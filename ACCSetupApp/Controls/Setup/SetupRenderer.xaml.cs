@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -35,11 +36,6 @@ namespace ACCSetupApp.Controls
 
             openFile.Click += OpenFile_Click;
 
-
-
-
-            //string b = @"C:\Users\Reinier\Documents\Assetto Corsa Competizione\Setups\porsche_991ii_gt3_r\misano\S3.json";
-            //ThreadPool.QueueUserWorkItem(new WaitCallback(y => LogSetup(b))); 
         }
 
         private void OpenFile_Click(object sender, RoutedEventArgs e)
@@ -48,6 +44,7 @@ namespace ACCSetupApp.Controls
 
             // Set filter for file extension and default file extension 
             dlg.DefaultExt = ".json";
+            dlg.Filter = "ACC Setup files|*.json";
             Nullable<bool> result = dlg.ShowDialog();
 
 
@@ -64,9 +61,6 @@ namespace ACCSetupApp.Controls
 
         private void LogSetup(string file)
         {
-            //string b = @"C:\Users\Reinier\Documents\Assetto Corsa Competizione\Setups\porsche_991ii_gt3_r\misano\S3.json";
-            //file = b;
-
             FileInfo jsonFile = new FileInfo(file);
             if (!jsonFile.Exists)
                 return;
@@ -154,6 +148,7 @@ namespace ACCSetupApp.Controls
             Table setupInfoTable = GetTable(30, 70);
             TableRowGroup rowGroupSetupInfo = new TableRowGroup();
             rowGroupSetupInfo.Rows.Add(GetTableRow("Setup", $"{jsonFile.Name}"));
+            rowGroupSetupInfo.Rows.Add(GetTableRow("Track", $"{GetTrackName(jsonFile.FullName)}"));
             rowGroupSetupInfo.Rows.Add(GetTableRow("Car", $"{carSetup.CarName}"));
             rowGroupSetupInfo.Rows.Add(GetTableRow("Class", $"{carSetup.CarClass}"));
 
@@ -315,6 +310,33 @@ namespace ACCSetupApp.Controls
             list.Foreground = Brushes.White;
 
             return list;
+        }
+
+        private string GetTrackName(string fileName)
+        {
+            string[] dashSplit = fileName.Split('\\');
+            string trackName = dashSplit[dashSplit.Length - 2];
+            trackName = Regex.Replace(trackName, "^[a-z]", m => m.Value.ToUpper());
+            trackName = trackName.Replace("_", " ");
+            return trackName;
+        }
+
+        /// <summary>
+        /// Strips the file name from a windows directory path
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns>removed the filename from the path is what it returns</returns>
+        public static string StripFileName(string fileName)
+        {
+            string[] dashSplit = fileName.Split('\\');
+            string result = String.Empty;
+
+            for (int i = 0; i < dashSplit.Length - 1; i++)
+            {
+                result += dashSplit[i] + '\\';
+            }
+
+            return result;
         }
     }
 }
