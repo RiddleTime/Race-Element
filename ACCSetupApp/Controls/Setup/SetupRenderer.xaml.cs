@@ -32,9 +32,19 @@ namespace ACCSetupApp.Controls
         {
             InitializeComponent();
 
+
+            openFile.Click += OpenFile_Click;
+
+
+
+
+            //string b = @"C:\Users\Reinier\Documents\Assetto Corsa Competizione\Setups\porsche_991ii_gt3_r\misano\S3.json";
+            //ThreadPool.QueueUserWorkItem(new WaitCallback(y => LogSetup(b))); 
+        }
+
+        private void OpenFile_Click(object sender, RoutedEventArgs e)
+        {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-
-
 
             // Set filter for file extension and default file extension 
             dlg.DefaultExt = ".json";
@@ -44,14 +54,12 @@ namespace ACCSetupApp.Controls
             // Get the selected file name and display in a TextBox 
             if (result == true)
             {
+                flowDocument.Blocks.Clear();
+
                 // Open document 
                 string filename = dlg.FileName;
                 LogSetup(filename);
             }
-
-
-            //string b = @"C:\Users\Reinier\Documents\Assetto Corsa Competizione\Setups\porsche_991ii_gt3_r\misano\S3.json";
-            //ThreadPool.QueueUserWorkItem(new WaitCallback(y => LogSetup(b))); 
         }
 
         private void LogSetup(string file)
@@ -139,47 +147,117 @@ namespace ACCSetupApp.Controls
 
 
 
-           
+            Section setupSection = new Section();
+            setupSection.Blocks.Add(GetDefaultHeader("Setup Info"));
+            setupSection.Blocks.Add(GetDefaultParagraph($" -- File -- \n{file}"));
+            setupSection.Blocks.Add(GetDefaultParagraph($" -- Car -- \n\t{carSetup.CarName}"));
 
-            Paragraph para = GetDefaultParagraph();
+            setupSection.BorderBrush = Brushes.White;
+            setupSection.BorderThickness = new Thickness(1, 1, 1, 1);
+            setupSection.Margin = new Thickness(0, 0, 0, 0);
+            flowDocument.Blocks.Add(setupSection);
 
 
-            Debug.WriteLine($"\n\n@@@@ Setup Converted @@@@");
-            para.Inlines.Add($"\n -- File -- \n\t {file}");
-            para.Inlines.Add($"\n -- Car -- \n\t {carSetup.CarName}");
+            Section tiresSection = new Section();
+            tiresSection.Blocks.Add(GetDefaultHeader("Tyres Setup"));
+            tiresSection.Blocks.Add(GetDefaultParagraph($" -- Compound -- \n\t {compound}"));
+            tiresSection.Blocks.Add(GetDefaultParagraph($" -- PSI -- \n\t FL: {frontLeftPressure}, FR: {frontRightPressure}, RL: {rearLeftPressure}, RR: {rearRightPressure}"));
+            tiresSection.Blocks.Add(GetDefaultParagraph($" -- Caster -- \n\t FL: {frontLeftCaster}, FR: {frontRightCaster}"));
+            tiresSection.Blocks.Add(GetDefaultParagraph($" -- Toe -- \n\t FL: {frontLeftToe}, FR: {frontRightToe}, RL: {rearLeftToe}, RR: {rearRightToe}"));
+            tiresSection.Blocks.Add(GetDefaultParagraph($" -- Camber -- \n\t FL: {camberFrontLeft}, FR: {camberFrontRight}, RL: {camberRearLeft}, RR: {camberRearRight}"));
 
-            para.Inlines.Add($"\n---- Tyres Setup -----");
-            para.Inlines.Add($"\n -- Compound -- \n\t {compound}");
-            para.Inlines.Add($"\n -- PSI -- \n\t FL: {frontLeftPressure}, FR: {frontRightPressure}, RL: {rearLeftPressure}, RR: {rearRightPressure}");
-            para.Inlines.Add($"\n -- Caster -- \n\t FL: {frontLeftCaster}, FR: {frontRightCaster}");
-            para.Inlines.Add($"\n -- Toe -- \n\t FL: {frontLeftToe}, FR: {frontRightToe}, RL: {rearLeftToe}, RR: {rearRightToe}");
-            para.Inlines.Add($"\n -- Camber -- \n\t FL: {camberFrontLeft}, FR: {camberFrontRight}, RL: {camberRearLeft}, RR: {camberRearRight}");
+            tiresSection.BorderBrush = Brushes.White;
+            tiresSection.BorderThickness = new Thickness(1, 1, 1, 1);
+            flowDocument.Blocks.Add(tiresSection);
 
-            para.Inlines.Add($"\n---- Mechanical Grip ----");
-            para.Inlines.Add($"\n -- WheelRates (Nm) -- \n\t FL: {wheelRateFrontLeft}, FR: {wheelRateFrontRight}, RL: {wheelRateRearLeft}, RR: {wheelRateRearRight}");
-            para.Inlines.Add($"\n -- Bumpstop Rate (Nm) -- \n\t FL: {bumpStopRateFrontLeft}, FR: {bumpStopRateFrontRight}, RL: {bumpStopRateRearLeft}, RR: {bumpStopRateRearRight}");
-            para.Inlines.Add($"\n -- Bumpstop range -- \n\t FL: {bumpStopRangeFrontLeft}, FR: {bumpStopRangeFrontRight}, RL: {bumpStopRangeRearLeft}, RR: {bumpStopRangeRearRight}");
-            para.Inlines.Add($"\n -- Differential Preload (Nm) -- \n\t {differentialPreload}");
-            para.Inlines.Add($"\n -- Brake Power (%) -- \n\t {brakePower}%");
-            para.Inlines.Add($"\n -- Brake Bias (%) -- \n\t {brakeBias}%");
-            para.Inlines.Add($"\n -- Anti Roll Bar-- \n\t Front: {antiRollBarFront}, Rear: {antiRollBarRear}");
-            para.Inlines.Add($"\n -- Steering Ratio -- \n\t {steeringRatio}");
 
-            para.Inlines.Add($"\n---- Aero Balance ----");
-            para.Inlines.Add($"\n -- Ride Height (mm)-- \n\t Front: {rideHeightFront}, Rear: {rideHeightRear}");
+            Section mechanicalGripSection = new Section();
+            mechanicalGripSection.Blocks.Add(GetDefaultHeader("Mechanical Grip"));
+            mechanicalGripSection.Blocks.Add(GetDefaultParagraph($" -- WheelRates (Nm) -- \n\t FL: {wheelRateFrontLeft}, FR: {wheelRateFrontRight}, RL: {wheelRateRearLeft}, RR: {wheelRateRearRight}"));
+            mechanicalGripSection.Blocks.Add(GetDefaultParagraph($" -- Bumpstop Rate (Nm) -- \n\t FL: {bumpStopRateFrontLeft}, FR: {bumpStopRateFrontRight}, RL: {bumpStopRateRearLeft}, RR: {bumpStopRateRearRight}"));
+            mechanicalGripSection.Blocks.Add(GetDefaultParagraph($" -- Bumpstop range -- \n\t FL: {bumpStopRangeFrontLeft}, FR: {bumpStopRangeFrontRight}, RL: {bumpStopRangeRearLeft}, RR: {bumpStopRangeRearRight}"));
+            mechanicalGripSection.Blocks.Add(GetDefaultParagraph($" -- Differential Preload (Nm) -- \n\t {differentialPreload}"));
+            mechanicalGripSection.Blocks.Add(GetDefaultParagraph($" -- Brake Power (%) -- \n\t {brakePower}%"));
+            mechanicalGripSection.Blocks.Add(GetDefaultParagraph($" -- Brake Bias (%) -- \n\t {brakeBias}%"));
+            mechanicalGripSection.Blocks.Add(GetDefaultParagraph($" -- Anti Roll Bar-- \n\t Front: {antiRollBarFront}, Rear: {antiRollBarRear}"));
+            mechanicalGripSection.Blocks.Add(GetDefaultParagraph($" -- Steering Ratio -- \n\t {steeringRatio}"));
 
-            para.BorderBrush = Brushes.White;
-            para.BorderThickness = new Thickness(1, 1, 1, 1);
-            flowDocument.Blocks.Add(para);
+            mechanicalGripSection.BorderBrush = Brushes.White;
+            mechanicalGripSection.BorderThickness = new Thickness(1, 1, 1, 1);
+            flowDocument.Blocks.Add(mechanicalGripSection);
+
+
+            Section aeroBalanceSection = new Section();
+            aeroBalanceSection.Blocks.Add(GetDefaultHeader("Aero Balance"));
+            aeroBalanceSection.Blocks.Add(GetDefaultParagraph($" -- Ride Height (mm)-- \n\t Front: {rideHeightFront}, Rear: {rideHeightRear}"));
+
+            aeroBalanceSection.BorderBrush = Brushes.White;
+            aeroBalanceSection.BorderThickness = new Thickness(1, 1, 1, 1);
+            flowDocument.Blocks.Add(aeroBalanceSection);
+        }
+
+        private Paragraph GetDefaultHeader()
+        {
+            Paragraph content = new Paragraph();
+            content.FontSize = 16;
+            content.FontWeight = FontWeights.Medium;
+            content.Foreground = Brushes.White;
+            content.TextAlignment = TextAlignment.Center;
+            return content;
+        }
+
+        private Paragraph GetDefaultHeader(double fontSize)
+        {
+            Paragraph content = GetDefaultHeader();
+            content.FontSize = fontSize;
+            return content;
+        }
+
+        private Paragraph GetDefaultHeader(string inlineText)
+        {
+            Paragraph content = GetDefaultHeader();
+            content.Margin = new Thickness(0, 0, 0, 0);
+            content.Inlines.Add(inlineText);
+            return content;
+        }
+
+        private Paragraph GetDefaultHeader(double fontSize, string inlineText)
+        {
+            Paragraph content = GetDefaultHeader();
+            content.FontSize = fontSize;
+            content.Margin = new Thickness(0, 0, 0, 0);
+            content.Inlines.Add(inlineText);
+            return content;
         }
 
         private Paragraph GetDefaultParagraph()
         {
-
             Paragraph content = new Paragraph();
-            content.FontSize = 13;
+            content.FontSize = 12;
             content.FontWeight = FontWeights.Medium;
             content.Foreground = Brushes.White;
+            content.Margin = new Thickness(0, 0, 0, 0);
+            return content;
+        }
+
+        private Paragraph GetDefaultParagraph(double fontSize)
+        {
+            Paragraph content = GetDefaultParagraph();
+            content.FontSize = fontSize;
+            return content;
+        }
+
+        private Paragraph GetDefaultParagraph(string inlineText)
+        {
+            Paragraph content = GetDefaultParagraph();
+            content.Inlines.Add(inlineText);
+            return content;
+        }
+
+        private Paragraph GetDefaultParagraph(double fontSize, string inlineText)
+        {
+            Paragraph content = GetDefaultParagraph(fontSize);
+            content.Inlines.Add(inlineText);
             return content;
         }
 

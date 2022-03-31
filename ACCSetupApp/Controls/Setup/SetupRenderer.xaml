@@ -7,10 +7,16 @@
          
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             MinWidth="800">
+             >
     <Grid>
-        
-        <FlowDocumentScrollViewer Opacity="0.5" Focusable="False" Cursor="Arrow" FontFamily="Roboto Medium">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Button x:Name="openFile" Grid.Row="0">Open Setup</Button>
+
+        <FlowDocumentScrollViewer Grid.Row="1" Opacity="0.5" Focusable="False" Cursor="Arrow" FontFamily="Roboto Medium">
             <FlowDocument  x:Name="flowDocument" Focusable="False" Cursor="Arrow" Background="Black" FontFamily="{StaticResource RobotoMedium}" RenderOptions.ClearTypeHint="Enabled" AllowDrop="False">
             </FlowDocument>
         </FlowDocumentScrollViewer>
