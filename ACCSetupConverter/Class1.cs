@@ -1,6 +1,7 @@
 ﻿using System;
 
-namespace ACCSetupConverter
+namespace SomeNameSpace
 {
+
 
 }

@@ -14,7 +14,22 @@ namespace SetupParser
         {
             // Read Json file
 
-            FileInfo jsonFile = new FileInfo(@"C:\Users\Reinier\Documents\Assetto Corsa Competizione\Setups\porsche_991ii_gt3_r\misano\S2.json");
+
+
+
+            // Create porsche 911.2 GT3 setup converter 
+            LogSetup(@"C:\Users\Reinier\Documents\Assetto Corsa Competizione\Setups\porsche_991ii_gt3_r\misano\S3.json");
+            LogSetup(@"C:\Users\Reinier\Documents\Assetto Corsa Competizione\Setups\porsche_991ii_gt3_r\misano\S4.json");
+
+        }
+
+        private static void LogSetup(string file)
+        {
+
+            FileInfo jsonFile = new FileInfo(file);
+            if (!jsonFile.Exists)
+                return;
+
             string jsonString = string.Empty;
             try
             {
@@ -34,8 +49,6 @@ namespace SetupParser
             }
             Root setup = JsonSerializer.Deserialize<Root>(jsonString);
 
-
-            // Create porsche 911.2 GT3 setup converter 
             ICarSetupConversion carSetup = new Porsche911II();
 
             TyreCompound compound = carSetup.TyresSetup.Compound(setup.basicSetup.tyres.tyreCompound);
@@ -91,6 +104,10 @@ namespace SetupParser
             int rideHeightRear = carSetup.AeroBalance.RideHeight(setup.advancedSetup.aeroBalance.rideHeight, Position.Rear);
 
 
+            Debug.WriteLine($"\n\n@@@@ Setup Converted @@@@");
+            Debug.WriteLine($" -- File -- \n\t {file}");
+            Debug.WriteLine($" -- Car -- \n\t {carSetup.CarName}");
+
             Debug.WriteLine($"\n---- Tyres Setup -----");
             Debug.WriteLine($" -- Compound -- \n\t {compound}");
             Debug.WriteLine($" -- PSI -- \n\t FL: {frontLeftPressure}, FR: {frontRightPressure}, RL: {rearLeftPressure}, RR: {rearRightPressure}");
@@ -110,7 +127,6 @@ namespace SetupParser
 
             Debug.WriteLine($"\n---- Aero Balance ----");
             Debug.WriteLine($" -- Ride Height (mm)-- \n\t Front: {rideHeightFront}, Rear: {rideHeightRear}");
-
         }
     }
 }

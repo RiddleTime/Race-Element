@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACCSetupConverter", "ACCSetupConverter\ACCSetupConverter.csproj", "{5C5B6070-FF6D-4DB3-AB7D-CECC4FED4932}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetupParser", "SetupParser\SetupParser.csproj", "{8C5E35E2-11D7-46A3-862A-2D35A0A03398}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SetupParser", "SetupParser\SetupParser.csproj", "{8C5E35E2-11D7-46A3-862A-2D35A0A03398}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACCSetupApp", "WpfApp1\ACCSetupApp.csproj", "{5FC4B4E1-CDB8-485A-ACF2-3032ACA3D699}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{8C5E35E2-11D7-46A3-862A-2D35A0A03398}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C5E35E2-11D7-46A3-862A-2D35A0A03398}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C5E35E2-11D7-46A3-862A-2D35A0A03398}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FC4B4E1-CDB8-485A-ACF2-3032ACA3D699}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FC4B4E1-CDB8-485A-ACF2-3032ACA3D699}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FC4B4E1-CDB8-485A-ACF2-3032ACA3D699}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FC4B4E1-CDB8-485A-ACF2-3032ACA3D699}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

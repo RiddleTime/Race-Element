@@ -35,6 +35,7 @@ namespace ACCSetupConverter
     public interface ICarSetupConversion
     {
         public string CarName { get; }
+        public string ParseName { get; }
         public CarClasses CarClass { get; }
 
         public ITyresSetup TyresSetup { get; }

@@ -9,6 +9,7 @@ namespace ACCSetupConverter.Cars.GT3
     public class Porsche911II : ICarSetupConversion
     {
         public string CarName => "Porsche 911.2 GT3";
+        public string ParseName => "porsche_991ii_gt3_r";
         public CarClasses CarClass => CarClasses.GT3;
 
         public ITyresSetup TyresSetup => new TyreSetup();
