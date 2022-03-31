@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:ACCSetupApp"
         xmlns:controls="clr-namespace:ACCSetupApp.Controls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" MinWidth="1050" MinHeight="640">
-    <Grid>
+        Title="MainWindow" Width="1000" MinWidth="1025" MinHeight="500" Background="Black">
+    <Grid MaxWidth="1050" HorizontalAlignment="Left" Background="Black">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
