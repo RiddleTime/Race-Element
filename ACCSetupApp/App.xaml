@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:ACCSetupApp"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <FontFamily x:Key="RobotoMedium" >pack://application:,,,./Fonts/Roboto Medium#</FontFamily>
     </Application.Resources>
 </Application>

@@ -32,14 +32,32 @@ namespace ACCSetupApp.Controls
         {
             InitializeComponent();
 
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+
+
+            // Set filter for file extension and default file extension 
+            dlg.DefaultExt = ".json";
+            Nullable<bool> result = dlg.ShowDialog();
+
+
+            // Get the selected file name and display in a TextBox 
+            if (result == true)
+            {
+                // Open document 
+                string filename = dlg.FileName;
+                LogSetup(filename);
+            }
+
+
             //string b = @"C:\Users\Reinier\Documents\Assetto Corsa Competizione\Setups\porsche_991ii_gt3_r\misano\S3.json";
             //ThreadPool.QueueUserWorkItem(new WaitCallback(y => LogSetup(b))); 
         }
 
         private void LogSetup(string file)
         {
-            string b = @"C:\Users\Reinier\Documents\Assetto Corsa Competizione\Setups\porsche_991ii_gt3_r\misano\S3.json";
-            file = b;
+            //string b = @"C:\Users\Reinier\Documents\Assetto Corsa Competizione\Setups\porsche_991ii_gt3_r\misano\S3.json";
+            //file = b;
 
             FileInfo jsonFile = new FileInfo(file);
             if (!jsonFile.Exists)
@@ -120,29 +138,58 @@ namespace ACCSetupApp.Controls
             int rideHeightRear = carSetup.AeroBalance.RideHeight(setup.advancedSetup.aeroBalance.rideHeight, Position.Rear);
 
 
+
+           
+
+            Paragraph para = GetDefaultParagraph();
+
+
             Debug.WriteLine($"\n\n@@@@ Setup Converted @@@@");
-            Debug.WriteLine($" -- File -- \n\t {file}");
-            Debug.WriteLine($" -- Car -- \n\t {carSetup.CarName}");
+            para.Inlines.Add($"\n -- File -- \n\t {file}");
+            para.Inlines.Add($"\n -- Car -- \n\t {carSetup.CarName}");
 
-            Debug.WriteLine($"\n---- Tyres Setup -----");
-            Debug.WriteLine($" -- Compound -- \n\t {compound}");
-            Debug.WriteLine($" -- PSI -- \n\t FL: {frontLeftPressure}, FR: {frontRightPressure}, RL: {rearLeftPressure}, RR: {rearRightPressure}");
-            Debug.WriteLine($" -- Caster -- \n\t FL: {frontLeftCaster}, FR: {frontRightCaster}");
-            Debug.WriteLine($" -- Toe -- \n\t FL: {frontLeftToe}, FR: {frontRightToe}, RL: {rearLeftToe}, RR: {rearRightToe}");
-            Debug.WriteLine($" -- Camber -- \n\t FL: {camberFrontLeft}, FR: {camberFrontRight}, RL: {camberRearLeft}, RR: {camberRearRight}");
+            para.Inlines.Add($"\n---- Tyres Setup -----");
+            para.Inlines.Add($"\n -- Compound -- \n\t {compound}");
+            para.Inlines.Add($"\n -- PSI -- \n\t FL: {frontLeftPressure}, FR: {frontRightPressure}, RL: {rearLeftPressure}, RR: {rearRightPressure}");
+            para.Inlines.Add($"\n -- Caster -- \n\t FL: {frontLeftCaster}, FR: {frontRightCaster}");
+            para.Inlines.Add($"\n -- Toe -- \n\t FL: {frontLeftToe}, FR: {frontRightToe}, RL: {rearLeftToe}, RR: {rearRightToe}");
+            para.Inlines.Add($"\n -- Camber -- \n\t FL: {camberFrontLeft}, FR: {camberFrontRight}, RL: {camberRearLeft}, RR: {camberRearRight}");
 
-            Debug.WriteLine($"\n---- Mechanical Grip ----");
-            Debug.WriteLine($" -- WheelRates (Nm) -- \n\t FL: {wheelRateFrontLeft}, FR: {wheelRateFrontRight}, RL: {wheelRateRearLeft}, RR: {wheelRateRearRight}");
-            Debug.WriteLine($" -- Bumpstop Rate (Nm) -- \n\t FL: {bumpStopRateFrontLeft}, FR: {bumpStopRateFrontRight}, RL: {bumpStopRateRearLeft}, RR: {bumpStopRateRearRight}");
-            Debug.WriteLine($" -- Bumpstop range -- \n\t FL: {bumpStopRangeFrontLeft}, FR: {bumpStopRangeFrontRight}, RL: {bumpStopRangeRearLeft}, RR: {bumpStopRangeRearRight}");
-            Debug.WriteLine($" -- Differential Preload (Nm) -- \n\t {differentialPreload}");
-            Debug.WriteLine($" -- Brake Power (%) -- \n\t {brakePower}%");
-            Debug.WriteLine($" -- Brake Bias (%) -- \n\t {brakeBias}%");
-            Debug.WriteLine($" -- Anti Roll Bar-- \n\t Front: {antiRollBarFront}, Rear: {antiRollBarRear}");
-            Debug.WriteLine($" -- Steering Ratio -- \n\t {steeringRatio}");
+            para.Inlines.Add($"\n---- Mechanical Grip ----");
+            para.Inlines.Add($"\n -- WheelRates (Nm) -- \n\t FL: {wheelRateFrontLeft}, FR: {wheelRateFrontRight}, RL: {wheelRateRearLeft}, RR: {wheelRateRearRight}");
+            para.Inlines.Add($"\n -- Bumpstop Rate (Nm) -- \n\t FL: {bumpStopRateFrontLeft}, FR: {bumpStopRateFrontRight}, RL: {bumpStopRateRearLeft}, RR: {bumpStopRateRearRight}");
+            para.Inlines.Add($"\n -- Bumpstop range -- \n\t FL: {bumpStopRangeFrontLeft}, FR: {bumpStopRangeFrontRight}, RL: {bumpStopRangeRearLeft}, RR: {bumpStopRangeRearRight}");
+            para.Inlines.Add($"\n -- Differential Preload (Nm) -- \n\t {differentialPreload}");
+            para.Inlines.Add($"\n -- Brake Power (%) -- \n\t {brakePower}%");
+            para.Inlines.Add($"\n -- Brake Bias (%) -- \n\t {brakeBias}%");
+            para.Inlines.Add($"\n -- Anti Roll Bar-- \n\t Front: {antiRollBarFront}, Rear: {antiRollBarRear}");
+            para.Inlines.Add($"\n -- Steering Ratio -- \n\t {steeringRatio}");
 
-            Debug.WriteLine($"\n---- Aero Balance ----");
-            Debug.WriteLine($" -- Ride Height (mm)-- \n\t Front: {rideHeightFront}, Rear: {rideHeightRear}");
+            para.Inlines.Add($"\n---- Aero Balance ----");
+            para.Inlines.Add($"\n -- Ride Height (mm)-- \n\t Front: {rideHeightFront}, Rear: {rideHeightRear}");
+
+            para.BorderBrush = Brushes.White;
+            para.BorderThickness = new Thickness(1, 1, 1, 1);
+            flowDocument.Blocks.Add(para);
+        }
+
+        private Paragraph GetDefaultParagraph()
+        {
+
+            Paragraph content = new Paragraph();
+            content.FontSize = 13;
+            content.FontWeight = FontWeights.Medium;
+            content.Foreground = Brushes.White;
+            return content;
+        }
+
+        private List GetDefaultList()
+        {
+            List list = new List();
+            list.FontSize = 13;
+            list.Foreground = Brushes.White;
+
+            return list;
         }
     }
 }
