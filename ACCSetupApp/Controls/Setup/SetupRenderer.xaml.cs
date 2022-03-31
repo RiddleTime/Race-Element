@@ -147,62 +147,111 @@ namespace ACCSetupApp.Controls
 
 
 
+            // Setup Info
             Section setupSection = new Section();
             setupSection.Blocks.Add(GetDefaultHeader("Setup Info"));
-            setupSection.Blocks.Add(GetDefaultParagraph($" -- File -- \n{file}"));
-            setupSection.Blocks.Add(GetDefaultParagraph($" -- Car -- \n\t{carSetup.CarName}"));
 
+            Table setupInfoTable = GetTable(30, 70);
+            TableRowGroup rowGroupSetupInfo = new TableRowGroup();
+            rowGroupSetupInfo.Rows.Add(GetTableRow("Setup", $"{jsonFile.Name}"));
+            rowGroupSetupInfo.Rows.Add(GetTableRow("Car", $"{carSetup.CarName}"));
+            rowGroupSetupInfo.Rows.Add(GetTableRow("Class", $"{carSetup.CarClass}"));
+
+            setupInfoTable.RowGroups.Add(rowGroupSetupInfo);
+            setupSection.Blocks.Add(setupInfoTable);
             setupSection.BorderBrush = Brushes.White;
             setupSection.BorderThickness = new Thickness(1, 1, 1, 1);
             setupSection.Margin = new Thickness(0, 0, 0, 0);
             flowDocument.Blocks.Add(setupSection);
 
 
+
+            // Tyres setup
             Section tiresSection = new Section();
             tiresSection.Blocks.Add(GetDefaultHeader("Tyres Setup"));
-            tiresSection.Blocks.Add(GetDefaultParagraph($" -- Compound -- \n\t {compound}"));
-            tiresSection.Blocks.Add(GetDefaultParagraph($" -- PSI -- \n\t FL: {frontLeftPressure}, FR: {frontRightPressure}, RL: {rearLeftPressure}, RR: {rearRightPressure}"));
-            tiresSection.Blocks.Add(GetDefaultParagraph($" -- Caster -- \n\t FL: {frontLeftCaster}, FR: {frontRightCaster}"));
-            tiresSection.Blocks.Add(GetDefaultParagraph($" -- Toe -- \n\t FL: {frontLeftToe}, FR: {frontRightToe}, RL: {rearLeftToe}, RR: {rearRightToe}"));
-            tiresSection.Blocks.Add(GetDefaultParagraph($" -- Camber -- \n\t FL: {camberFrontLeft}, FR: {camberFrontRight}, RL: {camberRearLeft}, RR: {camberRearRight}"));
 
+            Table tiresTable = GetTable(30, 70);
+            TableRowGroup rowGroupTires = new TableRowGroup();
+            rowGroupTires.Rows.Add(GetTableRow("Compound", $"{compound}"));
+            rowGroupTires.Rows.Add(GetTableRow("PSI", $"FL: {frontLeftPressure}, FR: {frontRightPressure}, RL: {rearLeftPressure}, RR: {rearRightPressure}"));
+            rowGroupTires.Rows.Add(GetTableRow("Caster", $"FL: {frontLeftCaster}, FR: {frontRightCaster}"));
+            rowGroupTires.Rows.Add(GetTableRow("Toe", $"FL: {frontLeftToe}, FR: {frontRightToe}, RL: {rearLeftToe}, RR: {rearRightToe}"));
+            rowGroupTires.Rows.Add(GetTableRow("Camber", $"FL: {camberFrontLeft}, FR: {camberFrontRight}, RL: {camberRearLeft}, RR: {camberRearRight}"));
+            tiresTable.RowGroups.Add(rowGroupTires);
+            tiresSection.Blocks.Add(tiresTable);
             tiresSection.BorderBrush = Brushes.White;
             tiresSection.BorderThickness = new Thickness(1, 1, 1, 1);
             flowDocument.Blocks.Add(tiresSection);
 
 
+            // Mechanical grip
             Section mechanicalGripSection = new Section();
             mechanicalGripSection.Blocks.Add(GetDefaultHeader("Mechanical Grip"));
-            mechanicalGripSection.Blocks.Add(GetDefaultParagraph($" -- WheelRates (Nm) -- \n\t FL: {wheelRateFrontLeft}, FR: {wheelRateFrontRight}, RL: {wheelRateRearLeft}, RR: {wheelRateRearRight}"));
-            mechanicalGripSection.Blocks.Add(GetDefaultParagraph($" -- Bumpstop Rate (Nm) -- \n\t FL: {bumpStopRateFrontLeft}, FR: {bumpStopRateFrontRight}, RL: {bumpStopRateRearLeft}, RR: {bumpStopRateRearRight}"));
-            mechanicalGripSection.Blocks.Add(GetDefaultParagraph($" -- Bumpstop range -- \n\t FL: {bumpStopRangeFrontLeft}, FR: {bumpStopRangeFrontRight}, RL: {bumpStopRangeRearLeft}, RR: {bumpStopRangeRearRight}"));
-            mechanicalGripSection.Blocks.Add(GetDefaultParagraph($" -- Differential Preload (Nm) -- \n\t {differentialPreload}"));
-            mechanicalGripSection.Blocks.Add(GetDefaultParagraph($" -- Brake Power (%) -- \n\t {brakePower}%"));
-            mechanicalGripSection.Blocks.Add(GetDefaultParagraph($" -- Brake Bias (%) -- \n\t {brakeBias}%"));
-            mechanicalGripSection.Blocks.Add(GetDefaultParagraph($" -- Anti Roll Bar-- \n\t Front: {antiRollBarFront}, Rear: {antiRollBarRear}"));
-            mechanicalGripSection.Blocks.Add(GetDefaultParagraph($" -- Steering Ratio -- \n\t {steeringRatio}"));
 
+            Table gripTable = GetTable(30, 70);
+            TableRowGroup rowGroupGrip = new TableRowGroup();
+            rowGroupGrip.Rows.Add(GetTableRow("Wheelrates(Nm)", $"FL: {wheelRateFrontLeft}, FR: {wheelRateFrontRight}, RL: {wheelRateRearLeft}, RR: {wheelRateRearRight}"));
+            rowGroupGrip.Rows.Add(GetTableRow("Bumpstop rate(Nm)", $"FL: {bumpStopRateFrontLeft}, FR: {bumpStopRateFrontRight}, RL: {bumpStopRateRearLeft}, RR: {bumpStopRateRearRight}"));
+            rowGroupGrip.Rows.Add(GetTableRow("Bumstop range", $"FL: {bumpStopRangeFrontLeft}, FR: {bumpStopRangeFrontRight}, RL: {bumpStopRangeRearLeft}, RR: {bumpStopRangeRearRight}"));
+            rowGroupGrip.Rows.Add(GetTableRow("Diff preload(Nm)", $"{differentialPreload}"));
+            rowGroupGrip.Rows.Add(GetTableRow("Brake Power", $"{brakePower}%"));
+            rowGroupGrip.Rows.Add(GetTableRow("Brake bias", $"{brakeBias}%"));
+            rowGroupGrip.Rows.Add(GetTableRow("Anti roll bar", $"Front: {antiRollBarFront}, Rear: {antiRollBarRear}"));
+            rowGroupGrip.Rows.Add(GetTableRow("Steering Ratio", $"{steeringRatio}"));
+
+            gripTable.RowGroups.Add(rowGroupGrip);
+            mechanicalGripSection.Blocks.Add(gripTable);
             mechanicalGripSection.BorderBrush = Brushes.White;
             mechanicalGripSection.BorderThickness = new Thickness(1, 1, 1, 1);
             flowDocument.Blocks.Add(mechanicalGripSection);
 
 
+            // Aero
             Section aeroBalanceSection = new Section();
             aeroBalanceSection.Blocks.Add(GetDefaultHeader("Aero Balance"));
-            aeroBalanceSection.Blocks.Add(GetDefaultParagraph($" -- Ride Height (mm)-- \n\t Front: {rideHeightFront}, Rear: {rideHeightRear}"));
+            Table aeroTable = GetTable(30, 70);
+            TableRowGroup aeroTableRowGroup = new TableRowGroup();
+            aeroTableRowGroup.Rows.Add(GetTableRow("Ride height(mm)", $"Front: {rideHeightFront}, Rear: {rideHeightRear}"));
 
+            aeroTable.RowGroups.Add(aeroTableRowGroup);
+            aeroBalanceSection.Blocks.Add(aeroTable);
             aeroBalanceSection.BorderBrush = Brushes.White;
             aeroBalanceSection.BorderThickness = new Thickness(1, 1, 1, 1);
             flowDocument.Blocks.Add(aeroBalanceSection);
         }
 
+        private Table GetTable(int headerWidth, int valueWidth)
+        {
+            Table table = new Table();
+            TableColumn columnTitle = new TableColumn();
+            columnTitle.Width = new GridLength(headerWidth, GridUnitType.Star);
+            table.Columns.Add(columnTitle);
+
+            TableColumn columnValues = new TableColumn();
+            columnValues.Width = new GridLength(valueWidth, GridUnitType.Star);
+            table.Columns.Add(columnValues);
+
+            table.Margin = new Thickness(0);
+
+            return table;
+        }
+
+        private TableRow GetTableRow(string title, string value)
+        {
+            TableRow row = new TableRow();
+            row.Cells.Add(new TableCell(GetDefaultParagraph(title)));
+            row.Cells.Add(new TableCell(GetDefaultParagraph(value)));
+            return row;
+        }
+
         private Paragraph GetDefaultHeader()
         {
             Paragraph content = new Paragraph();
-            content.FontSize = 16;
+            content.FontSize = 17;
             content.FontWeight = FontWeights.Medium;
             content.Foreground = Brushes.White;
             content.TextAlignment = TextAlignment.Center;
+            content.Margin = new Thickness(0, 0, 0, 2);
             return content;
         }
 
@@ -216,7 +265,6 @@ namespace ACCSetupApp.Controls
         private Paragraph GetDefaultHeader(string inlineText)
         {
             Paragraph content = GetDefaultHeader();
-            content.Margin = new Thickness(0, 0, 0, 0);
             content.Inlines.Add(inlineText);
             return content;
         }
@@ -225,7 +273,6 @@ namespace ACCSetupApp.Controls
         {
             Paragraph content = GetDefaultHeader();
             content.FontSize = fontSize;
-            content.Margin = new Thickness(0, 0, 0, 0);
             content.Inlines.Add(inlineText);
             return content;
         }
