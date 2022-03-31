@@ -1,10 +1,10 @@
-﻿using ACCSetupConverter;
-using ACCSetupConverter.Cars.GT3;
+﻿using SetupParser.Cars.GT3;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
-using static ACCSetupConverter.SetupJson;
+using static SetupParser.SetupConverter;
+using static SetupParser.SetupJson;
 
 namespace SetupParser
 {
@@ -13,8 +13,6 @@ namespace SetupParser
         static void Main(string[] args)
         {
             // Read Json file
-
-
 
 
             // Create porsche 911.2 GT3 setup converter 

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static SetupParser.SetupConverter;
 
-namespace ACCSetupConverter.Cars.GT3
+namespace SetupParser.Cars.GT3
 {
     public class Porsche911II : ICarSetupConversion
     {
