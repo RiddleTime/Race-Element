@@ -48,6 +48,9 @@ namespace ACCSetupApp.Controls.Setup
 
             ICarSetupConversion carSetup = new ConversionFactory().GetConversion(GetParseName(file));
 
+            if (carSetup == null)
+                return;
+
             TyreCompound compound = carSetup.TyresSetup.Compound(setup.basicSetup.tyres.tyreCompound);
 
             // Allignment / Tyre Setup
@@ -349,22 +352,5 @@ namespace ACCSetupApp.Controls.Setup
             return parseName;
         }
 
-        /// <summary>
-        /// Strips the file name from a windows directory path
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <returns>removed the filename from the path is what it returns</returns>
-        public static string StripFileName(string fileName)
-        {
-            string[] dashSplit = fileName.Split('\\');
-            string result = String.Empty;
-
-            for (int i = 0; i < dashSplit.Length - 1; i++)
-            {
-                result += dashSplit[i] + '\\';
-            }
-
-            return result;
-        }
     }
 }

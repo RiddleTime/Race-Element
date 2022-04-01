@@ -16,6 +16,7 @@ namespace ACCSetupApp.SetupParser
             {
                 case "porsche_991ii_gt3_r": return new Porsche911II();
                 case "honda_nsx_gt3_evo": return new HondaNsxEvo();
+                case "audi_r8_lms_evo_ii": return new AudiR8LMSevoII();
 
                 default: return null;
             }
@@ -31,6 +32,7 @@ namespace ACCSetupApp.SetupParser
                 case "amr_v12_vantage_gt3": return "Aston Martin Racing V12 Vantage GT3";
                 case "audi_r8_gt4": return "Audi R8 LMS GT4";
                 case "audi_r8_lms": return "Audi R8 LMS";
+                case "audi_r8_lms_evo_ii": return "Audi R8 LMS evo II";
 
 
                 case "porsche_991ii_gt3_r": return "Porsche 911 II GT3 R";

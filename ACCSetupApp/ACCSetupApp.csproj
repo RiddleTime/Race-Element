@@ -37,6 +37,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>ACCSetupApp.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Costura, Version=5.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Costura.Fody.5.7.0\lib\netstandard1.0\Costura.dll</HintPath>
@@ -207,6 +210,8 @@
     <Compile Include="Controls\Setup\SetupsTab.xaml.cs">
       <DependentUpon>SetupsTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SetupParser\Cars\GT3\AudiR8LMSevoII.cs" />
+    <Compile Include="SetupParser\Cars\GT3\Mclaren720sGT3.cs" />
     <Compile Include="SetupParser\ConversionFactory.cs" />
     <Compile Include="SetupParser\Cars\GT3\HondaNsxEvo.cs" />
     <Compile Include="SetupParser\Cars\GT3\Porsche911II.cs" />
