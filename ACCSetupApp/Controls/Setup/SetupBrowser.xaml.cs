@@ -97,8 +97,8 @@ namespace ACCSetupApp.Controls
                         {
                             TextBlock setupHeader = new TextBlock()
                             {
-                                Text = conversionFactory.ParseCarName(trackFile.Name),
-                                Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style,
+                                Text = conversionFactory.ParseCarName(trackFile.Name.Replace(".json", "")),
+                                Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style
                             };
                             TreeViewItem setupTreeViewItem = new TreeViewItem() { Header = setupHeader, DataContext = trackFile };
 
