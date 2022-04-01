@@ -20,6 +20,8 @@ namespace ACCSetupApp.Controls.Setup
     {
         public void LogSetup(ref FlowDocument flowDocument, string file)
         {
+            flowDocument.Blocks.Clear();
+
             FileInfo jsonFile = new FileInfo(file);
             if (!jsonFile.Exists)
                 return;

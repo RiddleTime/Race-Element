@@ -11,7 +11,9 @@ namespace ACCSetupApp.SetupParser
         public enum CarClasses
         {
             GT3,
-            GT4
+            GT4,
+            TCX,
+            GTC
         }
 
         public enum Wheel

@@ -14,6 +14,7 @@
                 <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="Cyan" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TreeView.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         </ResourceDictionary>
@@ -25,7 +26,34 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Column="0">hello</TextBlock>
+        <TreeView x:Name="setupsTreeView" Grid.Column="0" Style="{StaticResource MaterialDesignTreeView}" >
+            <TreeViewItem>
+                <TreeViewItem.Header>
+                    <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}">
+                        Honda NSX GT3 Evo
+                    </TextBlock>
+                </TreeViewItem.Header>
+                <TreeViewItem  >
+                    <TreeViewItem.Header>
+                        <TextBlock Style="{StaticResource MaterialDesignSubtitle2TextBlock}">
+                        Misano
+                        </TextBlock>
+                    </TreeViewItem.Header>
+                    <TreeViewItem>
+                        <TreeViewItem.Header>
+                            <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}">
+                        Setup 1
+                            </TextBlock>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+                    <TreeViewItem Header="Setup 2" />
+                </TreeViewItem>
+                <TreeViewItem Header="Paul Ricard" >
+                    <TreeViewItem Header="Setup 1" />
+                    <TreeViewItem Header="Setup 2" />
+                </TreeViewItem>
+            </TreeViewItem>
+        </TreeView>
 
         <FlowDocumentScrollViewer Grid.Column="1" Opacity="0.5" Focusable="False" Cursor="Arrow">
             <FlowDocument  x:Name="flowDocument" Focusable="False" Cursor="Arrow" Background="{DynamicResource MaterialDesignPaper}" FontFamily="{StaticResource RobotoMedium}" RenderOptions.ClearTypeHint="Enabled" AllowDrop="False">
