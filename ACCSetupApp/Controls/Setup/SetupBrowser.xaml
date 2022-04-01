@@ -25,7 +25,9 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-
+      
+        
+        
         <TreeView x:Name="setupsTreeView" Grid.Column="0" Style="{StaticResource MaterialDesignTreeView}" >
             <TreeViewItem>
                 <TreeViewItem.Header>

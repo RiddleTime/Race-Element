@@ -24,7 +24,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="Cyan" />
+                <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="Yellow" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TabControl.xaml" />
@@ -35,6 +35,8 @@
 
 
     <Grid>
+        <materialDesign:Snackbar x:Name="snackbar" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                   MessageQueue="{materialDesign:MessageQueue}"  />
         <TabControl TabStripPlacement="Left">
             <TabItem Style="{StaticResource MaterialDesignTabItem}" Name="tabSetups">
                 <TabItem.Header>

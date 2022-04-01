@@ -125,6 +125,8 @@ namespace ACCSetupApp.Controls.Setup
             // Aero Balance
             int rideHeightFront = carSetup.AeroBalance.RideHeight(setup.advancedSetup.aeroBalance.rideHeight, Position.Front);
             int rideHeightRear = carSetup.AeroBalance.RideHeight(setup.advancedSetup.aeroBalance.rideHeight, Position.Rear);
+            int rearWing = carSetup.AeroBalance.RearWing(setup.advancedSetup.aeroBalance.rearWing);
+            int splitter = carSetup.AeroBalance.Splitter(setup.advancedSetup.aeroBalance.splitter);
 
 
 
@@ -212,8 +214,8 @@ namespace ACCSetupApp.Controls.Setup
             Table aeroTable = GetTable(30, 70);
             TableRowGroup aeroTableRowGroup = new TableRowGroup();
             aeroTableRowGroup.Rows.Add(GetTableRow("Ride height(mm)", $"Front: {rideHeightFront}, Rear: {rideHeightRear}"));
-            aeroTableRowGroup.Rows.Add(GetTableRow("Rear Wing", $"{setup.advancedSetup.aeroBalance.rearWing + 1}"));
-            aeroTableRowGroup.Rows.Add(GetTableRow("Splitter", $"{setup.advancedSetup.aeroBalance.splitter}"));
+            aeroTableRowGroup.Rows.Add(GetTableRow("Rear Wing", $"{rearWing}"));
+            aeroTableRowGroup.Rows.Add(GetTableRow("Splitter", $"{splitter}"));
 
             aeroTable.RowGroups.Add(aeroTableRowGroup);
             aeroBalanceSection.Blocks.Add(aeroTable);

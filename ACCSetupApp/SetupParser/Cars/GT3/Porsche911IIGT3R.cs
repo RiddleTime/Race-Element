@@ -107,7 +107,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
 
             public int RearWing(int rawValue)
             {
-                throw new NotImplementedException();
+                return rawValue;
             }
 
             public int RideHeight(List<int> rawValue, Position position)
@@ -122,7 +122,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
 
             public int Splitter(int rawValue)
             {
-                throw new NotImplementedException();
+                return rawValue;
             }
         }
 

@@ -19,7 +19,8 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <TabControl TabStripPlacement="Top" FlowDirection="LeftToRight" SelectedIndex="1">
+        <TabControl TabStripPlacement="Top" FlowDirection="LeftToRight" SelectedIndex="0">
+
             <TabItem Style="{StaticResource MaterialDesignTabItem}">
                 <TabItem.Header>
                     <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}">Browse</TextBlock>
@@ -32,20 +33,16 @@
                     <controls:SetupBrowser Grid.Column="0"></controls:SetupBrowser>
                 </Grid>
             </TabItem>
-            <TabItem Style="{StaticResource MaterialDesignTabItem}">
+            <TabItem Style="{StaticResource MaterialDesignTabItem}" ToolTip="Right click setups in the browser to add them">
                 <TabItem.Header>
                     <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}">Compare</TextBlock>
                 </TabItem.Header>
 
                 <Grid>
-
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
-                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <controls:SetupRenderer Grid.Column="0"></controls:SetupRenderer>
-
-                    <controls:SetupRenderer Grid.Column="1"></controls:SetupRenderer>
+                    <controls:SetupComparer></controls:SetupComparer>
                 </Grid>
             </TabItem>
         </TabControl>
