@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using SetupParser.Cars.GT3;
+using ACCSetupApp.SetupParser.Cars.GT3;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,8 +18,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static SetupParser.SetupConverter;
 using static SetupParser.SetupJson;
+using static ACCSetupApp.SetupParser.SetupConverter;
+using ACCSetupApp.SetupParser;
 
 namespace ACCSetupApp.Controls
 {
@@ -29,6 +30,8 @@ namespace ACCSetupApp.Controls
     /// </summary>
     public partial class SetupRenderer : UserControl
     {
+        private ICarSetupConversion carfactory;
+
         public SetupRenderer()
         {
             InitializeComponent();
@@ -85,7 +88,7 @@ namespace ACCSetupApp.Controls
 
             Root setup = JsonConvert.DeserializeObject<Root>(jsonString);
 
-            ICarSetupConversion carSetup = new Porsche911II();
+            ICarSetupConversion carSetup = new ConversionFactory().GetConversion(GetParseName(file));
 
             TyreCompound compound = carSetup.TyresSetup.Compound(setup.basicSetup.tyres.tyreCompound);
 
@@ -336,6 +339,13 @@ namespace ACCSetupApp.Controls
             trackName = Regex.Replace(trackName, "^[a-z]", m => m.Value.ToUpper());
             trackName = trackName.Replace("_", " ");
             return trackName;
+        }
+
+        private string GetParseName(string fileName)
+        {
+            string[] dashSplit = fileName.Split('\\');
+            string parseName = dashSplit[dashSplit.Length - 3];
+            return parseName;
         }
 
         /// <summary>

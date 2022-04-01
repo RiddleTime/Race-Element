@@ -58,6 +58,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="SetupParser\CarFactory.cs" />
+    <Compile Include="SetupParser\Cars\GT3\HondaNsxEvo.cs" />
     <Compile Include="SetupParser\Cars\GT3\Porsche911II.cs" />
     <Compile Include="SetupParser\ISetupConverter.cs" />
     <Compile Include="SetupParser\SetupJson.cs" />
