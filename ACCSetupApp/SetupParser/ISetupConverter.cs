@@ -97,12 +97,10 @@ namespace ACCSetupApp.SetupParser
 
             public double TirePressure(CarClasses carClass, Wheel wheel, List<int> rawValue)
             {
-                int value = rawValue[(int)wheel];
-
                 switch (carClass)
                 {
-                    case CarClasses.GT3: return Math.Round(20.3f + 0.1f * value, 2);
-                    case CarClasses.GT4: return Math.Round(17f + 0.1f * value, 2);
+                    case CarClasses.GT3: return Math.Round(20.3f + 0.1f * rawValue[(int)wheel], 2);
+                    case CarClasses.GT4: return Math.Round(17f + 0.1f * rawValue[(int)wheel], 2);
 
                     default: return -1;
                 }

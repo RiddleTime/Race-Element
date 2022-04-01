@@ -138,9 +138,9 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
                 return rawValue;
             }
 
-            public int RideHeight(List<int> rawValue, Position wheel)
+            public int RideHeight(List<int> rawValue, Position position)
             {
-                switch (wheel)
+                switch (position)
                 {
                     case Position.Front: return 53 + rawValue[0];
                     case Position.Rear: return 55 + rawValue[2];

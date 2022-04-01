@@ -210,6 +210,8 @@ namespace ACCSetupApp.Controls
             Table aeroTable = GetTable(30, 70);
             TableRowGroup aeroTableRowGroup = new TableRowGroup();
             aeroTableRowGroup.Rows.Add(GetTableRow("Ride height(mm)", $"Front: {rideHeightFront}, Rear: {rideHeightRear}"));
+            aeroTableRowGroup.Rows.Add(GetTableRow("Rear Wing", $"{setup.advancedSetup.aeroBalance.rearWing + 1}"));
+            aeroTableRowGroup.Rows.Add(GetTableRow("Splitter", $"{setup.advancedSetup.aeroBalance.splitter}"));
 
             aeroTable.RowGroups.Add(aeroTableRowGroup);
             aeroBalanceSection.Blocks.Add(aeroTable);

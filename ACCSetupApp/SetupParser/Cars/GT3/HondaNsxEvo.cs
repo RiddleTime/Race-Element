@@ -133,12 +133,17 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
         {
             public int BrakeDucts(int rawValue)
             {
-                throw new NotImplementedException();
+                return rawValue;
             }
 
-            public int RideHeight(List<int> rawValue, Position positon)
+            public int RideHeight(List<int> rawValue, Position position)
             {
-                throw new NotImplementedException();
+                switch (position)
+                {
+                    case Position.Front: return 54 + rawValue[0];
+                    case Position.Rear: return 54 + rawValue[2];
+                    default: return -1;
+                }
             }
         }
     }
