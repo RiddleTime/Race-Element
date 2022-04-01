@@ -136,6 +136,11 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
                 return rawValue;
             }
 
+            public int RearWing(int rawValue)
+            {
+                return rawValue;
+            }
+
             public int RideHeight(List<int> rawValue, Position position)
             {
                 switch (position)
@@ -144,6 +149,11 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
                     case Position.Rear: return 54 + rawValue[2];
                     default: return -1;
                 }
+            }
+
+            public int Splitter(int rawValue)
+            {
+                return rawValue;
             }
         }
     }

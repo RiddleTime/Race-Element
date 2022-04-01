@@ -73,6 +73,8 @@ namespace ACCSetupApp.SetupParser
         {
             int RideHeight(List<int> rawValue, Position positon);
             int BrakeDucts(int rawValue);
+            int RearWing(int rawValue);
+            int Splitter(int rawValue);
         }
 
         public interface IElectronicsSetup
