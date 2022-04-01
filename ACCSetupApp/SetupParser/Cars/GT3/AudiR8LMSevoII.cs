@@ -18,22 +18,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
         {
             public override double Camber(Wheel wheel, List<int> rawValue)
             {
-                Position position;
-                switch (wheel)
-                {
-                    case Wheel.FrontLeft:
-                        position = Position.Front;
-                        break;
-                    case Wheel.FrontRight:
-                        position = Position.Front;
-                        break;
-
-                    default:
-                        position = Position.Rear;
-                        break;
-                }
-
-                switch (position)
+                switch (GetPosition(wheel))
                 {
                     case Position.Front: return Math.Round(-4 + 0.1 * rawValue[(int)wheel], 2);
                     case Position.Rear: return Math.Round(-3.5 + 0.1 * rawValue[(int)wheel], 2);
@@ -104,22 +89,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
                 int[] front = new int[] { 112000, 132000, 153000, 174000, 185000, 195000 };
                 int[] rear = new int[] { 124000, 144000, 163000, 173000, 183000, 202000 };
 
-                Position position;
-                switch (wheel)
-                {
-                    case Wheel.FrontLeft:
-                        position = Position.Front;
-                        break;
-                    case Wheel.FrontRight:
-                        position = Position.Front;
-                        break;
-
-                    default:
-                        position = Position.Rear;
-                        break;
-                }
-
-                switch (position)
+                switch (GetPosition(wheel))
                 {
                     case Position.Front: return front[rawValue[(int)wheel]];
                     case Position.Rear: return rear[rawValue[(int)wheel]];

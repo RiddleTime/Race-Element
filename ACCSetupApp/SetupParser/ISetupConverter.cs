@@ -36,6 +36,25 @@ namespace ACCSetupApp.SetupParser
             Wet
         }
 
+        public static Position GetPosition(Wheel wheel)
+        {
+            Position position;
+            switch (wheel)
+            {
+                case Wheel.FrontLeft:
+                    position = Position.Front;
+                    break;
+                case Wheel.FrontRight:
+                    position = Position.Front;
+                    break;
+
+                default:
+                    position = Position.Rear;
+                    break;
+            }
+            return position;
+        }
+
         public interface ICarSetupConversion
         {
             string CarName { get; }

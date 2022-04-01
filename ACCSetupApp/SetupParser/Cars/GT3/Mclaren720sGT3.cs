@@ -20,22 +20,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
         {
             public override double Camber(Wheel wheel, List<int> rawValue)
             {
-                Position position;
-                switch (wheel)
-                {
-                    case Wheel.FrontLeft:
-                        position = Position.Front;
-                        break;
-                    case Wheel.FrontRight:
-                        position = Position.Front;
-                        break;
-
-                    default:
-                        position = Position.Rear;
-                        break;
-                }
-
-                switch (position)
+                switch (GetPosition(wheel))
                 {
                     case Position.Front: return Math.Round(-4 + 0.1 * rawValue[(int)wheel], 2);
                     case Position.Rear: return Math.Round(-3.5 + 0.1 * rawValue[(int)wheel], 2);
@@ -52,22 +37,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
 
             public override double Toe(Wheel wheel, List<int> rawValue)
             {
-                Position position;
-                switch (wheel)
-                {
-                    case Wheel.FrontLeft:
-                        position = Position.Front;
-                        break;
-                    case Wheel.FrontRight:
-                        position = Position.Front;
-                        break;
-
-                    default:
-                        position = Position.Rear;
-                        break;
-                }
-
-                switch (position)
+                switch (GetPosition(wheel))
                 {
                     case Position.Front: return Math.Round(-0.48 + 0.1 * rawValue[(int)wheel], 2);
                     case Position.Rear: return Math.Round(-0.1 + 0.1 * rawValue[(int)wheel], 2);
@@ -124,22 +94,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
                 int[] front = new int[] { 118000, 134000, 150000, 166000, 182000, 198000, 214000, 230000 };
                 int[] rear = new int[] { 114000, 128000, 142000, 156000, 170000, 184000, 198000, 212000 };
 
-                Position position;
-                switch (wheel)
-                {
-                    case Wheel.FrontLeft:
-                        position = Position.Front;
-                        break;
-                    case Wheel.FrontRight:
-                        position = Position.Front;
-                        break;
-
-                    default:
-                        position = Position.Rear;
-                        break;
-                }
-
-                switch (position)
+                switch (GetPosition(wheel))
                 {
                     case Position.Front: return front[rawValue[(int)wheel]];
                     case Position.Rear: return rear[rawValue[(int)wheel]];

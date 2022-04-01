@@ -18,22 +18,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
         {
             public override double Camber(Wheel wheel, List<int> rawValue)
             {
-                Position position;
-                switch (wheel)
-                {
-                    case Wheel.FrontLeft:
-                        position = Position.Front;
-                        break;
-                    case Wheel.FrontRight:
-                        position = Position.Front;
-                        break;
-
-                    default:
-                        position = Position.Rear;
-                        break;
-                }
-
-                switch (position)
+                switch (GetPosition(wheel))
                 {
                     case Position.Front: return Math.Round(-5 + 0.1 * rawValue[(int)wheel], 2);
                     case Position.Rear: return Math.Round(-5 + 0.1 * rawValue[(int)wheel], 2);
@@ -104,22 +89,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
                 int[] rear = new int[] { 126800, 134700, 142600, 150500, 158400, 166300, 174200, 182100,
                     190000, 197900, 205800, 213700, 221600, 229500, 237400, 245300, 253200 };
 
-                Position position;
-                switch (wheel)
-                {
-                    case Wheel.FrontLeft:
-                        position = Position.Front;
-                        break;
-                    case Wheel.FrontRight:
-                        position = Position.Front;
-                        break;
-
-                    default:
-                        position = Position.Rear;
-                        break;
-                }
-
-                switch (position)
+                switch (GetPosition(wheel))
                 {
                     case Position.Front: return front[rawValue[(int)wheel]];
                     case Position.Rear: return rear[rawValue[(int)wheel]];
@@ -138,7 +108,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
 
             public int RearWing(int rawValue)
             {
-                throw new NotImplementedException();
+                return rawValue + 1;
             }
 
             public int RideHeight(List<int> rawValue, Position position)
@@ -153,7 +123,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
 
             public int Splitter(int rawValue)
             {
-                throw new NotImplementedException();
+                return rawValue;
             }
         }
     }
