@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -85,12 +86,15 @@ namespace ACCSetupApp.Controls
                     {
                         bool trackHasSetups = false;
 
+                        string trackName = trackDir.Name;
+                        trackName = Regex.Replace(trackName, "^[a-z]", m => m.Value.ToUpper());
+                        trackName = trackName.Replace("_", " ");
                         TextBlock trackHeader = new TextBlock()
                         {
-                            Text = conversionFactory.ParseCarName(trackDir.Name),
+                            Text = conversionFactory.ParseCarName(trackName),
                             Style = Resources["MaterialDesignSubtitle2TextBlock"] as Style,
                         };
-                        TreeViewItem trackTreeViewItem = new TreeViewItem() { Header = trackHeader };
+                        TreeViewItem trackTreeViewItem = new TreeViewItem() { Header = trackHeader, DataContext = trackDir };
 
                         // find setups in track dir
                         foreach (var trackFile in trackDir.GetFiles())

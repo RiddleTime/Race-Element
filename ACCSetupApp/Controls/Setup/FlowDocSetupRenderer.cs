@@ -108,7 +108,7 @@ namespace ACCSetupApp.Controls.Setup
 
             Table setupInfoTable = GetTable(30, 70);
             TableRowGroup rowGroupSetupInfo = new TableRowGroup();
-            rowGroupSetupInfo.Rows.Add(GetTableRow("Setup", $"{jsonFile.Name}"));
+            rowGroupSetupInfo.Rows.Add(GetTableRow("Setup", $"{jsonFile.Name.Replace(".json", "")}"));
             rowGroupSetupInfo.Rows.Add(GetTableRow("Track", $"{GetTrackName(jsonFile.FullName)}"));
             rowGroupSetupInfo.Rows.Add(GetTableRow("Car", $"{carSetup.CarName}"));
             rowGroupSetupInfo.Rows.Add(GetTableRow("Class", $"{carSetup.CarClass}"));
@@ -161,6 +161,12 @@ namespace ACCSetupApp.Controls.Setup
             mechanicalGripSection.BorderThickness = new Thickness(1, 1, 1, 1);
             flowDocument.Blocks.Add(mechanicalGripSection);
 
+
+            // Dampers
+            Section dampersSection = new Section();
+
+            Table dampersTable = GetTable(30, 70);
+            TableRowGroup rowGroupDampers = new TableRowGroup();
 
             // Aero
             Section aeroBalanceSection = new Section();
