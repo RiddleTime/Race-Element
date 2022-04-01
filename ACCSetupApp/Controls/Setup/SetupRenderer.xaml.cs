@@ -189,7 +189,7 @@ namespace ACCSetupApp.Controls
             rowGroupGrip.Rows.Add(GetTableRow("Bumpstop rate(Nm)", $"FL: {bumpStopRateFrontLeft}, FR: {bumpStopRateFrontRight}, RL: {bumpStopRateRearLeft}, RR: {bumpStopRateRearRight}"));
             rowGroupGrip.Rows.Add(GetTableRow("Bumstop range", $"FL: {bumpStopRangeFrontLeft}, FR: {bumpStopRangeFrontRight}, RL: {bumpStopRangeRearLeft}, RR: {bumpStopRangeRearRight}"));
             rowGroupGrip.Rows.Add(GetTableRow("Diff preload(Nm)", $"{differentialPreload}"));
-            rowGroupGrip.Rows.Add(GetTableRow("Brake Power", $"{brakePower}%"));
+            rowGroupGrip.Rows.Add(GetTableRow("Brake power", $"{brakePower}%"));
             rowGroupGrip.Rows.Add(GetTableRow("Brake bias", $"{brakeBias}%"));
             rowGroupGrip.Rows.Add(GetTableRow("Anti roll bar", $"Front: {antiRollBarFront}, Rear: {antiRollBarRear}"));
             rowGroupGrip.Rows.Add(GetTableRow("Steering Ratio", $"{steeringRatio}"));
@@ -213,6 +213,23 @@ namespace ACCSetupApp.Controls
             aeroBalanceSection.BorderBrush = Brushes.White;
             aeroBalanceSection.BorderThickness = new Thickness(1, 1, 1, 1);
             flowDocument.Blocks.Add(aeroBalanceSection);
+
+
+            // Electronics
+            Section electronicsSection = new Section();
+            electronicsSection.Blocks.Add(GetDefaultHeader("Electronics"));
+            Table electronicsTable = GetTable(30, 70);
+            TableRowGroup electronicsRowGroup = new TableRowGroup();
+            electronicsRowGroup.Rows.Add(GetTableRow("TC 1", $"{setup.basicSetup.electronics.tC1}"));
+            electronicsRowGroup.Rows.Add(GetTableRow("TC 2", $"{setup.basicSetup.electronics.tC2}"));
+            electronicsRowGroup.Rows.Add(GetTableRow("ABS", $"{setup.basicSetup.electronics.abs}"));
+            electronicsRowGroup.Rows.Add(GetTableRow("Engine map", $"{setup.basicSetup.electronics.eCUMap + 1}"));
+
+            electronicsTable.RowGroups.Add(electronicsRowGroup);
+            electronicsSection.Blocks.Add(electronicsTable);
+            electronicsSection.BorderBrush = Brushes.White;
+            electronicsSection.BorderThickness = new Thickness(1, 1, 1, 1);
+            flowDocument.Blocks.Add(electronicsSection);
         }
 
         private Table GetTable(int headerWidth, int valueWidth)
