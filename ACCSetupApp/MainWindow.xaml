@@ -5,14 +5,62 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ACCSetupApp"
         xmlns:controls="clr-namespace:ACCSetupApp.Controls"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+          xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Width="1000" MinWidth="1025" MinHeight="500" Background="Black">
-    <Grid MaxWidth="1050" HorizontalAlignment="Left" Background="Black">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <controls:SetupRenderer Grid.Column="0"></controls:SetupRenderer>
-        <controls:SetupRenderer Grid.Column="1"></controls:SetupRenderer>
+        
+        
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"        
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        
+        Title="MainWindow" Width="1200" MinWidth="1200" MinHeight="500" MaxWidth="1200" ResizeMode="NoResize">
+
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="Cyan" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TabControl.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        </ResourceDictionary>
+    </Window.Resources>
+
+
+    <Grid>
+        <TabControl TabStripPlacement="Left">
+            <TabItem Style="{StaticResource MaterialDesignTabItem}" Name="tabSetups">
+                <TabItem.Header>
+                    <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}">Setups</TextBlock>
+                </TabItem.Header>
+
+                <Grid HorizontalAlignment="Left">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <controls:SetupsTab></controls:SetupsTab>
+                </Grid>
+            </TabItem>
+
+            <TabItem Style="{StaticResource MaterialDesignTabItem}" Name="tabLiveries">
+                <TabItem.Header>
+                    <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}">Liveries</TextBlock>
+                </TabItem.Header>
+            </TabItem>
+        </TabControl>
+
+
+
+
     </Grid>
+
+
 </Window>

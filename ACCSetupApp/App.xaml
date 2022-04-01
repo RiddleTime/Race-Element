@@ -2,12 +2,27 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:ACCSetupApp"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+              xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <FontFamily x:Key="RobotoMedium" >pack://application:,,,./Fonts/Roboto Medium#</FontFamily>
 
 
+
+        <!-- https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit -->
+        <ResourceDictionary x:Key="materialTheme">
+            <ResourceDictionary.MergedDictionaries>
+                <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="Cyan" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <materialDesignConverters:BooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible" />
+        </ResourceDictionary>
+
+
         <!--ScrollBars-->
+        <!--
         <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
             <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
             <Setter Property="Foreground" Value="#9F0B0B0B" />
@@ -69,7 +84,7 @@
                     <Setter Property="Foreground" Value="#BA0B0B0B" />
                 </Trigger>
             </Style.Triggers>
-        </Style>
+        </Style>-->
 
     </Application.Resources>
 </Application>
