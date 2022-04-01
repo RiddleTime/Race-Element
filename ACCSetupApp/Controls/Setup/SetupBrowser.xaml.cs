@@ -1,21 +1,11 @@
 ﻿using ACCSetupApp.Controls.Setup;
 using ACCSetupApp.SetupParser;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ACCSetupApp.Controls
 {
@@ -37,8 +27,6 @@ namespace ACCSetupApp.Controls
             FetchAllSetups();
 
             setupsTreeView.SelectedItemChanged += SetupsTreeView_SelectedItemChanged;
-
-            new FlowDocSetupRenderer().LogSetup(ref flowDocument, $"{SetupsPath}\\honda_nsx_gt3_evo\\misano\\Aggressive_Preset.json");
         }
 
         private void SetupsTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -99,14 +87,17 @@ namespace ACCSetupApp.Controls
                         // find setups in track dir
                         foreach (var trackFile in trackDir.GetFiles())
                         {
-                            TextBlock setupHeader = new TextBlock()
+                            if (trackFile.Extension.Equals(".json"))
                             {
-                                Text = conversionFactory.ParseCarName(trackFile.Name.Replace(".json", "")),
-                                Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style
-                            };
-                            TreeViewItem setupTreeViewItem = new TreeViewItem() { Header = setupHeader, DataContext = trackFile };
+                                TextBlock setupHeader = new TextBlock()
+                                {
+                                    Text = conversionFactory.ParseCarName(trackFile.Name.Replace(".json", "")),
+                                    Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style
+                                };
+                                TreeViewItem setupTreeViewItem = new TreeViewItem() { Header = setupHeader, DataContext = trackFile };
 
-                            trackTreeViewItem.Items.Add(setupTreeViewItem);
+                                trackTreeViewItem.Items.Add(setupTreeViewItem);
+                            }
                         }
 
                         // check for any setups so the tree view doesn't get cluttered with cars that have no setups

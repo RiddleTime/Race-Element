@@ -18,7 +18,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         
-        Title="MainWindow" Width="1200" MinWidth="1200" MinHeight="500" MaxWidth="1200" ResizeMode="NoResize">
+        Title="MainWindow" Width="1200" Height="790"  ResizeMode="NoResize">
 
 
     <Window.Resources>

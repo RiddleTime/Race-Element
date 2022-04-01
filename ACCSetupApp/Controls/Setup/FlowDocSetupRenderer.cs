@@ -96,6 +96,29 @@ namespace ACCSetupApp.Controls.Setup
             double steeringRatio = carSetup.MechanicalSetup.SteeringRatio(setup.basicSetup.alignment.steerRatio);
 
 
+            // Dampers
+            int bumpSlowFrontLeft = setup.advancedSetup.dampers.bumpSlow[(int)Wheel.FrontLeft];
+            int bumpSlowFrontRight = setup.advancedSetup.dampers.bumpSlow[(int)Wheel.FrontRight];
+            int bumpSlowRearLeft = setup.advancedSetup.dampers.bumpSlow[(int)Wheel.RearLeft];
+            int bumpSlowRearRight = setup.advancedSetup.dampers.bumpSlow[(int)Wheel.RearRight];
+
+            int bumpFastFrontLeft = setup.advancedSetup.dampers.bumpFast[(int)Wheel.FrontLeft];
+            int bumpFastFrontRight = setup.advancedSetup.dampers.bumpFast[(int)Wheel.FrontRight];
+            int bumpFastRearLeft = setup.advancedSetup.dampers.bumpFast[(int)Wheel.RearLeft];
+            int bumpFastRearRight = setup.advancedSetup.dampers.bumpFast[(int)Wheel.RearRight];
+
+            int reboundSlowFrontLeft = setup.advancedSetup.dampers.reboundSlow[(int)Wheel.FrontLeft];
+            int reboundSlowFrontRight = setup.advancedSetup.dampers.reboundSlow[(int)Wheel.FrontRight];
+            int reboundSlowRearLeft = setup.advancedSetup.dampers.reboundSlow[(int)Wheel.RearLeft];
+            int reboundSlowRearRight = setup.advancedSetup.dampers.reboundSlow[(int)Wheel.RearRight];
+
+            int reboundFastFrontLeft = setup.advancedSetup.dampers.reboundFast[(int)Wheel.FrontLeft];
+            int reboundFastFrontRight = setup.advancedSetup.dampers.reboundFast[(int)Wheel.FrontRight];
+            int reboundFastRearLeft = setup.advancedSetup.dampers.reboundFast[(int)Wheel.RearLeft];
+            int reboundFastRearRight = setup.advancedSetup.dampers.reboundFast[(int)Wheel.RearRight];
+
+
+
             // Aero Balance
             int rideHeightFront = carSetup.AeroBalance.RideHeight(setup.advancedSetup.aeroBalance.rideHeight, Position.Front);
             int rideHeightRear = carSetup.AeroBalance.RideHeight(setup.advancedSetup.aeroBalance.rideHeight, Position.Rear);
@@ -164,9 +187,21 @@ namespace ACCSetupApp.Controls.Setup
 
             // Dampers
             Section dampersSection = new Section();
+            dampersSection.Blocks.Add(GetDefaultHeader("Dampers"));
 
             Table dampersTable = GetTable(30, 70);
             TableRowGroup rowGroupDampers = new TableRowGroup();
+            rowGroupDampers.Rows.Add(GetTableRow("Bump Slow", $"FL: {bumpSlowFrontLeft}, FR: {bumpSlowFrontRight}, RL: {bumpSlowRearLeft}, RR: {bumpSlowRearRight}"));
+            rowGroupDampers.Rows.Add(GetTableRow("Bump Fast", $"FL: {bumpFastFrontLeft}, FR: {bumpFastFrontRight}, RL: {bumpFastRearLeft}, RR: {bumpFastRearRight}"));
+            rowGroupDampers.Rows.Add(GetTableRow("Rebound Slow", $"FL: {reboundSlowFrontLeft}, FR: {reboundSlowFrontRight}, RL: {reboundSlowRearLeft}, RR: {reboundSlowRearRight}"));
+            rowGroupDampers.Rows.Add(GetTableRow("Rebound Fast", $"FL: {reboundFastFrontLeft}, FR: {reboundFastFrontRight}, RL: {reboundFastRearLeft}, RR: {reboundFastRearRight}"));
+
+            dampersTable.RowGroups.Add(rowGroupDampers);
+            dampersSection.Blocks.Add(dampersTable);
+            dampersSection.BorderBrush = Brushes.White;
+            dampersSection.BorderThickness = new Thickness(1, 1, 1, 1);
+            flowDocument.Blocks.Add(dampersSection);
+
 
             // Aero
             Section aeroBalanceSection = new Section();
