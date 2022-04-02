@@ -33,6 +33,10 @@
         </ResourceDictionary>
     </Window.Resources>
 
+    <Window.Clip>
+        <RectangleGeometry Rect="0,0,1200,790" RadiusX="2" RadiusY="2"/>
+    </Window.Clip>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
