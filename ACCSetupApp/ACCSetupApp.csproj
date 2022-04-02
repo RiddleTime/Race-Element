@@ -206,6 +206,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\About\About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Setup\SetupBrowser.xaml.cs">
       <DependentUpon>SetupBrowser.xaml</DependentUpon>
     </Compile>
@@ -226,6 +229,10 @@
     <Compile Include="SetupParser\Cars\GT3\Porsche911IIGT3R.cs" />
     <Compile Include="SetupParser\ISetupConverter.cs" />
     <Compile Include="SetupParser\SetupJson.cs" />
+    <Page Include="Controls\About\About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Setup\SetupBrowser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

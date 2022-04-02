@@ -9,20 +9,10 @@
              d:DesignHeight="450" d:DesignWidth="800"
              MinWidth="1100"
              Margin="3,3,3,3">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="Cyan" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        </ResourceDictionary>
-    </UserControl.Resources>
     <Grid>
         <TabControl TabStripPlacement="Top" FlowDirection="LeftToRight" SelectedIndex="0" HorizontalAlignment="Stretch" Width="1100">
 
-            <TabItem Style="{StaticResource MaterialDesignTabItem}">
+            <TabItem Name="tabSetupTree" Style="{DynamicResource MaterialDesignTabItem}">
                 <TabItem.Header>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -37,7 +27,7 @@
                             Height="32"
                         Foreground="White"    
                         />
-                        <TextBlock Grid.Column="1" Style="{StaticResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Browse</TextBlock>
+                        <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Browse</TextBlock>
                     </Grid>
                 </TabItem.Header>
 
@@ -45,7 +35,7 @@
                     <controls:SetupBrowser></controls:SetupBrowser>
                 </Grid>
             </TabItem>
-            <TabItem Style="{StaticResource MaterialDesignTabItem}" ToolTip="Right click setups in the browser to add them">
+            <TabItem Name="tabCompare" Style="{DynamicResource MaterialDesignTabItem}" ToolTip="Right click setups in the browser to add them">
                 <TabItem.Header>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -60,7 +50,7 @@
                             Height="32"
                         Foreground="White"    
                         />
-                        <TextBlock Grid.Column="1" Style="{StaticResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Compare</TextBlock>
+                        <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Compare</TextBlock>
                     </Grid>
                 </TabItem.Header>
 

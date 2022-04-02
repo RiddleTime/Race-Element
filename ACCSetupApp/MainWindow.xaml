@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ACCSetupApp"
         xmlns:controls="clr-namespace:ACCSetupApp.Controls"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-          xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+        xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
         mc:Ignorable="d"
         
         
@@ -26,8 +26,12 @@
             <ResourceDictionary.MergedDictionaries>
                 <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="Yellow" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TabControl.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Label.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Card.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         </ResourceDictionary>
@@ -48,8 +52,45 @@
 
         <controls:TitleBar x:Name="titleBar" Grid.Row="0" Width="1200"></controls:TitleBar>
 
-        <TabControl TabStripPlacement="Left" Grid.Row="1" Width="1200">
-            <TabItem Style="{StaticResource MaterialDesignTabItem}" Name="tabSetups" Height="60">
+        <TabControl x:Name="tabControl" Style="{StaticResource MaterialDesignTabControlBase}" TabStripPlacement="Left" Grid.Row="1" Width="1200">
+
+            <TabItem Style="{DynamicResource MaterialDesignTabItem}" Name="tabAbout" Height="60" VerticalAlignment="Bottom">
+                <TabItem.Header>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <materialDesign:PackIcon
+                            Grid.Row="0"
+                            Kind="Information"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="20"
+                            Width="20"
+                        Foreground="White"    
+                        />
+                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">About</TextBlock>
+                    </Grid>
+
+                </TabItem.Header>
+                <Grid HorizontalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:TransitioningContent Grid.Column="1">
+                        <materialDesign:TransitioningContent.OpeningEffects>
+                            <materialDesign:TransitionEffect Kind="FadeIn"/>
+                        </materialDesign:TransitioningContent.OpeningEffects>
+                        
+                        <controls:About></controls:About>
+                        
+                    </materialDesign:TransitioningContent>
+                </Grid>
+
+            </TabItem>
+
+            <TabItem Style="{DynamicResource MaterialDesignTabItem}" Name="tabSetups" Height="60">
                 <TabItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -65,7 +106,7 @@
                             Width="20"
                         Foreground="White"    
                         />
-                        <TextBlock Grid.Row="1" Style="{StaticResource MaterialDesignButtonTextBlock}">Setups</TextBlock>
+                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Setups</TextBlock>
                     </Grid>
                 </TabItem.Header>
 
@@ -73,12 +114,18 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
+                    <materialDesign:TransitioningContent Grid.Column="1">
+                        <materialDesign:TransitioningContent.OpeningEffects>
+                            <materialDesign:TransitionEffect Kind="FadeIn"/>
+                        </materialDesign:TransitioningContent.OpeningEffects>
 
-                    <controls:SetupsTab></controls:SetupsTab>
+                        <controls:SetupsTab></controls:SetupsTab>
+
+                    </materialDesign:TransitioningContent>
                 </Grid>
             </TabItem>
 
-            <TabItem Style="{StaticResource MaterialDesignTabItem}" Name="tabLiveries" Height="60">
+            <TabItem Style="{DynamicResource MaterialDesignTabItem}" Name="tabLiveries" Height="60">
                 <TabItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -94,12 +141,12 @@
                             Width="20"
                         Foreground="White"    
                         />
-                        <TextBlock Grid.Row="1" Style="{StaticResource MaterialDesignButtonTextBlock}">Liveries</TextBlock>
+                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Liveries</TextBlock>
                     </Grid>
                 </TabItem.Header>
             </TabItem>
 
-            <TabItem Style="{StaticResource MaterialDesignTabItem}" Name="tabTools" Height="60">
+            <TabItem Style="{DynamicResource MaterialDesignTabItem}" Name="tabTools" Height="60">
                 <TabItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -115,10 +162,12 @@
                             Width="20"
                         Foreground="White"    
                         />
-                        <TextBlock Grid.Row="1" Style="{StaticResource MaterialDesignButtonTextBlock}">Tools</TextBlock>
+                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Tools</TextBlock>
                     </Grid>
                 </TabItem.Header>
             </TabItem>
+
+
         </TabControl>
 
 
