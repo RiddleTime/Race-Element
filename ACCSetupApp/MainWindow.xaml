@@ -18,7 +18,8 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         WindowStyle="None"
-        Title="MainWindow" Width="1200" Height="790" ResizeMode="NoResize">
+        Title="MainWindow" Width="1200" Height="790" ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <ResourceDictionary>
