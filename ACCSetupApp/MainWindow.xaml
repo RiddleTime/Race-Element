@@ -43,11 +43,25 @@
                                    MessageQueue="{materialDesign:MessageQueue}"  />
 
         <controls:TitleBar x:Name="titleBar" Grid.Row="0" Width="1200"></controls:TitleBar>
-        
+
         <TabControl TabStripPlacement="Left" Grid.Row="1" Width="1200">
-            <TabItem Style="{StaticResource MaterialDesignTabItem}" Name="tabSetups">
+            <TabItem Style="{StaticResource MaterialDesignTabItem}" Name="tabSetups" Height="60">
                 <TabItem.Header>
-                    <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}">Setups</TextBlock>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <materialDesign:PackIcon
+                            Grid.Row="0"
+                            Kind="HammerScrewdriver"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="32"
+                        Foreground="White"    
+                        />
+                        <TextBlock Grid.Row="1" Style="{StaticResource MaterialDesignButtonTextBlock}">Setups</TextBlock>
+                    </Grid>
                 </TabItem.Header>
 
                 <Grid HorizontalAlignment="Left">
@@ -59,19 +73,48 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Style="{StaticResource MaterialDesignTabItem}" Name="tabLiveries">
+            <TabItem Style="{StaticResource MaterialDesignTabItem}" Name="tabLiveries" Height="60">
                 <TabItem.Header>
-                    <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}">Liveries</TextBlock>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <materialDesign:PackIcon
+                            Grid.Row="0"
+                            Kind="Paintbrush"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="32"
+                        Foreground="White"    
+                        />
+                        <TextBlock Grid.Row="1" Style="{StaticResource MaterialDesignButtonTextBlock}">Liveries</TextBlock>
+                    </Grid>
                 </TabItem.Header>
             </TabItem>
-            <TabItem Style="{StaticResource MaterialDesignTabItem}" Name="tabTools">
+            
+            <TabItem Style="{StaticResource MaterialDesignTabItem}" Name="tabTools" Height="60">
                 <TabItem.Header>
-                    <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}">Tools</TextBlock>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <materialDesign:PackIcon
+                            Grid.Row="0"
+                            Kind="Calculator"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="32"
+                        Foreground="White"    
+                        />
+                        <TextBlock Grid.Row="1" Style="{StaticResource MaterialDesignButtonTextBlock}">Tools</TextBlock>
+                    </Grid>
                 </TabItem.Header>
             </TabItem>
         </TabControl>
 
-    
+
 
     </Grid>
 </Window>

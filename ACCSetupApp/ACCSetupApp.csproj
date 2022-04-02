@@ -297,6 +297,7 @@
     <Resource Include="management.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Controls\Tools\" />
     <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
