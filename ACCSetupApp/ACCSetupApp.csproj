@@ -216,6 +216,9 @@
     <Compile Include="Controls\Setup\SetupsTab.xaml.cs">
       <DependentUpon>SetupsTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TitleBar.xaml.cs">
+      <DependentUpon>TitleBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SetupParser\Cars\GT3\AudiR8LMSevoII.cs" />
     <Compile Include="SetupParser\Cars\GT3\Mclaren720sGT3.cs" />
     <Compile Include="SetupParser\ConversionFactory.cs" />
@@ -236,6 +239,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Setup\SetupsTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TitleBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

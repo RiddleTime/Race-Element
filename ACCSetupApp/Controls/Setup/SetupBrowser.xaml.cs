@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace ACCSetupApp.Controls
 {
@@ -128,12 +129,11 @@ namespace ACCSetupApp.Controls
             ContextMenu contextMenu = new ContextMenu()
             {
                 Style = Resources["MaterialDesignContextMenu"] as Style,
-                Placement = System.Windows.Controls.Primitives.PlacementMode.RelativePoint,
                 Margin = new Thickness(0),
                 Padding = new Thickness(0),
                 UsesItemContainerTemplate = true,
+                Background = new SolidColorBrush(Color.FromArgb(220, 0, 0, 0)),
             };
-
 
             Button addToCompare1 = new Button()
             {
@@ -141,7 +141,8 @@ namespace ACCSetupApp.Controls
                 CommandParameter = file,
                 Style = Resources["MaterialDesignRaisedButton"] as Style,
                 Margin = new Thickness(0),
-                Padding = new Thickness(0),
+                Height = 30,
+                VerticalAlignment = VerticalAlignment.Center,
             };
             addToCompare1.Click += AddToCompare1_Click;
 
@@ -149,12 +150,18 @@ namespace ACCSetupApp.Controls
             {
                 Content = "Add to compare 2",
                 CommandParameter = file,
-                Style = Resources["MaterialDesignRaisedButton"] as Style
+                Style = Resources["MaterialDesignRaisedButton"] as Style,
+                Margin = new Thickness(0),
+                Height = 30,
+                VerticalAlignment = VerticalAlignment.Center,
             };
             addToCompare2.Click += AddToCompare2_Click;
 
             contextMenu.Items.Add(addToCompare1);
             contextMenu.Items.Add(addToCompare2);
+            contextMenu.HorizontalOffset = 0;
+            contextMenu.VerticalOffset = 0;
+
             return contextMenu;
         }
 

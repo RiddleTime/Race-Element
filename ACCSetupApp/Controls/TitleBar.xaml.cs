@@ -14,40 +14,32 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ACCSetupApp
+namespace ACCSetupApp.Controls
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for TitleBar.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class TitleBar : UserControl
     {
-        public static MainWindow Instance { get; private set; }
-
-        public MainWindow()
+        public TitleBar()
         {
             InitializeComponent();
+            this.Title.Text = $"ACC Manager {GetAssemblyFileVersion()}";
 
-            this.Title = $"ACC Manager {GetAssemblyFileVersion()}";
+            buttonExit.Click += ButtonExit_Click;
 
-            this.titleBar.MouseLeftButtonDown += TitleBar_MouseLeftButtonDown;
+            buttonMinimize.Click += ButtonMinimize_Click;
 
-
-            this.StateChanged += MainWindow_StateChanged;
-
-            Instance = this;
         }
 
-        private void MainWindow_StateChanged(object sender, EventArgs e)
+        private void ButtonMinimize_Click(object sender, RoutedEventArgs e)
         {
-            if (this.WindowState == WindowState.Normal)
-            {
-                this.Activate();
-            }
+            App.Current.MainWindow.WindowState = WindowState.Minimized;
         }
 
-        private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void ButtonExit_Click(object sender, RoutedEventArgs e)
         {
-            DragMove();
+            Environment.Exit(0);
         }
 
         public static string GetAssemblyFileVersion()

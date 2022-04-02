@@ -17,9 +17,8 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        
-        Title="MainWindow" Width="1200" Height="790"  ResizeMode="NoResize">
-
+        WindowStyle="None"
+        Title="MainWindow" Width="1200" Height="790" ResizeMode="NoResize">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -33,11 +32,18 @@
         </ResourceDictionary>
     </Window.Resources>
 
-
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
         <materialDesign:Snackbar x:Name="snackbar" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
                                    MessageQueue="{materialDesign:MessageQueue}"  />
-        <TabControl TabStripPlacement="Left">
+
+        <controls:TitleBar x:Name="titleBar" Grid.Row="0" Width="1200"></controls:TitleBar>
+        
+        <TabControl TabStripPlacement="Left" Grid.Row="1" Width="1200">
             <TabItem Style="{StaticResource MaterialDesignTabItem}" Name="tabSetups">
                 <TabItem.Header>
                     <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}">Setups</TextBlock>
@@ -57,12 +63,14 @@
                     <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}">Liveries</TextBlock>
                 </TabItem.Header>
             </TabItem>
+            <TabItem Style="{StaticResource MaterialDesignTabItem}" Name="tabTools">
+                <TabItem.Header>
+                    <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}">Tools</TextBlock>
+                </TabItem.Header>
+            </TabItem>
         </TabControl>
 
-
-
+    
 
     </Grid>
-
-
 </Window>

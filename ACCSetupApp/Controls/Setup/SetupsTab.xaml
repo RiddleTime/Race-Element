@@ -7,7 +7,8 @@
                xmlns:controls="clr-namespace:ACCSetupApp.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             MinWidth="1100">
+             MinWidth="1100"
+             Margin="3,3,3,3">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -19,7 +20,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <TabControl TabStripPlacement="Top" FlowDirection="LeftToRight" SelectedIndex="0">
+        <TabControl TabStripPlacement="Top" FlowDirection="LeftToRight" SelectedIndex="0" HorizontalAlignment="Stretch" Width="1100">
 
             <TabItem Style="{StaticResource MaterialDesignTabItem}">
                 <TabItem.Header>
@@ -27,10 +28,7 @@
                 </TabItem.Header>
 
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <controls:SetupBrowser Grid.Column="0"></controls:SetupBrowser>
+                    <controls:SetupBrowser></controls:SetupBrowser>
                 </Grid>
             </TabItem>
             <TabItem Style="{StaticResource MaterialDesignTabItem}" ToolTip="Right click setups in the browser to add them">
@@ -39,9 +37,6 @@
                 </TabItem.Header>
 
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
                     <controls:SetupComparer></controls:SetupComparer>
                 </Grid>
             </TabItem>
