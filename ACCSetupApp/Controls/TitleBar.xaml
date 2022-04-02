@@ -23,7 +23,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="15"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="90"/>
             <ColumnDefinition Width="2"/>
         </Grid.ColumnDefinitions>
 
@@ -51,7 +51,7 @@
 
                 <!--Icons here https://materialdesignicons.com/icon/settings-->
 
-                <Button Grid.Column="0" x:Name="buttonMinimize" Margin="0,0,2,0"  Style="{StaticResource MaterialDesignRaisedButton}">
+                <Button Grid.Column="0" x:Name="buttonMinimize" Margin="0,0,2,0" Style="{StaticResource MaterialDesignFlatDarkButton}" Focusable="False">
                     <materialDesign:PackIcon
                             Kind="MinusBox"
                             VerticalAlignment="Center"
@@ -60,7 +60,7 @@
                         Foreground="White"    
                         />
                 </Button>
-                <Button Grid.Column="1" x:Name="buttonExit"  Style="{StaticResource MaterialDesignRaisedDarkButton}">
+                <Button Grid.Column="1" x:Name="buttonExit"  Style="{StaticResource MaterialDesignFlatDarkButton}" Focusable="False" >
                     <materialDesign:PackIcon
                             Kind="CloseBox"
                             VerticalAlignment="Center"

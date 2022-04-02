@@ -19,19 +19,19 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <FlowDocumentScrollViewer Grid.Column="0" Opacity="0.5" Focusable="False" Cursor="Arrow">
+        <FlowDocumentScrollViewer Grid.Column="0" Focusable="False" Cursor="Arrow">
             <FlowDocument  x:Name="flowDoc1" Focusable="False" Cursor="Arrow" Background="{DynamicResource MaterialDesignPaper}" FontFamily="{StaticResource RobotoMedium}" RenderOptions.ClearTypeHint="Enabled" AllowDrop="False">
             </FlowDocument>
         </FlowDocumentScrollViewer>
 
-        <FlowDocumentScrollViewer Grid.Column="1" Opacity="0.5" Focusable="False" Cursor="Arrow">
+        <FlowDocumentScrollViewer Grid.Column="1" Focusable="False" Cursor="Arrow">
             <FlowDocument  x:Name="flowDoc2" Focusable="False" Cursor="Arrow" Background="{DynamicResource MaterialDesignPaper}" FontFamily="{StaticResource RobotoMedium}" RenderOptions.ClearTypeHint="Enabled" AllowDrop="False">
             </FlowDocument>
         </FlowDocumentScrollViewer>

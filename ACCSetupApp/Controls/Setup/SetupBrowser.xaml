@@ -55,7 +55,7 @@
             </TreeViewItem>
         </TreeView>
 
-        <FlowDocumentScrollViewer Grid.Column="1" Opacity="0.5" Focusable="False" Cursor="Arrow">
+        <FlowDocumentScrollViewer Grid.Column="1" Focusable="False" Cursor="Arrow">
             <FlowDocument  x:Name="flowDocument" Focusable="False" Cursor="Arrow" Background="{DynamicResource MaterialDesignPaper}" FontFamily="{StaticResource RobotoMedium}" RenderOptions.ClearTypeHint="Enabled" AllowDrop="False">
             </FlowDocument>
         </FlowDocumentScrollViewer>
