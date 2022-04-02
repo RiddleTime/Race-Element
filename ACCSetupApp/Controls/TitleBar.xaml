@@ -29,7 +29,6 @@
 
         <materialDesign:TransitioningContent Grid.Column="1">
             <materialDesign:TransitioningContent.OpeningEffects>
-                <materialDesign:TransitionEffect Kind="SlideInFromLeft" />
                 <materialDesign:TransitionEffect Kind="FadeIn" />
             </materialDesign:TransitioningContent.OpeningEffects>
 

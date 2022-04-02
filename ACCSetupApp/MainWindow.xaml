@@ -108,6 +108,7 @@
                         />
                         <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Setups</TextBlock>
                     </Grid>
+
                 </TabItem.Header>
 
                 <Grid HorizontalAlignment="Left">
@@ -144,6 +145,12 @@
                         <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Liveries</TextBlock>
                     </Grid>
                 </TabItem.Header>
+
+                <TextBlock 
+                           Style="{StaticResource MaterialDesignBody1TextBlock}"
+                           HorizontalAlignment="Center" TextWrapping="Wrap" >
+                           Under construction!
+                </TextBlock>
             </TabItem>
 
             <TabItem Style="{DynamicResource MaterialDesignTabItem}" Name="tabTools" Height="60">
@@ -165,6 +172,12 @@
                         <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Tools</TextBlock>
                     </Grid>
                 </TabItem.Header>
+
+                <TextBlock 
+                           Style="{StaticResource MaterialDesignBody1TextBlock}"
+                           HorizontalAlignment="Center" TextWrapping="Wrap" >
+                           Under construction!
+                </TextBlock>
             </TabItem>
 
 
