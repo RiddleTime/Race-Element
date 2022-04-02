@@ -29,7 +29,7 @@
 
         <materialDesign:TransitioningContent Grid.Column="1">
             <materialDesign:TransitioningContent.OpeningEffects>
-                <materialDesign:TransitionEffect Kind="SlideInFromLeft"/>
+                <materialDesign:TransitionEffect Kind="SlideInFromTop"/>
                 <materialDesign:TransitionEffect Kind="FadeIn"/>
             </materialDesign:TransitioningContent.OpeningEffects>
             <materialDesign:TransitioningContent.Effect>
@@ -48,7 +48,10 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" x:Name="buttonMinimize"  Style="{StaticResource MaterialDesignRaisedButton}">
+
+                <!--Icons here https://materialdesignicons.com/icon/settings-->
+
+                <Button Grid.Column="0" x:Name="buttonMinimize" Margin="0,0,2,0"  Style="{StaticResource MaterialDesignRaisedButton}">
                     <materialDesign:PackIcon
                             Kind="MinusBox"
                             VerticalAlignment="Center"
@@ -57,7 +60,7 @@
                         Foreground="White"    
                         />
                 </Button>
-                <Button Grid.Column="1" x:Name="buttonExit"  Style="{StaticResource MaterialDesignRaisedButton}">
+                <Button Grid.Column="1" x:Name="buttonExit"  Style="{StaticResource MaterialDesignRaisedDarkButton}">
                     <materialDesign:PackIcon
                             Kind="CloseBox"
                             VerticalAlignment="Center"

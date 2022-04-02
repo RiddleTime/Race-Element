@@ -130,13 +130,21 @@ namespace ACCSetupApp.Controls.Setup
 
 
 
+            Section setupTitle = new Section();
+            setupTitle.Blocks.Add(GetDefaultHeader(20, $"{jsonFile.Name.Replace(".json", "")}"));
+
+            setupTitle.BorderBrush = Brushes.White;
+            setupTitle.BorderThickness = new Thickness(1, 1, 1, 1);
+            setupTitle.Margin = new Thickness(0, 0, 0, 0);
+
+            flowDocument.Blocks.Add(setupTitle);
+
             // Setup Info
             Section setupSection = new Section();
-            setupSection.Blocks.Add(GetDefaultHeader("Setup Info"));
+            //setupSection.Blocks.Add(GetDefaultHeader("Setup Info"));
 
             Table setupInfoTable = GetTable(30, 70);
             TableRowGroup rowGroupSetupInfo = new TableRowGroup();
-            rowGroupSetupInfo.Rows.Add(GetTableRow("Setup", $"{jsonFile.Name.Replace(".json", "")}"));
             rowGroupSetupInfo.Rows.Add(GetTableRow("Track", $"{GetTrackName(jsonFile.FullName)}"));
             rowGroupSetupInfo.Rows.Add(GetTableRow("Car", $"{carSetup.CarName}"));
             rowGroupSetupInfo.Rows.Add(GetTableRow("Class", $"{carSetup.CarClass}"));
