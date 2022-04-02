@@ -25,7 +25,7 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        
+
         <TreeView x:Name="setupsTreeView" Grid.Column="0" Style="{StaticResource MaterialDesignTreeView}" >
             <TreeViewItem>
                 <TreeViewItem.Header>
@@ -56,7 +56,10 @@
         </TreeView>
 
         <FlowDocumentScrollViewer Grid.Column="1" Focusable="False" Cursor="Arrow">
-            <FlowDocument  x:Name="flowDocument" Focusable="False" Cursor="Arrow" Background="{DynamicResource MaterialDesignPaper}" FontFamily="{StaticResource RobotoMedium}" RenderOptions.ClearTypeHint="Enabled" AllowDrop="False">
+            <FlowDocument  x:Name="flowDocument" Focusable="False" Cursor="Arrow" 
+                           Background="{DynamicResource MaterialDesignPaper}"
+                           FontFamily="{StaticResource RobotoMedium}" 
+                           RenderOptions.ClearTypeHint="Enabled" AllowDrop="False">
             </FlowDocument>
         </FlowDocumentScrollViewer>
     </Grid>

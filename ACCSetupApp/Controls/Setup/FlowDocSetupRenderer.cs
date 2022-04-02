@@ -127,6 +127,8 @@ namespace ACCSetupApp.Controls.Setup
             int rideHeightRear = carSetup.AeroBalance.RideHeight(setup.advancedSetup.aeroBalance.rideHeight, Position.Rear);
             int rearWing = carSetup.AeroBalance.RearWing(setup.advancedSetup.aeroBalance.rearWing);
             int splitter = carSetup.AeroBalance.Splitter(setup.advancedSetup.aeroBalance.splitter);
+            int brakeDuctsFront = setup.advancedSetup.aeroBalance.brakeDuct[(int)Position.Front];
+            int brakeDuctsRear = setup.advancedSetup.aeroBalance.brakeDuct[(int)Position.Rear];
 
 
 
@@ -165,10 +167,10 @@ namespace ACCSetupApp.Controls.Setup
             Table tiresTable = GetTable(30, 70);
             TableRowGroup rowGroupTires = new TableRowGroup();
             rowGroupTires.Rows.Add(GetTableRow("Compound", $"{compound}"));
-            rowGroupTires.Rows.Add(GetTableRow("PSI", $"FL: {frontLeftPressure}, FR: {frontRightPressure}, RL: {rearLeftPressure}, RR: {rearRightPressure}"));
-            rowGroupTires.Rows.Add(GetTableRow("Caster", $"FL: {frontLeftCaster}, FR: {frontRightCaster}"));
-            rowGroupTires.Rows.Add(GetTableRow("Toe", $"FL: {frontLeftToe}, FR: {frontRightToe}, RL: {rearLeftToe}, RR: {rearRightToe}"));
-            rowGroupTires.Rows.Add(GetTableRow("Camber", $"FL: {camberFrontLeft}, FR: {camberFrontRight}, RL: {camberRearLeft}, RR: {camberRearRight}"));
+            rowGroupTires.Rows.Add(GetTableRow("Pressures(psi)", $"FL: {frontLeftPressure}, FR: {frontRightPressure}, RL: {rearLeftPressure}, RR: {rearRightPressure}"));
+            rowGroupTires.Rows.Add(GetTableRow("Caster(°)", $"FL: {frontLeftCaster}, FR: {frontRightCaster}"));
+            rowGroupTires.Rows.Add(GetTableRow("Toe(°)", $"FL: {frontLeftToe}, FR: {frontRightToe}, RL: {rearLeftToe}, RR: {rearRightToe}"));
+            rowGroupTires.Rows.Add(GetTableRow("Camber(°)", $"FL: {camberFrontLeft}, FR: {camberFrontRight}, RL: {camberRearLeft}, RR: {camberRearRight}"));
             tiresTable.RowGroups.Add(rowGroupTires);
             tiresSection.Blocks.Add(tiresTable);
             tiresSection.BorderBrush = Brushes.White;
@@ -221,9 +223,11 @@ namespace ACCSetupApp.Controls.Setup
             aeroBalanceSection.Blocks.Add(GetDefaultHeader("Aero Balance"));
             Table aeroTable = GetTable(30, 70);
             TableRowGroup aeroTableRowGroup = new TableRowGroup();
+            aeroTableRowGroup.Rows.Add(GetTableRow("Brake ducts", $"Front: {brakeDuctsFront}, Rear: {brakeDuctsRear}"));
             aeroTableRowGroup.Rows.Add(GetTableRow("Ride height(mm)", $"Front: {rideHeightFront}, Rear: {rideHeightRear}"));
-            aeroTableRowGroup.Rows.Add(GetTableRow("Rear Wing", $"{rearWing}"));
             aeroTableRowGroup.Rows.Add(GetTableRow("Splitter", $"{splitter}"));
+            aeroTableRowGroup.Rows.Add(GetTableRow("Rear Wing", $"{rearWing}"));
+
 
             aeroTable.RowGroups.Add(aeroTableRowGroup);
             aeroBalanceSection.Blocks.Add(aeroTable);

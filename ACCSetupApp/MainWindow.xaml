@@ -61,7 +61,8 @@
                             Kind="HammerScrewdriver"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
-                            Height="32"
+                            Height="20"
+                            Width="20"
                         Foreground="White"    
                         />
                         <TextBlock Grid.Row="1" Style="{StaticResource MaterialDesignButtonTextBlock}">Setups</TextBlock>
@@ -89,14 +90,15 @@
                             Kind="Paintbrush"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
-                            Height="32"
+                            Height="20"
+                            Width="20"
                         Foreground="White"    
                         />
                         <TextBlock Grid.Row="1" Style="{StaticResource MaterialDesignButtonTextBlock}">Liveries</TextBlock>
                     </Grid>
                 </TabItem.Header>
             </TabItem>
-            
+
             <TabItem Style="{StaticResource MaterialDesignTabItem}" Name="tabTools" Height="60">
                 <TabItem.Header>
                     <Grid>
@@ -109,7 +111,8 @@
                             Kind="Calculator"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
-                            Height="32"
+                            Height="20"
+                            Width="20"
                         Foreground="White"    
                         />
                         <TextBlock Grid.Row="1" Style="{StaticResource MaterialDesignButtonTextBlock}">Tools</TextBlock>
