@@ -90,7 +90,7 @@ namespace ACCSetupApp.SetupParser
 
         public interface IAeroBalance
         {
-            int RideHeight(List<int> rawValue, Position positon);
+            int RideHeight(List<int> rawValue, Position position);
             int BrakeDucts(int rawValue);
             int RearWing(int rawValue);
             int Splitter(int rawValue);

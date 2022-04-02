@@ -16,37 +16,57 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <ScrollViewer Style="{StaticResource MaterialDesignScrollViewer}">
-            <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Vertical">
 
-                <materialDesign:Card Width="1100">
+            <materialDesign:Card Width="1100">
+                <materialDesign:TransitioningContent>
+                    <materialDesign:TransitioningContent.Effect>
+                        <DropShadowEffect Color="Black" Opacity="0.7" BlurRadius="3" ShadowDepth="2"/>
+                    </materialDesign:TransitioningContent.Effect>
+
                     <StackPanel Orientation="Vertical">
-                        <TextBlock Grid.Row="0" 
-                           Style="{StaticResource MaterialDesignHeadline3TextBlock}"
-                           HorizontalAlignment="Center">
-                   ACC Manager
+                        <TextBlock Style="{StaticResource MaterialDesignHeadline3TextBlock}" HorizontalAlignment="Center">
+                    ACC Manager
                         </TextBlock>
-                        <TextBlock Grid.Row="1" 
-                           Style="{StaticResource MaterialDesignBody1TextBlock}"
-                           HorizontalAlignment="Center">
+                        <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" HorizontalAlignment="Center">
+                            Provides tooling for Assetto Corsa Competizione.<LineBreak/>
+                            
                     Developed by Defragler (Reinier Klarenberg)
                         </TextBlock>
                     </StackPanel>
-                </materialDesign:Card>
+                </materialDesign:TransitioningContent>
+            </materialDesign:Card>
 
+            <ScrollViewer Style="{StaticResource MaterialDesignScrollViewer}">
                 <materialDesign:Card Width="800" Margin="0,3,0,0">
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock 
+                    <StackPanel Orientation="Vertical" Margin="5,0,0,0" >
+                        <materialDesign:TransitioningContent>
+                            <materialDesign:TransitioningContent.Effect>
+                                <DropShadowEffect Color="Black" Opacity="0.7" BlurRadius="2" ShadowDepth="2"/>
+                            </materialDesign:TransitioningContent.Effect>
+                            <TextBlock 
                            Style="{StaticResource MaterialDesignHeadline5TextBlock}"
                            HorizontalAlignment="Center">Changelog
-                        </TextBlock>
-
+                            </TextBlock>
+                        </materialDesign:TransitioningContent>
 
                         <StackPanel Margin="0,10,0,0">
                             <TextBlock 
                            Style="{StaticResource MaterialDesignBody1TextBlock}"
                            HorizontalAlignment="Left" TextWrapping="Wrap" >
-                            1.0.1.2
+                            0.0.1.3
+                            </TextBlock>
+                            <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
+                            - Setup compare highlights setting when different.<LineBreak/>
+                            - Add setup conversion for: Audi R8 LMS, Honda NSX GT3, Porsche 911 GT3 R
+                            </TextBlock>
+                        </StackPanel>
+
+                        <StackPanel Margin="0,10,0,0">
+                            <TextBlock 
+                           Style="{StaticResource MaterialDesignBody1TextBlock}"
+                           HorizontalAlignment="Left" TextWrapping="Wrap" >
+                            0.0.1.2
                             </TextBlock>
                             <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
                             - Added more icons.<LineBreak/>
@@ -58,19 +78,20 @@
                             <TextBlock 
                            Style="{StaticResource MaterialDesignBody1TextBlock}"
                            HorizontalAlignment="Left" TextWrapping="Wrap" >
-                            1.0.1.1
+                            0.0.1.1
                             </TextBlock>
                             <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
-                            - Setup Browser added, 4 cars supported for now: Audi R8 LMS evo II, Honda NSX GT3 Evo, Mclaren 720S GT3, Porsche II GT3 R.<LineBreak/>
-                            - Setup Comparison added: Right click setups in the setup browser to add them to the comparison.
+                            - Setup Browser added.<LineBreak/>
+                            - Setup Comparison added: Right click setups in the setup browser to add them to the comparison.<LineBreak/>
+                            - Add setup conversion for: Audi R8 LMS evo II(thanks to Jubka), Honda NSX GT3 Evo, Mclaren 720S GT3, Porsche II GT3 R.
                             </TextBlock>
                         </StackPanel>
 
-                        <StackPanel Margin="0,10,0,0">
+                        <StackPanel Margin="0,10,0,10">
                             <TextBlock 
                            Style="{StaticResource MaterialDesignBody1TextBlock}"
                            HorizontalAlignment="Left" TextWrapping="Wrap" >
-                            1.0.1.0
+                            0.0.1.0
                             </TextBlock>
                             <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
                             - Material Design added.
@@ -78,8 +99,8 @@
                         </StackPanel>
                     </StackPanel>
                 </materialDesign:Card>
+            </ScrollViewer>
 
-            </StackPanel>
-        </ScrollViewer>
+        </StackPanel>
     </Grid>
 </UserControl>

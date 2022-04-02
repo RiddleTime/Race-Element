@@ -1,4 +1,5 @@
-﻿using ACCSetupApp.SetupParser;
+﻿using ACCSetupApp.Controls.Setup.FlowDocUtil;
+using ACCSetupApp.SetupParser;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -46,7 +47,7 @@ namespace ACCSetupApp.Controls.Setup
 
             Root setup = JsonConvert.DeserializeObject<Root>(jsonString);
 
-            ICarSetupConversion carSetup = new ConversionFactory().GetConversion(GetParseName(file));
+            ICarSetupConversion carSetup = new ConversionFactory().GetConversion(DocUtil.GetParseName(file));
 
             if (carSetup == null)
                 return;
@@ -133,7 +134,7 @@ namespace ACCSetupApp.Controls.Setup
 
 
             Section setupTitle = new Section();
-            setupTitle.Blocks.Add(GetDefaultHeader(20, $"{jsonFile.Name.Replace(".json", "")}"));
+            setupTitle.Blocks.Add(DocUtil.GetDefaultHeader(20, $"{jsonFile.Name.Replace(".json", "")}"));
 
             setupTitle.BorderBrush = Brushes.White;
             setupTitle.BorderThickness = new Thickness(1, 1, 1, 1);
@@ -145,11 +146,11 @@ namespace ACCSetupApp.Controls.Setup
             Section setupSection = new Section();
             //setupSection.Blocks.Add(GetDefaultHeader("Setup Info"));
 
-            Table setupInfoTable = GetTable(30, 70);
+            Table setupInfoTable = DocUtil.GetTable(30, 70);
             TableRowGroup rowGroupSetupInfo = new TableRowGroup();
-            rowGroupSetupInfo.Rows.Add(GetTableRow("Track", $"{GetTrackName(jsonFile.FullName)}"));
-            rowGroupSetupInfo.Rows.Add(GetTableRow("Car", $"{carSetup.CarName}"));
-            rowGroupSetupInfo.Rows.Add(GetTableRow("Class", $"{carSetup.CarClass}"));
+            rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRow("Track", $"{DocUtil.GetTrackName(jsonFile.FullName)}"));
+            rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRow("Car", $"{carSetup.CarName}"));
+            rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRow("Class", $"{carSetup.CarClass}"));
 
             setupInfoTable.RowGroups.Add(rowGroupSetupInfo);
             setupSection.Blocks.Add(setupInfoTable);
@@ -162,15 +163,15 @@ namespace ACCSetupApp.Controls.Setup
 
             // Tyres setup
             Section tiresSection = new Section();
-            tiresSection.Blocks.Add(GetDefaultHeader("Tyres Setup"));
+            tiresSection.Blocks.Add(DocUtil.GetDefaultHeader("Tyres Setup"));
 
-            Table tiresTable = GetTable(30, 70);
+            Table tiresTable = DocUtil.GetTable(30, 70);
             TableRowGroup rowGroupTires = new TableRowGroup();
-            rowGroupTires.Rows.Add(GetTableRow("Compound", $"{compound}"));
-            rowGroupTires.Rows.Add(GetTableRow("Pressures(psi)", $"FL: {frontLeftPressure}, FR: {frontRightPressure}, RL: {rearLeftPressure}, RR: {rearRightPressure}"));
-            rowGroupTires.Rows.Add(GetTableRow("Caster(°)", $"FL: {frontLeftCaster}, FR: {frontRightCaster}"));
-            rowGroupTires.Rows.Add(GetTableRow("Toe(°)", $"FL: {frontLeftToe}, FR: {frontRightToe}, RL: {rearLeftToe}, RR: {rearRightToe}"));
-            rowGroupTires.Rows.Add(GetTableRow("Camber(°)", $"FL: {camberFrontLeft}, FR: {camberFrontRight}, RL: {camberRearLeft}, RR: {camberRearRight}"));
+            rowGroupTires.Rows.Add(DocUtil.GetTableRow("Compound", $"{compound}"));
+            rowGroupTires.Rows.Add(DocUtil.GetTableRow("Pressures(psi)", $"FL: {frontLeftPressure}, FR: {frontRightPressure}, RL: {rearLeftPressure}, RR: {rearRightPressure}"));
+            rowGroupTires.Rows.Add(DocUtil.GetTableRow("Toe(°)", $"FL: {frontLeftToe}, FR: {frontRightToe}, RL: {rearLeftToe}, RR: {rearRightToe}"));
+            rowGroupTires.Rows.Add(DocUtil.GetTableRow("Camber(°)", $"FL: {camberFrontLeft}, FR: {camberFrontRight}, RL: {camberRearLeft}, RR: {camberRearRight}"));
+            rowGroupTires.Rows.Add(DocUtil.GetTableRow("Caster(°)", $"FL: {frontLeftCaster}, FR: {frontRightCaster}"));
             tiresTable.RowGroups.Add(rowGroupTires);
             tiresSection.Blocks.Add(tiresTable);
             tiresSection.BorderBrush = Brushes.White;
@@ -180,18 +181,18 @@ namespace ACCSetupApp.Controls.Setup
 
             // Mechanical grip
             Section mechanicalGripSection = new Section();
-            mechanicalGripSection.Blocks.Add(GetDefaultHeader("Mechanical Grip"));
+            mechanicalGripSection.Blocks.Add(DocUtil.GetDefaultHeader("Mechanical Grip"));
 
-            Table gripTable = GetTable(30, 70);
+            Table gripTable = DocUtil.GetTable(30, 70);
             TableRowGroup rowGroupGrip = new TableRowGroup();
-            rowGroupGrip.Rows.Add(GetTableRow("Wheelrates(Nm)", $"FL: {wheelRateFrontLeft}, FR: {wheelRateFrontRight}, RL: {wheelRateRearLeft}, RR: {wheelRateRearRight}"));
-            rowGroupGrip.Rows.Add(GetTableRow("Bumpstop rate(Nm)", $"FL: {bumpStopRateFrontLeft}, FR: {bumpStopRateFrontRight}, RL: {bumpStopRateRearLeft}, RR: {bumpStopRateRearRight}"));
-            rowGroupGrip.Rows.Add(GetTableRow("Bumstop range", $"FL: {bumpStopRangeFrontLeft}, FR: {bumpStopRangeFrontRight}, RL: {bumpStopRangeRearLeft}, RR: {bumpStopRangeRearRight}"));
-            rowGroupGrip.Rows.Add(GetTableRow("Diff preload(Nm)", $"{differentialPreload}"));
-            rowGroupGrip.Rows.Add(GetTableRow("Brake power", $"{brakePower}%"));
-            rowGroupGrip.Rows.Add(GetTableRow("Brake bias", $"{brakeBias}%"));
-            rowGroupGrip.Rows.Add(GetTableRow("Anti roll bar", $"Front: {antiRollBarFront}, Rear: {antiRollBarRear}"));
-            rowGroupGrip.Rows.Add(GetTableRow("Steering Ratio", $"{steeringRatio}"));
+            rowGroupGrip.Rows.Add(DocUtil.GetTableRow("Wheelrates(Nm)", $"FL: {wheelRateFrontLeft}, FR: {wheelRateFrontRight}, RL: {wheelRateRearLeft}, RR: {wheelRateRearRight}"));
+            rowGroupGrip.Rows.Add(DocUtil.GetTableRow("Bumpstop rate(Nm)", $"FL: {bumpStopRateFrontLeft}, FR: {bumpStopRateFrontRight}, RL: {bumpStopRateRearLeft}, RR: {bumpStopRateRearRight}"));
+            rowGroupGrip.Rows.Add(DocUtil.GetTableRow("Bumstop range", $"FL: {bumpStopRangeFrontLeft}, FR: {bumpStopRangeFrontRight}, RL: {bumpStopRangeRearLeft}, RR: {bumpStopRangeRearRight}"));
+            rowGroupGrip.Rows.Add(DocUtil.GetTableRow("Anti roll bar", $"Front: {antiRollBarFront}, Rear: {antiRollBarRear}"));
+            rowGroupGrip.Rows.Add(DocUtil.GetTableRow("Diff preload(Nm)", $"{differentialPreload}"));
+            rowGroupGrip.Rows.Add(DocUtil.GetTableRow("Brake power", $"{brakePower}%"));
+            rowGroupGrip.Rows.Add(DocUtil.GetTableRow("Brake bias", $"{brakeBias}%"));
+            rowGroupGrip.Rows.Add(DocUtil.GetTableRow("Steering Ratio", $"{steeringRatio}"));
 
             gripTable.RowGroups.Add(rowGroupGrip);
             mechanicalGripSection.Blocks.Add(gripTable);
@@ -202,14 +203,14 @@ namespace ACCSetupApp.Controls.Setup
 
             // Dampers
             Section dampersSection = new Section();
-            dampersSection.Blocks.Add(GetDefaultHeader("Dampers"));
+            dampersSection.Blocks.Add(DocUtil.GetDefaultHeader("Dampers"));
 
-            Table dampersTable = GetTable(30, 70);
+            Table dampersTable = DocUtil.GetTable(30, 70);
             TableRowGroup rowGroupDampers = new TableRowGroup();
-            rowGroupDampers.Rows.Add(GetTableRow("Bump Slow", $"FL: {bumpSlowFrontLeft}, FR: {bumpSlowFrontRight}, RL: {bumpSlowRearLeft}, RR: {bumpSlowRearRight}"));
-            rowGroupDampers.Rows.Add(GetTableRow("Bump Fast", $"FL: {bumpFastFrontLeft}, FR: {bumpFastFrontRight}, RL: {bumpFastRearLeft}, RR: {bumpFastRearRight}"));
-            rowGroupDampers.Rows.Add(GetTableRow("Rebound Slow", $"FL: {reboundSlowFrontLeft}, FR: {reboundSlowFrontRight}, RL: {reboundSlowRearLeft}, RR: {reboundSlowRearRight}"));
-            rowGroupDampers.Rows.Add(GetTableRow("Rebound Fast", $"FL: {reboundFastFrontLeft}, FR: {reboundFastFrontRight}, RL: {reboundFastRearLeft}, RR: {reboundFastRearRight}"));
+            rowGroupDampers.Rows.Add(DocUtil.GetTableRow("Bump Slow", $"FL: {bumpSlowFrontLeft}, FR: {bumpSlowFrontRight}, RL: {bumpSlowRearLeft}, RR: {bumpSlowRearRight}"));
+            rowGroupDampers.Rows.Add(DocUtil.GetTableRow("Bump Fast", $"FL: {bumpFastFrontLeft}, FR: {bumpFastFrontRight}, RL: {bumpFastRearLeft}, RR: {bumpFastRearRight}"));
+            rowGroupDampers.Rows.Add(DocUtil.GetTableRow("Rebound Slow", $"FL: {reboundSlowFrontLeft}, FR: {reboundSlowFrontRight}, RL: {reboundSlowRearLeft}, RR: {reboundSlowRearRight}"));
+            rowGroupDampers.Rows.Add(DocUtil.GetTableRow("Rebound Fast", $"FL: {reboundFastFrontLeft}, FR: {reboundFastFrontRight}, RL: {reboundFastRearLeft}, RR: {reboundFastRearRight}"));
 
             dampersTable.RowGroups.Add(rowGroupDampers);
             dampersSection.Blocks.Add(dampersTable);
@@ -220,13 +221,13 @@ namespace ACCSetupApp.Controls.Setup
 
             // Aero
             Section aeroBalanceSection = new Section();
-            aeroBalanceSection.Blocks.Add(GetDefaultHeader("Aero Balance"));
-            Table aeroTable = GetTable(30, 70);
+            aeroBalanceSection.Blocks.Add(DocUtil.GetDefaultHeader("Aero Balance"));
+            Table aeroTable = DocUtil.GetTable(30, 70);
             TableRowGroup aeroTableRowGroup = new TableRowGroup();
-            aeroTableRowGroup.Rows.Add(GetTableRow("Brake ducts", $"Front: {brakeDuctsFront}, Rear: {brakeDuctsRear}"));
-            aeroTableRowGroup.Rows.Add(GetTableRow("Ride height(mm)", $"Front: {rideHeightFront}, Rear: {rideHeightRear}"));
-            aeroTableRowGroup.Rows.Add(GetTableRow("Splitter", $"{splitter}"));
-            aeroTableRowGroup.Rows.Add(GetTableRow("Rear Wing", $"{rearWing}"));
+            aeroTableRowGroup.Rows.Add(DocUtil.GetTableRow("Brake ducts", $"Front: {brakeDuctsFront}, Rear: {brakeDuctsRear}"));
+            aeroTableRowGroup.Rows.Add(DocUtil.GetTableRow("Ride height(mm)", $"Front: {rideHeightFront}, Rear: {rideHeightRear}"));
+            aeroTableRowGroup.Rows.Add(DocUtil.GetTableRow("Splitter", $"{splitter}"));
+            aeroTableRowGroup.Rows.Add(DocUtil.GetTableRow("Rear Wing", $"{rearWing}"));
 
 
             aeroTable.RowGroups.Add(aeroTableRowGroup);
@@ -238,13 +239,13 @@ namespace ACCSetupApp.Controls.Setup
 
             // Electronics
             Section electronicsSection = new Section();
-            electronicsSection.Blocks.Add(GetDefaultHeader("Electronics"));
-            Table electronicsTable = GetTable(30, 70);
+            electronicsSection.Blocks.Add(DocUtil.GetDefaultHeader("Electronics"));
+            Table electronicsTable = DocUtil.GetTable(30, 70);
             TableRowGroup electronicsRowGroup = new TableRowGroup();
-            electronicsRowGroup.Rows.Add(GetTableRow("TC 1", $"{setup.basicSetup.electronics.tC1}"));
-            electronicsRowGroup.Rows.Add(GetTableRow("TC 2", $"{setup.basicSetup.electronics.tC2}"));
-            electronicsRowGroup.Rows.Add(GetTableRow("ABS", $"{setup.basicSetup.electronics.abs}"));
-            electronicsRowGroup.Rows.Add(GetTableRow("Engine map", $"{setup.basicSetup.electronics.eCUMap + 1}"));
+            electronicsRowGroup.Rows.Add(DocUtil.GetTableRow("TC 1", $"{setup.basicSetup.electronics.tC1}"));
+            electronicsRowGroup.Rows.Add(DocUtil.GetTableRow("TC 2", $"{setup.basicSetup.electronics.tC2}"));
+            electronicsRowGroup.Rows.Add(DocUtil.GetTableRow("ABS", $"{setup.basicSetup.electronics.abs}"));
+            electronicsRowGroup.Rows.Add(DocUtil.GetTableRow("Engine map", $"{setup.basicSetup.electronics.eCUMap + 1}"));
 
             electronicsTable.RowGroups.Add(electronicsRowGroup);
             electronicsSection.Blocks.Add(electronicsTable);
@@ -253,118 +254,6 @@ namespace ACCSetupApp.Controls.Setup
             flowDocument.Blocks.Add(electronicsSection);
         }
 
-        private Table GetTable(int headerWidth, int valueWidth)
-        {
-            Table table = new Table();
-            TableColumn columnTitle = new TableColumn();
-            columnTitle.Width = new GridLength(headerWidth, GridUnitType.Star);
-            table.Columns.Add(columnTitle);
-
-            TableColumn columnValues = new TableColumn();
-            columnValues.Width = new GridLength(valueWidth, GridUnitType.Star);
-            table.Columns.Add(columnValues);
-
-            table.Margin = new Thickness(0);
-
-            return table;
-        }
-
-        private TableRow GetTableRow(string title, string value)
-        {
-            TableRow row = new TableRow();
-            row.Cells.Add(new TableCell(GetDefaultParagraph(title)));
-            row.Cells.Add(new TableCell(GetDefaultParagraph(value)));
-            return row;
-        }
-
-        private Paragraph GetDefaultHeader()
-        {
-            Paragraph content = new Paragraph();
-            content.FontSize = 17;
-            content.FontWeight = FontWeights.Medium;
-            content.Foreground = Brushes.White;
-            content.TextAlignment = TextAlignment.Center;
-            content.Margin = new Thickness(0, 0, 0, 2);
-            return content;
-        }
-
-        private Paragraph GetDefaultHeader(double fontSize)
-        {
-            Paragraph content = GetDefaultHeader();
-            content.FontSize = fontSize;
-            return content;
-        }
-
-        private Paragraph GetDefaultHeader(string inlineText)
-        {
-            Paragraph content = GetDefaultHeader();
-            content.Inlines.Add(inlineText);
-            return content;
-        }
-
-        private Paragraph GetDefaultHeader(double fontSize, string inlineText)
-        {
-            Paragraph content = GetDefaultHeader();
-            content.FontSize = fontSize;
-            content.Inlines.Add(inlineText);
-            return content;
-        }
-
-        private Paragraph GetDefaultParagraph()
-        {
-            Paragraph content = new Paragraph();
-            content.FontSize = 12;
-            content.FontWeight = FontWeights.Medium;
-            content.Foreground = Brushes.White;
-            content.Margin = new Thickness(0, 0, 0, 0);
-            return content;
-        }
-
-        private Paragraph GetDefaultParagraph(double fontSize)
-        {
-            Paragraph content = GetDefaultParagraph();
-            content.FontSize = fontSize;
-            return content;
-        }
-
-        private Paragraph GetDefaultParagraph(string inlineText)
-        {
-            Paragraph content = GetDefaultParagraph();
-            content.Inlines.Add(inlineText);
-            return content;
-        }
-
-        private Paragraph GetDefaultParagraph(double fontSize, string inlineText)
-        {
-            Paragraph content = GetDefaultParagraph(fontSize);
-            content.Inlines.Add(inlineText);
-            return content;
-        }
-
-        private List GetDefaultList()
-        {
-            List list = new List();
-            list.FontSize = 13;
-            list.Foreground = Brushes.White;
-
-            return list;
-        }
-
-        private string GetTrackName(string fileName)
-        {
-            string[] dashSplit = fileName.Split('\\');
-            string trackName = dashSplit[dashSplit.Length - 2];
-            trackName = Regex.Replace(trackName, "^[a-z]", m => m.Value.ToUpper());
-            trackName = trackName.Replace("_", " ");
-            return trackName;
-        }
-
-        private string GetParseName(string fileName)
-        {
-            string[] dashSplit = fileName.Split('\\');
-            string parseName = dashSplit[dashSplit.Length - 3];
-            return parseName;
-        }
 
     }
 }

@@ -209,10 +209,12 @@
     <Compile Include="Controls\About\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Setup\FlowDocUtil\DocUtil.cs" />
+    <Compile Include="Controls\Setup\FlowDocUtil\FlowDocCompareSetupRenderer.cs" />
     <Compile Include="Controls\Setup\SetupBrowser.xaml.cs">
       <DependentUpon>SetupBrowser.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Setup\FlowDocSetupRenderer.cs" />
+    <Compile Include="Controls\Setup\FlowDocUtil\FlowDocSetupRenderer.cs" />
     <Compile Include="Controls\Setup\SetupComparer.xaml.cs">
       <DependentUpon>SetupComparer.xaml</DependentUpon>
     </Compile>
@@ -222,8 +224,11 @@
     <Compile Include="Controls\TitleBar.xaml.cs">
       <DependentUpon>TitleBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SetupParser\Cars\GT3\AudiR8LMS.cs" />
     <Compile Include="SetupParser\Cars\GT3\AudiR8LMSevoII.cs" />
+    <Compile Include="SetupParser\Cars\GT3\HondaNsxGT3.cs" />
     <Compile Include="SetupParser\Cars\GT3\Mclaren720sGT3.cs" />
+    <Compile Include="SetupParser\Cars\GT3\Porsche991GT3R.cs" />
     <Compile Include="SetupParser\ConversionFactory.cs" />
     <Compile Include="SetupParser\Cars\GT3\HondaNsxGT3Evo.cs" />
     <Compile Include="SetupParser\Cars\GT3\Porsche911IIGT3R.cs" />

@@ -22,7 +22,10 @@ namespace ACCSetupApp.Controls
     /// </summary>
     public partial class SetupComparer : UserControl
     {
-        private readonly FlowDocSetupRenderer setupRenderer = new FlowDocSetupRenderer();
+        private readonly FlowDocCompareSetupRenderer setupRenderer = new FlowDocCompareSetupRenderer();
+        private FileInfo Setup1 { get; set; }
+        private FileInfo Setup2 { get; set; }
+
 
         public SetupComparer()
         {
@@ -32,12 +35,25 @@ namespace ACCSetupApp.Controls
 
         public void SetSetup1(FileInfo file)
         {
-            setupRenderer.LogSetup(ref flowDoc1, file.FullName);
+            this.Setup1 = file;
+
+            UpdateComparison();
+            //setupRenderer.LogSetup(ref flowDoc1, file.FullName);
         }
 
         public void SetSetup2(FileInfo file)
         {
-            setupRenderer.LogSetup(ref flowDoc2, file.FullName);
+            this.Setup2 = file;
+            UpdateComparison();
+            //setupRenderer.LogSetup(ref flowDoc2, file.FullName);
+        }
+
+        private void UpdateComparison()
+        {
+            if (this.Setup1 != null && this.Setup2 != null)
+            {
+                this.setupRenderer.LogComparison(ref flowDocCompare, Setup1, Setup2);
+            }
         }
 
         public static SetupComparer Instance { get; private set; }
