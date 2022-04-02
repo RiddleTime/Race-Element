@@ -29,16 +29,15 @@
 
         <materialDesign:TransitioningContent Grid.Column="1">
             <materialDesign:TransitioningContent.OpeningEffects>
-                <materialDesign:TransitionEffect Kind="SlideInFromTop"/>
-                <materialDesign:TransitionEffect Kind="FadeIn"/>
+                <materialDesign:TransitionEffect Kind="SlideInFromLeft" />
+                <materialDesign:TransitionEffect Kind="FadeIn" />
             </materialDesign:TransitioningContent.OpeningEffects>
+
             <materialDesign:TransitioningContent.Effect>
-                <DropShadowEffect Color="Black" Opacity="0.3" BlurRadius="4" ShadowDepth="3"/>
+                <DropShadowEffect Color="Black" Opacity="0.7" BlurRadius="3" ShadowDepth="2"/>
             </materialDesign:TransitioningContent.Effect>
 
-
             <TextBlock x:Name="Title" Foreground="White" Style="{StaticResource MaterialDesignHeadline6TextBlock}" VerticalAlignment="Center">
-            <!--Assetto Corsa Manager-->
             </TextBlock>
         </materialDesign:TransitioningContent>
 
