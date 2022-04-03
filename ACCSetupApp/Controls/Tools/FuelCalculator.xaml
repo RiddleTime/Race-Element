@@ -25,7 +25,8 @@
                 <Slider x:Name="sliderMinutes" Margin="5,0,5,0" Minimum="0" Maximum="55" TickFrequency="5" IsSnapToTickEnabled="true" TickPlacement="BottomRight"></Slider>
 
                 <Label HorizontalAlignment="Center" FontSize="20" Style="{StaticResource MaterialDesignLabel}" Margin="0,10,0,0">Fuel Per Lap</Label>
-                <TextBox x:Name="textBoxFuelPerLap" materialDesign:TextFieldAssist.SuffixText="L" TextAlignment="Center" Width="100" ></TextBox>
+                <TextBox x:Name="textBoxFuelPerLap" materialDesign:TextFieldAssist.SuffixText="L" 
+                         materialDesign:TextFieldAssist.CharacterCounterVisibility="Hidden" MaxLength="6" TextAlignment="Center" Width="100" ></TextBox>
 
                 <Label HorizontalAlignment="Center" FontSize="20" Style="{StaticResource MaterialDesignLabel}" Margin="0,10,0,0">Laptime</Label>
                 <Grid Width="300">
@@ -34,11 +35,11 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBox Grid.Column="0" x:Name="textBoxLapTimeMinute" 
+                    <TextBox Grid.Column="0" x:Name="textBoxLapTimeMinute" MaxLength="1"  materialDesign:TextFieldAssist.CharacterCounterVisibility="Hidden" 
                                  materialDesign:HintAssist.Hint="Minutes" TextAlignment="Center" />
-                    <TextBox Grid.Column="1" x:Name="textBoxLapTimeSecond" 
+                    <TextBox Grid.Column="1" x:Name="textBoxLapTimeSecond" MaxLength="2"  materialDesign:TextFieldAssist.CharacterCounterVisibility="Hidden" 
                                  materialDesign:HintAssist.Hint="Seconds" TextAlignment="Center" />
-                    <TextBox Grid.Column="2" x:Name="textBoxLapTimeMillis" 
+                    <TextBox Grid.Column="2" x:Name="textBoxLapTimeMillis" MaxLength="3"  materialDesign:TextFieldAssist.CharacterCounterVisibility="Hidden" 
                                  materialDesign:HintAssist.Hint="Milliseconds" TextAlignment="Center" />
                 </Grid>
             </StackPanel>

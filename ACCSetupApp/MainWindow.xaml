@@ -147,11 +147,17 @@
                     </Grid>
                 </TabItem.Header>
 
-                <TextBlock 
-                           Style="{StaticResource MaterialDesignBody1TextBlock}"
-                           HorizontalAlignment="Center" TextWrapping="Wrap" >
-                           Under construction!
-                </TextBlock>
+                <Grid HorizontalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:TransitioningContent Grid.Column="1">
+                        <materialDesign:TransitioningContent.OpeningEffects>
+                            <materialDesign:TransitionEffect Kind="FadeIn"/>
+                        </materialDesign:TransitioningContent.OpeningEffects>
+                        <controls:LiveriesTab></controls:LiveriesTab>
+                    </materialDesign:TransitioningContent>
+                </Grid>
             </TabItem>
 
             <TabItem Style="{DynamicResource MaterialDesignTabItem}" Name="tabTools" Height="60">

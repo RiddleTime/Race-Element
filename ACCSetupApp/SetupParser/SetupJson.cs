@@ -8,7 +8,6 @@ namespace SetupParser
 {
     public class SetupJson
     {
-
         public class Root
         {
             public string carName { get; set; }

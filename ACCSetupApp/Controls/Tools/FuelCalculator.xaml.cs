@@ -21,6 +21,9 @@ namespace ACCSetupApp.Controls
     /// </summary>
     public partial class FuelCalculator : UserControl
     {
+        Regex regexRealNumbersOnly = new Regex("[0-9]+$");
+        Regex regexDoublesOnly = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
+
         private int raceHours = 0;
         private int raceMinutes = 0;
 
@@ -44,11 +47,10 @@ namespace ACCSetupApp.Controls
             textBoxLapTimeSecond.PreviewTextInput += PreviewTextInput_NumbersOnly;
             textBoxLapTimeMillis.PreviewTextInput += PreviewTextInput_NumbersOnly;
 
+            textBoxFuelPerLap.TextChanged += TextBoxFuelPerLap_TextChanged;
             textBoxLapTimeMinute.TextChanged += TextBoxLapTimeMinute_TextChanged;
             textBoxLapTimeSecond.TextChanged += TextBoxLapTimeSecond_TextChanged;
             textBoxLapTimeMillis.TextChanged += TextBoxLapTimeMillis_TextChanged;
-
-            textBoxFuelPerLap.TextChanged += TextBoxFuelPerLap_TextChanged;
 
             UpdateRaceDuration();
             UpdateLapTime();
@@ -76,6 +78,12 @@ namespace ACCSetupApp.Controls
         private void TextBoxFuelPerLap_TextChanged(object sender, TextChangedEventArgs e)
         {
             string text = textBoxFuelPerLap.Text;
+            if (!regexDoublesOnly.IsMatch(text))
+            {
+                textBoxFuelPerLap.Text = fuelPerLap.ToString();
+                return;
+            }
+
             if (text.Length > 0)
             {
                 try
@@ -98,6 +106,12 @@ namespace ACCSetupApp.Controls
         private void TextBoxLapTimeMillis_TextChanged(object sender, TextChangedEventArgs e)
         {
             string text = textBoxLapTimeMillis.Text;
+            if (!regexRealNumbersOnly.IsMatch(text))
+            {
+                textBoxLapTimeMillis.Text = lapTimeMilliseconds.ToString();
+                return;
+            }
+
             if (text.Length > 0)
                 lapTimeMilliseconds = Convert.ToInt32(text);
             else
@@ -109,6 +123,12 @@ namespace ACCSetupApp.Controls
         private void TextBoxLapTimeSecond_TextChanged(object sender, TextChangedEventArgs e)
         {
             string text = textBoxLapTimeSecond.Text;
+            if (!regexRealNumbersOnly.IsMatch(text))
+            {
+                textBoxLapTimeSecond.Text = lapTimeSeconds.ToString();
+                return;
+            }
+
             if (text.Length > 0)
                 lapTimeSeconds = Convert.ToInt32(text);
             else
@@ -120,6 +140,12 @@ namespace ACCSetupApp.Controls
         private void TextBoxLapTimeMinute_TextChanged(object sender, TextChangedEventArgs e)
         {
             string text = textBoxLapTimeMinute.Text;
+            if (!regexRealNumbersOnly.IsMatch(text))
+            {
+                textBoxLapTimeMinute.Text = lapTimeMinutes.ToString();
+                return;
+            }
+
             if (text.Length > 0)
                 lapTimeMinutes = Convert.ToInt32(text);
             else
@@ -136,14 +162,13 @@ namespace ACCSetupApp.Controls
 
         private void PreviewTextInput_NumbersOnly(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            e.Handled = !regexRealNumbersOnly.IsMatch(e.Text);
         }
 
         private void TextBoxFuelPerLap_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
-            e.Handled = !regex.IsMatch((sender as TextBox).Text.Insert((sender as TextBox).SelectionStart, e.Text));
+
+            e.Handled = !regexDoublesOnly.IsMatch((sender as TextBox).Text.Insert((sender as TextBox).SelectionStart, e.Text));
         }
 
         private void SliderMinutes_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
