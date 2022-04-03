@@ -224,6 +224,12 @@
     <Compile Include="Controls\TitleBar.xaml.cs">
       <DependentUpon>TitleBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Tools\FuelCalculator.xaml.cs">
+      <DependentUpon>FuelCalculator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tools\ToolsTabs.xaml.cs">
+      <DependentUpon>ToolsTabs.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SetupParser\Cars\GT3\AudiR8LMS.cs" />
     <Compile Include="SetupParser\Cars\GT3\AudiR8LMSevoII.cs" />
     <Compile Include="SetupParser\Cars\GT3\HondaNsxGT3.cs" />
@@ -234,6 +240,7 @@
     <Compile Include="SetupParser\Cars\GT3\Porsche911IIGT3R.cs" />
     <Compile Include="SetupParser\ISetupConverter.cs" />
     <Compile Include="SetupParser\SetupJson.cs" />
+    <Compile Include="SharedMemory.cs" />
     <Page Include="Controls\About\About.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -255,6 +262,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\TitleBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Tools\FuelCalculator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Tools\ToolsTabs.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -309,7 +324,7 @@
     <Resource Include="management.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controls\Tools\" />
+    <Folder Include="LiveryParser\" />
     <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
