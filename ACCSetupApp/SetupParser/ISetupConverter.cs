@@ -8,7 +8,25 @@ namespace ACCSetupApp.SetupParser
 {
     public class SetupConverter
     {
-        public enum CarClasses
+        internal static double[] ToDoubles(string[] strings)
+        {
+            double[] convertedDoubles = new double[strings.Length];
+            for (int i = 0; i < strings.Length; i++)
+                convertedDoubles[i] = double.Parse(strings[i]);
+
+            return convertedDoubles;
+        }
+
+        internal static int[] ToInts(string[] strings)
+        {
+            int[] convertedInts = new int[strings.Length];
+            for (int i = 0; i < strings.Length; i++)
+                convertedInts[i] = int.Parse(strings[i]);
+
+            return convertedInts;
+        }
+
+        internal enum CarClasses
         {
             GT3,
             GT4,
@@ -16,7 +34,7 @@ namespace ACCSetupApp.SetupParser
             GTC
         }
 
-        public enum Wheel
+        internal enum Wheel
         {
             FrontLeft,
             FrontRight,
@@ -24,19 +42,19 @@ namespace ACCSetupApp.SetupParser
             RearRight
         }
 
-        public enum Position
+        internal enum Position
         {
             Front,
             Rear
         }
 
-        public enum TyreCompound
+        internal enum TyreCompound
         {
             Dry,
             Wet
         }
 
-        public static Position GetPosition(Wheel wheel)
+        internal static Position GetPosition(Wheel wheel)
         {
             Position position;
             switch (wheel)
@@ -55,7 +73,7 @@ namespace ACCSetupApp.SetupParser
             return position;
         }
 
-        public interface ICarSetupConversion
+        internal interface ICarSetupConversion
         {
             string CarName { get; }
             string ParseName { get; }
@@ -68,7 +86,7 @@ namespace ACCSetupApp.SetupParser
             IAeroBalance AeroBalance { get; }
         }
 
-        public interface IMechanicalSetup
+        internal interface IMechanicalSetup
         {
             int AntiRollBarFront(int rawValue);
             int AntiRollBarRear(int rawValue);
@@ -88,7 +106,7 @@ namespace ACCSetupApp.SetupParser
             int BumpstopRange(List<int> rawValue, Wheel wheel);
         }
 
-        public interface IAeroBalance
+        internal interface IAeroBalance
         {
             int RideHeight(List<int> rawValue, Position position);
             int BrakeDucts(int rawValue);
@@ -96,7 +114,7 @@ namespace ACCSetupApp.SetupParser
             int Splitter(int rawValue);
         }
 
-        public interface IElectronicsSetup
+        internal interface IElectronicsSetup
         {
 
             int TractionControl { get; }
@@ -105,7 +123,7 @@ namespace ACCSetupApp.SetupParser
             int TractionControl2 { get; }
         }
 
-        public abstract class AbstractTyresSetup
+        internal abstract class AbstractTyresSetup
         {
             public TyreCompound Compound(int rawValue)
             {
@@ -118,12 +136,14 @@ namespace ACCSetupApp.SetupParser
                 }
             }
 
+            private readonly string baseGT3PSI = "20.3";
+            private readonly string baseGT4PSI = "17.0";
             public double TirePressure(CarClasses carClass, Wheel wheel, List<int> rawValue)
             {
                 switch (carClass)
                 {
-                    case CarClasses.GT3: return Math.Round(20.3f + 0.1f * rawValue[(int)wheel], 2);
-                    case CarClasses.GT4: return Math.Round(17f + 0.1f * rawValue[(int)wheel], 2);
+                    case CarClasses.GT3: return Math.Round(double.Parse(baseGT3PSI) + 0.1f * rawValue[(int)wheel], 2);
+                    case CarClasses.GT4: return Math.Round(double.Parse(baseGT4PSI) + 0.1f * rawValue[(int)wheel], 2);
 
                     default: return -1;
                 }

@@ -58,7 +58,7 @@
                             </TextBlock>
                             <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
                             - Setup compare highlights setting when different.<LineBreak/>
-                            - Add setup conversion for: Audi R8 LMS, Honda NSX GT3, Porsche 911 GT3 R
+                            - Add setup conversion for: Audi R8 LMS, Honda NSX GT3, Porsche 911 GT3 R.
                             </TextBlock>
                         </StackPanel>
 

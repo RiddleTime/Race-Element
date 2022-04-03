@@ -8,9 +8,9 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
     {
         public string CarName => "Porsche 911 II GT3 R";
         public string ParseName => "porsche_991ii_gt3_r";
-        public CarClasses CarClass => CarClasses.GT3;
+        CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
 
-        public AbstractTyresSetup TyresSetup => new TyreSetup();
+        AbstractTyresSetup ICarSetupConversion.TyresSetup => new TyreSetup();
         private class TyreSetup : AbstractTyresSetup
         {
             public override double Toe(Wheel wheel, List<int> rawValue)
@@ -27,18 +27,17 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
                     default: return -1;
                 }
             }
+
+            private readonly string[] casterStrings = new string[] { "4.4", "4.6", "4.8", "5.1", "5.3", "5.5", "5.7", "5.9", "6.1", "6.3", "6.5",
+                "6.7", "6.9", "7.1", "7.3", "7.5", "7.7", "7.8", "8.0", "8.2", "8.4", "8.6", "8.8", "9.0", "9.2", "9.4", "9.6", "9.8", "10.0", "10.2",
+                "10.4", "10.6", "10.8", "11.0", "11.2", "11.4", "11.6", "11.8", "12.0", "12.2", "12.4" };
             public override double Caster(int rawValue)
             {
-                double[] casters = new double[] { 4.4, 4.6, 4.8, 5.1, 5.3, 5.5, 5.7, 5.9, 6.1,
-                    6.3, 6.5, 6.7, 6.9, 7.1, 7.3, 7.5, 7.7, 7.8, 8.0, 8.2, 8.4, 8.6, 8.8, 9.0,
-                    9.2, 9.4, 9.6, 9.8, 10.0, 10.2, 10.4, 10.6, 10.8, 11.0, 11.2, 11.4, 11.6,
-                    11.8, 12.0, 12.2, 12.4, };
-
-                return Math.Round(casters[rawValue], 2);
+                return Math.Round(ToDoubles(casterStrings)[rawValue], 2);
             }
         }
 
-        public IMechanicalSetup MechanicalSetup => new MechSetup();
+        IMechanicalSetup ICarSetupConversion.MechanicalSetup => new MechSetup();
         private class MechSetup : IMechanicalSetup
         {
             public int AntiRollBarFront(int rawValue)
@@ -81,23 +80,20 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
                 return Math.Round(11d + rawValue, 2);
             }
 
+            private readonly string[] fronts = new string[] { "100500", "110000", "114000", "119000", "127000", "137000", "141500", "146000", "155000", "173500" };
+            private readonly string[] rears = new string[] { "137000", "149500", "156000", "162000", "174500", "187000", "193000", "199500", "212000", "237000" };
             public int WheelRate(List<int> rawValue, Wheel wheel)
             {
-                int[] front = new int[] { 100500, 110000, 114000, 119000, 127000,
-                    137000, 141500, 146000, 155000, 173500 };
-                int[] rear = new int[] { 137000, 149500, 156000, 162000, 174500,
-                    187000, 193000, 199500, 212000, 237000 };
-
                 switch (GetPosition(wheel))
                 {
-                    case Position.Front: return front[rawValue[(int)wheel]];
-                    case Position.Rear: return rear[rawValue[(int)wheel]];
+                    case Position.Front: return ToInts(fronts)[rawValue[(int)wheel]];
+                    case Position.Rear: return ToInts(rears)[rawValue[(int)wheel]];
                     default: return -1;
                 }
             }
         }
 
-        public IAeroBalance AeroBalance => new AeroSetup();
+        IAeroBalance ICarSetupConversion.AeroBalance => new AeroSetup();
         private class AeroSetup : IAeroBalance
         {
             public int BrakeDucts(int rawValue)

@@ -13,9 +13,9 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
 
         public string ParseName => "mclaren_720s_gt3";
 
-        public CarClasses CarClass => CarClasses.GT3;
+        CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
 
-        public AbstractTyresSetup TyresSetup => new TyreSetup();
+        AbstractTyresSetup ICarSetupConversion.TyresSetup => new TyreSetup();
         private class TyreSetup : AbstractTyresSetup
         {
             public override double Camber(Wheel wheel, List<int> rawValue)
@@ -28,11 +28,10 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
                 }
             }
 
+            private readonly string[] casterStrings = new string[] { "5.3", "5.6", "5.8", "6.0", "6.3", "6.5", "6.8", "7.0", "7.3", "7.5", "7.8", "8.0" };
             public override double Caster(int rawValue)
             {
-                double[] casters = new double[] { 5.3, 5.6, 5.8, 6.0, 6.3, 6.5, 6.8, 7.0, 7.3, 7.5, 7.8, 8.0 };
-
-                return Math.Round(casters[rawValue], 2);
+                return Math.Round(ToDoubles(casterStrings)[rawValue], 2);
             }
 
             public override double Toe(Wheel wheel, List<int> rawValue)
@@ -46,7 +45,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
             }
         }
 
-        public IMechanicalSetup MechanicalSetup => new MechSetup();
+        IMechanicalSetup ICarSetupConversion.MechanicalSetup => new MechSetup();
         private class MechSetup : IMechanicalSetup
         {
             public int AntiRollBarFront(int rawValue)
@@ -89,21 +88,20 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
                 return Math.Round(11d + rawValue, 2);
             }
 
+            private readonly string[] fronts = new string[] { "118000", "134000", "150000", "166000", "182000", "198000", "214000", "230000" };
+            private readonly string[] rears = new string[] { "114000", "128000", "142000", "156000", "170000", "184000", "198000", "212000" };
             public int WheelRate(List<int> rawValue, Wheel wheel)
             {
-                int[] front = new int[] { 118000, 134000, 150000, 166000, 182000, 198000, 214000, 230000 };
-                int[] rear = new int[] { 114000, 128000, 142000, 156000, 170000, 184000, 198000, 212000 };
-
                 switch (GetPosition(wheel))
                 {
-                    case Position.Front: return front[rawValue[(int)wheel]];
-                    case Position.Rear: return rear[rawValue[(int)wheel]];
+                    case Position.Front: return ToInts(fronts)[rawValue[(int)wheel]];
+                    case Position.Rear: return ToInts(rears)[rawValue[(int)wheel]];
                     default: return -1;
                 }
             }
         }
 
-        public IAeroBalance AeroBalance => new AeroSetup();
+        IAeroBalance ICarSetupConversion.AeroBalance => new AeroSetup();
         private class AeroSetup : IAeroBalance
         {
             public int BrakeDucts(int rawValue)
