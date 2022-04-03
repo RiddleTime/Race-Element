@@ -2,6 +2,7 @@
 using ACCSetupApp.SetupParser;
 using MaterialDesignThemes.Wpf;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -87,6 +88,7 @@ namespace ACCSetupApp.Controls
                             Style = Resources["MaterialDesignSubtitle2TextBlock"] as Style,
                         };
                         TreeViewItem trackTreeViewItem = new TreeViewItem() { Header = trackHeader, DataContext = trackDir };
+                        trackTreeViewItem.ContextMenu = GetTrackContextMenu(trackDir);
 
                         // find setups in track dir
                         foreach (var trackFile in trackDir.GetFiles())
@@ -122,6 +124,47 @@ namespace ACCSetupApp.Controls
                 }
             }
 
+        }
+
+        private ContextMenu GetTrackContextMenu(DirectoryInfo directory)
+        {
+            ContextMenu menu = new ContextMenu()
+            {
+                Style = Resources["MaterialDesignContextMenu"] as Style,
+                Margin = new Thickness(0),
+                Padding = new Thickness(0),
+                UsesItemContainerTemplate = true,
+                Background = new SolidColorBrush(Color.FromArgb(220, 0, 0, 0))
+            };
+
+
+            Button openFolder = new Button()
+            {
+                Content = "Open in explorer",
+                CommandParameter = directory,
+                Style = Resources["MaterialDesignRaisedButton"] as Style,
+                Margin = new Thickness(0),
+                Height = 30,
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            openFolder.Click += OpenFolder_Click; ;
+
+            menu.Items.Add(openFolder);
+
+            return menu;
+        }
+
+        private void OpenFolder_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender.GetType() == typeof(Button))
+            {
+                Button button = (Button)sender;
+
+                DirectoryInfo directory = (DirectoryInfo)button.CommandParameter;
+                Process.Start(directory.FullName);
+
+                (button.Parent as ContextMenu).IsOpen = false;
+            }
         }
 
         private ContextMenu GetCompareContextMenu(FileInfo file)
