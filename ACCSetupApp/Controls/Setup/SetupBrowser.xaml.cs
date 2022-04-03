@@ -147,7 +147,7 @@ namespace ACCSetupApp.Controls
                 Height = 30,
                 VerticalAlignment = VerticalAlignment.Center,
             };
-            openFolder.Click += OpenFolder_Click; ;
+            openFolder.Click += OpenFolder_Click;
 
             menu.Items.Add(openFolder);
 
