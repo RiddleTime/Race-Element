@@ -24,16 +24,19 @@
             <ColumnDefinition Width="30*"/>
             <ColumnDefinition Width="70*"/>
         </Grid.ColumnDefinitions>
-        <TreeView x:Name="liveriesTreeView" Grid.Column="0" Style="{StaticResource MaterialDesignTreeView}" >
-            <TreeViewItem>
-                <TreeViewItem.Header>
-                    <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}">
-                       Team A
-                    </TextBlock>
-                </TreeViewItem.Header>
-            </TreeViewItem>
-        </TreeView>
+        <StackPanel>
 
+            <Button>Import Liveries</Button>
+            <TreeView x:Name="liveriesTreeView" Grid.Column="0" Style="{StaticResource MaterialDesignTreeView}" Margin="0,10,0,0" >
+                <TreeViewItem>
+                    <TreeViewItem.Header>
+                        <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}">
+                       Team A
+                        </TextBlock>
+                    </TreeViewItem.Header>
+                </TreeViewItem>
+            </TreeView>
+        </StackPanel>
         <Grid Grid.Column="1">
             <Image x:Name="liveryImage"
                         Width="750"
