@@ -1,6 +1,7 @@
 ﻿using ACCSetupApp.Controls.Setup.FlowDocUtil;
 using ACCSetupApp.SetupParser;
 using Newtonsoft.Json;
+using SetupParser;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,8 +30,8 @@ namespace ACCSetupApp.Controls.Setup
         {
             flowDocument.Blocks.Clear();
 
-            Root setup1 = GetSetup(setupFile1);
-            Root setup2 = GetSetup(setupFile2);
+            SetupJson.Root setup1 = GetSetup(setupFile1);
+            SetupJson.Root setup2 = GetSetup(setupFile2);
 
             if (setup1 == null || setup2 == null)
             {

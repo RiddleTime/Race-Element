@@ -41,7 +41,5 @@ namespace ACCSetupApp.LiveryParser
             public string customSkinName { get; set; }
             public int bannerTemplateKey { get; set; }
         }
-
-
     }
 }

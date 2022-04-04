@@ -80,8 +80,15 @@ namespace ACCSetupApp.Controls
             string text = textBoxFuelPerLap.Text;
             if (!regexDoublesOnly.IsMatch(text))
             {
-                textBoxFuelPerLap.Text = fuelPerLap.ToString();
-                return;
+                if (text.Equals(string.Empty))
+                {
+                    textBoxFuelPerLap.Text = string.Empty;
+                    fuelPerLap = 0.0;
+                }
+                else
+                {
+                    textBoxFuelPerLap.Text = fuelPerLap.ToString();
+                }
             }
 
             if (text.Length > 0)
@@ -108,14 +115,23 @@ namespace ACCSetupApp.Controls
             string text = textBoxLapTimeMillis.Text;
             if (!regexRealNumbersOnly.IsMatch(text))
             {
-                textBoxLapTimeMillis.Text = lapTimeMilliseconds.ToString();
-                return;
+                if (text.Equals(string.Empty))
+                {
+                    textBoxLapTimeMillis.Text = string.Empty;
+                    lapTimeMilliseconds = 0;
+                }
+                else
+                {
+                    textBoxLapTimeMillis.Text = lapTimeMilliseconds.ToString();
+                }
             }
-
-            if (text.Length > 0)
-                lapTimeMilliseconds = Convert.ToInt32(text);
             else
-                lapTimeMilliseconds = 0;
+            {
+                if (text.Length > 0)
+                    lapTimeMilliseconds = Convert.ToInt32(text);
+                else
+                    lapTimeMilliseconds = 0;
+            }
 
             UpdateLapTime();
         }
@@ -125,14 +141,24 @@ namespace ACCSetupApp.Controls
             string text = textBoxLapTimeSecond.Text;
             if (!regexRealNumbersOnly.IsMatch(text))
             {
-                textBoxLapTimeSecond.Text = lapTimeSeconds.ToString();
-                return;
+                if (text.Equals(string.Empty))
+                {
+                    textBoxLapTimeSecond.Text = string.Empty;
+                    lapTimeSeconds = 0;
+                }
+                else
+                {
+                    textBoxLapTimeSecond.Text = lapTimeSeconds.ToString();
+                }
             }
-
-            if (text.Length > 0)
-                lapTimeSeconds = Convert.ToInt32(text);
             else
-                lapTimeSeconds = 0;
+            {
+
+                if (text.Length > 0)
+                    lapTimeSeconds = Convert.ToInt32(text);
+                else
+                    lapTimeSeconds = 0;
+            }
 
             UpdateLapTime();
         }
@@ -142,14 +168,22 @@ namespace ACCSetupApp.Controls
             string text = textBoxLapTimeMinute.Text;
             if (!regexRealNumbersOnly.IsMatch(text))
             {
-                textBoxLapTimeMinute.Text = lapTimeMinutes.ToString();
-                return;
+                if (text.Equals(string.Empty))
+                {
+                    textBoxLapTimeMinute.Text = string.Empty;
+                    lapTimeMinutes = 0;
+                }
+                else
+                {
+                    textBoxLapTimeMinute.Text = lapTimeMinutes.ToString();
+                }
             }
-
-            if (text.Length > 0)
-                lapTimeMinutes = Convert.ToInt32(text);
-            else
-                lapTimeMinutes = 0;
+            {
+                if (text.Length > 0)
+                    lapTimeMinutes = Convert.ToInt32(text);
+                else
+                    lapTimeMinutes = 0;
+            }
 
             UpdateLapTime();
         }
