@@ -21,8 +21,8 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="30*"/>
+            <ColumnDefinition Width="70*"/>
         </Grid.ColumnDefinitions>
         <TreeView x:Name="liveriesTreeView" Grid.Column="0" Style="{StaticResource MaterialDesignTreeView}" >
             <TreeViewItem>
@@ -35,7 +35,10 @@
         </TreeView>
 
         <Grid Grid.Column="1">
-
+            <Image x:Name="liveryImage"
+                        Width="750"
+                        Height="750"
+                        Stretch="UniformToFill" />
         </Grid>
     </Grid>
 </UserControl>
