@@ -54,6 +54,19 @@
                             <TextBlock 
                            Style="{StaticResource MaterialDesignBody1TextBlock}"
                            HorizontalAlignment="Left" TextWrapping="Wrap" >
+                            0.0.2.0
+                            </TextBlock>
+                            <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
+                            - Add Livery Browser, displays: team name, display name, car number, decals image and sponsors image.<LineBreak/>
+                            - Add Livery exporter: right click livery to save as zip.<LineBreak/>
+                            - Add Livery importer: supports (.7z, .rar, .zip), can import multiple archives at once, though multiple liveries per archive is not supported.
+                            </TextBlock>
+                        </StackPanel>
+
+                        <StackPanel Margin="0,10,0,0">
+                            <TextBlock 
+                           Style="{StaticResource MaterialDesignBody1TextBlock}"
+                           HorizontalAlignment="Left" TextWrapping="Wrap" >
                             0.0.1.5
                             </TextBlock>
                             <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">

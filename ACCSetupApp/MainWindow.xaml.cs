@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -33,6 +34,7 @@ namespace ACCSetupApp
 
 
             this.StateChanged += MainWindow_StateChanged;
+
 
             Instance = this;
         }

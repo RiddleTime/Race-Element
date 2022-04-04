@@ -26,7 +26,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="Yellow" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Snackbar.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TabControl.xaml" />
@@ -48,12 +48,11 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <materialDesign:Snackbar x:Name="snackbar" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
-                                   MessageQueue="{materialDesign:MessageQueue}" Background="Black" />
-
         <controls:TitleBar x:Name="titleBar" Grid.Row="0" Width="1200">
-         
+
         </controls:TitleBar>
+
+        <materialDesign:Snackbar Grid.Row="1" Panel.ZIndex="1" x:Name="snackbar" MessageQueue="{materialDesign:MessageQueue}" />
 
         <TabControl x:Name="tabControl" Style="{StaticResource MaterialDesignTabControlBase}" TabStripPlacement="Left" Grid.Row="1" Width="1200">
 
@@ -193,13 +192,8 @@
                         <controls:ToolsTabs></controls:ToolsTabs>
                     </materialDesign:TransitioningContent>
                 </Grid>
-
             </TabItem>
 
-
         </TabControl>
-
-
-
     </Grid>
 </Window>

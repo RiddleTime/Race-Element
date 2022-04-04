@@ -135,6 +135,8 @@ namespace ACCSetupApp.Controls
 
             DirectoryInfo customsCarsDirectory = new DirectoryInfo(CarsPath);
 
+            List<TreeViewItem> carsTreeViews = new List<TreeViewItem>();
+
             foreach (var carsFile in customsCarsDirectory.GetFiles())
             {
                 if (carsFile.Extension.Equals(".json"))
@@ -147,16 +149,27 @@ namespace ACCSetupApp.Controls
                         {
                             Text = $"{carsRoot.teamName}",
                             Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
+                            TextTrimming = TextTrimming.WordEllipsis,
+                            Width = liveriesTreeView.Width - 5
                         };
 
                         LiveryTreeCar treeCar = new LiveryTreeCar() { carsFile = carsFile, carsRoot = carsRoot };
                         TreeViewItem teamItem = new TreeViewItem() { Header = liveryHeader, DataContext = treeCar };
                         teamItem.ContextMenu = GetTeamContextMenu(treeCar);
 
-                        liveriesTreeView.Items.Add(teamItem);
+                        carsTreeViews.Add(teamItem);
                     }
                 }
             }
+
+            carsTreeViews.Sort((a, b) =>
+            {
+                LiveryTreeCar aCar = a.DataContext as LiveryTreeCar;
+                LiveryTreeCar bCar = b.DataContext as LiveryTreeCar;
+                return $"{aCar.carsRoot.teamName}{aCar.carsRoot.customSkinName}".CompareTo($"{bCar.carsRoot.teamName}{bCar.carsRoot.customSkinName}");
+            });
+
+            carsTreeViews.ForEach(x => liveriesTreeView.Items.Add(x));
         }
 
         private ContextMenu GetTeamContextMenu(LiveryTreeCar directory)
@@ -208,7 +221,7 @@ namespace ACCSetupApp.Controls
                     for (int i = 0; i < fileNames.Length; i++)
                     {
                         FileInfo fi = new FileInfo(fileNames[i]);
-                        if (fi.Exists)
+                        if (fi.Exists && fi.OpenRead() != null)
                         {
                             IArchive archive = null;
 
@@ -290,8 +303,11 @@ namespace ACCSetupApp.Controls
                                 root = GetLivery(new FileInfo(carsJsonFileName));
                             });
 
+
                             if (root != null)
                             {
+                                MainWindow.Instance.snackbar.MessageQueue.Enqueue($"Installing livery... {root.teamName}");
+
                                 string liveryFolder = $"{LiveriesPath}{root.customSkinName}\\";
                                 Directory.CreateDirectory(liveryFolder);
 
@@ -316,10 +332,12 @@ namespace ACCSetupApp.Controls
                                     e.WriteToFile(decalsPngFile);
                                 });
 
+                                MainWindow.Instance.snackbar.MessageQueue.Enqueue($"Installed custom livery: {root.teamName}");
                                 Debug.WriteLine($"Installed custom livery: {root.teamName}");
                             }
                             else
                             {
+                                MainWindow.Instance.snackbar.MessageQueue.Enqueue($"ACC Manager cannot parse \"{fi.Name}\", please install manually.");
                                 Debug.WriteLine("No valid cars json found");
                             }
 
@@ -400,7 +418,7 @@ namespace ACCSetupApp.Controls
                             using (FileStream outputStream = new FileStream(filename, FileMode.Create))
                             {
                                 zipArchive.SaveTo(outputStream);
-                                MainWindow.Instance.snackbar.MessageQueue.Enqueue($"Livery Zip saved: {filename}");
+                                MainWindow.Instance.snackbar.MessageQueue.Enqueue($"Livery \"{liveryTreeCar.carsRoot.teamName}\" saved as: {filename}");
                             }
                         }
                     }
