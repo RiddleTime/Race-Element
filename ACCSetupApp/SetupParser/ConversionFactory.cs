@@ -23,6 +23,7 @@ namespace ACCSetupApp.SetupParser
 
                 case "mclaren_720s_gt3": return new Mclaren720sGT3();
 
+                case "mercedes_amg_gt3_evo": return new MercedesAMGGT3evo();
 
                 case "porsche_991_gt3_r": return new Porsche991GT3R();
                 case "porsche_991ii_gt3_r": return new Porsche911IIGT3R();
@@ -51,7 +52,7 @@ namespace ACCSetupApp.SetupParser
 
 
                 case "mclaren_720s_gt3": return "McLaren 720S GT3";
-
+                case "mercedes_amg_gt3_evo": return "Mercedes-AMG GT3 2020";
 
                 case "porsche_991ii_gt3_r": return "Porsche 911 II GT3 R";
                 case "porsche_991_gt3_r": return "Porsche 911 GT3 R";

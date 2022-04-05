@@ -36,7 +36,7 @@
                 <DropShadowEffect Color="Black" Opacity="0.7" BlurRadius="3" ShadowDepth="2"/>
             </materialDesign:TransitioningContent.Effect>
 
-            <TextBlock x:Name="Title" Foreground="White" Style="{StaticResource MaterialDesignHeadline6TextBlock}" VerticalAlignment="Center">
+            <TextBlock x:Name="Title" Foreground="White" FontStyle="Italic" Style="{StaticResource MaterialDesignHeadline6TextBlock}" VerticalAlignment="Center">
             </TextBlock>
         </materialDesign:TransitioningContent>
 

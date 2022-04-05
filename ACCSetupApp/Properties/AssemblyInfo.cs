@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyTitle("ACC Manager")]
 [assembly: AssemblyDescription("Universal Tools for Assetto Corsa Competizione")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Element Future")]
 [assembly: AssemblyProduct("ACC Manager")]
 [assembly: AssemblyCopyright("Copyright © Defragler  2022")]
 [assembly: AssemblyTrademark("")]
@@ -51,5 +51,5 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.0.2.2")]
-[assembly: AssemblyFileVersion("0.0.2.2")]
+[assembly: AssemblyVersion("0.0.2.3")]
+[assembly: AssemblyFileVersion("0.0.2.3")]

@@ -16,40 +16,65 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <StackPanel Orientation="Vertical">
 
-            <materialDesign:Card Width="1100">
-                <materialDesign:TransitioningContent>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="120"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+
+        <materialDesign:Card Width="1100" Grid.Row="0">
+            <materialDesign:TransitioningContent>
+                <materialDesign:TransitioningContent.Effect>
+                    <DropShadowEffect Color="Black" Opacity="0.7" BlurRadius="3" ShadowDepth="2"/>
+                </materialDesign:TransitioningContent.Effect>
+
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Style="{StaticResource MaterialDesignHeadline3TextBlock}" HorizontalAlignment="Center">
+                    ACC Manager
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" HorizontalAlignment="Center">
+                    Provides tooling for Assetto Corsa Competizione.<LineBreak/>
+                    Developed by Defragler (Reinier Klarenberg)
+                    </TextBlock>
+                </StackPanel>
+            </materialDesign:TransitioningContent>
+        </materialDesign:Card>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="55"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <materialDesign:Card Grid.Row="0" Width="800" Margin="-18,5,0,5">
+                <materialDesign:TransitioningContent  VerticalAlignment="Center">
                     <materialDesign:TransitioningContent.Effect>
-                        <DropShadowEffect Color="Black" Opacity="0.7" BlurRadius="3" ShadowDepth="2"/>
+                        <DropShadowEffect Color="Black" Opacity="0.7" BlurRadius="2" ShadowDepth="2"/>
                     </materialDesign:TransitioningContent.Effect>
 
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Style="{StaticResource MaterialDesignHeadline3TextBlock}" HorizontalAlignment="Center">
-                    ACC Manager
-                        </TextBlock>
-                        <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" HorizontalAlignment="Center">
-                            Provides tooling for Assetto Corsa Competizione.<LineBreak/>
-                            
-                    Developed by Defragler (Reinier Klarenberg)
-                        </TextBlock>
-                    </StackPanel>
-                </materialDesign:TransitioningContent>
-            </materialDesign:Card>
-
-            <ScrollViewer Style="{StaticResource MaterialDesignScrollViewer}">
-                <materialDesign:Card Width="800" Margin="0,3,0,0">
-                    <StackPanel Orientation="Vertical" Margin="5,0,0,0" >
-                        <materialDesign:TransitioningContent>
-                            <materialDesign:TransitioningContent.Effect>
-                                <DropShadowEffect Color="Black" Opacity="0.7" BlurRadius="2" ShadowDepth="2"/>
-                            </materialDesign:TransitioningContent.Effect>
-                            <TextBlock 
+                    <TextBlock 
                            Style="{StaticResource MaterialDesignHeadline5TextBlock}"
                            HorizontalAlignment="Center">Changelog
-                            </TextBlock>
-                        </materialDesign:TransitioningContent>
+                    </TextBlock>
 
+                </materialDesign:TransitioningContent>
+            </materialDesign:Card>
+            <ScrollViewer Style="{StaticResource MaterialDesignScrollViewer}" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                <materialDesign:Card Width="800" Margin="0,3,0,0">
+                    <StackPanel Orientation="Vertical" Margin="5,0,0,0" >
+
+
+                        <StackPanel Margin="0,10,0,0">
+                            <TextBlock 
+                           Style="{StaticResource MaterialDesignBody1TextBlock}"
+                           HorizontalAlignment="Left" TextWrapping="Wrap" >
+                            0.0.2.3
+                            </TextBlock>
+                            <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
+                            - Add setup conversion for: Mercedes-AMG GT3 2020.
+                            - Fuel calculator: fixed fuel value parsing when windows language is set differently.
+                            </TextBlock>
+                        </StackPanel>
 
                         <StackPanel Margin="0,10,0,0">
                             <TextBlock 
@@ -60,7 +85,7 @@
                             <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
                             - Livery exporter: exported zips are now according to acc folder structure.<LineBreak/>
                             - Livery exporter: export team with all the skins inside in a single zip.<LineBreak/>
-                            - Livery importer: Now supports archives with multiple liveries.
+                            - Livery importer: added support for archives with multiple liveries.
                             </TextBlock>
                         </StackPanel>
 
@@ -161,7 +186,8 @@
                     </StackPanel>
                 </materialDesign:Card>
             </ScrollViewer>
+        </Grid>
 
-        </StackPanel>
+
     </Grid>
 </UserControl>

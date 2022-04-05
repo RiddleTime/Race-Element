@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -95,7 +96,9 @@ namespace ACCSetupApp.Controls
             {
                 try
                 {
-                    fuelPerLap = Convert.ToDouble(text);
+                    var separator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+                    fuelPerLap = double.Parse(text.Replace(".", separator));
+
                     CalculateFuel();
                 }
                 catch (Exception)
