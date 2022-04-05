@@ -17,6 +17,7 @@ namespace ACCSetupApp.SetupParser
                 case "audi_r8_lms": return new AudiR8LMS();
                 case "audi_r8_lms_evo_ii": return new AudiR8LMSevoII();
 
+                case "bmw_m4_gt3": return new BmwM4GT3();
 
                 case "honda_nsx_gt3": return new HondaNsxGT3();
                 case "honda_nsx_gt3_evo": return new HondaNsxGT3Evo();
@@ -46,6 +47,8 @@ namespace ACCSetupApp.SetupParser
                 case "audi_r8_lms": return "Audi R8 LMS";
                 case "audi_r8_lms_evo_ii": return "Audi R8 LMS evo II";
 
+
+                case "bmw_m4_gt3": return "BMW M4 GT3";
 
                 case "honda_nsx_gt3": return "Honda NSX GT3";
                 case "honda_nsx_gt3_evo": return "Honda NSX GT3 Evo";

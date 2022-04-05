@@ -258,6 +258,7 @@
     <Compile Include="LiveryParser\PaintDetailsJson.cs" />
     <Compile Include="SetupParser\Cars\GT3\AudiR8LMS.cs" />
     <Compile Include="SetupParser\Cars\GT3\AudiR8LMSevoII.cs" />
+    <Compile Include="SetupParser\Cars\GT3\BmwM4GT3.cs" />
     <Compile Include="SetupParser\Cars\GT3\HondaNsxGT3.cs" />
     <Compile Include="SetupParser\Cars\GT3\Mclaren720sGT3.cs" />
     <Compile Include="SetupParser\Cars\GT3\MercedesAMGGT3evo.cs" />

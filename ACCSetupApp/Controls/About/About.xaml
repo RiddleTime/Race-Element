@@ -30,7 +30,7 @@
                 </materialDesign:TransitioningContent.Effect>
 
                 <StackPanel Orientation="Vertical">
-                    <TextBlock Style="{StaticResource MaterialDesignHeadline3TextBlock}" HorizontalAlignment="Center">
+                    <TextBlock Style="{StaticResource MaterialDesignHeadline3TextBlock}" FontStyle="Italic" HorizontalAlignment="Center">
                     ACC Manager
                     </TextBlock>
                     <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" HorizontalAlignment="Center">
@@ -71,7 +71,7 @@
                             0.0.2.3
                             </TextBlock>
                             <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
-                            - Add setup conversion for: Mercedes-AMG GT3 2020.
+                            - Add setup conversion for: Mercedes-AMG GT3 2020, BMW M4 GT3.<LineBreak/>
                             - Fuel calculator: fixed fuel value parsing when windows language is set differently.
                             </TextBlock>
                         </StackPanel>
