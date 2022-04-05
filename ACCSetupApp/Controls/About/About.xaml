@@ -58,8 +58,9 @@
                             0.0.2.2
                             </TextBlock>
                             <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
-                            - Livery exporter: exports with folder structure now.<LineBreak/>
-                            - Livery exporter: export team with all the skins inside in 1 zip.
+                            - Livery exporter: exported zips are now according to acc folder structure.<LineBreak/>
+                            - Livery exporter: export team with all the skins inside in a single zip.<LineBreak/>
+                            - Livery importer: Now supports archives with multiple liveries.
                             </TextBlock>
                         </StackPanel>
 
