@@ -189,7 +189,7 @@ namespace ACCSetupApp.Controls
                             Width = liveriesTreeView.Width - 5
                         };
                         TreeViewItem skinItem = new TreeViewItem() { Header = skinHeader, DataContext = car };
-                        skinItem.ContextMenu = GetTeamContextMenu(car);
+                        skinItem.ContextMenu = GetSkinContextMenu(car);
 
                         teamItem.Items.Add(skinItem);
                     }
@@ -208,7 +208,7 @@ namespace ACCSetupApp.Controls
             }));
         }
 
-        private ContextMenu GetTeamContextMenu(LiveryTreeCar directory)
+        private ContextMenu GetSkinContextMenu(LiveryTreeCar directory)
         {
             ContextMenu menu = new ContextMenu()
             {
