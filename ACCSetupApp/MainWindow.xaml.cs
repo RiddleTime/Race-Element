@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace ACCSetupApp
 {
@@ -45,6 +46,15 @@ namespace ACCSetupApp
             {
                 this.Activate();
             }
+        }
+
+        public void EnqueueSnackbarMessage(string message)
+        {
+            Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
+                   delegate ()
+                   {
+                       Instance.snackbar.MessageQueue.Enqueue(message);
+                   }));
         }
 
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

@@ -50,6 +50,18 @@
                             </TextBlock>
                         </materialDesign:TransitioningContent>
 
+
+                        <StackPanel Margin="0,10,0,0">
+                            <TextBlock 
+                           Style="{StaticResource MaterialDesignBody1TextBlock}"
+                           HorizontalAlignment="Left" TextWrapping="Wrap" >
+                            0.0.2.1
+                            </TextBlock>
+                            <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
+                            - Livery Browser: Skins are grouped by team name.
+                            </TextBlock>
+                        </StackPanel>
+
                         <StackPanel Margin="0,10,0,0">
                             <TextBlock 
                            Style="{StaticResource MaterialDesignBody1TextBlock}"

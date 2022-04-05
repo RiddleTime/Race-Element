@@ -35,13 +35,16 @@ namespace ACCSetupApp.Controls
         private string CarsPath => CustomsPath + "Cars\\";
         private string LiveriesPath => CustomsPath + "Liveries\\";
 
+        private LiveryBrowser Instance;
+
         Regex carsJsonRegex = new Regex("^[0-9]*-[0-9]*-[0-9]*.json");
 
         public LiveryBrowser()
         {
             InitializeComponent();
 
-            FetchAllCars();
+            Instance = this;
+            ThreadPool.QueueUserWorkItem(x => FetchAllCars());
 
             liveriesTreeView.SelectedItemChanged += LiveriesTreeView_SelectedItemChanged;
 
@@ -50,13 +53,14 @@ namespace ACCSetupApp.Controls
 
         private void ButtonImportLiveries_Click(object sender, RoutedEventArgs e)
         {
-            ImportLiveryZips();
+            ThreadPool.QueueUserWorkItem(x => ImportLiveryZips());
         }
 
         private void LiveriesTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             decalsImage.Source = null;
             sponsorsImage.Source = null;
+            stackPanelLiveryInfo.Children.Clear();
 
             ThreadPool.QueueUserWorkItem(x => { GC.Collect(); });
 
@@ -75,7 +79,6 @@ namespace ACCSetupApp.Controls
 
                             if (carsRoot != null)
                             {
-                                stackPanelLiveryInfo.Children.Clear();
                                 stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Team: {carsRoot.teamName}", HorizontalAlignment.Left, 18));
                                 if (customSkinName != String.Empty)
                                     stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Skin: {customSkinName}", HorizontalAlignment.Left, 15));
@@ -131,45 +134,78 @@ namespace ACCSetupApp.Controls
 
         private void FetchAllCars()
         {
-            liveriesTreeView.Items.Clear();
-
-            DirectoryInfo customsCarsDirectory = new DirectoryInfo(CarsPath);
-
-            List<TreeViewItem> carsTreeViews = new List<TreeViewItem>();
-
-            foreach (var carsFile in customsCarsDirectory.GetFiles())
+            Instance.Dispatcher.BeginInvoke(new Action(() =>
             {
-                if (carsFile.Extension.Equals(".json"))
-                {
-                    CarsJson.Root carsRoot = GetLivery(carsFile);
+                liveriesTreeView.Items.Clear();
 
-                    if (carsRoot != null)
+                DirectoryInfo customsCarsDirectory = new DirectoryInfo(CarsPath);
+
+                List<TreeViewItem> carsTreeViews = new List<TreeViewItem>();
+
+                List<LiveryTreeCar> liveryTreeCars = new List<LiveryTreeCar>();
+
+                foreach (var carsFile in customsCarsDirectory.GetFiles())
+                {
+                    if (carsFile.Extension.Equals(".json"))
                     {
-                        TextBlock liveryHeader = new TextBlock()
+                        CarsJson.Root carsRoot = GetLivery(carsFile);
+
+                        if (carsRoot != null)
                         {
-                            Text = $"{carsRoot.teamName}",
-                            Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
+                            LiveryTreeCar treeCar = new LiveryTreeCar() { carsFile = carsFile, carsRoot = carsRoot };
+
+                            if (!treeCar.carsRoot.customSkinName.Equals(String.Empty))
+                                liveryTreeCars.Add(treeCar);
+
+                            //TreeViewItem teamItem = new TreeViewItem() { Header = liveryHeader, DataContext = treeCar };
+                            //teamItem.ContextMenu = GetTeamContextMenu(treeCar);
+
+                            //carsTreeViews.Add(teamItem);
+                        }
+                    }
+                }
+
+                var t = liveryTreeCars.GroupBy(g => g.carsRoot.teamName);
+
+
+                foreach (IGrouping<string, LiveryTreeCar> tItem in t)
+                {
+                    TextBlock teamHeader = new TextBlock()
+                    {
+                        Text = $"{tItem.Key}",
+                        Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
+                        TextTrimming = TextTrimming.WordEllipsis,
+                        Width = liveriesTreeView.Width - 5
+                    };
+                    TreeViewItem teamItem = new TreeViewItem() { Header = teamHeader };
+
+                    foreach (LiveryTreeCar car in tItem)
+                    {
+                        TextBlock skinHeader = new TextBlock()
+                        {
+                            Text = $"{car.carsRoot.customSkinName}",
+                            Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style,
                             TextTrimming = TextTrimming.WordEllipsis,
                             Width = liveriesTreeView.Width - 5
                         };
+                        TreeViewItem skinItem = new TreeViewItem() { Header = skinHeader, DataContext = car };
+                        skinItem.ContextMenu = GetTeamContextMenu(car);
 
-                        LiveryTreeCar treeCar = new LiveryTreeCar() { carsFile = carsFile, carsRoot = carsRoot };
-                        TreeViewItem teamItem = new TreeViewItem() { Header = liveryHeader, DataContext = treeCar };
-                        teamItem.ContextMenu = GetTeamContextMenu(treeCar);
-
-                        carsTreeViews.Add(teamItem);
+                        teamItem.Items.Add(skinItem);
                     }
+
+                    carsTreeViews.Add(teamItem);
                 }
-            }
 
-            carsTreeViews.Sort((a, b) =>
-            {
-                LiveryTreeCar aCar = a.DataContext as LiveryTreeCar;
-                LiveryTreeCar bCar = b.DataContext as LiveryTreeCar;
-                return $"{aCar.carsRoot.teamName}{aCar.carsRoot.customSkinName}".CompareTo($"{bCar.carsRoot.teamName}{bCar.carsRoot.customSkinName}");
-            });
+                carsTreeViews.Sort((a, b) =>
+                {
+                    TextBlock aCar = a.Header as TextBlock;
+                    TextBlock bCar = b.Header as TextBlock;
+                    return $"{aCar.Text}".CompareTo($"{bCar.Text}");
+                });
 
-            carsTreeViews.ForEach(x => liveriesTreeView.Items.Add(x));
+                carsTreeViews.ForEach(x => liveriesTreeView.Items.Add(x));
+            }));
         }
 
         private ContextMenu GetTeamContextMenu(LiveryTreeCar directory)
@@ -304,9 +340,9 @@ namespace ACCSetupApp.Controls
                             });
 
 
-                            if (root != null)
+                            if (root != null && !root.customSkinName.Equals(String.Empty))
                             {
-                                MainWindow.Instance.snackbar.MessageQueue.Enqueue($"Installing livery... {root.teamName}");
+                                MainWindow.Instance.EnqueueSnackbarMessage($"Installing {root.teamName} / {root.customSkinName}");
 
                                 string liveryFolder = $"{LiveriesPath}{root.customSkinName}\\";
                                 Directory.CreateDirectory(liveryFolder);
@@ -332,12 +368,12 @@ namespace ACCSetupApp.Controls
                                     e.WriteToFile(decalsPngFile);
                                 });
 
-                                MainWindow.Instance.snackbar.MessageQueue.Enqueue($"Installed custom livery: {root.teamName}");
-                                Debug.WriteLine($"Installed custom livery: {root.teamName}");
+                                MainWindow.Instance.EnqueueSnackbarMessage($"Installed livery: {root.teamName} / {root.customSkinName}");
+                                Debug.WriteLine($"Installed custom livery: {root.teamName} - {root.customSkinName}");
                             }
                             else
                             {
-                                MainWindow.Instance.snackbar.MessageQueue.Enqueue($"ACC Manager cannot parse \"{fi.Name}\", please install manually.");
+                                MainWindow.Instance.EnqueueSnackbarMessage($"ACC Manager cannot parse \"{fi.Name}\", please install manually.");
                                 Debug.WriteLine("No valid cars json found");
                             }
 
