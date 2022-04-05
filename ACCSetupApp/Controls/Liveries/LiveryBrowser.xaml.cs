@@ -156,19 +156,13 @@ namespace ACCSetupApp.Controls
 
                             if (!treeCar.carsRoot.customSkinName.Equals(String.Empty))
                                 liveryTreeCars.Add(treeCar);
-
-                            //TreeViewItem teamItem = new TreeViewItem() { Header = liveryHeader, DataContext = treeCar };
-                            //teamItem.ContextMenu = GetTeamContextMenu(treeCar);
-
-                            //carsTreeViews.Add(teamItem);
                         }
                     }
                 }
 
-                var t = liveryTreeCars.GroupBy(g => g.carsRoot.teamName);
+                var groupedLiveryCars = liveryTreeCars.GroupBy(g => g.carsRoot.teamName);
 
-
-                foreach (IGrouping<string, LiveryTreeCar> tItem in t)
+                foreach (IGrouping<string, LiveryTreeCar> tItem in groupedLiveryCars)
                 {
                     TextBlock teamHeader = new TextBlock()
                     {
@@ -194,6 +188,7 @@ namespace ACCSetupApp.Controls
                         teamItem.Items.Add(skinItem);
                     }
 
+                    teamItem.ContextMenu = GetTeamContextMenu(teamItem);
                     carsTreeViews.Add(teamItem);
                 }
 
@@ -222,7 +217,7 @@ namespace ACCSetupApp.Controls
 
             Button createZipButton = new Button()
             {
-                Content = "Save Livery.zip As",
+                Content = $"Save as zip archive",
                 CommandParameter = directory,
                 Style = Resources["MaterialDesignRaisedButton"] as Style,
                 Margin = new Thickness(0),
@@ -230,6 +225,34 @@ namespace ACCSetupApp.Controls
                 VerticalAlignment = VerticalAlignment.Center,
             };
             createZipButton.Click += CreateZipButton_Click;
+
+            menu.Items.Add(createZipButton);
+
+            return menu;
+        }
+
+        private ContextMenu GetTeamContextMenu(TreeViewItem teamItem)
+        {
+            ContextMenu menu = new ContextMenu()
+            {
+                Style = Resources["MaterialDesignContextMenu"] as Style,
+                Margin = new Thickness(0),
+                Padding = new Thickness(0),
+                UsesItemContainerTemplate = true,
+                Background = new SolidColorBrush(Color.FromArgb(220, 0, 0, 0))
+            };
+
+            Button createZipButton = new Button()
+            {
+                Content = $"Save team as zip archive",
+                CommandParameter = teamItem,
+                Style = Resources["MaterialDesignRaisedButton"] as Style,
+                Margin = new Thickness(0),
+                Height = 30,
+                ToolTip = "Saves all the skins for this team",
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            createZipButton.Click += CreateTeamZipButton_Click;
 
             menu.Items.Add(createZipButton);
 
@@ -416,6 +439,7 @@ namespace ACCSetupApp.Controls
                 dlg.DefaultExt = ".zip";
                 dlg.AddExtension = true;
                 dlg.CheckPathExists = true;
+                dlg.FileName = $"{liveryTreeCar.carsRoot.customSkinName}";
                 dlg.DefaultExt = ".zip";
                 dlg.Filter = "Livery zip|*.zip";
                 Nullable<bool> result = dlg.ShowDialog();
@@ -432,24 +456,27 @@ namespace ACCSetupApp.Controls
 
                     using (ZipArchive zipArchive = ZipArchive.Create())
                     {
-                        zipArchive.AddEntry(liveryTreeCar.carsFile.Name, liveryTreeCar.carsFile);
+                        string liveriesFolder = $"Liveries\\{liveryTreeCar.carsRoot.customSkinName}\\";
+                        string carsFolder = "Cars\\";
+                        zipArchive.AddEntry($"{carsFolder}{liveryTreeCar.carsFile.Name}", liveryTreeCar.carsFile);
 
                         DirectoryInfo customSkinDir = new DirectoryInfo(LiveriesPath + liveryTreeCar.carsRoot.customSkinName);
                         if (customSkinDir.Exists)
                         {
+
                             FileInfo decalsPng = new FileInfo(customSkinDir.FullName + "\\" + "decals.png");
                             FileInfo decalsJson = new FileInfo(customSkinDir.FullName + "\\" + "decals.json");
                             FileInfo sponsorsPng = new FileInfo(customSkinDir.FullName + "\\" + "sponsors.png");
                             FileInfo sponsorsJson = new FileInfo(customSkinDir.FullName + "\\" + "sponsors.json"); ;
 
                             if (decalsPng.Exists)
-                                zipArchive.AddEntry(decalsPng.Name, decalsPng);
+                                zipArchive.AddEntry($"{liveriesFolder}{decalsPng.Name}", decalsPng);
                             if (decalsJson.Exists)
-                                zipArchive.AddEntry(decalsJson.Name, decalsJson);
+                                zipArchive.AddEntry($"{liveriesFolder}{decalsJson.Name}", decalsJson);
                             if (sponsorsPng.Exists)
-                                zipArchive.AddEntry(sponsorsPng.Name, sponsorsPng);
+                                zipArchive.AddEntry($"{liveriesFolder}{sponsorsPng.Name}", sponsorsPng);
                             if (sponsorsJson.Exists)
-                                zipArchive.AddEntry(sponsorsJson.Name, sponsorsJson);
+                                zipArchive.AddEntry($"{liveriesFolder}{sponsorsJson.Name}", sponsorsJson);
 
                             using (FileStream outputStream = new FileStream(filename, FileMode.Create))
                             {
@@ -464,6 +491,89 @@ namespace ACCSetupApp.Controls
                 (button.Parent as ContextMenu).IsOpen = false;
             }
         }
+
+        private void CreateTeamZipButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender.GetType() == typeof(Button))
+            {
+                Button button = (Button)sender;
+
+                TreeViewItem treeItem = (TreeViewItem)button.CommandParameter;
+                List<LiveryTreeCar> treeCars = new List<LiveryTreeCar>();
+                treeItem.Items.OfType<TreeViewItem>().ToList().ForEach(x =>
+                {
+                    treeCars.Add((LiveryTreeCar)x.DataContext);
+                });
+
+                //if (liveryTreeCar.carsRoot.customSkinName == null || liveryTreeCar.carsRoot.customSkinName.Length == 0)
+                //{
+                //    goto closeMenu;
+                //}
+
+                Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+
+                // Set filter for file extension and default file extension 
+                dlg.DefaultExt = ".zip";
+                dlg.AddExtension = true;
+                dlg.CheckPathExists = true;
+                dlg.FileName = $"{((TextBlock)treeItem.Header).Text}";
+                dlg.DefaultExt = ".zip";
+                dlg.Filter = "Livery zip|*.zip";
+                Nullable<bool> result = dlg.ShowDialog();
+
+
+                // Get the selected file name and display in a TextBox 
+                if (result == true)
+                {
+                    // Open document 
+                    string filename = dlg.FileName;
+
+                    if (filename == null)
+                        goto closeMenu;
+
+                    using (ZipArchive zipArchive = ZipArchive.Create())
+                    {
+                        foreach (LiveryTreeCar liveryTreeCar in treeCars)
+                        {
+                            string liveriesFolder = $"Liveries\\{liveryTreeCar.carsRoot.customSkinName}\\";
+                            string carsFolder = "Cars\\";
+                            zipArchive.AddEntry($"{carsFolder}{liveryTreeCar.carsFile.Name}", liveryTreeCar.carsFile);
+
+                            DirectoryInfo customSkinDir = new DirectoryInfo(LiveriesPath + liveryTreeCar.carsRoot.customSkinName);
+                            if (customSkinDir.Exists)
+                            {
+
+                                FileInfo decalsPng = new FileInfo(customSkinDir.FullName + "\\" + "decals.png");
+                                FileInfo decalsJson = new FileInfo(customSkinDir.FullName + "\\" + "decals.json");
+                                FileInfo sponsorsPng = new FileInfo(customSkinDir.FullName + "\\" + "sponsors.png");
+                                FileInfo sponsorsJson = new FileInfo(customSkinDir.FullName + "\\" + "sponsors.json"); ;
+
+                                if (decalsPng.Exists)
+                                    zipArchive.AddEntry($"{liveriesFolder}{decalsPng.Name}", decalsPng);
+                                if (decalsJson.Exists)
+                                    zipArchive.AddEntry($"{liveriesFolder}{decalsJson.Name}", decalsJson);
+                                if (sponsorsPng.Exists)
+                                    zipArchive.AddEntry($"{liveriesFolder}{sponsorsPng.Name}", sponsorsPng);
+                                if (sponsorsJson.Exists)
+                                    zipArchive.AddEntry($"{liveriesFolder}{sponsorsJson.Name}", sponsorsJson);
+
+                            }
+
+                        }
+
+                        using (FileStream outputStream = new FileStream(filename, FileMode.Create))
+                        {
+                            zipArchive.SaveTo(outputStream);
+                            MainWindow.Instance.snackbar.MessageQueue.Enqueue($"Team {((TextBlock)treeItem.Header).Text} saved as: {filename}");
+                        }
+                    }
+                }
+
+            closeMenu:
+                (button.Parent as ContextMenu).IsOpen = false;
+            }
+        }
+
 
         public CarsJson.Root GetLivery(FileInfo file)
         {
