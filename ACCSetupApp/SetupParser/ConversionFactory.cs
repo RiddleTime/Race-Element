@@ -19,6 +19,8 @@ namespace ACCSetupApp.SetupParser
 
                 case "bmw_m4_gt3": return new BmwM4GT3();
 
+                case "ferrari_488_gt3_evo": return new Ferrari488GT3evo();
+
                 case "honda_nsx_gt3": return new HondaNsxGT3();
                 case "honda_nsx_gt3_evo": return new HondaNsxGT3Evo();
 
@@ -49,6 +51,8 @@ namespace ACCSetupApp.SetupParser
 
 
                 case "bmw_m4_gt3": return "BMW M4 GT3";
+
+                case "ferrari_488_gt3_evo": return "Ferrari 488 GT3 Evo";
 
                 case "honda_nsx_gt3": return "Honda NSX GT3";
                 case "honda_nsx_gt3_evo": return "Honda NSX GT3 Evo";
