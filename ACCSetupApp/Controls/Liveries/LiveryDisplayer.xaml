@@ -33,7 +33,7 @@
                     <RowDefinition Height="38"/>
                 </Grid.RowDefinitions>
 
-                <Button x:Name="buttonGenerateDDS" Grid.Row="2">Generate DDS Files</Button>
+
 
                 <materialDesign:Card x:Name="skinMainInfo" Margin="3,3,3,3" Grid.Row="0" Visibility="Hidden">
 
@@ -44,6 +44,8 @@
                 <StackPanel x:Name="stackPanelLiveryInfo" Grid.Row="1" Orientation="Vertical">
 
                 </StackPanel>
+
+                <Button x:Name="buttonGenerateDDS" Grid.Row="2" Visibility="Hidden" Margin="3,0,3,0" ToolTip="Generate the _0 and _1 dds files so the game doesn't have to do it for you.">Generate DDS Files</Button>
             </Grid>
         </materialDesign:Card>
         <materialDesign:Card Grid.Row="1" Margin="3,3,3,3">
