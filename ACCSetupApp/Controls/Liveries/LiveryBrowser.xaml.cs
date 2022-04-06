@@ -58,12 +58,6 @@ namespace ACCSetupApp.Controls
 
         private void LiveriesTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            decalsImage.Source = null;
-            sponsorsImage.Source = null;
-            stackPanelLiveryInfo.Children.Clear();
-
-            ThreadPool.QueueUserWorkItem(x => { GC.Collect(); });
-
             if (e.NewValue != null)
             {
                 if (e.NewValue.GetType() == typeof(TreeViewItem))
@@ -74,40 +68,9 @@ namespace ACCSetupApp.Controls
                         if (item.DataContext.GetType() == typeof(LiveryTreeCar))
                         {
                             LiveryTreeCar treeCar = (LiveryTreeCar)item.DataContext;
-                            CarsJson.Root carsRoot = treeCar.carsRoot;
-                            string customSkinName = carsRoot.customSkinName;
+                            
 
-                            if (carsRoot != null)
-                            {
-                                stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Team: {carsRoot.teamName}", HorizontalAlignment.Left, 18));
-                                if (customSkinName != String.Empty)
-                                    stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Skin: {customSkinName}", HorizontalAlignment.Left, 15));
-                                stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Display Name: {carsRoot.displayName}"));
-                                stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Race Number: {carsRoot.raceNumber}"));
-                            }
-
-                            if (customSkinName != null && customSkinName.Length > 0)
-                            {
-                                DirectoryInfo customSkinDir = new DirectoryInfo(LiveriesPath + customSkinName);
-                                if (customSkinDir.Exists)
-                                {
-                                    FileInfo[] sponporsFiles = customSkinDir.GetFiles("sponsors.png");
-                                    if (sponporsFiles != null && sponporsFiles.Length > 0)
-                                    {
-                                        FileInfo sponsorsFile = sponporsFiles[0];
-
-                                        sponsorsImage.Source = new BitmapImage(new Uri(sponsorsFile.FullName, UriKind.Absolute), new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable));
-                                    }
-
-                                    FileInfo[] decalFiles = customSkinDir.GetFiles("decals.png");
-                                    if (decalFiles != null && decalFiles.Length > 0)
-                                    {
-                                        FileInfo decalsFile = decalFiles[0];
-
-                                        decalsImage.Source = new BitmapImage(new Uri(decalsFile.FullName, UriKind.Absolute), new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable));
-                                    }
-                                }
-                            }
+                            LiveryDisplayer.Instance.SetLivery(treeCar);
                         }
                     }
                 }
@@ -126,7 +89,7 @@ namespace ACCSetupApp.Controls
             return label;
         }
 
-        private class LiveryTreeCar
+        internal class LiveryTreeCar
         {
             public FileInfo carsFile { get; set; }
             public CarsJson.Root carsRoot { get; set; }

@@ -1,0 +1,68 @@
+﻿<UserControl x:Class="ACCSetupApp.Controls.LiveryDisplayer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ACCSetupApp.Controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="Cyan" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Label.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Card.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <materialDesign:Card Grid.Row="0" Margin="3,3,3,3">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="45"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <materialDesign:Card x:Name="buttonsPanel" Margin="3,3,3,3" Grid.Row="0" Width="280"  Visibility="Hidden">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button x:Name="buttonOpenLiveryDirectory" Margin="3">Open directory</Button>
+                        <Button x:Name="buttonOpenLiveryCarsJson"  Margin="3">Open Cars Json</Button>
+                    </StackPanel>
+                </materialDesign:Card>
+
+                <StackPanel x:Name="stackPanelLiveryInfo" Grid.Row="1" Orientation="Vertical">
+
+                </StackPanel>
+            </Grid>
+        </materialDesign:Card>
+        <materialDesign:Card Grid.Row="1" Margin="3,3,3,3">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <StackPanel Orientation="Vertical">
+                    <Label x:Name="sponsorsLabel" Style="{StaticResource MaterialDesignLabel}" HorizontalAlignment="Center"></Label>
+                    <Image x:Name="sponsorsImage"
+                        Width="370"
+                        Height="370"
+                        Stretch="UniformToFill" 
+                               RenderOptions.BitmapScalingMode="LowQuality"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="3">
+                    <Label x:Name="decalsLabel" Style="{StaticResource MaterialDesignLabel}" HorizontalAlignment="Center"></Label>
+                    <Image x:Name="decalsImage"
+                        Width="370"
+                        Height="370"
+                        Stretch="UniformToFill" 
+                               RenderOptions.BitmapScalingMode="LowQuality"/>
+                </StackPanel>
+            </StackPanel>
+        </materialDesign:Card>
+    </Grid>
+</UserControl>

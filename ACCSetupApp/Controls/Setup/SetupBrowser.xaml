@@ -15,6 +15,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TreeView.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Card.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         </ResourceDictionary>
@@ -55,12 +56,14 @@
             </TreeViewItem>
         </TreeView>
 
-        <FlowDocumentScrollViewer Grid.Column="1" Focusable="False" Cursor="Arrow">
-            <FlowDocument  x:Name="flowDocument" Focusable="False" Cursor="Arrow" 
+        <materialDesign:Card Grid.Column="1" Margin="3,3,3,3">
+            <FlowDocumentScrollViewer Focusable="False" Cursor="Arrow">
+                <FlowDocument  x:Name="flowDocument" Focusable="False" Cursor="Arrow" 
                            Background="{DynamicResource MaterialDesignPaper}"
                            FontFamily="{StaticResource RobotoMedium}" 
                            RenderOptions.ClearTypeHint="Enabled" AllowDrop="False">
-            </FlowDocument>
-        </FlowDocumentScrollViewer>
+                </FlowDocument>
+            </FlowDocumentScrollViewer>
+        </materialDesign:Card>
     </Grid>
 </UserControl>
