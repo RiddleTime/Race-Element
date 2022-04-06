@@ -28,14 +28,12 @@
         <materialDesign:Card Grid.Row="0" Margin="3,3,3,3">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="45"/>
+                    <RowDefinition Height="75"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <materialDesign:Card x:Name="buttonsPanel" Margin="3,3,3,3" Grid.Row="0" Width="280"  Visibility="Hidden">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button x:Name="buttonOpenLiveryDirectory" Margin="3">Open directory</Button>
-                        <Button x:Name="buttonOpenLiveryCarsJson"  Margin="3">Open Cars Json</Button>
+                <materialDesign:Card x:Name="skinMainInfo" Margin="3,3,3,3" Grid.Row="0" Visibility="Hidden">
+                    <StackPanel x:Name="stackPanelMainInfo" Orientation="Vertical" HorizontalAlignment="Center" Width="auto">
                     </StackPanel>
                 </materialDesign:Card>
 

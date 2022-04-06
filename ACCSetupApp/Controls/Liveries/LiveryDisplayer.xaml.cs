@@ -39,23 +39,9 @@ namespace ACCSetupApp.Controls
         {
             InitializeComponent();
 
-            buttonOpenLiveryCarsJson.Click += ButtonOpenLiveryCarsJson_Click;
-            buttonOpenLiveryDirectory.Click += ButtonOpenLiveryDirectory_Click;
-
             Instance = this;
         }
 
-        private void ButtonOpenLiveryDirectory_Click(object sender, RoutedEventArgs e)
-        {
-            DirectoryInfo directory = new DirectoryInfo($"{LiveriesPath}{Livery.carsRoot.customSkinName}");
-            Process.Start(directory.FullName);
-        }
-
-        private void ButtonOpenLiveryCarsJson_Click(object sender, RoutedEventArgs e)
-        {
-            FileInfo carsJsonFile = new FileInfo($"{Livery.carsFile}");
-            Process.Start($"{CarsPath}{carsJsonFile.Name}");
-        }
 
         internal void SetLivery(LiveryTreeCar livery)
         {
@@ -65,13 +51,15 @@ namespace ACCSetupApp.Controls
                 return;
 
             Livery = livery;
+            Livery.carsRoot = GetLivery(livery.carsFile);
 
             decalsLabel.Content = string.Empty;
             decalsImage.Source = null;
             sponsorsLabel.Content = string.Empty;
             sponsorsImage.Source = null;
             stackPanelLiveryInfo.Children.Clear();
-            buttonsPanel.Visibility = Visibility.Hidden;
+            stackPanelMainInfo.Children.Clear();
+            skinMainInfo.Visibility = Visibility.Hidden;
 
             ThreadPool.QueueUserWorkItem(x => { GC.Collect(); });
 
@@ -81,27 +69,27 @@ namespace ACCSetupApp.Controls
                 Instance.Dispatcher.BeginInvoke(new Action(() =>
                 {
 
-                    CarsJson.Root carsRoot = livery.carsRoot;
+                    CarsJson.Root carsRoot = Livery.carsRoot;
                     string customSkinName = carsRoot.customSkinName;
 
                     if (customSkinName != null && customSkinName.Length > 0)
                     {
-                        buttonsPanel.Visibility = Visibility.Visible;
+                        skinMainInfo.Visibility = Visibility.Visible;
 
-                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"{carsRoot.teamName}", HorizontalAlignment.Center, 25));
-                        if (customSkinName != String.Empty)
-                            stackPanelLiveryInfo.Children.Add(GetInfoLabel($"{carsRoot.customSkinName}", HorizontalAlignment.Center, 18));
+                        stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.teamName}", HorizontalAlignment.Center, 25));
+                        stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.customSkinName}", HorizontalAlignment.Center, 18));
+
                         stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Display Name: {carsRoot.displayName}"));
                         stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Race Number: {carsRoot.raceNumber}"));
                         stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Nationality: {GetNationality(carsRoot.nationality)}"));
 
+                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($""));
+                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Body Base Layer: {GetBodyMaterialType(carsRoot.skinMaterialType1)}"));
+                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Body Accent: {GetBodyMaterialType(carsRoot.skinMaterialType2)}"));
+                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Body Trim: {GetBodyMaterialType(carsRoot.skinMaterialType3)}"));
                         stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Rim Base: {GetRimMaterialType(carsRoot.rimMaterialType1)}"));
                         stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Rim Accent: {GetRimMaterialType(carsRoot.rimMaterialType2)}"));
 
-                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Body Base Layer: {GetBodyMaterialType(carsRoot.skinMaterialType1)}"));
-
-                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Body Accent: {GetBodyMaterialType(carsRoot.skinMaterialType2)}"));
-                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Body Trim: {GetBodyMaterialType(carsRoot.skinMaterialType3)}"));
 
                         DirectoryInfo customSkinDir = new DirectoryInfo(LiveriesPath + customSkinName);
                         if (customSkinDir.Exists)

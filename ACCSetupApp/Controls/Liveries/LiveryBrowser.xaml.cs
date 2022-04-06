@@ -68,7 +68,7 @@ namespace ACCSetupApp.Controls
                         if (item.DataContext.GetType() == typeof(LiveryTreeCar))
                         {
                             LiveryTreeCar treeCar = (LiveryTreeCar)item.DataContext;
-                            
+
 
                             LiveryDisplayer.Instance.SetLivery(treeCar);
                         }
@@ -188,10 +188,77 @@ namespace ACCSetupApp.Controls
                 VerticalAlignment = VerticalAlignment.Center,
             };
             createZipButton.Click += CreateZipButton_Click;
-
             menu.Items.Add(createZipButton);
 
+            Button openLiveryDirectory = new Button()
+            {
+                Content = $"Open Livery Directory",
+                CommandParameter = directory,
+                Style = Resources["MaterialDesignRaisedButton"] as Style,
+                Margin = new Thickness(0),
+                Height = 30,
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            openLiveryDirectory.Click += OpenLiveryDirectory_Click;
+            menu.Items.Add(openLiveryDirectory);
+
+            Button openLiveryJson = new Button()
+            {
+                Content = $"Open Livery Json",
+                CommandParameter = directory,
+                Style = Resources["MaterialDesignRaisedButton"] as Style,
+                Margin = new Thickness(0),
+                Height = 30,
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            openLiveryJson.Click += OpenLiveryJson_Click;
+            menu.Items.Add(openLiveryJson);
+
             return menu;
+        }
+
+        private void OpenLiveryJson_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender.GetType() == typeof(Button))
+            {
+                Button button = (Button)sender;
+
+                LiveryTreeCar liveryTreeCar = (LiveryTreeCar)button.CommandParameter;
+
+                if (liveryTreeCar.carsRoot.customSkinName == null || liveryTreeCar.carsRoot.customSkinName.Length == 0)
+                {
+                    goto closeMenu;
+                }
+
+                FileInfo carsJsonFile = new FileInfo($"{liveryTreeCar.carsFile}");
+                Process.Start($"{CarsPath}{carsJsonFile.Name}");
+
+            closeMenu:
+                (button.Parent as ContextMenu).IsOpen = false;
+            }
+        }
+
+        private void OpenLiveryDirectory_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender.GetType() == typeof(Button))
+            {
+                Button button = (Button)sender;
+
+                LiveryTreeCar liveryTreeCar = (LiveryTreeCar)button.CommandParameter;
+
+                if (liveryTreeCar.carsRoot.customSkinName == null || liveryTreeCar.carsRoot.customSkinName.Length == 0)
+                {
+                    goto closeMenu;
+                }
+
+                DirectoryInfo directory = new DirectoryInfo($"{LiveriesPath}{liveryTreeCar.carsRoot.customSkinName}");
+                Process.Start(directory.FullName);
+
+            closeMenu:
+                (button.Parent as ContextMenu).IsOpen = false;
+            }
+
+
         }
 
         private ContextMenu GetTeamContextMenu(TreeViewItem teamItem)
@@ -492,7 +559,7 @@ namespace ACCSetupApp.Controls
         }
 
 
-        public CarsJson.Root GetLivery(FileInfo file)
+        public static CarsJson.Root GetLivery(FileInfo file)
         {
             if (!file.Exists)
                 return null;
@@ -503,7 +570,7 @@ namespace ACCSetupApp.Controls
             }
         }
 
-        public CarsJson.Root GetLivery(Stream stream)
+        public static CarsJson.Root GetLivery(Stream stream)
         {
             CarsJson.Root carLiveryRoot = null;
             string jsonString = string.Empty;

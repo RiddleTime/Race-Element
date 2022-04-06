@@ -70,8 +70,8 @@
                             0.0.2.4
                             </TextBlock>
                             <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
-                            - Livery Displayer: Added buttons to open livery json and livery folder.
-                            - Livery Displayer: Added Nationality.
+                            - Livery Displayer: Added buttons to open livery json and livery folder.<LineBreak/>
+                            - Livery Displayer: Added Nationality, Paint materials for body and rims.
                             </TextBlock>
                         </StackPanel>
 
