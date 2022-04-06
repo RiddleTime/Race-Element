@@ -30,9 +30,13 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="75"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="38"/>
                 </Grid.RowDefinitions>
 
+                <Button x:Name="buttonGenerateDDS" Grid.Row="2">Generate DDS Files</Button>
+
                 <materialDesign:Card x:Name="skinMainInfo" Margin="3,3,3,3" Grid.Row="0" Visibility="Hidden">
+
                     <StackPanel x:Name="stackPanelMainInfo" Orientation="Vertical" HorizontalAlignment="Center" Width="auto">
                     </StackPanel>
                 </materialDesign:Card>

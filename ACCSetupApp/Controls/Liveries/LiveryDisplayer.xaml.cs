@@ -1,4 +1,6 @@
 ﻿using ACCSetupApp.LiveryParser;
+using DdsFileTypePlus;
+using PaintDotNet;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -39,9 +41,46 @@ namespace ACCSetupApp.Controls
         {
             InitializeComponent();
 
+            buttonGenerateDDS.Click += ButtonGenerateDDS_Click;
+
             Instance = this;
         }
 
+        private void ButtonGenerateDDS_Click(object sender, RoutedEventArgs e)
+        {
+
+            ThreadPool.QueueUserWorkItem(x =>
+            {
+                DirectoryInfo customSkinDir = new DirectoryInfo(LiveriesPath + Livery.carsRoot.customSkinName);
+                FileInfo[] sponsorFiles = customSkinDir.GetFiles("sponsors.png");
+                if (sponsorFiles != null && sponsorFiles.Length > 0)
+                {
+                    FileInfo sponsorsFile = sponsorFiles[0];
+                    BitmapImage bmi = new BitmapImage(new Uri(sponsorsFile.FullName, UriKind.Absolute), new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable));
+                    System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(bmi.StreamSource);
+
+                    Surface surface = new Surface(bitmap.Size);
+                    System.Drawing.Bitmap bmp = surface.CreateAliasedBitmap();
+                    Image image;
+                    MemoryStream ms = new MemoryStream();
+                    bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                    ms.Position = 0;
+                    BitmapImage bi = new BitmapImage();
+                    bi.BeginInit();
+                    bi.StreamSource = ms;
+                    bi.EndInit();
+
+
+                    FileInfo dds_0 = new FileInfo($"{customSkinDir}\\sponsors_0.dds");
+                    FileStream write = dds_0.OpenWrite();
+                    DdsFile.Save(write, DdsFileFormat.BC7Srgb, DdsErrorMetric.Perceptual, BC7CompressionMode.Slow, true, true, ResamplingAlgorithm.Bilinear, surface, this.ProgressChanged);
+                    write.Close();
+
+                    GC.Collect();
+
+                }
+            }
+        }
 
         internal void SetLivery(LiveryTreeCar livery)
         {
@@ -90,16 +129,59 @@ namespace ACCSetupApp.Controls
                         stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Rim Base: {GetRimMaterialType(carsRoot.rimMaterialType1)}"));
                         stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Rim Accent: {GetRimMaterialType(carsRoot.rimMaterialType2)}"));
 
-
                         DirectoryInfo customSkinDir = new DirectoryInfo(LiveriesPath + customSkinName);
                         if (customSkinDir.Exists)
                         {
-                            FileInfo[] sponporsFiles = customSkinDir.GetFiles("sponsors.png");
-                            if (sponporsFiles != null && sponporsFiles.Length > 0)
+                            FileInfo[] sponsorFiles = customSkinDir.GetFiles("sponsors.png");
+                            if (sponsorFiles != null && sponsorFiles.Length > 0)
                             {
-                                FileInfo sponsorsFile = sponporsFiles[0];
+                                FileInfo sponsorsFile = sponsorFiles[0];
                                 sponsorsLabel.Content = "Sponsors";
                                 sponsorsImage.Source = new BitmapImage(new Uri(sponsorsFile.FullName, UriKind.Absolute), new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable));
+                            }
+
+                            FileInfo[] sponsorDddsFiles = customSkinDir.GetFiles("sponsors_0.dds");
+                            if (sponsorDddsFiles != null && sponsorDddsFiles.Length > 0)
+                            {
+
+                                // https://stackoverflow.com/questions/23618171/load-dds-file-from-stream-and-display-in-wpf-application
+
+                                // https://stackoverflow.com/questions/1118496/using-image-control-in-wpf-to-display-system-drawing-bitmap/1118557#1118557
+                                // https://code.google.com/archive/p/kprojects/downloads
+                                // https://github.com/ptrsuder/ddsfiletype-plus-hack
+
+                                FileInfo sponsorsFile = sponsorDddsFiles[0];
+
+                                Surface surface = DdsFile.Load(sponsorsFile.FullName);
+
+
+                                System.Drawing.Bitmap bmp = surface.CreateAliasedBitmap();
+                                Image image;
+                                MemoryStream ms = new MemoryStream();
+                                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                                ms.Position = 0;
+                                BitmapImage bi = new BitmapImage();
+                                bi.BeginInit();
+                                bi.StreamSource = ms;
+                                bi.EndInit();
+                                sponsorsImage.Source = bi;
+
+
+
+                                ThreadPool.QueueUserWorkItem(y =>
+                                {
+                                    FileInfo test = new FileInfo(sponsorsFile.FullName.Replace("_0", "_9779"));
+                                    if (test.Exists)
+                                        test.Delete();
+
+
+                                    FileStream write = test.OpenWrite();
+                                    DdsFile.Save(write, DdsFileFormat.BC7Srgb, DdsErrorMetric.Perceptual, BC7CompressionMode.Slow, true, true, ResamplingAlgorithm.Bilinear, surface, this.ProgressChanged);
+                                    //new BitmapImage(new Uri(sponsorsFile.FullName, UriKind.Absolute), new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable));
+                                    write.Close();
+
+                                    GC.Collect();
+                                });
                             }
 
                             FileInfo[] decalFiles = customSkinDir.GetFiles("decals.png");
@@ -109,10 +191,44 @@ namespace ACCSetupApp.Controls
                                 decalsLabel.Content = "Decals";
                                 decalsImage.Source = new BitmapImage(new Uri(decalsFile.FullName, UriKind.Absolute), new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable));
                             }
+
+                            FileInfo[] decalDDSFiles = customSkinDir.GetFiles("decals_0.dds");
+                            if (decalDDSFiles != null && decalDDSFiles.Length > 0)
+                            {
+
+                                // https://stackoverflow.com/questions/23618171/load-dds-file-from-stream-and-display-in-wpf-application
+
+                                // https://stackoverflow.com/questions/1118496/using-image-control-in-wpf-to-display-system-drawing-bitmap/1118557#1118557
+                                // https://code.google.com/archive/p/kprojects/downloads
+                                // https://github.com/ptrsuder/ddsfiletype-plus-hack
+
+                                FileInfo decalsFile = decalDDSFiles[0];
+
+                                Surface surface = DdsFile.Load(decalsFile.FullName);
+
+                                System.Drawing.Bitmap bmp = surface.CreateAliasedBitmap();
+                                Image image;
+                                MemoryStream ms = new MemoryStream();
+                                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                                ms.Position = 0;
+                                BitmapImage bi = new BitmapImage();
+                                bi.BeginInit();
+                                bi.StreamSource = ms;
+                                bi.EndInit();
+                                decalsImage.Source = bi;
+                                //new BitmapImage(new Uri(sponsorsFile.FullName, UriKind.Absolute), new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable));
+                            }
                         }
                     }
                 }));
             });
+        }
+
+        private void ProgressChanged(object sender, ProgressEventArgs e)
+        {
+
+            Debug.WriteLine(e.Percent.ToString());
+            //progressBar1.Value = (int) Math.Round(e.Percent);
         }
 
         private Label GetInfoLabel(string text, HorizontalAlignment allignmment = HorizontalAlignment.Left, int size = 13)
