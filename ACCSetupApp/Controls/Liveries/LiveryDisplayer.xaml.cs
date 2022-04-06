@@ -4,6 +4,7 @@ using PaintDotNet;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Cache;
@@ -49,37 +50,74 @@ namespace ACCSetupApp.Controls
         private void ButtonGenerateDDS_Click(object sender, RoutedEventArgs e)
         {
 
+            Dictionary<string, string> pngsToDDS = new Dictionary<string, string>()
+            {
+                {"decals_0.dds","decals.png" },
+                {"sponsors_0.dds" ,"sponsors.png"},
+                {"decals_1.dds","decals.png" },
+                {"sponsors_1.dds","sponsors.png" }
+            };
+
+            MainWindow.Instance.EnqueueSnackbarMessage($"Generating DDS files... this may take a while...");
             ThreadPool.QueueUserWorkItem(x =>
             {
-                DirectoryInfo customSkinDir = new DirectoryInfo(LiveriesPath + Livery.carsRoot.customSkinName);
-                FileInfo[] sponsorFiles = customSkinDir.GetFiles("sponsors.png");
-                if (sponsorFiles != null && sponsorFiles.Length > 0)
+                Instance.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    FileInfo sponsorsFile = sponsorFiles[0];
-                    BitmapImage bmi = new BitmapImage(new Uri(sponsorsFile.FullName, UriKind.Absolute), new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable));
-                    System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(bmi.StreamSource);
+                    buttonGenerateDDS.IsEnabled = false;
+                }));
+                for (int i = 0; i < pngsToDDS.Count; i++)
+                {
+                    DirectoryInfo customSkinDir = new DirectoryInfo(LiveriesPath + Livery.carsRoot.customSkinName);
+                    FileInfo[] sponsorFiles = customSkinDir.GetFiles(pngsToDDS.ElementAt(i).Value);
+                    if (sponsorFiles != null && sponsorFiles.Length > 0)
+                    {
+                        MainWindow.Instance.EnqueueSnackbarMessage($"Generating {pngsToDDS.ElementAt(i).Key}");
+                        FileInfo sponsorsFile = sponsorFiles[0];
+                        FileStream actualFileStream = sponsorsFile.OpenRead();
 
-                    Surface surface = new Surface(bitmap.Size);
-                    System.Drawing.Bitmap bmp = surface.CreateAliasedBitmap();
-                    Image image;
-                    MemoryStream ms = new MemoryStream();
-                    bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                    ms.Position = 0;
-                    BitmapImage bi = new BitmapImage();
-                    bi.BeginInit();
-                    bi.StreamSource = ms;
-                    bi.EndInit();
+                        Bitmap bitmap = new Bitmap(actualFileStream);
 
+                        if (pngsToDDS.ElementAt(i).Key.Contains("_1"))
+                        {
+                            bitmap = ResizeBitmap(bitmap, 2048, 2048);
+                        }
 
-                    FileInfo dds_0 = new FileInfo($"{customSkinDir}\\sponsors_0.dds");
-                    FileStream write = dds_0.OpenWrite();
-                    DdsFile.Save(write, DdsFileFormat.BC7Srgb, DdsErrorMetric.Perceptual, BC7CompressionMode.Slow, true, true, ResamplingAlgorithm.Bilinear, surface, this.ProgressChanged);
-                    write.Close();
+                        float hR = bitmap.HorizontalResolution;
+                        float vR = bitmap.VerticalResolution;
 
-                    GC.Collect();
+                        Surface surface = Surface.CopyFromBitmap(bitmap);
 
+                        FileInfo targetFile = new FileInfo($"{customSkinDir}\\{pngsToDDS.ElementAt(i).Key}");
+                        if (targetFile.Exists)
+                            targetFile.Delete();
+
+                        FileStream write = targetFile.OpenWrite();
+                        DdsFile.Save(write, DdsFileFormat.BC7, DdsErrorMetric.Perceptual, BC7CompressionMode.Slow, true, true, ResamplingAlgorithm.SuperSampling, surface, this.ProgressChanged);
+                        write.Close();
+                        actualFileStream.Close();
+
+                        GC.Collect();
+                        MainWindow.Instance.EnqueueSnackbarMessage($"Finished generating {pngsToDDS.ElementAt(i).Key}");
+                    }
                 }
+                Instance.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    buttonGenerateDDS.IsEnabled = true;
+                }));
+                MainWindow.Instance.EnqueueSnackbarMessage($"Finished generating DDS files.");
+            });
+        }
+
+        private Bitmap ResizeBitmap(Bitmap bmp, int width, int height)
+        {
+            Bitmap result = new Bitmap(width, height);
+            using (Graphics g = Graphics.FromImage(result))
+            {
+                g.DrawImage(bmp, 0, 0, width, height);
             }
+
+
+            return result;
         }
 
         internal void SetLivery(LiveryTreeCar livery)
@@ -156,7 +194,6 @@ namespace ACCSetupApp.Controls
 
 
                                 System.Drawing.Bitmap bmp = surface.CreateAliasedBitmap();
-                                Image image;
                                 MemoryStream ms = new MemoryStream();
                                 bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                                 ms.Position = 0;
@@ -168,20 +205,20 @@ namespace ACCSetupApp.Controls
 
 
 
-                                ThreadPool.QueueUserWorkItem(y =>
-                                {
-                                    FileInfo test = new FileInfo(sponsorsFile.FullName.Replace("_0", "_9779"));
-                                    if (test.Exists)
-                                        test.Delete();
+                                //ThreadPool.QueueUserWorkItem(y =>
+                                //{
+                                //    FileInfo test = new FileInfo(sponsorsFile.FullName.Replace("_0", "_9779"));
+                                //    if (test.Exists)
+                                //        test.Delete();
 
 
-                                    FileStream write = test.OpenWrite();
-                                    DdsFile.Save(write, DdsFileFormat.BC7Srgb, DdsErrorMetric.Perceptual, BC7CompressionMode.Slow, true, true, ResamplingAlgorithm.Bilinear, surface, this.ProgressChanged);
-                                    //new BitmapImage(new Uri(sponsorsFile.FullName, UriKind.Absolute), new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable));
-                                    write.Close();
+                                //    FileStream write = test.OpenWrite();
+                                //    DdsFile.Save(write, DdsFileFormat.BC7Srgb, DdsErrorMetric.Perceptual, BC7CompressionMode.Slow, true, true, ResamplingAlgorithm.Bilinear, surface, this.ProgressChanged);
+                                //    //new BitmapImage(new Uri(sponsorsFile.FullName, UriKind.Absolute), new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable));
+                                //    write.Close();
 
-                                    GC.Collect();
-                                });
+                                //    GC.Collect();
+                                //});
                             }
 
                             FileInfo[] decalFiles = customSkinDir.GetFiles("decals.png");
@@ -207,7 +244,6 @@ namespace ACCSetupApp.Controls
                                 Surface surface = DdsFile.Load(decalsFile.FullName);
 
                                 System.Drawing.Bitmap bmp = surface.CreateAliasedBitmap();
-                                Image image;
                                 MemoryStream ms = new MemoryStream();
                                 bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                                 ms.Position = 0;
@@ -216,7 +252,6 @@ namespace ACCSetupApp.Controls
                                 bi.StreamSource = ms;
                                 bi.EndInit();
                                 decalsImage.Source = bi;
-                                //new BitmapImage(new Uri(sponsorsFile.FullName, UriKind.Absolute), new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable));
                             }
                         }
                     }
