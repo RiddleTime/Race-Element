@@ -41,7 +41,7 @@
             </materialDesign:TransitioningContent>
         </materialDesign:Card>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Margin="0,0,0,2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="55"/>
                 <RowDefinition/>
