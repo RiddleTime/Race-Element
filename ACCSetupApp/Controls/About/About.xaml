@@ -111,7 +111,8 @@
                                     - Select multiple archives to import at once.<LineBreak/><LineBreak/>
                                    Exporter:<LineBreak/>
                                     - Once you add 1 skin to skin pack a new panel opens.<LineBreak/>
-                                    - Export as zip.
+                                    - Click items in the exporter to remove them from the pack.<LineBreak/>
+                                    - Exports as zip.
                                 </TextBlock>
                             </StackPanel>
 
