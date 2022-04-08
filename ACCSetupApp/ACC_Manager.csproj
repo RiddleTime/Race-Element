@@ -63,7 +63,7 @@
     <StartupObject>ACCSetupApp.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>management.ico</ApplicationIcon>
+    <ApplicationIcon>toolIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -75,7 +75,8 @@
     <DelaySign>false</DelaySign>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>acc_manager_key.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>9FBE825EC0ACCC58542DA8C54DA8899183BDE274</ManifestCertificateThumbprint>
@@ -331,6 +332,8 @@
     <Compile Include="SetupParser\ISetupConverter.cs" />
     <Compile Include="SetupParser\SetupJson.cs" />
     <Compile Include="SharedMemory.cs" />
+    <Compile Include="Util\FileUtil.cs" />
+    <Compile Include="Util\LogWriter.cs" />
     <Page Include="Controls\About\About.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -410,9 +413,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Resource Include="Fonts\Roboto-Medium.ttf" />
-    <None Include="ACCSetupApp_TemporaryKey.pfx" />
-    <None Include="acc_manager_key.pfx" />
-    <None Include="acc_manager_key.snk" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -429,9 +429,7 @@
   <ItemGroup>
     <Resource Include="management.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">
       <Visible>False</Visible>
@@ -443,6 +441,18 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="appIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="toolIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\toolIcon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.4.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.4.0\build\MaterialDesignThemes.targets')" />

@@ -1,4 +1,5 @@
 ﻿using ACCSetupApp.LiveryParser;
+using ACCSetupApp.Util;
 using Newtonsoft.Json;
 using SharpCompress.Archives;
 using SharpCompress.Archives.Rar;
@@ -30,14 +31,7 @@ namespace ACCSetupApp.Controls
     /// </summary>
     public partial class LiveryBrowser : UserControl
     {
-        private string AccPath => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "Assetto Corsa Competizione\\";
-        private string CustomsPath => AccPath + "Customs\\";
-        private string CarsPath => CustomsPath + "Cars\\";
-        private string LiveriesPath => CustomsPath + "Liveries\\";
-
         public static LiveryBrowser Instance;
-
-        Regex carsJsonRegex = new Regex("^[0-9]*-[0-9]*-[0-9]*.json");
 
         public LiveryBrowser()
         {
@@ -77,18 +71,6 @@ namespace ACCSetupApp.Controls
             }
         }
 
-        private Label GetInfoLabel(string text, HorizontalAlignment allignmment = HorizontalAlignment.Left, int size = 13)
-        {
-            Label label = new Label()
-            {
-                Content = text,
-                Style = Resources["MaterialDesignLabel"] as Style,
-                FontSize = size,
-                HorizontalAlignment = allignmment
-            };
-            return label;
-        }
-
         internal class LiveryTreeCar
         {
             public FileInfo carsFile { get; set; }
@@ -99,70 +81,78 @@ namespace ACCSetupApp.Controls
         {
             Instance.Dispatcher.BeginInvoke(new Action(() =>
             {
-                liveriesTreeView.Items.Clear();
-
-                DirectoryInfo customsCarsDirectory = new DirectoryInfo(CarsPath);
-
-                List<TreeViewItem> carsTreeViews = new List<TreeViewItem>();
-
-                List<LiveryTreeCar> liveryTreeCars = new List<LiveryTreeCar>();
-
-                foreach (var carsFile in customsCarsDirectory.GetFiles())
+                try
                 {
-                    if (carsFile.Extension.Equals(".json"))
+                    liveriesTreeView.Items.Clear();
+
+                    DirectoryInfo customsCarsDirectory = new DirectoryInfo(FileUtil.CarsPath);
+
+                    List<TreeViewItem> carsTreeViews = new List<TreeViewItem>();
+
+                    List<LiveryTreeCar> liveryTreeCars = new List<LiveryTreeCar>();
+
+                    foreach (var carsFile in customsCarsDirectory.GetFiles())
                     {
-                        CarsJson.Root carsRoot = GetLivery(carsFile);
-
-                        if (carsRoot != null)
+                        if (carsFile.Extension.Equals(".json"))
                         {
-                            LiveryTreeCar treeCar = new LiveryTreeCar() { carsFile = carsFile, carsRoot = carsRoot };
+                            CarsJson.Root carsRoot = GetLivery(carsFile);
 
-                            if (!treeCar.carsRoot.customSkinName.Equals(String.Empty))
-                                liveryTreeCars.Add(treeCar);
+                            if (carsRoot != null)
+                            {
+                                LiveryTreeCar treeCar = new LiveryTreeCar() { carsFile = carsFile, carsRoot = carsRoot };
+
+                                if (!treeCar.carsRoot.customSkinName.Equals(String.Empty))
+                                    liveryTreeCars.Add(treeCar);
+                            }
                         }
                     }
-                }
 
-                var groupedLiveryCars = liveryTreeCars.GroupBy(g => g.carsRoot.teamName);
+                    var groupedLiveryCars = liveryTreeCars.GroupBy(g => g.carsRoot.teamName);
 
-                foreach (IGrouping<string, LiveryTreeCar> tItem in groupedLiveryCars)
-                {
-                    TextBlock teamHeader = new TextBlock()
+                    foreach (IGrouping<string, LiveryTreeCar> tItem in groupedLiveryCars)
                     {
-                        Text = $"{tItem.Key}",
-                        Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
-                        TextTrimming = TextTrimming.WordEllipsis,
-                        Width = liveriesTreeView.Width - 5
-                    };
-                    TreeViewItem teamItem = new TreeViewItem() { Header = teamHeader };
-
-                    foreach (LiveryTreeCar car in tItem)
-                    {
-                        TextBlock skinHeader = new TextBlock()
+                        TextBlock teamHeader = new TextBlock()
                         {
-                            Text = $"{car.carsRoot.customSkinName}",
-                            Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style,
+                            Text = $"{tItem.Key}",
+                            Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
                             TextTrimming = TextTrimming.WordEllipsis,
                             Width = liveriesTreeView.Width - 5
                         };
-                        TreeViewItem skinItem = new TreeViewItem() { Header = skinHeader, DataContext = car };
-                        skinItem.ContextMenu = GetSkinContextMenu(car);
+                        TreeViewItem teamItem = new TreeViewItem() { Header = teamHeader };
 
-                        teamItem.Items.Add(skinItem);
+                        foreach (LiveryTreeCar car in tItem)
+                        {
+                            TextBlock skinHeader = new TextBlock()
+                            {
+                                Text = $"{car.carsRoot.customSkinName}",
+                                Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style,
+                                TextTrimming = TextTrimming.WordEllipsis,
+                                Width = liveriesTreeView.Width - 5
+                            };
+                            TreeViewItem skinItem = new TreeViewItem() { Header = skinHeader, DataContext = car };
+                            skinItem.ContextMenu = GetSkinContextMenu(car);
+
+                            teamItem.Items.Add(skinItem);
+                        }
+
+                        teamItem.ContextMenu = GetTeamContextMenu(teamItem);
+                        carsTreeViews.Add(teamItem);
                     }
 
-                    teamItem.ContextMenu = GetTeamContextMenu(teamItem);
-                    carsTreeViews.Add(teamItem);
+                    carsTreeViews.Sort((a, b) =>
+                    {
+                        TextBlock aCar = a.Header as TextBlock;
+                        TextBlock bCar = b.Header as TextBlock;
+                        return $"{aCar.Text}".CompareTo($"{bCar.Text}");
+                    });
+
+                    carsTreeViews.ForEach(x => liveriesTreeView.Items.Add(x));
                 }
-
-                carsTreeViews.Sort((a, b) =>
+                catch (Exception ex)
                 {
-                    TextBlock aCar = a.Header as TextBlock;
-                    TextBlock bCar = b.Header as TextBlock;
-                    return $"{aCar.Text}".CompareTo($"{bCar.Text}");
-                });
-
-                carsTreeViews.ForEach(x => liveriesTreeView.Items.Add(x));
+                    Debug.WriteLine(ex);
+                    LogWriter.WriteToLog(ex);
+                }
             }));
         }
 
@@ -231,7 +221,7 @@ namespace ACCSetupApp.Controls
                 }
 
                 FileInfo carsJsonFile = new FileInfo($"{liveryTreeCar.carsFile}");
-                Process.Start($"{CarsPath}{carsJsonFile.Name}");
+                Process.Start($"{FileUtil.CarsPath}{carsJsonFile.Name}");
 
             closeMenu:
                 (button.Parent as ContextMenu).IsOpen = false;
@@ -251,7 +241,7 @@ namespace ACCSetupApp.Controls
                     goto closeMenu;
                 }
 
-                DirectoryInfo directory = new DirectoryInfo($"{LiveriesPath}{liveryTreeCar.carsRoot.customSkinName}");
+                DirectoryInfo directory = new DirectoryInfo($"{FileUtil.LiveriesPath}{liveryTreeCar.carsRoot.customSkinName}");
                 Process.Start(directory.FullName);
 
             closeMenu:
@@ -336,7 +326,7 @@ namespace ACCSetupApp.Controls
                                     {
                                         Debug.WriteLine($"Found livery {carRoot.teamName} / {carRoot.customSkinName}");
 
-                                        string carsJsonFileName = $"{CarsPath}{GetFileName(x.Key)}";
+                                        string carsJsonFileName = $"{FileUtil.CarsPath}{GetFileName(x.Key)}";
 
 
                                         List<IArchiveEntry> skinFiles = archiveEntries.FindAll(s =>
@@ -365,7 +355,7 @@ namespace ACCSetupApp.Controls
                                                 {
                                                     if (skinFile.Key.ToLower().EndsWith(validSkinFiles[s]))
                                                     {
-                                                        string liveryFolder = $"{LiveriesPath}{carRoot.customSkinName}\\";
+                                                        string liveryFolder = $"{FileUtil.LiveriesPath}{carRoot.customSkinName}\\";
                                                         Directory.CreateDirectory(liveryFolder);
 
                                                         string skinFileName = $"{liveryFolder}{GetFileName(skinFile.Key)}";
@@ -444,7 +434,7 @@ namespace ACCSetupApp.Controls
                         string carsFolder = "Cars\\";
                         zipArchive.AddEntry($"{carsFolder}{liveryTreeCar.carsFile.Name}", liveryTreeCar.carsFile);
 
-                        DirectoryInfo customSkinDir = new DirectoryInfo(LiveriesPath + liveryTreeCar.carsRoot.customSkinName);
+                        DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + liveryTreeCar.carsRoot.customSkinName);
                         if (customSkinDir.Exists)
                         {
 
@@ -538,7 +528,7 @@ namespace ACCSetupApp.Controls
                             string carsFolder = "Cars\\";
                             zipArchive.AddEntry($"{carsFolder}{liveryTreeCar.carsFile.Name}", liveryTreeCar.carsFile);
 
-                            DirectoryInfo customSkinDir = new DirectoryInfo(LiveriesPath + liveryTreeCar.carsRoot.customSkinName);
+                            DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + liveryTreeCar.carsRoot.customSkinName);
                             if (customSkinDir.Exists)
                             {
 

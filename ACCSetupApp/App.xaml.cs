@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACCSetupApp.Util;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +14,10 @@ namespace ACCSetupApp
     /// </summary>
     public partial class App : Application
     {
+
+        public App()
+        {
+            LogWriter.WriteToLog("Started ACC Manager");
+        }
     }
 }

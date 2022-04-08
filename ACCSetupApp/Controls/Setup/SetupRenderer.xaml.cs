@@ -7,6 +7,8 @@ using static SetupParser.SetupJson;
 using static ACCSetupApp.SetupParser.SetupConverter;
 using ACCSetupApp.SetupParser;
 using ACCSetupApp.Controls.Setup;
+using ACCSetupApp.Util;
+using System.Diagnostics;
 
 namespace ACCSetupApp.Controls
 {
@@ -25,22 +27,30 @@ namespace ACCSetupApp.Controls
 
         private void OpenFile_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-
-            // Set filter for file extension and default file extension 
-            dlg.DefaultExt = ".json";
-            dlg.Filter = "ACC Setup files|*.json";
-            Nullable<bool> result = dlg.ShowDialog();
-
-
-            // Get the selected file name and display in a TextBox 
-            if (result == true)
+            try
             {
-                flowDocument.Blocks.Clear();
+                Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 
-                // Open document 
-                string filename = dlg.FileName;
-                new FlowDocSetupRenderer().LogSetup(ref flowDocument, filename);
+                // Set filter for file extension and default file extension 
+                dlg.DefaultExt = ".json";
+                dlg.Filter = "ACC Setup files|*.json";
+                Nullable<bool> result = dlg.ShowDialog();
+
+
+                // Get the selected file name and display in a TextBox 
+                if (result == true)
+                {
+                    flowDocument.Blocks.Clear();
+
+                    // Open document 
+                    string filename = dlg.FileName;
+                    new FlowDocSetupRenderer().LogSetup(ref flowDocument, filename);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogWriter.WriteToLog(ex);
+                Debug.WriteLine(ex);
             }
         }
 

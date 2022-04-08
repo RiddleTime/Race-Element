@@ -1,4 +1,5 @@
 ﻿using ACCSetupApp.LiveryParser;
+using ACCSetupApp.Util;
 using DdsFileTypePlus;
 using PaintDotNet;
 using System;
@@ -29,11 +30,6 @@ namespace ACCSetupApp.Controls
     /// </summary>
     public partial class LiveryDisplayer : UserControl
     {
-        private string AccPath => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "Assetto Corsa Competizione\\";
-        private string CustomsPath => AccPath + "Customs\\";
-        private string CarsPath => CustomsPath + "Cars\\";
-        private string LiveriesPath => CustomsPath + "Liveries\\";
-
         internal static LiveryDisplayer Instance;
 
         private LiveryTreeCar Livery { get; set; }
@@ -67,7 +63,7 @@ namespace ACCSetupApp.Controls
                 }));
                 for (int i = 0; i < pngsToDDS.Count; i++)
                 {
-                    DirectoryInfo customSkinDir = new DirectoryInfo(LiveriesPath + Livery.carsRoot.customSkinName);
+                    DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + Livery.carsRoot.customSkinName);
                     FileInfo[] sponsorFiles = customSkinDir.GetFiles(pngsToDDS.ElementAt(i).Value);
                     if (sponsorFiles != null && sponsorFiles.Length > 0)
                     {
@@ -128,7 +124,7 @@ namespace ACCSetupApp.Controls
             {
                 KeyValuePair<string, string> kvp = pngsToDDS.ElementAt(i);
 
-                DirectoryInfo customSkinDir = new DirectoryInfo(LiveriesPath + Livery.carsRoot.customSkinName);
+                DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + Livery.carsRoot.customSkinName);
                 //check if png exists
                 FileInfo[] foundFiles = customSkinDir.GetFiles(kvp.Value);
 
@@ -196,7 +192,7 @@ namespace ACCSetupApp.Controls
                         stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Rim Base: {GetRimMaterialType(carsRoot.rimMaterialType1)}"));
                         stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Rim Accent: {GetRimMaterialType(carsRoot.rimMaterialType2)}"));
 
-                        DirectoryInfo customSkinDir = new DirectoryInfo(LiveriesPath + customSkinName);
+                        DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + customSkinName);
                         if (customSkinDir.Exists)
                         {
                             FileInfo[] sponsorFiles = customSkinDir.GetFiles("sponsors.png");

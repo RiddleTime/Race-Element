@@ -70,7 +70,8 @@
                             0.0.2.6:
                             </TextBlock>
                             <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
-                            - App is now published instead of using releases, this will install the acc manager as an app on your system.
+                            - Icon: Something not too fancy, but it shows what the tool does.<LineBreak/>
+                            - Setup conversion: fixed Porsche 911 II GT3.
                             </TextBlock>
                         </StackPanel>
 
