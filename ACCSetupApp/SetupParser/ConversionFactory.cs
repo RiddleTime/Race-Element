@@ -36,6 +36,20 @@ namespace ACCSetupApp.SetupParser
                 return null;
         }
 
+        public List<string> GetAllGT3Names()
+        {
+            List<string> GT3Names = new List<string>();
+            carConversions.ToList().ForEach(x =>
+            {
+                if (x.Value.CarClass == CarClasses.GT3)
+                {
+                    GT3Names.Add(x.Value.CarName);
+                }
+            });
+
+            return GT3Names;
+        }
+
         private Dictionary<string, string> carParseNames = new Dictionary<string, string>()
         {
             {"audi_r8_lms", "Audi R8 LMS" },
@@ -59,7 +73,8 @@ namespace ACCSetupApp.SetupParser
                 return carParseNames[parseName];
             else return parseName;
         }
+
+
+
     }
-
-
 }

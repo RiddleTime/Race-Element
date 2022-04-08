@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACCSetupApp.SetupParser;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,28 @@ namespace ACCSetupApp.Controls
     /// </summary>
     public partial class About : UserControl
     {
+        // https://qwerty.dev/whitespace/
+        private string FourEmSpace = " ";
+
         public About()
         {
             InitializeComponent();
+
+            SetCarConversionFeatures();
+        }
+
+        private void SetCarConversionFeatures()
+        {
+            List<string> gt3Names = new ConversionFactory().GetAllGT3Names();
+            textBlockSetupViewerGT3.Text = $"{FourEmSpace}GT3:\n";
+            for (int i = 0; i < gt3Names.Count; i++)
+            {
+                textBlockSetupViewerGT3.Text += $"{FourEmSpace}- {gt3Names[i]}";
+                if (i < gt3Names.Count - 1)
+                {
+                    textBlockSetupViewerGT3.Text += "\n";
+                }
+            }
         }
     }
 }
