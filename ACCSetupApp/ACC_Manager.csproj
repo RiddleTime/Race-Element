@@ -8,7 +8,7 @@
     <ProjectGuid>{DEA7B2CA-611A-4CB8-BEDA-988F3EA11AF9}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ACCSetupApp</RootNamespace>
-    <AssemblyName>ACC Manager</AssemblyName>
+    <AssemblyName>AccManager</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
