@@ -161,6 +161,17 @@
                                 <TextBlock
                            Style="{StaticResource MaterialDesignBody1TextBlock}"
                            HorizontalAlignment="Left" TextWrapping="Wrap" >
+                            0.0.2.10:
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
+                            - Add features panel to about tab.
+                                </TextBlock>
+                            </StackPanel>
+
+                            <StackPanel Margin="0,10,0,0">
+                                <TextBlock
+                           Style="{StaticResource MaterialDesignBody1TextBlock}"
+                           HorizontalAlignment="Left" TextWrapping="Wrap" >
                             0.0.2.9:
                                 </TextBlock>
                                 <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
