@@ -15,16 +15,16 @@ namespace ACCSetupApp.SetupParser
         {
             {"audi_r8_lms", new AudiR8LMS() },
             {"audi_r8_lms_evo_ii", new AudiR8LMSevoII() },
-            {"bentley_continental_gt3_2018",new BentleyContinentalGT3_2018() },
+            {"bentley_continental_gt3_2018", new BentleyContinentalGT3_2018() },
             {"bmw_m4_gt3", new BmwM4GT3() },
             {"ferrari_488_gt3_evo", new Ferrari488GT3evo() },
             {"honda_nsx_gt3", new HondaNsxGT3() },
             {"honda_nsx_gt3_evo", new HondaNsxGT3Evo() },
-            {"lamborghini_huracan_gt3_evo",new LamborghiniHuracanGT3evo() },
+            {"lamborghini_huracan_gt3_evo", new LamborghiniHuracanGT3evo() },
             {"lexus_rc_f_gt3", new LexusRcfGT3() },
             {"mclaren_720s_gt3", new Mclaren720sGT3() },
-            {"mercedes_amg_gt3_evo" , new MercedesAMGGT3evo() },
-            {"nissan_gt_r_gt3_2018",new NissanGtrGT3_2018() },
+            {"mercedes_amg_gt3_evo", new MercedesAMGGT3evo() },
+            {"nissan_gt_r_gt3_2018", new NissanGtrGT3_2018() },
             {"porsche_991ii_gt3_r", new Porsche911IIGT3R() },
             {"porsche_991_gt3_r", new Porsche991GT3R()}
         };
@@ -121,7 +121,7 @@ namespace ACCSetupApp.SetupParser
             if (CarModelTypeIds.ContainsKey(carId))
                 return CarModelTypeIds[carId];
             else
-                return "Unknown car model";
+                return $"Unknown car model {carId}";
         }
 
 
