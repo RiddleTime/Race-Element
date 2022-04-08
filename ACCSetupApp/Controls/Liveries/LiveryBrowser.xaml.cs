@@ -209,46 +209,53 @@ namespace ACCSetupApp.Controls
 
         private void OpenLiveryJson_Click(object sender, RoutedEventArgs e)
         {
-            if (sender.GetType() == typeof(Button))
+            try
             {
-                Button button = (Button)sender;
-
-                LiveryTreeCar liveryTreeCar = (LiveryTreeCar)button.CommandParameter;
-
-                if (liveryTreeCar.carsRoot.customSkinName == null || liveryTreeCar.carsRoot.customSkinName.Length == 0)
+                if (sender.GetType() == typeof(Button))
                 {
-                    goto closeMenu;
+
+                    Button button = (Button)sender;
+
+                    LiveryTreeCar liveryTreeCar = (LiveryTreeCar)button.CommandParameter;
+
+                    if (liveryTreeCar.carsRoot.customSkinName == null || liveryTreeCar.carsRoot.customSkinName.Length == 0)
+                    {
+                        goto closeMenu;
+                    }
+
+                    FileInfo carsJsonFile = new FileInfo($"{liveryTreeCar.carsFile}");
+                    Process.Start($"{FileUtil.CarsPath}{carsJsonFile.Name}");
+
+                closeMenu:
+                    (button.Parent as ContextMenu).IsOpen = false;
                 }
-
-                FileInfo carsJsonFile = new FileInfo($"{liveryTreeCar.carsFile}");
-                Process.Start($"{FileUtil.CarsPath}{carsJsonFile.Name}");
-
-            closeMenu:
-                (button.Parent as ContextMenu).IsOpen = false;
             }
+            catch (Exception ex) { LogWriter.WriteToLog(ex); }
         }
 
         private void OpenLiveryDirectory_Click(object sender, RoutedEventArgs e)
         {
-            if (sender.GetType() == typeof(Button))
+            try
             {
-                Button button = (Button)sender;
-
-                LiveryTreeCar liveryTreeCar = (LiveryTreeCar)button.CommandParameter;
-
-                if (liveryTreeCar.carsRoot.customSkinName == null || liveryTreeCar.carsRoot.customSkinName.Length == 0)
+                if (sender.GetType() == typeof(Button))
                 {
-                    goto closeMenu;
+                    Button button = (Button)sender;
+
+                    LiveryTreeCar liveryTreeCar = (LiveryTreeCar)button.CommandParameter;
+
+                    if (liveryTreeCar.carsRoot.customSkinName == null || liveryTreeCar.carsRoot.customSkinName.Length == 0)
+                    {
+                        goto closeMenu;
+                    }
+
+                    DirectoryInfo directory = new DirectoryInfo($"{FileUtil.LiveriesPath}{liveryTreeCar.carsRoot.customSkinName}");
+                    Process.Start(directory.FullName);
+
+                closeMenu:
+                    (button.Parent as ContextMenu).IsOpen = false;
                 }
-
-                DirectoryInfo directory = new DirectoryInfo($"{FileUtil.LiveriesPath}{liveryTreeCar.carsRoot.customSkinName}");
-                Process.Start(directory.FullName);
-
-            closeMenu:
-                (button.Parent as ContextMenu).IsOpen = false;
             }
-
-
+            catch (Exception ex) { LogWriter.WriteToLog(ex); }
         }
 
         private ContextMenu GetTeamContextMenu(TreeViewItem teamItem)
@@ -281,102 +288,107 @@ namespace ACCSetupApp.Controls
 
         private void ImportLiveryZips()
         {
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-
-            // Set filter for file extension and default file extension 
-            dlg.AddExtension = true;
-            dlg.CheckPathExists = true;
-
-            dlg.Filter = "Livery zip(s)|*.zip|Livery rar(s)|*.rar|Livery 7z(s)|*.7z";
-            dlg.Multiselect = true;
-            Nullable<bool> result = dlg.ShowDialog();
-
-            if (result == true)
+            try
             {
-                string[] fileNames = dlg.FileNames;
+                Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 
-                if (fileNames != null && fileNames.Length > 0)
+                // Set filter for file extension and default file extension 
+                dlg.AddExtension = true;
+                dlg.CheckPathExists = true;
+
+                dlg.Filter = "Livery zip(s)|*.zip|Livery rar(s)|*.rar|Livery 7z(s)|*.7z";
+                dlg.Multiselect = true;
+                Nullable<bool> result = dlg.ShowDialog();
+
+                if (result == true)
                 {
-                    for (int i = 0; i < fileNames.Length; i++)
+                    string[] fileNames = dlg.FileNames;
+
+                    if (fileNames != null && fileNames.Length > 0)
                     {
-                        FileInfo fi = new FileInfo(fileNames[i]);
-                        if (fi.Exists && fi.OpenRead() != null)
+                        for (int i = 0; i < fileNames.Length; i++)
                         {
-                            IArchive archive = null;
-
-                            switch (fi.Extension)
+                            FileInfo fi = new FileInfo(fileNames[i]);
+                            if (fi.Exists && fi.OpenRead() != null)
                             {
-                                case ".7z":
-                                case ".zip":
-                                case ".rar": archive = ArchiveFactory.Open(fileNames[i]); break;
-                                default:
-                                    {
-                                        return;
-                                    }
-                            }
+                                IArchive archive = null;
 
-                            List<IArchiveEntry> archiveEntries = archive.Entries.ToList();
-                            archiveEntries.ForEach(x =>
-                            {
-                                //Debug.WriteLine(x.Key);
-                                if (!x.Key.StartsWith("__MACOSX") && (x.Key.ToLower().Contains("cars/") || x.Key.ToLower().Contains("cars\\")))
+                                switch (fi.Extension)
                                 {
-                                    CarsJson.Root carRoot = GetLivery(x.OpenEntryStream());
-                                    if (carRoot != null && carRoot.customSkinName != string.Empty)
+                                    case ".7z":
+                                    case ".zip":
+                                    case ".rar": archive = ArchiveFactory.Open(fileNames[i]); break;
+                                    default:
+                                        {
+                                            return;
+                                        }
+                                }
+
+                                List<IArchiveEntry> archiveEntries = archive.Entries.ToList();
+                                archiveEntries.ForEach(x =>
+                                {
+                                    //Debug.WriteLine(x.Key);
+                                    if (!x.Key.StartsWith("__MACOSX") && (x.Key.ToLower().Contains("cars/") || x.Key.ToLower().Contains("cars\\")))
                                     {
-                                        Debug.WriteLine($"Found livery {carRoot.teamName} / {carRoot.customSkinName}");
-
-                                        string carsJsonFileName = $"{FileUtil.CarsPath}{GetFileName(x.Key)}";
-
-
-                                        List<IArchiveEntry> skinFiles = archiveEntries.FindAll(s =>
+                                        CarsJson.Root carRoot = GetLivery(x.OpenEntryStream());
+                                        if (carRoot != null && carRoot.customSkinName != string.Empty)
                                         {
-                                            return s.Key.Contains($"/{carRoot.customSkinName}/") && !GetFileName(s.Key).StartsWith(".") && !s.Key.Contains("__MACOSX");
-                                        });
+                                            Debug.WriteLine($"Found livery {carRoot.teamName} / {carRoot.customSkinName}");
 
-                                        if (skinFiles.Count == 0)
-                                        {
-                                            skinFiles = archiveEntries.FindAll(s => s.Key.Contains($"\\{carRoot.customSkinName}\\"));
-                                        }
-                                        if (skinFiles.Count == 0)
-                                        {
-                                            skinFiles = archiveEntries.FindAll(s => s.Key.Contains($"\\\\{carRoot.customSkinName}\\\\"));
-                                        }
+                                            string carsJsonFileName = $"{FileUtil.CarsPath}{GetFileName(x.Key)}";
 
 
-                                        if (skinFiles.Count > 0)
-                                        {
-                                            x.WriteToFile(carsJsonFileName);
-
-                                            string[] validSkinFiles = new string[] { "sponsors.json", "sponsors.png", "decals.json", "decals.png", ".dds" };
-                                            foreach (IArchiveEntry skinFile in skinFiles)
+                                            List<IArchiveEntry> skinFiles = archiveEntries.FindAll(s =>
                                             {
-                                                for (int s = 0; s < validSkinFiles.Length; s++)
-                                                {
-                                                    if (skinFile.Key.ToLower().EndsWith(validSkinFiles[s]))
-                                                    {
-                                                        string liveryFolder = $"{FileUtil.LiveriesPath}{carRoot.customSkinName}\\";
-                                                        Directory.CreateDirectory(liveryFolder);
+                                                return s.Key.Contains($"/{carRoot.customSkinName}/") && !GetFileName(s.Key).StartsWith(".") && !s.Key.Contains("__MACOSX");
+                                            });
 
-                                                        string skinFileName = $"{liveryFolder}{GetFileName(skinFile.Key)}";
-                                                        skinFile.WriteToFile(skinFileName);
-                                                        Debug.WriteLine($"Imported livery file: {skinFileName}");
-                                                    }
-                                                }
-
+                                            if (skinFiles.Count == 0)
+                                            {
+                                                skinFiles = archiveEntries.FindAll(s => s.Key.Contains($"\\{carRoot.customSkinName}\\"));
+                                            }
+                                            if (skinFiles.Count == 0)
+                                            {
+                                                skinFiles = archiveEntries.FindAll(s => s.Key.Contains($"\\\\{carRoot.customSkinName}\\\\"));
                                             }
 
-                                            MainWindow.Instance.EnqueueSnackbarMessage($"Imported {carRoot.teamName} / {carRoot.customSkinName}");
-                                        }
-                                    }
-                                };
-                            });
-                        }
 
+                                            if (skinFiles.Count > 0)
+                                            {
+                                                x.WriteToFile(carsJsonFileName);
+
+                                                string[] validSkinFiles = new string[] { "sponsors.json", "sponsors.png", "decals.json", "decals.png", ".dds" };
+                                                foreach (IArchiveEntry skinFile in skinFiles)
+                                                {
+                                                    for (int s = 0; s < validSkinFiles.Length; s++)
+                                                    {
+                                                        if (skinFile.Key.ToLower().EndsWith(validSkinFiles[s]))
+                                                        {
+                                                            string liveryFolder = $"{FileUtil.LiveriesPath}{carRoot.customSkinName}\\";
+                                                            Directory.CreateDirectory(liveryFolder);
+
+                                                            string skinFileName = $"{liveryFolder}{GetFileName(skinFile.Key)}";
+                                                            skinFile.WriteToFile(skinFileName);
+                                                            Debug.WriteLine($"Imported livery file: {skinFileName}");
+                                                        }
+                                                    }
+
+                                                }
+
+                                                MainWindow.Instance.EnqueueSnackbarMessage($"Imported {carRoot.teamName} / {carRoot.customSkinName}");
+                                            }
+                                        }
+                                    };
+                                });
+                            }
+
+                        }
                     }
+
                 }
 
             }
+            catch (Exception ex) { LogWriter.WriteToLog(ex); }
 
             MainWindow.Instance.EnqueueSnackbarMessage($"Finished importing liveries");
             FetchAllCars();

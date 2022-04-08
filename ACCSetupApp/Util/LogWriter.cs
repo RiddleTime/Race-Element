@@ -39,7 +39,7 @@ namespace ACCSetupApp.Util
         /// <summary>
         /// Path to save log files
         /// </summary>
-        private static string LogPath = FileUtil.AppDirectory;
+        private static string LogPath = FileUtil.AccManagerDocumentsPath + "\\Log\\";
 
         /// <summary>
         /// Lof file name
@@ -95,7 +95,6 @@ namespace ACCSetupApp.Util
         {
             lock (Instance.LogQueue)
             {
-
                 // Create log
                 Log msg = new Log(e.Source.ToString().Trim() + " " + e.Message.ToString().Trim());
                 Log stack = new Log("Stack: " + e.StackTrace.ToString().Trim());
@@ -145,11 +144,17 @@ namespace ACCSetupApp.Util
                 Log entry = Instance.LogQueue.Dequeue();
                 string path = LogPath + entry.GetDate() + "_" + LogFile;
 
-                FileStream stream = new FileStream(path, FileMode.Append, FileAccess.Write);
+
                 FileInfo fileInfo = new FileInfo(path);
+
+                if (!fileInfo.Directory.Exists)
+                    new DirectoryInfo(fileInfo.DirectoryName).Create();
+
+                FileStream stream;
                 if (!fileInfo.Exists)
                     stream = new FileStream(new FileInfo(path).FullName, FileMode.Append, FileAccess.Write);
-
+                else
+                    stream = new FileStream(path, FileMode.Append, FileAccess.Write);
                 // Crete filestream
 
                 using (var writer = new StreamWriter(stream))
