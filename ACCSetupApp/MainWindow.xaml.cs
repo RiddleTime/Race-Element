@@ -1,4 +1,5 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using ACCSetupApp.Util;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -31,11 +32,17 @@ namespace ACCSetupApp
         {
             InitializeComponent();
 
-            IntPtr hWnd = new WindowInteropHelper(GetWindow(this)).EnsureHandle();
-            var attribute = DWMWINDOWATTRIBUTE.DWMWA_WINDOW_CORNER_PREFERENCE;
-            var preference = DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
-            DwmSetWindowAttribute(hWnd, attribute, ref preference, sizeof(uint));
-
+            try
+            {
+                IntPtr hWnd = new WindowInteropHelper(GetWindow(this)).EnsureHandle();
+                var attribute = DWMWINDOWATTRIBUTE.DWMWA_WINDOW_CORNER_PREFERENCE;
+                var preference = DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
+                DwmSetWindowAttribute(hWnd, attribute, ref preference, sizeof(uint));
+            }
+            catch (Exception ex)
+            {
+                LogWriter.WriteToLog("Rounded corners are not supported for this machine, using square corners for the main window.");
+            }
 
 
             this.Title = $"ACC Manager {GetAssemblyFileVersion()}";
