@@ -295,6 +295,9 @@
     <Compile Include="Controls\Liveries\LiveryDisplayer.xaml.cs">
       <DependentUpon>LiveryDisplayer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Liveries\LiveryExporter.xaml.cs">
+      <DependentUpon>LiveryExporter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Setup\FlowDocUtil\DocUtil.cs" />
     <Compile Include="Controls\Setup\FlowDocUtil\FlowDocCompareSetupRenderer.cs" />
     <Compile Include="Controls\Setup\SetupBrowser.xaml.cs">
@@ -347,6 +350,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Liveries\LiveryDisplayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Liveries\LiveryExporter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

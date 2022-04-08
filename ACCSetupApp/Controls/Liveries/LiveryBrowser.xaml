@@ -44,6 +44,7 @@
         </Grid>
         <Grid Grid.Column="1" Margin="3,0,0,0">
             <local:LiveryDisplayer></local:LiveryDisplayer>
+            <local:LiveryExporter Grid.Column="1" Panel.ZIndex="1" HorizontalAlignment="Right" VerticalAlignment="Center"></local:LiveryExporter>
         </Grid>
     </Grid>
 </UserControl>

@@ -75,6 +75,13 @@ namespace ACCSetupApp.Controls
         {
             public FileInfo carsFile { get; set; }
             public CarsJson.Root carsRoot { get; set; }
+
+            public override bool Equals(object obj)
+            {
+                return obj is LiveryTreeCar car &&
+                       EqualityComparer<FileInfo>.Default.Equals(carsFile, car.carsFile) &&
+                       EqualityComparer<CarsJson.Root>.Default.Equals(carsRoot, car.carsRoot);
+            }
         }
 
         private void FetchAllCars()
@@ -167,19 +174,6 @@ namespace ACCSetupApp.Controls
                 Background = new SolidColorBrush(Color.FromArgb(220, 0, 0, 0))
             };
 
-
-            Button createZipButton = new Button()
-            {
-                Content = $"Save Skin as zip archive",
-                CommandParameter = directory,
-                Style = Resources["MaterialDesignRaisedButton"] as Style,
-                Margin = new Thickness(0),
-                Height = 30,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
-            createZipButton.Click += CreateZipButton_Click;
-            menu.Items.Add(createZipButton);
-
             Button openLiveryDirectory = new Button()
             {
                 Content = $"Open Livery Directory",
@@ -204,7 +198,56 @@ namespace ACCSetupApp.Controls
             openLiveryJson.Click += OpenLiveryJson_Click;
             menu.Items.Add(openLiveryJson);
 
+
+            Button createZipButton = new Button()
+            {
+                Content = $"Save Skin as zip archive",
+                CommandParameter = directory,
+                Style = Resources["MaterialDesignRaisedButton"] as Style,
+                Margin = new Thickness(0),
+                Height = 30,
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            createZipButton.Click += CreateZipButton_Click;
+            menu.Items.Add(createZipButton);
+
+
+            Button addSkinToSkinPack = new Button()
+            {
+                Content = $"Add to Skin Pack",
+                CommandParameter = directory,
+                Style = Resources["MaterialDesignRaisedButton"] as Style,
+                Margin = new Thickness(0),
+                Height = 30,
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            addSkinToSkinPack.Click += AddSkinToSkinPack_Click; ;
+            menu.Items.Add(addSkinToSkinPack);
+
             return menu;
+        }
+
+        private void AddSkinToSkinPack_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender.GetType() == typeof(Button))
+                {
+                    Button button = (Button)sender;
+
+                    LiveryTreeCar liveryTreeCar = (LiveryTreeCar)button.CommandParameter;
+                    if (LiveryExporter.Instance.AddExportItem(liveryTreeCar))
+                    {
+                        MainWindow.Instance.EnqueueSnackbarMessage($"Added {liveryTreeCar.carsRoot.teamName}/{liveryTreeCar.carsRoot.customSkinName} to skin pack.");
+                    }
+
+                    (button.Parent as ContextMenu).IsOpen = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogWriter.WriteToLog(ex);
+            }
         }
 
         private void OpenLiveryJson_Click(object sender, RoutedEventArgs e)
@@ -269,21 +312,44 @@ namespace ACCSetupApp.Controls
                 Background = new SolidColorBrush(Color.FromArgb(220, 0, 0, 0))
             };
 
-            Button createZipButton = new Button()
+            Button addTeamToSkinPack = new Button()
             {
-                Content = $"Save team as zip archive",
+                Content = $"Add to Skin Pack",
                 CommandParameter = teamItem,
                 Style = Resources["MaterialDesignRaisedButton"] as Style,
                 Margin = new Thickness(0),
                 Height = 30,
-                ToolTip = "Saves all the skins for this team",
                 VerticalAlignment = VerticalAlignment.Center,
             };
-            createZipButton.Click += CreateTeamZipButton_Click;
-
-            menu.Items.Add(createZipButton);
+            addTeamToSkinPack.Click += AddTeamToSkinPack_Click;
+            menu.Items.Add(addTeamToSkinPack);
 
             return menu;
+        }
+
+        private void AddTeamToSkinPack_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender.GetType() == typeof(Button))
+                {
+                    Button button = (Button)sender;
+
+                    TreeViewItem treeItem = (TreeViewItem)button.CommandParameter;
+                    List<LiveryTreeCar> treeCars = new List<LiveryTreeCar>();
+
+                    treeItem.Items.OfType<TreeViewItem>().ToList().ForEach(x =>
+                    {
+                        LiveryExporter.Instance.AddExportItem((LiveryTreeCar)x.DataContext);
+                    });
+
+                    (button.Parent as ContextMenu).IsOpen = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogWriter.WriteToLog(ex);
+            }
         }
 
         private void ImportLiveryZips()
@@ -620,7 +686,8 @@ namespace ACCSetupApp.Controls
             }
             catch (Exception e)
             {
-                //Debug.WriteLine(e);
+                LogWriter.WriteToLog(e);
+                Debug.WriteLine(e);
             }
 
             return carLiveryRoot;

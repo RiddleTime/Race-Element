@@ -70,6 +70,7 @@
                             0.0.2.7:
                             </TextBlock>
                             <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
+                            - Livery exporter: Added skin pack exporter, right click teams or skins to add.<LineBreak/>
                             - ACC Manager Folder: Added dedicated folder for the acc Manager, My Documents/ACC Manager.<LineBreak/>
                             - Added logger which logs to the dedicated folder/Log.
                             </TextBlock>
