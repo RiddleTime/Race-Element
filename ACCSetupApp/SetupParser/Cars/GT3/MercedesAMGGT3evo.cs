@@ -7,7 +7,7 @@ using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT3
 {
-    public class MercedesAMGGT3evo : ICarSetupConversion
+    internal class MercedesAMGGT3evo : ICarSetupConversion
     {
         public string CarName => "Mercedes-AMG GT3 2020";
 

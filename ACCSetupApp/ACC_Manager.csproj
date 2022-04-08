@@ -69,14 +69,13 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <DelaySign>false</DelaySign>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>9FBE825EC0ACCC58542DA8C54DA8899183BDE274</ManifestCertificateThumbprint>
@@ -323,11 +322,15 @@
     <Compile Include="LiveryParser\PaintDetailsJson.cs" />
     <Compile Include="SetupParser\Cars\GT3\AudiR8LMS.cs" />
     <Compile Include="SetupParser\Cars\GT3\AudiR8LMSevoII.cs" />
+    <Compile Include="SetupParser\Cars\GT3\BentleyContinentalGT3_2018.cs" />
     <Compile Include="SetupParser\Cars\GT3\BmwM4GT3.cs" />
     <Compile Include="SetupParser\Cars\GT3\Ferrari488GT3evo.cs" />
     <Compile Include="SetupParser\Cars\GT3\HondaNsxGT3.cs" />
+    <Compile Include="SetupParser\Cars\GT3\LamborghiniHuracanGT3evo.cs" />
+    <Compile Include="SetupParser\Cars\GT3\LexusRcfGT3.cs" />
     <Compile Include="SetupParser\Cars\GT3\Mclaren720sGT3.cs" />
     <Compile Include="SetupParser\Cars\GT3\MercedesAMGGT3evo.cs" />
+    <Compile Include="SetupParser\Cars\GT3\NissanGtrGT3_2018.cs" />
     <Compile Include="SetupParser\Cars\GT3\Porsche991GT3R.cs" />
     <Compile Include="SetupParser\ConversionFactory.cs" />
     <Compile Include="SetupParser\Cars\GT3\HondaNsxGT3Evo.cs" />
@@ -420,6 +423,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Resource Include="Fonts\Roboto-Medium.ttf" />
+    <None Include="key.snk" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">

@@ -7,7 +7,7 @@ using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT3
 {
-    public class HondaNsxGT3Evo : ICarSetupConversion
+    internal class HondaNsxGT3Evo : ICarSetupConversion
     {
         public string CarName => "Honda NSX GT3 Evo";
         public string ParseName => "honda_nsx_gt3_evo";

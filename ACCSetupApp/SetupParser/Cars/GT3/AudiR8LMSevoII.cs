@@ -7,7 +7,7 @@ using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT3
 {
-    public class AudiR8LMSevoII : ICarSetupConversion
+    internal class AudiR8LMSevoII : ICarSetupConversion
     {
         public string CarName => "Audi R8 LMS evo II";
         public string ParseName => "audi_r8_lms_evo_ii";

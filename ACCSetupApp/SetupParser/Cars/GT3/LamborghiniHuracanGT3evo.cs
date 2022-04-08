@@ -7,11 +7,11 @@ using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT3
 {
-    internal class HondaNsxGT3 : ICarSetupConversion
+    internal class LamborghiniHuracanGT3evo : ICarSetupConversion
     {
-        public string CarName => "Honda NSX GT3";
+        string ICarSetupConversion.CarName => "Lamborghini Huracán GT3 Evo";
 
-        public string ParseName => "honda_nsx_gt3";
+        string ICarSetupConversion.ParseName => "lamborghini_huracan_gt3_evo";
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
 
@@ -22,23 +22,30 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
             {
                 switch (GetPosition(wheel))
                 {
-                    case Position.Front: return Math.Round(-5 + 0.1 * rawValue[(int)wheel], 2);
-                    case Position.Rear: return Math.Round(-5 + 0.1 * rawValue[(int)wheel], 2);
+                    case Position.Front: return Math.Round(-4 + 0.1 * rawValue[(int)wheel], 2);
+                    case Position.Rear: return Math.Round(-3.5 + 0.1 * rawValue[(int)wheel], 2);
                     default: return -1;
                 }
             }
 
-            private readonly string[] casterStrings = new string[] { "8.8", "9.0", "9.2", "9.4", "9.6", "9.8", "10.0", "10.2", "10.4", "10.6",
-                    "10.8", "10.9", "11.1", "11.3", "11.5", "11.7", "11.9", "12.1", "12.3", "12.4", "12.6", "12.8", "13.0", "13.2",
-                    "13.4", "13.6", "13.8", "13.9", "14.1", "14.3", "14.5", "14.7", "14.9", "15.0", "15.2" };
+            private readonly double[] casters = new double[] { 6.2, 6.5, 6.7, 7.0, 7.3, 7.5, 7.8, 8.1,
+                8.3, 8.6, 8.9, 9.1, 9.4, 9.6, 9.9, 10.2, 10.4, 10.7, 10.9, 11.2, 11.5, 11.7, 12.0, 12.2,
+                12.5, 12.8, 13.0, 13.3, 13.5, 13.8, 14.0, 14.3, 14.5, 14.8, 15.0 };
             public override double Caster(int rawValue)
             {
-                return Math.Round(ToDoubles(casterStrings)[rawValue], 2);
+                return Math.Round(casters[rawValue], 2);
             }
 
             public override double Toe(Wheel wheel, List<int> rawValue)
             {
-                return Math.Round(-0.4 + 0.01 * rawValue[(int)wheel], 2);
+
+                switch (GetPosition(wheel))
+                {
+                    case Position.Front: return Math.Round(-0.4 + 0.01 * rawValue[(int)wheel], 2);
+                    case Position.Rear: return Math.Round(-0.4 + 0.01 * rawValue[(int)wheel], 2);
+                    default: return -1;
+                }
+
             }
         }
 
@@ -85,16 +92,14 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
                 return Math.Round(10d + rawValue, 2);
             }
 
-            private readonly string[] fronts = new string[] { "115000", "124000", "133000", "142000", "151000",
-                "160000", "169000", "178000", "187000", "196000" };
-            private readonly string[] rears = new string[] { "115000", "124000", "133000", "142000", "151000",
-                "160000", "169000", "178000", "187000", "196000", "205000" };
+            private readonly int[] fronts = new int[] { 121000, 144000, 167000, 190000, 201000, 212000 };
+            private readonly int[] rears = new int[] { 117000, 136000, 154000, 164000, 173000, 191000 };
             public int WheelRate(List<int> rawValue, Wheel wheel)
             {
                 switch (GetPosition(wheel))
                 {
-                    case Position.Front: return ToInts(fronts)[rawValue[(int)wheel]];
-                    case Position.Rear: return ToInts(rears)[rawValue[(int)wheel]];
+                    case Position.Front: return fronts[rawValue[(int)wheel]];
+                    case Position.Rear: return rears[rawValue[(int)wheel]];
                     default: return -1;
                 }
             }

@@ -4,7 +4,7 @@ using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT3
 {
-    public class Porsche911IIGT3R : ICarSetupConversion
+    internal class Porsche911IIGT3R : ICarSetupConversion
     {
         public string CarName => "Porsche 911 II GT3 R";
         public string ParseName => "porsche_991ii_gt3_r";

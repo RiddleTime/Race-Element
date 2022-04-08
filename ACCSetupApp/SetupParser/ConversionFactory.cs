@@ -4,70 +4,62 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ACCSetupApp.SetupParser.Cars.GT3;
+using ACCSetupApp.Util;
 using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser
 {
     public class ConversionFactory
     {
+        private Dictionary<string, ICarSetupConversion> carConversions = new Dictionary<string, ICarSetupConversion>()
+        {
+            {"audi_r8_lms", new AudiR8LMS() },
+            {"audi_r8_lms_evo_ii", new AudiR8LMSevoII() },
+            {"bentley_continental_gt3_2018",new BentleyContinentalGT3_2018() },
+            {"bmw_m4_gt3", new BmwM4GT3() },
+            {"ferrari_488_gt3_evo", new Ferrari488GT3evo() },
+            {"honda_nsx_gt3", new HondaNsxGT3() },
+            {"honda_nsx_gt3_evo", new HondaNsxGT3Evo() },
+            {"lamborghini_huracan_gt3_evo",new LamborghiniHuracanGT3evo() },
+            {"lexus_rc_f_gt3", new LexusRcfGT3() },
+            {"mclaren_720s_gt3", new Mclaren720sGT3() },
+            {"mercedes_amg_gt3_evo" , new MercedesAMGGT3evo() },
+            {"nissan_gt_r_gt3_2018",new NissanGtrGT3_2018() },
+            {"porsche_991ii_gt3_r", new Porsche911IIGT3R() },
+            {"porsche_991_gt3_r", new Porsche991GT3R()}
+        };
         internal ICarSetupConversion GetConversion(string parseName)
         {
-            switch (parseName)
-            {
-                case "audi_r8_lms": return new AudiR8LMS();
-                case "audi_r8_lms_evo_ii": return new AudiR8LMSevoII();
-
-                case "bmw_m4_gt3": return new BmwM4GT3();
-
-                case "ferrari_488_gt3_evo": return new Ferrari488GT3evo();
-
-                case "honda_nsx_gt3": return new HondaNsxGT3();
-                case "honda_nsx_gt3_evo": return new HondaNsxGT3Evo();
-
-                case "mclaren_720s_gt3": return new Mclaren720sGT3();
-
-                case "mercedes_amg_gt3_evo": return new MercedesAMGGT3evo();
-
-                case "porsche_991_gt3_r": return new Porsche991GT3R();
-                case "porsche_991ii_gt3_r": return new Porsche911IIGT3R();
-
-
-
-                default: return null;
-            }
+            if (carParseNames.ContainsKey(parseName))
+                return carConversions[parseName];
+            else
+                return null;
         }
 
+        private Dictionary<string, string> carParseNames = new Dictionary<string, string>()
+        {
+            {"audi_r8_lms", "Audi R8 LMS" },
+            {"audi_r8_lms_evo_ii", "Audi R8 LMS evo II" },
+            {"bentley_continental_gt3_2018", "Bentley Continental GT3 2018" },
+            {"bmw_m4_gt3", "BMW M4 GT3" },
+            {"ferrari_488_gt3_evo", "Ferrari 488 GT3 Evo" },
+            {"honda_nsx_gt3", "Honda NSX GT3" },
+            {"honda_nsx_gt3_evo", "Honda NSX GT3 Evo" },
+            {"lexus_rc_f_gt3", "Lexus RC F GT3" },
+            {"lamborghini_huracan_gt3_evo","Lamborghini Huracán GT3 Evo" },
+            {"mclaren_720s_gt3", "McLaren 720S GT3" },
+            {"mercedes_amg_gt3_evo" , "Mercedes-AMG GT3 2020"},
+            {"nissan_gt_r_gt3_2018","Nissan GT-R Nismo GT3 2018" },
+            {"porsche_991ii_gt3_r", "Porsche 911 II GT3 R" },
+            {"porsche_991_gt3_r", "Porsche 911 GT3 R"}
+        };
         internal string ParseCarName(string parseName)
         {
-            switch (parseName)
-            {
-                //case "alpine_a110_gt4": return "Alpine A110 GT4";
-                //case "amr_v8_vantage_gt3": return "Aston Martin Racing V8 Vantage GT3";
-                //case "amr_v8_vantage_gt4": return "Aston Martin Racing V8 Vantage GT4";
-                //case "amr_v12_vantage_gt3": return "Aston Martin Racing V12 Vantage GT3";
-                //case "audi_r8_gt4": return "Audi R8 LMS GT4";
-                case "audi_r8_lms": return "Audi R8 LMS";
-                case "audi_r8_lms_evo_ii": return "Audi R8 LMS evo II";
-
-
-                case "bmw_m4_gt3": return "BMW M4 GT3";
-
-                case "ferrari_488_gt3_evo": return "Ferrari 488 GT3 Evo";
-
-                case "honda_nsx_gt3": return "Honda NSX GT3";
-                case "honda_nsx_gt3_evo": return "Honda NSX GT3 Evo";
-
-
-                case "mclaren_720s_gt3": return "McLaren 720S GT3";
-                case "mercedes_amg_gt3_evo": return "Mercedes-AMG GT3 2020";
-
-                case "porsche_991ii_gt3_r": return "Porsche 911 II GT3 R";
-                case "porsche_991_gt3_r": return "Porsche 911 GT3 R";
-
-
-                default: return parseName;
-            }
+            if (carParseNames.ContainsKey(parseName))
+                return carParseNames[parseName];
+            else return parseName;
         }
-
     }
+
+
 }

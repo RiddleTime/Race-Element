@@ -7,7 +7,7 @@ using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT3
 {
-    public class Ferrari488GT3evo : ICarSetupConversion
+    internal class Ferrari488GT3evo : ICarSetupConversion
     {
         public string CarName => "Ferrari 488 GT3 Evo";
 

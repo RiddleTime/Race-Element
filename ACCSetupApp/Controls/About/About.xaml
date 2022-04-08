@@ -63,6 +63,18 @@
                 <materialDesign:Card Width="800" Margin="0,3,0,0">
                     <StackPanel Orientation="Vertical" Margin="5,0,0,0" >
 
+
+                        <StackPanel Margin="0,10,0,0">
+                            <TextBlock
+                           Style="{StaticResource MaterialDesignBody1TextBlock}"
+                           HorizontalAlignment="Left" TextWrapping="Wrap" >
+                            0.0.2.9:
+                            </TextBlock>
+                            <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
+                            - Setup conversion added: Bentley Continental GT3 2018, Lamborghini Huracán GT3 Evo, Lexus RC F GT3, Nissan GT-R Nismo GT3 2018.
+                            </TextBlock>
+                        </StackPanel>
+
                         <StackPanel Margin="0,10,0,0">
                             <TextBlock 
                            Style="{StaticResource MaterialDesignBody1TextBlock}"
