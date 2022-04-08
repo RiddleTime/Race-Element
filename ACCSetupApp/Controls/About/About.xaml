@@ -67,6 +67,17 @@
                             <TextBlock 
                            Style="{StaticResource MaterialDesignBody1TextBlock}"
                            HorizontalAlignment="Left" TextWrapping="Wrap" >
+                            0.0.2.8:
+                            </TextBlock>
+                            <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
+                            - Added exception handling so the manager will not crash for windows version lower than 11.
+                            </TextBlock>
+                        </StackPanel>
+
+                        <StackPanel Margin="0,10,0,0">
+                            <TextBlock 
+                           Style="{StaticResource MaterialDesignBody1TextBlock}"
+                           HorizontalAlignment="Left" TextWrapping="Wrap" >
                             0.0.2.7:
                             </TextBlock>
                             <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
