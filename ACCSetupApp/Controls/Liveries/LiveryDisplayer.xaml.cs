@@ -1,4 +1,5 @@
 ﻿using ACCSetupApp.LiveryParser;
+using ACCSetupApp.SetupParser;
 using ACCSetupApp.Util;
 using DdsFileTypePlus;
 using PaintDotNet;
@@ -33,11 +34,13 @@ namespace ACCSetupApp.Controls
         internal static LiveryDisplayer Instance;
 
         private LiveryTreeCar Livery { get; set; }
+        private ConversionFactory conversionFactory { get; set; }
 
         public LiveryDisplayer()
         {
             InitializeComponent();
 
+            this.conversionFactory = new ConversionFactory();
             buttonGenerateDDS.Click += ButtonGenerateDDS_Click;
 
             Instance = this;
@@ -179,7 +182,8 @@ namespace ACCSetupApp.Controls
                         skinMainInfo.Visibility = Visibility.Visible;
 
                         stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.teamName}", HorizontalAlignment.Center, 25));
-                        stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.customSkinName}", HorizontalAlignment.Center, 18));
+                        stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.customSkinName}", HorizontalAlignment.Center, 19));
+                        stackPanelMainInfo.Children.Add(GetInfoLabel($"{conversionFactory.GetCarName(carsRoot.carModelType)}", HorizontalAlignment.Center, 16));
 
                         stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Display Name: {carsRoot.displayName}"));
                         stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Race Number: {carsRoot.raceNumber}"));
