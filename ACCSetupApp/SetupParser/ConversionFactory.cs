@@ -11,7 +11,7 @@ namespace ACCSetupApp.SetupParser
 {
     public class ConversionFactory
     {
-        private Dictionary<string, ICarSetupConversion> carConversions = new Dictionary<string, ICarSetupConversion>()
+        private static Dictionary<string, ICarSetupConversion> carConversions = new Dictionary<string, ICarSetupConversion>()
         {
             {"audi_r8_lms", new AudiR8LMS() },
             {"audi_r8_lms_evo_ii", new AudiR8LMSevoII() },
@@ -50,7 +50,7 @@ namespace ACCSetupApp.SetupParser
             return GT3Names;
         }
 
-        private Dictionary<string, string> carParseNames = new Dictionary<string, string>()
+        private static Dictionary<string, string> carParseNames = new Dictionary<string, string>()
         {
             {"audi_r8_lms", "Audi R8 LMS" },
             {"audi_r8_lms_evo_ii", "Audi R8 LMS evo II" },
@@ -74,7 +74,7 @@ namespace ACCSetupApp.SetupParser
             else return parseName;
         }
 
-        private Dictionary<int, string> CarIds = new Dictionary<int, string>()
+        private static Dictionary<int, string> CarModelTypeIds = new Dictionary<int, string>()
         {
             {1, "Mercedes AMG GT3 2015" },
             {2, "Ferrari 488 GT3 2018"},
@@ -118,8 +118,8 @@ namespace ACCSetupApp.SetupParser
 
         public string GetCarName(int carId)
         {
-            if (CarIds.ContainsKey(carId))
-                return CarIds[carId];
+            if (CarModelTypeIds.ContainsKey(carId))
+                return CarModelTypeIds[carId];
             else
                 return "Unknown car model";
         }
