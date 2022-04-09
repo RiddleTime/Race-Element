@@ -104,6 +104,9 @@
     <Reference Include="DdsFileTypePlus, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DdsFileTypePlusHack.1.0.4\lib\net45\DdsFileTypePlus.dll</HintPath>
     </Reference>
+    <Reference Include="JetBrains.Annotations, Version=2021.3.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.2021.3.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="MaterialDesignColors, Version=2.0.5.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.2.0.5\lib\net452\MaterialDesignColors.dll</HintPath>
     </Reference>
@@ -312,6 +315,7 @@
     <Compile Include="Controls\Setup\SetupsTab.xaml.cs">
       <DependentUpon>SetupsTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Telemetry\SharedMemory\StructExtensions.cs" />
     <Compile Include="Controls\Telemetry\TelemetryTab.xaml.cs">
       <DependentUpon>TelemetryTab.xaml</DependentUpon>
     </Compile>

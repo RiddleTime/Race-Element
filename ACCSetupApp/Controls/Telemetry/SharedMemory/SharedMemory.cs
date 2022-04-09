@@ -4,21 +4,28 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ACCSetupApp.Controls.Telemetry.SharedMemory;
 
 namespace ACCSetupApp
 {
+    /// <summary>
+    /// Used certain shared memory from https://github.com/gro-ove/actools
+    /// </summary>
     internal unsafe class SharedMemory
     {
+        // TODO https://github.com/gro-ove/actools/blob/master/AcManager.Tools/SharedMemory/AcSharedMemory.cs
+
         private string physicsMap = "Local\\acpmf_physics";
         private string graphicsMap = "Local\\acpmf_graphics";
         private string staticMap = "Local\\acpmf_static";
 
 
-        enum AC_STATUS : int
+        public enum AC_STATUS : int
         {
             AC_OFF,
             AC_REPLAY,
@@ -26,7 +33,7 @@ namespace ACCSetupApp
             AC_PAUSE,
         }
 
-        enum AC_SESSION_TYPE : int
+        public enum AC_SESSION_TYPE : int
         {
             AC_UNKNOWN = -1,
             AC_PRACTICE = 0,
@@ -40,7 +47,7 @@ namespace ACCSetupApp
             AC_HOTLAPSUPERPOLE = 8
         }
 
-        enum AC_FLAG_TYPE : int
+        public enum AC_FLAG_TYPE : int
         {
             AC_NO_FLAG,
             AC_BLUE_FLAG,
@@ -51,7 +58,7 @@ namespace ACCSetupApp
             AC_PENALTY_FLAG
         }
 
-        enum PenaltyShortcut : int
+        public enum PenaltyShortcut : int
         {
             None,
             DriveThrough_Cutting,
@@ -82,43 +89,63 @@ namespace ACCSetupApp
             Disqualified_ExceededDriverStintLimit,
         };
 
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct SPageFileGraphic
+        [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
+        internal class SPageFileGraphic
         {
-            public int packetId;
-            public int acStatus;
-            public int acSessionType;
-            public fixed char currentTime[15];
-            public fixed char lastTime[15];
-            public fixed char bestTime[15];
-            public fixed char split[15];
-            public int completedLaps;
-            public int position;
-            public int iCurrentTime;
-            public int iLastTime;
-            public int iBestTime;
-            public float sessionTimeLeft;
-            public float distanceTraveled;
-            public int isInPit;
-            public int currentSectorIndex;
-            public int lastSectorTime;
-            public int numberOfLaps;
-            public fixed char tyreCompound[33];
-            public float replayTimeMultiplier;
-            public float normalizedCarPosition;
+            public int PacketId;
+            public AC_STATUS Status;
+            public AC_SESSION_TYPE Session;
 
-            public int activeCars;
-            //public float[][] carCoordinates; // [60][3]
-            public fixed int carID[60];
-            public int playerCarID;
-            public float penaltyTime;
-            public int flagType;
-            public int penaltyShortcut;
-            public int idealLineOn;
-            public int isInPitLane;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+            public string CurrentTime;
 
-            public float surfaceGrip;
-            public int mandatoryPitDone;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+            public string LastTime;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+            public string BestTime;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+            public string Split;
+
+            public int CompletedLaps;
+            public int Position;
+            public int CurrentTimeMs;
+            public int LastTimeMs;
+            public int BestTimeMs;
+            public float SessionTimeLeft;
+            public float DistanceTraveled;
+
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool IsInPits;
+
+            public int CurrentSectorIndex;
+            public int LastSectorTime;
+            public int NumberOfLaps;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+            public string TyreCompound;
+
+            public float ReplayTimeMultiplier;
+            public float NormalizedCarPosition;
+
+            // [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+            public Vector3 CarCoordinates;
+
+            public float PenaltyTime;
+            public AC_FLAG_TYPE Flag;
+
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool IdealLineOn;
+
+            // added in 1.5
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool IsInPitLane;
+            public float SurfaceGrip;
+
+            // added in 1.13
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool MandatoryPitDone;
 
             public float windSpeed;
             public float windDirection;
@@ -141,214 +168,319 @@ namespace ACCSetupApp
             public int DriverStintTotalTimeLeft;
             public int DriverStintTimeLeft;
             public int rainTyres;
+
+
+            public static readonly int Size = Marshal.SizeOf(typeof(SPageFileGraphic));
+            public static readonly byte[] Buffer = new byte[Size];
         };
 
 
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct SPageFilePhysics
+        [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
+        public class SPageFilePhysics
         {
-            public int packetId;
-            public float gas;
-            public float brake;
-            public float fuel;
-            public int gear;
-            public int rpms;
-            public float steerAngle;
-            public float speedKmh;
-            public fixed float velocity[3];
-            public fixed float accG[3];
-            public fixed float wheelSlip[4];
-            public fixed float wheelLoad[4];
-            public fixed float wheelsPressure[4];
-            public fixed float wheelAngularSpeed[4];
-            public fixed float tyreWear[4];
-            public fixed float tyreDirtyLevel[4];
-            public fixed float tyreCoreTemperature[4];
-            public fixed float camberRAD[4];
-            public fixed float suspensionTravel[4];
-            public float drs;
-            public float tc;
-            public float heading;
-            public float pitch;
-            public float roll;
-            public float cgHeight;
-            public fixed float carDamage[5];
-            public int numberOfTyresOut;
-            public int pitLimiterOn;
-            public float abs;
-            public float kersCharge;
-            public float kersInput;
-            public int autoShifterOn;
-            public fixed float rideHeight[2];
-            public float turboBoost;
-            public float ballast;
-            public float airDensity;
-            public float airTemp;
-            public float roadTemp;
-            public fixed float localAngularVel[3];
+            public int PacketId;
+            public float Gas;
+            public float Brake;
+            public float Fuel;
+            public int Gear;
+            public int Rpms;
+            public float SteerAngle;
+            public float SpeedKmh;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+            public float[] Velocity;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+            public float[] AccG;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] WheelSlip;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] WheelLoad;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] WheelPressure;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] WheelAngularSpeed;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] TyreWear;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] TyreDirtyLevel;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] TyreCoreTemperature;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] CamberRad;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] SuspensionTravel;
+
+            public float Drs;
+            public float TC;
+            public float Heading;
+            public float Pitch;
+            public float Roll;
+            public float CgHeight;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 5)]
+            public float[] CarDamage;
+
+            public int NumberOfTyresOut;
+
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool PitLimiterOn;
+            public float Abs;
+
+            public float KersCharge;
+            public float KersInput;
+
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool AutoShifterOn;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+            public float[] RideHeight;
+
+            public float TurboBoost;
+            public float Ballast;
+            public float AirDensity;
+
+            public float AirTemp;
+            public float RoadTemp;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+            public float[] LocalAngularVelocity;
+
             public float finalFF;
             public float performanceMeter;
 
-            public int engineBrake;
-            public int ersRecoveryLevel;
-            public int ersPowerLevel;
-            public int ersHeatCharging;
-            public int ersIsCharging;
-            public float kersCurrentKJ;
 
-            public int drsAvailable;
-            public int drsEnabled;
+            public float PerformanceMeter;
+            public int EngineBrake;
+            public int ErsRecoveryLevel;
+            public int ErsPowerLevel;
+            public int ErsHeatCharging;
+            public int ErsIsCharging;
+            public float KersCurrentKJ;
 
-            public fixed float brakeTemp[4];
-            public float clutch;
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool DrsAvailable;
 
-            public fixed float tyreTempI[4];
-            public fixed float tyreTempM[4];
-            public fixed float tyreTempO[4];
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool DrsEnabled;
 
-            public int isAIControlled;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] BrakeTemperature;
 
-            //public float[][] tyreContactPoint;  
-            //public float[][] tyreContactNormal;
-            //public float[][] tyreContactHeading;
+            public float Clutch;
 
-            public float brakeBias;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] TyreTempI;
 
-            public fixed float localVelocity[3];
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] TyreTempM;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] TyreTempO;
+
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool IsAiControlled;
+
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public Vector3[] TyreContactPoint;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public Vector3[] TyreContactNormal;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public Vector3[] TyreContactHeading;
+
+            public float BrakeBias;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+            public float[] LocalVelocity;
 
             public int P2PActivations;
             public int P2PStatus;
 
-            public int currentMaxRpm;
+            public int CurrentMaxRpm;
 
-            public fixed float mz[4];
-            public fixed float fx[4];
-            public fixed float fy[4];
-            public fixed float slipRatio[4];
-            public fixed float slipAngle[4];
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] mz;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] fx;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] fy;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] SlipRatio;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] SlipAngle;
 
 
-            public int tcinAction;
-            public int absInAction;
-            public fixed float suspensionDamage[4];
-            public fixed float tyreTemp[4];
+            public int TcinAction;
+            public int AbsInAction;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] SuspensionDamage;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] TyreTemp;
+
+            public float WaterTemp;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] brakePressure;
+            public int frontBrakeCompound;
+            public int rearBrakeCompound;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] PadLife;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] DiscLife;
+
+            public int IgnitionOn;
+            public int StarterEngineOn;
+            public int IsEngineRunning;
+            public float KerbVibration;
+            public float SlipVibrations;
+            public float Gvibrations;
+            public float AbsVibrations;
+
+            public static readonly int Size = Marshal.SizeOf(typeof(SPageFilePhysics));
+            public static readonly byte[] Buffer = new byte[Size];
+
         };
 
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct SPageFileStatic
+        [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
+        public class SPageFileStatic
         {
-            public fixed char smVersion[15];
-            public fixed char acVersion[15];
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+            public string SharedMemoryVersion;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+            public string AssettoCorsaVersion;
 
             // session static info
-            public int numberOfSessions;
-            public int numCars;
-            public fixed char carModel[33];
-            public fixed char track[33];
-            public fixed char playerName[33];
-            public fixed char playerSurname[33];
-            public fixed char playerNick[33];
-            public int sectorCount;
+            public int NumberOfSessions;
+            public int NumberOfCars;
 
-            //// car static info
-            public float maxTorque;
-            public float maxPower;
-            public int maxRpm;
-            public float maxFuel;
-            public fixed float suspensionMaxTravel[4];
-            public fixed float tyreRadius[4];
-            public float maxTurboBoost;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+            public string CarModel;
 
-            public float deprecated_1;
-            public float deprecated_2;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+            public string Track;
 
-            public int penaltiesEnabled;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+            public string PlayerName;
 
-            public float aidFuelRate;
-            public float aidTireRate;
-            public float aidMechanicalDamage;
-            public int aidAllowTyreBlankets;
-            public float aidStability;
-            public int aidAutoClutch;
-            public int aidAutoBlip;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+            public string PlayerSurname;
 
-            public int hasDRS;
-            public int hasERS;
-            public int hasKERS;
-            public float kersMaxJ;
-            public int engineBrakeSettingsCount;
-            public int ersPowerControllerCount;
-            public float trackSPlineLength;
-            public fixed char trackConfiguration[33];
-            public float ersMaxJ;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+            public string PlayerNickname;
 
-            public int isTimedRace;
-            public int hasExtraLap;
+            public int SectorCount;
 
-            public fixed char carSkin[33];
-            public int reversedGridPositions;
+            // car static info
+            public float MaxTorque;
+            public float MaxPower;
+            public int MaxRpm;
+            public float MaxFuel;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] SuspensionMaxTravel;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] TyreRadius;
+
+            // added in 1.5
+            public float MaxTurboBoost;
+
+            [Obsolete]
+            public float AirTemperature; // AirTemp since 1.6 in physic
+
+            [Obsolete]
+            public float RoadTemperature; // RoadTemp since 1.6 in physic
+
+            public int PenaltiesEnabled;
+            public float AidFuelRate;
+            public float AidTireRate;
+            public float AidMechanicalDamage;
+            public int AidAllowTyreBlankets;
+            public float AidStability;
+            public int AidAutoClutch;
+            public int AidAutoBlip;
+
+            // added in 1.7.1
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool HasDRS;
+
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool HasERS;
+
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool HasKERS;
+
+            public float KersMaxJoules;
+            public int EngineBrakeSettingsCount;
+            public int ErsPowerControllerCount;
+
+            // added in 1.7.2
+            public float TrackSplineLength;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+            public string TrackConfiguration;
+
+            // added in 1.10.2
+            public float ErsMaxJ;
+
+            // added in 1.13
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool IsTimedRace;
+
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool HasExtraLap;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+            public string CarSkin;
+
+            public int ReversedGridPositions;
             public int PitWindowStart;
             public int PitWindowEnd;
+
             public int isOnline;
+
+            public static readonly int Size = Marshal.SizeOf(typeof(SPageFileStatic));
+            public static readonly byte[] Buffer = new byte[Size];
         };
 
-        public unsafe SharedMemory()
-        {
-            //SPageFileStatic pageStatic = ReadStaticPageFile();
-            //SPageFileGraphic pageGraphic = ReadGraphicsPageFile();
-            //SPageFilePhysics pagePhysics = ReadPhysicsPageFile();
-
-            //string info = "Page File Static:";
-            //info += $"\nSM Version: {new string(pageStatic.smVersion)}";
-            //info += $"\nAC Version: {new string(pageStatic.acVersion)}";
-            //info += $"\nNumber of sessions: {pageStatic.numberOfSessions}";
-            //info += $"\nNumber of cars: {pageStatic.numCars}";
-            //info += $"\nCar model: {new string(pageStatic.carModel)}";
-            //info += $"\nTrack: {new string(pageStatic.track)}";
-            //info += $"\nTrack.Config {new string(pageStatic.trackConfiguration)}";
-            //info += $"\nPlayer.Name: {new string(pageStatic.playerName)}";
-            //info += $"\nPlayer.Surname: {new string(pageStatic.playerSurname)}";
-            //info += $"\nPlayer.Nickname: {new string(pageStatic.playerNick)}";
-            //info += $"\nSector count: {pageStatic.sectorCount}";
-            //info += $"\n\n";
-            //info += $"Car.Skin: {new string(pageStatic.carSkin)}";
-            //info += $"\nCar.MaxTorque: {pageStatic.maxTorque}";
-            //info += $"\nCar.MaxPower: {pageStatic.maxPower}";
-            //info += $"\nCar.MaxRPM: {pageStatic.maxRpm}";
-            //info += $"\nCar.MaxFuel {pageStatic.maxFuel}";
-            //info += $"\nCar.maxSuspensionTravel: {pageStatic.suspensionMaxTravel[0]}, {pageStatic.suspensionMaxTravel[1]}, {pageStatic.suspensionMaxTravel[2]}, {pageStatic.suspensionMaxTravel[3]}";
-            //info += $"\nCar.TyreRadius: {pageStatic.tyreRadius[0]}, {pageStatic.tyreRadius[1]}, {pageStatic.tyreRadius[2]}, {pageStatic.tyreRadius[3]}";
-            //info += $"\nCar.MaxTurboBoost: {pageStatic.maxTurboBoost}";
-
-
-            //info += $"\n\n\n Tyre.Pressures: {pagePhysics.wheelsPressure[0]},{pagePhysics.wheelsPressure[1]},{pagePhysics.wheelsPressure[2]},{pagePhysics.wheelsPressure[3]},";
-            //Debug.WriteLine(info);
-
-        }
-
-
-        public unsafe SPageFileGraphic ReadGraphicsPageFile()
+        public SPageFileGraphic ReadGraphicsPageFile()
         {
             var mappedFile = MemoryMappedFile.CreateOrOpen(graphicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite);
-            MemoryMappedViewAccessor accessor = mappedFile.CreateViewAccessor();
-            accessor.Read(0, out SPageFileGraphic pageFile);
-            return pageFile;
+            var data = StructExtension.ToStruct<SPageFileGraphic>(mappedFile, SPageFileGraphic.Buffer);
+            return data;
         }
 
-        public unsafe SPageFileStatic ReadStaticPageFile()
+        public SPageFileStatic ReadStaticPageFile()
         {
             var mappedFile = MemoryMappedFile.CreateOrOpen(staticMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite);
-            MemoryMappedViewAccessor accessor = mappedFile.CreateViewAccessor();
-            accessor.Read(0, out SPageFileStatic pageFile);
-            return pageFile;
+            var data = StructExtension.ToStruct<SPageFileStatic>(mappedFile, SPageFileStatic.Buffer);
+            return data;
         }
 
-        public unsafe SPageFilePhysics ReadPhysicsPageFile()
+        public SPageFilePhysics ReadPhysicsPageFile()
         {
             var mappedFile = MemoryMappedFile.CreateOrOpen(physicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite);
-            MemoryMappedViewAccessor accessor = mappedFile.CreateViewAccessor();
-            accessor.Read(0, out SPageFilePhysics pageFile);
-            return pageFile;
+            var data = StructExtension.ToStruct<SPageFilePhysics>(mappedFile, SPageFilePhysics.Buffer);
+            return data;
         }
     }
 }
