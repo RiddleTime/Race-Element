@@ -208,7 +208,7 @@ namespace ACCSetupApp
 
             public int isAIControlled;
 
-            //public float[][] tyreContactPoint;  // 4 - 3
+            //public float[][] tyreContactPoint;  
             //public float[][] tyreContactNormal;
             //public float[][] tyreContactHeading;
 
@@ -294,35 +294,35 @@ namespace ACCSetupApp
 
         public unsafe SharedMemory()
         {
-            SPageFileStatic pageStatic = ReadStaticPageFile();
-            SPageFileGraphic pageGraphic = ReadGraphicsPageFile();
-            SPageFilePhysics pagePhysics = ReadPhysicsPageFile();
+            //SPageFileStatic pageStatic = ReadStaticPageFile();
+            //SPageFileGraphic pageGraphic = ReadGraphicsPageFile();
+            //SPageFilePhysics pagePhysics = ReadPhysicsPageFile();
 
-            string info = "Page File Static:";
-            info += $"\nSM Version: {new string(pageStatic.smVersion)}";
-            info += $"\nAC Version: {new string(pageStatic.acVersion)}";
-            info += $"\nNumber of sessions: {pageStatic.numberOfSessions}";
-            info += $"\nNumber of cars: {pageStatic.numCars}";
-            info += $"\nCar model: {new string(pageStatic.carModel)}";
-            info += $"\nTrack: {new string(pageStatic.track)}";
-            info += $"\nTrack.Config {new string(pageStatic.trackConfiguration)}";
-            info += $"\nPlayer.Name: {new string(pageStatic.playerName)}";
-            info += $"\nPlayer.Surname: {new string(pageStatic.playerSurname)}";
-            info += $"\nPlayer.Nickname: {new string(pageStatic.playerNick)}";
-            info += $"\nSector count: {pageStatic.sectorCount}";
-            info += $"\n\n";
-            info += $"Car.Skin: {new string(pageStatic.carSkin)}";
-            info += $"\nCar.MaxTorque: {pageStatic.maxTorque}";
-            info += $"\nCar.MaxPower: {pageStatic.maxPower}";
-            info += $"\nCar.MaxRPM: {pageStatic.maxRpm}";
-            info += $"\nCar.MaxFuel {pageStatic.maxFuel}";
-            info += $"\nCar.maxSuspensionTravel: {pageStatic.suspensionMaxTravel[0]}, {pageStatic.suspensionMaxTravel[1]}, {pageStatic.suspensionMaxTravel[2]}, {pageStatic.suspensionMaxTravel[3]}";
-            info += $"\nCar.TyreRadius: {pageStatic.tyreRadius[0]}, {pageStatic.tyreRadius[1]}, {pageStatic.tyreRadius[2]}, {pageStatic.tyreRadius[3]}";
-            info += $"\nCar.MaxTurboBoost: {pageStatic.maxTurboBoost}";
+            //string info = "Page File Static:";
+            //info += $"\nSM Version: {new string(pageStatic.smVersion)}";
+            //info += $"\nAC Version: {new string(pageStatic.acVersion)}";
+            //info += $"\nNumber of sessions: {pageStatic.numberOfSessions}";
+            //info += $"\nNumber of cars: {pageStatic.numCars}";
+            //info += $"\nCar model: {new string(pageStatic.carModel)}";
+            //info += $"\nTrack: {new string(pageStatic.track)}";
+            //info += $"\nTrack.Config {new string(pageStatic.trackConfiguration)}";
+            //info += $"\nPlayer.Name: {new string(pageStatic.playerName)}";
+            //info += $"\nPlayer.Surname: {new string(pageStatic.playerSurname)}";
+            //info += $"\nPlayer.Nickname: {new string(pageStatic.playerNick)}";
+            //info += $"\nSector count: {pageStatic.sectorCount}";
+            //info += $"\n\n";
+            //info += $"Car.Skin: {new string(pageStatic.carSkin)}";
+            //info += $"\nCar.MaxTorque: {pageStatic.maxTorque}";
+            //info += $"\nCar.MaxPower: {pageStatic.maxPower}";
+            //info += $"\nCar.MaxRPM: {pageStatic.maxRpm}";
+            //info += $"\nCar.MaxFuel {pageStatic.maxFuel}";
+            //info += $"\nCar.maxSuspensionTravel: {pageStatic.suspensionMaxTravel[0]}, {pageStatic.suspensionMaxTravel[1]}, {pageStatic.suspensionMaxTravel[2]}, {pageStatic.suspensionMaxTravel[3]}";
+            //info += $"\nCar.TyreRadius: {pageStatic.tyreRadius[0]}, {pageStatic.tyreRadius[1]}, {pageStatic.tyreRadius[2]}, {pageStatic.tyreRadius[3]}";
+            //info += $"\nCar.MaxTurboBoost: {pageStatic.maxTurboBoost}";
 
 
-            info += $"\n\n\n Tyre.Pressures: {pagePhysics.wheelsPressure[0]},{pagePhysics.wheelsPressure[1]},{pagePhysics.wheelsPressure[2]},{pagePhysics.wheelsPressure[3]},";
-            Debug.WriteLine(info);
+            //info += $"\n\n\n Tyre.Pressures: {pagePhysics.wheelsPressure[0]},{pagePhysics.wheelsPressure[1]},{pagePhysics.wheelsPressure[2]},{pagePhysics.wheelsPressure[3]},";
+            //Debug.WriteLine(info);
 
         }
 

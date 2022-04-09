@@ -4,9 +4,85 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ACCSetupApp.Controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Button x:Name="updateDataButton" Grid.Row="0">Update data</Button>
+        <TabControl Grid.Row="1" TabStripPlacement="Top" FlowDirection="LeftToRight" SelectedIndex="0" HorizontalAlignment="Stretch" Width="1100">
+            <TabItem Name="tabStaticData" Style="{DynamicResource MaterialDesignTabItem}">
+                <TabItem.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon
+                            Grid.Column="0"
+                            Kind="Lock"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="32"
+                        Foreground="White"    
+                        />
+                        <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center">
+                            Static Data
+                        </TextBlock>
+                    </Grid>
+                </TabItem.Header>
+            </TabItem>
+
+
+            <TabItem Name="tabPhysicsData" Style="{DynamicResource MaterialDesignTabItem}">
+                <TabItem.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon
+                            Grid.Column="0"
+                            Kind="MeasuringTape"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="32"
+                        Foreground="White"    
+                        />
+                        <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center">
+                            Physics Data
+                        </TextBlock>
+                    </Grid>
+                </TabItem.Header>
+            </TabItem>
+
+
+            <TabItem Name="tabGraphicsData" Style="{DynamicResource MaterialDesignTabItem}">
+                <TabItem.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon
+                            Grid.Column="0"
+                            Kind="Graph"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="32"
+                        Foreground="White"    
+                        />
+                        <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center">
+                            Graphics Data
+                        </TextBlock>
+                    </Grid>
+                </TabItem.Header>
+            </TabItem>
+
+
+        </TabControl>
     </Grid>
 </UserControl>

@@ -20,7 +20,6 @@ namespace ACCSetupApp
         {
             LogWriter.WriteToLog("Started ACC Manager");
 
-            ThreadPool.QueueUserWorkItem(x => { new SharedMemory(); });
         }
     }
 }

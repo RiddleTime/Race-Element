@@ -190,6 +190,41 @@
                 </Grid>
             </TabItem>
 
+            <TabItem Style="{DynamicResource MaterialDesignTabItem}" Name="tabTelemetry" Height="60">
+                <TabItem.Header>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <materialDesign:PackIcon
+                            Grid.Row="0"
+                            Kind="Analytics"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="20"
+                            Width="20"
+                        Foreground="White"    
+                        />
+                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">
+                            Telemetry
+                        </TextBlock>
+                    </Grid>
+                </TabItem.Header>
+
+                <Grid HorizontalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:TransitioningContent Grid.Column="1">
+                        <materialDesign:TransitioningContent.OpeningEffects>
+                            <materialDesign:TransitionEffect Kind="FadeIn"/>
+                        </materialDesign:TransitioningContent.OpeningEffects>
+                        <controls:TelemetryTab></controls:TelemetryTab>
+                    </materialDesign:TransitioningContent>
+                </Grid>
+            </TabItem>
+
         </TabControl>
     </Grid>
 </Window>
