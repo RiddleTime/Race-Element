@@ -24,9 +24,6 @@ namespace ACCSetupApp.Controls
         public ToolsTabs()
         {
             InitializeComponent();
-
-            ThreadPool.QueueUserWorkItem(x => { new SharedMemory(); });
-
         }
     }
 }
