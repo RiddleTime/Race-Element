@@ -47,6 +47,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -56,7 +57,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Prefer32Bit>true</Prefer32Bit>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
@@ -311,6 +312,9 @@
     <Compile Include="Controls\Setup\SetupsTab.xaml.cs">
       <DependentUpon>SetupsTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Telemetry\TelemetryTab.xaml.cs">
+      <DependentUpon>TelemetryTab.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TitleBar.xaml.cs">
       <DependentUpon>TitleBar.xaml</DependentUpon>
     </Compile>
@@ -339,7 +343,7 @@
     <Compile Include="SetupParser\Cars\GT3\Porsche911IIGT3R.cs" />
     <Compile Include="SetupParser\ISetupConverter.cs" />
     <Compile Include="SetupParser\SetupJson.cs" />
-    <Compile Include="SharedMemory.cs" />
+    <Compile Include="Controls\Telemetry\SharedMemory\SharedMemory.cs" />
     <Compile Include="Util\FileUtil.cs" />
     <Compile Include="Util\LogWriter.cs" />
     <Page Include="Controls\About\About.xaml">
@@ -375,6 +379,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Setup\SetupsTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Telemetry\TelemetryTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

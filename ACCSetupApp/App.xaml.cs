@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -18,6 +19,8 @@ namespace ACCSetupApp
         public App()
         {
             LogWriter.WriteToLog("Started ACC Manager");
+
+            ThreadPool.QueueUserWorkItem(x => { new SharedMemory(); });
         }
     }
 }

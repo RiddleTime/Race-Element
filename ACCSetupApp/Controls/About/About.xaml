@@ -162,6 +162,17 @@
                                 <TextBlock
                            Style="{StaticResource MaterialDesignBody1TextBlock}"
                            HorizontalAlignment="Left" TextWrapping="Wrap" >
+                            0.0.3.0:
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
+                            - Add car model name to livery viewer.
+                                </TextBlock>
+                            </StackPanel>
+
+                            <StackPanel Margin="0,10,0,0">
+                                <TextBlock
+                           Style="{StaticResource MaterialDesignBody1TextBlock}"
+                           HorizontalAlignment="Left" TextWrapping="Wrap" >
                             0.0.2.10:
                                 </TextBlock>
                                 <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
