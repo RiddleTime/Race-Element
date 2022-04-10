@@ -316,6 +316,11 @@
       <DependentUpon>SetupsTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Telemetry\SharedMemory\StructExtensions.cs" />
+    <Compile Include="Controls\Telemetry\TelemetryDebug.xaml.cs">
+      <DependentUpon>TelemetryDebug.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Telemetry\TelemetryRecorder.cs" />
+    <Compile Include="Controls\Telemetry\TelemetryStorage.cs" />
     <Compile Include="Controls\Telemetry\TelemetryTab.xaml.cs">
       <DependentUpon>TelemetryTab.xaml</DependentUpon>
     </Compile>
@@ -383,6 +388,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Setup\SetupsTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Telemetry\TelemetryDebug.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

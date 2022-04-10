@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -26,6 +27,9 @@ namespace ACCSetupApp.Controls
     /// </summary>
     public partial class TelemetryTab : UserControl
     {
+        //private TelemetryStorage _storage = new TelemetryStorage();
+        //private TelemetryRecorder _recorder;
+
         public TelemetryTab()
         {
             InitializeComponent();
@@ -34,6 +38,40 @@ namespace ACCSetupApp.Controls
             //
             // https://github.com/Apress/practical-wpf-charts-graphics
 
+            //new Thread(() =>
+            //{
+            //    _recorder = new TelemetryRecorder(ref _storage);
+
+            //    _recorder.Record();
+
+            //    Thread.Sleep(30 * 1000);
+
+            //    _recorder.Stop();
+
+            //    long firstTime = _storage.GetAllData().First().Key;
+            //    _storage.GetAllData().ToList().ForEach(data =>
+            //    {
+            //        Debug.Write(new DateTime(data.Key - firstTime).ToString("HH:mm:ss.fff", CultureInfo.InvariantCulture) + ": ");
+
+            //        data.Value.ToList().ForEach(value =>
+            //        {
+            //            if (value.Value.GetType() == typeof(Single[]))
+            //            {
+            //                string print = string.Empty;
+            //                Single[] arr = (Single[])value.Value;
+            //                foreach (Single v in arr)
+            //                {
+            //                    print += $"{{{v}}}, ";
+            //                }
+            //                Debug.Write($"[{value.Key}, {print}], ");
+            //            }
+            //            else
+            //                Debug.Write($"{value}, ");
+            //        });
+
+            //        Debug.WriteLine(String.Empty);
+            //    });
+            //}).Start();
         }
     }
 }

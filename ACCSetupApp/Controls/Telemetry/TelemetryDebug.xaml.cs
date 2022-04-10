@@ -147,7 +147,7 @@ namespace ACCSetupApp.Controls
             }));
         }
 
-        public object FieldTypeValue(FieldInfo member, object value)
+        public static object FieldTypeValue(FieldInfo member, object value)
         {
             if (member.FieldType.Name == typeof(Int32[]).Name)
             {
