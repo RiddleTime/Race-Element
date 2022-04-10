@@ -28,13 +28,13 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
                 }
             }
 
-            private readonly string[] casterStrings = new string[] { "6.0", "6.2", "6.4", "6.6", "6.7", "6.9", "7.1", "7.3", "7.5",
-                "7.7", "7.9", "8.1", "8.2", "8.4", "8.6", "8.8", "9.0", "9.2", "9.4", "9.5", "9.7", "9.9", "10.1", "10.3", "10.5",
-                "10.7", "10.8", "11.0", "11.2", "11.4", "11.6", "11.8", "11.9", "12.1", "12.3", "12.5", "12.7", "12.8", "13.0",
-                "13.2", "13.4", "13.6", "13.7", "13.9", "14.1" };
+            private readonly double[] casters = new double[] { 6.0, 6.2, 6.4, 6.6, 6.7, 6.9, 7.1, 7.3, 7.5,
+                7.7, 7.9, 8.1, 8.2, 8.4, 8.6, 8.8, 9.0, 9.2, 9.4, 9.5, 9.7, 9.9, 10.1, 10.3, 10.5,
+                10.7, 10.8, 11.0, 11.2, 11.4, 11.6, 11.8, 11.9, 12.1, 12.3, 12.5, 12.7, 12.8, 13.0,
+                13.2, 13.4, 13.6, 13.7, 13.9, 14.1 };
             public override double Caster(int rawValue)
             {
-                return Math.Round(ToDoubles(casterStrings)[rawValue], 2);
+                return Math.Round(casters[rawValue], 2);
             }
 
             public override double Toe(Wheel wheel, List<int> rawValue)
@@ -86,14 +86,14 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
                 return Math.Round(11d + rawValue, 2);
             }
 
-            private readonly string[] fronts = new string[] { "130000", "143000", "155000", "171000", "187000", "202000" };
-            private readonly string[] rears = new string[] { "71000", "83000", "95000", "107000", "119000", "131000" };
+            private readonly int[] fronts = new int[] { 130000, 143000, 155000, 171000, 187000, 202000 };
+            private readonly int[] rears = new int[] { 71000, 83000, 95000, 107000, 119000, 131000 };
             public int WheelRate(List<int> rawValue, Wheel wheel)
             {
                 switch (GetPosition(wheel))
                 {
-                    case Position.Front: return ToInts(fronts)[rawValue[(int)wheel]];
-                    case Position.Rear: return ToInts(rears)[rawValue[(int)wheel]];
+                    case Position.Front: return fronts[rawValue[(int)wheel]];
+                    case Position.Rear: return rears[rawValue[(int)wheel]];
                     default: return -1;
                 }
             }

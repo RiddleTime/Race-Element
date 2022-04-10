@@ -28,12 +28,12 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
                 }
             }
 
-            private readonly string[] casterStrings = new string[] { "7.3", "7.4", "7.5", "7.6", "7.7", "7.8",
-                "7.9", "8.0", "8.1", "8.2", "8.3", "8.4", "8.5", "8.6", "8.7", "8.8", "8.9", "9.0", "9.1", "9.2",
-                "9.3", "9.4", "9.5", "9.6", "9.7", "9.8", "9.9", "10.0", "10.1", "10.2", "10.3" };
+            private readonly double[] casters = new double[] { 7.3, 7.4, 7.5, 7.6, 7.7, 7.8,
+                7.9, 8.0, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.9, 9.0, 9.1, 9.2,
+                9.3, 9.4, 9.5, 9.6, 9.7, 9.8, 9.9, 10.0, 10.1, 10.2, 10.3 };
             public override double Caster(int rawValue)
             {
-                return Math.Round(ToDoubles(casterStrings)[rawValue], 2);
+                return Math.Round(casters[rawValue], 2);
             }
 
             public override double Toe(Wheel wheel, List<int> rawValue)
@@ -85,14 +85,14 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
                 return Math.Round(11d + rawValue, 2);
             }
 
-            private readonly string[] fronts = new string[] { "83000", "100000", "116000", "133000", "149000", "166000" };
-            private readonly string[] rears = new string[] { "115000", "128000", "141000", "154000", "167000", "180000" };
+            private readonly int[] fronts = new int[] { 83000, 100000, 116000, 133000, 149000, 166000 };
+            private readonly int[] rears = new int[] { 115000, 128000, 141000, 154000, 167000, 180000 };
             public int WheelRate(List<int> rawValue, Wheel wheel)
             {
                 switch (GetPosition(wheel))
                 {
-                    case Position.Front: return ToInts(fronts)[rawValue[(int)wheel]];
-                    case Position.Rear: return ToInts(rears)[rawValue[(int)wheel]];
+                    case Position.Front: return fronts[rawValue[(int)wheel]];
+                    case Position.Rear: return rears[rawValue[(int)wheel]];
                     default: return -1;
                 }
             }
