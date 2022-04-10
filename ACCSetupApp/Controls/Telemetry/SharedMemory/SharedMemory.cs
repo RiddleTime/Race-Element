@@ -279,6 +279,11 @@ namespace ACCSetupApp
             public float X;
             public float Y;
             public float Z;
+
+            public override string ToString()
+            {
+                return $"X ({X}), Y ({Y}), Z ({Z})";
+            }
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
@@ -300,7 +305,7 @@ namespace ACCSetupApp
 
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] WheelSlip;
-            
+
             [Obsolete]
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] WheelLoad;
@@ -348,7 +353,7 @@ namespace ACCSetupApp
             [MarshalAs(UnmanagedType.Bool)]
             public bool PitLimiterOn;
             public float Abs;
-            
+
             [Obsolete]
             public float KersCharge;
 
@@ -486,9 +491,15 @@ namespace ACCSetupApp
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] DiscLife;
 
-            public int IgnitionOn;
-            public int StarterEngineOn;
-            public int IsEngineRunning;
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool IgnitionOn;
+
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool StarterEngineOn;
+
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool IsEngineRunning;
+
             public float KerbVibration;
             public float SlipVibrations;
             public float Gvibrations;
@@ -573,7 +584,7 @@ namespace ACCSetupApp
             [MarshalAs(UnmanagedType.Bool)]
             public bool HasKERS;
             [Obsolete]
-            public float KersMaxJoules; 
+            public float KersMaxJoules;
             [Obsolete]
             public int EngineBrakeSettingsCount;
             [Obsolete]

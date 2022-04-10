@@ -67,9 +67,13 @@ namespace ACCSetupApp.Controls
                 {
                     if (cad.AttributeType == typeof(ObsoleteAttribute)) { isObsolete = true; break; }
                 }
-                if (!isObsolete)
-                    stacker.Children.Add(new TextBlock() { Text = $"{member.Name}: {value}" });
 
+                if (!isObsolete)
+                {
+                    value = FieldTypeValue(member, value);
+
+                    stacker.Children.Add(new TextBlock() { Text = $"{member.Name}: {value}" });
+                }
             }
 
             ScrollViewer scrollViewer = new ScrollViewer() { Margin = new Thickness(3) };
@@ -97,8 +101,13 @@ namespace ACCSetupApp.Controls
                 {
                     if (cad.AttributeType == typeof(ObsoleteAttribute)) { isObsolete = true; break; }
                 }
+
                 if (!isObsolete)
+                {
+                    value = FieldTypeValue(member, value);
+
                     stacker.Children.Add(new TextBlock() { Text = $"{member.Name}: {value}" });
+                }
             }
 
 
@@ -125,7 +134,12 @@ namespace ACCSetupApp.Controls
                     if (cad.AttributeType == typeof(ObsoleteAttribute)) { isObsolete = true; break; }
                 }
                 if (!isObsolete)
+                {
+                    value = FieldTypeValue(member, value);
+
                     stacker.Children.Add(new TextBlock() { Text = $"{member.Name}: {value}" });
+                }
+
             }
 
 
@@ -137,6 +151,46 @@ namespace ACCSetupApp.Controls
             {
                 tabGraphicsData.Content = scrollViewer;
             }));
+        }
+
+        public object FieldTypeValue(FieldInfo member, object value)
+        {
+            if (member.FieldType.Name == typeof(Int32[]).Name)
+            {
+                Int32[] arr = (Int32[])value;
+                value = string.Empty;
+                foreach (Int32 v in arr)
+                {
+                    value += $"{{{v}}}, ";
+                }
+            }
+
+            if (member.FieldType.Name == typeof(Single[]).Name)
+            {
+                Single[] arr = (Single[])value;
+                value = string.Empty;
+                foreach (Single v in arr)
+                {
+                    value += $"{{{v}}}, ";
+                }
+            }
+
+            if (member.FieldType.Name == typeof(StructVector3[]).Name)
+            {
+                StructVector3[] arr = (StructVector3[])value;
+                value = string.Empty;
+                foreach (StructVector3 v in arr)
+                {
+                    value += $"{{{v}}}, ";
+                }
+            }
+
+            if (member.FieldType.Name == typeof(StructVector3).Name)
+            {
+                value = (StructVector3)value;
+            }
+
+            return value;
         }
     }
 }
