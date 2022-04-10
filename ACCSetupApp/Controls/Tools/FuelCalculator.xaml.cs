@@ -73,16 +73,12 @@ namespace ACCSetupApp.Controls
                 }
 
                 float memFuelPerLap = memoryMap.FuelXLap;
-                this.textBoxFuelPerLap.Text = Math.Round(memFuelPerLap, 6).ToString();
-
+                textBoxFuelPerLap.Text = Math.Round(memFuelPerLap, 6).ToString();
 
                 string[] splittedTime = memoryMap.BestTime.Split(':');
-
-
-                if (int.Parse(splittedTime[0]) > 4)
-                {
+                if (int.Parse(splittedTime[0]) > 4) // no lap-time set 
                     return;
-                }
+
                 textBoxLapTimeMinute.Text = splittedTime[0];
                 textBoxLapTimeSecond.Text = splittedTime[1];
                 textBoxLapTimeMillis.Text = splittedTime[2];

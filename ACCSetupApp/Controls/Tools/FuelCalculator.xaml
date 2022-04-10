@@ -18,7 +18,9 @@
     <StackPanel Orientation="Vertical"  Width="600">
         <GroupBox Header="Race Data" FontSize="16" VerticalAlignment="Top">
             <StackPanel >
-                <Button x:Name="buttonFillDataFromMemory" Width="250">Fill Data from Game Memory</Button>
+                <Button x:Name="buttonFillDataFromMemory" Width="250" ToolTip="If you are in a session, your best lap time and fuel per lap will be automatically filled in.">
+                    Load data from Game
+                </Button>
 
 
                 <Label HorizontalAlignment="Center" FontSize="20" Style="{StaticResource MaterialDesignLabel}">Hours</Label>
