@@ -46,14 +46,14 @@
                         </Grid.ColumnDefinitions>
                         <materialDesign:PackIcon
                             Grid.Column="0"
-                            Kind="MeasuringTape"
+                            Kind="AxisArrowInfo"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
                             Height="32"
                         Foreground="White"    
                         />
                         <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center">
-                            Physics Data
+                           Physics Data
                         </TextBlock>
                     </Grid>
                 </TabItem.Header>
@@ -69,7 +69,7 @@
                         </Grid.ColumnDefinitions>
                         <materialDesign:PackIcon
                             Grid.Column="0"
-                            Kind="Graph"
+                            Kind="Radar"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
                             Height="32"

@@ -62,7 +62,13 @@ namespace ACCSetupApp.Controls
             {
                 var value = member.GetValue(pageStatic);
 
-                stacker.Children.Add(new TextBlock() { Text = $"{member.Name}: {value}" });
+                bool isObsolete = false;
+                foreach (CustomAttributeData cad in member.CustomAttributes)
+                {
+                    if (cad.AttributeType == typeof(ObsoleteAttribute)) { isObsolete = true; break; }
+                }
+                if (!isObsolete)
+                    stacker.Children.Add(new TextBlock() { Text = $"{member.Name}: {value}" });
 
             }
 
@@ -86,8 +92,13 @@ namespace ACCSetupApp.Controls
             foreach (FieldInfo member in members)
             {
                 var value = member.GetValue(pageStatic);
-
-                stacker.Children.Add(new TextBlock() { Text = $"{member.Name}: {value}" });
+                bool isObsolete = false;
+                foreach (CustomAttributeData cad in member.CustomAttributes)
+                {
+                    if (cad.AttributeType == typeof(ObsoleteAttribute)) { isObsolete = true; break; }
+                }
+                if (!isObsolete)
+                    stacker.Children.Add(new TextBlock() { Text = $"{member.Name}: {value}" });
             }
 
 
@@ -108,39 +119,13 @@ namespace ACCSetupApp.Controls
             foreach (FieldInfo member in members)
             {
                 var value = member.GetValue(pageStatic);
-
-                if (member.FieldType.IsNested)
+                bool isObsolete = false;
+                foreach (CustomAttributeData cad in member.CustomAttributes)
                 {
-                    object[] attr = member.GetCustomAttributes(typeof(FixedBufferAttribute), false);
-                    if (attr.Length > 0)
-                    {
-                        FixedBufferAttribute bufattr = (FixedBufferAttribute)attr[0];
-
-
-                        if (bufattr.ElementType == typeof(char))
-                        {
-                            switch (member.Name)
-                            {
-                                //case "currentTime": value = new string(pageStatic.currentTime); break;
-                                //case "lastTime": value = new string(pageStatic.lastTime); break;
-                                //case "bestTime": value = new string(pageStatic.bestTime); break;
-                                //case "split": value = new string(pageStatic.split); break;
-                                //case "tyreCompound": value = new string(pageStatic.tyreCompound); break;
-                            }
-                        }
-
-                        if (bufattr.ElementType == typeof(Int32))
-                        {
-                            switch (member.Name)
-                            {
-                                //case "carID": value = pageStatic.carID->ToString(); break;
-                            }
-                        }
-
-                    }
+                    if (cad.AttributeType == typeof(ObsoleteAttribute)) { isObsolete = true; break; }
                 }
-
-                stacker.Children.Add(new TextBlock() { Text = $"{member.Name}: {value}" });
+                if (!isObsolete)
+                    stacker.Children.Add(new TextBlock() { Text = $"{member.Name}: {value}" });
             }
 
 

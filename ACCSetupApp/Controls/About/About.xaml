@@ -165,7 +165,8 @@
                             0.0.3.0:
                                 </TextBlock>
                                 <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
-                            - Add car model name to livery viewer.
+                                    - Add Telemetry tab, very basic for now, might still have some data bugs, also not all data is shown as data yet.<LineBreak/>
+                                    - Add car model name to livery viewer.
                                 </TextBlock>
                             </StackPanel>
 
