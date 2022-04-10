@@ -188,7 +188,7 @@ namespace ACCSetupApp
             public int TCCut;
             public int EngineMap;
             public int ABS;
-            public int FuelXLap;
+            public float FuelXLap;
             public int RainLights;
             public int FlashingLights;
             public int LightsStage;

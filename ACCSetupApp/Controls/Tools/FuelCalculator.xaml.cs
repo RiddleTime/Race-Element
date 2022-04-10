@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACCSetupApp.Util;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -55,6 +56,41 @@ namespace ACCSetupApp.Controls
 
             UpdateRaceDuration();
             UpdateLapTime();
+
+            buttonFillDataFromMemory.Click += ButtonFillDataFromMemory_Click;
+        }
+
+        private void ButtonFillDataFromMemory_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                SharedMemory sharedMemory = new SharedMemory();
+                var memoryMap = sharedMemory.ReadGraphicsPageFile();
+
+                if (memoryMap.Status == SharedMemory.AcStatus.AC_OFF)
+                {
+                    return;
+                }
+
+                float memFuelPerLap = memoryMap.FuelXLap;
+                this.textBoxFuelPerLap.Text = Math.Round(memFuelPerLap, 6).ToString();
+
+
+                string[] splittedTime = memoryMap.BestTime.Split(':');
+
+
+                if (int.Parse(splittedTime[0]) > 4)
+                {
+                    return;
+                }
+                textBoxLapTimeMinute.Text = splittedTime[0];
+                textBoxLapTimeSecond.Text = splittedTime[1];
+                textBoxLapTimeMillis.Text = splittedTime[2];
+            }
+            catch (Exception ex)
+            {
+                LogWriter.WriteToLog(ex);
+            }
         }
 
         private void CalculateFuel()

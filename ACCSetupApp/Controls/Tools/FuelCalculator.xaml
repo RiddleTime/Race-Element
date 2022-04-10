@@ -18,6 +18,9 @@
     <StackPanel Orientation="Vertical"  Width="600">
         <GroupBox Header="Race Data" FontSize="16" VerticalAlignment="Top">
             <StackPanel >
+                <Button x:Name="buttonFillDataFromMemory" Width="250">Fill Data from Game Memory</Button>
+
+
                 <Label HorizontalAlignment="Center" FontSize="20" Style="{StaticResource MaterialDesignLabel}">Hours</Label>
                 <Slider x:Name="sliderHours" Margin="5,0,5,0" Minimum="0" Maximum="24"  IsSnapToTickEnabled="true" TickPlacement="BottomRight"></Slider>
 
@@ -26,7 +29,7 @@
 
                 <Label HorizontalAlignment="Center" FontSize="20" Style="{StaticResource MaterialDesignLabel}" Margin="0,10,0,0">Fuel Per Lap</Label>
                 <TextBox x:Name="textBoxFuelPerLap" materialDesign:TextFieldAssist.SuffixText="L" 
-                         materialDesign:TextFieldAssist.CharacterCounterVisibility="Hidden" MaxLength="6" TextAlignment="Center" Width="100" ></TextBox>
+                         materialDesign:TextFieldAssist.CharacterCounterVisibility="Hidden" MaxLength="8" TextAlignment="Center" Width="100" ></TextBox>
 
                 <Label HorizontalAlignment="Center" FontSize="20" Style="{StaticResource MaterialDesignLabel}" Margin="0,10,0,0">Laptime</Label>
                 <Grid Width="300">
@@ -42,6 +45,8 @@
                     <TextBox Grid.Column="2" x:Name="textBoxLapTimeMillis" MaxLength="3"  materialDesign:TextFieldAssist.CharacterCounterVisibility="Hidden" 
                                  materialDesign:HintAssist.Hint="Milliseconds" TextAlignment="Center" />
                 </Grid>
+
+
             </StackPanel>
         </GroupBox>
         <GroupBox Header="Lap and Fuel Data" FontSize="16" VerticalAlignment="Top">
