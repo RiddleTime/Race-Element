@@ -136,14 +136,12 @@ namespace ACCSetupApp.SetupParser
                 }
             }
 
-            private readonly string baseGT3PSI = "20.3";
-            private readonly string baseGT4PSI = "17.0";
             public double TirePressure(CarClasses carClass, Wheel wheel, List<int> rawValue)
             {
                 switch (carClass)
                 {
-                    case CarClasses.GT3: return Math.Round(double.Parse(baseGT3PSI) + 0.1f * rawValue[(int)wheel], 2);
-                    case CarClasses.GT4: return Math.Round(double.Parse(baseGT4PSI) + 0.1f * rawValue[(int)wheel], 2);
+                    case CarClasses.GT3: return Math.Round(20.3f + 0.1f * rawValue[(int)wheel], 2);
+                    case CarClasses.GT4: return Math.Round(17.0f + 0.1f * rawValue[(int)wheel], 2);
 
                     default: return -1;
                 }

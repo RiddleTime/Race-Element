@@ -179,7 +179,8 @@ namespace ACCSetupApp
             public float WindSpeed;
             public float WindDirection;
 
-            public int IsSetupMenuVisible;
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool IsSetupMenuVisible;
 
             public int MainDisplayIndex;
             public int SecondaryDisplayIndex;
@@ -212,7 +213,9 @@ namespace ACCSetupApp
             [MarshalAs(UnmanagedType.Bool)]
             public bool IsDeltaPositive;
             public int SplitTimeMillis;
-            public int IsValidLap;
+
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool IsValidLap;
             public float FuelEstimatedLaps;
 
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
@@ -282,7 +285,7 @@ namespace ACCSetupApp
 
             public override string ToString()
             {
-                return $"X ({X}), Y ({Y}), Z ({Z})";
+                return $"X: {X}, Y: {Y}, Z: {Z}";
             }
         }
 
@@ -563,14 +566,18 @@ namespace ACCSetupApp
             [Obsolete]
             public float RoadTemperature;
 
-            public int PenaltiesEnabled;
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool PenaltiesEnabled;
             public float AidFuelRate;
             public float AidTireRate;
             public float AidMechanicalDamage;
-            public int AidAllowTyreBlankets;
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool AidAllowTyreBlankets;
             public float AidStability;
-            public int AidAutoClutch;
-            public int AidAutoBlip;
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool AidAutoClutch;
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool AidAutoBlip;
 
             [Obsolete]
             [MarshalAs(UnmanagedType.Bool)]
@@ -611,7 +618,9 @@ namespace ACCSetupApp
             public int PitWindowStart;
             public int PitWindowEnd;
 
-            public int isOnline;
+
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool isOnline;
 
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
             public string DryTyresName;
