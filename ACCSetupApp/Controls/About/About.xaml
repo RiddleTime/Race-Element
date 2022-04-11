@@ -165,7 +165,7 @@
                             0.0.3.3:
                                 </TextBlock>
                                 <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
-                                    - Livery browser: added two tabs for grouping style, Car model type and Teams.
+                                    - Livery browser: added two tabs for grouping style, Car model type and Teams.<LineBreak/>
                                     - Livery viewer: fix crash when generating dds files.
                                 </TextBlock>
                             </StackPanel>
