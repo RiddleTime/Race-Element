@@ -9,11 +9,10 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35"/>
             <RowDefinition/>
+            <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
-        <Button x:Name="updateDataButton" Grid.Row="0">Update data</Button>
-        <TabControl Grid.Row="1" TabStripPlacement="Top" FlowDirection="LeftToRight" SelectedIndex="0" HorizontalAlignment="Stretch" Width="1100">
+        <TabControl Grid.Row="0" TabStripPlacement="Top" FlowDirection="LeftToRight" SelectedIndex="0" HorizontalAlignment="Stretch" Width="1100">
             <TabItem Name="tabStaticData" Style="{DynamicResource MaterialDesignTabItem}">
                 <TabItem.Header>
                     <Grid>
@@ -82,7 +81,8 @@
                 </TabItem.Header>
             </TabItem>
 
-
         </TabControl>
+
+        <Button x:Name="updateDataButton" Grid.Row="1" Content="Update data" />
     </Grid>
 </UserControl>

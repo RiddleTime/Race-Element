@@ -28,6 +28,11 @@ namespace ACCSetupApp.Controls
             }
         }
 
+        public void Clear()
+        {
+            Storage.Clear();
+        }
+
         public Dictionary<long, Dictionary<string, object>> GetAllData()
         {
             lock (Storage)

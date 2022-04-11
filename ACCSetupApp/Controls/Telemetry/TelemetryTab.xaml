@@ -9,6 +9,57 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <controls:TelemetryDebug></controls:TelemetryDebug>
+        <TabControl Width="1100">
+
+            <TabItem>
+                <TabItem.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon
+                            Grid.Column="0"
+                            Kind="ChartLine"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="32"
+                        Foreground="White"    
+                        />
+                        <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center">
+                         Charts
+                        </TextBlock>
+                    </Grid>
+                </TabItem.Header>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Under Development</TextBlock>
+                <!--<controls:DataRecorder></controls:DataRecorder>-->
+            </TabItem>
+
+            <TabItem>
+                <TabItem.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon
+                            Grid.Column="0"
+                            Kind="DatabaseEye"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="32"
+                        Foreground="White"    
+                        />
+                        <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center">
+                            Raw Data
+                        </TextBlock>
+                    </Grid>
+                </TabItem.Header>
+                
+                <controls:TelemetryDebug></controls:TelemetryDebug>
+            </TabItem>
+
+        </TabControl>
+
     </Grid>
 </UserControl>

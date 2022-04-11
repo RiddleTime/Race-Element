@@ -29,6 +29,7 @@ namespace ACCSetupApp.Controls
             _isRunning = true;
             ThreadPool.QueueUserWorkItem(x =>
             {
+                Storage.Clear();
                 var interval = new TimeSpan(0, 0, 0, 0, IntervalMillis);
                 var nextTick = DateTime.Now + interval;
                 while (_isRunning)
@@ -43,16 +44,15 @@ namespace ACCSetupApp.Controls
                     ThreadPool.QueueUserWorkItem(y =>
                     {
                         var physicsPage = Memory.ReadPhysicsPageFile();
+                        var graphicsPage = Memory.ReadGraphicsPageFile();
+
 
                         Dictionary<string, object> data = new Dictionary<string, object>()
                         {
                             {"Speed", physicsPage.SpeedKmh },
-                            {"Gear", physicsPage.Gear - 1 },
-                            {"RPM", physicsPage.Rpms},
-                            {"Fuel", physicsPage.Fuel },
-                            {"Pressures", physicsPage.WheelPressure },
-                            {"SteerAngle", physicsPage.SteerAngle },
-                            {"TyreTemp.Core",physicsPage.TyreCoreTemperature }
+                            {"Throttle", physicsPage.Gas},
+                            {"Brake", physicsPage.Brake },
+                            {"Lap", graphicsPage.CompletedLaps}
                         };
 
                         Storage.AddDataEntry(ticks, data);
@@ -65,6 +65,7 @@ namespace ACCSetupApp.Controls
         public void Stop()
         {
             _isRunning = false;
+            Thread.Sleep(IntervalMillis + 50);
         }
     }
 }
