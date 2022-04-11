@@ -62,7 +62,8 @@ namespace ACCSetupApp.Controls
                 {
                     buttonGenerateDDS.IsEnabled = false;
                     buttonGenerateDDS.Content = "Generating dds files... this may take a while";
-                    LiveryBrowser.Instance.liveriesTreeView.IsEnabled = false;
+                    LiveryBrowser.Instance.liveriesTreeViewTeams.IsEnabled = false;
+                    LiveryBrowser.Instance.liveriesTreeViewCars.IsEnabled = false;
                 }));
                 for (int i = 0; i < pngsToDDS.Count; i++)
                 {
@@ -105,7 +106,8 @@ namespace ACCSetupApp.Controls
                     buttonGenerateDDS.Content = "Generate DDS Files";
 
                     SetLivery(Livery);
-                    LiveryBrowser.Instance.liveriesTreeView.IsEnabled = true;
+                    LiveryBrowser.Instance.liveriesTreeViewTeams.IsEnabled = true;
+                    LiveryBrowser.Instance.liveriesTreeViewCars.IsEnabled = true;
                 }));
                 MainWindow.Instance.EnqueueSnackbarMessage($"DDS generating completed.");
             });

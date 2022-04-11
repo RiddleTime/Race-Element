@@ -70,8 +70,8 @@
                         />
                         <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">About</TextBlock>
                     </Grid>
-
                 </TabItem.Header>
+                
                 <Grid HorizontalAlignment="Center">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>

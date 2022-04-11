@@ -32,15 +32,67 @@
             </Grid.RowDefinitions>
 
             <Button Grid.Row="0" x:Name="buttonImportLiveries">Import Liveries</Button>
-            <TreeView Grid.Row="1" x:Name="liveriesTreeView" Grid.Column="0" Style="{StaticResource MaterialDesignTreeView}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                <TreeViewItem>
-                    <TreeViewItem.Header>
-                        <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}">
-                       Team A
-                        </TextBlock>
-                    </TreeViewItem.Header>
-                </TreeViewItem>
-            </TreeView>
+
+            <TabControl Grid.Row="1">
+                <TabItem>
+                    <TabItem.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon
+                            Grid.Column="0"
+                            Kind="CarSelect"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="32"
+                        Foreground="White"    
+                        />
+                            <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" Cars"></TextBlock>
+                        </Grid>
+                    </TabItem.Header>
+                    <TreeView  x:Name="liveriesTreeViewCars" Grid.Column="0" Style="{StaticResource MaterialDesignTreeView}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <TreeViewItem>
+                            <TreeViewItem.Header>
+                                <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}">
+                                    Team A
+                                </TextBlock>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                    </TreeView>
+                </TabItem>
+
+                <TabItem>
+                    <TabItem.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon
+                            Grid.Column="0"
+                            Kind="AccountGroupOutline"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="32"
+                        Foreground="White"    
+                        />
+                            <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" Teams"></TextBlock>
+                        </Grid>
+                    </TabItem.Header>
+                    <TreeView x:Name="liveriesTreeViewTeams" Grid.Column="0" Style="{StaticResource MaterialDesignTreeView}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <TreeViewItem>
+                            <TreeViewItem.Header>
+                                <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}">
+                                    Team A
+                                </TextBlock>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                    </TreeView>
+                </TabItem>
+            </TabControl>
+
         </Grid>
         <Grid Grid.Column="1" Margin="3,0,0,0">
             <local:LiveryDisplayer></local:LiveryDisplayer>

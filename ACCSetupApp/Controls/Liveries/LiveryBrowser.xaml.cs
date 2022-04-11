@@ -1,4 +1,5 @@
 ﻿using ACCSetupApp.LiveryParser;
+using ACCSetupApp.SetupParser;
 using ACCSetupApp.Util;
 using Newtonsoft.Json;
 using SharpCompress.Archives;
@@ -32,6 +33,7 @@ namespace ACCSetupApp.Controls
     public partial class LiveryBrowser : UserControl
     {
         public static LiveryBrowser Instance;
+        private ConversionFactory conversionFactory = new ConversionFactory();
 
         public LiveryBrowser()
         {
@@ -40,7 +42,8 @@ namespace ACCSetupApp.Controls
             Instance = this;
             ThreadPool.QueueUserWorkItem(x => FetchAllCars());
 
-            liveriesTreeView.SelectedItemChanged += LiveriesTreeView_SelectedItemChanged;
+            liveriesTreeViewTeams.SelectedItemChanged += LiveriesTreeView_SelectedItemChanged;
+            liveriesTreeViewCars.SelectedItemChanged += LiveriesTreeView_SelectedItemChanged;
 
             buttonImportLiveries.Click += ButtonImportLiveries_Click;
         }
@@ -90,11 +93,10 @@ namespace ACCSetupApp.Controls
             {
                 try
                 {
-                    liveriesTreeView.Items.Clear();
+                    liveriesTreeViewTeams.Items.Clear();
+                    liveriesTreeViewCars.Items.Clear();
 
                     DirectoryInfo customsCarsDirectory = new DirectoryInfo(FileUtil.CarsPath);
-
-                    List<TreeViewItem> carsTreeViews = new List<TreeViewItem>();
 
                     List<LiveryTreeCar> liveryTreeCars = new List<LiveryTreeCar>();
 
@@ -117,46 +119,13 @@ namespace ACCSetupApp.Controls
                         }
                     }
 
-                    var groupedLiveryCars = liveryTreeCars.GroupBy(g => g.carsRoot.teamName);
 
-                    foreach (IGrouping<string, LiveryTreeCar> tItem in groupedLiveryCars)
-                    {
-                        TextBlock teamHeader = new TextBlock()
-                        {
-                            Text = $"{tItem.Key}",
-                            Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
-                            TextTrimming = TextTrimming.WordEllipsis,
-                            Width = liveriesTreeView.Width - 5
-                        };
-                        TreeViewItem teamItem = new TreeViewItem() { Header = teamHeader };
+                    var liveriesGroupedByCar = liveryTreeCars.GroupBy(g => conversionFactory.GetCarName(g.carsRoot.carModelType));
+                    var liveriesGroupedByTeam = liveryTreeCars.GroupBy(g => g.carsRoot.teamName);
 
-                        foreach (LiveryTreeCar car in tItem)
-                        {
-                            TextBlock skinHeader = new TextBlock()
-                            {
-                                Text = $"{car.carsRoot.customSkinName}",
-                                Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style,
-                                TextTrimming = TextTrimming.WordEllipsis,
-                                Width = liveriesTreeView.Width - 5
-                            };
-                            TreeViewItem skinItem = new TreeViewItem() { Header = skinHeader, DataContext = car };
-                            skinItem.ContextMenu = GetSkinContextMenu(car);
+                    FillTreeViewTeams(liveriesGroupedByTeam);
+                    FillTreeViewModels(liveriesGroupedByCar);
 
-                            teamItem.Items.Add(skinItem);
-                        }
-
-                        teamItem.ContextMenu = GetTeamContextMenu(teamItem);
-                        carsTreeViews.Add(teamItem);
-                    }
-
-                    carsTreeViews.Sort((a, b) =>
-                    {
-                        TextBlock aCar = a.Header as TextBlock;
-                        TextBlock bCar = b.Header as TextBlock;
-                        return $"{aCar.Text}".CompareTo($"{bCar.Text}");
-                    });
-
-                    carsTreeViews.ForEach(x => liveriesTreeView.Items.Add(x));
                 }
                 catch (Exception ex)
                 {
@@ -164,6 +133,106 @@ namespace ACCSetupApp.Controls
                     LogWriter.WriteToLog(ex);
                 }
             }));
+        }
+
+        private void FillTreeViewModels(IEnumerable<IGrouping<string, LiveryTreeCar>> liveriesGroupedByModel)
+        {
+            List<TreeViewItem> carsTreeViews = new List<TreeViewItem>();
+
+            foreach (IGrouping<string, LiveryTreeCar> tItem in liveriesGroupedByModel)
+            {
+                TextBlock teamHeader = new TextBlock()
+                {
+                    Text = $"{tItem.Key}",
+                    Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
+                    TextTrimming = TextTrimming.WordEllipsis,
+                    Width = liveriesTreeViewTeams.Width - 5
+                };
+                TreeViewItem modelItem = new TreeViewItem() { Header = teamHeader };
+
+                var cars = tItem.ToList();
+                cars.Sort((a, b) =>
+                {
+                    return $"{a.carsRoot.customSkinName.ToLower()}".CompareTo($"{b.carsRoot.customSkinName.ToLower()}");
+                });
+                foreach (LiveryTreeCar car in cars)
+                {
+                    TextBlock skinHeader = new TextBlock()
+                    {
+                        Text = $"{car.carsRoot.customSkinName}",
+                        Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style,
+                        TextTrimming = TextTrimming.WordEllipsis,
+                        Width = liveriesTreeViewTeams.Width - 5
+                    };
+                    TreeViewItem skinItem = new TreeViewItem() { Header = skinHeader, DataContext = car };
+                    skinItem.ContextMenu = GetSkinContextMenu(car);
+
+                    modelItem.Items.Add(skinItem);
+                }
+
+                modelItem.ContextMenu = GetTeamContextMenu(modelItem);
+                carsTreeViews.Add(modelItem);
+            }
+
+            carsTreeViews.Sort((a, b) =>
+            {
+                TextBlock aCar = a.Header as TextBlock;
+                TextBlock bCar = b.Header as TextBlock;
+                return $"{aCar.Text}".CompareTo($"{bCar.Text}");
+            });
+
+            carsTreeViews.ForEach(x => liveriesTreeViewCars.Items.Add(x));
+        }
+
+
+        private void FillTreeViewTeams(IEnumerable<IGrouping<string, LiveryTreeCar>> liveriesGroupedByTeam)
+        {
+            List<TreeViewItem> carsTreeViews = new List<TreeViewItem>();
+
+            foreach (IGrouping<string, LiveryTreeCar> tItem in liveriesGroupedByTeam)
+            {
+                TextBlock teamHeader = new TextBlock()
+                {
+                    Text = $"{tItem.Key}",
+                    Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
+                    TextTrimming = TextTrimming.WordEllipsis,
+                    Width = liveriesTreeViewTeams.Width - 5
+                };
+                TreeViewItem teamItem = new TreeViewItem() { Header = teamHeader };
+
+                var cars = tItem.ToList();
+                cars.Sort((a, b) =>
+                {
+                    return $"{a.carsRoot.customSkinName.ToLower()}".CompareTo($"{b.carsRoot.customSkinName.ToLower()}");
+                });
+
+                foreach (LiveryTreeCar car in cars)
+                {
+                    TextBlock skinHeader = new TextBlock()
+                    {
+                        Text = $"{car.carsRoot.customSkinName}",
+                        Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style,
+                        TextTrimming = TextTrimming.WordEllipsis,
+                        Width = liveriesTreeViewTeams.Width - 5
+                    };
+                    TreeViewItem skinItem = new TreeViewItem() { Header = skinHeader, DataContext = car };
+                    skinItem.ContextMenu = GetSkinContextMenu(car);
+
+                    teamItem.Items.Add(skinItem);
+                }
+
+                teamItem.ContextMenu = GetTeamContextMenu(teamItem);
+                carsTreeViews.Add(teamItem);
+            }
+
+            carsTreeViews.Sort((a, b) =>
+            {
+                TextBlock aCar = a.Header as TextBlock;
+                TextBlock bCar = b.Header as TextBlock;
+                return $"{aCar.Text}".CompareTo($"{bCar.Text}");
+            });
+
+            carsTreeViews.ForEach(x => liveriesTreeViewTeams.Items.Add(x));
         }
 
         private ContextMenu GetSkinContextMenu(LiveryTreeCar directory)

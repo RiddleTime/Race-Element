@@ -126,7 +126,7 @@ namespace ACCSetupApp.SetupParser
             if (CarModelTypeIds.ContainsKey(carId))
                 return CarModelTypeIds[carId];
             else
-                return $"Unknown car model {carId}";
+                return $"Unknown: {carId}";
         }
 
 
