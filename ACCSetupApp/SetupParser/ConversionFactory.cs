@@ -76,6 +76,7 @@ namespace ACCSetupApp.SetupParser
 
         private static Dictionary<int, string> CarModelTypeIds = new Dictionary<int, string>()
         {
+            {0,"Porsche 991 GT3 R 2018" },
             {1, "Mercedes AMG GT3 2015" },
             {2, "Ferrari 488 GT3 2018"},
             {3, "Audi R8 LMS 2015" },
@@ -84,7 +85,7 @@ namespace ACCSetupApp.SetupParser
             {6, "Nissan GTR Nismo GT3 2018"},
             {7, "BMW M6 GT3 2017" },
             {8, "Bentley Continental GT3 2018" },
-            {9, "Porsche9 91 II GT3 Cup 2017" },
+            {9, "Porsche 991 II GT3 Cup 2017" },
             {10, "Nissan GTR Nismo GT3 2015" },
             {11, "Bentley Continental GT3 2015" },
             {12, "Aston Martin Vantage V12 GT3 2013" },
@@ -101,6 +102,10 @@ namespace ACCSetupApp.SetupParser
             {23, "Porsche 911 II GT3 R 2019" },
             {24, "Ferrari 488 GT3 Evo 2020" },
             {25, "Mercedes AMG GT3 Evo 2020" },
+            {26, "Ferrari 488 Challenge Evo 2020" },
+            {27, "BMW M2 Cup 2020" },
+            {28, "Porsche 992 GT3 Cup 2021" },
+            {29, "Lamborghini Huracán ST Evo2 2021" },
             {30, "BMW M4 GT3 2021" },
             {31, "Audi R8 LMS Evo II 2022" },
             {50, "Alpine A110 GT4 2018" },

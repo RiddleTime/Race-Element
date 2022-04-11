@@ -49,9 +49,9 @@ namespace ACCSetupApp.Controls
                             {"Speed", physicsPage.SpeedKmh },
                             {"Gear", physicsPage.Gear - 1 },
                             {"RPM", physicsPage.Rpms},
-                            {"Fuel",physicsPage.Fuel },
+                            {"Fuel", physicsPage.Fuel },
                             {"Pressures", physicsPage.WheelPressure },
-                            { "SteerAngle",physicsPage.SteerAngle },
+                            {"SteerAngle", physicsPage.SteerAngle },
                             {"TyreTemp.Core",physicsPage.TyreCoreTemperature }
                         };
 

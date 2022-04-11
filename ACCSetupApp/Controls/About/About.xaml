@@ -166,7 +166,7 @@
                                 </TextBlock>
                                 <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
                                     - Fuel calcalator: added button to fetch data from game.<LineBreak/>
-                                    - Livery browser: attempted fix for fetching the liveries to display them in the list.
+                                    - Livery browser: fix for fetching the liveries to display them in the list.
                                 </TextBlock>
                             </StackPanel>
 
