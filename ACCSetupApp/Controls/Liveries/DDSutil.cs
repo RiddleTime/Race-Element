@@ -31,10 +31,11 @@ namespace ACCSetupApp.Controls.Liveries
                 FileInfo[] sponsorFiles = customSkinDir.GetFiles(pngsToDDS.ElementAt(i).Value);
                 if (sponsorFiles != null && sponsorFiles.Length > 0)
                 {
-                    MainWindow.Instance.Dispatcher.Invoke(new Action(() => {
+                    MainWindow.Instance.Dispatcher.Invoke(new Action(() =>
+                    {
                         MainWindow.Instance.EnqueueSnackbarMessage($"Generating {pngsToDDS.ElementAt(i).Key}");
                     }));
-                   
+
                     FileInfo sponsorsFile = sponsorFiles[0];
                     FileStream actualFileStream = sponsorsFile.OpenRead();
 
@@ -68,15 +69,18 @@ namespace ACCSetupApp.Controls.Liveries
                 KeyValuePair<string, string> kvp = pngsToDDS.ElementAt(i);
 
                 DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + livery.carsRoot.customSkinName);
-                //check if png exists
-                FileInfo[] foundFiles = customSkinDir.GetFiles(kvp.Value);
-
-                if (foundFiles != null && foundFiles.Length > 0)
+                if (customSkinDir.Exists)
                 {
-                    foundFiles = customSkinDir.GetFiles(kvp.Key);
-                    if (foundFiles == null || foundFiles.Length == 0)
+                    //check if png exists
+                    FileInfo[] foundFiles = customSkinDir.GetFiles(kvp.Value);
+
+                    if (foundFiles != null && foundFiles.Length > 0)
                     {
-                        return false;
+                        foundFiles = customSkinDir.GetFiles(kvp.Key);
+                        if (foundFiles == null || foundFiles.Length == 0)
+                        {
+                            return false;
+                        }
                     }
                 }
             }
