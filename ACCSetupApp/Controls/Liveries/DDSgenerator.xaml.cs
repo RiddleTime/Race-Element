@@ -68,7 +68,7 @@ namespace ACCSetupApp.Controls
 
         private void ButtonGenerate_Click(object sender, RoutedEventArgs e)
         {
-            ThreadPool.QueueUserWorkItem(x =>
+            new Thread(x =>
             {
                 Generating = true;
 
@@ -99,6 +99,7 @@ namespace ACCSetupApp.Controls
                     {
                         MainWindow.Instance.EnqueueSnackbarMessage($"Generated DDS files for {livery.carsRoot.teamName}{livery.carsRoot.customSkinName}");
                         todoList.Items.RemoveAt(0);
+                        liveriesWithoutDDS.RemoveAt(0);
                     });
                 }
 
@@ -116,10 +117,12 @@ namespace ACCSetupApp.Controls
                         buttonCancel.IsEnabled = true;
                         buttonCancel.Content = "Cancel";
                     }
+
+                    Generating = false;
                 });
 
-                Generating = false;
-            });
+
+            }).Start();
         }
 
         private void LoadLiveriesWithoutDDS()

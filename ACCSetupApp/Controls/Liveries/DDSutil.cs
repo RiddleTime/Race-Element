@@ -31,7 +31,10 @@ namespace ACCSetupApp.Controls.Liveries
                 FileInfo[] sponsorFiles = customSkinDir.GetFiles(pngsToDDS.ElementAt(i).Value);
                 if (sponsorFiles != null && sponsorFiles.Length > 0)
                 {
-                    MainWindow.Instance.EnqueueSnackbarMessage($"Generating {pngsToDDS.ElementAt(i).Key}");
+                    MainWindow.Instance.Dispatcher.Invoke(new Action(() => {
+                        MainWindow.Instance.EnqueueSnackbarMessage($"Generating {pngsToDDS.ElementAt(i).Key}");
+                    }));
+                   
                     FileInfo sponsorsFile = sponsorFiles[0];
                     FileStream actualFileStream = sponsorsFile.OpenRead();
 
@@ -94,6 +97,7 @@ namespace ACCSetupApp.Controls.Liveries
         private static void ProgressChanged(object sender, ProgressEventArgs e)
         {
             Debug.WriteLine(e.Percent.ToString());
+            //Debug.WriteLine(e.Percent.ToString());
             //progressBar1.Value = (int) Math.Round(e.Percent);
         }
 
