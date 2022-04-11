@@ -96,7 +96,6 @@ namespace ACCSetupApp.Controls.Liveries
 
         private static void ProgressChanged(object sender, ProgressEventArgs e)
         {
-            Debug.WriteLine(e.Percent.ToString());
             //Debug.WriteLine(e.Percent.ToString());
             //progressBar1.Value = (int) Math.Round(e.Percent);
         }
