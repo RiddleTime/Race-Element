@@ -14,9 +14,8 @@
         </Grid.RowDefinitions>
 
         <Button x:Name="buttonRecordData" Grid.Row="0" Content="Start Recording"/>
-        <lvc:CartesianChart x:Name="chart" Grid.Row="1"
-                               ZoomingSpeed="1"
+        <lvc:CartesianChart x:Name="chart" Grid.Row="1" Margin="5"
                             Zoom="X"
-                             DisableAnimations="True" LegendLocation="Bottom"/>
+                             DisableAnimations="True"/>
     </Grid>
 </UserControl>

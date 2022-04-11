@@ -157,6 +157,16 @@
                     <materialDesign:Card Width="520" Margin="0,3,0,0">
                         <StackPanel Orientation="Vertical" Margin="5,0,0,0" >
 
+                            <StackPanel Margin="0,10,0,0">
+                                <TextBlock
+                           Style="{StaticResource MaterialDesignBody1TextBlock}"
+                           HorizontalAlignment="Left" TextWrapping="Wrap" >
+                            0.0.3.4:
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
+                                    - Added Bulk DDS Generator: Got many skins without dds files? this will generate the dds files. Sit back and relax.
+                                </TextBlock>
+                            </StackPanel>
 
                             <StackPanel Margin="0,10,0,0">
                                 <TextBlock

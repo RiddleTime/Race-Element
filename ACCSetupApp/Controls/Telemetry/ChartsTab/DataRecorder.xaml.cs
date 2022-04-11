@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 
 using LiveCharts;
 using LiveCharts.Wpf;
+using LiveCharts.Helpers;
 
 namespace ACCSetupApp.Controls
 {
@@ -75,11 +76,15 @@ namespace ACCSetupApp.Controls
 
         private void UpdateChart()
         {
+            chart.Series.Clear();
+
             Dictionary<string, ChartValues<double>> values = new Dictionary<string, ChartValues<double>>();
             Dictionary<string, Axis> axes = new Dictionary<string, Axis>();
 
             foreach (var data in _storage.GetAllData())
             {
+
+
                 List<KeyValuePair<string, object>> keyValuePairs = data.Value.ToList();
                 for (int i = 0; i < keyValuePairs.Count; i++)
                 {
@@ -88,7 +93,7 @@ namespace ACCSetupApp.Controls
 
                     if (!values.ContainsKey(key))
                     {
-                        values.Add(key, new ChartValues<double>());
+                        values.Add(key, new ChartValues<double>() { });
                     }
 
                     values[key].Add(double.Parse(value.ToString()));
@@ -97,7 +102,9 @@ namespace ACCSetupApp.Controls
                     {
                         Title = key,
                         Position = AxisPosition.RightTop,
-                        Foreground = GetAxisColor(key)
+                        Foreground = GetAxisColor(key),
+                        Visibility = Visibility.Hidden,
+                        ShowLabels = false,
                     };
                     if (!axes.ContainsKey(key))
                     {
@@ -123,7 +130,8 @@ namespace ACCSetupApp.Controls
                     PointGeometry = DefaultGeometries.None,
                     Fill = Brushes.Transparent,
                     Foreground = null,
-                    Stroke = GetAxisColor(kvPair.Key)
+                    Stroke = GetAxisColor(kvPair.Key),
+                    StrokeThickness = 1,
                 });
             }
         }

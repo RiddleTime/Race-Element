@@ -299,6 +299,10 @@
     <Compile Include="Controls\About\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Liveries\DDSgenerator.xaml.cs">
+      <DependentUpon>DDSgenerator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Liveries\DDSutil.cs" />
     <Compile Include="Controls\Liveries\LiveriesTab.xaml.cs">
       <DependentUpon>LiveriesTab.xaml</DependentUpon>
     </Compile>
@@ -367,6 +371,10 @@
     <Compile Include="Util\FileUtil.cs" />
     <Compile Include="Util\LogWriter.cs" />
     <Page Include="Controls\About\About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Liveries\DDSgenerator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

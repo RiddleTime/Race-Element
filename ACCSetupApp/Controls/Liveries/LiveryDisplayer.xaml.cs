@@ -1,4 +1,5 @@
-﻿using ACCSetupApp.LiveryParser;
+﻿using ACCSetupApp.Controls.Liveries;
+using ACCSetupApp.LiveryParser;
 using ACCSetupApp.SetupParser;
 using ACCSetupApp.Util;
 using DdsFileTypePlus;
@@ -64,41 +65,12 @@ namespace ACCSetupApp.Controls
                     buttonGenerateDDS.Content = "Generating dds files... this may take a while";
                     LiveryBrowser.Instance.liveriesTreeViewTeams.IsEnabled = false;
                     LiveryBrowser.Instance.liveriesTreeViewCars.IsEnabled = false;
+                    LiveryBrowser.Instance.buttonImportLiveries.IsEnabled = false;
+                    LiveryBrowser.Instance.buttonGenerateAllDDS.IsEnabled = false;
                 }));
-                for (int i = 0; i < pngsToDDS.Count; i++)
-                {
-                    DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + Livery.carsRoot.customSkinName);
-                    FileInfo[] sponsorFiles = customSkinDir.GetFiles(pngsToDDS.ElementAt(i).Value);
-                    if (sponsorFiles != null && sponsorFiles.Length > 0)
-                    {
-                        MainWindow.Instance.EnqueueSnackbarMessage($"Generating {pngsToDDS.ElementAt(i).Key}");
-                        FileInfo sponsorsFile = sponsorFiles[0];
-                        FileStream actualFileStream = sponsorsFile.OpenRead();
 
-                        Bitmap bitmap = new Bitmap(actualFileStream);
+                DDSutil.GenerateDDS(Livery);
 
-                        if (pngsToDDS.ElementAt(i).Key.Contains("_1"))
-                        {
-                            bitmap = ResizeBitmap(bitmap, 2048, 2048);
-                        }
-
-                        float hR = bitmap.HorizontalResolution;
-                        float vR = bitmap.VerticalResolution;
-
-                        Surface surface = Surface.CopyFromBitmap(bitmap);
-
-                        FileInfo targetFile = new FileInfo($"{customSkinDir}\\{pngsToDDS.ElementAt(i).Key}");
-                        if (targetFile.Exists)
-                            targetFile.Delete();
-
-                        FileStream write = targetFile.OpenWrite();
-                        DdsFile.Save(write, DdsFileFormat.BC7, DdsErrorMetric.Perceptual, BC7CompressionMode.Slow, true, true, ResamplingAlgorithm.SuperSampling, surface, this.ProgressChanged);
-                        write.Close();
-                        actualFileStream.Close();
-
-                        GC.Collect();
-                    }
-                }
                 Instance.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     buttonGenerateDDS.Visibility = Visibility.Hidden;
@@ -108,42 +80,11 @@ namespace ACCSetupApp.Controls
                     SetLivery(Livery);
                     LiveryBrowser.Instance.liveriesTreeViewTeams.IsEnabled = true;
                     LiveryBrowser.Instance.liveriesTreeViewCars.IsEnabled = true;
+                    LiveryBrowser.Instance.buttonImportLiveries.IsEnabled = true;
+                    LiveryBrowser.Instance.buttonGenerateAllDDS.IsEnabled = true;
                 }));
                 MainWindow.Instance.EnqueueSnackbarMessage($"DDS generating completed.");
             });
-        }
-
-        private Bitmap ResizeBitmap(Bitmap bmp, int width, int height)
-        {
-            Bitmap result = new Bitmap(width, height);
-            using (Graphics g = Graphics.FromImage(result))
-            {
-                g.DrawImage(bmp, 0, 0, width, height);
-            }
-            return result;
-        }
-
-        private bool HasDdsFiles()
-        {
-            for (int i = 0; i < pngsToDDS.Count; i++)
-            {
-                KeyValuePair<string, string> kvp = pngsToDDS.ElementAt(i);
-
-                DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + Livery.carsRoot.customSkinName);
-                //check if png exists
-                FileInfo[] foundFiles = customSkinDir.GetFiles(kvp.Value);
-
-                if (foundFiles != null && foundFiles.Length > 0)
-                {
-                    foundFiles = customSkinDir.GetFiles(kvp.Key);
-                    if (foundFiles == null || foundFiles.Length == 0)
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
         }
 
         internal void SetLivery(LiveryTreeCar livery)
@@ -163,7 +104,7 @@ namespace ACCSetupApp.Controls
             stackPanelLiveryInfo.Children.Clear();
             stackPanelMainInfo.Children.Clear();
             skinMainInfo.Visibility = Visibility.Hidden;
-            buttonGenerateDDS.Visibility = HasDdsFiles() ? Visibility.Hidden : Visibility.Visible;
+            buttonGenerateDDS.Visibility = DDSutil.HasDdsFiles(Livery) ? Visibility.Hidden : Visibility.Visible;
 
 
             ThreadPool.QueueUserWorkItem(x => { GC.Collect(); });
@@ -294,13 +235,6 @@ namespace ACCSetupApp.Controls
             });
         }
 
-        private void ProgressChanged(object sender, ProgressEventArgs e)
-        {
-
-            Debug.WriteLine(e.Percent.ToString());
-            //progressBar1.Value = (int) Math.Round(e.Percent);
-        }
-
         private Label GetInfoLabel(string text, HorizontalAlignment allignmment = HorizontalAlignment.Left, int size = 13)
         {
             Label label = new Label()
@@ -313,7 +247,7 @@ namespace ACCSetupApp.Controls
             return label;
         }
 
-        private Dictionary<int, string> Nationalities = new Dictionary<int, string>()
+        private static Dictionary<int, string> Nationalities = new Dictionary<int, string>()
             {
                 {0,"Other" },
                 {49,"Andorra" },
@@ -412,7 +346,7 @@ namespace ACCSetupApp.Controls
         }
 
 
-        private Dictionary<int, string> RimMaterialTypes = new Dictionary<int, string>()
+        private static Dictionary<int, string> RimMaterialTypes = new Dictionary<int, string>()
         {
             {1,"Glossy" },
             {2,"Matte" },
@@ -427,7 +361,7 @@ namespace ACCSetupApp.Controls
             return MaterialType;
         }
 
-        private Dictionary<int, string> BodyMaterialTypes = new Dictionary<int, string>()
+        private static Dictionary<int, string> BodyMaterialTypes = new Dictionary<int, string>()
         {
             {0,"Glossy" },
             {1,"Matte" },

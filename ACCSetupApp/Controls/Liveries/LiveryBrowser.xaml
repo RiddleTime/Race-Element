@@ -25,10 +25,13 @@
             <ColumnDefinition Width="30*"/>
             <ColumnDefinition Width="70*"/>
         </Grid.ColumnDefinitions>
-        <Grid>
+        <local:DDSgenerator Grid.Column="0" Panel.ZIndex="1" HorizontalAlignment="Left" VerticalAlignment="Center"></local:DDSgenerator>
+
+        <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
 
             <Button Grid.Row="0" x:Name="buttonImportLiveries">Import Liveries</Button>
@@ -93,6 +96,7 @@
                 </TabItem>
             </TabControl>
 
+            <Button Grid.Row="2" x:Name="buttonGenerateAllDDS" ToolTip="This will check and generate DDS files for all liveries above.">Generate DDS Files</Button>
         </Grid>
         <Grid Grid.Column="1" Margin="3,0,0,0">
             <local:LiveryDisplayer></local:LiveryDisplayer>

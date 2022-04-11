@@ -46,6 +46,12 @@ namespace ACCSetupApp.Controls
             liveriesTreeViewCars.SelectedItemChanged += LiveriesTreeView_SelectedItemChanged;
 
             buttonImportLiveries.Click += ButtonImportLiveries_Click;
+            buttonGenerateAllDDS.Click += ButtonGenerateAllDDS_Click;
+        }
+
+        private void ButtonGenerateAllDDS_Click(object sender, RoutedEventArgs e)
+        {
+            DDSgenerator.Instance.Visibility = Visibility.Visible;
         }
 
         private void ButtonImportLiveries_Click(object sender, RoutedEventArgs e)
