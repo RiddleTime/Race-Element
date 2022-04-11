@@ -100,7 +100,7 @@ namespace ACCSetupApp.Controls
 
                     foreach (var carsFile in customsCarsDirectory.GetFiles())
                     {
-                        if (carsFile.Extension.Equals(".json"))
+                        if (carsFile.Extension != null && carsFile.Extension.Equals(".json"))
                         {
                             CarsJson.Root carsRoot = GetLivery(carsFile);
 
@@ -108,8 +108,11 @@ namespace ACCSetupApp.Controls
                             {
                                 LiveryTreeCar treeCar = new LiveryTreeCar() { carsFile = carsFile, carsRoot = carsRoot };
 
-                                if (!treeCar.carsRoot.customSkinName.Equals(String.Empty))
-                                    liveryTreeCars.Add(treeCar);
+                                if (treeCar.carsRoot.customSkinName != null && treeCar.carsRoot.teamName != null)
+                                    if (!treeCar.carsRoot.customSkinName.Equals(string.Empty)
+                                           && !treeCar.carsRoot.teamName.Equals(string.Empty)
+                                            )
+                                        liveryTreeCars.Add(treeCar);
                             }
                         }
                     }
@@ -662,15 +665,22 @@ namespace ACCSetupApp.Controls
             if (!file.Exists)
                 return null;
 
-            using (FileStream fileStream = file.OpenRead())
+            try
             {
-                return GetLivery(fileStream);
+                using (FileStream fileStream = file.OpenRead())
+                {
+                    return GetLivery(fileStream);
+                }
             }
+            catch (Exception ex)
+            {
+                LogWriter.WriteToLog(ex);
+            }
+            return null;
         }
 
         public static CarsJson.Root GetLivery(Stream stream)
         {
-            CarsJson.Root carLiveryRoot = null;
             string jsonString = string.Empty;
             try
             {
@@ -682,7 +692,7 @@ namespace ACCSetupApp.Controls
                     stream.Close();
                 }
 
-                carLiveryRoot = JsonConvert.DeserializeObject<CarsJson.Root>(jsonString);
+                return JsonConvert.DeserializeObject<CarsJson.Root>(jsonString);
             }
             catch (Exception e)
             {
@@ -690,7 +700,7 @@ namespace ACCSetupApp.Controls
                 Debug.WriteLine(e);
             }
 
-            return carLiveryRoot;
+            return null;
         }
     }
 }
