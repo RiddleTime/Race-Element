@@ -98,7 +98,7 @@
                                 </TextBlock>
                                 <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
                                    Browser:<LineBreak/>
-                                    - Right click teams to add to skin pack.<LineBreak/>
+                                    - Right click cars/teams to add to skin pack.<LineBreak/>
                                     - Right click skins to add to skin pack.<LineBreak/>
                                     - Right click skins to browse livery folder.<LineBreak/>
                                     - Right click skins to open json file.<LineBreak/><LineBreak/>
