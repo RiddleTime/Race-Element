@@ -29,7 +29,11 @@ namespace ACCSetupApp.Controls
             InitializeComponent();
 
             SetCarConversionFeatures();
+
+            buttonDiscord.Click += (sender, e) => System.Diagnostics.Process.Start("https://discord.gg/26AAEW5mUq"); ;
+            buttonGithub.Click += (sender, e) => System.Diagnostics.Process.Start("https://github.com/RiddleTime/ACC-Manager");
         }
+
 
         private void SetCarConversionFeatures()
         {
