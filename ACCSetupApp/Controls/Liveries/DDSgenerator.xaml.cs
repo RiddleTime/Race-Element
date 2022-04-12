@@ -119,6 +119,7 @@ namespace ACCSetupApp.Controls
                     }
 
                     Generating = false;
+                    LoadLiveriesWithoutDDS();
                 });
 
 
