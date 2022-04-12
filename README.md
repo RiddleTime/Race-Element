@@ -6,4 +6,4 @@ Provides tooling for Assetto Corsa Competizione.
 https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48
 
 ### Discord server
-https://discord.gg/A7sJguWmqd
+https://discord.gg/26AAEW5mUq
