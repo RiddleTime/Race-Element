@@ -7,3 +7,8 @@ https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48
 
 ### Discord server
 https://discord.gg/26AAEW5mUq
+
+
+### Frameworks
+- WPF
+- https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit
