@@ -157,6 +157,17 @@ namespace ACCSetupApp.Controls
                 }
             }
 
+            if (liveryTreeCars.Count == 0)
+            {
+                buttonGenerate.Content = "All DDS files available";
+                buttonGenerate.IsEnabled = false;
+            }
+            else
+            {
+                buttonGenerate.Content = "Start generating";
+                buttonGenerate.IsEnabled = true;
+            }
+
             liveryTreeCars.Sort((a, b) =>
             {
                 return $"{a.carsRoot.teamName}{a.carsRoot.customSkinName}".CompareTo($"{b.carsRoot.teamName}{b.carsRoot.customSkinName}");
