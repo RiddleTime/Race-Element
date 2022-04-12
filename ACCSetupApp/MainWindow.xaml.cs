@@ -73,6 +73,15 @@ namespace ACCSetupApp
                    }));
         }
 
+        public void EnqueueSnackbarWarning(string message)
+        {
+            Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
+                   delegate ()
+                   {
+                       Instance.snackbar.MessageQueue.Enqueue(message);
+                   }));
+        }
+
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();

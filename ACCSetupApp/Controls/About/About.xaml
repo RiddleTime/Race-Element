@@ -41,6 +41,9 @@
                     Developed by Defragler (Reinier Klarenberg)
                         </TextBlock>
                     </StackPanel>
+
+                    <StackPanel x:Name="ReleaseStackPanel" Orientation="Vertical" HorizontalAlignment="Left" Width="250" VerticalAlignment="Top" Margin="0,5,5,0">
+                    </StackPanel>
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Right" Width="100" VerticalAlignment="Top" Margin="0,5,5,0">
                         <Button x:Name="buttonDiscord" >
                             <Grid>
@@ -199,6 +202,17 @@
                 <ScrollViewer Style="{StaticResource MaterialDesignScrollViewer}" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Visible">
                     <materialDesign:Card Width="520" Margin="0,3,0,0">
                         <StackPanel Orientation="Vertical" Margin="5,0,0,0" >
+
+                            <StackPanel Margin="0,10,0,0">
+                                <TextBlock
+                           Style="{StaticResource MaterialDesignBody1TextBlock}"
+                           HorizontalAlignment="Left" TextWrapping="Wrap" >
+                            0.0.3.6:
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
+                                    - About tab: When a new release is available a new button allows you to visit the latest release and download the newest version.
+                                </TextBlock>
+                            </StackPanel>
 
                             <StackPanel Margin="0,10,0,0">
                                 <TextBlock
