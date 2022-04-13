@@ -87,6 +87,11 @@ namespace ACCSetupApp.Controls
             });
         }
 
+        public void ReloadLivery()
+        {
+            SetLivery(this.Livery);
+        }
+
         internal void SetLivery(LiveryTreeCar livery)
         {
             ThreadPool.QueueUserWorkItem(x => { GC.Collect(); });

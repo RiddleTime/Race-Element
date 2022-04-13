@@ -81,7 +81,7 @@ namespace ACCSetupApp.Controls
                     LiveryBrowser.Instance.liveriesTreeViewCars.IsEnabled = false;
                     LiveryBrowser.Instance.buttonImportLiveries.IsEnabled = false;
                     LiveryBrowser.Instance.buttonGenerateAllDDS.IsEnabled = false;
-
+                    LiveryDisplayer.Instance.buttonGenerateDDS.IsEnabled = false;
                 });
 
                 while (liveriesWithoutDDS.Count > 0 && Generating)
@@ -111,7 +111,8 @@ namespace ACCSetupApp.Controls
                     LiveryBrowser.Instance.liveriesTreeViewCars.IsEnabled = true;
                     LiveryBrowser.Instance.buttonImportLiveries.IsEnabled = true;
                     LiveryBrowser.Instance.buttonGenerateAllDDS.IsEnabled = true;
-
+                    LiveryDisplayer.Instance.buttonGenerateDDS.IsEnabled = true;
+                    LiveryDisplayer.Instance.ReloadLivery();
                     if (!Generating)
                     {
                         buttonCancel.IsEnabled = true;

@@ -24,7 +24,6 @@ namespace ACCSetupApp.Controls
                 // Set filter for file extension and default file extension 
                 dlg.AddExtension = true;
                 dlg.CheckPathExists = true;
-
                 dlg.Filter = "Livery archive|*.zip;*.rar;*.7z";
                 dlg.Multiselect = true;
                 Nullable<bool> result = dlg.ShowDialog();
@@ -32,7 +31,6 @@ namespace ACCSetupApp.Controls
                 if (result == true)
                 {
                     string[] fileNames = dlg.FileNames;
-
                     if (fileNames != null && fileNames.Length > 0)
                     {
                         for (int i = 0; i < fileNames.Length; i++)
@@ -44,11 +42,13 @@ namespace ACCSetupApp.Controls
                             }
                         }
                     }
-
                 }
 
             }
-            catch (Exception ex) { LogWriter.WriteToLog(ex); }
+            catch (Exception ex)
+            {
+                LogWriter.WriteToLog(ex);
+            }
 
             MainWindow.Instance.EnqueueSnackbarMessage($"Finished importing liveries");
             LiveryBrowser.Instance.FetchAllCars();
