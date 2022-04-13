@@ -210,7 +210,7 @@
                             0.0.3.7:
                                 </TextBlock>
                                 <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
-                                    - Setup conversion added: Lamborghini Huracán GT3 2015, Ferrari 488 GT3 2018.
+                                    - Setup conversion added: Lamborghini Huracán GT3 2015, Nissan GT-R Nismo GT3 2015, Ferrari 488 GT3 2018.
                                 </TextBlock>
                             </StackPanel>
 

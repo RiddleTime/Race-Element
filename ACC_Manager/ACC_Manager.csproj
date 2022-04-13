@@ -366,6 +366,7 @@
     <Compile Include="SetupParser\Cars\GT3\LexusRcfGT3.cs" />
     <Compile Include="SetupParser\Cars\GT3\Mclaren720sGT3.cs" />
     <Compile Include="SetupParser\Cars\GT3\MercedesAMGGT3evo.cs" />
+    <Compile Include="SetupParser\Cars\GT3\NissanGtrGT3_2015.cs" />
     <Compile Include="SetupParser\Cars\GT3\NissanGtrGT3_2018.cs" />
     <Compile Include="SetupParser\Cars\GT3\Porsche991GT3R.cs" />
     <Compile Include="SetupParser\ConversionFactory.cs" />

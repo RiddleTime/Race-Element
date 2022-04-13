@@ -26,6 +26,7 @@ namespace ACCSetupApp.SetupParser
             {"lexus_rc_f_gt3", new LexusRcfGT3() },
             {"mclaren_720s_gt3", new Mclaren720sGT3() },
             {"mercedes_amg_gt3_evo", new MercedesAMGGT3evo() },
+            {"nissan_gt_r_gt3_2017", new NissanGtrGT3_2015() },
             {"nissan_gt_r_gt3_2018", new NissanGtrGT3_2018() },
             {"porsche_991ii_gt3_r", new Porsche911IIGT3R() },
             {"porsche_991_gt3_r", new Porsche991GT3R()}
@@ -67,6 +68,7 @@ namespace ACCSetupApp.SetupParser
             {"lamborghini_huracan_gt3_evo","Lamborghini Huracán GT3 Evo 2019" },
             {"mclaren_720s_gt3", "McLaren 720S GT3 2019" },
             {"mercedes_amg_gt3_evo" , "Mercedes-AMG GT3 2020"},
+            {"nissan_gt_r_gt3_2017", "Nissan GT-R Nismo GT3 2015" },
             {"nissan_gt_r_gt3_2018","Nissan GT-R Nismo GT3 2018" },
             {"porsche_991ii_gt3_r", "Porsche 911 II GT3 R 2019" },
             {"porsche_991_gt3_r", "Porsche 911 GT3 R 2018"}
