@@ -58,11 +58,13 @@ namespace ACCSetupApp.Controls
 
         private async void CheckNewestVersion()
         {
+#if DEBUG
+            return;
+#endif
             try
             {
                 GitHubClient client = new GitHubClient(new ProductHeaderValue("ACC-Manager"), new Uri("https://github.com/RiddleTime/ACC-Manager.git"));
                 var allTags = await client.Repository.GetAllTags("RiddleTime", "ACC-Manager");
-
 
                 if (allTags != null && allTags.Count > 0)
                 {
