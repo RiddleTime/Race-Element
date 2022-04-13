@@ -18,6 +18,8 @@ namespace ACCSetupApp.Controls
     /// </summary>
     public partial class SetupBrowser : UserControl
     {
+        public static SetupBrowser Instance { get; set; }
+
         private readonly ConversionFactory conversionFactory;
         private readonly FlowDocSetupRenderer setupRenderer;
 
@@ -32,7 +34,7 @@ namespace ACCSetupApp.Controls
 
             setupsTreeView.SelectedItemChanged += SetupsTreeView_SelectedItemChanged;
 
-
+            Instance = this;
         }
 
         private void SetupsTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -54,7 +56,7 @@ namespace ACCSetupApp.Controls
             }
         }
 
-        private void FetchAllSetups()
+        internal void FetchAllSetups()
         {
             try
             {
