@@ -79,6 +79,7 @@ namespace ACCSetupApp.Controls
                             Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
                         };
                         TreeViewItem carTreeViewItem = new TreeViewItem() { Header = carHeader };
+                        carTreeViewItem.ContextMenu = GetCarContextMenu(carDir);
 
                         // find track directories in car dir
                         foreach (var trackDir in carDir.GetDirectories())
@@ -135,6 +136,34 @@ namespace ACCSetupApp.Controls
                 LogWriter.WriteToLog(ex);
                 Debug.WriteLine(ex);
             }
+        }
+
+        private ContextMenu GetCarContextMenu(DirectoryInfo directory)
+        {
+            ContextMenu menu = new ContextMenu()
+            {
+                Style = Resources["MaterialDesignContextMenu"] as Style,
+                Margin = new Thickness(0),
+                Padding = new Thickness(0),
+                UsesItemContainerTemplate = true,
+                Background = new SolidColorBrush(Color.FromArgb(220, 0, 0, 0))
+            };
+
+
+            Button openFolder = new Button()
+            {
+                Content = "Open in explorer",
+                CommandParameter = directory,
+                Style = Resources["MaterialDesignRaisedButton"] as Style,
+                Margin = new Thickness(0),
+                Height = 30,
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            openFolder.Click += OpenFolder_Click;
+
+            menu.Items.Add(openFolder);
+
+            return menu;
         }
 
         private ContextMenu GetTrackContextMenu(DirectoryInfo directory)
