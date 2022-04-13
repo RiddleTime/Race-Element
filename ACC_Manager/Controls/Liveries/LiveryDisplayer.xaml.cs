@@ -95,7 +95,7 @@ namespace ACCSetupApp.Controls
                 return;
 
             Livery = livery;
-            Livery.carsRoot = GetLivery(livery.carsFile);
+            Livery.carsRoot = LiveryImporter.GetLivery(livery.carsFile);
 
             decalsLabel.Content = string.Empty;
             decalsImage.Source = null;

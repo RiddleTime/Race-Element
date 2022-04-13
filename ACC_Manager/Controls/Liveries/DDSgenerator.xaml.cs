@@ -139,7 +139,7 @@ namespace ACCSetupApp.Controls
             {
                 if (carsFile.Extension != null && carsFile.Extension.Equals(".json"))
                 {
-                    CarsJson.Root carsRoot = GetLivery(carsFile);
+                    CarsJson.Root carsRoot = LiveryImporter.GetLivery(carsFile);
 
                     if (carsRoot != null)
                     {

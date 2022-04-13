@@ -318,6 +318,7 @@
     <Compile Include="Controls\Liveries\LiveryExporter.xaml.cs">
       <DependentUpon>LiveryExporter.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Liveries\LiveryImporter.cs" />
     <Compile Include="Controls\Setup\FlowDocUtil\DocUtil.cs" />
     <Compile Include="Controls\Setup\FlowDocUtil\FlowDocCompareSetupRenderer.cs" />
     <Compile Include="Controls\Setup\SetupBrowser.xaml.cs">

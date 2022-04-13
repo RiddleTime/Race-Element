@@ -35,5 +35,17 @@ namespace ACCSetupApp.Util
 
             return result;
         }
+
+        public static string GetFileName(string fullName)
+        {
+            string[] split = fullName.Split('/');
+
+            if (split.Length == 1 && split[0].Contains("\\"))
+            {
+                split = fullName.Split('\\');
+            }
+
+            return split[split.Length - 1].Replace("\\", "");
+        }
     }
 }
