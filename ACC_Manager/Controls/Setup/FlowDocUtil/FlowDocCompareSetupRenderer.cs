@@ -279,10 +279,10 @@ namespace ACCSetupApp.Controls.Setup
             Section aeroBalanceSection = new Section();
             TableRowGroup rgAero = new TableRowGroup();
             rgAero.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), DocUtil.GetDefaultHeader("Aero Balance"), DocUtil.GetDefaultParagraph()));
-            rgAero.Rows.Add(DocUtil.GetTableRowCompare($"Front: {brakeDuctsFront1}, Rear: {brakeDuctsRear1}", "Brake ducts", $"Front: {brakeDuctsFront2}, Rear: {brakeDuctsRear2}"));
             rgAero.Rows.Add(DocUtil.GetTableRowCompare($"Front: {rideHeightFront1}, Rear: {rideHeightRear1}", "Ride height(mm)", $"Front: {rideHeightFront2}, Rear: {rideHeightRear2}"));
             rgAero.Rows.Add(DocUtil.GetTableRowCompare($"{splitter1}", "Splitter", $"{splitter2}"));
             rgAero.Rows.Add(DocUtil.GetTableRowCompare($"{rearWing1}", "Rear Wing", $"{rearWing2}"));
+            rgAero.Rows.Add(DocUtil.GetTableRowCompare($"Front: {brakeDuctsFront1}, Rear: {brakeDuctsRear1}", "Brake ducts", $"Front: {brakeDuctsFront2}, Rear: {brakeDuctsRear2}"));
             Table aeroTable = DocUtil.GetTable(35, 15, 35);
             aeroTable.RowGroups.Add(rgAero);
             aeroBalanceSection.Blocks.Add(aeroTable);

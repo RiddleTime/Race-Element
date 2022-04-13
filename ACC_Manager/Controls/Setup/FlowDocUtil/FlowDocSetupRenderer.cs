@@ -224,10 +224,10 @@ namespace ACCSetupApp.Controls.Setup
             aeroBalanceSection.Blocks.Add(DocUtil.GetDefaultHeader("Aero Balance"));
             Table aeroTable = DocUtil.GetTable(30, 70);
             TableRowGroup aeroTableRowGroup = new TableRowGroup();
-            aeroTableRowGroup.Rows.Add(DocUtil.GetTableRow("Brake ducts", $"Front: {brakeDuctsFront}, Rear: {brakeDuctsRear}"));
             aeroTableRowGroup.Rows.Add(DocUtil.GetTableRow("Ride height(mm)", $"Front: {rideHeightFront}, Rear: {rideHeightRear}"));
             aeroTableRowGroup.Rows.Add(DocUtil.GetTableRow("Splitter", $"{splitter}"));
             aeroTableRowGroup.Rows.Add(DocUtil.GetTableRow("Rear Wing", $"{rearWing}"));
+            aeroTableRowGroup.Rows.Add(DocUtil.GetTableRow("Brake ducts", $"Front: {brakeDuctsFront}, Rear: {brakeDuctsRear}"));
 
 
             aeroTable.RowGroups.Add(aeroTableRowGroup);
