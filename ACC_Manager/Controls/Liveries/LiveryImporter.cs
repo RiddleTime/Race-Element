@@ -96,11 +96,11 @@ namespace ACCSetupApp.Controls
             });
 
             // check importing strategy
-            if (availableSkins.Count == 1)
+            if (availableSkins.Count > 0)
             {
                 List<IArchiveEntry> carsFolders = archiveEntries.FindAll((x) =>
                   {
-                      return x.Key.EndsWith("Cars/") || x.Key.EndsWith("Cars\\");
+                      return x.Key.ToLower().EndsWith("cars/") || x.Key.ToLower().EndsWith("cars\\");
                   });
 
                 if (carsFolders.Count == 0)
