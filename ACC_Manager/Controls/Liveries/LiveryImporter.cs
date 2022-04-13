@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace ACCSetupApp.Controls
 {
@@ -19,6 +20,15 @@ namespace ACCSetupApp.Controls
         {
             try
             {
+                LiveryBrowser.Instance.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    LiveryBrowser.Instance.liveriesTreeViewTeams.IsEnabled = false;
+                    LiveryBrowser.Instance.liveriesTreeViewCars.IsEnabled = false;
+                    LiveryBrowser.Instance.buttonImportLiveries.IsEnabled = false;
+                    LiveryBrowser.Instance.buttonGenerateAllDDS.IsEnabled = false;
+                    LiveryDisplayer.Instance.IsEnabled = false;
+                }));
+
                 Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 
                 // Set filter for file extension and default file extension 
@@ -49,6 +59,15 @@ namespace ACCSetupApp.Controls
             {
                 LogWriter.WriteToLog(ex);
             }
+
+            LiveryBrowser.Instance.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                LiveryBrowser.Instance.liveriesTreeViewTeams.IsEnabled = true;
+                LiveryBrowser.Instance.liveriesTreeViewCars.IsEnabled = true;
+                LiveryBrowser.Instance.buttonImportLiveries.IsEnabled = true;
+                LiveryBrowser.Instance.buttonGenerateAllDDS.IsEnabled = true;
+                LiveryDisplayer.Instance.IsEnabled = true;
+            }));
 
             MainWindow.Instance.EnqueueSnackbarMessage($"Finished importing liveries");
             LiveryBrowser.Instance.FetchAllCars();
