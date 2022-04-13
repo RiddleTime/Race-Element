@@ -440,7 +440,7 @@ namespace ACCSetupApp.Controls
                 dlg.AddExtension = true;
                 dlg.CheckPathExists = true;
 
-                dlg.Filter = "Livery zip(s)|*.zip|Livery rar(s)|*.rar|Livery 7z(s)|*.7z";
+                dlg.Filter = "Livery archive|*.zip;*.rar;*.7z";
                 dlg.Multiselect = true;
                 Nullable<bool> result = dlg.ShowDialog();
 

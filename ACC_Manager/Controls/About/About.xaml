@@ -211,7 +211,8 @@
                                 </TextBlock>
                                 <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
                                     - Setups tab: Car names have the year added, added button to right click menu to open car directory.<LineBreak/>
-                                    - Setup conversion added: Lamborghini Huracán GT3 2015, Nissan GT-R Nismo GT3 2015, Ferrari 488 GT3 2018.
+                                    - Setup conversion added: Lamborghini Huracán GT3 2015, Nissan GT-R Nismo GT3 2015, Ferrari 488 GT3 2018.<LineBreak/>
+                                    - Livery Importer: Added 1 file filter for all supported types.
                                 </TextBlock>
                             </StackPanel>
 
