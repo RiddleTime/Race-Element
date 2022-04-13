@@ -70,13 +70,11 @@ namespace ACCSetupApp.Controls
             }
 
             List<IArchiveEntry> archiveEntries = archive.Entries.ToList();
-
             List<IArchiveEntry> availableSkins = archiveEntries.FindAll((x) =>
             {
                 CarsJson.Root carRoot = GetLivery(x.OpenEntryStream());
                 return carRoot != null && carRoot.customSkinName != null && !carRoot.customSkinName.Equals(string.Empty);
             });
-
 
             // check importing strategy
             if (availableSkins.Count == 1)
@@ -108,7 +106,7 @@ namespace ACCSetupApp.Controls
                     if (!x.Key.StartsWith("__MACOSX"))
                     {
                         CarsJson.Root carRoot = GetLivery(x.OpenEntryStream());
-                        if (carRoot != null && carRoot.customSkinName != string.Empty)
+                        if (carRoot != null && carRoot.customSkinName != null && carRoot.customSkinName != string.Empty)
                         {
                             Debug.WriteLine($"Found livery {carRoot.teamName} / {carRoot.customSkinName}");
 
@@ -176,7 +174,7 @@ namespace ACCSetupApp.Controls
                     if (!x.Key.StartsWith("__MACOSX") && (x.Key.ToLower().Contains("cars/") || x.Key.ToLower().Contains("cars\\")))
                     {
                         CarsJson.Root carRoot = GetLivery(x.OpenEntryStream());
-                        if (carRoot != null && carRoot.customSkinName != string.Empty)
+                        if (carRoot != null && carRoot.customSkinName != null && carRoot.customSkinName != string.Empty)
                         {
                             Debug.WriteLine($"Found livery {carRoot.teamName} / {carRoot.customSkinName}");
 
@@ -196,7 +194,6 @@ namespace ACCSetupApp.Controls
                             {
                                 skinFiles = archiveEntries.FindAll(s => s.Key.Contains($"\\\\{carRoot.customSkinName}\\\\"));
                             }
-
 
                             if (skinFiles.Count > 0)
                             {
