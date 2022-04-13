@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACC_Manager", "ACCSetupApp\ACC_Manager.csproj", "{DEA7B2CA-611A-4CB8-BEDA-988F3EA11AF9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACC_Manager", "ACC_Manager\ACC_Manager.csproj", "{DEA7B2CA-611A-4CB8-BEDA-988F3EA11AF9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
