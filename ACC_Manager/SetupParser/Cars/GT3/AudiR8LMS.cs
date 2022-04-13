@@ -9,7 +9,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
 {
     internal class AudiR8LMS : ICarSetupConversion
     {
-        public string CarName => "Audi R8 LMS";
+        public string CarName => "Audi R8 LMS 2015";
 
         public string ParseName => "audi_r8_lms";
 

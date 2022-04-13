@@ -9,7 +9,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
 {
     internal class HondaNsxGT3 : ICarSetupConversion
     {
-        public string CarName => "Honda NSX GT3";
+        public string CarName => "Honda NSX GT3 2017";
 
         public string ParseName => "honda_nsx_gt3";
 

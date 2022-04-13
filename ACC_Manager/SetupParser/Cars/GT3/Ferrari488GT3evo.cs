@@ -9,7 +9,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
 {
     internal class Ferrari488GT3evo : ICarSetupConversion
     {
-        public string CarName => "Ferrari 488 GT3 Evo";
+        public string CarName => "Ferrari 488 GT3 Evo 2020";
 
         public string ParseName => "ferrari_488_gt3_evo";
 

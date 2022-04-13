@@ -9,7 +9,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
 {
     internal class LexusRcfGT3 : ICarSetupConversion
     {
-        string ICarSetupConversion.CarName => "Lexus RC F GT3";
+        string ICarSetupConversion.CarName => "Lexus RCF GT3 2016";
 
         string ICarSetupConversion.ParseName => "lexus_rc_f_gt3";
 

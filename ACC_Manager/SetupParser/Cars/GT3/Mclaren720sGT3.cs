@@ -9,7 +9,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
 {
     internal class Mclaren720sGT3 : ICarSetupConversion
     {
-        public string CarName => "McLaren 720S GT3";
+        public string CarName => "McLaren 720S GT3 2019";
 
         public string ParseName => "mclaren_720s_gt3";
 

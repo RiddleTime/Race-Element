@@ -9,7 +9,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
 {
     internal class LamborghiniHuracanGT3evo : ICarSetupConversion
     {
-        string ICarSetupConversion.CarName => "Lamborghini Huracán GT3 Evo";
+        string ICarSetupConversion.CarName => "Lamborghini Huracán GT3 Evo 2019";
 
         string ICarSetupConversion.ParseName => "lamborghini_huracan_gt3_evo";
 
