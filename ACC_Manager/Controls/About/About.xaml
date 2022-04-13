@@ -38,7 +38,7 @@
                         </TextBlock>
                         <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" HorizontalAlignment="Center">
                     Provides tooling for Assetto Corsa Competizione.<LineBreak/>
-                    Developed by Defragler (Reinier Klarenberg)
+                    Developed by Defragler/RiddleTime (Reinier Klarenberg)
                         </TextBlock>
                     </StackPanel>
 
@@ -127,7 +127,7 @@
                                 <TextBlock>
                                 - View single setup.<LineBreak/>
                                 - Compare setups, right click in the browser to add them.<LineBreak/>
-                                - Open track directories quickly by right clicking.<LineBreak/>
+                                - Open car/track directories quickly by right clicking.<LineBreak/>
                                 </TextBlock>
                                 <TextBlock>Supported cars:</TextBlock>
                                 <TextBlock x:Name="textBlockSetupViewerGT3"  Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
@@ -170,7 +170,7 @@
                                 </TextBlock>
                                 <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
                                    Fuel calculator:<LineBreak/>
-                                    - Simple fuel calculator, enter duration, fuel per lap and lap-time.<LineBreak/>
+                                    - Simple fuel calculator, enter duration, fuel per lap and lap-time. Has button to load these from your active in-game session.<LineBreak/>
 
                                 </TextBlock>
                             </StackPanel>
