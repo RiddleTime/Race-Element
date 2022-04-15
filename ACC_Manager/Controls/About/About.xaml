@@ -210,7 +210,8 @@
                             0.0.3.8:
                                 </TextBlock>
                                 <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
-                                    - Setup conversion added: Aston Martin V8 Vantage GT3 2019(by FBalazs).
+                                    - Setup conversion added: Aston Martin V8 Vantage GT3 2019(by FBalazs).<LineBreak/>
+                                    - Livery Browser: added context menu option to delete liveries.
                                 </TextBlock>
                             </StackPanel>
 

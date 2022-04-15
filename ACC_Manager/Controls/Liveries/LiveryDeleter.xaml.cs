@@ -79,6 +79,10 @@ namespace ACCSetupApp.Controls
 
         internal void Open(LiveryTreeCar liveryTreeCar)
         {
+            LiveryExporter.Instance.Cancel();
+            DDSgenerator.Instance.Cancel();
+
+
             ToBeDeleted = liveryTreeCar;
             Instance.transitionDeleteDialog.Visibility = Visibility.Visible;
             Instance.tbDeleteSkinText.Text =

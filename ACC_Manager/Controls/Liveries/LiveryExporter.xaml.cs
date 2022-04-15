@@ -208,6 +208,12 @@ namespace ACCSetupApp.Controls
             this.Visibility = exportItems.Count > 0 ? Visibility.Visible : Visibility.Hidden;
         }
 
+        public void Cancel()
+        {
+            exportItems.Clear();
+            UpdateVisibility();
+        }
+
         private void ListBoxItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
 

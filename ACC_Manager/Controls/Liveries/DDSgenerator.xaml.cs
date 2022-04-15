@@ -54,6 +54,11 @@ namespace ACCSetupApp.Controls
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
+            Cancel();
+        }
+
+        public void Cancel()
+        {
             if (!this.Generating)
             {
                 this.Visibility = Visibility.Hidden;
