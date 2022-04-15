@@ -12,3 +12,7 @@ https://discord.gg/26AAEW5mUq
 ### Frameworks
 - WPF
 - https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit
+
+
+### Contributors
+<a href="https://github.com/RiddleTime/ACC-Manager/graphs/contributors">
