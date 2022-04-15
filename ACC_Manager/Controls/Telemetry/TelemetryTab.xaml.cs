@@ -30,6 +30,11 @@ namespace ACCSetupApp.Controls
         public TelemetryTab()
         {
             InitializeComponent();
+
+#if DEBUG
+            tbDataChartsInProgress.Visibility = Visibility.Hidden;
+            dataRecorderControl.Visibility = Visibility.Visible;
+#endif
         }
     }
 }

@@ -31,8 +31,10 @@
                         </TextBlock>
                     </Grid>
                 </TabItem.Header>
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Under Development</TextBlock>
-                <!--<controls:DataRecorder></controls:DataRecorder>-->
+                <Grid>
+                    <TextBlock x:Name="tbDataChartsInProgress" HorizontalAlignment="Center" VerticalAlignment="Center">Under Development</TextBlock>
+                    <controls:DataRecorder x:Name="dataRecorderControl" Visibility="Hidden"></controls:DataRecorder>
+                </Grid>
             </TabItem>
 
             <TabItem>
@@ -55,7 +57,7 @@
                         </TextBlock>
                     </Grid>
                 </TabItem.Header>
-                
+
                 <controls:TelemetryDebug></controls:TelemetryDebug>
             </TabItem>
 
