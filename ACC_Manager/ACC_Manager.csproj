@@ -354,6 +354,7 @@
     </Compile>
     <Compile Include="LiveryParser\CarsJson.cs" />
     <Compile Include="LiveryParser\PaintDetailsJson.cs" />
+    <Compile Include="SetupParser\Cars\GT3\AMRV8VantageGT3.cs" />
     <Compile Include="SetupParser\Cars\GT3\AudiR8LMS.cs" />
     <Compile Include="SetupParser\Cars\GT3\AudiR8LMSevoII.cs" />
     <Compile Include="SetupParser\Cars\GT3\BentleyContinentalGT3_2018.cs" />
