@@ -6,7 +6,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
 {
     internal class AMRV8VantageGT3 : ICarSetupConversion
     {
-        public string CarName => "AMR V8 Vantage GT3 2019";
+        public string CarName => "Aston Martin V8 Vantage GT3 2019";
 
         public string ParseName => "amr_v8_vantage_gt3";
 
