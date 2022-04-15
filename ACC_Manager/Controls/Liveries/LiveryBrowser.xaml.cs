@@ -276,7 +276,6 @@ namespace ACCSetupApp.Controls
             openLiveryJson.Click += OpenLiveryJson_Click;
             menu.Items.Add(openLiveryJson);
 
-
             Button createZipButton = new Button()
             {
                 Content = $"Save Skin as zip archive",
@@ -288,7 +287,6 @@ namespace ACCSetupApp.Controls
             };
             createZipButton.Click += CreateZipButton_Click;
             menu.Items.Add(createZipButton);
-
 
             Button addSkinToSkinPack = new Button()
             {
@@ -302,7 +300,39 @@ namespace ACCSetupApp.Controls
             addSkinToSkinPack.Click += AddSkinToSkinPack_Click; ;
             menu.Items.Add(addSkinToSkinPack);
 
+            Button deleteLivery = new Button()
+            {
+                Content = $"Delete",
+                CommandParameter = directory,
+                Style = Resources["MaterialDesignRaisedButton"] as Style,
+                Margin = new Thickness(0),
+                Height = 30,
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            deleteLivery.Click += DeleteLivery_Click;
+            menu.Items.Add(deleteLivery);
+
             return menu;
+        }
+
+        private void DeleteLivery_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender.GetType() == typeof(Button))
+                {
+                    Button button = (Button)sender;
+                    (button.Parent as ContextMenu).IsOpen = false;
+
+                    LiveryTreeCar liveryTreeCar = (LiveryTreeCar)button.CommandParameter;
+
+                    LiveryDeleter.Instance.Open(liveryTreeCar);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogWriter.WriteToLog(ex);
+            }
         }
 
         private void AddSkinToSkinPack_Click(object sender, RoutedEventArgs e)

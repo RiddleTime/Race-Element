@@ -312,6 +312,9 @@
     <Compile Include="Controls\Liveries\LiveryBrowser.xaml.cs">
       <DependentUpon>LiveryBrowser.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Liveries\LiveryDeleter.xaml.cs">
+      <DependentUpon>LiveryDeleter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Liveries\LiveryDisplayer.xaml.cs">
       <DependentUpon>LiveryDisplayer.xaml</DependentUpon>
     </Compile>
@@ -391,6 +394,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Liveries\LiveryBrowser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Liveries\LiveryDeleter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

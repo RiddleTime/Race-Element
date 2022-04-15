@@ -55,7 +55,7 @@
                             <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" Cars"></TextBlock>
                         </Grid>
                     </TabItem.Header>
-                    <TreeView  x:Name="liveriesTreeViewCars" Grid.Column="0" Style="{StaticResource MaterialDesignTreeView}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <TreeView x:Name="liveriesTreeViewCars" Grid.Column="0" Style="{StaticResource MaterialDesignTreeView}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <TreeViewItem>
                             <TreeViewItem.Header>
                                 <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}">

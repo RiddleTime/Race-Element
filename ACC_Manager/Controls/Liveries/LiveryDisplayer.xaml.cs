@@ -96,12 +96,6 @@ namespace ACCSetupApp.Controls
         {
             ThreadPool.QueueUserWorkItem(x => { GC.Collect(); });
 
-            if (livery == null)
-                return;
-
-            Livery = livery;
-            Livery.carsRoot = LiveryImporter.GetLivery(livery.carsFile);
-
             decalsLabel.Content = string.Empty;
             decalsImage.Source = null;
             sponsorsLabel.Content = string.Empty;
@@ -109,6 +103,13 @@ namespace ACCSetupApp.Controls
             stackPanelLiveryInfo.Children.Clear();
             stackPanelMainInfo.Children.Clear();
             skinMainInfo.Visibility = Visibility.Hidden;
+            buttonGenerateDDS.Visibility = Visibility.Hidden;
+
+            if (livery == null)
+                return;
+
+            Livery = livery;
+            Livery.carsRoot = LiveryImporter.GetLivery(livery.carsFile);
             buttonGenerateDDS.Visibility = DDSutil.HasDdsFiles(Livery) ? Visibility.Hidden : Visibility.Visible;
 
 
@@ -119,9 +120,6 @@ namespace ACCSetupApp.Controls
             {
                 Instance.Dispatcher.BeginInvoke(new Action(() =>
                 {
-
-
-
                     CarsJson.Root carsRoot = Livery.carsRoot;
                     string customSkinName = carsRoot.customSkinName;
 
@@ -152,7 +150,8 @@ namespace ACCSetupApp.Controls
                             {
                                 FileInfo sponsorsFile = sponsorFiles[0];
                                 sponsorsLabel.Content = "Sponsors";
-                                sponsorsImage.Source = new BitmapImage(new Uri(sponsorsFile.FullName, UriKind.Absolute), new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable));
+                                sponsorsImage.Source = LoadPhoto(sponsorsFile.FullName);
+                                //new BitmapImage(new Uri(sponsorsFile.FullName, UriKind.Absolute), new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable));
                             }
 
 
@@ -205,7 +204,9 @@ namespace ACCSetupApp.Controls
                             {
                                 FileInfo decalsFile = decalFiles[0];
                                 decalsLabel.Content = "Decals";
-                                decalsImage.Source = new BitmapImage(new Uri(decalsFile.FullName, UriKind.Absolute), new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable));
+                                decalsImage.Source = LoadPhoto(decalsFile.FullName);
+
+                                //new BitmapImage(new Uri(decalsFile.FullName, UriKind.Absolute), new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable));
                             }
 
 
@@ -238,6 +239,17 @@ namespace ACCSetupApp.Controls
                     }
                 }));
             });
+        }
+
+        BitmapImage LoadPhoto(string path)
+        {
+            BitmapImage bmi = new BitmapImage();
+            bmi.BeginInit();
+            bmi.CacheOption = BitmapCacheOption.OnLoad;
+            bmi.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            bmi.UriSource = new Uri(path);
+            bmi.EndInit();
+            return bmi;
         }
 
         private Label GetInfoLabel(string text, HorizontalAlignment allignmment = HorizontalAlignment.Left, int size = 13)

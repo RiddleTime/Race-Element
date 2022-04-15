@@ -259,7 +259,8 @@ namespace ACCSetupApp.Controls
             }
             catch (Exception ex)
             {
-                LogWriter.WriteToLog(ex);
+                Debug.WriteLine(ex);
+                //LogWriter.WriteToLog(ex);
             }
             return null;
         }
@@ -281,7 +282,7 @@ namespace ACCSetupApp.Controls
             }
             catch (Exception e)
             {
-                LogWriter.WriteToLog(e);
+                //LogWriter.WriteToLog(e);
                 Debug.WriteLine(e);
             }
 
