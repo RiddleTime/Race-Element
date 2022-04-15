@@ -16,3 +16,5 @@ https://discord.gg/26AAEW5mUq
 
 ### Contributors
 <a href="https://github.com/RiddleTime/ACC-Manager/graphs/contributors">
+  <img src="https://opencollective.com/ACC-Manager/contributors.svg?width=890&button=false">
+</a>
