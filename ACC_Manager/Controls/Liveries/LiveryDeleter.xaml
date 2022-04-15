@@ -33,7 +33,32 @@
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Margin="0,0,0,0" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="17" >Are you sure you want to delete this livery?</TextBlock>
                     <TextBlock Grid.Row="1" Margin="20,0,20,0" Foreground="Black" x:Name="tbDeleteSkinText" VerticalAlignment="Center" FontSize="14" TextWrapping="WrapWithOverflow" TextTrimming="CharacterEllipsis" ></TextBlock>
-                    <Button Grid.Row="2" x:Name="buttonDeleteSkinYes" Margin="10,3,10,3" ToolTip="Warning: the livery files will be deleted permanently!">Yes, Delete the livery</Button>
+                    <Button Grid.Row="2" x:Name="buttonDeleteSkinYes" Margin="10,3,10,3" ToolTip="Warning: the livery files will be deleted permanently!">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="32"/>
+                            </Grid.ColumnDefinitions>
+
+                            <materialDesign:PackIcon
+                                Grid.Column="0"
+                                Kind="Alert"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Height="32"
+                                Foreground="Yellow" />
+                            <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" 
+                                       VerticalAlignment="Center" Text=" Yes, Delete the livery"></TextBlock>
+                            <materialDesign:PackIcon
+                                Grid.Column="2"
+                                Kind="Alert"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Right"
+                                Height="32"
+                                Foreground="Yellow" />
+                        </Grid>
+                    </Button>
                     <Button Grid.Row="3" x:Name="buttonDeleteSkinNo" Margin="10,3,10,3">Cancel</Button>
                 </Grid>
             </materialDesign:Card>
