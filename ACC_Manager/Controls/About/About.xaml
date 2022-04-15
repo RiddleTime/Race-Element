@@ -202,6 +202,18 @@
                     <materialDesign:Card Width="520" Margin="0,3,0,0">
                         <StackPanel Orientation="Vertical" Margin="5,0,0,0" >
 
+
+                            <StackPanel Margin="0,10,0,0">
+                                <TextBlock
+                           Style="{StaticResource MaterialDesignBody1TextBlock}"
+                           HorizontalAlignment="Left" TextWrapping="Wrap" >
+                            0.0.3.8:
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
+                                    - Setup conversion added: Aston Martin V8 Vantage GT3 2019(by FBalazs).
+                                </TextBlock>
+                            </StackPanel>
+
                             <StackPanel Margin="0,10,0,0">
                                 <TextBlock
                            Style="{StaticResource MaterialDesignBody1TextBlock}"
@@ -486,7 +498,7 @@
                                 <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
                             - Setup Browser added.<LineBreak/>
                             - Setup Comparison added: Right click setups in the setup browser to add them to the comparison.<LineBreak/>
-                            - Add setup conversion for: Audi R8 LMS evo II(thanks to Jubka), Honda NSX GT3 Evo, Mclaren 720S GT3, Porsche II GT3 R.
+                            - Add setup conversion for: Audi R8 LMS evo II(by Jubka), Honda NSX GT3 Evo, Mclaren 720S GT3, Porsche II GT3 R.
                                 </TextBlock>
                             </StackPanel>
 
