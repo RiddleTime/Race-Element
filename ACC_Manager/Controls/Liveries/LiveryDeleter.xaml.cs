@@ -81,6 +81,7 @@ namespace ACCSetupApp.Controls
         {
             LiveryExporter.Instance.Cancel();
             DDSgenerator.Instance.Cancel();
+            LiveryDisplayer.Instance.SetLivery(liveryTreeCar);
 
 
             ToBeDeleted = liveryTreeCar;
