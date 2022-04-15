@@ -62,7 +62,7 @@ namespace ACCSetupApp.Controls
                     if (cad.AttributeType == typeof(ObsoleteAttribute)) { isObsolete = true; break; }
                 }
 
-                if (!isObsolete)
+                if (!isObsolete && !member.Name.Equals("Buffer") && !member.Name.Equals("Size"))
                 {
                     value = FieldTypeValue(member, value);
 
@@ -70,7 +70,11 @@ namespace ACCSetupApp.Controls
                 }
             }
 
-            ScrollViewer scrollViewer = new ScrollViewer() { Margin = new Thickness(3) };
+            ScrollViewer scrollViewer = new ScrollViewer()
+            {
+                Margin = new Thickness(3),
+                HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+            };
             scrollViewer.Content = stacker;
 
 
@@ -96,7 +100,7 @@ namespace ACCSetupApp.Controls
                     if (cad.AttributeType == typeof(ObsoleteAttribute)) { isObsolete = true; break; }
                 }
 
-                if (!isObsolete)
+                if (!isObsolete && !member.Name.Equals("Buffer") && !member.Name.Equals("Size"))
                 {
                     value = FieldTypeValue(member, value);
 
@@ -105,7 +109,11 @@ namespace ACCSetupApp.Controls
             }
 
 
-            ScrollViewer scrollViewer = new ScrollViewer() { Margin = new Thickness(3) };
+            ScrollViewer scrollViewer = new ScrollViewer()
+            {
+                Margin = new Thickness(3),
+                HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+            };
             scrollViewer.Content = stacker;
             Instance.Dispatcher.BeginInvoke(new Action(() =>
             {
@@ -127,7 +135,7 @@ namespace ACCSetupApp.Controls
                 {
                     if (cad.AttributeType == typeof(ObsoleteAttribute)) { isObsolete = true; break; }
                 }
-                if (!isObsolete)
+                if (!isObsolete && !member.Name.Equals("Buffer") && !member.Name.Equals("Size"))
                 {
                     value = FieldTypeValue(member, value);
 
@@ -136,9 +144,11 @@ namespace ACCSetupApp.Controls
 
             }
 
-
-
-            ScrollViewer scrollViewer = new ScrollViewer() { Margin = new Thickness(3) };
+            ScrollViewer scrollViewer = new ScrollViewer()
+            {
+                Margin = new Thickness(3),
+                HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+            };
             scrollViewer.Content = stacker;
 
             Instance.Dispatcher.BeginInvoke(new Action(() =>
@@ -149,6 +159,18 @@ namespace ACCSetupApp.Controls
 
         public static object FieldTypeValue(FieldInfo member, object value)
         {
+
+            if (member.FieldType.Name == typeof(byte[]).Name)
+            {
+                byte[] arr = (byte[])value;
+                value = string.Empty;
+                foreach (byte v in arr)
+                {
+                    value += $"{{{v}}}, ";
+                }
+            }
+
+
             if (member.FieldType.Name == typeof(Int32[]).Name)
             {
                 Int32[] arr = (Int32[])value;
