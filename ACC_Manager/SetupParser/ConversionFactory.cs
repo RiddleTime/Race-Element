@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ACCSetupApp.SetupParser.Cars.GT3;
-using ACCSetupApp.Util;
 using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser
@@ -13,6 +9,7 @@ namespace ACCSetupApp.SetupParser
     {
         private static Dictionary<string, ICarSetupConversion> carConversions = new Dictionary<string, ICarSetupConversion>()
         {
+            {"amr_v8_vantage_gt3", new AMRV8VantageGT3() },
             {"audi_r8_lms", new AudiR8LMS() },
             {"audi_r8_lms_evo_ii", new AudiR8LMSevoII() },
             {"bentley_continental_gt3_2018", new BentleyContinentalGT3_2018() },
@@ -55,6 +52,7 @@ namespace ACCSetupApp.SetupParser
 
         private static Dictionary<string, string> carParseNames = new Dictionary<string, string>()
         {
+            {"amr_v8_vantage_gt3", "AMR V8 Vantage GT3 2019"},
             {"audi_r8_lms", "Audi R8 LMS 2015" },
             {"audi_r8_lms_evo_ii", "Audi R8 LMS Evo II 2022" },
             {"bentley_continental_gt3_2018", "Bentley Continental GT3 2018" },
@@ -102,7 +100,7 @@ namespace ACCSetupApp.SetupParser
             {17, "Honda NSX GT3 2017" },
             {18, "Lamborghini Huracán ST 2015" },
             {19, "Audi R8 LMS Evo 2019" },
-            {20, "Aston Martin V8 Vantage GT3 2019" },
+            {20, "AMR V8 Vantage GT3 2019" },
             {21, "Honda NSX GT3 Evo 2019" },
             {22, "McLaren 720S GT3 2019" },
             {23, "Porsche 911 II GT3 R 2019" },
@@ -134,8 +132,5 @@ namespace ACCSetupApp.SetupParser
             else
                 return $"Unknown: {carId}";
         }
-
-
-
     }
 }
