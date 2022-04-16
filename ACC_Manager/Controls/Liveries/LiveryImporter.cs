@@ -46,9 +46,13 @@ namespace ACCSetupApp.Controls
                         for (int i = 0; i < fileNames.Length; i++)
                         {
                             FileInfo fi = new FileInfo(fileNames[i]);
-                            if (fi.Exists && fi.OpenRead() != null)
+                            if (fi.Exists)
                             {
-                                ImportArchive(fi);
+                                FileStream fs = fi.OpenRead();
+                                if (fs != null)
+                                    ImportArchive(fi);
+
+                                fs.Close();
                             }
                         }
                     }
@@ -81,7 +85,7 @@ namespace ACCSetupApp.Controls
             {
                 case ".7z":
                 case ".zip":
-                case ".rar": archive = ArchiveFactory.Open(fi.FullName); break;
+                case ".rar": archive = ArchiveFactory.Open(fi.FullName, new SharpCompress.Readers.ReaderOptions() { LeaveStreamOpen = false }); break;
                 default:
                     {
                         return;
@@ -91,7 +95,9 @@ namespace ACCSetupApp.Controls
             List<IArchiveEntry> archiveEntries = archive.Entries.ToList();
             List<IArchiveEntry> availableSkins = archiveEntries.FindAll((x) =>
             {
-                CarsJson.Root carRoot = GetLivery(x.OpenEntryStream());
+                Stream entryStream = x.OpenEntryStream();
+                CarsJson.Root carRoot = GetLivery(entryStream);
+                entryStream.Close();
                 return carRoot != null && carRoot.customSkinName != null && !carRoot.customSkinName.Equals(string.Empty);
             });
 
@@ -113,6 +119,8 @@ namespace ACCSetupApp.Controls
                     ImportStrategies.DefaultImportStrategy(archiveEntries);
                 }
             }
+
+            archive.Dispose();
         }
 
         private static class ImportStrategies
@@ -192,7 +200,9 @@ namespace ACCSetupApp.Controls
                     //Debug.WriteLine(x.Key);
                     if (!x.Key.StartsWith("__MACOSX") && (x.Key.ToLower().Contains("cars/") || x.Key.ToLower().Contains("cars\\")))
                     {
-                        CarsJson.Root carRoot = GetLivery(x.OpenEntryStream());
+                        Stream entryStream = x.OpenEntryStream();
+                        CarsJson.Root carRoot = GetLivery(entryStream);
+                        entryStream.Close();
                         if (carRoot != null && carRoot.customSkinName != null && carRoot.customSkinName != string.Empty)
                         {
                             Debug.WriteLine($"Found livery {carRoot.teamName} / {carRoot.customSkinName}");
