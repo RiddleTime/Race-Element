@@ -302,6 +302,7 @@
     <Compile Include="Controls\About\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\About\ReleaseNotes.cs" />
     <Compile Include="Controls\Liveries\DDSgenerator.xaml.cs">
       <DependentUpon>DDSgenerator.xaml</DependentUpon>
     </Compile>

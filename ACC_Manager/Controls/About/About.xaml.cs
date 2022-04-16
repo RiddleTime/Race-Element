@@ -36,7 +36,7 @@ namespace ACCSetupApp.Controls
             buttonGithub.Click += (sender, e) => System.Diagnostics.Process.Start("https://github.com/RiddleTime/ACC-Manager");
 
             SetCarConversionFeatures();
-
+            FillReleaseNotes();
             ThreadPool.QueueUserWorkItem(x => CheckNewestVersion());
         }
 
@@ -103,6 +103,33 @@ namespace ACCSetupApp.Controls
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
             FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(assembly.Location);
             return fileVersion.FileVersion;
+        }
+
+        private void FillReleaseNotes()
+        {
+            stackPanelReleaseNotes.Children.Clear();
+            ReleaseNotes.Notes.ToList().ForEach(note =>
+            {
+                TextBlock noteTitle = new TextBlock()
+                {
+                    Text = note.Key,
+                    Style = Resources["MaterialDesignBody1TextBlock"] as Style,
+                    FontWeight = FontWeights.Bold,
+                    FontStyle = FontStyles.Oblique
+                };
+                TextBlock noteDescription = new TextBlock()
+                {
+                    Text = note.Value,
+                    TextWrapping = TextWrapping.WrapWithOverflow,
+                    Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style
+                };
+
+                StackPanel changePanel = new StackPanel() { Margin = new Thickness(0, 10, 0, 0) };
+                changePanel.Children.Add(noteTitle);
+                changePanel.Children.Add(noteDescription);
+
+                stackPanelReleaseNotes.Children.Add(changePanel);
+            });
         }
     }
 }
