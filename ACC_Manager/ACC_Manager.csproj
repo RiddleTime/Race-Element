@@ -66,7 +66,7 @@
     <StartupObject>ACCSetupApp.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>toolIcon.ico</ApplicationIcon>
+    <ApplicationIcon>new_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -525,7 +525,9 @@
   <ItemGroup>
     <Resource Include="Resources\toolIcon.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="new_icon.ico" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="costura32\DdsFileTypePlusIO_x86.dll" />
     <EmbeddedResource Include="costura64\DdsFileTypePlusIO_x64.dll" />
