@@ -515,23 +515,17 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="appIcon.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="toolIcon.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\toolIcon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="new_icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="costura32\DdsFileTypePlusIO_x86.dll" />
     <EmbeddedResource Include="costura64\DdsFileTypePlusIO_x64.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="new_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.4.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.4.0\build\MaterialDesignThemes.targets')" />

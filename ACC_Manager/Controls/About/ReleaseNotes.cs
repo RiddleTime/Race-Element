@@ -10,7 +10,7 @@ namespace ACCSetupApp.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.0.3.9", "- Livery Deleter: shows to be delete skin in the livery displayer."+
+            {"0.0.3.9", "- Livery Deleter: shows the to be deleted skin in the livery displayer."+
                         "\n- Add new app icon."+
                         "\n- Fix issue with importer which caused acc manager to not keep a file stream open."},
             {"0.0.3.8", "- Setup conversion added: Aston Martin V8 Vantage GT3 2019(by FBalazs)."+
@@ -57,12 +57,12 @@ namespace ACCSetupApp.Controls
             {"0.0.1.4", "- Add Simple Fuel Calculator." },
             {"0.0.1.3", "- Setup comparison now highlights setup when different."+
                         "\n- Add setup conversion for: Audi R8 LMS, Honda NSX GT3, Porsche 911 GT3 R."},
-            {"0.0.1.2","- Added more icons."+
+            {"0.0.1.2", "- Added more icons."+
                 "\n- Added custom Titlebar."},
-            {"0.0.1.1","- Setup Browser added."+
-                       "\n- Setup Comparison added: Right click setups in the setup browser to add them to the comparison."+
-                       "\n- Add setup conversion for: Audi R8 LMS evo II(by Jubka), Honda NSX GT3 Evo, Mclaren 720S GT3, Porsche II GT3 R."},
-            {"0.0.1.0","- Material Design added." },
+            {"0.0.1.1", "- Setup Browser added."+
+                        "\n- Setup Comparison added: Right click setups in the setup browser to add them to the comparison."+
+                        "\n- Add setup conversion for: Audi R8 LMS evo II(by Jubka), Honda NSX GT3 Evo, Mclaren 720S GT3, Porsche II GT3 R."},
+            {"0.0.1.0", "- Material Design added." },
         };
     }
 }
