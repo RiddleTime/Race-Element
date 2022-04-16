@@ -36,7 +36,7 @@ namespace ACCSetupApp.Controls
 
             Instance = this;
 
-            transitionDeleteDialog.Background = new SolidColorBrush(Color.FromArgb(140, 255, 0, 0));
+            transitionDeleteDialog.Background = new SolidColorBrush(Color.FromArgb(140, 0, 0, 0));
             buttonDeleteSkinNo.Click += ButtonDeleteSkinNo_Click;
             buttonDeleteSkinYes.Click += ButtonDeleteSkinYes_Click;
         }
