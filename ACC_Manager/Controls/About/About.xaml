@@ -29,7 +29,6 @@
                     <DropShadowEffect Color="Black" Opacity="0.7" BlurRadius="3" ShadowDepth="2"/>
                 </materialDesign:TransitioningContent.Effect>
 
-
                 <Grid>
                     <StackPanel Orientation="Vertical">
                         <TextBlock FontStyle="Italic" FontFamily="{StaticResource FontRedemption}" FontSize="80" HorizontalAlignment="Center">

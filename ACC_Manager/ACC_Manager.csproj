@@ -483,7 +483,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Resource Include="Fonts\Roboto-Medium.ttf" />
     <Resource Include="Fonts\Redemption.ttf" />
     <None Include="key.snk" />
     <None Include="packages.config" />
