@@ -12,7 +12,8 @@ namespace ACCSetupApp.Controls
         {
             {"0.0.3.9", "- Livery Deleter: shows the to be deleted skin in the livery displayer."+
                         "\n- Add new app icon."+
-                        "\n- Fix issue with importer which caused acc manager to not keep a file stream open."},
+                        "\n- Fix issue with importer which caused acc manager to not keep a file stream open."+
+                        "\n- Add more botched import scenarios for livery archives that only contain 1 livery."},
             {"0.0.3.8", "- Setup conversion added: Aston Martin V8 Vantage GT3 2019(by FBalazs)."+
                         "\n- Livery Browser: added context menu option to delete liveries."},
             {"0.0.3.7", "- Setups tab: Car names have the year added."+

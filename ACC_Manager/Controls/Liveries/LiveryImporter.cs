@@ -109,13 +109,14 @@ namespace ACCSetupApp.Controls
                       return x.Key.ToLower().EndsWith("cars/") || x.Key.ToLower().EndsWith("cars\\");
                   });
 
-                if (carsFolders.Count == 0)
+                if (availableSkins.Count == 1)
                 {
-                    Debug.WriteLine("WTF???? noob export");
+                    Debug.WriteLine("WTF???? noob export, going to try the botched import strategy.");
                     ImportStrategies.BotchedImportStrategy(archiveEntries);
                 }
                 else
                 {
+                    Debug.WriteLine("Multiple liveries detected within 1 archive, using default import strategy.");
                     ImportStrategies.DefaultImportStrategy(archiveEntries);
                 }
             }
