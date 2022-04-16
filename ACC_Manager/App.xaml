@@ -6,8 +6,8 @@
               xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <FontFamily x:Key="RobotoMedium" >pack://application:,,,./Fonts/Roboto Medium#</FontFamily>
-
+        <FontFamily x:Key="RobotoMedium" >"pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/#Roboto-Medium</FontFamily>
+        <FontFamily x:Key="FontRedemption">pack://application:,,,./Fonts/#Redemption</FontFamily>
 
 
         <!-- https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit -->
