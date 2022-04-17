@@ -9,7 +9,6 @@
         xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
         mc:Ignorable="d"
         
-        
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
@@ -18,7 +17,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         WindowStyle="None"
-        Title="MainWindow" Width="1200" Height="790" ResizeMode="NoResize"
+        Title="MainWindow" MinWidth="1210" Width="1210" MinHeight="790" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" 
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
@@ -40,17 +39,17 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition x:Name="rowTitleBar" Height="30"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <controls:TitleBar x:Name="titleBar" Grid.Row="0" Width="1200">
+        <controls:TitleBar x:Name="titleBar" Grid.Row="0">
 
         </controls:TitleBar>
 
         <materialDesign:Snackbar Grid.Row="1" Panel.ZIndex="1" x:Name="snackbar" MessageQueue="{materialDesign:MessageQueue}" />
 
-        <TabControl x:Name="tabControl" Style="{StaticResource MaterialDesignTabControlBase}" TabStripPlacement="Left" Grid.Row="1" Width="1200">
+        <TabControl x:Name="tabControl" Style="{StaticResource MaterialDesignTabControlBase}" TabStripPlacement="Left" Grid.Row="1">
 
             <TabItem Style="{DynamicResource MaterialDesignTabItem}" Name="tabAbout" Height="60" VerticalAlignment="Bottom">
                 <TabItem.Header>
@@ -72,7 +71,7 @@
                     </Grid>
                 </TabItem.Header>
                 
-                <Grid HorizontalAlignment="Center">
+                <Grid UseLayoutRounding="True" HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
@@ -109,7 +108,7 @@
 
                 </TabItem.Header>
 
-                <Grid HorizontalAlignment="Center">
+                <Grid HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
@@ -144,7 +143,7 @@
                     </Grid>
                 </TabItem.Header>
 
-                <Grid HorizontalAlignment="Center">
+                <Grid HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
@@ -177,7 +176,7 @@
                     </Grid>
                 </TabItem.Header>
 
-                <Grid HorizontalAlignment="Center">
+                <Grid HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
@@ -212,7 +211,7 @@
                     </Grid>
                 </TabItem.Header>
 
-                <Grid HorizontalAlignment="Center">
+                <Grid HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>

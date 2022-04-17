@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:ACCSetupApp.Controls"
                xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             Height="30" MinWidth="1200">
+             >
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -19,11 +19,11 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Background="OrangeRed">
+    <Grid Background="OrangeRed" x:Name="backGround">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="15"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="90"/>
+            <ColumnDefinition Width="140"/>
             <ColumnDefinition Width="2"/>
         </Grid.ColumnDefinitions>
 
@@ -45,20 +45,30 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
                 <!--Icons here https://materialdesignicons.com/icon/settings-->
 
-                <Button Grid.Column="0" x:Name="buttonMinimize" Margin="0,0,2,0" Style="{StaticResource MaterialDesignFlatDarkButton}" Focusable="False">
+                <Button Grid.Column="0" x:Name="buttonMinimize" Margin="0,0,2,0" Style="{StaticResource MaterialDesignFlatDarkButton}" Focusable="False" VerticalAlignment="Center">
                     <materialDesign:PackIcon
-                            Kind="MinusBox"
+                            Kind="WindowMinimize"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
                             Height="32"
                         Foreground="White"    
                         />
                 </Button>
-                <Button Grid.Column="1" x:Name="buttonExit"  Style="{StaticResource MaterialDesignFlatDarkButton}" Focusable="False" >
+                <Button Grid.Column="1" x:Name="buttonMaximize" Margin="0,0,2,0" Style="{StaticResource MaterialDesignFlatDarkButton}" Focusable="False" VerticalAlignment="Center">
+                    <materialDesign:PackIcon
+                            Kind="WindowMaximize"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="32"
+                        Foreground="White"    
+                        />
+                </Button>
+                <Button Grid.Column="2" x:Name="buttonExit"  Style="{StaticResource MaterialDesignFlatDarkButton}" Focusable="False" VerticalAlignment="Center" >
                     <materialDesign:PackIcon
                             Kind="CloseBox"
                             VerticalAlignment="Center"
@@ -67,8 +77,6 @@
                         Foreground="White"/>
                 </Button>
             </Grid>
-
-
         </Grid>
 
 

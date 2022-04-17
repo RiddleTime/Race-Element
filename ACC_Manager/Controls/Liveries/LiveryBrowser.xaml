@@ -20,10 +20,10 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
+    <Grid HorizontalAlignment="Stretch">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="30*"/>
-            <ColumnDefinition Width="70*"/>
+            <ColumnDefinition Width="361"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <local:DDSgenerator Grid.Column="0" Panel.ZIndex="1" HorizontalAlignment="Left" VerticalAlignment="Center"></local:DDSgenerator>

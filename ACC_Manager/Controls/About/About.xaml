@@ -23,7 +23,7 @@
         </Grid.RowDefinitions>
 
 
-        <materialDesign:Card Width="1100" Grid.Row="0">
+        <materialDesign:Card MinWidth="1100" Grid.Row="0">
             <materialDesign:TransitioningContent>
                 <materialDesign:TransitioningContent.Effect>
                     <DropShadowEffect Color="Black" Opacity="0.7" BlurRadius="3" ShadowDepth="2"/>
@@ -112,7 +112,7 @@
                 </materialDesign:Card>
 
                 <ScrollViewer Style="{StaticResource MaterialDesignScrollViewer}" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Visible">
-                    <materialDesign:Card Width="526" Margin="-6,0,0,0">
+                    <materialDesign:Card Margin="0,0,3,0">
                         <StackPanel Orientation="Vertical" Margin="5,0,0,0" >
 
 
@@ -199,7 +199,7 @@
                 </materialDesign:Card>
 
                 <ScrollViewer Style="{StaticResource MaterialDesignScrollViewer}" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Visible">
-                    <materialDesign:Card Width="520" Margin="0,0,0,0">
+                    <materialDesign:Card Margin="6,0,3,0">
                         <StackPanel x:Name="stackPanelReleaseNotes" Orientation="Vertical" Margin="5,0,0,10" >
 
                         </StackPanel>

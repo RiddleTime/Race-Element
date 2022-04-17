@@ -12,7 +12,7 @@
             <RowDefinition/>
             <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
-        <TabControl Grid.Row="0" TabStripPlacement="Top" FlowDirection="LeftToRight" SelectedIndex="0" HorizontalAlignment="Stretch" Width="1100">
+        <TabControl Grid.Row="0" TabStripPlacement="Top" FlowDirection="LeftToRight" SelectedIndex="0" HorizontalAlignment="Stretch">
             <TabItem Name="tabStaticData" Style="{DynamicResource MaterialDesignTabItem}">
                 <TabItem.Header>
                     <Grid>

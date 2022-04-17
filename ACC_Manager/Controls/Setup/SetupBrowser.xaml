@@ -57,7 +57,7 @@
         </TreeView>
 
         <materialDesign:Card Grid.Column="1" Margin="3,3,3,3">
-            <FlowDocumentScrollViewer Focusable="False" Cursor="Arrow">
+            <FlowDocumentScrollViewer Focusable="False" Cursor="Arrow" MaxWidth="600">
                 <FlowDocument  x:Name="flowDocument" Focusable="False" Cursor="Arrow" 
                            Background="{DynamicResource MaterialDesignPaper}"
                            FontFamily="{StaticResource RobotoMedium}" 

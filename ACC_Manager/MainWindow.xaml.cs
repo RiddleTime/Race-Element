@@ -58,9 +58,23 @@ namespace ACCSetupApp
 
         private void MainWindow_StateChanged(object sender, EventArgs e)
         {
-            if (this.WindowState == WindowState.Normal)
+            switch (this.WindowState)
             {
-                this.Activate();
+                case WindowState.Minimized:
+                    {
+                        break;
+                    }
+                case WindowState.Normal:
+                    {
+                        this.Activate();
+                        rowTitleBar.Height = new GridLength(30);
+                        break;
+                    }
+                case WindowState.Maximized:
+                    {
+                        rowTitleBar.Height = new GridLength(35);
+                        break;
+                    }
             }
         }
 

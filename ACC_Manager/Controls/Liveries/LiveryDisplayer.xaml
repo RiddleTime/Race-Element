@@ -25,7 +25,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <materialDesign:Card Grid.Row="0" Margin="3,3,3,3">
+        <materialDesign:Card Grid.Row="0" Margin="3,3,0,3">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100"/>
@@ -48,25 +48,31 @@
                 <Button x:Name="buttonGenerateDDS" Grid.Row="2" Visibility="Hidden" Margin="3,0,3,0" ToolTip="Generate the _0 and _1 dds files so the game doesn't have to do it for you.">Generate DDS Files</Button>
             </Grid>
         </materialDesign:Card>
-        <materialDesign:Card Grid.Row="1" Margin="3,3,3,3">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
-                <StackPanel Orientation="Vertical">
+        <materialDesign:Card Grid.Row="1" Margin="3,3,0,3" HorizontalAlignment="Stretch">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+
+                <StackPanel Orientation="Vertical" Grid.Column="0">
                     <Label x:Name="sponsorsLabel" Style="{StaticResource MaterialDesignLabel}" HorizontalAlignment="Center"></Label>
                     <Image x:Name="sponsorsImage"
-                        Width="370"
-                        Height="370"
+                        Width="366"
+                        Height="366"
                         Stretch="UniformToFill" 
                                RenderOptions.BitmapScalingMode="LowQuality"/>
                 </StackPanel>
-                <StackPanel Orientation="Vertical" Margin="3">
+                <StackPanel Orientation="Vertical" Grid.Column="1">
                     <Label x:Name="decalsLabel" Style="{StaticResource MaterialDesignLabel}" HorizontalAlignment="Center"></Label>
                     <Image x:Name="decalsImage"
-                        Width="370"
-                        Height="370"
+                        Width="366"
+                        Height="366"
                         Stretch="UniformToFill" 
                                RenderOptions.BitmapScalingMode="LowQuality"/>
                 </StackPanel>
-            </StackPanel>
+            </Grid>
         </materialDesign:Card>
     </Grid>
 </UserControl>

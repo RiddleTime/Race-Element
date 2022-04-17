@@ -129,7 +129,7 @@ namespace ACCSetupApp.Controls
 
                                 if (treeCar.carsRoot.customSkinName != null /*&& treeCar.carsRoot.teamName != null*/)
                                     if (!treeCar.carsRoot.customSkinName.Equals(string.Empty)
-                                           //&& !treeCar.carsRoot.teamName.Equals(string.Empty)
+                                            //&& !treeCar.carsRoot.teamName.Equals(string.Empty)
                                             )
                                         liveryTreeCars.Add(treeCar);
                             }
@@ -271,22 +271,33 @@ namespace ACCSetupApp.Controls
                 TreeViewItem tagItem = new TreeViewItem() { Header = tagHeader };
                 tagItem.ContextMenu = GetTagContextMenu(tagItem, liveryTag);
 
+                List<LiveryTreeCar> tagCars = new List<LiveryTreeCar>();
                 foreach (LiveryTreeCar car in allLiveries)
                 {
                     if (LiveryTagging.TagContainsCar(liveryTag, car))
                     {
-                        TextBlock skinHeader = new TextBlock()
-                        {
-                            Text = $"{car.carsRoot.customSkinName}",
-                            Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style,
-                            TextTrimming = TextTrimming.WordEllipsis,
-                            Width = liveriesTreeViewTeams.Width - 5
-                        };
-                        TreeViewItem skinItem = new TreeViewItem() { Header = skinHeader, DataContext = car };
-                        skinItem.ContextMenu = GetSkinContextMenu(car, liveryTag);
-
-                        tagItem.Items.Add(skinItem);
+                        tagCars.Add(car);
                     }
+                }
+
+                tagCars.Sort((a, b) =>
+                {
+                    return $"{a.carsRoot.customSkinName.ToLower()}".CompareTo($"{b.carsRoot.customSkinName.ToLower()}");
+                });
+
+                foreach (LiveryTreeCar car in tagCars)
+                {
+                    TextBlock skinHeader = new TextBlock()
+                    {
+                        Text = $"{car.carsRoot.customSkinName}",
+                        Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style,
+                        TextTrimming = TextTrimming.WordEllipsis,
+                        Width = liveriesTreeViewTeams.Width - 5
+                    };
+                    TreeViewItem skinItem = new TreeViewItem() { Header = skinHeader, DataContext = car };
+                    skinItem.ContextMenu = GetSkinContextMenu(car, liveryTag);
+
+                    tagItem.Items.Add(skinItem);
                 }
 
                 tagTreeItems.Add(tagItem);

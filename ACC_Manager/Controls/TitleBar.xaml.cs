@@ -28,13 +28,38 @@ namespace ACCSetupApp.Controls
 
             buttonExit.Click += ButtonExit_Click;
 
-            buttonMinimize.Click += ButtonMinimize_Click;
+            buttonMinimize.Click += (e, s) => { App.Current.MainWindow.WindowState = WindowState.Minimized; };
+            buttonMaximize.Click += (e, s) =>
+            {
+                if (App.Current.MainWindow.WindowState == WindowState.Maximized)
+                    App.Current.MainWindow.WindowState = WindowState.Normal;
+                else
+                    App.Current.MainWindow.WindowState = WindowState.Maximized;
+            };
+
+            this.MouseDoubleClick += TitleBar_MouseDoubleClick;
 
         }
 
-        private void ButtonMinimize_Click(object sender, RoutedEventArgs e)
+
+        private void TitleBar_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            App.Current.MainWindow.WindowState = WindowState.Minimized;
+            WindowState targetState = WindowState.Normal;
+            switch (App.Current.MainWindow.WindowState)
+            {
+                case WindowState.Normal:
+                    {
+                        targetState = WindowState.Maximized;
+                        break;
+                    }
+                case WindowState.Maximized:
+                    {
+                        targetState = WindowState.Normal;
+                        break;
+                    }
+            }
+
+            App.Current.MainWindow.WindowState = targetState;
         }
 
         private void ButtonExit_Click(object sender, RoutedEventArgs e)

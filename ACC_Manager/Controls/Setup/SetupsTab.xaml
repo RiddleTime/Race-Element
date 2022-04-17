@@ -19,7 +19,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <TabControl TabStripPlacement="Top" FlowDirection="LeftToRight" SelectedIndex="0" HorizontalAlignment="Stretch" Width="1100">
+        <TabControl TabStripPlacement="Top" FlowDirection="LeftToRight" SelectedIndex="0" HorizontalAlignment="Stretch" >
 
             <TabItem Name="tabSetupTree" Style="{DynamicResource MaterialDesignTabItem}">
                 <TabItem.Header>

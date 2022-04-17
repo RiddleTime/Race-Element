@@ -6,9 +6,9 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:ACCSetupApp.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="1200" MinWidth="1100">
-    <Grid>
-        <TabControl TabStripPlacement="Top" FlowDirection="LeftToRight" SelectedIndex="0" HorizontalAlignment="Stretch" Width="1100">
+             d:DesignHeight="450" d:DesignWidth="1200">
+    <Grid HorizontalAlignment="Stretch">
+        <TabControl TabStripPlacement="Top" FlowDirection="LeftToRight" SelectedIndex="0" HorizontalAlignment="Stretch" Margin="3">
 
             <TabItem Name="tabSetupTree" Style="{DynamicResource MaterialDesignTabItem}">
                 <TabItem.Header>

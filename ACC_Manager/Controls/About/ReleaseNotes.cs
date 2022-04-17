@@ -9,7 +9,8 @@ namespace ACCSetupApp.Controls
     public static class ReleaseNotes
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
-        {
+        {   {"0.0.4.2", "- Livery Tags: Cars under a tag are now alphabetically sorted."+
+                        "\n- ACCM: Allow window resizing."},
             {"0.0.4.1", "- Livery Tags: Cannot enter an empty tag name anymore."+
                         "\n- Livery Browser: Now displays liveries without a team name set."},
             {"0.0.4.0", "- Livery Browser: Add livery tagging system." },
