@@ -10,7 +10,8 @@ namespace ACCSetupApp.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.0.4.1", "- Livery Tags: Cannot enter an empty tag name anymore." },
+            {"0.0.4.1", "- Livery Tags: Cannot enter an empty tag name anymore."+
+                        "\n- Livery Browser: Now displays liveries without a team name set."},
             {"0.0.4.0", "- Livery Browser: Add livery tagging system." },
             {"0.0.3.9", "- Livery Deleter: shows the to be deleted skin in the livery displayer."+
                         "\n- Add new app icon."+

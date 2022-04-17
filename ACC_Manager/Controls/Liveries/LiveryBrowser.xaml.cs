@@ -127,9 +127,9 @@ namespace ACCSetupApp.Controls
                             {
                                 LiveryTreeCar treeCar = new LiveryTreeCar() { carsFile = carsFile, carsRoot = carsRoot };
 
-                                if (treeCar.carsRoot.customSkinName != null && treeCar.carsRoot.teamName != null)
+                                if (treeCar.carsRoot.customSkinName != null /*&& treeCar.carsRoot.teamName != null*/)
                                     if (!treeCar.carsRoot.customSkinName.Equals(string.Empty)
-                                           && !treeCar.carsRoot.teamName.Equals(string.Empty)
+                                           //&& !treeCar.carsRoot.teamName.Equals(string.Empty)
                                             )
                                         liveryTreeCars.Add(treeCar);
                             }
