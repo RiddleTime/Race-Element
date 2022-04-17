@@ -63,6 +63,12 @@ namespace ACCSetupApp.Controls
         private void ButtonCreate_Click(object sender, RoutedEventArgs e)
         {
             string newTagName = textBoxNewTagName.Text.Trim();
+            if (newTagName.Length == 0)
+            {
+                MainWindow.Instance.EnqueueSnackbarMessage("Please enter a name for your tag.");
+                return;
+            }
+
             List<LiveryTag> allTags = LiveryTagging.GetAllTags();
 
             foreach (LiveryTag tag in allTags)
