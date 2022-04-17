@@ -144,7 +144,8 @@
                                     - Right click skins to add to skin pack.<LineBreak/>
                                     - Right click skins to browse livery folder.<LineBreak/>
                                     - Right click skins to open json file.<LineBreak/>
-                                    - Right click skins to delete.<LineBreak/><LineBreak/>
+                                    - Right click skins to delete.<LineBreak/>
+                                    - Right click skins to tag them<LineBreak/><LineBreak/>
                                    DDS(DirectDraw Surface) Generator:<LineBreak/>
                                     - Button is visible in viewer when dds_0 and dds_1 do not exist.<LineBreak/>
                                     - Generate dds_0 and dds_1 files.<LineBreak/>
