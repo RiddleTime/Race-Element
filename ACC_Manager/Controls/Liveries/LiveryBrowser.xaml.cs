@@ -54,8 +54,8 @@ namespace ACCSetupApp.Controls
             buttonNewTag.Click += (sender, args) =>
             {
                 LiveryTagCreator.Instance.Open();
-                
-                
+
+
             };
         }
 
@@ -183,7 +183,7 @@ namespace ACCSetupApp.Controls
                         Width = liveriesTreeViewTeams.Width - 5
                     };
                     TreeViewItem skinItem = new TreeViewItem() { Header = skinHeader, DataContext = car };
-                    skinItem.ContextMenu = GetSkinContextMenu(car);
+                    skinItem.ContextMenu = GetSkinContextMenu(car, null);
 
                     modelItem.Items.Add(skinItem);
                 }
@@ -234,7 +234,7 @@ namespace ACCSetupApp.Controls
                         Width = liveriesTreeViewTeams.Width - 5
                     };
                     TreeViewItem skinItem = new TreeViewItem() { Header = skinHeader, DataContext = car };
-                    skinItem.ContextMenu = GetSkinContextMenu(car);
+                    skinItem.ContextMenu = GetSkinContextMenu(car, null);
 
                     teamItem.Items.Add(skinItem);
                 }
@@ -269,7 +269,7 @@ namespace ACCSetupApp.Controls
                     Width = liveriesTreeViewTeams.Width - 5
                 };
                 TreeViewItem tagItem = new TreeViewItem() { Header = tagHeader };
-
+                tagItem.ContextMenu = GetTagContextMenu(tagItem, liveryTag);
 
                 foreach (LiveryTreeCar car in allLiveries)
                 {
@@ -283,7 +283,7 @@ namespace ACCSetupApp.Controls
                             Width = liveriesTreeViewTeams.Width - 5
                         };
                         TreeViewItem skinItem = new TreeViewItem() { Header = skinHeader, DataContext = car };
-                        skinItem.ContextMenu = GetSkinContextMenu(car);
+                        skinItem.ContextMenu = GetSkinContextMenu(car, liveryTag);
 
                         tagItem.Items.Add(skinItem);
                     }
@@ -305,7 +305,7 @@ namespace ACCSetupApp.Controls
         }
 
 
-        private ContextMenu GetSkinContextMenu(LiveryTreeCar directory)
+        private ContextMenu GetSkinContextMenu(LiveryTreeCar liveryTreeCar, LiveryTag tag)
         {
             ContextMenu menu = new ContextMenu()
             {
@@ -319,7 +319,7 @@ namespace ACCSetupApp.Controls
             Button openLiveryDirectory = new Button()
             {
                 Content = $"Open Livery Directory",
-                CommandParameter = directory,
+                CommandParameter = liveryTreeCar,
                 Style = Resources["MaterialDesignRaisedButton"] as Style,
                 Margin = new Thickness(0),
                 Height = 30,
@@ -331,7 +331,7 @@ namespace ACCSetupApp.Controls
             Button openLiveryJson = new Button()
             {
                 Content = $"Open Livery Json",
-                CommandParameter = directory,
+                CommandParameter = liveryTreeCar,
                 Style = Resources["MaterialDesignRaisedButton"] as Style,
                 Margin = new Thickness(0),
                 Height = 30,
@@ -343,7 +343,7 @@ namespace ACCSetupApp.Controls
             Button createZipButton = new Button()
             {
                 Content = $"Save Skin as zip archive",
-                CommandParameter = directory,
+                CommandParameter = liveryTreeCar,
                 Style = Resources["MaterialDesignRaisedButton"] as Style,
                 Margin = new Thickness(0),
                 Height = 30,
@@ -355,7 +355,7 @@ namespace ACCSetupApp.Controls
             Button addSkinToSkinPack = new Button()
             {
                 Content = $"Add to Skin Pack",
-                CommandParameter = directory,
+                CommandParameter = liveryTreeCar,
                 Style = Resources["MaterialDesignRaisedButton"] as Style,
                 Margin = new Thickness(0),
                 Height = 30,
@@ -364,23 +364,44 @@ namespace ACCSetupApp.Controls
             addSkinToSkinPack.Click += AddSkinToSkinPack_Click;
             menu.Items.Add(addSkinToSkinPack);
 
-
-            Button addSkinToTag = new Button()
+            if (tag == null)
             {
-                Content = $"Add to Tag",
-                CommandParameter = directory,
-                Style = Resources["MaterialDesignRaisedButton"] as Style,
-                Margin = new Thickness(0),
-                Height = 30,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
-            addSkinToTag.Click += AddSkinToTag_Click;
-            menu.Items.Add(addSkinToTag);
+                Button addSkinToTag = new Button()
+                {
+                    Content = $"Add to Tag",
+                    CommandParameter = liveryTreeCar,
+                    Style = Resources["MaterialDesignRaisedButton"] as Style,
+                    Margin = new Thickness(0),
+                    Height = 30,
+                    VerticalAlignment = VerticalAlignment.Center,
+                };
+                addSkinToTag.Click += AddSkinToTag_Click;
+                menu.Items.Add(addSkinToTag);
+            }
+            else
+            {
+                Button removeSkinFromTag = new Button()
+                {
+                    Content = $"Remove from tag",
+                    CommandParameter = liveryTreeCar,
+                    Style = Resources["MaterialDesignRaisedButton"] as Style,
+                    Margin = new Thickness(0),
+                    Height = 30,
+                    VerticalAlignment = VerticalAlignment.Center,
+                };
+                removeSkinFromTag.Click += (e, s) =>
+                {
+                    LiveryTagging.RemoveFromTag(tag, liveryTreeCar);
+                    menu.IsOpen = false;
+                    FetchAllCars();
+                };
+                menu.Items.Add(removeSkinFromTag);
+            }
 
             Button deleteLivery = new Button()
             {
                 Content = $"Delete",
-                CommandParameter = directory,
+                CommandParameter = liveryTreeCar,
                 Style = Resources["MaterialDesignRaisedButton"] as Style,
                 Margin = new Thickness(0),
                 Height = 30,
@@ -504,6 +525,49 @@ namespace ACCSetupApp.Controls
                 }
             }
             catch (Exception ex) { LogWriter.WriteToLog(ex); }
+        }
+
+        private ContextMenu GetTagContextMenu(TreeViewItem teamItem, LiveryTag tag)
+        {
+            ContextMenu menu = new ContextMenu()
+            {
+                Style = Resources["MaterialDesignContextMenu"] as Style,
+                Margin = new Thickness(0),
+                Padding = new Thickness(0),
+                UsesItemContainerTemplate = true,
+                Background = new SolidColorBrush(Color.FromArgb(220, 0, 0, 0))
+            };
+
+            Button addTeamToSkinPack = new Button()
+            {
+                Content = $"Add to Skin Pack",
+                CommandParameter = teamItem,
+                Style = Resources["MaterialDesignRaisedButton"] as Style,
+                Margin = new Thickness(0),
+                Height = 30,
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            addTeamToSkinPack.Click += AddTeamToSkinPack_Click;
+            menu.Items.Add(addTeamToSkinPack);
+
+            Button deleteTagButton = new Button()
+            {
+                Content = $"Delete Tag",
+                CommandParameter = teamItem,
+                Style = Resources["MaterialDesignRaisedButton"] as Style,
+                Margin = new Thickness(0),
+                Height = 30,
+                ToolTip = "Warning! This permantely deletes this tag!",
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            deleteTagButton.Click += (e, s) =>
+            {
+                LiveryTagging.DeleteTag(tag);
+                menu.IsOpen = false;
+            };
+            menu.Items.Add(deleteTagButton);
+
+            return menu;
         }
 
         private ContextMenu GetTeamContextMenu(TreeViewItem teamItem)
@@ -674,103 +738,6 @@ namespace ACCSetupApp.Controls
                                 zipArchive.SaveTo(outputStream);
                                 MainWindow.Instance.snackbar.MessageQueue.Enqueue($"Livery \"{liveryTreeCar.carsRoot.teamName}\" saved as: {filename}");
                             }
-                        }
-                    }
-                }
-
-            closeMenu:
-                (button.Parent as ContextMenu).IsOpen = false;
-            }
-        }
-
-        private void CreateTeamZipButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender.GetType() == typeof(Button))
-            {
-                Button button = (Button)sender;
-
-                TreeViewItem treeItem = (TreeViewItem)button.CommandParameter;
-                List<LiveryTreeCar> treeCars = new List<LiveryTreeCar>();
-                treeItem.Items.OfType<TreeViewItem>().ToList().ForEach(x =>
-                {
-                    treeCars.Add((LiveryTreeCar)x.DataContext);
-                });
-
-                //if (liveryTreeCar.carsRoot.customSkinName == null || liveryTreeCar.carsRoot.customSkinName.Length == 0)
-                //{
-                //    goto closeMenu;
-                //}
-
-                Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-
-                // Set filter for file extension and default file extension 
-                dlg.DefaultExt = ".zip";
-                dlg.AddExtension = true;
-                dlg.CheckPathExists = true;
-                dlg.FileName = $"{((TextBlock)treeItem.Header).Text}";
-                dlg.DefaultExt = ".zip";
-                dlg.Filter = "Livery zip|*.zip";
-                Nullable<bool> result = dlg.ShowDialog();
-
-
-                // Get the selected file name and display in a TextBox 
-                if (result == true)
-                {
-                    // Open document 
-                    string filename = dlg.FileName;
-
-                    if (filename == null)
-                        goto closeMenu;
-
-                    using (ZipArchive zipArchive = ZipArchive.Create())
-                    {
-                        foreach (LiveryTreeCar liveryTreeCar in treeCars)
-                        {
-                            string liveriesFolder = $"Liveries\\{liveryTreeCar.carsRoot.customSkinName}\\";
-                            string carsFolder = "Cars\\";
-                            zipArchive.AddEntry($"{carsFolder}{liveryTreeCar.carsFile.Name}", liveryTreeCar.carsFile);
-
-                            DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + liveryTreeCar.carsRoot.customSkinName);
-                            if (customSkinDir.Exists)
-                            {
-
-                                FileInfo decalsPng = new FileInfo(customSkinDir.FullName + "\\" + "decals.png");
-                                FileInfo decalsJson = new FileInfo(customSkinDir.FullName + "\\" + "decals.json");
-                                FileInfo sponsorsPng = new FileInfo(customSkinDir.FullName + "\\" + "sponsors.png");
-                                FileInfo sponsorsJson = new FileInfo(customSkinDir.FullName + "\\" + "sponsors.json"); ;
-
-                                if (decalsPng.Exists)
-                                    zipArchive.AddEntry($"{liveriesFolder}{decalsPng.Name}", decalsPng);
-                                if (decalsJson.Exists)
-                                    zipArchive.AddEntry($"{liveriesFolder}{decalsJson.Name}", decalsJson);
-                                if (sponsorsPng.Exists)
-                                    zipArchive.AddEntry($"{liveriesFolder}{sponsorsPng.Name}", sponsorsPng);
-                                if (sponsorsJson.Exists)
-                                    zipArchive.AddEntry($"{liveriesFolder}{sponsorsJson.Name}", sponsorsJson);
-
-
-                                FileInfo decalsDds0 = new FileInfo(customSkinDir.FullName + "\\" + "decals_0.dds");
-                                FileInfo decalsDds1 = new FileInfo(customSkinDir.FullName + "\\" + "decals_1.dds");
-                                FileInfo sponsorsDds0 = new FileInfo(customSkinDir.FullName + "\\" + "sponsors_0.dds");
-                                FileInfo sponsorsDds1 = new FileInfo(customSkinDir.FullName + "\\" + "sponsors_1.dds");
-
-                                if (decalsDds0.Exists)
-                                    zipArchive.AddEntry($"{liveriesFolder}{decalsDds0.Name}", decalsDds0);
-                                if (decalsDds1.Exists)
-                                    zipArchive.AddEntry($"{liveriesFolder}{decalsDds1.Name}", decalsDds1);
-                                if (sponsorsDds0.Exists)
-                                    zipArchive.AddEntry($"{liveriesFolder}{sponsorsDds0.Name}", sponsorsDds0);
-                                if (sponsorsDds1.Exists)
-                                    zipArchive.AddEntry($"{liveriesFolder}{sponsorsDds1.Name}", sponsorsDds1);
-
-                            }
-
-                        }
-
-                        using (FileStream outputStream = new FileStream(filename, FileMode.Create))
-                        {
-                            zipArchive.SaveTo(outputStream);
-                            MainWindow.Instance.snackbar.MessageQueue.Enqueue($"Team {((TextBlock)treeItem.Header).Text} saved as: {filename}");
                         }
                     }
                 }

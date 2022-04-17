@@ -47,7 +47,7 @@ namespace ACCSetupApp.Controls
                 listBoxItem.Background = Brushes.Transparent;
             }
 
-            foreach (var item in e.AddedItems)
+            foreach (var item in tagList.SelectedItems)
             {
                 var listBoxItem = (item as ListBoxItem);
                 listBoxItem.Background = Brushes.OrangeRed;

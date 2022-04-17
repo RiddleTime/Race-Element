@@ -89,6 +89,21 @@ namespace ACCSetupApp.Controls
             return false;
         }
 
+
+
+        internal static void RemoveFromTag(LiveryTag tag, LiveryTreeCar livery)
+        {
+            TaggedLivery taggedLivery = new TaggedLivery()
+            {
+                CarModelType = livery.carsRoot.carModelType,
+                TeamName = livery.carsRoot.teamName,
+                CustomSkinName = livery.carsRoot.customSkinName,
+            };
+
+            tag.TaggedLiveries.Remove(taggedLivery);
+            SaveTag(tag);
+        }
+
         public static LiveryTag CreateNewTag(string tagName)
         {
             LiveryTag tag = new LiveryTag()
@@ -141,7 +156,6 @@ namespace ACCSetupApp.Controls
             string jsonString = JsonConvert.SerializeObject(tag, Formatting.Indented);
 
             File.WriteAllText(liveryFile.FullName, jsonString);
-
 
             return tag;
         }
@@ -198,6 +212,35 @@ namespace ACCSetupApp.Controls
             }
 
             return tagDir;
+        }
+
+        internal static void DeleteTag(LiveryTag tag)
+        {
+            DirectoryInfo tagDir = GetTagDirectory();
+
+            FileInfo[] tagFiles = tagDir.GetFiles($"{tag.Name}.json");
+
+            try
+            {
+                if (tagFiles.Length > 0)
+                {
+                    foreach (FileInfo file in tagFiles)
+                    {
+                        if (file.Name.Equals($"{tag.Name}.json"))
+                        {
+                            file.Delete();
+
+                            break;
+                        }
+                    }
+                }
+
+                LiveryBrowser.Instance.FetchAllCars();
+            }
+            catch (Exception e)
+            {
+                LogWriter.WriteToLog(e);
+            }
         }
     }
 }

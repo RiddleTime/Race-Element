@@ -37,7 +37,7 @@
                         <RowDefinition Height="80"/>
                     </Grid.RowDefinitions>
 
-                    <ListBox x:Name="tagList" Grid.Row="0">
+                    <ListBox x:Name="tagList" Grid.Row="0" SelectionMode="Multiple">
                     </ListBox>
 
                     <StackPanel Grid.Row="1">
