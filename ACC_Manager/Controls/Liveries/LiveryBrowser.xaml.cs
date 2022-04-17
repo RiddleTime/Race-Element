@@ -53,8 +53,9 @@ namespace ACCSetupApp.Controls
 
             buttonNewTag.Click += (sender, args) =>
             {
-                LiveryTagging.CreateNewTag("oNiD");
-                FetchAllCars();
+                LiveryTagCreator.Instance.Open();
+                
+                
             };
         }
 

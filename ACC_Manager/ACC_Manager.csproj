@@ -323,6 +323,9 @@
       <DependentUpon>LiveryExporter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Liveries\LiveryImporter.cs" />
+    <Compile Include="Controls\Liveries\LiveryTagCreator.xaml.cs">
+      <DependentUpon>LiveryTagCreator.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Liveries\LiveryTagger.xaml.cs">
       <DependentUpon>LiveryTagger.xaml</DependentUpon>
     </Compile>
@@ -411,6 +414,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Liveries\LiveryExporter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Liveries\LiveryTagCreator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
