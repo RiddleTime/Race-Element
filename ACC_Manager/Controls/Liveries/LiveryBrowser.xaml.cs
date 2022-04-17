@@ -24,6 +24,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static ACCSetupApp.Controls.LiveryTagging;
 
 namespace ACCSetupApp.Controls
 {
@@ -44,9 +45,17 @@ namespace ACCSetupApp.Controls
 
             liveriesTreeViewTeams.SelectedItemChanged += LiveriesTreeView_SelectedItemChanged;
             liveriesTreeViewCars.SelectedItemChanged += LiveriesTreeView_SelectedItemChanged;
+            liveriesTreeViewTags.SelectedItemChanged += LiveriesTreeView_SelectedItemChanged;
 
             buttonImportLiveries.Click += ButtonImportLiveries_Click;
             buttonGenerateAllDDS.Click += ButtonGenerateAllDDS_Click;
+
+
+            buttonNewTag.Click += (sender, args) =>
+            {
+                LiveryTagging.CreateNewTag("oNiD");
+                FetchAllCars();
+            };
         }
 
         private void ButtonGenerateAllDDS_Click(object sender, RoutedEventArgs e)
@@ -101,6 +110,7 @@ namespace ACCSetupApp.Controls
                 {
                     liveriesTreeViewTeams.Items.Clear();
                     liveriesTreeViewCars.Items.Clear();
+                    liveriesTreeViewTags.Items.Clear();
 
                     DirectoryInfo customsCarsDirectory = new DirectoryInfo(FileUtil.CarsPath);
 
@@ -131,6 +141,7 @@ namespace ACCSetupApp.Controls
 
                     FillTreeViewTeams(liveriesGroupedByTeam);
                     FillTreeViewModels(liveriesGroupedByCar);
+                    FillTreeViewTags(liveryTreeCars);
 
                 }
                 catch (Exception ex)
@@ -241,6 +252,58 @@ namespace ACCSetupApp.Controls
             carsTreeViews.ForEach(x => liveriesTreeViewTeams.Items.Add(x));
         }
 
+        private void FillTreeViewTags(List<LiveryTreeCar> allLiveries)
+        {
+            //LiveryTag tag = LiveryTagging.CreateNewTag("oNiD");
+
+            List<TreeViewItem> tagTreeItems = new List<TreeViewItem>();
+
+            LiveryTagging.GetAllTags().ForEach(liveryTag =>
+            {
+                TextBlock tagHeader = new TextBlock()
+                {
+                    Text = $"{liveryTag.Name}",
+                    Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
+                    TextTrimming = TextTrimming.WordEllipsis,
+                    Width = liveriesTreeViewTeams.Width - 5
+                };
+                TreeViewItem tagItem = new TreeViewItem() { Header = tagHeader };
+
+
+                foreach (LiveryTreeCar car in allLiveries)
+                {
+                    if (LiveryTagging.TagContainsCar(liveryTag, car))
+                    {
+                        TextBlock skinHeader = new TextBlock()
+                        {
+                            Text = $"{car.carsRoot.customSkinName}",
+                            Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style,
+                            TextTrimming = TextTrimming.WordEllipsis,
+                            Width = liveriesTreeViewTeams.Width - 5
+                        };
+                        TreeViewItem skinItem = new TreeViewItem() { Header = skinHeader, DataContext = car };
+                        skinItem.ContextMenu = GetSkinContextMenu(car);
+
+                        tagItem.Items.Add(skinItem);
+                    }
+                }
+
+                tagTreeItems.Add(tagItem);
+            });
+
+
+            tagTreeItems.Sort((a, b) =>
+            {
+                TextBlock textA = a.Header as TextBlock;
+                TextBlock textB = b.Header as TextBlock;
+                return $"{textA.Text}".CompareTo($"{textB.Text}");
+            });
+
+            tagTreeItems.ForEach(x => liveriesTreeViewTags.Items.Add(x));
+
+        }
+
+
         private ContextMenu GetSkinContextMenu(LiveryTreeCar directory)
         {
             ContextMenu menu = new ContextMenu()
@@ -297,8 +360,21 @@ namespace ACCSetupApp.Controls
                 Height = 30,
                 VerticalAlignment = VerticalAlignment.Center,
             };
-            addSkinToSkinPack.Click += AddSkinToSkinPack_Click; ;
+            addSkinToSkinPack.Click += AddSkinToSkinPack_Click;
             menu.Items.Add(addSkinToSkinPack);
+
+
+            Button addSkinToTag = new Button()
+            {
+                Content = $"Add to Tag",
+                CommandParameter = directory,
+                Style = Resources["MaterialDesignRaisedButton"] as Style,
+                Margin = new Thickness(0),
+                Height = 30,
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            addSkinToTag.Click += AddSkinToTag_Click;
+            menu.Items.Add(addSkinToTag);
 
             Button deleteLivery = new Button()
             {
@@ -313,6 +389,26 @@ namespace ACCSetupApp.Controls
             menu.Items.Add(deleteLivery);
 
             return menu;
+        }
+
+        private void AddSkinToTag_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender.GetType() == typeof(Button))
+                {
+                    Button button = (Button)sender;
+                    (button.Parent as ContextMenu).IsOpen = false;
+
+                    LiveryTreeCar liveryTreeCar = (LiveryTreeCar)button.CommandParameter;
+
+                    LiveryTagger.Instance.Open(liveryTreeCar);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogWriter.WriteToLog(ex);
+            }
         }
 
         private void DeleteLivery_Click(object sender, RoutedEventArgs e)
@@ -432,7 +528,46 @@ namespace ACCSetupApp.Controls
             addTeamToSkinPack.Click += AddTeamToSkinPack_Click;
             menu.Items.Add(addTeamToSkinPack);
 
+            Button addTeamToTag = new Button()
+            {
+                Content = $"Add to Tag",
+                CommandParameter = teamItem,
+                Style = Resources["MaterialDesignRaisedButton"] as Style,
+                Margin = new Thickness(0),
+                Height = 30,
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            addTeamToTag.Click += AddTeamToTag_Click;
+            menu.Items.Add(addTeamToTag);
+
             return menu;
+        }
+
+        private void AddTeamToTag_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender.GetType() == typeof(Button))
+                {
+                    Button button = (Button)sender;
+
+                    TreeViewItem treeItem = (TreeViewItem)button.CommandParameter;
+                    List<LiveryTreeCar> treeCars = new List<LiveryTreeCar>();
+
+                    treeItem.Items.OfType<TreeViewItem>().ToList().ForEach(x =>
+                    {
+                        treeCars.Add((LiveryTreeCar)x.DataContext);
+                    });
+
+                    LiveryTagger.Instance.Open(treeCars);
+
+                    (button.Parent as ContextMenu).IsOpen = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogWriter.WriteToLog(ex);
+            }
         }
 
         private void AddTeamToSkinPack_Click(object sender, RoutedEventArgs e)

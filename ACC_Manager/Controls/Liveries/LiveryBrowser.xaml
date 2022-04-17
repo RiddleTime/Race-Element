@@ -26,6 +26,7 @@
             <ColumnDefinition Width="70*"/>
         </Grid.ColumnDefinitions>
         <local:DDSgenerator Grid.Column="0" Panel.ZIndex="1" HorizontalAlignment="Left" VerticalAlignment="Center"></local:DDSgenerator>
+        <local:LiveryTagger  Grid.Column="0" Panel.ZIndex="1" HorizontalAlignment="Left" VerticalAlignment="Center"></local:LiveryTagger>
 
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
@@ -113,15 +114,23 @@
                             <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" Tags"></TextBlock>
                         </Grid>
                     </TabItem.Header>
-                    <TreeView x:Name="liveriesTreeViewTags" Grid.Column="0" Style="{StaticResource MaterialDesignTreeView}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                        <TreeViewItem>
-                            <TreeViewItem.Header>
-                                <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="35"/>
+                        </Grid.RowDefinitions>
+
+                        <TreeView x:Name="liveriesTreeViewTags" Grid.Column="0" Style="{StaticResource MaterialDesignTreeView}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <TreeViewItem>
+                                <TreeViewItem.Header>
+                                    <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}">
                                     Team A
-                                </TextBlock>
-                            </TreeViewItem.Header>
-                        </TreeViewItem>
-                    </TreeView>
+                                    </TextBlock>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+                        </TreeView>
+                        <Button x:Name="buttonNewTag" Grid.Row="1" Content="Add new tag"></Button>
+                    </Grid>
                 </TabItem>
 
             </TabControl>

@@ -323,6 +323,9 @@
       <DependentUpon>LiveryExporter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Liveries\LiveryImporter.cs" />
+    <Compile Include="Controls\Liveries\LiveryTagger.xaml.cs">
+      <DependentUpon>LiveryTagger.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Liveries\LiveryTagging.cs" />
     <Compile Include="Controls\Setup\FlowDocUtil\DocUtil.cs" />
     <Compile Include="Controls\Setup\FlowDocUtil\FlowDocCompareSetupRenderer.cs" />
@@ -408,6 +411,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Liveries\LiveryExporter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Liveries\LiveryTagger.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

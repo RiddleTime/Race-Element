@@ -10,6 +10,10 @@ namespace ACCSetupApp.Util
     {
 
         public static string AccManagerDocumentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "ACC Manager\\";
+        public static string AccManagerLogPath = AccManagerDocumentsPath + "\\" + "Log\\";
+        public static string AccManagerTagsPath = AccManagerDocumentsPath + "\\" + "Tag\\";
+
+
         public static string AccPath => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "Assetto Corsa Competizione\\";
         public static string CustomsPath => AccPath + "Customs\\";
         public static string CarsPath => CustomsPath + "Cars\\";

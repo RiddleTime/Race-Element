@@ -39,7 +39,7 @@ namespace ACCSetupApp.Util
         /// <summary>
         /// Path to save log files
         /// </summary>
-        private static string LogPath = FileUtil.AccManagerDocumentsPath + "\\Log\\";
+        private static string LogPath = FileUtil.AccManagerLogPath;
 
         /// <summary>
         /// Lof file name
