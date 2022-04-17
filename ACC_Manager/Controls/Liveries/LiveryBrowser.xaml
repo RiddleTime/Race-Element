@@ -66,7 +66,7 @@
                     </TreeView>
                 </TabItem>
 
-                <TabItem>
+                <TabItem Padding="0">
                     <TabItem.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -81,7 +81,7 @@
                             Height="32"
                         Foreground="White"    
                         />
-                            <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" Teams"></TextBlock>
+                            <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}"  VerticalAlignment="Center" Text=" Teams"></TextBlock>
                         </Grid>
                     </TabItem.Header>
                     <TreeView x:Name="liveriesTreeViewTeams" Grid.Column="0" Style="{StaticResource MaterialDesignTreeView}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -94,6 +94,36 @@
                         </TreeViewItem>
                     </TreeView>
                 </TabItem>
+
+                <TabItem>
+                    <TabItem.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon
+                            Grid.Column="0"
+                            Kind="TagOutline"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="32"
+                        Foreground="White"    
+                        />
+                            <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" Tags"></TextBlock>
+                        </Grid>
+                    </TabItem.Header>
+                    <TreeView x:Name="liveriesTreeViewTags" Grid.Column="0" Style="{StaticResource MaterialDesignTreeView}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <TreeViewItem>
+                            <TreeViewItem.Header>
+                                <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}">
+                                    Team A
+                                </TextBlock>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                    </TreeView>
+                </TabItem>
+
             </TabControl>
 
             <Button Grid.Row="2" x:Name="buttonGenerateAllDDS" ToolTip="This will check and generate DDS files for all liveries above.">Generate DDS Files</Button>
