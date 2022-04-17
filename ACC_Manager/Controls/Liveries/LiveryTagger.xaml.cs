@@ -33,8 +33,25 @@ namespace ACCSetupApp.Controls
             buttonAdd.Click += ButtonAdd_Click;
             buttonCancel.Click += ButtonCancel_Click;
 
+            tagList.SelectionChanged += TagList_SelectionChanged;
+
             Visibility = Visibility.Hidden;
             Instance = this;
+        }
+
+        private void TagList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            foreach (var item in tagList.Items)
+            {
+                var listBoxItem = (item as ListBoxItem);
+                listBoxItem.Background = Brushes.Transparent;
+            }
+
+            foreach (var item in e.AddedItems)
+            {
+                var listBoxItem = (item as ListBoxItem);
+                listBoxItem.Background = Brushes.OrangeRed;
+            }
         }
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
@@ -54,11 +71,6 @@ namespace ACCSetupApp.Controls
                 };
                 tagList.Items.Add(item);
             });
-
-            if (tagList.Items.Count > 0)
-            {
-                tagList.SelectedIndex = 0;
-            }
         }
 
         internal void Open(LiveryTreeCar car)
@@ -78,17 +90,33 @@ namespace ACCSetupApp.Controls
 
             UpdateTagList();
 
-
             this.Visibility = Visibility.Visible;
         }
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-            LiveryTag tag = (tagList.SelectedItem as ListBoxItem).DataContext as LiveryTag;
-            foreach (var car in Cars)
+            if (tagList.Items.Count == 0)
             {
-                LiveryTagging.AddToTag(tag, car);
+                MainWindow.Instance.EnqueueSnackbarMessage("Please add a new tag first.");
+                goto close;
             }
+
+            if (tagList.SelectedItems.Count == 0)
+            {
+                MainWindow.Instance.EnqueueSnackbarMessage("Please select 1 or more tags.");
+                return;
+            }
+
+            foreach (var listItem in tagList.SelectedItems)
+            {
+                var listBox = listItem as ListBoxItem;
+                LiveryTag tag = listBox.DataContext as LiveryTag;
+                foreach (var car in Cars)
+                {
+                    LiveryTagging.AddToTag(tag, car);
+                }
+            }
+        close:
             this.Visibility = Visibility.Hidden;
             LiveryBrowser.Instance.FetchAllCars();
         }
