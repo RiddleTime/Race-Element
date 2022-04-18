@@ -21,7 +21,7 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/>
+            <RowDefinition Height="350"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -49,7 +49,7 @@
             </Grid>
         </materialDesign:Card>
         <materialDesign:Card Grid.Row="1" Margin="3,3,0,3" HorizontalAlignment="Stretch">
-            <Grid>
+            <Grid SizeChanged="StackPanelDecals_SizeChanged">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
@@ -61,15 +61,15 @@
                     <Image x:Name="sponsorsImage"
                         Width="366"
                         Height="366"
-                        Stretch="UniformToFill" 
+                        Stretch="Uniform" 
                                RenderOptions.BitmapScalingMode="LowQuality"/>
                 </StackPanel>
-                <StackPanel Orientation="Vertical" Grid.Column="1">
+                <StackPanel Orientation="Vertical" Grid.Column="1" >
                     <Label x:Name="decalsLabel" Style="{StaticResource MaterialDesignLabel}" HorizontalAlignment="Center"></Label>
                     <Image x:Name="decalsImage"
                         Width="366"
                         Height="366"
-                        Stretch="UniformToFill" 
+                        Stretch="Fill" 
                                RenderOptions.BitmapScalingMode="LowQuality"/>
                 </StackPanel>
             </Grid>

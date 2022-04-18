@@ -394,5 +394,23 @@ namespace ACCSetupApp.Controls
             try { MaterialType = BodyMaterialTypes[jsonValue]; } catch (Exception e) { Debug.WriteLine(e); }
             return MaterialType;
         }
+
+        private void StackPanelDecals_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Grid decalsPanel = sender as Grid;
+            double labelHeight = 27;
+            double lowestSize = decalsPanel.ActualWidth / 2;
+            if (decalsPanel.ActualHeight < lowestSize)
+            {
+                lowestSize = decalsPanel.ActualHeight;
+            }
+
+            lowestSize -= labelHeight;
+
+            decalsImage.Width = lowestSize;
+            decalsImage.Height = lowestSize;
+            sponsorsImage.Width = lowestSize;
+            sponsorsImage.Height = lowestSize;
+        }
     }
 }
