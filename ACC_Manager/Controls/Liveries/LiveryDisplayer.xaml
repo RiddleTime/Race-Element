@@ -21,57 +21,42 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="353"/>
+            <RowDefinition Height="220"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
         <materialDesign:Card Grid.Row="0" Margin="3,3,0,3">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="100"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="38"/>
-                </Grid.RowDefinitions>
 
-
-
-                <materialDesign:Card x:Name="skinMainInfo" Margin="3,3,3,3" Grid.Row="0" Visibility="Hidden">
-
-                    <StackPanel x:Name="stackPanelMainInfo" Orientation="Vertical" HorizontalAlignment="Center" Width="auto">
-                    </StackPanel>
-                </materialDesign:Card>
-
-                <StackPanel x:Name="stackPanelLiveryInfo" Grid.Row="1" Orientation="Vertical">
-
+            <StackPanel Orientation="Horizontal">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <materialDesign:Card x:Name="skinMainInfo" MinWidth="300" Margin="3,3,3,3" Grid.Row="0" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <StackPanel x:Name="stackPanelMainInfo" Orientation="Vertical" Grid.Row="0">
+                        </StackPanel>
+                    </materialDesign:Card>
+                    <Button x:Name="buttonGenerateDDS" Grid.Row="1" Visibility="Hidden" Margin="3" ToolTip="Generate the _0 and _1 dds files so the game doesn't have to do it for you.">Generate DDS Files</Button>
+                </Grid>
+                <StackPanel x:Name="stackPanelLiveryInfo" Grid.Column="1" HorizontalAlignment="Left" Orientation="Vertical" ScrollViewer.HorizontalScrollBarVisibility="Auto">
                 </StackPanel>
-
-                <Button x:Name="buttonGenerateDDS" Grid.Row="2" Visibility="Hidden" Margin="3,0,3,0" ToolTip="Generate the _0 and _1 dds files so the game doesn't have to do it for you.">Generate DDS Files</Button>
-            </Grid>
+            </StackPanel>
         </materialDesign:Card>
         <materialDesign:Card Grid.Row="1" Margin="3,3,0,3" HorizontalAlignment="Stretch">
             <Grid SizeChanged="StackPanelDecals_SizeChanged">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
 
-
-                <StackPanel Orientation="Vertical" Grid.Column="0">
-                    <Label x:Name="sponsorsLabel" Style="{StaticResource MaterialDesignLabel}" HorizontalAlignment="Center"></Label>
-                    <Image x:Name="sponsorsImage"
-                        Width="366"
-                        Height="366"
-                        Stretch="Uniform" 
-                               RenderOptions.BitmapScalingMode="LowQuality"/>
-                </StackPanel>
-                <StackPanel Orientation="Vertical" Grid.Column="1" >
-                    <Label x:Name="decalsLabel" Style="{StaticResource MaterialDesignLabel}" HorizontalAlignment="Center"></Label>
-                    <Image x:Name="decalsImage"
+                <Image x:Name="decalsImage"
                         Width="366"
                         Height="366"
                         Stretch="Fill" 
                                RenderOptions.BitmapScalingMode="LowQuality"/>
-                </StackPanel>
+                <Image x:Name="sponsorsImage"
+                        Width="366"
+                        Height="366"
+                        Stretch="Uniform" 
+                               RenderOptions.BitmapScalingMode="LowQuality"/>
+
             </Grid>
         </materialDesign:Card>
     </Grid>

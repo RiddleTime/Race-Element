@@ -96,9 +96,7 @@ namespace ACCSetupApp.Controls
         {
             ThreadPool.QueueUserWorkItem(x => { GC.Collect(); });
 
-            decalsLabel.Content = string.Empty;
             decalsImage.Source = null;
-            sponsorsLabel.Content = string.Empty;
             sponsorsImage.Source = null;
             stackPanelLiveryInfo.Children.Clear();
             stackPanelMainInfo.Children.Clear();
@@ -127,9 +125,10 @@ namespace ACCSetupApp.Controls
                     {
                         skinMainInfo.Visibility = Visibility.Visible;
 
-                        stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.teamName}", HorizontalAlignment.Center, 25));
-                        stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.customSkinName}", HorizontalAlignment.Center, 19));
-                        stackPanelMainInfo.Children.Add(GetInfoLabel($"{conversionFactory.GetCarName(carsRoot.carModelType)}", HorizontalAlignment.Center, 16));
+                        if (carsRoot.teamName != String.Empty)
+                            stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.teamName}", HorizontalAlignment.Center, 25, "Team Name"));
+                        stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.customSkinName}", HorizontalAlignment.Center, 19, "Skin Name"));
+                        stackPanelMainInfo.Children.Add(GetInfoLabel($"{conversionFactory.GetCarName(carsRoot.carModelType)}", HorizontalAlignment.Center, 16, "Car model type"));
 
                         stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Display Name: {carsRoot.displayName}"));
                         stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Race Number: {carsRoot.raceNumber}"));
@@ -149,7 +148,6 @@ namespace ACCSetupApp.Controls
                             if (sponsorFiles != null && sponsorFiles.Length > 0)
                             {
                                 FileInfo sponsorsFile = sponsorFiles[0];
-                                sponsorsLabel.Content = "Sponsors";
                                 sponsorsImage.Source = LoadPhoto(sponsorsFile.FullName);
                                 //new BitmapImage(new Uri(sponsorsFile.FullName, UriKind.Absolute), new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable));
                             }
@@ -203,7 +201,6 @@ namespace ACCSetupApp.Controls
                             if (decalFiles != null && decalFiles.Length > 0)
                             {
                                 FileInfo decalsFile = decalFiles[0];
-                                decalsLabel.Content = "Decals";
                                 decalsImage.Source = LoadPhoto(decalsFile.FullName);
 
                                 //new BitmapImage(new Uri(decalsFile.FullName, UriKind.Absolute), new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable));
@@ -252,7 +249,7 @@ namespace ACCSetupApp.Controls
             return bmi;
         }
 
-        private Label GetInfoLabel(string text, HorizontalAlignment allignmment = HorizontalAlignment.Left, int size = 13)
+        private Label GetInfoLabel(string text, HorizontalAlignment allignmment = HorizontalAlignment.Left, int size = 13, string toolTip = "")
         {
             Label label = new Label()
             {
@@ -261,6 +258,10 @@ namespace ACCSetupApp.Controls
                 FontSize = size,
                 HorizontalAlignment = allignmment
             };
+            if (toolTip != string.Empty)
+            {
+                label.ToolTip = toolTip;
+            }
             return label;
         }
 
@@ -398,14 +399,11 @@ namespace ACCSetupApp.Controls
         private void StackPanelDecals_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             Grid decalsPanel = sender as Grid;
-            double labelHeight = 27;
-            double lowestSize = decalsPanel.ActualWidth / 2;
+            double lowestSize = decalsPanel.ActualWidth;
             if (decalsPanel.ActualHeight < lowestSize)
             {
                 lowestSize = decalsPanel.ActualHeight;
             }
-
-            lowestSize -= labelHeight;
 
             decalsImage.Width = lowestSize;
             decalsImage.Height = lowestSize;
