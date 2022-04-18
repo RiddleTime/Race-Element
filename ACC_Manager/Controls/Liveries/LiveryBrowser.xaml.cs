@@ -54,8 +54,6 @@ namespace ACCSetupApp.Controls
             buttonNewTag.Click += (sender, args) =>
             {
                 LiveryTagCreator.Instance.Open();
-
-
             };
         }
 
@@ -103,14 +101,17 @@ namespace ACCSetupApp.Controls
             }
         }
 
-        internal void FetchAllCars()
+        internal void FetchAllCars(bool tagsOnly = false)
         {
             Instance.Dispatcher.BeginInvoke(new Action(() =>
             {
                 try
                 {
-                    liveriesTreeViewTeams.Items.Clear();
-                    liveriesTreeViewCars.Items.Clear();
+                    if (!tagsOnly)
+                    {
+                        liveriesTreeViewTeams.Items.Clear();
+                        liveriesTreeViewCars.Items.Clear();
+                    }
                     liveriesTreeViewTags.Items.Clear();
 
                     DirectoryInfo customsCarsDirectory = new DirectoryInfo(FileUtil.CarsPath);
@@ -140,8 +141,11 @@ namespace ACCSetupApp.Controls
                     var liveriesGroupedByCar = liveryTreeCars.GroupBy(g => conversionFactory.GetCarName(g.carsRoot.carModelType));
                     var liveriesGroupedByTeam = liveryTreeCars.GroupBy(g => g.carsRoot.teamName);
 
-                    FillTreeViewTeams(liveriesGroupedByTeam);
-                    FillTreeViewModels(liveriesGroupedByCar);
+                    if (!tagsOnly)
+                    {
+                        FillTreeViewTeams(liveriesGroupedByTeam);
+                        FillTreeViewModels(liveriesGroupedByCar);
+                    }
                     FillTreeViewTags(liveryTreeCars);
 
                 }

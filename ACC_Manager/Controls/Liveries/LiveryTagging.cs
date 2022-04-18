@@ -235,7 +235,7 @@ namespace ACCSetupApp.Controls
                     }
                 }
 
-                LiveryBrowser.Instance.FetchAllCars();
+                LiveryBrowser.Instance.FetchAllCars(true);
             }
             catch (Exception e)
             {

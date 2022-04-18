@@ -118,7 +118,7 @@ namespace ACCSetupApp.Controls
             }
         close:
             this.Visibility = Visibility.Hidden;
-            LiveryBrowser.Instance.FetchAllCars();
+            LiveryBrowser.Instance.FetchAllCars(true);
         }
     }
 }

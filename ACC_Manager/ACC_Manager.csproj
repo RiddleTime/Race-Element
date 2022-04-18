@@ -373,6 +373,7 @@
     <Compile Include="SetupParser\Cars\GT3\Ferrari488GT3.cs" />
     <Compile Include="SetupParser\Cars\GT3\Ferrari488GT3evo.cs" />
     <Compile Include="SetupParser\Cars\GT3\HondaNsxGT3.cs" />
+    <Compile Include="SetupParser\Cars\GT3\JaguarG3GT3.cs" />
     <Compile Include="SetupParser\Cars\GT3\LamborghiniHuracanGT3.cs" />
     <Compile Include="SetupParser\Cars\GT3\LamborghiniHuracanGT3evo.cs" />
     <Compile Include="SetupParser\Cars\GT3\LexusRcfGT3.cs" />

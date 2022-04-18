@@ -10,7 +10,10 @@ namespace ACCSetupApp.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {   {"0.0.4.3", "- Livery Displayer: Sponsors Image is now displayed ontop of Decals image."+
-                        "\n- Livery Displayer: Revamped layout to increase size of livery preview."},
+                        "\n- Livery Displayer: Revamped layout to increase size of livery preview."+
+                        "\n- Livery Importer: Improved feedback for user when importing an unsupported archive."+
+                        "\n- Livery Tagger: When adding tags to cars, only the Tags tab in the Livery Browser will be updated."+
+                        "\n- Setup conversion added: Emil Frey Jaguar G3 2012."},
             {"0.0.4.2", "- Livery Tags: Cars under a tag are now alphabetically sorted."+
                         "\n- ACCM: Allow window resizing."+
                         "\n- Livery Displayer: preview images scale with window resizing."},
