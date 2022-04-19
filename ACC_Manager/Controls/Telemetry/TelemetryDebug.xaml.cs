@@ -11,14 +11,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static ACCSetupApp.SharedMemory;
-using UserControl = System.Windows.Controls.UserControl;
 
 namespace ACCSetupApp.Controls
 {
@@ -29,9 +27,9 @@ namespace ACCSetupApp.Controls
     {
         static TelemetryDebug Instance;
 
-        private bool drawOnGame = false;
-
         SharedMemory sharedMemory = new SharedMemory();
+
+        TelemetryOverlay overlay = new TelemetryOverlay();
 
         public TelemetryDebug()
         {
@@ -50,88 +48,12 @@ namespace ACCSetupApp.Controls
 
         private void CheckBoxDrawOnGame_Unchecked(object sender, RoutedEventArgs e)
         {
-            drawOnGame = false;
+            overlay.Stop();
         }
 
         private void CheckBoxDrawOnGame_Checked(object sender, RoutedEventArgs e)
         {
-
-            new Thread(x =>
-            {
-                drawOnGame = true;
-                Form overlay = null;
-
-                overlay = new Form()
-                {
-                    WindowState = FormWindowState.Maximized,
-                    TopLevel = true,
-                    TransparencyKey = System.Drawing.Color.Black,
-                    AllowTransparency = true,
-                    ShowInTaskbar = false,
-                    Capture = false,
-                    TopMost = true,
-                    FormBorderStyle = FormBorderStyle.None,
-                    ShowIcon = false,
-                };
-                overlay.Show();
-                typeof(Form).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, overlay, new object[] { true });
-
-                BufferedGraphicsContext ctx = new BufferedGraphicsContext();
-
-
-                while (drawOnGame)
-                {
-                    Thread.Sleep(1000 / 60);
-
-                    BufferedGraphics bg = ctx.Allocate(Graphics.FromHwnd(overlay.Handle), new System.Drawing.Rectangle(0, 0, overlay.Width, overlay.Height));
-                    Bitmap curBitmap = new Bitmap(overlay.Width, overlay.Height);
-
-                    bg.Graphics.Clear(System.Drawing.Color.Transparent);
-
-                    // draw here
-                    DrawData(bg.Graphics);
-
-
-                    // render double buffer...
-                    bg.Render();
-                    bg.Dispose();
-                }
-
-                if (!drawOnGame)
-                {
-                    Graphics g = Graphics.FromHwnd(overlay.Handle);
-                    g.Dispose();
-                    overlay.Dispose();
-                }
-            }).Start();
-
-        }
-
-        private void DrawData(Graphics g)
-        {
-            SolidBrush b = new SolidBrush(System.Drawing.Color.White);
-
-            SPageFilePhysics pageStatic = sharedMemory.ReadPhysicsPageFile();
-            FieldInfo[] members = pageStatic.GetType().GetFields();
-            float y = 0;
-            float emSize = 16;
-            foreach (FieldInfo member in members)
-            {
-                var value = member.GetValue(pageStatic);
-
-                bool isObsolete = false;
-                foreach (CustomAttributeData cad in member.CustomAttributes)
-                {
-                    if (cad.AttributeType == typeof(ObsoleteAttribute)) { isObsolete = true; break; }
-                }
-
-                if (!isObsolete && !member.Name.Equals("Buffer") && !member.Name.Equals("Size"))
-                {
-                    value = FieldTypeValue(member, value);
-
-                    g.DrawString($"{member.Name}: {value}", new Font("Arial", emSize), b, new PointF(0, y += emSize + 3));
-                }
-            }
+            overlay.Start();
         }
 
         private void UpdateDataButton_Click(object sender, RoutedEventArgs e)
@@ -143,7 +65,7 @@ namespace ACCSetupApp.Controls
 
         private unsafe void UpdateStaticData()
         {
-            StackPanel stacker = new StackPanel() { Orientation = System.Windows.Controls.Orientation.Vertical };
+            StackPanel stacker = new StackPanel() { Orientation = Orientation.Vertical };
 
             SPageFileStatic pageStatic = sharedMemory.ReadStaticPageFile();
             FieldInfo[] members = pageStatic.GetType().GetFields();
@@ -182,7 +104,7 @@ namespace ACCSetupApp.Controls
 
         private unsafe void UpdatePhysicsData()
         {
-            StackPanel stacker = new StackPanel() { Orientation = System.Windows.Controls.Orientation.Vertical };
+            StackPanel stacker = new StackPanel() { Orientation = Orientation.Vertical };
 
             SPageFilePhysics pageStatic = sharedMemory.ReadPhysicsPageFile();
             FieldInfo[] members = pageStatic.GetType().GetFields();
@@ -218,7 +140,7 @@ namespace ACCSetupApp.Controls
 
         private unsafe void UpdateGraphicsData()
         {
-            StackPanel stacker = new StackPanel() { Orientation = System.Windows.Controls.Orientation.Vertical };
+            StackPanel stacker = new StackPanel() { Orientation = Orientation.Vertical };
 
             SPageFileGraphic pageStatic = sharedMemory.ReadGraphicsPageFile();
             FieldInfo[] members = pageStatic.GetType().GetFields();
