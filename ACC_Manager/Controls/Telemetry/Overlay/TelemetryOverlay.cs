@@ -54,7 +54,7 @@ namespace ACCSetupApp.Controls
                 {
                     while (drawOnGame)
                     {
-                        Thread.Sleep(1000 / 60);
+                        Thread.Sleep(1000 / 30);
                         this.BeginInvoke(new Action(() =>
                         {
                             this.InvokePaint(this, new PaintEventArgs(this.CreateGraphics(), this.DisplayRectangle));

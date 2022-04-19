@@ -55,7 +55,7 @@ namespace ACCSetupApp.Controls
             {
                 while (IsCollecting)
                 {
-                    Thread.Sleep(1000 / 50);
+                    Thread.Sleep(1000 / 25);
                     Collect(sharedMemory.ReadPhysicsPageFile());
                 }
             }).Start();
