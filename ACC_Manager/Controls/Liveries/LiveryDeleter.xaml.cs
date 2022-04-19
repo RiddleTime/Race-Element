@@ -58,7 +58,9 @@ namespace ACCSetupApp.Controls
             try
             {
                 DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + ToBeDeleted.carsRoot.customSkinName);
-                customSkinDir.Delete(true);
+                if (customSkinDir.Exists)
+                    customSkinDir.Delete(true);
+
                 ToBeDeleted.carsFile.Delete();
 
                 MainWindow.Instance.EnqueueSnackbarMessage($"Livery Deleted: {ToBeDeleted.carsRoot.teamName} / {ToBeDeleted.carsRoot.customSkinName}");

@@ -82,7 +82,9 @@
             </TabItem>
 
         </TabControl>
-
-        <Button x:Name="updateDataButton" Grid.Row="1" Content="Update data" />
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <CheckBox x:Name="checkBoxDrawOnGame">Draw on game</CheckBox>
+            <Button x:Name="updateDataButton" Grid.Row="1" Content="Update data" HorizontalAlignment="Stretch"/>
+        </StackPanel>
     </Grid>
 </UserControl>

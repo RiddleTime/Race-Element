@@ -52,7 +52,7 @@ namespace ACCSetupApp.Controls
                             {"Speed", physicsPage.SpeedKmh },
                             {"Throttle", physicsPage.Gas},
                             {"Brake", physicsPage.Brake },
-                            {"Lap", graphicsPage.CompletedLaps}
+                            {"Lap", graphicsPage.CompletedLaps+1}
                         };
 
                         Storage.AddDataEntry(ticks, data);
