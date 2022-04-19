@@ -112,117 +112,13 @@ namespace ACCSetupApp.Controls
 
         private void Draw(Graphics g, SPageFilePhysics pageFilePhysics, SPageFileGraphic pageGraphics)
         {
-            //DrawInputs(g, pageFilePhysics);
             DrawInputGraph(g);
         }
 
         private void DrawInputGraph(Graphics g)
         {
-            RectangleF visibleArea = g.VisibleClipBounds;
-
             InputGraph graph = new InputGraph(0, 0, this.Width - 1, this.Height - 1, inputDataCollector.Throttle, inputDataCollector.Brake, inputDataCollector.Steering);
             graph.Draw(g);
-        }
-
-        private void DrawInputs(Graphics g, SPageFilePhysics pagePhysics)
-        {
-            RectangleF visibleArea = g.VisibleClipBounds;
-
-            int horizontalMid = (int)(visibleArea.Width / 2);
-            int visibleHeight = (int)(visibleArea.Height);
-
-            int barWidth = 100;
-
-
-            float throttle = pagePhysics.Gas;
-            g.FillRectangle(Brushes.Green, new Rectangle(horizontalMid - barWidth / 2, visibleHeight - 35, (int)(barWidth * throttle), 30));
-            g.DrawRectangle(new Pen(Brushes.White), new Rectangle(horizontalMid - barWidth / 2, visibleHeight - 35, barWidth, 30));
-            g.DrawString($"{Math.Round(throttle * 100)}%", inputFont, Brushes.White, horizontalMid - barWidth / 2, visibleHeight - 33);
-
-
-            float brake = pagePhysics.Brake;
-            g.FillRectangle(Brushes.Red, new Rectangle(horizontalMid - barWidth / 2, visibleHeight - 75, (int)(barWidth * brake), 30));
-            g.DrawRectangle(new Pen(Brushes.White), new Rectangle(horizontalMid - barWidth / 2, visibleHeight - 75, barWidth, 30));
-            g.DrawString($"{Math.Round(brake * 100)}%", inputFont, Brushes.White, horizontalMid - barWidth / 2, visibleHeight - 73);
-        }
-
-        private void DrawData(Graphics g)
-        {
-            SolidBrush b = new SolidBrush(System.Drawing.Color.White);
-
-            SPageFileGraphic pageStatic = sharedMemory.ReadGraphicsPageFile();
-            FieldInfo[] members = pageStatic.GetType().GetFields();
-            float y = 0;
-            float emSize = 16;
-            foreach (FieldInfo member in members)
-            {
-                var value = member.GetValue(pageStatic);
-
-                bool isObsolete = false;
-                foreach (CustomAttributeData cad in member.CustomAttributes)
-                {
-                    if (cad.AttributeType == typeof(ObsoleteAttribute)) { isObsolete = true; break; }
-                }
-
-                if (!isObsolete && !member.Name.Equals("Buffer") && !member.Name.Equals("Size"))
-                {
-                    value = FieldTypeValue(member, value);
-
-                    g.DrawString($"{member.Name}: {value}", new Font("Arial", emSize), b, new PointF(0, y += emSize + 3));
-                }
-            }
-        }
-
-        public static object FieldTypeValue(FieldInfo member, object value)
-        {
-
-            if (member.FieldType.Name == typeof(byte[]).Name)
-            {
-                byte[] arr = (byte[])value;
-                value = string.Empty;
-                foreach (byte v in arr)
-                {
-                    value += $"{{{v}}}, ";
-                }
-            }
-
-
-            if (member.FieldType.Name == typeof(Int32[]).Name)
-            {
-                Int32[] arr = (Int32[])value;
-                value = string.Empty;
-                foreach (Int32 v in arr)
-                {
-                    value += $"{{{v}}}, ";
-                }
-            }
-
-            if (member.FieldType.Name == typeof(Single[]).Name)
-            {
-                Single[] arr = (Single[])value;
-                value = string.Empty;
-                foreach (Single v in arr)
-                {
-                    value += $"{{{v}}}, ";
-                }
-            }
-
-            if (member.FieldType.Name == typeof(StructVector3[]).Name)
-            {
-                StructVector3[] arr = (StructVector3[])value;
-                value = string.Empty;
-                foreach (StructVector3 v in arr)
-                {
-                    value += $"{{{v}}}, ";
-                }
-            }
-
-            if (member.FieldType.Name == typeof(StructVector3).Name)
-            {
-                value = (StructVector3)value;
-            }
-
-            return value;
         }
     }
 }
