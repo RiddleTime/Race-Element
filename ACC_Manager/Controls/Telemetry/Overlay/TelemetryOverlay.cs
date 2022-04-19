@@ -1,6 +1,7 @@
 ﻿using ACCSetupApp.Util;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -19,11 +20,11 @@ namespace ACCSetupApp.Controls
 
         private Font inputFont = new Font("Arial", 16);
 
-        private InputDataCollector inputDataCollector = new InputDataCollector();
+        private InputDataCollector inputDataCollector;
 
         public TelemetryOverlay()
         {
-            WindowState = FormWindowState.Maximized;
+            //WindowState = FormWindowState.Maximized;
             TopLevel = true;
             TransparencyKey = System.Drawing.Color.Black;
             AllowTransparency = true;
@@ -34,7 +35,12 @@ namespace ACCSetupApp.Controls
             ShowIcon = false;
             UseWaitCursor = false;
             DoubleBuffered = true;
+            Width = 310;
+            Height = 150;
+            Location = new Point((int)System.Windows.SystemParameters.FullPrimaryScreenWidth / 2 + this.Width, 0);
+            this.StartPosition = FormStartPosition.Manual;
 
+            inputDataCollector = new InputDataCollector() { TraceCount = this.Width - 1 };
             this.Paint += Overlay_Paint;
         }
 
@@ -108,10 +114,8 @@ namespace ACCSetupApp.Controls
         private void DrawInputGraph(Graphics g)
         {
             RectangleF visibleArea = g.VisibleClipBounds;
-            int horizontalMid = (int)(visibleArea.Width / 2);
-            int visibleHeight = (int)(visibleArea.Height);
 
-            InputGraph graph = new InputGraph(horizontalMid + 250, 0, 300, 150, inputDataCollector.Throttle, inputDataCollector.Brake, inputDataCollector.Steering);
+            InputGraph graph = new InputGraph(0, 0, this.Width - 1, this.Height - 1, inputDataCollector.Throttle, inputDataCollector.Brake, inputDataCollector.Steering);
             graph.Draw(g);
         }
 
