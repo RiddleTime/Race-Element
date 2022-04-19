@@ -18,6 +18,8 @@ namespace ACCSetupApp.Controls
 
         private Font inputFont = new Font("Arial", 16);
 
+        private InputDataCollector inputDataCollector = new InputDataCollector();
+
         public void Stop()
         {
             drawOnGame = false;
@@ -46,16 +48,15 @@ namespace ACCSetupApp.Controls
                 overlay.Show();
                 //typeof(Form).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, overlay, new object[] { true });
 
+                inputDataCollector.Start();
+
                 BufferedGraphicsContext ctx = new BufferedGraphicsContext();
                 while (drawOnGame)
                 {
                     Thread.Sleep(1000 / 30);
 
-                    BufferedGraphics bg = ctx.Allocate(Graphics.FromHwnd(overlay.Handle), new System.Drawing.Rectangle(0, 0, overlay.Width, overlay.Height));
-
-
+                    BufferedGraphics bg = ctx.Allocate(Graphics.FromHwnd(overlay.Handle), new Rectangle(0, 0, overlay.Width, overlay.Height));
                     bg.Graphics.Clear(System.Drawing.Color.Transparent);
-
 
                     SPageFilePhysics pagePhysics = sharedMemory.ReadPhysicsPageFile();
                     SPageFileGraphic pageGraphics = sharedMemory.ReadGraphicsPageFile();
@@ -66,8 +67,9 @@ namespace ACCSetupApp.Controls
 
                     // draw here
                     if (shouldRender)
+                    {
                         Draw(bg.Graphics, pagePhysics, pageGraphics);
-
+                    }
 
                     // render double buffer...
                     bg.Render();
@@ -77,6 +79,7 @@ namespace ACCSetupApp.Controls
                 if (!drawOnGame)
                 {
                     overlay.Dispose();
+                    inputDataCollector.Stop();
                 }
             }).Start();
         }
@@ -84,6 +87,17 @@ namespace ACCSetupApp.Controls
         private void Draw(Graphics g, SPageFilePhysics pageFilePhysics, SPageFileGraphic pageGraphics)
         {
             DrawInputs(g, pageFilePhysics);
+            DrawInputGraph(g);
+        }
+
+        private void DrawInputGraph(Graphics g)
+        {
+            RectangleF visibleArea = g.VisibleClipBounds;
+            int horizontalMid = (int)(visibleArea.Width / 2);
+            int visibleHeight = (int)(visibleArea.Height);
+
+            InputGraph graph = new InputGraph(horizontalMid + 250, visibleHeight - 160, 300, 150, inputDataCollector.Throttle, inputDataCollector.Brake);
+            graph.Draw(g);
         }
 
         private void DrawInputs(Graphics g, SPageFilePhysics pagePhysics)
