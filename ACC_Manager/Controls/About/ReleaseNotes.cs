@@ -9,7 +9,9 @@ namespace ACCSetupApp.Controls
     public static class ReleaseNotes
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
-        {   {"0.0.4.3", "- Livery Displayer: Sponsors Image is now displayed ontop of Decals image."+
+        {
+            {"0.0.4.4", "- Telemetry Debug: Add test overlay for input traces. Enabled with Draw On Game checkbox in Telemetry Debug (doesn't work with full-screen mode)." },
+            {"0.0.4.3", "- Livery Displayer: Sponsors Image is now displayed ontop of Decals image."+
                         "\n- Livery Displayer: Revamped layout to increase size of livery preview."+
                         "\n- Livery Importer: Improved feedback for user when importing an unsupported archive."+
                         "\n- Livery Tagger: When adding tags to cars, only the Tags tab in the Livery Browser will be updated."+

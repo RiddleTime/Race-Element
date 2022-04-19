@@ -29,7 +29,7 @@ namespace ACCSetupApp.Controls
 
         SharedMemory sharedMemory = new SharedMemory();
 
-        TelemetryOverlay overlay = new TelemetryOverlay();
+        TelemetryOverlay overlay;
 
         public TelemetryDebug()
         {
@@ -53,6 +53,7 @@ namespace ACCSetupApp.Controls
 
         private void CheckBoxDrawOnGame_Checked(object sender, RoutedEventArgs e)
         {
+            overlay = new TelemetryOverlay();
             overlay.Start();
         }
 

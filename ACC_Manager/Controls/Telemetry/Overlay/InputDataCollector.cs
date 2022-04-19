@@ -15,6 +15,7 @@ namespace ACCSetupApp.Controls
 
         public LinkedList<int> Throttle = new LinkedList<int>();
         public LinkedList<int> Brake = new LinkedList<int>();
+        public LinkedList<int> Steering = new LinkedList<int>();
 
         SharedMemory sharedMemory = new SharedMemory();
 
@@ -34,6 +35,15 @@ namespace ACCSetupApp.Controls
                 if (Brake.Count > TraceCount)
                 {
                     Brake.RemoveLast();
+                }
+            }
+
+            lock (Steering)
+            {
+                Steering.AddFirst((int)((filePhysics.SteerAngle + 1.0) / 2 * 100));
+                if (Steering.Count > TraceCount)
+                {
+                    Steering.RemoveLast();
                 }
             }
         }

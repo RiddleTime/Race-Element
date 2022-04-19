@@ -352,7 +352,9 @@
     <Compile Include="Controls\Telemetry\TelemetryDebug.xaml.cs">
       <DependentUpon>TelemetryDebug.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Telemetry\Overlay\TelemetryOverlay.cs" />
+    <Compile Include="Controls\Telemetry\Overlay\TelemetryOverlay.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Controls\Telemetry\TelemetryRecorder.cs" />
     <Compile Include="Controls\Telemetry\TelemetryStorage.cs" />
     <Compile Include="Controls\Telemetry\TelemetryTab.xaml.cs">

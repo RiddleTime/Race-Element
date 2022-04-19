@@ -13,13 +13,15 @@ namespace ACCSetupApp.Controls
         private int Width, Height;
         private LinkedList<int> ThrottleData;
         private LinkedList<int> BrakeData;
+        private LinkedList<int> SteeringData;
 
-        public InputGraph(int x, int y, int width, int height, LinkedList<int> throttleData, LinkedList<int> brakeData)
+        public InputGraph(int x, int y, int width, int height, LinkedList<int> throttleData, LinkedList<int> brakeData, LinkedList<int> steeringData)
         {
             this.X = x;
             this.Y = y;
             this.Width = width;
             this.Height = height;
+            this.SteeringData = steeringData;
             this.ThrottleData = throttleData;
             this.BrakeData = brakeData;
         }
@@ -36,11 +38,16 @@ namespace ACCSetupApp.Controls
         {
             Rectangle graphRect = new Rectangle(X, Y, Width, Height);
             // draw background
-            g.FillRectangle(new SolidBrush(Color.FromArgb(255, Color.DarkGray)), graphRect);
-           
+            g.FillRectangle(new SolidBrush(Color.DarkSlateGray), graphRect);
+
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             DrawData(g, BrakeData, Brushes.Red);
 
-            DrawData(g, ThrottleData, Brushes.Green);
+            DrawData(g, ThrottleData, Brushes.ForestGreen);
+            DrawData(g, SteeringData, Brushes.White);
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
+
+
 
             g.DrawRectangle(new Pen(Brushes.White), graphRect);
         }
@@ -50,22 +57,23 @@ namespace ACCSetupApp.Controls
             if (Data.Count > 0)
             {
                 List<Point> points = new List<Point>();
-                for (int i = Data.Count - 1; i >= 0; i--)
-                {
-                    int x = X + i * (Width / Data.Count);
-                    lock (Data)
+                lock (Data)
+                    for (int i = 0; i < Data.Count - 1; i++)
                     {
-                        int y = Y + getRelativeNodeY(Data.ElementAt(i));
-                        if (y > Y + Height)
+                        int x = X + Width - i * (Width / Data.Count);
+                        lock (Data)
                         {
-                            y = Y + Height;
+                            int y = Y + getRelativeNodeY(Data.ElementAt(i));
+                            if (y > Y + Height)
+                            {
+                                y = Y + Height;
+                            }
+                            if (x < X)
+                                break;
+                            points.Add(new Point(x, y));
                         }
-                        if (x < X)
-                            break;
-                        points.Add(new Point(x, y));
-                    }
 
-                }
+                    }
 
                 // draw the graph
                 for (int i = 0; i < points.Count; i++)
@@ -74,7 +82,7 @@ namespace ACCSetupApp.Controls
                     {
                         Point from = points[i];
                         Point to = points[i + 1];
-                        g.DrawLine(new Pen(color, 1.3f), from, to);
+                        g.DrawLine(new Pen(color, 1.9f), from, to);
                     }
                 }
             }

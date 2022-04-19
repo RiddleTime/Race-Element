@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACCSetupApp.Util;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -11,7 +12,7 @@ using static ACCSetupApp.SharedMemory;
 
 namespace ACCSetupApp.Controls
 {
-    internal class TelemetryOverlay
+    internal class TelemetryOverlay : Form
     {
         private SharedMemory sharedMemory = new SharedMemory();
         private bool drawOnGame = false;
@@ -20,6 +21,23 @@ namespace ACCSetupApp.Controls
 
         private InputDataCollector inputDataCollector = new InputDataCollector();
 
+        public TelemetryOverlay()
+        {
+            WindowState = FormWindowState.Maximized;
+            TopLevel = true;
+            TransparencyKey = System.Drawing.Color.Black;
+            AllowTransparency = true;
+            ShowInTaskbar = false;
+            Capture = false;
+            TopMost = true;
+            FormBorderStyle = FormBorderStyle.None;
+            ShowIcon = false;
+            UseWaitCursor = false;
+            DoubleBuffered = true;
+
+            this.Paint += Overlay_Paint;
+        }
+
         public void Stop()
         {
             drawOnGame = false;
@@ -27,66 +45,63 @@ namespace ACCSetupApp.Controls
 
         public void Start()
         {
-            new Thread(x =>
+            try
             {
                 drawOnGame = true;
-
-                Form overlay = null;
-                overlay = new Form()
-                {
-                    WindowState = FormWindowState.Maximized,
-                    TopLevel = true,
-                    TransparencyKey = System.Drawing.Color.Black,
-                    AllowTransparency = true,
-                    ShowInTaskbar = false,
-                    Capture = false,
-                    TopMost = true,
-                    FormBorderStyle = FormBorderStyle.None,
-                    ShowIcon = false,
-                    UseWaitCursor = false,
-                };
-                overlay.Show();
-                //typeof(Form).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, overlay, new object[] { true });
-
+                this.Show();
                 inputDataCollector.Start();
-
-                BufferedGraphicsContext ctx = new BufferedGraphicsContext();
-                while (drawOnGame)
+                new Thread(x =>
                 {
-                    Thread.Sleep(1000 / 30);
-
-                    BufferedGraphics bg = ctx.Allocate(Graphics.FromHwnd(overlay.Handle), new Rectangle(0, 0, overlay.Width, overlay.Height));
-                    bg.Graphics.Clear(System.Drawing.Color.Transparent);
-
-                    SPageFilePhysics pagePhysics = sharedMemory.ReadPhysicsPageFile();
-                    SPageFileGraphic pageGraphics = sharedMemory.ReadGraphicsPageFile();
-
-                    bool shouldRender = true;
-                    if (pageGraphics.Status == AcStatus.AC_OFF || pageGraphics.Status == AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
-                        shouldRender = false;
-
-                    // draw here
-                    if (shouldRender)
+                    while (drawOnGame)
                     {
-                        Draw(bg.Graphics, pagePhysics, pageGraphics);
+                        Thread.Sleep(1000 / 60);
+                        this.BeginInvoke(new Action(() =>
+                        {
+                            this.InvokePaint(this, new PaintEventArgs(this.CreateGraphics(), this.DisplayRectangle));
+                        }));
                     }
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        this.Dispose();
+                        inputDataCollector.Stop();
+                    }));
+                }).Start();
+            }
+            catch (Exception ex)
+            {
+                LogWriter.WriteToLog(ex);
+            }
+        }
+        BufferedGraphicsContext ctx = new BufferedGraphicsContext();
+        private void Overlay_Paint(object sender, PaintEventArgs e)
+        {
+            if (drawOnGame)
+            {
+                BufferedGraphics bg = ctx.Allocate(Graphics.FromHwnd(this.Handle), new Rectangle(0, 0, this.Width, this.Height));
+                bg.Graphics.Clear(System.Drawing.Color.Transparent);
 
-                    // render double buffer...
-                    bg.Render();
-                    bg.Dispose();
-                }
+                SPageFilePhysics pagePhysics = sharedMemory.ReadPhysicsPageFile();
+                SPageFileGraphic pageGraphics = sharedMemory.ReadGraphicsPageFile();
 
-                if (!drawOnGame)
+                bool shouldRender = true;
+                if (pageGraphics.Status == AcStatus.AC_OFF || pageGraphics.Status == AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
+                    shouldRender = false;
+
+                // draw here
+                if (shouldRender)
                 {
-                    overlay.Dispose();
-                    inputDataCollector.Stop();
+                    Draw(bg.Graphics, pagePhysics, pageGraphics);
                 }
-            }).Start();
+
+                // render double buffer...
+                bg.Render();
+                bg.Dispose();
+            }
         }
 
         private void Draw(Graphics g, SPageFilePhysics pageFilePhysics, SPageFileGraphic pageGraphics)
         {
-            DrawInputs(g, pageFilePhysics);
+            //DrawInputs(g, pageFilePhysics);
             DrawInputGraph(g);
         }
 
@@ -96,7 +111,7 @@ namespace ACCSetupApp.Controls
             int horizontalMid = (int)(visibleArea.Width / 2);
             int visibleHeight = (int)(visibleArea.Height);
 
-            InputGraph graph = new InputGraph(horizontalMid + 250, visibleHeight - 160, 300, 150, inputDataCollector.Throttle, inputDataCollector.Brake);
+            InputGraph graph = new InputGraph(horizontalMid + 250, 0, 300, 150, inputDataCollector.Throttle, inputDataCollector.Brake, inputDataCollector.Steering);
             graph.Draw(g);
         }
 
