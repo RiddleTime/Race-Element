@@ -63,6 +63,11 @@ namespace ACCSetupApp.Controls
                         Thread.Sleep(1000 / 30);
                         this.BeginInvoke(new Action(() =>
                         {
+                            if (this == null)
+                            {
+                                return;
+                            }
+
                             this.InvokePaint(this, new PaintEventArgs(this.CreateGraphics(), this.DisplayRectangle));
                         }));
                     }

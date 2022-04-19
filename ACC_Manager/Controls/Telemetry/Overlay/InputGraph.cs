@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,20 +71,17 @@ namespace ACCSetupApp.Controls
                             }
                             if (x < X)
                                 break;
+
                             points.Add(new Point(x, y));
                         }
 
                     }
 
-                // draw the graph
-                for (int i = 0; i < points.Count; i++)
+                if (points.Count > 0)
                 {
-                    if (points.Count - 1 != i)
-                    {
-                        Point from = points[i];
-                        Point to = points[i + 1];
-                        g.DrawLine(new Pen(color, 1.9f), from, to);
-                    }
+                    GraphicsPath path = new GraphicsPath();
+                    path.AddLines(points.ToArray());
+                    g.DrawPath(new Pen(color, 1.9f), path);
                 }
             }
         }
