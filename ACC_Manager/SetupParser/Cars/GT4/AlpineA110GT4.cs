@@ -11,11 +11,11 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
     // TODO (remove this comment when done), all the data in here is not correct.
     internal class AlpineA110GT4 : ICarSetupConversion
     {
-        public string CarName => "Aston Martin Vantage V12 GT3 2013";
+        public string CarName => "Alpine A110 GT4 2018";
 
-        public string ParseName => "amr_v12_vantage_gt3";
+        public string ParseName => "alpine_a110_gt4";
 
-        CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
+        CarClasses ICarSetupConversion.CarClass => CarClasses.GT4;
 
         AbstractTyresSetup ICarSetupConversion.TyresSetup => new TyreSetup();
         private class TyreSetup : AbstractTyresSetup
