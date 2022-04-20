@@ -10,6 +10,7 @@ namespace ACCSetupApp.SetupParser
         private static Dictionary<string, ICarSetupConversion> carConversions = new Dictionary<string, ICarSetupConversion>()
         {
             {"amr_v8_vantage_gt3", new AMRV8VantageGT3() },
+            {"amr_v12_vantage_gt3", new AMRV12VantageGT3() },
             {"audi_r8_lms", new AudiR8LMS() },
             {"audi_r8_lms_evo_ii", new AudiR8LMSevoII() },
             {"bentley_continental_gt3_2018", new BentleyContinentalGT3_2018() },
@@ -54,6 +55,7 @@ namespace ACCSetupApp.SetupParser
         private static Dictionary<string, string> carParseNames = new Dictionary<string, string>()
         {
             {"amr_v8_vantage_gt3", "Aston Martin V8 Vantage GT3 2019"},
+            {"amr_v12_vantage_gt3", "Aston Martin Vantage V12 GT3 2013"},
             {"audi_r8_lms", "Audi R8 LMS 2015" },
             {"audi_r8_lms_evo_ii", "Audi R8 LMS Evo II 2022" },
             {"bentley_continental_gt3_2018", "Bentley Continental GT3 2018" },
