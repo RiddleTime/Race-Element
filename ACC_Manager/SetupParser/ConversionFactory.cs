@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ACCSetupApp.SetupParser.Cars.GT3;
+using ACCSetupApp.SetupParser.Cars.GT4;
 using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser
@@ -28,7 +29,9 @@ namespace ACCSetupApp.SetupParser
             {"nissan_gt_r_gt3_2017", new NissanGtrGT3_2015() },
             {"nissan_gt_r_gt3_2018", new NissanGtrGT3_2018() },
             {"porsche_991ii_gt3_r", new Porsche911IIGT3R() },
-            {"porsche_991_gt3_r", new Porsche991GT3R()}
+            {"porsche_991_gt3_r", new Porsche991GT3R() },
+            {"alpine_a110_gt4", new AlpineA110GT4() },
+            {"amr_v8_vantage_gt4", new AMRV8VantageGT4() }
         };
         internal ICarSetupConversion GetConversion(string parseName)
         {
@@ -87,7 +90,9 @@ namespace ACCSetupApp.SetupParser
             {"nissan_gt_r_gt3_2017", "Nissan GT-R Nismo GT3 2015" },
             {"nissan_gt_r_gt3_2018","Nissan GT-R Nismo GT3 2018" },
             {"porsche_991ii_gt3_r", "Porsche 911 II GT3 R 2019" },
-            {"porsche_991_gt3_r", "Porsche 911 GT3 R 2018"}
+            {"porsche_991_gt3_r", "Porsche 911 GT3 R 2018"},
+            {"alpine_a110_gt4", "Alpine A110 GT4 2018"},
+            {"amr_v8_vantage_gt4", "Aston Martin Vantage AMR GT4 2018"}
         };
         internal string ParseCarName(string parseName)
         {
