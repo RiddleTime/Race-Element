@@ -52,6 +52,20 @@ namespace ACCSetupApp.SetupParser
             return GT3Names;
         }
 
+        public List<string> GetAllGT4Names()
+        {
+            List<string> GT4Names = new List<string>();
+            carConversions.ToList().ForEach(x =>
+            {
+                if (x.Value.CarClass == CarClasses.GT4)
+                {
+                    GT4Names.Add(x.Value.CarName);
+                }
+            });
+
+            return GT4Names;
+        }
+
         private static Dictionary<string, string> carParseNames = new Dictionary<string, string>()
         {
             {"amr_v8_vantage_gt3", "Aston Martin V8 Vantage GT3 2019"},

@@ -43,7 +43,9 @@ namespace ACCSetupApp.Controls
 
         private void SetCarConversionFeatures()
         {
-            List<string> gt3Names = new ConversionFactory().GetAllGT3Names();
+            ConversionFactory conversions = new ConversionFactory();
+
+            List<string> gt3Names = conversions.GetAllGT3Names();
             textBlockSetupViewerGT3.Text = $"{FourEmSpace}GT3:\n";
             for (int i = 0; i < gt3Names.Count; i++)
             {
@@ -52,6 +54,24 @@ namespace ACCSetupApp.Controls
                 {
                     textBlockSetupViewerGT3.Text += "\n";
                 }
+            }
+
+            List<string> gt4Names = conversions.GetAllGT4Names();
+            textBlockSetupViewerGT3.Text += $"\n\n{FourEmSpace}GT4:\n";
+            if (gt4Names.Count > 0)
+            {
+                for (int i = 0; i < gt4Names.Count; i++)
+                {
+                    textBlockSetupViewerGT3.Text += $"{FourEmSpace}- {gt4Names[i]}";
+                    if (i < gt4Names.Count - 1)
+                    {
+                        textBlockSetupViewerGT3.Text += "\n";
+                    }
+                }
+            }
+            else
+            {
+                textBlockSetupViewerGT3.Text += "None yet\n";
             }
         }
 
