@@ -304,6 +304,15 @@
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\About\ReleaseNotes.cs" />
+    <Compile Include="Controls\HUD\HudOptions.xaml.cs">
+      <DependentUpon>HudOptions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\HUD\HudTab.xaml.cs">
+      <DependentUpon>HudTab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\HUD\Overlay\Internal\AbstractOverlay.cs" />
+    <Compile Include="Controls\HUD\Overlay\InputTraceOverlay.cs" />
+    <Compile Include="Controls\HUD\Overlay\Internal\FloatingWindow.cs" />
     <Compile Include="Controls\Liveries\DDSgenerator.xaml.cs">
       <DependentUpon>DDSgenerator.xaml</DependentUpon>
     </Compile>
@@ -346,13 +355,13 @@
     <Compile Include="Controls\Telemetry\ChartsTab\DataRecorder.xaml.cs">
       <DependentUpon>DataRecorder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Telemetry\Overlay\InputDataCollector.cs" />
-    <Compile Include="Controls\Telemetry\Overlay\InputGraph.cs" />
+    <Compile Include="Controls\HUD\Overlay\InputDataCollector.cs" />
+    <Compile Include="Controls\HUD\Overlay\InputGraph.cs" />
     <Compile Include="Controls\Telemetry\SharedMemory\StructExtensions.cs" />
     <Compile Include="Controls\Telemetry\TelemetryDebug.xaml.cs">
       <DependentUpon>TelemetryDebug.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Telemetry\Overlay\TelemetryOverlay.cs">
+    <Compile Include="Controls\HUD\Overlay\TelemetryOverlay.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Controls\Telemetry\TelemetryRecorder.cs" />
@@ -400,6 +409,14 @@
     <Compile Include="Util\FileUtil.cs" />
     <Compile Include="Util\LogWriter.cs" />
     <Page Include="Controls\About\About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\HUD\HudOptions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\HUD\HudTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

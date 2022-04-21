@@ -39,16 +39,13 @@ namespace ACCSetupApp.Controls
         {
             Rectangle graphRect = new Rectangle(X, Y, Width, Height);
             // draw background
-            g.FillRectangle(new SolidBrush(Color.DarkSlateGray), graphRect);
+            g.FillRectangle(new SolidBrush(Color.FromArgb(140, Color.DarkSlateGray)), graphRect);
 
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             DrawData(g, BrakeData, Brushes.Red);
-
             DrawData(g, ThrottleData, Brushes.ForestGreen);
             DrawData(g, SteeringData, Brushes.White);
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
-
-
 
             g.DrawRectangle(new Pen(Brushes.White), graphRect);
         }

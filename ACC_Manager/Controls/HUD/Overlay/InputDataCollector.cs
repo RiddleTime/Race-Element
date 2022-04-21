@@ -51,6 +51,14 @@ namespace ACCSetupApp.Controls
         public void Start()
         {
             IsCollecting = true;
+
+            for (int i = 0; i < TraceCount; i++)
+            {
+                Throttle.AddLast(0);
+                Brake.AddLast(0);
+                Steering.AddLast(50);
+            }
+
             new Thread(x =>
             {
                 while (IsCollecting)
