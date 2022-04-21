@@ -29,32 +29,17 @@ namespace ACCSetupApp.Controls
 
         SharedMemory sharedMemory = new SharedMemory();
 
-        TelemetryOverlay overlay;
-
         public TelemetryDebug()
         {
             InitializeComponent();
             Instance = this;
 
             updateDataButton.Click += UpdateDataButton_Click;
-            checkBoxDrawOnGame.Checked += CheckBoxDrawOnGame_Checked;
-            checkBoxDrawOnGame.Unchecked += CheckBoxDrawOnGame_Unchecked;
 
             UpdateStaticData();
             UpdatePhysicsData();
             UpdateGraphicsData();
 
-        }
-
-        private void CheckBoxDrawOnGame_Unchecked(object sender, RoutedEventArgs e)
-        {
-            overlay.Stop();
-        }
-
-        private void CheckBoxDrawOnGame_Checked(object sender, RoutedEventArgs e)
-        {
-            overlay = new TelemetryOverlay();
-            overlay.Start();
         }
 
         private void UpdateDataButton_Click(object sender, RoutedEventArgs e)

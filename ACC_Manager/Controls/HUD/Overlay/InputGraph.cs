@@ -39,7 +39,7 @@ namespace ACCSetupApp.Controls
         {
             Rectangle graphRect = new Rectangle(X, Y, Width, Height);
             // draw background
-            g.FillRectangle(new SolidBrush(Color.FromArgb(140, Color.DarkSlateGray)), graphRect);
+            g.FillRectangle(new SolidBrush(Color.FromArgb(140, Color.Black)), graphRect);
 
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             DrawData(g, BrakeData, Brushes.Red);

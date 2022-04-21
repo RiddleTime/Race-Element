@@ -40,9 +40,9 @@ namespace ACCSetupApp.Controls
         private void CheckboxInputTrace_Checked(object sender, RoutedEventArgs e)
         {
             int width = 300;
-            int x = (int)System.Windows.SystemParameters.FullPrimaryScreenWidth / 2 + width;
+            int x = (int)(System.Windows.SystemParameters.FullPrimaryScreenWidth / 2 + (width * 1.5));
 
-            overlayInputTrace = new InputTraceOverlay(x, 500, width, 150);
+            overlayInputTrace = new InputTraceOverlay(x, 0, width, 150);
             overlayInputTrace.Start();
         }
     }
