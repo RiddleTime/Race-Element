@@ -31,8 +31,8 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
             }
 
             private readonly double[] casters = new double[] {
-                10.7, 10.9, 11.1, 11.3, 11.5, 11.6, 11.8, 12.0, 12.2, 12.4, 12.5, 12.7, 12.9, 
-                13.1, 13.3, 13.4, 13.6, 13.8, 14.0, 14.2, 14.3, 14.5, 14.7, 14.9, 15.0, 15.2, 
+                10.7, 10.9, 11.1, 11.3, 11.5, 11.6, 11.8, 12.0, 12.2, 12.4, 12.5, 12.7, 12.9,
+                13.1, 13.3, 13.4, 13.6, 13.8, 14.0, 14.2, 14.3, 14.5, 14.7, 14.9, 15.0, 15.2,
                 15.4, 15.6, 15.7, 15.9, 16.1
             };
             public override double Caster(int rawValue)
@@ -112,7 +112,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
 
             public int RearWing(int rawValue)
             {
-                return rawValue +1;
+                return rawValue + 1;
             }
 
             public int RideHeight(List<int> rawValue, Position position)
