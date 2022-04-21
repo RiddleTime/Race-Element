@@ -61,13 +61,14 @@ namespace ACCSetupApp.Controls
                     while (drawOnGame)
                     {
                         Thread.Sleep(1000 / 30);
+                        if (this == null || this.IsDisposed)
+                        {
+                            inputDataCollector.Stop();
+                            return;
+                        }
+
                         this.BeginInvoke(new Action(() =>
                         {
-                            if (this == null)
-                            {
-                                return;
-                            }
-
                             this.InvokePaint(this, new PaintEventArgs(this.CreateGraphics(), this.DisplayRectangle));
                         }));
                     }
