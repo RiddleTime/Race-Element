@@ -101,25 +101,25 @@ namespace ACCSetupApp.Controls.Setup
 
 
             // Dampers
-            int bumpSlowFrontLeft = setup.advancedSetup.dampers.bumpSlow[(int)Wheel.FrontLeft];
-            int bumpSlowFrontRight = setup.advancedSetup.dampers.bumpSlow[(int)Wheel.FrontRight];
-            int bumpSlowRearLeft = setup.advancedSetup.dampers.bumpSlow[(int)Wheel.RearLeft];
-            int bumpSlowRearRight = setup.advancedSetup.dampers.bumpSlow[(int)Wheel.RearRight];
+            int bumpSlowFrontLeft = carSetup.DamperSetup.BumpSlow(setup.advancedSetup.dampers.bumpSlow, Wheel.FrontLeft);
+            int bumpSlowFrontRight = carSetup.DamperSetup.BumpSlow(setup.advancedSetup.dampers.bumpSlow, Wheel.FrontRight);
+            int bumpSlowRearLeft = carSetup.DamperSetup.BumpSlow(setup.advancedSetup.dampers.bumpSlow, Wheel.RearLeft);
+            int bumpSlowRearRight = carSetup.DamperSetup.BumpSlow(setup.advancedSetup.dampers.bumpSlow, Wheel.RearRight);
 
-            int bumpFastFrontLeft = setup.advancedSetup.dampers.bumpFast[(int)Wheel.FrontLeft];
-            int bumpFastFrontRight = setup.advancedSetup.dampers.bumpFast[(int)Wheel.FrontRight];
-            int bumpFastRearLeft = setup.advancedSetup.dampers.bumpFast[(int)Wheel.RearLeft];
-            int bumpFastRearRight = setup.advancedSetup.dampers.bumpFast[(int)Wheel.RearRight];
+            int bumpFastFrontLeft = carSetup.DamperSetup.BumpFast(setup.advancedSetup.dampers.bumpFast, Wheel.FrontLeft);
+            int bumpFastFrontRight = carSetup.DamperSetup.BumpFast(setup.advancedSetup.dampers.bumpFast, Wheel.FrontRight);
+            int bumpFastRearLeft = carSetup.DamperSetup.BumpFast(setup.advancedSetup.dampers.bumpFast, Wheel.RearLeft);
+            int bumpFastRearRight = carSetup.DamperSetup.BumpFast(setup.advancedSetup.dampers.bumpFast, Wheel.RearRight);
 
-            int reboundSlowFrontLeft = setup.advancedSetup.dampers.reboundSlow[(int)Wheel.FrontLeft];
-            int reboundSlowFrontRight = setup.advancedSetup.dampers.reboundSlow[(int)Wheel.FrontRight];
-            int reboundSlowRearLeft = setup.advancedSetup.dampers.reboundSlow[(int)Wheel.RearLeft];
-            int reboundSlowRearRight = setup.advancedSetup.dampers.reboundSlow[(int)Wheel.RearRight];
+            int reboundSlowFrontLeft = carSetup.DamperSetup.ReboundSlow(setup.advancedSetup.dampers.reboundSlow, Wheel.FrontLeft);
+            int reboundSlowFrontRight = carSetup.DamperSetup.ReboundSlow(setup.advancedSetup.dampers.reboundSlow, Wheel.FrontRight);
+            int reboundSlowRearLeft = carSetup.DamperSetup.ReboundSlow(setup.advancedSetup.dampers.reboundSlow, Wheel.RearLeft);
+            int reboundSlowRearRight = carSetup.DamperSetup.ReboundSlow(setup.advancedSetup.dampers.reboundSlow, Wheel.RearRight);
 
-            int reboundFastFrontLeft = setup.advancedSetup.dampers.reboundFast[(int)Wheel.FrontLeft];
-            int reboundFastFrontRight = setup.advancedSetup.dampers.reboundFast[(int)Wheel.FrontRight];
-            int reboundFastRearLeft = setup.advancedSetup.dampers.reboundFast[(int)Wheel.RearLeft];
-            int reboundFastRearRight = setup.advancedSetup.dampers.reboundFast[(int)Wheel.RearRight];
+            int reboundFastFrontLeft = carSetup.DamperSetup.ReboundFast(setup.advancedSetup.dampers.reboundFast, Wheel.FrontLeft);
+            int reboundFastFrontRight = carSetup.DamperSetup.ReboundFast(setup.advancedSetup.dampers.reboundFast, Wheel.FrontRight);
+            int reboundFastRearLeft = carSetup.DamperSetup.ReboundFast(setup.advancedSetup.dampers.reboundFast, Wheel.RearLeft);
+            int reboundFastRearRight = carSetup.DamperSetup.ReboundFast(setup.advancedSetup.dampers.reboundFast, Wheel.RearRight);
 
 
 

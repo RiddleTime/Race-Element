@@ -81,6 +81,8 @@ namespace ACCSetupApp.SetupParser
 
             AbstractTyresSetup TyresSetup { get; }
 
+            IDamperSetup DamperSetup { get; }
+
             IMechanicalSetup MechanicalSetup { get; }
 
             IAeroBalance AeroBalance { get; }
@@ -104,6 +106,37 @@ namespace ACCSetupApp.SetupParser
 
             int BumpstopRate(List<int> rawValue, Wheel wheel);
             int BumpstopRange(List<int> rawValue, Wheel wheel);
+        }
+
+        internal interface IDamperSetup
+        {
+            int BumpSlow(List<int> rawValue, Wheel wheel);
+            int BumpFast(List<int> rawValue, Wheel wheel);
+            int ReboundSlow(List<int> rawValue, Wheel wheel);
+            int ReboundFast(List<int> rawValue, Wheel wheel);
+        }
+
+        internal class DefaultDamperSetup : IDamperSetup
+        {
+            int IDamperSetup.BumpFast(List<int> rawValue, Wheel wheel)
+            {
+                return rawValue[(int)wheel];
+            }
+
+            int IDamperSetup.BumpSlow(List<int> rawValue, Wheel wheel)
+            {
+                return rawValue[(int)wheel];
+            }
+
+            int IDamperSetup.ReboundFast(List<int> rawValue, Wheel wheel)
+            {
+                return rawValue[(int)wheel];
+            }
+
+            int IDamperSetup.ReboundSlow(List<int> rawValue, Wheel wheel)
+            {
+                return rawValue[(int)wheel];
+            }
         }
 
         internal interface IAeroBalance

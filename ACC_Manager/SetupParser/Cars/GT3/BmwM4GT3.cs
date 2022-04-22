@@ -106,6 +106,8 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
             }
         }
 
+        IDamperSetup ICarSetupConversion.DamperSetup => new DefaultDamperSetup();
+
         IAeroBalance ICarSetupConversion.AeroBalance => new AeroSetup();
         private class AeroSetup : IAeroBalance
         {
