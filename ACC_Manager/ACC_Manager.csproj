@@ -374,6 +374,7 @@
     <Compile Include="SetupParser\Cars\GT4\ChevroletCamaroGT4R.cs" />
     <Compile Include="SetupParser\Cars\GT4\GinettaG55GT4.cs" />
     <Compile Include="SetupParser\Cars\GT4\KTMXbowGT4.cs" />
+    <Compile Include="SetupParser\Cars\GT4\MaseratiMCGT4.cs" />
     <Compile Include="SharedMemory\StructExtensions.cs" />
     <Compile Include="Controls\Telemetry\TelemetryDebug.xaml.cs">
       <DependentUpon>TelemetryDebug.xaml</DependentUpon>
