@@ -32,7 +32,7 @@ namespace ACCSetupApp.SetupParser
             {"porsche_991_gt3_r", new Porsche991GT3R() },
             {"alpine_a110_gt4", new AlpineA110GT4() },
             {"amr_v8_vantage_gt4", new AMRV8VantageGT4() },
-            {"audi_r8_gt4", new AudiR8GT4()}
+            {"audi_r8_gt4", new AudiR8GT4() }
         };
         internal ICarSetupConversion GetConversion(string parseName)
         {
