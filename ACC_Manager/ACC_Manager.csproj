@@ -320,6 +320,10 @@
     <Compile Include="Controls\HUD\Overlay\Internal\AbstractOverlay.cs" />
     <Compile Include="Controls\HUD\Overlay\OverlayInputTrace\InputTraceOverlay.cs" />
     <Compile Include="Controls\HUD\Overlay\Internal\FloatingWindow.cs" />
+    <Compile Include="Controls\HUD\Overlay\OverlayPressureTrace\TirePressureDataCollector.cs" />
+    <Compile Include="Controls\HUD\Overlay\OverlayPressureTrace\TirePressureGraph.cs" />
+    <Compile Include="Controls\HUD\Overlay\OverlayPressureTrace\PressureTraceOverlay.cs" />
+    <Compile Include="Controls\HUD\Overlay\Overlays.cs" />
     <Compile Include="Controls\HUD\Overlay\OverlayStaticInfo\StaticInfoOverlay.cs" />
     <Compile Include="Controls\Liveries\DDSgenerator.xaml.cs">
       <DependentUpon>DDSgenerator.xaml</DependentUpon>
@@ -419,6 +423,7 @@
     <Compile Include="SharedMemory\ACCSharedMemory.cs" />
     <Compile Include="Util\FileUtil.cs" />
     <Compile Include="Util\LogWriter.cs" />
+    <Compile Include="Util\ReflectionUtil.cs" />
     <Page Include="Controls\About\About.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

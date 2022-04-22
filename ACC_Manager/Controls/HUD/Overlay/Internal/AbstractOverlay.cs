@@ -18,12 +18,12 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
         internal SPageFileGraphic pageGraphics;
         internal SPageFileStatic pageStatic;
 
-        public AbstractOverlay(int x, int y, int width, int height)
+        protected AbstractOverlay(Rectangle rectangle)
         {
-            this.X = x;
-            this.Y = y;
-            this.Width = width;
-            this.Height = height;
+            this.X = rectangle.X;
+            this.Y = rectangle.Y;
+            this.Width = rectangle.Width;
+            this.Height = rectangle.Height;
             this.Alpha = 255;
         }
 

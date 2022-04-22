@@ -4,6 +4,7 @@ using ACCSetupApp.Controls.HUD.Overlay.OverlayStaticInfo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,51 +24,38 @@ namespace ACCSetupApp.Controls
     /// </summary>
     public partial class HudOptions : UserControl
     {
-        List<AbstractOverlay> overlays = new List<AbstractOverlay>();
-
         public HudOptions()
         {
             InitializeComponent();
 
-            checkboxInputTrace.Checked += CheckboxInputTrace_Checked;
-            checkboxInputTrace.Unchecked += CheckboxInputTrace_Unchecked;
-
-            checkboxStaticData.Checked += CheckboxStaticData_Checked;
-            checkboxStaticData.Unchecked += CheckboxStaticData_Unchecked;
+            BuildOverlayStackPanel();
         }
 
-        private void CheckboxStaticData_Unchecked(object sender, RoutedEventArgs e)
+        private void BuildOverlayStackPanel()
         {
-            AbstractOverlay overlay = overlays.Find(x => x.GetType() == typeof(StaticInfoOverlay));
-            overlay?.Stop();
-            overlays.Remove(overlay);
-        }
+            int screenMiddleX = (int)(System.Windows.SystemParameters.FullPrimaryScreenWidth / 2);
+            int screenMiddleY = (int)(System.Windows.SystemParameters.FullPrimaryScreenHeight / 2);
 
-        private void CheckboxStaticData_Checked(object sender, RoutedEventArgs e)
-        {
-            int width = 300;
-            int x = 0;
+            stackPanelOverlayCheckboxes.Children.Clear();
+            foreach (KeyValuePair<string, Type> x in Overlays.AbstractOverlays)
+            {
+                CheckBox checkBox = new CheckBox() { Content = x.Key };
+                checkBox.Checked += (s, e) =>
+                {
+                    AbstractOverlay overlay = (AbstractOverlay)Activator.CreateInstance(x.Value, new System.Drawing.Rectangle(0, 0, 300, 150));
+                    overlay.Start();
+                    Overlays.ActiveOverlays.Add(overlay);
+                };
 
-            AbstractOverlay overlay = new StaticInfoOverlay(x, 0, width, 150);
-            overlay.Start();
-            overlays.Add(overlay);
-        }
+                checkBox.Unchecked += (s, e) =>
+                {
+                    AbstractOverlay overlay = Overlays.ActiveOverlays.Find(f => f.GetType() == x.Value);
+                    overlay?.Stop();
+                    Overlays.ActiveOverlays.Remove(overlay);
+                };
 
-        private void CheckboxInputTrace_Unchecked(object sender, RoutedEventArgs e)
-        {
-            AbstractOverlay inputTrace = overlays.Find(x => x.GetType() == typeof(InputTraceOverlay));
-            inputTrace?.Stop();
-            overlays.Remove(inputTrace);
-        }
-
-        private void CheckboxInputTrace_Checked(object sender, RoutedEventArgs e)
-        {
-            int width = 300;
-            int x = (int)(System.Windows.SystemParameters.FullPrimaryScreenWidth / 2 + (width * 1.5));
-
-            AbstractOverlay inputTrace = new InputTraceOverlay(x, 0, width, 150);
-            inputTrace.Start();
-            overlays.Add(inputTrace);
+                stackPanelOverlayCheckboxes.Children.Add(checkBox);
+            }
         }
     }
 }

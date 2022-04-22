@@ -14,8 +14,13 @@ namespace ACCSetupApp.Controls.HUD.Overlay
     {
         private InputDataCollector inputDataCollector;
 
-        public InputTraceOverlay(int x, int y, int width, int height) : base(x, y, width, height)
+        public InputTraceOverlay(Rectangle rectangle) : base(rectangle)
         {
+            int screenMiddleX = (int)(System.Windows.SystemParameters.FullPrimaryScreenWidth / 2);
+            this.X = screenMiddleX + 300;
+            this.Y = 0;
+            this.Width = 300;
+            this.Height = 150;
         }
 
         public override void BeforeStart()
