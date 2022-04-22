@@ -10,7 +10,7 @@ namespace ACCSetupApp.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.0.4.9", "- Setup conversion added: Audi R8 LMS GT4 2016(by KrisV147), BMW M4 GT4 2018(by KrisV147) and Chevrolet Camaro GT4 R 2017(by KrisV147)." },
+            {"0.0.4.9", "- Setup conversion added by KrisV147: Audi R8 LMS GT4 2016, BMW M4 GT4 2018, Chevrolet Camaro GT4 R 2017, Ginetta G55 GT4 2012 and Ktm Xbow GT4 2016." },
             {"0.0.4.8", "- HUD tab: Added overlays: Very very simple tire pressure trace overlay and a shared memory static data overlay" },
             {"0.0.4.7", "- Added HUD tab: Simple checkbox to enable the input trace overlay." },
             {"0.0.4.6", "- Setup conversion added: Aston Martin V12 Vantage GT3 2013(by KrisV147), Alpine A110 GT4(by KrisV147) and Aston Martin Vantage AMR GT4 2018(by KrisV147)." },
