@@ -7,7 +7,6 @@ using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT4
 {
-
     internal class AMRV8VantageGT4 : ICarSetupConversion
     {
         public string CarName => "Aston Martin Vantage AMR GT4 2018";
