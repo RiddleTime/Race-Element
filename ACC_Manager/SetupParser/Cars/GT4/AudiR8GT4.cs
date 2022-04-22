@@ -8,7 +8,6 @@ using static ACCSetupApp.SetupParser.SetupConverter;
 namespace ACCSetupApp.SetupParser.Cars.GT4
 {
 
-    // TODO (remove this comment when done), all the data in here is not correct.
     internal class AudiR8GT4 : ICarSetupConversion
     {
         public string CarName => "Audi R8 LMS GT4 2016";
