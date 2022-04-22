@@ -34,7 +34,9 @@ namespace ACCSetupApp.SetupParser
             {"amr_v8_vantage_gt4", new AMRV8VantageGT4() },
             {"audi_r8_gt4", new AudiR8GT4() },
             {"bmw_m4_gt4", new BMWM4GT4() },
-            {"chevrolet_camaro_gt4r", new ChevroletCamaroGT4R() }
+            {"chevrolet_camaro_gt4r", new ChevroletCamaroGT4R() },
+            {"ginetta_g55_gt4", new GinettaG55GT4() },
+            {"ktm_xbow_gt4", new KTMXbowGT4() }
         };
         internal ICarSetupConversion GetConversion(string parseName)
         {
@@ -98,7 +100,9 @@ namespace ACCSetupApp.SetupParser
             {"amr_v8_vantage_gt4", "Aston Martin Vantage AMR GT4 2018"},
             {"audi_r8_gt4", "Audi R8 LMS GT4 2016"},
             {"bmw_m4_gt4", "BMW M4 GT4 2018"},
-            {"chevrolet_camaro_gt4r", "Chevrolet Camaro GT4 R 2017"}
+            {"chevrolet_camaro_gt4r", "Chevrolet Camaro GT4 R 2017"},
+            {"ginetta_g55_gt4", "Ginetta G55 GT4 2012"},
+            {"ktm_xbow_gt4", "Ktm Xbow GT4 2016"}
         };
         internal string ParseCarName(string parseName)
         {
