@@ -320,6 +320,7 @@
     <Compile Include="Controls\HUD\Overlay\Internal\AbstractOverlay.cs" />
     <Compile Include="Controls\HUD\Overlay\OverlayInputTrace\InputTraceOverlay.cs" />
     <Compile Include="Controls\HUD\Overlay\Internal\FloatingWindow.cs" />
+    <Compile Include="Controls\HUD\Overlay\Overlays.cs" />
     <Compile Include="Controls\HUD\Overlay\OverlayStaticInfo\StaticInfoOverlay.cs" />
     <Compile Include="Controls\Liveries\DDSgenerator.xaml.cs">
       <DependentUpon>DDSgenerator.xaml</DependentUpon>

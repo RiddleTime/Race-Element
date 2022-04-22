@@ -14,7 +14,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayStaticInfo
     {
         private Font inputFont = new Font("Arial", 16);
 
-        public StaticInfoOverlay(int x, int y, int width, int height) : base(x, y, width, height)
+        public StaticInfoOverlay(Rectangle rectangle) : base(rectangle)
         {
         }
 
