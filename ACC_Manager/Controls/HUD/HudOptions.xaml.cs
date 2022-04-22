@@ -1,5 +1,6 @@
 ﻿using ACCSetupApp.Controls.HUD.Overlay;
 using ACCSetupApp.Controls.HUD.Overlay.Internal;
+using ACCSetupApp.Controls.HUD.Overlay.OverlayStaticInfo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace ACCSetupApp.Controls
     /// </summary>
     public partial class HudOptions : UserControl
     {
-        AbstractOverlay overlayInputTrace;
+        List<AbstractOverlay> overlays = new List<AbstractOverlay>();
 
         public HudOptions()
         {
@@ -30,11 +31,33 @@ namespace ACCSetupApp.Controls
 
             checkboxInputTrace.Checked += CheckboxInputTrace_Checked;
             checkboxInputTrace.Unchecked += CheckboxInputTrace_Unchecked;
+
+            checkboxStaticData.Checked += CheckboxStaticData_Checked;
+            checkboxStaticData.Unchecked += CheckboxStaticData_Unchecked;
+        }
+
+        private void CheckboxStaticData_Unchecked(object sender, RoutedEventArgs e)
+        {
+            AbstractOverlay overlay = overlays.Find(x => x.GetType() == typeof(StaticInfoOverlay));
+            overlay?.Stop();
+            overlays.Remove(overlay);
+        }
+
+        private void CheckboxStaticData_Checked(object sender, RoutedEventArgs e)
+        {
+            int width = 300;
+            int x = (int)(System.Windows.SystemParameters.FullPrimaryScreenWidth / 2 + (width * 1.5));
+
+            AbstractOverlay overlay = new StaticInfoOverlay(x, 0, width, 150);
+            overlay.Start();
+            overlays.Add(overlay);
         }
 
         private void CheckboxInputTrace_Unchecked(object sender, RoutedEventArgs e)
         {
-            overlayInputTrace.Stop();
+            AbstractOverlay inputTrace = overlays.Find(x => x.GetType() == typeof(InputTraceOverlay));
+            inputTrace?.Stop();
+            overlays.Remove(inputTrace);
         }
 
         private void CheckboxInputTrace_Checked(object sender, RoutedEventArgs e)
@@ -42,8 +65,9 @@ namespace ACCSetupApp.Controls
             int width = 300;
             int x = (int)(System.Windows.SystemParameters.FullPrimaryScreenWidth / 2 + (width * 1.5));
 
-            overlayInputTrace = new InputTraceOverlay(x, 0, width, 150);
-            overlayInputTrace.Start();
+            AbstractOverlay inputTrace = new InputTraceOverlay(x, 0, width, 150);
+            inputTrace.Start();
+            overlays.Add(inputTrace);
         }
     }
 }

@@ -16,7 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static ACCSetupApp.SharedMemory;
+using static ACCSetupApp.ACCSharedMemory;
 
 namespace ACCSetupApp.Controls
 {
@@ -27,7 +27,7 @@ namespace ACCSetupApp.Controls
     {
         static TelemetryDebug Instance;
 
-        SharedMemory sharedMemory = new SharedMemory();
+        ACCSharedMemory sharedMemory = new ACCSharedMemory();
 
         public TelemetryDebug()
         {

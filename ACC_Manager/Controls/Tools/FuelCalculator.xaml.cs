@@ -64,10 +64,10 @@ namespace ACCSetupApp.Controls
         {
             try
             {
-                SharedMemory sharedMemory = new SharedMemory();
+                ACCSharedMemory sharedMemory = new ACCSharedMemory();
                 var memoryMap = sharedMemory.ReadGraphicsPageFile();
 
-                if (memoryMap.Status == SharedMemory.AcStatus.AC_OFF)
+                if (memoryMap.Status == ACCSharedMemory.AcStatus.AC_OFF)
                 {
                     return;
                 }

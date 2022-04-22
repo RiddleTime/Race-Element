@@ -6,12 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using static ACCSetupApp.ACCSharedMemory;
 
 namespace ACCSetupApp.Controls.HUD.Overlay.Internal
 {
     internal abstract class AbstractOverlay : FloatingWindow
     {
         private bool Draw = false;
+
+        internal SPageFilePhysics pagePhysics;
+        internal SPageFileGraphic pageGraphics;
+        internal SPageFileStatic pageStatic;
 
         public AbstractOverlay(int x, int y, int width, int height)
         {
@@ -27,6 +32,15 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
         {
             try
             {
+                PageStaticTracker.Instance.Tracker += PageStaticChanged;
+                PageGraphicsTracker.Instance.Tracker += PageGraphicsChanged;
+                PagePhysicsTracker.Instance.Tracker += PagePhysicsChanged;
+                ACCSharedMemory mem = new ACCSharedMemory();
+
+                pageStatic = mem.ReadStaticPageFile();
+                pageGraphics = mem.ReadGraphicsPageFile();
+                pagePhysics = mem.ReadPhysicsPageFile();
+
                 BeforeStart();
                 Draw = true;
                 this.Show();
@@ -51,10 +65,29 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
             catch (Exception ex) { Debug.WriteLine(ex); }
         }
 
+        private void PagePhysicsChanged(object sender, SPageFilePhysics e)
+        {
+            pagePhysics = e;
+        }
+
+        private void PageGraphicsChanged(object sender, SPageFileGraphic e)
+        {
+            pageGraphics = e;
+        }
+
+        private void PageStaticChanged(object sender, SPageFileStatic e)
+        {
+            pageStatic = e;
+        }
+
         public abstract void BeforeStop();
         public void Stop()
         {
             BeforeStop();
+            PageStaticTracker.Instance.Tracker -= PageStaticChanged;
+            PageGraphicsTracker.Instance.Tracker -= PageGraphicsChanged;
+            PagePhysicsTracker.Instance.Tracker -= PagePhysicsChanged;
+
             Draw = false;
             this.Close();
             this.Dispose();

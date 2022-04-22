@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using static ACCSetupApp.SharedMemory;
+using static ACCSetupApp.ACCSharedMemory;
 
 namespace ACCSetupApp.Controls
 {
@@ -17,7 +17,7 @@ namespace ACCSetupApp.Controls
         public LinkedList<int> Brake = new LinkedList<int>();
         public LinkedList<int> Steering = new LinkedList<int>();
 
-        SharedMemory sharedMemory = new SharedMemory();
+        ACCSharedMemory sharedMemory = new ACCSharedMemory();
 
         public void Collect(SPageFilePhysics filePhysics)
         {

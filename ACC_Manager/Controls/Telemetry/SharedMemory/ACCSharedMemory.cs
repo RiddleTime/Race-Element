@@ -16,7 +16,7 @@ namespace ACCSetupApp
     /// <summary>
     /// Used certain shared memory from https://github.com/gro-ove/actools
     /// </summary>
-    internal unsafe class SharedMemory
+    internal unsafe class ACCSharedMemory
     {
         // TODO https://github.com/gro-ove/actools/blob/master/AcManager.Tools/SharedMemory/AcSharedMemory.cs
 

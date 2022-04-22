@@ -14,13 +14,13 @@ namespace ACCSetupApp.Controls
         private bool _isRunning = false;
 
 
-        private SharedMemory Memory;
+        private ACCSharedMemory Memory;
         private TelemetryStorage Storage;
 
         public TelemetryRecorder(ref TelemetryStorage storage, int intervalMillis = 50)
         {
             IntervalMillis = intervalMillis;
-            Memory = new SharedMemory();
+            Memory = new ACCSharedMemory();
             Storage = storage;
         }
 

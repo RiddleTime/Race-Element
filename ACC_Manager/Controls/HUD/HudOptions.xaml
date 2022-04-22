@@ -7,6 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <CheckBox x:Name="checkboxInputTrace" ToolTip="Only works in window mode ( or during full-screen hit F11 and hit F11 again in-game)">Enable Input Trace</CheckBox>
+        <StackPanel Orientation="Vertical">
+            <CheckBox x:Name="checkboxInputTrace" ToolTip="Only works in window mode ( or during full-screen hit F11 and hit F11 again in-game)">Enable Input Trace</CheckBox>
+            <CheckBox x:Name="checkboxStaticData"/>
+        </StackPanel>
     </Grid>
 </UserControl>
