@@ -117,7 +117,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
 
             public int RearWing(int rawValue)
             {
-                return rawValue +1;
+                return rawValue + 1;
             }
 
             public int RideHeight(List<int> rawValue, Position position)

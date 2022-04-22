@@ -32,7 +32,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
 
             private readonly double[] casters = new double[] {
                 6.6, 6.8, 7.0, 7.2, 7.4, 7.6, 7.8, 8.0, 8.2, 8.4, 8.6, 8.8, 9.0,
-                9.2, 9.4, 9.6, 9.8, 10.0, 10.2, 10.4, 10.6, 10.8, 11.0, 11.2, 
+                9.2, 9.4, 9.6, 9.8, 10.0, 10.2, 10.4, 10.6, 10.8, 11.0, 11.2,
                 11.4, 11.6, 11.8, 12.0, 12.2,12.3, 12.7, 12.9, 13.1, 13.3
             };
             public override double Caster(int rawValue)
