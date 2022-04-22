@@ -42,8 +42,8 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
             {
                 switch (GetPosition(wheel))
                 {
-                    case Position.Front: return Math.Round(-2.0 + 0.1 * rawValue[(int)wheel], 2);
-                    case Position.Rear: return Math.Round(0.0 + 0.1 * rawValue[(int)wheel], 2);
+                    case Position.Front: return Math.Round(-0.2 + 0.01 * rawValue[(int)wheel], 2);
+                    case Position.Rear: return Math.Round(0.0 + 0.01 * rawValue[(int)wheel], 2);
                     default: return -1;
                 }
             }
