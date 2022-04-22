@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCSetupApp.ACCSharedMemory;
 
 namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
 {
@@ -45,7 +46,11 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
 
         public override bool ShouldRender()
         {
-            return true;
+            bool shouldRender = true;
+            if (pageGraphics.Status == AcStatus.AC_OFF || pageGraphics.Status == AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
+                shouldRender = false;
+
+            return shouldRender;
         }
     }
 }
