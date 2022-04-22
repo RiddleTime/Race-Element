@@ -420,6 +420,7 @@
     <Compile Include="SharedMemory\ACCSharedMemory.cs" />
     <Compile Include="Util\FileUtil.cs" />
     <Compile Include="Util\LogWriter.cs" />
+    <Compile Include="Util\ReflectionUtil.cs" />
     <Page Include="Controls\About\About.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
