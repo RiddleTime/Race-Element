@@ -46,7 +46,7 @@ namespace ACCSetupApp.Controls
         private void CheckboxStaticData_Checked(object sender, RoutedEventArgs e)
         {
             int width = 300;
-            int x = (int)(System.Windows.SystemParameters.FullPrimaryScreenWidth / 2 + (width * 1.5));
+            int x = 0;
 
             AbstractOverlay overlay = new StaticInfoOverlay(x, 0, width, 150);
             overlay.Start();

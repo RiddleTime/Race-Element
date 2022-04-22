@@ -368,7 +368,7 @@
     <Compile Include="Controls\HUD\Overlay\Internal\PageGraphicsTracker.cs" />
     <Compile Include="Controls\HUD\Overlay\Internal\PagePhysicsTracker.cs" />
     <Compile Include="Controls\HUD\Overlay\Internal\PageStaticTracker.cs" />
-    <Compile Include="Controls\Telemetry\SharedMemory\StructExtensions.cs" />
+    <Compile Include="SharedMemory\StructExtensions.cs" />
     <Compile Include="Controls\Telemetry\TelemetryDebug.xaml.cs">
       <DependentUpon>TelemetryDebug.xaml</DependentUpon>
     </Compile>
@@ -413,7 +413,7 @@
     <Compile Include="SetupParser\Cars\GT3\Porsche911IIGT3R.cs" />
     <Compile Include="SetupParser\SetupConverter.cs" />
     <Compile Include="SetupParser\SetupJson.cs" />
-    <Compile Include="Controls\Telemetry\SharedMemory\ACCSharedMemory.cs" />
+    <Compile Include="SharedMemory\ACCSharedMemory.cs" />
     <Compile Include="Util\FileUtil.cs" />
     <Compile Include="Util\LogWriter.cs" />
     <Page Include="Controls\About\About.xaml">

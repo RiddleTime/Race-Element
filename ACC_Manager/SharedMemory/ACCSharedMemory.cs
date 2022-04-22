@@ -18,12 +18,9 @@ namespace ACCSetupApp
     /// </summary>
     internal unsafe class ACCSharedMemory
     {
-        // TODO https://github.com/gro-ove/actools/blob/master/AcManager.Tools/SharedMemory/AcSharedMemory.cs
-
         private string physicsMap = "Local\\acpmf_physics";
         private string graphicsMap = "Local\\acpmf_graphics";
         private string staticMap = "Local\\acpmf_static";
-
 
         public enum AcStatus : int
         {

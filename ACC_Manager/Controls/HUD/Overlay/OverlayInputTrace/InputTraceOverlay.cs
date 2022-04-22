@@ -22,7 +22,6 @@ namespace ACCSetupApp.Controls.HUD.Overlay
         {
             inputDataCollector = new InputDataCollector() { TraceCount = this.Width - 1 };
             inputDataCollector.Start();
-
         }
 
         public override void BeforeStop()
