@@ -369,6 +369,7 @@
     <Compile Include="Controls\HUD\Overlay\Internal\PagePhysicsTracker.cs" />
     <Compile Include="Controls\HUD\Overlay\Internal\PageStaticTracker.cs" />
     <Compile Include="SetupParser\Cars\GT4\AudiR8GT4.cs" />
+    <Compile Include="SetupParser\Cars\GT4\BMWM4GT4.cs" />
     <Compile Include="SharedMemory\StructExtensions.cs" />
     <Compile Include="Controls\Telemetry\TelemetryDebug.xaml.cs">
       <DependentUpon>TelemetryDebug.xaml</DependentUpon>
