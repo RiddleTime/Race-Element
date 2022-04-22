@@ -102,7 +102,29 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
             }
         }
 
-        IDamperSetup ICarSetupConversion.DamperSetup => DefaultDamperSetup;
+        IDamperSetup ICarSetupConversion.DamperSetup => new CustomDamperSetup();
+        private class CustomDamperSetup : IDamperSetup
+        {
+            int IDamperSetup.BumpFast(List<int> rawValue, Wheel wheel)
+            {
+                return rawValue[(int)wheel];
+            }
+
+            int IDamperSetup.BumpSlow(List<int> rawValue, Wheel wheel)
+            {
+                return rawValue[(int)wheel] + 1;
+            }
+
+            int IDamperSetup.ReboundFast(List<int> rawValue, Wheel wheel)
+            {
+                return rawValue[(int)wheel];
+            }
+
+            int IDamperSetup.ReboundSlow(List<int> rawValue, Wheel wheel)
+            {
+                return rawValue[(int)wheel] + 1;
+            }
+        }
 
         IAeroBalance ICarSetupConversion.AeroBalance => new AeroSetup();
         private class AeroSetup : IAeroBalance
