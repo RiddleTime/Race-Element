@@ -24,14 +24,14 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
             {
                 switch (GetPosition(wheel))
                 {
-                    case Position.Front: return Math.Round(-4.5 + 0.1 * rawValue[(int)wheel], 2);
+                    case Position.Front: return Math.Round(-5.0 + 0.1 * rawValue[(int)wheel], 2);
                     case Position.Rear: return Math.Round(-3.5 + 0.1 * rawValue[(int)wheel], 2);
                     default: return -1;
                 }
             }
 
             private readonly double[] casters = new double[] {
-                8.4
+                7.1
             };
             public override double Caster(int rawValue)
             {
@@ -64,7 +64,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
 
             public double BrakeBias(int rawValue)
             {
-                return Math.Round(49 + 0.2 * rawValue, 2);
+                return Math.Round(47 + 0.2 * rawValue, 2);
             }
 
             public int BrakePower(int rawValue)
@@ -84,7 +84,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
 
             public int PreloadDifferential(int rawValue)
             {
-                return 10 + rawValue * 10;
+                return 20 + rawValue * 10;
             }
 
             public double SteeringRatio(int rawValue)
@@ -93,7 +93,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
             }
 
             private readonly int[] fronts = new int[] { 165888, 184320, 202752 };
-            private readonly int[] rears = new int[] { 103335, 117113, 130891 };
+            private readonly int[] rears = new int[] { 90000, 102000, 114000 };
             public int WheelRate(List<int> rawValue, Wheel wheel)
             {
                 switch (GetPosition(wheel))
@@ -124,8 +124,8 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
             {
                 switch (position)
                 {
-                    case Position.Front: return 70 + rawValue[0];
-                    case Position.Rear: return 65 + rawValue[2];
+                    case Position.Front: return 115 + rawValue[0];
+                    case Position.Rear: return 123 + rawValue[2];
                     default: return -1;
                 }
             }
