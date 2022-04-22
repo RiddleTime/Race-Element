@@ -31,7 +31,8 @@ namespace ACCSetupApp.SetupParser
             {"porsche_991ii_gt3_r", new Porsche911IIGT3R() },
             {"porsche_991_gt3_r", new Porsche991GT3R() },
             {"alpine_a110_gt4", new AlpineA110GT4() },
-            {"amr_v8_vantage_gt4", new AMRV8VantageGT4() }
+            {"amr_v8_vantage_gt4", new AMRV8VantageGT4() },
+            {"audi_r8_gt4", new AudiR8GT4()}
         };
         internal ICarSetupConversion GetConversion(string parseName)
         {
@@ -92,7 +93,8 @@ namespace ACCSetupApp.SetupParser
             {"porsche_991ii_gt3_r", "Porsche 911 II GT3 R 2019" },
             {"porsche_991_gt3_r", "Porsche 911 GT3 R 2018"},
             {"alpine_a110_gt4", "Alpine A110 GT4 2018"},
-            {"amr_v8_vantage_gt4", "Aston Martin Vantage AMR GT4 2018"}
+            {"amr_v8_vantage_gt4", "Aston Martin Vantage AMR GT4 2018"},
+            {"audi_r8_gt4", "Audi R8 LMS GT4 2016"}
         };
         internal string ParseCarName(string parseName)
         {
