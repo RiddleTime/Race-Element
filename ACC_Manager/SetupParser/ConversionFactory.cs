@@ -38,7 +38,8 @@ namespace ACCSetupApp.SetupParser
             {"ginetta_g55_gt4", new GinettaG55GT4() },
             {"ktm_xbow_gt4", new KTMXbowGT4() },
             {"maserati_mc_gt4", new MaseratiMCGT4() },
-            {"mclaren_570s_gt4", new Mclaren570SGT4() }
+            {"mclaren_570s_gt4", new Mclaren570SGT4() },
+            {"mercedes_amg_gt4", new MercedesAMGGT4() }
         };
         internal ICarSetupConversion GetConversion(string parseName)
         {
@@ -106,7 +107,8 @@ namespace ACCSetupApp.SetupParser
             {"ginetta_g55_gt4", "Ginetta G55 GT4 2012"},
             {"ktm_xbow_gt4", "Ktm Xbow GT4 2016"},
             {"maserati_mc_gt4", "Maserati Gran Turismo MC GT4 2016"},
-            {"mclaren_570s_gt4", "McLaren 570s GT4 2016"}
+            {"mclaren_570s_gt4", "McLaren 570s GT4 2016"},
+            {"mercedes_amg_gt4", "Mercedes AMG GT4 2016"}
         };
         internal string ParseCarName(string parseName)
         {
