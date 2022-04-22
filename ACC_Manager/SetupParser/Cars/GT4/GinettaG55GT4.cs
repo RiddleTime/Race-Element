@@ -7,7 +7,6 @@ using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT4
 {
-
     internal class GinettaG55GT4 : ICarSetupConversion
     {
         public string CarName => "Ginetta G55 GT4 2012";
