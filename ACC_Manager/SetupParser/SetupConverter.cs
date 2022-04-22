@@ -8,24 +8,6 @@ namespace ACCSetupApp.SetupParser
 {
     public class SetupConverter
     {
-        internal static double[] ToDoubles(string[] strings)
-        {
-            double[] convertedDoubles = new double[strings.Length];
-            for (int i = 0; i < strings.Length; i++)
-                convertedDoubles[i] = double.Parse(strings[i]);
-
-            return convertedDoubles;
-        }
-
-        internal static int[] ToInts(string[] strings)
-        {
-            int[] convertedInts = new int[strings.Length];
-            for (int i = 0; i < strings.Length; i++)
-                convertedInts[i] = int.Parse(strings[i]);
-
-            return convertedInts;
-        }
-
         internal enum CarClasses
         {
             GT3,
@@ -116,7 +98,8 @@ namespace ACCSetupApp.SetupParser
             int ReboundFast(List<int> rawValue, Wheel wheel);
         }
 
-        internal class DefaultDamperSetup : IDamperSetup
+        internal static IDamperSetup DefaultDamperSetup = new DefaultDamperSetupImplementation();
+        private class DefaultDamperSetupImplementation : IDamperSetup
         {
             int IDamperSetup.BumpFast(List<int> rawValue, Wheel wheel)
             {

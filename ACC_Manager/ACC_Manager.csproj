@@ -400,7 +400,7 @@
     <Compile Include="SetupParser\ConversionFactory.cs" />
     <Compile Include="SetupParser\Cars\GT3\HondaNsxGT3Evo.cs" />
     <Compile Include="SetupParser\Cars\GT3\Porsche911IIGT3R.cs" />
-    <Compile Include="SetupParser\ISetupConverter.cs" />
+    <Compile Include="SetupParser\SetupConverter.cs" />
     <Compile Include="SetupParser\SetupJson.cs" />
     <Compile Include="Controls\Telemetry\SharedMemory\SharedMemory.cs" />
     <Compile Include="Util\FileUtil.cs" />
