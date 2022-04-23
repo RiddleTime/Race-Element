@@ -31,8 +31,8 @@ namespace ACCSetupApp.Controls
         {
             double range = 100 - 0;
             double percentage = 1d - (value - 0) / range;
-            return (int)(percentage * (Height - Height / 7.5))
-                    + Height / 15;
+            return (int)(percentage * (Height - Height / 5))
+                    + Height / 10;
         }
 
         public void Draw(Graphics g)
