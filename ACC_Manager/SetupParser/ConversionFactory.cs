@@ -36,7 +36,11 @@ namespace ACCSetupApp.SetupParser
             {"bmw_m4_gt4", new BMWM4GT4() },
             {"chevrolet_camaro_gt4r", new ChevroletCamaroGT4R() },
             {"ginetta_g55_gt4", new GinettaG55GT4() },
-            {"ktm_xbow_gt4", new KTMXbowGT4() }
+            {"ktm_xbow_gt4", new KTMXbowGT4() },
+            {"maserati_mc_gt4", new MaseratiMCGT4() },
+            {"mclaren_570s_gt4", new Mclaren570SGT4() },
+            {"mercedes_amg_gt4", new MercedesAMGGT4() },
+            {"porsche_718_cayman_gt4_mr", new Porsche718CaymanGT4MR() }
         };
         internal ICarSetupConversion GetConversion(string parseName)
         {
@@ -88,7 +92,11 @@ namespace ACCSetupApp.SetupParser
             {"bmw_m4_gt4", "BMW M4 GT4 2018"},
             {"chevrolet_camaro_gt4r", "Chevrolet Camaro GT4 R 2017"},
             {"ginetta_g55_gt4", "Ginetta G55 GT4 2012"},
-            {"ktm_xbow_gt4", "Ktm Xbow GT4 2016"}
+            {"ktm_xbow_gt4", "Ktm Xbow GT4 2016"},
+            {"maserati_mc_gt4", "Maserati Gran Turismo MC GT4 2016"},
+            {"mclaren_570s_gt4", "McLaren 570s GT4 2016"},
+            {"mercedes_amg_gt4", "Mercedes AMG GT4 2016"},
+            {"porsche_718_cayman_gt4_mr", "Porsche 718 Cayman GT4 MR 2019"}
         };
         internal string ParseCarName(string parseName)
         {

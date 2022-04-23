@@ -7,11 +7,11 @@ using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT4
 {
-    internal class KTMXbowGT4 : ICarSetupConversion
+    internal class MercedesAMGGT4 : ICarSetupConversion
     {
-        public string CarName => "Ktm Xbow GT4 2016";
+        public string CarName => "Mercedes AMG GT4 2016";
 
-        public string ParseName => "ktm_xbow_gt4";
+        public string ParseName => "mercedes_amg_gt4";
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT4;
 
@@ -22,16 +22,16 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
             {
                 switch (GetPosition(wheel))
                 {
-                    case Position.Front: return Math.Round(-2.5 + 0.1 * rawValue[(int)wheel], 2);
-                    case Position.Rear: return Math.Round(-2.5 + 0.1 * rawValue[(int)wheel], 2);
+                    case Position.Front: return Math.Round(-4.5 + 0.1 * rawValue[(int)wheel], 2);
+                    case Position.Rear: return Math.Round(-3.5 + 0.1 * rawValue[(int)wheel], 2);
                     default: return -1;
                 }
             }
 
             private readonly double[] casters = new double[] {
-                1.7, 1.9, 2.1, 2.3, 2.5, 2.7, 2.9, 3.1, 3.3, 3.5, 3.7, 3.9, 4.1, 4.3, 4.5, 4.7,
-                4.8, 5.0, 5.2, 5.4, 5.6, 5.8, 6.0, 6.2, 6.4, 6.6, 6.8, 7.0, 7.1, 7.3, 7.5, 7.7,
-                7.9, 8.1, 8.3, 8.5, 8.7, 8.9, 9.1, 9.2, 9.4
+                9.2, 9.4, 9.5, 9.7, 9.9, 10.1, 10.3, 10.5, 10.7, 10.8, 11.0, 11.2, 11.4, 11.6, 11.8,
+                11.9, 12.1, 12.3, 12.5, 12.7, 12.8, 13.0, 13.2, 13.4, 13.6, 13.7, 13.9, 14.1, 14.3,
+                14.5, 14.6, 14.8, 15.0, 15.2, 15.4, 15.5, 15.7, 15.9, 16.1, 16.2, 16.4
             };
             public override double Caster(int rawValue)
             {
@@ -40,7 +40,12 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
 
             public override double Toe(Wheel wheel, List<int> rawValue)
             {
-                return Math.Round(-0.4 + 0.01 * rawValue[(int)wheel], 2);
+                switch (GetPosition(wheel))
+                {
+                    case Position.Front: return Math.Round(-0.2 + 0.01 * rawValue[(int)wheel], 2);
+                    case Position.Rear: return Math.Round(0.0 + 0.01 * rawValue[(int)wheel], 2);
+                    default: return -1;
+                }
             }
         }
 
@@ -59,7 +64,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
 
             public double BrakeBias(int rawValue)
             {
-                return Math.Round(44 + 0.2 * rawValue, 2);
+                return Math.Round(51 + 0.3 * rawValue, 2);
             }
 
             public int BrakePower(int rawValue)
@@ -84,11 +89,11 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
 
             public double SteeringRatio(int rawValue)
             {
-                return Math.Round(11d + rawValue, 2);
+                return Math.Round(10d + rawValue, 2);
             }
 
-            private readonly int[] fronts = new int[] { 87000, 97000, 107000, 117000, 127000 };
-            private readonly int[] rears = new int[] { 81000, 91000, 101000, 111000, 121000, 131000 };
+            private readonly int[] fronts = new int[] { 78000, 88000, 104000 };
+            private readonly int[] rears = new int[] { 66000 };
             public int WheelRate(List<int> rawValue, Wheel wheel)
             {
                 switch (GetPosition(wheel))
@@ -119,8 +124,8 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
             {
                 switch (position)
                 {
-                    case Position.Front: return 110 + rawValue[0];
-                    case Position.Rear: return 110 + rawValue[2];
+                    case Position.Front: return 103 + rawValue[0];
+                    case Position.Rear: return 101 + rawValue[2];
                     default: return -1;
                 }
             }
