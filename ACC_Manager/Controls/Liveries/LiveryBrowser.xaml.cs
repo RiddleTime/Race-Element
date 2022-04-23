@@ -163,12 +163,19 @@ namespace ACCSetupApp.Controls
 
             foreach (IGrouping<string, LiveryTreeCar> tItem in liveriesGroupedByModel)
             {
+                string treeViewTitle = $"{tItem.Key}";
+                int groupCount = tItem.Count();
+                if (groupCount > 1)
+                {
+                    treeViewTitle += $"  ({groupCount})";
+                }
                 TextBlock teamHeader = new TextBlock()
                 {
-                    Text = $"{tItem.Key}",
+                    Text = treeViewTitle,
                     Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
                     TextTrimming = TextTrimming.WordEllipsis,
-                    Width = liveriesTreeViewTeams.Width - 5
+                    Width = liveriesTreeViewTeams.Width - 5,
+                    DataContext = tItem.Key
                 };
                 TreeViewItem modelItem = new TreeViewItem() { Header = teamHeader };
 
@@ -200,7 +207,7 @@ namespace ACCSetupApp.Controls
             {
                 TextBlock aCar = a.Header as TextBlock;
                 TextBlock bCar = b.Header as TextBlock;
-                return $"{aCar.Text}".CompareTo($"{bCar.Text}");
+                return $"{aCar.DataContext}".CompareTo($"{bCar.DataContext}");
             });
 
             carsTreeViews.ForEach(x => liveriesTreeViewCars.Items.Add(x));
@@ -213,12 +220,19 @@ namespace ACCSetupApp.Controls
 
             foreach (IGrouping<string, LiveryTreeCar> tItem in liveriesGroupedByTeam)
             {
+                string treeViewTitle = $"{tItem.Key}";
+                int groupCount = tItem.Count();
+                if (groupCount > 1)
+                {
+                    treeViewTitle += $"  ({groupCount})";
+                }
                 TextBlock teamHeader = new TextBlock()
                 {
-                    Text = $"{tItem.Key}",
+                    Text = treeViewTitle,
                     Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
                     TextTrimming = TextTrimming.WordEllipsis,
-                    Width = liveriesTreeViewTeams.Width - 5
+                    Width = liveriesTreeViewTeams.Width - 5,
+                    DataContext = tItem.Key
                 };
                 TreeViewItem teamItem = new TreeViewItem() { Header = teamHeader };
 
@@ -251,7 +265,7 @@ namespace ACCSetupApp.Controls
             {
                 TextBlock aCar = a.Header as TextBlock;
                 TextBlock bCar = b.Header as TextBlock;
-                return $"{aCar.Text}".CompareTo($"{bCar.Text}");
+                return $"{aCar.DataContext}".CompareTo($"{bCar.DataContext}");
             });
 
             carsTreeViews.ForEach(x => liveriesTreeViewTeams.Items.Add(x));
@@ -265,16 +279,6 @@ namespace ACCSetupApp.Controls
 
             LiveryTagging.GetAllTags().ForEach(liveryTag =>
             {
-                TextBlock tagHeader = new TextBlock()
-                {
-                    Text = $"{liveryTag.Name}",
-                    Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
-                    TextTrimming = TextTrimming.WordEllipsis,
-                    Width = liveriesTreeViewTeams.Width - 5
-                };
-                TreeViewItem tagItem = new TreeViewItem() { Header = tagHeader };
-                tagItem.ContextMenu = GetTagContextMenu(tagItem, liveryTag);
-
                 List<LiveryTreeCar> tagCars = new List<LiveryTreeCar>();
                 foreach (LiveryTreeCar car in allLiveries)
                 {
@@ -284,6 +288,24 @@ namespace ACCSetupApp.Controls
                     }
                 }
 
+                string treeViewTitle = $"{liveryTag.Name}";
+                int groupCount = tagCars.Count();
+                if (groupCount > 1)
+                {
+                    treeViewTitle += $"  ({groupCount})";
+                }
+
+                TextBlock tagHeader = new TextBlock()
+                {
+                    Text = treeViewTitle,
+                    Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
+                    TextTrimming = TextTrimming.WordEllipsis,
+                    Width = liveriesTreeViewTeams.Width - 5,
+                    DataContext = liveryTag.Name
+                };
+                TreeViewItem tagItem = new TreeViewItem() { Header = tagHeader };
+
+                tagItem.ContextMenu = GetTagContextMenu(tagItem, liveryTag);
                 tagCars.Sort((a, b) =>
                 {
                     return $"{a.carsRoot.customSkinName.ToLower()}".CompareTo($"{b.carsRoot.customSkinName.ToLower()}");
@@ -312,7 +334,7 @@ namespace ACCSetupApp.Controls
             {
                 TextBlock textA = a.Header as TextBlock;
                 TextBlock textB = b.Header as TextBlock;
-                return $"{textA.Text}".CompareTo($"{textB.Text}");
+                return $"{textA.DataContext}".CompareTo($"{textB.DataContext}");
             });
 
             tagTreeItems.ForEach(x => liveriesTreeViewTags.Items.Add(x));
