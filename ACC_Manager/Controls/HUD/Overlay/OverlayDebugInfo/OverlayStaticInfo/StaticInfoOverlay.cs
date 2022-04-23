@@ -1,31 +1,45 @@
 ﻿using ACCSetupApp.Controls.HUD.Overlay.Internal;
+using ACCSetupApp.Controls.HUD.Overlay.OverlayDebugInfo;
+using ACCSetupApp.Controls.Telemetry.SharedMemory;
 using ACCSetupApp.Util;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPhysicsInfo
+namespace ACCSetupApp.Controls.HUD.Overlay.OverlayStaticInfo
 {
-    internal class PhysicsInfoOverlay : AbstractOverlay
+    internal class StaticInfoOverlay : AbstractOverlay
     {
         private Font inputFont = new Font("Arial", 10);
 
-        public PhysicsInfoOverlay(Rectangle rectangle) : base(rectangle)
+        public StaticInfoOverlay(Rectangle rectangle) : base(rectangle)
         {
-            this.Width = 600;
-            this.Height = 620;
+            this.Width = 230;
+            this.Height = 325;
+
+            DebugInfoHelper.Instance.WidthChanged += (sender, args) =>
+            {
+                if (args)
+                {
+                    this.X = DebugInfoHelper.Instance.GetX(this);
+                }
+            };
         }
 
         public override void BeforeStart()
         {
+            DebugInfoHelper.Instance.AddOverlay(this);
+            this.X = DebugInfoHelper.Instance.GetX(this);
         }
 
         public override void BeforeStop()
         {
+            DebugInfoHelper.Instance.RemoveOverlay(this);
         }
 
         public override void Render(Graphics g)
@@ -34,10 +48,10 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPhysicsInfo
 
             int xMargin = 5;
             int y = 0;
-            FieldInfo[] members = pagePhysics.GetType().GetFields();
+            FieldInfo[] members = pageStatic.GetType().GetFields();
             foreach (FieldInfo member in members)
             {
-                var value = member.GetValue(pagePhysics);
+                var value = member.GetValue(pageStatic);
                 bool isObsolete = false;
                 foreach (CustomAttributeData cad in member.CustomAttributes)
                 {

@@ -1,4 +1,5 @@
 ﻿using ACCSetupApp.Controls.HUD.Overlay.Internal;
+using ACCSetupApp.Controls.HUD.Overlay.OverlayDebugInfo;
 using ACCSetupApp.Util;
 using System;
 using System.Collections.Generic;
@@ -8,24 +9,35 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCSetupApp.Controls.HUD.Overlay.OverlayGraphicsInfo
+namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPhysicsInfo
 {
-    internal class GraphicsInfoOverlay : AbstractOverlay
+    internal class PhysicsInfoOverlay : AbstractOverlay
     {
         private Font inputFont = new Font("Arial", 10);
 
-        public GraphicsInfoOverlay(Rectangle rectangle) : base(rectangle)
+        public PhysicsInfoOverlay(Rectangle rectangle) : base(rectangle)
         {
-            this.Width = 275;
-            this.Height = 1030;
+            this.Width = 600;
+            this.Height = 620;
+
+            DebugInfoHelper.Instance.WidthChanged += (sender, args) =>
+            {
+                if (args)
+                {
+                    this.X = DebugInfoHelper.Instance.GetX(this);
+                }
+            };
         }
 
         public override void BeforeStart()
         {
+            DebugInfoHelper.Instance.AddOverlay(this);
+            this.X = DebugInfoHelper.Instance.GetX(this);
         }
 
         public override void BeforeStop()
         {
+            DebugInfoHelper.Instance.RemoveOverlay(this);
         }
 
         public override void Render(Graphics g)
@@ -34,10 +46,10 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayGraphicsInfo
 
             int xMargin = 5;
             int y = 0;
-            FieldInfo[] members = pageGraphics.GetType().GetFields();
+            FieldInfo[] members = pagePhysics.GetType().GetFields();
             foreach (FieldInfo member in members)
             {
-                var value = member.GetValue(pageGraphics);
+                var value = member.GetValue(pagePhysics);
                 bool isObsolete = false;
                 foreach (CustomAttributeData cad in member.CustomAttributes)
                 {
