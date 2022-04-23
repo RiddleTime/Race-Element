@@ -15,7 +15,14 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
         {
             {   new CarModels[]{ Aston_Martin_V8_Vantage_GT3_2019, Aston_Martin_Vantage_V12_GT3_2013 },
                 new EcuMap[]{
-
+                    new EcuMap(){ Index = 1, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.High },
+                    new EcuMap(){ Index = 2, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Dry, ThrottleMap = "Aggressive", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 3, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Dry, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 4, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Dry, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.Low },
+                    new EcuMap(){ Index = 5, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Wet, ThrottleMap = "Slightly progressive", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 6, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Wet, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.Low },
+                    new EcuMap(){ Index = 7, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Wet, ThrottleMap = "More progressive", FuelConsumption = FuelConsumptions.Low },
+                    new EcuMap(){ Index = 8, Power = PowerDelivery.Slow, Conditon = EcuMapConditions.PaceCar, ThrottleMap = "Least progressive", FuelConsumption = FuelConsumptions.Lowest },
                 }
             },
             {   new CarModels[]{ Audi_R8_LMS_2015, Audi_R8_LMS_Evo_II_2022},
@@ -48,7 +55,36 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
 
                 }
             },
+            {   new CarModels[]{ Lamborhini_Huracán_GT3_2015, Lamborhini_Huracán_GT3_Evo_2019 },
+                new EcuMap[]{
 
+                }
+            },
+            {   new CarModels[]{ Emil_Frey_Jaguar_G3_2021 },
+                new EcuMap[]{
+
+                }
+            },
+            {   new CarModels[]{ Nissan_GT_R_Nismo_GT3_2015, Nissan_GT_R_Nismo_GT3_2018 },
+                new EcuMap[]{
+
+                }
+            },
+            {   new CarModels[]{ Lexus_RCF_GT3_2016 },
+                new EcuMap[]{
+
+                }
+            },
+            {   new CarModels[]{ McLaren_720S_GT3_2019 },
+                new EcuMap[]{
+
+                }
+            },
+            {   new CarModels[]{ Mercedes_AMG_GT3_2020, /*Add Mercedes AMG Gt3? */ },
+                new EcuMap[]{
+
+                }
+            },
             {   new CarModels[] { Porsche_911_GT3_R_2018, Porsche_911_II_GT3_R_2019 },
                 new EcuMap[] {
                     new EcuMap(){ Index = 1, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Dry, ThrottleMap = "Least progressive", FuelConsumption = FuelConsumptions.Medium },
