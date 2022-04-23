@@ -3,6 +3,7 @@ using System.Linq;
 using ACCSetupApp.SetupParser.Cars.GT3;
 using ACCSetupApp.SetupParser.Cars.GT4;
 using static ACCSetupApp.SetupParser.SetupConverter;
+using static ACCSetupApp.SetupParser.ConversionFactory.CarModels;
 
 namespace ACCSetupApp.SetupParser
 {
@@ -44,7 +45,7 @@ namespace ACCSetupApp.SetupParser
         };
         internal ICarSetupConversion GetConversion(string parseName)
         {
-            if (carParseNames.ContainsKey(parseName))
+            if (ParseNames.ContainsKey(parseName))
                 return carConversions[parseName];
             else
                 return null;
@@ -57,55 +58,127 @@ namespace ACCSetupApp.SetupParser
             {
                 if (x.Value.CarClass == carClass)
                 {
-                    classNames.Add(x.Value.CarName);
+                    classNames.Add(CarNames[x.Value.CarModel]);
                 }
             });
 
             return classNames;
         }
 
-        private static Dictionary<string, string> carParseNames = new Dictionary<string, string>()
+        public enum CarModels
         {
-            {"amr_v8_vantage_gt3", "Aston Martin V8 Vantage GT3 2019"},
-            {"amr_v12_vantage_gt3", "Aston Martin Vantage V12 GT3 2013"},
-            {"audi_r8_lms", "Audi R8 LMS 2015" },
-            {"audi_r8_lms_evo_ii", "Audi R8 LMS Evo II 2022" },
-            {"bentley_continental_gt3_2018", "Bentley Continental GT3 2018" },
-            {"bmw_m4_gt3", "BMW M4 GT3 2021" },
-            {"jaguar_g3", "Emil Frey Jaguar G3 2012" },
-            {"ferrari_488_gt3", "Ferrari 488 GT3 2018" },
-            {"ferrari_488_gt3_evo", "Ferrari 488 GT3 Evo 2020" },
-            {"honda_nsx_gt3", "Honda NSX GT3 2017" },
-            {"honda_nsx_gt3_evo", "Honda NSX GT3 Evo 2019" },
-            {"lexus_rc_f_gt3", "Lexus RCF GT3 2016" },
-            {"lamborghini_huracan_gt3","Lamborghini Huracán GT3 2015" },
-            {"lamborghini_huracan_gt3_evo","Lamborghini Huracán GT3 Evo 2019" },
-            {"mclaren_720s_gt3", "McLaren 720S GT3 2019" },
-            {"mercedes_amg_gt3_evo" , "Mercedes-AMG GT3 2020"},
-            {"nissan_gt_r_gt3_2017", "Nissan GT-R Nismo GT3 2015" },
-            {"nissan_gt_r_gt3_2018","Nissan GT-R Nismo GT3 2018" },
-            {"porsche_991ii_gt3_r", "Porsche 911 II GT3 R 2019" },
-            {"porsche_991_gt3_r", "Porsche 911 GT3 R 2018"},
-            {"alpine_a110_gt4", "Alpine A110 GT4 2018"},
-            {"amr_v8_vantage_gt4", "Aston Martin Vantage AMR GT4 2018"},
-            {"audi_r8_gt4", "Audi R8 LMS GT4 2016"},
-            {"bmw_m4_gt4", "BMW M4 GT4 2018"},
-            {"chevrolet_camaro_gt4r", "Chevrolet Camaro GT4 R 2017"},
-            {"ginetta_g55_gt4", "Ginetta G55 GT4 2012"},
-            {"ktm_xbow_gt4", "Ktm Xbow GT4 2016"},
-            {"maserati_mc_gt4", "Maserati Gran Turismo MC GT4 2016"},
-            {"mclaren_570s_gt4", "McLaren 570s GT4 2016"},
-            {"mercedes_amg_gt4", "Mercedes AMG GT4 2016"},
-            {"porsche_718_cayman_gt4_mr", "Porsche 718 Cayman GT4 MR 2019"}
-        };
-        internal string ParseCarName(string parseName)
-        {
-            if (carParseNames.ContainsKey(parseName))
-                return carParseNames[parseName];
-            else return parseName;
+            None,
+            Aston_Martin_V8_Vantage_GT3_2019,
+            Aston_Martin_Vantage_V12_GT3_2013,
+            Audi_R8_LMS_2015,
+            Audi_R8_LMS_Evo_II_2022,
+            Bentley_Continental_GT3_2018,
+            BMW_M4_GT3_2021,
+            Emil_Frey_Jaguar_G3_2021,
+            Ferrari_488_GT3_2018,
+            Ferrari_488_GT3_Evo_2020,
+            Honda_NSX_GT3_2017,
+            Honda_NSX_GT3_Evo_2019,
+            Lexus_RCF_GT3_2016,
+            Lamborhini_Huracán_GT3_2015,
+            Lamborhini_Huracán_GT3_Evo_2019,
+            McLaren_720S_GT3_2019,
+            Mercedes_AMG_GT3_2020,
+            Nissan_GT_R_Nismo_GT3_2015,
+            Nissan_GT_R_Nismo_GT3_2018,
+            Porsche_911_II_GT3_R_2019,
+            Porsche_911_GT3_R_2018,
+            Alpine_A110_GT4_2018,
+            Aston_Martin_Vantage_AMR_GT4_2018,
+            Audi_R8_LMS_GT4_2016,
+            BMW_M4_GT4_2018,
+            Chevrolet_Camaro_GT4_R_2017,
+            Ginetta_G55_GT4_2012,
+            KTM_Xbow_GT4_2016,
+            Maserati_Gran_Turismo_MC_GT4_2016,
+            McLaren_570s_GT4_2016,
+            Mercedes_AMG_GT4_2016,
+            Porsche_718_Cayman_GT4_MR_2019
         }
 
-        private static Dictionary<int, string> CarModelTypeIds = new Dictionary<int, string>()
+        public static readonly Dictionary<CarModels, string> CarNames = new Dictionary<CarModels, string>() {
+            {None, "Unknown car model" },
+            {Aston_Martin_V8_Vantage_GT3_2019, "Aston Martin V8 Vantage GT3 2019"},
+            {Aston_Martin_Vantage_V12_GT3_2013, "Aston Martin Vantage V12 GT3 2013"},
+            {Audi_R8_LMS_2015, "Audi R8 LMS 2015" },
+            {Audi_R8_LMS_Evo_II_2022, "Audi R8 LMS Evo II 2022" },
+            {Bentley_Continental_GT3_2018, "Bentley Continental GT3 2018" },
+            {BMW_M4_GT3_2021, "BMW M4 GT3 2021" },
+            {Emil_Frey_Jaguar_G3_2021, "Emil Frey Jaguar G3 2012" },
+            {Ferrari_488_GT3_2018, "Ferrari 488 GT3 2018" },
+            {Ferrari_488_GT3_Evo_2020, "Ferrari 488 GT3 Evo 2020" },
+            {Honda_NSX_GT3_2017, "Honda NSX GT3 2017" },
+            {Honda_NSX_GT3_Evo_2019, "Honda NSX GT3 Evo 2019" },
+            {Lexus_RCF_GT3_2016, "Lexus RCF GT3 2016" },
+            {Lamborhini_Huracán_GT3_2015,"Lamborghini Huracán GT3 2015" },
+            {Lamborhini_Huracán_GT3_Evo_2019,"Lamborghini Huracán GT3 Evo 2019" },
+            {McLaren_720S_GT3_2019, "McLaren 720S GT3 2019" },
+            {Mercedes_AMG_GT3_2020 , "Mercedes-AMG GT3 2020"},
+            {Nissan_GT_R_Nismo_GT3_2015, "Nissan GT-R Nismo GT3 2015" },
+            {Nissan_GT_R_Nismo_GT3_2018, "Nissan GT-R Nismo GT3 2018" },
+            {Porsche_911_II_GT3_R_2019, "Porsche 911 II GT3 R 2019" },
+            {Porsche_911_GT3_R_2018, "Porsche 911 GT3 R 2018"},
+            {Alpine_A110_GT4_2018, "Alpine A110 GT4 2018"},
+            {Aston_Martin_Vantage_AMR_GT4_2018, "Aston Martin Vantage AMR GT4 2018"},
+            {Audi_R8_LMS_GT4_2016, "Audi R8 LMS GT4 2016"},
+            {BMW_M4_GT4_2018, "BMW M4 GT4 2018"},
+            {Chevrolet_Camaro_GT4_R_2017, "Chevrolet Camaro GT4 R 2017"},
+            {Ginetta_G55_GT4_2012, "Ginetta G55 GT4 2012"},
+            {KTM_Xbow_GT4_2016, "KTM Xbow GT4 2016"},
+            {Maserati_Gran_Turismo_MC_GT4_2016, "Maserati Gran Turismo MC GT4 2016"},
+            {McLaren_570s_GT4_2016, "McLaren 570s GT4 2016"},
+            {Mercedes_AMG_GT4_2016, "Mercedes AMG GT4 2016"},
+            {Porsche_718_Cayman_GT4_MR_2019, "Porsche 718 Cayman GT4 MR 2019"}
+        };
+
+        public static readonly Dictionary<string, CarModels> ParseNames = new Dictionary<string, CarModels>()
+        {
+            {"amr_v8_vantage_gt3", Aston_Martin_V8_Vantage_GT3_2019 },
+            {"amr_v12_vantage_gt3", Aston_Martin_Vantage_V12_GT3_2013 },
+            {"audi_r8_lms", Audi_R8_LMS_2015 },
+            {"audi_r8_lms_evo_ii", Audi_R8_LMS_Evo_II_2022 },
+            {"bentley_continental_gt3_2018", Bentley_Continental_GT3_2018 },
+            {"bmw_m4_gt3", BMW_M4_GT3_2021 },
+            {"jaguar_g3", Emil_Frey_Jaguar_G3_2021 },
+            {"ferrari_488_gt3", Ferrari_488_GT3_2018 },
+            {"ferrari_488_gt3_evo", Ferrari_488_GT3_Evo_2020 },
+            {"honda_nsx_gt3", Honda_NSX_GT3_2017 },
+            {"honda_nsx_gt3_evo", Honda_NSX_GT3_Evo_2019 },
+            {"lexus_rc_f_gt3", Lexus_RCF_GT3_2016 },
+            {"lamborghini_huracan_gt3", Lamborhini_Huracán_GT3_2015 },
+            {"lamborghini_huracan_gt3_evo", Lamborhini_Huracán_GT3_Evo_2019 },
+            {"mclaren_720s_gt3", McLaren_720S_GT3_2019 },
+            {"mercedes_amg_gt3_evo", Mercedes_AMG_GT3_2020 },
+            {"nissan_gt_r_gt3_2017", Nissan_GT_R_Nismo_GT3_2015 }, // yes the parsename is 2017 and not 2015.. (kunos feature)
+            {"nissan_gt_r_gt3_2018", Nissan_GT_R_Nismo_GT3_2018 },
+            {"porsche_991ii_gt3_r", Porsche_911_II_GT3_R_2019 },
+            {"porsche_991_gt3_r", Porsche_911_GT3_R_2018 },
+            {"alpine_a110_gt4", Alpine_A110_GT4_2018 },
+            {"amr_v8_vantage_gt4", Aston_Martin_Vantage_AMR_GT4_2018 },
+            {"audi_r8_gt4", Audi_R8_LMS_GT4_2016 },
+            {"bmw_m4_gt4", BMW_M4_GT4_2018 },
+            {"chevrolet_camaro_gt4r", Chevrolet_Camaro_GT4_R_2017 },
+            {"ginetta_g55_gt4", Ginetta_G55_GT4_2012 },
+            {"ktm_xbow_gt4", KTM_Xbow_GT4_2016 },
+            {"maserati_mc_gt4", Maserati_Gran_Turismo_MC_GT4_2016 },
+            {"mclaren_570s_gt4", McLaren_570s_GT4_2016 },
+            {"mercedes_amg_gt4", Mercedes_AMG_GT4_2016 },
+            {"porsche_718_cayman_gt4_mr", Porsche_718_Cayman_GT4_MR_2019 }
+        };
+
+        internal static CarModels ParseCarName(string parseName)
+        {
+            if (ParseNames.ContainsKey(parseName))
+                return ParseNames[parseName];
+            else return None;
+        }
+
+        private static readonly Dictionary<int, string> CarModelTypeIds = new Dictionary<int, string>()
         {
             {0, "Porsche 991 GT3 R 2018" },
             {1, "Mercedes AMG GT3 2015" },

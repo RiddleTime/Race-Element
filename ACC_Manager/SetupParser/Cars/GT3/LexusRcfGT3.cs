@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCSetupApp.SetupParser.ConversionFactory;
 using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT3
 {
     internal class LexusRcfGT3 : ICarSetupConversion
     {
-        string ICarSetupConversion.CarName => "Lexus RCF GT3 2016";
-
-        string ICarSetupConversion.ParseName => "lexus_rc_f_gt3";
+        public CarModels CarModel => CarModels.Lexus_RCF_GT3_2016;
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
 

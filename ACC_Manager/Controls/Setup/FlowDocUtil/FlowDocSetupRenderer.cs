@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 using static ACCSetupApp.SetupParser.SetupConverter;
+using static ACCSetupApp.SetupParser.ConversionFactory;
 using static SetupParser.SetupJson;
 
 namespace ACCSetupApp.Controls.Setup
@@ -149,7 +150,7 @@ namespace ACCSetupApp.Controls.Setup
             Table setupInfoTable = DocUtil.GetTable(30, 70);
             TableRowGroup rowGroupSetupInfo = new TableRowGroup();
             rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRow("Track", $"{DocUtil.GetTrackName(jsonFile.FullName)}"));
-            rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRow("Car", $"{carSetup.CarName}"));
+            rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRow("Car", $"{CarNames[carSetup.CarModel]}"));
             rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRow("Class", $"{carSetup.CarClass}"));
 
             setupInfoTable.RowGroups.Add(rowGroupSetupInfo);

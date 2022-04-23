@@ -109,5 +109,9 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
                 }
             }
         }
+
+        public void EnableReposition(bool enabled)
+        {
+        }
     }
 }

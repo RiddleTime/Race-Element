@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCSetupApp.SetupParser.ConversionFactory;
 using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT4
 {
     internal class GinettaG55GT4 : ICarSetupConversion
     {
+        public CarModels CarModel => CarModels.Ginetta_G55_GT4_2012;
         public string CarName => "Ginetta G55 GT4 2012";
 
         public string ParseName => "ginetta_g55_gt4";

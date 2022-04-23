@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCSetupApp.SetupParser.ConversionFactory;
 using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT3
 {
     internal class BentleyContinentalGT3_2018 : ICarSetupConversion
     {
-        string ICarSetupConversion.CarName => "Bentley Continental GT3 2018";
-
-        string ICarSetupConversion.ParseName => "bentley_continental_gt3_2018";
+        public CarModels CarModel => CarModels.Bentley_Continental_GT3_2018;
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
 

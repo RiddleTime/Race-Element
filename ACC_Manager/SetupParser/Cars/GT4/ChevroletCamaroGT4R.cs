@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCSetupApp.SetupParser.ConversionFactory;
 using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT4
 {
     internal class ChevroletCamaroGT4R : ICarSetupConversion
     {
+        public CarModels CarModel => CarModels.Chevrolet_Camaro_GT4_R_2017;
         public string CarName => "Chevrolet Camaro GT4 R 2017";
 
         public string ParseName => "chevrolet_camaro_gt4r";

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCSetupApp.SetupParser.ConversionFactory;
 using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT3
 {
     internal class Ferrari488GT3 : ICarSetupConversion
     {
+        public CarModels CarModel => CarModels.Ferrari_488_GT3_2018;
         public string CarName => "Ferrari 488 GT3 2018";
 
         public string ParseName => "ferrari_488_gt3";

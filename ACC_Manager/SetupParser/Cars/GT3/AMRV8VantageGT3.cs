@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using static ACCSetupApp.SetupParser.ConversionFactory;
 using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT3
 {
     internal class AMRV8VantageGT3 : ICarSetupConversion
     {
+        public CarModels CarModel => CarModels.Aston_Martin_V8_Vantage_GT3_2019;
+
         public string CarName => "Aston Martin V8 Vantage GT3 2019";
 
         public string ParseName => "amr_v8_vantage_gt3";

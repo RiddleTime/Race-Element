@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCSetupApp.SetupParser.ConversionFactory;
 using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT3
 {
     internal class AudiR8LMSevoII : ICarSetupConversion
     {
+        public CarModels CarModel => CarModels.Audi_R8_LMS_Evo_II_2022;
         public string CarName => "Audi R8 LMS Evo II 2022";
         public string ParseName => "audi_r8_lms_evo_ii";
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;

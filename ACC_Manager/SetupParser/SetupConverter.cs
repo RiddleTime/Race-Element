@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCSetupApp.SetupParser.ConversionFactory;
 
 namespace ACCSetupApp.SetupParser
 {
@@ -57,8 +58,7 @@ namespace ACCSetupApp.SetupParser
 
         internal interface ICarSetupConversion
         {
-            string CarName { get; }
-            string ParseName { get; }
+            CarModels CarModel { get; }
             CarClasses CarClass { get; }
 
             AbstractTyresSetup TyresSetup { get; }

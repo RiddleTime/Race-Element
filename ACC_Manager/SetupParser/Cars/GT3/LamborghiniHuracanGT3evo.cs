@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCSetupApp.SetupParser.ConversionFactory;
 using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT3
 {
     internal class LamborghiniHuracanGT3evo : ICarSetupConversion
     {
-        string ICarSetupConversion.CarName => "Lamborghini Huracán GT3 Evo 2019";
-
-        string ICarSetupConversion.ParseName => "lamborghini_huracan_gt3_evo";
+        public CarModels CarModel => CarModels.Lamborhini_Huracán_GT3_Evo_2019;
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
 

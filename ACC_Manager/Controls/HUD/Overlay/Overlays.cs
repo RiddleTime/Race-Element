@@ -1,4 +1,5 @@
 ﻿using ACCSetupApp.Controls.HUD.Overlay.Internal;
+using ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo;
 using ACCSetupApp.Controls.HUD.Overlay.OverlayGraphicsInfo;
 using ACCSetupApp.Controls.HUD.Overlay.OverlayPhysicsInfo;
 using ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace;
@@ -15,6 +16,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay
     {
         internal static Dictionary<string, Type> AbstractOverlays = new Dictionary<string, Type>()
         {
+            {"ECU Maps", typeof(EcuMapOverlay) },
             {"Input trace", typeof(InputTraceOverlay) },
             {"Tire Pressure Trace", typeof(PressureTraceOverlay) },
             {"Debug Static Data", typeof(StaticInfoOverlay) },

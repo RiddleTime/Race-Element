@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCSetupApp.SetupParser.ConversionFactory;
 using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT4
 {
     internal class KTMXbowGT4 : ICarSetupConversion
     {
+        public CarModels CarModel => CarModels.KTM_Xbow_GT4_2016;
         public string CarName => "Ktm Xbow GT4 2016";
 
         public string ParseName => "ktm_xbow_gt4";

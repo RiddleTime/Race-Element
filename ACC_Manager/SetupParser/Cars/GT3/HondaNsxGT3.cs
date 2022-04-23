@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCSetupApp.SetupParser.ConversionFactory;
 using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT3
 {
     internal class HondaNsxGT3 : ICarSetupConversion
     {
+        public CarModels CarModel => CarModels.Honda_NSX_GT3_2017;
         public string CarName => "Honda NSX GT3 2017";
 
         public string ParseName => "honda_nsx_gt3";

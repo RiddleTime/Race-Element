@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCSetupApp.SetupParser.ConversionFactory;
 using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT4
 {
     internal class Porsche718CaymanGT4MR : ICarSetupConversion
     {
+        public CarModels CarModel => CarModels.Porsche_718_Cayman_GT4_MR_2019;
         public string CarName => "Porsche 718 Cayman GT4 MR 2019";
 
         public string ParseName => "porsche_718_cayman_gt4_mr";

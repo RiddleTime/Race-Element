@@ -11,6 +11,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
+using static ACCSetupApp.SetupParser.ConversionFactory;
+
 namespace ACCSetupApp.Controls
 {
     /// <summary>
@@ -77,7 +79,7 @@ namespace ACCSetupApp.Controls
                         // Make Car Tree View Item
                         TextBlock carHeader = new TextBlock()
                         {
-                            Text = conversionFactory.ParseCarName(carDir.Name),
+                            Text = CarNames[ParseCarName(carDir.Name)],
                             Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
                         };
                         TreeViewItem carTreeViewItem = new TreeViewItem() { Header = carHeader };
@@ -93,7 +95,7 @@ namespace ACCSetupApp.Controls
                             trackName = trackName.Replace("_", " ");
                             TextBlock trackHeader = new TextBlock()
                             {
-                                Text = conversionFactory.ParseCarName(trackName),
+                                Text = trackName,
                                 Style = Resources["MaterialDesignSubtitle2TextBlock"] as Style,
                             };
                             TreeViewItem trackTreeViewItem = new TreeViewItem() { Header = trackHeader, DataContext = trackDir };
@@ -106,7 +108,7 @@ namespace ACCSetupApp.Controls
                                 {
                                     TextBlock setupHeader = new TextBlock()
                                     {
-                                        Text = conversionFactory.ParseCarName(trackFile.Name.Replace(".json", "")),
+                                        Text = trackFile.Name.Replace(".json", ""),
                                         Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style
                                     };
                                     TreeViewItem setupTreeViewItem = new TreeViewItem() { Header = setupHeader, DataContext = trackFile };

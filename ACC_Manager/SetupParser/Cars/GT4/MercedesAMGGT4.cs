@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCSetupApp.SetupParser.ConversionFactory;
 using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT4
 {
     internal class MercedesAMGGT4 : ICarSetupConversion
     {
+        public CarModels CarModel => CarModels.Mercedes_AMG_GT4_2016;
         public string CarName => "Mercedes AMG GT4 2016";
 
         public string ParseName => "mercedes_amg_gt4";

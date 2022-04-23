@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using static ACCSetupApp.SetupParser.ConversionFactory;
 using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT3
 {
     internal class Porsche911IIGT3R : ICarSetupConversion
     {
+        public CarModels CarModel => CarModels.Porsche_911_II_GT3_R_2019;
         public string CarName => "Porsche 911 II GT3 R 2019";
         public string ParseName => "porsche_991ii_gt3_r";
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;

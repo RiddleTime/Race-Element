@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCSetupApp.SetupParser.ConversionFactory;
 using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT4
 {
     internal class AMRV8VantageGT4 : ICarSetupConversion
     {
+        public CarModels CarModel => CarModels.Aston_Martin_Vantage_AMR_GT4_2018;
         public string CarName => "Aston Martin Vantage AMR GT4 2018";
 
         public string ParseName => "amr_v8_vantage_gt4";

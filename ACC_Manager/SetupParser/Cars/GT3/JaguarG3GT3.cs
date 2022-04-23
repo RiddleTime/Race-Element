@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCSetupApp.SetupParser.ConversionFactory;
 using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT3
 {
     internal class JaguarG3GT3 : ICarSetupConversion
     {
-        string ICarSetupConversion.CarName => "Emil Frey Jaguar G3 2012";
-
-        string ICarSetupConversion.ParseName => "jaguar_g3";
+        public CarModels CarModel => CarModels.Emil_Frey_Jaguar_G3_2021;
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
 
