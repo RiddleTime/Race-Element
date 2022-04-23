@@ -36,7 +36,7 @@
                         </TextBlock>
                         <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" Margin="0,-9,0,0" HorizontalAlignment="Center">
                     Provides tooling for Assetto Corsa Competizione.<LineBreak/>
-                    Developed by Defragler/RiddleTime (Reinier Klarenberg)
+                    Developed by RiddleTime (Reinier Klarenberg)
                         </TextBlock>
                     </StackPanel>
 
