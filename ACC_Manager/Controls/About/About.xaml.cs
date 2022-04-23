@@ -45,7 +45,7 @@ namespace ACCSetupApp.Controls
         {
             ConversionFactory conversions = new ConversionFactory();
 
-            List<string> gt3Names = conversions.GetAllGT3Names();
+            List<string> gt3Names = ConversionFactory.GetAllNamesByClass(SetupConverter.CarClasses.GT3);
             textBlockSetupViewerGT3.Text = $"{FourEmSpace}GT3:\n";
             for (int i = 0; i < gt3Names.Count; i++)
             {
@@ -56,7 +56,7 @@ namespace ACCSetupApp.Controls
                 }
             }
 
-            List<string> gt4Names = conversions.GetAllGT4Names();
+            List<string> gt4Names = ConversionFactory.GetAllNamesByClass(SetupConverter.CarClasses.GT4);
             textBlockSetupViewerGT3.Text += $"\n\n{FourEmSpace}GT4:\n";
             if (gt4Names.Count > 0)
             {

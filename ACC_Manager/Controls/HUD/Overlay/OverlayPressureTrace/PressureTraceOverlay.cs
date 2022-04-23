@@ -14,7 +14,8 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
         private TirePressureDataCollector dataCollector;
         public PressureTraceOverlay(Rectangle rectangle) : base(rectangle)
         {
-            this.X = 0;
+            int width = 150;
+            this.X = (int)(System.Windows.SystemParameters.FullPrimaryScreenWidth) - width;
             this.Y = 0;
             this.Width = 300;
             this.Height = 80 * 4;

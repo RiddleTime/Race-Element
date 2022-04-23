@@ -8,7 +8,7 @@ namespace ACCSetupApp.SetupParser
 {
     public class ConversionFactory
     {
-        private static Dictionary<string, ICarSetupConversion> carConversions = new Dictionary<string, ICarSetupConversion>()
+        private static readonly Dictionary<string, ICarSetupConversion> carConversions = new Dictionary<string, ICarSetupConversion>()
         {
             {"amr_v8_vantage_gt3", new AMRV8VantageGT3() },
             {"amr_v12_vantage_gt3", new AMRV12VantageGT3() },
@@ -46,32 +46,18 @@ namespace ACCSetupApp.SetupParser
                 return null;
         }
 
-        public List<string> GetAllGT3Names()
+        public static List<string> GetAllNamesByClass(CarClasses carClass)
         {
-            List<string> GT3Names = new List<string>();
+            List<string> classNames = new List<string>();
             carConversions.ToList().ForEach(x =>
             {
-                if (x.Value.CarClass == CarClasses.GT3)
+                if (x.Value.CarClass == carClass)
                 {
-                    GT3Names.Add(x.Value.CarName);
+                    classNames.Add(x.Value.CarName);
                 }
             });
 
-            return GT3Names;
-        }
-
-        public List<string> GetAllGT4Names()
-        {
-            List<string> GT4Names = new List<string>();
-            carConversions.ToList().ForEach(x =>
-            {
-                if (x.Value.CarClass == CarClasses.GT4)
-                {
-                    GT4Names.Add(x.Value.CarName);
-                }
-            });
-
-            return GT4Names;
+            return classNames;
         }
 
         private static Dictionary<string, string> carParseNames = new Dictionary<string, string>()

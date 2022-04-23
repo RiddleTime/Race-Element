@@ -56,7 +56,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayStaticInfo
 
         public override bool ShouldRender()
         {
-            return pageStatic.AssettoCorsaVersion != String.Empty;
+            return true;
         }
     }
 }

@@ -28,16 +28,16 @@ namespace ACCSetupApp.Controls.Liveries
             for (int i = 0; i < pngsToDDS.Count; i++)
             {
                 DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + livery.carsRoot.customSkinName);
-                FileInfo[] sponsorFiles = customSkinDir.GetFiles(pngsToDDS.ElementAt(i).Value);
-                if (sponsorFiles != null && sponsorFiles.Length > 0)
+                FileInfo[] liveryPngFiles = customSkinDir.GetFiles(pngsToDDS.ElementAt(i).Value);
+                if (liveryPngFiles != null && liveryPngFiles.Length > 0)
                 {
                     MainWindow.Instance.Dispatcher.Invoke(new Action(() =>
                     {
                         MainWindow.Instance.EnqueueSnackbarMessage($"Generating {pngsToDDS.ElementAt(i).Key}");
                     }));
 
-                    FileInfo sponsorsFile = sponsorFiles[0];
-                    FileStream actualFileStream = sponsorsFile.OpenRead();
+                    FileInfo pngFile = liveryPngFiles[0];
+                    FileStream actualFileStream = pngFile.OpenRead();
 
                     Bitmap bitmap = new Bitmap(actualFileStream);
 

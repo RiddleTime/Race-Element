@@ -8,7 +8,7 @@ namespace ACCSetupApp.SetupParser
 {
     public class SetupConverter
     {
-        internal enum CarClasses
+        public enum CarClasses
         {
             GT3,
             GT4,
@@ -16,7 +16,7 @@ namespace ACCSetupApp.SetupParser
             GTC
         }
 
-        internal enum Wheel
+        public enum Wheel
         {
             FrontLeft,
             FrontRight,
@@ -24,19 +24,19 @@ namespace ACCSetupApp.SetupParser
             RearRight
         }
 
-        internal enum Position
+        public enum Position
         {
             Front,
             Rear
         }
 
-        internal enum TyreCompound
+        public enum TyreCompound
         {
             Dry,
             Wet
         }
 
-        internal static Position GetPosition(Wheel wheel)
+        public static Position GetPosition(Wheel wheel)
         {
             Position position;
             switch (wheel)
