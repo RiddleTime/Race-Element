@@ -11,9 +11,6 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
     internal class MercedesAMGGT3evo : ICarSetupConversion
     {
         public CarModels CarModel => CarModels.Mercedes_AMG_GT3_2020;
-        public string CarName => "Mercedes-AMG GT3 2020";
-
-        public string ParseName => "mercedes_amg_gt3_evo";
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
 

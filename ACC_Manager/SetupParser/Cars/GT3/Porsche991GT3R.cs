@@ -11,9 +11,6 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
     internal class Porsche991GT3R : ICarSetupConversion
     {
         public CarModels CarModel => CarModels.Porsche_911_GT3_R_2018;
-        public string CarName => "Porsche 911 GT3 R 2018";
-
-        public string ParseName => "porsche_991_gt3_r";
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
 

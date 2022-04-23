@@ -11,9 +11,6 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
     internal class MaseratiMCGT4 : ICarSetupConversion
     {
         public CarModels CarModel => CarModels.Maserati_Gran_Turismo_MC_GT4_2016;
-        public string CarName => "Maserati Gran Turismo MC GT4 2016";
-
-        public string ParseName => "maserati_mc_gt4";
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT4;
 

@@ -11,9 +11,6 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
     internal class Ferrari488GT3 : ICarSetupConversion
     {
         public CarModels CarModel => CarModels.Ferrari_488_GT3_2018;
-        public string CarName => "Ferrari 488 GT3 2018";
-
-        public string ParseName => "ferrari_488_gt3";
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
 

@@ -11,9 +11,6 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
     internal class AlpineA110GT4 : ICarSetupConversion
     {
         public CarModels CarModel => CarModels.Alpine_A110_GT4_2018;
-        public string CarName => "Alpine A110 GT4 2018";
-
-        public string ParseName => "alpine_a110_gt4";
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT4;
 

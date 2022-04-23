@@ -11,9 +11,6 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
     internal class AMRV8VantageGT4 : ICarSetupConversion
     {
         public CarModels CarModel => CarModels.Aston_Martin_Vantage_AMR_GT4_2018;
-        public string CarName => "Aston Martin Vantage AMR GT4 2018";
-
-        public string ParseName => "amr_v8_vantage_gt4";
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT4;
 

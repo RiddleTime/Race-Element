@@ -11,9 +11,6 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
     internal class Mclaren570SGT4 : ICarSetupConversion
     {
         public CarModels CarModel => CarModels.McLaren_570s_GT4_2016;
-        public string CarName => "McLaren 570s GT4 2016";
-
-        public string ParseName => "mclaren_570s_gt4";
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT4;
 

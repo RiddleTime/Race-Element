@@ -11,9 +11,6 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
     internal class BMWM4GT4 : ICarSetupConversion
     {
         public CarModels CarModel => CarModels.BMW_M4_GT4_2018;
-        public string CarName => "BMW M4 GT4 2018";
-
-        public string ParseName => "bmw_m4_gt4";
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT4;
 

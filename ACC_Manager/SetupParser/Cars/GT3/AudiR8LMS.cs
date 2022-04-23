@@ -12,10 +12,6 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
     {
         public CarModels CarModel => CarModels.Audi_R8_LMS_2015;
 
-        public string CarName => "Audi R8 LMS 2015";
-
-        public string ParseName => "audi_r8_lms";
-
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
 
         AbstractTyresSetup ICarSetupConversion.TyresSetup => new TyreSetup();

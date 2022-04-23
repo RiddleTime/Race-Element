@@ -11,9 +11,6 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
     internal class GinettaG55GT4 : ICarSetupConversion
     {
         public CarModels CarModel => CarModels.Ginetta_G55_GT4_2012;
-        public string CarName => "Ginetta G55 GT4 2012";
-
-        public string ParseName => "ginetta_g55_gt4";
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT4;
 

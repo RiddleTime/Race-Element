@@ -11,9 +11,6 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
     internal class ChevroletCamaroGT4R : ICarSetupConversion
     {
         public CarModels CarModel => CarModels.Chevrolet_Camaro_GT4_R_2017;
-        public string CarName => "Chevrolet Camaro GT4 R 2017";
-
-        public string ParseName => "chevrolet_camaro_gt4r";
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT4;
 

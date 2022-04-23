@@ -9,10 +9,6 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
     {
         public CarModels CarModel => CarModels.Aston_Martin_Vantage_V12_GT3_2013;
 
-        public string CarName => "Aston Martin Vantage V12 GT3 2013";
-
-        public string ParseName => "amr_v12_vantage_gt3";
-
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
 
         AbstractTyresSetup ICarSetupConversion.TyresSetup => new TyreSetup();

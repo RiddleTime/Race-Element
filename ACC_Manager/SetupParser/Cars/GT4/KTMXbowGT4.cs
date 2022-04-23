@@ -11,9 +11,6 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
     internal class KTMXbowGT4 : ICarSetupConversion
     {
         public CarModels CarModel => CarModels.KTM_Xbow_GT4_2016;
-        public string CarName => "Ktm Xbow GT4 2016";
-
-        public string ParseName => "ktm_xbow_gt4";
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT4;
 

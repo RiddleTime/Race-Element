@@ -11,7 +11,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
     internal class NissanGtrGT3_2015 : ICarSetupConversion
     {
         public CarModels CarModel => CarModels.Nissan_GT_R_Nismo_GT3_2015;
-        
+
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
 
         AbstractTyresSetup ICarSetupConversion.TyresSetup => new TyreSetup();

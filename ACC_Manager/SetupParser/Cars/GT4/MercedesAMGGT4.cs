@@ -11,9 +11,6 @@ namespace ACCSetupApp.SetupParser.Cars.GT4
     internal class MercedesAMGGT4 : ICarSetupConversion
     {
         public CarModels CarModel => CarModels.Mercedes_AMG_GT4_2016;
-        public string CarName => "Mercedes AMG GT4 2016";
-
-        public string ParseName => "mercedes_amg_gt4";
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT4;
 
