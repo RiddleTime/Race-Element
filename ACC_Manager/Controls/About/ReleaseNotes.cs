@@ -20,8 +20,7 @@ namespace ACCSetupApp.Controls
                         "\n - McLaren 570s GT4 2016."+
                         "\n - Mercedes AMG GT4 2016."+
                         "\n - Porsche 718 Cayman GT4 MR 2019."+
-                        "\n- Livery Browser: displays sub-item count in tree header."
-                },
+                        "\n- Livery Browser: displays sub-item count in tree header."},
             {"0.0.4.8", "- HUD tab: Added overlays: Very very simple tire pressure trace overlay and a shared memory static data overlay." },
             {"0.0.4.7", "- Added HUD tab: Simple checkbox to enable the input trace overlay." },
             {"0.0.4.6", "- Setup conversion added: Aston Martin V12 Vantage GT3 2013(by KrisV147), Alpine A110 GT4(by KrisV147) and Aston Martin Vantage AMR GT4 2018(by KrisV147)." },

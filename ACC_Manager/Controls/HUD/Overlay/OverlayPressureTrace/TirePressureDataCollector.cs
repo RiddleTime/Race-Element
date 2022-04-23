@@ -64,7 +64,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
             {
                 while (IsCollecting)
                 {
-                    Thread.Sleep(1000 / 25);
+                    Thread.Sleep(1000 / 2);
                     Collect(sharedMemory.ReadPhysicsPageFile());
                 }
             }).Start();

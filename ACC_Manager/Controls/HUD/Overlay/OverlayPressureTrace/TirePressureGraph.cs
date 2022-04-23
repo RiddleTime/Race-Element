@@ -15,7 +15,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
         private int Width, Height;
         private LinkedList<float> TirePressures;
 
-        private float boundMin = 15, boundMax = 35;
+        private float boundMin = 26.9f, boundMax = 29.2f;
 
         public TirePressureGraph(int x, int y, int width, int height, LinkedList<float> tirePressures)
         {
@@ -30,8 +30,8 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
         {
             double range = boundMax - boundMin;
             double percentage = 1d - (value - boundMin) / range;
-            return (int)(percentage * (Height - Height / 7.5))
-                    + Height / 15;
+            return (int)(percentage * (Height - Height / 5))
+                    + Height / 10;
         }
 
         public void SetMinAndMax()
@@ -58,7 +58,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
             //this.SetMinAndMax();
             Rectangle graphRect = new Rectangle(X, Y, Width, Height);
             // draw background
-            g.FillRectangle(new SolidBrush(Color.FromArgb(140, Color.Black)), graphRect);
+            g.FillRectangle(new SolidBrush(Color.FromArgb(196, Color.Black)), graphRect);
 
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
@@ -74,7 +74,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
                 DrawData(g, TirePressures, brush);
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
 
-                g.DrawRectangle(new Pen(Brushes.White), graphRect);
+                g.DrawRectangle(new Pen(Color.FromArgb(196, Color.Black)), graphRect);
             }
         }
 
@@ -106,7 +106,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
                 {
                     GraphicsPath path = new GraphicsPath();
                     path.AddLines(points.ToArray());
-                    g.DrawPath(new Pen(color, 1.9f), path);
+                    g.DrawPath(new Pen(color, 2.9f), path);
                 }
             }
         }

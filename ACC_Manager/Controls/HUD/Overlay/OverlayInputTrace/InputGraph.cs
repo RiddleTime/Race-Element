@@ -39,7 +39,7 @@ namespace ACCSetupApp.Controls
         {
             Rectangle graphRect = new Rectangle(X, Y, Width, Height);
             // draw background
-            g.FillRectangle(new SolidBrush(Color.FromArgb(140, Color.Black)), graphRect);
+            g.FillRectangle(new SolidBrush(Color.FromArgb(196, Color.Black)), graphRect);
 
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             DrawData(g, BrakeData, Brushes.Red);
@@ -47,7 +47,7 @@ namespace ACCSetupApp.Controls
             DrawData(g, SteeringData, Brushes.White);
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
 
-            g.DrawRectangle(new Pen(Brushes.White), graphRect);
+            g.DrawRectangle(new Pen(Color.FromArgb(196, Color.Black)), graphRect);
         }
 
         private void DrawData(Graphics g, LinkedList<int> Data, Brush color)
