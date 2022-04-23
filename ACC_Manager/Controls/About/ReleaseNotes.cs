@@ -10,8 +10,19 @@ namespace ACCSetupApp.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.0.4.9", "- Setup conversion added by KrisV147: Audi R8 LMS GT4 2016, BMW M4 GT4 2018, Chevrolet Camaro GT4 R 2017, Ginetta G55 GT4 2012 and Ktm Xbow GT4 2016." },
-            {"0.0.4.8", "- HUD tab: Added overlays: Very very simple tire pressure trace overlay and a shared memory static data overlay" },
+            {"0.0.4.9", "- Setup conversions added by KrisV147:"+
+                        "\n - Audi R8 LMS GT4 2016."+
+                        "\n - BMW M4 GT4 2018."+
+                        "\n - Chevrolet Camaro GT4 R 2017."+
+                        "\n - Ginetta G55 GT4 2012."+
+                        "\n - Ktm Xbow GT4 2016."+
+                        "\n - Maserati Gran Turismo MC GT4 2016."+
+                        "\n - McLaren 570s GT4 2016."+
+                        "\n - Mercedes AMG GT4 2016."+
+                        "\n - Porsche 718 Cayman GT4 MR 2019."+
+                        "\n- Livery Browser: displays sub-item count in tree header."
+                },
+            {"0.0.4.8", "- HUD tab: Added overlays: Very very simple tire pressure trace overlay and a shared memory static data overlay." },
             {"0.0.4.7", "- Added HUD tab: Simple checkbox to enable the input trace overlay." },
             {"0.0.4.6", "- Setup conversion added: Aston Martin V12 Vantage GT3 2013(by KrisV147), Alpine A110 GT4(by KrisV147) and Aston Martin Vantage AMR GT4 2018(by KrisV147)." },
             {"0.0.4.5", "- Input Trace: Should be drawing less gpu cost." },
