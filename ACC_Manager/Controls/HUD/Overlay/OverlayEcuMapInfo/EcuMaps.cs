@@ -27,12 +27,26 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
             },
             {   new CarModels[]{ Audi_R8_LMS_2015, Audi_R8_LMS_Evo_II_2022},
                 new EcuMap[]{
-
+                    new EcuMap(){ Index = 1, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.High },
+                    new EcuMap(){ Index = 2, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Dry, ThrottleMap = "Aggressive", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 3, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Dry, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 4, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Dry, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.Low },
+                    new EcuMap(){ Index = 5, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Wet, ThrottleMap = "Slightly Wet", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 6, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Wet, ThrottleMap = "Different wet", FuelConsumption = FuelConsumptions.Low },
+                    new EcuMap(){ Index = 7, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Wet, ThrottleMap = "Different wet", FuelConsumption = FuelConsumptions.Low },
+                    new EcuMap(){ Index = 8, Power = PowerDelivery.Slow, Conditon = EcuMapConditions.PaceCar, ThrottleMap = "Least progressive", FuelConsumption = FuelConsumptions.Lowest },
                 }
             },
             {   new CarModels[]{ Bentley_Continental_GT3_2018, /* add bentley 2016??? */ },
                 new EcuMap[]{
-
+                    new EcuMap(){ Index = 1, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.High },
+                    new EcuMap(){ Index = 2, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Dry, ThrottleMap = "Aggressive", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 3, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Dry, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 4, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Dry, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.Low },
+                    new EcuMap(){ Index = 5, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Wet, ThrottleMap = "Slightly Wet", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 6, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Wet, ThrottleMap = "Different wet", FuelConsumption = FuelConsumptions.Low },
+                    new EcuMap(){ Index = 7, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Wet, ThrottleMap = "Different wet", FuelConsumption = FuelConsumptions.Low },
+                    new EcuMap(){ Index = 8, Power = PowerDelivery.Slow, Conditon = EcuMapConditions.PaceCar, ThrottleMap = "Least progressive", FuelConsumption = FuelConsumptions.Lowest },
                 }
             },
             {   new CarModels[]{ BMW_M4_GT3_2021, /* add bmw m6 gt3?? */},
@@ -82,21 +96,23 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
             },
             {   new CarModels[]{ Mercedes_AMG_GT3_2020, /*Add Mercedes AMG Gt3? */ },
                 new EcuMap[]{
-
+                    new EcuMap(){ Index = 1, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Highest },
+                    new EcuMap(){ Index = 2, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 3, Power = PowerDelivery.Slow, Conditon = EcuMapConditions.PaceCar, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Lowest },
                 }
             },
             {   new CarModels[] { Porsche_911_GT3_R_2018, Porsche_911_II_GT3_R_2019 },
                 new EcuMap[] {
                     new EcuMap(){ Index = 1, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Dry, ThrottleMap = "Least progressive", FuelConsumption = FuelConsumptions.Medium },
-                    new EcuMap(){ Index = 2, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Dry, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.Medium},
-                    new EcuMap(){ Index = 3, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Dry, ThrottleMap = "Aggressive", FuelConsumption = FuelConsumptions.Medium},
-                    new EcuMap(){ Index = 4, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Medium},
-                    new EcuMap(){ Index = 5, Power = PowerDelivery.Qualy, Conditon = EcuMapConditions.Dry, ThrottleMap = "Least progressive", FuelConsumption = FuelConsumptions.High},
-                    new EcuMap(){ Index = 6, Power = PowerDelivery.Qualy, Conditon = EcuMapConditions.Dry, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.High},
-                    new EcuMap(){ Index = 7, Power = PowerDelivery.Qualy, Conditon = EcuMapConditions.Dry, ThrottleMap = "Aggressive", FuelConsumption = FuelConsumptions.High},
-                    new EcuMap(){ Index = 8, Power = PowerDelivery.Qualy, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.High},
-                    new EcuMap(){ Index = 9, Power = PowerDelivery.Low, Conditon = EcuMapConditions.Dry, ThrottleMap = "Least progressive", FuelConsumption = FuelConsumptions.Low},
-                    new EcuMap(){ Index = 10, Power = PowerDelivery.Slow, Conditon = EcuMapConditions.Dry, ThrottleMap = "Least progressive", FuelConsumption = FuelConsumptions.Lowest}
+                    new EcuMap(){ Index = 2, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Dry, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 3, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Dry, ThrottleMap = "Aggressive", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 4, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Wet, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 5, Power = PowerDelivery.Qualy, Conditon = EcuMapConditions.Dry, ThrottleMap = "Least progressive", FuelConsumption = FuelConsumptions.High },
+                    new EcuMap(){ Index = 6, Power = PowerDelivery.Qualy, Conditon = EcuMapConditions.Dry, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.High },
+                    new EcuMap(){ Index = 7, Power = PowerDelivery.Qualy, Conditon = EcuMapConditions.Dry, ThrottleMap = "Aggressive", FuelConsumption = FuelConsumptions.High },
+                    new EcuMap(){ Index = 8, Power = PowerDelivery.Qualy, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.High },
+                    new EcuMap(){ Index = 9, Power = PowerDelivery.Low, Conditon = EcuMapConditions.Dry, ThrottleMap = "Least progressive", FuelConsumption = FuelConsumptions.Low },
+                    new EcuMap(){ Index = 10, Power = PowerDelivery.Slow, Conditon = EcuMapConditions.Dry, ThrottleMap = "Least progressive", FuelConsumption = FuelConsumptions.Lowest }
                 }
             }
         };
