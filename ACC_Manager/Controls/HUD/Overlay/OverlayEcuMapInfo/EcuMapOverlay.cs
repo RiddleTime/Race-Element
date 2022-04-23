@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static ACCSetupApp.ACCSharedMemory;
-using static ACCSetupApp.SetupParser.ConversionFactory;
 
 namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
 {
@@ -19,15 +18,9 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
             this.Width = 700;
         }
 
-        public override void BeforeStart()
-        {
+        public override void BeforeStart() { }
 
-        }
-
-        public override void BeforeStop()
-        {
-
-        }
+        public override void BeforeStop() { }
 
         public override bool ShouldRender()
         {
@@ -40,32 +33,12 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
 
         public override void Render(Graphics g)
         {
-            EcuMap current = GetCurrentMap();
+            EcuMap current = EcuMaps.GetMap(pageStatic.CarModel, pageGraphics.EngineMap);
             if (current != null)
             {
                 g.DrawString($"Engine map: {current.Index}, Power: {current.Power}, Condition: {current.Conditon}, Consumption: {current.FuelConsumption}, Throttle map: {current.ThrottleMap}", inputFont, Brushes.White, 0, 0);
             }
         }
 
-        private EcuMap GetCurrentMap()
-        {
-            CarModels carModel = ParseNames[pageStatic.CarModel];
-
-            EcuMap[] carMaps = null;
-            foreach (KeyValuePair<CarModels[], EcuMap[]> maps in EcuMaps.maps.ToList())
-            {
-                foreach (CarModels mapModel in maps.Key)
-                {
-                    if (carModel == mapModel)
-                    {
-                        carMaps = maps.Value;
-                        break;
-                    }
-                }
-                if (carMaps != null) break;
-            }
-
-            return carMaps[pageGraphics.EngineMap];
-        }
     }
 }

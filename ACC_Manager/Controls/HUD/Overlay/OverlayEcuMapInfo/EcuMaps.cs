@@ -123,6 +123,27 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
                 }
             }
         };
+
+        public static EcuMap GetMap(string modelName, int map)
+        {
+            CarModels carModel = ParseNames[modelName];
+
+            EcuMap[] carMaps = null;
+            foreach (KeyValuePair<CarModels[], EcuMap[]> maps in EcuMaps.maps.ToList())
+            {
+                foreach (CarModels mapModel in maps.Key)
+                {
+                    if (carModel == mapModel)
+                    {
+                        carMaps = maps.Value;
+                        break;
+                    }
+                }
+                if (carMaps != null) break;
+            }
+
+            return carMaps[map];
+        }
     }
 
     public class EcuMap
@@ -159,5 +180,4 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
         PaceCar,
         LowPower
     }
-
 }
