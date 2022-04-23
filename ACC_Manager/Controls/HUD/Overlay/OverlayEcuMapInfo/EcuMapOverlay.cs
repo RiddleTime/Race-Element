@@ -52,9 +52,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
             CarModels carModel = ParseNames[pageStatic.CarModel];
 
             EcuMap[] carMaps = null;
-            List<KeyValuePair<CarModels[], EcuMap[]>> allMaps = EcuMaps.maps.ToList();
-
-            foreach (KeyValuePair<CarModels[], EcuMap[]> maps in allMaps)
+            foreach (KeyValuePair<CarModels[], EcuMap[]> maps in EcuMaps.maps.ToList())
             {
                 foreach (CarModels mapModel in maps.Key)
                 {

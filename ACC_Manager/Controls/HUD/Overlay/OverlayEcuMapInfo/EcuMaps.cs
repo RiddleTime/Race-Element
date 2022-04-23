@@ -51,7 +51,14 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
             },
             {   new CarModels[]{ BMW_M4_GT3_2021, /* add bmw m6 gt3?? */},
                 new EcuMap[]{
-
+                    new EcuMap(){ Index = 1, Power = PowerDelivery.Qualy, Conditon = EcuMapConditions.Dry, ThrottleMap = "Aggressive", FuelConsumption = FuelConsumptions.Highest },
+                    new EcuMap(){ Index = 2, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 3, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Dry, ThrottleMap = "Gradual", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 4, Power = PowerDelivery.Slow, Conditon = EcuMapConditions.Dry, ThrottleMap = "Reserve Engineer Map", FuelConsumption = FuelConsumptions.Low },
+                    new EcuMap(){ Index = 5, Power = PowerDelivery.Slow, Conditon = EcuMapConditions.PaceCar, ThrottleMap = "Least progressive", FuelConsumption = FuelConsumptions.Lowest },
+                    new EcuMap(){ Index = 6, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Wet, ThrottleMap = "Wet", FuelConsumption = FuelConsumptions.High },
+                    new EcuMap(){ Index = 7, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Wet, ThrottleMap = "Different wet", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 8, Power = PowerDelivery.Race, Conditon = EcuMapConditions.Wet, ThrottleMap = "Different wet", FuelConsumption = FuelConsumptions.Medium},
                 }
             },
             {   new CarModels[]{ Ferrari_488_GT3_2018 },
