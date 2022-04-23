@@ -312,8 +312,10 @@
       <DependentUpon>HudTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\HUD\Overlay\Internal\AbstractOverlay.cs" />
+    <Compile Include="Controls\HUD\Overlay\OverlayGraphicsInfo\GraphicsInfoOverlay.cs" />
     <Compile Include="Controls\HUD\Overlay\OverlayInputTrace\InputTraceOverlay.cs" />
     <Compile Include="Controls\HUD\Overlay\Internal\FloatingWindow.cs" />
+    <Compile Include="Controls\HUD\Overlay\OverlayPhysicsInfo\PhysicsInfoOverlay.cs" />
     <Compile Include="Controls\HUD\Overlay\OverlayPressureTrace\TirePressureDataCollector.cs" />
     <Compile Include="Controls\HUD\Overlay\OverlayPressureTrace\TirePressureGraph.cs" />
     <Compile Include="Controls\HUD\Overlay\OverlayPressureTrace\PressureTraceOverlay.cs" />

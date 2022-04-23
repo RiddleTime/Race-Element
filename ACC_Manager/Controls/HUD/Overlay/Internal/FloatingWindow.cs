@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace ACCSetupApp.Controls.HUD.Overlay.Internal
 {
-    public class FloatingWindow : NativeWindow, IDisposable
+    internal class FloatingWindow : NativeWindow, IDisposable
     {
         #region #  Enums  #
         public enum AnimateMode

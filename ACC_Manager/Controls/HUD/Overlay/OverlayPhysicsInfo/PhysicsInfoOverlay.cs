@@ -1,25 +1,23 @@
 ﻿using ACCSetupApp.Controls.HUD.Overlay.Internal;
-using ACCSetupApp.Controls.Telemetry.SharedMemory;
 using ACCSetupApp.Util;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCSetupApp.Controls.HUD.Overlay.OverlayStaticInfo
+namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPhysicsInfo
 {
-    internal class StaticInfoOverlay : AbstractOverlay
+    internal class PhysicsInfoOverlay : AbstractOverlay
     {
         private Font inputFont = new Font("Arial", 10);
 
-        public StaticInfoOverlay(Rectangle rectangle) : base(rectangle)
+        public PhysicsInfoOverlay(Rectangle rectangle) : base(rectangle)
         {
-            this.Width = 230;
-            this.Height = 325;
+            this.Width = 600;
+            this.Height = 620;
         }
 
         public override void BeforeStart()
@@ -36,10 +34,10 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayStaticInfo
 
             int xMargin = 5;
             int y = 0;
-            FieldInfo[] members = pageStatic.GetType().GetFields();
+            FieldInfo[] members = pagePhysics.GetType().GetFields();
             foreach (FieldInfo member in members)
             {
-                var value = member.GetValue(pageStatic);
+                var value = member.GetValue(pagePhysics);
                 bool isObsolete = false;
                 foreach (CustomAttributeData cad in member.CustomAttributes)
                 {

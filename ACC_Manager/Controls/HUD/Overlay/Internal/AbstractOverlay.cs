@@ -96,7 +96,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
         public abstract bool ShouldRender();
         public abstract void Render(Graphics g);
 
-        protected override void PerformPaint(PaintEventArgs e)
+        protected sealed override void PerformPaint(PaintEventArgs e)
         {
             if (base.Handle == IntPtr.Zero)
                 return;
