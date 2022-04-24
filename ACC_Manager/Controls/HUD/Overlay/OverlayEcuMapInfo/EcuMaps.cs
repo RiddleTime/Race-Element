@@ -167,7 +167,18 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
             },
             {   new CarModels[]{ McLaren_720S_GT3_2019 },
                 new EcuMap[]{
-
+                    new EcuMap(){ Index = 1, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Aggressive", FuelConsumption = FuelConsumptions.Highest },
+                    new EcuMap(){ Index = 2, Power = PowerDelivery.High, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.High },
+                    new EcuMap(){ Index = 3, Power = PowerDelivery.High, Conditon = EcuMapConditions.Dry, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 4, Power = PowerDelivery.Low, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Low },
+                    new EcuMap(){ Index = 5, Power = PowerDelivery.Low, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Low },
+                    new EcuMap(){ Index = 6, Power = PowerDelivery.Lowest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Lowest },
+                    new EcuMap(){ Index = 7, Power = PowerDelivery.Lowest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Cool Down", FuelConsumption = FuelConsumptions.Lowest },
+                    new EcuMap(){ Index = 8, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Damp, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.Low},
+                    new EcuMap(){ Index = 9, Power = PowerDelivery.Low, Conditon = EcuMapConditions.Damp, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.Low},
+                    new EcuMap(){ Index = 10, Power = PowerDelivery.High, Conditon = EcuMapConditions.Wet, ThrottleMap = "Wet", FuelConsumption = FuelConsumptions.High},
+                    new EcuMap(){ Index = 11, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Wet, ThrottleMap = "Wet", FuelConsumption = FuelConsumptions.Medium},
+                    new EcuMap(){ Index = 12, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Wet, ThrottleMap = "Wet", FuelConsumption = FuelConsumptions.Medium},
                 }
             },
             {   new CarModels[]{ Mercedes_AMG_GT3_2015, Mercedes_AMG_GT3_Evo_2020 },
@@ -246,6 +257,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
     public enum EcuMapConditions
     {
         Dry,
+        Damp,
         Wet,
         PaceCar,
         LowPower
