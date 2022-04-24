@@ -107,27 +107,49 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
             },
             {   new CarModels[]{ Lamborghini_Gallardo_G3_Reiter_2017 },
                 new EcuMap[]{
-
+                    new EcuMap(){ Index = 1, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Highest },
+                    new EcuMap(){ Index = 2, Power = PowerDelivery.High, Conditon = EcuMapConditions.Dry, ThrottleMap = "Aggressive", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 3, Power = PowerDelivery.High, Conditon = EcuMapConditions.Dry, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 4, Power = PowerDelivery.Low, Conditon = EcuMapConditions.Dry, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.Low },
                 }
             },
             {   new CarModels[]{ Lamborghini_Huracán_GT3_2015, Lamborghini_Huracán_GT3_Evo_2019 },
                 new EcuMap[]{
-
+                    new EcuMap(){ Index = 1, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.Highest },
+                    new EcuMap(){ Index = 2, Power = PowerDelivery.High, Conditon = EcuMapConditions.Dry, ThrottleMap = "Different", FuelConsumption = FuelConsumptions.High },
+                    new EcuMap(){ Index = 3, Power = PowerDelivery.High, Conditon = EcuMapConditions.Dry, ThrottleMap = "Different", FuelConsumption = FuelConsumptions.High },
+                    new EcuMap(){ Index = 4, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Dry, ThrottleMap = "Same as map 3", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 5, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Wet, ThrottleMap = "Slightly Wet", FuelConsumption = FuelConsumptions.High },
+                    new EcuMap(){ Index = 6, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Wet, ThrottleMap = "Different Wet", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 7, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Wet, ThrottleMap = "Different Wet", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 8, Power = PowerDelivery.Lowest, Conditon = EcuMapConditions.PaceCar, ThrottleMap = "Gradual", FuelConsumption = FuelConsumptions.Lowest},
                 }
             },
             {   new CarModels[]{ Emil_Frey_Jaguar_G3_2021 },
                 new EcuMap[]{
-
+                    new EcuMap(){ Index = 1, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Highest },
+                    new EcuMap(){ Index = 2, Power = PowerDelivery.High, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 3, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Low },
+                    new EcuMap(){ Index = 4, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Wet, ThrottleMap = "Gradual", FuelConsumption = FuelConsumptions.Highest },
+                    new EcuMap(){ Index = 5, Power = PowerDelivery.High, Conditon = EcuMapConditions.Wet, ThrottleMap = "Gradual", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 6, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Wet, ThrottleMap = "Gradual", FuelConsumption = FuelConsumptions.Low },
                 }
             },
             {   new CarModels[]{ Nissan_GT_R_Nismo_GT3_2015, Nissan_GT_R_Nismo_GT3_2018 },
                 new EcuMap[]{
-
+                    new EcuMap(){ Index = 1, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Highest },
+                    new EcuMap(){ Index = 2, Power = PowerDelivery.High, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.High },
+                    new EcuMap(){ Index = 3, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 4, Power = PowerDelivery.Lowest, Conditon = EcuMapConditions.PaceCar, ThrottleMap = "Gradual", FuelConsumption = FuelConsumptions.Low },
                 }
             },
             {   new CarModels[]{ Lexus_RCF_GT3_2016 },
                 new EcuMap[]{
-
+                    new EcuMap(){ Index = 1, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Highest },
+                    new EcuMap(){ Index = 2, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Aggressive", FuelConsumption = FuelConsumptions.Highest },
+                    new EcuMap(){ Index = 3, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.Highest },
+                    new EcuMap(){ Index = 4, Power = PowerDelivery.Low, Conditon = EcuMapConditions.Wet, ThrottleMap = "Wet", FuelConsumption = FuelConsumptions.Low },
+                    new EcuMap(){ Index = 5, Power = PowerDelivery.Lowest, Conditon = EcuMapConditions.PaceCar, ThrottleMap = "Gradual", FuelConsumption = FuelConsumptions.Lowest },
                 }
             },
             {   new CarModels[]{ McLaren_650S_GT3_2015 },
