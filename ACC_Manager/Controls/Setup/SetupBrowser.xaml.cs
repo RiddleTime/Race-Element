@@ -79,7 +79,7 @@ namespace ACCSetupApp.Controls
                         // Make Car Tree View Item
                         TextBlock carHeader = new TextBlock()
                         {
-                            Text = CarNames[ParseCarName(carDir.Name)],
+                            Text = CarModelToCarName[ParseCarName(carDir.Name)],
                             Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
                         };
                         TreeViewItem carTreeViewItem = new TreeViewItem() { Header = carHeader };

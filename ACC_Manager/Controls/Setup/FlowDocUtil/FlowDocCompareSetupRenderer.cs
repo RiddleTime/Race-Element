@@ -213,7 +213,7 @@ namespace ACCSetupApp.Controls.Setup
             header2.TextAlignment = TextAlignment.Left;
             rgSetupInfo.Rows.Add(DocUtil.GetTableRow(header1, DocUtil.GetDefaultParagraph(), header2));
             rgSetupInfo.Rows.Add(DocUtil.GetTableRowCompare($"{DocUtil.GetTrackName(setupFile1.FullName)}", "Track", $"{DocUtil.GetTrackName(setupFile2.FullName)}"));
-            rgSetupInfo.Rows.Add(DocUtil.GetTableRowCompare($"{CarNames[carSetup1.CarModel]}", "Car", $"{CarNames[carSetup2.CarModel]}"));
+            rgSetupInfo.Rows.Add(DocUtil.GetTableRowCompare($"{CarModelToCarName[carSetup1.CarModel]}", "Car", $"{CarModelToCarName[carSetup2.CarModel]}"));
             rgSetupInfo.Rows.Add(DocUtil.GetTableRowCompare($"{carSetup1.CarClass}", "Class", $"{carSetup2.CarClass}"));
             Table setupInfoTable = DocUtil.GetTable(35, 15, 35);
             setupInfoTable.RowGroups.Add(rgSetupInfo);

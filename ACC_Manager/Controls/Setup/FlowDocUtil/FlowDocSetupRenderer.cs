@@ -150,7 +150,7 @@ namespace ACCSetupApp.Controls.Setup
             Table setupInfoTable = DocUtil.GetTable(30, 70);
             TableRowGroup rowGroupSetupInfo = new TableRowGroup();
             rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRow("Track", $"{DocUtil.GetTrackName(jsonFile.FullName)}"));
-            rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRow("Car", $"{CarNames[carSetup.CarModel]}"));
+            rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRow("Car", $"{CarModelToCarName[carSetup.CarModel]}"));
             rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRow("Class", $"{carSetup.CarClass}"));
 
             setupInfoTable.RowGroups.Add(rowGroupSetupInfo);
