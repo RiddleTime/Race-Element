@@ -206,6 +206,11 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
 
         public static EcuMap GetMap(string modelName, int map)
         {
+            if(modelName.Length == 0)
+            {
+                return null;
+            }
+
             CarModels carModel = ParseNames[modelName];
 
             EcuMap[] carMaps = null;

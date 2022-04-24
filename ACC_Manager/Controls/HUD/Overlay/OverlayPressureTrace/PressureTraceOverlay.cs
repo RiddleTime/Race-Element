@@ -15,11 +15,11 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
         public PressureTraceOverlay(Rectangle rectangle) : base(rectangle)
         {
             int width = 140;
-            this.X = (int)(System.Windows.SystemParameters.FullPrimaryScreenWidth) - width;
+            this.X = ScreenWidth - width;
 
             this.Width = width;
             this.Height = 60 * 2;
-            this.Y = (int)(System.Windows.SystemParameters.FullPrimaryScreenHeight / 2) - this.Height / 2;
+            this.Y = (int)(ScreenHeight / 2) - this.Height / 2;
         }
 
         public override void BeforeStart()

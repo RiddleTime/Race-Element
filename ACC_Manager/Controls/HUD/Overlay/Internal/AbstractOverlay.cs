@@ -18,6 +18,9 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
         internal SPageFileGraphic pageGraphics;
         internal SPageFileStatic pageStatic;
 
+        internal int ScreenWidth => (int)System.Windows.SystemParameters.PrimaryScreenWidth;
+        internal int ScreenHeight => (int)System.Windows.SystemParameters.PrimaryScreenHeight;
+
         protected AbstractOverlay(Rectangle rectangle)
         {
             this.X = rectangle.X;

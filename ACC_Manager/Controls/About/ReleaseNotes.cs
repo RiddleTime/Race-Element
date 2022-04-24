@@ -10,6 +10,9 @@ namespace ACCSetupApp.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.0.5.0", "- Added ECU map HUD (bottom-right), still very simple look."+
+                        "- Repositioned Input Trace HUD."+
+                        "- Added upper and lower bounds to Tires Traces (working for gt3 dry only atm)."},
             {"0.0.4.9", "- Setup conversions added by KrisV147:"+
                         "\n - Audi R8 LMS GT4 2016."+
                         "\n - BMW M4 GT4 2018."+
