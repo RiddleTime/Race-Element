@@ -64,9 +64,9 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
             {   new CarModels[]{ Ferrari_488_GT3_2018 },
                 new EcuMap[]{
                     new EcuMap(){ Index = 1, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Aggressive", FuelConsumption = FuelConsumptions.Medium },
-                    new EcuMap(){ Index = 2, Power = PowerDelivery.High, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Low },
-                    new EcuMap(){ Index = 3, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Dry, ThrottleMap = "Gradual", FuelConsumption = FuelConsumptions.Medium },
-                    new EcuMap(){ Index = 4, Power = PowerDelivery.Lowest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Reserve Engineer Map", FuelConsumption = FuelConsumptions.Lowest },
+                    new EcuMap(){ Index = 2, Power = PowerDelivery.High, Conditon = EcuMapConditions.Dry, ThrottleMap = "Aggressive", FuelConsumption = FuelConsumptions.Low },
+                    new EcuMap(){ Index = 3, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Dry, ThrottleMap = "Aggressive", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 4, Power = PowerDelivery.Lowest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Moderate Aggressive", FuelConsumption = FuelConsumptions.Lowest },
                     new EcuMap(){ Index = 5, Power = PowerDelivery.High, Conditon = EcuMapConditions.Wet, ThrottleMap = "Gradual", FuelConsumption = FuelConsumptions.Medium },
                     new EcuMap(){ Index = 6, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Wet, ThrottleMap = "Gradual", FuelConsumption = FuelConsumptions.Low },
                     new EcuMap(){ Index = 7, Power = PowerDelivery.Low, Conditon = EcuMapConditions.Wet, ThrottleMap = "Gradual", FuelConsumption = FuelConsumptions.Medium },
@@ -79,12 +79,30 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
             },
             {   new CarModels[]{ Ferrari_488_GT3_Evo_2020 },
                 new EcuMap[]{
-
+                    new EcuMap(){ Index = 1, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Extreme Aggressive", FuelConsumption = FuelConsumptions.Highest },
+                    new EcuMap(){ Index = 2, Power = PowerDelivery.High, Conditon = EcuMapConditions.Dry, ThrottleMap = "Quite Aggressive", FuelConsumption = FuelConsumptions.High },
+                    new EcuMap(){ Index = 3, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Dry, ThrottleMap = "Aggressive", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 4, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Dry, ThrottleMap = "Moderate Aggressive", FuelConsumption = FuelConsumptions.Lowest },
+                    new EcuMap(){ Index = 5, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Dry, ThrottleMap = "Almost Linear", FuelConsumption = FuelConsumptions.Low },
+                    new EcuMap(){ Index = 6, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Wet, ThrottleMap = "Gradual", FuelConsumption = FuelConsumptions.Low },
+                    new EcuMap(){ Index = 7, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Wet, ThrottleMap = "Gradual", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 8, Power = PowerDelivery.Low, Conditon = EcuMapConditions.Wet, ThrottleMap = "Gradual", FuelConsumption = FuelConsumptions.Lowest},
+                    new EcuMap(){ Index = 9, Power = PowerDelivery.Lowest, Conditon = EcuMapConditions.PaceCar, ThrottleMap = "Gradual", FuelConsumption = FuelConsumptions.Lowest},
+                    new EcuMap(){ Index = 10, Power = PowerDelivery.Lowest, Conditon = EcuMapConditions.PaceCar, ThrottleMap = "Gradual", FuelConsumption = FuelConsumptions.Lowest},
+                    new EcuMap(){ Index = 11, Power = PowerDelivery.Lowest, Conditon = EcuMapConditions.PaceCar, ThrottleMap = "Gradual", FuelConsumption = FuelConsumptions.Lowest},
+                    new EcuMap(){ Index = 12, Power = PowerDelivery.Lowest, Conditon = EcuMapConditions.PaceCar, ThrottleMap = "Gradual", FuelConsumption = FuelConsumptions.Lowest},
                 }
             },
             {   new CarModels[]{ Honda_NSX_GT3_2017, Honda_NSX_GT3_Evo_2019 },
                 new EcuMap[]{
-
+                    new EcuMap(){ Index = 1, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.Highest },
+                    new EcuMap(){ Index = 2, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Highest },
+                    new EcuMap(){ Index = 3, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Aggressive", FuelConsumption = FuelConsumptions.Highest },
+                    new EcuMap(){ Index = 4, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Very Aggressive", FuelConsumption = FuelConsumptions.Highest },
+                    new EcuMap(){ Index = 5, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Wet, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.Highest },
+                    new EcuMap(){ Index = 6, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Wet, ThrottleMap = "More Progressive", FuelConsumption = FuelConsumptions.Highest },
+                    new EcuMap(){ Index = 7, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Wet, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.High },
+                    new EcuMap(){ Index = 8, Power = PowerDelivery.Lowest, Conditon = EcuMapConditions.PaceCar, ThrottleMap = "Gradual", FuelConsumption = FuelConsumptions.Lowest},
                 }
             },
             {   new CarModels[]{ Lamborhini_Huracán_GT3_2015, Lamborhini_Huracán_GT3_Evo_2019 },
@@ -107,12 +125,17 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
 
                 }
             },
+            {   new CarModels[]{ Mclaren_650S_GT3_2015 },
+                new EcuMap[]{
+
+                }
+            },
             {   new CarModels[]{ McLaren_720S_GT3_2019 },
                 new EcuMap[]{
 
                 }
             },
-            {   new CarModels[]{ Mercedes_AMG_GT3_2020, /*Add Mercedes AMG Gt3? */ },
+            {   new CarModels[]{ Mercedes_AMG_GT3_2015, Mercedes_AMG_GT3_2020 },
                 new EcuMap[]{
                     new EcuMap(){ Index = 1, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Highest },
                     new EcuMap(){ Index = 2, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Medium },
