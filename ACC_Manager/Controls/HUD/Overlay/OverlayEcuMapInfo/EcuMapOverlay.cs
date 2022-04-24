@@ -49,7 +49,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
 
             if (current != null)
             {
-                string EcuInfo = $"ECU Map: {current.Index}, Power: {current.Power}, Condition: {current.Conditon}," +
+                string EcuInfo = $"ECU Map: {current.Index}, Power: {current.Power}, Condition: {current.Conditon}, " +
                                     $"Consumption: {current.FuelConsumption}, Throttle map: {current.ThrottleMap}";
 
                 if (updateWidth)
