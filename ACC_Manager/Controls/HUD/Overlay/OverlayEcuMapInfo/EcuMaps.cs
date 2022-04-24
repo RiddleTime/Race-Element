@@ -37,7 +37,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
                     new EcuMap(){ Index = 8, Power = PowerDelivery.Lowest, Conditon = EcuMapConditions.PaceCar, ThrottleMap = "Least progressive", FuelConsumption = FuelConsumptions.Lowest },
                 }
             },
-            {   new CarModels[]{ Bentley_Continental_GT3_2018, /* add bentley 2016??? */ },
+            {   new CarModels[]{ Bentley_Continental_GT3_2015, Bentley_Continental_GT3_2018 },
                 new EcuMap[]{
                     new EcuMap(){ Index = 1, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.High },
                     new EcuMap(){ Index = 2, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Dry, ThrottleMap = "Aggressive", FuelConsumption = FuelConsumptions.Medium },
@@ -49,7 +49,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
                     new EcuMap(){ Index = 8, Power = PowerDelivery.Lowest, Conditon = EcuMapConditions.PaceCar, ThrottleMap = "Least progressive", FuelConsumption = FuelConsumptions.Lowest },
                 }
             },
-            {   new CarModels[]{ BMW_M4_GT3_2021, /* add bmw m6 gt3?? */},
+            {   new CarModels[]{ BMW_M4_GT3_2021, BMW_M6_GT3_2017 },
                 new EcuMap[]{
                     new EcuMap(){ Index = 1, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Aggressive", FuelConsumption = FuelConsumptions.Highest },
                     new EcuMap(){ Index = 2, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Medium },
@@ -105,7 +105,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
                     new EcuMap(){ Index = 8, Power = PowerDelivery.Lowest, Conditon = EcuMapConditions.PaceCar, ThrottleMap = "Gradual", FuelConsumption = FuelConsumptions.Lowest},
                 }
             },
-            {   new CarModels[]{ Lamborhini_Huracán_GT3_2015, Lamborhini_Huracán_GT3_Evo_2019 },
+            {   new CarModels[]{ Lamborghini_Huracán_GT3_2015, Lamborghini_Huracán_GT3_Evo_2019 },
                 new EcuMap[]{
 
                 }
@@ -125,7 +125,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
 
                 }
             },
-            {   new CarModels[]{ Mclaren_650S_GT3_2015 },
+            {   new CarModels[]{ McLaren_650S_GT3_2015 },
                 new EcuMap[]{
 
                 }
@@ -135,7 +135,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
 
                 }
             },
-            {   new CarModels[]{ Mercedes_AMG_GT3_2015, Mercedes_AMG_GT3_2020 },
+            {   new CarModels[]{ Mercedes_AMG_GT3_2015, Mercedes_AMG_GT3_Evo_2020 },
                 new EcuMap[]{
                     new EcuMap(){ Index = 1, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Highest },
                     new EcuMap(){ Index = 2, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Medium },
