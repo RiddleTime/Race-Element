@@ -24,7 +24,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
         {
             lock (FrontLeft)
             {
-                FrontLeft.AddFirst(filePhysics.WheelPressure[(int)Wheel.FrontLeft]);
+                FrontLeft.AddFirst(CorrectToBounds(filePhysics.WheelPressure[(int)Wheel.FrontLeft]));
                 if (FrontLeft.Count > TraceCount)
                 {
                     FrontLeft.RemoveLast();
@@ -32,7 +32,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
             }
             lock (FrontRight)
             {
-                FrontRight.AddFirst(filePhysics.WheelPressure[(int)Wheel.FrontRight]);
+                FrontRight.AddFirst(CorrectToBounds(filePhysics.WheelPressure[(int)Wheel.FrontRight]));
                 if (FrontRight.Count > TraceCount)
                 {
                     FrontRight.RemoveLast();
@@ -40,7 +40,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
             }
             lock (RearLeft)
             {
-                RearLeft.AddFirst(filePhysics.WheelPressure[(int)Wheel.RearLeft]);
+                RearLeft.AddFirst(CorrectToBounds(filePhysics.WheelPressure[(int)Wheel.RearLeft]));
                 if (RearLeft.Count > TraceCount)
                 {
                     RearLeft.RemoveLast();
@@ -48,12 +48,23 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
             }
             lock (RearRight)
             {
-                RearRight.AddFirst(filePhysics.WheelPressure[(int)Wheel.RearRight]);
+                RearRight.AddFirst(CorrectToBounds(filePhysics.WheelPressure[(int)Wheel.RearRight]));
                 if (RearRight.Count > TraceCount)
                 {
                     RearRight.RemoveLast();
                 }
             }
+        }
+
+        private float CorrectToBounds(float value)
+        {
+            if (value < TirePressureGraph.boundMin)
+                value = TirePressureGraph.boundMin;
+
+            if (value > TirePressureGraph.boundMax)
+                value = TirePressureGraph.boundMax;
+
+            return value;
         }
 
         public void Start()

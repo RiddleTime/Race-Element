@@ -15,7 +15,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
         private int Width, Height;
         private LinkedList<float> TirePressures;
 
-        private float boundMin = 26.9f, boundMax = 29.2f;
+        internal static float boundMin = 26.9f, boundMax = 29.2f;
 
         public TirePressureGraph(int x, int y, int width, int height, LinkedList<float> tirePressures)
         {
