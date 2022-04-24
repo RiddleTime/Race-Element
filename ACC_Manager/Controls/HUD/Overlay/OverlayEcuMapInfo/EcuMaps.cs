@@ -154,7 +154,15 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
             },
             {   new CarModels[]{ McLaren_650S_GT3_2015 },
                 new EcuMap[]{
-
+                    new EcuMap(){ Index = 1, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 2, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Low },
+                    new EcuMap(){ Index = 3, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 4, Power = PowerDelivery.Low, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Lowest },
+                    new EcuMap(){ Index = 5, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Wet, ThrottleMap = "Wet", FuelConsumption = FuelConsumptions.Medium },
+                    new EcuMap(){ Index = 6, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Wet, ThrottleMap = "Wet", FuelConsumption = FuelConsumptions.Low },
+                    new EcuMap(){ Index = 7, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Wet, ThrottleMap = "Wet", FuelConsumption = FuelConsumptions.High },
+                    new EcuMap(){ Index = 8, Power = PowerDelivery.Lowest, Conditon = EcuMapConditions.Wet, ThrottleMap = "Wet", FuelConsumption = FuelConsumptions.High },
+                    new EcuMap(){ Index = 9, Power = PowerDelivery.Low, Conditon = EcuMapConditions.PaceCar, ThrottleMap = "Very Low", FuelConsumption = FuelConsumptions.Low },
                 }
             },
             {   new CarModels[]{ McLaren_720S_GT3_2019 },
