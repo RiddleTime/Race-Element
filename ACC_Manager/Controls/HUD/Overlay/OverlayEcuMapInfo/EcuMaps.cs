@@ -105,6 +105,11 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
                     new EcuMap(){ Index = 8, Power = PowerDelivery.Lowest, Conditon = EcuMapConditions.PaceCar, ThrottleMap = "Gradual", FuelConsumption = FuelConsumptions.Lowest},
                 }
             },
+            {   new CarModels[]{ Lamborghini_Gallardo_G3_Reiter_2017 },
+                new EcuMap[]{
+
+                }
+            },
             {   new CarModels[]{ Lamborghini_Huracán_GT3_2015, Lamborghini_Huracán_GT3_Evo_2019 },
                 new EcuMap[]{
 
