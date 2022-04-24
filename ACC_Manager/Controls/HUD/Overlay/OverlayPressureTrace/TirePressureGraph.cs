@@ -68,7 +68,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
 
                 if (TirePressures.First() < 27.3)
                     brush = Brushes.Blue;
-                if (TirePressures.First() > 27.8)
+                if (TirePressures.First() > 27.9)
                     brush = Brushes.Red;
 
                 DrawData(g, TirePressures, brush);
