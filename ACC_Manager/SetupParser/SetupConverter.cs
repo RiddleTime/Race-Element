@@ -156,6 +156,7 @@ namespace ACCSetupApp.SetupParser
             {
                 switch (carClass)
                 {
+                    case CarClasses.GTC:
                     case CarClasses.GT3: return Math.Round(20.3f + 0.1f * rawValue[(int)wheel], 2);
                     case CarClasses.GT4: return Math.Round(17.0f + 0.1f * rawValue[(int)wheel], 2);
 
