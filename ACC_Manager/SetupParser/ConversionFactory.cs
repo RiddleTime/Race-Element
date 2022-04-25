@@ -75,7 +75,6 @@ namespace ACCSetupApp.SetupParser
             {Ferrari_488_GT3_Evo_2020, new Ferrari488GT3evo() },
             {Honda_NSX_GT3_2017, new HondaNsxGT3() },
             {Honda_NSX_GT3_Evo_2019, new HondaNsxGT3Evo() },
-            {Lamborghini_Gallardo_G3_Reiter_2017, new LamborghiniGallardoG3Reiter_2017() },
             {Lamborghini_Huracan_GT3_2015, new LamborghiniHuracanGT3() },
             {Lamborghini_Huracan_GT3_Evo_2019, new LamborghiniHuracanGT3evo() },
             {Lamborghini_Huracan_ST_2015, new LamborghiniHuracanST_2015() },
@@ -100,7 +99,14 @@ namespace ACCSetupApp.SetupParser
             {Maserati_Gran_Turismo_MC_GT4_2016, new MaseratiMCGT4() },
             {McLaren_570s_GT4_2016, new Mclaren570SGT4() },
             {Mercedes_AMG_GT4_2016, new MercedesAMGGT4() },
-            {Porsche_718_Cayman_GT4_MR_2019, new Porsche718CaymanGT4MR() }
+            {Porsche_718_Cayman_GT4_MR_2019, new Porsche718CaymanGT4MR() },
+
+            // GTC 
+            {Lamborghini_Gallardo_G3_Reiter_2017, new LamborghiniGallardoG3Reiter_2017() },
+            {Porsche_991_II_GT3_Cup_2017, new Porsche991IIGT3Cup_2017() }
+
+            // TCX
+
         };
 
         public static ICarSetupConversion GetConversion(CarModels model)
