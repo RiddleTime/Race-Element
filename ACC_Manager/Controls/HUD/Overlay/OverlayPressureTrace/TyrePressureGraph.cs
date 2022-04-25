@@ -52,25 +52,19 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
 
             if (TirePressures.Count > 0)
             {
-                Brush brush = Brushes.Green;
-
-                if (TirePressures.First() < PressureRange.OptimalMinimum)
-                    brush = Brushes.Blue;
-                if (TirePressures.First() > PressureRange.OptimalMaximum)
-                    brush = Brushes.Red;
-
-                DrawData(g, TirePressures, brush);
+                DrawData(g, TirePressures);
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
 
                 g.DrawRectangle(new Pen(Color.FromArgb(196, Color.Black)), graphRect);
             }
         }
 
-        private void DrawData(Graphics g, LinkedList<float> Data, Brush color)
+        private void DrawData(Graphics g, LinkedList<float> Data)
         {
             if (Data.Count > 0)
             {
                 List<Point> points = new List<Point>();
+
                 lock (Data)
                     for (int i = 0; i < Data.Count - 1; i++)
                     {
@@ -85,18 +79,36 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
                             if (x < X)
                                 break;
 
+
                             points.Add(new Point(x, y));
+
+                            if (points.Count > 1)
+                            {
+                                GraphicsPath path = new GraphicsPath() { FillMode = FillMode.Winding };
+                                path.AddLines(points.ToArray());
+                                g.DrawPath(new Pen(GetLineColor(Data.ElementAt(i)), 2f), path);
+                                points.Clear();
+                                points.Add(new Point(x, y));
+                            }
+
                         }
 
                     }
-
-                if (points.Count > 0)
-                {
-                    GraphicsPath path = new GraphicsPath();
-                    path.AddLines(points.ToArray());
-                    g.DrawPath(new Pen(color, 2.9f), path);
-                }
             }
+        }
+
+        private Brush GetLineColor(float pressure)
+        {
+            if (pressure < PressureRange.OptimalMinimum)
+            {
+                return Brushes.Blue;
+            }
+            if (pressure > PressureRange.OptimalMaximum)
+            {
+                return Brushes.Red;
+            }
+
+            return Brushes.Green;
         }
     }
 }
