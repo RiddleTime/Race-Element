@@ -4,6 +4,7 @@ using ACCSetupApp.SetupParser.Cars.GT3;
 using ACCSetupApp.SetupParser.Cars.GT4;
 using static ACCSetupApp.SetupParser.SetupConverter;
 using static ACCSetupApp.SetupParser.ConversionFactory.CarModels;
+using ACCSetupApp.SetupParser.Cars.GTC;
 
 namespace ACCSetupApp.SetupParser
 {
@@ -77,6 +78,7 @@ namespace ACCSetupApp.SetupParser
             {Lamborghini_Gallardo_G3_Reiter_2017, new LamborghiniGallardoG3Reiter_2017() },
             {Lamborghini_Huracan_GT3_2015, new LamborghiniHuracanGT3() },
             {Lamborghini_Huracan_GT3_Evo_2019, new LamborghiniHuracanGT3evo() },
+            {Lamborghini_Huracan_ST_2015, new LamborghiniHuracanST_2015() },
             {Lexus_RCF_GT3_2016, new LexusRcfGT3() },
             {McLaren_720S_GT3_2019, new Mclaren720sGT3() },
             {Mercedes_AMG_GT3_2015, new MercedesAMGGT3_2015() },

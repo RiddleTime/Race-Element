@@ -67,9 +67,33 @@ namespace ACCSetupApp.Controls
                     }
                 }
             }
-            else
+
+            List<string> gtcNames = ConversionFactory.GetAllNamesByClass(SetupConverter.CarClasses.GTC);
+            textBlockSetupViewerGT3.Text += $"\n\n{FourEmSpace}GTC:\n";
+            if(gtcNames.Count > 0)
             {
-                textBlockSetupViewerGT3.Text += "None yet\n";
+                for (int i = 0; i < gtcNames.Count; i++)
+                {
+                    textBlockSetupViewerGT3.Text += $"{FourEmSpace}- {gtcNames[i]}";
+                    if (i < gtcNames.Count - 1)
+                    {
+                        textBlockSetupViewerGT3.Text += "\n";
+                    }
+                }
+            }
+
+            List<string> tcxNames = ConversionFactory.GetAllNamesByClass(SetupConverter.CarClasses.TCX);
+            textBlockSetupViewerGT3.Text += $"\n\n{FourEmSpace}TCX:\n";
+            if (tcxNames.Count > 0)
+            {
+                for (int i = 0; i < tcxNames.Count; i++)
+                {
+                    textBlockSetupViewerGT3.Text += $"{FourEmSpace}- {tcxNames[i]}";
+                    if (i < tcxNames.Count - 1)
+                    {
+                        textBlockSetupViewerGT3.Text += "\n";
+                    }
+                }
             }
         }
 
