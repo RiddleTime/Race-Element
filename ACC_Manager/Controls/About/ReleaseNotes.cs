@@ -10,7 +10,9 @@ namespace ACCSetupApp.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.0.5.1", "- Added setup conversion: Audi R8 LMS Evo 2019, Bentley Continental GT3 2015, BMW M6 GT3 2017, Lamborghini Gallardo G3 Reiter 2017, Lamborghini Huracán ST 2015, McLaren 650S GT3 2015, Mercedes-AMG GT3 2015 and Porsche 911 II GT3 Cup 2017." },
+            {"0.0.5.2", "- Setup conversions added by KrisV147:"+
+                        "\n-Ferrari 488 Challenge Evo 2020"},
+            {"0.0.5.1", "- Setup conversion added: Audi R8 LMS Evo 2019, Bentley Continental GT3 2015, BMW M6 GT3 2017, Lamborghini Gallardo G3 Reiter 2017, Lamborghini Huracán ST 2015, McLaren 650S GT3 2015, Mercedes-AMG GT3 2015 and Porsche 911 II GT3 Cup 2017." },
             {"0.0.5.0", "- Added ECU map HUD (bottom-right), still very simple look."+
                         "\n- Repositioned Input Trace HUD."+
                         "\n- Added upper and lower bounds to Tires Traces (working for gt3 dry only atm)."},
