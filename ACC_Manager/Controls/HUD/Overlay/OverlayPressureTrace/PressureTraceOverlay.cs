@@ -11,7 +11,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
 {
     internal class PressureTraceOverlay : AbstractOverlay
     {
-        private TirePressureDataCollector dataCollector;
+        private TyrePressureDataCollector dataCollector;
         public PressureTraceOverlay(Rectangle rectangle) : base(rectangle)
         {
             int width = 140;
@@ -24,7 +24,8 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
 
         public override void BeforeStart()
         {
-            dataCollector = new TirePressureDataCollector() { TraceCount = this.Width / 2 - 1 };
+            TyrePressureGraph.PressureRange = TyrePressures.GetCurrentRange(pageGraphics.TyreCompound, pageStatic.CarModel);
+            dataCollector = new TyrePressureDataCollector() { TraceCount = this.Width / 2 - 1 };
             dataCollector.Start();
         }
 
@@ -35,10 +36,12 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
 
         public override void Render(Graphics g)
         {
-            TirePressureGraph graph = new TirePressureGraph(0, 0, this.Width / 2 - 1, (this.Height / 2) - 1, dataCollector.FrontLeft);
-            TirePressureGraph graph1 = new TirePressureGraph(this.Width / 2, 0, this.Width / 2 - 1, (this.Height / 2) - 1, dataCollector.FrontRight);
-            TirePressureGraph graph2 = new TirePressureGraph(0, (this.Height / 2) * 1, this.Width / 2 - 1, (this.Height / 2) - 1, dataCollector.RearLeft);
-            TirePressureGraph graph3 = new TirePressureGraph(this.Width / 2, (this.Height / 2) * 1, this.Width / 2 - 1, (this.Height / 2) - 1, dataCollector.RearRight);
+
+            TyrePressureGraph.PressureRange = TyrePressures.GetCurrentRange(pageGraphics.TyreCompound, pageStatic.CarModel);
+            TyrePressureGraph graph = new TyrePressureGraph(0, 0, this.Width / 2 - 1, (this.Height / 2) - 1, dataCollector.FrontLeft);
+            TyrePressureGraph graph1 = new TyrePressureGraph(this.Width / 2, 0, this.Width / 2 - 1, (this.Height / 2) - 1, dataCollector.FrontRight);
+            TyrePressureGraph graph2 = new TyrePressureGraph(0, (this.Height / 2) * 1, this.Width / 2 - 1, (this.Height / 2) - 1, dataCollector.RearLeft);
+            TyrePressureGraph graph3 = new TyrePressureGraph(this.Width / 2, (this.Height / 2) * 1, this.Width / 2 - 1, (this.Height / 2) - 1, dataCollector.RearRight);
 
             graph.Draw(g);
             graph1.Draw(g);

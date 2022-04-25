@@ -319,9 +319,10 @@
     <Compile Include="Controls\HUD\Overlay\OverlayInputTrace\InputTraceOverlay.cs" />
     <Compile Include="Controls\HUD\Overlay\Internal\FloatingWindow.cs" />
     <Compile Include="Controls\HUD\Overlay\OverlayDebugInfo\OverlayPhysicsInfo\PhysicsInfoOverlay.cs" />
-    <Compile Include="Controls\HUD\Overlay\OverlayPressureTrace\TirePressureDataCollector.cs" />
-    <Compile Include="Controls\HUD\Overlay\OverlayPressureTrace\TirePressureGraph.cs" />
+    <Compile Include="Controls\HUD\Overlay\OverlayPressureTrace\TyrePressureDataCollector.cs" />
+    <Compile Include="Controls\HUD\Overlay\OverlayPressureTrace\TyrePressureGraph.cs" />
     <Compile Include="Controls\HUD\Overlay\OverlayPressureTrace\PressureTraceOverlay.cs" />
+    <Compile Include="Controls\HUD\Overlay\OverlayPressureTrace\TyrePressures.cs" />
     <Compile Include="Controls\HUD\Overlay\Overlays.cs" />
     <Compile Include="Controls\HUD\Overlay\OverlayDebugInfo\OverlayStaticInfo\StaticInfoOverlay.cs" />
     <Compile Include="Controls\Liveries\DDSgenerator.xaml.cs">

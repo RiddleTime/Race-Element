@@ -6,18 +6,19 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace.TyrePressures;
 
 namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
 {
-    internal class TirePressureGraph
+    internal class TyrePressureGraph
     {
         private int X, Y;
         private int Width, Height;
         private LinkedList<float> TirePressures;
 
-        internal static float boundMin = 26.9f, boundMax = 29.2f;
+        public static TyrePressureRange PressureRange { get; set; }
 
-        public TirePressureGraph(int x, int y, int width, int height, LinkedList<float> tirePressures)
+        public TyrePressureGraph(int x, int y, int width, int height, LinkedList<float> tirePressures)
         {
             this.X = x;
             this.Y = y;
@@ -28,29 +29,9 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
 
         private int getRelativeNodeY(float value)
         {
-            double range = boundMax - boundMin;
-            double percentage = 1d - (value - boundMin) / range;
-            return (int)(percentage * (Height - Height / 5))
-                    + Height / 10;
-        }
-
-        public void SetMinAndMax()
-        {
-            //boundMin = 9999, boundMax = -1;
-            foreach (var item in TirePressures)
-            {
-                if (item < boundMin)
-                {
-                    boundMin = item;
-                }
-
-                if (item > boundMax)
-                {
-                    boundMax = item;
-                }
-            }
-
-            Debug.WriteLine($"min: {boundMin}, max: {boundMax}");
+            double range = (PressureRange.OptimalMaximum + 0.4) - (PressureRange.OptimalMinimum - 0.4);
+            double percentage = 1d - (value - PressureRange.OptimalMinimum) / range;
+            return (int)(percentage * Height);
         }
 
         public void Draw(Graphics g)
@@ -66,9 +47,9 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
             {
                 Brush brush = Brushes.Green;
 
-                if (TirePressures.First() < 27.3)
+                if (TirePressures.First() < PressureRange.OptimalMinimum)
                     brush = Brushes.Blue;
-                if (TirePressures.First() > 27.9)
+                if (TirePressures.First() > PressureRange.OptimalMaximum)
                     brush = Brushes.Red;
 
                 DrawData(g, TirePressures, brush);

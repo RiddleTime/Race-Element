@@ -9,7 +9,7 @@ using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
 {
-    internal class TirePressureDataCollector
+    internal class TyrePressureDataCollector
     {
         private bool IsCollecting = false;
         public int TraceCount = 300;
@@ -58,11 +58,11 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
 
         private float CorrectToBounds(float value)
         {
-            if (value < TirePressureGraph.boundMin)
-                value = TirePressureGraph.boundMin;
+            if (value < TyrePressureGraph.PressureRange.OptimalMinimum - 0.4)
+                value = (float)(TyrePressureGraph.PressureRange.OptimalMinimum - 0.4);
 
-            if (value > TirePressureGraph.boundMax)
-                value = TirePressureGraph.boundMax;
+            if (value > TyrePressureGraph.PressureRange.OptimalMaximum + 0.4)
+                value = (float)(TyrePressureGraph.PressureRange.OptimalMaximum + 0.4);
 
             return value;
         }
