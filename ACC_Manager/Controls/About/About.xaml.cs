@@ -82,19 +82,19 @@ namespace ACCSetupApp.Controls
                 }
             }
 
-            List<string> tcxNames = ConversionFactory.GetAllNamesByClass(SetupConverter.CarClasses.TCX);
-            textBlockSetupViewerGT3.Text += $"\n\n{FourEmSpace}TCX:\n";
-            if (tcxNames.Count > 0)
-            {
-                for (int i = 0; i < tcxNames.Count; i++)
-                {
-                    textBlockSetupViewerGT3.Text += $"{FourEmSpace}- {tcxNames[i]}";
-                    if (i < tcxNames.Count - 1)
-                    {
-                        textBlockSetupViewerGT3.Text += "\n";
-                    }
-                }
-            }
+            //List<string> tcxNames = ConversionFactory.GetAllNamesByClass(SetupConverter.CarClasses.TCX);
+            //textBlockSetupViewerGT3.Text += $"\n\n{FourEmSpace}TCX:\n";
+            //if (tcxNames.Count > 0)
+            //{
+            //    for (int i = 0; i < tcxNames.Count; i++)
+            //    {
+            //        textBlockSetupViewerGT3.Text += $"{FourEmSpace}- {tcxNames[i]}";
+            //        if (i < tcxNames.Count - 1)
+            //        {
+            //            textBlockSetupViewerGT3.Text += "\n";
+            //        }
+            //    }
+            //}
         }
 
         private async void CheckNewestVersion()
