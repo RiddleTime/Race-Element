@@ -10,7 +10,7 @@ namespace ACCSetupApp.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.0.5.1", "- Added setup conversion: Audi R8 LMS Evo 2019, Bentley Continental GT3 2015, BMW M6 GT3 2017." },
+            {"0.0.5.1", "- Added setup conversion: Audi R8 LMS Evo 2019, Bentley Continental GT3 2015, BMW M6 GT3 2017, Lamborghini Gallardo G3 Reiter 2017." },
             {"0.0.5.0", "- Added ECU map HUD (bottom-right), still very simple look."+
                         "\n- Repositioned Input Trace HUD."+
                         "\n- Added upper and lower bounds to Tires Traces (working for gt3 dry only atm)."},
