@@ -34,7 +34,6 @@ namespace ACCSetupApp.Controls
     public partial class LiveryBrowser : UserControl
     {
         public static LiveryBrowser Instance;
-        private ConversionFactory conversionFactory = new ConversionFactory();
 
         public LiveryBrowser()
         {
@@ -138,7 +137,7 @@ namespace ACCSetupApp.Controls
                     }
 
 
-                    var liveriesGroupedByCar = liveryTreeCars.GroupBy(g => conversionFactory.GetCarName(g.carsRoot.carModelType));
+                    var liveriesGroupedByCar = liveryTreeCars.GroupBy(g => ConversionFactory.GetCarName(g.carsRoot.carModelType));
                     var liveriesGroupedByTeam = liveryTreeCars.GroupBy(g => g.carsRoot.teamName);
 
                     if (!tagsOnly)

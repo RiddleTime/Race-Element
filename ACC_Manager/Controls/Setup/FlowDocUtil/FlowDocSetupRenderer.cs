@@ -48,7 +48,10 @@ namespace ACCSetupApp.Controls.Setup
 
             Root setup = JsonConvert.DeserializeObject<Root>(jsonString);
 
-            ICarSetupConversion carSetup = new ConversionFactory().GetConversion(DocUtil.GetParseName(file));
+
+            CarModels model = ConversionFactory.ParseCarName(DocUtil.GetParseName(file));
+            if (model == CarModels.None) return;
+            ICarSetupConversion carSetup = ConversionFactory.GetConversion(model);
 
             if (carSetup == null)
                 return;

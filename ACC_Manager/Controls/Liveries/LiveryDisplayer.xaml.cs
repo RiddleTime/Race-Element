@@ -35,13 +35,11 @@ namespace ACCSetupApp.Controls
         internal static LiveryDisplayer Instance;
 
         private LiveryTreeCar Livery { get; set; }
-        private ConversionFactory conversionFactory { get; set; }
 
         public LiveryDisplayer()
         {
             InitializeComponent();
 
-            this.conversionFactory = new ConversionFactory();
             buttonGenerateDDS.Click += ButtonGenerateDDS_Click;
 
             Instance = this;
@@ -128,7 +126,7 @@ namespace ACCSetupApp.Controls
                         if (carsRoot.teamName != String.Empty)
                             stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.teamName}", HorizontalAlignment.Center, 25, "Team Name"));
                         stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.customSkinName}", HorizontalAlignment.Center, 19, "Skin Name"));
-                        stackPanelMainInfo.Children.Add(GetInfoLabel($"{conversionFactory.GetCarName(carsRoot.carModelType)}", HorizontalAlignment.Center, 16, "Car model type"));
+                        stackPanelMainInfo.Children.Add(GetInfoLabel($"{ConversionFactory.GetCarName(carsRoot.carModelType)}", HorizontalAlignment.Center, 16, "Car model type"));
 
                         stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Display Name: {carsRoot.displayName}"));
                         stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Race Number: {carsRoot.raceNumber}"));

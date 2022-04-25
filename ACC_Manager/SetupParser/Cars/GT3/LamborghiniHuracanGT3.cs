@@ -10,7 +10,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
 {
     internal class LamborghiniHuracanGT3 : ICarSetupConversion
     {
-        public CarModels CarModel => CarModels.Lamborghini_Huracán_GT3_2015;
+        public CarModels CarModel => CarModels.Lamborghini_Huracan_GT3_2015;
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
 

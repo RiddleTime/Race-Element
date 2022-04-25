@@ -12,19 +12,17 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
-using static ACCSetupApp.SetupParser.SetupConverter;
 using static ACCSetupApp.SetupParser.ConversionFactory;
+using static ACCSetupApp.SetupParser.SetupConverter;
 using static SetupParser.SetupJson;
 
 namespace ACCSetupApp.Controls.Setup
 {
     public class FlowDocCompareSetupRenderer
     {
-        private ConversionFactory conversionFactory;
-
         public FlowDocCompareSetupRenderer()
         {
-            this.conversionFactory = new ConversionFactory();
+
         }
 
         public void LogComparison(ref FlowDocument flowDocument, FileInfo setupFile1, FileInfo setupFile2)
@@ -41,7 +39,9 @@ namespace ACCSetupApp.Controls.Setup
 
 
             //// Car 1 conversions
-            ICarSetupConversion carSetup1 = conversionFactory.GetConversion(DocUtil.GetParseName(setupFile1.FullName));
+            CarModels model1 = ConversionFactory.ParseCarName(DocUtil.GetParseName(setupFile1.FullName));
+            if (model1 == CarModels.None) return;
+            ICarSetupConversion carSetup1 = ConversionFactory.GetConversion(model1);
             if (carSetup1 == null) return;
             TyreCompound compound1 = carSetup1.TyresSetup.Compound(setup1.basicSetup.tyres.tyreCompound);
 
@@ -123,7 +123,11 @@ namespace ACCSetupApp.Controls.Setup
 
 
             ///// Car 2 conversions
-            ICarSetupConversion carSetup2 = conversionFactory.GetConversion(DocUtil.GetParseName(setupFile2.FullName));
+
+            CarModels model2 = ConversionFactory.ParseCarName(DocUtil.GetParseName(setupFile2.FullName));
+            if (model2 == CarModels.None) return;
+            ICarSetupConversion carSetup2 = ConversionFactory.GetConversion(model2);
+
             if (carSetup2 == null) return;
 
             TyreCompound compound2 = carSetup2.TyresSetup.Compound(setup2.basicSetup.tyres.tyreCompound);
@@ -213,7 +217,7 @@ namespace ACCSetupApp.Controls.Setup
             header2.TextAlignment = TextAlignment.Left;
             rgSetupInfo.Rows.Add(DocUtil.GetTableRow(header1, DocUtil.GetDefaultParagraph(), header2));
             rgSetupInfo.Rows.Add(DocUtil.GetTableRowCompare($"{DocUtil.GetTrackName(setupFile1.FullName)}", "Track", $"{DocUtil.GetTrackName(setupFile2.FullName)}"));
-            rgSetupInfo.Rows.Add(DocUtil.GetTableRowCompare($"{CarModelToCarName[carSetup1.CarModel]}", "Car", $"{CarModelToCarName[carSetup2.CarModel]}"));
+            rgSetupInfo.Rows.Add(DocUtil.GetTableRowCompare($"{ConversionFactory.CarModelToCarName[carSetup1.CarModel]}", "Car", $"{ConversionFactory.CarModelToCarName[carSetup2.CarModel]}"));
             rgSetupInfo.Rows.Add(DocUtil.GetTableRowCompare($"{carSetup1.CarClass}", "Class", $"{carSetup2.CarClass}"));
             Table setupInfoTable = DocUtil.GetTable(35, 15, 35);
             setupInfoTable.RowGroups.Add(rgSetupInfo);

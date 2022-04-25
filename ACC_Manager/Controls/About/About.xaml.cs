@@ -43,8 +43,6 @@ namespace ACCSetupApp.Controls
 
         private void SetCarConversionFeatures()
         {
-            ConversionFactory conversions = new ConversionFactory();
-
             List<string> gt3Names = ConversionFactory.GetAllNamesByClass(SetupConverter.CarClasses.GT3);
             textBlockSetupViewerGT3.Text = $"{FourEmSpace}GT3:\n";
             for (int i = 0; i < gt3Names.Count; i++)

@@ -7,67 +7,8 @@ using static ACCSetupApp.SetupParser.ConversionFactory.CarModels;
 
 namespace ACCSetupApp.SetupParser
 {
-    public class ConversionFactory
+    public static class ConversionFactory
     {
-        private static readonly Dictionary<string, ICarSetupConversion> carConversions = new Dictionary<string, ICarSetupConversion>()
-        {
-            // GT3
-            {"amr_v8_vantage_gt3", new AMRV8VantageGT3() },
-            {"amr_v12_vantage_gt3", new AMRV12VantageGT3() },
-            {"audi_r8_lms", new AudiR8LMS() },
-            {"audi_r8_lms_evo_ii", new AudiR8LMSevoII() },
-            {"bentley_continental_gt3_2018", new BentleyContinentalGT3_2018() },
-            {"bmw_m4_gt3", new BmwM4GT3() },
-            {"jaguar_g3",new JaguarG3GT3() },
-            {"ferrari_488_gt3", new Ferrari488GT3() },
-            {"ferrari_488_gt3_evo", new Ferrari488GT3evo() },
-            {"honda_nsx_gt3", new HondaNsxGT3() },
-            {"honda_nsx_gt3_evo", new HondaNsxGT3Evo() },
-            {"lamborghini_huracan_gt3",new LamborghiniHuracanGT3() },
-            {"lamborghini_huracan_gt3_evo", new LamborghiniHuracanGT3evo() },
-            {"lexus_rc_f_gt3", new LexusRcfGT3() },
-            {"mclaren_720s_gt3", new Mclaren720sGT3() },
-            {"mercedes_amg_gt3_evo", new MercedesAMGGT3evo() },
-            {"nissan_gt_r_gt3_2017", new NissanGtrGT3_2015() },
-            {"nissan_gt_r_gt3_2018", new NissanGtrGT3_2018() },
-            {"porsche_991ii_gt3_r", new Porsche911IIGT3R() },
-            {"porsche_991_gt3_r", new Porsche991GT3R() },
-            
-            // GT4
-            {"alpine_a110_gt4", new AlpineA110GT4() },
-            {"amr_v8_vantage_gt4", new AMRV8VantageGT4() },
-            {"audi_r8_gt4", new AudiR8GT4() },
-            {"bmw_m4_gt4", new BMWM4GT4() },
-            {"chevrolet_camaro_gt4r", new ChevroletCamaroGT4R() },
-            {"ginetta_g55_gt4", new GinettaG55GT4() },
-            {"ktm_xbow_gt4", new KTMXbowGT4() },
-            {"maserati_mc_gt4", new MaseratiMCGT4() },
-            {"mclaren_570s_gt4", new Mclaren570SGT4() },
-            {"mercedes_amg_gt4", new MercedesAMGGT4() },
-            {"porsche_718_cayman_gt4_mr", new Porsche718CaymanGT4MR() }
-        };
-        internal ICarSetupConversion GetConversion(string parseName)
-        {
-            if (ParseNames.ContainsKey(parseName))
-                return carConversions[parseName];
-            else
-                return null;
-        }
-
-        public static List<string> GetAllNamesByClass(CarClasses carClass)
-        {
-            List<string> classNames = new List<string>();
-            carConversions.ToList().ForEach(x =>
-            {
-                if (x.Value.CarClass == carClass)
-                {
-                    classNames.Add(CarModelToCarName[x.Value.CarModel]);
-                }
-            });
-
-            return classNames;
-        }
-
         public enum CarModels
         {
             None,
@@ -95,10 +36,10 @@ namespace ACCSetupApp.SetupParser
             Honda_NSX_GT3_Evo_2019,
             KTM_Xbow_GT4_2016,
             Lexus_RCF_GT3_2016,
-            Lamborghini_Huracán_GT3_2015,
-            Lamborghini_Huracán_GT3_Evo_2019,
-            Lamborghini_Huracán_ST_2015,
-            Lamborghini_Huracán_ST_Evo2_2021,
+            Lamborghini_Huracan_GT3_2015,
+            Lamborghini_Huracan_GT3_Evo_2019,
+            Lamborghini_Huracan_ST_2015,
+            Lamborghini_Huracan_ST_Evo2_2021,
             Lamborghini_Gallardo_G3_Reiter_2017,
             Maserati_Gran_Turismo_MC_GT4_2016,
             McLaren_570s_GT4_2016,
@@ -114,6 +55,65 @@ namespace ACCSetupApp.SetupParser
             Porsche_911_II_GT3_R_2019,
             Porsche_911_GT3_R_2018,
             Porsche_992_GT3_Cup_2021
+        }
+
+        private static Dictionary<CarModels, ICarSetupConversion> Conversions = new Dictionary<CarModels, ICarSetupConversion>()
+        {
+            // GT3
+            {Aston_Martin_V8_Vantage_GT3_2019, new AMRV8VantageGT3() },
+            {Aston_Martin_Vantage_V12_GT3_2013, new AMRV12VantageGT3() },
+            {Audi_R8_LMS_2015, new AudiR8LMS() },
+            {Audi_R8_LMS_Evo_II_2022, new AudiR8LMSevoII() },
+            {Bentley_Continental_GT3_2018, new BentleyContinentalGT3_2018() },
+            {BMW_M4_GT3_2021, new BmwM4GT3() },
+            {Emil_Frey_Jaguar_G3_2021, new JaguarG3GT3() },
+            {Ferrari_488_GT3_2018, new Ferrari488GT3() },
+            {Ferrari_488_GT3_Evo_2020, new Ferrari488GT3evo() },
+            {Honda_NSX_GT3_2017, new HondaNsxGT3() },
+            {Honda_NSX_GT3_Evo_2019, new HondaNsxGT3Evo() },
+            {Lamborghini_Huracan_GT3_2015, new LamborghiniHuracanGT3() },
+            {Lamborghini_Huracan_GT3_Evo_2019, new LamborghiniHuracanGT3evo() },
+            {Lexus_RCF_GT3_2016, new LexusRcfGT3() },
+            {McLaren_720S_GT3_2019, new Mclaren720sGT3() },
+            {Mercedes_AMG_GT3_Evo_2020, new MercedesAMGGT3evo() },
+            {Nissan_GT_R_Nismo_GT3_2015, new NissanGtrGT3_2015() },
+            {Nissan_GT_R_Nismo_GT3_2018, new NissanGtrGT3_2018() },
+            {Porsche_911_II_GT3_R_2019, new Porsche911IIGT3R() },
+            {Porsche_911_GT3_R_2018, new Porsche991GT3R() },
+            
+            // GT4
+            {Alpine_A110_GT4_2018, new AlpineA110GT4() },
+            {Aston_Martin_Vantage_AMR_GT4_2018, new AMRV8VantageGT4() },
+            {Audi_R8_LMS_GT4_2016, new AudiR8GT4() },
+            {BMW_M4_GT4_2018, new BMWM4GT4() },
+            {Chevrolet_Camaro_GT4_R_2017, new ChevroletCamaroGT4R() },
+            {Ginetta_G55_GT4_2012, new GinettaG55GT4() },
+            {KTM_Xbow_GT4_2016, new KTMXbowGT4() },
+            {Maserati_Gran_Turismo_MC_GT4_2016, new MaseratiMCGT4() },
+            {McLaren_570s_GT4_2016, new Mclaren570SGT4() },
+            {Mercedes_AMG_GT4_2016, new MercedesAMGGT4() },
+            {Porsche_718_Cayman_GT4_MR_2019, new Porsche718CaymanGT4MR() }
+        };
+
+        public static ICarSetupConversion GetConversion(CarModels model)
+        {
+            bool found = Conversions.TryGetValue(model, out var conversion);
+            if (found) return conversion;
+            return null;
+        }
+
+        public static List<string> GetAllNamesByClass(CarClasses carClass)
+        {
+            List<string> classNames = new List<string>();
+            Conversions.ToList().ForEach(x =>
+            {
+                if (x.Value.CarClass == carClass)
+                {
+                    classNames.Add(CarModelToCarName[x.Value.CarModel]);
+                }
+            });
+
+            return classNames;
         }
 
         public static readonly Dictionary<CarModels, string> CarModelToCarName = new Dictionary<CarModels, string>() {
@@ -143,10 +143,10 @@ namespace ACCSetupApp.SetupParser
             {KTM_Xbow_GT4_2016, "KTM Xbow GT4 2016" },
             {Lexus_RCF_GT3_2016, "Lexus RCF GT3 2016" },
             {Lamborghini_Gallardo_G3_Reiter_2017, "Lamborghini Gallardo G3 Reiter 2017" },
-            {Lamborghini_Huracán_GT3_2015, "Lamborghini Huracán GT3 2015" },
-            {Lamborghini_Huracán_GT3_Evo_2019, "Lamborghini Huracán GT3 Evo 2019" },
-            {Lamborghini_Huracán_ST_2015, "Lamborghini Huracán ST 2015" },
-            {Lamborghini_Huracán_ST_Evo2_2021, "Lamborghini Huracán ST Evo2 2021" },
+            {Lamborghini_Huracan_GT3_2015, "Lamborghini Huracán GT3 2015" },
+            {Lamborghini_Huracan_GT3_Evo_2019, "Lamborghini Huracán GT3 Evo 2019" },
+            {Lamborghini_Huracan_ST_2015, "Lamborghini Huracán ST 2015" },
+            {Lamborghini_Huracan_ST_Evo2_2021, "Lamborghini Huracán ST Evo2 2021" },
             {Maserati_Gran_Turismo_MC_GT4_2016, "Maserati Gran Turismo MC GT4 2016" },
             {McLaren_570s_GT4_2016, "McLaren 570s GT4 2016"},
             {McLaren_650S_GT3_2015, "McLaren 650S GT3 2015" },
@@ -189,10 +189,10 @@ namespace ACCSetupApp.SetupParser
             {"jaguar_g3", Emil_Frey_Jaguar_G3_2021 },
             {"ktm_xbow_gt4", KTM_Xbow_GT4_2016 },
             {"lamborghini_gallardo_rex", Lamborghini_Gallardo_G3_Reiter_2017 },
-            {"lamborghini_huracan_gt3", Lamborghini_Huracán_GT3_2015 },
-            {"lamborghini_huracan_gt3_evo", Lamborghini_Huracán_GT3_Evo_2019 },
-            {"lamborghini_huracan_st", Lamborghini_Huracán_ST_2015 },
-            {"lamborghini_huracan_st_evo2", Lamborghini_Huracán_ST_Evo2_2021 },
+            {"lamborghini_huracan_gt3", Lamborghini_Huracan_GT3_2015 },
+            {"lamborghini_huracan_gt3_evo", Lamborghini_Huracan_GT3_Evo_2019 },
+            {"lamborghini_huracan_st", Lamborghini_Huracan_ST_2015 },
+            {"lamborghini_huracan_st_evo2", Lamborghini_Huracan_ST_Evo2_2021 },
             {"lexus_rc_f_gt3", Lexus_RCF_GT3_2016 },
             {"maserati_mc_gt4", Maserati_Gran_Turismo_MC_GT4_2016 },
             {"mclaren_570s_gt4", McLaren_570s_GT4_2016 },
@@ -223,7 +223,7 @@ namespace ACCSetupApp.SetupParser
             {1, Mercedes_AMG_GT3_2015 },
             {2, Ferrari_488_GT3_2018 },
             {3, Audi_R8_LMS_2015 },
-            {4, Lamborghini_Huracán_GT3_2015 },
+            {4, Lamborghini_Huracan_GT3_2015 },
             {5, McLaren_650S_GT3_2015 },
             {6, Nissan_GT_R_Nismo_GT3_2018 },
             {7, BMW_M6_GT3_2017 },
@@ -235,9 +235,9 @@ namespace ACCSetupApp.SetupParser
             {13, Lamborghini_Gallardo_G3_Reiter_2017 },
             {14, Emil_Frey_Jaguar_G3_2021 },
             {15, Lexus_RCF_GT3_2016 },
-            {16, Lamborghini_Huracán_GT3_Evo_2019 },
+            {16, Lamborghini_Huracan_GT3_Evo_2019 },
             {17, Honda_NSX_GT3_2017 },
-            {18, Lamborghini_Huracán_ST_2015 },
+            {18, Lamborghini_Huracan_ST_2015 },
             {19, Audi_R8_LMS_Evo_2019 },
             {20, Aston_Martin_V8_Vantage_GT3_2019 },
             {21, Honda_NSX_GT3_Evo_2019 },
@@ -248,7 +248,7 @@ namespace ACCSetupApp.SetupParser
             {26, Ferrari_488_Challenge_Evo_2020 },
             {27, BMW_M2_Cup_2020 },
             {28, Porsche_992_GT3_Cup_2021 },
-            {29, Lamborghini_Huracán_ST_Evo2_2021 },
+            {29, Lamborghini_Huracan_ST_Evo2_2021 },
             {30, BMW_M4_GT3_2021 },
             {31, Audi_R8_LMS_Evo_II_2022 },
             {50, Alpine_A110_GT4_2018 },
@@ -265,7 +265,7 @@ namespace ACCSetupApp.SetupParser
         };
 
 
-        public string GetCarName(int carId)
+        public static string GetCarName(int carId)
         {
             if (IdsToCarModel.ContainsKey(carId))
             {

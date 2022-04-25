@@ -56,7 +56,7 @@ namespace ACCSetupApp.SetupParser
             return position;
         }
 
-        internal interface ICarSetupConversion
+        public interface ICarSetupConversion
         {
             CarModels CarModel { get; }
             CarClasses CarClass { get; }
@@ -70,7 +70,7 @@ namespace ACCSetupApp.SetupParser
             IAeroBalance AeroBalance { get; }
         }
 
-        internal interface IMechanicalSetup
+        public interface IMechanicalSetup
         {
             int AntiRollBarFront(int rawValue);
             int AntiRollBarRear(int rawValue);
@@ -90,7 +90,7 @@ namespace ACCSetupApp.SetupParser
             int BumpstopRange(List<int> rawValue, Wheel wheel);
         }
 
-        internal interface IDamperSetup
+        public interface IDamperSetup
         {
             int BumpSlow(List<int> rawValue, Wheel wheel);
             int BumpFast(List<int> rawValue, Wheel wheel);
@@ -122,7 +122,7 @@ namespace ACCSetupApp.SetupParser
             }
         }
 
-        internal interface IAeroBalance
+        public interface IAeroBalance
         {
             int RideHeight(List<int> rawValue, Position position);
             int BrakeDucts(int rawValue);
@@ -130,7 +130,7 @@ namespace ACCSetupApp.SetupParser
             int Splitter(int rawValue);
         }
 
-        internal interface IElectronicsSetup
+        public interface IElectronicsSetup
         {
 
             int TractionControl { get; }
@@ -139,7 +139,7 @@ namespace ACCSetupApp.SetupParser
             int TractionControl2 { get; }
         }
 
-        internal abstract class AbstractTyresSetup
+        public abstract class AbstractTyresSetup
         {
             public TyreCompound Compound(int rawValue)
             {

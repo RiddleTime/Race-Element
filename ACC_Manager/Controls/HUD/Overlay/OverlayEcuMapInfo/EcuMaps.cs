@@ -113,7 +113,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
                     new EcuMap(){ Index = 4, Power = PowerDelivery.Low, Conditon = EcuMapConditions.Dry, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.Low },
                 }
             },
-            {   new CarModels[]{ Lamborghini_Huracán_GT3_2015, Lamborghini_Huracán_GT3_Evo_2019 },
+            {   new CarModels[]{ Lamborghini_Huracan_GT3_2015, Lamborghini_Huracan_GT3_Evo_2019 },
                 new EcuMap[]{
                     new EcuMap(){ Index = 1, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.Highest },
                     new EcuMap(){ Index = 2, Power = PowerDelivery.High, Conditon = EcuMapConditions.Dry, ThrottleMap = "Different", FuelConsumption = FuelConsumptions.High },

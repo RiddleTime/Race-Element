@@ -28,8 +28,6 @@ namespace ACCSetupApp.Controls
         public static LiveryDeleter Instance { get; private set; }
         private LiveryTreeCar ToBeDeleted;
 
-        private ConversionFactory conversionFactory = new ConversionFactory();
-
         public LiveryDeleter()
         {
             InitializeComponent();
@@ -91,7 +89,7 @@ namespace ACCSetupApp.Controls
             Instance.tbDeleteSkinText.Text =
                 $"Team: {ToBeDeleted.carsRoot.teamName}" +
                 $"\nSkin: {ToBeDeleted.carsRoot.customSkinName}" +
-                $"\nCar: {conversionFactory.GetCarName(ToBeDeleted.carsRoot.carModelType)}";
+                $"\nCar: {ConversionFactory.GetCarName(ToBeDeleted.carsRoot.carModelType)}";
         }
     }
 }

@@ -22,14 +22,12 @@ namespace ACCSetupApp.Controls
     {
         public static SetupBrowser Instance { get; set; }
 
-        private readonly ConversionFactory conversionFactory;
         private readonly FlowDocSetupRenderer setupRenderer;
 
         public SetupBrowser()
         {
             InitializeComponent();
 
-            this.conversionFactory = new ConversionFactory();
             this.setupRenderer = new FlowDocSetupRenderer();
 
             FetchAllSetups();
@@ -38,6 +36,7 @@ namespace ACCSetupApp.Controls
 
             Instance = this;
         }
+
 
         private void SetupsTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
