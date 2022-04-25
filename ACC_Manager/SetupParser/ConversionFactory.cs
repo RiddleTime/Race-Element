@@ -68,6 +68,7 @@ namespace ACCSetupApp.SetupParser
             {Bentley_Continental_GT3_2015, new BentleyContinentalGT3_2015() },
             {Bentley_Continental_GT3_2018, new BentleyContinentalGT3_2018() },
             {BMW_M4_GT3_2021, new BmwM4GT3() },
+            {BMW_M6_GT3_2017, new BmwM6GT3_2017() } ,
             {Emil_Frey_Jaguar_G3_2021, new JaguarG3GT3() },
             {Ferrari_488_GT3_2018, new Ferrari488GT3() },
             {Ferrari_488_GT3_Evo_2020, new Ferrari488GT3evo() },

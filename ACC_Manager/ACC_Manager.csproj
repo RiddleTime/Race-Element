@@ -373,6 +373,7 @@
     <Compile Include="Controls\HUD\Overlay\Internal\PageStaticTracker.cs" />
     <Compile Include="SetupParser\Cars\GT3\AudiR8LMSevo.cs" />
     <Compile Include="SetupParser\Cars\GT3\BentleyContinentalGT3_2015.cs" />
+    <Compile Include="SetupParser\Cars\GT3\BmwM6GT3_2017.cs" />
     <Compile Include="SetupParser\Cars\GT4\AudiR8GT4.cs" />
     <Compile Include="SetupParser\Cars\GT4\BMWM4GT4.cs" />
     <Compile Include="SetupParser\Cars\GT4\ChevroletCamaroGT4R.cs" />
