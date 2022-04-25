@@ -65,6 +65,7 @@ namespace ACCSetupApp.SetupParser
             {Audi_R8_LMS_2015, new AudiR8LMS() },
             {Audi_R8_LMS_Evo_2019, new AudiR8LMSevo() },
             {Audi_R8_LMS_Evo_II_2022, new AudiR8LMSevoII() },
+            {Bentley_Continental_GT3_2015, new BentleyContinentalGT3_2015() },
             {Bentley_Continental_GT3_2018, new BentleyContinentalGT3_2018() },
             {BMW_M4_GT3_2021, new BmwM4GT3() },
             {Emil_Frey_Jaguar_G3_2021, new JaguarG3GT3() },
