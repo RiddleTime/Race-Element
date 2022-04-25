@@ -86,7 +86,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
                             {
                                 GraphicsPath path = new GraphicsPath() { FillMode = FillMode.Winding };
                                 path.AddLines(points.ToArray());
-                                g.DrawPath(new Pen(GetLineColor(Data.ElementAt(i)), 2f), path);
+                                g.DrawPath(new Pen(GetLineColor(Data.ElementAt(i)), 2.5f), path);
                                 points.Clear();
                                 points.Add(new Point(x, y));
                             }
