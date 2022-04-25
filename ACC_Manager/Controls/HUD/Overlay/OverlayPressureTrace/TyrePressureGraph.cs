@@ -16,7 +16,8 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
         private int Width, Height;
         private LinkedList<float> TirePressures;
 
-        public static TyrePressureRange PressureRange { get; set; }
+        public static TyrePressureRange PressureRange { get; set; } = TyrePressures.DRY_DHE2020;
+        public static float Padding = 0.4f;
 
         public TyrePressureGraph(int x, int y, int width, int height, LinkedList<float> tirePressures)
         {
@@ -29,8 +30,14 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
 
         private int getRelativeNodeY(float value)
         {
-            double range = (PressureRange.OptimalMaximum + 0.4) - (PressureRange.OptimalMinimum - 0.4);
-            double percentage = 1d - (value - PressureRange.OptimalMinimum) / range;
+            double range = (PressureRange.OptimalMaximum + Padding) - (PressureRange.OptimalMinimum - Padding);
+            double percentage = (PressureRange.OptimalMaximum + Padding - value) / range;
+            if (percentage > 0.95)
+                percentage = 0.95;
+
+            if (percentage < 0.05)
+                percentage = 0.05;
+
             return (int)(percentage * Height);
         }
 

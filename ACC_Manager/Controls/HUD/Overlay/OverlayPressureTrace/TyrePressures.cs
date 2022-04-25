@@ -39,11 +39,15 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
             CarModels model = ConversionFactory.ParseCarName(carModel);
             ICarSetupConversion setupConversion = GetConversion(model);
 
-            switch (setupConversion.CarClass)
-            {
-                case CarClasses.GT3: return DRY_DHE2020;
-                default: return DRY_DHE2020_GT4;
-            }
+            if (setupConversion != null)
+                switch (setupConversion.CarClass)
+                {
+                    case CarClasses.GT3: return DRY_DHE2020;
+                    default: return DRY_DHE2020_GT4;
+                }
+
+            // gotta return something.. I know isn't nice, but solutions..
+            return DRY_DHE2020;
         }
     }
 

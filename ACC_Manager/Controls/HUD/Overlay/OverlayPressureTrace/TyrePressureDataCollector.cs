@@ -58,11 +58,11 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
 
         private float CorrectToBounds(float value)
         {
-            if (value < TyrePressureGraph.PressureRange.OptimalMinimum - 0.4)
-                value = (float)(TyrePressureGraph.PressureRange.OptimalMinimum - 0.4);
+            if (value < TyrePressureGraph.PressureRange.OptimalMinimum - TyrePressureGraph.Padding)
+                value = (float)(TyrePressureGraph.PressureRange.OptimalMinimum - TyrePressureGraph.Padding);
 
-            if (value > TyrePressureGraph.PressureRange.OptimalMaximum + 0.4)
-                value = (float)(TyrePressureGraph.PressureRange.OptimalMaximum + 0.4);
+            if (value > TyrePressureGraph.PressureRange.OptimalMaximum + TyrePressureGraph.Padding)
+                value = (float)(TyrePressureGraph.PressureRange.OptimalMaximum + TyrePressureGraph.Padding);
 
             return value;
         }
@@ -75,7 +75,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
             {
                 while (IsCollecting)
                 {
-                    Thread.Sleep(1000 / 2);
+                    Thread.Sleep(1000 / 3);
                     Collect(sharedMemory.ReadPhysicsPageFile());
                 }
             }).Start();
