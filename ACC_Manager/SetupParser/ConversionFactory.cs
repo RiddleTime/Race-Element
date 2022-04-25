@@ -80,6 +80,7 @@ namespace ACCSetupApp.SetupParser
             {Lamborghini_Huracan_GT3_Evo_2019, new LamborghiniHuracanGT3evo() },
             {Lamborghini_Huracan_ST_2015, new LamborghiniHuracanST_2015() },
             {Lexus_RCF_GT3_2016, new LexusRcfGT3() },
+            {McLaren_650S_GT3_2015, new Mclaren650sGT3_2015() },
             {McLaren_720S_GT3_2019, new Mclaren720sGT3() },
             {Mercedes_AMG_GT3_2015, new MercedesAMGGT3_2015() },
             {Mercedes_AMG_GT3_Evo_2020, new MercedesAMGGT3evo() },
