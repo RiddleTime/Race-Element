@@ -27,8 +27,9 @@
         </Grid.ColumnDefinitions>
 
         <local:DDSgenerator Grid.Column="0" Panel.ZIndex="1" HorizontalAlignment="Left" VerticalAlignment="Center"></local:DDSgenerator>
-        <local:LiveryTagger  Grid.Column="0" Panel.ZIndex="1" HorizontalAlignment="Left" VerticalAlignment="Center"></local:LiveryTagger>
+        <local:LiveryTagger  Grid.Column="0" Panel.ZIndex="2" HorizontalAlignment="Left" VerticalAlignment="Center"></local:LiveryTagger>
         <local:LiveryTagCreator  Grid.Column="0" Panel.ZIndex="1" HorizontalAlignment="Left" VerticalAlignment="Center"></local:LiveryTagCreator>
+        <local:AfterImport Grid.Column="1" Panel.ZIndex="1" ></local:AfterImport>
 
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>

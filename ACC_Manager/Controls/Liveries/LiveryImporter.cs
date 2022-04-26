@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using static ACCSetupApp.Controls.LiveryBrowser;
 
 namespace ACCSetupApp.Controls
 {
@@ -17,10 +18,13 @@ namespace ACCSetupApp.Controls
     {
 
         private static int liveryCount = 0;
+        private static List<LiveryTreeCar> ImportedLiveries = new List<LiveryTreeCar>();
 
         public static void ImportLiveryZips()
         {
             liveryCount = 0;
+            ImportedLiveries.Clear();
+
             try
             {
                 LiveryBrowser.Instance.Dispatcher.BeginInvoke(new Action(() =>
@@ -72,7 +76,14 @@ namespace ACCSetupApp.Controls
             }
 
             if (liveryCount > 0)
+            {
                 MainWindow.Instance.EnqueueSnackbarMessage($"Imported {liveryCount} liveries.");
+                LiveryBrowser.Instance.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    Debug.WriteLine("opening AfterImport.");
+                    AfterImport.Instance.Open(ImportedLiveries);
+                }));
+            }
             else
                 MainWindow.Instance.EnqueueSnackbarMessage($"The archive(s) you choose are not supported. Manually import them.");
 
@@ -194,12 +205,18 @@ namespace ACCSetupApp.Controls
                                             string skinFileName = $"{liveryFolder}{FileUtil.GetFileName(skinFile.Key)}";
                                             skinFile.WriteToFile(skinFileName);
                                             Debug.WriteLine($"Imported livery file: {skinFileName}");
-                                         
+
+
                                         }
                                     }
 
                                 }
-                                liveryCount++;
+                                LiveryTreeCar ltc = new LiveryTreeCar() { carsFile = new FileInfo(carsJsonFileName), carsRoot = carRoot };
+                                if (!ImportedLiveries.Contains(ltc))
+                                {
+                                    ImportedLiveries.Add(ltc);
+                                    liveryCount++;
+                                }
                                 MainWindow.Instance.EnqueueSnackbarMessage($"Imported {carRoot.teamName} / {carRoot.customSkinName}");
                             }
                         }
@@ -255,12 +272,17 @@ namespace ACCSetupApp.Controls
                                             string skinFileName = $"{liveryFolder}{FileUtil.GetFileName(skinFile.Key)}";
                                             skinFile.WriteToFile(skinFileName);
                                             Debug.WriteLine($"Imported livery file: {skinFileName}");
-                                            
+
                                         }
                                     }
 
                                 }
-                                liveryCount++;
+                                LiveryTreeCar ltc = new LiveryTreeCar() { carsFile = new FileInfo(carsJsonFileName), carsRoot = carRoot };
+                                if (!ImportedLiveries.Contains(ltc))
+                                {
+                                    ImportedLiveries.Add(ltc);
+                                    liveryCount++;
+                                }
                                 MainWindow.Instance.EnqueueSnackbarMessage($"Imported {carRoot.teamName} / {carRoot.customSkinName}");
                             }
                         }
