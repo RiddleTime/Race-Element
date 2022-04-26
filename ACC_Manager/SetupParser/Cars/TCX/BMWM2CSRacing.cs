@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using static ACCSetupApp.SetupParser.ConversionFactory;
 using static ACCSetupApp.SetupParser.SetupConverter;
 
-namespace ACCSetupApp.SetupParser.Cars.GTC
+namespace ACCSetupApp.SetupParser.Cars.TCX
 {
-    internal class Porsche991IIGT3Cup_2017 : ICarSetupConversion
+    internal class BMWM2CSRacing : ICarSetupConversion
     {
-        public CarModels CarModel => CarModels.Porsche_991_II_GT3_Cup_2017;
+        public CarModels CarModel => CarModels.BMW_M2_Cup_2020;
 
-        CarClasses ICarSetupConversion.CarClass => CarClasses.GT3; // did this for tyre pressures, should be 'GTC' 
+        CarClasses ICarSetupConversion.CarClass => CarClasses.GT4;
 
         AbstractTyresSetup ICarSetupConversion.TyresSetup => new TyreSetup();
         private class TyreSetup : AbstractTyresSetup
@@ -21,15 +21,13 @@ namespace ACCSetupApp.SetupParser.Cars.GTC
             {
                 switch (GetPosition(wheel))
                 {
-                    case Position.Front: return Math.Round(-6.5 + 0.1 * rawValue[(int)wheel], 2);
-                    case Position.Rear: return Math.Round(-5 + 0.1 * rawValue[(int)wheel], 2);
+                    case Position.Front: return Math.Round(-5 + 0.1 * rawValue[(int)wheel], 2);
+                    case Position.Rear: return Math.Round(-3.5 + 0.1 * rawValue[(int)wheel], 2);
                     default: return -1;
                 }
             }
 
-            private readonly double[] casters = new double[] { 7.3, 7.4, 7.5, 7.6, 7.7, 7.8,
-                7.9, 8.0, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.9, 9.0, 9.1, 9.2,
-                9.3, 9.4, 9.5, 9.6, 9.7, 9.8, 9.9, 10.0, 10.1, 10.2, 10.3 };
+            private readonly double[] casters = new double[] { 8.5 };
             public override double Caster(int rawValue)
             {
                 return Math.Round(casters[rawValue], 2);
@@ -40,8 +38,8 @@ namespace ACCSetupApp.SetupParser.Cars.GTC
 
                 switch (GetPosition(wheel))
                 {
-                    case Position.Front: return Math.Round(-0.4 + 0.01 * rawValue[(int)wheel], 2);
-                    case Position.Rear: return Math.Round(-0.4 + 0.01 * rawValue[(int)wheel], 2);
+                    case Position.Front: return Math.Round(-0.2 + 0.01 * rawValue[(int)wheel], 2);
+                    case Position.Rear: return Math.Round(0 + 0.01 * rawValue[(int)wheel], 2);
                     default: return -1;
                 }
 
@@ -63,7 +61,7 @@ namespace ACCSetupApp.SetupParser.Cars.GTC
 
             public double BrakeBias(int rawValue)
             {
-                return Math.Round(50 + 0.2 * rawValue, 2);
+                return Math.Round(56 + 0.2 * rawValue, 2);
             }
 
             public int BrakePower(int rawValue)
@@ -78,21 +76,21 @@ namespace ACCSetupApp.SetupParser.Cars.GTC
 
             public int BumpstopRate(List<int> rawValue, Wheel wheel)
             {
-                return 1000 + 0 * rawValue[(int)wheel];
+                return 300 + 0 * rawValue[(int)wheel];
             }
 
             public int PreloadDifferential(int rawValue)
             {
-                return 0 + rawValue * 10;
+                return 20 + rawValue * 10;
             }
 
             public double SteeringRatio(int rawValue)
             {
-                return Math.Round(11d + rawValue, 2);
+                return Math.Round(10d + rawValue, 2);
             }
 
-            private readonly int[] fronts = new int[] { 0, 1, 2, 3 };
-            private readonly int[] rears = new int[] { 0, 1, 2, 3 };
+            private readonly int[] fronts = new int[] { 162000, 180000, 198000 };
+            private readonly int[] rears = new int[] { 103000, 117000, 131000 };
             public int WheelRate(List<int> rawValue, Wheel wheel)
             {
                 switch (GetPosition(wheel))
@@ -104,7 +102,30 @@ namespace ACCSetupApp.SetupParser.Cars.GTC
             }
         }
 
-        IDamperSetup ICarSetupConversion.DamperSetup => DefaultDamperSetup;
+        //IDamperSetup ICarSetupConversion.DamperSetup => DefaultDamperSetup;
+        IDamperSetup ICarSetupConversion.DamperSetup => new CustomDamperSetup();
+        private class CustomDamperSetup : IDamperSetup
+        {
+            int IDamperSetup.BumpFast(List<int> rawValue, Wheel wheel)
+            {
+                return rawValue[(int)wheel];
+            }
+
+            int IDamperSetup.BumpSlow(List<int> rawValue, Wheel wheel)
+            {
+                return rawValue[(int)wheel] + 1;
+            }
+
+            int IDamperSetup.ReboundFast(List<int> rawValue, Wheel wheel)
+            {
+                return rawValue[(int)wheel];
+            }
+
+            int IDamperSetup.ReboundSlow(List<int> rawValue, Wheel wheel)
+            {
+                return rawValue[(int)wheel] + 1;
+            }
+        }
 
         IAeroBalance ICarSetupConversion.AeroBalance => new AeroSetup();
         private class AeroSetup : IAeroBalance
@@ -123,8 +144,8 @@ namespace ACCSetupApp.SetupParser.Cars.GTC
             {
                 switch (position)
                 {
-                    case Position.Front: return 60 + rawValue[0];
-                    case Position.Rear: return 80 + rawValue[2];
+                    case Position.Front: return 125 + rawValue[0];
+                    case Position.Rear: return 125 + rawValue[2];
                     default: return -1;
                 }
             }

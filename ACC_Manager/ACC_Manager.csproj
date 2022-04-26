@@ -395,6 +395,8 @@
     <Compile Include="SetupParser\Cars\GTC\LamborghiniHuracanSTEvo2.cs" />
     <Compile Include="SetupParser\Cars\GTC\LamborghiniHuracanST_2015.cs" />
     <Compile Include="SetupParser\Cars\GTC\Porsche991IIGT3Cup_2017.cs" />
+    <Compile Include="SetupParser\Cars\GTC\Porsche992GT3Cup_2021.cs" />
+    <Compile Include="SetupParser\Cars\TCX\BMWM2CSRacing.cs" />
     <Compile Include="SharedMemory\StructExtensions.cs" />
     <Compile Include="Controls\Telemetry\TelemetryDebug.xaml.cs">
       <DependentUpon>TelemetryDebug.xaml</DependentUpon>
