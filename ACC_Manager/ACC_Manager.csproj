@@ -392,6 +392,7 @@
     <Compile Include="SetupParser\Cars\GT4\MercedesAMGGT4.cs" />
     <Compile Include="SetupParser\Cars\GT4\Porsche718CaymanGT4MR.cs" />
     <Compile Include="SetupParser\Cars\GTC\Ferrari488ChallengeEvo.cs" />
+    <Compile Include="SetupParser\Cars\GTC\LamborghiniHuracanSTEvo2.cs" />
     <Compile Include="SetupParser\Cars\GTC\LamborghiniHuracanST_2015.cs" />
     <Compile Include="SetupParser\Cars\GTC\Porsche991IIGT3Cup_2017.cs" />
     <Compile Include="SharedMemory\StructExtensions.cs" />
