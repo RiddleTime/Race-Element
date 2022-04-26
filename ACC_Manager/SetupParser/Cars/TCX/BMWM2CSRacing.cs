@@ -12,7 +12,7 @@ namespace ACCSetupApp.SetupParser.Cars.TCX
     {
         public CarModels CarModel => CarModels.BMW_M2_Cup_2020;
 
-        CarClasses ICarSetupConversion.CarClass => CarClasses.GT4;
+        CarClasses ICarSetupConversion.CarClass => CarClasses.TCX;
 
         AbstractTyresSetup ICarSetupConversion.TyresSetup => new TyreSetup();
         private class TyreSetup : AbstractTyresSetup

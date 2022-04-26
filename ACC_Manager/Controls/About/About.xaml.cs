@@ -35,67 +35,10 @@ namespace ACCSetupApp.Controls
             buttonDiscord.Click += (sender, e) => System.Diagnostics.Process.Start("https://discord.gg/26AAEW5mUq"); ;
             buttonGithub.Click += (sender, e) => System.Diagnostics.Process.Start("https://github.com/RiddleTime/ACC-Manager");
 
-            SetCarConversionFeatures();
             FillReleaseNotes();
             ThreadPool.QueueUserWorkItem(x => CheckNewestVersion());
         }
 
-
-        private void SetCarConversionFeatures()
-        {
-            List<string> gt3Names = ConversionFactory.GetAllNamesByClass(SetupConverter.CarClasses.GT3);
-            textBlockSetupViewerGT3.Text = $"{FourEmSpace}GT3:\n";
-            for (int i = 0; i < gt3Names.Count; i++)
-            {
-                textBlockSetupViewerGT3.Text += $"{FourEmSpace}- {gt3Names[i]}";
-                if (i < gt3Names.Count - 1)
-                {
-                    textBlockSetupViewerGT3.Text += "\n";
-                }
-            }
-
-            List<string> gt4Names = ConversionFactory.GetAllNamesByClass(SetupConverter.CarClasses.GT4);
-            textBlockSetupViewerGT3.Text += $"\n\n{FourEmSpace}GT4:\n";
-            if (gt4Names.Count > 0)
-            {
-                for (int i = 0; i < gt4Names.Count; i++)
-                {
-                    textBlockSetupViewerGT3.Text += $"{FourEmSpace}- {gt4Names[i]}";
-                    if (i < gt4Names.Count - 1)
-                    {
-                        textBlockSetupViewerGT3.Text += "\n";
-                    }
-                }
-            }
-
-            List<string> gtcNames = ConversionFactory.GetAllNamesByClass(SetupConverter.CarClasses.GTC);
-            textBlockSetupViewerGT3.Text += $"\n\n{FourEmSpace}GTC:\n";
-            if(gtcNames.Count > 0)
-            {
-                for (int i = 0; i < gtcNames.Count; i++)
-                {
-                    textBlockSetupViewerGT3.Text += $"{FourEmSpace}- {gtcNames[i]}";
-                    if (i < gtcNames.Count - 1)
-                    {
-                        textBlockSetupViewerGT3.Text += "\n";
-                    }
-                }
-            }
-
-            //List<string> tcxNames = ConversionFactory.GetAllNamesByClass(SetupConverter.CarClasses.TCX);
-            //textBlockSetupViewerGT3.Text += $"\n\n{FourEmSpace}TCX:\n";
-            //if (tcxNames.Count > 0)
-            //{
-            //    for (int i = 0; i < tcxNames.Count; i++)
-            //    {
-            //        textBlockSetupViewerGT3.Text += $"{FourEmSpace}- {tcxNames[i]}";
-            //        if (i < tcxNames.Count - 1)
-            //        {
-            //            textBlockSetupViewerGT3.Text += "\n";
-            //        }
-            //    }
-            //}
-        }
 
         private async void CheckNewestVersion()
         {
