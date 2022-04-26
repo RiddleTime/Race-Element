@@ -10,7 +10,8 @@ namespace ACCSetupApp.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.0.5.3", "- Added screen that pops-up after importing liveries, allowing you to tag them." },
+            {"0.0.5.3", "- Added screen that pops-up after importing liveries, allowing you to tag them."+
+                        "\n- Setup conversion added: Lamborghini Huracán ST Evo2 2021(By KrisV147)."},
             {"0.0.5.2", "- Setup conversions added: Ferrari 488 Challenge Evo 2020(By KrisV147)."+
                         "\n- Tyre pressure trace: now auto-detects gt3/gt4(gtc)/wet tyres."+
                         "\n- Tyre pressure trace: draws specific parts in the trace by color, green = good, red is too high, blue is too low."},
