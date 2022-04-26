@@ -14,7 +14,8 @@ namespace ACCSetupApp.Controls
                         "\n- Setup conversions added by KrisV147:"+
                         "\n - BMW M2 Cup 2020."+
                         "\n - Lamborghini Huracán ST Evo2 2021."+
-                        "\n - Porsche 992 GT3 Cup 2021."},
+                        "\n - Porsche 992 GT3 Cup 2021."+
+                        "\n - All excisting in-game cars are now supported for the setup viewer/comparison."},
             {"0.0.5.2", "- Setup conversion added: Ferrari 488 Challenge Evo 2020(By KrisV147)."+
                         "\n- Tyre pressure trace: now auto-detects gt3/gt4(gtc)/wet tyres."+
                         "\n- Tyre pressure trace: draws specific parts in the trace by color, green = good, red is too high, blue is too low."},
