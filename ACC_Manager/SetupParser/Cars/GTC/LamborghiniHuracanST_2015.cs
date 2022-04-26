@@ -12,7 +12,7 @@ namespace ACCSetupApp.SetupParser.Cars.GTC
     {
         public CarModels CarModel => CarModels.Lamborghini_Huracan_ST_2015;
 
-        CarClasses ICarSetupConversion.CarClass => CarClasses.GTC;
+        CarClasses ICarSetupConversion.CarClass => CarClasses.GT3; // did this for tyre pressures, should be 'GTC' 
 
         AbstractTyresSetup ICarSetupConversion.TyresSetup => new TyreSetup();
         private class TyreSetup : AbstractTyresSetup
