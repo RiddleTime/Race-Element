@@ -5,6 +5,7 @@ using ACCSetupApp.SetupParser.Cars.GT4;
 using static ACCSetupApp.SetupParser.SetupConverter;
 using static ACCSetupApp.SetupParser.ConversionFactory.CarModels;
 using ACCSetupApp.SetupParser.Cars.GTC;
+using ACCSetupApp.SetupParser.Cars.TCX;
 
 namespace ACCSetupApp.SetupParser
 {
@@ -105,10 +106,11 @@ namespace ACCSetupApp.SetupParser
 
             // GTC 
             {Porsche_991_II_GT3_Cup_2017, new Porsche991IIGT3Cup_2017() },
-            {Ferrari_488_Challenge_Evo_2020, new Ferrari488ChallengeEvo() }
+            {Porsche_992_GT3_Cup_2021, new Porsche992GT3Cup_2021() },
+            {Ferrari_488_Challenge_Evo_2020, new Ferrari488ChallengeEvo() },
 
             // TCX
-
+            {BMW_M2_Cup_2020, new BMWM2CSRacing() }
         };
 
         public static ICarSetupConversion GetConversion(CarModels model)
