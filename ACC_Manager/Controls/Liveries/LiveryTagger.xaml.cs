@@ -57,6 +57,7 @@ namespace ACCSetupApp.Controls
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
             this.Visibility = Visibility.Hidden;
+            AfterImport.Instance.IsEnabled = false;
         }
 
         private void UpdateTagList()
@@ -90,6 +91,8 @@ namespace ACCSetupApp.Controls
 
             UpdateTagList();
 
+            AfterImport.Instance.IsEnabled = false;
+
             this.Visibility = Visibility.Visible;
         }
 
@@ -119,6 +122,7 @@ namespace ACCSetupApp.Controls
         close:
             this.Visibility = Visibility.Hidden;
             LiveryBrowser.Instance.FetchAllCars(true);
+            AfterImport.Instance.IsEnabled = true;
         }
     }
 }
