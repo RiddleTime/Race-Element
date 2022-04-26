@@ -31,7 +31,11 @@ namespace ACCSetupApp.Controls
                 {
                     LiveryBrowser.Instance.liveriesTreeViewTeams.IsEnabled = false;
                     LiveryBrowser.Instance.liveriesTreeViewCars.IsEnabled = false;
+                    LiveryBrowser.Instance.liveriesTreeViewTags.IsEnabled = false;
+
                     LiveryBrowser.Instance.buttonImportLiveries.IsEnabled = false;
+                    LiveryBrowser.Instance.buttonImportLiveries.Content = "Importing... please wait";
+
                     LiveryBrowser.Instance.buttonGenerateAllDDS.IsEnabled = false;
                     LiveryDisplayer.Instance.IsEnabled = false;
                 }));
@@ -94,7 +98,11 @@ namespace ACCSetupApp.Controls
             {
                 LiveryBrowser.Instance.liveriesTreeViewTeams.IsEnabled = true;
                 LiveryBrowser.Instance.liveriesTreeViewCars.IsEnabled = true;
+                LiveryBrowser.Instance.liveriesTreeViewTags.IsEnabled = true;
+
                 LiveryBrowser.Instance.buttonImportLiveries.IsEnabled = true;
+                LiveryBrowser.Instance.buttonImportLiveries.Content = "Import Liveries";
+
                 LiveryBrowser.Instance.buttonGenerateAllDDS.IsEnabled = true;
                 LiveryDisplayer.Instance.IsEnabled = true;
             }));
@@ -217,7 +225,7 @@ namespace ACCSetupApp.Controls
                                     ImportedLiveries.Add(ltc);
                                     liveryCount++;
                                 }
-                                MainWindow.Instance.EnqueueSnackbarMessage($"Imported {carRoot.teamName} / {carRoot.customSkinName}");
+                                //MainWindow.Instance.EnqueueSnackbarMessage($"Imported {carRoot.teamName} / {carRoot.customSkinName}");
                             }
                         }
                     };
@@ -283,7 +291,7 @@ namespace ACCSetupApp.Controls
                                     ImportedLiveries.Add(ltc);
                                     liveryCount++;
                                 }
-                                MainWindow.Instance.EnqueueSnackbarMessage($"Imported {carRoot.teamName} / {carRoot.customSkinName}");
+                                //MainWindow.Instance.EnqueueSnackbarMessage($"Imported {carRoot.teamName} / {carRoot.customSkinName}");
                             }
                         }
                     };

@@ -67,7 +67,16 @@ namespace ACCSetupApp.Controls
         {
             this.ImportedLiveries = importedLiveries;
             this.transitionAfterImport.Visibility = Visibility.Visible;
-            LiveryBrowser.Instance.buttonImportLiveries.IsEnabled = false;
+
+
+            LiveryBrowser.Instance.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                LiveryBrowser.Instance.liveriesTreeViewTeams.IsEnabled = false;
+                LiveryBrowser.Instance.liveriesTreeViewCars.IsEnabled = false;
+                LiveryBrowser.Instance.liveriesTreeViewTags.IsEnabled = false;
+                LiveryBrowser.Instance.buttonImportLiveries.IsEnabled = false;
+                LiveryBrowser.Instance.buttonGenerateAllDDS.IsEnabled = false;
+            }));
 
             UpdateList();
         }
@@ -75,7 +84,14 @@ namespace ACCSetupApp.Controls
         private void Close()
         {
             transitionAfterImport.Visibility = Visibility.Hidden;
-            LiveryBrowser.Instance.buttonImportLiveries.IsEnabled = true;
+            LiveryBrowser.Instance.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                LiveryBrowser.Instance.liveriesTreeViewTeams.IsEnabled = true;
+                LiveryBrowser.Instance.liveriesTreeViewCars.IsEnabled = true;
+                LiveryBrowser.Instance.liveriesTreeViewTags.IsEnabled = true;
+                LiveryBrowser.Instance.buttonImportLiveries.IsEnabled = true;
+                LiveryBrowser.Instance.buttonGenerateAllDDS.IsEnabled = true;
+            }));
         }
 
         private void AddTags()
