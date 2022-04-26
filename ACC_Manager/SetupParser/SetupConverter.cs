@@ -17,7 +17,7 @@ namespace ACCSetupApp.SetupParser
             GTC
         }
 
-        public enum Wheel
+        public enum Wheel : int
         {
             FrontLeft,
             FrontRight,

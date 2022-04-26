@@ -471,7 +471,7 @@ namespace ACCSetupApp
             [Obsolete]
             public int AbsInAction;
 
-            [Obsolete]
+            //[Obsolete]
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] SuspensionDamage;
 
