@@ -18,7 +18,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPhysicsInfo
         public PhysicsInfoOverlay(Rectangle rectangle) : base(rectangle)
         {
             this.Width = 600;
-            this.Height = 620;
+            this.Height = 635;
 
             DebugInfoHelper.Instance.WidthChanged += (sender, args) =>
             {
