@@ -98,6 +98,13 @@ namespace ACCSetupApp.Controls
                                 Style = Resources["MaterialDesignSubtitle2TextBlock"] as Style,
                             };
                             TreeViewItem trackTreeViewItem = new TreeViewItem() { Header = trackHeader, DataContext = trackDir };
+                            trackTreeViewItem.Expanded += (s, e) =>
+                            {
+                                int targetItemInView = trackTreeViewItem.Items.Count;
+                                if (targetItemInView > 18)    // magic number :D (no just counted minimum size and made sure it will still show the track)
+                                    targetItemInView = 18;
+                                ((TreeViewItem)trackTreeViewItem.Items.GetItemAt(targetItemInView - 1)).BringIntoView();
+                            };
                             trackTreeViewItem.ContextMenu = GetTrackContextMenu(trackDir);
 
                             // find setups in track dir
@@ -284,6 +291,5 @@ namespace ACCSetupApp.Controls
 
         private string AccPath => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "Assetto Corsa Competizione\\";
         private string SetupsPath => AccPath + "Setups\\";
-
     }
 }

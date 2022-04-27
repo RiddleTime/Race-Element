@@ -177,6 +177,13 @@ namespace ACCSetupApp.Controls
                     DataContext = tItem.Key
                 };
                 TreeViewItem modelItem = new TreeViewItem() { Header = teamHeader };
+                modelItem.Expanded += (s, e) =>
+                {
+                    int targetItemInView = modelItem.Items.Count;
+                    if (targetItemInView > 18)    // magic number :D (no just counted minimum size and made sure it will still show the track)
+                        targetItemInView = 18;
+                    ((TreeViewItem)modelItem.Items.GetItemAt(targetItemInView - 1)).BringIntoView();
+                };
 
                 var cars = tItem.ToList();
                 cars.Sort((a, b) =>
@@ -234,6 +241,13 @@ namespace ACCSetupApp.Controls
                     DataContext = tItem.Key
                 };
                 TreeViewItem teamItem = new TreeViewItem() { Header = teamHeader };
+                teamItem.Expanded += (s, e) =>
+                {
+                    int targetItemInView = teamItem.Items.Count;
+                    if (targetItemInView > 18)    // magic number :D (no just counted minimum size and made sure it will still show the track)
+                        targetItemInView = 18;
+                    ((TreeViewItem)teamItem.Items.GetItemAt(targetItemInView - 1)).BringIntoView();
+                };
 
                 var cars = tItem.ToList();
                 cars.Sort((a, b) =>
@@ -303,6 +317,13 @@ namespace ACCSetupApp.Controls
                     DataContext = liveryTag.Name
                 };
                 TreeViewItem tagItem = new TreeViewItem() { Header = tagHeader };
+                tagItem.Expanded += (s, e) =>
+                {
+                    int targetItemInView = tagItem.Items.Count;
+                    if (targetItemInView > 18)    // magic number :D (no just counted minimum size and made sure it will still show the track)
+                        targetItemInView = 18;
+                    ((TreeViewItem)tagItem.Items.GetItemAt(targetItemInView - 1)).BringIntoView();
+                };
 
                 tagItem.ContextMenu = GetTagContextMenu(tagItem, liveryTag);
                 tagCars.Sort((a, b) =>
