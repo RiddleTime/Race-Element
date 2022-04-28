@@ -54,6 +54,8 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
                     RearRight.RemoveLast();
                 }
             }
+
+            PressureTraceOverlay.Instance.RequestRedraw();
         }
 
         private float CorrectToBounds(float value)

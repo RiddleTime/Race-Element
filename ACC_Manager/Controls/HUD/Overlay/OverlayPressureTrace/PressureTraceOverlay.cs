@@ -11,6 +11,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
 {
     internal class PressureTraceOverlay : AbstractOverlay
     {
+        internal static PressureTraceOverlay Instance;
         private TyrePressureDataCollector dataCollector;
         public PressureTraceOverlay(Rectangle rectangle) : base(rectangle)
         {
@@ -20,6 +21,8 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
             this.Width = width;
             this.Height = 60 * 2;
             this.Y = (int)(ScreenHeight / 2) - this.Height / 2;
+            this.RequestsDrawItself = true;
+            Instance = this;
         }
 
         public override void BeforeStart()

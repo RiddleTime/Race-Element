@@ -11,30 +11,50 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayCarDamage
 {
     internal class CarDamageOverlay : AbstractOverlay
     {
+
+        private Font inputFont = new Font("Roboto", 10);
         private float MagicDamageMultiplier = 0.282f;
 
         public CarDamageOverlay(Rectangle rectangle) : base(rectangle)
         {
+            this.Width = 300;
+            this.Height = 200;
         }
 
         public override void BeforeStart()
         {
-            throw new NotImplementedException();
         }
 
         public override void BeforeStop()
         {
-            throw new NotImplementedException();
         }
 
         public override void Render(Graphics g)
         {
-            throw new NotImplementedException();
+            g.DrawRectangle(new Pen(Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.Width, this.Height));
+
+            float totalRepairTime = GetTotalRepairTime();
+            g.DrawString($"Repair Time: {totalRepairTime}", inputFont, Brushes.White, 0, 0);
         }
 
         public override bool ShouldRender()
         {
+#if DEBUG
+            return true;
+#endif
             return HasAnyDamage();
+        }
+
+        private float GetTotalRepairTime()
+        {
+            float totalRepairTime = 0;
+
+            totalRepairTime += GetBodyWorkDamage(CarDamagePosition.Centre);
+
+            foreach (Wheel wheel in Enum.GetValues(typeof(Wheel)))
+                totalRepairTime += GetSuspensionDamage(wheel);
+
+            return totalRepairTime;
         }
 
         private bool HasAnyDamage()

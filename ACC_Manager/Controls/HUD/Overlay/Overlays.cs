@@ -1,4 +1,5 @@
 ﻿using ACCSetupApp.Controls.HUD.Overlay.Internal;
+using ACCSetupApp.Controls.HUD.Overlay.OverlayCarDamage;
 using ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo;
 using ACCSetupApp.Controls.HUD.Overlay.OverlayGraphicsInfo;
 using ACCSetupApp.Controls.HUD.Overlay.OverlayPhysicsInfo;
@@ -19,6 +20,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay
             {"ECU Maps", typeof(EcuMapOverlay) },
             {"Input trace", typeof(InputTraceOverlay) },
             {"Tire Pressure Trace", typeof(PressureTraceOverlay) },
+            {"Repair Time", typeof(CarDamageOverlay) },
             {"Debug Static Data", typeof(StaticInfoOverlay) },
             {"Debug Physics Data", typeof(PhysicsInfoOverlay) },
             {"Debug Graphics Data", typeof(GraphicsInfoOverlay) }

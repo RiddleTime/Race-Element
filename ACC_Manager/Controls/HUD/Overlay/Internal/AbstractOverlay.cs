@@ -21,6 +21,8 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
         internal int ScreenWidth => (int)System.Windows.SystemParameters.PrimaryScreenWidth;
         internal int ScreenHeight => (int)System.Windows.SystemParameters.PrimaryScreenHeight;
 
+        internal bool RequestsDrawItself = false;
+
         protected AbstractOverlay(Rectangle rectangle)
         {
             this.X = rectangle.X;
@@ -48,6 +50,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
                 Draw = true;
                 this.Show();
 
+
                 new Thread(x =>
                 {
                     while (Draw)
@@ -59,13 +62,19 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
                             return;
                         }
 
-                        this.UpdateLayeredWindow();
+                        if (!RequestsDrawItself)
+                            this.UpdateLayeredWindow();
                     }
 
                     this.Stop();
                 }).Start();
             }
             catch (Exception ex) { Debug.WriteLine(ex); }
+        }
+
+        internal void RequestRedraw()
+        {
+            this.UpdateLayeredWindow();
         }
 
         private void PagePhysicsChanged(object sender, SPageFilePhysics e)
