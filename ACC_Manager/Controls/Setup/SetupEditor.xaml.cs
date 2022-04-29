@@ -78,11 +78,131 @@ namespace ACCSetupApp.Controls
 
 
             // Mechanical Setup
+            FieldStackPanel.Children.Add(GetWheelRatesStacker());
+            FieldStackPanel.Children.Add(GetBumpstopRateStacker());
+
+
 
 
 
             // Aero Setup
 
+        }
+
+        private Grid GetBumpstopRateStacker()
+        {
+            Grid grid = GetMainGrid("Bumpstop rate", 100);
+
+            Grid settings = GetGrid(4, 90);
+            Grid.SetColumn(settings, 1);
+
+
+            // FL
+            StackPanel stackerFL = new StackPanel { Orientation = Orientation.Horizontal };
+            stackerFL.Children.Add(new Label() { Content = "FL" });
+            ComboBox comboFL = new ComboBox() { HorizontalAlignment = HorizontalAlignment.Right };
+            comboFL.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.BumpstopRate);
+            comboFL.SelectedIndex = Setup.advancedSetup.mechanicalBalance.bumpStopRateUp[(int)Wheel.FrontLeft];
+            comboFL.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.bumpStopRateUp[(int)Wheel.FrontLeft] = comboFL.SelectedIndex; };
+            stackerFL.Children.Add(comboFL);
+            Grid.SetColumn(stackerFL, 0);
+
+            // FR
+            StackPanel stackerFR = new StackPanel { Orientation = Orientation.Horizontal };
+            stackerFR.Children.Add(new Label() { Content = "FR" });
+            ComboBox comboFR = new ComboBox();
+            comboFR.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.BumpstopRate);
+            comboFR.SelectedIndex = Setup.advancedSetup.mechanicalBalance.bumpStopRateUp[(int)Wheel.FrontRight];
+            comboFR.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.bumpStopRateUp[(int)Wheel.FrontRight] = comboFR.SelectedIndex; };
+            stackerFR.Children.Add(comboFR);
+            Grid.SetColumn(stackerFR, 1);
+
+            // RL
+            StackPanel stackerRL = new StackPanel { Orientation = Orientation.Horizontal };
+            stackerRL.Children.Add(new Label() { Content = "RL" });
+            ComboBox comboRL = new ComboBox();
+            comboRL.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.BumpstopRate);
+            comboRL.SelectedIndex = Setup.advancedSetup.mechanicalBalance.bumpStopRateUp[(int)Wheel.RearLeft];
+            comboRL.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.bumpStopRateUp[(int)Wheel.RearLeft] = comboRL.SelectedIndex; };
+            stackerRL.Children.Add(comboRL);
+            Grid.SetColumn(stackerRL, 2);
+
+            // RR
+            StackPanel stackerRR = new StackPanel { Orientation = Orientation.Horizontal };
+            stackerRR.Children.Add(new Label() { Content = "RR" });
+            ComboBox comboRR = new ComboBox();
+            comboRR.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.BumpstopRate);
+            comboRR.SelectedIndex = Setup.advancedSetup.mechanicalBalance.bumpStopRateUp[(int)Wheel.RearRight];
+            comboRR.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.bumpStopRateUp[(int)Wheel.RearRight] = comboRR.SelectedIndex; };
+            stackerRR.Children.Add(comboRR);
+            Grid.SetColumn(stackerRR, 3);
+
+            settings.Children.Add(stackerFL);
+            settings.Children.Add(stackerFR);
+            settings.Children.Add(stackerRL);
+            settings.Children.Add(stackerRR);
+
+            grid.Children.Add(settings);
+
+            return grid;
+        }
+
+        private Grid GetWheelRatesStacker()
+        {
+            Grid grid = GetMainGrid("Wheelrate", 100);
+
+            Grid settings = GetGrid(4, 90);
+            Grid.SetColumn(settings, 1);
+
+            // FL
+            StackPanel stackerFL = new StackPanel { Orientation = Orientation.Horizontal };
+            stackerFL.Children.Add(new Label() { Content = "FL" });
+            ComboBox comboFL = new ComboBox() { HorizontalAlignment = HorizontalAlignment.Right };
+            comboFL.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.WheelRateFronts);
+            comboFL.SelectedIndex = Setup.advancedSetup.mechanicalBalance.wheelRate[(int)Wheel.FrontLeft];
+            comboFL.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.wheelRate[(int)Wheel.FrontLeft] = comboFL.SelectedIndex; };
+            stackerFL.Children.Add(comboFL);
+            Grid.SetColumn(stackerFL, 0);
+
+            // FR
+            StackPanel stackerFR = new StackPanel { Orientation = Orientation.Horizontal };
+            stackerFR.Children.Add(new Label() { Content = "FR" });
+            ComboBox comboFR = new ComboBox();
+            comboFR.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.WheelRateFronts);
+            comboFR.SelectedIndex = Setup.advancedSetup.mechanicalBalance.wheelRate[(int)Wheel.FrontRight];
+            comboFR.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.wheelRate[(int)Wheel.FrontRight] = comboFR.SelectedIndex; };
+            stackerFR.Children.Add(comboFR);
+            Grid.SetColumn(stackerFR, 1);
+
+            // RL
+            StackPanel stackerRL = new StackPanel { Orientation = Orientation.Horizontal };
+            stackerRL.Children.Add(new Label() { Content = "RL" });
+            ComboBox comboRL = new ComboBox();
+            comboRL.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.WheelRateRears);
+            comboRL.SelectedIndex = Setup.advancedSetup.mechanicalBalance.wheelRate[(int)Wheel.RearLeft];
+            comboRL.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.wheelRate[(int)Wheel.RearLeft] = comboRL.SelectedIndex; };
+            stackerRL.Children.Add(comboRL);
+            Grid.SetColumn(stackerRL, 2);
+
+            // RR
+            StackPanel stackerRR = new StackPanel { Orientation = Orientation.Horizontal };
+            stackerRR.Children.Add(new Label() { Content = "RR" });
+            ComboBox comboRR = new ComboBox();
+            comboRR.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.WheelRateRears);
+            comboRR.SelectedIndex = Setup.advancedSetup.mechanicalBalance.wheelRate[(int)Wheel.RearRight];
+            comboRR.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.wheelRate[(int)Wheel.RearRight] = comboRR.SelectedIndex; };
+            stackerRR.Children.Add(comboRR);
+            Grid.SetColumn(stackerRR, 3);
+
+
+            settings.Children.Add(stackerFL);
+            settings.Children.Add(stackerFR);
+            settings.Children.Add(stackerRL);
+            settings.Children.Add(stackerRR);
+
+            grid.Children.Add(settings);
+
+            return grid;
         }
 
 
@@ -123,7 +243,6 @@ namespace ACCSetupApp.Controls
             comboPressureRL.SelectionChanged += (s, e) => { Setup.basicSetup.tyres.tyrePressure[(int)Wheel.RearLeft] = comboPressureRL.SelectedIndex; };
             stackerRL.Children.Add(comboPressureRL);
             Grid.SetColumn(stackerRL, 2);
-
 
             // RR
             StackPanel stackerRR = new StackPanel { Orientation = Orientation.Horizontal };
