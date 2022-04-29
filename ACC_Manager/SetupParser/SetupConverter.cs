@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ACCSetupApp.SetupParser.Attributes;
+using ACCSetupApp.SetupParser.SetupChanger;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -90,6 +92,7 @@ namespace ACCSetupApp.SetupParser
             int BumpstopRange(List<int> rawValue, Wheel wheel);
         }
 
+
         public interface IDamperSetup
         {
             int BumpSlow(List<int> rawValue, Wheel wheel);
@@ -137,6 +140,39 @@ namespace ACCSetupApp.SetupParser
             int ABS { get; }
             int EcuMap { get; }
             int TractionControl2 { get; }
+        }
+
+        public interface ITyreSetupChanger
+        {
+            SetupDoubleRange CamberFront { get; }
+            SetupDoubleRange CamberRear { get; }
+            SetupDoubleRange ToeFront { get; }
+            SetupDoubleRange ToeRear { get; }
+            SetupDoubleRange Caster { get; }
+        }
+
+        public interface IMechanicalSetupChanger
+        {
+            SetupIntRange AntiRollBarFront { get; }
+            SetupIntRange AntiRollBarRear { get; }
+            SetupIntRange PreloadDifferential { get; }
+            SetupDoubleRange BrakeBias { get; }
+            SetupIntRange BrakePower { get; }
+            SetupDoubleRange SteeringRatio { get; }
+            SetupIntRange WheelRateFronts { get; }
+            SetupIntRange WheelRateRears { get; }
+            SetupIntRange BumpstopRate { get; }
+            SetupIntRange BumpstopRangeFronts { get; }
+            SetupIntRange BumpstopRangeRears { get; }
+        }
+
+        public interface IAeroSetupChanger
+        {
+            SetupIntRange RideHeightFront { get; }
+            SetupIntRange RideHeightRear { get; }
+            SetupIntRange BrakeDucts { get; }
+            SetupIntRange RearWing { get; }
+            SetupIntRange Splitter { get; }
         }
 
         public abstract class AbstractTyresSetup
