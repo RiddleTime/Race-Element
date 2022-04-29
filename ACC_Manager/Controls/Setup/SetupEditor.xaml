@@ -22,7 +22,7 @@
         </materialDesign:TransitioningContent.OpeningEffects>
 
 
-        <StackPanel x:Name="FieldStackPanel" Orientation="Vertical" Background="Black">
+        <StackPanel x:Name="FieldStackPanel" Orientation="Vertical" Background="Black" HorizontalAlignment="Stretch">
 
         </StackPanel>
 
