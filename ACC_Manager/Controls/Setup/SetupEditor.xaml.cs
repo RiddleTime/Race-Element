@@ -88,20 +88,10 @@ namespace ACCSetupApp.Controls
 
         private Grid GetTyrePressureStacker()
         {
-            Grid grid = new Grid()
-            {
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                ColumnDefinitions = {
-                    new ColumnDefinition() {  Width = new GridLength(100) },
-                    new ColumnDefinition()
-                }
-            };
-            grid.Children.Add(new Label() { Content = "PSI" });
-
+            Grid grid = GetMainGrid("PSI", 100);
 
             Grid settings = GetGrid(4, 75);
             Grid.SetColumn(settings, 1);
-
 
             // FL
             StackPanel stackerFL = new StackPanel { Orientation = Orientation.Horizontal };
@@ -158,16 +148,7 @@ namespace ACCSetupApp.Controls
 
         private Grid GetCamberStacker()
         {
-            // Camber inputs 
-            Grid grid = new Grid()
-            {
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                ColumnDefinitions = {
-                    new ColumnDefinition() { Width = new GridLength(100) },
-                    new ColumnDefinition()
-                }
-            };
-            grid.Children.Add(new Label() { Content = "Camber" });
+            Grid grid = GetMainGrid("Camber", 100);
 
             Grid settings = GetGrid(4, 75);
             Grid.SetColumn(settings, 1);
@@ -182,7 +163,6 @@ namespace ACCSetupApp.Controls
             stackerFL.Children.Add(comboToeFL);
             Grid.SetColumn(stackerFL, 0);
 
-
             // FR
             StackPanel stackerFR = new StackPanel { Orientation = Orientation.Horizontal };
             stackerFR.Children.Add(new Label() { Content = "FR" });
@@ -193,7 +173,6 @@ namespace ACCSetupApp.Controls
             stackerFR.Children.Add(comboToeFR);
             Grid.SetColumn(stackerFR, 1);
 
-
             // RL
             StackPanel stackerRL = new StackPanel { Orientation = Orientation.Horizontal };
             stackerRL.Children.Add(new Label() { Content = "RL" });
@@ -203,7 +182,6 @@ namespace ACCSetupApp.Controls
             comboToeRL.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.camber[(int)Wheel.RearLeft] = comboToeRL.SelectedIndex; };
             stackerRL.Children.Add(comboToeRL);
             Grid.SetColumn(stackerRL, 2);
-
 
             // RR
             StackPanel stackerRR = new StackPanel { Orientation = Orientation.Horizontal };
@@ -228,21 +206,10 @@ namespace ACCSetupApp.Controls
         private Grid GetCasterStacker()
         {
             // Caster inputs 
-            Grid grid = new Grid()
-            {
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                ColumnDefinitions = {
-                    new ColumnDefinition() {  Width = new GridLength(100) },
-                    new ColumnDefinition()
-                }
-            };
-            grid.Children.Add(new Label() { Content = "Caster" });
+            Grid grid = GetMainGrid("Caster", 100);
 
-            Grid settings = GetGrid(4, 75);
+            Grid settings = GetGrid(2, 75);
             Grid.SetColumn(settings, 1);
-
-
-
 
             // LF
             StackPanel stackerCasterLF = new StackPanel() { Orientation = Orientation.Horizontal };
@@ -253,7 +220,6 @@ namespace ACCSetupApp.Controls
             comboCasterLF.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.casterLF = comboCasterLF.SelectedIndex; };
             stackerCasterLF.Children.Add(comboCasterLF);
             Grid.SetColumn(stackerCasterLF, 0);
-
 
             // RF
             StackPanel stackerCasterRF = new StackPanel() { Orientation = Orientation.Horizontal };
@@ -275,19 +241,10 @@ namespace ACCSetupApp.Controls
 
         private Grid GetToeStacker()
         {
-            Grid grid = new Grid()
-            {
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                ColumnDefinitions = {
-                    new ColumnDefinition() {  Width = new GridLength(100) },
-                    new ColumnDefinition()
-                }
-            };
-            grid.Children.Add(new Label() { Content = "Toe" });
+            Grid grid = GetMainGrid("Toe", 100);
 
             Grid settings = GetGrid(4, 75);
             Grid.SetColumn(settings, 1);
-
 
             // FL
             StackPanel stackerFL = new StackPanel { Orientation = Orientation.Horizontal };
@@ -330,14 +287,27 @@ namespace ACCSetupApp.Controls
             Grid.SetColumn(stackerRR, 3);
 
 
-
             settings.Children.Add(stackerFL);
             settings.Children.Add(stackerFR);
             settings.Children.Add(stackerRL);
             settings.Children.Add(stackerRR);
 
-
             grid.Children.Add(settings);
+
+            return grid;
+        }
+
+        private Grid GetMainGrid(string label, int labelWidth)
+        {
+            Grid grid = new Grid()
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                ColumnDefinitions = {
+                    new ColumnDefinition() {  Width = new GridLength(labelWidth) },
+                    new ColumnDefinition()
+                }
+            };
+            grid.Children.Add(new Label() { Content = label });
 
             return grid;
         }
@@ -369,6 +339,23 @@ namespace ACCSetupApp.Controls
             for (double i = doubleRange.Min; i < doubleRange.Max + doubleRange.Increment; i += doubleRange.Increment)
             {
                 collection.Add(Math.Round(i, 2));
+            }
+
+            return collection.ToArray();
+        }
+
+        private int[] GetIntegerRangeCollection(SetupIntRange intRange)
+        {
+            if (intRange.LUT != null)
+            {
+                return intRange.LUT;
+            }
+
+            List<int> collection = new List<int>();
+
+            for (int i = intRange.Min; i < intRange.Max + intRange.Increment; i += intRange.Increment)
+            {
+                collection.Add(i);
             }
 
             return collection.ToArray();
