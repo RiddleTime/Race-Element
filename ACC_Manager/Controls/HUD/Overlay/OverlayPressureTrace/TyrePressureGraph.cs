@@ -48,14 +48,16 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
             // draw background
             g.FillRectangle(new SolidBrush(Color.FromArgb(196, Color.Black)), graphRect);
 
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
 
             if (TirePressures.Count > 0)
             {
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 DrawData(g, TirePressures);
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
 
                 g.DrawRectangle(new Pen(Color.FromArgb(196, Color.Black)), graphRect);
+
             }
         }
 
@@ -64,7 +66,6 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
             if (Data.Count > 0)
             {
                 List<Point> points = new List<Point>();
-
                 lock (Data)
                     for (int i = 0; i < Data.Count - 1; i++)
                     {

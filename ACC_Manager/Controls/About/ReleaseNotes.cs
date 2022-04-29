@@ -10,6 +10,7 @@ namespace ACCSetupApp.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.0.5.4", "- Decrease draw rate for tyre pressure trace by 90%." },
             {"0.0.5.3", "- Added screen that pops-up after importing liveries, allowing you to tag them."+
                         "\n- Setup conversions added by KrisV147:"+
                         "\n - BMW M2 Cup 2020."+

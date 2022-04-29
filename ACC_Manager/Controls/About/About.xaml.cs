@@ -25,9 +25,6 @@ namespace ACCSetupApp.Controls
     /// </summary>
     public partial class About : UserControl
     {
-        // https://qwerty.dev/whitespace/
-        private string FourEmSpace = " ";
-
         public About()
         {
             InitializeComponent();

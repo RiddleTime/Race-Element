@@ -54,6 +54,10 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
 
         public override bool ShouldRender()
         {
+#if DEBUG
+            return true;
+#endif
+
             bool shouldRender = true;
             if (pageGraphics.Status == AcStatus.AC_OFF || pageGraphics.Status == AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
                 shouldRender = false;
