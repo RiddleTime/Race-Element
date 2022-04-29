@@ -106,7 +106,7 @@ namespace ACCSetupApp.Controls
 
             StackPanel stackerBrakeBias = new StackPanel { Orientation = Orientation.Horizontal };
             ComboBox comboBrakeBias = new ComboBox() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboBrakeBias.ItemsSource = GetDoubleRangeCollection(SetupChanger.MechanicalSetupChanger.SteeringRatio);
+            comboBrakeBias.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.SteeringRatio);
             comboBrakeBias.SelectedIndex = Setup.basicSetup.alignment.steerRatio;
             comboBrakeBias.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.steerRatio = comboBrakeBias.SelectedIndex; };
             stackerBrakeBias.Children.Add(comboBrakeBias);
@@ -130,7 +130,7 @@ namespace ACCSetupApp.Controls
 
             StackPanel stackerBrakeBias = new StackPanel { Orientation = Orientation.Horizontal };
             ComboBox comboBrakeBias = new ComboBox() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboBrakeBias.ItemsSource = GetDoubleRangeCollection(SetupChanger.MechanicalSetupChanger.BrakeBias);
+            comboBrakeBias.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.BrakeBias);
             comboBrakeBias.SelectedIndex = Setup.advancedSetup.mechanicalBalance.brakeBias;
             comboBrakeBias.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.brakeBias = comboBrakeBias.SelectedIndex; };
             stackerBrakeBias.Children.Add(comboBrakeBias);
@@ -154,7 +154,7 @@ namespace ACCSetupApp.Controls
 
             StackPanel stackerBrakePower = new StackPanel { Orientation = Orientation.Horizontal };
             ComboBox comboBrakePower = new ComboBox() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboBrakePower.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.BrakePower);
+            comboBrakePower.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.BrakePower);
             comboBrakePower.SelectedIndex = Setup.advancedSetup.mechanicalBalance.brakeTorque;
             comboBrakePower.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.brakeTorque = comboBrakePower.SelectedIndex; };
             stackerBrakePower.Children.Add(comboBrakePower);
@@ -178,7 +178,7 @@ namespace ACCSetupApp.Controls
 
             StackPanel stackerPreload = new StackPanel { Orientation = Orientation.Horizontal };
             ComboBox comboPreload = new ComboBox() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboPreload.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.PreloadDifferential);
+            comboPreload.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.PreloadDifferential);
             comboPreload.SelectedIndex = Setup.advancedSetup.drivetrain.preload;
             comboPreload.SelectionChanged += (s, e) => { Setup.advancedSetup.drivetrain.preload = comboPreload.SelectedIndex; };
             stackerPreload.Children.Add(comboPreload);
@@ -206,7 +206,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerFront = new StackPanel { Orientation = Orientation.Horizontal };
             stackerFront.Children.Add(new Label() { Content = "Front" });
             ComboBox comboFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboFL.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.AntiRollBarFront);
+            comboFL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.AntiRollBarFront);
             comboFL.SelectedIndex = Setup.advancedSetup.mechanicalBalance.aRBFront;
             comboFL.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.aRBFront = comboFL.SelectedIndex; };
             stackerFront.Children.Add(comboFL);
@@ -216,7 +216,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerRear = new StackPanel { Orientation = Orientation.Horizontal };
             stackerRear.Children.Add(new Label() { Content = "Rear" });
             ComboBox comboFR = new ComboBox() { Width = blockWidth + 4, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboFR.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.AntiRollBarRear);
+            comboFR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.AntiRollBarRear);
             comboFR.SelectedIndex = Setup.advancedSetup.mechanicalBalance.aRBRear;
             comboFR.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.aRBRear = comboFR.SelectedIndex; };
             stackerRear.Children.Add(comboFR);
@@ -245,7 +245,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerFL = new StackPanel { Orientation = Orientation.Horizontal };
             stackerFL.Children.Add(new Label() { Content = "FL" });
             ComboBox comboFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboFL.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.BumpstopRangeFronts);
+            comboFL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.BumpstopRangeFronts);
             comboFL.SelectedIndex = Setup.advancedSetup.mechanicalBalance.bumpStopWindow[(int)Wheel.FrontLeft];
             comboFL.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.bumpStopWindow[(int)Wheel.FrontLeft] = comboFL.SelectedIndex; };
             stackerFL.Children.Add(comboFL);
@@ -255,7 +255,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerFR = new StackPanel { Orientation = Orientation.Horizontal };
             stackerFR.Children.Add(new Label() { Content = "FR" });
             ComboBox comboFR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboFR.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.BumpstopRangeFronts);
+            comboFR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.BumpstopRangeFronts);
             comboFR.SelectedIndex = Setup.advancedSetup.mechanicalBalance.bumpStopWindow[(int)Wheel.FrontRight];
             comboFR.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.bumpStopWindow[(int)Wheel.FrontRight] = comboFR.SelectedIndex; };
             stackerFR.Children.Add(comboFR);
@@ -265,7 +265,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerRL = new StackPanel { Orientation = Orientation.Horizontal };
             stackerRL.Children.Add(new Label() { Content = "RL" });
             ComboBox comboRL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboRL.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.BumpstopRangeRears);
+            comboRL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.BumpstopRangeRears);
             comboRL.SelectedIndex = Setup.advancedSetup.mechanicalBalance.bumpStopWindow[(int)Wheel.RearLeft];
             comboRL.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.bumpStopWindow[(int)Wheel.RearLeft] = comboRL.SelectedIndex; };
             stackerRL.Children.Add(comboRL);
@@ -275,7 +275,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerRR = new StackPanel { Orientation = Orientation.Horizontal };
             stackerRR.Children.Add(new Label() { Content = "RR" });
             ComboBox comboRR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboRR.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.BumpstopRangeRears);
+            comboRR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.BumpstopRangeRears);
             comboRR.SelectedIndex = Setup.advancedSetup.mechanicalBalance.bumpStopWindow[(int)Wheel.RearRight];
             comboRR.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.bumpStopWindow[(int)Wheel.RearRight] = comboRR.SelectedIndex; };
             stackerRR.Children.Add(comboRR);
@@ -305,7 +305,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerFL = new StackPanel { Orientation = Orientation.Horizontal };
             stackerFL.Children.Add(new Label() { Content = "FL" });
             ComboBox comboFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboFL.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.BumpstopRate);
+            comboFL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.BumpstopRate);
             comboFL.SelectedIndex = Setup.advancedSetup.mechanicalBalance.bumpStopRateUp[(int)Wheel.FrontLeft];
             comboFL.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.bumpStopRateUp[(int)Wheel.FrontLeft] = comboFL.SelectedIndex; };
             stackerFL.Children.Add(comboFL);
@@ -315,7 +315,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerFR = new StackPanel { Orientation = Orientation.Horizontal };
             stackerFR.Children.Add(new Label() { Content = "FR" });
             ComboBox comboFR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboFR.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.BumpstopRate);
+            comboFR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.BumpstopRate);
             comboFR.SelectedIndex = Setup.advancedSetup.mechanicalBalance.bumpStopRateUp[(int)Wheel.FrontRight];
             comboFR.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.bumpStopRateUp[(int)Wheel.FrontRight] = comboFR.SelectedIndex; };
             stackerFR.Children.Add(comboFR);
@@ -325,7 +325,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerRL = new StackPanel { Orientation = Orientation.Horizontal };
             stackerRL.Children.Add(new Label() { Content = "RL" });
             ComboBox comboRL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboRL.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.BumpstopRate);
+            comboRL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.BumpstopRate);
             comboRL.SelectedIndex = Setup.advancedSetup.mechanicalBalance.bumpStopRateUp[(int)Wheel.RearLeft];
             comboRL.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.bumpStopRateUp[(int)Wheel.RearLeft] = comboRL.SelectedIndex; };
             stackerRL.Children.Add(comboRL);
@@ -335,7 +335,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerRR = new StackPanel { Orientation = Orientation.Horizontal };
             stackerRR.Children.Add(new Label() { Content = "RR" });
             ComboBox comboRR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboRR.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.BumpstopRate);
+            comboRR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.BumpstopRate);
             comboRR.SelectedIndex = Setup.advancedSetup.mechanicalBalance.bumpStopRateUp[(int)Wheel.RearRight];
             comboRR.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.bumpStopRateUp[(int)Wheel.RearRight] = comboRR.SelectedIndex; };
             stackerRR.Children.Add(comboRR);
@@ -364,7 +364,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerFL = new StackPanel { Orientation = Orientation.Horizontal };
             stackerFL.Children.Add(new Label() { Content = "FL" });
             ComboBox comboFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboFL.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.WheelRateFronts);
+            comboFL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.WheelRateFronts);
             comboFL.SelectedIndex = Setup.advancedSetup.mechanicalBalance.wheelRate[(int)Wheel.FrontLeft];
             comboFL.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.wheelRate[(int)Wheel.FrontLeft] = comboFL.SelectedIndex; };
             stackerFL.Children.Add(comboFL);
@@ -374,7 +374,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerFR = new StackPanel { Orientation = Orientation.Horizontal };
             stackerFR.Children.Add(new Label() { Content = "FR" });
             ComboBox comboFR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboFR.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.WheelRateFronts);
+            comboFR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.WheelRateFronts);
             comboFR.SelectedIndex = Setup.advancedSetup.mechanicalBalance.wheelRate[(int)Wheel.FrontRight];
             comboFR.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.wheelRate[(int)Wheel.FrontRight] = comboFR.SelectedIndex; };
             stackerFR.Children.Add(comboFR);
@@ -384,7 +384,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerRL = new StackPanel { Orientation = Orientation.Horizontal };
             stackerRL.Children.Add(new Label() { Content = "RL" });
             ComboBox comboRL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboRL.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.WheelRateRears);
+            comboRL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.WheelRateRears);
             comboRL.SelectedIndex = Setup.advancedSetup.mechanicalBalance.wheelRate[(int)Wheel.RearLeft];
             comboRL.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.wheelRate[(int)Wheel.RearLeft] = comboRL.SelectedIndex; };
             stackerRL.Children.Add(comboRL);
@@ -394,7 +394,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerRR = new StackPanel { Orientation = Orientation.Horizontal };
             stackerRR.Children.Add(new Label() { Content = "RR" });
             ComboBox comboRR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboRR.ItemsSource = GetIntegerRangeCollection(SetupChanger.MechanicalSetupChanger.WheelRateRears);
+            comboRR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.WheelRateRears);
             comboRR.SelectedIndex = Setup.advancedSetup.mechanicalBalance.wheelRate[(int)Wheel.RearRight];
             comboRR.SelectionChanged += (s, e) => { Setup.advancedSetup.mechanicalBalance.wheelRate[(int)Wheel.RearRight] = comboRR.SelectedIndex; };
             stackerRR.Children.Add(comboRR);
@@ -428,7 +428,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerFL = new StackPanel { Orientation = Orientation.Horizontal };
             stackerFL.Children.Add(new Label() { Content = "FL" });
             ComboBox comboPressureFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboPressureFL.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.TyrePressures);
+            comboPressureFL.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.TyrePressures);
             comboPressureFL.SelectedIndex = Setup.basicSetup.tyres.tyrePressure[(int)Wheel.FrontLeft];
             comboPressureFL.SelectionChanged += (s, e) => { Setup.basicSetup.tyres.tyrePressure[(int)Wheel.FrontLeft] = comboPressureFL.SelectedIndex; };
             stackerFL.Children.Add(comboPressureFL);
@@ -439,7 +439,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerFR = new StackPanel { Orientation = Orientation.Horizontal };
             stackerFR.Children.Add(new Label() { Content = "FR" });
             ComboBox comboPressureFR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboPressureFR.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.TyrePressures);
+            comboPressureFR.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.TyrePressures);
             comboPressureFR.SelectedIndex = Setup.basicSetup.tyres.tyrePressure[(int)Wheel.FrontRight];
             comboPressureFR.SelectionChanged += (s, e) => { Setup.basicSetup.tyres.tyrePressure[(int)Wheel.FrontRight] = comboPressureFR.SelectedIndex; };
             stackerFR.Children.Add(comboPressureFR);
@@ -449,7 +449,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerRL = new StackPanel { Orientation = Orientation.Horizontal };
             stackerRL.Children.Add(new Label() { Content = "RL" });
             ComboBox comboPressureRL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboPressureRL.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.TyrePressures);
+            comboPressureRL.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.TyrePressures);
             comboPressureRL.SelectedIndex = Setup.basicSetup.tyres.tyrePressure[(int)Wheel.RearLeft];
             comboPressureRL.SelectionChanged += (s, e) => { Setup.basicSetup.tyres.tyrePressure[(int)Wheel.RearLeft] = comboPressureRL.SelectedIndex; };
             stackerRL.Children.Add(comboPressureRL);
@@ -459,7 +459,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerRR = new StackPanel { Orientation = Orientation.Horizontal };
             stackerRR.Children.Add(new Label() { Content = "RR" });
             ComboBox comboPressureRR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboPressureRR.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.TyrePressures);
+            comboPressureRR.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.TyrePressures);
             comboPressureRR.SelectedIndex = Setup.basicSetup.tyres.tyrePressure[(int)Wheel.RearRight];
             comboPressureRR.SelectionChanged += (s, e) => { Setup.basicSetup.tyres.tyrePressure[(int)Wheel.RearRight] = comboPressureRR.SelectedIndex; };
             stackerRR.Children.Add(comboPressureRR);
@@ -489,7 +489,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerFL = new StackPanel { Orientation = Orientation.Horizontal };
             stackerFL.Children.Add(new Label() { Content = "FL" });
             ComboBox comboToeFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboToeFL.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.CamberFront);
+            comboToeFL.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.CamberFront);
             comboToeFL.SelectedIndex = Setup.basicSetup.alignment.camber[(int)Wheel.FrontLeft];
             comboToeFL.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.camber[(int)Wheel.FrontLeft] = comboToeFL.SelectedIndex; };
             stackerFL.Children.Add(comboToeFL);
@@ -499,7 +499,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerFR = new StackPanel { Orientation = Orientation.Horizontal };
             stackerFR.Children.Add(new Label() { Content = "FR" });
             ComboBox comboToeFR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboToeFR.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.CamberFront);
+            comboToeFR.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.CamberFront);
             comboToeFR.SelectedIndex = Setup.basicSetup.alignment.camber[(int)Wheel.FrontRight];
             comboToeFR.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.camber[(int)Wheel.FrontRight] = comboToeFR.SelectedIndex; };
             stackerFR.Children.Add(comboToeFR);
@@ -509,7 +509,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerRL = new StackPanel { Orientation = Orientation.Horizontal };
             stackerRL.Children.Add(new Label() { Content = "RL" });
             ComboBox comboToeRL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboToeRL.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.CamberRear);
+            comboToeRL.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.CamberRear);
             comboToeRL.SelectedIndex = Setup.basicSetup.alignment.camber[(int)Wheel.RearLeft];
             comboToeRL.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.camber[(int)Wheel.RearLeft] = comboToeRL.SelectedIndex; };
             stackerRL.Children.Add(comboToeRL);
@@ -519,7 +519,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerRR = new StackPanel { Orientation = Orientation.Horizontal };
             stackerRR.Children.Add(new Label() { Content = "RR" });
             ComboBox comboToeRR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboToeRR.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.CamberRear);
+            comboToeRR.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.CamberRear);
             comboToeRR.SelectedIndex = Setup.basicSetup.alignment.camber[(int)Wheel.RearRight];
             comboToeRR.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.camber[(int)Wheel.RearRight] = comboToeRR.SelectedIndex; };
             stackerRR.Children.Add(comboToeRR);
@@ -549,7 +549,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerCasterLF = new StackPanel() { Orientation = Orientation.Horizontal };
             stackerCasterLF.Children.Add(new Label() { Content = "FL" });
             ComboBox comboCasterLF = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboCasterLF.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.Caster);
+            comboCasterLF.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.Caster);
             comboCasterLF.SelectedIndex = Setup.basicSetup.alignment.casterLF;
             comboCasterLF.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.casterLF = comboCasterLF.SelectedIndex; };
             stackerCasterLF.Children.Add(comboCasterLF);
@@ -559,7 +559,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerCasterRF = new StackPanel() { Orientation = Orientation.Horizontal };
             stackerCasterRF.Children.Add(new Label() { Content = "FR" });
             ComboBox comboCasterRF = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboCasterRF.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.Caster);
+            comboCasterRF.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.Caster);
             comboCasterRF.SelectedIndex = Setup.basicSetup.alignment.casterRF;
             comboCasterRF.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.casterRF = comboCasterRF.SelectedIndex; };
             stackerCasterRF.Children.Add(comboCasterRF);
@@ -586,7 +586,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerFL = new StackPanel { Orientation = Orientation.Horizontal };
             stackerFL.Children.Add(new Label() { Content = "FL" });
             ComboBox comboCasterFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboCasterFL.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.ToeFront);
+            comboCasterFL.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.ToeFront);
             comboCasterFL.SelectedIndex = Setup.basicSetup.alignment.toe[(int)Wheel.FrontLeft];
             comboCasterFL.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.camber[(int)Wheel.FrontLeft] = comboCasterFL.SelectedIndex; };
             stackerFL.Children.Add(comboCasterFL);
@@ -596,7 +596,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerFR = new StackPanel { Orientation = Orientation.Horizontal };
             stackerFR.Children.Add(new Label() { Content = "FR" });
             ComboBox comboCasterFR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboCasterFR.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.ToeFront);
+            comboCasterFR.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.ToeFront);
             comboCasterFR.SelectedIndex = Setup.basicSetup.alignment.toe[(int)Wheel.FrontRight];
             comboCasterFR.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.camber[(int)Wheel.FrontRight] = comboCasterFR.SelectedIndex; };
             stackerFR.Children.Add(comboCasterFR);
@@ -606,7 +606,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerRL = new StackPanel { Orientation = Orientation.Horizontal };
             stackerRL.Children.Add(new Label() { Content = "RL" });
             ComboBox comboCasterRL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right }; ;
-            comboCasterRL.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.ToeRear);
+            comboCasterRL.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.ToeRear);
             comboCasterRL.SelectedIndex = Setup.basicSetup.alignment.toe[(int)Wheel.RearLeft];
             comboCasterRL.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.camber[(int)Wheel.RearLeft] = comboCasterRL.SelectedIndex; };
             stackerRL.Children.Add(comboCasterRL);
@@ -616,7 +616,7 @@ namespace ACCSetupApp.Controls
             StackPanel stackerRR = new StackPanel { Orientation = Orientation.Horizontal };
             stackerRR.Children.Add(new Label() { Content = "RR" });
             ComboBox comboCasterRR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboCasterRR.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.ToeRear);
+            comboCasterRR.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.ToeRear);
             comboCasterRR.SelectedIndex = Setup.basicSetup.alignment.toe[(int)Wheel.RearRight];
             comboCasterRR.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.camber[(int)Wheel.RearRight] = comboCasterRR.SelectedIndex; };
             stackerRR.Children.Add(comboCasterRR);
@@ -662,40 +662,6 @@ namespace ACCSetupApp.Controls
             }
 
             return customGrid;
-        }
-
-        private double[] GetDoubleRangeCollection(SetupDoubleRange doubleRange)
-        {
-            if (doubleRange.LUT != null)
-            {
-                return doubleRange.LUT;
-            }
-
-            List<double> collection = new List<double>();
-
-            for (double i = doubleRange.Min; i < doubleRange.Max + doubleRange.Increment; i += doubleRange.Increment)
-            {
-                collection.Add(Math.Round(i, 2));
-            }
-
-            return collection.ToArray();
-        }
-
-        private int[] GetIntegerRangeCollection(SetupIntRange intRange)
-        {
-            if (intRange.LUT != null)
-            {
-                return intRange.LUT;
-            }
-
-            List<int> collection = new List<int>();
-
-            for (int i = intRange.Min; i < intRange.Max + intRange.Increment; i += intRange.Increment)
-            {
-                collection.Add(i);
-            }
-
-            return collection.ToArray();
         }
 
         public Root GetSetup(FileInfo file)

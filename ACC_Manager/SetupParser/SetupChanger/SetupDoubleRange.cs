@@ -25,5 +25,22 @@ namespace ACCSetupApp.SetupParser.SetupRanges
             Max = max;
             Increment = increment;
         }
+
+        public static double[] GetOptionsCollection(SetupDoubleRange doubleRange)
+        {
+            if (doubleRange.LUT != null)
+            {
+                return doubleRange.LUT;
+            }
+
+            List<double> collection = new List<double>();
+
+            for (double i = doubleRange.Min; i < doubleRange.Max + doubleRange.Increment; i += doubleRange.Increment)
+            {
+                collection.Add(Math.Round(i, 2));
+            }
+
+            return collection.ToArray();
+        }
     }
 }
