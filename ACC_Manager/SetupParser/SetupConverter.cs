@@ -157,7 +157,7 @@ namespace ACCSetupApp.SetupParser
         }
 
         public static SetupDoubleRange TyrePressuresGT3 = new SetupDoubleRange(20.3, 35, 0.1);
-        public static SetupDoubleRange TyrePressuresGT4 = new SetupDoubleRange(17.0, 99, 0.1);
+        public static SetupDoubleRange TyrePressuresGT4 = new SetupDoubleRange(17.0, 35, 0.1);
 
         public interface IMechanicalSetupChanger
         {
