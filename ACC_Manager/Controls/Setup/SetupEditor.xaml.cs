@@ -77,6 +77,12 @@ namespace ACCSetupApp.Controls
             FieldStackPanel.Children.Add(GetCasterStacker());
 
 
+            // Mechanical Setup
+
+
+
+            // Aero Setup
+
         }
 
 
@@ -91,7 +97,7 @@ namespace ACCSetupApp.Controls
             ComboBox comboPressureFL = new ComboBox();
             comboPressureFL.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.TyrePressures);
             comboPressureFL.SelectedIndex = Setup.basicSetup.tyres.tyrePressure[(int)Wheel.FrontLeft];
-            comboPressureFL.SelectionChanged += (s, e) => { Setup.basicSetup.tyres.tyrePressure[(int)Wheel.FrontLeft] = (int)comboPressureFL.SelectedIndex; };
+            comboPressureFL.SelectionChanged += (s, e) => { Setup.basicSetup.tyres.tyrePressure[(int)Wheel.FrontLeft] = comboPressureFL.SelectedIndex; };
             stackerFL.Children.Add(comboPressureFL);
             pressureStacker.Children.Add(stackerFL);
 
@@ -101,7 +107,7 @@ namespace ACCSetupApp.Controls
             ComboBox comboPressureFR = new ComboBox();
             comboPressureFR.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.TyrePressures);
             comboPressureFR.SelectedIndex = Setup.basicSetup.tyres.tyrePressure[(int)Wheel.FrontRight];
-            comboPressureFR.SelectionChanged += (s, e) => { Setup.basicSetup.tyres.tyrePressure[(int)Wheel.FrontRight] = (int)comboPressureFR.SelectedIndex; };
+            comboPressureFR.SelectionChanged += (s, e) => { Setup.basicSetup.tyres.tyrePressure[(int)Wheel.FrontRight] = comboPressureFR.SelectedIndex; };
             stackerFR.Children.Add(comboPressureFR);
             pressureStacker.Children.Add(stackerFR);
 
@@ -111,7 +117,7 @@ namespace ACCSetupApp.Controls
             ComboBox comboPressureRL = new ComboBox();
             comboPressureRL.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.TyrePressures);
             comboPressureRL.SelectedIndex = Setup.basicSetup.tyres.tyrePressure[(int)Wheel.RearLeft];
-            comboPressureRL.SelectionChanged += (s, e) => { Setup.basicSetup.tyres.tyrePressure[(int)Wheel.RearLeft] = (int)comboPressureRL.SelectedIndex; };
+            comboPressureRL.SelectionChanged += (s, e) => { Setup.basicSetup.tyres.tyrePressure[(int)Wheel.RearLeft] = comboPressureRL.SelectedIndex; };
             stackerRL.Children.Add(comboPressureRL);
             pressureStacker.Children.Add(stackerRL);
 
@@ -121,7 +127,7 @@ namespace ACCSetupApp.Controls
             ComboBox comboPressureRR = new ComboBox();
             comboPressureRR.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.TyrePressures);
             comboPressureRR.SelectedIndex = Setup.basicSetup.tyres.tyrePressure[(int)Wheel.RearRight];
-            comboPressureRR.SelectionChanged += (s, e) => { Setup.basicSetup.tyres.tyrePressure[(int)Wheel.RearRight] = (int)comboPressureRR.SelectedIndex; };
+            comboPressureRR.SelectionChanged += (s, e) => { Setup.basicSetup.tyres.tyrePressure[(int)Wheel.RearRight] = comboPressureRR.SelectedIndex; };
             stackerRR.Children.Add(comboPressureRR);
             pressureStacker.Children.Add(stackerRR);
 
@@ -141,7 +147,7 @@ namespace ACCSetupApp.Controls
             ComboBox comboToeFL = new ComboBox();
             comboToeFL.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.CamberFront);
             comboToeFL.SelectedIndex = Setup.basicSetup.alignment.camber[(int)Wheel.FrontLeft];
-            comboToeFL.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.camber[(int)Wheel.FrontLeft] = (int)comboToeFL.SelectedIndex; };
+            comboToeFL.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.camber[(int)Wheel.FrontLeft] = comboToeFL.SelectedIndex; };
             stackerFL.Children.Add(comboToeFL);
             camberStacker.Children.Add(stackerFL);
 
@@ -151,7 +157,7 @@ namespace ACCSetupApp.Controls
             ComboBox comboToeFR = new ComboBox();
             comboToeFR.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.CamberFront);
             comboToeFR.SelectedIndex = Setup.basicSetup.alignment.camber[(int)Wheel.FrontRight];
-            comboToeFR.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.camber[(int)Wheel.FrontRight] = (int)comboToeFR.SelectedIndex; };
+            comboToeFR.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.camber[(int)Wheel.FrontRight] = comboToeFR.SelectedIndex; };
             stackerFR.Children.Add(comboToeFR);
             camberStacker.Children.Add(stackerFR);
 
@@ -161,7 +167,7 @@ namespace ACCSetupApp.Controls
             ComboBox comboToeRL = new ComboBox();
             comboToeRL.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.CamberRear);
             comboToeRL.SelectedIndex = Setup.basicSetup.alignment.camber[(int)Wheel.RearLeft];
-            comboToeRL.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.camber[(int)Wheel.RearLeft] = (int)comboToeRL.SelectedIndex; };
+            comboToeRL.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.camber[(int)Wheel.RearLeft] = comboToeRL.SelectedIndex; };
             stackerRL.Children.Add(comboToeRL);
             camberStacker.Children.Add(stackerRL);
 
@@ -171,7 +177,7 @@ namespace ACCSetupApp.Controls
             ComboBox comboToeRR = new ComboBox();
             comboToeRR.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.CamberRear);
             comboToeRR.SelectedIndex = Setup.basicSetup.alignment.camber[(int)Wheel.RearRight];
-            comboToeRR.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.camber[(int)Wheel.RearRight] = (int)comboToeRR.SelectedIndex; };
+            comboToeRR.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.camber[(int)Wheel.RearRight] = comboToeRR.SelectedIndex; };
             stackerRR.Children.Add(comboToeRR);
             camberStacker.Children.Add(stackerRR);
 
@@ -191,6 +197,7 @@ namespace ACCSetupApp.Controls
             ComboBox comboCasterLF = new ComboBox();
             comboCasterLF.ItemsSource = GetDoubleRangeCollection(casterRange);
             comboCasterLF.SelectedIndex = Setup.basicSetup.alignment.casterLF;
+            comboCasterLF.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.casterLF = comboCasterLF.SelectedIndex; };
             stackerCasterLF.Children.Add(comboCasterLF);
             casterStacker.Children.Add(stackerCasterLF);
 
@@ -200,6 +207,7 @@ namespace ACCSetupApp.Controls
             ComboBox comboCasterRF = new ComboBox();
             comboCasterRF.ItemsSource = GetDoubleRangeCollection(casterRange);
             comboCasterRF.SelectedIndex = Setup.basicSetup.alignment.casterRF;
+            comboCasterRF.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.casterRF = comboCasterRF.SelectedIndex; };
             stackerCasterRF.Children.Add(comboCasterRF);
             casterStacker.Children.Add(stackerCasterRF);
 
@@ -214,37 +222,41 @@ namespace ACCSetupApp.Controls
             // FL
             StackPanel stackerFL = new StackPanel { Orientation = Orientation.Horizontal };
             stackerFL.Children.Add(new Label() { Content = "FL" });
-            ComboBox comboToeFL = new ComboBox();
-            comboToeFL.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.ToeFront);
-            comboToeFL.SelectedIndex = Setup.basicSetup.alignment.toe[(int)Wheel.FrontLeft];
-            stackerFL.Children.Add(comboToeFL);
+            ComboBox comboCasterFL = new ComboBox();
+            comboCasterFL.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.ToeFront);
+            comboCasterFL.SelectedIndex = Setup.basicSetup.alignment.toe[(int)Wheel.FrontLeft];
+            comboCasterFL.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.camber[(int)Wheel.FrontLeft] = comboCasterFL.SelectedIndex; };
+            stackerFL.Children.Add(comboCasterFL);
             toeStacker.Children.Add(stackerFL);
 
             // FR
             StackPanel stackerFR = new StackPanel { Orientation = Orientation.Horizontal };
             stackerFR.Children.Add(new Label() { Content = "FR" });
-            ComboBox comboToeFR = new ComboBox();
-            comboToeFR.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.ToeFront);
-            comboToeFR.SelectedIndex = Setup.basicSetup.alignment.toe[(int)Wheel.FrontRight];
-            stackerFR.Children.Add(comboToeFR);
+            ComboBox comboCasterFR = new ComboBox();
+            comboCasterFR.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.ToeFront);
+            comboCasterFR.SelectedIndex = Setup.basicSetup.alignment.toe[(int)Wheel.FrontRight];
+            comboCasterFR.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.camber[(int)Wheel.FrontRight] = comboCasterFR.SelectedIndex; };
+            stackerFR.Children.Add(comboCasterFR);
             toeStacker.Children.Add(stackerFR);
 
             // RL
             StackPanel stackerRL = new StackPanel { Orientation = Orientation.Horizontal };
             stackerRL.Children.Add(new Label() { Content = "RL" });
-            ComboBox comboToeRL = new ComboBox();
-            comboToeRL.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.ToeRear);
-            comboToeRL.SelectedIndex = Setup.basicSetup.alignment.toe[(int)Wheel.RearLeft];
-            stackerRL.Children.Add(comboToeRL);
+            ComboBox comboCasterRL = new ComboBox();
+            comboCasterRL.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.ToeRear);
+            comboCasterRL.SelectedIndex = Setup.basicSetup.alignment.toe[(int)Wheel.RearLeft];
+            comboCasterRL.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.camber[(int)Wheel.RearLeft] = comboCasterRL.SelectedIndex; };
+            stackerRL.Children.Add(comboCasterRL);
             toeStacker.Children.Add(stackerRL);
 
             // RR
             StackPanel stackerRR = new StackPanel { Orientation = Orientation.Horizontal };
             stackerRR.Children.Add(new Label() { Content = "RR" });
-            ComboBox comboToeRR = new ComboBox();
-            comboToeRR.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.ToeRear);
-            comboToeRR.SelectedIndex = Setup.basicSetup.alignment.toe[(int)Wheel.RearRight];
-            stackerRR.Children.Add(comboToeRR);
+            ComboBox comboCasterRR = new ComboBox();
+            comboCasterRR.ItemsSource = GetDoubleRangeCollection(SetupChanger.TyreSetupChanger.ToeRear);
+            comboCasterRR.SelectedIndex = Setup.basicSetup.alignment.toe[(int)Wheel.RearRight];
+            comboCasterRR.SelectionChanged += (s, e) => { Setup.basicSetup.alignment.camber[(int)Wheel.RearRight] = comboCasterRR.SelectedIndex; };
+            stackerRR.Children.Add(comboCasterRR);
             toeStacker.Children.Add(stackerRR);
 
             return toeStacker;

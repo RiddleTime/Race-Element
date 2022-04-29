@@ -44,9 +44,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
         }
 
         ITyreSetupChanger ISetupChanger.TyreSetupChanger => new TyreSetupChanger();
-
         IMechanicalSetupChanger ISetupChanger.MechanicalSetupChanger => new MechSetupChanger();
-
         IAeroSetupChanger ISetupChanger.AeroSetupChanger => new AeroSetupChanger();
 
         private class TyreSetupChanger : ITyreSetupChanger
