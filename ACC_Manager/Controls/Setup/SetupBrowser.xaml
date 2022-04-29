@@ -56,14 +56,27 @@
             </TreeViewItem>
         </TreeView>
 
-        <materialDesign:Card Grid.Column="1" Margin="3,3,3,3">
-            <FlowDocumentScrollViewer Focusable="False" Cursor="Arrow" MaxWidth="600">
-                <FlowDocument  x:Name="flowDocument" Focusable="False" Cursor="Arrow" 
+
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="35"/>
+            </Grid.RowDefinitions>
+
+            <materialDesign:Card Grid.Row="0" Margin="3">
+                <FlowDocumentScrollViewer Focusable="False" Cursor="Arrow" MaxWidth="600">
+                    <FlowDocument  x:Name="flowDocument" Focusable="False" Cursor="Arrow" 
                            Background="{DynamicResource MaterialDesignPaper}"
                            FontFamily="{StaticResource RobotoMedium}" 
                            RenderOptions.ClearTypeHint="Enabled" AllowDrop="False">
-                </FlowDocument>
-            </FlowDocumentScrollViewer>
-        </materialDesign:Card>
+                    </FlowDocument>
+                </FlowDocumentScrollViewer>
+            </materialDesign:Card>
+
+            <Button x:Name="buttonEditSetup" Grid.Row="1">Edit</Button>
+        </Grid>
+
+        <controls:SetupEditor Grid.Column="1" Margin="3"></controls:SetupEditor>
     </Grid>
 </UserControl>

@@ -23,6 +23,7 @@ namespace ACCSetupApp.Controls
         public static SetupBrowser Instance { get; set; }
 
         private readonly FlowDocSetupRenderer setupRenderer;
+        private string selectedSetup;
 
         public SetupBrowser()
         {
@@ -33,6 +34,12 @@ namespace ACCSetupApp.Controls
             FetchAllSetups();
 
             setupsTreeView.SelectedItemChanged += SetupsTreeView_SelectedItemChanged;
+
+            buttonEditSetup.Click += (o, e) =>
+            {
+                if (selectedSetup != null)
+                    SetupEditor.Instance.Open(selectedSetup);
+            };
 
             Instance = this;
         }
@@ -50,6 +57,7 @@ namespace ACCSetupApp.Controls
                         if (item.DataContext.GetType() == typeof(FileInfo))
                         {
                             FileInfo file = (FileInfo)item.DataContext;
+                            selectedSetup = file.FullName;
                             setupRenderer.LogSetup(ref flowDocument, file.FullName);
                         }
                     }

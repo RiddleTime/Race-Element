@@ -1,5 +1,4 @@
-﻿using ACCSetupApp.SetupParser.Attributes;
-using ACCSetupApp.SetupParser.SetupChanger;
+﻿using ACCSetupApp.SetupParser.SetupRanges;
 using System;
 using System.Collections.Generic;
 using static ACCSetupApp.SetupParser.ConversionFactory;
@@ -7,7 +6,7 @@ using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.GT3
 {
-    internal class Porsche911IIGT3R : ICarSetupConversion
+    internal class Porsche911IIGT3R : ICarSetupConversion, ISetupChanger
     {
         public CarModels CarModel => CarModels.Porsche_911_II_GT3_R_2019;
 
@@ -44,8 +43,15 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
             }
         }
 
+        ITyreSetupChanger ISetupChanger.TyreSetupChanger => new TyreSetupChanger();
+
+        IMechanicalSetupChanger ISetupChanger.MechanicalSetupChanger => new MechSetupChanger();
+
+        IAeroSetupChanger ISetupChanger.AeroSetupChanger => new AeroSetupChanger();
+
         private class TyreSetupChanger : ITyreSetupChanger
         {
+            public SetupDoubleRange TyrePressures => TyrePressuresGT3;
             public SetupDoubleRange CamberFront => new SetupDoubleRange(-4, -1.5, 0.1);
             public SetupDoubleRange CamberRear => new SetupDoubleRange(-3.5, -1, 0.1);
             public SetupDoubleRange ToeFront => new SetupDoubleRange(-0.4, 0.4, 0.01);
@@ -135,6 +141,9 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
         IDamperSetup ICarSetupConversion.DamperSetup => DefaultDamperSetup;
 
         IAeroBalance ICarSetupConversion.AeroBalance => new AeroSetup();
+
+
+
         private class AeroSetup : IAeroBalance
         {
             public int BrakeDucts(int rawValue)

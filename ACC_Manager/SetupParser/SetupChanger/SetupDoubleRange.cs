@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static ACCSetupApp.SetupParser.SetupConverter;
 
-namespace ACCSetupApp.SetupParser.Attributes
+namespace ACCSetupApp.SetupParser.SetupRanges
 {
     public class SetupDoubleRange
     {

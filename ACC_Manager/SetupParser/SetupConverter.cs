@@ -1,5 +1,4 @@
-﻿using ACCSetupApp.SetupParser.Attributes;
-using ACCSetupApp.SetupParser.SetupChanger;
+﻿using ACCSetupApp.SetupParser.SetupRanges;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,12 +63,10 @@ namespace ACCSetupApp.SetupParser
             CarClasses CarClass { get; }
 
             AbstractTyresSetup TyresSetup { get; }
-
             IDamperSetup DamperSetup { get; }
-
             IMechanicalSetup MechanicalSetup { get; }
-
             IAeroBalance AeroBalance { get; }
+
         }
 
         public interface IMechanicalSetup
@@ -142,14 +139,25 @@ namespace ACCSetupApp.SetupParser
             int TractionControl2 { get; }
         }
 
+        public interface ISetupChanger
+        {
+            ITyreSetupChanger TyreSetupChanger { get; }
+            IMechanicalSetupChanger MechanicalSetupChanger { get; }
+            IAeroSetupChanger AeroSetupChanger { get; }
+        }
+
         public interface ITyreSetupChanger
         {
+            SetupDoubleRange TyrePressures { get; }
             SetupDoubleRange CamberFront { get; }
             SetupDoubleRange CamberRear { get; }
             SetupDoubleRange ToeFront { get; }
             SetupDoubleRange ToeRear { get; }
             SetupDoubleRange Caster { get; }
         }
+
+        public static SetupDoubleRange TyrePressuresGT3 = new SetupDoubleRange(20.3, 35, 0.1);
+        public static SetupDoubleRange TyrePressuresGT4 = new SetupDoubleRange(17.0, 99, 0.1);
 
         public interface IMechanicalSetupChanger
         {

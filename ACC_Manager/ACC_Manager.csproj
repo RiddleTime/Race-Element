@@ -365,6 +365,9 @@
     <Compile Include="Controls\Setup\SetupComparer.xaml.cs">
       <DependentUpon>SetupComparer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Setup\SetupEditor.xaml.cs">
+      <DependentUpon>SetupEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Setup\SetupsTab.xaml.cs">
       <DependentUpon>SetupsTab.xaml</DependentUpon>
     </Compile>
@@ -376,6 +379,7 @@
     <Compile Include="Controls\HUD\Overlay\Internal\PageGraphicsTracker.cs" />
     <Compile Include="Controls\HUD\Overlay\Internal\PagePhysicsTracker.cs" />
     <Compile Include="Controls\HUD\Overlay\Internal\PageStaticTracker.cs" />
+    <Compile Include="SetupParser\SetupChanger\SetupDoubleRange.cs" />
     <Compile Include="SetupParser\Cars\GT3\AudiR8LMSevo.cs" />
     <Compile Include="SetupParser\Cars\GT3\BentleyContinentalGT3_2015.cs" />
     <Compile Include="SetupParser\Cars\GT3\BmwM6GT3_2017.cs" />
@@ -397,6 +401,7 @@
     <Compile Include="SetupParser\Cars\GTC\Porsche991IIGT3Cup_2017.cs" />
     <Compile Include="SetupParser\Cars\GTC\Porsche992GT3Cup_2021.cs" />
     <Compile Include="SetupParser\Cars\TCX\BMWM2CSRacing.cs" />
+    <Compile Include="SetupParser\SetupChanger\SetupIntRange.cs" />
     <Compile Include="SharedMemory\StructExtensions.cs" />
     <Compile Include="Controls\Telemetry\TelemetryDebug.xaml.cs">
       <DependentUpon>TelemetryDebug.xaml</DependentUpon>
@@ -499,6 +504,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Setup\SetupComparer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Setup\SetupEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

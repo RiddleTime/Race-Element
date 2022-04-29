@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCSetupApp.SetupParser.SetupChanger
+namespace ACCSetupApp.SetupParser.SetupRanges
 {
     public class SetupIntRange
     {
