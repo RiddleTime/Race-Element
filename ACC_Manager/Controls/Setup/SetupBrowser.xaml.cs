@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 
 using static ACCSetupApp.SetupParser.ConversionFactory;
+using static SetupParser.SetupJson;
 
 namespace ACCSetupApp.Controls
 {
@@ -58,6 +59,21 @@ namespace ACCSetupApp.Controls
                         {
                             FileInfo file = (FileInfo)item.DataContext;
                             selectedSetup = file.FullName;
+
+                            Root root = GetSetupJsonRoot(file);
+                            if (root == null)
+                                return;
+
+                            // make edit button visible depending on whether there is a setup changer avaiable for the car
+                            if (GetChanger(ParseCarName(root.carName)) == null)
+                            {
+                                buttonEditSetup.Visibility = Visibility.Hidden;
+                            }
+                            else
+                            {
+                                buttonEditSetup.Visibility = Visibility.Visible;
+                            }
+
                             setupRenderer.LogSetup(ref flowDocument, file.FullName);
                         }
                     }

@@ -61,7 +61,7 @@
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="35"/>
+                <RowDefinition Height="37"/>
             </Grid.RowDefinitions>
 
             <materialDesign:Card Grid.Row="0" Margin="3">
@@ -74,7 +74,7 @@
                 </FlowDocumentScrollViewer>
             </materialDesign:Card>
 
-            <Button x:Name="buttonEditSetup" Grid.Row="1">Edit</Button>
+            <Button x:Name="buttonEditSetup" Grid.Row="1" Margin="4" Visibility="Hidden">Edit</Button>
         </Grid>
 
         <controls:SetupEditor Grid.Column="1" Margin="3"></controls:SetupEditor>

@@ -29,8 +29,8 @@ namespace ACCSetupApp.Controls.Setup
         {
             flowDocument.Blocks.Clear();
 
-            SetupJson.Root setup1 = GetSetup(setupFile1);
-            SetupJson.Root setup2 = GetSetup(setupFile2);
+            SetupJson.Root setup1 = GetSetupJsonRoot(setupFile1);
+            SetupJson.Root setup2 = GetSetupJsonRoot(setupFile2);
 
             if (setup1 == null || setup2 == null)
             {
@@ -311,31 +311,5 @@ namespace ACCSetupApp.Controls.Setup
             flowDocument.Blocks.Add(electronicsSection);
         }
 
-        public Root GetSetup(FileInfo file)
-        {
-            if (!file.Exists)
-                return null;
-
-            string jsonString = string.Empty;
-            try
-            {
-                using (FileStream fileStream = file.OpenRead())
-                {
-                    using (StreamReader reader = new StreamReader(fileStream))
-                    {
-                        jsonString = reader.ReadToEnd();
-                        reader.Close();
-                        fileStream.Close();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-            }
-
-            Root setup = JsonConvert.DeserializeObject<Root>(jsonString);
-            return setup;
-        }
     }
 }

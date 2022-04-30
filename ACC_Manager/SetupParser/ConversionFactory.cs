@@ -6,6 +6,11 @@ using static ACCSetupApp.SetupParser.SetupConverter;
 using static ACCSetupApp.SetupParser.ConversionFactory.CarModels;
 using ACCSetupApp.SetupParser.Cars.GTC;
 using ACCSetupApp.SetupParser.Cars.TCX;
+using static SetupParser.SetupJson;
+using System.IO;
+using System;
+using System.Diagnostics;
+using Newtonsoft.Json;
 
 namespace ACCSetupApp.SetupParser
 {
@@ -59,7 +64,68 @@ namespace ACCSetupApp.SetupParser
             Porsche_992_GT3_Cup_2021
         }
 
-        private static Dictionary<CarModels, ICarSetupConversion> Conversions = new Dictionary<CarModels, ICarSetupConversion>()
+        private static readonly Dictionary<CarModels, ISetupChanger> Changers = new Dictionary<CarModels, ISetupChanger>()
+        {
+            // GT3
+            //{Aston_Martin_V8_Vantage_GT3_2019, new AMRV8VantageGT3() },
+            //{Aston_Martin_Vantage_V12_GT3_2013, new AMRV12VantageGT3() },
+            //{Audi_R8_LMS_2015, new AudiR8LMS() },
+            //{Audi_R8_LMS_Evo_2019, new AudiR8LMSevo() },
+            //{Audi_R8_LMS_Evo_II_2022, new AudiR8LMSevoII() },
+            //{Bentley_Continental_GT3_2015, new BentleyContinentalGT3_2015() },
+            //{Bentley_Continental_GT3_2018, new BentleyContinentalGT3_2018() },
+            //{BMW_M4_GT3_2021, new BmwM4GT3() },
+            //{BMW_M6_GT3_2017, new BmwM6GT3_2017() } ,
+            //{Emil_Frey_Jaguar_G3_2021, new JaguarG3GT3() },
+            //{Ferrari_488_GT3_2018, new Ferrari488GT3() },
+            //{Ferrari_488_GT3_Evo_2020, new Ferrari488GT3evo() },
+            //{Honda_NSX_GT3_2017, new HondaNsxGT3() },
+            //{Honda_NSX_GT3_Evo_2019, new HondaNsxGT3Evo() },
+            //{Lamborghini_Gallardo_G3_Reiter_2017, new LamborghiniGallardoG3Reiter_2017() },
+            //{Lamborghini_Huracan_GT3_2015, new LamborghiniHuracanGT3() },
+            //{Lamborghini_Huracan_GT3_Evo_2019, new LamborghiniHuracanGT3evo() },
+            //{Lamborghini_Huracan_ST_2015, new LamborghiniHuracanST_2015() },
+            //{Lamborghini_Huracan_ST_Evo2_2021, new LamborghiniHuracanSTEvo22021() },
+            //{Lexus_RCF_GT3_2016, new LexusRcfGT3() },
+            //{McLaren_650S_GT3_2015, new Mclaren650sGT3_2015() },
+            //{McLaren_720S_GT3_2019, new Mclaren720sGT3() },
+            //{Mercedes_AMG_GT3_2015, new MercedesAMGGT3_2015() },
+            //{Mercedes_AMG_GT3_Evo_2020, new MercedesAMGGT3evo() },
+            //{Nissan_GT_R_Nismo_GT3_2015, new NissanGtrGT3_2015() },
+            //{Nissan_GT_R_Nismo_GT3_2018, new NissanGtrGT3_2018() },
+            {Porsche_911_II_GT3_R_2019, new Porsche911IIGT3R() },
+            //{Porsche_911_GT3_R_2018, new Porsche991GT3R() },
+            
+            // GT4
+            //{Alpine_A110_GT4_2018, new AlpineA110GT4() },
+            //{Aston_Martin_Vantage_AMR_GT4_2018, new AMRV8VantageGT4() },
+            //{Audi_R8_LMS_GT4_2016, new AudiR8GT4() },
+            //{BMW_M4_GT4_2018, new BMWM4GT4() },
+            //{Chevrolet_Camaro_GT4_R_2017, new ChevroletCamaroGT4R() },
+            //{Ginetta_G55_GT4_2012, new GinettaG55GT4() },
+            //{KTM_Xbow_GT4_2016, new KTMXbowGT4() },
+            //{Maserati_Gran_Turismo_MC_GT4_2016, new MaseratiMCGT4() },
+            //{McLaren_570s_GT4_2016, new Mclaren570SGT4() },
+            //{Mercedes_AMG_GT4_2016, new MercedesAMGGT4() },
+            //{Porsche_718_Cayman_GT4_MR_2019, new Porsche718CaymanGT4MR() },
+
+            // GTC 
+            //{Porsche_991_II_GT3_Cup_2017, new Porsche991IIGT3Cup_2017() },
+            //{Porsche_992_GT3_Cup_2021, new Porsche992GT3Cup_2021() },
+            //{Ferrari_488_Challenge_Evo_2020, new Ferrari488ChallengeEvo() },
+
+            // TCX
+            //{BMW_M2_Cup_2020, new BMWM2CSRacing() }
+        };
+
+        public static ISetupChanger GetChanger(CarModels model)
+        {
+            bool found = Changers.TryGetValue(model, out var changer);
+            if (found) return changer;
+            return null;
+        }
+
+        private static readonly Dictionary<CarModels, ICarSetupConversion> Conversions = new Dictionary<CarModels, ICarSetupConversion>()
         {
             // GT3
             {Aston_Martin_V8_Vantage_GT3_2019, new AMRV8VantageGT3() },
@@ -293,6 +359,39 @@ namespace ACCSetupApp.SetupParser
             }
 
             return $"Unknown: {carId}";
+        }
+
+        public static Root GetSetupJsonRoot(FileInfo jsonFile)
+        {
+            string jsonString = string.Empty;
+            try
+            {
+                using (FileStream fileStream = jsonFile.OpenRead())
+                {
+                    using (StreamReader reader = new StreamReader(fileStream))
+                    {
+                        jsonString = reader.ReadToEnd();
+                        reader.Close();
+                        fileStream.Close();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+
+            Root setup = JsonConvert.DeserializeObject<Root>(jsonString);
+            return setup;
+        }
+
+        public static Root GetSetupJsonRoot(string file)
+        {
+            FileInfo jsonFile = new FileInfo(file);
+            if (!jsonFile.Exists)
+                return null;
+
+            return GetSetupJsonRoot(jsonFile);
         }
     }
 }

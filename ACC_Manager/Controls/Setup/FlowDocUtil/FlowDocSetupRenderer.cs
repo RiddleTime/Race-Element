@@ -24,30 +24,8 @@ namespace ACCSetupApp.Controls.Setup
         {
             flowDocument.Blocks.Clear();
 
-            FileInfo jsonFile = new FileInfo(file);
-            if (!jsonFile.Exists)
-                return;
-
-            string jsonString = string.Empty;
-            try
-            {
-                using (FileStream fileStream = jsonFile.OpenRead())
-                {
-                    using (StreamReader reader = new StreamReader(fileStream))
-                    {
-                        jsonString = reader.ReadToEnd();
-                        reader.Close();
-                        fileStream.Close();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-            }
-
-            Root setup = JsonConvert.DeserializeObject<Root>(jsonString);
-
+            Root setup = GetSetupJsonRoot(file);
+            if (setup == null) return;
 
             CarModels model = ConversionFactory.ParseCarName(DocUtil.GetParseName(file));
             if (model == CarModels.None) return;
@@ -138,7 +116,7 @@ namespace ACCSetupApp.Controls.Setup
 
 
             Section setupTitle = new Section();
-            setupTitle.Blocks.Add(DocUtil.GetDefaultHeader(20, $"{jsonFile.Name.Replace(".json", "")}"));
+            setupTitle.Blocks.Add(DocUtil.GetDefaultHeader(20, $"{new FileInfo(file).Name.Replace(".json", "")}"));
 
             setupTitle.BorderBrush = Brushes.White;
             setupTitle.BorderThickness = new Thickness(1, 1, 1, 1);
@@ -152,7 +130,7 @@ namespace ACCSetupApp.Controls.Setup
 
             Table setupInfoTable = DocUtil.GetTable(30, 70);
             TableRowGroup rowGroupSetupInfo = new TableRowGroup();
-            rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRow("Track", $"{DocUtil.GetTrackName(jsonFile.FullName)}"));
+            rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRow("Track", $"{DocUtil.GetTrackName(file)}"));
             rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRow("Car", $"{CarModelToCarName[carSetup.CarModel]}"));
             rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRow("Class", $"{carSetup.CarClass}"));
 

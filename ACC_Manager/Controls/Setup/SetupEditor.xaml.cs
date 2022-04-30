@@ -21,6 +21,7 @@ using System.IO;
 using System.Diagnostics;
 using Newtonsoft.Json;
 using static SetupParser.SetupJson;
+using ACCSetupApp.SetupParser;
 
 namespace ACCSetupApp.Controls
 {
@@ -44,6 +45,10 @@ namespace ACCSetupApp.Controls
         public SetupEditor()
         {
             InitializeComponent();
+
+            buttonSave.Click += (o, e) => Save();
+            buttonCancel.Click += (o, e) => Close();
+
             _instance = this;
         }
 
@@ -52,18 +57,34 @@ namespace ACCSetupApp.Controls
             this.Setup = GetSetup(new FileInfo(file));
 
             Instance.transitionEditPanel.Visibility = Visibility.Visible;
-            SetupChanger = new Porsche911IIGT3R();
+
+            ISetupChanger changer = ConversionFactory.GetChanger(ConversionFactory.ParseCarName(Setup.carName));
+            if (changer == null)
+                Close();
+
+
+            EnableBrowser(false);
+            SetupChanger = changer;
             CreateFields();
         }
 
         public void Save()
         {
+            // Do save stuff here
 
+
+            Close();
+        }
+
+        private void EnableBrowser(bool enable)
+        {
+            SetupBrowser.Instance.setupsTreeView.IsEnabled = enable;
         }
 
         public void Close()
         {
-
+            EnableBrowser(true);
+            Instance.transitionEditPanel.Visibility = Visibility.Hidden;
         }
 
         private void CreateFields()

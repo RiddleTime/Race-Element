@@ -16,14 +16,26 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
-    <materialDesign:TransitioningContent x:Name="transitionEditPanel" Visibility="Hidden" Panel.ZIndex="999">
+    <materialDesign:TransitioningContent x:Name="transitionEditPanel" Visibility="Hidden" Panel.ZIndex="999" Background="{StaticResource MaterialDesignDarkBackground}">
         <materialDesign:TransitioningContent.OpeningEffects>
             <materialDesign:TransitionEffect Kind="FadeIn" />
         </materialDesign:TransitioningContent.OpeningEffects>
 
-
-        <StackPanel x:Name="FieldStackPanel" Orientation="Vertical" Background="{StaticResource MaterialDesignDarkBackground}" HorizontalAlignment="Stretch">
-        </StackPanel>
-
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="38"/>
+            </Grid.RowDefinitions>
+            <StackPanel x:Name="FieldStackPanel" Grid.Row="0" Orientation="Vertical"  HorizontalAlignment="Stretch">
+            </StackPanel>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="buttonSave" Grid.Column="0" Margin="3">Save</Button>
+                <Button x:Name="buttonCancel" Grid.Column="1" Margin="3">Cancel</Button>
+            </Grid>
+        </Grid>
     </materialDesign:TransitioningContent>
 </UserControl>
