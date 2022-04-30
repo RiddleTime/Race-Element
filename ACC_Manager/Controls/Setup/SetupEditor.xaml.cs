@@ -85,7 +85,6 @@ namespace ACCSetupApp.Controls
             FieldStackPanel.Children.Add(GetTractionControlStacker(ecuLabelWidth));
             FieldStackPanel.Children.Add(GetABSStacker(ecuLabelWidth));
             FieldStackPanel.Children.Add(GetEngineMapStacker(ecuLabelWidth));
-            FieldStackPanel.Children.Add(GetTractionControlCutStacker(ecuLabelWidth));
 
 
 
@@ -113,6 +112,12 @@ namespace ACCSetupApp.Controls
         }
 
 
+        #region DamperSetupChanger
+
+
+
+        #endregion
+
         #region ElectronicsSetupChanger
 
 
@@ -120,7 +125,7 @@ namespace ACCSetupApp.Controls
         {
             Grid grid = GetMainGrid("Engine Map", labelWidth);
 
-            Grid settings = GetGrid(1, 90);
+            Grid settings = GetGrid(1, 95);
             Grid.SetColumn(settings, 1);
 
 
@@ -144,7 +149,7 @@ namespace ACCSetupApp.Controls
         {
             Grid grid = GetMainGrid("ABS", labelWidth);
 
-            Grid settings = GetGrid(1, 90);
+            Grid settings = GetGrid(1, 95);
             Grid.SetColumn(settings, 1);
 
 
@@ -166,62 +171,40 @@ namespace ACCSetupApp.Controls
 
         private Grid GetTractionControlStacker(int labelWidth)
         {
-            Grid grid = GetMainGrid("TC1", labelWidth);
+            Grid grid = GetMainGrid("Traction Control", labelWidth);
 
-            Grid settings = GetGrid(1, 90);
-            Grid.SetColumn(settings, 1);
+            Grid settings = GetGrid(2, 95);
+            Grid.SetColumn(settings, 2);
 
 
             StackPanel stackerTC = new StackPanel { Orientation = Orientation.Horizontal };
-            ComboBox comboTC = new ComboBox() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
+            stackerTC.Children.Add(new Label() { Content = "TC1", ToolTip = "Traction Control" });
+            ComboBox comboTC = new ComboBox() { Width = 56, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboTC.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.ElectronicsSetupChanger.TractionControl);
             comboTC.SelectedIndex = Setup.basicSetup.electronics.tC1;
             comboTC.SelectionChanged += (s, e) => { Setup.basicSetup.electronics.tC1 = comboTC.SelectedIndex; };
             stackerTC.Children.Add(comboTC);
             Grid.SetColumn(stackerTC, 0);
 
+            StackPanel stackerTC2 = new StackPanel { Orientation = Orientation.Horizontal };
+            stackerTC2.Children.Add(new Label() { Content = "TC2", ToolTip = "Traction Control Cut" });
+            ComboBox comboTC2 = new ComboBox() { Width = 57, HorizontalContentAlignment = HorizontalAlignment.Right };
+            comboTC2.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.ElectronicsSetupChanger.TractionControlCut);
+            comboTC2.SelectedIndex = Setup.basicSetup.electronics.tC2;
+            comboTC2.SelectionChanged += (s, e) => { Setup.basicSetup.electronics.tC2 = comboTC2.SelectedIndex; };
+            stackerTC2.Children.Add(comboTC2);
+            Grid.SetColumn(stackerTC2, 1);
+
 
             settings.Children.Add(stackerTC);
+            settings.Children.Add(stackerTC2);
 
             grid.Children.Add(settings);
 
             return grid;
         }
 
-        private Grid GetTractionControlCutStacker(int labelWidth)
-        {
-            Grid grid = GetMainGrid("TC2", labelWidth);
-
-            Grid settings = GetGrid(1, 90);
-            Grid.SetColumn(settings, 1);
-
-
-            StackPanel stackerTCC = new StackPanel { Orientation = Orientation.Horizontal };
-            ComboBox comboTCC = new ComboBox() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboTCC.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.ElectronicsSetupChanger.TractionControl);
-            comboTCC.SelectedIndex = Setup.basicSetup.electronics.tC2;
-            comboTCC.SelectionChanged += (s, e) => { Setup.basicSetup.electronics.tC2 = comboTCC.SelectedIndex; };
-            stackerTCC.Children.Add(comboTCC);
-            Grid.SetColumn(stackerTCC, 0);
-
-
-            settings.Children.Add(stackerTCC);
-
-            grid.Children.Add(settings);
-
-            return grid;
-        }
-
-
-
         #endregion
-
-        #region DamperSetupChanger
-
-
-
-        #endregion
-
 
         #region MechanicalSetupChanger
         private Grid GetSteeringRatioStacker(int labelWidth)
@@ -546,7 +529,7 @@ namespace ACCSetupApp.Controls
         {
             Grid grid = GetMainGrid("PSI", labelWidth);
 
-            int blockWidth = 50;
+            int blockWidth = 65;
 
             Grid settings = GetGrid(4, blockWidth + 30);
 
@@ -608,7 +591,7 @@ namespace ACCSetupApp.Controls
         {
             Grid grid = GetMainGrid("Camber", labelWidth);
 
-            int blockWidth = 50;
+            int blockWidth = 65;
 
             Grid settings = GetGrid(4, blockWidth + 30);
             Grid.SetColumn(settings, 1);
@@ -668,7 +651,7 @@ namespace ACCSetupApp.Controls
             // Caster inputs 
             Grid grid = GetMainGrid("Caster", labelWidth);
 
-            int blockWidth = 50;
+            int blockWidth = 65;
 
             Grid settings = GetGrid(2, blockWidth + 30);
             Grid.SetColumn(settings, 1);
@@ -705,7 +688,7 @@ namespace ACCSetupApp.Controls
         {
             Grid grid = GetMainGrid("Toe", labelWidth);
 
-            int blockWidth = 50;
+            int blockWidth = 65;
 
             Grid settings = GetGrid(4, blockWidth + 30);
             Grid.SetColumn(settings, 1);
