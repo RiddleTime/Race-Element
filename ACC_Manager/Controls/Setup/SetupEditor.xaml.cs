@@ -80,6 +80,12 @@ namespace ACCSetupApp.Controls
 
 
             // Electronics Setup
+            int ecuLabelWidth = 110;
+            FieldStackPanel.Children.Add(GetTitle("Electronics Setup"));
+            FieldStackPanel.Children.Add(GetTractionControlStacker(ecuLabelWidth));
+            FieldStackPanel.Children.Add(GetABSStacker(ecuLabelWidth));
+            FieldStackPanel.Children.Add(GetEngineMapStacker(ecuLabelWidth));
+            FieldStackPanel.Children.Add(GetTractionControlCutStacker(ecuLabelWidth));
 
 
 
@@ -96,13 +102,119 @@ namespace ACCSetupApp.Controls
             FieldStackPanel.Children.Add(GetSteeringRatioStacker(mechLabelWidth));
 
             // Damper Setup
+            int damperLabelWidth = 110;
+            FieldStackPanel.Children.Add(GetTitle("Damper Setup"));
 
             // Aero Setup
             int aeroLabelWidth = 110;
-            FieldStackPanel.Children.Add(GetTitle("Damper Setup"));
+            FieldStackPanel.Children.Add(GetTitle("Aero Setup"));
 
 
         }
+
+
+        #region ElectronicsSetupChanger
+
+
+        private Grid GetEngineMapStacker(int labelWidth)
+        {
+            Grid grid = GetMainGrid("Engine Map", labelWidth);
+
+            Grid settings = GetGrid(1, 90);
+            Grid.SetColumn(settings, 1);
+
+
+            StackPanel stackerEcuMap = new StackPanel { Orientation = Orientation.Horizontal };
+            ComboBox comboEcuMap = new ComboBox() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
+            comboEcuMap.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.ElectronicsSetupChanger.EcuMap);
+            comboEcuMap.SelectedIndex = Setup.basicSetup.electronics.eCUMap;
+            comboEcuMap.SelectionChanged += (s, e) => { Setup.basicSetup.electronics.eCUMap = comboEcuMap.SelectedIndex; };
+            stackerEcuMap.Children.Add(comboEcuMap);
+            Grid.SetColumn(stackerEcuMap, 0);
+
+
+            settings.Children.Add(stackerEcuMap);
+
+            grid.Children.Add(settings);
+
+            return grid;
+        }
+
+        private Grid GetABSStacker(int labelWidth)
+        {
+            Grid grid = GetMainGrid("ABS", labelWidth);
+
+            Grid settings = GetGrid(1, 90);
+            Grid.SetColumn(settings, 1);
+
+
+            StackPanel stackerABS = new StackPanel { Orientation = Orientation.Horizontal };
+            ComboBox comboABS = new ComboBox() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
+            comboABS.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.ElectronicsSetupChanger.ABS);
+            comboABS.SelectedIndex = Setup.basicSetup.electronics.abs;
+            comboABS.SelectionChanged += (s, e) => { Setup.basicSetup.electronics.abs = comboABS.SelectedIndex; };
+            stackerABS.Children.Add(comboABS);
+            Grid.SetColumn(stackerABS, 0);
+
+
+            settings.Children.Add(stackerABS);
+
+            grid.Children.Add(settings);
+
+            return grid;
+        }
+
+        private Grid GetTractionControlStacker(int labelWidth)
+        {
+            Grid grid = GetMainGrid("TC1", labelWidth);
+
+            Grid settings = GetGrid(1, 90);
+            Grid.SetColumn(settings, 1);
+
+
+            StackPanel stackerTC = new StackPanel { Orientation = Orientation.Horizontal };
+            ComboBox comboTC = new ComboBox() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
+            comboTC.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.ElectronicsSetupChanger.TractionControl);
+            comboTC.SelectedIndex = Setup.basicSetup.electronics.tC1;
+            comboTC.SelectionChanged += (s, e) => { Setup.basicSetup.electronics.tC1 = comboTC.SelectedIndex; };
+            stackerTC.Children.Add(comboTC);
+            Grid.SetColumn(stackerTC, 0);
+
+
+            settings.Children.Add(stackerTC);
+
+            grid.Children.Add(settings);
+
+            return grid;
+        }
+
+        private Grid GetTractionControlCutStacker(int labelWidth)
+        {
+            Grid grid = GetMainGrid("TC2", labelWidth);
+
+            Grid settings = GetGrid(1, 90);
+            Grid.SetColumn(settings, 1);
+
+
+            StackPanel stackerTCC = new StackPanel { Orientation = Orientation.Horizontal };
+            ComboBox comboTCC = new ComboBox() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
+            comboTCC.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.ElectronicsSetupChanger.TractionControl);
+            comboTCC.SelectedIndex = Setup.basicSetup.electronics.tC2;
+            comboTCC.SelectionChanged += (s, e) => { Setup.basicSetup.electronics.tC2 = comboTCC.SelectedIndex; };
+            stackerTCC.Children.Add(comboTCC);
+            Grid.SetColumn(stackerTCC, 0);
+
+
+            settings.Children.Add(stackerTCC);
+
+            grid.Children.Add(settings);
+
+            return grid;
+        }
+
+
+
+        #endregion
 
         #region DamperSetupChanger
 
