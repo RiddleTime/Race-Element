@@ -103,6 +103,10 @@ namespace ACCSetupApp.Controls
             // Damper Setup
             int damperLabelWidth = 110;
             FieldStackPanel.Children.Add(GetTitle("Damper Setup"));
+            FieldStackPanel.Children.Add(GetBumpSlowStacker(tyreLabelWidth));
+            FieldStackPanel.Children.Add(GetBumpFastStacker(tyreLabelWidth));
+            //FieldStackPanel.Children.Add(GetReboundFastStacker(tyreLabelWidth));
+            //FieldStackPanel.Children.Add(GetReboundSlowStacker(tyreLabelWidth));
 
             // Aero Setup
             int aeroLabelWidth = 110;
@@ -114,6 +118,130 @@ namespace ACCSetupApp.Controls
 
         #region DamperSetupChanger
 
+
+        private Grid GetBumpSlowStacker(int labelWidth)
+        {
+            Grid grid = GetMainGrid("Bump Slow", labelWidth);
+
+            int blockWidth = 65;
+
+            Grid settings = GetGrid(4, blockWidth + 30);
+
+            Grid.SetColumn(settings, 1);
+
+            // FL
+            StackPanel stackerFL = new StackPanel { Orientation = Orientation.Horizontal };
+            stackerFL.Children.Add(new Label() { Content = "FL" });
+            ComboBox comboPressureFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            comboPressureFL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.BumpSlow);
+            comboPressureFL.SelectedIndex = Setup.advancedSetup.dampers.bumpSlow[(int)Wheel.FrontLeft];
+            comboPressureFL.SelectionChanged += (s, e) => { Setup.advancedSetup.dampers.bumpSlow[(int)Wheel.FrontLeft] = comboPressureFL.SelectedIndex; };
+            stackerFL.Children.Add(comboPressureFL);
+            Grid.SetColumn(stackerFL, 0);
+
+
+            // FR
+            StackPanel stackerFR = new StackPanel { Orientation = Orientation.Horizontal };
+            stackerFR.Children.Add(new Label() { Content = "FR" });
+            ComboBox comboPressureFR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            comboPressureFR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.BumpSlow);
+            comboPressureFR.SelectedIndex = Setup.advancedSetup.dampers.bumpSlow[(int)Wheel.FrontRight];
+            comboPressureFR.SelectionChanged += (s, e) => { Setup.advancedSetup.dampers.bumpSlow[(int)Wheel.FrontRight] = comboPressureFR.SelectedIndex; };
+            stackerFR.Children.Add(comboPressureFR);
+            Grid.SetColumn(stackerFR, 1);
+
+            // RL
+            StackPanel stackerRL = new StackPanel { Orientation = Orientation.Horizontal };
+            stackerRL.Children.Add(new Label() { Content = "RL" });
+            ComboBox comboPressureRL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            comboPressureRL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.BumpSlow);
+            comboPressureRL.SelectedIndex = Setup.advancedSetup.dampers.bumpSlow[(int)Wheel.RearLeft];
+            comboPressureRL.SelectionChanged += (s, e) => { Setup.advancedSetup.dampers.bumpSlow[(int)Wheel.RearLeft] = comboPressureRL.SelectedIndex; };
+            stackerRL.Children.Add(comboPressureRL);
+            Grid.SetColumn(stackerRL, 2);
+
+            // RR
+            StackPanel stackerRR = new StackPanel { Orientation = Orientation.Horizontal };
+            stackerRR.Children.Add(new Label() { Content = "RR" });
+            ComboBox comboPressureRR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            comboPressureRR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.BumpSlow);
+            comboPressureRR.SelectedIndex = Setup.advancedSetup.dampers.bumpSlow[(int)Wheel.RearRight];
+            comboPressureRR.SelectionChanged += (s, e) => { Setup.advancedSetup.dampers.bumpSlow[(int)Wheel.RearRight] = comboPressureRR.SelectedIndex; };
+            stackerRR.Children.Add(comboPressureRR);
+            Grid.SetColumn(stackerRR, 3);
+
+
+            settings.Children.Add(stackerFL);
+            settings.Children.Add(stackerFR);
+            settings.Children.Add(stackerRL);
+            settings.Children.Add(stackerRR);
+
+            grid.Children.Add(settings);
+
+            return grid;
+        }
+
+        private Grid GetBumpFastStacker(int labelWidth)
+        {
+            Grid grid = GetMainGrid("Bump Fast", labelWidth);
+
+            int blockWidth = 65;
+
+            Grid settings = GetGrid(4, blockWidth + 30);
+
+            Grid.SetColumn(settings, 1);
+
+            // FL
+            StackPanel stackerFL = new StackPanel { Orientation = Orientation.Horizontal };
+            stackerFL.Children.Add(new Label() { Content = "FL" });
+            ComboBox comboPressureFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            comboPressureFL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.BumpFast);
+            comboPressureFL.SelectedIndex = Setup.advancedSetup.dampers.bumpFast[(int)Wheel.FrontLeft];
+            comboPressureFL.SelectionChanged += (s, e) => { Setup.advancedSetup.dampers.bumpFast[(int)Wheel.FrontLeft] = comboPressureFL.SelectedIndex; };
+            stackerFL.Children.Add(comboPressureFL);
+            Grid.SetColumn(stackerFL, 0);
+
+
+            // FR
+            StackPanel stackerFR = new StackPanel { Orientation = Orientation.Horizontal };
+            stackerFR.Children.Add(new Label() { Content = "FR" });
+            ComboBox comboPressureFR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            comboPressureFR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.BumpFast);
+            comboPressureFR.SelectedIndex = Setup.advancedSetup.dampers.bumpFast[(int)Wheel.FrontRight];
+            comboPressureFR.SelectionChanged += (s, e) => { Setup.advancedSetup.dampers.bumpFast[(int)Wheel.FrontRight] = comboPressureFR.SelectedIndex; };
+            stackerFR.Children.Add(comboPressureFR);
+            Grid.SetColumn(stackerFR, 1);
+
+            // RL
+            StackPanel stackerRL = new StackPanel { Orientation = Orientation.Horizontal };
+            stackerRL.Children.Add(new Label() { Content = "RL" });
+            ComboBox comboPressureRL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            comboPressureRL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.BumpFast);
+            comboPressureRL.SelectedIndex = Setup.advancedSetup.dampers.bumpFast[(int)Wheel.RearLeft];
+            comboPressureRL.SelectionChanged += (s, e) => { Setup.advancedSetup.dampers.bumpFast[(int)Wheel.RearLeft] = comboPressureRL.SelectedIndex; };
+            stackerRL.Children.Add(comboPressureRL);
+            Grid.SetColumn(stackerRL, 2);
+
+            // RR
+            StackPanel stackerRR = new StackPanel { Orientation = Orientation.Horizontal };
+            stackerRR.Children.Add(new Label() { Content = "RR" });
+            ComboBox comboPressureRR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            comboPressureRR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.BumpFast);
+            comboPressureRR.SelectedIndex = Setup.advancedSetup.dampers.bumpFast[(int)Wheel.RearRight];
+            comboPressureRR.SelectionChanged += (s, e) => { Setup.advancedSetup.dampers.bumpFast[(int)Wheel.RearRight] = comboPressureRR.SelectedIndex; };
+            stackerRR.Children.Add(comboPressureRR);
+            Grid.SetColumn(stackerRR, 3);
+
+
+            settings.Children.Add(stackerFL);
+            settings.Children.Add(stackerFR);
+            settings.Children.Add(stackerRL);
+            settings.Children.Add(stackerRR);
+
+            grid.Children.Add(settings);
+
+            return grid;
+        }
 
 
         #endregion
@@ -781,7 +909,9 @@ namespace ACCSetupApp.Controls
             {
                 Text = label,
                 HorizontalAlignment = HorizontalAlignment.Center,
-                Style = Resources["MaterialDesignHeadline6TextBlock"] as Style
+                Style = Resources["MaterialDesignHeadline6TextBlock"] as Style,
+                Margin = new Thickness(0, 3, 0, 0),
+                FontSize = 16
             };
         }
 
