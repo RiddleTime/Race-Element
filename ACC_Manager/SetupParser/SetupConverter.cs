@@ -142,8 +142,10 @@ namespace ACCSetupApp.SetupParser
         public interface ISetupChanger
         {
             ITyreSetupChanger TyreSetupChanger { get; }
+            IElectronicsSetupChanger ElectronicsSetupChanger { get; }
             IMechanicalSetupChanger MechanicalSetupChanger { get; }
             IAeroSetupChanger AeroSetupChanger { get; }
+            IDamperSetupChanger DamperSetupChanger { get; }
         }
 
         public interface ITyreSetupChanger
@@ -154,6 +156,14 @@ namespace ACCSetupApp.SetupParser
             SetupDoubleRange ToeFront { get; }
             SetupDoubleRange ToeRear { get; }
             SetupDoubleRange Caster { get; }
+        }
+
+        public interface IElectronicsSetupChanger
+        {
+            SetupIntRange TractionControl { get; }
+            SetupIntRange ABS { get; }
+            SetupIntRange EcuMap { get; }
+            SetupIntRange TractionControlCut { get; }
         }
 
         public static SetupDoubleRange TyrePressuresGT3 = new SetupDoubleRange(20.3, 35, 0.1);
@@ -181,6 +191,14 @@ namespace ACCSetupApp.SetupParser
             SetupIntRange BrakeDucts { get; }
             SetupIntRange RearWing { get; }
             SetupIntRange Splitter { get; }
+        }
+
+        public interface IDamperSetupChanger
+        {
+            SetupIntRange BumpSlow { get; }
+            SetupIntRange BumpFast { get; }
+            SetupIntRange ReboundSlow { get; }
+            SetupIntRange ReboundFast { get; }
         }
 
         public abstract class AbstractTyresSetup

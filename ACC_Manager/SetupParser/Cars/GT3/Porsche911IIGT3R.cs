@@ -44,8 +44,10 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
         }
 
         ITyreSetupChanger ISetupChanger.TyreSetupChanger => new TyreSetupChanger();
+        IElectronicsSetupChanger ISetupChanger.ElectronicsSetupChanger => new ElectronicsSetupChanger();
         IMechanicalSetupChanger ISetupChanger.MechanicalSetupChanger => new MechSetupChanger();
         IAeroSetupChanger ISetupChanger.AeroSetupChanger => new AeroSetupChanger();
+        IDamperSetupChanger ISetupChanger.DamperSetupChanger => new DamperSetupChanger();
 
         private class TyreSetupChanger : ITyreSetupChanger
         {
@@ -55,6 +57,14 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
             public SetupDoubleRange ToeFront => new SetupDoubleRange(-0.4, 0.4, 0.01);
             public SetupDoubleRange ToeRear => ToeFront;
             public SetupDoubleRange Caster => new SetupDoubleRange(casters);
+        }
+
+        private class ElectronicsSetupChanger : IElectronicsSetupChanger
+        {
+            public SetupIntRange TractionControl => new SetupIntRange(0, 11, 1);
+            public SetupIntRange ABS => new SetupIntRange(0, 11, 1);
+            public SetupIntRange EcuMap => new SetupIntRange(1, 10, 1);
+            public SetupIntRange TractionControlCut => new SetupIntRange(0, 11, 1);
         }
 
         private class MechSetupChanger : IMechanicalSetupChanger
@@ -79,6 +89,14 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
             public SetupIntRange BrakeDucts => new SetupIntRange(0, 6, 1);
             public SetupIntRange Splitter => new SetupIntRange(0, 5, 1);
             public SetupIntRange RearWing => new SetupIntRange(0, 12, 1);
+        }
+
+        private class DamperSetupChanger : IDamperSetupChanger
+        {
+            public SetupIntRange BumpSlow => new SetupIntRange(0, 17, 1);
+            public SetupIntRange BumpFast => new SetupIntRange(0, 12, 1);
+            public SetupIntRange ReboundSlow => BumpSlow;
+            public SetupIntRange ReboundFast => BumpFast;
         }
 
         IMechanicalSetup ICarSetupConversion.MechanicalSetup => new MechSetup();

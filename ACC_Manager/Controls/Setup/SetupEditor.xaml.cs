@@ -72,14 +72,20 @@ namespace ACCSetupApp.Controls
 
             // Tyre Setup
             int tyreLabelWidth = 110;
+            FieldStackPanel.Children.Add(GetTitle("Tyres Setup"));
             FieldStackPanel.Children.Add(GetTyrePressureStacker(tyreLabelWidth));
             FieldStackPanel.Children.Add(GetToeStacker(tyreLabelWidth));
             FieldStackPanel.Children.Add(GetCamberStacker(tyreLabelWidth));
             FieldStackPanel.Children.Add(GetCasterStacker(tyreLabelWidth));
 
 
+            // Electronics Setup
+
+
+
             // Mechanical Setup
             int mechLabelWidth = 110;
+            FieldStackPanel.Children.Add(GetTitle("Mechanical Setup"));
             FieldStackPanel.Children.Add(GetWheelRatesStacker(mechLabelWidth));
             FieldStackPanel.Children.Add(GetBumpstopRateStacker(mechLabelWidth));
             FieldStackPanel.Children.Add(GetBumpstopRangeStacker(mechLabelWidth));
@@ -89,10 +95,20 @@ namespace ACCSetupApp.Controls
             FieldStackPanel.Children.Add(GetBrakeBiasStacker(mechLabelWidth));
             FieldStackPanel.Children.Add(GetSteeringRatioStacker(mechLabelWidth));
 
+            // Damper Setup
 
             // Aero Setup
+            int aeroLabelWidth = 110;
+            FieldStackPanel.Children.Add(GetTitle("Damper Setup"));
+
 
         }
+
+        #region DamperSetupChanger
+
+
+
+        #endregion
 
 
         #region MechanicalSetupChanger
@@ -411,7 +427,7 @@ namespace ACCSetupApp.Controls
             return grid;
         }
 
-#endregion
+        #endregion
 
         #region TyreSetupChanger
         private Grid GetTyrePressureStacker(int labelWidth)
@@ -662,6 +678,16 @@ namespace ACCSetupApp.Controls
             }
 
             return customGrid;
+        }
+
+        private TextBlock GetTitle(string label)
+        {
+            return new TextBlock()
+            {
+                Text = label,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Style = Resources["MaterialDesignHeadline6TextBlock"] as Style
+            };
         }
 
         public Root GetSetup(FileInfo file)
