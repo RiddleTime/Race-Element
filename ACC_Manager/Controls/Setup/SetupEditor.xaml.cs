@@ -111,13 +111,146 @@ namespace ACCSetupApp.Controls
             // Aero Setup
             int aeroLabelWidth = 110;
             FieldStackPanel.Children.Add(GetTitle("Aero Setup"));
+            FieldStackPanel.Children.Add(GetRideHeightStacker(tyreLabelWidth));
+            FieldStackPanel.Children.Add(GetSplitterStacker(tyreLabelWidth));
+            FieldStackPanel.Children.Add(GetRearWingStacker(tyreLabelWidth));
+            FieldStackPanel.Children.Add(GetBrakeDuctStacker(tyreLabelWidth));
 
 
         }
 
 
-        #region DamperSetupChanger
+        #region AeroSetupChanger
 
+        private Grid GetRearWingStacker(int labelWidth)
+        {
+            Grid grid = GetMainGrid("Rear Wing", labelWidth);
+
+            Grid settings = GetGrid(1, 90);
+            Grid.SetColumn(settings, 1);
+
+
+            StackPanel rearWingStacker = new StackPanel { Orientation = Orientation.Horizontal };
+            ComboBox comboRearWing = new ComboBox() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
+            comboRearWing.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.AeroSetupChanger.RearWing);
+            comboRearWing.SelectedIndex = Setup.advancedSetup.aeroBalance.rearWing;
+            comboRearWing.SelectionChanged += (s, e) => { Setup.advancedSetup.aeroBalance.rearWing = comboRearWing.SelectedIndex; };
+            rearWingStacker.Children.Add(comboRearWing);
+            Grid.SetColumn(rearWingStacker, 0);
+
+
+            settings.Children.Add(rearWingStacker);
+
+            grid.Children.Add(settings);
+
+            return grid;
+        }
+
+        private Grid GetSplitterStacker(int labelWidth)
+        {
+            Grid grid = GetMainGrid("Splitter", labelWidth);
+
+            Grid settings = GetGrid(1, 90);
+            Grid.SetColumn(settings, 1);
+
+
+            StackPanel stackerSplitter = new StackPanel { Orientation = Orientation.Horizontal };
+            ComboBox comboSplitter = new ComboBox() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
+            comboSplitter.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.AeroSetupChanger.Splitter);
+            comboSplitter.SelectedIndex = Setup.advancedSetup.aeroBalance.splitter;
+            comboSplitter.SelectionChanged += (s, e) => { Setup.advancedSetup.aeroBalance.splitter = comboSplitter.SelectedIndex; };
+            stackerSplitter.Children.Add(comboSplitter);
+            Grid.SetColumn(stackerSplitter, 0);
+
+
+            settings.Children.Add(stackerSplitter);
+
+            grid.Children.Add(settings);
+
+            return grid;
+        }
+
+        private Grid GetBrakeDuctStacker(int labelWidth)
+        {
+            Grid grid = GetMainGrid("Brake Ducts", labelWidth);
+
+            int blockWidth = 50;
+
+            Grid settings = GetGrid(2, blockWidth + 45);
+            Grid.SetColumn(settings, 1);
+
+
+            // Front
+            StackPanel stackerFront = new StackPanel { Orientation = Orientation.Horizontal };
+            stackerFront.Children.Add(new Label() { Content = "Front" });
+            ComboBox comboFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            comboFL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.AeroSetupChanger.BrakeDucts);
+            comboFL.SelectedIndex = Setup.advancedSetup.aeroBalance.brakeDuct[(int)Position.Front];
+            comboFL.SelectionChanged += (s, e) => { Setup.advancedSetup.aeroBalance.brakeDuct[(int)Position.Front] = comboFL.SelectedIndex; };
+            stackerFront.Children.Add(comboFL);
+            Grid.SetColumn(stackerFront, 0);
+
+            // Rear
+            StackPanel stackerRear = new StackPanel { Orientation = Orientation.Horizontal };
+            stackerRear.Children.Add(new Label() { Content = "Rear" });
+            ComboBox comboFR = new ComboBox() { Width = blockWidth + 4, HorizontalContentAlignment = HorizontalAlignment.Right };
+            comboFR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.AeroSetupChanger.BrakeDucts);
+            comboFR.SelectedIndex = Setup.advancedSetup.aeroBalance.brakeDuct[(int)Position.Rear];
+            comboFR.SelectionChanged += (s, e) => { Setup.advancedSetup.aeroBalance.brakeDuct[(int)Position.Rear] = comboFR.SelectedIndex; };
+            stackerRear.Children.Add(comboFR);
+            Grid.SetColumn(stackerRear, 1);
+
+
+            settings.Children.Add(stackerFront);
+            settings.Children.Add(stackerRear);
+
+            grid.Children.Add(settings);
+
+            return grid;
+        }
+
+        private Grid GetRideHeightStacker(int labelWidth)
+        {
+            Grid grid = GetMainGrid("Ride Height", labelWidth);
+
+            int blockWidth = 50;
+
+            Grid settings = GetGrid(2, blockWidth + 45);
+            Grid.SetColumn(settings, 1);
+
+
+            // Front
+            StackPanel stackerFront = new StackPanel { Orientation = Orientation.Horizontal };
+            stackerFront.Children.Add(new Label() { Content = "Front" });
+            ComboBox comboFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            comboFL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.AeroSetupChanger.RideHeightFront);
+            comboFL.SelectedIndex = Setup.advancedSetup.aeroBalance.rideHeight[(int)Position.Front];
+            comboFL.SelectionChanged += (s, e) => { Setup.advancedSetup.aeroBalance.rideHeight[(int)Position.Front] = comboFL.SelectedIndex; };
+            stackerFront.Children.Add(comboFL);
+            Grid.SetColumn(stackerFront, 0);
+
+            // Rear
+            StackPanel stackerRear = new StackPanel { Orientation = Orientation.Horizontal };
+            stackerRear.Children.Add(new Label() { Content = "Rear" });
+            ComboBox comboFR = new ComboBox() { Width = blockWidth + 4, HorizontalContentAlignment = HorizontalAlignment.Right };
+            comboFR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.AeroSetupChanger.RideHeightRear);
+            comboFR.SelectedIndex = Setup.advancedSetup.aeroBalance.rideHeight[(int)Position.Rear];
+            comboFR.SelectionChanged += (s, e) => { Setup.advancedSetup.aeroBalance.rideHeight[(int)Position.Rear] = comboFR.SelectedIndex; };
+            stackerRear.Children.Add(comboFR);
+            Grid.SetColumn(stackerRear, 1);
+
+
+            settings.Children.Add(stackerFront);
+            settings.Children.Add(stackerRear);
+
+            grid.Children.Add(settings);
+
+            return grid;
+        }
+
+        #endregion
+
+        #region DamperSetupChanger
 
         private Grid GetReboundFastStacker(int labelWidth)
         {
