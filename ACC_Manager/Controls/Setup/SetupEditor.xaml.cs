@@ -112,58 +112,47 @@ namespace ACCSetupApp.Controls
             int aeroLabelWidth = 110;
             FieldStackPanel.Children.Add(GetTitle("Aero Setup"));
             FieldStackPanel.Children.Add(GetRideHeightStacker(tyreLabelWidth));
-            FieldStackPanel.Children.Add(GetSplitterStacker(tyreLabelWidth));
-            FieldStackPanel.Children.Add(GetRearWingStacker(tyreLabelWidth));
+            FieldStackPanel.Children.Add(GetAeroSurfaceStacker(tyreLabelWidth));
             FieldStackPanel.Children.Add(GetBrakeDuctStacker(tyreLabelWidth));
 
 
         }
 
-
         #region AeroSetupChanger
 
-        private Grid GetRearWingStacker(int labelWidth)
+        private Grid GetAeroSurfaceStacker(int labelWidth)
         {
-            Grid grid = GetMainGrid("Rear Wing", labelWidth);
-
-            Grid settings = GetGrid(1, 90);
-            Grid.SetColumn(settings, 1);
+            Grid grid = GetMainGrid("Aero", labelWidth);
 
 
-            StackPanel rearWingStacker = new StackPanel { Orientation = Orientation.Horizontal };
-            ComboBox comboRearWing = new ComboBox() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
-            comboRearWing.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.AeroSetupChanger.RearWing);
-            comboRearWing.SelectedIndex = Setup.advancedSetup.aeroBalance.rearWing;
-            comboRearWing.SelectionChanged += (s, e) => { Setup.advancedSetup.aeroBalance.rearWing = comboRearWing.SelectedIndex; };
-            rearWingStacker.Children.Add(comboRearWing);
-            Grid.SetColumn(rearWingStacker, 0);
+            int blockWidth = 50;
+            Grid settings = GetGrid(2, blockWidth + 45);
+            Grid.SetColumn(settings, 2);
 
 
-            settings.Children.Add(rearWingStacker);
-
-            grid.Children.Add(settings);
-
-            return grid;
-        }
-
-        private Grid GetSplitterStacker(int labelWidth)
-        {
-            Grid grid = GetMainGrid("Splitter", labelWidth);
-
-            Grid settings = GetGrid(1, 90);
-            Grid.SetColumn(settings, 1);
-
-
-            StackPanel stackerSplitter = new StackPanel { Orientation = Orientation.Horizontal };
-            ComboBox comboSplitter = new ComboBox() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
+            // Front
+            StackPanel stackerFront = new StackPanel { Orientation = Orientation.Horizontal };
+            stackerFront.Children.Add(new Label() { Content = "Splitter" });
+            ComboBox comboSplitter = new ComboBox() { Width = blockWidth - 11, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboSplitter.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.AeroSetupChanger.Splitter);
             comboSplitter.SelectedIndex = Setup.advancedSetup.aeroBalance.splitter;
             comboSplitter.SelectionChanged += (s, e) => { Setup.advancedSetup.aeroBalance.splitter = comboSplitter.SelectedIndex; };
-            stackerSplitter.Children.Add(comboSplitter);
-            Grid.SetColumn(stackerSplitter, 0);
+            stackerFront.Children.Add(comboSplitter);
+            Grid.SetColumn(stackerFront, 0);
+
+            // Rear
+            StackPanel stackerRear = new StackPanel { Orientation = Orientation.Horizontal };
+            stackerRear.Children.Add(new Label() { Content = "Wing" });
+            ComboBox comboRear = new ComboBox() { Width = blockWidth + 1, HorizontalContentAlignment = HorizontalAlignment.Right };
+            comboRear.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.AeroSetupChanger.RearWing);
+            comboRear.SelectedIndex = Setup.advancedSetup.aeroBalance.rearWing;
+            comboRear.SelectionChanged += (s, e) => { Setup.advancedSetup.aeroBalance.rearWing = comboRear.SelectedIndex; };
+            stackerRear.Children.Add(comboRear);
+            Grid.SetColumn(stackerRear, 1);
 
 
-            settings.Children.Add(stackerSplitter);
+            settings.Children.Add(stackerFront);
+            settings.Children.Add(stackerRear);
 
             grid.Children.Add(settings);
 
@@ -1167,8 +1156,9 @@ namespace ACCSetupApp.Controls
                 Text = label,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Style = Resources["MaterialDesignHeadline6TextBlock"] as Style,
-                Margin = new Thickness(0, 3, 0, 0),
-                FontSize = 17
+                TextDecorations = { TextDecorations.Underline },
+                Margin = new Thickness(0, 2, 0, 0),
+                FontSize = 16
             };
         }
 
