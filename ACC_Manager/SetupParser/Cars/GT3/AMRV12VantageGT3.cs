@@ -62,7 +62,7 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
         {
             public SetupIntRange RideHeightFront => new SetupIntRange(55, 80, 1);
             public SetupIntRange RideHeightRear => new SetupIntRange(55, 90, 1);
-            public SetupIntRange BrakeDucts => new SetupIntRange(0, 6, 1);
+            public SetupIntRange BrakeDucts => BrakeDuctsGT3;
             public SetupIntRange Splitter => new SetupIntRange(0, 0, 1);
             public SetupIntRange RearWing => new SetupIntRange(0, 10, 1);
         }
