@@ -90,6 +90,8 @@ namespace ACCSetupApp.Controls
                 $"Team: {ToBeDeleted.carsRoot.teamName}" +
                 $"\nSkin: {ToBeDeleted.carsRoot.customSkinName}" +
                 $"\nCar: {ConversionFactory.GetCarName(ToBeDeleted.carsRoot.carModelType)}";
+
+            buttonDeleteSkinYes.Focus();
         }
     }
 }

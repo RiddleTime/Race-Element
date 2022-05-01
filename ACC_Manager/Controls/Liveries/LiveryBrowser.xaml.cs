@@ -35,6 +35,10 @@ namespace ACCSetupApp.Controls
     {
         public static LiveryBrowser Instance;
 
+        private List<string> expandedCarHeaders = new List<string>();
+        private List<string> expandedTeamHeaders = new List<string>();
+        private List<string> expandedTagHeaders = new List<string>();
+
         public LiveryBrowser()
         {
             InitializeComponent();
@@ -46,6 +50,11 @@ namespace ACCSetupApp.Controls
             liveriesTreeViewCars.SelectedItemChanged += LiveriesTreeView_SelectedItemChanged;
             liveriesTreeViewTags.SelectedItemChanged += LiveriesTreeView_SelectedItemChanged;
 
+            liveriesTreeViewTeams.KeyUp += (s, e) => LiveryTreeViewKeyUp(liveriesTreeViewTeams, s, e);
+            liveriesTreeViewCars.KeyUp += (s, e) => LiveryTreeViewKeyUp(liveriesTreeViewCars, s, e);
+            liveriesTreeViewTags.KeyUp += (s, e) => LiveryTreeViewKeyUp(liveriesTreeViewTags, s, e);
+
+
             buttonImportLiveries.Click += ButtonImportLiveries_Click;
             buttonGenerateAllDDS.Click += ButtonGenerateAllDDS_Click;
 
@@ -54,6 +63,36 @@ namespace ACCSetupApp.Controls
             {
                 LiveryTagCreator.Instance.Open();
             };
+        }
+
+        private void LiveryTreeViewKeyUp(TreeView treeView, object sender, KeyEventArgs e)
+        {
+            if (!treeView.IsVisible)
+                return;
+
+            switch (e.Key)
+            {
+                case Key.Delete:
+                    {
+                        var selectedItem = treeView.SelectedItem;
+
+                        if (selectedItem == null)
+                            return;
+
+                        TreeViewItem item = (TreeViewItem)selectedItem;
+                        if (item.DataContext != null)
+                        {
+                            if (item.DataContext.GetType() == typeof(LiveryTreeCar))
+                            {
+                                LiveryTreeCar treeCar = (LiveryTreeCar)item.DataContext;
+                                LiveryDeleter.Instance.Open(treeCar);
+
+                            }
+                        }
+                        break;
+                    }
+                default: break;
+            }
         }
 
         private void ButtonGenerateAllDDS_Click(object sender, RoutedEventArgs e)
@@ -177,13 +216,16 @@ namespace ACCSetupApp.Controls
                     DataContext = tItem.Key
                 };
                 TreeViewItem modelItem = new TreeViewItem() { Header = teamHeader };
+                if (expandedCarHeaders.Contains(tItem.Key)) modelItem.ExpandSubtree();
                 modelItem.Expanded += (s, e) =>
                 {
                     int targetItemInView = modelItem.Items.Count;
                     if (targetItemInView > 18)    // magic number :D (no just counted minimum size and made sure it will still show the track)
                         targetItemInView = 18;
                     ((TreeViewItem)modelItem.Items.GetItemAt(targetItemInView - 1)).BringIntoView();
+                    expandedCarHeaders.Add(tItem.Key);
                 };
+                modelItem.Collapsed += (s, e) => expandedCarHeaders.Remove(tItem.Key);
 
                 var cars = tItem.ToList();
                 cars.Sort((a, b) =>
@@ -241,13 +283,16 @@ namespace ACCSetupApp.Controls
                     DataContext = tItem.Key
                 };
                 TreeViewItem teamItem = new TreeViewItem() { Header = teamHeader };
+                if (expandedTeamHeaders.Contains(tItem.Key)) teamItem.ExpandSubtree();
                 teamItem.Expanded += (s, e) =>
                 {
                     int targetItemInView = teamItem.Items.Count;
                     if (targetItemInView > 18)    // magic number :D (no just counted minimum size and made sure it will still show the track)
                         targetItemInView = 18;
                     ((TreeViewItem)teamItem.Items.GetItemAt(targetItemInView - 1)).BringIntoView();
+                    expandedTeamHeaders.Add(tItem.Key);
                 };
+                teamItem.Collapsed += (s, e) => expandedTeamHeaders.Remove(tItem.Key);
 
                 var cars = tItem.ToList();
                 cars.Sort((a, b) =>
@@ -317,13 +362,16 @@ namespace ACCSetupApp.Controls
                     DataContext = liveryTag.Name
                 };
                 TreeViewItem tagItem = new TreeViewItem() { Header = tagHeader };
+                if (expandedTagHeaders.Contains(liveryTag.Name)) tagItem.ExpandSubtree();
                 tagItem.Expanded += (s, e) =>
                 {
                     int targetItemInView = tagItem.Items.Count;
                     if (targetItemInView > 18)    // magic number :D (no just counted minimum size and made sure it will still show the track)
                         targetItemInView = 18;
                     ((TreeViewItem)tagItem.Items.GetItemAt(targetItemInView - 1)).BringIntoView();
+                    expandedTagHeaders.Add(liveryTag.Name);
                 };
+                tagItem.Collapsed += (s, e) => expandedTagHeaders.Remove(liveryTag.Name);
 
                 tagItem.ContextMenu = GetTagContextMenu(tagItem, liveryTag);
                 tagCars.Sort((a, b) =>
