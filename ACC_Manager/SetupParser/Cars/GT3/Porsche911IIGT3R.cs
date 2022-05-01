@@ -27,8 +27,8 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
         private class TyreSetupChanger : ITyreSetupChanger
         {
             public SetupDoubleRange TyrePressures => TyrePressuresGT3;
-            public SetupDoubleRange CamberFront => new SetupDoubleRange(-4, -1.5, 0.1);
-            public SetupDoubleRange CamberRear => new SetupDoubleRange(-3.5, -1, 0.1);
+            public SetupDoubleRange CamberFront => CamberFrontGT3;
+            public SetupDoubleRange CamberRear => CamberRearGT3;
             public SetupDoubleRange ToeFront => new SetupDoubleRange(-0.4, 0.4, 0.01);
             public SetupDoubleRange ToeRear => ToeFront;
             public SetupDoubleRange Caster => new SetupDoubleRange(casters);
