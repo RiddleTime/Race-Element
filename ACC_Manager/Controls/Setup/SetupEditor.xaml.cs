@@ -234,8 +234,8 @@ namespace ACCSetupApp.Controls
             stackerFront.Children.Add(new Label() { Content = "Front" });
             ComboBox comboFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboFL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.AeroSetupChanger.RideHeightFront);
-            comboFL.SelectedIndex = Setup.advancedSetup.aeroBalance.rideHeight[(int)Position.Front];
-            comboFL.SelectionChanged += (s, e) => { Setup.advancedSetup.aeroBalance.rideHeight[(int)Position.Front] = comboFL.SelectedIndex; };
+            comboFL.SelectedIndex = Setup.advancedSetup.aeroBalance.rideHeight[0];
+            comboFL.SelectionChanged += (s, e) => { Setup.advancedSetup.aeroBalance.rideHeight[0] = comboFL.SelectedIndex; };
             stackerFront.Children.Add(comboFL);
             Grid.SetColumn(stackerFront, 0);
 
@@ -244,8 +244,8 @@ namespace ACCSetupApp.Controls
             stackerRear.Children.Add(new Label() { Content = "Rear" });
             ComboBox comboFR = new ComboBox() { Width = blockWidth + 4, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboFR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.AeroSetupChanger.RideHeightRear);
-            comboFR.SelectedIndex = Setup.advancedSetup.aeroBalance.rideHeight[(int)Position.Rear];
-            comboFR.SelectionChanged += (s, e) => { Setup.advancedSetup.aeroBalance.rideHeight[(int)Position.Rear] = comboFR.SelectedIndex; };
+            comboFR.SelectedIndex = Setup.advancedSetup.aeroBalance.rideHeight[2];
+            comboFR.SelectionChanged += (s, e) => { Setup.advancedSetup.aeroBalance.rideHeight[2] = comboFR.SelectedIndex; };
             stackerRear.Children.Add(comboFR);
             Grid.SetColumn(stackerRear, 1);
 
