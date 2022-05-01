@@ -71,7 +71,9 @@ namespace ACCSetupApp.Controls
                             }
                             else
                             {
+                            #if DEBUG
                                 buttonEditSetup.Visibility = Visibility.Visible;
+                            #endif
                             }
 
                             setupRenderer.LogSetup(ref flowDocument, file.FullName);
