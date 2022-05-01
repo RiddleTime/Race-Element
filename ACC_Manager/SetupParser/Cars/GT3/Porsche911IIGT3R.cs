@@ -18,31 +18,6 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
         private static readonly int[] wheelRateFronts = new int[] { 100500, 110000, 114000, 119000, 127000, 137000, 141500, 146000, 155000, 173500 };
         private static readonly int[] wheelRateRears = new int[] { 137000, 149500, 156000, 162000, 174500, 187000, 193000, 199500, 212000, 237000 };
 
-        AbstractTyresSetup ICarSetupConversion.TyresSetup => new TyreSetup();
-        private class TyreSetup : AbstractTyresSetup
-        {
-            public override double Toe(Wheel wheel, List<int> rawValue)
-            {
-                return Math.Round(-0.4 + 0.01 * rawValue[(int)wheel], 2);
-            }
-
-            public override double Camber(Wheel wheel, List<int> rawValue)
-            {
-                switch (GetPosition(wheel))
-                {
-                    case Position.Front: return Math.Round(-4 + 0.1 * rawValue[(int)wheel], 2);
-                    case Position.Rear: return Math.Round(-3.5 + 0.1 * rawValue[(int)wheel], 2);
-                    default: return -1;
-                }
-            }
-
-
-            public override double Caster(int rawValue)
-            {
-                return Math.Round(casters[rawValue], 2);
-            }
-        }
-
         ITyreSetupChanger ISetupChanger.TyreSetupChanger => new TyreSetupChanger();
         IElectronicsSetupChanger ISetupChanger.ElectronicsSetupChanger => new ElectronicsSetupChanger();
         IMechanicalSetupChanger ISetupChanger.MechanicalSetupChanger => new MechSetupChanger();
@@ -97,6 +72,31 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
             public SetupIntRange BumpFast => new SetupIntRange(0, 12, 1);
             public SetupIntRange ReboundSlow => BumpSlow;
             public SetupIntRange ReboundFast => BumpFast;
+        }
+
+        AbstractTyresSetup ICarSetupConversion.TyresSetup => new TyreSetup();
+        private class TyreSetup : AbstractTyresSetup
+        {
+            public override double Toe(Wheel wheel, List<int> rawValue)
+            {
+                return Math.Round(-0.4 + 0.01 * rawValue[(int)wheel], 2);
+            }
+
+            public override double Camber(Wheel wheel, List<int> rawValue)
+            {
+                switch (GetPosition(wheel))
+                {
+                    case Position.Front: return Math.Round(-4 + 0.1 * rawValue[(int)wheel], 2);
+                    case Position.Rear: return Math.Round(-3.5 + 0.1 * rawValue[(int)wheel], 2);
+                    default: return -1;
+                }
+            }
+
+
+            public override double Caster(int rawValue)
+            {
+                return Math.Round(casters[rawValue], 2);
+            }
         }
 
         IMechanicalSetup ICarSetupConversion.MechanicalSetup => new MechSetup();
@@ -157,9 +157,6 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
         IDamperSetup ICarSetupConversion.DamperSetup => DefaultDamperSetup;
 
         IAeroBalance ICarSetupConversion.AeroBalance => new AeroSetup();
-
-
-
         private class AeroSetup : IAeroBalance
         {
             public int BrakeDucts(int rawValue)
