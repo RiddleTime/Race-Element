@@ -115,7 +115,7 @@ namespace ACCSetupApp.SetupParser
             //{Ferrari_488_Challenge_Evo_2020, new Ferrari488ChallengeEvo() },
 
             // TCX
-            //{BMW_M2_Cup_2020, new BMWM2CSRacing() }
+            {BMW_M2_Cup_2020, new BMWM2CSRacing() }
         };
 
         public static ISetupChanger GetChanger(CarModels model)

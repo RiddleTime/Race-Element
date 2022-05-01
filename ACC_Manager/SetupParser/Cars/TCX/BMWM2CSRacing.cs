@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACCSetupApp.SetupParser.SetupRanges;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +9,71 @@ using static ACCSetupApp.SetupParser.SetupConverter;
 
 namespace ACCSetupApp.SetupParser.Cars.TCX
 {
-    internal class BMWM2CSRacing : ICarSetupConversion
+    internal class BMWM2CSRacing : ICarSetupConversion, ISetupChanger
     {
         public CarModels CarModel => CarModels.BMW_M2_Cup_2020;
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.TCX;
+
+        private static readonly double[] casters = new double[] { 8.5 };
+        private static readonly int[] wheelRateFronts = new int[] { 162000, 180000, 198000 };
+        private static readonly int[] wheelRateRears = new int[] { 103000, 117000, 131000 };
+
+        ITyreSetupChanger ISetupChanger.TyreSetupChanger => new TyreSetupChanger();
+        IElectronicsSetupChanger ISetupChanger.ElectronicsSetupChanger => new ElectronicsSetupChanger();
+        IMechanicalSetupChanger ISetupChanger.MechanicalSetupChanger => new MechSetupChanger();
+        IAeroSetupChanger ISetupChanger.AeroSetupChanger => new AeroSetupChanger();
+        IDamperSetupChanger ISetupChanger.DamperSetupChanger => new DamperSetupChanger();
+
+        private class TyreSetupChanger : ITyreSetupChanger
+        {
+            public SetupDoubleRange TyrePressures => TyrePressuresGT4;
+            public SetupDoubleRange CamberFront => new SetupDoubleRange(-5.0, -3.0, 0.1);
+            public SetupDoubleRange CamberRear => new SetupDoubleRange(-3.5, -2.0, 0.1);
+            public SetupDoubleRange ToeFront => new SetupDoubleRange(-0.2, 0.2, 0.01);
+            public SetupDoubleRange ToeRear => new SetupDoubleRange(0.0, 0.31, 0.01);
+            public SetupDoubleRange Caster => new SetupDoubleRange(casters);
+        }
+
+        private class ElectronicsSetupChanger : IElectronicsSetupChanger
+        {
+            public SetupIntRange TractionControl => new SetupIntRange(0, 4, 1);
+            public SetupIntRange ABS => new SetupIntRange(0, 2, 1);
+            public SetupIntRange EcuMap => new SetupIntRange(1, 1, 1);
+            public SetupIntRange TractionControlCut => new SetupIntRange(0, 0, 1);
+        }
+
+        private class MechSetupChanger : IMechanicalSetupChanger
+        {
+            public SetupIntRange AntiRollBarFront => new SetupIntRange(0, 2, 1);
+            public SetupIntRange AntiRollBarRear => AntiRollBarFront;
+            public SetupDoubleRange BrakeBias => new SetupDoubleRange(56.0, 56.0, 0.2);
+            public SetupIntRange PreloadDifferential => new SetupIntRange(20, 20, 10);
+            public SetupIntRange BrakePower => new SetupIntRange(80, 100, 1);
+            public SetupDoubleRange SteeringRatio => new SetupDoubleRange(10, 17, 1);
+            public SetupIntRange WheelRateFronts => new SetupIntRange(wheelRateFronts);
+            public SetupIntRange WheelRateRears => new SetupIntRange(wheelRateRears);
+            public SetupIntRange BumpstopRate => new SetupIntRange(300, 1000, 100);
+            public SetupIntRange BumpstopRangeFronts => new SetupIntRange(0, 48, 1);
+            public SetupIntRange BumpstopRangeRears => new SetupIntRange(0, 40, 1);
+        }
+
+        private class AeroSetupChanger : IAeroSetupChanger
+        {
+            public SetupIntRange RideHeightFront => new SetupIntRange(125, 140, 1);
+            public SetupIntRange RideHeightRear => RideHeightFront;
+            public SetupIntRange BrakeDucts => BrakeDuctsGT3;
+            public SetupIntRange Splitter => new SetupIntRange(0, 0, 1);
+            public SetupIntRange RearWing => new SetupIntRange(1, 5, 1);
+        }
+
+        private class DamperSetupChanger : IDamperSetupChanger
+        {
+            public SetupIntRange BumpSlow => new SetupIntRange(1, 20, 1);
+            public SetupIntRange BumpFast => new SetupIntRange(0, 0, 1);
+            public SetupIntRange ReboundSlow => BumpSlow;
+            public SetupIntRange ReboundFast => BumpFast;
+        }
 
         AbstractTyresSetup ICarSetupConversion.TyresSetup => new TyreSetup();
         private class TyreSetup : AbstractTyresSetup
@@ -27,7 +88,6 @@ namespace ACCSetupApp.SetupParser.Cars.TCX
                 }
             }
 
-            private readonly double[] casters = new double[] { 8.5 };
             public override double Caster(int rawValue)
             {
                 return Math.Round(casters[rawValue], 2);
@@ -89,14 +149,12 @@ namespace ACCSetupApp.SetupParser.Cars.TCX
                 return Math.Round(10d + rawValue, 2);
             }
 
-            private readonly int[] fronts = new int[] { 162000, 180000, 198000 };
-            private readonly int[] rears = new int[] { 103000, 117000, 131000 };
             public int WheelRate(List<int> rawValue, Wheel wheel)
             {
                 switch (GetPosition(wheel))
                 {
-                    case Position.Front: return fronts[rawValue[(int)wheel]];
-                    case Position.Rear: return rears[rawValue[(int)wheel]];
+                    case Position.Front: return wheelRateFronts[rawValue[(int)wheel]];
+                    case Position.Rear: return wheelRateRears[rawValue[(int)wheel]];
                     default: return -1;
                 }
             }
