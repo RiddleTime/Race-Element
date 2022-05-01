@@ -88,10 +88,6 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
                 }
             }
 
-            //            private readonly double[] casters = new double[] {
-            //               8.3, 8.5, 8.7, 9.0, 9.2, 9.4, 9.6, 9.9, 10.1, 10.3, 10.5, 10.8, 11.0, 11.2, 11.4, 11.6,
-            //              11.9, 12.1, 12.3, 12.5, 12.7, 13.0, 13.2, 13.4, 13.6, 13.8, 14.0, 14.3, 14.5, 14.7, 14.9
-            //         };
             public override double Caster(int rawValue)
             {
                 return Math.Round(casters[rawValue], 2);
@@ -146,10 +142,6 @@ namespace ACCSetupApp.SetupParser.Cars.GT3
                 return Math.Round(14d + rawValue, 2);
             }
 
-            //            private readonly int[] fronts = new int[] { 115000, 120000, 125000, 130000, 135000, 140000, 145000, 150000,
-            //                                                        155000, 160000, 165000, 170000, 175000, 180000, 185000 };
-            //            private readonly int[] rears = new int[] { 95000, 100000, 110000, 115000, 120000, 125000, 130000, 135000, 140000, 145000, 150000,
-            //                                                        155000, 160000, 165000, 170000, 175000, 180000, 185000, 190000, 195000 };
             public int WheelRate(List<int> rawValue, Wheel wheel)
             {
                 switch (GetPosition(wheel))
