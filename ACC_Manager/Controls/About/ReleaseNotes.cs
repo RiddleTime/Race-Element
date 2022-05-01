@@ -10,7 +10,9 @@ namespace ACCSetupApp.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.0.5.5", "- Add setup editor for Porsche 911 II GT3 R 2019." }, // yup not an editor yet when it doesn't save yet...
+            {"0.0.5.5", "- Add setup editor for Porsche 911 II GT3 R 2019."+
+                        "\n- The Livery browser will re-expand previously expanded items after refreshing."+
+                        "\n- Added hotkey(Delete) to quickly open up the delete livery interface."},
             {"0.0.5.4", "- Decrease draw rate for tyre pressure trace by 90%."+
                         "\n- Updated system.net.http reference due to possible vulnerability."},
             {"0.0.5.3", "- Added screen that pops-up after importing liveries, allowing you to tag them."+
