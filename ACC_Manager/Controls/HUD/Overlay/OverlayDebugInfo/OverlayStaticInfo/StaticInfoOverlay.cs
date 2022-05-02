@@ -17,7 +17,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayStaticInfo
     {
         private Font inputFont = new Font("Arial", 10);
 
-        public StaticInfoOverlay(Rectangle rectangle) : base(rectangle)
+        public StaticInfoOverlay(Rectangle rectangle) : base(rectangle, "Debug Static Overlay")
         {
             this.Width = 230;
             this.Height = 325;

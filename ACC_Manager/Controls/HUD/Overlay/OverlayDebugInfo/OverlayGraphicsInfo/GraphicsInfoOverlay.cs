@@ -15,7 +15,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayGraphicsInfo
     {
         private Font inputFont = new Font("Arial", 10);
 
-        public GraphicsInfoOverlay(Rectangle rectangle) : base(rectangle)
+        public GraphicsInfoOverlay(Rectangle rectangle) : base(rectangle, "Debug Graphics Overlay")
         {
             this.Width = 275;
             this.Height = 1030;

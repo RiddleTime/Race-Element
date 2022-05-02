@@ -13,9 +13,11 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
 {
     internal abstract class AbstractOverlay : FloatingWindow
     {
+        public string Name { get; private set; }
         private bool Draw = false;
 
-        private bool CanReposition = false;
+        public bool CanReposition { get; internal set; }
+
         private Window RepositionWindow;
 
         internal SPageFilePhysics pagePhysics;
@@ -27,13 +29,14 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
 
         internal bool RequestsDrawItself = false;
 
-        protected AbstractOverlay(Rectangle rectangle)
+        protected AbstractOverlay(Rectangle rectangle, string Name)
         {
             this.X = rectangle.X;
             this.Y = rectangle.Y;
             this.Width = rectangle.Width;
             this.Height = rectangle.Height;
             this.Alpha = 255;
+            this.Name = Name;
         }
 
         public abstract void BeforeStart();
@@ -137,10 +140,17 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
                 {
                     Width = this.Width,
                     Height = this.Height,
-                    WindowStyle = WindowStyle.ToolWindow,
+                    WindowStyle = WindowStyle.None,
                     ResizeMode = ResizeMode.NoResize,
                     Left = X,
                     Top = Y,
+                    Title = this.Name,
+                    Topmost = true,
+                    BorderBrush = System.Windows.Media.Brushes.Red,
+                    BorderThickness = new Thickness(3),
+                    ShowInTaskbar = false,
+                    AllowsTransparency = true,
+                    Opacity = 0.3
                 };
                 this.RepositionWindow.MouseLeftButtonDown += (s, e) =>
                 {

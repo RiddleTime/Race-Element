@@ -15,7 +15,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPhysicsInfo
     {
         private Font inputFont = new Font("Arial", 10);
 
-        public PhysicsInfoOverlay(Rectangle rectangle) : base(rectangle)
+        public PhysicsInfoOverlay(Rectangle rectangle) : base(rectangle, "Debug Physics Overlay")
         {
             this.Width = 600;
             this.Height = 635;

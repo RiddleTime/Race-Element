@@ -15,7 +15,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayCarDamage
         private Font inputFont = new Font("Roboto", 10);
         private float MagicDamageMultiplier = 0.282f;
 
-        public CarDamageOverlay(Rectangle rectangle) : base(rectangle)
+        public CarDamageOverlay(Rectangle rectangle) : base(rectangle, "Car Damage Overlay")
         {
             this.Width = 300;
             this.Height = 200;

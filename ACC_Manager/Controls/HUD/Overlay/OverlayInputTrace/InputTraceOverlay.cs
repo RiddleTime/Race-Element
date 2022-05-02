@@ -14,7 +14,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay
     {
         private InputDataCollector inputDataCollector;
 
-        public InputTraceOverlay(Rectangle rectangle) : base(rectangle)
+        public InputTraceOverlay(Rectangle rectangle) : base(rectangle, "Input Trace Overlay")
         {
             this.Y = 0;
             this.Width = 300;
