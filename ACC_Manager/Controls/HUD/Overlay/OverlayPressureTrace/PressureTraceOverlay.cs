@@ -15,12 +15,11 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPressureTrace
         private TyrePressureDataCollector dataCollector;
         public PressureTraceOverlay(Rectangle rectangle) : base(rectangle, "Pressure Trace Overlay")
         {
-            int width = 140;
-            this.X = ScreenWidth - width;
+            //this.X = ScreenWidth - width;
 
-            this.Width = width;
+            this.Width = 140;
             this.Height = 60 * 2;
-            this.Y = (int)(ScreenHeight / 2) - this.Height / 2;
+            //this.Y = (int)(ScreenHeight / 2) - this.Height / 2;
             this.RequestsDrawItself = true;
             Instance = this;
         }

@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -15,8 +16,8 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
 
         public class OverlaySettings
         {
-            bool Enabled;
-            int X, Y;
+            public bool Enabled;
+            public int X, Y;
         }
 
         private static DirectoryInfo GetOverlayDirectory()
@@ -34,10 +35,19 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
 
         public static OverlaySettings LoadOverlaySettings(string overlayName)
         {
+            DirectoryInfo overlayDir = GetOverlayDirectory();
 
+            FileInfo[] overlayFiles = overlayDir.GetFiles($"*.json");
+            foreach (FileInfo overlayFile in overlayFiles)
+            {
+                if (overlayFile.Name.Replace(".json", "") == overlayName)
+                {
+                    OverlaySettings overlay = LoadSettings(overlayFile);
+                    return overlay;
+                }
+            }
 
-            OverlaySettings overlaySettings = new OverlaySettings();
-            return overlaySettings;
+            return null;
         }
 
         public static OverlaySettings SaveOverlaySettings(string overlayName, OverlaySettings settings)
@@ -70,5 +80,47 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
             return settings;
         }
 
+
+        private static OverlaySettings LoadSettings(FileInfo file)
+        {
+            if (!file.Exists)
+                return null;
+
+            try
+            {
+                using (FileStream fileStream = file.OpenRead())
+                {
+                    return LoadSettings(fileStream);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            return null;
+        }
+
+        private static OverlaySettings LoadSettings(Stream stream)
+        {
+            string jsonString = string.Empty;
+            try
+            {
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    jsonString = reader.ReadToEnd();
+                    jsonString = jsonString.Replace("\0", "");
+                    reader.Close();
+                    stream.Close();
+                }
+
+                return JsonConvert.DeserializeObject<OverlaySettings>(jsonString);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+
+            return null;
+        }
     }
 }

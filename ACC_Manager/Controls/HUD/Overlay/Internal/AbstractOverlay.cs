@@ -8,6 +8,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
 using static ACCSetupApp.ACCSharedMemory;
+using static ACCSetupApp.Controls.HUD.Overlay.Internal.OverlayOptions;
 
 namespace ACCSetupApp.Controls.HUD.Overlay.Internal
 {
@@ -37,6 +38,18 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
             this.Height = rectangle.Height;
             this.Alpha = 255;
             this.Name = Name;
+
+            ApplyOverlaySettings();
+        }
+
+        private void ApplyOverlaySettings()
+        {
+            OverlaySettings settings = OverlayOptions.LoadOverlaySettings(this.Name);
+            if (settings != null)
+            {
+                this.X = settings.X;
+                this.Y = settings.Y;
+            }
         }
 
         public abstract void BeforeStart();
@@ -182,6 +195,9 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
                         catch (Exception ex) { Debug.WriteLine(ex); }
                     }));
                 }
+
+                OverlaySettings settings = new OverlaySettings() { X = X, Y = Y, Enabled = true };
+                OverlayOptions.SaveOverlaySettings(this.Name, settings);
             }
         }
     }

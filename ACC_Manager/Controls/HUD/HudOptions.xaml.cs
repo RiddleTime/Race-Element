@@ -36,6 +36,8 @@ namespace ACCSetupApp.Controls
 
         private void SetRepositionMode(bool enabled)
         {
+            stackPanelOverlayCheckboxes.IsEnabled = !enabled;
+
             lock (Overlays.ActiveOverlays)
                 foreach (AbstractOverlay overlay in Overlays.ActiveOverlays)
                 {
