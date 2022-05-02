@@ -16,6 +16,8 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
         private Font inputFont = new Font("Roboto", 10);
         public EcuMapOverlay(Rectangle rectangle) : base(rectangle, "Ecu Maps Overlay")
         {
+            this.AllowReposition = false;
+
             this.Width = 1;
             this.Height = inputFont.Height + 2;
             this.Y = ScreenHeight - Height - 2;

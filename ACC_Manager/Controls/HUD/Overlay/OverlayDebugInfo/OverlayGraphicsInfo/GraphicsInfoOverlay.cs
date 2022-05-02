@@ -17,6 +17,9 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayGraphicsInfo
 
         public GraphicsInfoOverlay(Rectangle rectangle) : base(rectangle, "Debug Graphics Overlay")
         {
+            this.AllowReposition = false;
+
+            this.X = 0;
             this.Width = 275;
             this.Height = 1030;
 

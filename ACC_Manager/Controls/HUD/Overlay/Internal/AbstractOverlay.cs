@@ -17,7 +17,9 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
         public string Name { get; private set; }
         private bool Draw = false;
 
-        public bool CanReposition { get; internal set; }
+        public bool IsRepositioning { get; internal set; }
+
+        public bool AllowReposition { get; set; }
 
         private Window RepositionWindow;
 
@@ -39,7 +41,8 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
             this.Alpha = 255;
             this.Name = Name;
 
-            ApplyOverlaySettings();
+            if (AllowReposition)
+                ApplyOverlaySettings();
         }
 
         private void ApplyOverlaySettings()
@@ -145,7 +148,10 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
 
         public void EnableReposition(bool enabled)
         {
-            this.CanReposition = enabled;
+            if (!AllowReposition)
+                return;
+
+            this.IsRepositioning = enabled;
 
             if (enabled)
             {

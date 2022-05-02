@@ -19,6 +19,10 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayStaticInfo
 
         public StaticInfoOverlay(Rectangle rectangle) : base(rectangle, "Debug Static Overlay")
         {
+            this.AllowReposition = false;
+
+
+            this.X = 0;
             this.Width = 230;
             this.Height = 325;
 

@@ -17,6 +17,9 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPhysicsInfo
 
         public PhysicsInfoOverlay(Rectangle rectangle) : base(rectangle, "Debug Physics Overlay")
         {
+            this.AllowReposition = false;
+
+            this.X = 0;
             this.Width = 600;
             this.Height = 635;
 
