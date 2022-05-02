@@ -202,7 +202,12 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
                     }));
                 }
 
-                OverlaySettings settings = new OverlaySettings() { X = X, Y = Y, Enabled = true };
+
+
+                OverlaySettings settings = OverlayOptions.LoadOverlaySettings(this.Name);
+                settings.X = X;
+                settings.Y = Y;
+
                 OverlayOptions.SaveOverlaySettings(this.Name, settings);
             }
         }

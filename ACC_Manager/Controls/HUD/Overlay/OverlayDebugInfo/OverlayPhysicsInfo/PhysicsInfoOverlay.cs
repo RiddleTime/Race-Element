@@ -20,6 +20,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayPhysicsInfo
             this.AllowReposition = false;
 
             this.X = 0;
+            this.Y = 0;
             this.Width = 600;
             this.Height = 635;
 

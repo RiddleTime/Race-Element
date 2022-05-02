@@ -20,6 +20,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayGraphicsInfo
             this.AllowReposition = false;
 
             this.X = 0;
+            this.Y = 0;
             this.Width = 275;
             this.Height = 1030;
 

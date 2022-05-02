@@ -74,7 +74,8 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
             }
 
             string jsonString = JsonConvert.SerializeObject(settings, Formatting.Indented);
-
+            
+            overlaySettingsFile.Delete();
             File.WriteAllText(overlaySettingsFile.FullName, jsonString);
 
             return settings;
@@ -90,7 +91,9 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
             {
                 using (FileStream fileStream = file.OpenRead())
                 {
-                    return LoadSettings(fileStream);
+                    OverlaySettings settings = LoadSettings(fileStream);
+                    fileStream.Close();
+                    return settings;
                 }
             }
             catch (Exception ex)
@@ -103,6 +106,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
         private static OverlaySettings LoadSettings(Stream stream)
         {
             string jsonString = string.Empty;
+            OverlaySettings settings = null;
             try
             {
                 using (StreamReader reader = new StreamReader(stream))
@@ -113,14 +117,22 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
                     stream.Close();
                 }
 
-                return JsonConvert.DeserializeObject<OverlaySettings>(jsonString);
+                settings = JsonConvert.DeserializeObject<OverlaySettings>(jsonString);
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e);
             }
+            finally
+            {
+                if (stream != null)
+                {
+                    stream.Close();
+                    stream.Dispose();
+                }
+            }
 
-            return null;
+            return settings;
         }
     }
 }

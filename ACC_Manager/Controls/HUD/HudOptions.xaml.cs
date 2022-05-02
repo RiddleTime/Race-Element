@@ -65,8 +65,9 @@ namespace ACCSetupApp.Controls
                         AbstractOverlay overlay = (AbstractOverlay)Activator.CreateInstance(x.Value, args);
                         overlay.Start();
 
-                        Overlays.ActiveOverlays.Add(overlay);
                         SaveOverlaySettings(overlay, true);
+
+                        Overlays.ActiveOverlays.Add(overlay);
                     }
                 };
 
@@ -75,9 +76,11 @@ namespace ACCSetupApp.Controls
                     lock (Overlays.ActiveOverlays)
                     {
                         AbstractOverlay overlay = Overlays.ActiveOverlays.Find(f => f.GetType() == x.Value);
+
+                        SaveOverlaySettings(overlay, false);
+
                         overlay?.Stop();
                         Overlays.ActiveOverlays.Remove(overlay);
-                        SaveOverlaySettings(overlay, false);
                     }
                 };
 
