@@ -59,7 +59,8 @@ namespace ACCSetupApp.Controls
                 {
                     lock (Overlays.ActiveOverlays)
                     {
-                        AbstractOverlay overlay = (AbstractOverlay)Activator.CreateInstance(x.Value, new System.Drawing.Rectangle(0, 0, 300, 150));
+                        object[] args = new object[] { new System.Drawing.Rectangle((int)System.Windows.SystemParameters.PrimaryScreenWidth / 2, (int)System.Windows.SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
+                        AbstractOverlay overlay = (AbstractOverlay)Activator.CreateInstance(x.Value, args);
                         overlay.Start();
 
                         Overlays.ActiveOverlays.Add(overlay);

@@ -16,10 +16,8 @@ namespace ACCSetupApp.Controls.HUD.Overlay
 
         public InputTraceOverlay(Rectangle rectangle) : base(rectangle, "Input Trace Overlay")
         {
-            this.Y = 0;
             this.Width = 300;
             this.Height = 150;
-            this.X = ScreenWidth / 2 + ScreenWidth / 4 - this.Width / 2;
         }
 
         public override void BeforeStart()

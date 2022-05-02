@@ -7,8 +7,23 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <CheckBox x:Name="checkBoxReposition">Enable Reposition</CheckBox>
-        <StackPanel Orientation="Vertical" x:Name="stackPanelOverlayCheckboxes">
-        </StackPanel>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <CheckBox Grid.Row="0" x:Name="checkBoxReposition" Height="25">Enable Reposition</CheckBox>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0">Overlays:</Label>
+            <StackPanel Grid.Row="1" Orientation="Vertical" x:Name="stackPanelOverlayCheckboxes">
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>
