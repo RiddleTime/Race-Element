@@ -67,7 +67,7 @@ namespace ACCSetupApp.SetupParser
         private static readonly Dictionary<CarModels, ISetupChanger> Changers = new Dictionary<CarModels, ISetupChanger>()
         {
             // GT3
-            //{Aston_Martin_V8_Vantage_GT3_2019, new AMRV8VantageGT3() },
+            {Aston_Martin_V8_Vantage_GT3_2019, new AMRV8VantageGT3() },
             {Aston_Martin_Vantage_V12_GT3_2013, new AMRV12VantageGT3() },
             //{Audi_R8_LMS_2015, new AudiR8LMS() },
             //{Audi_R8_LMS_Evo_2019, new AudiR8LMSevo() },
