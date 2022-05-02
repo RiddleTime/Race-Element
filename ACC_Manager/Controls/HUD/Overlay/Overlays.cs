@@ -31,11 +31,13 @@ namespace ACCSetupApp.Controls.HUD.Overlay
 
         public static void CloseAll()
         {
-            foreach (var overlay in ActiveOverlays)
-            {
-                ActiveOverlays.Remove(overlay);
-                overlay.Dispose();
-            }
+            lock (ActiveOverlays)
+                while (Overlays.ActiveOverlays.Count > 0)
+                {
+                    Overlays.ActiveOverlays.ElementAt(0).Stop();
+                    Overlays.ActiveOverlays.ElementAt(0).Dispose();
+                    ActiveOverlays.Remove(Overlays.ActiveOverlays.ElementAt(0));
+                }
         }
     }
 }

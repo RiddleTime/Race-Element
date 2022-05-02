@@ -29,6 +29,18 @@ namespace ACCSetupApp.Controls
             InitializeComponent();
 
             BuildOverlayStackPanel();
+
+            checkBoxReposition.Checked += (s, e) => SetRepositionMode(true);
+            checkBoxReposition.Unchecked += (s, e) => SetRepositionMode(false);
+        }
+
+        private void SetRepositionMode(bool enabled)
+        {
+            lock (Overlays.ActiveOverlays)
+                foreach (AbstractOverlay overlay in Overlays.ActiveOverlays)
+                {
+                    overlay.EnableReposition(enabled);
+                }
         }
 
         private void BuildOverlayStackPanel()
@@ -40,18 +52,26 @@ namespace ACCSetupApp.Controls
             foreach (KeyValuePair<string, Type> x in Overlays.AbstractOverlays)
             {
                 CheckBox checkBox = new CheckBox() { Content = x.Key };
+
                 checkBox.Checked += (s, e) =>
                 {
-                    AbstractOverlay overlay = (AbstractOverlay)Activator.CreateInstance(x.Value, new System.Drawing.Rectangle(0, 0, 300, 150));
-                    overlay.Start();
-                    Overlays.ActiveOverlays.Add(overlay);
+                    lock (Overlays.ActiveOverlays)
+                    {
+                        AbstractOverlay overlay = (AbstractOverlay)Activator.CreateInstance(x.Value, new System.Drawing.Rectangle(0, 0, 300, 150));
+                        overlay.Start();
+
+                        Overlays.ActiveOverlays.Add(overlay);
+                    }
                 };
 
                 checkBox.Unchecked += (s, e) =>
                 {
-                    AbstractOverlay overlay = Overlays.ActiveOverlays.Find(f => f.GetType() == x.Value);
-                    overlay?.Stop();
-                    Overlays.ActiveOverlays.Remove(overlay);
+                    lock (Overlays.ActiveOverlays)
+                    {
+                        AbstractOverlay overlay = Overlays.ActiveOverlays.Find(f => f.GetType() == x.Value);
+                        overlay?.Stop();
+                        Overlays.ActiveOverlays.Remove(overlay);
+                    }
                 };
 
                 stackPanelOverlayCheckboxes.Children.Add(checkBox);

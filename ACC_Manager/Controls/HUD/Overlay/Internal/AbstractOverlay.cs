@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Windows;
 using System.Windows.Forms;
 using static ACCSetupApp.ACCSharedMemory;
 
@@ -13,6 +14,9 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
     internal abstract class AbstractOverlay : FloatingWindow
     {
         private bool Draw = false;
+
+        private bool CanReposition = false;
+        private Window RepositionWindow;
 
         internal SPageFilePhysics pagePhysics;
         internal SPageFileGraphic pageGraphics;
@@ -95,6 +99,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
         public abstract void BeforeStop();
         public void Stop()
         {
+            this.EnableReposition(false);
             BeforeStop();
             PageStaticTracker.Instance.Tracker -= PageStaticChanged;
             PageGraphicsTracker.Instance.Tracker -= PageGraphicsChanged;
@@ -124,6 +129,50 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
 
         public void EnableReposition(bool enabled)
         {
+            this.CanReposition = enabled;
+
+            if (enabled)
+            {
+                this.RepositionWindow = new Window()
+                {
+                    Width = this.Width,
+                    Height = this.Height,
+                    WindowStyle = WindowStyle.ToolWindow,
+                    ResizeMode = ResizeMode.NoResize,
+                    Left = X,
+                    Top = Y,
+                };
+                this.RepositionWindow.MouseLeftButtonDown += (s, e) =>
+                {
+                    this.RepositionWindow.DragMove();
+                };
+
+                this.RepositionWindow.LocationChanged += (s, e) =>
+                {
+                    X = (int)this.RepositionWindow.Left;
+                    Y = (int)this.RepositionWindow.Top;
+                };
+                RepositionWindow.Show();
+            }
+            else
+            {
+                if (this.RepositionWindow != null)
+                {
+                    this.RepositionWindow.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        try
+                        {
+                            if (this.RepositionWindow != null)
+                            {
+                                this.RepositionWindow.Hide();
+                                this.RepositionWindow.Close();
+                                this.RepositionWindow = null;
+                            }
+                        }
+                        catch (Exception ex) { Debug.WriteLine(ex); }
+                    }));
+                }
+            }
         }
     }
 }
