@@ -1,4 +1,5 @@
-﻿using ACCSetupApp.Util;
+﻿using ACCSetupApp.Controls.HUD.Overlay;
+using ACCSetupApp.Util;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -53,7 +54,20 @@ namespace ACCSetupApp
             this.StateChanged += MainWindow_StateChanged;
 
 
+            AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
+            this.Closing += MainWindow_Closing;
+
             Instance = this;
+        }
+
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Overlays.CloseAll();
+        }
+
+        private void CurrentDomain_ProcessExit(object sender, EventArgs e)
+        {
+            Overlays.CloseAll();
         }
 
         private void MainWindow_StateChanged(object sender, EventArgs e)

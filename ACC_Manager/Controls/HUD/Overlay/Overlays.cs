@@ -28,5 +28,14 @@ namespace ACCSetupApp.Controls.HUD.Overlay
         };
 
         internal static List<AbstractOverlay> ActiveOverlays = new List<AbstractOverlay>();
+
+        public static void CloseAll()
+        {
+            foreach (var overlay in ActiveOverlays)
+            {
+                ActiveOverlays.Remove(overlay);
+                overlay.Dispose();
+            }
+        }
     }
 }
