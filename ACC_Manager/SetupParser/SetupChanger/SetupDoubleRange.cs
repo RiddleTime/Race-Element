@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,8 +36,9 @@ namespace ACCSetupApp.SetupParser.SetupRanges
 
             List<double> collection = new List<double>();
 
-            for (double i = doubleRange.Min; i < doubleRange.Max + doubleRange.Increment; i += doubleRange.Increment)
+            for (double i = doubleRange.Min; i < doubleRange.Max + Math.Round(doubleRange.Increment, 2); i += Math.Round(doubleRange.Increment, 2))
             {
+                i = Math.Round(i, 2);
                 collection.Add(Math.Round(i, 2));
             }
 
