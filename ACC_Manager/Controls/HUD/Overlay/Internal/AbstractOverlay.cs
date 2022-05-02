@@ -19,7 +19,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
 
         public bool IsRepositioning { get; internal set; }
 
-        public bool AllowReposition { get; set; }
+        public bool AllowReposition { get; set; } = true;
 
         private Window RepositionWindow;
 

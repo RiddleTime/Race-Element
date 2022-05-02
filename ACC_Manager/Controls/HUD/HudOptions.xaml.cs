@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static ACCSetupApp.Controls.HUD.Overlay.Internal.OverlayOptions;
 
 namespace ACCSetupApp.Controls
 {
@@ -53,17 +54,19 @@ namespace ACCSetupApp.Controls
             stackPanelOverlayCheckboxes.Children.Clear();
             foreach (KeyValuePair<string, Type> x in Overlays.AbstractOverlays)
             {
+                object[] args = new object[] { new System.Drawing.Rectangle((int)System.Windows.SystemParameters.PrimaryScreenWidth / 2, (int)System.Windows.SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
+
                 CheckBox checkBox = new CheckBox() { Content = x.Key };
 
                 checkBox.Checked += (s, e) =>
                 {
                     lock (Overlays.ActiveOverlays)
                     {
-                        object[] args = new object[] { new System.Drawing.Rectangle((int)System.Windows.SystemParameters.PrimaryScreenWidth / 2, (int)System.Windows.SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
                         AbstractOverlay overlay = (AbstractOverlay)Activator.CreateInstance(x.Value, args);
                         overlay.Start();
 
                         Overlays.ActiveOverlays.Add(overlay);
+                        SaveOverlaySettings(overlay, true);
                     }
                 };
 
@@ -74,11 +77,36 @@ namespace ACCSetupApp.Controls
                         AbstractOverlay overlay = Overlays.ActiveOverlays.Find(f => f.GetType() == x.Value);
                         overlay?.Stop();
                         Overlays.ActiveOverlays.Remove(overlay);
+                        SaveOverlaySettings(overlay, false);
                     }
                 };
 
+                AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(x.Value, args);
+                OverlaySettings settings = OverlayOptions.LoadOverlaySettings(tempOverlay.Name);
+                if (settings != null)
+                {
+                    if (settings.Enabled)
+                    {
+                        checkBox.IsChecked = true;
+                    }
+                }
+                tempOverlay.Dispose();
+
                 stackPanelOverlayCheckboxes.Children.Add(checkBox);
             }
+        }
+
+        private void SaveOverlaySettings(AbstractOverlay overlay, bool isEnabled)
+        {
+            OverlaySettings settings = OverlayOptions.LoadOverlaySettings(overlay.Name);
+            if (settings == null)
+            {
+                settings = new OverlaySettings() { X = overlay.X, Y = overlay.Y };
+            }
+
+            settings.Enabled = isEnabled;
+
+            OverlayOptions.SaveOverlaySettings(overlay.Name, settings);
         }
     }
 }
