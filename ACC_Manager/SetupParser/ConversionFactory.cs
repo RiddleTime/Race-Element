@@ -97,7 +97,7 @@ namespace ACCSetupApp.SetupParser
             //{Porsche_911_GT3_R_2018, new Porsche991GT3R() },
             
             // GT4
-            //{Alpine_A110_GT4_2018, new AlpineA110GT4() },
+            {Alpine_A110_GT4_2018, new AlpineA110GT4() },
             //{Aston_Martin_Vantage_AMR_GT4_2018, new AMRV8VantageGT4() },
             //{Audi_R8_LMS_GT4_2016, new AudiR8GT4() },
             //{BMW_M4_GT4_2018, new BMWM4GT4() },
@@ -115,7 +115,7 @@ namespace ACCSetupApp.SetupParser
             //{Ferrari_488_Challenge_Evo_2020, new Ferrari488ChallengeEvo() },
 
             // TCX
-            //{BMW_M2_Cup_2020, new BMWM2CSRacing() }
+            {BMW_M2_Cup_2020, new BMWM2CSRacing() }
         };
 
         public static ISetupChanger GetChanger(CarModels model)
