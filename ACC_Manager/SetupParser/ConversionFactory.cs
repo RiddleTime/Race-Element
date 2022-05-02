@@ -97,7 +97,7 @@ namespace ACCSetupApp.SetupParser
             //{Porsche_911_GT3_R_2018, new Porsche991GT3R() },
             
             // GT4
-            //{Alpine_A110_GT4_2018, new AlpineA110GT4() },
+            {Alpine_A110_GT4_2018, new AlpineA110GT4() },
             //{Aston_Martin_Vantage_AMR_GT4_2018, new AMRV8VantageGT4() },
             //{Audi_R8_LMS_GT4_2016, new AudiR8GT4() },
             //{BMW_M4_GT4_2018, new BMWM4GT4() },
