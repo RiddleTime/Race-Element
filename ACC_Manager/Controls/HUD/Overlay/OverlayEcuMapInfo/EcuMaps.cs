@@ -25,7 +25,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
                     new EcuMap(){ Index = 8, Power = PowerDelivery.Lowest, Conditon = EcuMapConditions.PaceCar, ThrottleMap = "Least progressive", FuelConsumption = FuelConsumptions.Lowest },
                 }
             },
-            {   new CarModels[]{ Audi_R8_LMS_2015, Audi_R8_LMS_Evo_II_2022},
+            {   new CarModels[]{ Audi_R8_LMS_2015, Audi_R8_LMS_Evo_2019, Audi_R8_LMS_Evo_II_2022},
                 new EcuMap[]{
                     new EcuMap(){ Index = 1, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.High },
                     new EcuMap(){ Index = 2, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Dry, ThrottleMap = "Aggressive", FuelConsumption = FuelConsumptions.Medium },
@@ -206,7 +206,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo
 
         public static EcuMap GetMap(string modelName, int map)
         {
-            if(modelName.Length == 0)
+            if (modelName.Length == 0)
             {
                 return null;
             }
