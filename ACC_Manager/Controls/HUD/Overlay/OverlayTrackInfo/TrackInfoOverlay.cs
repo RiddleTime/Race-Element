@@ -12,12 +12,12 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayTrackInfo
 {
     internal class TrackInfoOverlay : AbstractOverlay
     {
-        private readonly InfoPanel panel = new InfoPanel(11);
+        private readonly InfoPanel panel = new InfoPanel(10);
 
         public TrackInfoOverlay(Rectangle rectangle) : base(rectangle, "Track Info Overlay")
         {
-            this.Width = 320;
-            this.Height = 93;
+            this.Width = 280;
+            this.Height = 86;
         }
 
         public override void BeforeStart() { }
