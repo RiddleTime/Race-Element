@@ -1,4 +1,5 @@
 ﻿using ACCSetupApp.Controls.HUD.Overlay.Internal;
+using ACCSetupApp.Controls.HUD.Overlay.OverlayAccelerometer;
 using ACCSetupApp.Controls.HUD.Overlay.OverlayCarDamage;
 using ACCSetupApp.Controls.HUD.Overlay.OverlayEcuMapInfo;
 using ACCSetupApp.Controls.HUD.Overlay.OverlayGraphicsInfo;
@@ -25,6 +26,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay
 
 
 #if DEBUG
+            {"Accelerometer", typeof(AccelerometerOverlay) },
             {"Car Damage Overlay", typeof(CarDamageOverlay) },
             {"Track Info Overlay", typeof(TrackInfoOverlay) },
 
