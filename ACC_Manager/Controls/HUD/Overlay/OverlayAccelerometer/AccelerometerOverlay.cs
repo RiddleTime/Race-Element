@@ -37,8 +37,8 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayAccelerometer
             double AccGX = (double)pagePhysics.AccG[0] * 100;
             double AccGY = (double)pagePhysics.AccG[2] * 100;
 
-            int gDotPosX = (int)AccGX + paintWidth / 2 - gDotWidth / 2;
-            int gDotPosY = (int)AccGY + paintHeight / 2 - gDotHeight / 2;
+            int gDotPosX = (int)AccGX + (paintWidth / 2) - (gDotWidth / 2);
+            int gDotPosY = (int)AccGY + (paintHeight / 2) - (gDotHeight / 2);
 
             //testing
             g.DrawString($"AccG X = {AccGX}", inputFont, Brushes.White, new PointF(0, 0));
@@ -48,12 +48,13 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayAccelerometer
             g.FillRectangle(new SolidBrush(System.Drawing.Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.Width, this.Height));
             //Draws the lines and circles
             g.DrawEllipse(Pens.Red, 0, 0, paintWidth, paintHeight);
-            g.DrawEllipse(Pens.Yellow, paintWidth / 4, paintHeight / 4, paintWidth / 2, paintHeight / 2);
+            g.DrawEllipse(Pens.LightBlue, paintWidth / 6, paintHeight / 6, (paintWidth / 3) * 2, (paintHeight / 3) * 2);
+            g.DrawEllipse(Pens.Yellow, paintWidth / 3, paintHeight / 3, paintWidth / 3, paintHeight / 3);
             g.DrawLine(Pens.Red, 0, paintHeight / 2, paintWidth, paintHeight / 2);
             g.DrawLine(Pens.Red, paintWidth / 2, 0, paintWidth / 2, paintHeight);
             //Draws the 'dot'
-            g.FillRectangle(new SolidBrush(System.Drawing.Color.FromArgb(0, 255, 255)),
-                new Rectangle(gDotPosX, gDotPosY, gDotWidth, gDotHeight));
+            g.FillRectangle(new SolidBrush(System.Drawing.Color.FromArgb(0, 255, 255)), 
+                            new Rectangle(gDotPosX, gDotPosY, gDotWidth, gDotHeight));
 
 
         }
