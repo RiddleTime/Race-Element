@@ -23,12 +23,12 @@ namespace ACCSetupApp.Controls.HUD.Overlay
             {"Input trace", typeof(InputTraceOverlay) },
             {"Tire Pressure Trace", typeof(PressureTraceOverlay) },
 
-
+            {"Track Info Overlay", typeof(TrackInfoOverlay) },
 
 #if DEBUG
             {"Accelerometer", typeof(AccelerometerOverlay) },
             {"Car Info Overlay", typeof(CarInfoOverlay) },
-            {"Track Info Overlay", typeof(TrackInfoOverlay) },
+          
 
 #endif
 
