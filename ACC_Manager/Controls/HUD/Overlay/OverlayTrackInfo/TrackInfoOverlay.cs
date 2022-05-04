@@ -12,6 +12,8 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayTrackInfo
 {
     internal class TrackInfoOverlay : AbstractOverlay
     {
+        private InfoPanel panel = new InfoPanel(12);
+
         public TrackInfoOverlay(Rectangle rectangle) : base(rectangle, "Track Info Overlay")
         {
             this.Width = 225;
@@ -26,7 +28,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayTrackInfo
         {
             g.FillRectangle(new SolidBrush(System.Drawing.Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.Width, this.Height));
 
-            InfoPanel panel = new InfoPanel();
+
             panel.AddLine(new InfoLine() { Title = "Flag", Value = ACCSharedMemory.FlagTypeToString(pageGraphics.Flag) });
             panel.AddLine(new InfoLine() { Title = "Session", Value = ACCSharedMemory.SessionTypeToString(pageGraphics.SessionType) });
             panel.AddLine(new InfoLine() { Title = "Track status", Value = pageGraphics.trackGripStatus.ToString() });

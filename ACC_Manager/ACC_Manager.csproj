@@ -584,7 +584,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Resource Include="Fonts\Redemption.ttf" />
-    <EmbeddedResource Include="Fonts\Roboto-Regular.ttf" />
+    <EmbeddedResource Include="Fonts\orbitron-medium.ttf" />
     <None Include="key.snk" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />

@@ -16,12 +16,13 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayUtil
 {
     internal class InfoPanel
     {
-        Font RobotoFont = new Font(FontUtil.GetRobotoMedium(), 15);
+        private readonly Font CustomFont;
         int FontHeight;
 
-        public InfoPanel()
+        public InfoPanel(int fontSize)
         {
-            FontHeight = RobotoFont.Height;
+            CustomFont = FontUtil.GetSpecialFont(fontSize);
+            FontHeight = CustomFont.Height;
         }
         private List<InfoLine> Lines = new List<InfoLine>();
 
@@ -36,12 +37,23 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayUtil
             TextRenderingHint previousHint = g.TextRenderingHint;
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
             g.TextContrast = 2;
-            foreach (InfoLine line in Lines)
+            lock (Lines)
             {
-                g.DrawString($"{line.Title}: {line.Value}", RobotoFont, Brushes.White, new PointF(0, lineY));
-                lineY += FontHeight;
+                int length = Lines.Count;
+                int counter = 0;
+                while (counter < length)
+                {
+                    InfoLine line = Lines[counter];
+                    g.DrawString($"{line.Title}: {line.Value}", CustomFont, Brushes.White, new PointF(0, counter * FontHeight));
+                    lineY += FontHeight;
+                    counter++;
+                    length = Lines.Count;
+                }
             }
             g.TextRenderingHint = previousHint;
+
+            lock (Lines)
+                Lines.Clear();
         }
 
 

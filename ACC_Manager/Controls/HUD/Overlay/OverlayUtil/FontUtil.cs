@@ -13,37 +13,68 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayUtil
 {
     internal class FontUtil
     {
-        public static FontFamily GetRobotoMedium()
+        // Adding a private font (Win2000 and later)
+        [DllImport("gdi32.dll", ExactSpelling = true)]
+        private static extern IntPtr AddFontMemResourceEx(byte[] pbFont, int cbFont, IntPtr pdv, out uint pcFonts);
+
+        // Cleanup of a private font (Win2000 and later)
+        [DllImport("gdi32.dll", ExactSpelling = true)]
+        internal static extern bool RemoveFontMemResourceEx(IntPtr fh);
+
+        // Some private holders of font information we are loading
+        static private IntPtr m_fh = IntPtr.Zero;
+        static private PrivateFontCollection m_pfc = null;
+
+        public static Font GetSpecialFont(float size)
         {
-            PrivateFontCollection private_fonts = new PrivateFontCollection();
 
-            string resource = "ACCSetupApp.Fonts.Roboto-Regular.ttf";
+            Font fnt = null;
 
-            // receive resource stream
-            Stream fontStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resource);
+            if (null == m_pfc)
+            {
 
-            // create an unsafe memory block for the font data
-            System.IntPtr data = Marshal.AllocCoTaskMem((int)fontStream.Length);
+                // First load the font as a memory stream
+                Stream stmFont = Assembly.GetExecutingAssembly().GetManifestResourceStream("ACCSetupApp.Fonts.orbitron-medium.ttf");
 
-            // create a buffer to read in to
-            byte[] fontdata = new byte[fontStream.Length];
+                if (null != stmFont)
+                {
 
-            // read the font data from the resource
-            fontStream.Read(fontdata, 0, (int)fontStream.Length);
+                    // 
+                    // GDI+ wants a pointer to memory, GDI wants the memory.
+                    // We will make them both happy.
+                    //
 
-            // copy the bytes to the unsafe memory block
-            Marshal.Copy(fontdata, 0, data, (int)fontStream.Length);
+                    // First read the font into a buffer
+                    byte[] rgbyt = new Byte[stmFont.Length];
+                    stmFont.Read(rgbyt, 0, rgbyt.Length);
 
-            // pass the font to the font collection
-            private_fonts.AddMemoryFont(data, (int)fontStream.Length);
+                    // Then do the unmanaged font (Windows 2000 and later)
+                    // The reason this works is that GDI+ will create a font object for
+                    // controls like the RichTextBox and this call will make sure that GDI
+                    // recognizes the font name, later.
+                    uint cFonts;
+                    AddFontMemResourceEx(rgbyt, rgbyt.Length, IntPtr.Zero, out cFonts);
 
-            // close the resource stream
-            fontStream.Close();
+                    // Now do the managed font
+                    IntPtr pbyt = Marshal.AllocCoTaskMem(rgbyt.Length);
+                    if (null != pbyt)
+                    {
+                        Marshal.Copy(rgbyt, 0, pbyt, rgbyt.Length);
+                        m_pfc = new PrivateFontCollection();
+                        m_pfc.AddMemoryFont(pbyt, rgbyt.Length);
+                        Marshal.FreeCoTaskMem(pbyt);
+                    }
+                }
+            }
 
-            // free up the unsafe memory
-            Marshal.FreeCoTaskMem(data);
+            if (m_pfc.Families.Length > 0)
+            {
+                // Handy how one of the Font constructors takes a
+                // FontFamily object, huh? :-)
+                fnt = new Font(m_pfc.Families[0], size);
+            }
 
-            return private_fonts.Families[0];
+            return fnt;
         }
     }
 }

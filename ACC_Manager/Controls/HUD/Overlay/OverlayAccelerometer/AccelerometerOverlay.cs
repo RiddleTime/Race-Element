@@ -11,6 +11,8 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayAccelerometer
 {
     internal class AccelerometerOverlay : AbstractOverlay
     {
+        private InfoPanel infoPanel = new InfoPanel(13);
+
         public AccelerometerOverlay(Rectangle rectangle) : base(rectangle, "Accelerometer Overlay")
         {
             this.Width = 300;
@@ -52,10 +54,10 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayAccelerometer
                             new Rectangle(gDotPosX, gDotPosY, gDotWidth, gDotHeight));
 
 
-            InfoPanel infos = new InfoPanel();
-            infos.AddLine(new InfoPanel.InfoLine() { Title = "AccG X", Value = $"{AccGX}" });
-            infos.AddLine(new InfoPanel.InfoLine() { Title = "AccG Y", Value = $"{AccGY}" });
-            infos.Draw(g, 300);
+
+            infoPanel.AddLine(new InfoPanel.InfoLine() { Title = "AccG X", Value = $"{AccGX}" });
+            infoPanel.AddLine(new InfoPanel.InfoLine() { Title = "AccG Y", Value = $"{AccGY}" });
+            infoPanel.Draw(g, 300);
         }
 
         public override bool ShouldRender()
