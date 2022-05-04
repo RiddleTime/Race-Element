@@ -11,11 +11,11 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayAccelerometer
 {
     internal class AccelerometerOverlay : AbstractOverlay
     {
-        private InfoPanel infoPanel = new InfoPanel(13);
+        private InfoPanel infoPanel = new InfoPanel(8);
 
         public AccelerometerOverlay(Rectangle rectangle) : base(rectangle, "Accelerometer Overlay")
         {
-            this.Width = 300;
+            this.Width = 200;
             this.Height = this.Width;
         }
 
@@ -32,7 +32,16 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayAccelerometer
             int paintWidth = this.Width - 1;
             int paintHeight = this.Height - 1;
 
-            int gDotWidth = 11;
+            Pen AccPen = new Pen(Color.FromArgb(100, 255, 255, 255));
+            AccPen.Width = 1;
+            Pen AccPen2 = new Pen(Color.FromArgb(30, 255, 255, 255));
+            AccPen2.Width = 3;
+            Pen AccPen3 = new Pen(Color.FromArgb(100, 255, 255, 255));
+            AccPen3.Width = 4;
+            Pen AccPen4 = new Pen(Color.FromArgb(200, 200, 200, 200));
+            AccPen4.Width = 5;
+
+            int gDotWidth = 14;
             int gDotHeight = gDotWidth;
 
             double AccGX = (double)pagePhysics.AccG[0] * 100;
@@ -44,15 +53,18 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayAccelerometer
             //Draws the HUD window
             g.FillRectangle(new SolidBrush(System.Drawing.Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.Width, this.Height));
             //Draws the lines and circles
-            g.DrawEllipse(Pens.Red, 0, 0, paintWidth, paintHeight);
-            g.DrawEllipse(Pens.LightBlue, paintWidth / 6, paintHeight / 6, (paintWidth / 3) * 2, (paintHeight / 3) * 2);
-            g.DrawEllipse(Pens.Yellow, paintWidth / 3, paintHeight / 3, paintWidth / 3, paintHeight / 3);
-            g.DrawLine(Pens.Red, 0, paintHeight / 2, paintWidth, paintHeight / 2);
-            g.DrawLine(Pens.Red, paintWidth / 2, 0, paintWidth / 2, paintHeight);
-            //Draws the 'dot'
-            g.FillRectangle(new SolidBrush(System.Drawing.Color.FromArgb(0, 255, 255)),
-                            new Rectangle(gDotPosX, gDotPosY, gDotWidth, gDotHeight));
+            g.DrawLine(AccPen, 0, paintHeight / 2, paintWidth, paintHeight / 2);
+            g.DrawLine(AccPen, paintWidth / 2, 0, paintWidth / 2, paintHeight);
+            System.Drawing.Drawing2D.SmoothingMode previousSmoothing = g.SmoothingMode;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            g.DrawEllipse(AccPen4, 2, 2, paintWidth - 4, paintHeight - 4);
+            g.DrawEllipse(AccPen3, paintWidth / 6, paintHeight / 6, (paintWidth / 3) * 2, (paintHeight / 3) * 2);
+            g.DrawEllipse(AccPen2, paintWidth / 3, paintHeight / 3, paintWidth / 3, paintHeight / 3);
 
+            //Draws the 'dot'
+            g.FillEllipse(new SolidBrush(System.Drawing.Color.FromArgb(242, 82, 2)),
+                            new Rectangle(gDotPosX, gDotPosY, gDotWidth, gDotHeight));
+            g.SmoothingMode = previousSmoothing;
 
 
             infoPanel.AddLine(new InfoPanel.InfoLine() { Title = "AccG X", Value = $"{AccGX}" });
