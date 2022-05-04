@@ -24,21 +24,39 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayAccelerometer
         {
         }
 
+        private Font inputFont = new Font("Arial", 10);
+
         public override void Render(Graphics g)
         {
             int paintWidth = this.Width - 1;
             int paintHeight = this.Height - 1;
 
+            int gDotWidth = 11;
+            int gDotHeight = gDotWidth;
 
+            double AccGX = (double)pagePhysics.AccG[0] * 100;
+            double AccGY = (double)pagePhysics.AccG[2] * 100;
+
+            int gDotPosX = (int)AccGX + (paintWidth / 2) - (gDotWidth / 2);
+            int gDotPosY = (int)AccGY + (paintHeight / 2) - (gDotHeight / 2);
+
+            //testing
+            g.DrawString($"AccG X = {AccGX}", inputFont, Brushes.White, new PointF(0, 0));
+            g.DrawString($"AccG Y = {AccGY}", inputFont, Brushes.White, new PointF(0, 15));
+            //
+            //Draws the HUD window
             g.FillRectangle(new SolidBrush(System.Drawing.Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.Width, this.Height));
-
+            //Draws the lines and circles
             g.DrawEllipse(Pens.Red, 0, 0, paintWidth, paintHeight);
-            g.DrawEllipse(Pens.Yellow, 75, 75, paintWidth / 2, paintHeight / 2);
-            g.DrawLine(Pens.Red, 0, paintHeight / 2, paintWidth, paintHeight / 2); // X1, Y1, X2, Y2
+            g.DrawEllipse(Pens.LightBlue, paintWidth / 6, paintHeight / 6, (paintWidth / 3) * 2, (paintHeight / 3) * 2);
+            g.DrawEllipse(Pens.Yellow, paintWidth / 3, paintHeight / 3, paintWidth / 3, paintHeight / 3);
+            g.DrawLine(Pens.Red, 0, paintHeight / 2, paintWidth, paintHeight / 2);
             g.DrawLine(Pens.Red, paintWidth / 2, 0, paintWidth / 2, paintHeight);
+            //Draws the 'dot'
+            g.FillRectangle(new SolidBrush(System.Drawing.Color.FromArgb(0, 255, 255)), 
+                            new Rectangle(gDotPosX, gDotPosY, gDotWidth, gDotHeight));
 
-            // commented this since it's not compiling :P 
-            //g.DrawPolygon(Pens.Red, this.Width / 3, this.Height / 3,);
+
         }
 
         public override bool ShouldRender()
