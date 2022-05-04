@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCSetupApp.ACCSharedMemory;
 using static ACCSetupApp.Controls.HUD.Overlay.OverlayUtil.InfoPanel;
 
 namespace ACCSetupApp.Controls.HUD.Overlay.OverlayTrackInfo
@@ -29,8 +30,8 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayTrackInfo
         {
             g.FillRectangle(new SolidBrush(System.Drawing.Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.Width, this.Height));
 
-            panel.AddLine(new InfoLine() { Title = "Flag", Value = ACCSharedMemory.FlagTypeToString(pageGraphics.Flag) });
-            panel.AddLine(new InfoLine() { Title = "Session", Value = ACCSharedMemory.SessionTypeToString(pageGraphics.SessionType) });
+            panel.AddLine(new InfoLine() { Title = "Flag", Value = FlagTypeToString(pageGraphics.Flag) });
+            panel.AddLine(new InfoLine() { Title = "Session", Value = SessionTypeToString(pageGraphics.SessionType) });
             panel.AddLine(new InfoLine() { Title = "Grip", Value = pageGraphics.trackGripStatus.ToString() });
             string airTemp = Math.Round(pagePhysics.AirTemp, 2).ToString("F2");
             string roadTemp = Math.Round(pagePhysics.RoadTemp, 2).ToString("F2");
@@ -44,8 +45,11 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayTrackInfo
 #if DEBUG
             return true;
 #endif
+            bool shouldRender = true;
+            if (pageGraphics.Status == AcStatus.AC_OFF || pageGraphics.Status == AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
+                shouldRender = false;
 
-            return false;
+            return shouldRender;
         }
 
 
