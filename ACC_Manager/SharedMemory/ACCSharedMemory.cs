@@ -44,6 +44,26 @@ namespace ACCSetupApp
             AC_HOTLAPSUPERPOLE = 8
         }
 
+
+        public static string SessionTypeToString(AcSessionType sessionType)
+        {
+            switch (sessionType)
+            {
+                case AcSessionType.AC_UNKNOWN: return "Unknown";
+                case AcSessionType.AC_PRACTICE: return "Practice";
+                case AcSessionType.AC_QUALIFY: return "Qualify";
+                case AcSessionType.AC_RACE: return "Race";
+                case AcSessionType.AC_HOTLAP: return "Hotlap";
+                case AcSessionType.AC_TIME_ATTACK: return "Time attack";
+                case AcSessionType.AC_DRIFT: return "Drift";
+                case AcSessionType.AC_DRAG: return "Drag";
+                case AcSessionType.AC_HOTSTINT: return "Hotstint";
+                case AcSessionType.AC_HOTLAPSUPERPOLE: return "Hotlap superpole";
+
+                default: return sessionType.ToString();
+            }
+        }
+
         public enum AcFlagType : int
         {
             AC_NO_FLAG,

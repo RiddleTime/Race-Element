@@ -117,6 +117,7 @@
     </Reference>
     <Reference Include="MaterialDesignThemes.Wpf, Version=4.4.0.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignThemes.4.4.0\lib\net452\MaterialDesignThemes.Wpf.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
@@ -329,6 +330,8 @@
     <Compile Include="Controls\HUD\Overlay\Overlays.cs" />
     <Compile Include="Controls\HUD\Overlay\OverlayDebugInfo\OverlayStaticInfo\StaticInfoOverlay.cs" />
     <Compile Include="Controls\HUD\Overlay\OverlayTrackInfo\TrackInfoOverlay.cs" />
+    <Compile Include="Controls\HUD\Overlay\OverlayUtil\FontUtil.cs" />
+    <Compile Include="Controls\HUD\Overlay\OverlayUtil\InfoPanel.cs" />
     <Compile Include="Controls\Liveries\AfterImport.xaml.cs">
       <DependentUpon>AfterImport.xaml</DependentUpon>
     </Compile>
@@ -581,6 +584,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Resource Include="Fonts\Redemption.ttf" />
+    <EmbeddedResource Include="Fonts\Roboto-Regular.ttf" />
     <None Include="key.snk" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
