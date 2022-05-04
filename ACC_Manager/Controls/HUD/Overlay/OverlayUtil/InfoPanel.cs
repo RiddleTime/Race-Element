@@ -16,8 +16,13 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayUtil
 {
     internal class InfoPanel
     {
-        Font Font = new Font(FontUtil.GetRobotoMedium(), 15);
+        Font RobotoFont = new Font(FontUtil.GetRobotoMedium(), 15);
+        int FontHeight;
 
+        public InfoPanel()
+        {
+            FontHeight = RobotoFont.Height;
+        }
         private List<InfoLine> Lines = new List<InfoLine>();
 
         public void AddLine(InfoLine info)
@@ -27,17 +32,14 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayUtil
 
         public void Draw(Graphics g, int maxWidth)
         {
-
-            // pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/#Roboto-Medium
-
             int lineY = 0;
             TextRenderingHint previousHint = g.TextRenderingHint;
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
             g.TextContrast = 2;
             foreach (InfoLine line in Lines)
             {
-                g.DrawString($"{line.Title}: {line.Value}", Font, Brushes.White, new PointF(0, lineY));
-                lineY += Font.Height;
+                g.DrawString($"{line.Title}: {line.Value}", RobotoFont, Brushes.White, new PointF(0, lineY));
+                lineY += FontHeight;
             }
             g.TextRenderingHint = previousHint;
         }
