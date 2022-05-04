@@ -48,6 +48,8 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayTrackInfo
             bool shouldRender = true;
             if (pageGraphics.Status == AcStatus.AC_OFF || pageGraphics.Status == AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
                 shouldRender = false;
+
+            return shouldRender;
         }
 
 
