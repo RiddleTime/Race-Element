@@ -19,6 +19,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayCarInfo
         {
             this.Width = 300;
             this.Height = 200;
+            this.RefreshRateHz = 10;
         }
 
         public override void BeforeStart()
