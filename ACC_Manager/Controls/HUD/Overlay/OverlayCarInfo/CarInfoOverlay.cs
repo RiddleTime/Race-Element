@@ -34,9 +34,9 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayCarInfo
             g.FillRectangle(new SolidBrush(Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.Width, this.Height));
 
             float totalRepairTime = GetTotalRepairTime();
-            infoPanel.AddLine(new InfoPanel.InfoLine() { Title = "Repair time", Value = $"{totalRepairTime}" });
-            infoPanel.AddLine(new InfoPanel.InfoLine() { Title = "Tyre set", Value = $"{pageGraphics.currentTyreSet}" });
-            infoPanel.AddLine(new InfoPanel.InfoLine() { Title = "Fuel per lap", Value = $"{Math.Round(pageGraphics.FuelXLap, 3)}" });
+            infoPanel.AddLine("Repair time", $"{totalRepairTime}");
+            infoPanel.AddLine("Tyre set", $"{pageGraphics.currentTyreSet}");
+            infoPanel.AddLine("Fuel per lap", $"{Math.Round(pageGraphics.FuelXLap, 3)}");
 
 
             infoPanel.Draw(g);

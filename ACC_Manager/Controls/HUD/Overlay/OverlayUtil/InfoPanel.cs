@@ -31,9 +31,9 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayUtil
         }
         private List<InfoLine> Lines = new List<InfoLine>();
 
-        public void AddLine(InfoLine info)
+        public void AddLine(string title, string value)
         {
-            Lines.Add(info);
+            Lines.Add(new InfoLine() { Title = title, Value = value });
         }
 
         public void Draw(Graphics g)
@@ -78,9 +78,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayUtil
                 Lines.Clear();
         }
 
-
-
-        public class InfoLine
+        private class InfoLine
         {
             internal string Title { get; set; }
             internal string Value { get; set; }

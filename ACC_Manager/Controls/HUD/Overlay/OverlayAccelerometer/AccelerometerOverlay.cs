@@ -11,7 +11,8 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayAccelerometer
 {
     internal class AccelerometerOverlay : AbstractOverlay
     {
-        private InfoPanel infoPanel = new InfoPanel(8);
+        private InfoPanel info = new InfoPanel(8);
+        private const int MaxG = 3;
 
         public AccelerometerOverlay(Rectangle rectangle) : base(rectangle, "Accelerometer Overlay")
         {
@@ -35,15 +36,15 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayAccelerometer
 
             DrawGMeter(48, 48, 250, g);
 
-            double xPercentage = GetPercentage(3, pagePhysics.AccG[0]);
-            double yPercentage = GetPercentage(3, pagePhysics.AccG[2]);
+            double xPercentage = GetPercentage(MaxG, pagePhysics.AccG[0]);
+            double yPercentage = GetPercentage(MaxG, pagePhysics.AccG[2]);
 
-            infoPanel.AddLine(new InfoPanel.InfoLine() { Title = "AccG X", Value = $"{pagePhysics.AccG[0].ToString("F2")}" });
-            infoPanel.AddLine(new InfoPanel.InfoLine() { Title = "AccG Y", Value = $"{pagePhysics.AccG[2].ToString("F2")}" });
-            infoPanel.AddLine(new InfoPanel.InfoLine() { Title = "X percent", Value = $"{(xPercentage * 100).ToString("F2")}" });
-            infoPanel.AddLine(new InfoPanel.InfoLine() { Title = "Y percent", Value = $"{(yPercentage * 10).ToString("F2")}" });
+            info.AddLine("AccG X", $"{pagePhysics.AccG[0].ToString("F2")}");
+            info.AddLine("AccG Y", $"{pagePhysics.AccG[2].ToString("F2")}");
+            info.AddLine("X percent", $"{(xPercentage * 100).ToString("F2")}");
+            info.AddLine("Y percent", $"{(yPercentage * 100).ToString("F2")}");
 
-            infoPanel.Draw(g);
+            info.Draw(g);
         }
 
 
@@ -87,9 +88,8 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayAccelerometer
             //Draws the 'dot'
             int gDotSize = 14;
 
-            float maxG = 2.5f;
-            double xPercentage = GetPercentage(maxG, pagePhysics.AccG[0]);
-            double yPercentage = GetPercentage(maxG, pagePhysics.AccG[2]);
+            double xPercentage = GetPercentage(MaxG, pagePhysics.AccG[0]);
+            double yPercentage = GetPercentage(MaxG, pagePhysics.AccG[2]);
 
             PointF middle = new PointF(x + size / 2, y + size / 2);
             int gDotPosX = (int)(middle.X + (size * 0.8 / 2 * xPercentage) - (gDotSize / 2));
