@@ -25,8 +25,6 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayAccelerometer
         {
         }
 
-        private Font inputFont = new Font("Arial", 10);
-
         public override void Render(Graphics g)
         {
             int paintWidth = this.Width - 1;
