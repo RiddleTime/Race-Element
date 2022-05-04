@@ -18,8 +18,9 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
         private bool Draw = false;
 
         public bool IsRepositioning { get; internal set; }
-
         public bool AllowReposition { get; set; } = true;
+
+        public int RefreshRateHz = 30;
 
         private Window RepositionWindow;
 
@@ -78,7 +79,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.Internal
                 {
                     while (Draw)
                     {
-                        Thread.Sleep(1000 / 30);
+                        Thread.Sleep(1000 / RefreshRateHz);
                         if (this._disposed)
                         {
                             this.Stop();

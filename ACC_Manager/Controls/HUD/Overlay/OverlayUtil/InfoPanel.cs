@@ -16,13 +16,18 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayUtil
 {
     internal class InfoPanel
     {
-        private readonly Font CustomFont;
+        private readonly Font TitleFont;
+        private readonly Font ValueFont;
         int FontHeight;
+
+        private bool MaxTitleWidthSet = false;
+        private float MaxTitleWidth = 0;
 
         public InfoPanel(int fontSize)
         {
-            CustomFont = FontUtil.GetSpecialFont(fontSize);
-            FontHeight = CustomFont.Height;
+            TitleFont = FontUtil.GetBoldFont(fontSize);
+            ValueFont = FontUtil.GetLightFont(fontSize);
+            FontHeight = TitleFont.Height;
         }
         private List<InfoLine> Lines = new List<InfoLine>();
 
@@ -31,7 +36,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayUtil
             Lines.Add(info);
         }
 
-        public void Draw(Graphics g, int maxWidth)
+        public void Draw(Graphics g)
         {
             int lineY = 0;
             TextRenderingHint previousHint = g.TextRenderingHint;
@@ -44,11 +49,28 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayUtil
                 while (counter < length)
                 {
                     InfoLine line = Lines[counter];
-                    g.DrawString($"{line.Title}: {line.Value}", CustomFont, Brushes.White, new PointF(0, counter * FontHeight));
-                    lineY += FontHeight;
+
+                    if (!MaxTitleWidthSet)
+                    {
+                        SizeF titleWidth;
+                        if ((titleWidth = g.MeasureString(line.Title, TitleFont)).Width > MaxTitleWidth)
+                        {
+                            MaxTitleWidth = titleWidth.Width;
+                        }
+                    }
+                    else
+                    {
+                        g.DrawString($"{line.Title}", TitleFont, Brushes.White, new PointF(0, counter * FontHeight));
+                        g.DrawString($"{line.Value}", ValueFont, Brushes.White, new PointF(MaxTitleWidth + TitleFont.Size, counter * FontHeight));
+                        lineY += FontHeight;
+                    }
+
                     counter++;
                     length = Lines.Count;
                 }
+
+                if (!MaxTitleWidthSet)
+                    MaxTitleWidthSet = true;
             }
             g.TextRenderingHint = previousHint;
 

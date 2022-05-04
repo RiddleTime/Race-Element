@@ -12,12 +12,13 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayTrackInfo
 {
     internal class TrackInfoOverlay : AbstractOverlay
     {
-        private InfoPanel panel = new InfoPanel(12);
+        private readonly InfoPanel panel = new InfoPanel(10);
 
         public TrackInfoOverlay(Rectangle rectangle) : base(rectangle, "Track Info Overlay")
         {
-            this.Width = 225;
-            this.Height = 100;
+            this.Width = 240;
+            this.Height = 86;
+            RefreshRateHz = 5;
         }
 
         public override void BeforeStart() { }
@@ -28,14 +29,14 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayTrackInfo
         {
             g.FillRectangle(new SolidBrush(System.Drawing.Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.Width, this.Height));
 
-
             panel.AddLine(new InfoLine() { Title = "Flag", Value = ACCSharedMemory.FlagTypeToString(pageGraphics.Flag) });
             panel.AddLine(new InfoLine() { Title = "Session", Value = ACCSharedMemory.SessionTypeToString(pageGraphics.SessionType) });
-            panel.AddLine(new InfoLine() { Title = "Track status", Value = pageGraphics.trackGripStatus.ToString() });
-            panel.AddLine(new InfoLine() { Title = "Temps", Value = $"Air: {Math.Round(pagePhysics.AirTemp, 2)}, Track: {Math.Round(pagePhysics.RoadTemp, 2)}" });
+            panel.AddLine(new InfoLine() { Title = "Grip", Value = pageGraphics.trackGripStatus.ToString() });
+            string airTemp = Math.Round(pagePhysics.AirTemp, 2).ToString("F2");
+            string roadTemp = Math.Round(pagePhysics.RoadTemp, 2).ToString("F2");
+            panel.AddLine(new InfoLine() { Title = "Air - Track", Value = $"{airTemp} C - {roadTemp} C" });
             panel.AddLine(new InfoLine() { Title = "Wind", Value = $"{Math.Round(pageGraphics.WindSpeed, 2)} km/h" });
-
-            panel.Draw(g, this.Width);
+            panel.Draw(g);
         }
 
         public override bool ShouldRender()

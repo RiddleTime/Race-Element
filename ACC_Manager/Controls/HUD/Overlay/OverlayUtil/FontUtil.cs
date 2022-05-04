@@ -25,7 +25,18 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayUtil
         static private IntPtr m_fh = IntPtr.Zero;
         static private PrivateFontCollection m_pfc = null;
 
-        public static Font GetSpecialFont(float size)
+
+        public static Font GetLightFont(float size)
+        {
+            return GetSpecialFont(size, "ACCSetupApp.Fonts.orbitron-light.ttf");
+        }
+
+        public static Font GetBoldFont(float size)
+        {
+            return GetSpecialFont(size, "ACCSetupApp.Fonts.orbitron-medium.ttf");
+        }
+
+        private static Font GetSpecialFont(float size, string resourceName)
         {
 
             Font fnt = null;
@@ -34,7 +45,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayUtil
             {
 
                 // First load the font as a memory stream
-                Stream stmFont = Assembly.GetExecutingAssembly().GetManifestResourceStream("ACCSetupApp.Fonts.orbitron-medium.ttf");
+                Stream stmFont = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
 
                 if (null != stmFont)
                 {

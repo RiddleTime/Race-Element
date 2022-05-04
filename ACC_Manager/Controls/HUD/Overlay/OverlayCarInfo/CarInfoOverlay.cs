@@ -1,4 +1,5 @@
 ﻿using ACCSetupApp.Controls.HUD.Overlay.Internal;
+using ACCSetupApp.Controls.HUD.Overlay.OverlayUtil;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,15 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using static ACCSetupApp.SetupParser.SetupConverter;
 
-namespace ACCSetupApp.Controls.HUD.Overlay.OverlayCarDamage
+namespace ACCSetupApp.Controls.HUD.Overlay.OverlayCarInfo
 {
-    internal class CarDamageOverlay : AbstractOverlay
+    internal class CarInfoOverlay : AbstractOverlay
     {
-
-        private Font inputFont = new Font("Roboto", 10);
+        InfoPanel infoPanel = new InfoPanel(10);
         private float MagicDamageMultiplier = 0.282f;
 
-        public CarDamageOverlay(Rectangle rectangle) : base(rectangle, "Car Damage Overlay")
+        public CarInfoOverlay(Rectangle rectangle) : base(rectangle, "Car Info Overlay")
         {
             this.Width = 300;
             this.Height = 200;
@@ -31,10 +31,15 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayCarDamage
 
         public override void Render(Graphics g)
         {
-            g.DrawRectangle(new Pen(Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.Width, this.Height));
+            g.FillRectangle(new SolidBrush(Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.Width, this.Height));
 
             float totalRepairTime = GetTotalRepairTime();
-            g.DrawString($"Repair Time: {totalRepairTime}", inputFont, Brushes.White, 0, 0);
+            infoPanel.AddLine(new InfoPanel.InfoLine() { Title = "Repair time", Value = $"{totalRepairTime}" });
+            infoPanel.AddLine(new InfoPanel.InfoLine() { Title = "Tyre set", Value = $"{pageGraphics.currentTyreSet}" });
+            infoPanel.AddLine(new InfoPanel.InfoLine() { Title = "Fuel per lap", Value = $"{Math.Round(pageGraphics.FuelXLap, 3)}" });
+
+
+            infoPanel.Draw(g);
         }
 
         public override bool ShouldRender()
