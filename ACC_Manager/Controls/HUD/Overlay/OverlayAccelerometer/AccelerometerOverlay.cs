@@ -11,7 +11,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayAccelerometer
 {
     internal class AccelerometerOverlay : AbstractOverlay
     {
-        private InfoPanel infoPanel = new InfoPanel(13);
+        private InfoPanel infoPanel = new InfoPanel(8);
 
         public AccelerometerOverlay(Rectangle rectangle) : base(rectangle, "Accelerometer Overlay")
         {
@@ -38,7 +38,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayAccelerometer
             AccPen2.Width = 3;
             Pen AccPen3 = new Pen(Color.FromArgb(100, 255, 255, 255));
             AccPen3.Width = 4;
-            Pen AccPen4 = new Pen(Color.FromArgb(200, 255, 255, 255));
+            Pen AccPen4 = new Pen(Color.FromArgb(200, 200, 200, 200));
             AccPen4.Width = 5;
 
             int gDotWidth = 14;
