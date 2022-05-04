@@ -52,7 +52,28 @@ namespace ACCSetupApp
             AC_BLACK_FLAG,
             AC_WHITE_FLAG,
             AC_CHECKERED_FLAG,
-            AC_PENALTY_FLAG
+            AC_PENALTY_FLAG,
+            AC_GREEN_FLAG,
+            AC_BLACK_FLAG_WITH_ORANGE_CIRCLE,
+
+        }
+
+        public static string FlagTypeToString(AcFlagType flagType)
+        {
+            switch (flagType)
+            {
+                case AcFlagType.AC_NO_FLAG: return "Green";
+                case AcFlagType.AC_BLUE_FLAG: return "Blue";
+                case AcFlagType.AC_YELLOW_FLAG: return "Yellow";
+                case AcFlagType.AC_BLACK_FLAG: return "Black";
+                case AcFlagType.AC_WHITE_FLAG: return "White";
+                case AcFlagType.AC_CHECKERED_FLAG: return "Checkered";
+                case AcFlagType.AC_PENALTY_FLAG: return "Penalty";
+                case AcFlagType.AC_GREEN_FLAG: return "Green";
+                case AcFlagType.AC_BLACK_FLAG_WITH_ORANGE_CIRCLE: return "Black/Orange Circle";
+
+                default: return flagType.ToString();
+            }
         }
 
         public enum PenaltyShortcut : int
