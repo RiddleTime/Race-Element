@@ -35,7 +35,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayTrackInfo
             panel.AddLine(new InfoLine() { Title = "Temps", Value = $"Air: {Math.Round(pagePhysics.AirTemp, 2)}, Track: {Math.Round(pagePhysics.RoadTemp, 2)}" });
             panel.AddLine(new InfoLine() { Title = "Wind", Value = $"{Math.Round(pageGraphics.WindSpeed, 2)} km/h" });
 
-            panel.Draw(g, this.Width);
+            panel.Draw(g);
         }
 
         public override bool ShouldRender()

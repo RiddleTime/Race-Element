@@ -34,7 +34,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayUtil
             Lines.Add(info);
         }
 
-        public void Draw(Graphics g, int maxWidth)
+        public void Draw(Graphics g)
         {
             int lineY = 0;
             TextRenderingHint previousHint = g.TextRenderingHint;

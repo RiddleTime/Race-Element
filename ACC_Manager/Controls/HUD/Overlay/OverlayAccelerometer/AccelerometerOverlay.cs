@@ -57,7 +57,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayAccelerometer
 
             infoPanel.AddLine(new InfoPanel.InfoLine() { Title = "AccG X", Value = $"{AccGX}" });
             infoPanel.AddLine(new InfoPanel.InfoLine() { Title = "AccG Y", Value = $"{AccGY}" });
-            infoPanel.Draw(g, 300);
+            infoPanel.Draw(g);
         }
 
         public override bool ShouldRender()
