@@ -315,7 +315,7 @@
     <Compile Include="Controls\HUD\Overlay\Internal\AbstractOverlay.cs" />
     <Compile Include="Controls\HUD\Overlay\Internal\OverlayOptions.cs" />
     <Compile Include="Controls\HUD\Overlay\OverlayAccelerometer\AccelerometerOverlay.cs" />
-    <Compile Include="Controls\HUD\Overlay\OverlayCarDamage\CarDamageOverlay.cs" />
+    <Compile Include="Controls\HUD\Overlay\OverlayCarInfo\CarInfoOverlay.cs" />
     <Compile Include="Controls\HUD\Overlay\OverlayDebugInfo\DebugInfoHelper.cs" />
     <Compile Include="Controls\HUD\Overlay\OverlayDebugInfo\OverlayGraphicsInfo\GraphicsInfoOverlay.cs" />
     <Compile Include="Controls\HUD\Overlay\OverlayEcuMapInfo\EcuMapOverlay.cs" />
