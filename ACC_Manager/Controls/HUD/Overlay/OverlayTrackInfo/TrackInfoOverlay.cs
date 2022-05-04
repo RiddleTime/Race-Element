@@ -16,8 +16,8 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayTrackInfo
 
         public TrackInfoOverlay(Rectangle rectangle) : base(rectangle, "Track Info Overlay")
         {
-            this.Width = 330;
-            this.Height = 95;
+            this.Width = 320;
+            this.Height = 93;
         }
 
         public override void BeforeStart() { }
@@ -30,10 +30,9 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayTrackInfo
 
             panel.AddLine(new InfoLine() { Title = "Flag", Value = ACCSharedMemory.FlagTypeToString(pageGraphics.Flag) });
             panel.AddLine(new InfoLine() { Title = "Session", Value = ACCSharedMemory.SessionTypeToString(pageGraphics.SessionType) });
-            panel.AddLine(new InfoLine() { Title = "Track status", Value = pageGraphics.trackGripStatus.ToString() });
-            panel.AddLine(new InfoLine() { Title = "Temps", Value = $"Air: {Math.Round(pagePhysics.AirTemp, 2)}, Track: {Math.Round(pagePhysics.RoadTemp, 2)}" });
+            panel.AddLine(new InfoLine() { Title = "Grip", Value = pageGraphics.trackGripStatus.ToString() });
+            panel.AddLine(new InfoLine() { Title = "Temp (Air/Track)", Value = $"{Math.Round(pagePhysics.AirTemp, 2)} C - {Math.Round(pagePhysics.RoadTemp, 2)} C" });
             panel.AddLine(new InfoLine() { Title = "Wind", Value = $"{Math.Round(pageGraphics.WindSpeed, 2)} km/h" });
-
             panel.Draw(g);
         }
 

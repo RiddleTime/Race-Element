@@ -585,6 +585,7 @@
     </EmbeddedResource>
     <Resource Include="Fonts\Redemption.ttf" />
     <EmbeddedResource Include="Fonts\orbitron-medium.ttf" />
+    <EmbeddedResource Include="Fonts\orbitron-light.ttf" />
     <None Include="key.snk" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />

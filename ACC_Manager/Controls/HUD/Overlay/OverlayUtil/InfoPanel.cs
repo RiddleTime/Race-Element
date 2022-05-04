@@ -16,7 +16,8 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayUtil
 {
     internal class InfoPanel
     {
-        private readonly Font CustomFont;
+        private readonly Font TitleFont;
+        private readonly Font ValueFont;
         int FontHeight;
 
         private bool MaxTitleWidthSet = false;
@@ -24,8 +25,9 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayUtil
 
         public InfoPanel(int fontSize)
         {
-            CustomFont = FontUtil.GetSpecialFont(fontSize);
-            FontHeight = CustomFont.Height;
+            TitleFont = FontUtil.GetBoldFont(fontSize);
+            ValueFont = FontUtil.GetLightFont(fontSize);
+            FontHeight = TitleFont.Height;
         }
         private List<InfoLine> Lines = new List<InfoLine>();
 
@@ -51,15 +53,15 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayUtil
                     if (!MaxTitleWidthSet)
                     {
                         SizeF titleWidth;
-                        if ((titleWidth = g.MeasureString(line.Title, CustomFont)).Width > MaxTitleWidth)
+                        if ((titleWidth = g.MeasureString(line.Title, TitleFont)).Width > MaxTitleWidth)
                         {
                             MaxTitleWidth = titleWidth.Width;
                         }
                     }
                     else
                     {
-                        g.DrawString($"{line.Title}:", CustomFont, Brushes.White, new PointF(0, counter * FontHeight));
-                        g.DrawString($"{line.Value}", CustomFont, Brushes.White, new PointF(MaxTitleWidth + CustomFont.Size, counter * FontHeight));
+                        g.DrawString($"{line.Title}", TitleFont, Brushes.White, new PointF(0, counter * FontHeight));
+                        g.DrawString($"{line.Value}", ValueFont, Brushes.White, new PointF(MaxTitleWidth + TitleFont.Size, counter * FontHeight));
                         lineY += FontHeight;
                     }
 
