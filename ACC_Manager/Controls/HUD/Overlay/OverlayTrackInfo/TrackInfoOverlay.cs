@@ -10,8 +10,6 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayTrackInfo
 {
     internal class TrackInfoOverlay : AbstractOverlay
     {
-        private Font inputFont = new Font("Arial", 10);
-
         public TrackInfoOverlay(Rectangle rectangle) : base(rectangle, "Track Info Overlay")
         {
             this.Width = 200;
@@ -26,9 +24,17 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayTrackInfo
         {
             g.FillRectangle(new SolidBrush(System.Drawing.Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.Width, this.Height));
 
-          InfoDrawing infoDrawing = new InfoDrawing();
+            InfoDrawing info = new InfoDrawing();
+            info.AddLine(new InfoLine() { Title = "Time", Value = pageGraphics.CurrentTime });
+            info.AddLine(new InfoLine() { Title = "Flag", Value = ACCSharedMemory.FlagTypeToString(pageGraphics.Flag) });
+            info.AddLine(new InfoLine() { Title = "Session", Value = pageGraphics.SessionType.ToString() });
+            info.AddLine(new InfoLine() { Title = "Track status", Value = pageGraphics.trackGripStatus.ToString() });
+            info.AddLine(new InfoLine() { Title = "Temperature", Value = $"Air: {Math.Round(pagePhysics.AirTemp, 2)}, Track: {Math.Round(pagePhysics.RoadTemp, 2)}" });
+            info.AddLine(new InfoLine() { Title = "Wind", Value = $"Speed: {Math.Round(pageGraphics.WindSpeed, 2)}" });
 
-            g.DrawString($"Blinker left is on? : {pageGraphics.BlinkerLeftOn}", inputFont, Brushes.White, new PointF(0, 0));
+            info.Draw(g, this.Width);
+
+
             //g.DrawString($"")
         }
 
@@ -43,13 +49,29 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayTrackInfo
 
         internal class InfoDrawing
         {
-            internal List<InfoObject> Infos = new List<InfoObject>();
+            public Font Font = new Font("Arial", 10);
+            private List<InfoLine> Lines = new List<InfoLine>();
+
+            public void AddLine(InfoLine info)
+            {
+                Lines.Add(info);
+            }
+
+            public void Draw(Graphics g, int maxWidth)
+            {
+                int lineY = 0;
+                foreach (InfoLine line in Lines)
+                {
+                    g.DrawString($"{line.Title}: {line.Value}", Font, Brushes.White, new PointF(0, lineY));
+                    lineY += Font.Height;
+                }
+            }
         }
 
-        internal class InfoObject
+        internal class InfoLine
         {
-            internal string Header;
-            internal string Info;
+            internal string Title { get; set; }
+            internal string Value { get; set; }
         }
     }
 }
