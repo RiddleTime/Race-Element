@@ -12,12 +12,12 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayTrackInfo
 {
     internal class TrackInfoOverlay : AbstractOverlay
     {
-        private InfoPanel panel = new InfoPanel(11);
+        private readonly InfoPanel panel = new InfoPanel(11);
 
         public TrackInfoOverlay(Rectangle rectangle) : base(rectangle, "Track Info Overlay")
         {
-            this.Width = 300;
-            this.Height = 100;
+            this.Width = 330;
+            this.Height = 95;
         }
 
         public override void BeforeStart() { }
@@ -27,7 +27,6 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayTrackInfo
         public override void Render(Graphics g)
         {
             g.FillRectangle(new SolidBrush(System.Drawing.Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.Width, this.Height));
-
 
             panel.AddLine(new InfoLine() { Title = "Flag", Value = ACCSharedMemory.FlagTypeToString(pageGraphics.Flag) });
             panel.AddLine(new InfoLine() { Title = "Session", Value = ACCSharedMemory.SessionTypeToString(pageGraphics.SessionType) });
