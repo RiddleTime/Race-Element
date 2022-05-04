@@ -26,6 +26,8 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayTrackInfo
         {
             g.FillRectangle(new SolidBrush(System.Drawing.Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.Width, this.Height));
 
+          InfoDrawing infoDrawing = new InfoDrawing();
+
             g.DrawString($"Blinker left is on? : {pageGraphics.BlinkerLeftOn}", inputFont, Brushes.White, new PointF(0, 0));
             //g.DrawString($"")
         }
@@ -37,6 +39,17 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayTrackInfo
 #endif
 
             return false;
+        }
+
+        internal class InfoDrawing
+        {
+            internal List<InfoObject> Infos = new List<InfoObject>();
+        }
+
+        internal class InfoObject
+        {
+            internal string Header;
+            internal string Info;
         }
     }
 }
