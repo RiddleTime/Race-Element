@@ -90,7 +90,7 @@ namespace ACCSetupApp
                 case AcFlagType.AC_CHECKERED_FLAG: return "Checkered";
                 case AcFlagType.AC_PENALTY_FLAG: return "Penalty";
                 case AcFlagType.AC_GREEN_FLAG: return "Green";
-                case AcFlagType.AC_BLACK_FLAG_WITH_ORANGE_CIRCLE: return "Black/Orange Circle";
+                case AcFlagType.AC_BLACK_FLAG_WITH_ORANGE_CIRCLE: return "Orange";
 
                 default: return flagType.ToString();
             }
