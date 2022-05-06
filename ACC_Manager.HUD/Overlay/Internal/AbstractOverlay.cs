@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows;
@@ -44,6 +45,30 @@ namespace ACCManager.HUD.Overlay.Internal
 
             if (AllowReposition)
                 ApplyOverlaySettings();
+
+            LoadFieldConfig();
+        }
+
+
+        private void LoadFieldConfig()
+        {
+            FieldInfo[] fields = this.GetType().GetRuntimeFields().ToArray();
+            foreach (var nested in fields)
+            {
+                if (nested.FieldType.BaseType == typeof(OverlayConfiguration))
+                {
+                    Debug.WriteLine($"Found {nested.Name} - {nested.GetValue(this)}");
+                    OverlayConfiguration temp = (OverlayConfiguration)Activator.CreateInstance(nested.FieldType, new object[] { });
+
+                    OverlaySettings settings = OverlayOptions.LoadOverlaySettings(this.Name);
+
+                    temp.SetConfigFields(settings.Config);
+
+                    nested.SetValue(this, temp);
+
+
+                }
+            }
         }
 
         private void ApplyOverlaySettings()

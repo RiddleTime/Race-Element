@@ -2,6 +2,7 @@
 using ACCManager.HUD.Overlay.Internal;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -62,6 +63,10 @@ namespace ACCManager.Controls
                     lock (OverlaysACC.ActiveOverlays)
                     {
                         AbstractOverlay overlay = (AbstractOverlay)Activator.CreateInstance(x.Value, args);
+
+
+                        //SaveOverlaySettings(overlay, CheckConfiguration(overlay));
+
                         overlay.Start();
 
                         SaveOverlaySettings(overlay, true);
@@ -109,6 +114,37 @@ namespace ACCManager.Controls
             settings.Enabled = isEnabled;
 
             OverlayOptions.SaveOverlaySettings(overlay.Name, settings);
+        }
+
+
+        private void SaveOverlaySettings(AbstractOverlay overlay, OverlayConfiguration overlayConfiguration)
+        {
+            OverlaySettings settings = OverlayOptions.LoadOverlaySettings(overlay.Name);
+            if (settings == null)
+            {
+                settings = new OverlaySettings() { X = overlay.X, Y = overlay.Y };
+            }
+
+            settings.Config = overlayConfiguration.GetConfigFields();
+
+            OverlayOptions.SaveOverlaySettings(overlay.Name, settings);
+        }
+
+        private OverlayConfiguration CheckConfiguration(AbstractOverlay overlay)
+        {
+            Debug.WriteLine($"Finding OverlayConfiguration in {overlay.Name}");
+            FieldInfo[] fields = overlay.GetType().GetRuntimeFields().ToArray();
+            foreach (var nested in fields)
+            {
+                if (nested.FieldType.BaseType == typeof(OverlayConfiguration))
+                {
+                    Debug.WriteLine($"Found {nested.Name} - {nested.GetValue(overlay)}");
+                    OverlayConfiguration temp = (OverlayConfiguration)Activator.CreateInstance(nested.FieldType, new object[] { });
+                    return temp;
+                }
+            }
+
+            return null;
         }
     }
 }

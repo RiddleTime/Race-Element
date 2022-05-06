@@ -22,10 +22,10 @@ namespace ACCManager.HUD.Overlay.Util
         private bool MaxTitleWidthSet = false;
         private float MaxTitleWidth = 0;
 
-        public InfoPanel(int fontSize)
+        public InfoPanel(double fontSize)
         {
-            TitleFont = FontUtil.GetBoldFont(fontSize);
-            ValueFont = FontUtil.GetLightFont(fontSize);
+            TitleFont = FontUtil.GetBoldFont((float)fontSize);
+            ValueFont = FontUtil.GetLightFont((float)fontSize);
             FontHeight = TitleFont.Height;
         }
         private List<InfoLine> Lines = new List<InfoLine>();

@@ -14,6 +14,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
         private InfoPanel info = new InfoPanel(8);
         private const int MaxG = 3;
 
+        private AccelleroConfig config = new AccelleroConfig();
+        private class AccelleroConfig : OverlayConfiguration
+        {
+            internal bool ShowText { get; set; } = true;
+        }
+
         public AccelerometerOverlay(Rectangle rectangle) : base(rectangle, "Accelerometer Overlay")
         {
             this.Width = 300;
@@ -39,12 +45,15 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             double xPercentage = GetPercentage(MaxG, pagePhysics.AccG[0]);
             double yPercentage = GetPercentage(MaxG, pagePhysics.AccG[2]);
 
-            info.AddLine("AccG X", $"{pagePhysics.AccG[0]:F2}");
-            info.AddLine("AccG Y", $"{pagePhysics.AccG[2]:F2}");
-            info.AddLine("X percent", $"{xPercentage * 100:F2}");
-            info.AddLine("Y percent", $"{yPercentage * 100:F2}");
+            if (this.config.ShowText)
+            {
+                info.AddLine("AccG X", $"{pagePhysics.AccG[0]:F2}");
+                info.AddLine("AccG Y", $"{pagePhysics.AccG[2]:F2}");
+                info.AddLine("X percent", $"{xPercentage * 100:F2}");
+                info.AddLine("Y percent", $"{yPercentage * 100:F2}");
 
-            info.Draw(g);
+                info.Draw(g);
+            }
         }
 
 

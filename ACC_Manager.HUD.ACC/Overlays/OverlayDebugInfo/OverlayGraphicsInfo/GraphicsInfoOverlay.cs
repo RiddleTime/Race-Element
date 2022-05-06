@@ -65,11 +65,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayGraphicsInfo
                 if (!isObsolete && !member.Name.Equals("Buffer") && !member.Name.Equals("Size"))
                 {
                     value = ReflectionUtil.FieldTypeValue(member, value);
-
                     g.DrawString($"{member.Name}: {value}", inputFont, Brushes.White, 0 + xMargin, y);
                     y += (int)inputFont.Size + 2;
                 }
             }
+
         }
 
         public override bool ShouldRender()

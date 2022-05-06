@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCManager.HUD.Overlay.Internal.OverlayConfiguration;
 
 namespace ACCManager.HUD.Overlay.Internal
 {
@@ -18,6 +19,7 @@ namespace ACCManager.HUD.Overlay.Internal
         {
             public bool Enabled;
             public int X, Y;
+            public List<ConfigField> Config;
         }
 
         private static DirectoryInfo GetOverlayDirectory()
@@ -74,7 +76,7 @@ namespace ACCManager.HUD.Overlay.Internal
             }
 
             string jsonString = JsonConvert.SerializeObject(settings, Formatting.Indented);
-            
+
             overlaySettingsFile.Delete();
             File.WriteAllText(overlaySettingsFile.FullName, jsonString);
 
