@@ -29,7 +29,7 @@ namespace ACCManager.Controls.HUD.Overlay.OverlayTrackInfo
             g.FillRectangle(new SolidBrush(System.Drawing.Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.Width, this.Height));
 
             TimeSpan time = TimeSpan.FromMilliseconds(pageGraphics.DriverStintTimeLeft);
-            string stintTime2 = time.ToString(@"hh\:mm\:ss");
+            string stintTime = time.ToString(@"hh\:mm\:ss");
 
             double fuelPercent = (pagePhysics.Fuel / pageStatic.MaxFuel) * 100;
             double lapsOfFuel = pagePhysics.Fuel / pageGraphics.FuelXLap;
@@ -40,7 +40,7 @@ namespace ACCManager.Controls.HUD.Overlay.OverlayTrackInfo
             panel.AddLine("Laps Fuel", lapsOfFuel.ToString("F1"));
             panel.AddLine("Fuel-End", $"{fuelToEnd.ToString("F1")} : Add {fuelToAdd.ToString("F0")}");
 
-            panel.AddLine("Stint Time", stintTime2);
+            panel.AddLine("Stint Time", stintTime);
 
             panel.Draw(g);
         }
