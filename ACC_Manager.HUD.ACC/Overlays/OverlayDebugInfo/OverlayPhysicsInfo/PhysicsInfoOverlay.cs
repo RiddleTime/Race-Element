@@ -19,6 +19,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPhysicsInfo
         public PhysicsInfoOverlay(Rectangle rectangle) : base(rectangle, "Debug Physics Overlay")
         {
             this.AllowReposition = false;
+            this.RefreshRateHz = 5;
 
             this.X = 0;
             this.Y = 0;
