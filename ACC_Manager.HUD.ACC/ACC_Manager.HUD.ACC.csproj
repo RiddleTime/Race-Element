@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F1699F70-54A1-49F2-896D-B70B1EDABF74}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ACC_Manager.HUD.ACC</RootNamespace>
+    <AssemblyName>ACC_Manager.HUD.ACC</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="OverlaysACC.cs" />
+    <Compile Include="Overlays\OverlayAccelerometer\AccelerometerOverlay.cs" />
+    <Compile Include="Overlays\OverlayCarInfo\CarInfoOverlay.cs" />
+    <Compile Include="Overlays\OverlayDebugInfo\DebugInfoHelper.cs" />
+    <Compile Include="Overlays\OverlayDebugInfo\OverlayGraphicsInfo\GraphicsInfoOverlay.cs" />
+    <Compile Include="Overlays\OverlayDebugInfo\OverlayPhysicsInfo\PhysicsInfoOverlay.cs" />
+    <Compile Include="Overlays\OverlayDebugInfo\OverlayStaticInfo\StaticInfoOverlay.cs" />
+    <Compile Include="Overlays\OverlayEcuMapInfo\EcuMapOverlay.cs" />
+    <Compile Include="Overlays\OverlayEcuMapInfo\EcuMaps.cs" />
+    <Compile Include="Overlays\OverlayInputTrace\InputDataCollector.cs" />
+    <Compile Include="Overlays\OverlayInputTrace\InputGraph.cs" />
+    <Compile Include="Overlays\OverlayInputTrace\InputTraceOverlay.cs" />
+    <Compile Include="Overlays\OverlayPressureTrace\PressureTraceOverlay.cs" />
+    <Compile Include="Overlays\OverlayPressureTrace\TyrePressureDataCollector.cs" />
+    <Compile Include="Overlays\OverlayPressureTrace\TyrePressureGraph.cs" />
+    <Compile Include="Overlays\OverlayPressureTrace\TyrePressures.cs" />
+    <Compile Include="Overlays\OverlayTrackInfo\TrackInfoOverlay.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ACC_Manager.Data.ACC\ACC_Manager.Data.ACC.csproj">
+      <Project>{BB693CEB-CD96-4EB6-9F13-110D3CCECFFE}</Project>
+      <Name>ACC_Manager.Data.ACC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ACC_Manager.HUD\ACC_Manager.HUD.csproj">
+      <Project>{3717a55e-4629-40ed-9c93-24058d9ef18c}</Project>
+      <Name>ACC_Manager.HUD</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ACC_Manager.SharedMemory\ACC_Manager.SharedMemory.csproj">
+      <Project>{9F9BE520-14C4-4AB6-8119-5E14BCCA9A0F}</Project>
+      <Name>ACC_Manager.SharedMemory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ACC_Manager.Util\ACC_Manager.Util.csproj">
+      <Project>{AAB23116-299B-415B-8305-96CB86148CE7}</Project>
+      <Name>ACC_Manager.Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,5 +1,5 @@
-﻿using ACCSetupApp.Controls.HUD.Overlay;
-using ACCSetupApp.Util;
+﻿using ACCManager.HUD.ACC;
+using ACCManager.Util;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace ACCSetupApp
+namespace ACCManager
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -62,12 +62,12 @@ namespace ACCSetupApp
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Overlays.CloseAll();
+            OverlaysACC.CloseAll();
         }
 
         private void CurrentDomain_ProcessExit(object sender, EventArgs e)
         {
-            Overlays.CloseAll();
+            OverlaysACC.CloseAll();
         }
 
         private void MainWindow_StateChanged(object sender, EventArgs e)

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCSetupApp.LiveryParser
+namespace ACCManager.LiveryParser
 {
     // (Sponsors.json + Decals.json)
     public class PaintDetailsJson

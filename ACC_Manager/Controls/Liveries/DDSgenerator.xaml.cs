@@ -1,6 +1,6 @@
-﻿using ACCSetupApp.Controls.Liveries;
-using ACCSetupApp.LiveryParser;
-using ACCSetupApp.Util;
+﻿using ACCManager.Controls.Liveries;
+using ACCManager.LiveryParser;
+using ACCManager.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,9 +17,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static ACCSetupApp.Controls.LiveryBrowser;
+using static ACCManager.Controls.LiveryBrowser;
 
-namespace ACCSetupApp.Controls
+namespace ACCManager.Controls
 {
     /// <summary>
     /// Interaction logic for DDSgenerator.xaml

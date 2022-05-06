@@ -1,6 +1,5 @@
-﻿using ACCSetupApp.Controls.Setup;
-using ACCSetupApp.SetupParser;
-using ACCSetupApp.Util;
+﻿using ACCManager.Controls.Setup;
+using ACCManager.Util;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Diagnostics;
@@ -10,11 +9,10 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using static ACCManager.Data.SetupJson;
+using static ACCManager.Data.ConversionFactory;
 
-using static ACCSetupApp.SetupParser.ConversionFactory;
-using static SetupParser.SetupJson;
-
-namespace ACCSetupApp.Controls
+namespace ACCManager.Controls
 {
     /// <summary>
     /// Interaction logic for SetupBrowser.xaml
@@ -71,9 +69,9 @@ namespace ACCSetupApp.Controls
                             }
                             else
                             {
-                            #if DEBUG
+#if DEBUG
                                 buttonEditSetup.Visibility = Visibility.Visible;
-                            #endif
+#endif
                             }
 
                             setupRenderer.LogSetup(ref flowDocument, file.FullName);

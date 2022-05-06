@@ -1,6 +1,4 @@
-﻿using ACCSetupApp.SetupParser.SetupRanges;
-using ACCSetupApp.SetupParser.Cars.GT3;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -15,15 +13,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static ACCSetupApp.SetupParser.SetupConverter;
 using MaterialDesignThemes.Wpf;
 using System.IO;
 using System.Diagnostics;
 using Newtonsoft.Json;
-using static SetupParser.SetupJson;
-using ACCSetupApp.SetupParser;
+using static ACCManager.Data.SetupConverter;
+using ACCManager.Data;
+using static ACCManager.Data.SetupJson;
+using ACCManager.Data.SetupRanges;
 
-namespace ACCSetupApp.Controls
+namespace ACCManager.Controls
 {
     /// <summary>
     /// Interaction logic for SetupEditor.xaml

@@ -1,6 +1,5 @@
-﻿using ACCSetupApp.Controls.HUD.Overlay;
-using ACCSetupApp.Controls.HUD.Overlay.Internal;
-using ACCSetupApp.Controls.HUD.Overlay.OverlayStaticInfo;
+﻿using ACCManager.HUD.ACC;
+using ACCManager.HUD.Overlay.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +15,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static ACCSetupApp.Controls.HUD.Overlay.Internal.OverlayOptions;
+using static ACCManager.HUD.Overlay.Internal.OverlayOptions;
 
-namespace ACCSetupApp.Controls
+namespace ACCManager.Controls
 {
     /// <summary>
     /// Interaction logic for HudOptions.xaml
@@ -39,8 +38,8 @@ namespace ACCSetupApp.Controls
         {
             stackPanelOverlayCheckboxes.IsEnabled = !enabled;
 
-            lock (Overlays.ActiveOverlays)
-                foreach (AbstractOverlay overlay in Overlays.ActiveOverlays)
+            lock (OverlaysACC.ActiveOverlays)
+                foreach (AbstractOverlay overlay in OverlaysACC.ActiveOverlays)
                 {
                     overlay.EnableReposition(enabled);
                 }
@@ -52,7 +51,7 @@ namespace ACCSetupApp.Controls
             int screenMiddleY = (int)(System.Windows.SystemParameters.FullPrimaryScreenHeight / 2);
 
             stackPanelOverlayCheckboxes.Children.Clear();
-            foreach (KeyValuePair<string, Type> x in Overlays.AbstractOverlays)
+            foreach (KeyValuePair<string, Type> x in OverlaysACC.AbstractOverlays)
             {
                 object[] args = new object[] { new System.Drawing.Rectangle((int)System.Windows.SystemParameters.PrimaryScreenWidth / 2, (int)System.Windows.SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
 
@@ -60,27 +59,27 @@ namespace ACCSetupApp.Controls
 
                 checkBox.Checked += (s, e) =>
                 {
-                    lock (Overlays.ActiveOverlays)
+                    lock (OverlaysACC.ActiveOverlays)
                     {
                         AbstractOverlay overlay = (AbstractOverlay)Activator.CreateInstance(x.Value, args);
                         overlay.Start();
 
                         SaveOverlaySettings(overlay, true);
 
-                        Overlays.ActiveOverlays.Add(overlay);
+                        OverlaysACC.ActiveOverlays.Add(overlay);
                     }
                 };
 
                 checkBox.Unchecked += (s, e) =>
                 {
-                    lock (Overlays.ActiveOverlays)
+                    lock (OverlaysACC.ActiveOverlays)
                     {
-                        AbstractOverlay overlay = Overlays.ActiveOverlays.Find(f => f.GetType() == x.Value);
+                        AbstractOverlay overlay = OverlaysACC.ActiveOverlays.Find(f => f.GetType() == x.Value);
 
                         SaveOverlaySettings(overlay, false);
 
                         overlay?.Stop();
-                        Overlays.ActiveOverlays.Remove(overlay);
+                        OverlaysACC.ActiveOverlays.Remove(overlay);
                     }
                 };
 

@@ -7,7 +7,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{DEA7B2CA-611A-4CB8-BEDA-988F3EA11AF9}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>ACCSetupApp</RootNamespace>
+    <RootNamespace>ACCManager</RootNamespace>
     <AssemblyName>AccManager</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -63,7 +63,7 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>ACCSetupApp.App</StartupObject>
+    <StartupObject>ACCManager.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>new_icon.ico</ApplicationIcon>
@@ -278,7 +278,6 @@
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -312,27 +311,6 @@
     <Compile Include="Controls\HUD\HudTab.xaml.cs">
       <DependentUpon>HudTab.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\HUD\Overlay\Internal\AbstractOverlay.cs" />
-    <Compile Include="Controls\HUD\Overlay\Internal\OverlayOptions.cs" />
-    <Compile Include="Controls\HUD\Overlay\OverlayAccelerometer\AccelerometerOverlay.cs" />
-    <Compile Include="Controls\HUD\Overlay\OverlayCarInfo\CarInfoOverlay.cs" />
-    <Compile Include="Controls\HUD\Overlay\OverlayDebugInfo\DebugInfoHelper.cs" />
-    <Compile Include="Controls\HUD\Overlay\OverlayDebugInfo\OverlayGraphicsInfo\GraphicsInfoOverlay.cs" />
-    <Compile Include="Controls\HUD\Overlay\OverlayEcuMapInfo\EcuMapOverlay.cs" />
-    <Compile Include="Controls\HUD\Overlay\OverlayEcuMapInfo\EcuMaps.cs" />
-    <Compile Include="Controls\HUD\Overlay\OverlayFuelInfo\FuelInfoOverlay.cs" />
-    <Compile Include="Controls\HUD\Overlay\OverlayInputTrace\InputTraceOverlay.cs" />
-    <Compile Include="Controls\HUD\Overlay\Internal\FloatingWindow.cs" />
-    <Compile Include="Controls\HUD\Overlay\OverlayDebugInfo\OverlayPhysicsInfo\PhysicsInfoOverlay.cs" />
-    <Compile Include="Controls\HUD\Overlay\OverlayPressureTrace\TyrePressureDataCollector.cs" />
-    <Compile Include="Controls\HUD\Overlay\OverlayPressureTrace\TyrePressureGraph.cs" />
-    <Compile Include="Controls\HUD\Overlay\OverlayPressureTrace\PressureTraceOverlay.cs" />
-    <Compile Include="Controls\HUD\Overlay\OverlayPressureTrace\TyrePressures.cs" />
-    <Compile Include="Controls\HUD\Overlay\Overlays.cs" />
-    <Compile Include="Controls\HUD\Overlay\OverlayDebugInfo\OverlayStaticInfo\StaticInfoOverlay.cs" />
-    <Compile Include="Controls\HUD\Overlay\OverlayTrackInfo\TrackInfoOverlay.cs" />
-    <Compile Include="Controls\HUD\Overlay\OverlayUtil\FontUtil.cs" />
-    <Compile Include="Controls\HUD\Overlay\OverlayUtil\InfoPanel.cs" />
     <Compile Include="Controls\Liveries\AfterImport.xaml.cs">
       <DependentUpon>AfterImport.xaml</DependentUpon>
     </Compile>
@@ -381,35 +359,6 @@
     <Compile Include="Controls\Telemetry\ChartsTab\DataRecorder.xaml.cs">
       <DependentUpon>DataRecorder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\HUD\Overlay\OverlayInputTrace\InputDataCollector.cs" />
-    <Compile Include="Controls\HUD\Overlay\OverlayInputTrace\InputGraph.cs" />
-    <Compile Include="Controls\HUD\Overlay\Internal\PageGraphicsTracker.cs" />
-    <Compile Include="Controls\HUD\Overlay\Internal\PagePhysicsTracker.cs" />
-    <Compile Include="Controls\HUD\Overlay\Internal\PageStaticTracker.cs" />
-    <Compile Include="SetupParser\SetupChanger\SetupDoubleRange.cs" />
-    <Compile Include="SetupParser\Cars\GT3\AudiR8LMSevo.cs" />
-    <Compile Include="SetupParser\Cars\GT3\BentleyContinentalGT3_2015.cs" />
-    <Compile Include="SetupParser\Cars\GT3\BmwM6GT3_2017.cs" />
-    <Compile Include="SetupParser\Cars\GT3\LamborghiniGallardoG3Reiter_2017.cs" />
-    <Compile Include="SetupParser\Cars\GT3\Mclaren650sGT3_2015.cs" />
-    <Compile Include="SetupParser\Cars\GT3\MercedesAMGGT3_2015.cs" />
-    <Compile Include="SetupParser\Cars\GT4\AudiR8GT4.cs" />
-    <Compile Include="SetupParser\Cars\GT4\BMWM4GT4.cs" />
-    <Compile Include="SetupParser\Cars\GT4\ChevroletCamaroGT4R.cs" />
-    <Compile Include="SetupParser\Cars\GT4\GinettaG55GT4.cs" />
-    <Compile Include="SetupParser\Cars\GT4\KTMXbowGT4.cs" />
-    <Compile Include="SetupParser\Cars\GT4\MaseratiMCGT4.cs" />
-    <Compile Include="SetupParser\Cars\GT4\Mclaren570SGT4.cs" />
-    <Compile Include="SetupParser\Cars\GT4\MercedesAMGGT4.cs" />
-    <Compile Include="SetupParser\Cars\GT4\Porsche718CaymanGT4MR.cs" />
-    <Compile Include="SetupParser\Cars\GTC\Ferrari488ChallengeEvo.cs" />
-    <Compile Include="SetupParser\Cars\GTC\LamborghiniHuracanSTEvo2.cs" />
-    <Compile Include="SetupParser\Cars\GTC\LamborghiniHuracanST_2015.cs" />
-    <Compile Include="SetupParser\Cars\GTC\Porsche991IIGT3Cup_2017.cs" />
-    <Compile Include="SetupParser\Cars\GTC\Porsche992GT3Cup_2021.cs" />
-    <Compile Include="SetupParser\Cars\TCX\BMWM2CSRacing.cs" />
-    <Compile Include="SetupParser\SetupChanger\SetupIntRange.cs" />
-    <Compile Include="SharedMemory\StructExtensions.cs" />
     <Compile Include="Controls\Telemetry\TelemetryDebug.xaml.cs">
       <DependentUpon>TelemetryDebug.xaml</DependentUpon>
     </Compile>
@@ -429,35 +378,6 @@
     </Compile>
     <Compile Include="LiveryParser\CarsJson.cs" />
     <Compile Include="LiveryParser\PaintDetailsJson.cs" />
-    <Compile Include="SetupParser\Cars\GT3\AMRV12VantageGT3.cs" />
-    <Compile Include="SetupParser\Cars\GT3\AMRV8VantageGT3.cs" />
-    <Compile Include="SetupParser\Cars\GT3\AudiR8LMS.cs" />
-    <Compile Include="SetupParser\Cars\GT3\AudiR8LMSevoII.cs" />
-    <Compile Include="SetupParser\Cars\GT3\BentleyContinentalGT3_2018.cs" />
-    <Compile Include="SetupParser\Cars\GT3\BmwM4GT3.cs" />
-    <Compile Include="SetupParser\Cars\GT3\Ferrari488GT3.cs" />
-    <Compile Include="SetupParser\Cars\GT3\Ferrari488GT3evo.cs" />
-    <Compile Include="SetupParser\Cars\GT3\HondaNsxGT3.cs" />
-    <Compile Include="SetupParser\Cars\GT3\JaguarG3GT3.cs" />
-    <Compile Include="SetupParser\Cars\GT3\LamborghiniHuracanGT3.cs" />
-    <Compile Include="SetupParser\Cars\GT3\LamborghiniHuracanGT3evo.cs" />
-    <Compile Include="SetupParser\Cars\GT3\LexusRcfGT3.cs" />
-    <Compile Include="SetupParser\Cars\GT3\Mclaren720sGT3.cs" />
-    <Compile Include="SetupParser\Cars\GT3\MercedesAMGGT3evo.cs" />
-    <Compile Include="SetupParser\Cars\GT3\NissanGtrGT3_2015.cs" />
-    <Compile Include="SetupParser\Cars\GT3\NissanGtrGT3_2018.cs" />
-    <Compile Include="SetupParser\Cars\GT3\Porsche991GT3R.cs" />
-    <Compile Include="SetupParser\Cars\GT4\AlpineA110GT4.cs" />
-    <Compile Include="SetupParser\Cars\GT4\AMRV8VantageGT4.cs" />
-    <Compile Include="SetupParser\ConversionFactory.cs" />
-    <Compile Include="SetupParser\Cars\GT3\HondaNsxGT3Evo.cs" />
-    <Compile Include="SetupParser\Cars\GT3\Porsche911IIGT3R.cs" />
-    <Compile Include="SetupParser\SetupConverter.cs" />
-    <Compile Include="SetupParser\SetupJson.cs" />
-    <Compile Include="SharedMemory\ACCSharedMemory.cs" />
-    <Compile Include="Util\FileUtil.cs" />
-    <Compile Include="Util\LogWriter.cs" />
-    <Compile Include="Util\ReflectionUtil.cs" />
     <Page Include="Controls\About\About.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -585,8 +505,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Resource Include="Fonts\Redemption.ttf" />
-    <EmbeddedResource Include="Fonts\orbitron-medium.ttf" />
-    <EmbeddedResource Include="Fonts\orbitron-light.ttf" />
     <None Include="key.snk" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
@@ -622,6 +540,28 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ACC_Manager.Data.ACC\ACC_Manager.Data.ACC.csproj">
+      <Project>{BB693CEB-CD96-4EB6-9F13-110D3CCECFFE}</Project>
+      <Name>ACC_Manager.Data.ACC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ACC_Manager.HUD.ACC\ACC_Manager.HUD.ACC.csproj">
+      <Project>{f1699f70-54a1-49f2-896d-b70b1edabf74}</Project>
+      <Name>ACC_Manager.HUD.ACC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ACC_Manager.HUD\ACC_Manager.HUD.csproj">
+      <Project>{3717a55e-4629-40ed-9c93-24058d9ef18c}</Project>
+      <Name>ACC_Manager.HUD</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ACC_Manager.SharedMemory\ACC_Manager.SharedMemory.csproj">
+      <Project>{9f9be520-14c4-4ab6-8119-5e14bcca9a0f}</Project>
+      <Name>ACC_Manager.SharedMemory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ACC_Manager.Util\ACC_Manager.Util.csproj">
+      <Project>{AAB23116-299B-415B-8305-96CB86148CE7}</Project>
+      <Name>ACC_Manager.Util</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

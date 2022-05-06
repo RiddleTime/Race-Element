@@ -1,5 +1,5 @@
-﻿using ACCSetupApp.LiveryParser;
-using ACCSetupApp.Util;
+﻿using ACCManager.LiveryParser;
+using ACCManager.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +15,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using static ACCSetupApp.Controls.LiveryBrowser;
+using static ACCManager.Controls.LiveryBrowser;
 
-namespace ACCSetupApp.Controls
+namespace ACCManager.Controls
 {
     /// <summary>
     /// Interaction logic for AfterImport.xaml

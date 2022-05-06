@@ -1,5 +1,4 @@
-﻿using ACCSetupApp.SetupParser;
-using ACCSetupApp.Util;
+﻿using ACCManager.Util;
 using Octokit;
 using System;
 using System.Collections.Generic;
@@ -18,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ACCSetupApp.Controls
+namespace ACCManager.Controls
 {
     /// <summary>
     /// Interaction logic for About.xaml

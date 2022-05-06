@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 
-namespace ACCSetupApp.Controls.Setup.FlowDocUtil
+namespace ACCManager.Controls.Setup.FlowDocUtil
 {
     public static class DocUtil
     {

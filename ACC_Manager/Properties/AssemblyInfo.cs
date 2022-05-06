@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Element Future")]
 [assembly: AssemblyProduct("ACC Manager")]
-[assembly: AssemblyCopyright("Copyright © RiddleTime/Reinier Klarenberg 2022")]
+[assembly: AssemblyCopyright("Copyright 2022 © Reinier Klarenberg")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -20,7 +20,7 @@ using LiveCharts;
 using LiveCharts.Wpf;
 using LiveCharts.Helpers;
 
-namespace ACCSetupApp.Controls
+namespace ACCManager.Controls
 {
     /// <summary>
     /// Interaction logic for DataRecorder.xaml

@@ -1,16 +1,12 @@
 ﻿using Newtonsoft.Json;
-using ACCSetupApp.SetupParser.Cars.GT3;
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using static SetupParser.SetupJson;
-using static ACCSetupApp.SetupParser.SetupConverter;
-using ACCSetupApp.SetupParser;
-using ACCSetupApp.Controls.Setup;
-using ACCSetupApp.Util;
+using ACCManager.Controls.Setup;
+using ACCManager.Util;
 using System.Diagnostics;
 
-namespace ACCSetupApp.Controls
+namespace ACCManager.Controls
 {
     /// <summary>
     /// Interaction logic for SetupRenderer.xaml

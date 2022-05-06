@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BB693CEB-CD96-4EB6-9F13-110D3CCECFFE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ACC_Manager.Data.ACC</RootNamespace>
+    <AssemblyName>ACC_Manager.Data.ACC</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SetupParser\Cars\GT3\AMRV12VantageGT3.cs" />
+    <Compile Include="SetupParser\Cars\GT3\AMRV8VantageGT3.cs" />
+    <Compile Include="SetupParser\Cars\GT3\AudiR8LMS.cs" />
+    <Compile Include="SetupParser\Cars\GT3\AudiR8LMSevo.cs" />
+    <Compile Include="SetupParser\Cars\GT3\AudiR8LMSevoII.cs" />
+    <Compile Include="SetupParser\Cars\GT3\BentleyContinentalGT3_2015.cs" />
+    <Compile Include="SetupParser\Cars\GT3\BentleyContinentalGT3_2018.cs" />
+    <Compile Include="SetupParser\Cars\GT3\BmwM4GT3.cs" />
+    <Compile Include="SetupParser\Cars\GT3\BmwM6GT3_2017.cs" />
+    <Compile Include="SetupParser\Cars\GT3\Ferrari488GT3.cs" />
+    <Compile Include="SetupParser\Cars\GT3\Ferrari488GT3evo.cs" />
+    <Compile Include="SetupParser\Cars\GT3\HondaNsxGT3.cs" />
+    <Compile Include="SetupParser\Cars\GT3\HondaNsxGT3Evo.cs" />
+    <Compile Include="SetupParser\Cars\GT3\JaguarG3GT3.cs" />
+    <Compile Include="SetupParser\Cars\GT3\LamborghiniGallardoG3Reiter_2017.cs" />
+    <Compile Include="SetupParser\Cars\GT3\LamborghiniHuracanGT3.cs" />
+    <Compile Include="SetupParser\Cars\GT3\LamborghiniHuracanGT3evo.cs" />
+    <Compile Include="SetupParser\Cars\GT3\LexusRcfGT3.cs" />
+    <Compile Include="SetupParser\Cars\GT3\Mclaren650sGT3_2015.cs" />
+    <Compile Include="SetupParser\Cars\GT3\Mclaren720sGT3.cs" />
+    <Compile Include="SetupParser\Cars\GT3\MercedesAMGGT3evo.cs" />
+    <Compile Include="SetupParser\Cars\GT3\MercedesAMGGT3_2015.cs" />
+    <Compile Include="SetupParser\Cars\GT3\NissanGtrGT3_2015.cs" />
+    <Compile Include="SetupParser\Cars\GT3\NissanGtrGT3_2018.cs" />
+    <Compile Include="SetupParser\Cars\GT3\Porsche911IIGT3R.cs" />
+    <Compile Include="SetupParser\Cars\GT3\Porsche991GT3R.cs" />
+    <Compile Include="SetupParser\Cars\GT4\AlpineA110GT4.cs" />
+    <Compile Include="SetupParser\Cars\GT4\AMRV8VantageGT4.cs" />
+    <Compile Include="SetupParser\Cars\GT4\AudiR8GT4.cs" />
+    <Compile Include="SetupParser\Cars\GT4\BMWM4GT4.cs" />
+    <Compile Include="SetupParser\Cars\GT4\ChevroletCamaroGT4R.cs" />
+    <Compile Include="SetupParser\Cars\GT4\GinettaG55GT4.cs" />
+    <Compile Include="SetupParser\Cars\GT4\KTMXbowGT4.cs" />
+    <Compile Include="SetupParser\Cars\GT4\MaseratiMCGT4.cs" />
+    <Compile Include="SetupParser\Cars\GT4\Mclaren570SGT4.cs" />
+    <Compile Include="SetupParser\Cars\GT4\MercedesAMGGT4.cs" />
+    <Compile Include="SetupParser\Cars\GT4\Porsche718CaymanGT4MR.cs" />
+    <Compile Include="SetupParser\Cars\GTC\Ferrari488ChallengeEvo.cs" />
+    <Compile Include="SetupParser\Cars\GTC\LamborghiniHuracanSTEvo2.cs" />
+    <Compile Include="SetupParser\Cars\GTC\LamborghiniHuracanST_2015.cs" />
+    <Compile Include="SetupParser\Cars\GTC\Porsche991IIGT3Cup_2017.cs" />
+    <Compile Include="SetupParser\Cars\GTC\Porsche992GT3Cup_2021.cs" />
+    <Compile Include="SetupParser\Cars\TCX\BMWM2CSRacing.cs" />
+    <Compile Include="SetupParser\ConversionFactory.cs" />
+    <Compile Include="SetupParser\SetupChanger\SetupDoubleRange.cs" />
+    <Compile Include="SetupParser\SetupChanger\SetupIntRange.cs" />
+    <Compile Include="SetupParser\SetupConverter.cs" />
+    <Compile Include="SetupParser\SetupJson.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
