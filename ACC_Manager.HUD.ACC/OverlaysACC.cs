@@ -1,6 +1,7 @@
 ﻿using ACCManager.HUD.ACC.Overlays.OverlayAccelerometer;
 using ACCManager.HUD.ACC.Overlays.OverlayCarInfo;
 using ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo;
+using ACCManager.HUD.ACC.Overlays.OverlayFuelInfo;
 using ACCManager.HUD.ACC.Overlays.OverlayGraphicsInfo;
 using ACCManager.HUD.ACC.Overlays.OverlayInputTrace;
 using ACCManager.HUD.ACC.Overlays.OverlayPhysicsInfo;
