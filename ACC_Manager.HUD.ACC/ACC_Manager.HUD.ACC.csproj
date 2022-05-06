@@ -52,6 +52,7 @@
     <Compile Include="Overlays\OverlayDebugInfo\OverlayStaticInfo\StaticInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayEcuMapInfo\EcuMapOverlay.cs" />
     <Compile Include="Overlays\OverlayEcuMapInfo\EcuMaps.cs" />
+    <Compile Include="Overlays\OverlayFuelInfo\FuelInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayInputTrace\InputDataCollector.cs" />
     <Compile Include="Overlays\OverlayInputTrace\InputGraph.cs" />
     <Compile Include="Overlays\OverlayInputTrace\InputTraceOverlay.cs" />
