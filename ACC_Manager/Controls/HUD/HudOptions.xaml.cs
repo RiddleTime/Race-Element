@@ -109,7 +109,7 @@ namespace ACCManager.Controls
 
         private StackPanel GetConfigStacker(Type overlayType)
         {
-            StackPanel stacker = new StackPanel();
+            StackPanel stacker = new StackPanel() { Margin = new Thickness(10, 0, 0, 0), Orientation = Orientation.Horizontal };
             OverlayConfiguration overlayConfig = GetOverlayConfig(overlayType);
             if (overlayConfig == null) return stacker;
 
@@ -135,29 +135,28 @@ namespace ACCManager.Controls
                         configFields.RemoveAt(configFields.IndexOf(configField));
                         configFields.Add(configField);
 
-
-
-                        OverlaySettings settings = OverlayOptions.LoadOverlaySettings(overlayName);
-                        settings.Config = configFields;
-                        OverlayOptions.SaveOverlaySettings(overlayName, settings);
+                        SaveOverlayConfigFields(overlayName, configFields);
                     };
                     box.Unchecked += (sender, args) =>
                     {
                         configField.Value = false;
                         configFields.RemoveAt(configFields.IndexOf(configField));
                         configFields.Add(configField);
-                        OverlayConfiguration config = GetOverlayConfig(overlayType);
-                        config.SetConfigFields(configFields);
 
-                        OverlaySettings settings = OverlayOptions.LoadOverlaySettings(overlayName);
-                        settings.Config = configFields;
-                        OverlayOptions.SaveOverlaySettings(overlayName, settings);
+                        SaveOverlayConfigFields(overlayName, configFields);
                     };
                     stacker.Children.Add(box);
                 }
             };
 
             return stacker;
+        }
+
+        private void SaveOverlayConfigFields(string overlayName, List<ConfigField> configFields)
+        {
+            OverlaySettings settings = OverlayOptions.LoadOverlaySettings(overlayName);
+            settings.Config = configFields;
+            OverlayOptions.SaveOverlaySettings(overlayName, settings);
         }
 
         private void SaveOverlaySettings(AbstractOverlay overlay, bool isEnabled)

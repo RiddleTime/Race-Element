@@ -43,8 +43,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
         public override void Render(Graphics g)
         {
             //Draws the HUD window
-            g.FillRectangle(new SolidBrush(Color.FromArgb(140, Color.Black)), new Rectangle(0, 0, this.Width, this.Height));
-
+            if (this.config.ShowText)
+                g.FillRectangle(new SolidBrush(Color.FromArgb(140, Color.Black)), new Rectangle(0, 0, this.Width, this.Height));
+            else
+                g.FillEllipse(new SolidBrush(Color.FromArgb(140, Color.Black)), new Rectangle(0, 0, this.Width, this.Height));
 
             DrawGMeter(gMeterX, gMeterY, 250, g);
 
