@@ -17,6 +17,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
         public EcuMapOverlay(Rectangle rectangle) : base(rectangle, "Ecu Maps Overlay")
         {
             this.AllowReposition = false;
+            this.RefreshRateHz = 5;
 
             this.Width = 1;
             this.Height = inputFont.Height + 2;
