@@ -35,6 +35,9 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public void SetConfigFields(List<ConfigField> configFields)
         {
+            if (configFields == null)
+                return;
+
             foreach (var field in configFields)
             {
                 Type type = this.GetType();

@@ -130,10 +130,15 @@ namespace ACCManager.Controls
             OverlayOptions.SaveOverlaySettings(overlay.Name, settings);
         }
 
-        private OverlayConfiguration CheckConfiguration(AbstractOverlay overlay)
+        private OverlayConfiguration GetConfiguration(Type overlay)
         {
-            Debug.WriteLine($"Finding OverlayConfiguration in {overlay.Name}");
-            FieldInfo[] fields = overlay.GetType().GetRuntimeFields().ToArray();
+            object[] args = new object[] { new System.Drawing.Rectangle((int)System.Windows.SystemParameters.PrimaryScreenWidth / 2, (int)System.Windows.SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
+            AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(overlay, args);
+            
+
+
+            Debug.WriteLine($"Finding OverlayConfiguration in {tempOverlay.Name}");
+            FieldInfo[] fields = tempOverlay.GetType().GetRuntimeFields().ToArray();
             foreach (var nested in fields)
             {
                 if (nested.FieldType.BaseType == typeof(OverlayConfiguration))

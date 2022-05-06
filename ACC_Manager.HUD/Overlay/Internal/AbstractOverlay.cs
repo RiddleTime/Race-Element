@@ -57,7 +57,6 @@ namespace ACCManager.HUD.Overlay.Internal
             {
                 if (nested.FieldType.BaseType == typeof(OverlayConfiguration))
                 {
-                    Debug.WriteLine($"Found {nested.Name} - {nested.GetValue(this)}");
                     OverlayConfiguration temp = (OverlayConfiguration)Activator.CreateInstance(nested.FieldType, new object[] { });
 
                     OverlaySettings settings = OverlayOptions.LoadOverlaySettings(this.Name);
@@ -65,8 +64,6 @@ namespace ACCManager.HUD.Overlay.Internal
                     temp.SetConfigFields(settings.Config);
 
                     nested.SetValue(this, temp);
-
-
                 }
             }
         }
