@@ -61,6 +61,9 @@ namespace ACCManager.HUD.Overlay.Internal
 
                     OverlaySettings settings = OverlayOptions.LoadOverlaySettings(this.Name);
 
+                    if(settings == null)
+                        return;
+
                     temp.SetConfigFields(settings.Config);
 
                     nested.SetValue(this, temp);

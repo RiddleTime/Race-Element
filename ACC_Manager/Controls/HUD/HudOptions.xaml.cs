@@ -64,9 +64,6 @@ namespace ACCManager.Controls
                     {
                         AbstractOverlay overlay = (AbstractOverlay)Activator.CreateInstance(x.Value, args);
 
-
-                        //SaveOverlaySettings(overlay, CheckConfiguration(overlay));
-
                         overlay.Start();
 
                         SaveOverlaySettings(overlay, true);

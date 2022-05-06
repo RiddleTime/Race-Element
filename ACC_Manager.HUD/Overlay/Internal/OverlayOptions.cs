@@ -14,7 +14,6 @@ namespace ACCManager.HUD.Overlay.Internal
 {
     public class OverlayOptions
     {
-
         public class OverlaySettings
         {
             public bool Enabled;
