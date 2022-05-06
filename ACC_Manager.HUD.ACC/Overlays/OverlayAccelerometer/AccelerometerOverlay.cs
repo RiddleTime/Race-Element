@@ -13,6 +13,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
     {
         private InfoPanel info = new InfoPanel(8);
         private const int MaxG = 3;
+        private int gMeterX = 48;
+        private int gMeterY = 48;
+
+
 
         private AccelleroConfig config = new AccelleroConfig();
         private class AccelleroConfig : OverlayConfiguration
@@ -26,7 +30,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             this.Height = this.Width;
         }
 
-        public override void BeforeStart() { }
+        public override void BeforeStart()
+        {
+            if (!this.config.ShowText)
+            {
+                this.Width = 251;
+                this.Height = this.Width;
+                gMeterX = 0;
+                gMeterY = 0;
+            }
+        }
         public override void BeforeStop() { }
 
         public override void Render(Graphics g)
@@ -34,7 +47,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             //Draws the HUD window
             g.FillRectangle(new SolidBrush(Color.FromArgb(140, Color.Black)), new Rectangle(0, 0, this.Width, this.Height));
 
-            DrawGMeter(48, 48, 250, g);
+
+            DrawGMeter(gMeterX, gMeterY, 250, g);
 
             double xPercentage = GetPercentage(MaxG, pagePhysics.AccG[0]);
             double yPercentage = GetPercentage(MaxG, pagePhysics.AccG[2]);
