@@ -53,12 +53,18 @@ namespace ACCManager.HUD.Overlay.Internal
             }
         }
 
+        public List<PropertyInfo> GetProperties()
+        {
+            List<PropertyInfo> properties = this.GetType().GetRuntimeProperties().ToList();
+            return properties;
+        }
+
         private void LogAllChildMembers()
         {
-            //Debug.WriteLine("Checking overlay config");
+            Debug.WriteLine("Runtime properties of " + this.GetType().Name);
             foreach (var nested in this.GetType().GetRuntimeProperties())
             {
-                //Debug.WriteLine($"{nested.Name} - {nested.GetValue(this)}");
+                Debug.WriteLine($"{nested.Name} - {nested.GetValue(this)}");
                 //nested.SetValue(this, true);
             }
         }

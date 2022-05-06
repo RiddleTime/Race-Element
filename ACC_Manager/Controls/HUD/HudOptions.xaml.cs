@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static ACCManager.HUD.Overlay.Internal.OverlayConfiguration;
 using static ACCManager.HUD.Overlay.Internal.OverlayOptions;
 
 namespace ACCManager.Controls
@@ -56,7 +57,10 @@ namespace ACCManager.Controls
             {
                 object[] args = new object[] { new System.Drawing.Rectangle((int)System.Windows.SystemParameters.PrimaryScreenWidth / 2, (int)System.Windows.SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
 
+                StackPanel stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
                 CheckBox checkBox = new CheckBox() { Content = x.Key };
+                stackPanel.Children.Add(checkBox);
+                stackPanel.Children.Add(GetConfigStacker(x.Value));
 
                 checkBox.Checked += (s, e) =>
                 {
@@ -96,8 +100,55 @@ namespace ACCManager.Controls
                 }
                 tempOverlay.Dispose();
 
-                stackPanelOverlayCheckboxes.Children.Add(checkBox);
+                stackPanelOverlayCheckboxes.Children.Add(stackPanel);
             }
+        }
+
+        private StackPanel GetConfigStacker(Type overlayType)
+        {
+            StackPanel stacker = new StackPanel();
+            OverlayConfiguration overlayConfig = GetOverlayConfig(overlayType);
+            if (overlayConfig == null) return stacker;
+
+            List<ConfigField> configFields = overlayConfig.GetConfigFields();
+
+            foreach (PropertyInfo pi in overlayConfig.GetProperties())
+            {
+                if (pi.PropertyType.Name == typeof(bool).Name)
+                {
+                    ConfigField configField = configFields.Where(cf => cf.Name == pi.Name).First();
+                    CheckBox box = new CheckBox() { Content = configField.Name, IsChecked = (bool)configField.Value };
+                    box.Checked += (sender, args) =>
+                    {
+                        configField.Value = true;
+                        configFields.RemoveAt(configFields.IndexOf(configField));
+                        configFields.Add(configField);
+
+
+                        string overlayName = GetOverlayName(overlayType);
+                        OverlaySettings settings = OverlayOptions.LoadOverlaySettings(overlayName);
+                        settings.Config = configFields;
+                        OverlayOptions.SaveOverlaySettings(overlayName, settings);
+                    };
+                    box.Unchecked += (sender, args) =>
+                    {
+                        configField.Value = false;
+                        configFields.RemoveAt(configFields.IndexOf(configField));
+                        configFields.Add(configField);
+                        OverlayConfiguration config = GetOverlayConfig(overlayType);
+                        config.SetConfigFields(configFields);
+
+
+                        string overlayName = GetOverlayName(overlayType);
+                        OverlaySettings settings = OverlayOptions.LoadOverlaySettings(overlayName);
+                        settings.Config = configFields;
+                        OverlayOptions.SaveOverlaySettings(overlayName, settings);
+                    };
+                    stacker.Children.Add(box);
+                }
+            };
+
+            return stacker;
         }
 
         private void SaveOverlaySettings(AbstractOverlay overlay, bool isEnabled)
@@ -114,7 +165,15 @@ namespace ACCManager.Controls
         }
 
 
-        private void SaveOverlaySettings(AbstractOverlay overlay, OverlayConfiguration overlayConfiguration)
+        private void SaveOverlayConfig(Type overlay, OverlayConfiguration overlayConfiguration)
+        {
+            object[] args = new object[] { new System.Drawing.Rectangle(0, 0, 300, 150) };
+            AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(overlay, args);
+            SaveOverlayConfig(tempOverlay, overlayConfiguration);
+            tempOverlay.Dispose();
+        }
+
+        private void SaveOverlayConfig(AbstractOverlay overlay, OverlayConfiguration overlayConfiguration)
         {
             OverlaySettings settings = OverlayOptions.LoadOverlaySettings(overlay.Name);
             if (settings == null)
@@ -127,12 +186,22 @@ namespace ACCManager.Controls
             OverlayOptions.SaveOverlaySettings(overlay.Name, settings);
         }
 
-        private OverlayConfiguration GetConfiguration(Type overlay)
+        private string GetOverlayName(Type overlay)
         {
-            object[] args = new object[] { new System.Drawing.Rectangle((int)System.Windows.SystemParameters.PrimaryScreenWidth / 2, (int)System.Windows.SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
+            object[] args = new object[] { new System.Drawing.Rectangle(0, 0, 300, 150) };
             AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(overlay, args);
-            
+            string name = tempOverlay.Name;
+            tempOverlay.Dispose();
 
+            return name;
+        }
+
+        private OverlayConfiguration GetOverlayConfig(Type overlay)
+        {
+            object[] args = new object[] { new System.Drawing.Rectangle(0, 0, 300, 150) };
+            AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(overlay, args);
+
+            OverlayConfiguration temp = null;
 
             Debug.WriteLine($"Finding OverlayConfiguration in {tempOverlay.Name}");
             FieldInfo[] fields = tempOverlay.GetType().GetRuntimeFields().ToArray();
@@ -140,13 +209,15 @@ namespace ACCManager.Controls
             {
                 if (nested.FieldType.BaseType == typeof(OverlayConfiguration))
                 {
-                    Debug.WriteLine($"Found {nested.Name} - {nested.GetValue(overlay)}");
-                    OverlayConfiguration temp = (OverlayConfiguration)Activator.CreateInstance(nested.FieldType, new object[] { });
+                    //Debug.WriteLine($"Found {nested.Name} - {nested.GetValue(overlay)}");
+                    temp = (OverlayConfiguration)Activator.CreateInstance(nested.FieldType, new object[] { });
                     return temp;
                 }
             }
 
-            return null;
+            tempOverlay.Dispose();
+
+            return temp;
         }
     }
 }

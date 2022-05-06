@@ -26,14 +26,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             this.Height = this.Width;
         }
 
-        public override void BeforeStart()
-        {
-        }
-
-        public override void BeforeStop()
-        {
-        }
-
+        public override void BeforeStart() { }
+        public override void BeforeStop() { }
 
         public override void Render(Graphics g)
         {
