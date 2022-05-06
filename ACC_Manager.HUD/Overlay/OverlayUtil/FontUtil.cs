@@ -28,12 +28,12 @@ namespace ACCManager.HUD.Overlay.Util
 
         public static Font GetLightFont(float size)
         {
-            return GetSpecialFont(size, "ACC_Manager.HUD.Fonts.orbitron-light.ttf");
+            return GetSpecialFont(size, "ACCManager.HUD.Fonts.orbitron-light.ttf");
         }
 
         public static Font GetBoldFont(float size)
         {
-            return GetSpecialFont(size, "ACC_Manager.HUD.Fonts.orbitron-medium.ttf");
+            return GetSpecialFont(size, "ACCManager.HUD.Fonts.orbitron-medium.ttf");
         }
 
         private static Font GetSpecialFont(float size, string resourceName)
