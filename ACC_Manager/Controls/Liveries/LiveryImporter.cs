@@ -1,5 +1,5 @@
-﻿using ACCSetupApp.LiveryParser;
-using ACCSetupApp.Util;
+﻿using ACCManager.LiveryParser;
+using ACCManager.Util;
 using Newtonsoft.Json;
 using SharpCompress.Archives;
 using System;
@@ -10,9 +10,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
-using static ACCSetupApp.Controls.LiveryBrowser;
+using static ACCManager.Controls.LiveryBrowser;
 
-namespace ACCSetupApp.Controls
+namespace ACCManager.Controls
 {
     internal static class LiveryImporter
     {

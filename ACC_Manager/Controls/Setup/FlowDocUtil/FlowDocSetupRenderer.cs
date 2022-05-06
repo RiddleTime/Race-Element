@@ -1,5 +1,5 @@
-﻿using ACCSetupApp.Controls.Setup.FlowDocUtil;
-using ACCSetupApp.SetupParser;
+﻿using ACCManager.Controls.Setup.FlowDocUtil;
+using ACCManager.Data;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,11 +12,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
-using static ACCSetupApp.SetupParser.SetupConverter;
-using static ACCSetupApp.SetupParser.ConversionFactory;
-using static SetupParser.SetupJson;
+using static ACCManager.Data.ConversionFactory;
+using static ACCManager.Data.SetupConverter;
+using static ACCManager.Data.SetupJson;
 
-namespace ACCSetupApp.Controls.Setup
+namespace ACCManager.Controls.Setup
 {
     public class FlowDocSetupRenderer
     {

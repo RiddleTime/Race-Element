@@ -1,4 +1,4 @@
-﻿using ACCSetupApp.Util;
+﻿using ACCManager.Util;
 using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
 using System;
@@ -17,9 +17,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static ACCSetupApp.Controls.LiveryBrowser;
+using static ACCManager.Controls.LiveryBrowser;
 
-namespace ACCSetupApp.Controls
+namespace ACCManager.Controls
 {
     /// <summary>
     /// Interaction logic for LiveryExporter.xaml

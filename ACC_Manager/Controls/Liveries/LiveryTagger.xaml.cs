@@ -12,10 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static ACCSetupApp.Controls.LiveryBrowser;
-using static ACCSetupApp.Controls.LiveryTagging;
+using static ACCManager.Controls.LiveryBrowser;
+using static ACCManager.Controls.LiveryTagging;
 
-namespace ACCSetupApp.Controls
+namespace ACCManager.Controls
 {
     /// <summary>
     /// Interaction logic for LiveryTagger.xaml

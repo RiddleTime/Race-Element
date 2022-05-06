@@ -1,4 +1,4 @@
-﻿using ACCSetupApp.Controls.Telemetry;
+﻿using ACCManager.Controls.Telemetry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ACCSetupApp.Controls
+namespace ACCManager.Controls
 {
     internal class TelemetryRecorder
     {

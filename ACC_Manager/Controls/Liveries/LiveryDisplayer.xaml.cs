@@ -1,7 +1,7 @@
-﻿using ACCSetupApp.Controls.Liveries;
-using ACCSetupApp.LiveryParser;
-using ACCSetupApp.SetupParser;
-using ACCSetupApp.Util;
+﻿using ACCManager.Controls.Liveries;
+using ACCManager.Data;
+using ACCManager.LiveryParser;
+using ACCManager.Util;
 using DdsFileTypePlus;
 using PaintDotNet;
 using System;
@@ -23,9 +23,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static ACCSetupApp.Controls.LiveryBrowser;
+using static ACCManager.Controls.LiveryBrowser;
 
-namespace ACCSetupApp.Controls
+namespace ACCManager.Controls
 {
     /// <summary>
     /// Interaction logic for LiveryDisplayer.xaml

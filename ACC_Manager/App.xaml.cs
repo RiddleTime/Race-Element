@@ -1,4 +1,4 @@
-﻿using ACCSetupApp.Util;
+﻿using ACCManager.Util;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace ACCSetupApp
+namespace ACCManager
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ACCSetupApp.Controls
+namespace ACCManager.Controls
 {
     /// <summary>
     /// Interaction logic for SetupsTab.xaml

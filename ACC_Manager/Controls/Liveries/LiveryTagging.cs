@@ -1,4 +1,4 @@
-﻿using ACCSetupApp.Util;
+﻿using ACCManager.Util;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,9 +7,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static ACCSetupApp.Controls.LiveryBrowser;
+using static ACCManager.Controls.LiveryBrowser;
 
-namespace ACCSetupApp.Controls
+namespace ACCManager.Controls
 {
     internal class LiveryTagging
     {

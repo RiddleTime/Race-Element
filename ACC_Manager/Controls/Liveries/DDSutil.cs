@@ -1,4 +1,4 @@
-﻿using ACCSetupApp.Util;
+﻿using ACCManager.Util;
 using DdsFileTypePlus;
 using PaintDotNet;
 using System;
@@ -9,9 +9,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static ACCSetupApp.Controls.LiveryBrowser;
+using static ACCManager.Controls.LiveryBrowser;
 
-namespace ACCSetupApp.Controls.Liveries
+namespace ACCManager.Controls.Liveries
 {
     internal class DDSutil
     {

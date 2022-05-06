@@ -1,4 +1,4 @@
-﻿using ACCSetupApp.Controls.Setup;
+﻿using ACCManager.Controls.Setup;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ACCSetupApp.Controls
+namespace ACCManager.Controls
 {
     /// <summary>
     /// Interaction logic for SetupComparer.xaml

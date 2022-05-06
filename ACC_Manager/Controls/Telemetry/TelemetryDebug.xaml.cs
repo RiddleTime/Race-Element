@@ -1,4 +1,4 @@
-﻿using ACCSetupApp.Util;
+﻿using ACCManager.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -17,9 +17,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static ACCSetupApp.ACCSharedMemory;
+using static ACCManager.ACCSharedMemory;
 
-namespace ACCSetupApp.Controls
+namespace ACCManager.Controls
 {
     /// <summary>
     /// Interaction logic for TelemetryDebug.xaml
