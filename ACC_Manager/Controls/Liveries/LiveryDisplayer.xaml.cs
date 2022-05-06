@@ -357,7 +357,7 @@ namespace ACCManager.Controls
         {
 
             string nationality = "Other";
-            try { nationality = Nationalities[jsonValue]; } catch (Exception e) { }
+            try { nationality = Nationalities[jsonValue]; } catch (Exception) { }
             return nationality;
         }
 

@@ -1,12 +1,12 @@
-﻿using ACCManager.Controls.HUD.Overlay.OverlayPressureTrace;
-using ACCManager.Controls.HUD.Overlay.OverlayTrackInfo;
-using ACCManager.HUD.ACC.Overlays.OverlayAccelerometer;
+﻿using ACCManager.HUD.ACC.Overlays.OverlayAccelerometer;
 using ACCManager.HUD.ACC.Overlays.OverlayCarInfo;
 using ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo;
 using ACCManager.HUD.ACC.Overlays.OverlayGraphicsInfo;
 using ACCManager.HUD.ACC.Overlays.OverlayInputTrace;
 using ACCManager.HUD.ACC.Overlays.OverlayPhysicsInfo;
+using ACCManager.HUD.ACC.Overlays.OverlayPressureTrace;
 using ACCManager.HUD.ACC.Overlays.OverlayStaticInfo;
+using ACCManager.HUD.ACC.Overlays.OverlayTrackInfo;
 using ACCManager.HUD.Overlay.Internal;
 using System;
 using System.Collections.Generic;

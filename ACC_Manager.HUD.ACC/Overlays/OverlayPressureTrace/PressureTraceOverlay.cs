@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static ACCManager.ACCSharedMemory;
 
-namespace ACCManager.Controls.HUD.Overlay.OverlayPressureTrace
+namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
 {
     internal class PressureTraceOverlay : AbstractOverlay
     {

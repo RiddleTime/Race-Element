@@ -40,7 +40,7 @@ namespace ACCManager
                 var preference = DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
                 DwmSetWindowAttribute(hWnd, attribute, ref preference, sizeof(uint));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 LogWriter.WriteToLog("Rounded corners are not supported for this machine, using square corners for the main window.");
             }

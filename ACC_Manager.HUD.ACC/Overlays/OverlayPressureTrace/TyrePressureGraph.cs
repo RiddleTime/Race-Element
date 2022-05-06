@@ -6,9 +6,8 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static ACCManager.Controls.HUD.Overlay.OverlayPressureTrace.TyrePressures;
 
-namespace ACCManager.Controls.HUD.Overlay.OverlayPressureTrace
+namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
 {
     internal class TyrePressureGraph
     {

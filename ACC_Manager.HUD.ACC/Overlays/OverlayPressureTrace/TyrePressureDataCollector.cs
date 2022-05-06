@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using static ACCManager.ACCSharedMemory;
 using static ACCManager.Data.SetupConverter;
 
-namespace ACCManager.Controls.HUD.Overlay.OverlayPressureTrace
+namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
 {
     internal class TyrePressureDataCollector
     {
