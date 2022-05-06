@@ -320,6 +320,7 @@
     <Compile Include="Controls\HUD\Overlay\OverlayDebugInfo\OverlayGraphicsInfo\GraphicsInfoOverlay.cs" />
     <Compile Include="Controls\HUD\Overlay\OverlayEcuMapInfo\EcuMapOverlay.cs" />
     <Compile Include="Controls\HUD\Overlay\OverlayEcuMapInfo\EcuMaps.cs" />
+    <Compile Include="Controls\HUD\Overlay\OverlayFuelInfo\FuelInfoOverlay.cs" />
     <Compile Include="Controls\HUD\Overlay\OverlayInputTrace\InputTraceOverlay.cs" />
     <Compile Include="Controls\HUD\Overlay\Internal\FloatingWindow.cs" />
     <Compile Include="Controls\HUD\Overlay\OverlayDebugInfo\OverlayPhysicsInfo\PhysicsInfoOverlay.cs" />

@@ -22,7 +22,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay
             {"ECU Maps", typeof(EcuMapOverlay) },
             {"Input trace", typeof(InputTraceOverlay) },
             {"Tire Pressure Trace", typeof(PressureTraceOverlay) },
-
+            {"Fuel Info Overlay", typeof(FuelInfoOverlay) },
             {"Track Info Overlay", typeof(TrackInfoOverlay) },
 
 #if DEBUG
