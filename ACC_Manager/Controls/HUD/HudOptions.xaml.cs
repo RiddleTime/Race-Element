@@ -60,7 +60,8 @@ namespace ACCManager.Controls
                 StackPanel stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
                 CheckBox checkBox = new CheckBox() { Content = x.Key };
                 stackPanel.Children.Add(checkBox);
-                stackPanel.Children.Add(GetConfigStacker(x.Value));
+                StackPanel configStacker = GetConfigStacker(x.Value);
+                stackPanel.Children.Add(configStacker);
 
                 checkBox.Checked += (s, e) =>
                 {
@@ -72,6 +73,7 @@ namespace ACCManager.Controls
 
                         SaveOverlaySettings(overlay, true);
 
+                        configStacker.IsEnabled = false;
                         OverlaysACC.ActiveOverlays.Add(overlay);
                     }
                 };
@@ -86,6 +88,7 @@ namespace ACCManager.Controls
 
                         overlay?.Stop();
                         OverlaysACC.ActiveOverlays.Remove(overlay);
+                        configStacker.IsEnabled = true;
                     }
                 };
 
