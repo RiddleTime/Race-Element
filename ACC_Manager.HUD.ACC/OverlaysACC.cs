@@ -8,6 +8,7 @@ using ACCManager.HUD.ACC.Overlays.OverlayPressureTrace;
 using ACCManager.HUD.ACC.Overlays.OverlayStaticInfo;
 using ACCManager.HUD.ACC.Overlays.OverlayTrackInfo;
 using ACCManager.HUD.Overlay.Internal;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,7 @@ namespace ACCManager.HUD.ACC
 #if DEBUG
             {"Accelerometer", typeof(AccelerometerOverlay) },
             {"Car Info Overlay", typeof(CarInfoOverlay) },
+            {"Fuel Info Overlay", typeof(FuelInfoOverlay) },
           
 
 #endif
