@@ -113,7 +113,15 @@ namespace ACCManager.Controls
             OverlayConfiguration overlayConfig = GetOverlayConfig(overlayType);
             if (overlayConfig == null) return stacker;
 
-            List<ConfigField> configFields = overlayConfig.GetConfigFields();
+
+            string overlayName = GetOverlayName(overlayType);
+
+            List<ConfigField> configFields = null;
+            OverlaySettings overlaySettings = OverlayOptions.LoadOverlaySettings(overlayName);
+            if (overlaySettings == null)
+                configFields = overlayConfig.GetConfigFields();
+            else
+                configFields = overlaySettings.Config;
 
             foreach (PropertyInfo pi in overlayConfig.GetProperties())
             {
@@ -128,7 +136,7 @@ namespace ACCManager.Controls
                         configFields.Add(configField);
 
 
-                        string overlayName = GetOverlayName(overlayType);
+
                         OverlaySettings settings = OverlayOptions.LoadOverlaySettings(overlayName);
                         settings.Config = configFields;
                         OverlayOptions.SaveOverlaySettings(overlayName, settings);
@@ -141,8 +149,6 @@ namespace ACCManager.Controls
                         OverlayConfiguration config = GetOverlayConfig(overlayType);
                         config.SetConfigFields(configFields);
 
-
-                        string overlayName = GetOverlayName(overlayType);
                         OverlaySettings settings = OverlayOptions.LoadOverlaySettings(overlayName);
                         settings.Config = configFields;
                         OverlayOptions.SaveOverlaySettings(overlayName, settings);

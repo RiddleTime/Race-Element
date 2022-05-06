@@ -11,18 +11,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
 {
     internal class AccelerometerOverlay : AbstractOverlay
     {
-        private InfoPanel info = new InfoPanel(8);
-        private const int MaxG = 3;
-        private int gMeterX = 48;
-        private int gMeterY = 48;
-
-
-
         private AccelleroConfig config = new AccelleroConfig();
         private class AccelleroConfig : OverlayConfiguration
         {
             internal bool ShowText { get; set; } = true;
         }
+
+        private InfoPanel info = new InfoPanel(8);
+        private const int MaxG = 3;
+        private int gMeterX = 48;
+        private int gMeterY = 48;
 
         public AccelerometerOverlay(Rectangle rectangle) : base(rectangle, "Accelerometer Overlay")
         {

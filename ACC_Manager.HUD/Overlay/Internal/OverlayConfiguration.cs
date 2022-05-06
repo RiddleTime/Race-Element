@@ -15,7 +15,6 @@ namespace ACCManager.HUD.Overlay.Internal
             LogAllChildMembers();
         }
 
-
         public class ConfigField
         {
             public string Name { get; set; }
@@ -65,7 +64,6 @@ namespace ACCManager.HUD.Overlay.Internal
             foreach (var nested in this.GetType().GetRuntimeProperties())
             {
                 Debug.WriteLine($"{nested.Name} - {nested.GetValue(this)}");
-                //nested.SetValue(this, true);
             }
         }
     }
