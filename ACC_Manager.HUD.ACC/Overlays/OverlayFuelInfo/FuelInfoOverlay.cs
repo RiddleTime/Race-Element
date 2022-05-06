@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCManager.Controls.HUD.Overlay.OverlayTrackInfo
+namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
 {
     internal class FuelInfoOverlay : AbstractOverlay
     {
