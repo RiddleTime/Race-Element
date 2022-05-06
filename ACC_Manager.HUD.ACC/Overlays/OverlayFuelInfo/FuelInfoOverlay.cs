@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCSetupApp.Controls.HUD.Overlay.OverlayTrackInfo
+namespace ACCManager.Controls.HUD.Overlay.OverlayTrackInfo
 {
     internal class FuelInfoOverlay : AbstractOverlay
     {
@@ -51,7 +51,7 @@ namespace ACCSetupApp.Controls.HUD.Overlay.OverlayTrackInfo
             return true;
 #endif
             bool shouldRender = true;
-            if (pageGraphics.Status == AcStatus.AC_OFF || pageGraphics.Status == AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
+            if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF || pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
                 shouldRender = false;
 
             return shouldRender;
