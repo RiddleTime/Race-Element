@@ -1,5 +1,6 @@
 ﻿using ACCManager.HUD.ACC;
 using ACCManager.HUD.Overlay.Internal;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -16,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static ACCManager.HUD.Overlay.Internal.OverlayConfiguration;
 using static ACCManager.HUD.Overlay.Internal.OverlayOptions;
 
 namespace ACCManager.Controls
@@ -30,7 +33,7 @@ namespace ACCManager.Controls
             InitializeComponent();
 
             BuildOverlayStackPanel();
-
+            labelReposition.MouseUp += (o, e) => { checkBoxReposition.IsChecked = !checkBoxReposition.IsChecked; };
             checkBoxReposition.Checked += (s, e) => SetRepositionMode(true);
             checkBoxReposition.Unchecked += (s, e) => SetRepositionMode(false);
         }
@@ -56,9 +59,19 @@ namespace ACCManager.Controls
             {
                 object[] args = new object[] { new System.Drawing.Rectangle((int)System.Windows.SystemParameters.PrimaryScreenWidth / 2, (int)System.Windows.SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
 
-                CheckBox checkBox = new CheckBox() { Content = x.Key };
+                Card card = new Card() { Margin = new Thickness(2) };
+                StackPanel stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
+                card.Content = stackPanel;
 
-                checkBox.Checked += (s, e) =>
+                ToggleButton toggle = new ToggleButton() { Height = 35, Width = 50, Cursor = Cursors.Hand, VerticalAlignment = VerticalAlignment.Center };
+                stackPanel.Children.Add(toggle);
+                Label label = new Label() { Content = x.Key, FontSize = 16, Cursor = Cursors.Hand, VerticalAlignment = VerticalAlignment.Center };
+                label.MouseUp += (s, e) => { toggle.IsChecked = !toggle.IsChecked; };
+                stackPanel.Children.Add(label);
+                StackPanel configStacker = GetConfigStacker(x.Value);
+                stackPanel.Children.Add(configStacker);
+
+                toggle.Checked += (s, e) =>
                 {
                     lock (OverlaysACC.ActiveOverlays)
                     {
@@ -68,11 +81,12 @@ namespace ACCManager.Controls
 
                         SaveOverlaySettings(overlay, true);
 
+                        configStacker.IsEnabled = false;
                         OverlaysACC.ActiveOverlays.Add(overlay);
                     }
                 };
 
-                checkBox.Unchecked += (s, e) =>
+                toggle.Unchecked += (s, e) =>
                 {
                     lock (OverlaysACC.ActiveOverlays)
                     {
@@ -82,6 +96,7 @@ namespace ACCManager.Controls
 
                         overlay?.Stop();
                         OverlaysACC.ActiveOverlays.Remove(overlay);
+                        configStacker.IsEnabled = true;
                     }
                 };
 
@@ -91,13 +106,87 @@ namespace ACCManager.Controls
                 {
                     if (settings.Enabled)
                     {
-                        checkBox.IsChecked = true;
+                        toggle.IsChecked = true;
                     }
                 }
                 tempOverlay.Dispose();
 
-                stackPanelOverlayCheckboxes.Children.Add(checkBox);
+                stackPanelOverlayCheckboxes.Children.Add(card);
             }
+        }
+
+        private StackPanel GetConfigStacker(Type overlayType)
+        {
+            StackPanel stacker = new StackPanel() { Margin = new Thickness(10, 0, 0, 0), Orientation = Orientation.Horizontal, VerticalAlignment = VerticalAlignment.Center };
+            OverlayConfiguration overlayConfig = GetOverlayConfig(overlayType);
+            if (overlayConfig == null) return stacker;
+
+
+            string overlayName = GetOverlayName(overlayType);
+
+            List<ConfigField> configFields = null;
+            OverlaySettings overlaySettings = OverlayOptions.LoadOverlaySettings(overlayName);
+            if (overlaySettings == null)
+                configFields = overlayConfig.GetConfigFields();
+            else
+                configFields = overlaySettings.Config;
+
+            if (configFields == null)
+                configFields = overlayConfig.GetConfigFields();
+
+            List<PropertyInfo> props = overlayConfig.GetProperties();
+            if (props.Count != configFields.Count)
+            {
+                configFields = overlayConfig.GetConfigFields();
+            }
+            else
+            {
+                foreach (PropertyInfo property in props)
+                {
+                    ConfigField field = configFields.Find(x => x.Name == property.Name);
+                    if (field == null)
+                    {
+                        configFields = overlayConfig.GetConfigFields();
+                        break;
+                    }
+                }
+            }
+
+            foreach (PropertyInfo pi in props)
+            {
+                if (pi.PropertyType.Name == typeof(bool).Name)
+                {
+                    ConfigField configField = configFields.Where(cf => cf.Name == pi.Name).First();
+                    string checkBoxlabel = string.Concat(configField.Name.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
+                    CheckBox box = new CheckBox() { Content = checkBoxlabel, IsChecked = (bool)configField.Value, Margin = new Thickness(5, 0, 0, 0) };
+                    box.Checked += (sender, args) =>
+                    {
+                        configField.Value = true;
+                        configFields.RemoveAt(configFields.IndexOf(configField));
+                        configFields.Add(configField);
+
+                        SaveOverlayConfigFields(overlayName, configFields);
+                    };
+                    box.Unchecked += (sender, args) =>
+                    {
+                        configField.Value = false;
+                        configFields.RemoveAt(configFields.IndexOf(configField));
+                        configFields.Add(configField);
+
+                        SaveOverlayConfigFields(overlayName, configFields);
+                    };
+                    stacker.Children.Add(box);
+                }
+            };
+
+            return stacker;
+        }
+
+        private void SaveOverlayConfigFields(string overlayName, List<ConfigField> configFields)
+        {
+            OverlaySettings settings = OverlayOptions.LoadOverlaySettings(overlayName);
+            settings.Config = configFields;
+            OverlayOptions.SaveOverlaySettings(overlayName, settings);
         }
 
         private void SaveOverlaySettings(AbstractOverlay overlay, bool isEnabled)
@@ -114,7 +203,15 @@ namespace ACCManager.Controls
         }
 
 
-        private void SaveOverlaySettings(AbstractOverlay overlay, OverlayConfiguration overlayConfiguration)
+        private void SaveOverlayConfig(Type overlay, OverlayConfiguration overlayConfiguration)
+        {
+            object[] args = new object[] { new System.Drawing.Rectangle(0, 0, 300, 150) };
+            AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(overlay, args);
+            SaveOverlayConfig(tempOverlay, overlayConfiguration);
+            tempOverlay.Dispose();
+        }
+
+        private void SaveOverlayConfig(AbstractOverlay overlay, OverlayConfiguration overlayConfiguration)
         {
             OverlaySettings settings = OverlayOptions.LoadOverlaySettings(overlay.Name);
             if (settings == null)
@@ -127,12 +224,22 @@ namespace ACCManager.Controls
             OverlayOptions.SaveOverlaySettings(overlay.Name, settings);
         }
 
-        private OverlayConfiguration GetConfiguration(Type overlay)
+        private string GetOverlayName(Type overlay)
         {
-            object[] args = new object[] { new System.Drawing.Rectangle((int)System.Windows.SystemParameters.PrimaryScreenWidth / 2, (int)System.Windows.SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
+            object[] args = new object[] { new System.Drawing.Rectangle(0, 0, 300, 150) };
             AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(overlay, args);
-            
+            string name = tempOverlay.Name;
+            tempOverlay.Dispose();
 
+            return name;
+        }
+
+        private OverlayConfiguration GetOverlayConfig(Type overlay)
+        {
+            object[] args = new object[] { new System.Drawing.Rectangle(0, 0, 300, 150) };
+            AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(overlay, args);
+
+            OverlayConfiguration temp = null;
 
             Debug.WriteLine($"Finding OverlayConfiguration in {tempOverlay.Name}");
             FieldInfo[] fields = tempOverlay.GetType().GetRuntimeFields().ToArray();
@@ -140,13 +247,15 @@ namespace ACCManager.Controls
             {
                 if (nested.FieldType.BaseType == typeof(OverlayConfiguration))
                 {
-                    Debug.WriteLine($"Found {nested.Name} - {nested.GetValue(overlay)}");
-                    OverlayConfiguration temp = (OverlayConfiguration)Activator.CreateInstance(nested.FieldType, new object[] { });
+                    //Debug.WriteLine($"Found {nested.Name} - {nested.GetValue(overlay)}");
+                    temp = (OverlayConfiguration)Activator.CreateInstance(nested.FieldType, new object[] { });
                     return temp;
                 }
             }
 
-            return null;
+            tempOverlay.Dispose();
+
+            return temp;
         }
     }
 }

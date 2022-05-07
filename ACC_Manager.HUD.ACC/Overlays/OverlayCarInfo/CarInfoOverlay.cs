@@ -12,7 +12,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
 {
     internal class CarInfoOverlay : AbstractOverlay
     {
-        InfoPanel infoPanel = new InfoPanel(10);
+        InfoPanel infoPanel = new InfoPanel(10, 300);
         private float MagicDamageMultiplier = 0.282f;
 
         public CarInfoOverlay(Rectangle rectangle) : base(rectangle, "Car Info Overlay")
@@ -32,12 +32,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
 
         public override void Render(Graphics g)
         {
-            g.FillRectangle(new SolidBrush(Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.Width, this.Height));
-
             float totalRepairTime = GetTotalRepairTime();
             infoPanel.AddLine("Repair time", $"{totalRepairTime}");
             infoPanel.AddLine("Tyre set", $"{pageGraphics.currentTyreSet}");
             infoPanel.AddLine("Fuel per lap", $"{Math.Round(pageGraphics.FuelXLap, 3)}");
+            infoPanel.AddProgressBar($"Fuel:", 0, pagePhysics.Fuel, pageStatic.MaxFuel);
 
 
             infoPanel.Draw(g);

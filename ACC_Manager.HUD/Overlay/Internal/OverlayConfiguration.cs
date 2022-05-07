@@ -12,9 +12,7 @@ namespace ACCManager.HUD.Overlay.Internal
     {
         public OverlayConfiguration()
         {
-            LogAllChildMembers();
         }
-
 
         public class ConfigField
         {
@@ -53,14 +51,11 @@ namespace ACCManager.HUD.Overlay.Internal
             }
         }
 
-        private void LogAllChildMembers()
+        public List<PropertyInfo> GetProperties()
         {
-            //Debug.WriteLine("Checking overlay config");
-            foreach (var nested in this.GetType().GetRuntimeProperties())
-            {
-                //Debug.WriteLine($"{nested.Name} - {nested.GetValue(this)}");
-                //nested.SetValue(this, true);
-            }
+            List<PropertyInfo> properties = this.GetType().GetRuntimeProperties().ToList();
+            return properties;
         }
+
     }
 }

@@ -44,6 +44,12 @@ namespace ACCManager.HUD.Overlay.Internal
                 if (overlayFile.Name.Replace(".json", "") == overlayName)
                 {
                     OverlaySettings overlay = LoadSettings(overlayFile);
+
+                    if(overlay == null)
+                    {
+                        overlay = new OverlaySettings();
+                    }
+
                     return overlay;
                 }
             }

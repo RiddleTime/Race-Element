@@ -58,7 +58,9 @@
     <Compile Include="Overlay\Internal\PagePhysicsTracker.cs" />
     <Compile Include="Overlay\Internal\PageStaticTracker.cs" />
     <Compile Include="Overlay\OverlayUtil\FontUtil.cs" />
+    <Compile Include="Overlay\OverlayUtil\GraphicsExtensions.cs" />
     <Compile Include="Overlay\OverlayUtil\InfoPanel.cs" />
+    <Compile Include="Overlay\OverlayUtil\ProgressBar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
