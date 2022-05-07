@@ -12,7 +12,6 @@ namespace ACCManager.HUD.Overlay.Internal
     {
         public OverlayConfiguration()
         {
-            LogAllChildMembers();
         }
 
         public class ConfigField
@@ -58,13 +57,5 @@ namespace ACCManager.HUD.Overlay.Internal
             return properties;
         }
 
-        private void LogAllChildMembers()
-        {
-            Debug.WriteLine("Runtime properties of " + this.GetType().Name);
-            foreach (var nested in this.GetType().GetRuntimeProperties())
-            {
-                Debug.WriteLine($"{nested.Name} - {nested.GetValue(this)}");
-            }
-        }
     }
 }

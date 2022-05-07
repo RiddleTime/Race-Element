@@ -109,8 +109,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             double yPercentage = GetPercentage(MaxG, pagePhysics.AccG[2]);
 
             PointF middle = new PointF(x + size / 2, y + size / 2);
-            int gDotPosX = (int)(middle.X + (size * 0.8 / 2 * xPercentage) - (gDotSize / 2));
-            int gDotPosY = (int)(middle.Y + (size * 0.8 / 2 * yPercentage) - (gDotSize / 2));
+            int gDotPosX = (int)(middle.X + (size / 2 * xPercentage) - (gDotSize / 2));
+            int gDotPosY = (int)(middle.Y + (size / 2 * yPercentage) - (gDotSize / 2));
 
             g.FillEllipse(new SolidBrush(Color.FromArgb(242, 82, 2)), new Rectangle(gDotPosX, gDotPosY, gDotSize, gDotSize));
 
