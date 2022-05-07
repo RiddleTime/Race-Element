@@ -111,13 +111,29 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             double xPercentage = GetPercentage(MaxG, pagePhysics.AccG[0]);
             double yPercentage = GetPercentage(MaxG, pagePhysics.AccG[2]);
 
+            double direction = Math.Atan2(xPercentage, yPercentage);
+            double magnitude = Math.Sqrt(xPercentage * xPercentage + yPercentage * yPercentage);
+            magnitude = KeepBetween(magnitude, -1, 1);
+
+            double horizontalPlacement = Math.Sin(direction) * magnitude;
+            double verticalPlacement = Math.Cos(direction) * magnitude;
+            verticalPlacement = KeepBetween(verticalPlacement, -1, 1);
+            horizontalPlacement = KeepBetween(horizontalPlacement, -1, 1);
+
             PointF middle = new PointF(x + size / 2, y + size / 2);
-            int gDotPosX = (int)(middle.X + (size / 2 * xPercentage) - (gDotSize / 2));
-            int gDotPosY = (int)(middle.Y + (size / 2 * yPercentage) - (gDotSize / 2));
+            int gDotPosX = (int)(middle.X + (size / 2 * horizontalPlacement) - (gDotSize / 2));
+            int gDotPosY = (int)(middle.Y + (size / 2 * verticalPlacement) - (gDotSize / 2));
 
             g.FillEllipse(new SolidBrush(Color.FromArgb(242, 82, 2)), new Rectangle(gDotPosX, gDotPosY, gDotSize, gDotSize));
 
             g.SmoothingMode = previousSmoothing;
+        }
+
+        public double KeepBetween(double value, double min, double max)
+        {
+            if (value < min) value = min;
+            if (value > max) value = max;
+            return value;
         }
 
         public override bool ShouldRender()
