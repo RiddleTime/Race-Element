@@ -61,7 +61,7 @@ namespace ACCManager.HUD.Overlay.Internal
 
                     OverlaySettings settings = OverlayOptions.LoadOverlaySettings(this.Name);
 
-                    if(settings == null)
+                    if (settings == null)
                         return;
 
                     temp.SetConfigFields(settings.Config);
@@ -190,6 +190,7 @@ namespace ACCManager.HUD.Overlay.Internal
                     Left = X,
                     Top = Y,
                     Title = this.Name,
+                    ToolTip = this.Name,
                     Topmost = true,
                     BorderBrush = System.Windows.Media.Brushes.Red,
                     BorderThickness = new Thickness(3),
