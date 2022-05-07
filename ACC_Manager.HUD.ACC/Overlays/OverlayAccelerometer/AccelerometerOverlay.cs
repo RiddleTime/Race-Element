@@ -26,6 +26,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
         {
             this.Width = 300;
             this.Height = this.Width;
+            this.RefreshRateHz = 20;
         }
 
         public override void BeforeStart()
@@ -42,11 +43,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
 
         public override void Render(Graphics g)
         {
+            Rectangle overlaySize = new Rectangle(0, 0, this.Width, this.Height);
+            SolidBrush backgroundBrush = new SolidBrush(Color.FromArgb(140, Color.Black));
             //Draws the HUD window
             if (this.config.ShowText)
-                g.FillRectangle(new SolidBrush(Color.FromArgb(140, Color.Black)), new Rectangle(0, 0, this.Width, this.Height));
+                g.FillRectangle(backgroundBrush, overlaySize);
             else
-                g.FillEllipse(new SolidBrush(Color.FromArgb(140, Color.Black)), new Rectangle(0, 0, this.Width, this.Height));
+                g.FillEllipse(backgroundBrush, overlaySize);
 
             DrawGMeter(gMeterX, gMeterY, 250, g);
 

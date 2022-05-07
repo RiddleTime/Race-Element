@@ -83,9 +83,7 @@ namespace ACCManager.HUD.Overlay.Util
                     {
                         SizeF titleWidth;
                         if ((titleWidth = g.MeasureString(line.Title, TitleFont)).Width > MaxTitleWidth)
-                        {
                             MaxTitleWidth = titleWidth.Width;
-                        }
                     }
 
                     counter++;
