@@ -22,7 +22,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
         private const int MaxG = 3;
         private int gMeterX = 48;
         private int gMeterY = 48;
-        private int gMeterSize = 250;
+        private int gMeterSize = 200;
         private LinkedList<Point> trace = new LinkedList<Point>();
 
         public AccelerometerOverlay(Rectangle rectangle) : base(rectangle, "Accelerometer Overlay")
@@ -46,13 +46,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
 
         public override void Render(Graphics g)
         {
-            Rectangle overlaySize = new Rectangle(0, 0, this.Width, this.Height);
             SolidBrush backgroundBrush = new SolidBrush(Color.FromArgb(140, Color.Black));
             //Draws the HUD window
             if (this.config.ShowText)
-                g.FillRectangle(backgroundBrush, overlaySize);
+                g.FillRectangle(backgroundBrush, new Rectangle(0, 0, this.Width, this.Height));
             else
-                g.FillEllipse(backgroundBrush, overlaySize);
+                g.FillEllipse(backgroundBrush, new Rectangle(1, 1, this.Width - 2, this.Height - 2));
 
             DrawGMeter(gMeterX, gMeterY, gMeterSize, g);
 
@@ -102,11 +101,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             g.DrawLine(AccPen, 0 + gMeterX, gMeterY + size / 2, gMeterX + size, gMeterY + size / 2);
             g.DrawLine(AccPen, gMeterX + size / 2, gMeterY, gMeterX + size / 2, gMeterY + size);
             System.Drawing.Drawing2D.SmoothingMode previousSmoothing = g.SmoothingMode;
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             g.DrawEllipse(AccPen4, gMeterX + 2, gMeterY + 2, size - 4, size - 4);
             g.DrawEllipse(AccPen3, gMeterX + size / 6, gMeterY + size / 6, (size / 3) * 2, (size / 3) * 2);
             g.DrawEllipse(AccPen2, gMeterX + size / 3, gMeterY + size / 3, size / 3, size / 3);
 
+
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             //Draws the 'dot'
             int gDotSize = 14;
 
@@ -137,9 +138,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
                         trace.RemoveLast();
 
 
-                    foreach (var traceItem in trace)
+                    for (int i = 0; i < trace.Count; i++)
                     {
-                        g.FillEllipse(new SolidBrush(Color.FromArgb(70, 242, 82, 2)), new Rectangle(traceItem.X, traceItem.Y, gDotSize, gDotSize));
+                        Point traceItem = trace.ElementAt(i);
+                        g.FillEllipse(new SolidBrush(Color.FromArgb(90 - i * 5, 242, 82, 2)), new Rectangle(traceItem.X, traceItem.Y, gDotSize, gDotSize));
                     }
                 }
             }
