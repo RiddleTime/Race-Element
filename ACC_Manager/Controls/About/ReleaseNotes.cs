@@ -11,7 +11,8 @@ namespace ACCManager.Controls
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
             {"0.0.5.7", "- HUD: Added Track Info overlay."+
-                        "\n- HUD: Added Accelerometer overlay."},
+                        "\n- HUD: Added Accelerometer overlay."+
+                        "\n- HUD: Some overlays can be configured."},
             {"0.0.5.6", "- HUD: Certain overlays can now be repositioned, this position will be automatically saved."+
                         "\n- HUD: Enabled overlays will be re-enabled during the next start of ACC Manager."},
             {"0.0.5.5", "- The Livery browser will re-expand previously expanded items after refreshing."+
