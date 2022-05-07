@@ -14,13 +14,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
         private AccelleroConfig config = new AccelleroConfig();
         private class AccelleroConfig : OverlayConfiguration
         {
-            internal bool ShowText { get; set; } = true;
+            internal bool ShowTrace { get; set; } = true;
+            internal bool ShowText { get; set; } = false;
         }
 
         private InfoPanel info = new InfoPanel(8);
         private const int MaxG = 3;
         private int gMeterX = 48;
         private int gMeterY = 48;
+        private int gMeterSize = 250;
+        private LinkedList<Point> trace = new LinkedList<Point>();
 
         public AccelerometerOverlay(Rectangle rectangle) : base(rectangle, "Accelerometer Overlay")
         {
@@ -33,7 +36,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
         {
             if (!this.config.ShowText)
             {
-                this.Width = 251;
+                this.Width = gMeterSize + 1;
                 this.Height = this.Width;
                 gMeterX = 0;
                 gMeterY = 0;
@@ -51,7 +54,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             else
                 g.FillEllipse(backgroundBrush, overlaySize);
 
-            DrawGMeter(gMeterX, gMeterY, 250, g);
+            DrawGMeter(gMeterX, gMeterY, gMeterSize, g);
 
             double xPercentage = GetPercentage(MaxG, pagePhysics.AccG[0]);
             double yPercentage = GetPercentage(MaxG, pagePhysics.AccG[2]);
@@ -76,6 +79,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
         {
             float percentage = actual * 100 / max / 100;
 
+            percentage = KeepBetween(percentage, -1, 1);
             if (percentage > 1)
                 percentage = 1;
             if (percentage < -1)
@@ -124,10 +128,33 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
 
             g.FillEllipse(new SolidBrush(Color.FromArgb(242, 82, 2)), new Rectangle(gDotPosX, gDotPosY, gDotSize, gDotSize));
 
+            if (this.config.ShowTrace)
+            {
+                lock (trace)
+                {
+                    trace.AddFirst(new Point(gDotPosX, gDotPosY));
+                    if (trace.Count > 10)
+                        trace.RemoveLast();
+
+
+                    foreach (var traceItem in trace)
+                    {
+                        g.FillEllipse(new SolidBrush(Color.FromArgb(70, 242, 82, 2)), new Rectangle(traceItem.X, traceItem.Y, gDotSize, gDotSize));
+                    }
+                }
+            }
+
             g.SmoothingMode = previousSmoothing;
         }
 
         public double KeepBetween(double value, double min, double max)
+        {
+            if (value < min) value = min;
+            if (value > max) value = max;
+            return value;
+        }
+
+        public float KeepBetween(float value, float min, float max)
         {
             if (value < min) value = min;
             if (value > max) value = max;

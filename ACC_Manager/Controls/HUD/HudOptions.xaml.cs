@@ -123,7 +123,12 @@ namespace ACCManager.Controls
             else
                 configFields = overlaySettings.Config;
 
-            foreach (PropertyInfo pi in overlayConfig.GetProperties())
+            List<PropertyInfo> props = overlayConfig.GetProperties();
+            if (props.Count != configFields.Count)
+            {
+                configFields = overlayConfig.GetConfigFields();
+            }
+            foreach (PropertyInfo pi in props)
             {
                 if (pi.PropertyType.Name == typeof(bool).Name)
                 {
