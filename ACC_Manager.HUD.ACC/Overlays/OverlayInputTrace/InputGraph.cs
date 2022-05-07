@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACCManager.HUD.Overlay.OverlayUtil;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -39,7 +40,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
         {
             Rectangle graphRect = new Rectangle(X, Y, Width, Height);
             // draw background
-            g.FillRectangle(new SolidBrush(Color.FromArgb(196, Color.Black)), graphRect);
+            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(196, Color.Black)), graphRect, 3);
 
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             DrawData(g, BrakeData, Brushes.Red);
@@ -47,7 +48,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             DrawData(g, SteeringData, Brushes.White);
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
 
-            g.DrawRectangle(new Pen(Color.FromArgb(196, Color.Black)), graphRect);
+            g.DrawRoundedRectangle(new Pen(Color.FromArgb(196, Color.Black)), graphRect, 3);
         }
 
         private void DrawData(Graphics g, LinkedList<int> Data, Brush color)
