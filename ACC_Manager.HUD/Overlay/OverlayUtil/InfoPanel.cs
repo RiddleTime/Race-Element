@@ -43,10 +43,7 @@ namespace ACCManager.HUD.Overlay.Util
         }
         private List<InfoLine> Lines = new List<InfoLine>();
 
-        public void AddLine(string title, string value)
-        {
-            Lines.Add(new InfoLine() { Title = title, Value = value });
-        }
+
 
         public void Draw(Graphics g)
         {
@@ -76,8 +73,38 @@ namespace ACCManager.HUD.Overlay.Util
                 {
                     InfoLine line = Lines[counter];
 
-                    g.DrawString($"{line.Title}", TitleFont, Brushes.White, new PointF(X, Y + counter * FontHeight));
-                    g.DrawString($"{line.Value}", ValueFont, Brushes.White, new PointF(X + MaxTitleWidth + TitleFont.Size, Y + counter * FontHeight));
+                    if (line.GetType() == typeof(TextLine))
+                    {
+                        TextLine textLine = (TextLine)line;
+                        g.DrawString($"{textLine.Title}", TitleFont, Brushes.White, new PointF(X, Y + counter * FontHeight));
+                        g.DrawString($"{textLine.Value}", ValueFont, Brushes.White, new PointF(X + MaxTitleWidth + TitleFont.Size, Y + counter * FontHeight));
+                    }
+
+                    if (line.GetType() == typeof(TitledProgressBarLine))
+                    {
+                        TitledProgressBarLine bar = (TitledProgressBarLine)line;
+                        g.DrawString($"{bar.Title}", TitleFont, Brushes.White, new PointF(X, Y + counter * FontHeight));
+
+                        ProgressBar progressBar = new ProgressBar(bar.Min, bar.Max, bar.Value);
+                        progressBar.Draw(g, (int)(X + MaxTitleWidth + TitleFont.Size), Y + counter * FontHeight + 1, (int)(MaxWidth - MaxTitleWidth - TitleFont.Size) - 2, (int)FontHeight - 2);
+
+                        string percent = $"{(bar.Max / bar.Value * 100):F1}%";
+                        SizeF textWidth = g.MeasureString(percent, TitleFont);
+                        g.DrawString($"{percent}", TitleFont, Brushes.White, new PointF((int)(X + (MaxWidth - MaxTitleWidth)) - textWidth.Width / 2, Y + counter * FontHeight));
+                    }
+
+                    if (line.GetType() == typeof(CenterTextedProgressBarLine))
+                    {
+                        CenterTextedProgressBarLine bar = (CenterTextedProgressBarLine)line;
+
+                        ProgressBar progressBar = new ProgressBar(bar.Min, bar.Max, bar.Value);
+                        progressBar.Draw(g, X + 1, Y + counter * FontHeight + 1, (int)MaxWidth - 2, (int)FontHeight - 2);
+
+                        SizeF textWidth = g.MeasureString(bar.CenteredText, TitleFont);
+                        g.DrawString($"{bar.CenteredText}", TitleFont, Brushes.White, new PointF(X + MaxWidth / 2 - textWidth.Width / 2, Y + counter * FontHeight));
+
+                    }
+
 
                     counter++;
                     length = Lines.Count;
@@ -100,12 +127,23 @@ namespace ACCManager.HUD.Overlay.Util
                 {
                     InfoLine line = Lines[counter];
 
-                    if (!MaxTitleWidthSet)
+
+                    if (line.GetType() == typeof(TextLine))
                     {
+                        TextLine textLine = (TextLine)line;
                         SizeF titleWidth;
-                        if ((titleWidth = g.MeasureString(line.Title, TitleFont)).Width > MaxTitleWidth)
+                        if ((titleWidth = g.MeasureString(textLine.Title, TitleFont)).Width > MaxTitleWidth)
                             MaxTitleWidth = titleWidth.Width;
                     }
+
+                    if (line.GetType() == typeof(TitledProgressBarLine))
+                    {
+                        TitledProgressBarLine titledProgressBar = (TitledProgressBarLine)line;
+                        SizeF titleWidth;
+                        if ((titleWidth = g.MeasureString(titledProgressBar.Title, TitleFont)).Width > MaxTitleWidth)
+                            MaxTitleWidth = titleWidth.Width;
+                    }
+
 
                     counter++;
                     length = Lines.Count;
@@ -113,10 +151,44 @@ namespace ACCManager.HUD.Overlay.Util
             }
         }
 
-        private class InfoLine
+
+        public void AddLine(string title, string value)
+        {
+            Lines.Add(new TextLine() { Title = title, Value = value });
+        }
+
+        public void AddProgressBar(string title, double min, double max, double value)
+        {
+            Lines.Add(new TitledProgressBarLine() { Title = title, Min = min, Max = max, Value = value });
+        }
+
+        public void AddProgressBarWithCenteredText(string centeredText, double min, double max, double value)
+        {
+            Lines.Add(new CenterTextedProgressBarLine() { CenteredText = centeredText, Min = min, Max = max, Value = value });
+        }
+
+        private class TextLine : InfoLine
         {
             internal string Title { get; set; }
             internal string Value { get; set; }
         }
+
+        private class TitledProgressBarLine : InfoLine
+        {
+            internal string Title { get; set; }
+            internal double Min { get; set; }
+            internal double Max { get; set; }
+            internal double Value { get; set; }
+        }
+
+        private class CenterTextedProgressBarLine : InfoLine
+        {
+            internal string CenteredText { get; set; }
+            internal double Min { get; set; }
+            internal double Max { get; set; }
+            internal double Value { get; set; }
+        }
+
+        private interface InfoLine { }
     }
 }

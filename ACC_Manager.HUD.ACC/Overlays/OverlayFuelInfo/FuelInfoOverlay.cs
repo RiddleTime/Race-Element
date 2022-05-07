@@ -34,7 +34,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             double fuelToEnd = (pageGraphics.SessionTimeLeft / pageGraphics.BestTimeMs) * pageGraphics.FuelXLap + pageGraphics.FuelXLap;
             double fuelToAdd = Math.Max(Math.Min(Math.Ceiling(fuelToEnd - pagePhysics.Fuel), pageStatic.MaxFuel), 0);
 
-            panel.AddLine("Fuel", $"{pagePhysics.Fuel.ToString("F1")} : {fuelPercent.ToString("F1")}%");
+            panel.AddProgressBarWithCenteredText($"Fuel: {(fuelPercent):F1}%", 0, pagePhysics.Fuel, pageStatic.MaxFuel);
+            //panel.AddLine("Fuel", $"{pagePhysics.Fuel.ToString("F1")} : {fuelPercent.ToString("F1")}%");
             panel.AddLine("Laps Fuel", lapsOfFuel.ToString("F1"));
             panel.AddLine("Fuel-End", $"{fuelToEnd.ToString("F1")} : Add {fuelToAdd.ToString("F0")}");
 

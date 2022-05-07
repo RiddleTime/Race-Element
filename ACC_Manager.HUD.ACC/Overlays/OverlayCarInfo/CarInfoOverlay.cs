@@ -36,6 +36,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
             infoPanel.AddLine("Repair time", $"{totalRepairTime}");
             infoPanel.AddLine("Tyre set", $"{pageGraphics.currentTyreSet}");
             infoPanel.AddLine("Fuel per lap", $"{Math.Round(pageGraphics.FuelXLap, 3)}");
+            infoPanel.AddProgressBar($"Fuel:", 0, pagePhysics.Fuel, pageStatic.MaxFuel);
 
 
             infoPanel.Draw(g);

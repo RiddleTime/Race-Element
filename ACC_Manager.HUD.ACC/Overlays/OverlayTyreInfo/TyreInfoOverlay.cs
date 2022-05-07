@@ -14,11 +14,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
 {
     internal class TyreInfoOverlay : AbstractOverlay
     {
-        private const int PanelWidth = 160;
-        InfoPanel PanelFrontLeft = new InfoPanel(9, PanelWidth) { };
-        InfoPanel PanelFrontRight = new InfoPanel(9, PanelWidth) { X = PanelWidth + PanelWidth / 2 };
-        InfoPanel PanelRearLeft = new InfoPanel(9, PanelWidth) { Y = 75 };
-        InfoPanel PanelRearRight = new InfoPanel(9, PanelWidth) { X = PanelWidth + PanelWidth / 2, Y = 75 };
+        private const int PanelWidth = 120;
+        private const double FontSize = 8.5;
+        InfoPanel PanelFrontLeft = new InfoPanel(FontSize, PanelWidth) { };
+        InfoPanel PanelFrontRight = new InfoPanel(FontSize, PanelWidth) { X = PanelWidth + PanelWidth / 2 };
+        InfoPanel PanelRearLeft = new InfoPanel(FontSize, PanelWidth) { Y = 75 };
+        InfoPanel PanelRearRight = new InfoPanel(FontSize, PanelWidth) { X = PanelWidth + PanelWidth / 2, Y = 75 };
 
         public TyreInfoOverlay(Rectangle rectangle) : base(rectangle, "Tyre Info Overlay")
         {
@@ -43,8 +44,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             for (int i = 0; i < list.Length; i++)
             {
                 list[i].AddLine("PSI", $"{pagePhysics.WheelPressure[i]:F2}");
-                list[i].AddLine("Temp", $"{pagePhysics.TyreTemp[i]:F2}");
-                list[i].AddLine("Brake Temp", $"{pagePhysics.BrakeTemperature[i]:F2}");
+                list[i].AddLine("Tyre (C)", $"{pagePhysics.TyreTemp[i]:F1}");
+                list[i].AddLine("Brake (C)", $"{pagePhysics.BrakeTemperature[i]:F1}");
             }
 
             PanelFrontLeft.Draw(g);
