@@ -21,7 +21,10 @@ namespace ACCManager.HUD.Overlay.Util
     {
         private readonly Font TitleFont;
         private readonly Font ValueFont;
+
         private readonly int MaxWidth;
+        public int X = 0;
+        public int Y = 0;
 
         private int _fontHeight;
         public int FontHeight { get { return this._fontHeight; } private set { this._fontHeight = value; } }
@@ -57,7 +60,7 @@ namespace ACCManager.HUD.Overlay.Util
             {
                 SmoothingMode previous = g.SmoothingMode;
                 g.SmoothingMode = SmoothingMode.AntiAlias;
-                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.MaxWidth, Lines.Count * this.FontHeight), 6);
+                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(140, 0, 0, 0)), new Rectangle(X, Y, this.MaxWidth, Lines.Count * this.FontHeight), 6);
                 g.SmoothingMode = previous;
             }
 
@@ -73,8 +76,8 @@ namespace ACCManager.HUD.Overlay.Util
                 {
                     InfoLine line = Lines[counter];
 
-                    g.DrawString($"{line.Title}", TitleFont, Brushes.White, new PointF(0, counter * FontHeight));
-                    g.DrawString($"{line.Value}", ValueFont, Brushes.White, new PointF(MaxTitleWidth + TitleFont.Size, counter * FontHeight));
+                    g.DrawString($"{line.Title}", TitleFont, Brushes.White, new PointF(X, Y + counter * FontHeight));
+                    g.DrawString($"{line.Value}", ValueFont, Brushes.White, new PointF(X + MaxTitleWidth + TitleFont.Size, Y + counter * FontHeight));
 
                     counter++;
                     length = Lines.Count;

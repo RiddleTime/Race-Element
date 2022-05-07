@@ -516,7 +516,6 @@ namespace ACCManager
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] SuspensionDamage;
 
-            [Obsolete]
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] TyreTemp;
 
