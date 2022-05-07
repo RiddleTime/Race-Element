@@ -60,8 +60,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             {
                 info.AddLine("AccG X", $"{pagePhysics.AccG[0]:F2}");
                 info.AddLine("AccG Y", $"{pagePhysics.AccG[2]:F2}");
-                info.AddLine("X percent", $"{xPercentage * 100:F2}");
-                info.AddLine("Y percent", $"{yPercentage * 100:F2}");
 
                 info.Draw(g);
             }
