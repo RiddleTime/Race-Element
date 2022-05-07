@@ -2,6 +2,7 @@
 using ACCManager.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Caching;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             RefreshRateHz = 5;
         }
 
+
         public override void BeforeStart() { }
 
         public override void BeforeStop() { }
@@ -37,9 +39,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             double fuelPercent = pagePhysics.Fuel / pageStatic.MaxFuel * 100;
             double fuelToEnd = pageGraphics.SessionTimeLeft / laptimePlaceholder * pageGraphics.FuelXLap + pageGraphics.FuelXLap;
             double fuelToAdd = Math.Max(Math.Min(Math.Ceiling(fuelToEnd - fuelInCarDebug), pageStatic.MaxFuel), 0);
-            double stintFuel = Math.Ceiling(pageGraphics.DriverStintTimeLeft / laptimePlaceholder * pageGraphics.FuelXLap);
+            double stintFuel = pageGraphics.DriverStintTimeLeft / laptimePlaceholder * pageGraphics.FuelXLap + 1;
 
-            double fuelTimeCalc = (fuelInCarDebug / pageGraphics.FuelXLap) * laptimePlaceholder + 1;
+            double debug1 = 42;
+
+
+            double fuelTimeCalc = (fuelInCarDebug / pageGraphics.FuelXLap) * laptimePlaceholder;
             TimeSpan time2 = TimeSpan.FromMilliseconds(fuelTimeCalc);
             string fuelTime = time2.ToString(@"hh\:mm\:ss");
 
@@ -53,9 +58,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             panel.AddLine("Fuel Time", fuelTime);
             //Magic End
             //Debug start
-            panel.AddLine("Stint Fuel", stintFuel.ToString("F0"));
-            panel.AddLine("Stint Timer", pageGraphics.DriverStintTimeLeft.ToString("F0"));
-            //panel.AddLine("Debug Name 1", DebugValue1);
+            panel.AddLine("", "");
+            panel.AddLine("Stint Fuel", stintFuel.ToString("F1"));
+            panel.AddLine("laptime", laptimePlaceholder.ToString("F0"));
+            panel.AddLine("Fuel X Lap", pageGraphics.FuelXLap.ToString("F2"));
+            panel.AddLine("Debug Name 1", debug1.ToString("F0"));
+            panel.AddLine("Driver Stint", pageGraphics.DriverStintTimeLeft.ToString("F0"));
+
             //Debug End
 
             panel.Draw(g);
