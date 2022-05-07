@@ -63,9 +63,9 @@ namespace ACCManager.Controls
                 StackPanel stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
                 card.Content = stackPanel;
 
-                ToggleButton toggle = new ToggleButton() { Height = 35, Width = 50, Cursor = Cursors.Hand };
+                ToggleButton toggle = new ToggleButton() { Height = 35, Width = 50, Cursor = Cursors.Hand, VerticalAlignment = VerticalAlignment.Center };
                 stackPanel.Children.Add(toggle);
-                Label label = new Label() { Content = x.Key, FontSize = 16, Cursor = Cursors.Hand };
+                Label label = new Label() { Content = x.Key, FontSize = 16, Cursor = Cursors.Hand, VerticalAlignment = VerticalAlignment.Center };
                 label.MouseUp += (s, e) => { toggle.IsChecked = !toggle.IsChecked; };
                 stackPanel.Children.Add(label);
                 StackPanel configStacker = GetConfigStacker(x.Value);
