@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.IO;
 using System.Linq;
@@ -10,6 +11,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+
+using ACCManager.HUD.Overlay.OverlayUtil;
+
 
 namespace ACCManager.HUD.Overlay.Util
 {
@@ -50,7 +54,12 @@ namespace ACCManager.HUD.Overlay.Util
             }
 
             if (DrawBackground)
-                g.FillRectangle(new SolidBrush(System.Drawing.Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.MaxWidth, Lines.Count * this.FontHeight));
+            {
+                SmoothingMode previous = g.SmoothingMode;
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.MaxWidth, Lines.Count * this.FontHeight), 6);
+                g.SmoothingMode = previous;
+            }
 
             TextRenderingHint previousHint = g.TextRenderingHint;
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
