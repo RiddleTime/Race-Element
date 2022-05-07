@@ -169,7 +169,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             return true;
 #endif
 
-            return false;
+            bool shouldRender = true;
+            if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF || pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
+                shouldRender = false;
+
+            return shouldRender;
         }
     }
 }
