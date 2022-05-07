@@ -150,7 +150,7 @@ namespace ACCManager.Controls
                 {
                     ConfigField configField = configFields.Where(cf => cf.Name == pi.Name).First();
                     string checkBoxlabel = string.Concat(configField.Name.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
-                    CheckBox box = new CheckBox() { Content = checkBoxlabel, IsChecked = (bool)configField.Value, Margin = new Thickness(10, 0, 0, 0) };
+                    CheckBox box = new CheckBox() { Content = checkBoxlabel, IsChecked = (bool)configField.Value, Margin = new Thickness(5, 0, 0, 0) };
                     box.Checked += (sender, args) =>
                     {
                         configField.Value = true;
