@@ -57,7 +57,7 @@ namespace ACCManager.Controls
             {
                 object[] args = new object[] { new System.Drawing.Rectangle((int)System.Windows.SystemParameters.PrimaryScreenWidth / 2, (int)System.Windows.SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
 
-                StackPanel stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
+                StackPanel stackPanel = new StackPanel() { Orientation = Orientation.Horizontal, Height = 20 };
                 CheckBox checkBox = new CheckBox() { Content = x.Key };
                 stackPanel.Children.Add(checkBox);
                 StackPanel configStacker = GetConfigStacker(x.Value);
@@ -123,17 +123,33 @@ namespace ACCManager.Controls
             else
                 configFields = overlaySettings.Config;
 
+            if (configFields == null)
+                configFields = overlayConfig.GetConfigFields();
+
             List<PropertyInfo> props = overlayConfig.GetProperties();
             if (props.Count != configFields.Count)
             {
                 configFields = overlayConfig.GetConfigFields();
             }
+            else
+            {
+                foreach (PropertyInfo property in props)
+                {
+                    ConfigField field = configFields.Find(x => x.Name == property.Name);
+                    if (field == null)
+                    {
+                        configFields = overlayConfig.GetConfigFields();
+                        break;
+                    }
+                }
+            }
+
             foreach (PropertyInfo pi in props)
             {
                 if (pi.PropertyType.Name == typeof(bool).Name)
                 {
                     ConfigField configField = configFields.Where(cf => cf.Name == pi.Name).First();
-                    CheckBox box = new CheckBox() { Content = configField.Name, IsChecked = (bool)configField.Value };
+                    CheckBox box = new CheckBox() { Content = configField.Name, IsChecked = (bool)configField.Value, Margin = new Thickness(10, 0, 0, 0) };
                     box.Checked += (sender, args) =>
                     {
                         configField.Value = true;

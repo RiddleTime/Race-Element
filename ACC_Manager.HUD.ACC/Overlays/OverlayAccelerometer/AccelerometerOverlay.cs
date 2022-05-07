@@ -20,14 +20,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
 
         private InfoPanel info = new InfoPanel(8);
         private const int MaxG = 3;
-        private int gMeterX = 48;
-        private int gMeterY = 48;
+        private int gMeterX = 22;
+        private int gMeterY = 22;
         private int gMeterSize = 200;
         private LinkedList<Point> trace = new LinkedList<Point>();
 
         public AccelerometerOverlay(Rectangle rectangle) : base(rectangle, "Accelerometer Overlay")
         {
-            this.Width = 300;
+            this.Width = 225;
             this.Height = this.Width;
             this.RefreshRateHz = 20;
         }
