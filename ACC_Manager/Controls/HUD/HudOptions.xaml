@@ -21,7 +21,7 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0">Overlays:</Label>
+            <Label Grid.Row="0" FontSize="18">Overlays</Label>
             <StackPanel Grid.Row="1" Orientation="Vertical" x:Name="stackPanelOverlayCheckboxes">
             </StackPanel>
         </Grid>

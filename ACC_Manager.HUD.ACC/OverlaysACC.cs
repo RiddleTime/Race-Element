@@ -25,11 +25,10 @@ namespace ACCManager.HUD.ACC
             {"ECU Maps", typeof(EcuMapOverlay) },
             {"Input trace", typeof(InputTraceOverlay) },
             {"Tire Pressure Trace", typeof(PressureTraceOverlay) },
-
+            {"Accelerometer", typeof(AccelerometerOverlay) },
             {"Track Info Overlay", typeof(TrackInfoOverlay) },
 
 #if DEBUG
-            {"Accelerometer", typeof(AccelerometerOverlay) },
             {"Car Info Overlay", typeof(CarInfoOverlay) },
             {"Fuel Info Overlay", typeof(FuelInfoOverlay) },
           

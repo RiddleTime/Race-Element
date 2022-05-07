@@ -17,16 +17,22 @@ namespace ACCManager.HUD.Overlay.Util
     {
         private readonly Font TitleFont;
         private readonly Font ValueFont;
-        int FontHeight;
+        private readonly int MaxWidth;
+
+        private int _fontHeight;
+        public int FontHeight { get { return this._fontHeight; } private set { this._fontHeight = value; } }
+        public bool DrawBackground = true;
+
 
         private bool MaxTitleWidthSet = false;
         private float MaxTitleWidth = 0;
 
-        public InfoPanel(double fontSize)
+        public InfoPanel(double fontSize, int maxWidth)
         {
-            TitleFont = FontUtil.GetBoldFont((float)fontSize);
-            ValueFont = FontUtil.GetLightFont((float)fontSize);
-            FontHeight = TitleFont.Height;
+            this.MaxWidth = maxWidth;
+            this.TitleFont = FontUtil.GetBoldFont((float)fontSize);
+            this.ValueFont = FontUtil.GetLightFont((float)fontSize);
+            this.FontHeight = TitleFont.Height;
         }
         private List<InfoLine> Lines = new List<InfoLine>();
 
@@ -42,6 +48,9 @@ namespace ACCManager.HUD.Overlay.Util
                 UpdateMaxTitleWidth(g);
                 MaxTitleWidthSet = true;
             }
+
+            if (DrawBackground)
+                g.FillRectangle(new SolidBrush(System.Drawing.Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.MaxWidth, Lines.Count * this.FontHeight));
 
             TextRenderingHint previousHint = g.TextRenderingHint;
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
