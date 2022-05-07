@@ -1,5 +1,6 @@
 ﻿using ACCManager.HUD.ACC;
 using ACCManager.HUD.Overlay.Internal;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -31,7 +33,7 @@ namespace ACCManager.Controls
             InitializeComponent();
 
             BuildOverlayStackPanel();
-
+            labelReposition.MouseUp += (o, e) => { checkBoxReposition.IsChecked = !checkBoxReposition.IsChecked; };
             checkBoxReposition.Checked += (s, e) => SetRepositionMode(true);
             checkBoxReposition.Unchecked += (s, e) => SetRepositionMode(false);
         }
@@ -57,13 +59,19 @@ namespace ACCManager.Controls
             {
                 object[] args = new object[] { new System.Drawing.Rectangle((int)System.Windows.SystemParameters.PrimaryScreenWidth / 2, (int)System.Windows.SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
 
-                StackPanel stackPanel = new StackPanel() { Orientation = Orientation.Horizontal, Height = 20 };
-                CheckBox checkBox = new CheckBox() { Content = x.Key };
-                stackPanel.Children.Add(checkBox);
+                Card card = new Card() { Margin = new Thickness(2) };
+                StackPanel stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
+                card.Content = stackPanel;
+
+                ToggleButton toggle = new ToggleButton() { Height = 35, Width = 50, Cursor = Cursors.Hand };
+                stackPanel.Children.Add(toggle);
+                Label label = new Label() { Content = x.Key, FontSize = 16, Cursor = Cursors.Hand };
+                label.MouseUp += (s, e) => { toggle.IsChecked = !toggle.IsChecked; };
+                stackPanel.Children.Add(label);
                 StackPanel configStacker = GetConfigStacker(x.Value);
                 stackPanel.Children.Add(configStacker);
 
-                checkBox.Checked += (s, e) =>
+                toggle.Checked += (s, e) =>
                 {
                     lock (OverlaysACC.ActiveOverlays)
                     {
@@ -78,7 +86,7 @@ namespace ACCManager.Controls
                     }
                 };
 
-                checkBox.Unchecked += (s, e) =>
+                toggle.Unchecked += (s, e) =>
                 {
                     lock (OverlaysACC.ActiveOverlays)
                     {
@@ -98,18 +106,18 @@ namespace ACCManager.Controls
                 {
                     if (settings.Enabled)
                     {
-                        checkBox.IsChecked = true;
+                        toggle.IsChecked = true;
                     }
                 }
                 tempOverlay.Dispose();
 
-                stackPanelOverlayCheckboxes.Children.Add(stackPanel);
+                stackPanelOverlayCheckboxes.Children.Add(card);
             }
         }
 
         private StackPanel GetConfigStacker(Type overlayType)
         {
-            StackPanel stacker = new StackPanel() { Margin = new Thickness(10, 0, 0, 0), Orientation = Orientation.Horizontal };
+            StackPanel stacker = new StackPanel() { Margin = new Thickness(10, 0, 0, 0), Orientation = Orientation.Horizontal, VerticalAlignment = VerticalAlignment.Center };
             OverlayConfiguration overlayConfig = GetOverlayConfig(overlayType);
             if (overlayConfig == null) return stacker;
 

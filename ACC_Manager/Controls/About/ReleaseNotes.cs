@@ -10,6 +10,7 @@ namespace ACCManager.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.0.5.8", "- HUD Tab: Added design." },
             {"0.0.5.7", "- HUD: Added Track Info overlay."+
                         "\n- HUD: Added Accelerometer overlay."+
                         "\n- HUD: Some overlays can be configured."},
