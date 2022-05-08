@@ -182,7 +182,7 @@
                             <Bold><Italic>HUD</Italic></Bold>
                                 </TextBlock>
                                 <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
-                                    - <Bold>Accelerometer</Bold>: Lateral and longtitudal g-forces.<LineBreak/>
+                                    - <Bold>Accelerometer</Bold>: Lateral and longitudinal g-forces.<LineBreak/>
                                     - <Bold>ECU Maps</Bold>: Information regarding the current ecu map.<LineBreak/>
                                     - <Bold>Input Trace</Bold>: Throttle, Brake and steering input over time in a graph.<LineBreak/>
                                     - <Bold>Track Info</Bold>: Global flag, session type, track grip, air-track temp and wind speed.<LineBreak/>
