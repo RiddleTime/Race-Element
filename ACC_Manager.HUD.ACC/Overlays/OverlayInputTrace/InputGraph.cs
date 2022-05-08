@@ -6,6 +6,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCManager.HUD.ACC.Overlays.OverlayInputTrace.InputTraceOverlay;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
 {
@@ -16,8 +17,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
         private LinkedList<int> ThrottleData;
         private LinkedList<int> BrakeData;
         private LinkedList<int> SteeringData;
+        private InputTraceConfig Config;
 
-        public InputGraph(int x, int y, int width, int height, LinkedList<int> throttleData, LinkedList<int> brakeData, LinkedList<int> steeringData)
+        public InputGraph(int x, int y, int width, int height, LinkedList<int> throttleData, LinkedList<int> brakeData, LinkedList<int> steeringData, InputTraceConfig config)
         {
             this.X = x;
             this.Y = y;
@@ -26,6 +28,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             this.SteeringData = steeringData;
             this.ThrottleData = throttleData;
             this.BrakeData = brakeData;
+            this.Config = config;
         }
 
         private int getRelativeNodeY(int value)
@@ -45,7 +48,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             DrawData(g, BrakeData, Brushes.Red);
             DrawData(g, ThrottleData, Brushes.ForestGreen);
-            DrawData(g, SteeringData, Brushes.White);
+
+            if (this.Config.ShowSteeringInput)
+                DrawData(g, SteeringData, Brushes.White);
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
 
             g.DrawRoundedRectangle(new Pen(Color.FromArgb(196, Color.Black)), graphRect, 3);

@@ -13,6 +13,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
 {
     internal class InputTraceOverlay : AbstractOverlay
     {
+        private InputTraceConfig config = new InputTraceConfig();
+        internal class InputTraceConfig : OverlayConfiguration
+        {
+            internal bool ShowSteeringInput { get; set; } = true;
+        }
+
         private InputDataCollector inputDataCollector;
 
         public InputTraceOverlay(Rectangle rectangle) : base(rectangle, "Input Trace Overlay")
@@ -34,12 +40,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
 
         public override void Render(Graphics g)
         {
-            InputGraph graph = new InputGraph(0, 0, this.Width - 1, this.Height - 1, inputDataCollector.Throttle, inputDataCollector.Brake, inputDataCollector.Steering);
+            InputGraph graph = new InputGraph(0, 0, this.Width - 1, this.Height - 1, inputDataCollector.Throttle, inputDataCollector.Brake, inputDataCollector.Steering, this.config);
             graph.Draw(g);
         }
 
         public override bool ShouldRender()
         {
+#if DEBUG
+            return true;
+#endif
+
             bool shouldRender = true;
             if (pageGraphics.Status == AcStatus.AC_OFF || pageGraphics.Status == AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
                 shouldRender = false;
