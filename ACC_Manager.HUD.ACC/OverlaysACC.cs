@@ -24,25 +24,25 @@ namespace ACCManager.HUD.ACC
     {
         public static Dictionary<string, Type> AbstractOverlays = new Dictionary<string, Type>()
         {
-            {"ECU Maps", typeof(EcuMapOverlay) },
-            {"Input trace", typeof(InputTraceOverlay) },
-            {"Tyre Pressure Trace", typeof(PressureTraceOverlay) },
             {"Accelerometer", typeof(AccelerometerOverlay) },
+            {"ECU Maps", typeof(EcuMapOverlay) },
+            {"Input Trace", typeof(InputTraceOverlay) },
             {"Track Info", typeof(TrackInfoOverlay) },
+            {"Tyre Pressure Trace", typeof(PressureTraceOverlay) },
 
 #if DEBUG
             {"Car Info Overlay", typeof(CarInfoOverlay) },
             {"Fuel Info Overlay", typeof(FuelInfoOverlay) },
             {"Tyre Info", typeof(TyreInfoOverlay) },
 
-#endif
+
 
 
             // yea this shit has to be at the bottom...
             {"Debug Static Data", typeof(StaticInfoOverlay) },
             {"Debug Physics Data", typeof(PhysicsInfoOverlay) },
             {"Debug Graphics Data", typeof(GraphicsInfoOverlay) }
-
+#endif
         };
 
         public static List<AbstractOverlay> ActiveOverlays = new List<AbstractOverlay>();
