@@ -26,12 +26,11 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
             SmoothingMode previous = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            double percent = Max / Value;
-            if (percent > 0.03)
-                g.FillRoundedRectangle(Brushes.OrangeRed, new Rectangle(x, y, (int)(width * percent), height), 3);
+            double percent = Value / Max;
+            g.FillRectangle(Brushes.OrangeRed, new Rectangle(x, y, (int)(width * percent), height));
 
             Brush brush = new SolidBrush(Color.White);
-            g.DrawRoundedRectangle(new Pen(brush), new Rectangle(x, y, width, height), 3);
+            g.DrawRectangle(new Pen(brush), new Rectangle(x, y, width, height));
 
             g.SmoothingMode = previous;
         }
