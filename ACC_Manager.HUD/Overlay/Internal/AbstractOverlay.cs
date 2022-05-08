@@ -9,7 +9,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
 using static ACCManager.ACCSharedMemory;
-using static ACCManager.HUD.Overlay.Internal.OverlayOptions;
+using static ACCManager.HUD.Overlay.Internal.OverlaySettings;
 
 namespace ACCManager.HUD.Overlay.Internal
 {
@@ -57,23 +57,23 @@ namespace ACCManager.HUD.Overlay.Internal
             {
                 if (nested.FieldType.BaseType == typeof(OverlayConfiguration))
                 {
-                    OverlayConfiguration temp = (OverlayConfiguration)Activator.CreateInstance(nested.FieldType, new object[] { });
+                    var overlayConfig = (OverlayConfiguration)Activator.CreateInstance(nested.FieldType, new object[] { });
 
-                    OverlaySettings settings = OverlayOptions.LoadOverlaySettings(this.Name);
+                    OverlaySettingsJson savedSettings = OverlaySettings.LoadOverlaySettings(this.Name);
 
-                    if (settings == null)
+                    if (savedSettings == null)
                         return;
 
-                    temp.SetConfigFields(settings.Config);
+                    overlayConfig.SetConfigFields(savedSettings.Config);
 
-                    nested.SetValue(this, temp);
+                    nested.SetValue(this, overlayConfig);
                 }
             }
         }
 
         private void ApplyOverlaySettings()
         {
-            OverlaySettings settings = OverlayOptions.LoadOverlaySettings(this.Name);
+            OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(this.Name);
             if (settings != null)
             {
                 this.X = settings.X;
@@ -231,11 +231,11 @@ namespace ACCManager.HUD.Overlay.Internal
 
 
 
-                OverlaySettings settings = OverlayOptions.LoadOverlaySettings(this.Name);
+                OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(this.Name);
                 settings.X = X;
                 settings.Y = Y;
 
-                OverlayOptions.SaveOverlaySettings(this.Name, settings);
+                OverlaySettings.SaveOverlaySettings(this.Name, settings);
             }
         }
     }

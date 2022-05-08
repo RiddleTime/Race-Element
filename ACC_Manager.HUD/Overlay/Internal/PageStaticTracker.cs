@@ -11,7 +11,7 @@ namespace ACCManager.HUD.Overlay.Internal
     internal class PageStaticTracker : IDisposable
     {
         private static PageStaticTracker _instance;
-        public static PageStaticTracker Instance
+        internal static PageStaticTracker Instance
         {
             get
             {
@@ -30,7 +30,7 @@ namespace ACCManager.HUD.Overlay.Internal
         private readonly ACCSharedMemory sharedMemory;
         private SPageFileStatic last = null;
 
-        public PageStaticTracker()
+        private PageStaticTracker()
         {
             sharedMemory = new ACCSharedMemory();
 

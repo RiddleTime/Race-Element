@@ -19,7 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static ACCManager.HUD.Overlay.Internal.OverlayConfiguration;
-using static ACCManager.HUD.Overlay.Internal.OverlayOptions;
+using static ACCManager.HUD.Overlay.Internal.OverlaySettings;
 
 namespace ACCManager.Controls
 {
@@ -101,7 +101,7 @@ namespace ACCManager.Controls
                 };
 
                 AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(x.Value, args);
-                OverlaySettings settings = OverlayOptions.LoadOverlaySettings(tempOverlay.Name);
+                OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(tempOverlay.Name);
                 if (settings != null)
                 {
                     if (settings.Enabled)
@@ -125,7 +125,7 @@ namespace ACCManager.Controls
             string overlayName = GetOverlayName(overlayType);
 
             List<ConfigField> configFields = null;
-            OverlaySettings overlaySettings = OverlayOptions.LoadOverlaySettings(overlayName);
+            OverlaySettingsJson overlaySettings = OverlaySettings.LoadOverlaySettings(overlayName);
             if (overlaySettings == null)
                 configFields = overlayConfig.GetConfigFields();
             else
@@ -184,22 +184,22 @@ namespace ACCManager.Controls
 
         private void SaveOverlayConfigFields(string overlayName, List<ConfigField> configFields)
         {
-            OverlaySettings settings = OverlayOptions.LoadOverlaySettings(overlayName);
+            OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(overlayName);
             settings.Config = configFields;
-            OverlayOptions.SaveOverlaySettings(overlayName, settings);
+            OverlaySettings.SaveOverlaySettings(overlayName, settings);
         }
 
         private void SaveOverlaySettings(AbstractOverlay overlay, bool isEnabled)
         {
-            OverlaySettings settings = OverlayOptions.LoadOverlaySettings(overlay.Name);
+            OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(overlay.Name);
             if (settings == null)
             {
-                settings = new OverlaySettings() { X = overlay.X, Y = overlay.Y };
+                settings = new OverlaySettingsJson() { X = overlay.X, Y = overlay.Y };
             }
 
             settings.Enabled = isEnabled;
 
-            OverlayOptions.SaveOverlaySettings(overlay.Name, settings);
+            OverlaySettings.SaveOverlaySettings(overlay.Name, settings);
         }
 
 
@@ -213,15 +213,15 @@ namespace ACCManager.Controls
 
         private void SaveOverlayConfig(AbstractOverlay overlay, OverlayConfiguration overlayConfiguration)
         {
-            OverlaySettings settings = OverlayOptions.LoadOverlaySettings(overlay.Name);
+            OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(overlay.Name);
             if (settings == null)
             {
-                settings = new OverlaySettings() { X = overlay.X, Y = overlay.Y };
+                settings = new OverlaySettingsJson() { X = overlay.X, Y = overlay.Y };
             }
 
             settings.Config = overlayConfiguration.GetConfigFields();
 
-            OverlayOptions.SaveOverlaySettings(overlay.Name, settings);
+            OverlaySettings.SaveOverlaySettings(overlay.Name, settings);
         }
 
         private string GetOverlayName(Type overlay)

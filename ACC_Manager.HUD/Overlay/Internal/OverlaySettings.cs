@@ -12,9 +12,9 @@ using static ACCManager.HUD.Overlay.Internal.OverlayConfiguration;
 
 namespace ACCManager.HUD.Overlay.Internal
 {
-    public class OverlayOptions
+    public class OverlaySettings
     {
-        public class OverlaySettings
+        public class OverlaySettingsJson
         {
             public bool Enabled;
             public int X, Y;
@@ -34,7 +34,7 @@ namespace ACCManager.HUD.Overlay.Internal
         }
 
 
-        public static OverlaySettings LoadOverlaySettings(string overlayName)
+        public static OverlaySettingsJson LoadOverlaySettings(string overlayName)
         {
             DirectoryInfo overlayDir = GetOverlayDirectory();
 
@@ -43,11 +43,11 @@ namespace ACCManager.HUD.Overlay.Internal
             {
                 if (overlayFile.Name.Replace(".json", "") == overlayName)
                 {
-                    OverlaySettings overlay = LoadSettings(overlayFile);
+                    OverlaySettingsJson overlay = LoadSettings(overlayFile);
 
                     if(overlay == null)
                     {
-                        overlay = new OverlaySettings();
+                        overlay = new OverlaySettingsJson();
                     }
 
                     return overlay;
@@ -57,7 +57,7 @@ namespace ACCManager.HUD.Overlay.Internal
             return null;
         }
 
-        public static OverlaySettings SaveOverlaySettings(string overlayName, OverlaySettings settings)
+        public static OverlaySettingsJson SaveOverlaySettings(string overlayName, OverlaySettingsJson settings)
         {
             DirectoryInfo tagDir = GetOverlayDirectory();
 
@@ -89,7 +89,7 @@ namespace ACCManager.HUD.Overlay.Internal
         }
 
 
-        private static OverlaySettings LoadSettings(FileInfo file)
+        private static OverlaySettingsJson LoadSettings(FileInfo file)
         {
             if (!file.Exists)
                 return null;
@@ -98,7 +98,7 @@ namespace ACCManager.HUD.Overlay.Internal
             {
                 using (FileStream fileStream = file.OpenRead())
                 {
-                    OverlaySettings settings = LoadSettings(fileStream);
+                    OverlaySettingsJson settings = LoadSettings(fileStream);
                     fileStream.Close();
                     return settings;
                 }
@@ -110,10 +110,10 @@ namespace ACCManager.HUD.Overlay.Internal
             return null;
         }
 
-        private static OverlaySettings LoadSettings(Stream stream)
+        private static OverlaySettingsJson LoadSettings(Stream stream)
         {
             string jsonString = string.Empty;
-            OverlaySettings settings = null;
+            OverlaySettingsJson settings = null;
             try
             {
                 using (StreamReader reader = new StreamReader(stream))
@@ -124,7 +124,7 @@ namespace ACCManager.HUD.Overlay.Internal
                     stream.Close();
                 }
 
-                settings = JsonConvert.DeserializeObject<OverlaySettings>(jsonString);
+                settings = JsonConvert.DeserializeObject<OverlaySettingsJson>(jsonString);
             }
             catch (Exception e)
             {

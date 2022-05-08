@@ -3,6 +3,7 @@ using ACCManager.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -92,6 +93,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             int gMeterX = x;
             int gMeterY = y;
 
+
+            SmoothingMode previousSmoothing = g.SmoothingMode;
             //Draws the lines and circles
             Pen AccPen = new Pen(Color.FromArgb(100, 255, 255, 255), 1);
             Pen AccPen2 = new Pen(Color.FromArgb(30, 255, 255, 255), 3);
@@ -100,7 +103,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
 
             g.DrawLine(AccPen, 0 + gMeterX, gMeterY + size / 2, gMeterX + size, gMeterY + size / 2);
             g.DrawLine(AccPen, gMeterX + size / 2, gMeterY, gMeterX + size / 2, gMeterY + size);
-            System.Drawing.Drawing2D.SmoothingMode previousSmoothing = g.SmoothingMode;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             g.DrawEllipse(AccPen4, gMeterX + 2, gMeterY + 2, size - 4, size - 4);
             g.DrawEllipse(AccPen3, gMeterX + size / 6, gMeterY + size / 6, (size / 3) * 2, (size / 3) * 2);

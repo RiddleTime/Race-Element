@@ -11,7 +11,7 @@ namespace ACCManager.HUD.Overlay.Internal
     internal class PageGraphicsTracker : IDisposable
     {
         private static PageGraphicsTracker _instance;
-        public static PageGraphicsTracker Instance
+        internal static PageGraphicsTracker Instance
         {
             get
             {
@@ -29,7 +29,7 @@ namespace ACCManager.HUD.Overlay.Internal
         private readonly Task trackingTask;
         private readonly ACCSharedMemory sharedMemory;
 
-        public PageGraphicsTracker()
+        private PageGraphicsTracker()
         {
             sharedMemory = new ACCSharedMemory();
 

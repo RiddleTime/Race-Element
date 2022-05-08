@@ -31,7 +31,7 @@ namespace ACCManager.HUD.Overlay.Internal
             return configFields;
         }
 
-        public void SetConfigFields(List<ConfigField> configFields)
+        internal void SetConfigFields(List<ConfigField> configFields)
         {
             if (configFields == null)
                 return;

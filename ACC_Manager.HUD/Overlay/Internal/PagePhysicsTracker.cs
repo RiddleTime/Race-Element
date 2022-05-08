@@ -11,7 +11,7 @@ namespace ACCManager.HUD.Overlay.Internal
     internal class PagePhysicsTracker : IDisposable
     {
         private static PagePhysicsTracker _instance;
-        public static PagePhysicsTracker Instance
+        internal static PagePhysicsTracker Instance
         {
             get
             {
@@ -29,7 +29,7 @@ namespace ACCManager.HUD.Overlay.Internal
         private readonly Task trackingTask;
         private readonly ACCSharedMemory sharedMemory;
 
-        public PagePhysicsTracker()
+        private PagePhysicsTracker()
         {
             sharedMemory = new ACCSharedMemory();
 
