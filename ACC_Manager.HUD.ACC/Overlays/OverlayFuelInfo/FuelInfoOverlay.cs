@@ -44,16 +44,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             TimeSpan time2 = TimeSpan.FromMilliseconds(fuelTimeCalc);
             string fuelTime = time2.ToString(@"hh\:mm\:ss");
 
-            //Start
+            //Start (Basic)
             panel.AddLine("Fuel", $"{pagePhysics.Fuel.ToString("F1")} : {fuelPercent.ToString("F1")}%");
             panel.AddLine("Laps Fuel", pageGraphics.FuelEstimatedLaps.ToString("F1"));
             panel.AddLine("Fuel-End", $"{fuelToEnd.ToString("F1")} : Add {fuelToAdd.ToString("F0")}");
-            //End
-            //Magic Start
+            //End (Basic)
+            //Magic Start (Advanced)
             panel.AddLine("Stint Time", stintTime);
             panel.AddLine("Fuel Time", fuelTime);
             panel.AddLine("Stint Fuel", stintFuel.ToString("F1"));
-            //Magic End
+            //Magic End (Advanced)
             //Debug start
             //panel.AddLine("", "");
 
