@@ -14,6 +14,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
 {
     internal class TyreInfoOverlay : AbstractOverlay
     {
+        private TyreInfoConfig config = new TyreInfoConfig();
+        private class TyreInfoConfig : OverlayConfiguration
+        {
+            internal bool ShowBrakePressure { get; set; } = false;
+        }
+
         private const int PanelWidth = 120;
         private const double FontSize = 8.5;
         InfoPanel PanelFrontLeft = new InfoPanel(FontSize, PanelWidth) { };
@@ -44,7 +50,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
                 list[i].AddLine("PSI", $"{pagePhysics.WheelPressure[i]:F2}");
                 list[i].AddLine("Tyre (C)", $"{pagePhysics.TyreTemp[i]:F1}");
                 list[i].AddLine("Brake (C)", $"{pagePhysics.BrakeTemperature[i]:F1}");
-                list[i].AddProgressBarWithCenteredText("Brake Pressure", 0, 1, pagePhysics.brakePressure[i]);
+                if (this.config.ShowBrakePressure)
+                    list[i].AddProgressBarWithCenteredText("Brake Pressure", 0, 1, pagePhysics.brakePressure[i]);
             }
 
             for (int i = 0; i < list.Length; i++)
