@@ -11,7 +11,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
 {
     internal class FuelInfoOverlay : AbstractOverlay
     {
-        InfoPanel panel = new InfoPanel(12, 500);
+        InfoPanel panel = new InfoPanel(12, 260);
 
         public FuelInfoOverlay(Rectangle rectangle) : base(rectangle, "Fuel Info Overlay")
         {
@@ -27,8 +27,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
 
         public override void Render(Graphics g)
         {
-            g.FillRectangle(new SolidBrush(System.Drawing.Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.Width, this.Height));
-
             double laptimePlaceholder = LaptimePlaceholder2();
             double fuelInCarDebug = Math.Max(pagePhysics.Fuel, 1);
 
@@ -45,6 +43,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             string fuelTime = time2.ToString(@"hh\:mm\:ss");
 
             //Start (Basic)
+            panel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel.ToString("F1")} : {fuelPercent.ToString("F1")}%", 0, pageStatic.MaxFuel, pagePhysics.Fuel);
             panel.AddLine("Fuel", $"{pagePhysics.Fuel.ToString("F1")} : {fuelPercent.ToString("F1")}%");
             panel.AddLine("Laps Fuel", pageGraphics.FuelEstimatedLaps.ToString("F1"));
             panel.AddLine("Fuel-End", $"{fuelToEnd.ToString("F1")} : Add {fuelToAdd.ToString("F0")}");
