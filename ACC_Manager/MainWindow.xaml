@@ -260,5 +260,20 @@
             </TabItem>
 
         </TabControl>
+
+        <Button x:Name="buttonPlayACC" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="90" Height="55" Margin="3" Style="{StaticResource MaterialDesignRaisedDarkButton}" ToolTip="Launch Assetto Corsa Competizione">
+            <TextBlock TextAlignment="Center">
+                <materialDesign:PackIcon
+                    Grid.Row="0"
+                    Kind="Launch"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Height="24"
+                    Width="24"
+                    Foreground="White"/>
+                <LineBreak/>
+                Play ACC
+            </TextBlock>
+        </Button>
     </Grid>
 </Window>

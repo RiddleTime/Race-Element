@@ -10,7 +10,8 @@ namespace ACCManager.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.0.5.9", "- About tab: added information about HUDs." },
+            {"0.0.5.9", "- About Tab: added information about HUDs."+
+                        "\n- Added Play ACC Button, launches Assetto Corsa Competizione using the steam link."},
             {"0.0.5.8", "- HUD Tab: Added design."+
                         "\n- HUD: Added option to input trace for disabling steering input."},
             {"0.0.5.7", "- HUD: Added Track Info overlay."+

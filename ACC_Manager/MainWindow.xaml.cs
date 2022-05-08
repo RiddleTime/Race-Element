@@ -50,6 +50,7 @@ namespace ACCManager
 
             this.titleBar.MouseLeftButtonDown += TitleBar_MouseLeftButtonDown;
 
+            this.buttonPlayACC.Click += (sender, e) => System.Diagnostics.Process.Start("steam://rungameid/805550");
 
             this.StateChanged += MainWindow_StateChanged;
 
