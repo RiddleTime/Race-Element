@@ -37,8 +37,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
 
         public override void Render(Graphics g)
         {
-            //DrawBackground(g);
-
             InfoPanel[] list = new InfoPanel[] { PanelFrontLeft, PanelFrontRight, PanelRearLeft, PanelRearRight };
 
             for (int i = 0; i < list.Length; i++)
@@ -48,18 +46,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
                 list[i].AddLine("Brake (C)", $"{pagePhysics.BrakeTemperature[i]:F1}");
             }
 
-            PanelFrontLeft.Draw(g);
-            PanelFrontRight.Draw(g);
-            PanelRearLeft.Draw(g);
-            PanelRearRight.Draw(g);
-        }
-
-        private void DrawBackground(Graphics g)
-        {
-            SmoothingMode previous = g.SmoothingMode;
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.Width, this.Height), 6);
-            g.SmoothingMode = previous;
+            for (int i = 0; i < list.Length; i++)
+                list[i].Draw(g);
         }
 
         public override bool ShouldRender()
