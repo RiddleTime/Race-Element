@@ -11,12 +11,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
 {
     internal class FuelInfoOverlay : AbstractOverlay
     {
-        InfoPanel panel = new InfoPanel(12, 350);
+        InfoPanel panel = new InfoPanel(12, 500);
 
         public FuelInfoOverlay(Rectangle rectangle) : base(rectangle, "Fuel Info Overlay")
         {
             this.Width = 260;
-            this.Height = 400;// 140;
+            this.Height = 120;// 120;
             RefreshRateHz = 5;
         }
 
@@ -38,11 +38,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             double fuelPercent = pagePhysics.Fuel / pageStatic.MaxFuel * 100;
             double fuelToEnd = pageGraphics.SessionTimeLeft / laptimePlaceholder * pageGraphics.FuelXLap + pageGraphics.FuelXLap;
             double fuelToAdd = Math.Max(Math.Min(Math.Ceiling(fuelToEnd - fuelInCarDebug), pageStatic.MaxFuel), 0);
-            double stintFuel = pageGraphics.DriverStintTimeLeft / laptimePlaceholder * pageGraphics.FuelXLap + 1;
+            double stintFuel = pageGraphics.DriverStintTimeLeft / laptimePlaceholder * pageGraphics.FuelXLap + pageGraphics.UsedFuelSinceRefuel + 1;
 
-            double debug1 = 42;
-
-            double fuelTimeCalc = (fuelInCarDebug / pageGraphics.FuelXLap) * laptimePlaceholder;
+            double fuelTimeCalc = (long)(fuelInCarDebug / pageGraphics.FuelXLap) * laptimePlaceholder;
             TimeSpan time2 = TimeSpan.FromMilliseconds(fuelTimeCalc);
             string fuelTime = time2.ToString(@"hh\:mm\:ss");
 
@@ -54,15 +52,17 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             //Magic Start
             panel.AddLine("Stint Time", stintTime);
             panel.AddLine("Fuel Time", fuelTime);
+            panel.AddLine("Stint Fuel", stintFuel.ToString("F1"));
             //Magic End
             //Debug start
-            panel.AddLine("", "");
-            panel.AddLine("Stint Fuel", stintFuel.ToString("F1"));
-            panel.AddLine("laptime", laptimePlaceholder.ToString("F0"));
+            //panel.AddLine("", "");
+
+            /*panel.AddLine("laptime", laptimePlaceholder.ToString("F0"));
             panel.AddLine("Fuel X Lap", pageGraphics.FuelXLap.ToString("F2"));
-            panel.AddLine("Debug Name 1", debug1.ToString("F0"));
+            //panel.AddLine("Debug Name 1", fuelTimeCalc.ToString("F0"));
+            //panel.AddLine("Debug Name 2", fuelTime);
             panel.AddLine("Driver Stint", pageGraphics.DriverStintTimeLeft.ToString("F0"));
-            //Debug End
+            //Debug End*/
 
             panel.Draw(g);
         }
