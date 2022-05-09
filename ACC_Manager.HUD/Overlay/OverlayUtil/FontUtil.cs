@@ -76,6 +76,8 @@ namespace ACCManager.HUD.Overlay.Util
                         Marshal.FreeCoTaskMem(pbyt);
                     }
                 }
+
+                stmFont.Close();
             }
 
             if (m_pfc.Families.Length > 0)
