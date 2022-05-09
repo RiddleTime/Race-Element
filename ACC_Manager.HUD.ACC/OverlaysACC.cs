@@ -4,6 +4,7 @@ using ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo;
 using ACCManager.HUD.ACC.Overlays.OverlayFuelInfo;
 using ACCManager.HUD.ACC.Overlays.OverlayGraphicsInfo;
 using ACCManager.HUD.ACC.Overlays.OverlayInputTrace;
+using ACCManager.HUD.ACC.Overlays.OverlayLapDelta;
 using ACCManager.HUD.ACC.Overlays.OverlayPhysicsInfo;
 using ACCManager.HUD.ACC.Overlays.OverlayPressureTrace;
 using ACCManager.HUD.ACC.Overlays.OverlayStaticInfo;
@@ -34,7 +35,7 @@ namespace ACCManager.HUD.ACC
             {"Car Info Overlay", typeof(CarInfoOverlay) },
             {"Fuel Info Overlay", typeof(FuelInfoOverlay) },
             {"Tyre Info", typeof(TyreInfoOverlay) },
-
+            {"Lap Delta", typeof(LapDeltaOverlay) },
 
 
 
