@@ -100,7 +100,7 @@ namespace ACCManager.Controls
 
 
             // Electronics Setup
-            int ecuLabelWidth = 110;
+            int ecuLabelWidth = tyreLabelWidth;
             FieldStackPanel.Children.Add(GetTitle("Electronics Setup"));
             FieldStackPanel.Children.Add(GetTractionControlStacker(ecuLabelWidth));
             FieldStackPanel.Children.Add(GetABSStacker(ecuLabelWidth));
@@ -109,7 +109,7 @@ namespace ACCManager.Controls
 
 
             // Mechanical Setup
-            int mechLabelWidth = 110;
+            int mechLabelWidth = tyreLabelWidth;
             FieldStackPanel.Children.Add(GetTitle("Mechanical Setup"));
             FieldStackPanel.Children.Add(GetWheelRatesStacker(mechLabelWidth));
             FieldStackPanel.Children.Add(GetBumpstopRateStacker(mechLabelWidth));
@@ -121,19 +121,19 @@ namespace ACCManager.Controls
             FieldStackPanel.Children.Add(GetSteeringRatioStacker(mechLabelWidth));
 
             // Damper Setup
-            int damperLabelWidth = 110;
+            int damperLabelWidth = tyreLabelWidth;
             FieldStackPanel.Children.Add(GetTitle("Damper Setup"));
-            FieldStackPanel.Children.Add(GetBumpSlowStacker(tyreLabelWidth));
-            FieldStackPanel.Children.Add(GetBumpFastStacker(tyreLabelWidth));
-            FieldStackPanel.Children.Add(GetReboundSlowStacker(tyreLabelWidth));
-            FieldStackPanel.Children.Add(GetReboundFastStacker(tyreLabelWidth));
+            FieldStackPanel.Children.Add(GetBumpSlowStacker(damperLabelWidth));
+            FieldStackPanel.Children.Add(GetBumpFastStacker(damperLabelWidth));
+            FieldStackPanel.Children.Add(GetReboundSlowStacker(damperLabelWidth));
+            FieldStackPanel.Children.Add(GetReboundFastStacker(damperLabelWidth));
 
             // Aero Setup
-            int aeroLabelWidth = 110;
+            int aeroLabelWidth = tyreLabelWidth;
             FieldStackPanel.Children.Add(GetTitle("Aero Setup"));
-            FieldStackPanel.Children.Add(GetRideHeightStacker(tyreLabelWidth));
-            FieldStackPanel.Children.Add(GetAeroSurfaceStacker(tyreLabelWidth));
-            FieldStackPanel.Children.Add(GetBrakeDuctStacker(tyreLabelWidth));
+            FieldStackPanel.Children.Add(GetRideHeightStacker(aeroLabelWidth));
+            FieldStackPanel.Children.Add(GetAeroSurfaceStacker(aeroLabelWidth));
+            FieldStackPanel.Children.Add(GetBrakeDuctStacker(aeroLabelWidth));
 
 
         }
