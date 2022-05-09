@@ -11,17 +11,29 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
 {
     internal class FuelInfoOverlay : AbstractOverlay
     {
-        InfoPanel panel = new InfoPanel(12, 260);
+        InfoPanel infoPanel = new InfoPanel(10, 240);
+
+        private FuelInfoConfig config = new FuelInfoConfig();
+        private class FuelInfoConfig : OverlayConfiguration
+        {
+            internal bool ShowAdvancedInfo { get; set; } = true;
+        }
 
         public FuelInfoOverlay(Rectangle rectangle) : base(rectangle, "Fuel Info Overlay")
         {
-            this.Width = 260;
+            this.Width = 240;
             this.Height = 120;// 120;
             RefreshRateHz = 5;
         }
 
 
-        public override void BeforeStart() { }
+        public override void BeforeStart()
+        {
+            if (this.config.ShowAdvancedInfo)
+            {
+            this.Height += this.infoPanel.FontHeight;
+            }
+        }
 
         public override void BeforeStop() { }
 
@@ -33,7 +45,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             TimeSpan time = TimeSpan.FromMilliseconds(pageGraphics.DriverStintTimeLeft);
             string stintTime = time.ToString(@"hh\:mm\:ss");
 
-            double fuelPercent = pagePhysics.Fuel / pageStatic.MaxFuel * 100;
+            //double fuelPercent = pagePhysics.Fuel / pageStatic.MaxFuel * 100; //Not needed - respresented by fuel bar
             double fuelToEnd = pageGraphics.SessionTimeLeft / laptimePlaceholder * pageGraphics.FuelXLap + pageGraphics.FuelXLap;
             double fuelToAdd = Math.Max(Math.Min(Math.Ceiling(fuelToEnd - fuelInCarDebug), pageStatic.MaxFuel), 0);
             double stintFuel = pageGraphics.DriverStintTimeLeft / laptimePlaceholder * pageGraphics.FuelXLap + pageGraphics.UsedFuelSinceRefuel + 1;
@@ -43,27 +55,30 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             string fuelTime = time2.ToString(@"hh\:mm\:ss");
 
             //Start (Basic)
-            panel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel.ToString("F1")} : {fuelPercent.ToString("F1")}%", 0, pageStatic.MaxFuel, pagePhysics.Fuel);
-            panel.AddLine("Fuel", $"{pagePhysics.Fuel.ToString("F1")} : {fuelPercent.ToString("F1")}%");
-            panel.AddLine("Laps Fuel", pageGraphics.FuelEstimatedLaps.ToString("F1"));
-            panel.AddLine("Fuel-End", $"{fuelToEnd.ToString("F1")} : Add {fuelToAdd.ToString("F0")}");
+            infoPanel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel.ToString("F1")}", 0, pageStatic.MaxFuel, pagePhysics.Fuel);
+            //infoPanel.AddLine("Fuel", $"{pagePhysics.Fuel.ToString("F1")} : {fuelPercent.ToString("F1")}%");
+            infoPanel.AddLine("Laps Fuel", pageGraphics.FuelEstimatedLaps.ToString("F1"));
+            infoPanel.AddLine("Fuel-End", $"{fuelToEnd.ToString("F1")} : Add {fuelToAdd.ToString("F0")}");
             //End (Basic)
             //Magic Start (Advanced)
-            panel.AddLine("Stint Time", stintTime);
-            panel.AddLine("Fuel Time", fuelTime);
-            panel.AddLine("Stint Fuel", stintFuel.ToString("F1"));
+            if (this.config.ShowAdvancedInfo)
+                infoPanel.AddLine("Stint Time", stintTime);
+            if (this.config.ShowAdvancedInfo)
+                infoPanel.AddLine("Fuel Time", fuelTime);
+            if (this.config.ShowAdvancedInfo)
+                infoPanel.AddLine("Stint Fuel", stintFuel.ToString("F1"));
             //Magic End (Advanced)
             //Debug start
             //panel.AddLine("", "");
 
             /*panel.AddLine("laptime", laptimePlaceholder.ToString("F0"));
-            panel.AddLine("Fuel X Lap", pageGraphics.FuelXLap.ToString("F2"));
+            infoPanel.AddLine("Fuel X Lap", pageGraphics.FuelXLap.ToString("F2"));
             //panel.AddLine("Debug Name 1", fuelTimeCalc.ToString("F0"));
             //panel.AddLine("Debug Name 2", fuelTime);
-            panel.AddLine("Driver Stint", pageGraphics.DriverStintTimeLeft.ToString("F0"));
+            infoPanel.AddLine("Driver Stint", pageGraphics.DriverStintTimeLeft.ToString("F0"));
             //Debug End*/
 
-            panel.Draw(g);
+            infoPanel.Draw(g);
         }
 
         public override bool ShouldRender()
