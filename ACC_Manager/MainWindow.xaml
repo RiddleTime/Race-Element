@@ -265,7 +265,7 @@
             <TextBlock TextAlignment="Center">
                 <materialDesign:PackIcon
                     Grid.Row="0"
-                    Kind="Launch"
+                    Kind="Steam"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"
                     Height="24"
