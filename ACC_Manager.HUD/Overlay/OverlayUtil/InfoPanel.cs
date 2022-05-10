@@ -43,8 +43,6 @@ namespace ACCManager.HUD.Overlay.Util
         }
         private List<InfoLine> Lines = new List<InfoLine>();
 
-
-
         public void Draw(Graphics g)
         {
             if (!MaxTitleWidthSet)

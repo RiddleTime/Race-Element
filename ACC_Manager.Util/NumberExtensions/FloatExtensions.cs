@@ -15,5 +15,31 @@
             if (value > max) value = max;
             return value;
         }
+
+        /// <summary>
+        /// Sets this value or returns it, clipped by max (inclusive)
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        public static float Max(ref this float value, float max)
+        {
+            if (value > max) value = max;
+            return value;
+        }
+
+        /// <summary>
+        /// Sets this value or returns it, clipped by min (inclusive)
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        public static float Min(ref this float value, float min)
+        {
+            if (value < min) value = min;
+            return value;
+        }
     }
 }

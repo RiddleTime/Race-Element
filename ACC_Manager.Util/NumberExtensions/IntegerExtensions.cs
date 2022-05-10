@@ -21,5 +21,31 @@ namespace ACC_Manager.Util.NumberExtensions
             if (value > max) value = max;
             return value;
         }
+
+        /// <summary>
+        /// Sets this value or returns it, clipped by max (inclusive)
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        public static int Max(ref this int value, int max)
+        {
+            if (value > max) value = max;
+            return value;
+        }
+
+        /// <summary>
+        /// Sets this value or returns it, clipped by min (inclusive)
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        public static int Min(ref this int value, int min)
+        {
+            if (value < min) value = min;
+            return value;
+        }
     }
 }
