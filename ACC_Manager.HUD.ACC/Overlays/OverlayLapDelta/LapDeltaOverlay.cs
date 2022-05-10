@@ -13,7 +13,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
     internal class LapDeltaOverlay : AbstractOverlay
     {
         private const int overlayWidth = 200;
-        private const int overlayHeight = 100;
+        private const int overlayHeight = 150;
 
         private LapTimeCollector collector;
 
@@ -43,8 +43,18 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             panel.AddLine("Predicted", pageGraphics.EstimatedLapTime);
             panel.AddLine("Best", pageGraphics.BestTime);
             panel.AddLine("Current", pageGraphics.CurrentTime);
-            panel.AddLine("sector i", $"{pageGraphics.CurrentSectorIndex}");
-            panel.AddLine("Sector", $"{((float)pageGraphics.LastSectorTime / 1000):F3}");
+
+
+            string sector1 = "-";
+            string sector2 = "-";
+            string sector3 = "-";
+            if (collector.Sectors1.Count > 0) sector1 = $"{((float)collector.Sectors1.Last().Value / 1000):F3}";
+            if (collector.Sectors2.Count > 0) sector1 = $"{((float)collector.Sectors2.Last().Value / 1000):F3}";
+            if (collector.Sectors3.Count > 0) sector1 = $"{((float)collector.Sectors3.Last().Value / 1000):F3}";
+            panel.AddLine("S1", $"{sector1}");
+            panel.AddLine("S2", $"{sector2}");
+            panel.AddLine("S3", $"{sector3}");
+            panel.AddLine("Sector", $"{pageGraphics.CurrentSectorIndex}");
             panel.AddLine("Valid?", $"{pageGraphics.IsValidLap}");
             panel.Draw(g);
 

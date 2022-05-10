@@ -1,4 +1,5 @@
-﻿using ACCManager.HUD.Overlay.Internal;
+﻿using ACC_Manager.Util.NumberExtensions;
+using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
@@ -79,11 +80,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
         {
             float percentage = actual * 100 / max / 100;
 
-            percentage = KeepBetween(percentage, -1, 1);
-            if (percentage > 1)
-                percentage = 1;
-            if (percentage < -1)
-                percentage = -1;
+            percentage.Clip(-1, 1);
 
             return percentage;
         }
@@ -118,12 +115,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
 
             double direction = Math.Atan2(xPercentage, yPercentage);
             double magnitude = Math.Sqrt(xPercentage * xPercentage + yPercentage * yPercentage);
-            magnitude = KeepBetween(magnitude, -1, 1);
+            magnitude.Clip(-1, 1);
 
             double horizontalPlacement = Math.Sin(direction) * magnitude;
             double verticalPlacement = Math.Cos(direction) * magnitude;
-            verticalPlacement = KeepBetween(verticalPlacement, -1, 1);
-            horizontalPlacement = KeepBetween(horizontalPlacement, -1, 1);
+            verticalPlacement.Clip(-1, 1);
+            horizontalPlacement.Clip(-1, 1);
 
             PointF middle = new PointF(x + size / 2, y + size / 2);
             int gDotPosX = (int)(middle.X + (size / 2 * horizontalPlacement) - (gDotSize / 2));
@@ -149,20 +146,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             }
 
             g.SmoothingMode = previousSmoothing;
-        }
-
-        public double KeepBetween(double value, double min, double max)
-        {
-            if (value < min) value = min;
-            if (value > max) value = max;
-            return value;
-        }
-
-        public float KeepBetween(float value, float min, float max)
-        {
-            if (value < min) value = min;
-            if (value > max) value = max;
-            return value;
         }
 
         public override bool ShouldRender()
