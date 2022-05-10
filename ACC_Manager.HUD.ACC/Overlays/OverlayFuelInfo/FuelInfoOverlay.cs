@@ -22,16 +22,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
         public FuelInfoOverlay(Rectangle rectangle) : base(rectangle, "Fuel Info Overlay")
         {
             this.Width = 240;
-            this.Height = 120;// 120;
+            this.Height = 105;// 120;
             RefreshRateHz = 5;
         }
 
 
         public override void BeforeStart()
         {
-            if (this.config.ShowAdvancedInfo)
+            if (!this.config.ShowAdvancedInfo)
             {
-            this.Height += this.infoPanel.FontHeight;
+                this.Height -= this.infoPanel.FontHeight * 3;
             }
         }
 
@@ -62,11 +62,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             //End (Basic)
             //Magic Start (Advanced)
             if (this.config.ShowAdvancedInfo)
+            {
                 infoPanel.AddLine("Stint Time", stintTime);
-            if (this.config.ShowAdvancedInfo)
                 infoPanel.AddLine("Fuel Time", fuelTime);
-            if (this.config.ShowAdvancedInfo)
                 infoPanel.AddLine("Stint Fuel", stintFuel.ToString("F1"));
+            }
             //Magic End (Advanced)
             //Debug start
             //panel.AddLine("", "");
