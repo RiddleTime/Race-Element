@@ -4,6 +4,7 @@
     {
         /// <summary>
         /// Sets this value or returns it, clipped by min and max (inclusive)
+        /// </summary>
         /// <param name="value"></param>
         /// <param name="min"></param>
         /// <param name="max"></param>

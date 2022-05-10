@@ -32,13 +32,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
         {
             double range = (PressureRange.OptimalMaximum + Padding) - (PressureRange.OptimalMinimum - Padding);
             double percentage = (PressureRange.OptimalMaximum + Padding - value) / range;
-
             percentage.Clip(0.05, 0.95);
-            if (percentage > 0.95)
-                percentage = 0.95;
-
-            if (percentage < 0.05)
-                percentage = 0.05;
 
             return (int)(percentage * Height);
         }

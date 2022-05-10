@@ -57,9 +57,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
 
             DrawGMeter(gMeterX, gMeterY, gMeterSize, g);
 
-            double xPercentage = GetPercentage(MaxG, pagePhysics.AccG[0]);
-            double yPercentage = GetPercentage(MaxG, pagePhysics.AccG[2]);
-
             if (this.config.ShowText)
             {
                 info.AddLine("AccG X", $"{pagePhysics.AccG[0]:F2}");
