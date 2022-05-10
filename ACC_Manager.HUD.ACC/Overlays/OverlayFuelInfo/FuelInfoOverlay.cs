@@ -56,9 +56,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             string fuelTime = time2.ToString(@"hh\:mm\:ss");
 
             //Start (Basic)
-            infoPanel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel.ToString("F1")}", 0, pageStatic.MaxFuel, pagePhysics.Fuel);
+            infoPanel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel:F2} L", 0, pageStatic.MaxFuel, pagePhysics.Fuel);
             //infoPanel.AddLine("Fuel", $"{pagePhysics.Fuel.ToString("F1")} : {fuelPercent.ToString("F1")}%");
-            infoPanel.AddLine("Laps Fuel", pageGraphics.FuelEstimatedLaps.ToString("F1"));
+            infoPanel.AddLine("Laps Left", pageGraphics.FuelEstimatedLaps.ToString("F1"));
             infoPanel.AddLine("Fuel-End", $"{fuelToEnd.ToString("F1")} : Add {fuelToAdd.ToString("F0")}");
             //End (Basic)
             //Magic Start (Advanced)

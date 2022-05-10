@@ -32,8 +32,8 @@ namespace ACCManager.HUD.ACC
             {"Tyre Pressure Trace", typeof(PressureTraceOverlay) },
 
 #if DEBUG
-            {"Car Info Overlay", typeof(CarInfoOverlay) },
-            {"Fuel Info Overlay", typeof(FuelInfoOverlay) },
+            {"Car Info", typeof(CarInfoOverlay) },
+            {"Fuel Info", typeof(FuelInfoOverlay) },
             {"Tyre Info", typeof(TyreInfoOverlay) },
             {"Lap Delta", typeof(LapDeltaOverlay) },
 
