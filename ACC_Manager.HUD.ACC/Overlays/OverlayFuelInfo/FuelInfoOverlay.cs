@@ -11,7 +11,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
 {
     internal class FuelInfoOverlay : AbstractOverlay
     {
-        InfoPanel infoPanel = new InfoPanel(10, 240);
+        InfoPanel infoPanel;
 
         private FuelInfoConfig config = new FuelInfoConfig();
         private class FuelInfoConfig : OverlayConfiguration
@@ -23,6 +23,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
         {
             this.Width = 240;
             this.Height = 105;// 120;
+            infoPanel = new InfoPanel(10, this.Width - 1);
             RefreshRateHz = 5;
         }
 
