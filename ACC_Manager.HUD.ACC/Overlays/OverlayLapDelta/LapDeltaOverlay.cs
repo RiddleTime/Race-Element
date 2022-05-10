@@ -1,4 +1,5 @@
 ﻿using ACCManager.HUD.Overlay.Internal;
+using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
@@ -31,21 +32,22 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
         public override void Render(Graphics g)
         {
-            if (pageGraphics.IsDeltaPositive)
-            {
-                g.DrawRectangle(Pens.Red, 0, 0, overlayWidth, overlayHeight);
-            }
-            else
-            {
-                g.DrawRectangle(Pens.Green, 0, 0, overlayWidth, overlayHeight);
-            }
 
-            panel.AddLine("Delta", pageGraphics.DeltaLapTime);
+            string deltaString = pageGraphics.IsDeltaPositive ? "+" : "-";
+            panel.AddLine("Delta", $"{deltaString}{pageGraphics.DeltaLapTime}");
             panel.AddLine("Predicted", pageGraphics.EstimatedLapTime);
             panel.AddLine("Best", pageGraphics.BestTime);
             panel.AddLine("Current", pageGraphics.CurrentTime);
-
+            panel.AddLine("Sector", $"{pageGraphics.LastSectorTime}");
+            panel.AddLine("Valid?", $"{pageGraphics.IsValidLap}");
             panel.Draw(g);
+
+
+            Pen isbetterPen = Pens.Green;
+            if (pageGraphics.IsDeltaPositive || !pageGraphics.IsValidLap)
+                isbetterPen = Pens.Red;
+
+            g.DrawRoundedRectangle(isbetterPen, new Rectangle(0, 0, overlayWidth, overlayHeight), 3);
         }
 
         public override bool ShouldRender()
