@@ -12,6 +12,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
     {
         private bool IsCollecting = false;
 
+        public Dictionary<int, bool> LapValids { get; set; }
         // <LapIndex, Time> (divide time by 1000)
         public Dictionary<int, int> LapTimes { get; set; }
         public Dictionary<int, int> Sectors1 { get; set; }
@@ -20,8 +21,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
         private ACCSharedMemory sharedMemory;
 
+        private bool CurrentValid = true;
         private int CurrentLap = 0;
-        private int LastSector = -1;
         private int CurrentSector = 0;
 
         internal LapTimeCollector()
@@ -49,6 +50,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
                     var pageGraphics = sharedMemory.ReadGraphicsPageFile();
 
+                    if (CurrentValid != pageGraphics.IsValidLap)
+                    {
+                        CurrentValid = false;
+                    }
 
                     if (CurrentSector != pageGraphics.CurrentSectorIndex)
                     {
@@ -71,6 +76,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
                     if (CurrentLap != pageGraphics.CompletedLaps)
                     {
                         LapTimes.Add(CurrentLap, pageGraphics.LastTimeMs);
+                        LapValids.Add(CurrentLap, CurrentValid);
                         CurrentLap = pageGraphics.CompletedLaps;
                         Debug.WriteLine($"Collected lap time: {pageGraphics.LastTimeMs}");
                     }

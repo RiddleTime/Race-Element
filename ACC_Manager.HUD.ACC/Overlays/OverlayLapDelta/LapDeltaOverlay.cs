@@ -77,8 +77,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             if (sectorTime < 0) { return false; }
 
             foreach (KeyValuePair<int, int> kvp in sectorTimes)
-                if (sectorTime > kvp.Value)
-                    return false;
+            {
+                if (collector.LapValids[kvp.Key])
+                    if (sectorTime > kvp.Value)
+                        return false;
+            }
 
             return true;
         }
