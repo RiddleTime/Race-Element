@@ -75,7 +75,7 @@ namespace ACCManager.HUD.Overlay.Util
                     {
                         TextLine textLine = (TextLine)line;
                         g.DrawString($"{textLine.Title}", TitleFont, Brushes.White, new PointF(X, Y + counter * FontHeight));
-                        g.DrawString($"{textLine.Value}", ValueFont, Brushes.White, new PointF(X + MaxTitleWidth + TitleFont.Size, Y + counter * FontHeight));
+                        g.DrawString($"{textLine.Value}", ValueFont, textLine.ValueBrush, new PointF(X + MaxTitleWidth + TitleFont.Size, Y + counter * FontHeight));
                     }
 
                     if (line.GetType() == typeof(TitledProgressBarLine))
@@ -155,6 +155,11 @@ namespace ACCManager.HUD.Overlay.Util
             Lines.Add(new TextLine() { Title = title, Value = value });
         }
 
+        public void AddLine(string title, string value, Brush valueBrush)
+        {
+            Lines.Add(new TextLine() { Title = title, Value = value, ValueBrush = valueBrush });
+        }
+
         public void AddProgressBar(string title, double min, double max, double value)
         {
             Lines.Add(new TitledProgressBarLine() { Title = title, Min = min, Max = max, Value = value });
@@ -169,6 +174,7 @@ namespace ACCManager.HUD.Overlay.Util
         {
             internal string Title { get; set; }
             internal string Value { get; set; }
+            internal Brush ValueBrush { get; set; } = Brushes.White;
         }
 
         private class TitledProgressBarLine : InfoLine

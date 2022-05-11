@@ -49,13 +49,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             string sector2 = "-";
             string sector3 = "-";
             if (collector.Sectors1.Count > 0) sector1 = $"{((float)collector.Sectors1.Last().Value / 1000):F3}";
-            if (collector.Sectors2.Count > 0) sector1 = $"{((float)collector.Sectors2.Last().Value / 1000):F3}";
-            if (collector.Sectors3.Count > 0) sector1 = $"{((float)collector.Sectors3.Last().Value / 1000):F3}";
-            panel.AddLine("S1", $"{sector1}");
-            panel.AddLine("S2", $"{sector2}");
-            panel.AddLine("S3", $"{sector3}");
+            if (collector.Sectors2.Count > 0) sector2 = $"{((float)collector.Sectors2.Last().Value / 1000):F3}";
+            if (collector.Sectors3.Count > 0) sector3 = $"{((float)collector.Sectors3.Last().Value / 1000):F3}";
+            panel.AddLine("S1", $"{sector1}", IsLastSectorFastest(collector.Sectors1) ? Brushes.LimeGreen : Brushes.White);
+            panel.AddLine("S2", $"{sector2}", IsLastSectorFastest(collector.Sectors2) ? Brushes.LimeGreen : Brushes.White);
+            panel.AddLine("S3", $"{sector3}", IsLastSectorFastest(collector.Sectors3) ? Brushes.LimeGreen : Brushes.White);
             panel.AddLine("Sector", $"{pageGraphics.CurrentSectorIndex}");
-            panel.AddLine("Valid?", $"{pageGraphics.IsValidLap}");
+            panel.AddLine("collected?", $"{collector.LapTimes.Count}");
             panel.Draw(g);
 
 
@@ -64,6 +64,23 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
                 isbetterPen = Pens.Red;
 
             g.DrawRoundedRectangle(isbetterPen, new Rectangle(0, 0, overlayWidth, overlayHeight), 3);
+        }
+
+
+
+
+        public bool IsLastSectorFastest(Dictionary<int, int> sectorTimes)
+        {
+            if (sectorTimes.Count == 0) return false;
+
+            int sectorTime = sectorTimes.Last().Value;
+            if (sectorTime < 0) { return false; }
+
+            foreach (KeyValuePair<int, int> kvp in sectorTimes)
+                if (sectorTime > kvp.Value)
+                    return false;
+
+            return true;
         }
 
         public override bool ShouldRender()

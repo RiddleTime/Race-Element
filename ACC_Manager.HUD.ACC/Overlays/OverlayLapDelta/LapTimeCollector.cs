@@ -57,11 +57,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
                             Debug.WriteLine($"Not sector 1 {CurrentSector}");
                         }
                         else
-                            switch (CurrentSector)
+                            switch (pageGraphics.CurrentSectorIndex)
                             {
-                                case 0: Sectors1.Add(CurrentLap, pageGraphics.LastSectorTime); break;
-                                case 1: Sectors2.Add(CurrentLap, pageGraphics.LastSectorTime - Sectors1[CurrentLap]); break;
-                                case 2: Sectors3.Add(CurrentLap, pageGraphics.LastTimeMs - Sectors2[CurrentLap] - Sectors1[CurrentLap]); break;
+                                case 1: Sectors1.Add(CurrentLap, pageGraphics.LastSectorTime); break;
+                                case 2: Sectors2.Add(CurrentLap, pageGraphics.LastSectorTime - Sectors1[CurrentLap]); break;
+                                case 0: Sectors3.Add(CurrentLap, pageGraphics.LastTimeMs - Sectors2[CurrentLap] - Sectors1[CurrentLap]); break;
                             }
 
                         CurrentSector = pageGraphics.CurrentSectorIndex;
@@ -70,7 +70,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
                     if (CurrentLap != pageGraphics.CompletedLaps)
                     {
-                        LapTimes.Add(CurrentLap, pageGraphics.LastTimeMs / 1000);
+                        LapTimes.Add(CurrentLap, pageGraphics.LastTimeMs);
                         CurrentLap = pageGraphics.CompletedLaps;
                         Debug.WriteLine($"Collected lap time: {pageGraphics.LastTimeMs}");
                     }
