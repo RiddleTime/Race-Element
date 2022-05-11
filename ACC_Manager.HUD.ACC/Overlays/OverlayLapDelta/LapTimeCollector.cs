@@ -78,9 +78,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
                         LapTimes.Add(CurrentLap, pageGraphics.LastTimeMs);
                         LapValids.Add(CurrentLap, CurrentValid);
                         CurrentLap = pageGraphics.CompletedLaps;
-                        Debug.WriteLine($"Collected lap time: {pageGraphics.LastTimeMs}");
+                        CurrentValid = true;
                     }
-
                 }
             }).Start();
         }
