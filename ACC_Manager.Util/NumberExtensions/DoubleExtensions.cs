@@ -23,7 +23,7 @@
         /// <param name="min"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        public static double Max(ref this double value, double max)
+        public static double MaxClip(ref this double value, double max)
         {
             if (value > max) value = max;
             return value;
@@ -36,7 +36,7 @@
         /// <param name="min"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        public static double Min(ref this double value, double min)
+        public static double MinClip(ref this double value, double min)
         {
             if (value < min) value = min;
             return value;
