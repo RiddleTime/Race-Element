@@ -72,15 +72,17 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         public bool IsLastSectorFastest(Dictionary<int, int> sectorTimes)
         {
             if (sectorTimes.Count == 0) return false;
+            if (!pageGraphics.IsValidLap) return false;
 
             int sectorTime = sectorTimes.Last().Value;
             if (sectorTime < 0) { return false; }
 
             foreach (KeyValuePair<int, int> kvp in sectorTimes)
             {
-                if (collector.LapValids[kvp.Key])
-                    if (sectorTime > kvp.Value)
-                        return false;
+                if (collector.LapValids.ContainsKey(kvp.Key))
+                    if (collector.LapValids[kvp.Key])
+                        if (sectorTime > kvp.Value)
+                            return false;
             }
 
             return true;

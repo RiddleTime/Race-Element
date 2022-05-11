@@ -28,6 +28,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         internal LapTimeCollector()
         {
             sharedMemory = new ACCSharedMemory();
+            LapValids = new Dictionary<int, bool>();
             LapTimes = new Dictionary<int, int>();
             Sectors1 = new Dictionary<int, int>();
             Sectors2 = new Dictionary<int, int>();
@@ -73,7 +74,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
                         Debug.WriteLine("collected sector time");
                     }
 
-                    if (CurrentLap != pageGraphics.CompletedLaps)
+                    if (CurrentLap != pageGraphics.CompletedLaps && pageGraphics.LastTimeMs > 0)
                     {
                         LapTimes.Add(CurrentLap, pageGraphics.LastTimeMs);
                         LapValids.Add(CurrentLap, CurrentValid);
