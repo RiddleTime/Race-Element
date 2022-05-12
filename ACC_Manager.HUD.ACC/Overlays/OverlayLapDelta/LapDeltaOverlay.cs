@@ -92,17 +92,78 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
             if (lap.Sector3 > -1)
                 sector3 = $"{((float)lap.Sector3 / 1000):F3}";
-            else if (lap.Sector2 > -1 && lap.Index == pageGraphics.CompletedLaps)
+            else if (lap.Sector2 > -1 && pageGraphics.CurrentSectorIndex == 2)
             {
                 sector3 = $"{(((float)pageGraphics.CurrentTimeMs - lap.Sector2 - lap.Sector1) / 1000):F3}";
             }
 
-            panel.AddLine("S1", $"{sector1}");
-            panel.AddLine("S2", $"{sector2}");
-            panel.AddLine("S3", $"{sector3}");
+            if (pageGraphics.CurrentSectorIndex != 0 && lap.Sector1 != -1)
+                panel.AddLine("S1", $"{sector1}", IsSectorFastest(1, lap.Sector1) ? Brushes.LimeGreen : Brushes.White);
+            else
+                panel.AddLine("S1", $"{sector1}");
+
+            if (pageGraphics.CurrentSectorIndex != 1 && lap.Sector2 != -1)
+                panel.AddLine("S2", $"{sector2}", IsSectorFastest(2, lap.Sector2) ? Brushes.LimeGreen : Brushes.White);
+            else
+                panel.AddLine("S2", $"{sector2}");
+
+            if (pageGraphics.CurrentSectorIndex != 2 && lap.Sector3 != -1)
+                panel.AddLine("S3", $"{sector3}", IsSectorFastest(3, lap.Sector3) ? Brushes.LimeGreen : Brushes.White);
+            else
+                panel.AddLine("S3", $"{sector3}");
+
         }
 
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="sector">1 based indexing </param>
+        /// <param name="lap"></param>
+        /// <returns></returns>
+        private bool IsSectorFastest(int sector, int time)
+        {
+            List<LapTimingData> data;
+            lock (LapTimeTracker.Instance.LapTimeDatas)
+                data = LapTimeTracker.Instance.LapTimeDatas;
+
+            if (sector == 1)
+            {
+                foreach (LapTimingData timing in data)
+                {
+                    if (timing.Sector1 < time)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if (sector == 2)
+            {
+                foreach (LapTimingData timing in data)
+                {
+                    if (timing.Sector2 < time)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if (sector == 3)
+            {
+                foreach (LapTimingData timing in data)
+                {
+                    if (timing.Sector3 < time)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
 
 
         //public bool IsLastSectorFastest(Dictionary<int, int> sectorTimes)

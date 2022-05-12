@@ -94,7 +94,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
                         if (CurrentLap.Sector1 != -1)
                         {
-                            LapTimeDatas.Add(CurrentLap);
+                            lock (LapTimeDatas)
+                                LapTimeDatas.Add(CurrentLap);
+
                             LapFinished?.Invoke(this, CurrentLap);
                         }
 
