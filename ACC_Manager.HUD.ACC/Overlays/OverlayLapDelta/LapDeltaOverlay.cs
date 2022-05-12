@@ -15,7 +15,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         private const int overlayWidth = 200;
         private const int overlayHeight = 150;
 
-        private LapTimeCollector collector;
+        private LapTimeTracker collector;
 
         InfoPanel panel = new InfoPanel(10, overlayWidth);
         public LapDeltaOverlay(Rectangle rectangle) : base(rectangle, "Lap Delta Overlay")
@@ -27,8 +27,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
         public override void BeforeStart()
         {
-            collector = new LapTimeCollector();
-            collector.Start();
+            collector = LapTimeTracker.Instance;
+            collector.LapFinished += Collector_LapFinished;
+        }
+
+        private void Collector_LapFinished(object sender, LapTimeTracker.LapTimingData e)
+        {
+            throw new NotImplementedException();
         }
 
         public override void BeforeStop()
@@ -48,14 +53,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             string sector1 = "-";
             string sector2 = "-";
             string sector3 = "-";
-            if (collector.Sectors1.Count > 0) sector1 = $"{((float)collector.Sectors1.Last().Value / 1000):F3}";
-            if (collector.Sectors2.Count > 0) sector2 = $"{((float)collector.Sectors2.Last().Value / 1000):F3}";
-            if (collector.Sectors3.Count > 0) sector3 = $"{((float)collector.Sectors3.Last().Value / 1000):F3}";
-            panel.AddLine("S1", $"{sector1}", IsLastSectorFastest(collector.Sectors1) ? Brushes.LimeGreen : Brushes.White);
-            panel.AddLine("S2", $"{sector2}", IsLastSectorFastest(collector.Sectors2) ? Brushes.LimeGreen : Brushes.White);
-            panel.AddLine("S3", $"{sector3}", IsLastSectorFastest(collector.Sectors3) ? Brushes.LimeGreen : Brushes.White);
+            sector1 = $"{((float)collector.CurrentLap.Sector1 / 1000):F3}";
+            sector2 = $"{((float)collector.CurrentLap.Sector2 / 1000):F3}";
+            sector3 = $"{((float)collector.CurrentLap.Sector3 / 1000):F3}";
+            panel.AddLine("S1", $"{sector1}");
+            panel.AddLine("S2", $"{sector2}");
+            panel.AddLine("S3", $"{sector3}");
             panel.AddLine("Sector", $"{pageGraphics.CurrentSectorIndex}");
-            panel.AddLine("collected?", $"{collector.LapTimes.Count}");
+            panel.AddLine("collected?", $"{collector.LapTimeDatas.Count}");
             panel.Draw(g);
 
 
@@ -69,24 +74,24 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
 
 
-        public bool IsLastSectorFastest(Dictionary<int, int> sectorTimes)
-        {
-            if (sectorTimes.Count == 0) return false;
-            if (!pageGraphics.IsValidLap) return false;
+        //public bool IsLastSectorFastest(Dictionary<int, int> sectorTimes)
+        //{
+        //    if (sectorTimes.Count == 0) return false;
+        //    if (!pageGraphics.IsValidLap) return false;
 
-            int sectorTime = sectorTimes.Last().Value;
-            if (sectorTime < 0) { return false; }
+        //    int sectorTime = sectorTimes.Last().Value;
+        //    if (sectorTime < 0) { return false; }
 
-            foreach (KeyValuePair<int, int> kvp in sectorTimes)
-            {
-                if (collector.LapValids.ContainsKey(kvp.Key))
-                    if (collector.LapValids[kvp.Key])
-                        if (sectorTime > kvp.Value)
-                            return false;
-            }
+        //    foreach (KeyValuePair<int, int> kvp in sectorTimes)
+        //    {
+        //        if (collector.LapValids.ContainsKey(kvp.Key))
+        //            if (collector.LapValids[kvp.Key])
+        //                if (sectorTime > kvp.Value)
+        //                    return false;
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
         public override bool ShouldRender()
         {

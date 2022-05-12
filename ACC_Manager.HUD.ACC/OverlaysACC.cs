@@ -38,7 +38,6 @@ namespace ACCManager.HUD.ACC
             {"Tyre Info", typeof(TyreInfoOverlay) },
 
 
-
             // yea this shit has to be at the bottom...
             {"Debug Static Data", typeof(StaticInfoOverlay) },
             {"Debug Physics Data", typeof(PhysicsInfoOverlay) },
