@@ -114,7 +114,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
                     {
                         LapTimeDatas.Clear();
                         CurrentLap = new LapTimingData();
-                        this.Stop();
                     }
 
                     // collect sector times.
