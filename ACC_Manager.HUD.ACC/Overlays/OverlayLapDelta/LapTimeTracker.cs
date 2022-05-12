@@ -15,8 +15,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         {
             get
             {
-                if (Instance == null) _instance = new LapTimeTracker();
-                return Instance;
+                if (_instance == null) _instance = new LapTimeTracker();
+                return _instance;
             }
         }
 
@@ -45,7 +45,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             CurrentLap = new LapTimingData();
 
             this.Start();
-
         }
 
         private void Start()

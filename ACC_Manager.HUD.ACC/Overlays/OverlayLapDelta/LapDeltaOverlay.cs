@@ -3,6 +3,7 @@ using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -31,14 +32,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             collector.LapFinished += Collector_LapFinished;
         }
 
-        private void Collector_LapFinished(object sender, LapTimeTracker.LapTimingData e)
-        {
-            throw new NotImplementedException();
-        }
-
         public override void BeforeStop()
         {
+            collector.LapFinished -= Collector_LapFinished;
             collector.Stop();
+        }
+
+        private void Collector_LapFinished(object sender, LapTimeTracker.LapTimingData e)
+        {
         }
 
         public override void Render(Graphics g)
