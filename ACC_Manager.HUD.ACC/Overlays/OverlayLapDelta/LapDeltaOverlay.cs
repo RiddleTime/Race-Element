@@ -135,7 +135,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             {
                 foreach (LapTimingData timing in data)
                 {
-                    if (timing.Sector1 < time)
+                    if (timing.IsValid && timing.Sector1 < time)
                     {
                         return false;
                     }
@@ -146,7 +146,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             {
                 foreach (LapTimingData timing in data)
                 {
-                    if (timing.Sector2 < time)
+                    if (timing.IsValid && timing.Sector2 < time)
                     {
                         return false;
                     }
@@ -157,7 +157,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             {
                 foreach (LapTimingData timing in data)
                 {
-                    if (timing.Sector3 < time)
+                    if (timing.IsValid && timing.Sector3 < time)
                     {
                         return false;
                     }
