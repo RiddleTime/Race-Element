@@ -49,6 +49,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
         private void Start()
         {
+            if (IsCollecting)
+                return;
+
             IsCollecting = true;
             new Thread(x =>
             {
@@ -58,11 +61,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
                     var pageGraphics = sharedMemory.ReadGraphicsPageFile();
 
+
+                    // invalidate current lap 
                     if (CurrentLap.IsValid != pageGraphics.IsValidLap)
                     {
                         CurrentLap.IsValid = pageGraphics.IsValidLap;
                     }
 
+                    // collect sector times.
                     if (CurrentSector != pageGraphics.CurrentSectorIndex)
                     {
                         if (CurrentLap.Sector1 == -1 && CurrentSector != 0)
@@ -80,6 +86,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
                         CurrentSector = pageGraphics.CurrentSectorIndex;
                     }
 
+                    // finalize lap time data and add it to history.
                     if (CurrentLap.Index != pageGraphics.CompletedLaps && pageGraphics.LastTimeMs != int.MaxValue)
                     {
                         CurrentLap.Time = pageGraphics.LastTimeMs;
