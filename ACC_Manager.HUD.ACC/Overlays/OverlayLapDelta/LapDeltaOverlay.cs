@@ -51,34 +51,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             string deltaString = pageGraphics.IsDeltaPositive ? "+" : "-";
             panel.AddLine("Delta", $"{deltaString}{pageGraphics.DeltaLapTime}");
 
-            string sector1 = "-";
-            string sector2 = "-";
-            string sector3 = "-";
-            if (collector.CurrentLap.Sector1 > -1)
-            {
-                sector1 = $"{((float)collector.CurrentLap.Sector1 / 1000):F3}";
-            }
-            else if (pageGraphics.CurrentSectorIndex == 0)
-                sector1 = $"{((float)pageGraphics.CurrentTimeMs / 1000):F3}";
+            AddSectorLines();
 
-
-            if (collector.CurrentLap.Sector2 > -1)
-                sector2 = $"{((float)collector.CurrentLap.Sector2 / 1000):F3}";
-            else if (collector.CurrentLap.Sector1 > -1)
-            {
-                sector2 = $"{(((float)pageGraphics.CurrentTimeMs - collector.CurrentLap.Sector1) / 1000):F3}";
-            }
-
-            if (collector.CurrentLap.Sector3 > -1)
-                sector3 = $"{((float)collector.CurrentLap.Sector3 / 1000):F3}";
-            else if (collector.CurrentLap.Sector2 > -1)
-            {
-                sector3 = $"{(((float)pageGraphics.CurrentTimeMs - collector.CurrentLap.Sector2 - collector.CurrentLap.Sector1) / 1000):F3}";
-            }
-
-            panel.AddLine("S1", $"{sector1}");
-            panel.AddLine("S2", $"{sector2}");
-            panel.AddLine("S3", $"{sector3}");
             panel.Draw(g);
 
 
@@ -87,6 +61,45 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
                 isbetterPen = Pens.Red;
 
             g.DrawRoundedRectangle(isbetterPen, new Rectangle(0, 0, overlayWidth, overlayHeight), 3);
+        }
+
+        private void AddSectorLines()
+        {
+            LapTimingData lap = collector.CurrentLap;
+
+            if (lastLap != null && pageGraphics.NormalizedCarPosition < 0.08)
+            {
+                lap = lastLap;
+            }
+
+            string sector1 = "-";
+            string sector2 = "-";
+            string sector3 = "-";
+            if (collector.CurrentLap.Sector1 > -1)
+            {
+                sector1 = $"{((float)lap.Sector1 / 1000):F3}";
+            }
+            else if (pageGraphics.CurrentSectorIndex == 0)
+                sector1 = $"{((float)pageGraphics.CurrentTimeMs / 1000):F3}";
+
+
+            if (lap.Sector2 > -1)
+                sector2 = $"{((float)lap.Sector2 / 1000):F3}";
+            else if (lap.Sector1 > -1)
+            {
+                sector2 = $"{(((float)pageGraphics.CurrentTimeMs - lap.Sector1) / 1000):F3}";
+            }
+
+            if (lap.Sector3 > -1)
+                sector3 = $"{((float)lap.Sector3 / 1000):F3}";
+            else if (lap.Sector2 > -1 && lap.Index == pageGraphics.CompletedLaps)
+            {
+                sector3 = $"{(((float)pageGraphics.CurrentTimeMs - lap.Sector2 - lap.Sector1) / 1000):F3}";
+            }
+
+            panel.AddLine("S1", $"{sector1}");
+            panel.AddLine("S2", $"{sector2}");
+            panel.AddLine("S3", $"{sector3}");
         }
 
 
