@@ -8,6 +8,16 @@ using System.Threading.Tasks;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 {
+    internal class LapTimingData
+    {
+        public int Index { get; set; } = -1;
+        public int Time { get; set; } = -1;
+        public bool IsValid { get; set; } = true;
+        public int Sector1 { get; set; } = -1;
+        public int Sector2 { get; set; } = -1;
+        public int Sector3 { get; set; } = -1;
+    }
+
     internal class LapTimeTracker
     {
         private static LapTimeTracker _instance;
@@ -26,16 +36,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
         internal List<LapTimingData> LapTimeDatas = new List<LapTimingData>();
         internal LapTimingData CurrentLap;
-
-        internal class LapTimingData
-        {
-            public int Index { get; set; } = -1;
-            public int Time { get; set; } = -1;
-            public bool IsValid { get; set; } = true;
-            public int Sector1 { get; set; } = -1;
-            public int Sector2 { get; set; } = -1;
-            public int Sector3 { get; set; } = -1;
-        }
 
         public event EventHandler<LapTimingData> LapFinished;
 
@@ -87,9 +87,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
                         CurrentLap.Time = pageGraphics.LastTimeMs;
                         CurrentLap.Index = pageGraphics.CompletedLaps - 1;
 
-                        LapTimeDatas.Add(CurrentLap);
-
-                        LapFinished?.Invoke(this, CurrentLap);
+                        if (CurrentLap.Sector1 != -1)
+                        {
+                            LapTimeDatas.Add(CurrentLap);
+                            LapFinished?.Invoke(this, CurrentLap);
+                        }
 
                         CurrentLap = new LapTimingData() { Index = pageGraphics.CompletedLaps };
                     }
@@ -102,4 +104,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             IsCollecting = false;
         }
     }
+
+
 }

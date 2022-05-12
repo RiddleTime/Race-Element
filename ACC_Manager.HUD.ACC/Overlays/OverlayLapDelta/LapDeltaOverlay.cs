@@ -14,13 +14,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
     internal class LapDeltaOverlay : AbstractOverlay
     {
         private const int overlayWidth = 200;
-        private const int overlayHeight = 150;
+        private int overlayHeight = 150;
 
         private LapTimeTracker collector;
+        private LapTimingData lastLap = null;
 
         InfoPanel panel = new InfoPanel(10, overlayWidth);
         public LapDeltaOverlay(Rectangle rectangle) : base(rectangle, "Lap Delta Overlay")
         {
+            overlayHeight = panel.FontHeight * 4;
+
             this.Width = overlayWidth + 1;
             this.Height = overlayHeight + 1;
             RefreshRateHz = 10;
@@ -38,30 +41,44 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             collector.Stop();
         }
 
-        private void Collector_LapFinished(object sender, LapTimeTracker.LapTimingData e)
+        private void Collector_LapFinished(object sender, LapTimingData e)
         {
+            lastLap = e;
         }
 
         public override void Render(Graphics g)
         {
             string deltaString = pageGraphics.IsDeltaPositive ? "+" : "-";
             panel.AddLine("Delta", $"{deltaString}{pageGraphics.DeltaLapTime}");
-            panel.AddLine("Predicted", pageGraphics.EstimatedLapTime);
-            panel.AddLine("Best", pageGraphics.BestTime);
-            panel.AddLine("Current", pageGraphics.CurrentTime);
-
 
             string sector1 = "-";
             string sector2 = "-";
             string sector3 = "-";
-            sector1 = $"{((float)collector.CurrentLap.Sector1 / 1000):F3}";
-            sector2 = $"{((float)collector.CurrentLap.Sector2 / 1000):F3}";
-            sector3 = $"{((float)collector.CurrentLap.Sector3 / 1000):F3}";
+            if (collector.CurrentLap.Sector1 > -1)
+            {
+                sector1 = $"{((float)collector.CurrentLap.Sector1 / 1000):F3}";
+            }
+            else if (pageGraphics.CurrentSectorIndex == 0)
+                sector1 = $"{((float)pageGraphics.CurrentTimeMs / 1000):F3}";
+
+
+            if (collector.CurrentLap.Sector2 > -1)
+                sector2 = $"{((float)collector.CurrentLap.Sector2 / 1000):F3}";
+            else if (collector.CurrentLap.Sector1 > -1)
+            {
+                sector2 = $"{(((float)pageGraphics.CurrentTimeMs - collector.CurrentLap.Sector1) / 1000):F3}";
+            }
+
+            if (collector.CurrentLap.Sector3 > -1)
+                sector3 = $"{((float)collector.CurrentLap.Sector3 / 1000):F3}";
+            else if (collector.CurrentLap.Sector2 > -1)
+            {
+                sector3 = $"{(((float)pageGraphics.CurrentTimeMs - collector.CurrentLap.Sector2 - collector.CurrentLap.Sector1) / 1000):F3}";
+            }
+
             panel.AddLine("S1", $"{sector1}");
             panel.AddLine("S2", $"{sector2}");
             panel.AddLine("S3", $"{sector3}");
-            panel.AddLine("Sector", $"{pageGraphics.CurrentSectorIndex}");
-            panel.AddLine("collected?", $"{collector.LapTimeDatas.Count}");
             panel.Draw(g);
 
 
