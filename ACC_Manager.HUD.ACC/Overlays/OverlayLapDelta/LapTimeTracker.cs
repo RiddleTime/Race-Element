@@ -106,7 +106,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             {
                 while (IsCollecting)
                 {
-                    Thread.Sleep(1000 / 20);
+                    Thread.Sleep(1000 / 10);
 
                     var pageGraphics = sharedMemory.ReadGraphicsPageFile();
 
