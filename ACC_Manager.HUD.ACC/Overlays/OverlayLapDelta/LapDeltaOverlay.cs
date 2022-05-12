@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 {
@@ -165,32 +166,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             return true;
         }
 
-
-        //public bool IsLastSectorFastest(Dictionary<int, int> sectorTimes)
-        //{
-        //    if (sectorTimes.Count == 0) return false;
-        //    if (!pageGraphics.IsValidLap) return false;
-
-        //    int sectorTime = sectorTimes.Last().Value;
-        //    if (sectorTime < 0) { return false; }
-
-        //    foreach (KeyValuePair<int, int> kvp in sectorTimes)
-        //    {
-        //        if (collector.LapValids.ContainsKey(kvp.Key))
-        //            if (collector.LapValids[kvp.Key])
-        //                if (sectorTime > kvp.Value)
-        //                    return false;
-        //    }
-
-        //    return true;
-        //}
-
         public override bool ShouldRender()
         {
 #if DEBUG
             return true;
 #endif
-            return false;
+            bool shouldRender = true;
+            if (pageGraphics.Status == AcStatus.AC_OFF || pageGraphics.Status == AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
+                shouldRender = false;
+
+            return shouldRender;
         }
     }
 }
