@@ -33,6 +33,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         public override void BeforeStart()
         {
             collector = LapTimeTracker.Instance;
+            collector.Start();
             collector.LapFinished += Collector_LapFinished;
         }
 
