@@ -27,6 +27,7 @@ namespace ACCManager.HUD.ACC
         {
             {"Accelerometer", typeof(AccelerometerOverlay) },
             {"ECU Maps", typeof(EcuMapOverlay) },
+            {"Fuel Info", typeof(FuelInfoOverlay) },
             {"Input Trace", typeof(InputTraceOverlay) },
             {"Lap Delta", typeof(LapDeltaOverlay) },
             {"Track Info", typeof(TrackInfoOverlay) },
@@ -34,7 +35,6 @@ namespace ACCManager.HUD.ACC
 
 #if DEBUG
             {"Car Info", typeof(CarInfoOverlay) },
-            {"Fuel Info", typeof(FuelInfoOverlay) },
             {"Tyre Info", typeof(TyreInfoOverlay) },
 
 

@@ -12,6 +12,19 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
     {
         private bool IsCollecting = false;
 
+
+        private List<LapTimingData> LapTimeDatas = new List<LapTimingData>();
+
+        private class LapTimingData
+        {
+            public int Index { get; set; }
+            public int Time { get; set; }
+            public bool IsValid { get; set; }
+            public int Sector1 { get; set; }
+            public int Sector2 { get; set; }
+            public int Sector3 { get; set; }
+        }
+
         public Dictionary<int, bool> LapValids { get; set; }
         // <LapIndex, Time> (divide time by 1000)
         public Dictionary<int, int> LapTimes { get; set; }
@@ -24,6 +37,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         private bool CurrentValid = true;
         private int CurrentLap = 0;
         private int CurrentSector = 0;
+
+        private LapTimingData Current = new LapTimingData();
 
         internal LapTimeCollector()
         {
