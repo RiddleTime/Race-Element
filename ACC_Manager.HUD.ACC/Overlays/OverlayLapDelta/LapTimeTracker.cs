@@ -47,6 +47,55 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             this.Start();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="sector">1 based indexing </param>
+        /// <param name="lap"></param>
+        /// <returns></returns>
+        internal bool IsSectorFastest(int sector, int time)
+        {
+            List<LapTimingData> data;
+            lock (Instance.LapTimeDatas)
+                data = Instance.LapTimeDatas;
+
+            if (sector == 1)
+            {
+                foreach (LapTimingData timing in data)
+                {
+                    if (timing.IsValid && timing.Sector1 < time)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if (sector == 2)
+            {
+                foreach (LapTimingData timing in data)
+                {
+                    if (timing.IsValid && timing.Sector2 < time)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if (sector == 3)
+            {
+                foreach (LapTimingData timing in data)
+                {
+                    if (timing.IsValid && timing.Sector3 < time)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
         internal void Start()
         {
             if (IsCollecting)
