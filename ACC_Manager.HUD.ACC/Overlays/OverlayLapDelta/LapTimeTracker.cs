@@ -54,21 +54,20 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             {
                 while (IsCollecting)
                 {
-                    Thread.Sleep(1000 / 10);
+                    Thread.Sleep(1000 / 20);
 
                     var pageGraphics = sharedMemory.ReadGraphicsPageFile();
 
                     if (CurrentLap.IsValid != pageGraphics.IsValidLap)
                     {
                         CurrentLap.IsValid = pageGraphics.IsValidLap;
-                        Debug.WriteLine("Invalidated current lap");
                     }
 
                     if (CurrentSector != pageGraphics.CurrentSectorIndex)
                     {
                         if (CurrentLap.Sector1 == -1 && CurrentSector != 0)
                         {
-                            Debug.WriteLine($"Not sector 1 {CurrentSector}");
+                            // simply don't collect, we're already into a lap and passed sector 1, can't properly calculate the sector times now.
                         }
                         else
                             switch (pageGraphics.CurrentSectorIndex)
@@ -79,7 +78,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
                             }
 
                         CurrentSector = pageGraphics.CurrentSectorIndex;
-                        Debug.WriteLine("collected sector time");
                     }
 
                     if (CurrentLap.Index != pageGraphics.CompletedLaps && pageGraphics.LastTimeMs != int.MaxValue)
