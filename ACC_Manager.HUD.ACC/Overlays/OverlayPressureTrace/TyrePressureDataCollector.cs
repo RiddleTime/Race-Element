@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACC_Manager.Util.NumberExtensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -60,12 +61,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
 
         private float CorrectToBounds(float value)
         {
-            if (value < TyrePressureGraph.PressureRange.OptimalMinimum - TyrePressureGraph.Padding)
-                value = (float)(TyrePressureGraph.PressureRange.OptimalMinimum - TyrePressureGraph.Padding);
-
-            if (value > TyrePressureGraph.PressureRange.OptimalMaximum + TyrePressureGraph.Padding)
-                value = (float)(TyrePressureGraph.PressureRange.OptimalMaximum + TyrePressureGraph.Padding);
-
+            float min = (float)(TyrePressureGraph.PressureRange.OptimalMinimum - TyrePressureGraph.Padding);
+            float max = (float)(TyrePressureGraph.PressureRange.OptimalMaximum + TyrePressureGraph.Padding);
+            value.Clip(min, max);
             return value;
         }
 

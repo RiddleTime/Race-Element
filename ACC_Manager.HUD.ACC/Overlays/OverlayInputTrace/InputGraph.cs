@@ -1,4 +1,5 @@
-﻿using ACCManager.HUD.Overlay.OverlayUtil;
+﻿using ACC_Manager.Util.NumberExtensions;
+using ACCManager.HUD.Overlay.OverlayUtil;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -68,10 +69,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
                         lock (Data)
                         {
                             int y = Y + getRelativeNodeY(Data.ElementAt(i));
-                            if (y > Y + Height)
-                            {
-                                y = Y + Height;
-                            }
+                            y.ClipMax(Y + Height);
+
                             if (x < X)
                                 break;
 

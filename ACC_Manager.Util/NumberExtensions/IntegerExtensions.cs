@@ -29,7 +29,7 @@ namespace ACC_Manager.Util.NumberExtensions
         /// <param name="min"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        public static int MaxClip(ref this int value, int max)
+        public static int ClipMax(ref this int value, int max)
         {
             if (value > max) value = max;
             return value;
@@ -42,7 +42,7 @@ namespace ACC_Manager.Util.NumberExtensions
         /// <param name="min"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        public static int MinClip(ref this int value, int min)
+        public static int ClipMin(ref this int value, int min)
         {
             if (value < min) value = min;
             return value;

@@ -23,7 +23,7 @@
         /// <param name="min"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        public static float MaxClip(ref this float value, float max)
+        public static float ClipMax(ref this float value, float max)
         {
             if (value > max) value = max;
             return value;
@@ -36,7 +36,7 @@
         /// <param name="min"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        public static float MinClip(ref this float value, float min)
+        public static float ClipMin(ref this float value, float min)
         {
             if (value < min) value = min;
             return value;

@@ -57,6 +57,7 @@
     <Compile Include="Overlay\Internal\PageGraphicsTracker.cs" />
     <Compile Include="Overlay\Internal\PagePhysicsTracker.cs" />
     <Compile Include="Overlay\Internal\PageStaticTracker.cs" />
+    <Compile Include="Overlay\OverlayUtil\DeltaBar.cs" />
     <Compile Include="Overlay\OverlayUtil\FontUtil.cs" />
     <Compile Include="Overlay\OverlayUtil\GraphicsExtensions.cs" />
     <Compile Include="Overlay\OverlayUtil\InfoPanel.cs" />

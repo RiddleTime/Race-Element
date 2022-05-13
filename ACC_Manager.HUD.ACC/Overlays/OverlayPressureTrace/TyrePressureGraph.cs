@@ -69,10 +69,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
                         lock (Data)
                         {
                             int y = Y + getRelativeNodeY(Data.ElementAt(i));
-                            if (y > Y + Height)
-                            {
-                                y = Y + Height;
-                            }
+                            y.ClipMax(Y + Height);
+
                             if (x < X)
                                 break;
 
