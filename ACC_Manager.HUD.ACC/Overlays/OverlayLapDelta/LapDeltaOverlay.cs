@@ -14,9 +14,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 {
     internal class LapDeltaOverlay : AbstractOverlay
     {
-        private LapDeltaConfig config = new LapDeltaConfig();
+        private readonly LapDeltaConfig config = new LapDeltaConfig();
         private class LapDeltaConfig : OverlayConfiguration
         {
+            public bool ShowSectors { get; set; } = true;
             public LapDeltaConfig() : base()
             {
                 this.AllowRescale = true;
@@ -41,6 +42,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
         public override void BeforeStart()
         {
+            if (!this.config.ShowSectors)
+                this.Height -= this.panel.FontHeight * 3;
+
             collector = LapTimeTracker.Instance;
             collector.Start();
             collector.LapFinished += Collector_LapFinished;
@@ -59,20 +63,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
         public override void Render(Graphics g)
         {
-            string deltaString = pageGraphics.IsDeltaPositive ? "+" : "-";
             double delta = (double)pageGraphics.DeltaLapTimeMillis / 1000;
-            panel.AddDeltaBarWithCenteredText($"{delta:F3}", -1, 1, delta);
+            panel.AddDeltaBarWithCenteredText($"{delta:F3}", -1.5, 1.5, delta);
 
-            AddSectorLines();
+            if (this.config.ShowSectors)
+                AddSectorLines();
 
             panel.Draw(g);
-
-
-            Pen isbetterPen = Pens.Green;
-            if (pageGraphics.IsDeltaPositive || !pageGraphics.IsValidLap)
-                isbetterPen = Pens.Red;
-
-            g.DrawRoundedRectangle(isbetterPen, new Rectangle(0, 0, overlayWidth, overlayHeight), 3);
         }
 
         private void AddSectorLines()
