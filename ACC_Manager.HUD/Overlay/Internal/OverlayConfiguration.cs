@@ -8,8 +8,11 @@ using System.Threading.Tasks;
 
 namespace ACCManager.HUD.Overlay.Internal
 {
-    public class OverlayConfiguration
+    public abstract class OverlayConfiguration
     {
+        public bool AllowRescale = false;
+        public float Scale { get; set; } = 1.0f;
+
         public OverlayConfiguration()
         {
         }
@@ -44,7 +47,12 @@ namespace ACCManager.HUD.Overlay.Internal
                 {
                     if (prop.Name == field.Name)
                     {
-                        prop.SetValue(this, field.Value);
+                        if (prop.PropertyType == typeof(Single))
+                        {
+                            prop.SetValue(this, Single.Parse(field.Value.ToString()));
+                        }
+                        else
+                            prop.SetValue(this, field.Value);
                     }
                 }
 

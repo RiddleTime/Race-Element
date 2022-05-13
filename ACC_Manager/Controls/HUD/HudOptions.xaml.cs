@@ -177,6 +177,53 @@ namespace ACCManager.Controls
                     };
                     stacker.Children.Add(box);
                 }
+
+                if (pi.PropertyType.Name == typeof(float).Name)
+                {
+                    ConfigField configField = configFields.Where(cf => cf.Name == pi.Name).First();
+                    if (configField.Name == "Scale")
+                    {
+                        object[] tempOverlayArgs = new object[] { new System.Drawing.Rectangle(0, 0, 300, 150) };
+                        AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(overlayType, tempOverlayArgs);
+                        bool allowsRescaling = tempOverlay.AllowRescale;
+                        tempOverlay.Dispose();
+
+                        if (overlayConfig.AllowRescale)
+                        {
+                            StackPanel sliderStacker = new StackPanel() { Margin = new Thickness(10, 0, 0, 0), Orientation = Orientation.Horizontal, VerticalAlignment = VerticalAlignment.Center };
+
+                            string floatLabel = string.Concat(configField.Name.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
+
+                            sliderStacker.Children.Add(new Label { Content = floatLabel, VerticalAlignment = VerticalAlignment.Center });
+
+
+                            Slider slider = new Slider()
+                            {
+                                Minimum = 0.5,
+                                Maximum = 2.0,
+                                IsSnapToTickEnabled = true,
+                                TickFrequency = 0.1,
+                                Value = double.Parse(configField.Value.ToString()),
+                                Width = 100,
+                                VerticalAlignment = VerticalAlignment.Center,
+                                ToolTip = "Right click to reset",
+                            };
+                            slider.ValueChanged += (sender, args) =>
+                            {
+                                configField.Value = slider.Value;
+                                configFields.RemoveAt(configFields.IndexOf(configField));
+                                configFields.Add(configField);
+
+                                SaveOverlayConfigFields(overlayName, configFields);
+                            };
+
+                            slider.MouseRightButtonUp += (sender, args) => { slider.Value = 1.0; };
+                            sliderStacker.Children.Add(slider);
+
+                            stacker.Children.Add(sliderStacker);
+                        }
+                    }
+                }
             };
 
             return stacker;

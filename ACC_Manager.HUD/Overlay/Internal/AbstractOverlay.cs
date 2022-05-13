@@ -20,8 +20,11 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public bool IsRepositioning { get; internal set; }
         public bool AllowReposition { get; set; } = true;
+        public bool AllowRescale { get; set; } = true;
 
         public int RefreshRateHz = 30;
+
+        private float Scale = 1f;
 
         private Window RepositionWindow;
 
@@ -42,6 +45,8 @@ namespace ACCManager.HUD.Overlay.Internal
             this.Height = rectangle.Height;
             this.Alpha = 255;
             this.Name = Name;
+
+
 
             if (AllowReposition)
                 ApplyOverlaySettings();
@@ -67,6 +72,9 @@ namespace ACCManager.HUD.Overlay.Internal
                     overlayConfig.SetConfigFields(savedSettings.Config);
 
                     nested.SetValue(this, overlayConfig);
+
+                    if (overlayConfig.AllowRescale)
+                        this.Scale = overlayConfig.Scale;
                 }
             }
         }
@@ -96,6 +104,11 @@ namespace ACCManager.HUD.Overlay.Internal
                 pagePhysics = mem.ReadPhysicsPageFile();
 
                 BeforeStart();
+                if (AllowRescale)
+                {
+                    this.Width = (int)Math.Ceiling(this.Width * Scale);
+                    this.Height = (int)Math.Ceiling(this.Height * Scale);
+                }
                 Draw = true;
                 this.Show();
 
@@ -167,7 +180,12 @@ namespace ACCManager.HUD.Overlay.Internal
             {
                 if (ShouldRender())
                 {
+                    if (AllowRescale)
+                        e.Graphics.ScaleTransform(Scale, Scale);
+
+
                     Render(e.Graphics);
+
                 }
             }
         }

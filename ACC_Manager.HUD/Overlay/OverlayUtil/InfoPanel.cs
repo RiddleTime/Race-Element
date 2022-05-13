@@ -103,6 +103,17 @@ namespace ACCManager.HUD.Overlay.Util
 
                     }
 
+                    if (line.GetType() == typeof(CenteredTextedDeltabarLine))
+                    {
+                        CenteredTextedDeltabarLine bar = (CenteredTextedDeltabarLine)line;
+
+                        DeltaBar deltaBar = new DeltaBar(bar.Min, bar.Max, bar.Value);
+                        deltaBar.Draw(g, X + 1, Y + counter * FontHeight + 1, (int)MaxWidth - 2, (int)FontHeight - 2);
+
+                        SizeF textWidth = g.MeasureString(bar.CenteredText, TitleFont);
+                        g.DrawString($"{bar.CenteredText}", TitleFont, Brushes.White, new PointF(X + MaxWidth / 2 - textWidth.Width / 2, Y + counter * FontHeight));
+                    }
+
 
                     counter++;
                     length = Lines.Count;
@@ -170,6 +181,11 @@ namespace ACCManager.HUD.Overlay.Util
             Lines.Add(new CenterTextedProgressBarLine() { CenteredText = centeredText, Min = min, Max = max, Value = value });
         }
 
+        public void AddDeltaBarWithCenteredText(string centeredText, double min, double max, double value)
+        {
+            Lines.Add(new CenteredTextedDeltabarLine() { CenteredText = centeredText, Min = min, Max = max, Value = value });
+        }
+
         private class TextLine : InfoLine
         {
             internal string Title { get; set; }
@@ -186,6 +202,14 @@ namespace ACCManager.HUD.Overlay.Util
         }
 
         private class CenterTextedProgressBarLine : InfoLine
+        {
+            internal string CenteredText { get; set; }
+            internal double Min { get; set; }
+            internal double Max { get; set; }
+            internal double Value { get; set; }
+        }
+
+        private class CenteredTextedDeltabarLine : InfoLine
         {
             internal string CenteredText { get; set; }
             internal double Min { get; set; }

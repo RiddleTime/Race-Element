@@ -14,13 +14,22 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 {
     internal class LapDeltaOverlay : AbstractOverlay
     {
+        private LapDeltaConfig config = new LapDeltaConfig();
+        private class LapDeltaConfig : OverlayConfiguration
+        {
+            public LapDeltaConfig() : base()
+            {
+                this.AllowRescale = true;
+            }
+        }
+
         private const int overlayWidth = 200;
         private int overlayHeight = 150;
 
         private LapTimeTracker collector;
         private LapTimingData lastLap = null;
 
-        InfoPanel panel = new InfoPanel(10, overlayWidth);
+        InfoPanel panel = new InfoPanel(11, overlayWidth);
         public LapDeltaOverlay(Rectangle rectangle) : base(rectangle, "Lap Delta Overlay")
         {
             overlayHeight = panel.FontHeight * 4;
@@ -51,7 +60,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         public override void Render(Graphics g)
         {
             string deltaString = pageGraphics.IsDeltaPositive ? "+" : "-";
-            panel.AddLine("Delta", $"{deltaString}{pageGraphics.DeltaLapTime}");
+            double delta = (double)pageGraphics.DeltaLapTimeMillis / 1000;
+            panel.AddDeltaBarWithCenteredText($"{delta:F3}", -1, 1, delta);
 
             AddSectorLines();
 
