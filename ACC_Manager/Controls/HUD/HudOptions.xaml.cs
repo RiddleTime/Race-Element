@@ -159,7 +159,13 @@ namespace ACCManager.Controls
                 {
                     ConfigField configField = configFields.Where(cf => cf.Name == pi.Name).First();
                     string checkBoxlabel = string.Concat(configField.Name.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
-                    CheckBox box = new CheckBox() { Content = checkBoxlabel, IsChecked = (bool)configField.Value, Margin = new Thickness(5, 0, 0, 0) };
+                    CheckBox box = new CheckBox()
+                    {
+                        Content = checkBoxlabel,
+                        IsChecked = (bool)configField.Value,
+                        Margin = new Thickness(5, 0, 0, 0),
+                        VerticalAlignment = VerticalAlignment.Center,
+                    };
                     box.Checked += (sender, args) =>
                     {
                         configField.Value = true;
@@ -191,16 +197,28 @@ namespace ACCManager.Controls
 
                         if (allowsRescaling)
                         {
-                            StackPanel sliderStacker = new StackPanel() { Margin = new Thickness(10, 0, 0, 0), Orientation = Orientation.Horizontal, VerticalAlignment = VerticalAlignment.Center };
-
-                            string floatLabel = string.Concat(configField.Name.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
-
-                            sliderStacker.Children.Add(new Label { Content = floatLabel, VerticalAlignment = VerticalAlignment.Center });
+                            StackPanel sliderStacker = new StackPanel()
+                            {
+                                Margin = new Thickness(10, 2, 0, 0),
+                                Orientation = Orientation.Horizontal,
+                                VerticalAlignment = VerticalAlignment.Center,
+                                Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0))
+                            };
 
                             double min = 0.5;
                             double max = 2.0;
                             double sliderValue = double.Parse(configField.Value.ToString());
                             sliderValue.Clip(min, max);
+
+                            string floatLabel = string.Concat(configField.Name.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
+
+                            Label sliderLabel = new Label
+                            {
+                                Content = $"{floatLabel}: {sliderValue}",
+                                VerticalAlignment = VerticalAlignment.Center,
+                                VerticalContentAlignment = VerticalAlignment.Center,
+                            };
+                            sliderStacker.Children.Add(sliderLabel);
 
                             Slider slider = new Slider()
                             {
@@ -211,10 +229,12 @@ namespace ACCManager.Controls
                                 Value = sliderValue,
                                 Width = 100,
                                 VerticalAlignment = VerticalAlignment.Center,
+                                VerticalContentAlignment = VerticalAlignment.Center,
                                 ToolTip = "Right click to reset"
                             };
                             slider.ValueChanged += (sender, args) =>
                             {
+                                sliderLabel.Content = $"{floatLabel}: {slider.Value:F1}";
                                 configField.Value = slider.Value;
                                 configFields.RemoveAt(configFields.IndexOf(configField));
                                 configFields.Add(configField);
