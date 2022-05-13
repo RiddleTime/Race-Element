@@ -1,4 +1,5 @@
-﻿using ACCManager.HUD.ACC;
+﻿using ACC_Manager.Util.NumberExtensions;
+using ACCManager.HUD.ACC;
 using ACCManager.HUD.Overlay.Internal;
 using MaterialDesignThemes.Wpf;
 using System;
@@ -185,10 +186,10 @@ namespace ACCManager.Controls
                     {
                         object[] tempOverlayArgs = new object[] { new System.Drawing.Rectangle(0, 0, 300, 150) };
                         AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(overlayType, tempOverlayArgs);
-                        bool allowsRescaling = tempOverlay.AllowRescale;
+                        bool allowsRescaling = overlayConfig.AllowRescale;
                         tempOverlay.Dispose();
 
-                        if (overlayConfig.AllowRescale)
+                        if (allowsRescaling)
                         {
                             StackPanel sliderStacker = new StackPanel() { Margin = new Thickness(10, 0, 0, 0), Orientation = Orientation.Horizontal, VerticalAlignment = VerticalAlignment.Center };
 
@@ -196,17 +197,21 @@ namespace ACCManager.Controls
 
                             sliderStacker.Children.Add(new Label { Content = floatLabel, VerticalAlignment = VerticalAlignment.Center });
 
+                            double min = 0.5;
+                            double max = 2.0;
+                            double sliderValue = double.Parse(configField.Value.ToString());
+                            sliderValue.Clip(min, max);
 
                             Slider slider = new Slider()
                             {
-                                Minimum = 0.5,
-                                Maximum = 2.0,
+                                Minimum = min,
+                                Maximum = max,
                                 IsSnapToTickEnabled = true,
                                 TickFrequency = 0.1,
-                                Value = double.Parse(configField.Value.ToString()),
+                                Value = sliderValue,
                                 Width = 100,
                                 VerticalAlignment = VerticalAlignment.Center,
-                                ToolTip = "Right click to reset",
+                                ToolTip = "Right click to reset"
                             };
                             slider.ValueChanged += (sender, args) =>
                             {
@@ -216,8 +221,8 @@ namespace ACCManager.Controls
 
                                 SaveOverlayConfigFields(overlayName, configFields);
                             };
-
                             slider.MouseRightButtonUp += (sender, args) => { slider.Value = 1.0; };
+
                             sliderStacker.Children.Add(slider);
 
                             stacker.Children.Add(sliderStacker);

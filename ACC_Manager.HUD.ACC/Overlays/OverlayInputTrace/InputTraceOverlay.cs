@@ -17,19 +17,26 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
         internal class InputTraceConfig : OverlayConfiguration
         {
             internal bool ShowSteeringInput { get; set; } = true;
+            public InputTraceConfig()
+            {
+                this.AllowRescale = true;
+            }
         }
+
+        private int OriginalHeight = 150;
+        private int OriginalWidth = 300;
 
         private InputDataCollector inputDataCollector;
 
         public InputTraceOverlay(Rectangle rectangle) : base(rectangle, "Input Trace Overlay")
         {
-            this.Width = 300;
-            this.Height = 150;
+            this.Width = OriginalWidth;
+            this.Height = OriginalHeight;
         }
 
         public override void BeforeStart()
         {
-            inputDataCollector = new InputDataCollector() { TraceCount = this.Width - 1 };
+            inputDataCollector = new InputDataCollector() { TraceCount = this.OriginalWidth - 1 };
             inputDataCollector.Start();
         }
 
@@ -40,7 +47,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
 
         public override void Render(Graphics g)
         {
-            InputGraph graph = new InputGraph(0, 0, this.Width - 1, this.Height - 1, inputDataCollector.Throttle, inputDataCollector.Brake, inputDataCollector.Steering, this.config);
+            InputGraph graph = new InputGraph(0, 0, this.OriginalWidth - 1, this.OriginalHeight - 1, inputDataCollector.Throttle, inputDataCollector.Brake, inputDataCollector.Steering, this.config);
             graph.Draw(g);
         }
 

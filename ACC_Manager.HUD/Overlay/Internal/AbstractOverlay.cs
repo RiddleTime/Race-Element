@@ -20,7 +20,7 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public bool IsRepositioning { get; internal set; }
         public bool AllowReposition { get; set; } = true;
-        public bool AllowRescale { get; set; } = true;
+        private bool AllowRescale { get; set; } = false;
 
         public int RefreshRateHz = 30;
 
@@ -74,7 +74,10 @@ namespace ACCManager.HUD.Overlay.Internal
                     nested.SetValue(this, overlayConfig);
 
                     if (overlayConfig.AllowRescale)
+                    {
+                        this.AllowRescale = true;
                         this.Scale = overlayConfig.Scale;
+                    }
                 }
             }
         }
