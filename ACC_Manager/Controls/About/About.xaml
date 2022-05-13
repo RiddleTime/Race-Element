@@ -196,13 +196,13 @@
 
                                 <materialDesign:Card Margin="4,5,8,0">
                                     <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" Margin="5,0,0,0" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
-                                        <Bold>Fuel Info</Bold>: Requires a valid lap on track before all info is accurate.<LineBreak/><LineBreak/>
-                                        Progress bar: A bar representing fuel level and is also displayed as number.<LineBreak/>
-                                        Laps Left: How many laps of fuel you have left.<LineBreak/>
-                                        Fuel-End: How much fuel is required to the end of the race : Suggested amount to add at next stop.<LineBreak/>
-                                        Stint Time:  Stint time remaining.<LineBreak/>
-                                        Fuel Time: How long your current fuel will last in time value.<LineBreak/>
-                                        Stint Fuel: Suggested amount of fuel for a full stint based on current usage.
+                                        <Bold>Fuel Info</Bold>: Requires a valid lap on track before all info is accurate.<LineBreak/>
+                                        - Progress bar: A bar representing fuel level and is also displayed as number.<LineBreak/>
+                                        - Laps Left: How many laps of fuel you have left.<LineBreak/>
+                                        - Fuel-End: How much fuel is required to the end of the race, Suggested amount to add at next stop.<LineBreak/>
+                                        - Stint Time: Stint time remaining.<LineBreak/>
+                                        - Fuel Time: How long your current fuel will last in time value.<LineBreak/>
+                                        - Stint Fuel: Suggested amount of fuel for a full stint based on current usage.
                                     </TextBlock>
                                 </materialDesign:Card>
 

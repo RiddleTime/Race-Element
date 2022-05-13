@@ -14,7 +14,7 @@ namespace ACCManager.Controls
                         "\n- Added Play ACC Button, launches Assetto Corsa Competizione using the steam link."+
                         "\n- HUD: Added Fuel Info Overlay (By KrisV147)."+
                         "\n- HUD: Added Lap Delta Overlay."+
-                        "\n HUDs: Some are now scalable."},
+                        "\n- HUD Tab: Some overlays are now scalable."},
             {"0.0.5.8", "- HUD Tab: Added design."+
                         "\n- HUD: Added option to input trace for disabling steering input."},
             {"0.0.5.7", "- HUD: Added Track Info overlay."+
