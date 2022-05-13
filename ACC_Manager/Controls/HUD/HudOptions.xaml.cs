@@ -214,7 +214,7 @@ namespace ACCManager.Controls
 
                             Label sliderLabel = new Label
                             {
-                                Content = $"{floatLabel}: {sliderValue}",
+                                Content = $"{floatLabel}: {sliderValue:F1}",
                                 VerticalAlignment = VerticalAlignment.Center,
                                 VerticalContentAlignment = VerticalAlignment.Center,
                             };
