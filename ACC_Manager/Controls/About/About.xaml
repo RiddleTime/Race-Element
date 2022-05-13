@@ -127,6 +127,7 @@
                                 - View single setup.<LineBreak/>
                                 - Compare setups, right click in the browser to add them.<LineBreak/>
                                 - Open car/track directories quickly by right clicking.<LineBreak/>
+                                - Right click the setup browser tab to refresh the setups.
                                 </TextBlock>
                                 <TextBlock>All cars supported.</TextBlock>
                                 <TextBlock x:Name="textBlockSetupViewerGT3"  Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
