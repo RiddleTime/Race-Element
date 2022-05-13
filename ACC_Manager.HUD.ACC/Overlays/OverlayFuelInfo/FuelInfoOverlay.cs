@@ -17,9 +17,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
         private class FuelInfoConfig : OverlayConfiguration
         {
             internal bool ShowAdvancedInfo { get; set; } = true;
+
+            public FuelInfoConfig()
+            {
+                this.AllowRescale = true;
+            }
         }
 
-        public FuelInfoOverlay(Rectangle rectangle) : base(rectangle, "Fuel Info Overlay")
+    public FuelInfoOverlay(Rectangle rectangle) : base(rectangle, "Fuel Info Overlay")
         {
             this.Width = 240;
             this.Height = 105;// 120;
