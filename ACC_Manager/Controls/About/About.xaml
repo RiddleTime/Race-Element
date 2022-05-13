@@ -181,14 +181,54 @@
                            HorizontalAlignment="Center" TextWrapping="Wrap" >
                             <Bold><Italic>HUD</Italic></Bold>
                                 </TextBlock>
-                                <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
-                                    - <Bold>Accelerometer</Bold>: Lateral and longitudinal g-forces.<LineBreak/>
-                                    - <Bold>ECU Maps</Bold>: Information regarding the current ecu map.<LineBreak/>
-                                    - <Bold>Input Trace</Bold>: Throttle, Brake and steering input over time in a graph.<LineBreak/>
-                                    - <Bold>Track Info</Bold>: Global flag, session type, track grip, air-track temp and wind speed.<LineBreak/>
-                                    - <Bold>Tyre Pressure Trace</Bold>: Tyre pressure for each wheel over time in a graph. Color suggests whether the pressures are within recommended range.<LineBreak/>
-                                   <LineBreak/>
-                                </TextBlock>
+
+                                <materialDesign:Card Margin="4,5,8,0">
+                                    <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" Margin="5,0,0,0"  HorizontalAlignment="Left" TextWrapping="WrapWithOverflow" >
+                                        <Bold>Accelerometer</Bold> : Lateral and longitudinal g-forces.
+                                    </TextBlock>
+                                </materialDesign:Card>
+
+                                <materialDesign:Card Margin="4,5,8,0" >
+                                    <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" Margin="5,0,0,0" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
+                                        <Bold>ECU Maps</Bold>: Information regarding the current ecu map.
+                                    </TextBlock>
+                                </materialDesign:Card>
+
+                                <materialDesign:Card Margin="4,5,8,0">
+                                    <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" Margin="5,0,0,0" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
+                                        <Bold>Fuel Info</Bold>: Requires a valid lap on track before all info is accurate.<LineBreak/><LineBreak/>
+                                        Progress bar: A bar representing fuel level and is also displayed as number.<LineBreak/>
+                                        Laps Left: How many laps of fuel you have left.<LineBreak/>
+                                        Fuel-End: How much fuel is required to the end of the race : Suggested amount to add at next stop.<LineBreak/>
+                                        Stint Time:  Stint time remaining.<LineBreak/>
+                                        Fuel Time: How long your current fuel will last in time value.<LineBreak/>
+                                        Stint Fuel: Suggested amount of fuel for a full stint based on current usage.
+                                    </TextBlock>
+                                </materialDesign:Card>
+
+                                <materialDesign:Card Margin="4,5,8,0">
+                                    <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" Margin="5,0,0,0" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow" >
+                                        <Bold>Input Trace</Bold>: Throttle, Brake and steering input over time in a graph.
+                                    </TextBlock>
+                                </materialDesign:Card>
+
+                                <materialDesign:Card Margin="4,5,8,0">
+                                    <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" Margin="5,0,0,0" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
+                                        <Bold>Lap Delta</Bold>: Displays Delta time and sector times, green colored sectors are personal best sectors.
+                                    </TextBlock>
+                                </materialDesign:Card>
+
+                                <materialDesign:Card Margin="4,5,8,0">
+                                    <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" Margin="5,0,0,0" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
+                                        <Bold>Track Info</Bold>: Global flag, session type, track grip, air-track temp and wind speed.
+                                    </TextBlock>
+                                </materialDesign:Card>
+
+                                <materialDesign:Card Margin="4,5,8,0">
+                                    <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" Margin="5,0,0,0" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
+                                        <Bold>Tyre Pressure Trace</Bold>: Tyre pressure for each wheel over time in a graph. Color suggests whether the pressures are within recommended range.
+                                    </TextBlock>
+                                </materialDesign:Card>
                             </StackPanel>
 
                         </StackPanel>
