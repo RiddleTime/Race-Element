@@ -636,7 +636,7 @@ namespace ACCManager
             [Obsolete]
             public float TrackSplineLength;
             [Obsolete]
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
             public string TrackConfiguration;
             [Obsolete]
             public float ErsMaxJ;
