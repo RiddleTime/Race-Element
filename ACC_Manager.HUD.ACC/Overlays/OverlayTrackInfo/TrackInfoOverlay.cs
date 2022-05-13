@@ -19,6 +19,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
         {
             internal bool ShowGlobalFlag { get; set; } = true;
             internal bool ShowSessionType { get; set; } = true;
+
+            public TrackInfoConfig()
+            {
+                this.AllowRescale = true;
+            }
         }
 
         public TrackInfoOverlay(Rectangle rectangle) : base(rectangle, "Track Info Overlay")
