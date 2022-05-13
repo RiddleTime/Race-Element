@@ -109,17 +109,17 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
                 sector3 = $"{(((float)pageGraphics.CurrentTimeMs - lap.Sector2 - lap.Sector1) / 1000):F3}";
             }
 
-            if (pageGraphics.CurrentSectorIndex != 0 && lap.Sector1 != -1)
+            if (pageGraphics.CurrentSectorIndex != 0 && lap.Sector1 != -1 && lap.IsValid)
                 panel.AddLine("S1", $"{sector1}", collector.IsSectorFastest(1, lap.Sector1) ? Brushes.LimeGreen : Brushes.White);
             else
                 panel.AddLine("S1", $"{sector1}");
 
-            if (pageGraphics.CurrentSectorIndex != 1 && lap.Sector2 != -1)
+            if (pageGraphics.CurrentSectorIndex != 1 && lap.Sector2 != -1 && lap.IsValid)
                 panel.AddLine("S2", $"{sector2}", collector.IsSectorFastest(2, lap.Sector2) ? Brushes.LimeGreen : Brushes.White);
             else
                 panel.AddLine("S2", $"{sector2}");
 
-            if (pageGraphics.CurrentSectorIndex != 2 && lap.Sector3 != -1)
+            if (pageGraphics.CurrentSectorIndex != 2 && lap.Sector3 != -1 && lap.IsValid)
                 panel.AddLine("S3", $"{sector3}", collector.IsSectorFastest(3, lap.Sector3) ? Brushes.LimeGreen : Brushes.White);
             else
                 panel.AddLine("S3", $"{sector3}");
