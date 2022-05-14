@@ -1,4 +1,5 @@
-﻿using ACCManager.HUD.Overlay.Internal;
+﻿using ACCManager.Data;
+using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
@@ -12,61 +13,62 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
 {
     internal class EcuMapOverlay : AbstractOverlay
     {
-        EcuMap current;
-        private Font inputFont = new Font("Roboto", 10);
+        private const int PanelWidth = 270;
+        InfoPanel Panel = new InfoPanel(10, PanelWidth);
+
+        private EcuMapConfiguration config = new EcuMapConfiguration();
+        private class EcuMapConfiguration : OverlayConfiguration
+        {
+            public EcuMapConfiguration()
+            {
+                this.AllowRescale = true;
+            }
+        }
+
         public EcuMapOverlay(Rectangle rectangle) : base(rectangle, "Ecu Maps Overlay")
         {
-            this.AllowReposition = false;
-            this.RefreshRateHz = 5;
+            this.RefreshRateHz = 4;
 
-            this.Width = 1;
-            this.Height = inputFont.Height + 2;
-            this.Y = ScreenHeight - Height - 2;
+            this.Width = PanelWidth + 1;
+            this.Height = Panel.FontHeight * 5 + 1;
         }
 
-        public override void BeforeStart()
-        {
-        }
-
+        public override void BeforeStart() { }
         public override void BeforeStop() { }
+
+        public override void Render(Graphics g)
+        {
+            EcuMap current = EcuMaps.GetMap(pageStatic.CarModel, pageGraphics.EngineMap);
+
+            if (current != null)
+            {
+                Panel.AddLine("Map", $"{current.Index}");
+                Panel.AddLine("Power", $"{current.Power}");
+                Panel.AddLine("Condition", $"{current.Conditon}");
+                Panel.AddLine("Fuel", $"{current.FuelConsumption}");
+                Panel.AddLine("Throttle", $"{current.ThrottleMap}");
+            }
+            else
+            {
+                Panel.AddLine("Car", "Not supported");
+                Panel.AddLine("Model", pageStatic.CarModel);
+                Panel.AddLine("Map", $"{pageGraphics.EngineMap + 1}");
+            }
+
+            Panel.Draw(g);
+        }
 
         public override bool ShouldRender()
         {
+#if DEBUG
+            return true;
+#endif
+
             bool shouldRender = true;
             if (pageGraphics.Status == AcStatus.AC_OFF || pageGraphics.Status == AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
                 shouldRender = false;
 
             return shouldRender;
         }
-
-        public override void Render(Graphics g)
-        {
-            EcuMap next = EcuMaps.GetMap(pageStatic.CarModel, pageGraphics.EngineMap);
-
-            bool updateWidth = false;
-            if (current != next)
-            {
-                current = next;
-                updateWidth = true;
-            }
-
-            if (current != null)
-            {
-                string EcuInfo = $"ECU Map: {current.Index}, Power: {current.Power}, Condition: {current.Conditon}, " +
-                                    $"Consumption: {current.FuelConsumption}, Throttle map: {current.ThrottleMap}";
-
-                if (updateWidth)
-                {
-                    int width = (int)g.MeasureString(EcuInfo, inputFont).Width;
-
-                    this.Width = width;
-                    this.X = ScreenWidth - this.Width - 2;
-                }
-
-                g.FillRectangle(new SolidBrush(Color.FromArgb(140, 0, 0, 0)), 0, 0, this.Width, this.Height);
-                g.DrawString(EcuInfo, inputFont, Brushes.White, 0, 0);
-            }
-        }
-
     }
 }
