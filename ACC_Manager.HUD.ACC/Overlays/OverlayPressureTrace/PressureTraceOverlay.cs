@@ -9,7 +9,7 @@ using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
 {
-    internal class PressureTraceOverlay : AbstractOverlay
+    internal sealed class PressureTraceOverlay : AbstractOverlay
     {
         internal static PressureTraceOverlay Instance;
         private TyrePressureDataCollector dataCollector;

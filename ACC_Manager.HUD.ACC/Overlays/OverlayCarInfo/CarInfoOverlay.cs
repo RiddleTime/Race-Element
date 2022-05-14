@@ -10,7 +10,7 @@ using static ACCManager.Data.SetupConverter;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
 {
-    internal class CarInfoOverlay : AbstractOverlay
+    internal sealed class CarInfoOverlay : AbstractOverlay
     {
         InfoPanel infoPanel = new InfoPanel(10, 300);
         private float MagicDamageMultiplier = 0.282f;

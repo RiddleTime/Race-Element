@@ -10,7 +10,7 @@ using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
 {
-    internal class TrackInfoOverlay : AbstractOverlay
+    internal sealed class TrackInfoOverlay : AbstractOverlay
     {
         private readonly InfoPanel panel = new InfoPanel(10, 240);
 

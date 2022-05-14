@@ -12,7 +12,7 @@ using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 {
-    internal class LapDeltaOverlay : AbstractOverlay
+    internal sealed class LapDeltaOverlay : AbstractOverlay
     {
         private readonly LapDeltaConfig config = new LapDeltaConfig();
         private class LapDeltaConfig : OverlayConfiguration

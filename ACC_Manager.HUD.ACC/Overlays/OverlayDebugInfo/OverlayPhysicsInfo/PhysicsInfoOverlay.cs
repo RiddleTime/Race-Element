@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayPhysicsInfo
 {
-    internal class PhysicsInfoOverlay : AbstractOverlay
+    internal sealed class PhysicsInfoOverlay : AbstractOverlay
     {
         private Font inputFont = new Font("Arial", 10);
 

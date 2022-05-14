@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
 {
-    internal class AccelerometerOverlay : AbstractOverlay
+    internal sealed class AccelerometerOverlay : AbstractOverlay
     {
         private AccelleroConfig config = new AccelleroConfig();
         private class AccelleroConfig : OverlayConfiguration

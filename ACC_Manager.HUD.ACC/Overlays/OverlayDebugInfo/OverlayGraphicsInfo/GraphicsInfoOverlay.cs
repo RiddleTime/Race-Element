@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayGraphicsInfo
 {
-    internal class GraphicsInfoOverlay : AbstractOverlay
+    internal sealed class GraphicsInfoOverlay : AbstractOverlay
     {
         private Font inputFont = new Font("Arial", 10);
 

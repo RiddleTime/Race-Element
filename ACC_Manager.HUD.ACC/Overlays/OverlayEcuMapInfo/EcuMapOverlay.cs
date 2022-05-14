@@ -11,7 +11,7 @@ using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
 {
-    internal class EcuMapOverlay : AbstractOverlay
+    internal sealed class EcuMapOverlay : AbstractOverlay
     {
         private const int PanelWidth = 270;
         InfoPanel Panel = new InfoPanel(10, PanelWidth);

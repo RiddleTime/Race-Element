@@ -12,7 +12,7 @@ using static ACCManager.Data.SetupConverter;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
 {
-    internal class TyreInfoOverlay : AbstractOverlay
+    internal sealed class TyreInfoOverlay : AbstractOverlay
     {
         private TyreInfoConfig config = new TyreInfoConfig();
         private class TyreInfoConfig : OverlayConfiguration

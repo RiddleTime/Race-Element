@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
 {
-    internal class FuelInfoOverlay : AbstractOverlay
+    internal sealed class FuelInfoOverlay : AbstractOverlay
     {
         InfoPanel infoPanel;
 

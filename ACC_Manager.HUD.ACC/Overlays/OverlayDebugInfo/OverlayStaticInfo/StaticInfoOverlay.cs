@@ -14,7 +14,7 @@ using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayStaticInfo
 {
-    internal class StaticInfoOverlay : AbstractOverlay
+    internal sealed class StaticInfoOverlay : AbstractOverlay
     {
         private Font inputFont = new Font("Arial", 10);
 

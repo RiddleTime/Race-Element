@@ -11,7 +11,7 @@ using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
 {
-    internal class InputTraceOverlay : AbstractOverlay
+    internal sealed class InputTraceOverlay : AbstractOverlay
     {
         private InputTraceConfig config = new InputTraceConfig();
         internal class InputTraceConfig : OverlayConfiguration
