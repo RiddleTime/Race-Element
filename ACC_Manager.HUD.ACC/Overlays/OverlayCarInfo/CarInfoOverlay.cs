@@ -26,18 +26,28 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
             }
         }
 
-        InfoPanel infoPanel = new InfoPanel(10, 300);
+        private readonly InfoPanel infoPanel;
         private const float MagicDamageMultiplier = 0.282f;
 
         public CarInfoOverlay(Rectangle rectangle) : base(rectangle, "Car Info Overlay")
         {
-            this.Width = 300;
-            this.Height = 200;
+            int panelWidth = 130;
+            
+            if (this.config.ShowPadAndDiscLife) panelWidth = 360;
+
+            this.infoPanel = new InfoPanel(10, panelWidth);
+            this.Width = panelWidth + 1;
+            this.Height = this.infoPanel.FontHeight * 4 + 1;
             this.RefreshRateHz = 10;
+
         }
 
         public override void BeforeStart()
         {
+            if (!this.config.ShowPadAndDiscLife)
+            {
+                this.Height -= this.infoPanel.FontHeight * 2;
+            }
         }
 
         public override void BeforeStop()
@@ -52,8 +62,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
 
             if (this.config.ShowPadAndDiscLife)
             {
-                infoPanel.AddLine("Pad Life", $"{pagePhysics.PadLife.ToString(1)}");
-                infoPanel.AddLine("Disc Life", $"{pagePhysics.DiscLife.ToString(1)}");
+                infoPanel.AddLine("Pad Life", $"{pagePhysics.PadLife.ToString(2)}");
+                infoPanel.AddLine("Disc Life", $"{pagePhysics.DiscLife.ToString(2)}");
             }
 
             infoPanel.Draw(g);
