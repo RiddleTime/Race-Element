@@ -1,5 +1,7 @@
-﻿using ACCManager.HUD.Overlay.Internal;
+﻿using ACC_Manager.Util.NumberExtensions;
+using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.Util;
+using ACCManager.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -25,7 +27,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
         }
 
         InfoPanel infoPanel = new InfoPanel(10, 300);
-        private float MagicDamageMultiplier = 0.282f;
+        private const float MagicDamageMultiplier = 0.282f;
 
         public CarInfoOverlay(Rectangle rectangle) : base(rectangle, "Car Info Overlay")
         {
@@ -50,8 +52,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
 
             if (this.config.ShowPadAndDiscLife)
             {
-                infoPanel.AddLine("Pad Life", $"{pagePhysics.PadLife}");
-                infoPanel.AddLine("Disc Life", $"{pagePhysics.DiscLife}");
+                infoPanel.AddLine("Pad Life", $"{pagePhysics.PadLife.ToString(1)}");
+                infoPanel.AddLine("Disc Life", $"{pagePhysics.DiscLife.ToString(1)}");
             }
 
             infoPanel.Draw(g);

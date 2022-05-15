@@ -41,5 +41,18 @@
             if (value < min) value = min;
             return value;
         }
+
+        public static string ToString(this float[] values, int decimals)
+        {
+            var value = string.Empty;
+            for (int i = 0; i < values.Length; i++)
+            {
+                float v = values[i];
+                value += $"{{{v.ToString($"F{decimals}")}}}";
+                if (i < values.Length - 1)
+                    value += ", ";
+            }
+            return value;
+        }
     }
 }
