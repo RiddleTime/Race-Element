@@ -119,6 +119,8 @@ namespace ACCManager.Controls
         private StackPanel GetConfigStacker(Type overlayType)
         {
             StackPanel stacker = new StackPanel() { Margin = new Thickness(10, 0, 0, 0), Orientation = Orientation.Horizontal, VerticalAlignment = VerticalAlignment.Center };
+            List<FrameworkElement> configStackers = new List<FrameworkElement>();
+
             OverlayConfiguration overlayConfig = GetOverlayConfig(overlayType);
             if (overlayConfig == null) return stacker;
 
@@ -182,7 +184,7 @@ namespace ACCManager.Controls
 
                         SaveOverlayConfigFields(overlayName, configFields);
                     };
-                    stacker.Children.Add(box);
+                    configStackers.Add(box);
                 }
 
                 if (pi.PropertyType.Name == typeof(float).Name)
@@ -199,7 +201,8 @@ namespace ACCManager.Controls
                         {
                             StackPanel sliderStacker = new StackPanel()
                             {
-                                Margin = new Thickness(10, 2, 0, 0),
+                                Name = "ScaleSlider",
+                                Margin = new Thickness(10, 0, 10, 0),
                                 Orientation = Orientation.Horizontal,
                                 VerticalAlignment = VerticalAlignment.Center,
                                 Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0))
@@ -230,7 +233,7 @@ namespace ACCManager.Controls
                                 Width = 100,
                                 VerticalAlignment = VerticalAlignment.Center,
                                 VerticalContentAlignment = VerticalAlignment.Center,
-                                ToolTip = "Right click to reset"
+                                ToolTip = "Right click to reset.\nDrag with mouse or Scroll or use arrow-keys to change."
                             };
                             slider.ValueChanged += (sender, args) =>
                             {
@@ -242,14 +245,31 @@ namespace ACCManager.Controls
                                 SaveOverlayConfigFields(overlayName, configFields);
                             };
                             slider.MouseRightButtonUp += (sender, args) => { slider.Value = 1.0; };
+                            slider.MouseWheel += (sender, args) =>
+                            {
+                                int delta = args.Delta;
+                                slider.Value += delta.Clip(-1, 1) * 0.1;
+                            };
 
                             sliderStacker.Children.Add(slider);
 
-                            stacker.Children.Add(sliderStacker);
+                            configStackers.Add(sliderStacker);
                         }
                     }
                 }
             };
+
+            configStackers.Sort((a, b) =>
+            {
+                if (b.Name == "ScaleSlider")
+                    return 1;
+
+                return a.Name.CompareTo(b.Name);
+            });
+
+
+            configStackers.ForEach(x => stacker.Children.Add(x));
+
 
             return stacker;
         }
