@@ -12,6 +12,18 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
 {
     internal sealed class CarInfoOverlay : AbstractOverlay
     {
+        private CarInfoConfiguration config = new CarInfoConfiguration();
+        private class CarInfoConfiguration : OverlayConfiguration
+        {
+            public bool ShowAdvancedDamage { get; set; } = true;
+            public bool ShowPadAndDiscLife { get; set; } = false;
+
+            public CarInfoConfiguration()
+            {
+                this.AllowRescale = true;
+            }
+        }
+
         InfoPanel infoPanel = new InfoPanel(10, 300);
         private float MagicDamageMultiplier = 0.282f;
 
@@ -33,11 +45,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
         public override void Render(Graphics g)
         {
             float totalRepairTime = GetTotalRepairTime();
-            infoPanel.AddLine("Repair time", $"{totalRepairTime}");
-            infoPanel.AddLine("Tyre set", $"{pageGraphics.currentTyreSet}");
-            infoPanel.AddLine("Fuel per lap", $"{Math.Round(pageGraphics.FuelXLap, 3)}");
-            infoPanel.AddProgressBar($"Fuel:", 0, pagePhysics.Fuel, pageStatic.MaxFuel);
+            infoPanel.AddLine("Repair Time", $"{totalRepairTime}");
+            infoPanel.AddLine("Tyre Set", $"{pageGraphics.currentTyreSet}");
 
+            if (this.config.ShowPadAndDiscLife)
+            {
+                infoPanel.AddLine("Pad Life", $"{pagePhysics.PadLife}");
+                infoPanel.AddLine("Disc Life", $"{pagePhysics.DiscLife}");
+            }
 
             infoPanel.Draw(g);
         }

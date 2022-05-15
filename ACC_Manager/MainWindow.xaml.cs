@@ -1,4 +1,5 @@
 ﻿using ACCManager.HUD.ACC;
+using ACCManager.HUD.ACC.Data.Tracker;
 using ACCManager.Util;
 using MaterialDesignThemes.Wpf;
 using System;
@@ -64,11 +65,13 @@ namespace ACCManager
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             OverlaysACC.CloseAll();
+            Trackers.StopAll();
         }
 
         private void CurrentDomain_ProcessExit(object sender, EventArgs e)
         {
             OverlaysACC.CloseAll();
+            Trackers.StopAll();
         }
 
         private void MainWindow_StateChanged(object sender, EventArgs e)

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
+namespace ACCManager.HUD.ACC.Data.Tracker
 {
     internal class LapTimingData
     {
@@ -30,7 +30,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             }
         }
 
-        private bool IsCollecting = false;
+        private bool IsTracking = false;
         private ACCSharedMemory sharedMemory;
         private int CurrentSector = 0;
 
@@ -44,7 +44,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             sharedMemory = new ACCSharedMemory();
             CurrentLap = new LapTimingData();
 
-            this.Start();
+            if (!IsTracking)
+                this.Start();
         }
 
         /// <summary>
@@ -98,13 +99,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
         internal void Start()
         {
-            if (IsCollecting)
+            if (IsTracking)
                 return;
 
-            IsCollecting = true;
+            IsTracking = true;
             new Thread(x =>
             {
-                while (IsCollecting)
+                while (IsTracking)
                 {
                     Thread.Sleep(1000 / 10);
 
@@ -163,7 +164,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
         internal void Stop()
         {
-            IsCollecting = false;
+            IsTracking = false;
         }
     }
 

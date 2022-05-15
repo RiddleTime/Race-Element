@@ -54,8 +54,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
                     list[i].AddProgressBarWithCenteredText("Brake Pressure", 0, 1, pagePhysics.brakePressure[i]);
             }
 
-            for (int i = 0; i < list.Length; i++)
-                list[i].Draw(g);
+            lock (list)
+                for (int i = 0; i < list.Length; i++)
+                    list[i].Draw(g);
         }
 
         public override bool ShouldRender()
