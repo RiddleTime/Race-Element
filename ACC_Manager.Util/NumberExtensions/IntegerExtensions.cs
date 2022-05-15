@@ -47,5 +47,18 @@ namespace ACC_Manager.Util.NumberExtensions
             if (value < min) value = min;
             return value;
         }
+
+        public static string ToString(this int[] values)
+        {
+            var value = string.Empty;
+            for (int i = 0; i < values.Length; i++)
+            {
+                double v = values[i];
+                value += $"{{{v}}}";
+                if (i < values.Length - 1)
+                    value += ", ";
+            }
+            return value;
+        }
     }
 }
