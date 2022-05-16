@@ -30,20 +30,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
         public FuelInfoOverlay(Rectangle rectangle) : base(rectangle, "Fuel Info Overlay")
         {
             this.Width = 240;
-            //this.Height = 105;// 120;
             infoPanel = new InfoPanel(10, this.Width - 1);
             this.Height = this.infoPanel.FontHeight * 6;
             RefreshRateHz = 5;
         }
 
-
         public override void BeforeStart()
         {
-           // if (!this.config.IncludeFuelBuffer)
-            //{
-            //    this.Height = this.infoPanel.FontHeight * 6;
-           // }
-
             if (!this.config.ShowAdvancedInfo)
             {
                 this.Height -= this.infoPanel.FontHeight * 3;
