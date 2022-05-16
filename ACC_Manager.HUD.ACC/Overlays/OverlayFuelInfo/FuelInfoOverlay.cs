@@ -73,10 +73,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             //Start (Basic)
             infoPanel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel:F2} L", 0, pageStatic.MaxFuel, pagePhysics.Fuel, fuelBarBrush);
             infoPanel.AddLine("Laps Left", $"{ pageGraphics.FuelEstimatedLaps.ToString("F1")} : {pageGraphics.FuelXLap}L");
-            if(this.config.IncludeFuelBuffer)
-            infoPanel.AddLine("Fuel-End+", $"{fuelToEndBuffer.ToString("F1")} : Add {Math.Min(fuelToAdd, stintFuelBuffer).ToString("F0")}");
+            if (this.config.IncludeFuelBuffer)
+                infoPanel.AddLine("Fuel-End+", $"{fuelToEndBuffer.ToString("F1")} : Add {Math.Min(fuelToAdd, stintFuelBuffer).ToString("F0")}");
             else
-            infoPanel.AddLine("Fuel-End", $"{fuelToEnd.ToString("F1")} : Add {Math.Min(fuelToAdd, stintFuel).ToString("F0")}");
+                infoPanel.AddLine("Fuel-End", $"{fuelToEnd.ToString("F1")} : Add {Math.Min(fuelToAdd, stintFuel).ToString("F0")}");
             //End (Basic)
             //Magic Start (Advanced)
             if (this.config.ShowAdvancedInfo)
@@ -84,9 +84,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
                 infoPanel.AddLine("Stint Time", stintTime);
                 infoPanel.AddLine("Fuel Time", fuelTime);
                 if (this.config.IncludeFuelBuffer)
-                infoPanel.AddLine("Stint Fuel+", stintFuelBuffer.ToString("F1"));   
+                    infoPanel.AddLine("Stint Fuel+", stintFuelBuffer.ToString("F1"));
                 else
-                infoPanel.AddLine("Stint Fuel", stintFuel.ToString("F1")); 
+                    infoPanel.AddLine("Stint Fuel", stintFuel.ToString("F1"));
             }
             //Magic End (Advanced)
             infoPanel.Draw(g);
