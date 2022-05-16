@@ -234,6 +234,7 @@ namespace ACCManager.Controls
                                 TickFrequency = tickFrequency,
                                 Value = sliderValue,
                                 Width = 100,
+                                Margin = new Thickness(0, 0, 3, 0),
                                 VerticalAlignment = VerticalAlignment.Center,
                                 VerticalContentAlignment = VerticalAlignment.Center,
 
