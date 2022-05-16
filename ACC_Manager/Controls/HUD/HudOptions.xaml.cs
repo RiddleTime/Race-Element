@@ -206,7 +206,8 @@ namespace ACCManager.Controls
                                 Margin = new Thickness(10, 0, 10, 0),
                                 Orientation = Orientation.Horizontal,
                                 VerticalAlignment = VerticalAlignment.Center,
-                                Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0))
+                                Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)),
+                                ToolTip = "Scroll Me.\nRight click to reset."
                             };
 
                             double min = 0.5;
@@ -235,7 +236,7 @@ namespace ACCManager.Controls
                                 Width = 100,
                                 VerticalAlignment = VerticalAlignment.Center,
                                 VerticalContentAlignment = VerticalAlignment.Center,
-                                ToolTip = "Scroll Me.\nRight click to reset."
+
                             };
                             slider.ValueChanged += (sender, args) =>
                             {
@@ -246,16 +247,17 @@ namespace ACCManager.Controls
 
                                 SaveOverlayConfigFields(overlayName, configFields);
                             };
-                            slider.MouseRightButtonUp += (sender, args) => { slider.Value = 1.0; };
 
-
-                            sliderStacker.Children.Add(slider);
-
+                            sliderStacker.MouseRightButtonUp += (sender, args) => { slider.Value = 1.0; };
                             sliderStacker.MouseWheel += (sender, args) =>
                             {
                                 int delta = args.Delta;
                                 slider.Value += delta.Clip(-1, 1) * tickFrequency;
                             };
+                            sliderStacker.MouseEnter += (sender, args) => { sliderStacker.Background = new SolidColorBrush(Color.FromArgb(50, 180, 0, 0)); }; ;
+                            sliderStacker.MouseLeave += (sender, args) => { sliderStacker.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)); };
+
+                            sliderStacker.Children.Add(slider);
 
                             configStackers.Add(sliderStacker);
                         }
