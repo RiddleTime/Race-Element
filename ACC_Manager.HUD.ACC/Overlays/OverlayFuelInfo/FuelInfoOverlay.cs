@@ -12,6 +12,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
 {
     internal sealed class FuelInfoOverlay : AbstractOverlay
     {
+
         InfoPanel infoPanel;
 
         private FuelInfoConfig config = new FuelInfoConfig();
@@ -29,22 +30,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
         public FuelInfoOverlay(Rectangle rectangle) : base(rectangle, "Fuel Info Overlay")
         {
             this.Width = 240;
-            this.Height = 105;// 120;
             infoPanel = new InfoPanel(10, this.Width - 1);
+            this.Height = this.infoPanel.FontHeight * 6;
             RefreshRateHz = 5;
         }
-
 
         public override void BeforeStart()
         {
             if (!this.config.ShowAdvancedInfo)
             {
                 this.Height -= this.infoPanel.FontHeight * 3;
-            }
-
-            if (!this.config.IncludeFuelBuffer)
-            {
-                this.Height += this.infoPanel.FontHeight;
             }
         }
 
@@ -59,11 +54,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             TimeSpan time = TimeSpan.FromMilliseconds(stintDebug);
             string stintTime = time.ToString(@"hh\:mm\:ss");
 
-            double fuelToEnd = pageGraphics.SessionTimeLeft / bestLapTime * pageGraphics.FuelXLap;
-            double fuelToEndBuffer = pageGraphics.SessionTimeLeft / bestLapTime * pageGraphics.FuelXLap + pageGraphics.FuelXLap;
-            double fuelToAdd = Math.Max(Math.Min(Math.Ceiling(fuelToEnd - fuelInCarDebug), pageStatic.MaxFuel), 0);
             double stintFuelBuffer = pageGraphics.DriverStintTimeLeft / bestLapTime * pageGraphics.FuelXLap + pageGraphics.UsedFuelSinceRefuel + pageGraphics.FuelXLap;
             double stintFuel = pageGraphics.DriverStintTimeLeft / bestLapTime * pageGraphics.FuelXLap + pageGraphics.UsedFuelSinceRefuel;
+            double fuelToEnd = pageGraphics.SessionTimeLeft / bestLapTime * pageGraphics.FuelXLap;
+            double fuelToEndBuffer = pageGraphics.SessionTimeLeft / bestLapTime * pageGraphics.FuelXLap + pageGraphics.FuelXLap;
+            double fuelToAddStint = Math.Min(stintFuel, pageStatic.MaxFuel);
+            double fuelToAddNoStint = Math.Max(Math.Min(Math.Ceiling(fuelToEnd - fuelInCarDebug), pageStatic.MaxFuel), 0);
+            double fuelToAdd = stintDebug == 0 ? fuelToAddNoStint : fuelToAddStint;
+            double fuelToAddBuffer = stintDebug == 0 ? fuelToAddNoStint + pageGraphics.FuelXLap : fuelToAddStint + pageGraphics.FuelXLap;
 
             double fuelTimeCalc = (long)(fuelInCarDebug / pageGraphics.FuelXLap) * bestLapTime;
             TimeSpan time2 = TimeSpan.FromMilliseconds(fuelTimeCalc);
@@ -72,11 +70,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             Brush fuelBarBrush = pagePhysics.Fuel / pageStatic.MaxFuel < 0.15 ? Brushes.Red : Brushes.OrangeRed;
             //Start (Basic)
             infoPanel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel:F2} L", 0, pageStatic.MaxFuel, pagePhysics.Fuel, fuelBarBrush);
-            infoPanel.AddLine("Laps Left", $"{ pageGraphics.FuelEstimatedLaps.ToString("F1")} : {pageGraphics.FuelXLap}L");
+            infoPanel.AddLine("Laps Left", $"{ pageGraphics.FuelEstimatedLaps:F1} : {pageGraphics.FuelXLap:F2}L");
             if (this.config.IncludeFuelBuffer)
-                infoPanel.AddLine("Fuel-End+", $"{fuelToEndBuffer.ToString("F1")} : Add {Math.Min(fuelToAdd, stintFuelBuffer).ToString("F0")}");
+                infoPanel.AddLine("Fuel-End+", $"{fuelToEndBuffer:F1} : Add {fuelToAddBuffer:F0}");
             else
-                infoPanel.AddLine("Fuel-End", $"{fuelToEnd.ToString("F1")} : Add {Math.Min(fuelToAdd, stintFuel).ToString("F0")}");
+                infoPanel.AddLine("Fuel-End", $"{fuelToEnd:F1} : Add {fuelToAdd:F0}");
             //End (Basic)
             //Magic Start (Advanced)
             if (this.config.ShowAdvancedInfo)
