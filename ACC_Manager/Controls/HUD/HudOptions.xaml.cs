@@ -163,6 +163,7 @@ namespace ACCManager.Controls
                     string checkBoxlabel = string.Concat(configField.Name.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
                     CheckBox box = new CheckBox()
                     {
+                        Name = configField.Name,
                         Content = checkBoxlabel,
                         IsChecked = (bool)configField.Value,
                         Margin = new Thickness(5, 0, 0, 0),
@@ -246,7 +247,7 @@ namespace ACCManager.Controls
                                 SaveOverlayConfigFields(overlayName, configFields);
                             };
                             slider.MouseRightButtonUp += (sender, args) => { slider.Value = 1.0; };
-                        
+
 
                             sliderStacker.Children.Add(slider);
 
