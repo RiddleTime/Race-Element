@@ -10,7 +10,8 @@ namespace ACCManager.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.0.6.0", "- HUD: ECU Map Overlay can now be scaled and repositioned." },
+            {"0.0.6.0", "- HUD Tab: Scroll the scale scrollbar to adjust the scale."+
+                        "\n- HUD: ECU Map Overlay can now be scaled and repositioned." },
             {"0.0.5.9", "- About Tab: Added information about HUDs."+
                         "\n- Added Play ACC Button, launches Assetto Corsa Competizione using the steam link."+
                         "\n- HUD: Added Fuel Info Overlay (By KrisV147)."+

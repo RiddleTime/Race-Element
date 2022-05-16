@@ -40,8 +40,7 @@ namespace ACCManager.HUD.Overlay.Util
         {
 
             Font fnt = null;
-
-            if (null == m_pfc)
+            if (m_pfc == null)
             {
 
                 // First load the font as a memory stream

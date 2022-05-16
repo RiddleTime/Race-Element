@@ -115,20 +115,22 @@ namespace ACCManager.HUD.Overlay.Internal
                 Draw = true;
                 this.Show();
 
-
                 new Thread(x =>
                 {
                     while (Draw)
                     {
-                        Thread.Sleep(1000 / RefreshRateHz);
-                        if (this._disposed)
+                        lock (this)
                         {
-                            this.Stop();
-                            return;
-                        }
+                            Thread.Sleep(1000 / RefreshRateHz);
+                            if (this._disposed)
+                            {
+                                this.Stop();
+                                return;
+                            }
 
-                        if (!RequestsDrawItself)
-                            this.UpdateLayeredWindow();
+                            if (!RequestsDrawItself)
+                                this.UpdateLayeredWindow();
+                        }
                     }
 
                     this.Stop();

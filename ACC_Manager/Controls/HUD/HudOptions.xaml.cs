@@ -157,7 +157,7 @@ namespace ACCManager.Controls
 
             foreach (PropertyInfo pi in props)
             {
-                if (pi.PropertyType.Name == typeof(bool).Name)
+                if (pi.PropertyType == typeof(bool))
                 {
                     ConfigField configField = configFields.Where(cf => cf.Name == pi.Name).First();
                     string checkBoxlabel = string.Concat(configField.Name.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
@@ -187,7 +187,7 @@ namespace ACCManager.Controls
                     configStackers.Add(box);
                 }
 
-                if (pi.PropertyType.Name == typeof(float).Name)
+                if (pi.PropertyType == typeof(float))
                 {
                     ConfigField configField = configFields.Where(cf => cf.Name == pi.Name).First();
                     if (configField.Name == "Scale")
@@ -210,6 +210,7 @@ namespace ACCManager.Controls
 
                             double min = 0.5;
                             double max = 2.0;
+                            double tickFrequency = 0.1;
                             double sliderValue = double.Parse(configField.Value.ToString());
                             sliderValue.Clip(min, max);
 
@@ -228,12 +229,12 @@ namespace ACCManager.Controls
                                 Minimum = min,
                                 Maximum = max,
                                 IsSnapToTickEnabled = true,
-                                TickFrequency = 0.1,
+                                TickFrequency = tickFrequency,
                                 Value = sliderValue,
                                 Width = 100,
                                 VerticalAlignment = VerticalAlignment.Center,
                                 VerticalContentAlignment = VerticalAlignment.Center,
-                                ToolTip = "Right click to reset.\nDrag with mouse or Scroll or use arrow-keys to change."
+                                ToolTip = "Scroll Me.\nRight click to reset."
                             };
                             slider.ValueChanged += (sender, args) =>
                             {
@@ -245,13 +246,15 @@ namespace ACCManager.Controls
                                 SaveOverlayConfigFields(overlayName, configFields);
                             };
                             slider.MouseRightButtonUp += (sender, args) => { slider.Value = 1.0; };
-                            slider.MouseWheel += (sender, args) =>
-                            {
-                                int delta = args.Delta;
-                                slider.Value += delta.Clip(-1, 1) * 0.1;
-                            };
+                        
 
                             sliderStacker.Children.Add(slider);
+
+                            sliderStacker.MouseWheel += (sender, args) =>
+                            {
+                                int delta = args.Delta;
+                                slider.Value += delta.Clip(-1, 1) * tickFrequency;
+                            };
 
                             configStackers.Add(sliderStacker);
                         }
