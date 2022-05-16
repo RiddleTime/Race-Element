@@ -59,8 +59,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             TimeSpan time2 = TimeSpan.FromMilliseconds(fuelTimeCalc);
             string fuelTime = time2.ToString(@"hh\:mm\:ss");
 
+            Brush fuelBarBrush = pagePhysics.Fuel / pageStatic.MaxFuel < 0.15 ? Brushes.Red : Brushes.OrangeRed;
             //Start (Basic)
-            infoPanel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel:F2} L", 0, pageStatic.MaxFuel, pagePhysics.Fuel);
+            infoPanel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel:F2} L", 0, pageStatic.MaxFuel, pagePhysics.Fuel, fuelBarBrush);
             infoPanel.AddLine("Laps Left", pageGraphics.FuelEstimatedLaps.ToString("F1"));
             infoPanel.AddLine("Fuel-End", $"{fuelToEnd.ToString("F1")} : Add {fuelToAdd.ToString("F0")}");
             //End (Basic)
