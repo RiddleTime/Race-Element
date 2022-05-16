@@ -148,7 +148,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker
                             LapFinished?.Invoke(this, CurrentLap);
                         }
 
-                        CurrentLap = new LapTimingData() { Index = pageGraphics.CompletedLaps };
+                        CurrentLap = new LapTimingData() { Index = pageGraphics.CompletedLaps + 1 };
                     }
 
                     // invalidate current lap 
