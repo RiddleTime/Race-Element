@@ -36,6 +36,7 @@ namespace ACCManager.Controls
             Instance = this;
 
             updateDataButton.Click += UpdateDataButton_Click;
+            this.MouseRightButtonUp += UpdateDataButton_Click;
 
             UpdateStaticData();
             UpdatePhysicsData();
