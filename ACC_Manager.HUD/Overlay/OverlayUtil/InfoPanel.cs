@@ -84,7 +84,7 @@ namespace ACCManager.HUD.Overlay.Util
                         g.DrawString($"{bar.Title}", TitleFont, Brushes.White, new PointF(X, Y + counter * FontHeight));
 
                         ProgressBar progressBar = new ProgressBar(bar.Min, bar.Max, bar.Value);
-                        progressBar.Draw(g, (int)(X + MaxTitleWidth + TitleFont.Size), Y + counter * FontHeight + 1, (int)(MaxWidth - MaxTitleWidth - TitleFont.Size) - 2, (int)FontHeight - 2);
+                        progressBar.Draw(g, (int)(X + MaxTitleWidth + TitleFont.Size), Y + counter * FontHeight + 1, (int)(MaxWidth - MaxTitleWidth - TitleFont.Size) - 2, (int)FontHeight - 2, bar.BarColor);
 
                         string percent = $"{(bar.Max / bar.Value * 100):F1}%";
                         SizeF textWidth = g.MeasureString(percent, TitleFont);
@@ -96,7 +96,7 @@ namespace ACCManager.HUD.Overlay.Util
                         CenterTextedProgressBarLine bar = (CenterTextedProgressBarLine)line;
 
                         ProgressBar progressBar = new ProgressBar(bar.Min, bar.Max, bar.Value);
-                        progressBar.Draw(g, X + 1, Y + counter * FontHeight + 1, (int)MaxWidth - 2, (int)FontHeight - 2);
+                        progressBar.Draw(g, X + 1, Y + counter * FontHeight + 1, (int)MaxWidth - 2, (int)FontHeight - 2, bar.BarColor);
 
                         SizeF textWidth = g.MeasureString(bar.CenteredText, TitleFont);
                         g.DrawString($"{bar.CenteredText}", TitleFont, Brushes.White, new PointF(X + MaxWidth / 2 - textWidth.Width / 2, Y + counter * FontHeight));
@@ -176,9 +176,19 @@ namespace ACCManager.HUD.Overlay.Util
             Lines.Add(new TitledProgressBarLine() { Title = title, Min = min, Max = max, Value = value });
         }
 
+        public void AddProgressBar(string title, double min, double max, double value, Brush barColor)
+        {
+            Lines.Add(new TitledProgressBarLine() { Title = title, Min = min, Max = max, Value = value, BarColor = barColor });
+        }
+
         public void AddProgressBarWithCenteredText(string centeredText, double min, double max, double value)
         {
             Lines.Add(new CenterTextedProgressBarLine() { CenteredText = centeredText, Min = min, Max = max, Value = value });
+        }
+
+        public void AddProgressBarWithCenteredText(string centeredText, double min, double max, double value, Brush barColor)
+        {
+            Lines.Add(new CenterTextedProgressBarLine() { CenteredText = centeredText, Min = min, Max = max, Value = value, BarColor = barColor });
         }
 
         public void AddDeltaBarWithCenteredText(string centeredText, double min, double max, double value)
@@ -199,6 +209,7 @@ namespace ACCManager.HUD.Overlay.Util
             internal double Min { get; set; }
             internal double Max { get; set; }
             internal double Value { get; set; }
+            internal Brush BarColor { get; set; } = Brushes.OrangeRed;
         }
 
         private class CenterTextedProgressBarLine : InfoLine
@@ -207,6 +218,7 @@ namespace ACCManager.HUD.Overlay.Util
             internal double Min { get; set; }
             internal double Max { get; set; }
             internal double Value { get; set; }
+            internal Brush BarColor { get; set; } = Brushes.OrangeRed;
         }
 
         private class CenteredTextedDeltabarLine : InfoLine
