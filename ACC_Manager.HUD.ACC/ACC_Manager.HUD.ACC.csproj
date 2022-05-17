@@ -57,7 +57,7 @@
     <Compile Include="Overlays\OverlayInputTrace\InputDataCollector.cs" />
     <Compile Include="Overlays\OverlayInputTrace\InputGraph.cs" />
     <Compile Include="Overlays\OverlayInputTrace\InputTraceOverlay.cs" />
-    <Compile Include="Data\Tracker\LapTimeTracker.cs" />
+    <Compile Include="Data\Tracker\LapTracker.cs" />
     <Compile Include="Overlays\OverlayPressureTrace\PressureTraceOverlay.cs" />
     <Compile Include="Overlays\OverlayPressureTrace\TyrePressureDataCollector.cs" />
     <Compile Include="Overlays\OverlayPressureTrace\TyrePressureGraph.cs" />

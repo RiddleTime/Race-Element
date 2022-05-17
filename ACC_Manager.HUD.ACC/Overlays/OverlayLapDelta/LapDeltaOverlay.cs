@@ -45,12 +45,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             if (!this.config.ShowSectors)
                 this.Height -= this.panel.FontHeight * 3;
 
-            LapTimeTracker.Instance.LapFinished += Collector_LapFinished;
+            LapTracker.Instance.LapFinished += Collector_LapFinished;
         }
 
         public override void BeforeStop()
         {
-            LapTimeTracker.Instance.LapFinished -= Collector_LapFinished;
+            LapTracker.Instance.LapFinished -= Collector_LapFinished;
         }
 
         private void Collector_LapFinished(object sender, LapData e)
@@ -72,7 +72,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
         private void AddSectorLines()
         {
-            LapData lap = LapTimeTracker.Instance.CurrentLap;
+            LapData lap = LapTracker.Instance.CurrentLap;
 
             if (lastLap != null && pageGraphics.NormalizedCarPosition < 0.08)
                 lap = lastLap;
@@ -80,7 +80,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             string sector1 = "-";
             string sector2 = "-";
             string sector3 = "-";
-            if (LapTimeTracker.Instance.CurrentLap.Sector1 > -1)
+            if (LapTracker.Instance.CurrentLap.Sector1 > -1)
             {
                 sector1 = $"{((float)lap.Sector1 / 1000):F3}";
             }
@@ -104,17 +104,17 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
 
             if (pageGraphics.CurrentSectorIndex != 0 && lap.Sector1 != -1 && lap.IsValid)
-                panel.AddLine("S1", $"{sector1}", LapTimeTracker.Instance.IsSectorFastest(1, lap.Sector1) ? Brushes.LimeGreen : Brushes.White);
+                panel.AddLine("S1", $"{sector1}", LapTracker.Instance.IsSectorFastest(1, lap.Sector1) ? Brushes.LimeGreen : Brushes.White);
             else
                 panel.AddLine("S1", $"{sector1}");
 
             if (pageGraphics.CurrentSectorIndex != 1 && lap.Sector2 != -1 && lap.IsValid)
-                panel.AddLine("S2", $"{sector2}", LapTimeTracker.Instance.IsSectorFastest(2, lap.Sector2) ? Brushes.LimeGreen : Brushes.White);
+                panel.AddLine("S2", $"{sector2}", LapTracker.Instance.IsSectorFastest(2, lap.Sector2) ? Brushes.LimeGreen : Brushes.White);
             else
                 panel.AddLine("S2", $"{sector2}");
 
             if (pageGraphics.CurrentSectorIndex != 2 && lap.Sector3 != -1 && lap.IsValid)
-                panel.AddLine("S3", $"{sector3}", LapTimeTracker.Instance.IsSectorFastest(3, lap.Sector3) ? Brushes.LimeGreen : Brushes.White);
+                panel.AddLine("S3", $"{sector3}", LapTracker.Instance.IsSectorFastest(3, lap.Sector3) ? Brushes.LimeGreen : Brushes.White);
             else
                 panel.AddLine("S3", $"{sector3}");
         }

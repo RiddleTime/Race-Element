@@ -23,14 +23,14 @@ namespace ACCManager.HUD.ACC.Data.Tracker
         public int FuelLeft { get; set; } = -1;
     }
 
-    internal class LapTimeTracker
+    internal class LapTracker
     {
-        private static LapTimeTracker _instance;
-        public static LapTimeTracker Instance
+        private static LapTracker _instance;
+        public static LapTracker Instance
         {
             get
             {
-                if (_instance == null) _instance = new LapTimeTracker();
+                if (_instance == null) _instance = new LapTracker();
                 return _instance;
             }
         }
@@ -39,12 +39,12 @@ namespace ACCManager.HUD.ACC.Data.Tracker
         private ACCSharedMemory sharedMemory;
         private int CurrentSector = 0;
 
-        internal List<LapData> LapTimeDatas = new List<LapData>();
+        internal List<LapData> Laps = new List<LapData>();
         internal LapData CurrentLap;
 
         public event EventHandler<LapData> LapFinished;
 
-        private LapTimeTracker()
+        private LapTracker()
         {
             sharedMemory = new ACCSharedMemory();
             CurrentLap = new LapData();
@@ -63,8 +63,8 @@ namespace ACCManager.HUD.ACC.Data.Tracker
         internal bool IsSectorFastest(int sector, int time)
         {
             List<LapData> data;
-            lock (Instance.LapTimeDatas)
-                data = Instance.LapTimeDatas;
+            lock (Instance.Laps)
+                data = Instance.Laps;
 
             if (sector == 1)
             {
@@ -118,7 +118,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker
 
                     if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF)
                     {
-                        LapTimeDatas.Clear();
+                        Laps.Clear();
                         CurrentLap = new LapData() { Index = pageGraphics.CompletedLaps + 1 };
                         Debug.WriteLine("Cleared Lap Times and Current lap");
                     }
@@ -152,8 +152,8 @@ namespace ACCManager.HUD.ACC.Data.Tracker
 
                         if (CurrentLap.Sector1 != -1)
                         {
-                            lock (LapTimeDatas)
-                                LapTimeDatas.Add(CurrentLap);
+                            lock (Laps)
+                                Laps.Add(CurrentLap);
 
                             LapFinished?.Invoke(this, CurrentLap);
                         }

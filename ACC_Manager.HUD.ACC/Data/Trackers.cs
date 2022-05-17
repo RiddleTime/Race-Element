@@ -11,7 +11,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker
     {
         public static void StopAll()
         {
-            LapTimeTracker.Instance.Stop();
+            LapTracker.Instance.Stop();
         }
     }
 }
