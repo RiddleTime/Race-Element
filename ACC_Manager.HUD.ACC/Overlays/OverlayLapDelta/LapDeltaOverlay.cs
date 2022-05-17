@@ -34,7 +34,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         InfoPanel panel = new InfoPanel(11, overlayWidth);
         public LapDeltaOverlay(Rectangle rectangle) : base(rectangle, "Lap Delta Overlay")
         {
-            overlayHeight = panel.FontHeight * 5;
+            overlayHeight = panel.FontHeight * 4;
 
             this.Width = overlayWidth + 1;
             this.Height = overlayHeight + 1;

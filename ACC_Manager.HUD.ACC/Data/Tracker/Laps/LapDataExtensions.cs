@@ -9,6 +9,8 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
 {
     public static class LapDataExtensions
     {
+        #region LapData Extensions
+
         public static float GetLapTime(this LapData lap)
         {
             return lap.Time / 1000;
@@ -34,6 +36,36 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
             return lap.FuelLeft / 1000;
         }
 
+        #endregion
+
+        #region List<LapData> Extensions
+
+        public static int GetAverageFuelUsage(this List<LapData> laps)
+        {
+            return laps.GetAverageFuelUsage(laps.Count);
+        }
+
+        public static int GetAverageFuelUsage(this List<LapData> laps, int lapAmount)
+        {
+            lapAmount.ClipMax(laps.Count);
+            if (lapAmount == 0)
+                return 0;
+
+            int total = 0;
+            int previousLapFuelLeft = -1;
+            for (int i = 0; i < lapAmount; i++)
+            {
+                int lapFuelLeft = laps[laps.Count - 1 - (lapAmount - i)].FuelLeft;
+
+                if (previousLapFuelLeft != -1)
+                    total += previousLapFuelLeft - lapFuelLeft;
+
+                previousLapFuelLeft = lapFuelLeft;
+
+            }
+
+            return total / lapAmount;
+        }
 
         public static int GetAverageLapTime(this List<LapData> laps)
         {
@@ -87,5 +119,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
 
             return true;
         }
+
+        #endregion
     }
 }
