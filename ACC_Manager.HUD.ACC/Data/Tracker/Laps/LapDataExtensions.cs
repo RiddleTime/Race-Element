@@ -61,7 +61,6 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
                     total += previousLapFuelLeft - lapFuelLeft;
 
                 previousLapFuelLeft = lapFuelLeft;
-
             }
 
             return total / lapAmount;
@@ -74,15 +73,36 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
 
         public static int GetAverageLapTime(this List<LapData> laps, int lapAmount)
         {
+            return laps.GetAverageLapTime(lapAmount, false);
+        }
+
+        public static int GetAverageLapTime(this List<LapData> laps, int lapAmount, bool onlyValidLaps)
+        {
             lapAmount.ClipMax(laps.Count);
             if (lapAmount == 0)
                 return 0;
 
             int total = 0;
+            int validCount = 0;
             for (int i = 0; i < lapAmount; i++)
-                total += laps[laps.Count - 1 - (lapAmount - i)].Time;
+            {
+                LapData lap = laps[laps.Count - 1 - (lapAmount - i)];
+                if (onlyValidLaps)
+                {
+                    if (lap.IsValid)
+                    {
+                        validCount++;
+                        total += lap.Time;
+                    }
+                }
+                else
+                    total += lap.Time;
+            }
 
-            return total / lapAmount;
+            if (onlyValidLaps)
+                return total / validCount;
+            else
+                return total / lapAmount;
         }
 
         /// <summary>
