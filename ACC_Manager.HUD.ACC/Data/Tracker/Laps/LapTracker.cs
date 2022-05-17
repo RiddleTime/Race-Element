@@ -83,9 +83,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker
                     {
                         Laps.Clear();
                         CurrentLap = new LapData() { Index = pageGraphics.CompletedLaps + 1 };
-                        Debug.WriteLine("Cleared Lap Times and Current lap");
                     }
-
 
                     // collect sector times.
                     if (CurrentSector != pageGraphics.CurrentSectorIndex)
@@ -111,8 +109,6 @@ namespace ACCManager.HUD.ACC.Data.Tracker
                         CurrentLap.Time = pageGraphics.LastTimeMs;
                         CurrentLap.FuelLeft = (int)(sharedMemory.ReadPhysicsPageFile().Fuel * 1000);
 
-                        Debug.WriteLine($"Finished lap: {CurrentLap.Index} - {CurrentLap.Time}");
-
                         if (CurrentLap.Sector1 != -1)
                         {
                             lock (Laps)
@@ -126,11 +122,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker
 
                     // invalidate current lap 
                     if (CurrentLap.IsValid != pageGraphics.IsValidLap)
-                    {
-                        Debug.WriteLine($"Invalidated lap: {CurrentLap.Index}");
                         CurrentLap.IsValid = pageGraphics.IsValidLap;
-                    }
-
 
                 }
             }).Start();

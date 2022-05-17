@@ -54,10 +54,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             LapTracker.Instance.LapFinished -= Collector_LapFinished;
         }
 
-        private void Collector_LapFinished(object sender, LapData e)
+        private void Collector_LapFinished(object sender, LapData newLap)
         {
-            if (e.Sector1 != -1 && e.Sector2 != -1 && e.Sector3 != -1)
-                lastLap = e;
+            if (newLap.Sector1 != -1 && newLap.Sector2 != -1 && newLap.Sector3 != -1)
+                lastLap = newLap;
         }
 
         public override void Render(Graphics g)
