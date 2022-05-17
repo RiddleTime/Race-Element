@@ -114,30 +114,10 @@ namespace ACCManager.HUD.ACC.Data.Tracker
                     if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF)
                     {
                         LapTimeDatas.Clear();
-                        CurrentLap = new LapTimingData();
-                    }
-
-                    // finalize lap time data and add it to history.
-                    if (CurrentLap.Index != pageGraphics.CompletedLaps && pageGraphics.LastTimeMs != int.MaxValue)
-                    {
-                        CurrentLap.Time = pageGraphics.LastTimeMs;
-
-                        if (CurrentLap.Sector1 != -1)
-                        {
-                            lock (LapTimeDatas)
-                                LapTimeDatas.Add(CurrentLap);
-
-                            LapFinished?.Invoke(this, CurrentLap);
-                        }
-
                         CurrentLap = new LapTimingData() { Index = pageGraphics.CompletedLaps + 1 };
+                        Debug.WriteLine("Cleared Lap Times and Current lap");
                     }
 
-                    // invalidate current lap 
-                    if (CurrentLap.IsValid != pageGraphics.IsValidLap)
-                    {
-                        CurrentLap.IsValid = pageGraphics.IsValidLap;
-                    }
 
                     // collect sector times.
                     if (CurrentSector != pageGraphics.CurrentSectorIndex)
@@ -156,6 +136,33 @@ namespace ACCManager.HUD.ACC.Data.Tracker
 
                         CurrentSector = pageGraphics.CurrentSectorIndex;
                     }
+
+                    // finalize lap time data and add it to history.
+                    if (CurrentLap.Index - 1 != pageGraphics.CompletedLaps && pageGraphics.LastTimeMs != int.MaxValue)
+                    {
+                        CurrentLap.Time = pageGraphics.LastTimeMs;
+
+                        Debug.WriteLine($"Finished lap: {CurrentLap.Index} - {CurrentLap.Time}");
+
+                        if (CurrentLap.Sector1 != -1)
+                        {
+                            lock (LapTimeDatas)
+                                LapTimeDatas.Add(CurrentLap);
+
+                            LapFinished?.Invoke(this, CurrentLap);
+                        }
+
+                        CurrentLap = new LapTimingData() { Index = pageGraphics.CompletedLaps + 1 };
+                    }
+
+                    // invalidate current lap 
+                    if (CurrentLap.IsValid != pageGraphics.IsValidLap)
+                    {
+                        Debug.WriteLine($"Invalidated lap: {CurrentLap.Index}");
+                        CurrentLap.IsValid = pageGraphics.IsValidLap;
+                    }
+
+
                 }
             }).Start();
 

@@ -75,7 +75,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
             if (lastLap != null && pageGraphics.NormalizedCarPosition < 0.08)
             {
-                lap = lastLap;
+                if (lastLap.Sector1 != -1 && lastLap.Sector2 != -1 && lastLap.Sector3 != -1)
+                    lap = lastLap;
             }
 
             string sector1 = "-";
