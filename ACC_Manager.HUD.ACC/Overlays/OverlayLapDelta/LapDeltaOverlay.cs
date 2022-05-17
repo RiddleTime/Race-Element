@@ -28,7 +28,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         private const int overlayWidth = 200;
         private int overlayHeight = 150;
 
-        private LapTimingData lastLap = null;
+        private LapData lastLap = null;
 
         InfoPanel panel = new InfoPanel(11, overlayWidth);
         public LapDeltaOverlay(Rectangle rectangle) : base(rectangle, "Lap Delta Overlay")
@@ -53,7 +53,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             LapTimeTracker.Instance.LapFinished -= Collector_LapFinished;
         }
 
-        private void Collector_LapFinished(object sender, LapTimingData e)
+        private void Collector_LapFinished(object sender, LapData e)
         {
             if (e.Sector1 != -1 && e.Sector2 != -1 && e.Sector3 != -1)
                 lastLap = e;
@@ -72,7 +72,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
         private void AddSectorLines()
         {
-            LapTimingData lap = LapTimeTracker.Instance.CurrentLap;
+            LapData lap = LapTimeTracker.Instance.CurrentLap;
 
             if (lastLap != null && pageGraphics.NormalizedCarPosition < 0.08)
                 lap = lastLap;

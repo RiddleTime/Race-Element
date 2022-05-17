@@ -8,7 +8,11 @@ using System.Threading.Tasks;
 
 namespace ACCManager.HUD.ACC.Data.Tracker
 {
-    internal class LapTimingData
+
+    /// <summary>
+    /// All data except for the Index must be divided by 1000 to get the actual value (floating points are annoying)
+    /// </summary>
+    internal class LapData
     {
         public int Index { get; set; } = -1;
         public int Time { get; set; } = -1;
@@ -16,6 +20,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker
         public int Sector1 { get; set; } = -1;
         public int Sector2 { get; set; } = -1;
         public int Sector3 { get; set; } = -1;
+        public int FuelLeft { get; set; } = -1;
     }
 
     internal class LapTimeTracker
@@ -34,15 +39,15 @@ namespace ACCManager.HUD.ACC.Data.Tracker
         private ACCSharedMemory sharedMemory;
         private int CurrentSector = 0;
 
-        internal List<LapTimingData> LapTimeDatas = new List<LapTimingData>();
-        internal LapTimingData CurrentLap;
+        internal List<LapData> LapTimeDatas = new List<LapData>();
+        internal LapData CurrentLap;
 
-        public event EventHandler<LapTimingData> LapFinished;
+        public event EventHandler<LapData> LapFinished;
 
         private LapTimeTracker()
         {
             sharedMemory = new ACCSharedMemory();
-            CurrentLap = new LapTimingData();
+            CurrentLap = new LapData();
 
             if (!IsTracking)
                 this.Start();
@@ -57,13 +62,13 @@ namespace ACCManager.HUD.ACC.Data.Tracker
         /// <returns></returns>
         internal bool IsSectorFastest(int sector, int time)
         {
-            List<LapTimingData> data;
+            List<LapData> data;
             lock (Instance.LapTimeDatas)
                 data = Instance.LapTimeDatas;
 
             if (sector == 1)
             {
-                foreach (LapTimingData timing in data)
+                foreach (LapData timing in data)
                 {
                     if (timing.IsValid && timing.Sector1 < time)
                     {
@@ -74,7 +79,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker
 
             if (sector == 2)
             {
-                foreach (LapTimingData timing in data)
+                foreach (LapData timing in data)
                 {
                     if (timing.IsValid && timing.Sector2 < time)
                     {
@@ -85,7 +90,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker
 
             if (sector == 3)
             {
-                foreach (LapTimingData timing in data)
+                foreach (LapData timing in data)
                 {
                     if (timing.IsValid && timing.Sector3 < time)
                     {
@@ -114,7 +119,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker
                     if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF)
                     {
                         LapTimeDatas.Clear();
-                        CurrentLap = new LapTimingData() { Index = pageGraphics.CompletedLaps + 1 };
+                        CurrentLap = new LapData() { Index = pageGraphics.CompletedLaps + 1 };
                         Debug.WriteLine("Cleared Lap Times and Current lap");
                     }
 
@@ -141,6 +146,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker
                     if (CurrentLap.Index - 1 != pageGraphics.CompletedLaps && pageGraphics.LastTimeMs != int.MaxValue)
                     {
                         CurrentLap.Time = pageGraphics.LastTimeMs;
+                        CurrentLap.FuelLeft = (int)(sharedMemory.ReadPhysicsPageFile().Fuel * 1000);
 
                         Debug.WriteLine($"Finished lap: {CurrentLap.Index} - {CurrentLap.Time}");
 
@@ -152,7 +158,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker
                             LapFinished?.Invoke(this, CurrentLap);
                         }
 
-                        CurrentLap = new LapTimingData() { Index = pageGraphics.CompletedLaps + 1 };
+                        CurrentLap = new LapData() { Index = pageGraphics.CompletedLaps + 1 };
                     }
 
                     // invalidate current lap 
