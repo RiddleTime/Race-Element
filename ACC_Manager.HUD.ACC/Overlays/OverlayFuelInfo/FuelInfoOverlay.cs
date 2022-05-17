@@ -80,7 +80,18 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             if (this.config.ShowAdvancedInfo)
             {
                 infoPanel.AddLine("Stint Time", stintTime);
-                infoPanel.AddLine("Fuel Time", fuelTime);
+
+                if (stintDebug > 0)
+                    if (fuelTimeCalc <= stintDebug)
+                        infoPanel.AddLine("Fuel Time", fuelTime, Brushes.Red);
+                    else
+                        infoPanel.AddLine("Fuel Time", fuelTime, Brushes.LimeGreen);
+                else
+                    if (fuelTimeCalc <= pageGraphics.SessionTimeLeft)
+                    infoPanel.AddLine("Fuel Time", fuelTime, Brushes.Red);
+                else
+                    infoPanel.AddLine("Fuel Time", fuelTime, Brushes.LimeGreen);
+
                 if (this.config.IncludeFuelBuffer)
                     infoPanel.AddLine("Stint Fuel+", stintFuelBuffer.ToString("F1"));
                 else
