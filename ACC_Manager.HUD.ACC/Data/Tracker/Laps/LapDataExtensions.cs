@@ -48,8 +48,8 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
         public static int GetAverageFuelUsage(this List<LapData> laps, int lapAmount)
         {
             lapAmount.ClipMax(laps.Count);
-            if (lapAmount == 0)
-                return 0;
+            if (lapAmount < 2)
+                return -1;
 
             int total = 0;
             int previousLapFuelLeft = -1;
