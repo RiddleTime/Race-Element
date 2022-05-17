@@ -13,27 +13,27 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
 
         public static float GetLapTime(this LapData lap)
         {
-            return lap.Time / 1000;
+            return lap.Time / 1000f;
         }
 
         public static float GetSector1(this LapData lap)
         {
-            return lap.Sector1 / 1000;
+            return lap.Sector1 / 1000f;
         }
 
         public static float GetSector2(this LapData lap)
         {
-            return lap.Sector2 / 1000;
+            return lap.Sector2 / 1000f;
         }
 
         public static float GetSector3(this LapData lap)
         {
-            return lap.Sector3 / 1000;
+            return lap.Sector3 / 1000f;
         }
 
         public static float GetFuelLeft(this LapData lap)
         {
-            return lap.FuelLeft / 1000;
+            return lap.FuelLeft / 1000f;
         }
 
         #endregion
