@@ -66,9 +66,16 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
             return total / lapAmount;
         }
 
+
+
         public static int GetAverageLapTime(this List<LapData> laps)
         {
             return laps.GetAverageLapTime(laps.Count);
+        }
+
+        public static int GetAverageLapTime(this List<LapData> laps, bool onlyValidLaps)
+        {
+            return laps.GetAverageLapTime(laps.Count, onlyValidLaps);
         }
 
         public static int GetAverageLapTime(this List<LapData> laps, int lapAmount)

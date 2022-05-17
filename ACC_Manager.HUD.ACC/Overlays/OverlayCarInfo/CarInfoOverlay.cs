@@ -17,7 +17,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
         private CarInfoConfiguration config = new CarInfoConfiguration();
         private class CarInfoConfiguration : OverlayConfiguration
         {
-            public bool ShowAdvancedDamage { get; set; } = true;
             public bool ShowPadAndDiscLife { get; set; } = false;
 
             public CarInfoConfiguration()
@@ -32,7 +31,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
         public CarInfoOverlay(Rectangle rectangle) : base(rectangle, "Car Info Overlay")
         {
             int panelWidth = 130;
-            
+
             if (this.config.ShowPadAndDiscLife) panelWidth = 360;
 
             this.infoPanel = new InfoPanel(10, panelWidth);
@@ -45,9 +44,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
         public override void BeforeStart()
         {
             if (!this.config.ShowPadAndDiscLife)
-            {
                 this.Height -= this.infoPanel.FontHeight * 2;
-            }
         }
 
         public override void BeforeStop()
@@ -57,7 +54,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
         public override void Render(Graphics g)
         {
             float totalRepairTime = GetTotalRepairTime();
-            infoPanel.AddLine("Repair Time", $"{totalRepairTime}");
+            infoPanel.AddLine("Repair Time", $"{totalRepairTime:F1}");
             infoPanel.AddLine("Tyre Set", $"{pageGraphics.currentTyreSet}");
 
             if (this.config.ShowPadAndDiscLife)
