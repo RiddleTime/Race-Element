@@ -181,7 +181,7 @@ namespace ACCManager.Controls
                         Name = configField.Name,
                         Content = checkBoxlabel,
                         IsChecked = (bool)configField.Value,
-                        Margin = new Thickness(0, 3, 0, 3),
+                        Margin = new Thickness(5, 3, 5, 3),
                         VerticalAlignment = VerticalAlignment.Center,
                         VerticalContentAlignment = VerticalAlignment.Center
                     };
