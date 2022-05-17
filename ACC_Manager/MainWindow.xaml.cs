@@ -66,12 +66,16 @@ namespace ACCManager
         {
             OverlaysACC.CloseAll();
             Trackers.StopAll();
+            Debug.WriteLine("Shutdown ACC Manager");
+            LogWriter.WriteToLog("Shutdown ACC Manager");
         }
 
         private void CurrentDomain_ProcessExit(object sender, EventArgs e)
         {
             OverlaysACC.CloseAll();
             Trackers.StopAll();
+            Debug.WriteLine("Shutdown ACC Manager");
+            LogWriter.WriteToLog("Shutdown ACC Manager");
         }
 
         private void MainWindow_StateChanged(object sender, EventArgs e)

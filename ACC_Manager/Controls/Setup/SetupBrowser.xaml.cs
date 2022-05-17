@@ -86,9 +86,6 @@ namespace ACCManager.Controls
         {
             try
             {
-                LogWriter.WriteToLog("Fetching setups");
-
-
                 DirectoryInfo setupsDirectory = new DirectoryInfo(SetupsPath);
 
                 setupsTreeView.Items.Clear();

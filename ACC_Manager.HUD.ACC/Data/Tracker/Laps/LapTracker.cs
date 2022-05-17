@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACCManager.Util;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -75,59 +76,67 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
             {
                 while (IsTracking)
                 {
-                    Thread.Sleep(1000 / 10);
-
-                    var pageGraphics = sharedMemory.ReadGraphicsPageFile();
-
-                    if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF)
+                    try
                     {
-                        Laps.Clear();
-                        CurrentLap = new LapData() { Index = pageGraphics.CompletedLaps + 1 };
-                    }
+                        Thread.Sleep(1000 / 10);
 
-                    // collect sector times.
-                    if (CurrentSector != pageGraphics.CurrentSectorIndex)
-                    {
-                        if (CurrentLap.Sector1 == -1 && CurrentSector != 0)
+                        var pageGraphics = sharedMemory.ReadGraphicsPageFile();
+
+                        if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF)
                         {
-                            // simply don't collect, we're already into a lap and passed sector 1, can't properly calculate the sector times now.
+                            Laps.Clear();
+                            CurrentLap = new LapData() { Index = pageGraphics.CompletedLaps + 1 };
                         }
-                        else
-                            switch (pageGraphics.CurrentSectorIndex)
+
+                        // collect sector times.
+                        if (CurrentSector != pageGraphics.CurrentSectorIndex)
+                        {
+                            if (CurrentLap.Sector1 == -1 && CurrentSector != 0)
                             {
-                                case 1: CurrentLap.Sector1 = pageGraphics.LastSectorTime; break;
-                                case 2: CurrentLap.Sector2 = pageGraphics.LastSectorTime - CurrentLap.Sector1; break;
-                                case 0: CurrentLap.Sector3 = pageGraphics.LastTimeMs - CurrentLap.Sector2 - CurrentLap.Sector1; break;
+                                // simply don't collect, we're already into a lap and passed sector 1, can't properly calculate the sector times now.
+                            }
+                            else
+                                switch (pageGraphics.CurrentSectorIndex)
+                                {
+                                    case 1: CurrentLap.Sector1 = pageGraphics.LastSectorTime; break;
+                                    case 2: CurrentLap.Sector2 = pageGraphics.LastSectorTime - CurrentLap.Sector1; break;
+                                    case 0: CurrentLap.Sector3 = pageGraphics.LastTimeMs - CurrentLap.Sector2 - CurrentLap.Sector1; break;
+                                }
+
+                            CurrentSector = pageGraphics.CurrentSectorIndex;
+                        }
+
+                        // finalize lap time data and add it to history.
+                        if (CurrentLap.Index - 1 != pageGraphics.CompletedLaps && pageGraphics.LastTimeMs != int.MaxValue)
+                        {
+                            CurrentLap.Time = pageGraphics.LastTimeMs;
+                            CurrentLap.FuelLeft = (int)(sharedMemory.ReadPhysicsPageFile().Fuel * 1000);
+
+                            if (CurrentLap.Sector1 != -1)
+                            {
+                                lock (Laps)
+                                    Laps.Add(CurrentLap);
+
+                                LapFinished?.Invoke(this, CurrentLap);
                             }
 
-                        CurrentSector = pageGraphics.CurrentSectorIndex;
-                    }
-
-                    // finalize lap time data and add it to history.
-                    if (CurrentLap.Index - 1 != pageGraphics.CompletedLaps && pageGraphics.LastTimeMs != int.MaxValue)
-                    {
-                        CurrentLap.Time = pageGraphics.LastTimeMs;
-                        CurrentLap.FuelLeft = (int)(sharedMemory.ReadPhysicsPageFile().Fuel * 1000);
-
-                        if (CurrentLap.Sector1 != -1)
-                        {
-                            lock (Laps)
-                                Laps.Add(CurrentLap);
-
-                            LapFinished?.Invoke(this, CurrentLap);
+                            CurrentLap = new LapData() { Index = pageGraphics.CompletedLaps + 1 };
                         }
 
-                        CurrentLap = new LapData() { Index = pageGraphics.CompletedLaps + 1 };
+                        // invalidate current lap 
+                        if (CurrentLap.IsValid != pageGraphics.IsValidLap)
+                            CurrentLap.IsValid = pageGraphics.IsValidLap;
                     }
-
-                    // invalidate current lap 
-                    if (CurrentLap.IsValid != pageGraphics.IsValidLap)
-                        CurrentLap.IsValid = pageGraphics.IsValidLap;
-
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex);
+                        LogWriter.WriteToLog(ex);
+                    }
                 }
             }).Start();
 
             _instance = null;
+            IsTracking = false;
         }
 
         internal void Stop()

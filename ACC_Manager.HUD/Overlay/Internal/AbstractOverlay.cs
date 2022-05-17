@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACCManager.Util;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -106,7 +107,15 @@ namespace ACCManager.HUD.Overlay.Internal
                 pageGraphics = mem.ReadGraphicsPageFile();
                 pagePhysics = mem.ReadPhysicsPageFile();
 
-                BeforeStart();
+                try
+                {
+                    BeforeStart();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                    LogWriter.WriteToLog(ex);
+                }
                 if (AllowRescale)
                 {
                     this.Width = (int)Math.Ceiling(this.Width * Scale);
@@ -163,7 +172,14 @@ namespace ACCManager.HUD.Overlay.Internal
         public void Stop()
         {
             this.EnableReposition(false);
-            BeforeStop();
+            try
+            {
+                BeforeStop();
+            }
+            catch (Exception ex)
+            {
+                LogWriter.WriteToLog(ex);
+            }
             PageStaticTracker.Instance.Tracker -= PageStaticChanged;
             PageGraphicsTracker.Instance.Tracker -= PageGraphicsChanged;
             PagePhysicsTracker.Instance.Tracker -= PagePhysicsChanged;
@@ -188,77 +204,91 @@ namespace ACCManager.HUD.Overlay.Internal
                     if (AllowRescale)
                         e.Graphics.ScaleTransform(Scale, Scale);
 
-
-                    Render(e.Graphics);
-
+                    try
+                    {
+                        Render(e.Graphics);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex);
+                        LogWriter.WriteToLog(ex);
+                    }
                 }
             }
         }
 
         public void EnableReposition(bool enabled)
         {
-            if (!AllowReposition)
-                return;
-
-            this.IsRepositioning = enabled;
-
-            if (enabled)
+            try
             {
-                this.RepositionWindow = new Window()
-                {
-                    Width = this.Width,
-                    Height = this.Height,
-                    WindowStyle = WindowStyle.None,
-                    ResizeMode = ResizeMode.NoResize,
-                    Left = X,
-                    Top = Y,
-                    Title = this.Name,
-                    ToolTip = this.Name,
-                    Topmost = true,
-                    BorderBrush = System.Windows.Media.Brushes.Red,
-                    BorderThickness = new Thickness(3),
-                    ShowInTaskbar = false,
-                    AllowsTransparency = true,
-                    Opacity = 0.3
-                };
-                this.RepositionWindow.MouseLeftButtonDown += (s, e) =>
-                {
-                    this.RepositionWindow.DragMove();
-                };
+                if (!AllowReposition)
+                    return;
 
-                this.RepositionWindow.LocationChanged += (s, e) =>
+                this.IsRepositioning = enabled;
+
+                if (enabled)
                 {
-                    X = (int)this.RepositionWindow.Left;
-                    Y = (int)this.RepositionWindow.Top;
-                };
-                RepositionWindow.Show();
-            }
-            else
-            {
-                if (this.RepositionWindow != null)
-                {
-                    this.RepositionWindow.Dispatcher.BeginInvoke(new Action(() =>
+                    this.RepositionWindow = new Window()
                     {
-                        try
-                        {
-                            if (this.RepositionWindow != null)
-                            {
-                                this.RepositionWindow.Hide();
-                                this.RepositionWindow.Close();
-                                this.RepositionWindow = null;
-                            }
-                        }
-                        catch (Exception ex) { Debug.WriteLine(ex); }
-                    }));
+                        Width = this.Width,
+                        Height = this.Height,
+                        WindowStyle = WindowStyle.None,
+                        ResizeMode = ResizeMode.NoResize,
+                        Left = X,
+                        Top = Y,
+                        Title = this.Name,
+                        ToolTip = this.Name,
+                        Topmost = true,
+                        BorderBrush = System.Windows.Media.Brushes.Red,
+                        BorderThickness = new Thickness(3),
+                        ShowInTaskbar = false,
+                        AllowsTransparency = true,
+                        Opacity = 0.3
+                    };
+                    this.RepositionWindow.MouseLeftButtonDown += (s, e) =>
+                    {
+                        this.RepositionWindow.DragMove();
+                    };
+
+                    this.RepositionWindow.LocationChanged += (s, e) =>
+                    {
+                        X = (int)this.RepositionWindow.Left;
+                        Y = (int)this.RepositionWindow.Top;
+                    };
+                    RepositionWindow.Show();
                 }
+                else
+                {
+                    if (this.RepositionWindow != null)
+                    {
+                        this.RepositionWindow.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            try
+                            {
+                                if (this.RepositionWindow != null)
+                                {
+                                    this.RepositionWindow.Hide();
+                                    this.RepositionWindow.Close();
+                                    this.RepositionWindow = null;
+                                }
+                            }
+                            catch (Exception ex) { Debug.WriteLine(ex); }
+                        }));
+                    }
 
 
 
-                OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(this.Name);
-                settings.X = X;
-                settings.Y = Y;
+                    OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(this.Name);
+                    settings.X = X;
+                    settings.Y = Y;
 
-                OverlaySettings.SaveOverlaySettings(this.Name, settings);
+                    OverlaySettings.SaveOverlaySettings(this.Name, settings);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                LogWriter.WriteToLog(ex);
             }
         }
     }
