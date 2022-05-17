@@ -10,11 +10,11 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
-            <RowDefinition/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="3">
-            <ToggleButton Grid.Row="0" x:Name="checkBoxReposition" Height="25" Cursor="Hand"></ToggleButton>
+            <ToggleButton Grid.Row="0" x:Name="checkBoxReposition" Height="25" Cursor="Hand" ToolTip="Click scroll wheel to Toggle"></ToggleButton>
             <Label FontSize="18" x:Name="labelReposition" Cursor="Hand">Reposition Active Overlays</Label>
         </StackPanel>
 

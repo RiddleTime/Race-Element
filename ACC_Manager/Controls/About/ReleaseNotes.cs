@@ -10,7 +10,10 @@ namespace ACCManager.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.0.6.0", "- HUD Tab: Scroll the scale scrollbar to adjust the scale."+
+            {"0.0.6.0", "- HUD Tab:"+
+                        "\n  - Scroll the scale control to adjust the scale."+
+                        "\n  - Click Scroll/middle mouse button click to enable reposition."+
+                        "\n  - Left Click entire overlay to toggle."+
                         "\n- HUD: ECU Map Overlay can now be scaled and repositioned."+
                         "\n- Trees in the GUI now expand on single click."},
             {"0.0.5.9", "- About Tab: Added information about HUDs."+

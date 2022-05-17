@@ -34,9 +34,14 @@ namespace ACCManager.Controls
             InitializeComponent();
 
             BuildOverlayStackPanel();
-            labelReposition.MouseUp += (o, e) => { checkBoxReposition.IsChecked = !checkBoxReposition.IsChecked; };
             checkBoxReposition.Checked += (s, e) => SetRepositionMode(true);
             checkBoxReposition.Unchecked += (s, e) => SetRepositionMode(false);
+
+            this.PreviewMouseUp += (s, e) =>
+            {
+                if (e.ChangedButton == MouseButton.Middle)
+                    this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
+            };
         }
 
         private void SetRepositionMode(bool enabled)
@@ -164,6 +169,11 @@ namespace ACCManager.Controls
             {
                 if (pi.PropertyType == typeof(bool))
                 {
+                    StackPanel checkStacker = new StackPanel()
+                    {
+                        VerticalAlignment = VerticalAlignment.Center,
+                        Margin = new Thickness(5, 0, 0, 0),
+                    };
                     ConfigField configField = configFields.Where(cf => cf.Name == pi.Name).First();
                     string checkBoxlabel = string.Concat(configField.Name.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
                     CheckBox box = new CheckBox()
@@ -171,10 +181,13 @@ namespace ACCManager.Controls
                         Name = configField.Name,
                         Content = checkBoxlabel,
                         IsChecked = (bool)configField.Value,
-                        Margin = new Thickness(5, 0, 0, 0),
-                        Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)),
+                        Margin = new Thickness(0, 3, 0, 3),
                         VerticalAlignment = VerticalAlignment.Center,
+                        VerticalContentAlignment = VerticalAlignment.Center
                     };
+                    checkStacker.PreviewMouseDown += (s, e) => { if (s == checkStacker && e.LeftButton == MouseButtonState.Pressed) { box.IsChecked = !box.IsChecked; e.Handled = true; } };
+                    checkStacker.MouseEnter += (s, e) => checkStacker.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+                    checkStacker.MouseLeave += (s, e) => checkStacker.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
                     box.Checked += (sender, args) =>
                     {
                         configField.Value = true;
@@ -191,7 +204,8 @@ namespace ACCManager.Controls
 
                         SaveOverlayConfigFields(overlayName, configFields);
                     };
-                    configStackers.Add(box);
+                    checkStacker.Children.Add(box);
+                    configStackers.Add(checkStacker);
                 }
 
                 if (pi.PropertyType == typeof(float))
@@ -213,7 +227,7 @@ namespace ACCManager.Controls
                                 Orientation = Orientation.Horizontal,
                                 VerticalAlignment = VerticalAlignment.Center,
                                 Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)),
-                                ToolTip = "Scroll Me.\nRight click to reset."
+                                ToolTip = "Right click to reset. Scroll Me.",
                             };
 
                             double min = 0.5;
