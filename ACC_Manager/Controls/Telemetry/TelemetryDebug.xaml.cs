@@ -37,11 +37,6 @@ namespace ACCManager.Controls
 
             updateDataButton.Click += UpdateDataButton_Click;
             this.MouseRightButtonUp += UpdateDataButton_Click;
-
-            UpdateStaticData();
-            UpdatePhysicsData();
-            UpdateGraphicsData();
-
         }
 
         private void UpdateDataButton_Click(object sender, RoutedEventArgs e)

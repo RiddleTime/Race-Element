@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using static ACCManager.Data.SetupJson;
 using static ACCManager.Data.ConversionFactory;
+using ACC_Manager.Util.NumberExtensions;
 
 namespace ACCManager.Controls
 {
@@ -105,7 +106,12 @@ namespace ACCManager.Controls
                             Text = CarModelToCarName[ParseCarName(carDir.Name)],
                             Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
                         };
-                        TreeViewItem carTreeViewItem = new TreeViewItem() { Header = carHeader };
+                        TreeViewItem carTreeViewItem = new TreeViewItem()
+                        {
+                            Header = carHeader,
+                            Background = new SolidColorBrush(Color.FromArgb(38, 10, 0, 0)),
+                        };
+                        carTreeViewItem.PreviewMouseLeftButtonDown += (s, e) => { carTreeViewItem.IsExpanded = !carTreeViewItem.IsExpanded; };
                         carTreeViewItem.ContextMenu = GetCarContextMenu(carDir);
 
                         // find track directories in car dir
@@ -121,12 +127,17 @@ namespace ACCManager.Controls
                                 Text = trackName,
                                 Style = Resources["MaterialDesignSubtitle2TextBlock"] as Style,
                             };
-                            TreeViewItem trackTreeViewItem = new TreeViewItem() { Header = trackHeader, DataContext = trackDir };
+                            TreeViewItem trackTreeViewItem = new TreeViewItem()
+                            {
+                                Header = trackHeader,
+                                DataContext = trackDir,
+                                Background = new SolidColorBrush(Color.FromArgb(19, 0, 0, 0)),
+                            };
+                            trackTreeViewItem.PreviewMouseLeftButtonDown += (s, e) => { trackTreeViewItem.IsExpanded = !trackTreeViewItem.IsExpanded; };
                             trackTreeViewItem.Expanded += (s, e) =>
                             {
                                 int targetItemInView = trackTreeViewItem.Items.Count;
-                                if (targetItemInView > 18)    // magic number :D (no just counted minimum size and made sure it will still show the track)
-                                    targetItemInView = 18;
+                                targetItemInView.ClipMax(18);
                                 ((TreeViewItem)trackTreeViewItem.Items.GetItemAt(targetItemInView - 1)).BringIntoView();
                             };
                             trackTreeViewItem.ContextMenu = GetTrackContextMenu(trackDir);

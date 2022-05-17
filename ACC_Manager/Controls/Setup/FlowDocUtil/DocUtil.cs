@@ -83,9 +83,9 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
         public static TableRow GetTableRowCompare(string value1, string title, string value2)
         {
             TableRow row = new TableRow();
-            TableCell cellA = new TableCell(GetDefaultParagraph(value1)) { TextAlignment = TextAlignment.Right };
+            TableCell cellA = new TableCell(GetDefaultParagraph(value1, new Thickness(0, 0, 5, 0))) { TextAlignment = TextAlignment.Right };
             TableCell cellB = new TableCell(GetDefaultParagraph(title)) { TextAlignment = TextAlignment.Center };
-            TableCell cellC = new TableCell(GetDefaultParagraph(value2)) { TextAlignment = TextAlignment.Left };
+            TableCell cellC = new TableCell(GetDefaultParagraph(value2, new Thickness(5, 0, 0, 0))) { TextAlignment = TextAlignment.Left };
 
             if (!value1.Equals(value2))
             {
@@ -148,9 +148,17 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
             return content;
         }
 
+        public static Paragraph GetDefaultParagraph(string inlineText, Thickness margin)
+        {
+            Paragraph content = GetDefaultParagraph(inlineText);
+            content.Margin = margin;
+            return content;
+        }
+
         public static Paragraph GetDefaultParagraph(string inlineText)
         {
             Paragraph content = GetDefaultParagraph();
+            content.Margin = new Thickness(5, 0, 0, 0);
             content.Inlines.Add(inlineText);
             return content;
         }

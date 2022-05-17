@@ -230,7 +230,7 @@ namespace ACCManager.Controls.Setup
             electronicsRowGroup.Rows.Add(DocUtil.GetTableRow("Engine map", $"{setup.basicSetup.electronics.eCUMap + 1}"));
 
             electronicsTable.RowGroups.Add(electronicsRowGroup);
-            electronicsSection.Blocks.Add(electronicsTable);
+            electronicsSection.Blocks.Add(electronicsTable);  
             electronicsSection.BorderBrush = Brushes.White;
             electronicsSection.BorderThickness = new Thickness(1, 1, 1, 1);
             flowDocument.Blocks.Add(electronicsSection);

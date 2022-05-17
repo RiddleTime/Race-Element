@@ -66,12 +66,12 @@ namespace ACCManager.Controls
 
                 ToggleButton toggle = new ToggleButton() { Height = 35, Width = 50, Cursor = Cursors.Hand, VerticalAlignment = VerticalAlignment.Center };
                 stackPanel.Children.Add(toggle);
-                Label label = new Label() { Content = x.Key, FontSize = 16, Cursor = Cursors.Hand, VerticalAlignment = VerticalAlignment.Center };
-                label.MouseUp += (s, e) => { toggle.IsChecked = !toggle.IsChecked; };
+                Label label = new Label() { Content = x.Key, FontSize = 16, Cursor = Cursors.Hand, VerticalAlignment = VerticalAlignment.Center, Width = 180 };
                 stackPanel.Children.Add(label);
                 StackPanel configStacker = GetConfigStacker(x.Value);
                 stackPanel.Children.Add(configStacker);
 
+                card.MouseLeftButtonDown += (s, e) => { if (s == card) { toggle.IsChecked = !toggle.IsChecked; } };
                 toggle.Checked += (s, e) =>
                 {
                     lock (OverlaysACC.ActiveOverlays)
@@ -118,7 +118,12 @@ namespace ACCManager.Controls
 
         private StackPanel GetConfigStacker(Type overlayType)
         {
-            StackPanel stacker = new StackPanel() { Margin = new Thickness(10, 0, 0, 0), Orientation = Orientation.Horizontal, VerticalAlignment = VerticalAlignment.Center };
+            StackPanel stacker = new StackPanel()
+            {
+                Margin = new Thickness(10, 0, 0, 0),
+                Orientation = Orientation.Horizontal,
+                VerticalAlignment = VerticalAlignment.Center
+            };
             List<FrameworkElement> configStackers = new List<FrameworkElement>();
 
             OverlayConfiguration overlayConfig = GetOverlayConfig(overlayType);
@@ -167,6 +172,7 @@ namespace ACCManager.Controls
                         Content = checkBoxlabel,
                         IsChecked = (bool)configField.Value,
                         Margin = new Thickness(5, 0, 0, 0),
+                        Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)),
                         VerticalAlignment = VerticalAlignment.Center,
                     };
                     box.Checked += (sender, args) =>
@@ -203,7 +209,7 @@ namespace ACCManager.Controls
                             StackPanel sliderStacker = new StackPanel()
                             {
                                 Name = "ScaleSlider",
-                                Margin = new Thickness(10, 0, 10, 0),
+                                Margin = new Thickness(0, 0, 10, 0),
                                 Orientation = Orientation.Horizontal,
                                 VerticalAlignment = VerticalAlignment.Center,
                                 Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)),

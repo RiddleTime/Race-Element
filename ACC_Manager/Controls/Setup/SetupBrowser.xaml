@@ -23,7 +23,7 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="400"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
@@ -65,7 +65,7 @@
             </Grid.RowDefinitions>
 
             <materialDesign:Card Grid.Row="0" Margin="3">
-                <FlowDocumentScrollViewer Focusable="False" Cursor="Arrow" MaxWidth="600">
+                <FlowDocumentScrollViewer Focusable="False" Cursor="Arrow" >
                     <FlowDocument  x:Name="flowDocument" Focusable="False" Cursor="Arrow" 
                            Background="{DynamicResource MaterialDesignPaper}"
                            FontFamily="{StaticResource RobotoMedium}" 

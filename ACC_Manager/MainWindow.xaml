@@ -156,6 +156,41 @@
                 </Grid>
             </TabItem>
 
+            <TabItem Style="{DynamicResource MaterialDesignTabItem}" Name="tabHUD" Height="60">
+                <TabItem.Header>
+                    <Grid  Margin="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <materialDesign:PackIcon
+                            Grid.Row="0"
+                            Kind="MonitorDashboard"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="20"
+                            Width="20"
+                        Foreground="White"    
+                        />
+                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">
+                            HUD
+                        </TextBlock>
+                    </Grid>
+                </TabItem.Header>
+
+                <Grid HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:TransitioningContent Grid.Column="1">
+                        <materialDesign:TransitioningContent.OpeningEffects>
+                            <materialDesign:TransitionEffect Kind="FadeIn"/>
+                        </materialDesign:TransitioningContent.OpeningEffects>
+                        <controls:HudTab></controls:HudTab>
+                    </materialDesign:TransitioningContent>
+                </Grid>
+            </TabItem>
+            
             <TabItem Style="{DynamicResource MaterialDesignTabItem}" Name="tabTools" Height="60">
                 <TabItem.Header>
                     <Grid>
@@ -220,41 +255,6 @@
                             <materialDesign:TransitionEffect Kind="FadeIn"/>
                         </materialDesign:TransitioningContent.OpeningEffects>
                         <controls:TelemetryTab></controls:TelemetryTab>
-                    </materialDesign:TransitioningContent>
-                </Grid>
-            </TabItem>
-
-            <TabItem Style="{DynamicResource MaterialDesignTabItem}" Name="tabHUD" Height="60">
-                <TabItem.Header>
-                    <Grid  Margin="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <materialDesign:PackIcon
-                            Grid.Row="0"
-                            Kind="MonitorDashboard"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            Height="20"
-                            Width="20"
-                        Foreground="White"    
-                        />
-                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">
-                            HUD
-                        </TextBlock>
-                    </Grid>
-                </TabItem.Header>
-
-                <Grid HorizontalAlignment="Stretch">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <materialDesign:TransitioningContent Grid.Column="1">
-                        <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="FadeIn"/>
-                        </materialDesign:TransitioningContent.OpeningEffects>
-                        <controls:HudTab></controls:HudTab>
                     </materialDesign:TransitioningContent>
                 </Grid>
             </TabItem>

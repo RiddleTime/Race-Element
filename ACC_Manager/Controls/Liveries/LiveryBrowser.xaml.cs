@@ -1,4 +1,5 @@
-﻿using ACCManager.Data;
+﻿using ACC_Manager.Util.NumberExtensions;
+using ACCManager.Data;
 using ACCManager.LiveryParser;
 using ACCManager.Util;
 using Newtonsoft.Json;
@@ -215,13 +216,17 @@ namespace ACCManager.Controls
                     Width = liveriesTreeViewTeams.Width - 5,
                     DataContext = tItem.Key
                 };
-                TreeViewItem modelItem = new TreeViewItem() { Header = teamHeader };
+                TreeViewItem modelItem = new TreeViewItem()
+                {
+                    Header = teamHeader,
+                    Background = new SolidColorBrush(Color.FromArgb(38, 10, 0, 0)),
+                };
+                modelItem.PreviewMouseLeftButtonDown += (s, e) => { modelItem.IsExpanded = !modelItem.IsExpanded; };
                 if (expandedCarHeaders.Contains(tItem.Key)) modelItem.ExpandSubtree();
                 modelItem.Expanded += (s, e) =>
                 {
                     int targetItemInView = modelItem.Items.Count;
-                    if (targetItemInView > 18)    // magic number :D (no just counted minimum size and made sure it will still show the track)
-                        targetItemInView = 18;
+                    targetItemInView.ClipMax(18);
                     ((TreeViewItem)modelItem.Items.GetItemAt(targetItemInView - 1)).BringIntoView();
                     expandedCarHeaders.Add(tItem.Key);
                 };
@@ -282,13 +287,17 @@ namespace ACCManager.Controls
                     Width = liveriesTreeViewTeams.Width - 5,
                     DataContext = tItem.Key
                 };
-                TreeViewItem teamItem = new TreeViewItem() { Header = teamHeader };
+                TreeViewItem teamItem = new TreeViewItem()
+                {
+                    Header = teamHeader,
+                    Background = new SolidColorBrush(Color.FromArgb(38, 10, 0, 0)),
+                };
+                teamItem.PreviewMouseLeftButtonDown += (s, e) => { teamItem.IsExpanded = !teamItem.IsExpanded; };
                 if (expandedTeamHeaders.Contains(tItem.Key)) teamItem.ExpandSubtree();
                 teamItem.Expanded += (s, e) =>
                 {
-                    int targetItemInView = teamItem.Items.Count;
-                    if (targetItemInView > 18)    // magic number :D (no just counted minimum size and made sure it will still show the track)
-                        targetItemInView = 18;
+                    int targetItemInView =  teamItem.Items.Count;
+                    targetItemInView.ClipMax(18);
                     ((TreeViewItem)teamItem.Items.GetItemAt(targetItemInView - 1)).BringIntoView();
                     expandedTeamHeaders.Add(tItem.Key);
                 };
@@ -361,13 +370,17 @@ namespace ACCManager.Controls
                     Width = liveriesTreeViewTeams.Width - 5,
                     DataContext = liveryTag.Name
                 };
-                TreeViewItem tagItem = new TreeViewItem() { Header = tagHeader };
+                TreeViewItem tagItem = new TreeViewItem()
+                {
+                    Header = tagHeader,
+                    Background = new SolidColorBrush(Color.FromArgb(38, 10, 0, 0)),
+                };
+                tagItem.PreviewMouseLeftButtonDown += (s, e) => { tagItem.IsExpanded = !tagItem.IsExpanded; };
                 if (expandedTagHeaders.Contains(liveryTag.Name)) tagItem.ExpandSubtree();
                 tagItem.Expanded += (s, e) =>
                 {
                     int targetItemInView = tagItem.Items.Count;
-                    if (targetItemInView > 18)    // magic number :D (no just counted minimum size and made sure it will still show the track)
-                        targetItemInView = 18;
+                    targetItemInView.ClipMax(18);
                     ((TreeViewItem)tagItem.Items.GetItemAt(targetItemInView - 1)).BringIntoView();
                     expandedTagHeaders.Add(liveryTag.Name);
                 };

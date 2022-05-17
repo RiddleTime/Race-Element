@@ -117,24 +117,6 @@ namespace ACCManager.HUD.ACC.Data.Tracker
                         CurrentLap = new LapTimingData();
                     }
 
-                    // collect sector times.
-                    if (CurrentSector != pageGraphics.CurrentSectorIndex)
-                    {
-                        if (CurrentLap.Sector1 == -1 && CurrentSector != 0)
-                        {
-                            // simply don't collect, we're already into a lap and passed sector 1, can't properly calculate the sector times now.
-                        }
-                        else
-                            switch (pageGraphics.CurrentSectorIndex)
-                            {
-                                case 1: CurrentLap.Sector1 = pageGraphics.LastSectorTime; break;
-                                case 2: CurrentLap.Sector2 = pageGraphics.LastSectorTime - CurrentLap.Sector1; break;
-                                case 0: CurrentLap.Sector3 = pageGraphics.LastTimeMs - CurrentLap.Sector2 - CurrentLap.Sector1; break;
-                            }
-
-                        CurrentSector = pageGraphics.CurrentSectorIndex;
-                    }
-
                     // finalize lap time data and add it to history.
                     if (CurrentLap.Index != pageGraphics.CompletedLaps && pageGraphics.LastTimeMs != int.MaxValue)
                     {
@@ -155,6 +137,24 @@ namespace ACCManager.HUD.ACC.Data.Tracker
                     if (CurrentLap.IsValid != pageGraphics.IsValidLap)
                     {
                         CurrentLap.IsValid = pageGraphics.IsValidLap;
+                    }
+
+                    // collect sector times.
+                    if (CurrentSector != pageGraphics.CurrentSectorIndex)
+                    {
+                        if (CurrentLap.Sector1 == -1 && CurrentSector != 0)
+                        {
+                            // simply don't collect, we're already into a lap and passed sector 1, can't properly calculate the sector times now.
+                        }
+                        else
+                            switch (pageGraphics.CurrentSectorIndex)
+                            {
+                                case 1: CurrentLap.Sector1 = pageGraphics.LastSectorTime; break;
+                                case 2: CurrentLap.Sector2 = pageGraphics.LastSectorTime - CurrentLap.Sector1; break;
+                                case 0: CurrentLap.Sector3 = pageGraphics.LastTimeMs - CurrentLap.Sector2 - CurrentLap.Sector1; break;
+                            }
+
+                        CurrentSector = pageGraphics.CurrentSectorIndex;
                     }
                 }
             }).Start();
