@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ACCManager.HUD.ACC.Data.Tracker
+namespace ACCManager.HUD.ACC.Data.Tracker.Laps
 {
 
     /// <summary>

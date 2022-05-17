@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Data\Trackers.cs" />
     <Compile Include="Data\Tracker\Laps\LapDataExtensions.cs" />
+    <Compile Include="Data\Tracker\Weather\WeatherTracker.cs" />
     <Compile Include="OverlaysACC.cs" />
     <Compile Include="Overlays\OverlayAccelerometer\AccelerometerOverlay.cs" />
     <Compile Include="Overlays\OverlayCarInfo\CarInfoOverlay.cs" />
