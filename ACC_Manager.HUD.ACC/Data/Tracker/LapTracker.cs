@@ -10,16 +10,28 @@ namespace ACCManager.HUD.ACC.Data.Tracker
 {
 
     /// <summary>
-    /// All data except for the Index must be divided by 1000 to get the actual value (floating points are annoying)
+    /// All data except for the Index must be divided by 1000 to get the actual value (floating point precision is annoying)
     /// </summary>
     internal class LapData
     {
+        /// <summary>
+        /// Lap Index
+        /// </summary>
         public int Index { get; set; } = -1;
+
+        /// <summary>
+        /// Lap Time
+        /// </summary>
         public int Time { get; set; } = -1;
         public bool IsValid { get; set; } = true;
         public int Sector1 { get; set; } = -1;
         public int Sector2 { get; set; } = -1;
         public int Sector3 { get; set; } = -1;
+
+
+        /// <summary>
+        /// Fuel left at the end of the lap, divide by 1000...
+        /// </summary>
         public int FuelLeft { get; set; } = -1;
     }
 
