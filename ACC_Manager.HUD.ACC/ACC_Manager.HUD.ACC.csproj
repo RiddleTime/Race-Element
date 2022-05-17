@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\Trackers.cs" />
+    <Compile Include="Data\Tracker\Laps\LapDataExtensions.cs" />
     <Compile Include="OverlaysACC.cs" />
     <Compile Include="Overlays\OverlayAccelerometer\AccelerometerOverlay.cs" />
     <Compile Include="Overlays\OverlayCarInfo\CarInfoOverlay.cs" />
@@ -57,7 +58,7 @@
     <Compile Include="Overlays\OverlayInputTrace\InputDataCollector.cs" />
     <Compile Include="Overlays\OverlayInputTrace\InputGraph.cs" />
     <Compile Include="Overlays\OverlayInputTrace\InputTraceOverlay.cs" />
-    <Compile Include="Data\Tracker\LapTracker.cs" />
+    <Compile Include="Data\Tracker\Laps\LapTracker.cs" />
     <Compile Include="Overlays\OverlayPressureTrace\PressureTraceOverlay.cs" />
     <Compile Include="Overlays\OverlayPressureTrace\TyrePressureDataCollector.cs" />
     <Compile Include="Overlays\OverlayPressureTrace\TyrePressureGraph.cs" />

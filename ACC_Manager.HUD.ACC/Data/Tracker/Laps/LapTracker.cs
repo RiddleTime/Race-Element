@@ -12,7 +12,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker
     /// <summary>
     /// All data except for the Index must be divided by 1000 to get the actual value (floating point precision is annoying)
     /// </summary>
-    internal class LapData
+    public class LapData
     {
         /// <summary>
         /// Lap Index
@@ -63,55 +63,6 @@ namespace ACCManager.HUD.ACC.Data.Tracker
 
             if (!IsTracking)
                 this.Start();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="time"></param>
-        /// <param name="sector">1 based indexing </param>
-        /// <param name="lap"></param>
-        /// <returns></returns>
-        internal bool IsSectorFastest(int sector, int time)
-        {
-            List<LapData> data;
-            lock (Instance.Laps)
-                data = Instance.Laps;
-
-            if (sector == 1)
-            {
-                foreach (LapData timing in data)
-                {
-                    if (timing.IsValid && timing.Sector1 < time)
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            if (sector == 2)
-            {
-                foreach (LapData timing in data)
-                {
-                    if (timing.IsValid && timing.Sector2 < time)
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            if (sector == 3)
-            {
-                foreach (LapData timing in data)
-                {
-                    if (timing.IsValid && timing.Sector3 < time)
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
         }
 
         internal void Start()

@@ -1,4 +1,5 @@
 ﻿using ACCManager.HUD.ACC.Data.Tracker;
+using ACCManager.HUD.ACC.Data.Tracker.Laps;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.HUD.Overlay.Util;
@@ -33,7 +34,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         InfoPanel panel = new InfoPanel(11, overlayWidth);
         public LapDeltaOverlay(Rectangle rectangle) : base(rectangle, "Lap Delta Overlay")
         {
-            overlayHeight = panel.FontHeight * 4;
+            overlayHeight = panel.FontHeight * 5;
 
             this.Width = overlayWidth + 1;
             this.Height = overlayHeight + 1;
@@ -72,6 +73,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
         private void AddSectorLines()
         {
+
             LapData lap = LapTracker.Instance.CurrentLap;
 
             if (lastLap != null && pageGraphics.NormalizedCarPosition < 0.08)
@@ -82,21 +84,21 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             string sector3 = "-";
             if (LapTracker.Instance.CurrentLap.Sector1 > -1)
             {
-                sector1 = $"{((float)lap.Sector1 / 1000):F3}";
+                sector1 = $"{lap.GetSector1():F3}";
             }
             else if (pageGraphics.CurrentSectorIndex == 0)
                 sector1 = $"{((float)pageGraphics.CurrentTimeMs / 1000):F3}";
 
 
             if (lap.Sector2 > -1)
-                sector2 = $"{((float)lap.Sector2 / 1000):F3}";
+                sector2 = $"{lap.GetSector2():F3}";
             else if (lap.Sector1 > -1)
             {
                 sector2 = $"{(((float)pageGraphics.CurrentTimeMs - lap.Sector1) / 1000):F3}";
             }
 
             if (lap.Sector3 > -1)
-                sector3 = $"{((float)lap.Sector3 / 1000):F3}";
+                sector3 = $"{lap.GetSector3():F3}";
             else if (lap.Sector2 > -1 && pageGraphics.CurrentSectorIndex == 2)
             {
                 sector3 = $"{(((float)pageGraphics.CurrentTimeMs - lap.Sector2 - lap.Sector1) / 1000):F3}";
@@ -104,17 +106,17 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
 
             if (pageGraphics.CurrentSectorIndex != 0 && lap.Sector1 != -1 && lap.IsValid)
-                panel.AddLine("S1", $"{sector1}", LapTracker.Instance.IsSectorFastest(1, lap.Sector1) ? Brushes.LimeGreen : Brushes.White);
+                panel.AddLine("S1", $"{sector1}", LapTracker.Instance.Laps.IsSectorFastest(1, lap.Sector1) ? Brushes.LimeGreen : Brushes.White);
             else
                 panel.AddLine("S1", $"{sector1}");
 
             if (pageGraphics.CurrentSectorIndex != 1 && lap.Sector2 != -1 && lap.IsValid)
-                panel.AddLine("S2", $"{sector2}", LapTracker.Instance.IsSectorFastest(2, lap.Sector2) ? Brushes.LimeGreen : Brushes.White);
+                panel.AddLine("S2", $"{sector2}", LapTracker.Instance.Laps.IsSectorFastest(2, lap.Sector2) ? Brushes.LimeGreen : Brushes.White);
             else
                 panel.AddLine("S2", $"{sector2}");
 
             if (pageGraphics.CurrentSectorIndex != 2 && lap.Sector3 != -1 && lap.IsValid)
-                panel.AddLine("S3", $"{sector3}", LapTracker.Instance.IsSectorFastest(3, lap.Sector3) ? Brushes.LimeGreen : Brushes.White);
+                panel.AddLine("S3", $"{sector3}", LapTracker.Instance.Laps.IsSectorFastest(3, lap.Sector3) ? Brushes.LimeGreen : Brushes.White);
             else
                 panel.AddLine("S3", $"{sector3}");
         }
