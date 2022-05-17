@@ -55,7 +55,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
         private void Collector_LapFinished(object sender, LapTimingData e)
         {
-            lastLap = e;
+            if (e.Sector1 != -1 && e.Sector2 != -1 && e.Sector3 != -1)
+                lastLap = e;
         }
 
         public override void Render(Graphics g)
@@ -74,10 +75,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             LapTimingData lap = LapTimeTracker.Instance.CurrentLap;
 
             if (lastLap != null && pageGraphics.NormalizedCarPosition < 0.08)
-            {
-                if (lastLap.Sector1 != -1 && lastLap.Sector2 != -1 && lastLap.Sector3 != -1)
-                    lap = lastLap;
-            }
+                lap = lastLap;
 
             string sector1 = "-";
             string sector2 = "-";
