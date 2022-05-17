@@ -131,7 +131,7 @@ namespace ACCManager.HUD.Overlay.Internal
                         lock (this)
                         {
                             Thread.Sleep(1000 / RefreshRateHz);
-                            if (this._disposed)
+                            if (this == null || this._disposed)
                             {
                                 this.Stop();
                                 return;
@@ -201,11 +201,11 @@ namespace ACCManager.HUD.Overlay.Internal
             {
                 if (ShouldRender())
                 {
-                    if (AllowRescale)
-                        e.Graphics.ScaleTransform(Scale, Scale);
-
                     try
                     {
+                        if (AllowRescale)
+                            e.Graphics.ScaleTransform(Scale, Scale);
+
                         Render(e.Graphics);
                     }
                     catch (Exception ex)
@@ -213,6 +213,10 @@ namespace ACCManager.HUD.Overlay.Internal
                         Debug.WriteLine(ex);
                         LogWriter.WriteToLog(ex);
                     }
+                }
+                else
+                {
+                    e.Graphics.Clear(Color.Transparent);
                 }
             }
         }
