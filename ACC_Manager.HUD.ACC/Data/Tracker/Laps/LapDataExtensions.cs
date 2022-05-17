@@ -48,7 +48,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
 
             int total = 0;
             for (int i = 0; i < lapAmount; i++)
-                total += laps[laps.Count - (lapAmount - i)].Time;
+                total += laps[laps.Count - 1 - (lapAmount - i)].Time;
 
             return total / lapAmount;
         }
