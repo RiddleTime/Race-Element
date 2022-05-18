@@ -66,6 +66,7 @@
     <Compile Include="Overlays\OverlayPressureTrace\TyrePressures.cs" />
     <Compile Include="Overlays\OverlayTyreInfo\TyreInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayTrackInfo\TrackInfoOverlay.cs" />
+    <Compile Include="Overlays\OverlayWeather\WeatherOverlay.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

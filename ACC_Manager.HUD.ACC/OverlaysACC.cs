@@ -10,7 +10,7 @@ using ACCManager.HUD.ACC.Overlays.OverlayPressureTrace;
 using ACCManager.HUD.ACC.Overlays.OverlayStaticInfo;
 using ACCManager.HUD.ACC.Overlays.OverlayTrackInfo;
 using ACCManager.HUD.ACC.Overlays.OverlayTyreInfo;
-
+using ACCManager.HUD.ACC.Overlays.OverlayWeather;
 using ACCManager.HUD.Overlay.Internal;
 
 using System;
@@ -36,6 +36,7 @@ namespace ACCManager.HUD.ACC
 #if DEBUG
             {"Car Info", typeof(CarInfoOverlay) },
             {"Tyre Info", typeof(TyreInfoOverlay) },
+            {"Weather Info", typeof(WeatherOverlay) },
 
 
             // yea this shit has to be at the bottom...
