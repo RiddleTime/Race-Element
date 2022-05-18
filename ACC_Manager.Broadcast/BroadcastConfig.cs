@@ -31,7 +31,7 @@ namespace ACC_Manager.Broadcast
                     {
                         Root config = GetConfiguration(fileStream);
                         if (config.updListenerPort == 0)
-                            LogWriter.WriteToLog("Please change your broadcasting.json.. the port is 0, change it to something else");
+                            LogWriter.WriteToLog($"Please change the port number in \"{FileUtil.ConfigPath}broadcasting.json\" .change it to something higher than 0.");
 
                         return config;
                     }
