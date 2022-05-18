@@ -25,10 +25,13 @@ namespace ACCManager.HUD.Overlay.Internal
         }
 
         private ACCUdpRemoteClient client;
+        private ACCSharedMemory sharedMemory;
         public bool IsConnected { get; private set; }
 
         private BroadcastTracker()
         {
+
+            sharedMemory = new ACCSharedMemory();
             // fetch from json....
             this.Connect();
 
@@ -43,7 +46,11 @@ namespace ACCManager.HUD.Overlay.Internal
         public void Connect()
         {
             client = new ACCUdpRemoteClient("127.0.0.1", 9000, string.Empty, string.Empty, string.Empty, 100);
-            client.MessageHandler.OnRealtimeUpdate += (s, realTimeUpdate) => OnRealTimeUpdate?.Invoke(this, realTimeUpdate);
+            client.MessageHandler.OnRealtimeUpdate += (s, realTimeUpdate) =>
+            {
+
+                OnRealTimeUpdate?.Invoke(this, realTimeUpdate);
+            };
             client.MessageHandler.OnConnectionStateChanged += (int connectionId, bool connectionSuccess, bool isReadonly, string error) =>
             {
                 ConnectionState state = new ConnectionState()
@@ -58,13 +65,28 @@ namespace ACCManager.HUD.Overlay.Internal
             };
             client.MessageHandler.OnTrackDataUpdate += (s, trackData) => OnTrackDataUpdate?.Invoke(this, trackData);
 
-            client.MessageHandler.OnRealtimeCarUpdate += (s, e) => OnRealTimeCarUpdate?.Invoke(this, e);
+            client.MessageHandler.OnRealtimeCarUpdate += (s, e) =>
+            {
+                int localCarIndex = sharedMemory.ReadGraphicsPageFile().CarIds[0];
+
+                if (e.CarIndex == localCarIndex)
+                    OnRealTimeCarUpdate?.Invoke(this, e);
+            };
 
             this.IsConnected = true;
         }
 
+        private void ResetData()
+        {
+            OnConnectionStateChanged?.Invoke(this, new ConnectionState());
+            OnRealTimeUpdate?.Invoke(this, new RealtimeUpdate());
+            OnRealTimeCarUpdate?.Invoke(this, new RealtimeCarUpdate());
+            OnTrackDataUpdate?.Invoke(this, new TrackData());
+        }
+
         public void Disconnect()
         {
+            ResetData();
             client.Shutdown();
             client.Dispose();
             this.IsConnected = false;
