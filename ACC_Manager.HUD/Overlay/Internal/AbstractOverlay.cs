@@ -32,6 +32,8 @@ namespace ACCManager.HUD.Overlay.Internal
         public SPageFilePhysics pagePhysics;
         public SPageFileGraphic pageGraphics;
         public SPageFileStatic pageStatic;
+        public Broadcast.Structs.RealtimeUpdate broadCastRealTime;
+
 
         public int ScreenWidth => (int)System.Windows.SystemParameters.PrimaryScreenWidth;
         public int ScreenHeight => (int)System.Windows.SystemParameters.PrimaryScreenHeight;
@@ -101,6 +103,8 @@ namespace ACCManager.HUD.Overlay.Internal
                 PageStaticTracker.Instance.Tracker += PageStaticChanged;
                 PageGraphicsTracker.Instance.Tracker += PageGraphicsChanged;
                 PagePhysicsTracker.Instance.Tracker += PagePhysicsChanged;
+                BroadcastTracker.Instance.OnRealTimeUpdate += BroadCastRealTimeChanged;
+
                 ACCSharedMemory mem = new ACCSharedMemory();
 
                 pageStatic = mem.ReadStaticPageFile();
@@ -148,6 +152,11 @@ namespace ACCManager.HUD.Overlay.Internal
             catch (Exception ex) { Debug.WriteLine(ex); }
         }
 
+        private void BroadCastRealTimeChanged(object sender, Broadcast.Structs.RealtimeUpdate e)
+        {
+            broadCastRealTime = e;
+        }
+
         public void RequestRedraw()
         {
             this.UpdateLayeredWindow();
@@ -183,6 +192,7 @@ namespace ACCManager.HUD.Overlay.Internal
             PageStaticTracker.Instance.Tracker -= PageStaticChanged;
             PageGraphicsTracker.Instance.Tracker -= PageGraphicsChanged;
             PagePhysicsTracker.Instance.Tracker -= PagePhysicsChanged;
+            BroadcastTracker.Instance.OnRealTimeUpdate -= BroadCastRealTimeChanged;
 
             Draw = false;
             this.Close();

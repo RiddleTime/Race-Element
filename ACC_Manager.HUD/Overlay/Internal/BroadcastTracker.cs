@@ -11,13 +11,26 @@ namespace ACCManager.HUD.Overlay.Internal
 {
     internal class BroadcastTracker : IDisposable
     {
+        private static BroadcastTracker _instance;
+        internal static BroadcastTracker Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new BroadcastTracker();
+
+                return _instance;
+            }
+        }
+
         private ACCUdpRemoteClient client;
 
         private BroadcastTracker()
         {
-            client = new ACCUdpRemoteClient("127.0.0.1", 9000, String.Empty, string.Empty, string.Empty, 100);
+            // fetch from json....
+            client = new ACCUdpRemoteClient("127.0.0.1", 9000, string.Empty, string.Empty, string.Empty, 100);
 
-            client.MessageHandler.OnRealtimeUpdate += (s, e) => OnRealTimeUpdate?.Invoke(this, e);
+            client.MessageHandler.OnRealtimeUpdate += (s, realTimeUpdate) => OnRealTimeUpdate?.Invoke(this, realTimeUpdate);
             client.MessageHandler.OnConnectionStateChanged += (int connectionId, bool connectionSuccess, bool isReadonly, string error) => OnConnectionStateChanged?.Invoke(this, new ConnectionState()
             {
                 ConnectionId = connectionId,
