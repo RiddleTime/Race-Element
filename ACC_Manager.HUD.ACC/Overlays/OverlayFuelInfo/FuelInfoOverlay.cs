@@ -49,61 +49,50 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
         public override void Render(Graphics g)
         {
             // Some global variants
-            double bufferGlobal = pageGraphics.FuelXLap + 1;
+            double bufferGlobal = pageGraphics.FuelXLap;
             double bestLapTime = pageGraphics.BestTimeMs; bestLapTime.ClipMax(180000);
             double fuelInCarDebug = Math.Max(pagePhysics.Fuel, 0);
             double stintDebug = pageGraphics.DriverStintTimeLeft < 0 ? -1 : pageGraphics.DriverStintTimeLeft;
-
-            // Workings for fuel-end
-            double fuelToEnd = pageGraphics.SessionTimeLeft / bestLapTime * pageGraphics.FuelXLap;
-
-
-            TimeSpan time = TimeSpan.FromMilliseconds(stintDebug);
-            string stintTime = time.ToString(@"hh\:mm\:ss");
-
-            double stintFuelBuffer = pageGraphics.DriverStintTimeLeft / bestLapTime * pageGraphics.FuelXLap + pageGraphics.UsedFuelSinceRefuel + pageGraphics.FuelXLap;
+            //**********************
+            // Workings for Stints
             double stintFuel = pageGraphics.DriverStintTimeLeft / bestLapTime * pageGraphics.FuelXLap + pageGraphics.UsedFuelSinceRefuel;
-            
-            double fuelToAddStint = Math.Min(stintFuel, pageStatic.MaxFuel);
-            double fuelToAddNoStint = Math.Max(Math.Min(Math.Ceiling(fuelToEnd - fuelInCarDebug), pageStatic.MaxFuel), 0);
+            double fuelToAddStint = Math.Max(Math.Min(stintFuel - fuelInCarDebug, pageStatic.MaxFuel), pageGraphics.FuelXLap * -1);
+            //**********************
+            // Workings for no Stint
+            double fuelToEnd = pageGraphics.SessionTimeLeft / bestLapTime * pageGraphics.FuelXLap;
+            double fuelToAddNoStint = Math.Max(Math.Min(Math.Ceiling(fuelToEnd - fuelInCarDebug), pageStatic.MaxFuel), pageGraphics.FuelXLap * -1);
+            //**********************
             double fuelToAdd = stintDebug == -1 ? fuelToAddNoStint : fuelToAddStint;
-            double fuelToAddBuffer = stintDebug == -1 ? fuelToAddNoStint + pageGraphics.FuelXLap : fuelInCarDebug > fuelToAddStint + pageGraphics.FuelXLap ? 0 : fuelToAddStint + pageGraphics.FuelXLap;
-
+            // Fuel Time Remaining
             double fuelTimeCalc = pageGraphics.FuelEstimatedLaps * bestLapTime;
             TimeSpan time2 = TimeSpan.FromMilliseconds(fuelTimeCalc);
             string fuelTime = time2.ToString(@"hh\:mm\:ss");
-            //*************** TESTING *************************
-            //*************************************************
+            //**********************
+            // Stint Time Remaining
+            TimeSpan time = TimeSpan.FromMilliseconds(stintDebug);
+            string stintTime = time.ToString(@"hh\:mm\:ss");
+            //**********************
             Brush fuelBarBrush = pagePhysics.Fuel / pageStatic.MaxFuel < 0.15 ? Brushes.Red : Brushes.OrangeRed;
+            Brush fuelTimeBrush = stintDebug > 1 ? fuelTimeCalc <= stintDebug ? Brushes.Red : Brushes.LimeGreen : fuelTimeCalc <= pageGraphics.SessionTimeLeft ? Brushes.Red : Brushes.LimeGreen;
             //Start (Basic)
             infoPanel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel:F2} L", 0, pageStatic.MaxFuel, pagePhysics.Fuel, fuelBarBrush);
             infoPanel.AddLine("Laps Left", $"{pageGraphics.FuelEstimatedLaps:F1} @ {pageGraphics.FuelXLap:F2}L");
             if (this.config.IncludeFuelBuffer)
-                infoPanel.AddLine("Fuel-End+", $"{fuelToEnd + bufferGlobal:F1} : Add {fuelToAddBuffer:F0}");
+                infoPanel.AddLine("Fuel-End+", $"{fuelToEnd + bufferGlobal:F1} : Add {fuelToAdd + bufferGlobal:F0}");
             else
-                infoPanel.AddLine("Fuel-End", $"{fuelToEnd:F1} : Add {fuelToAdd:F0}");
+                infoPanel.AddLine("Fuel-End", $"{fuelToEnd:F1} : Add {Math.Max(fuelToAdd, 0):F0}");
             //End (Basic)
             //Magic Start (Advanced)
             if (this.config.ShowAdvancedInfo)
             {
                 infoPanel.AddLine("Stint Time", stintTime);
-
-                if (stintDebug > -1)
-                    if (fuelTimeCalc <= stintDebug)
-                        infoPanel.AddLine("Fuel Time", fuelTime, Brushes.Red);
-                    else
-                        infoPanel.AddLine("Fuel Time", fuelTime, Brushes.LimeGreen);
-                else
-                    if (fuelTimeCalc <= pageGraphics.SessionTimeLeft)
-                    infoPanel.AddLine("Fuel Time", fuelTime, Brushes.Red);
-                else
-                    infoPanel.AddLine("Fuel Time", fuelTime, Brushes.LimeGreen);
+                infoPanel.AddLine("Fuel Time", fuelTime, fuelTimeBrush);
 
                 if (stintDebug == -1)
                     infoPanel.AddLine("Stint Fuel", "No Stints");
                 else
                     if (this.config.IncludeFuelBuffer)
-                    infoPanel.AddLine("Stint Fuel+", stintFuelBuffer.ToString("F1"));
+                    infoPanel.AddLine("Stint Fuel+", $"{stintFuel + bufferGlobal:F1}");
                 else
                     infoPanel.AddLine("Stint Fuel", stintFuel.ToString("F1"));
             }
