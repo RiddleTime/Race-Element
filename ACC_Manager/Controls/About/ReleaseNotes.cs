@@ -10,6 +10,8 @@ namespace ACCManager.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.0.6.2", "- Integrate broadcast data, avaiable for overlay developers."+
+                        "\n- HUD: Added Time of Day to Track Info overlay."},
             {"0.0.6.1", "- Improve logging for overlays." },
             {"0.0.6.0", "- HUD Tab:"+
                         "\n    - Scroll the scale control to adjust the scale."+

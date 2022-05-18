@@ -55,7 +55,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
             int previousLapFuelLeft = -1;
             for (int i = 0; i < lapAmount; i++)
             {
-                int lapFuelLeft = laps[laps.Count - 1 - (lapAmount - i)].FuelLeft;
+                int lapFuelLeft = laps[laps.Count - (lapAmount - i)].FuelLeft;
 
                 if (previousLapFuelLeft != -1)
                     total += previousLapFuelLeft - lapFuelLeft;
@@ -63,7 +63,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
                 previousLapFuelLeft = lapFuelLeft;
             }
 
-            return total / lapAmount;
+            return total / (lapAmount - 1);
         }
 
 
@@ -93,7 +93,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
             int validCount = 0;
             for (int i = 0; i < lapAmount; i++)
             {
-                LapData lap = laps[laps.Count - 1 - (lapAmount - i)];
+                LapData lap = laps[laps.Count - (lapAmount - i)];
                 if (onlyValidLaps)
                 {
                     if (lap.IsValid)

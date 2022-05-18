@@ -133,10 +133,12 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
                         LogWriter.WriteToLog(ex);
                     }
                 }
+ 
+                _instance = null;
+                IsTracking = false;
             }).Start();
 
-            _instance = null;
-            IsTracking = false;
+
         }
 
         internal void Stop()
