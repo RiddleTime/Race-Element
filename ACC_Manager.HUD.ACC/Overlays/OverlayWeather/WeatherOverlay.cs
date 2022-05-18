@@ -51,10 +51,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayWeather
             panel.AddLine("In 30", WeatherTracker.Instance.Weather.In30.ToString());
 
 
-
-
-
-            panel.AddLine("Rain Level", $"{broadCastRealTime.AmbientTemp}");
             panel.Draw(g);
         }
 

@@ -37,6 +37,8 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public event EventHandler<RealtimeUpdate> OnRealTimeUpdate;
         public event EventHandler<ConnectionState> OnConnectionStateChanged;
+        public event EventHandler<TrackData> OnTrackDataUpdate;
+        public event EventHandler<RealtimeCarUpdate> OnRealTimeCarUpdate;
 
         public void Connect()
         {
@@ -54,7 +56,10 @@ namespace ACCManager.HUD.Overlay.Internal
 
                 OnConnectionStateChanged?.Invoke(this, state);
             };
-            //client.MessageHandler.OnBroadcastingEvent += (s, e) => Debug.WriteLine(e.Msg);
+            client.MessageHandler.OnTrackDataUpdate += (s, trackData) => OnTrackDataUpdate?.Invoke(this, trackData);
+
+            client.MessageHandler.OnRealtimeCarUpdate += (s, e) => OnRealTimeCarUpdate?.Invoke(this, e);
+
             this.IsConnected = true;
         }
 

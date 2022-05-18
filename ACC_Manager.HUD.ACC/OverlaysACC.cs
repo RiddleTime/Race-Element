@@ -44,7 +44,9 @@ namespace ACCManager.HUD.ACC
             {"Debug Static Data", typeof(StaticInfoOverlay) },
             {"Debug Physics Data", typeof(PhysicsInfoOverlay) },
             {"Debug Graphics Data", typeof(GraphicsInfoOverlay) },
-            {"Debug Broadcast Realtime", typeof(BroadcastRealtimeOverlay) }
+            {"Debug Broadcast Realtime", typeof(BroadcastRealtimeOverlay) },
+            {"Debug Broadcast Trackdata", typeof(BroadcastTrackDataOverlay) },
+            {"Debug Broadcast Carupdate", typeof(BroadcastCarUpdateOverlay) }
 #endif
         };
 
