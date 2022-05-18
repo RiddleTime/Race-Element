@@ -19,29 +19,38 @@ namespace ACC_Manager.Broadcast
             public string commandPassword { get; set; }
         }
 
+        private static string _lock = String.Empty;
+
         public static Root GetConfiguration()
         {
-            FileInfo broadcastingConfig = new FileInfo(FileUtil.ConfigPath + "broadcasting.json");
-
-            if (broadcastingConfig.Exists)
+            lock (_lock)
             {
-                try
-                {
-                    using (FileStream fileStream = broadcastingConfig.OpenRead())
-                    {
-                        Root config = GetConfiguration(fileStream);
-                        if (config.updListenerPort == 0)
-                            LogWriter.WriteToLog($"Please change the port number in \"{FileUtil.ConfigPath}broadcasting.json\" .change it to something higher than 0.");
+                FileInfo broadcastingConfig = new FileInfo(FileUtil.ConfigPath + "broadcasting.json");
 
-                        return config;
+                if (broadcastingConfig.Exists)
+                {
+                    try
+                    {
+                        using (FileStream fileStream = broadcastingConfig.OpenRead())
+                        {
+                            Root config = GetConfiguration(fileStream);
+
+                            if (config.updListenerPort == 0)
+                            {
+                                config.updListenerPort = 9000;
+                                File.WriteAllText(broadcastingConfig.FullName, JsonConvert.SerializeObject(config, Formatting.Indented));
+                                LogWriter.WriteToLog($"Auto-Changed the port number in \"{FileUtil.ConfigPath}broadcasting.json\" from 0 to 9000.");
+                            }
+
+                            return config;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex);
                     }
                 }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex);
-                }
             }
-
             return null;
         }
 
