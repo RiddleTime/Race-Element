@@ -45,7 +45,7 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public void Connect()
         {
-            client = new ACCUdpRemoteClient("127.0.0.1", 9000, string.Empty, string.Empty, string.Empty, 100);
+            client = new ACCUdpRemoteClient("127.0.0.1", 9000, string.Empty, string.Empty, string.Empty, 200);
             client.MessageHandler.OnRealtimeUpdate += (s, realTimeUpdate) =>
             {
 
@@ -67,7 +67,7 @@ namespace ACCManager.HUD.Overlay.Internal
 
             client.MessageHandler.OnRealtimeCarUpdate += (s, e) =>
             {
-                int localCarIndex = sharedMemory.ReadGraphicsPageFile().CarIds[0];
+                int localCarIndex = sharedMemory.ReadGraphicsPageFile().PlayerCarID;
 
                 if (e.CarIndex == localCarIndex)
                     OnRealTimeCarUpdate?.Invoke(this, e);
