@@ -1,4 +1,4 @@
-﻿using ACCManager.Structs;
+﻿using ACCManager.Broadcast.Structs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
