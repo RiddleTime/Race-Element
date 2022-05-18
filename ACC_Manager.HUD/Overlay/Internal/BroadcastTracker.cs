@@ -1,4 +1,5 @@
-﻿using ACCManager.Broadcast;
+﻿using ACC_Manager.Broadcast.Structs;
+using ACCManager.Broadcast;
 using ACCManager.Broadcast.Structs;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,17 @@ namespace ACCManager.HUD.Overlay.Internal
             client = new ACCUdpRemoteClient("127.0.0.1", 9000, String.Empty, string.Empty, string.Empty, 100);
 
             client.MessageHandler.OnRealtimeUpdate += (s, e) => OnRealTimeUpdate?.Invoke(this, e);
+            client.MessageHandler.OnConnectionStateChanged += (int connectionId, bool connectionSuccess, bool isReadonly, string error) => OnConnectionStateChanged?.Invoke(this, new ConnectionState()
+            {
+                ConnectionId = connectionId,
+                ConnectionSuccess = connectionSuccess,
+                IsReadonly = isReadonly,
+                Error = error
+            });
         }
 
         public event EventHandler<RealtimeUpdate> OnRealTimeUpdate;
+        public event EventHandler<ConnectionState> OnConnectionStateChanged;
 
         public void Dispose()
         {
