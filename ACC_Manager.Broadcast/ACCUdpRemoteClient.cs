@@ -47,9 +47,9 @@ namespace ACCManager.Broadcast
             ShutdownAsnyc().ContinueWith(t =>
              {
                  if (t.Exception?.InnerExceptions?.Any() == true)
-                     System.Diagnostics.Debug.WriteLine($"Client shut down with {t.Exception.InnerExceptions.Count} errors");
-                 else
-                     System.Diagnostics.Debug.WriteLine("Client shut down asynchronously");
+                     System.Diagnostics.Debug.WriteLine($"Broadcast Client shut down with {t.Exception.InnerExceptions.Count} errors");
+                 //else
+                     //System.Diagnostics.Debug.WriteLine("Client shut down asynchronously");
 
              });
         }
@@ -90,7 +90,7 @@ namespace ACCManager.Broadcast
                 catch (Exception ex)
                 {
                     // Other exceptions
-                    System.Diagnostics.Debug.WriteLine(ex);
+                    //System.Diagnostics.Debug.WriteLine(ex);
                 }
             }
         }
