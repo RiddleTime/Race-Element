@@ -49,6 +49,7 @@
     <Compile Include="Overlays\OverlayAccelerometer\AccelerometerOverlay.cs" />
     <Compile Include="Overlays\OverlayCarInfo\CarInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\DebugInfoHelper.cs" />
+    <Compile Include="Overlays\OverlayDebugInfo\OverlayBroadcastRealtime\BroadcastRealtimeOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayGraphicsInfo\GraphicsInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayPhysicsInfo\PhysicsInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayStaticInfo\StaticInfoOverlay.cs" />

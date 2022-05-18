@@ -1,5 +1,6 @@
 ﻿using ACCManager.HUD.ACC.Overlays.OverlayAccelerometer;
 using ACCManager.HUD.ACC.Overlays.OverlayCarInfo;
+using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime;
 using ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo;
 using ACCManager.HUD.ACC.Overlays.OverlayFuelInfo;
 using ACCManager.HUD.ACC.Overlays.OverlayGraphicsInfo;
@@ -42,7 +43,8 @@ namespace ACCManager.HUD.ACC
             // yea this shit has to be at the bottom...
             {"Debug Static Data", typeof(StaticInfoOverlay) },
             {"Debug Physics Data", typeof(PhysicsInfoOverlay) },
-            {"Debug Graphics Data", typeof(GraphicsInfoOverlay) }
+            {"Debug Graphics Data", typeof(GraphicsInfoOverlay) },
+            {"Debug Broadcast Realtime", typeof(BroadcastRealtimeOverlay) }
 #endif
         };
 

@@ -3,6 +3,7 @@ using ACCManager.Broadcast;
 using ACCManager.Broadcast.Structs;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,29 +25,49 @@ namespace ACCManager.HUD.Overlay.Internal
         }
 
         private ACCUdpRemoteClient client;
+        public bool IsConnected { get; private set; }
 
         private BroadcastTracker()
         {
             // fetch from json....
-            client = new ACCUdpRemoteClient("127.0.0.1", 9000, string.Empty, string.Empty, string.Empty, 100);
+            this.Connect();
 
-            client.MessageHandler.OnRealtimeUpdate += (s, realTimeUpdate) => OnRealTimeUpdate?.Invoke(this, realTimeUpdate);
-            client.MessageHandler.OnConnectionStateChanged += (int connectionId, bool connectionSuccess, bool isReadonly, string error) => OnConnectionStateChanged?.Invoke(this, new ConnectionState()
-            {
-                ConnectionId = connectionId,
-                ConnectionSuccess = connectionSuccess,
-                IsReadonly = isReadonly,
-                Error = error
-            });
+
         }
 
         public event EventHandler<RealtimeUpdate> OnRealTimeUpdate;
         public event EventHandler<ConnectionState> OnConnectionStateChanged;
 
+        public void Connect()
+        {
+            client = new ACCUdpRemoteClient("127.0.0.1", 9000, string.Empty, string.Empty, string.Empty, 100);
+            client.MessageHandler.OnRealtimeUpdate += (s, realTimeUpdate) => OnRealTimeUpdate?.Invoke(this, realTimeUpdate);
+            client.MessageHandler.OnConnectionStateChanged += (int connectionId, bool connectionSuccess, bool isReadonly, string error) =>
+            {
+                ConnectionState state = new ConnectionState()
+                {
+                    ConnectionId = connectionId,
+                    ConnectionSuccess = connectionSuccess,
+                    IsReadonly = isReadonly,
+                    Error = error
+                };
+
+                OnConnectionStateChanged?.Invoke(this, state);
+            };
+            //client.MessageHandler.OnBroadcastingEvent += (s, e) => Debug.WriteLine(e.Msg);
+            this.IsConnected = true;
+        }
+
+        public void Disconnect()
+        {
+            client.Shutdown();
+            client.Dispose();
+            this.IsConnected = false;
+        }
+
         public void Dispose()
         {
-            this.client.Shutdown();
-            this.client.Dispose();
+            this.Disconnect();
         }
     }
 }

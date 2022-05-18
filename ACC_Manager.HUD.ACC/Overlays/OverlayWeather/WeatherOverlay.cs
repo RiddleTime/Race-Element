@@ -49,7 +49,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayWeather
             panel.AddLine("Now", WeatherTracker.Instance.Weather.Now.ToString());
             panel.AddLine("In 10", WeatherTracker.Instance.Weather.In10.ToString());
             panel.AddLine("In 30", WeatherTracker.Instance.Weather.In30.ToString());
-            panel.AddLine("Rain Level", $"{broadCastRealTime.TrackTemp}");
+
+
+
+
+
+            panel.AddLine("Rain Level", $"{broadCastRealTime.AmbientTemp}");
             panel.Draw(g);
         }
 
