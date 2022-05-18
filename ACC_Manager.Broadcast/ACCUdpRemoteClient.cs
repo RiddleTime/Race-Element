@@ -38,7 +38,8 @@ namespace ACCManager.Broadcast
 
         private void Send(byte[] payload)
         {
-            var sent = _client.Send(payload, payload.Length);
+            if (_client != null)
+                _client.Send(payload, payload.Length);
         }
 
         public void Shutdown()
@@ -55,6 +56,9 @@ namespace ACCManager.Broadcast
 
         public async Task ShutdownAsnyc()
         {
+            if (_client == null)
+                return;
+
             if (_listenerTask != null && !_listenerTask.IsCompleted)
             {
                 MessageHandler.Disconnect();
