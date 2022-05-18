@@ -1,4 +1,5 @@
 ﻿using ACC_Manager.Util.NumberExtensions;
+using ACCManager.HUD.ACC.Data.Tracker.Laps;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.Util;
 using ACCManager.Util;
@@ -36,7 +37,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
 
             this.infoPanel = new InfoPanel(10, panelWidth);
             this.Width = panelWidth + 1;
-            this.Height = this.infoPanel.FontHeight * 4 + 1;
+            this.Height = this.infoPanel.FontHeight * 5 + 1;
             this.RefreshRateHz = 10;
 
         }
@@ -62,6 +63,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
                 infoPanel.AddLine("Pad Life", $"{pagePhysics.PadLife.ToString(2)}");
                 infoPanel.AddLine("Disc Life", $"{pagePhysics.DiscLife.ToString(2)}");
             }
+
+            int fuelXLap = LapTracker.Instance.Laps.GetAverageFuelUsage();
+            if (fuelXLap != -1)
+                fuelXLap /= 1000;
+            infoPanel.AddLine("av. FuelXLap", $"{fuelXLap}");
 
             infoPanel.Draw(g);
         }

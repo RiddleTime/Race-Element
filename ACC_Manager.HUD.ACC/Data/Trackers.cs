@@ -10,6 +10,12 @@ namespace ACCManager.HUD.ACC.Data.Tracker
 {
     public static class Trackers
     {
+
+        public static void StartAll()
+        {
+            LapTracker.Instance.ToString();
+        }
+
         public static void StopAll()
         {
             LapTracker.Instance.Stop();

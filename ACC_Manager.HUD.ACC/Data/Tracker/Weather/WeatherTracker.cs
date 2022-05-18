@@ -71,6 +71,9 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Weather
                         LogWriter.WriteToLog(ex);
                     }
                 }
+
+                _instance = null;
+                IsTracking = false;
             }).Start();
         }
 
