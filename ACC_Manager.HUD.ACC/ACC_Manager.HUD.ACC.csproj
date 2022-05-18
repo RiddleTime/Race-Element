@@ -49,6 +49,9 @@
     <Compile Include="Overlays\OverlayAccelerometer\AccelerometerOverlay.cs" />
     <Compile Include="Overlays\OverlayCarInfo\CarInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\DebugInfoHelper.cs" />
+    <Compile Include="Overlays\OverlayDebugInfo\OverlayBroadcastCarUpdate\BroadcastRealtimeOverlay.cs" />
+    <Compile Include="Overlays\OverlayDebugInfo\OverlayBroadcastRealtime\BroadcastRealtimeOverlay.cs" />
+    <Compile Include="Overlays\OverlayDebugInfo\OverlayBroadcastTrackData\BroadcastRealtimeOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayGraphicsInfo\GraphicsInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayPhysicsInfo\PhysicsInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayStaticInfo\StaticInfoOverlay.cs" />
@@ -66,9 +69,14 @@
     <Compile Include="Overlays\OverlayPressureTrace\TyrePressures.cs" />
     <Compile Include="Overlays\OverlayTyreInfo\TyreInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayTrackInfo\TrackInfoOverlay.cs" />
+    <Compile Include="Overlays\OverlayWeather\WeatherOverlay.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ACC_Manager.Broadcast\ACC_Manager.Broadcast.csproj">
+      <Project>{840220BD-8469-4A04-A6EC-1ED2BC743EFB}</Project>
+      <Name>ACC_Manager.Broadcast</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ACC_Manager.Data.ACC\ACC_Manager.Data.ACC.csproj">
       <Project>{BB693CEB-CD96-4EB6-9F13-110D3CCECFFE}</Project>
       <Name>ACC_Manager.Data.ACC</Name>

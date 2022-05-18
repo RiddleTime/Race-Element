@@ -71,7 +71,7 @@ namespace ACCManager.Controls
 
                 ToggleButton toggle = new ToggleButton() { Height = 35, Width = 50, Cursor = Cursors.Hand, VerticalAlignment = VerticalAlignment.Center };
                 stackPanel.Children.Add(toggle);
-                Label label = new Label() { Content = x.Key, FontSize = 16, Cursor = Cursors.Hand, VerticalAlignment = VerticalAlignment.Center, Width = 180 };
+                Label label = new Label() { Content = x.Key, FontSize = 16, Cursor = Cursors.Hand, VerticalAlignment = VerticalAlignment.Center, Width = 180};
                 stackPanel.Children.Add(label);
                 StackPanel configStacker = GetConfigStacker(x.Value);
                 stackPanel.Children.Add(configStacker);
@@ -280,7 +280,7 @@ namespace ACCManager.Controls
 
                             sliderStacker.Children.Add(slider);
 
-                            configStackers.Add(sliderStacker);
+                            stacker.Children.Add(sliderStacker);
                         }
                     }
                 }
@@ -288,8 +288,8 @@ namespace ACCManager.Controls
 
             configStackers.Sort((a, b) =>
             {
-                if (b.Name == "ScaleSlider")
-                    return 1;
+                //if (b.Name == "ScaleSlider")
+                //return 1;
 
                 return a.Name.CompareTo(b.Name);
             });

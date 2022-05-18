@@ -1,4 +1,5 @@
-﻿using ACCManager.HUD.ACC;
+﻿using ACCManager.HUD;
+using ACCManager.HUD.ACC;
 using ACCManager.HUD.ACC.Data.Tracker;
 using ACCManager.Util;
 using MaterialDesignThemes.Wpf;
@@ -66,14 +67,15 @@ namespace ACCManager
         {
             OverlaysACC.CloseAll();
             Trackers.StopAll();
-            Debug.WriteLine("Shutdown ACC Manager");
-            LogWriter.WriteToLog("Shutdown ACC Manager");
+            HUDDisposer.Dispose();
         }
 
         private void CurrentDomain_ProcessExit(object sender, EventArgs e)
         {
             OverlaysACC.CloseAll();
             Trackers.StopAll();
+            HUDDisposer.Dispose();
+
             Debug.WriteLine("Shutdown ACC Manager");
             LogWriter.WriteToLog("Shutdown ACC Manager");
         }

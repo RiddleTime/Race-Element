@@ -1,4 +1,5 @@
-﻿using ACCManager.Util;
+﻿using ACCManager.Broadcast.Structs;
+using ACCManager.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -32,6 +33,10 @@ namespace ACCManager.HUD.Overlay.Internal
         public SPageFilePhysics pagePhysics;
         public SPageFileGraphic pageGraphics;
         public SPageFileStatic pageStatic;
+        public Broadcast.Structs.RealtimeUpdate broadCastRealTime;
+        public Broadcast.Structs.TrackData broadCastTrackData;
+        public Broadcast.Structs.RealtimeCarUpdate broadCastRealtimeCarUpdate;
+
 
         public int ScreenWidth => (int)System.Windows.SystemParameters.PrimaryScreenWidth;
         public int ScreenHeight => (int)System.Windows.SystemParameters.PrimaryScreenHeight;
@@ -101,6 +106,10 @@ namespace ACCManager.HUD.Overlay.Internal
                 PageStaticTracker.Instance.Tracker += PageStaticChanged;
                 PageGraphicsTracker.Instance.Tracker += PageGraphicsChanged;
                 PagePhysicsTracker.Instance.Tracker += PagePhysicsChanged;
+                BroadcastTracker.Instance.OnRealTimeUpdate += BroadCastRealTimeChanged;
+                BroadcastTracker.Instance.OnTrackDataUpdate += BroadCastTrackDataChanged;
+                BroadcastTracker.Instance.OnRealTimeCarUpdate += BroadCastRealTimeCarUpdateChanged;
+
                 ACCSharedMemory mem = new ACCSharedMemory();
 
                 pageStatic = mem.ReadStaticPageFile();
@@ -148,6 +157,21 @@ namespace ACCManager.HUD.Overlay.Internal
             catch (Exception ex) { Debug.WriteLine(ex); }
         }
 
+        private void BroadCastRealTimeCarUpdateChanged(object sender, RealtimeCarUpdate e)
+        {
+            broadCastRealtimeCarUpdate = e;
+        }
+
+        private void BroadCastTrackDataChanged(object sender, TrackData e)
+        {
+            broadCastTrackData = e;
+        }
+
+        private void BroadCastRealTimeChanged(object sender, Broadcast.Structs.RealtimeUpdate e)
+        {
+            broadCastRealTime = e;
+        }
+
         public void RequestRedraw()
         {
             this.UpdateLayeredWindow();
@@ -183,6 +207,9 @@ namespace ACCManager.HUD.Overlay.Internal
             PageStaticTracker.Instance.Tracker -= PageStaticChanged;
             PageGraphicsTracker.Instance.Tracker -= PageGraphicsChanged;
             PagePhysicsTracker.Instance.Tracker -= PagePhysicsChanged;
+            BroadcastTracker.Instance.OnRealTimeUpdate -= BroadCastRealTimeChanged;
+            BroadcastTracker.Instance.OnTrackDataUpdate -= BroadCastTrackDataChanged;
+            BroadcastTracker.Instance.OnRealTimeCarUpdate -= BroadCastRealTimeCarUpdateChanged;
 
             Draw = false;
             this.Close();

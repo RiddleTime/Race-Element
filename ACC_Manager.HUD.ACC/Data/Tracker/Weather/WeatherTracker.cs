@@ -10,8 +10,6 @@ using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.HUD.ACC.Data.Tracker.Weather
 {
-
-
     public class WeatherInfo
     {
         public AcRainIntensity Now { get; set; }

@@ -40,6 +40,16 @@ namespace ACCManager.HUD.Overlay.Internal
                 {
                     Thread.Sleep(1);
                     Tracker?.Invoke(this, sharedMemory.ReadGraphicsPageFile());
+
+                    if (sharedMemory.ReadGraphicsPageFile().Status == AcStatus.AC_OFF)
+                    {
+                        BroadcastTracker.Instance.Disconnect();
+                    }
+                    else
+                    {
+                        if (!BroadcastTracker.Instance.IsConnected)
+                            BroadcastTracker.Instance.Connect();
+                    }
                 }
             });
 

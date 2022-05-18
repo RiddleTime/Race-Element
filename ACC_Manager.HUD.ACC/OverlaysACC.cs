@@ -1,5 +1,6 @@
 ﻿using ACCManager.HUD.ACC.Overlays.OverlayAccelerometer;
 using ACCManager.HUD.ACC.Overlays.OverlayCarInfo;
+using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime;
 using ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo;
 using ACCManager.HUD.ACC.Overlays.OverlayFuelInfo;
 using ACCManager.HUD.ACC.Overlays.OverlayGraphicsInfo;
@@ -10,7 +11,7 @@ using ACCManager.HUD.ACC.Overlays.OverlayPressureTrace;
 using ACCManager.HUD.ACC.Overlays.OverlayStaticInfo;
 using ACCManager.HUD.ACC.Overlays.OverlayTrackInfo;
 using ACCManager.HUD.ACC.Overlays.OverlayTyreInfo;
-
+using ACCManager.HUD.ACC.Overlays.OverlayWeather;
 using ACCManager.HUD.Overlay.Internal;
 
 using System;
@@ -36,12 +37,16 @@ namespace ACCManager.HUD.ACC
 #if DEBUG
             {"Car Info", typeof(CarInfoOverlay) },
             {"Tyre Info", typeof(TyreInfoOverlay) },
+            {"Weather Info", typeof(WeatherOverlay) },
 
 
             // yea this shit has to be at the bottom...
-            {"Debug Static Data", typeof(StaticInfoOverlay) },
-            {"Debug Physics Data", typeof(PhysicsInfoOverlay) },
-            {"Debug Graphics Data", typeof(GraphicsInfoOverlay) }
+            {"Page Static", typeof(StaticInfoOverlay) },
+            {"Page Physics", typeof(PhysicsInfoOverlay) },
+            {"Page Graphics", typeof(GraphicsInfoOverlay) },
+            {"Broadcast Realtime", typeof(BroadcastRealtimeOverlay) },
+            {"Broadcast Trackdata", typeof(BroadcastTrackDataOverlay) },
+            {"Broadcast Carupdate", typeof(BroadcastCarUpdateOverlay) }
 #endif
         };
 
