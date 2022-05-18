@@ -67,6 +67,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
             float fuelXLap = LapTracker.Instance.Laps.GetAverageFuelUsage();
             if (fuelXLap != -1)
                 fuelXLap /= 1000f;
+            else fuelXLap = pageGraphics.FuelXLap;
             infoPanel.AddLine("av. FuelXLap", $"{fuelXLap:F3}");
 
             infoPanel.Draw(g);
