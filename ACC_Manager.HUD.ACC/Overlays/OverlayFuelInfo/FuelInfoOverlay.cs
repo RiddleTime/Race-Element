@@ -31,8 +31,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
         public FuelInfoOverlay(Rectangle rectangle) : base(rectangle, "Fuel Info Overlay")
         {
             this.Width = 240;
-            infoPanel = new InfoPanel(10, this.Width - 1);
-            this.Height = this.infoPanel.FontHeight * 10;
+            infoPanel = new InfoPanel(11, this.Width - 1);
+            this.Height = this.infoPanel.FontHeight * 10; // Put me back to 6 before release please :)
             RefreshRateHz = 5;
         }
 
@@ -105,8 +105,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             }
             //Magic End (Advanced)
 
-            infoPanel.AddLine("Riddle AVG Fuel", fuelTest.ToString("F2"));
-            infoPanel.AddLine("ACC AVG Fuel", pageGraphics.FuelXLap.ToString("F2"));
+            infoPanel.AddLine("Riddle Fuel", fuelTest.ToString("F2"));
+            infoPanel.AddLine("ACC Fuel", pageGraphics.FuelXLap.ToString("F2"));
 
             infoPanel.Draw(g);
         }
