@@ -67,6 +67,7 @@ namespace ACCManager
         {
             OverlaysACC.CloseAll();
             Trackers.StopAll();
+            HUDDisposer.Dispose();
         }
 
         private void CurrentDomain_ProcessExit(object sender, EventArgs e)

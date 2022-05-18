@@ -41,12 +41,12 @@ namespace ACCManager.HUD.ACC
 
 
             // yea this shit has to be at the bottom...
-            {"Debug Static Data", typeof(StaticInfoOverlay) },
-            {"Debug Physics Data", typeof(PhysicsInfoOverlay) },
-            {"Debug Graphics Data", typeof(GraphicsInfoOverlay) },
-            {"Debug Broadcast Realtime", typeof(BroadcastRealtimeOverlay) },
-            {"Debug Broadcast Trackdata", typeof(BroadcastTrackDataOverlay) },
-            {"Debug Broadcast Carupdate", typeof(BroadcastCarUpdateOverlay) }
+            {"Page Static", typeof(StaticInfoOverlay) },
+            {"Page Physics", typeof(PhysicsInfoOverlay) },
+            {"Page Graphics", typeof(GraphicsInfoOverlay) },
+            {"Broadcast Realtime", typeof(BroadcastRealtimeOverlay) },
+            {"Broadcast Trackdata", typeof(BroadcastTrackDataOverlay) },
+            {"Broadcast Carupdate", typeof(BroadcastCarUpdateOverlay) }
 #endif
         };
 

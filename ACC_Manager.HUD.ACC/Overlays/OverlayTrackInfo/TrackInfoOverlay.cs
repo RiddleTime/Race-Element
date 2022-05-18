@@ -19,6 +19,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
         {
             internal bool ShowGlobalFlag { get; set; } = true;
             internal bool ShowSessionType { get; set; } = true;
+            internal bool ShowTrackTime { get; set; } = true;
 
             public TrackInfoConfig()
             {
@@ -29,27 +30,32 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
         public TrackInfoOverlay(Rectangle rectangle) : base(rectangle, "Track Info Overlay")
         {
             this.Width = 240;
-            this.Height = 54;
+            this.Height = panel.FontHeight * 6; ;
             RefreshRateHz = 5;
         }
 
         public override void BeforeStart()
         {
-            if (this.config.ShowGlobalFlag)
-            {
-                this.Height += this.panel.FontHeight;
-            }
+            if (!this.config.ShowGlobalFlag)
+                this.Height -= this.panel.FontHeight;
 
-            if (this.config.ShowSessionType)
-            {
-                this.Height += this.panel.FontHeight;
-            }
+            if (!this.config.ShowSessionType)
+                this.Height -= this.panel.FontHeight;
+
+            if (!this.config.ShowTrackTime)
+                this.Height -= this.panel.FontHeight;
         }
 
         public override void BeforeStop() { }
 
         public override void Render(Graphics g)
         {
+            if (this.config.ShowTrackTime)
+            {
+                TimeSpan time = TimeSpan.FromMilliseconds(broadCastRealTime.TimeOfDay.TotalMilliseconds * 1000);
+                this.panel.AddLine("Time", $"{time:hh\\:mm\\:ss}");
+            }
+
             if (this.config.ShowGlobalFlag)
                 panel.AddLine("Flag", ACCSharedMemory.FlagTypeToString(pageGraphics.Flag));
 
