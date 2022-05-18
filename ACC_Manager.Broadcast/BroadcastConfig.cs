@@ -29,7 +29,11 @@ namespace ACC_Manager.Broadcast
                 {
                     using (FileStream fileStream = broadcastingConfig.OpenRead())
                     {
-                        return GetConfiguration(fileStream);
+                        Root config = GetConfiguration(fileStream);
+                        if (config.updListenerPort == 0)
+                            LogWriter.WriteToLog("Please change your broadcasting.json.. the port is 0, change it to something else");
+
+                        return config;
                     }
                 }
                 catch (Exception ex)
