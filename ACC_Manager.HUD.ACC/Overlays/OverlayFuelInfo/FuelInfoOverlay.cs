@@ -1,4 +1,5 @@
 ﻿using ACC_Manager.Util.NumberExtensions;
+using ACCManager.HUD.ACC.Data.Tracker.Laps;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.Util;
 using System;
@@ -31,7 +32,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
         {
             this.Width = 240;
             infoPanel = new InfoPanel(10, this.Width - 1);
-            this.Height = this.infoPanel.FontHeight * 6;
+            this.Height = this.infoPanel.FontHeight * 10;
             RefreshRateHz = 5;
         }
 
@@ -67,10 +68,15 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             TimeSpan time2 = TimeSpan.FromMilliseconds(fuelTimeCalc);
             string fuelTime = time2.ToString(@"hh\:mm\:ss");
 
+            //*************** TESTING *************************
+            //double fuelChecking = LapTracker.Instance.Laps.Count < 2 ? -1 : pageGraphics.FuelXLap;
+
+            double fuelTest = LapTracker.Instance.Laps.GetAverageFuelUsage(5); // using (5) latest laps for fuel average
+            //*************************************************
             Brush fuelBarBrush = pagePhysics.Fuel / pageStatic.MaxFuel < 0.15 ? Brushes.Red : Brushes.OrangeRed;
             //Start (Basic)
             infoPanel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel:F2} L", 0, pageStatic.MaxFuel, pagePhysics.Fuel, fuelBarBrush);
-            infoPanel.AddLine("Laps Left", $"{ pageGraphics.FuelEstimatedLaps:F1} : {pageGraphics.FuelXLap:F2}L");
+            infoPanel.AddLine("Laps Left", $"{pageGraphics.FuelEstimatedLaps:F1} : {pageGraphics.FuelXLap:F2}L");
             if (this.config.IncludeFuelBuffer)
                 infoPanel.AddLine("Fuel-End+", $"{fuelToEndBuffer:F1} : Add {fuelToAddBuffer:F0}");
             else
@@ -98,6 +104,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
                     infoPanel.AddLine("Stint Fuel", stintFuel.ToString("F1"));
             }
             //Magic End (Advanced)
+
+            infoPanel.AddLine("Riddle AVG Fuel", fuelTest.ToString("F2"));
+            infoPanel.AddLine("ACC AVG Fuel", pageGraphics.FuelXLap.ToString("F2"));
+
             infoPanel.Draw(g);
         }
 
