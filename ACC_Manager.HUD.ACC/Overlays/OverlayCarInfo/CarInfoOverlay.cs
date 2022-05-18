@@ -64,10 +64,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
                 infoPanel.AddLine("Disc Life", $"{pagePhysics.DiscLife.ToString(2)}");
             }
 
-            int fuelXLap = LapTracker.Instance.Laps.GetAverageFuelUsage();
+            float fuelXLap = LapTracker.Instance.Laps.GetAverageFuelUsage();
             if (fuelXLap != -1)
-                fuelXLap /= 1000;
-            infoPanel.AddLine("av. FuelXLap", $"{fuelXLap}");
+                fuelXLap /= 1000f;
+            infoPanel.AddLine("av. FuelXLap", $"{fuelXLap:F3}");
 
             infoPanel.Draw(g);
         }
