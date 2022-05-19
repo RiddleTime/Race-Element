@@ -100,15 +100,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
 
         private Brush GetFuelTimeBrush(double fuelTimeLeft, double stintDebug)
         {
-            _ = Brushes.White;
+            Brush brush = Brushes.White;
             if (stintDebug > -1)
-                if (fuelTimeLeft <= stintDebug)
-                    return _ = Brushes.Red;
-                else return _ = Brushes.LimeGreen;
+                brush = fuelTimeLeft <= stintDebug ? Brushes.Red : Brushes.LimeGreen;
             else
-            if (fuelTimeLeft <= pageGraphics.SessionTimeLeft)
-                return _ = Brushes.Red;
-            else return _ = Brushes.LimeGreen;
+                brush = fuelTimeLeft <= pageGraphics.SessionTimeLeft ? Brushes.Red : Brushes.LimeGreen;
+            return brush;
         }
 
         public override bool ShouldRender()
