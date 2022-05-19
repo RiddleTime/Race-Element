@@ -34,7 +34,8 @@ namespace ACCManager.HUD.Overlay.Internal
 
             sharedMemory = new ACCSharedMemory();
             // fetch from json....
-            this.Connect();
+
+            //this.Connect();
 
 
         }
@@ -46,11 +47,12 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public void Connect()
         {
+            this.IsConnected = true;
+
             BroadcastConfig.Root config = BroadcastConfig.GetConfiguration();
             client = new ACCUdpRemoteClient("127.0.0.1", config.updListenerPort, string.Empty, config.connectionPassword, config.commandPassword, 200);
             client.MessageHandler.OnRealtimeUpdate += (s, realTimeUpdate) =>
             {
-
                 OnRealTimeUpdate?.Invoke(this, realTimeUpdate);
             };
             client.MessageHandler.OnConnectionStateChanged += (int connectionId, bool connectionSuccess, bool isReadonly, string error) =>
@@ -74,8 +76,6 @@ namespace ACCManager.HUD.Overlay.Internal
                 if (e.CarIndex == localCarIndex)
                     OnRealTimeCarUpdate?.Invoke(this, e);
             };
-
-            this.IsConnected = true;
         }
 
         private void ResetData()
@@ -88,10 +88,10 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public void Disconnect()
         {
+            this.IsConnected = false;
             ResetData();
             client.Shutdown();
             client.Dispose();
-            this.IsConnected = false;
         }
 
         public void Dispose()
