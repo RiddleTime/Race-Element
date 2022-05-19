@@ -31,7 +31,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
 
         public CarInfoOverlay(Rectangle rectangle) : base(rectangle, "Car Info Overlay")
         {
-            int panelWidth = 130;
+            int panelWidth = 195;
 
             if (this.config.ShowPadAndDiscLife) panelWidth = 360;
 
