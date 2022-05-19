@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -33,22 +34,34 @@ namespace ACCManager.HUD.Overlay.Internal
         {
             sharedMemory = new ACCSharedMemory();
 
+            isTracking = true;
+
             trackingTask = Task.Run(() =>
             {
-                isTracking = true;
                 while (isTracking)
                 {
                     Thread.Sleep(1);
                     Tracker?.Invoke(this, sharedMemory.ReadGraphicsPageFile());
+                }
+            });
 
-                    if (sharedMemory.ReadGraphicsPageFile().Status == AcStatus.AC_OFF)
+            Task.Run(() =>
+            {
+                while (isTracking)
+                {
+                    Thread.Sleep(100);
+
+                    SPageFileGraphic sPageFileGraphic = sharedMemory.ReadGraphicsPageFile();
+
+                    if (sPageFileGraphic.Status == AcStatus.AC_OFF && BroadcastTracker.Instance.IsConnected)
                     {
+                        Debug.WriteLine("Disconnected broadcast tracker");
                         BroadcastTracker.Instance.Disconnect();
                     }
-                    else
+                    else if (!BroadcastTracker.Instance.IsConnected && sPageFileGraphic.Status != AcStatus.AC_OFF)
                     {
-                        if (!BroadcastTracker.Instance.IsConnected)
-                            BroadcastTracker.Instance.Connect();
+                        Debug.WriteLine("Connected broadcast tracker");
+                        BroadcastTracker.Instance.Connect();
                     }
                 }
             });

@@ -20,6 +20,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         private class LapDeltaConfig : OverlayConfiguration
         {
             public bool ShowSectors { get; set; } = true;
+            public bool ShowLapType { get; set; } = false;
+
             public LapDeltaConfig() : base()
             {
                 this.AllowRescale = true;
@@ -34,7 +36,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         InfoPanel panel = new InfoPanel(11, overlayWidth);
         public LapDeltaOverlay(Rectangle rectangle) : base(rectangle, "Lap Delta Overlay")
         {
-            overlayHeight = panel.FontHeight * 4;
+            overlayHeight = panel.FontHeight * 5;
 
             this.Width = overlayWidth + 1;
             this.Height = overlayHeight + 1;
@@ -45,6 +47,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         {
             if (!this.config.ShowSectors)
                 this.Height -= this.panel.FontHeight * 3;
+
+            if (!this.config.ShowLapType)
+                this.Height -= this.panel.FontHeight;
 
             LapTracker.Instance.LapFinished += Collector_LapFinished;
         }
@@ -73,7 +78,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
         private void AddSectorLines()
         {
-
             LapData lap = LapTracker.Instance.CurrentLap;
 
             if (lastLap != null && pageGraphics.NormalizedCarPosition < 0.08)
@@ -119,6 +123,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
                 panel.AddLine("S3", $"{sector3}", LapTracker.Instance.Laps.IsSectorFastest(3, lap.Sector3) ? Brushes.LimeGreen : Brushes.White);
             else
                 panel.AddLine("S3", $"{sector3}");
+
+            if (this.config.ShowLapType)
+            {
+                string lapType = "Unknown";
+                if (broadCastRealtimeCarUpdate.CurrentLap != null)
+                    lapType = $"{broadCastRealtimeCarUpdate.CurrentLap.Type}";
+                panel.AddLine("Type", lapType);
+            }
         }
 
         public override bool ShouldRender()
