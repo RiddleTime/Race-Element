@@ -73,6 +73,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             if (this.config.ShowSectors)
                 AddSectorLines();
 
+            if (this.config.ShowLapType)
+            {
+                string lapType = "Unknown";
+                if (broadCastRealtimeCarUpdate.CurrentLap != null)
+                    lapType = $"{broadCastRealtimeCarUpdate.CurrentLap.Type}";
+                panel.AddLine("Type", lapType);
+            }
+
             panel.Draw(g);
         }
 
@@ -123,14 +131,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
                 panel.AddLine("S3", $"{sector3}", LapTracker.Instance.Laps.IsSectorFastest(3, lap.Sector3) ? Brushes.LimeGreen : Brushes.White);
             else
                 panel.AddLine("S3", $"{sector3}");
-
-            if (this.config.ShowLapType)
-            {
-                string lapType = "Unknown";
-                if (broadCastRealtimeCarUpdate.CurrentLap != null)
-                    lapType = $"{broadCastRealtimeCarUpdate.CurrentLap.Type}";
-                panel.AddLine("Type", lapType);
-            }
         }
 
         public override bool ShouldRender()
