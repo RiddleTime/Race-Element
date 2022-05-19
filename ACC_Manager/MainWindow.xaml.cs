@@ -75,9 +75,6 @@ namespace ACCManager
             OverlaysACC.CloseAll();
             Trackers.StopAll();
             HUDDisposer.Dispose();
-
-            Debug.WriteLine("Shutdown ACC Manager");
-            LogWriter.WriteToLog("Shutdown ACC Manager");
         }
 
         private void MainWindow_StateChanged(object sender, EventArgs e)

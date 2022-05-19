@@ -18,8 +18,6 @@ namespace ACCManager
 
         public App()
         {
-            LogWriter.WriteToLog("Started ACC Manager");
-
         }
     }
 }
