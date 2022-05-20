@@ -49,9 +49,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
         public override void Render(Graphics g)
         {
             // Some global variants
-            double bufferGlobal = pageGraphics.FuelXLap;
             double bestLapTime = pageGraphics.BestTimeMs; bestLapTime.ClipMax(180000);
-            //double pagePhysics.Fuel = pagePhysics.Fuel;
             double fuelTimeLeft = pageGraphics.FuelEstimatedLaps * bestLapTime;
             double stintDebug = pageGraphics.DriverStintTimeLeft; stintDebug.ClipMin(-1);
             //**********************
@@ -68,7 +66,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             infoPanel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel:F2} L", 0, pageStatic.MaxFuel, pagePhysics.Fuel, fuelBarBrush);
             infoPanel.AddLine("Laps Left", $"{pageGraphics.FuelEstimatedLaps:F1} @ {pageGraphics.FuelXLap:F2}L");
             if (this.config.IncludeFuelBuffer)
-                infoPanel.AddLine("Fuel-End+", $"{fuelToEnd + bufferGlobal:F1} : Add {fuelToAdd:F0}");
+                infoPanel.AddLine("Fuel-End+", $"{fuelToEnd + pageGraphics.FuelXLap:F1} : Add {fuelToAdd:F0}");
             else
                 infoPanel.AddLine("Fuel-End", $"{fuelToEnd:F1} : Add {fuelToAdd:F0}");
             //End (Basic)
@@ -82,7 +80,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
                     infoPanel.AddLine("Stint Fuel", "No Stints");
                 else
                     if (this.config.IncludeFuelBuffer)
-                    infoPanel.AddLine("Stint Fuel+", $"{stintFuel + bufferGlobal:F1}");
+                    infoPanel.AddLine("Stint Fuel+", $"{stintFuel + pageGraphics.FuelXLap:F1}");
                 else
                     infoPanel.AddLine("Stint Fuel", $"{stintFuel:F1}");
             }
