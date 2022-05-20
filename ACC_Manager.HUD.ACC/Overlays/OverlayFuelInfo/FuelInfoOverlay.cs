@@ -56,13 +56,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             //**********************
             // Workings for Stints
             double stintFuel = pageGraphics.DriverStintTimeLeft / bestLapTime * pageGraphics.FuelXLap + pageGraphics.UsedFuelSinceRefuel;
-            double fuelToAddStint = Math.Max(Math.Min(stintFuel - fuelInCarDebug, pageStatic.MaxFuel), pageGraphics.FuelXLap * -1);
+            //double fuelToAddStint = Math.Max(Math.Min(stintFuel - fuelInCarDebug, pageStatic.MaxFuel), pageGraphics.FuelXLap * -1);
             //**********************
             // Workings for no Stint
             double fuelToEnd = pageGraphics.SessionTimeLeft / bestLapTime * pageGraphics.FuelXLap;
-            double fuelToAddNoStint = Math.Max(Math.Min(Math.Ceiling(fuelToEnd - fuelInCarDebug), pageStatic.MaxFuel), pageGraphics.FuelXLap * -1);
+            //double fuelToAddNoStint = Math.Max(Math.Min(Math.Ceiling(fuelToEnd - fuelInCarDebug), pageStatic.MaxFuel), pageGraphics.FuelXLap * -1);
             //**********************
-            double fuelToAdd = stintDebug == -1 ? fuelToAddNoStint : fuelToAddStint;
+            //double fuelToAdd = stintDebug == -1 ? fuelToAddNoStint : fuelToAddStint;
+            double fuelToAdd = FuelToAdd(stintDebug, stintFuel, fuelToEnd, fuelInCarDebug);
             // Fuel Time Remaining
             double fuelTimeLeft = pageGraphics.FuelEstimatedLaps * bestLapTime;
             string fuelTime = $"{TimeSpan.FromMilliseconds(fuelTimeLeft):hh\\:mm\\:ss}";
@@ -76,7 +77,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             infoPanel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel:F2} L", 0, pageStatic.MaxFuel, pagePhysics.Fuel, fuelBarBrush);
             infoPanel.AddLine("Laps Left", $"{pageGraphics.FuelEstimatedLaps:F1} @ {pageGraphics.FuelXLap:F2}L");
             if (this.config.IncludeFuelBuffer)
-                infoPanel.AddLine("Fuel-End+", $"{fuelToEnd + bufferGlobal:F1} : Add {fuelToAdd + bufferGlobal:F0}");
+                infoPanel.AddLine("Fuel-End+", $"{fuelToEnd + bufferGlobal:F1} : Add {fuelToAdd:F0}");
             else
                 infoPanel.AddLine("Fuel-End", $"{fuelToEnd:F1} : Add {Math.Max(fuelToAdd, 0):F0}");
             //End (Basic)
@@ -96,6 +97,22 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             }
             //Magic End (Advanced)
             infoPanel.Draw(g);
+        }
+
+        private double FuelToAdd(double stintDebug, double stintFuel, double fuelToEnd, double fuelInCarDebug)
+        {
+            double fuel;
+            if (this.config.IncludeFuelBuffer)
+                if (stintDebug == -1)
+                    fuel = Math.Max(Math.Min(Math.Ceiling(fuelToEnd - fuelInCarDebug), pageStatic.MaxFuel) + pageGraphics.FuelXLap, 0);
+                else
+                    fuel = Math.Max(Math.Min(stintFuel - fuelInCarDebug, pageStatic.MaxFuel) + pageGraphics.FuelXLap, 0);
+            else
+                if (stintDebug == -1)
+                fuel = Math.Max(Math.Min(Math.Ceiling(fuelToEnd - fuelInCarDebug), pageStatic.MaxFuel), 0);
+            else
+                fuel = Math.Max(Math.Min(stintFuel - fuelInCarDebug, pageStatic.MaxFuel), 0);
+            return fuel;
         }
 
         private Brush GetFuelTimeBrush(double fuelTimeLeft, double stintDebug)
