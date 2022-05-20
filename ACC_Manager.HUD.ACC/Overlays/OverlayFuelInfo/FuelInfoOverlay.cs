@@ -33,7 +33,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             this.Width = 240;
             infoPanel = new InfoPanel(10, this.Width - 1);
             this.Height = this.infoPanel.FontHeight * 6;
-            RefreshRateHz = 5;
+            RefreshRateHz = 2;
         }
 
         public override void BeforeStart()
