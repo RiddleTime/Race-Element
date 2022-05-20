@@ -51,15 +51,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             // Some global variants
             double bufferGlobal = pageGraphics.FuelXLap;
             double bestLapTime = pageGraphics.BestTimeMs; bestLapTime.ClipMax(180000);
-            double fuelInCarDebug = Math.Max(pagePhysics.Fuel, 0);
+            double fuelInCar = pagePhysics.Fuel;
             double fuelTimeLeft = pageGraphics.FuelEstimatedLaps * bestLapTime;
             double stintDebug = pageGraphics.DriverStintTimeLeft; stintDebug.ClipMin(-1);
             //**********************
             // Workings
             double stintFuel = pageGraphics.DriverStintTimeLeft / bestLapTime * pageGraphics.FuelXLap + pageGraphics.UsedFuelSinceRefuel;
             double fuelToEnd = pageGraphics.SessionTimeLeft / bestLapTime * pageGraphics.FuelXLap;
-            double fuelToAdd = FuelToAdd(stintDebug, stintFuel, fuelToEnd, fuelInCarDebug);
-            // Fuel/Stint Time Left
+            double fuelToAdd = FuelToAdd(stintDebug, stintFuel, fuelToEnd, fuelInCar);
             string fuelTime = $"{TimeSpan.FromMilliseconds(fuelTimeLeft):hh\\:mm\\:ss}";
             string stintTime = $"{TimeSpan.FromMilliseconds(stintDebug):hh\\:mm\\:ss}";
             //**********************
@@ -91,19 +90,19 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             infoPanel.Draw(g);
         }
 
-        private double FuelToAdd(double stintDebug, double stintFuel, double fuelToEnd, double fuelInCarDebug)
+        private double FuelToAdd(double stintDebug, double stintFuel, double fuelToEnd, double fuelInCar)
         {
             double fuel;
             if (this.config.IncludeFuelBuffer)
                 if (stintDebug == -1)
-                    fuel = Math.Min(Math.Ceiling(fuelToEnd - fuelInCarDebug), pageStatic.MaxFuel) + pageGraphics.FuelXLap;
+                    fuel = Math.Min(Math.Ceiling(fuelToEnd - fuelInCar), pageStatic.MaxFuel) + pageGraphics.FuelXLap;
                 else
-                    fuel = Math.Min(stintFuel - fuelInCarDebug, pageStatic.MaxFuel) + pageGraphics.FuelXLap;
+                    fuel = Math.Min(stintFuel - fuelInCar, pageStatic.MaxFuel) + pageGraphics.FuelXLap;
             else
                 if (stintDebug == -1)
-                fuel = Math.Min(Math.Ceiling(fuelToEnd - fuelInCarDebug), pageStatic.MaxFuel);
+                fuel = Math.Min(Math.Ceiling(fuelToEnd - fuelInCar), pageStatic.MaxFuel);
             else
-                fuel = Math.Min(stintFuel - fuelInCarDebug, pageStatic.MaxFuel);
+                fuel = Math.Min(stintFuel - fuelInCar, pageStatic.MaxFuel);
             fuel.ClipMin(0);
             return fuel;
         }
