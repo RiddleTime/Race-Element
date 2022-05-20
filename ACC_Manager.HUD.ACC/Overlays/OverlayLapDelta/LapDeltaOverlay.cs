@@ -40,7 +40,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
             this.Width = overlayWidth + 1;
             this.Height = overlayHeight + 1;
-            RefreshRateHz = 10;
+            RefreshRateHz = 2;
         }
 
         public override void BeforeStart()
