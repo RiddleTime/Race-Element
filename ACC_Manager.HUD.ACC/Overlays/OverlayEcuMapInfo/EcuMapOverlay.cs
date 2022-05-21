@@ -20,6 +20,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
         private EcuMapConfiguration config = new EcuMapConfiguration();
         private class EcuMapConfiguration : OverlayConfiguration
         {
+            [ToolTip("Displays the number of the ecu map.")]
+            public bool ShowMapNumber { get; set; } = true;
+
             public EcuMapConfiguration()
             {
                 this.AllowRescale = true;
@@ -34,7 +37,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
             this.Height = Panel.FontHeight * 5 + 1;
         }
 
-        public override void BeforeStart() { }
+        public override void BeforeStart()
+        {
+            if (!this.config.ShowMapNumber)
+            {
+                this.Height -= Panel.FontHeight;
+            }
+        }
         public override void BeforeStop() { }
 
         public override void Render(Graphics g)
@@ -43,7 +52,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
 
             if (current != null)
             {
-                Panel.AddLine("Map", $"{current.Index}");
+                if (this.config.ShowMapNumber)
+                    Panel.AddLine("Map", $"{current.Index}");
                 Panel.AddLine("Power", $"{current.Power}");
                 Panel.AddLine("Condition", $"{current.Conditon}");
                 Panel.AddLine("Fuel", $"{current.FuelConsumption}");

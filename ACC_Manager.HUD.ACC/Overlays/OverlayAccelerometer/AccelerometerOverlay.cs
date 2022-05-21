@@ -17,7 +17,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
         private AccelleroConfig config = new AccelleroConfig();
         private class AccelleroConfig : OverlayConfiguration
         {
+            [ToolTip("Displays fading dots representing history of the g-forces.")]
             internal bool ShowTrace { get; set; } = true;
+
+            [ToolTip("Displays the lateral and longitudinal g-forces as text.")]
             internal bool ShowText { get; set; } = false;
         }
 

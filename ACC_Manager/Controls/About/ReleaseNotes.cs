@@ -11,10 +11,13 @@ namespace ACCManager.Controls
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
             {"0.0.6.2", "- Integrate broadcast data, available for overlay developers."+
-                        "\n- HUD: Added Time of Day to Track Info overlay."+
-                        "\n- HUD: Lap Delta Vverlay:"+
+                        "\n- HUD: Track Info Overlay:" +
+                        "\n    - Added configurable Time of Day information."+
+                        "\n    - Added tooltips."+
+                        "\n- HUD: Lap Delta Overlay:"+
                         "\n    - Added configurable Lap Type (in/out/regular)."+
                         "\n    - Added configurable Max Delta value."+
+                        "\n    - Added tooltips."+
                         "\n- HUD: Fuel Info Overlay:"+
                         "\n    - Fuel bar turns red when fuel tank reaches 15% or lower."+
                         "\n    - Fuel Time is green if you have enough for stint/session and red if not."+

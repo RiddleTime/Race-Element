@@ -25,7 +25,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
             internal bool ShowSessionType { get; set; } = true;
 
             [ToolTip("Displays the actual time on track.")]
-            internal bool ShowTrackTime { get; set; } = true;
+            internal bool ShowTimeOfDay { get; set; } = true;
 
             public TrackInfoConfig()
             {
@@ -48,7 +48,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
             if (!this.config.ShowSessionType)
                 this.Height -= this.panel.FontHeight;
 
-            if (!this.config.ShowTrackTime)
+            if (!this.config.ShowTimeOfDay)
                 this.Height -= this.panel.FontHeight;
         }
 
@@ -56,7 +56,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
 
         public override void Render(Graphics g)
         {
-            if (this.config.ShowTrackTime)
+            if (this.config.ShowTimeOfDay)
             {
                 TimeSpan time = TimeSpan.FromMilliseconds(broadCastRealTime.TimeOfDay.TotalMilliseconds * 1000);
                 this.panel.AddLine("Time", $"{time:hh\\:mm\\:ss}");
