@@ -12,7 +12,11 @@ namespace ACCManager.Controls
         {
             {"0.0.6.2", "- Integrate broadcast data, available for overlay developers."+
                         "\n- HUD: Added Time of Day to Track Info overlay."+
-                        "\n- HUD: Added lap type (in/out/regular) to Lap Delta overlay."},
+                        "\n- HUD: Added lap type (in/out/regular) to Lap Delta overlay."+
+                        "\n- HUD: Fuel Info Overlay changes and improvements."+
+                        "\n    - Fuel bar turns red when fuel tank reaches 15% or lower."+
+                        "\n    - Fuel Time is green if you have enough for stint/session and red if not."+
+                        "\n    - Suggested fuel now longer shows negative values."},
             {"0.0.6.1", "- Improve logging for overlays." },
             {"0.0.6.0", "- HUD Tab:"+
                         "\n    - Scroll the scale control to adjust the scale."+
