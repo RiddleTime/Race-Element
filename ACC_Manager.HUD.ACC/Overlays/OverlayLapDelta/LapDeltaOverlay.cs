@@ -20,7 +20,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         private readonly LapDeltaConfig config = new LapDeltaConfig();
         private class LapDeltaConfig : OverlayConfiguration
         {
+            [ToolTip("Displays the time for each sector, green colored sectors are personal best.")]
             public bool ShowSectors { get; set; } = true;
+
+            [ToolTip("Displays the type of the current lap (In/Out/Regular).")]
             public bool ShowLapType { get; set; } = false;
 
             [ToolTip("Sets the maximum range for the delta bar.")]
