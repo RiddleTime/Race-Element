@@ -23,6 +23,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             public bool ShowSectors { get; set; } = true;
             public bool ShowLapType { get; set; } = false;
 
+            [ToolTip("Sets the maximum range for the delta bar.")]
             [IntRange(1, 5, 1)]
             public int MaxDelta { get; set; } = 2;
 

@@ -2,7 +2,6 @@
 using ACCManager.HUD.ACC;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.Internal.Configuration;
 using ACCManager.Util;
 using MaterialDesignThemes.Wpf;
 using System;
@@ -23,7 +22,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static ACCManager.HUD.Overlay.Configuration.OverlayConfiguration;
-using static ACCManager.HUD.Overlay.Internal.Configuration.OverlaySettings;
+using static ACCManager.HUD.Overlay.Configuration.OverlaySettings;
 
 namespace ACCManager.Controls
 {
@@ -181,9 +180,15 @@ namespace ACCManager.Controls
                 if (pi.PropertyType == typeof(int))
                 {
                     IntRangeAttribute intRange = null;
+                    ToolTipAttribute toolTip = null;
                     foreach (Attribute cad in Attribute.GetCustomAttributes(pi))
+                    {
                         if (cad is IntRangeAttribute)
                             intRange = (IntRangeAttribute)cad;
+
+                        if (cad is ToolTipAttribute)
+                            toolTip = (ToolTipAttribute)cad;
+                    }
 
                     if (intRange == null)
                         Debug.WriteLine($"Specify an IntRangeAttribute for {pi.Name}");
@@ -200,6 +205,9 @@ namespace ACCManager.Controls
                             VerticalAlignment = VerticalAlignment.Center,
                             Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)),
                         };
+
+                        if (toolTip != null)
+                            intStacker.ToolTip = toolTip.ToolTip;
 
                         int min = intRange.Min;
                         int max = intRange.Max;
@@ -256,11 +264,21 @@ namespace ACCManager.Controls
 
                 if (pi.PropertyType == typeof(bool))
                 {
+                    ToolTipAttribute toolTip = null;
+                    foreach (Attribute cad in Attribute.GetCustomAttributes(pi))
+                    {
+                        if (cad is ToolTipAttribute)
+                            toolTip = (ToolTipAttribute)cad;
+                    }
+
                     StackPanel checkStacker = new StackPanel()
                     {
                         VerticalAlignment = VerticalAlignment.Center,
                         Cursor = Cursors.Hand,
                     };
+                    if (toolTip != null)
+                        checkStacker.ToolTip = toolTip.ToolTip;
+
                     ConfigField configField = configFields.Where(cf => cf.Name == pi.Name).First();
                     string checkBoxlabel = string.Concat(configField.Name.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
                     CheckBox box = new CheckBox()

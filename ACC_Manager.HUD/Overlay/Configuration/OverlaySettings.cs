@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static ACCManager.HUD.Overlay.Configuration.OverlayConfiguration;
 
-namespace ACCManager.HUD.Overlay.Internal.Configuration
+namespace ACCManager.HUD.Overlay.Configuration
 {
     public class OverlaySettings
     {

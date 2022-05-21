@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HUDDisposer.cs" />
+    <Compile Include="Overlay\Configuration\ToolTipAttribute.cs" />
     <Compile Include="Overlay\Internal\AbstractOverlay.cs" />
     <Compile Include="Overlay\Internal\BroadcastTracker.cs" />
     <Compile Include="Overlay\Configuration\IntRangeAttribute.cs" />

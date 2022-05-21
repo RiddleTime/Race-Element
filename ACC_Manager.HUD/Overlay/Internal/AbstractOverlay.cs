@@ -1,6 +1,5 @@
 ﻿using ACCManager.Broadcast.Structs;
 using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal.Configuration;
 using ACCManager.Util;
 using System;
 using System.Collections.Generic;
@@ -13,7 +12,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
 using static ACCManager.ACCSharedMemory;
-using static ACCManager.HUD.Overlay.Internal.Configuration.OverlaySettings;
+using static ACCManager.HUD.Overlay.Configuration.OverlaySettings;
 
 namespace ACCManager.HUD.Overlay.Internal
 {
