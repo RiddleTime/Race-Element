@@ -21,7 +21,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
         private class FuelInfoConfig : OverlayConfiguration
         {
             [ToolTip("Basic: Displays fuel bar, laps left and fuel-to-end information." +
-                    "\nAdvanced: Additionally displays stint time remaining, fuel time remaining and the suggested amount"+
+                    "\nAdvanced: Additionally displays stint time remaining, fuel time remaining and the suggested amount" +
                     "\nof fuel needed to end the stint or session." +
                     "\nFuel time remaining is green if it's higher than stint time or session time and red if it is not.")]
             internal bool ShowAdvancedInfo { get; set; } = true;
