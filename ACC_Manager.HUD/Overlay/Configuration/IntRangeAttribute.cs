@@ -11,12 +11,6 @@ namespace ACCManager.HUD.Overlay.Configuration
         public int Min;
         public int Max;
         public int Increment;
-        public int[] LUT;
-
-        public IntRangeAttribute(int[] LUT)
-        {
-            this.LUT = LUT;
-        }
 
         public IntRangeAttribute(int min, int max, int increment)
         {
@@ -27,11 +21,6 @@ namespace ACCManager.HUD.Overlay.Configuration
 
         public static int[] GetOptionsCollection(IntRangeAttribute intRange)
         {
-            if (intRange.LUT != null)
-            {
-                return intRange.LUT;
-            }
-
             List<int> collection = new List<int>();
 
             for (int i = intRange.Min; i < intRange.Max + intRange.Increment; i += intRange.Increment)

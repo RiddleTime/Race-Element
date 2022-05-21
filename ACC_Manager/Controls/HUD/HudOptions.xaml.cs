@@ -171,7 +171,77 @@ namespace ACCManager.Controls
             {
                 if (pi.PropertyType == typeof(int))
                 {
+                    IntRangeAttribute intRange = null;
+                    foreach (Attribute cad in Attribute.GetCustomAttributes(pi))
+                        if (cad is IntRangeAttribute)
+                            intRange = (IntRangeAttribute)cad;
 
+                    if (intRange == null)
+                        Debug.WriteLine($"Specify an IntRangeAttribute for {pi.Name}");
+                    else
+                    {
+                        StackPanel intStacker = new StackPanel()
+                        {
+                            Margin = new Thickness(5, 0, 10, 0),
+                            Orientation = Orientation.Horizontal,
+                            VerticalAlignment = VerticalAlignment.Center,
+                            Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)),
+                        };
+
+                        ConfigField configField = configFields.Where(cf => cf.Name == pi.Name).First();
+
+                        int min = intRange.Min;
+                        int max = intRange.Max;
+                        int tickFrequency = intRange.Increment;
+                        int sliderValue = int.Parse(configField.Value.ToString());
+                        sliderValue.Clip(min, max);
+
+                        string intLabel = string.Concat(configField.Name.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
+
+                        Label sliderLabel = new Label
+                        {
+                            Content = $"{intLabel}: {sliderValue:F0}",
+                            VerticalAlignment = VerticalAlignment.Center,
+                            VerticalContentAlignment = VerticalAlignment.Center,
+                        };
+                        intStacker.Children.Add(sliderLabel);
+
+                        Slider slider = new Slider()
+                        {
+                            Minimum = min,
+                            Maximum = max,
+                            IsSnapToTickEnabled = true,
+                            TickFrequency = tickFrequency,
+                            Value = sliderValue,
+                            Width = 100,
+                            Margin = new Thickness(0, 0, 3, 0),
+                            VerticalAlignment = VerticalAlignment.Center,
+                            VerticalContentAlignment = VerticalAlignment.Center,
+
+                        };
+                        slider.ValueChanged += (sender, args) =>
+                        {
+                            sliderLabel.Content = $"{intLabel}: {slider.Value:F0}";
+                            configField.Value = (int)slider.Value;
+                            configFields.RemoveAt(configFields.IndexOf(configField));
+                            configFields.Add(configField);
+
+                            SaveOverlayConfigFields(overlayName, configFields);
+                        };
+
+                        //intStacker.MouseRightButtonUp += (sender, args) => { slider.Value = 1.0; };
+                        intStacker.MouseWheel += (sender, args) =>
+                        {
+                            int delta = args.Delta;
+                            slider.Value += delta.Clip(-1, 1) * tickFrequency;
+                        };
+                        intStacker.MouseEnter += (sender, args) => { intStacker.Background = new SolidColorBrush(Color.FromArgb(50, 140, 0, 0)); }; ;
+                        intStacker.MouseLeave += (sender, args) => { intStacker.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)); };
+
+                        intStacker.Children.Add(slider);
+
+                        configStackers.Add(intStacker);
+                    }
                 }
 
                 if (pi.PropertyType == typeof(bool))
@@ -367,7 +437,7 @@ namespace ACCManager.Controls
 
             OverlayConfiguration temp = null;
 
-            Debug.WriteLine($"Finding OverlayConfiguration in {tempOverlay.Name}");
+            //Debug.WriteLine($"Finding OverlayConfiguration in {tempOverlay.Name}");
             FieldInfo[] fields = tempOverlay.GetType().GetRuntimeFields().ToArray();
             foreach (var nested in fields)
             {

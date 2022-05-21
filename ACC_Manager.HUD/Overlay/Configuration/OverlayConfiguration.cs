@@ -47,11 +47,15 @@ namespace ACCManager.HUD.Overlay.Configuration
                 {
                     if (prop.Name == field.Name)
                     {
+                        bool isSet = false;
+
                         if (prop.PropertyType == typeof(Single))
-                        {
                             prop.SetValue(this, Single.Parse(field.Value.ToString()));
-                        }
-                        else
+
+                        if (prop.PropertyType == typeof(int))
+                            prop.SetValue(this, int.Parse(field.Value.ToString()));
+
+                        if (prop.PropertyType == typeof(bool))
                             prop.SetValue(this, field.Value);
                     }
                 }

@@ -90,8 +90,12 @@ namespace ACCManager.HUD.Overlay.Internal
         {
             this.IsConnected = false;
             ResetData();
-            client.Shutdown();
-            client.Dispose();
+
+            if (client != null)
+            {
+                client.Shutdown();
+                client.Dispose();
+            }
         }
 
         public void Dispose()

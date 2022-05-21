@@ -23,7 +23,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             public bool ShowSectors { get; set; } = true;
             public bool ShowLapType { get; set; } = false;
 
-            [IntRange(1, 3, 1)]
+            [IntRange(1, 5, 1)]
             public int MaxDelta { get; set; } = 2;
 
             public LapDeltaConfig() : base()
@@ -72,7 +72,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         public override void Render(Graphics g)
         {
             double delta = (double)pageGraphics.DeltaLapTimeMillis / 1000;
-            panel.AddDeltaBarWithCenteredText($"{delta:F3}", -1.5, 1.5, delta);
+            panel.AddDeltaBarWithCenteredText($"{delta:F3}", -this.config.MaxDelta, this.config.MaxDelta, delta);
 
             if (this.config.ShowSectors)
                 AddSectorLines();
