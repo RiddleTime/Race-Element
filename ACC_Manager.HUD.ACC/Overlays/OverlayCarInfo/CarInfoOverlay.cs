@@ -20,7 +20,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
         private CarInfoConfiguration config = new CarInfoConfiguration();
         private class CarInfoConfiguration : OverlayConfiguration
         {
-            [ToolTip("Displays the average fuel usage over the past 3 laps.")]
+            [ToolTip("Displays the average fuel usage over the past 3 laps.\n(uses last lap info if not enough data)")]
             public bool ShowAverageFuelUsage { get; set; } = false;
 
             [ToolTip("Displays the exhaust temperature.")]
