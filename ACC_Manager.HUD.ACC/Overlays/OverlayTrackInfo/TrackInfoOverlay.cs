@@ -18,8 +18,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
         private TrackInfoConfig config = new TrackInfoConfig();
         private class TrackInfoConfig : OverlayConfiguration
         {
+            [ToolTip("Shows which the global track flag.")]
             internal bool ShowGlobalFlag { get; set; } = true;
+
+            [ToolTip("Shows the type of the session.")]
             internal bool ShowSessionType { get; set; } = true;
+
+            [ToolTip("Displays the actual time on track.")]
             internal bool ShowTrackTime { get; set; } = true;
 
             public TrackInfoConfig()
