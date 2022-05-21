@@ -65,6 +65,7 @@ namespace ACCManager.Controls
                                      Content = $"Download {latest.Name} at GitHub",
                                      ToolTip = $"Release notes:\n{release.Body}"
                                  };
+                                 ToolTipService.SetShowDuration(openReleaseButton, int.MaxValue);
                                  openReleaseButton.Click += (s, e) => Process.Start(release.HtmlUrl);
                                  ReleaseStackPanel.Children.Add(openReleaseButton);
                              }));

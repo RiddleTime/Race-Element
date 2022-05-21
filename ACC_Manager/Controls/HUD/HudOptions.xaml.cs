@@ -208,6 +208,7 @@ namespace ACCManager.Controls
 
                         if (toolTip != null)
                             intStacker.ToolTip = toolTip.ToolTip;
+                        ToolTipService.SetShowDuration(intStacker, int.MaxValue);
 
                         int min = intRange.Min;
                         int max = intRange.Max;
@@ -278,6 +279,7 @@ namespace ACCManager.Controls
                     };
                     if (toolTip != null)
                         checkStacker.ToolTip = toolTip.ToolTip;
+                    ToolTipService.SetShowDuration(checkStacker, int.MaxValue);
 
                     ConfigField configField = configFields.Where(cf => cf.Name == pi.Name).First();
                     string checkBoxlabel = string.Concat(configField.Name.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
@@ -334,6 +336,7 @@ namespace ACCManager.Controls
                                 Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)),
                                 ToolTip = "Right click to reset. Scroll Me.",
                             };
+                            ToolTipService.SetShowDuration(sliderStacker, int.MaxValue);
 
                             double min = 0.5;
                             double max = 2.0;
