@@ -11,6 +11,7 @@ namespace ACCManager.Controls
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
             {"0.0.6.2", "- Integrate broadcast data, available for overlay developers."+
+                        "\n- HUD: Added Car Info Overlay."+
                         "\n- HUD: Track Info Overlay:" +
                         "\n    - Added configurable Time of Day information."+
                         "\n    - Added tooltips."+
