@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCManager.ACCSharedMemory;
 using static ACCManager.Data.SetupConverter;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
@@ -25,7 +26,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
             [ToolTip("Displays the exhaust temperature.")]
             public bool ShowExhaustTemp { get; set; } = false;
 
-            [ToolTip("Displays the water temp of the engine.")]
+            [ToolTip("Displays the water temperature of the engine.")]
             public bool ShowWaterTemp { get; set; } = false;
 
             public CarInfoConfiguration()
@@ -45,7 +46,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
             this.Width = panelWidth + 1;
             this.Height = this.infoPanel.FontHeight * 5 + 1;
             this.RefreshRateHz = 3;
-
         }
 
         public sealed override void BeforeStart()
@@ -67,7 +67,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
         public sealed override void Render(Graphics g)
         {
             float totalRepairTime = GetTotalRepairTime();
-            infoPanel.AddLine("Repair Time", $"{totalRepairTime:F1}");
+            Brush repairBrush = HasAnyDamage() ? Brushes.Red : Brushes.White;
+            infoPanel.AddLine("Repair Time", $"{totalRepairTime:F1}", repairBrush);
             infoPanel.AddLine("Tyre Set", $"{pageGraphics.currentTyreSet}");
 
             if (this.config.ShowAverageFuelUsage)
@@ -93,7 +94,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
 #if DEBUG
             return true;
 #endif
-            return HasAnyDamage();
+            bool shouldRender = true;
+            if (pageGraphics.Status == AcStatus.AC_OFF || pageGraphics.Status == AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
+                shouldRender = false;
+
+            return shouldRender;
         }
 
         private float GetTotalRepairTime()
