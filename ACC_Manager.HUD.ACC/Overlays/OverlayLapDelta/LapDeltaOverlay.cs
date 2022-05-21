@@ -26,7 +26,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             [ToolTip("Displays the type of the current lap (In/Out/Regular).")]
             public bool ShowLapType { get; set; } = false;
 
-            [ToolTip("Sets the maximum range for the delta bar.")]
+            [ToolTip("Sets the maximum range in seconds for the delta bar.")]
             [IntRange(1, 5, 1)]
             public int MaxDelta { get; set; } = 2;
 
