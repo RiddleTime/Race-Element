@@ -14,7 +14,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
 {
     internal sealed class InputTraceOverlay : AbstractOverlay
     {
-        private InputTraceConfig config = new InputTraceConfig();
+        private readonly InputTraceConfig config = new InputTraceConfig();
         internal class InputTraceConfig : OverlayConfiguration
         {
             [ToolTip("Displays the steering input as a white line in the trace.")]

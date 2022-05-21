@@ -15,7 +15,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
     internal sealed class EcuMapOverlay : AbstractOverlay
     {
         private const int PanelWidth = 270;
-        InfoPanel Panel = new InfoPanel(10, PanelWidth);
+        private readonly InfoPanel Panel = new InfoPanel(10, PanelWidth);
 
         private EcuMapConfiguration config = new EcuMapConfiguration();
         private class EcuMapConfiguration : OverlayConfiguration

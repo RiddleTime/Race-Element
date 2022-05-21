@@ -29,7 +29,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             }
         }
 
-        private InfoPanel info = new InfoPanel(8, 225) { DrawBackground = false };
+        private readonly InfoPanel info = new InfoPanel(8, 225) { DrawBackground = false };
         private const int MaxG = 3;
         private int gMeterX = 22;
         private int gMeterY = 22;

@@ -14,8 +14,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
 {
     internal sealed class FuelInfoOverlay : AbstractOverlay
     {
-
-        InfoPanel infoPanel;
+        private readonly InfoPanel infoPanel;
 
         private readonly FuelInfoConfig config = new FuelInfoConfig();
         private class FuelInfoConfig : OverlayConfiguration
@@ -24,7 +23,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
                     "\nAdvanced: Additionally displays stint time remaining, fuel time remaining and the suggested amount" +
                     "\nof fuel needed to end the stint or session." +
                     "\nFuel time remaining is green if it's higher than stint time or session time and red if it is not.")]
-            internal bool ShowAdvancedInfo { get; set; } = true;
+            public bool ShowAdvancedInfo { get; set; } = true;
 
             [ToolTip("Sets the number of additional laps as a fuel buffer.")]
             [IntRange(0, 3, 1)]
