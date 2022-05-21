@@ -20,7 +20,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
         private FuelInfoConfig config = new FuelInfoConfig();
         private class FuelInfoConfig : OverlayConfiguration
         {
+            [ToolTip("Shows additional stint/fuel data.")]
             internal bool ShowAdvancedInfo { get; set; } = true;
+            
+            [ToolTip("Includes a fuel buffer of 1 extra lap.")]
             internal bool IncludeFuelBuffer { get; set; } = true;
 
             public FuelInfoConfig()
