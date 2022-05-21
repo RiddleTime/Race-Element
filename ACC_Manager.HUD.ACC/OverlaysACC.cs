@@ -27,6 +27,7 @@ namespace ACCManager.HUD.ACC
         public static Dictionary<string, Type> AbstractOverlays = new Dictionary<string, Type>()
         {
             {"Accelerometer", typeof(AccelerometerOverlay) },
+            {"Car Info", typeof(CarInfoOverlay) },
             {"ECU Maps", typeof(EcuMapOverlay) },
             {"Fuel Info", typeof(FuelInfoOverlay) },
             {"Input Trace", typeof(InputTraceOverlay) },
@@ -35,7 +36,6 @@ namespace ACCManager.HUD.ACC
             {"Tyre Pressure Trace", typeof(PressureTraceOverlay) },
 
 #if DEBUG
-            {"Car Info", typeof(CarInfoOverlay) },
             {"Tyre Info", typeof(TyreInfoOverlay) },
             {"Weather Info", typeof(WeatherOverlay) },
 

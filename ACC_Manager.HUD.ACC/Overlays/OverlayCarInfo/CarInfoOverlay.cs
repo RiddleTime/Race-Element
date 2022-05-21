@@ -19,6 +19,15 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
         private CarInfoConfiguration config = new CarInfoConfiguration();
         private class CarInfoConfiguration : OverlayConfiguration
         {
+            [ToolTip("Displays the average fuel usage over the past 3 laps.")]
+            public bool ShowAverageFuelUsage { get; set; } = false;
+
+            [ToolTip("Displays the exhaust temperature.")]
+            public bool ShowExhaustTemp { get; set; } = false;
+
+            [ToolTip("Displays the water temp of the engine.")]
+            public bool ShowWaterTemp { get; set; } = false;
+
             public CarInfoConfiguration()
             {
                 this.AllowRescale = true;
@@ -35,12 +44,20 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
             this.infoPanel = new InfoPanel(10, panelWidth);
             this.Width = panelWidth + 1;
             this.Height = this.infoPanel.FontHeight * 5 + 1;
-            this.RefreshRateHz = 10;
+            this.RefreshRateHz = 3;
 
         }
 
         public sealed override void BeforeStart()
         {
+            if (!this.config.ShowAverageFuelUsage)
+                this.Height -= this.infoPanel.FontHeight;
+
+            if (!this.config.ShowExhaustTemp)
+                this.Height -= this.infoPanel.FontHeight;
+
+            if (!this.config.ShowWaterTemp)
+                this.Height -= this.infoPanel.FontHeight;
         }
 
         public sealed override void BeforeStop()
@@ -53,11 +70,20 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
             infoPanel.AddLine("Repair Time", $"{totalRepairTime:F1}");
             infoPanel.AddLine("Tyre Set", $"{pageGraphics.currentTyreSet}");
 
-            float fuelXLap = LapTracker.Instance.Laps.GetAverageFuelUsage();
-            if (fuelXLap != -1)
-                fuelXLap /= 1000f;
-            else fuelXLap = pageGraphics.FuelXLap;
-            infoPanel.AddLine("av. FuelXLap", $"{fuelXLap:F3}");
+            if (this.config.ShowAverageFuelUsage)
+            {
+                float fuelXLap = LapTracker.Instance.Laps.GetAverageFuelUsage(3);
+                if (fuelXLap != -1)
+                    fuelXLap /= 1000f;
+                else fuelXLap = pageGraphics.FuelXLap;
+                infoPanel.AddLine("Av. Fuel/lap", $"{fuelXLap:F3}");
+            }
+
+            if (this.config.ShowWaterTemp)
+                infoPanel.AddLine("Water temp", $"{pagePhysics.WaterTemp:F0} C");
+
+            if (this.config.ShowExhaustTemp)
+                infoPanel.AddLine("Exhaust temp", $"{pageGraphics.ExhaustTemperature:F0} C");
 
             infoPanel.Draw(g);
         }
