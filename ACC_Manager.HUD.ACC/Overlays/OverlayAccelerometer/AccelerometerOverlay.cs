@@ -22,6 +22,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
 
             [ToolTip("Displays the lateral and longitudinal g-forces as text.")]
             internal bool ShowText { get; set; } = false;
+
+            public AccelleroConfig()
+            {
+                this.AllowRescale = true;
+            }
         }
 
         private InfoPanel info = new InfoPanel(8, 225) { DrawBackground = false };
@@ -36,10 +41,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             this.Width = 225;
             this.Height = this.Width;
             this.RefreshRateHz = 20;
-        }
 
-        public sealed override void BeforeStart()
-        {
             if (!this.config.ShowText)
             {
                 this.Width = gMeterSize + 1;
@@ -48,6 +50,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
                 gMeterY = 0;
             }
         }
+
+        public sealed override void BeforeStart()
+        {
+            
+        }
         public sealed override void BeforeStop() { }
 
         public sealed override void Render(Graphics g)
@@ -55,9 +62,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             SolidBrush backgroundBrush = new SolidBrush(Color.FromArgb(140, Color.Black));
             //Draws the HUD window
             if (this.config.ShowText)
-                g.FillRectangle(backgroundBrush, new Rectangle(0, 0, this.Width, this.Height));
+                g.FillRectangle(backgroundBrush, new Rectangle(0, 0, this.gMeterSize+25, this.gMeterSize+25));
             else
-                g.FillEllipse(backgroundBrush, new Rectangle(1, 1, this.Width - 2, this.Height - 2));
+                g.FillEllipse(backgroundBrush, new Rectangle(1, 1, this.gMeterSize - 2, this.gMeterSize - 2));
 
             DrawGMeter(gMeterX, gMeterY, gMeterSize, g);
 
