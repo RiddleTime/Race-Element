@@ -36,16 +36,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayWeather
             this.Height = panel.FontHeight * 4;
         }
 
-        public override void BeforeStart()
+        public sealed override void BeforeStart()
         {
         }
 
-        public override void BeforeStop()
+        public sealed override void BeforeStop()
         {
 
         }
 
-        public override void Render(Graphics g)
+        public sealed override void Render(Graphics g)
         {
             panel.AddLine("Now", WeatherTracker.Instance.Weather.Now.ToString());
             panel.AddLine("In 10", WeatherTracker.Instance.Weather.In10.ToString());
@@ -55,7 +55,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayWeather
             panel.Draw(g);
         }
 
-        public override bool ShouldRender()
+        public sealed override bool ShouldRender()
         {
 #if DEBUG
             return true;

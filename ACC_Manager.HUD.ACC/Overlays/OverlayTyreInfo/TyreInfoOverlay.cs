@@ -32,15 +32,15 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             this.Height = 300;
         }
 
-        public override void BeforeStart()
+        public sealed override void BeforeStart()
         {
         }
 
-        public override void BeforeStop()
+        public sealed override void BeforeStop()
         {
         }
 
-        public override void Render(Graphics g)
+        public sealed override void Render(Graphics g)
         {
             InfoPanel[] list = new InfoPanel[] { PanelFrontLeft, PanelFrontRight, PanelRearLeft, PanelRearRight };
 
@@ -58,7 +58,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
                     list[i].Draw(g);
         }
 
-        public override bool ShouldRender()
+        public sealed override bool ShouldRender()
         {
 #if DEBUG
             return true;

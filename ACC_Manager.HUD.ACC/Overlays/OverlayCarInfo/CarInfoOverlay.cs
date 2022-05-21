@@ -19,8 +19,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
         private CarInfoConfiguration config = new CarInfoConfiguration();
         private class CarInfoConfiguration : OverlayConfiguration
         {
-            public bool ShowPadAndDiscLife { get; set; } = false;
-
             public CarInfoConfiguration()
             {
                 this.AllowRescale = true;
@@ -34,8 +32,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
         {
             int panelWidth = 195;
 
-            if (this.config.ShowPadAndDiscLife) panelWidth = 360;
-
             this.infoPanel = new InfoPanel(10, panelWidth);
             this.Width = panelWidth + 1;
             this.Height = this.infoPanel.FontHeight * 5 + 1;
@@ -43,27 +39,19 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
 
         }
 
-        public override void BeforeStart()
-        {
-            if (!this.config.ShowPadAndDiscLife)
-                this.Height -= this.infoPanel.FontHeight * 2;
-        }
-
-        public override void BeforeStop()
+        public sealed override void BeforeStart()
         {
         }
 
-        public override void Render(Graphics g)
+        public sealed override void BeforeStop()
+        {
+        }
+
+        public sealed override void Render(Graphics g)
         {
             float totalRepairTime = GetTotalRepairTime();
             infoPanel.AddLine("Repair Time", $"{totalRepairTime:F1}");
             infoPanel.AddLine("Tyre Set", $"{pageGraphics.currentTyreSet}");
-
-            if (this.config.ShowPadAndDiscLife)
-            {
-                infoPanel.AddLine("Pad Life", $"{pagePhysics.PadLife.ToString(2)}");
-                infoPanel.AddLine("Disc Life", $"{pagePhysics.DiscLife.ToString(2)}");
-            }
 
             float fuelXLap = LapTracker.Instance.Laps.GetAverageFuelUsage();
             if (fuelXLap != -1)
@@ -74,7 +62,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
             infoPanel.Draw(g);
         }
 
-        public override bool ShouldRender()
+        public sealed override bool ShouldRender()
         {
 #if DEBUG
             return true;

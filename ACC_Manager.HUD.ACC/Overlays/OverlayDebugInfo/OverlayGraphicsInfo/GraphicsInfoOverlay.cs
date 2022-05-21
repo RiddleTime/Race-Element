@@ -35,18 +35,18 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayGraphicsInfo
             };
         }
 
-        public override void BeforeStart()
+        public sealed override void BeforeStart()
         {
             DebugInfoHelper.Instance.AddOverlay(this);
             this.X = DebugInfoHelper.Instance.GetX(this);
         }
 
-        public override void BeforeStop()
+        public sealed override void BeforeStop()
         {
             DebugInfoHelper.Instance.RemoveOverlay(this);
         }
 
-        public override void Render(Graphics g)
+        public sealed override void Render(Graphics g)
         {
             g.FillRectangle(new SolidBrush(System.Drawing.Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.Width, this.Height));
 
@@ -72,7 +72,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayGraphicsInfo
 
         }
 
-        public override bool ShouldRender()
+        public sealed override bool ShouldRender()
         {
             return true;
         }

@@ -37,24 +37,24 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             this.Height = OriginalHeight;
         }
 
-        public override void BeforeStart()
+        public sealed override void BeforeStart()
         {
             inputDataCollector = new InputDataCollector() { TraceCount = this.OriginalWidth - 1 };
             inputDataCollector.Start();
         }
 
-        public override void BeforeStop()
+        public sealed override void BeforeStop()
         {
             inputDataCollector.Stop();
         }
 
-        public override void Render(Graphics g)
+        public sealed override void Render(Graphics g)
         {
             InputGraph graph = new InputGraph(0, 0, this.OriginalWidth - 1, this.OriginalHeight - 1, inputDataCollector.Throttle, inputDataCollector.Brake, inputDataCollector.Steering, this.config);
             graph.Draw(g);
         }
 
-        public override bool ShouldRender()
+        public sealed override bool ShouldRender()
         {
 #if DEBUG
             return true;

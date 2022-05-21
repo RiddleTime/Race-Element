@@ -37,7 +37,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             RefreshRateHz = 2;
         }
 
-        public override void BeforeStart()
+        public sealed override void BeforeStart()
         {
             if (!this.config.ShowAdvancedInfo)
             {
@@ -45,9 +45,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             }
         }
 
-        public override void BeforeStop() { }
+        public sealed override void BeforeStop() { }
 
-        public override void Render(Graphics g)
+        public sealed override void Render(Graphics g)
         {
             // Some global variants
             double bestLapTime = pageGraphics.BestTimeMs; bestLapTime.ClipMax(180000);
@@ -116,7 +116,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             return brush;
         }
 
-        public override bool ShouldRender()
+        public sealed override bool ShouldRender()
         {
 #if DEBUG
             return true;

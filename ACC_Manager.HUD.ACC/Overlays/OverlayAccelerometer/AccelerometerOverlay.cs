@@ -38,7 +38,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             this.RefreshRateHz = 20;
         }
 
-        public override void BeforeStart()
+        public sealed override void BeforeStart()
         {
             if (!this.config.ShowText)
             {
@@ -48,9 +48,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
                 gMeterY = 0;
             }
         }
-        public override void BeforeStop() { }
+        public sealed override void BeforeStop() { }
 
-        public override void Render(Graphics g)
+        public sealed override void Render(Graphics g)
         {
             SolidBrush backgroundBrush = new SolidBrush(Color.FromArgb(140, Color.Black));
             //Draws the HUD window
@@ -149,7 +149,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             g.SmoothingMode = previousSmoothing;
         }
 
-        public override bool ShouldRender()
+        public sealed override bool ShouldRender()
         {
 #if DEBUG
             return true;

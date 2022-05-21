@@ -37,16 +37,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
             this.Height = Panel.FontHeight * 5 + 1;
         }
 
-        public override void BeforeStart()
+        public sealed override void BeforeStart()
         {
             if (!this.config.ShowMapNumber)
             {
                 this.Height -= Panel.FontHeight;
             }
         }
-        public override void BeforeStop() { }
+        public sealed override void BeforeStop() { }
 
-        public override void Render(Graphics g)
+        public sealed override void Render(Graphics g)
         {
             EcuMap current = EcuMaps.GetMap(pageStatic.CarModel, pageGraphics.EngineMap);
 
@@ -69,7 +69,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
             Panel.Draw(g);
         }
 
-        public override bool ShouldRender()
+        public sealed override bool ShouldRender()
         {
 #if DEBUG
             return true;

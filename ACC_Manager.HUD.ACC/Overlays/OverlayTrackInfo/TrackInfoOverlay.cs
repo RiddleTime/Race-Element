@@ -40,7 +40,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
             RefreshRateHz = 5;
         }
 
-        public override void BeforeStart()
+        public sealed override void BeforeStart()
         {
             if (!this.config.ShowGlobalFlag)
                 this.Height -= this.panel.FontHeight;
@@ -52,9 +52,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
                 this.Height -= this.panel.FontHeight;
         }
 
-        public override void BeforeStop() { }
+        public sealed override void BeforeStop() { }
 
-        public override void Render(Graphics g)
+        public sealed override void Render(Graphics g)
         {
             if (this.config.ShowTimeOfDay)
             {
@@ -76,7 +76,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
             panel.Draw(g);
         }
 
-        public override bool ShouldRender()
+        public sealed override bool ShouldRender()
         {
 #if DEBUG
             return true;

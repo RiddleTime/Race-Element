@@ -24,19 +24,19 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
             Instance = this;
         }
 
-        public override void BeforeStart()
+        public sealed override void BeforeStart()
         {
             TyrePressureGraph.PressureRange = TyrePressures.GetCurrentRange(pageGraphics.TyreCompound, pageStatic.CarModel);
             dataCollector = new TyrePressureDataCollector() { TraceCount = this.Width / 2 - 1 };
             dataCollector.Start();
         }
 
-        public override void BeforeStop()
+        public sealed override void BeforeStop()
         {
             dataCollector.Stop();
         }
 
-        public override void Render(Graphics g)
+        public sealed override void Render(Graphics g)
         {
 
             TyrePressureGraph.PressureRange = TyrePressures.GetCurrentRange(pageGraphics.TyreCompound, pageStatic.CarModel);
@@ -51,7 +51,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
             graph3.Draw(g);
         }
 
-        public override bool ShouldRender()
+        public sealed override bool ShouldRender()
         {
 #if DEBUG
             return true;

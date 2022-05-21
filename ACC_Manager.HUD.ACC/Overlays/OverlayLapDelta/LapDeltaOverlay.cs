@@ -51,7 +51,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             RefreshRateHz = 10;
         }
 
-        public override void BeforeStart()
+        public sealed override void BeforeStart()
         {
             if (!this.config.ShowSectors)
                 this.Height -= this.panel.FontHeight * 3;
@@ -62,7 +62,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             LapTracker.Instance.LapFinished += Collector_LapFinished;
         }
 
-        public override void BeforeStop()
+        public sealed override void BeforeStop()
         {
             LapTracker.Instance.LapFinished -= Collector_LapFinished;
         }
@@ -73,7 +73,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
                 lastLap = newLap;
         }
 
-        public override void Render(Graphics g)
+        public sealed override void Render(Graphics g)
         {
             double delta = (double)pageGraphics.DeltaLapTimeMillis / 1000;
             panel.AddDeltaBarWithCenteredText($"{delta:F3}", -this.config.MaxDelta, this.config.MaxDelta, delta);
@@ -141,7 +141,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
                 panel.AddLine("S3", $"{sector3}");
         }
 
-        public override bool ShouldRender()
+        public sealed override bool ShouldRender()
         {
 #if DEBUG
             return true;
