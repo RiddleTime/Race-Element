@@ -180,15 +180,17 @@ namespace ACCManager.Controls
                         Debug.WriteLine($"Specify an IntRangeAttribute for {pi.Name}");
                     else
                     {
+                        ConfigField configField = configFields.Where(cf => cf.Name == pi.Name).First();
+                        string intLabel = string.Concat(configField.Name.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
+
                         StackPanel intStacker = new StackPanel()
                         {
+                            Name = intLabel.Replace(" ", "_"),
                             Margin = new Thickness(5, 0, 10, 0),
                             Orientation = Orientation.Horizontal,
                             VerticalAlignment = VerticalAlignment.Center,
                             Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)),
                         };
-
-                        ConfigField configField = configFields.Where(cf => cf.Name == pi.Name).First();
 
                         int min = intRange.Min;
                         int max = intRange.Max;
@@ -196,7 +198,6 @@ namespace ACCManager.Controls
                         int sliderValue = int.Parse(configField.Value.ToString());
                         sliderValue.Clip(min, max);
 
-                        string intLabel = string.Concat(configField.Name.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
 
                         Label sliderLabel = new Label
                         {
@@ -255,7 +256,7 @@ namespace ACCManager.Controls
                     string checkBoxlabel = string.Concat(configField.Name.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
                     CheckBox box = new CheckBox()
                     {
-                        Name = configField.Name,
+                        Name = checkBoxlabel.Replace(" ", "_"),
                         Content = checkBoxlabel,
                         IsChecked = (bool)configField.Value,
                         Margin = new Thickness(5, 3, 5, 3),
@@ -365,9 +366,6 @@ namespace ACCManager.Controls
 
             configStackers.Sort((a, b) =>
             {
-                //if (b.Name == "ScaleSlider")
-                //return 1;
-
                 return a.Name.CompareTo(b.Name);
             });
 
@@ -381,6 +379,9 @@ namespace ACCManager.Controls
         private void SaveOverlayConfigFields(string overlayName, List<ConfigField> configFields)
         {
             OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(overlayName);
+            if (settings == null)
+                settings = new OverlaySettingsJson();
+
             settings.Config = configFields;
             OverlaySettings.SaveOverlaySettings(overlayName, settings);
         }
