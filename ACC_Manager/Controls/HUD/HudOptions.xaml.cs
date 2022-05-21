@@ -3,6 +3,7 @@ using ACCManager.HUD.ACC;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.Internal.Configuration;
+using ACCManager.Util;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -35,15 +36,23 @@ namespace ACCManager.Controls
         {
             InitializeComponent();
 
-            BuildOverlayStackPanel();
-            checkBoxReposition.Checked += (s, e) => SetRepositionMode(true);
-            checkBoxReposition.Unchecked += (s, e) => SetRepositionMode(false);
-
-            this.PreviewMouseUp += (s, e) =>
+            try
             {
-                if (e.ChangedButton == MouseButton.Middle)
-                    this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
-            };
+                BuildOverlayStackPanel();
+                checkBoxReposition.Checked += (s, e) => SetRepositionMode(true);
+                checkBoxReposition.Unchecked += (s, e) => SetRepositionMode(false);
+
+                this.PreviewMouseUp += (s, e) =>
+                {
+                    if (e.ChangedButton == MouseButton.Middle)
+                        this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
+                };
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                LogWriter.WriteToLog(ex);
+            }
         }
 
         private void SetRepositionMode(bool enabled)
@@ -380,7 +389,11 @@ namespace ACCManager.Controls
         {
             OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(overlayName);
             if (settings == null)
-                settings = new OverlaySettingsJson();
+            {
+                int screenMiddleX = (int)(System.Windows.SystemParameters.FullPrimaryScreenWidth / 2);
+                int screenMiddleY = (int)(System.Windows.SystemParameters.FullPrimaryScreenHeight / 2);
+                settings = new OverlaySettingsJson() { X = screenMiddleX, Y = screenMiddleY };
+            }
 
             settings.Config = configFields;
             OverlaySettings.SaveOverlaySettings(overlayName, settings);
