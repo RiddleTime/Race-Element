@@ -1,4 +1,5 @@
 ﻿using ACC_Manager.Util.NumberExtensions;
+using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.Util;
 using System;

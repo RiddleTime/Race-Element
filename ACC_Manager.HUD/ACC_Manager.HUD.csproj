@@ -53,9 +53,10 @@
     <Compile Include="HUDDisposer.cs" />
     <Compile Include="Overlay\Internal\AbstractOverlay.cs" />
     <Compile Include="Overlay\Internal\BroadcastTracker.cs" />
+    <Compile Include="Overlay\Configuration\IntRangeAttribute.cs" />
     <Compile Include="Overlay\Internal\FloatingWindow.cs" />
-    <Compile Include="Overlay\Internal\OverlayConfiguration.cs" />
-    <Compile Include="Overlay\Internal\OverlaySettings.cs" />
+    <Compile Include="Overlay\Configuration\OverlayConfiguration.cs" />
+    <Compile Include="Overlay\Configuration\OverlaySettings.cs" />
     <Compile Include="Overlay\Internal\PageGraphicsTracker.cs" />
     <Compile Include="Overlay\Internal\PagePhysicsTracker.cs" />
     <Compile Include="Overlay\Internal\PageStaticTracker.cs" />

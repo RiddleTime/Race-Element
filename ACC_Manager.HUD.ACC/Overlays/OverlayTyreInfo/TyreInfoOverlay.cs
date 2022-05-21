@@ -6,9 +6,8 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.HUD.Overlay.Util;
-using static ACCManager.Data.SetupConverter;
+using ACCManager.HUD.Overlay.Configuration;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
 {

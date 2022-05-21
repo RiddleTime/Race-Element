@@ -1,4 +1,5 @@
 ﻿using ACCManager.HUD.Overlay.Internal;
+using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Util;
 using ACCManager.Controls.Telemetry.SharedMemory;
 using System;

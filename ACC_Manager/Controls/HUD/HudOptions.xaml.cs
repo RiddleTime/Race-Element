@@ -1,6 +1,8 @@
 ﻿using ACC_Manager.Util.NumberExtensions;
 using ACCManager.HUD.ACC;
+using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
+using ACCManager.HUD.Overlay.Internal.Configuration;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -19,8 +21,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static ACCManager.HUD.Overlay.Internal.OverlayConfiguration;
-using static ACCManager.HUD.Overlay.Internal.OverlaySettings;
+using static ACCManager.HUD.Overlay.Configuration.OverlayConfiguration;
+using static ACCManager.HUD.Overlay.Internal.Configuration.OverlaySettings;
 
 namespace ACCManager.Controls
 {
@@ -71,7 +73,7 @@ namespace ACCManager.Controls
 
                 ToggleButton toggle = new ToggleButton() { Height = 35, Width = 50, Cursor = Cursors.Hand, VerticalAlignment = VerticalAlignment.Center };
                 stackPanel.Children.Add(toggle);
-                Label label = new Label() { Content = x.Key, FontSize = 16, Cursor = Cursors.Hand, VerticalAlignment = VerticalAlignment.Center, Width = 180};
+                Label label = new Label() { Content = x.Key, FontSize = 16, Cursor = Cursors.Hand, VerticalAlignment = VerticalAlignment.Center, Width = 180 };
                 stackPanel.Children.Add(label);
                 StackPanel configStacker = GetConfigStacker(x.Value);
                 stackPanel.Children.Add(configStacker);
@@ -167,6 +169,11 @@ namespace ACCManager.Controls
 
             foreach (PropertyInfo pi in props)
             {
+                if (pi.PropertyType == typeof(int))
+                {
+
+                }
+
                 if (pi.PropertyType == typeof(bool))
                 {
                     StackPanel checkStacker = new StackPanel()

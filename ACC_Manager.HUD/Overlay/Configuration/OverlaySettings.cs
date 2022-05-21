@@ -8,9 +8,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static ACCManager.HUD.Overlay.Internal.OverlayConfiguration;
+using static ACCManager.HUD.Overlay.Configuration.OverlayConfiguration;
 
-namespace ACCManager.HUD.Overlay.Internal
+namespace ACCManager.HUD.Overlay.Internal.Configuration
 {
     public class OverlaySettings
     {

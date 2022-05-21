@@ -1,6 +1,7 @@
 ﻿using ACCManager.Broadcast;
 using ACCManager.Broadcast.Structs;
 using ACCManager.HUD.ACC.Data.Tracker.Weather;
+using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.Util;
 using System;

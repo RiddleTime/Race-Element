@@ -1,5 +1,6 @@
 ﻿using ACCManager.HUD.ACC.Data.Tracker;
 using ACCManager.HUD.ACC.Data.Tracker.Laps;
+using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.HUD.Overlay.Util;
@@ -21,6 +22,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         {
             public bool ShowSectors { get; set; } = true;
             public bool ShowLapType { get; set; } = false;
+
+            [IntRange(1, 3, 1)]
+            public int MaxDelta { get; set; } = 2;
 
             public LapDeltaConfig() : base()
             {

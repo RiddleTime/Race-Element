@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCManager.HUD.Overlay.Internal
+namespace ACCManager.HUD.Overlay.Configuration
 {
     public abstract class OverlayConfiguration
     {

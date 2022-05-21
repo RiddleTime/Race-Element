@@ -1,4 +1,5 @@
 ﻿using ACCManager.Data;
+using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.Util;
 using System;
