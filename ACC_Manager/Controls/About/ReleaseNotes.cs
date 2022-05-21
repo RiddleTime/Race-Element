@@ -16,7 +16,8 @@ namespace ACCManager.Controls
                         "\n- HUD: Fuel Info Overlay:"+
                         "\n    - Fuel bar turns red when fuel tank reaches 15% or lower."+
                         "\n    - Fuel Time is green if you have enough for stint/session and red if not."+
-                        "\n    - Suggested fuel now longer shows negative values."+
+                        "\n    - Suggested fuel no longer shows negative values."+
+                        "\n    - Fuel buffer laps now user selectable. Choice of 0-3 laps (Default: 0)"+
                         "\n- HUD: Lap Delta Overlay:"+
                         "\n    - Added configurable Lap Type (in/out/regular)."+
                         "\n    - Added configurable Max Delta value."+
