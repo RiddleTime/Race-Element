@@ -31,9 +31,9 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
             return lap.Sector3 / 1000f;
         }
 
-        public static float GetFuelLeft(this LapData lap)
+        public static float GetFuelUsage(this LapData lap)
         {
-            return lap.FuelLeft / 1000f;
+            return lap.FuelUsage / 1000f;
         }
 
         #endregion
@@ -52,21 +52,11 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
                 return -1;
 
             int total = 0;
-            int previousLapFuelLeft = -1;
             for (int i = 0; i < lapAmount; i++)
-            {
-                int lapFuelLeft = laps[laps.Count - (lapAmount - i)].FuelLeft;
+                total += laps[laps.Count - (lapAmount - i)].FuelUsage;
 
-                if (previousLapFuelLeft != -1)
-                    total += previousLapFuelLeft - lapFuelLeft;
-
-                previousLapFuelLeft = lapFuelLeft;
-            }
-
-            return total / (lapAmount - 1);
+            return total / lapAmount;
         }
-
-
 
         public static int GetAverageLapTime(this List<LapData> laps)
         {

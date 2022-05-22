@@ -13,7 +13,7 @@ using System.Windows;
 [assembly: AssemblyCompany("Element Future")]
 [assembly: AssemblyProduct("ACC Manager")]
 [assembly: AssemblyCopyright("Copyright 2022 © Reinier Klarenberg")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("Element Future")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -51,5 +51,5 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.0.6.2")]
-[assembly: AssemblyFileVersion("0.0.6.2")]
+[assembly: AssemblyVersion("0.0.6.3")]
+[assembly: AssemblyFileVersion("0.0.6.3")]

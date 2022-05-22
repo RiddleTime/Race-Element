@@ -33,7 +33,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
         /// <summary>
         /// Fuel left at the end of the lap, divide by 1000...
         /// </summary>
-        public int FuelLeft { get; set; } = -1;
+        public int FuelUsage { get; set; } = -1;
     }
 
     internal class LapTracker
@@ -110,7 +110,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
                         if (CurrentLap.Index - 1 != pageGraphics.CompletedLaps && pageGraphics.LastTimeMs != int.MaxValue)
                         {
                             CurrentLap.Time = pageGraphics.LastTimeMs;
-                            CurrentLap.FuelLeft = (int)(sharedMemory.ReadPhysicsPageFile().Fuel * 1000);
+                            CurrentLap.FuelUsage = (int)(sharedMemory.ReadGraphicsPageFile().FuelXLap * 1000);
 
                             if (CurrentLap.Sector1 != -1)
                             {
@@ -133,7 +133,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
                         LogWriter.WriteToLog(ex);
                     }
                 }
- 
+
                 _instance = null;
                 IsTracking = false;
             }).Start();
