@@ -1,4 +1,5 @@
-﻿using ACCManager.Controls.HUD;
+﻿using ACCManager.Controls;
+using ACCManager.Controls.HUD;
 using ACCManager.HUD;
 using ACCManager.HUD.ACC;
 using ACCManager.HUD.ACC.Data.Tracker;
@@ -81,6 +82,7 @@ namespace ACCManager
             OverlaysACC.CloseAll();
             Trackers.StopAll();
             HUDDisposer.Dispose();
+            HudOptions.Instance.DisposeKeyboardHooks();
         }
 
         private void CurrentDomain_ProcessExit(object sender, EventArgs e)
@@ -88,6 +90,7 @@ namespace ACCManager
             OverlaysACC.CloseAll();
             Trackers.StopAll();
             HUDDisposer.Dispose();
+            HudOptions.Instance.DisposeKeyboardHooks();
         }
 
         private void MainWindow_StateChanged(object sender, EventArgs e)

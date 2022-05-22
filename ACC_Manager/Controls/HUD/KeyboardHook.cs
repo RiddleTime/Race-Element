@@ -101,14 +101,16 @@ namespace ACCManager.Controls.HUD
 
         public void Dispose()
         {
-            // unregister all the registered hot keys.
-            for (int i = _currentId; i > 0; i--)
+            if (_window != null)
             {
-                UnregisterHotKey(_window.Handle, i);
-            }
+                // unregister all the registered hot keys.
+                for (int i = _currentId; i > 0; i--)
 
-            // dispose the inner native window.
-            _window.Dispose();
+                    UnregisterHotKey(_window.Handle, i);
+
+                // dispose the inner native window.
+                _window.Dispose();
+            }
         }
 
         #endregion

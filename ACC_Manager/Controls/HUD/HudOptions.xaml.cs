@@ -33,6 +33,10 @@ namespace ACCManager.Controls
     public partial class HudOptions : UserControl
     {
         private KeyboardHook _hook = new KeyboardHook();
+
+        private static HudOptions _instance;
+        public static HudOptions Instance { get { return _instance; } }
+
         public HudOptions()
         {
             InitializeComponent();
@@ -59,11 +63,12 @@ namespace ACCManager.Controls
                 LogWriter.WriteToLog(ex);
             }
 
-            this.Unloaded += HudOptions_Unloaded;
+            _instance = this;
         }
 
-        private void HudOptions_Unloaded(object sender, RoutedEventArgs e)
+        public void DisposeKeyboardHooks()
         {
+            Debug.WriteLine("Disposing HUD Keyboard hooks");
             _hook.Dispose();
         }
 
