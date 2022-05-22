@@ -22,7 +22,6 @@ namespace ACCManager.HUD.Overlay.Util
         internal static extern bool RemoveFontMemResourceEx(IntPtr fh);
 
         // Some private holders of font information we are loading
-        static private IntPtr m_fh = IntPtr.Zero;
         static private PrivateFontCollection m_pfc = null;
 
         public static Font FontOrbitron(float size)
