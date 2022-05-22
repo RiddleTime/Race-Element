@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/u6yxjmncb1g8484h/branch/dev?svg=true)](https://ci.appveyor.com/project/RiddleTime/acc-manager/branch/dev)
+
 # ACC-Manager
 Provides tooling for Assetto Corsa Competizione.
 
@@ -15,6 +17,3 @@ https://discord.gg/26AAEW5mUq
 ### Frameworks
 - WPF
 - https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit
-
-Build Status:
-[![Build status](https://ci.appveyor.com/api/projects/status/u6yxjmncb1g8484h/branch/dev?svg=true)](https://ci.appveyor.com/project/RiddleTime/acc-manager/branch/dev)
