@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ACCManager.HUD.Overlay.Util
 {
-    internal class FontUtil
+    public class FontUtil
     {
         // Adding a private font (Win2000 and later)
         [DllImport("gdi32.dll", ExactSpelling = true)]

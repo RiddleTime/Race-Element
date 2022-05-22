@@ -33,10 +33,10 @@ namespace ACCManager.HUD.ACC
             {"Input Trace", typeof(InputTraceOverlay) },
             {"Lap Delta", typeof(LapDeltaOverlay) },
             {"Track Info", typeof(TrackInfoOverlay) },
+            {"Tyre Info", typeof(TyreInfoOverlay) },
             {"Tyre Pressure Trace", typeof(PressureTraceOverlay) },
 
 #if DEBUG
-            {"Tyre Info", typeof(TyreInfoOverlay) },
             {"Weather Info", typeof(WeatherOverlay) },
 
 
