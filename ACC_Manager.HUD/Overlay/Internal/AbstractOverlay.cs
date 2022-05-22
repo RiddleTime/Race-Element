@@ -272,7 +272,7 @@ namespace ACCManager.HUD.Overlay.Internal
                         ToolTip = this.Name,
                         Topmost = true,
                         BorderBrush = System.Windows.Media.Brushes.Red,
-                        BorderThickness = new Thickness(3),
+                        BorderThickness = new Thickness(1),
                         ShowInTaskbar = false,
                         AllowsTransparency = true,
                         Opacity = 0.3
@@ -280,6 +280,8 @@ namespace ACCManager.HUD.Overlay.Internal
                     this.RepositionWindow.MouseLeftButtonDown += (s, e) =>
                     {
                         this.RepositionWindow.DragMove();
+                        this.RepositionWindow.BorderBrush = System.Windows.Media.Brushes.Green;
+                        this.RepositionWindow.BorderThickness = new Thickness(3);
                     };
 
                     this.RepositionWindow.LocationChanged += (s, e) =>
@@ -293,14 +295,11 @@ namespace ACCManager.HUD.Overlay.Internal
                         this.RepositionWindow.BorderBrush = System.Windows.Media.Brushes.Red;
                         this.RepositionWindow.BorderThickness = new Thickness(1);
                     };
-                    this.RepositionWindow.Activated += (s, e) =>
+                  
+                    this.RepositionWindow.KeyDown += (s, e) =>
                     {
                         this.RepositionWindow.BorderBrush = System.Windows.Media.Brushes.Green;
                         this.RepositionWindow.BorderThickness = new Thickness(3);
-                    };
-                    this.RepositionWindow.KeyDown += (s, e) =>
-                    {
-
                         switch (e.Key)
                         {
                             case System.Windows.Input.Key.Right:
