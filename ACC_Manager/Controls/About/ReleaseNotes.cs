@@ -11,8 +11,10 @@ namespace ACCManager.Controls
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
             {"0.0.6.4", "- HUD: Added hotkey (Ctrl + Shift + M) for enabling the reposition of overlays"+
+                        "\n- HUD: Overlays can now be scaled on with 1% steps, providing more precision."+
                         "\n- HUD: Overlays can now be moved with the arrow keys as well for finetuning of position."+
-                        "\n- Added startup argument to start in minimized window state: ( /StartMinimized )."
+                        "\n- Added startup argument to start in minimized window state: ( /StartMinimized )."+
+                        "\n- Added Tyre Info overlay, this can be placed on top of the kunos tyre info"
             },
             {"0.0.6.3", "- Lap Data Collector: Fix Average Fuel usage calculation after adding new fuel." },
             {"0.0.6.2", "- Integrate broadcast data, available for overlay developers."+
