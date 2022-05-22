@@ -32,8 +32,7 @@ namespace ACCManager.Controls
     /// </summary>
     public partial class HudOptions : UserControl
     {
-        private KeyboardHook hook = new KeyboardHook();
-
+        private KeyboardHook _hook = new KeyboardHook();
         public HudOptions()
         {
             InitializeComponent();
@@ -49,9 +48,15 @@ namespace ACCManager.Controls
                     if (e.ChangedButton == MouseButton.Middle)
                         this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
                 };
+                try
+                {
+                    _hook.RegisterHotKey(HUD.ModifierKeys.Control | HUD.ModifierKeys.Shift, System.Windows.Forms.Keys.M);
+                    _hook.KeyPressed += (s, ev) => { this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked; };
+                }
+                catch (Exception except)
+                {
 
-                hook.RegisterHotKey(HUD.ModifierKeys.Control | HUD.ModifierKeys.Shift, System.Windows.Forms.Keys.M);
-                hook.KeyPressed += (s, e) => { this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked; };
+                }
             }
             catch (Exception ex)
             {

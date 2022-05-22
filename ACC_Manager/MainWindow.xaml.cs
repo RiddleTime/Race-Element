@@ -1,4 +1,5 @@
-﻿using ACCManager.HUD;
+﻿using ACCManager.Controls.HUD;
+using ACCManager.HUD;
 using ACCManager.HUD.ACC;
 using ACCManager.HUD.ACC.Data.Tracker;
 using ACCManager.Util;
@@ -60,7 +61,19 @@ namespace ACCManager
             AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
             this.Closing += MainWindow_Closing;
 
+           
+
+            this.Loaded += MainWindow_Loaded;
+
             Instance = this;
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!App.Instance.StartMinimized)
+            {
+                this.WindowState = WindowState.Normal;
+            }
         }
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
