@@ -1,4 +1,5 @@
 ﻿using ACC_Manager.Util.NumberExtensions;
+using ACCManager.Controls.HUD;
 using ACCManager.HUD.ACC;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
@@ -31,6 +32,8 @@ namespace ACCManager.Controls
     /// </summary>
     public partial class HudOptions : UserControl
     {
+        private KeyboardHook hook = new KeyboardHook();
+
         public HudOptions()
         {
             InitializeComponent();
@@ -46,6 +49,9 @@ namespace ACCManager.Controls
                     if (e.ChangedButton == MouseButton.Middle)
                         this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
                 };
+
+                hook.RegisterHotKey(HUD.ModifierKeys.Control | HUD.ModifierKeys.Shift, System.Windows.Forms.Keys.M);
+                hook.KeyPressed += (s, e) => { this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked; };
             }
             catch (Exception ex)
             {
@@ -110,7 +116,11 @@ namespace ACCManager.Controls
 
                         SaveOverlaySettings(overlay, false);
 
-                        overlay?.Stop();
+                        Task.Run(() =>
+                        {
+                            overlay?.Stop();
+                        });
+
                         OverlaysACC.ActiveOverlays.Remove(overlay);
                         configStacker.IsEnabled = true;
                     }

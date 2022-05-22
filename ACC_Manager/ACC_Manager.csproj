@@ -311,6 +311,7 @@
     <Compile Include="Controls\HUD\HudTab.xaml.cs">
       <DependentUpon>HudTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\HUD\KeyboardHook.cs" />
     <Compile Include="Controls\Liveries\AfterImport.xaml.cs">
       <DependentUpon>AfterImport.xaml</DependentUpon>
     </Compile>
