@@ -304,13 +304,11 @@ namespace ACCManager.HUD.Overlay.Internal
                         {
                             case System.Windows.Input.Key.Right:
                                 {
-                                    //X += 1;
                                     this.RepositionWindow.Left += 1;
                                     break;
                                 }
                             case System.Windows.Input.Key.Left:
                                 {
-                                    //X -= 1;
                                     this.RepositionWindow.Left -= 1;
                                     break;
                                 }
@@ -318,13 +316,11 @@ namespace ACCManager.HUD.Overlay.Internal
                             case System.Windows.Input.Key.Up:
                                 {
                                     this.RepositionWindow.Top -= 1;
-                                    //Y -= 1;
                                     break;
                                 }
                             case System.Windows.Input.Key.Down:
                                 {
                                     this.RepositionWindow.Top += 1;
-                                    //Y += 1;
                                     break;
                                 }
                             default: break;
