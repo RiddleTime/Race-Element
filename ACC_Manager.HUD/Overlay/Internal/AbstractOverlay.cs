@@ -287,6 +287,51 @@ namespace ACCManager.HUD.Overlay.Internal
                         X = (int)this.RepositionWindow.Left;
                         Y = (int)this.RepositionWindow.Top;
                     };
+
+                    this.RepositionWindow.Deactivated += (s, e) =>
+                    {
+                        this.RepositionWindow.BorderBrush = System.Windows.Media.Brushes.Red;
+                        this.RepositionWindow.BorderThickness = new Thickness(3);
+                    };
+                    this.RepositionWindow.Activated += (s, e) =>
+                    {
+                        this.RepositionWindow.BorderBrush = System.Windows.Media.Brushes.Green;
+                        this.RepositionWindow.BorderThickness = new Thickness(5);
+                    };
+                    this.RepositionWindow.KeyDown += (s, e) =>
+                    {
+
+                        switch (e.Key)
+                        {
+                            case System.Windows.Input.Key.Right:
+                                {
+                                    X += 1;
+                                    this.RepositionWindow.Left += 1;
+                                    break;
+                                }
+                            case System.Windows.Input.Key.Left:
+                                {
+                                    X -= 1;
+                                    this.RepositionWindow.Left -= 1;
+                                    break;
+                                }
+
+                            case System.Windows.Input.Key.Up:
+                                {
+                                    this.RepositionWindow.Top -= 1;
+                                    Y -= 1;
+                                    break;
+                                }
+                            case System.Windows.Input.Key.Down:
+                                {
+                                    this.RepositionWindow.Top += 1;
+                                    Y += 1;
+                                    break;
+                                }
+                        }
+
+                    };
+
                     RepositionWindow.Show();
                 }
                 else
