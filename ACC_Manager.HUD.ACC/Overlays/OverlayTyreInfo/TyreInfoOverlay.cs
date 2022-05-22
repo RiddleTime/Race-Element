@@ -92,7 +92,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
 
         private void DrawBrakeTemps(Graphics g, int x, int y, Position position)
         {
-            Font fontFamily = FontUtil.GetBoldFont(9);
+            Font fontFamily = FontUtil.FontOrbitron(9);
 
             double percentage = 0;
             switch (position)
@@ -133,7 +133,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
 
         private void DrawPadWearText(Graphics g, int x, int y, Position position)
         {
-            Font fontFamily = FontUtil.GetBoldFont(9);
+            Font fontFamily = FontUtil.FontOrbitron(9);
 
             double percentage = 0;
             switch (position)

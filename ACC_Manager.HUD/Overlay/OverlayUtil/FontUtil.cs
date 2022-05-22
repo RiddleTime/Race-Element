@@ -25,7 +25,7 @@ namespace ACCManager.HUD.Overlay.Util
         static private IntPtr m_fh = IntPtr.Zero;
         static private PrivateFontCollection m_pfc = null;
 
-        public static Font GetBoldFont(float size)
+        public static Font FontOrbitron(float size)
         {
             return GetSpecialFont(size, "ACCManager.HUD.Fonts.orbitron-medium.ttf");
         }

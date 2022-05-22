@@ -279,9 +279,9 @@ namespace ACCManager.HUD.Overlay.Internal
                     };
                     this.RepositionWindow.MouseLeftButtonDown += (s, e) =>
                     {
-                        this.RepositionWindow.DragMove();
                         this.RepositionWindow.BorderBrush = System.Windows.Media.Brushes.Green;
                         this.RepositionWindow.BorderThickness = new Thickness(3);
+                        this.RepositionWindow.DragMove();
                     };
 
                     this.RepositionWindow.LocationChanged += (s, e) =>

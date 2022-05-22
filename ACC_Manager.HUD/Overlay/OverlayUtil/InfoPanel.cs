@@ -36,7 +36,7 @@ namespace ACCManager.HUD.Overlay.Util
         public InfoPanel(double fontSize, int maxWidth)
         {
             this.MaxWidth = maxWidth;
-            this.Font = FontUtil.GetBoldFont((float)fontSize);
+            this.Font = FontUtil.FontOrbitron((float)fontSize);
             this.FontHeight = Font.Height;
         }
         private List<InfoLine> Lines = new List<InfoLine>();
