@@ -27,7 +27,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             [ToolTip("Displays the average of front and rear brake temperatures under the brake pads.")]
             public bool ShowBrakeTemps { get; set; } = true;
 
-            [ToolTip("Displays the tyre temperature for each tyre whist displaying colors." +
+            [ToolTip("Displays the tyre temperature for each tyre whilst displaying colors." +
                 "\nGreen is optimal, Red is too hot, Blue is too cold.")]
             public bool ShowTyreTemps { get; set; } = true;
 
