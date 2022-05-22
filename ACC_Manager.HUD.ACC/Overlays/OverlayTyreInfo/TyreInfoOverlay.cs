@@ -22,9 +22,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
         private TyreInfoConfig config = new TyreInfoConfig();
         private class TyreInfoConfig : OverlayConfiguration
         {
-            [ToolTip("Draws progress bars and text displaying how brake pade life there is left.")]
+            [ToolTip("Shows progress bars and text displaying the percentage of brake pad life.")]
             public bool DrawPadLife { get; set; } = true;
 
+            [ToolTip("Shows the average of front and rear brake temperatures.")]
             public bool DrawBrakeTemps { get; set; } = true;
 
 
