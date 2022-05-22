@@ -291,12 +291,12 @@ namespace ACCManager.HUD.Overlay.Internal
                     this.RepositionWindow.Deactivated += (s, e) =>
                     {
                         this.RepositionWindow.BorderBrush = System.Windows.Media.Brushes.Red;
-                        this.RepositionWindow.BorderThickness = new Thickness(3);
+                        this.RepositionWindow.BorderThickness = new Thickness(1);
                     };
                     this.RepositionWindow.Activated += (s, e) =>
                     {
                         this.RepositionWindow.BorderBrush = System.Windows.Media.Brushes.Green;
-                        this.RepositionWindow.BorderThickness = new Thickness(5);
+                        this.RepositionWindow.BorderThickness = new Thickness(3);
                     };
                     this.RepositionWindow.KeyDown += (s, e) =>
                     {
@@ -305,13 +305,13 @@ namespace ACCManager.HUD.Overlay.Internal
                         {
                             case System.Windows.Input.Key.Right:
                                 {
-                                    X += 1;
+                                    //X += 1;
                                     this.RepositionWindow.Left += 1;
                                     break;
                                 }
                             case System.Windows.Input.Key.Left:
                                 {
-                                    X -= 1;
+                                    //X -= 1;
                                     this.RepositionWindow.Left -= 1;
                                     break;
                                 }
@@ -319,15 +319,16 @@ namespace ACCManager.HUD.Overlay.Internal
                             case System.Windows.Input.Key.Up:
                                 {
                                     this.RepositionWindow.Top -= 1;
-                                    Y -= 1;
+                                    //Y -= 1;
                                     break;
                                 }
                             case System.Windows.Input.Key.Down:
                                 {
                                     this.RepositionWindow.Top += 1;
-                                    Y += 1;
+                                    //Y += 1;
                                     break;
                                 }
+                            default: break;
                         }
 
                     };
