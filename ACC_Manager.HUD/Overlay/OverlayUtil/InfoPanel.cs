@@ -19,8 +19,7 @@ namespace ACCManager.HUD.Overlay.Util
 {
     public class InfoPanel
     {
-        private readonly Font TitleFont;
-        private readonly Font ValueFont;
+        private readonly Font Font;
 
         private readonly int MaxWidth;
         public int X = 0;
@@ -37,9 +36,8 @@ namespace ACCManager.HUD.Overlay.Util
         public InfoPanel(double fontSize, int maxWidth)
         {
             this.MaxWidth = maxWidth;
-            this.TitleFont = FontUtil.GetBoldFont((float)fontSize);
-            this.ValueFont = FontUtil.GetLightFont((float)fontSize);
-            this.FontHeight = TitleFont.Height;
+            this.Font = FontUtil.GetBoldFont((float)fontSize);
+            this.FontHeight = Font.Height;
         }
         private List<InfoLine> Lines = new List<InfoLine>();
 
@@ -61,7 +59,7 @@ namespace ACCManager.HUD.Overlay.Util
 
             TextRenderingHint previousHint = g.TextRenderingHint;
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
-            g.TextContrast = 2;
+            g.TextContrast = 1;
 
             lock (Lines)
             {
@@ -74,21 +72,21 @@ namespace ACCManager.HUD.Overlay.Util
                     if (line.GetType() == typeof(TextLine))
                     {
                         TextLine textLine = (TextLine)line;
-                        g.DrawString($"{textLine.Title}", TitleFont, Brushes.White, new PointF(X, Y + counter * FontHeight));
-                        g.DrawString($"{textLine.Value}", ValueFont, textLine.ValueBrush, new PointF(X + MaxTitleWidth + TitleFont.Size, Y + counter * FontHeight));
+                        g.DrawString($"{textLine.Title}", Font, Brushes.White, new PointF(X, Y + counter * FontHeight));
+                        g.DrawString($"{textLine.Value}", Font, textLine.ValueBrush, new PointF(X + MaxTitleWidth + Font.Size, Y + counter * FontHeight));
                     }
 
                     if (line.GetType() == typeof(TitledProgressBarLine))
                     {
                         TitledProgressBarLine bar = (TitledProgressBarLine)line;
-                        g.DrawString($"{bar.Title}", TitleFont, Brushes.White, new PointF(X, Y + counter * FontHeight));
+                        g.DrawString($"{bar.Title}", Font, Brushes.White, new PointF(X, Y + counter * FontHeight));
 
                         ProgressBar progressBar = new ProgressBar(bar.Min, bar.Max, bar.Value);
-                        progressBar.Draw(g, (int)(X + MaxTitleWidth + TitleFont.Size), Y + counter * FontHeight + 1, (int)(MaxWidth - MaxTitleWidth - TitleFont.Size) - 2, (int)FontHeight - 2, bar.BarColor);
+                        progressBar.Draw(g, (int)(X + MaxTitleWidth + Font.Size), Y + counter * FontHeight + 1, (int)(MaxWidth - MaxTitleWidth - Font.Size) - 2, (int)FontHeight - 2, bar.BarColor);
 
                         string percent = $"{(bar.Max / bar.Value * 100):F1}%";
-                        SizeF textWidth = g.MeasureString(percent, TitleFont);
-                        g.DrawString($"{percent}", TitleFont, Brushes.White, new PointF((int)(X + (MaxWidth - MaxTitleWidth)) - textWidth.Width / 2, Y + counter * FontHeight));
+                        SizeF textWidth = g.MeasureString(percent, Font);
+                        g.DrawString($"{percent}", Font, Brushes.White, new PointF((int)(X + (MaxWidth - MaxTitleWidth)) - textWidth.Width / 2, Y + counter * FontHeight));
                     }
 
                     if (line.GetType() == typeof(CenterTextedProgressBarLine))
@@ -98,8 +96,8 @@ namespace ACCManager.HUD.Overlay.Util
                         ProgressBar progressBar = new ProgressBar(bar.Min, bar.Max, bar.Value);
                         progressBar.Draw(g, X + 1, Y + counter * FontHeight + 1, (int)MaxWidth - 2, (int)FontHeight - 2, bar.BarColor);
 
-                        SizeF textWidth = g.MeasureString(bar.CenteredText, TitleFont);
-                        g.DrawString($"{bar.CenteredText}", TitleFont, Brushes.White, new PointF(X + MaxWidth / 2 - textWidth.Width / 2, Y + counter * FontHeight));
+                        SizeF textWidth = g.MeasureString(bar.CenteredText, Font);
+                        g.DrawString($"{bar.CenteredText}", Font, Brushes.White, new PointF(X + MaxWidth / 2 - textWidth.Width / 2, Y + counter * FontHeight));
 
                     }
 
@@ -110,8 +108,8 @@ namespace ACCManager.HUD.Overlay.Util
                         DeltaBar deltaBar = new DeltaBar(bar.Min, bar.Max, bar.Value);
                         deltaBar.Draw(g, X + 1, Y + counter * FontHeight + 1, (int)MaxWidth - 2, (int)FontHeight - 2);
 
-                        SizeF textWidth = g.MeasureString(bar.CenteredText, TitleFont);
-                        g.DrawString($"{bar.CenteredText}", TitleFont, Brushes.White, new PointF(X + MaxWidth / 2 - textWidth.Width / 2, Y + counter * FontHeight));
+                        SizeF textWidth = g.MeasureString(bar.CenteredText, Font);
+                        g.DrawString($"{bar.CenteredText}", Font, Brushes.White, new PointF(X + MaxWidth / 2 - textWidth.Width / 2, Y + counter * FontHeight));
                     }
 
 
@@ -141,7 +139,7 @@ namespace ACCManager.HUD.Overlay.Util
                     {
                         TextLine textLine = (TextLine)line;
                         SizeF titleWidth;
-                        if ((titleWidth = g.MeasureString(textLine.Title, TitleFont)).Width > MaxTitleWidth)
+                        if ((titleWidth = g.MeasureString(textLine.Title, Font)).Width > MaxTitleWidth)
                             MaxTitleWidth = titleWidth.Width;
                     }
 
@@ -149,7 +147,7 @@ namespace ACCManager.HUD.Overlay.Util
                     {
                         TitledProgressBarLine titledProgressBar = (TitledProgressBarLine)line;
                         SizeF titleWidth;
-                        if ((titleWidth = g.MeasureString(titledProgressBar.Title, TitleFont)).Width > MaxTitleWidth)
+                        if ((titleWidth = g.MeasureString(titledProgressBar.Title, Font)).Width > MaxTitleWidth)
                             MaxTitleWidth = titleWidth.Width;
                     }
 

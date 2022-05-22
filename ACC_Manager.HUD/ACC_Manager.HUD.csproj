@@ -84,9 +84,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Fonts\orbitron-light.ttf" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Fonts\orbitron-medium.ttf" />
   </ItemGroup>
   <ItemGroup>
