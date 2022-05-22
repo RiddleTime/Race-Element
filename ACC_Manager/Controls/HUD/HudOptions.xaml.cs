@@ -362,7 +362,7 @@ namespace ACCManager.Controls
 
                             double min = 0.5;
                             double max = 2.0;
-                            double tickFrequency = 0.1;
+                            double tickFrequency = 0.01;
                             double sliderValue = double.Parse(configField.Value.ToString());
                             sliderValue.Clip(min, max);
 
@@ -370,7 +370,7 @@ namespace ACCManager.Controls
 
                             Label sliderLabel = new Label
                             {
-                                Content = $"{floatLabel}: {sliderValue:F1}",
+                                Content = $"{floatLabel}: {sliderValue:F2}",
                                 VerticalAlignment = VerticalAlignment.Center,
                                 VerticalContentAlignment = VerticalAlignment.Center,
                             };
@@ -391,7 +391,7 @@ namespace ACCManager.Controls
                             };
                             slider.ValueChanged += (sender, args) =>
                             {
-                                sliderLabel.Content = $"{floatLabel}: {slider.Value:F1}";
+                                sliderLabel.Content = $"{floatLabel}: {slider.Value:F2}";
                                 configField.Value = slider.Value;
                                 configFields.RemoveAt(configFields.IndexOf(configField));
                                 configFields.Add(configField);
