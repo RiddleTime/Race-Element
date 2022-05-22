@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using ACCManager.HUD.Overlay.Util;
 using ACCManager.HUD.Overlay.Configuration;
+using ACCManager.HUD.ACC.Overlays.OverlayPressureTrace;
+using ACCManager.HUD.Overlay.OverlayUtil;
+using static ACCManager.Data.SetupConverter;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
 {
@@ -16,20 +19,17 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
         private TyreInfoConfig config = new TyreInfoConfig();
         private class TyreInfoConfig : OverlayConfiguration
         {
-            internal bool ShowBrakePressure { get; set; } = false;
+            public TyreInfoConfig()
+            {
+                this.AllowRescale = true;
+            }
         }
-
-        private const int PanelWidth = 120;
-        private const double FontSize = 8.5;
-        InfoPanel PanelFrontLeft = new InfoPanel(FontSize, PanelWidth) { };
-        InfoPanel PanelFrontRight = new InfoPanel(FontSize, PanelWidth) { X = PanelWidth + PanelWidth / 2 };
-        InfoPanel PanelRearLeft = new InfoPanel(FontSize, PanelWidth) { Y = 75 };
-        InfoPanel PanelRearRight = new InfoPanel(FontSize, PanelWidth) { X = PanelWidth + PanelWidth / 2, Y = 75 };
 
         public TyreInfoOverlay(Rectangle rectangle) : base(rectangle, "Tyre Info Overlay")
         {
-            this.Width = PanelWidth + PanelWidth + PanelWidth / 2;
-            this.Height = 300;
+            this.Width = 150;
+            this.Height = 200;
+            this.RefreshRateHz = 10;
         }
 
         public sealed override void BeforeStart()
@@ -42,20 +42,46 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
 
         public sealed override void Render(Graphics g)
         {
-            InfoPanel[] list = new InfoPanel[] { PanelFrontLeft, PanelFrontRight, PanelRearLeft, PanelRearRight };
+            DrawPressureBackgrounds(g);
 
-            for (int i = 0; i < list.Length; i++)
+
+        }
+
+        private void DrawPressureBackgrounds(Graphics g)
+        {
+            TyrePressureRange range = TyrePressures.GetCurrentRange(pageGraphics.TyreCompound, pageStatic.CarModel);
+
+            if (range != null)
             {
-                list[i].AddLine("PSI", $"{pagePhysics.WheelPressure[i]:F2}");
-                list[i].AddLine("Tyre (C)", $"{pagePhysics.TyreTemp[i]:F1}");
-                list[i].AddLine("Brake (C)", $"{pagePhysics.BrakeTemperature[i]:F1}");
-                if (this.config.ShowBrakePressure)
-                    list[i].AddProgressBarWithCenteredText("Brake Pressure", 0, 1, pagePhysics.brakePressure[i]);
+                DrawPressureBackground(g, 0, 10, Wheel.FrontLeft, range);
+                DrawPressureBackground(g, 76, 10, Wheel.FrontRight, range);
+                DrawPressureBackground(g, 0, 178, Wheel.RearLeft, range);
+                DrawPressureBackground(g, 76, 178, Wheel.RearRight, range);
             }
+        }
 
-            lock (list)
-                for (int i = 0; i < list.Length; i++)
-                    list[i].Draw(g);
+        private void DrawPressureBackground(Graphics g, int x, int y, Wheel wheel, TyrePressureRange range)
+        {
+            SmoothingMode previous = g.SmoothingMode;
+
+            Color brushColor = Color.FromArgb(80, 0, 255, 0);
+
+            if (pagePhysics.WheelPressure[(int)wheel] >= range.OptimalMaximum)
+                brushColor = Color.FromArgb(80, 255, 0, 0);
+
+            if (pagePhysics.WheelPressure[(int)wheel] <= range.OptimalMinimum)
+                brushColor = Color.FromArgb(80, 0, 0, 255);
+
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+
+            g.FillRoundedRectangle(new SolidBrush(brushColor), new Rectangle(x, y, 60, 20), 2);
+
+            g.SmoothingMode = previous;
+        }
+
+        private bool IsInRange(double value, double min, double max)
+        {
+            return value < max && value > min;
         }
 
         public sealed override bool ShouldRender()
