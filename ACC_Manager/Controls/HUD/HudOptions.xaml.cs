@@ -48,21 +48,23 @@ namespace ACCManager.Controls
                     if (e.ChangedButton == MouseButton.Middle)
                         this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
                 };
-                try
-                {
-                    _hook.RegisterHotKey(HUD.ModifierKeys.Control | HUD.ModifierKeys.Shift, System.Windows.Forms.Keys.M);
-                    _hook.KeyPressed += (s, ev) => { this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked; };
-                }
-                catch (Exception except)
-                {
 
-                }
+                _hook.RegisterHotKey(HUD.ModifierKeys.Control | HUD.ModifierKeys.Shift, System.Windows.Forms.Keys.M);
+                _hook.KeyPressed += (s, ev) => { this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked; };
+
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
                 LogWriter.WriteToLog(ex);
             }
+
+            this.Unloaded += HudOptions_Unloaded;
+        }
+
+        private void HudOptions_Unloaded(object sender, RoutedEventArgs e)
+        {
+            _hook.Dispose();
         }
 
         private void SetRepositionMode(bool enabled)
