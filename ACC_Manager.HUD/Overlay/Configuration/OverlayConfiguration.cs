@@ -47,8 +47,6 @@ namespace ACCManager.HUD.Overlay.Configuration
                 {
                     if (prop.Name == field.Name)
                     {
-                        bool isSet = false;
-
                         if (prop.PropertyType == typeof(Single))
                             prop.SetValue(this, Single.Parse(field.Value.ToString()));
 

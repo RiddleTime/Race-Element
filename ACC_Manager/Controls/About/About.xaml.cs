@@ -49,7 +49,6 @@ namespace ACCManager.Controls
                 if (allTags != null && allTags.Count > 0)
                 {
                     RepositoryTag latest = allTags.First();
-                    Debug.WriteLine($"Latest version: {latest.Name}");
                     if (!GetAssemblyFileVersion().Equals(latest.Name))
                     {
                         Release release = await client.Repository.Release.GetLatest("RiddleTime", "ACC-Manager");

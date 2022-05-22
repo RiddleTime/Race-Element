@@ -87,7 +87,7 @@ namespace ACCManager.Broadcast
                     // Shutdown happened
                     break;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // Other exceptions
                     //System.Diagnostics.Debug.WriteLine(ex);

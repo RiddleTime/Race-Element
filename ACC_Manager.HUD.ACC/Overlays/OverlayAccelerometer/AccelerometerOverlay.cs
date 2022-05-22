@@ -53,7 +53,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
 
         public sealed override void BeforeStart()
         {
-            
+
         }
         public sealed override void BeforeStop() { }
 
@@ -62,7 +62,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             SolidBrush backgroundBrush = new SolidBrush(Color.FromArgb(140, Color.Black));
             //Draws the HUD window
             if (this.config.ShowText)
-                g.FillRectangle(backgroundBrush, new Rectangle(0, 0, this.gMeterSize+25, this.gMeterSize+25));
+                g.FillRectangle(backgroundBrush, new Rectangle(0, 0, this.gMeterSize + 25, this.gMeterSize + 25));
             else
                 g.FillEllipse(backgroundBrush, new Rectangle(1, 1, this.gMeterSize - 2, this.gMeterSize - 2));
 
