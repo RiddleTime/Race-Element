@@ -31,7 +31,7 @@ namespace ACCManager.HUD.Overlay.Util
 
         public static Font FontMono(float size)
         {
-            return GetSpecialFont(size, "ACCManager.HUD.Fonts.Nobody-Talks.ttf", "Nobody Talks");
+            return GetSpecialFont(size-1, "ACCManager.HUD.Fonts.unispace.bold.ttf", "Unispace");
         }
 
         private static Font GetSpecialFont(float size, string resourceName, string fontName)

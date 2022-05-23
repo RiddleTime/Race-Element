@@ -75,7 +75,7 @@ namespace ACCManager.HUD.Overlay.Util
                     {
                         TextLine textLine = (TextLine)line;
                         g.DrawString($"{textLine.Title}", Font, Brushes.White, new PointF(X, Y + counter * FontHeight));
-                        int yMono = textLine.ValueFontIsMono ? MonoFont.Height / 7 : 0;
+                        int yMono = textLine.ValueFontIsMono ? MonoFont.Height / 5 : 0;
                         g.DrawString($"{textLine.Value}", textLine.ValueFontIsMono ? MonoFont : Font, textLine.ValueBrush, new PointF(X + MaxTitleWidth + Font.Size, Y + counter * FontHeight + yMono));
                     }
 
@@ -89,7 +89,7 @@ namespace ACCManager.HUD.Overlay.Util
 
                         string percent = $"{(bar.Max / bar.Value * 100):F1}%";
                         SizeF textWidth = g.MeasureString(percent, bar.ValueFontIsMono ? MonoFont : Font);
-                        int yMono = bar.ValueFontIsMono ? MonoFont.Height / 7 : 0;
+                        int yMono = bar.ValueFontIsMono ? MonoFont.Height / 5 : 0;
                         g.DrawString($"{percent}", bar.ValueFontIsMono ? MonoFont : Font, Brushes.White, new PointF((int)(X + (MaxWidth - MaxTitleWidth)) - textWidth.Width / 2, Y + counter * FontHeight + yMono));
                     }
 
@@ -101,7 +101,7 @@ namespace ACCManager.HUD.Overlay.Util
                         progressBar.Draw(g, X + 1, Y + counter * FontHeight + 1, (int)MaxWidth - 2, (int)FontHeight - 2, bar.BarColor);
 
                         SizeF textWidth = g.MeasureString(bar.CenteredText, bar.ValueFontIsMono ? MonoFont : Font);
-                        int yMono = bar.ValueFontIsMono ? MonoFont.Height / 7 : 0;
+                        int yMono = bar.ValueFontIsMono ? MonoFont.Height / 5 : 0;
                         g.DrawString($"{bar.CenteredText}", bar.ValueFontIsMono ? MonoFont : Font, Brushes.White, new PointF(X + MaxWidth / 2 - textWidth.Width / 2, Y + counter * FontHeight + yMono));
 
                     }
@@ -114,7 +114,7 @@ namespace ACCManager.HUD.Overlay.Util
                         deltaBar.Draw(g, X + 1, Y + counter * FontHeight + 1, (int)MaxWidth - 2, (int)FontHeight - 2);
 
                         SizeF textWidth = g.MeasureString(bar.CenteredText, bar.ValueFontIsMono ? MonoFont : Font);
-                        int yMono = bar.ValueFontIsMono ? MonoFont.Height / 7 : 0;
+                        int yMono = bar.ValueFontIsMono ? MonoFont.Height / 5 : 0;
                         g.DrawString($"{bar.CenteredText}", bar.ValueFontIsMono ? MonoFont : Font, Brushes.White, new PointF(X + MaxWidth / 2 - textWidth.Width / 2, Y + counter * FontHeight + yMono));
                     }
 
