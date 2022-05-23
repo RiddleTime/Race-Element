@@ -38,9 +38,17 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
         }
 
         private const double MaxPadLife = 29;
+        private readonly Font _fontFamily;
+        private readonly Font _fontFamilySmall;
+        private readonly int _yMono;
+        private readonly int _yMonoSmall;
 
         public TyreInfoOverlay(Rectangle rectangle) : base(rectangle, "Tyre Info Overlay")
         {
+            _fontFamily = FontUtil.FontMono(10);
+            _yMono = _fontFamily.Height / 7;
+            _fontFamilySmall = FontUtil.FontMono(9);
+            _yMonoSmall = _fontFamilySmall.Height / 7;
             this.Width = 135;
             this.Height = 200;
             this.RefreshRateHz = 10;
@@ -102,9 +110,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             if (temp < 75)
                 tyreBrush = Brushes.DarkCyan;
 
-            Font fontFamily = FontUtil.FontOrbitron(10);
+
             string text = $"{temp:F1}";
-            int textWidth = (int)g.MeasureString(text, fontFamily).Width;
+            int textWidth = (int)g.MeasureString(text, _fontFamily).Width;
 
             SmoothingMode previous = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -114,11 +122,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             g.TextContrast = 1;
 
 
-            Rectangle backgroundDimension = new Rectangle(x - textWidth / 2, y, (int)textWidth, fontFamily.Height);
+            Rectangle backgroundDimension = new Rectangle(x - textWidth / 2, y, (int)textWidth, _fontFamily.Height);
 
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 255, 255, 255)), backgroundDimension, 2);
             g.DrawRoundedRectangle(new Pen(tyreBrush), backgroundDimension, 2);
-            g.DrawString(text, fontFamily, tyreBrush, x - textWidth / 2, y);
+
+            g.DrawString(text, _fontFamily, tyreBrush, x - textWidth / 2, y + _yMono);
 
             g.SmoothingMode = previous;
             g.TextRenderingHint = previousHint;
@@ -126,8 +135,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
 
         private void DrawBrakeTemps(Graphics g, int x, int y, Position position)
         {
-            Font fontFamily = FontUtil.FontOrbitron(9);
-
             double percentage = 0;
             switch (position)
             {
@@ -154,21 +161,19 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             }
 
             string text = $"{percentage * 100:F0} C";
-            int textWidth = (int)g.MeasureString(text, fontFamily).Width;
+            int textWidth = (int)g.MeasureString(text, _fontFamilySmall).Width;
 
             SmoothingMode previous = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(120, 0, 0, 0)), new Rectangle(x - textWidth / 2, y, (int)textWidth, fontFamily.Height), 2);
-            g.DrawString(text, fontFamily, Brushes.White, x - textWidth / 2, y);
+            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(120, 0, 0, 0)), new Rectangle(x - textWidth / 2, y, (int)textWidth, _fontFamilySmall.Height), 2);
+            g.DrawString(text, _fontFamilySmall, Brushes.White, x - textWidth / 2, y + _yMonoSmall);
 
             g.SmoothingMode = previous;
         }
 
         private void DrawPadWearText(Graphics g, int x, int y, Position position)
         {
-            Font fontFamily = FontUtil.FontOrbitron(9);
-
             double percentage = 0;
             switch (position)
             {
@@ -195,13 +200,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             }
 
             string text = $"{percentage * 100:F0} %";
-            int textWidth = (int)g.MeasureString(text, fontFamily).Width;
+            int textWidth = (int)g.MeasureString(text, _fontFamilySmall).Width;
 
             SmoothingMode previous = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(120, 0, 0, 0)), new Rectangle(x - textWidth / 2, y, (int)textWidth, fontFamily.Height), 2);
-            g.DrawString(text, fontFamily, Brushes.White, x - textWidth / 2, y);
+            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(120, 0, 0, 0)), new Rectangle(x - textWidth / 2, y, (int)textWidth, _fontFamilySmall.Height), 2);
+            g.DrawString(text, _fontFamilySmall, Brushes.White, x - textWidth / 2, y + _yMonoSmall / 2);
 
             g.SmoothingMode = previous;
         }

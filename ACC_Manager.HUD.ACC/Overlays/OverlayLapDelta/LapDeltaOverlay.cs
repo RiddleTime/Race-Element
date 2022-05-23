@@ -76,7 +76,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         public sealed override void Render(Graphics g)
         {
             double delta = (double)pageGraphics.DeltaLapTimeMillis / 1000;
-            panel.AddDeltaBarWithCenteredText($"{delta:F3}", -this.config.MaxDelta, this.config.MaxDelta, delta);
+            panel.AddDeltaBarWithCenteredText($"{delta:F3}", -this.config.MaxDelta, this.config.MaxDelta, delta, true);
 
             if (this.config.ShowSectors)
                 AddSectorLines();
@@ -126,19 +126,19 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
 
             if (pageGraphics.CurrentSectorIndex != 0 && lap.Sector1 != -1 && lap.IsValid)
-                panel.AddLine("S1", $"{sector1}", LapTracker.Instance.Laps.IsSectorFastest(1, lap.Sector1) ? Brushes.LimeGreen : Brushes.White);
+                panel.AddLine("S1", $"{sector1}", LapTracker.Instance.Laps.IsSectorFastest(1, lap.Sector1) ? Brushes.LimeGreen : Brushes.White, true);
             else
-                panel.AddLine("S1", $"{sector1}");
+                panel.AddLine("S1", $"{sector1}", true);
 
             if (pageGraphics.CurrentSectorIndex != 1 && lap.Sector2 != -1 && lap.IsValid)
-                panel.AddLine("S2", $"{sector2}", LapTracker.Instance.Laps.IsSectorFastest(2, lap.Sector2) ? Brushes.LimeGreen : Brushes.White);
+                panel.AddLine("S2", $"{sector2}", LapTracker.Instance.Laps.IsSectorFastest(2, lap.Sector2) ? Brushes.LimeGreen : Brushes.White, true);
             else
-                panel.AddLine("S2", $"{sector2}");
+                panel.AddLine("S2", $"{sector2}", true);
 
             if (pageGraphics.CurrentSectorIndex != 2 && lap.Sector3 != -1 && lap.IsValid)
-                panel.AddLine("S3", $"{sector3}", LapTracker.Instance.Laps.IsSectorFastest(3, lap.Sector3) ? Brushes.LimeGreen : Brushes.White);
+                panel.AddLine("S3", $"{sector3}", LapTracker.Instance.Laps.IsSectorFastest(3, lap.Sector3) ? Brushes.LimeGreen : Brushes.White, true);
             else
-                panel.AddLine("S3", $"{sector3}");
+                panel.AddLine("S3", $"{sector3}", true);
         }
 
         public sealed override bool ShouldRender()

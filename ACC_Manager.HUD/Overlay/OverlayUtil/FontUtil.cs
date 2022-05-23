@@ -26,57 +26,68 @@ namespace ACCManager.HUD.Overlay.Util
 
         public static Font FontOrbitron(float size)
         {
-            return GetSpecialFont(size, "ACCManager.HUD.Fonts.orbitron-medium.ttf");
+            return GetSpecialFont(size, "ACCManager.HUD.Fonts.orbitron-medium.ttf", "Orbitron");
         }
 
-        private static Font GetSpecialFont(float size, string resourceName)
+        public static Font FontMono(float size)
+        {
+            return GetSpecialFont(size, "ACCManager.HUD.Fonts.Nobody-Talks.ttf", "Nobody Talks");
+        }
+
+        private static Font GetSpecialFont(float size, string resourceName, string fontName)
         {
 
             Font fnt = null;
-            if (m_pfc == null)
+
+
+            // First load the font as a memory stream
+            Stream stmFont = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
+
+            if (null != stmFont)
             {
 
-                // First load the font as a memory stream
-                Stream stmFont = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
+                // 
+                // GDI+ wants a pointer to memory, GDI wants the memory.
+                // We will make them both happy.
+                //
 
-                if (null != stmFont)
+                // First read the font into a buffer
+                byte[] rgbyt = new Byte[stmFont.Length];
+                stmFont.Read(rgbyt, 0, rgbyt.Length);
+
+                // Then do the unmanaged font (Windows 2000 and later)
+                // The reason this works is that GDI+ will create a font object for
+                // controls like the RichTextBox and this call will make sure that GDI
+                // recognizes the font name, later.
+                uint cFonts;
+                AddFontMemResourceEx(rgbyt, rgbyt.Length, IntPtr.Zero, out cFonts);
+
+                // Now do the managed font
+                IntPtr pbyt = Marshal.AllocCoTaskMem(rgbyt.Length);
+                if (null != pbyt)
                 {
-
-                    // 
-                    // GDI+ wants a pointer to memory, GDI wants the memory.
-                    // We will make them both happy.
-                    //
-
-                    // First read the font into a buffer
-                    byte[] rgbyt = new Byte[stmFont.Length];
-                    stmFont.Read(rgbyt, 0, rgbyt.Length);
-
-                    // Then do the unmanaged font (Windows 2000 and later)
-                    // The reason this works is that GDI+ will create a font object for
-                    // controls like the RichTextBox and this call will make sure that GDI
-                    // recognizes the font name, later.
-                    uint cFonts;
-                    AddFontMemResourceEx(rgbyt, rgbyt.Length, IntPtr.Zero, out cFonts);
-
-                    // Now do the managed font
-                    IntPtr pbyt = Marshal.AllocCoTaskMem(rgbyt.Length);
-                    if (null != pbyt)
-                    {
-                        Marshal.Copy(rgbyt, 0, pbyt, rgbyt.Length);
+                    Marshal.Copy(rgbyt, 0, pbyt, rgbyt.Length);
+                    if (m_pfc == null)
                         m_pfc = new PrivateFontCollection();
-                        m_pfc.AddMemoryFont(pbyt, rgbyt.Length);
-                        Marshal.FreeCoTaskMem(pbyt);
-                    }
+                    m_pfc.AddMemoryFont(pbyt, rgbyt.Length);
+                    Marshal.FreeCoTaskMem(pbyt);
                 }
-
-                stmFont.Close();
             }
+
+            stmFont.Close();
+
 
             if (m_pfc.Families.Length > 0)
             {
                 // Handy how one of the Font constructors takes a
                 // FontFamily object, huh? :-)
-                fnt = new Font(m_pfc.Families[0], size);
+                for (int i = 0; i < m_pfc.Families.Length; i++)
+                {
+                    if (m_pfc.Families[i].Name == fontName)
+                        fnt = new Font(m_pfc.Families[i], size);
+                }
+
+                //fnt = new Font(m_pfc.Families[0], size);
             }
 
             return fnt;
