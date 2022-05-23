@@ -416,6 +416,13 @@ namespace ACCManager.Controls
                 tagTreeItems.Add(tagItem);
             });
 
+            tagTreeItems.Sort((a, b) =>
+            {
+                TextBlock textA = a.Header as TextBlock;
+                TextBlock textB = b.Header as TextBlock;
+                return $"{textA.DataContext}".CompareTo($"{textB.DataContext}");
+            });
+
 
             if (liveriesWithTags.Count > 0)
             {
@@ -470,17 +477,9 @@ namespace ACCManager.Controls
                     tagItem.Items.Add(skinItem);
                 }
 
-                tagTreeItems.Add(tagItem);
+                tagTreeItems.Insert(0, tagItem);
 
             }
-
-
-            tagTreeItems.Sort((a, b) =>
-            {
-                TextBlock textA = a.Header as TextBlock;
-                TextBlock textB = b.Header as TextBlock;
-                return $"{textA.DataContext}".CompareTo($"{textB.DataContext}");
-            });
 
             tagTreeItems.ForEach(x => liveriesTreeViewTags.Items.Add(x));
 
