@@ -45,9 +45,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
 
         public TyreInfoOverlay(Rectangle rectangle) : base(rectangle, "Tyre Info Overlay")
         {
-            _fontFamily = FontUtil.FontMono(10);
+            _fontFamily = FontUtil.FontUnispace(10);
             _yMono = _fontFamily.Height / 6;
-            _fontFamilySmall = FontUtil.FontMono(9);
+            _fontFamilySmall = FontUtil.FontUnispace(9);
             _yMonoSmall = _fontFamilySmall.Height / 5;
             this.Width = 135;
             this.Height = 200;

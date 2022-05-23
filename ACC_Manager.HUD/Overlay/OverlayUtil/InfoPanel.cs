@@ -38,7 +38,7 @@ namespace ACCManager.HUD.Overlay.Util
         {
             this.MaxWidth = maxWidth;
             this.Font = FontUtil.FontOrbitron((float)fontSize);
-            this.MonoFont = FontUtil.FontMono((float)fontSize);
+            this.MonoFont = FontUtil.FontUnispace((float)fontSize);
             this.FontHeight = Font.Height;
         }
         private List<InfoLine> Lines = new List<InfoLine>();

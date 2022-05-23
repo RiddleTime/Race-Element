@@ -29,9 +29,9 @@ namespace ACCManager.HUD.Overlay.Util
             return GetSpecialFont(size, "ACCManager.HUD.Fonts.orbitron-medium.ttf", "Orbitron");
         }
 
-        public static Font FontMono(float size)
+        public static Font FontUnispace(float size)
         {
-            return GetSpecialFont(size-1, "ACCManager.HUD.Fonts.unispace.bold.ttf", "Unispace");
+            return GetSpecialFont(size - 1, "ACCManager.HUD.Fonts.unispace.bold.ttf", "Unispace");
         }
 
         private static Font GetSpecialFont(float size, string resourceName, string fontName)
