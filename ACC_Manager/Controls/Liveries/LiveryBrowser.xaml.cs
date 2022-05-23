@@ -463,7 +463,7 @@ namespace ACCManager.Controls
                 {
                     TextBlock skinHeader = new TextBlock()
                     {
-                        Text = $"{car.carsRoot.customSkinName}",
+                        Text = $"{car.carsRoot.teamName} \\ {car.carsRoot.customSkinName}",
                         Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style,
                         TextTrimming = TextTrimming.WordEllipsis,
                         Width = liveriesTreeViewTeams.Width - 5
