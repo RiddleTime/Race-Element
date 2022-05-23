@@ -69,6 +69,12 @@ namespace ACCManager.Controls
                 return;
             }
 
+            if (newTagName.Equals("No Tags"))
+            {
+                MainWindow.Instance.EnqueueSnackbarMessage("This name is reserved.");
+                return;
+            }
+
             List<LiveryTag> allTags = LiveryTagging.GetAllTags();
 
             foreach (LiveryTag tag in allTags)

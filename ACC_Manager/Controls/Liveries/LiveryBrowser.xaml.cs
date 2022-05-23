@@ -296,7 +296,7 @@ namespace ACCManager.Controls
                 if (expandedTeamHeaders.Contains(tItem.Key)) teamItem.ExpandSubtree();
                 teamItem.Expanded += (s, e) =>
                 {
-                    int targetItemInView =  teamItem.Items.Count;
+                    int targetItemInView = teamItem.Items.Count;
                     targetItemInView.ClipMax(18);
                     ((TreeViewItem)teamItem.Items.GetItemAt(targetItemInView - 1)).BringIntoView();
                     expandedTeamHeaders.Add(tItem.Key);
@@ -344,6 +344,8 @@ namespace ACCManager.Controls
 
             List<TreeViewItem> tagTreeItems = new List<TreeViewItem>();
 
+            List<LiveryTreeCar> liveriesWithTags = new List<LiveryTreeCar>();
+
             LiveryTagging.GetAllTags().ForEach(liveryTag =>
             {
                 List<LiveryTreeCar> tagCars = new List<LiveryTreeCar>();
@@ -381,7 +383,8 @@ namespace ACCManager.Controls
                 {
                     int targetItemInView = tagItem.Items.Count;
                     targetItemInView.ClipMax(18);
-                    ((TreeViewItem)tagItem.Items.GetItemAt(targetItemInView - 1)).BringIntoView();
+                    if (tagItem.Items.Count > 0)
+                        ((TreeViewItem)tagItem.Items.GetItemAt(targetItemInView - 1)).BringIntoView();
                     expandedTagHeaders.Add(liveryTag.Name);
                 };
                 tagItem.Collapsed += (s, e) => expandedTagHeaders.Remove(liveryTag.Name);
@@ -404,11 +407,72 @@ namespace ACCManager.Controls
                     TreeViewItem skinItem = new TreeViewItem() { Header = skinHeader, DataContext = car };
                     skinItem.ContextMenu = GetSkinContextMenu(car, liveryTag);
 
+                    if (!liveriesWithTags.Contains(car))
+                        liveriesWithTags.Add(car);
+
                     tagItem.Items.Add(skinItem);
                 }
 
                 tagTreeItems.Add(tagItem);
             });
+
+
+            if (liveriesWithTags.Count > 0)
+            {
+                List<LiveryTreeCar> liveriesWithoutTags = allLiveries.Except(liveriesWithTags).ToList();
+
+                string treeViewTitle = $"No Tags ({liveriesWithoutTags.Count})";
+                TextBlock tagHeader = new TextBlock()
+                {
+                    Text = treeViewTitle,
+                    Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
+                    TextTrimming = TextTrimming.WordEllipsis,
+                    Width = liveriesTreeViewTeams.Width - 5,
+                    Background = new SolidColorBrush(Colors.OrangeRed)
+                };
+                TreeViewItem tagItem = new TreeViewItem()
+                {
+                    Header = tagHeader,
+                    Background = new SolidColorBrush(Color.FromArgb(38, 10, 0, 0)),
+                };
+                tagItem.PreviewMouseLeftButtonDown += (s, e) => { tagItem.IsExpanded = !tagItem.IsExpanded; };
+                if (expandedTagHeaders.Contains("No Tags")) tagItem.ExpandSubtree();
+                tagItem.Expanded += (s, e) =>
+                {
+                    int targetItemInView = tagItem.Items.Count;
+                    targetItemInView.ClipMax(18);
+                    if (tagItem.Items.Count > 0)
+                        ((TreeViewItem)tagItem.Items.GetItemAt(targetItemInView - 1)).BringIntoView();
+                    expandedTagHeaders.Add("No Tags");
+                };
+                tagItem.Collapsed += (s, e) => expandedTagHeaders.Remove("No Tags");
+
+                liveriesWithoutTags.Sort((a, b) =>
+                {
+                    return $"{a.carsRoot.customSkinName.ToLower()}".CompareTo($"{b.carsRoot.customSkinName.ToLower()}");
+                });
+
+                foreach (LiveryTreeCar car in liveriesWithoutTags)
+                {
+                    TextBlock skinHeader = new TextBlock()
+                    {
+                        Text = $"{car.carsRoot.customSkinName}",
+                        Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style,
+                        TextTrimming = TextTrimming.WordEllipsis,
+                        Width = liveriesTreeViewTeams.Width - 5
+                    };
+                    TreeViewItem skinItem = new TreeViewItem() { Header = skinHeader, DataContext = car };
+                    skinItem.ContextMenu = GetSkinContextMenu(car, null);
+
+                    if (!liveriesWithTags.Contains(car))
+                        liveriesWithTags.Add(car);
+
+                    tagItem.Items.Add(skinItem);
+                }
+
+                tagTreeItems.Add(tagItem);
+
+            }
 
 
             tagTreeItems.Sort((a, b) =>
