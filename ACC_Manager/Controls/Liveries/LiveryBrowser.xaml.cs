@@ -456,14 +456,14 @@ namespace ACCManager.Controls
 
                 liveriesWithoutTags.Sort((a, b) =>
                 {
-                    return $"{a.carsRoot.teamName} \\ {a.carsRoot.customSkinName}".CompareTo($"{b.carsRoot.teamName} \\ {b.carsRoot.customSkinName}");
+                    return $"{a.carsRoot.teamName} / {a.carsRoot.customSkinName}".CompareTo($"{b.carsRoot.teamName} / {b.carsRoot.customSkinName}");
                 });
 
                 foreach (LiveryTreeCar car in liveriesWithoutTags)
                 {
                     TextBlock skinHeader = new TextBlock()
                     {
-                        Text = $"{car.carsRoot.teamName} \\ {car.carsRoot.customSkinName}",
+                        Text = $"{car.carsRoot.teamName} / {car.carsRoot.customSkinName}",
                         Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style,
                         TextTrimming = TextTrimming.WordEllipsis,
                         Width = liveriesTreeViewTeams.Width - 5
