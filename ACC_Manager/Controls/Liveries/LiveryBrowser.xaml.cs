@@ -456,7 +456,7 @@ namespace ACCManager.Controls
 
                 liveriesWithoutTags.Sort((a, b) =>
                 {
-                    return $"{a.carsRoot.customSkinName.ToLower()}".CompareTo($"{b.carsRoot.customSkinName.ToLower()}");
+                    return $"{a.carsRoot.teamName} \\ {a.carsRoot.customSkinName}".CompareTo($"{b.carsRoot.teamName} \\ {b.carsRoot.customSkinName}");
                 });
 
                 foreach (LiveryTreeCar car in liveriesWithoutTags)
