@@ -40,7 +40,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
 
         public CarInfoOverlay(Rectangle rectangle) : base(rectangle, "Car Info Overlay")
         {
-            int panelWidth = 180;
+            int panelWidth = 150;
 
             this.infoPanel = new InfoPanel(10, panelWidth);
             this.Width = panelWidth + 1;
@@ -67,8 +67,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
         public sealed override void Render(Graphics g)
         {
             float totalRepairTime = GetTotalRepairTime();
-            Brush repairBrush = HasAnyDamage() ? Brushes.Red : Brushes.White;
-            infoPanel.AddLine("Repair Time", $"{totalRepairTime:F1}", repairBrush);
+            Brush damageBrush = HasAnyDamage() ? Brushes.Red : Brushes.White;
+            infoPanel.AddLine("Damage", $"{totalRepairTime:F1}", damageBrush);
             infoPanel.AddLine("Tyre Set", $"{pageGraphics.currentTyreSet}");
 
             if (this.config.ShowAverageFuelUsage)
@@ -77,14 +77,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
                 if (fuelXLap != -1)
                     fuelXLap /= 1000f;
                 else fuelXLap = pageGraphics.FuelXLap;
-                infoPanel.AddLine("Av. Fuel/lap", $"{fuelXLap:F3}");
+                infoPanel.AddLine("Fuel/Lap", $"{fuelXLap:F3}");
             }
 
             if (this.config.ShowWaterTemp)
-                infoPanel.AddLine("Water temp", $"{pagePhysics.WaterTemp:F0} C");
+                infoPanel.AddLine("Water", $"{pagePhysics.WaterTemp:F0} C");
 
             if (this.config.ShowExhaustTemp)
-                infoPanel.AddLine("Exhaust temp", $"{pageGraphics.ExhaustTemperature:F0} C");
+                infoPanel.AddLine("Exhaust", $"{pageGraphics.ExhaustTemperature:F0} C");
 
             infoPanel.Draw(g);
         }

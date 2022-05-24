@@ -53,7 +53,7 @@ namespace ACCManager.Controls
                         this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
                 };
 
-                _hook.RegisterHotKey(HUD.ModifierKeys.Control | HUD.ModifierKeys.Alt, System.Windows.Forms.Keys.M);
+                _hook.RegisterHotKey(HUD.ModifierKeys.Control, System.Windows.Forms.Keys.Home);
                 _hook.KeyPressed += (s, ev) =>
                 {
                     this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;

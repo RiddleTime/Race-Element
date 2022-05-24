@@ -38,7 +38,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
         }
 
         private const float ShadowDistance = 1f;
-        private readonly Brush ShadowBrush = new SolidBrush(Color.FromArgb(75, Color.Black));
+        private readonly Brush _shadowBrush = new SolidBrush(Color.FromArgb(75, Color.Black));
+        private Brush ShadowBrush { get { lock (_shadowBrush) { return _shadowBrush; } } }
         private const double MaxPadLife = 29;
         private readonly Font _fontFamily;
         private readonly Font _fontFamilySmall;
@@ -123,13 +124,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             }
 
 
-         
-
             SmoothingMode previous = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.CompositingQuality = CompositingQuality.HighQuality;
             TextRenderingHint previousHint = g.TextRenderingHint;
-            g.TextRenderingHint = TextRenderingHint.AntiAlias;
+            g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
             g.TextContrast = 1;
 
 
@@ -181,11 +180,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             SmoothingMode previous = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
+            TextRenderingHint previousHint = g.TextRenderingHint;
+            g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+            g.TextContrast = 1;
+
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(120, 0, 0, 0)), new Rectangle(x - textWidth / 2, y, (int)textWidth, _fontFamilySmall.Height), 2);
             g.DrawString(text, _fontFamilySmall, ShadowBrush, x - textWidth / 2 + ShadowDistance, y + _yMonoSmall + ShadowDistance);
             g.DrawString(text, _fontFamilySmall, Brushes.White, x - textWidth / 2, y + _yMonoSmall);
 
             g.SmoothingMode = previous;
+            g.TextRenderingHint = previousHint;
         }
 
         private void DrawPadWearText(Graphics g, int x, int y, Position position)
@@ -220,13 +224,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
 
             SmoothingMode previous = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.AntiAlias;
-
+            TextRenderingHint previousHint = g.TextRenderingHint;
+            g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+            g.TextContrast = 1;
 
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(120, 0, 0, 0)), new Rectangle(x - textWidth / 2, y, (int)textWidth, _fontFamilySmall.Height), 2);
             g.DrawString(text, _fontFamilySmall, ShadowBrush, x - textWidth / 2 + ShadowDistance, y + _yMonoSmall / 2 + ShadowDistance);
             g.DrawString(text, _fontFamilySmall, Brushes.White, x - textWidth / 2, y + _yMonoSmall / 2);
 
             g.SmoothingMode = previous;
+            g.TextRenderingHint = previousHint;
         }
 
         private void DrawPressureBackground(Graphics g, int x, int y, Wheel wheel, TyrePressureRange range)
