@@ -105,10 +105,20 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             float temp = pagePhysics.TyreCoreTemperature[(int)wheel];
 
             Brush tyreBrush = Brushes.DarkOliveGreen;
-            if (temp > 95)
+
+
+            if (temp > 90)
                 tyreBrush = Brushes.DarkRed;
             if (temp < 75)
                 tyreBrush = Brushes.DarkCyan;
+
+            if (pageGraphics.TyreCompound == "wet_compound")
+            {
+                if (temp > 65)
+                    tyreBrush = Brushes.DarkRed;
+                if (temp < 25)
+                    tyreBrush = Brushes.DarkCyan;
+            }
 
 
             string text = $"{temp:F1}";
