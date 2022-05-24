@@ -1,4 +1,5 @@
-﻿using ACCManager.HUD.Overlay.Internal;
+﻿using ACCManager.Data.ACC.Tracker;
+using ACCManager.HUD.Overlay.Internal;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

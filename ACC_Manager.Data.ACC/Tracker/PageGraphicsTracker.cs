@@ -7,12 +7,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using static ACCManager.ACCSharedMemory;
 
-namespace ACCManager.HUD.Overlay.Internal
+namespace ACCManager.Data.ACC.Tracker
 {
-    internal class PageGraphicsTracker : IDisposable
+    public class PageGraphicsTracker : IDisposable
     {
         private static PageGraphicsTracker _instance;
-        internal static PageGraphicsTracker Instance
+        public static PageGraphicsTracker Instance
         {
             get
             {

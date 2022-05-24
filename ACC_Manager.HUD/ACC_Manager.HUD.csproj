@@ -53,14 +53,10 @@
     <Compile Include="HUDDisposer.cs" />
     <Compile Include="Overlay\Configuration\ToolTipAttribute.cs" />
     <Compile Include="Overlay\Internal\AbstractOverlay.cs" />
-    <Compile Include="Overlay\Internal\BroadcastTracker.cs" />
     <Compile Include="Overlay\Configuration\IntRangeAttribute.cs" />
     <Compile Include="Overlay\Internal\FloatingWindow.cs" />
     <Compile Include="Overlay\Configuration\OverlayConfiguration.cs" />
     <Compile Include="Overlay\Configuration\OverlaySettings.cs" />
-    <Compile Include="Overlay\Internal\PageGraphicsTracker.cs" />
-    <Compile Include="Overlay\Internal\PagePhysicsTracker.cs" />
-    <Compile Include="Overlay\Internal\PageStaticTracker.cs" />
     <Compile Include="Overlay\OverlayUtil\DeltaBar.cs" />
     <Compile Include="Overlay\OverlayUtil\FontUtil.cs" />
     <Compile Include="Overlay\OverlayUtil\GraphicsExtensions.cs" />
@@ -73,6 +69,10 @@
     <ProjectReference Include="..\ACC_Manager.Broadcast\ACC_Manager.Broadcast.csproj">
       <Project>{840220BD-8469-4A04-A6EC-1ED2BC743EFB}</Project>
       <Name>ACC_Manager.Broadcast</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ACC_Manager.Data.ACC\ACC_Manager.Data.ACC.csproj">
+      <Project>{BB693CEB-CD96-4EB6-9F13-110D3CCECFFE}</Project>
+      <Name>ACC_Manager.Data.ACC</Name>
     </ProjectReference>
     <ProjectReference Include="..\ACC_Manager.SharedMemory\ACC_Manager.SharedMemory.csproj">
       <Project>{9f9be520-14c4-4ab6-8119-5e14bcca9a0f}</Project>

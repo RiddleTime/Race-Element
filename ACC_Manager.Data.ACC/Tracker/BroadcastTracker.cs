@@ -9,12 +9,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCManager.HUD.Overlay.Internal
+namespace ACCManager.Data.ACC.Tracker
 {
-    internal class BroadcastTracker : IDisposable
+    public class BroadcastTracker : IDisposable
     {
         private static BroadcastTracker _instance;
-        internal static BroadcastTracker Instance
+        public static BroadcastTracker Instance
         {
             get
             {
@@ -45,7 +45,7 @@ namespace ACCManager.HUD.Overlay.Internal
         public event EventHandler<TrackData> OnTrackDataUpdate;
         public event EventHandler<RealtimeCarUpdate> OnRealTimeCarUpdate;
 
-        public void Connect()
+        internal void Connect()
         {
             this.IsConnected = true;
 
@@ -86,7 +86,7 @@ namespace ACCManager.HUD.Overlay.Internal
             OnTrackDataUpdate?.Invoke(this, new TrackData());
         }
 
-        public void Disconnect()
+        internal void Disconnect()
         {
             this.IsConnected = false;
             ResetData();

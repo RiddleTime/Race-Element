@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Tracker\BroadcastTracker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SetupParser\Cars\GT3\AMRV12VantageGT3.cs" />
     <Compile Include="SetupParser\Cars\GT3\AMRV8VantageGT3.cs" />
@@ -93,9 +94,22 @@
     <Compile Include="SetupParser\SetupChanger\SetupIntRange.cs" />
     <Compile Include="SetupParser\SetupConverter.cs" />
     <Compile Include="SetupParser\SetupJson.cs" />
+    <Compile Include="Tracker\PageGraphicsTracker.cs" />
+    <Compile Include="Tracker\PagePhysicsTracker.cs" />
+    <Compile Include="Tracker\PageStaticTracker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ACC_Manager.Broadcast\ACC_Manager.Broadcast.csproj">
+      <Project>{840220BD-8469-4A04-A6EC-1ED2BC743EFB}</Project>
+      <Name>ACC_Manager.Broadcast</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ACC_Manager.SharedMemory\ACC_Manager.SharedMemory.csproj">
+      <Project>{9F9BE520-14C4-4AB6-8119-5E14BCCA9A0F}</Project>
+      <Name>ACC_Manager.SharedMemory</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,4 +1,5 @@
 ﻿using ACCManager.Broadcast.Structs;
+using ACCManager.Data.ACC.Tracker;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.Util;
 using System;

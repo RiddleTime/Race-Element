@@ -6,12 +6,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using static ACCManager.ACCSharedMemory;
 
-namespace ACCManager.HUD.Overlay.Internal
+namespace ACCManager.Data.ACC.Tracker
 {
-    internal class PagePhysicsTracker : IDisposable
+    public class PagePhysicsTracker : IDisposable
     {
         private static PagePhysicsTracker _instance;
-        internal static PagePhysicsTracker Instance
+        public static PagePhysicsTracker Instance
         {
             get
             {

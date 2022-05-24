@@ -6,12 +6,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using static ACCManager.ACCSharedMemory;
 
-namespace ACCManager.HUD.Overlay.Internal
+namespace ACCManager.Data.ACC.Tracker
 {
-    internal class PageStaticTracker : IDisposable
+    public class PageStaticTracker : IDisposable
     {
         private static PageStaticTracker _instance;
-        internal static PageStaticTracker Instance
+        public static PageStaticTracker Instance
         {
             get
             {
@@ -28,7 +28,7 @@ namespace ACCManager.HUD.Overlay.Internal
 
         private readonly Task trackingTask;
         private readonly ACCSharedMemory sharedMemory;
-        private SPageFileStatic last = null;
+        private SPageFileStatic _last = null;
 
         private PageStaticTracker()
         {
@@ -41,7 +41,7 @@ namespace ACCManager.HUD.Overlay.Internal
                 {
                     Thread.Sleep(1);
                     SPageFileStatic next = sharedMemory.ReadStaticPageFile();
-                    if (next != last)
+                    if (next != _last)
                         Tracker?.Invoke(this, next);
                 }
             });
