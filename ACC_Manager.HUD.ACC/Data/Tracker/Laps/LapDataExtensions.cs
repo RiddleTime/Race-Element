@@ -137,6 +137,42 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
             return true;
         }
 
+        /// <summary>
+        /// Returns the fastest sector time, int.MaxValue if no valid fastest sector available
+        /// </summary>
+        /// <param name="laps"></param>
+        /// <param name="sector"></param>
+        /// <returns></returns>
+        public static int GetFastestSector(this List<LapData> laps, int sector)
+        {
+            sector.Clip(1, 3);
+            if (laps.Count == 0)
+                return int.MaxValue;
+
+            int fastest = int.MaxValue;
+            switch (sector)
+            {
+                case 1:
+                    foreach (LapData lap in laps)
+                        if (lap.IsValid && (lap.Sector1 < fastest) && lap.Sector1 != -1)
+                            fastest = lap.Sector1; break;
+
+                case 2:
+                    foreach (LapData lap in laps)
+                        if (lap.IsValid && (lap.Sector2 < fastest) && lap.Sector2 != -1)
+                            fastest = lap.Sector2; break;
+
+                case 3:
+                    foreach (LapData lap in laps)
+                        if (lap.IsValid && (lap.Sector3 < fastest) && lap.Sector3 != -1)
+                            fastest = lap.Sector3; break;
+
+                default: return fastest;
+            }
+
+            return fastest;
+        }
+
         #endregion
     }
 }

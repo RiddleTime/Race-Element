@@ -1,4 +1,6 @@
-﻿using ACCManager.Util;
+﻿using ACCManager.Broadcast.Structs;
+using ACCManager.Data.ACC.Tracker;
+using ACCManager.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -64,6 +66,34 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
 
             if (!IsTracking)
                 this.Start();
+
+            BroadcastTracker.Instance.OnRealTimeCarUpdate += Instance_OnRealTimeCarUpdate;
+        }
+
+        private LapInfo _lastLapInfo;
+
+        private void Instance_OnRealTimeCarUpdate(object sender, RealtimeCarUpdate e)
+        {
+            _lastLapInfo = e.LastLap;
+
+            FinalizeCurrentLapData();
+        }
+
+        private void FinalizeCurrentLapData()
+        {
+            if (_lastLapInfo != null)
+                if (_lastLapInfo.Splits != null)
+                    if (_lastLapInfo.Splits.Count == 3)
+                        if (_lastLapInfo.Splits[2].HasValue)
+                        {
+                            LapData lastData = Laps.Last();
+                            if (_lastLapInfo.LaptimeMS == lastData.Time)
+                                if (Laps[Laps.Count - 1].Sector3 != _lastLapInfo.Splits[2].Value)
+                                {
+                                    Laps[Laps.Count - 1].Sector3 = _lastLapInfo.Splits[2].Value;
+                                    LapFinished?.Invoke(this, Laps[Laps.Count - 1]);
+                                }
+                        }
         }
 
         internal void Start()
@@ -100,7 +130,9 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
                                 {
                                     case 1: CurrentLap.Sector1 = pageGraphics.LastSectorTime; break;
                                     case 2: CurrentLap.Sector2 = pageGraphics.LastSectorTime - CurrentLap.Sector1; break;
-                                    case 0: CurrentLap.Sector3 = pageGraphics.LastTimeMs - CurrentLap.Sector2 - CurrentLap.Sector1; break;
+
+                                        // this sector time is now finalized with the FinalizeCurrentLapData() function    
+                                        //case 0: CurrentLap.Sector3 = pageGraphics.LastTimeMs - CurrentLap.Sector2 - CurrentLap.Sector1; break;
                                 }
 
                             CurrentSector = pageGraphics.CurrentSectorIndex;
@@ -116,15 +148,13 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
                             {
                                 lock (Laps)
                                     Laps.Add(CurrentLap);
-
-                                LapFinished?.Invoke(this, CurrentLap);
                             }
 
                             CurrentLap = new LapData() { Index = pageGraphics.CompletedLaps + 1 };
                         }
 
                         // invalidate current lap 
-                        if (CurrentLap.IsValid != pageGraphics.IsValidLap)
+                        if (CurrentLap.IsValid != pageGraphics.IsValidLap && CurrentLap.Index == pageGraphics.CompletedLaps + 1)
                             CurrentLap.IsValid = pageGraphics.IsValidLap;
                     }
                     catch (Exception ex)

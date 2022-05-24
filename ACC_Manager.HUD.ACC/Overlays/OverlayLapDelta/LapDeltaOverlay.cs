@@ -99,26 +99,41 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             if (lastLap != null && pageGraphics.NormalizedCarPosition < 0.08)
                 lap = lastLap;
 
+            int fastestSector1 = LapTracker.Instance.Laps.GetFastestSector(1);
+            int fastestSector2 = LapTracker.Instance.Laps.GetFastestSector(2);
+            int fastestSector3 = LapTracker.Instance.Laps.GetFastestSector(3);
+
             string sector1 = "-";
             string sector2 = "-";
             string sector3 = "-";
             if (LapTracker.Instance.CurrentLap.Sector1 > -1)
             {
                 sector1 = $"{lap.GetSector1():F3}";
+
+                if (lap.Sector1 > fastestSector1)
+                    sector1 += $"  +{(float)(lap.Sector1 - fastestSector1) / 1000:F3}";
             }
             else if (pageGraphics.CurrentSectorIndex == 0)
                 sector1 = $"{((float)pageGraphics.CurrentTimeMs / 1000):F3}";
 
 
             if (lap.Sector2 > -1)
+            {
                 sector2 = $"{lap.GetSector2():F3}";
+                if (lap.Sector2 > fastestSector2)
+                    sector2 += $"  +{(float)(lap.Sector2 - fastestSector2) / 1000:F3}";
+            }
             else if (lap.Sector1 > -1)
             {
                 sector2 = $"{(((float)pageGraphics.CurrentTimeMs - lap.Sector1) / 1000):F3}";
             }
 
             if (lap.Sector3 > -1)
+            {
                 sector3 = $"{lap.GetSector3():F3}";
+                if (lap.Sector3 > fastestSector3)
+                    sector3 += $"  +{(float)(lap.Sector3 - fastestSector3) / 1000:F3}";
+            }
             else if (lap.Sector2 > -1 && pageGraphics.CurrentSectorIndex == 2)
             {
                 sector3 = $"{(((float)pageGraphics.CurrentTimeMs - lap.Sector2 - lap.Sector1) / 1000):F3}";
