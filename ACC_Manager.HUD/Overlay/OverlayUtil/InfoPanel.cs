@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-
+using ACC_Manager.Util.NumberExtensions;
 using ACCManager.HUD.Overlay.OverlayUtil;
 
 
@@ -19,6 +19,9 @@ namespace ACCManager.HUD.Overlay.Util
 {
     public class InfoPanel
     {
+        private const float ShadowDistance = 0.75f;
+        private readonly Brush ShadowBrush = new SolidBrush(Color.FromArgb(60, Color.Black));
+
         private readonly Font Font;
         private readonly Font MonoFont;
 
@@ -34,13 +37,18 @@ namespace ACCManager.HUD.Overlay.Util
         private bool MaxTitleWidthSet = false;
         private float MaxTitleWidth = 0;
 
+        private int _yMono = 0;
+
         public InfoPanel(double fontSize, int maxWidth)
         {
+            fontSize.ClipMin(9);
             this.MaxWidth = maxWidth;
             this.Font = FontUtil.FontOrbitron((float)fontSize);
             this.MonoFont = FontUtil.FontUnispace((float)fontSize);
             this.FontHeight = Font.Height;
+            _yMono = MonoFont.Height / 6;
         }
+
         private List<InfoLine> Lines = new List<InfoLine>();
 
         public void Draw(Graphics g)
@@ -55,12 +63,12 @@ namespace ACCManager.HUD.Overlay.Util
             {
                 SmoothingMode previous = g.SmoothingMode;
                 g.SmoothingMode = SmoothingMode.AntiAlias;
-                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(140, 0, 0, 0)), new Rectangle(X, Y, this.MaxWidth, Lines.Count * this.FontHeight), 6);
+                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(140, 0, 0, 0)), new Rectangle(X, Y, this.MaxWidth, Lines.Count * this.FontHeight), 4);
                 g.SmoothingMode = previous;
             }
 
             TextRenderingHint previousHint = g.TextRenderingHint;
-            g.TextRenderingHint = TextRenderingHint.AntiAlias;
+            g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
             g.TextContrast = 1;
 
             lock (Lines)
@@ -74,22 +82,26 @@ namespace ACCManager.HUD.Overlay.Util
                     if (line.GetType() == typeof(TextLine))
                     {
                         TextLine textLine = (TextLine)line;
+                        g.DrawString($"{textLine.Title}", Font, ShadowBrush, new PointF(X + ShadowDistance, Y + counter * FontHeight + ShadowDistance));
                         g.DrawString($"{textLine.Title}", Font, Brushes.White, new PointF(X, Y + counter * FontHeight));
-                        int yMono = textLine.ValueFontIsMono ? MonoFont.Height / 5 : 0;
-                        g.DrawString($"{textLine.Value}", textLine.ValueFontIsMono ? MonoFont : Font, textLine.ValueBrush, new PointF(X + MaxTitleWidth + Font.Size, Y + counter * FontHeight + yMono));
+
+                        int yAdd = textLine.ValueFontIsMono ? _yMono : 0;
+                        g.DrawString($"{textLine.Value}", textLine.ValueFontIsMono ? MonoFont : Font, ShadowBrush, new PointF(X + MaxTitleWidth + Font.Size + ShadowDistance, Y + counter * FontHeight + yAdd + ShadowDistance));
+                        g.DrawString($"{textLine.Value}", textLine.ValueFontIsMono ? MonoFont : Font, textLine.ValueBrush, new PointF(X + MaxTitleWidth + Font.Size, Y + counter * FontHeight + yAdd));
                     }
 
                     if (line.GetType() == typeof(TitledProgressBarLine))
                     {
                         TitledProgressBarLine bar = (TitledProgressBarLine)line;
+                        g.DrawString($"{bar.Title}", Font, ShadowBrush, new PointF(X + ShadowDistance, Y + counter * FontHeight + ShadowDistance));
                         g.DrawString($"{bar.Title}", Font, Brushes.White, new PointF(X, Y + counter * FontHeight));
 
                         ProgressBar progressBar = new ProgressBar(bar.Min, bar.Max, bar.Value);
-                        progressBar.Draw(g, (int)(X + MaxTitleWidth + Font.Size), Y + counter * FontHeight + 1, (int)(MaxWidth - MaxTitleWidth - Font.Size) - 2, (int)FontHeight - 2, bar.BarColor);
+                        progressBar.Draw(g, (int)(X + MaxTitleWidth + Font.Size), Y + counter * FontHeight + 1, (int)(MaxWidth - MaxTitleWidth - Font.Size) - 4, (int)FontHeight - 2, bar.BarColor);
 
                         string percent = $"{(bar.Max / bar.Value * 100):F1}%";
                         SizeF textWidth = g.MeasureString(percent, bar.ValueFontIsMono ? MonoFont : Font);
-                        int yMono = bar.ValueFontIsMono ? MonoFont.Height / 5 : 0;
+                        int yMono = bar.ValueFontIsMono ? _yMono : 0;
                         g.DrawString($"{percent}", bar.ValueFontIsMono ? MonoFont : Font, Brushes.White, new PointF((int)(X + (MaxWidth - MaxTitleWidth)) - textWidth.Width / 2, Y + counter * FontHeight + yMono));
                     }
 
@@ -98,10 +110,11 @@ namespace ACCManager.HUD.Overlay.Util
                         CenterTextedProgressBarLine bar = (CenterTextedProgressBarLine)line;
 
                         ProgressBar progressBar = new ProgressBar(bar.Min, bar.Max, bar.Value);
-                        progressBar.Draw(g, X + 1, Y + counter * FontHeight + 1, (int)MaxWidth - 2, (int)FontHeight - 2, bar.BarColor);
+                        progressBar.Draw(g, X + 3, Y + counter * FontHeight + 1, (int)MaxWidth - 6, (int)FontHeight - 2, bar.BarColor);
 
                         SizeF textWidth = g.MeasureString(bar.CenteredText, bar.ValueFontIsMono ? MonoFont : Font);
-                        int yMono = bar.ValueFontIsMono ? MonoFont.Height / 5 : 0;
+                        int yMono = bar.ValueFontIsMono ? _yMono : 0;
+                        g.DrawString($"{bar.CenteredText}", bar.ValueFontIsMono ? MonoFont : Font, ShadowBrush, new PointF(X + MaxWidth / 2 - textWidth.Width / 2 + ShadowDistance, Y + counter * FontHeight + yMono + ShadowDistance));
                         g.DrawString($"{bar.CenteredText}", bar.ValueFontIsMono ? MonoFont : Font, Brushes.White, new PointF(X + MaxWidth / 2 - textWidth.Width / 2, Y + counter * FontHeight + yMono));
 
                     }
@@ -114,7 +127,8 @@ namespace ACCManager.HUD.Overlay.Util
                         deltaBar.Draw(g, X + 1, Y + counter * FontHeight + 1, (int)MaxWidth - 2, (int)FontHeight - 2);
 
                         SizeF textWidth = g.MeasureString(bar.CenteredText, bar.ValueFontIsMono ? MonoFont : Font);
-                        int yMono = bar.ValueFontIsMono ? MonoFont.Height / 5 : 0;
+                        int yMono = bar.ValueFontIsMono ? _yMono : 0;
+                        g.DrawString($"{bar.CenteredText}", bar.ValueFontIsMono ? MonoFont : Font, ShadowBrush, new PointF(X + MaxWidth / 2 - textWidth.Width / 2 + ShadowDistance, Y + counter * FontHeight + yMono + ShadowDistance));
                         g.DrawString($"{bar.CenteredText}", bar.ValueFontIsMono ? MonoFont : Font, Brushes.White, new PointF(X + MaxWidth / 2 - textWidth.Width / 2, Y + counter * FontHeight + yMono));
                     }
 
@@ -165,12 +179,12 @@ namespace ACCManager.HUD.Overlay.Util
         }
 
 
-        public void AddLine(string title, string value, bool valueIsMonoFont = false)
+        public void AddLine(string title, string value, bool valueIsMonoFont = true)
         {
             Lines.Add(new TextLine() { Title = title, Value = value, ValueFontIsMono = valueIsMonoFont });
         }
 
-        public void AddLine(string title, string value, Brush valueBrush, bool valueIsMonoFont = false)
+        public void AddLine(string title, string value, Brush valueBrush, bool valueIsMonoFont = true)
         {
             Lines.Add(new TextLine() { Title = title, Value = value, ValueBrush = valueBrush, ValueFontIsMono = valueIsMonoFont });
         }
@@ -185,12 +199,12 @@ namespace ACCManager.HUD.Overlay.Util
             Lines.Add(new TitledProgressBarLine() { Title = title, Min = min, Max = max, Value = value, BarColor = barColor });
         }
 
-        public void AddProgressBarWithCenteredText(string centeredText, double min, double max, double value, bool valueIsMonoFont = false)
+        public void AddProgressBarWithCenteredText(string centeredText, double min, double max, double value, bool valueIsMonoFont = true)
         {
             Lines.Add(new CenterTextedProgressBarLine() { CenteredText = centeredText, Min = min, Max = max, Value = value, ValueFontIsMono = valueIsMonoFont });
         }
 
-        public void AddProgressBarWithCenteredText(string centeredText, double min, double max, double value, Brush barColor, bool valueIsMonoFont = false)
+        public void AddProgressBarWithCenteredText(string centeredText, double min, double max, double value, Brush barColor, bool valueIsMonoFont = true)
         {
             Lines.Add(new CenterTextedProgressBarLine() { CenteredText = centeredText, Min = min, Max = max, Value = value, BarColor = barColor, ValueFontIsMono = valueIsMonoFont });
         }

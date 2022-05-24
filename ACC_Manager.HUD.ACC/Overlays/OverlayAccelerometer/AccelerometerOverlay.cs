@@ -70,8 +70,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
 
             if (this.config.ShowText)
             {
-                info.AddLine("AccG X", $"{pagePhysics.AccG[0]:F2}");
-                info.AddLine("AccG Y", $"{pagePhysics.AccG[2]:F2}");
+                info.AddLine("X ", $"{pagePhysics.AccG[0]:F2}");
+                info.AddLine("Y ", $"{pagePhysics.AccG[2]:F2}");
 
                 info.Draw(g);
             }

@@ -37,6 +37,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             }
         }
 
+        private const float ShadowDistance = 1f;
+        private readonly Brush ShadowBrush = new SolidBrush(Color.FromArgb(75, Color.Black));
         private const double MaxPadLife = 29;
         private readonly Font _fontFamily;
         private readonly Font _fontFamilySmall;
@@ -121,8 +123,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             }
 
 
-            string text = $"{temp:F1}";
-            int textWidth = (int)g.MeasureString(text, _fontFamily).Width;
+         
 
             SmoothingMode previous = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -132,11 +133,15 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             g.TextContrast = 1;
 
 
+            string text = $"{temp:F1}";
+            int textWidth = (int)g.MeasureString(text, _fontFamily).Width;
+
             Rectangle backgroundDimension = new Rectangle(x - textWidth / 2, y, (int)textWidth, _fontFamily.Height);
 
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 255, 255, 255)), backgroundDimension, 2);
             g.DrawRoundedRectangle(new Pen(tyreBrush), backgroundDimension, 2);
 
+            g.DrawString(text, _fontFamily, ShadowBrush, x - textWidth / 2 + ShadowDistance, y + _yMono + ShadowDistance);
             g.DrawString(text, _fontFamily, tyreBrush, x - textWidth / 2, y + _yMono);
 
             g.SmoothingMode = previous;
@@ -177,6 +182,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(120, 0, 0, 0)), new Rectangle(x - textWidth / 2, y, (int)textWidth, _fontFamilySmall.Height), 2);
+            g.DrawString(text, _fontFamilySmall, ShadowBrush, x - textWidth / 2 + ShadowDistance, y + _yMonoSmall + ShadowDistance);
             g.DrawString(text, _fontFamilySmall, Brushes.White, x - textWidth / 2, y + _yMonoSmall);
 
             g.SmoothingMode = previous;
@@ -215,7 +221,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             SmoothingMode previous = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
+
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(120, 0, 0, 0)), new Rectangle(x - textWidth / 2, y, (int)textWidth, _fontFamilySmall.Height), 2);
+            g.DrawString(text, _fontFamilySmall, ShadowBrush, x - textWidth / 2 + ShadowDistance, y + _yMonoSmall / 2 + ShadowDistance);
             g.DrawString(text, _fontFamilySmall, Brushes.White, x - textWidth / 2, y + _yMonoSmall / 2);
 
             g.SmoothingMode = previous;

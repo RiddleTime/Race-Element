@@ -1,5 +1,6 @@
 ﻿using ACCManager.Broadcast.Structs;
 using ACCManager.HUD.Overlay.Internal;
+using ACCManager.HUD.Overlay.Util;
 using ACCManager.Util;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
 {
     internal sealed class BroadcastRealtimeOverlay : AbstractOverlay
     {
-        private Font inputFont = new Font("Arial", 10);
+        private Font inputFont = FontUtil.FontUnispace((float)9);
 
         public BroadcastRealtimeOverlay(Rectangle rectangle) : base(rectangle, "Debug BroadcastRealtime Overlay")
         {
@@ -57,7 +58,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
                 var value = member.GetValue(broadCastRealTime);
                 value = ReflectionUtil.FieldTypeValue(member, value);
                 g.DrawString($"{member.Name.Replace("<", "").Replace(">k__BackingField", "")}: {value}", inputFont, Brushes.White, 0 + xMargin, y);
-                y += (int)inputFont.Size + 2;
+                y += (int)inputFont.Size + 4;
             }
         }
 

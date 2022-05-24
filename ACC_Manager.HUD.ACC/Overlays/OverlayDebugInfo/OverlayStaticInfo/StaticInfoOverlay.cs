@@ -16,7 +16,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStaticInfo
 {
     internal sealed class StaticInfoOverlay : AbstractOverlay
     {
-        private Font inputFont = new Font("Arial", 10);
+        private Font inputFont = FontUtil.FontUnispace((float)9);
 
         public StaticInfoOverlay(Rectangle rectangle) : base(rectangle, "Debug Static Overlay")
         {
@@ -69,7 +69,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStaticInfo
                     value = ReflectionUtil.FieldTypeValue(member, value);
 
                     g.DrawString($"{member.Name}: {value}", inputFont, Brushes.White, 0 + xMargin, y);
-                    y += (int)inputFont.Size + 2;
+                    y += (int)inputFont.Size + 4;
                 }
             }
         }
