@@ -94,6 +94,7 @@
     <Compile Include="SetupParser\SetupChanger\SetupIntRange.cs" />
     <Compile Include="SetupParser\SetupConverter.cs" />
     <Compile Include="SetupParser\SetupJson.cs" />
+    <Compile Include="Tracker\TrackerDispose.cs" />
     <Compile Include="Tracker\PageGraphicsTracker.cs" />
     <Compile Include="Tracker\PagePhysicsTracker.cs" />
     <Compile Include="Tracker\PageStaticTracker.cs" />

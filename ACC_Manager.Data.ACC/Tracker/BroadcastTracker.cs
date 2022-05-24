@@ -31,13 +31,7 @@ namespace ACCManager.Data.ACC.Tracker
 
         private BroadcastTracker()
         {
-
             sharedMemory = new ACCSharedMemory();
-            // fetch from json....
-
-            //this.Connect();
-
-
         }
 
         public event EventHandler<RealtimeUpdate> OnRealTimeUpdate;

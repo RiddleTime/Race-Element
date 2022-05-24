@@ -1,6 +1,5 @@
 ﻿using ACCManager.Controls;
-using ACCManager.Controls.HUD;
-using ACCManager.HUD;
+using ACCManager.Data.ACC.Tracker;
 using ACCManager.HUD.ACC;
 using ACCManager.HUD.ACC.Data.Tracker;
 using ACCManager.Util;
@@ -80,16 +79,16 @@ namespace ACCManager
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             OverlaysACC.CloseAll();
-            Trackers.StopAll();
-            HUDDisposer.Dispose();
+            HudTrackers.StopAll();
+            DataTrackerDispose.Dispose();
             HudOptions.Instance.DisposeKeyboardHooks();
         }
 
         private void CurrentDomain_ProcessExit(object sender, EventArgs e)
         {
             OverlaysACC.CloseAll();
-            Trackers.StopAll();
-            HUDDisposer.Dispose();
+            HudTrackers.StopAll();
+            DataTrackerDispose.Dispose();
             HudOptions.Instance.DisposeKeyboardHooks();
         }
 

@@ -106,7 +106,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
 
             Brush tyreBrush = Brushes.DarkOliveGreen;
 
-
             if (temp > 90)
                 tyreBrush = Brushes.DarkRed;
             if (temp < 75)

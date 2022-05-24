@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ACCManager.HUD.ACC.Data.Tracker
 {
-    public static class Trackers
+    public static class HudTrackers
     {
 
         public static void StartAll()
