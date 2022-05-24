@@ -10,7 +10,8 @@ namespace ACCManager.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.0.6.5", "- Liveries tab: Added tree item in tag tree showing all cars that aren't tagged yet." },
+            {"0.0.6.5", "- Liveries tab: Added tree item in tag tree showing all cars that aren't tagged yet."+
+                        "\n- HUD: Reposition hotkey has been changed to (Ctrl + Alt + M), it was conflicting with other global hotkeys."},
             {"0.0.6.4", "- HUD: Added hotkey (Ctrl + Shift + M) for enabling the reposition of overlays"+
                         "\n- HUD: Overlays can now be scaled on with 1% steps, providing more precision."+
                         "\n- HUD: Overlays can now be moved with the arrow keys as well for finetuning of position."+
