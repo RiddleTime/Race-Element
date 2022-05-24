@@ -114,6 +114,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
 
             if (pageGraphics.TyreCompound == "wet_compound")
             {
+                tyreBrush = Brushes.DarkOliveGreen;
                 if (temp > 65)
                     tyreBrush = Brushes.DarkRed;
                 if (temp < 25)
