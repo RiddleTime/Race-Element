@@ -35,7 +35,7 @@ namespace ACCManager.HUD.Overlay.Util
 
 
         private bool MaxTitleWidthSet = false;
-        private float MaxTitleWidth = 0;
+        public float MaxTitleWidth { get; private set; } = 0;
 
         private int _yMono = 0;
 
