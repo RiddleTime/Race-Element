@@ -24,6 +24,8 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
 
         public int X = 0;
         public int Y = 0;
+        private int _fontHeight;
+        public int FontHeight { get { return _fontHeight; } private set { _fontHeight = value; } }
         public bool DrawBackground { get; set; } = true;
 
         public InfoTable(float fontSize, int[] columnWidths)
@@ -31,6 +33,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
             fontSize.ClipMin(9);
             _columnWidths = columnWidths;
             _font = FontUtil.FontUnispace(fontSize);
+            _fontHeight = _font.Height;
             _yMono = _font.Height / 6;
         }
 
@@ -67,7 +70,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                     {
                         float columnX = GetColumnX(i);
                         g.DrawString(row.Columns[i], this._font, this._shadowBrush, columnX + _shadowDistance, rowY + _shadowDistance + _yMono);
-                        g.DrawString(row.Columns[i], this._font, Brushes.White, columnX, rowY + _yMono);
+                        g.DrawString(row.Columns[i], this._font, new SolidBrush(row.ColumnColors[i]), columnX, rowY + _yMono);
                     }
 
                     counter++;
@@ -88,9 +91,9 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
             return x;
         }
 
-        public void AddRow(string header, string[] columns)
+        public void AddRow(string header, string[] columns, Color[] columnColors = null)
         {
-            this.AddRow(new TableRow() { Header = header, Columns = columns }); ;
+            this.AddRow(new TableRow() { Header = header, Columns = columns, ColumnColors = columnColors }); ;
         }
 
         public void AddRow(TableRow row)
@@ -98,7 +101,23 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
             if (row == null) return;
             if (row.Header == null) row.Header = string.Empty;
             if (row.Columns == null) row.Columns = new string[this._columnWidths.Length];
+            if (row.ColumnColors == null)
+            {
+                row.ColumnColors = new Color[this._columnWidths.Length];
+                for (int i = 0; i < this._columnWidths.Length; i++)
+                    row.ColumnColors[i] = Color.White;
+            }
 
+            if (row.ColumnColors.Length != this._columnWidths.Length)
+            {
+                Color[] givenColors = row.ColumnColors;
+                row.ColumnColors = new Color[this._columnWidths.Length];
+                for (int i = 0; i < this._columnWidths.Length; i++)
+                    if (i >= givenColors.Length)
+                        row.ColumnColors[i] = Color.White;
+                    else
+                        row.ColumnColors[i] = givenColors[i];
+            }
 
             if (row.Columns.Length > this._columnWidths.Length)
                 row.Columns = row.Columns.Take(this._columnWidths.Length).ToArray();
@@ -110,6 +129,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
         {
             public string Header { get; set; }
             public string[] Columns { get; set; }
+            public Color[] ColumnColors { get; set; }
         }
 
         private void UpdateMaxheaderWidth(Graphics g)

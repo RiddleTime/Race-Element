@@ -41,11 +41,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
         private LapData lastLap = null;
 
-        InfoPanel panel = new InfoPanel(10, overlayWidth);
-        InfoTable table = new InfoTable(10, new int[] { 70, 150 });
+        private readonly InfoTable _table = new InfoTable(10, new int[] { 60, 60 });
+
         public LapDeltaOverlay(Rectangle rectangle) : base(rectangle, "Lap Delta Overlay")
         {
-            overlayHeight = panel.FontHeight * 5;
+            overlayHeight = _table.FontHeight * 5;
 
             this.Width = overlayWidth + 1;
             this.Height = overlayHeight + 1;
@@ -55,10 +55,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         public sealed override void BeforeStart()
         {
             if (!this.config.ShowSectors)
-                this.Height -= this.panel.FontHeight * 3;
+                this.Height -= this._table.FontHeight * 3;
 
             if (!this.config.ShowLapType)
-                this.Height -= this.panel.FontHeight;
+                this.Height -= this._table.FontHeight;
 
             LapTracker.Instance.LapFinished += Collector_LapFinished;
         }
@@ -77,19 +77,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         public sealed override void Render(Graphics g)
         {
 
-            table.AddRow("S1", new string[] { "henlo", "test2", "henlo", "test2", "henlo", "test2", "henlo", "test2" });
-            table.AddRow("S2", new string[] { "henlo", "test2" });
-            table.AddRow("S3", new string[] { "henlo", "test2" });
-            table.Draw(g);
-
-
-
 
             //double delta = (double)pageGraphics.DeltaLapTimeMillis / 1000;
             //panel.AddDeltaBarWithCenteredText($"{delta:F3}", -this.config.MaxDelta, this.config.MaxDelta, delta, true);
 
-            //if (this.config.ShowSectors)
-            //    AddSectorLines();
+            if (this.config.ShowSectors)
+                AddSectorLines();
 
             //if (this.config.ShowLapType)
             //{
@@ -99,71 +92,74 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             //    panel.AddLine("Type", lapType);
             //}
 
-            //panel.Draw(g);
+            _table.Draw(g);
         }
 
         private void AddSectorLines()
         {
             LapData lap = LapTracker.Instance.CurrentLap;
 
-            if (lastLap != null && pageGraphics.NormalizedCarPosition < 0.08)
+            if (lastLap != null && pageGraphics.NormalizedCarPosition < 0.08 && lap.Index != lastLap.Index && lastLap.Sector3 != -1)
                 lap = lastLap;
 
             int fastestSector1 = LapTracker.Instance.Laps.GetFastestSector(1);
             int fastestSector2 = LapTracker.Instance.Laps.GetFastestSector(2);
             int fastestSector3 = LapTracker.Instance.Laps.GetFastestSector(3);
 
-            string sector1 = "-";
-            string sector2 = "-";
-            string sector3 = "-";
+            string[] rowSector1 = new string[2];
+            string[] rowSector2 = new string[2];
+            string[] rowSector3 = new string[2];
+            rowSector1[0] = "-";
+            rowSector2[0] = "-";
+            rowSector3[0] = "-";
+
             if (LapTracker.Instance.CurrentLap.Sector1 > -1)
             {
-                sector1 = $"{lap.GetSector1():F3}";
-
+                rowSector1[0] = $"{lap.GetSector1():F3}";
                 if (lap.Sector1 > fastestSector1)
-                    sector1 += $"  +{(float)(lap.Sector1 - fastestSector1) / 1000:F3}";
+                    rowSector1[1] = $"+{(float)(lap.Sector1 - fastestSector1) / 1000:F3}";
             }
             else if (pageGraphics.CurrentSectorIndex == 0)
-                sector1 = $"{((float)pageGraphics.CurrentTimeMs / 1000):F3}";
+                rowSector1[0] = $"{((float)pageGraphics.CurrentTimeMs / 1000):F3}";
 
 
             if (lap.Sector2 > -1)
             {
-                sector2 = $"{lap.GetSector2():F3}";
+                rowSector2[0] = $"{lap.GetSector2():F3}";
                 if (lap.Sector2 > fastestSector2)
-                    sector2 += $"  +{(float)(lap.Sector2 - fastestSector2) / 1000:F3}";
+                    rowSector2[1] = $"+{(float)(lap.Sector2 - fastestSector2) / 1000:F3}";
             }
             else if (lap.Sector1 > -1)
             {
-                sector2 = $"{(((float)pageGraphics.CurrentTimeMs - lap.Sector1) / 1000):F3}";
+                rowSector2[0] = $"{(((float)pageGraphics.CurrentTimeMs - lap.Sector1) / 1000):F3}";
             }
 
             if (lap.Sector3 > -1)
             {
-                sector3 = $"{lap.GetSector3():F3}";
+                rowSector3[0] = $"{lap.GetSector3():F3}";
                 if (lap.Sector3 > fastestSector3)
-                    sector3 += $"  +{(float)(lap.Sector3 - fastestSector3) / 1000:F3}";
+                    rowSector3[1] = $"+{(float)(lap.Sector3 - fastestSector3) / 1000:F3}";
             }
             else if (lap.Sector2 > -1 && pageGraphics.CurrentSectorIndex == 2)
             {
-                sector3 = $"{(((float)pageGraphics.CurrentTimeMs - lap.Sector2 - lap.Sector1) / 1000):F3}";
+                rowSector3[0] = $"{(((float)pageGraphics.CurrentTimeMs - lap.Sector2 - lap.Sector1) / 1000):F3}";
             }
 
 
             if (pageGraphics.CurrentSectorIndex != 0 && lap.Sector1 != -1 && lap.IsValid)
-                panel.AddLine("S1", $"{sector1}", LapTracker.Instance.Laps.IsSectorFastest(1, lap.Sector1) ? Brushes.LimeGreen : Brushes.White, true);
+                _table.AddRow("S1", rowSector1, new Color[] { LapTracker.Instance.Laps.IsSectorFastest(1, lap.Sector1) ? Color.LimeGreen : Color.White, Color.Orange });
             else
-                panel.AddLine("S1", $"{sector1}", true);
+                _table.AddRow("S1", rowSector1, new Color[] { Color.White });
 
             if (pageGraphics.CurrentSectorIndex != 1 && lap.Sector2 != -1 && lap.IsValid)
-                panel.AddLine("S2", $"{sector2}", LapTracker.Instance.Laps.IsSectorFastest(2, lap.Sector2) ? Brushes.LimeGreen : Brushes.White, true);
+                _table.AddRow("S2", rowSector2, new Color[] { LapTracker.Instance.Laps.IsSectorFastest(2, lap.Sector2) ? Color.LimeGreen : Color.White, Color.Orange });
             else
-                panel.AddLine("S2", $"{sector2}", true);
+                _table.AddRow("S2", rowSector2, new Color[] { Color.White });
 
             if (pageGraphics.CurrentSectorIndex != 2 && lap.Sector3 != -1 && lap.IsValid)
-                panel.AddLine("S3", $"{sector3}", LapTracker.Instance.Laps.IsSectorFastest(3, lap.Sector3) ? Brushes.LimeGreen : Brushes.White, true);
+                _table.AddRow("S3", rowSector3, new Color[] { LapTracker.Instance.Laps.IsSectorFastest(3, lap.Sector3) ? Color.LimeGreen : Color.White, Color.Orange });
             else
-                panel.AddLine("S3", $"{sector3}", true);
+                _table.AddRow("S3", rowSector3, new Color[] { Color.White });
         }
 
         public sealed override bool ShouldRender()
