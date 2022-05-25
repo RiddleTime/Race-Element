@@ -60,6 +60,7 @@
     <Compile Include="Overlay\OverlayUtil\FontUtil.cs" />
     <Compile Include="Overlay\OverlayUtil\GraphicsExtensions.cs" />
     <Compile Include="Overlay\OverlayUtil\InfoPanel.cs" />
+    <Compile Include="Overlay\OverlayUtil\InfoTable.cs" />
     <Compile Include="Overlay\OverlayUtil\ProgressBar.cs" />
     <Compile Include="Overlay\OverlayUtil\VerticalProgressBar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

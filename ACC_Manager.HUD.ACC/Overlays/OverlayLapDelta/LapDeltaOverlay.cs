@@ -42,6 +42,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         private LapData lastLap = null;
 
         InfoPanel panel = new InfoPanel(10, overlayWidth);
+        InfoTable table = new InfoTable(10, new int[] { 70, 150 });
         public LapDeltaOverlay(Rectangle rectangle) : base(rectangle, "Lap Delta Overlay")
         {
             overlayHeight = panel.FontHeight * 5;
@@ -75,21 +76,30 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
         public sealed override void Render(Graphics g)
         {
-            double delta = (double)pageGraphics.DeltaLapTimeMillis / 1000;
-            panel.AddDeltaBarWithCenteredText($"{delta:F3}", -this.config.MaxDelta, this.config.MaxDelta, delta, true);
 
-            if (this.config.ShowSectors)
-                AddSectorLines();
+            table.AddRow("S1", new string[] { "henlo", "test2", "henlo", "test2", "henlo", "test2", "henlo", "test2" });
+            table.AddRow("S2", new string[] { "henlo", "test2" });
+            table.AddRow("S3", new string[] { "henlo", "test2" });
+            table.Draw(g);
 
-            if (this.config.ShowLapType)
-            {
-                string lapType = "Unknown";
-                if (broadCastRealtimeCarUpdate.CurrentLap != null)
-                    lapType = $"{broadCastRealtimeCarUpdate.CurrentLap.Type}";
-                panel.AddLine("Type", lapType);
-            }
 
-            panel.Draw(g);
+
+
+            //double delta = (double)pageGraphics.DeltaLapTimeMillis / 1000;
+            //panel.AddDeltaBarWithCenteredText($"{delta:F3}", -this.config.MaxDelta, this.config.MaxDelta, delta, true);
+
+            //if (this.config.ShowSectors)
+            //    AddSectorLines();
+
+            //if (this.config.ShowLapType)
+            //{
+            //    string lapType = "Unknown";
+            //    if (broadCastRealtimeCarUpdate.CurrentLap != null)
+            //        lapType = $"{broadCastRealtimeCarUpdate.CurrentLap.Type}";
+            //    panel.AddLine("Type", lapType);
+            //}
+
+            //panel.Draw(g);
         }
 
         private void AddSectorLines()
