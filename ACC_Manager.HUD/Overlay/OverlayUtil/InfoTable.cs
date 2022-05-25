@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
         private const float _shadowDistance = 0.75f;
         private readonly Brush _shadowBrush = new SolidBrush(Color.FromArgb(60, Color.Black));
 
-        private Font _font;
+
         private float _yMono;
         private bool _headerWidthSet;
         private float _maxHeaderWidth;
@@ -24,8 +25,12 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
 
         public int X = 0;
         public int Y = 0;
+
+        private Font _font;
+        public Font Font { get { return _font; } }
         private int _fontHeight;
         public int FontHeight { get { return _fontHeight; } private set { _fontHeight = value; } }
+
         public bool DrawBackground { get; set; } = true;
 
         public InfoTable(float fontSize, int[] columnWidths)
@@ -41,7 +46,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
         {
             if (!_headerWidthSet) UpdateMaxheaderWidth(g);
 
-            if (DrawBackground)
+            if (DrawBackground && _rows.Count > 0)
             {
                 SmoothingMode previous = g.SmoothingMode;
                 g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -49,10 +54,14 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                 for (int i = 0; i < _columnWidths.Length; i++)
                     totalWidth += this._columnWidths[i];
 
-                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(140, 0, 0, 0)), new Rectangle(X, Y, (int)totalWidth, _rows.Count * this._font.Height), 4);
+                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(140, 0, 0, 0)), new Rectangle(X, Y, (int)totalWidth, _rows.Count * this._font.Height + (int)_yMono), 4);
                 g.SmoothingMode = previous;
             }
 
+
+            TextRenderingHint previousHint = g.TextRenderingHint;
+            g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+            g.TextContrast = 1;
             lock (_rows)
             {
                 int length = _rows.Count;
@@ -78,6 +87,8 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
 
                 _rows.Clear();
             }
+
+            g.TextRenderingHint = previousHint;
         }
 
         private float GetColumnX(int columnIndex)

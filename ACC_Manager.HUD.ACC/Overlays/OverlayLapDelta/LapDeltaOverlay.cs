@@ -37,18 +37,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         }
 
         private const int overlayWidth = 200;
-        private int overlayHeight = 150;
 
         private LapData lastLap = null;
 
-        private readonly InfoTable _table = new InfoTable(10, new int[] { 60, 60 });
+        private readonly InfoTable _table;
 
         public LapDeltaOverlay(Rectangle rectangle) : base(rectangle, "Lap Delta Overlay")
         {
-            overlayHeight = _table.FontHeight * 5;
-
+            _table = new InfoTable(10, new int[] { 60, 113 }) { Y = 17 };
             this.Width = overlayWidth + 1;
-            this.Height = overlayHeight + 1;
+            this.Height = _table.FontHeight * 5 + 2 + 4;
             RefreshRateHz = 10;
         }
 
@@ -76,21 +74,24 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
         public sealed override void Render(Graphics g)
         {
+            double delta = (double)pageGraphics.DeltaLapTimeMillis / 1000;
+            DeltaBar deltaBar = new DeltaBar(-this.config.MaxDelta, this.config.MaxDelta, delta);
+            deltaBar.Draw(g, 0, 0, this.Width - 1, _table.FontHeight);
 
-
-            //double delta = (double)pageGraphics.DeltaLapTimeMillis / 1000;
-            //panel.AddDeltaBarWithCenteredText($"{delta:F3}", -this.config.MaxDelta, this.config.MaxDelta, delta, true);
+            SizeF textWidth = g.MeasureString($"{delta}", _table.Font);
+            g.DrawString($"{delta}", _table.Font, new SolidBrush(Color.FromArgb(60, Color.Black)), new PointF(overlayWidth / 2 - textWidth.Width / 2 + 0.75f, _table.FontHeight / 6 + 0.75f));
+            g.DrawString($"{delta}", _table.Font, Brushes.White, new PointF(overlayWidth / 2 - textWidth.Width / 2, _table.FontHeight / 6));
 
             if (this.config.ShowSectors)
                 AddSectorLines();
 
-            //if (this.config.ShowLapType)
-            //{
-            //    string lapType = "Unknown";
-            //    if (broadCastRealtimeCarUpdate.CurrentLap != null)
-            //        lapType = $"{broadCastRealtimeCarUpdate.CurrentLap.Type}";
-            //    panel.AddLine("Type", lapType);
-            //}
+            if (this.config.ShowLapType)
+            {
+                string lapType = "Unknown";
+                if (broadCastRealtimeCarUpdate.CurrentLap != null)
+                    lapType = $"{broadCastRealtimeCarUpdate.CurrentLap.Type}";
+                _table.AddRow("Type", new string[] { lapType });
+            }
 
             _table.Draw(g);
         }
@@ -147,19 +148,19 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
 
             if (pageGraphics.CurrentSectorIndex != 0 && lap.Sector1 != -1 && lap.IsValid)
-                _table.AddRow("S1", rowSector1, new Color[] { LapTracker.Instance.Laps.IsSectorFastest(1, lap.Sector1) ? Color.LimeGreen : Color.White, Color.Orange });
+                _table.AddRow("S1  ", rowSector1, new Color[] { LapTracker.Instance.Laps.IsSectorFastest(1, lap.Sector1) ? Color.LimeGreen : Color.White, Color.Orange });
             else
-                _table.AddRow("S1", rowSector1, new Color[] { Color.White });
+                _table.AddRow("S1  ", rowSector1, new Color[] { Color.White });
 
             if (pageGraphics.CurrentSectorIndex != 1 && lap.Sector2 != -1 && lap.IsValid)
-                _table.AddRow("S2", rowSector2, new Color[] { LapTracker.Instance.Laps.IsSectorFastest(2, lap.Sector2) ? Color.LimeGreen : Color.White, Color.Orange });
+                _table.AddRow("S2  ", rowSector2, new Color[] { LapTracker.Instance.Laps.IsSectorFastest(2, lap.Sector2) ? Color.LimeGreen : Color.White, Color.Orange });
             else
-                _table.AddRow("S2", rowSector2, new Color[] { Color.White });
+                _table.AddRow("S2  ", rowSector2, new Color[] { Color.White });
 
             if (pageGraphics.CurrentSectorIndex != 2 && lap.Sector3 != -1 && lap.IsValid)
-                _table.AddRow("S3", rowSector3, new Color[] { LapTracker.Instance.Laps.IsSectorFastest(3, lap.Sector3) ? Color.LimeGreen : Color.White, Color.Orange });
+                _table.AddRow("S3  ", rowSector3, new Color[] { LapTracker.Instance.Laps.IsSectorFastest(3, lap.Sector3) ? Color.LimeGreen : Color.White, Color.Orange });
             else
-                _table.AddRow("S3", rowSector3, new Color[] { Color.White });
+                _table.AddRow("S3  ", rowSector3, new Color[] { Color.White });
         }
 
         public sealed override bool ShouldRender()

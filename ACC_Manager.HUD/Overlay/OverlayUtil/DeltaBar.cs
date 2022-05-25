@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ACCManager.HUD.Overlay.OverlayUtil
 {
-    internal class DeltaBar
+    public class DeltaBar
     {
 
         internal double Min { get; set; }
