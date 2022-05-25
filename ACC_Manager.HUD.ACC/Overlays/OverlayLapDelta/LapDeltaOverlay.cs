@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,11 +71,17 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         {
             double delta = (double)pageGraphics.DeltaLapTimeMillis / 1000;
             DeltaBar deltaBar = new DeltaBar(-this.config.MaxDelta, this.config.MaxDelta, delta) { DrawBackground = true };
-            deltaBar.Draw(g, 0, 0, this.Width - 1, _table.FontHeight);
+            deltaBar.Draw(g, 0, 0, overlayWidth, _table.FontHeight);
 
-            SizeF textWidth = g.MeasureString($"{delta}", _table.Font);
-            g.DrawString($"{delta}", _table.Font, new SolidBrush(Color.FromArgb(60, Color.Black)), new PointF(overlayWidth / 2 - textWidth.Width / 2 + 0.75f, _table.FontHeight / 6 + 0.75f));
-            g.DrawString($"{delta}", _table.Font, Brushes.White, new PointF(overlayWidth / 2 - textWidth.Width / 2, _table.FontHeight / 6));
+            TextRenderingHint previousHint = g.TextRenderingHint;
+            g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+            g.TextContrast = 1;
+            string deltaText = $"{delta:F3}";
+            SizeF textWidth = g.MeasureString(deltaText, _table.Font);
+            g.DrawString(deltaText, _table.Font, new SolidBrush(Color.FromArgb(60, Color.Black)), new PointF(overlayWidth / 2 - textWidth.Width + textWidth.Width / 2 + 0.75f, _table.FontHeight / 6 + 0.75f));
+            g.DrawString(deltaText, _table.Font, Brushes.White, new PointF(overlayWidth / 2 - textWidth.Width + textWidth.Width / 2, _table.FontHeight / 6));
+            g.TextRenderingHint = previousHint;
+
 
             if (this.config.ShowSectors)
                 AddSectorLines();

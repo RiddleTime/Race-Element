@@ -58,7 +58,6 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                 g.SmoothingMode = previous;
             }
 
-
             TextRenderingHint previousHint = g.TextRenderingHint;
             g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
             g.TextContrast = 1;

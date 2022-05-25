@@ -226,7 +226,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
                 }
                 if (carMaps != null) break;
             }
-
+            if (carMaps == null) return null;
             return carMaps[map];
         }
     }
