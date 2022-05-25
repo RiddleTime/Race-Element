@@ -31,10 +31,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
 
         private InputDataCollector inputDataCollector;
 
+        internal static InputTraceOverlay Instance;
         public InputTraceOverlay(Rectangle rectangle) : base(rectangle, "Input Trace Overlay")
         {
             this.Width = OriginalWidth;
             this.Height = OriginalHeight;
+            this.RequestsDrawItself = true;
+            Instance = this;
         }
 
         public sealed override void BeforeStart()

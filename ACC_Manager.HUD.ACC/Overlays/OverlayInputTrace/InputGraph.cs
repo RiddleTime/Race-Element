@@ -47,17 +47,19 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(196, Color.Black)), graphRect, 3);
 
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            DrawData(g, BrakeData, Brushes.Red);
-            DrawData(g, ThrottleData, Brushes.ForestGreen);
 
             if (this.Config.ShowSteeringInput)
-                DrawData(g, SteeringData, Brushes.White);
+                DrawData(g, SteeringData, Color.FromArgb(190, Color.White));
+
+            DrawData(g, ThrottleData, Color.ForestGreen);
+            DrawData(g, BrakeData, Color.Red);
+
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
 
             g.DrawRoundedRectangle(new Pen(Color.FromArgb(196, Color.Black)), graphRect, 3);
         }
 
-        private void DrawData(Graphics g, LinkedList<int> Data, Brush color)
+        private void DrawData(Graphics g, LinkedList<int> Data, Color color)
         {
             if (Data.Count > 0)
             {
@@ -83,7 +85,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
                 {
                     GraphicsPath path = new GraphicsPath();
                     path.AddLines(points.ToArray());
-                    g.DrawPath(new Pen(color, 1.9f), path);
+                    Color colorFaded = Color.FromArgb(60, color);
+                    g.DrawPath(new Pen(colorFaded, 3.3f), path);
+                    g.DrawPath(new Pen(color, 1.2f), path);
                 }
             }
         }
