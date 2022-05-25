@@ -23,9 +23,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             [ToolTip("Displays the time for each sector, green colored sectors are personal best.")]
             public bool ShowSectors { get; set; } = true;
 
-            [ToolTip("Displays the type of the current lap (In/Out/Regular).")]
-            public bool ShowLapType { get; set; } = false;
-
             [ToolTip("Sets the maximum range in seconds for the delta bar.")]
             [IntRange(1, 5, 1)]
             public int MaxDelta { get; set; } = 2;
@@ -55,9 +52,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             if (!this.config.ShowSectors)
                 this.Height -= this._table.FontHeight * 3;
 
-            if (!this.config.ShowLapType)
-                this.Height -= this._table.FontHeight;
-
             LapTracker.Instance.LapFinished += Collector_LapFinished;
         }
 
@@ -75,7 +69,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         public sealed override void Render(Graphics g)
         {
             double delta = (double)pageGraphics.DeltaLapTimeMillis / 1000;
-            DeltaBar deltaBar = new DeltaBar(-this.config.MaxDelta, this.config.MaxDelta, delta);
+            DeltaBar deltaBar = new DeltaBar(-this.config.MaxDelta, this.config.MaxDelta, delta) { DrawBackground = true };
             deltaBar.Draw(g, 0, 0, this.Width - 1, _table.FontHeight);
 
             SizeF textWidth = g.MeasureString($"{delta}", _table.Font);
@@ -84,14 +78,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
             if (this.config.ShowSectors)
                 AddSectorLines();
-
-            if (this.config.ShowLapType)
-            {
-                string lapType = "Unknown";
-                if (broadCastRealtimeCarUpdate.CurrentLap != null)
-                    lapType = $"{broadCastRealtimeCarUpdate.CurrentLap.Type}";
-                _table.AddRow("Type", new string[] { lapType });
-            }
 
             _table.Draw(g);
         }

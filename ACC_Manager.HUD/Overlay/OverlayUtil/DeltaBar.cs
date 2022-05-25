@@ -18,6 +18,8 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
 
         private double Average { get; set; }
 
+        public bool DrawBackground = false;
+
         public DeltaBar(double min, double max, double value)
         {
             Min = min;
@@ -39,6 +41,9 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
             double percent = Value / Max;
 
             Color outlineColor = Color.White;
+
+            if (DrawBackground)
+                g.FillRectangle(new SolidBrush(Color.FromArgb(120, Color.Black)), new Rectangle(x, y, width, height));
 
             if (Value < Average)
             {
