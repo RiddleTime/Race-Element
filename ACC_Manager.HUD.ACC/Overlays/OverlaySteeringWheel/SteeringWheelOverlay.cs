@@ -79,7 +79,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
 
             Rectangle rect = new Rectangle(0+wheelWidth, 0+wheelWidth, Width-(2*wheelWidth), Height-(2*wheelWidth));
             Pen indicatorPen = new Pen(Color.FromArgb(255, 255, 10, 10), wheelWidth);
-            float drawAngle = angle+270-(indicatorWidth/2); // - 90 - indicatorWidth;
+            float drawAngle = angle+270-(indicatorWidth/2);
             g.DrawArc(indicatorPen, rect, drawAngle, indicatorWidth);
              
         }
