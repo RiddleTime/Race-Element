@@ -32,7 +32,6 @@ namespace ACCManager.HUD.ACC
             {"ECU Maps", typeof(EcuMapOverlay) },
             {"Fuel Info", typeof(FuelInfoOverlay) },
             {"Input Trace", typeof(InputTraceOverlay) },
-            {"Steering Wheel", typeof(SteeringWheelOverlay) },
             {"Lap Delta", typeof(LapDeltaOverlay) },
             {"Track Info", typeof(TrackInfoOverlay) },
             {"Tyre Info", typeof(TyreInfoOverlay) },
@@ -40,7 +39,7 @@ namespace ACCManager.HUD.ACC
 
 #if DEBUG
             {"Weather Info", typeof(WeatherOverlay) },
-
+            {"Steering Wheel", typeof(SteeringWheelOverlay) },
 
             // yea this shit has to be at the bottom...
             {"Page Static", typeof(StaticInfoOverlay) },
