@@ -14,7 +14,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayGraphicsInfo
 {
     internal sealed class GraphicsInfoOverlay : AbstractOverlay
     {
-        private Font inputFont = FontUtil.FontUnispace((float)9);
+        private Font _inputFont = FontUtil.FontUnispace((float)9);
 
         public GraphicsInfoOverlay(Rectangle rectangle) : base(rectangle, "Debug Graphics Overlay")
         {
@@ -65,8 +65,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayGraphicsInfo
                 if (!isObsolete && !member.Name.Equals("Buffer") && !member.Name.Equals("Size"))
                 {
                     value = ReflectionUtil.FieldTypeValue(member, value);
-                    g.DrawString($"{member.Name}: {value}", inputFont, Brushes.White, 0 + xMargin, y);
-                    y += (int)inputFont.Size + 4;
+                    g.DrawString($"{member.Name}: {value}", _inputFont, Brushes.White, 0 + xMargin, y);
+                    y += (int)_inputFont.Size + 4;
                 }
             }
 

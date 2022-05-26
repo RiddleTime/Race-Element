@@ -15,9 +15,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
     internal sealed class EcuMapOverlay : AbstractOverlay
     {
         private const int PanelWidth = 270;
-        private readonly InfoPanel Panel = new InfoPanel(10, PanelWidth);
+        private readonly InfoPanel _panel = new InfoPanel(10, PanelWidth);
 
-        private EcuMapConfiguration config = new EcuMapConfiguration();
+        private EcuMapConfiguration _config = new EcuMapConfiguration();
         private class EcuMapConfiguration : OverlayConfiguration
         {
             [ToolTip("Displays the number of the ecu map.")]
@@ -34,14 +34,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
             this.RefreshRateHz = 4;
 
             this.Width = PanelWidth + 1;
-            this.Height = Panel.FontHeight * 5 + 1;
+            this.Height = _panel.FontHeight * 5 + 1;
         }
 
         public sealed override void BeforeStart()
         {
-            if (!this.config.ShowMapNumber)
+            if (!this._config.ShowMapNumber)
             {
-                this.Height -= Panel.FontHeight;
+                this.Height -= _panel.FontHeight;
             }
         }
         public sealed override void BeforeStop() { }
@@ -52,21 +52,21 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
 
             if (current != null)
             {
-                if (this.config.ShowMapNumber)
-                    Panel.AddLine("Map", $"{current.Index}");
-                Panel.AddLine("Power", $"{current.Power}");
-                Panel.AddLine("Condition", $"{current.Conditon}");
-                Panel.AddLine("Fuel", $"{current.FuelConsumption}");
-                Panel.AddLine("Throttle", $"{current.ThrottleMap}");
+                if (this._config.ShowMapNumber)
+                    _panel.AddLine("Map", $"{current.Index}");
+                _panel.AddLine("Power", $"{current.Power}");
+                _panel.AddLine("Condition", $"{current.Conditon}");
+                _panel.AddLine("Fuel", $"{current.FuelConsumption}");
+                _panel.AddLine("Throttle", $"{current.ThrottleMap}");
             }
             else
             {
-                Panel.AddLine("Car", "Not supported");
-                Panel.AddLine("Model", pageStatic.CarModel);
-                Panel.AddLine("Map", $"{pageGraphics.EngineMap + 1}");
+                _panel.AddLine("Car", "Not supported");
+                _panel.AddLine("Model", pageStatic.CarModel);
+                _panel.AddLine("Map", $"{pageGraphics.EngineMap + 1}");
             }
 
-            Panel.Draw(g);
+            _panel.Draw(g);
         }
 
         public sealed override bool ShouldRender()

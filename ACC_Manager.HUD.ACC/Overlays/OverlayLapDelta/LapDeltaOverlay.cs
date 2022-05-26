@@ -18,7 +18,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 {
     internal sealed class LapDeltaOverlay : AbstractOverlay
     {
-        private readonly LapDeltaConfig config = new LapDeltaConfig();
+        private readonly LapDeltaConfig _config = new LapDeltaConfig();
         private class LapDeltaConfig : OverlayConfiguration
         {
             [ToolTip("Displays the time for each sector, green colored sectors are personal best.")]
@@ -34,23 +34,23 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             }
         }
 
-        private const int overlayWidth = 170;
+        private const int _overlayWidth = 170;
 
-        private LapData lastLap = null;
+        private LapData _lastLap = null;
 
         private readonly InfoTable _table;
 
         public LapDeltaOverlay(Rectangle rectangle) : base(rectangle, "Lap Delta Overlay")
         {
             _table = new InfoTable(10, new int[] { 60, 83 }) { Y = 17 };
-            this.Width = overlayWidth + 1;
+            this.Width = _overlayWidth + 1;
             this.Height = _table.FontHeight * 5 + 2 + 4;
             RefreshRateHz = 10;
         }
 
         public sealed override void BeforeStart()
         {
-            if (!this.config.ShowSectors)
+            if (!this._config.ShowSectors)
                 this.Height -= this._table.FontHeight * 3;
 
             LapTracker.Instance.LapFinished += Collector_LapFinished;
@@ -64,26 +64,26 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         private void Collector_LapFinished(object sender, LapData newLap)
         {
             if (newLap.Sector1 != -1 && newLap.Sector2 != -1 && newLap.Sector3 != -1)
-                lastLap = newLap;
+                _lastLap = newLap;
         }
 
         public sealed override void Render(Graphics g)
         {
             double delta = (double)pageGraphics.DeltaLapTimeMillis / 1000;
-            DeltaBar deltaBar = new DeltaBar(-this.config.MaxDelta, this.config.MaxDelta, delta) { DrawBackground = true };
-            deltaBar.Draw(g, 0, 0, overlayWidth, _table.FontHeight);
+            DeltaBar deltaBar = new DeltaBar(-this._config.MaxDelta, this._config.MaxDelta, delta) { DrawBackground = true };
+            deltaBar.Draw(g, 0, 0, _overlayWidth, _table.FontHeight);
 
             TextRenderingHint previousHint = g.TextRenderingHint;
             g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
             g.TextContrast = 1;
             string deltaText = $"{delta:F3}";
             SizeF textWidth = g.MeasureString(deltaText, _table.Font);
-            g.DrawString(deltaText, _table.Font, new SolidBrush(Color.FromArgb(60, Color.Black)), new PointF(overlayWidth / 2 - textWidth.Width + textWidth.Width / 2 + 0.75f, _table.FontHeight / 6 + 0.75f));
-            g.DrawString(deltaText, _table.Font, Brushes.White, new PointF(overlayWidth / 2 - textWidth.Width + textWidth.Width / 2, _table.FontHeight / 6));
+            g.DrawString(deltaText, _table.Font, new SolidBrush(Color.FromArgb(60, Color.Black)), new PointF(_overlayWidth / 2 - textWidth.Width + textWidth.Width / 2 + 0.75f, _table.FontHeight / 6 + 0.75f));
+            g.DrawString(deltaText, _table.Font, Brushes.White, new PointF(_overlayWidth / 2 - textWidth.Width + textWidth.Width / 2, _table.FontHeight / 6));
             g.TextRenderingHint = previousHint;
 
 
-            if (this.config.ShowSectors)
+            if (this._config.ShowSectors)
                 AddSectorLines();
 
             _table.Draw(g);
@@ -93,8 +93,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         {
             LapData lap = LapTracker.Instance.CurrentLap;
 
-            if (lastLap != null && pageGraphics.NormalizedCarPosition < 0.08 && lap.Index != lastLap.Index && lastLap.Sector3 != -1)
-                lap = lastLap;
+            if (_lastLap != null && pageGraphics.NormalizedCarPosition < 0.08 && lap.Index != _lastLap.Index && _lastLap.Sector3 != -1)
+                lap = _lastLap;
 
             int fastestSector1 = LapTracker.Instance.Laps.GetFastestSector(1);
             int fastestSector2 = LapTracker.Instance.Laps.GetFastestSector(2);

@@ -14,9 +14,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
 {
     internal sealed class FuelInfoOverlay : AbstractOverlay
     {
-        private readonly InfoPanel infoPanel;
+        private readonly InfoPanel _infoPanel;
 
-        private readonly FuelInfoConfig config = new FuelInfoConfig();
+        private readonly FuelInfoConfig _config = new FuelInfoConfig();
         private class FuelInfoConfig : OverlayConfiguration
         {
             [ToolTip("Basic: Displays fuel bar, laps left and fuel-to-end information." +
@@ -38,16 +38,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
         public FuelInfoOverlay(Rectangle rectangle) : base(rectangle, "Fuel Info Overlay")
         {
             this.Width = 240;
-            infoPanel = new InfoPanel(10, this.Width - 1);
-            this.Height = this.infoPanel.FontHeight * 6;
+            _infoPanel = new InfoPanel(10, this.Width - 1);
+            this.Height = this._infoPanel.FontHeight * 6;
             RefreshRateHz = 2;
         }
 
         public sealed override void BeforeStart()
         {
-            if (!this.config.ShowAdvancedInfo)
+            if (!this._config.ShowAdvancedInfo)
             {
-                this.Height -= this.infoPanel.FontHeight * 3;
+                this.Height -= this._infoPanel.FontHeight * 3;
             }
         }
 
@@ -56,7 +56,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
         public sealed override void Render(Graphics g)
         {
             // Some global variants
-            double lapBufferVar = pageGraphics.FuelXLap * this.config.FuelBufferLaps;
+            double lapBufferVar = pageGraphics.FuelXLap * this._config.FuelBufferLaps;
             double bestLapTime = pageGraphics.BestTimeMs; bestLapTime.ClipMax(180000);
             double fuelTimeLeft = pageGraphics.FuelEstimatedLaps * bestLapTime;
             double stintDebug = pageGraphics.DriverStintTimeLeft; stintDebug.ClipMin(-1);
@@ -71,23 +71,23 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             Brush fuelBarBrush = pagePhysics.Fuel / pageStatic.MaxFuel < 0.15 ? Brushes.Red : Brushes.OrangeRed;
             Brush fuelTimeBrush = GetFuelTimeBrush(fuelTimeLeft, stintDebug);
             //Start (Basic)
-            infoPanel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel:F2} L", 0, pageStatic.MaxFuel, pagePhysics.Fuel, fuelBarBrush);
-            infoPanel.AddLine("Laps Left", $"{pageGraphics.FuelEstimatedLaps:F1} @ {pageGraphics.FuelXLap:F2}L");
-            infoPanel.AddLine("Fuel-End", $"{fuelToEnd + lapBufferVar:F1} : Add {fuelToAdd:F0}");
+            _infoPanel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel:F2} L", 0, pageStatic.MaxFuel, pagePhysics.Fuel, fuelBarBrush);
+            _infoPanel.AddLine("Laps Left", $"{pageGraphics.FuelEstimatedLaps:F1} @ {pageGraphics.FuelXLap:F2}L");
+            _infoPanel.AddLine("Fuel-End", $"{fuelToEnd + lapBufferVar:F1} : Add {fuelToAdd:F0}");
             //End (Basic)
             //Magic Start (Advanced)
-            if (this.config.ShowAdvancedInfo)
+            if (this._config.ShowAdvancedInfo)
             {
-                infoPanel.AddLine("Stint Time", stintTime);
-                infoPanel.AddLine("Fuel Time", fuelTime, fuelTimeBrush);
+                _infoPanel.AddLine("Stint Time", stintTime);
+                _infoPanel.AddLine("Fuel Time", fuelTime, fuelTimeBrush);
 
                 if (stintDebug == -1)
-                    infoPanel.AddLine("Stint Fuel", "No Stints");
+                    _infoPanel.AddLine("Stint Fuel", "No Stints");
                 else
-                    infoPanel.AddLine("Stint Fuel", $"{stintFuel + lapBufferVar:F1}");
+                    _infoPanel.AddLine("Stint Fuel", $"{stintFuel + lapBufferVar:F1}");
             }
             //Magic End (Advanced)
-            infoPanel.Draw(g);
+            _infoPanel.Draw(g);
         }
 
         private double FuelToAdd(double lapBufferVar, double stintDebug, double stintFuel, double fuelToEnd)

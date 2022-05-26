@@ -14,7 +14,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
 {
     internal sealed class AccelerometerOverlay : AbstractOverlay
     {
-        private AccelleroConfig config = new AccelleroConfig();
+        private AccelleroConfig _config = new AccelleroConfig();
         private class AccelleroConfig : OverlayConfiguration
         {
             [ToolTip("Displays fading dots representing history of the g-forces.")]
@@ -29,12 +29,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             }
         }
 
-        private readonly InfoPanel info = new InfoPanel(10, 225) { DrawBackground = false };
+        private readonly InfoPanel _panel = new InfoPanel(10, 225) { DrawBackground = false };
         private const int MaxG = 3;
-        private int gMeterX = 22;
-        private int gMeterY = 22;
-        private int gMeterSize = 200;
-        private LinkedList<Point> trace = new LinkedList<Point>();
+        private int _gMeterX = 22;
+        private int _gMeterY = 22;
+        private int _gMeterSize = 200;
+        private readonly LinkedList<Point> _trace = new LinkedList<Point>();
 
         public AccelerometerOverlay(Rectangle rectangle) : base(rectangle, "Accelerometer Overlay")
         {
@@ -42,12 +42,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             this.Height = this.Width;
             this.RefreshRateHz = 20;
 
-            if (!this.config.ShowText)
+            if (!this._config.ShowText)
             {
-                this.Width = gMeterSize + 1;
+                this.Width = _gMeterSize + 1;
                 this.Height = this.Width;
-                gMeterX = 0;
-                gMeterY = 0;
+                _gMeterX = 0;
+                _gMeterY = 0;
             }
         }
 
@@ -61,19 +61,19 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
         {
             SolidBrush backgroundBrush = new SolidBrush(Color.FromArgb(140, Color.Black));
             //Draws the HUD window
-            if (this.config.ShowText)
-                g.FillRectangle(backgroundBrush, new Rectangle(0, 0, this.gMeterSize + 25, this.gMeterSize + 25));
+            if (this._config.ShowText)
+                g.FillRectangle(backgroundBrush, new Rectangle(0, 0, this._gMeterSize + 25, this._gMeterSize + 25));
             else
-                g.FillEllipse(backgroundBrush, new Rectangle(1, 1, this.gMeterSize - 2, this.gMeterSize - 2));
+                g.FillEllipse(backgroundBrush, new Rectangle(1, 1, this._gMeterSize - 2, this._gMeterSize - 2));
 
-            DrawGMeter(gMeterX, gMeterY, gMeterSize, g);
+            DrawGMeter(_gMeterX, _gMeterY, _gMeterSize, g);
 
-            if (this.config.ShowText)
+            if (this._config.ShowText)
             {
-                info.AddLine("X ", $"{pagePhysics.AccG[0]:F2}");
-                info.AddLine("Y ", $"{pagePhysics.AccG[2]:F2}");
+                _panel.AddLine("X ", $"{pagePhysics.AccG[0]:F2}");
+                _panel.AddLine("Y ", $"{pagePhysics.AccG[2]:F2}");
 
-                info.Draw(g);
+                _panel.Draw(g);
             }
         }
 
@@ -136,18 +136,18 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
 
             g.FillEllipse(new SolidBrush(Color.FromArgb(242, 82, 2)), new Rectangle(gDotPosX, gDotPosY, gDotSize, gDotSize));
 
-            if (this.config.ShowTrace)
+            if (this._config.ShowTrace)
             {
-                lock (trace)
+                lock (_trace)
                 {
-                    trace.AddFirst(new Point(gDotPosX, gDotPosY));
-                    if (trace.Count > 10)
-                        trace.RemoveLast();
+                    _trace.AddFirst(new Point(gDotPosX, gDotPosY));
+                    if (_trace.Count > 10)
+                        _trace.RemoveLast();
 
 
-                    for (int i = 0; i < trace.Count; i++)
+                    for (int i = 0; i < _trace.Count; i++)
                     {
-                        Point traceItem = trace.ElementAt(i);
+                        Point traceItem = _trace.ElementAt(i);
                         g.FillEllipse(new SolidBrush(Color.FromArgb(90 - i * 5, 242, 82, 2)), new Rectangle(traceItem.X, traceItem.Y, gDotSize, gDotSize));
                     }
                 }
