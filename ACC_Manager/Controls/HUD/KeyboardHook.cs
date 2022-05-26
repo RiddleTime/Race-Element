@@ -93,7 +93,7 @@ namespace ACCManager.Controls.HUD
                 if (!RegisterHotKey(_window.Handle, _currentId, (uint)modifier, (uint)key))
                     throw new InvalidOperationException("Couldn’t register the hot key.");
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
         }
 
         /// <summary>
