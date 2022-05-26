@@ -69,10 +69,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
 
             SolidBrush brush = new SolidBrush(Color.Red);
             StringFormat format = new StringFormat();
-            Font font = FontUtil.FontUnispace(10);
             float accSteering = (pagePhysics.SteerAngle + 1) * 100; // map acc value to 0 - 200
             float angle = toAngle(accSteering);
+
 #if DEBUG
+            Font font = FontUtil.FontUnispace(10);
             g.DrawString($"angle: {angle.ToString("000.00")}", font, brush, 10, Height-15, format);
 #endif
 
