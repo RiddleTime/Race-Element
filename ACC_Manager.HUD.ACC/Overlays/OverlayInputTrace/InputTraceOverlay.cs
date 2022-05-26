@@ -20,6 +20,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             [ToolTip("Displays the steering input as a white line in the trace.")]
             internal bool ShowSteeringInput { get; set; } = true;
 
+            [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
+            [IntRange(150, 450, 10)]
+            internal int DataPoints { get; set; } = 300;
+
             public InputTraceConfig()
             {
                 this.AllowRescale = true;
@@ -34,6 +38,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
         internal static InputTraceOverlay Instance;
         public InputTraceOverlay(Rectangle rectangle) : base(rectangle, "Input Trace Overlay")
         {
+            OriginalWidth = this.config.DataPoints;
             this.Width = OriginalWidth;
             this.Height = OriginalHeight;
             this.RequestsDrawItself = true;
