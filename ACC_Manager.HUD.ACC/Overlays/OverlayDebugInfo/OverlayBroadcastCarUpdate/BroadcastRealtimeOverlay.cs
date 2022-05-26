@@ -14,7 +14,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
 {
     internal sealed class BroadcastCarUpdateOverlay : AbstractOverlay
     {
-        private Font inputFont = FontUtil.FontUnispace((float)9);
+        private Font _inputFont = FontUtil.FontUnispace((float)9);
 
         public BroadcastCarUpdateOverlay(Rectangle rectangle) : base(rectangle, "Debug BroadcastCarUpdate Overlay")
         {
@@ -57,8 +57,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
             {
                 var value = member.GetValue(broadCastRealtimeCarUpdate);
                 value = ReflectionUtil.FieldTypeValue(member, value);
-                g.DrawString($"{member.Name.Replace("<", "").Replace(">k__BackingField", "")}: {value}", inputFont, Brushes.White, 0 + xMargin, y);
-                y += (int)inputFont.Size + 4;
+                g.DrawString($"{member.Name.Replace("<", "").Replace(">k__BackingField", "")}: {value}", _inputFont, Brushes.White, 0 + xMargin, y);
+                y += (int)_inputFont.Size + 4;
             }
         }
 

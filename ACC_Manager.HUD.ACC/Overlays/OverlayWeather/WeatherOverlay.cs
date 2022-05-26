@@ -16,7 +16,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayWeather
 {
     internal class WeatherOverlay : AbstractOverlay
     {
-        private WeatherConfiguration config = new WeatherConfiguration();
+        private readonly WeatherConfiguration _config = new WeatherConfiguration();
         private class WeatherConfiguration : OverlayConfiguration
         {
             public WeatherConfiguration()
@@ -25,15 +25,15 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayWeather
             }
         }
 
-        private InfoPanel panel;
+        private readonly InfoPanel _panel;
 
         public WeatherOverlay(Rectangle rectangle) : base(rectangle, "Overlay Weather")
         {
             int panelWidth = 200;
-            panel = new InfoPanel(10, panelWidth);
+            _panel = new InfoPanel(10, panelWidth);
 
             this.Width = panelWidth + 1;
-            this.Height = panel.FontHeight * 4;
+            this.Height = _panel.FontHeight * 4;
         }
 
         public sealed override void BeforeStart()
@@ -47,12 +47,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayWeather
 
         public sealed override void Render(Graphics g)
         {
-            panel.AddLine("Now", WeatherTracker.Instance.Weather.Now.ToString());
-            panel.AddLine("In 10", WeatherTracker.Instance.Weather.In10.ToString());
-            panel.AddLine("In 30", WeatherTracker.Instance.Weather.In30.ToString());
+            _panel.AddLine("Now", WeatherTracker.Instance.Weather.Now.ToString());
+            _panel.AddLine("In 10", WeatherTracker.Instance.Weather.In10.ToString());
+            _panel.AddLine("In 30", WeatherTracker.Instance.Weather.In30.ToString());
 
 
-            panel.Draw(g);
+            _panel.Draw(g);
         }
 
         public sealed override bool ShouldRender()

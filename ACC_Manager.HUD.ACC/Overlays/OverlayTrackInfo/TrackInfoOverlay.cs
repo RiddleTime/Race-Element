@@ -13,9 +13,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
 {
     internal sealed class TrackInfoOverlay : AbstractOverlay
     {
-        private readonly InfoPanel panel = new InfoPanel(10, 240);
+        private readonly InfoPanel _panel = new InfoPanel(10, 240);
 
-        private TrackInfoConfig config = new TrackInfoConfig();
+        private readonly TrackInfoConfig _config = new TrackInfoConfig();
         private class TrackInfoConfig : OverlayConfiguration
         {
             [ToolTip("Shows the global track flag.")]
@@ -36,44 +36,44 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
         public TrackInfoOverlay(Rectangle rectangle) : base(rectangle, "Track Info Overlay")
         {
             this.Width = 240;
-            this.Height = panel.FontHeight * 6; ;
+            this.Height = _panel.FontHeight * 6; ;
             RefreshRateHz = 5;
         }
 
         public sealed override void BeforeStart()
         {
-            if (!this.config.ShowGlobalFlag)
-                this.Height -= this.panel.FontHeight;
+            if (!this._config.ShowGlobalFlag)
+                this.Height -= this._panel.FontHeight;
 
-            if (!this.config.ShowSessionType)
-                this.Height -= this.panel.FontHeight;
+            if (!this._config.ShowSessionType)
+                this.Height -= this._panel.FontHeight;
 
-            if (!this.config.ShowTimeOfDay)
-                this.Height -= this.panel.FontHeight;
+            if (!this._config.ShowTimeOfDay)
+                this.Height -= this._panel.FontHeight;
         }
 
         public sealed override void BeforeStop() { }
 
         public sealed override void Render(Graphics g)
         {
-            if (this.config.ShowTimeOfDay)
+            if (this._config.ShowTimeOfDay)
             {
                 TimeSpan time = TimeSpan.FromMilliseconds(broadCastRealTime.TimeOfDay.TotalMilliseconds * 1000);
-                this.panel.AddLine("Time", $"{time:hh\\:mm\\:ss}");
+                this._panel.AddLine("Time", $"{time:hh\\:mm\\:ss}");
             }
 
-            if (this.config.ShowGlobalFlag)
-                panel.AddLine("Flag", ACCSharedMemory.FlagTypeToString(pageGraphics.Flag));
+            if (this._config.ShowGlobalFlag)
+                _panel.AddLine("Flag", ACCSharedMemory.FlagTypeToString(pageGraphics.Flag));
 
-            if (this.config.ShowSessionType)
-                panel.AddLine("Session", ACCSharedMemory.SessionTypeToString(pageGraphics.SessionType));
+            if (this._config.ShowSessionType)
+                _panel.AddLine("Session", ACCSharedMemory.SessionTypeToString(pageGraphics.SessionType));
 
-            panel.AddLine("Grip", pageGraphics.trackGripStatus.ToString());
+            _panel.AddLine("Grip", pageGraphics.trackGripStatus.ToString());
             string airTemp = Math.Round(pagePhysics.AirTemp, 2).ToString("F2");
             string roadTemp = Math.Round(pagePhysics.RoadTemp, 2).ToString("F2");
-            panel.AddLine("Air - Track", $"{airTemp} C - {roadTemp} C");
-            panel.AddLine("Wind", $"{Math.Round(pageGraphics.WindSpeed, 2)} km/h");
-            panel.Draw(g);
+            _panel.AddLine("Air - Track", $"{airTemp} C - {roadTemp} C");
+            _panel.AddLine("Wind", $"{Math.Round(pageGraphics.WindSpeed, 2)} km/h");
+            _panel.Draw(g);
         }
 
         public sealed override bool ShouldRender()

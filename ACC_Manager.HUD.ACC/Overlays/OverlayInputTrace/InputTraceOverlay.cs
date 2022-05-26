@@ -14,7 +14,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
 {
     internal sealed class InputTraceOverlay : AbstractOverlay
     {
-        private readonly InputTraceConfig config = new InputTraceConfig();
+        private readonly InputTraceConfig _config = new InputTraceConfig();
         internal class InputTraceConfig : OverlayConfiguration
         {
             [ToolTip("Displays the steering input as a white line in the trace.")]
@@ -30,35 +30,35 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             }
         }
 
-        private int OriginalHeight = 150;
-        private int OriginalWidth = 300;
+        private readonly int _originalHeight = 150;
+        private readonly int _originalWidth = 300;
 
-        private InputDataCollector inputDataCollector;
+        private InputDataCollector _inputDataCollector;
 
         internal static InputTraceOverlay Instance;
         public InputTraceOverlay(Rectangle rectangle) : base(rectangle, "Input Trace Overlay")
         {
-            OriginalWidth = this.config.DataPoints;
-            this.Width = OriginalWidth;
-            this.Height = OriginalHeight;
+            _originalWidth = this._config.DataPoints;
+            this.Width = _originalWidth;
+            this.Height = _originalHeight;
             this.RequestsDrawItself = true;
             Instance = this;
         }
 
         public sealed override void BeforeStart()
         {
-            inputDataCollector = new InputDataCollector() { TraceCount = this.OriginalWidth - 1 };
-            inputDataCollector.Start();
+            _inputDataCollector = new InputDataCollector() { TraceCount = this._originalWidth - 1 };
+            _inputDataCollector.Start();
         }
 
         public sealed override void BeforeStop()
         {
-            inputDataCollector.Stop();
+            _inputDataCollector.Stop();
         }
 
         public sealed override void Render(Graphics g)
         {
-            InputGraph graph = new InputGraph(0, 0, this.OriginalWidth - 1, this.OriginalHeight - 1, inputDataCollector.Throttle, inputDataCollector.Brake, inputDataCollector.Steering, this.config);
+            InputGraph graph = new InputGraph(0, 0, this._originalWidth - 1, this._originalHeight - 1, _inputDataCollector.Throttle, _inputDataCollector.Brake, _inputDataCollector.Steering, this._config);
             graph.Draw(g);
         }
 

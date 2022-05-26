@@ -14,7 +14,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPhysicsInfo
 {
     internal sealed class PhysicsInfoOverlay : AbstractOverlay
     {
-        private Font inputFont = FontUtil.FontUnispace((float)9);
+        private Font _inputFont = FontUtil.FontUnispace((float)9);
 
         public PhysicsInfoOverlay(Rectangle rectangle) : base(rectangle, "Debug Physics Overlay")
         {
@@ -66,8 +66,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPhysicsInfo
                 {
                     value = ReflectionUtil.FieldTypeValue(member, value);
 
-                    g.DrawString($"{member.Name}: {value}", inputFont, Brushes.White, 0 + xMargin, y);
-                    y += (int)inputFont.Size + 4;
+                    g.DrawString($"{member.Name}: {value}", _inputFont, Brushes.White, 0 + xMargin, y);
+                    y += (int)_inputFont.Size + 4;
                 }
             }
         }
