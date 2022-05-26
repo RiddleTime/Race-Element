@@ -84,20 +84,15 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
                 g.FillRoundedRectangle(bkgrndBrush, graphRect, 10);
             }
 
-            drawSteeringIndicator(g);
-            drawThrottleIndicator(g);
-            drawBrakingIndicator(g);
-            drawGearIndicator(g);
+            DrawSteeringIndicator(g);
+            DrawThrottleIndicator(g);
+            if (this.config.BrakeIndicator) DrawBrakingIndicator(g);
+            if (this.config.GearIndicator) DrawGearIndicator(g);
 
         }
 
-        private void drawGearIndicator(Graphics g)
+        private void DrawGearIndicator(Graphics g)
         {
-            if (!config.GearIndicator)
-            {
-                return;
-            }
-
             string gearIndicator = "?";
             int accGear = pagePhysics.Gear;
             if (accGear == 0) gearIndicator = "R";
@@ -113,13 +108,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
             g.DrawString(gearIndicator, drawFont, drawBrush, xPos, yPos, new StringFormat());
         }
 
-        private void drawBrakingIndicator(Graphics g)
+        private void DrawBrakingIndicator(Graphics g)
         {
-            if (!config.BrakeIndicator)
-            {
-                return;
-            }
-
             // TODO add ABS indicator
 
             int x = wheelWidth * 2 + (config.ThrottleIndicator ? this.innerWheelWidth : 0);
@@ -129,11 +119,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
 
             Rectangle rect = new Rectangle(x, y, width, height);
             g.DrawArc(brakingIndicatorBkgrnd, rect, inputCircleMinAngle, inputCircleSweepAngle);
-            float brakeAngle = rescale(1, inputCircleSweepAngle, pagePhysics.Brake);
+            float brakeAngle = Rescale(1, inputCircleSweepAngle, pagePhysics.Brake);
             g.DrawArc(brakingIndicatorFrgrnd, rect, inputCircleMinAngle, brakeAngle);
         }
 
-        private void drawThrottleIndicator(Graphics g)
+        private void DrawThrottleIndicator(Graphics g)
         {
             if (!config.ThrottleIndicator)
             {
@@ -142,18 +132,18 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
 
             Rectangle rect = new Rectangle(0 + wheelWidth * 2, 0 + wheelWidth * 2, Width - (4 * wheelWidth), Height - (4 * wheelWidth));
             g.DrawArc(thottleIndicatorBkgrnd, rect, inputCircleMinAngle, inputCircleSweepAngle);
-            float throttleAngle = rescale(1, inputCircleSweepAngle, pagePhysics.Gas);
+            float throttleAngle = Rescale(1, inputCircleSweepAngle, pagePhysics.Gas);
             g.DrawArc(thottleIndicatorFrgrnd, rect, inputCircleMinAngle, throttleAngle);
         }
 
-        private void drawSteeringIndicator(Graphics g)
+        private void DrawSteeringIndicator(Graphics g)
         {
             g.DrawCircle(wheelPen, this.Width / 2, this.Height / 2, (this.Height / 2) - wheelWidth);
 
             SolidBrush brush = new SolidBrush(Color.White);
             StringFormat format = new StringFormat();
             float accSteering = (pagePhysics.SteerAngle + 1) * 100; // map acc value to 0 - 200
-            float angle = rescale(200, getMaxSteeringAngle() * 2, accSteering) - (getMaxSteeringAngle());
+            float angle = Rescale(200, GetMaxSteeringAngle() * 2, accSteering) - (GetMaxSteeringAngle());
 
             // steering indicator
             Rectangle rect = new Rectangle(0 + wheelWidth, 0 + wheelWidth, Width - (2 * wheelWidth), Height - (2 * wheelWidth));
@@ -162,12 +152,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
         }
 
         // map value input from range 0 - fromMax into range 0 - toMax
-        private float rescale(float fromMax, float toMax, float input)
+        private float Rescale(float fromMax, float toMax, float input)
         {
             return ((toMax) / (fromMax) * (input));
         }
 
-        private int getMaxSteeringAngle()
+        private int GetMaxSteeringAngle()
         {
             return SteeringLock.Get(pageStatic.CarModel);
         }

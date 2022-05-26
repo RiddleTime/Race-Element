@@ -506,6 +506,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Resource Include="Fonts\Redemption.ttf" />
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="key.snk" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />

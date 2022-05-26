@@ -87,9 +87,6 @@
     <EmbeddedResource Include="Fonts\orbitron-medium.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\.editorconfig">
-      <Link>.editorconfig</Link>
-    </None>
     <EmbeddedResource Include="Fonts\unispace.bold.ttf" />
     <None Include="packages.config" />
   </ItemGroup>
