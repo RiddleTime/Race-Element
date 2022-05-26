@@ -3,6 +3,7 @@ using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.HUD.Overlay.Util;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using static ACCManager.ACCSharedMemory;
@@ -17,16 +18,20 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
         private const int indicatorWidth = 15;
         private const int inputCircleMinAngle = 135;
         private const int inputCircleSweepAngle = 270;
+        private const int absIndicatorWidth = 60;
 
-        private int innerWheelWidth = 0;
+        private readonly int innerWheelWidth = 0;
         private readonly SolidBrush background;
         private readonly Pen wheelPen;
         private readonly Pen indicatorPen;
         private readonly Pen throttleBackground;
         private readonly Pen throttleForeground;
         private readonly Pen brakingBackground;
-        private readonly Pen brakingForeground;
+        private readonly Color brakeColor;
+        private readonly Color throttleColor;
         private readonly SteeringWheelConfig config = new SteeringWheelConfig();
+
+        private Pen brakingForeground;
 
         internal class SteeringWheelConfig : OverlayConfiguration
         {
@@ -56,9 +61,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
             this.wheelPen = new Pen(Color.FromArgb(100, 150, 150, 150), wheelWidth);
             this.indicatorPen = new Pen(Color.White, wheelWidth);
 
-            Color throttleColor = Color.FromArgb(255, 10, 255, 10);
+            throttleColor = Color.FromArgb(255, 10, 255, 10);
             Color throttleBackgroundColor = Color.FromArgb(50, throttleColor);
-            Color brakeColor = Color.FromArgb(255, 255, 10, 10);
+            brakeColor = Color.FromArgb(255, 255, 10, 10);
             Color brakeBackgroundColor = Color.FromArgb(50, brakeColor);
 
             this.throttleBackground = new Pen(throttleBackgroundColor, this.innerWheelWidth);
@@ -121,12 +126,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
 
         private void DrawBrakingIndicator(Graphics g)
         {
-            // TODO add ABS indicator
-
             int x = wheelWidth * 2 + (config.ShowThrottleInput ? this.innerWheelWidth : 0);
             int y = wheelWidth * 2 + (config.ShowThrottleInput ? this.innerWheelWidth : 0);
             int width = Width - (4 * wheelWidth) - (2 * (config.ShowThrottleInput ? this.innerWheelWidth : 0));
             int height = Height - (4 * wheelWidth) - (2 * (config.ShowThrottleInput ? this.innerWheelWidth : 0));
+
+            DrivingAssistanceIndicator((pagePhysics.Abs == 1), this.brakingForeground, brakeColor);
 
             Rectangle rect = new Rectangle(x, y, width, height);
             g.DrawArc(brakingBackground, rect, inputCircleMinAngle, inputCircleSweepAngle);
@@ -136,6 +141,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
 
         private void DrawThrottleIndicator(Graphics g)
         {
+
+            DrivingAssistanceIndicator((pagePhysics.TC == 1), this.throttleForeground, throttleColor);
+
             Rectangle rect = new Rectangle(0 + wheelWidth * 2, 0 + wheelWidth * 2, Width - (4 * wheelWidth), Height - (4 * wheelWidth));
             g.DrawArc(throttleBackground, rect, inputCircleMinAngle, inputCircleSweepAngle);
             float throttleAngle = Rescale(1, inputCircleSweepAngle, pagePhysics.Gas);
@@ -163,6 +171,28 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
             return ((toMax) / (fromMax) * (input));
         }
 
+        private Color SetRandomTransparency(int minTransparanxy, int maxTransparancy, Color color)
+        {
+            Random rd = new Random();
+            int randomTransparancy = rd.Next(minTransparanxy, maxTransparancy);
+            return Color.FromArgb(randomTransparancy, color);
+        }
+
+        private void DrivingAssistanceIndicator(bool active, Pen pen, Color inactiveColor)
+        {
+            if (active)
+            {
+                pen.Color = SetRandomTransparency(50, 255, inactiveColor);
+            }
+            else
+            {
+                if (pen.Color.A != 255)
+                    pen.Color = inactiveColor;
+            }
+        }
+
+
+
         public sealed override bool ShouldRender()
         {
 #if DEBUG
@@ -175,6 +205,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
 
             return shouldRender;
         }
+
     }
 }
 
