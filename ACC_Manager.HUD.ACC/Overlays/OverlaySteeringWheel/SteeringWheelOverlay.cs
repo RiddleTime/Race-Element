@@ -4,13 +4,13 @@ using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.HUD.Overlay.Util;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
 {
     internal sealed class SteeringWheelOverlay : AbstractOverlay
     {
-
         private const int initialHeight = 150;
         private const int initialWidth = 150;
         private const int wheelWidth = 15;
@@ -19,27 +19,26 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
         private const int inputCircleSweepAngle = 270;
 
         private int innerWheelWidth = 0;
-        private readonly SolidBrush bkgrndBrush;
+        private readonly SolidBrush background;
         private readonly Pen wheelPen;
         private readonly Pen indicatorPen;
-        private readonly Pen thottleIndicatorBkgrnd;
-        private readonly Pen thottleIndicatorFrgrnd;
-        private readonly Pen brakingIndicatorBkgrnd;
-        private readonly Pen brakingIndicatorFrgrnd;
+        private readonly Pen throttleBackground;
+        private readonly Pen throttleForeground;
+        private readonly Pen brakingBackground;
+        private readonly Pen brakingForeground;
         private readonly SteeringWheelConfig config = new SteeringWheelConfig();
 
         internal class SteeringWheelConfig : OverlayConfiguration
         {
-            [ToolTip("Draw steering indicator with a transparent backround.")]
-            public bool TransparentBackground { get; set; } = false;
-
             [ToolTip("Show throttle input indicator.")]
-            public bool ThrottleIndicator { get; set; } = true;
+            public bool ShowThrottleInput { get; set; } = true;
             [ToolTip("Show brake input indicator.")]
-            public bool BrakeIndicator { get; set; } = true;
+            public bool ShowBrakeInput { get; set; } = true;
             [ToolTip("Show selected gear.")]
-            public bool GearIndicator { get; set; } = true;
+            public bool ShowGears { get; set; } = true;
 
+            [ToolTip("Adds a background to the overlay")]
+            public bool DrawBackground { get; set; } = false;
 
             public SteeringWheelConfig()
             {
@@ -53,42 +52,54 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
             this.Width = initialWidth;
 
             this.innerWheelWidth = wheelWidth / 2;
-            this.bkgrndBrush = new SolidBrush(Color.FromArgb(100, Color.Black));
+            this.background = new SolidBrush(Color.FromArgb(100, Color.Black));
             this.wheelPen = new Pen(Color.FromArgb(100, 150, 150, 150), wheelWidth);
             this.indicatorPen = new Pen(Color.White, wheelWidth);
-            this.thottleIndicatorBkgrnd = new Pen(Color.FromArgb(50, 10, 255, 10), this.innerWheelWidth);
-            this.thottleIndicatorFrgrnd = new Pen(Color.FromArgb(255, 10, 255, 10), this.innerWheelWidth);
-            this.brakingIndicatorBkgrnd = new Pen(Color.FromArgb(50, 255, 10, 10), this.innerWheelWidth);
-            this.brakingIndicatorFrgrnd = new Pen(Color.FromArgb(255, 255, 10, 10), this.innerWheelWidth);
 
+            Color throttleColor = Color.FromArgb(255, 10, 255, 10);
+            Color throttleBackgroundColor = Color.FromArgb(50, throttleColor);
+            Color brakeColor = Color.FromArgb(255, 255, 10, 10);
+            Color brakeBackgroundColor = Color.FromArgb(50, brakeColor);
+
+            this.throttleBackground = new Pen(throttleBackgroundColor, this.innerWheelWidth);
+            this.throttleForeground = new Pen(throttleColor, this.innerWheelWidth);
+            this.brakingBackground = new Pen(brakeBackgroundColor, this.innerWheelWidth);
+            this.brakingForeground = new Pen(brakeColor, this.innerWheelWidth);
         }
 
-        public override void BeforeStart()
+        public sealed override void BeforeStart()
         {
 
         }
 
-        public override void BeforeStop()
+        public sealed override void BeforeStop()
         {
 
         }
 
-        public override void Render(Graphics g)
+        public sealed override void Render(Graphics g)
         {
+            SmoothingMode previous = g.SmoothingMode;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-            if (config.TransparentBackground)
+            if (this.config.DrawBackground)
             {
                 Rectangle graphRect = new Rectangle(0, 0, this.Width, this.Height);
-                g.FillRoundedRectangle(bkgrndBrush, graphRect, 10);
+                g.FillRoundedRectangle(background, graphRect, 10);
             }
 
             DrawSteeringIndicator(g);
-            DrawThrottleIndicator(g);
-            if (this.config.BrakeIndicator) DrawBrakingIndicator(g);
-            if (this.config.GearIndicator) DrawGearIndicator(g);
 
+            if (this.config.ShowThrottleInput)
+                DrawThrottleIndicator(g);
+
+            if (this.config.ShowBrakeInput)
+                DrawBrakingIndicator(g);
+
+            if (this.config.ShowGears)
+                DrawGearIndicator(g);
+
+            g.SmoothingMode = previous;
         }
 
         private void DrawGearIndicator(Graphics g)
@@ -112,28 +123,23 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
         {
             // TODO add ABS indicator
 
-            int x = wheelWidth * 2 + (config.ThrottleIndicator ? this.innerWheelWidth : 0);
-            int y = wheelWidth * 2 + (config.ThrottleIndicator ? this.innerWheelWidth : 0);
-            int width = Width - (4 * wheelWidth) - (2 * (config.ThrottleIndicator ? this.innerWheelWidth : 0));
-            int height = Height - (4 * wheelWidth) - (2 * (config.ThrottleIndicator ? this.innerWheelWidth : 0));
+            int x = wheelWidth * 2 + (config.ShowThrottleInput ? this.innerWheelWidth : 0);
+            int y = wheelWidth * 2 + (config.ShowThrottleInput ? this.innerWheelWidth : 0);
+            int width = Width - (4 * wheelWidth) - (2 * (config.ShowThrottleInput ? this.innerWheelWidth : 0));
+            int height = Height - (4 * wheelWidth) - (2 * (config.ShowThrottleInput ? this.innerWheelWidth : 0));
 
             Rectangle rect = new Rectangle(x, y, width, height);
-            g.DrawArc(brakingIndicatorBkgrnd, rect, inputCircleMinAngle, inputCircleSweepAngle);
+            g.DrawArc(brakingBackground, rect, inputCircleMinAngle, inputCircleSweepAngle);
             float brakeAngle = Rescale(1, inputCircleSweepAngle, pagePhysics.Brake);
-            g.DrawArc(brakingIndicatorFrgrnd, rect, inputCircleMinAngle, brakeAngle);
+            g.DrawArc(brakingForeground, rect, inputCircleMinAngle, brakeAngle);
         }
 
         private void DrawThrottleIndicator(Graphics g)
         {
-            if (!config.ThrottleIndicator)
-            {
-                return;
-            }
-
             Rectangle rect = new Rectangle(0 + wheelWidth * 2, 0 + wheelWidth * 2, Width - (4 * wheelWidth), Height - (4 * wheelWidth));
-            g.DrawArc(thottleIndicatorBkgrnd, rect, inputCircleMinAngle, inputCircleSweepAngle);
+            g.DrawArc(throttleBackground, rect, inputCircleMinAngle, inputCircleSweepAngle);
             float throttleAngle = Rescale(1, inputCircleSweepAngle, pagePhysics.Gas);
-            g.DrawArc(thottleIndicatorFrgrnd, rect, inputCircleMinAngle, throttleAngle);
+            g.DrawArc(throttleForeground, rect, inputCircleMinAngle, throttleAngle);
         }
 
         private void DrawSteeringIndicator(Graphics g)
@@ -143,7 +149,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
             SolidBrush brush = new SolidBrush(Color.White);
             StringFormat format = new StringFormat();
             float accSteering = (pagePhysics.SteerAngle + 1) * 100; // map acc value to 0 - 200
-            float angle = Rescale(200, GetMaxSteeringAngle() * 2, accSteering) - (GetMaxSteeringAngle());
+            float angle = Rescale(200, SteeringLock.Get(pageStatic.CarModel) * 2, accSteering) - (SteeringLock.Get(pageStatic.CarModel));
 
             // steering indicator
             Rectangle rect = new Rectangle(0 + wheelWidth, 0 + wheelWidth, Width - (2 * wheelWidth), Height - (2 * wheelWidth));
@@ -157,12 +163,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
             return ((toMax) / (fromMax) * (input));
         }
 
-        private int GetMaxSteeringAngle()
-        {
-            return SteeringLock.Get(pageStatic.CarModel);
-        }
-
-        public override bool ShouldRender()
+        public sealed override bool ShouldRender()
         {
 #if DEBUG
             return true;
