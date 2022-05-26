@@ -45,7 +45,7 @@ namespace ACCManager.HUD.Overlay.Configuration
                 {
                     OverlaySettingsJson overlay = LoadSettings(overlayFile);
 
-                    if(overlay == null)
+                    if (overlay == null)
                     {
                         overlay = new OverlaySettingsJson();
                     }

@@ -75,7 +75,6 @@ namespace ACCManager.Controls
             }
             catch (Exception ex)
             {
-                LogWriter.WriteToLog(ex);
             }
         }
 

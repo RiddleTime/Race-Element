@@ -54,14 +54,15 @@ namespace ACCManager.HUD.Overlay.Internal
             this.Alpha = 255;
             this.Name = Name;
 
+            try
+            {
+                if (AllowReposition)
+                    ApplyOverlaySettings();
 
-
-            if (AllowReposition)
-                ApplyOverlaySettings();
-
-            LoadFieldConfig();
+                LoadFieldConfig();
+            }
+            catch (Exception) { }
         }
-
 
         private void LoadFieldConfig()
         {
@@ -296,7 +297,7 @@ namespace ACCManager.HUD.Overlay.Internal
                         this.RepositionWindow.BorderBrush = System.Windows.Media.Brushes.Red;
                         this.RepositionWindow.BorderThickness = new Thickness(1);
                     };
-                  
+
                     this.RepositionWindow.KeyDown += (s, e) =>
                     {
                         this.RepositionWindow.BorderBrush = System.Windows.Media.Brushes.Green;
