@@ -9,6 +9,7 @@ using ACCManager.HUD.ACC.Overlays.OverlayLapDelta;
 using ACCManager.HUD.ACC.Overlays.OverlayPhysicsInfo;
 using ACCManager.HUD.ACC.Overlays.OverlayPressureTrace;
 using ACCManager.HUD.ACC.Overlays.OverlayStaticInfo;
+using ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel;
 using ACCManager.HUD.ACC.Overlays.OverlayTrackInfo;
 using ACCManager.HUD.ACC.Overlays.OverlayTyreInfo;
 using ACCManager.HUD.ACC.Overlays.OverlayWeather;
@@ -31,6 +32,7 @@ namespace ACCManager.HUD.ACC
             {"ECU Maps", typeof(EcuMapOverlay) },
             {"Fuel Info", typeof(FuelInfoOverlay) },
             {"Input Trace", typeof(InputTraceOverlay) },
+            {"Steering Wheel", typeof(SteeringWheelOverlay) },
             {"Lap Delta", typeof(LapDeltaOverlay) },
             {"Track Info", typeof(TrackInfoOverlay) },
             {"Tyre Info", typeof(TyreInfoOverlay) },
