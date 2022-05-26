@@ -32,7 +32,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
         private readonly SteeringWheelConfig config = new SteeringWheelConfig();
 
         private Pen brakingForeground;
-        
+
         internal class SteeringWheelConfig : OverlayConfiguration
         {
             [ToolTip("Show throttle input indicator.")]
@@ -41,7 +41,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
             public bool ShowBrakeInput { get; set; } = true;
             [ToolTip("Show selected gear.")]
             public bool ShowGears { get; set; } = true;
-            
+
             [ToolTip("Adds a background to the overlay")]
             public bool DrawBackground { get; set; } = false;
 
