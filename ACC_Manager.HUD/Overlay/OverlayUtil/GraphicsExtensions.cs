@@ -10,6 +10,30 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
 {
     public static class GraphicsExtensions
     {
+        public static void DrawCircle(this Graphics graphics, Pen pen,
+                                  float centerX, float centerY, float radius)
+        {
+            if (graphics == null)
+                throw new ArgumentNullException("graphics");
+            if (pen == null)
+                throw new ArgumentNullException("pen");
+
+            graphics.DrawEllipse(pen, centerX - radius, centerY - radius,
+                      radius + radius, radius + radius);
+        }
+
+        public static void DrawFillCircle(this Graphics graphics, Brush brush,
+                                  float centerX, float centerY, float radius)
+        {
+            if (graphics == null)
+                throw new ArgumentNullException("graphics");
+            if (brush == null)
+                throw new ArgumentNullException("pen");
+
+            graphics.FillEllipse(brush, centerX - radius, centerY - radius,
+                          radius + radius, radius + radius);
+        }
+
         public static void DrawRoundedRectangle(this Graphics graphics, Pen pen, Rectangle bounds, int cornerRadius)
         {
             if (graphics == null)
