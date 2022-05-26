@@ -1,4 +1,5 @@
 ﻿using ACCManager.Data;
+using ACCManager.Data.ACC.Cars;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.OverlayUtil;
@@ -95,10 +96,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
 
         private int getMaxSteeringAngle()
         {
-            //CarModels model = ConversionFactory.ParseCarName(pageStatic.CarModel);
-            //ICarSetupConversion setupConversion = GetConversion(model);
-            // TODO get max steering angle from acc data
-            return 320;
+            return SteeringLock.Get(pageStatic.CarModel);
         }
 
         public override bool ShouldRender()
