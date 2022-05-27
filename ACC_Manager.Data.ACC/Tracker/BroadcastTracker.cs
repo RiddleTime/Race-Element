@@ -25,13 +25,13 @@ namespace ACCManager.Data.ACC.Tracker
             }
         }
 
-        private ACCUdpRemoteClient client;
-        private ACCSharedMemory sharedMemory;
+        private ACCUdpRemoteClient _client;
+        private readonly ACCSharedMemory _sharedMemory;
         public bool IsConnected { get; private set; }
 
         private BroadcastTracker()
         {
-            sharedMemory = new ACCSharedMemory();
+            _sharedMemory = new ACCSharedMemory();
         }
 
         public event EventHandler<RealtimeUpdate> OnRealTimeUpdate;
@@ -44,12 +44,12 @@ namespace ACCManager.Data.ACC.Tracker
             this.IsConnected = true;
 
             BroadcastConfig.Root config = BroadcastConfig.GetConfiguration();
-            client = new ACCUdpRemoteClient("127.0.0.1", config.updListenerPort, string.Empty, config.connectionPassword, config.commandPassword, 200);
-            client.MessageHandler.OnRealtimeUpdate += (s, realTimeUpdate) =>
+            _client = new ACCUdpRemoteClient("127.0.0.1", config.updListenerPort, string.Empty, config.connectionPassword, config.commandPassword, 100);
+            _client.MessageHandler.OnRealtimeUpdate += (s, realTimeUpdate) =>
             {
                 OnRealTimeUpdate?.Invoke(this, realTimeUpdate);
             };
-            client.MessageHandler.OnConnectionStateChanged += (int connectionId, bool connectionSuccess, bool isReadonly, string error) =>
+            _client.MessageHandler.OnConnectionStateChanged += (int connectionId, bool connectionSuccess, bool isReadonly, string error) =>
             {
                 ConnectionState state = new ConnectionState()
                 {
@@ -61,17 +61,17 @@ namespace ACCManager.Data.ACC.Tracker
 
                 OnConnectionStateChanged?.Invoke(this, state);
             };
-            client.MessageHandler.OnTrackDataUpdate += (s, trackData) => OnTrackDataUpdate?.Invoke(this, trackData);
+            _client.MessageHandler.OnTrackDataUpdate += (s, trackData) => OnTrackDataUpdate?.Invoke(this, trackData);
 
-            client.MessageHandler.OnRealtimeCarUpdate += (s, e) =>
+            _client.MessageHandler.OnRealtimeCarUpdate += (s, e) =>
             {
-                int localCarIndex = sharedMemory.ReadGraphicsPageFile().PlayerCarID;
+                int localCarIndex = _sharedMemory.ReadGraphicsPageFile().PlayerCarID;
 
                 if (e.CarIndex == localCarIndex)
                     OnRealTimeCarUpdate?.Invoke(this, e);
             };
 
-            client.MessageHandler.OnConnectionStateChanged += (connectionId, connectionSuccess, isReadonly, error) =>
+            _client.MessageHandler.OnConnectionStateChanged += (connectionId, connectionSuccess, isReadonly, error) =>
             {
                 Debug.WriteLine($"Broadcast Connection State Changed:\n{connectionId}, Connected: {connectionSuccess}, IsReadOnly: {isReadonly}\nError: {error}");
             };
@@ -90,10 +90,10 @@ namespace ACCManager.Data.ACC.Tracker
             this.IsConnected = false;
             ResetData();
 
-            if (client != null)
+            if (_client != null)
             {
-                client.Shutdown();
-                client.Dispose();
+                _client.Shutdown();
+                _client.Dispose();
             }
         }
 
