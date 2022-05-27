@@ -91,6 +91,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
                                 if (Laps[Laps.Count - 1].Sector3 != _lastLapInfo.Splits[2].Value)
                                 {
                                     Laps[Laps.Count - 1].Sector3 = _lastLapInfo.Splits[2].Value;
+                                    Laps[Laps.Count - 1].IsValid = !_lastLapInfo.IsInvalid;
                                     LapFinished?.Invoke(this, Laps[Laps.Count - 1]);
                                 }
                         }
@@ -152,10 +153,6 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
 
                             CurrentLap = new LapData() { Index = pageGraphics.CompletedLaps + 1 };
                         }
-
-                        // invalidate current lap 
-                        if (CurrentLap.IsValid != pageGraphics.IsValidLap && CurrentLap.Index == pageGraphics.CompletedLaps + 1)
-                            CurrentLap.IsValid = pageGraphics.IsValidLap;
                     }
                     catch (Exception ex)
                     {
