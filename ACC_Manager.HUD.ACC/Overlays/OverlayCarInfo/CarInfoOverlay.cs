@@ -40,7 +40,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
 
         public CarInfoOverlay(Rectangle rectangle) : base(rectangle, "Car Info Overlay")
         {
-            int panelWidth = 150;
+            int panelWidth = 140;
 
             this.infoPanel = new InfoPanel(10, panelWidth);
             this.Width = panelWidth + 1;
