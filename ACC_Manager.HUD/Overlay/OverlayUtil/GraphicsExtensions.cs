@@ -10,7 +10,23 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
 {
     public static class GraphicsExtensions
     {
-        public static void DrawCircle(this Graphics graphics, Pen pen,
+        public static void DrawStringWithShadow(this Graphics g, string text, Font font, Color color, PointF location)
+        {
+            DrawStringWithShadow(g, text, font, color, Color.FromArgb(60, Color.Black), location, 0.75f);
+        }
+
+        public static void DrawStringWithShadow(this Graphics g, string text, Font font, Color color, Color shadowColor, PointF location)
+        {
+            DrawStringWithShadow(g, text, font, color, shadowColor, location, 0.75f);
+        }
+
+        public static void DrawStringWithShadow(this Graphics g, string text, Font font, Color color, Color shadowColor, PointF location, float shadowDistance)
+        {
+            g.DrawString(text, font, new SolidBrush(shadowColor), new PointF(location.X + shadowDistance, location.Y + shadowDistance));
+            g.DrawString(text, font, new SolidBrush(color), location);
+        }
+
+        public static void DrawEllipse(this Graphics graphics, Pen pen,
                                   float centerX, float centerY, float radius)
         {
             if (graphics == null)
@@ -22,7 +38,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                       radius + radius, radius + radius);
         }
 
-        public static void DrawFillCircle(this Graphics graphics, Brush brush,
+        public static void FillEllipse(this Graphics graphics, Brush brush,
                                   float centerX, float centerY, float radius)
         {
             if (graphics == null)

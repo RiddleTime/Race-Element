@@ -10,7 +10,8 @@ namespace ACCManager.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.0.6.6", "- HUD: Added configurable data point amount for the Input Trace Overlay." },
+            {"0.0.6.6", "- HUD: Added configurable data point amount for the Input Trace Overlay."+
+                        "- HUD: Lap Delta bar outlines positive or negative delta color."},
             {"0.0.6.5", "- Liveries tab: Added tree item in tag tree showing all cars that aren't tagged yet."+
                         "\n- HUD: Reposition hotkey has been changed to (Ctrl + Home), it was conflicting with other global hotkeys."+
                         "\n- HUD: Changed font for values in the info panel and added drop shadow."+

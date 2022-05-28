@@ -32,7 +32,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             this.Config = config;
         }
 
-        private int getRelativeNodeY(int value)
+        private int GetRelativeNodeY(int value)
         {
             double range = 100 - 0;
             double percentage = 1d - (value - 0) / range;
@@ -70,7 +70,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
                         int x = X + Width - i * (Width / Data.Count);
                         lock (Data)
                         {
-                            int y = Y + getRelativeNodeY(Data.ElementAt(i));
+                            int y = Y + GetRelativeNodeY(Data.ElementAt(i));
                             y.ClipMax(Y + Height);
 
                             if (x < X)

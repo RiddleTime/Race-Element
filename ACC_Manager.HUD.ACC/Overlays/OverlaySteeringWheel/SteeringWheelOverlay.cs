@@ -152,7 +152,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
 
         private void DrawSteeringIndicator(Graphics g)
         {
-            g.DrawCircle(wheelPen, this.Width / 2, this.Height / 2, (this.Height / 2) - wheelWidth);
+            g.DrawEllipse(wheelPen, this.Width / 2, this.Height / 2, (this.Height / 2) - wheelWidth);
 
             SolidBrush brush = new SolidBrush(Color.White);
             StringFormat format = new StringFormat();
