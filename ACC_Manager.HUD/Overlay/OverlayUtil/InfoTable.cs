@@ -40,7 +40,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
             _columnWidths = columnWidths;
             _font = FontUtil.FontUnispace(fontSize);
             _fontHeight = _font.Height;
-            _yMono = _font.Height / 6;
+            _yMono = _font.Height / 8;
         }
 
         public void Draw(Graphics g)

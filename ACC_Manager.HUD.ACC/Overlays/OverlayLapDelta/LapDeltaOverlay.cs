@@ -78,7 +78,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
             string deltaText = $"{delta:F3}";
             SizeF textWidth = g.MeasureString(deltaText, _table.Font);
-            g.DrawStringWithShadow(deltaText, _table.Font, Color.White, new PointF(_overlayWidth / 2 - textWidth.Width + textWidth.Width / 2, _table.FontHeight / 6));
+            g.DrawStringWithShadow(deltaText, _table.Font, Color.White, new PointF(_overlayWidth / 2 - textWidth.Width + textWidth.Width / 2, _table.FontHeight / 8f));
 
             if (this._config.ShowSectors)
                 AddSectorLines();
