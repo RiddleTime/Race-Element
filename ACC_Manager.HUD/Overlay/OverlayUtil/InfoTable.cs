@@ -67,7 +67,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                 int valueWidth = (int)(totalWidth - this._maxHeaderWidth);
 
                 if (DrawValueBackground)
-                    g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(25, Color.White)), new Rectangle((int)_maxHeaderWidth + 5, Y, valueWidth - 5, _rows.Count * this._font.Height + (int)_yMono + 1), 4);
+                    g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(25, Color.White)), new Rectangle((int)_maxHeaderWidth + 5, Y, valueWidth - 4, _rows.Count * this._font.Height + (int)_yMono + 1), 4);
 
                 while (counter < length)
                 {
