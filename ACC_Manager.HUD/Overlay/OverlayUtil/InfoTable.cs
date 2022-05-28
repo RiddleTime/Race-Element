@@ -75,7 +75,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                     float rowY = Y + counter * _font.Height;
 
                     if (DrawRowLines && counter > 0)
-                        g.DrawLine(new Pen(Color.FromArgb(45, Color.White)), new Point(X, (int)rowY), new Point(totalWidth, (int)rowY));
+                        g.DrawLine(new Pen(Color.FromArgb(45, Color.White)), new Point(X + 1, (int)rowY), new Point(totalWidth - 1, (int)rowY));
 
                     g.DrawStringWithShadow(row.Header, this._font, Color.White, new PointF(X, rowY + _yMono), _shadowDistance);
 

@@ -89,7 +89,7 @@ namespace ACCManager.HUD.Overlay.Util
                     if (DrawRowLines && counter > FirstRowLine)
                     {
                         float rowY = counter * FontHeight;
-                        g.DrawLine(new Pen(Color.FromArgb(45, Color.White)), new Point(X, (int)rowY), new Point(this.MaxWidth, (int)rowY));
+                        g.DrawLine(new Pen(Color.FromArgb(45, Color.White)), new Point(X + 1, (int)rowY), new Point(this.MaxWidth - 1, (int)rowY));
                     }
 
                     IPanelLine line = Lines[counter];

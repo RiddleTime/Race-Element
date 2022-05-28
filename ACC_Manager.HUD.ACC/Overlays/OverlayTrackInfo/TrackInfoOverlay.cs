@@ -35,7 +35,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
 
         public TrackInfoOverlay(Rectangle rectangle) : base(rectangle, "Track Info Overlay")
         {
-            this.Width = 240;
+            this.Width = 230;
             this.Height = _panel.FontHeight * 6; ;
             RefreshRateHz = 5;
         }
