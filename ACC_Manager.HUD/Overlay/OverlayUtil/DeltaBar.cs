@@ -53,7 +53,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                 double fillPercent = relativeValue / range;
 
                 int fillWidth = width / 2 - (int)(width / 2 * fillPercent);
-                g.FillRectangle(new SolidBrush(NegativeColor), new Rectangle(width / 2 - fillWidth, y, fillWidth, height));
+                g.FillRectangle(new SolidBrush(drawingColor), new Rectangle(width / 2 - fillWidth, y, fillWidth, height));
             }
 
             if (Value == Average)
@@ -71,7 +71,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                 double fillPercent = relativeValue / range;
 
                 int fillWidth = width / 2 - (int)(width / 2 * fillPercent);
-                g.FillRectangle(new SolidBrush(PositiveColor), new Rectangle(width / 2, y, fillWidth, height));
+                g.FillRectangle(new SolidBrush(drawingColor), new Rectangle(width / 2, y, fillWidth, height));
             }
 
             if (DrawOutline)
