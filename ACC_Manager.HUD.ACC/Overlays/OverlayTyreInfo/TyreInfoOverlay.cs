@@ -37,9 +37,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             }
         }
 
-        private const float ShadowDistance = 1f;
-        private readonly Brush _shadowBrush = new SolidBrush(Color.FromArgb(75, Color.Black));
-        private Brush ShadowBrush { get { lock (_shadowBrush) { return _shadowBrush; } } }
         private const double MaxPadLife = 29;
         private readonly Font _fontFamily;
         private readonly Font _fontFamilySmall;
@@ -138,9 +135,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 255, 255, 255)), backgroundDimension, 2);
             g.DrawRoundedRectangle(new Pen(tyreBrush), backgroundDimension, 2);
 
-            g.DrawString(text, _fontFamily, ShadowBrush, x - textWidth / 2 + ShadowDistance, y + _yMono + ShadowDistance);
-            g.DrawString(text, _fontFamily, tyreBrush, x - textWidth / 2, y + _yMono);
-
+            g.DrawStringWithShadow(text, _fontFamily, tyreBrush, new PointF(x - textWidth / 2, y + _yMono));
         }
 
         private void DrawBrakeTemps(Graphics g, int x, int y, Position position)
@@ -181,8 +176,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             g.TextContrast = 1;
 
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(120, 0, 0, 0)), new Rectangle(x - textWidth / 2, y, (int)textWidth, _fontFamilySmall.Height), 2);
-            g.DrawString(text, _fontFamilySmall, ShadowBrush, x - textWidth / 2 + ShadowDistance, y + _yMonoSmall + ShadowDistance);
-            g.DrawString(text, _fontFamilySmall, Brushes.White, x - textWidth / 2, y + _yMonoSmall);
+            g.DrawStringWithShadow(text, _fontFamilySmall, Brushes.White, new PointF(x - textWidth / 2, y + _yMonoSmall));
 
             g.SmoothingMode = previous;
             g.TextRenderingHint = previousHint;
@@ -225,8 +219,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             g.TextContrast = 1;
 
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(120, 0, 0, 0)), new Rectangle(x - textWidth / 2, y, (int)textWidth, _fontFamilySmall.Height), 2);
-            g.DrawString(text, _fontFamilySmall, ShadowBrush, x - textWidth / 2 + ShadowDistance, y + _yMonoSmall / 2 + ShadowDistance);
-            g.DrawString(text, _fontFamilySmall, Brushes.White, x - textWidth / 2, y + _yMonoSmall / 2);
+
+            g.DrawStringWithShadow(text, _fontFamilySmall, Brushes.White, new PointF(x - textWidth / 2, y + _yMonoSmall / 2));
 
             g.SmoothingMode = previous;
             g.TextRenderingHint = previousHint;
