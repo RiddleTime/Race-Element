@@ -238,12 +238,14 @@ namespace ACCManager.HUD.Overlay.Internal
                         if (AllowRescale)
                             e.Graphics.ScaleTransform(Scale, Scale);
 
+                        CompositingQuality previousComposingQuality = e.Graphics.CompositingQuality;
                         SmoothingMode previousSmoothingMode = e.Graphics.SmoothingMode;
                         TextRenderingHint previousTextRenderHint = e.Graphics.TextRenderingHint;
                         int previousTextConstrast = e.Graphics.TextContrast;
 
                         Render(e.Graphics);
 
+                        e.Graphics.CompositingQuality = previousComposingQuality;
                         e.Graphics.SmoothingMode = previousSmoothingMode;
                         e.Graphics.TextRenderingHint = previousTextRenderHint;
                         e.Graphics.TextContrast = previousTextConstrast;

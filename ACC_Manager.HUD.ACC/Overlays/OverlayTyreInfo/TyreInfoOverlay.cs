@@ -124,10 +124,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             }
 
 
-            SmoothingMode previous = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.CompositingQuality = CompositingQuality.HighQuality;
-            TextRenderingHint previousHint = g.TextRenderingHint;
             g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
             g.TextContrast = 1;
 
@@ -143,8 +141,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             g.DrawString(text, _fontFamily, ShadowBrush, x - textWidth / 2 + ShadowDistance, y + _yMono + ShadowDistance);
             g.DrawString(text, _fontFamily, tyreBrush, x - textWidth / 2, y + _yMono);
 
-            g.SmoothingMode = previous;
-            g.TextRenderingHint = previousHint;
         }
 
         private void DrawBrakeTemps(Graphics g, int x, int y, Position position)
