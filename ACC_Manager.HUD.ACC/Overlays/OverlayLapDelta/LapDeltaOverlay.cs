@@ -73,15 +73,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             DeltaBar deltaBar = new DeltaBar(-this._config.MaxDelta, this._config.MaxDelta, delta) { DrawBackground = true };
             deltaBar.Draw(g, 0, 0, _overlayWidth, _table.FontHeight);
 
-            TextRenderingHint previousHint = g.TextRenderingHint;
             g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
             g.TextContrast = 1;
+
             string deltaText = $"{delta:F3}";
             SizeF textWidth = g.MeasureString(deltaText, _table.Font);
             g.DrawString(deltaText, _table.Font, new SolidBrush(Color.FromArgb(60, Color.Black)), new PointF(_overlayWidth / 2 - textWidth.Width + textWidth.Width / 2 + 0.75f, _table.FontHeight / 6 + 0.75f));
             g.DrawString(deltaText, _table.Font, Brushes.White, new PointF(_overlayWidth / 2 - textWidth.Width + textWidth.Width / 2, _table.FontHeight / 6));
-            g.TextRenderingHint = previousHint;
-
 
             if (this._config.ShowSectors)
                 AddSectorLines();

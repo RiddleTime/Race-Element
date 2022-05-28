@@ -19,6 +19,9 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
         private double Average { get; set; }
 
         public bool DrawBackground = false;
+        public bool DrawOutline = true;
+        public Color PositiveColor = Color.OrangeRed;
+        public Color NegativeColor = Color.LimeGreen;
 
         public DeltaBar(double min, double max, double value)
         {
@@ -30,30 +33,27 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
 
         public void Draw(Graphics g, int x, int y, int width, int height)
         {
-            this.Draw(g, x, y, width, height, Brushes.LimeGreen, Brushes.OrangeRed);
-        }
-
-        public void Draw(Graphics g, int x, int y, int width, int height, Brush negativeBrush, Brush positiveBrush)
-        {
             SmoothingMode previous = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
             double percent = Value / Max;
 
-            Color outlineColor = Color.White;
+            Color drawingColor = Color.White;
 
             if (DrawBackground)
                 g.FillRectangle(new SolidBrush(Color.FromArgb(120, Color.Black)), new Rectangle(x, y, width, height));
 
             if (Value < Average)
             {
+                drawingColor = NegativeColor;
+
                 double range = Average + Min;
                 double relativeValue = Value - Min;
                 if (range < 0) range *= -1;
                 double fillPercent = relativeValue / range;
 
                 int fillWidth = width / 2 - (int)(width / 2 * fillPercent);
-                g.FillRectangle(negativeBrush, new Rectangle(width / 2 - fillWidth, y, fillWidth, height));
+                g.FillRectangle(new SolidBrush(NegativeColor), new Rectangle(width / 2 - fillWidth, y, fillWidth, height));
             }
 
             if (Value == Average)
@@ -63,17 +63,22 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
 
             if (Value > Average)
             {
+                drawingColor = PositiveColor;
+
                 double range = Average + Max;
                 double relativeValue = Max - Value;
                 if (range < 0) range *= -1;
                 double fillPercent = relativeValue / range;
 
                 int fillWidth = width / 2 - (int)(width / 2 * fillPercent);
-                g.FillRectangle(positiveBrush, new Rectangle(width / 2, y, fillWidth, height));
+                g.FillRectangle(new SolidBrush(PositiveColor), new Rectangle(width / 2, y, fillWidth, height));
             }
 
-            Brush brush = new SolidBrush(outlineColor);
-            g.DrawRectangle(new Pen(brush), new Rectangle(x, y, width, height));
+            if (DrawOutline)
+            {
+                Brush outlineBrush = new SolidBrush(drawingColor);
+                g.DrawRectangle(new Pen(outlineBrush), new Rectangle(x, y, width, height));
+            }
 
             g.SmoothingMode = previous;
         }
