@@ -10,7 +10,6 @@ using System.Resources;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using ACC_Manager.Util.NumberExtensions;
 using ACCManager.HUD.Overlay.OverlayUtil;
 
@@ -33,6 +32,8 @@ namespace ACCManager.HUD.Overlay.Util
         private int _fontHeight;
         public int FontHeight { get { return this._fontHeight; } private set { this._fontHeight = value; } }
         public bool DrawBackground = true;
+        public bool DrawRowLines { get; set; } = true;
+        public int FirstRowLine { get; set; } = 0;
 
 
         private bool MaxTitleWidthSet = false;
@@ -78,6 +79,12 @@ namespace ACCManager.HUD.Overlay.Util
                 int counter = 0;
                 while (counter < length)
                 {
+                    if (DrawRowLines && counter > FirstRowLine)
+                    {
+                        float rowY = counter * FontHeight;
+                        g.DrawLine(new Pen(Color.FromArgb(65, Color.White)), new Point(X, (int)rowY), new Point(this.MaxWidth, (int)rowY));
+                    }
+
                     IPanelLine line = Lines[counter];
 
                     if (line.GetType() == typeof(TextLine))
