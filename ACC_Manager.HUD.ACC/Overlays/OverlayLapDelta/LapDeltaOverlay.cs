@@ -42,7 +42,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
         public LapDeltaOverlay(Rectangle rectangle) : base(rectangle, "Lap Delta Overlay")
         {
-            _table = new InfoTable(10, new int[] { 60, 83 }) { Y = 17 };
+            _table = new InfoTable(10, new int[] { 70, 73 }) { Y = 17 };
             this.Width = _overlayWidth + 1;
             this.Height = _table.FontHeight * 5 + 2 + 4;
             RefreshRateHz = 10;

@@ -67,7 +67,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                 int valueWidth = (int)(totalWidth - this._maxHeaderWidth);
 
                 if (DrawValueBackground)
-                    g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(25, Color.White)), new Rectangle((int)_maxHeaderWidth + 1, Y, valueWidth, _rows.Count * this._font.Height + (int)_yMono + 1), 4);
+                    g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(25, Color.White)), new Rectangle((int)_maxHeaderWidth + 5, Y, valueWidth - 5, _rows.Count * this._font.Height + (int)_yMono + 1), 4);
 
                 while (counter < length)
                 {
@@ -80,8 +80,11 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                     g.DrawStringWithShadow(row.Header, this._font, Color.White, new PointF(X, rowY + _yMono), _shadowDistance);
 
                     for (int i = 0; i < row.Columns.Length; i++)
-                        g.DrawStringWithShadow(row.Columns[i], this._font, row.ColumnColors[i], new PointF(GetColumnX(i), rowY + _yMono), _shadowDistance);
-
+                    {
+                        float columnX = GetColumnX(i);
+                        if (i == 0) columnX += Font.Size;
+                        g.DrawStringWithShadow(row.Columns[i], this._font, row.ColumnColors[i], new PointF(columnX, rowY + _yMono), _shadowDistance);
+                    }
                     counter++;
                 }
 
