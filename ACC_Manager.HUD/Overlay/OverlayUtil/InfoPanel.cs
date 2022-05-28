@@ -31,6 +31,7 @@ namespace ACCManager.HUD.Overlay.Util
         private int _fontHeight;
         public int FontHeight { get { return this._fontHeight; } private set { this._fontHeight = value; } }
         public bool DrawBackground = true;
+        public bool DrawValueBackground = true;
         public bool DrawRowLines { get; set; } = true;
         public int FirstRowLine { get; set; } = 0;
 
@@ -75,6 +76,14 @@ namespace ACCManager.HUD.Overlay.Util
             {
                 int length = Lines.Count;
                 int counter = 0;
+
+                if (DrawValueBackground)
+                {
+                    int valueBackgroundY = Y + Font.Height * FirstRowLine;
+                    int valueBackgroundHeight = (Lines.Count - FirstRowLine) * this.Font.Height + (int)_addMonoY + 1;
+                    g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(25, Color.White)), new Rectangle((int)MaxTitleWidth + 1, valueBackgroundY, (int)(MaxWidth - MaxTitleWidth), valueBackgroundHeight), 4);
+                }
+
                 while (counter < length)
                 {
                     if (DrawRowLines && counter > FirstRowLine)
@@ -177,7 +186,7 @@ namespace ACCManager.HUD.Overlay.Util
 
         public void AddLine(string title, string value, bool valueIsMonoFont = true)
         {
-            Lines.Add(new TextLine() { Title = title, Value = value});
+            Lines.Add(new TextLine() { Title = title, Value = value });
         }
 
         public void AddLine(string title, string value, Brush valueBrush)
