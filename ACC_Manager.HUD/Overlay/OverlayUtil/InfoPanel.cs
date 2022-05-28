@@ -88,8 +88,8 @@ namespace ACCManager.HUD.Overlay.Util
                     if (line.GetType() == typeof(TextLine))
                     {
                         TextLine textLine = (TextLine)line;
-                        g.DrawStringWithShadow($"{textLine.Title}", Font, Color.White, new PointF(X, Y + counter * FontHeight + _addMonoY));
 
+                        g.DrawStringWithShadow($"{textLine.Title}", Font, Color.White, new PointF(X, Y + counter * FontHeight + _addMonoY));
                         g.DrawStringWithShadow($"{textLine.Value}", Font, textLine.ValueBrush, new PointF(X + MaxTitleWidth + Font.Size, Y + counter * FontHeight + _addMonoY));
                     }
 
@@ -103,7 +103,6 @@ namespace ACCManager.HUD.Overlay.Util
 
                         string percent = $"{(bar.Max / bar.Value * 100):F1}%";
                         SizeF textWidth = g.MeasureString(percent, Font);
-
                         g.DrawStringWithShadow($"{percent}", Font, Brushes.White, new PointF((int)(X + (MaxWidth - MaxTitleWidth)) - textWidth.Width / 2, Y + counter * FontHeight + _addMonoY));
                     }
 
