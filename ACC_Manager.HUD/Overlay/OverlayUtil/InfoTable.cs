@@ -32,6 +32,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
         public int FontHeight { get { return _fontHeight; } private set { _fontHeight = value; } }
 
         public bool DrawBackground { get; set; } = true;
+        public bool DrawRowLines { get; set; } = true;
 
         public InfoTable(float fontSize, int[] columnWidths)
         {
@@ -50,11 +51,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
             {
                 SmoothingMode previous = g.SmoothingMode;
                 g.SmoothingMode = SmoothingMode.AntiAlias;
-                float totalWidth = this._maxHeaderWidth;
-                for (int i = 0; i < _columnWidths.Length; i++)
-                    totalWidth += this._columnWidths[i];
-
-                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(140, 0, 0, 0)), new Rectangle(X, Y, (int)totalWidth, _rows.Count * this._font.Height + (int)_yMono), 4);
+                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(140, 0, 0, 0)), new Rectangle(X, Y, (int)GetTotalWidth(), _rows.Count * this._font.Height + (int)_yMono), 4);
                 g.SmoothingMode = previous;
             }
 
@@ -65,11 +62,15 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
             {
                 int length = _rows.Count;
                 int counter = 0;
+                int totalWidth = (int)GetTotalWidth();
+                int valueWidth = (int)(totalWidth - this._maxHeaderWidth);
                 while (counter < length)
                 {
                     TableRow row = _rows[counter];
-
                     float rowY = Y + counter * _font.Height;
+
+                    if (DrawRowLines && counter > 0)
+                        g.DrawLine(new Pen(Color.FromArgb(65, Color.White)), new Point(X, (int)rowY), new Point(totalWidth, (int)rowY));
 
                     g.DrawStringWithShadow(row.Header, this._font, Color.White, new PointF(X, rowY + _yMono), _shadowDistance);
 
@@ -94,6 +95,15 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                 x += this._columnWidths[i];
 
             return x;
+        }
+
+        private float GetTotalWidth()
+        {
+            float totalWidth = this._maxHeaderWidth;
+            for (int i = 0; i < _columnWidths.Length; i++)
+                totalWidth += this._columnWidths[i];
+
+            return totalWidth;
         }
 
         public void AddRow(string header, string[] columns, Color[] columnColors = null)
