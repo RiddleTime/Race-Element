@@ -84,7 +84,7 @@ namespace ACCManager.Controls
             if (enabled)
             {
                 mousePositionOverlay = new MousePositionOverlay(new System.Drawing.Rectangle(0, 0, 150, 150), "Mouse Position");
-                mousePositionOverlay.Start();
+                mousePositionOverlay.Start(false);
             }
             else
             {

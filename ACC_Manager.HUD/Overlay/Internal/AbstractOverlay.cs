@@ -104,16 +104,19 @@ namespace ACCManager.HUD.Overlay.Internal
         }
 
         public abstract void BeforeStart();
-        public void Start()
+        public void Start(bool addTrackers = true)
         {
             try
             {
-                PageStaticTracker.Instance.Tracker += PageStaticChanged;
-                PageGraphicsTracker.Instance.Tracker += PageGraphicsChanged;
-                PagePhysicsTracker.Instance.Tracker += PagePhysicsChanged;
-                BroadcastTracker.Instance.OnRealTimeUpdate += BroadCastRealTimeChanged;
-                BroadcastTracker.Instance.OnTrackDataUpdate += BroadCastTrackDataChanged;
-                BroadcastTracker.Instance.OnRealTimeCarUpdate += BroadCastRealTimeCarUpdateChanged;
+                if (addTrackers)
+                {
+                    PageStaticTracker.Instance.Tracker += PageStaticChanged;
+                    PageGraphicsTracker.Instance.Tracker += PageGraphicsChanged;
+                    PagePhysicsTracker.Instance.Tracker += PagePhysicsChanged;
+                    BroadcastTracker.Instance.OnRealTimeUpdate += BroadCastRealTimeChanged;
+                    BroadcastTracker.Instance.OnTrackDataUpdate += BroadCastTrackDataChanged;
+                    BroadcastTracker.Instance.OnRealTimeCarUpdate += BroadCastRealTimeCarUpdateChanged;
+                }
 
                 ACCSharedMemory mem = new ACCSharedMemory();
 

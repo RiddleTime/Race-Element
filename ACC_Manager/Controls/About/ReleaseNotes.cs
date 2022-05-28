@@ -12,7 +12,7 @@ namespace ACCManager.Controls
         {
             {"0.0.6.6", "- HUD: Added configurable data point amount for the Input Trace Overlay."+
                         "\n- HUD: Lap Delta bar outlines positive or negative delta color."+
-                        "\n- HUD: Added subtle background and row lines to info table and panel."+
+                        "\n- HUD: Added subtle value background and row lines to info table and panel."+
                         "\n- HUD: Added mouse cursor when repositioning overlays."},
             {"0.0.6.5", "- Liveries tab: Added tree item in tag tree showing all cars that aren't tagged yet."+
                         "\n- HUD: Reposition hotkey has been changed to (Ctrl + Home), it was conflicting with other global hotkeys."+
