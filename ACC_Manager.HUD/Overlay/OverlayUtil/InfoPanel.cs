@@ -20,6 +20,7 @@ namespace ACCManager.HUD.Overlay.Util
     public class InfoPanel
     {
         private const float ShadowDistance = 0.75f;
+        private readonly Color _shadowColor = Color.FromArgb(60, Color.Black);
         private readonly Brush ShadowBrush = new SolidBrush(Color.FromArgb(60, Color.Black));
 
         private readonly Font Font;
@@ -82,19 +83,16 @@ namespace ACCManager.HUD.Overlay.Util
                     if (line.GetType() == typeof(TextLine))
                     {
                         TextLine textLine = (TextLine)line;
-                        g.DrawString($"{textLine.Title}", Font, ShadowBrush, new PointF(X + ShadowDistance, Y + counter * FontHeight + ShadowDistance));
-                        g.DrawString($"{textLine.Title}", Font, Brushes.White, new PointF(X, Y + counter * FontHeight));
+                        g.DrawStringWithShadow($"{textLine.Title}", Font, Color.White, new PointF(X, Y + counter * FontHeight));
 
                         int yAdd = textLine.ValueFontIsMono ? _yMono : 0;
-                        g.DrawString($"{textLine.Value}", textLine.ValueFontIsMono ? MonoFont : Font, ShadowBrush, new PointF(X + MaxTitleWidth + Font.Size + ShadowDistance, Y + counter * FontHeight + yAdd + ShadowDistance));
-                        g.DrawString($"{textLine.Value}", textLine.ValueFontIsMono ? MonoFont : Font, textLine.ValueBrush, new PointF(X + MaxTitleWidth + Font.Size, Y + counter * FontHeight + yAdd));
+                        g.DrawStringWithShadow($"{textLine.Value}", textLine.ValueFontIsMono ? MonoFont : Font, textLine.ValueBrush, new PointF(X + MaxTitleWidth + Font.Size, Y + counter * FontHeight + yAdd));
                     }
 
                     if (line.GetType() == typeof(TitledProgressBarLine))
                     {
                         TitledProgressBarLine bar = (TitledProgressBarLine)line;
-                        g.DrawString($"{bar.Title}", Font, ShadowBrush, new PointF(X + ShadowDistance, Y + counter * FontHeight + ShadowDistance));
-                        g.DrawString($"{bar.Title}", Font, Brushes.White, new PointF(X, Y + counter * FontHeight));
+                        g.DrawStringWithShadow($"{bar.Title}", Font, Brushes.White, new PointF(X, Y + counter * FontHeight));
 
                         ProgressBar progressBar = new ProgressBar(bar.Min, bar.Max, bar.Value);
                         progressBar.Draw(g, (int)(X + MaxTitleWidth + Font.Size), Y + counter * FontHeight + 1, (int)(MaxWidth - MaxTitleWidth - Font.Size) - 4, (int)FontHeight - 2, bar.BarColor);
@@ -102,7 +100,7 @@ namespace ACCManager.HUD.Overlay.Util
                         string percent = $"{(bar.Max / bar.Value * 100):F1}%";
                         SizeF textWidth = g.MeasureString(percent, bar.ValueFontIsMono ? MonoFont : Font);
                         int yMono = bar.ValueFontIsMono ? _yMono : 0;
-                        g.DrawString($"{percent}", bar.ValueFontIsMono ? MonoFont : Font, Brushes.White, new PointF((int)(X + (MaxWidth - MaxTitleWidth)) - textWidth.Width / 2, Y + counter * FontHeight + yMono));
+                        g.DrawStringWithShadow($"{percent}", bar.ValueFontIsMono ? MonoFont : Font, Brushes.White, new PointF((int)(X + (MaxWidth - MaxTitleWidth)) - textWidth.Width / 2, Y + counter * FontHeight + yMono));
                     }
 
                     if (line.GetType() == typeof(CenterTextedProgressBarLine))
@@ -114,9 +112,7 @@ namespace ACCManager.HUD.Overlay.Util
 
                         SizeF textWidth = g.MeasureString(bar.CenteredText, bar.ValueFontIsMono ? MonoFont : Font);
                         int yMono = bar.ValueFontIsMono ? _yMono : 0;
-                        g.DrawString($"{bar.CenteredText}", bar.ValueFontIsMono ? MonoFont : Font, ShadowBrush, new PointF(X + MaxWidth / 2 - textWidth.Width / 2 + ShadowDistance, Y + counter * FontHeight + yMono + ShadowDistance));
-                        g.DrawString($"{bar.CenteredText}", bar.ValueFontIsMono ? MonoFont : Font, Brushes.White, new PointF(X + MaxWidth / 2 - textWidth.Width / 2, Y + counter * FontHeight + yMono));
-
+                        g.DrawStringWithShadow($"{bar.CenteredText}", bar.ValueFontIsMono ? MonoFont : Font, Brushes.White, new PointF(X + MaxWidth / 2 - textWidth.Width / 2, Y + counter * FontHeight + yMono));
                     }
 
                     if (line.GetType() == typeof(CenteredTextedDeltabarLine))
@@ -128,8 +124,7 @@ namespace ACCManager.HUD.Overlay.Util
 
                         SizeF textWidth = g.MeasureString(bar.CenteredText, bar.ValueFontIsMono ? MonoFont : Font);
                         int yMono = bar.ValueFontIsMono ? _yMono : 0;
-                        g.DrawString($"{bar.CenteredText}", bar.ValueFontIsMono ? MonoFont : Font, ShadowBrush, new PointF(X + MaxWidth / 2 - textWidth.Width / 2 + ShadowDistance, Y + counter * FontHeight + yMono + ShadowDistance));
-                        g.DrawString($"{bar.CenteredText}", bar.ValueFontIsMono ? MonoFont : Font, Brushes.White, new PointF(X + MaxWidth / 2 - textWidth.Width / 2, Y + counter * FontHeight + yMono));
+                        g.DrawStringWithShadow($"{bar.CenteredText}", bar.ValueFontIsMono ? MonoFont : Font, Brushes.White, new PointF(X + MaxWidth / 2 - textWidth.Width / 2, Y + counter * FontHeight + yMono));
                     }
 
 
