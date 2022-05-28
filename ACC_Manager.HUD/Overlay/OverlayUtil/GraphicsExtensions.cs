@@ -15,6 +15,11 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
             DrawStringWithShadow(g, text, font, color, Color.FromArgb(60, Color.Black), location, 0.75f);
         }
 
+        public static void DrawStringWithShadow(this Graphics g, string text, Font font, Color color, PointF location, float shadowDistance)
+        {
+            DrawStringWithShadow(g, text, font, color, Color.FromArgb(60, Color.Black), location, shadowDistance);
+        }
+
         public static void DrawStringWithShadow(this Graphics g, string text, Font font, Color color, Color shadowColor, PointF location)
         {
             DrawStringWithShadow(g, text, font, color, shadowColor, location, 0.75f);

@@ -71,15 +71,10 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
 
                     float rowY = Y + counter * _font.Height;
 
-                    g.DrawString(row.Header, this._font, this._shadowBrush, X + _shadowDistance, rowY + _shadowDistance + _yMono);
-                    g.DrawString(row.Header, this._font, Brushes.White, X, rowY + _yMono);
+                    g.DrawStringWithShadow(row.Header, this._font, Color.White, new PointF(X, rowY + _yMono), _shadowDistance);
 
                     for (int i = 0; i < row.Columns.Length; i++)
-                    {
-                        float columnX = GetColumnX(i);
-                        g.DrawString(row.Columns[i], this._font, this._shadowBrush, columnX + _shadowDistance, rowY + _shadowDistance + _yMono);
-                        g.DrawString(row.Columns[i], this._font, new SolidBrush(row.ColumnColors[i]), columnX, rowY + _yMono);
-                    }
+                        g.DrawStringWithShadow(row.Columns[i], this._font, row.ColumnColors[i], new PointF(GetColumnX(i), rowY + _yMono), _shadowDistance);
 
                     counter++;
                 }
