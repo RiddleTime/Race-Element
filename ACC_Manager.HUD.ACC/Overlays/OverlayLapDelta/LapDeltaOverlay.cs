@@ -44,7 +44,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         {
             _table = new InfoTable(10, new int[] { 70, 73 }) { Y = 17 };
             this.Width = _overlayWidth + 1;
-            this.Height = _table.FontHeight * 5 + 2 + 4;
+            this.Height = _table.FontHeight * 4 + 2 + 4;
             RefreshRateHz = 10;
         }
 

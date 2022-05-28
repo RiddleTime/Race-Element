@@ -366,6 +366,8 @@ namespace ACCManager.HUD.Overlay.Internal
 
 
                     OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(this.Name);
+                    if (settings == null)
+                        return;
                     settings.X = X;
                     settings.Y = Y;
 

@@ -1,6 +1,7 @@
 ﻿using ACC_Manager.Util.NumberExtensions;
 using ACCManager.Controls.HUD;
 using ACCManager.HUD.ACC;
+using ACCManager.HUD.ACC.Overlays.OverlayMousePosition;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.Util;
@@ -75,15 +76,28 @@ namespace ACCManager.Controls
             _hook.Dispose();
         }
 
+        private MousePositionOverlay mousePositionOverlay;
         private void SetRepositionMode(bool enabled)
         {
             stackPanelOverlayCheckboxes.IsEnabled = !enabled;
+
+            if (enabled)
+            {
+                mousePositionOverlay = new MousePositionOverlay(new System.Drawing.Rectangle(0, 0, 150, 150), "Mouse Position");
+                mousePositionOverlay.Start();
+            }
+            else
+            {
+                if (mousePositionOverlay != null)
+                    mousePositionOverlay.Stop();
+            }
 
             lock (OverlaysACC.ActiveOverlays)
                 foreach (AbstractOverlay overlay in OverlaysACC.ActiveOverlays)
                 {
                     overlay.EnableReposition(enabled);
                 }
+
         }
 
         private void BuildOverlayStackPanel()
