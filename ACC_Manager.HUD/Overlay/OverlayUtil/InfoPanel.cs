@@ -49,7 +49,7 @@ namespace ACCManager.HUD.Overlay.Util
             _yMono = MonoFont.Height / 6;
         }
 
-        private List<InfoLine> Lines = new List<InfoLine>();
+        private List<IPanelLine> Lines = new List<IPanelLine>();
 
         public void Draw(Graphics g)
         {
@@ -77,7 +77,7 @@ namespace ACCManager.HUD.Overlay.Util
                 int counter = 0;
                 while (counter < length)
                 {
-                    InfoLine line = Lines[counter];
+                    IPanelLine line = Lines[counter];
 
                     if (line.GetType() == typeof(TextLine))
                     {
@@ -152,7 +152,7 @@ namespace ACCManager.HUD.Overlay.Util
                 int counter = 0;
                 while (counter < length)
                 {
-                    InfoLine line = Lines[counter];
+                    IPanelLine line = Lines[counter];
 
 
                     if (line.GetType() == typeof(TextLine))
@@ -214,7 +214,7 @@ namespace ACCManager.HUD.Overlay.Util
             Lines.Add(new CenteredTextedDeltabarLine() { CenteredText = centeredText, Min = min, Max = max, Value = value, ValueFontIsMono = valueIsMonoFont });
         }
 
-        private class TextLine : InfoLine
+        private class TextLine : IPanelLine
         {
             internal string Title { get; set; }
             internal string Value { get; set; }
@@ -222,7 +222,7 @@ namespace ACCManager.HUD.Overlay.Util
             internal bool ValueFontIsMono { get; set; }
         }
 
-        private class TitledProgressBarLine : InfoLine
+        private class TitledProgressBarLine : IPanelLine
         {
             internal string Title { get; set; }
             internal double Min { get; set; }
@@ -232,7 +232,7 @@ namespace ACCManager.HUD.Overlay.Util
             internal bool ValueFontIsMono { get; set; }
         }
 
-        private class CenterTextedProgressBarLine : InfoLine
+        private class CenterTextedProgressBarLine : IPanelLine
         {
             internal string CenteredText { get; set; }
             internal double Min { get; set; }
@@ -242,7 +242,7 @@ namespace ACCManager.HUD.Overlay.Util
             internal bool ValueFontIsMono { get; set; }
         }
 
-        private class CenteredTextedDeltabarLine : InfoLine
+        private class CenteredTextedDeltabarLine : IPanelLine
         {
             internal string CenteredText { get; set; }
             internal double Min { get; set; }
@@ -251,6 +251,6 @@ namespace ACCManager.HUD.Overlay.Util
             internal bool ValueFontIsMono { get; set; }
         }
 
-        private interface InfoLine { }
+        private interface IPanelLine { }
     }
 }

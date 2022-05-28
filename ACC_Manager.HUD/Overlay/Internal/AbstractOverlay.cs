@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -236,7 +238,15 @@ namespace ACCManager.HUD.Overlay.Internal
                         if (AllowRescale)
                             e.Graphics.ScaleTransform(Scale, Scale);
 
+                        SmoothingMode previousSmoothingMode = e.Graphics.SmoothingMode;
+                        TextRenderingHint previousTextRenderHint = e.Graphics.TextRenderingHint;
+                        int previousTextConstrast = e.Graphics.TextContrast;
+
                         Render(e.Graphics);
+
+                        e.Graphics.SmoothingMode = previousSmoothingMode;
+                        e.Graphics.TextRenderingHint = previousTextRenderHint;
+                        e.Graphics.TextContrast = previousTextConstrast;
                     }
                     catch (Exception ex)
                     {
