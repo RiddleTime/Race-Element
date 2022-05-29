@@ -12,6 +12,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
 {
     internal sealed class InputsOverlay : AbstractOverlay
     {
+        private const int _size = 150;
         private const int wheelWidth = 15;
         private const int indicatorWidth = 15;
         private const int inputCircleMinAngle = 135;
@@ -51,8 +52,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
 
         public InputsOverlay(Rectangle rectangle) : base(rectangle, "Inputs Overlay")
         {
-            this.Height = 150;
-            this.Width = this.Height;
+            this.Height = _size;
+            this.Width = _size;
 
             this.innerWheelWidth = wheelWidth / 2;
             this.background = new SolidBrush(Color.FromArgb(100, Color.Black));
@@ -75,7 +76,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
 
         public sealed override void BeforeStart()
         {
-           
+
         }
 
         public sealed override void BeforeStop()
@@ -85,14 +86,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
 
         public sealed override void Render(Graphics g)
         {
-            SmoothingMode previous = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
             if (this.config.DrawBackground)
-            {
-                Rectangle graphRect = new Rectangle(0, 0, this.Width, this.Height);
-                g.FillRoundedRectangle(background, graphRect, 10);
-            }
+                g.FillRoundedRectangle(background, new Rectangle(0, 0, _size, _size), 10);
 
             DrawSteeringIndicator(g);
 
@@ -104,8 +101,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
 
             if (this.config.ShowCurrentGear)
                 DrawGearIndicator(g);
-
-            g.SmoothingMode = previous;
         }
 
         private readonly Font _gearIndicatorFont;
@@ -120,8 +115,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
             }
 
             float gearStringWidth = g.MeasureString(gear, _gearIndicatorFont).Width;
-            int xPos = (int)((Width / 2) - (_gearIndicatorFont.Height / 2));
-            int yPos = (int)((Height / 2) - (gearStringWidth / 2));
+            int xPos = (int)((_size / 2) - (_gearIndicatorFont.Height / 2));
+            int yPos = (int)((_size / 2) - (gearStringWidth / 2));
             g.DrawString(gear, _gearIndicatorFont, Brushes.White, xPos, yPos, new StringFormat());
         }
 
@@ -129,8 +124,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
         {
             int x = wheelWidth * 2 + (config.ShowThrottleInput ? this.innerWheelWidth : 0);
             int y = wheelWidth * 2 + (config.ShowThrottleInput ? this.innerWheelWidth : 0);
-            int width = Width - (4 * wheelWidth) - (2 * (config.ShowThrottleInput ? this.innerWheelWidth : 0));
-            int height = Height - (4 * wheelWidth) - (2 * (config.ShowThrottleInput ? this.innerWheelWidth : 0));
+            int width = _size - (4 * wheelWidth) - (2 * (config.ShowThrottleInput ? this.innerWheelWidth : 0));
+            int height = _size - (4 * wheelWidth) - (2 * (config.ShowThrottleInput ? this.innerWheelWidth : 0));
 
             DrivingAssistanceIndicator((pagePhysics.Abs == 1), this.brakingForeground, brakeColor);
 
@@ -144,7 +139,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
         {
             DrivingAssistanceIndicator((pagePhysics.TC == 1), this.throttleForeground, throttleColor);
 
-            Rectangle rect = new Rectangle(0 + wheelWidth * 2, 0 + wheelWidth * 2, Width - (4 * wheelWidth), Height - (4 * wheelWidth));
+            Rectangle rect = new Rectangle(0 + wheelWidth * 2, 0 + wheelWidth * 2, _size - (4 * wheelWidth), _size - (4 * wheelWidth));
             g.DrawArc(throttleBackground, rect, inputCircleMinAngle, inputCircleSweepAngle);
             float throttleAngle = Rescale(1, inputCircleSweepAngle, pagePhysics.Gas);
             g.DrawArc(throttleForeground, rect, inputCircleMinAngle, throttleAngle);
@@ -152,13 +147,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
 
         private void DrawSteeringIndicator(Graphics g)
         {
-            g.DrawEllipse(wheelPen, this.Width / 2, this.Height / 2, (this.Height / 2) - wheelWidth);
+            g.DrawEllipse(wheelPen, _size / 2, _size / 2, _size / 2 - wheelWidth);
 
             float accSteering = (pagePhysics.SteerAngle / 2 + 1) * 100; // map acc value to 0 - 200
             float angle = Rescale(200, SteeringLock.Get(pageStatic.CarModel) * 2, accSteering) - (SteeringLock.Get(pageStatic.CarModel));
 
             // steering indicator
-            Rectangle rect = new Rectangle(0 + wheelWidth, 0 + wheelWidth, Width - (2 * wheelWidth), Height - (2 * wheelWidth));
+            Rectangle rect = new Rectangle(0 + wheelWidth, 0 + wheelWidth, _size - (2 * wheelWidth), _size - (2 * wheelWidth));
             float drawAngle = angle + 270 - (indicatorWidth / 2);
             g.DrawArc(indicatorPen, rect, drawAngle, indicatorWidth);
         }
