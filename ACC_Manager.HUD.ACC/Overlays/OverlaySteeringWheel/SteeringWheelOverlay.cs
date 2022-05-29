@@ -156,7 +156,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
 
             SolidBrush brush = new SolidBrush(Color.White);
             StringFormat format = new StringFormat();
-            float accSteering = (pagePhysics.SteerAngle + 1) * 100; // map acc value to 0 - 200
+            float accSteering = (pagePhysics.SteerAngle / 2 + 1) * 100; // map acc value to 0 - 200
             float angle = Rescale(200, SteeringLock.Get(pageStatic.CarModel) * 2, accSteering) - (SteeringLock.Get(pageStatic.CarModel));
 
             // steering indicator
