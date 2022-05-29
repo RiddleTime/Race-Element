@@ -112,10 +112,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
                 default: gear = $"{pagePhysics.Gear - 1}"; break;
             }
 
-            g.TextRenderingHint = TextRenderingHint.AntiAlias;
             float gearStringWidth = g.MeasureString(gear, _gearIndicatorFont).Width;
             int xPos = (int)(_size / 2 - gearStringWidth / 2);
             int yPos = _size / 2 - _gearIndicatorFont.Height / 2;
+
+            g.TextRenderingHint = TextRenderingHint.AntiAlias;
             g.DrawStringWithShadow(gear, _gearIndicatorFont, Color.White, new PointF(xPos, yPos), 2.5f);
         }
 

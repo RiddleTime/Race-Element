@@ -140,32 +140,26 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
 
         private void DrawBrakeTemps(Graphics g, int x, int y, Position position)
         {
-            double percentage = 0;
+            float averageBrakeTemps = 0;
             switch (position)
             {
                 case Position.Front:
                     {
                         float brakeTempLeft = pagePhysics.BrakeTemperature[(int)Wheel.FrontLeft];
                         float brakeTempRight = pagePhysics.BrakeTemperature[(int)Wheel.FrontRight];
-
-                        float averageBrakeTemp = (brakeTempLeft + brakeTempRight) / 2;
-
-                        percentage = averageBrakeTemp / MaxPadLife;
+                        averageBrakeTemps = (brakeTempLeft + brakeTempRight) / 2;
                         break;
                     }
                 case Position.Rear:
                     {
                         float brakeTempLeft = pagePhysics.BrakeTemperature[(int)Wheel.RearRight];
                         float brakeTempRight = pagePhysics.BrakeTemperature[(int)Wheel.RearRight];
-
-                        float averageBrakeTemp = (brakeTempLeft + brakeTempRight) / 2;
-
-                        percentage = averageBrakeTemp / MaxPadLife;
+                        averageBrakeTemps = (brakeTempLeft + brakeTempRight) / 2;
                         break;
                     }
             }
 
-            string text = $"{percentage * 100:F0} C";
+            string text = $"{averageBrakeTemps * 100:F0} C";
             int textWidth = (int)g.MeasureString(text, _fontFamilySmall).Width;
 
             SmoothingMode previous = g.SmoothingMode;
