@@ -8,9 +8,9 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using static ACCManager.ACCSharedMemory;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
+namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
 {
-    internal sealed class SteeringWheelOverlay : AbstractOverlay
+    internal sealed class InputsOverlay : AbstractOverlay
     {
         private const int initialHeight = 150;
         private const int initialWidth = 150;
@@ -51,7 +51,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySteeringWheel
             }
         }
 
-        public SteeringWheelOverlay(Rectangle rectangle) : base(rectangle, "Steering Wheel Overlay")
+        public InputsOverlay(Rectangle rectangle) : base(rectangle, "Inputs Overlay")
         {
             this.Height = initialHeight;
             this.Width = initialWidth;

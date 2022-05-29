@@ -15,6 +15,15 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Weather
         public AcRainIntensity Now { get; set; }
         public AcRainIntensity In10 { get; set; }
         public AcRainIntensity In30 { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) 
+                return false;
+
+            WeatherInfo other = obj as WeatherInfo;
+            return this.Now == other.Now && this.In10 == other.In10 && this.In30 == other.In30;
+        }
     }
 
     internal class WeatherTracker

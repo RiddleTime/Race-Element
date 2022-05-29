@@ -70,7 +70,8 @@
     <Compile Include="Overlays\OverlayPressureTrace\TyrePressureDataCollector.cs" />
     <Compile Include="Overlays\OverlayPressureTrace\TyrePressureGraph.cs" />
     <Compile Include="Overlays\OverlayPressureTrace\TyrePressures.cs" />
-    <Compile Include="Overlays\OverlaySteeringWheel\SteeringWheelOverlay.cs" />
+    <Compile Include="Overlays\OverlayInputs\InputOverlay.cs" />
+    <Compile Include="Overlays\OverlayTrackPosition\TrackPositionOverlay.cs" />
     <Compile Include="Overlays\OverlayTyreInfo\TyreInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayTrackInfo\TrackInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayWeather\WeatherOverlay.cs" />
