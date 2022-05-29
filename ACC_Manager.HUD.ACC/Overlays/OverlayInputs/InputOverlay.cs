@@ -4,8 +4,10 @@ using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.HUD.Overlay.Util;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
@@ -28,11 +30,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
         private readonly Pen brakingBackground;
         private readonly Color brakeColor;
         private readonly Color throttleColor;
-        private readonly SteeringWheelConfig config = new SteeringWheelConfig();
 
         private readonly Pen brakingForeground;
 
-        internal class SteeringWheelConfig : OverlayConfiguration
+        private Font _gearIndicatorFont;
+
+        private readonly SteeringWheelConfig _config = new SteeringWheelConfig();
+        private sealed class SteeringWheelConfig : OverlayConfiguration
         {
             [ToolTip("Show throttle input indicator.")]
             public bool ShowThrottleInput { get; set; } = true;
@@ -41,8 +45,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
             [ToolTip("Show selected gear.")]
             public bool ShowCurrentGear { get; set; } = true;
 
-            [ToolTip("Adds a background to the overlay")]
-            public bool DrawBackground { get; set; } = false;
+            [ToolTip("Show a background")]
+            public bool DrawBackground { get; set; } = true;
 
             public SteeringWheelConfig()
             {
@@ -52,8 +56,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
 
         public InputsOverlay(Rectangle rectangle) : base(rectangle, "Inputs Overlay")
         {
-            this.Height = _size;
-            this.Width = _size;
+            this.Height = _size + 1;
+            this.Width = _size + 1;
 
             this.innerWheelWidth = wheelWidth / 2;
             this.background = new SolidBrush(Color.FromArgb(100, Color.Black));
@@ -70,40 +74,34 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
             this.brakingBackground = new Pen(brakeBackgroundColor, this.innerWheelWidth);
             this.brakingForeground = new Pen(brakeColor, this.innerWheelWidth);
 
-            if (this.config.ShowCurrentGear)
-                _gearIndicatorFont = FontUtil.FontOrbitron(30);
         }
 
         public sealed override void BeforeStart()
         {
-
+            if (this._config.ShowCurrentGear)
+                _gearIndicatorFont = FontUtil.FontOrbitron(40);
         }
-
-        public sealed override void BeforeStop()
-        {
-
-        }
+        public sealed override void BeforeStop() { }
 
         public sealed override void Render(Graphics g)
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            if (this.config.DrawBackground)
-                g.FillRoundedRectangle(background, new Rectangle(0, 0, _size, _size), 10);
+            if (this._config.DrawBackground)
+                g.FillEllipse(background, new Rectangle(0, 0, _size, _size));
 
             DrawSteeringIndicator(g);
 
-            if (this.config.ShowThrottleInput)
+            if (this._config.ShowThrottleInput)
                 DrawThrottleIndicator(g);
 
-            if (this.config.ShowBrakeInput)
+            if (this._config.ShowBrakeInput)
                 DrawBrakingIndicator(g);
 
-            if (this.config.ShowCurrentGear)
+            if (this._config.ShowCurrentGear)
                 DrawGearIndicator(g);
         }
 
-        private readonly Font _gearIndicatorFont;
         private void DrawGearIndicator(Graphics g)
         {
             string gear;
@@ -114,18 +112,19 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
                 default: gear = $"{pagePhysics.Gear - 1}"; break;
             }
 
+            g.TextRenderingHint = TextRenderingHint.AntiAlias;
             float gearStringWidth = g.MeasureString(gear, _gearIndicatorFont).Width;
-            int xPos = (int)((_size / 2) - (_gearIndicatorFont.Height / 2));
-            int yPos = (int)((_size / 2) - (gearStringWidth / 2));
-            g.DrawString(gear, _gearIndicatorFont, Brushes.White, xPos, yPos, new StringFormat());
+            int xPos = (int)(_size / 2 - gearStringWidth / 2);
+            int yPos = _size / 2 - _gearIndicatorFont.Height / 2;
+            g.DrawStringWithShadow(gear, _gearIndicatorFont, Color.White, new PointF(xPos, yPos), 2.5f);
         }
 
         private void DrawBrakingIndicator(Graphics g)
         {
-            int x = wheelWidth * 2 + (config.ShowThrottleInput ? this.innerWheelWidth : 0);
-            int y = wheelWidth * 2 + (config.ShowThrottleInput ? this.innerWheelWidth : 0);
-            int width = _size - (4 * wheelWidth) - (2 * (config.ShowThrottleInput ? this.innerWheelWidth : 0));
-            int height = _size - (4 * wheelWidth) - (2 * (config.ShowThrottleInput ? this.innerWheelWidth : 0));
+            int x = wheelWidth * 2 + (_config.ShowThrottleInput ? this.innerWheelWidth : 0);
+            int y = wheelWidth * 2 + (_config.ShowThrottleInput ? this.innerWheelWidth : 0);
+            int width = _size - (4 * wheelWidth) - (2 * (_config.ShowThrottleInput ? this.innerWheelWidth : 0));
+            int height = _size - (4 * wheelWidth) - (2 * (_config.ShowThrottleInput ? this.innerWheelWidth : 0));
 
             DrivingAssistanceIndicator((pagePhysics.Abs == 1), this.brakingForeground, brakeColor);
 
