@@ -1,5 +1,4 @@
 ﻿using ACCManager.Data.ACC.Cars;
-using ACCManager.Data.ACC.Session;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.OverlayUtil;
@@ -168,24 +167,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
 
         public sealed override bool ShouldRender()
         {
-#if DEBUG
-            return true;
-#endif
-
-            bool shouldRender = true;
-            if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF || pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
-                shouldRender = false;
-
-            if (pageGraphics.GlobalRed)
-                shouldRender = false;
-
-            if (RaceSessionState.IsPreSession(pageGraphics.GlobalRed, broadCastRealTime.Phase))
-                shouldRender = true;
-
-            if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE)
-                shouldRender = false;
-
-            return shouldRender;
+            return DefaultShouldRender();
         }
 
     }

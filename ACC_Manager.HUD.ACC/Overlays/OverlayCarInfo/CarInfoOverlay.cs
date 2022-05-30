@@ -1,10 +1,7 @@
-﻿using ACC_Manager.Util.NumberExtensions;
-using ACCManager.Data.ACC.Session;
-using ACCManager.HUD.ACC.Data.Tracker.Laps;
+﻿using ACCManager.HUD.ACC.Data.Tracker.Laps;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.Util;
-using ACCManager.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -92,24 +89,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
 
         public sealed override bool ShouldRender()
         {
-#if DEBUG
-            return true;
-#endif
-
-            bool shouldRender = true;
-            if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF || pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
-                shouldRender = false;
-
-            if (pageGraphics.GlobalRed)
-                shouldRender = false;
-
-            if (RaceSessionState.IsPreSession(pageGraphics.GlobalRed, broadCastRealTime.Phase))
-                shouldRender = true;
-
-            if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE)
-                shouldRender = false;
-
-            return shouldRender;
+            return DefaultShouldRender();
         }
 
         private float GetTotalRepairTime()

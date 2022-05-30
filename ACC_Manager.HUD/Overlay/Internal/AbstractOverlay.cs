@@ -1,4 +1,5 @@
 ﻿using ACCManager.Broadcast.Structs;
+using ACCManager.Data.ACC.Session;
 using ACCManager.Data.ACC.Tracker;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.Util;
@@ -73,6 +74,28 @@ namespace ACCManager.HUD.Overlay.Internal
                 LoadFieldConfig();
             }
             catch (Exception) { }
+        }
+
+        public bool DefaultShouldRender()
+        {
+#if DEBUG
+            return true;
+#endif
+
+            bool shouldRender = true;
+            if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF || pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
+                shouldRender = false;
+
+            if (pageGraphics.GlobalRed)
+                shouldRender = false;
+
+            if (RaceSessionState.IsPreSession(pageGraphics.GlobalRed, broadCastRealTime.Phase))
+                shouldRender = true;
+
+            if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE)
+                shouldRender = false;
+
+            return shouldRender;
         }
 
         private void LoadFieldConfig()
