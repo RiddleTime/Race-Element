@@ -92,7 +92,7 @@ namespace ACCManager.Controls
             lock (OverlaysACC.ActiveOverlays)
                 foreach (AbstractOverlay overlay in OverlaysACC.ActiveOverlays)
                 {
-                    overlay.EnableReposition(enabled);
+                    overlay.EnableReposition(enabled, MainWindow.Instance);
                 }
 
         }

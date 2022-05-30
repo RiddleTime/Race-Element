@@ -11,10 +11,12 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Threading;
 using static ACCManager.ACCSharedMemory;
 using static ACCManager.HUD.Overlay.Configuration.OverlaySettings;
 
@@ -235,7 +237,7 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public void Stop()
         {
-            this.EnableReposition(false);
+            this.EnableReposition(false, null);
             try
             {
                 BeforeStop();
@@ -295,14 +297,25 @@ namespace ACCManager.HUD.Overlay.Internal
             }
         }
 
-        public void EnableReposition(bool enabled)
+
+        [DllImport("user32.dll")]
+        private static extern int SetWindowLong(IntPtr window, int index, int value);
+        [DllImport("user32.dll")]
+        private static extern int GetWindowLong(IntPtr window, int index);
+
+        public void EnableReposition(bool enabled, Window owner)
         {
             try
             {
+                if (enabled && owner == null)
+                    throw new ArgumentNullException("You need to specify a window owner if you want to reposition this overlay.");
+
                 if (!AllowReposition)
                     return;
 
                 this.IsRepositioning = enabled;
+
+                
 
                 if (enabled)
                 {
@@ -321,7 +334,8 @@ namespace ACCManager.HUD.Overlay.Internal
                         BorderThickness = new Thickness(1),
                         ShowInTaskbar = false,
                         AllowsTransparency = true,
-                        Opacity = 0.3
+                        Opacity = 0.3,
+                        Owner = owner
                     };
                     this.RepositionWindow.MouseLeftButtonDown += (s, e) =>
                     {
