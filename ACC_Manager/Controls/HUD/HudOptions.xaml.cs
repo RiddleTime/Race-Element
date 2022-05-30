@@ -120,7 +120,7 @@ namespace ACCManager.Controls
                 card.MouseLeftButtonDown += (s, e) => { if (s == card) { toggle.IsChecked = !toggle.IsChecked; } };
                 toggle.Checked += (s, e) =>
                 {
-                    label.Foreground = Brushes.OrangeRed;
+                    label.Foreground = Brushes.LimeGreen;
                     lock (OverlaysACC.ActiveOverlays)
                     {
                         AbstractOverlay overlay = (AbstractOverlay)Activator.CreateInstance(x.Value, args);
