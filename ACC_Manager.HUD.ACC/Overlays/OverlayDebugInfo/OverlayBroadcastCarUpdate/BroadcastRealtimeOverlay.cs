@@ -9,41 +9,49 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
 {
     internal sealed class BroadcastCarUpdateOverlay : AbstractOverlay
     {
+        private DebugConfig _config = new DebugConfig();
         private Font _inputFont = FontUtil.FontUnispace((float)9);
 
         public BroadcastCarUpdateOverlay(Rectangle rectangle) : base(rectangle, "Debug BroadcastCarUpdate Overlay")
         {
             this.AllowReposition = false;
             this.RefreshRateHz = 5;
-
-            this.X = 0;
-            this.Y = 0;
             this.Width = 300;
             this.Height = 300;
+        }
 
-            DebugInfoHelper.Instance.WidthChanged += (sender, args) =>
-            {
-                if (args)
-                {
-                    this.X = DebugInfoHelper.Instance.GetX(this);
-                }
-            };
+        private void Instance_WidthChanged(object sender, bool e)
+        {
+            if (e)
+                this.X = DebugInfoHelper.Instance.GetX(this);
         }
 
         public sealed override void BeforeStart()
         {
-            DebugInfoHelper.Instance.AddOverlay(this);
-            this.X = DebugInfoHelper.Instance.GetX(this);
+            if (this._config.Undock)
+                this.AllowReposition = true;
+            else
+            {
+                DebugInfoHelper.Instance.WidthChanged += Instance_WidthChanged;
+                DebugInfoHelper.Instance.AddOverlay(this);
+                this.X = DebugInfoHelper.Instance.GetX(this);
+                this.Y = 0;
+            }
         }
 
         public sealed override void BeforeStop()
         {
-            DebugInfoHelper.Instance.RemoveOverlay(this);
+            if (!this._config.Undock)
+            {
+                DebugInfoHelper.Instance.RemoveOverlay(this);
+                DebugInfoHelper.Instance.WidthChanged -= Instance_WidthChanged;
+            }
         }
 
         public sealed override void Render(Graphics g)

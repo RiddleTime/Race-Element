@@ -1,4 +1,5 @@
-﻿using ACCManager.HUD.Overlay.Internal;
+﻿using ACCManager.HUD.Overlay.Configuration;
+using ACCManager.HUD.Overlay.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo
 {
     internal class DebugInfoHelper
     {
+        public class DebugConfig : OverlayConfiguration
+        {
+            [ToolTip("Allows you to reposition this debug panel.")]
+            internal bool Undock { get; set; } = false;
+        }
+
         private static DebugInfoHelper _instance = new DebugInfoHelper();
         public static DebugInfoHelper Instance
         {
@@ -26,7 +33,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo
         public void RemoveOverlay(AbstractOverlay overlay)
         {
             _infoOverlays.Remove(overlay);
-            WidthChanged.Invoke(this, true);
+            if (WidthChanged != null)
+                WidthChanged.Invoke(this, true);
         }
 
         public int GetX(AbstractOverlay overlay)
