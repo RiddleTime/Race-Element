@@ -31,6 +31,7 @@ namespace ACCManager.HUD.ACC
             {"Car Info", typeof(CarInfoOverlay) },
             {"ECU Maps", typeof(EcuMapOverlay) },
             {"Fuel Info", typeof(FuelInfoOverlay) },
+            {"Inputs", typeof(InputsOverlay) },
             {"Input Trace", typeof(InputTraceOverlay) },
             {"Lap Delta", typeof(LapDeltaOverlay) },
             {"Track Info", typeof(TrackInfoOverlay) },
@@ -38,7 +39,6 @@ namespace ACCManager.HUD.ACC
             {"Tyre Pressure Trace", typeof(PressureTraceOverlay) },
 
 #if DEBUG
-            {"Inputs", typeof(InputsOverlay) },
             {"Weather Info", typeof(WeatherOverlay) },
 
             // yea this shit has to be at the bottom...
