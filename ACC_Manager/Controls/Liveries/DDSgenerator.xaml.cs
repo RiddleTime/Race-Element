@@ -102,14 +102,17 @@ namespace ACCManager.Controls
 
                     Instance.Dispatcher.Invoke((Action)(() =>
                     {
-                        MainWindow.Instance.EnqueueSnackbarMessage($"Generated DDS files for {livery.carsRoot.teamName}{livery.carsRoot.customSkinName}");
                         todoList.Items.RemoveAt(0);
                         liveriesWithoutDDS.RemoveAt(0);
                     }));
                 }
 
+             
                 Instance.Dispatcher.Invoke(() =>
                 {
+                    MainWindow.Instance.ClearSnackbar();
+                    MainWindow.Instance.EnqueueSnackbarMessage($"Finished generating DDS Files.");
+
                     buttonGenerate.IsEnabled = true;
                     buttonGenerate.Content = "Start generating";
                     LiveryBrowser.Instance.liveriesTreeViewTeams.IsEnabled = true;

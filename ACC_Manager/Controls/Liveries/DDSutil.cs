@@ -33,7 +33,8 @@ namespace ACCManager.Controls.Liveries
                 {
                     MainWindow.Instance.Dispatcher.Invoke(new Action(() =>
                     {
-                        MainWindow.Instance.EnqueueSnackbarMessage($"Generating {pngsToDDS.ElementAt(i).Key}");
+                        MainWindow.Instance.ClearSnackbar();
+                        MainWindow.Instance.EnqueueSnackbarMessage($"Generating {pngsToDDS.ElementAt(i).Key} for {livery.carsRoot.customSkinName}");
                     }));
 
                     FileInfo pngFile = liveryPngFiles[0];
