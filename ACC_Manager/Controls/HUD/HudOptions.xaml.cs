@@ -20,9 +20,6 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using static ACCManager.HUD.Overlay.Configuration.OverlayConfiguration;
 using static ACCManager.HUD.Overlay.Configuration.OverlaySettings;
 
@@ -120,10 +117,10 @@ namespace ACCManager.Controls
                 stackPanel.Children.Add(label);
                 StackPanel configStacker = GetConfigStacker(x.Value);
                 stackPanel.Children.Add(configStacker);
-
                 card.MouseLeftButtonDown += (s, e) => { if (s == card) { toggle.IsChecked = !toggle.IsChecked; } };
                 toggle.Checked += (s, e) =>
                 {
+                    label.Foreground = Brushes.OrangeRed;
                     lock (OverlaysACC.ActiveOverlays)
                     {
                         AbstractOverlay overlay = (AbstractOverlay)Activator.CreateInstance(x.Value, args);
@@ -139,6 +136,7 @@ namespace ACCManager.Controls
 
                 toggle.Unchecked += (s, e) =>
                 {
+                    label.Foreground = new SolidColorBrush(Color.FromArgb(221, 255, 255, 255));
                     lock (OverlaysACC.ActiveOverlays)
                     {
                         AbstractOverlay overlay = OverlaysACC.ActiveOverlays.Find(f => f.GetType() == x.Value);

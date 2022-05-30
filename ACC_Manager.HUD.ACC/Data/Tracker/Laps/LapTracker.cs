@@ -82,19 +82,18 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
         private void FinalizeCurrentLapData()
         {
             if (_lastLapInfo != null)
-                if (_lastLapInfo.Splits != null)
-                    if (_lastLapInfo.Splits.Count == 3)
-                        if (_lastLapInfo.Splits[2].HasValue)
-                        {
-                            LapData lastData = Laps.Last();
-                            if (_lastLapInfo.LaptimeMS == lastData.Time)
-                                if (Laps[Laps.Count - 1].Sector3 != _lastLapInfo.Splits[2].Value)
-                                {
-                                    Laps[Laps.Count - 1].Sector3 = _lastLapInfo.Splits[2].Value;
-                                    Laps[Laps.Count - 1].IsValid = !_lastLapInfo.IsInvalid;
-                                    LapFinished?.Invoke(this, Laps[Laps.Count - 1]);
-                                }
-                        }
+                if (_lastLapInfo.Splits != null && _lastLapInfo.Splits.Count == 3)
+                    if (_lastLapInfo.Splits[2].HasValue)
+                    {
+                        LapData lastData = Laps.Last();
+                        if (_lastLapInfo.LaptimeMS == lastData.Time)
+                            if (Laps[Laps.Count - 1].Sector3 != _lastLapInfo.Splits[2].Value)
+                            {
+                                Laps[Laps.Count - 1].Sector3 = _lastLapInfo.Splits[2].Value;
+                                Laps[Laps.Count - 1].IsValid = !_lastLapInfo.IsInvalid;
+                                LapFinished?.Invoke(this, Laps[Laps.Count - 1]);
+                            }
+                    }
         }
 
         internal void Start()
