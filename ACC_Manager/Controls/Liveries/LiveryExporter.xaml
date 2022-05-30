@@ -19,7 +19,7 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
-    
+
     <materialDesign:TransitioningContent x:Name="transition">
         <materialDesign:TransitioningContent.OpeningEffects>
             <materialDesign:TransitionEffect Kind="FadeIn" />
@@ -37,12 +37,17 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
 
                     <ListBox x:Name="exportList" Grid.Row="0">
                     </ListBox>
 
-                    <Button x:Name="buttonExport" Grid.Row="1" Margin="0,5,0,0">Export as zip</Button>
+                    <StackPanel x:Name="stackPanelToggleExportDDS" Orientation="Horizontal" Grid.Row="1" ToolTip="When disabled the exporter will not include the dds files." VerticalAlignment="Center" Cursor="Hand">
+                        <ToggleButton x:Name="toggleExportDDS" IsChecked="True"/>
+                        <Label>Include DDS</Label>
+                    </StackPanel>
+                    <Button x:Name="buttonExport" Grid.Row="2" Margin="0,5,0,0">Export as zip</Button>
                 </Grid>
             </GroupBox>
         </materialDesign:Card>
