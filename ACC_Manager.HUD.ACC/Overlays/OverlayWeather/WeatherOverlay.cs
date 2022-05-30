@@ -24,6 +24,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayWeather
         }
 
         private readonly InfoPanel _panel;
+        private WeatherInfo _weather;
 
         public WeatherOverlay(Rectangle rectangle) : base(rectangle, "Overlay Weather")
         {
@@ -32,6 +33,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayWeather
 
             this.Width = panelWidth + 1;
             this.Height = _panel.FontHeight * 4;
+
+            WeatherTracker.Instance.OnWeatherChanged += Instance_OnWeatherChanged;
+        }
+
+        private void Instance_OnWeatherChanged(object sender, WeatherInfo e)
+        {
+            _weather = e;
         }
 
         public sealed override void BeforeStart()
@@ -45,10 +53,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayWeather
 
         public sealed override void Render(Graphics g)
         {
-            _panel.AddLine("Now", WeatherTracker.Instance.Weather.Now.ToString());
-            _panel.AddLine("In 10", WeatherTracker.Instance.Weather.In10.ToString());
-            _panel.AddLine("In 30", WeatherTracker.Instance.Weather.In30.ToString());
-
+            if (_weather != null)
+            {
+                _panel.AddLine("Now", _weather.Now.ToString());
+                _panel.AddLine("In 10", _weather.In10.ToString());
+                _panel.AddLine("In 30", _weather.In30.ToString());
+            }
 
             _panel.Draw(g);
         }

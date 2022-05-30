@@ -10,7 +10,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackPosition
 {
     internal sealed class TrackPositionOverlay : AbstractOverlay
     {
-        public TrackPositionOverlay(Rectangle rectangle, string Name) : base(rectangle, Name)
+        public TrackPositionOverlay(Rectangle rectangle) : base(rectangle, "Overlay Track Position")
         {
         }
 

@@ -12,13 +12,14 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Weather
 {
     public class WeatherInfo
     {
+        public long TimeStamp = -1;
         public AcRainIntensity Now { get; set; }
         public AcRainIntensity In10 { get; set; }
         public AcRainIntensity In30 { get; set; }
 
         public override bool Equals(object obj)
         {
-            if (obj == null) 
+            if (obj == null)
                 return false;
 
             WeatherInfo other = obj as WeatherInfo;
@@ -42,6 +43,8 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Weather
         private ACCSharedMemory sharedMemory;
 
         public WeatherInfo Weather;
+
+        public event EventHandler<WeatherInfo> OnWeatherChanged;
 
         public WeatherTracker()
         {
@@ -68,12 +71,19 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Weather
                         var graphicsPage = sharedMemory.ReadGraphicsPageFile();
 
 
-                        Weather = new WeatherInfo()
+                        var newWeather = new WeatherInfo()
                         {
                             Now = graphicsPage.rainIntensity,
                             In10 = graphicsPage.rainIntensityIn10min,
                             In30 = graphicsPage.rainIntensityIn30min,
+                            TimeStamp = DateTime.Now.ToFileTimeUtc()
                         };
+
+                        if (!newWeather.Equals(Weather))
+                        {
+                            OnWeatherChanged.Invoke(this, newWeather);
+                        }
+
                     }
                     catch (Exception ex)
                     {
