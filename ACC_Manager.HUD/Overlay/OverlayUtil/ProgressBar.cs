@@ -23,7 +23,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
 
         public void Draw(Graphics g, int x, int y, int width, int height, Brush fillBrush, Brush outlineBrush, bool drawRounded, bool drawOutline)
         {
-            Draw(g, fillBrush, outlineBrush, new Rectangle(x, y, width, height), true, true);
+            Draw(g, fillBrush, outlineBrush, new Rectangle(x, y, width, height), drawRounded, drawOutline);
         }
 
         public void Draw(Graphics g, Brush fillBrush, Brush outlineBrush, Rectangle rectangle, bool drawRounded, bool drawOutline)

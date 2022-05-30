@@ -30,7 +30,7 @@ namespace ACCManager
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static MainWindow Instance { get; private set; }
+        internal static MainWindow Instance { get; private set; }
 
         public MainWindow()
         {
@@ -114,7 +114,7 @@ namespace ACCManager
             }
         }
 
-        public void EnqueueSnackbarMessage(string message)
+        internal void EnqueueSnackbarMessage(string message)
         {
             Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
                    delegate ()
@@ -123,7 +123,7 @@ namespace ACCManager
                    }));
         }
 
-        public void ClearSnackbar()
+        internal void ClearSnackbar()
         {
             Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
                    delegate ()
@@ -132,7 +132,7 @@ namespace ACCManager
                    }));
         }
 
-        public void EnqueueSnackbarMessage(string message, string action, Action actionDelegate)
+        internal void EnqueueSnackbarMessage(string message, string action, Action actionDelegate)
         {
             Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
                    delegate ()
