@@ -12,24 +12,24 @@ using System.Windows.Forms;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
 {
-    public class MousePositionOverlay : AbstractOverlay
+    public sealed class MousePositionOverlay : AbstractOverlay
     {
         public MousePositionOverlay(Rectangle rectangle, string Name) : base(rectangle, Name)
         {
             this.Width = ScreenWidth;
             this.Height = ScreenHeight;
-            this.RefreshRateHz = 60;
+            this.RefreshRateHz = 144;
         }
 
-        public override void BeforeStart()
+        public sealed override void BeforeStart()
         {
         }
 
-        public override void BeforeStop()
+        public sealed override void BeforeStop()
         {
         }
 
-        public override void Render(Graphics g)
+        public sealed override void Render(Graphics g)
         {
             Point cursorPosition = GetCursorPosition();
             g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -37,13 +37,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
             g.FillEllipse(new SolidBrush(Color.FromArgb(120, Color.Red)), cursorPosition.X, cursorPosition.Y, 5);
         }
 
-        public override bool ShouldRender()
+        public sealed override bool ShouldRender()
         {
             return true;
         }
 
         [DllImport("user32.dll")]
-        public static extern bool GetCursorPos(out POINT lpPoint);
+        private static extern bool GetCursorPos(out POINT lpPoint);
 
         public static Point GetCursorPosition()
         {
@@ -60,7 +60,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
         /// Struct representing a point.
         /// </summary>
         [StructLayout(LayoutKind.Sequential)]
-        public struct POINT
+        private struct POINT
         {
             public int X;
             public int Y;

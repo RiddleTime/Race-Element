@@ -36,7 +36,7 @@ namespace ACCManager.HUD.Overlay.Util
 
         private static Font GetSpecialFont(float size, string resourceName, string fontName)
         {
-            Font fnt = null;
+            Font font = null;
 
             if (m_pfc != null)
                 lock (m_pfc)
@@ -47,13 +47,11 @@ namespace ACCManager.HUD.Overlay.Util
                         for (int i = 0; i < m_pfc.Families.Length; i++)
                         {
                             if (m_pfc.Families[i].Name == fontName)
-                                fnt = new Font(m_pfc.Families[i], size);
+                                font = new Font(m_pfc.Families[i], size);
                         }
-
-                        //fnt = new Font(m_pfc.Families[0], size);
                     }
 
-            if (fnt == null)
+            if (font == null)
                 using (Stream stmFont = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
                 {
                     if (stmFont != null)
@@ -72,8 +70,7 @@ namespace ACCManager.HUD.Overlay.Util
                         // The reason this works is that GDI+ will create a font object for
                         // controls like the RichTextBox and this call will make sure that GDI
                         // recognizes the font name, later.
-                        uint cFonts;
-                        AddFontMemResourceEx(rgbyt, rgbyt.Length, IntPtr.Zero, out cFonts);
+                        AddFontMemResourceEx(rgbyt, rgbyt.Length, IntPtr.Zero, out _);
 
                         // Now do the managed font
                         IntPtr pbyt = Marshal.AllocCoTaskMem(rgbyt.Length);
@@ -91,9 +88,7 @@ namespace ACCManager.HUD.Overlay.Util
                     return GetSpecialFont(size, resourceName, fontName);
                 }
 
-
-
-            return fnt;
+            return font;
         }
     }
 }

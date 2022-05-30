@@ -35,10 +35,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         }
 
         private const int _overlayWidth = 170;
+        private readonly InfoTable _table;
 
         private LapData _lastLap = null;
-
-        private readonly InfoTable _table;
 
         public LapDeltaOverlay(Rectangle rectangle) : base(rectangle, "Lap Delta Overlay")
         {

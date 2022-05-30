@@ -21,31 +21,40 @@ namespace ACCManager.HUD.Overlay.Internal
 {
     public abstract class AbstractOverlay : FloatingWindow
     {
+        public abstract void BeforeStart();
+        public abstract void BeforeStop();
+        public abstract bool ShouldRender();
+        public abstract void Render(Graphics g);
+
         public string Name { get; private set; }
         private bool Draw = false;
 
         public bool IsRepositioning { get; internal set; }
-        public bool AllowReposition { get; set; } = true;
-        private bool AllowRescale { get; set; } = false;
 
         public int RefreshRateHz = 30;
 
-        private float Scale = 1f;
 
-        private Window RepositionWindow;
 
         public SPageFilePhysics pagePhysics;
         public SPageFileGraphic pageGraphics;
         public SPageFileStatic pageStatic;
-        public Broadcast.Structs.RealtimeUpdate broadCastRealTime;
-        public Broadcast.Structs.TrackData broadCastTrackData;
-        public Broadcast.Structs.RealtimeCarUpdate broadCastRealtimeCarUpdate;
+        public RealtimeUpdate broadCastRealTime;
+        public TrackData broadCastTrackData;
+        public RealtimeCarUpdate broadCastRealtimeCarUpdate;
 
 
-        public int ScreenWidth => (int)System.Windows.SystemParameters.PrimaryScreenWidth;
-        public int ScreenHeight => (int)System.Windows.SystemParameters.PrimaryScreenHeight;
+        public int ScreenWidth => (int)SystemParameters.PrimaryScreenWidth;
+        public int ScreenHeight => (int)SystemParameters.PrimaryScreenHeight;
 
         public bool RequestsDrawItself = false;
+
+        public bool AllowReposition { get; set; } = true;
+
+        private float _scale = 1f;
+        private bool _allowRescale = false;
+
+        private Window RepositionWindow;
+
 
         protected AbstractOverlay(Rectangle rectangle, string Name)
         {
@@ -86,8 +95,8 @@ namespace ACCManager.HUD.Overlay.Internal
 
                     if (overlayConfig.AllowRescale)
                     {
-                        this.AllowRescale = true;
-                        this.Scale = overlayConfig.Scale;
+                        this._allowRescale = true;
+                        this._scale = overlayConfig.Scale;
                     }
                 }
             }
@@ -103,7 +112,6 @@ namespace ACCManager.HUD.Overlay.Internal
             }
         }
 
-        public abstract void BeforeStart();
         public void Start(bool addTrackers = true)
         {
             try
@@ -133,11 +141,13 @@ namespace ACCManager.HUD.Overlay.Internal
                     Debug.WriteLine(ex);
                     LogWriter.WriteToLog(ex);
                 }
-                if (AllowRescale)
+                if (_allowRescale)
                 {
-                    this.Width = (int)Math.Ceiling(this.Width * Scale);
-                    this.Height = (int)Math.Ceiling(this.Height * Scale);
+                    this.Width = (int)Math.Ceiling(this.Width * _scale);
+                    this.Height = (int)Math.Ceiling(this.Height * _scale);
                 }
+
+
                 Draw = true;
                 this.Show();
 
@@ -200,7 +210,6 @@ namespace ACCManager.HUD.Overlay.Internal
             pageStatic = e;
         }
 
-        public abstract void BeforeStop();
         public void Stop()
         {
             this.EnableReposition(false);
@@ -224,9 +233,6 @@ namespace ACCManager.HUD.Overlay.Internal
             this.Dispose();
         }
 
-        public abstract bool ShouldRender();
-        public abstract void Render(Graphics g);
-
         protected sealed override void PerformPaint(PaintEventArgs e)
         {
             if (base.Handle == IntPtr.Zero)
@@ -238,8 +244,8 @@ namespace ACCManager.HUD.Overlay.Internal
                 {
                     try
                     {
-                        if (AllowRescale)
-                            e.Graphics.ScaleTransform(Scale, Scale);
+                        if (_allowRescale)
+                            e.Graphics.ScaleTransform(_scale, _scale);
 
                         CompositingQuality previousComposingQuality = e.Graphics.CompositingQuality;
                         SmoothingMode previousSmoothingMode = e.Graphics.SmoothingMode;
@@ -365,8 +371,6 @@ namespace ACCManager.HUD.Overlay.Internal
                             catch (Exception ex) { Debug.WriteLine(ex); }
                         }));
                     }
-
-
 
                     OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(this.Name);
                     if (settings == null)

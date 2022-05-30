@@ -82,11 +82,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
         /// Returns a percentage, mininum -100% and max 100%
         /// </summary>
         /// <param name="max"></param>
-        /// <param name="actual"></param>
+        /// <param name="value"></param>
         /// <returns>a value between -1 and 1 (inclusive)</returns>
-        public float GetPercentage(float max, float actual)
+        public float GetPercentage(float max, float value)
         {
-            float percentage = actual * 100 / max / 100;
+            float percentage = value * 100 / max / 100;
 
             percentage.Clip(-1, 1);
 
@@ -99,7 +99,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             int gMeterY = y;
 
 
-            SmoothingMode previousSmoothing = g.SmoothingMode;
             //Draws the lines and circles
             Pen AccPen = new Pen(Color.FromArgb(100, 255, 255, 255), 1);
             Pen AccPen2 = new Pen(Color.FromArgb(30, 255, 255, 255), 3);
@@ -114,7 +113,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             g.DrawEllipse(AccPen2, gMeterX + size / 3, gMeterY + size / 3, size / 3, size / 3);
 
 
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
             //Draws the 'dot'
             int gDotSize = 14;
 
@@ -140,22 +139,32 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             {
                 lock (_trace)
                 {
-                    _trace.AddFirst(new Point(gDotPosX, gDotPosY));
-                    if (_trace.Count > 10)
-                        _trace.RemoveLast();
-
-
-                    for (int i = 0; i < _trace.Count; i++)
+                    Point currentPoint = new Point(gDotPosX, gDotPosY);
+                    switch (_trace.Count)
                     {
-                        Point traceItem = _trace.ElementAt(i);
-                        g.FillEllipse(new SolidBrush(Color.FromArgb(90 - i * 5, 242, 82, 2)), new Rectangle(traceItem.X, traceItem.Y, gDotSize, gDotSize));
+                        case 0: _trace.AddFirst(currentPoint); break;
+                        default:
+                            {
+                                for (int i = 0; i < _trace.Count; i++)
+                                {
+                                    Point traceItem = _trace.ElementAt(i);
+                                    int alpha = 90 - i * 5;
+                                    alpha.Clip(0, 255);
+                                    g.FillEllipse(new SolidBrush(Color.FromArgb(alpha, 242, 82, 2)), new Rectangle(traceItem.X, traceItem.Y, gDotSize, gDotSize));
+                                }
+
+                                if (!_trace.Last.Equals(new Point(gDotPosX, gDotPosY)))
+                                    _trace.AddFirst(new Point(gDotPosX, gDotPosY));
+
+                                break;
+                            }
                     }
+
+
                 }
             }
-
-            g.SmoothingMode = previousSmoothing;
         }
-
+        
         public sealed override bool ShouldRender()
         {
 #if DEBUG

@@ -18,12 +18,7 @@ namespace ACCManager.HUD.Overlay.Util
 {
     public class InfoPanel
     {
-        private const float ShadowDistance = 0.75f;
-        private readonly Color _shadowColor = Color.FromArgb(60, Color.Black);
-        private readonly Brush ShadowBrush = new SolidBrush(Color.FromArgb(60, Color.Black));
-
-        private readonly Font Font;
-
+        private readonly Font _font;
         private readonly int MaxWidth;
         public int X = 0;
         public int Y = 0;
@@ -43,11 +38,11 @@ namespace ACCManager.HUD.Overlay.Util
 
         public InfoPanel(double fontSize, int maxWidth)
         {
-            fontSize.ClipMin(9);
+            fontSize.ClipMin(10);
             this.MaxWidth = maxWidth;
-            this.Font = FontUtil.FontUnispace((float)fontSize);
-            this.FontHeight = Font.Height;
-            _addMonoY = Font.Height / 8;
+            this._font = FontUtil.FontUnispace((float)fontSize);
+            this.FontHeight = _font.Height;
+            _addMonoY = _font.Height / 8;
         }
 
         private List<IPanelLine> Lines = new List<IPanelLine>();
@@ -79,9 +74,9 @@ namespace ACCManager.HUD.Overlay.Util
 
                 if (DrawValueBackground)
                 {
-                    int valueBackgroundY = Y + Font.Height * FirstRowLine;
-                    int valueBackgroundHeight = (Lines.Count - FirstRowLine) * this.Font.Height + (int)_addMonoY + 1;
-                    g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(25, Color.White)), new Rectangle((int)MaxTitleWidth + 1, valueBackgroundY, (int)(MaxWidth - MaxTitleWidth), valueBackgroundHeight), 4);
+                    int valueBackgroundY = Y + _font.Height * FirstRowLine;
+                    int valueBackgroundHeight = (Lines.Count - FirstRowLine) * this._font.Height + (int)_addMonoY + 1;
+                    g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(25, Color.White)), new Rectangle((int)MaxTitleWidth + 1, valueBackgroundY, (int)(MaxWidth - MaxTitleWidth), valueBackgroundHeight - 1), 4);
                 }
 
                 while (counter < length)
@@ -89,7 +84,7 @@ namespace ACCManager.HUD.Overlay.Util
                     if (DrawRowLines && counter > FirstRowLine)
                     {
                         float rowY = counter * FontHeight;
-                        g.DrawLine(new Pen(Color.FromArgb(45, Color.White)), new Point(X + 1, (int)rowY), new Point(this.MaxWidth - 1, (int)rowY));
+                        g.DrawLine(new Pen(Color.FromArgb(42, Color.White)), new Point(X + 1, (int)rowY), new Point(this.MaxWidth - 1, (int)rowY));
                     }
 
                     IPanelLine line = Lines[counter];
@@ -98,21 +93,21 @@ namespace ACCManager.HUD.Overlay.Util
                     {
                         TextLine textLine = (TextLine)line;
 
-                        g.DrawStringWithShadow($"{textLine.Title}", Font, Color.White, new PointF(X, Y + counter * FontHeight + _addMonoY));
-                        g.DrawStringWithShadow($"{textLine.Value}", Font, textLine.ValueBrush, new PointF(X + MaxTitleWidth + Font.Size, Y + counter * FontHeight + _addMonoY));
+                        g.DrawStringWithShadow($"{textLine.Title}", _font, Color.White, new PointF(X, Y + counter * FontHeight + _addMonoY));
+                        g.DrawStringWithShadow($"{textLine.Value}", _font, textLine.ValueBrush, new PointF(X + MaxTitleWidth + _font.Size, Y + counter * FontHeight + _addMonoY));
                     }
 
                     if (line.GetType() == typeof(TitledProgressBarLine))
                     {
                         TitledProgressBarLine bar = (TitledProgressBarLine)line;
-                        g.DrawStringWithShadow($"{bar.Title}", Font, Brushes.White, new PointF(X, Y + counter * FontHeight));
+                        g.DrawStringWithShadow($"{bar.Title}", _font, Brushes.White, new PointF(X, Y + counter * FontHeight));
 
                         ProgressBar progressBar = new ProgressBar(bar.Min, bar.Max, bar.Value);
-                        progressBar.Draw(g, (int)(X + MaxTitleWidth + Font.Size), Y + counter * FontHeight + 1, (int)(MaxWidth - MaxTitleWidth - Font.Size) - 4, (int)FontHeight - 2, bar.BarColor);
+                        progressBar.Draw(g, bar.BarColor, Brushes.Transparent, new Rectangle((int)(X + MaxTitleWidth + _font.Size), Y + counter * FontHeight + 1, (int)(MaxWidth - MaxTitleWidth - _font.Size) - 4, (int)FontHeight - 2), false, false);
 
                         string percent = $"{(bar.Max / bar.Value * 100):F1}%";
-                        SizeF textWidth = g.MeasureString(percent, Font);
-                        g.DrawStringWithShadow($"{percent}", Font, Brushes.White, new PointF((int)(X + (MaxWidth - MaxTitleWidth)) - textWidth.Width / 2, Y + counter * FontHeight + _addMonoY));
+                        SizeF textWidth = g.MeasureString(percent, _font);
+                        g.DrawStringWithShadow($"{percent}", _font, Brushes.White, new PointF((int)(X + (MaxWidth - MaxTitleWidth)) - textWidth.Width / 2, Y + counter * FontHeight + _addMonoY));
                     }
 
                     if (line.GetType() == typeof(CenterTextedProgressBarLine))
@@ -120,10 +115,10 @@ namespace ACCManager.HUD.Overlay.Util
                         CenterTextedProgressBarLine bar = (CenterTextedProgressBarLine)line;
 
                         ProgressBar progressBar = new ProgressBar(bar.Min, bar.Max, bar.Value);
-                        progressBar.Draw(g, X + 3, Y + counter * FontHeight + 1, (int)MaxWidth - 6, (int)FontHeight - 2, bar.BarColor);
+                        progressBar.Draw(g, bar.BarColor, Brushes.Transparent, new Rectangle(X + 3, Y + counter * FontHeight + 1, (int)MaxWidth - 6, (int)FontHeight - 2), false, false);
 
-                        SizeF textWidth = g.MeasureString(bar.CenteredText, Font);
-                        g.DrawStringWithShadow($"{bar.CenteredText}", Font, Brushes.White, new PointF(X + MaxWidth / 2 - textWidth.Width / 2, Y + counter * FontHeight + _addMonoY));
+                        SizeF textWidth = g.MeasureString(bar.CenteredText, _font);
+                        g.DrawStringWithShadow($"{bar.CenteredText}", _font, Brushes.White, new PointF(X + MaxWidth / 2 - textWidth.Width / 2, Y + counter * FontHeight + _addMonoY));
                     }
 
                     if (line.GetType() == typeof(CenteredTextedDeltabarLine))
@@ -133,8 +128,8 @@ namespace ACCManager.HUD.Overlay.Util
                         DeltaBar deltaBar = new DeltaBar(bar.Min, bar.Max, bar.Value);
                         deltaBar.Draw(g, X + 1, Y + counter * FontHeight + 1, (int)MaxWidth - 2, (int)FontHeight - 2);
 
-                        SizeF textWidth = g.MeasureString(bar.CenteredText, Font);
-                        g.DrawStringWithShadow($"{bar.CenteredText}", Font, Brushes.White, new PointF(X + MaxWidth / 2 - textWidth.Width / 2, Y + counter * FontHeight + _addMonoY));
+                        SizeF textWidth = g.MeasureString(bar.CenteredText, _font);
+                        g.DrawStringWithShadow($"{bar.CenteredText}", _font, Brushes.White, new PointF(X + MaxWidth / 2 - textWidth.Width / 2, Y + counter * FontHeight + _addMonoY));
                     }
 
 
@@ -159,12 +154,11 @@ namespace ACCManager.HUD.Overlay.Util
                 {
                     IPanelLine line = Lines[counter];
 
-
                     if (line.GetType() == typeof(TextLine))
                     {
                         TextLine textLine = (TextLine)line;
                         SizeF titleWidth;
-                        if ((titleWidth = g.MeasureString(textLine.Title, Font)).Width > MaxTitleWidth)
+                        if ((titleWidth = g.MeasureString(textLine.Title, _font)).Width > MaxTitleWidth)
                             MaxTitleWidth = titleWidth.Width;
                     }
 
@@ -172,10 +166,9 @@ namespace ACCManager.HUD.Overlay.Util
                     {
                         TitledProgressBarLine titledProgressBar = (TitledProgressBarLine)line;
                         SizeF titleWidth;
-                        if ((titleWidth = g.MeasureString(titledProgressBar.Title, Font)).Width > MaxTitleWidth)
+                        if ((titleWidth = g.MeasureString(titledProgressBar.Title, _font)).Width > MaxTitleWidth)
                             MaxTitleWidth = titleWidth.Width;
                     }
-
 
                     counter++;
                     length = Lines.Count;

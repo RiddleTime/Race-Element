@@ -46,9 +46,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
         public sealed override void BeforeStart()
         {
             if (!this._config.ShowAdvancedInfo)
-            {
                 this.Height -= this._infoPanel.FontHeight * 3;
-            }
         }
 
         public sealed override void BeforeStop() { }
@@ -71,6 +69,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             Brush fuelBarBrush = pagePhysics.Fuel / pageStatic.MaxFuel < 0.15 ? Brushes.Red : Brushes.OrangeRed;
             Brush fuelTimeBrush = GetFuelTimeBrush(fuelTimeLeft, stintDebug);
             //Start (Basic)
+            pageStatic.MaxFuel = 50;
+            pagePhysics.Fuel = 12;
             _infoPanel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel:F2} L", 0, pageStatic.MaxFuel, pagePhysics.Fuel, fuelBarBrush);
             _infoPanel.AddLine("Laps Left", $"{pageGraphics.FuelEstimatedLaps:F1} @ {pageGraphics.FuelXLap:F2}L");
             _infoPanel.AddLine("Fuel-End", $"{fuelToEnd + lapBufferVar:F1} : Add {fuelToAdd:F0}");
