@@ -10,6 +10,7 @@ namespace ACCManager.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.0.6.8", "- HUDs: Removed reposition-windows from displaying during alt-tab when repositioning." },
             {"0.0.6.7", "- HUDs: Improved 'should render' status detection."+
                         "\n- HUD: Fixed average brake temps in Tyre Info Overlay."+
                         "\n- HUD: Added Inputs Overlay by Floriwan."+

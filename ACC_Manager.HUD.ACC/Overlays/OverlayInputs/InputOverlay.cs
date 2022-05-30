@@ -17,11 +17,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
         private readonly SteeringWheelConfig _config = new SteeringWheelConfig();
         private sealed class SteeringWheelConfig : OverlayConfiguration
         {
-            [ToolTip("Show throttle input indicator.")]
+            [ToolTip("Displays the throttle input.")]
             public bool ShowThrottleInput { get; set; } = true;
-            [ToolTip("Show brake input indicator.")]
+            [ToolTip("Displays the brake input.")]
             public bool ShowBrakeInput { get; set; } = true;
-            [ToolTip("Show selected gear.")]
+            [ToolTip("Displays the selected gear.")]
             public bool ShowCurrentGear { get; set; } = true;
 
             public SteeringWheelConfig()
