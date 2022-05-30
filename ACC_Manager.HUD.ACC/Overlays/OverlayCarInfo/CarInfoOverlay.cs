@@ -1,4 +1,5 @@
 ﻿using ACC_Manager.Util.NumberExtensions;
+using ACCManager.Data.ACC.Session;
 using ACCManager.HUD.ACC.Data.Tracker.Laps;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
@@ -94,8 +95,18 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
 #if DEBUG
             return true;
 #endif
+
             bool shouldRender = true;
-            if (pageGraphics.Status == AcStatus.AC_OFF || pageGraphics.Status == AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
+            if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF || pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
+                shouldRender = false;
+
+            if (pageGraphics.GlobalRed)
+                shouldRender = false;
+
+            if (RaceSessionState.IsPreSession(pageGraphics.GlobalRed, broadCastRealTime.Phase))
+                shouldRender = true;
+
+            if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE)
                 shouldRender = false;
 
             return shouldRender;
