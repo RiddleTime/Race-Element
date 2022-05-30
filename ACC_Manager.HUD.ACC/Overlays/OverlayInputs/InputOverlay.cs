@@ -24,9 +24,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
             [ToolTip("Show selected gear.")]
             public bool ShowCurrentGear { get; set; } = true;
 
-            [ToolTip("Show a background")]
-            public bool DrawBackground { get; set; } = true;
-
             public SteeringWheelConfig()
             {
                 this.AllowRescale = true;
@@ -62,8 +59,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            if (this._config.DrawBackground)
-                g.FillEllipse(new SolidBrush(Color.FromArgb(100, Color.Black)), new Rectangle(0, 0, _size, _size));
+            g.FillEllipse(new SolidBrush(Color.FromArgb(140, Color.Black)), new Rectangle(0, 0, _size, _size));
 
             DrawSteeringIndicator(g);
 
@@ -97,8 +93,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
 
         private void DrawBrakingIndicator(Graphics g)
         {
-            var brakeColor = Color.FromArgb(255, 255, 10, 10);
-            var brakingBackground = new Pen(Color.FromArgb(50, brakeColor), this.innerWheelWidth / 2);
+            var brakeColor = Color.FromArgb(255, 240, 10, 10);
+            var brakingBackground = new Pen(Color.FromArgb(80, brakeColor), this.innerWheelWidth / 2);
             var brakingForeground = new Pen(brakeColor, this.innerWheelWidth);
 
             int x = _wheelWidth * 2 + (_config.ShowThrottleInput ? this.innerWheelWidth : 0);
@@ -116,12 +112,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
 
         private void DrawThrottleIndicator(Graphics g)
         {
-            pagePhysics.Gas = 0.8f;
-            var throttleColor = Color.FromArgb(255, 10, 255, 10);
-            var penBackground = new Pen(Color.FromArgb(50, throttleColor), this.innerWheelWidth / 2);
+            var throttleColor = Color.FromArgb(255, 10, 240, 10);
+            var penBackground = new Pen(Color.FromArgb(80, throttleColor), this.innerWheelWidth / 2);
             var penForeground = new Pen(throttleColor, this.innerWheelWidth);
 
-            //DrivingAssistanceIndicator((pagePhysics.TC == 1), penForeground, throttleColor);
+            DrivingAssistanceIndicator((pagePhysics.TC == 1), penForeground, throttleColor);
 
             Rectangle rect = new Rectangle(_wheelWidth * 2, _wheelWidth * 2, _size - 4 * _wheelWidth, _size - 4 * _wheelWidth);
             g.DrawArc(penBackground, rect, inputCircleMinAngle, inputCircleSweepAngle);
@@ -136,7 +131,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
 
             Rectangle rect = new Rectangle(0 + _wheelWidth, 0 + _wheelWidth, _size - (2 * _wheelWidth), _size - (2 * _wheelWidth));
             float drawAngle = angle + 270 - (indicatorWidth / 2);
-            g.DrawEllipse(new Pen(Color.FromArgb(100, 150, 150, 150), _wheelWidth), _size / 2, _size / 2, _size / 2 - _wheelWidth);
+            g.DrawEllipse(new Pen(Color.FromArgb(80, Color.White), _wheelWidth / 2), _size / 2, _size / 2, _size / 2 - _wheelWidth);
             g.DrawArc(new Pen(Color.White, _wheelWidth), rect, drawAngle, indicatorWidth);
         }
 
