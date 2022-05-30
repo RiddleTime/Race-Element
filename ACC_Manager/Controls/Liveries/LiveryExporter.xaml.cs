@@ -3,6 +3,7 @@ using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -47,7 +48,7 @@ namespace ACCManager.Controls
             {
                 bool shouldExportDDS = toggleExportDDS.IsChecked.Value;
 
-                ThreadPool.QueueUserWorkItem(x =>
+                ThreadPool.QueueUserWorkItem((WaitCallback)(x =>
                 {
                     Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
 
@@ -58,7 +59,7 @@ namespace ACCManager.Controls
                     dlg.FileName = $"Rename_Me.zip";
                     dlg.DefaultExt = ".zip";
                     dlg.Filter = "Livery zip|*.zip";
-                    Nullable<bool> result = dlg.ShowDialog();
+                    bool? result = dlg.ShowDialog();
 
 
                     // Get the selected file name and display in a TextBox 
@@ -131,20 +132,25 @@ namespace ACCManager.Controls
                             using (FileStream outputStream = new FileStream(filename, FileMode.Create))
                             {
                                 zipArchive.SaveTo(outputStream);
+                                outputStream.Close();
+                            }
 
-                                Instance.Dispatcher.Invoke(() =>
+                            Instance.Dispatcher.Invoke(() =>
+                            {
+                                MainWindow.Instance.ClearSnackbar();
+                                MainWindow.Instance.EnqueueSnackbarMessage($"Skin pack saved as: {filename}", "Open in explorer", () =>
                                 {
-                                    MainWindow.Instance.snackbar.MessageQueue.Enqueue($"Skin pack saved as: {filename}");
-                                    exportItems.Clear();
-                                    RebuildListView();
-                                    this.IsEnabled = true;
-                                    buttonExport.Content = "Export as zip";
+                                    Process.Start($"explorer", $"/select,{filename}");
                                 });
 
-                            }
+                                exportItems.Clear();
+                                RebuildListView();
+                                this.IsEnabled = true;
+                                buttonExport.Content = "Export as zip";
+                            });
                         }
                     }
-                });
+                }));
             }
             catch (Exception ex)
             {

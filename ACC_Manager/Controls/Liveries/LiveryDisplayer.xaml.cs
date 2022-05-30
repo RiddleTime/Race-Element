@@ -55,7 +55,7 @@ namespace ACCManager.Controls
         private void ButtonGenerateDDS_Click(object sender, RoutedEventArgs e)
         {
             MainWindow.Instance.EnqueueSnackbarMessage($"Generating DDS files... this may take a while...");
-            ThreadPool.QueueUserWorkItem(x =>
+            ThreadPool.QueueUserWorkItem((WaitCallback)(x =>
             {
                 Instance.Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -82,7 +82,7 @@ namespace ACCManager.Controls
                     LiveryBrowser.Instance.buttonGenerateAllDDS.IsEnabled = true;
                 }));
                 MainWindow.Instance.EnqueueSnackbarMessage($"DDS generating completed.");
-            });
+            }));
         }
 
         public void ReloadLivery()

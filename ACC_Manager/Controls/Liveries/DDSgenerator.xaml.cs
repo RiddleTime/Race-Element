@@ -100,12 +100,12 @@ namespace ACCManager.Controls
                     LiveryTreeCar livery = liveriesWithoutDDS.First();
                     DDSutil.GenerateDDS(livery);
 
-                    Instance.Dispatcher.Invoke(() =>
+                    Instance.Dispatcher.Invoke((Action)(() =>
                     {
                         MainWindow.Instance.EnqueueSnackbarMessage($"Generated DDS files for {livery.carsRoot.teamName}{livery.carsRoot.customSkinName}");
                         todoList.Items.RemoveAt(0);
                         liveriesWithoutDDS.RemoveAt(0);
-                    });
+                    }));
                 }
 
                 Instance.Dispatcher.Invoke(() =>

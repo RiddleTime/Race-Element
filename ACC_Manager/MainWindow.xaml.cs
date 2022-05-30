@@ -61,7 +61,7 @@ namespace ACCManager
             AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
             this.Closing += MainWindow_Closing;
 
-           
+
 
             this.Loaded += MainWindow_Loaded;
 
@@ -123,12 +123,21 @@ namespace ACCManager
                    }));
         }
 
-        public void EnqueueSnackbarWarning(string message)
+        public void ClearSnackbar()
         {
             Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
                    delegate ()
                    {
-                       Instance.snackbar.MessageQueue.Enqueue(message);
+                       Instance.snackbar.MessageQueue.Clear();
+                   }));
+        }
+
+        public void EnqueueSnackbarMessage(string message, string action, Action actionDelegate)
+        {
+            Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
+                   delegate ()
+                   {
+                       Instance.snackbar.MessageQueue.Enqueue(message, action, actionDelegate);
                    }));
         }
 
