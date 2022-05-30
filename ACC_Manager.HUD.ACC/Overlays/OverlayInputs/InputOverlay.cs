@@ -98,7 +98,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
         private void DrawBrakingIndicator(Graphics g)
         {
             var brakeColor = Color.FromArgb(255, 255, 10, 10);
-            var brakingBackground = new Pen(Color.FromArgb(50, brakeColor), this.innerWheelWidth);
+            var brakingBackground = new Pen(Color.FromArgb(50, brakeColor), this.innerWheelWidth / 2);
             var brakingForeground = new Pen(brakeColor, this.innerWheelWidth);
 
             int x = _wheelWidth * 2 + (_config.ShowThrottleInput ? this.innerWheelWidth : 0);
@@ -116,11 +116,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
 
         private void DrawThrottleIndicator(Graphics g)
         {
+            pagePhysics.Gas = 0.8f;
             var throttleColor = Color.FromArgb(255, 10, 255, 10);
-            var penBackground = new Pen(Color.FromArgb(50, throttleColor), this.innerWheelWidth);
+            var penBackground = new Pen(Color.FromArgb(50, throttleColor), this.innerWheelWidth / 2);
             var penForeground = new Pen(throttleColor, this.innerWheelWidth);
 
-            DrivingAssistanceIndicator((pagePhysics.TC == 1), penForeground, throttleColor);
+            //DrivingAssistanceIndicator((pagePhysics.TC == 1), penForeground, throttleColor);
 
             Rectangle rect = new Rectangle(_wheelWidth * 2, _wheelWidth * 2, _size - 4 * _wheelWidth, _size - 4 * _wheelWidth);
             g.DrawArc(penBackground, rect, inputCircleMinAngle, inputCircleSweepAngle);
