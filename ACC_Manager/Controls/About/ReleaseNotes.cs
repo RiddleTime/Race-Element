@@ -12,8 +12,9 @@ namespace ACCManager.Controls
         {
             {"0.0.6.7", "- HUDs: Improved 'should render' status detection."+
                         "\n- HUD: Fixed average brake temps in Tyre Info Overlay."+
-                        "\n- Livery exporter: Added option to exclude dds files."+
-                        "\n- HUD: Added Inputs Overlay by Floriwan."},
+                        "\n- HUD: Added Inputs Overlay by Floriwan."+
+                        "\n- Livery exporter: Added option to exclude dds files."
+                        },
             {"0.0.6.6", "- HUD: Added configurable data point amount for the Input Trace Overlay."+
                         "\n- HUD: Lap Delta bar outlines positive or negative delta color."+
                         "\n- HUD: Added subtle value background and row lines to info table and panel."+
