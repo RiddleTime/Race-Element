@@ -44,6 +44,7 @@ namespace ACCManager.Controls
             try
             {
                 BuildOverlayStackPanel();
+
                 checkBoxReposition.Checked += (s, e) => SetRepositionMode(true);
                 checkBoxReposition.Unchecked += (s, e) => SetRepositionMode(false);
 
@@ -62,7 +63,7 @@ namespace ACCManager.Controls
                     e.Handled = true;
                 };
 
-                _hook.RegisterHotKey(HUD.ModifierKeys.Control, System.Windows.Forms.Keys.Home);
+                _hook.RegisterHotKey(HUD.ModifierKeys.Control, System.Windows.Forms.Keys.Insert);
                 _hook.KeyPressed += (s, ev) =>
                 {
                     this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;

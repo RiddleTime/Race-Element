@@ -69,7 +69,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             Brush fuelTimeBrush = GetFuelTimeBrush(fuelTimeLeft, stintDebug);
             //Start (Basic)
             pageStatic.MaxFuel = 50;
-            pagePhysics.Fuel = 12;
             _infoPanel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel:F2} L", 0, pageStatic.MaxFuel, pagePhysics.Fuel, fuelBarBrush);
             _infoPanel.AddLine("Laps Left", $"{pageGraphics.FuelEstimatedLaps:F1} @ {pageGraphics.FuelXLap:F2}L");
             _infoPanel.AddLine("Fuel-End", $"{fuelToEnd + lapBufferVar:F1} : Add {fuelToAdd:F0}");
