@@ -1,4 +1,5 @@
-﻿using ACCManager.HUD.ACC.Data.Tracker.Laps;
+﻿using ACC_Manager.Util.NumberExtensions;
+using ACCManager.HUD.ACC.Data.Tracker.Laps;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.OverlayUtil;
@@ -34,14 +35,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             }
         }
 
-        private const int _overlayWidth = 177;
+        private const int _overlayWidth = 202;
         private readonly InfoTable _table;
 
         private LapData _lastLap = null;
 
         public LapDeltaOverlay(Rectangle rectangle) : base(rectangle, "Lap Delta Overlay")
         {
-            _table = new InfoTable(10, new int[] { 70, 73 }) { Y = 17 };
+            _table = new InfoTable(10, new int[] { 85, 83 }) { Y = 17 };
             this.Width = _overlayWidth + 1;
             this.Height = _table.FontHeight * 5 + 2 + 4;
             RefreshRateHz = 10;
