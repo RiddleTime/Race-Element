@@ -19,7 +19,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <ToggleButton Grid.Column="0" x:Name="checkBoxReposition" Height="25" Cursor="Hand" ToolTip="Click scroll wheel to Toggle" VerticalAlignment="Center"></ToggleButton>
-            <Label Grid.Column="1" FontSize="18"  VerticalAlignment="Center">Move Active Overlays (Ctrl + Insert)</Label>
+            <Label Grid.Column="1" FontSize="18"  VerticalAlignment="Center">Move Active Overlays (Ctrl + Home)</Label>
         </Grid>
 
         <Grid Grid.Row="1" x:Name="gridOverlays" >

@@ -305,6 +305,7 @@ namespace ACCManager.HUD.Overlay.Internal
         [DllImport("user32.dll")]
         private static extern int GetWindowLong(IntPtr window, int index);
 
+        private bool _wasTopMost;
         public void EnableReposition(bool enabled, Window owner)
         {
             try
@@ -317,10 +318,9 @@ namespace ACCManager.HUD.Overlay.Internal
 
                 this.IsRepositioning = enabled;
 
-
-
                 if (enabled)
                 {
+                    _wasTopMost = owner.Topmost;
                     this.RepositionWindow = new Window()
                     {
                         Width = this.Width,
@@ -341,6 +341,8 @@ namespace ACCManager.HUD.Overlay.Internal
                     };
                     this.RepositionWindow.MouseLeftButtonDown += (s, e) =>
                     {
+                        if (this.RepositionWindow == null)
+                            return;
                         this.RepositionWindow.BorderBrush = System.Windows.Media.Brushes.Green;
                         this.RepositionWindow.BorderThickness = new Thickness(3);
                         this.RepositionWindow.DragMove();
@@ -348,18 +350,25 @@ namespace ACCManager.HUD.Overlay.Internal
 
                     this.RepositionWindow.LocationChanged += (s, e) =>
                     {
+                        if (this.RepositionWindow == null)
+                            return;
                         X = (int)this.RepositionWindow.Left;
                         Y = (int)this.RepositionWindow.Top;
                     };
 
                     this.RepositionWindow.Deactivated += (s, e) =>
                     {
+                        if (this.RepositionWindow == null)
+                            return;
                         this.RepositionWindow.BorderBrush = System.Windows.Media.Brushes.Red;
                         this.RepositionWindow.BorderThickness = new Thickness(1);
+
                     };
 
                     this.RepositionWindow.KeyDown += (s, e) =>
                     {
+                        if (this.RepositionWindow == null)
+                            return;
                         this.RepositionWindow.BorderBrush = System.Windows.Media.Brushes.Green;
                         this.RepositionWindow.BorderThickness = new Thickness(3);
                         switch (e.Key)
@@ -391,6 +400,7 @@ namespace ACCManager.HUD.Overlay.Internal
                     };
 
                     RepositionWindow.Show();
+                    owner.Topmost = _wasTopMost;
                 }
                 else
                 {
@@ -403,8 +413,8 @@ namespace ACCManager.HUD.Overlay.Internal
                                 if (this.RepositionWindow != null)
                                 {
                                     this.RepositionWindow.Hide();
-                                    this.RepositionWindow.Close();
                                     this.RepositionWindow = null;
+                                    owner.Topmost = _wasTopMost;
                                 }
                             }
                             catch (Exception ex) { Debug.WriteLine(ex); }
