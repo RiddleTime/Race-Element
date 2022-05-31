@@ -36,7 +36,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
 
         public FuelInfoOverlay(Rectangle rectangle) : base(rectangle, "Fuel Info Overlay")
         {
-            this.Width = 220;
+            this.Width = 222;
             _infoPanel = new InfoPanel(10, this.Width - 1) { FirstRowLine = 1 };
             this.Height = this._infoPanel.FontHeight * 6 + 1;
             RefreshRateHz = 2;

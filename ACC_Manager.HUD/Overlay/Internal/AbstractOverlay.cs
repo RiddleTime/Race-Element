@@ -239,7 +239,7 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public void Stop()
         {
-            this.EnableReposition(false, null);
+            this.EnableReposition(false);
             try
             {
                 BeforeStop();
@@ -306,13 +306,10 @@ namespace ACCManager.HUD.Overlay.Internal
         private static extern int GetWindowLong(IntPtr window, int index);
 
         private bool _wasTopMost;
-        public void EnableReposition(bool enabled, Window owner)
+        public void EnableReposition(bool enabled)
         {
             try
             {
-                if (enabled && owner == null)
-                    throw new ArgumentNullException("You need to specify a window owner if you want to reposition this overlay.");
-
                 if (!AllowReposition)
                     return;
 
@@ -320,7 +317,6 @@ namespace ACCManager.HUD.Overlay.Internal
 
                 if (enabled)
                 {
-                    _wasTopMost = owner.Topmost;
                     this.RepositionWindow = new Window()
                     {
                         Width = this.Width,
@@ -337,7 +333,6 @@ namespace ACCManager.HUD.Overlay.Internal
                         ShowInTaskbar = false,
                         AllowsTransparency = true,
                         Opacity = 0.3,
-                        Owner = owner
                     };
                     this.RepositionWindow.MouseLeftButtonDown += (s, e) =>
                     {
@@ -400,7 +395,6 @@ namespace ACCManager.HUD.Overlay.Internal
                     };
 
                     RepositionWindow.Show();
-                    owner.Topmost = _wasTopMost;
                 }
                 else
                 {
@@ -414,7 +408,6 @@ namespace ACCManager.HUD.Overlay.Internal
                                 {
                                     this.RepositionWindow.Hide();
                                     this.RepositionWindow = null;
-                                    owner.Topmost = _wasTopMost;
                                 }
                             }
                             catch (Exception ex) { Debug.WriteLine(ex); }
