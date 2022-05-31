@@ -9,16 +9,20 @@
     <Grid>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="3">
-            <ToggleButton Grid.Row="0" x:Name="checkBoxReposition" Height="25" Cursor="Hand" ToolTip="Click scroll wheel to Toggle"></ToggleButton>
-            <Label FontSize="18" x:Name="labelReposition">Move Active Overlays (Ctrl + Home)</Label>
-        </StackPanel>
+        <Grid Grid.Row="0" Margin="3" x:Name="gridRepositionToggler" Cursor="Hand" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ToggleButton Grid.Column="0" x:Name="checkBoxReposition" Height="25" Cursor="Hand" ToolTip="Click scroll wheel to Toggle" VerticalAlignment="Center"></ToggleButton>
+            <Label Grid.Column="1" FontSize="18"  VerticalAlignment="Center">Move Active Overlays (Ctrl + Home)</Label>
+        </Grid>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" x:Name="gridOverlays" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition/>

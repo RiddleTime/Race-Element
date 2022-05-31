@@ -35,6 +35,8 @@ namespace ACCManager.Controls
         private static HudOptions _instance;
         public static HudOptions Instance { get { return _instance; } }
 
+        private readonly Brush activeHoverColor = new SolidColorBrush(Color.FromArgb(190, 220, 220, 220));
+
         public HudOptions()
         {
             InitializeComponent();
@@ -48,7 +50,16 @@ namespace ACCManager.Controls
                 this.PreviewMouseUp += (s, e) =>
                 {
                     if (e.ChangedButton == MouseButton.Middle)
+                    {
                         this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
+                        e.Handled = true;
+                    }
+                };
+
+                gridRepositionToggler.MouseUp += (s, e) =>
+                {
+                    this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
+                    e.Handled = true;
                 };
 
                 _hook.RegisterHotKey(HUD.ModifierKeys.Control, System.Windows.Forms.Keys.Home);
@@ -107,7 +118,7 @@ namespace ACCManager.Controls
             {
                 object[] args = new object[] { new System.Drawing.Rectangle((int)System.Windows.SystemParameters.PrimaryScreenWidth / 2, (int)System.Windows.SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
 
-                Card card = new Card() { Margin = new Thickness(2) };
+                Card card = new Card() { Margin = new Thickness(2), Cursor = Cursors.Hand };
                 StackPanel stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
                 card.Content = stackPanel;
 
@@ -126,6 +137,11 @@ namespace ACCManager.Controls
                 StackPanel configStacker = GetConfigStacker(x.Value);
                 stackPanel.Children.Add(configStacker);
                 card.MouseLeftButtonDown += (s, e) => { if (s == card) { toggle.IsChecked = !toggle.IsChecked; } };
+
+                card.MouseMove += (s, e) => label.Foreground = toggle.IsChecked.Value ? activeHoverColor : Brushes.GreenYellow;
+                card.MouseEnter += (s, e) => label.Foreground = toggle.IsChecked.Value ? activeHoverColor : Brushes.GreenYellow;
+                card.MouseLeave += (s, e) => label.Foreground = toggle.IsChecked.Value ? Brushes.White : new SolidColorBrush(Color.FromArgb(221, 255, 255, 255));
+                card.MouseUp += (s, e) => label.Foreground = toggle.IsChecked.Value ? activeHoverColor : Brushes.GreenYellow;
                 toggle.Checked += (s, e) =>
                 {
                     label.Foreground = Brushes.White;
