@@ -40,6 +40,22 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
 
         #region List<LapData> Extensions
 
+        public static int GetPotentialFastestLapTime(this List<LapData> laps)
+        {
+            if (laps.Count == 0) return -1;
+
+            int fastestSector1 = laps.GetFastestSector(1);
+            if (fastestSector1 == int.MaxValue) return -1;
+
+            int fastestSector2 = laps.GetFastestSector(2);
+            if (fastestSector2 == int.MaxValue) return -1;
+
+            int fastestSector3 = laps.GetFastestSector(3);
+            if (fastestSector3 == int.MaxValue) return -1;
+
+            return fastestSector1 + fastestSector2 + fastestSector3;
+        }
+
         public static int GetAverageFuelUsage(this List<LapData> laps)
         {
             return laps.GetAverageFuelUsage(laps.Count);

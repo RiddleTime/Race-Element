@@ -21,6 +21,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             [ToolTip("Displays the time for each sector, green colored sectors are personal best.")]
             public bool ShowSectors { get; set; } = true;
 
+            [ToolTip("Displays the potential best lap time based on your fastest sector times.")]
+            public bool ShowPotentialBest { get; set; } = true;
+
             [ToolTip("Sets the maximum range in seconds for the delta bar.")]
             [IntRange(1, 5, 1)]
             public int MaxDelta { get; set; } = 2;
@@ -40,7 +43,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         {
             _table = new InfoTable(10, new int[] { 70, 73 }) { Y = 17 };
             this.Width = _overlayWidth + 1;
-            this.Height = _table.FontHeight * 4 + 2 + 4;
+            this.Height = _table.FontHeight * 5 + 2 + 4;
             RefreshRateHz = 10;
         }
 
@@ -48,6 +51,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         {
             if (!this._config.ShowSectors)
                 this.Height -= this._table.FontHeight * 3;
+
+            if (!this._config.ShowPotentialBest)
+                this.Height -= this._table.FontHeight;
 
             LapTracker.Instance.LapFinished += Collector_LapFinished;
         }
@@ -79,7 +85,26 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             if (this._config.ShowSectors)
                 AddSectorLines();
 
+            if (this._config.ShowPotentialBest)
+                AddPotentialBest();
+
             _table.Draw(g);
+        }
+
+        private void AddPotentialBest()
+        {
+            string[] potentialValues = new string[2];
+
+            int potentialBest = LapTracker.Instance.Laps.GetPotentialFastestLapTime();
+            if (potentialBest == -1)
+                potentialValues[0] = $"--:--.---";
+            else
+            {
+                TimeSpan best = TimeSpan.FromMilliseconds(potentialBest);
+                potentialValues[0] = $"{best:mm\\:ss\\:fff}";
+            }
+
+            this._table.AddRow("Pot.", potentialValues);
         }
 
         private void AddSectorLines()
