@@ -158,7 +158,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
                     }
             }
 
-            string text = $"{averageBrakeTemps * 100:F0} C";
+            string text = $"{averageBrakeTemps:F0} C";
             int textWidth = (int)g.MeasureString(text, _fontFamilySmall).Width;
 
             SmoothingMode previous = g.SmoothingMode;
