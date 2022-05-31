@@ -1,4 +1,5 @@
-﻿using ACCManager.Broadcast.Structs;
+﻿using ACCManager.Broadcast;
+using ACCManager.Broadcast.Structs;
 using ACCManager.Data.ACC.Tracker;
 using ACCManager.Util;
 using System;
@@ -31,6 +32,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
         public int Sector2 { get; set; } = -1;
         public int Sector3 { get; set; } = -1;
 
+        public LapType LapType { get; set; } = LapType.ERROR;
 
         /// <summary>
         /// Fuel left at the end of the lap, divide by 1000...
@@ -96,7 +98,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
                         {
                             Laps[Laps.Count - 1].Sector3 = _lastLapInfo.Splits[2].Value;
                             Laps[Laps.Count - 1].IsValid = !_lastLapInfo.IsInvalid;
-
+                            Laps[Laps.Count - 1].LapType = _lastLapInfo.Type;
                         }
 
                     LapFinished?.Invoke(this, Laps[Laps.Count - 1]);
@@ -124,6 +126,9 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
                             Laps.Clear();
                             CurrentLap = new LapData() { Index = pageGraphics.CompletedLaps + 1 };
                         }
+                        
+
+                        // TOdo if current lap is inlap/outlap reset the lap data.
 
                         // collect sector times.
                         if (CurrentSector != pageGraphics.CurrentSectorIndex)
