@@ -34,7 +34,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             }
         }
 
-        private const int _overlayWidth = 170;
+        private const int _overlayWidth = 177;
         private readonly InfoTable _table;
 
         private LapData _lastLap = null;
@@ -104,7 +104,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
                 potentialValues[0] = $"{best:mm\\:ss\\:fff}";
             }
 
-            this._table.AddRow("Pot.", potentialValues);
+            this._table.AddRow("Pot", potentialValues);
         }
 
         private void AddSectorLines()
@@ -159,19 +159,19 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
 
             if (pageGraphics.CurrentSectorIndex != 0 && lap.Sector1 != -1 && lap.IsValid)
-                _table.AddRow("S1  ", rowSector1, new Color[] { LapTracker.Instance.Laps.IsSectorFastest(1, lap.Sector1) ? Color.LimeGreen : Color.White, Color.Orange });
+                _table.AddRow("S1 ", rowSector1, new Color[] { LapTracker.Instance.Laps.IsSectorFastest(1, lap.Sector1) ? Color.LimeGreen : Color.White, Color.Orange });
             else
-                _table.AddRow("S1  ", rowSector1, new Color[] { Color.White });
+                _table.AddRow("S1 ", rowSector1, new Color[] { Color.White });
 
             if (pageGraphics.CurrentSectorIndex != 1 && lap.Sector2 != -1 && lap.IsValid)
-                _table.AddRow("S2  ", rowSector2, new Color[] { LapTracker.Instance.Laps.IsSectorFastest(2, lap.Sector2) ? Color.LimeGreen : Color.White, Color.Orange });
+                _table.AddRow("S2 ", rowSector2, new Color[] { LapTracker.Instance.Laps.IsSectorFastest(2, lap.Sector2) ? Color.LimeGreen : Color.White, Color.Orange });
             else
-                _table.AddRow("S2  ", rowSector2, new Color[] { Color.White });
+                _table.AddRow("S2 ", rowSector2, new Color[] { Color.White });
 
             if (pageGraphics.CurrentSectorIndex != 2 && lap.Sector3 != -1 && lap.IsValid)
-                _table.AddRow("S3  ", rowSector3, new Color[] { LapTracker.Instance.Laps.IsSectorFastest(3, lap.Sector3) ? Color.LimeGreen : Color.White, Color.Orange });
+                _table.AddRow("S3 ", rowSector3, new Color[] { LapTracker.Instance.Laps.IsSectorFastest(3, lap.Sector3) ? Color.LimeGreen : Color.White, Color.Orange });
             else
-                _table.AddRow("S3  ", rowSector3, new Color[] { Color.White });
+                _table.AddRow("S3 ", rowSector3, new Color[] { Color.White });
         }
 
         public sealed override bool ShouldRender()
