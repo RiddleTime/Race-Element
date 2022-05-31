@@ -42,7 +42,11 @@ namespace ACCManager.Data.ACC.Tracker
         internal void Connect()
         {
             this.IsConnected = true;
+            ConnectDataClient();
+        }
 
+        private void ConnectDataClient()
+        {
             BroadcastConfig.Root config = BroadcastConfig.GetConfiguration();
             _client = new ACCUdpRemoteClient("127.0.0.1", config.updListenerPort, string.Empty, config.connectionPassword, config.commandPassword, 100);
             _client.MessageHandler.OnRealtimeUpdate += (s, realTimeUpdate) =>
@@ -70,10 +74,9 @@ namespace ACCManager.Data.ACC.Tracker
                 if (e.CarIndex == localCarIndex)
                     OnRealTimeCarUpdate?.Invoke(this, e);
             };
-
             _client.MessageHandler.OnConnectionStateChanged += (connectionId, connectionSuccess, isReadonly, error) =>
             {
-                Debug.WriteLine($"Broadcast Connection State Changed:\n{connectionId}, Connected: {connectionSuccess}, IsReadOnly: {isReadonly}\nError: {error}");
+                Debug.WriteLine($"Broadcast Connection State Changed: {connectionId}, Connected: {connectionSuccess}, IsReadOnly: {isReadonly}, Error: {error}");
             };
         }
 

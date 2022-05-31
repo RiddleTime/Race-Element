@@ -113,14 +113,23 @@ namespace ACCManager.Controls
 
                 ToggleButton toggle = new ToggleButton() { Height = 35, Width = 50, Cursor = Cursors.Hand, VerticalAlignment = VerticalAlignment.Center };
                 stackPanel.Children.Add(toggle);
-                Label label = new Label() { Content = x.Key, FontSize = 16, Cursor = Cursors.Hand, VerticalAlignment = VerticalAlignment.Center, Width = 180 };
+                Label label = new Label()
+                {
+                    Content = x.Key,
+                    FontSize = 16,
+                    Cursor = Cursors.Hand,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Width = 180,
+                    HorizontalContentAlignment = HorizontalAlignment.Center
+                };
                 stackPanel.Children.Add(label);
                 StackPanel configStacker = GetConfigStacker(x.Value);
                 stackPanel.Children.Add(configStacker);
                 card.MouseLeftButtonDown += (s, e) => { if (s == card) { toggle.IsChecked = !toggle.IsChecked; } };
                 toggle.Checked += (s, e) =>
                 {
-                    label.Foreground = Brushes.LimeGreen;
+                    label.Foreground = Brushes.White;
+                    label.Background = new SolidColorBrush(Color.FromArgb(50, 10, 255, 10));
                     lock (OverlaysACC.ActiveOverlays)
                     {
                         AbstractOverlay overlay = (AbstractOverlay)Activator.CreateInstance(x.Value, args);
@@ -137,6 +146,7 @@ namespace ACCManager.Controls
                 toggle.Unchecked += (s, e) =>
                 {
                     label.Foreground = new SolidColorBrush(Color.FromArgb(221, 255, 255, 255));
+                    label.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
                     lock (OverlaysACC.ActiveOverlays)
                     {
                         AbstractOverlay overlay = OverlaysACC.ActiveOverlays.Find(f => f.GetType() == x.Value);

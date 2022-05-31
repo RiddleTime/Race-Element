@@ -97,6 +97,8 @@ namespace ACCManager.HUD.Overlay.Internal
             if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE)
                 shouldRender = false;
 
+            if (IsRepositioning) shouldRender = true;
+
             return shouldRender;
         }
 
@@ -315,7 +317,7 @@ namespace ACCManager.HUD.Overlay.Internal
 
                 this.IsRepositioning = enabled;
 
-                
+
 
                 if (enabled)
                 {

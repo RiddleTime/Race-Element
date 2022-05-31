@@ -1,4 +1,5 @@
-﻿using ACCManager.HUD.Overlay.Internal;
+﻿using ACCManager.HUD.Overlay.Configuration;
+using ACCManager.HUD.Overlay.Internal;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,6 +11,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackPosition
 {
     internal sealed class TrackPositionOverlay : AbstractOverlay
     {
+        private class TrackPositionConfiguration : OverlayConfiguration
+        {
+
+        } 
+
         public TrackPositionOverlay(Rectangle rectangle) : base(rectangle, "Overlay Track Position")
         {
         }
