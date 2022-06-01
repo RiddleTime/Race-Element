@@ -148,7 +148,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                 y += (int)_inputFont.Size + 4;
                 if (kv.Value.RealtimeCarUpdate.LastLap != null)
                 {
-                    g.DrawString($"  last lap time: {kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS}", _inputFont, Brushes.White, 0 + xMargin, y);
+                    string LaptimeString = $"{TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.Value):mm\\:ss\\.fff}";
+                    g.DrawString($"  last lap time: {LaptimeString}", _inputFont, Brushes.White, 0 + xMargin, y);
                 }
                 
                 y += (int)_inputFont.Size + 4;

@@ -82,9 +82,9 @@ namespace ACCManager.Data.ACC.Tracker
 
             _client.MessageHandler.OnRealtimeCarUpdate += (s, e) =>
             {
-                int localCarIndex = _sharedMemory.ReadGraphicsPageFile().PlayerCarID;
+               //int localCarIndex = _sharedMemory.ReadGraphicsPageFile().PlayerCarID;
 
-                if (e.CarIndex == localCarIndex)
+                //if (e.CarIndex == localCarIndex)
                     OnRealTimeCarUpdate?.Invoke(this, e);
             };
             _client.MessageHandler.OnConnectionStateChanged += (connectionId, connectionSuccess, isReadonly, error) =>
