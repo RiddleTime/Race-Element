@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList;
 
 namespace ACCManager.HUD.ACC
 {
@@ -47,7 +48,8 @@ namespace ACCManager.HUD.ACC
             {"Page Graphics", typeof(GraphicsInfoOverlay) },
             {"Broadcast Realtime", typeof(BroadcastRealtimeOverlay) },
             {"Broadcast Trackdata", typeof(BroadcastTrackDataOverlay) },
-            {"Broadcast Carupdate", typeof(BroadcastCarUpdateOverlay) }
+            {"Broadcast Carupdate", typeof(BroadcastCarUpdateOverlay) },
+            {"Broadcast Entrylist", typeof(EntryListOverlay) }
 #endif
         };
 
