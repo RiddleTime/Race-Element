@@ -38,8 +38,9 @@ namespace ACCManager.Data.ACC.Tracker
         public event EventHandler<ConnectionState> OnConnectionStateChanged;
         public event EventHandler<CarInfo> OnEntryListUpdate;
         public event EventHandler<TrackData> OnTrackDataUpdate;
-        public event EventHandler<RealtimeCarUpdate> OnRealTimeCarUpdate;
         public event EventHandler<BroadcastingEvent> OnBroadcastEvent;
+        public event EventHandler<RealtimeCarUpdate> OnRealTimeCarUpdate;
+        public event EventHandler<RealtimeCarUpdate> OnRealTimeLocalCarUpdate;
 
         internal void Connect()
         {
@@ -82,10 +83,11 @@ namespace ACCManager.Data.ACC.Tracker
 
             _client.MessageHandler.OnRealtimeCarUpdate += (s, e) =>
             {
-               //int localCarIndex = _sharedMemory.ReadGraphicsPageFile().PlayerCarID;
+                OnRealTimeCarUpdate?.Invoke(this, e);
 
-                //if (e.CarIndex == localCarIndex)
-                    OnRealTimeCarUpdate?.Invoke(this, e);
+                int localCarIndex = _sharedMemory.ReadGraphicsPageFile().PlayerCarID;
+                if (e.CarIndex == localCarIndex)
+                    OnRealTimeLocalCarUpdate?.Invoke(this, e);
             };
             _client.MessageHandler.OnConnectionStateChanged += (connectionId, connectionSuccess, isReadonly, error) =>
             {
@@ -97,7 +99,8 @@ namespace ACCManager.Data.ACC.Tracker
         {
             OnConnectionStateChanged?.Invoke(this, new ConnectionState());
             OnRealTimeUpdate?.Invoke(this, new RealtimeUpdate());
-            OnRealTimeCarUpdate?.Invoke(this, new RealtimeCarUpdate());
+            OnBroadcastEvent?.Invoke(this, new BroadcastingEvent());
+            OnRealTimeLocalCarUpdate?.Invoke(this, new RealtimeCarUpdate());
             OnTrackDataUpdate?.Invoke(this, new TrackData());
         }
 

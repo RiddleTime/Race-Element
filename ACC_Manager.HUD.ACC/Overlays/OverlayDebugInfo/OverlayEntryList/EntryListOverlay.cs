@@ -23,11 +23,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
     {
         public CarInfo CarInfo { get; set; }
         public RealtimeCarUpdate RealtimeCarUpdate { get; set; }
-        
+
 
     }
 
-    internal class EntryListOverlay : AbstractOverlay
+    internal sealed class EntryListOverlay : AbstractOverlay
     {
 
         private DebugConfig _config = new DebugConfig();
@@ -67,9 +67,22 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 
         }
 
+        public sealed override void BeforeStop()
+        {
+            if (!this._config.Undock)
+            {
+                DebugInfoHelper.Instance.RemoveOverlay(this);
+                DebugInfoHelper.Instance.WidthChanged -= Instance_WidthChanged;
+            }
+
+            BroadcastTracker.Instance.OnRealTimeCarUpdate -= RealTimeCarUpdate_EventHandler;
+            BroadcastTracker.Instance.OnEntryListUpdate -= EntryListUpdate_EventHandler;
+            BroadcastTracker.Instance.OnBroadcastEvent -= Broadcast_EventHandler;
+        }
+
         private void Broadcast_EventHandler(object sender, BroadcastingEvent broadcastingEvent)
         {
-            if (broadcastingEvent.Type.Equals(BroadcastingCarEventType.LapCompleted)) 
+            if (broadcastingEvent.Type.Equals(BroadcastingCarEventType.LapCompleted))
             {
                 CarData carData;
                 if (EntryListCars.TryGetValue(broadcastingEvent.CarData.CarIndex, out carData))
@@ -82,7 +95,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                     carData = new CarData();
                     carData.CarInfo = broadcastingEvent.CarData;
                     EntryListCars.Add(broadcastingEvent.CarData.CarIndex, carData);
-                    
+
                 }
             }
         }
@@ -100,7 +113,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                 carData.CarInfo = carInfo;
                 EntryListCars.Add(carInfo.CarIndex, carData);
             }
-            
+
         }
 
         private void RealTimeCarUpdate_EventHandler(object sender, RealtimeCarUpdate carUpdate)
@@ -120,14 +133,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 
         }
 
-        public sealed override void BeforeStop()
-        {
-            if (!this._config.Undock)
-            {
-                DebugInfoHelper.Instance.RemoveOverlay(this);
-                DebugInfoHelper.Instance.WidthChanged -= Instance_WidthChanged;
-            }
-        }
+
 
         public sealed override void Render(Graphics g)
         {
@@ -144,14 +150,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                 {
                     g.DrawString($"> {kv.Value.CarInfo.CarIndex} - {kv.Value.CarInfo.RaceNumber} - {ConversionFactory.GetCarName(kv.Value.CarInfo.CarModelType)} - {kv.Value.CarInfo.GetCurrentDriverName()}", _inputFont, Brushes.White, 0 + xMargin, y);
                 }
-                
+
                 y += (int)_inputFont.Size + 4;
                 if (kv.Value.RealtimeCarUpdate.LastLap != null)
                 {
                     string LaptimeString = $"{TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.Value):mm\\:ss\\.fff}";
                     g.DrawString($"  last lap time: {LaptimeString}", _inputFont, Brushes.White, 0 + xMargin, y);
                 }
-                
+
                 y += (int)_inputFont.Size + 4;
             }
 

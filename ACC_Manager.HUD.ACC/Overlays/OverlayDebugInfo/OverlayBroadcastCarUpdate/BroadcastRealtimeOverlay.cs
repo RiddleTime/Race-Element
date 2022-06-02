@@ -60,10 +60,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
 
             int xMargin = 5;
             int y = 0;
-            FieldInfo[] members = broadCastRealtimeCarUpdate.GetType().GetRuntimeFields().ToArray();
+            FieldInfo[] members = broadCastLocalCar.GetType().GetRuntimeFields().ToArray();
             foreach (FieldInfo member in members)
             {
-                var value = member.GetValue(broadCastRealtimeCarUpdate);
+                var value = member.GetValue(broadCastLocalCar);
                 value = ReflectionUtil.FieldTypeValue(member, value);
                 g.DrawString($"{member.Name.Replace("<", "").Replace(">k__BackingField", "")}: {value}", _inputFont, Brushes.White, 0 + xMargin, y);
                 y += (int)_inputFont.Size + 4;

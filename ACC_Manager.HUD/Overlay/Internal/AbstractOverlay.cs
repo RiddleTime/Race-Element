@@ -43,7 +43,7 @@ namespace ACCManager.HUD.Overlay.Internal
         public SPageFileStatic pageStatic;
         public RealtimeUpdate broadCastRealTime;
         public TrackData broadCastTrackData;
-        public RealtimeCarUpdate broadCastRealtimeCarUpdate;
+        public RealtimeCarUpdate broadCastLocalCar;
 
 
         public int ScreenWidth => (int)SystemParameters.PrimaryScreenWidth;
@@ -150,7 +150,7 @@ namespace ACCManager.HUD.Overlay.Internal
                     PagePhysicsTracker.Instance.Tracker += PagePhysicsChanged;
                     BroadcastTracker.Instance.OnRealTimeUpdate += BroadCastRealTimeChanged;
                     BroadcastTracker.Instance.OnTrackDataUpdate += BroadCastTrackDataChanged;
-                    BroadcastTracker.Instance.OnRealTimeCarUpdate += BroadCastRealTimeCarUpdateChanged;
+                    BroadcastTracker.Instance.OnRealTimeLocalCarUpdate += BroadCastRealTimeLocalCarUpdateChanged;
                 }
 
                 ACCSharedMemory mem = new ACCSharedMemory();
@@ -202,9 +202,9 @@ namespace ACCManager.HUD.Overlay.Internal
             catch (Exception ex) { Debug.WriteLine(ex); }
         }
 
-        private void BroadCastRealTimeCarUpdateChanged(object sender, RealtimeCarUpdate e)
+        private void BroadCastRealTimeLocalCarUpdateChanged(object sender, RealtimeCarUpdate e)
         {
-            broadCastRealtimeCarUpdate = e;
+            broadCastLocalCar = e;
         }
 
         private void BroadCastTrackDataChanged(object sender, TrackData e)
@@ -253,7 +253,7 @@ namespace ACCManager.HUD.Overlay.Internal
             PagePhysicsTracker.Instance.Tracker -= PagePhysicsChanged;
             BroadcastTracker.Instance.OnRealTimeUpdate -= BroadCastRealTimeChanged;
             BroadcastTracker.Instance.OnTrackDataUpdate -= BroadCastTrackDataChanged;
-            BroadcastTracker.Instance.OnRealTimeCarUpdate -= BroadCastRealTimeCarUpdateChanged;
+            BroadcastTracker.Instance.OnRealTimeLocalCarUpdate -= BroadCastRealTimeLocalCarUpdateChanged;
 
             Draw = false;
             this.Close();

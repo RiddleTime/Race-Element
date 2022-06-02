@@ -69,7 +69,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
             if (!IsTracking)
                 this.Start();
 
-            BroadcastTracker.Instance.OnRealTimeCarUpdate += Instance_OnRealTimeCarUpdate;
+            BroadcastTracker.Instance.OnRealTimeLocalCarUpdate += Instance_OnRealTimeCarUpdate;
         }
 
         private LapInfo _lastLapInfo;
