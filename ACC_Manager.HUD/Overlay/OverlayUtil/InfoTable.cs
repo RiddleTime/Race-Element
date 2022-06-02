@@ -166,12 +166,15 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                 while (counter < length)
                 {
                     TableRow line = _rows[counter];
-                    SizeF titleWidth;
-                    if ((titleWidth = g.MeasureString(line.Header, _font)).Width > _maxHeaderWidth)
-                        _maxHeaderWidth = titleWidth.Width;
+                    if (line != null)
+                    {
+                        SizeF titleWidth;
+                        if ((titleWidth = g.MeasureString(line.Header, _font)).Width > _maxHeaderWidth)
+                            _maxHeaderWidth = titleWidth.Width;
 
-                    counter++;
-                    length = _rows.Count;
+                        counter++;
+                        length = _rows.Count;
+                    }
                 }
                 _maxHeaderWidth += _font.Size;
                 _headerWidthSet = true;

@@ -38,11 +38,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
         public EntryListOverlay(Rectangle rect) : base(rect, "Debug EntryList Overlay")
         {
             this.AllowReposition = false;
-            this.RefreshRateHz = 1;
+            this.RefreshRateHz = 10;
 
-            float fontSize = 9;
+            float fontSize = 10;
             var font = FontUtil.FontUnispace(fontSize);
-            _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 4), 500 });
+            _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 5), 500 });
 
             this.Width = 600;
             this.Height = 800;
@@ -89,7 +89,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
         {
             switch (broadcastingEvent.Type)
             {
-                case BroadcastingCarEventType.None: break;
                 case BroadcastingCarEventType.LapCompleted:
                     {
                         if (broadcastingEvent.CarData == null)
@@ -110,7 +109,23 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                         break;
                     }
 
-                default: break;
+
+                case BroadcastingCarEventType.Accident:
+                    {
+                        if (broadcastingEvent.CarData == null)
+                            break;
+
+                        Debug.WriteLine($"Car: {broadcastingEvent.CarData.RaceNumber} had an accident");
+                        break;
+                    }
+                default:
+                    {
+                        if (broadcastingEvent.CarData == null)
+                            break;
+
+                        Debug.WriteLine($"{broadcastingEvent.Type} - {broadcastingEvent.CarData}");
+                        break;
+                    }
             }
         }
 
@@ -151,21 +166,44 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 
         public sealed override void Render(Graphics g)
         {
-            foreach (KeyValuePair<int, CarData> kv in _entryListCars)
+            if (pageGraphics.SessionType == ACCSharedMemory.AcSessionType.AC_UNKNOWN)
+                _entryListCars.Clear();
+
+            List<KeyValuePair<int, CarData>> cars = _entryListCars.ToList();
+
+            cars.Sort((x, y) => { return x.Value.RealtimeCarUpdate.SplinePosition.CompareTo(y.Value.RealtimeCarUpdate.SplinePosition); });
+            cars.Reverse();
+
+            foreach (KeyValuePair<int, CarData> kv in cars)
             {
                 if (kv.Value.CarInfo != null)
                 {
-                    _table.AddRow(kv.Value.CarInfo.GetCurrentDriverName().Trim(), new string[] { $"{kv.Value.CarInfo.RaceNumber}", $"{ConversionFactory.GetCarName(kv.Value.CarInfo.CarModelType)}" });
+                    string[] firstRow = new string[2] { String.Empty, String.Empty };
+
+                    firstRow[0] = $"{kv.Value.RealtimeCarUpdate.CupPosition}";
 
                     if (kv.Value.RealtimeCarUpdate.LastLap != null)
-                    {
                         if (kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.HasValue)
                         {
                             TimeSpan lastLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.Value);
+                            firstRow[1] = $"{lastLapTime:mm\\:ss\\.fff}";
 
-                            _table.AddRow(String.Empty, new string[] { "", $"Last lap: {lastLapTime:mm\\:ss\\.fff}" });
+                            if (kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.HasValue)
+                            {
+                                TimeSpan fastestLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.Value);
+                                firstRow[1] += $" - {fastestLapTime:mm\\:ss\\.fff}";
+                            }
                         }
+                        else
+                            firstRow[1] = $"--:--.---";
+                    _table.AddRow($"{kv.Value.CarInfo.RaceNumber} - {kv.Value.CarInfo.GetCurrentDriverName().Trim()}", firstRow, new Color[] { Color.OrangeRed });
+
+                    LapType currentLapType = LapType.ERROR;
+                    if (kv.Value.RealtimeCarUpdate.CurrentLap != null)
+                    {
+                        currentLapType = kv.Value.RealtimeCarUpdate.CurrentLap.Type;
                     }
+                    _table.AddRow(String.Empty, new string[] { String.Empty, $"{currentLapType} - {kv.Value.RealtimeCarUpdate.SplinePosition * 100:F2}% - {kv.Value.RealtimeCarUpdate.Kmh} km/h" });
                 }
             }
 
