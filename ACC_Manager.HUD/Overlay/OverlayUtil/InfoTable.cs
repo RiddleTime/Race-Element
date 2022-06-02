@@ -18,7 +18,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
 
 
         private float _yMono;
-        private bool _headerWidthSet;
+        public bool _headerWidthSet;
         private float _maxHeaderWidth;
         private int[] _columnWidths;
         private List<TableRow> _rows = new List<TableRow>();
@@ -159,6 +159,8 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
         {
             lock (_rows)
             {
+                _maxHeaderWidth = 0;
+
                 int length = _rows.Count;
                 int counter = 0;
                 while (counter < length)

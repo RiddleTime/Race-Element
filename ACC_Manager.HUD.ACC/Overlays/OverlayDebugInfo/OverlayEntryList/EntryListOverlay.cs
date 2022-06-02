@@ -3,6 +3,7 @@ using ACCManager.Broadcast.Structs;
 using ACCManager.Data;
 using ACCManager.Data.ACC.Tracker;
 using ACCManager.HUD.Overlay.Internal;
+using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.HUD.Overlay.Util;
 using ACCManager.Util;
 using System;
@@ -29,16 +30,20 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 
     internal sealed class EntryListOverlay : AbstractOverlay
     {
-
         private DebugConfig _config = new DebugConfig();
-        private Font _inputFont = FontUtil.FontUnispace((float)9);
 
-        Dictionary<int, CarData> EntryListCars = new Dictionary<int, CarData>();
+        private Dictionary<int, CarData> _entryListCars = new Dictionary<int, CarData>();
+        private readonly InfoTable _table;
 
         public EntryListOverlay(Rectangle rect) : base(rect, "Debug EntryList Overlay")
         {
             this.AllowReposition = false;
             this.RefreshRateHz = 1;
+
+            float fontSize = 9;
+            var font = FontUtil.FontUnispace(fontSize);
+            _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 4), 500 });
+
             this.Width = 600;
             this.Height = 800;
         }
@@ -82,28 +87,37 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 
         private void Broadcast_EventHandler(object sender, BroadcastingEvent broadcastingEvent)
         {
-            if (broadcastingEvent.Type.Equals(BroadcastingCarEventType.LapCompleted))
+            switch (broadcastingEvent.Type)
             {
-                CarData carData;
-                if (EntryListCars.TryGetValue(broadcastingEvent.CarData.CarIndex, out carData))
-                {
-                    carData.CarInfo = broadcastingEvent.CarData;
-                }
-                else
-                {
-                    Debug.WriteLine($"BroadcastingCarEventType.LapCompleted car index: {broadcastingEvent.CarData.CarIndex} not found in entry list");
-                    carData = new CarData();
-                    carData.CarInfo = broadcastingEvent.CarData;
-                    EntryListCars.Add(broadcastingEvent.CarData.CarIndex, carData);
+                case BroadcastingCarEventType.None: break;
+                case BroadcastingCarEventType.LapCompleted:
+                    {
+                        if (broadcastingEvent.CarData == null)
+                            break;
 
-                }
+                        CarData carData;
+                        if (_entryListCars.TryGetValue(broadcastingEvent.CarData.CarIndex, out carData))
+                        {
+                            carData.CarInfo = broadcastingEvent.CarData;
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"BroadcastingCarEventType.LapCompleted car index: {broadcastingEvent.CarData.CarIndex} not found in entry list");
+                            carData = new CarData();
+                            carData.CarInfo = broadcastingEvent.CarData;
+                            _entryListCars.Add(broadcastingEvent.CarData.CarIndex, carData);
+                        }
+                        break;
+                    }
+
+                default: break;
             }
         }
 
         private void EntryListUpdate_EventHandler(object sender, CarInfo carInfo)
         {
             CarData carData;
-            if (EntryListCars.TryGetValue(carInfo.CarIndex, out carData))
+            if (_entryListCars.TryGetValue(carInfo.CarIndex, out carData))
             {
                 carData.CarInfo = carInfo;
             }
@@ -111,7 +125,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
             {
                 carData = new CarData();
                 carData.CarInfo = carInfo;
-                EntryListCars.Add(carInfo.CarIndex, carData);
+                _entryListCars.Add(carInfo.CarIndex, carData);
             }
 
         }
@@ -119,7 +133,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
         private void RealTimeCarUpdate_EventHandler(object sender, RealtimeCarUpdate carUpdate)
         {
             CarData carData;
-            if (EntryListCars.TryGetValue(carUpdate.CarIndex, out carData))
+            if (_entryListCars.TryGetValue(carUpdate.CarIndex, out carData))
             {
                 carData.RealtimeCarUpdate = carUpdate;
             }
@@ -128,7 +142,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                 Debug.WriteLine($"RealTimeCarUpdate_EventHandler car index: {carUpdate.CarIndex} not found in entry list");
                 carData = new CarData();
                 carData.RealtimeCarUpdate = carUpdate;
-                EntryListCars.Add(carUpdate.CarIndex, carData);
+                _entryListCars.Add(carUpdate.CarIndex, carData);
             }
 
         }
@@ -137,30 +151,27 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 
         public sealed override void Render(Graphics g)
         {
-            g.FillRectangle(new SolidBrush(System.Drawing.Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.Width, this.Height));
-            int xMargin = 5;
-            int y = 0;
-
-            g.DrawString($"entry list size: {EntryListCars.Count}", _inputFont, Brushes.White, 0 + xMargin, y);
-            y += (int)_inputFont.Size + 4;
-
-            foreach (KeyValuePair<int, CarData> kv in EntryListCars)
+            foreach (KeyValuePair<int, CarData> kv in _entryListCars)
             {
                 if (kv.Value.CarInfo != null)
                 {
-                    g.DrawString($"> {kv.Value.CarInfo.CarIndex} - {kv.Value.CarInfo.RaceNumber} - {ConversionFactory.GetCarName(kv.Value.CarInfo.CarModelType)} - {kv.Value.CarInfo.GetCurrentDriverName()}", _inputFont, Brushes.White, 0 + xMargin, y);
-                }
+                    _table.AddRow(kv.Value.CarInfo.GetCurrentDriverName().Trim(), new string[] { $"{kv.Value.CarInfo.RaceNumber}", $"{ConversionFactory.GetCarName(kv.Value.CarInfo.CarModelType)}" });
 
-                y += (int)_inputFont.Size + 4;
-                if (kv.Value.RealtimeCarUpdate.LastLap != null)
-                {
-                    string LaptimeString = $"{TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.Value):mm\\:ss\\.fff}";
-                    g.DrawString($"  last lap time: {LaptimeString}", _inputFont, Brushes.White, 0 + xMargin, y);
-                }
+                    if (kv.Value.RealtimeCarUpdate.LastLap != null)
+                    {
+                        if (kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.HasValue)
+                        {
+                            TimeSpan lastLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.Value);
 
-                y += (int)_inputFont.Size + 4;
+                            _table.AddRow(String.Empty, new string[] { "", $"Last lap: {lastLapTime:mm\\:ss\\.fff}" });
+                        }
+                    }
+                }
             }
 
+            _table._headerWidthSet = false;
+
+            _table.Draw(g);
         }
 
         public sealed override bool ShouldRender()
