@@ -1,6 +1,7 @@
 ﻿using ACCManager.Broadcast;
 using ACCManager.Broadcast.Structs;
 using ACCManager.Data;
+using ACCManager.Data.ACC.EntryList;
 using ACCManager.Data.ACC.Tracker;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.OverlayUtil;
@@ -15,24 +16,15 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCManager.Data.ACC.EntryList.EntryListTracker;
 using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 {
-
-    internal class CarData
-    {
-        public CarInfo CarInfo { get; set; }
-        public RealtimeCarUpdate RealtimeCarUpdate { get; set; }
-
-
-    }
-
     internal sealed class EntryListOverlay : AbstractOverlay
     {
         private DebugConfig _config = new DebugConfig();
 
-        private Dictionary<int, CarData> _entryListCars = new Dictionary<int, CarData>();
         private readonly InfoTable _table;
 
         public EntryListOverlay(Rectangle rect) : base(rect, "Debug EntryList Overlay")
@@ -65,11 +57,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                 this.X = DebugInfoHelper.Instance.GetX(this);
                 this.Y = 0;
             }
-
-            BroadcastTracker.Instance.OnRealTimeCarUpdate += RealTimeCarUpdate_EventHandler;
-            BroadcastTracker.Instance.OnEntryListUpdate += EntryListUpdate_EventHandler;
-            BroadcastTracker.Instance.OnBroadcastEvent += Broadcast_EventHandler;
-
         }
 
         public sealed override void BeforeStop()
@@ -80,96 +67,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                 DebugInfoHelper.Instance.WidthChanged -= Instance_WidthChanged;
             }
 
-            BroadcastTracker.Instance.OnRealTimeCarUpdate -= RealTimeCarUpdate_EventHandler;
-            BroadcastTracker.Instance.OnEntryListUpdate -= EntryListUpdate_EventHandler;
-            BroadcastTracker.Instance.OnBroadcastEvent -= Broadcast_EventHandler;
         }
-
-        private void Broadcast_EventHandler(object sender, BroadcastingEvent broadcastingEvent)
-        {
-            switch (broadcastingEvent.Type)
-            {
-                case BroadcastingCarEventType.LapCompleted:
-                    {
-                        if (broadcastingEvent.CarData == null)
-                            break;
-
-                        CarData carData;
-                        if (_entryListCars.TryGetValue(broadcastingEvent.CarData.CarIndex, out carData))
-                        {
-                            carData.CarInfo = broadcastingEvent.CarData;
-                        }
-                        else
-                        {
-                            Debug.WriteLine($"BroadcastingCarEventType.LapCompleted car index: {broadcastingEvent.CarData.CarIndex} not found in entry list");
-                            carData = new CarData();
-                            carData.CarInfo = broadcastingEvent.CarData;
-                            _entryListCars.Add(broadcastingEvent.CarData.CarIndex, carData);
-                        }
-                        break;
-                    }
-
-
-                case BroadcastingCarEventType.Accident:
-                    {
-                        if (broadcastingEvent.CarData == null)
-                            break;
-
-                        Debug.WriteLine($"Car: {broadcastingEvent.CarData.RaceNumber} had an accident");
-                        break;
-                    }
-                default:
-                    {
-                        if (broadcastingEvent.CarData == null)
-                            break;
-
-                        Debug.WriteLine($"{broadcastingEvent.Type} - {broadcastingEvent.CarData}");
-                        break;
-                    }
-            }
-        }
-
-        private void EntryListUpdate_EventHandler(object sender, CarInfo carInfo)
-        {
-            CarData carData;
-            if (_entryListCars.TryGetValue(carInfo.CarIndex, out carData))
-            {
-                carData.CarInfo = carInfo;
-            }
-            else
-            {
-                carData = new CarData();
-                carData.CarInfo = carInfo;
-                _entryListCars.Add(carInfo.CarIndex, carData);
-            }
-
-        }
-
-        private void RealTimeCarUpdate_EventHandler(object sender, RealtimeCarUpdate carUpdate)
-        {
-            CarData carData;
-            if (_entryListCars.TryGetValue(carUpdate.CarIndex, out carData))
-            {
-                carData.RealtimeCarUpdate = carUpdate;
-            }
-            else
-            {
-                Debug.WriteLine($"RealTimeCarUpdate_EventHandler car index: {carUpdate.CarIndex} not found in entry list");
-                carData = new CarData();
-                carData.RealtimeCarUpdate = carUpdate;
-                _entryListCars.Add(carUpdate.CarIndex, carData);
-            }
-
-        }
-
-
 
         public sealed override void Render(Graphics g)
         {
-            if (pageGraphics.SessionType == ACCSharedMemory.AcSessionType.AC_UNKNOWN)
-                _entryListCars.Clear();
-
-            List<KeyValuePair<int, CarData>> cars = _entryListCars.ToList();
+            List<KeyValuePair<int, CarData>> cars = EntryListTracker.Instance.Cars;
 
             cars.Sort((x, y) => { return x.Value.RealtimeCarUpdate.SplinePosition.CompareTo(y.Value.RealtimeCarUpdate.SplinePosition); });
             cars.Reverse();
@@ -179,7 +81,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                 if (kv.Value.CarInfo != null)
                 {
                     string[] firstRow = new string[2] { String.Empty, String.Empty };
-
                     firstRow[0] = $"{kv.Value.RealtimeCarUpdate.CupPosition}";
 
                     if (kv.Value.RealtimeCarUpdate.LastLap != null)
@@ -200,9 +101,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 
                     LapType currentLapType = LapType.ERROR;
                     if (kv.Value.RealtimeCarUpdate.CurrentLap != null)
-                    {
                         currentLapType = kv.Value.RealtimeCarUpdate.CurrentLap.Type;
-                    }
                     _table.AddRow(String.Empty, new string[] { String.Empty, $"{currentLapType} - {kv.Value.RealtimeCarUpdate.SplinePosition * 100:F2}% - {kv.Value.RealtimeCarUpdate.Kmh} km/h" });
                 }
             }

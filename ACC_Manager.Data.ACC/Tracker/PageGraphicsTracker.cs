@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACCManager.Data.ACC.EntryList;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -57,11 +58,13 @@ namespace ACCManager.Data.ACC.Tracker
                     {
                         Debug.WriteLine("Disconnected broadcast tracker");
                         BroadcastTracker.Instance.Disconnect();
+                        EntryListTracker.Instance.Stop();
                     }
                     else if (!BroadcastTracker.Instance.IsConnected && sPageFileGraphic.Status != AcStatus.AC_OFF)
                     {
                         Debug.WriteLine("Connected broadcast tracker");
                         BroadcastTracker.Instance.Connect();
+                        EntryListTracker.Instance.Start();
                     }
                 }
             });

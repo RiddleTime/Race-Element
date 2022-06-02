@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cars\SteeringLock.cs" />
+    <Compile Include="EntryList\EntryListTracker.cs" />
     <Compile Include="Session\RaceSessionState.cs" />
     <Compile Include="Tracker\BroadcastTracker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
