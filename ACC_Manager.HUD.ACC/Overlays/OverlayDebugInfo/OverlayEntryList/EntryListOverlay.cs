@@ -43,7 +43,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 
             float fontSize = 10;
             var font = FontUtil.FontUnispace(fontSize);
-            _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 5), 300 });
+            _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 5), (int)(font.Size * 13), (int)(font.Size * 7) });
 
             this.Width = 500;
             this.Height = 800;
@@ -88,7 +88,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
             {
                 if (kv.Value.CarInfo != null)
                 {
-                    string[] firstRow = new string[2] { String.Empty, String.Empty };
+                    string[] firstRow = new string[] { String.Empty, String.Empty, String.Empty };
+                    Color[] firstRowColors = new Color[] { Color.White, Color.White, Color.White };
                     firstRow[0] = $"{kv.Value.RealtimeCarUpdate.CupPosition}";
 
                     switch (broadCastRealTime.SessionType)
@@ -121,6 +122,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                         default: break;
                     }
 
+                    firstRow[2] = $"{kv.Value.RealtimeCarUpdate.Delta / 1000f:F2}";
+                    firstRowColors[2] = kv.Value.RealtimeCarUpdate.Delta > 0 ? Color.OrangeRed : Color.LimeGreen;
+
+
                     switch (kv.Value.RealtimeCarUpdate.CarLocation)
                     {
                         case CarLocationEnum.PitEntry:
@@ -144,7 +149,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                     string raceNumber = $"{kv.Value.CarInfo.RaceNumber}".FillEnd(3, ' ');
                     string firstName = kv.Value.CarInfo.Drivers[kv.Value.CarInfo.CurrentDriverIndex].FirstName;
                     firstName = firstName.Take(1).First() + ".";
-                    _table.AddRow($"{raceNumber} {firstName} {kv.Value.CarInfo.GetCurrentDriverName().Trim()}", firstRow, new Color[] { Color.OrangeRed });
+                    _table.AddRow($"{raceNumber} {firstName} {kv.Value.CarInfo.GetCurrentDriverName().Trim()}", firstRow, firstRowColors);
 
 
                     if (this._config.ShowExtendedData)
@@ -152,7 +157,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                         LapType currentLapType = LapType.ERROR;
                         if (kv.Value.RealtimeCarUpdate.CurrentLap != null)
                             currentLapType = kv.Value.RealtimeCarUpdate.CurrentLap.Type;
-                        _table.AddRow(String.Empty, new string[] { String.Empty, $"Lap {kv.Value.RealtimeCarUpdate.Laps} @ {kv.Value.RealtimeCarUpdate.SplinePosition * 100:F3}% - {kv.Value.RealtimeCarUpdate.Delta / 1000:F2}" });
+                        _table.AddRow(String.Empty, new string[] { String.Empty, $"Lap {kv.Value.RealtimeCarUpdate.Laps} @ {kv.Value.RealtimeCarUpdate.SplinePosition * 100:F3}%" });
                     }
                 }
             }
@@ -186,11 +191,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                                     cars.Sort((a, b) =>
                                     {
                                         var aSpline = a.Value.RealtimeCarUpdate.SplinePosition;
-                                        if (aSpline >= 99.995)
+                                        if (aSpline >= 99.999)
                                             aSpline = 0;
 
                                         var bSpline = b.Value.RealtimeCarUpdate.SplinePosition;
-                                        if (bSpline >= 99.995)
+                                        if (bSpline >= 99.999)
                                             bSpline = 0;
 
                                         float aPosition = a.Value.RealtimeCarUpdate.Laps + aSpline / 10;
