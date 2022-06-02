@@ -86,13 +86,21 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
             {
                 case RaceSessionType.Race:
                     {
-                        cars.Sort((a, b) =>
+                        if (broadCastRealTime.Phase == SessionPhase.PreSession || broadCastRealTime.Phase == SessionPhase.PreFormation)
+                            cars.Sort((a, b) =>
+                            {
+                                return a.Value.RealtimeCarUpdate.CupPosition.CompareTo(b.Value.RealtimeCarUpdate.CupPosition);
+                            });
+                        else
                         {
-                            float aPosition = a.Value.RealtimeCarUpdate.Laps + a.Value.RealtimeCarUpdate.SplinePosition;
-                            float bPosition = b.Value.RealtimeCarUpdate.Laps + b.Value.RealtimeCarUpdate.SplinePosition;
-                            return aPosition.CompareTo(bPosition);
-                        });
-                        cars.Reverse();
+                            cars.Sort((a, b) =>
+                            {
+                                float aPosition = a.Value.RealtimeCarUpdate.Laps + a.Value.RealtimeCarUpdate.SplinePosition / 10;
+                                float bPosition = b.Value.RealtimeCarUpdate.Laps + b.Value.RealtimeCarUpdate.SplinePosition / 10;
+                                return aPosition.CompareTo(bPosition);
+                            });
+                            cars.Reverse();
+                        }
                         break;
                     }
 
