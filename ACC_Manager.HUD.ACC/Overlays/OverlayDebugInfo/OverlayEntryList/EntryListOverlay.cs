@@ -107,20 +107,15 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                     string[] firstRow = new string[2] { String.Empty, String.Empty };
                     firstRow[0] = $"{kv.Value.RealtimeCarUpdate.CupPosition}";
 
-                    if (kv.Value.RealtimeCarUpdate.LastLap != null)
-                        if (kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.HasValue)
+                    if (kv.Value.RealtimeCarUpdate.BestSessionLap != null)
+                        if (kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.HasValue)
                         {
-                            TimeSpan lastLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.Value);
-                            firstRow[1] = $"{lastLapTime:mm\\:ss\\.fff}";
-
-                            if (kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.HasValue)
-                            {
-                                TimeSpan fastestLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.Value);
-                                firstRow[1] += $" - {fastestLapTime:mm\\:ss\\.fff}";
-                            }
+                            TimeSpan fastestLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.Value);
+                            firstRow[1] = $" - {fastestLapTime:mm\\:ss\\.fff}";
                         }
                         else
                             firstRow[1] = $"--:--.---";
+
                     _table.AddRow($"{kv.Value.CarInfo.RaceNumber} - {kv.Value.CarInfo.GetCurrentDriverName().Trim()}", firstRow, new Color[] { Color.OrangeRed });
 
                     LapType currentLapType = LapType.ERROR;
