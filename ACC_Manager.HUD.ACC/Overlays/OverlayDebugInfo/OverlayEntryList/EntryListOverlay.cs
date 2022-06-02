@@ -82,40 +82,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
         {
             List<KeyValuePair<int, CarData>> cars = EntryListTracker.Instance.Cars;
 
-            switch (broadCastRealTime.SessionType)
-            {
-                case RaceSessionType.Race:
-                    {
-                        if (broadCastRealTime.Phase == SessionPhase.PreSession || broadCastRealTime.Phase == SessionPhase.PreFormation)
-                            cars.Sort((a, b) =>
-                            {
-                                return a.Value.RealtimeCarUpdate.CupPosition.CompareTo(b.Value.RealtimeCarUpdate.CupPosition);
-                            });
-                        else
-                        {
-                            cars.Sort((a, b) =>
-                            {
-                                float aPosition = a.Value.RealtimeCarUpdate.Laps + a.Value.RealtimeCarUpdate.SplinePosition / 10;
-                                float bPosition = b.Value.RealtimeCarUpdate.Laps + b.Value.RealtimeCarUpdate.SplinePosition / 10;
-                                return aPosition.CompareTo(bPosition);
-                            });
-                            cars.Reverse();
-                        }
-                        break;
-                    }
-
-                case RaceSessionType.Practice:
-                case RaceSessionType.Qualifying:
-                    {
-                        cars.Sort((a, b) =>
-                        {
-                            return a.Value.RealtimeCarUpdate.CupPosition.CompareTo(b.Value.RealtimeCarUpdate.CupPosition);
-                        });
-                        break;
-                    }
-
-                default: break;
-            }
+            SortEntryList(cars);
 
             foreach (KeyValuePair<int, CarData> kv in cars)
             {
@@ -156,7 +123,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 
                     switch (kv.Value.RealtimeCarUpdate.CarLocation)
                     {
-
                         case CarLocationEnum.PitEntry:
                             {
                                 firstRow[1] += " (PI)";
@@ -167,18 +133,18 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                                 firstRow[1] += " (PE)";
                                 break;
                             }
-
                         case CarLocationEnum.Pitlane:
                             {
                                 firstRow[1] += " (P)";
                                 break;
                             }
-
                         default: break;
                     }
 
                     string raceNumber = $"{kv.Value.CarInfo.RaceNumber}".FillEnd(3, ' ');
-                    _table.AddRow($"{raceNumber} {kv.Value.CarInfo.GetCurrentDriverName().Trim()}", firstRow, new Color[] { Color.OrangeRed });
+                    string firstName = kv.Value.CarInfo.Drivers[kv.Value.CarInfo.CurrentDriverIndex].FirstName;
+                    firstName = firstName.Take(1).First() + ".";
+                    _table.AddRow($"{raceNumber} {firstName} {kv.Value.CarInfo.GetCurrentDriverName().Trim()}", firstRow, new Color[] { Color.OrangeRed });
 
 
                     if (this._config.ShowExtendedData)
@@ -186,7 +152,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                         LapType currentLapType = LapType.ERROR;
                         if (kv.Value.RealtimeCarUpdate.CurrentLap != null)
                             currentLapType = kv.Value.RealtimeCarUpdate.CurrentLap.Type;
-                        _table.AddRow(String.Empty, new string[] { String.Empty, $"Lap {kv.Value.RealtimeCarUpdate.Laps} @ {kv.Value.RealtimeCarUpdate.SplinePosition * 100:F0}% - {kv.Value.RealtimeCarUpdate.Kmh} km/h" });
+                        _table.AddRow(String.Empty, new string[] { String.Empty, $"Lap {kv.Value.RealtimeCarUpdate.Laps} @ {kv.Value.RealtimeCarUpdate.SplinePosition * 100:F3}% - {kv.Value.RealtimeCarUpdate.Delta / 1000:F2}" });
                     }
                 }
             }
@@ -194,6 +160,62 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
             _table._headerWidthSet = false;
 
             _table.Draw(g);
+        }
+
+        private void SortEntryList(List<KeyValuePair<int, CarData>> cars)
+        {
+
+            switch (broadCastRealTime.SessionType)
+            {
+                case RaceSessionType.Race:
+                    {
+                        switch (broadCastRealTime.Phase)
+                        {
+                            case SessionPhase.SessionOver:
+                            case SessionPhase.PreSession:
+                            case SessionPhase.PreFormation:
+                                {
+                                    cars.Sort((a, b) =>
+                                    {
+                                        return a.Value.RealtimeCarUpdate.CupPosition.CompareTo(b.Value.RealtimeCarUpdate.CupPosition);
+                                    });
+                                    break;
+                                }
+                            default:
+                                {
+                                    cars.Sort((a, b) =>
+                                    {
+                                        var aSpline = a.Value.RealtimeCarUpdate.SplinePosition;
+                                        if (aSpline >= 99.995)
+                                            aSpline = 0;
+
+                                        var bSpline = b.Value.RealtimeCarUpdate.SplinePosition;
+                                        if (bSpline >= 99.995)
+                                            bSpline = 0;
+
+                                        float aPosition = a.Value.RealtimeCarUpdate.Laps + aSpline / 10;
+                                        float bPosition = b.Value.RealtimeCarUpdate.Laps + bSpline / 10;
+                                        return aPosition.CompareTo(bPosition);
+                                    });
+                                    cars.Reverse();
+                                    break;
+                                };
+                        }
+                        break;
+                    }
+
+                case RaceSessionType.Practice:
+                case RaceSessionType.Qualifying:
+                    {
+                        cars.Sort((a, b) =>
+                        {
+                            return a.Value.RealtimeCarUpdate.CupPosition.CompareTo(b.Value.RealtimeCarUpdate.CupPosition);
+                        });
+                        break;
+                    }
+
+                default: break;
+            }
         }
 
         public sealed override bool ShouldRender()
