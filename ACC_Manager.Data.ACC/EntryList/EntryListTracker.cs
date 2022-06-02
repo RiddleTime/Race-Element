@@ -30,8 +30,17 @@ namespace ACCManager.Data.ACC.EntryList
             private set { _instance = value; }
         }
 
-        public List<KeyValuePair<int, CarData>> Cars { get { lock (_entryListCars) { return _entryListCars.ToList(); } } }
         private Dictionary<int, CarData> _entryListCars = new Dictionary<int, CarData>();
+        public List<KeyValuePair<int, CarData>> Cars
+        {
+            get
+            {
+                lock (_entryListCars)
+                {
+                    return _entryListCars.ToList();
+                }
+            }
+        }
         private bool _isRunning = false;
         private readonly ACCSharedMemory _sharedMemory;
 
@@ -46,6 +55,7 @@ namespace ACCManager.Data.ACC.EntryList
             BroadcastTracker.Instance.OnRealTimeCarUpdate += RealTimeCarUpdate_EventHandler;
             BroadcastTracker.Instance.OnEntryListUpdate += EntryListUpdate_EventHandler;
             BroadcastTracker.Instance.OnBroadcastEvent += Broadcast_EventHandler;
+            StartEntryListCleanupTracker();
         }
 
         internal void Stop()
@@ -67,14 +77,13 @@ namespace ACCManager.Data.ACC.EntryList
 
                     int[] activeCarIds = _sharedMemory.ReadGraphicsPageFile().CarIds;
 
-                    lock (_entryListCars)
+                    List<KeyValuePair<int, CarData>> datas = _entryListCars.ToList();
+                    foreach (var entryListCar in datas)
                     {
-                        foreach (var entryListCar in _entryListCars)
-                        {
-                            bool isInServer = activeCarIds.Contains(entryListCar.Key);
-                            if (!isInServer)
+                        bool isInServer = activeCarIds.Contains(entryListCar.Key);
+                        if (!isInServer)
+                            lock (_entryListCars)
                                 _entryListCars.Remove(entryListCar.Key);
-                        }
                     }
                 }
             }).Start();
@@ -88,18 +97,20 @@ namespace ACCManager.Data.ACC.EntryList
                     {
                         if (broadcastingEvent.CarData == null)
                             break;
-
-                        CarData carData;
-                        if (_entryListCars.TryGetValue(broadcastingEvent.CarData.CarIndex, out carData))
+                        lock (_entryListCars)
                         {
-                            carData.CarInfo = broadcastingEvent.CarData;
-                        }
-                        else
-                        {
-                            Debug.WriteLine($"BroadcastingCarEventType.LapCompleted car index: {broadcastingEvent.CarData.CarIndex} not found in entry list");
-                            carData = new CarData();
-                            carData.CarInfo = broadcastingEvent.CarData;
-                            _entryListCars.Add(broadcastingEvent.CarData.CarIndex, carData);
+                            CarData carData;
+                            if (_entryListCars.TryGetValue(broadcastingEvent.CarData.CarIndex, out carData))
+                            {
+                                carData.CarInfo = broadcastingEvent.CarData;
+                            }
+                            else
+                            {
+                                Debug.WriteLine($"BroadcastingCarEventType.LapCompleted car index: {broadcastingEvent.CarData.CarIndex} not found in entry list");
+                                carData = new CarData();
+                                carData.CarInfo = broadcastingEvent.CarData;
+                                _entryListCars.Add(broadcastingEvent.CarData.CarIndex, carData);
+                            }
                         }
                         break;
                     }
@@ -125,31 +136,39 @@ namespace ACCManager.Data.ACC.EntryList
         private void EntryListUpdate_EventHandler(object sender, CarInfo carInfo)
         {
             CarData carData;
-            if (_entryListCars.TryGetValue(carInfo.CarIndex, out carData))
+            lock (_entryListCars)
             {
-                carData.CarInfo = carInfo;
-            }
-            else
-            {
-                carData = new CarData();
-                carData.CarInfo = carInfo;
-                _entryListCars.Add(carInfo.CarIndex, carData);
+                if (_entryListCars.TryGetValue(carInfo.CarIndex, out carData))
+                {
+                    carData.CarInfo = carInfo;
+                }
+                else
+                {
+                    carData = new CarData();
+                    carData.CarInfo = carInfo;
+
+                    _entryListCars.Add(carInfo.CarIndex, carData);
+                }
             }
         }
 
         private void RealTimeCarUpdate_EventHandler(object sender, RealtimeCarUpdate carUpdate)
         {
             CarData carData;
-            if (_entryListCars.TryGetValue(carUpdate.CarIndex, out carData))
+            lock (_entryListCars)
             {
-                carData.RealtimeCarUpdate = carUpdate;
-            }
-            else
-            {
-                Debug.WriteLine($"RealTimeCarUpdate_EventHandler car index: {carUpdate.CarIndex} not found in entry list");
-                carData = new CarData();
-                carData.RealtimeCarUpdate = carUpdate;
-                _entryListCars.Add(carUpdate.CarIndex, carData);
+                if (_entryListCars.TryGetValue(carUpdate.CarIndex, out carData))
+                {
+                    carData.RealtimeCarUpdate = carUpdate;
+                }
+                else
+                {
+                    Debug.WriteLine($"RealTimeCarUpdate_EventHandler car index: {carUpdate.CarIndex} not found in entry list");
+                    carData = new CarData();
+                    carData.RealtimeCarUpdate = carUpdate;
+
+                    _entryListCars.Add(carUpdate.CarIndex, carData);
+                }
             }
         }
     }
