@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ACCManager.Data.ACC.EntryList
@@ -31,14 +32,17 @@ namespace ACCManager.Data.ACC.EntryList
 
         public List<KeyValuePair<int, CarData>> Cars { get { lock (_entryListCars) { return _entryListCars.ToList(); } } }
         private Dictionary<int, CarData> _entryListCars = new Dictionary<int, CarData>();
+        private bool _isRunning = false;
+        private readonly ACCSharedMemory _sharedMemory;
 
         private EntryListTracker()
         {
-
+            _sharedMemory = new ACCSharedMemory();
         }
 
         internal void Start()
         {
+            _isRunning = true;
             BroadcastTracker.Instance.OnRealTimeCarUpdate += RealTimeCarUpdate_EventHandler;
             BroadcastTracker.Instance.OnEntryListUpdate += EntryListUpdate_EventHandler;
             BroadcastTracker.Instance.OnBroadcastEvent += Broadcast_EventHandler;
@@ -46,10 +50,34 @@ namespace ACCManager.Data.ACC.EntryList
 
         internal void Stop()
         {
+            _isRunning = false;
             BroadcastTracker.Instance.OnRealTimeCarUpdate -= RealTimeCarUpdate_EventHandler;
             BroadcastTracker.Instance.OnEntryListUpdate -= EntryListUpdate_EventHandler;
             BroadcastTracker.Instance.OnBroadcastEvent -= Broadcast_EventHandler;
             _entryListCars?.Clear();
+        }
+
+        private void StartEntryListCleanupTracker()
+        {
+            new Task(() =>
+            {
+                while (_isRunning)
+                {
+                    Thread.Sleep(100);
+
+                    int[] activeCarIds = _sharedMemory.ReadGraphicsPageFile().CarIds;
+
+                    lock (_entryListCars)
+                    {
+                        foreach (var entryListCar in _entryListCars)
+                        {
+                            bool isInServer = activeCarIds.Contains(entryListCar.Key);
+                            if (!isInServer)
+                                _entryListCars.Remove(entryListCar.Key);
+                        }
+                    }
+                }
+            }).Start();
         }
 
         private void Broadcast_EventHandler(object sender, BroadcastingEvent broadcastingEvent)

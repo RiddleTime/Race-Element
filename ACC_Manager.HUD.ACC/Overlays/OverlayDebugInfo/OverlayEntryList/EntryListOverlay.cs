@@ -111,7 +111,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                         if (kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.HasValue)
                         {
                             TimeSpan fastestLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.Value);
-                            firstRow[1] = $" - {fastestLapTime:mm\\:ss\\.fff}";
+                            firstRow[1] = $"{fastestLapTime:mm\\:ss\\.fff}";
                         }
                         else
                             firstRow[1] = $"--:--.---";
