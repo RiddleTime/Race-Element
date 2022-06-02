@@ -1,8 +1,10 @@
-﻿using ACCManager.Broadcast;
+﻿using ACC_Manager.Util.NumberExtensions;
+using ACCManager.Broadcast;
 using ACCManager.Broadcast.Structs;
 using ACCManager.Data;
 using ACCManager.Data.ACC.EntryList;
 using ACCManager.Data.ACC.Tracker;
+using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.HUD.Overlay.Util;
@@ -23,7 +25,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 {
     internal sealed class EntryListOverlay : AbstractOverlay
     {
-        private DebugConfig _config = new DebugConfig();
+        private EntryListDebugConfig _config = new EntryListDebugConfig();
+        private class EntryListDebugConfig : OverlayConfiguration
+        {
+            internal bool ShowExtendedData { get; set; } = false;
+
+            [ToolTip("Allows you to reposition this debug panel.")]
+            internal bool Undock { get; set; } = false;
+        }
 
         private readonly InfoTable _table;
 
@@ -107,21 +116,70 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                     string[] firstRow = new string[2] { String.Empty, String.Empty };
                     firstRow[0] = $"{kv.Value.RealtimeCarUpdate.CupPosition}";
 
-                    if (kv.Value.RealtimeCarUpdate.BestSessionLap != null)
-                        if (kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.HasValue)
-                        {
-                            TimeSpan fastestLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.Value);
-                            firstRow[1] = $"{fastestLapTime:mm\\:ss\\.fff}";
-                        }
-                        else
-                            firstRow[1] = $"--:--.---";
+                    switch (broadCastRealTime.SessionType)
+                    {
+                        case RaceSessionType.Race:
+                            {
+                                if (kv.Value.RealtimeCarUpdate.LastLap != null)
+                                    if (kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.HasValue)
+                                    {
+                                        TimeSpan fastestLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.Value);
+                                        firstRow[1] = $"{fastestLapTime:mm\\:ss\\.fff}";
+                                    }
+                                    else
+                                        firstRow[1] = $"--:--.---";
+                                break;
+                            }
 
-                    _table.AddRow($"{kv.Value.CarInfo.RaceNumber} - {kv.Value.CarInfo.GetCurrentDriverName().Trim()}", firstRow, new Color[] { Color.OrangeRed });
+                        case RaceSessionType.Qualifying:
+                            {
+                                if (kv.Value.RealtimeCarUpdate.BestSessionLap != null)
+                                    if (kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.HasValue)
+                                    {
+                                        TimeSpan fastestLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.Value);
+                                        firstRow[1] = $"{fastestLapTime:mm\\:ss\\.fff}";
+                                    }
+                                    else
+                                        firstRow[1] = $"--:--.---";
+                                break;
+                            }
+                        default: break;
+                    }
 
-                    LapType currentLapType = LapType.ERROR;
-                    if (kv.Value.RealtimeCarUpdate.CurrentLap != null)
-                        currentLapType = kv.Value.RealtimeCarUpdate.CurrentLap.Type;
-                    _table.AddRow(String.Empty, new string[] { String.Empty, $"{currentLapType} - {kv.Value.RealtimeCarUpdate.SplinePosition * 100:F2}% - {kv.Value.RealtimeCarUpdate.Kmh} km/h" });
+                    switch (kv.Value.RealtimeCarUpdate.CarLocation)
+                    {
+
+                        case CarLocationEnum.PitEntry:
+                            {
+                                firstRow[1] += " (PI)";
+                                break;
+                            }
+                        case CarLocationEnum.PitExit:
+                            {
+                                firstRow[1] += " (PE)";
+                                break;
+                            }
+
+                        case CarLocationEnum.Pitlane:
+                            {
+                                firstRow[1] += " (P)";
+                                break;
+                            }
+
+                        default: break;
+                    }
+
+                    string raceNumber = $"{kv.Value.CarInfo.RaceNumber}".FillEnd(3, ' ');
+                    _table.AddRow($"{raceNumber} {kv.Value.CarInfo.GetCurrentDriverName().Trim()}", firstRow, new Color[] { Color.OrangeRed });
+
+
+                    if (this._config.ShowExtendedData)
+                    {
+                        LapType currentLapType = LapType.ERROR;
+                        if (kv.Value.RealtimeCarUpdate.CurrentLap != null)
+                            currentLapType = kv.Value.RealtimeCarUpdate.CurrentLap.Type;
+                        _table.AddRow(String.Empty, new string[] { String.Empty, $"Lap {kv.Value.RealtimeCarUpdate.Laps} @ {kv.Value.RealtimeCarUpdate.SplinePosition * 100:F0}% - {kv.Value.RealtimeCarUpdate.Kmh} km/h" });
+                    }
                 }
             }
 
