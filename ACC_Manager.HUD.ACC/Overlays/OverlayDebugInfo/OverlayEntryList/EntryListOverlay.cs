@@ -34,9 +34,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 
             float fontSize = 10;
             var font = FontUtil.FontUnispace(fontSize);
-            _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 5), 500 });
+            _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 5), 300 });
 
-            this.Width = 600;
+            this.Width = 500;
             this.Height = 800;
         }
 
@@ -73,8 +73,32 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
         {
             List<KeyValuePair<int, CarData>> cars = EntryListTracker.Instance.Cars;
 
-            cars.Sort((x, y) => { return x.Value.RealtimeCarUpdate.SplinePosition.CompareTo(y.Value.RealtimeCarUpdate.SplinePosition); });
-            cars.Reverse();
+            switch (broadCastRealTime.SessionType)
+            {
+                case RaceSessionType.Race:
+                    {
+                        cars.Sort((a, b) =>
+                        {
+                            float aPosition = a.Value.RealtimeCarUpdate.Laps + a.Value.RealtimeCarUpdate.SplinePosition;
+                            float bPosition = b.Value.RealtimeCarUpdate.Laps + b.Value.RealtimeCarUpdate.SplinePosition;
+                            return aPosition.CompareTo(bPosition);
+                        });
+                        cars.Reverse();
+                        break;
+                    }
+
+                case RaceSessionType.Practice:
+                case RaceSessionType.Qualifying:
+                    {
+                        cars.Sort((a, b) =>
+                        {
+                            return a.Value.RealtimeCarUpdate.CupPosition.CompareTo(b.Value.RealtimeCarUpdate.CupPosition);
+                        });
+                        break;
+                    }
+
+                default: break;
+            }
 
             foreach (KeyValuePair<int, CarData> kv in cars)
             {
