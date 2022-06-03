@@ -182,6 +182,12 @@ namespace ACCManager.Data.ACC.EntryList
                 {
                     if (_entryListCars.TryGetValue(carUpdate.CarIndex, out carData))
                     {
+                        if (carData.RealtimeCarUpdate.Laps < carUpdate.Laps)
+                        {
+                            if (carUpdate.SplinePosition > 0.7)
+                                carUpdate.SplinePosition = 0;
+                        }
+
                         carData.RealtimeCarUpdate = carUpdate;
                     }
                     else

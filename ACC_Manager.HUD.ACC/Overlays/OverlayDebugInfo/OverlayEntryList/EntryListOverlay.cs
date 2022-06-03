@@ -43,7 +43,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 
             float fontSize = 10;
             var font = FontUtil.FontUnispace(fontSize);
-            _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 5), (int)(font.Size * 13), (int)(font.Size * 7) });
+            _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 5), (int)(font.Size * 13), (int)(font.Size * 8) });
 
             this.Width = 510;
             this.Height = 800;
@@ -107,6 +107,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                                 break;
                             }
 
+                        case RaceSessionType.Practice:
                         case RaceSessionType.Qualifying:
                             {
                                 if (kv.Value.RealtimeCarUpdate.BestSessionLap != null)
@@ -158,10 +159,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 
                     if (this._config.ShowExtendedData)
                     {
-                        LapType currentLapType = LapType.ERROR;
-                        if (kv.Value.RealtimeCarUpdate.CurrentLap != null)
-                            currentLapType = kv.Value.RealtimeCarUpdate.CurrentLap.Type;
-                        _table.AddRow(String.Empty, new string[] { String.Empty, $"Lap {kv.Value.RealtimeCarUpdate.Laps} @ {kv.Value.RealtimeCarUpdate.SplinePosition * 100:F3}%" });
+                        string speed = $"{kv.Value.RealtimeCarUpdate.Kmh} km/h".FillStart(8, ' ');
+                        _table.AddRow(String.Empty, new string[] { String.Empty, $"Lap {kv.Value.RealtimeCarUpdate.Laps}` {kv.Value.RealtimeCarUpdate.SplinePosition:F3}", speed });
                     }
                 }
             }
@@ -195,11 +194,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                                     cars.Sort((a, b) =>
                                     {
                                         var aSpline = a.Value.RealtimeCarUpdate.SplinePosition;
-                                        if (aSpline >= 99.999)
+                                        if (aSpline >= 99.98)
                                             aSpline = 0;
 
                                         var bSpline = b.Value.RealtimeCarUpdate.SplinePosition;
-                                        if (bSpline >= 99.999)
+                                        if (bSpline >= 99.98)
                                             bSpline = 0;
 
                                         float aPosition = a.Value.RealtimeCarUpdate.Laps + aSpline / 10;

@@ -22,6 +22,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             [IntRange(150, 450, 10)]
             internal int DataPoints { get; set; } = 300;
 
+
+            [ToolTip("The amount of data points recorded per second. (Determines the refresh rate as well)")]
+            [IntRange(30, 70, 5)]
+            internal int DataCollectionRate { get; set; } = 50;
+
             public InputTraceConfig()
             {
                 this.AllowRescale = true;
@@ -45,7 +50,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
 
         public sealed override void BeforeStart()
         {
-            _inputDataCollector = new InputDataCollector() { TraceCount = this._originalWidth - 1 };
+            _inputDataCollector = new InputDataCollector() { TraceCount = this._originalWidth - 1, inputTraceConfig = _config };
             _inputDataCollector.Start();
         }
 

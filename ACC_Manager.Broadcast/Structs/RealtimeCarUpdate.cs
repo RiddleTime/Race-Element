@@ -18,7 +18,7 @@ namespace ACCManager.Broadcast.Structs
         public int Kmh { get; internal set; }
         public int Position { get; internal set; }
         public int TrackPosition { get; internal set; }
-        public float SplinePosition { get; internal set; }
+        public float SplinePosition { get; set; }
         public int Delta { get; internal set; }
         public LapInfo BestSessionLap { get; internal set; }
         public LapInfo LastLap { get; internal set; }

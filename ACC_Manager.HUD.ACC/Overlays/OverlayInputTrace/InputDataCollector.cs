@@ -12,6 +12,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
     {
         private bool IsCollecting = false;
         public int TraceCount = 300;
+        public InputTraceOverlay.InputTraceConfig inputTraceConfig;
 
         public LinkedList<int> Throttle = new LinkedList<int>();
         public LinkedList<int> Brake = new LinkedList<int>();
@@ -63,7 +64,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             {
                 while (IsCollecting)
                 {
-                    Thread.Sleep(1000 / 50);
+                    Thread.Sleep(1000 / inputTraceConfig.DataCollectionRate);
                     Collect(sharedMemory.ReadPhysicsPageFile());
                     InputTraceOverlay.Instance.RequestRedraw();
                 }
