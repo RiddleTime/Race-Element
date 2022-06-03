@@ -18,7 +18,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
         {
             this.Width = ScreenWidth;
             this.Height = ScreenHeight;
-            this.RefreshRateHz = 144;
+            this.RefreshRateHz = 60;
         }
 
         public sealed override void BeforeStart()
