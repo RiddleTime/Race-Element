@@ -151,7 +151,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 
                     string raceNumber = $"{kv.Value.CarInfo.RaceNumber}".FillEnd(3, ' ');
                     string firstName = kv.Value.CarInfo.Drivers[kv.Value.CarInfo.CurrentDriverIndex].FirstName;
-                    firstName = firstName.Take(1).First() + ".";
+                    if (firstName.Length > 0)
+                        firstName = firstName.Take(1).First() + ".";
                     _table.AddRow($"{raceNumber} {firstName} {kv.Value.CarInfo.GetCurrentDriverName().Trim()}", firstRow, firstRowColors);
 
 

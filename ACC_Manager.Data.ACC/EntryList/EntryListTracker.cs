@@ -71,104 +71,132 @@ namespace ACCManager.Data.ACC.EntryList
         {
             new Task(() =>
             {
-                while (_isRunning)
+                try
                 {
-                    Thread.Sleep(100);
-
-                    int[] activeCarIds = _sharedMemory.ReadGraphicsPageFile().CarIds;
-
-                    List<KeyValuePair<int, CarData>> datas = _entryListCars.ToList();
-                    foreach (var entryListCar in datas)
+                    while (_isRunning)
                     {
-                        bool isInServer = activeCarIds.Contains(entryListCar.Key);
-                        if (!isInServer)
-                            lock (_entryListCars)
-                                _entryListCars.Remove(entryListCar.Key);
+                        Thread.Sleep(100);
+
+                        int[] activeCarIds = _sharedMemory.ReadGraphicsPageFile().CarIds;
+
+                        List<KeyValuePair<int, CarData>> datas = _entryListCars.ToList();
+                        foreach (var entryListCar in datas)
+                        {
+                            bool isInServer = activeCarIds.Contains(entryListCar.Key);
+                            if (!isInServer)
+                                lock (_entryListCars)
+                                    _entryListCars.Remove(entryListCar.Key);
+                        }
                     }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
                 }
             }).Start();
         }
 
         private void Broadcast_EventHandler(object sender, BroadcastingEvent broadcastingEvent)
         {
-            switch (broadcastingEvent.Type)
+            try
             {
-                case BroadcastingCarEventType.LapCompleted:
-                    {
-                        if (broadcastingEvent.CarData == null)
-                            break;
-                        lock (_entryListCars)
+                switch (broadcastingEvent.Type)
+                {
+                    case BroadcastingCarEventType.LapCompleted:
                         {
-                            CarData carData;
-                            if (_entryListCars.TryGetValue(broadcastingEvent.CarData.CarIndex, out carData))
+                            if (broadcastingEvent.CarData == null)
+                                break;
+                            lock (_entryListCars)
                             {
-                                carData.CarInfo = broadcastingEvent.CarData;
+                                CarData carData;
+                                if (_entryListCars.TryGetValue(broadcastingEvent.CarData.CarIndex, out carData))
+                                {
+                                    carData.CarInfo = broadcastingEvent.CarData;
+                                }
+                                else
+                                {
+                                    Debug.WriteLine($"BroadcastingCarEventType.LapCompleted car index: {broadcastingEvent.CarData.CarIndex} not found in entry list");
+                                    carData = new CarData();
+                                    carData.CarInfo = broadcastingEvent.CarData;
+                                    _entryListCars.Add(broadcastingEvent.CarData.CarIndex, carData);
+                                }
                             }
-                            else
-                            {
-                                Debug.WriteLine($"BroadcastingCarEventType.LapCompleted car index: {broadcastingEvent.CarData.CarIndex} not found in entry list");
-                                carData = new CarData();
-                                carData.CarInfo = broadcastingEvent.CarData;
-                                _entryListCars.Add(broadcastingEvent.CarData.CarIndex, carData);
-                            }
+                            break;
                         }
-                        break;
-                    }
-                case BroadcastingCarEventType.Accident:
-                    {
-                        if (broadcastingEvent.CarData == null)
-                            break;
+                    case BroadcastingCarEventType.Accident:
+                        {
+                            if (broadcastingEvent.CarData == null)
+                                break;
 
-                        Debug.WriteLine($"Car: {broadcastingEvent.CarData.RaceNumber} had an accident");
-                        break;
-                    }
-                default:
-                    {
-                        if (broadcastingEvent.CarData == null)
+                            Debug.WriteLine($"Car: {broadcastingEvent.CarData.RaceNumber} had an accident");
                             break;
+                        }
+                    default:
+                        {
+                            if (broadcastingEvent.CarData == null)
+                                break;
 
-                        Debug.WriteLine($"{broadcastingEvent.Type} - {broadcastingEvent.CarData}");
-                        break;
-                    }
+                            Debug.WriteLine($"{broadcastingEvent.Type} - {broadcastingEvent.CarData}");
+                            break;
+                        }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
             }
         }
 
         private void EntryListUpdate_EventHandler(object sender, CarInfo carInfo)
         {
-            CarData carData;
-            lock (_entryListCars)
+            try
             {
-                if (_entryListCars.TryGetValue(carInfo.CarIndex, out carData))
+                CarData carData;
+                lock (_entryListCars)
                 {
-                    carData.CarInfo = carInfo;
-                }
-                else
-                {
-                    carData = new CarData();
-                    carData.CarInfo = carInfo;
+                    if (_entryListCars.TryGetValue(carInfo.CarIndex, out carData))
+                    {
+                        carData.CarInfo = carInfo;
+                    }
+                    else
+                    {
+                        carData = new CarData();
+                        carData.CarInfo = carInfo;
 
-                    _entryListCars.Add(carInfo.CarIndex, carData);
+                        _entryListCars.Add(carInfo.CarIndex, carData);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
             }
         }
 
         private void RealTimeCarUpdate_EventHandler(object sender, RealtimeCarUpdate carUpdate)
         {
-            CarData carData;
-            lock (_entryListCars)
+            try
             {
-                if (_entryListCars.TryGetValue(carUpdate.CarIndex, out carData))
+                CarData carData;
+                lock (_entryListCars)
                 {
-                    carData.RealtimeCarUpdate = carUpdate;
-                }
-                else
-                {
-                    Debug.WriteLine($"RealTimeCarUpdate_EventHandler car index: {carUpdate.CarIndex} not found in entry list");
-                    carData = new CarData();
-                    carData.RealtimeCarUpdate = carUpdate;
+                    if (_entryListCars.TryGetValue(carUpdate.CarIndex, out carData))
+                    {
+                        carData.RealtimeCarUpdate = carUpdate;
+                    }
+                    else
+                    {
+                        Debug.WriteLine($"RealTimeCarUpdate_EventHandler car index: {carUpdate.CarIndex} not found in entry list");
+                        carData = new CarData();
+                        carData.RealtimeCarUpdate = carUpdate;
 
-                    _entryListCars.Add(carUpdate.CarIndex, carData);
+                        _entryListCars.Add(carUpdate.CarIndex, carData);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
             }
         }
     }
