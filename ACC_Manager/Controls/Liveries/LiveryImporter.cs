@@ -2,6 +2,7 @@
 using ACCManager.Util;
 using Newtonsoft.Json;
 using SharpCompress.Archives;
+using SharpCompress.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -76,6 +77,7 @@ namespace ACCManager.Controls
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex);
                 LogWriter.WriteToLog(ex);
             }
 

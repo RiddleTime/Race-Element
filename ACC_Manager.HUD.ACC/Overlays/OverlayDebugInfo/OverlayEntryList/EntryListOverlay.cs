@@ -45,7 +45,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
             var font = FontUtil.FontUnispace(fontSize);
             _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 5), (int)(font.Size * 13), (int)(font.Size * 7) });
 
-            this.Width = 500;
+            this.Width = 510;
             this.Height = 800;
         }
 
@@ -122,10 +122,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                         default: break;
                     }
 
-                    firstRow[2] = $"{kv.Value.RealtimeCarUpdate.Delta / 1000f:F2}";
-                    firstRowColors[2] = kv.Value.RealtimeCarUpdate.Delta > 0 ? Color.OrangeRed : Color.LimeGreen;
-
-
                     switch (kv.Value.RealtimeCarUpdate.CarLocation)
                     {
                         case CarLocationEnum.PitEntry:
@@ -141,6 +137,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                         case CarLocationEnum.Pitlane:
                             {
                                 firstRow[1] += " (P)";
+                                break;
+                            }
+
+                        case CarLocationEnum.Track:
+                            {
+                                firstRow[2] = $"{kv.Value.RealtimeCarUpdate.Delta / 1000f:F2}".FillStart(6, ' ');
+                                firstRowColors[2] = kv.Value.RealtimeCarUpdate.Delta > 0 ? Color.OrangeRed : Color.LimeGreen;
                                 break;
                             }
                         default: break;
