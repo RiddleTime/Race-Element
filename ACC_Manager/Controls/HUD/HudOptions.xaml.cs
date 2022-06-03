@@ -271,7 +271,7 @@ namespace ACCManager.Controls
                         StackPanel intStacker = new StackPanel()
                         {
                             Name = intLabel.Replace(" ", "_"),
-                            Margin = new Thickness(5, 0, 10, 0),
+                            Margin = new Thickness(5, 0, 5, 0),
                             Orientation = Orientation.Horizontal,
                             VerticalAlignment = VerticalAlignment.Center,
                             Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)),
@@ -324,6 +324,7 @@ namespace ACCManager.Controls
                         {
                             int delta = args.Delta;
                             slider.Value += delta.Clip(-1, 1) * tickFrequency;
+                            args.Handled = true;
                         };
                         intStacker.MouseEnter += (sender, args) => { intStacker.Background = new SolidColorBrush(Color.FromArgb(50, 140, 0, 0)); }; ;
                         intStacker.MouseLeave += (sender, args) => { intStacker.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)); };
@@ -453,6 +454,7 @@ namespace ACCManager.Controls
                             {
                                 int delta = args.Delta;
                                 slider.Value += delta.Clip(-1, 1) * tickFrequency;
+                                args.Handled = true;
                             };
                             sliderStacker.MouseEnter += (sender, args) => { sliderStacker.Background = new SolidColorBrush(Color.FromArgb(50, 180, 0, 0)); }; ;
                             sliderStacker.MouseLeave += (sender, args) => { sliderStacker.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)); };
