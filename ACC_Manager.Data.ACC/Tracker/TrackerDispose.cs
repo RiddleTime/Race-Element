@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using ACCManager.Data.ACC.EntryList;
+using ACCManager.Data.ACC.Session;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -12,6 +14,8 @@ namespace ACCManager.Data.ACC.Tracker
         {
             Debug.WriteLine("Safely disposing ACC Data Tracker instances");
             BroadcastTracker.Instance.Dispose();
+            EntryListTracker.Instance.Stop();
+            RaceSessionTracker.Instance.Stop();
         }
     }
 }
