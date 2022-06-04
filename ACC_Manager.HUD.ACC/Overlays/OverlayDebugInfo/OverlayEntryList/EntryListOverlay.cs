@@ -206,6 +206,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 
             switch (broadCastRealTime.SessionType)
             {
+                case RaceSessionType.Practice:
                 case RaceSessionType.Race:
                     {
                         switch (broadCastRealTime.Phase)
@@ -237,7 +238,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                         break;
                     }
 
-                case RaceSessionType.Practice:
+              
                 case RaceSessionType.Qualifying:
                     {
                         cars.Sort((a, b) =>

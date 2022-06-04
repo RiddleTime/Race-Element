@@ -106,21 +106,21 @@ namespace ACCManager.Data.ACC.EntryList
                         {
                             if (broadcastingEvent.CarData == null)
                                 break;
-                            lock (_entryListCars)
-                            {
-                                CarData carData;
-                                if (_entryListCars.TryGetValue(broadcastingEvent.CarData.CarIndex, out carData))
-                                {
-                                    carData.CarInfo = broadcastingEvent.CarData;
-                                }
-                                else
-                                {
-                                    //Debug.WriteLine($"BroadcastingCarEventType.LapCompleted car index: {broadcastingEvent.CarData.CarIndex} not found in entry list");
-                                    carData = new CarData();
-                                    carData.CarInfo = broadcastingEvent.CarData;
-                                    _entryListCars.Add(broadcastingEvent.CarData.CarIndex, carData);
-                                }
-                            }
+                            //lock (_entryListCars)
+                            //{
+                            //    CarData carData;
+                            //    if (_entryListCars.TryGetValue(broadcastingEvent.CarData.CarIndex, out carData))
+                            //    {
+                            //        carData.CarInfo = broadcastingEvent.CarData;
+                            //    }
+                            //    else
+                            //    {
+                            //        //Debug.WriteLine($"BroadcastingCarEventType.LapCompleted car index: {broadcastingEvent.CarData.CarIndex} not found in entry list");
+                            //        carData = new CarData();
+                            //        carData.CarInfo = broadcastingEvent.CarData;
+                            //        _entryListCars.Add(broadcastingEvent.CarData.CarIndex, carData);
+                            //    }
+                            //}
                             break;
                         }
                     case BroadcastingCarEventType.Accident:
@@ -183,12 +183,6 @@ namespace ACCManager.Data.ACC.EntryList
                 {
                     if (_entryListCars.TryGetValue(carUpdate.CarIndex, out carData))
                     {
-                        if (carData.RealtimeCarUpdate.Laps < carUpdate.Laps)
-                        {
-                            if (carUpdate.SplinePosition > 0.7)
-                                carUpdate.SplinePosition = 0;
-                        }
-
                         carData.RealtimeCarUpdate = carUpdate;
                     }
                     else
