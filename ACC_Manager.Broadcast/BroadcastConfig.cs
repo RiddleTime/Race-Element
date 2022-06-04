@@ -14,9 +14,9 @@ namespace ACC_Manager.Broadcast
     {
         public class Root
         {
-            public int updListenerPort { get; set; }
-            public string connectionPassword { get; set; }
-            public string commandPassword { get; set; }
+            public int UpdListenerPort { get; set; }
+            public string ConnectionPassword { get; set; }
+            public string CommandPassword { get; set; }
         }
 
         private static string _lock = String.Empty;
@@ -35,9 +35,9 @@ namespace ACC_Manager.Broadcast
                         {
                             Root config = GetConfiguration(fileStream);
 
-                            if (config.updListenerPort == 0)
+                            if (config.UpdListenerPort == 0)
                             {
-                                config.updListenerPort = 9000;
+                                config.UpdListenerPort = 9000;
                                 File.WriteAllText(broadcastingConfig.FullName, JsonConvert.SerializeObject(config, Formatting.Indented));
                                 LogWriter.WriteToLog($"Auto-Changed the port number in \"{FileUtil.ConfigPath}broadcasting.json\" from 0 to 9000.");
                             }

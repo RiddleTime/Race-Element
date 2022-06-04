@@ -22,10 +22,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             [IntRange(150, 450, 10)]
             internal int DataPoints { get; set; } = 300;
 
-
-            [ToolTip("The amount of data points recorded per second. (Determines the refresh rate as well)")]
-            [IntRange(30, 70, 5)]
-            internal int DataCollectionRate { get; set; } = 50;
+            [ToolTip("Sets the data collection rate.")]
+            [IntRange(25, 85, 5)]
+            internal int Herz { get; set; } = 50;
 
             public InputTraceConfig()
             {

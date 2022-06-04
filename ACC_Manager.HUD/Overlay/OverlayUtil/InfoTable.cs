@@ -74,6 +74,9 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                     TableRow row = _rows[counter];
                     float rowY = Y + counter * _font.Height;
 
+                    if (row.HeaderBackground != Color.Transparent)
+                        g.FillRoundedRectangle(new SolidBrush(row.HeaderBackground), new Rectangle(X, (int)rowY, (int)_maxHeaderWidth + 5, _font.Height), 4);
+
                     if (DrawRowLines && counter > 0)
                         g.DrawLine(new Pen(Color.FromArgb(45, Color.White)), new Point(X + 1, (int)rowY), new Point(totalWidth - 1, (int)rowY));
 
@@ -151,6 +154,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
         public class TableRow
         {
             public string Header { get; set; }
+            public Color HeaderBackground { get; set; } = Color.Transparent;
             public string[] Columns { get; set; }
             public Color[] ColumnColors { get; set; }
         }

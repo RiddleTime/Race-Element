@@ -64,7 +64,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             {
                 while (IsCollecting)
                 {
-                    Thread.Sleep(1000 / inputTraceConfig.DataCollectionRate);
+                    Thread.Sleep(1000 / inputTraceConfig.Herz);
                     Collect(sharedMemory.ReadPhysicsPageFile());
                     InputTraceOverlay.Instance.RequestRedraw();
                 }

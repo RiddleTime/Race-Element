@@ -20,18 +20,24 @@ using System.Text;
 using System.Threading.Tasks;
 using static ACCManager.Data.ACC.EntryList.EntryListTracker;
 using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
+using static ACCManager.HUD.Overlay.OverlayUtil.InfoTable;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 {
     internal sealed class EntryListOverlay : AbstractOverlay
     {
-        private EntryListDebugConfig _config = new EntryListDebugConfig();
+        private readonly EntryListDebugConfig _config = new EntryListDebugConfig();
         private class EntryListDebugConfig : OverlayConfiguration
         {
             internal bool ShowExtendedData { get; set; } = false;
 
             [ToolTip("Allows you to reposition this debug panel.")]
             internal bool Undock { get; set; } = false;
+
+            public EntryListDebugConfig()
+            {
+                AllowRescale = true;
+            }
         }
 
         private readonly InfoTable _table;
@@ -39,13 +45,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
         public EntryListOverlay(Rectangle rect) : base(rect, "Debug EntryList Overlay")
         {
             this.AllowReposition = false;
-            this.RefreshRateHz = 10;
+            //this.RefreshRateHz = 10;
 
-            float fontSize = 10;
+            float fontSize = 9;
             var font = FontUtil.FontUnispace(fontSize);
             _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 5), (int)(font.Size * 13), (int)(font.Size * 8) });
 
-            this.Width = 510;
+            this.Width = 415;
             this.Height = 800;
         }
 
@@ -92,6 +98,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                     Color[] firstRowColors = new Color[] { Color.White, Color.White, Color.White };
                     firstRow[0] = $"{kv.Value.RealtimeCarUpdate.CupPosition}";
 
+
+
+                    int bestSessionLapMS = -1;
+                    if (broadCastRealTime.BestSessionLap != null)
+                        bestSessionLapMS = broadCastRealTime.BestSessionLap.LaptimeMS.GetValueOrDefault(-1);
                     switch (broadCastRealTime.SessionType)
                     {
                         case RaceSessionType.Race:
@@ -99,6 +110,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                                 if (kv.Value.RealtimeCarUpdate.LastLap != null)
                                     if (kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.HasValue)
                                     {
+                                        if (broadCastRealTime.BestSessionLap != null)
+                                            if (kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS == bestSessionLapMS)
+                                                firstRowColors[1] = Color.FromArgb(255, 207, 97, 255);
+
                                         TimeSpan fastestLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.Value);
                                         firstRow[1] = $"{fastestLapTime:mm\\:ss\\.fff}";
                                     }
@@ -113,6 +128,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                                 if (kv.Value.RealtimeCarUpdate.BestSessionLap != null)
                                     if (kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.HasValue)
                                     {
+                                        if (broadCastRealTime.BestSessionLap != null)
+                                            if (kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS == bestSessionLapMS)
+                                                firstRowColors[1] = Color.FromArgb(255, 207, 97, 255);
+
                                         TimeSpan fastestLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.Value);
                                         firstRow[1] = $"{fastestLapTime:mm\\:ss\\.fff}";
                                     }
@@ -152,9 +171,21 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 
                     string raceNumber = $"{kv.Value.CarInfo.RaceNumber}".FillEnd(3, ' ');
                     string firstName = kv.Value.CarInfo.Drivers[kv.Value.CarInfo.CurrentDriverIndex].FirstName;
-                    if (firstName.Length > 0)
-                        firstName = firstName.Take(1).First() + ".";
-                    _table.AddRow($"{raceNumber} {firstName} {kv.Value.CarInfo.GetCurrentDriverName().Trim()}", firstRow, firstRowColors);
+                    if (firstName.Length > 0) firstName = firstName.First() + ".";
+                    TableRow row = new TableRow()
+                    {
+                        Header = $"{raceNumber} {firstName} {kv.Value.CarInfo.GetCurrentDriverName().Trim()}",
+                        Columns = firstRow,
+                        ColumnColors = firstRowColors,
+                        HeaderBackground = Color.FromArgb(70, Color.Black)
+                    };
+
+                    if (kv.Key == pageGraphics.PlayerCarID) row.HeaderBackground = Color.FromArgb(120, Color.Red);
+                    else
+                        if (kv.Key == broadCastRealTime.FocusedCarIndex) row.HeaderBackground = Color.FromArgb(70, Color.Red);
+
+                    _table.AddRow(row);
+                    //_table.AddRow($"{raceNumber} {firstName} {kv.Value.CarInfo.GetCurrentDriverName().Trim()}", firstRow, firstRowColors);
 
 
                     if (this._config.ShowExtendedData)
@@ -194,13 +225,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                                     cars.Sort((a, b) =>
                                     {
                                         var aSpline = a.Value.RealtimeCarUpdate.SplinePosition;
-                                        if (aSpline >= 99.98)
-                                            aSpline = 0;
-
                                         var bSpline = b.Value.RealtimeCarUpdate.SplinePosition;
-                                        if (bSpline >= 99.98)
-                                            bSpline = 0;
-
                                         float aPosition = a.Value.RealtimeCarUpdate.Laps + aSpline / 10;
                                         float bPosition = b.Value.RealtimeCarUpdate.Laps + bSpline / 10;
                                         return aPosition.CompareTo(bPosition);

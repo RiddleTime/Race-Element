@@ -14,6 +14,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo
         {
             [ToolTip("Allows you to reposition this debug panel.")]
             internal bool Undock { get; set; } = false;
+
+            public DebugConfig()
+            {
+                this.AllowRescale = true;
+            }
         }
 
         private static DebugInfoHelper _instance = new DebugInfoHelper();
