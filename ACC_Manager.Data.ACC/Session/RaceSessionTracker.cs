@@ -53,9 +53,9 @@ namespace ACCManager.Data.ACC.Session
                     var pageGraphics = _sharedMemory.ReadGraphicsPageFile();
                     if (pageGraphics.SessionType != lastSessionType)
                     {
+                        Debug.WriteLine($"SessionType: {lastSessionType} -> {pageGraphics.SessionType}");
                         lastSessionType = pageGraphics.SessionType;
                         OnACSessionTypeChanged?.Invoke(this, pageGraphics.SessionType);
-                        Debug.WriteLine("SessionType: " + pageGraphics.SessionType);
                     }
                 }
 
@@ -68,9 +68,10 @@ namespace ACCManager.Data.ACC.Session
         {
             if (e.Phase != lastSessionPhase)
             {
+                Debug.WriteLine($"SessionPhase: {lastSessionPhase} -> {e.Phase}");
+
                 lastSessionPhase = e.Phase;
                 OnSessionPhaseChanged?.Invoke(this, e.Phase);
-                Debug.WriteLine("SessionPhase: " + e.Phase);
             }
         }
 
