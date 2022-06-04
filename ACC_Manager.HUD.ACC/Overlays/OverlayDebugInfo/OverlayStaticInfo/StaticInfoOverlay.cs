@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo;
 using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
+using System.Drawing.Text;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayStaticInfo
 {
@@ -59,6 +60,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStaticInfo
         public sealed override void Render(Graphics g)
         {
             g.FillRectangle(new SolidBrush(System.Drawing.Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.Width, this.Height));
+            g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+            g.TextContrast = 1;
 
             int xMargin = 5;
             int y = 0;
