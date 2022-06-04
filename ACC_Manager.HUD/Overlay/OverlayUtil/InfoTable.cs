@@ -180,6 +180,9 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                         length = _rows.Count;
                     }
                 }
+                if (_maxHeaderWidth == 0)
+                    return;
+
                 _maxHeaderWidth += _font.Size;
                 _headerWidthSet = true;
             }

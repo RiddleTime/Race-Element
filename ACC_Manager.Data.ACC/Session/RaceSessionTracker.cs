@@ -11,7 +11,7 @@ using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.Data.ACC.Session
 {
-    internal class RaceSessionTracker
+    public class RaceSessionTracker
     {
 
         private static RaceSessionTracker _instance;
@@ -55,7 +55,7 @@ namespace ACCManager.Data.ACC.Session
                     {
                         lastSessionType = pageGraphics.SessionType;
                         OnACSessionTypeChanged?.Invoke(this, pageGraphics.SessionType);
-                        Debug.WriteLine("AC_SessionType_Changed: " + pageGraphics.SessionType);
+                        Debug.WriteLine("SessionType: " + pageGraphics.SessionType);
                     }
                 }
 
@@ -70,7 +70,7 @@ namespace ACCManager.Data.ACC.Session
             {
                 lastSessionPhase = e.Phase;
                 OnSessionPhaseChanged?.Invoke(this, e.Phase);
-                Debug.WriteLine("SessionPhase_Changed: " + e.Phase);
+                Debug.WriteLine("SessionPhase: " + e.Phase);
             }
         }
 

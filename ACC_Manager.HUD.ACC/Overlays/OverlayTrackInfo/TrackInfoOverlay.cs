@@ -1,4 +1,5 @@
-﻿using ACCManager.HUD.Overlay.Configuration;
+﻿using ACCManager.Data.ACC.Session;
+using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.Util;
 using System;
@@ -7,13 +8,12 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
 {
     internal sealed class TrackInfoOverlay : AbstractOverlay
     {
-        private readonly InfoPanel _panel = new InfoPanel(10, 240);
-
         private readonly TrackInfoConfig _config = new TrackInfoConfig();
         private class TrackInfoConfig : OverlayConfiguration
         {
@@ -32,6 +32,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
             }
         }
 
+        private readonly InfoPanel _panel = new InfoPanel(10, 240);
+        private AcSessionType _sessionType = AcSessionType.AC_UNKNOWN;
+
+
         public TrackInfoOverlay(Rectangle rectangle) : base(rectangle, "Track Info Overlay")
         {
             this.Width = 230;
@@ -49,9 +53,19 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
 
             if (!this._config.ShowTimeOfDay)
                 this.Height -= this._panel.FontHeight;
+
+            RaceSessionTracker.Instance.OnACSessionTypeChanged += Instance_OnACSessionTypeChanged;
         }
 
-        public sealed override void BeforeStop() { }
+        public sealed override void BeforeStop()
+        {
+            RaceSessionTracker.Instance.OnACSessionTypeChanged -= Instance_OnACSessionTypeChanged;
+        }
+
+        private void Instance_OnACSessionTypeChanged(object sender, AcSessionType e)
+        {
+            _sessionType = e;
+        }
 
         public sealed override void Render(Graphics g)
         {
@@ -65,7 +79,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
                 _panel.AddLine("Flag", ACCSharedMemory.FlagTypeToString(pageGraphics.Flag));
 
             if (this._config.ShowSessionType)
-                _panel.AddLine("Session", ACCSharedMemory.SessionTypeToString(pageGraphics.SessionType));
+                _panel.AddLine("Session", ACCSharedMemory.SessionTypeToString(_sessionType));
 
             _panel.AddLine("Grip", pageGraphics.trackGripStatus.ToString());
             string airTemp = Math.Round(pagePhysics.AirTemp, 2).ToString("F2");

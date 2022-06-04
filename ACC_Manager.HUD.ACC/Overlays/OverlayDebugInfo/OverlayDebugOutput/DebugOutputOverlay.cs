@@ -18,7 +18,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
         private DebugOutputConfiguration _config = new DebugOutputConfiguration();
         private class DebugOutputConfiguration : OverlayConfiguration
         {
-            [IntRange(5, 30, 1)]
+            [IntRange(5, 50, 1)]
             public int VisibleLines { get; set; } = 10;
 
             public DebugOutputConfiguration()
@@ -44,10 +44,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
 
         public DebugOutputOverlay(Rectangle rectangle) : base(rectangle, "Debug Output Overlay")
         {
-            _font = FontUtil.FontOrbitron(9);
-            _table = new InfoTable(_font.Size, new int[] { 600 });
+            int fontSize = 9;
+            _font = FontUtil.FontOrbitron(fontSize);
+            _table = new InfoTable(fontSize, new int[] { 600 });
             RefreshRateHz = 5;
-            this.Width = 700;
+            this.Width = 680;
         }
 
         public override void BeforeStart()
@@ -57,7 +58,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
             Debug.Listeners.Add(_traceListener);
             Debug.AutoFlush = true;
 
-            this.Height = (int)(_font.Height * _config.VisibleLines) + 1;
+            this.Height = (int)((_font.Height - 2) * _config.VisibleLines) + 1;
 
         }
 
@@ -86,7 +87,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
             lastPosition = _outputStream.Position;
 
 
-            _table._headerWidthSet = false;
             foreach (DebugOut output in _outputs)
             {
                 DateTime time = DateTime.FromFileTime(output.time);

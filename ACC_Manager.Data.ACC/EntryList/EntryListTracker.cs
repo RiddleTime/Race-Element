@@ -115,7 +115,7 @@ namespace ACCManager.Data.ACC.EntryList
                                 }
                                 else
                                 {
-                                    Debug.WriteLine($"BroadcastingCarEventType.LapCompleted car index: {broadcastingEvent.CarData.CarIndex} not found in entry list");
+                                    //Debug.WriteLine($"BroadcastingCarEventType.LapCompleted car index: {broadcastingEvent.CarData.CarIndex} not found in entry list");
                                     carData = new CarData();
                                     carData.CarInfo = broadcastingEvent.CarData;
                                     _entryListCars.Add(broadcastingEvent.CarData.CarIndex, carData);
@@ -128,7 +128,7 @@ namespace ACCManager.Data.ACC.EntryList
                             if (broadcastingEvent.CarData == null)
                                 break;
 
-                            Debug.WriteLine($"Car: {broadcastingEvent.CarData.RaceNumber} had an accident. {broadcastingEvent.Msg}");
+                            //Debug.WriteLine($"Car: {broadcastingEvent.CarData.RaceNumber} had an accident. {broadcastingEvent.Msg}");
                             break;
                         }
 
@@ -137,7 +137,7 @@ namespace ACCManager.Data.ACC.EntryList
                             if (broadcastingEvent.CarData == null)
                                 break;
 
-                            Debug.WriteLine($"{broadcastingEvent.Type} - {broadcastingEvent.CarData.RaceNumber} - {broadcastingEvent.Msg}");
+                            //Debug.WriteLine($"{broadcastingEvent.Type} - {broadcastingEvent.CarData.RaceNumber} - {broadcastingEvent.Msg}");
                             break;
                         }
                 }
@@ -193,7 +193,7 @@ namespace ACCManager.Data.ACC.EntryList
                     }
                     else
                     {
-                        Debug.WriteLine($"RealTimeCarUpdate_EventHandler car index: {carUpdate.CarIndex} not found in entry list");
+                        //Debug.WriteLine($"RealTimeCarUpdate_EventHandler car index: {carUpdate.CarIndex} not found in entry list");
                         carData = new CarData();
                         carData.RealtimeCarUpdate = carUpdate;
 

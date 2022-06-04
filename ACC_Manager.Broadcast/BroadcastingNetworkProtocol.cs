@@ -139,7 +139,7 @@ namespace ACCManager.Broadcast
                             var carInfo = _entryListCars.SingleOrDefault(x => x.CarIndex == carId);
                             if (carInfo == null)
                             {
-                                System.Diagnostics.Debug.WriteLine($"Entry list update for unknown carIndex {carId}");
+                                //System.Diagnostics.Debug.WriteLine($"Entry list update for unknown carIndex {carId}");
                                 break;
                             }
 
@@ -238,7 +238,7 @@ namespace ACCManager.Broadcast
                                 {
                                     lastEntrylistRequest = DateTime.Now;
                                     RequestEntryList();
-                                    System.Diagnostics.Debug.WriteLine($"CarUpdate {carUpdate.CarIndex}|{carUpdate.DriverIndex} not know, will ask for new EntryList");
+                                    //System.Diagnostics.Debug.WriteLine($"CarUpdate {carUpdate.CarIndex}|{carUpdate.DriverIndex} not know, will ask for new EntryList");
                                 }
                             }
                             else
