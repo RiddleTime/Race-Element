@@ -18,8 +18,7 @@ Unsucessful Pit Entry</panel_attributes><additional_attributes>10;10;10;40;250;4
 --
 valign=top
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>180</x><y>280</y><w>100</w><h>230</h></coordinates><panel_attributes>lt=-&gt;
-Lap Finished</panel_attributes><additional_attributes>10;10;10;210</additional_attributes></element><element><id>Relation</id><coordinates><x>70</x><y>130</y><w>110</w><h>400</h></coordinates><panel_attributes>lt=-&gt;
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>70</x><y>130</y><w>110</w><h>400</h></coordinates><panel_attributes>lt=-&gt;
 
 
 
