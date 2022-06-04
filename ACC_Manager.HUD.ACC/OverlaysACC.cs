@@ -21,6 +21,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList;
+using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput;
 
 namespace ACCManager.HUD.ACC
 {
@@ -43,6 +44,7 @@ namespace ACCManager.HUD.ACC
             {"Weather Info", typeof(WeatherOverlay) },
 
             // yea this shit has to be at the bottom...
+            {"Debug Output", typeof(DebugOutputOverlay) },
             {"Page Static", typeof(StaticInfoOverlay) },
             {"Page Physics", typeof(PhysicsInfoOverlay) },
             {"Page Graphics", typeof(GraphicsInfoOverlay) },

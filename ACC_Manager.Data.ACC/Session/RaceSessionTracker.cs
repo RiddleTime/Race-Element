@@ -2,6 +2,7 @@
 using ACCManager.Data.ACC.Tracker;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -54,6 +55,7 @@ namespace ACCManager.Data.ACC.Session
                     {
                         lastSessionType = pageGraphics.SessionType;
                         OnACSessionTypeChanged?.Invoke(this, pageGraphics.SessionType);
+                        Debug.WriteLine("AC_SessionType_Changed: " + pageGraphics.SessionType);
                     }
                 }
 
@@ -68,6 +70,7 @@ namespace ACCManager.Data.ACC.Session
             {
                 lastSessionPhase = e.Phase;
                 OnSessionPhaseChanged?.Invoke(this, e.Phase);
+                Debug.WriteLine("SessionPhase_Changed: " + e.Phase);
             }
         }
 

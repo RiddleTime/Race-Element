@@ -128,15 +128,16 @@ namespace ACCManager.Data.ACC.EntryList
                             if (broadcastingEvent.CarData == null)
                                 break;
 
-                            Debug.WriteLine($"Car: {broadcastingEvent.CarData.RaceNumber} had an accident");
+                            Debug.WriteLine($"Car: {broadcastingEvent.CarData.RaceNumber} had an accident. {broadcastingEvent.Msg}");
                             break;
                         }
+
                     default:
                         {
                             if (broadcastingEvent.CarData == null)
                                 break;
 
-                            Debug.WriteLine($"{broadcastingEvent.Type} - {broadcastingEvent.CarData}");
+                            Debug.WriteLine($"{broadcastingEvent.Type} - {broadcastingEvent.CarData.RaceNumber} - {broadcastingEvent.Msg}");
                             break;
                         }
                 }

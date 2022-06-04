@@ -1,4 +1,5 @@
-﻿using ACCManager.Broadcast.Structs;
+﻿using ACC_Manager.Util.NumberExtensions;
+using ACCManager.Broadcast.Structs;
 using ACCManager.Data.ACC.Session;
 using ACCManager.Data.ACC.Tracker;
 using ACCManager.HUD.Overlay.Configuration;
@@ -180,6 +181,7 @@ namespace ACCManager.HUD.Overlay.Internal
 
                 new Thread(x =>
                 {
+                    this.RefreshRateHz.ClipMin(1);
                     while (Draw)
                     {
                         lock (this)
@@ -305,7 +307,6 @@ namespace ACCManager.HUD.Overlay.Internal
         [DllImport("user32.dll")]
         private static extern int GetWindowLong(IntPtr window, int index);
 
-        private bool _wasTopMost;
         public void EnableReposition(bool enabled)
         {
             try
