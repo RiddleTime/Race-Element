@@ -128,7 +128,7 @@ namespace ACCManager.Data.ACC.EntryList
                             if (broadcastingEvent.CarData == null)
                                 break;
 
-                            //Debug.WriteLine($"Car: {broadcastingEvent.CarData.RaceNumber} had an accident. {broadcastingEvent.Msg}");
+                            Debug.WriteLine($"#{broadcastingEvent.CarData.RaceNumber}| {broadcastingEvent.CarData.GetCurrentDriverName()} had an accident. {broadcastingEvent.Msg}");
                             break;
                         }
 

@@ -89,10 +89,6 @@ namespace ACCManager.Data.ACC.Tracker
                 if (e.CarIndex == localCarIndex)
                     OnRealTimeLocalCarUpdate?.Invoke(this, e);
             };
-            _client.MessageHandler.OnConnectionStateChanged += (connectionId, connectionSuccess, isReadonly, error) =>
-            {
-                Debug.WriteLine($"Broadcast Connection State Changed: {connectionId}, Connected: {connectionSuccess}, IsReadOnly: {isReadonly}, Error: {error}");
-            };
         }
 
         private void ResetData()
