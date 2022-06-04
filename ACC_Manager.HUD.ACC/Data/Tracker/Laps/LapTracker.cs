@@ -86,14 +86,14 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
             if (_lastLapInfo != null)
                 if (_lastLapInfo.Splits != null && _lastLapInfo.Splits.Count == 3)
                 {
-                    if (!_lastLapInfo.Splits[2].HasValue)
-                    {
-                        Laps[Laps.Count - 1].Sector1 = _lastLapInfo.Splits[0].Value;
-                        Laps[Laps.Count - 1].Sector2 = _lastLapInfo.Splits[1].Value;
-                    }
-
                     if (Laps.Any())
                     {
+                        if (!_lastLapInfo.Splits[2].HasValue)
+                        {
+                            Laps[Laps.Count - 1].Sector1 = _lastLapInfo.Splits[0].Value;
+                            Laps[Laps.Count - 1].Sector2 = _lastLapInfo.Splits[1].Value;
+                        }
+
                         LapData lastData = Laps.Last();
                         if (_lastLapInfo.LaptimeMS == lastData.Time)
                             if (Laps[Laps.Count - 1].Sector3 != _lastLapInfo.Splits[2].Value)
@@ -102,8 +102,9 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
                                 Laps[Laps.Count - 1].IsValid = !_lastLapInfo.IsInvalid;
                                 Laps[Laps.Count - 1].LapType = _lastLapInfo.Type;
                             }
+
+                        LapFinished?.Invoke(this, Laps[Laps.Count - 1]);
                     }
-                    LapFinished?.Invoke(this, Laps[Laps.Count - 1]);
                 }
         }
 
