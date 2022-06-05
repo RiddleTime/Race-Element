@@ -94,99 +94,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
             {
                 if (kv.Value.CarInfo != null)
                 {
-                    string[] firstRow = new string[] { String.Empty, String.Empty, String.Empty };
-                    Color[] firstRowColors = new Color[] { Color.White, Color.White, Color.White };
-                    firstRow[0] = $"{kv.Value.RealtimeCarUpdate.CupPosition}";
-
-
-
-                    int bestSessionLapMS = -1;
-                    if (broadCastRealTime.BestSessionLap != null)
-                        bestSessionLapMS = broadCastRealTime.BestSessionLap.LaptimeMS.GetValueOrDefault(-1);
-                    switch (broadCastRealTime.SessionType)
-                    {
-                        case RaceSessionType.Race:
-                            {
-                                if (kv.Value.RealtimeCarUpdate.LastLap != null)
-                                    if (kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.HasValue)
-                                    {
-                                        if (broadCastRealTime.BestSessionLap != null)
-                                            if (kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS == bestSessionLapMS)
-                                                firstRowColors[1] = Color.FromArgb(255, 207, 97, 255);
-
-                                        TimeSpan fastestLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.Value);
-                                        firstRow[1] = $"{fastestLapTime:mm\\:ss\\.fff}";
-                                    }
-                                    else
-                                        firstRow[1] = $"--:--.---";
-                                break;
-                            }
-
-                        case RaceSessionType.Practice:
-                        case RaceSessionType.Qualifying:
-                            {
-                                if (kv.Value.RealtimeCarUpdate.BestSessionLap != null)
-                                    if (kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.HasValue)
-                                    {
-                                        if (broadCastRealTime.BestSessionLap != null)
-                                            if (kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS == bestSessionLapMS)
-                                                firstRowColors[1] = Color.FromArgb(255, 207, 97, 255);
-
-                                        TimeSpan fastestLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.Value);
-                                        firstRow[1] = $"{fastestLapTime:mm\\:ss\\.fff}";
-                                    }
-                                    else
-                                        firstRow[1] = $"--:--.---";
-                                break;
-                            }
-                        default: break;
-                    }
-
-                    switch (kv.Value.RealtimeCarUpdate.CarLocation)
-                    {
-                        case CarLocationEnum.PitEntry:
-                            {
-                                firstRow[1] += " (PI)";
-                                break;
-                            }
-                        case CarLocationEnum.PitExit:
-                            {
-                                firstRow[1] += " (PE)";
-                                break;
-                            }
-                        case CarLocationEnum.Pitlane:
-                            {
-                                firstRow[1] += " (P)";
-                                break;
-                            }
-
-                        case CarLocationEnum.Track:
-                            {
-                                firstRow[2] = $"{kv.Value.RealtimeCarUpdate.Delta / 1000f:F2}".FillStart(6, ' ');
-                                firstRowColors[2] = kv.Value.RealtimeCarUpdate.Delta > 0 ? Color.OrangeRed : Color.LimeGreen;
-                                break;
-                            }
-                        default: break;
-                    }
-
-                    string raceNumber = $"{kv.Value.CarInfo.RaceNumber}".FillEnd(3, ' ');
-                    string firstName = kv.Value.CarInfo.Drivers[kv.Value.CarInfo.CurrentDriverIndex].FirstName;
-                    if (firstName.Length > 0) firstName = firstName.First() + ".";
-                    TableRow row = new TableRow()
-                    {
-                        Header = $"{raceNumber} {firstName} {kv.Value.CarInfo.GetCurrentDriverName().Trim()}",
-                        Columns = firstRow,
-                        ColumnColors = firstRowColors,
-                        HeaderBackground = Color.FromArgb(70, Color.Black)
-                    };
-
-                    if (kv.Key == pageGraphics.PlayerCarID) row.HeaderBackground = Color.FromArgb(120, Color.Red);
-                    else
-                        if (kv.Key == broadCastRealTime.FocusedCarIndex) row.HeaderBackground = Color.FromArgb(70, Color.Red);
-
-                    _table.AddRow(row);
-                    //_table.AddRow($"{raceNumber} {firstName} {kv.Value.CarInfo.GetCurrentDriverName().Trim()}", firstRow, firstRowColors);
-
+                    AddCarFirstRow(kv);
 
                     if (this._config.ShowExtendedData)
                     {
@@ -199,6 +107,101 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
             _table._headerWidthSet = false;
 
             _table.Draw(g);
+        }
+
+        private void AddCarFirstRow(KeyValuePair<int, CarData> kv)
+        {
+            string[] firstRow = new string[] { String.Empty, String.Empty, String.Empty };
+            Color[] firstRowColors = new Color[] { Color.White, Color.White, Color.White };
+            firstRow[0] = $"{kv.Value.RealtimeCarUpdate.CupPosition}";
+
+
+
+            int bestSessionLapMS = -1;
+            if (broadCastRealTime.BestSessionLap != null)
+                bestSessionLapMS = broadCastRealTime.BestSessionLap.LaptimeMS.GetValueOrDefault(-1);
+            switch (broadCastRealTime.SessionType)
+            {
+                case RaceSessionType.Race:
+                    {
+                        if (kv.Value.RealtimeCarUpdate.LastLap != null)
+                            if (kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.HasValue)
+                            {
+                                if (broadCastRealTime.BestSessionLap != null)
+                                    if (kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS == bestSessionLapMS)
+                                        firstRowColors[1] = Color.FromArgb(255, 207, 97, 255);
+
+                                TimeSpan fastestLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.Value);
+                                firstRow[1] = $"{fastestLapTime:mm\\:ss\\.fff}";
+                            }
+                            else
+                                firstRow[1] = $"--:--.---";
+                        break;
+                    }
+
+                case RaceSessionType.Practice:
+                case RaceSessionType.Qualifying:
+                    {
+                        if (kv.Value.RealtimeCarUpdate.BestSessionLap != null)
+                            if (kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.HasValue)
+                            {
+                                if (broadCastRealTime.BestSessionLap != null)
+                                    if (kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS == bestSessionLapMS)
+                                        firstRowColors[1] = Color.FromArgb(255, 207, 97, 255);
+
+                                TimeSpan fastestLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.Value);
+                                firstRow[1] = $"{fastestLapTime:mm\\:ss\\.fff}";
+                            }
+                            else
+                                firstRow[1] = $"--:--.---";
+                        break;
+                    }
+                default: break;
+            }
+
+            switch (kv.Value.RealtimeCarUpdate.CarLocation)
+            {
+                case CarLocationEnum.PitEntry:
+                    {
+                        firstRow[1] += " (PI)";
+                        break;
+                    }
+                case CarLocationEnum.PitExit:
+                    {
+                        firstRow[1] += " (PE)";
+                        break;
+                    }
+                case CarLocationEnum.Pitlane:
+                    {
+                        firstRow[1] += " (P)";
+                        break;
+                    }
+
+                case CarLocationEnum.Track:
+                    {
+                        firstRow[2] = $"{kv.Value.RealtimeCarUpdate.Delta / 1000f:F2}".FillStart(6, ' ');
+                        firstRowColors[2] = kv.Value.RealtimeCarUpdate.Delta > 0 ? Color.OrangeRed : Color.LimeGreen;
+                        break;
+                    }
+                default: break;
+            }
+
+            string raceNumber = $"{kv.Value.CarInfo.RaceNumber}".FillEnd(3, ' ');
+            string firstName = kv.Value.CarInfo.Drivers[kv.Value.CarInfo.CurrentDriverIndex].FirstName;
+            if (firstName.Length > 0) firstName = firstName.First() + ".";
+            TableRow row = new TableRow()
+            {
+                Header = $"{raceNumber} {firstName} {kv.Value.CarInfo.GetCurrentDriverName().Trim()}",
+                Columns = firstRow,
+                ColumnColors = firstRowColors,
+                HeaderBackground = Color.FromArgb(70, Color.Black)
+            };
+
+            if (kv.Key == pageGraphics.PlayerCarID) row.HeaderBackground = Color.FromArgb(120, Color.Red);
+            else
+                if (kv.Key == broadCastRealTime.FocusedCarIndex) row.HeaderBackground = Color.FromArgb(70, Color.Red);
+
+            _table.AddRow(row);
         }
 
         private void SortEntryList(List<KeyValuePair<int, CarData>> cars)

@@ -18,8 +18,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
         private DebugOutputConfiguration _config = new DebugOutputConfiguration();
         private class DebugOutputConfiguration : OverlayConfiguration
         {
+            [ToolTip("Allows you to reposition this debug panel.")]
+            internal bool Undock { get; set; } = false;
+
             [IntRange(5, 50, 1)]
             public int VisibleLines { get; set; } = 10;
+
+            [IntRange(400, 1000, 1)]
+            public int Width { get; set; } = 680;
 
             public DebugOutputConfiguration()
             {
@@ -44,15 +50,33 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
 
         public DebugOutputOverlay(Rectangle rectangle) : base(rectangle, "Debug Output Overlay")
         {
+            this.AllowReposition = false;
+
             int fontSize = 9;
             _font = FontUtil.FontOrbitron(fontSize);
             _table = new InfoTable(fontSize, new int[] { 600 });
             RefreshRateHz = 5;
-            this.Width = 680;
+            this.Width = _config.Width;
+        }
+
+        private void Instance_WidthChanged(object sender, bool e)
+        {
+            if (e)
+                this.X = DebugInfoHelper.Instance.GetX(this);
         }
 
         public override void BeforeStart()
         {
+            if (this._config.Undock)
+                this.AllowReposition = true;
+            else
+            {
+                DebugInfoHelper.Instance.WidthChanged += Instance_WidthChanged;
+                DebugInfoHelper.Instance.AddOverlay(this);
+                this.X = DebugInfoHelper.Instance.GetX(this);
+                this.Y = 0;
+            }
+
             _outputStream = new MemoryStream();
             _traceListener = new TextWriterTraceListener(new StreamWriter(_outputStream));
             Debug.Listeners.Add(_traceListener);
@@ -64,6 +88,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
 
         public override void BeforeStop()
         {
+            if (!this._config.Undock)
+            {
+                DebugInfoHelper.Instance.RemoveOverlay(this);
+                DebugInfoHelper.Instance.WidthChanged -= Instance_WidthChanged;
+            }
+
             _traceListener.Flush();
             Trace.Listeners.Remove(_traceListener);
             _outputStream.Close();
