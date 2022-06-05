@@ -1,5 +1,6 @@
 ﻿using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo;
 using ACCManager.HUD.Overlay.Internal;
+using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.HUD.Overlay.Util;
 using ACCManager.Util;
 using System;
@@ -16,15 +17,17 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPhysicsInfo
 {
     internal sealed class PhysicsInfoOverlay : AbstractOverlay
     {
-        private DebugConfig _config = new DebugConfig();
-        private Font _inputFont = FontUtil.FontUnispace((float)9);
+        private readonly DebugConfig _config = new DebugConfig();
+        private readonly InfoTable _table;
 
         public PhysicsInfoOverlay(Rectangle rectangle) : base(rectangle, "Debug Physics Overlay")
         {
             this.AllowReposition = false;
             this.RefreshRateHz = 5;
             this.Width = 600;
-            this.Height = 635;
+            this.Height = 700;
+
+            _table = new InfoTable(9, new int[] { 450 });
         }
 
         private void Instance_WidthChanged(object sender, bool e)
@@ -57,13 +60,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPhysicsInfo
 
         public sealed override void Render(Graphics g)
         {
-            g.FillRectangle(new SolidBrush(System.Drawing.Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.Width, this.Height));
-
-            g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
-            g.TextContrast = 1;
-
-            int xMargin = 5;
-            int y = 0;
             FieldInfo[] members = pagePhysics.GetType().GetFields();
             foreach (FieldInfo member in members)
             {
@@ -77,11 +73,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPhysicsInfo
                 if (!isObsolete && !member.Name.Equals("Buffer") && !member.Name.Equals("Size"))
                 {
                     value = ReflectionUtil.FieldTypeValue(member, value);
-
-                    g.DrawString($"{member.Name}: {value}", _inputFont, Brushes.White, 0 + xMargin, y);
-                    y += (int)_inputFont.Size + 4;
+                    _table.AddRow($"{member.Name}", new string[] { value.ToString() });
                 }
             }
+
+            _table.Draw(g);
         }
 
         public sealed override bool ShouldRender()

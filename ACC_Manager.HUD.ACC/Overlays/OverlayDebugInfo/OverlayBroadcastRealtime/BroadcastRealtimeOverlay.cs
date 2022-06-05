@@ -22,7 +22,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
     {
         private DebugConfig _config = new DebugConfig();
 
-        private Font _inputFont = FontUtil.FontUnispace((float)9);
         private InfoTable _table;
 
         public BroadcastRealtimeOverlay(Rectangle rectangle) : base(rectangle, "Debug BroadcastRealtime Overlay")

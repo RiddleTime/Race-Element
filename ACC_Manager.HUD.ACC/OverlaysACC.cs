@@ -48,7 +48,6 @@ namespace ACCManager.HUD.ACC
             {"Page Static", typeof(StaticInfoOverlay) },
             {"Page Physics", typeof(PhysicsInfoOverlay) },
             {"Page Graphics", typeof(GraphicsInfoOverlay) },
-            {"Broadcast Carupdate", typeof(BroadcastCarUpdateOverlay) },
             {"Broadcast Entrylist", typeof(EntryListOverlay) },
             {"Broadcast Realtime", typeof(BroadcastRealtimeOverlay) },
             {"Broadcast Trackdata", typeof(BroadcastTrackDataOverlay) },
