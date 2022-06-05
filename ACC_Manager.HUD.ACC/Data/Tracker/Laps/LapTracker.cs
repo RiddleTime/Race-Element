@@ -91,35 +91,36 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
 
         private void Instance_OnRealTimeCarUpdate(object sender, RealtimeCarUpdate e)
         {
-            _lastLapInfo = e.LastLap;
+            if (e.LastLap != null)
+            {
+                _lastLapInfo = e.LastLap;
 
-            FinalizeCurrentLapData();
+                FinalizeCurrentLapData();
+            }
         }
 
         private void FinalizeCurrentLapData()
         {
+
             if (_lastLapInfo != null)
                 if (_lastLapInfo.Splits != null && _lastLapInfo.Splits.Count == 3)
                 {
-                    if (Laps.Any())
-                    {
-                        if (!_lastLapInfo.Splits[2].HasValue)
+                    lock (Laps)
+                        if (Laps.Any())
                         {
-                            Laps[Laps.Count - 1].Sector1 = _lastLapInfo.Splits[0].Value;
-                            Laps[Laps.Count - 1].Sector2 = _lastLapInfo.Splits[1].Value;
-                        }
-
-                        LapData lastData = Laps.Last();
-                        if (_lastLapInfo.LaptimeMS == lastData.Time)
-                            if (Laps[Laps.Count - 1].Sector3 != _lastLapInfo.Splits[2].Value)
+                            LapData lastData = Laps.Last();
+                            if (_lastLapInfo.LaptimeMS == lastData.Time)
                             {
-                                Laps[Laps.Count - 1].Sector3 = _lastLapInfo.Splits[2].Value;
-                                Laps[Laps.Count - 1].IsValid = !_lastLapInfo.IsInvalid;
-                                Laps[Laps.Count - 1].LapType = _lastLapInfo.Type;
-                            }
+                                if (Laps[Laps.Count - 1].Sector3 != _lastLapInfo.Splits[2].Value)
+                                {
+                                    Laps[Laps.Count - 1].Sector3 = _lastLapInfo.Splits[2].Value;
+                                    Laps[Laps.Count - 1].IsValid = !_lastLapInfo.IsInvalid;
+                                    Laps[Laps.Count - 1].LapType = _lastLapInfo.Type;
+                                }
 
-                        LapFinished?.Invoke(this, Laps[Laps.Count - 1]);
-                    }
+                                LapFinished?.Invoke(this, Laps[Laps.Count - 1]);
+                            }
+                        }
                 }
         }
 
