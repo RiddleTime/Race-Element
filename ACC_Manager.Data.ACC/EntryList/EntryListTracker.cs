@@ -30,6 +30,15 @@ namespace ACCManager.Data.ACC.EntryList
             private set { _instance = value; }
         }
 
+        private class AccidentData
+        {
+            public BroadcastingEvent Event;
+            public DateTime Timestamp;
+        }
+
+        private Dictionary<int, List<AccidentData>> accidentDataList = new Dictionary<int, List<AccidentData>>();
+
+
         private Dictionary<int, CarData> _entryListCars = new Dictionary<int, CarData>();
         public List<KeyValuePair<int, CarData>> Cars
         {
@@ -129,6 +138,25 @@ namespace ACCManager.Data.ACC.EntryList
                                 break;
 
                             Debug.WriteLine($"#{broadcastingEvent.CarData.RaceNumber}| {broadcastingEvent.CarData.GetCurrentDriverName()} had an accident. {broadcastingEvent.Msg}");
+
+                            AccidentData accidentData = new AccidentData();
+                            accidentData.Event = broadcastingEvent;
+                            accidentData.Timestamp = DateTime.Now;
+
+                            int accidentGroup = broadcastingEvent.TimeMs / 1000;
+
+                            if (accidentDataList.ContainsKey(accidentGroup))
+                            {
+                                Console.WriteLine($"add accident event to existing accident group {accidentGroup}");
+                                accidentDataList[accidentGroup].Add(accidentData);
+                            } 
+                            else
+                            {
+                                Console.WriteLine($"create new accident group {accidentGroup}");
+                                List<AccidentData> accidentList = new List<AccidentData>();
+                                accidentList.Add(accidentData);
+                                accidentDataList[accidentGroup] = accidentList;
+                            }
                             break;
                         }
 
@@ -198,6 +226,30 @@ namespace ACCManager.Data.ACC.EntryList
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
+            }
+
+            // push accidents
+            DateTime currentTime = DateTime.Now;
+            foreach (var accidentDataKV in accidentDataList.ToList())
+            {
+                // get first accident data element
+                var firstAccidentData = accidentDataKV.Value[0];
+                List<AccidentData> pushAccidentList = new List<AccidentData>();
+                if (((currentTime - firstAccidentData.Timestamp).TotalSeconds) > 1) {
+                    pushAccidentList = accidentDataKV.Value;
+                    accidentDataList.Remove(accidentDataKV.Key);
+                }
+
+                if (pushAccidentList.Count > 0)
+                {
+                    string accidentMessage = $"{firstAccidentData.Event.Type} between [";
+                    foreach (var accident in pushAccidentList)
+                    {
+                        accidentMessage += $"{accident.Event.CarData.RaceNumber}";
+                    }
+                    Debug.WriteLine($"{accidentMessage}]");
+                }
+                
             }
         }
     }
