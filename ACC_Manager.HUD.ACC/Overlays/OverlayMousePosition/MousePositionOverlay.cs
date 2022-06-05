@@ -16,8 +16,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
     {
         public MousePositionOverlay(Rectangle rectangle, string Name) : base(rectangle, Name)
         {
-            this.Width = ScreenWidth;
-            this.Height = ScreenHeight;
+            this.Width = 15;
+            this.Height = 15;
             this.RefreshRateHz = 60;
         }
 
@@ -32,9 +32,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
         public sealed override void Render(Graphics g)
         {
             Point cursorPosition = GetCursorPosition();
+
+            this.X = cursorPosition.X - 5;
+            this.Y = cursorPosition.Y - 5;
             g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.DrawEllipse(Pens.White, cursorPosition.X, cursorPosition.Y, 5);
-            g.FillEllipse(new SolidBrush(Color.FromArgb(120, Color.Red)), cursorPosition.X, cursorPosition.Y, 5);
+            g.DrawEllipse(Pens.White, 5, 5, 5);
+            g.FillEllipse(new SolidBrush(Color.FromArgb(120, Color.Red)), 5, 5, 5);
         }
 
         public sealed override bool ShouldRender()

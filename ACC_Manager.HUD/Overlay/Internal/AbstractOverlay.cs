@@ -318,6 +318,9 @@ namespace ACCManager.HUD.Overlay.Internal
 
                 if (enabled)
                 {
+                    if (this.RepositionWindow != null)
+                        return;
+
                     this.RepositionWindow = new Window()
                     {
                         Width = this.Width,
@@ -407,7 +410,9 @@ namespace ACCManager.HUD.Overlay.Internal
                             {
                                 if (this.RepositionWindow != null)
                                 {
+                                    this.RepositionWindow.ToolTip = null;
                                     this.RepositionWindow.Hide();
+                                    this.RepositionWindow.Close();
                                     this.RepositionWindow = null;
                                 }
                             }
