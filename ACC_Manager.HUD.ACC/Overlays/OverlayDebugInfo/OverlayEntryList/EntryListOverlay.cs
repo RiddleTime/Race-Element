@@ -45,7 +45,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
         public EntryListOverlay(Rectangle rect) : base(rect, "Debug EntryList Overlay")
         {
             this.AllowReposition = false;
-            //this.RefreshRateHz = 10;
+            this.RefreshRateHz = 5;
 
             float fontSize = 9;
             var font = FontUtil.FontUnispace(fontSize);

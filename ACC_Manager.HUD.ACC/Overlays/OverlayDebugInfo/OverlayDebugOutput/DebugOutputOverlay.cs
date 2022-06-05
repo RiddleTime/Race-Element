@@ -42,6 +42,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
         public DebugOutputOverlay(Rectangle rectangle) : base(rectangle, "Debug Output Overlay")
         {
             this.AllowReposition = false;
+            this.RefreshRateHz = 5;
 
             int fontSize = 9;
             _font = FontUtil.FontOrbitron(fontSize);
