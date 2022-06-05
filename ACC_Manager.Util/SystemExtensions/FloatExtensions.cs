@@ -1,4 +1,4 @@
-﻿namespace ACC_Manager.Util.NumberExtensions
+﻿namespace ACC_Manager.Util.SystemExtensions
 {
     public static class FloatExtensions
     {

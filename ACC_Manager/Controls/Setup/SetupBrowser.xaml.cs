@@ -11,7 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using static ACCManager.Data.SetupJson;
 using static ACCManager.Data.ConversionFactory;
-using ACC_Manager.Util.NumberExtensions;
+using ACC_Manager.Util.SystemExtensions;
 
 namespace ACCManager.Controls
 {

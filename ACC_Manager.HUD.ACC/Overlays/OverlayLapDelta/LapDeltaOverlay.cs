@@ -1,4 +1,4 @@
-﻿using ACC_Manager.Util.NumberExtensions;
+﻿using ACC_Manager.Util.SystemExtensions;
 using ACCManager.HUD.ACC.Data.Tracker.Laps;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
