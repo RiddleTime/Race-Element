@@ -144,15 +144,15 @@ namespace ACCManager.Data.ACC.EntryList
                             accidentData.Timestamp = DateTime.Now;
 
                             int accidentGroup = broadcastingEvent.TimeMs / 1000;
-
+                            Console.WriteLine($"*** accident ms {broadcastingEvent.TimeMs} group {accidentGroup}");
                             if (accidentDataList.ContainsKey(accidentGroup))
                             {
-                                Console.WriteLine($"add accident event to existing accident group {accidentGroup}");
+                                Console.WriteLine($"- add accident event to existing accident group {accidentGroup}");
                                 accidentDataList[accidentGroup].Add(accidentData);
                             } 
                             else
                             {
-                                Console.WriteLine($"create new accident group {accidentGroup}");
+                                Console.WriteLine($"+ create new accident group {accidentGroup}");
                                 List<AccidentData> accidentList = new List<AccidentData>();
                                 accidentList.Add(accidentData);
                                 accidentDataList[accidentGroup] = accidentList;
@@ -242,12 +242,9 @@ namespace ACCManager.Data.ACC.EntryList
 
                 if (pushAccidentList.Count > 0)
                 {
-                    string accidentMessage = $"{firstAccidentData.Event.Type} between [";
-                    foreach (var accident in pushAccidentList)
-                    {
-                        accidentMessage += $"{accident.Event.CarData.RaceNumber}";
-                    }
-                    Debug.WriteLine($"{accidentMessage}]");
+                    string carNumbers = string.Join(" ", pushAccidentList.Select(x => x.Event.CarData.RaceNumber).ToArray());
+                    string accidentMessage = $"{firstAccidentData.Event.Type} between [{carNumbers}]";
+                    Debug.WriteLine($"{accidentMessage}");
                 }
                 
             }
