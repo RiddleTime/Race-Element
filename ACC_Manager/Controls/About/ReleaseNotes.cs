@@ -10,7 +10,8 @@ namespace ACCManager.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.0.7.0", "- HUD: Added configurable data collection/refresh rate for input trace." },
+            {"0.0.7.0", "- HUD: Added configurable data collection/refresh rate for input trace."+
+                        "- HUD: Lap delta overlay's recorded laps are now reset in between practice/qualifying/race."},
             {"0.0.6.9", "- HUD: Added configurable potentional best lap time to lap delta overlay."+
                         "\n- HUD: Fixed brake temps multiplication in tyre info overlay."},
             {"0.0.6.8", "- HUDs: Overlays now also render when reposition is enabled."+

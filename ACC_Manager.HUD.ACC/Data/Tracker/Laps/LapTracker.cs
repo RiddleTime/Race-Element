@@ -1,5 +1,6 @@
 ﻿using ACCManager.Broadcast;
 using ACCManager.Broadcast.Structs;
+using ACCManager.Data.ACC.Session;
 using ACCManager.Data.ACC.Tracker;
 using ACCManager.Util;
 using System;
@@ -70,6 +71,20 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
                 this.Start();
 
             BroadcastTracker.Instance.OnRealTimeLocalCarUpdate += Instance_OnRealTimeCarUpdate;
+            RaceSessionTracker.Instance.OnACSessionTypeChanged += Instance_OnACSessionTypeChanged;
+        }
+
+        private void Instance_OnACSessionTypeChanged(object sender, ACCSharedMemory.AcSessionType e)
+        {
+            var pageGraphics = sharedMemory.ReadGraphicsPageFile();
+
+            lock (Laps)
+                Laps.Clear();
+
+            lock (CurrentLap)
+                CurrentLap = new LapData() { Index = pageGraphics.CompletedLaps + 1 };
+
+            Debug.WriteLine("LapTracker: Resetted current lap and previous recorded laps.");
         }
 
         private LapInfo _lastLapInfo;
@@ -184,6 +199,8 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
 
         internal void Stop()
         {
+            RaceSessionTracker.Instance.OnACSessionTypeChanged -= Instance_OnACSessionTypeChanged;
+            BroadcastTracker.Instance.OnRealTimeLocalCarUpdate -= Instance_OnRealTimeCarUpdate;
             IsTracking = false;
         }
     }
