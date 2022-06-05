@@ -1,6 +1,8 @@
 ﻿using ACCManager.Broadcast.Structs;
+using ACCManager.Data.ACC.EntryList;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
+using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.HUD.Overlay.Util;
 using ACCManager.Util;
 using System;
@@ -11,6 +13,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCManager.Data.ACC.EntryList.EntryListTracker;
 using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
@@ -20,12 +23,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
         private DebugConfig _config = new DebugConfig();
 
         private Font _inputFont = FontUtil.FontUnispace((float)9);
+        private InfoTable _table;
+
         public BroadcastRealtimeOverlay(Rectangle rectangle) : base(rectangle, "Debug BroadcastRealtime Overlay")
         {
             this.AllowReposition = false;
-            this.RefreshRateHz = 5;
+            this.RefreshRateHz = 10;
             this.Width = 300;
             this.Height = 300;
+
+            _table = new InfoTable(9, new int[] { 200 });
         }
 
         private void Instance_WidthChanged(object sender, bool e)
@@ -58,20 +65,22 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
 
         public sealed override void Render(Graphics g)
         {
-            g.FillRectangle(new SolidBrush(Color.FromArgb(140, 0, 0, 0)), new Rectangle(0, 0, this.Width, this.Height));
-
-            g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
-            g.TextContrast = 1;
-
-            int xMargin = 5;
-            int y = 0;
-            FieldInfo[] members = broadCastRealTime.GetType().GetRuntimeFields().ToArray();
-            foreach (FieldInfo member in members)
+            foreach (KeyValuePair<int, CarData> carData in EntryListTracker.Instance.Cars)
             {
-                var value = member.GetValue(broadCastRealTime);
-                value = ReflectionUtil.FieldTypeValue(member, value);
-                g.DrawString($"{member.Name.Replace("<", "").Replace(">k__BackingField", "")}: {value}", _inputFont, Brushes.White, 0 + xMargin, y);
-                y += (int)_inputFont.Size + 4;
+                if (carData.Key == broadCastRealTime.FocusedCarIndex)
+                {
+                    FieldInfo[] members = carData.Value.RealtimeCarUpdate.GetType().GetRuntimeFields().ToArray();
+                    foreach (FieldInfo member in members)
+                    {
+                        var value = member.GetValue(carData.Value.RealtimeCarUpdate);
+                        value = ReflectionUtil.FieldTypeValue(member, value);
+
+                        if (value != null)
+                            _table.AddRow($"{member.Name.Replace("<", "").Replace(">k__BackingField", "")}", new string[] { value.ToString() });
+                    }
+
+                    _table.Draw(g);
+                }
             }
         }
 
