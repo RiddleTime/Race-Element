@@ -31,7 +31,7 @@ namespace ACCManager.HUD.Overlay.Internal
 
         #region #  Fields  #
         protected bool _disposed = false;
-        private byte _alpha = 250;
+        private byte _alpha = 255;
         private Size _size = new Size(250, 50);
         private Point _location = new Point(50, 50);
         #endregion
@@ -381,7 +381,7 @@ namespace ACCManager.HUD.Overlay.Internal
                     RECT rect = new RECT();
                     User32.GetWindowRect(base.Handle, ref rect);
                     this._location = new Point(rect.left, rect.top);
-                    this.UpdateLayeredWindow();
+                    //this.UpdateLayeredWindow();
                 }
                 else
                 {
@@ -403,7 +403,7 @@ namespace ACCManager.HUD.Overlay.Internal
                     RECT rect = new RECT();
                     User32.GetWindowRect(base.Handle, ref rect);
                     this._size = new Size(rect.right - rect.left, rect.bottom - rect.top);
-                    this.UpdateLayeredWindow();
+                    //this.UpdateLayeredWindow();
                 }
                 else
                 {

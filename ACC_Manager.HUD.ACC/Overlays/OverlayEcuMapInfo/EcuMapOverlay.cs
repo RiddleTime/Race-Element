@@ -64,6 +64,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
             {
                 _panel.AddLine("Car", "Not supported");
                 _panel.AddLine("Model", pageStatic.CarModel);
+                _panel.AddLine("Condition", "");
                 _panel.AddLine("Map", $"{pageGraphics.EngineMap + 1}");
             }
 
