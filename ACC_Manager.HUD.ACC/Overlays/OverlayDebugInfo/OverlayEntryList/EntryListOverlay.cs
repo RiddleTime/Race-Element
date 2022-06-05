@@ -113,7 +113,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
         {
             string[] firstRow = new string[] { String.Empty, String.Empty, String.Empty };
             Color[] firstRowColors = new Color[] { Color.White, Color.White, Color.White };
-            firstRow[0] = $"{kv.Value.RealtimeCarUpdate.CupPosition}";
+            firstRow[0] = $"{kv.Value.CarInfo.RaceNumber}";
 
 
 
@@ -189,9 +189,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
             string raceNumber = $"{kv.Value.CarInfo.RaceNumber}".FillEnd(3, ' ');
             string firstName = kv.Value.CarInfo.Drivers[kv.Value.CarInfo.CurrentDriverIndex].FirstName;
             if (firstName.Length > 0) firstName = firstName.First() + ".";
+            string cupPosition = $"{kv.Value.RealtimeCarUpdate.CupPosition}".FillStart(2, ' ');
             TableRow row = new TableRow()
             {
-                Header = $"{raceNumber} {firstName} {kv.Value.CarInfo.GetCurrentDriverName().Trim()}",
+                Header = $"{cupPosition} {firstName} {kv.Value.CarInfo.GetCurrentDriverName().Trim()}",
                 Columns = firstRow,
                 ColumnColors = firstRowColors,
                 HeaderBackground = Color.FromArgb(70, Color.Black)
@@ -241,7 +242,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                         break;
                     }
 
-              
+
                 case RaceSessionType.Qualifying:
                     {
                         cars.Sort((a, b) =>
