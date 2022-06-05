@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput.DebugOutputListener;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
 {
@@ -21,9 +22,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
             [ToolTip("Allows you to reposition this debug panel.")]
             internal bool Undock { get; set; } = false;
 
+            [ToolTip("The amount of lines displayed.")]
             [IntRange(5, 50, 1)]
             public int VisibleLines { get; set; } = 10;
 
+            [ToolTip("Sets the width, allows you to see more.")]
             [IntRange(400, 1000, 1)]
             public int Width { get; set; } = 680;
 
@@ -33,19 +36,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
             }
         }
 
-        private Stream _outputStream;
-        private TextWriterTraceListener _traceListener;
-        private long lastPosition = -1;
-
-        private struct DebugOut
-        {
-            public long time;
-            public string message;
-        }
-
-        private LinkedList<DebugOut> _outputs = new LinkedList<DebugOut>();
         private Font _font;
-
         private InfoTable _table;
 
         public DebugOutputOverlay(Rectangle rectangle) : base(rectangle, "Debug Output Overlay")
@@ -77,13 +68,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
                 this.Y = 0;
             }
 
-            _outputStream = new MemoryStream();
-            _traceListener = new TextWriterTraceListener(new StreamWriter(_outputStream));
-            Debug.Listeners.Add(_traceListener);
-            Debug.AutoFlush = true;
-
             this.Height = (int)((_font.Height - 2) * _config.VisibleLines) + 1;
-
         }
 
         public override void BeforeStop()
@@ -93,31 +78,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
                 DebugInfoHelper.Instance.RemoveOverlay(this);
                 DebugInfoHelper.Instance.WidthChanged -= Instance_WidthChanged;
             }
-
-            _traceListener.Flush();
-            Trace.Listeners.Remove(_traceListener);
-            _outputStream.Close();
         }
 
         public override void Render(Graphics g)
         {
-            StreamReader reader = new StreamReader(_outputStream);
-
-            if (lastPosition == -1)
-                lastPosition = _outputStream.Position;
-            else
-                _outputStream.Position = lastPosition;
-
-            while (!reader.EndOfStream)
-            {
-                if (_outputs.Count >= _config.VisibleLines)
-                    _outputs.RemoveLast();
-                _outputs.AddFirst(new DebugOut() { message = reader.ReadLine(), time = DateTime.Now.ToFileTime() });
-            }
-            lastPosition = _outputStream.Position;
-
-
-            foreach (DebugOut output in _outputs)
+            foreach (DebugOut output in DebugOutputListener.Instance.Outputs)
             {
                 DateTime time = DateTime.FromFileTime(output.time);
                 _table.AddRow($"{time:HH\\:mm\\:ss}", new string[] { output.message });
