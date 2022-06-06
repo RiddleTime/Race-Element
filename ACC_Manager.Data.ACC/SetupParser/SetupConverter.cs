@@ -226,14 +226,12 @@ namespace ACCManager.Data
                 }
             }
 
-            public double TirePressure(CarClasses carClass, Wheel wheel, List<int> rawValue)
+            public double TirePressure(DryTyreCompounds compound, Wheel wheel, List<int> rawValue)
             {
-                switch (carClass)
+                switch (compound)
                 {
-                    case CarClasses.GT3: return Math.Round(20.3f + 0.1f * rawValue[(int)wheel], 2);
-                    case CarClasses.TCX:
-                    case CarClasses.GTC:
-                    case CarClasses.GT4: return Math.Round(17.0f + 0.1f * rawValue[(int)wheel], 2);
+                    case DryTyreCompounds.DHE2020: return Math.Round(20.3f + 0.1f * rawValue[(int)wheel], 2);
+                    case DryTyreCompounds.DHE2020_GT4: return Math.Round(17.0f + 0.1f * rawValue[(int)wheel], 2);
 
                     default: return -1;
                 }
