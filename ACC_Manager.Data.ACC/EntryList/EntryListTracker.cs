@@ -137,22 +137,19 @@ namespace ACCManager.Data.ACC.EntryList
                             if (broadcastingEvent.CarData == null)
                                 break;
 
-                            Debug.WriteLine($"#{broadcastingEvent.CarData.RaceNumber}| {broadcastingEvent.CarData.GetCurrentDriverName()} had an accident. {broadcastingEvent.Msg}");
+                            //Debug.WriteLine($"#{broadcastingEvent.CarData.RaceNumber}| {broadcastingEvent.CarData.GetCurrentDriverName()} had an accident. {broadcastingEvent.Msg}");
 
                             AccidentData accidentData = new AccidentData();
                             accidentData.Event = broadcastingEvent;
                             accidentData.Timestamp = DateTime.Now;
 
                             int accidentGroup = broadcastingEvent.TimeMs / 1000;
-                            Console.WriteLine($"*** accident ms {broadcastingEvent.TimeMs} group {accidentGroup}");
                             if (accidentDataList.ContainsKey(accidentGroup))
                             {
-                                Console.WriteLine($"- add accident event to existing accident group {accidentGroup}");
                                 accidentDataList[accidentGroup].Add(accidentData);
                             } 
                             else
                             {
-                                Console.WriteLine($"+ create new accident group {accidentGroup}");
                                 List<AccidentData> accidentList = new List<AccidentData>();
                                 accidentList.Add(accidentData);
                                 accidentDataList[accidentGroup] = accidentList;
@@ -228,11 +225,11 @@ namespace ACCManager.Data.ACC.EntryList
                 Debug.WriteLine(ex);
             }
 
-            // push accidents
+            // publish accident events that are older than 1 second
             DateTime currentTime = DateTime.Now;
             foreach (var accidentDataKV in accidentDataList.ToList())
             {
-                // get first accident data element
+                // first accident element is always available
                 var firstAccidentData = accidentDataKV.Value[0];
                 List<AccidentData> pushAccidentList = new List<AccidentData>();
                 if (((currentTime - firstAccidentData.Timestamp).TotalSeconds) > 1) {
