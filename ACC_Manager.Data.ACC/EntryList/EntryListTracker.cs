@@ -1,11 +1,11 @@
 ﻿using ACCManager.Broadcast;
 using ACCManager.Broadcast.Structs;
+using ACCManager.Data.ACC.AccidentList;
 using ACCManager.Data.ACC.Tracker;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,14 +30,7 @@ namespace ACCManager.Data.ACC.EntryList
             private set { _instance = value; }
         }
 
-        private class AccidentData
-        {
-            public BroadcastingEvent Event;
-            public DateTime Timestamp;
-        }
-
-        private Dictionary<int, List<AccidentData>> accidentDataList = new Dictionary<int, List<AccidentData>>();
-
+        private static AccidentListTracker _accidentListTracker = AccidentListTracker.Instance;
 
         private Dictionary<int, CarData> _entryListCars = new Dictionary<int, CarData>();
         public List<KeyValuePair<int, CarData>> Cars
@@ -64,6 +57,9 @@ namespace ACCManager.Data.ACC.EntryList
             BroadcastTracker.Instance.OnRealTimeCarUpdate += RealTimeCarUpdate_EventHandler;
             BroadcastTracker.Instance.OnEntryListUpdate += EntryListUpdate_EventHandler;
             BroadcastTracker.Instance.OnBroadcastEvent += Broadcast_EventHandler;
+
+            _accidentListTracker.Start();
+
             StartEntryListCleanupTracker();
         }
 
@@ -73,6 +69,9 @@ namespace ACCManager.Data.ACC.EntryList
             BroadcastTracker.Instance.OnRealTimeCarUpdate -= RealTimeCarUpdate_EventHandler;
             BroadcastTracker.Instance.OnEntryListUpdate -= EntryListUpdate_EventHandler;
             BroadcastTracker.Instance.OnBroadcastEvent -= Broadcast_EventHandler;
+
+            _accidentListTracker.Stop();
+
             _entryListCars?.Clear();
         }
 
@@ -134,26 +133,7 @@ namespace ACCManager.Data.ACC.EntryList
                         }
                     case BroadcastingCarEventType.Accident:
                         {
-                            if (broadcastingEvent.CarData == null)
-                                break;
-
-                            //Debug.WriteLine($"#{broadcastingEvent.CarData.RaceNumber}| {broadcastingEvent.CarData.GetCurrentDriverName()} had an accident. {broadcastingEvent.Msg}");
-
-                            AccidentData accidentData = new AccidentData();
-                            accidentData.Event = broadcastingEvent;
-                            accidentData.Timestamp = DateTime.Now;
-
-                            int accidentGroup = broadcastingEvent.TimeMs / 1000;
-                            if (accidentDataList.ContainsKey(accidentGroup))
-                            {
-                                accidentDataList[accidentGroup].Add(accidentData);
-                            } 
-                            else
-                            {
-                                List<AccidentData> accidentList = new List<AccidentData>();
-                                accidentList.Add(accidentData);
-                                accidentDataList[accidentGroup] = accidentList;
-                            }
+                            Debug.WriteLine($"#{broadcastingEvent.CarData.RaceNumber}| {broadcastingEvent.CarData.GetCurrentDriverName()} had an accident. {broadcastingEvent.Msg}");
                             break;
                         }
 
@@ -225,26 +205,17 @@ namespace ACCManager.Data.ACC.EntryList
                 Debug.WriteLine(ex);
             }
 
-            // publish accident events that are older than 1 second
-            DateTime currentTime = DateTime.Now;
-            foreach (var accidentDataKV in accidentDataList.ToList())
+            var accidentList = _accidentListTracker.GetNewAccidents();
+            foreach (var broadcastEventList in accidentList)
             {
-                // first accident element is always available
-                var firstAccidentData = accidentDataKV.Value[0];
-                List<AccidentData> pushAccidentList = new List<AccidentData>();
-                if (((currentTime - firstAccidentData.Timestamp).TotalSeconds) > 1) {
-                    pushAccidentList = accidentDataKV.Value;
-                    accidentDataList.Remove(accidentDataKV.Key);
-                }
+                if (broadcastEventList.Count == 0) continue;
 
-                if (pushAccidentList.Count > 0)
-                {
-                    string carNumbers = string.Join(" ", pushAccidentList.Select(x => x.Event.CarData.RaceNumber).ToArray());
-                    string accidentMessage = $"{firstAccidentData.Event.Type} between [{carNumbers}]";
-                    Debug.WriteLine($"{accidentMessage}");
-                }
-                
+                string carNumbers = string.Join(" ", broadcastEventList.Select(x => x.CarData.RaceNumber).ToArray());
+                string accidentMessage = $"accident between [{carNumbers}]";
+                Debug.WriteLine($"{accidentMessage}");
+
             }
+
         }
     }
 }
