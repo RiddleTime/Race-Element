@@ -349,6 +349,14 @@ namespace ACCManager.Data
             {61, Porsche_718_Cayman_GT4_MR_2019 }
         };
 
+        public static CarModels GetCarModels(int carId)
+        {
+            if (IdsToCarModel.ContainsKey(carId))
+            {
+                return IdsToCarModel[carId];
+            }
+            return None;
+        }
 
         public static string GetCarName(int carId)
         {

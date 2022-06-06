@@ -19,6 +19,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using static ACCManager.Data.ACC.EntryList.EntryListTracker;
+using static ACCManager.Data.ConversionFactory;
+using static ACCManager.Data.SetupConverter;
 using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
 using static ACCManager.HUD.Overlay.OverlayUtil.InfoTable;
 
@@ -41,6 +43,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
         }
 
         private readonly InfoTable _table;
+
+        private readonly Color Gt3Color = Color.FromArgb(70, Color.Black);
+        private readonly Color Gt4Color = Color.FromArgb(200, 12, 12, 36);
+        private readonly Color CupColor = Color.FromArgb(200, 15, 31, 13);
+        private readonly Color TcxColor = Color.FromArgb(200, 0, 48, 68);
+        private readonly Color StColor = Color.FromArgb(200, 0, 48, 68);
+        private readonly Color ChlColor = Color.FromArgb(200, 56, 55, 0);
 
         public EntryListOverlay(Rectangle rect) : base(rect, "Debug EntryList Overlay")
         {
@@ -115,8 +124,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
             Color[] firstRowColors = new Color[] { Color.White, Color.White, Color.White };
             firstRow[0] = $"{kv.Value.CarInfo.RaceNumber}";
 
-
-
             int bestSessionLapMS = -1;
             if (broadCastRealTime.BestSessionLap != null)
                 bestSessionLapMS = broadCastRealTime.BestSessionLap.LaptimeMS.GetValueOrDefault(-1);
@@ -186,16 +193,45 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                 default: break;
             }
 
+            var carModel = ConversionFactory.GetCarModels(kv.Value.CarInfo.CarModelType);
+            var carClass = ConversionFactory.GetConversion(carModel).CarClass;
+
+            Color headerBackgroundColor = Color.FromArgb(70, Color.Black);
+            switch (carClass) {
+                case CarClasses.GT3:
+                    headerBackgroundColor = Gt3Color;
+                    break;
+                case CarClasses.GT4:
+                    headerBackgroundColor = Gt4Color;
+                    break;
+                case CarClasses.CUP:
+                    headerBackgroundColor = CupColor;
+                    break;
+                case CarClasses.ST:
+                    headerBackgroundColor = StColor;
+                    break;
+                case CarClasses.TCX:
+                    headerBackgroundColor = TcxColor;
+                    break;
+                case CarClasses.CHL:
+                    headerBackgroundColor = ChlColor;
+                    break;
+                default:
+                    break;
+
+            }
+
             string raceNumber = $"{kv.Value.CarInfo.RaceNumber}".FillEnd(3, ' ');
             string firstName = kv.Value.CarInfo.Drivers[kv.Value.CarInfo.CurrentDriverIndex].FirstName;
             if (firstName.Length > 0) firstName = firstName.First() + ".";
             string cupPosition = $"{kv.Value.RealtimeCarUpdate.CupPosition}".FillStart(2, ' ');
+            cupPosition += $" [{carClass}]";
             TableRow row = new TableRow()
             {
                 Header = $"{cupPosition} {firstName} {kv.Value.CarInfo.GetCurrentDriverName().Trim()}",
                 Columns = firstRow,
                 ColumnColors = firstRowColors,
-                HeaderBackground = Color.FromArgb(70, Color.Black)
+                HeaderBackground = headerBackgroundColor
             };
 
             if (kv.Key == pageGraphics.PlayerCarID) row.HeaderBackground = Color.FromArgb(120, Color.Red);
