@@ -26,6 +26,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayWeather
 
         private readonly InfoPanel _panel;
         private WeatherInfo _weather;
+        private int _timeMultiplier = -1;
 
         public WeatherOverlay(Rectangle rectangle) : base(rectangle, "Overlay Weather")
         {
@@ -35,7 +36,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayWeather
             this.Width = panelWidth + 1;
             this.Height = _panel.FontHeight * 4;
 
-            WeatherTracker.Instance.OnWeatherChanged += Instance_OnWeatherChanged;
+         
+        }
+
+        private void Instance_OnMultiplierChanged(object sender, int e)
+        {
+            _timeMultiplier = e;
         }
 
         private void Instance_OnWeatherChanged(object sender, WeatherInfo e)
@@ -45,11 +51,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayWeather
 
         public sealed override void BeforeStart()
         {
+            SessionTimeTracker.Instance.OnMultiplierChanged += Instance_OnMultiplierChanged;
+            WeatherTracker.Instance.OnWeatherChanged += Instance_OnWeatherChanged;
         }
 
         public sealed override void BeforeStop()
         {
-
+            SessionTimeTracker.Instance.OnMultiplierChanged -= Instance_OnMultiplierChanged;
+            WeatherTracker.Instance.OnWeatherChanged -= Instance_OnWeatherChanged;
         }
 
         public sealed override void Render(Graphics g)
@@ -60,7 +69,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayWeather
                 _panel.AddLine("In 10", _weather.In10.ToString());
                 _panel.AddLine("In 30", _weather.In30.ToString());
             }
-            _panel.AddLine("Multiplier", $"{SessionTimeTracker.Instance.TimeMultiplier}");
+            _panel.AddLine("Multiplier", $"{_timeMultiplier}");
 
             _panel.Draw(g);
         }
