@@ -30,23 +30,24 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayWeather
 
         public WeatherOverlay(Rectangle rectangle) : base(rectangle, "Overlay Weather")
         {
+            this.RefreshRateHz = 1;
             int panelWidth = 200;
             _panel = new InfoPanel(10, panelWidth);
 
             this.Width = panelWidth + 1;
             this.Height = _panel.FontHeight * 4;
 
-         
+
         }
 
         private void Instance_OnMultiplierChanged(object sender, int e)
         {
-            Debug.WriteLine("Detected time multiplier change");
             _timeMultiplier = e;
         }
 
         private void Instance_OnWeatherChanged(object sender, WeatherInfo e)
         {
+            Debug.WriteLine("Weather has changed");
             _weather = e;
         }
 
@@ -64,13 +65,25 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayWeather
 
         public sealed override void Render(Graphics g)
         {
-            if (_weather != null)
+            if (_weather != null && _timeMultiplier > 0)
             {
                 _panel.AddLine("Now", _weather.Now.ToString());
-                _panel.AddLine("In 10", _weather.In10.ToString());
-                _panel.AddLine("In 30", _weather.In30.ToString());
+
+                float in10 = 10f / _timeMultiplier;
+                float in10secondsOnly = in10 % 1;
+                in10 -= in10secondsOnly;
+                in10secondsOnly *= 60;
+                _panel.AddLine($"In {in10:F0}:{in10secondsOnly:F0}", _weather.In10.ToString());
+
+                float in30 = 30f / _timeMultiplier;
+                float in30Seconds = in30 % 1;
+                in30 -= in30Seconds;
+                in30Seconds *= 60;
+                _panel.AddLine($"In {in30:F0}:{in30Seconds:F0}", _weather.In30.ToString());
             }
-            _panel.AddLine("Multiplier", $"{_timeMultiplier}");
+
+            string multiplierText = _timeMultiplier > 0 ? $"{_timeMultiplier}x" : "Detecting";
+            _panel.AddLine("Multiplier", $"{multiplierText}");
 
             _panel.Draw(g);
         }

@@ -39,30 +39,30 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Weather
             }
         }
 
-        private bool IsTracking = false;
+        private bool _isTracking = false;
         private ACCSharedMemory sharedMemory;
 
-        public WeatherInfo Weather;
+        private WeatherInfo _lastWeather;
 
         public event EventHandler<WeatherInfo> OnWeatherChanged;
 
-        public WeatherTracker()
+        private WeatherTracker()
         {
             sharedMemory = new ACCSharedMemory();
-            Weather = new WeatherInfo();
+            _lastWeather = new WeatherInfo();
 
             Start();
         }
 
         private void Start()
         {
-            if (IsTracking)
+            if (_isTracking)
                 return;
 
-            IsTracking = true;
+            _isTracking = true;
             new Thread(x =>
             {
-                while (IsTracking)
+                while (_isTracking)
                 {
                     try
                     {
@@ -79,26 +79,28 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Weather
                             TimeStamp = DateTime.Now.ToFileTimeUtc()
                         };
 
-                        if (!newWeather.Equals(Weather))
+                        if (!newWeather.Equals(_lastWeather))
                         {
-                            OnWeatherChanged.Invoke(this, newWeather);
+                            OnWeatherChanged?.Invoke(this, newWeather);
+                            _lastWeather = newWeather;
                         }
 
                     }
                     catch (Exception ex)
                     {
+                        Debug.WriteLine(ex);
                         LogWriter.WriteToLog(ex);
                     }
                 }
 
                 _instance = null;
-                IsTracking = false;
+                _isTracking = false;
             }).Start();
         }
 
         internal void Stop()
         {
-            IsTracking = false;
+            _isTracking = false;
         }
     }
 }
