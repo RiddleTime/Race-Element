@@ -32,7 +32,7 @@ namespace ACCManager.Data.ACC.Session
         private SessionPhase lastSessionPhase = SessionPhase.NONE;
         public event EventHandler<SessionPhase> OnSessionPhaseChanged;
 
-        public RaceSessionTracker()
+        private RaceSessionTracker()
         {
             _sharedMemory = new ACCSharedMemory();
             StartTracking();

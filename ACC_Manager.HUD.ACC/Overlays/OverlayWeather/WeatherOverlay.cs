@@ -1,4 +1,5 @@
-﻿using ACCManager.HUD.ACC.Data.Tracker.Weather;
+﻿using ACCManager.Data.ACC.Session;
+using ACCManager.HUD.ACC.Data.Tracker.Weather;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.Util;
@@ -59,6 +60,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayWeather
                 _panel.AddLine("In 10", _weather.In10.ToString());
                 _panel.AddLine("In 30", _weather.In30.ToString());
             }
+            _panel.AddLine("Multiplier", $"{SessionTimeTracker.Instance.TimeMultiplier}");
 
             _panel.Draw(g);
         }
