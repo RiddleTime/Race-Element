@@ -41,6 +41,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayWeather
 
         private void Instance_OnMultiplierChanged(object sender, int e)
         {
+            Debug.WriteLine("Detected time multiplier change");
             _timeMultiplier = e;
         }
 
