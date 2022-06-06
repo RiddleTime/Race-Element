@@ -133,7 +133,7 @@ namespace ACCManager.Data.ACC.EntryList
                         }
                     case BroadcastingCarEventType.Accident:
                         {
-                            Debug.WriteLine($"#{broadcastingEvent.CarData.RaceNumber}| {broadcastingEvent.CarData.GetCurrentDriverName()} had an accident. {broadcastingEvent.Msg}");
+                            //Debug.WriteLine($"#{broadcastingEvent.CarData.RaceNumber}| {broadcastingEvent.CarData.GetCurrentDriverName()} had an accident. {broadcastingEvent.Msg}");
                             break;
                         }
 
