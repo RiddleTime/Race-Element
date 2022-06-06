@@ -14,6 +14,7 @@ namespace ACCManager.Data.Cars.GT4
         public CarModels CarModel => CarModels.Alpine_A110_GT4_2018;
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT4;
+        public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHE2020_GT4;
 
         private static readonly double[] casters = new double[] { 7.3, 7.5, 7.7, 7.9, 8.1, 8.3, 8.5, 8.6, 8.8, 9.0, 9.2,
                     9.4, 9.6, 9.8, 10.0, 10.1, 10.3, 10.5, 10.7, 10.9, 11.1, 11.3, 11.5, 11.6, 11.8, 12.0, 12.2,

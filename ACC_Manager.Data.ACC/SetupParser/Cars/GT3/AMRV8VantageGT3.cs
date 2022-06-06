@@ -11,6 +11,7 @@ namespace ACCManager.Data.Cars.GT3
         public CarModels CarModel => CarModels.Aston_Martin_V8_Vantage_GT3_2019;
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
+        public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHE2020;
 
         private static readonly double[] casters = new double[] { 10.7, 10.9, 11.1, 11.3, 11.5, 11.6, 11.8, 12.0, 12.2, 12.4, 12.5, 12.7, 12.9, 13.1, 13.3, 13.4,
                 13.6, 13.8, 14.0, 14.2, 14.3, 14.5, 14.7, 14.9, 15.0, 15.2, 15.4, 15.6, 15.7, 15.9, 16.1 };
@@ -160,6 +161,8 @@ namespace ACCManager.Data.Cars.GT3
         IDamperSetup ICarSetupConversion.DamperSetup => DefaultDamperSetup;
 
         IAeroBalance ICarSetupConversion.AeroBalance => new AeroSetup();
+
+
         private class AeroSetup : IAeroBalance
         {
             public int BrakeDucts(int rawValue)

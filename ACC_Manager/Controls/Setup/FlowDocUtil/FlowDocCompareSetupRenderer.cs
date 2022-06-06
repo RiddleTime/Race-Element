@@ -44,10 +44,10 @@ namespace ACCManager.Controls.Setup
             TyreCompound compound1 = carSetup1.TyresSetup.Compound(setup1.basicSetup.tyres.tyreCompound);
 
             // Allignment / Tyre Setup car 1
-            double frontLeftPressure1 = carSetup1.TyresSetup.TirePressure(carSetup1.CarClass, Wheel.FrontLeft, setup1.basicSetup.tyres.tyrePressure);
-            double frontRightPressure1 = carSetup1.TyresSetup.TirePressure(carSetup1.CarClass, Wheel.FrontRight, setup1.basicSetup.tyres.tyrePressure);
-            double rearLeftPressure1 = carSetup1.TyresSetup.TirePressure(carSetup1.CarClass, Wheel.RearLeft, setup1.basicSetup.tyres.tyrePressure);
-            double rearRightPressure1 = carSetup1.TyresSetup.TirePressure(carSetup1.CarClass, Wheel.RearRight, setup1.basicSetup.tyres.tyrePressure);
+            double frontLeftPressure1 = carSetup1.TyresSetup.TirePressure(carSetup1.DryTyreCompound, Wheel.FrontLeft, setup1.basicSetup.tyres.tyrePressure);
+            double frontRightPressure1 = carSetup1.TyresSetup.TirePressure(carSetup1.DryTyreCompound, Wheel.FrontRight, setup1.basicSetup.tyres.tyrePressure);
+            double rearLeftPressure1 = carSetup1.TyresSetup.TirePressure(carSetup1.DryTyreCompound, Wheel.RearLeft, setup1.basicSetup.tyres.tyrePressure);
+            double rearRightPressure1 = carSetup1.TyresSetup.TirePressure(carSetup1.DryTyreCompound, Wheel.RearRight, setup1.basicSetup.tyres.tyrePressure);
 
             double frontLeftCaster1 = carSetup1.TyresSetup.Caster(setup1.basicSetup.alignment.casterLF);
             double frontRightCaster1 = carSetup1.TyresSetup.Caster(setup1.basicSetup.alignment.casterRF);
@@ -131,10 +131,10 @@ namespace ACCManager.Controls.Setup
             TyreCompound compound2 = carSetup2.TyresSetup.Compound(setup2.basicSetup.tyres.tyreCompound);
 
             // Allignment / Tyre Setup car 2
-            double frontLeftPressure2 = carSetup2.TyresSetup.TirePressure(carSetup2.CarClass, Wheel.FrontLeft, setup2.basicSetup.tyres.tyrePressure);
-            double frontRightPressure2 = carSetup2.TyresSetup.TirePressure(carSetup2.CarClass, Wheel.FrontRight, setup2.basicSetup.tyres.tyrePressure);
-            double rearLeftPressure2 = carSetup2.TyresSetup.TirePressure(carSetup2.CarClass, Wheel.RearLeft, setup2.basicSetup.tyres.tyrePressure);
-            double rearRightPressure2 = carSetup2.TyresSetup.TirePressure(carSetup2.CarClass, Wheel.RearRight, setup2.basicSetup.tyres.tyrePressure);
+            double frontLeftPressure2 = carSetup2.TyresSetup.TirePressure(carSetup2.DryTyreCompound, Wheel.FrontLeft, setup2.basicSetup.tyres.tyrePressure);
+            double frontRightPressure2 = carSetup2.TyresSetup.TirePressure(carSetup2.DryTyreCompound, Wheel.FrontRight, setup2.basicSetup.tyres.tyrePressure);
+            double rearLeftPressure2 = carSetup2.TyresSetup.TirePressure(carSetup2.DryTyreCompound, Wheel.RearLeft, setup2.basicSetup.tyres.tyrePressure);
+            double rearRightPressure2 = carSetup2.TyresSetup.TirePressure(carSetup2.DryTyreCompound, Wheel.RearRight, setup2.basicSetup.tyres.tyrePressure);
 
             double frontLeftCaster2 = carSetup2.TyresSetup.Caster(setup2.basicSetup.alignment.casterLF);
             double frontRightCaster2 = carSetup2.TyresSetup.Caster(setup2.basicSetup.alignment.casterRF);

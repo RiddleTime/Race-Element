@@ -14,6 +14,8 @@ namespace ACCManager.Data.Cars.TCX
         public CarModels CarModel => CarModels.BMW_M2_Cup_2020;
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.TCX;
+        public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHE2020_GT4;
+
 
         private static readonly double[] casters = new double[] { 8.5 };
         private static readonly int[] wheelRateFronts = new int[] { 162000, 180000, 198000 };
