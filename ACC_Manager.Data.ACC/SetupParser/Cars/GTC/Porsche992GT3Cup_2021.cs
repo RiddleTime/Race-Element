@@ -12,7 +12,7 @@ namespace ACCManager.Data.Cars.GTC
     {
         public CarModels CarModel => CarModels.Porsche_992_GT3_Cup_2021;
 
-        CarClasses ICarSetupConversion.CarClass => CarClasses.GT3; // did this for tyre pressures, should be 'GTC' 
+        CarClasses ICarSetupConversion.CarClass => CarClasses.CUP; // did this for tyre pressures, should be 'GTC' 
         public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHE2020;
 
 

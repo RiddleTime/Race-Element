@@ -14,8 +14,10 @@ namespace ACCManager.Data
         {
             GT3,
             GT4,
+            CUP,
+            ST,
             TCX,
-            GTC
+            CHL
         }
 
         public enum DryTyreCompounds

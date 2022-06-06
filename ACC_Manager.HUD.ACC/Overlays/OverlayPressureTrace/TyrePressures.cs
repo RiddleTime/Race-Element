@@ -40,9 +40,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
             ICarSetupConversion setupConversion = GetConversion(model);
 
             if (setupConversion != null)
-                switch (setupConversion.CarClass)
+                switch (setupConversion.DryTyreCompound)
                 {
-                    case CarClasses.GT3: return DRY_DHE2020;
+                    case DryTyreCompounds.DHE2020: return DRY_DHE2020;
                     default: return DRY_DHE2020_GT4;
                 }
 
