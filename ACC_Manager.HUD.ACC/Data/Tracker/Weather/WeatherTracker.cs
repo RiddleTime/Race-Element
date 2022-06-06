@@ -15,6 +15,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Weather
         public long TimeStamp = -1;
         public AcRainIntensity Now { get; set; }
         public AcRainIntensity In10 { get; set; }
+        public AcRainIntensity In20 { get; set; }
         public AcRainIntensity In30 { get; set; }
 
         public override bool Equals(object obj)
@@ -81,6 +82,11 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Weather
 
                         if (!newWeather.Equals(_lastWeather))
                         {
+                            if (_lastWeather.TimeStamp != -1)
+                            {
+                                newWeather.In20 = _lastWeather.In30;
+                            }
+
                             OnWeatherChanged?.Invoke(this, newWeather);
                             _lastWeather = newWeather;
                         }

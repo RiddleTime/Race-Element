@@ -1,4 +1,5 @@
-﻿using ACCManager.Data.ACC.Session;
+﻿using ACC_Manager.Util.SystemExtensions;
+using ACCManager.Data.ACC.Session;
 using ACCManager.HUD.ACC.Data.Tracker.Weather;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
@@ -35,7 +36,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayWeather
             _panel = new InfoPanel(10, panelWidth);
 
             this.Width = panelWidth + 1;
-            this.Height = _panel.FontHeight * 4;
+            this.Height = _panel.FontHeight * 5;
 
 
         }
@@ -67,15 +68,30 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayWeather
         {
             if (_weather != null && _timeMultiplier > 0)
             {
+                float minutesFromChange = (DateTime.Now.ToFileTimeUtc() - _weather.TimeStamp) / 10000000f / 60f;
+
+                TimeSpan timeSpan = TimeSpan.FromSeconds(minutesFromChange * 60f);
+                _panel.AddLine("last change", $"{timeSpan:mm\\:ss}");
+
                 _panel.AddLine("Now", _weather.Now.ToString());
 
-                float in10 = 10f / _timeMultiplier;
+                float in10 = 10f / _timeMultiplier - minutesFromChange;
+                in10.ClipMin(0);
                 float in10secondsOnly = in10 % 1;
                 in10 -= in10secondsOnly;
                 in10secondsOnly *= 60;
                 _panel.AddLine($"In {in10:F0}:{in10secondsOnly:F0}", _weather.In10.ToString());
 
-                float in30 = 30f / _timeMultiplier;
+
+                float in20 = 20f / _timeMultiplier - minutesFromChange;
+                in20.ClipMin(0);
+                float in20Seconds = in20 % 1;
+                in20 -= in20Seconds;
+                in20Seconds *= 60;
+                _panel.AddLine($"In {in20:F0}:{in20Seconds:F0}", _weather.In20.ToString());
+
+                float in30 = 30f / _timeMultiplier - minutesFromChange;
+                in30.ClipMin(0);
                 float in30Seconds = in30 % 1;
                 in30 -= in30Seconds;
                 in30Seconds *= 60;
