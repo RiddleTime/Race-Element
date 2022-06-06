@@ -70,16 +70,16 @@ namespace ACCManager.Data.ACC.AccidentList
 
                         var added = false;
 
-                        foreach (var accidentTimeMS in _accidentDataList.Keys)
+                        foreach (var key in _accidentDataList.Keys)
                         {
                             //Debug.WriteLine($"- time diff {broadcastingEvent.TimeMs} - {accidentTimeData.accidentTimeMS} = {(broadcastingEvent.TimeMs - accidentTimeData.accidentTimeMS)}");
                             // Group all accidents within 1 sec. together
                             // If an accident occurs at the same time on different track positions, we have only one accident.
-                            if ((broadcastingEvent.TimeMs - accidentTimeMS) < 1000) 
+                            if ((broadcastingEvent.TimeMs - key) < 1000) 
                             {
                                 //Debug.WriteLine($"- add to existing group {accidentTimeData.accidentTimeMS} size: {_accidentDataList[accidentTimeData].Count}");
                                 added = true;
-                                _accidentDataList[accidentTimeMS].EventList.Add(broadcastingEvent);
+                                _accidentDataList[key].EventList.Add(broadcastingEvent);
                             }
                         }
 
