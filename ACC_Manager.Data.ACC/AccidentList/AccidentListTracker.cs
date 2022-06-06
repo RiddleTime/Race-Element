@@ -11,7 +11,9 @@ namespace ACCManager.Data.ACC.AccidentList
     public class AccidentListTracker
     {
         private static AccidentListTracker _instance;
-        private Dictionary<AccidentTimeData, List<BroadcastingEvent>> _accidentDataList = new Dictionary<AccidentTimeData, List<BroadcastingEvent>>();
+
+        // the key into the dictionary is the timeMS of the first accident event
+        private Dictionary<int, AccidentData> _accidentDataList = new Dictionary<int, AccidentData>();
 
         public static AccidentListTracker Instance
         {
@@ -31,12 +33,12 @@ namespace ACCManager.Data.ACC.AccidentList
 
             foreach (var accidentDataKV in _accidentDataList.ToList())
             {
-                AccidentTimeData accidentTimeData = accidentDataKV.Key;
+                int key = accidentDataKV.Key;
                 // return accident data older than 1.5 sec.
-                if ((currentTime - accidentTimeData.Timestamp).TotalSeconds > 1.5)
+                if ((currentTime - _accidentDataList[key].Timestamp).TotalSeconds > 1.5)
                 {
-                    list.Add(_accidentDataList[accidentTimeData]);
-                    _accidentDataList.Remove(accidentTimeData);
+                    list.Add(_accidentDataList[key].EventList);
+                    _accidentDataList.Remove(key);
                 }
             }
                 
@@ -67,29 +69,31 @@ namespace ACCManager.Data.ACC.AccidentList
                             break;
 
                         var added = false;
-                        foreach (var accidentTimeData in _accidentDataList.Keys)
+
+                        foreach (var accidentTimeMS in _accidentDataList.Keys)
                         {
                             //Debug.WriteLine($"- time diff {broadcastingEvent.TimeMs} - {accidentTimeData.accidentTimeMS} = {(broadcastingEvent.TimeMs - accidentTimeData.accidentTimeMS)}");
                             // Group all accidents within 1 sec. together
                             // If an accident occurs at the same time on different track positions, we have only one accident.
-                            if ((broadcastingEvent.TimeMs - accidentTimeData.accidentTimeMS) < 1000) 
+                            if ((broadcastingEvent.TimeMs - accidentTimeMS) < 1000) 
                             {
                                 //Debug.WriteLine($"- add to existing group {accidentTimeData.accidentTimeMS} size: {_accidentDataList[accidentTimeData].Count}");
                                 added = true;
-                                _accidentDataList[accidentTimeData].Add(broadcastingEvent);
+                                _accidentDataList[accidentTimeMS].EventList.Add(broadcastingEvent);
                             }
                         }
 
                         if (!added)
                         {
                             //Debug.WriteLine($"+ create new group");
-                            List<BroadcastingEvent> broadcastEventList = new List<BroadcastingEvent> { broadcastingEvent };
+                            //List<BroadcastingEvent> broadcastEventList = new List<BroadcastingEvent> { broadcastingEvent };
 
-                            AccidentTimeData accidentTimeData = new AccidentTimeData();
-                            accidentTimeData.accidentTimeMS = broadcastingEvent.TimeMs;
-                            accidentTimeData.Timestamp = DateTime.Now;
+                            AccidentData accidentData = new AccidentData();
+                            accidentData.AccidentTimeMS = broadcastingEvent.TimeMs;
+                            accidentData.Timestamp = DateTime.Now;
+                            accidentData.EventList.Add(broadcastingEvent);
 
-                            _accidentDataList[accidentTimeData] = broadcastEventList;
+                            _accidentDataList[broadcastingEvent.TimeMs] = accidentData;
                         }
 
                         break;
@@ -98,11 +102,13 @@ namespace ACCManager.Data.ACC.AccidentList
 
         }
 
-        private class AccidentTimeData
+        private class AccidentData
         {
             public DateTime Timestamp;
-            public int accidentTimeMS;
+            public int AccidentTimeMS;
+            public List<BroadcastingEvent> EventList = new List<BroadcastingEvent>();
         }
+
     }
 
 
