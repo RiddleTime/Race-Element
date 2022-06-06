@@ -32,6 +32,9 @@ namespace ACCManager.Data.ACC.Session
         private SessionPhase lastSessionPhase = SessionPhase.NONE;
         public event EventHandler<SessionPhase> OnSessionPhaseChanged;
 
+        private int lastSessionIndex = -1;
+        public event EventHandler<int> OnSessionIndexChanged;
+
         private RaceSessionTracker()
         {
             _sharedMemory = new ACCSharedMemory();
@@ -55,7 +58,14 @@ namespace ACCManager.Data.ACC.Session
                     {
                         Debug.WriteLine($"SessionType: {lastSessionType} -> {pageGraphics.SessionType}");
                         lastSessionType = pageGraphics.SessionType;
-                        OnACSessionTypeChanged?.Invoke(this, pageGraphics.SessionType);
+                        OnACSessionTypeChanged?.Invoke(this, lastSessionType);
+                    }
+
+                    if (pageGraphics.SessionIndex != lastSessionIndex)
+                    {
+                        Debug.WriteLine($"SessionIndex: {lastSessionIndex} -> {pageGraphics.SessionIndex}");
+                        lastSessionIndex = pageGraphics.SessionIndex;
+                        OnSessionIndexChanged?.Invoke(this, lastSessionIndex);
                     }
                 }
 

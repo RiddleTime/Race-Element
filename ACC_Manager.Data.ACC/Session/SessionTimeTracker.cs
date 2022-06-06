@@ -39,6 +39,7 @@ namespace ACCManager.Data.ACC.Session
                 BroadcastTracker.Instance.OnRealTimeUpdate += Instance_OnRealTimeUpdate;
                 RaceSessionTracker.Instance.OnACSessionTypeChanged += Instance_OnACSessionTypeChanged;
                 RaceSessionTracker.Instance.OnSessionPhaseChanged += Instance_OnSessionPhaseChanged;
+                RaceSessionTracker.Instance.OnSessionIndexChanged += Instance_OnSessionIndexChanged;
 
                 while (_isTracking)
                 {
@@ -49,24 +50,20 @@ namespace ACCManager.Data.ACC.Session
                 BroadcastTracker.Instance.OnRealTimeUpdate -= Instance_OnRealTimeUpdate;
                 RaceSessionTracker.Instance.OnACSessionTypeChanged -= Instance_OnACSessionTypeChanged;
                 RaceSessionTracker.Instance.OnSessionPhaseChanged -= Instance_OnSessionPhaseChanged;
-
+                RaceSessionTracker.Instance.OnSessionIndexChanged -= Instance_OnSessionIndexChanged;
                 _instance = null;
             }).Start();
         }
 
-        private int _lastSessionIndex = -1;
+        private void Instance_OnSessionIndexChanged(object sender, int e)
+        {
+            ResetTimeTrackingData();
+        }
+
         private void Instance_OnSessionPhaseChanged(object sender, Broadcast.SessionPhase e)
         {
             if (e == Broadcast.SessionPhase.NONE)
                 ResetTimeTrackingData();
-
-            ACCSharedMemory sharedMemory = new ACCSharedMemory();
-            int newSessionIndex = sharedMemory.ReadGraphicsPageFile().SessionIndex;
-            if (newSessionIndex != _lastSessionIndex)
-            {
-                _lastSessionIndex = newSessionIndex;
-                ResetTimeTrackingData();
-            }
         }
 
         private void Instance_OnACSessionTypeChanged(object sender, ACCSharedMemory.AcSessionType e)
