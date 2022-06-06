@@ -13,6 +13,7 @@ namespace ACCManager.Data.Cars.GTC
         public CarModels CarModel => CarModels.Ferrari_488_Challenge_Evo_2020;
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GTC;
+        public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHE2020_GT4;
 
         AbstractTyresSetup ICarSetupConversion.TyresSetup => new TyreSetup();
         private class TyreSetup : AbstractTyresSetup

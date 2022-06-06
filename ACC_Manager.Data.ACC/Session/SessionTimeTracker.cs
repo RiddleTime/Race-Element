@@ -73,6 +73,7 @@ namespace ACCManager.Data.ACC.Session
 
         private void ResetTimeTrackingData()
         {
+            Debug.WriteLine("Reset time tracking data");
             _serverChanges = 0;
             _lastServerMilliseconds = -1;
             _timeMultiplier = -1;

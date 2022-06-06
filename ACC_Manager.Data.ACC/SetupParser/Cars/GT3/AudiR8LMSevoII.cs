@@ -13,6 +13,7 @@ namespace ACCManager.Data.Cars.GT3
         public CarModels CarModel => CarModels.Audi_R8_LMS_Evo_II_2022;
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
+        public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHE2020;
 
         AbstractTyresSetup ICarSetupConversion.TyresSetup => new TyreSetup();
         private class TyreSetup : AbstractTyresSetup

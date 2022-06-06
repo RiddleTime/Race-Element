@@ -18,6 +18,12 @@ namespace ACCManager.Data
             GTC
         }
 
+        public enum DryTyreCompounds
+        {
+            DHE2020_GT4,
+            DHE2020,
+        }
+
         public enum Wheel : int
         {
             FrontLeft,
@@ -61,6 +67,7 @@ namespace ACCManager.Data
         {
             CarModels CarModel { get; }
             CarClasses CarClass { get; }
+            DryTyreCompounds DryTyreCompound { get; }
 
             AbstractTyresSetup TyresSetup { get; }
             IDamperSetup DamperSetup { get; }

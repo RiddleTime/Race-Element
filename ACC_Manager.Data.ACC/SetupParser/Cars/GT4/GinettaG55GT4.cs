@@ -13,6 +13,7 @@ namespace ACCManager.Data.Cars.GT4
         public CarModels CarModel => CarModels.Ginetta_G55_GT4_2012;
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT4;
+        public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHE2020_GT4;
 
         AbstractTyresSetup ICarSetupConversion.TyresSetup => new TyreSetup();
         private class TyreSetup : AbstractTyresSetup
