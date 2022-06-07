@@ -61,17 +61,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            pageStatic.MaxRpm = 9250;
-            pagePhysics.Rpms = 9000;
-
             DrawRpmBar(g);
 
-            if (_config.ShowRpm)
+            if (_config.ShowRpm && pagePhysics.Rpms > 0)
             {
                 string currentRpm = $"{pagePhysics.Rpms}".FillStart(4, ' ');
                 float stringWidth = g.MeasureString(currentRpm, _rpmFont).Width;
 
-                g.DrawStringWithShadow(currentRpm, _rpmFont, Brushes.White, new PointF(_config.Width / 2 - stringWidth / 2, _config.Height / 2 + _rpmFont.Height / 2));
+                g.DrawStringWithShadow(currentRpm, _rpmFont, Brushes.White, new PointF(_config.Width / 2 - stringWidth / 2, _config.Height / 2 - _rpmFont.Height / 2 + 1));
             }
         }
 
@@ -85,18 +82,17 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
             double currentRpm = pagePhysics.Rpms;
             double percent = 0;
 
-            if (maxRpm > 0 && currentRpm > 0) percent = currentRpm / maxRpm;
-
-
+            if (maxRpm > 0 && currentRpm > 0)
+                percent = currentRpm / maxRpm;
 
             if (percent > 0)
             {
                 Color rpmColor = Color.FromArgb(120, 255, 255, 255);
 
                 if (percent > 0.94)
-                    rpmColor = Color.FromArgb(160, Color.Yellow);
+                    rpmColor = Color.FromArgb(195, 255, 120, 7);
                 if (percent > 0.975)
-                    rpmColor = Color.FromArgb(160, 255, 0, 0);
+                    rpmColor = Color.FromArgb(195, 255, 7, 7);
 
                 if (percent > 1)
                     rpmColor = Color.Black;
