@@ -2,6 +2,7 @@
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.OverlayUtil;
+using ACCManager.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -27,11 +28,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
             [IntRange(20, 50, 5)]
             internal int Height { get; set; } = 35;
 
+            [ToolTip("Displays the current RPM inside of the shift indicator bar.")]
+            internal bool ShowRpm { get; set; } = false;
+
             public ShiftIndicatorConfig()
             {
                 this.AllowRescale = true;
             }
         }
+
+        private Font _rpmFont;
 
         public ShiftIndicatorOverlay(Rectangle rectangle) : base(rectangle, "Shift Indicator Overlay")
         {
@@ -42,7 +48,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
 
         public sealed override void BeforeStart()
         {
-
+            if (_config.ShowRpm)
+                _rpmFont = FontUtil.FontUnispace(15);
         }
 
         public sealed override void BeforeStop()
@@ -54,7 +61,18 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
+            pageStatic.MaxRpm = 9250;
+            pagePhysics.Rpms = 9000;
+
             DrawRpmBar(g);
+
+            if (_config.ShowRpm)
+            {
+                string currentRpm = $"{pagePhysics.Rpms}".FillStart(4, ' ');
+                float stringWidth = g.MeasureString(currentRpm, _rpmFont).Width;
+
+                g.DrawStringWithShadow(currentRpm, _rpmFont, Brushes.White, new PointF(_config.Width / 2 - stringWidth / 2, _config.Height / 2 + _rpmFont.Height / 2));
+            }
         }
 
         private void DrawRpmBar(Graphics g)
@@ -83,7 +101,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
                 if (percent > 1)
                     rpmColor = Color.Black;
 
-                    percent.Clip(0.05, 1);
+                percent.Clip(0.05, 1);
 
                 g.FillRoundedRectangle(new SolidBrush(rpmColor), new Rectangle(0, 0, (int)(_config.Width * percent), _config.Height), cornerRadius);
             }
