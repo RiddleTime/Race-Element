@@ -44,12 +44,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 
         private readonly InfoTable _table;
 
-        private readonly Color Gt3Color = Color.FromArgb(70, Color.Black);
-        private readonly Color Gt4Color = Color.FromArgb(200, 12, 12, 36);
-        private readonly Color CupColor = Color.FromArgb(200, 15, 31, 13);
-        private readonly Color TcxColor = Color.FromArgb(200, 0, 48, 68);
-        private readonly Color StColor = Color.FromArgb(200, 0, 48, 68);
-        private readonly Color ChlColor = Color.FromArgb(200, 56, 55, 0);
+        private readonly Color Gt3Color = Color.FromArgb(255, Color.Black);
+        private readonly Color Gt4Color = Color.FromArgb(255, 12, 12, 36);
+        private readonly Color CupColor = Color.FromArgb(255, 15, 31, 13);
+        private readonly Color TcxColor = Color.FromArgb(255, 0, 48, 68);
+        private readonly Color StColor = Color.FromArgb(255, 0, 48, 68);
+        private readonly Color ChlColor = Color.FromArgb(255, 56, 55, 0);
 
         public EntryListOverlay(Rectangle rect) : base(rect, "Debug EntryList Overlay")
         {
@@ -58,7 +58,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 
             float fontSize = 9;
             var font = FontUtil.FontUnispace(fontSize);
-            _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 5), (int)(font.Size * 13), (int)(font.Size * 8) });
+            _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 13), (int)(font.Size * 13), (int)(font.Size * 8), (int)(font.Size * 8) });
 
             this.Width = 415;
             this.Height = 800;
@@ -120,9 +120,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 
         private void AddCarFirstRow(KeyValuePair<int, CarData> kv)
         {
-            string[] firstRow = new string[] { String.Empty, String.Empty, String.Empty };
-            Color[] firstRowColors = new Color[] { Color.White, Color.White, Color.White };
-            firstRow[0] = $"{kv.Value.CarInfo.RaceNumber}";
+            string[] firstRow = new string[] { String.Empty, String.Empty, String.Empty, String.Empty };
+            Color[] firstRowColors = new Color[] { Color.White, Color.White, Color.White, Color.White };
+
+            string firstName = kv.Value.CarInfo.Drivers[kv.Value.CarInfo.CurrentDriverIndex].FirstName;
+            if (firstName.Length > 0) firstName = firstName.First() + ".";
+            firstRow[0] = $"{firstName} {kv.Value.CarInfo.GetCurrentDriverName().Trim()}";
+
+            firstRow[1] = $"{kv.Value.CarInfo.RaceNumber}";
 
             int bestSessionLapMS = -1;
             if (broadCastRealTime.BestSessionLap != null)
@@ -136,13 +141,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                             {
                                 if (broadCastRealTime.BestSessionLap != null)
                                     if (kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS == bestSessionLapMS)
-                                        firstRowColors[1] = Color.FromArgb(255, 207, 97, 255);
+                                        firstRowColors[2] = Color.FromArgb(255, 207, 97, 255);
 
                                 TimeSpan fastestLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.Value);
-                                firstRow[1] = $"{fastestLapTime:mm\\:ss\\.fff}";
+                                firstRow[2] = $"{fastestLapTime:mm\\:ss\\.fff}";
                             }
                             else
-                                firstRow[1] = $"--:--.---";
+                                firstRow[2] = $"--:--.---";
                         break;
                     }
 
@@ -154,13 +159,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                             {
                                 if (broadCastRealTime.BestSessionLap != null)
                                     if (kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS == bestSessionLapMS)
-                                        firstRowColors[1] = Color.FromArgb(255, 207, 97, 255);
+                                        firstRowColors[2] = Color.FromArgb(255, 207, 97, 255);
 
                                 TimeSpan fastestLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.Value);
-                                firstRow[1] = $"{fastestLapTime:mm\\:ss\\.fff}";
+                                firstRow[2] = $"{fastestLapTime:mm\\:ss\\.fff}";
                             }
                             else
-                                firstRow[1] = $"--:--.---";
+                                firstRow[2] = $"--:--.---";
                         break;
                     }
                 default: break;
@@ -170,24 +175,24 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
             {
                 case CarLocationEnum.PitEntry:
                     {
-                        firstRow[1] += " (PI)";
+                        firstRow[3] += " (PI)";
                         break;
                     }
                 case CarLocationEnum.PitExit:
                     {
-                        firstRow[1] += " (PE)";
+                        firstRow[3] += " (PE)";
                         break;
                     }
                 case CarLocationEnum.Pitlane:
                     {
-                        firstRow[1] += " (P)";
+                        firstRow[3] += " (P)";
                         break;
                     }
 
                 case CarLocationEnum.Track:
                     {
-                        firstRow[2] = $"{kv.Value.RealtimeCarUpdate.Delta / 1000f:F2}".FillStart(6, ' ');
-                        firstRowColors[2] = kv.Value.RealtimeCarUpdate.Delta > 0 ? Color.OrangeRed : Color.LimeGreen;
+                        firstRow[3] = $"{kv.Value.RealtimeCarUpdate.Delta / 1000f:F2}".FillStart(6, ' ');
+                        firstRowColors[3] = kv.Value.RealtimeCarUpdate.Delta > 0 ? Color.OrangeRed : Color.LimeGreen;
                         break;
                     }
                 default: break;
@@ -221,20 +226,17 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 
             }
 
-            string raceNumber = $"{kv.Value.CarInfo.RaceNumber}".FillEnd(3, ' ');
-            string firstName = kv.Value.CarInfo.Drivers[kv.Value.CarInfo.CurrentDriverIndex].FirstName;
-            if (firstName.Length > 0) firstName = firstName.First() + ".";
-            string cupPosition = $"{kv.Value.RealtimeCarUpdate.CupPosition}".FillStart(2, ' ');
-            cupPosition += $" [{carClass}]";
+            string cupPosition = $"{kv.Value.RealtimeCarUpdate.CupPosition}";
             TableRow row = new TableRow()
             {
-                Header = $"{cupPosition} {firstName} {kv.Value.CarInfo.GetCurrentDriverName().Trim()}",
+                Header = $"  {cupPosition}",
                 Columns = firstRow,
                 ColumnColors = firstRowColors,
                 HeaderBackground = headerBackgroundColor
             };
 
-            if (kv.Key == pageGraphics.PlayerCarID) row.HeaderBackground = Color.FromArgb(120, Color.Red);
+            if (kv.Key == pageGraphics.PlayerCarID) 
+                row.HeaderBackground = Color.FromArgb(120, Color.Red);
             else
                 if (kv.Key == broadCastRealTime.FocusedCarIndex) row.HeaderBackground = Color.FromArgb(70, Color.Red);
 
