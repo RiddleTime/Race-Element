@@ -22,6 +22,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList;
 using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput;
+using ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator;
 
 namespace ACCManager.HUD.ACC
 {
@@ -41,6 +42,7 @@ namespace ACCManager.HUD.ACC
             {"Tyre Pressure Trace", typeof(PressureTraceOverlay) },
 
 #if DEBUG
+            {"Shift Indicator", typeof(ShiftIndicatorOverlay) },
             {"Weather Info", typeof(WeatherOverlay) },
 
             // yea this shit has to be at the bottom...

@@ -58,7 +58,7 @@ namespace ACCManager.HUD.Overlay.Internal
         }
         protected void UpdateLayeredWindow()
         {
-            Bitmap bitmap1 = new Bitmap(this.Size.Width, this.Size.Height, PixelFormat.Format32bppArgb);
+            Bitmap bitmap1 = new Bitmap(this.Size.Width, this.Size.Height, PixelFormat.Format32bppPArgb);
             using (Graphics graphics1 = Graphics.FromImage(bitmap1))
             {
                 Rectangle rectangle1;

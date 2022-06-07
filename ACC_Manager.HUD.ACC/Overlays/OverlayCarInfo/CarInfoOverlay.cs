@@ -65,7 +65,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
         public sealed override void Render(Graphics g)
         {
             float totalRepairTime = GetTotalRepairTime();
-            Brush damageBrush = HasAnyDamage() ? Brushes.Red : Brushes.White;
+            Brush damageBrush = HasAnyDamage() ? Brushes.OrangeRed : Brushes.White;
             infoPanel.AddLine("Damage", $"{totalRepairTime:F1}", damageBrush);
             infoPanel.AddLine("Tyre Set", $"{pageGraphics.currentTyreSet}");
 
