@@ -18,11 +18,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
         private readonly ShiftIndicatorConfig _config = new ShiftIndicatorConfig();
         private class ShiftIndicatorConfig : OverlayConfiguration
         {
-
             [ToolTip("Sets the Width of the shift indicator bar.")]
             [IntRange(100, 400, 10)]
             internal int Width { get; set; } = 200;
-
 
             [ToolTip("Sets the Height of the shift indicator bar.")]
             [IntRange(20, 50, 5)]
@@ -38,6 +36,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
         }
 
         private Font _rpmFont;
+        private float _halfRpmStringWidth = -1;
 
         public ShiftIndicatorOverlay(Rectangle rectangle) : base(rectangle, "Shift Indicator Overlay")
         {
@@ -52,10 +51,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
                 _rpmFont = FontUtil.FontUnispace(15);
         }
 
-        public sealed override void BeforeStop()
-        {
-
-        }
+        public sealed override void BeforeStop() { }
 
         public sealed override void Render(Graphics g)
         {
@@ -63,12 +59,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
 
             DrawRpmBar(g);
 
-            if (_config.ShowRpm && pagePhysics.Rpms > 0)
+            if (_config.ShowRpm)
             {
                 string currentRpm = $"{pagePhysics.Rpms}".FillStart(4, ' ');
-                float stringWidth = g.MeasureString(currentRpm, _rpmFont).Width;
 
-                g.DrawStringWithShadow(currentRpm, _rpmFont, Brushes.White, new PointF(_config.Width / 2 - stringWidth / 2, _config.Height / 2 - _rpmFont.Height / 2 + 1));
+                if (_halfRpmStringWidth < 0)
+                    _halfRpmStringWidth = g.MeasureString(currentRpm, _rpmFont).Width / 2;
+
+                g.DrawStringWithShadow(currentRpm, _rpmFont, Brushes.White, new PointF(_config.Width / 2 - _halfRpmStringWidth, _config.Height / 2 - _rpmFont.Height / 2 + 1));
             }
         }
 
