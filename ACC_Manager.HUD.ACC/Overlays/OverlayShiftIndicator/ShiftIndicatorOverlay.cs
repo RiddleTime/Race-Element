@@ -1,4 +1,5 @@
-﻿using ACCManager.HUD.Overlay.Configuration;
+﻿using ACC_Manager.Util.SystemExtensions;
+using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.OverlayUtil;
 using System;
@@ -69,14 +70,20 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
             if (maxRpm > 0 && currentRpm > 0) percent = currentRpm / maxRpm;
 
 
+
             if (percent > 0)
             {
                 Color rpmColor = Color.FromArgb(120, 255, 255, 255);
 
-                if (percent > 0.90)
-                    rpmColor = Color.FromArgb(120, Color.OrangeRed);
-                if (percent > 0.97)
-                    rpmColor = Color.FromArgb(120, 255, 0, 0);
+                if (percent > 0.94)
+                    rpmColor = Color.FromArgb(160, Color.Yellow);
+                if (percent > 0.975)
+                    rpmColor = Color.FromArgb(160, 255, 0, 0);
+
+                if (percent > 1)
+                    rpmColor = Color.Black;
+
+                    percent.Clip(0.05, 1);
 
                 g.FillRoundedRectangle(new SolidBrush(rpmColor), new Rectangle(0, 0, (int)(_config.Width * percent), _config.Height), cornerRadius);
             }
