@@ -95,7 +95,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
                     rpmColor = Color.FromArgb(195, 255, 7, 7);
 
                 if (percent > 1)
-                    rpmColor = Color.Black;
+                    rpmColor = Color.Red;
 
                 percent.Clip(0.05, 1);
 
