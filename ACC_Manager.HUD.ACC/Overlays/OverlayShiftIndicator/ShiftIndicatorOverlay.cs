@@ -17,20 +17,26 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
         private class ShiftIndicatorConfig : OverlayConfiguration
         {
 
+            [ToolTip("Sets the Width of the shift indicator bar.")]
+            [IntRange(100, 400, 10)]
+            internal int Width { get; set; } = 200;
+
+
+            [ToolTip("Sets the Height of the shift indicator bar.")]
+            [IntRange(20, 50, 5)]
+            internal int Height { get; set; } = 35;
+
             public ShiftIndicatorConfig()
             {
                 this.AllowRescale = true;
             }
         }
 
-        private const int _barWidth = 200;
-        private const int _barHeight = 35;
-
         public ShiftIndicatorOverlay(Rectangle rectangle) : base(rectangle, "Shift Indicator Overlay")
         {
             AllowReposition = true;
-            this.Height = _barHeight + 1;
-            this.Width = _barWidth + 1;
+            this.Height = _config.Height + 1;
+            this.Width = _config.Width + 1;
         }
 
         public sealed override void BeforeStart()
@@ -47,9 +53,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
+            DrawRpmBar(g);
+        }
+
+        private void DrawRpmBar(Graphics g)
+        {
             const int cornerRadius = 10;
 
-            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(160, 0, 0, 0)), new Rectangle(0, 0, _barWidth, _barHeight), cornerRadius);
+            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(160, 0, 0, 0)), new Rectangle(0, 0, _config.Width, _config.Height), cornerRadius);
 
             double maxRpm = pageStatic.MaxRpm;
             double currentRpm = pagePhysics.Rpms;
@@ -62,12 +73,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
             {
                 Color rpmColor = Color.FromArgb(120, 255, 255, 255);
 
-                if (percent > 0.85)
+                if (percent > 0.90)
                     rpmColor = Color.FromArgb(120, Color.OrangeRed);
-                if (percent > 0.95)
+                if (percent > 0.97)
                     rpmColor = Color.FromArgb(120, 255, 0, 0);
 
-                g.FillRoundedRectangle(new SolidBrush(rpmColor), new Rectangle(0, 0, (int)(_barWidth * percent), _barHeight), cornerRadius);
+                g.FillRoundedRectangle(new SolidBrush(rpmColor), new Rectangle(0, 0, (int)(_config.Width * percent), _config.Height), cornerRadius);
             }
         }
 
