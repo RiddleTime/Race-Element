@@ -38,7 +38,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
         {
             this.Width = 222;
             _infoPanel = new InfoPanel(10, this.Width - 1) { FirstRowLine = 1 };
-            this.Height = this._infoPanel.FontHeight * 6 + 1;
+            this.Height = this._infoPanel.FontHeight * 8 + 1;
             RefreshRateHz = 2;
         }
 
@@ -83,6 +83,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
                 else
                     _infoPanel.AddLine("Stint Fuel", $"{stintFuel + lapBufferVar:F1}");
             }
+
+            _infoPanel.AddLine("Pit Lane?", $"{pageGraphics.IsInPitLane}");
+            _infoPanel.AddLine("Pit?", $"More Info PLZ");
             //Magic End (Advanced)
             _infoPanel.Draw(g);
         }
