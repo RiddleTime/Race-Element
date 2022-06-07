@@ -89,6 +89,9 @@ namespace ACCManager.HUD.Overlay.Internal
             if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF || pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
                 shouldRender = false;
 
+            if (!pagePhysics.IsEngineRunning)
+                shouldRender = false;
+
             if (pageGraphics.GlobalRed)
                 shouldRender = false;
 
