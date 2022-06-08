@@ -46,6 +46,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
 
         public ShiftIndicatorOverlay(Rectangle rectangle) : base(rectangle, "Shift Indicator Overlay")
         {
+            this.RefreshRateHz = 30;
             AllowReposition = true;
             this.Height = _config.Height + 1;
             this.Width = _config.Width + 1;
@@ -70,7 +71,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
 
             if (_config.ShowPitLimiter && pagePhysics.PitLimiterOn)
             {
-       
+
                 DrawPitLimiterBar(g);
 
                 string pitLimiter = "!Pit Limiter!";
@@ -88,14 +89,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
         }
 
         private int _limiterColorSwitch = 0;
-        private Pen _limiterBackground = Pens.Yellow;
+        private Pen _limiterBackground = new Pen(Color.Yellow, 2);
         private void DrawPitLimiterBar(Graphics g)
         {
             g.DrawRoundedRectangle(_limiterBackground, new Rectangle(0, 0, _config.Width, _config.Height), 10);
 
-            if (_limiterColorSwitch > this.RefreshRateHz / 3)
+            if (_limiterColorSwitch > this.RefreshRateHz / 3) // makes this flash 3 times a second
             {
-                _limiterBackground = _limiterBackground == Pens.Yellow ? Pens.Transparent : Pens.Yellow;
+                _limiterBackground.Color = _limiterBackground.Color == Color.Yellow ? Color.Transparent : Color.Yellow;
                 _limiterColorSwitch = 0;
             }
 
@@ -130,7 +131,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
 
                 if (percent > 0.94)
                     rpmColor = Color.FromArgb(195, 255, 120, 7);
-                if (percent > 0.975)
+                if (percent > 0.973)
                     rpmColor = Color.FromArgb(195, 255, 7, 7);
 
                 if (percent > 1)
