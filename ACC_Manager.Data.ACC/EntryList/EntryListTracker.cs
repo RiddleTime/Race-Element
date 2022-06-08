@@ -205,7 +205,7 @@ namespace ACCManager.Data.ACC.EntryList
                 Debug.WriteLine(ex);
             }
 
-            var accidentList = _accidentListTracker.GetNewAccidents();
+            /*var accidentList = _accidentListTracker.GetNewAccidents();
             foreach (var broadcastEventList in accidentList)
             {
                 if (broadcastEventList.Count == 0) continue;
@@ -214,7 +214,7 @@ namespace ACCManager.Data.ACC.EntryList
                 string accidentMessage = $"accident between [{carNumbers}]";
                 Debug.WriteLine($"{accidentMessage}");
 
-            }
+            }*/
 
         }
     }
