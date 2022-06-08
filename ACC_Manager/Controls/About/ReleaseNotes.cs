@@ -11,7 +11,8 @@ namespace ACCManager.Controls
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
             {"0.0.7.1", "- HUDs: Improve rendering performance."+
-                        "\n- HUDs: Prevent huds from rendering when pausing during hotlap mode."},
+                        "\n- HUDs: Prevent huds from rendering when pausing during hotlap mode."+
+                        "\n- HUD: Added Shift Indicator overlay capable of also showing when the pit limiter is active."},
             {"0.0.7.0", "- HUD: Added configurable data collection/refresh rate for input trace."+
                         "\n- HUD: Lap delta overlay's recorded laps are now reset in between practice/qualifying/race."},
             {"0.0.6.9", "- HUD: Added configurable potentional best lap time to lap delta overlay."+
