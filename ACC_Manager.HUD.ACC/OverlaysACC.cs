@@ -37,12 +37,12 @@ namespace ACCManager.HUD.ACC
             {"Inputs", typeof(InputsOverlay) },
             {"Input Trace", typeof(InputTraceOverlay) },
             {"Lap Delta", typeof(LapDeltaOverlay) },
+            {"Shift Indicator", typeof(ShiftIndicatorOverlay) },
             {"Track Info", typeof(TrackInfoOverlay) },
             {"Tyre Info", typeof(TyreInfoOverlay) },
             {"Tyre Pressure Trace", typeof(PressureTraceOverlay) },
 
 #if DEBUG
-            {"Shift Indicator", typeof(ShiftIndicatorOverlay) },
             {"Weather Info", typeof(WeatherOverlay) },
 
             // yea this shit has to be at the bottom...
