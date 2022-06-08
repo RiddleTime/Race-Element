@@ -28,10 +28,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
             internal int Height { get; set; } = 35;
 
             [ToolTip("Displays the current RPM inside of the shift indicator bar.")]
-            internal bool ShowRpm { get; set; } = false;
+            internal bool ShowRpm { get; set; } = true;
 
             [ToolTip("Displays when the pit limiter is active.")]
-            internal bool ShowPitLimiter { get; set; } = false;
+            internal bool ShowPitLimiter { get; set; } = true;
 
 
             public ShiftIndicatorConfig()
