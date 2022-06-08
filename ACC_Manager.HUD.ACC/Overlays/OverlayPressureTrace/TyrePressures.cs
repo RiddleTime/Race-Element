@@ -24,8 +24,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
         };
         public static TyrePressureRange WET_ALL = new TyrePressureRange()
         {
-            OptimalMinimum = 30.0,
-            OptimalMaximum = 31.0
+            OptimalMinimum = 29.5,
+            OptimalMaximum = 30.5
         };
 
 
