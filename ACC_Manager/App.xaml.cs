@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,7 +23,8 @@ namespace ACCManager
         public App()
         {
             this.Startup += App_Startup;
-            _instance = this;
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+           _instance = this;
         }
 
         private void App_Startup(object sender, StartupEventArgs e)
