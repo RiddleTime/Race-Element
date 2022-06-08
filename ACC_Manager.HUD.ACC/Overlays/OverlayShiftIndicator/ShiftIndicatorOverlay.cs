@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,12 +62,15 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
         public sealed override void Render(Graphics g)
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+            g.TextContrast = 1;
 
             // draw background
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(160, 0, 0, 0)), new Rectangle(0, 0, _config.Width, _config.Height), 10);
 
             if (_config.ShowPitLimiter && pagePhysics.PitLimiterOn)
             {
+       
                 DrawPitLimiterBar(g);
 
                 string pitLimiter = "!Pit Limiter!";
