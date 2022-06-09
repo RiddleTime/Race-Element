@@ -17,6 +17,13 @@ namespace ACCManager.Data.ACC.EntryList
         {
             public CarInfo CarInfo { get; set; }
             public RealtimeCarUpdate RealtimeCarUpdate { get; set; }
+            public RacePositionData RacePositionData { get; set; } = new RacePositionData();
+        }
+
+        public class RacePositionData
+        {
+            public int Laps { get; set; }
+            public float SplinePosition { get; set; }
         }
 
         private static EntryListTracker _instance;
@@ -158,6 +165,13 @@ namespace ACCManager.Data.ACC.EntryList
                     if (_entryListCars.TryGetValue(carInfo.CarIndex, out carData))
                     {
                         carData.CarInfo = carInfo;
+
+                        carData.RacePositionData.Laps = carData.RealtimeCarUpdate.Laps;
+
+                        if (carData.RealtimeCarUpdate.SplinePosition > 0.9 && carData.RealtimeCarUpdate.CurrentLap.LaptimeMS < 1500)
+                            carData.RacePositionData.SplinePosition = 0;
+                        else
+                            carData.RacePositionData.SplinePosition = carData.RealtimeCarUpdate.SplinePosition;
                     }
                     else
                     {
@@ -184,6 +198,13 @@ namespace ACCManager.Data.ACC.EntryList
                     if (_entryListCars.TryGetValue(carUpdate.CarIndex, out carData))
                     {
                         carData.RealtimeCarUpdate = carUpdate;
+
+                        carData.RacePositionData.Laps = carData.RealtimeCarUpdate.Laps;
+
+                        if (carData.RealtimeCarUpdate.SplinePosition > 0.9 && carData.RealtimeCarUpdate.CurrentLap.LaptimeMS < 1500)
+                            carData.RacePositionData.SplinePosition = 0;
+                        else
+                            carData.RacePositionData.SplinePosition = carData.RealtimeCarUpdate.SplinePosition;
                     }
                     else
                     {

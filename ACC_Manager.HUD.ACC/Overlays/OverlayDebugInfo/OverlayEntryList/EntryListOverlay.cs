@@ -108,7 +108,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                     if (this._config.ShowExtendedData)
                     {
                         string speed = $"{kv.Value.RealtimeCarUpdate.Kmh} km/h".FillStart(8, ' ');
-                        _table.AddRow(String.Empty, new string[] { String.Empty, $"Lap {kv.Value.RealtimeCarUpdate.Laps}` {kv.Value.RealtimeCarUpdate.SplinePosition:F3}", speed });
+                        _table.AddRow(String.Empty, new string[] { String.Empty, $"Lap {kv.Value.RealtimeCarUpdate.Laps}` {kv.Value.RacePositionData.SplinePosition:F3}", speed });
                     }
                 }
             }
@@ -268,8 +268,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                                 {
                                     cars.Sort((a, b) =>
                                     {
-                                        var aSpline = a.Value.RealtimeCarUpdate.SplinePosition;
-                                        var bSpline = b.Value.RealtimeCarUpdate.SplinePosition;
+                                        var aSpline = a.Value.RacePositionData.SplinePosition;
+                                        var bSpline = b.Value.RacePositionData.SplinePosition;
                                         float aPosition = a.Value.RealtimeCarUpdate.Laps + aSpline / 10;
                                         float bPosition = b.Value.RealtimeCarUpdate.Laps + bSpline / 10;
                                         return aPosition.CompareTo(bPosition);
