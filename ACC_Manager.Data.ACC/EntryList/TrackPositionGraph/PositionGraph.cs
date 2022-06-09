@@ -26,7 +26,7 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
 
         private PositionGraph()
         {
-            RaceSessionTracker.Instance.OnSessionPhaseChanged += (s, e) => ResetData();
+            RaceSessionTracker.Instance.OnACSessionTypeChanged += (s, e) => ResetData();
         }
 
         public void AddCar(int carIndex)

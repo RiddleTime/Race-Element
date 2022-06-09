@@ -24,7 +24,7 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
 
     public static class CarPositionUpdater
     {
-        public static void UpdateLocation(this Car car, float SplinePosition, CarLocationEnum newLocation)
+        public static void UpdateLocation(this Car car, float NewSplinePosition, CarLocationEnum newLocation)
         {
             EntryListTracker.CarData carData = EntryListTracker.Instance.Cars[car.CarIndex].Value;
             string currentDriver = carData.CarInfo.Drivers[carData.CarInfo.CurrentDriverIndex].LastName;
@@ -46,8 +46,7 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
                     car.PreviousLocation = car.Location;
                     car.Location = newLocation;
 
-                    Debug.WriteLine($"{car.CarIndex} - {currentDriver} has been towed to the pitlane");
-                    // moved from track to pitlane --> Tow/Return to garage
+                    Debug.WriteLine($"{car.CarIndex} - {currentDriver} has been entered the pitlane.");
                 }
 
 
@@ -69,17 +68,14 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
             }
 
 
-            if (car.SplinePosition > SplinePosition)
+            if (car.SplinePosition > NewSplinePosition)
             {
                 if (newLocation == CarLocationEnum.Track && car.Location == CarLocationEnum.Track)
                 {
                     Debug.WriteLine($"{car.CarIndex} - {currentDriver} has gained a lap on track");
-                    lock (car)
-                    {
-                        car.LapIndex++;
-                        car.PreviousLocation = car.Location;
-                        car.Location = newLocation;
-                    }
+                    car.LapIndex++;
+                    car.PreviousLocation = car.Location;
+                    car.Location = newLocation;
                 }
 
                 if (newLocation == CarLocationEnum.Pitlane && car.Location == CarLocationEnum.Pitlane)
@@ -89,16 +85,13 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
                         car.LapIndex++;
                         Debug.WriteLine($"{car.CarIndex} - {currentDriver} has gained a lap in the pitlane.");
                     }
-                    lock (car)
-                    {
 
-                        car.PreviousLocation = car.Location;
-                        car.Location = newLocation;
-                    }
+                    car.PreviousLocation = car.Location;
+                    car.Location = newLocation;
                 }
             }
 
-            car.SplinePosition = SplinePosition;
+            car.SplinePosition = NewSplinePosition;
         }
     }
 }

@@ -18,14 +18,9 @@ namespace ACCManager.Data.ACC.EntryList
         {
             public CarInfo CarInfo { get; set; }
             public RealtimeCarUpdate RealtimeCarUpdate { get; set; }
-            public RacePositionData RacePositionData { get; set; } = new RacePositionData();
         }
 
-        public class RacePositionData
-        {
-            public int Laps { get; set; }
-            public float SplinePosition { get; set; }
-        }
+
 
         private static EntryListTracker _instance;
         public static EntryListTracker Instance
@@ -68,6 +63,7 @@ namespace ACCManager.Data.ACC.EntryList
 
         internal void Stop()
         {
+            Debug.WriteLine("Stopping EntryListTracker");
             _isRunning = false;
             BroadcastTracker.Instance.OnRealTimeCarUpdate -= RealTimeCarUpdate_EventHandler;
             BroadcastTracker.Instance.OnEntryListUpdate -= EntryListUpdate_EventHandler;
@@ -167,16 +163,6 @@ namespace ACCManager.Data.ACC.EntryList
                     {
                         carData.CarInfo = carInfo;
 
-                        carData.RacePositionData.Laps = carData.RealtimeCarUpdate.Laps;
-
-
-
-                        if (carData.RealtimeCarUpdate.SplinePosition > 0.9 && carData.RealtimeCarUpdate.CurrentLap.LaptimeMS < 2000)
-                            carData.RacePositionData.SplinePosition = 0;
-                        else
-                            carData.RacePositionData.SplinePosition = carData.RealtimeCarUpdate.SplinePosition;
-
-
                         // 
                         Car car = PositionGraph.Instance.GetCar(carInfo.CarIndex);
                         if (car != null)
@@ -208,14 +194,6 @@ namespace ACCManager.Data.ACC.EntryList
                     if (_entryListCars.TryGetValue(carUpdate.CarIndex, out carData))
                     {
                         carData.RealtimeCarUpdate = carUpdate;
-
-                        carData.RacePositionData.Laps = carData.RealtimeCarUpdate.Laps;
-
-                        if (carData.RealtimeCarUpdate.SplinePosition > 0.9 && carData.RealtimeCarUpdate.CurrentLap.LaptimeMS < 2000)
-                            carData.RacePositionData.SplinePosition = 0;
-                        else
-                            carData.RacePositionData.SplinePosition = carData.RealtimeCarUpdate.SplinePosition;
-
 
                         Car car = PositionGraph.Instance.GetCar(carUpdate.CarIndex);
                         if (car != null)
