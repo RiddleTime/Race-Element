@@ -1,5 +1,6 @@
 ﻿using ACCManager.Broadcast;
 using ACCManager.Broadcast.Structs;
+using ACCManager.Data.ACC.EntryList.TrackPositionGraph;
 using ACCManager.Data.ACC.Tracker;
 using System;
 using System.Collections.Generic;
@@ -168,10 +169,18 @@ namespace ACCManager.Data.ACC.EntryList
 
                         carData.RacePositionData.Laps = carData.RealtimeCarUpdate.Laps;
 
+
+
                         if (carData.RealtimeCarUpdate.SplinePosition > 0.9 && carData.RealtimeCarUpdate.CurrentLap.LaptimeMS < 2000)
                             carData.RacePositionData.SplinePosition = 0;
                         else
                             carData.RacePositionData.SplinePosition = carData.RealtimeCarUpdate.SplinePosition;
+
+
+                        // 
+                        Car car = PositionGraph.Instance.GetCar(carInfo.CarIndex);
+                        if (car != null)
+                            car.UpdateLocation(carData.RealtimeCarUpdate.SplinePosition, carData.RealtimeCarUpdate.CarLocation);
                     }
                     else
                     {
@@ -179,6 +188,7 @@ namespace ACCManager.Data.ACC.EntryList
                         carData.CarInfo = carInfo;
 
                         _entryListCars.Add(carInfo.CarIndex, carData);
+                        PositionGraph.Instance.AddCar(carInfo.CarIndex);
                     }
                 }
             }
@@ -205,6 +215,11 @@ namespace ACCManager.Data.ACC.EntryList
                             carData.RacePositionData.SplinePosition = 0;
                         else
                             carData.RacePositionData.SplinePosition = carData.RealtimeCarUpdate.SplinePosition;
+
+
+                        Car car = PositionGraph.Instance.GetCar(carUpdate.CarIndex);
+                        if (car != null)
+                            car.UpdateLocation(carUpdate.SplinePosition, carUpdate.CarLocation);
                     }
                     else
                     {
@@ -213,6 +228,8 @@ namespace ACCManager.Data.ACC.EntryList
                         carData.RealtimeCarUpdate = carUpdate;
 
                         _entryListCars.Add(carUpdate.CarIndex, carData);
+
+                        PositionGraph.Instance.AddCar(carUpdate.CarIndex);
                     }
                 }
             }

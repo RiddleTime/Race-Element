@@ -99,8 +99,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
         {
             List<KeyValuePair<int, CarData>> cars = EntryListTracker.Instance.Cars;
 
+            if (cars.Count == 0)
+                return;
+
             SortEntryList(cars);
 
+            CarData firstCar = GetFirstPositionCar();
+            float firstCarTrackMeters = broadCastTrackData.TrackMeters * firstCar.RacePositionData.SplinePosition;
 
             foreach (KeyValuePair<int, CarData> kv in cars)
             {
@@ -112,9 +117,20 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                     {
                         string speed = $"{kv.Value.RealtimeCarUpdate.Kmh} km/h".FillStart(8, ' ');
 
-                        float trackDistance = kv.Value.RacePositionData.SplinePosition * broadCastTrackData.TrackMeters;
-                        string distanceText = $"{trackDistance:F0}".FillStart(4, ' ');
-                        _table.AddRow(String.Empty, new string[] { String.Empty, $"Lap {kv.Value.RealtimeCarUpdate.Laps} {distanceText}m", speed });
+
+                        string distanceText = string.Empty;
+                        if (kv.Value.RacePositionData.Laps == firstCar.RacePositionData.Laps)
+                        {
+                            float trackDistance = kv.Value.RacePositionData.SplinePosition * broadCastTrackData.TrackMeters;
+                            distanceText = $"+{firstCarTrackMeters - trackDistance:F0}".FillStart(4, ' ') + "m";
+                        }
+                        else
+                        {
+                            distanceText = $"+{firstCar.RacePositionData.Laps - kv.Value.RacePositionData.Laps} laps";
+                        }
+
+
+                        _table.AddRow(String.Empty, new string[] { String.Empty, $"{distanceText}", speed });
                     }
                 }
             }
@@ -301,7 +317,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
             }
         }
 
-        public float GetFirstPositionDistance()
+        public CarData GetFirstPositionCar()
         {
             List<KeyValuePair<int, CarData>> cars = EntryListTracker.Instance.Cars;
             cars.Sort((a, b) =>
@@ -315,14 +331,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
             cars.Reverse();
 
 
-            CarData firstCar = cars.First().Value;
+            return cars.First().Value;
 
-            float trackMeters = broadCastTrackData.TrackMeters;
 
-            float distance = firstCar.RacePositionData.Laps * trackMeters;
-            distance += firstCar.RacePositionData.SplinePosition * trackMeters;
-
-            return distance;
         }
 
         public sealed override bool ShouldRender()
