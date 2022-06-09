@@ -33,7 +33,7 @@ namespace ACCManager.Data.ACC.EntryList
             private set { _instance = value; }
         }
 
-        private Dictionary<int, CarData> _entryListCars = new Dictionary<int, CarData>();
+        internal Dictionary<int, CarData> _entryListCars = new Dictionary<int, CarData>();
         public List<KeyValuePair<int, CarData>> Cars
         {
             get
@@ -165,7 +165,7 @@ namespace ACCManager.Data.ACC.EntryList
 
                         // 
                         Car car = PositionGraph.Instance.GetCar(carInfo.CarIndex);
-                        if (car != null)
+                        if (car != null && !_sharedMemory.ReadGraphicsPageFile().GlobalRed)
                             car.UpdateLocation(carData.RealtimeCarUpdate.SplinePosition, carData.RealtimeCarUpdate.CarLocation);
                     }
                     else
@@ -196,7 +196,7 @@ namespace ACCManager.Data.ACC.EntryList
                         carData.RealtimeCarUpdate = carUpdate;
 
                         Car car = PositionGraph.Instance.GetCar(carUpdate.CarIndex);
-                        if (car != null)
+                        if (car != null && !_sharedMemory.ReadGraphicsPageFile().GlobalRed)
                             car.UpdateLocation(carUpdate.SplinePosition, carUpdate.CarLocation);
                     }
                     else

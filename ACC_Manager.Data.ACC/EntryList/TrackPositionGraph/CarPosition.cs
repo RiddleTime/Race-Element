@@ -26,7 +26,7 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
     {
         public static void UpdateLocation(this Car car, float NewSplinePosition, CarLocationEnum newLocation)
         {
-            EntryListTracker.CarData carData = EntryListTracker.Instance.Cars[car.CarIndex].Value;
+            EntryListTracker.CarData carData = EntryListTracker.Instance._entryListCars[car.CarIndex];
             string currentDriver = carData.CarInfo.Drivers[carData.CarInfo.CurrentDriverIndex].LastName;
 
 
@@ -70,6 +70,8 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
 
             if (car.SplinePosition > NewSplinePosition)
             {
+
+
                 if (newLocation == CarLocationEnum.Track && car.Location == CarLocationEnum.Track)
                 {
                     Debug.WriteLine($"{car.CarIndex} - {currentDriver} has gained a lap on track");
@@ -78,7 +80,7 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
                     car.Location = newLocation;
                 }
 
-                if (newLocation == CarLocationEnum.Pitlane && car.Location == CarLocationEnum.Pitlane)
+                if (newLocation == CarLocationEnum.Pitlane && car.Location == CarLocationEnum.Pitlane && car.PreviousLocation == CarLocationEnum.PitEntry)
                 {
                     if (car.LapIndex > 0)
                     {
@@ -86,6 +88,13 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
                         Debug.WriteLine($"{car.CarIndex} - {currentDriver} has gained a lap in the pitlane.");
                     }
 
+                    car.PreviousLocation = car.Location;
+                    car.Location = newLocation;
+                }
+
+                if (newLocation == CarLocationEnum.Track && car.Location == CarLocationEnum.Pitlane)
+                {
+                    Debug.WriteLine($"{car.CarIndex} - {currentDriver} has started his first lap.");
                     car.PreviousLocation = car.Location;
                     car.Location = newLocation;
                 }

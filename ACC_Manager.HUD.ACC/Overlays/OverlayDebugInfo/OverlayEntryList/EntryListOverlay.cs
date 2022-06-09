@@ -331,14 +331,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
             List<KeyValuePair<int, CarData>> cars = EntryListTracker.Instance.Cars;
             cars.Sort((a, b) =>
             {
-                var aSpline = PositionGraph.Instance.GetCar(a.Value.CarInfo.CarIndex).SplinePosition;
-                var bSpline = PositionGraph.Instance.GetCar(b.Value.CarInfo.CarIndex).SplinePosition;
+                var aSpline = PositionGraph.Instance.GetCar(a.Value.CarInfo.CarIndex)?.SplinePosition;
+                var bSpline = PositionGraph.Instance.GetCar(b.Value.CarInfo.CarIndex)?.SplinePosition;
 
-                var aLaps = PositionGraph.Instance.GetCar(a.Value.CarInfo.CarIndex).LapIndex;
-                var bLaps = PositionGraph.Instance.GetCar(b.Value.CarInfo.CarIndex).LapIndex;
+                var aLaps = PositionGraph.Instance.GetCar(a.Value.CarInfo.CarIndex)?.LapIndex;
+                var bLaps = PositionGraph.Instance.GetCar(b.Value.CarInfo.CarIndex)?.LapIndex;
 
-                float aPosition = aLaps + aSpline / 10;
-                float bPosition = bLaps + bSpline / 10;
+                float aPosition = aLaps.GetValueOrDefault(0) * 10 + aSpline.GetValueOrDefault(0);
+                float bPosition = bLaps.GetValueOrDefault(0) * 10 + bSpline.GetValueOrDefault(0);
                 return aPosition.CompareTo(bPosition);
             });
             cars.Reverse();
