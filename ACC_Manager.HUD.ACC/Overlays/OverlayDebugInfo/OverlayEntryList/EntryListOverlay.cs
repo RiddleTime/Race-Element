@@ -51,10 +51,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
         private readonly Color StColor = Color.FromArgb(255, 0, 96, 136);
         private readonly Color ChlColor = Color.FromArgb(255, 112, 110, 0);
 
+
+
         public EntryListOverlay(Rectangle rect) : base(rect, "Debug EntryList Overlay")
         {
             this.AllowReposition = false;
-            this.RefreshRateHz = 5;
+            this.RefreshRateHz = 10;
 
             float fontSize = 9;
             var font = FontUtil.FontUnispace(fontSize);
@@ -99,6 +101,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 
             SortEntryList(cars);
 
+
             foreach (KeyValuePair<int, CarData> kv in cars)
             {
                 if (kv.Value.CarInfo != null)
@@ -108,7 +111,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                     if (this._config.ShowExtendedData)
                     {
                         string speed = $"{kv.Value.RealtimeCarUpdate.Kmh} km/h".FillStart(8, ' ');
-                        _table.AddRow(String.Empty, new string[] { String.Empty, $"Lap {kv.Value.RealtimeCarUpdate.Laps}` {kv.Value.RacePositionData.SplinePosition:F3}", speed });
+
+                        float trackDistance = kv.Value.RacePositionData.SplinePosition * broadCastTrackData.TrackMeters;
+                        string distanceText = $"{trackDistance:F0}".FillStart(4, ' ');
+                        _table.AddRow(String.Empty, new string[] { String.Empty, $"Lap {kv.Value.RealtimeCarUpdate.Laps} {distanceText}m", speed });
                     }
                 }
             }
@@ -293,6 +299,30 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 
                 default: break;
             }
+        }
+
+        public float GetFirstPositionDistance()
+        {
+            List<KeyValuePair<int, CarData>> cars = EntryListTracker.Instance.Cars;
+            cars.Sort((a, b) =>
+            {
+                var aSpline = a.Value.RacePositionData.SplinePosition;
+                var bSpline = b.Value.RacePositionData.SplinePosition;
+                float aPosition = a.Value.RealtimeCarUpdate.Laps + aSpline / 10;
+                float bPosition = b.Value.RealtimeCarUpdate.Laps + bSpline / 10;
+                return aPosition.CompareTo(bPosition);
+            });
+            cars.Reverse();
+
+
+            CarData firstCar = cars.First().Value;
+
+            float trackMeters = broadCastTrackData.TrackMeters;
+
+            float distance = firstCar.RacePositionData.Laps * trackMeters;
+            distance += firstCar.RacePositionData.SplinePosition * trackMeters;
+
+            return distance;
         }
 
         public sealed override bool ShouldRender()

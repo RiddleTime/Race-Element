@@ -168,7 +168,7 @@ namespace ACCManager.Data.ACC.EntryList
 
                         carData.RacePositionData.Laps = carData.RealtimeCarUpdate.Laps;
 
-                        if (carData.RealtimeCarUpdate.SplinePosition > 0.9 && carData.RealtimeCarUpdate.CurrentLap.LaptimeMS < 1500)
+                        if (carData.RealtimeCarUpdate.SplinePosition > 0.9 && carData.RealtimeCarUpdate.CurrentLap.LaptimeMS < 2000)
                             carData.RacePositionData.SplinePosition = 0;
                         else
                             carData.RacePositionData.SplinePosition = carData.RealtimeCarUpdate.SplinePosition;
@@ -201,7 +201,7 @@ namespace ACCManager.Data.ACC.EntryList
 
                         carData.RacePositionData.Laps = carData.RealtimeCarUpdate.Laps;
 
-                        if (carData.RealtimeCarUpdate.SplinePosition > 0.9 && carData.RealtimeCarUpdate.CurrentLap.LaptimeMS < 1500)
+                        if (carData.RealtimeCarUpdate.SplinePosition > 0.9 && carData.RealtimeCarUpdate.CurrentLap.LaptimeMS < 2000)
                             carData.RacePositionData.SplinePosition = 0;
                         else
                             carData.RacePositionData.SplinePosition = carData.RealtimeCarUpdate.SplinePosition;
