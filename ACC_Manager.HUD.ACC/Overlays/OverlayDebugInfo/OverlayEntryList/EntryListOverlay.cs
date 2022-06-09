@@ -331,6 +331,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
             List<KeyValuePair<int, CarData>> cars = EntryListTracker.Instance.Cars;
             cars.Sort((a, b) =>
             {
+                if (a.Value.CarInfo == null)
+                    return -1;
                 var aSpline = PositionGraph.Instance.GetCar(a.Value.CarInfo.CarIndex)?.SplinePosition;
                 var bSpline = PositionGraph.Instance.GetCar(b.Value.CarInfo.CarIndex)?.SplinePosition;
 

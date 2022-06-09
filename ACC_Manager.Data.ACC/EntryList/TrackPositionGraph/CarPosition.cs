@@ -65,13 +65,18 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
 
                     Debug.WriteLine($"{car.CarIndex} - {currentDriver} has entered the pit exit");
                 }
+
+                if (newLocation == CarLocationEnum.Track && car.Location == CarLocationEnum.Pitlane)
+                {
+                    Debug.WriteLine($"{car.CarIndex} - {currentDriver} has started his first lap.");
+                    car.PreviousLocation = car.Location;
+                    car.Location = newLocation;
+                }
             }
 
 
-            if (car.SplinePosition > NewSplinePosition)
+            if (car.SplinePosition > NewSplinePosition && car.SplinePosition > 0.99)
             {
-
-
                 if (newLocation == CarLocationEnum.Track && car.Location == CarLocationEnum.Track)
                 {
                     Debug.WriteLine($"{car.CarIndex} - {currentDriver} has gained a lap on track");
@@ -94,7 +99,7 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
 
                 if (newLocation == CarLocationEnum.Track && car.Location == CarLocationEnum.Pitlane)
                 {
-                    Debug.WriteLine($"{car.CarIndex} - {currentDriver} has started his first lap.");
+              
                     car.PreviousLocation = car.Location;
                     car.Location = newLocation;
                 }
