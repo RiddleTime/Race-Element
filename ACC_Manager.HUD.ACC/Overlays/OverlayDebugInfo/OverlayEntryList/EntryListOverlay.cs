@@ -45,11 +45,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
         private readonly InfoTable _table;
 
         private readonly Color Gt3Color = Color.FromArgb(255, Color.Black);
-        private readonly Color Gt4Color = Color.FromArgb(255, 12, 12, 36);
-        private readonly Color CupColor = Color.FromArgb(255, 15, 31, 13);
-        private readonly Color TcxColor = Color.FromArgb(255, 0, 48, 68);
-        private readonly Color StColor = Color.FromArgb(255, 0, 48, 68);
-        private readonly Color ChlColor = Color.FromArgb(255, 56, 55, 0);
+        private readonly Color Gt4Color = Color.FromArgb(255, 24, 24, 72);
+        private readonly Color CupColor = Color.FromArgb(255, 30, 61, 26);
+        private readonly Color TcxColor = Color.FromArgb(255, 0, 96, 136);
+        private readonly Color StColor = Color.FromArgb(255, 0, 96, 136);
+        private readonly Color ChlColor = Color.FromArgb(255, 112, 110, 0);
 
         public EntryListOverlay(Rectangle rect) : base(rect, "Debug EntryList Overlay")
         {
@@ -201,8 +201,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
             var carModel = ConversionFactory.GetCarModels(kv.Value.CarInfo.CarModelType);
             var carClass = ConversionFactory.GetConversion(carModel).CarClass;
 
-            Color headerBackgroundColor = Color.FromArgb(70, Color.Black);
-            switch (carClass) {
+            Color headerBackgroundColor = Color.FromArgb(90, Color.Black);
+            switch (carClass)
+            {
                 case CarClasses.GT3:
                     headerBackgroundColor = Gt3Color;
                     break;
@@ -235,10 +236,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                 HeaderBackground = headerBackgroundColor
             };
 
-            if (kv.Key == pageGraphics.PlayerCarID) 
+            if (kv.Key == pageGraphics.PlayerCarID)
                 row.HeaderBackground = Color.FromArgb(120, Color.Red);
             else
-                if (kv.Key == broadCastRealTime.FocusedCarIndex) row.HeaderBackground = Color.FromArgb(70, Color.Red);
+                if (kv.Key == broadCastRealTime.FocusedCarIndex) row.HeaderBackground = Color.FromArgb(90, Color.Red);
 
             _table.AddRow(row);
         }
