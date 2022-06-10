@@ -34,10 +34,10 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
             Car newCar = new Car()
             {
                 CarIndex = carIndex,
-                Location = Broadcast.CarLocationEnum.Pitlane,
+                Location = Broadcast.CarLocationEnum.NONE,
                 LapIndex = 0,
                 SplinePosition = 0,
-                PreviousLocation = Broadcast.CarLocationEnum.Pitlane,
+                PreviousLocation = Broadcast.CarLocationEnum.NONE,
             };
 
             if (!_cars.TryGetValue(carIndex, out _))
@@ -57,12 +57,14 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
         public void ResetData()
         {
             Debug.WriteLine("Reset Position Graph");
+            //_cars.Clear();
+
             foreach (Car car in _cars.Values)
             {
-                _cars[car.CarIndex].Location = Broadcast.CarLocationEnum.Pitlane;
+                _cars[car.CarIndex].Location = Broadcast.CarLocationEnum.NONE;
                 _cars[car.CarIndex].LapIndex = 0;
                 _cars[car.CarIndex].SplinePosition = 0;
-                _cars[car.CarIndex].PreviousLocation = Broadcast.CarLocationEnum.Pitlane;
+                _cars[car.CarIndex].PreviousLocation = Broadcast.CarLocationEnum.NONE;
             }
         }
     }

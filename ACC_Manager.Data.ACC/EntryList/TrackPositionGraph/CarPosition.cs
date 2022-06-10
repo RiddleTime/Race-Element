@@ -1,4 +1,5 @@
-﻿using ACCManager.Broadcast;
+﻿using ACC_Manager.Util.SystemExtensions;
+using ACCManager.Broadcast;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,8 +28,12 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
         public static void UpdateLocation(this Car car, float NewSplinePosition, CarLocationEnum newLocation)
         {
             EntryListTracker.CarData carData = EntryListTracker.Instance._entryListCars[car.CarIndex];
+            if (carData.CarInfo == null)
+                return;
             string currentDriver = carData.CarInfo.Drivers[carData.CarInfo.CurrentDriverIndex].LastName;
 
+
+            string carInfo = $"#{carData.CarInfo.RaceNumber}".FillEnd(5, ' ');
 
             if (newLocation != car.Location)
             {
@@ -43,7 +48,15 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
                                         car.PreviousLocation = car.Location;
                                         car.Location = newLocation;
 
-                                        Debug.WriteLine($"{carData.CarInfo} - {currentDriver} has entered the pit entry");
+                                        break;
+                                    }
+
+                                case CarLocationEnum.NONE:
+                                    {
+                                        car.PreviousLocation = car.Location;
+                                        car.Location = newLocation;
+
+                                        Debug.WriteLine($"{carInfo} has come into the pit entry on the formation lap");
                                         break;
                                     }
                             }
@@ -58,7 +71,14 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
                                         car.PreviousLocation = car.Location;
                                         car.Location = newLocation;
 
-                                        Debug.WriteLine($"{car.CarIndex} - {currentDriver} has been entered the pitlane.");
+                                        break;
+                                    }
+
+                                case CarLocationEnum.Track:
+                                    {
+                                        car.PreviousLocation = car.Location;
+                                        car.Location = newLocation;
+
                                         break;
                                     }
                             }
@@ -74,7 +94,6 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
                                         car.PreviousLocation = car.Location;
                                         car.Location = newLocation;
 
-                                        Debug.WriteLine($"{car.CarIndex} - {currentDriver} has entered the pit exit");
                                         break;
                                     }
                             }
@@ -84,12 +103,27 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
                         {
                             switch (car.Location)
                             {
+                                case CarLocationEnum.PitEntry:
+                                    {
+                                        car.PreviousLocation = car.Location;
+                                        car.Location = newLocation;
+
+                                        //Debug.WriteLine($"{carInfo} has cancelled his pit entry");
+                                        break;
+                                    }
                                 case CarLocationEnum.PitExit:
                                     {
                                         car.PreviousLocation = car.Location;
                                         car.Location = newLocation;
 
-                                        Debug.WriteLine($"{car.CarIndex} - {currentDriver} has entered the track");
+                                        break;
+                                    }
+
+                                case CarLocationEnum.NONE:
+                                    {
+                                        car.PreviousLocation = car.Location;
+                                        car.Location = newLocation;
+
                                         break;
                                     }
                             }
@@ -99,10 +133,13 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
 
                 if (newLocation == CarLocationEnum.Track && car.Location == CarLocationEnum.Pitlane)
                 {
-                    Debug.WriteLine($"{car.CarIndex} - {currentDriver} has started his first lap.");
+
                     car.PreviousLocation = car.Location;
                     car.Location = newLocation;
                 }
+
+                if (car.PreviousLocation != car.Location)
+                    Debug.WriteLine($"{carInfo} | lap:{car.LapIndex} | {car.PreviousLocation}->{car.Location}");
             }
 
 
@@ -110,7 +147,7 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
             {
                 if (newLocation == CarLocationEnum.Track && car.Location == CarLocationEnum.Track)
                 {
-                    Debug.WriteLine($"{car.CarIndex} - {currentDriver} has gained a lap on track");
+                    Debug.WriteLine($"{carInfo} has gained a lap on track");
                     car.LapIndex++;
                     car.PreviousLocation = car.Location;
                     car.Location = newLocation;
@@ -121,16 +158,15 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
                     if (car.LapIndex > 0)
                     {
                         car.LapIndex++;
-                        Debug.WriteLine($"{car.CarIndex} - {currentDriver} has gained a lap in the pitlane.");
+                        Debug.WriteLine($"{carInfo} has gained a lap in the pitlane.");
                     }
 
                     car.PreviousLocation = car.Location;
                     car.Location = newLocation;
                 }
 
-                if (newLocation == CarLocationEnum.Track && car.Location == CarLocationEnum.Pitlane)
+                if (newLocation == CarLocationEnum.Track && car.Location == CarLocationEnum.NONE)
                 {
-
                     car.PreviousLocation = car.Location;
                     car.Location = newLocation;
                 }

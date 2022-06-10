@@ -124,6 +124,10 @@
       <Project>{9F9BE520-14C4-4AB6-8119-5E14BCCA9A0F}</Project>
       <Name>ACC_Manager.SharedMemory</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ACC_Manager.Util\ACC_Manager.Util.csproj">
+      <Project>{AAB23116-299B-415B-8305-96CB86148CE7}</Project>
+      <Name>ACC_Manager.Util</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

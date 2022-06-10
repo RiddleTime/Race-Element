@@ -107,7 +107,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 
             CarData firstCar = GetFirstPositionCar();
             Car firstCarCar = PositionGraph.Instance.GetCar(firstCar.CarInfo.CarIndex);
-            float firstCarTrackMeters = broadCastTrackData.TrackMeters * firstCarCar.SplinePosition;
+            float firstCarTrackMeters = 0;
+            if (firstCarCar != null) firstCarTrackMeters = broadCastTrackData.TrackMeters * firstCarCar.SplinePosition;
 
             foreach (KeyValuePair<int, CarData> kv in cars)
             {
@@ -122,17 +123,21 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 
                         string distanceText = string.Empty;
 
-                        Car carCar = PositionGraph.Instance.GetCar(kv.Value.CarInfo.CarIndex);
-                        if (carCar.LapIndex == firstCarCar.LapIndex)
+                        if (firstCarCar != null)
                         {
-                            float trackDistance = carCar.SplinePosition * broadCastTrackData.TrackMeters;
-                            distanceText = $"+{firstCarTrackMeters - trackDistance:F0}".FillStart(4, ' ') + "m";
-                        }
-                        else
-                        {
-                            distanceText = $"+{firstCarCar.LapIndex - carCar.LapIndex} laps";
-                        }
+                            Car carCar = PositionGraph.Instance.GetCar(kv.Value.CarInfo.CarIndex);
+                            if (carCar != null)
+                                if (carCar.LapIndex == firstCarCar.LapIndex)
+                                {
+                                    float trackDistance = carCar.SplinePosition * broadCastTrackData.TrackMeters;
 
+                                    distanceText = $"+{firstCarTrackMeters - trackDistance:F0}".FillStart(4, ' ') + "m";
+                                }
+                                else
+                                {
+                                    distanceText = $"+{firstCarCar.LapIndex - carCar.LapIndex} laps";
+                                }
+                        }
 
                         _table.AddRow(String.Empty, new string[] { String.Empty, $"{distanceText}", speed });
                     }
@@ -295,11 +300,23 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                                 {
                                     cars.Sort((a, b) =>
                                     {
-                                        var aSpline = PositionGraph.Instance.GetCar(a.Value.CarInfo.CarIndex).SplinePosition;
-                                        var bSpline = PositionGraph.Instance.GetCar(b.Value.CarInfo.CarIndex).SplinePosition;
+                                        if (a.Value.CarInfo == null)
+                                            return -1;
 
-                                        var aLaps = PositionGraph.Instance.GetCar(a.Value.CarInfo.CarIndex).LapIndex;
-                                        var bLaps = PositionGraph.Instance.GetCar(b.Value.CarInfo.CarIndex).LapIndex;
+                                        if (b.Value.CarInfo == null)
+                                            return 1;
+
+                                        Car carCarA = PositionGraph.Instance.GetCar(a.Value.CarInfo.CarIndex);
+                                        Car carCarb = PositionGraph.Instance.GetCar(b.Value.CarInfo.CarIndex);
+
+                                        if (carCarA == null) return -1;
+                                        if (carCarb == null) return 1;
+
+                                        var aSpline = carCarA.SplinePosition;
+                                        var bSpline = carCarb.SplinePosition;
+
+                                        var aLaps = carCarA.LapIndex;
+                                        var bLaps = carCarb.LapIndex;
 
                                         float aPosition = aLaps + aSpline / 10;
                                         float bPosition = bLaps + bSpline / 10;
@@ -333,6 +350,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
             {
                 if (a.Value.CarInfo == null)
                     return -1;
+
+                if (b.Value.CarInfo == null)
+                    return -1;
+
                 var aSpline = PositionGraph.Instance.GetCar(a.Value.CarInfo.CarIndex)?.SplinePosition;
                 var bSpline = PositionGraph.Instance.GetCar(b.Value.CarInfo.CarIndex)?.SplinePosition;
 
