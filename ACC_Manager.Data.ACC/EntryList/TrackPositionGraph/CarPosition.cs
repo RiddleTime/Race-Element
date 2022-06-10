@@ -73,9 +73,23 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
 
                                         break;
                                     }
+                                case CarLocationEnum.PitExit:
+                                    {
+                                        car.PreviousLocation = car.Location;
+                                        car.Location = newLocation;
 
+                                        break;
+                                    }
                                 case CarLocationEnum.Track:
                                     {
+                                        car.PreviousLocation = car.Location;
+                                        car.Location = newLocation;
+
+                                        break;
+                                    }
+                                case CarLocationEnum.NONE:
+                                    {
+                                        Debug.WriteLine($"{carInfo} has joined the server");
                                         car.PreviousLocation = car.Location;
                                         car.Location = newLocation;
 
