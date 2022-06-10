@@ -106,9 +106,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
             SortEntryList(cars);
 
             CarData firstCar = GetFirstPositionCar();
-            Car firstCarCar = PositionGraph.Instance.GetCar(firstCar.CarInfo.CarIndex);
-            float firstCarTrackMeters = 0;
-            if (firstCarCar != null) firstCarTrackMeters = broadCastTrackData.TrackMeters * firstCarCar.SplinePosition;
+            Car carAhead = PositionGraph.Instance.GetCar(firstCar.CarInfo.CarIndex);
+
 
             foreach (KeyValuePair<int, CarData> kv in cars)
             {
@@ -120,23 +119,29 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
                     {
                         string speed = $"{kv.Value.RealtimeCarUpdate.Kmh} km/h".FillStart(8, ' ');
 
-
                         string distanceText = string.Empty;
 
-                        if (firstCarCar != null)
+                        if (carAhead != null)
                         {
                             Car carCar = PositionGraph.Instance.GetCar(kv.Value.CarInfo.CarIndex);
-                            if (carCar != null)
-                                if (carCar.LapIndex == firstCarCar.LapIndex)
-                                {
-                                    float trackDistance = carCar.SplinePosition * broadCastTrackData.TrackMeters;
+                            if (carCar != null && carCar != carAhead)
+                            {
 
-                                    distanceText = $"+{firstCarTrackMeters - trackDistance:F0}".FillStart(4, ' ') + "m";
+                                float carAheadDistance = 0;
+                                if (carAhead != null) carAheadDistance = carAhead.LapIndex * broadCastTrackData.TrackMeters + broadCastTrackData.TrackMeters * carAhead.SplinePosition;
+                                float carDistance = carCar.LapIndex * broadCastTrackData.TrackMeters + carCar.SplinePosition * broadCastTrackData.TrackMeters;
+
+                                if (carAheadDistance - carDistance < broadCastTrackData.TrackMeters)
+                                {
+                                    distanceText = $"+{carAheadDistance - carDistance:F0}".FillStart(4, ' ') + "m";
                                 }
                                 else
                                 {
-                                    distanceText = $"+{firstCarCar.LapIndex - carCar.LapIndex} laps";
+                                    distanceText = $"+{carAhead.LapIndex - carCar.LapIndex} laps";
                                 }
+                            }
+
+                            carAhead = carCar;
                         }
 
                         _table.AddRow(String.Empty, new string[] { String.Empty, $"{distanceText}", speed });
