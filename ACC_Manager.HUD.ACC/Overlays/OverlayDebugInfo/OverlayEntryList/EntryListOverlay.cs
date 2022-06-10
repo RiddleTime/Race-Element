@@ -106,7 +106,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
             SortEntryList(cars);
 
             CarData firstCar = GetFirstPositionCar();
-            Car carAhead = PositionGraph.Instance.GetCar(firstCar.CarInfo.CarIndex);
+            Car carAhead = null;
+
+            if (firstCar.CarInfo != null)
+                carAhead = PositionGraph.Instance.GetCar(firstCar.CarInfo.CarIndex);
 
 
             foreach (KeyValuePair<int, CarData> kv in cars)
