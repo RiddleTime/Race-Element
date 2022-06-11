@@ -54,21 +54,26 @@ namespace ACCManager.Data.ACC.EntryList
 
         internal void Start()
         {
+#if DEBUG
+
             _isRunning = true;
             BroadcastTracker.Instance.OnRealTimeCarUpdate += RealTimeCarUpdate_EventHandler;
             BroadcastTracker.Instance.OnEntryListUpdate += EntryListUpdate_EventHandler;
             BroadcastTracker.Instance.OnBroadcastEvent += Broadcast_EventHandler;
             StartEntryListCleanupTracker();
+#endif
         }
 
         internal void Stop()
         {
+#if DEBUG
             Debug.WriteLine("Stopping EntryListTracker");
             _isRunning = false;
             BroadcastTracker.Instance.OnRealTimeCarUpdate -= RealTimeCarUpdate_EventHandler;
             BroadcastTracker.Instance.OnEntryListUpdate -= EntryListUpdate_EventHandler;
             BroadcastTracker.Instance.OnBroadcastEvent -= Broadcast_EventHandler;
             _entryListCars?.Clear();
+#endif
         }
 
         private void StartEntryListCleanupTracker()
