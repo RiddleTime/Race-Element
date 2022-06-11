@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using ACCManager.Util.Settings;
+using Newtonsoft.Json.Linq;
 using OBSWebsocketDotNet;
 using OBSWebsocketDotNet.Types;
 using System;
@@ -45,7 +46,9 @@ namespace ACCManager.Data.ACC.Tracker
         {
             try
             {
-                _obsWebSocket.Connect("ws://192.168.0.130:4444", "password");
+                var streamSettings = StreamSettings.LoadJson();
+
+                _obsWebSocket.Connect($"ws://{streamSettings.StreamingWebSocketIP}:{streamSettings.StreamingWebSocketPort}", streamSettings.StreamingWebSocketPassword);
             }
             catch (Exception ex)
             {

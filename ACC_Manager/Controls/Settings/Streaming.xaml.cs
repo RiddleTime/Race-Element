@@ -1,6 +1,10 @@
-﻿using ACCManager.Controls.Settings;
+﻿using ACCManager.Util;
+using ACCManager.Util.Settings;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,18 +39,27 @@ namespace ACCManager.Controls
 
         private void LoadSettings()
         {
+            var streamingSettings = StreamSettings.LoadJson();
+            if (streamingSettings == null)
+                streamingSettings = StreamingSettingsJson.Default();
 
-        }
-
-        private void SaveSettings()
-        {
-            var globalSettings = AccManagerSettings.Instance.GetSettings();
-            var streamingSettings = globalSettings.StreamingSettings;
-
+            comboStreamSoftware.SelectedItem = streamingSettings.StreamingSoftware;
             streamServer.Text = streamingSettings.StreamingWebSocketIP;
             streamPort.Text = $"{streamingSettings.StreamingWebSocketPort}";
             streamPassword.Password = streamingSettings.StreamingWebSocketPassword;
         }
 
+        private void SaveSettings()
+        {
+            var streamingSettings = StreamSettings.LoadJson();
+
+            streamingSettings.StreamingSoftware = comboStreamSoftware.SelectedItem.ToString();
+            streamingSettings.StreamingWebSocketIP = streamServer.Text;
+            streamingSettings.StreamingWebSocketPort = int.Parse(streamPort.Text);
+            streamingSettings.StreamingWebSocketPassword = streamPassword.Password;
+
+            StreamSettings.SaveJson(streamingSettings);
+            MainWindow.Instance.EnqueueSnackbarMessage("Saved Streaming settings.");
+        }
     }
 }
