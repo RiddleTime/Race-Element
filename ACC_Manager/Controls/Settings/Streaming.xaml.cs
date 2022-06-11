@@ -23,6 +23,9 @@ namespace ACCManager.Controls
         public Streaming()
         {
             InitializeComponent();
+            comboStreamSoftware.Items.Add("OBS");
+            comboStreamSoftware.Items.Add("Streamlabs");
+            comboStreamSoftware.SelectedIndex = 0;
         }
     }
 }

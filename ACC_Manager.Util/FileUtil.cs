@@ -13,6 +13,7 @@ namespace ACCManager.Util
         public static string AccManagerLogPath = AccManagerDocumentsPath + "\\" + "Log\\";
         public static string AccManagerTagsPath = AccManagerDocumentsPath + "\\" + "Tag\\";
         public static string AccManagerOverlayPath = AccManagerDocumentsPath + "\\" + "Overlay\\";
+        public static string AccManangerSettingsPath = AccManagerDocumentsPath + "\\" + "Settings\\";
 
 
         public static string AccPath => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "Assetto Corsa Competizione\\";

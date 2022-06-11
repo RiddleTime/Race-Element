@@ -4,9 +4,25 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ACCManager.Controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" Width="300">
     <Grid>
-        <Label>Stream settings go here</Label>
+        <StackPanel Orientation="Vertical">
+            <Label HorizontalContentAlignment="Center">Streaming WebSocket settings</Label>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <Label>Streaming Software:</Label>
+                <ComboBox x:Name="comboStreamSoftware" Width="100"></ComboBox>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <Label>Streaming Software:</Label>
+                <ComboBox x:Name="comboStreamSoftware" Width="100"></ComboBox>
+            </StackPanel>
+            <TextBox x:Name="streamServer" materialDesign:HintAssist.Hint="Server IP"></TextBox>
+            <TextBox x:Name="streamPort" materialDesign:HintAssist.Hint="Server Port"></TextBox>
+            <PasswordBox x:Name="streamPassword"  materialDesign:HintAssist.Hint="Password" ></PasswordBox>
+            <Button>Save</Button>
+        </StackPanel>
     </Grid>
 </UserControl>
