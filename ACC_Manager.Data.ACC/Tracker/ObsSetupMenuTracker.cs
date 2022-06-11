@@ -81,7 +81,6 @@ namespace ACCManager.Data.ACC.Tracker
         {
             Debug.WriteLine("Connected obs websocket");
             Debug.WriteLine($"Current scene: {_obsWebSocket.GetCurrentScene().Name}");
-            Debug.WriteLine($"");
             Toggle(true);
         }
 
@@ -89,11 +88,8 @@ namespace ACCManager.Data.ACC.Tracker
         {
             SourceInfo setupHiderSource = _obsWebSocket.GetSourcesList().Find(x => x.Name == "SetupHider");
             if (setupHiderSource != null)
-            {
                 _obsWebSocket.SetSourceRender(setupHiderSource.Name, enable);
-            }
         }
-
 
         public void Dispose()
         {
