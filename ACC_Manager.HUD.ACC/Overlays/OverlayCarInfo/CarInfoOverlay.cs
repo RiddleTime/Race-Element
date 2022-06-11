@@ -18,6 +18,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
         private readonly CarInfoConfiguration _config = new CarInfoConfiguration();
         private class CarInfoConfiguration : OverlayConfiguration
         {
+            [ToolTip("Displays your current tyre set")]
+            public bool ShowTyreSet { get; set; } = true;
+
             [ToolTip("Displays the average fuel usage over the past 3 laps.\n(uses last lap info if not enough data)")]
             public bool ShowAverageFuelUsage { get; set; } = false;
 
@@ -56,6 +59,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
 
             if (!this._config.ShowWaterTemp)
                 this.Height -= this.infoPanel.FontHeight;
+
+            if (!this._config.ShowTyreSet)
+                this.Height -= this.infoPanel.FontHeight;
         }
 
         public sealed override void BeforeStop()
@@ -67,7 +73,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
             float totalRepairTime = GetTotalRepairTime();
             Brush damageBrush = HasAnyDamage() ? Brushes.OrangeRed : Brushes.White;
             infoPanel.AddLine("Damage", $"{totalRepairTime:F1}", damageBrush);
-            infoPanel.AddLine("Tyre Set", $"{pageGraphics.currentTyreSet}");
+
+            if (_config.ShowTyreSet)
+                infoPanel.AddLine("Tyre Set", $"{pageGraphics.currentTyreSet}");
 
             if (this._config.ShowAverageFuelUsage)
             {
