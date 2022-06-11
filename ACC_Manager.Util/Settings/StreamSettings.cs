@@ -77,10 +77,8 @@ namespace ACCManager.Util.Settings
             string jsonString = JsonConvert.SerializeObject(streamSettings, Formatting.Indented);
 
             if (!StreamSettingsFile.Exists)
-            {
                 if (!Directory.Exists(FileUtil.AccManangerSettingsPath))
                     Directory.CreateDirectory(FileUtil.AccManangerSettingsPath);
-            }
 
             File.WriteAllText(FileUtil.AccManangerSettingsPath + FileName, jsonString);
         }
