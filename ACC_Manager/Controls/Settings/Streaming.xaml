@@ -15,10 +15,6 @@
                 <ComboBox x:Name="comboStreamSoftware" Width="100"></ComboBox>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                <Label>Streaming Software:</Label>
-                <ComboBox x:Name="comboStreamSoftware" Width="100"></ComboBox>
-            </StackPanel>
             <TextBox x:Name="streamServer" materialDesign:HintAssist.Hint="Server IP"></TextBox>
             <TextBox x:Name="streamPort" materialDesign:HintAssist.Hint="Server Port"></TextBox>
             <PasswordBox x:Name="streamPassword"  materialDesign:HintAssist.Hint="Password" ></PasswordBox>
