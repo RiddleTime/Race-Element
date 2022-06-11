@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACCManager.Controls.Settings;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,6 +27,26 @@ namespace ACCManager.Controls
             comboStreamSoftware.Items.Add("OBS");
             comboStreamSoftware.Items.Add("Streamlabs");
             comboStreamSoftware.SelectedIndex = 0;
+
+            buttonSave.Click += (s, e) => SaveSettings();
+
+            LoadSettings();
         }
+
+        private void LoadSettings()
+        {
+
+        }
+
+        private void SaveSettings()
+        {
+            var globalSettings = AccManagerSettings.Instance.GetSettings();
+            var streamingSettings = globalSettings.StreamingSettings;
+
+            streamServer.Text = streamingSettings.StreamingWebSocketIP;
+            streamPort.Text = $"{streamingSettings.StreamingWebSocketPort}";
+            streamPassword.Password = streamingSettings.StreamingWebSocketPassword;
+        }
+
     }
 }

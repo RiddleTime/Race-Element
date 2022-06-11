@@ -18,7 +18,7 @@
             <TextBox x:Name="streamServer" materialDesign:HintAssist.Hint="Server IP"></TextBox>
             <TextBox x:Name="streamPort" materialDesign:HintAssist.Hint="Server Port"></TextBox>
             <PasswordBox x:Name="streamPassword"  materialDesign:HintAssist.Hint="Password" ></PasswordBox>
-            <Button>Save</Button>
+            <Button x:Name="buttonSave">Save</Button>
         </StackPanel>
     </Grid>
 </UserControl>
