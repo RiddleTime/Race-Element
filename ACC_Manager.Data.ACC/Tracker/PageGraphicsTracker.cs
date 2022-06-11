@@ -59,12 +59,14 @@ namespace ACCManager.Data.ACC.Tracker
                         Debug.WriteLine("Disconnected broadcast tracker");
                         BroadcastTracker.Instance.Disconnect();
                         EntryListTracker.Instance.Stop();
+                        ObsSetupMenuTracker.Instance.Dispose();
                     }
                     else if (!BroadcastTracker.Instance.IsConnected && sPageFileGraphic.Status != AcStatus.AC_OFF)
                     {
                         Debug.WriteLine("Connected broadcast tracker");
                         BroadcastTracker.Instance.Connect();
                         EntryListTracker.Instance.Start();
+                        ObsSetupMenuTracker.Instance.ToString();
                     }
                 }
             });

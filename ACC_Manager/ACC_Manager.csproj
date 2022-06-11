@@ -353,6 +353,12 @@
       <DependentUpon>LiveryTagger.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Liveries\LiveryTagging.cs" />
+    <Compile Include="Controls\Settings\SettingsTab.xaml.cs">
+      <DependentUpon>SettingsTab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Settings\Streaming.xaml.cs">
+      <DependentUpon>Streaming.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Setup\FlowDocUtil\DocUtil.cs" />
     <Compile Include="Controls\Setup\FlowDocUtil\FlowDocCompareSetupRenderer.cs" />
     <Compile Include="Controls\Setup\SetupBrowser.xaml.cs">
@@ -435,6 +441,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Liveries\LiveryTagger.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Settings\SettingsTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Settings\Streaming.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
