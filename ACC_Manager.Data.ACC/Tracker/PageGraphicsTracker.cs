@@ -59,7 +59,8 @@ namespace ACCManager.Data.ACC.Tracker
                         Debug.WriteLine("Disconnected broadcast tracker");
                         BroadcastTracker.Instance.Disconnect();
                         EntryListTracker.Instance.Stop();
-                        ObsSetupMenuTracker.Instance.Dispose();
+                        if (ObsSetupMenuTracker.Instance != null)
+                            ObsSetupMenuTracker.Instance.Dispose();
                     }
                     else if (!BroadcastTracker.Instance.IsConnected && sPageFileGraphic.Status != AcStatus.AC_OFF)
                     {

@@ -86,13 +86,24 @@ namespace ACCManager.Data.ACC.Tracker
             {
                 SourceInfo setupHiderSource = _obsWebSocket.GetSourcesList().Find(x => x.Name == "SetupHider");
                 if (setupHiderSource != null)
-                    _obsWebSocket.SetSourceRender(setupHiderSource.Name, enable);
-            }
-            else
-            {
-                Debug.WriteLine($"OBS Connection could not be established for the setup hider.");
-                LogWriter.WriteToLog($"OBS Connection could not be established for the setup hider.");
-                Dispose();
+                {
+                    try
+                    {
+                        _obsWebSocket.SetSourceRender(setupHiderSource.Name, enable);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine($"Setup Hider: Source 'SetupHider' was not found.");
+                        LogWriter.WriteToLog($"Setup Hider: Source 'SetupHider' was not found.");
+                        Dispose();
+                    }
+                }
+                else
+                {
+                    Debug.WriteLine($"Setup Hider: Source 'SetupHider' was not found.");
+                    LogWriter.WriteToLog($"Setup Hider: Source 'SetupHider' was not found.");
+                    Dispose();
+                }
             }
         }
 
