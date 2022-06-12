@@ -44,6 +44,10 @@ namespace ACCManager.Controls
             var streamingSettings = StreamSettings.LoadJson();
             streamingSettings.SetupHider = toggleSetupHider.IsChecked.Value;
             StreamSettings.SaveJson(streamingSettings);
+
+            string status = streamingSettings.SetupHider ? "Enabled" : "Disabled";
+            MainWindow.Instance.ClearSnackbar();
+            MainWindow.Instance.EnqueueSnackbarMessage($"Stream Setup Hider {status}.");
         }
 
         private void LoadSettings()
@@ -69,6 +73,7 @@ namespace ACCManager.Controls
             streamingSettings.StreamingWebSocketPassword = streamPassword.Password;
 
             StreamSettings.SaveJson(streamingSettings);
+            MainWindow.Instance.ClearSnackbar();
             MainWindow.Instance.EnqueueSnackbarMessage("Saved Streaming settings.");
         }
     }
