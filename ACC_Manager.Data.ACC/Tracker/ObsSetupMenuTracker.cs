@@ -1,4 +1,5 @@
-﻿using ACCManager.Util.Settings;
+﻿using ACCManager.Util;
+using ACCManager.Util.Settings;
 using Newtonsoft.Json.Linq;
 using OBSWebsocketDotNet;
 using OBSWebsocketDotNet.Types;
@@ -81,9 +82,18 @@ namespace ACCManager.Data.ACC.Tracker
 
         public void Toggle(bool enable)
         {
-            SourceInfo setupHiderSource = _obsWebSocket.GetSourcesList().Find(x => x.Name == "SetupHider");
-            if (setupHiderSource != null)
-                _obsWebSocket.SetSourceRender(setupHiderSource.Name, enable);
+            if (_obsWebSocket.IsConnected)
+            {
+                SourceInfo setupHiderSource = _obsWebSocket.GetSourcesList().Find(x => x.Name == "SetupHider");
+                if (setupHiderSource != null)
+                    _obsWebSocket.SetSourceRender(setupHiderSource.Name, enable);
+            }
+            else
+            {
+                Debug.WriteLine($"OBS Connection could not be established for the setup hider.");
+                LogWriter.WriteToLog($"OBS Connection could not be established for the setup hider.");
+                Dispose();
+            }
         }
 
         public void Dispose()
