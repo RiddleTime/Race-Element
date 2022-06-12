@@ -73,9 +73,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
 
                     while (!reader.EndOfStream)
                     {
-                        if (_outputs.Count >= 100)
-                            _outputs.RemoveLast();
-                        _outputs.AddFirst(new DebugOut() { message = reader.ReadLine(), time = DateTime.Now.ToFileTime() });
+                        lock (_outputs)
+                        {
+                            if (_outputs.Count >= 100)
+                                _outputs.RemoveLast();
+                            _outputs.AddFirst(new DebugOut() { message = reader.ReadLine(), time = DateTime.Now.ToFileTime() });
+                        }
                     }
 
                     lastPosition = _outputStream.Position;

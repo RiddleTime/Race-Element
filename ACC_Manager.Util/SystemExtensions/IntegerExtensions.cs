@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ACC_Manager.Util.SystemExtensions
+﻿namespace ACC_Manager.Util.SystemExtensions
 {
     public static class IntegerExtensions
     {

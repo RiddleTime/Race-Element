@@ -259,6 +259,41 @@
                 </Grid>
             </TabItem>
 
+            <TabItem Style="{DynamicResource MaterialDesignTabItem}" Name="tabSettings" Height="60">
+                <TabItem.Header>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <materialDesign:PackIcon
+                            Grid.Row="0"
+                            Kind="Cog"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="20"
+                            Width="20"
+                        Foreground="White"    
+                        />
+                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">
+                            Settings
+                        </TextBlock>
+                    </Grid>
+                </TabItem.Header>
+
+                <Grid HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:TransitioningContent Grid.Column="1">
+                        <materialDesign:TransitioningContent.OpeningEffects>
+                            <materialDesign:TransitionEffect Kind="FadeIn"/>
+                        </materialDesign:TransitioningContent.OpeningEffects>
+                        <controls:SettingsTab></controls:SettingsTab>
+                    </materialDesign:TransitioningContent>
+                </Grid>
+            </TabItem>
+
         </TabControl>
 
         <Button x:Name="buttonPlayACC" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="90" Height="55" Margin="3" Style="{StaticResource MaterialDesignRaisedDarkButton}" ToolTip="Launch Assetto Corsa Competizione">

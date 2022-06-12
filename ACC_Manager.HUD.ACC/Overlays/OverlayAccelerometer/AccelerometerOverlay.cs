@@ -135,32 +135,20 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
 
             g.FillEllipse(new SolidBrush(Color.FromArgb(242, 82, 2)), new Rectangle(gDotPosX, gDotPosY, gDotSize, gDotSize));
 
-            if (this._config.ShowTrace)
+            if (_config.ShowTrace)
             {
                 lock (_trace)
                 {
-                    Point currentPoint = new Point(gDotPosX, gDotPosY);
-                    switch (_trace.Count)
+                    _trace.AddFirst(new Point(gDotPosX, gDotPosY));
+                    if (_trace.Count > 10)
+                        _trace.RemoveLast();
+
+
+                    for (int i = 0; i < _trace.Count; i++)
                     {
-                        case 0: _trace.AddFirst(currentPoint); break;
-                        default:
-                            {
-                                for (int i = 0; i < _trace.Count; i++)
-                                {
-                                    Point traceItem = _trace.ElementAt(i);
-                                    int alpha = 90 - i * 5;
-                                    alpha.Clip(0, 255);
-                                    g.FillEllipse(new SolidBrush(Color.FromArgb(alpha, 242, 82, 2)), new Rectangle(traceItem.X, traceItem.Y, gDotSize, gDotSize));
-                                }
-
-                                if (!_trace.Last.Equals(new Point(gDotPosX, gDotPosY)))
-                                    _trace.AddFirst(new Point(gDotPosX, gDotPosY));
-
-                                break;
-                            }
+                        Point traceItem = _trace.ElementAt(i);
+                        g.FillEllipse(new SolidBrush(Color.FromArgb(90 - i * 5, 242, 82, 2)), new Rectangle(traceItem.X, traceItem.Y, gDotSize, gDotSize));
                     }
-
-
                 }
             }
         }

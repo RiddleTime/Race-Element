@@ -33,8 +33,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
         }
 
         private readonly InfoPanel _panel = new InfoPanel(10, 240);
-        private AcSessionType _sessionType = AcSessionType.AC_UNKNOWN;
-
 
         public TrackInfoOverlay(Rectangle rectangle) : base(rectangle, "Track Info Overlay")
         {
@@ -53,18 +51,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
 
             if (!this._config.ShowTimeOfDay)
                 this.Height -= this._panel.FontHeight;
-
-            RaceSessionTracker.Instance.OnACSessionTypeChanged += Instance_OnACSessionTypeChanged;
         }
 
         public sealed override void BeforeStop()
         {
-            RaceSessionTracker.Instance.OnACSessionTypeChanged -= Instance_OnACSessionTypeChanged;
-        }
-
-        private void Instance_OnACSessionTypeChanged(object sender, AcSessionType e)
-        {
-            _sessionType = e;
         }
 
         public sealed override void Render(Graphics g)
@@ -79,7 +69,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
                 _panel.AddLine("Flag", ACCSharedMemory.FlagTypeToString(pageGraphics.Flag));
 
             if (this._config.ShowSessionType)
-                _panel.AddLine("Session", ACCSharedMemory.SessionTypeToString(_sessionType));
+                _panel.AddLine("Session", ACCSharedMemory.SessionTypeToString(pageGraphics.SessionType));
 
             _panel.AddLine("Grip", pageGraphics.trackGripStatus.ToString());
             string airTemp = Math.Round(pagePhysics.AirTemp, 2).ToString("F2");
