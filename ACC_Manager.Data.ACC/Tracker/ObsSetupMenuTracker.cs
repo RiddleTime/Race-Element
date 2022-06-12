@@ -9,7 +9,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using WebSocketSharp;
 
 namespace ACCManager.Data.ACC.Tracker
 {
@@ -36,7 +35,6 @@ namespace ACCManager.Data.ACC.Tracker
                 Debug.WriteLine("Started OBS setup menu tracker");
                 _obsWebSocket = new OBSWebsocket();
                 _obsWebSocket.Connected += ObsWebSocket_Connected;
-                _obsWebSocket.Disconnected += ObsWebSocket_Disconnected;
 
                 _sharedMemory = new ACCSharedMemory();
 
@@ -74,12 +72,6 @@ namespace ACCManager.Data.ACC.Tracker
             }).Start();
         }
 
-        private void ObsWebSocket_Disconnected(object sender, EventArgs e)
-        {
-            CloseEventArgs ev = (CloseEventArgs)e;
-            Debug.WriteLine($"Disconnected obs websocket {ev.Code}");
-        }
-
         private void ObsWebSocket_Connected(object sender, EventArgs e)
         {
             Debug.WriteLine("Connected obs websocket");
@@ -98,7 +90,9 @@ namespace ACCManager.Data.ACC.Tracker
         {
             _isTracking = false;
             Debug.WriteLine("Disposed OBS setup menu tracker");
-            _obsWebSocket.Disconnect();
+            if (StreamSettings.LoadJson().SetupHider)
+                _obsWebSocket.Disconnect();
+
             _instance = null;
         }
     }

@@ -1,6 +1,7 @@
 ﻿using ACCManager.Util;
 using ACCManager.Util.Settings;
 using Newtonsoft.Json;
+using OBSWebsocketDotNet;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WebSocketSharp;
 
 namespace ACCManager.Controls
 {
@@ -33,10 +35,62 @@ namespace ACCManager.Controls
             comboStreamSoftware.SelectedIndex = 0;
 
             buttonSave.Click += (s, e) => SaveSettings();
+            buttonTestConnnection.Click += (s, e) => TestConnection();
 
             toggleSetupHider.Click += (s, e) => ToggleSetupHider();
 
             LoadSettings();
+        }
+
+        private void TestConnection()
+        {
+            var streamSettings = StreamSettings.LoadJson();
+
+            Dispatcher.Invoke(() =>
+            {
+                buttonTestConnnection.IsEnabled = false;
+            });
+            Task.Run(() =>
+            {
+                try
+                {
+                    OBSWebsocket _obsWebSocket = new OBSWebsocket();
+                    _obsWebSocket.Connected += (s, e) =>
+                    {
+                        MainWindow.Instance.ClearSnackbar();
+                        MainWindow.Instance.EnqueueSnackbarMessage($"Connection to {streamSettings.StreamingSoftware} is working.");
+                        _obsWebSocket.Disconnect();
+                    };
+                    _obsWebSocket.Disconnected += (s, e) =>
+                    {
+                        CloseEventArgs args = (CloseEventArgs)e;
+                        if (args.WasClean)
+                            Debug.WriteLine("Disconnected test connection.");
+                        else
+                        {
+                            MainWindow.Instance.ClearSnackbar();
+                            MainWindow.Instance.EnqueueSnackbarMessage($"Failed to make a connection to {streamSettings.StreamingSoftware}.");
+                        }
+
+                        Dispatcher.Invoke(() =>
+                        {
+                            buttonTestConnnection.IsEnabled = true;
+                        });
+
+                    };
+                    _obsWebSocket.Connect($"ws://{streamSettings.StreamingWebSocketIP}:{streamSettings.StreamingWebSocketPort}", streamSettings.StreamingWebSocketPassword);
+                }
+                catch (Exception e)
+                {
+                    MainWindow.Instance.ClearSnackbar();
+                    MainWindow.Instance.EnqueueSnackbarMessage("Failed to make a connection");
+                    Dispatcher.Invoke(() =>
+                    {
+                        buttonTestConnnection.IsEnabled = true;
+                    });
+                }
+            });
+
         }
 
         private void ToggleSetupHider()
@@ -53,8 +107,6 @@ namespace ACCManager.Controls
         private void LoadSettings()
         {
             var streamingSettings = StreamSettings.LoadJson();
-            if (streamingSettings == null)
-                streamingSettings = StreamingSettingsJson.Default();
 
             comboStreamSoftware.SelectedItem = streamingSettings.StreamingSoftware;
             streamServer.Text = streamingSettings.StreamingWebSocketIP;

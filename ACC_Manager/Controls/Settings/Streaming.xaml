@@ -9,29 +9,30 @@
              d:DesignHeight="450" Width="400">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="150"/>
+            <RowDefinition Height="250"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Grid.Row="0" HorizontalAlignment="Center">
+        <StackPanel Orientation="Vertical" Grid.Row="0" HorizontalAlignment="Center" Width="300">
             <Label HorizontalContentAlignment="Center">Streaming WebSocket settings</Label>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                <Label Width="130">Streaming Software:</Label>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,5,0,0">
+                <Label Width="100">Software:</Label>
                 <ComboBox x:Name="comboStreamSoftware" Width="100"></ComboBox>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                <Label Width="130">Server IP:</Label>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,5,0,0">
+                <Label Width="100">Server IP:</Label>
                 <TextBox x:Name="streamServer" materialDesign:HintAssist.Hint="Server IP"></TextBox>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                <Label Width="130">Server Port:</Label>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,5,0,0">
+                <Label Width="100">Server Port:</Label>
                 <TextBox x:Name="streamPort" materialDesign:HintAssist.Hint="Server Port"></TextBox>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                <Label Width="130">Password:</Label>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,5,0,0">
+                <Label Width="100">Password:</Label>
                 <PasswordBox x:Name="streamPassword"  materialDesign:HintAssist.Hint="Password" ></PasswordBox>
             </StackPanel>
-            <Button x:Name="buttonSave">Save</Button>
+            <Button x:Name="buttonSave" Margin="0,10,0,0">Save</Button>
+            <Button x:Name="buttonTestConnnection" Margin="0,10,0,0">Test Connection</Button>
         </StackPanel>
         <StackPanel Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch"

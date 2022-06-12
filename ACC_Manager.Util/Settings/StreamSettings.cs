@@ -49,7 +49,7 @@ namespace ACCManager.Util.Settings
             {
                 Debug.WriteLine(ex);
             }
-            return null;
+            return StreamingSettingsJson.Default();
         }
 
         public static StreamingSettingsJson ReadJson(Stream stream)
