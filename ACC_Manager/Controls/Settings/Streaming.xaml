@@ -6,19 +6,39 @@
              xmlns:local="clr-namespace:ACCManager.Controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="450" Width="300">
+             d:DesignHeight="450" Width="400">
     <Grid>
-        <StackPanel Orientation="Vertical">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical" Grid.Row="0" HorizontalAlignment="Center">
             <Label HorizontalContentAlignment="Center">Streaming WebSocket settings</Label>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                <Label>Streaming Software:</Label>
+                <Label Width="130">Streaming Software:</Label>
                 <ComboBox x:Name="comboStreamSoftware" Width="100"></ComboBox>
             </StackPanel>
-
-            <TextBox x:Name="streamServer" materialDesign:HintAssist.Hint="Server IP"></TextBox>
-            <TextBox x:Name="streamPort" materialDesign:HintAssist.Hint="Server Port"></TextBox>
-            <PasswordBox x:Name="streamPassword"  materialDesign:HintAssist.Hint="Password" ></PasswordBox>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <Label Width="130">Server IP:</Label>
+                <TextBox x:Name="streamServer" materialDesign:HintAssist.Hint="Server IP"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <Label Width="130">Server Port:</Label>
+                <TextBox x:Name="streamPort" materialDesign:HintAssist.Hint="Server Port"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <Label Width="130">Password:</Label>
+                <PasswordBox x:Name="streamPassword"  materialDesign:HintAssist.Hint="Password" ></PasswordBox>
+            </StackPanel>
             <Button x:Name="buttonSave">Save</Button>
+        </StackPanel>
+        <StackPanel Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch"
+                        ToolTip="Add a Source in your Scene called 'SetupHider'. ACC Mananger will automatically show and hide this based on the setup menu visibility.">
+                <ToggleButton x:Name="toggleSetupHider" Width="50" Height="35" VerticalAlignment="Center"/>
+                <Label VerticalAlignment="Center">Enable Setup Hider</Label>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>

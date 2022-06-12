@@ -34,7 +34,16 @@ namespace ACCManager.Controls
 
             buttonSave.Click += (s, e) => SaveSettings();
 
+            toggleSetupHider.Click += (s, e) => ToggleSetupHider();
+
             LoadSettings();
+        }
+
+        private void ToggleSetupHider()
+        {
+            var streamingSettings = StreamSettings.LoadJson();
+            streamingSettings.SetupHider = toggleSetupHider.IsChecked.Value;
+            StreamSettings.SaveJson(streamingSettings);
         }
 
         private void LoadSettings()
@@ -47,6 +56,7 @@ namespace ACCManager.Controls
             streamServer.Text = streamingSettings.StreamingWebSocketIP;
             streamPort.Text = $"{streamingSettings.StreamingWebSocketPort}";
             streamPassword.Password = streamingSettings.StreamingWebSocketPassword;
+            toggleSetupHider.IsChecked = streamingSettings.SetupHider;
         }
 
         private void SaveSettings()

@@ -12,6 +12,8 @@ namespace ACCManager.Util.Settings
         public int StreamingWebSocketPort { get; set; }
         public string StreamingWebSocketPassword { get; set; }
 
+        public bool SetupHider { get; set; }
+
         public static StreamingSettingsJson Default()
         {
             var settings = new StreamingSettingsJson()
@@ -19,7 +21,8 @@ namespace ACCManager.Util.Settings
                 StreamingSoftware = "OBS",
                 StreamingWebSocketIP = "localhost",
                 StreamingWebSocketPort = 4444,
-                StreamingWebSocketPassword = String.Empty
+                StreamingWebSocketPassword = String.Empty,
+                SetupHider = false
             };
             return settings;
         }

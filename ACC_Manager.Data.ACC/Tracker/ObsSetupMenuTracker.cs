@@ -31,15 +31,18 @@ namespace ACCManager.Data.ACC.Tracker
 
         private ObsSetupMenuTracker()
         {
-            Debug.WriteLine("Started OBS setup menu tracker");
-            _obsWebSocket = new OBSWebsocket();
-            _obsWebSocket.Connected += ObsWebSocket_Connected;
-            _obsWebSocket.Disconnected += ObsWebSocket_Disconnected;
+            if (StreamSettings.LoadJson().SetupHider)
+            {
+                Debug.WriteLine("Started OBS setup menu tracker");
+                _obsWebSocket = new OBSWebsocket();
+                _obsWebSocket.Connected += ObsWebSocket_Connected;
+                _obsWebSocket.Disconnected += ObsWebSocket_Disconnected;
 
-            _sharedMemory = new ACCSharedMemory();
+                _sharedMemory = new ACCSharedMemory();
 
-            Connect();
-            StartTracker();
+                Connect();
+                StartTracker();
+            }
         }
 
         private void Connect()
