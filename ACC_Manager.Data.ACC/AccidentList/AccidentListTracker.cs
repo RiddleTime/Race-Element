@@ -110,13 +110,13 @@ namespace ACCManager.Data.ACC.AccidentList
                 
                 if (_unprocessedAccidents.Count < 2)
                 {
-                    Debug.WriteLine($"accident: car {_unprocessedAccidents[0].RaceNumber}|{_unprocessedAccidents[0].GetCurrentDriverName()}");
+                    Debug.WriteLine($"accident: car #{_unprocessedAccidents[0].RaceNumber}|{_unprocessedAccidents[0].GetCurrentDriverName()}");
                 }
 
                 for (int i=0; i<_unprocessedAccidents.Count-1; i++)
                 {
                     float distance = Math.Abs((_unprocessedAccidents[i].RealtimeCarUpdate.SplinePosition - _unprocessedAccidents[i + 1].RealtimeCarUpdate.SplinePosition) * _trackDistance);
-                    Debug.WriteLine($"accident: car {_unprocessedAccidents[i].RaceNumber} vs {_unprocessedAccidents[i+1].RaceNumber} distance {distance}");
+                    Debug.WriteLine($"accident: car #{_unprocessedAccidents[i].RaceNumber} vs #{_unprocessedAccidents[i+1].RaceNumber} distance {distance}");
 
                 }
 
