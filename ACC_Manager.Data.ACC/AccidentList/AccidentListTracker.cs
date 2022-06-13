@@ -66,7 +66,7 @@ namespace ACCManager.Data.ACC.AccidentList
 
             if (broadcastingEvent.CarData == null) return;
 
-            Debug.WriteLine($"#{broadcastingEvent.CarData.RaceNumber}|{broadcastingEvent.TimeMs}| {broadcastingEvent.CarData.GetCurrentDriverName()} had an accident. {broadcastingEvent.Msg}");
+            Debug.WriteLine($"#{broadcastingEvent.CarData.RaceNumber}|{broadcastingEvent.CarData.GetCurrentDriverName()} had an accident. {broadcastingEvent.Msg}");
 
             // accident events seems to be 5000 ms too late
             // with the corrected accident time get a valid key into the history data
@@ -110,13 +110,13 @@ namespace ACCManager.Data.ACC.AccidentList
                 
                 if (_unprocessedAccidents.Count < 2)
                 {
-                    Debug.WriteLine($"accident: car #{_unprocessedAccidents[0].RaceNumber}|{_unprocessedAccidents[0].GetCurrentDriverName()}");
+                    Debug.WriteLine($"accident: #{_unprocessedAccidents[0].RaceNumber}|{_unprocessedAccidents[0].GetCurrentDriverName()}");
                 }
 
                 for (int i=0; i<_unprocessedAccidents.Count-1; i++)
                 {
                     float distance = Math.Abs((_unprocessedAccidents[i].RealtimeCarUpdate.SplinePosition - _unprocessedAccidents[i + 1].RealtimeCarUpdate.SplinePosition) * _trackDistance);
-                    Debug.WriteLine($"accident: car #{_unprocessedAccidents[i].RaceNumber} vs #{_unprocessedAccidents[i+1].RaceNumber} distance {distance}");
+                    Debug.WriteLine($"accident: #{_unprocessedAccidents[i].RaceNumber} vs #{_unprocessedAccidents[i+1].RaceNumber} distance {distance.ToString("0.##")}m");
 
                 }
 
