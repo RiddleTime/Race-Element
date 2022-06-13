@@ -1,12 +1,12 @@
 ﻿using ACCManager.Broadcast;
 using ACCManager.Broadcast.Structs;
 using ACCManager.Data.ACC.EntryList.TrackPositionGraph;
+using ACCManager.Data.ACC.AccidentList;
 using ACCManager.Data.ACC.Tracker;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,6 +34,9 @@ namespace ACCManager.Data.ACC.EntryList
         }
 
         internal Dictionary<int, CarData> _entryListCars = new Dictionary<int, CarData>();
+        private static AccidentListTracker _accidentListTracker = AccidentListTracker.Instance;
+        private Dictionary<int, CarData> _entryListCars = new Dictionary<int, CarData>();
+      
         public List<KeyValuePair<int, CarData>> Cars
         {
             get
@@ -60,6 +63,9 @@ namespace ACCManager.Data.ACC.EntryList
             BroadcastTracker.Instance.OnRealTimeCarUpdate += RealTimeCarUpdate_EventHandler;
             BroadcastTracker.Instance.OnEntryListUpdate += EntryListUpdate_EventHandler;
             BroadcastTracker.Instance.OnBroadcastEvent += Broadcast_EventHandler;
+
+            _accidentListTracker.Start();
+
             StartEntryListCleanupTracker();
 #endif
         }
@@ -72,6 +78,9 @@ namespace ACCManager.Data.ACC.EntryList
             BroadcastTracker.Instance.OnRealTimeCarUpdate -= RealTimeCarUpdate_EventHandler;
             BroadcastTracker.Instance.OnEntryListUpdate -= EntryListUpdate_EventHandler;
             BroadcastTracker.Instance.OnBroadcastEvent -= Broadcast_EventHandler;
+
+            _accidentListTracker.Stop();
+
             _entryListCars?.Clear();
 #endif
         }
@@ -134,10 +143,7 @@ namespace ACCManager.Data.ACC.EntryList
                         }
                     case BroadcastingCarEventType.Accident:
                         {
-                            if (broadcastingEvent.CarData == null)
-                                break;
-
-                            Debug.WriteLine($"#{broadcastingEvent.CarData.RaceNumber}| {broadcastingEvent.CarData.GetCurrentDriverName()} had an accident. {broadcastingEvent.Msg}");
+                            //Debug.WriteLine($"#{broadcastingEvent.CarData.RaceNumber}| {broadcastingEvent.CarData.GetCurrentDriverName()} had an accident. {broadcastingEvent.Msg}");
                             break;
                         }
 
@@ -220,6 +226,18 @@ namespace ACCManager.Data.ACC.EntryList
             {
                 Debug.WriteLine(ex);
             }
+
+            /*var accidentList = _accidentListTracker.GetNewAccidents();
+            foreach (var broadcastEventList in accidentList)
+            {
+                if (broadcastEventList.Count == 0) continue;
+
+                string carNumbers = string.Join(" ", broadcastEventList.Select(x => x.CarData.RaceNumber).ToArray());
+                string accidentMessage = $"accident between [{carNumbers}]";
+                Debug.WriteLine($"{accidentMessage}");
+
+            }*/
+
         }
     }
 }
