@@ -11,6 +11,9 @@ namespace ACCManager.Data.ACC.AccidentList
 {
     public sealed class AccidentListTracker
     {
+
+        public event EventHandler<AccidentEvent> OnAccident;
+
         private static AccidentListTracker _instance;
         private RealtimeUpdate _realtimeUpdate;
         private float _trackDistance;
@@ -118,6 +121,8 @@ namespace ACCManager.Data.ACC.AccidentList
                     float distance = Math.Abs((_unprocessedAccidents[i].RealtimeCarUpdate.SplinePosition - _unprocessedAccidents[i + 1].RealtimeCarUpdate.SplinePosition) * _trackDistance);
                     Debug.WriteLine($"accident: #{_unprocessedAccidents[i].RaceNumber} vs #{_unprocessedAccidents[i+1].RaceNumber} distance {distance.ToString("0.##")}m");
 
+                    // TODO send out accident event
+                    OnAccident?.Invoke(this, new AccidentEvent());
                 }
 
                 lock(_unprocessedAccidents)
@@ -241,6 +246,14 @@ namespace ACCManager.Data.ACC.AccidentList
         private class ContactData
         {
             public double SessionTime { get; set; }
+        }
+
+        // TODO define accident event with all neccessary data, or use existing CarInfo
+        public class AccidentEvent
+        {
+            public double SessionTime { get; set; }
+            public List<int> CarIds { get; set; }
+
         }
     }
 }
