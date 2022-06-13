@@ -38,8 +38,14 @@ namespace ACCManager.Controls
             buttonTestConnnection.Click += (s, e) => TestConnection();
 
             toggleSetupHider.Click += (s, e) => ToggleSetupHider();
+            
+            this.IsVisibleChanged += Streaming_IsVisibleChanged;
+        }
 
-            LoadSettings();
+        private void Streaming_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (this.IsVisible)
+                LoadSettings();
         }
 
         private void TestConnection()
