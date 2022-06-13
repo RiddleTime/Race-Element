@@ -20,8 +20,8 @@ namespace ACCManager.Data.ACC.AccidentList
         // Maps session time to a map of carID and realTimeInfo
         private Dictionary<double, Dictionary<int, RealtimeCarUpdate>> _realTimeCarHistory = new Dictionary<double, Dictionary<int, RealtimeCarUpdate>>();
 
+        // store all incoming broadcast accident events with the corresponding real time car update
         private List<CarInfoWithRealTime> _unprocessedAccidents = new List<CarInfoWithRealTime>();
-        //private Dictionary<double, CarInfoWithRealTime> _unprocessedAccidents = new Dictionary<double, CarInfoWithRealTime>();
 
         public static AccidentListTracker Instance
         {
@@ -68,30 +68,31 @@ namespace ACCManager.Data.ACC.AccidentList
 
             Debug.WriteLine($"#{broadcastingEvent.CarData.RaceNumber}|{broadcastingEvent.TimeMs}| {broadcastingEvent.CarData.GetCurrentDriverName()} had an accident. {broadcastingEvent.Msg}");
 
-            double key = GetSessionTimeKey();
             // accident events seems to be 5000 ms too late
-            double accidentTime = key - 5000;
+            // with the corrected accident time get a valid key into the history data
+            double key = GetValidHistoryKey(GetSessionTimeKey() - 5000);
 
-            //Debug.WriteLine($"session time {key} accident time {accidentTime}");
             if (!_realTimeCarHistory.ContainsKey(key))
             {
                 Debug.WriteLine($"! no history data for key=({key})");
                 return;
             }
 
+            //Debug.WriteLine($"session time {key} accident time {accidentTime}");
+            // get real time car update data from history and add information to accident event
             CarInfoWithRealTime carInfoWithRealTime = new CarInfoWithRealTime(broadcastingEvent.CarData);
             carInfoWithRealTime.RealtimeCarUpdate = _realTimeCarHistory[key][broadcastingEvent.CarId];
             lock(_unprocessedAccidents)
             {
                 _unprocessedAccidents.Add(carInfoWithRealTime);
-                Debug.WriteLine($"unprocessed accidents list size: {_unprocessedAccidents.Count}");
+                //Debug.WriteLine($"unprocessed accidents list size: {_unprocessedAccidents.Count}");
             }
             
 
             if (_accidentTime == DateTime.MinValue)
             {
                 _accidentTime = DateTime.Now;
-                Debug.WriteLine($"set new accident timestamp: {_accidentTime}");
+                //Debug.WriteLine($"set new accident timestamp: {_accidentTime}");
             }
                 
 
@@ -100,13 +101,12 @@ namespace ACCManager.Data.ACC.AccidentList
         private void ProcessAccidentData()
         {
             DateTime processTime = DateTime.Now;
-            // Debug.WriteLine($"process old accident data list size {processTime.Millisecond - _accidentTime.Millisecond} ...");
+
             // process accidents older than 1 sec.
             TimeSpan timediff = processTime - _accidentTime;
-           //Debug.WriteLine($"process old accident data list size {(int)timediff.TotalMilliseconds} ...");
             if (_accidentTime != DateTime.MinValue && timediff.TotalMilliseconds > 1000)
             {
-                Debug.WriteLine($"process old accident data list size {_unprocessedAccidents.Count} ...");
+                //Debug.WriteLine($"process old accident data list size {_unprocessedAccidents.Count} ...");
                 
                 if (_unprocessedAccidents.Count < 2)
                 {
@@ -115,17 +115,19 @@ namespace ACCManager.Data.ACC.AccidentList
 
                 for (int i=0; i<_unprocessedAccidents.Count-1; i++)
                 {
-                    float distance = (_unprocessedAccidents[i].RealtimeCarUpdate.SplinePosition - _unprocessedAccidents[i + 1].RealtimeCarUpdate.SplinePosition) * _trackDistance;
+                    float distance = Math.Abs((_unprocessedAccidents[i].RealtimeCarUpdate.SplinePosition - _unprocessedAccidents[i + 1].RealtimeCarUpdate.SplinePosition) * _trackDistance);
                     Debug.WriteLine($"accident: car {_unprocessedAccidents[i].RaceNumber} vs {_unprocessedAccidents[i+1].RaceNumber} distance {distance}");
+
                 }
 
                 lock(_unprocessedAccidents)
                 {
-                    Debug.WriteLine($"clear unprocessed accident list and reset accident timestamp");
+                    //Debug.WriteLine($"clear unprocessed accident list and reset accident timestamp");
                     _accidentTime = DateTime.MinValue;
                     _unprocessedAccidents.Clear();
                 }
             }
+
 
            // double key = GetSessionTimeKey();
 
@@ -176,6 +178,29 @@ namespace ACCManager.Data.ACC.AccidentList
                 //Debug.WriteLine($"# create key {key} car index {realtimeCarUpdate.CarIndex}");
                 _realTimeCarHistory[key] = carUpdate;
             }
+
+        }
+
+        private double GetValidHistoryKey(double key)
+        {
+            if (_realTimeCarHistory.ContainsKey(key))
+            {
+                return key;
+            }
+
+            // find nearest history session key
+            double nearest = 999999f;
+            double nearestHistoryKey = 0f;
+            foreach (var historyKey in _realTimeCarHistory.Keys)
+            {
+                double dt = Math.Abs(historyKey - key);
+                if (dt < nearest)
+                {
+                    nearest = dt;
+                    nearestHistoryKey = historyKey;
+                }
+            }
+            return nearestHistoryKey;
         }
 
         private double GetSessionTimeKey()
