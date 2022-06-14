@@ -1,4 +1,5 @@
 ﻿using ACCManager.Data.ACC.EntryList;
+using ACCManager.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -50,24 +51,40 @@ namespace ACCManager.Data.ACC.Tracker
             {
                 while (isTracking)
                 {
-                    Thread.Sleep(100);
-
-                    SPageFileGraphic sPageFileGraphic = sharedMemory.ReadGraphicsPageFile();
-
-                    if (sPageFileGraphic.Status == AcStatus.AC_OFF && BroadcastTracker.Instance.IsConnected)
+                    try
                     {
-                        Debug.WriteLine("Disconnected broadcast tracker");
-                        BroadcastTracker.Instance.Disconnect();
-                        EntryListTracker.Instance.Stop();
-                        if (SetupHiderTracker.Instance != null)
-                            SetupHiderTracker.Instance.Dispose();
+                        Thread.Sleep(100);
+
+                        SPageFileGraphic sPageFileGraphic = sharedMemory.ReadGraphicsPageFile();
+
+                        if (sPageFileGraphic.Status == AcStatus.AC_OFF)
+                        {
+                            if (BroadcastTracker.Instance.IsConnected)
+                            {
+                                BroadcastTracker.Instance.Disconnect();
+                                EntryListTracker.Instance.Stop();
+                            }
+
+                            if (SetupHiderTracker.Instance.IsTracking)
+                                SetupHiderTracker.Instance.Dispose();
+                        }
+                        else if (sPageFileGraphic.Status != AcStatus.AC_OFF)
+                        {
+                            if (!BroadcastTracker.Instance.IsConnected)
+                            {
+                                BroadcastTracker.Instance.Connect();
+                                EntryListTracker.Instance.Start();
+                            }
+
+                            var hider = SetupHiderTracker.Instance;
+                            if (!hider.IsTracking)
+                                hider.StartTracker();
+                        }
                     }
-                    else if (!BroadcastTracker.Instance.IsConnected && sPageFileGraphic.Status != AcStatus.AC_OFF)
+                    catch (Exception e)
                     {
-                        Debug.WriteLine("Connected broadcast tracker");
-                        BroadcastTracker.Instance.Connect();
-                        EntryListTracker.Instance.Start();
-                        SetupHiderTracker.Instance.ToString();
+                        LogWriter.WriteToLog(e);
+                        Debug.WriteLine(e);
                     }
                 }
             });

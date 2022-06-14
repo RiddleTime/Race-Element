@@ -17,7 +17,7 @@
         <StackPanel Orientation="Vertical" Grid.Row="0" HorizontalAlignment="Center">
             <Label HorizontalContentAlignment="Center" FontWeight="Bold" FontSize="18">Instruction</Label>
             <TextBlock TextAlignment="Center">
-               Add a Source to the your Scene called: <Bold>SetupHider</Bold><LineBreak/>
+               Add a Source to your Active Scene called: <Bold>SetupHider</Bold><LineBreak/>
                 This Source can be anything you want it to be.
             </TextBlock>
         </StackPanel>

@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace ACCManager.Data.ACC.Tracker
 {
-    internal class SetupHiderTracker : IDisposable
+    public class SetupHiderTracker : IDisposable
     {
         public static SetupHiderTracker _instance;
         public static SetupHiderTracker Instance
@@ -27,24 +27,26 @@ namespace ACCManager.Data.ACC.Tracker
             }
         }
 
-        private readonly OBSWebsocket _obsWebSocket;
-        private readonly SlobsPipeClient _SlobsClient;
-        private bool _isTracking = false;
-        private readonly ACCSharedMemory _sharedMemory;
+        public bool IsTracking = false;
+
+        private OBSWebsocket _obsWebSocket;
+        private SlobsPipeClient _SlobsClient;
+        private ACCSharedMemory _sharedMemory;
 
         private bool _toggle = false;
 
-        private SetupHiderTracker()
+        private SetupHiderTracker() { }
+
+        public void StartTracker()
         {
             var streamSettings = StreamSettings.LoadJson();
             if (streamSettings.SetupHider)
             {
-                Debug.WriteLine("Started Setup Hider Tracker");
-
                 if (streamSettings.StreamingSoftware == "OBS")
                 {
                     _obsWebSocket = new OBSWebsocket();
                     _obsWebSocket.Connected += ObsWebSocket_Connected;
+                    Connect();
                 }
                 else
                 {
@@ -52,11 +54,25 @@ namespace ACCManager.Data.ACC.Tracker
                 }
 
                 _sharedMemory = new ACCSharedMemory();
-
-                Connect();
-                StartTracker();
             }
+
+            IsTracking = true;
+            new Thread(() =>
+            {
+                while (IsTracking)
+                {
+                    Thread.Sleep(50);
+                    var pageGraphics = _sharedMemory.ReadGraphicsPageFile();
+
+                    if (pageGraphics.IsSetupMenuVisible != _toggle)
+                    {
+                        _toggle = pageGraphics.IsSetupMenuVisible;
+                        Toggle(pageGraphics.IsSetupMenuVisible);
+                    }
+                }
+            }).Start();
         }
+
 
         private void Connect()
         {
@@ -73,29 +89,8 @@ namespace ACCManager.Data.ACC.Tracker
             }
         }
 
-        private void StartTracker()
-        {
-            _isTracking = true;
-            new Thread(() =>
-            {
-                while (_isTracking)
-                {
-                    Thread.Sleep(50);
-                    var pageGraphics = _sharedMemory.ReadGraphicsPageFile();
-
-                    if (pageGraphics.IsSetupMenuVisible != _toggle)
-                    {
-                        Toggle(pageGraphics.IsSetupMenuVisible);
-                        _toggle = pageGraphics.IsSetupMenuVisible;
-                    }
-                }
-            }).Start();
-        }
-
         private void ObsWebSocket_Connected(object sender, EventArgs e)
         {
-            Debug.WriteLine("Connected obs websocket");
-            Debug.WriteLine($"Current scene: {_obsWebSocket.GetCurrentScene().Name}");
             Toggle(true);
         }
 
@@ -109,28 +104,18 @@ namespace ACCManager.Data.ACC.Tracker
 
         private void ToggleOBS(bool enable)
         {
-            if (_obsWebSocket.IsConnected)
+            try
             {
-                SourceInfo setupHiderSource = _obsWebSocket.GetSourcesList().Find(x => x.Name == "SetupHider");
-                if (setupHiderSource != null)
+                if (_obsWebSocket.IsConnected)
                 {
-                    try
-                    {
+                    SourceInfo setupHiderSource = _obsWebSocket.GetSourcesList().Find(x => x.Name == "SetupHider");
+                    if (setupHiderSource != null)
                         _obsWebSocket.SetSourceRender(setupHiderSource.Name, enable);
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine($"Setup Hider: Source 'SetupHider' was not found.");
-                        LogWriter.WriteToLog($"Setup Hider: Source 'SetupHider' was not found.");
-                        Dispose();
-                    }
                 }
-                else
-                {
-                    Debug.WriteLine($"Setup Hider: Source 'SetupHider' was not found.");
-                    LogWriter.WriteToLog($"Setup Hider: Source 'SetupHider' was not found.");
-                    Dispose();
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
             }
         }
 
@@ -162,9 +147,8 @@ namespace ACCManager.Data.ACC.Tracker
 
         public void Dispose()
         {
-            _isTracking = false;
-            Debug.WriteLine("Disposed OBS setup menu tracker");
-            if (StreamSettings.LoadJson().SetupHider)
+            IsTracking = false;
+            if (_obsWebSocket != null)
                 _obsWebSocket.Disconnect();
 
             _instance = null;

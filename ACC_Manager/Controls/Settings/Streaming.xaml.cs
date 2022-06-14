@@ -1,4 +1,5 @@
-﻿using ACCManager.Util;
+﻿using ACCManager.Data.ACC.Tracker;
+using ACCManager.Util;
 using ACCManager.Util.Settings;
 using Newtonsoft.Json;
 using OBSWebsocketDotNet;
@@ -58,6 +59,7 @@ namespace ACCManager.Controls
             toggleSetupHider.Click += (s, e) => ToggleSetupHider();
 
             this.IsVisibleChanged += Streaming_IsVisibleChanged;
+            var pageGraphics = PageGraphicsTracker.Instance;
         }
 
         private void Streaming_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -169,7 +171,7 @@ namespace ACCManager.Controls
                 {
                     Debug.WriteLine(e);
 
-                    string message = "Failed to make a connection.";
+                    string message = $"Failed to make a connection to {streamSettings.StreamingSoftware}.";
 
                     if (e.Message.Contains("SetupHider"))
                         message = e.Message;
