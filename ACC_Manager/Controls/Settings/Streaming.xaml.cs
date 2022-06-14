@@ -206,15 +206,7 @@ namespace ACCManager.Controls
         {
             var streamingSettings = StreamSettings.LoadJson();
 
-            switch (streamingSettings.StreamingSoftware)
-            {
-                case "OBS":
-                    {
-                        streamPassword.Password = streamingSettings.StreamingWebSocketPassword;
-                        break;
-                    }
-            }
-
+            streamPassword.Password = streamingSettings.StreamingWebSocketPassword;
             streamServer.Text = streamingSettings.StreamingWebSocketIP;
             streamPort.Text = $"{streamingSettings.StreamingWebSocketPort}";
             comboStreamSoftware.SelectedItem = streamingSettings.StreamingSoftware;
