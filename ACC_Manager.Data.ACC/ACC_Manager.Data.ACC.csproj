@@ -122,7 +122,7 @@
     <Compile Include="SetupParser\SetupChanger\SetupIntRange.cs" />
     <Compile Include="SetupParser\SetupConverter.cs" />
     <Compile Include="SetupParser\SetupJson.cs" />
-    <Compile Include="Tracker\ObsSetupMenuTracker.cs" />
+    <Compile Include="Tracker\SetupHiderTracker.cs" />
     <Compile Include="Tracker\TrackerDispose.cs" />
     <Compile Include="Tracker\PageGraphicsTracker.cs" />
     <Compile Include="Tracker\PagePhysicsTracker.cs" />

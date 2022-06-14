@@ -15,14 +15,14 @@ using System.Threading.Tasks;
 
 namespace ACCManager.Data.ACC.Tracker
 {
-    internal class ObsSetupMenuTracker : IDisposable
+    internal class SetupHiderTracker : IDisposable
     {
-        public static ObsSetupMenuTracker _instance;
-        public static ObsSetupMenuTracker Instance
+        public static SetupHiderTracker _instance;
+        public static SetupHiderTracker Instance
         {
             get
             {
-                if (_instance == null) _instance = new ObsSetupMenuTracker();
+                if (_instance == null) _instance = new SetupHiderTracker();
                 return _instance;
             }
         }
@@ -34,12 +34,12 @@ namespace ACCManager.Data.ACC.Tracker
 
         private bool _toggle = false;
 
-        private ObsSetupMenuTracker()
+        private SetupHiderTracker()
         {
             var streamSettings = StreamSettings.LoadJson();
             if (streamSettings.SetupHider)
             {
-                Debug.WriteLine("Started OBS setup menu tracker");
+                Debug.WriteLine("Started Setup Hider Tracker");
 
                 if (streamSettings.StreamingSoftware == "OBS")
                 {
