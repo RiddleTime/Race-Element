@@ -9,39 +9,47 @@
              d:DesignHeight="450" Width="400">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
             <RowDefinition Height="250"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Grid.Row="0" HorizontalAlignment="Center" Width="300">
-            <Label HorizontalContentAlignment="Center">Streaming WebSocket settings</Label>
+        <StackPanel Orientation="Vertical" Grid.Row="0" HorizontalAlignment="Center">
+            <Label HorizontalContentAlignment="Center" FontWeight="Bold" FontSize="18">Instruction</Label>
+            <TextBlock TextAlignment="Center">
+               Add a Source to the your Scene called: <Bold>SetupHider</Bold><LineBreak/>
+                This Source can be anything you want it to be.
+            </TextBlock>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Row="1" HorizontalAlignment="Center" Width="300">
+            <Label HorizontalContentAlignment="Center" FontWeight="Bold" FontSize="18">Settings</Label>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,5,0,0">
                 <Label Width="100">Software:</Label>
                 <ComboBox x:Name="comboStreamSoftware" Width="100"></ComboBox>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,5,0,0">
-                <Label Width="100">Server IP:</Label>
-                <TextBox x:Name="streamServer" materialDesign:HintAssist.Hint="Server IP"></TextBox>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,5,0,0">
-                <Label Width="100">Server Port:</Label>
-                <TextBox x:Name="streamPort" materialDesign:HintAssist.Hint="Server Port"></TextBox>
-            </StackPanel>
-            <StackPanel x:Name="passwordStack" Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,5,0,0">
-                <Label Width="100">Password:</Label>
-                <PasswordBox x:Name="streamPassword"  materialDesign:HintAssist.Hint="Password" ></PasswordBox>
-            </StackPanel>
-            <StackPanel x:Name="apiTokenStack" Visibility="Collapsed" Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,5,0,0">
-                <Label Width="100">API Token:</Label>
-                <PasswordBox x:Name="apiToken"  materialDesign:HintAssist.Hint="Api Token" ></PasswordBox>
+            <StackPanel x:Name="obsStack">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,5,0,0">
+                    <Label Width="100">Server IP:</Label>
+                    <TextBox x:Name="streamServer" materialDesign:HintAssist.Hint="Server IP"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,5,0,0">
+                    <Label Width="100">Server Port:</Label>
+                    <TextBox x:Name="streamPort" materialDesign:HintAssist.Hint="Server Port"></TextBox>
+                </StackPanel>
+                <StackPanel  Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,5,0,0">
+                    <Label Width="100">Password:</Label>
+                    <PasswordBox x:Name="streamPassword"  materialDesign:HintAssist.Hint="Password" ></PasswordBox>
+                </StackPanel>
             </StackPanel>
             <Button x:Name="buttonSave" Margin="0,10,0,0">Save</Button>
             <Button x:Name="buttonTestConnnection" Margin="0,10,0,0">Test Connection</Button>
         </StackPanel>
-        <StackPanel Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center">
+
+        <StackPanel Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch"
-                        ToolTip="Add a Source in your Scene called 'SetupHider'. ACC Mananger will automatically show and hide this based on the setup menu visibility.">
-                <ToggleButton x:Name="toggleSetupHider" Width="50" Height="35" VerticalAlignment="Center"/>
+                        ToolTip="Add a Source in your Scene called SetupHider. ACC Mananger will automatically show and hide this based on the setup menu visibility.">
+                <ToggleButton x:Name="toggleSetupHider" Width="50" Height="35" VerticalAlignment="Center" Cursor="Hand"/>
                 <Label VerticalAlignment="Center">Enable Setup Hider</Label>
             </StackPanel>
         </StackPanel>

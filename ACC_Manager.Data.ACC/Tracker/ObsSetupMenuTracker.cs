@@ -3,6 +3,8 @@ using ACCManager.Util.Settings;
 using Newtonsoft.Json.Linq;
 using OBSWebsocketDotNet;
 using OBSWebsocketDotNet.Types;
+using SLOBSharp.Client;
+using SLOBSharp.Client.Requests;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,16 +28,28 @@ namespace ACCManager.Data.ACC.Tracker
         }
 
         private readonly OBSWebsocket _obsWebSocket;
+        private readonly SlobsPipeClient _SlobsClient;
         private bool _isTracking = false;
         private readonly ACCSharedMemory _sharedMemory;
 
+        private bool _toggle = false;
+
         private ObsSetupMenuTracker()
         {
-            if (StreamSettings.LoadJson().SetupHider)
+            var streamSettings = StreamSettings.LoadJson();
+            if (streamSettings.SetupHider)
             {
                 Debug.WriteLine("Started OBS setup menu tracker");
-                _obsWebSocket = new OBSWebsocket();
-                _obsWebSocket.Connected += ObsWebSocket_Connected;
+
+                if (streamSettings.StreamingSoftware == "OBS")
+                {
+                    _obsWebSocket = new OBSWebsocket();
+                    _obsWebSocket.Connected += ObsWebSocket_Connected;
+                }
+                else
+                {
+                    _SlobsClient = new SlobsPipeClient();
+                }
 
                 _sharedMemory = new ACCSharedMemory();
 
@@ -69,7 +83,11 @@ namespace ACCManager.Data.ACC.Tracker
                     Thread.Sleep(50);
                     var pageGraphics = _sharedMemory.ReadGraphicsPageFile();
 
-                    Toggle(pageGraphics.IsSetupMenuVisible);
+                    if (pageGraphics.IsSetupMenuVisible != _toggle)
+                    {
+                        Toggle(pageGraphics.IsSetupMenuVisible);
+                        _toggle = pageGraphics.IsSetupMenuVisible;
+                    }
                 }
             }).Start();
         }
@@ -85,6 +103,8 @@ namespace ACCManager.Data.ACC.Tracker
         {
             if (_obsWebSocket != null)
                 ToggleOBS(enable);
+            else
+                ToggleStreamLabs(enable);
         }
 
         private void ToggleOBS(bool enable)
@@ -111,6 +131,32 @@ namespace ACCManager.Data.ACC.Tracker
                     LogWriter.WriteToLog($"Setup Hider: Source 'SetupHider' was not found.");
                     Dispose();
                 }
+            }
+        }
+
+        private void ToggleStreamLabs(bool enable)
+        {
+            try
+            {
+                var request = SlobsRequestBuilder.NewRequest().SetMethod("getScenes").SetResource("ScenesService").BuildRequest();
+
+                var response = _SlobsClient.ExecuteRequest(request);
+                if (response.Error != null)
+                    throw new Exception($"{response.Error.Code}: {response.Error.Message} ");
+                else
+                {
+                    string resource = string.Empty;
+                    response.Result.First().Nodes.ForEach(x => { if (x.Name == "SetupHider") resource = x.ResourceId; });
+                    if (resource != string.Empty)
+                    {
+                        request = SlobsRequestBuilder.NewRequest().SetMethod("setVisibility").SetResource(resource).AddArgs(enable).BuildRequest();
+                        _SlobsClient.ExecuteRequest(request);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
             }
         }
 
