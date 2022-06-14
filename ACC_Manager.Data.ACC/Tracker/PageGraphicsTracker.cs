@@ -76,9 +76,8 @@ namespace ACCManager.Data.ACC.Tracker
                                 EntryListTracker.Instance.Start();
                             }
 
-                            var hider = SetupHiderTracker.Instance;
-                            if (!hider.IsTracking)
-                                hider.StartTracker();
+                            if (!SetupHiderTracker.Instance.IsTracking)
+                                SetupHiderTracker.Instance.StartTracker();
                         }
                     }
                     catch (Exception e)

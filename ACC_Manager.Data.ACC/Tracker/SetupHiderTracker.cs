@@ -33,7 +33,7 @@ namespace ACCManager.Data.ACC.Tracker
         private SlobsPipeClient _SlobsClient;
         private ACCSharedMemory _sharedMemory;
 
-        private bool _toggle = false;
+        private bool _toggle = true;
 
         private SetupHiderTracker() { }
 
@@ -64,11 +64,12 @@ namespace ACCManager.Data.ACC.Tracker
                     Thread.Sleep(50);
                     var pageGraphics = _sharedMemory.ReadGraphicsPageFile();
 
-                    if (pageGraphics.IsSetupMenuVisible != _toggle)
-                    {
-                        _toggle = pageGraphics.IsSetupMenuVisible;
-                        Toggle(pageGraphics.IsSetupMenuVisible);
-                    }
+                    if (pageGraphics.Status != ACCSharedMemory.AcStatus.AC_OFF)
+                        if (pageGraphics.IsSetupMenuVisible != _toggle)
+                        {
+                            _toggle = pageGraphics.IsSetupMenuVisible;
+                            Toggle(pageGraphics.IsSetupMenuVisible);
+                        }
                 }
             }).Start();
         }
@@ -91,7 +92,6 @@ namespace ACCManager.Data.ACC.Tracker
 
         private void ObsWebSocket_Connected(object sender, EventArgs e)
         {
-            Toggle(true);
         }
 
         public void Toggle(bool enable)
@@ -110,7 +110,9 @@ namespace ACCManager.Data.ACC.Tracker
                 {
                     SourceInfo setupHiderSource = _obsWebSocket.GetSourcesList().Find(x => x.Name == "SetupHider");
                     if (setupHiderSource != null)
+                    {
                         _obsWebSocket.SetSourceRender(setupHiderSource.Name, enable);
+                    }
                 }
             }
             catch (Exception e)
@@ -131,11 +133,15 @@ namespace ACCManager.Data.ACC.Tracker
                 else
                 {
                     string resource = string.Empty;
-                    response.Result.First().Nodes.ForEach(x => { if (x.Name == "SetupHider") resource = x.ResourceId; });
-                    if (resource != string.Empty)
+                    var node = response.Result.First().Nodes.Find(x => x.Name == "SetupHider");
+
+                    if (node != null)
                     {
-                        request = SlobsRequestBuilder.NewRequest().SetMethod("setVisibility").SetResource(resource).AddArgs(enable).BuildRequest();
-                        _SlobsClient.ExecuteRequest(request);
+                        if (node.Visible != enable)
+                        {
+                            request = SlobsRequestBuilder.NewRequest().SetMethod("setVisibility").SetResource(node.ResourceId).AddArgs(enable).BuildRequest();
+                            _SlobsClient.ExecuteRequest(request);
+                        }
                     }
                 }
             }
