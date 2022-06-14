@@ -62,7 +62,9 @@ namespace ACCManager.Data.ACC.Tracker
                             if (BroadcastTracker.Instance.IsConnected)
                             {
                                 BroadcastTracker.Instance.Disconnect();
+#if DEBUG
                                 EntryListTracker.Instance.Stop();
+#endif
                             }
 
                             if (SetupHiderTracker.Instance.IsTracking)
@@ -73,7 +75,9 @@ namespace ACCManager.Data.ACC.Tracker
                             if (!BroadcastTracker.Instance.IsConnected)
                             {
                                 BroadcastTracker.Instance.Connect();
+#if DEBUG
                                 EntryListTracker.Instance.Start();
+#endif
                             }
 
                             if (!SetupHiderTracker.Instance.IsTracking)

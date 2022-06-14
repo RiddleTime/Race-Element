@@ -54,24 +54,25 @@ namespace ACCManager.Data.ACC.Tracker
                 }
 
                 _sharedMemory = new ACCSharedMemory();
-            }
 
-            IsTracking = true;
-            new Thread(() =>
-            {
-                while (IsTracking)
+
+                IsTracking = true;
+                new Thread(() =>
                 {
-                    Thread.Sleep(50);
-                    var pageGraphics = _sharedMemory.ReadGraphicsPageFile();
+                    while (IsTracking)
+                    {
+                        Thread.Sleep(50);
+                        var pageGraphics = _sharedMemory.ReadGraphicsPageFile();
 
-                    if (pageGraphics.Status != ACCSharedMemory.AcStatus.AC_OFF)
-                        if (pageGraphics.IsSetupMenuVisible != _toggle)
-                        {
-                            _toggle = pageGraphics.IsSetupMenuVisible;
-                            Toggle(pageGraphics.IsSetupMenuVisible);
-                        }
-                }
-            }).Start();
+                        if (pageGraphics.Status != ACCSharedMemory.AcStatus.AC_OFF)
+                            if (pageGraphics.IsSetupMenuVisible != _toggle)
+                            {
+                                _toggle = pageGraphics.IsSetupMenuVisible;
+                                Toggle(pageGraphics.IsSetupMenuVisible);
+                            }
+                    }
+                }).Start();
+            }
         }
 
 

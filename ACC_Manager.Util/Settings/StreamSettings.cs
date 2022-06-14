@@ -72,7 +72,7 @@ namespace ACCManager.Util.Settings
                 Debug.WriteLine(e);
             }
 
-            return null;
+            return StreamingSettingsJson.Default();
         }
 
         public static void SaveJson(StreamingSettingsJson streamSettings)
