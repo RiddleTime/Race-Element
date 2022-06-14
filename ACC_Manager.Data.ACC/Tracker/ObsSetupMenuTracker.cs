@@ -50,7 +50,8 @@ namespace ACCManager.Data.ACC.Tracker
             {
                 var streamSettings = StreamSettings.LoadJson();
 
-                _obsWebSocket.Connect($"ws://{streamSettings.StreamingWebSocketIP}:{streamSettings.StreamingWebSocketPort}", streamSettings.StreamingWebSocketPassword);
+                if (streamSettings.StreamingSoftware == "OBS")
+                    _obsWebSocket.Connect($"ws://{streamSettings.StreamingWebSocketIP}:{streamSettings.StreamingWebSocketPort}", streamSettings.StreamingWebSocketPassword);
             }
             catch (Exception ex)
             {
@@ -81,6 +82,12 @@ namespace ACCManager.Data.ACC.Tracker
         }
 
         public void Toggle(bool enable)
+        {
+            if (_obsWebSocket != null)
+                ToggleOBS(enable);
+        }
+
+        private void ToggleOBS(bool enable)
         {
             if (_obsWebSocket.IsConnected)
             {

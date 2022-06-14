@@ -2,6 +2,8 @@
 using ACCManager.Util.Settings;
 using Newtonsoft.Json;
 using OBSWebsocketDotNet;
+using SLOBSharp.Client;
+using SLOBSharp.Client.Requests;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -33,12 +35,30 @@ namespace ACCManager.Controls
             comboStreamSoftware.Items.Add("OBS");
             comboStreamSoftware.Items.Add("Streamlabs");
             comboStreamSoftware.SelectedIndex = 0;
+            comboStreamSoftware.SelectionChanged += (s, e) =>
+            {
+                switch (comboStreamSoftware.SelectedItem)
+                {
+                    case "OBS":
+                        {
+                            apiTokenStack.Visibility = Visibility.Collapsed;
+                            passwordStack.Visibility = Visibility.Visible;
+                            break;
+                        }
+                    case "Streamlabs":
+                        {
+                            apiTokenStack.Visibility = Visibility.Visible;
+                            passwordStack.Visibility = Visibility.Collapsed;
+                            break;
+                        }
+                }
+            };
 
             buttonSave.Click += (s, e) => SaveSettings();
             buttonTestConnnection.Click += (s, e) => TestConnection();
 
             toggleSetupHider.Click += (s, e) => ToggleSetupHider();
-            
+
             this.IsVisibleChanged += Streaming_IsVisibleChanged;
         }
 
@@ -52,6 +72,23 @@ namespace ACCManager.Controls
         {
             var streamSettings = StreamSettings.LoadJson();
 
+            switch (comboStreamSoftware.SelectedItem)
+            {
+                case "OBS":
+                    {
+                        TestOBSconnection(streamSettings);
+                        break;
+                    }
+                case "Streamlabs":
+                    {
+                        TestStreamlabsConnection(streamSettings);
+                        break;
+                    }
+            }
+        }
+
+        private void TestOBSconnection(StreamingSettingsJson streamingSettings)
+        {
             Dispatcher.Invoke(() =>
             {
                 buttonTestConnnection.IsEnabled = false;
@@ -64,7 +101,7 @@ namespace ACCManager.Controls
                     _obsWebSocket.Connected += (s, e) =>
                     {
                         MainWindow.Instance.ClearSnackbar();
-                        MainWindow.Instance.EnqueueSnackbarMessage($"Connection to {streamSettings.StreamingSoftware} is working.");
+                        MainWindow.Instance.EnqueueSnackbarMessage($"Connection to {streamingSettings.StreamingSoftware} is working.");
                         _obsWebSocket.Disconnect();
                     };
                     _obsWebSocket.Disconnected += (s, e) =>
@@ -75,7 +112,7 @@ namespace ACCManager.Controls
                         else
                         {
                             MainWindow.Instance.ClearSnackbar();
-                            MainWindow.Instance.EnqueueSnackbarMessage($"Failed to make a connection to {streamSettings.StreamingSoftware}.");
+                            MainWindow.Instance.EnqueueSnackbarMessage($"Failed to make a connection to {streamingSettings.StreamingSoftware}.");
                         }
 
                         Dispatcher.Invoke(() =>
@@ -84,20 +121,70 @@ namespace ACCManager.Controls
                         });
 
                     };
-                    _obsWebSocket.Connect($"ws://{streamSettings.StreamingWebSocketIP}:{streamSettings.StreamingWebSocketPort}", streamSettings.StreamingWebSocketPassword);
+                    _obsWebSocket.Connect($"ws://{streamingSettings.StreamingWebSocketIP}:{streamingSettings.StreamingWebSocketPort}", streamingSettings.StreamingWebSocketPassword);
                 }
                 catch (Exception e)
                 {
                     MainWindow.Instance.ClearSnackbar();
-                    MainWindow.Instance.EnqueueSnackbarMessage("Failed to make a connection");
+                    MainWindow.Instance.EnqueueSnackbarMessage($"Failed to make a connection to {streamingSettings.StreamingSoftware}.");
                     Dispatcher.Invoke(() =>
                     {
                         buttonTestConnnection.IsEnabled = true;
                     });
                 }
             });
-
         }
+
+        private void TestStreamlabsConnection(StreamingSettingsJson streamSettings)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                buttonTestConnnection.IsEnabled = false;
+            });
+            Task.Run(() =>
+            {
+                try
+                {
+                    SlobsPipeClient client = new SlobsPipeClient();
+                    var request = SlobsRequestBuilder.NewRequest().SetMethod("getScenes").SetResource("ScenesService").BuildRequest();
+                    var response = client.ExecuteRequest(request);
+                    if (response.Error != null)
+                        throw new Exception($"{response.Error.Code}: {response.Error.Message} ");
+                    else
+                    {
+                        bool foundSetupHider = false;
+                        response.Result.First().Nodes.ForEach(x => { if (x.Name == "SetupHider") foundSetupHider = true; });
+                        if (!foundSetupHider)
+                            throw new Exception("Did not find the setup hider source.");
+                        else
+                        {
+                            MainWindow.Instance.ClearSnackbar();
+                            MainWindow.Instance.EnqueueSnackbarMessage($"Connection to {streamSettings.StreamingSoftware} is working.");
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e);
+
+                    string message = "Failed to make a connection.";
+
+                    if (e.Message.Contains("setup hider"))
+                        message = e.Message;
+
+                    MainWindow.Instance.ClearSnackbar();
+                    MainWindow.Instance.EnqueueSnackbarMessage(message);
+                }
+                finally
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        buttonTestConnnection.IsEnabled = true;
+                    });
+                }
+            });
+        }
+
 
         private void ToggleSetupHider()
         {
@@ -114,10 +201,24 @@ namespace ACCManager.Controls
         {
             var streamingSettings = StreamSettings.LoadJson();
 
-            comboStreamSoftware.SelectedItem = streamingSettings.StreamingSoftware;
+            switch (streamingSettings.StreamingSoftware)
+            {
+                case "OBS":
+                    {
+                        streamPassword.Password = streamingSettings.StreamingWebSocketPassword;
+                        break;
+                    }
+                case "Streamlabs":
+                    {
+                        apiToken.Password = streamingSettings.StreamingWebSocketPassword;
+                        break;
+                    }
+            }
+
             streamServer.Text = streamingSettings.StreamingWebSocketIP;
             streamPort.Text = $"{streamingSettings.StreamingWebSocketPort}";
-            streamPassword.Password = streamingSettings.StreamingWebSocketPassword;
+            comboStreamSoftware.SelectedItem = streamingSettings.StreamingSoftware;
+
             toggleSetupHider.IsChecked = streamingSettings.SetupHider;
         }
 
@@ -128,7 +229,20 @@ namespace ACCManager.Controls
             streamingSettings.StreamingSoftware = comboStreamSoftware.SelectedItem.ToString();
             streamingSettings.StreamingWebSocketIP = streamServer.Text;
             streamingSettings.StreamingWebSocketPort = int.Parse(streamPort.Text);
-            streamingSettings.StreamingWebSocketPassword = streamPassword.Password;
+
+            switch (streamingSettings.StreamingSoftware)
+            {
+                case "OBS":
+                    {
+                        streamingSettings.StreamingWebSocketPassword = streamPassword.Password;
+                        break;
+                    }
+                case "Streamlabs":
+                    {
+                        streamingSettings.StreamingWebSocketPassword = apiToken.Password;
+                        break;
+                    }
+            }
 
             StreamSettings.SaveJson(streamingSettings);
             MainWindow.Instance.ClearSnackbar();

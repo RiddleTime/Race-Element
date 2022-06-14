@@ -27,9 +27,13 @@
                 <Label Width="100">Server Port:</Label>
                 <TextBox x:Name="streamPort" materialDesign:HintAssist.Hint="Server Port"></TextBox>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,5,0,0">
+            <StackPanel x:Name="passwordStack" Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,5,0,0">
                 <Label Width="100">Password:</Label>
                 <PasswordBox x:Name="streamPassword"  materialDesign:HintAssist.Hint="Password" ></PasswordBox>
+            </StackPanel>
+            <StackPanel x:Name="apiTokenStack" Visibility="Collapsed" Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,5,0,0">
+                <Label Width="100">API Token:</Label>
+                <PasswordBox x:Name="apiToken"  materialDesign:HintAssist.Hint="Api Token" ></PasswordBox>
             </StackPanel>
             <Button x:Name="buttonSave" Margin="0,10,0,0">Save</Button>
             <Button x:Name="buttonTestConnnection" Margin="0,10,0,0">Test Connection</Button>
