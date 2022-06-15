@@ -36,12 +36,17 @@ namespace ACCManager.Controls
         {
             SaveSettings();
             SteeringLockTracker.Instance.Dispose();
+            MainWindow.Instance.ClearSnackbar();
+            MainWindow.Instance.EnqueueSnackbarMessage("Disabled automatic hardware steering lock.");
+
         }
 
         private void ToggleSteeringHardwareLock_Checked(object sender, RoutedEventArgs e)
         {
             SaveSettings();
             SteeringLockTracker.Instance.StartTracking();
+            MainWindow.Instance.ClearSnackbar();
+            MainWindow.Instance.EnqueueSnackbarMessage("Enabled automatic hardware steering lock.");
         }
 
         private void LoadSettings()
@@ -51,7 +56,6 @@ namespace ACCManager.Controls
                 var hardwareSettings = HardwareSettings.LoadJson();
 
                 toggleSteeringHardwareLock.IsChecked = hardwareSettings.UseHardwareSteeringLock;
-
             }
             catch (Exception e)
             {
@@ -68,7 +72,6 @@ namespace ACCManager.Controls
                 hardwareSettings.UseHardwareSteeringLock = toggleSteeringHardwareLock.IsChecked.Value;
 
                 HardwareSettings.SaveJson(hardwareSettings);
-
             }
             catch (Exception e)
             {
