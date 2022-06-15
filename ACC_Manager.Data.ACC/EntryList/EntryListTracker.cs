@@ -35,7 +35,6 @@ namespace ACCManager.Data.ACC.EntryList
 
         internal Dictionary<int, CarData> _entryListCars = new Dictionary<int, CarData>();
         private static AccidentListTracker _accidentListTracker = AccidentListTracker.Instance;
-        private Dictionary<int, CarData> _entryListCars = new Dictionary<int, CarData>();
       
         public List<KeyValuePair<int, CarData>> Cars
         {

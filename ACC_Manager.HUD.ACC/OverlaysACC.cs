@@ -23,6 +23,7 @@ using System.Threading.Tasks;
 using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList;
 using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput;
 using ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator;
+using ACCManager.HUD.ACC.Overlays.OverlayRefuel;
 
 namespace ACCManager.HUD.ACC
 {
@@ -53,6 +54,7 @@ namespace ACCManager.HUD.ACC
             {"Broadcast Entrylist", typeof(EntryListOverlay) },
             {"Broadcast Realtime", typeof(BroadcastRealtimeOverlay) },
             {"Broadcast Trackdata", typeof(BroadcastTrackDataOverlay) },
+            {"Refuel Info", typeof(RefuelInfoOverlay) },
 #endif
         };
 
