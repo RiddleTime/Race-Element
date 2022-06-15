@@ -308,15 +308,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
 
         public sealed override bool ShouldRender()
         {
-#if DEBUG
-            return true;
-#endif
-
-            bool shouldRender = true;
-            if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF || pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
-                shouldRender = false;
-
-            return shouldRender;
+            return DefaultShouldRender();
         }
 
     }
