@@ -29,7 +29,8 @@ namespace ACCManager.Controls
             toggleSteeringHardwareLock.Checked += ToggleSteeringHardwareLock_Checked;
             toggleSteeringHardwareLock.Unchecked += ToggleSteeringHardwareLock_Unchecked;
 
-            LoadSettings();
+
+            this.Loaded += (s, e) => LoadSettings();
         }
 
         private void ToggleSteeringHardwareLock_Unchecked(object sender, RoutedEventArgs e)
