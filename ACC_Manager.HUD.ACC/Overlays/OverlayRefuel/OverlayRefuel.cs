@@ -16,7 +16,7 @@ using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
 {
-    internal class RefuelInfoOverlay : AbstractOverlay
+    internal sealed class RefuelInfoOverlay : AbstractOverlay
     {
 
         private RefuelConfiguration config = new RefuelConfiguration();
@@ -63,17 +63,17 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
         }
 
 
-        public override void BeforeStart()
+        public sealed override void BeforeStart()
         {
             LapTracker.Instance.LapFinished += FuelHelperLapFinished;
         }
 
-        public override void BeforeStop()
+        public sealed override void BeforeStop()
         {
             LapTracker.Instance.LapFinished -= FuelHelperLapFinished;
         }
 
-        public override void Render(Graphics g)
+        public sealed override void Render(Graphics g)
         {
 
             int widgetMinXPos = 0 + padding;
@@ -306,7 +306,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
 
         }
 
-        public override bool ShouldRender()
+        public sealed override bool ShouldRender()
         {
 #if DEBUG
             return true;
