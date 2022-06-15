@@ -10,7 +10,9 @@ namespace ACCManager.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.0.7.2","- HUD: Current tyre set is now configurable for the Car Info Overlay." },
+            {"0.0.7.3", "- Stream settings: Fixed a crash (sigh..)." },
+            {"0.0.7.2","- HUD: Current tyre set is now configurable for the Car Info Overlay."+
+                       "\n- Stream settings: Added Setup Hider for OBS and Streamlabs."},
             {"0.0.7.1", "- HUDs: Improve rendering performance."+
                         "\n- HUDs: Prevent huds from rendering when pausing during hotlap mode."+
                         "\n- HUD: Added Shift Indicator overlay, including an option to display when the pit limiter is activated."},

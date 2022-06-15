@@ -16,6 +16,7 @@ namespace ACCManager.Data.ACC.Tracker
             BroadcastTracker.Instance.Dispose();
             EntryListTracker.Instance.Stop();
             RaceSessionTracker.Instance.Stop();
+            SetupHiderTracker.Instance.Dispose();
         }
     }
 }

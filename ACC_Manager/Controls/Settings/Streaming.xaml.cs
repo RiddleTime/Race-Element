@@ -1,7 +1,10 @@
-﻿using ACCManager.Util;
+﻿using ACCManager.Data.ACC.Tracker;
+using ACCManager.Util;
 using ACCManager.Util.Settings;
 using Newtonsoft.Json;
 using OBSWebsocketDotNet;
+using SLOBSharp.Client;
+using SLOBSharp.Client.Requests;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -33,13 +36,30 @@ namespace ACCManager.Controls
             comboStreamSoftware.Items.Add("OBS");
             comboStreamSoftware.Items.Add("Streamlabs");
             comboStreamSoftware.SelectedIndex = 0;
+            comboStreamSoftware.SelectionChanged += (s, e) =>
+            {
+                switch (comboStreamSoftware.SelectedItem)
+                {
+                    case "OBS":
+                        {
+                            obsStack.Visibility = Visibility.Visible;
+                            break;
+                        }
+                    case "Streamlabs":
+                        {
+                            obsStack.Visibility = Visibility.Hidden;
+                            break;
+                        }
+                }
+            };
 
             buttonSave.Click += (s, e) => SaveSettings();
             buttonTestConnnection.Click += (s, e) => TestConnection();
 
             toggleSetupHider.Click += (s, e) => ToggleSetupHider();
-            
+
             this.IsVisibleChanged += Streaming_IsVisibleChanged;
+            var pageGraphics = PageGraphicsTracker.Instance;
         }
 
         private void Streaming_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -51,11 +71,26 @@ namespace ACCManager.Controls
         private void TestConnection()
         {
             var streamSettings = StreamSettings.LoadJson();
+            buttonTestConnnection.Content = "Testing Connection...";
+            buttonTestConnnection.IsEnabled = false;
 
-            Dispatcher.Invoke(() =>
+            switch (comboStreamSoftware.SelectedItem)
             {
-                buttonTestConnnection.IsEnabled = false;
-            });
+                case "OBS":
+                    {
+                        TestOBSconnection(streamSettings);
+                        break;
+                    }
+                case "Streamlabs":
+                    {
+                        TestStreamlabsConnection(streamSettings);
+                        break;
+                    }
+            }
+        }
+
+        private void TestOBSconnection(StreamingSettingsJson streamSettings)
+        {
             Task.Run(() =>
             {
                 try
@@ -63,8 +98,15 @@ namespace ACCManager.Controls
                     OBSWebsocket _obsWebSocket = new OBSWebsocket();
                     _obsWebSocket.Connected += (s, e) =>
                     {
+                        bool foundSetupHider = _obsWebSocket.GetSourcesList().Find(x => x.Name == "SetupHider") != null;
+
+                        string message = "SetupHider source was not found in your current Scene.";
+                        if (foundSetupHider)
+                            message = $"Connection to {streamSettings.StreamingSoftware} is working.";
+
                         MainWindow.Instance.ClearSnackbar();
-                        MainWindow.Instance.EnqueueSnackbarMessage($"Connection to {streamSettings.StreamingSoftware} is working.");
+                        MainWindow.Instance.EnqueueSnackbarMessage(message);
+
                         _obsWebSocket.Disconnect();
                     };
                     _obsWebSocket.Disconnected += (s, e) =>
@@ -80,6 +122,7 @@ namespace ACCManager.Controls
 
                         Dispatcher.Invoke(() =>
                         {
+                            buttonTestConnnection.Content = "Test Connection";
                             buttonTestConnnection.IsEnabled = true;
                         });
 
@@ -89,15 +132,64 @@ namespace ACCManager.Controls
                 catch (Exception e)
                 {
                     MainWindow.Instance.ClearSnackbar();
-                    MainWindow.Instance.EnqueueSnackbarMessage("Failed to make a connection");
+                    MainWindow.Instance.EnqueueSnackbarMessage($"Failed to make a connection to {streamSettings.StreamingSoftware}.");
                     Dispatcher.Invoke(() =>
                     {
+                        buttonTestConnnection.Content = "Test Connection";
                         buttonTestConnnection.IsEnabled = true;
                     });
                 }
             });
-
         }
+
+        private void TestStreamlabsConnection(StreamingSettingsJson streamSettings)
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    SlobsPipeClient client = new SlobsPipeClient();
+                    var request = SlobsRequestBuilder.NewRequest().SetMethod("getScenes").SetResource("ScenesService").BuildRequest();
+
+                    var response = client.ExecuteRequest(request);
+                    if (response.Error != null)
+                        throw new Exception($"{response.Error.Code}: {response.Error.Message} ");
+                    else
+                    {
+                        bool foundSetupHider = false;
+                        response.Result.First().Nodes.ForEach(x => { if (x.Name == "SetupHider") foundSetupHider = true; });
+                        if (!foundSetupHider)
+                            throw new Exception("Did not find the 'SetupHider' Source in your active Scene.");
+                        else
+                        {
+                            MainWindow.Instance.ClearSnackbar();
+                            MainWindow.Instance.EnqueueSnackbarMessage($"Connection to {streamSettings.StreamingSoftware} is working.");
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e);
+
+                    string message = $"Failed to make a connection to {streamSettings.StreamingSoftware}.";
+
+                    if (e.Message.Contains("SetupHider"))
+                        message = e.Message;
+
+                    MainWindow.Instance.ClearSnackbar();
+                    MainWindow.Instance.EnqueueSnackbarMessage(message);
+                }
+                finally
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        buttonTestConnnection.Content = "Test Connection";
+                        buttonTestConnnection.IsEnabled = true;
+                    });
+                }
+            });
+        }
+
 
         private void ToggleSetupHider()
         {
@@ -114,10 +206,11 @@ namespace ACCManager.Controls
         {
             var streamingSettings = StreamSettings.LoadJson();
 
-            comboStreamSoftware.SelectedItem = streamingSettings.StreamingSoftware;
+            streamPassword.Password = streamingSettings.StreamingWebSocketPassword;
             streamServer.Text = streamingSettings.StreamingWebSocketIP;
             streamPort.Text = $"{streamingSettings.StreamingWebSocketPort}";
-            streamPassword.Password = streamingSettings.StreamingWebSocketPassword;
+            comboStreamSoftware.SelectedItem = streamingSettings.StreamingSoftware;
+
             toggleSetupHider.IsChecked = streamingSettings.SetupHider;
         }
 
@@ -127,8 +220,16 @@ namespace ACCManager.Controls
 
             streamingSettings.StreamingSoftware = comboStreamSoftware.SelectedItem.ToString();
             streamingSettings.StreamingWebSocketIP = streamServer.Text;
-            streamingSettings.StreamingWebSocketPort = int.Parse(streamPort.Text);
-            streamingSettings.StreamingWebSocketPassword = streamPassword.Password;
+            streamingSettings.StreamingWebSocketPort = streamPort.Text;
+
+            switch (streamingSettings.StreamingSoftware)
+            {
+                case "OBS":
+                    {
+                        streamingSettings.StreamingWebSocketPassword = streamPassword.Password;
+                        break;
+                    }
+            }
 
             StreamSettings.SaveJson(streamingSettings);
             MainWindow.Instance.ClearSnackbar();
