@@ -1,4 +1,5 @@
-﻿using SharpDX.DirectInput;
+﻿using ACCManager.Data.ACC.Cars;
+using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace ACCManager.Hardware.ACC.SteeringLock
 {
+    /// <summary>
+    /// Partially From https://github.com/Havner/acc-steering-lock
+    /// </summary>
     public class SteeringLockTracker : IDisposable
     {
         private static SteeringLockTracker _instance;
@@ -26,10 +30,12 @@ namespace ACCManager.Hardware.ACC.SteeringLock
         private string _lastCar;
         private int _lastRotation;
         private IWheelSteerLockSetter _wheel;
+        private readonly ACCSharedMemory _sharedMemory;
 
         private SteeringLockTracker()
         {
-
+            _sharedMemory = new ACCSharedMemory();
+            DetectDevices();
         }
 
 
@@ -38,6 +44,8 @@ namespace ACCManager.Hardware.ACC.SteeringLock
             IsTracking = false;
 
             ResetRotation();
+
+            Debug.WriteLine("Disposed steering lock tracker.");
             _instance = null;
         }
 
@@ -49,7 +57,19 @@ namespace ACCManager.Hardware.ACC.SteeringLock
                 {
                     Thread.Sleep(1000);
 
+                    if (_sharedMemory.ReadGraphicsPageFile().Status != ACCSharedMemory.AcStatus.AC_OFF)
+                    {
+                        if (_wheel == null)
+                            DetectDevices();
 
+                        SetHardwareLock();
+
+                    }
+                    else
+                    {
+                        _lastCar = null;
+                        ResetRotation();
+                    }
                 }
 
                 ResetRotation();
@@ -57,7 +77,29 @@ namespace ACCManager.Hardware.ACC.SteeringLock
 
         }
 
-        internal void DetectDevices()
+        private void SetHardwareLock()
+        {
+            string currentModel = _sharedMemory.ReadStaticPageFile().CarModel;
+            if (_lastCar == currentModel) return;
+
+            // car has changed, if we have no wheel, try to re-detect
+            if (_wheel == null)
+                DetectDevices();
+            _lastCar = currentModel;
+            if (_wheel == null) return;
+
+            ResetRotation();
+            int rotation = Data.ACC.Cars.SteeringLock.Get(_lastCar);
+            Debug.WriteLine("AccSteeringLock: setting rotation of " + _lastCar + " to: " + rotation);
+
+            if (!_wheel.Apply(rotation, false, out _lastRotation))
+                Debug.WriteLine("AccSteeringLock: IWheelSteerLockSetter::Apply() failed.");
+            else if (rotation != _lastRotation)
+                Debug.WriteLine("AccSteeringLock: rotation had to be clamped due to hardware limitations to: " + _lastRotation);
+
+        }
+
+        private void DetectDevices()
         {
             DirectInput di = new DirectInput();
 
@@ -76,7 +118,7 @@ namespace ACCManager.Hardware.ACC.SteeringLock
                 Debug.WriteLine(" no supported wheel found.");
         }
 
-        internal void ResetRotation()
+        private void ResetRotation()
         {
             if (_wheel == null) return;
             if (_lastRotation <= 0) return;

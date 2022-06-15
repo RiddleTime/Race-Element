@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACCManager.Hardware.ACC.SteeringLock;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,18 @@ namespace ACCManager.Controls
         public Hardware()
         {
             InitializeComponent();
+            toggleSteeringHardwareLock.Checked += ToggleSteeringHardwareLock_Checked;
+            toggleSteeringHardwareLock.Unchecked += ToggleSteeringHardwareLock_Unchecked;
+        }
+
+        private void ToggleSteeringHardwareLock_Unchecked(object sender, RoutedEventArgs e)
+        {
+            SteeringLockTracker.Instance.Dispose();
+        }
+
+        private void ToggleSteeringHardwareLock_Checked(object sender, RoutedEventArgs e)
+        {
+            SteeringLockTracker.Instance.StartTracking();
         }
     }
 }

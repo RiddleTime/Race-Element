@@ -10,7 +10,7 @@
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch"
                         ToolTip="Set your steering lock to 0 in the game.">
-                <ToggleButton x:Name="toggleSetupHider" Width="50" Height="35" VerticalAlignment="Center" Cursor="Hand"/>
+                <ToggleButton x:Name="toggleSteeringHardwareLock" Width="50" Height="35" VerticalAlignment="Center" Cursor="Hand"/>
                 <Label VerticalAlignment="Center">Enable Automatic Steering Lock</Label>
             </StackPanel>
         </StackPanel>
