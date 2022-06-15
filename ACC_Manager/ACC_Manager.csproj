@@ -367,6 +367,9 @@
       <DependentUpon>LiveryTagger.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Liveries\LiveryTagging.cs" />
+    <Compile Include="Controls\Settings\Hardware.xaml.cs">
+      <DependentUpon>Hardware.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Settings\SettingsTab.xaml.cs">
       <DependentUpon>SettingsTab.xaml</DependentUpon>
     </Compile>
@@ -455,6 +458,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Liveries\LiveryTagger.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Settings\Hardware.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
