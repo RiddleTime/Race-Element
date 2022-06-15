@@ -58,14 +58,21 @@ namespace ACCManager.Hardware.ACC.SteeringLock
                 {
                     Thread.Sleep(1000);
 
-                    if (_sharedMemory.ReadGraphicsPageFile().Status != ACCSharedMemory.AcStatus.AC_OFF)
+                    try
                     {
-                        SetHardwareLock();
+                        if (_sharedMemory.ReadGraphicsPageFile().Status != ACCSharedMemory.AcStatus.AC_OFF)
+                        {
+                            SetHardwareLock();
+                        }
+                        else
+                        {
+                            _lastCar = null;
+                            ResetRotation();
+                        }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        _lastCar = null;
-                        ResetRotation();
+                        Debug.WriteLine(e);
                     }
                 }
 
