@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Linq;
 using System.Text;
@@ -34,6 +35,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
             public int ExtraLaps { get; set; } = 2;
 
         }
+
+        private SolidBrush whiteBrush = new SolidBrush(Color.White);
 
         private const int windowWidth = 400;
         private const int windowHeight = 100;
@@ -82,8 +85,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
 
             UpdateSessionData();
 
-
             StringFormat drawFormat = new StringFormat();
+            SmoothingMode previous = g.SmoothingMode;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+
             TextRenderingHint previousHint = g.TextRenderingHint;
             g.TextContrast = 2;
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
@@ -118,12 +123,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
             g.FillRectangle(new SolidBrush(Color.FromArgb(200, 0, 255, 0)), new Rectangle(pitWindowStartPxl, barYPos + progressBarHeight - pitBarHeight, (int)(pitWindowEndPxl - pitWindowStartPxl), pitBarHeight));
 
             // race progress
-            //float raceProgressPercentage = getRaceProgressPercentage();
             float raceProgressPercentage = GetRaceProgressPercentage();
             int raceProgressPercentagePxl = PercentageToPxl(widgetMaxWidth, raceProgressPercentage);
             g.FillRectangle(new SolidBrush(Color.FromArgb(200, 255, 255, 255)), new Rectangle(widgetMinXPos, barYPos, (int)raceProgressPercentagePxl, progressBarHeight));
-
-            SolidBrush drawBrush = new SolidBrush(Color.Red);
 
             // earliest pit stop bar
             int maxFuelPx = PercentageToPxl(widgetMaxWidth, this.refuelTimeWithMaxFuelPercentage);
@@ -150,11 +152,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
             {
                 textPosition -= pitStopTextSize.Width - 5;
             }
-            g.DrawString(pitStopInfo, drawFont, drawBrush, textPosition, barYPos - 20, drawFormat);
+            g.DrawString(pitStopInfo, drawFont, new SolidBrush(Color.Red), textPosition, barYPos - 20, drawFormat);
 
             // fuel consumption indicator
             float fuelDifference = this.avgFuelConsumption - this.lastFuelConsumption;
             string fuelConsumptionIndicator = " ";
+            SolidBrush drawBrush;
             if (fuelDifference > 0.01)
             {
                 drawBrush = new SolidBrush(Color.Green);
@@ -167,7 +170,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
             }
             else
             {
-                drawBrush = new SolidBrush(Color.White);
+                drawBrush = whiteBrush;
                 fuelConsumptionIndicator = "=";
             }
 
@@ -176,14 +179,15 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
 
             // refuel
             drawFont = FontUtil.FontOrbitron(15);
-            drawBrush = new SolidBrush(Color.White);
-            g.DrawString($"Refuel:", drawFont, drawBrush, widgetMinXPos, barYPos + pitBarHeight + 30, drawFormat);
+            g.DrawString($"Refuel:", drawFont, whiteBrush, widgetMinXPos, barYPos + pitBarHeight + 30, drawFormat);
             if (this.refuelToTheEnd <= 0) drawBrush = new SolidBrush(Color.Green);
             g.DrawString($"{this.refuelToTheEnd.ToString("0.0")}l ", drawFont, drawBrush, widgetMinXPos + 110, barYPos + pitBarHeight + 30, drawFormat);
 
             drawFont = FontUtil.FontOrbitron(8);
-            drawBrush = new SolidBrush(Color.White);
-            g.DrawString($"{config.ExtraLaps} extra laps", drawFont, drawBrush, widgetMinXPos, barYPos + pitBarHeight + 50, drawFormat);
+            g.DrawString($"{config.ExtraLaps} extra laps", drawFont, whiteBrush, widgetMinXPos, barYPos + pitBarHeight + 50, drawFormat);
+
+            g.TextRenderingHint = previousHint;
+            g.SmoothingMode = previous;
         }
 
         private void FuelHelperLapFinished(object sender, LapData lap)
