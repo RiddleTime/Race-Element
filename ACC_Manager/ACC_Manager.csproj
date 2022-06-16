@@ -367,6 +367,9 @@
       <DependentUpon>LiveryTagger.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Liveries\LiveryTagging.cs" />
+    <Compile Include="Controls\Settings\Hardware.xaml.cs">
+      <DependentUpon>Hardware.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Settings\SettingsTab.xaml.cs">
       <DependentUpon>SettingsTab.xaml</DependentUpon>
     </Compile>
@@ -455,6 +458,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Liveries\LiveryTagger.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Settings\Hardware.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -588,6 +595,10 @@
     <ProjectReference Include="..\ACC_Manager.Data.ACC\ACC_Manager.Data.ACC.csproj">
       <Project>{BB693CEB-CD96-4EB6-9F13-110D3CCECFFE}</Project>
       <Name>ACC_Manager.Data.ACC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ACC_Manager.Hardware\ACC_Manager.Hardware.csproj">
+      <Project>{8A7A4857-2F0A-4E85-98C5-3EA1228A8CE2}</Project>
+      <Name>ACC_Manager.Hardware</Name>
     </ProjectReference>
     <ProjectReference Include="..\ACC_Manager.HUD.ACC\ACC_Manager.HUD.ACC.csproj">
       <Project>{f1699f70-54a1-49f2-896d-b70b1edabf74}</Project>

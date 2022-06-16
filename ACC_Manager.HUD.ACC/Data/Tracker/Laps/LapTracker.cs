@@ -101,27 +101,36 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
 
         private void FinalizeCurrentLapData()
         {
-
-            if (_lastLapInfo != null)
-                if (_lastLapInfo.Splits != null && _lastLapInfo.Splits.Count == 3)
-                {
-                    lock (Laps)
-                        if (Laps.Any())
-                        {
-                            LapData lastData = Laps.Last();
-                            if (_lastLapInfo.LaptimeMS == lastData.Time)
+            try
+            {
+                if (_lastLapInfo != null)
+                    if (_lastLapInfo.Splits != null && _lastLapInfo.Splits.Count == 3)
+                    {
+                        lock (Laps)
+                            if (Laps.Any())
                             {
-                                if (Laps[Laps.Count - 1].Sector3 != _lastLapInfo.Splits[2].Value)
+                                LapData lastData = Laps.Last();
+                                if (_lastLapInfo.LaptimeMS == lastData.Time)
                                 {
-                                    Laps[Laps.Count - 1].Sector3 = _lastLapInfo.Splits[2].Value;
-                                    Laps[Laps.Count - 1].IsValid = !_lastLapInfo.IsInvalid;
-                                    Laps[Laps.Count - 1].LapType = _lastLapInfo.Type;
-                                }
+                                    if (_lastLapInfo.Splits[2].HasValue)
+                                    {
+                                        if (Laps[Laps.Count - 1].Sector3 != _lastLapInfo.Splits[2].Value)
+                                        {
+                                            Laps[Laps.Count - 1].Sector3 = _lastLapInfo.Splits[2].Value;
+                                            Laps[Laps.Count - 1].IsValid = !_lastLapInfo.IsInvalid;
+                                            Laps[Laps.Count - 1].LapType = _lastLapInfo.Type;
+                                        }
 
-                                LapFinished?.Invoke(this, Laps[Laps.Count - 1]);
+                                        LapFinished?.Invoke(this, Laps[Laps.Count - 1]);
+                                    }
+                                }
                             }
-                        }
-                }
+                    }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
         }
 
         internal void Start()

@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Settings\HardwareSettings.cs" />
     <Compile Include="Settings\StreamSettings.cs" />
     <Compile Include="SystemExtensions\DoubleExtensions.cs" />
     <Compile Include="SystemExtensions\FloatExtensions.cs" />

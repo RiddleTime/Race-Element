@@ -19,11 +19,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             internal bool ShowSteeringInput { get; set; } = true;
 
             [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
-            [IntRange(150, 450, 10)]
+            [IntRange(150, 800, 10)]
             internal int DataPoints { get; set; } = 300;
 
-            [ToolTip("Sets the data collection rate.")]
-            [IntRange(25, 85, 5)]
+            [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
+            [IntRange(25, 70, 5)]
             internal int Herz { get; set; } = 50;
 
             public InputTraceConfig()
@@ -32,7 +32,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             }
         }
 
-        private readonly int _originalHeight = 150;
+        private readonly int _originalHeight = 120;
         private readonly int _originalWidth = 300;
 
         private InputDataCollector _inputDataCollector;

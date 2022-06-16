@@ -3,6 +3,8 @@
 # ACC-Manager
 Provides tooling for Assetto Corsa Competizione.
 
+All the data the software uses is provided by the game (ACC Shared Memory and Broadcast Socket).
+
 ### Requires .NET Framework 4.8 to run
 https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48
 

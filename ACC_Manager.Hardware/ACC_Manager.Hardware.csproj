@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8A7A4857-2F0A-4E85-98C5-3EA1228A8CE2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ACCManager.Hardware</RootNamespace>
+    <AssemblyName>ACC_Manager.Hardware</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="HidLibrary, Version=3.2.49.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\hidlibrary.3.3.40\lib\net45\HidLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.4.2.0\lib\net45\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.DirectInput, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.DirectInput.4.2.0\lib\net45\SharpDX.DirectInput.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ACC\SteeringLock\Implementations\MMos.cs" />
+    <Compile Include="ACC\SteeringLock\Implementations\SimuCube.cs" />
+    <Compile Include="ACC\SteeringLock\Implementations\ThrustmasterF1.cs" />
+    <Compile Include="ACC\SteeringLock\Implementations\ThrustmasterFerrariF1Advanced1.cs" />
+    <Compile Include="ACC\SteeringLock\Implementations\ThrustmasterFerrariF1Advanced2.cs" />
+    <Compile Include="ACC\SteeringLock\Implementations\ThrustmasterFerrariF1TSPC.cs" />
+    <Compile Include="ACC\SteeringLock\Implementations\ThrustmasterSF1000TSPC.cs" />
+    <Compile Include="ACC\SteeringLock\Implementations\ThrustmasterT150.cs" />
+    <Compile Include="ACC\SteeringLock\Implementations\ThrustmasterT300.cs" />
+    <Compile Include="ACC\SteeringLock\Implementations\ThrustmasterT500.cs" />
+    <Compile Include="ACC\SteeringLock\Implementations\ThrustmasterTGT.cs" />
+    <Compile Include="ACC\SteeringLock\Implementations\ThrustmasterTMX.cs" />
+    <Compile Include="ACC\SteeringLock\Implementations\ThrustmasterTSPC.cs" />
+    <Compile Include="ACC\SteeringLock\Implementations\ThrustmasterTSXW.cs" />
+    <Compile Include="ACC\SteeringLock\Implementations\ThrustmasterTX.cs" />
+    <Compile Include="ACC\SteeringLock\IWheelSteerLockSetter.cs" />
+    <Compile Include="ACC\SteeringLock\SteeringLockTracker.cs" />
+    <Compile Include="ACC\SteeringLock\WheelSteerLock.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ACC_Manager.Data.ACC\ACC_Manager.Data.ACC.csproj">
+      <Project>{BB693CEB-CD96-4EB6-9F13-110D3CCECFFE}</Project>
+      <Name>ACC_Manager.Data.ACC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ACC_Manager.SharedMemory\ACC_Manager.SharedMemory.csproj">
+      <Project>{9f9be520-14c4-4ab6-8119-5e14bcca9a0f}</Project>
+      <Name>ACC_Manager.SharedMemory</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
