@@ -36,7 +36,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
 
         }
 
-        private SolidBrush whiteBrush = new SolidBrush(Color.White);
+        private SolidBrush _whiteBrush = new SolidBrush(Color.White);
+        private SolidBrush _greenBrush = new SolidBrush(Color.Green);
 
         private const int windowWidth = 400;
         private const int windowHeight = 100;
@@ -46,17 +47,17 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
         private const int pitBarHeight = 5;
         private const int amountOfLapsForAverageCalculation = 3;
 
-        private AcSessionType lastSessionType = AcSessionType.AC_UNKNOWN;
-        private float sessionLength = 0;
-        private float pitWindowStartPercentage = 0;
-        private float pitWindowEndPercentage = 0;
-        private float raceProgressWithFuelPercentage = 0;
-        private float refuelTimeWithMaxFuelPercentage = 0;
-        private float lapsWithFuel = 0;
-        private float refuelToTheEnd = 0;
+        private AcSessionType _lastSessionType = AcSessionType.AC_UNKNOWN;
+        private float _sessionLength = 0;
+        private float _pitWindowStartPercentage = 0;
+        private float _pitWindowEndPercentage = 0;
+        private float _raceProgressWithFuelPercentage = 0;
+        private float _refuelTimeWithMaxFuelPercentage = 0;
+        private float _lapsWithFuel = 0;
+        private float _refuelToTheEnd = 0;
 
-        private float avgFuelConsumption = 0;
-        private float lastFuelConsumption = 0;
+        private float _avgFuelConsumption = 0;
+        private float _lastFuelConsumption = 0;
 
         public RefuelInfoOverlay(Rectangle rect) : base(rect, "Fuelhelper")
         {
@@ -116,9 +117,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
             }
 
             // pit window
-            int pitWindowStartPxl = PercentageToPxl(widgetMaxWidth, this.pitWindowStartPercentage);
+            int pitWindowStartPxl = PercentageToPxl(widgetMaxWidth, this._pitWindowStartPercentage);
             if (pitWindowStartPxl < widgetMinXPos) pitWindowStartPxl = widgetMinXPos;
-            int pitWindowEndPxl = PercentageToPxl(widgetMaxWidth, this.pitWindowEndPercentage);
+            int pitWindowEndPxl = PercentageToPxl(widgetMaxWidth, this._pitWindowEndPercentage);
             if (pitWindowEndPxl > widgetMaxXPos) pitWindowEndPxl = widgetMaxXPos;
             g.FillRectangle(new SolidBrush(Color.FromArgb(200, 0, 255, 0)), new Rectangle(pitWindowStartPxl, barYPos + progressBarHeight - pitBarHeight, (int)(pitWindowEndPxl - pitWindowStartPxl), pitBarHeight));
 
@@ -128,18 +129,18 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
             g.FillRectangle(new SolidBrush(Color.FromArgb(200, 255, 255, 255)), new Rectangle(widgetMinXPos, barYPos, (int)raceProgressPercentagePxl, progressBarHeight));
 
             // earliest pit stop bar
-            int maxFuelPx = PercentageToPxl(widgetMaxWidth, this.refuelTimeWithMaxFuelPercentage);
+            int maxFuelPx = PercentageToPxl(widgetMaxWidth, this._refuelTimeWithMaxFuelPercentage);
             maxFuelPx += widgetMinXPos;
             g.FillRectangle(new SolidBrush(Color.FromArgb(200, 0, 255, 0)), new Rectangle(maxFuelPx, barYPos - 10, 2, progressBarHeight + 16));
 
             // latest pit stop bar
-            int raceProgressWithFuelPx = PercentageToPxl(widgetMaxWidth, this.raceProgressWithFuelPercentage);
+            int raceProgressWithFuelPx = PercentageToPxl(widgetMaxWidth, this._raceProgressWithFuelPercentage);
             raceProgressWithFuelPx += widgetMinXPos;
             g.FillRectangle(new SolidBrush(Color.FromArgb(200, 255, 0, 0)), new Rectangle(raceProgressWithFuelPx, barYPos - 10, 2, progressBarHeight + 16));
 
             // latest pit stop lap info
-            string pitStopInfo = $"in {(int)this.lapsWithFuel} laps";
-            if ((int)this.lapsWithFuel < 2)
+            string pitStopInfo = $"in {(int)this._lapsWithFuel} laps";
+            if ((int)this._lapsWithFuel < 2)
             {
                 pitStopInfo = "box THIS lap!";
             }
@@ -155,12 +156,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
             g.DrawString(pitStopInfo, drawFont, new SolidBrush(Color.Red), textPosition, barYPos - 20, drawFormat);
 
             // fuel consumption indicator
-            float fuelDifference = this.avgFuelConsumption - this.lastFuelConsumption;
+            float fuelDifference = this._avgFuelConsumption - this._lastFuelConsumption;
             string fuelConsumptionIndicator = " ";
             SolidBrush drawBrush;
             if (fuelDifference > 0.01)
             {
-                drawBrush = new SolidBrush(Color.Green);
+                drawBrush = _greenBrush;
                 fuelConsumptionIndicator = "\u23F7";
             }
             else if (fuelDifference < -0.01)
@@ -170,7 +171,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
             }
             else
             {
-                drawBrush = whiteBrush;
+                drawBrush = _whiteBrush;
                 fuelConsumptionIndicator = "=";
             }
 
@@ -179,12 +180,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
 
             // refuel
             drawFont = FontUtil.FontOrbitron(15);
-            g.DrawString($"Refuel:", drawFont, whiteBrush, widgetMinXPos, barYPos + pitBarHeight + 30, drawFormat);
-            if (this.refuelToTheEnd <= 0) drawBrush = new SolidBrush(Color.Green);
-            g.DrawString($"{this.refuelToTheEnd.ToString("0.0")}l ", drawFont, drawBrush, widgetMinXPos + 110, barYPos + pitBarHeight + 30, drawFormat);
+            g.DrawString($"Refuel:", drawFont, _whiteBrush, widgetMinXPos, barYPos + pitBarHeight + 30, drawFormat);
+            if (this._refuelToTheEnd <= 0) drawBrush = _greenBrush;
+            g.DrawString($"{this._refuelToTheEnd.ToString("0.0")}l ", drawFont, drawBrush, widgetMinXPos + 110, barYPos + pitBarHeight + 30, drawFormat);
 
             drawFont = FontUtil.FontOrbitron(8);
-            g.DrawString($"{config.ExtraLaps} extra laps", drawFont, whiteBrush, widgetMinXPos, barYPos + pitBarHeight + 50, drawFormat);
+            g.DrawString($"{config.ExtraLaps} extra laps", drawFont, _whiteBrush, widgetMinXPos, barYPos + pitBarHeight + 50, drawFormat);
 
             g.TextRenderingHint = previousHint;
             g.SmoothingMode = previous;
@@ -194,31 +195,31 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
         {
 
             float fuelLevel = (int)(pagePhysics.Fuel);
-            this.avgFuelConsumption = GetAverageFuelConsumption();
-            this.lastFuelConsumption = GetLastFuelConsumption();
+            this._avgFuelConsumption = GetAverageFuelConsumption();
+            this._lastFuelConsumption = GetLastFuelConsumption();
             int averageLapTime = GetAverageLapTime();
 
-            this.lapsWithFuel = fuelLevel / lastFuelConsumption;
+            this._lapsWithFuel = fuelLevel / _lastFuelConsumption;
 
             float sessionTimeLeft = pageGraphics.SessionTimeLeft;
             float lapsUntilTheEnd = sessionTimeLeft / averageLapTime;
-            float fuelUntilTheEnd = lastFuelConsumption * (lapsUntilTheEnd + config.ExtraLaps);
-            this.refuelToTheEnd = fuelUntilTheEnd - fuelLevel;
-            this.raceProgressWithFuelPercentage = ((averageLapTime * this.lapsWithFuel) * 100) / sessionLength;
-            this.raceProgressWithFuelPercentage += GetRaceProgressPercentage();
+            float fuelUntilTheEnd = _lastFuelConsumption * (lapsUntilTheEnd + config.ExtraLaps);
+            this._refuelToTheEnd = fuelUntilTheEnd - fuelLevel;
+            this._raceProgressWithFuelPercentage = ((averageLapTime * this._lapsWithFuel) * 100) / _sessionLength;
+            this._raceProgressWithFuelPercentage += GetRaceProgressPercentage();
 
 
             // the time where we will make it to the end with a full tank.
-            float lapsWithMaxFuel = (int)(pageStatic.MaxFuel) / lastFuelConsumption;
+            float lapsWithMaxFuel = (int)(pageStatic.MaxFuel) / _lastFuelConsumption;
             lapsWithMaxFuel -= config.ExtraLaps;
             //float lapsInSession = sessionLength / averageLapTime;
             int timeWithMaxFuel = (int)(lapsWithMaxFuel * averageLapTime);
-            float refuelTimeWithMaxFuel = sessionLength - timeWithMaxFuel;
+            float refuelTimeWithMaxFuel = _sessionLength - timeWithMaxFuel;
             if (refuelTimeWithMaxFuel < 0)
             {
                 refuelTimeWithMaxFuel = 0;
             }
-            this.refuelTimeWithMaxFuelPercentage = RaceTimeToRacePercentage(sessionLength - refuelTimeWithMaxFuel);
+            this._refuelTimeWithMaxFuelPercentage = RaceTimeToRacePercentage(_sessionLength - refuelTimeWithMaxFuel);
 
         }
 
@@ -241,7 +242,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
 
         private float RaceTimeToRacePercentage(float raceTime)
         {
-            float percentage = 100 - (raceTime * 100) / this.sessionLength;
+            float percentage = 100 - (raceTime * 100) / this._sessionLength;
             return percentage.ClipMax((float)100);
         }
 
@@ -276,33 +277,33 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
 
         private void UpdateSessionData()
         {
-            if (lastSessionType != pageGraphics.SessionType)
+            if (_lastSessionType != pageGraphics.SessionType)
             {
                 // new session, reset
-                this.sessionLength = 0;
-                this.lastSessionType = pageGraphics.SessionType;
+                this._sessionLength = 0;
+                this._lastSessionType = pageGraphics.SessionType;
                 return;
             }
 
             // new session started
-            if (this.sessionLength < pageGraphics.SessionTimeLeft)
+            if (this._sessionLength < pageGraphics.SessionTimeLeft)
             {
                 // we will not get the session length after race start, save the session length.            {
-                this.sessionLength = pageGraphics.SessionTimeLeft;
+                this._sessionLength = pageGraphics.SessionTimeLeft;
 
                 // calculate pit window length
                 if (pageStatic.PitWindowStart <= 0 || pageStatic.PitWindowStart >= pageStatic.PitWindowEnd || pageGraphics.SessionType != AcSessionType.AC_RACE)
                 {
-                    this.pitWindowStartPercentage = 0;
-                    this.pitWindowEndPercentage = 0;
+                    this._pitWindowStartPercentage = 0;
+                    this._pitWindowEndPercentage = 0;
                 }
                 else
                 {
                     int pitWindowLength = pageStatic.PitWindowEnd - pageStatic.PitWindowStart;
-                    float pitWindowStartTime = (this.sessionLength - pitWindowLength) / 2;
+                    float pitWindowStartTime = (this._sessionLength - pitWindowLength) / 2;
                     float pitWindowEndTime = pitWindowStartTime + pitWindowLength;
-                    this.pitWindowStartPercentage = (pitWindowStartTime * 100) / this.sessionLength;
-                    this.pitWindowEndPercentage = (pitWindowEndTime * 100) / this.sessionLength;
+                    this._pitWindowStartPercentage = (pitWindowStartTime * 100) / this._sessionLength;
+                    this._pitWindowEndPercentage = (pitWindowEndTime * 100) / this._sessionLength;
 
                 }
 
