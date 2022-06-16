@@ -35,7 +35,6 @@ namespace ACCManager.Hardware.ACC.SteeringLock
         private SteeringLockTracker()
         {
             _sharedMemory = new ACCSharedMemory();
-            DetectDevices();
         }
 
 
@@ -45,30 +44,35 @@ namespace ACCManager.Hardware.ACC.SteeringLock
 
             ResetRotation();
 
-            Debug.WriteLine("Disposed steering lock tracker.");
+            Debug.WriteLine("Disposed steering hardware lock tracker.");
             _instance = null;
         }
 
         public void StartTracking()
         {
+            Debug.WriteLine("Started steering hardware lock tracker");
+            IsTracking = true;
             new Thread(() =>
             {
                 while (IsTracking)
                 {
                     Thread.Sleep(1000);
 
-                    if (_sharedMemory.ReadGraphicsPageFile().Status != ACCSharedMemory.AcStatus.AC_OFF)
+                    try
                     {
-                        if (_wheel == null)
-                            DetectDevices();
-
-                        SetHardwareLock();
-
+                        if (_sharedMemory.ReadGraphicsPageFile().Status != ACCSharedMemory.AcStatus.AC_OFF)
+                        {
+                            SetHardwareLock();
+                        }
+                        else
+                        {
+                            _lastCar = null;
+                            ResetRotation();
+                        }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        _lastCar = null;
-                        ResetRotation();
+                        Debug.WriteLine(e);
                     }
                 }
 

@@ -7,11 +7,19 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+            <Label HorizontalContentAlignment="Center" FontWeight="Bold" FontSize="18">Automatic Steering Hard Lock Instruction</Label>
+            <TextBlock TextAlignment="Left">
+                In ACC, set the steering rotation to 0.<LineBreak/><LineBreak/>
+                Supported wheels:<LineBreak/>
+                - MMOs.<LineBreak/>
+                - SimuCUBEs (1, 2S, 2P, 2U).<LineBreak/>
+                - Thrustmasters (150, 300, 500, TGT, TMX, TSPC, TSXW, TX, F1).<LineBreak/>
+            </TextBlock>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch"
                         ToolTip="Set your steering lock to 0 in the game.">
                 <ToggleButton x:Name="toggleSteeringHardwareLock" Width="50" Height="35" VerticalAlignment="Center" Cursor="Hand"/>
-                <Label VerticalAlignment="Center">Enable Automatic Steering Lock</Label>
+                <Label VerticalAlignment="Center">Enable Automatic Steering Hard Lock</Label>
             </StackPanel>
         </StackPanel>
     </Grid>

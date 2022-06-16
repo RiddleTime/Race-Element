@@ -10,6 +10,7 @@ namespace ACCManager.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.0.7.4", "- Hardware Settings: Added automatic steering hard lock based per car." },
             {"0.0.7.3", "- Stream settings: Fixed a crash (sigh..)." },
             {"0.0.7.2","- HUD: Current tyre set is now configurable for the Car Info Overlay."+
                        "\n- Stream settings: Added Setup Hider for OBS and Streamlabs."},
