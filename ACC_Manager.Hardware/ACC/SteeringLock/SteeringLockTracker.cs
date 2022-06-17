@@ -102,6 +102,23 @@ namespace ACCManager.Hardware.ACC.SteeringLock
 
         }
 
+        public static string GetSupportedDeviceName()
+        {
+            DirectInput di = new DirectInput();
+
+            foreach (DeviceInstance device in di.GetDevices(DeviceClass.GameControl, DeviceEnumerationFlags.AttachedOnly))
+            {
+                Debug.WriteLine("AccSteeringLock: detected: " + device.ProductGuid + " " + device.ProductName);
+                var _wheel = WheelSteerLock.Get(device.ProductGuid.ToString());
+                if (_wheel != null)
+                {
+                    return device.ProductName;
+                }
+            }
+
+            return String.Empty;
+        }
+
         private void DetectDevices()
         {
             DirectInput di = new DirectInput();
