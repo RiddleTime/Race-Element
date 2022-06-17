@@ -1,5 +1,6 @@
 ﻿using ACCManager.Controls;
 using ACCManager.Data.ACC.Tracker;
+using ACCManager.Hardware.ACC.SteeringLock;
 using ACCManager.HUD.ACC;
 using ACCManager.HUD.ACC.Data.Tracker;
 using ACCManager.Util;
@@ -86,6 +87,7 @@ namespace ACCManager
             HudTrackers.StopAll();
             DataTrackerDispose.Dispose();
             HudOptions.Instance.DisposeKeyboardHooks();
+            SteeringLockTracker.Instance.Dispose();
         }
 
         private void CurrentDomain_ProcessExit(object sender, EventArgs e)
@@ -94,6 +96,7 @@ namespace ACCManager
             HudTrackers.StopAll();
             DataTrackerDispose.Dispose();
             HudOptions.Instance.DisposeKeyboardHooks();
+            SteeringLockTracker.Instance.Dispose();
         }
 
         private void MainWindow_StateChanged(object sender, EventArgs e)

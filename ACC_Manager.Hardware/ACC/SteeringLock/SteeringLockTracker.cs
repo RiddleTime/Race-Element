@@ -37,7 +37,6 @@ namespace ACCManager.Hardware.ACC.SteeringLock
             _sharedMemory = new ACCSharedMemory();
         }
 
-
         public void Dispose()
         {
             IsTracking = false;

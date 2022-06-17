@@ -12,9 +12,9 @@ namespace ACCManager.Hardware.ACC.SteeringLock.Implementations
 
         public override bool Test(string productGuid)
         {
-            return string.Equals(productGuid, "B667044F-0000-0000-0000-504944564944", StringComparison.OrdinalIgnoreCase);
+            return string.Equals(productGuid, "B677044F-0000-0000-0000-504944564944", StringComparison.OrdinalIgnoreCase);
         }
 
-        protected override int ProductId => 0xb667;
+        protected override int ProductId => 0xb677;
     }
 }
