@@ -83,6 +83,7 @@
     <Compile Include="Overlays\OverlayPressureTrace\TyrePressureGraph.cs" />
     <Compile Include="Overlays\OverlayPressureTrace\TyrePressures.cs" />
     <Compile Include="Overlays\OverlayInputs\InputOverlay.cs" />
+    <Compile Include="Overlays\OverlayRefuel\OverlayRefuel.cs" />
     <Compile Include="Overlays\OverlayShiftIndicator\ShiftIndicatorOverlay.cs" />
     <Compile Include="Overlays\OverlayTrackPosition\TrackPositionOverlay.cs" />
     <Compile Include="Overlays\OverlayTyreInfo\TyreInfoOverlay.cs" />

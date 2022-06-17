@@ -9,13 +9,13 @@ namespace ACCManager.Broadcast.Structs
     public class CarInfo
     {
         public ushort CarIndex { get; }
-        public byte CarModelType { get; internal set; }
-        public string TeamName { get; internal set; }
-        public int RaceNumber { get; internal set; }
-        public byte CupCategory { get; internal set; }
-        public int CurrentDriverIndex { get; internal set; }
+        public byte CarModelType { get; protected internal set; }
+        public string TeamName { get; protected internal set; }
+        public int RaceNumber { get; protected internal set; }
+        public byte CupCategory { get; protected internal set; }
+        public int CurrentDriverIndex { get; protected internal set; }
         public IList<DriverInfo> Drivers { get; } = new List<DriverInfo>();
-        public NationalityEnum Nationality { get; internal set; }
+        public NationalityEnum Nationality { get; protected internal set; }
 
         public CarInfo(ushort carIndex)
         {
