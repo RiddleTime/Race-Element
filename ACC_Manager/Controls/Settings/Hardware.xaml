@@ -10,8 +10,8 @@
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
             <Label HorizontalContentAlignment="Center" FontWeight="Bold" FontSize="18">Automatic Steering Hard Lock</Label>
             <TextBlock TextAlignment="Left">
-                In ACC, set the steering rotation to 0.<LineBreak/>
-                ACC Manager will set automatically the correct rotation for every car.
+                In ACC, set the steering rotation in-game to 10.<LineBreak/>
+                ACC Manager will automatically set the correct rotation for every car.
                 <LineBreak/><LineBreak/>
                 Supported wheelbases:<LineBreak/>
                 - MMOs.<LineBreak/>
