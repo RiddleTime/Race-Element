@@ -123,7 +123,8 @@ namespace ACCManager
 
         internal void EnqueueSnackbarMessage(string message)
         {
-            Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
+            if (Instance.WindowState != WindowState.Minimized)
+                Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
                    delegate ()
                    {
                        Instance.snackbar.MessageQueue.Enqueue(message);
@@ -132,7 +133,8 @@ namespace ACCManager
 
         internal void ClearSnackbar()
         {
-            Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
+            if (Instance.WindowState != WindowState.Minimized)
+                Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
                    delegate ()
                    {
                        Instance.snackbar.MessageQueue.Clear();
@@ -141,7 +143,8 @@ namespace ACCManager
 
         internal void EnqueueSnackbarMessage(string message, string action, Action actionDelegate)
         {
-            Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
+            if (Instance.WindowState != WindowState.Minimized)
+                Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
                    delegate ()
                    {
                        Instance.snackbar.MessageQueue.Enqueue(message, action, actionDelegate);
