@@ -38,8 +38,8 @@ namespace ACCManager.Data.Cars.GT3
             {
                 switch (GetPosition(wheel))
                 {
-                    case Position.Front: return Math.Round(-0.48 + 0.1 * rawValue[(int)wheel], 2);
-                    case Position.Rear: return Math.Round(-0.1 + 0.1 * rawValue[(int)wheel], 2);
+                    case Position.Front: return Math.Round(-0.48 + 0.01 * rawValue[(int)wheel], 2);
+                    case Position.Rear: return Math.Round(-0.1 + 0.01 * rawValue[(int)wheel], 2);
                     default: return -1;
                 }
             }
@@ -75,7 +75,7 @@ namespace ACCManager.Data.Cars.GT3
 
             public int BumpstopRate(List<int> rawValue, Wheel wheel)
             {
-                return 300 + 50 * rawValue[(int)wheel];
+                return 300 + 100 * rawValue[(int)wheel];
             }
 
             public int PreloadDifferential(int rawValue)
