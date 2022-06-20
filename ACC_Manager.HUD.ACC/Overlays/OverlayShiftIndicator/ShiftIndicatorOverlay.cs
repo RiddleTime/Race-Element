@@ -62,12 +62,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
 
         public sealed override void Render(Graphics g)
         {
+            pagePhysics.Rpms = 6800;
+            pageStatic.MaxRpm = 6900;
+
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
             g.TextContrast = 1;
 
             // draw background
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(160, 0, 0, 0)), new Rectangle(0, 0, _config.Width, _config.Height), 10);
+            //g.DrawRoundedRectangle(Pens.White, new Rectangle(0, 0, _config.Width, _config.Height), 10);
 
             if (_config.ShowPitLimiter && pagePhysics.PitLimiterOn)
             {
@@ -140,6 +144,30 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
                 percent.Clip(0.05, 1);
 
                 g.FillRoundedRectangle(new SolidBrush(rpmColor), new Rectangle(0, 0, (int)(_config.Width * percent), _config.Height), 10);
+            }
+
+            DrawRpmBar1kLines(g);
+        }
+
+        private void DrawRpmBar1kLines(Graphics g)
+        {
+            int lines = (int)Math.Floor(pageStatic.MaxRpm / 1000d);
+
+            int leftOver = pageStatic.MaxRpm % 1000;
+            if (leftOver < 100)
+                lines--;
+
+            Pen linePen = new Pen(new SolidBrush(Color.FromArgb(39, Color.White)), 2);
+
+            double thousandPercent = 1000d / pageStatic.MaxRpm * lines;
+
+            for (int i = 1; i <= lines; i++)
+            {
+                int alpha = linePen.Color.A * 1 + i * lines / 10;
+                alpha.ClipMax(255);
+                linePen.Color = Color.FromArgb(alpha, linePen.Color.R, linePen.Color.G, linePen.Color.B);
+                int x = (int)(i * _config.Width / lines * thousandPercent);
+                g.DrawLine(linePen, x, 1, x, _config.Height - 1);
             }
         }
 
