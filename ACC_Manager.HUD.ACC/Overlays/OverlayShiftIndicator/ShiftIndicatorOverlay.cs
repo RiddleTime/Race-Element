@@ -62,9 +62,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
 
         public sealed override void Render(Graphics g)
         {
-            pagePhysics.Rpms = 6800;
-            pageStatic.MaxRpm = 6900;
-
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
             g.TextContrast = 1;
