@@ -184,7 +184,7 @@ namespace ACCManager.HUD.Overlay.Internal
 
                 new Thread(x =>
                 {
-                    this.RefreshRateHz.ClipMin(1);
+                    this.RefreshRateHz.Clip(1, 100);
                     while (Draw)
                     {
                         lock (this)
