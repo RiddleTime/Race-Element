@@ -123,32 +123,32 @@ namespace ACCManager
 
         internal void EnqueueSnackbarMessage(string message)
         {
-            if (Instance.WindowState != WindowState.Minimized)
-                Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
-                   delegate ()
-                   {
+            Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
+               delegate ()
+               {
+                   if (Instance.WindowState != WindowState.Minimized)
                        Instance.snackbar.MessageQueue.Enqueue(message);
-                   }));
+               }));
         }
 
         internal void ClearSnackbar()
         {
-            if (Instance.WindowState != WindowState.Minimized)
-                Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
-                   delegate ()
-                   {
+            Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
+               delegate ()
+               {
+                   if (Instance.WindowState != WindowState.Minimized)
                        Instance.snackbar.MessageQueue.Clear();
-                   }));
+               }));
         }
 
         internal void EnqueueSnackbarMessage(string message, string action, Action actionDelegate)
         {
-            if (Instance.WindowState != WindowState.Minimized)
-                Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
-                   delegate ()
-                   {
+            Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
+               delegate ()
+               {
+                   if (Instance.WindowState != WindowState.Minimized)
                        Instance.snackbar.MessageQueue.Enqueue(message, action, actionDelegate);
-                   }));
+               }));
         }
 
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
