@@ -154,17 +154,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
             if (leftOver < 70)
                 lineCount--;
 
-            Pen linePen = new Pen(new SolidBrush(Color.FromArgb(25, Color.White)), 2);
-            Pen reachedPen = new Pen(new SolidBrush(Color.FromArgb(130, Color.White)), 2);
-
-            int reachedLine = (int)Math.Floor(pagePhysics.Rpms / 1000d);
+            Pen linePen = new Pen(new SolidBrush(Color.FromArgb(90, Color.White)), 2);
 
             double thousandPercent = 1000d / pageStatic.MaxRpm * lineCount;
             double baseX = _config.Width / lineCount * thousandPercent;
             for (int i = 1; i <= lineCount; i++)
             {
                 int x = (int)(i * baseX);
-                g.DrawLine(i > reachedLine ? reachedPen : linePen, x, 1, x, _config.Height - 1);
+                g.DrawLine(linePen, x, 1, x, _config.Height - 1);
             }
         }
 
