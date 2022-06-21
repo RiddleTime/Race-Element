@@ -37,7 +37,6 @@ namespace ACCManager.Hardware.ACC.SteeringLock
             _sharedMemory = new ACCSharedMemory();
         }
 
-
         public void Dispose()
         {
             IsTracking = false;
@@ -101,6 +100,23 @@ namespace ACCManager.Hardware.ACC.SteeringLock
             else if (rotation != _lastRotation)
                 Debug.WriteLine("AccSteeringLock: rotation had to be clamped due to hardware limitations to: " + _lastRotation);
 
+        }
+
+        public static string GetSupportedDeviceName()
+        {
+            DirectInput di = new DirectInput();
+
+            foreach (DeviceInstance device in di.GetDevices(DeviceClass.GameControl, DeviceEnumerationFlags.AttachedOnly))
+            {
+                Debug.WriteLine("AccSteeringLock: detected: " + device.ProductGuid + " " + device.ProductName);
+                var _wheel = WheelSteerLock.Get(device.ProductGuid.ToString());
+                if (_wheel != null)
+                {
+                    return device.ProductName;
+                }
+            }
+
+            return String.Empty;
         }
 
         private void DetectDevices()

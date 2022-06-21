@@ -29,8 +29,27 @@ namespace ACCManager.Controls
             toggleSteeringHardwareLock.Checked += ToggleSteeringHardwareLock_Checked;
             toggleSteeringHardwareLock.Unchecked += ToggleSteeringHardwareLock_Unchecked;
 
+            buttonCheckSteeringLockSupport.Click += ButtonCheckSteeringLockSupport_Click;
 
             this.Loaded += (s, e) => LoadSettings();
+        }
+
+        private void ButtonCheckSteeringLockSupport_Click(object sender, RoutedEventArgs e)
+        {
+            string supportedDeviceName = SteeringLockTracker.GetSupportedDeviceName();
+
+            string message = string.Empty;
+            if (supportedDeviceName == string.Empty)
+            {
+                message = "Your device is not supported.";
+                toggleSteeringHardwareLock.IsChecked = false;
+            }
+            else
+                message = $"Detect supported device: {supportedDeviceName}";
+
+
+            MainWindow.Instance.ClearSnackbar();
+            MainWindow.Instance.EnqueueSnackbarMessage(message);
         }
 
         private void ToggleSteeringHardwareLock_Unchecked(object sender, RoutedEventArgs e)

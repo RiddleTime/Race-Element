@@ -1,5 +1,6 @@
 ﻿using ACCManager.Controls;
 using ACCManager.Data.ACC.Tracker;
+using ACCManager.Hardware.ACC.SteeringLock;
 using ACCManager.HUD.ACC;
 using ACCManager.HUD.ACC.Data.Tracker;
 using ACCManager.Util;
@@ -86,6 +87,7 @@ namespace ACCManager
             HudTrackers.StopAll();
             DataTrackerDispose.Dispose();
             HudOptions.Instance.DisposeKeyboardHooks();
+            SteeringLockTracker.Instance.Dispose();
         }
 
         private void CurrentDomain_ProcessExit(object sender, EventArgs e)
@@ -94,6 +96,7 @@ namespace ACCManager
             HudTrackers.StopAll();
             DataTrackerDispose.Dispose();
             HudOptions.Instance.DisposeKeyboardHooks();
+            SteeringLockTracker.Instance.Dispose();
         }
 
         private void MainWindow_StateChanged(object sender, EventArgs e)
@@ -120,7 +123,8 @@ namespace ACCManager
 
         internal void EnqueueSnackbarMessage(string message)
         {
-            Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
+            if (Instance.WindowState != WindowState.Minimized)
+                Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
                    delegate ()
                    {
                        Instance.snackbar.MessageQueue.Enqueue(message);
@@ -129,7 +133,8 @@ namespace ACCManager
 
         internal void ClearSnackbar()
         {
-            Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
+            if (Instance.WindowState != WindowState.Minimized)
+                Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
                    delegate ()
                    {
                        Instance.snackbar.MessageQueue.Clear();
@@ -138,7 +143,8 @@ namespace ACCManager
 
         internal void EnqueueSnackbarMessage(string message, string action, Action actionDelegate)
         {
-            Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
+            if (Instance.WindowState != WindowState.Minimized)
+                Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
                    delegate ()
                    {
                        Instance.snackbar.MessageQueue.Enqueue(message, action, actionDelegate);

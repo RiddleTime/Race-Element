@@ -67,7 +67,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
             g.TextContrast = 1;
 
             // draw background
-            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(160, 0, 0, 0)), new Rectangle(0, 0, _config.Width, _config.Height), 10);
+            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(160, 0, 0, 0)), new Rectangle(0, 0, _config.Width, _config.Height), 6);
+            g.DrawRoundedRectangle(Pens.DarkGray, new Rectangle(0, 0, _config.Width, _config.Height), 6);
 
             if (_config.ShowPitLimiter && pagePhysics.PitLimiterOn)
             {
@@ -92,7 +93,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
         private Pen _limiterBackground = new Pen(Color.Yellow, 2);
         private void DrawPitLimiterBar(Graphics g)
         {
-            g.DrawRoundedRectangle(_limiterBackground, new Rectangle(0, 0, _config.Width, _config.Height), 10);
+            g.DrawRoundedRectangle(_limiterBackground, new Rectangle(0, 0, _config.Width, _config.Height), 6);
 
             if (_limiterColorSwitch > this.RefreshRateHz / 3) // makes this flash 3 times a second
             {
@@ -139,7 +140,28 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
 
                 percent.Clip(0.05, 1);
 
-                g.FillRoundedRectangle(new SolidBrush(rpmColor), new Rectangle(0, 0, (int)(_config.Width * percent), _config.Height), 10);
+                g.FillRoundedRectangle(new SolidBrush(rpmColor), new Rectangle(0, 0, (int)(_config.Width * percent), _config.Height), 6);
+            }
+
+            DrawRpmBar1kLines(g);
+        }
+
+        private void DrawRpmBar1kLines(Graphics g)
+        {
+            int lines = (int)Math.Floor(pageStatic.MaxRpm / 1000d);
+
+            int leftOver = pageStatic.MaxRpm % 1000;
+            if (leftOver < 70)
+                lines--;
+
+            Pen linePen = new Pen(new SolidBrush(Color.FromArgb(120, Color.LightGray)), 2);
+
+            double thousandPercent = 1000d / pageStatic.MaxRpm * lines;
+
+            for (int i = 1; i <= lines; i++)
+            {
+                int x = (int)(i * _config.Width / lines * thousandPercent);
+                g.DrawLine(linePen, x, 1, x, _config.Height - 1);
             }
         }
 

@@ -8,19 +8,21 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-            <Label HorizontalContentAlignment="Center" FontWeight="Bold" FontSize="18">Automatic Steering Hard Lock Instruction</Label>
+            <Label HorizontalContentAlignment="Center" FontWeight="Bold" FontSize="18">Automatic Steering Hard Lock</Label>
             <TextBlock TextAlignment="Left">
-                In ACC, set the steering rotation to 0.<LineBreak/><LineBreak/>
-                Supported wheels:<LineBreak/>
+                In ACC, set the steering rotation in-game to 10.<LineBreak/>
+                ACC Manager will automatically set the correct rotation for every car.
+                <LineBreak/><LineBreak/>
+                Supported wheelbases:<LineBreak/>
                 - MMOs.<LineBreak/>
                 - SimuCUBEs (1, 2S, 2P, 2U).<LineBreak/>
-                - Thrustmasters (150, 300, 500, TGT, TMX, TSPC, TSXW, TX, F1).<LineBreak/>
+                - Thrustmasters (T150, T300, T500, TGT, TMX, TSPC, TSXW, TX, F1).<LineBreak/>
             </TextBlock>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch"
-                        ToolTip="Set your steering lock to 0 in the game.">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                 <ToggleButton x:Name="toggleSteeringHardwareLock" Width="50" Height="35" VerticalAlignment="Center" Cursor="Hand"/>
                 <Label VerticalAlignment="Center">Enable Automatic Steering Hard Lock</Label>
             </StackPanel>
+            <Button x:Name="buttonCheckSteeringLockSupport" Margin="0,5,0,0">Check whether wheelbase is supported</Button>
         </StackPanel>
     </Grid>
 </UserControl>
