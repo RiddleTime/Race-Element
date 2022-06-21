@@ -10,6 +10,8 @@ namespace ACCManager.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.0.7.5", "- Setup Conversion: Fixed for McLaren 720s."+
+                        "\n- HUD: Shift indicator now draws vertical lines for every 1000 rpm available."},
             {"0.0.7.4", "- Hardware Settings: Added automatic steering hard lock based per car."+
                         "\n- HUD: Made stint info configurable for Fuel Info overlay."+
                         "\n- HUD: Input trace overlay can now be sized up to 800 datapoints (be aware of cpu usage)."},
