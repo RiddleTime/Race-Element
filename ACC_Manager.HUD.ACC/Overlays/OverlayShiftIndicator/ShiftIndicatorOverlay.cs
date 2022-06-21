@@ -160,9 +160,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
 
             for (int i = 1; i <= lines; i++)
             {
-                //int alpha = linePen.Color.A * 1 + i * lines / 10;
-                //alpha.ClipMax(255);
-                //linePen.Color = Color.FromArgb(alpha, linePen.Color.R, linePen.Color.G, linePen.Color.B);
                 int x = (int)(i * _config.Width / lines * thousandPercent);
                 g.DrawLine(linePen, x, 1, x, _config.Height - 1);
             }
