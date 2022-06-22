@@ -43,11 +43,12 @@ namespace ACCManager.HUD.ACC
             {"Tyre Info", typeof(TyreInfoOverlay) },
             {"Tyre Pressure Trace", typeof(PressureTraceOverlay) },
 
+
+            {"Debug Output", typeof(DebugOutputOverlay) },
 #if DEBUG
             {"Weather Info", typeof(WeatherOverlay) },
 
             // yea this shit has to be at the bottom...
-            {"Debug Output", typeof(DebugOutputOverlay) },
             {"Page Static", typeof(StaticInfoOverlay) },
             {"Page Physics", typeof(PhysicsInfoOverlay) },
             {"Page Graphics", typeof(GraphicsInfoOverlay) },

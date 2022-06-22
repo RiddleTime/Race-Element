@@ -97,6 +97,7 @@ namespace ACCManager.Data.ACC.Tracker
 
         public void Toggle(bool enable)
         {
+            Trace.WriteLine("Setup hider is " + (enable ? "Visible" : "Hidden"));
             if (_obsWebSocket != null)
                 ToggleOBS(enable);
             else

@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
 {
-    internal class DebugOutputListener
+    internal class TraceOutputListener
     {
-        public struct DebugOut
+        public struct MessageOut
         {
             public long time;
             public string message;
@@ -22,8 +22,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
         private TextWriterTraceListener _traceListener;
         private long lastPosition = -1;
 
-        private LinkedList<DebugOut> _outputs = new LinkedList<DebugOut>();
-        public LinkedList<DebugOut> Outputs
+        private LinkedList<MessageOut> _outputs = new LinkedList<MessageOut>();
+        public LinkedList<MessageOut> Outputs
         {
             get
             {
@@ -34,22 +34,23 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
             }
         }
 
-        private static DebugOutputListener _instance;
-        internal static DebugOutputListener Instance
+        private static TraceOutputListener _instance;
+        internal static TraceOutputListener Instance
         {
             get
             {
-                if (_instance == null) _instance = new DebugOutputListener(); return _instance;
+                if (_instance == null) _instance = new TraceOutputListener(); return _instance;
             }
         }
 
         private bool _isRunning;
 
-        public DebugOutputListener()
+        public TraceOutputListener()
         {
             _outputStream = new MemoryStream();
             _traceListener = new TextWriterTraceListener(new StreamWriter(_outputStream));
-            Debug.Listeners.Add(_traceListener);
+
+            Trace.Listeners.Add(_traceListener);
             Debug.AutoFlush = true;
 
             Start();
@@ -77,7 +78,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
                         {
                             if (_outputs.Count >= 100)
                                 _outputs.RemoveLast();
-                            _outputs.AddFirst(new DebugOut() { message = reader.ReadLine(), time = DateTime.Now.ToFileTime() });
+                            _outputs.AddFirst(new MessageOut() { message = reader.ReadLine(), time = DateTime.Now.ToFileTime() });
                         }
                     }
 

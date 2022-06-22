@@ -63,7 +63,7 @@
     <Compile Include="Overlays\OverlayDebugInfo\DebugInfoHelper.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayBroadcastRealtime\BroadcastRealtimeOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayBroadcastTrackData\BroadcastRealtimeOverlay.cs" />
-    <Compile Include="Overlays\OverlayDebugInfo\OverlayDebugOutput\DebugOutputListener.cs" />
+    <Compile Include="Overlays\OverlayDebugInfo\OverlayDebugOutput\TraceOutputListener.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayDebugOutput\DebugOutputOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayEntryList\EntryListOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayGraphicsInfo\GraphicsInfoOverlay.cs" />
