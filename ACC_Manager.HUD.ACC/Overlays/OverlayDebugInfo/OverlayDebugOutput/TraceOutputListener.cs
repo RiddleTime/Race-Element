@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
 {
-    internal class TraceOutputListener
+    public class TraceOutputListener
     {
         public struct MessageOut
         {
@@ -35,7 +35,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
         }
 
         private static TraceOutputListener _instance;
-        internal static TraceOutputListener Instance
+        public static TraceOutputListener Instance
         {
             get
             {

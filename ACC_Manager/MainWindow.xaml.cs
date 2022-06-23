@@ -3,6 +3,7 @@ using ACCManager.Data.ACC.Tracker;
 using ACCManager.Hardware.ACC.SteeringLock;
 using ACCManager.HUD.ACC;
 using ACCManager.HUD.ACC.Data.Tracker;
+using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput;
 using ACCManager.Util;
 using MaterialDesignThemes.Wpf;
 using System;
@@ -66,7 +67,7 @@ namespace ACCManager
             AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
             this.Closing += MainWindow_Closing;
 
-
+            TraceOutputListener.Instance.ToString();
 
             this.Loaded += MainWindow_Loaded;
 
@@ -79,6 +80,7 @@ namespace ACCManager
             {
                 this.WindowState = WindowState.Normal;
             }
+            Trace.WriteLine($"Loaded ACC Mananger {GetAssemblyFileVersion()}");
         }
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)

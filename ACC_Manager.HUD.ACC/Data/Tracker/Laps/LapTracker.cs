@@ -39,6 +39,11 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
         /// Fuel left at the end of the lap, divide by 1000...
         /// </summary>
         public int FuelUsage { get; set; } = -1;
+
+        public override string ToString()
+        {
+            return $"Lap: {Index}, Time: {this.GetLapTime():F3}, IsValid: {IsValid}, S1: {this.GetSector1():F3}, S2: {this.GetSector2():F3}, S3: {this.GetSector3():F3}";
+        }
     }
 
     internal class LapTracker
@@ -120,6 +125,8 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
                                             Laps[Laps.Count - 1].IsValid = !_lastLapInfo.IsInvalid;
                                             Laps[Laps.Count - 1].LapType = _lastLapInfo.Type;
                                         }
+
+                                        Trace.WriteLine($"{Laps[Laps.Count - 1]}");
 
                                         LapFinished?.Invoke(this, Laps[Laps.Count - 1]);
                                     }

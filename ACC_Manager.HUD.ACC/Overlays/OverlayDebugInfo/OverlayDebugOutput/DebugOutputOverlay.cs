@@ -48,7 +48,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
             _font = FontUtil.FontOrbitron(fontSize);
             _table = new InfoTable(fontSize, new int[] { 600 });
             RefreshRateHz = 5;
-            this.Width = _config.Width;
+            this.Width = _config.Width + 1;
         }
 
         private void Instance_WidthChanged(object sender, bool e)
