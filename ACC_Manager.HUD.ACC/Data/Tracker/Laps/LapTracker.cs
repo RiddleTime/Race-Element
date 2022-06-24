@@ -124,11 +124,13 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
                                             Laps[Laps.Count - 1].Sector3 = _lastLapInfo.Splits[2].Value;
                                             Laps[Laps.Count - 1].IsValid = !_lastLapInfo.IsInvalid;
                                             Laps[Laps.Count - 1].LapType = _lastLapInfo.Type;
+
+                                            Trace.WriteLine($"{Laps[Laps.Count - 1]}");
+
+                                            LapFinished?.Invoke(this, Laps[Laps.Count - 1]);
                                         }
 
-                                        Trace.WriteLine($"{Laps[Laps.Count - 1]}");
-
-                                        LapFinished?.Invoke(this, Laps[Laps.Count - 1]);
+                                      
                                     }
                                 }
                             }

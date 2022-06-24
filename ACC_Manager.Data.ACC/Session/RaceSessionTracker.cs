@@ -26,13 +26,16 @@ namespace ACCManager.Data.ACC.Session
         private bool _isTracking = false;
         private ACCSharedMemory _sharedMemory;
 
-        private AcSessionType lastSessionType = AcSessionType.AC_UNKNOWN;
+        private AcSessionType _lastSessionType = AcSessionType.AC_UNKNOWN;
         public event EventHandler<AcSessionType> OnACSessionTypeChanged;
 
-        private SessionPhase lastSessionPhase = SessionPhase.NONE;
+        private SessionPhase _lastSessionPhase = SessionPhase.NONE;
         public event EventHandler<SessionPhase> OnSessionPhaseChanged;
 
-        private int lastSessionIndex = -1;
+        private AcStatus _lastAcStatus = AcStatus.AC_OFF;
+        public event EventHandler<AcStatus> OnACStatusChanged;
+
+        private int _lastSessionIndex = -1;
         public event EventHandler<int> OnSessionIndexChanged;
 
         private RaceSessionTracker()
@@ -54,18 +57,26 @@ namespace ACCManager.Data.ACC.Session
                     Thread.Sleep(100);
 
                     var pageGraphics = _sharedMemory.ReadGraphicsPageFile();
-                    if (pageGraphics.SessionType != lastSessionType)
+
+                    if (pageGraphics.SessionType != _lastSessionType)
                     {
-                        Debug.WriteLine($"SessionType: {lastSessionType} -> {pageGraphics.SessionType}");
-                        lastSessionType = pageGraphics.SessionType;
-                        OnACSessionTypeChanged?.Invoke(this, lastSessionType);
+                        Debug.WriteLine($"SessionType: {_lastSessionType} -> {pageGraphics.SessionType}");
+                        _lastSessionType = pageGraphics.SessionType;
+                        OnACSessionTypeChanged?.Invoke(this, _lastSessionType);
                     }
 
-                    if (pageGraphics.SessionIndex != lastSessionIndex)
+                    if (pageGraphics.SessionIndex != _lastSessionIndex)
                     {
-                        Debug.WriteLine($"SessionIndex: {lastSessionIndex} -> {pageGraphics.SessionIndex}");
-                        lastSessionIndex = pageGraphics.SessionIndex;
-                        OnSessionIndexChanged?.Invoke(this, lastSessionIndex);
+                        Debug.WriteLine($"SessionIndex: {_lastSessionIndex} -> {pageGraphics.SessionIndex}");
+                        _lastSessionIndex = pageGraphics.SessionIndex;
+                        OnSessionIndexChanged?.Invoke(this, _lastSessionIndex);
+                    }
+
+                    if (pageGraphics.Status != _lastAcStatus)
+                    {
+                        Debug.WriteLine($"AcStatus: {_lastAcStatus} -> {pageGraphics.Status}");
+                        _lastAcStatus = pageGraphics.Status;
+                        OnACStatusChanged?.Invoke(this, _lastAcStatus);
                     }
                 }
 
@@ -76,11 +87,11 @@ namespace ACCManager.Data.ACC.Session
 
         private void Instance_OnRealTimeUpdate(object sender, Broadcast.Structs.RealtimeUpdate e)
         {
-            if (e.Phase != lastSessionPhase)
+            if (e.Phase != _lastSessionPhase)
             {
-                Debug.WriteLine($"SessionPhase: {lastSessionPhase} -> {e.Phase}");
+                Debug.WriteLine($"SessionPhase: {_lastSessionPhase} -> {e.Phase}");
 
-                lastSessionPhase = e.Phase;
+                _lastSessionPhase = e.Phase;
                 OnSessionPhaseChanged?.Invoke(this, e.Phase);
             }
         }
