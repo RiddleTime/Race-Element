@@ -87,7 +87,7 @@ namespace ACCManager.Data.ACC.Tracker
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.ToString());
+                //Debug.WriteLine(ex.ToString());
             }
         }
 
@@ -119,7 +119,7 @@ namespace ACCManager.Data.ACC.Tracker
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e);
+                //Debug.WriteLine(e);
             }
         }
 
@@ -149,7 +149,7 @@ namespace ACCManager.Data.ACC.Tracker
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e);
+                //Debug.WriteLine(e);
             }
         }
 
