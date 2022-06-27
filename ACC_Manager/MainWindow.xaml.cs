@@ -80,7 +80,12 @@ namespace ACCManager
             {
                 this.WindowState = WindowState.Normal;
             }
-            Trace.WriteLine($"Loaded ACC Mananger {GetAssemblyFileVersion()}");
+
+            string loadString = $"Loaded ACC Manager {GetAssemblyFileVersion()}";
+#if DEBUG
+            loadString += " - Debug";
+#endif
+            Trace.WriteLine(loadString);
         }
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
