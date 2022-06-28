@@ -61,12 +61,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
 
         private void RenderBackgroundBitmap()
         {
-            int backgroundSize = _gMeterSize;
+            int size = _gMeterSize;
 
             if (Scale != 1)
-                backgroundSize = (int)Math.Floor(backgroundSize * Scale);
+                size = (int)Math.Floor(size * Scale);
 
-            _background = new Bitmap(backgroundSize + 1, backgroundSize + 1);
+            _background = new Bitmap(size + 1, size + 1);
 
             using (Graphics g = Graphics.FromImage(_background))
             {
@@ -76,7 +76,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
                 g.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 g.CompositingQuality = CompositingQuality.HighQuality;
 
-                g.FillEllipse(backgroundBrush, new Rectangle(0, 0, backgroundSize, backgroundSize));
+                g.FillEllipse(backgroundBrush, new Rectangle(0, 0, size, size));
 
                 // Draws the lines and circles
                 Pen AccPen = new Pen(Color.FromArgb(100, 255, 255, 255), 1);
@@ -84,7 +84,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
                 Pen AccPen3 = new Pen(Color.FromArgb(100, 255, 255, 255), 4);
                 Pen AccPen4 = new Pen(Color.FromArgb(200, 200, 200, 200), 5);
 
-                int size = backgroundSize;
                 int x = 0;
                 int y = 0;
 
@@ -101,6 +100,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
         public sealed override void BeforeStop()
         {
             _background.Dispose();
+            GC.Collect();
         }
 
         public sealed override void Render(Graphics g)
