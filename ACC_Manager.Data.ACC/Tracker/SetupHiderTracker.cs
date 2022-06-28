@@ -85,7 +85,7 @@ namespace ACCManager.Data.ACC.Tracker
                 if (streamSettings.StreamingSoftware == "OBS")
                     _obsWebSocket.Connect($"ws://{streamSettings.StreamingWebSocketIP}:{streamSettings.StreamingWebSocketPort}", streamSettings.StreamingWebSocketPassword);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //Debug.WriteLine(ex.ToString());
             }
@@ -117,7 +117,7 @@ namespace ACCManager.Data.ACC.Tracker
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //Debug.WriteLine(e);
             }
@@ -147,7 +147,7 @@ namespace ACCManager.Data.ACC.Tracker
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //Debug.WriteLine(e);
             }

@@ -129,7 +129,7 @@ namespace ACCManager.Controls
                     };
                     _obsWebSocket.Connect($"ws://{streamSettings.StreamingWebSocketIP}:{streamSettings.StreamingWebSocketPort}", streamSettings.StreamingWebSocketPassword);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     MainWindow.Instance.ClearSnackbar();
                     MainWindow.Instance.EnqueueSnackbarMessage($"Failed to make a connection to {streamSettings.StreamingSoftware}.");
