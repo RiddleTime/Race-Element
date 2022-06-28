@@ -57,23 +57,19 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
         public sealed override void BeforeStart()
         {
             _background = new Bitmap(this.Width, this.Height);
-            SolidBrush backgroundBrush = new SolidBrush(Color.FromArgb(140, Color.Black));
-
-            if (this._config.ShowText)
-                using (Graphics g = Graphics.FromImage(_background))
-                {
-                    g.SmoothingMode = SmoothingMode.HighQuality;
-                    g.FillEllipse(backgroundBrush, new Rectangle(_gMeterX, _gMeterY, _gMeterSize, _gMeterSize));
-                }
-            else
-                using (Graphics g = Graphics.FromImage(_background))
-                {
-                    g.SmoothingMode = SmoothingMode.HighQuality;
-                    g.FillEllipse(backgroundBrush, new Rectangle(0, 0, this.Width - 1, this.Height - 1));
-                }
-
+          
             using (Graphics g = Graphics.FromImage(_background))
             {
+                SolidBrush backgroundBrush = new SolidBrush(Color.FromArgb(140, Color.Black));
+
+                g.SmoothingMode = SmoothingMode.HighQuality;
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+
+                if (this._config.ShowText)
+                    g.FillEllipse(backgroundBrush, new Rectangle(_gMeterX, _gMeterY, _gMeterSize, _gMeterSize));
+                else
+                    g.FillEllipse(backgroundBrush, new Rectangle(0, 0, this.Width - 1, this.Height - 1));
+
                 //Draws the lines and circles
                 Pen AccPen = new Pen(Color.FromArgb(100, 255, 255, 255), 1);
                 Pen AccPen2 = new Pen(Color.FromArgb(30, 255, 255, 255), 3);
@@ -92,6 +88,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
                 g.DrawEllipse(AccPen3, x + size / 6, y + size / 6, (size / 3) * 2, (size / 3) * 2);
                 g.DrawEllipse(AccPen2, x + size / 3, y + size / 3, size / 3, size / 3);
             }
+
+            GC.Collect();
         }
 
         public sealed override void BeforeStop()
