@@ -55,6 +55,7 @@ namespace ACCManager.HUD.Overlay.Internal
         public bool AllowReposition { get; set; } = true;
 
         private float _scale = 1f;
+        public float Scale { get { return _scale; } }
         private bool _allowRescale = false;
 
         private Window RepositionWindow;

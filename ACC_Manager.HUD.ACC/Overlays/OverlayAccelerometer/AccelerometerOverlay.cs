@@ -29,6 +29,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             }
         }
 
+        private Bitmap _background = null;
         private readonly InfoPanel _panel;
         private const int MaxG = 3;
         private int _gMeterX = 22;
@@ -53,34 +54,39 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
                 _panel = new InfoPanel(10, 62) { DrawBackground = true, DrawRowLines = false };
         }
 
-        private Bitmap _background = null;
         public sealed override void BeforeStart()
         {
-            _background = new Bitmap(this.Width, this.Height);
-          
+            RenderBackgroundBitmap();
+        }
+
+        private void RenderBackgroundBitmap()
+        {
+            int backgroundSize = _gMeterSize;
+
+            if (Scale != 1)
+                backgroundSize = (int)Math.Floor(backgroundSize * Scale);
+
+            _background = new Bitmap(backgroundSize + 1, backgroundSize + 1);
+
             using (Graphics g = Graphics.FromImage(_background))
             {
                 SolidBrush backgroundBrush = new SolidBrush(Color.FromArgb(140, Color.Black));
 
-                g.SmoothingMode = SmoothingMode.HighQuality;
+                g.SmoothingMode = SmoothingMode.AntiAlias;
                 g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g.CompositingQuality = CompositingQuality.HighQuality;
 
-                if (this._config.ShowText)
-                    g.FillEllipse(backgroundBrush, new Rectangle(_gMeterX, _gMeterY, _gMeterSize, _gMeterSize));
-                else
-                    g.FillEllipse(backgroundBrush, new Rectangle(0, 0, this.Width - 1, this.Height - 1));
+                g.FillEllipse(backgroundBrush, new Rectangle(0, 0, backgroundSize, backgroundSize));
 
-                //Draws the lines and circles
+                // Draws the lines and circles
                 Pen AccPen = new Pen(Color.FromArgb(100, 255, 255, 255), 1);
                 Pen AccPen2 = new Pen(Color.FromArgb(30, 255, 255, 255), 3);
                 Pen AccPen3 = new Pen(Color.FromArgb(100, 255, 255, 255), 4);
                 Pen AccPen4 = new Pen(Color.FromArgb(200, 200, 200, 200), 5);
 
-                int size = _gMeterSize;
-                int x = _gMeterX;
-                int y = _gMeterY;
-
-                g.SmoothingMode = SmoothingMode.HighQuality;
+                int size = backgroundSize;
+                int x = 0;
+                int y = 0;
 
                 g.DrawLine(AccPen, x, y + size / 2, x + size, y + size / 2);
                 g.DrawLine(AccPen, x + size / 2, y, x + size / 2, y + size);
@@ -99,8 +105,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
 
         public sealed override void Render(Graphics g)
         {
+            g.SmoothingMode = SmoothingMode.HighQuality;
             if (_background != null)
-                g.DrawImage(_background, 0, 0);
+                g.DrawImage(_background, _gMeterX, _gMeterY, _gMeterSize, _gMeterSize);
 
             if (this._config.ShowText)
             {
@@ -148,7 +155,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             int gDotPosX = (int)(middle.X + (size / 2 * horizontalPlacement) - (gDotSize / 2));
             int gDotPosY = (int)(middle.Y + (size / 2 * verticalPlacement) - (gDotSize / 2));
 
-            g.FillEllipse(new SolidBrush(Color.FromArgb(242, 82, 2)), new Rectangle(gDotPosX, gDotPosY, gDotSize, gDotSize));
+            g.FillEllipse(new SolidBrush(Color.FromArgb(224, 82, 2)), new Rectangle(gDotPosX, gDotPosY, gDotSize, gDotSize));
 
             if (_config.ShowTrace)
             {
