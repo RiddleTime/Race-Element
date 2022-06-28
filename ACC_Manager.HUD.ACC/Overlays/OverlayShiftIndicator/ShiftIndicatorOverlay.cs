@@ -52,13 +52,35 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
             this.Width = _config.Width + 1;
         }
 
+
+        Bitmap _background;
         public sealed override void BeforeStart()
         {
             if (_config.ShowRpm || _config.ShowPitLimiter)
                 _font = FontUtil.FontUnispace(15);
+
+            PreRenderBackground();
         }
 
-        public sealed override void BeforeStop() { }
+        private void PreRenderBackground()
+        {
+            _background = new Bitmap((int)(_config.Width * this.Scale + 1), (int)(_config.Height * this.Scale + 1));
+            using (Graphics g = Graphics.FromImage(_background))
+            {
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+                g.CompositingQuality = CompositingQuality.HighQuality;
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+
+                // draw background
+                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(160, 0, 0, 0)), new Rectangle(0, 0, (int)(_config.Width * this.Scale), (int)(_config.Height * this.Scale)), 6);
+                g.DrawRoundedRectangle(Pens.DarkGray, new Rectangle(0, 0, (int)(_config.Width * this.Scale), (int)(_config.Height * this.Scale)), 6);
+            }
+        }
+
+        public sealed override void BeforeStop()
+        {
+            _background.Dispose();
+        }
 
         public sealed override void Render(Graphics g)
         {
@@ -66,13 +88,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
             g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
             g.TextContrast = 1;
 
-            // draw background
-            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(160, 0, 0, 0)), new Rectangle(0, 0, _config.Width, _config.Height), 6);
-            g.DrawRoundedRectangle(Pens.DarkGray, new Rectangle(0, 0, _config.Width, _config.Height), 6);
+            if (_background != null)
+                g.DrawImage(_background, 0, 0, _config.Width, _config.Height);
 
             if (_config.ShowPitLimiter && pagePhysics.PitLimiterOn)
             {
-
                 DrawPitLimiterBar(g);
 
                 string pitLimiter = "!Pit Limiter!";
