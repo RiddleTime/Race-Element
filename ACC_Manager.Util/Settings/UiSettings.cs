@@ -16,16 +16,14 @@ namespace ACC_Manager.Util.Settings
         public int SelectedTabIndex;
         public int X;
         public int Y;
-        public int Width;
-        public int Height;
 
         public static UiSettingsJson Default()
         {
             var settings = new UiSettingsJson()
             {
                 SelectedTabIndex = 0,
-                X = (int)SystemParameters.PrimaryScreenWidth / 2,
-                Y = (int)SystemParameters.PrimaryScreenHeight / 2
+                X = (int)SystemParameters.PrimaryScreenWidth / 2 - 1210 / 2,
+                Y = (int)SystemParameters.PrimaryScreenHeight / 2 - 790 / 2
             };
 
             return settings;

@@ -64,6 +64,7 @@ namespace ACCManager.Controls
 
         private void ButtonExit_Click(object sender, RoutedEventArgs e)
         {
+            MainWindow.Instance.SaveLocation();
             Environment.Exit(0);
         }
 

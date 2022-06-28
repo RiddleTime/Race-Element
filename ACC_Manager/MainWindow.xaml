@@ -18,6 +18,7 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         WindowStyle="None"
         Title="MainWindow" MinWidth="1210" Width="1210" MinHeight="790" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" 
+        WindowStartupLocation="Manual"
         WindowState="Minimized">
 
     <Window.Resources>
