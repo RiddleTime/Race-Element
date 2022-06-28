@@ -82,7 +82,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
 
                 g.SmoothingMode = SmoothingMode.HighQuality;
 
-                g.DrawLine(AccPen, x, y + size / 2, X + size, y + size / 2);
+                g.DrawLine(AccPen, x, y + size / 2, x + size, y + size / 2);
                 g.DrawLine(AccPen, x + size / 2, y, x + size / 2, y + size);
                 g.DrawEllipse(AccPen4, x + 2, y + 2, size - 4, size - 4);
                 g.DrawEllipse(AccPen3, x + size / 6, y + size / 6, (size / 3) * 2, (size / 3) * 2);
