@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -25,7 +26,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
 
         public sealed override void BeforeStart()
         {
-            _cursor = new Bitmap(Width, Height);
+            _cursor = new Bitmap(Width, Height, PixelFormat.Format32bppPArgb);
 
             using (Graphics g = Graphics.FromImage(_cursor))
             {

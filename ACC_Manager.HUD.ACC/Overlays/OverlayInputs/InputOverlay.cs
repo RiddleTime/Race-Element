@@ -7,6 +7,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Drawing.Text;
 using static ACCManager.ACCSharedMemory;
 
@@ -55,7 +56,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
             if (this._config.ShowCurrentGear)
                 _gearIndicatorFont = FontUtil.FontOrbitron(40);
 
-            _background = new Bitmap((int)(Width * this.Scale), (int)(Height * this.Scale));
+            _background = new Bitmap((int)(Width * this.Scale), (int)(Height * this.Scale), PixelFormat.Format32bppPArgb);
             using (Graphics g = Graphics.FromImage(_background))
             {
                 g.SmoothingMode = SmoothingMode.HighQuality;

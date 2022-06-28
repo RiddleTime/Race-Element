@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Linq;
 using System.Text;
@@ -64,7 +65,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
 
         private void PreRenderBackground()
         {
-            _background = new Bitmap((int)(_config.Width * this.Scale + 1), (int)(_config.Height * this.Scale + 1));
+            _background = new Bitmap((int)(_config.Width * this.Scale + 1), (int)(_config.Height * this.Scale + 1), PixelFormat.Format32bppPArgb);
             using (Graphics g = Graphics.FromImage(_background))
             {
                 g.SmoothingMode = SmoothingMode.AntiAlias;
