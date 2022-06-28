@@ -422,7 +422,11 @@ namespace ACCManager.HUD.Overlay.Internal
                                     this.RepositionWindow = null;
                                 }
                             }
-                            catch (Exception ex) { Debug.WriteLine(ex); }
+                            catch (Exception ex)
+                            {
+                                Debug.WriteLine(ex);
+                                LogWriter.WriteToLog(ex);
+                            }
                         }));
                     }
 
