@@ -7,24 +7,15 @@ using ACCManager.HUD.ACC;
 using ACCManager.HUD.ACC.Data.Tracker;
 using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput;
 using ACCManager.Util;
-using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace ACCManager
@@ -71,21 +62,55 @@ namespace ACCManager
 
             TraceOutputListener.Instance.ToString();
 
-
-
             this.Loaded += MainWindow_Loaded;
 
-
+            this.LocationChanged += MainWindow_LocationChanged;
+            this.SizeChanged += MainWindow_SizeChanged;
             tabControl.SelectionChanged += (s, se) =>
             {
-                UiSettingsJson uiSettings = UiSettings.LoadJson();
-                uiSettings.SelectedTabIndex = tabControl.SelectedIndex;
-                UiSettings.SaveJson(uiSettings);
+                UiSettingsJson tempSettings = UiSettings.LoadJson();
+                tempSettings.SelectedTabIndex = tabControl.SelectedIndex;
+                UiSettings.SaveJson(tempSettings);
             };
+
+            UiSettingsJson uiSettings = UiSettings.LoadJson();
+            this.Left = uiSettings.X.Clip(0, (int)SystemParameters.PrimaryScreenWidth);
+            this.Top = uiSettings.Y.Clip(0, (int)SystemParameters.PrimaryScreenHeight);
+            
+            int loadedWidth = uiSettings.Width;
+            loadedWidth.Clip((int)this.MinWidth, (int)SystemParameters.PrimaryScreenWidth);
+            uiSettings.Width = loadedWidth;
+
+            int loadedHeight = uiSettings.Height;
+            loadedHeight.Clip((int)this.MinHeight, (int)SystemParameters.PrimaryScreenHeight);
+            uiSettings.Height = loadedHeight;
+
+            this.Width = uiSettings.Width;
+            this.Height = uiSettings.Height;
+
+            UiSettings.SaveJson(uiSettings);
 
             tabControl.SelectedIndex = UiSettings.LoadJson().SelectedTabIndex.Clip(0, tabControl.Items.Count - 1);
 
             Instance = this;
+        }
+
+        private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            UiSettingsJson uiSettings = UiSettings.LoadJson();
+            uiSettings.X = (int)this.Left;
+            uiSettings.Y = (int)this.Top;
+            uiSettings.Width = (int)this.Width;
+            uiSettings.Height = (int)this.Height;
+            UiSettings.SaveJson(uiSettings);
+        }
+
+        private void MainWindow_LocationChanged(object sender, EventArgs e)
+        {
+            UiSettingsJson uiSettings = UiSettings.LoadJson();
+            uiSettings.X = (int)this.Left;
+            uiSettings.Y = (int)this.Top;
+            UiSettings.SaveJson(uiSettings);
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -98,11 +123,7 @@ namespace ACCManager
 
 
             if (!App.Instance.StartMinimized)
-            {
                 this.WindowState = WindowState.Normal;
-            }
-
-         
         }
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)

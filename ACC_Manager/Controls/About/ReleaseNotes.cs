@@ -10,7 +10,8 @@ namespace ACCManager.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.0.7.6", "ACC Manager now remembers the last tab you opened."+
+            {"0.0.7.6", "- ACC Manager now remembers the last tab you opened."+
+                        "\n- ACC Manager now remembers the last dimensions and position of the GUI."+
                         "\n- HUD: Added Debug Output overlay showing all kind of logging."+
                         "\n- HUD: Increased performance for Accelerometer overlay."+
                         "\n- Lap tracker: Fixed an issue with finalizing lap data."},
