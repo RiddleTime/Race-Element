@@ -97,12 +97,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
                 }
             }
         }
-        public sealed override void BeforeStop() { }
+        public sealed override void BeforeStop()
+        {
+            _background.Dispose();
+        }
 
         public sealed override void Render(Graphics g)
         {
-            pagePhysics.Brake = 0.25f;
-            pagePhysics.Gas = 0.75f;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
             if (_background != null)
