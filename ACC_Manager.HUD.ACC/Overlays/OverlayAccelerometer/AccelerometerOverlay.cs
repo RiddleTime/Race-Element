@@ -30,18 +30,21 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
         }
 
         private Bitmap _background = null;
-        private readonly InfoPanel _panel;
+        private InfoPanel _panel;
         private const int MaxG = 3;
         private int _gMeterX = 22;
         private int _gMeterY = 22;
         private int _gMeterSize = 200;
         private readonly LinkedList<Point> _trace = new LinkedList<Point>();
 
-        public AccelerometerOverlay(Rectangle rectangle) : base(rectangle, "Accelerometer Overlay")
+        public AccelerometerOverlay(Rectangle rectangle) : base(rectangle, "Accelerometer Overlay") { }
+
+        public sealed override void BeforeStart()
         {
+            this.RefreshRateHz = 20;
+
             this.Width = 225;
             this.Height = this.Width;
-            this.RefreshRateHz = 20;
 
             if (!this._config.ShowText)
             {
@@ -52,10 +55,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             }
             else
                 _panel = new InfoPanel(10, 62) { DrawBackground = true, DrawRowLines = false };
-        }
 
-        public sealed override void BeforeStart()
-        {
             RenderBackgroundBitmap();
         }
 

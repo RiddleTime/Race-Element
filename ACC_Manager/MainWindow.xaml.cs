@@ -1,4 +1,6 @@
-﻿using ACCManager.Controls;
+﻿using ACC_Manager.Util.Settings;
+using ACC_Manager.Util.SystemExtensions;
+using ACCManager.Controls;
 using ACCManager.Data.ACC.Tracker;
 using ACCManager.Hardware.ACC.SteeringLock;
 using ACCManager.HUD.ACC;
@@ -69,23 +71,38 @@ namespace ACCManager
 
             TraceOutputListener.Instance.ToString();
 
+
+
             this.Loaded += MainWindow_Loaded;
+
+
+            tabControl.SelectionChanged += (s, se) =>
+            {
+                UiSettingsJson uiSettings = UiSettings.LoadJson();
+                uiSettings.SelectedTabIndex = tabControl.SelectedIndex;
+                UiSettings.SaveJson(uiSettings);
+            };
+
+            tabControl.SelectedIndex = UiSettings.LoadJson().SelectedTabIndex.Clip(0, tabControl.Items.Count - 1);
 
             Instance = this;
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!App.Instance.StartMinimized)
-            {
-                this.WindowState = WindowState.Normal;
-            }
-
             string loadString = $"Loaded ACC Manager {GetAssemblyFileVersion()}";
 #if DEBUG
             loadString += " - Debug";
 #endif
             Trace.WriteLine(loadString);
+
+
+            if (!App.Instance.StartMinimized)
+            {
+                this.WindowState = WindowState.Normal;
+            }
+
+         
         }
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
