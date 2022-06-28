@@ -40,6 +40,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
             }
         }
 
+        private Bitmap _background;
         private Font _font;
         private float _halfRpmStringWidth = -1;
         private float _halfPitLimiterStringWidth = -1;
@@ -53,7 +54,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
         }
 
 
-        Bitmap _background;
         public sealed override void BeforeStart()
         {
             if (_config.ShowRpm || _config.ShowPitLimiter)

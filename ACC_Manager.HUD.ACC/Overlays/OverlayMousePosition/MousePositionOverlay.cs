@@ -14,6 +14,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
 {
     public sealed class MousePositionOverlay : AbstractOverlay
     {
+        private Bitmap _cursor;
+
         public MousePositionOverlay(Rectangle rectangle, string Name) : base(rectangle, Name)
         {
             this.Width = 15;
@@ -23,21 +25,30 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
 
         public sealed override void BeforeStart()
         {
+            _cursor = new Bitmap(Width, Height);
+
+            using (Graphics g = Graphics.FromImage(_cursor))
+            {
+                g.SmoothingMode = SmoothingMode.HighQuality;
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g.CompositingQuality = CompositingQuality.HighQuality;
+
+                g.DrawEllipse(Pens.White, 5, 5, 5);
+                g.FillEllipse(new SolidBrush(Color.FromArgb(120, Color.Red)), 5, 5, 5);
+            };
         }
 
         public sealed override void BeforeStop()
         {
+            _cursor.Dispose();
         }
 
         public sealed override void Render(Graphics g)
         {
             Point cursorPosition = GetCursorPosition();
-
             this.X = cursorPosition.X - 5;
             this.Y = cursorPosition.Y - 5;
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.DrawEllipse(Pens.White, 5, 5, 5);
-            g.FillEllipse(new SolidBrush(Color.FromArgb(120, Color.Red)), 5, 5, 5);
+            g.DrawImage(_cursor, 0, 0, Width, Height);
         }
 
         public sealed override bool ShouldRender()

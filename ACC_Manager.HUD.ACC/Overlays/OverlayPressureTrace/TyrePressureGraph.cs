@@ -28,7 +28,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
             this.TirePressures = tirePressures;
         }
 
-        private int getRelativeNodeY(float value)
+        private int GetRelativeNodeY(float value)
         {
             double range = (PressureRange.OptimalMaximum + Padding) - (PressureRange.OptimalMinimum - Padding);
             double percentage = (PressureRange.OptimalMaximum + Padding - value) / range;
@@ -68,7 +68,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
                         int x = X + Width - i * (Width / Data.Count);
                         lock (Data)
                         {
-                            int y = Y + getRelativeNodeY(Data.ElementAt(i));
+                            int y = Y + GetRelativeNodeY(Data.ElementAt(i));
                             y.ClipMax(Y + Height);
 
                             if (x < X)
