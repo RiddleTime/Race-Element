@@ -49,7 +49,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
             Point cursorPosition = GetCursorPosition();
             this.X = cursorPosition.X - 5;
             this.Y = cursorPosition.Y - 5;
-            g.DrawImage(_cursor, 0, 0, Width, Height);
+
+            if (_cursor != null && _cursor.PixelFormat == PixelFormat.Format32bppPArgb)
+                g.DrawImage(_cursor, 0, 0, Width, Height);
         }
 
         public sealed override bool ShouldRender()

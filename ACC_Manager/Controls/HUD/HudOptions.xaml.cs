@@ -146,8 +146,16 @@ namespace ACCManager.Controls
                 stackPanel.Children.Add(configStacker);
                 card.MouseLeftButtonDown += (s, e) => { if (s == card) { toggle.IsChecked = !toggle.IsChecked; } };
 
-                card.MouseMove += (s, e) => label.Foreground = toggle.IsChecked.Value ? activeHoverColor : Brushes.GreenYellow;
-                card.MouseEnter += (s, e) => label.Foreground = toggle.IsChecked.Value ? activeHoverColor : Brushes.GreenYellow;
+                card.MouseMove += (s, e) =>
+                {
+                    label.Foreground = toggle.IsChecked.Value ? activeHoverColor : Brushes.GreenYellow;
+                    toggle.Focus();
+                };
+                card.MouseEnter += (s, e) =>
+                {
+                    label.Foreground = toggle.IsChecked.Value ? activeHoverColor : Brushes.GreenYellow;
+                    toggle.Focus();
+                };
                 card.MouseLeave += (s, e) => label.Foreground = toggle.IsChecked.Value ? Brushes.White : new SolidColorBrush(Color.FromArgb(221, 255, 255, 255));
                 card.MouseUp += (s, e) => label.Foreground = toggle.IsChecked.Value ? activeHoverColor : Brushes.GreenYellow;
                 toggle.Checked += (s, e) =>
