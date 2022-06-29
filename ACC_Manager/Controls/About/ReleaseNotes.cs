@@ -14,7 +14,7 @@ namespace ACCManager.Controls
                         "\n- ACC Manager now remembers the last position of the GUI."+
                         "\n- HUD: Added Debug Output overlay showing all kind of logging."+
                         "\n- HUD: Increased performance for several overlays."+
-                        "\n- HUD: When hovering an overlay in the gui, spacebar or enter key enabled/disables the overlay."+
+                        "\n- HUD: When hovering an overlay in the GUI, spacebar or enter key enabled/disables the overlay."+
                         "\n- Lap tracker: Fixed an issue with finalizing lap data."},
             {"0.0.7.5", "- Setup Conversion: Fixed for McLaren 720s."+
                         "\n- HUD: Shift indicator now draws vertical lines for every 1000 rpm available."},
