@@ -342,7 +342,8 @@ namespace ACCManager.HUD.Overlay.Internal
                         BorderThickness = new Thickness(1),
                         ShowInTaskbar = false,
                         AllowsTransparency = true,
-                        Opacity = 0.3,
+                        Opacity = 0.25,
+                        Cursor = System.Windows.Input.Cursors.SizeAll
                     };
                     this.RepositionWindow.MouseLeftButtonDown += (s, e) =>
                     {
