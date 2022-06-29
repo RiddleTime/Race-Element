@@ -13,26 +13,53 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
     {
         public readonly int Width;
         public readonly int Height;
-        public delegate void Render(Graphics g);
+        public delegate void Renderer(Graphics g);
 
-        private readonly Bitmap _bitmap;
-        private readonly Render _renderer;
+        private Bitmap _bitmap;
+        private Renderer _renderer;
 
-        public CachedBitmap(int width, int height, Render renderer)
+        /// <summary>
+        /// Creates a cached bitmap using the given renderer
+        /// </summary>
+        /// <param name="width">The Width of the bitmap</param>
+        /// <param name="height">The Height of the bitmap</param>
+        /// <param name="renderer">The render function</param>
+        /// <param name="preRender">Default true, calls the renderer delegate</param>
+        public CachedBitmap(int width, int height, Renderer renderer, bool preRender = true)
         {
             this.Width = width;
             this.Height = height;
             _renderer = renderer;
             _bitmap = new Bitmap(Width, Height, PixelFormat.Format32bppPArgb);
-            PreRender();
+
+            if (!preRender)
+                return;
+
+            Render();
         }
 
-        private void PreRender()
+        /// <summary>
+        /// Sets the renderer
+        /// </summary>
+        /// <param name="renderer">The render function</param>
+        /// <param name="render">Default true, calls the renderer delegate</param>
+        public void SetRenderer(Renderer renderer, bool render = true)
+        {
+            _renderer = renderer;
+
+            if (!render)
+                return;
+
+            Render();
+        }
+
+        public void Render()
         {
             lock (_bitmap)
             {
                 using (Graphics g = Graphics.FromImage(_bitmap))
                 {
+                    g.Clear(Color.Transparent);
                     g.SmoothingMode = SmoothingMode.AntiAlias;
                     g.CompositingQuality = CompositingQuality.GammaCorrected;
                     g.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -54,8 +81,13 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
 
         public void Draw(Graphics g, int x, int y, int width, int height)
         {
+            if (_bitmap == null)
+                return;
+
             lock (_bitmap)
+            {
                 g.DrawImage(_bitmap, x, y, width, height);
+            }
         }
 
         public void Dispose()
