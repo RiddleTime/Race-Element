@@ -64,19 +64,19 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
 
         public sealed override void BeforeStop()
         {
-            if (_cachedCursor != null)
-                _cachedCursor.Dispose();
-
             _globalKbmHook.MouseDown -= GlobalKbmHook_MouseDown;
             _globalKbmHook.MouseUp -= GlobalKbmHook_MouseUp;
             _globalKbmHook.MouseMove -= GlobalKbmHook_MouseMove;
-
             _globalKbmHook.Dispose();
+
+            if (_cachedCursor != null)
+                _cachedCursor.Dispose();
         }
 
         public sealed override void Render(Graphics g)
         {
-            _cachedCursor.Draw(g, Width, Height);
+            if (_cachedCursor != null)
+                _cachedCursor.Draw(g, Width, Height);
         }
 
         public sealed override bool ShouldRender()
