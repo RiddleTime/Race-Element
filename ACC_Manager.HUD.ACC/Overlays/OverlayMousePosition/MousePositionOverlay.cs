@@ -19,8 +19,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
 
         public MousePositionOverlay(Rectangle rectangle, string Name) : base(rectangle, Name)
         {
-            this.Width = 15;
-            this.Height = 15;
+            this.Width = 11;
+            this.Height = 11;
             this.RefreshRateHz = 60;
         }
 
@@ -35,7 +35,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
                 g.CompositingQuality = CompositingQuality.HighQuality;
 
                 g.DrawEllipse(Pens.White, 5, 5, 5);
-                g.FillEllipse(new SolidBrush(Color.FromArgb(120, Color.Red)), 5, 5, 5);
+                g.DrawEllipse(Pens.White, 5, 5, 3);
+                g.FillEllipse(new SolidBrush(Color.FromArgb(140, Color.Red)), 5, 5, 5);
+
             };
         }
 

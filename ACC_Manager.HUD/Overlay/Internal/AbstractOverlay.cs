@@ -29,8 +29,7 @@ namespace ACCManager.HUD.Overlay.Internal
         public abstract void BeforeStop();
         public abstract bool ShouldRender();
         public abstract void Render(Graphics g);
-
-        public string Name { get; private set; }
+       
         private bool Draw = false;
 
         public bool IsRepositioning { get; internal set; }

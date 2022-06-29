@@ -94,14 +94,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
                 g.DrawEllipse(AccPen3, x + size / 6, y + size / 6, (size / 3) * 2, (size / 3) * 2);
                 g.DrawEllipse(AccPen2, x + size / 3, y + size / 3, size / 3, size / 3);
             }
-
-            GC.Collect();
         }
 
         public sealed override void BeforeStop()
         {
             _background.Dispose();
-            GC.Collect();
         }
 
         public sealed override void Render(Graphics g)

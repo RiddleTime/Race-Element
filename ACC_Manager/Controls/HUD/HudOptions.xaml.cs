@@ -118,13 +118,13 @@ namespace ACCManager.Controls
 
         private void BuildOverlayStackPanel()
         {
-            int screenMiddleX = (int)(System.Windows.SystemParameters.FullPrimaryScreenWidth / 2);
-            int screenMiddleY = (int)(System.Windows.SystemParameters.FullPrimaryScreenHeight / 2);
+            int screenMiddleX = (int)(SystemParameters.FullPrimaryScreenWidth / 2);
+            int screenMiddleY = (int)(SystemParameters.FullPrimaryScreenHeight / 2);
 
             stackPanelOverlayCheckboxes.Children.Clear();
             foreach (KeyValuePair<string, Type> x in OverlaysACC.AbstractOverlays)
             {
-                object[] args = new object[] { new System.Drawing.Rectangle((int)System.Windows.SystemParameters.PrimaryScreenWidth / 2, (int)System.Windows.SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
+                object[] args = new object[] { new System.Drawing.Rectangle((int)SystemParameters.PrimaryScreenWidth / 2, (int)SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
 
                 Card card = new Card() { Margin = new Thickness(2), Cursor = Cursors.Hand };
                 StackPanel stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };

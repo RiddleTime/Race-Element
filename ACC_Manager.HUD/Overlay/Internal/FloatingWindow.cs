@@ -13,6 +13,9 @@ namespace ACCManager.HUD.Overlay.Internal
 {
     public class FloatingWindow : NativeWindow, IDisposable
     {
+        public string Name { get; internal set; }
+
+
         #region #  Enums  #
         public enum AnimateMode
         {
@@ -271,7 +274,7 @@ namespace ACCManager.HUD.Overlay.Internal
         {
 
             CreateParams params1 = new CreateParams();
-            params1.Caption = "FloatingNativeWindow";
+            params1.Caption = Name;
             int nX = this._location.X;
             int nY = this._location.Y;
             Screen screen1 = Screen.FromHandle(base.Handle);
@@ -293,7 +296,10 @@ namespace ACCManager.HUD.Overlay.Internal
             params1.Parent = IntPtr.Zero;
             uint ui = User32.WS_POPUP;
             params1.Style = (int)ui;
-            params1.ExStyle = User32.WS_EX_TOPMOST | User32.WS_EX_TOOLWINDOW | User32.WS_EX_LAYERED | User32.WS_EX_NOACTIVATE | User32.WS_EX_TRANSPARENT;
+
+            int defaultStyle = User32.WS_EX_TOPMOST | User32.WS_EX_TOOLWINDOW | User32.WS_EX_LAYERED | User32.WS_EX_NOACTIVATE | User32.WS_EX_TRANSPARENT;
+            int streamerStyle = User32.WS_EX_TOPMOST | User32.WS_EX_LAYERED | User32.WS_EX_TRANSPARENT;
+            params1.ExStyle = defaultStyle;
             this.CreateHandle(params1);
             this.UpdateLayeredWindow();
         }
@@ -306,7 +312,7 @@ namespace ACCManager.HUD.Overlay.Internal
             RECT rect1;
             Rectangle rectangle1;
             paintstruct1 = new PAINTSTRUCT();
-            IntPtr ptr1 = (isPaintMessage ? User32.BeginPaint(m.HWnd, ref paintstruct1) : m.WParam);
+            IntPtr ptr1 = isPaintMessage ? User32.BeginPaint(m.HWnd, ref paintstruct1) : m.WParam;
             rect1 = new RECT();
             User32.GetWindowRect(base.Handle, ref rect1);
             rectangle1 = new Rectangle(0, 0, rect1.right - rect1.left, rect1.bottom - rect1.top);
