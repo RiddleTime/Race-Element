@@ -3,19 +3,29 @@ using ACCManager.HUD.Overlay.OverlayUtil;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Gma.System.MouseKeyHook;
+using System.Runtime.InteropServices;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
 {
     public sealed class MousePositionOverlay : AbstractOverlay
     {
         private CachedBitmap _cachedCursor;
+        private IKeyboardMouseEvents _globalKbmHook;
+
+        private readonly CachedBitmap.Renderer MouseDownRenderer = g =>
+        {
+            g.DrawEllipse(Pens.White, 5, 5, 5);
+            g.DrawEllipse(Pens.White, 5, 5, 3);
+            g.FillEllipse(new SolidBrush(Color.FromArgb(140, Color.Red)), 5, 5, 5);
+        };
+        private readonly CachedBitmap.Renderer MouseUpRenderer = g =>
+        {
+            g.DrawEllipse(Pens.White, 5, 5, 5);
+            g.DrawEllipse(Pens.White, 5, 5, 3);
+            g.FillEllipse(new SolidBrush(Color.FromArgb(140, Color.White)), 5, 5, 5);
+        };
 
         public MousePositionOverlay(Rectangle rectangle, string Name) : base(rectangle, Name)
         {
@@ -26,26 +36,46 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
 
         public sealed override void BeforeStart()
         {
-            _cachedCursor = new CachedBitmap(Width, Height, g =>
-            {
-                g.DrawEllipse(Pens.White, 5, 5, 5);
-                g.DrawEllipse(Pens.White, 5, 5, 3);
-                g.FillEllipse(new SolidBrush(Color.FromArgb(140, Color.Red)), 5, 5, 5);
-            });
+            _cachedCursor = new CachedBitmap(Width, Height, MouseUpRenderer);
+            _globalKbmHook = Hook.GlobalEvents();
+            _globalKbmHook.MouseDown += GlobalKbmHook_MouseDown;
+            _globalKbmHook.MouseUp += GlobalKbmHook_MouseUp;
+            _globalKbmHook.MouseMove += GlobalKbmHook_MouseMove;
+
+            this.X = GetCursorPosition().X - 5;
+            this.Y = GetCursorPosition().Y - 5;
+        }
+
+        private void GlobalKbmHook_MouseMove(object sender, MouseEventArgs e)
+        {
+            this.X = e.Location.X - 5;
+            this.Y = e.Location.Y - 5;
+        }
+
+        private void GlobalKbmHook_MouseUp(object sender, MouseEventArgs e)
+        {
+            _cachedCursor.SetRenderer(MouseUpRenderer);
+        }
+
+        private void GlobalKbmHook_MouseDown(object sender, MouseEventArgs e)
+        {
+            _cachedCursor.SetRenderer(MouseDownRenderer);
         }
 
         public sealed override void BeforeStop()
         {
             if (_cachedCursor != null)
                 _cachedCursor.Dispose();
+
+            _globalKbmHook.MouseDown -= GlobalKbmHook_MouseDown;
+            _globalKbmHook.MouseUp -= GlobalKbmHook_MouseUp;
+            _globalKbmHook.MouseMove -= GlobalKbmHook_MouseMove;
+
+            _globalKbmHook.Dispose();
         }
 
         public sealed override void Render(Graphics g)
         {
-            Point cursorPosition = GetCursorPosition();
-            this.X = cursorPosition.X - 5;
-            this.Y = cursorPosition.Y - 5;
-
             _cachedCursor.Draw(g, Width, Height);
         }
 
@@ -57,7 +87,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
         [DllImport("user32.dll")]
         private static extern bool GetCursorPos(out POINT lpPoint);
 
-        public static Point GetCursorPosition()
+        private static Point GetCursorPosition()
         {
             POINT lpPoint;
             GetCursorPos(out lpPoint);
@@ -84,3 +114,4 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
         }
     }
 }
+

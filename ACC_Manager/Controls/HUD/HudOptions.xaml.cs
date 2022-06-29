@@ -1,10 +1,10 @@
 ﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Controls.HUD;
 using ACCManager.HUD.ACC;
 using ACCManager.HUD.ACC.Overlays.OverlayMousePosition;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.Util;
+using Gma.System.MouseKeyHook;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -23,6 +23,7 @@ using System.Windows.Media;
 using static ACCManager.HUD.Overlay.Configuration.OverlayConfiguration;
 using static ACCManager.HUD.Overlay.Configuration.OverlaySettings;
 
+// https://github.com/gmamaladze/globalmousekeyhook
 namespace ACCManager.Controls
 {
     /// <summary>
@@ -30,7 +31,7 @@ namespace ACCManager.Controls
     /// </summary>
     public partial class HudOptions : UserControl
     {
-        private KeyboardHook _hook = new KeyboardHook();
+        private IKeyboardMouseEvents m_GlobalHook;
 
         private static HudOptions _instance;
         public static HudOptions Instance { get { return _instance; } }
@@ -70,12 +71,11 @@ namespace ACCManager.Controls
                     e.Handled = true;
                 };
 
-                _hook.RegisterHotKey(HUD.ModifierKeys.Control, System.Windows.Forms.Keys.Home);
-                _hook.KeyPressed += (s, ev) =>
+                m_GlobalHook = Hook.GlobalEvents();
+                m_GlobalHook.OnCombination(new Dictionary<Combination, Action>
                 {
-                    this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
-                };
-
+                    { Combination.FromString("Control+Home"), () => this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked }
+                });
             }
             catch (Exception ex)
             {
@@ -88,8 +88,7 @@ namespace ACCManager.Controls
 
         public void DisposeKeyboardHooks()
         {
-            Debug.WriteLine("Disposing HUD Keyboard hooks");
-            _hook.Dispose();
+            m_GlobalHook.Dispose();
         }
 
         private MousePositionOverlay mousePositionOverlay;

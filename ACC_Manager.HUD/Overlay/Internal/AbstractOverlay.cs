@@ -29,7 +29,7 @@ namespace ACCManager.HUD.Overlay.Internal
         public abstract void BeforeStop();
         public abstract bool ShouldRender();
         public abstract void Render(Graphics g);
-       
+
         private bool Draw = false;
 
         public bool IsRepositioning { get; internal set; }
@@ -343,7 +343,7 @@ namespace ACCManager.HUD.Overlay.Internal
                         ShowInTaskbar = false,
                         AllowsTransparency = true,
                         Opacity = 0.25,
-                        Cursor = System.Windows.Input.Cursors.SizeAll
+                        Cursor = System.Windows.Input.Cursors.None
                     };
                     this.RepositionWindow.MouseLeftButtonDown += (s, e) =>
                     {
