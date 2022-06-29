@@ -1,6 +1,7 @@
 ﻿using ACC_Manager.Util.SystemExtensions;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
+using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             }
         }
 
-        private Bitmap _background = null;
+        private CachedBitmap _cachedBackground;
         private InfoPanel _panel;
         private const int MaxG = 3;
         private int _gMeterX = 22;
@@ -67,16 +68,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             if (Scale != 1)
                 size = (int)Math.Floor(size * Scale);
 
-            _background = new Bitmap(size + 1, size + 1, PixelFormat.Format32bppPArgb);
-
-            using (Graphics g = Graphics.FromImage(_background))
+            _cachedBackground = new CachedBitmap(size + 1, size + 1, g =>
             {
                 SolidBrush backgroundBrush = new SolidBrush(Color.FromArgb(140, Color.Black));
-
-                g.SmoothingMode = SmoothingMode.AntiAlias;
-                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                g.CompositingQuality = CompositingQuality.HighQuality;
-
                 g.FillEllipse(backgroundBrush, new Rectangle(0, 0, size, size));
 
                 // Draws the lines and circles
@@ -93,19 +87,20 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
                 g.DrawEllipse(AccPen4, x + 2, y + 2, size - 4, size - 4);
                 g.DrawEllipse(AccPen3, x + size / 6, y + size / 6, (size / 3) * 2, (size / 3) * 2);
                 g.DrawEllipse(AccPen2, x + size / 3, y + size / 3, size / 3, size / 3);
-            }
+            });
         }
 
         public sealed override void BeforeStop()
         {
-            _background.Dispose();
+            if (_cachedBackground != null)
+                _cachedBackground.Dispose();
         }
 
         public sealed override void Render(Graphics g)
         {
             g.SmoothingMode = SmoothingMode.HighQuality;
-            if (_background != null)
-                g.DrawImage(_background, _gMeterX, _gMeterY, _gMeterSize, _gMeterSize);
+            if (_cachedBackground != null)
+                _cachedBackground.Draw(g, _gMeterX, _gMeterY, _gMeterSize, _gMeterSize);
 
             if (this._config.ShowText)
             {

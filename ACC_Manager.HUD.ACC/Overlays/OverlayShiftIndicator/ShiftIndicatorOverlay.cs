@@ -79,7 +79,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
             g.TextContrast = 1;
 
             if (_cachedBackground != null)
-                _cachedBackground.Draw(g, 0, 0, _config.Width, _config.Height);
+                _cachedBackground.Draw(g, _config.Width, _config.Height);
 
             if (_config.ShowPitLimiter && pagePhysics.PitLimiterOn)
             {

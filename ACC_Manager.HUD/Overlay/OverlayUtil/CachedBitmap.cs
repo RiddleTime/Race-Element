@@ -42,6 +42,16 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
             }
         }
 
+        public void Draw(Graphics g, Point p)
+        {
+            Draw(g, p.X, p.Y, Width, Height);
+        }
+
+        public void Draw(Graphics g, int width, int height)
+        {
+            Draw(g, 0, 0, width, height);
+        }
+
         public void Draw(Graphics g, int x, int y, int width, int height)
         {
             lock (_bitmap)

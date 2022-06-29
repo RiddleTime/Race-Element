@@ -39,7 +39,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
 
         private readonly int innerWheelWidth;
 
-        private Bitmap _background;
+        private CachedBitmap _cachedBackground;
 
         private Font _gearIndicatorFont;
 
@@ -55,14 +55,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
         {
             if (this._config.ShowCurrentGear)
                 _gearIndicatorFont = FontUtil.FontOrbitron(40);
-
-            _background = new Bitmap((int)(Width * this.Scale), (int)(Height * this.Scale), PixelFormat.Format32bppPArgb);
-            using (Graphics g = Graphics.FromImage(_background))
+            
+            _cachedBackground = new CachedBitmap((int)(Width * this.Scale), (int)(Height * this.Scale), g =>
             {
-                g.SmoothingMode = SmoothingMode.HighQuality;
-                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                g.CompositingQuality = CompositingQuality.HighQuality;
-
                 // background
                 g.FillEllipse(new SolidBrush(Color.FromArgb(140, Color.Black)), new Rectangle(0, 0, (int)(_size * Scale), (int)(_size * Scale)));
 
@@ -96,19 +91,21 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
                     };
                     g.DrawArc(penBackground, throttleBackGroundRect, inputCircleMinAngle, inputCircleSweepAngle);
                 }
-            }
+            });
         }
+
         public sealed override void BeforeStop()
         {
-            _background.Dispose();
+            if (_cachedBackground != null)
+                _cachedBackground.Dispose();
         }
 
         public sealed override void Render(Graphics g)
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            if (_background != null)
-                g.DrawImage(_background, 0, 0, (int)(_size), (int)(_size));
+            if (_cachedBackground != null)
+                _cachedBackground.Draw(g, 0, 0, (int)_size, (int)_size);
 
             DrawSteeringIndicator(g);
 

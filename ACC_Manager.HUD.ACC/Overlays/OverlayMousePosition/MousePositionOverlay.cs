@@ -15,7 +15,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
 {
     public sealed class MousePositionOverlay : AbstractOverlay
     {
-        private Bitmap _cursor;
+        private CachedBitmap _cachedCursor;
 
         public MousePositionOverlay(Rectangle rectangle, string Name) : base(rectangle, Name)
         {
@@ -26,24 +26,18 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
 
         public sealed override void BeforeStart()
         {
-            _cursor = new Bitmap(Width, Height, PixelFormat.Format32bppPArgb);
-
-            using (Graphics g = Graphics.FromImage(_cursor))
+            _cachedCursor = new CachedBitmap(Width, Height, g =>
             {
-                g.SmoothingMode = SmoothingMode.HighQuality;
-                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                g.CompositingQuality = CompositingQuality.HighQuality;
-
                 g.DrawEllipse(Pens.White, 5, 5, 5);
                 g.DrawEllipse(Pens.White, 5, 5, 3);
                 g.FillEllipse(new SolidBrush(Color.FromArgb(140, Color.Red)), 5, 5, 5);
-
-            };
+            });
         }
 
         public sealed override void BeforeStop()
         {
-            _cursor.Dispose();
+            if (_cachedCursor != null)
+                _cachedCursor.Dispose();
         }
 
         public sealed override void Render(Graphics g)
@@ -52,8 +46,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
             this.X = cursorPosition.X - 5;
             this.Y = cursorPosition.Y - 5;
 
-            if (_cursor != null && _cursor.PixelFormat == PixelFormat.Format32bppPArgb)
-                g.DrawImage(_cursor, 0, 0, Width, Height);
+            _cachedCursor.Draw(g, Width, Height);
         }
 
         public sealed override bool ShouldRender()
