@@ -41,7 +41,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
             }
         }
 
-        private Bitmap _background;
+        private CachedBitmap _cachedBackground;
         private Font _font;
         private float _halfRpmStringWidth = -1;
         private float _halfPitLimiterStringWidth = -1;
@@ -54,33 +54,22 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
             this.Width = _config.Width + 1;
         }
 
-
         public sealed override void BeforeStart()
         {
             if (_config.ShowRpm || _config.ShowPitLimiter)
                 _font = FontUtil.FontUnispace(15);
 
-            PreRenderBackground();
-        }
-
-        private void PreRenderBackground()
-        {
-            _background = new Bitmap((int)(_config.Width * this.Scale + 1), (int)(_config.Height * this.Scale + 1), PixelFormat.Format32bppPArgb);
-            using (Graphics g = Graphics.FromImage(_background))
+            _cachedBackground = new CachedBitmap((int)(_config.Width * this.Scale + 1), (int)(_config.Height * this.Scale + 1), g =>
             {
-                g.SmoothingMode = SmoothingMode.AntiAlias;
-                g.CompositingQuality = CompositingQuality.HighQuality;
-                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-
-                // draw background
                 g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(160, 0, 0, 0)), new Rectangle(0, 0, (int)(_config.Width * this.Scale), (int)(_config.Height * this.Scale)), 6);
                 g.DrawRoundedRectangle(Pens.DarkGray, new Rectangle(0, 0, (int)(_config.Width * this.Scale), (int)(_config.Height * this.Scale)), 6);
-            }
+            });
         }
 
         public sealed override void BeforeStop()
         {
-            _background.Dispose();
+            if (_cachedBackground != null)
+                _cachedBackground.Dispose();
         }
 
         public sealed override void Render(Graphics g)
@@ -89,8 +78,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
             g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
             g.TextContrast = 1;
 
-            if (_background != null)
-                g.DrawImage(_background, 0, 0, _config.Width, _config.Height);
+            if (_cachedBackground != null)
+                _cachedBackground.Draw(g, 0, 0, _config.Width, _config.Height);
 
             if (_config.ShowPitLimiter && pagePhysics.PitLimiterOn)
             {
