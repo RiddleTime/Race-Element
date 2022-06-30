@@ -29,7 +29,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             _collector = collector;
             _config = config;
 
-            _cachedBackground = new CachedBitmap(width, height, g =>
+            _cachedBackground = new CachedBitmap(_width, _height, g =>
             {
                 Rectangle graphRect = new Rectangle(_x, _y, _width, _height);
                 g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(196, Color.Black)), graphRect, 3);

@@ -36,6 +36,11 @@ namespace ACCManager.HUD.Overlay.Util
 
         private readonly int _addMonoY = 0;
 
+        private CachedBitmap _cachedBackground;
+        private CachedBitmap _cachedLine;
+
+        private int previousLineCount = 0;
+
         public InfoPanel(double fontSize, int maxWidth)
         {
             fontSize.ClipMin(10);
@@ -47,6 +52,21 @@ namespace ACCManager.HUD.Overlay.Util
 
         private List<IPanelLine> Lines = new List<IPanelLine>();
 
+        public void SetBackground()
+        {
+            _cachedBackground = new CachedBitmap(MaxWidth, Lines.Count * this.FontHeight, g =>
+            {
+                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(140, 0, 0, 0)), new Rectangle(X, Y, this.MaxWidth, Lines.Count * this.FontHeight), 4);
+
+                if (DrawValueBackground)
+                {
+                    int valueBackgroundY = Y + _font.Height * FirstRowLine;
+                    int valueBackgroundHeight = (Lines.Count - FirstRowLine) * this._font.Height + (int)_addMonoY - 2;
+                    g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(8, Color.White)), new Rectangle((int)MaxTitleWidth, valueBackgroundY, (int)(MaxWidth - MaxTitleWidth), valueBackgroundHeight), 4);
+                }
+            });
+        }
+
         public void Draw(Graphics g)
         {
             if (!MaxTitleWidthSet)
@@ -57,10 +77,13 @@ namespace ACCManager.HUD.Overlay.Util
 
             if (DrawBackground)
             {
-                SmoothingMode previous = g.SmoothingMode;
-                g.SmoothingMode = SmoothingMode.AntiAlias;
-                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(140, 0, 0, 0)), new Rectangle(X, Y, this.MaxWidth, Lines.Count * this.FontHeight), 4);
-                g.SmoothingMode = previous;
+                if (Lines.Count != previousLineCount)
+                {
+                    SetBackground();
+                    previousLineCount = Lines.Count;
+                }
+
+                _cachedBackground.Draw(g);
             }
 
             TextRenderingHint previousHint = g.TextRenderingHint;
@@ -72,19 +95,20 @@ namespace ACCManager.HUD.Overlay.Util
                 int length = Lines.Count;
                 int counter = 0;
 
-                if (DrawValueBackground)
-                {
-                    int valueBackgroundY = Y + _font.Height * FirstRowLine;
-                    int valueBackgroundHeight = (Lines.Count - FirstRowLine) * this._font.Height + (int)_addMonoY + 1;
-                    g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(25, Color.White)), new Rectangle((int)MaxTitleWidth + 1, valueBackgroundY, (int)(MaxWidth - MaxTitleWidth), valueBackgroundHeight - 1), 4);
-                }
-
                 while (counter < length)
                 {
                     if (DrawRowLines && counter > FirstRowLine)
                     {
                         float rowY = counter * FontHeight;
-                        g.DrawLine(new Pen(Color.FromArgb(42, Color.White)), new Point(X + 1, (int)rowY), new Point(this.MaxWidth - 1, (int)rowY));
+
+                        if (_cachedLine == null)
+                        {
+                            _cachedLine = new CachedBitmap(this.MaxWidth - 2, 1, cr =>
+                            {
+                                cr.DrawLine(new Pen(Color.FromArgb(42, Color.White)), new Point(0, 0), new Point(this.MaxWidth - 2, 0));
+                            });
+                        }
+                        _cachedLine.Draw(g, new Point(X + 1, (int)rowY));
                     }
 
                     IPanelLine line = Lines[counter];

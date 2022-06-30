@@ -32,10 +32,8 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
             _renderer = renderer;
             _bitmap = new Bitmap(Width, Height, PixelFormat.Format32bppPArgb);
 
-            if (!preRender)
-                return;
-
-            Render();
+            if (preRender)
+                Render();
         }
 
         /// <summary>
@@ -45,12 +43,13 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
         /// <param name="render">Default true, calls the renderer delegate</param>
         public void SetRenderer(Renderer renderer, bool render = true)
         {
-            _renderer = renderer;
-
-            if (!render)
+            if (_renderer == renderer)
                 return;
 
-            Render();
+            _renderer = renderer;
+
+            if (render)
+                Render();
         }
 
         public void Render()
@@ -63,6 +62,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                     g.SmoothingMode = SmoothingMode.AntiAlias;
                     g.CompositingQuality = CompositingQuality.GammaCorrected;
                     g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    g.CompositingMode = CompositingMode.SourceOver;
 
                     _renderer(g);
                 }
