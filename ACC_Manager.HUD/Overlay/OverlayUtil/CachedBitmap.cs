@@ -69,6 +69,11 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
             }
         }
 
+        public void Draw(Graphics g)
+        {
+            Draw(g, 0, 0, Width, Height);
+        }
+
         public void Draw(Graphics g, Point p)
         {
             Draw(g, p.X, p.Y, Width, Height);

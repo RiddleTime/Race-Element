@@ -35,9 +35,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
         private readonly int _originalHeight = 120;
         private readonly int _originalWidth = 300;
 
+        internal static InputTraceOverlay Instance;
+
+        private InputGraph _graph;
         private InputDataCollector _inputDataCollector;
 
-        internal static InputTraceOverlay Instance;
         public InputTraceOverlay(Rectangle rectangle) : base(rectangle, "Input Trace Overlay")
         {
             _originalWidth = this._config.DataPoints;
@@ -51,17 +53,19 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
         {
             _inputDataCollector = new InputDataCollector() { TraceCount = this._originalWidth - 1, inputTraceConfig = _config };
             _inputDataCollector.Start();
+
+            _graph = new InputGraph(0, 0, this._originalWidth - 1, this._originalHeight - 1, _inputDataCollector, this._config);
         }
 
         public sealed override void BeforeStop()
         {
             _inputDataCollector.Stop();
+            _graph.Dispose();
         }
 
         public sealed override void Render(Graphics g)
         {
-            InputGraph graph = new InputGraph(0, 0, this._originalWidth - 1, this._originalHeight - 1, _inputDataCollector.Throttle, _inputDataCollector.Brake, _inputDataCollector.Steering, this._config);
-            graph.Draw(g);
+            _graph.Draw(g);
         }
 
         public sealed override bool ShouldRender()

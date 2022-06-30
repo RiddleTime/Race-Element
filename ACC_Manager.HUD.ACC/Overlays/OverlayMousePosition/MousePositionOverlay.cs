@@ -38,35 +38,35 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
         {
             _cachedCursor = new CachedBitmap(Width, Height, MouseUpRenderer);
             _globalKbmHook = Hook.GlobalEvents();
-            _globalKbmHook.MouseDown += GlobalKbmHook_MouseDown;
-            _globalKbmHook.MouseUp += GlobalKbmHook_MouseUp;
-            _globalKbmHook.MouseMove += GlobalKbmHook_MouseMove;
+            _globalKbmHook.MouseDown += GlobalMouseDown;
+            _globalKbmHook.MouseUp += GlobalMouseUp;
+            _globalKbmHook.MouseMove += GlobalMouseMove;
 
             this.X = GetCursorPosition().X - 5;
             this.Y = GetCursorPosition().Y - 5;
         }
 
-        private void GlobalKbmHook_MouseMove(object sender, MouseEventArgs e)
+        private void GlobalMouseMove(object sender, MouseEventArgs e)
         {
             this.X = e.Location.X - 5;
             this.Y = e.Location.Y - 5;
         }
 
-        private void GlobalKbmHook_MouseUp(object sender, MouseEventArgs e)
+        private void GlobalMouseUp(object sender, MouseEventArgs e)
         {
             _cachedCursor.SetRenderer(MouseUpRenderer);
         }
 
-        private void GlobalKbmHook_MouseDown(object sender, MouseEventArgs e)
+        private void GlobalMouseDown(object sender, MouseEventArgs e)
         {
             _cachedCursor.SetRenderer(MouseDownRenderer);
         }
 
         public sealed override void BeforeStop()
         {
-            _globalKbmHook.MouseDown -= GlobalKbmHook_MouseDown;
-            _globalKbmHook.MouseUp -= GlobalKbmHook_MouseUp;
-            _globalKbmHook.MouseMove -= GlobalKbmHook_MouseMove;
+            _globalKbmHook.MouseDown -= GlobalMouseDown;
+            _globalKbmHook.MouseUp -= GlobalMouseUp;
+            _globalKbmHook.MouseMove -= GlobalMouseMove;
             _globalKbmHook.Dispose();
 
             if (_cachedCursor != null)
