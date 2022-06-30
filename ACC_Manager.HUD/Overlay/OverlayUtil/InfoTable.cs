@@ -14,8 +14,6 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
     public class InfoTable
     {
         private const float _shadowDistance = 0.75f;
-        private readonly Brush _shadowBrush = new SolidBrush(Color.FromArgb(60, Color.Black));
-
 
         private float _yMono;
         public bool _headerWidthSet;
@@ -35,6 +33,11 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
         public bool DrawValueBackground { get; set; } = true;
         public bool DrawRowLines { get; set; } = true;
 
+        private CachedBitmap _cachedBackground;
+        private CachedBitmap _cachedLine;
+
+        private int previousRowCount = 0;
+
         public InfoTable(float fontSize, int[] columnWidths)
         {
             fontSize.ClipMin(9);
@@ -50,10 +53,16 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
 
             if (DrawBackground && _rows.Count > 0)
             {
-                SmoothingMode previous = g.SmoothingMode;
-                g.SmoothingMode = SmoothingMode.AntiAlias;
-                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(140, Color.Black)), new Rectangle(X, Y, (int)GetTotalWidth(), _rows.Count * this._font.Height + (int)_yMono), 4);
-                g.SmoothingMode = previous;
+                if (previousRowCount != _rows.Count)
+                {
+                    _cachedBackground = new CachedBitmap((int)Math.Ceiling(GetTotalWidth()), _rows.Count * _fontHeight + (int)_yMono, bg =>
+                    {
+                        bg.FillRoundedRectangle(new SolidBrush(Color.FromArgb(140, Color.Black)), new Rectangle(X, Y, (int)GetTotalWidth(), _rows.Count * this._font.Height + (int)_yMono), 4);
+                    });
+                    previousRowCount = _rows.Count;
+                }
+
+                _cachedBackground.Draw(g);
             }
 
             TextRenderingHint previousHint = g.TextRenderingHint;
@@ -67,8 +76,9 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                 int valueWidth = (int)(totalWidth - this._maxHeaderWidth);
 
                 if (DrawValueBackground)
+                {
                     g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(25, Color.White)), new Rectangle((int)_maxHeaderWidth + 5, Y, valueWidth - 4, _rows.Count * this._font.Height + (int)_yMono + 1), 4);
-
+                }
                 while (counter < length)
                 {
                     TableRow row = _rows[counter];

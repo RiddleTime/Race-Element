@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using ACC_Manager.Util.SystemExtensions;
 using ACCManager.HUD.Overlay.OverlayUtil;
 
-
 namespace ACCManager.HUD.Overlay.Util
 {
     public class InfoPanel
