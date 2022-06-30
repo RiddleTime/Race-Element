@@ -62,7 +62,6 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                     g.SmoothingMode = SmoothingMode.AntiAlias;
                     g.CompositingQuality = CompositingQuality.GammaCorrected;
                     g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                    g.CompositingMode = CompositingMode.SourceOver;
 
                     _renderer(g);
                 }

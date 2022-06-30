@@ -57,12 +57,12 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                 {
                     _cachedBackground = new CachedBitmap((int)Math.Ceiling(GetTotalWidth()), _rows.Count * _fontHeight + (int)_yMono, bg =>
                     {
-                        bg.FillRoundedRectangle(new SolidBrush(Color.FromArgb(140, Color.Black)), new Rectangle(X, Y, (int)GetTotalWidth(), _rows.Count * this._font.Height + (int)_yMono), 4);
+                        bg.FillRoundedRectangle(new SolidBrush(Color.FromArgb(140, Color.Black)), new Rectangle(0, 0, (int)GetTotalWidth(), _rows.Count * this._font.Height + (int)_yMono), 4);
                     });
                     previousRowCount = _rows.Count;
                 }
 
-                _cachedBackground.Draw(g);
+                _cachedBackground.Draw(g, new Point(X, Y));
             }
 
             TextRenderingHint previousHint = g.TextRenderingHint;
@@ -88,7 +88,17 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                         g.FillRoundedRectangle(new SolidBrush(row.HeaderBackground), new Rectangle(X, (int)rowY, (int)_maxHeaderWidth + 5, _font.Height), 4);
 
                     if (DrawRowLines && counter > 0)
-                        g.DrawLine(new Pen(Color.FromArgb(45, Color.White)), new Point(X + 1, (int)rowY), new Point(totalWidth - 1, (int)rowY));
+                    {
+                        if (_cachedLine == null)
+                        {
+                            _cachedLine = new CachedBitmap(totalWidth - 2, 1, lg =>
+                            {
+                                lg.DrawLine(new Pen(Color.FromArgb(42, Color.White)), new Point(1, 0), new Point(totalWidth - 1, 0));
+                            });
+                        }
+
+                        _cachedLine.Draw(g, new Point(X + 1, (int)rowY));
+                    }
 
                     g.DrawStringWithShadow(row.Header, this._font, Color.White, new PointF(X, rowY + _yMono), _shadowDistance);
 

@@ -104,7 +104,7 @@ namespace ACCManager.HUD.Overlay.Util
                         {
                             _cachedLine = new CachedBitmap(this.MaxWidth - 2, 1, cr =>
                             {
-                                cr.DrawLine(new Pen(Color.FromArgb(42, Color.White)), new Point(0, 0), new Point(this.MaxWidth - 2, 0));
+                                cr.DrawLine(new Pen(Color.FromArgb(42, Color.White)), new Point(1, 0), new Point(this.MaxWidth - 2, 0));
                             });
                         }
                         _cachedLine.Draw(g, new Point(X + 1, (int)rowY));
