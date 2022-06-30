@@ -134,7 +134,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 255, 255, 255)), backgroundDimension, 2);
             g.DrawRoundedRectangle(new Pen(tyreBrush), backgroundDimension, 2);
 
-            g.DrawStringWithShadow(text, _fontFamily, tyreBrush, new PointF(x - textWidth / 2, y + _yMono));
+            g.DrawStringWithShadow(text, _fontFamily, tyreBrush, new PointF(x - textWidth / 2, y + _yMono - 1));
         }
 
         private void DrawBrakeTemps(Graphics g, int x, int y, Position position)

@@ -61,8 +61,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
 
             _cachedBackground = new CachedBitmap((int)(_config.Width * this.Scale + 1), (int)(_config.Height * this.Scale + 1), g =>
             {
-                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(160, 0, 0, 0)), new Rectangle(0, 0, (int)(_config.Width * this.Scale), (int)(_config.Height * this.Scale)), 6);
-                g.DrawRoundedRectangle(Pens.DarkGray, new Rectangle(0, 0, (int)(_config.Width * this.Scale), (int)(_config.Height * this.Scale)), 6);
+                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(160, 0, 0, 0)), new Rectangle(0, 0, (int)(_config.Width * this.Scale), (int)(_config.Height * this.Scale)), (int)(6 * Scale));
+                g.DrawRoundedRectangle(Pens.DarkGray, new Rectangle(0, 0, (int)(_config.Width * this.Scale), (int)(_config.Height * this.Scale)), (int)(6 * Scale));
             });
         }
 

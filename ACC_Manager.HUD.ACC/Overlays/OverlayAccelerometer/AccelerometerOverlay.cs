@@ -104,8 +104,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
 
             if (this._config.ShowText)
             {
-                _panel.AddLine("X ", $"{pagePhysics.AccG[0]:F2}");
-                _panel.AddLine("Y ", $"{pagePhysics.AccG[2]:F2}");
+                string x = $"{pagePhysics.AccG[0]:F2}".FillStart(5, ' ');
+                string y = $"{pagePhysics.AccG[2]:F2}".FillStart(5, ' ');
+                _panel.AddLine("X ", x);
+                _panel.AddLine("Y ", y);
 
                 _panel.Draw(g);
             }
