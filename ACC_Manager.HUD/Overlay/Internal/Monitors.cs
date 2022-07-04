@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -9,7 +10,7 @@ using static ACCManager.HUD.Overlay.Internal.WindowStructs;
 namespace ACCManager.HUD.Overlay.Internal
 {
     // from https://xcalibursystems.com/accessing-monitor-information-with-c-part-2-getting-a-monitor-associated-with-a-window-handle/
-    internal class Monitors
+    public class Monitors
     {
         private static List<MonitorInfoWithHandle> _monitorInfos;
 
@@ -29,6 +30,15 @@ namespace ACCManager.HUD.Overlay.Internal
             // Enumerate monitors
             EnumDisplayMonitors(IntPtr.Zero, IntPtr.Zero, MonitorEnum, IntPtr.Zero);
 
+            Debug.WriteLine("\nLogging Monitors");
+            foreach (MonitorInfoWithHandle monitor in _monitorInfos)
+            {
+                Debug.WriteLine($"Handle: {monitor.MonitorHandle}");
+                Debug.WriteLine($"Monitor: {monitor.MonitorInfo.monitor}");
+                Debug.WriteLine($"Work: {monitor.MonitorInfo.monitor}");
+                Debug.WriteLine($"Size: {monitor.MonitorInfo.size}");
+            }
+
             // Return list
             return _monitorInfos.ToArray();
         }
@@ -47,8 +57,11 @@ namespace ACCManager.HUD.Overlay.Internal
             mi.size = (uint)Marshal.SizeOf(mi);
             GetMonitorInfo(hMonitor, ref mi);
 
+
+            var miwh = new MonitorInfoWithHandle(hMonitor, mi);
             // Add to monitor info
-            _monitorInfos.Add(new MonitorInfoWithHandle(hMonitor, mi));
+            if (!_monitorInfos.Contains(miwh))
+                _monitorInfos.Add(miwh);
             return true;
         }
 
@@ -91,6 +104,14 @@ namespace ACCManager.HUD.Overlay.Internal
             {
                 MonitorHandle = monitorHandle;
                 MonitorInfo = monitorInfo;
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (obj is MonitorInfoWithHandle)
+                    return this.MonitorHandle == ((MonitorInfoWithHandle)obj).MonitorHandle;
+
+                return false;
             }
         }
 

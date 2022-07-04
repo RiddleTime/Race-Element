@@ -491,8 +491,8 @@ namespace ACCManager.Controls
             OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(overlayName);
             if (settings == null)
             {
-                int screenMiddleX = (int)(System.Windows.SystemParameters.FullPrimaryScreenWidth / 2);
-                int screenMiddleY = (int)(System.Windows.SystemParameters.FullPrimaryScreenHeight / 2);
+                int screenMiddleX = (int)(System.Windows.SystemParameters.PrimaryScreenHeight / 2);
+                int screenMiddleY = (int)(System.Windows.SystemParameters.PrimaryScreenHeight / 2);
                 settings = new OverlaySettingsJson() { X = screenMiddleX, Y = screenMiddleY };
             }
 

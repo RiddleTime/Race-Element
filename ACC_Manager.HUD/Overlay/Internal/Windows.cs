@@ -8,7 +8,7 @@ using static ACCManager.HUD.Overlay.Internal.WindowStructs;
 
 namespace ACCManager.HUD.Overlay.Internal
 {
-    internal class Windows
+    public class Windows
     {
         #region Members
 
@@ -25,14 +25,17 @@ namespace ACCManager.HUD.Overlay.Internal
         /// <returns></returns>
         public static WindowAndMonitorHandle[] GetWindowAndMonitorHandles()
         {
-            // new list
-            _windowAndMonitorHandles = new List<WindowAndMonitorHandle>();
+            if (_windowAndMonitorHandles == null)
+                _windowAndMonitorHandles = new List<WindowAndMonitorHandle>();
 
-            // Enumerate windows
-            EnumWindows(EnumTheWindows, IntPtr.Zero);
+            lock (_windowAndMonitorHandles)
+            {
+                // Enumerate windows
+                EnumWindows(EnumTheWindows, IntPtr.Zero);
 
-            // Return list
-            return _windowAndMonitorHandles.ToArray();
+                // Return list
+                return _windowAndMonitorHandles.ToArray();
+            }
         }
 
         /// <summary>
@@ -51,7 +54,13 @@ namespace ACCManager.HUD.Overlay.Internal
             var monitorHandle = MonitorFromRect(ref rect, MONITOR_DEFAULTTONEAREST);
 
             // Add to enumerated windows
-            _windowAndMonitorHandles.Add(new WindowAndMonitorHandle(windowHandle, monitorHandle));
+            lock (_windowAndMonitorHandles)
+            {
+                var wamh = new WindowAndMonitorHandle(windowHandle, monitorHandle);
+
+                if (!_windowAndMonitorHandles.Contains(wamh))
+                    _windowAndMonitorHandles.Add(wamh);
+            }
             return true;
         }
 
@@ -109,6 +118,17 @@ namespace ACCManager.HUD.Overlay.Internal
             {
                 WindowHandle = windowHandle;
                 MonitorHandle = monitorHandle;
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (obj is WindowAndMonitorHandle)
+                {
+                    var wamh = (WindowAndMonitorHandle)obj;
+                    return this.MonitorHandle == wamh.MonitorHandle && this.WindowHandle == wamh.WindowHandle;
+                }
+
+                return false;
             }
         }
     }

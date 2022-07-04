@@ -437,27 +437,20 @@ namespace ACCManager.HUD.Overlay.Internal
 
                     MonitorInfoWithHandle[] monitors = Monitors.GetMonitors();
 
-                    Debug.WriteLine("Logging Monitors");
-                    foreach (MonitorInfoWithHandle monitor in monitors)
-                    {
-                        Debug.WriteLine($"Handle: {monitor.MonitorHandle}");
-                        Debug.WriteLine($"Monitor: {monitor.MonitorInfo.monitor}");
-                        Debug.WriteLine($"Work: {monitor.MonitorInfo.monitor}");
-                        Debug.WriteLine($"Size: {monitor.MonitorInfo.size}");
-                    }
-
                     WindowAndMonitorHandle[] windowsMonitorHandles = Windows.GetWindowAndMonitorHandles();
 
-                    Debug.WriteLine($"Logging current window: {this.Name}");
+                    Debug.WriteLine($"\nLogging current window: {this.Name}");
                     foreach (WindowAndMonitorHandle windowsMonitorHandle in windowsMonitorHandles)
                     {
-                        if (windowsMonitorHandle.WindowHandle == this.Handle)
+
+                        if (windowsMonitorHandle != null && windowsMonitorHandle.WindowHandle == this.Handle)
                         {
-                            Debug.WriteLine($"Window Handle: {windowsMonitorHandle.WindowHandle}");
+                            Debug.WriteLine($"Window Handle: {windowsMonitorHandle.WindowHandle.ToString()}");
                             Debug.WriteLine($"Monitor Handle: {windowsMonitorHandle.MonitorHandle}");
                             WindowStructs.RECT rect = new WindowStructs.RECT();
                             GetWindowRect(this.Handle, ref rect);
                             Debug.WriteLine($"Window Rect: {rect}");
+                            Debug.WriteLine($"Iternal Rect: X: {this.X}, Y: {this.Y}, Width: {this.Width}, Height: {this.Height}");
                         }
                     }
 

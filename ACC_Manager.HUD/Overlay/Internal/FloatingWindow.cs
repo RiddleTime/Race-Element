@@ -273,20 +273,55 @@ namespace ACCManager.HUD.Overlay.Internal
 
         private void CreateWindowOnly()
         {
-
             CreateParams params1 = new CreateParams();
             params1.Caption = Name;
             int nX = this._location.X;
             int nY = this._location.Y;
-            Screen screen1 = Screen.FromHandle(base.Handle);
-            if ((nX + this._size.Width) > screen1.Bounds.Width)
+
+            var monitors = Monitors.GetMonitors();
+            bool isInsideMonitor = false;
+            foreach (var monitor in monitors)
             {
-                nX = screen1.Bounds.Width - this._size.Width;
+                int monitorWidth = monitor.MonitorInfo.monitor.right - monitor.MonitorInfo.monitor.left;
+                int monitorHeight = monitor.MonitorInfo.monitor.bottom - monitor.MonitorInfo.monitor.top;
+                int monitorX = monitor.MonitorInfo.monitor.left;
+                int monitorY = monitor.MonitorInfo.monitor.top;
+
+                if (nX > monitorX && nX < monitorX + monitorWidth)
+                {
+                    if (nY > monitorY && nY < monitorY + monitorHeight)
+                    {
+                        isInsideMonitor = true;
+
+                        if ((nX + this._size.Width) > monitorX + monitorWidth)
+                        {
+                            nX = monitorX + monitorWidth - this._size.Width;
+                        }
+                        if ((nY + this._size.Height) > monitorY + monitorHeight)
+                        {
+                            nY = monitorY + monitorHeight - this._size.Height;
+                        }
+
+                        isInsideMonitor = true;
+
+                        break;
+                    }
+                }
             }
-            if ((nY + this._size.Height) > screen1.Bounds.Height)
+
+            if (!isInsideMonitor)
             {
-                nY = screen1.Bounds.Height - this._size.Height;
+                Screen screen1 = Screen.FromHandle(base.Handle);
+                if ((nX + this._size.Width) > screen1.Bounds.Width)
+                {
+                    nX = screen1.Bounds.Width - this._size.Width;
+                }
+                if ((nY + this._size.Height) > screen1.Bounds.Height)
+                {
+                    nY = screen1.Bounds.Height - this._size.Height;
+                }
             }
+
             this._location = new Point(nX, nY);
             Size size1 = this._size;
             Point point1 = this._location;

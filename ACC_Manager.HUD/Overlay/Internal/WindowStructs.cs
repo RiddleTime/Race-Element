@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ACCManager.HUD.Overlay.Internal
 {
-    internal class WindowStructs
+    public class WindowStructs
     {
         /// <summary>
         /// Monitor information.
@@ -22,13 +22,13 @@ namespace ACCManager.HUD.Overlay.Internal
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        internal struct POINT
+        public struct POINT
         {
             public int x;
             public int y;
         }
         [StructLayout(LayoutKind.Sequential)]
-        internal struct RECT
+        public struct RECT
         {
             public int left;
             public int top;
@@ -37,11 +37,11 @@ namespace ACCManager.HUD.Overlay.Internal
 
             public override string ToString()
             {
-                return $"X: {left}, Y: {top}, Width: {right}, Height: {bottom}";
+                return $"X: {left}, Y: {top}, Width: {right - left}, Height: {bottom - top}";
             }
         }
         [StructLayout(LayoutKind.Sequential)]
-        internal struct SIZE
+        public struct SIZE
         {
             public int cx;
             public int cy;
