@@ -435,26 +435,6 @@ namespace ACCManager.HUD.Overlay.Internal
                         }));
                     }
 
-                    MonitorInfoWithHandle[] monitors = Monitors.GetMonitors();
-
-                    WindowAndMonitorHandle[] windowsMonitorHandles = Windows.GetWindowAndMonitorHandles();
-
-                    Debug.WriteLine($"\nLogging current window: {this.Name}");
-                    foreach (WindowAndMonitorHandle windowsMonitorHandle in windowsMonitorHandles)
-                    {
-
-                        if (windowsMonitorHandle != null && windowsMonitorHandle.WindowHandle == this.Handle)
-                        {
-                            Debug.WriteLine($"Window Handle: {windowsMonitorHandle.WindowHandle.ToString()}");
-                            Debug.WriteLine($"Monitor Handle: {windowsMonitorHandle.MonitorHandle}");
-                            WindowStructs.RECT rect = new WindowStructs.RECT();
-                            GetWindowRect(this.Handle, ref rect);
-                            Debug.WriteLine($"Window Rect: {rect}");
-                            Debug.WriteLine($"Iternal Rect: X: {this.X}, Y: {this.Y}, Width: {this.Width}, Height: {this.Height}");
-                        }
-                    }
-
-
                     OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(this.Name);
                     if (settings == null)
                         return;
