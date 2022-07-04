@@ -20,6 +20,8 @@ using System.Windows.Forms;
 using System.Windows.Threading;
 using static ACCManager.ACCSharedMemory;
 using static ACCManager.HUD.Overlay.Configuration.OverlaySettings;
+using static ACCManager.HUD.Overlay.Internal.Monitors;
+using static ACCManager.HUD.Overlay.Internal.Windows;
 
 namespace ACCManager.HUD.Overlay.Internal
 {
@@ -345,6 +347,8 @@ namespace ACCManager.HUD.Overlay.Internal
                         Opacity = 0.25,
                         Cursor = System.Windows.Input.Cursors.None
                     };
+
+
                     this.RepositionWindow.MouseLeftButtonDown += (s, e) =>
                     {
                         if (this.RepositionWindow == null)
@@ -430,6 +434,33 @@ namespace ACCManager.HUD.Overlay.Internal
                             }
                         }));
                     }
+
+                    MonitorInfoWithHandle[] monitors = Monitors.GetMonitors();
+
+                    Debug.WriteLine("Logging Monitors");
+                    foreach (MonitorInfoWithHandle monitor in monitors)
+                    {
+                        Debug.WriteLine($"Handle: {monitor.MonitorHandle}");
+                        Debug.WriteLine($"Monitor: {monitor.MonitorInfo.monitor}");
+                        Debug.WriteLine($"Work: {monitor.MonitorInfo.monitor}");
+                        Debug.WriteLine($"Size: {monitor.MonitorInfo.size}");
+                    }
+
+                    WindowAndMonitorHandle[] windowsMonitorHandles = Windows.GetWindowAndMonitorHandles();
+
+                    Debug.WriteLine($"Logging current window: {this.Name}");
+                    foreach (WindowAndMonitorHandle windowsMonitorHandle in windowsMonitorHandles)
+                    {
+                        if (windowsMonitorHandle.WindowHandle == this.Handle)
+                        {
+                            Debug.WriteLine($"Window Handle: {windowsMonitorHandle.WindowHandle}");
+                            Debug.WriteLine($"Monitor Handle: {windowsMonitorHandle.MonitorHandle}");
+                            WindowStructs.RECT rect = new WindowStructs.RECT();
+                            GetWindowRect(this.Handle, ref rect);
+                            Debug.WriteLine($"Window Rect: {rect}");
+                        }
+                    }
+
 
                     OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(this.Name);
                     if (settings == null)

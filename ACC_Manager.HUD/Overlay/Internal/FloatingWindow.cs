@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static ACCManager.HUD.Overlay.Internal.WindowStructs;
 
 namespace ACCManager.HUD.Overlay.Internal
 {
@@ -519,26 +520,6 @@ namespace ACCManager.HUD.Overlay.Internal
         public int Reserved6;
         public int Reserved7;
         public int Reserved8;
-    }
-    [StructLayout(LayoutKind.Sequential)]
-    internal struct POINT
-    {
-        public int x;
-        public int y;
-    }
-    [StructLayout(LayoutKind.Sequential)]
-    internal struct RECT
-    {
-        public int left;
-        public int top;
-        public int right;
-        public int bottom;
-    }
-    [StructLayout(LayoutKind.Sequential)]
-    internal struct SIZE
-    {
-        public int cx;
-        public int cy;
     }
     [StructLayout(LayoutKind.Sequential)]
     internal struct TRACKMOUSEEVENTS

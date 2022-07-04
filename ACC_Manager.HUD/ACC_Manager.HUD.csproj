@@ -65,6 +65,9 @@
     <Compile Include="Overlay\Internal\FloatingWindow.cs" />
     <Compile Include="Overlay\Configuration\OverlayConfiguration.cs" />
     <Compile Include="Overlay\Configuration\OverlaySettings.cs" />
+    <Compile Include="Overlay\Internal\Monitors.cs" />
+    <Compile Include="Overlay\Internal\WindowStructs.cs" />
+    <Compile Include="Overlay\Internal\Windows.cs" />
     <Compile Include="Overlay\OverlayUtil\CachedBitmap.cs" />
     <Compile Include="Overlay\OverlayUtil\DeltaBar.cs" />
     <Compile Include="Overlay\OverlayUtil\FontUtil.cs" />

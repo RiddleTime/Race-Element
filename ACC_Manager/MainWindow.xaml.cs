@@ -90,7 +90,7 @@ namespace ACCManager
             uiSettings.Y = (int)this.Top;
             UiSettings.SaveJson(uiSettings);
         }
-       
+
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             string loadString = $"Loaded ACC Manager {GetAssemblyFileVersion()}";
@@ -98,13 +98,10 @@ namespace ACCManager
             loadString += " - Debug";
 #endif
             Trace.WriteLine(loadString);
-
+            LogWriter.WriteToLog(loadString);
 
             if (!App.Instance.StartMinimized)
                 this.WindowState = WindowState.Normal;
-
-
-        
         }
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
