@@ -13,9 +13,6 @@ namespace ACC_Manager.Util.Settings
         {
             get
             {
-#if DEBUG
-      return true;
-#endif
                 return _demoMode;
             }
             set { _demoMode = value; }

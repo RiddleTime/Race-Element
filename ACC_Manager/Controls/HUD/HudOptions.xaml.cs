@@ -90,6 +90,10 @@ namespace ACCManager.Controls
 
                     m_GlobalHook = Hook.GlobalEvents();
                     m_GlobalHook.OnCombination(new Dictionary<Combination, Action> { { Combination.FromString("Control+Home"), () => this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked } });
+
+#if DEBUG
+                    checkBoxDemoMode.IsChecked = true;
+#endif
                 }
                 catch (Exception ex)
                 {

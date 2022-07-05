@@ -44,7 +44,7 @@ namespace ACCManager
             }
             catch (Exception)
             {
-                LogWriter.WriteToLog("Rounded corners are not supported for this machine, using square corners for the main window.");
+                // LogWriter.WriteToLog("Rounded corners are not supported for this machine, using square corners for the main window.");
             }
 
 
@@ -60,7 +60,7 @@ namespace ACCManager
             AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
             this.Closing += MainWindow_Closing;
 
-            TraceOutputListener.Instance.ToString();
+            _ = TraceOutputListener.Instance;
 
             this.Loaded += MainWindow_Loaded;
 
