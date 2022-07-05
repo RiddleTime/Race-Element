@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Settings\HardwareSettings.cs" />
+    <Compile Include="Settings\HudSettings.cs" />
     <Compile Include="Settings\StreamSettings.cs" />
     <Compile Include="Settings\UiSettings.cs" />
     <Compile Include="SystemExtensions\DoubleExtensions.cs" />

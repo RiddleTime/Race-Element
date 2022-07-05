@@ -1,4 +1,5 @@
-﻿using ACC_Manager.Util.SystemExtensions;
+﻿using ACC_Manager.Util.Settings;
+using ACC_Manager.Util.SystemExtensions;
 using ACCManager.HUD.ACC;
 using ACCManager.HUD.ACC.Overlays.OverlayMousePosition;
 using ACCManager.HUD.Overlay.Configuration;
@@ -58,6 +59,16 @@ namespace ACCManager.Controls
                         SetRepositionMode(false);
                     };
 
+                    checkBoxDemoMode.Checked += (s, e) =>
+                    {
+                        HudSettings.DemoMode = true;
+                    };
+
+                    checkBoxDemoMode.Unchecked += (s, e) =>
+                    {
+                        HudSettings.DemoMode = false;
+                    };
+
                     this.PreviewMouseUp += (s, e) =>
                     {
                         if (e.ChangedButton == MouseButton.Middle)
@@ -72,12 +83,13 @@ namespace ACCManager.Controls
                         this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
                         e.Handled = true;
                     };
+                    gridDemoToggler.MouseUp += (s, e) =>
+                    {
+                        this.checkBoxDemoMode.IsChecked = !this.checkBoxDemoMode.IsChecked;
+                    };
 
                     m_GlobalHook = Hook.GlobalEvents();
-                    m_GlobalHook.OnCombination(new Dictionary<Combination, Action>
-                {
-                    { Combination.FromString("Control+Home"), () => this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked }
-                });
+                    m_GlobalHook.OnCombination(new Dictionary<Combination, Action> { { Combination.FromString("Control+Home"), () => this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked } });
                 }
                 catch (Exception ex)
                 {

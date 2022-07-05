@@ -29,6 +29,8 @@ namespace ACCManager.HUD.ACC
 {
     public class OverlaysACC
     {
+
+
         public static Dictionary<string, Type> AbstractOverlays = new Dictionary<string, Type>()
         {
             {"Accelerometer", typeof(AccelerometerOverlay) },

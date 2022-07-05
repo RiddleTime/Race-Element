@@ -1,4 +1,5 @@
-﻿using ACC_Manager.Util.SystemExtensions;
+﻿using ACC_Manager.Util.Settings;
+using ACC_Manager.Util.SystemExtensions;
 using ACCManager.Broadcast.Structs;
 using ACCManager.Data.ACC.Session;
 using ACCManager.Data.ACC.Tracker;
@@ -83,9 +84,8 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public bool DefaultShouldRender()
         {
-#if DEBUG
-            return true;
-#endif
+            if (HudSettings.DemoMode)
+                return true;
 
             bool shouldRender = true;
             if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF || pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
