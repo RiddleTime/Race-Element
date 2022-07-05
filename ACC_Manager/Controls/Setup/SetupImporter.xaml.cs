@@ -54,6 +54,13 @@ namespace ACCManager.Controls
 
                     FileInfo targetFile = new FileInfo(FileUtil.AccPath + "Setups\\" + _currentSetup.carName + "\\" + kv.Key + "\\" + _setupName + ".json");
 
+                    if (targetFile.Exists)
+                    {
+                        MainWindow.Instance.EnqueueSnackbarMessage($"Setup already exists: {targetFile.FullName}");
+                        Close();
+                        return;
+                    }
+
                     SaveSetup(_currentSetup, targetFile);
 
                     MainWindow.Instance.EnqueueSnackbarMessage($"Imported {_setupName} for {modelName} at {kv.Value}");
