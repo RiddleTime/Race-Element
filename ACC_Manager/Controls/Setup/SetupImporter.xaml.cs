@@ -45,7 +45,12 @@ namespace ACCManager.Controls
             this.listViewTracks.Items.Clear();
             foreach (KeyValuePair<string, string> kv in TrackNames.Tracks)
             {
-                ListViewItem trackItem = new ListViewItem() { Content = kv.Value, DataContext = kv.Key };
+                ListViewItem trackItem = new ListViewItem()
+                {   
+                    FontWeight = FontWeights.Bold,
+                    Content = kv.Value,
+                    DataContext = kv.Key
+                };
 
                 trackItem.MouseLeftButtonUp += (s, e) =>
                 {

@@ -18,9 +18,10 @@
     </UserControl.Resources>
 
     <StackPanel Orientation="Vertical">
-        <TextBlock HorizontalAlignment="Center" Style="{StaticResource MaterialDesignHeadline5TextBlock}">Setup Importer</TextBlock>
-        <TextBlock x:Name="textBlockSetupName" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignHeadline6TextBlock}"></TextBlock>
-        <ListView x:Name="listViewTracks" ToolTip="Click the correct track and the setup will automatically be copied in the correct folder." Cursor="Hand">
+        <TextBlock HorizontalAlignment="Center" Style="{StaticResource MaterialDesignHeadline5TextBlock}" FontWeight="Bold">Setup Importer</TextBlock>
+        <TextBlock x:Name="textBlockSetupName" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignHeadline6TextBlock}" FontWeight="Light"></TextBlock>
+        <ListView x:Name="listViewTracks" HorizontalContentAlignment="Center"
+                  ToolTip="Click the correct track and the setup will automatically be copied in the correct folder." Cursor="Hand">
         </ListView>
     </StackPanel>
 </UserControl>
