@@ -31,7 +31,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
         {
             this.Width = 11;
             this.Height = 11;
-            this.RefreshRateHz = 60;
+            this.RequestsDrawItself = true;
         }
 
         public sealed override void BeforeStart()
@@ -44,6 +44,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
 
             this.X = GetCursorPosition().X - 5;
             this.Y = GetCursorPosition().Y - 5;
+            this.RequestRedraw();
         }
 
         private void GlobalMouseMove(object sender, MouseEventArgs e)
@@ -55,11 +56,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
         private void GlobalMouseUp(object sender, MouseEventArgs e)
         {
             _cachedCursor.SetRenderer(MouseUpRenderer);
+            this.RequestRedraw();
         }
 
         private void GlobalMouseDown(object sender, MouseEventArgs e)
         {
             _cachedCursor.SetRenderer(MouseDownRenderer);
+            this.RequestRedraw();
         }
 
         public sealed override void BeforeStop()

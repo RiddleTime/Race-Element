@@ -384,6 +384,9 @@
     <Compile Include="Controls\Setup\SetupEditor.xaml.cs">
       <DependentUpon>SetupEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Setup\SetupImporter.xaml.cs">
+      <DependentUpon>SetupImporter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Setup\SetupsTab.xaml.cs">
       <DependentUpon>SetupsTab.xaml</DependentUpon>
     </Compile>
@@ -473,6 +476,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Setup\SetupEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Setup\SetupImporter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

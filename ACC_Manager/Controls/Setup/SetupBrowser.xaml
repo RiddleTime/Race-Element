@@ -65,7 +65,7 @@
             </Grid.RowDefinitions>
 
             <materialDesign:Card Grid.Row="0" Margin="3">
-                <FlowDocumentScrollViewer Focusable="False" Cursor="Arrow" >
+                <FlowDocumentScrollViewer Focusable="False" Cursor="Arrow" IsHitTestVisible="False">
                     <FlowDocument  x:Name="flowDocument" Focusable="False" Cursor="Arrow" 
                            Background="{DynamicResource MaterialDesignPaper}"
                            FontFamily="{StaticResource RobotoMedium}" 

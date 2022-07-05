@@ -42,53 +42,56 @@ namespace ACCManager.Controls
         {
             InitializeComponent();
 
-            try
-            {
-                BuildOverlayStackPanel();
-
-                checkBoxReposition.Checked += (s, e) =>
+            bool designTime = System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject());
+            if (!designTime)
+                try
                 {
-                    SetRepositionMode(true);
+                    BuildOverlayStackPanel();
 
-                };
-                checkBoxReposition.Unchecked += (s, e) =>
-                {
-                    SetRepositionMode(false);
-                };
+                    checkBoxReposition.Checked += (s, e) =>
+                    {
+                        SetRepositionMode(true);
 
-                this.PreviewMouseUp += (s, e) =>
-                {
-                    if (e.ChangedButton == MouseButton.Middle)
+                    };
+                    checkBoxReposition.Unchecked += (s, e) =>
+                    {
+                        SetRepositionMode(false);
+                    };
+
+                    this.PreviewMouseUp += (s, e) =>
+                    {
+                        if (e.ChangedButton == MouseButton.Middle)
+                        {
+                            this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
+                            e.Handled = true;
+                        }
+                    };
+
+                    gridRepositionToggler.MouseUp += (s, e) =>
                     {
                         this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
                         e.Handled = true;
-                    }
-                };
+                    };
 
-                gridRepositionToggler.MouseUp += (s, e) =>
-                {
-                    this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
-                    e.Handled = true;
-                };
-
-                m_GlobalHook = Hook.GlobalEvents();
-                m_GlobalHook.OnCombination(new Dictionary<Combination, Action>
+                    m_GlobalHook = Hook.GlobalEvents();
+                    m_GlobalHook.OnCombination(new Dictionary<Combination, Action>
                 {
                     { Combination.FromString("Control+Home"), () => this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked }
                 });
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-                LogWriter.WriteToLog(ex);
-            }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                    LogWriter.WriteToLog(ex);
+                }
 
             _instance = this;
         }
 
         public void DisposeKeyboardHooks()
         {
-            m_GlobalHook.Dispose();
+            if (m_GlobalHook != null)
+                m_GlobalHook.Dispose();
         }
 
         private MousePositionOverlay mousePositionOverlay;

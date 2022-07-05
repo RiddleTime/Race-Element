@@ -302,8 +302,6 @@ namespace ACCManager.HUD.Overlay.Internal
                             nY = monitorY + monitorHeight - this._size.Height;
                         }
 
-
-
                         break;
                     }
                 }
