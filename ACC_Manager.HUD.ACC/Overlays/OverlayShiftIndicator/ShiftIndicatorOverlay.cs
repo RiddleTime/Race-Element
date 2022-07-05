@@ -41,7 +41,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
             }
         }
 
+        private string _lastCar = string.Empty;
         private CachedBitmap _cachedBackground;
+        private CachedBitmap _cachedRpmLines;
+
         private Font _font;
         private float _halfRpmStringWidth = -1;
         private float _halfPitLimiterStringWidth = -1;
@@ -64,12 +67,34 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
                 g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(160, 0, 0, 0)), new Rectangle(0, 0, (int)(_config.Width * this.Scale), (int)(_config.Height * this.Scale)), (int)(6 * Scale));
                 g.DrawRoundedRectangle(Pens.DarkGray, new Rectangle(0, 0, (int)(_config.Width * this.Scale), (int)(_config.Height * this.Scale)), (int)(6 * Scale));
             });
+
+            _cachedRpmLines = new CachedBitmap(_config.Width, _config.Height, rpmG =>
+            {
+                int lineCount = (int)Math.Floor(pageStatic.MaxRpm / 1000d);
+
+                int leftOver = pageStatic.MaxRpm % 1000;
+                if (leftOver < 70)
+                    lineCount--;
+
+                Pen linePen = new Pen(new SolidBrush(Color.FromArgb(90, Color.White)), 2);
+
+                double thousandPercent = 1000d / pageStatic.MaxRpm * lineCount;
+                double baseX = _config.Width / lineCount * thousandPercent;
+                for (int i = 1; i <= lineCount; i++)
+                {
+                    int x = (int)(i * baseX);
+                    rpmG.DrawLine(linePen, x, 1, x, _config.Height - 1);
+                }
+            });
         }
 
         public sealed override void BeforeStop()
         {
             if (_cachedBackground != null)
                 _cachedBackground.Dispose();
+
+            if (_cachedRpmLines != null)
+                _cachedRpmLines.Dispose();
         }
 
         public sealed override void Render(Graphics g)
@@ -158,21 +183,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
 
         private void DrawRpmBar1kLines(Graphics g)
         {
-            int lineCount = (int)Math.Floor(pageStatic.MaxRpm / 1000d);
-
-            int leftOver = pageStatic.MaxRpm % 1000;
-            if (leftOver < 70)
-                lineCount--;
-
-            Pen linePen = new Pen(new SolidBrush(Color.FromArgb(90, Color.White)), 2);
-
-            double thousandPercent = 1000d / pageStatic.MaxRpm * lineCount;
-            double baseX = _config.Width / lineCount * thousandPercent;
-            for (int i = 1; i <= lineCount; i++)
+            if (_lastCar != pageStatic.CarModel)
             {
-                int x = (int)(i * baseX);
-                g.DrawLine(linePen, x, 1, x, _config.Height - 1);
+                _cachedRpmLines.Render();
+                _lastCar = pageStatic.CarModel;
             }
+
+            _cachedRpmLines.Draw(g);
         }
 
         public sealed override bool ShouldRender()
