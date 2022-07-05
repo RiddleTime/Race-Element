@@ -30,6 +30,7 @@ namespace ACCManager.Controls
         private static SetupImporter _instance;
         internal static SetupImporter Instance { get { return _instance; } }
 
+        private string _originalSetupFile;
         private string _setupName;
         private SetupJson.Root _currentSetup;
 
@@ -46,7 +47,7 @@ namespace ACCManager.Controls
             foreach (KeyValuePair<string, string> kv in TrackNames.Tracks)
             {
                 ListViewItem trackItem = new ListViewItem()
-                {   
+                {
                     FontWeight = FontWeights.Bold,
                     Content = kv.Value,
                     DataContext = kv.Key
@@ -66,7 +67,9 @@ namespace ACCManager.Controls
                         return;
                     }
 
-                    SaveSetup(_currentSetup, targetFile);
+                    FileInfo originalFile = new FileInfo(_originalSetupFile);
+                    if (originalFile.Exists)
+                        originalFile.CopyTo(targetFile.FullName);
 
                     MainWindow.Instance.EnqueueSnackbarMessage($"Imported {_setupName} for {modelName} at {kv.Value}");
 
@@ -75,17 +78,6 @@ namespace ACCManager.Controls
                 };
                 this.listViewTracks.Items.Add(trackItem);
             }
-        }
-
-        public static void SaveSetup(SetupJson.Root streamSettings, FileInfo fileInfo)
-        {
-            string jsonString = JsonConvert.SerializeObject(streamSettings, Formatting.Indented);
-
-            if (!fileInfo.Exists)
-                if (!fileInfo.Directory.Exists)
-                    fileInfo.Directory.Create();
-
-            File.WriteAllText(fileInfo.FullName, jsonString);
         }
 
         public void Open(string setupFile)
@@ -104,6 +96,7 @@ namespace ACCManager.Controls
             Debug.WriteLine($"Trying to import a setup for {modelName}");
             _currentSetup = setupRoot;
             _setupName = file.Name;
+            _originalSetupFile = setupFile;
 
             BuildTrackList();
             this.textBlockSetupName.Text = $"{modelName} - {file.Name}";
