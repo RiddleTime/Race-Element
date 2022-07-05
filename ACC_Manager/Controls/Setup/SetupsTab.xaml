@@ -21,7 +21,7 @@
     </UserControl.Resources>
     <Grid>
         <controls:SetupImporter HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="9999"></controls:SetupImporter>
-        <TabControl TabStripPlacement="Top" FlowDirection="LeftToRight" SelectedIndex="0" HorizontalAlignment="Stretch" >
+        <TabControl x:Name="tabControl" TabStripPlacement="Top" FlowDirection="LeftToRight" SelectedIndex="0" HorizontalAlignment="Stretch" >
 
             <TabItem Name="tabSetupTree" Style="{DynamicResource MaterialDesignTabItem}">
                 <TabItem.Header>

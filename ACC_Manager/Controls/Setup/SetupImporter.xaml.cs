@@ -101,14 +101,18 @@ namespace ACCManager.Controls
             _setupName = file.Name;
 
             BuildTrackList();
+            this.textBlockSetupName.Text = $"{modelName} - {file.Name}";
 
             this.Visibility = Visibility.Visible;
+            SetupsTab.Instance.tabControl.IsEnabled = false;
         }
 
         public void Close()
         {
+            _setupName = String.Empty;
             _currentSetup = null;
             this.Visibility = Visibility.Hidden;
+            SetupsTab.Instance.tabControl.IsEnabled = true;
         }
     }
 }

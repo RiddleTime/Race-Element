@@ -8,11 +8,19 @@
              Background="{DynamicResource MaterialDesignPaper}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel Orientation="Vertical">
-        <Label HorizontalAlignment="Center">Setup Importer</Label>
-        <Label HorizontalAlignment="Center">Click the circuit this setup belongs to</Label>
-        <ListView x:Name="listViewTracks">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="Cyan" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
 
+    <StackPanel Orientation="Vertical">
+        <TextBlock HorizontalAlignment="Center" Style="{StaticResource MaterialDesignHeadline5TextBlock}">Setup Importer</TextBlock>
+        <TextBlock x:Name="textBlockSetupName" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignHeadline6TextBlock}"></TextBlock>
+        <ListView x:Name="listViewTracks" ToolTip="Click the correct track and the setup will automatically be copied in the correct folder." Cursor="Hand">
         </ListView>
     </StackPanel>
 </UserControl>

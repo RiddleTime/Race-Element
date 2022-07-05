@@ -23,6 +23,9 @@ namespace ACCManager.Controls
     /// </summary>
     public partial class SetupsTab : UserControl
     {
+        private static SetupsTab _instance;
+        public static SetupsTab Instance { get { return _instance; } }
+
         public SetupsTab()
         {
             InitializeComponent();
@@ -30,6 +33,7 @@ namespace ACCManager.Controls
             this.Loaded += SetupsTab_Loaded;
 
             tabSetupTree.ContextMenu = GetBrowseTabContextMenu();
+            _instance = this;
         }
 
         private void SetupsTab_Loaded(object sender, RoutedEventArgs e)
