@@ -332,7 +332,9 @@ namespace ACCManager.HUD.Overlay.Internal
             params1.Style = (int)ui;
 
             int defaultStyle = User32.WS_EX_TOPMOST | User32.WS_EX_TOOLWINDOW | User32.WS_EX_LAYERED | User32.WS_EX_NOACTIVATE | User32.WS_EX_TRANSPARENT;
+#if DEBUG
             int streamerStyle = User32.WS_EX_TOPMOST | User32.WS_EX_LAYERED | User32.WS_EX_TRANSPARENT;
+#endif
             params1.ExStyle = defaultStyle;
             this.CreateHandle(params1);
             this.UpdateLayeredWindow();
