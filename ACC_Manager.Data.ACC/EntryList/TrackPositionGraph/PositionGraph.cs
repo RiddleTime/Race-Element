@@ -10,9 +10,7 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
 {
     public class PositionGraph
     {
-
         private Dictionary<int, Car> _cars = new Dictionary<int, Car>();
-
 
         private static PositionGraph _instance;
         public static PositionGraph Instance
