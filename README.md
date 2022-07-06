@@ -5,16 +5,11 @@ Provides tooling for Assetto Corsa Competizione.
 
 All the data the software uses is provided by the game (ACC Shared Memory and Broadcast Socket).
 
-### Requires .NET Framework 4.8 to run
+### Requires .NET Framework 4.8
 https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48
-
-### Requires .NET Framework 4.8 SDK for development
-https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net48-developer-pack-offline-installer
-
 
 ### Discord server
 https://discord.gg/26AAEW5mUq
-
 
 ### Frameworks
 - WPF
