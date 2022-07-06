@@ -25,6 +25,9 @@ namespace ACCManager.Controls
         {
             InitializeComponent();
             this.Title.Text = $"ACC Manager {GetAssemblyFileVersion()}";
+#if DEBUG
+            this.Title.Text += " - Dev";
+#endif
 
             buttonExit.Click += ButtonExit_Click;
 
