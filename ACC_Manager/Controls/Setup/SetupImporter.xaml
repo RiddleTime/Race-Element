@@ -17,14 +17,34 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid>
-        <Button x:Name="buttonCancel" Panel.ZIndex="99" HorizontalAlignment="Left" VerticalAlignment="Top" >Cancel</Button>
+    <StackPanel Orientation="Vertical">
         <StackPanel Orientation="Vertical">
+            <Button x:Name="buttonCancel" Panel.ZIndex="99" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,-100">Cancel</Button>
             <TextBlock HorizontalAlignment="Center" Style="{StaticResource MaterialDesignHeadline5TextBlock}" FontWeight="Bold">Setup Importer</TextBlock>
             <TextBlock x:Name="textBlockSetupName" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignHeadline6TextBlock}" FontWeight="Light"></TextBlock>
-            <ListView x:Name="listViewTracks" HorizontalContentAlignment="Center"
-                  ToolTip="Click the correct track and the setup will automatically be copied in the correct folder." Cursor="Hand">
-            </ListView>
         </StackPanel>
-    </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Orientation="Vertical">
+                <ListView x:Name="listViewTracks" HorizontalContentAlignment="Center"
+                  ToolTip="Click the correct track and the setup will automatically be copied in the correct folder." Cursor="Hand">
+                </ListView>
+            </StackPanel>
+
+            <materialDesign:Card Grid.Column="1" Margin="3">
+                <FlowDocumentScrollViewer Focusable="False" Cursor="Arrow" IsHitTestVisible="False">
+                    <FlowDocument  x:Name="flowDocument" Focusable="False" Cursor="Arrow" 
+                           Background="{DynamicResource MaterialDesignPaper}"
+                           FontFamily="{StaticResource RobotoMedium}" 
+                           RenderOptions.ClearTypeHint="Enabled" AllowDrop="False">
+                    </FlowDocument>
+                </FlowDocumentScrollViewer>
+            </materialDesign:Card>
+        </Grid>
+    </StackPanel>
 </UserControl>

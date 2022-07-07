@@ -1,4 +1,5 @@
-﻿using ACCManager.Data;
+﻿using ACCManager.Controls.Setup;
+using ACCManager.Data;
 using ACCManager.Data.ACC.Tracks;
 using ACCManager.Util;
 using Newtonsoft.Json;
@@ -33,6 +34,7 @@ namespace ACCManager.Controls
         private string _originalSetupFile;
         private string _setupName;
         private SetupJson.Root _currentSetup;
+        private FlowDocSetupRenderer _renderer;
 
         public SetupImporter()
         {
@@ -40,6 +42,9 @@ namespace ACCManager.Controls
             this.Visibility = Visibility.Hidden;
 
             buttonCancel.Click += (s, e) => Close();
+
+            _renderer = new FlowDocSetupRenderer();
+
             _instance = this;
         }
 
@@ -103,6 +108,8 @@ namespace ACCManager.Controls
             BuildTrackList();
             this.textBlockSetupName.Text = $"{modelName} - {file.Name}";
 
+            _renderer.LogSetup(ref this.flowDocument, setupFile, false);
+
             this.Visibility = Visibility.Visible;
             SetupsTab.Instance.tabControl.IsEnabled = false;
         }
@@ -113,6 +120,7 @@ namespace ACCManager.Controls
             _currentSetup = null;
             this.Visibility = Visibility.Hidden;
             this.listViewTracks.Items.Clear();
+            this.flowDocument.Blocks.Clear();
             SetupsTab.Instance.tabControl.IsEnabled = true;
         }
     }
