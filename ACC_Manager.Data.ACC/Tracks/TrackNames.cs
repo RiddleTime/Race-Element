@@ -18,7 +18,7 @@ namespace ACCManager.Data.ACC.Tracks
             {"donington", "Donington Park" },
             {"Hungaroring", "Hungaroring" },
             {"Imola", "Imola (Autodromo Internazionale Enzo e Dino Ferrari)" },
-            {"indianapolis", "Indanapolis Motor Speedway" },
+            {"indianapolis", "Indianapolis Motor Speedway" },
             {"Kyalami", "Kyalami Grand Prix Circuit" },
             {"Laguna_Seca", "Weathertech Raceway Laguna Seca" },
             {"misano", "Misano World Circuit" },
