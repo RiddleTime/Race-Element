@@ -47,9 +47,12 @@ namespace ACCManager.Controls
 
         internal void SetAppTitle(string launchType = "")
         {
-            this.Title.Text = $"{_AppName} {GetAssemblyFileVersion()}";
-            if (launchType != String.Empty)
-                this.Title.Text += $" - {launchType}";
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                this.Title.Text = $"{_AppName} {GetAssemblyFileVersion()}";
+                if (launchType != String.Empty)
+                    this.Title.Text += $" - {launchType}";
+            }));
         }
 
         private void TitleBar_MouseDoubleClick(object sender, MouseButtonEventArgs e)

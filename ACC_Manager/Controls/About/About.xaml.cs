@@ -41,6 +41,10 @@ namespace ACCManager.Controls
 
         private async void CheckNewestVersion()
         {
+#if DEBUG
+            TitleBar.Instance.SetAppTitle("Dev");
+            return;
+#endif
             try
             {
                 GitHubClient client = new GitHubClient(new ProductHeaderValue("ACC-Manager"), new Uri("https://github.com/RiddleTime/ACC-Manager.git"));
@@ -54,17 +58,7 @@ namespace ACCManager.Controls
                     long remoteVersion = VersionToLong(new Version(latest.Name));
 
                     if (localVersion > remoteVersion)
-                    {
-                        await Dispatcher.BeginInvoke(new Action(() =>
-                        {
-#if DEBUG
-                            TitleBar.Instance.SetAppTitle("Dev");
-#else
-                            TitleBar.Instance.SetAppTitle("Beta");
-#endif
-                        }));
-
-                    }
+                        TitleBar.Instance.SetAppTitle("Beta");
 
                     if (remoteVersion > localVersion)
                     {
@@ -90,7 +84,7 @@ namespace ACCManager.Controls
                 }
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
             }
         }
@@ -103,8 +97,7 @@ namespace ACCManager.Controls
             string revision = $"{VersionInfo.Revision}".FillStart(4, '0');
             string versionString = major + minor + build + revision;
 
-            long version;
-            long.TryParse(versionString, out version);
+            long.TryParse(versionString, out long version);
             return version;
         }
 
