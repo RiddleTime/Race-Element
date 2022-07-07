@@ -38,6 +38,8 @@ namespace ACCManager.Controls
         {
             InitializeComponent();
             this.Visibility = Visibility.Hidden;
+
+            buttonCancel.Click += (s, e) => Close();
             _instance = this;
         }
 
@@ -110,6 +112,7 @@ namespace ACCManager.Controls
             _setupName = String.Empty;
             _currentSetup = null;
             this.Visibility = Visibility.Hidden;
+            this.listViewTracks.Items.Clear();
             SetupsTab.Instance.tabControl.IsEnabled = true;
         }
     }

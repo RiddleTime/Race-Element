@@ -31,10 +31,6 @@ namespace ACCManager
         {
             InitializeComponent();
 
-#if DEBUG
-            LogWriter.WriteToLog("ACC Manager is running in DEBUG mode!");
-#endif
-
             try
             {
                 IntPtr hWnd = new WindowInteropHelper(GetWindow(this)).EnsureHandle();

@@ -17,11 +17,14 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <StackPanel Orientation="Vertical">
-        <TextBlock HorizontalAlignment="Center" Style="{StaticResource MaterialDesignHeadline5TextBlock}" FontWeight="Bold">Setup Importer</TextBlock>
-        <TextBlock x:Name="textBlockSetupName" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignHeadline6TextBlock}" FontWeight="Light"></TextBlock>
-        <ListView x:Name="listViewTracks" HorizontalContentAlignment="Center"
+    <Grid>
+        <Button x:Name="buttonCancel" Panel.ZIndex="99" HorizontalAlignment="Left" VerticalAlignment="Top" >Cancel</Button>
+        <StackPanel Orientation="Vertical">
+            <TextBlock HorizontalAlignment="Center" Style="{StaticResource MaterialDesignHeadline5TextBlock}" FontWeight="Bold">Setup Importer</TextBlock>
+            <TextBlock x:Name="textBlockSetupName" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignHeadline6TextBlock}" FontWeight="Light"></TextBlock>
+            <ListView x:Name="listViewTracks" HorizontalContentAlignment="Center"
                   ToolTip="Click the correct track and the setup will automatically be copied in the correct folder." Cursor="Hand">
-        </ListView>
-    </StackPanel>
+            </ListView>
+        </StackPanel>
+    </Grid>
 </UserControl>

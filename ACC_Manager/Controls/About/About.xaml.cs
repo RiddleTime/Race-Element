@@ -84,7 +84,7 @@ namespace ACCManager.Controls
                 }
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
             }
         }
