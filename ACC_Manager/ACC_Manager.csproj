@@ -142,8 +142,8 @@
     <Reference Include="obs-websocket-dotnet, Version=4.9.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\obs-websocket-dotnet.4.9.1\lib\netstandard2.0\obs-websocket-dotnet.dll</HintPath>
     </Reference>
-    <Reference Include="Octokit, Version=0.51.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Octokit.0.51.0\lib\net46\Octokit.dll</HintPath>
+    <Reference Include="Octokit, Version=0.52.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Octokit.0.52.0\lib\net46\Octokit.dll</HintPath>
     </Reference>
     <Reference Include="PaintDotNet.Base, Version=3.36.7079.22820, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DdsFileTypePlusHack.1.0.4\lib\net45\PaintDotNet.Base.dll</HintPath>
@@ -620,12 +620,12 @@
     <Error Condition="!Exists('..\packages\Costura.Fody.5.7.0\build\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.5.7.0\build\Costura.Fody.targets'))" />
     <Error Condition="!Exists('..\packages\DdsFileTypePlusHack.1.0.4\build\DdsFileTypePlusHack.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\DdsFileTypePlusHack.1.0.4\build\DdsFileTypePlusHack.targets'))" />
     <Error Condition="!Exists('..\packages\MaterialDesignThemes.4.4.0\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MaterialDesignThemes.4.4.0\build\MaterialDesignThemes.targets'))" />
-    <Error Condition="!Exists('..\packages\Fody.6.6.2\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.6.2\build\Fody.targets'))" />
     <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets'))" />
+    <Error Condition="!Exists('..\packages\Fody.6.6.3\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.6.3\build\Fody.targets'))" />
   </Target>
   <Import Project="..\packages\Costura.Fody.5.7.0\build\Costura.Fody.targets" Condition="Exists('..\packages\Costura.Fody.5.7.0\build\Costura.Fody.targets')" />
   <Import Project="..\packages\DdsFileTypePlusHack.1.0.4\build\DdsFileTypePlusHack.targets" Condition="Exists('..\packages\DdsFileTypePlusHack.1.0.4\build\DdsFileTypePlusHack.targets')" />
   <Import Project="..\packages\MaterialDesignThemes.4.4.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.4.0\build\MaterialDesignThemes.targets')" />
-  <Import Project="..\packages\Fody.6.6.2\build\Fody.targets" Condition="Exists('..\packages\Fody.6.6.2\build\Fody.targets')" />
   <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
+  <Import Project="..\packages\Fody.6.6.3\build\Fody.targets" Condition="Exists('..\packages\Fody.6.6.3\build\Fody.targets')" />
 </Project>
