@@ -44,18 +44,7 @@
             </StackPanel>
         </materialDesign:Card>
         <materialDesign:Card Grid.Row="1" Margin="3,3,0,3" HorizontalAlignment="Stretch">
-            <Grid SizeChanged="StackPanelDecals_SizeChanged">
-
-                <Image x:Name="decalsImage"
-                        Width="366"
-                        Height="366"
-                        Stretch="Fill" 
-                               RenderOptions.BitmapScalingMode="LowQuality"/>
-                <Image x:Name="sponsorsImage"
-                        Width="366"
-                        Height="366"
-                        Stretch="Uniform" 
-                               RenderOptions.BitmapScalingMode="LowQuality"/>
+            <Grid x:Name="imageGrid" SizeChanged="StackPanelDecals_SizeChanged">
 
             </Grid>
         </materialDesign:Card>
