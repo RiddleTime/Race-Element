@@ -146,8 +146,8 @@ namespace ACCManager.Controls
                             if (sponsorFiles != null && sponsorFiles.Length > 0)
                             {
                                 FileInfo sponsorsFile = sponsorFiles[0];
-                                sponsorsImage.Source = LoadPhoto(sponsorsFile.FullName);
-                                //new BitmapImage(new Uri(sponsorsFile.FullName, UriKind.Absolute), new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable));
+                                sponsorsImage.Source = LoadPhoto(_sponsorsStream, sponsorsFile.FullName);
+                                sponsorsImage.Loaded += (s, e) => DisposeMediaStream(_sponsorsStream);
                             }
 
 
@@ -199,9 +199,8 @@ namespace ACCManager.Controls
                             if (decalFiles != null && decalFiles.Length > 0)
                             {
                                 FileInfo decalsFile = decalFiles[0];
-                                decalsImage.Source = LoadPhoto(decalsFile.FullName);
-
-                                //new BitmapImage(new Uri(decalsFile.FullName, UriKind.Absolute), new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable));
+                                decalsImage.Source = LoadPhoto(_decalsStream, decalsFile.FullName);
+                                decalsImage.Loaded += (s, e) => DisposeMediaStream(_decalsStream);
                             }
 
 
@@ -236,16 +235,38 @@ namespace ACCManager.Controls
             });
         }
 
-        BitmapImage LoadPhoto(string path)
+        BitmapImage LoadPhoto(FileStream stream, string path)
         {
+            DisposeMediaStream(stream);
             BitmapImage bmi = new BitmapImage();
-            bmi.BeginInit();
-            bmi.CacheOption = BitmapCacheOption.OnLoad;
-            bmi.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-            bmi.UriSource = new Uri(path);
-            bmi.EndInit();
+            using (stream = new FileStream(path, FileMode.Open))
+            {
+                bmi.BeginInit();
+                bmi.CacheOption = BitmapCacheOption.OnLoad;
+                bmi.StreamSource = stream;
+                bmi.EndInit();
+
+                bmi.Freeze();
+                stream.Close();
+                stream.Dispose();
+            }
             return bmi;
         }
+
+        private FileStream _sponsorsStream;
+        private FileStream _decalsStream;
+
+        void DisposeMediaStream(FileStream stream)
+        {
+            if (stream != null)
+            {
+                stream.Close();
+                stream.Dispose();
+            }
+
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
+        }
+
 
         private Label GetInfoLabel(string text, HorizontalAlignment allignmment = HorizontalAlignment.Left, int size = 13, string toolTip = "")
         {
