@@ -131,6 +131,11 @@ namespace ACCManager.HUD.Overlay.Internal
                         this._allowRescale = true;
                         this._scale = overlayConfig.Scale;
                     }
+
+                    if (overlayConfig.Streamer)
+                    {
+                        this.StreamingMode = true;
+                    }
                 }
             }
         }

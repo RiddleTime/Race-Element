@@ -41,7 +41,7 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" FontSize="18">Overlays</Label>
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <StackPanel Orientation="Vertical" x:Name="stackPanelOverlayCheckboxes">
                 </StackPanel>
             </ScrollViewer>
