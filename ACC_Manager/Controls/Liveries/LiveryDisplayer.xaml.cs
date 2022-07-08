@@ -35,6 +35,7 @@ namespace ACCManager.Controls
         internal static LiveryDisplayer Instance;
 
         private LiveryTreeCar Livery { get; set; }
+        private bool _isLoading = false;
 
         public LiveryDisplayer()
         {
@@ -55,7 +56,8 @@ namespace ACCManager.Controls
                         {
                             System.Windows.Controls.Image imageControl = (System.Windows.Controls.Image)control;
                             BitmapImage image = (BitmapImage)imageControl.Source;
-                            image.StreamSource.Close();
+                            if (image != null && image.StreamSource != null)
+                                image.StreamSource.Close();
                             imageControl.Source = null;
                             imageControl = null;
                         }
@@ -104,11 +106,14 @@ namespace ACCManager.Controls
 
         public void ReloadLivery()
         {
-            SetLivery(this.Livery);
+            if (!_isLoading)
+                SetLivery(this.Livery);
         }
 
         internal void SetLivery(LiveryTreeCar livery)
         {
+            _isLoading = true;
+
             ThreadPool.QueueUserWorkItem(x => { GC.Collect(); });
 
             stackPanelLiveryInfo.Children.Clear();
@@ -259,6 +264,7 @@ namespace ACCManager.Controls
 
 
                             UpdateImageSize();
+                            _isLoading = false;
                         }
                     }
                 }));
