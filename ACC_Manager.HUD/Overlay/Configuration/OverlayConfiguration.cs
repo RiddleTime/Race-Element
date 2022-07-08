@@ -13,7 +13,7 @@ namespace ACCManager.HUD.Overlay.Configuration
         public bool AllowRescale = false;
         public float Scale { get; set; } = 1.0f;
 
-        [ToolTip("Allows OBS to capture this overlay, prevents it from being always on top.")]
+        [ToolTip("Allows Stream Apps to capture this overlay as a Window, prevents it from being always on top.\nYou will not see it in-game!")]
         public bool Streamer { get; set; } = false;
 
         public OverlayConfiguration()
