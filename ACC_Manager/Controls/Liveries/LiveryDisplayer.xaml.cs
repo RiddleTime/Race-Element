@@ -35,6 +35,7 @@ namespace ACCManager.Controls
         internal static LiveryDisplayer Instance;
 
         private LiveryTreeCar Livery { get; set; }
+        private bool _isLoading = false;
 
         public LiveryDisplayer()
         {
@@ -43,15 +44,33 @@ namespace ACCManager.Controls
             buttonGenerateDDS.Click += ButtonGenerateDDS_Click;
 
             Instance = this;
+
+            this.Loaded += (s, e) => ReloadLivery();
+            this.IsVisibleChanged += (s, e) =>
+            {
+                if (!(bool)e.NewValue)
+                {
+                    foreach (var control in imageGrid.Children)
+                    {
+                        if (control is System.Windows.Controls.Image)
+                        {
+                            System.Windows.Controls.Image imageControl = (System.Windows.Controls.Image)control;
+                            BitmapImage image = (BitmapImage)imageControl.Source;
+                            if (image != null && image.StreamSource != null)
+                                image.StreamSource.Close();
+                            imageControl.Source = null;
+                            imageControl = null;
+                        }
+                    }
+                    imageGrid.Children.Clear();
+
+                    stackPanelLiveryInfo.Children.Clear();
+                    stackPanelMainInfo.Children.Clear();
+                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
+                }
+            };
         }
 
-        private Dictionary<string, string> pngsToDDS = new Dictionary<string, string>()
-            {
-                {"decals_0.dds","decals.png" },
-                {"sponsors_0.dds" ,"sponsors.png"},
-                {"decals_1.dds","decals.png" },
-                {"sponsors_1.dds","sponsors.png" }
-            };
         private void ButtonGenerateDDS_Click(object sender, RoutedEventArgs e)
         {
             MainWindow.Instance.EnqueueSnackbarMessage($"Generating DDS files... this may take a while...");
@@ -87,15 +106,16 @@ namespace ACCManager.Controls
 
         public void ReloadLivery()
         {
-            SetLivery(this.Livery);
+            if (!_isLoading)
+                SetLivery(this.Livery);
         }
 
         internal void SetLivery(LiveryTreeCar livery)
         {
+            _isLoading = true;
+
             ThreadPool.QueueUserWorkItem(x => { GC.Collect(); });
 
-            decalsImage.Source = null;
-            sponsorsImage.Source = null;
             stackPanelLiveryInfo.Children.Clear();
             stackPanelMainInfo.Children.Clear();
             skinMainInfo.Visibility = Visibility.Hidden;
@@ -109,7 +129,7 @@ namespace ACCManager.Controls
             buttonGenerateDDS.Visibility = DDSutil.HasDdsFiles(Livery) ? Visibility.Hidden : Visibility.Visible;
 
 
-            ThreadPool.QueueUserWorkItem(x => { GC.Collect(); });
+            ThreadPool.QueueUserWorkItem(x => { GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true); });
 
 
             ThreadPool.QueueUserWorkItem(x =>
@@ -142,12 +162,57 @@ namespace ACCManager.Controls
                         DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + customSkinName);
                         if (customSkinDir.Exists)
                         {
+                            imageGrid.Children.Clear();
+
+                            FileInfo[] decalFiles = customSkinDir.GetFiles("decals.png");
+                            if (decalFiles != null && decalFiles.Length > 0)
+                            {
+                                FileInfo decalsFile = decalFiles[0];
+                                System.Windows.Controls.Image imageControl = new System.Windows.Controls.Image()
+                                {
+                                    Stretch = Stretch.Fill,
+                                    Height = 366,
+                                    Width = 366,
+                                };
+                                imageGrid.Children.Add(imageControl);
+                                LoadPhoto(imageControl, _decalsStream, decalsFile.FullName);
+                            }
+
+
+                            // // WIll never display dds files as generating them takes way too fucking long
+                            //FileInfo[] decalDDSFiles = customSkinDir.GetFiles("decals_0.dds");
+                            //if (decalDDSFiles != null && decalDDSFiles.Length > 0)
+                            //{
+
+                            //    // https://stackoverflow.com/questions/23618171/load-dds-file-from-stream-and-display-in-wpf-application
+
+                            //    // https://stackoverflow.com/questions/1118496/using-image-control-in-wpf-to-display-system-drawing-bitmap/1118557#1118557
+                            //    // https://code.google.com/archive/p/kprojects/downloads
+                            //    // https://github.com/ptrsuder/ddsfiletype-plus-hack
+
+                            //    FileInfo decalsFile = decalDDSFiles[0];
+
+                            //    Surface surface = DdsFile.Load(decalsFile.FullName);
+
+                            //    System.Drawing.Bitmap bmp = surface.CreateAliasedBitmap();
+                            //    MemoryStream ms = new MemoryStream();
+                            //    bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                            //    ms.Position = 0;
+                            //    BitmapImage bi = new BitmapImage();
+                            //    bi.BeginInit();
+                            //    bi.StreamSource = ms;
+                            //    bi.EndInit();
+                            //    decalsImage.Source = bi;
+                            //}
+
+
                             FileInfo[] sponsorFiles = customSkinDir.GetFiles("sponsors.png");
                             if (sponsorFiles != null && sponsorFiles.Length > 0)
                             {
                                 FileInfo sponsorsFile = sponsorFiles[0];
-                                sponsorsImage.Source = LoadPhoto(_sponsorsStream, sponsorsFile.FullName);
-                                sponsorsImage.Loaded += (s, e) => DisposeMediaStream(_sponsorsStream);
+                                System.Windows.Controls.Image imageControl = new System.Windows.Controls.Image() { Stretch = Stretch.Fill, Height = 366, Width = 366 };
+                                imageGrid.Children.Add(imageControl);
+                                LoadPhoto(imageControl, _sponsorsStream, sponsorsFile.FullName);
                             }
 
 
@@ -195,78 +260,45 @@ namespace ACCManager.Controls
                             //    //});
                             //}
 
-                            FileInfo[] decalFiles = customSkinDir.GetFiles("decals.png");
-                            if (decalFiles != null && decalFiles.Length > 0)
-                            {
-                                FileInfo decalsFile = decalFiles[0];
-                                decalsImage.Source = LoadPhoto(_decalsStream, decalsFile.FullName);
-                                decalsImage.Loaded += (s, e) => DisposeMediaStream(_decalsStream);
-                            }
 
 
-                            // // WIll never display dds files as generating them takes way too fucking long
-                            //FileInfo[] decalDDSFiles = customSkinDir.GetFiles("decals_0.dds");
-                            //if (decalDDSFiles != null && decalDDSFiles.Length > 0)
-                            //{
 
-                            //    // https://stackoverflow.com/questions/23618171/load-dds-file-from-stream-and-display-in-wpf-application
-
-                            //    // https://stackoverflow.com/questions/1118496/using-image-control-in-wpf-to-display-system-drawing-bitmap/1118557#1118557
-                            //    // https://code.google.com/archive/p/kprojects/downloads
-                            //    // https://github.com/ptrsuder/ddsfiletype-plus-hack
-
-                            //    FileInfo decalsFile = decalDDSFiles[0];
-
-                            //    Surface surface = DdsFile.Load(decalsFile.FullName);
-
-                            //    System.Drawing.Bitmap bmp = surface.CreateAliasedBitmap();
-                            //    MemoryStream ms = new MemoryStream();
-                            //    bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                            //    ms.Position = 0;
-                            //    BitmapImage bi = new BitmapImage();
-                            //    bi.BeginInit();
-                            //    bi.StreamSource = ms;
-                            //    bi.EndInit();
-                            //    decalsImage.Source = bi;
-                            //}
+                            UpdateImageSize();
+                            _isLoading = false;
                         }
                     }
                 }));
             });
         }
 
-        BitmapImage LoadPhoto(FileStream stream, string path)
+        private void LoadPhoto(System.Windows.Controls.Image imageControl, FileStream stream, string path)
         {
-            DisposeMediaStream(stream);
-            BitmapImage bmi = new BitmapImage();
-            using (stream = new FileStream(path, FileMode.Open))
+            ThreadPool.QueueUserWorkItem(x =>
             {
-                bmi.BeginInit();
-                bmi.CacheOption = BitmapCacheOption.OnLoad;
-                bmi.StreamSource = stream;
-                bmi.EndInit();
+                BitmapImage bmi = new BitmapImage();
+                using (stream = new FileStream(path, FileMode.Open))
+                {
+                    bmi.BeginInit();
+                    bmi.CacheOption = BitmapCacheOption.OnLoad;
+                    bmi.StreamSource = stream;
+                    bmi.EndInit();
 
-                bmi.Freeze();
-                stream.Close();
-                stream.Dispose();
-            }
-            return bmi;
+                    bmi.Freeze();
+                    stream.Close();
+                    stream.Dispose();
+                }
+
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    imageControl.Source = bmi;
+                }));
+
+                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
+            });
         }
 
         private FileStream _sponsorsStream;
         private FileStream _decalsStream;
-
-        void DisposeMediaStream(FileStream stream)
-        {
-            if (stream != null)
-            {
-                stream.Close();
-                stream.Dispose();
-            }
-
-            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
-        }
-
 
         private Label GetInfoLabel(string text, HorizontalAlignment allignmment = HorizontalAlignment.Left, int size = 13, string toolTip = "")
         {
@@ -417,17 +449,22 @@ namespace ACCManager.Controls
 
         private void StackPanelDecals_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            Grid decalsPanel = sender as Grid;
-            double lowestSize = decalsPanel.ActualWidth;
-            if (decalsPanel.ActualHeight < lowestSize)
+            UpdateImageSize();
+        }
+
+        private void UpdateImageSize()
+        {
+            double lowestSize = imageGrid.ActualWidth;
+            if (imageGrid.ActualHeight < lowestSize)
             {
-                lowestSize = decalsPanel.ActualHeight;
+                lowestSize = imageGrid.ActualHeight;
             }
 
-            decalsImage.Width = lowestSize;
-            decalsImage.Height = lowestSize;
-            sponsorsImage.Width = lowestSize;
-            sponsorsImage.Height = lowestSize;
+            foreach (System.Windows.Controls.Image imageControl in imageGrid.Children)
+            {
+                imageControl.Width = lowestSize;
+                imageControl.Height = lowestSize;
+            }
         }
     }
 }

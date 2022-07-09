@@ -11,10 +11,7 @@ namespace ACC_Manager.Util.Settings
         private static bool _demoMode = false;
         public static bool DemoMode
         {
-            get
-            {
-                return _demoMode;
-            }
+            get { return _demoMode; }
             set { _demoMode = value; }
         }
     }
