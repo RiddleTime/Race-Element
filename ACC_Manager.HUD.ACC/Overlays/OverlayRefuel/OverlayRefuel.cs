@@ -116,6 +116,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
 
             }
 
+            if (this._sessionLength == 0) return;
+
             // pit window
             int pitWindowStartPxl = PercentageToPxl(widgetMaxWidth, this._pitWindowStartPercentage);
             if (pitWindowStartPxl < widgetMinXPos) pitWindowStartPxl = widgetMinXPos;
@@ -131,11 +133,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
             // earliest pit stop bar
             int maxFuelPx = PercentageToPxl(widgetMaxWidth, this._refuelTimeWithMaxFuelPercentage);
             maxFuelPx += widgetMinXPos;
+            maxFuelPx = (maxFuelPx > widgetMaxWidth) ? widgetMaxWidth : maxFuelPx;
             g.FillRectangle(new SolidBrush(Color.FromArgb(200, 0, 255, 0)), new Rectangle(maxFuelPx, barYPos - 10, 2, progressBarHeight + 16));
 
             // latest pit stop bar
             int raceProgressWithFuelPx = PercentageToPxl(widgetMaxWidth, this._raceProgressWithFuelPercentage);
             raceProgressWithFuelPx += widgetMinXPos;
+            raceProgressWithFuelPx = (raceProgressWithFuelPx > widgetMaxWidth) ? widgetMaxWidth : raceProgressWithFuelPx;
             g.FillRectangle(new SolidBrush(Color.FromArgb(200, 255, 0, 0)), new Rectangle(raceProgressWithFuelPx, barYPos - 10, 2, progressBarHeight + 16));
 
             // latest pit stop lap info
@@ -282,7 +286,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
                 // new session, reset
                 this._sessionLength = 0;
                 this._lastSessionType = pageGraphics.SessionType;
-                return;
+                //return;
             }
 
             // new session started
