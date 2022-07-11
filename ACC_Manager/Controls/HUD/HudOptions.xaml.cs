@@ -213,6 +213,13 @@ namespace ACCManager.Controls
                     }
                 };
 
+                OverlayAttribute overlayAttribute = GetOverlayAttribute(x.Value);
+                if (overlayAttribute != null)
+                {
+                    card.ToolTip = overlayAttribute.Description;
+                    ToolTipService.SetShowDuration(card, int.MaxValue);
+                }
+
                 AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(x.Value, args);
                 OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(tempOverlay.Name);
                 if (settings != null)
@@ -243,6 +250,7 @@ namespace ACCManager.Controls
 
 
             string overlayName = GetOverlayName(overlayType);
+
 
             List<ConfigField> configFields = null;
             OverlaySettingsJson overlaySettings = OverlaySettings.LoadOverlaySettings(overlayName);
@@ -510,8 +518,8 @@ namespace ACCManager.Controls
             OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(overlayName);
             if (settings == null)
             {
-                int screenMiddleX = (int)(System.Windows.SystemParameters.PrimaryScreenHeight / 2);
-                int screenMiddleY = (int)(System.Windows.SystemParameters.PrimaryScreenHeight / 2);
+                int screenMiddleX = (int)(SystemParameters.PrimaryScreenHeight / 2);
+                int screenMiddleY = (int)(SystemParameters.PrimaryScreenHeight / 2);
                 settings = new OverlaySettingsJson() { X = screenMiddleX, Y = screenMiddleY };
             }
 
@@ -562,6 +570,25 @@ namespace ACCManager.Controls
             tempOverlay.Dispose();
 
             return name;
+        }
+
+        private OverlayAttribute GetOverlayAttribute(Type overlay)
+        {
+            object[] args = new object[] { new System.Drawing.Rectangle(0, 0, 300, 150) };
+            AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(overlay, args);
+            OverlayAttribute overlayAttribute = null;
+            try
+            {
+                overlayAttribute = tempOverlay.GetType().GetCustomAttribute<OverlayAttribute>();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Overlay {tempOverlay.GetType().Name} doesn't have an overlay attribute specified");
+            }
+
+            tempOverlay.Dispose();
+
+            return overlayAttribute;
         }
 
         private OverlayConfiguration GetOverlayConfig(Type overlay)

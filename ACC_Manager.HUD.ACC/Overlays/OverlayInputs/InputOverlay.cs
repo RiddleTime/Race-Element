@@ -10,6 +10,8 @@ using System.Drawing.Text;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
 {
+    [Overlay(Name = "Inputs", Version = 1.00,
+        Description = "Displays inputs of steering, throttle, brake and the selected gear.")]
     internal sealed class InputsOverlay : AbstractOverlay
     {
         private readonly SteeringWheelConfig _config = new SteeringWheelConfig();
@@ -52,7 +54,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
         {
             if (this._config.ShowCurrentGear)
                 _gearIndicatorFont = FontUtil.FontOrbitron(40);
-            
+
             _cachedBackground = new CachedBitmap((int)(Width * this.Scale), (int)(Height * this.Scale), g =>
             {
                 // background
