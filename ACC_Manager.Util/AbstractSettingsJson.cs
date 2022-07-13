@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace ACC_Manager.Util
 {
+    public interface IGenericSettingsJson { }
+
     public abstract class AbstractSettingsJson<IGenericJson>
     {
         public abstract IGenericJson Default();
@@ -61,9 +63,9 @@ namespace ACC_Manager.Util
             return Default();
         }
 
-        public void SaveJson(IGenericJson accSettings)
+        public void SaveJson(IGenericJson genericJson)
         {
-            string jsonString = JsonConvert.SerializeObject(accSettings, Formatting.Indented);
+            string jsonString = JsonConvert.SerializeObject(genericJson, Formatting.Indented);
 
             if (!SettingsFile.Exists)
                 if (!Directory.Exists(Path))
@@ -77,9 +79,5 @@ namespace ACC_Manager.Util
             if (SettingsFile.Exists)
                 SettingsFile.Delete();
         }
-    }
-
-    public interface IGenericSettingsJson
-    {
     }
 }

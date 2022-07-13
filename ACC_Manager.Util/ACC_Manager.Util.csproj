@@ -54,7 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GenericJsonSettings.cs" />
+    <Compile Include="AbstractSettingsJson.cs" />
     <Compile Include="Settings\AccSettings.cs" />
     <Compile Include="Settings\HardwareSettings.cs" />
     <Compile Include="Settings\HudSettings.cs" />

@@ -22,9 +22,8 @@ namespace ACCManager.Controls.Settings.AccUiSettings
     public partial class AccServerListSettings : UserControl
     {
         private AccSettingsJson _accSettings = AccSettings.LoadJson();
-
-        private AccServerListSettingsJson _accServerListSettingsJson = new AccServerListSettingsJson();
-        private UnlistedServersSettingsJson _unlistedServerSettingsJson = new UnlistedServersSettingsJson();
+        private readonly AccServerListSettingsJson _accServerListSettingsJson = new AccServerListSettingsJson();
+        private readonly UnlistedServersSettingsJson _unlistedServerSettingsJson = new UnlistedServersSettingsJson();
 
         public AccServerListSettings()
         {
