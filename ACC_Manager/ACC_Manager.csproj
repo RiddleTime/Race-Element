@@ -366,6 +366,9 @@
     <Compile Include="Controls\Settings\AccSettings.xaml.cs">
       <DependentUpon>AccSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Settings\AccSettings\AccServerListSettings.xaml.cs">
+      <DependentUpon>AccServerListSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Settings\Hardware.xaml.cs">
       <DependentUpon>Hardware.xaml</DependentUpon>
     </Compile>
@@ -459,6 +462,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Settings\AccSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Settings\AccSettings\AccServerListSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
