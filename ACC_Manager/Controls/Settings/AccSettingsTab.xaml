@@ -29,7 +29,7 @@
                         <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Serverlist</TextBlock>
                     </Grid>
                 </TabItem.Header>
-                <accSettings:AccServerListSettings></accSettings:AccServerListSettings>
+                <accSettings:AccServerListSettings Margin="2,0,0,0"></accSettings:AccServerListSettings>
             </TabItem>
         </TabControl>
     </Grid>
