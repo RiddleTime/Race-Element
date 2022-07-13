@@ -12,6 +12,8 @@ using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
 {
+    [Overlay(Name = "Fuel Info", Version = 1.00,
+        Description = "A panel showing information about the track state: grip, temperatures and wind. Optionally showing the global flag, session type and time of day.")]
     internal sealed class TrackInfoOverlay : AbstractOverlay
     {
         private readonly TrackInfoConfig _config = new TrackInfoConfig();

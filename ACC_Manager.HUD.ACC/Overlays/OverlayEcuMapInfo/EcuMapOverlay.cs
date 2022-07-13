@@ -5,6 +5,8 @@ using System.Drawing;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
 {
+    [Overlay(Name = "ECU Maps", Version = 1.00,
+        Description = "A panel showing information about the current ECU Map.")]
     internal sealed class EcuMapOverlay : AbstractOverlay
     {
         private const int PanelWidth = 270;

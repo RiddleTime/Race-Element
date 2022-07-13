@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
 {
+    [Overlay(Name = "Pressure Trace", Version = 1.00,
+    Description = "Live graphs of the tyre pressures, green is within range, red is too high, blue is too low.")]
     internal sealed class PressureTraceOverlay : AbstractOverlay
     {
         internal static PressureTraceOverlay Instance;

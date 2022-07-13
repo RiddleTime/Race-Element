@@ -14,6 +14,8 @@ using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput.Tra
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
 {
+    [Overlay(Name = "Debug Output", Version = 1.00,
+    Description = "A panel showing live debug output.")]
     internal class DebugOutputOverlay : AbstractOverlay
     {
         private DebugOutputConfiguration _config = new DebugOutputConfiguration();

@@ -13,6 +13,8 @@ using static ACCManager.Data.SetupConverter;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
 {
+    [Overlay(Name = "Car Info", Version = 1.00,
+        Description = "A panel showing the damage time. Optionally showing current tyre set, av. fuel usage, exhaust temp and water temp.")]
     internal sealed class CarInfoOverlay : AbstractOverlay
     {
         private readonly CarInfoConfiguration _config = new CarInfoConfiguration();

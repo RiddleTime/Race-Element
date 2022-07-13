@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
 {
+    [Overlay(Name = "Shift Indicator", Version = 1.00,
+        Description = "A bar showing the current RPM, optionally showing when the pit limiter is enabled.")]
     internal class ShiftIndicatorOverlay : AbstractOverlay
     {
         private readonly ShiftIndicatorConfig _config = new ShiftIndicatorConfig();
