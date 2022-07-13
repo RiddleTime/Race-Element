@@ -10,10 +10,10 @@ namespace ACCManager.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.0.7.9", "- TreeViews: fixed open/close bug when clicking the leafs."+
-                        "\n- Livery Viewer: Increased snappiness."+
+            {"0.0.7.9", "- TreeViews: Fixed open/close bug when clicking the leafs."+
+                        "\n- Livery Viewer: Increased snappiness and decreased memory usage."+
                         "\n- ACC Settings: Added serverlist so you can manage unlisted servers and quickly enable or disable the serverList.json."+
-                        "\n- HUDs: Overlay options will only show when hovering else it will show the description of the overlay."+
+                        "\n- HUDs: Overlay options will only show when hovering else the description of the overlay will be displayed."+
                         "\n- HUDs: Add a Window option to each overlay, allowing it to be captured by streaming applications."},
             {"0.0.7.8", "- Setups: Added Setup Importer, drag and drop your setup json file in the Setup Page/Tab."+
                         "\n- HUDs: Added a preview mode."+
