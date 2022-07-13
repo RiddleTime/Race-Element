@@ -125,7 +125,7 @@ namespace ACCManager.Controls
                 return;
 
             Livery = livery;
-            Livery.carsRoot = LiveryImporter.GetLivery(livery.carsFile);
+            Livery.CarsRoot = LiveryImporter.GetLivery(livery.CarsFile);
             buttonGenerateDDS.Visibility = DDSutil.HasDdsFiles(Livery) ? Visibility.Hidden : Visibility.Visible;
 
 
@@ -136,7 +136,7 @@ namespace ACCManager.Controls
             {
                 Instance.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    CarsJson.Root carsRoot = Livery.carsRoot;
+                    CarsJson.Root carsRoot = Livery.CarsRoot;
                     string customSkinName = carsRoot.customSkinName;
 
                     if (customSkinName != null && customSkinName.Length > 0)

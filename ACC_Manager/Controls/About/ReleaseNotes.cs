@@ -10,6 +10,8 @@ namespace ACCManager.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.0.7.9", "- TreeViews: fixed open/close bug when clicking the leafs."+
+                        "\n- Livery Viewer: Increased snappiness."},
             {"0.0.7.8", "- Setups: Added Setup Importer, drag and drop your setup json file in the Setup Page/Tab."+
                         "\n- HUDs: Added a preview mode."+
                         "\n- HUD: Increased performance for Shift Indicator."},

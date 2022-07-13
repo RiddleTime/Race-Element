@@ -76,6 +76,7 @@ namespace ACCManager.Controls
                             }
 
                             setupRenderer.LogSetup(ref flowDocument, file.FullName);
+                            e.Handled = true;
                         }
                     }
                 }
@@ -89,7 +90,6 @@ namespace ACCManager.Controls
                 DirectoryInfo setupsDirectory = new DirectoryInfo(SetupsPath);
 
                 setupsTreeView.Items.Clear();
-
                 // Find car directories
                 foreach (var carDir in setupsDirectory.GetDirectories())
                 {
@@ -108,7 +108,12 @@ namespace ACCManager.Controls
                             Header = carHeader,
                             Background = new SolidColorBrush(Color.FromArgb(38, 10, 0, 0)),
                         };
-                        carTreeViewItem.PreviewMouseLeftButtonDown += (s, e) => { carTreeViewItem.IsExpanded = !carTreeViewItem.IsExpanded; };
+                        carTreeViewItem.MouseLeftButtonUp += (s, e) =>
+                        {
+                            carTreeViewItem.IsExpanded = !carTreeViewItem.IsExpanded;
+                            if (s == carTreeViewItem)
+                                e.Handled = true;
+                        };
                         carTreeViewItem.ContextMenu = GetCarContextMenu(carDir);
 
                         // find track directories in car dir
@@ -130,7 +135,13 @@ namespace ACCManager.Controls
                                 DataContext = trackDir,
                                 Background = new SolidColorBrush(Color.FromArgb(19, 0, 0, 0)),
                             };
-                            trackTreeViewItem.PreviewMouseLeftButtonDown += (s, e) => { trackTreeViewItem.IsExpanded = !trackTreeViewItem.IsExpanded; };
+                            trackTreeViewItem.MouseLeftButtonUp += (s, e) =>
+                            {
+                                trackTreeViewItem.IsExpanded = !trackTreeViewItem.IsExpanded;
+                                if (s == trackTreeViewItem)
+                                    e.Handled = true;
+                            };
+                            //trackTreeViewItem.MouseLeftButtonUp += (s, e) => { e.Handled = true; };
                             trackTreeViewItem.Expanded += (s, e) =>
                             {
                                 int targetItemInView = trackTreeViewItem.Items.Count;
@@ -150,6 +161,7 @@ namespace ACCManager.Controls
                                         Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style
                                     };
                                     TreeViewItem setupTreeViewItem = new TreeViewItem() { Header = setupHeader, DataContext = trackFile };
+                                    setupTreeViewItem.MouseLeftButtonUp += (s, e) => e.Handled = true;
 
                                     setupTreeViewItem.ContextMenu = GetCompareContextMenu(trackFile);
 

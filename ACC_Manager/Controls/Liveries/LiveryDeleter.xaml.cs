@@ -55,13 +55,13 @@ namespace ACCManager.Controls
 
             try
             {
-                DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + ToBeDeleted.carsRoot.customSkinName);
+                DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + ToBeDeleted.CarsRoot.customSkinName);
                 if (customSkinDir.Exists)
                     customSkinDir.Delete(true);
 
-                ToBeDeleted.carsFile.Delete();
+                ToBeDeleted.CarsFile.Delete();
 
-                MainWindow.Instance.EnqueueSnackbarMessage($"Livery Deleted: {ToBeDeleted.carsRoot.teamName} / {ToBeDeleted.carsRoot.customSkinName}");
+                MainWindow.Instance.EnqueueSnackbarMessage($"Livery Deleted: {ToBeDeleted.CarsRoot.teamName} / {ToBeDeleted.CarsRoot.customSkinName}");
             }
             catch (Exception ex)
             {
@@ -87,9 +87,9 @@ namespace ACCManager.Controls
             ToBeDeleted = liveryTreeCar;
             Instance.transitionDeleteDialog.Visibility = Visibility.Visible;
             Instance.tbDeleteSkinText.Text =
-                $"Team: {ToBeDeleted.carsRoot.teamName}" +
-                $"\nSkin: {ToBeDeleted.carsRoot.customSkinName}" +
-                $"\nCar: {ConversionFactory.GetCarName(ToBeDeleted.carsRoot.carModelType)}";
+                $"Team: {ToBeDeleted.CarsRoot.teamName}" +
+                $"\nSkin: {ToBeDeleted.CarsRoot.customSkinName}" +
+                $"\nCar: {ConversionFactory.GetCarName(ToBeDeleted.CarsRoot.carModelType)}";
 
             buttonDeleteSkinYes.Focus();
         }

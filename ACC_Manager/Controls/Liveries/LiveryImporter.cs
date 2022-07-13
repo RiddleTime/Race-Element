@@ -221,7 +221,7 @@ namespace ACCManager.Controls
                                     }
 
                                 }
-                                LiveryTreeCar ltc = new LiveryTreeCar() { carsFile = new FileInfo(carsJsonFileName), carsRoot = carRoot };
+                                LiveryTreeCar ltc = new LiveryTreeCar() { CarsFile = new FileInfo(carsJsonFileName), CarsRoot = carRoot };
                                 if (!ImportedLiveries.Contains(ltc))
                                 {
                                     ImportedLiveries.Add(ltc);
@@ -287,7 +287,7 @@ namespace ACCManager.Controls
                                     }
 
                                 }
-                                LiveryTreeCar ltc = new LiveryTreeCar() { carsFile = new FileInfo(carsJsonFileName), carsRoot = carRoot };
+                                LiveryTreeCar ltc = new LiveryTreeCar() { CarsFile = new FileInfo(carsJsonFileName), CarsRoot = carRoot };
                                 if (!ImportedLiveries.Contains(ltc))
                                 {
                                     ImportedLiveries.Add(ltc);
