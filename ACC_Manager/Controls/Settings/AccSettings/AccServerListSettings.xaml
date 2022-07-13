@@ -11,16 +11,22 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0" Orientation="Vertical">
-            <ToolBar Style="{DynamicResource MaterialDesignToolbar}">
-                <Button>Add new</Button>
-            </ToolBar>
-            <Label>Known servers:</Label>
-            <ListView x:Name="listViewServers" ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0">
+                <ToolBar Style="{DynamicResource MaterialDesignToolbar}">
+                    <Button>Add new</Button>
+                </ToolBar>
+                <Label HorizontalAlignment="Center" FontWeight="Bold" FontSize="18">Saved Servers</Label>
+            </StackPanel>
+            <ListView Grid.Row="1" x:Name="listViewServers" ScrollViewer.VerticalScrollBarVisibility="Visible" Height="auto">
 
             </ListView>
-        </StackPanel>
-        <StackPanel x:Name="stackPanelServerDescription" Grid.Column="1">
+        </Grid>
+        <StackPanel x:Name="stackPanelServerDescription" Grid.Column="1" Margin="10,0,0,0">
 
         </StackPanel>
     </Grid>

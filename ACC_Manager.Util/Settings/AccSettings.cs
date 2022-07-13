@@ -12,13 +12,13 @@ namespace ACC_Manager.Util.Settings
 {
     public class AccSettingsJson
     {
-        public Guid? UnlistedAccServer { get; set; }
+        public Guid UnlistedAccServer { get; set; }
 
         public static AccSettingsJson Default()
         {
             return new AccSettingsJson()
             {
-                UnlistedAccServer = null,
+                UnlistedAccServer = Guid.Empty,
             };
         }
     }
