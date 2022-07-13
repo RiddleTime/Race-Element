@@ -132,7 +132,7 @@ namespace ACCManager.HUD.Overlay.Internal
                         this._scale = overlayConfig.Scale;
                     }
 
-                    if (overlayConfig.Streamer)
+                    if (overlayConfig.Window)
                     {
                         this.StreamingMode = true;
                     }

@@ -159,8 +159,24 @@ namespace ACCManager.Controls
                     Width = 180,
                     HorizontalContentAlignment = HorizontalAlignment.Center
                 };
+
+
+
                 stackPanel.Children.Add(label);
+
+                Label overlayDescription = new Label()
+                {
+                    Margin = new Thickness(10, 0, 0, 0),
+                    VerticalContentAlignment = VerticalAlignment.Center
+                };
+                stackPanel.Children.Add(overlayDescription);
+
+                OverlayAttribute overlayAttribute = GetOverlayAttribute(x.Value);
+                if (overlayAttribute != null)
+                    overlayDescription.Content = $"{overlayAttribute.Description}";
+
                 StackPanel configStacker = GetConfigStacker(x.Value);
+                configStacker.Visibility = Visibility.Collapsed;
                 stackPanel.Children.Add(configStacker);
                 card.MouseLeftButtonDown += (s, e) => { if (s == card) { toggle.IsChecked = !toggle.IsChecked; } };
 
@@ -173,8 +189,15 @@ namespace ACCManager.Controls
                 {
                     label.Foreground = toggle.IsChecked.Value ? activeHoverColor : Brushes.GreenYellow;
                     toggle.Focus();
+                    configStacker.Visibility = Visibility.Visible;
+                    overlayDescription.Visibility = Visibility.Collapsed;
                 };
-                card.MouseLeave += (s, e) => label.Foreground = toggle.IsChecked.Value ? Brushes.White : new SolidColorBrush(Color.FromArgb(221, 255, 255, 255));
+                card.MouseLeave += (s, e) =>
+                {
+                    label.Foreground = toggle.IsChecked.Value ? Brushes.White : new SolidColorBrush(Color.FromArgb(221, 255, 255, 255));
+                    configStacker.Visibility = Visibility.Collapsed;
+                    overlayDescription.Visibility = Visibility.Visible;
+                };
                 card.MouseUp += (s, e) => label.Foreground = toggle.IsChecked.Value ? activeHoverColor : Brushes.GreenYellow;
                 toggle.Checked += (s, e) =>
                 {
@@ -213,12 +236,7 @@ namespace ACCManager.Controls
                     }
                 };
 
-                OverlayAttribute overlayAttribute = GetOverlayAttribute(x.Value);
-                if (overlayAttribute != null)
-                {
-                    card.ToolTip = overlayAttribute.Description;
-                    ToolTipService.SetShowDuration(card, int.MaxValue);
-                }
+
 
                 AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(x.Value, args);
                 OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(tempOverlay.Name);
@@ -305,7 +323,7 @@ namespace ACCManager.Controls
                         StackPanel intStacker = new StackPanel()
                         {
                             Name = intLabel.Replace(" ", "_"),
-                            Margin = new Thickness(5, 0, 5, 0),
+                            Margin = new Thickness(5, 0, 0, 0),
                             Orientation = Orientation.Horizontal,
                             VerticalAlignment = VerticalAlignment.Center,
                             Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)),
