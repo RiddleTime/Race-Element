@@ -36,7 +36,7 @@ namespace ACCManager.Controls
 
             FillReleaseNotes();
 
-            this.Loaded += (s, e) => ThreadPool.QueueUserWorkItem(x => CheckNewestVersion());
+            this.Loaded += (s, e) => Task.Run(new Action(CheckNewestVersion));
         }
 
         private async void CheckNewestVersion()
