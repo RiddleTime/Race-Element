@@ -12,7 +12,7 @@
         <TabControl TabStripPlacement="Left">
             <TabItem Height="60">
                 <TabItem.Header>
-                    <Grid>
+                    <Grid ToolTip="This allows you to save and activate unlisted server ips for lan discovery in the game.">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>

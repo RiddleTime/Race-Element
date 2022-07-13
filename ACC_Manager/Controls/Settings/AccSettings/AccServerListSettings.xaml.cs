@@ -31,6 +31,63 @@ namespace ACCManager.Controls.Settings.AccUiSettings
 
             this.Loaded += (s, e) => FillListView();
             this.listViewServers.SelectionChanged += ListViewServers_SelectionChanged;
+            buttonNew.Click += ButtonNew_Click;
+        }
+
+        private void ButtonNew_Click(object sender, RoutedEventArgs e)
+        {
+            stackPanelServerDescription.Children.Clear();
+
+            StackPanel namePanel = new StackPanel() { Orientation = Orientation.Horizontal };
+            Label nameLabel = new Label() { Content = "Name", Width = 80 };
+            TextBox nameBox = new TextBox() { Width = 150 };
+            namePanel.Children.Add(nameLabel);
+            namePanel.Children.Add(nameBox);
+
+            StackPanel descriptionPanel = new StackPanel() { Orientation = Orientation.Horizontal };
+            Label descriptionLabel = new Label() { Content = "Description", Width = 80 };
+            TextBox descriptionBox = new TextBox() { Width = 150 };
+            descriptionPanel.Children.Add(descriptionLabel);
+            descriptionPanel.Children.Add(descriptionBox);
+
+
+            StackPanel serverPanel = new StackPanel() { Orientation = Orientation.Horizontal };
+            Label serverLabel = new Label() { Content = "Server", Width = 80 };
+            TextBox serverBox = new TextBox() { Width = 150 };
+            serverPanel.Children.Add(serverLabel);
+            serverPanel.Children.Add(serverBox);
+
+            StackPanel buttonPanel = new StackPanel() { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 10, 0, 0) };
+            Button saveButton = new Button() { Content = "Save" };
+            saveButton.Click += (s, ev) =>
+            {
+                UnlistedAccServer newServer = new UnlistedAccServer()
+                {
+                    Name = nameBox.Text,
+                    Description = descriptionBox.Text,
+                    Server = serverBox.Text,
+                    Guid = Guid.NewGuid()
+                };
+
+                if (newServer.Name != string.Empty && newServer.Description != string.Empty && newServer.Server != string.Empty)
+                {
+                    var unlistedServerSettings = _unlistedServerSettingsJson.LoadJson();
+                    unlistedServerSettings.UnlistedServers.Add(newServer);
+                    _unlistedServerSettingsJson.SaveJson(unlistedServerSettings);
+                    MainWindow.Instance.EnqueueSnackbarMessage("Saved new unlisted server.");
+                    stackPanelServerDescription.Children.Clear();
+                    FillListView();
+                }
+            };
+            buttonPanel.Children.Add(saveButton);
+            Button cancelButton = new Button() { Content = "Cancel", Margin = new Thickness(5, 0, 0, 0) };
+            cancelButton.Click += (s, ev) => stackPanelServerDescription.Children.Clear();
+            buttonPanel.Children.Add(cancelButton);
+
+            stackPanelServerDescription.Children.Add(namePanel);
+            stackPanelServerDescription.Children.Add(descriptionPanel);
+            stackPanelServerDescription.Children.Add(serverPanel);
+            stackPanelServerDescription.Children.Add(buttonPanel);
         }
 
         private void ListViewServers_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -49,14 +106,16 @@ namespace ACCManager.Controls.Settings.AccUiSettings
                     AccSettings.SaveJson(_accSettings);
 
                     AccServerListJson serverList = _accServerListSettingsJson.LoadJson();
-                    serverList.LeagueServerIp = unlistedServer.Server;
+                    serverList.leagueServerIp = unlistedServer.Server;
                     _accServerListSettingsJson.SaveJson(serverList);
+                    FillListView();
                 };
                 toggle.Unchecked += (s, ev) =>
                 {
                     _accSettings.UnlistedAccServer = Guid.Empty;
                     AccSettings.SaveJson(_accSettings);
                     _accServerListSettingsJson.Delete();
+                    FillListView();
                 };
                 Label toggleLabel = new Label() { Content = " Activate" };
 
@@ -70,15 +129,15 @@ namespace ACCManager.Controls.Settings.AccUiSettings
 
                 stackPanelServerDescription.Children.Add(new Label()
                 {
-                    Content = $"{unlistedServer.Name}"
+                    Content = $"Name: {unlistedServer.Name}"
                 });
                 stackPanelServerDescription.Children.Add(new Label()
                 {
-                    Content = $"{unlistedServer.Description}"
+                    Content = $"Description: {unlistedServer.Description}"
                 });
                 stackPanelServerDescription.Children.Add(new Label()
                 {
-                    Content = $"{unlistedServer.Server}"
+                    Content = $"Server address: {unlistedServer.Server}"
                 });
             }
         }
@@ -90,12 +149,14 @@ namespace ACCManager.Controls.Settings.AccUiSettings
             UnlistedServersJson unlistedServersJson = _unlistedServerSettingsJson.LoadJson();
 
             listViewServers.Items.Clear();
+
             if (unlistedServersJson.UnlistedServers != null)
                 foreach (var unlistedAccServer in unlistedServersJson.UnlistedServers)
                 {
                     TextBlock serverTextBlock = new TextBlock()
                     {
                         Text = $"{unlistedAccServer.Name}",
+                        Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
                     };
 
                     if (unlistedAccServer.Guid == _accSettings.UnlistedAccServer)
@@ -104,10 +165,9 @@ namespace ACCManager.Controls.Settings.AccUiSettings
                     ListViewItem listItem = new ListViewItem
                     {
                         Content = serverTextBlock,
-                        DataContext = unlistedAccServer
+                        DataContext = unlistedAccServer,
+                        ContextMenu = GetListContextMenu(unlistedAccServer),
                     };
-
-                    listItem.ContextMenu = GetListContextMenu(unlistedAccServer);
 
                     listViewServers.Items.Add(listItem);
                 }
@@ -140,6 +200,12 @@ namespace ACCManager.Controls.Settings.AccUiSettings
                 serverList.UnlistedServers.Remove(unlistedAccServer);
                 _unlistedServerSettingsJson.SaveJson(serverList);
                 menu.IsOpen = false;
+
+                if (_accSettings.UnlistedAccServer == unlistedAccServer.Guid)
+                    _accServerListSettingsJson.Delete();
+
+                stackPanelServerDescription.Children.Clear();
+                FillListView();
             };
 
             menu.Items.Add(deleteTagButton);
@@ -149,7 +215,9 @@ namespace ACCManager.Controls.Settings.AccUiSettings
 
         public class AccServerListJson : IGenericSettingsJson
         {
-            public string LeagueServerIp { get; set; }
+#pragma warning disable IDE1006 // Naming Styles
+            public string leagueServerIp { get; set; }
+#pragma warning restore IDE1006 // Naming Styles
         }
         internal class AccServerListSettingsJson : AbstractSettingsJson<AccServerListJson>
         {
@@ -158,10 +226,7 @@ namespace ACCManager.Controls.Settings.AccUiSettings
 
             public override AccServerListJson Default()
             {
-                return new AccServerListJson()
-                {
-                    LeagueServerIp = String.Empty
-                };
+                return new AccServerListJson() { leagueServerIp = String.Empty };
             }
         }
 
@@ -171,22 +236,28 @@ namespace ACCManager.Controls.Settings.AccUiSettings
             public string Name { get; set; }
             public string Description { get; set; }
             public string Server { get; set; }
+
+            public override bool Equals(object obj)
+            {
+                if (obj is UnlistedAccServer)
+                {
+                    return this.Guid == ((UnlistedAccServer)obj).Guid;
+                }
+                return false;
+            }
         }
         public class UnlistedServersJson : IGenericSettingsJson
         {
-            public List<UnlistedAccServer> UnlistedServers { get; set; }
+            public List<UnlistedAccServer> UnlistedServers { get; set; } = new List<UnlistedAccServer>();
         }
         internal class UnlistedServersSettingsJson : AbstractSettingsJson<UnlistedServersJson>
         {
             public override string Path => FileUtil.AccManangerSettingsPath;
-            public override string FileName => "ACC.json";
+            public override string FileName => "ACC_UnlistedServers.json";
 
             public override UnlistedServersJson Default()
             {
-                return new UnlistedServersJson()
-                {
-                    UnlistedServers = new List<UnlistedAccServer>()
-                };
+                return new UnlistedServersJson() { UnlistedServers = new List<UnlistedAccServer>() };
             }
         }
     }
