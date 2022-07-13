@@ -134,7 +134,7 @@ namespace ACCManager.HUD.Overlay.Internal
 
                     if (overlayConfig.Window)
                     {
-                        this.StreamingMode = true;
+                        this.WindowMode = true;
                     }
                 }
             }

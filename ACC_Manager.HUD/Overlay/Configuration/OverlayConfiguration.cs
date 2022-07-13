@@ -13,7 +13,7 @@ namespace ACCManager.HUD.Overlay.Configuration
         public bool AllowRescale = false;
         public float Scale { get; set; } = 1.0f;
 
-        [ToolTip("Allows Stream Apps to capture this overlay as a Window, prevents it from being always on top.\nYou will not see it in-game!")]
+        [ToolTip("Allows other software to to detect this overlay as a Window, can be used for streaming apps.")]
         public bool Window { get; set; } = false;
 
         public OverlayConfiguration()
