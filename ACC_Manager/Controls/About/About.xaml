@@ -173,6 +173,7 @@
 
                                 </TextBlock>
                                 <TextBlock>
+                                - Overlays will become visible as soon as the engine is running. <LineBreak/>
                                 - <Bold>Ctrl + Home</Bold> toggles reposition mode.<LineBreak/>
                                 - When the game is in Fullscreen mode, hit F11 twice to display the overlays.
                                 </TextBlock>
