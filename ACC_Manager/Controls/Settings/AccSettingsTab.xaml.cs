@@ -18,9 +18,9 @@ namespace ACCManager.Controls
     /// <summary>
     /// Interaction logic for AccSettings.xaml
     /// </summary>
-    public partial class AccSettings : UserControl
+    public partial class AccSettingsTab : UserControl
     {
-        public AccSettings()
+        public AccSettingsTab()
         {
             InitializeComponent();
         }

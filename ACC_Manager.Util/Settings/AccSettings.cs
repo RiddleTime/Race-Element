@@ -26,16 +26,16 @@ namespace ACC_Manager.Util.Settings
     public class AccSettings
     {
         private const string FileName = "ACC.json";
-        private static FileInfo StreamSettingsFile => new FileInfo(FileUtil.AccManangerSettingsPath + FileName);
+        private static FileInfo AccSettingsFile => new FileInfo(FileUtil.AccManangerSettingsPath + FileName);
 
         public static AccSettingsJson LoadJson()
         {
-            if (!StreamSettingsFile.Exists)
+            if (!AccSettingsFile.Exists)
                 return AccSettingsJson.Default();
 
             try
             {
-                using (FileStream fileStream = StreamSettingsFile.OpenRead())
+                using (FileStream fileStream = AccSettingsFile.OpenRead())
                 {
                     return ReadJson(fileStream);
                 }
@@ -74,7 +74,7 @@ namespace ACC_Manager.Util.Settings
         {
             string jsonString = JsonConvert.SerializeObject(accSettings, Formatting.Indented);
 
-            if (!StreamSettingsFile.Exists)
+            if (!AccSettingsFile.Exists)
                 if (!Directory.Exists(FileUtil.AccManangerSettingsPath))
                     Directory.CreateDirectory(FileUtil.AccManangerSettingsPath);
 

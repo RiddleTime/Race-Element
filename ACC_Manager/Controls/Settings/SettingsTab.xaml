@@ -29,7 +29,7 @@
                         <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">ACC</TextBlock>
                     </Grid>
                 </TabItem.Header>
-                <local:AccSettings></local:AccSettings>
+                <local:AccSettingsTab></local:AccSettingsTab>
             </TabItem>
 
 
