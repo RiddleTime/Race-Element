@@ -23,6 +23,36 @@ namespace ACCManager.Controls.Settings.AccSettings
         public AccServerListSettings()
         {
             InitializeComponent();
+
+            this.Loaded += (s, e) => FillListView();
+        }
+
+        private void FillListView()
+        {
+            List<UnlistedAccServer> list = new List<UnlistedAccServer>();
+            for (int i = 0; i < 10; i++)
+            {
+                list.Add(new UnlistedAccServer() { Name = $"test {i}", Description = $"Description {i}", Server = $"SomeDomainOrIP {i}" });
+            }
+
+            listViewServers.Items.Clear();
+            foreach (var unlistedAccServer in list)
+            {
+                TextBlock serverBlock = new TextBlock()
+                {
+                    Text = unlistedAccServer.Name,
+                    DataContext = unlistedAccServer
+                };
+                listViewServers.Items.Add(serverBlock);
+            }
+        }
+
+        private class UnlistedAccServer
+        {
+            public Guid Guid { get; set; }
+            public string Name { get; set; }
+            public string Description { get; set; }
+            public string Server { get; set; }
         }
     }
 }

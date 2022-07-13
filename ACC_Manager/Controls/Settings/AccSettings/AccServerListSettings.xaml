@@ -7,6 +7,21 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Orientation="Vertical">
+            <ToolBar Style="{DynamicResource MaterialDesignToolbar}">
+                <Button>Add new</Button>
+            </ToolBar>
+            <Label>Known servers:</Label>
+            <ListView x:Name="listViewServers" ScrollViewer.VerticalScrollBarVisibility="Auto">
+
+            </ListView>
+        </StackPanel>
+        <StackPanel Grid.Column="1">
+
+        </StackPanel>
     </Grid>
 </UserControl>
