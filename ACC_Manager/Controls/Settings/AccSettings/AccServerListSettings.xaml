@@ -29,8 +29,8 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0">
-                <Button x:Name="buttonNew">Add new</Button>
-                <Label HorizontalAlignment="Center" FontWeight="Bold" FontSize="18">Saved Servers</Label>
+                <Button x:Name="buttonNew">Add new unlisted server</Button>
+                <Label HorizontalAlignment="Center" FontWeight="Bold" FontSize="18">Unlisted Servers</Label>
             </StackPanel>
 
             <ListView Grid.Row="1" x:Name="listViewServers" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Auto">

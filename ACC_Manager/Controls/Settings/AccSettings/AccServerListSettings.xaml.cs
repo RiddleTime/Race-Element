@@ -100,6 +100,10 @@ namespace ACCManager.Controls.Settings.AccUiSettings
 
                 StackPanel togglePanel = new StackPanel() { Orientation = Orientation.Horizontal, Cursor = Cursors.Hand };
                 ToggleButton toggle = new ToggleButton();
+                if (_accSettings.UnlistedAccServer == unlistedServer.Guid)
+                    toggle.IsChecked = true;
+                Label toggleLabel = new Label() { Content = toggle.IsChecked.Value ? " Deactivate" : " Activate" };
+
                 toggle.Checked += (s, ev) =>
                 {
                     _accSettings.UnlistedAccServer = unlistedServer.Guid;
@@ -109,6 +113,7 @@ namespace ACCManager.Controls.Settings.AccUiSettings
                     serverList.leagueServerIp = unlistedServer.Server;
                     _accServerListSettingsJson.SaveJson(serverList);
                     FillListView();
+                    toggleLabel.Content = toggle.IsChecked.Value ? " Deactivate" : " Activate";
                 };
                 toggle.Unchecked += (s, ev) =>
                 {
@@ -116,11 +121,9 @@ namespace ACCManager.Controls.Settings.AccUiSettings
                     AccSettings.SaveJson(_accSettings);
                     _accServerListSettingsJson.Delete();
                     FillListView();
+                    toggleLabel.Content = toggle.IsChecked.Value ? " Deactivate" : " Activate";
                 };
-                Label toggleLabel = new Label() { Content = " Activate" };
 
-                if (_accSettings.UnlistedAccServer == unlistedServer.Guid)
-                    toggle.IsChecked = true;
 
                 togglePanel.MouseLeftButtonUp += (s, ev) => toggle.IsChecked = !toggle.IsChecked; ;
                 togglePanel.Children.Add(toggle);
