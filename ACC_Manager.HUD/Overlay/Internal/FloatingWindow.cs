@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACC_Manager.Util.Settings;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -8,11 +9,15 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static ACCManager.HUD.Overlay.Internal.WindowStructs;
 
 namespace ACCManager.HUD.Overlay.Internal
 {
     public class FloatingWindow : NativeWindow, IDisposable
     {
+        public string Name { get; internal set; }
+        internal bool WindowMode { get; set; }
+
         #region #  Enums  #
         public enum AnimateMode
         {
@@ -269,20 +274,53 @@ namespace ACCManager.HUD.Overlay.Internal
 
         private void CreateWindowOnly()
         {
-
             CreateParams params1 = new CreateParams();
-            params1.Caption = "FloatingNativeWindow";
+            params1.Caption = Name;
             int nX = this._location.X;
             int nY = this._location.Y;
-            Screen screen1 = Screen.FromHandle(base.Handle);
-            if ((nX + this._size.Width) > screen1.Bounds.Width)
+
+            var monitors = Monitors.GetMonitors();
+            bool isInsideMonitor = false;
+            foreach (var monitor in monitors)
             {
-                nX = screen1.Bounds.Width - this._size.Width;
+                int monitorWidth = monitor.MonitorInfo.monitor.right - monitor.MonitorInfo.monitor.left;
+                int monitorHeight = monitor.MonitorInfo.monitor.bottom - monitor.MonitorInfo.monitor.top;
+                int monitorX = monitor.MonitorInfo.monitor.left;
+                int monitorY = monitor.MonitorInfo.monitor.top;
+
+                if (nX > monitorX && nX < monitorX + monitorWidth)
+                {
+                    if (nY > monitorY && nY < monitorY + monitorHeight)
+                    {
+                        isInsideMonitor = true;
+
+                        if ((nX + this._size.Width) > monitorX + monitorWidth)
+                        {
+                            nX = monitorX + monitorWidth - this._size.Width;
+                        }
+                        if ((nY + this._size.Height) > monitorY + monitorHeight)
+                        {
+                            nY = monitorY + monitorHeight - this._size.Height;
+                        }
+
+                        break;
+                    }
+                }
             }
-            if ((nY + this._size.Height) > screen1.Bounds.Height)
+
+            if (!isInsideMonitor)
             {
-                nY = screen1.Bounds.Height - this._size.Height;
+                Screen screen1 = Screen.FromHandle(base.Handle);
+                if ((nX + this._size.Width) > screen1.Bounds.Width)
+                {
+                    nX = screen1.Bounds.Width - this._size.Width;
+                }
+                if ((nY + this._size.Height) > screen1.Bounds.Height)
+                {
+                    nY = screen1.Bounds.Height - this._size.Height;
+                }
             }
+
             this._location = new Point(nX, nY);
             Size size1 = this._size;
             Point point1 = this._location;
@@ -293,7 +331,16 @@ namespace ACCManager.HUD.Overlay.Internal
             params1.Parent = IntPtr.Zero;
             uint ui = User32.WS_POPUP;
             params1.Style = (int)ui;
-            params1.ExStyle = User32.WS_EX_TOPMOST | User32.WS_EX_TOOLWINDOW | User32.WS_EX_LAYERED | User32.WS_EX_NOACTIVATE | User32.WS_EX_TRANSPARENT;
+
+            int defaultStyle = User32.WS_EX_TOPMOST | User32.WS_EX_TOOLWINDOW | User32.WS_EX_LAYERED | User32.WS_EX_NOACTIVATE | User32.WS_EX_TRANSPARENT;
+            params1.ExStyle = defaultStyle;
+
+            if (WindowMode)
+            {
+                int streamerStyle = User32.WS_EX_TOPMOST | User32.WS_EX_LAYERED | User32.WS_EX_TRANSPARENT;
+                params1.ExStyle = streamerStyle;
+            }
+
             this.CreateHandle(params1);
             this.UpdateLayeredWindow();
         }
@@ -306,7 +353,7 @@ namespace ACCManager.HUD.Overlay.Internal
             RECT rect1;
             Rectangle rectangle1;
             paintstruct1 = new PAINTSTRUCT();
-            IntPtr ptr1 = (isPaintMessage ? User32.BeginPaint(m.HWnd, ref paintstruct1) : m.WParam);
+            IntPtr ptr1 = isPaintMessage ? User32.BeginPaint(m.HWnd, ref paintstruct1) : m.WParam;
             rect1 = new RECT();
             User32.GetWindowRect(base.Handle, ref rect1);
             rectangle1 = new Rectangle(0, 0, rect1.right - rect1.left, rect1.bottom - rect1.top);
@@ -513,26 +560,6 @@ namespace ACCManager.HUD.Overlay.Internal
         public int Reserved6;
         public int Reserved7;
         public int Reserved8;
-    }
-    [StructLayout(LayoutKind.Sequential)]
-    internal struct POINT
-    {
-        public int x;
-        public int y;
-    }
-    [StructLayout(LayoutKind.Sequential)]
-    internal struct RECT
-    {
-        public int left;
-        public int top;
-        public int right;
-        public int bottom;
-    }
-    [StructLayout(LayoutKind.Sequential)]
-    internal struct SIZE
-    {
-        public int cx;
-        public int cy;
     }
     [StructLayout(LayoutKind.Sequential)]
     internal struct TRACKMOUSEEVENTS

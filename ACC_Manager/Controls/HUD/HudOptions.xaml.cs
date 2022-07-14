@@ -1,10 +1,11 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Controls.HUD;
+﻿using ACC_Manager.Util.Settings;
+using ACC_Manager.Util.SystemExtensions;
 using ACCManager.HUD.ACC;
 using ACCManager.HUD.ACC.Overlays.OverlayMousePosition;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.Util;
+using Gma.System.MouseKeyHook;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ using System.Windows.Media;
 using static ACCManager.HUD.Overlay.Configuration.OverlayConfiguration;
 using static ACCManager.HUD.Overlay.Configuration.OverlaySettings;
 
+// https://github.com/gmamaladze/globalmousekeyhook
 namespace ACCManager.Controls
 {
     /// <summary>
@@ -30,7 +32,7 @@ namespace ACCManager.Controls
     /// </summary>
     public partial class HudOptions : UserControl
     {
-        private KeyboardHook _hook = new KeyboardHook();
+        private IKeyboardMouseEvents m_GlobalHook;
 
         private static HudOptions _instance;
         public static HudOptions Instance { get { return _instance; } }
@@ -41,55 +43,71 @@ namespace ACCManager.Controls
         {
             InitializeComponent();
 
-            try
-            {
-                BuildOverlayStackPanel();
-
-                checkBoxReposition.Checked += (s, e) =>
+            bool designTime = System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject());
+            if (!designTime)
+                try
                 {
-                    SetRepositionMode(true);
+                    BuildOverlayStackPanel();
 
-                };
-                checkBoxReposition.Unchecked += (s, e) =>
-                {
-                    SetRepositionMode(false);
-                };
+                    checkBoxReposition.Checked += (s, e) =>
+                    {
+                        SetRepositionMode(true);
 
-                this.PreviewMouseUp += (s, e) =>
-                {
-                    if (e.ChangedButton == MouseButton.Middle)
+                    };
+                    checkBoxReposition.Unchecked += (s, e) =>
+                    {
+                        SetRepositionMode(false);
+                    };
+
+                    checkBoxDemoMode.Checked += (s, e) =>
+                    {
+                        HudSettings.DemoMode = true;
+                    };
+
+                    checkBoxDemoMode.Unchecked += (s, e) =>
+                    {
+                        HudSettings.DemoMode = false;
+                    };
+
+                    this.PreviewMouseUp += (s, e) =>
+                    {
+                        if (e.ChangedButton == MouseButton.Middle)
+                        {
+                            this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
+                            e.Handled = true;
+                        }
+                    };
+
+                    gridRepositionToggler.MouseUp += (s, e) =>
                     {
                         this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
                         e.Handled = true;
-                    }
-                };
+                    };
+                    gridDemoToggler.MouseUp += (s, e) =>
+                    {
+                        this.checkBoxDemoMode.IsChecked = !this.checkBoxDemoMode.IsChecked;
+                    };
 
-                gridRepositionToggler.MouseUp += (s, e) =>
+                    m_GlobalHook = Hook.GlobalEvents();
+                    m_GlobalHook.OnCombination(new Dictionary<Combination, Action> { { Combination.FromString("Control+Home"), () => this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked } });
+
+#if DEBUG
+                    checkBoxDemoMode.IsChecked = true;
+#endif
+                }
+                catch (Exception ex)
                 {
-                    this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
-                    e.Handled = true;
-                };
-
-                _hook.RegisterHotKey(HUD.ModifierKeys.Control, System.Windows.Forms.Keys.Home);
-                _hook.KeyPressed += (s, ev) =>
-                {
-                    this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
-                };
-
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-                LogWriter.WriteToLog(ex);
-            }
+                    Debug.WriteLine(ex);
+                    LogWriter.WriteToLog(ex);
+                }
 
             _instance = this;
         }
 
         public void DisposeKeyboardHooks()
         {
-            Debug.WriteLine("Disposing HUD Keyboard hooks");
-            _hook.Dispose();
+            if (m_GlobalHook != null)
+                m_GlobalHook.Dispose();
         }
 
         private MousePositionOverlay mousePositionOverlay;
@@ -118,13 +136,13 @@ namespace ACCManager.Controls
 
         private void BuildOverlayStackPanel()
         {
-            int screenMiddleX = (int)(System.Windows.SystemParameters.FullPrimaryScreenWidth / 2);
-            int screenMiddleY = (int)(System.Windows.SystemParameters.FullPrimaryScreenHeight / 2);
+            int screenMiddleX = (int)(SystemParameters.FullPrimaryScreenWidth / 2);
+            int screenMiddleY = (int)(SystemParameters.FullPrimaryScreenHeight / 2);
 
             stackPanelOverlayCheckboxes.Children.Clear();
             foreach (KeyValuePair<string, Type> x in OverlaysACC.AbstractOverlays)
             {
-                object[] args = new object[] { new System.Drawing.Rectangle((int)System.Windows.SystemParameters.PrimaryScreenWidth / 2, (int)System.Windows.SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
+                object[] args = new object[] { new System.Drawing.Rectangle((int)SystemParameters.PrimaryScreenWidth / 2, (int)SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
 
                 Card card = new Card() { Margin = new Thickness(2), Cursor = Cursors.Hand };
                 StackPanel stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
@@ -141,14 +159,45 @@ namespace ACCManager.Controls
                     Width = 180,
                     HorizontalContentAlignment = HorizontalAlignment.Center
                 };
+
+
+
                 stackPanel.Children.Add(label);
+
+                Label overlayDescription = new Label()
+                {
+                    Margin = new Thickness(10, 0, 0, 0),
+                    VerticalContentAlignment = VerticalAlignment.Center
+                };
+                stackPanel.Children.Add(overlayDescription);
+
+                OverlayAttribute overlayAttribute = GetOverlayAttribute(x.Value);
+                if (overlayAttribute != null)
+                    overlayDescription.Content = $"{overlayAttribute.Description}";
+
                 StackPanel configStacker = GetConfigStacker(x.Value);
+                configStacker.Visibility = Visibility.Collapsed;
                 stackPanel.Children.Add(configStacker);
                 card.MouseLeftButtonDown += (s, e) => { if (s == card) { toggle.IsChecked = !toggle.IsChecked; } };
 
-                card.MouseMove += (s, e) => label.Foreground = toggle.IsChecked.Value ? activeHoverColor : Brushes.GreenYellow;
-                card.MouseEnter += (s, e) => label.Foreground = toggle.IsChecked.Value ? activeHoverColor : Brushes.GreenYellow;
-                card.MouseLeave += (s, e) => label.Foreground = toggle.IsChecked.Value ? Brushes.White : new SolidColorBrush(Color.FromArgb(221, 255, 255, 255));
+                card.MouseMove += (s, e) =>
+                {
+                    label.Foreground = toggle.IsChecked.Value ? activeHoverColor : Brushes.GreenYellow;
+                    toggle.Focus();
+                };
+                card.MouseEnter += (s, e) =>
+                {
+                    label.Foreground = toggle.IsChecked.Value ? activeHoverColor : Brushes.GreenYellow;
+                    toggle.Focus();
+                    configStacker.Visibility = Visibility.Visible;
+                    overlayDescription.Visibility = Visibility.Collapsed;
+                };
+                card.MouseLeave += (s, e) =>
+                {
+                    label.Foreground = toggle.IsChecked.Value ? Brushes.White : new SolidColorBrush(Color.FromArgb(221, 255, 255, 255));
+                    configStacker.Visibility = Visibility.Collapsed;
+                    overlayDescription.Visibility = Visibility.Visible;
+                };
                 card.MouseUp += (s, e) => label.Foreground = toggle.IsChecked.Value ? activeHoverColor : Brushes.GreenYellow;
                 toggle.Checked += (s, e) =>
                 {
@@ -187,6 +236,8 @@ namespace ACCManager.Controls
                     }
                 };
 
+
+
                 AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(x.Value, args);
                 OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(tempOverlay.Name);
                 if (settings != null)
@@ -217,6 +268,7 @@ namespace ACCManager.Controls
 
 
             string overlayName = GetOverlayName(overlayType);
+
 
             List<ConfigField> configFields = null;
             OverlaySettingsJson overlaySettings = OverlaySettings.LoadOverlaySettings(overlayName);
@@ -271,7 +323,7 @@ namespace ACCManager.Controls
                         StackPanel intStacker = new StackPanel()
                         {
                             Name = intLabel.Replace(" ", "_"),
-                            Margin = new Thickness(5, 0, 5, 0),
+                            Margin = new Thickness(5, 0, 0, 0),
                             Orientation = Orientation.Horizontal,
                             VerticalAlignment = VerticalAlignment.Center,
                             Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)),
@@ -484,8 +536,8 @@ namespace ACCManager.Controls
             OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(overlayName);
             if (settings == null)
             {
-                int screenMiddleX = (int)(System.Windows.SystemParameters.FullPrimaryScreenWidth / 2);
-                int screenMiddleY = (int)(System.Windows.SystemParameters.FullPrimaryScreenHeight / 2);
+                int screenMiddleX = (int)(SystemParameters.PrimaryScreenHeight / 2);
+                int screenMiddleY = (int)(SystemParameters.PrimaryScreenHeight / 2);
                 settings = new OverlaySettingsJson() { X = screenMiddleX, Y = screenMiddleY };
             }
 
@@ -536,6 +588,25 @@ namespace ACCManager.Controls
             tempOverlay.Dispose();
 
             return name;
+        }
+
+        private OverlayAttribute GetOverlayAttribute(Type overlay)
+        {
+            object[] args = new object[] { new System.Drawing.Rectangle(0, 0, 300, 150) };
+            AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(overlay, args);
+            OverlayAttribute overlayAttribute = null;
+            try
+            {
+                overlayAttribute = tempOverlay.GetType().GetCustomAttribute<OverlayAttribute>();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Overlay {tempOverlay.GetType().Name} doesn't have an overlay attribute specified");
+            }
+
+            tempOverlay.Dispose();
+
+            return overlayAttribute;
         }
 
         private OverlayConfiguration GetOverlayConfig(Type overlay)

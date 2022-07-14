@@ -26,26 +26,20 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             {
                 Throttle.AddFirst((int)(filePhysics.Gas * 100));
                 if (Throttle.Count > TraceCount)
-                {
                     Throttle.RemoveLast();
-                }
             }
             lock (Brake)
             {
                 Brake.AddFirst((int)(filePhysics.Brake * 100));
                 if (Brake.Count > TraceCount)
-                {
                     Brake.RemoveLast();
-                }
             }
 
             lock (Steering)
             {
                 Steering.AddFirst((int)((filePhysics.SteerAngle + 1.0) / 2 * 100));
                 if (Steering.Count > TraceCount)
-                {
                     Steering.RemoveLast();
-                }
             }
         }
 

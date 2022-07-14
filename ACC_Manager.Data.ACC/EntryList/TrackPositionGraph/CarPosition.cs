@@ -25,7 +25,7 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
 
     public static class CarPositionUpdater
     {
-        public static void UpdateLocation(this Car car, float NewSplinePosition, CarLocationEnum newLocation)
+        public static void UpdateLocation(this Car car, float newSplinePosition, CarLocationEnum newLocation)
         {
             EntryListTracker.CarData carData = EntryListTracker.Instance._entryListCars[car.CarIndex];
             if (carData.CarInfo == null)
@@ -157,7 +157,7 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
             }
 
 
-            if (car.SplinePosition > NewSplinePosition && car.SplinePosition > 0.99)
+            if (car.SplinePosition > newSplinePosition && car.SplinePosition > 0.99)
             {
                 if (newLocation == CarLocationEnum.Track && car.Location == CarLocationEnum.Track)
                 {
@@ -186,7 +186,7 @@ namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
                 }
             }
 
-            car.SplinePosition = NewSplinePosition;
+            car.SplinePosition = newSplinePosition;
         }
     }
 }

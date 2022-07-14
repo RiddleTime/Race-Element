@@ -129,10 +129,10 @@ namespace ACCManager.Controls
                     };
                     _obsWebSocket.Connect($"ws://{streamSettings.StreamingWebSocketIP}:{streamSettings.StreamingWebSocketPort}", streamSettings.StreamingWebSocketPassword);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     MainWindow.Instance.ClearSnackbar();
-                    MainWindow.Instance.EnqueueSnackbarMessage($"Failed to make a connection to {streamSettings.StreamingSoftware}.");
+                    MainWindow.Instance.EnqueueSnackbarMessage($"Failed to make a connection to OBS.");
                     Dispatcher.Invoke(() =>
                     {
                         buttonTestConnnection.Content = "Test Connection";
@@ -163,7 +163,7 @@ namespace ACCManager.Controls
                         else
                         {
                             MainWindow.Instance.ClearSnackbar();
-                            MainWindow.Instance.EnqueueSnackbarMessage($"Connection to {streamSettings.StreamingSoftware} is working.");
+                            MainWindow.Instance.EnqueueSnackbarMessage($"Connection to StreamLabs is working.");
                         }
                     }
                 }
@@ -171,7 +171,7 @@ namespace ACCManager.Controls
                 {
                     Debug.WriteLine(e);
 
-                    string message = $"Failed to make a connection to {streamSettings.StreamingSoftware}.";
+                    string message = $"Failed to make a connection to StreamLabs.";
 
                     if (e.Message.Contains("SetupHider"))
                         message = e.Message;

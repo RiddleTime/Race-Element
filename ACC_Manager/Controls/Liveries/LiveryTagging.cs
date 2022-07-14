@@ -74,15 +74,15 @@ namespace ACCManager.Controls
         {
             TaggedLivery taggedLivery = new TaggedLivery()
             {
-                CarModelType = livery.carsRoot.carModelType,
-                TeamName = livery.carsRoot.teamName,
-                CustomSkinName = livery.carsRoot.customSkinName,
+                CarModelType = livery.CarsRoot.carModelType,
+                TeamName = livery.CarsRoot.teamName,
+                CustomSkinName = livery.CarsRoot.customSkinName,
             };
 
             if (!tag.TaggedLiveries.Contains(taggedLivery))
                 tag.TaggedLiveries.Add(taggedLivery);
             else
-                MainWindow.Instance.EnqueueSnackbarMessage($"{livery.carsRoot.customSkinName} has already been tagged with {tag.Name}");
+                MainWindow.Instance.EnqueueSnackbarMessage($"{livery.CarsRoot.customSkinName} has already been tagged with {tag.Name}");
 
             SaveTag(tag);
 
@@ -95,9 +95,9 @@ namespace ACCManager.Controls
         {
             TaggedLivery taggedLivery = new TaggedLivery()
             {
-                CarModelType = livery.carsRoot.carModelType,
-                TeamName = livery.carsRoot.teamName,
-                CustomSkinName = livery.carsRoot.customSkinName,
+                CarModelType = livery.CarsRoot.carModelType,
+                TeamName = livery.CarsRoot.teamName,
+                CustomSkinName = livery.CarsRoot.customSkinName,
             };
 
             tag.TaggedLiveries.Remove(taggedLivery);
@@ -121,9 +121,9 @@ namespace ACCManager.Controls
 
             tag.TaggedLiveries.ForEach(x =>
             {
-                if (x.CarModelType == car.carsRoot.carModelType
-                    && x.TeamName == car.carsRoot.teamName
-                    && x.CustomSkinName == car.carsRoot.customSkinName)
+                if (x.CarModelType == car.CarsRoot.carModelType
+                    && x.TeamName == car.CarsRoot.teamName
+                    && x.CustomSkinName == car.CarsRoot.customSkinName)
                     found = true;
             });
 

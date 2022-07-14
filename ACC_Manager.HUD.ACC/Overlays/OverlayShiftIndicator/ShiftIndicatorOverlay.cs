@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,8 @@ using System.Threading.Tasks;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
 {
+    [Overlay(Name = "Shift Indicator", Version = 1.00,
+        Description = "A bar showing the current RPM, optionally showing when the pit limiter is enabled.")]
     internal class ShiftIndicatorOverlay : AbstractOverlay
     {
         private readonly ShiftIndicatorConfig _config = new ShiftIndicatorConfig();
@@ -40,13 +43,17 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
             }
         }
 
+        private string _lastCar = string.Empty;
+        private CachedBitmap _cachedBackground;
+        private CachedBitmap _cachedRpmLines;
+
         private Font _font;
         private float _halfRpmStringWidth = -1;
         private float _halfPitLimiterStringWidth = -1;
 
         public ShiftIndicatorOverlay(Rectangle rectangle) : base(rectangle, "Shift Indicator Overlay")
         {
-            this.RefreshRateHz = 30;
+            this.RefreshRateHz = 40;
             AllowReposition = true;
             this.Height = _config.Height + 1;
             this.Width = _config.Width + 1;
@@ -56,9 +63,41 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
         {
             if (_config.ShowRpm || _config.ShowPitLimiter)
                 _font = FontUtil.FontUnispace(15);
+
+            _cachedBackground = new CachedBitmap((int)(_config.Width * this.Scale + 1), (int)(_config.Height * this.Scale + 1), g =>
+            {
+                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(160, 0, 0, 0)), new Rectangle(0, 0, (int)(_config.Width * this.Scale), (int)(_config.Height * this.Scale)), (int)(6 * Scale));
+                g.DrawRoundedRectangle(Pens.DarkGray, new Rectangle(0, 0, (int)(_config.Width * this.Scale), (int)(_config.Height * this.Scale)), (int)(6 * Scale));
+            });
+
+            _cachedRpmLines = new CachedBitmap(_config.Width, _config.Height, rpmG =>
+            {
+                int lineCount = (int)Math.Floor(pageStatic.MaxRpm / 1000d);
+
+                int leftOver = pageStatic.MaxRpm % 1000;
+                if (leftOver < 70)
+                    lineCount--;
+
+                Pen linePen = new Pen(new SolidBrush(Color.FromArgb(90, Color.White)), 2);
+
+                double thousandPercent = 1000d / pageStatic.MaxRpm * lineCount;
+                double baseX = _config.Width / lineCount * thousandPercent;
+                for (int i = 1; i <= lineCount; i++)
+                {
+                    int x = (int)(i * baseX);
+                    rpmG.DrawLine(linePen, x, 1, x, _config.Height - 1);
+                }
+            });
         }
 
-        public sealed override void BeforeStop() { }
+        public sealed override void BeforeStop()
+        {
+            if (_cachedBackground != null)
+                _cachedBackground.Dispose();
+
+            if (_cachedRpmLines != null)
+                _cachedRpmLines.Dispose();
+        }
 
         public sealed override void Render(Graphics g)
         {
@@ -66,13 +105,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
             g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
             g.TextContrast = 1;
 
-            // draw background
-            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(160, 0, 0, 0)), new Rectangle(0, 0, _config.Width, _config.Height), 6);
-            g.DrawRoundedRectangle(Pens.DarkGray, new Rectangle(0, 0, _config.Width, _config.Height), 6);
+            if (_cachedBackground != null)
+                _cachedBackground.Draw(g, _config.Width, _config.Height);
 
             if (_config.ShowPitLimiter && pagePhysics.PitLimiterOn)
             {
-
                 DrawPitLimiterBar(g);
 
                 string pitLimiter = "!Pit Limiter!";
@@ -148,21 +185,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
 
         private void DrawRpmBar1kLines(Graphics g)
         {
-            int lines = (int)Math.Floor(pageStatic.MaxRpm / 1000d);
-
-            int leftOver = pageStatic.MaxRpm % 1000;
-            if (leftOver < 70)
-                lines--;
-
-            Pen linePen = new Pen(new SolidBrush(Color.FromArgb(120, Color.LightGray)), 2);
-
-            double thousandPercent = 1000d / pageStatic.MaxRpm * lines;
-
-            for (int i = 1; i <= lines; i++)
+            if (_lastCar != pageStatic.CarModel)
             {
-                int x = (int)(i * _config.Width / lines * thousandPercent);
-                g.DrawLine(linePen, x, 1, x, _config.Height - 1);
+                _cachedRpmLines.Render();
+                _lastCar = pageStatic.CarModel;
             }
+
+            _cachedRpmLines.Draw(g);
         }
 
         public sealed override bool ShouldRender()

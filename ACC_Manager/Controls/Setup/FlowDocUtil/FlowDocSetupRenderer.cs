@@ -20,14 +20,14 @@ namespace ACCManager.Controls.Setup
 {
     public class FlowDocSetupRenderer
     {
-        public void LogSetup(ref FlowDocument flowDocument, string file)
+        public void LogSetup(ref FlowDocument flowDocument, string file, bool logTrack = true)
         {
             flowDocument.Blocks.Clear();
 
             Root setup = GetSetupJsonRoot(file);
             if (setup == null) return;
 
-            CarModels model = ConversionFactory.ParseCarName(DocUtil.GetParseName(file));
+            CarModels model = ConversionFactory.ParseCarName(setup.carName);
             if (model == CarModels.None) return;
             ICarSetupConversion carSetup = ConversionFactory.GetConversion(model);
 
@@ -130,7 +130,8 @@ namespace ACCManager.Controls.Setup
 
             Table setupInfoTable = DocUtil.GetTable(30, 70);
             TableRowGroup rowGroupSetupInfo = new TableRowGroup();
-            rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRow("Track", $"{DocUtil.GetTrackName(file)}"));
+            if (logTrack)
+                rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRow("Track", $"{DocUtil.GetTrackName(file)}"));
             rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRow("Car", $"{CarModelToCarName[carSetup.CarModel]}"));
             rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRow("Class", $"{carSetup.CarClass}"));
 
@@ -230,7 +231,7 @@ namespace ACCManager.Controls.Setup
             electronicsRowGroup.Rows.Add(DocUtil.GetTableRow("Engine map", $"{setup.basicSetup.electronics.eCUMap + 1}"));
 
             electronicsTable.RowGroups.Add(electronicsRowGroup);
-            electronicsSection.Blocks.Add(electronicsTable);  
+            electronicsSection.Blocks.Add(electronicsTable);
             electronicsSection.BorderBrush = Brushes.White;
             electronicsSection.BorderThickness = new Thickness(1, 1, 1, 1);
             flowDocument.Blocks.Add(electronicsSection);

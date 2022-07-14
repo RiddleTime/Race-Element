@@ -34,33 +34,6 @@
 
                 <controls:TelemetryDebug></controls:TelemetryDebug>
             </TabItem>
-
-            <TabItem>
-                <TabItem.Header>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <materialDesign:PackIcon
-                            Grid.Column="0"
-                            Kind="ChartLine"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            Height="32"
-                        Foreground="White"    
-                        />
-                        <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center">
-                         Charts
-                        </TextBlock>
-                    </Grid>
-                </TabItem.Header>
-                <Grid>
-                    <TextBlock x:Name="tbDataChartsInProgress" HorizontalAlignment="Center" VerticalAlignment="Center">Under Development</TextBlock>
-                    <controls:DataRecorder x:Name="dataRecorderControl" Visibility="Hidden"></controls:DataRecorder>
-                </Grid>
-            </TabItem>
-
         </TabControl>
 
     </Grid>

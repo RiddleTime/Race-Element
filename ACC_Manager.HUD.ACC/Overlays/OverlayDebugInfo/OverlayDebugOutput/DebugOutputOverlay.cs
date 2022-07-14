@@ -10,10 +10,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput.DebugOutputListener;
+using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput.TraceOutputListener;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
 {
+    [Overlay(Name = "Debug Output", Version = 1.00,
+    Description = "A panel showing live debug output.")]
     internal class DebugOutputOverlay : AbstractOverlay
     {
         private DebugOutputConfiguration _config = new DebugOutputConfiguration();
@@ -46,9 +48,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
 
             int fontSize = 9;
             _font = FontUtil.FontOrbitron(fontSize);
-            _table = new InfoTable(fontSize, new int[] { 600 });
+            _table = new InfoTable(fontSize, new int[] { _config.Width - 66 });
             RefreshRateHz = 5;
-            this.Width = _config.Width;
+            this.Width = _config.Width + 1;
         }
 
         private void Instance_WidthChanged(object sender, bool e)
@@ -83,7 +85,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
 
         public override void Render(Graphics g)
         {
-            foreach (DebugOut output in DebugOutputListener.Instance.Outputs.Take(_config.VisibleLines))
+            foreach (MessageOut output in TraceOutputListener.Instance.Outputs.Take(_config.VisibleLines))
             {
                 DateTime time = DateTime.FromFileTime(output.time);
                 _table.AddRow($"{time:HH\\:mm\\:ss}", new string[] { output.message });

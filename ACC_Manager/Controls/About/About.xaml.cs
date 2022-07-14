@@ -1,9 +1,11 @@
-﻿using ACCManager.Util;
+﻿using ACC_Manager.Util.SystemExtensions;
+using ACCManager.Util;
 using Octokit;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,22 +26,25 @@ namespace ACCManager.Controls
     /// </summary>
     public partial class About : UserControl
     {
+
         public About()
         {
             InitializeComponent();
 
-            buttonDiscord.Click += (sender, e) => System.Diagnostics.Process.Start("https://discord.gg/26AAEW5mUq"); ;
-            buttonGithub.Click += (sender, e) => System.Diagnostics.Process.Start("https://github.com/RiddleTime/ACC-Manager");
+            buttonDiscord.Click += (sender, e) => Process.Start("https://discord.gg/26AAEW5mUq"); ;
+            buttonGithub.Click += (sender, e) => Process.Start("https://github.com/RiddleTime/ACC-Manager");
 
             FillReleaseNotes();
-            ThreadPool.QueueUserWorkItem(x => CheckNewestVersion());
+
+            this.Loaded += (s, e) => Task.Run(new Action(CheckNewestVersion));
         }
 
         private async void CheckNewestVersion()
         {
 #if DEBUG
+            TitleBar.Instance.SetAppTitle("Dev");
             return;
-#else
+#endif
             try
             {
                 GitHubClient client = new GitHubClient(new ProductHeaderValue("ACC-Manager"), new Uri("https://github.com/RiddleTime/ACC-Manager.git"));
@@ -48,7 +53,14 @@ namespace ACCManager.Controls
                 if (allTags != null && allTags.Count > 0)
                 {
                     RepositoryTag latest = allTags.First();
-                    if (!GetAssemblyFileVersion().Equals(latest.Name))
+
+                    long localVersion = VersionToLong(Assembly.GetEntryAssembly().GetName().Version);
+                    long remoteVersion = VersionToLong(new Version(latest.Name));
+
+                    if (localVersion > remoteVersion)
+                        TitleBar.Instance.SetAppTitle("Beta");
+
+                    if (remoteVersion > localVersion)
                     {
                         Release release = await client.Repository.Release.GetLatest("RiddleTime", "ACC-Manager");
 
@@ -75,14 +87,18 @@ namespace ACCManager.Controls
             catch (Exception)
             {
             }
-#endif
         }
 
-        private static string GetAssemblyFileVersion()
+        private long VersionToLong(Version VersionInfo)
         {
-            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(assembly.Location);
-            return fileVersion.FileVersion;
+            string major = $"{VersionInfo.Major}".FillStart(4, '0');
+            string minor = $"{VersionInfo.Minor}".FillStart(4, '0');
+            string build = $"{VersionInfo.Build}".FillStart(4, '0');
+            string revision = $"{VersionInfo.Revision}".FillStart(4, '0');
+            string versionString = major + minor + build + revision;
+
+            long.TryParse(versionString, out long version);
+            return version;
         }
 
         private void FillReleaseNotes()

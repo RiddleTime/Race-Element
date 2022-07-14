@@ -11,52 +11,55 @@ using static ACCManager.HUD.ACC.Overlays.OverlayInputTrace.InputTraceOverlay;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
 {
-    internal class InputGraph
+    internal class InputGraph : IDisposable
     {
-        private int X, Y;
-        private int Width, Height;
-        private LinkedList<int> ThrottleData;
-        private LinkedList<int> BrakeData;
-        private LinkedList<int> SteeringData;
-        private InputTraceConfig Config;
+        private int _x, _y;
+        private int _width, _height;
+        private readonly InputTraceConfig _config;
+        private readonly InputDataCollector _collector;
 
-        public InputGraph(int x, int y, int width, int height, LinkedList<int> throttleData, LinkedList<int> brakeData, LinkedList<int> steeringData, InputTraceConfig config)
+        private readonly CachedBitmap _cachedBackground;
+
+        public InputGraph(int x, int y, int width, int height, InputDataCollector collector, InputTraceConfig config)
         {
-            this.X = x;
-            this.Y = y;
-            this.Width = width;
-            this.Height = height;
-            this.SteeringData = steeringData;
-            this.ThrottleData = throttleData;
-            this.BrakeData = brakeData;
-            this.Config = config;
+            _x = x;
+            _y = y;
+            _width = width;
+            _height = height;
+            _collector = collector;
+            _config = config;
+
+            _cachedBackground = new CachedBitmap(_width, _height, g =>
+            {
+                Rectangle graphRect = new Rectangle(_x, _y, _width, _height);
+                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(196, Color.Black)), graphRect, 3);
+                g.DrawRoundedRectangle(new Pen(Color.FromArgb(196, Color.Black)), graphRect, 3);
+            });
         }
 
         private int GetRelativeNodeY(int value)
         {
             double range = 100 - 0;
             double percentage = 1d - (value - 0) / range;
-            return (int)(percentage * (Height - Height / 5))
-                    + Height / 10;
+            return (int)(percentage * (_height - _height / 5))
+                    + _height / 10;
         }
 
         public void Draw(Graphics g)
         {
             SmoothingMode previous = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.HighQuality;
-            Rectangle graphRect = new Rectangle(X, Y, Width, Height);
-            // draw background
-            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(196, Color.Black)), graphRect, 3);
+
+            if (_cachedBackground != null)
+                _cachedBackground.Draw(g);
+
+            if (this._config.ShowSteeringInput)
+                DrawData(g, _collector.Steering, Color.FromArgb(190, Color.White));
+
+            DrawData(g, _collector.Throttle, Color.ForestGreen);
+            DrawData(g, _collector.Brake, Color.Red);
 
 
-            if (this.Config.ShowSteeringInput)
-                DrawData(g, SteeringData, Color.FromArgb(190, Color.White));
-
-            DrawData(g, ThrottleData, Color.ForestGreen);
-            DrawData(g, BrakeData, Color.Red);
-
-
-            g.DrawRoundedRectangle(new Pen(Color.FromArgb(196, Color.Black)), graphRect, 3);
             g.SmoothingMode = previous;
         }
 
@@ -68,13 +71,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
                 lock (Data)
                     for (int i = 0; i < Data.Count - 1; i++)
                     {
-                        int x = X + Width - i * (Width / Data.Count);
+                        int x = _x + _width - i * (_width / Data.Count);
                         lock (Data)
                         {
-                            int y = Y + GetRelativeNodeY(Data.ElementAt(i));
-                            y.ClipMax(Y + Height);
+                            int y = _y + GetRelativeNodeY(Data.ElementAt(i));
+                            y.ClipMax(_y + _height);
 
-                            if (x < X)
+                            if (x < _x)
                                 break;
 
                             points.Add(new Point(x, y));
@@ -89,6 +92,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
                     g.DrawPath(new Pen(color, 2f), path);
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            _cachedBackground.Dispose();
         }
     }
 }

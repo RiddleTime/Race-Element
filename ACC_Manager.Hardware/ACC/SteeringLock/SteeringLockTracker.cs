@@ -93,7 +93,8 @@ namespace ACCManager.Hardware.ACC.SteeringLock
 
             ResetRotation();
             int rotation = Data.ACC.Cars.SteeringLock.Get(_lastCar);
-            Debug.WriteLine("AccSteeringLock: setting rotation of " + _lastCar + " to: " + rotation);
+            
+            Trace.WriteLine($"Set wheelbase rotation for {_lastCar} to {rotation}");
 
             if (!_wheel.Apply(rotation, false, out _lastRotation))
                 Debug.WriteLine("AccSteeringLock: IWheelSteerLockSetter::Apply() failed.");

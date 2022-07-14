@@ -1,4 +1,5 @@
-﻿using ACC_Manager.Util.SystemExtensions;
+﻿using ACC_Manager.Util.Settings;
+using ACC_Manager.Util.SystemExtensions;
 using ACCManager.Broadcast.Structs;
 using ACCManager.Data.ACC.Session;
 using ACCManager.Data.ACC.Tracker;
@@ -20,6 +21,8 @@ using System.Windows.Forms;
 using System.Windows.Threading;
 using static ACCManager.ACCSharedMemory;
 using static ACCManager.HUD.Overlay.Configuration.OverlaySettings;
+using static ACCManager.HUD.Overlay.Internal.Monitors;
+using static ACCManager.HUD.Overlay.Internal.Windows;
 
 namespace ACCManager.HUD.Overlay.Internal
 {
@@ -30,7 +33,6 @@ namespace ACCManager.HUD.Overlay.Internal
         public abstract bool ShouldRender();
         public abstract void Render(Graphics g);
 
-        public string Name { get; private set; }
         private bool Draw = false;
 
         public bool IsRepositioning { get; internal set; }
@@ -55,6 +57,7 @@ namespace ACCManager.HUD.Overlay.Internal
         public bool AllowReposition { get; set; } = true;
 
         private float _scale = 1f;
+        public float Scale { get { return _scale; } }
         private bool _allowRescale = false;
 
         private Window RepositionWindow;
@@ -81,9 +84,8 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public bool DefaultShouldRender()
         {
-#if DEBUG
-            return true;
-#endif
+            if (HudSettings.DemoMode)
+                return true;
 
             bool shouldRender = true;
             if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF || pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
@@ -128,6 +130,11 @@ namespace ACCManager.HUD.Overlay.Internal
                     {
                         this._allowRescale = true;
                         this._scale = overlayConfig.Scale;
+                    }
+
+                    if (overlayConfig.Window)
+                    {
+                        this.WindowMode = true;
                     }
                 }
             }
@@ -342,8 +349,11 @@ namespace ACCManager.HUD.Overlay.Internal
                         BorderThickness = new Thickness(1),
                         ShowInTaskbar = false,
                         AllowsTransparency = true,
-                        Opacity = 0.3,
+                        Opacity = 0.25,
+                        Cursor = System.Windows.Input.Cursors.None
                     };
+
+
                     this.RepositionWindow.MouseLeftButtonDown += (s, e) =>
                     {
                         if (this.RepositionWindow == null)
@@ -422,7 +432,11 @@ namespace ACCManager.HUD.Overlay.Internal
                                     this.RepositionWindow = null;
                                 }
                             }
-                            catch (Exception ex) { Debug.WriteLine(ex); }
+                            catch (Exception ex)
+                            {
+                                Debug.WriteLine(ex);
+                                LogWriter.WriteToLog(ex);
+                            }
                         }));
                     }
 

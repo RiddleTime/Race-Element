@@ -27,14 +27,14 @@ namespace ACCManager.Controls.Liveries
         {
             for (int i = 0; i < pngsToDDS.Count; i++)
             {
-                DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + livery.carsRoot.customSkinName);
+                DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + livery.CarsRoot.customSkinName);
                 FileInfo[] liveryPngFiles = customSkinDir.GetFiles(pngsToDDS.ElementAt(i).Value);
                 if (liveryPngFiles != null && liveryPngFiles.Length > 0)
                 {
                     MainWindow.Instance.Dispatcher.Invoke(new Action(() =>
                     {
                         MainWindow.Instance.ClearSnackbar();
-                        MainWindow.Instance.EnqueueSnackbarMessage($"Generating {pngsToDDS.ElementAt(i).Key} for {livery.carsRoot.customSkinName}");
+                        MainWindow.Instance.EnqueueSnackbarMessage($"Generating {pngsToDDS.ElementAt(i).Key} for {livery.CarsRoot.customSkinName}");
                     }));
 
                     FileInfo pngFile = liveryPngFiles[0];
@@ -69,7 +69,7 @@ namespace ACCManager.Controls.Liveries
             {
                 KeyValuePair<string, string> kvp = pngsToDDS.ElementAt(i);
 
-                DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + livery.carsRoot.customSkinName);
+                DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + livery.CarsRoot.customSkinName);
                 if (customSkinDir.Exists)
                 {
                     //check if png exists

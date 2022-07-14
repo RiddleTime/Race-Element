@@ -1,27 +1,21 @@
-﻿using ACCManager.Controls;
+﻿using ACC_Manager.Util.Settings;
+using ACC_Manager.Util.SystemExtensions;
+using ACCManager.Controls;
 using ACCManager.Data.ACC.Tracker;
 using ACCManager.Hardware.ACC.SteeringLock;
 using ACCManager.HUD.ACC;
 using ACCManager.HUD.ACC.Data.Tracker;
+using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput;
 using ACCManager.Util;
-using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace ACCManager
@@ -37,10 +31,6 @@ namespace ACCManager
         {
             InitializeComponent();
 
-#if DEBUG
-            LogWriter.WriteToLog("ACC Manager is running in DEBUG mode!");
-#endif
-
             try
             {
                 IntPtr hWnd = new WindowInteropHelper(GetWindow(this)).EnsureHandle();
@@ -50,7 +40,7 @@ namespace ACCManager
             }
             catch (Exception)
             {
-                LogWriter.WriteToLog("Rounded corners are not supported for this machine, using square corners for the main window.");
+                // LogWriter.WriteToLog("Rounded corners are not supported for this machine, using square corners for the main window.");
             }
 
 
@@ -66,23 +56,57 @@ namespace ACCManager
             AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
             this.Closing += MainWindow_Closing;
 
-
+            _ = TraceOutputListener.Instance;
 
             this.Loaded += MainWindow_Loaded;
+
+            tabControl.SelectionChanged += (s, se) =>
+            {
+                UiSettingsJson tempSettings = UiSettings.LoadJson();
+                tempSettings.SelectedTabIndex = tabControl.SelectedIndex;
+                UiSettings.SaveJson(tempSettings);
+            };
+
+            tabControl.SelectedIndex = UiSettings.LoadJson().SelectedTabIndex.Clip(0, tabControl.Items.Count - 1);
+
+            UiSettingsJson uiSettings = UiSettings.LoadJson();
+            this.Left = uiSettings.X.Clip(0, (int)SystemParameters.PrimaryScreenWidth);
+            this.Top = uiSettings.Y.Clip(0, (int)SystemParameters.PrimaryScreenHeight);
+
+            UiSettings.SaveJson(uiSettings);
+
 
             Instance = this;
         }
 
+        public void SaveLocation()
+        {
+            UiSettingsJson uiSettings = UiSettings.LoadJson();
+            uiSettings.X = (int)this.Left;
+            uiSettings.Y = (int)this.Top;
+            UiSettings.SaveJson(uiSettings);
+        }
+
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            string loadString = $"Loaded ACC Manager {GetAssemblyFileVersion()}";
+#if DEBUG
+            loadString += " - Debug";
+#endif
+            Trace.WriteLine(loadString);
+            LogWriter.WriteToLog(loadString);
+
             if (!App.Instance.StartMinimized)
-            {
                 this.WindowState = WindowState.Normal;
-            }
         }
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            UiSettingsJson uiSettings = UiSettings.LoadJson();
+            uiSettings.X = (int)this.Left;
+            uiSettings.Y = (int)this.Top;
+            UiSettings.SaveJson(uiSettings);
+
             OverlaysACC.CloseAll();
             HudTrackers.StopAll();
             DataTrackerDispose.Dispose();
@@ -123,32 +147,32 @@ namespace ACCManager
 
         internal void EnqueueSnackbarMessage(string message)
         {
-            if (Instance.WindowState != WindowState.Minimized)
-                Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
-                   delegate ()
-                   {
+            Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
+               delegate ()
+               {
+                   if (Instance.WindowState != WindowState.Minimized)
                        Instance.snackbar.MessageQueue.Enqueue(message);
-                   }));
+               }));
         }
 
         internal void ClearSnackbar()
         {
-            if (Instance.WindowState != WindowState.Minimized)
-                Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
-                   delegate ()
-                   {
+            Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
+               delegate ()
+               {
+                   if (Instance.WindowState != WindowState.Minimized)
                        Instance.snackbar.MessageQueue.Clear();
-                   }));
+               }));
         }
 
         internal void EnqueueSnackbarMessage(string message, string action, Action actionDelegate)
         {
-            if (Instance.WindowState != WindowState.Minimized)
-                Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
-                   delegate ()
-                   {
+            Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
+               delegate ()
+               {
+                   if (Instance.WindowState != WindowState.Minimized)
                        Instance.snackbar.MessageQueue.Enqueue(message, action, actionDelegate);
-                   }));
+               }));
         }
 
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

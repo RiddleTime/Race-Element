@@ -152,11 +152,11 @@ namespace ACCManager.Controls
 
                     if (carsRoot != null)
                     {
-                        LiveryTreeCar treeCar = new LiveryTreeCar() { carsFile = carsFile, carsRoot = carsRoot };
+                        LiveryTreeCar treeCar = new LiveryTreeCar() { CarsFile = carsFile, CarsRoot = carsRoot };
 
-                        if (treeCar.carsRoot.customSkinName != null && treeCar.carsRoot.teamName != null)
-                            if (!treeCar.carsRoot.customSkinName.Equals(string.Empty)
-                                   && !treeCar.carsRoot.teamName.Equals(string.Empty)
+                        if (treeCar.CarsRoot.customSkinName != null && treeCar.CarsRoot.teamName != null)
+                            if (!treeCar.CarsRoot.customSkinName.Equals(string.Empty)
+                                   && !treeCar.CarsRoot.teamName.Equals(string.Empty)
                                     )
                             {
                                 if (!DDSutil.HasDdsFiles(treeCar))
@@ -180,7 +180,7 @@ namespace ACCManager.Controls
 
             liveryTreeCars.Sort((a, b) =>
             {
-                return $"{a.carsRoot.teamName}{a.carsRoot.customSkinName}".CompareTo($"{b.carsRoot.teamName}{b.carsRoot.customSkinName}");
+                return $"{a.CarsRoot.teamName}{a.CarsRoot.customSkinName}".CompareTo($"{b.CarsRoot.teamName}{b.CarsRoot.customSkinName}");
             });
 
             liveryTreeCars.ForEach(x =>
@@ -188,7 +188,7 @@ namespace ACCManager.Controls
                 ListBoxItem listBoxItem = new ListBoxItem()
                 {
                     AllowDrop = true,
-                    Content = $"{x.carsRoot.teamName} / {x.carsRoot.customSkinName}",
+                    Content = $"{x.CarsRoot.teamName} / {x.CarsRoot.customSkinName}",
                     DataContext = x,
                 };
 

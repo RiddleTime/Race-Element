@@ -21,11 +21,15 @@ namespace ACCManager.Controls
     /// </summary>
     public partial class TitleBar : UserControl
     {
+        private static TitleBar _instance;
+        internal static TitleBar Instance { get { return _instance; } }
+
+        private const string _AppName = "ACC Manager";
+
         public TitleBar()
         {
             InitializeComponent();
-            this.Title.Text = $"ACC Manager {GetAssemblyFileVersion()}";
-
+            SetAppTitle();
             buttonExit.Click += ButtonExit_Click;
 
             buttonMinimize.Click += (e, s) => { App.Current.MainWindow.WindowState = WindowState.Minimized; };
@@ -38,9 +42,18 @@ namespace ACCManager.Controls
             };
 
             this.MouseDoubleClick += TitleBar_MouseDoubleClick;
-
+            _instance = this;
         }
 
+        internal void SetAppTitle(string launchType = "")
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                this.Title.Text = $"{_AppName} {GetAssemblyFileVersion()}";
+                if (launchType != String.Empty)
+                    this.Title.Text += $" - {launchType}";
+            }));
+        }
 
         private void TitleBar_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -64,6 +77,7 @@ namespace ACCManager.Controls
 
         private void ButtonExit_Click(object sender, RoutedEventArgs e)
         {
+            MainWindow.Instance.SaveLocation();
             Environment.Exit(0);
         }
 

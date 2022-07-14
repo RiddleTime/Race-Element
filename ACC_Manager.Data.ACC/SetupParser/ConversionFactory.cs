@@ -248,6 +248,13 @@ namespace ACCManager.Data
             {Porsche_992_GT3_Cup_2021, "Porsche 992 GT3 Cup 2021" }
         };
 
+        public static string GetNameFromCarModel(CarModels model)
+        {
+            string name;
+            CarModelToCarName.TryGetValue(model, out name);
+            return name;
+        }
+
         public static readonly Dictionary<string, CarModels> ParseNames = new Dictionary<string, CarModels>()
         {
             {"alpine_a110_gt4", Alpine_A110_GT4_2018 },
@@ -388,6 +395,7 @@ namespace ACCManager.Data
             catch (Exception e)
             {
                 Debug.WriteLine(e);
+                return null;
             }
 
             Root setup = JsonConvert.DeserializeObject<Root>(jsonString);

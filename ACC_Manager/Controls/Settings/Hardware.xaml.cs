@@ -37,8 +37,8 @@ namespace ACCManager.Controls
         private void ButtonCheckSteeringLockSupport_Click(object sender, RoutedEventArgs e)
         {
             string supportedDeviceName = SteeringLockTracker.GetSupportedDeviceName();
+            string message;
 
-            string message = string.Empty;
             if (supportedDeviceName == string.Empty)
             {
                 message = "Your device is not supported.";
@@ -46,7 +46,6 @@ namespace ACCManager.Controls
             }
             else
                 message = $"Detect supported device: {supportedDeviceName}";
-
 
             MainWindow.Instance.ClearSnackbar();
             MainWindow.Instance.EnqueueSnackbarMessage(message);
@@ -56,7 +55,6 @@ namespace ACCManager.Controls
         {
             SaveSettings();
             SteeringLockTracker.Instance.Dispose();
-            MainWindow.Instance.ClearSnackbar();
             MainWindow.Instance.EnqueueSnackbarMessage("Disabled automatic hardware steering lock.");
 
         }
@@ -65,7 +63,6 @@ namespace ACCManager.Controls
         {
             SaveSettings();
             SteeringLockTracker.Instance.StartTracking();
-            MainWindow.Instance.ClearSnackbar();
             MainWindow.Instance.EnqueueSnackbarMessage("Enabled automatic hardware steering lock.");
         }
 

@@ -19,6 +19,29 @@
                         </Grid.RowDefinitions>
                         <materialDesign:PackIcon
                             Grid.Row="0"
+                            Kind="Steam"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="20"
+                            Width="20"
+                        Foreground="White"    
+                        />
+                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">ACC</TextBlock>
+                    </Grid>
+                </TabItem.Header>
+                <local:AccSettingsTab></local:AccSettingsTab>
+            </TabItem>
+
+
+            <TabItem Height="60">
+                <TabItem.Header>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <materialDesign:PackIcon
+                            Grid.Row="0"
                             Kind="UsbPort"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"

@@ -1,5 +1,8 @@
-﻿using System;
+﻿using ACCManager.Data;
+using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,13 +23,41 @@ namespace ACCManager.Controls
     /// </summary>
     public partial class SetupsTab : UserControl
     {
+        private static SetupsTab _instance;
+        public static SetupsTab Instance { get { return _instance; } }
+
         public SetupsTab()
         {
             InitializeComponent();
 
-
+            this.Loaded += SetupsTab_Loaded;
 
             tabSetupTree.ContextMenu = GetBrowseTabContextMenu();
+            _instance = this;
+        }
+
+        private void SetupsTab_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.Drop += SetupsTab_Drop;
+        }
+
+        private void SetupsTab_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data is DataObject)
+            {
+                DataObject data = (DataObject)e.Data;
+
+                StringCollection droppedItems = data.GetFileDropList();
+                if (droppedItems.Count == 1)
+                {
+                    string droppedItem = droppedItems[0];
+
+                    if (droppedItem.EndsWith(".json"))
+                    {
+                        SetupImporter.Instance.Open(droppedItem);
+                    }
+                }
+            }
         }
 
         private ContextMenu GetBrowseTabContextMenu()

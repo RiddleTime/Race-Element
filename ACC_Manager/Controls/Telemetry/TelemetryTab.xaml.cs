@@ -18,7 +18,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.Controls
 {
@@ -30,11 +29,6 @@ namespace ACCManager.Controls
         public TelemetryTab()
         {
             InitializeComponent();
-
-#if DEBUG
-            tbDataChartsInProgress.Visibility = Visibility.Hidden;
-            dataRecorderControl.Visibility = Visibility.Visible;
-#endif
         }
     }
 }

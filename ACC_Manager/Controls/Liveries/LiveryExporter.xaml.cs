@@ -87,11 +87,11 @@ namespace ACCManager.Controls
                         {
                             foreach (LiveryTreeCar liveryTreeCar in exportItems)
                             {
-                                string liveriesFolder = $"Liveries\\{liveryTreeCar.carsRoot.customSkinName}\\";
+                                string liveriesFolder = $"Liveries\\{liveryTreeCar.CarsRoot.customSkinName}\\";
                                 string carsFolder = "Cars\\";
-                                zipArchive.AddEntry($"{carsFolder}{liveryTreeCar.carsFile.Name}", liveryTreeCar.carsFile);
+                                zipArchive.AddEntry($"{carsFolder}{liveryTreeCar.CarsFile.Name}", liveryTreeCar.CarsFile);
 
-                                DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + liveryTreeCar.carsRoot.customSkinName);
+                                DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + liveryTreeCar.CarsRoot.customSkinName);
                                 if (customSkinDir.Exists)
                                 {
 
@@ -173,7 +173,7 @@ namespace ACCManager.Controls
 
             if (exportItems.Contains(skin))
             {
-                MainWindow.Instance.EnqueueSnackbarMessage($"Skin pack already contains {skin.carsRoot.teamName}/{skin.carsRoot.customSkinName}.");
+                MainWindow.Instance.EnqueueSnackbarMessage($"Skin pack already contains {skin.CarsRoot.teamName}/{skin.CarsRoot.customSkinName}.");
                 return false;
             }
 
@@ -190,7 +190,7 @@ namespace ACCManager.Controls
             {
                 exportItems.Sort((a, b) =>
                 {
-                    return $"{a.carsRoot.teamName}{a.carsRoot.customSkinName}".CompareTo($"{b.carsRoot.teamName}{b.carsRoot.customSkinName}");
+                    return $"{a.CarsRoot.teamName}{a.CarsRoot.customSkinName}".CompareTo($"{b.CarsRoot.teamName}{b.CarsRoot.customSkinName}");
                 });
 
                 exportList.Items.Clear();
@@ -199,7 +199,7 @@ namespace ACCManager.Controls
                     ListBoxItem listBoxItem = new ListBoxItem()
                     {
                         AllowDrop = true,
-                        Content = $"{x.carsRoot.teamName} / {x.carsRoot.customSkinName}",
+                        Content = $"{x.CarsRoot.teamName} / {x.CarsRoot.customSkinName}",
                         DataContext = x,
                         ToolTip = "Click to remove from skin pack"
                     };

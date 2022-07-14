@@ -85,9 +85,9 @@ namespace ACCManager.Data.ACC.Tracker
                 if (streamSettings.StreamingSoftware == "OBS")
                     _obsWebSocket.Connect($"ws://{streamSettings.StreamingWebSocketIP}:{streamSettings.StreamingWebSocketPort}", streamSettings.StreamingWebSocketPassword);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Debug.WriteLine(ex.ToString());
+                //Debug.WriteLine(ex.ToString());
             }
         }
 
@@ -97,6 +97,7 @@ namespace ACCManager.Data.ACC.Tracker
 
         public void Toggle(bool enable)
         {
+            Trace.WriteLine("Setup hider is " + (enable ? "Visible" : "Hidden"));
             if (_obsWebSocket != null)
                 ToggleOBS(enable);
             else
@@ -116,9 +117,9 @@ namespace ACCManager.Data.ACC.Tracker
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Debug.WriteLine(e);
+                //Debug.WriteLine(e);
             }
         }
 
@@ -146,9 +147,9 @@ namespace ACCManager.Data.ACC.Tracker
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Debug.WriteLine(e);
+                //Debug.WriteLine(e);
             }
         }
 

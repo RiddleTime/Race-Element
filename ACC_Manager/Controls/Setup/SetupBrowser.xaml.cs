@@ -1,6 +1,5 @@
 ﻿using ACCManager.Controls.Setup;
 using ACCManager.Util;
-using MaterialDesignThemes.Wpf;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -12,6 +11,7 @@ using System.Windows.Media;
 using static ACCManager.Data.SetupJson;
 using static ACCManager.Data.ConversionFactory;
 using ACC_Manager.Util.SystemExtensions;
+using System.Collections.Generic;
 
 namespace ACCManager.Controls
 {
@@ -22,14 +22,16 @@ namespace ACCManager.Controls
     {
         public static SetupBrowser Instance { get; set; }
 
-        private readonly FlowDocSetupRenderer setupRenderer;
-        private string selectedSetup;
+        private readonly FlowDocSetupRenderer _setupRenderer;
+        private string _selectedSetup;
+
+        private Dictionary<string, List<string>> _expandedHeaders = new Dictionary<string, List<string>>();
 
         public SetupBrowser()
         {
             InitializeComponent();
 
-            this.setupRenderer = new FlowDocSetupRenderer();
+            _setupRenderer = new FlowDocSetupRenderer();
 
             FetchAllSetups();
 
@@ -37,8 +39,8 @@ namespace ACCManager.Controls
 
             buttonEditSetup.Click += (o, e) =>
             {
-                if (selectedSetup != null)
-                    SetupEditor.Instance.Open(selectedSetup);
+                if (_selectedSetup != null)
+                    SetupEditor.Instance.Open(_selectedSetup);
             };
 
             Instance = this;
@@ -57,7 +59,7 @@ namespace ACCManager.Controls
                         if (item.DataContext.GetType() == typeof(FileInfo))
                         {
                             FileInfo file = (FileInfo)item.DataContext;
-                            selectedSetup = file.FullName;
+                            _selectedSetup = file.FullName;
 
                             Root root = GetSetupJsonRoot(file);
                             if (root == null)
@@ -75,7 +77,8 @@ namespace ACCManager.Controls
 #endif
                             }
 
-                            setupRenderer.LogSetup(ref flowDocument, file.FullName);
+                            _setupRenderer.LogSetup(ref flowDocument, file.FullName);
+                            e.Handled = true;
                         }
                     }
                 }
@@ -108,8 +111,26 @@ namespace ACCManager.Controls
                             Header = carHeader,
                             Background = new SolidColorBrush(Color.FromArgb(38, 10, 0, 0)),
                         };
-                        carTreeViewItem.PreviewMouseLeftButtonDown += (s, e) => { carTreeViewItem.IsExpanded = !carTreeViewItem.IsExpanded; };
+                        carTreeViewItem.MouseLeftButtonUp += (s, e) =>
+                        {
+                            carTreeViewItem.IsExpanded = !carTreeViewItem.IsExpanded;
+                            if (s == carTreeViewItem)
+                                e.Handled = true;
+                        };
                         carTreeViewItem.ContextMenu = GetCarContextMenu(carDir);
+                        carTreeViewItem.Expanded += (s, e) =>
+                        {
+                            if (!_expandedHeaders.ContainsKey(carHeader.Text))
+                                _expandedHeaders.Add(carHeader.Text, new List<string>());
+                        };
+                        carTreeViewItem.Collapsed += (s, e) =>
+                        {
+                            if (s == carTreeViewItem)
+                                if (_expandedHeaders.ContainsKey(carHeader.Text))
+                                    _expandedHeaders.Remove(carHeader.Text);
+                        };
+
+                        if (_expandedHeaders.ContainsKey(carHeader.Text)) carTreeViewItem.IsExpanded = true;
 
                         // find track directories in car dir
                         foreach (var trackDir in carDir.GetDirectories())
@@ -130,14 +151,32 @@ namespace ACCManager.Controls
                                 DataContext = trackDir,
                                 Background = new SolidColorBrush(Color.FromArgb(19, 0, 0, 0)),
                             };
-                            trackTreeViewItem.PreviewMouseLeftButtonDown += (s, e) => { trackTreeViewItem.IsExpanded = !trackTreeViewItem.IsExpanded; };
+                            trackTreeViewItem.MouseLeftButtonUp += (s, e) =>
+                            {
+                                trackTreeViewItem.IsExpanded = !trackTreeViewItem.IsExpanded;
+                                if (s == trackTreeViewItem)
+                                    e.Handled = true;
+                            };
                             trackTreeViewItem.Expanded += (s, e) =>
                             {
+                                if (_expandedHeaders.ContainsKey(carHeader.Text) && !_expandedHeaders[carHeader.Text].Contains(trackName))
+                                    _expandedHeaders[carHeader.Text].Add(trackName);
+
                                 int targetItemInView = trackTreeViewItem.Items.Count;
                                 targetItemInView.ClipMax(18);
-                                ((TreeViewItem)trackTreeViewItem.Items.GetItemAt(targetItemInView - 1)).BringIntoView();
+                                if (targetItemInView > 0)
+                                    ((TreeViewItem)trackTreeViewItem.Items.GetItemAt(targetItemInView - 1)).BringIntoView();
+                            };
+                            trackTreeViewItem.Collapsed += (s, e) =>
+                            {
+                                if (_expandedHeaders.ContainsKey(carHeader.Text))
+                                    _expandedHeaders[carHeader.Text].Remove(trackName);
+                                e.Handled = true;
                             };
                             trackTreeViewItem.ContextMenu = GetTrackContextMenu(trackDir);
+
+                            if (_expandedHeaders.ContainsKey(carHeader.Text) && _expandedHeaders[carHeader.Text].Contains(trackName))
+                                trackTreeViewItem.IsExpanded = true;
 
                             // find setups in track dir
                             foreach (var trackFile in trackDir.GetFiles())
@@ -149,7 +188,12 @@ namespace ACCManager.Controls
                                         Text = trackFile.Name.Replace(".json", ""),
                                         Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style
                                     };
-                                    TreeViewItem setupTreeViewItem = new TreeViewItem() { Header = setupHeader, DataContext = trackFile };
+                                    TreeViewItem setupTreeViewItem = new TreeViewItem()
+                                    {
+                                        Header = setupHeader,
+                                        DataContext = trackFile,
+                                    };
+                                    setupTreeViewItem.MouseLeftButtonUp += (s, e) => e.Handled = true;
 
                                     setupTreeViewItem.ContextMenu = GetCompareContextMenu(trackFile);
 

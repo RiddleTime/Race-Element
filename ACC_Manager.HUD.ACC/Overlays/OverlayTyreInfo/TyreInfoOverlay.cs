@@ -15,6 +15,8 @@ using System.Drawing.Text;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
 {
+    [Overlay(Name = "Pressure Trace", Version = 1.00,
+        Description = "Shows indicators for tyre pressures. Addionality shows tyre temperature, brake temps and pad life. Overlays the in-game tyre info.")]
     internal sealed class TyreInfoOverlay : AbstractOverlay
     {
         private readonly TyreInfoConfig _config = new TyreInfoConfig();
@@ -134,7 +136,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 255, 255, 255)), backgroundDimension, 2);
             g.DrawRoundedRectangle(new Pen(tyreBrush), backgroundDimension, 2);
 
-            g.DrawStringWithShadow(text, _fontFamily, tyreBrush, new PointF(x - textWidth / 2, y + _yMono));
+            g.DrawStringWithShadow(text, _fontFamily, tyreBrush, new PointF(x - textWidth / 2, y + _yMono - 1));
         }
 
         private void DrawBrakeTemps(Graphics g, int x, int y, Position position)

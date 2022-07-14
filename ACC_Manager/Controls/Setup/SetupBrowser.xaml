@@ -27,8 +27,11 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <TreeView x:Name="setupsTreeView" Grid.Column="0" Style="{StaticResource MaterialDesignTreeView}" >
-            <TreeViewItem>
+        <TreeView x:Name="setupsTreeView" Grid.Column="0" Style="{StaticResource MaterialDesignTreeView}" 
+                  VirtualizingPanel.IsVirtualizing="False" 
+                  VirtualizingPanel.IsVirtualizingWhenGrouping="False" 
+                  VirtualizingPanel.VirtualizationMode="Recycling">
+            <!--<TreeViewItem>
                 <TreeViewItem.Header>
                     <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}">
                         Honda NSX GT3 Evo
@@ -53,7 +56,7 @@
                     <TreeViewItem Header="Setup 1" />
                     <TreeViewItem Header="Setup 2" />
                 </TreeViewItem>
-            </TreeViewItem>
+            </TreeViewItem>-->
         </TreeView>
 
 
@@ -65,7 +68,7 @@
             </Grid.RowDefinitions>
 
             <materialDesign:Card Grid.Row="0" Margin="3">
-                <FlowDocumentScrollViewer Focusable="False" Cursor="Arrow" >
+                <FlowDocumentScrollViewer Focusable="False" Cursor="Arrow" IsHitTestVisible="False">
                     <FlowDocument  x:Name="flowDocument" Focusable="False" Cursor="Arrow" 
                            Background="{DynamicResource MaterialDesignPaper}"
                            FontFamily="{StaticResource RobotoMedium}" 
