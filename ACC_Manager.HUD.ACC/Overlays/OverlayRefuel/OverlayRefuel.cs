@@ -17,6 +17,10 @@ using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
 {
+#if DEBUG
+    [Overlay(Name = "Refuel Info", Version = 1.00,
+    Description = "TODO/ Refuel Info description", OverlayType = OverlayType.Release)]
+#endif
     internal sealed class RefuelInfoOverlay : AbstractOverlay
     {
 

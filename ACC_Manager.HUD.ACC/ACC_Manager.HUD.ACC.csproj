@@ -65,7 +65,7 @@
     <Compile Include="Overlays\OverlayCarInfo\CarInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\DebugInfoHelper.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayBroadcastRealtime\BroadcastRealtimeOverlay.cs" />
-    <Compile Include="Overlays\OverlayDebugInfo\OverlayBroadcastTrackData\BroadcastRealtimeOverlay.cs" />
+    <Compile Include="Overlays\OverlayDebugInfo\OverlayBroadcastTrackData\BroadcastTrackDataOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayDebugOutput\TraceOutputListener.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayDebugOutput\DebugOutputOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayEntryList\EntryListOverlay.cs" />

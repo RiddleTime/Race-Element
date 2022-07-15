@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
 {
+#if DEBUG
     [Overlay(Name = "Slip Angle", Version = 1.00,
-    Description = "Shows Slip angle", OverlayType = OverlayType.Beta)]
+        Description = "Shows Slip angle", OverlayType = OverlayType.Release)]
+#endif
     internal class SlipAngleOverlay : AbstractOverlay
     {
         public SlipAngleOverlay(Rectangle rectangle) : base(rectangle, "Slip Angle Overlay")

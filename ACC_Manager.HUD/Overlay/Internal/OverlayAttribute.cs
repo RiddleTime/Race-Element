@@ -18,6 +18,5 @@ namespace ACCManager.HUD.Overlay.Internal
     {
         Release,
         Debug,
-        Beta
     }
 }

@@ -18,6 +18,8 @@ using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
 {
+    [Overlay(Name = "Broadcast Realtime", Version = 1.00, OverlayType = OverlayType.Debug,
+        Description = "A panel showing live broadcast realtime data.")]
     internal sealed class BroadcastRealtimeOverlay : AbstractOverlay
     {
         private DebugConfig _config = new DebugConfig();

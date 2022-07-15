@@ -15,6 +15,9 @@ using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayPhysicsInfo
 {
+
+    [Overlay(Name = "Physics Info", Version = 1.00,
+        Description = "Shared Memory Physics Page", OverlayType = OverlayType.Debug)]
     internal sealed class PhysicsInfoOverlay : AbstractOverlay
     {
         private readonly DebugConfig _config = new DebugConfig();

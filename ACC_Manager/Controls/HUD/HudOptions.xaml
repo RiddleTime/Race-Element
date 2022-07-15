@@ -37,8 +37,7 @@
         <Grid Grid.Row="1" x:Name="gridOverlays" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="75*"/>
-                <RowDefinition Height="15*"/>
-                <RowDefinition Height="15*"/>
+                <RowDefinition Height="25*"/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" >
@@ -53,20 +52,7 @@
                 </ScrollViewer>
             </Grid>
 
-            <Grid Grid.Row="1" >
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <Label Grid.Row="0" FontSize="15">Beta</Label>
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                    <StackPanel Orientation="Vertical" x:Name="stackPanelOverlaysBeta">
-                    </StackPanel>
-                </ScrollViewer>
-            </Grid>
-
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25"/>
                     <RowDefinition Height="*"/>

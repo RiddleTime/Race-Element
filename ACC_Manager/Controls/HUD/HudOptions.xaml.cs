@@ -114,6 +114,7 @@ namespace ACCManager.Controls
         private void SetRepositionMode(bool enabled)
         {
             stackPanelOverlaysRelease.IsEnabled = !enabled;
+            stackPanelOverlaysDebug.IsEnabled = !enabled;
 
             if (enabled)
             {
@@ -136,16 +137,14 @@ namespace ACCManager.Controls
 
         private void BuildOverlayPanel()
         {
-            BuildOverlayStackPanel(stackPanelOverlaysRelease, OverlayType.Release);
-            BuildOverlayStackPanel(stackPanelOverlaysBeta, OverlayType.Beta);
-            BuildOverlayStackPanel(stackPanelOverlaysDebug, OverlayType.Debug);
+            OverlaysACC.GenerateDictionary();
 
+            BuildOverlayStackPanel(stackPanelOverlaysRelease, OverlayType.Release);
+            BuildOverlayStackPanel(stackPanelOverlaysDebug, OverlayType.Debug);
         }
 
         private void BuildOverlayStackPanel(StackPanel stackPanelOverlays, OverlayType overlayType)
         {
-            OverlaysACC.GenerateDictionary();
-
             int screenMiddleX = (int)(SystemParameters.FullPrimaryScreenWidth / 2);
             int screenMiddleY = (int)(SystemParameters.FullPrimaryScreenHeight / 2);
 

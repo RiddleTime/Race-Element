@@ -79,7 +79,6 @@ namespace ACCManager.HUD.ACC
                     }
                 }
             }
-
         }
 
         public static void CloseAll()

@@ -9,7 +9,7 @@ using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput.Tra
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
 {
-    [Overlay(Name = "Debug Output", Version = 1.00, OverlayType = OverlayType.Release,
+    [Overlay(Name = "Debug Output", Version = 1.00, OverlayType = OverlayType.Debug,
         Description = "A panel showing live debug output.")]
     internal class DebugOutputOverlay : AbstractOverlay
     {
