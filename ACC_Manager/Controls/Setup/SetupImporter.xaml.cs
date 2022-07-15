@@ -74,6 +74,9 @@ namespace ACCManager.Controls
                         return;
                     }
 
+                    if (!targetFile.Directory.Exists)
+                        targetFile.Directory.Create();
+
                     FileInfo originalFile = new FileInfo(_originalSetupFile);
                     if (originalFile.Exists)
                         originalFile.CopyTo(targetFile.FullName);

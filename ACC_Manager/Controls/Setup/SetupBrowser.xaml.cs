@@ -22,6 +22,8 @@ namespace ACCManager.Controls
     {
         public static SetupBrowser Instance { get; set; }
 
+        private readonly string SetupsPath = FileUtil.AccPath + "Setups\\";
+
         private readonly FlowDocSetupRenderer _setupRenderer;
         private string _selectedSetup;
 
@@ -90,6 +92,9 @@ namespace ACCManager.Controls
             try
             {
                 DirectoryInfo setupsDirectory = new DirectoryInfo(SetupsPath);
+
+                if (!setupsDirectory.Exists)
+                    return;
 
                 setupsTreeView.Items.Clear();
 
@@ -365,7 +370,5 @@ namespace ACCManager.Controls
             }
         }
 
-        private string AccPath => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "Assetto Corsa Competizione\\";
-        private string SetupsPath => AccPath + "Setups\\";
     }
 }
