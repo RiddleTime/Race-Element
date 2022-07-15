@@ -13,9 +13,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace ACCManager
@@ -47,6 +50,10 @@ namespace ACCManager
             this.Title = $"ACC Manager {GetAssemblyFileVersion()}";
 
             this.titleBar.MouseLeftButtonDown += TitleBar_MouseLeftButtonDown;
+            this.titleBar.MouseLeftButtonUp += TitleBar_MouseLeftButtonUp;
+            this.titleBar.MouseLeave += (s, e) => { _stopDecreaseOpacty = true; e.Handled = true; this.Opacity = 1; };
+            this.titleBar.DragLeave += (s, e) => { _stopDecreaseOpacty = true; e.Handled = true; this.Opacity = 1; };
+            this.titleBar.MouseDoubleClick += (s, e) => { _stopDecreaseOpacty = true; e.Handled = true; this.Opacity = 1; };
 
             this.buttonPlayACC.Click += (sender, e) => System.Diagnostics.Process.Start("steam://rungameid/805550");
 
@@ -78,6 +85,7 @@ namespace ACCManager
 
             Instance = this;
         }
+
 
         public void SaveLocation()
         {
@@ -135,11 +143,13 @@ namespace ACCManager
                     {
                         this.Activate();
                         rowTitleBar.Height = new GridLength(30);
+                        _stopDecreaseOpacty = true;
                         break;
                     }
                 case WindowState.Maximized:
                     {
                         rowTitleBar.Height = new GridLength(35);
+                        _stopDecreaseOpacty = true;
                         break;
                     }
             }
@@ -175,9 +185,51 @@ namespace ACCManager
                }));
         }
 
+
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            DecreaseOpacity();
+            //this.Opacity = 0.9;
             DragMove();
+            e.Handled = true;
+        }
+
+        private void TitleBar_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _stopDecreaseOpacty = true;
+            this.Opacity = 1.0;
+            e.Handled = true;
+        }
+
+        private bool _stopDecreaseOpacty;
+        private void DecreaseOpacity()
+        {
+            _stopDecreaseOpacty = false;
+            Task.Run(new Action(() =>
+            {
+                bool finalValueReached = false;
+
+                while (!finalValueReached)
+                {
+                    if (_stopDecreaseOpacty)
+                    {
+                        Dispatcher.Invoke(new Action(() =>
+                        {
+                            this.Opacity = 1;
+                        }));
+                        break;
+                    }
+
+                    Thread.Sleep(5);
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        this.Opacity -= 0.0025;
+
+                        if (this.Opacity < 0.85)
+                            finalValueReached = true;
+                    }));
+                }
+            }));
         }
 
         public static string GetAssemblyFileVersion()
@@ -186,7 +238,6 @@ namespace ACCManager
             FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(assembly.Location);
             return fileVersion.FileVersion;
         }
-
 
         public enum DWMWINDOWATTRIBUTE
         {
