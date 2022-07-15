@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
 {
-    [Overlay(Name = "Input Trace", Version = 1.00,
+    [Overlay(Name = "Input Trace", Version = 1.00, OverlayType = OverlayType.Release,
         Description = "Live graph of steering, throttle and brake inputs.")]
     internal sealed class InputTraceOverlay : AbstractOverlay
     {

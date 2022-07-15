@@ -15,7 +15,7 @@ using System.Drawing.Text;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
 {
-    [Overlay(Name = "Pressure Trace", Version = 1.00,
+    [Overlay(Name = "Tyre Info", Version = 1.00, OverlayType = OverlayType.Release,
         Description = "Shows indicators for tyre pressures. Addionality shows tyre temperature, brake temps and pad life. Overlays the in-game tyre info.")]
     internal sealed class TyreInfoOverlay : AbstractOverlay
     {

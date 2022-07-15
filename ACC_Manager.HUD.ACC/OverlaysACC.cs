@@ -24,14 +24,14 @@ using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList;
 using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput;
 using ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator;
 using ACCManager.HUD.ACC.Overlays.OverlayRefuel;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace ACCManager.HUD.ACC
 {
     public class OverlaysACC
     {
-
-
-        public static Dictionary<string, Type> AbstractOverlays = new Dictionary<string, Type>()
+        public static SortedDictionary<string, Type> AbstractOverlays = new SortedDictionary<string, Type>()
         {
             {"Accelerometer", typeof(AccelerometerOverlay) },
             {"Car Info", typeof(CarInfoOverlay) },
@@ -62,6 +62,25 @@ namespace ACCManager.HUD.ACC
         };
 
         public static List<AbstractOverlay> ActiveOverlays = new List<AbstractOverlay>();
+
+        public static void GenerateDictionary()
+        {
+            AbstractOverlays.Clear();
+
+            foreach (var type in Assembly.GetExecutingAssembly().GetTypes().Where(x => x.IsDefined(typeof(OverlayAttribute))))
+            {
+                var overlayType = type.GetCustomAttribute<OverlayAttribute>();
+                if (overlayType != null)
+                {
+                    if (!AbstractOverlays.ContainsKey(overlayType.Name))
+                    {
+                        Debug.WriteLine($"Found {overlayType.Name} - {overlayType.OverlayType}");
+                        AbstractOverlays.Add(overlayType.Name, type);
+                    }
+                }
+            }
+
+        }
 
         public static void CloseAll()
         {

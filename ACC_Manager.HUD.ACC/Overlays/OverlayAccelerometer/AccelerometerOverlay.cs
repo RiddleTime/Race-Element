@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
 {
-    [Overlay(Name = "Accelerometer", Version = 1.00,
+    [Overlay(Name = "Accelerometer", Version = 1.00, OverlayType = OverlayType.Release,
         Description = "G-meter showing lateral and longitudinal g-forces.")]
     internal sealed class AccelerometerOverlay : AbstractOverlay
     {

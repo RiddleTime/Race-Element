@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 {
-    [Overlay(Name = "Lap Delta", Version = 1.00,
+    [Overlay(Name = "Lap Delta", Version = 1.00, OverlayType = OverlayType.Release,
         Description = "A panel with a bar showing the current delta. Optionally showing the sector times and the potential best.")]
     internal sealed class LapDeltaOverlay : AbstractOverlay
     {

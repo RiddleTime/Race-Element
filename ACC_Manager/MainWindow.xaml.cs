@@ -189,7 +189,6 @@ namespace ACCManager
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             DecreaseOpacity();
-            //this.Opacity = 0.9;
             DragMove();
             e.Handled = true;
         }
@@ -220,12 +219,12 @@ namespace ACCManager
                         break;
                     }
 
-                    Thread.Sleep(5);
+                    Thread.Sleep(1);
                     Dispatcher.Invoke(new Action(() =>
                     {
-                        this.Opacity -= 0.0025;
+                        this.Opacity -= 0.001;
 
-                        if (this.Opacity < 0.85)
+                        if (this.Opacity < 0.8)
                             finalValueReached = true;
                     }));
                 }

@@ -47,7 +47,7 @@ namespace ACCManager.Controls
             if (!designTime)
                 try
                 {
-                    BuildOverlayStackPanel();
+                    BuildOverlayPanel();
 
                     checkBoxReposition.Checked += (s, e) =>
                     {
@@ -113,7 +113,7 @@ namespace ACCManager.Controls
         private MousePositionOverlay mousePositionOverlay;
         private void SetRepositionMode(bool enabled)
         {
-            stackPanelOverlayCheckboxes.IsEnabled = !enabled;
+            stackPanelOverlaysRelease.IsEnabled = !enabled;
 
             if (enabled)
             {
@@ -134,13 +134,23 @@ namespace ACCManager.Controls
 
         }
 
-        private void BuildOverlayStackPanel()
+        private void BuildOverlayPanel()
         {
+            BuildOverlayStackPanel(stackPanelOverlaysRelease, OverlayType.Release);
+            BuildOverlayStackPanel(stackPanelOverlaysBeta, OverlayType.Beta);
+            BuildOverlayStackPanel(stackPanelOverlaysDebug, OverlayType.Debug);
+
+        }
+
+        private void BuildOverlayStackPanel(StackPanel stackPanelOverlays, OverlayType overlayType)
+        {
+            OverlaysACC.GenerateDictionary();
+
             int screenMiddleX = (int)(SystemParameters.FullPrimaryScreenWidth / 2);
             int screenMiddleY = (int)(SystemParameters.FullPrimaryScreenHeight / 2);
 
-            stackPanelOverlayCheckboxes.Children.Clear();
-            foreach (KeyValuePair<string, Type> x in OverlaysACC.AbstractOverlays)
+            stackPanelOverlays.Children.Clear();
+        forLoop: foreach (KeyValuePair<string, Type> x in OverlaysACC.AbstractOverlays)
             {
                 object[] args = new object[] { new System.Drawing.Rectangle((int)SystemParameters.PrimaryScreenWidth / 2, (int)SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
 
@@ -173,7 +183,18 @@ namespace ACCManager.Controls
 
                 OverlayAttribute overlayAttribute = GetOverlayAttribute(x.Value);
                 if (overlayAttribute != null)
+                {
                     overlayDescription.Content = $"{overlayAttribute.Description}";
+
+                    if (overlayAttribute.OverlayType != overlayType)
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    continue;
+                }
 
                 StackPanel configStacker = GetConfigStacker(x.Value);
                 configStacker.Visibility = Visibility.Collapsed;
@@ -249,7 +270,7 @@ namespace ACCManager.Controls
                 }
                 tempOverlay.Dispose();
 
-                stackPanelOverlayCheckboxes.Children.Add(card);
+                stackPanelOverlays.Children.Add(card);
             }
         }
 

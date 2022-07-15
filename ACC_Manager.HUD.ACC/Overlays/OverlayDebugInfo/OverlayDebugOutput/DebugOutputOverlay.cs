@@ -3,19 +3,14 @@ using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.HUD.Overlay.Util;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput.TraceOutputListener;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
 {
-    [Overlay(Name = "Debug Output", Version = 1.00,
-    Description = "A panel showing live debug output.")]
+    [Overlay(Name = "Debug Output", Version = 1.00, OverlayType = OverlayType.Release,
+        Description = "A panel showing live debug output.")]
     internal class DebugOutputOverlay : AbstractOverlay
     {
         private DebugOutputConfiguration _config = new DebugOutputConfiguration();
