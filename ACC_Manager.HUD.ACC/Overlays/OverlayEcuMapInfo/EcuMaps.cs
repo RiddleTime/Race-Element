@@ -173,7 +173,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
                     new EcuMap(){ Index = 4, Power = PowerDelivery.Low, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Low },
                     new EcuMap(){ Index = 5, Power = PowerDelivery.Low, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Low },
                     new EcuMap(){ Index = 6, Power = PowerDelivery.Lowest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Lowest },
-                    new EcuMap(){ Index = 7, Power = PowerDelivery.Lowest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Cool Down", FuelConsumption = FuelConsumptions.Lowest },
+                    new EcuMap(){ Index = 7, Power = PowerDelivery.Lowest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Cool Down", FuelConsumption = FuelConsumptions.Highest },
                     new EcuMap(){ Index = 8, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Damp, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.Low},
                     new EcuMap(){ Index = 9, Power = PowerDelivery.Low, Conditon = EcuMapConditions.Damp, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.Low},
                     new EcuMap(){ Index = 10, Power = PowerDelivery.High, Conditon = EcuMapConditions.Wet, ThrottleMap = "Wet", FuelConsumption = FuelConsumptions.High},
