@@ -149,7 +149,7 @@ namespace ACCManager.Controls
             int screenMiddleY = (int)(SystemParameters.FullPrimaryScreenHeight / 2);
 
             stackPanelOverlays.Children.Clear();
-        forLoop: foreach (KeyValuePair<string, Type> x in OverlaysACC.AbstractOverlays)
+            foreach (KeyValuePair<string, Type> x in OverlaysACC.AbstractOverlays)
             {
                 object[] args = new object[] { new System.Drawing.Rectangle((int)SystemParameters.PrimaryScreenWidth / 2, (int)SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
 
@@ -612,20 +612,14 @@ namespace ACCManager.Controls
 
         private OverlayAttribute GetOverlayAttribute(Type overlay)
         {
-            object[] args = new object[] { new System.Drawing.Rectangle(0, 0, 300, 150) };
-            AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(overlay, args);
             OverlayAttribute overlayAttribute = null;
             try
             {
-                overlayAttribute = tempOverlay.GetType().GetCustomAttribute<OverlayAttribute>();
+                overlayAttribute = overlay.GetCustomAttribute<OverlayAttribute>();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Debug.WriteLine($"Overlay {tempOverlay.GetType().Name} doesn't have an overlay attribute specified");
             }
-
-            tempOverlay.Dispose();
-
             return overlayAttribute;
         }
 
