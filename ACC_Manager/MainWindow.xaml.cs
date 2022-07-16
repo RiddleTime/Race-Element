@@ -204,7 +204,7 @@ namespace ACCManager
         private void DecreaseOpacity()
         {
             _stopDecreaseOpacty = false;
-            Task.Run(new Action(() =>
+            new Thread(() =>
             {
                 bool finalValueReached = false;
 
@@ -219,16 +219,16 @@ namespace ACCManager
                         break;
                     }
 
-                    Thread.Sleep(1);
+                    Thread.Sleep(3);
                     Dispatcher.Invoke(new Action(() =>
                     {
-                        this.Opacity -= 0.001;
+                        this.Opacity -= 0.004;
 
-                        if (this.Opacity < 0.8)
+                        if (this.Opacity < 0.85)
                             finalValueReached = true;
                     }));
                 }
-            }));
+            }).Start();
         }
 
         public static string GetAssemblyFileVersion()
