@@ -203,12 +203,12 @@ namespace ACCManager.Controls
                 card.MouseMove += (s, e) =>
                 {
                     label.Foreground = toggle.IsChecked.Value ? activeHoverColor : Brushes.GreenYellow;
-                    toggle.Focus();
+                    //toggle.Focus();
                 };
                 card.MouseEnter += (s, e) =>
                 {
                     label.Foreground = toggle.IsChecked.Value ? activeHoverColor : Brushes.GreenYellow;
-                    toggle.Focus();
+                    //toggle.Focus();
                     configStacker.Visibility = Visibility.Visible;
                     overlayDescription.Visibility = Visibility.Collapsed;
                 };
