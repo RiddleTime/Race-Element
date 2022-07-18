@@ -647,7 +647,11 @@ namespace ACCManager.Controls
                     GeneratePreview(actualOverlayName);
                     _cachedPreviews.TryGetValue(actualOverlayName, out CachedPreview preview);
                     if (preview != null)
+                    {
+                        previewImage.Width = preview.Width;
+                        previewImage.Height = preview.Height;
                         previewImage.Source = ImageControlCreator.CreateImage(preview.Width, preview.Height, preview.CachedBitmap).Source;
+                    }
                 }
             }
         }
