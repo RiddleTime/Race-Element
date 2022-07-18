@@ -12,7 +12,6 @@ using static ACCManager.Data.SetupJson;
 using static ACCManager.Data.ConversionFactory;
 using ACC_Manager.Util.SystemExtensions;
 using System.Collections.Generic;
-using ACCManager.Controls.Setup.SetupImage;
 
 namespace ACCManager.Controls
 {
@@ -68,6 +67,7 @@ namespace ACCManager.Controls
                             if (root == null)
                                 return;
 
+#if DEBUG
                             // make edit button visible depending on whether there is a setup changer avaiable for the car
                             if (GetChanger(ParseCarName(root.CarName)) == null)
                             {
@@ -75,10 +75,10 @@ namespace ACCManager.Controls
                             }
                             else
                             {
-#if DEBUG
+
                                 buttonEditSetup.Visibility = Visibility.Visible;
-#endif
                             }
+#endif
 
                             _setupRenderer.LogSetup(ref flowDocument, file.FullName);
                             e.Handled = true;

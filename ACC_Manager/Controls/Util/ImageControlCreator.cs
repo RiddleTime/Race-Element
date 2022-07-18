@@ -4,7 +4,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Media.Imaging;
 
-namespace ACCManager.Controls.Setup.SetupImage
+namespace ACCManager.Controls.Util.SetupImage
 {
     internal class ImageControlCreator
     {

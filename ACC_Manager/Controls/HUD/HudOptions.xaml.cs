@@ -1,6 +1,6 @@
 ﻿using ACC_Manager.Util.Settings;
 using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Controls.Setup.SetupImage;
+using ACCManager.Controls.Util.SetupImage;
 using ACCManager.HUD.ACC;
 using ACCManager.HUD.ACC.Overlays.OverlayMousePosition;
 using ACCManager.HUD.Overlay.Configuration;
@@ -8,7 +8,6 @@ using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.Util;
 using Gma.System.MouseKeyHook;
-using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -142,6 +141,14 @@ namespace ACCManager.Controls
 
             StackPanel configStacker = GetConfigStacker(type, Orientation.Vertical);
 
+            Label overlayNameLabel = new Label()
+            {
+                Content = overlayName,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                FontSize = 18
+            };
+            configStackPanel.Children.Add(overlayNameLabel);
+
             StackPanel activationPanel = new StackPanel()
             {
                 Orientation = Orientation.Horizontal,
@@ -149,16 +156,18 @@ namespace ACCManager.Controls
                 VerticalAlignment = VerticalAlignment.Center,
                 Cursor = Cursors.Hand
             };
+            Label nameLabel = new Label() { Content = tempOverlaySettings.Enabled ? "Deactivate" : "Activate", VerticalAlignment = VerticalAlignment.Center };
             ToggleButton toggle = new ToggleButton() { Height = 35, Width = 50, VerticalAlignment = VerticalAlignment.Center };
             toggle.Checked += (s, e) =>
             {
-                listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 10, 255, 10));
                 lock (OverlaysACC.ActiveOverlays)
                 {
                     AbstractOverlay overlay = OverlaysACC.ActiveOverlays.Find(f => f.GetType() == type);
 
                     if (overlay == null)
                     {
+                        listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 10, 255, 10));
+                        nameLabel.Content = "Deactivate";
                         overlay = (AbstractOverlay)Activator.CreateInstance(type, DefaultOverlayArgs);
 
                         overlay.Start();
@@ -175,6 +184,7 @@ namespace ACCManager.Controls
                 lock (OverlaysACC.ActiveOverlays)
                 {
                     listViewItem.Background = Brushes.Transparent;
+                    nameLabel.Content = "Activate";
                     AbstractOverlay overlay = OverlaysACC.ActiveOverlays.Find(f => f.GetType() == type);
 
                     SaveOverlaySettings(overlay, false);
@@ -196,7 +206,6 @@ namespace ACCManager.Controls
                 configStacker.IsEnabled = false;
             }
 
-            Label nameLabel = new Label() { Content = "Activate", VerticalAlignment = VerticalAlignment.Center };
             activationPanel.Children.Add(toggle);
             activationPanel.Children.Add(nameLabel);
             configStackPanel.Children.Add(activationPanel);
@@ -269,7 +278,6 @@ namespace ACCManager.Controls
                 tempAbstractOverlay.Dispose();
 
                 TextBlock listViewText = new TextBlock() { Text = x.Key };
-
 
                 ListViewItem listViewItem = new ListViewItem()
                 {
@@ -358,9 +366,7 @@ namespace ACCManager.Controls
             OverlayConfiguration overlayConfig = GetOverlayConfig(overlayType);
             if (overlayConfig == null) return stacker;
 
-
             string overlayName = GetOverlayName(overlayType);
-
 
             List<ConfigField> configFields = null;
             OverlaySettingsJson overlaySettings = OverlaySettings.LoadOverlaySettings(overlayName);
@@ -693,8 +699,7 @@ namespace ACCManager.Controls
 
         private string GetOverlayName(Type overlay)
         {
-            object[] args = new object[] { new System.Drawing.Rectangle(0, 0, 300, 150) };
-            AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(overlay, args);
+            AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(overlay, DefaultOverlayArgs);
             string name = tempOverlay.Name;
             tempOverlay.Dispose();
 
