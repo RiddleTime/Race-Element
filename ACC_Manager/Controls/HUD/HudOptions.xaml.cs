@@ -43,6 +43,8 @@ namespace ACCManager.Controls
 
         private readonly Dictionary<string, CachedPreview> _cachedPreviews = new Dictionary<string, CachedPreview>();
 
+        private readonly object[] DefaultOverlayArgs = new object[] { new System.Drawing.Rectangle((int)SystemParameters.PrimaryScreenWidth / 2, (int)SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
+
         private class CachedPreview
         {
             public int Width;
@@ -121,24 +123,20 @@ namespace ACCManager.Controls
         {
             if (e.AddedItems.Count > 0)
             {
-
                 ListViewItem item = (ListViewItem)e.AddedItems[0];
                 KeyValuePair<string, Type> kv = (KeyValuePair<string, Type>)item.DataContext;
-
-                Debug.WriteLine($"Selected {kv.Key}");
-
                 BuildOverlayConfigPanel(item, kv.Key, kv.Value);
             }
+            else
+                configStackPanel.Children.Clear();
         }
 
         private void BuildOverlayConfigPanel(ListViewItem listViewItem, string overlayName, Type type)
         {
             configStackPanel.Children.Clear();
 
-            var args = new object[] { new System.Drawing.Rectangle((int)SystemParameters.PrimaryScreenWidth / 2, (int)SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
-
-            AbstractOverlay tempAbstractOverlay = (AbstractOverlay)Activator.CreateInstance(type, args);
-            GeneratePreview(overlayName, tempAbstractOverlay);
+            AbstractOverlay tempAbstractOverlay = (AbstractOverlay)Activator.CreateInstance(type, DefaultOverlayArgs);
+            GeneratePreview(overlayName);
             OverlaySettingsJson tempOverlaySettings = OverlaySettings.LoadOverlaySettings(tempAbstractOverlay.Name);
             tempAbstractOverlay.Dispose();
 
@@ -161,7 +159,7 @@ namespace ACCManager.Controls
 
                     if (overlay == null)
                     {
-                        overlay = (AbstractOverlay)Activator.CreateInstance(type, args);
+                        overlay = (AbstractOverlay)Activator.CreateInstance(type, DefaultOverlayArgs);
 
                         overlay.Start();
 
@@ -280,7 +278,19 @@ namespace ACCManager.Controls
                 };
                 if (tempOverlaySettings != null)
                     if (tempOverlaySettings.Enabled)
+                    {
                         listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 10, 255, 10));
+                        lock (OverlaysACC.ActiveOverlays)
+                        {
+                            AbstractOverlay overlay = (AbstractOverlay)Activator.CreateInstance(x.Value, args);
+
+                            overlay.Start();
+
+                            SaveOverlaySettings(overlay, true);
+
+                            OverlaysACC.ActiveOverlays.Add(overlay);
+                        }
+                    }
 
                 listOverlays.Items.Add(listViewItem);
             }
@@ -337,7 +347,7 @@ namespace ACCManager.Controls
                     continue;
                 }
 
-                GeneratePreview(x.Key, (AbstractOverlay)Activator.CreateInstance(x.Value, args));
+                GeneratePreview(x.Key);
 
                 StackPanel configStacker = GetConfigStacker(x.Value, Orientation.Horizontal);
                 configStacker.Visibility = Visibility.Collapsed;
@@ -428,8 +438,23 @@ namespace ACCManager.Controls
             }
         }
 
-        private void GeneratePreview(string overlayName, AbstractOverlay overlay)
+        private void GeneratePreview(string overlayName)
         {
+            OverlaysACC.AbstractOverlays.TryGetValue(overlayName, out Type overlayType);
+
+            if (overlayType == null)
+                return;
+
+            AbstractOverlay overlay;
+            try
+            {
+                overlay = (AbstractOverlay)Activator.CreateInstance(overlayType, DefaultOverlayArgs);
+            }
+            catch (Exception e)
+            {
+                return;
+            }
+
             ACCSharedMemory mem = new ACCSharedMemory();
             overlay.pageGraphics = mem.ReadGraphicsPageFile();
             overlay.pagePhysics = mem.ReadPhysicsPageFile();
@@ -450,11 +475,15 @@ namespace ACCManager.Controls
                     _cachedPreviews.Add(overlayName, cachedPreview);
 
                 overlay.BeforeStop();
-                overlay.Dispose();
             }
             catch (Exception e)
             {
 
+            }
+            finally
+            {
+                overlay.Dispose();
+                overlay = null;
             }
         }
 
@@ -746,7 +775,23 @@ namespace ACCManager.Controls
             }
 
             settings.Config = configFields;
+
             OverlaySettings.SaveOverlaySettings(overlayName, settings);
+
+            // update preview image
+            if (listOverlays.SelectedIndex >= 0)
+            {
+                ListViewItem lvi = (ListViewItem)listOverlays.SelectedItem;
+                TextBlock tb = (TextBlock)lvi.Content;
+                string actualOverlayName = overlayName.Replace("Overlay", "").Trim();
+                if (tb.Text.Equals(actualOverlayName))
+                {
+                    GeneratePreview(actualOverlayName);
+                    _cachedPreviews.TryGetValue(actualOverlayName, out CachedPreview preview);
+                    if (preview != null)
+                        previewImage.Source = ImageControlCreator.CreateImage(preview.Width, preview.Height, preview.CachedBitmap).Source;
+                }
+            }
         }
 
         private void SaveOverlaySettings(AbstractOverlay overlay, bool isEnabled)

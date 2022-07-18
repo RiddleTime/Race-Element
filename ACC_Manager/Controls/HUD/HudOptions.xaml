@@ -52,7 +52,7 @@
                     <RowDefinition Height="70*"/>
                 </Grid.RowDefinitions>
 
-                <Image Grid.Row="0" x:Name="previewImage"/>
+                <Image Grid.Row="0" x:Name="previewImage" ToolTip="This is a preview, the scaling will become visible once you Activate the overlay."/>
                 <StackPanel Grid.Row="1" x:Name="configStackPanel"/>
             </Grid>
         </Grid>
