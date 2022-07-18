@@ -13,6 +13,9 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <Image x:Name="previewHud" Grid.RowSpan="2" Panel.ZIndex="999" Visibility="Hidden"></Image>
+
+
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Grid Grid.Row="0" Margin="3" x:Name="gridRepositionToggler" Cursor="Hand" >
                 <Grid.ColumnDefinitions>
@@ -33,36 +36,22 @@
             </Grid>
         </StackPanel>
 
+        <Grid Grid.Row="1" x:Name="gridOverlays">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="1" x:Name="gridOverlays" >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="75*"/>
-                <RowDefinition Height="25*"/>
-            </Grid.RowDefinitions>
+            <ListView Grid.Column="0" x:Name="listOverlays" ScrollViewer.VerticalScrollBarVisibility="Visible" />
 
-            <Grid Grid.Row="0" >
+            <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Label Grid.Row="0" FontSize="15">General</Label>
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                    <StackPanel Orientation="Vertical" x:Name="stackPanelOverlaysRelease">
-                    </StackPanel>
-                </ScrollViewer>
-            </Grid>
-
-            <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="30*"/>
+                    <RowDefinition Height="70*"/>
                 </Grid.RowDefinitions>
 
-                <Label Grid.Row="0" FontSize="15">Debug</Label>
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                    <StackPanel Orientation="Vertical" x:Name="stackPanelOverlaysDebug">
-                    </StackPanel>
-                </ScrollViewer>
+                <Image Grid.Row="0" x:Name="previewImage" ToolTip="This is a preview, the scaling will become visible once you Activate the overlay."/>
+                <StackPanel Grid.Row="1" x:Name="configStackPanel"/>
             </Grid>
         </Grid>
     </Grid>

@@ -390,7 +390,7 @@
     <Compile Include="Controls\Setup\SetupEditor.xaml.cs">
       <DependentUpon>SetupEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Setup\SetupImage\SetupImageCreator.cs" />
+    <Compile Include="Controls\Util\ImageControlCreator.cs" />
     <Compile Include="Controls\Setup\SetupImporter.xaml.cs">
       <DependentUpon>SetupImporter.xaml</DependentUpon>
     </Compile>

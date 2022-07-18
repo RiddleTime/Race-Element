@@ -1,25 +1,14 @@
-﻿using ACCManager.Data;
-using ACCManager.HUD.Overlay.OverlayUtil;
-using ACCManager.HUD.Overlay.Util;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
-using static ACCManager.Data.ConversionFactory;
-using static ACCManager.Data.SetupConverter;
-using static ACCManager.Data.SetupJson;
-using static ACCManager.HUD.Overlay.OverlayUtil.InfoTable;
 
-namespace ACCManager.Controls.Setup.SetupImage
+namespace ACCManager.Controls.Util.SetupImage
 {
-    internal class SetupImageCreator
+    internal class ImageControlCreator
     {
-        public static System.Windows.Controls.Image CreateImage(int width, int height, string file)
+        public static System.Windows.Controls.Image CreateImage(int width, int height, HUD.Overlay.OverlayUtil.CachedBitmap cachedBitmap)
         {
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
 
@@ -27,7 +16,7 @@ namespace ACCManager.Controls.Setup.SetupImage
 
             using (Graphics g = Graphics.FromImage(bitmap))
             {
-                RenderSetup(g, file, width, height);
+                cachedBitmap.Draw(g, 0, 0, width, height);
             }
 
             MemoryStream memStream = new MemoryStream();
@@ -57,11 +46,6 @@ namespace ACCManager.Controls.Setup.SetupImage
             memStream.Dispose();
 
             return image;
-        }
-
-        private static void RenderSetup(Graphics g, string file, int width, int height)
-        {
-
         }
     }
 }
