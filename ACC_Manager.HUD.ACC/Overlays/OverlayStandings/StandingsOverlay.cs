@@ -492,8 +492,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
             if (tableData.Count == 0) return;
 
-            OverlayStandingTableHeaderLabel tableHeader = new OverlayStandingTableHeaderLabel(g, _x, rowPosY, FontUtil.FontUnispace(_fontSize));
-            tableHeader.Draw(g, classBackground, Brushes.White, header);
+            OverlayStandingTableHeaderLabel tableHeader = new OverlayStandingTableHeaderLabel(g, _x, rowPosY, classBackground, FontUtil.FontUnispace(_fontSize));
+            tableHeader.Draw(g, Brushes.White, header);
             rowPosY += tableHeader.Height + _rowGab;
 
             for (int i = 0; i < tableData.Count; i++)
@@ -554,23 +554,29 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
     {
         private readonly int _x;
         private readonly int _y;
+        private CachedBitmap _cachedBackground;
         public int Height { get; }
         private readonly Font _fontFamily;
 
-        public OverlayStandingTableHeaderLabel(Graphics g, int x, int y, Font font)
+        public OverlayStandingTableHeaderLabel(Graphics g, int x, int y, SolidBrush backgroundBrush, Font font)
         {
             _x = x;
             _y = y;
             _fontFamily = font;
             var fontSize = g.MeasureString(" ", _fontFamily);
             Height = (int)fontSize.Height;
+
+            _cachedBackground = new CachedBitmap((int)(fontSize.Width + 10), (int)fontSize.Height, gr =>
+            {
+                var rectanle = new Rectangle(_x, _y, (int)(fontSize.Width + 10), (int)fontSize.Height);
+                g.FillRoundedRectangle(backgroundBrush, rectanle, 3);
+            });
         }
 
-        public void Draw(Graphics g, SolidBrush backgroundBrush, Brush fontBruch, String text)
+        public void Draw(Graphics g, Brush fontBruch, String text)
         {
             var fontSize = g.MeasureString(text, _fontFamily);
-            var rectanle = new Rectangle(_x, _y, (int)(fontSize.Width + 10), (int)fontSize.Height);
-            g.FillRoundedRectangle(backgroundBrush, rectanle, 3);
+            _cachedBackground.Draw(g, _x, _y); 
             g.DrawStringWithShadow(text, _fontFamily, fontBruch, new PointF(_x, _y));
         }
     }
