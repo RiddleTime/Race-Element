@@ -57,7 +57,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
         private CarClasses _ownClass = CarClasses.GT3;
         private String _driverLastName = "";
-        private bool _initDone = false;
+        private AcStatus _currentAcStatus = AcStatus.AC_OFF;
 
         // the entry list splint into separate lists for every car class
         private Dictionary<CarClasses, List<KeyValuePair<int, CarData>>> _entryListForCarClass = new Dictionary<CarClasses, List<KeyValuePair<int, CarData>>>();
@@ -104,15 +104,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
         private void SessionTypeChanged(object sender, ACCSharedMemory.AcSessionType e)
         {
-            _initDone = false;
             ClearCarClassEntryList();
         }
 
         private void StatusChanged(object sender, ACCSharedMemory.AcStatus e)
         {
+            _currentAcStatus = e;
             if (e.Equals(AcStatus.AC_OFF))
             {
-                _initDone = false;
                 ClearCarClassEntryList();
             }
         }
@@ -150,7 +149,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             SplitEntryList(cars);
             SortAllEntryLists();
 
-            if (!_initDone) return;
+            if (!_currentAcStatus.Equals(AcStatus.AC_LIVE)) return;
 
             int bestSessionLapMS = GetBestSessionLap();
             
@@ -381,7 +380,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
         private void DetermineOwnClass(List<KeyValuePair<int, CarData>> cars)
         {
 
-            if (_initDone) return;
+            if (!_currentAcStatus.Equals(AcStatus.AC_LIVE)) return;
 
             foreach (KeyValuePair<int, CarData> kvp in cars)
             {
@@ -399,7 +398,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
                     //_driverLastName = driverInfo.LastName;
                     Debug.WriteLine($"standings overlay - car class {_ownClass} driver name {_driverLastName}");
-                    _initDone = true;
 
                 }
             }
@@ -515,8 +513,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
                 //String deltaString = $"{tableData[i].Delta / 1000f:F2}".FillStart(6, ' ');
                 String deltaString = $"{TimeSpan.FromMilliseconds(tableData[i].Delta):ss\\.f}";
 
-                OverlayStandingsTablePositionLabel position = new OverlayStandingsTablePositionLabel(g, columnPosX, rowPosY, FontUtil.FontUnispace(_fontSize));
-                position.Draw(g, backgroundColor, classBackground, tableData[i].Position.ToString());
+                OverlayStandingsTablePositionLabel position = new OverlayStandingsTablePositionLabel(g, columnPosX, rowPosY, backgroundColor, classBackground, FontUtil.FontUnispace(_fontSize));
+                position.Draw(g, tableData[i].Position.ToString());
 
                 columnPosX += position.Width + _columnGab;
                 OverlayStandingsTableTextLabel raceNumber = new OverlayStandingsTableTextLabel(g, columnPosX, rowPosY, 4, FontUtil.FontUnispace(_fontSize));
@@ -555,6 +553,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
         private readonly int _x;
         private readonly int _y;
         private CachedBitmap _cachedBackground;
+        private SolidBrush _backgroundBrush;
         public int Height { get; }
         private readonly Font _fontFamily;
 
@@ -563,19 +562,26 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             _x = x;
             _y = y;
             _fontFamily = font;
+            _backgroundBrush = backgroundBrush;
             var fontSize = g.MeasureString(" ", _fontFamily);
             Height = (int)fontSize.Height;
-
-            _cachedBackground = new CachedBitmap((int)(fontSize.Width + 10), (int)fontSize.Height, gr =>
-            {
-                var rectanle = new Rectangle(_x, _y, (int)(fontSize.Width + 10), (int)fontSize.Height);
-                g.FillRoundedRectangle(backgroundBrush, rectanle, 3);
-            });
+          
         }
 
         public void Draw(Graphics g, Brush fontBruch, String text)
         {
             var fontSize = g.MeasureString(text, _fontFamily);
+
+            if (_cachedBackground == null || fontSize.Width > _cachedBackground.Width)
+            {
+                if (_cachedBackground != null) _cachedBackground.Dispose();
+                _cachedBackground = new CachedBitmap((int)(fontSize.Width + 10), (int)fontSize.Height, gr =>
+                {
+                    var rectanle = new Rectangle(_x, _y, (int)(fontSize.Width + 10), (int)fontSize.Height);
+                    g.FillRoundedRectangle(_backgroundBrush, rectanle, 3);
+                });
+            }
+
             _cachedBackground.Draw(g, _x, _y); 
             g.DrawStringWithShadow(text, _fontFamily, fontBruch, new PointF(_x, _y));
         }
@@ -656,10 +662,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
         public int Width { get; }
         public int Height { get; }
         private readonly int _maxFontWidth;
+        private CachedBitmap _cachedBackground;
 
         private readonly GraphicsPath _path;
 
-        public OverlayStandingsTablePositionLabel(Graphics g, int x, int y, Font font)
+        public OverlayStandingsTablePositionLabel(Graphics g, int x, int y, SolidBrush background, SolidBrush highlight, Font font)
         {
 
             _x = x;
@@ -676,16 +683,21 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             var rectanle = new Rectangle(_x, _y, Width, Height);
             _path = GraphicsExtensions.CreateRoundedRectangle(rectanle, 0, 0, Height / 3, 0);
 
+            _cachedBackground = new CachedBitmap((int)(fontSize.Width + 10), (int)fontSize.Height, gr =>
+            {
+                LinearGradientBrush lgb = new LinearGradientBrush(new Point() { X = _x - 10, Y = _y }, new Point() { X = Width + 10, Y = _y }, highlight.Color, background.Color);
+                g.FillPath(lgb, _path);
+
+                var highlightRectanle = new Rectangle(_x, _y, 4, Height);
+                g.FillRectangle(highlight, highlightRectanle);
+            });
+
         }
 
-        public void Draw(Graphics g, SolidBrush background, SolidBrush highlight, String number)
+        public void Draw(Graphics g, String number)
         {
 
-            LinearGradientBrush lgb = new LinearGradientBrush(new Point() { X = _x - 10, Y = _y }, new Point() { X = Width + 10, Y = _y }, highlight.Color, background.Color);
-            g.FillPath(lgb, _path);
-
-            var rectanle = new Rectangle(_x, _y, 4, Height);
-            g.FillRectangle(highlight, rectanle);
+            _cachedBackground.Draw(g, _x, _y);
 
             var numberWidth = g.MeasureString(number, _fontFamily).Width;
             g.DrawString(number, _fontFamily, Brushes.White, new PointF(_x + _maxFontWidth / 2 - numberWidth / 2, _y));
