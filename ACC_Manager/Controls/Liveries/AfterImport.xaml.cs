@@ -112,7 +112,7 @@ namespace ACCManager.Controls
 
             foreach (LiveryTreeCar car in ImportedLiveries)
             {
-                ListBoxItem listBoxItem = new ListBoxItem() { Content = $"{car.CarsRoot.teamName} / {car.CarsRoot.customSkinName}", DataContext = car };
+                ListBoxItem listBoxItem = new ListBoxItem() { Content = $"{car.CarsRoot.TeamName} / {car.CarsRoot.CustomSkinName}", DataContext = car };
                 lvImportedLiveries.Items.Add(listBoxItem);
             }
         }

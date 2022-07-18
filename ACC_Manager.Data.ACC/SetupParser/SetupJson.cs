@@ -10,107 +10,107 @@ namespace ACCManager.Data
     {
         public class Root
         {
-            public string carName { get; set; }
-            public BasicSetup basicSetup { get; set; }
-            public AdvancedSetup advancedSetup { get; set; }
-            public int trackBopType { get; set; }
+            public string CarName { get; set; }
+            public BasicSetup BasicSetup { get; set; }
+            public AdvancedSetup AdvancedSetup { get; set; }
+            public int TrackBopType { get; set; }
         }
 
         public class AdvancedSetup
         {
-            public MechanicalBalance mechanicalBalance { get; set; }
-            public Dampers dampers { get; set; }
-            public AeroBalance aeroBalance { get; set; }
-            public Drivetrain drivetrain { get; set; }
+            public MechanicalBalance MechanicalBalance { get; set; }
+            public Dampers Dampers { get; set; }
+            public AeroBalance AeroBalance { get; set; }
+            public Drivetrain Drivetrain { get; set; }
         }
 
         public class Tyres
         {
-            public int tyreCompound { get; set; }
-            public List<int> tyrePressure { get; set; }
+            public int TyreCompound { get; set; }
+            public List<int> TyrePressure { get; set; }
         }
 
         public class Alignment
         {
-            public List<int> camber { get; set; }
-            public List<int> toe { get; set; }
-            public List<double> staticCamber { get; set; }
-            public List<double> toeOutLinear { get; set; }
-            public int casterLF { get; set; }
-            public int casterRF { get; set; }
-            public int steerRatio { get; set; }
+            public List<int> Camber { get; set; }
+            public List<int> Toe { get; set; }
+            public List<double> StaticCamber { get; set; }
+            public List<double> ToeOutLinear { get; set; }
+            public int CasterLF { get; set; }
+            public int CasterRF { get; set; }
+            public int SteerRatio { get; set; }
         }
 
         public class Electronics
         {
-            public int tC1 { get; set; }
-            public int tC2 { get; set; }
-            public int abs { get; set; }
-            public int eCUMap { get; set; }
-            public int fuelMix { get; set; }
-            public int telemetryLaps { get; set; }
+            public int TC1 { get; set; }
+            public int TC2 { get; set; }
+            public int Abs { get; set; }
+            public int ECUMap { get; set; }
+            public int FuelMix { get; set; }
+            public int TelemetryLaps { get; set; }
         }
 
         public class PitStrategyItem
         {
-            public int fuelToAdd { get; set; }
-            public Tyres tyres { get; set; }
-            public int tyreSet { get; set; }
-            public int frontBrakePadCompound { get; set; }
-            public int rearBrakePadCompound { get; set; }
+            public int FuelToAdd { get; set; }
+            public Tyres Tyres { get; set; }
+            public int TyreSet { get; set; }
+            public int FrontBrakePadCompound { get; set; }
+            public int RearBrakePadCompound { get; set; }
         }
 
         public class Strategy
         {
-            public int fuel { get; set; }
-            public int nPitStops { get; set; }
-            public int tyreSet { get; set; }
-            public int frontBrakePadCompound { get; set; }
-            public int rearBrakePadCompound { get; set; }
-            public List<PitStrategyItem> pitStrategy { get; set; }
-            public double fuelPerLap { get; set; }
+            public int Fuel { get; set; }
+            public int NPitStops { get; set; }
+            public int TyreSet { get; set; }
+            public int FrontBrakePadCompound { get; set; }
+            public int RearBrakePadCompound { get; set; }
+            public List<PitStrategyItem> PitStrategy { get; set; }
+            public double FuelPerLap { get; set; }
         }
 
         public class BasicSetup
         {
-            public Tyres tyres { get; set; }
-            public Alignment alignment { get; set; }
-            public Electronics electronics { get; set; }
-            public Strategy strategy { get; set; }
+            public Tyres Tyres { get; set; }
+            public Alignment Alignment { get; set; }
+            public Electronics Electronics { get; set; }
+            public Strategy Strategy { get; set; }
         }
 
         public class MechanicalBalance
         {
-            public int aRBFront { get; set; }
-            public int aRBRear { get; set; }
-            public List<int> wheelRate { get; set; }
-            public List<int> bumpStopRateUp { get; set; }
-            public List<int> bumpStopRateDn { get; set; }
-            public List<int> bumpStopWindow { get; set; }
-            public int brakeTorque { get; set; }
-            public int brakeBias { get; set; }
+            public int ARBFront { get; set; }
+            public int ARBRear { get; set; }
+            public List<int> WheelRate { get; set; }
+            public List<int> BumpStopRateUp { get; set; }
+            public List<int> BumpStopRateDn { get; set; }
+            public List<int> BumpStopWindow { get; set; }
+            public int BrakeTorque { get; set; }
+            public int BrakeBias { get; set; }
         }
 
         public class Dampers
         {
-            public List<int> bumpSlow { get; set; }
-            public List<int> bumpFast { get; set; }
-            public List<int> reboundSlow { get; set; }
-            public List<int> reboundFast { get; set; }
+            public List<int> BumpSlow { get; set; }
+            public List<int> BumpFast { get; set; }
+            public List<int> ReboundSlow { get; set; }
+            public List<int> ReboundFast { get; set; }
         }
 
         public class AeroBalance
         {
-            public List<int> rideHeight { get; set; }
-            public List<double> rodLength { get; set; }
-            public int splitter { get; set; }
-            public int rearWing { get; set; }
-            public List<int> brakeDuct { get; set; }
+            public List<int> RideHeight { get; set; }
+            public List<double> RodLength { get; set; }
+            public int Splitter { get; set; }
+            public int RearWing { get; set; }
+            public List<int> BrakeDuct { get; set; }
         }
 
         public class Drivetrain
         {
-            public int preload { get; set; }
+            public int Preload { get; set; }
         }
     }
 }
