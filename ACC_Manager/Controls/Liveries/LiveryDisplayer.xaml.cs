@@ -137,27 +137,27 @@ namespace ACCManager.Controls
                 Instance.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     CarsJson.Root carsRoot = Livery.CarsRoot;
-                    string customSkinName = carsRoot.customSkinName;
+                    string customSkinName = carsRoot.CustomSkinName;
 
                     if (customSkinName != null && customSkinName.Length > 0)
                     {
                         skinMainInfo.Visibility = Visibility.Visible;
 
-                        if (carsRoot.teamName != String.Empty)
-                            stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.teamName}", HorizontalAlignment.Center, 25, "Team Name"));
-                        stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.customSkinName}", HorizontalAlignment.Center, 19, "Skin Name"));
-                        stackPanelMainInfo.Children.Add(GetInfoLabel($"{ConversionFactory.GetCarName(carsRoot.carModelType)}", HorizontalAlignment.Center, 16, "Car model type"));
+                        if (carsRoot.TeamName != String.Empty)
+                            stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.TeamName}", HorizontalAlignment.Center, 25, "Team Name"));
+                        stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.CustomSkinName}", HorizontalAlignment.Center, 19, "Skin Name"));
+                        stackPanelMainInfo.Children.Add(GetInfoLabel($"{ConversionFactory.GetCarName(carsRoot.CarModelType)}", HorizontalAlignment.Center, 16, "Car model type"));
 
-                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Display Name: {carsRoot.displayName}"));
-                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Race Number: {carsRoot.raceNumber}"));
-                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Nationality: {GetNationality(carsRoot.nationality)}"));
+                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Display Name: {carsRoot.DisplayName}"));
+                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Race Number: {carsRoot.RaceNumber}"));
+                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Nationality: {GetNationality(carsRoot.Nationality)}"));
 
                         stackPanelLiveryInfo.Children.Add(GetInfoLabel($""));
-                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Body Base Layer: {GetBodyMaterialType(carsRoot.skinMaterialType1)}"));
-                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Body Accent: {GetBodyMaterialType(carsRoot.skinMaterialType2)}"));
-                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Body Trim: {GetBodyMaterialType(carsRoot.skinMaterialType3)}"));
-                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Rim Base: {GetRimMaterialType(carsRoot.rimMaterialType1)}"));
-                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Rim Accent: {GetRimMaterialType(carsRoot.rimMaterialType2)}"));
+                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Body Base Layer: {GetBodyMaterialType(carsRoot.SkinMaterialType1)}"));
+                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Body Accent: {GetBodyMaterialType(carsRoot.SkinMaterialType2)}"));
+                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Body Trim: {GetBodyMaterialType(carsRoot.SkinMaterialType3)}"));
+                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Rim Base: {GetRimMaterialType(carsRoot.RimMaterialType1)}"));
+                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Rim Accent: {GetRimMaterialType(carsRoot.RimMaterialType2)}"));
 
                         DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + customSkinName);
                         if (customSkinDir.Exists)

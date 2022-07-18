@@ -110,10 +110,7 @@ namespace ACCManager
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            UiSettingsJson uiSettings = UiSettings.LoadJson();
-            uiSettings.X = (int)this.Left;
-            uiSettings.Y = (int)this.Top;
-            UiSettings.SaveJson(uiSettings);
+            SaveLocation();
 
             OverlaysACC.CloseAll();
             HudTrackers.StopAll();
@@ -188,7 +185,7 @@ namespace ACCManager
 
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            DecreaseOpacity();
+            DecreaseOpacity(0.9, 0.0025);
             DragMove();
             e.Handled = true;
         }
@@ -201,9 +198,10 @@ namespace ACCManager
         }
 
         private bool _stopDecreaseOpacty;
-        private void DecreaseOpacity()
+        private void DecreaseOpacity(double target, double steps)
         {
             _stopDecreaseOpacty = false;
+
             new Thread(() =>
             {
                 bool finalValueReached = false;
@@ -222,11 +220,12 @@ namespace ACCManager
                     Thread.Sleep(3);
                     Dispatcher.Invoke(new Action(() =>
                     {
-                        this.Opacity -= 0.004;
+                        this.Opacity -= steps;
 
-                        if (this.Opacity < 0.85)
+                        if (this.Opacity < target)
                             finalValueReached = true;
                     }));
+
                 }
             }).Start();
         }

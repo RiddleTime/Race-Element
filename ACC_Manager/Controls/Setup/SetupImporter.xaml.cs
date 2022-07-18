@@ -62,10 +62,10 @@ namespace ACCManager.Controls
 
                 trackItem.MouseLeftButtonUp += (s, e) =>
                 {
-                    CarModels model = ConversionFactory.ParseCarName(_currentSetup.carName);
+                    CarModels model = ConversionFactory.ParseCarName(_currentSetup.CarName);
                     string modelName = ConversionFactory.GetNameFromCarModel(model);
 
-                    FileInfo targetFile = new FileInfo(FileUtil.AccPath + "Setups\\" + _currentSetup.carName + "\\" + kv.Key + "\\" + _setupName + ".json");
+                    FileInfo targetFile = new FileInfo(FileUtil.AccPath + "Setups\\" + _currentSetup.CarName + "\\" + kv.Key + "\\" + _setupName + ".json");
 
                     if (targetFile.Exists)
                     {
@@ -101,7 +101,7 @@ namespace ACCManager.Controls
                 return;
 
             Debug.WriteLine($"Importing {file.FullName}");
-            CarModels model = ConversionFactory.ParseCarName(setupRoot.carName);
+            CarModels model = ConversionFactory.ParseCarName(setupRoot.CarName);
             string modelName = ConversionFactory.GetNameFromCarModel(model);
             Debug.WriteLine($"Trying to import a setup for {modelName}");
             _currentSetup = setupRoot;

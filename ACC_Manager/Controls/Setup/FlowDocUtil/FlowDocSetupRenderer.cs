@@ -27,91 +27,91 @@ namespace ACCManager.Controls.Setup
             Root setup = GetSetupJsonRoot(file);
             if (setup == null) return;
 
-            CarModels model = ConversionFactory.ParseCarName(setup.carName);
+            CarModels model = ConversionFactory.ParseCarName(setup.CarName);
             if (model == CarModels.None) return;
             ICarSetupConversion carSetup = ConversionFactory.GetConversion(model);
 
             if (carSetup == null)
                 return;
 
-            TyreCompound compound = carSetup.TyresSetup.Compound(setup.basicSetup.tyres.tyreCompound);
+            TyreCompound compound = carSetup.TyresSetup.Compound(setup.BasicSetup.Tyres.TyreCompound);
 
             // Allignment / Tyre Setup
-            double frontLeftPressure = carSetup.TyresSetup.TirePressure(carSetup.DryTyreCompound, Wheel.FrontLeft, setup.basicSetup.tyres.tyrePressure);
-            double frontRightPressure = carSetup.TyresSetup.TirePressure(carSetup.DryTyreCompound, Wheel.FrontRight, setup.basicSetup.tyres.tyrePressure);
-            double rearLeftPressure = carSetup.TyresSetup.TirePressure(carSetup.DryTyreCompound, Wheel.RearLeft, setup.basicSetup.tyres.tyrePressure);
-            double rearRightPressure = carSetup.TyresSetup.TirePressure(carSetup.DryTyreCompound, Wheel.RearRight, setup.basicSetup.tyres.tyrePressure);
+            double frontLeftPressure = carSetup.TyresSetup.TirePressure(carSetup.DryTyreCompound, Wheel.FrontLeft, setup.BasicSetup.Tyres.TyrePressure);
+            double frontRightPressure = carSetup.TyresSetup.TirePressure(carSetup.DryTyreCompound, Wheel.FrontRight, setup.BasicSetup.Tyres.TyrePressure);
+            double rearLeftPressure = carSetup.TyresSetup.TirePressure(carSetup.DryTyreCompound, Wheel.RearLeft, setup.BasicSetup.Tyres.TyrePressure);
+            double rearRightPressure = carSetup.TyresSetup.TirePressure(carSetup.DryTyreCompound, Wheel.RearRight, setup.BasicSetup.Tyres.TyrePressure);
 
-            double frontLeftCaster = carSetup.TyresSetup.Caster(setup.basicSetup.alignment.casterLF);
-            double frontRightCaster = carSetup.TyresSetup.Caster(setup.basicSetup.alignment.casterRF);
+            double frontLeftCaster = carSetup.TyresSetup.Caster(setup.BasicSetup.Alignment.CasterLF);
+            double frontRightCaster = carSetup.TyresSetup.Caster(setup.BasicSetup.Alignment.CasterRF);
 
-            double frontLeftToe = carSetup.TyresSetup.Toe(Wheel.FrontLeft, setup.basicSetup.alignment.toe);
-            double frontRightToe = carSetup.TyresSetup.Toe(Wheel.FrontRight, setup.basicSetup.alignment.toe);
-            double rearLeftToe = carSetup.TyresSetup.Toe(Wheel.RearLeft, setup.basicSetup.alignment.toe);
-            double rearRightToe = carSetup.TyresSetup.Toe(Wheel.RearRight, setup.basicSetup.alignment.toe);
+            double frontLeftToe = carSetup.TyresSetup.Toe(Wheel.FrontLeft, setup.BasicSetup.Alignment.Toe);
+            double frontRightToe = carSetup.TyresSetup.Toe(Wheel.FrontRight, setup.BasicSetup.Alignment.Toe);
+            double rearLeftToe = carSetup.TyresSetup.Toe(Wheel.RearLeft, setup.BasicSetup.Alignment.Toe);
+            double rearRightToe = carSetup.TyresSetup.Toe(Wheel.RearRight, setup.BasicSetup.Alignment.Toe);
 
-            double camberFrontLeft = carSetup.TyresSetup.Camber(Wheel.FrontLeft, setup.basicSetup.alignment.camber);
-            double camberFrontRight = carSetup.TyresSetup.Camber(Wheel.FrontRight, setup.basicSetup.alignment.camber);
-            double camberRearLeft = carSetup.TyresSetup.Camber(Wheel.RearLeft, setup.basicSetup.alignment.camber);
-            double camberRearRight = carSetup.TyresSetup.Camber(Wheel.RearRight, setup.basicSetup.alignment.camber);
+            double camberFrontLeft = carSetup.TyresSetup.Camber(Wheel.FrontLeft, setup.BasicSetup.Alignment.Camber);
+            double camberFrontRight = carSetup.TyresSetup.Camber(Wheel.FrontRight, setup.BasicSetup.Alignment.Camber);
+            double camberRearLeft = carSetup.TyresSetup.Camber(Wheel.RearLeft, setup.BasicSetup.Alignment.Camber);
+            double camberRearRight = carSetup.TyresSetup.Camber(Wheel.RearRight, setup.BasicSetup.Alignment.Camber);
 
 
             // Mechnical Setup
-            int wheelRateFrontLeft = carSetup.MechanicalSetup.WheelRate(setup.advancedSetup.mechanicalBalance.wheelRate, Wheel.FrontLeft);
-            int wheelRateFrontRight = carSetup.MechanicalSetup.WheelRate(setup.advancedSetup.mechanicalBalance.wheelRate, Wheel.FrontRight);
-            int wheelRateRearLeft = carSetup.MechanicalSetup.WheelRate(setup.advancedSetup.mechanicalBalance.wheelRate, Wheel.RearLeft);
-            int wheelRateRearRight = carSetup.MechanicalSetup.WheelRate(setup.advancedSetup.mechanicalBalance.wheelRate, Wheel.RearRight);
+            int wheelRateFrontLeft = carSetup.MechanicalSetup.WheelRate(setup.AdvancedSetup.MechanicalBalance.WheelRate, Wheel.FrontLeft);
+            int wheelRateFrontRight = carSetup.MechanicalSetup.WheelRate(setup.AdvancedSetup.MechanicalBalance.WheelRate, Wheel.FrontRight);
+            int wheelRateRearLeft = carSetup.MechanicalSetup.WheelRate(setup.AdvancedSetup.MechanicalBalance.WheelRate, Wheel.RearLeft);
+            int wheelRateRearRight = carSetup.MechanicalSetup.WheelRate(setup.AdvancedSetup.MechanicalBalance.WheelRate, Wheel.RearRight);
 
 
-            int bumpStopRateFrontLeft = carSetup.MechanicalSetup.BumpstopRate(setup.advancedSetup.mechanicalBalance.bumpStopRateUp, Wheel.FrontLeft);
-            int bumpStopRateFrontRight = carSetup.MechanicalSetup.BumpstopRate(setup.advancedSetup.mechanicalBalance.bumpStopRateUp, Wheel.FrontRight);
-            int bumpStopRateRearLeft = carSetup.MechanicalSetup.BumpstopRate(setup.advancedSetup.mechanicalBalance.bumpStopRateUp, Wheel.RearLeft);
-            int bumpStopRateRearRight = carSetup.MechanicalSetup.BumpstopRate(setup.advancedSetup.mechanicalBalance.bumpStopRateUp, Wheel.RearRight);
+            int bumpStopRateFrontLeft = carSetup.MechanicalSetup.BumpstopRate(setup.AdvancedSetup.MechanicalBalance.BumpStopRateUp, Wheel.FrontLeft);
+            int bumpStopRateFrontRight = carSetup.MechanicalSetup.BumpstopRate(setup.AdvancedSetup.MechanicalBalance.BumpStopRateUp, Wheel.FrontRight);
+            int bumpStopRateRearLeft = carSetup.MechanicalSetup.BumpstopRate(setup.AdvancedSetup.MechanicalBalance.BumpStopRateUp, Wheel.RearLeft);
+            int bumpStopRateRearRight = carSetup.MechanicalSetup.BumpstopRate(setup.AdvancedSetup.MechanicalBalance.BumpStopRateUp, Wheel.RearRight);
 
-            int bumpStopRangeFrontLeft = carSetup.MechanicalSetup.BumpstopRange(setup.advancedSetup.mechanicalBalance.bumpStopWindow, Wheel.FrontLeft);
-            int bumpStopRangeFrontRight = carSetup.MechanicalSetup.BumpstopRange(setup.advancedSetup.mechanicalBalance.bumpStopWindow, Wheel.FrontRight);
-            int bumpStopRangeRearLeft = carSetup.MechanicalSetup.BumpstopRange(setup.advancedSetup.mechanicalBalance.bumpStopWindow, Wheel.RearLeft);
-            int bumpStopRangeRearRight = carSetup.MechanicalSetup.BumpstopRange(setup.advancedSetup.mechanicalBalance.bumpStopWindow, Wheel.RearRight);
+            int bumpStopRangeFrontLeft = carSetup.MechanicalSetup.BumpstopRange(setup.AdvancedSetup.MechanicalBalance.BumpStopWindow, Wheel.FrontLeft);
+            int bumpStopRangeFrontRight = carSetup.MechanicalSetup.BumpstopRange(setup.AdvancedSetup.MechanicalBalance.BumpStopWindow, Wheel.FrontRight);
+            int bumpStopRangeRearLeft = carSetup.MechanicalSetup.BumpstopRange(setup.AdvancedSetup.MechanicalBalance.BumpStopWindow, Wheel.RearLeft);
+            int bumpStopRangeRearRight = carSetup.MechanicalSetup.BumpstopRange(setup.AdvancedSetup.MechanicalBalance.BumpStopWindow, Wheel.RearRight);
 
-            int differentialPreload = carSetup.MechanicalSetup.PreloadDifferential(setup.advancedSetup.drivetrain.preload);
+            int differentialPreload = carSetup.MechanicalSetup.PreloadDifferential(setup.AdvancedSetup.Drivetrain.Preload);
 
-            int brakePower = carSetup.MechanicalSetup.BrakePower(setup.advancedSetup.mechanicalBalance.brakeTorque);
-            double brakeBias = carSetup.MechanicalSetup.BrakeBias(setup.advancedSetup.mechanicalBalance.brakeBias);
-            int antiRollBarFront = carSetup.MechanicalSetup.AntiRollBarFront(setup.advancedSetup.mechanicalBalance.aRBFront);
-            int antiRollBarRear = carSetup.MechanicalSetup.AntiRollBarFront(setup.advancedSetup.mechanicalBalance.aRBRear);
-            double steeringRatio = carSetup.MechanicalSetup.SteeringRatio(setup.basicSetup.alignment.steerRatio);
+            int brakePower = carSetup.MechanicalSetup.BrakePower(setup.AdvancedSetup.MechanicalBalance.BrakeTorque);
+            double brakeBias = carSetup.MechanicalSetup.BrakeBias(setup.AdvancedSetup.MechanicalBalance.BrakeBias);
+            int antiRollBarFront = carSetup.MechanicalSetup.AntiRollBarFront(setup.AdvancedSetup.MechanicalBalance.ARBFront);
+            int antiRollBarRear = carSetup.MechanicalSetup.AntiRollBarFront(setup.AdvancedSetup.MechanicalBalance.ARBRear);
+            double steeringRatio = carSetup.MechanicalSetup.SteeringRatio(setup.BasicSetup.Alignment.SteerRatio);
 
 
             // Dampers
-            int bumpSlowFrontLeft = carSetup.DamperSetup.BumpSlow(setup.advancedSetup.dampers.bumpSlow, Wheel.FrontLeft);
-            int bumpSlowFrontRight = carSetup.DamperSetup.BumpSlow(setup.advancedSetup.dampers.bumpSlow, Wheel.FrontRight);
-            int bumpSlowRearLeft = carSetup.DamperSetup.BumpSlow(setup.advancedSetup.dampers.bumpSlow, Wheel.RearLeft);
-            int bumpSlowRearRight = carSetup.DamperSetup.BumpSlow(setup.advancedSetup.dampers.bumpSlow, Wheel.RearRight);
+            int bumpSlowFrontLeft = carSetup.DamperSetup.BumpSlow(setup.AdvancedSetup.Dampers.BumpSlow, Wheel.FrontLeft);
+            int bumpSlowFrontRight = carSetup.DamperSetup.BumpSlow(setup.AdvancedSetup.Dampers.BumpSlow, Wheel.FrontRight);
+            int bumpSlowRearLeft = carSetup.DamperSetup.BumpSlow(setup.AdvancedSetup.Dampers.BumpSlow, Wheel.RearLeft);
+            int bumpSlowRearRight = carSetup.DamperSetup.BumpSlow(setup.AdvancedSetup.Dampers.BumpSlow, Wheel.RearRight);
 
-            int bumpFastFrontLeft = carSetup.DamperSetup.BumpFast(setup.advancedSetup.dampers.bumpFast, Wheel.FrontLeft);
-            int bumpFastFrontRight = carSetup.DamperSetup.BumpFast(setup.advancedSetup.dampers.bumpFast, Wheel.FrontRight);
-            int bumpFastRearLeft = carSetup.DamperSetup.BumpFast(setup.advancedSetup.dampers.bumpFast, Wheel.RearLeft);
-            int bumpFastRearRight = carSetup.DamperSetup.BumpFast(setup.advancedSetup.dampers.bumpFast, Wheel.RearRight);
+            int bumpFastFrontLeft = carSetup.DamperSetup.BumpFast(setup.AdvancedSetup.Dampers.BumpFast, Wheel.FrontLeft);
+            int bumpFastFrontRight = carSetup.DamperSetup.BumpFast(setup.AdvancedSetup.Dampers.BumpFast, Wheel.FrontRight);
+            int bumpFastRearLeft = carSetup.DamperSetup.BumpFast(setup.AdvancedSetup.Dampers.BumpFast, Wheel.RearLeft);
+            int bumpFastRearRight = carSetup.DamperSetup.BumpFast(setup.AdvancedSetup.Dampers.BumpFast, Wheel.RearRight);
 
-            int reboundSlowFrontLeft = carSetup.DamperSetup.ReboundSlow(setup.advancedSetup.dampers.reboundSlow, Wheel.FrontLeft);
-            int reboundSlowFrontRight = carSetup.DamperSetup.ReboundSlow(setup.advancedSetup.dampers.reboundSlow, Wheel.FrontRight);
-            int reboundSlowRearLeft = carSetup.DamperSetup.ReboundSlow(setup.advancedSetup.dampers.reboundSlow, Wheel.RearLeft);
-            int reboundSlowRearRight = carSetup.DamperSetup.ReboundSlow(setup.advancedSetup.dampers.reboundSlow, Wheel.RearRight);
+            int reboundSlowFrontLeft = carSetup.DamperSetup.ReboundSlow(setup.AdvancedSetup.Dampers.ReboundSlow, Wheel.FrontLeft);
+            int reboundSlowFrontRight = carSetup.DamperSetup.ReboundSlow(setup.AdvancedSetup.Dampers.ReboundSlow, Wheel.FrontRight);
+            int reboundSlowRearLeft = carSetup.DamperSetup.ReboundSlow(setup.AdvancedSetup.Dampers.ReboundSlow, Wheel.RearLeft);
+            int reboundSlowRearRight = carSetup.DamperSetup.ReboundSlow(setup.AdvancedSetup.Dampers.ReboundSlow, Wheel.RearRight);
 
-            int reboundFastFrontLeft = carSetup.DamperSetup.ReboundFast(setup.advancedSetup.dampers.reboundFast, Wheel.FrontLeft);
-            int reboundFastFrontRight = carSetup.DamperSetup.ReboundFast(setup.advancedSetup.dampers.reboundFast, Wheel.FrontRight);
-            int reboundFastRearLeft = carSetup.DamperSetup.ReboundFast(setup.advancedSetup.dampers.reboundFast, Wheel.RearLeft);
-            int reboundFastRearRight = carSetup.DamperSetup.ReboundFast(setup.advancedSetup.dampers.reboundFast, Wheel.RearRight);
+            int reboundFastFrontLeft = carSetup.DamperSetup.ReboundFast(setup.AdvancedSetup.Dampers.ReboundFast, Wheel.FrontLeft);
+            int reboundFastFrontRight = carSetup.DamperSetup.ReboundFast(setup.AdvancedSetup.Dampers.ReboundFast, Wheel.FrontRight);
+            int reboundFastRearLeft = carSetup.DamperSetup.ReboundFast(setup.AdvancedSetup.Dampers.ReboundFast, Wheel.RearLeft);
+            int reboundFastRearRight = carSetup.DamperSetup.ReboundFast(setup.AdvancedSetup.Dampers.ReboundFast, Wheel.RearRight);
 
 
 
             // Aero Balance
-            int rideHeightFront = carSetup.AeroBalance.RideHeight(setup.advancedSetup.aeroBalance.rideHeight, Position.Front);
-            int rideHeightRear = carSetup.AeroBalance.RideHeight(setup.advancedSetup.aeroBalance.rideHeight, Position.Rear);
-            int rearWing = carSetup.AeroBalance.RearWing(setup.advancedSetup.aeroBalance.rearWing);
-            int splitter = carSetup.AeroBalance.Splitter(setup.advancedSetup.aeroBalance.splitter);
-            int brakeDuctsFront = setup.advancedSetup.aeroBalance.brakeDuct[(int)Position.Front];
-            int brakeDuctsRear = setup.advancedSetup.aeroBalance.brakeDuct[(int)Position.Rear];
+            int rideHeightFront = carSetup.AeroBalance.RideHeight(setup.AdvancedSetup.AeroBalance.RideHeight, Position.Front);
+            int rideHeightRear = carSetup.AeroBalance.RideHeight(setup.AdvancedSetup.AeroBalance.RideHeight, Position.Rear);
+            int rearWing = carSetup.AeroBalance.RearWing(setup.AdvancedSetup.AeroBalance.RearWing);
+            int splitter = carSetup.AeroBalance.Splitter(setup.AdvancedSetup.AeroBalance.Splitter);
+            int brakeDuctsFront = setup.AdvancedSetup.AeroBalance.BrakeDuct[(int)Position.Front];
+            int brakeDuctsRear = setup.AdvancedSetup.AeroBalance.BrakeDuct[(int)Position.Rear];
 
 
 
@@ -225,10 +225,10 @@ namespace ACCManager.Controls.Setup
             electronicsSection.Blocks.Add(DocUtil.GetDefaultHeader("Electronics"));
             Table electronicsTable = DocUtil.GetTable(30, 70);
             TableRowGroup electronicsRowGroup = new TableRowGroup();
-            electronicsRowGroup.Rows.Add(DocUtil.GetTableRow("TC 1", $"{setup.basicSetup.electronics.tC1}"));
-            electronicsRowGroup.Rows.Add(DocUtil.GetTableRow("TC 2", $"{setup.basicSetup.electronics.tC2}"));
-            electronicsRowGroup.Rows.Add(DocUtil.GetTableRow("ABS", $"{setup.basicSetup.electronics.abs}"));
-            electronicsRowGroup.Rows.Add(DocUtil.GetTableRow("Engine map", $"{setup.basicSetup.electronics.eCUMap + 1}"));
+            electronicsRowGroup.Rows.Add(DocUtil.GetTableRow("TC 1", $"{setup.BasicSetup.Electronics.TC1}"));
+            electronicsRowGroup.Rows.Add(DocUtil.GetTableRow("TC 2", $"{setup.BasicSetup.Electronics.TC2}"));
+            electronicsRowGroup.Rows.Add(DocUtil.GetTableRow("ABS", $"{setup.BasicSetup.Electronics.Abs}"));
+            electronicsRowGroup.Rows.Add(DocUtil.GetTableRow("Engine map", $"{setup.BasicSetup.Electronics.ECUMap + 1}"));
 
             electronicsTable.RowGroups.Add(electronicsRowGroup);
             electronicsSection.Blocks.Add(electronicsTable);
