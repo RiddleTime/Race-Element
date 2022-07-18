@@ -39,7 +39,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             }
 
             [ToolTip("Multiclass")]
-            internal bool ShowMulticlass { get; set; } = false;
+            internal bool ShowMulticlass { get; set; } = true;
+
+            [ToolTip("Time Delta")]
+            internal bool ShowTimeDelta { get; set; } = true;
 
             [ToolTip("Rows in front and behind")]
             [IntRange(1, 5, 1)]
@@ -86,6 +89,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             RaceSessionTracker.Instance.OnACStatusChanged += StatusChanged;
             RaceSessionTracker.Instance.OnACSessionTypeChanged += SessionTypeChanged;
             BroadcastTracker.Instance.OnTrackDataUpdate += TrackDataUpdate;
+            _currentAcStatus = pageGraphics.Status;
         }
 
         public override void BeforeStop()
@@ -203,7 +207,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             int height = 0;
             foreach (KeyValuePair<CarClasses, List<StandingsTableRow>> kvp in tableRows)
             {
-                ost.Draw(g, height, kvp.Value, _carClassToBrush[kvp.Key], kvp.Key.ToString() + " / " + _entryListForCarClass[kvp.Key].Count() + " Cars", _driverLastName);
+                ost.Draw(g, height, kvp.Value, _carClassToBrush[kvp.Key], kvp.Key.ToString() + " / " + _entryListForCarClass[kvp.Key].Count() + " Cars", _driverLastName, _config.ShowTimeDelta);
                 height = ost.Height;
             }
 
@@ -397,7 +401,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
                     _driverLastName = $"{firstName}. {driverInfo.LastName}";
 
                     //_driverLastName = driverInfo.LastName;
-                    Debug.WriteLine($"standings overlay - car class {_ownClass} driver name {_driverLastName}");
+                    //Debug.WriteLine($"standings overlay - car class {_ownClass} driver name {_driverLastName}");
 
                 }
             }
@@ -484,7 +488,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             _fontSize = fontSize;
         }
 
-        public void Draw(Graphics g, int y, List<StandingsTableRow> tableData, SolidBrush classBackground, string header, string ownName)
+        public void Draw(Graphics g, int y, List<StandingsTableRow> tableData, SolidBrush classBackground, string header, string ownName, bool showDeltaRow)
         {
             var rowPosY = _y + y;
 
@@ -529,10 +533,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
                 deltaTime.Draw(g, backgroundColor, (SolidBrush)Brushes.Green, Brushes.White, deltaString, (tableData[i].Delta < -100));
 
                 columnPosX += deltaTime.Width + _columnGab;
-                OverlayStandingsTableTextLabel gabTime = new OverlayStandingsTableTextLabel(g, columnPosX, rowPosY, 3, FontUtil.FontUnispace(_fontSize));
-                gabTime.Draw(g, backgroundColor, (SolidBrush)Brushes.Green, Brushes.White, tableData[i].Gab, false);
+                if (showDeltaRow)
+                {
+                    OverlayStandingsTableTextLabel gabTime = new OverlayStandingsTableTextLabel(g, columnPosX, rowPosY, 3, FontUtil.FontUnispace(_fontSize));
+                    gabTime.Draw(g, backgroundColor, (SolidBrush)Brushes.Green, Brushes.White, tableData[i].Gab, false);
+                    columnPosX += gabTime.Width + _columnGab;
+                }
+                
 
-                columnPosX += gabTime.Width + _columnGab;
                 OverlayStandingsTableTextLabel laptTime = new OverlayStandingsTableTextLabel(g, columnPosX, rowPosY, 9, FontUtil.FontUnispace(_fontSize));
                 laptTime.Draw(g, backgroundColor, (SolidBrush)Brushes.Purple, Brushes.White, tableData[i].LapTime, tableData[i].FastestLapTime);
 
@@ -655,6 +663,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
     public class OverlayStandingsTablePositionLabel
     {
+        private readonly int _spacing = 10;
         private readonly Font _fontFamily;
 
         private readonly int _x;
@@ -676,16 +685,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             string maxString = new string('K', 2); // max two figures are allowed :-)
             var fontSize = g.MeasureString(maxString, _fontFamily);
             _maxFontWidth = (int)fontSize.Width;
-            Width = (int)(fontSize.Width);
+            Width = (int)(fontSize.Width) + _spacing;
             Height = (int)(fontSize.Height);
 
 
-            var rectanle = new Rectangle(_x, _y, Width, Height);
+            var rectanle = new Rectangle(_x, _y, Width-(_spacing/2), Height);
             _path = GraphicsExtensions.CreateRoundedRectangle(rectanle, 0, 0, Height / 3, 0);
 
-            _cachedBackground = new CachedBitmap((int)(fontSize.Width + 10), (int)fontSize.Height, gr =>
+            _cachedBackground = new CachedBitmap((int)(fontSize.Width + _spacing), (int)fontSize.Height, gr =>
             {
-                LinearGradientBrush lgb = new LinearGradientBrush(new Point() { X = _x - 10, Y = _y }, new Point() { X = Width + 10, Y = _y }, highlight.Color, background.Color);
+                LinearGradientBrush lgb = new LinearGradientBrush(new Point() { X = _x - _spacing, Y = _y }, new Point() { X = Width + _spacing, Y = _y }, highlight.Color, background.Color);
                 g.FillPath(lgb, _path);
 
                 var highlightRectanle = new Rectangle(_x, _y, 4, Height);
@@ -698,9 +707,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
         {
 
             _cachedBackground.Draw(g, _x, _y);
-
             var numberWidth = g.MeasureString(number, _fontFamily).Width;
-            g.DrawString(number, _fontFamily, Brushes.White, new PointF(_x + _maxFontWidth / 2 - numberWidth / 2, _y));
+            g.DrawString(number, _fontFamily, Brushes.White, new PointF(_x + _spacing / 2 + _maxFontWidth / 2 - numberWidth / 2, _y));
 
         }
     }
