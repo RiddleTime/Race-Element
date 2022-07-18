@@ -316,7 +316,7 @@ namespace ACCManager.Controls
             {
                 overlay = (AbstractOverlay)Activator.CreateInstance(overlayType, DefaultOverlayArgs);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return;
             }
@@ -342,7 +342,7 @@ namespace ACCManager.Controls
 
                 overlay.BeforeStop();
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }
