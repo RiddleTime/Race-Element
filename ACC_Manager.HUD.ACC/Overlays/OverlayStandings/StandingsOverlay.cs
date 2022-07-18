@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Linq;
 using static ACCManager.ACCSharedMemory;
 using static ACCManager.Data.ACC.EntryList.EntryListTracker;
@@ -98,6 +99,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
         private void TrackDataUpdate(object sender, TrackData e)
         {
             _trackMeter = e.TrackMeters;
+            Debug.WriteLine($"standings overlay - TrackDataUpdate  {_trackMeter}");
         }
 
         private void SessionTypeChanged(object sender, ACCSharedMemory.AcSessionType e)
@@ -135,6 +137,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
         public override void Render(Graphics g)
         {
 
+            TextRenderingHint previousHint = g.TextRenderingHint;
+            g.TextRenderingHint = TextRenderingHint.AntiAlias;
+
+            SmoothingMode previous = g.SmoothingMode;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+
             List<KeyValuePair<int, CarData>> cars = EntryListTracker.Instance.Cars;
             if (cars.Count == 0) return;
 
@@ -145,8 +153,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             if (!_initDone) return;
 
             int bestSessionLapMS = GetBestSessionLap();
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-
+            
             Dictionary<CarClasses, List<StandingsTableRow>> tableRows = new Dictionary<CarClasses, List<StandingsTableRow>>();
 
             foreach (CarClasses carClass in Enum.GetValues(typeof(CarClasses)))
@@ -200,6 +207,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
                 ost.Draw(g, height, kvp.Value, _carClassToBrush[kvp.Key], kvp.Key.ToString() + " / " + _entryListForCarClass[kvp.Key].Count() + " Cars", _driverLastName);
                 height = ost.Height;
             }
+
+            g.TextRenderingHint = previousHint;
+            g.SmoothingMode = previous;
 
         }
 
