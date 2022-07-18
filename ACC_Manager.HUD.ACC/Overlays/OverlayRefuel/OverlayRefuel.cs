@@ -19,7 +19,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
 {
 #if DEBUG
     [Overlay(Name = "Refuel Info", Version = 1.00,
-    Description = "TODO/ Refuel Info description", OverlayType = OverlayType.Release)]
+    Description = "Overlay to verify the fuel calculation during the race and help with pit stop strategy.", OverlayType = OverlayType.Release)]
 #endif
     internal sealed class RefuelInfoOverlay : AbstractOverlay
     {
