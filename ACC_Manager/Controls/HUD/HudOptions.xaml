@@ -36,16 +36,14 @@
             </Grid>
         </StackPanel>
 
-
-        <Grid Grid.Row="1" Opacity="1" Panel.ZIndex="50" x:Name="gridOverlays">
+        <Grid Grid.Row="1" x:Name="gridOverlays">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="300"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <ListView Grid.Column="0" x:Name="listOverlays" ScrollViewer.VerticalScrollBarVisibility="Visible">
 
+            <ListView Grid.Column="0" x:Name="listOverlays" ScrollViewer.VerticalScrollBarVisibility="Visible" />
 
-            </ListView>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30*"/>
@@ -56,37 +54,5 @@
                 <StackPanel Grid.Row="1" x:Name="configStackPanel"/>
             </Grid>
         </Grid>
-
-        <!--<Grid Grid.Row="1" x:Name="gridOverlays" >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="75*"/>
-                <RowDefinition Height="25*"/>
-            </Grid.RowDefinitions>
-
-            <Grid Grid.Row="0" >
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Label Grid.Row="0" FontSize="15">General</Label>
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                    <StackPanel Orientation="Vertical" x:Name="stackPanelOverlaysRelease">
-                    </StackPanel>
-                </ScrollViewer>
-            </Grid>
-
-            <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <Label Grid.Row="0" FontSize="15">Debug</Label>
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                    <StackPanel Orientation="Vertical" x:Name="stackPanelOverlaysDebug">
-                    </StackPanel>
-                </ScrollViewer>
-            </Grid>
-        </Grid>-->
     </Grid>
 </UserControl>
