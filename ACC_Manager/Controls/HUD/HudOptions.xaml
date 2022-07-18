@@ -13,6 +13,9 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <Image x:Name="previewHud" Grid.RowSpan="2" Panel.ZIndex="999" Visibility="Hidden"></Image>
+
+
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Grid Grid.Row="0" Margin="3" x:Name="gridRepositionToggler" Cursor="Hand" >
                 <Grid.ColumnDefinitions>

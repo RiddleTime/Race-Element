@@ -1,9 +1,11 @@
 ﻿using ACC_Manager.Util.Settings;
 using ACC_Manager.Util.SystemExtensions;
+using ACCManager.Controls.Setup.SetupImage;
 using ACCManager.HUD.ACC;
 using ACCManager.HUD.ACC.Overlays.OverlayMousePosition;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
+using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.Util;
 using Gma.System.MouseKeyHook;
 using MaterialDesignThemes.Wpf;
@@ -38,6 +40,15 @@ namespace ACCManager.Controls
         public static HudOptions Instance { get { return _instance; } }
 
         private readonly Brush activeHoverColor = new SolidColorBrush(Color.FromArgb(190, 220, 220, 220));
+
+        private readonly Dictionary<string, CachedPreview> _cachedPreviews = new Dictionary<string, CachedPreview>();
+
+        private class CachedPreview
+        {
+            public int Width;
+            public int Height;
+            public CachedBitmap CachedBitmap;
+        }
 
         public HudOptions()
         {
@@ -169,8 +180,6 @@ namespace ACCManager.Controls
                     HorizontalContentAlignment = HorizontalAlignment.Center
                 };
 
-
-
                 stackPanel.Children.Add(label);
 
                 Label overlayDescription = new Label()
@@ -195,6 +204,9 @@ namespace ACCManager.Controls
                     continue;
                 }
 
+                GeneratePreview(x.Key, (AbstractOverlay)Activator.CreateInstance(x.Value, args));
+
+
                 StackPanel configStacker = GetConfigStacker(x.Value);
                 configStacker.Visibility = Visibility.Collapsed;
                 stackPanel.Children.Add(configStacker);
@@ -208,6 +220,17 @@ namespace ACCManager.Controls
                 card.MouseEnter += (s, e) =>
                 {
                     label.Foreground = toggle.IsChecked.Value ? activeHoverColor : Brushes.GreenYellow;
+
+                    CachedPreview preview;
+                    _cachedPreviews.TryGetValue(x.Key, out preview);
+                    if (preview != null)
+                    {
+                        previewHud.Visibility = Visibility.Visible;
+                        previewHud.Width = preview.Width;
+                        previewHud.Height = preview.Height;
+                        previewHud.Source = ImageControlCreator.CreateImage(preview.Width, preview.Height, preview.CachedBitmap).Source;
+                    }
+
                     //toggle.Focus();
                     configStacker.Visibility = Visibility.Visible;
                     overlayDescription.Visibility = Visibility.Collapsed;
@@ -270,6 +293,26 @@ namespace ACCManager.Controls
                 tempOverlay.Dispose();
 
                 stackPanelOverlays.Children.Add(card);
+            }
+        }
+
+        private void GeneratePreview(string overlayName, AbstractOverlay overlay)
+        {
+            ACCSharedMemory mem = new ACCSharedMemory();
+            overlay.pageGraphics = mem.ReadGraphicsPageFile();
+            overlay.pagePhysics = mem.ReadPhysicsPageFile();
+            overlay.pageStatic = mem.ReadStaticPageFile();
+            try
+            {
+                overlay.BeforeStart();
+                CachedBitmap cachedBitmap = new CachedBitmap(overlay.Width, overlay.Height, g => overlay.Render(g));
+                _cachedPreviews.Add(overlayName, new CachedPreview() { Width = overlay.Width, Height = overlay.Height, CachedBitmap = cachedBitmap });
+                overlay.BeforeStop();
+                overlay.Dispose();
+            }
+            catch (Exception e)
+            {
+
             }
         }
 
