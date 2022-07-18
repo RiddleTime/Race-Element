@@ -1,5 +1,4 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Broadcast;
+﻿using ACCManager.Broadcast;
 using ACCManager.Broadcast.Structs;
 using ACCManager.Data;
 using ACCManager.Data.ACC.EntryList;
@@ -38,16 +37,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
                 this.AllowRescale = true;
             }
 
-            [ToolTip("Shows driver class only.")]
-            internal bool ShowDriverClassOnly { get; set; } = false;
+            [ToolTip("Multiclass")]
+            internal bool ShowMulticlass { get; set; } = false;
 
-            [ToolTip("Number of cars in front and behind me.")]
+            [ToolTip("Rows in front and behind")]
             [IntRange(1, 5, 1)]
             public int PlacesAroundMyCar { get; set; } = 2;
 
-            [ToolTip("Number of rows in other car classes standings table.")]
+            [ToolTip("Multiclass Rows")]
             [IntRange(1, 10, 1)]
-            public int NumberOfCarsOnStandingsTable { get; set; } = 4;
+            public int MulticlassRows { get; set; } = 4;
 
         }
 
@@ -93,7 +92,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             RaceSessionTracker.Instance.OnACStatusChanged -= StatusChanged;
             RaceSessionTracker.Instance.OnACSessionTypeChanged -= SessionTypeChanged;
             BroadcastTracker.Instance.OnTrackDataUpdate -= TrackDataUpdate;
-            
+
         }
 
         private void TrackDataUpdate(object sender, TrackData e)
@@ -161,7 +160,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
                     for (int i = 0; i < _entryListForCarClass[carClass].Count(); i++)
                     {
                         CarData carData = _entryListForCarClass[carClass][i].Value;
-                        
+
                         if (pageGraphics.PlayerCarID == carData.CarInfo.CarIndex)
                         {
                             playersIndex = i;
@@ -181,9 +180,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
                         AddCarDataTableRow(carData, tableRows[carClass], gab, false);
                     }
                 }
-                else if (!_config.ShowDriverClassOnly)
+                else if (_config.ShowMulticlass)
                 {
-                    for (int i = 0; i < (_entryListForCarClass[carClass].Count() < _config.NumberOfCarsOnStandingsTable ? _entryListForCarClass[carClass].Count() : _config.NumberOfCarsOnStandingsTable); i++)
+                    for (int i = 0; i < (_entryListForCarClass[carClass].Count() < _config.MulticlassRows ? _entryListForCarClass[carClass].Count() : _config.MulticlassRows); i++)
                     {
                         CarData carData = _entryListForCarClass[carClass][i].Value;
                         //AddCarDataTableRow(carData, tableRows[carClass], (carData.RealtimeCarUpdate.LastLap.LaptimeMS == bestSessionLapMS));
@@ -505,7 +504,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
                 //String deltaString = $"{tableData[i].Delta / 1000f:F2}".FillStart(6, ' ');
                 String deltaString = $"{TimeSpan.FromMilliseconds(tableData[i].Delta):ss\\.f}";
-                
+
                 OverlayStandingsTablePositionLabel position = new OverlayStandingsTablePositionLabel(g, columnPosX, rowPosY, FontUtil.FontUnispace(_fontSize));
                 position.Draw(g, backgroundColor, classBackground, tableData[i].Position.ToString());
 
@@ -595,7 +594,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
         public void Draw(Graphics g, SolidBrush backgroundBrush, SolidBrush highlightBrush, Brush fontBruch, String text, bool highlight)
         {
-            Rectangle graphRect = new Rectangle(_x-(_spacing/2), _y, (int)Width, (int)_height);
+            Rectangle graphRect = new Rectangle(_x - (_spacing / 2), _y, (int)Width, (int)_height);
 
             if (highlight)
             {
