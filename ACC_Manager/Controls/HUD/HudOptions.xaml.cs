@@ -374,6 +374,8 @@ namespace ACCManager.Controls
             overlay.pageGraphics = mem.ReadGraphicsPageFile();
             overlay.pagePhysics = mem.ReadPhysicsPageFile();
             overlay.pageStatic = mem.ReadStaticPageFile();
+            overlay.pageStatic.CarModel = "porsche_991ii_gt3_r";
+
             try
             {
                 overlay.BeforeStart();

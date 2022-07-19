@@ -80,11 +80,18 @@ namespace ACCManager.HUD.Overlay.Configuration
                 }
             }
 
+            if (overlaySettingsFile == null)
+                overlaySettingsFile = new FileInfo($"{FileUtil.AccManagerOverlayPath}{overlayName}.json");
+
             string jsonString = JsonConvert.SerializeObject(settings, Formatting.Indented);
 
             try
             {
-                overlaySettingsFile.Delete();
+                if (overlaySettingsFile != null)
+                {
+                    overlaySettingsFile.Delete();
+                }
+
                 File.WriteAllText(overlaySettingsFile.FullName, jsonString);
             }
             catch (Exception)
