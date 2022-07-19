@@ -372,8 +372,21 @@ namespace ACCManager.Controls
 
             ACCSharedMemory mem = new ACCSharedMemory();
             overlay.pageGraphics = mem.ReadGraphicsPageFile();
+            overlay.pageGraphics.NumberOfLaps = 30;
+            overlay.pageGraphics.FuelXLap = 3.012f;
+
             overlay.pagePhysics = mem.ReadPhysicsPageFile();
+            overlay.pagePhysics.Fuel = 13.37f;
+            overlay.pagePhysics.Rpms = 8500;
+            overlay.pagePhysics.Gear = 3;
+            overlay.pagePhysics.WheelPressure = new float[] { 27.6f, 27.5f, 26.9f, 26.1f };
+            overlay.pagePhysics.TyreCoreTemperature = new float[] { 92.6f, 88.5f, 65.9f, 67.2f };
+            overlay.pagePhysics.PadLife = new float[] { 24f, 24f, 25f, 25f };
+            overlay.pagePhysics.BrakeTemperature = new float[] { 300f, 250f, 450f, 460f };
+
             overlay.pageStatic = mem.ReadStaticPageFile();
+            overlay.pageStatic.MaxFuel = 120f;
+            overlay.pageStatic.MaxRpm = 9250;
             overlay.pageStatic.CarModel = "porsche_991ii_gt3_r";
 
             try
