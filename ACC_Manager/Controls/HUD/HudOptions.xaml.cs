@@ -118,21 +118,24 @@ namespace ACCManager.Controls
             _instance = this;
         }
 
+        private DateTime _lastEnterDown = DateTime.MinValue;
         private void HudOptions_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             // kind of stupid but it works.. gotta travel the generated tree in #BuildOverlayConfigPanel();
-            if (e.Key == Key.Enter)
-                if (listOverlays.SelectedIndex >= 0)
-                    foreach (UIElement element in configStackPanel.Children)
-                        if (element is StackPanel)
-                            foreach (UIElement child in ((StackPanel)element).Children)
-                                if (child is ToggleButton)
-                                {
-                                    ToggleButton toggle = (ToggleButton)child;
-                                    toggle.IsChecked = !toggle.IsChecked;
-                                    e.Handled = true;
-                                    break;
-                                }
+            if (_lastEnterDown.AddMilliseconds(200) < DateTime.Now)
+                if (e.Key == Key.Enter)
+                    if (listOverlays.SelectedIndex >= 0)
+                        foreach (UIElement element in configStackPanel.Children)
+                            if (element is StackPanel)
+                                foreach (UIElement child in ((StackPanel)element).Children)
+                                    if (child is ToggleButton)
+                                    {
+                                        ToggleButton toggle = (ToggleButton)child;
+                                        toggle.IsChecked = !toggle.IsChecked;
+                                        _lastEnterDown = DateTime.Now;
+                                        e.Handled = true;
+                                        break;
+                                    }
         }
 
         private void ListOverlays_SelectionChanged(object sender, SelectionChangedEventArgs e)
