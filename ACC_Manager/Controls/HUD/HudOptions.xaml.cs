@@ -118,11 +118,11 @@ namespace ACCManager.Controls
             _instance = this;
         }
 
-        private DateTime _lastEnterDown = DateTime.MinValue;
+        private DateTime _lastOverlayStart = DateTime.MinValue;
         private void HudOptions_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             // kind of stupid but it works.. gotta travel the generated tree in #BuildOverlayConfigPanel();
-            if (_lastEnterDown.AddMilliseconds(200) < DateTime.Now)
+            if (_lastOverlayStart.AddMilliseconds(200) < DateTime.Now)
                 if (e.Key == Key.Enter)
                     if (listOverlays.SelectedIndex >= 0)
                         foreach (UIElement element in configStackPanel.Children)
@@ -131,7 +131,7 @@ namespace ACCManager.Controls
                                     if (child is ToggleButton toggle)
                                     {
                                         toggle.IsChecked = !toggle.IsChecked;
-                                        _lastEnterDown = DateTime.Now;
+                                        _lastOverlayStart = DateTime.Now;
                                         e.Handled = true;
                                         break;
                                     }
@@ -179,6 +179,7 @@ namespace ACCManager.Controls
             };
             Label nameLabel = new Label() { Content = tempOverlaySettings.Enabled ? "Deactivate" : "Activate", VerticalAlignment = VerticalAlignment.Center };
             ToggleButton toggle = new ToggleButton() { Height = 35, Width = 50, VerticalAlignment = VerticalAlignment.Center };
+            toggle.PreviewKeyDown += (s, e) => { if (e.Key == Key.Enter) e.Handled = true; };
             toggle.Checked += (s, e) =>
             {
                 lock (OverlaysACC.ActiveOverlays)
