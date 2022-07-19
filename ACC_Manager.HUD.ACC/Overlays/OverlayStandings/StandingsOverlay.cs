@@ -86,6 +86,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
         public override void BeforeStart()
         {
+            this.RefreshRateHz = 1;
             RaceSessionTracker.Instance.OnACStatusChanged += StatusChanged;
             RaceSessionTracker.Instance.OnACSessionTypeChanged += SessionTypeChanged;
             BroadcastTracker.Instance.OnTrackDataUpdate += TrackDataUpdate;
@@ -528,8 +529,17 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
                 driverName.Draw(g, backgroundColor, (SolidBrush)Brushes.Purple, Brushes.White, tableData[i].DriverName, false);
 
                 columnPosX += driverName.Width + _columnGab;
-                OverlayStandingsTableTextLabel deltaTime = new OverlayStandingsTableTextLabel(g, columnPosX, rowPosY, 4, FontUtil.FontUnispace(_fontSize));
-                deltaTime.Draw(g, backgroundColor, (SolidBrush)Brushes.Green, Brushes.White, deltaString, (tableData[i].Delta < -100));
+                OverlayStandingsTableTextLabel deltaTime = new OverlayStandingsTableTextLabel(g, columnPosX, rowPosY, 5, FontUtil.FontUnispace(_fontSize));
+                if (tableData[i].Delta < -100) {
+                    deltaTime.Draw(g, backgroundColor, (SolidBrush)Brushes.DarkGreen, Brushes.White, "-"+deltaString, true);
+                } else if (tableData[i].Delta > 100)
+                {
+                    deltaTime.Draw(g, backgroundColor, (SolidBrush)Brushes.DarkRed, Brushes.White, "+"+deltaString, true);
+                } else
+                {
+                    deltaTime.Draw(g, backgroundColor, (SolidBrush)Brushes.Red, Brushes.White, " "+deltaString, false);
+                }
+                
 
                 columnPosX += deltaTime.Width + _columnGab;
                 if (showDeltaRow)
@@ -630,7 +640,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
                 LinearGradientBrush lgb = new LinearGradientBrush(graphRect, backgroundBrush.Color, highlightBrush.Color, 0f, true);
                 lgb.SetBlendTriangularShape(.5f, .6f);
                 g.FillRectangle(lgb, graphRect);
-                Rectangle hightlightRect = new Rectangle(_x, _y + (int)_height - 4, (int)Width, 4);
+                Rectangle hightlightRect = new Rectangle(_x - (_spacing / 2), _y + (int)_height - 4, (int)Width, 4);
                 g.FillRoundedRectangle(highlightBrush, hightlightRect, 3);
             }
             else
