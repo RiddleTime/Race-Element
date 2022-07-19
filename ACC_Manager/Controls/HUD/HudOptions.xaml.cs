@@ -665,7 +665,7 @@ namespace ACCManager.Controls
             OverlaySettings.SaveOverlaySettings(overlayName, settings);
 
             // update preview image
-            if (listOverlays.SelectedIndex > 0)
+            if (listOverlays.SelectedIndex >= 0)
             {
                 ListViewItem lvi = (ListViewItem)listOverlays.SelectedItem;
                 TextBlock tb = (TextBlock)lvi.Content;
