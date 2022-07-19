@@ -82,8 +82,15 @@ namespace ACCManager.HUD.Overlay.Configuration
 
             string jsonString = JsonConvert.SerializeObject(settings, Formatting.Indented);
 
-            overlaySettingsFile.Delete();
-            File.WriteAllText(overlaySettingsFile.FullName, jsonString);
+            try
+            {
+                overlaySettingsFile.Delete();
+                File.WriteAllText(overlaySettingsFile.FullName, jsonString);
+            }
+            catch (Exception)
+            {
+                return settings;
+            }
 
             return settings;
         }
