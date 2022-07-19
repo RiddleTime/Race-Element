@@ -237,7 +237,9 @@ namespace ACCManager.Controls
 
             // add preview iamge
             _cachedPreviews.TryGetValue(overlayName, out CachedPreview preview);
-            if (preview != null)
+            if (preview == null)
+                previewImage.Source = null;
+            else
             {
                 previewImage.Width = preview.Width;
                 previewImage.Height = preview.Height;
@@ -679,6 +681,10 @@ namespace ACCManager.Controls
                         previewImage.Width = preview.Width;
                         previewImage.Height = preview.Height;
                         previewImage.Source = ImageControlCreator.CreateImage(preview.Width, preview.Height, preview.CachedBitmap).Source;
+                    }
+                    else
+                    {
+                        previewImage.Source = null;
                     }
                 }
             }
