@@ -54,7 +54,7 @@ namespace ACCManager.HUD.Overlay.Configuration
                 }
             }
 
-            return null;
+            return new OverlaySettingsJson(); ;
         }
 
         public static OverlaySettingsJson SaveOverlaySettings(string overlayName, OverlaySettingsJson settings)
