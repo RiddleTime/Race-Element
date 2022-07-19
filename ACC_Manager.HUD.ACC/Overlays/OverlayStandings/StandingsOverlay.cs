@@ -24,7 +24,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 {
 #if DEBUG
     [Overlay(Name = "Live Standings", Version = 1.00,
-    Description = "Shows standings table during the race for different car classes.", OverlayType = OverlayType.Debug)]
+    Description = "Shows race standings table for different car classes.", OverlayType = OverlayType.Debug)]
 #endif
 
     public partial class StandingsOverlay : AbstractOverlay
