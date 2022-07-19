@@ -38,8 +38,6 @@ namespace ACCManager.Controls
         private static HudOptions _instance;
         public static HudOptions Instance { get { return _instance; } }
 
-        private readonly Brush activeHoverColor = new SolidColorBrush(Color.FromArgb(190, 220, 220, 220));
-
         private readonly Dictionary<string, CachedPreview> _cachedPreviews = new Dictionary<string, CachedPreview>();
 
         private readonly object[] DefaultOverlayArgs = new object[] { new System.Drawing.Rectangle((int)SystemParameters.PrimaryScreenWidth / 2, (int)SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
@@ -105,6 +103,8 @@ namespace ACCManager.Controls
                     m_GlobalHook = Hook.GlobalEvents();
                     m_GlobalHook.OnCombination(new Dictionary<Combination, Action> { { Combination.FromString("Control+Home"), () => this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked } });
 
+                    this.KeyUp += HudOptions_KeyUp;
+
 #if DEBUG
                     checkBoxDemoMode.IsChecked = true;
 #endif
@@ -116,6 +116,23 @@ namespace ACCManager.Controls
                 }
 
             _instance = this;
+        }
+
+        private void HudOptions_KeyUp(object sender, KeyEventArgs e)
+        {
+            // kind of stupid but it works.. gotta travel the generated tree in #BuildOverlayConfigPanel();
+            if (e.Key == Key.Enter)
+                if (listOverlays.SelectedIndex >= 0)
+                    foreach (UIElement element in configStackPanel.Children)
+                        if (element is StackPanel)
+                            foreach (UIElement child in ((StackPanel)element).Children)
+                                if (child is ToggleButton)
+                                {
+                                    ToggleButton toggle = (ToggleButton)child;
+                                    toggle.IsChecked = !toggle.IsChecked;
+                                    e.Handled = true;
+                                    break;
+                                }
         }
 
         private void ListOverlays_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -154,7 +171,9 @@ namespace ACCManager.Controls
                 Orientation = Orientation.Horizontal,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Center,
-                Cursor = Cursors.Hand
+                Cursor = Cursors.Hand,
+                Name = "activationStacker",
+                ToolTip = "You can else press Enter to activate this overlay."
             };
             Label nameLabel = new Label() { Content = tempOverlaySettings.Enabled ? "Deactivate" : "Activate", VerticalAlignment = VerticalAlignment.Center };
             ToggleButton toggle = new ToggleButton() { Height = 35, Width = 50, VerticalAlignment = VerticalAlignment.Center };
@@ -643,7 +662,7 @@ namespace ACCManager.Controls
             OverlaySettings.SaveOverlaySettings(overlayName, settings);
 
             // update preview image
-            if (listOverlays.SelectedIndex >= 0)
+            if (listOverlays.SelectedIndex > 0)
             {
                 ListViewItem lvi = (ListViewItem)listOverlays.SelectedItem;
                 TextBlock tb = (TextBlock)lvi.Content;
