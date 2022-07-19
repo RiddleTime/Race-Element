@@ -24,7 +24,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
             }
         }
 
-        public EcuMapOverlay(Rectangle rectangle) : base(rectangle, "Ecu Maps Overlay")
+        public EcuMapOverlay(Rectangle rectangle) : base(rectangle, "ECU Maps Overlay")
         {
             this.RefreshRateHz = 3;
 

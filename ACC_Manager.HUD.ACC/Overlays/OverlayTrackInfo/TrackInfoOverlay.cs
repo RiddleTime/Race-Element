@@ -13,7 +13,7 @@ using static ACCManager.ACCSharedMemory;
 namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
 {
     [Overlay(Name = "Track Info", Version = 1.00, OverlayType = OverlayType.Release,
-        Description = "A panel showing information about the track state: grip, temperatures and wind. Optionally showing the global flag, session type and time of day.")]
+        Description = "A panel showing information about the track state: grip, temperatures and wind.\nOptionally showing the global flag, session type and time of day.")]
     internal sealed class TrackInfoOverlay : AbstractOverlay
     {
         private readonly TrackInfoConfig _config = new TrackInfoConfig();

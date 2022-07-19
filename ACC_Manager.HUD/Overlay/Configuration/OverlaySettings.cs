@@ -54,7 +54,7 @@ namespace ACCManager.HUD.Overlay.Configuration
                 }
             }
 
-            return null;
+            return new OverlaySettingsJson(); ;
         }
 
         public static OverlaySettingsJson SaveOverlaySettings(string overlayName, OverlaySettingsJson settings)
@@ -80,10 +80,24 @@ namespace ACCManager.HUD.Overlay.Configuration
                 }
             }
 
+            if (overlaySettingsFile == null)
+                overlaySettingsFile = new FileInfo($"{FileUtil.AccManagerOverlayPath}{overlayName}.json");
+
             string jsonString = JsonConvert.SerializeObject(settings, Formatting.Indented);
 
-            overlaySettingsFile.Delete();
-            File.WriteAllText(overlaySettingsFile.FullName, jsonString);
+            try
+            {
+                if (overlaySettingsFile != null)
+                {
+                    overlaySettingsFile.Delete();
+                }
+
+                File.WriteAllText(overlaySettingsFile.FullName, jsonString);
+            }
+            catch (Exception)
+            {
+                return settings;
+            }
 
             return settings;
         }
