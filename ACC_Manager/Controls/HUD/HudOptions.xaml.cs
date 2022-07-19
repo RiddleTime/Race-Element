@@ -103,7 +103,7 @@ namespace ACCManager.Controls
                     m_GlobalHook = Hook.GlobalEvents();
                     m_GlobalHook.OnCombination(new Dictionary<Combination, Action> { { Combination.FromString("Control+Home"), () => this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked } });
 
-                    this.KeyUp += HudOptions_KeyUp;
+                    this.PreviewKeyDown += HudOptions_PreviewKeyDown;
 
 #if DEBUG
                     checkBoxDemoMode.IsChecked = true;
@@ -118,7 +118,7 @@ namespace ACCManager.Controls
             _instance = this;
         }
 
-        private void HudOptions_KeyUp(object sender, KeyEventArgs e)
+        private void HudOptions_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             // kind of stupid but it works.. gotta travel the generated tree in #BuildOverlayConfigPanel();
             if (e.Key == Key.Enter)
