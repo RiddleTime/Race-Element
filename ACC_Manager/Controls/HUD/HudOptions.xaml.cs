@@ -38,8 +38,6 @@ namespace ACCManager.Controls
         private static HudOptions _instance;
         public static HudOptions Instance { get { return _instance; } }
 
-        private readonly Brush activeHoverColor = new SolidColorBrush(Color.FromArgb(190, 220, 220, 220));
-
         private readonly Dictionary<string, CachedPreview> _cachedPreviews = new Dictionary<string, CachedPreview>();
 
         private readonly object[] DefaultOverlayArgs = new object[] { new System.Drawing.Rectangle((int)SystemParameters.PrimaryScreenWidth / 2, (int)SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
@@ -105,6 +103,8 @@ namespace ACCManager.Controls
                     m_GlobalHook = Hook.GlobalEvents();
                     m_GlobalHook.OnCombination(new Dictionary<Combination, Action> { { Combination.FromString("Control+Home"), () => this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked } });
 
+                    this.PreviewKeyDown += HudOptions_PreviewKeyDown;
+
 #if DEBUG
                     checkBoxDemoMode.IsChecked = true;
 #endif
@@ -116,6 +116,25 @@ namespace ACCManager.Controls
                 }
 
             _instance = this;
+        }
+
+        private DateTime _lastOverlayStart = DateTime.MinValue;
+        private void HudOptions_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            // kind of stupid but it works.. gotta travel the generated tree in #BuildOverlayConfigPanel();
+            if (_lastOverlayStart.AddMilliseconds(200) < DateTime.Now)
+                if (e.Key == Key.Enter)
+                    if (listOverlays.SelectedIndex >= 0)
+                        foreach (UIElement element in configStackPanel.Children)
+                            if (element is StackPanel panel)
+                                foreach (UIElement child in panel.Children)
+                                    if (child is ToggleButton toggle)
+                                    {
+                                        toggle.IsChecked = !toggle.IsChecked;
+                                        _lastOverlayStart = DateTime.Now;
+                                        e.Handled = true;
+                                        break;
+                                    }
         }
 
         private void ListOverlays_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -139,25 +158,52 @@ namespace ACCManager.Controls
             OverlaySettingsJson tempOverlaySettings = OverlaySettings.LoadOverlaySettings(tempAbstractOverlay.Name);
             tempAbstractOverlay.Dispose();
 
+            OverlayAttribute overlayAttribute = GetOverlayAttribute(type);
+
             StackPanel configStacker = GetConfigStacker(type, Orientation.Vertical);
 
             Label overlayNameLabel = new Label()
             {
                 Content = overlayName,
+                FontFamily = FindResource("FontRedemption") as FontFamily,
+                BorderBrush = Brushes.OrangeRed,
+                BorderThickness = new Thickness(0, 0, 0, 1),
+                Margin = new Thickness(0, 0, 0, 5),
                 HorizontalAlignment = HorizontalAlignment.Center,
-                FontSize = 18
+                FontSize = 30,
+                FontStyle = FontStyles.Italic
             };
-            configStackPanel.Children.Add(overlayNameLabel);
+            TextBlock overlayDescription = new TextBlock()
+            {
+                Text = overlayAttribute.Description,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                TextWrapping = TextWrapping.Wrap,
+                TextAlignment = TextAlignment.Center,
+                FontSize = 13.5,
+                Margin = new Thickness(0, 0, 0, 3),
+            };
+            StackPanel stackerOverlayInfo = new StackPanel()
+            {
+                Orientation = Orientation.Vertical,
+                Margin = new Thickness(0, 3, 0, 3),
+                Background = new SolidColorBrush(Color.FromArgb(190, 0, 0, 0)),
+            };
+            stackerOverlayInfo.Children.Add(overlayNameLabel);
+            stackerOverlayInfo.Children.Add(overlayDescription);
+            configStackPanel.Children.Add(stackerOverlayInfo);
 
             StackPanel activationPanel = new StackPanel()
             {
                 Orientation = Orientation.Horizontal,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Center,
-                Cursor = Cursors.Hand
+                Cursor = Cursors.Hand,
+                Name = "activationStacker",
+                ToolTip = "You can else press Enter to activate this overlay."
             };
             Label nameLabel = new Label() { Content = tempOverlaySettings.Enabled ? "Deactivate" : "Activate", VerticalAlignment = VerticalAlignment.Center };
             ToggleButton toggle = new ToggleButton() { Height = 35, Width = 50, VerticalAlignment = VerticalAlignment.Center };
+            toggle.PreviewKeyDown += (s, e) => { if (e.Key == Key.Enter) e.Handled = true; };
             toggle.Checked += (s, e) =>
             {
                 lock (OverlaysACC.ActiveOverlays)
@@ -215,8 +261,11 @@ namespace ACCManager.Controls
 
             // add preview iamge
             _cachedPreviews.TryGetValue(overlayName, out CachedPreview preview);
-            if (preview != null)
+            if (preview == null)
+                previewImage.Source = null;
+            else
             {
+                previewImage.Stretch = Stretch.UniformToFill;
                 previewImage.Width = preview.Width;
                 previewImage.Height = preview.Height;
                 previewImage.Source = ImageControlCreator.CreateImage(preview.Width, preview.Height, preview.CachedBitmap).Source;
@@ -323,8 +372,23 @@ namespace ACCManager.Controls
 
             ACCSharedMemory mem = new ACCSharedMemory();
             overlay.pageGraphics = mem.ReadGraphicsPageFile();
+            overlay.pageGraphics.NumberOfLaps = 30;
+            overlay.pageGraphics.FuelXLap = 3.012f;
+
             overlay.pagePhysics = mem.ReadPhysicsPageFile();
+            overlay.pagePhysics.Fuel = 13.37f;
+            overlay.pagePhysics.Rpms = 8500;
+            overlay.pagePhysics.Gear = 3;
+            overlay.pagePhysics.WheelPressure = new float[] { 27.6f, 27.5f, 26.9f, 26.1f };
+            overlay.pagePhysics.TyreCoreTemperature = new float[] { 92.6f, 88.5f, 65.9f, 67.2f };
+            overlay.pagePhysics.PadLife = new float[] { 24f, 24f, 25f, 25f };
+            overlay.pagePhysics.BrakeTemperature = new float[] { 300f, 250f, 450f, 460f };
+
             overlay.pageStatic = mem.ReadStaticPageFile();
+            overlay.pageStatic.MaxFuel = 120f;
+            overlay.pageStatic.MaxRpm = 9250;
+            overlay.pageStatic.CarModel = "porsche_991ii_gt3_r";
+
             try
             {
                 overlay.BeforeStart();
@@ -421,7 +485,7 @@ namespace ACCManager.Controls
                         StackPanel intStacker = new StackPanel()
                         {
                             Name = intLabel.Replace(" ", "_"),
-                            Margin = new Thickness(5, 0, 0, 0),
+                            Margin = new Thickness(0, 0, 0, 0),
                             Orientation = Orientation.Horizontal,
                             VerticalAlignment = VerticalAlignment.Center,
                             Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)),
@@ -510,7 +574,7 @@ namespace ACCManager.Controls
                         Name = checkBoxlabel.Replace(" ", "_"),
                         Content = checkBoxlabel,
                         IsChecked = (bool)configField.Value,
-                        Margin = new Thickness(5, 3, 5, 3),
+                        Margin = new Thickness(0, 3, 5, 3),
                         VerticalAlignment = VerticalAlignment.Center,
                         VerticalContentAlignment = VerticalAlignment.Center
                     };
@@ -654,9 +718,14 @@ namespace ACCManager.Controls
                     _cachedPreviews.TryGetValue(actualOverlayName, out CachedPreview preview);
                     if (preview != null)
                     {
+                        previewImage.Stretch = Stretch.UniformToFill;
                         previewImage.Width = preview.Width;
                         previewImage.Height = preview.Height;
                         previewImage.Source = ImageControlCreator.CreateImage(preview.Width, preview.Height, preview.CachedBitmap).Source;
+                    }
+                    else
+                    {
+                        previewImage.Source = null;
                     }
                 }
             }

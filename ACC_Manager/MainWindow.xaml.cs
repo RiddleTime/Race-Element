@@ -185,7 +185,7 @@ namespace ACCManager
 
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            DecreaseOpacity(0.9, 0.0025);
+            DecreaseOpacity(0.925, 0.0025);
             DragMove();
             e.Handled = true;
         }
