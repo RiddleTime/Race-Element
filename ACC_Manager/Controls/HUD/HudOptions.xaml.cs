@@ -158,15 +158,39 @@ namespace ACCManager.Controls
             OverlaySettingsJson tempOverlaySettings = OverlaySettings.LoadOverlaySettings(tempAbstractOverlay.Name);
             tempAbstractOverlay.Dispose();
 
+            OverlayAttribute overlayAttribute = GetOverlayAttribute(type);
+
             StackPanel configStacker = GetConfigStacker(type, Orientation.Vertical);
 
             Label overlayNameLabel = new Label()
             {
                 Content = overlayName,
+                FontFamily = FindResource("FontRedemption") as FontFamily,
+                BorderBrush = Brushes.OrangeRed,
+                BorderThickness = new Thickness(0, 0, 0, 1),
+                Margin = new Thickness(0, 0, 0, 5),
                 HorizontalAlignment = HorizontalAlignment.Center,
-                FontSize = 18
+                FontSize = 30,
+                FontStyle = FontStyles.Italic
             };
-            configStackPanel.Children.Add(overlayNameLabel);
+            TextBlock overlayDescription = new TextBlock()
+            {
+                Text = overlayAttribute.Description,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                TextWrapping = TextWrapping.Wrap,
+                TextAlignment = TextAlignment.Center,
+                FontSize = 13.5,
+                Margin = new Thickness(0, 0, 0, 3),
+            };
+            StackPanel stackerOverlayInfo = new StackPanel()
+            {
+                Orientation = Orientation.Vertical,
+                Margin = new Thickness(0, 3, 0, 3),
+                Background = new SolidColorBrush(Color.FromArgb(190, 0, 0, 0)),
+            };
+            stackerOverlayInfo.Children.Add(overlayNameLabel);
+            stackerOverlayInfo.Children.Add(overlayDescription);
+            configStackPanel.Children.Add(stackerOverlayInfo);
 
             StackPanel activationPanel = new StackPanel()
             {
@@ -241,6 +265,7 @@ namespace ACCManager.Controls
                 previewImage.Source = null;
             else
             {
+                previewImage.Stretch = Stretch.UniformToFill;
                 previewImage.Width = preview.Width;
                 previewImage.Height = preview.Height;
                 previewImage.Source = ImageControlCreator.CreateImage(preview.Width, preview.Height, preview.CachedBitmap).Source;
@@ -445,7 +470,7 @@ namespace ACCManager.Controls
                         StackPanel intStacker = new StackPanel()
                         {
                             Name = intLabel.Replace(" ", "_"),
-                            Margin = new Thickness(5, 0, 0, 0),
+                            Margin = new Thickness(0, 0, 0, 0),
                             Orientation = Orientation.Horizontal,
                             VerticalAlignment = VerticalAlignment.Center,
                             Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)),
@@ -534,7 +559,7 @@ namespace ACCManager.Controls
                         Name = checkBoxlabel.Replace(" ", "_"),
                         Content = checkBoxlabel,
                         IsChecked = (bool)configField.Value,
-                        Margin = new Thickness(5, 3, 5, 3),
+                        Margin = new Thickness(0, 3, 5, 3),
                         VerticalAlignment = VerticalAlignment.Center,
                         VerticalContentAlignment = VerticalAlignment.Center
                     };
@@ -678,6 +703,7 @@ namespace ACCManager.Controls
                     _cachedPreviews.TryGetValue(actualOverlayName, out CachedPreview preview);
                     if (preview != null)
                     {
+                        previewImage.Stretch = Stretch.UniformToFill;
                         previewImage.Width = preview.Width;
                         previewImage.Height = preview.Height;
                         previewImage.Source = ImageControlCreator.CreateImage(preview.Width, preview.Height, preview.CachedBitmap).Source;

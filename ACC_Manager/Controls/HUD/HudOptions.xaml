@@ -44,13 +44,14 @@
 
             <ListView Grid.Column="0" x:Name="listOverlays" ScrollViewer.VerticalScrollBarVisibility="Visible" />
 
-            <Grid Grid.Column="1">
+            <Grid Grid.Column="1" Background="#65101010">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="30*"/>
-                    <RowDefinition Height="70*"/>
+                    <RowDefinition Height="32*"/>
+                    <RowDefinition Height="68*"/>
                 </Grid.RowDefinitions>
 
-                <Image Grid.Row="0" x:Name="previewImage" ToolTip="This is a preview, the scaling will become visible once you Activate the overlay."/>
+                <Image Grid.Row="0" x:Name="previewImage"
+                       ToolTip="This is a preview, the scaling will become visible once you Activate the overlay."/>
                 <StackPanel Grid.Row="1" x:Name="configStackPanel"/>
             </Grid>
         </Grid>
