@@ -126,11 +126,10 @@ namespace ACCManager.Controls
                 if (e.Key == Key.Enter)
                     if (listOverlays.SelectedIndex >= 0)
                         foreach (UIElement element in configStackPanel.Children)
-                            if (element is StackPanel)
-                                foreach (UIElement child in ((StackPanel)element).Children)
-                                    if (child is ToggleButton)
+                            if (element is StackPanel panel)
+                                foreach (UIElement child in panel.Children)
+                                    if (child is ToggleButton toggle)
                                     {
-                                        ToggleButton toggle = (ToggleButton)child;
                                         toggle.IsChecked = !toggle.IsChecked;
                                         _lastEnterDown = DateTime.Now;
                                         e.Handled = true;
