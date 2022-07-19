@@ -58,7 +58,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
         private const int _width = 800;
         private float _trackMeter = 0;
 
-        private CarClasses _ownClass = CarClasses.GT3;
+        private CarClasses _driversClass = CarClasses.GT3;
         private String _driverLastName = "";
         private AcStatus _currentAcStatus = AcStatus.AC_OFF;
 
@@ -149,7 +149,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             List<KeyValuePair<int, CarData>> cars = EntryListTracker.Instance.Cars;
             if (cars.Count == 0) return;
 
-            DetermineOwnClass(cars);
+            DetermineDriversClass(cars);
             SplitEntryList(cars);
             SortAllEntryLists();
 
@@ -163,7 +163,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             {
                 tableRows[carClass] = new List<StandingsTableRow>();
 
-                if (carClass == _ownClass)
+                if (carClass == _driversClass)
                 {
                     int playersIndex = 0;
 
@@ -381,7 +381,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             }
         }
 
-        private void DetermineOwnClass(List<KeyValuePair<int, CarData>> cars)
+        private void DetermineDriversClass(List<KeyValuePair<int, CarData>> cars)
         {
 
             if (!_currentAcStatus.Equals(AcStatus.AC_LIVE)) return;
@@ -391,7 +391,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
                 if (kvp.Key == pageGraphics.PlayerCarID)
                 {
                     var carModel = ConversionFactory.GetCarModels(kvp.Value.CarInfo.CarModelType);
-                    _ownClass = ConversionFactory.GetConversion(carModel).CarClass;
+                    _driversClass = ConversionFactory.GetConversion(carModel).CarClass;
 
                     //DriverInfo driverInfo = kvp.Value.CarInfo.Drivers[kvp.Value.CarInfo.CurrentDriverIndex];
 
@@ -478,8 +478,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
         private readonly SolidBrush _oddBackground = new SolidBrush(Color.FromArgb(100, Color.Black));
         private readonly SolidBrush _evenBackground = new SolidBrush(Color.FromArgb(180, Color.Black));
-        private readonly SolidBrush _ownCarBackground = new SolidBrush(Color.FromArgb(180, Color.DarkSeaGreen));
-        //Color.FromArgb(120, Color.Red);
+        private readonly SolidBrush _driversCarBackground = new SolidBrush(Color.FromArgb(180, Color.DarkSeaGreen));
 
         public OverlayStandingsTable(int x, int y, int fontSize)
         {
@@ -511,7 +510,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
                 if (tableData[i].DriverName.Equals(ownName))
                 {
-                    backgroundColor = _ownCarBackground;
+                    backgroundColor = _driversCarBackground;
                 }
 
                 //String deltaString = $"{tableData[i].Delta / 1000f:F2}".FillStart(6, ' ');
