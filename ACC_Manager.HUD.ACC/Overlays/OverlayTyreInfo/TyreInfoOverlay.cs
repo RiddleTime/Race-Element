@@ -153,7 +153,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
                     }
                 case Position.Rear:
                     {
-                        float brakeTempLeft = pagePhysics.BrakeTemperature[(int)Wheel.RearRight];
+                        float brakeTempLeft = pagePhysics.BrakeTemperature[(int)Wheel.RearLeft];
                         float brakeTempRight = pagePhysics.BrakeTemperature[(int)Wheel.RearRight];
                         averageBrakeTemps = (brakeTempLeft + brakeTempRight) / 2;
                         break;
