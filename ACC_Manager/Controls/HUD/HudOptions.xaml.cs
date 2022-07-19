@@ -55,6 +55,22 @@ namespace ACCManager.Controls
 
             listOverlays.SelectionChanged += ListOverlays_SelectionChanged;
             listDebugOverlays.SelectionChanged += ListDebugOverlays_SelectionChanged;
+            tabControlListOverlays.SelectionChanged += (s, e) =>
+            {
+                if (e.AddedItems.Count > 0)
+                {
+                    if (s is ListViewItem)
+                    {
+                        e.Handled = true;
+                        return;
+                    }
+                }
+
+                configStackPanel.Children.Clear();
+                previewImage.Source = null;
+                listDebugOverlays.SelectedIndex = -1;
+                listOverlays.SelectedIndex = -1;
+            };
 
             bool designTime = System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject());
             if (!designTime)
@@ -150,6 +166,7 @@ namespace ACCManager.Controls
                 ListViewItem item = (ListViewItem)e.AddedItems[0];
                 KeyValuePair<string, Type> kv = (KeyValuePair<string, Type>)item.DataContext;
                 BuildOverlayConfigPanel(item, kv.Value);
+                e.Handled = true;
             }
             else
                 configStackPanel.Children.Clear();
@@ -162,6 +179,7 @@ namespace ACCManager.Controls
                 ListViewItem item = (ListViewItem)e.AddedItems[0];
                 KeyValuePair<string, Type> kv = (KeyValuePair<string, Type>)item.DataContext;
                 BuildOverlayConfigPanel(item, kv.Value);
+                e.Handled = true;
             }
             else
                 configStackPanel.Children.Clear();
@@ -300,8 +318,6 @@ namespace ACCManager.Controls
         private void SetRepositionMode(bool enabled)
         {
             gridOverlays.IsEnabled = !enabled;
-            //stackPanelOverlaysRelease.IsEnabled = !enabled;
-            //stackPanelOverlaysDebug.IsEnabled = !enabled;
 
             if (enabled)
             {
@@ -329,11 +345,11 @@ namespace ACCManager.Controls
             //BuildOverlayStackPanel(stackPanelOverlaysRelease, OverlayType.Release);
             //BuildOverlayStackPanel(stackPanelOverlaysDebug, OverlayType.Debug);
 
-            BuildNewOverlayPanel(listOverlays, OverlayType.Release);
-            BuildNewOverlayPanel(listDebugOverlays, OverlayType.Debug);
+            BuildOverlayListView(listOverlays, OverlayType.Release);
+            BuildOverlayListView(listDebugOverlays, OverlayType.Debug);
         }
 
-        private void BuildNewOverlayPanel(ListView listView, OverlayType overlayType)
+        private void BuildOverlayListView(ListView listView, OverlayType overlayType)
         {
             listView.Items.Clear();
 
@@ -350,7 +366,7 @@ namespace ACCManager.Controls
                 if (overlayAttribute.OverlayType != overlayType)
                     continue;
 
-                TextBlock listViewText = new TextBlock() { Text = x.Key };
+                TextBlock listViewText = new TextBlock() { Text = x.Key, Style = Resources["MaterialDesignButtonTextBlock"] as Style, };
 
                 ListViewItem listViewItem = new ListViewItem()
                 {
