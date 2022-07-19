@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ACCManager.Controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -42,7 +43,48 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <ListView Grid.Column="0" x:Name="listOverlays" ScrollViewer.VerticalScrollBarVisibility="Visible" />
+            <TabControl Grid.Column="0" x:Name="tabControlListOverlays">
+                <TabItem x:Name="tabItemOverlays">
+                    <TabItem.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon
+                            Grid.Column="0"
+                            Kind="TooltipImage"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="32"
+                            Foreground="White"    
+                        />
+                            <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" General"></TextBlock>
+                        </Grid>
+                    </TabItem.Header>
+                    <ListView Grid.Column="0" x:Name="listOverlays" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="0,3,0,0"/>
+                </TabItem>
+                <TabItem  x:Name="tabItemDebugOverlays">
+                    <TabItem.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon
+                            Grid.Column="0"
+                            Kind="WrenchClock"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="32"
+                            Foreground="White"    
+                        />
+                            <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" Debug"></TextBlock>
+                        </Grid>
+                    </TabItem.Header>
+                    <ListView Grid.Column="0" x:Name="listDebugOverlays" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="0,3,0,0" />
+                </TabItem>
+            </TabControl>
 
             <Grid Grid.Column="1" Background="#65101010">
                 <Grid.RowDefinitions>

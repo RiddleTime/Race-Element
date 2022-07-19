@@ -54,6 +54,7 @@ namespace ACCManager.Controls
             InitializeComponent();
 
             listOverlays.SelectionChanged += ListOverlays_SelectionChanged;
+            listDebugOverlays.SelectionChanged += ListDebugOverlays_SelectionChanged;
 
             bool designTime = System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject());
             if (!designTime)
@@ -118,13 +119,17 @@ namespace ACCManager.Controls
             _instance = this;
         }
 
+
+
         private DateTime _lastOverlayStart = DateTime.MinValue;
         private void HudOptions_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             // kind of stupid but it works.. gotta travel the generated tree in #BuildOverlayConfigPanel();
             if (_lastOverlayStart.AddMilliseconds(200) < DateTime.Now)
                 if (e.Key == Key.Enter)
-                    if (listOverlays.SelectedIndex >= 0)
+                {
+                    ListView currentList = tabControlListOverlays.SelectedItem == tabItemOverlays ? listOverlays : listDebugOverlays;
+                    if (currentList.SelectedIndex >= 0)
                         foreach (UIElement element in configStackPanel.Children)
                             if (element is StackPanel panel)
                                 foreach (UIElement child in panel.Children)
@@ -135,6 +140,7 @@ namespace ACCManager.Controls
                                         e.Handled = true;
                                         break;
                                     }
+                }
         }
 
         private void ListOverlays_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -143,28 +149,40 @@ namespace ACCManager.Controls
             {
                 ListViewItem item = (ListViewItem)e.AddedItems[0];
                 KeyValuePair<string, Type> kv = (KeyValuePair<string, Type>)item.DataContext;
-                BuildOverlayConfigPanel(item, kv.Key, kv.Value);
+                BuildOverlayConfigPanel(item, kv.Value);
             }
             else
                 configStackPanel.Children.Clear();
         }
 
-        private void BuildOverlayConfigPanel(ListViewItem listViewItem, string overlayName, Type type)
+        private void ListDebugOverlays_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                ListViewItem item = (ListViewItem)e.AddedItems[0];
+                KeyValuePair<string, Type> kv = (KeyValuePair<string, Type>)item.DataContext;
+                BuildOverlayConfigPanel(item, kv.Value);
+            }
+            else
+                configStackPanel.Children.Clear();
+        }
+
+        private void BuildOverlayConfigPanel(ListViewItem listViewItem, Type type)
         {
             configStackPanel.Children.Clear();
 
             AbstractOverlay tempAbstractOverlay = (AbstractOverlay)Activator.CreateInstance(type, DefaultOverlayArgs);
-            GeneratePreview(overlayName);
             OverlaySettingsJson tempOverlaySettings = OverlaySettings.LoadOverlaySettings(tempAbstractOverlay.Name);
             tempAbstractOverlay.Dispose();
 
             OverlayAttribute overlayAttribute = GetOverlayAttribute(type);
+            GeneratePreview(overlayAttribute.Name);
 
             StackPanel configStacker = GetConfigStacker(type, Orientation.Vertical);
 
             Label overlayNameLabel = new Label()
             {
-                Content = overlayName,
+                Content = overlayAttribute.Name,
                 FontFamily = FindResource("FontRedemption") as FontFamily,
                 BorderBrush = Brushes.OrangeRed,
                 BorderThickness = new Thickness(0, 0, 0, 1),
@@ -260,7 +278,7 @@ namespace ACCManager.Controls
             configStackPanel.Children.Add(configStacker);
 
             // add preview iamge
-            _cachedPreviews.TryGetValue(overlayName, out CachedPreview preview);
+            _cachedPreviews.TryGetValue(overlayAttribute.Name, out CachedPreview preview);
             if (preview == null)
                 previewImage.Source = null;
             else
@@ -311,12 +329,13 @@ namespace ACCManager.Controls
             //BuildOverlayStackPanel(stackPanelOverlaysRelease, OverlayType.Release);
             //BuildOverlayStackPanel(stackPanelOverlaysDebug, OverlayType.Debug);
 
-            BuildNewOverlayPanel();
+            BuildNewOverlayPanel(listOverlays, OverlayType.Release);
+            BuildNewOverlayPanel(listDebugOverlays, OverlayType.Debug);
         }
 
-        private void BuildNewOverlayPanel()
+        private void BuildNewOverlayPanel(ListView listView, OverlayType overlayType)
         {
-            listOverlays.Items.Clear();
+            listView.Items.Clear();
 
             foreach (KeyValuePair<string, Type> x in OverlaysACC.AbstractOverlays)
             {
@@ -325,6 +344,11 @@ namespace ACCManager.Controls
                 AbstractOverlay tempAbstractOverlay = (AbstractOverlay)Activator.CreateInstance(x.Value, args);
                 OverlaySettingsJson tempOverlaySettings = OverlaySettings.LoadOverlaySettings(tempAbstractOverlay.Name);
                 tempAbstractOverlay.Dispose();
+
+                var overlayAttribute = GetOverlayAttribute(x.Value);
+
+                if (overlayAttribute.OverlayType != overlayType)
+                    continue;
 
                 TextBlock listViewText = new TextBlock() { Text = x.Key };
 
@@ -349,7 +373,7 @@ namespace ACCManager.Controls
                         }
                     }
 
-                listOverlays.Items.Add(listViewItem);
+                listView.Items.Add(listViewItem);
             }
         }
 

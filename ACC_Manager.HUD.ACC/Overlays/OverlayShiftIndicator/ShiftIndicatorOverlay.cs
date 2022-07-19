@@ -24,11 +24,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
         {
             [ToolTip("Sets the Width of the shift indicator bar.")]
             [IntRange(160, 500, 10)]
-            internal int Width { get; set; } = 200;
+            internal int Width { get; set; } = 300;
 
             [ToolTip("Sets the Height of the shift indicator bar.")]
             [IntRange(20, 45, 5)]
-            internal int Height { get; set; } = 35;
+            internal int Height { get; set; } = 30;
 
             [ToolTip("Displays the current RPM inside of the shift indicator bar.")]
             internal bool ShowRpm { get; set; } = true;
