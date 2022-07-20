@@ -136,7 +136,6 @@ namespace ACCManager.Controls
         }
 
 
-
         private DateTime _lastOverlayStart = DateTime.MinValue;
         private void HudOptions_PreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -284,6 +283,7 @@ namespace ACCManager.Controls
 
             if (tempOverlaySettings.Enabled)
             {
+
                 toggle.IsChecked = true;
                 configStacker.IsEnabled = false;
             }
@@ -291,6 +291,18 @@ namespace ACCManager.Controls
             activationPanel.Children.Add(toggle);
             activationPanel.Children.Add(nameLabel);
             configStackPanel.Children.Add(activationPanel);
+
+            // click overlay title/description to toggle overlay
+            stackerOverlayInfo.Cursor = Cursors.Hand;
+            stackerOverlayInfo.PreviewMouseUp += (s, e) =>
+            {
+                if (_lastOverlayStart.AddMilliseconds(200) < DateTime.Now)
+                {
+                    toggle.IsChecked = !toggle.IsChecked;
+                    _lastOverlayStart = DateTime.Now;
+                }
+            };
+
 
             // add config stacker
             configStackPanel.Children.Add(configStacker);
