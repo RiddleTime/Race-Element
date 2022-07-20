@@ -157,7 +157,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             if (!_currentAcStatus.Equals(AcStatus.AC_LIVE)) return;
 
             int bestSessionLapMS = GetBestSessionLap();
-            
+
             Dictionary<CarClasses, List<StandingsTableRow>> tableRows = new Dictionary<CarClasses, List<StandingsTableRow>>();
 
             foreach (CarClasses carClass in Enum.GetValues(typeof(CarClasses)))
@@ -274,7 +274,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
         private String AdditionalInfo(RealtimeCarUpdate realtimeCarUpdate)
         {
-            if (broadCastRealTime.SessionType != RaceSessionType.Race) return "";
+            if (broadCastRealTime.SessionType != RaceSessionType.Race
+                && broadCastRealTime.SessionType != RaceSessionType.Qualifying) return "";
 
             switch (realtimeCarUpdate.CarLocation)
             {
@@ -290,9 +291,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
                     {
                         return "Box";
                     }
-                default:
-                    return "";
             }
+
+            if (realtimeCarUpdate.CurrentLap.IsInvalid)
+            {
+                return "X";
+            }
+
+            return "";
         }
 
         private String GetLastLapTime(RealtimeCarUpdate realtimeCarUpdate)
@@ -530,16 +536,19 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
                 columnPosX += driverName.Width + _columnGab;
                 OverlayStandingsTableTextLabel deltaTime = new OverlayStandingsTableTextLabel(g, columnPosX, rowPosY, 5, FontUtil.FontUnispace(_fontSize));
-                if (tableData[i].Delta < -100) {
-                    deltaTime.Draw(g, backgroundColor, (SolidBrush)Brushes.DarkGreen, Brushes.White, "-"+deltaString, true);
-                } else if (tableData[i].Delta > 100)
+                if (tableData[i].Delta < -100)
                 {
-                    deltaTime.Draw(g, backgroundColor, (SolidBrush)Brushes.DarkRed, Brushes.White, "+"+deltaString, true);
-                } else
-                {
-                    deltaTime.Draw(g, backgroundColor, (SolidBrush)Brushes.Red, Brushes.White, " "+deltaString, false);
+                    deltaTime.Draw(g, backgroundColor, (SolidBrush)Brushes.DarkGreen, Brushes.White, "-" + deltaString, true);
                 }
-                
+                else if (tableData[i].Delta > 100)
+                {
+                    deltaTime.Draw(g, backgroundColor, (SolidBrush)Brushes.DarkRed, Brushes.White, "+" + deltaString, true);
+                }
+                else
+                {
+                    deltaTime.Draw(g, backgroundColor, (SolidBrush)Brushes.Red, Brushes.White, " " + deltaString, false);
+                }
+
 
                 columnPosX += deltaTime.Width + _columnGab;
                 if (showDeltaRow)
@@ -548,14 +557,22 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
                     gabTime.Draw(g, backgroundColor, (SolidBrush)Brushes.Green, Brushes.White, tableData[i].Gab, false);
                     columnPosX += gabTime.Width + _columnGab;
                 }
-                
+
 
                 OverlayStandingsTableTextLabel laptTime = new OverlayStandingsTableTextLabel(g, columnPosX, rowPosY, 9, FontUtil.FontUnispace(_fontSize));
                 laptTime.Draw(g, backgroundColor, (SolidBrush)Brushes.Purple, Brushes.White, tableData[i].LapTime, tableData[i].FastestLapTime);
 
                 if (tableData[i].AdditionalInfo != "")
                 {
-                    laptTime.DrawAdditionalInfo(g, tableData[i].AdditionalInfo);
+                    if (tableData[i].AdditionalInfo == "X")
+                    {
+                        laptTime.DrawAdditionalInfo(g, Brushes.DarkRed, "");
+                    }
+                    else
+                    {
+                        laptTime.DrawAdditionalInfo(g, Brushes.DarkGreen, tableData[i].AdditionalInfo);
+                    }
+
                 }
 
                 rowPosY += position.Height + _rowGab;
@@ -582,7 +599,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             _backgroundBrush = backgroundBrush;
             var fontSize = g.MeasureString(" ", _fontFamily);
             Height = (int)fontSize.Height;
-          
+
         }
 
         public void Draw(Graphics g, Brush fontBruch, String text)
@@ -599,7 +616,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
                 });
             }
 
-            _cachedBackground.Draw(g, _x, _y); 
+            _cachedBackground.Draw(g, _x, _y);
             g.DrawStringWithShadow(text, _fontFamily, fontBruch, new PointF(_x, _y));
         }
     }
@@ -652,13 +669,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
         }
 
-        public void DrawAdditionalInfo(Graphics g, String text)
+        public void DrawAdditionalInfo(Graphics g, Brush brush, String text)
         {
             var fontSize = g.MeasureString(text, _fontFamily);
 
             var rectanle = new Rectangle(_x + Width, _y, (int)(fontSize.Width + 10), _height);
             var path = GraphicsExtensions.CreateRoundedRectangle(rectanle, 0, _height / 4, _height / 4, 0);
-            g.FillPath(Brushes.DarkGreen, path);
+            g.FillPath(brush, path);
             g.DrawString(text, _fontFamily, Brushes.White, new PointF(_x + (int)(Width + 5), _y));
 
         }
@@ -698,7 +715,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             Height = (int)(fontSize.Height);
 
 
-            var rectanle = new Rectangle(_x, _y, Width-(_spacing/2), Height);
+            var rectanle = new Rectangle(_x, _y, Width - (_spacing / 2), Height);
             _path = GraphicsExtensions.CreateRoundedRectangle(rectanle, 0, 0, Height / 3, 0);
 
             _cachedBackground = new CachedBitmap((int)(fontSize.Width + _spacing), (int)fontSize.Height, gr =>
