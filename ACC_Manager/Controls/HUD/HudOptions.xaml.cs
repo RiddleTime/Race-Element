@@ -140,22 +140,18 @@ namespace ACCManager.Controls
         private void HudOptions_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             // kind of stupid but it works.. gotta travel the generated tree in #BuildOverlayConfigPanel();
-            if (_lastOverlayStart.AddMilliseconds(200) < DateTime.Now)
-                if (e.Key == Key.Enter)
-                {
-                    ListView currentList = tabControlListOverlays.SelectedItem == tabItemOverlays ? listOverlays : listDebugOverlays;
-                    if (currentList.SelectedIndex >= 0)
-                        foreach (UIElement element in configStackPanel.Children)
-                            if (element is StackPanel panel)
-                                foreach (UIElement child in panel.Children)
-                                    if (child is ToggleButton toggle)
-                                    {
-                                        toggle.IsChecked = !toggle.IsChecked;
-                                        _lastOverlayStart = DateTime.Now;
-                                        e.Handled = true;
-                                        break;
-                                    }
-                }
+            if (e.Key == Key.Enter)
+                if (_lastOverlayStart.AddMilliseconds(200) < DateTime.Now)
+                    foreach (UIElement element in configStackPanel.Children)
+                        if (element is StackPanel panel)
+                            foreach (UIElement child in panel.Children)
+                                if (child is ToggleButton toggle)
+                                {
+                                    toggle.IsChecked = !toggle.IsChecked;
+                                    _lastOverlayStart = DateTime.Now;
+                                    e.Handled = true;
+                                    break;
+                                }
         }
 
         private void ListOverlays_SelectionChanged(object sender, SelectionChangedEventArgs e)
