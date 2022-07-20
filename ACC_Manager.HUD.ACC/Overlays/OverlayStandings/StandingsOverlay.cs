@@ -44,6 +44,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             [ToolTip("Time Delta")]
             internal bool ShowTimeDelta { get; set; } = true;
 
+            [ToolTip("Invalid Lap Indicator")]
+            internal bool ShowInvalidLapIndicator { get; set; } = true;
+
+
+
             [ToolTip("Rows in front and behind")]
             [IntRange(1, 5, 1)]
             public int PlacesAroundMyCar { get; set; } = 2;
@@ -208,7 +213,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             int height = 0;
             foreach (KeyValuePair<CarClasses, List<StandingsTableRow>> kvp in tableRows)
             {
-                ost.Draw(g, height, kvp.Value, _carClassToBrush[kvp.Key], kvp.Key.ToString() + " / " + _entryListForCarClass[kvp.Key].Count() + " Cars", _driverLastName, _config.ShowTimeDelta);
+                ost.Draw(g, height, kvp.Value, _carClassToBrush[kvp.Key], kvp.Key.ToString() + " / " + _entryListForCarClass[kvp.Key].Count() + " Cars", _driverLastName, _config.ShowTimeDelta, _config.ShowInvalidLapIndicator);
                 height = ost.Height;
             }
 
@@ -293,7 +298,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
                     }
             }
 
-            if (realtimeCarUpdate.CurrentLap.IsInvalid)
+            if (realtimeCarUpdate.CurrentLap != null && realtimeCarUpdate.CurrentLap.IsInvalid)
             {
                 return "X";
             }
@@ -494,7 +499,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             _fontSize = fontSize;
         }
 
-        public void Draw(Graphics g, int y, List<StandingsTableRow> tableData, SolidBrush classBackground, string header, string ownName, bool showDeltaRow)
+        public void Draw(Graphics g, int y, List<StandingsTableRow> tableData, SolidBrush classBackground, string header, string ownName, bool showDeltaRow, bool showInvalidLapIndicator)
         {
             var rowPosY = _y + y;
 
@@ -566,7 +571,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
                 {
                     if (tableData[i].AdditionalInfo == "X")
                     {
-                        laptTime.DrawAdditionalInfo(g, Brushes.DarkRed, "");
+                        if (showInvalidLapIndicator) laptTime.DrawAdditionalInfo(g, Brushes.DarkRed, "");
                     }
                     else
                     {
