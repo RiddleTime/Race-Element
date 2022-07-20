@@ -10,6 +10,8 @@ namespace ACCManager.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.0.8.0", "- HUD tab: New Design showing previews of overlays."+
+                        "\n- ECU Maps: Updated (By Mominon)."},
             {"0.0.7.9", "- TreeViews: Fixed open/close bug when clicking the leaves."+
                         "\n- Livery Viewer: Increased snappiness and decreased memory usage."+
                         "\n- ACC Settings: Added serverlist so you can manage unlisted servers and quickly enable or disable the serverList.json."+

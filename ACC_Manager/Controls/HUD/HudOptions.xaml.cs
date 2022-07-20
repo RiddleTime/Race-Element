@@ -136,27 +136,22 @@ namespace ACCManager.Controls
         }
 
 
-
         private DateTime _lastOverlayStart = DateTime.MinValue;
         private void HudOptions_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             // kind of stupid but it works.. gotta travel the generated tree in #BuildOverlayConfigPanel();
-            if (_lastOverlayStart.AddMilliseconds(200) < DateTime.Now)
-                if (e.Key == Key.Enter)
-                {
-                    ListView currentList = tabControlListOverlays.SelectedItem == tabItemOverlays ? listOverlays : listDebugOverlays;
-                    if (currentList.SelectedIndex >= 0)
-                        foreach (UIElement element in configStackPanel.Children)
-                            if (element is StackPanel panel)
-                                foreach (UIElement child in panel.Children)
-                                    if (child is ToggleButton toggle)
-                                    {
-                                        toggle.IsChecked = !toggle.IsChecked;
-                                        _lastOverlayStart = DateTime.Now;
-                                        e.Handled = true;
-                                        break;
-                                    }
-                }
+            if (e.Key == Key.Enter)
+                if (_lastOverlayStart.AddMilliseconds(200) < DateTime.Now)
+                    foreach (UIElement element in configStackPanel.Children)
+                        if (element is StackPanel panel)
+                            foreach (UIElement child in panel.Children)
+                                if (child is ToggleButton toggle)
+                                {
+                                    toggle.IsChecked = !toggle.IsChecked;
+                                    _lastOverlayStart = DateTime.Now;
+                                    e.Handled = true;
+                                    break;
+                                }
         }
 
         private void ListOverlays_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -284,6 +279,7 @@ namespace ACCManager.Controls
 
             if (tempOverlaySettings.Enabled)
             {
+
                 toggle.IsChecked = true;
                 configStacker.IsEnabled = false;
             }
@@ -291,6 +287,18 @@ namespace ACCManager.Controls
             activationPanel.Children.Add(toggle);
             activationPanel.Children.Add(nameLabel);
             configStackPanel.Children.Add(activationPanel);
+
+            // click overlay title/description to toggle overlay
+            stackerOverlayInfo.Cursor = Cursors.Hand;
+            stackerOverlayInfo.PreviewMouseUp += (s, e) =>
+            {
+                if (_lastOverlayStart.AddMilliseconds(200) < DateTime.Now)
+                {
+                    toggle.IsChecked = !toggle.IsChecked;
+                    _lastOverlayStart = DateTime.Now;
+                }
+            };
+
 
             // add config stacker
             configStackPanel.Children.Add(configStacker);
