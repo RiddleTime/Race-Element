@@ -98,6 +98,60 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
             return row;
         }
 
+        public static TableRow GetTableRowCompare(double value1, string title, double value2, int denominator = 0)
+        {
+            return GetTableRowCompare(new double[] { value1 }, title, new double[] { value2 }, denominator);
+        }
+
+        public static TableRow GetTableRowCompare(double[] values1, string title, double[] values2, int denominator = 0)
+        {
+            if (values1.Length != values2.Length)
+                throw new ArgumentException("Both of the values arrays have to be the same length.");
+
+            List<TableCell> cells1 = new List<TableCell>();
+            List<TableCell> cells2 = new List<TableCell>();
+
+            bool different = false;
+
+            for (int i = 0; i < values1.Length; i++)
+            {
+                TableCell cell1 = new TableCell(GetDefaultParagraph($"{values1[i].ToString($"F{denominator}")}", new Thickness(0, 0, 5, 0))) { TextAlignment = TextAlignment.Right };
+                TableCell cell2 = new TableCell(GetDefaultParagraph($"{values2[i].ToString($"F{denominator}")}", new Thickness(5, 0, 0, 0))) { TextAlignment = TextAlignment.Left };
+
+                if (values1[i] > values2[i])
+                {
+                    cell1.Blocks.First().Foreground = new SolidColorBrush(Colors.LimeGreen);
+                    cell1.Blocks.First().FontWeight = FontWeights.Bold;
+                    different = true;
+                }
+
+                if (values1[i] < values2[i])
+                {
+                    cell2.Blocks.First().Foreground = new SolidColorBrush(Colors.LimeGreen);
+                    cell2.Blocks.First().FontWeight = FontWeights.Bold;
+                    different = true;
+                }
+
+                cells1.Add(cell1);
+                cells2.Add(cell2);
+            }
+
+            TableRow row = new TableRow();
+
+            for (int i = cells1.Count - 1; i >= 0; i--)
+                row.Cells.Add(cells1[i]);
+
+            TableCell header = new TableCell(GetDefaultParagraph(title)) { TextAlignment = TextAlignment.Center };
+            if (different)
+                header.Background = new SolidColorBrush(Colors.DarkOrange);
+            row.Cells.Add(header);
+
+            for (int i = 0; i < cells2.Count; i++)
+                row.Cells.Add(cells2[i]);
+
+            return row;
+        }
+
         public static Paragraph GetDefaultHeader()
         {
             Paragraph content = new Paragraph();
