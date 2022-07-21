@@ -165,61 +165,84 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
             Dictionary<CarClasses, List<StandingsTableRow>> tableRows = new Dictionary<CarClasses, List<StandingsTableRow>>();
 
-            foreach (CarClasses carClass in Enum.GetValues(typeof(CarClasses)))
+            if (_config.ShowMulticlass)
             {
-                tableRows[carClass] = new List<StandingsTableRow>();
-
-                if (carClass == _driversClass)
+                foreach (CarClasses carClass in Enum.GetValues(typeof(CarClasses)))
                 {
-                    int playersIndex = 0;
-
-                    for (int i = 0; i < _entryListForCarClass[carClass].Count(); i++)
-                    {
-                        CarData carData = _entryListForCarClass[carClass][i].Value;
-
-                        if (pageGraphics.PlayerCarID == carData.CarInfo.CarIndex)
-                        {
-                            playersIndex = i;
-                            break;
-                        }
-                    }
-
-                    int startIdx = (playersIndex - _config.PlacesAroundMyCar) < 0 ? 0 : (playersIndex - _config.PlacesAroundMyCar);
-                    int endIdx = (playersIndex + _config.PlacesAroundMyCar + 1) > _entryListForCarClass[carClass].Count() ? _entryListForCarClass[carClass].Count() : (playersIndex + _config.PlacesAroundMyCar + 1);
-
-                    for (int i = startIdx; i < endIdx; i++)
-                    {
-                        CarData carData = _entryListForCarClass[carClass][i].Value;
-
-                        var gab = GetGabToCarInFront(_entryListForCarClass[carClass], i);
-                        //AddCarDataTableRow(carData, tableRows[carClass], (carData.RealtimeCarUpdate.LastLap.LaptimeMS == bestSessionLapMS));
-                        AddCarDataTableRow(carData, tableRows[carClass], gab, false);
-                    }
-                }
-                else if (_config.ShowMulticlass)
-                {
-                    for (int i = 0; i < (_entryListForCarClass[carClass].Count() < _config.MulticlassRows ? _entryListForCarClass[carClass].Count() : _config.MulticlassRows); i++)
-                    {
-                        CarData carData = _entryListForCarClass[carClass][i].Value;
-                        //AddCarDataTableRow(carData, tableRows[carClass], (carData.RealtimeCarUpdate.LastLap.LaptimeMS == bestSessionLapMS));
-                        var gab = GetGabToCarInFront(_entryListForCarClass[carClass], i);
-                        AddCarDataTableRow(carData, tableRows[carClass], gab, false);
-                    }
+                    tableRows[carClass] = new List<StandingsTableRow>();
+                    EntryListToTableRow(tableRows[carClass], _entryListForCarClass[carClass]);
                 }
             }
+            else
+            {
+                tableRows[_driversClass] = new List<StandingsTableRow>();
+                EntryListToTableRow(tableRows[_driversClass], _entryListForCarClass[_driversClass]);
+            }
 
-            OverlayStandingsTable ost = new OverlayStandingsTable(10, 10, 11);
+            AddDriversRow(tableRows[_driversClass], _entryListForCarClass[_driversClass]);
+
+            OverlayStandingsTable ost = new OverlayStandingsTable(10, 10, 13);
 
             int height = 0;
             foreach (KeyValuePair<CarClasses, List<StandingsTableRow>> kvp in tableRows)
             {
-                ost.Draw(g, height, kvp.Value, _carClassToBrush[kvp.Key], kvp.Key.ToString() + " / " + _entryListForCarClass[kvp.Key].Count() + " Cars", _driverLastName, _config.ShowTimeDelta, _config.ShowInvalidLapIndicator);
+                ost.Draw(g, height, kvp.Value, _config.MulticlassRows, _carClassToBrush[kvp.Key], kvp.Key.ToString() + " / " + _entryListForCarClass[kvp.Key].Count() + " Cars", _driverLastName, _config.ShowTimeDelta, _config.ShowInvalidLapIndicator);
                 height = ost.Height;
             }
 
             g.TextRenderingHint = previousHint;
             g.SmoothingMode = previous;
 
+        }
+
+        private void AddDriversRow(List<StandingsTableRow> standingsTableRows, List<KeyValuePair<int, CarData>> list)
+        {
+            var playersIndex = GetDriversIndex(list);
+            if (playersIndex == -1 || playersIndex < _config.MulticlassRows)
+            {
+                return;
+            }
+
+            int startIdx = (playersIndex - _config.PlacesAroundMyCar) < 0 ? 0 : (playersIndex+_config.PlacesAroundMyCar-_config.MulticlassRows);
+            int endIdx = (playersIndex + _config.PlacesAroundMyCar + 1) > list.Count() ? list.Count() : (playersIndex + _config.PlacesAroundMyCar + 1);
+            /*
+            if (startIdx < _config.MulticlassRows)
+            {
+                startIdx = startIdx - _config.MulticlassRows;
+            }*/
+
+            for (int i = startIdx; i < endIdx; i++)
+            {
+                CarData carData = list[i].Value;
+                //AddCarDataTableRow(carData, tableRows[carClass], (carData.RealtimeCarUpdate.LastLap.LaptimeMS == bestSessionLapMS));
+                var gab = GetGabToCarInFront(list, i);
+                AddCarDataTableRow(carData, standingsTableRows, gab, false);
+            }
+        }
+
+        private int GetDriversIndex(List<KeyValuePair<int, CarData>> list)
+        {
+            for (int i = 0; i < list.Count(); i++)
+            {
+                CarData carData = list[i].Value;
+
+                if (pageGraphics.PlayerCarID == carData.CarInfo.CarIndex)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        private void EntryListToTableRow(List<StandingsTableRow> tableRows, List<KeyValuePair<int, CarData>> entryList)
+        {
+            for (int i = 0; i < (entryList.Count() < _config.MulticlassRows ? entryList.Count() : _config.MulticlassRows); i++)
+            {
+                CarData carData = entryList[i].Value;
+                //AddCarDataTableRow(carData, tableRows[carClass], (carData.RealtimeCarUpdate.LastLap.LaptimeMS == bestSessionLapMS));
+                var gab = GetGabToCarInFront(entryList, i);
+                AddCarDataTableRow(carData, tableRows, gab, false);
+            }
         }
 
         private string GetGabToCarInFront(List<KeyValuePair<int, CarData>> list, int i)
@@ -499,7 +522,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             _fontSize = fontSize;
         }
 
-        public void Draw(Graphics g, int y, List<StandingsTableRow> tableData, SolidBrush classBackground, string header, string ownName, bool showDeltaRow, bool showInvalidLapIndicator)
+        public void Draw(Graphics g, int y, List<StandingsTableRow> tableData, int splitRowIndex, SolidBrush classBackground, string header, string ownName, bool showDeltaRow, bool showInvalidLapIndicator)
         {
             var rowPosY = _y + y;
 
@@ -581,6 +604,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
                 }
 
                 rowPosY += position.Height + _rowGab;
+
+                if (i == splitRowIndex-1) rowPosY += 10;
 
             }
             Height = rowPosY;
