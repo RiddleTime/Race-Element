@@ -253,7 +253,7 @@ namespace ACCManager.Controls.Setup
             rgGrip.Rows.Add(DocUtil.GetTableRowCompare($"{differentialPreload1}", "Diff Preload(Nm)", $"{differentialPreload2}"));
             rgGrip.Rows.Add(DocUtil.GetTableRowCompare($"{brakePower1}%", "Brake Power", $"{brakePower2}%"));
             rgGrip.Rows.Add(DocUtil.GetTableRowCompare($"{brakeBias1}%", "Brake Bias", $"{brakeBias2}%"));
-            rgGrip.Rows.Add(DocUtil.GetTableRowCompare($"{steeringRatio1}", "Steering Ratio", $"{steeringRatio2}"));
+            rgGrip.Rows.Add(DocUtil.GetTableRowCompare(steeringRatio1, "Steering Ratio", steeringRatio2));
             Table gripTable = DocUtil.GetTable(35, 15, 35);
             gripTable.RowGroups.Add(rgGrip);
             gripSection.Blocks.Add(gripTable);
@@ -283,8 +283,8 @@ namespace ACCManager.Controls.Setup
             TableRowGroup rgAero = new TableRowGroup();
             rgAero.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), DocUtil.GetDefaultHeader("Aero Balance"), DocUtil.GetDefaultParagraph()));
             rgAero.Rows.Add(DocUtil.GetTableRowCompare($"Front: {rideHeightFront1}, Rear: {rideHeightRear1}", "Ride height(mm)", $"Front: {rideHeightFront2}, Rear: {rideHeightRear2}"));
-            rgAero.Rows.Add(DocUtil.GetTableRowCompare($"{splitter1}", "Splitter", $"{splitter2}"));
-            rgAero.Rows.Add(DocUtil.GetTableRowCompare($"{rearWing1}", "Rear Wing", $"{rearWing2}"));
+            rgAero.Rows.Add(DocUtil.GetTableRowCompare(splitter1, "Splitter", splitter2));
+            rgAero.Rows.Add(DocUtil.GetTableRowCompare(rearWing1, "Rear Wing", rearWing2));
             rgAero.Rows.Add(DocUtil.GetTableRowCompare($"Front: {brakeDuctsFront1}, Rear: {brakeDuctsRear1}", "Brake ducts", $"Front: {brakeDuctsFront2}, Rear: {brakeDuctsRear2}"));
             Table aeroTable = DocUtil.GetTable(35, 15, 35);
             aeroTable.RowGroups.Add(rgAero);
@@ -297,10 +297,10 @@ namespace ACCManager.Controls.Setup
             Section electronicsSection = new Section();
             TableRowGroup rgElectro = new TableRowGroup();
             rgElectro.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), DocUtil.GetDefaultHeader("Electronics"), DocUtil.GetDefaultParagraph()));
-            rgElectro.Rows.Add(DocUtil.GetTableRowCompare($"{setup1.BasicSetup.Electronics.TC1}", "TC 1", $"{setup2.BasicSetup.Electronics.TC1}"));
-            rgElectro.Rows.Add(DocUtil.GetTableRowCompare($"{setup1.BasicSetup.Electronics.TC2}", "TC 2", $"{setup2.BasicSetup.Electronics.TC2}"));
-            rgElectro.Rows.Add(DocUtil.GetTableRowCompare($"{setup1.BasicSetup.Electronics.Abs}", "ABS", $"{setup2.BasicSetup.Electronics.Abs}"));
-            rgElectro.Rows.Add(DocUtil.GetTableRowCompare($"{setup1.BasicSetup.Electronics.ECUMap + 1}", "Engine map", $"{setup2.BasicSetup.Electronics.ECUMap + 1}"));
+            rgElectro.Rows.Add(DocUtil.GetTableRowCompare(setup1.BasicSetup.Electronics.TC1, "TC 1", setup2.BasicSetup.Electronics.TC1));
+            rgElectro.Rows.Add(DocUtil.GetTableRowCompare(setup1.BasicSetup.Electronics.TC2, "TC 2", setup2.BasicSetup.Electronics.TC2));
+            rgElectro.Rows.Add(DocUtil.GetTableRowCompare(setup1.BasicSetup.Electronics.Abs, "ABS", setup2.BasicSetup.Electronics.Abs));
+            rgElectro.Rows.Add(DocUtil.GetTableRowCompare(setup1.BasicSetup.Electronics.ECUMap + 1, "Engine map", setup2.BasicSetup.Electronics.ECUMap + 1));
             Table electroTable = DocUtil.GetTable(35, 15, 35);
             electroTable.RowGroups.Add(rgElectro);
             electronicsSection.Blocks.Add(electroTable);
