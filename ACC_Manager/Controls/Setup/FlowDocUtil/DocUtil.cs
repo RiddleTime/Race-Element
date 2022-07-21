@@ -202,16 +202,14 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
 
                 if (values1[i] > values2[i])
                 {
-                    cell1.Blocks.First().Foreground = new SolidColorBrush(Colors.LimeGreen);
-
+                    cell1.Blocks.First().Foreground = Brushes.LimeGreen;
                     cell2.Blocks.First().Foreground = Brushes.OrangeRed;
                     different = true;
                 }
 
                 if (values1[i] < values2[i])
                 {
-                    cell2.Blocks.First().Foreground = new SolidColorBrush(Colors.LimeGreen);
-
+                    cell2.Blocks.First().Foreground = Brushes.LimeGreen;
                     cell1.Blocks.First().Foreground = Brushes.OrangeRed;
                     different = true;
                 }
