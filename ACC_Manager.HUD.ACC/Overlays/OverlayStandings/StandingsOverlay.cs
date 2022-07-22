@@ -152,16 +152,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             SmoothingMode previous = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
+            if (!_currentAcStatus.Equals(AcStatus.AC_LIVE)) return;
+
             List<KeyValuePair<int, CarData>> cars = EntryListTracker.Instance.Cars;
             if (cars.Count == 0) return;
-
+            
             DetermineDriversClass(cars);
             SplitEntryList(cars);
             SortAllEntryLists();
 
-            if (!_currentAcStatus.Equals(AcStatus.AC_LIVE)) return;
-
-            int bestSessionLapMS = GetBestSessionLap();
+            //int bestSessionLapMS = GetBestSessionLap();
 
             Dictionary<CarClasses, List<StandingsTableRow>> tableRows = new Dictionary<CarClasses, List<StandingsTableRow>>();
 
