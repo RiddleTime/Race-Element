@@ -205,11 +205,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
             int startIdx = (playersIndex - _config.PlacesAroundMyCar) < 0 ? 0 : (playersIndex+_config.PlacesAroundMyCar-_config.MulticlassRows);
             int endIdx = (playersIndex + _config.PlacesAroundMyCar + 1) > list.Count() ? list.Count() : (playersIndex + _config.PlacesAroundMyCar + 1);
-            /*
-            if (startIdx < _config.MulticlassRows)
-            {
-                startIdx = startIdx - _config.MulticlassRows;
-            }*/
+
+            if (startIdx < _config.MulticlassRows) startIdx = _config.MulticlassRows;
 
             for (int i = startIdx; i < endIdx; i++)
             {
