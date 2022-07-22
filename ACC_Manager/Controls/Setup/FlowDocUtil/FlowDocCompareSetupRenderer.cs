@@ -258,7 +258,7 @@ namespace ACCManager.Controls.Setup
             rgGrip.Rows.Add(DocUtil.GetTableRowCompareWithLabels(frontOrRearLabels, new double[] { antiRollBarFront1, antiRollBarRear1 }, "Anti roll bar", new double[] { antiRollBarFront2, antiRollBarRear2 }, cells, 0));
             rgGrip.Rows.Add(DocUtil.GetTableRowCompare(differentialPreload1, "Diff Preload(Nm)", differentialPreload2, cells));
             rgGrip.Rows.Add(DocUtil.GetTableRowCompare(brakePower1, "Brake Power(%)", brakePower2, cells));
-            rgGrip.Rows.Add(DocUtil.GetTableRowCompare(brakeBias1, "Brake Bias(%)", brakeBias2, cells));
+            rgGrip.Rows.Add(DocUtil.GetTableRowCompare(brakeBias1, "Brake Bias(%)", brakeBias2, cells, 1));
             rgGrip.Rows.Add(DocUtil.GetTableRowCompare(steeringRatio1, "Steering Ratio", steeringRatio2, cells));
             Table gripTable = DocUtil.GetMultiTable(headerWidthPercent, cells - 1);
             gripTable.RowGroups.Add(rgGrip);
