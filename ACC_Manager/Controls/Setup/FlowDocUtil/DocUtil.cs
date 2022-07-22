@@ -24,7 +24,45 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
             table.Columns.Add(columnValues);
 
             table.Margin = new Thickness(0);
+            return table;
+        }
 
+        /// <summary>
+        /// Header is centered
+        /// </summary>
+        /// <param name="headerWidth"></param>
+        /// <param name="cells"></param>
+        /// <returns></returns>
+        public static Table GetMultiTable(int headerWidth, int cells)
+        {
+            if (cells % 2 == 1)
+                throw new ArgumentException("Cells requires to be an even number");
+
+            Table table = new Table();
+
+            int cellWidth = (100 - headerWidth) / cells;
+
+            for (int i = 0; i < cells / 2; i++)
+            {
+                TableColumn column = new TableColumn();
+                column.Width = new GridLength(cellWidth, GridUnitType.Star);
+                table.Columns.Add(column);
+            }
+
+            TableColumn columnHeader = new TableColumn();
+            columnHeader.Width = new GridLength(headerWidth, GridUnitType.Star);
+            table.Columns.Add(columnHeader);
+
+            for (int i = 0; i < cells / 2; i++)
+            {
+                TableColumn column = new TableColumn();
+                column.Width = new GridLength(cellWidth, GridUnitType.Star);
+                table.Columns.Add(column);
+            }
+
+            table.Margin = new Thickness(0);
+            table.LineStackingStrategy = LineStackingStrategy.MaxHeight;
+            table.CellSpacing = 0;
             return table;
         }
 
@@ -44,7 +82,6 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
             table.Columns.Add(columnValues2);
 
             table.Margin = new Thickness(0);
-
             return table;
         }
 
@@ -68,42 +105,87 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
             return row;
         }
 
+
         public static TableRow GetTableRow(Paragraph a, Paragraph b, Paragraph c)
         {
+            return GetTableRow(a, b, c, 3);
+        }
+
+        public static TableRow GetTableRow(Paragraph a, Paragraph b, Paragraph c, int cellCount)
+        {
+            int cellsToAdd = 0;
+            if (cellCount > 3)
+                cellsToAdd = (cellCount - 1) / 2;
+
             TableRow row = new TableRow();
             TableCell cellA = new TableCell(a) { TextAlignment = TextAlignment.Right };
+            if (cellsToAdd > 0)
+                cellA.ColumnSpan = cellsToAdd;
             TableCell cellB = new TableCell(b) { TextAlignment = TextAlignment.Center };
             TableCell cellC = new TableCell(c) { TextAlignment = TextAlignment.Left };
+            if (cellsToAdd > 0)
+                cellC.ColumnSpan = cellsToAdd;
+
             row.Cells.Add(cellA);
             row.Cells.Add(cellB);
             row.Cells.Add(cellC);
+
+            return row;
+        }
+
+
+        public static TableRow GetTableRowCompare(string value1, string title, string value2, int cellCount)
+        {
+            int cellsToAdd = 0;
+            if (cellCount > 3)
+                cellsToAdd = (cellCount - 1) / 2;
+
+
+            TableRow row = new TableRow();
+            TableCell cellA = new TableCell(GetDefaultParagraph(value1, new Thickness(0, 0, 5, 0))) { TextAlignment = TextAlignment.Right };
+            if (cellsToAdd > 0)
+                cellA.ColumnSpan = cellsToAdd;
+            TableCell cellB = new TableCell(GetDefaultParagraph(title))
+            {
+                TextAlignment = TextAlignment.Center,
+                BorderThickness = new Thickness(2, 0, 2, 0),
+                BorderBrush = Brushes.DarkGray
+            };
+            if (!value1.Equals(value2))
+            {
+                cellB.Blocks.First().Foreground = Brushes.DarkOrange;
+                cellB.BorderBrush = Brushes.DarkOrange;
+            }
+
+            TableCell cellC = new TableCell(GetDefaultParagraph(value2, new Thickness(5, 0, 0, 0))) { TextAlignment = TextAlignment.Left };
+            if (cellsToAdd > 0)
+                cellC.ColumnSpan = cellsToAdd;
+
+
+
+            row.Cells.Add(cellA);
+            row.Cells.Add(cellB);
+            row.Cells.Add(cellC);
+
             return row;
         }
 
         public static TableRow GetTableRowCompare(string value1, string title, string value2)
         {
-            TableRow row = new TableRow();
-            TableCell cellA = new TableCell(GetDefaultParagraph(value1, new Thickness(0, 0, 5, 0))) { TextAlignment = TextAlignment.Right };
-            TableCell cellB = new TableCell(GetDefaultParagraph(title)) { TextAlignment = TextAlignment.Center };
-            TableCell cellC = new TableCell(GetDefaultParagraph(value2, new Thickness(5, 0, 0, 0))) { TextAlignment = TextAlignment.Left };
-
-            if (!value1.Equals(value2))
-            {
-                cellB.Background = new SolidColorBrush(Colors.DarkOrange);
-            }
-
-            row.Cells.Add(cellA);
-            row.Cells.Add(cellB);
-            row.Cells.Add(cellC);
-            return row;
+            return GetTableRowCompare(value1, title, value2, 3);
         }
 
-        public static TableRow GetTableRowCompare(double value1, string title, double value2, int denominator = 0)
+        public static TableRow GetTableRowCompare(double value1, string title, double value2, int cellCount, int denominator = 0)
         {
-            return GetTableRowCompare(new double[] { value1 }, title, new double[] { value2 }, denominator);
+            return GetTableRowCompare(new double[] { value1 }, title, new double[] { value2 }, cellCount, denominator);
         }
 
-        public static TableRow GetTableRowCompare(double[] values1, string title, double[] values2, int denominator = 0)
+        public static TableRow GetTableRowCompare(double[] values1, string title, double[] values2, int cellCount, int denominator = 0)
+        {
+            return GetTableRowCompareWithLabels(new string[values1.Length], values1, title, values2, cellCount, denominator);
+        }
+
+        public static TableRow GetTableRowCompareWithLabels(string[] labels, double[] values1, string title, double[] values2, int cellCount, int denominator = 0)
         {
             if (values1.Length != values2.Length)
                 throw new ArgumentException("Both of the values arrays have to be the same length.");
@@ -115,20 +197,20 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
 
             for (int i = 0; i < values1.Length; i++)
             {
-                TableCell cell1 = new TableCell(GetDefaultParagraph($"{values1[i].ToString($"F{denominator}")}", new Thickness(0, 0, 5, 0))) { TextAlignment = TextAlignment.Right };
-                TableCell cell2 = new TableCell(GetDefaultParagraph($"{values2[i].ToString($"F{denominator}")}", new Thickness(5, 0, 0, 0))) { TextAlignment = TextAlignment.Left };
+                TableCell cell1 = new TableCell(GetDefaultParagraph($"{labels[i]}{values1[i].ToString($"F{denominator}")}", new Thickness(0, 0, 5, 0))) { TextAlignment = TextAlignment.Right };
+                TableCell cell2 = new TableCell(GetDefaultParagraph($"{labels[i]}{values2[i].ToString($"F{denominator}")}", new Thickness(5, 0, 0, 0))) { TextAlignment = TextAlignment.Left };
 
                 if (values1[i] > values2[i])
                 {
-                    cell1.Blocks.First().Foreground = new SolidColorBrush(Colors.LimeGreen);
-                    cell1.Blocks.First().FontWeight = FontWeights.Bold;
+                    cell1.Blocks.First().Foreground = Brushes.LimeGreen;
+                    cell2.Blocks.First().Foreground = Brushes.OrangeRed;
                     different = true;
                 }
 
                 if (values1[i] < values2[i])
                 {
-                    cell2.Blocks.First().Foreground = new SolidColorBrush(Colors.LimeGreen);
-                    cell2.Blocks.First().FontWeight = FontWeights.Bold;
+                    cell2.Blocks.First().Foreground = Brushes.LimeGreen;
+                    cell1.Blocks.First().Foreground = Brushes.OrangeRed;
                     different = true;
                 }
 
@@ -138,16 +220,39 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
 
             TableRow row = new TableRow();
 
-            for (int i = cells1.Count - 1; i >= 0; i--)
+            int spacingCells = 0;
+            if (cellCount > values2.Count() * 2 + 1)
+                spacingCells = (cellCount - (values2.Count() * 2 + 1)) / 2;
+
+            // add spacing cells on left side
+            if (spacingCells > 0)
+                for (int i = 0; i < spacingCells; i++)
+                    row.Cells.Add(new TableCell());
+
+            for (int i = 0; i < cells1.Count; i++)
                 row.Cells.Add(cells1[i]);
 
-            TableCell header = new TableCell(GetDefaultParagraph(title)) { TextAlignment = TextAlignment.Center };
+            TableCell header = new TableCell(GetDefaultParagraph(title))
+            {
+                TextAlignment = TextAlignment.Center,
+                BorderThickness = new Thickness(2, 0, 2, 0),
+                BorderBrush = Brushes.DarkGray
+            };
             if (different)
-                header.Background = new SolidColorBrush(Colors.DarkOrange);
+            {
+                header.BorderBrush = Brushes.DarkOrange;
+                header.Blocks.First().Foreground = Brushes.DarkOrange;
+            }
+
             row.Cells.Add(header);
 
             for (int i = 0; i < cells2.Count; i++)
                 row.Cells.Add(cells2[i]);
+
+            // add spacing cells on right side
+            if (spacingCells > 0)
+                for (int i = 0; i < spacingCells; i++)
+                    row.Cells.Add(new TableCell());
 
             return row;
         }

@@ -105,7 +105,7 @@ namespace ACCManager.Controls
             string modelName = ConversionFactory.GetNameFromCarModel(model);
             Debug.WriteLine($"Trying to import a setup for {modelName}");
             _currentSetup = setupRoot;
-            _setupName = file.Name;
+            _setupName = file.Name.Replace(".json", "");
             _originalSetupFile = setupFile;
 
             BuildTrackList();
