@@ -13,36 +13,55 @@ using static ACCManager.Data.SetupConverter;
 namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
 {
 #if DEBUG
-    [Overlay(Name = "Slip Angle", Version = 1.00,
+    [Overlay(Name = "Oversteer Trace", Version = 1.00,
         Description = "Shows Slip angle", OverlayType = OverlayType.Release)]
 #endif
-    internal sealed class SlipAngleOverlay : AbstractOverlay
+    internal sealed class OversteerOverlay : AbstractOverlay
     {
         private readonly SlipConfiguration _config = new SlipConfiguration();
         private class SlipConfiguration : OverlayConfiguration
         {
+
+
             public SlipConfiguration()
             {
                 this.AllowRescale = true;
             }
         }
 
-        private readonly InfoPanel _panel;
-        public SlipAngleOverlay(Rectangle rectangle) : base(rectangle, "Slip Angle Overlay")
-        {
-            const int width = 220;
-            _panel = new InfoPanel(12, width) { FirstRowLine = 0 };
+        internal static OversteerOverlay Instance;
 
-            this.Width = width;
-            this.Height = _panel.FontHeight * 5;
+        private readonly InfoPanel _panel;
+        private OversteerDataCollector _collector;
+        private OversteerGraph _graph;
+        private int _originalWidth;
+        private int _originalHeight;
+
+        public OversteerOverlay(Rectangle rectangle) : base(rectangle, "Oversteer Trace Overlay")
+        {
+            _originalWidth = 220;
+            _panel = new InfoPanel(12, _originalWidth) { FirstRowLine = 0 };
+            _originalHeight = _panel.FontHeight * 5;
+
+            this.Width = _originalWidth;
+            this.Height = _originalHeight;
         }
 
         public sealed override void BeforeStart()
         {
+
+            _collector = new OversteerDataCollector() { TraceCount = this._originalWidth - 1 };
+            _collector.Start();
+
+            _graph = new OversteerGraph(0, 0, this._originalWidth - 1, this._originalHeight - 1, _collector);
+            Instance = this;
         }
 
         public sealed override void BeforeStop()
         {
+            _collector.Stop();
+            _graph.Dispose();
+            Instance = null;
         }
 
         public sealed override void Render(Graphics g)
@@ -54,7 +73,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
             if (slipRatioRear > slipRatioFront)
             {
                 float diff = slipRatioRear - slipRatioFront;
-
                 if (diff > 0.01)
                     type = "Oversteer";
             }
@@ -70,8 +88,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
             _panel.AddLine("Oversteer", $"{(slipRatioRear - slipRatioFront):F2}");
             _panel.AddLine("Balance", type);
 
-            _panel.Draw(g);
+            //_panel.Draw(g);
 
+
+            _graph.Draw(g);
         }
 
         public sealed override bool ShouldRender() => DefaultShouldRender();
