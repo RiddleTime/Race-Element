@@ -19,7 +19,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
         public LinkedList<float> FrontRight = new LinkedList<float>();
         public LinkedList<float> RearLeft = new LinkedList<float>();
         public LinkedList<float> RearRight = new LinkedList<float>();
-        private readonly ACCSharedMemory sharedMemory = new ACCSharedMemory();
 
         public void Collect(SPageFilePhysics filePhysics)
         {
@@ -56,7 +55,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
                 }
             }
 
-            PressureTraceOverlay.Instance.RequestRedraw();
         }
 
         private float CorrectToBounds(float value)
@@ -76,7 +74,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
                 while (IsCollecting)
                 {
                     Thread.Sleep(1000 / 3);
-                    Collect(sharedMemory.ReadPhysicsPageFile());
+                    if (PressureTraceOverlay.Instance != null && PressureTraceOverlay.Instance.pagePhysics != null)
+                    {
+                        Collect(PressureTraceOverlay.Instance.pagePhysics);
+                        PressureTraceOverlay.Instance.RequestRedraw();
+                    }
                 }
             }).Start();
         }

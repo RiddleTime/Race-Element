@@ -48,11 +48,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             this.Width = _originalWidth;
             this.Height = _originalHeight;
             this.RequestsDrawItself = true;
-            Instance = this;
         }
 
         public sealed override void BeforeStart()
         {
+            Instance = this;
             _inputDataCollector = new InputDataCollector() { TraceCount = this._originalWidth - 1, inputTraceConfig = _config };
             _inputDataCollector.Start();
 
@@ -63,6 +63,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
         {
             _inputDataCollector.Stop();
             _graph.Dispose();
+            Instance = null;
         }
 
         public sealed override void Render(Graphics g)

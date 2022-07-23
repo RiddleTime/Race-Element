@@ -18,8 +18,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
         public LinkedList<int> Brake = new LinkedList<int>();
         public LinkedList<int> Steering = new LinkedList<int>();
 
-        ACCSharedMemory sharedMemory = new ACCSharedMemory();
-
         public void Collect(SPageFilePhysics filePhysics)
         {
             lock (Throttle)
@@ -59,8 +57,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
                 while (IsCollecting)
                 {
                     Thread.Sleep(1000 / inputTraceConfig.Herz);
-                    Collect(sharedMemory.ReadPhysicsPageFile());
-                    InputTraceOverlay.Instance.RequestRedraw();
+                    if (InputTraceOverlay.Instance != null && InputTraceOverlay.Instance.pagePhysics != null)
+                    {
+                        Collect(InputTraceOverlay.Instance.pagePhysics);
+                        InputTraceOverlay.Instance.RequestRedraw();
+                    }
                 }
             }).Start();
         }

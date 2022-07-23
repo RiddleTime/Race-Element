@@ -23,11 +23,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
             this.Height = 60 * 2;
             //this.Y = (int)(ScreenHeight / 2) - this.Height / 2;
             this.RequestsDrawItself = true;
-            Instance = this;
         }
 
         public sealed override void BeforeStart()
         {
+            Instance = this;
+
             TyrePressureGraph.PressureRange = TyrePressures.GetCurrentRange(pageGraphics.TyreCompound, pageStatic.CarModel);
             _dataCollector = new TyrePressureDataCollector() { TraceCount = this.Width / 2 - 1 };
             _dataCollector.Start();
@@ -36,11 +37,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
         public sealed override void BeforeStop()
         {
             _dataCollector.Stop();
+            Instance = null;
         }
 
         public sealed override void Render(Graphics g)
         {
-
             TyrePressureGraph.PressureRange = TyrePressures.GetCurrentRange(pageGraphics.TyreCompound, pageStatic.CarModel);
             TyrePressureGraph graph = new TyrePressureGraph(0, 0, this.Width / 2 - 1, (this.Height / 2) - 1, _dataCollector.FrontLeft);
             TyrePressureGraph graph1 = new TyrePressureGraph(this.Width / 2, 0, this.Width / 2 - 1, (this.Height / 2) - 1, _dataCollector.FrontRight);
