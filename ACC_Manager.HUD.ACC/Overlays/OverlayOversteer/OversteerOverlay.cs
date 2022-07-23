@@ -45,6 +45,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
 
             this.Width = _originalWidth;
             this.Height = _originalHeight;
+            this.RequestsDrawItself = true;
         }
 
         public sealed override void BeforeStart()
