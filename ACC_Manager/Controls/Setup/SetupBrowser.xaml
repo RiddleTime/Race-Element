@@ -67,12 +67,13 @@
                 <RowDefinition Height="37"/>
             </Grid.RowDefinitions>
 
-            <materialDesign:Card Grid.Row="0" Margin="3">
-                <FlowDocumentScrollViewer Focusable="False" Cursor="Arrow" IsHitTestVisible="False">
+            <materialDesign:Card Grid.Row="0" Margin="5">
+                <FlowDocumentScrollViewer Focusable="False" Cursor="Arrow" IsHitTestVisible="False" Margin="0">
                     <FlowDocument  x:Name="flowDocument" Focusable="False" Cursor="Arrow" 
                            Background="{DynamicResource MaterialDesignPaper}"
                            FontFamily="{StaticResource RobotoMedium}" 
-                           RenderOptions.ClearTypeHint="Enabled" AllowDrop="False">
+                           RenderOptions.ClearTypeHint="Enabled" AllowDrop="False"
+                                   PagePadding="2">
                     </FlowDocument>
                 </FlowDocumentScrollViewer>
             </materialDesign:Card>
