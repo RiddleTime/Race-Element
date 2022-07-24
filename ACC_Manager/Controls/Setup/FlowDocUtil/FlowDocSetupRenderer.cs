@@ -115,128 +115,112 @@ namespace ACCManager.Controls.Setup
 
 
 
-            Section setupTitle = new Section();
-            setupTitle.Blocks.Add(DocUtil.GetDefaultHeader(20, $"{new FileInfo(file).Name.Replace(".json", "")}"));
+            const int cells = 8;
+            const int headerWidthPercent = 20;
+            string[] tyreLocationLabels = new string[] { "FL: ", "FR: ", "RL: ", "RR: " };
+            string[] frontOrRearLabels = new string[] { "Front: ", "Rear: " };
 
-            setupTitle.BorderBrush = Brushes.White;
-            setupTitle.BorderThickness = new Thickness(1, 1, 1, 1);
-            setupTitle.Margin = new Thickness(0, 0, 0, 0);
 
-            flowDocument.Blocks.Add(setupTitle);
-
-            // Setup Info
-            Section setupSection = new Section();
-            //setupSection.Blocks.Add(GetDefaultHeader("Setup Info"));
-
-            Table setupInfoTable = DocUtil.GetTable(30, 70);
+            //// Setup Info Section
+            Table setupInfoTable = DocUtil.GetLeftAllignedTable(headerWidthPercent, cells);
             TableRowGroup rowGroupSetupInfo = new TableRowGroup();
             if (logTrack)
-                rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRow("Track", $"{DocUtil.GetTrackName(file)}"));
-            rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRow("Car", $"{CarModelToCarName[carSetup.CarModel]}"));
-            rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRow("Class", $"{carSetup.CarClass}"));
-
+                rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRowLeft("Track", $"{DocUtil.GetTrackName(file)}", cells));
+            rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRowLeft("Car", $"{CarModelToCarName[carSetup.CarModel]}", cells));
+            rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRowLeft("Class", $"{carSetup.CarClass}", cells));
             setupInfoTable.RowGroups.Add(rowGroupSetupInfo);
+            Section setupSection = new Section
+            {
+                BorderBrush = Brushes.White,
+                BorderThickness = new Thickness(0, 1, 0, 1),
+                Margin = new Thickness(0, 0, 0, 0)
+            };
             setupSection.Blocks.Add(setupInfoTable);
-            setupSection.BorderBrush = Brushes.White;
-            setupSection.BorderThickness = new Thickness(1, 1, 1, 1);
-            setupSection.Margin = new Thickness(0, 0, 0, 0);
             flowDocument.Blocks.Add(setupSection);
 
 
+            //// Tyres Section
+            Section tyresSection = new Section();
+            TableRowGroup rgTyres = new TableRowGroup();
+            rgTyres.Rows.Add(DocUtil.GetTableRowLeftCenterTitle("Tyres Setup", (int)(cells * 0.85)));
+            rgTyres.Rows.Add(DocUtil.GetTableRowLeft("Compound", $"{compound}", cells));
+            rgTyres.Rows.Add(DocUtil.GetTableRowLeft("Pressures(psi)", tyreLocationLabels, new double[] { frontLeftPressure, frontRightPressure, rearLeftPressure, rearRightPressure }, cells, 1));
+            rgTyres.Rows.Add(DocUtil.GetTableRowLeft("Toe(°)", tyreLocationLabels, new double[] { frontLeftToe, frontRightToe, rearLeftToe, rearRightToe }, cells, 2));
+            rgTyres.Rows.Add(DocUtil.GetTableRowLeft("Camber(°)", tyreLocationLabels, new double[] { camberFrontLeft, camberFrontRight, camberRearLeft, camberRearRight }, cells, 1));
+            rgTyres.Rows.Add(DocUtil.GetTableRowLeft("Caster(°)", tyreLocationLabels.Take(2).ToArray(), new double[] { frontLeftCaster, frontRightCaster }, cells, 1));
+            Table tyresSetupTable = DocUtil.GetLeftAllignedTable(headerWidthPercent, cells);
+            tyresSetupTable.RowGroups.Add(rgTyres);
+            tyresSection.Blocks.Add(tyresSetupTable);
+            tyresSection.BorderBrush = Brushes.White;
+            tyresSection.BorderThickness = new Thickness(0, 1, 0, 0);
+            flowDocument.Blocks.Add(tyresSection);
 
-            // Tyres setup
-            Section tiresSection = new Section();
-            tiresSection.Blocks.Add(DocUtil.GetDefaultHeader("Tyres Setup"));
-
-            Table tiresTable = DocUtil.GetTable(30, 70);
-            TableRowGroup rowGroupTires = new TableRowGroup();
-            rowGroupTires.Rows.Add(DocUtil.GetTableRow("Compound", $"{compound}"));
-            rowGroupTires.Rows.Add(DocUtil.GetTableRow("Pressures(psi)", $"FL: {frontLeftPressure}, FR: {frontRightPressure}, RL: {rearLeftPressure}, RR: {rearRightPressure}"));
-            rowGroupTires.Rows.Add(DocUtil.GetTableRow("Toe(°)", $"FL: {frontLeftToe}, FR: {frontRightToe}, RL: {rearLeftToe}, RR: {rearRightToe}"));
-            rowGroupTires.Rows.Add(DocUtil.GetTableRow("Camber(°)", $"FL: {camberFrontLeft}, FR: {camberFrontRight}, RL: {camberRearLeft}, RR: {camberRearRight}"));
-            rowGroupTires.Rows.Add(DocUtil.GetTableRow("Caster(°)", $"FL: {frontLeftCaster}, FR: {frontRightCaster}"));
-            tiresTable.RowGroups.Add(rowGroupTires);
-            tiresSection.Blocks.Add(tiresTable);
-            tiresSection.BorderBrush = Brushes.White;
-            tiresSection.BorderThickness = new Thickness(1, 1, 1, 1);
-            flowDocument.Blocks.Add(tiresSection);
-
-
-            // Mechanical grip
-            Section mechanicalGripSection = new Section();
-            mechanicalGripSection.Blocks.Add(DocUtil.GetDefaultHeader("Mechanical Grip"));
-
-            Table gripTable = DocUtil.GetTable(30, 70);
-            TableRowGroup rowGroupGrip = new TableRowGroup();
-            rowGroupGrip.Rows.Add(DocUtil.GetTableRow("Wheelrates(Nm)", $"FL: {wheelRateFrontLeft}, FR: {wheelRateFrontRight}, RL: {wheelRateRearLeft}, RR: {wheelRateRearRight}"));
-            rowGroupGrip.Rows.Add(DocUtil.GetTableRow("Bumpstop rate(Nm)", $"FL: {bumpStopRateFrontLeft}, FR: {bumpStopRateFrontRight}, RL: {bumpStopRateRearLeft}, RR: {bumpStopRateRearRight}"));
-            rowGroupGrip.Rows.Add(DocUtil.GetTableRow("Bumstop range", $"FL: {bumpStopRangeFrontLeft}, FR: {bumpStopRangeFrontRight}, RL: {bumpStopRangeRearLeft}, RR: {bumpStopRangeRearRight}"));
-            rowGroupGrip.Rows.Add(DocUtil.GetTableRow("Anti roll bar", $"Front: {antiRollBarFront}, Rear: {antiRollBarRear}"));
-            rowGroupGrip.Rows.Add(DocUtil.GetTableRow("Diff preload(Nm)", $"{differentialPreload}"));
-            rowGroupGrip.Rows.Add(DocUtil.GetTableRow("Brake power", $"{brakePower}%"));
-            rowGroupGrip.Rows.Add(DocUtil.GetTableRow("Brake bias", $"{brakeBias}%"));
-            rowGroupGrip.Rows.Add(DocUtil.GetTableRow("Steering Ratio", $"{steeringRatio}"));
-
-            gripTable.RowGroups.Add(rowGroupGrip);
-            mechanicalGripSection.Blocks.Add(gripTable);
-            mechanicalGripSection.BorderBrush = Brushes.White;
-            mechanicalGripSection.BorderThickness = new Thickness(1, 1, 1, 1);
-            flowDocument.Blocks.Add(mechanicalGripSection);
+            //// Mechanical Grip Section
+            Section gripSection = new Section();
+            TableRowGroup rgGrip = new TableRowGroup();
+            rgGrip.Rows.Add(DocUtil.GetTableRowLeftCenterTitle("Mechanical Grip", (int)(cells * 0.85)));
+            rgGrip.Rows.Add(DocUtil.GetTableRowLeft("Wheelrates(Nm)", tyreLocationLabels, new double[] { wheelRateFrontLeft, wheelRateFrontRight, wheelRateRearLeft, wheelRateRearRight }, cells, 0));
+            rgGrip.Rows.Add(DocUtil.GetTableRowLeft("Bumpstop Rate(Nm)", tyreLocationLabels, new double[] { bumpStopRateFrontLeft, bumpStopRateFrontRight, bumpStopRateRearLeft, bumpStopRateRearRight }, cells, 0));
+            rgGrip.Rows.Add(DocUtil.GetTableRowLeft("Bumpstop Range", tyreLocationLabels, new double[] { bumpStopRangeFrontLeft, bumpStopRangeFrontRight, bumpStopRangeRearLeft, bumpStopRangeRearRight }, cells, 0));
+            rgGrip.Rows.Add(DocUtil.GetTableRowLeft("Anti roll bar", frontOrRearLabels, new double[] { antiRollBarFront, antiRollBarRear }, cells, 0));
+            rgGrip.Rows.Add(DocUtil.GetTableRowLeft("Diff Preload(Nm)", differentialPreload, cells));
+            rgGrip.Rows.Add(DocUtil.GetTableRowLeft("Brake Power(%)", brakePower, cells));
+            rgGrip.Rows.Add(DocUtil.GetTableRowLeft("Brake Bias(%)", brakeBias, cells, 1));
+            rgGrip.Rows.Add(DocUtil.GetTableRowLeft("Steering Ratio", steeringRatio, cells));
+            Table gripTable = DocUtil.GetLeftAllignedTable(headerWidthPercent, cells); ;
+            gripTable.RowGroups.Add(rgGrip);
+            gripSection.Blocks.Add(gripTable);
+            gripSection.BorderBrush = Brushes.White;
+            gripSection.BorderThickness = new Thickness(0, 1, 0, 0);
+            flowDocument.Blocks.Add(gripSection);
 
 
-            // Dampers
+
+            //// Dampers Section
             Section dampersSection = new Section();
-            dampersSection.Blocks.Add(DocUtil.GetDefaultHeader("Dampers"));
-
-            Table dampersTable = DocUtil.GetTable(30, 70);
-            TableRowGroup rowGroupDampers = new TableRowGroup();
-            rowGroupDampers.Rows.Add(DocUtil.GetTableRow("Bump Slow", $"FL: {bumpSlowFrontLeft}, FR: {bumpSlowFrontRight}, RL: {bumpSlowRearLeft}, RR: {bumpSlowRearRight}"));
-            rowGroupDampers.Rows.Add(DocUtil.GetTableRow("Bump Fast", $"FL: {bumpFastFrontLeft}, FR: {bumpFastFrontRight}, RL: {bumpFastRearLeft}, RR: {bumpFastRearRight}"));
-            rowGroupDampers.Rows.Add(DocUtil.GetTableRow("Rebound Slow", $"FL: {reboundSlowFrontLeft}, FR: {reboundSlowFrontRight}, RL: {reboundSlowRearLeft}, RR: {reboundSlowRearRight}"));
-            rowGroupDampers.Rows.Add(DocUtil.GetTableRow("Rebound Fast", $"FL: {reboundFastFrontLeft}, FR: {reboundFastFrontRight}, RL: {reboundFastRearLeft}, RR: {reboundFastRearRight}"));
-
-            dampersTable.RowGroups.Add(rowGroupDampers);
+            TableRowGroup rgDampers = new TableRowGroup();
+            rgDampers.Rows.Add(DocUtil.GetTableRowLeftCenterTitle("Dampers", (int)(cells * 0.85)));
+            rgDampers.Rows.Add(DocUtil.GetTableRowLeft("Bump Slow", tyreLocationLabels, new double[] { bumpSlowFrontLeft, bumpSlowFrontRight, bumpSlowRearLeft, bumpSlowRearRight }, cells));
+            rgDampers.Rows.Add(DocUtil.GetTableRowLeft("Bump Fast", tyreLocationLabels, new double[] { bumpFastFrontLeft, bumpFastFrontRight, bumpFastRearLeft, bumpFastRearRight }, cells));
+            rgDampers.Rows.Add(DocUtil.GetTableRowLeft("Rebound Slow", tyreLocationLabels, new double[] { reboundSlowFrontLeft, reboundSlowFrontRight, reboundSlowRearLeft, reboundSlowRearRight }, cells));
+            rgDampers.Rows.Add(DocUtil.GetTableRowLeft("Rebound Fast", tyreLocationLabels, new double[] { reboundFastFrontLeft, reboundFastFrontRight, reboundFastRearLeft, reboundFastRearRight }, cells));
+            Table dampersTable = DocUtil.GetLeftAllignedTable(headerWidthPercent, cells);
+            dampersTable.RowGroups.Add(rgDampers);
             dampersSection.Blocks.Add(dampersTable);
             dampersSection.BorderBrush = Brushes.White;
-            dampersSection.BorderThickness = new Thickness(1, 1, 1, 1);
+            dampersSection.BorderThickness = new Thickness(0, 1, 0, 0);
             flowDocument.Blocks.Add(dampersSection);
 
 
-            // Aero
+            //// Aero
             Section aeroBalanceSection = new Section();
-            aeroBalanceSection.Blocks.Add(DocUtil.GetDefaultHeader("Aero Balance"));
-            Table aeroTable = DocUtil.GetTable(30, 70);
-            TableRowGroup aeroTableRowGroup = new TableRowGroup();
-            aeroTableRowGroup.Rows.Add(DocUtil.GetTableRow("Ride height(mm)", $"Front: {rideHeightFront}, Rear: {rideHeightRear}"));
-            aeroTableRowGroup.Rows.Add(DocUtil.GetTableRow("Splitter", $"{splitter}"));
-            aeroTableRowGroup.Rows.Add(DocUtil.GetTableRow("Rear Wing", $"{rearWing}"));
-            aeroTableRowGroup.Rows.Add(DocUtil.GetTableRow("Brake ducts", $"Front: {brakeDuctsFront}, Rear: {brakeDuctsRear}"));
-
-
-            aeroTable.RowGroups.Add(aeroTableRowGroup);
+            TableRowGroup rgAero = new TableRowGroup();
+            rgAero.Rows.Add(DocUtil.GetTableRowLeftCenterTitle("Aero Balance", (int)(cells * 0.85)));
+            rgAero.Rows.Add(DocUtil.GetTableRowLeft("Ride height(mm)", frontOrRearLabels, new double[] { rideHeightFront, rideHeightRear }, cells));
+            rgAero.Rows.Add(DocUtil.GetTableRowLeft("Splitter", splitter, cells));
+            rgAero.Rows.Add(DocUtil.GetTableRowLeft("Rear Wing", rearWing, cells));
+            rgAero.Rows.Add(DocUtil.GetTableRowLeft("Brake ducts", frontOrRearLabels, new double[] { brakeDuctsFront, brakeDuctsRear }, cells));
+            Table aeroTable = DocUtil.GetLeftAllignedTable(headerWidthPercent, cells);
+            aeroTable.RowGroups.Add(rgAero);
             aeroBalanceSection.Blocks.Add(aeroTable);
             aeroBalanceSection.BorderBrush = Brushes.White;
-            aeroBalanceSection.BorderThickness = new Thickness(1, 1, 1, 1);
+            aeroBalanceSection.BorderThickness = new Thickness(0, 1, 0, 0);
             flowDocument.Blocks.Add(aeroBalanceSection);
 
-
-            // Electronics
+            //// Electronics
             Section electronicsSection = new Section();
-            electronicsSection.Blocks.Add(DocUtil.GetDefaultHeader("Electronics"));
-            Table electronicsTable = DocUtil.GetTable(30, 70);
-            TableRowGroup electronicsRowGroup = new TableRowGroup();
-            electronicsRowGroup.Rows.Add(DocUtil.GetTableRow("TC 1", $"{setup.BasicSetup.Electronics.TC1}"));
-            electronicsRowGroup.Rows.Add(DocUtil.GetTableRow("TC 2", $"{setup.BasicSetup.Electronics.TC2}"));
-            electronicsRowGroup.Rows.Add(DocUtil.GetTableRow("ABS", $"{setup.BasicSetup.Electronics.Abs}"));
-            electronicsRowGroup.Rows.Add(DocUtil.GetTableRow("Engine map", $"{setup.BasicSetup.Electronics.ECUMap + 1}"));
-
-            electronicsTable.RowGroups.Add(electronicsRowGroup);
-            electronicsSection.Blocks.Add(electronicsTable);
+            TableRowGroup rgElectro = new TableRowGroup();
+            rgElectro.Rows.Add(DocUtil.GetTableRowLeftCenterTitle("Electronics", (int)(cells * 0.85)));
+            rgElectro.Rows.Add(DocUtil.GetTableRowLeft("TC 1", setup.BasicSetup.Electronics.TC1, cells));
+            rgElectro.Rows.Add(DocUtil.GetTableRowLeft("TC ", setup.BasicSetup.Electronics.TC2, cells));
+            rgElectro.Rows.Add(DocUtil.GetTableRowLeft("ABS", setup.BasicSetup.Electronics.Abs, cells));
+            rgElectro.Rows.Add(DocUtil.GetTableRowLeft("Engine map", setup.BasicSetup.Electronics.ECUMap + 1, cells));
+            Table electroTable = DocUtil.GetLeftAllignedTable(headerWidthPercent, cells);
+            electroTable.RowGroups.Add(rgElectro);
+            electronicsSection.Blocks.Add(electroTable);
             electronicsSection.BorderBrush = Brushes.White;
-            electronicsSection.BorderThickness = new Thickness(1, 1, 1, 1);
+            electronicsSection.BorderThickness = new Thickness(0, 1, 0, 1);
             flowDocument.Blocks.Add(electronicsSection);
         }
-
-
     }
 }

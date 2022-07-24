@@ -27,13 +27,35 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
             return table;
         }
 
+        public static Table GetLeftAllignedTable(int headerWidth, int cells)
+        {
+            Table table = new Table();
+
+            int cellWidth = (100 - headerWidth) / cells;
+
+            TableColumn columnHeader = new TableColumn();
+            columnHeader.Width = new GridLength(headerWidth, GridUnitType.Star);
+            table.Columns.Add(columnHeader);
+
+            for (int i = 0; i < cells; i++)
+            {
+                TableColumn column = new TableColumn();
+                column.Width = new GridLength(cellWidth, GridUnitType.Star);
+                table.Columns.Add(column);
+            }
+
+            table.Margin = new Thickness(0);
+            table.CellSpacing = 0;
+            return table;
+        }
+
         /// <summary>
         /// Header is centered
         /// </summary>
         /// <param name="headerWidth"></param>
         /// <param name="cells"></param>
         /// <returns></returns>
-        public static Table GetMultiTable(int headerWidth, int cells)
+        public static Table GetCenteredTable(int headerWidth, int cells)
         {
             if (cells % 2 == 1)
                 throw new ArgumentException("Cells requires to be an even number");
@@ -105,7 +127,6 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
             return row;
         }
 
-
         public static TableRow GetTableRow(Paragraph a, Paragraph b, Paragraph c)
         {
             return GetTableRow(a, b, c, 3);
@@ -121,7 +142,7 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
             TableCell cellA = new TableCell(a) { TextAlignment = TextAlignment.Right };
             if (cellsToAdd > 0)
                 cellA.ColumnSpan = cellsToAdd;
-            TableCell cellB = new TableCell(b) { TextAlignment = TextAlignment.Center };
+            TableCell cellB = new TableCell(b) { TextAlignment = TextAlignment.Center, Padding = new Thickness(0, 3, 0, 3) };
             TableCell cellC = new TableCell(c) { TextAlignment = TextAlignment.Left };
             if (cellsToAdd > 0)
                 cellC.ColumnSpan = cellsToAdd;
@@ -169,6 +190,124 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
 
             return row;
         }
+
+        public static TableRow GetTableRowLeft(string title, double value, int cellCount, int denominator = 0)
+        {
+            return GetTableRowLeft(title, new string[1], new double[] { value }, cellCount, denominator);
+        }
+
+        public static TableRow GetTableRowLeft(string title, string[] labels, double[] values, int cellCount, int denominator = 0)
+        {
+            if (values.Length == 0)
+                throw new ArgumentException("Provide at least 1 value.");
+            if (labels.Length == 0)
+                labels = new string[values.Length];
+
+            List<TableCell> tableCells = new List<TableCell>();
+
+            for (int i = 0; i != values.Length; i++)
+            {
+                TableCell cell = new TableCell(GetDefaultParagraph($"{labels[i]}{values[i].ToString($"F{denominator}")}", new Thickness(3, 0, 3, 0)))
+                {
+                    TextAlignment = TextAlignment.Left
+                };
+                tableCells.Add(cell);
+            }
+
+            TableRow row = new TableRow();
+
+            int spacingCells = 0;
+            if (cellCount > values.Count() + 1)
+                spacingCells = (cellCount - (values.Count() + 1));
+
+            TableCell header = new TableCell(GetDefaultParagraph(title))
+            {
+                TextAlignment = TextAlignment.Left,
+                BorderThickness = new Thickness(2, 0, 2, 0),
+                BorderBrush = Brushes.DarkGray
+            };
+
+
+            row.Cells.Add(header);
+
+            for (int i = 0; i < tableCells.Count; i++)
+                row.Cells.Add(tableCells[i]);
+
+            // add spacing cells on right side
+            if (spacingCells > 0)
+                for (int i = 0; i < spacingCells; i++)
+                    row.Cells.Add(new TableCell());
+
+            return row;
+        }
+
+        public static TableRow GetTableRowLeftCenterTitle(string title, int cellCount)
+        {
+            TableRow row = new TableRow();
+
+            // set amount of spacing cells on the right
+            int spacingCells = 0;
+            if (cellCount > 2)
+                spacingCells = cellCount - 2;
+
+            // add header
+            TableCell header = new TableCell(GetDefaultHeader(18, title))
+            {
+                TextAlignment = TextAlignment.Center,
+                ColumnSpan = cellCount
+            };
+            row.Cells.Add(header);
+
+
+            // add spacing cells on right side
+            if (spacingCells > 0)
+                for (int i = 0; i < spacingCells; i++)
+                    row.Cells.Add(new TableCell());
+
+            return row;
+        }
+
+
+        public static TableRow GetTableRowLeft(string title, string value, int cellCount)
+        {
+            return GetTableRowLeft(title, new string[] { value }, cellCount);
+        }
+
+
+        public static TableRow GetTableRowLeft(string title, string[] values, int cellCount)
+        {
+            if (values.Length == 0)
+                throw new ArgumentException("Provide at least 1 value.");
+
+            TableRow row = new TableRow();
+
+            // set amount of spacing cells on the right
+            int spacingCells = 0;
+            if (cellCount > values.Count() + 1)
+                spacingCells = (cellCount - (values.Count() + 1));
+
+            // add header
+            TableCell header = new TableCell(GetDefaultParagraph(title))
+            {
+                TextAlignment = TextAlignment.Left,
+                BorderThickness = new Thickness(2, 0, 2, 0),
+                BorderBrush = Brushes.DarkGray
+            };
+            row.Cells.Add(header);
+
+
+            // add values 
+            for (int i = 0; i != values.Length; i++)
+                row.Cells.Add(new TableCell(GetDefaultParagraph(values[i], new Thickness(3, 0, 3, 0))) { TextAlignment = TextAlignment.Left, Padding = new Thickness(0) });
+
+            // add spacing cells on right side
+            if (spacingCells > 0)
+                for (int i = 0; i < spacingCells; i++)
+                    row.Cells.Add(new TableCell());
+
+            return row;
+        }
+
 
         public static TableRow GetTableRowCompare(string value1, string title, string value2)
         {
