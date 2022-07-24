@@ -11,10 +11,10 @@ namespace ACCManager.LiveryParser
     {
         public class Root
         {
-            public int baseRoughness { get; set; }
-            public int clearCoat { get; set; }
-            public int clearCoatRoughness { get; set; }
-            public int metallic { get; set; }
+            public int BaseRoughness { get; set; }
+            public int ClearCoat { get; set; }
+            public int ClearCoatRoughness { get; set; }
+            public int Metallic { get; set; }
         }
     }
 }
