@@ -45,6 +45,7 @@ namespace ACCManager.Controls
             TitleBar.Instance.SetAppTitle("Dev");
             return;
 #endif
+#pragma warning disable CS0162 // Unreachable code detected
             try
             {
                 GitHubClient client = new GitHubClient(new ProductHeaderValue("ACC-Manager"), new Uri("https://github.com/RiddleTime/ACC-Manager.git"));
@@ -87,6 +88,7 @@ namespace ACCManager.Controls
             catch (Exception)
             {
             }
+#pragma warning restore CS0162 // Unreachable code detected
         }
 
         private long VersionToLong(Version VersionInfo)
