@@ -237,7 +237,9 @@ namespace ACCManager.Controls.Setup
             //// Tyres Section
             Section tyresSection = new Section();
             TableRowGroup rgTyres = new TableRowGroup();
-            rgTyres.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), DocUtil.GetDefaultHeader("Tyres Setup"), DocUtil.GetDefaultParagraph(), cells));
+            Paragraph tyresHeader = DocUtil.GetDefaultHeader("Tyres Setup");
+            tyresHeader.FontStyle = FontStyles.Italic;
+            rgTyres.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), tyresHeader, DocUtil.GetDefaultParagraph(), cells));
             rgTyres.Rows.Add(DocUtil.GetTableRowCompare($"{compound1}", "Compound", $"{compound2}", cells));
             rgTyres.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, new double[] { frontLeftPressure1, frontRightPressure1, rearLeftPressure1, rearRightPressure1 }, "Pressures(psi)", new double[] { frontLeftPressure2, frontRightPressure2, rearLeftPressure2, rearRightPressure2 }, cells, 1));
             rgTyres.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, new double[] { frontLeftToe1, frontRightToe1, rearLeftToe1, rearRightToe1 }, "Toe(°)", new double[] { frontLeftToe2, frontRightToe2, rearLeftToe2, rearRightToe2 }, cells, 2));
@@ -253,7 +255,9 @@ namespace ACCManager.Controls.Setup
             //// Mechanical Grip Section
             Section gripSection = new Section();
             TableRowGroup rgGrip = new TableRowGroup();
-            rgGrip.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), DocUtil.GetDefaultHeader("Mechanical Grip"), DocUtil.GetDefaultParagraph(), cells));
+            Paragraph mechanicalHeader = DocUtil.GetDefaultHeader("Mechanical Grip");
+            mechanicalHeader.FontStyle = FontStyles.Italic;
+            rgGrip.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), mechanicalHeader, DocUtil.GetDefaultParagraph(), cells));
             rgGrip.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, new double[] { wheelRateFrontLeft1, wheelRateFrontRight1, wheelRateRearLeft1, wheelRateRearRight1 }, "Wheelrates(Nm)", new double[] { wheelRateFrontLeft2, wheelRateFrontRight2, wheelRateRearLeft2, wheelRateRearRight2 }, cells, 0));
             rgGrip.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, new double[] { bumpStopRateFrontLeft1, bumpStopRateFrontRight1, bumpStopRateRearLeft1, bumpStopRateRearRight1 }, "Bumpstop Rate(Nm)", new double[] { bumpStopRateFrontLeft2, bumpStopRateFrontRight2, bumpStopRateRearLeft2, bumpStopRateRearRight2 }, cells, 0));
             rgGrip.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, new double[] { bumpStopRangeFrontLeft1, bumpStopRangeFrontRight1, bumpStopRangeRearLeft1, bumpStopRangeRearRight1 }, "Bumpstop Range", new double[] { bumpStopRangeFrontLeft2, bumpStopRangeFrontRight2, bumpStopRangeRearLeft2, bumpStopRangeRearRight2 }, cells, 0));
@@ -274,7 +278,9 @@ namespace ACCManager.Controls.Setup
             //// Dampers Section
             Section dampersSection = new Section();
             TableRowGroup rgDampers = new TableRowGroup();
-            rgDampers.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), DocUtil.GetDefaultHeader("Dampers"), DocUtil.GetDefaultParagraph(), cells));
+            Paragraph dampersHeader = DocUtil.GetDefaultHeader("Dampers");
+            dampersHeader.FontStyle = FontStyles.Italic;
+            rgDampers.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), dampersHeader, DocUtil.GetDefaultParagraph(), cells));
             rgDampers.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, new double[] { bumpSlowFrontLeft1, bumpSlowFrontRight1, bumpSlowRearLeft1, bumpSlowRearRight1 }, "Bump Slow", new double[] { bumpSlowFrontLeft2, bumpSlowFrontRight2, bumpSlowRearLeft2, bumpSlowRearRight2 }, cells));
             rgDampers.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, new double[] { bumpFastFrontLeft1, bumpFastFrontRight1, bumpFastRearLeft1, bumpFastRearRight1 }, "Bump Fast", new double[] { bumpFastFrontLeft2, bumpFastFrontRight2, bumpFastRearLeft2, bumpFastRearRight2 }, cells));
             rgDampers.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, new double[] { reboundSlowFrontLeft1, reboundSlowFrontRight1, reboundSlowRearLeft1, reboundSlowRearRight1 }, "Rebound Slow", new double[] { reboundSlowFrontLeft2, reboundSlowFrontRight2, reboundSlowRearLeft2, reboundSlowRearRight2 }, cells));
@@ -290,7 +296,9 @@ namespace ACCManager.Controls.Setup
             //// Aero
             Section aeroBalanceSection = new Section();
             TableRowGroup rgAero = new TableRowGroup();
-            rgAero.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), DocUtil.GetDefaultHeader("Aero Balance"), DocUtil.GetDefaultParagraph(), cells));
+            Paragraph aeroHeader = DocUtil.GetDefaultHeader("Aero Balance");
+            aeroHeader.FontStyle = FontStyles.Italic;
+            rgAero.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), aeroHeader, DocUtil.GetDefaultParagraph(), cells));
             rgAero.Rows.Add(DocUtil.GetTableRowCompareWithLabels(frontOrRearLabels, new double[] { rideHeightFront1, rideHeightRear1 }, "Ride height(mm)", new double[] { rideHeightFront2, rideHeightRear2 }, cells));
             rgAero.Rows.Add(DocUtil.GetTableRowCompare(splitter1, "Splitter", splitter2, cells));
             rgAero.Rows.Add(DocUtil.GetTableRowCompare(rearWing1, "Rear Wing", rearWing2, cells));
@@ -305,7 +313,9 @@ namespace ACCManager.Controls.Setup
             //// Electronics
             Section electronicsSection = new Section();
             TableRowGroup rgElectro = new TableRowGroup();
-            rgElectro.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), DocUtil.GetDefaultHeader("Electronics"), DocUtil.GetDefaultParagraph(), cells));
+            Paragraph electroHeader = DocUtil.GetDefaultHeader("Electronics");
+            electroHeader.FontStyle = FontStyles.Italic;
+            rgElectro.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), electroHeader, DocUtil.GetDefaultParagraph(), cells));
             rgElectro.Rows.Add(DocUtil.GetTableRowCompare(setup1.BasicSetup.Electronics.TC1, "TC 1", setup2.BasicSetup.Electronics.TC1, cells));
             rgElectro.Rows.Add(DocUtil.GetTableRowCompare(setup1.BasicSetup.Electronics.TC2, "TC 2", setup2.BasicSetup.Electronics.TC2, cells));
             rgElectro.Rows.Add(DocUtil.GetTableRowCompare(setup1.BasicSetup.Electronics.Abs, "ABS", setup2.BasicSetup.Electronics.Abs, cells));
