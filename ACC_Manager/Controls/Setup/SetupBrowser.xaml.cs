@@ -359,7 +359,7 @@ namespace ACCManager.Controls
             {
                 FileInfo file = (FileInfo)button.DataContext;
 
-                SetupImporter.Instance.Open(file.FullName);
+                SetupImporter.Instance.Open(file.FullName, true);
 
                 (button.Parent as ContextMenu).IsOpen = false;
             }

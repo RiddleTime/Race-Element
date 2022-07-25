@@ -24,6 +24,8 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
             table.Columns.Add(columnValues);
 
             table.Margin = new Thickness(0);
+            table.CellSpacing = 0;
+            table.LineStackingStrategy = LineStackingStrategy.MaxHeight;
             return table;
         }
 
@@ -209,7 +211,9 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
             {
                 TableCell cell = new TableCell(GetDefaultParagraph($"{labels[i]}{values[i].ToString($"F{denominator}")}", new Thickness(3, 0, 3, 0)))
                 {
-                    TextAlignment = TextAlignment.Left
+                    TextAlignment = TextAlignment.Left,
+                    BorderThickness = new Thickness(0),
+                    Padding = new Thickness(0),
                 };
                 tableCells.Add(cell);
             }
@@ -220,10 +224,11 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
             if (cellCount > values.Count() + 1)
                 spacingCells = (cellCount - (values.Count() + 1));
 
-            TableCell header = new TableCell(GetDefaultParagraph(title))
+            TableCell header = new TableCell(GetDefaultParagraph(title, new Thickness(0)))
             {
                 TextAlignment = TextAlignment.Left,
                 BorderThickness = new Thickness(2, 0, 2, 0),
+                Padding = new Thickness(3, 0, 0, 0),
                 BorderBrush = Brushes.DarkGray
             };
 
@@ -231,48 +236,74 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
             row.Cells.Add(header);
 
             for (int i = 0; i < tableCells.Count; i++)
+            {
+                if (i == 0)
+                    tableCells[i].Padding = new Thickness(3, 0, 0, 0);
                 row.Cells.Add(tableCells[i]);
-
-            // add spacing cells on right side
-            if (spacingCells > 0)
-                for (int i = 0; i < spacingCells; i++)
-                    row.Cells.Add(new TableCell());
+            }
 
             return row;
         }
 
-        public static TableRow GetTableRowLeftCenterTitle(string title, int cellCount)
+        public static TableRow GetTableRowLeftTitle(string title, int cellCount)
         {
             TableRow row = new TableRow();
 
-            // set amount of spacing cells on the right
-            int spacingCells = 0;
-            if (cellCount > 2)
-                spacingCells = cellCount - 2;
-
             // add header
-            TableCell header = new TableCell(GetDefaultHeader(18, title))
+            Paragraph pHeader = GetDefaultHeader(18, title);
+            pHeader.TextAlignment = TextAlignment.Left;
+            pHeader.Margin = new Thickness(3, 5, 0, 3);
+            pHeader.FontStyle = FontStyles.Italic;
+            TableCell header = new TableCell(pHeader)
             {
-                TextAlignment = TextAlignment.Center,
-                ColumnSpan = cellCount
+                TextAlignment = TextAlignment.Left,
+                ColumnSpan = cellCount,
+                Padding = new Thickness(0),
             };
             row.Cells.Add(header);
-
-
-            // add spacing cells on right side
-            if (spacingCells > 0)
-                for (int i = 0; i < spacingCells; i++)
-                    row.Cells.Add(new TableCell());
 
             return row;
         }
 
 
-        public static TableRow GetTableRowLeft(string title, string value, int cellCount)
+        public static TableRow GetTableRowLeft(string title, string value, int cellCount, bool fullValueColumnSpan = false)
         {
-            return GetTableRowLeft(title, new string[] { value }, cellCount);
-        }
+            if (!fullValueColumnSpan)
+            {
+                return GetTableRowLeft(title, new string[] { value }, cellCount);
+            }
+            else
+            {
+                TableRow row = new TableRow();
 
+                // set amount of spacing cells on the right
+                int spacingCells = 0;
+                if (cellCount > 2)
+                    spacingCells = (cellCount - 1);
+
+                // add header
+                TableCell header = new TableCell(GetDefaultParagraph(title))
+                {
+                    TextAlignment = TextAlignment.Left,
+                    BorderThickness = new Thickness(2, 0, 2, 0),
+                    Padding = new Thickness(0),
+                    BorderBrush = Brushes.DarkGray
+                };
+                row.Cells.Add(header);
+
+                TableCell valueCell = new TableCell(GetDefaultParagraph(value, new Thickness(3, 0, 3, 0)))
+                {
+                    TextAlignment = TextAlignment.Left,
+                    Padding = new Thickness(3, 0, 0, 0),
+                };
+                if (spacingCells > 0)
+                    valueCell.ColumnSpan = spacingCells;
+                row.Cells.Add(valueCell);
+
+                return row;
+
+            }
+        }
 
         public static TableRow GetTableRowLeft(string title, string[] values, int cellCount)
         {
@@ -291,6 +322,7 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
             {
                 TextAlignment = TextAlignment.Left,
                 BorderThickness = new Thickness(2, 0, 2, 0),
+                Padding = new Thickness(0),
                 BorderBrush = Brushes.DarkGray
             };
             row.Cells.Add(header);
@@ -298,12 +330,16 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
 
             // add values 
             for (int i = 0; i != values.Length; i++)
-                row.Cells.Add(new TableCell(GetDefaultParagraph(values[i], new Thickness(3, 0, 3, 0))) { TextAlignment = TextAlignment.Left, Padding = new Thickness(0) });
+                row.Cells.Add(new TableCell(GetDefaultParagraph(values[i], new Thickness(3, 0, 3, 0)))
+                {
+                    TextAlignment = TextAlignment.Left,
+                    Padding = new Thickness(0),
+                    BorderThickness = new Thickness(0)
+                });
 
-            // add spacing cells on right side
             if (spacingCells > 0)
                 for (int i = 0; i < spacingCells; i++)
-                    row.Cells.Add(new TableCell());
+                    row.Cells.Add(new TableCell() { Padding = new Thickness(0), BorderThickness = new Thickness(0) });
 
             return row;
         }
@@ -403,7 +439,7 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
             content.FontWeight = FontWeights.Medium;
             content.Foreground = Brushes.White;
             content.TextAlignment = TextAlignment.Center;
-            content.Margin = new Thickness(0, 0, 0, 2);
+            content.Margin = new Thickness(0, 0, 0, 0);
             return content;
         }
 
