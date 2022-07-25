@@ -46,5 +46,5 @@ using System.Windows;
 //      Minor Version
 //      Build Number
 //      Revision
-[assembly: AssemblyVersion("0.0.8.0")]
-[assembly: AssemblyFileVersion("0.0.8.0")]
+[assembly: AssemblyVersion("0.0.8.1")]
+[assembly: AssemblyFileVersion("0.0.8.1")]
