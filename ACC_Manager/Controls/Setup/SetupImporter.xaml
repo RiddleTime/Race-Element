@@ -37,7 +37,7 @@
             </StackPanel>
 
             <materialDesign:Card Grid.Column="1" Margin="3">
-                <FlowDocumentScrollViewer Focusable="False" Cursor="Arrow" IsHitTestVisible="False">
+                <FlowDocumentScrollViewer Focusable="False" Cursor="Arrow" IsHitTestVisible="False"  VerticalScrollBarVisibility="Hidden">
                     <FlowDocument  x:Name="flowDocument" Focusable="False" Cursor="Arrow" 
                            Background="{DynamicResource MaterialDesignPaper}"
                            FontFamily="{StaticResource RobotoMedium}" 
