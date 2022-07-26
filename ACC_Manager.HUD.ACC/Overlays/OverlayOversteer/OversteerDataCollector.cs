@@ -25,7 +25,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
                 float slipRatioFront = (pagePhysics.WheelSlip[(int)Wheel.FrontLeft] + pagePhysics.WheelSlip[(int)Wheel.FrontRight]) / 2;
                 float slipRatioRear = (pagePhysics.WheelSlip[(int)Wheel.RearLeft] + pagePhysics.WheelSlip[(int)Wheel.RearRight]) / 2;
 
-                float max = 25;
+                float max = 10;
                 float diff = slipRatioRear - slipRatioFront;
                 diff += max / 2;
                 diff.Clip(0, max);
