@@ -224,7 +224,7 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
             if (cellCount > values.Count() + 1)
                 spacingCells = (cellCount - (values.Count() + 1));
 
-            TableCell header = new TableCell(GetDefaultParagraph(title, new Thickness(0)))
+            TableCell header = new TableCell(GetDefaultParagraph(title, new Thickness(3, 0, 3, 0)))
             {
                 TextAlignment = TextAlignment.Left,
                 BorderThickness = new Thickness(2, 0, 2, 0),
