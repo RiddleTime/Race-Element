@@ -16,6 +16,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
 
         private bool IsCollecting = false;
         public int TraceCount = 300;
+        public int Herz = 30;
         public int MaxSlipAngle { get; set; }
 
         public LinkedList<float> OversteerData = new LinkedList<float>();
@@ -78,7 +79,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
             {
                 while (IsCollecting)
                 {
-                    Thread.Sleep(1000 / 30);
+                    Thread.Sleep(1000 / Herz);
                     if (_overlay != null && _overlay.pagePhysics != null)
                     {
                         Collect(_overlay.pagePhysics);
