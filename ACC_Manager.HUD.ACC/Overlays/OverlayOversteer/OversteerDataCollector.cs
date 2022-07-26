@@ -1,4 +1,5 @@
 ﻿using ACC_Manager.Util.SystemExtensions;
+using ACCManager.HUD.Overlay.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,27 +16,52 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
 
         private bool IsCollecting = false;
         public int TraceCount = 300;
+        public int MaxSlipAngle { get; set; }
 
-        public LinkedList<int> Oversteer = new LinkedList<int>();
+        public LinkedList<float> OversteerData = new LinkedList<float>();
+        public LinkedList<float> UndersteerData = new LinkedList<float>();
+
+        private AbstractOverlay _overlay;
+
+        public OversteerDataCollector(AbstractOverlay overlay)
+        {
+            _overlay = overlay;
+        }
 
         public void Collect(SPageFilePhysics pagePhysics)
         {
-            lock (Oversteer)
+            float slipRatioFront = (pagePhysics.WheelSlip[(int)Wheel.FrontLeft] + pagePhysics.WheelSlip[(int)Wheel.FrontRight]) / 2;
+            float slipRatioRear = (pagePhysics.WheelSlip[(int)Wheel.RearLeft] + pagePhysics.WheelSlip[(int)Wheel.RearRight]) / 2;
+
+            // understeer
+            if (slipRatioFront > slipRatioRear)
             {
-                float slipRatioFront = (pagePhysics.WheelSlip[(int)Wheel.FrontLeft] + pagePhysics.WheelSlip[(int)Wheel.FrontRight]) / 2;
-                float slipRatioRear = (pagePhysics.WheelSlip[(int)Wheel.RearLeft] + pagePhysics.WheelSlip[(int)Wheel.RearRight]) / 2;
-
-                float max = 10;
-                float diff = slipRatioRear - slipRatioFront;
-                diff += max / 2;
-                diff.Clip(0, max);
-
-                float normalized = diff * 100 / max;
-
-                Oversteer.AddFirst((int)(normalized));
-                if (Oversteer.Count > TraceCount)
-                    Oversteer.RemoveLast();
+                float diff = slipRatioFront - slipRatioRear;
+                diff.ClipMax(MaxSlipAngle);
+                lock (UndersteerData)
+                    UndersteerData.AddFirst(diff);
+                lock (OversteerData)
+                    OversteerData.AddFirst(0);
             }
+
+            // oversteer
+            if (slipRatioRear > slipRatioFront)
+            {
+                float diff = slipRatioRear - slipRatioFront;
+                diff.ClipMax(MaxSlipAngle);
+                lock (OversteerData)
+                    OversteerData.AddFirst(diff);
+                lock (UndersteerData)
+                    UndersteerData.AddFirst(0);
+            }
+
+            lock (OversteerData)
+                if (OversteerData.Count > TraceCount)
+                    OversteerData.RemoveLast();
+
+            lock (UndersteerData)
+                if (UndersteerData.Count > TraceCount)
+                    UndersteerData.RemoveLast();
         }
 
         public void Start()
@@ -44,7 +70,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
 
             for (int i = 0; i < TraceCount; i++)
             {
-                Oversteer.AddLast(0);
+                OversteerData.AddLast(0);
+                UndersteerData.AddLast(0);
             }
 
             new Thread(x =>
@@ -52,10 +79,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
                 while (IsCollecting)
                 {
                     Thread.Sleep(1000 / 30);
-                    if (OversteerOverlay.Instance != null && OversteerOverlay.Instance.pagePhysics != null)
+                    if (_overlay != null && _overlay.pagePhysics != null)
                     {
-                        Collect(OversteerOverlay.Instance.pagePhysics);
-                        OversteerOverlay.Instance.RequestRedraw();
+                        Collect(_overlay.pagePhysics);
+                        _overlay.RequestRedraw();
                     }
                 }
             }).Start();

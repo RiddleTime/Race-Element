@@ -34,9 +34,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
             });
         }
 
-        private int GetRelativeNodeY(int value)
+        private int GetRelativeNodeY(float value)
         {
-            double range = 100 - 0;
+            double range = _collector.MaxSlipAngle - 0;
             double percentage = 1d - (value - 0) / range;
             return (int)(percentage * (_height - _height / 5))
                     + _height / 10;
@@ -50,13 +50,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
             if (_cachedBackground != null)
                 _cachedBackground.Draw(g, _x, _y, _width, _height);
 
-            DrawData(g, _collector.Oversteer, Color.White);
+            DrawData(g, _collector.OversteerData, Color.Red);
+            DrawData(g, _collector.UndersteerData, Color.Blue);
 
 
             g.SmoothingMode = previous;
         }
 
-        private void DrawData(Graphics g, LinkedList<int> Data, Color color)
+        private void DrawData(Graphics g, LinkedList<float> Data, Color color)
         {
             if (Data.Count > 0)
             {
