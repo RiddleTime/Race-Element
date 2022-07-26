@@ -21,7 +21,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
         private readonly SlipConfiguration _config = new SlipConfiguration();
         private class SlipConfiguration : OverlayConfiguration
         {
-            [IntRange(0, 10, 1)]
+            [IntRange(1, 90, 1)]
             public int MaxSlipAngle { get; set; } = 10;
 
             public SlipConfiguration()
