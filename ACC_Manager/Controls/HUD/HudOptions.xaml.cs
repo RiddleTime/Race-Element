@@ -553,10 +553,11 @@ namespace ACCManager.Controls
                         int sliderValue = int.Parse(configField.Value.ToString());
                         sliderValue.Clip(min, max);
 
+                        int maxValueChars = $"{max}".Length;
 
                         Label sliderLabel = new Label
                         {
-                            Content = $"{intLabel}: {sliderValue:F0}",
+                            Content = $"{intLabel}: {sliderValue.ToString("F0").FillStart(maxValueChars, ' ')}",
                             VerticalAlignment = VerticalAlignment.Center,
                             VerticalContentAlignment = VerticalAlignment.Center,
                         };
@@ -577,7 +578,7 @@ namespace ACCManager.Controls
                         };
                         slider.ValueChanged += (sender, args) =>
                         {
-                            sliderLabel.Content = $"{intLabel}: {slider.Value:F0}";
+                            sliderLabel.Content = $"{intLabel}: {slider.Value.ToString("F0").FillStart(maxValueChars, ' ')}";
                             configField.Value = (int)slider.Value;
                             configFields.RemoveAt(configFields.IndexOf(configField));
                             configFields.Add(configField);
