@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
 {
     [Overlay(Name = "Oversteer Trace", Version = 1.00,
-        Description = "Shows a live history of oversteer in red or understeer in blue.", OverlayType = OverlayType.Release)]
+        Description = "Live graph of oversteer in red and understeer in blue.", OverlayType = OverlayType.Release)]
     internal sealed class OversteerTraceOverlay : AbstractOverlay
     {
         private readonly OversteerTraceConfiguration _config = new OversteerTraceConfiguration();
