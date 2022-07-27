@@ -376,10 +376,14 @@ namespace ACCManager.Controls
 
                 TextBlock listViewText = new TextBlock() { Text = x.Key, Style = Resources["MaterialDesignButtonTextBlock"] as Style, };
 
+                double marginTopBottom = 6.5d;
+
                 ListViewItem listViewItem = new ListViewItem()
                 {
                     Content = listViewText,
-                    DataContext = x
+                    DataContext = x,
+                    HorizontalContentAlignment = HorizontalAlignment.Center,
+                    Padding = new Thickness(0, marginTopBottom, 0, marginTopBottom),
                 };
                 if (tempOverlaySettings != null)
                     if (tempOverlaySettings.Enabled)

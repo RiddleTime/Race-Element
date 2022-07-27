@@ -65,19 +65,34 @@ namespace ACC_Manager.Util
 
         public void SaveJson(IGenericJson genericJson)
         {
-            string jsonString = JsonConvert.SerializeObject(genericJson, Formatting.Indented);
+            try
+            {
+                string jsonString = JsonConvert.SerializeObject(genericJson, Formatting.Indented);
 
-            if (!SettingsFile.Exists)
-                if (!Directory.Exists(Path))
-                    Directory.CreateDirectory(Path);
+                if (!SettingsFile.Exists)
+                    if (!Directory.Exists(Path))
+                        Directory.CreateDirectory(Path);
 
-            File.WriteAllText(Path + "\\" + FileName, jsonString);
+
+                File.WriteAllText(Path + "\\" + FileName, jsonString);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
         }
 
         public void Delete()
         {
-            if (SettingsFile.Exists)
-                SettingsFile.Delete();
+            try
+            {
+                if (SettingsFile.Exists)
+                    SettingsFile.Delete();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
         }
     }
 }
