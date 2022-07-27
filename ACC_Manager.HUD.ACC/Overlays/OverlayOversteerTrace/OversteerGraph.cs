@@ -45,13 +45,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
         public void Draw(Graphics g)
         {
             SmoothingMode previous = g.SmoothingMode;
-            g.SmoothingMode = SmoothingMode.HighQuality;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.CompositingQuality = CompositingQuality.GammaCorrected;
 
             if (_cachedBackground != null)
                 _cachedBackground.Draw(g, _x, _y, _width, _height);
 
-            DrawData(g, _collector.OversteerData, Color.Red);
-            DrawData(g, _collector.UndersteerData, Color.Blue);
+            DrawData(g, _collector.OversteerData, Color.OrangeRed);
+            DrawData(g, _collector.UndersteerData, Color.DeepSkyBlue);
 
 
             g.SmoothingMode = previous;
@@ -83,7 +84,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
                 {
                     GraphicsPath path = new GraphicsPath();
                     path.AddLines(points.ToArray());
-                    g.DrawPath(new Pen(color, 2f), path);
+                    g.DrawPath(new Pen(color, 1f), path);
                 }
             }
         }

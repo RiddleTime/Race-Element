@@ -19,23 +19,21 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
         {
             [ToolTip("Sets the maximum amount of slip angle displayed.")]
             [IntRange(1, 90, 1)]
-            public int MaxSlipAngle { get; set; } = 10;
+            public int MaxSlipAngle { get; set; } = 5;
 
             [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
             [IntRange(150, 800, 10)]
             public int DataPoints { get; set; } = 300;
 
             [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
-            [IntRange(25, 70, 5)]
-            internal int Herz { get; set; } = 50;
+            [IntRange(10, 70, 5)]
+            internal int Herz { get; set; } = 40;
 
             public OversteerTraceConfiguration()
             {
                 this.AllowRescale = true;
             }
         }
-
-        internal static OversteerTraceOverlay Instance;
 
         private OversteerDataCollector _collector;
         private OversteerGraph _graph;
@@ -62,14 +60,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
             _collector.Start();
 
             _graph = new OversteerGraph(0, 0, _originalWidth - 1, _originalHeight - 1, _collector);
-            Instance = this;
         }
 
         public sealed override void BeforeStop()
         {
             _collector.Stop();
             _graph.Dispose();
-            Instance = null;
         }
 
         public sealed override void Render(Graphics g)

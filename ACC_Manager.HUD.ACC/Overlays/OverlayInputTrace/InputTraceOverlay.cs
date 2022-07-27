@@ -25,8 +25,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             internal int DataPoints { get; set; } = 300;
 
             [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
-            [IntRange(25, 70, 5)]
-            internal int Herz { get; set; } = 50;
+            [IntRange(10, 70, 5)]
+            internal int Herz { get; set; } = 30;
 
             public InputTraceConfig()
             {
