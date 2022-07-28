@@ -27,11 +27,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
     Description = "Shows race standings table for different car classes.", OverlayType = OverlayType.Debug)]
 #endif
 
-    public partial class StandingsOverlay : AbstractOverlay
+    public sealed class StandingsOverlay : AbstractOverlay
     {
         private StandingsConfiguration _config = new StandingsConfiguration();
 
-        private class StandingsConfiguration : OverlayConfiguration
+        private sealed class StandingsConfiguration : OverlayConfiguration
         {
             public StandingsConfiguration()
             {
@@ -89,7 +89,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             InitCarClassEntryLists();
         }
 
-        public override void BeforeStart()
+        public sealed override void BeforeStart()
         {
             this.RefreshRateHz = 1;
             RaceSessionTracker.Instance.OnACStatusChanged += StatusChanged;
@@ -98,7 +98,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             _currentAcStatus = pageGraphics.Status;
         }
 
-        public override void BeforeStop()
+        public sealed override void BeforeStop()
         {
             RaceSessionTracker.Instance.OnACStatusChanged -= StatusChanged;
             RaceSessionTracker.Instance.OnACSessionTypeChanged -= SessionTypeChanged;
@@ -143,7 +143,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             }
         }
 
-        public override void Render(Graphics g)
+        public sealed override void Render(Graphics g)
         {
 
             TextRenderingHint previousHint = g.TextRenderingHint;
@@ -156,7 +156,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
             List<KeyValuePair<int, CarData>> cars = EntryListTracker.Instance.Cars;
             if (cars.Count == 0) return;
-            
+
             DetermineDriversClass(cars);
             SplitEntryList(cars);
             SortAllEntryLists();
@@ -203,7 +203,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
                 return;
             }
 
-            int startIdx = (playersIndex - _config.PlacesAroundMyCar) < 0 ? 0 : (playersIndex+_config.PlacesAroundMyCar-_config.MulticlassRows);
+            int startIdx = (playersIndex - _config.PlacesAroundMyCar) < 0 ? 0 : (playersIndex + _config.PlacesAroundMyCar - _config.MulticlassRows);
             int endIdx = (playersIndex + _config.PlacesAroundMyCar + 1) > list.Count() ? list.Count() : (playersIndex + _config.PlacesAroundMyCar + 1);
 
             if (startIdx < _config.MulticlassRows) startIdx = _config.MulticlassRows;
@@ -480,7 +480,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
         }
 
-        public override bool ShouldRender()
+        public sealed override bool ShouldRender()
         {
             return DefaultShouldRender();
         }
@@ -602,7 +602,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
                 rowPosY += position.Height + _rowGab;
 
-                if (i == splitRowIndex-1) rowPosY += 10;
+                if (i == splitRowIndex - 1) rowPosY += 10;
 
             }
             Height = rowPosY;
