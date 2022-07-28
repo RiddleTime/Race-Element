@@ -199,7 +199,7 @@ namespace ACCManager.Controls
             tempAbstractOverlay.Dispose();
 
             OverlayAttribute overlayAttribute = GetOverlayAttribute(type);
-            GeneratePreview(overlayAttribute.Name);
+            GeneratePreview(overlayAttribute.Name, true);
 
             StackPanel configStacker = GetConfigStacker(type, Orientation.Vertical);
 
@@ -415,8 +415,16 @@ namespace ACCManager.Controls
             }
         }
 
-        private void GeneratePreview(string overlayName)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="overlayName"></param>
+        /// <param name="cached">Chooses to use a cached version if there is one</param>
+        private void GeneratePreview(string overlayName, bool cached = false)
         {
+            if (cached && _cachedPreviews.ContainsKey(overlayName))
+                return;
+
             OverlaysACC.AbstractOverlays.TryGetValue(overlayName, out Type overlayType);
 
             if (overlayType == null)
@@ -468,10 +476,7 @@ namespace ACCManager.Controls
 
                 overlay.BeforeStop();
             }
-            catch (Exception)
-            {
-
-            }
+            catch (Exception) { }
             finally
             {
                 overlay.Dispose();
