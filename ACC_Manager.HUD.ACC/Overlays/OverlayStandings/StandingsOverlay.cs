@@ -145,11 +145,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
         public sealed override void Render(Graphics g)
         {
-
-            TextRenderingHint previousHint = g.TextRenderingHint;
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
-
-            SmoothingMode previous = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
             if (!_currentAcStatus.Equals(AcStatus.AC_LIVE)) return;
@@ -189,10 +185,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
                 ost.Draw(g, height, kvp.Value, _config.MulticlassRows, _carClassToBrush[kvp.Key], kvp.Key.ToString() + " / " + _entryListForCarClass[kvp.Key].Count() + " Cars", _driverLastName, _config.ShowTimeDelta, _config.ShowInvalidLapIndicator);
                 height = ost.Height;
             }
-
-            g.TextRenderingHint = previousHint;
-            g.SmoothingMode = previous;
-
         }
 
         private void AddDriversRow(List<StandingsTableRow> standingsTableRows, List<KeyValuePair<int, CarData>> list)
