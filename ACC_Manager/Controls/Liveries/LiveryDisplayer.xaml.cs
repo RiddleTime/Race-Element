@@ -175,7 +175,7 @@ namespace ACCManager.Controls
                                     Width = 366,
                                 };
                                 imageGrid.Children.Add(imageControl);
-                                LoadPhoto(imageControl, _decalsStream, decalsFile.FullName);
+                                LoadPhoto(imageControl, decalsFile.FullName);
                             }
 
 
@@ -212,7 +212,7 @@ namespace ACCManager.Controls
                                 FileInfo sponsorsFile = sponsorFiles[0];
                                 System.Windows.Controls.Image imageControl = new System.Windows.Controls.Image() { Stretch = Stretch.Fill, Height = 366, Width = 366 };
                                 imageGrid.Children.Add(imageControl);
-                                LoadPhoto(imageControl, _sponsorsStream, sponsorsFile.FullName);
+                                LoadPhoto(imageControl, sponsorsFile.FullName);
                             }
 
 
@@ -271,12 +271,12 @@ namespace ACCManager.Controls
             });
         }
 
-        private void LoadPhoto(System.Windows.Controls.Image imageControl, FileStream stream, string path)
+        private void LoadPhoto(System.Windows.Controls.Image imageControl, string path)
         {
             ThreadPool.QueueUserWorkItem(x =>
             {
                 BitmapImage bmi = new BitmapImage();
-                using (stream = new FileStream(path, FileMode.Open))
+                using (var stream = new FileStream(path, FileMode.Open))
                 {
                     bmi.BeginInit();
                     bmi.CacheOption = BitmapCacheOption.OnLoad;
@@ -296,9 +296,6 @@ namespace ACCManager.Controls
                 GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
             });
         }
-
-        private FileStream _sponsorsStream;
-        private FileStream _decalsStream;
 
         private Label GetInfoLabel(string text, HorizontalAlignment allignmment = HorizontalAlignment.Left, int size = 13, string toolTip = "")
         {

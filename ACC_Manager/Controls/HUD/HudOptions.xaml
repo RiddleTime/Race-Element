@@ -72,7 +72,7 @@
                             <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" General"></TextBlock>
                         </Grid>
                     </TabItem.Header>
-                    <ListView Grid.Column="0" x:Name="listOverlays" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="0,3,0,0"/>
+                    <ListView Grid.Column="0" x:Name="listOverlays" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="0,3,0,0" Cursor="Hand"/>
                 </TabItem>
                 <TabItem  x:Name="tabItemDebugOverlays">
                     <TabItem.Header>
@@ -92,7 +92,7 @@
                             <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" Debug"></TextBlock>
                         </Grid>
                     </TabItem.Header>
-                    <ListView Grid.Column="0" x:Name="listDebugOverlays" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="0,3,0,0" />
+                    <ListView Grid.Column="0" x:Name="listDebugOverlays" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="0,3,0,0" Cursor="Hand"/>
                 </TabItem>
             </TabControl>
 

@@ -90,7 +90,7 @@ namespace ACCManager.Controls
             }
         }
 
-        public void Open(string setupFile)
+        public void Open(string setupFile, bool showTrack = false)
         {
             FileInfo file = new FileInfo(setupFile);
             if (!file.Exists)
@@ -111,7 +111,7 @@ namespace ACCManager.Controls
             BuildTrackList();
             this.textBlockSetupName.Text = $"{modelName} - {file.Name}";
 
-            _renderer.LogSetup(ref this.flowDocument, setupFile, false);
+            _renderer.LogSetup(ref this.flowDocument, setupFile, showTrack);
 
             this.Visibility = Visibility.Visible;
             SetupsTab.Instance.tabControl.IsEnabled = false;

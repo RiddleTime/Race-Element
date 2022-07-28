@@ -334,10 +334,35 @@ namespace ACCManager.Controls
 
             contextMenu.Items.Add(addToCompare1);
             contextMenu.Items.Add(addToCompare2);
+
+            Button copyToOtherTrack = new Button()
+            {
+                Content = "Copy to other track",
+                CommandParameter = file,
+                Style = Resources["MaterialDesignRaisedButton"] as Style,
+                Margin = new Thickness(0),
+                Height = 30,
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            copyToOtherTrack.Click += CopyToOtherTrack_Click;
+            contextMenu.Items.Add(copyToOtherTrack);
+
             contextMenu.HorizontalOffset = 0;
             contextMenu.VerticalOffset = 0;
 
             return contextMenu;
+        }
+
+        private void CopyToOtherTrack_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                FileInfo file = (FileInfo)button.DataContext;
+
+                SetupImporter.Instance.Open(file.FullName, true);
+
+                (button.Parent as ContextMenu).IsOpen = false;
+            }
         }
 
         private void AddToCompare2_Click(object sender, RoutedEventArgs e)
