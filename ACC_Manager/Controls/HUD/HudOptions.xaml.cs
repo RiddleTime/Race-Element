@@ -107,6 +107,9 @@ namespace ACCManager.Controls
                         }
                     };
 
+                    listOverlays.MouseDoubleClick += (s, e) => { if (ToggleViewingOverlay()) e.Handled = true; };
+                    listDebugOverlays.MouseDoubleClick += (s, e) => { if (ToggleViewingOverlay()) e.Handled = true; };
+
                     gridRepositionToggler.MouseUp += (s, e) =>
                     {
                         this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
@@ -139,19 +142,26 @@ namespace ACCManager.Controls
         private DateTime _lastOverlayStart = DateTime.MinValue;
         private void HudOptions_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            // kind of stupid but it works.. gotta travel the generated tree in #BuildOverlayConfigPanel();
             if (e.Key == Key.Enter)
-                if (_lastOverlayStart.AddMilliseconds(200) < DateTime.Now)
-                    foreach (UIElement element in configStackPanel.Children)
-                        if (element is StackPanel panel)
-                            foreach (UIElement child in panel.Children)
-                                if (child is ToggleButton toggle)
-                                {
-                                    toggle.IsChecked = !toggle.IsChecked;
-                                    _lastOverlayStart = DateTime.Now;
-                                    e.Handled = true;
-                                    break;
-                                }
+                if (ToggleViewingOverlay())
+                    e.Handled = true;
+        }
+
+        private bool ToggleViewingOverlay()
+        {
+            // kind of stupid but it works.. gotta travel the generated tree in #BuildOverlayConfigPanel();
+
+            if (_lastOverlayStart.AddMilliseconds(200) < DateTime.Now)
+                foreach (UIElement element in configStackPanel.Children)
+                    if (element is StackPanel panel)
+                        foreach (UIElement child in panel.Children)
+                            if (child is ToggleButton toggle)
+                            {
+                                toggle.IsChecked = !toggle.IsChecked;
+                                _lastOverlayStart = DateTime.Now;
+                                return true;
+                            }
+            return false;
         }
 
         private void ListOverlays_SelectionChanged(object sender, SelectionChangedEventArgs e)

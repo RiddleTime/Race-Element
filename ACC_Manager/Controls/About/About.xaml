@@ -172,7 +172,7 @@
                                 <Bold><Italic>HUD</Italic></Bold>
                                 </TextBlock>
                                 <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
-                                - To (de)activate the displayed overlay: either type Enter or click the title or click the toggle button.<LineBreak/>
+                                - To (de)activate the displayed overlay: double click the overlay in the left side list or type Enter or click the title or click the toggle button.<LineBreak/>
                                 - <Bold>Ctrl + Home</Bold> toggles reposition mode.<LineBreak/>
                                 - Overlays will become visible as soon as the engine is running. <LineBreak/>
                                 - When the game is in Fullscreen mode, hit F11 twice to display the overlays.<LineBreak/>
