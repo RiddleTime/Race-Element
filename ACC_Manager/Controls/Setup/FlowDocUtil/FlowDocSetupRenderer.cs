@@ -220,7 +220,7 @@ namespace ACCManager.Controls.Setup
             TableRowGroup rgElectro = new TableRowGroup();
             rgElectro.Rows.Add(DocUtil.GetTableRowLeftTitle("Electronics", cells));
             rgElectro.Rows.Add(DocUtil.GetTableRowLeft("TC 1", setup.BasicSetup.Electronics.TC1, cells));
-            rgElectro.Rows.Add(DocUtil.GetTableRowLeft("TC ", setup.BasicSetup.Electronics.TC2, cells));
+            rgElectro.Rows.Add(DocUtil.GetTableRowLeft("TC 2", setup.BasicSetup.Electronics.TC2, cells));
             rgElectro.Rows.Add(DocUtil.GetTableRowLeft("ABS", setup.BasicSetup.Electronics.Abs, cells));
             rgElectro.Rows.Add(DocUtil.GetTableRowLeft("Engine map", setup.BasicSetup.Electronics.ECUMap + 1, cells));
             Table electroTable = DocUtil.GetLeftAllignedTable(headerWidthPercent, cells);
