@@ -29,6 +29,7 @@ namespace ACCManager
     public partial class MainWindow : Window
     {
         internal static MainWindow Instance { get; private set; }
+        private readonly UiSettings _uiSettings;
 
         public MainWindow()
         {
@@ -45,6 +46,8 @@ namespace ACCManager
             {
                 // LogWriter.WriteToLog("Rounded corners are not supported for this machine, using square corners for the main window.");
             }
+
+            _uiSettings = new UiSettings();
 
 
             this.Title = $"ACC Manager {GetAssemblyFileVersion()}";
@@ -69,18 +72,18 @@ namespace ACCManager
 
             tabControl.SelectionChanged += (s, se) =>
             {
-                UiSettingsJson tempSettings = UiSettings.LoadJson();
+                UiSettingsJson tempSettings = _uiSettings.LoadJson();
                 tempSettings.SelectedTabIndex = tabControl.SelectedIndex;
-                UiSettings.SaveJson(tempSettings);
+                _uiSettings.SaveJson(tempSettings);
             };
 
-            tabControl.SelectedIndex = UiSettings.LoadJson().SelectedTabIndex.Clip(0, tabControl.Items.Count - 1);
+            tabControl.SelectedIndex = _uiSettings.LoadJson().SelectedTabIndex.Clip(0, tabControl.Items.Count - 1);
 
-            UiSettingsJson uiSettings = UiSettings.LoadJson();
+            UiSettingsJson uiSettings = _uiSettings.LoadJson();
             this.Left = uiSettings.X.Clip(0, (int)SystemParameters.PrimaryScreenWidth);
             this.Top = uiSettings.Y.Clip(0, (int)SystemParameters.PrimaryScreenHeight);
 
-            UiSettings.SaveJson(uiSettings);
+            _uiSettings.SaveJson(uiSettings);
 
 
             Instance = this;
@@ -89,10 +92,10 @@ namespace ACCManager
 
         public void SaveLocation()
         {
-            UiSettingsJson uiSettings = UiSettings.LoadJson();
+            UiSettingsJson uiSettings = _uiSettings.LoadJson();
             uiSettings.X = (int)this.Left;
             uiSettings.Y = (int)this.Top;
-            UiSettings.SaveJson(uiSettings);
+            _uiSettings.SaveJson(uiSettings);
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
