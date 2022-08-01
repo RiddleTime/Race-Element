@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ACC_Manager.Util.Settings
 {
-    public class AccSettingsJson
+    public class AccSettingsJson 
     {
         public Guid UnlistedAccServer { get; set; }
 

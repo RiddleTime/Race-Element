@@ -23,6 +23,8 @@ namespace ACCManager.Controls
     /// </summary>
     public partial class Hardware : UserControl
     {
+
+        private readonly HardwareSettings _hardwareSettings;
         public Hardware()
         {
             InitializeComponent();
@@ -31,6 +33,7 @@ namespace ACCManager.Controls
 
             buttonCheckSteeringLockSupport.Click += ButtonCheckSteeringLockSupport_Click;
 
+            _hardwareSettings = new HardwareSettings();
             this.Loaded += (s, e) => LoadSettings();
         }
 
@@ -70,7 +73,7 @@ namespace ACCManager.Controls
         {
             try
             {
-                var hardwareSettings = HardwareSettings.LoadJson();
+                var hardwareSettings = _hardwareSettings.LoadJson();
 
                 toggleSteeringHardwareLock.IsChecked = hardwareSettings.UseHardwareSteeringLock;
             }
@@ -84,11 +87,11 @@ namespace ACCManager.Controls
         {
             try
             {
-                var hardwareSettings = HardwareSettings.LoadJson();
+                var hardwareSettings = _hardwareSettings.LoadJson();
 
                 hardwareSettings.UseHardwareSteeringLock = toggleSteeringHardwareLock.IsChecked.Value;
 
-                HardwareSettings.SaveJson(hardwareSettings);
+                _hardwareSettings.SaveJson(hardwareSettings);
             }
             catch (Exception e)
             {
