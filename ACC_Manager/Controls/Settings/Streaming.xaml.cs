@@ -30,9 +30,14 @@ namespace ACCManager.Controls
     /// </summary>
     public partial class Streaming : UserControl
     {
+        private readonly StreamSettings _streamSettings;
+
         public Streaming()
         {
             InitializeComponent();
+
+            _streamSettings = new StreamSettings();
+
             comboStreamSoftware.Items.Add("OBS");
             comboStreamSoftware.Items.Add("Streamlabs");
             comboStreamSoftware.SelectedIndex = 0;
@@ -70,7 +75,7 @@ namespace ACCManager.Controls
 
         private void TestConnection()
         {
-            var streamSettings = StreamSettings.LoadJson();
+            var streamSettings = _streamSettings.LoadJson();
             buttonTestConnnection.Content = "Testing Connection...";
             buttonTestConnnection.IsEnabled = false;
 
@@ -193,9 +198,9 @@ namespace ACCManager.Controls
 
         private void ToggleSetupHider()
         {
-            var streamingSettings = StreamSettings.LoadJson();
+            var streamingSettings = _streamSettings.LoadJson();
             streamingSettings.SetupHider = toggleSetupHider.IsChecked.Value;
-            StreamSettings.SaveJson(streamingSettings);
+            _streamSettings.SaveJson(streamingSettings);
 
             string status = streamingSettings.SetupHider ? "Enabled" : "Disabled";
             MainWindow.Instance.ClearSnackbar();
@@ -204,7 +209,7 @@ namespace ACCManager.Controls
 
         private void LoadSettings()
         {
-            var streamingSettings = StreamSettings.LoadJson();
+            var streamingSettings = _streamSettings.LoadJson();
 
             streamPassword.Password = streamingSettings.StreamingWebSocketPassword;
             streamServer.Text = streamingSettings.StreamingWebSocketIP;
@@ -216,7 +221,7 @@ namespace ACCManager.Controls
 
         private void SaveSettings()
         {
-            var streamingSettings = StreamSettings.LoadJson();
+            var streamingSettings = _streamSettings.LoadJson();
 
             streamingSettings.StreamingSoftware = comboStreamSoftware.SelectedItem.ToString();
             streamingSettings.StreamingWebSocketIP = streamServer.Text;
@@ -231,7 +236,7 @@ namespace ACCManager.Controls
                     }
             }
 
-            StreamSettings.SaveJson(streamingSettings);
+            _streamSettings.SaveJson(streamingSettings);
             MainWindow.Instance.ClearSnackbar();
             MainWindow.Instance.EnqueueSnackbarMessage("Saved Streaming settings.");
         }

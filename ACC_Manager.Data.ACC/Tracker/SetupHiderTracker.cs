@@ -35,11 +35,17 @@ namespace ACCManager.Data.ACC.Tracker
 
         private bool _toggle = true;
 
-        private SetupHiderTracker() { }
+        private readonly StreamSettings _streamSettings;
+
+        private SetupHiderTracker()
+        {
+            _streamSettings = new StreamSettings();
+        }
 
         public void StartTracker()
         {
-            var streamSettings = StreamSettings.LoadJson();
+
+            var streamSettings = _streamSettings.LoadJson();
             if (streamSettings.SetupHider)
             {
                 if (streamSettings.StreamingSoftware == "OBS")
@@ -80,7 +86,7 @@ namespace ACCManager.Data.ACC.Tracker
         {
             try
             {
-                var streamSettings = StreamSettings.LoadJson();
+                var streamSettings = _streamSettings.LoadJson();
 
                 if (streamSettings.StreamingSoftware == "OBS")
                     _obsWebSocket.Connect($"ws://{streamSettings.StreamingWebSocketIP}:{streamSettings.StreamingWebSocketPort}", streamSettings.StreamingWebSocketPassword);
