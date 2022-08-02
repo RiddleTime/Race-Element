@@ -11,7 +11,9 @@ namespace ACCManager.Controls
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
             {"0.0.8.2", "- HUD: Added Oversteer trace overlay. Displaying under and oversteer."+
-                        "\n- HUDs tab: Double click overlays on the list items to toggle overlays on and off."},
+                        "\n- HUDs tab: Double click overlays on the list items to toggle overlays on and off."+
+                        "\n- Setups tab: Add strategy section to viewer and comparison."+
+                        "\n- Internal memory usage enhancements."},
             {"0.0.8.1", "- Setups tab: Right click to copy a setup to another track."+
                         "\n- Setups Viewer: Reworked the table cell alignment."},
             {"0.0.8.0", "- HUD tab: New Design showing previews of overlays."+

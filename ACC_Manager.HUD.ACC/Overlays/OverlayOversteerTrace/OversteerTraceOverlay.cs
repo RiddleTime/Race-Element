@@ -19,7 +19,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
         {
             [ToolTip("Sets the maximum amount of slip angle displayed.")]
             [IntRange(1, 90, 1)]
-            public int MaxSlipAngle { get; set; } = 5;
+            public int MaxSlipAngle { get; set; } = 4;
 
             [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
             [IntRange(150, 800, 10)]
