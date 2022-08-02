@@ -1,11 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ACC_Manager.Util
 {
@@ -20,7 +16,7 @@ namespace ACC_Manager.Util
 
         public FileInfo SettingsFile => new FileInfo(Path + FileName);
 
-        public IGenericJson LoadJson()
+        public virtual IGenericJson LoadJson()
         {
             if (!SettingsFile.Exists)
                 return Default();
@@ -40,7 +36,7 @@ namespace ACC_Manager.Util
             return Default();
         }
 
-        public IGenericJson ReadJson(Stream stream)
+        private IGenericJson ReadJson(Stream stream)
         {
             string jsonString = string.Empty;
             try
@@ -63,7 +59,7 @@ namespace ACC_Manager.Util
             return Default();
         }
 
-        public void SaveJson(IGenericJson genericJson)
+        public virtual void SaveJson(IGenericJson genericJson)
         {
             try
             {

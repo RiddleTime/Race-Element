@@ -39,8 +39,6 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public int RefreshRateHz = 30;
 
-
-
         public SPageFilePhysics pagePhysics;
         public SPageFileGraphic pageGraphics;
         public SPageFileStatic pageStatic;
@@ -84,7 +82,7 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public bool DefaultShouldRender()
         {
-            if (HudSettings.DemoMode)
+            if (HudSettings.hudSettingsJson.DemoMode)
                 return true;
 
             bool shouldRender = true;

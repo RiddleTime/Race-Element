@@ -38,6 +38,9 @@ namespace ACCManager.Controls
         private static HudOptions _instance;
         public static HudOptions Instance { get { return _instance; } }
 
+        private readonly HudSettings _hudSettings;
+        private HudSettingsJson _hudSettingsJson;
+
         private readonly Dictionary<string, CachedPreview> _cachedPreviews = new Dictionary<string, CachedPreview>();
 
         private readonly object[] DefaultOverlayArgs = new object[] { new System.Drawing.Rectangle((int)SystemParameters.PrimaryScreenWidth / 2, (int)SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
@@ -52,6 +55,10 @@ namespace ACCManager.Controls
         public HudOptions()
         {
             InitializeComponent();
+
+            _hudSettings = new HudSettings();
+            _hudSettingsJson = _hudSettings.LoadJson();
+            
 
             listOverlays.SelectionChanged += ListOverlays_SelectionChanged;
             listDebugOverlays.SelectionChanged += ListDebugOverlays_SelectionChanged;
@@ -90,12 +97,14 @@ namespace ACCManager.Controls
 
                     checkBoxDemoMode.Checked += (s, e) =>
                     {
-                        HudSettings.DemoMode = true;
+                        _hudSettingsJson.DemoMode = true;
+                        _hudSettings.SaveJson(_hudSettingsJson);
                     };
 
                     checkBoxDemoMode.Unchecked += (s, e) =>
                     {
-                        HudSettings.DemoMode = false;
+                        _hudSettingsJson.DemoMode = false;
+                        _hudSettings.SaveJson(_hudSettingsJson);
                     };
 
                     this.PreviewMouseUp += (s, e) =>
@@ -125,6 +134,8 @@ namespace ACCManager.Controls
 
                     this.PreviewKeyDown += HudOptions_PreviewKeyDown;
 
+
+                    checkBoxDemoMode.IsChecked = _hudSettingsJson.DemoMode;
 #if DEBUG
                     checkBoxDemoMode.IsChecked = true;
 #endif
