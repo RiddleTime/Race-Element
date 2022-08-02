@@ -62,7 +62,7 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
             if (cells % 2 == 1)
                 throw new ArgumentException("Cells requires to be an even number");
 
-            Table table = new Table();
+            Table table = new Table() { Padding = new Thickness(0) };
 
             int cellWidth = (100 - headerWidth) / cells;
 
@@ -372,8 +372,18 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
 
             for (int i = 0; i < values1.Length; i++)
             {
-                TableCell cell1 = new TableCell(GetDefaultParagraph($"{labels[i]}{values1[i].ToString($"F{denominator}")}", new Thickness(0, 0, 5, 0))) { TextAlignment = TextAlignment.Right };
-                TableCell cell2 = new TableCell(GetDefaultParagraph($"{labels[i]}{values2[i].ToString($"F{denominator}")}", new Thickness(5, 0, 0, 0))) { TextAlignment = TextAlignment.Left };
+                TableCell cell1 = new TableCell(GetDefaultParagraph($"{labels[i]}{values1[i].ToString($"F{denominator}")}", new Thickness(0, 0, 5, 0)))
+                {
+                    TextAlignment = TextAlignment.Right,
+                    Padding = new Thickness(0),
+                    BorderThickness = new Thickness(0)
+                };
+                TableCell cell2 = new TableCell(GetDefaultParagraph($"{labels[i]}{values2[i].ToString($"F{denominator}")}", new Thickness(5, 0, 0, 0)))
+                {
+                    TextAlignment = TextAlignment.Left,
+                    Padding = new Thickness(0),
+                    BorderThickness = new Thickness(0)
+                };
 
                 if (values1[i] > values2[i])
                 {
@@ -402,7 +412,11 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
             // add spacing cells on left side
             if (spacingCells > 0)
                 for (int i = 0; i < spacingCells; i++)
-                    row.Cells.Add(new TableCell());
+                    row.Cells.Add(new TableCell(GetDefaultParagraph())
+                    {
+                        Padding = new Thickness(0),
+                        BorderThickness = new Thickness(0),
+                    });
 
             for (int i = 0; i < cells1.Count; i++)
                 row.Cells.Add(cells1[i]);
@@ -411,7 +425,8 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
             {
                 TextAlignment = TextAlignment.Center,
                 BorderThickness = new Thickness(2, 0, 2, 0),
-                BorderBrush = Brushes.DarkGray
+                BorderBrush = Brushes.DarkGray,
+                Padding = new Thickness(0)
             };
             if (different)
             {
@@ -427,19 +442,27 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
             // add spacing cells on right side
             if (spacingCells > 0)
                 for (int i = 0; i < spacingCells; i++)
-                    row.Cells.Add(new TableCell());
+                    row.Cells.Add(new TableCell(GetDefaultParagraph())
+                    {
+                        Padding = new Thickness(0),
+                        BorderThickness = new Thickness(0),
+                        LineHeight = 1,
+                        LineStackingStrategy = LineStackingStrategy.MaxHeight
+                    });
 
             return row;
         }
 
         public static Paragraph GetDefaultHeader()
         {
-            Paragraph content = new Paragraph();
-            content.FontSize = 17;
-            content.FontWeight = FontWeights.Medium;
-            content.Foreground = Brushes.White;
-            content.TextAlignment = TextAlignment.Center;
-            content.Margin = new Thickness(0, 0, 0, 0);
+            Paragraph content = new Paragraph
+            {
+                FontSize = 17,
+                FontWeight = FontWeights.Medium,
+                Foreground = Brushes.White,
+                TextAlignment = TextAlignment.Center,
+                Margin = new Thickness(0, 0, 0, 0)
+            };
             return content;
         }
 
@@ -467,11 +490,13 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
 
         public static Paragraph GetDefaultParagraph()
         {
-            Paragraph content = new Paragraph();
-            content.FontSize = 12;
-            content.FontWeight = FontWeights.Medium;
-            content.Foreground = Brushes.White;
-            content.Margin = new Thickness(0, 0, 0, 0);
+            Paragraph content = new Paragraph
+            {
+                FontSize = 12,
+                FontWeight = FontWeights.Medium,
+                Foreground = Brushes.White,
+                Margin = new Thickness(0, 0, 0, 0)
+            };
             return content;
         }
 
@@ -506,9 +531,11 @@ namespace ACCManager.Controls.Setup.FlowDocUtil
 
         public static List GetDefaultList()
         {
-            List list = new List();
-            list.FontSize = 13;
-            list.Foreground = Brushes.White;
+            List list = new List
+            {
+                FontSize = 13,
+                Foreground = Brushes.White
+            };
 
             return list;
         }

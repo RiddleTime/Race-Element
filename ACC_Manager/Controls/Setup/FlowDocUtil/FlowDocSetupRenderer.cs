@@ -225,7 +225,7 @@ namespace ACCManager.Controls.Setup
             Section strategySection = new Section();
             TableRowGroup rgStrategy = new TableRowGroup();
             rgStrategy.Rows.Add(DocUtil.GetTableRowLeftTitle("Strategy", cells));
-            rgStrategy.Rows.Add(DocUtil.GetTableRowLeft("Brake compound", frontOrRearLabels, new double[] { brakeCompoundFront, brakeCompoundRear }, cells));
+            rgStrategy.Rows.Add(DocUtil.GetTableRowLeft("Brake Compound", frontOrRearLabels, new double[] { brakeCompoundFront, brakeCompoundRear }, cells));
             Table strategyTable = DocUtil.GetLeftAllignedTable(headerWidthPercent, cells);
             electroTable.RowGroups.Add(rgStrategy);
             strategySection.Blocks.Add(strategyTable);

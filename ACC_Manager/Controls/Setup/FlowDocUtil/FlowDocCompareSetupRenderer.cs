@@ -118,6 +118,10 @@ namespace ACCManager.Controls.Setup
             int brakeDuctsFront1 = setup1.AdvancedSetup.AeroBalance.BrakeDuct[(int)Position.Front];
             int brakeDuctsRear1 = setup1.AdvancedSetup.AeroBalance.BrakeDuct[(int)Position.Rear];
 
+            // Strategy car 1   
+            int brakeCompoundFront1 = setup1.BasicSetup.Strategy.FrontBrakePadCompound + 1;
+            int brakeCompoundRear1 = setup1.BasicSetup.Strategy.FrontBrakePadCompound + 1;
+
 
 
             ///// Car 2 conversions
@@ -205,6 +209,11 @@ namespace ACCManager.Controls.Setup
             int brakeDuctsFront2 = setup2.AdvancedSetup.AeroBalance.BrakeDuct[(int)Position.Front];
             int brakeDuctsRear2 = setup2.AdvancedSetup.AeroBalance.BrakeDuct[(int)Position.Rear];
 
+            // Strategy car 2   
+            int brakeCompoundFront2 = setup2.BasicSetup.Strategy.FrontBrakePadCompound + 1;
+            int brakeCompoundRear2 = setup2.BasicSetup.Strategy.FrontBrakePadCompound + 1;
+
+
 
             const int cells = 13;
             const int headerWidthPercent = 15;
@@ -229,7 +238,7 @@ namespace ACCManager.Controls.Setup
             setupInfoTable.RowGroups.Add(rgSetupInfo);
             setupSection.Blocks.Add(setupInfoTable);
             setupSection.BorderBrush = Brushes.White;
-            setupSection.BorderThickness = new Thickness(0, 1, 0, 1);
+            setupSection.BorderThickness = new Thickness(0, 1, 0, 0);
             setupSection.Margin = new Thickness(0, 0, 0, 0);
             flowDocument.Blocks.Add(setupSection);
 
@@ -324,8 +333,23 @@ namespace ACCManager.Controls.Setup
             electroTable.RowGroups.Add(rgElectro);
             electronicsSection.Blocks.Add(electroTable);
             electronicsSection.BorderBrush = Brushes.White;
-            electronicsSection.BorderThickness = new Thickness(0, 1, 0, 1);
+            electronicsSection.BorderThickness = new Thickness(0, 1, 0, 0);
             flowDocument.Blocks.Add(electronicsSection);
+
+
+            //// Strategy
+            Section strategySection = new Section();
+            TableRowGroup rgStrategy = new TableRowGroup();
+            Paragraph strategyHeader = DocUtil.GetDefaultHeader("Strategy");
+            strategyHeader.FontStyle = FontStyles.Italic;
+            rgStrategy.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), strategyHeader, DocUtil.GetDefaultParagraph(), cells));
+            rgStrategy.Rows.Add(DocUtil.GetTableRowCompareWithLabels(frontOrRearLabels, new double[] { brakeCompoundFront1, brakeCompoundRear1 }, "Brake Compound", new double[] { brakeCompoundFront2, brakeCompoundRear2 }, cells));
+            Table strategyTable = DocUtil.GetCenteredTable(headerWidthPercent, cells - 1);
+            strategyTable.RowGroups.Add(rgStrategy);
+            strategySection.Blocks.Add(strategyTable);
+            strategySection.BorderBrush = Brushes.White;
+            strategySection.BorderThickness = new Thickness(0, 1, 0, 1);
+            flowDocument.Blocks.Add(strategySection);
         }
 
     }
