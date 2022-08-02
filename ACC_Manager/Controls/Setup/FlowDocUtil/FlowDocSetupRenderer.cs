@@ -55,13 +55,11 @@ namespace ACCManager.Controls.Setup
             double camberRearLeft = carSetup.TyresSetup.Camber(Wheel.RearLeft, setup.BasicSetup.Alignment.Camber);
             double camberRearRight = carSetup.TyresSetup.Camber(Wheel.RearRight, setup.BasicSetup.Alignment.Camber);
 
-
             // Mechnical Setup
             int wheelRateFrontLeft = carSetup.MechanicalSetup.WheelRate(setup.AdvancedSetup.MechanicalBalance.WheelRate, Wheel.FrontLeft);
             int wheelRateFrontRight = carSetup.MechanicalSetup.WheelRate(setup.AdvancedSetup.MechanicalBalance.WheelRate, Wheel.FrontRight);
             int wheelRateRearLeft = carSetup.MechanicalSetup.WheelRate(setup.AdvancedSetup.MechanicalBalance.WheelRate, Wheel.RearLeft);
             int wheelRateRearRight = carSetup.MechanicalSetup.WheelRate(setup.AdvancedSetup.MechanicalBalance.WheelRate, Wheel.RearRight);
-
 
             int bumpStopRateFrontLeft = carSetup.MechanicalSetup.BumpstopRate(setup.AdvancedSetup.MechanicalBalance.BumpStopRateUp, Wheel.FrontLeft);
             int bumpStopRateFrontRight = carSetup.MechanicalSetup.BumpstopRate(setup.AdvancedSetup.MechanicalBalance.BumpStopRateUp, Wheel.FrontRight);
@@ -80,7 +78,6 @@ namespace ACCManager.Controls.Setup
             int antiRollBarFront = carSetup.MechanicalSetup.AntiRollBarFront(setup.AdvancedSetup.MechanicalBalance.ARBFront);
             int antiRollBarRear = carSetup.MechanicalSetup.AntiRollBarFront(setup.AdvancedSetup.MechanicalBalance.ARBRear);
             double steeringRatio = carSetup.MechanicalSetup.SteeringRatio(setup.BasicSetup.Alignment.SteerRatio);
-
 
             // Dampers
             int bumpSlowFrontLeft = carSetup.DamperSetup.BumpSlow(setup.AdvancedSetup.Dampers.BumpSlow, Wheel.FrontLeft);
@@ -103,8 +100,6 @@ namespace ACCManager.Controls.Setup
             int reboundFastRearLeft = carSetup.DamperSetup.ReboundFast(setup.AdvancedSetup.Dampers.ReboundFast, Wheel.RearLeft);
             int reboundFastRearRight = carSetup.DamperSetup.ReboundFast(setup.AdvancedSetup.Dampers.ReboundFast, Wheel.RearRight);
 
-
-
             // Aero Balance
             int rideHeightFront = carSetup.AeroBalance.RideHeight(setup.AdvancedSetup.AeroBalance.RideHeight, Position.Front);
             int rideHeightRear = carSetup.AeroBalance.RideHeight(setup.AdvancedSetup.AeroBalance.RideHeight, Position.Rear);
@@ -113,6 +108,9 @@ namespace ACCManager.Controls.Setup
             int brakeDuctsFront = setup.AdvancedSetup.AeroBalance.BrakeDuct[(int)Position.Front];
             int brakeDuctsRear = setup.AdvancedSetup.AeroBalance.BrakeDuct[(int)Position.Rear];
 
+            // Strategy
+            int brakeCompoundFront = setup.BasicSetup.Strategy.FrontBrakePadCompound + 1;
+            int brakeCompoundRear = setup.BasicSetup.Strategy.FrontBrakePadCompound + 1;
 
 
             const int cells = 8;
@@ -121,16 +119,13 @@ namespace ACCManager.Controls.Setup
             string[] frontOrRearLabels = new string[] { "Front: ", "Rear: " };
 
 
-
             Section setupTitle = new Section();
             setupTitle.Blocks.Add(DocUtil.GetDefaultHeader(20, $"{new FileInfo(file).Name.Replace(".json", "")}"));
             setupTitle.BorderBrush = Brushes.White;
             setupTitle.BorderThickness = new Thickness(1);
             setupTitle.Margin = new Thickness(0, 0, 0, 4);
             setupTitle.Padding = new Thickness(0);
-
             flowDocument.Blocks.Add(setupTitle);
-
 
             //// Setup Info Section
             Table setupInfoTable = DocUtil.GetLeftAllignedTable(headerWidthPercent, cells);
@@ -145,7 +140,6 @@ namespace ACCManager.Controls.Setup
             setupInfoTable.BorderThickness = new Thickness(0, 0, 0, 1);
             setupSection.Blocks.Add(setupInfoTable);
             flowDocument.Blocks.Add(setupSection);
-
 
             //// Tyres Section
             Section tyresSection = new Section();
@@ -182,8 +176,6 @@ namespace ACCManager.Controls.Setup
             gripSection.BorderThickness = new Thickness(0, 0, 0, 1);
             flowDocument.Blocks.Add(gripSection);
 
-
-
             //// Dampers Section
             Section dampersSection = new Section();
             TableRowGroup rgDampers = new TableRowGroup();
@@ -198,7 +190,6 @@ namespace ACCManager.Controls.Setup
             dampersSection.BorderBrush = Brushes.DarkGray;
             dampersSection.BorderThickness = new Thickness(0, 0, 0, 1);
             flowDocument.Blocks.Add(dampersSection);
-
 
             //// Aero
             Section aeroBalanceSection = new Section();
@@ -229,6 +220,18 @@ namespace ACCManager.Controls.Setup
             electronicsSection.BorderBrush = Brushes.DarkGray;
             electronicsSection.BorderThickness = new Thickness(0, 0, 0, 1);
             flowDocument.Blocks.Add(electronicsSection);
+
+            //// Strategy
+            Section strategySection = new Section();
+            TableRowGroup rgStrategy = new TableRowGroup();
+            rgStrategy.Rows.Add(DocUtil.GetTableRowLeftTitle("Strategy", cells));
+            rgStrategy.Rows.Add(DocUtil.GetTableRowLeft("Brake compound", frontOrRearLabels, new double[] { brakeCompoundFront, brakeCompoundRear }, cells));
+            Table strategyTable = DocUtil.GetLeftAllignedTable(headerWidthPercent, cells);
+            electroTable.RowGroups.Add(rgStrategy);
+            strategySection.Blocks.Add(strategyTable);
+            strategySection.BorderBrush = Brushes.DarkGray;
+            strategySection.BorderThickness = new Thickness(0, 0, 0, 1);
+            flowDocument.Blocks.Add(strategySection);
         }
     }
 }
