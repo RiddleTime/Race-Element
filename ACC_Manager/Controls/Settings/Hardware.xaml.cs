@@ -73,7 +73,7 @@ namespace ACCManager.Controls
         {
             try
             {
-                var hardwareSettings = _hardwareSettings.LoadJson();
+                var hardwareSettings = _hardwareSettings.Get();
 
                 toggleSteeringHardwareLock.IsChecked = hardwareSettings.UseHardwareSteeringLock;
             }
@@ -87,11 +87,11 @@ namespace ACCManager.Controls
         {
             try
             {
-                var hardwareSettings = _hardwareSettings.LoadJson();
+                var hardwareSettings = _hardwareSettings.Get();
 
                 hardwareSettings.UseHardwareSteeringLock = toggleSteeringHardwareLock.IsChecked.Value;
 
-                _hardwareSettings.SaveJson(hardwareSettings);
+                _hardwareSettings.Save(hardwareSettings);
             }
             catch (Exception e)
             {

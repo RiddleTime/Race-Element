@@ -18,28 +18,12 @@ namespace ACC_Manager.Util.Settings
 
         public override string FileName => "HudSettings.json";
 
-        public static HudSettingsJson hudSettingsJson = new HudSettings().LoadJson();
-
         public override HudSettingsJson Default()
         {
             return new HudSettingsJson()
             {
                 DemoMode = false
             };
-        }
-
-        public override HudSettingsJson LoadJson()
-        {
-            if (hudSettingsJson != null)
-                return hudSettingsJson;
-
-            return base.LoadJson();
-        }
-
-        public override void SaveJson(HudSettingsJson genericJson)
-        {
-            base.SaveJson(genericJson);
-            hudSettingsJson = genericJson;
         }
     }
 }

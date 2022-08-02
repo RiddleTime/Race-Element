@@ -57,8 +57,8 @@ namespace ACCManager.Controls
             InitializeComponent();
 
             _hudSettings = new HudSettings();
-            _hudSettingsJson = _hudSettings.LoadJson();
-            
+            _hudSettingsJson = _hudSettings.Get();
+
 
             listOverlays.SelectionChanged += ListOverlays_SelectionChanged;
             listDebugOverlays.SelectionChanged += ListDebugOverlays_SelectionChanged;
@@ -98,13 +98,13 @@ namespace ACCManager.Controls
                     checkBoxDemoMode.Checked += (s, e) =>
                     {
                         _hudSettingsJson.DemoMode = true;
-                        _hudSettings.SaveJson(_hudSettingsJson);
+                        _hudSettings.Save(_hudSettingsJson);
                     };
 
                     checkBoxDemoMode.Unchecked += (s, e) =>
                     {
                         _hudSettingsJson.DemoMode = false;
-                        _hudSettings.SaveJson(_hudSettingsJson);
+                        _hudSettings.Save(_hudSettingsJson);
                     };
 
                     this.PreviewMouseUp += (s, e) =>
@@ -136,9 +136,6 @@ namespace ACCManager.Controls
 
 
                     checkBoxDemoMode.IsChecked = _hudSettingsJson.DemoMode;
-#if DEBUG
-                    checkBoxDemoMode.IsChecked = true;
-#endif
                 }
                 catch (Exception ex)
                 {

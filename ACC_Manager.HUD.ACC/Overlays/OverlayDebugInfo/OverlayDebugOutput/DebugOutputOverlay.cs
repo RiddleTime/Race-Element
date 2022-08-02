@@ -11,7 +11,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
 {
     [Overlay(Name = "Debug Output", Version = 1.00, OverlayType = OverlayType.Debug,
         Description = "A panel showing live debug output.")]
-    internal class DebugOutputOverlay : AbstractOverlay
+    internal sealed class DebugOutputOverlay : AbstractOverlay
     {
         private DebugOutputConfiguration _config = new DebugOutputConfiguration();
         private class DebugOutputConfiguration : OverlayConfiguration
@@ -54,7 +54,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
                 this.X = DebugInfoHelper.Instance.GetX(this);
         }
 
-        public override void BeforeStart()
+        public sealed override void BeforeStart()
         {
             if (this._config.Undock)
                 this.AllowReposition = true;
@@ -69,7 +69,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
             this.Height = (int)((_font.Height - 2) * _config.VisibleLines) + 1;
         }
 
-        public override void BeforeStop()
+        public sealed override void BeforeStop()
         {
             if (!this._config.Undock)
             {
@@ -78,7 +78,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
             }
         }
 
-        public override void Render(Graphics g)
+        public sealed override void Render(Graphics g)
         {
             foreach (MessageOut output in TraceOutputListener.Instance.Outputs.Take(_config.VisibleLines))
             {
@@ -89,7 +89,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
             _table.Draw(g);
         }
 
-        public override bool ShouldRender()
+        public sealed override bool ShouldRender()
         {
             return true;
         }

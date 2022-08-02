@@ -75,7 +75,7 @@ namespace ACCManager.Controls
 
         private void TestConnection()
         {
-            var streamSettings = _streamSettings.LoadJson();
+            var streamSettings = _streamSettings.Get();
             buttonTestConnnection.Content = "Testing Connection...";
             buttonTestConnnection.IsEnabled = false;
 
@@ -198,9 +198,9 @@ namespace ACCManager.Controls
 
         private void ToggleSetupHider()
         {
-            var streamingSettings = _streamSettings.LoadJson();
+            var streamingSettings = _streamSettings.Get();
             streamingSettings.SetupHider = toggleSetupHider.IsChecked.Value;
-            _streamSettings.SaveJson(streamingSettings);
+            _streamSettings.Save(streamingSettings);
 
             string status = streamingSettings.SetupHider ? "Enabled" : "Disabled";
             MainWindow.Instance.ClearSnackbar();
@@ -209,7 +209,7 @@ namespace ACCManager.Controls
 
         private void LoadSettings()
         {
-            var streamingSettings = _streamSettings.LoadJson();
+            var streamingSettings = _streamSettings.Get();
 
             streamPassword.Password = streamingSettings.StreamingWebSocketPassword;
             streamServer.Text = streamingSettings.StreamingWebSocketIP;
@@ -221,7 +221,7 @@ namespace ACCManager.Controls
 
         private void SaveSettings()
         {
-            var streamingSettings = _streamSettings.LoadJson();
+            var streamingSettings = _streamSettings.Get();
 
             streamingSettings.StreamingSoftware = comboStreamSoftware.SelectedItem.ToString();
             streamingSettings.StreamingWebSocketIP = streamServer.Text;
@@ -236,7 +236,7 @@ namespace ACCManager.Controls
                     }
             }
 
-            _streamSettings.SaveJson(streamingSettings);
+            _streamSettings.Save(streamingSettings);
             MainWindow.Instance.ClearSnackbar();
             MainWindow.Instance.EnqueueSnackbarMessage("Saved Streaming settings.");
         }

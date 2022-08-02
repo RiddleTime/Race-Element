@@ -72,18 +72,18 @@ namespace ACCManager
 
             tabControl.SelectionChanged += (s, se) =>
             {
-                UiSettingsJson tempSettings = _uiSettings.LoadJson();
+                UiSettingsJson tempSettings = _uiSettings.Get();
                 tempSettings.SelectedTabIndex = tabControl.SelectedIndex;
-                _uiSettings.SaveJson(tempSettings);
+                _uiSettings.Save(tempSettings);
             };
 
-            tabControl.SelectedIndex = _uiSettings.LoadJson().SelectedTabIndex.Clip(0, tabControl.Items.Count - 1);
+            tabControl.SelectedIndex = _uiSettings.Get().SelectedTabIndex.Clip(0, tabControl.Items.Count - 1);
 
-            UiSettingsJson uiSettings = _uiSettings.LoadJson();
+            UiSettingsJson uiSettings = _uiSettings.Get();
             this.Left = uiSettings.X.Clip(0, (int)SystemParameters.PrimaryScreenWidth);
             this.Top = uiSettings.Y.Clip(0, (int)SystemParameters.PrimaryScreenHeight);
 
-            _uiSettings.SaveJson(uiSettings);
+            _uiSettings.Save(uiSettings);
 
 
             Instance = this;
@@ -92,10 +92,10 @@ namespace ACCManager
 
         public void SaveLocation()
         {
-            UiSettingsJson uiSettings = _uiSettings.LoadJson();
+            UiSettingsJson uiSettings = _uiSettings.Get();
             uiSettings.X = (int)this.Left;
             uiSettings.Y = (int)this.Top;
-            _uiSettings.SaveJson(uiSettings);
+            _uiSettings.Save(uiSettings);
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)

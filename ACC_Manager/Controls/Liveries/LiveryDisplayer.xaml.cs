@@ -45,28 +45,11 @@ namespace ACCManager.Controls
 
             Instance = this;
 
-            this.Loaded += (s, e) => ReloadLivery();
             this.IsVisibleChanged += (s, e) =>
             {
                 if (!(bool)e.NewValue)
                 {
-                    foreach (var control in imageGrid.Children)
-                    {
-                        if (control is System.Windows.Controls.Image)
-                        {
-                            System.Windows.Controls.Image imageControl = (System.Windows.Controls.Image)control;
-                            BitmapImage image = (BitmapImage)imageControl.Source;
-                            if (image != null && image.StreamSource != null)
-                                image.StreamSource.Close();
-                            imageControl.Source = null;
-                            imageControl = null;
-                        }
-                    }
-                    imageGrid.Children.Clear();
-
-                    stackPanelLiveryInfo.Children.Clear();
-                    stackPanelMainInfo.Children.Clear();
-                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
+                    Cache();
                 }
             };
         }
@@ -107,15 +90,48 @@ namespace ACCManager.Controls
         public void ReloadLivery()
         {
             if (!_isLoading)
+            {
                 SetLivery(this.Livery);
+                this.Visibility = Visibility.Visible;
+            }
+        }
+
+        public void Cache()
+        {
+            Debug.WriteLine(imageGrid.Children.Count);
+
+            foreach (var control in imageGrid.Children)
+            {
+                if (control is System.Windows.Controls.Image)
+                {
+                    System.Windows.Controls.Image imageControl = (System.Windows.Controls.Image)control;
+                    BitmapImage image = (BitmapImage)imageControl.Source;
+                    if (image != null && image.StreamSource != null)
+                    {
+                        image.StreamSource.Close();
+                        image.StreamSource.Dispose();
+                    }
+                    imageControl.Source = null;
+                    imageControl = null;
+                }
+            }
+            imageGrid.Children.Clear();
+            imageGrid.UpdateLayout();
+
+            stackPanelLiveryInfo.Children.Clear();
+            stackPanelMainInfo.Children.Clear();
+            skinMainInfo.Visibility = Visibility.Hidden;
+            buttonGenerateDDS.Visibility = Visibility.Hidden;
+
+            this.Visibility = Visibility.Collapsed;
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
         }
 
         internal void SetLivery(LiveryTreeCar livery)
         {
             _isLoading = true;
 
-            ThreadPool.QueueUserWorkItem(x => { GC.Collect(); });
-
+            imageGrid.Children.Clear();
             stackPanelLiveryInfo.Children.Clear();
             stackPanelMainInfo.Children.Clear();
             skinMainInfo.Visibility = Visibility.Hidden;
@@ -127,10 +143,6 @@ namespace ACCManager.Controls
             Livery = livery;
             Livery.CarsRoot = LiveryImporter.GetLivery(livery.CarsFile);
             buttonGenerateDDS.Visibility = DDSutil.HasDdsFiles(Livery) ? Visibility.Hidden : Visibility.Visible;
-
-
-            ThreadPool.QueueUserWorkItem(x => { GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true); });
-
 
             ThreadPool.QueueUserWorkItem(x =>
             {
@@ -176,6 +188,12 @@ namespace ACCManager.Controls
                                 };
                                 imageGrid.Children.Add(imageControl);
                                 LoadPhoto(imageControl, decalsFile.FullName);
+
+                                ThreadPool.QueueUserWorkItem(gc =>
+                                {
+                                    Thread.Sleep(1 * 1000);
+                                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                                });
                             }
 
 
@@ -210,9 +228,14 @@ namespace ACCManager.Controls
                             if (sponsorFiles != null && sponsorFiles.Length > 0)
                             {
                                 FileInfo sponsorsFile = sponsorFiles[0];
-                                System.Windows.Controls.Image imageControl = new System.Windows.Controls.Image() { Stretch = Stretch.Fill, Height = 366, Width = 366 };
+                                System.Windows.Controls.Image imageControl = new System.Windows.Controls.Image() { Stretch = Stretch.UniformToFill, Height = 366, Width = 366 };
                                 imageGrid.Children.Add(imageControl);
                                 LoadPhoto(imageControl, sponsorsFile.FullName);
+                                ThreadPool.QueueUserWorkItem(gc =>
+                                {
+                                    Thread.Sleep(2 * 1000);
+                                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                                });
                             }
 
 
@@ -265,6 +288,8 @@ namespace ACCManager.Controls
 
                             UpdateImageSize();
                             _isLoading = false;
+
+
                         }
                     }
                 }));
@@ -293,7 +318,6 @@ namespace ACCManager.Controls
                     imageControl.Source = bmi;
                 }));
 
-                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
             });
         }
 

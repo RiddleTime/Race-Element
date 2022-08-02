@@ -64,6 +64,20 @@ namespace ACCManager.Controls
             {
                 LiveryTagCreator.Instance.Open();
             };
+
+            this.IsVisibleChanged += (s, e) =>
+            {
+                if ((bool)e.NewValue)
+                    LiveryDisplayer.Instance.ReloadLivery();
+                else
+                    LiveryDisplayer.Instance.Cache();
+
+                ThreadPool.QueueUserWorkItem(x =>
+                {
+                    Thread.Sleep(10 * 1000);
+                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                });
+            };
         }
 
         private void LiveryTreeViewKeyUp(TreeView treeView, object sender, KeyEventArgs e)

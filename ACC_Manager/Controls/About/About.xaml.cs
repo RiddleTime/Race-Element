@@ -34,9 +34,22 @@ namespace ACCManager.Controls
             buttonDiscord.Click += (sender, e) => Process.Start("https://discord.gg/26AAEW5mUq"); ;
             buttonGithub.Click += (sender, e) => Process.Start("https://github.com/RiddleTime/ACC-Manager");
 
-            FillReleaseNotes();
 
             this.Loaded += (s, e) => Task.Run(new Action(CheckNewestVersion));
+
+            this.IsVisibleChanged += (s, e) =>
+            {
+                if ((bool)e.NewValue)
+                    FillReleaseNotes();
+                else
+                    stackPanelReleaseNotes.Children.Clear();
+
+                ThreadPool.QueueUserWorkItem(x =>
+                {
+                    Thread.Sleep(5 * 1000);
+                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                });
+            };
         }
 
         private async void CheckNewestVersion()

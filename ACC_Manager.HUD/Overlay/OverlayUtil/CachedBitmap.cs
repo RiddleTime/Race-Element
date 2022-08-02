@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -34,6 +35,8 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
 
             if (preRender)
                 Render();
+
+
         }
 
         /// <summary>
@@ -65,6 +68,12 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
 
                     _renderer(g);
                 }
+
+#if DEBUG
+                string bitmapString = $"{_bitmap.GetHbitmap().GetType()}";
+                Debug.WriteLine($"le: {bitmapString[0]}");
+                Debug.WriteLine($"str:\n{bitmapString}");
+#endif
             }
         }
 

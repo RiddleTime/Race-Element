@@ -82,7 +82,7 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public bool DefaultShouldRender()
         {
-            if (HudSettings.hudSettingsJson.DemoMode)
+            if (HudSettings.Cached.DemoMode)
                 return true;
 
             bool shouldRender = true;

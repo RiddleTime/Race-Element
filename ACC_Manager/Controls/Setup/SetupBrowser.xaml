@@ -67,9 +67,11 @@
                 <RowDefinition Height="37"/>
             </Grid.RowDefinitions>
 
-            <materialDesign:Card Grid.Row="0" Margin="3">
-                <FlowDocumentScrollViewer Focusable="False" Cursor="Arrow" IsHitTestVisible="False" VerticalScrollBarVisibility="Hidden">
-                    <FlowDocument  x:Name="flowDocument" Focusable="False" Cursor="Arrow" 
+            <materialDesign:Card Grid.Row="0" Margin="3" VerticalAlignment="Center">
+                <FlowDocumentScrollViewer Focusable="False" Cursor="Arrow" IsHitTestVisible="False"
+                                          VerticalScrollBarVisibility="Hidden" 
+                                          VerticalContentAlignment="Center" VerticalAlignment="Stretch">
+                    <FlowDocument x:Name="flowDocument" Focusable="False" Cursor="Arrow" 
                            Background="{DynamicResource MaterialDesignPaper}"
                            FontFamily="{StaticResource RobotoMedium}" 
                            RenderOptions.ClearTypeHint="Enabled" AllowDrop="False"

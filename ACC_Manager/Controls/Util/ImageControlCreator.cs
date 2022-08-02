@@ -10,8 +10,6 @@ namespace ACCManager.Controls.Util.SetupImage
     {
         public static System.Windows.Controls.Image CreateImage(int width, int height, HUD.Overlay.OverlayUtil.CachedBitmap cachedBitmap)
         {
-            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
-
             Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format32bppPArgb);
 
             using (Graphics g = Graphics.FromImage(bitmap))
@@ -44,6 +42,8 @@ namespace ACCManager.Controls.Util.SetupImage
 
             memStream.Close();
             memStream.Dispose();
+
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
 
             return image;
         }
