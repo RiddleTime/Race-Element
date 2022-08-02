@@ -43,7 +43,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <ToggleButton Grid.Column="0" x:Name="checkBoxDemoMode" Height="25" Cursor="Hand" VerticalAlignment="Center"></ToggleButton>
-                <Label Grid.Column="1" FontSize="18"  VerticalAlignment="Center" ToolTip="Enables a mode for the huds so they always display. (Does not save after restarting the application)">Enable Always Visible</Label>
+                <Label Grid.Column="1" FontSize="18"  VerticalAlignment="Center" ToolTip="Enables a mode for the huds so they always display.">Always Visible</Label>
             </Grid>
         </StackPanel>
 
