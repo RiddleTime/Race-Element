@@ -18,7 +18,7 @@ namespace ACC_Manager.Util.Settings
 
         public override string FileName => "HudSettings.json";
 
-        public static HudSettingsJson hudSettingsJson;
+        public static HudSettingsJson hudSettingsJson = new HudSettings().LoadJson();
 
         public override HudSettingsJson Default()
         {
