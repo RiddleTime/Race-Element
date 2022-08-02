@@ -287,9 +287,8 @@ namespace ACCManager.Controls
 
 
                             UpdateImageSize();
+                            this.Visibility = Visibility.Visible;
                             _isLoading = false;
-
-
                         }
                     }
                 }));

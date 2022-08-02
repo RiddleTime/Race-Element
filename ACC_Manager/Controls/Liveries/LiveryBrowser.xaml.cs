@@ -135,6 +135,7 @@ namespace ACCManager.Controls
 
 
                             LiveryDisplayer.Instance.SetLivery(treeCar);
+                            LiveryDisplayer.Instance.ReloadLivery();
                         }
                     }
                 }
