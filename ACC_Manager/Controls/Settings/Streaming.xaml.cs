@@ -38,6 +38,8 @@ namespace ACCManager.Controls
 
             _streamSettings = new StreamSettings();
 
+            TitleBar.Instance.SetIcons(TitleBar.ActivatedIcons.SetupHider, _streamSettings.Get().SetupHider);
+
             comboStreamSoftware.Items.Add("OBS");
             comboStreamSoftware.Items.Add("Streamlabs");
             comboStreamSoftware.SelectedIndex = 0;
@@ -202,9 +204,7 @@ namespace ACCManager.Controls
             streamingSettings.SetupHider = toggleSetupHider.IsChecked.Value;
             _streamSettings.Save(streamingSettings);
 
-            string status = streamingSettings.SetupHider ? "Enabled" : "Disabled";
-            MainWindow.Instance.ClearSnackbar();
-            MainWindow.Instance.EnqueueSnackbarMessage($"Stream Setup Hider {status}.");
+            TitleBar.Instance.SetIcons(TitleBar.ActivatedIcons.SetupHider, streamingSettings.SetupHider);
         }
 
         private void LoadSettings()
@@ -217,6 +217,8 @@ namespace ACCManager.Controls
             comboStreamSoftware.SelectedItem = streamingSettings.StreamingSoftware;
 
             toggleSetupHider.IsChecked = streamingSettings.SetupHider;
+
+            if (streamingSettings.SetupHider) TitleBar.Instance.SetIcons(TitleBar.ActivatedIcons.SetupHider, true);
         }
 
         private void SaveSettings()

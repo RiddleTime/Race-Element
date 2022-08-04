@@ -98,8 +98,6 @@ namespace ACCManager.Controls
 
         public void Cache()
         {
-            Debug.WriteLine(imageGrid.Children.Count);
-
             foreach (var control in imageGrid.Children)
             {
                 if (control is System.Windows.Controls.Image)

@@ -76,6 +76,29 @@ namespace ACCManager.Controls
             App.Current.MainWindow.WindowState = targetState;
         }
 
+        public void SetIcons(ActivatedIcons icon, bool enabled)
+        {
+            switch (icon)
+            {
+                case ActivatedIcons.AutomaticSteeringHardLock:
+                    {
+                        iconSteeringLock.Visibility = enabled ? Visibility.Visible : Visibility.Collapsed;
+                        break;
+                    };
+                case ActivatedIcons.SetupHider:
+                    {
+                        iconSetupHider.Visibility = enabled ? Visibility.Visible : Visibility.Collapsed;
+                        break;
+                    };
+            }
+        }
+
+        public enum ActivatedIcons
+        {
+            AutomaticSteeringHardLock,
+            SetupHider,
+        }
+
         private void ButtonExit_Click(object sender, RoutedEventArgs e)
         {
             MainWindow.Instance.SaveLocation();

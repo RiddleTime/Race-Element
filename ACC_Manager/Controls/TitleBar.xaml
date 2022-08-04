@@ -35,9 +35,39 @@
             <materialDesign:TransitioningContent.Effect>
                 <DropShadowEffect Color="Black" Opacity="0.7" BlurRadius="3" ShadowDepth="2"/>
             </materialDesign:TransitioningContent.Effect>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="Title" Foreground="White" FontStyle="Italic" Style="{StaticResource MaterialDesignHeadline6TextBlock}" VerticalAlignment="Center">
+                </TextBlock>
 
-            <TextBlock x:Name="Title" Foreground="White" FontStyle="Italic" Style="{StaticResource MaterialDesignHeadline6TextBlock}" VerticalAlignment="Center">
-            </TextBlock>
+                <StackPanel x:Name="stackPanelActivatedIcons"  Orientation="Horizontal" Margin="10,0,0,0" HorizontalAlignment="Right">
+                    <materialDesign:PackIcon
+                        x:Name="iconSteeringLock"
+                        Kind="Steering"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Height="20"
+                        Width="20"
+                        Background="#00000000"
+                        Foreground="White" 
+                        Margin="5,0,0,0"
+                        ToolTip="Automatic Steering Lock Activated"
+                        Visibility="Collapsed"
+                    />
+                    <materialDesign:PackIcon
+                        x:Name="iconSetupHider"
+                        Kind="EyeOff"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Height="20"
+                        Width="20"
+                        Background="#00000000"
+                        Foreground="White" 
+                        Margin="5,0,0,0"
+                        ToolTip="Setup Hider Activated"
+                        Visibility="Collapsed"
+                    />
+                </StackPanel>
+            </StackPanel>
         </materialDesign:TransitioningContent>
 
         <Grid Grid.Column="2">

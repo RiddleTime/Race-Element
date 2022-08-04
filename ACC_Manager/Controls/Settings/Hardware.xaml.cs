@@ -58,7 +58,8 @@ namespace ACCManager.Controls
         {
             SaveSettings();
             SteeringLockTracker.Instance.Dispose();
-            MainWindow.Instance.EnqueueSnackbarMessage("Disabled automatic hardware steering lock.");
+            TitleBar.Instance.SetIcons(TitleBar.ActivatedIcons.AutomaticSteeringHardLock, false);
+            //MainWindow.Instance.EnqueueSnackbarMessage("Disabled automatic hardware steering lock.");
 
         }
 
@@ -66,7 +67,8 @@ namespace ACCManager.Controls
         {
             SaveSettings();
             SteeringLockTracker.Instance.StartTracking();
-            MainWindow.Instance.EnqueueSnackbarMessage("Enabled automatic hardware steering lock.");
+            TitleBar.Instance.SetIcons(TitleBar.ActivatedIcons.AutomaticSteeringHardLock, true);
+            //MainWindow.Instance.EnqueueSnackbarMessage("Enabled automatic hardware steering lock.");
         }
 
         private void LoadSettings()
