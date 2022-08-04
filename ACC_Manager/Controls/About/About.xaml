@@ -124,7 +124,7 @@
                                 <Bold><Italic>Setups</Italic></Bold>
                                 </TextBlock>
                                 <TextBlock>
-                                - Drag and Drop setup json files to import them.<LineBreak/>
+                                - Drag and Drop setup json files on top of the app to import them.<LineBreak/>
                                 - View setups.<LineBreak/>
                                 - Compare setups, right click in the browser to add them.<LineBreak/>
                                 - Open car/track directories quickly by right clicking.<LineBreak/>

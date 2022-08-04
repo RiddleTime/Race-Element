@@ -227,7 +227,7 @@ namespace ACCManager.Controls.Setup
             rgStrategy.Rows.Add(DocUtil.GetTableRowLeftTitle("Strategy", cells));
             rgStrategy.Rows.Add(DocUtil.GetTableRowLeft("Brake Compound", frontOrRearLabels, new double[] { brakeCompoundFront, brakeCompoundRear }, cells));
             Table strategyTable = DocUtil.GetLeftAllignedTable(headerWidthPercent, cells);
-            electroTable.RowGroups.Add(rgStrategy);
+            strategyTable.RowGroups.Add(rgStrategy);
             strategySection.Blocks.Add(strategyTable);
             strategySection.BorderBrush = Brushes.DarkGray;
             strategySection.BorderThickness = new Thickness(0, 0, 0, 1);
