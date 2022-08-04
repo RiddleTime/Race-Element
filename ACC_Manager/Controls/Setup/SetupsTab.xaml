@@ -8,7 +8,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              MinWidth="1100"
-             AllowDrop="True"
              Margin="3,3,3,3">
     <UserControl.Resources>
         <ResourceDictionary>

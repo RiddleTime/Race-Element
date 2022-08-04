@@ -9,6 +9,7 @@ using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput;
 using ACCManager.Util;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -86,9 +87,35 @@ namespace ACCManager
             _uiSettings.Save(uiSettings);
 
 
+            this.Drop += MainWindow_Drop;
+
             Instance = this;
         }
 
+        private void MainWindow_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data is DataObject)
+            {
+                DataObject data = (DataObject)e.Data;
+
+                StringCollection droppedItems = data.GetFileDropList();
+                if (droppedItems.Count == 1)
+                {
+                    string droppedItem = droppedItems[0];
+
+                    if (droppedItem.EndsWith(".json"))
+                    {
+                        if (SetupImporter.Instance.Open(droppedItem))
+                        {
+                            tabSetups.Focus();
+                            e.Handled = true;
+                            return;
+                        }
+                    }
+                }
+            }
+
+        }
 
         public void SaveLocation()
         {

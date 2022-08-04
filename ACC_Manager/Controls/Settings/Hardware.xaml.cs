@@ -23,7 +23,6 @@ namespace ACCManager.Controls
     /// </summary>
     public partial class Hardware : UserControl
     {
-
         private readonly HardwareSettings _hardwareSettings;
         public Hardware()
         {

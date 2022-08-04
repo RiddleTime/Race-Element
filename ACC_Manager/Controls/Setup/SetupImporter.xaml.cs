@@ -90,15 +90,15 @@ namespace ACCManager.Controls
             }
         }
 
-        public void Open(string setupFile, bool showTrack = false)
+        public bool Open(string setupFile, bool showTrack = false)
         {
             FileInfo file = new FileInfo(setupFile);
             if (!file.Exists)
-                return;
+                return false;
 
             SetupJson.Root setupRoot = ConversionFactory.GetSetupJsonRoot(file);
             if (setupRoot == null)
-                return;
+                return false;
 
             Debug.WriteLine($"Importing {file.FullName}");
             CarModels model = ConversionFactory.ParseCarName(setupRoot.CarName);
@@ -115,6 +115,8 @@ namespace ACCManager.Controls
 
             this.Visibility = Visibility.Visible;
             SetupsTab.Instance.tabControl.IsEnabled = false;
+
+            return true;
         }
 
         public void Close()
