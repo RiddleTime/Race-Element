@@ -6,7 +6,6 @@ using ACCManager.Data.ACC.Tracker;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.Util;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -14,15 +13,11 @@ using System.Drawing.Text;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Threading;
 using static ACCManager.ACCSharedMemory;
 using static ACCManager.HUD.Overlay.Configuration.OverlaySettings;
-using static ACCManager.HUD.Overlay.Internal.Monitors;
-using static ACCManager.HUD.Overlay.Internal.Windows;
 
 namespace ACCManager.HUD.Overlay.Internal
 {
@@ -230,6 +225,7 @@ namespace ACCManager.HUD.Overlay.Internal
         public void RequestRedraw()
         {
             this.UpdateLayeredWindow();
+
         }
 
         private void PagePhysicsChanged(object sender, SPageFilePhysics e)
@@ -249,6 +245,7 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public void Stop()
         {
+            this.HideAnimate(AnimateMode.Blend | AnimateMode.ExpandCollapse, 200);
             this.EnableReposition(false);
             try
             {
@@ -266,6 +263,7 @@ namespace ACCManager.HUD.Overlay.Internal
             BroadcastTracker.Instance.OnRealTimeLocalCarUpdate -= BroadCastRealTimeLocalCarUpdateChanged;
 
             Draw = false;
+
             this.Close();
             this.Dispose();
         }
