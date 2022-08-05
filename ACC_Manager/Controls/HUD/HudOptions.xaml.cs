@@ -286,7 +286,7 @@ namespace ACCManager.Controls
 
                     Task.Run(() =>
                     {
-                        overlay?.Stop();
+                        overlay?.Stop(true);
                     });
 
                     OverlaysACC.ActiveOverlays.Remove(overlay);

@@ -68,12 +68,6 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
 
                     _renderer(g);
                 }
-
-#if DEBUG
-                string bitmapString = $"{_bitmap.GetHbitmap().GetType()}";
-                Debug.WriteLine($"le: {bitmapString[0]}");
-                Debug.WriteLine($"str:\n{bitmapString}");
-#endif
             }
         }
 

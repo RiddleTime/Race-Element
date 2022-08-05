@@ -243,9 +243,11 @@ namespace ACCManager.HUD.Overlay.Internal
             pageStatic = e;
         }
 
-        public void Stop()
+        public void Stop(bool animate = false)
         {
-            this.HideAnimate(AnimateMode.Blend | AnimateMode.ExpandCollapse, 200);
+            if (animate)
+                this.HideAnimate(AnimateMode.Blend | AnimateMode.ExpandCollapse, 200);
+
             this.EnableReposition(false);
             try
             {
