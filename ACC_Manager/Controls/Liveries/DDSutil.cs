@@ -25,41 +25,48 @@ namespace ACCManager.Controls.Liveries
 
         public static void GenerateDDS(LiveryTreeCar livery)
         {
-            for (int i = 0; i < pngsToDDS.Count; i++)
+            try
             {
-                DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + livery.CarsRoot.CustomSkinName);
-                FileInfo[] liveryPngFiles = customSkinDir.GetFiles(pngsToDDS.ElementAt(i).Value);
-                if (liveryPngFiles != null && liveryPngFiles.Length > 0)
+                for (int i = 0; i < pngsToDDS.Count; i++)
                 {
-                    MainWindow.Instance.Dispatcher.Invoke(new Action(() =>
+                    DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + livery.CarsRoot.CustomSkinName);
+                    FileInfo[] liveryPngFiles = customSkinDir.GetFiles(pngsToDDS.ElementAt(i).Value);
+                    if (liveryPngFiles != null && liveryPngFiles.Length > 0)
                     {
-                        MainWindow.Instance.ClearSnackbar();
-                        MainWindow.Instance.EnqueueSnackbarMessage($"Generating {pngsToDDS.ElementAt(i).Key} for {livery.CarsRoot.CustomSkinName}");
-                    }));
+                        MainWindow.Instance.Dispatcher.Invoke(new Action(() =>
+                        {
+                            MainWindow.Instance.ClearSnackbar();
+                            MainWindow.Instance.EnqueueSnackbarMessage($"Generating {pngsToDDS.ElementAt(i).Key} for {livery.CarsRoot.CustomSkinName}");
+                        }));
 
-                    FileInfo pngFile = liveryPngFiles[0];
-                    FileStream actualFileStream = pngFile.OpenRead();
+                        FileInfo pngFile = liveryPngFiles[0];
+                        FileStream actualFileStream = pngFile.OpenRead();
 
-                    Bitmap bitmap = new Bitmap(actualFileStream);
+                        Bitmap bitmap = new Bitmap(actualFileStream);
 
-                    if (pngsToDDS.ElementAt(i).Key.Contains("_1"))
-                    {
-                        bitmap = ResizeBitmap(bitmap, 2048, 2048);
+                        if (pngsToDDS.ElementAt(i).Key.Contains("_1"))
+                        {
+                            bitmap = ResizeBitmap(bitmap, 2048, 2048);
+                        }
+
+                        Surface surface = Surface.CopyFromBitmap(bitmap);
+
+                        FileInfo targetFile = new FileInfo($"{customSkinDir}\\{pngsToDDS.ElementAt(i).Key}");
+                        if (targetFile.Exists)
+                            targetFile.Delete();
+
+                        FileStream write = targetFile.OpenWrite();
+                        DdsFile.Save(write, DdsFileFormat.BC7, DdsErrorMetric.Perceptual, BC7CompressionMode.Slow, true, true, ResamplingAlgorithm.SuperSampling, surface, ProgressChanged);
+                        write.Close();
+                        actualFileStream.Close();
+
+                        GC.Collect();
                     }
-
-                    Surface surface = Surface.CopyFromBitmap(bitmap);
-
-                    FileInfo targetFile = new FileInfo($"{customSkinDir}\\{pngsToDDS.ElementAt(i).Key}");
-                    if (targetFile.Exists)
-                        targetFile.Delete();
-
-                    FileStream write = targetFile.OpenWrite();
-                    DdsFile.Save(write, DdsFileFormat.BC7, DdsErrorMetric.Perceptual, BC7CompressionMode.Slow, true, true, ResamplingAlgorithm.SuperSampling, surface, ProgressChanged);
-                    write.Close();
-                    actualFileStream.Close();
-
-                    GC.Collect();
                 }
+            }
+            catch (Exception e)
+            {
+                LogWriter.WriteToLog(e);
             }
         }
 
