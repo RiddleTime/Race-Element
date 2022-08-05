@@ -42,6 +42,19 @@ namespace ACCManager.Controls
                     App.Current.MainWindow.WindowState = WindowState.Maximized;
             };
 
+            this.iconSteeringLock.MouseLeftButtonDown += (s, e) =>
+            {
+                MainWindow.Instance.tabSettings.Focus();
+                SettingsTab.Instance.tabHardware.Focus();
+            };
+
+            this.iconSetupHider.MouseLeftButtonDown += (s, e) =>
+            {
+                MainWindow.Instance.tabSettings.Focus();
+                SettingsTab.Instance.tabStreaming.Focus();
+            };
+
+
             this.MouseDoubleClick += TitleBar_MouseDoubleClick;
             _instance = this;
         }

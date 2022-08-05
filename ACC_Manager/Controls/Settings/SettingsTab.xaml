@@ -33,7 +33,7 @@
             </TabItem>
 
 
-            <TabItem Height="60">
+            <TabItem Height="60" x:Name="tabHardware">
                 <TabItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -55,7 +55,7 @@
                 <local:Hardware></local:Hardware>
             </TabItem>
 
-            <TabItem Height="60">
+            <TabItem Height="60" x:Name="tabStreaming">
                 <TabItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>

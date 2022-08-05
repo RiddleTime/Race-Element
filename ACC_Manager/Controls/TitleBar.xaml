@@ -52,6 +52,7 @@
                         Margin="5,0,0,0"
                         ToolTip="Automatic Steering Lock Activated"
                         Visibility="Collapsed"
+                        Cursor="Hand"
                     />
                     <materialDesign:PackIcon
                         x:Name="iconSetupHider"
@@ -65,6 +66,7 @@
                         Margin="5,0,0,0"
                         ToolTip="Setup Hider Activated"
                         Visibility="Collapsed"
+                        Cursor="Hand"
                     />
                 </StackPanel>
             </StackPanel>
