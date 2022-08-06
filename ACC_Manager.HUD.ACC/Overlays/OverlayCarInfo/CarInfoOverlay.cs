@@ -1,4 +1,4 @@
-﻿using ACCManager.HUD.ACC.Data.Tracker.Laps;
+﻿using ACCManager.Data.ACC.Tracker.Laps;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.Util;

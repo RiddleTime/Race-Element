@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ACCManager.HUD.ACC.Data.Tracker.Laps
+namespace ACCManager.Data.ACC.Tracker.Laps
 {
 
     /// <summary>
@@ -46,7 +46,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
         }
     }
 
-    internal class LapTracker
+    public class LapTracker
     {
         private static LapTracker _instance;
         public static LapTracker Instance
@@ -62,8 +62,8 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
         private ACCSharedMemory sharedMemory;
         private int CurrentSector = 0;
 
-        internal List<LapData> Laps = new List<LapData>();
-        internal LapData CurrentLap;
+        public List<LapData> Laps = new List<LapData>();
+        public LapData CurrentLap;
 
         public event EventHandler<LapData> LapFinished;
 
@@ -130,7 +130,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
                                             LapFinished?.Invoke(this, Laps[Laps.Count - 1]);
                                         }
 
-                                      
+
                                     }
                                 }
                             }

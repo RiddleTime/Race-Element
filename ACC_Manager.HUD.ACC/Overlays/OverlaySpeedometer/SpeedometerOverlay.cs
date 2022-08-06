@@ -1,5 +1,5 @@
 ﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.HUD.ACC.Data.Tracker.Laps;
+using ACCManager.Data.ACC.Tracker.Laps;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.Util;
@@ -17,8 +17,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySpeedometer
 #endif
     internal sealed class SpeedometerOverlay : AbstractOverlay
     {
-        private readonly InfoPanel _panel;
-
         private SpeedometerConfiguration _config = new SpeedometerConfiguration();
         private class SpeedometerConfiguration : OverlayConfiguration
         {
@@ -29,10 +27,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySpeedometer
             }
         }
 
+        private readonly InfoPanel _panel;
         private float _maxSpeed = 0;
+
         public SpeedometerOverlay(Rectangle rectangle) : base(rectangle, "Speedometer Overlay")
         {
-            this.Width = 300;
+            this.Width = 150;
             _panel = new InfoPanel(13, this.Width);
             this.Height = _panel.FontHeight * 2 + 1;
         }

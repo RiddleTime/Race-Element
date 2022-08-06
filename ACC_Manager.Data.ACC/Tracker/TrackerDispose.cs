@@ -1,5 +1,6 @@
 ﻿using ACCManager.Data.ACC.EntryList;
 using ACCManager.Data.ACC.Session;
+using ACCManager.Data.ACC.Tracker.Laps;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace ACCManager.Data.ACC.Tracker
             EntryListTracker.Instance.Stop();
             RaceSessionTracker.Instance.Stop();
             SetupHiderTracker.Instance.Dispose();
+            LapTracker.Instance.Stop();
         }
     }
 }
