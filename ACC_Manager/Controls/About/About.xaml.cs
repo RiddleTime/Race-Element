@@ -34,8 +34,7 @@ namespace ACCManager.Controls
             buttonDiscord.Click += (sender, e) => Process.Start("https://discord.gg/26AAEW5mUq"); ;
             buttonGithub.Click += (sender, e) => Process.Start("https://github.com/RiddleTime/ACC-Manager");
 
-
-            this.Loaded += (s, e) => Task.Run(new Action(CheckNewestVersion));
+            this.Loaded += (s, e) => new Thread((x) => CheckNewestVersion()).Start();
 
             this.IsVisibleChanged += (s, e) =>
             {
