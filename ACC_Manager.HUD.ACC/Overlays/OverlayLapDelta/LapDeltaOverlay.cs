@@ -1,4 +1,6 @@
 ﻿using ACC_Manager.Util.SystemExtensions;
+
+using ACCManager.Data.ACC.Tracker.LapDataDB;
 using ACCManager.Data.ACC.Tracker.Laps;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;

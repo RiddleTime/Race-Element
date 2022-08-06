@@ -43,6 +43,9 @@
     <Reference Include="AutoMapper, Version=8.1.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.8.1.0\lib\net461\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="LiteDB, Version=5.0.12.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiteDB.5.0.12\lib\net45\LiteDB.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -54,6 +57,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -67,10 +71,15 @@
   <ItemGroup>
     <Compile Include="AccidentList\AccidentListTracker.cs" />
     <Compile Include="Cars\SteeringLock.cs" />
+    <Compile Include="Database\GameData\DbCarData.cs" />
+    <Compile Include="Database\GameData\DbTrackData.cs" />
+    <Compile Include="Database\LapDataDB\LapData.cs" />
+    <Compile Include="Database\LapDataDB\LapDataExtensions.cs" />
+    <Compile Include="Database\LocalDatabase.cs" />
+    <Compile Include="Database\SessionData\DbSession.cs" />
     <Compile Include="EntryList\EntryListTracker.cs" />
     <Compile Include="EntryList\TrackPositionGraph\CarPosition.cs" />
     <Compile Include="EntryList\TrackPositionGraph\PositionGraph.cs" />
-    <Compile Include="Laps\LapDataExtensions.cs" />
     <Compile Include="Laps\LapTracker.cs" />
     <Compile Include="Session\RaceSessionTracker.cs" />
     <Compile Include="Session\RaceSessionState.cs" />
@@ -150,5 +159,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

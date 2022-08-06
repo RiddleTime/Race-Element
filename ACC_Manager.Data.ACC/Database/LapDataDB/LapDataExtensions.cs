@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCManager.Data.ACC.Tracker.Laps
+namespace ACCManager.Data.ACC.Tracker.LapDataDB
 {
     public static class LapDataExtensions
     {
