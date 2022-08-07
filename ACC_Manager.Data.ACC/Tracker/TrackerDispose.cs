@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ACCManager.Data.ACC.Tracker
 {
-    public class DataTrackerDispose
+    public class ACCTrackerDispose
     {
         public static void Dispose()
         {

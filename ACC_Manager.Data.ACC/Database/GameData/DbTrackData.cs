@@ -9,10 +9,11 @@ namespace ACCManager.Data.ACC.Database.GameData
     internal class DbTrackData
     {
         public Guid TrackGuid { get; set; }
+        public int Length { get; set; }
         public string ParseName { get; set; }
     }
 
-    internal class TrackDataDB
+    internal class TrackDataCollection
     {
         public static void UpsertTrack(DbTrackData track)
         {

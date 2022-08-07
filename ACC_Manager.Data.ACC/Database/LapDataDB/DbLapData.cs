@@ -41,7 +41,7 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
         }
     }
 
-    public class LapDataDB
+    public class LapDataCollection
     {
         public static void UpsertLap(DbLapData lap)
         {

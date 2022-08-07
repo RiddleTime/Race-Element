@@ -14,7 +14,7 @@ namespace ACCManager.Data.ACC.Database.GameData
         public string ParseName { get; set; }
     }
 
-    internal class CarDataDB
+    internal class CarDataCollection
     {
         public static void UpsertTrack(DbCarData car)
         {

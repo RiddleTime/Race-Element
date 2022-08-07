@@ -97,7 +97,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
 
                                             LapFinished?.Invoke(this, Laps[Laps.Count - 1]);
 
-                                            LapDataDB.UpsertLap(Laps[Laps.Count - 1]);
+                                            LapDataCollection.UpsertLap(Laps[Laps.Count - 1]);
                                         }
                                     }
                                 }

@@ -1,4 +1,5 @@
 ﻿using ACCManager.Broadcast;
+using ACCManager.Data.ACC.Database.SessionData;
 using ACCManager.Data.ACC.Tracker;
 using System;
 using System.Collections.Generic;
@@ -13,13 +14,15 @@ namespace ACCManager.Data.ACC.Session
 {
     public class RaceSessionTracker
     {
-
         private static RaceSessionTracker _instance;
         public static RaceSessionTracker Instance
         {
             get
             {
+                Debug.WriteLine("asd2");
+
                 if (_instance == null) _instance = new RaceSessionTracker();
+
                 return _instance;
             }
         }
@@ -40,6 +43,7 @@ namespace ACCManager.Data.ACC.Session
 
         private RaceSessionTracker()
         {
+            Debug.WriteLine("Started race session tracker.");
             _sharedMemory = new ACCSharedMemory();
             StartTracking();
         }
@@ -70,6 +74,16 @@ namespace ACCManager.Data.ACC.Session
                         Debug.WriteLine($"SessionIndex: {_lastSessionIndex} -> {pageGraphics.SessionIndex}");
                         _lastSessionIndex = pageGraphics.SessionIndex;
                         OnSessionIndexChanged?.Invoke(this, _lastSessionIndex);
+
+                        if (_lastSessionIndex > 0)
+                        {
+                            RaceSessionCollection.Upsert(new DbRaceSession()
+                            {
+                                UtcStart = DateTime.UtcNow,
+                                SessionIndex = _lastSessionIndex,
+                                SessionType = _lastSessionType
+                            });
+                        }
                     }
 
                     if (pageGraphics.Status != _lastAcStatus)

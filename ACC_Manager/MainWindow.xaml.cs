@@ -90,6 +90,9 @@ namespace ACCManager
             this.Drop += MainWindow_Drop;
 
             Instance = this;
+
+            // TODO refactor
+            ACCTrackerStarter.StartACCTrackers();
         }
 
         private void MainWindow_Drop(object sender, DragEventArgs e)
@@ -144,7 +147,7 @@ namespace ACCManager
 
             OverlaysACC.CloseAll();
             HudTrackers.StopAll();
-            DataTrackerDispose.Dispose();
+            ACCTrackerDispose.Dispose();
             HudOptions.Instance.DisposeKeyboardHooks();
             SteeringLockTracker.Instance.Dispose();
         }
@@ -153,7 +156,7 @@ namespace ACCManager
         {
             OverlaysACC.CloseAll();
             HudTrackers.StopAll();
-            DataTrackerDispose.Dispose();
+            ACCTrackerDispose.Dispose();
             HudOptions.Instance.DisposeKeyboardHooks();
             SteeringLockTracker.Instance.Dispose();
         }

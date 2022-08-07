@@ -139,6 +139,7 @@
     <Compile Include="Tracker\PageGraphicsTracker.cs" />
     <Compile Include="Tracker\PagePhysicsTracker.cs" />
     <Compile Include="Tracker\PageStaticTracker.cs" />
+    <Compile Include="Tracker\TrackerStarter.cs" />
     <Compile Include="Tracks\TrackNames.cs" />
   </ItemGroup>
   <ItemGroup>
