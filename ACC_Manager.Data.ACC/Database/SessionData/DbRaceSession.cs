@@ -15,6 +15,9 @@ namespace ACCManager.Data.ACC.Database.SessionData
         public Guid _id { get; set; }
 #pragma warning restore IDE1006 // Naming Styles
 
+        public Guid TrackGuid { get; set; }
+        public Guid CarGuid { get; set; }
+
         public DateTime UtcStart { get; set; }
         public DateTime UtcEnd { get; set; }
         public AcSessionType SessionType { get; set; }

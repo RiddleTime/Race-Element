@@ -27,8 +27,6 @@ namespace ACCManager.Data.ACC.Database
                 {
                     if (_database == null) _database = new LiteDatabase($"Filename={_file};");
                     if (_database == null) Trace.WriteLine("Something went wrong initializing the LocalDatabase.Database");
-
-                    Trace.WriteLine($"ACCM DB Version: {_database.UserVersion}");
                 }
                 catch (Exception ex)
                 {

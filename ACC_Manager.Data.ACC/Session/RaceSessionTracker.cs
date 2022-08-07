@@ -1,4 +1,5 @@
 ﻿using ACCManager.Broadcast;
+using ACCManager.Data.ACC.Database.GameData;
 using ACCManager.Data.ACC.Database.SessionData;
 using ACCManager.Data.ACC.Tracker;
 using System;
@@ -74,11 +75,19 @@ namespace ACCManager.Data.ACC.Session
                     RaceSessionCollection.Update(CurrentSession);
                 }
 
+                var staticPageFile = _sharedMemory.ReadStaticPageFile();
+                DbCarData carData = CarDataCollection.GetCarData(staticPageFile.CarModel);
+                DbTrackData trackData = TrackDataCollection.GetTrackData(staticPageFile.Track);
+                if (carData == null || trackData == null)
+                    return;
+
                 CurrentSession = new DbRaceSession()
                 {
                     UtcStart = DateTime.UtcNow,
                     SessionIndex = _lastSessionIndex,
-                    SessionType = _lastSessionType
+                    SessionType = _lastSessionType,
+                    CarGuid = carData._id,
+                    TrackGuid = trackData._id
                 };
                 RaceSessionCollection.Insert(CurrentSession);
             }

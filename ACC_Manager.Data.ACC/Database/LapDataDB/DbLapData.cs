@@ -52,7 +52,6 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
             var collection = LocalDatabase.Database.GetCollection<DbLapData>();
             collection.EnsureIndex(x => x._id, true);
             collection.Insert(lap);
-
         }
     }
 }

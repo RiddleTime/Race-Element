@@ -15,27 +15,37 @@ namespace ACCManager.Data.ACC.Database.GameData
         public Guid _id { get; set; }
 #pragma warning restore IDE1006 // Naming Styles
 
-        public CarClasses CarClass { get; set; }
         public string ParseName { get; set; }
     }
 
     internal class CarDataCollection
     {
-        public static void Create()
+        public static DbCarData GetCarData(string parseName)
         {
-            new Thread(() =>
+            var collection = LocalDatabase.Database.GetCollection<DbCarData>();
+            var result = collection.FindOne(x => x.ParseName == parseName);
+
+            if (result == null)
             {
-                var collection = LocalDatabase.Database.GetCollection<DbCarData>();
-            }).Start();
+                CreateNewCar(parseName);
+                result = collection.FindOne(x => x.ParseName == parseName);
+            }
+
+            return result;
         }
 
-        public static void Upsert(DbCarData car)
+        private static void CreateNewCar(string parseName)
         {
-            Debug.WriteLine($"Inserting new car data {car._id} {car.CarClass} {car.ParseName}");
+            Insert(new DbCarData() { ParseName = parseName });
+        }
 
+        public static void Insert(DbCarData car)
+        {
             var collection = LocalDatabase.Database.GetCollection<DbCarData>();
             collection.EnsureIndex(x => x._id, true);
             collection.Insert(car);
+
+            Debug.WriteLine($"Inserted new car data {car._id} {car.ParseName}");
         }
     }
 }
