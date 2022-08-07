@@ -42,14 +42,14 @@ namespace ACCManager.Controls
                     App.Current.MainWindow.WindowState = WindowState.Maximized;
             };
 
-            this.iconSteeringLock.MouseLeftButtonDown += (s, e) =>
+            this.iconSteeringLock.MouseRightButtonDown += (s, e) =>
             {
                 MainWindow.Instance.tabSettings.Focus();
                 SettingsTab.Instance.tabHardware.Focus();
                 e.Handled = true;
             };
 
-            this.iconSetupHider.MouseLeftButtonDown += (s, e) =>
+            this.iconSetupHider.MouseRightButtonDown += (s, e) =>
             {
                 MainWindow.Instance.tabSettings.Focus();
                 SettingsTab.Instance.tabStreaming.Focus();
