@@ -55,8 +55,12 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                 Laps.Clear();
 
             lock (CurrentLap)
-                CurrentLap = new DbLapData() { Index = pageGraphics.CompletedLaps + 1 };
-
+            {
+                if (RaceSessionTracker.Instance.CurrentSession == null)
+                    Debug.WriteLine("Lap Tracker cannot record a new lap on session type change, current session is null");
+                else
+                    CurrentLap = new DbLapData() { Index = pageGraphics.CompletedLaps + 1, RaceSessionGuid = RaceSessionTracker.Instance.CurrentSession._id };
+            }
             Debug.WriteLine("LapTracker: Resetted current lap and previous recorded laps.");
         }
 
@@ -97,7 +101,11 @@ namespace ACCManager.Data.ACC.Tracker.Laps
 
                                             LapFinished?.Invoke(this, Laps[Laps.Count - 1]);
 
-                                            LapDataCollection.UpsertLap(Laps[Laps.Count - 1]);
+                                            if (RaceSessionTracker.Instance.CurrentSession != null)
+                                            {
+                                                Laps[Laps.Count - 1].RaceSessionGuid = RaceSessionTracker.Instance.CurrentSession._id;
+                                                LapDataCollection.Insert(Laps[Laps.Count - 1]);
+                                            }
                                         }
                                     }
                                 }

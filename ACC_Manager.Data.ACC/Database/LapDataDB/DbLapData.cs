@@ -12,7 +12,11 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
     /// </summary>
     public class DbLapData
     {
-        public Guid RaceSessionGuid { get; set; } = new Guid();
+#pragma warning disable IDE1006 // Naming Styles
+        public Guid _id { get; set; }
+#pragma warning restore IDE1006 // Naming Styles
+
+        public Guid RaceSessionGuid { get; set; } = Guid.NewGuid();
         /// <summary>
         /// Lap Index
         /// </summary>
@@ -43,12 +47,12 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
 
     public class LapDataCollection
     {
-        public static void UpsertLap(DbLapData lap)
+        public static void Insert(DbLapData lap)
         {
-            using (var db = LocalDatabase.Instance.Database)
-            {
-                db.GetCollection<DbLapData>().Upsert(lap);
-            }
+            var collection = LocalDatabase.Database.GetCollection<DbLapData>();
+            collection.EnsureIndex(x => x._id, true);
+            collection.Insert(lap);
+
         }
     }
 }

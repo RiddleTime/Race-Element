@@ -14,18 +14,6 @@ namespace ACCManager.Data.ACC.Session
 {
     public class RaceSessionTracker
     {
-        private static RaceSessionTracker _instance;
-        public static RaceSessionTracker Instance
-        {
-            get
-            {
-                Debug.WriteLine("asd2");
-
-                if (_instance == null) _instance = new RaceSessionTracker();
-
-                return _instance;
-            }
-        }
         private bool _isTracking = false;
         private ACCSharedMemory _sharedMemory;
 
@@ -41,11 +29,59 @@ namespace ACCManager.Data.ACC.Session
         private int _lastSessionIndex = -1;
         public event EventHandler<int> OnSessionIndexChanged;
 
+        internal DbRaceSession CurrentSession { get; private set; }
+
+        private static RaceSessionTracker _instance;
+
         private RaceSessionTracker()
         {
             Debug.WriteLine("Started race session tracker.");
             _sharedMemory = new ACCSharedMemory();
             StartTracking();
+            OnSessionIndexChanged += TryCreateNewSession;
+            OnACSessionTypeChanged += TryCreateNewSession;
+        }
+
+        public static RaceSessionTracker Instance
+        {
+            get
+            {
+                if (_instance == null) _instance = new RaceSessionTracker();
+                return _instance;
+            }
+        }
+
+        private void TryCreateNewSession(object sender, AcSessionType index)
+        {
+            if (index != AcSessionType.AC_UNKNOWN)
+                TryCreateNewSession(sender, _lastSessionIndex);
+        }
+
+        private void TryCreateNewSession(object sender, int sessionIndex)
+        {
+            if (_lastSessionType == AcSessionType.AC_UNKNOWN)
+                return;
+
+            if (_lastSessionIndex > -1)
+            {
+                if (CurrentSession != null)
+                {
+                    if (_lastAcStatus != AcStatus.AC_OFF)
+                        if (_lastSessionIndex == CurrentSession.SessionIndex && _lastSessionType == CurrentSession.SessionType)
+                            return;
+
+                    CurrentSession.UtcEnd = DateTime.UtcNow;
+                    RaceSessionCollection.Update(CurrentSession);
+                }
+
+                CurrentSession = new DbRaceSession()
+                {
+                    UtcStart = DateTime.UtcNow,
+                    SessionIndex = _lastSessionIndex,
+                    SessionType = _lastSessionType
+                };
+                RaceSessionCollection.Insert(CurrentSession);
+            }
         }
 
         private void StartTracking()
@@ -62,36 +98,52 @@ namespace ACCManager.Data.ACC.Session
 
                     var pageGraphics = _sharedMemory.ReadGraphicsPageFile();
 
-                    if (pageGraphics.SessionType != _lastSessionType)
-                    {
-                        Debug.WriteLine($"SessionType: {_lastSessionType} -> {pageGraphics.SessionType}");
-                        _lastSessionType = pageGraphics.SessionType;
-                        OnACSessionTypeChanged?.Invoke(this, _lastSessionType);
-                    }
-
-                    if (pageGraphics.SessionIndex != _lastSessionIndex)
-                    {
-                        Debug.WriteLine($"SessionIndex: {_lastSessionIndex} -> {pageGraphics.SessionIndex}");
-                        _lastSessionIndex = pageGraphics.SessionIndex;
-                        OnSessionIndexChanged?.Invoke(this, _lastSessionIndex);
-
-                        if (_lastSessionIndex > 0)
-                        {
-                            RaceSessionCollection.Upsert(new DbRaceSession()
-                            {
-                                UtcStart = DateTime.UtcNow,
-                                SessionIndex = _lastSessionIndex,
-                                SessionType = _lastSessionType
-                            });
-                        }
-                    }
-
                     if (pageGraphics.Status != _lastAcStatus)
                     {
                         Debug.WriteLine($"AcStatus: {_lastAcStatus} -> {pageGraphics.Status}");
                         _lastAcStatus = pageGraphics.Status;
+
+                        if (_lastAcStatus == AcStatus.AC_OFF)
+                        {
+                            _lastSessionIndex = -1;
+                            _lastSessionType = AcSessionType.AC_UNKNOWN;
+
+                            if (CurrentSession != null)
+                            {
+                                CurrentSession.UtcEnd = DateTime.UtcNow;
+                                RaceSessionCollection.Update(CurrentSession);
+                            }
+
+                            CurrentSession = null;
+                            OnSessionIndexChanged?.Invoke(this, _lastSessionIndex);
+                            Debug.WriteLine("CurrentSession Reset to null");
+                        }
+
                         OnACStatusChanged?.Invoke(this, _lastAcStatus);
                     }
+
+                    bool sessionIndexChanged = false;
+                    if (pageGraphics.SessionIndex != _lastSessionIndex && _lastAcStatus != AcStatus.AC_OFF)
+                    {
+                        Debug.WriteLine($"SessionIndex: {_lastSessionIndex} -> {pageGraphics.SessionIndex}");
+                        _lastSessionIndex = pageGraphics.SessionIndex;
+                        sessionIndexChanged = true;
+                    }
+
+                    bool sessionTypeChanged = false;
+                    if (pageGraphics.SessionType != _lastSessionType && _lastAcStatus != AcStatus.AC_OFF)
+                    {
+                        Debug.WriteLine($"SessionType: {_lastSessionType} -> {pageGraphics.SessionType}");
+                        _lastSessionType = pageGraphics.SessionType;
+                        sessionTypeChanged = true;
+                    }
+
+                    if (sessionIndexChanged)
+                        OnSessionIndexChanged?.Invoke(this, _lastSessionIndex);
+                    if (sessionTypeChanged)
+                        OnACSessionTypeChanged?.Invoke(this, _lastSessionType);
+
+
                 }
 
                 BroadcastTracker.Instance.OnRealTimeUpdate -= Instance_OnRealTimeUpdate;

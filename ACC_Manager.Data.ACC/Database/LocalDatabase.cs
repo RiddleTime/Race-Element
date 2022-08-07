@@ -1,5 +1,6 @@
 ﻿using ACCManager.Util;
 using LiteDB;
+using LiteDB.Engine;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,20 +16,32 @@ namespace ACCManager.Data.ACC.Database
     /// </summary>
     public class LocalDatabase
     {
-        private static LocalDatabase _instance;
-        public static LocalDatabase Instance
+        private static readonly string _file = FileUtil.AccManangerDataPath + "accm.db";
+
+        private static LiteDatabase _database;
+        public static LiteDatabase Database
         {
             get
             {
-                if (_instance == null)
-                    _instance = new LocalDatabase();
+                try
+                {
+                    if (_database == null) _database = new LiteDatabase($"Filename={_file};");
+                    if (_database == null) Trace.WriteLine("Something went wrong initializing the LocalDatabase.Database");
 
-                return _instance;
+                    Trace.WriteLine($"ACCM DB Version: {_database.UserVersion}");
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+
+                return _database;
             }
         }
 
-        private readonly string _file = FileUtil.AccManangerDataPath + "accm.db";
-
-        public LiteDatabase Database { get => new LiteDatabase(_file); }
+        public static void Close()
+        {
+            _database.Dispose();
+        }
     }
 }

@@ -80,11 +80,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
 
         public sealed override void Render(Graphics g)
         {
-            foreach (MessageOut output in TraceOutputListener.Instance.Outputs.Take(_config.VisibleLines))
-            {
-                DateTime time = DateTime.FromFileTime(output.time);
-                _table.AddRow($"{time:HH\\:mm\\:ss}", new string[] { output.message });
-            }
+            lock (TraceOutputListener.Instance.Outputs)
+                foreach (MessageOut output in TraceOutputListener.Instance.Outputs.Take(_config.VisibleLines))
+                {
+                    DateTime time = DateTime.FromFileTime(output.time);
+                    _table.AddRow($"{time:HH\\:mm\\:ss}", new string[] { output.message });
+                }
 
             _table.Draw(g);
         }
