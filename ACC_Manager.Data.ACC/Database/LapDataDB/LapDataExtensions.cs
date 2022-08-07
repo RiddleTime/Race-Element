@@ -5,42 +5,42 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCManager.Data.ACC.Tracker.LapDataDB
+namespace ACCManager.Data.ACC.Database.LapDataDB
 {
     public static class LapDataExtensions
     {
-        #region LapData Extensions
+        #region DbLapData Extensions
 
-        public static float GetLapTime(this LapData lap)
+        public static float GetLapTime(this DbLapData lap)
         {
             return lap.Time / 1000f;
         }
 
-        public static float GetSector1(this LapData lap)
+        public static float GetSector1(this DbLapData lap)
         {
             return lap.Sector1 / 1000f;
         }
 
-        public static float GetSector2(this LapData lap)
+        public static float GetSector2(this DbLapData lap)
         {
             return lap.Sector2 / 1000f;
         }
 
-        public static float GetSector3(this LapData lap)
+        public static float GetSector3(this DbLapData lap)
         {
             return lap.Sector3 / 1000f;
         }
 
-        public static float GetFuelUsage(this LapData lap)
+        public static float GetFuelUsage(this DbLapData lap)
         {
             return lap.FuelUsage / 1000f;
         }
 
         #endregion
 
-        #region List<LapData> Extensions
+        #region List<DbLapData> Extensions
 
-        public static int GetPotentialFastestLapTime(this List<LapData> laps)
+        public static int GetPotentialFastestLapTime(this List<DbLapData> laps)
         {
             if (laps.Count == 0) return -1;
 
@@ -56,12 +56,12 @@ namespace ACCManager.Data.ACC.Tracker.LapDataDB
             return fastestSector1 + fastestSector2 + fastestSector3;
         }
 
-        public static int GetAverageFuelUsage(this List<LapData> laps)
+        public static int GetAverageFuelUsage(this List<DbLapData> laps)
         {
             return laps.GetAverageFuelUsage(laps.Count);
         }
 
-        public static int GetAverageFuelUsage(this List<LapData> laps, int lapAmount)
+        public static int GetAverageFuelUsage(this List<DbLapData> laps, int lapAmount)
         {
             lapAmount.ClipMax(laps.Count);
             if (lapAmount < 2)
@@ -74,22 +74,22 @@ namespace ACCManager.Data.ACC.Tracker.LapDataDB
             return total / lapAmount;
         }
 
-        public static int GetAverageLapTime(this List<LapData> laps)
+        public static int GetAverageLapTime(this List<DbLapData> laps)
         {
             return laps.GetAverageLapTime(laps.Count);
         }
 
-        public static int GetAverageLapTime(this List<LapData> laps, bool onlyValidLaps)
+        public static int GetAverageLapTime(this List<DbLapData> laps, bool onlyValidLaps)
         {
             return laps.GetAverageLapTime(laps.Count, onlyValidLaps);
         }
 
-        public static int GetAverageLapTime(this List<LapData> laps, int lapAmount)
+        public static int GetAverageLapTime(this List<DbLapData> laps, int lapAmount)
         {
             return laps.GetAverageLapTime(lapAmount, false);
         }
 
-        public static int GetAverageLapTime(this List<LapData> laps, int lapAmount, bool onlyValidLaps)
+        public static int GetAverageLapTime(this List<DbLapData> laps, int lapAmount, bool onlyValidLaps)
         {
             lapAmount.ClipMax(laps.Count);
             if (lapAmount == 0)
@@ -99,7 +99,7 @@ namespace ACCManager.Data.ACC.Tracker.LapDataDB
             int validCount = 0;
             for (int i = 0; i < lapAmount; i++)
             {
-                LapData lap = laps[laps.Count - (lapAmount - i)];
+                DbLapData lap = laps[laps.Count - (lapAmount - i)];
                 if (onlyValidLaps)
                 {
                     if (lap.IsValid)
@@ -124,26 +124,26 @@ namespace ACCManager.Data.ACC.Tracker.LapDataDB
         /// <param name="sector">1, 2 or 3</param>
         /// <param name="time">laptime as int</param>
         /// <returns>true if the given sector time is faster than any others of that sector in these laps</returns>
-        public static bool IsSectorFastest(this List<LapData> laps, int sector, int time)
+        public static bool IsSectorFastest(this List<DbLapData> laps, int sector, int time)
         {
-            List<LapData> data = laps;
+            List<DbLapData> data = laps;
 
             sector.Clip(1, 3);
 
             switch (sector)
             {
                 case 1:
-                    foreach (LapData timing in data)
+                    foreach (DbLapData timing in data)
                         if (timing.IsValid && timing.Sector1 < time)
                             return false; break;
 
                 case 2:
-                    foreach (LapData timing in data)
+                    foreach (DbLapData timing in data)
                         if (timing.IsValid && timing.Sector2 < time)
                             return false; break;
 
                 case 3:
-                    foreach (LapData timing in data)
+                    foreach (DbLapData timing in data)
                         if (timing.IsValid && timing.Sector3 < time)
                             return false; break;
 
@@ -159,7 +159,7 @@ namespace ACCManager.Data.ACC.Tracker.LapDataDB
         /// <param name="laps"></param>
         /// <param name="sector"></param>
         /// <returns></returns>
-        public static int GetFastestSector(this List<LapData> laps, int sector)
+        public static int GetFastestSector(this List<DbLapData> laps, int sector)
         {
             sector.Clip(1, 3);
             if (laps.Count == 0)
@@ -169,17 +169,17 @@ namespace ACCManager.Data.ACC.Tracker.LapDataDB
             switch (sector)
             {
                 case 1:
-                    foreach (LapData lap in laps)
+                    foreach (DbLapData lap in laps)
                         if (lap.IsValid && (lap.Sector1 < fastest) && lap.Sector1 != -1)
                             fastest = lap.Sector1; break;
 
                 case 2:
-                    foreach (LapData lap in laps)
+                    foreach (DbLapData lap in laps)
                         if (lap.IsValid && (lap.Sector2 < fastest) && lap.Sector2 != -1)
                             fastest = lap.Sector2; break;
 
                 case 3:
-                    foreach (LapData lap in laps)
+                    foreach (DbLapData lap in laps)
                         if (lap.IsValid && (lap.Sector3 < fastest) && lap.Sector3 != -1)
                             fastest = lap.Sector3; break;
 

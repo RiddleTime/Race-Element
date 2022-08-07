@@ -7,8 +7,10 @@ using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.Data.ACC.Database.SessionData
 {
-    internal class DbSession
+    internal class DbRaceSession
     {
+
+
         public Guid Guid { get; set; }
         public DateTime Start { get; set; }
         public AcSessionType SessionType { get; set; }

@@ -29,12 +29,6 @@ namespace ACCManager.Data.ACC.Database
 
         private readonly string _file = FileUtil.AccManangerDataPath + "accm.db";
 
-        public LiteDatabase Database
-        {
-            get
-            {
-                return new LiteDatabase(_file);
-            }
-        }
+        public LiteDatabase Database { get => new LiteDatabase(_file); }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Data.ACC.Tracker.LapDataDB;
+using ACCManager.Data.ACC.Database.LapDataDB;
 using ACCManager.Data.ACC.Tracker.Laps;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
@@ -200,7 +200,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
             g.SmoothingMode = previous;
         }
 
-        private void FuelHelperLapFinished(object sender, LapData lap)
+        private void FuelHelperLapFinished(object sender, DbLapData lap)
         {
 
             float fuelLevel = (int)(pagePhysics.Fuel);

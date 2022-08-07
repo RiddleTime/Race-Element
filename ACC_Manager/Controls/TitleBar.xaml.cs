@@ -46,12 +46,14 @@ namespace ACCManager.Controls
             {
                 MainWindow.Instance.tabSettings.Focus();
                 SettingsTab.Instance.tabHardware.Focus();
+                e.Handled = true;
             };
 
             this.iconSetupHider.MouseLeftButtonDown += (s, e) =>
             {
                 MainWindow.Instance.tabSettings.Focus();
                 SettingsTab.Instance.tabStreaming.Focus();
+                e.Handled = true;
             };
 
 

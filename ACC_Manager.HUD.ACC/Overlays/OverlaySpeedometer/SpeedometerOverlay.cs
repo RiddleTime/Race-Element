@@ -1,5 +1,5 @@
 ﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Data.ACC.Tracker.LapDataDB;
+using ACCManager.Data.ACC.Database.LapDataDB;
 using ACCManager.Data.ACC.Tracker.Laps;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
@@ -48,7 +48,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySpeedometer
             LapTracker.Instance.LapFinished -= OnLapFinished;
         }
 
-        private void OnLapFinished(object sender, LapData e)
+        private void OnLapFinished(object sender, DbLapData e)
         {
             _maxSpeed.ClipMax(pagePhysics.SpeedKmh);
         }

@@ -1,9 +1,7 @@
-﻿using ACCManager.Broadcast;
-using ACCManager.Broadcast.Structs;
+﻿using ACCManager.Broadcast.Structs;
 using ACCManager.Data.ACC.Database;
-using ACCManager.Data.ACC.Tracker.LapDataDB;
+using ACCManager.Data.ACC.Database.LapDataDB;
 using ACCManager.Data.ACC.Session;
-using ACCManager.Data.ACC.Tracker;
 using ACCManager.Util;
 using System;
 using System.Collections.Generic;
@@ -11,7 +9,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ACCManager.Data.ACC.Tracker.Laps
 {
@@ -31,24 +28,17 @@ namespace ACCManager.Data.ACC.Tracker.Laps
         private ACCSharedMemory sharedMemory;
         private int CurrentSector = 0;
 
-        public List<LapData> Laps = new List<LapData>();
-        public LapData CurrentLap;
+        public List<DbLapData> Laps = new List<DbLapData>();
+        public DbLapData CurrentLap;
 
-        public event EventHandler<LapData> LapFinished;
+        public event EventHandler<DbLapData> LapFinished;
 
         private LapTracker()
         {
             sharedMemory = new ACCSharedMemory();
-            CurrentLap = new LapData();
+            CurrentLap = new DbLapData();
 
-//            using (var db = LocalDatabase.Instance.Database)
-//            {
 
-//                int count = db.GetCollection<LapData>().Count();
-//LapData
-//                var lapDataCol = db.GetCollection<Lapdata>();
-//                Debug.WriteLine($"lap data count: {count}");
-//            }
 
             if (!IsTracking)
                 this.Start();
@@ -65,7 +55,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                 Laps.Clear();
 
             lock (CurrentLap)
-                CurrentLap = new LapData() { Index = pageGraphics.CompletedLaps + 1 };
+                CurrentLap = new DbLapData() { Index = pageGraphics.CompletedLaps + 1 };
 
             Debug.WriteLine("LapTracker: Resetted current lap and previous recorded laps.");
         }
@@ -92,7 +82,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                         lock (Laps)
                             if (Laps.Any())
                             {
-                                LapData lastData = Laps.Last();
+                                DbLapData lastData = Laps.Last();
                                 if (_lastLapInfo.LaptimeMS == lastData.Time)
                                 {
                                     if (_lastLapInfo.Splits[2].HasValue)
@@ -106,9 +96,9 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                                             Trace.WriteLine($"{Laps[Laps.Count - 1]}");
 
                                             LapFinished?.Invoke(this, Laps[Laps.Count - 1]);
+
+                                            LapDataDB.UpsertLap(Laps[Laps.Count - 1]);
                                         }
-
-
                                     }
                                 }
                             }
@@ -139,7 +129,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                         if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF)
                         {
                             Laps.Clear();
-                            CurrentLap = new LapData() { Index = pageGraphics.CompletedLaps + 1 };
+                            CurrentLap = new DbLapData() { Index = pageGraphics.CompletedLaps + 1 };
                         }
 
 
@@ -177,7 +167,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                                     Laps.Add(CurrentLap);
                             }
 
-                            CurrentLap = new LapData() { Index = pageGraphics.CompletedLaps + 1 };
+                            CurrentLap = new DbLapData() { Index = pageGraphics.CompletedLaps + 1 };
                         }
                     }
                     catch (Exception ex)
