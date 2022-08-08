@@ -1,4 +1,5 @@
 ﻿using ACCManager.Data.ACC.Database.GameData;
+using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,6 +29,18 @@ namespace ACCManager.Data.ACC.Database.SessionData
 
     public class RaceSessionCollection
     {
+        private static ILiteCollection<DbRaceSession> _collection;
+        private static ILiteCollection<DbRaceSession> Collection
+        {
+            get
+            {
+                if (_collection == null)
+                    _collection = LocalDatabase.Database.GetCollection<DbRaceSession>();
+
+                return _collection;
+            }
+        }
+
         /// <summary>
         /// Returns all db Car Guids which exist with the given track guid
         /// </summary>
@@ -35,9 +48,7 @@ namespace ACCManager.Data.ACC.Database.SessionData
         /// <returns></returns>
         public static List<Guid> GetAllCarsForTrack(Guid trackId)
         {
-            var sessionCollection = LocalDatabase.Database.GetCollection<DbRaceSession>();
-
-            return sessionCollection.Find(x => x.TrackGuid == trackId)
+            return Collection.Find(x => x.TrackGuid == trackId)
                 .Select(x => x.CarGuid)
                 .Distinct()
                 .ToList();
@@ -45,21 +56,18 @@ namespace ACCManager.Data.ACC.Database.SessionData
 
         public static List<DbRaceSession> GetAll()
         {
-            var collection = LocalDatabase.Database.GetCollection<DbRaceSession>();
-            return collection.FindAll().OrderBy(x => x.UtcStart).ToList();
+            return Collection.FindAll().OrderBy(x => x.UtcStart).ToList();
         }
 
         public static void Update(DbRaceSession raceSession)
         {
-            var collection = LocalDatabase.Database.GetCollection<DbRaceSession>();
-
             try
             {
-                var storedSession = collection.FindOne(x => x._id == raceSession._id);
+                var storedSession = Collection.FindOne(x => x._id == raceSession._id);
                 if (storedSession != null)
                 {
                     storedSession = raceSession;
-                    collection.Update(storedSession);
+                    Collection.Update(storedSession);
                     Debug.WriteLine($"Updated Race session {raceSession._id}");
                 }
             }
@@ -68,10 +76,8 @@ namespace ACCManager.Data.ACC.Database.SessionData
 
         public static void Insert(DbRaceSession raceSession)
         {
-            var collection = LocalDatabase.Database.GetCollection<DbRaceSession>();
-            collection.EnsureIndex(x => x._id, true);
-
-            collection.Insert(raceSession);
+            Collection.EnsureIndex(x => x._id, true);
+            Collection.Insert(raceSession);
 
             Debug.WriteLine($"Inserted new race session {raceSession.SessionIndex} {raceSession.SessionType} {raceSession._id}");
         }

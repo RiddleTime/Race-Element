@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LiteDB;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -19,42 +20,48 @@ namespace ACCManager.Data.ACC.Database.GameData
 
     public class TrackDataCollection
     {
+        private static ILiteCollection<DbTrackData> _collection;
+        private static ILiteCollection<DbTrackData> Collection
+        {
+            get
+            {
+                if (_collection == null)
+                    _collection = LocalDatabase.Database.GetCollection<DbTrackData>();
+
+                return _collection;
+            }
+        }
+
         public static List<DbTrackData> GetAll()
         {
-            var collection = LocalDatabase.Database.GetCollection<DbTrackData>();
-            return collection.FindAll().OrderBy(x => x.ParseName).ToList();
+            var allTracks = Collection.FindAll();
+            if (!allTracks.Any()) return new List<DbTrackData>();
+
+            return allTracks.OrderBy(x => x.ParseName).ToList();
         }
 
         public static DbTrackData GetTrackData(Guid id)
         {
             var collection = LocalDatabase.Database.GetCollection<DbTrackData>();
-            return collection.FindById(id);
+            return Collection.FindById(id);
         }
 
         public static DbTrackData GetTrackData(string trackParseName)
         {
-            var collection = LocalDatabase.Database.GetCollection<DbTrackData>();
-
-            var result = collection.FindOne(x => x.ParseName == trackParseName);
+            var result = Collection.FindOne(x => x.ParseName == trackParseName);
             if (result == null)
             {
-                CreateNewTrack(trackParseName);
-                result = collection.FindOne(x => x.ParseName == trackParseName);
+                Insert(new DbTrackData() { ParseName = trackParseName });
+                result = Collection.FindOne(x => x.ParseName == trackParseName);
             }
 
             return result;
         }
 
-        private static void CreateNewTrack(string trackParseName)
-        {
-            Insert(new DbTrackData() { ParseName = trackParseName });
-        }
-
         public static void Insert(DbTrackData track)
         {
-            var collection = LocalDatabase.Database.GetCollection<DbTrackData>();
-            collection.EnsureIndex(x => x._id, true);
-            collection.Insert(track);
+            Collection.EnsureIndex(x => x._id, true);
+            Collection.Insert(track);
 
             Debug.WriteLine($"Inserted new track data {track._id} {track.ParseName}");
 

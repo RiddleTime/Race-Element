@@ -29,7 +29,7 @@ namespace ACCManager.Controls
         {
             InitializeComponent();
 
-            FillTrackComboBox();
+            this.Loaded += (s, e) => FillTrackComboBox();
 
             comboTracks.SelectionChanged += (s, e) => FillCarComboBox();
             comboCars.SelectionChanged += (s, e) => LoadSessionList();
@@ -105,9 +105,12 @@ namespace ACCManager.Controls
         public void FillTrackComboBox()
         {
             comboTracks.Items.Clear();
-            foreach (DbTrackData track in TrackDataCollection.GetAll())
+            List<DbTrackData> allTracks = TrackDataCollection.GetAll();
+            foreach (DbTrackData track in allTracks)
             {
                 TrackNames.Tracks.TryGetValue(track.ParseName, out string trackName);
+                if (trackName == null) trackName = track.ParseName;
+
                 ComboBoxItem item = new ComboBoxItem() { DataContext = track._id, Content = trackName };
                 comboTracks.Items.Add(item);
             }

@@ -1,4 +1,5 @@
 ﻿using ACCManager.Broadcast;
+using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,17 +54,27 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
 
     public class LapDataCollection
     {
+        private static ILiteCollection<DbLapData> _collection;
+        private static ILiteCollection<DbLapData> Collection
+        {
+            get
+            {
+                if (_collection == null)
+                    _collection = LocalDatabase.Database.GetCollection<DbLapData>();
+
+                return _collection;
+            }
+        }
+
         public static void Insert(DbLapData lap)
         {
-            var collection = LocalDatabase.Database.GetCollection<DbLapData>();
-            collection.EnsureIndex(x => x._id, true);
-            collection.Insert(lap);
+            Collection.EnsureIndex(x => x._id, true);
+            Collection.Insert(lap);
         }
 
         public static List<DbLapData> GetForSession(Guid sessionId)
         {
-            var collection = LocalDatabase.Database.GetCollection<DbLapData>();
-            return collection.Find(x => x.RaceSessionGuid == sessionId).ToList();
+            return Collection.Find(x => x.RaceSessionGuid == sessionId).ToList();
         }
     }
 }

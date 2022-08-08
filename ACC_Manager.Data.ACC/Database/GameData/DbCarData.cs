@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LiteDB;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -20,42 +21,45 @@ namespace ACCManager.Data.ACC.Database.GameData
 
     public class CarDataCollection
     {
+        private static ILiteCollection<DbCarData> _collection;
+        private static ILiteCollection<DbCarData> Collection
+        {
+            get
+            {
+                if (_collection == null)
+                    _collection = LocalDatabase.Database.GetCollection<DbCarData>();
+
+                return _collection;
+            }
+        }
+
         public static List<DbCarData> GetAll()
         {
-            var collection = LocalDatabase.Database.GetCollection<DbCarData>();
-            return collection.FindAll().OrderBy(x => x.ParseName).ToList();
+            return Collection.FindAll().OrderBy(x => x.ParseName).ToList();
         }
 
         public static DbCarData GetCarData(Guid id)
         {
-            var collection = LocalDatabase.Database.GetCollection<DbCarData>();
-            return collection.FindById(id);
+            return Collection.FindById(id);
         }
 
         public static DbCarData GetCarData(string parseName)
         {
-            var collection = LocalDatabase.Database.GetCollection<DbCarData>();
-            var result = collection.FindOne(x => x.ParseName == parseName);
+            var result = Collection.FindOne(x => x.ParseName == parseName);
 
             if (result == null)
             {
-                CreateNewCar(parseName);
-                result = collection.FindOne(x => x.ParseName == parseName);
+                Insert(new DbCarData() { ParseName = parseName });
+                result = Collection.FindOne(x => x.ParseName == parseName);
             }
 
             return result;
         }
 
-        private static void CreateNewCar(string parseName)
-        {
-            Insert(new DbCarData() { ParseName = parseName });
-        }
-
         public static void Insert(DbCarData car)
         {
-            var collection = LocalDatabase.Database.GetCollection<DbCarData>();
-            collection.EnsureIndex(x => x._id, true);
-            collection.Insert(car);
+            Collection.EnsureIndex(x => x._id, true);
+            Collection.Insert(car);
 
             Debug.WriteLine($"Inserted new car data {car._id} {car.ParseName}");
         }
