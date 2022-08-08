@@ -59,5 +59,11 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
             collection.EnsureIndex(x => x._id, true);
             collection.Insert(lap);
         }
+
+        public static List<DbLapData> GetForSession(Guid sessionId)
+        {
+            var collection = LocalDatabase.Database.GetCollection<DbLapData>();
+            return collection.Find(x => x.RaceSessionGuid == sessionId).ToList();
+        }
     }
 }

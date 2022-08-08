@@ -1,5 +1,6 @@
 ﻿using ACCManager.Data;
 using ACCManager.Data.ACC.Database.GameData;
+using ACCManager.Data.ACC.Database.LapDataDB;
 using ACCManager.Data.ACC.Database.SessionData;
 using ACCManager.Data.ACC.Tracks;
 using System;
@@ -54,6 +55,14 @@ namespace ACCManager.Controls
             {
                 Text = $"Start: {selected.UtcStart:U} \nEnd: {selected.UtcEnd:U}"
             });
+
+            ListView lapsListView = new ListView();
+            foreach (DbLapData lapData in LapDataCollection.GetForSession(selected._id))
+            {
+                ListViewItem lvi = new ListViewItem() { Content = lapData.ToString() };
+                lapsListView.Items.Add(lvi);
+            }
+            stackerSessionViewer.Children.Add(lapsListView);
         }
 
         private Guid GetSelectedTrack()
@@ -121,7 +130,7 @@ namespace ACCManager.Controls
 
                 ListViewItem listItem = new ListViewItem()
                 {
-                    Content = $"{session.UtcStart.ToLocalTime():U}",
+                    Content = $"{ACCSharedMemory.SessionTypeToString(session.SessionType)} - {session.UtcStart.ToLocalTime():U}",
                     DataContext = session
                 };
                 listViewRaceSessions.Items.Add(listItem);

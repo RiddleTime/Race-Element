@@ -9,21 +9,21 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="400" />
+            <ColumnDefinition Width="300" />
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0" Orientation="Vertical">
-            <ComboBox x:Name="comboTracks" Height="30" VerticalContentAlignment="Center"></ComboBox>
-            <ComboBox x:Name="comboCars" Height="30" VerticalContentAlignment="Center"></ComboBox>
-            
+            <ComboBox x:Name="comboTracks" Height="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></ComboBox>
+            <ComboBox x:Name="comboCars" Height="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></ComboBox>
+
             <ListView Margin="0,3,0,0" x:Name="listViewRaceSessions">
 
             </ListView>
 
         </StackPanel>
 
-        <StackPanel x:Name="stackerSessionViewer" Grid.Column="1" Orientation="Vertical">
+        <StackPanel x:Name="stackerSessionViewer" Grid.Column="1" Margin="3" Orientation="Vertical">
 
         </StackPanel>
     </Grid>
