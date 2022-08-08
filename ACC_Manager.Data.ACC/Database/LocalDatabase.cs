@@ -25,6 +25,10 @@ namespace ACCManager.Data.ACC.Database
             {
                 try
                 {
+                    DirectoryInfo dataDir = new DirectoryInfo(FileUtil.AccManangerDataPath);
+                    if (!dataDir.Exists)
+                        dataDir.Create();
+
                     if (_database == null) _database = new LiteDatabase($"Filename={_file};");
                     if (_database == null) Trace.WriteLine("Something went wrong initializing the LocalDatabase.Database");
                 }
