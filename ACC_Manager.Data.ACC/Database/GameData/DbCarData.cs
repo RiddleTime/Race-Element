@@ -9,7 +9,7 @@ using static ACCManager.Data.SetupConverter;
 
 namespace ACCManager.Data.ACC.Database.GameData
 {
-    internal class DbCarData
+    public class DbCarData
     {
 #pragma warning disable IDE1006 // Naming Styles
         public Guid _id { get; set; }
@@ -18,8 +18,14 @@ namespace ACCManager.Data.ACC.Database.GameData
         public string ParseName { get; set; }
     }
 
-    internal class CarDataCollection
+    public class CarDataCollection
     {
+        public static DbCarData GetCarData(Guid id)
+        {
+            var collection = LocalDatabase.Database.GetCollection<DbCarData>();
+            return collection.FindById(id);
+        }
+
         public static DbCarData GetCarData(string parseName)
         {
             var collection = LocalDatabase.Database.GetCollection<DbCarData>();

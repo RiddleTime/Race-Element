@@ -17,6 +17,12 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
 #pragma warning restore IDE1006 // Naming Styles
 
         public Guid RaceSessionGuid { get; set; } = Guid.NewGuid();
+
+        /// <summary>
+        /// The time when this lap was completed
+        /// </summary>
+        public DateTime UtcCompleted { get; set; }
+
         /// <summary>
         /// Lap Index
         /// </summary>

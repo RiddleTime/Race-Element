@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ACCManager.Data.ACC.Database.GameData
 {
-    internal class DbTrackData
+    public class DbTrackData
     {
 #pragma warning disable IDE1006 // Naming Styles
         public Guid _id { get; set; }
@@ -17,8 +17,15 @@ namespace ACCManager.Data.ACC.Database.GameData
         public string ParseName { get; set; }
     }
 
-    internal class TrackDataCollection
+    public class TrackDataCollection
     {
+
+        public static DbTrackData GetTrackData(Guid id)
+        {
+            var collection = LocalDatabase.Database.GetCollection<DbTrackData>();
+            return collection.FindById(id);
+        }
+
         public static DbTrackData GetTrackData(string trackParseName)
         {
             var collection = LocalDatabase.Database.GetCollection<DbTrackData>();

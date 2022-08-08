@@ -9,7 +9,7 @@ using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.Data.ACC.Database.SessionData
 {
-    internal class DbRaceSession
+    public class DbRaceSession
     {
 #pragma warning disable IDE1006 // Naming Styles
         public Guid _id { get; set; }
@@ -24,8 +24,14 @@ namespace ACCManager.Data.ACC.Database.SessionData
         public int SessionIndex { get; set; }
     }
 
-    internal class RaceSessionCollection
+    public class RaceSessionCollection
     {
+        public static List<DbRaceSession> GetAll()
+        {
+            var collection = LocalDatabase.Database.GetCollection<DbRaceSession>();
+            return collection.FindAll().OrderBy(x => x.UtcStart).ToList();
+        }
+
         public static void Update(DbRaceSession raceSession)
         {
             var collection = LocalDatabase.Database.GetCollection<DbRaceSession>();

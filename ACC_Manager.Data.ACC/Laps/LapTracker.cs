@@ -104,6 +104,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                                             if (RaceSessionTracker.Instance.CurrentSession != null)
                                             {
                                                 Laps[Laps.Count - 1].RaceSessionGuid = RaceSessionTracker.Instance.CurrentSession._id;
+                                                Laps[Laps.Count - 1].UtcCompleted = DateTime.UtcNow;
                                                 LapDataCollection.Insert(Laps[Laps.Count - 1]);
                                             }
                                         }
