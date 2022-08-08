@@ -48,7 +48,7 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
 
         public override string ToString()
         {
-            return $"Lap: {Index}, Time: {this.GetLapTime():F3}, IsValid: {IsValid}, S1: {this.GetSector1():F3}, S2: {this.GetSector2():F3}, S3: {this.GetSector3():F3}, LapType: {this.LapType}";
+            return $"Lap: {Index}, Time: {new TimeSpan(0, 0, 0, 0, Time):mm\\:ss\\:fff}, IsValid: {IsValid}, S1: {this.GetSector1():F3}, S2: {this.GetSector2():F3}, S3: {this.GetSector3():F3}, LapType: {this.LapType}";
         }
     }
 

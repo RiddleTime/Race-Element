@@ -60,6 +60,8 @@ namespace ACCManager.Controls
             foreach (DbLapData lapData in LapDataCollection.GetForSession(selected._id))
             {
                 ListViewItem lvi = new ListViewItem() { Content = lapData.ToString() };
+                if (!lapData.IsValid) lvi.Foreground = Brushes.OrangeRed;
+
                 lapsListView.Items.Add(lvi);
             }
             stackerSessionViewer.Children.Add(lapsListView);
