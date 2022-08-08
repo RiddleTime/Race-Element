@@ -29,16 +29,13 @@ namespace ACCManager.Data.ACC.Tracker.Laps
         private int CurrentSector = 0;
 
         public List<DbLapData> Laps = new List<DbLapData>();
-        public DbLapData CurrentLap;
+        public DbLapData CurrentLap = new DbLapData();
 
         public event EventHandler<DbLapData> LapFinished;
 
         private LapTracker()
         {
             sharedMemory = new ACCSharedMemory();
-            CurrentLap = new DbLapData();
-
-
 
             if (!IsTracking)
                 this.Start();
@@ -189,8 +186,6 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                 _instance = null;
                 IsTracking = false;
             }).Start();
-
-
         }
 
         internal void Stop()
