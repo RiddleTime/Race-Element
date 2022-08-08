@@ -22,6 +22,7 @@ namespace ACCManager.Data.ACC.Database.SessionData
         public DateTime UtcStart { get; set; }
         public DateTime UtcEnd { get; set; }
         public AcSessionType SessionType { get; set; }
+        public bool IsOnline { get; set; }
         public int SessionIndex { get; set; }
     }
 

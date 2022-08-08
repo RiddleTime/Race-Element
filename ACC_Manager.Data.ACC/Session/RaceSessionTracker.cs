@@ -87,7 +87,8 @@ namespace ACCManager.Data.ACC.Session
                     SessionIndex = _lastSessionIndex,
                     SessionType = _lastSessionType,
                     CarGuid = carData._id,
-                    TrackGuid = trackData._id
+                    TrackGuid = trackData._id,
+                    IsOnline = staticPageFile.isOnline
                 };
                 RaceSessionCollection.Insert(CurrentSession);
             }

@@ -28,10 +28,32 @@ namespace ACCManager.Controls
         {
             InitializeComponent();
 
-            this.Loaded += (s, e) => FillTrackComboBox();
+            FillTrackComboBox();
 
-            comboTracks.SelectionChanged += ComboTracks_SelectionChanged;
-            comboCars.SelectionChanged += ComboCars_SelectionChanged;
+            comboTracks.SelectionChanged += (s, e) => FillCarComboBox();
+            comboCars.SelectionChanged += (s, e) => LoadSessionList();
+            listViewRaceSessions.SelectionChanged += (s, e) => LoadSession();
+        }
+
+        private void LoadSession()
+        {
+            stackerSessionViewer.Children.Clear();
+
+            DbRaceSession selected = GetSelectedRaceSession();
+            if (selected == null) return;
+
+            stackerSessionViewer.Children.Add(new TextBlock()
+            {
+                Text = $"{ACCSharedMemory.SessionTypeToString(selected.SessionType)} - {(selected.IsOnline ? "On" : "Off")}line"
+            });
+            stackerSessionViewer.Children.Add(new TextBlock()
+            {
+                Text = $"Session Index: {selected.SessionIndex}"
+            });
+            stackerSessionViewer.Children.Add(new TextBlock()
+            {
+                Text = $"Start: {selected.UtcStart:U} \nEnd: {selected.UtcEnd:U}"
+            });
         }
 
         private Guid GetSelectedTrack()
@@ -46,18 +68,17 @@ namespace ACCManager.Controls
             return (Guid)(comboCars.SelectedItem as ComboBoxItem).DataContext;
         }
 
-        private void ComboCars_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private DbRaceSession GetSelectedRaceSession()
         {
-            LoadSessionList();
-        }
-
-        private void ComboTracks_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            FillCarComboBox();
+            if (listViewRaceSessions.SelectedIndex == -1) return null;
+            return (DbRaceSession)(listViewRaceSessions.SelectedItem as ListViewItem).DataContext;
         }
 
         public void FillCarComboBox()
         {
+            if (GetSelectedTrack() == Guid.Empty)
+                return;
+
             List<Guid> carGuidsForTrack = RaceSessionCollection.GetAllCarsForTrack(GetSelectedTrack());
             List<DbCarData> allCars = CarDataCollection.GetAll();
 
@@ -81,6 +102,7 @@ namespace ACCManager.Controls
                 ComboBoxItem item = new ComboBoxItem() { DataContext = track._id, Content = trackName };
                 comboTracks.Items.Add(item);
             }
+            comboCars.SelectedIndex = -1;
         }
 
         public void LoadSessionList()
@@ -97,7 +119,12 @@ namespace ACCManager.Controls
                 string carName = ConversionFactory.GetNameFromCarModel(carModel);
                 TrackNames.Tracks.TryGetValue(trackData.ParseName, out string trackName);
 
-                listViewRaceSessions.Items.Add($"{session.UtcStart.ToLocalTime():U}");
+                ListViewItem listItem = new ListViewItem()
+                {
+                    Content = $"{session.UtcStart.ToLocalTime():U}",
+                    DataContext = session
+                };
+                listViewRaceSessions.Items.Add(listItem);
             }
         }
     }

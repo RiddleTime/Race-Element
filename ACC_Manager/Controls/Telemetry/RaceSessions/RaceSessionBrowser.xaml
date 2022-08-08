@@ -14,11 +14,16 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0" Orientation="Vertical">
-            <ComboBox x:Name="comboTracks"></ComboBox>
-            <ComboBox x:Name="comboCars"></ComboBox>
-            <ListView x:Name="listViewRaceSessions">
+            <ComboBox x:Name="comboTracks" Height="30" VerticalContentAlignment="Center"></ComboBox>
+            <ComboBox x:Name="comboCars" Height="30" VerticalContentAlignment="Center"></ComboBox>
+            
+            <ListView Margin="0,3,0,0" x:Name="listViewRaceSessions">
 
             </ListView>
+
+        </StackPanel>
+
+        <StackPanel x:Name="stackerSessionViewer" Grid.Column="1" Orientation="Vertical">
 
         </StackPanel>
     </Grid>
