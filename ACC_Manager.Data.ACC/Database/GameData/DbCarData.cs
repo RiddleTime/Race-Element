@@ -20,6 +20,12 @@ namespace ACCManager.Data.ACC.Database.GameData
 
     public class CarDataCollection
     {
+        public static List<DbCarData> GetAll()
+        {
+            var collection = LocalDatabase.Database.GetCollection<DbCarData>();
+            return collection.FindAll().OrderBy(x => x.ParseName).ToList();
+        }
+
         public static DbCarData GetCarData(Guid id)
         {
             var collection = LocalDatabase.Database.GetCollection<DbCarData>();

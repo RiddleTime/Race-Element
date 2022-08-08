@@ -6,10 +6,20 @@
              xmlns:local="clr-namespace:ACCManager.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
     <Grid>
-        <ListView x:Name="listViewRaceSessions">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="400" />
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-        </ListView>
+        <StackPanel Grid.Column="0" Orientation="Vertical">
+            <ComboBox x:Name="comboTracks"></ComboBox>
+            <ComboBox x:Name="comboCars"></ComboBox>
+            <ListView x:Name="listViewRaceSessions">
 
+            </ListView>
+
+        </StackPanel>
     </Grid>
 </UserControl>

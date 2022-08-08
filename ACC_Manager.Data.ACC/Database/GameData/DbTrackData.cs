@@ -19,6 +19,11 @@ namespace ACCManager.Data.ACC.Database.GameData
 
     public class TrackDataCollection
     {
+        public static List<DbTrackData> GetAll()
+        {
+            var collection = LocalDatabase.Database.GetCollection<DbTrackData>();
+            return collection.FindAll().OrderBy(x => x.ParseName).ToList();
+        }
 
         public static DbTrackData GetTrackData(Guid id)
         {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACCManager.Data.ACC.Database.GameData;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -26,6 +27,21 @@ namespace ACCManager.Data.ACC.Database.SessionData
 
     public class RaceSessionCollection
     {
+        /// <summary>
+        /// Returns all db Car Guids which exist with the given track guid
+        /// </summary>
+        /// <param name="trackId"></param>
+        /// <returns></returns>
+        public static List<Guid> GetAllCarsForTrack(Guid trackId)
+        {
+            var sessionCollection = LocalDatabase.Database.GetCollection<DbRaceSession>();
+
+            return sessionCollection.Find(x => x.TrackGuid == trackId)
+                .Select(x => x.CarGuid)
+                .Distinct()
+                .ToList();
+        }
+
         public static List<DbRaceSession> GetAll()
         {
             var collection = LocalDatabase.Database.GetCollection<DbRaceSession>();
