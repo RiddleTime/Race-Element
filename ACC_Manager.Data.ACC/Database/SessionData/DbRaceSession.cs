@@ -76,9 +76,10 @@ namespace ACCManager.Data.ACC.Database.SessionData
 
         public static void Insert(DbRaceSession raceSession)
         {
+            LocalDatabase.Database.BeginTrans();
             Collection.EnsureIndex(x => x._id, true);
             Collection.Insert(raceSession);
-
+            LocalDatabase.Database.Commit();
             Debug.WriteLine($"Inserted new race session {raceSession.SessionIndex} {raceSession.SessionType} {raceSession._id}");
         }
     }

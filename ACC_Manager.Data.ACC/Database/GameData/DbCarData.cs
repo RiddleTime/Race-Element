@@ -58,8 +58,10 @@ namespace ACCManager.Data.ACC.Database.GameData
 
         public static void Insert(DbCarData car)
         {
+            LocalDatabase.Database.BeginTrans();
             Collection.EnsureIndex(x => x._id, true);
             Collection.Insert(car);
+            LocalDatabase.Database.Commit();
 
             Debug.WriteLine($"Inserted new car data {car._id} {car.ParseName}");
         }

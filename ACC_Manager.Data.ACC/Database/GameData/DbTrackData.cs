@@ -60,9 +60,10 @@ namespace ACCManager.Data.ACC.Database.GameData
 
         public static void Insert(DbTrackData track)
         {
+            LocalDatabase.Database.BeginTrans();
             Collection.EnsureIndex(x => x._id, true);
             Collection.Insert(track);
-
+            LocalDatabase.Database.Commit();
             Debug.WriteLine($"Inserted new track data {track._id} {track.ParseName}");
 
         }

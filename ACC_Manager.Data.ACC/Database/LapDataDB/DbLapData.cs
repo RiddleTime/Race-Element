@@ -68,8 +68,10 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
 
         public static void Insert(DbLapData lap)
         {
+            LocalDatabase.Database.BeginTrans();
             Collection.EnsureIndex(x => x._id, true);
             Collection.Insert(lap);
+            LocalDatabase.Database.Commit();
         }
 
         public static Dictionary<int, DbLapData> GetForSession(Guid sessionId)
