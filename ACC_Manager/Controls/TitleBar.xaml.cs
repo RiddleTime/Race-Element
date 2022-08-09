@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -41,6 +42,21 @@ namespace ACCManager.Controls
                     App.Current.MainWindow.WindowState = WindowState.Maximized;
             };
 
+            this.iconSteeringLock.MouseRightButtonDown += (s, e) =>
+            {
+                MainWindow.Instance.tabSettings.Focus();
+                SettingsTab.Instance.tabHardware.Focus();
+                e.Handled = true;
+            };
+
+            this.iconSetupHider.MouseRightButtonDown += (s, e) =>
+            {
+                MainWindow.Instance.tabSettings.Focus();
+                SettingsTab.Instance.tabStreaming.Focus();
+                e.Handled = true;
+            };
+
+
             this.MouseDoubleClick += TitleBar_MouseDoubleClick;
             _instance = this;
         }
@@ -73,6 +89,29 @@ namespace ACCManager.Controls
             }
 
             App.Current.MainWindow.WindowState = targetState;
+        }
+
+        public void SetIcons(ActivatedIcons icon, bool enabled)
+        {
+            switch (icon)
+            {
+                case ActivatedIcons.AutomaticSteeringHardLock:
+                    {
+                        iconSteeringLock.Visibility = enabled ? Visibility.Visible : Visibility.Collapsed;
+                        break;
+                    };
+                case ActivatedIcons.SetupHider:
+                    {
+                        iconSetupHider.Visibility = enabled ? Visibility.Visible : Visibility.Collapsed;
+                        break;
+                    };
+            }
+        }
+
+        public enum ActivatedIcons
+        {
+            AutomaticSteeringHardLock,
+            SetupHider,
         }
 
         private void ButtonExit_Click(object sender, RoutedEventArgs e)

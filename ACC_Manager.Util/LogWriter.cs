@@ -13,7 +13,9 @@ namespace ACCManager.Util
     public class LogWriter
     {
 
+#pragma warning disable IDE1006 // Naming Styles
         private static LogWriter _instance { get; set; }
+#pragma warning restore IDE1006 // Naming Styles
         /// <summary>
         /// Single instance of logwriter
         /// </summary>

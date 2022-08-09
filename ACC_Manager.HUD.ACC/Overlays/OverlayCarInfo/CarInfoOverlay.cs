@@ -1,4 +1,5 @@
-﻿using ACCManager.HUD.ACC.Data.Tracker.Laps;
+﻿using ACCManager.Data.ACC.Database.LapDataDB;
+using ACCManager.Data.ACC.Tracker.Laps;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.Util;
@@ -13,7 +14,7 @@ using static ACCManager.Data.SetupConverter;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
 {
-    [Overlay(Name = "Car Info", Version = 1.00,
+    [Overlay(Name = "Car Info", Version = 1.00, OverlayType = OverlayType.Release,
         Description = "A panel showing the damage time. Optionally showing current tyre set, av. fuel usage, exhaust temp and water temp.")]
     internal sealed class CarInfoOverlay : AbstractOverlay
     {

@@ -14,23 +14,25 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
         private CachedBitmap _cachedCursor;
         private IKeyboardMouseEvents _globalKbmHook;
 
+        private const int _circleWidth = 6;
+
         private readonly CachedBitmap.Renderer MouseDownRenderer = g =>
         {
-            g.DrawEllipse(Pens.White, 5, 5, 5);
-            g.DrawEllipse(Pens.White, 5, 5, 3);
+            g.DrawEllipse(Pens.White, _circleWidth, _circleWidth, _circleWidth);
+            g.DrawEllipse(Pens.White, _circleWidth, _circleWidth, 3);
             g.FillEllipse(new SolidBrush(Color.FromArgb(140, Color.Red)), 5, 5, 5);
         };
         private readonly CachedBitmap.Renderer MouseUpRenderer = g =>
         {
-            g.DrawEllipse(Pens.White, 5, 5, 5);
-            g.DrawEllipse(Pens.White, 5, 5, 3);
+            g.DrawEllipse(Pens.White, _circleWidth, _circleWidth, _circleWidth);
+            g.DrawEllipse(Pens.White, _circleWidth, _circleWidth, 3);
             g.FillEllipse(new SolidBrush(Color.FromArgb(140, Color.White)), 5, 5, 5);
         };
 
         public MousePositionOverlay(Rectangle rectangle, string Name) : base(rectangle, Name)
         {
-            this.Width = 11;
-            this.Height = 11;
+            this.Width = _circleWidth * 2 + 1;
+            this.Height = Width;
             this.RequestsDrawItself = true;
         }
 
@@ -42,15 +44,15 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
             _globalKbmHook.MouseUp += GlobalMouseUp;
             _globalKbmHook.MouseMove += GlobalMouseMove;
 
-            this.X = GetCursorPosition().X - 5;
-            this.Y = GetCursorPosition().Y - 5;
+            this.X = GetCursorPosition().X - _circleWidth;
+            this.Y = GetCursorPosition().Y - _circleWidth;
             this.RequestRedraw();
         }
 
         private void GlobalMouseMove(object sender, MouseEventArgs e)
         {
-            this.X = e.Location.X - 5;
-            this.Y = e.Location.Y - 5;
+            this.X = e.Location.X - _circleWidth;
+            this.Y = e.Location.Y - _circleWidth;
         }
 
         private void GlobalMouseUp(object sender, MouseEventArgs e)

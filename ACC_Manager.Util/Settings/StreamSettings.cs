@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using ACC_Manager.Util;
+using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.IO;
 
 namespace ACCManager.Util.Settings
 {
-    public class StreamingSettingsJson
+    public class StreamingSettingsJson : IGenericSettingsJson
     {
         public string StreamingSoftware { get; set; }
         public string StreamingWebSocketIP { get; set; }
@@ -13,8 +14,15 @@ namespace ACCManager.Util.Settings
         public string StreamingWebSocketPassword { get; set; }
 
         public bool SetupHider { get; set; }
+    }
 
-        public static StreamingSettingsJson Default()
+    public class StreamSettings : AbstractSettingsJson<StreamingSettingsJson>
+    {
+        public override string Path => FileUtil.AccManangerSettingsPath;
+        public override string FileName => "Streaming.json";
+
+
+        public override StreamingSettingsJson Default()
         {
             var settings = new StreamingSettingsJson()
             {
@@ -25,65 +33,6 @@ namespace ACCManager.Util.Settings
                 SetupHider = false
             };
             return settings;
-        }
-    }
-
-    public class StreamSettings
-    {
-        private const string FileName = "Streaming.json";
-        private static FileInfo StreamSettingsFile => new FileInfo(FileUtil.AccManangerSettingsPath + FileName);
-
-        public static StreamingSettingsJson LoadJson()
-        {
-            if (!StreamSettingsFile.Exists)
-                return StreamingSettingsJson.Default();
-
-            try
-            {
-                using (FileStream fileStream = StreamSettingsFile.OpenRead())
-                {
-                    return ReadJson(fileStream);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-            return StreamingSettingsJson.Default();
-        }
-
-        public static StreamingSettingsJson ReadJson(Stream stream)
-        {
-            string jsonString = string.Empty;
-            try
-            {
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    jsonString = reader.ReadToEnd();
-                    jsonString = jsonString.Replace("\0", "");
-                    reader.Close();
-                    stream.Close();
-                }
-
-                return JsonConvert.DeserializeObject<StreamingSettingsJson>(jsonString);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-            }
-
-            return StreamingSettingsJson.Default();
-        }
-
-        public static void SaveJson(StreamingSettingsJson streamSettings)
-        {
-            string jsonString = JsonConvert.SerializeObject(streamSettings, Formatting.Indented);
-
-            if (!StreamSettingsFile.Exists)
-                if (!Directory.Exists(FileUtil.AccManangerSettingsPath))
-                    Directory.CreateDirectory(FileUtil.AccManangerSettingsPath);
-
-            File.WriteAllText(FileUtil.AccManangerSettingsPath + FileName, jsonString);
         }
     }
 }

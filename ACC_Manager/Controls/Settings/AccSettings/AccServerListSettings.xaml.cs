@@ -21,13 +21,17 @@ namespace ACCManager.Controls.Settings.AccUiSettings
     /// </summary>
     public partial class AccServerListSettings : UserControl
     {
-        private AccSettingsJson _accSettings = AccSettings.LoadJson();
+        private readonly AccSettings _accSettings;
+        private AccSettingsJson _accSettingsJson;
+
         private readonly AccServerListSettingsJson _accServerListSettingsJson = new AccServerListSettingsJson();
         private readonly UnlistedServersSettingsJson _unlistedServerSettingsJson = new UnlistedServersSettingsJson();
 
         public AccServerListSettings()
         {
             InitializeComponent();
+            _accSettings = new AccSettings();
+            _accSettingsJson = _accSettings.Get();
 
             this.Loaded += (s, e) => FillListView();
             this.listViewServers.SelectionChanged += ListViewServers_SelectionChanged;
@@ -71,9 +75,9 @@ namespace ACCManager.Controls.Settings.AccUiSettings
 
                 if (newServer.Name != string.Empty && newServer.Description != string.Empty && newServer.Server != string.Empty)
                 {
-                    var unlistedServerSettings = _unlistedServerSettingsJson.LoadJson();
+                    var unlistedServerSettings = _unlistedServerSettingsJson.Get();
                     unlistedServerSettings.UnlistedServers.Add(newServer);
-                    _unlistedServerSettingsJson.SaveJson(unlistedServerSettings);
+                    _unlistedServerSettingsJson.Save(unlistedServerSettings);
                     MainWindow.Instance.EnqueueSnackbarMessage("Saved new unlisted server.");
                     stackPanelServerDescription.Children.Clear();
                     FillListView();
@@ -100,25 +104,25 @@ namespace ACCManager.Controls.Settings.AccUiSettings
 
                 StackPanel togglePanel = new StackPanel() { Orientation = Orientation.Horizontal, Cursor = Cursors.Hand };
                 ToggleButton toggle = new ToggleButton();
-                if (_accSettings.UnlistedAccServer == unlistedServer.Guid)
+                if (_accSettingsJson.UnlistedAccServer == unlistedServer.Guid)
                     toggle.IsChecked = true;
                 Label toggleLabel = new Label() { Content = toggle.IsChecked.Value ? " Deactivate" : " Activate" };
 
                 toggle.Checked += (s, ev) =>
                 {
-                    _accSettings.UnlistedAccServer = unlistedServer.Guid;
-                    AccSettings.SaveJson(_accSettings);
+                    _accSettingsJson.UnlistedAccServer = unlistedServer.Guid;
+                    _accSettings.Save(_accSettingsJson);
 
-                    AccServerListJson serverList = _accServerListSettingsJson.LoadJson();
+                    AccServerListJson serverList = _accServerListSettingsJson.Get();
                     serverList.leagueServerIp = unlistedServer.Server;
-                    _accServerListSettingsJson.SaveJson(serverList);
+                    _accServerListSettingsJson.Save(serverList);
                     FillListView();
                     toggleLabel.Content = toggle.IsChecked.Value ? " Deactivate" : " Activate";
                 };
                 toggle.Unchecked += (s, ev) =>
                 {
-                    _accSettings.UnlistedAccServer = Guid.Empty;
-                    AccSettings.SaveJson(_accSettings);
+                    _accSettingsJson.UnlistedAccServer = Guid.Empty;
+                    _accSettings.Save(_accSettingsJson);
                     _accServerListSettingsJson.Delete();
                     FillListView();
                     toggleLabel.Content = toggle.IsChecked.Value ? " Deactivate" : " Activate";
@@ -147,9 +151,9 @@ namespace ACCManager.Controls.Settings.AccUiSettings
 
         private void FillListView()
         {
-            _accSettings = AccSettings.LoadJson();
+            _accSettingsJson = _accSettings.Get();
 
-            UnlistedServersJson unlistedServersJson = _unlistedServerSettingsJson.LoadJson();
+            UnlistedServersJson unlistedServersJson = _unlistedServerSettingsJson.Get();
 
             listViewServers.Items.Clear();
 
@@ -162,7 +166,7 @@ namespace ACCManager.Controls.Settings.AccUiSettings
                         Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
                     };
 
-                    if (unlistedAccServer.Guid == _accSettings.UnlistedAccServer)
+                    if (unlistedAccServer.Guid == _accSettingsJson.UnlistedAccServer)
                         serverTextBlock.Foreground = Brushes.Green;
 
                     ListViewItem listItem = new ListViewItem
@@ -199,12 +203,12 @@ namespace ACCManager.Controls.Settings.AccUiSettings
             };
             deleteTagButton.Click += (e, s) =>
             {
-                var serverList = _unlistedServerSettingsJson.LoadJson();
+                var serverList = _unlistedServerSettingsJson.Get();
                 serverList.UnlistedServers.Remove(unlistedAccServer);
-                _unlistedServerSettingsJson.SaveJson(serverList);
+                _unlistedServerSettingsJson.Save(serverList);
                 menu.IsOpen = false;
 
-                if (_accSettings.UnlistedAccServer == unlistedAccServer.Guid)
+                if (_accSettingsJson.UnlistedAccServer == unlistedAccServer.Guid)
                     _accServerListSettingsJson.Delete();
 
                 stackPanelServerDescription.Children.Clear();

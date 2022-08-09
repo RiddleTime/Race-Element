@@ -1,4 +1,4 @@
-﻿using ACCManager.HUD.ACC.Data.Tracker.Laps;
+﻿using ACCManager.Data.ACC.Tracker.Laps;
 using ACCManager.HUD.ACC.Data.Tracker.Weather;
 using System;
 using System.Collections.Generic;
@@ -13,12 +13,11 @@ namespace ACCManager.HUD.ACC.Data.Tracker
 
         public static void StartAll()
         {
-            LapTracker.Instance.ToString();
+            _ = LapTracker.Instance;
         }
 
         public static void StopAll()
         {
-            LapTracker.Instance.Stop();
             WeatherTracker.Instance.Stop();
         }
     }

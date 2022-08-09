@@ -15,6 +15,8 @@ using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayGraphicsInfo
 {
+    [Overlay(Name = "Graphics Info", Version = 1.00,
+        Description = "Shared Memory Graphics Page", OverlayType = OverlayType.Debug)]
     internal sealed class GraphicsInfoOverlay : AbstractOverlay
     {
         private readonly DebugConfig _config = new DebugConfig();

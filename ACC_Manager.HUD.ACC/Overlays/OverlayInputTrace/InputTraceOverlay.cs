@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
 {
-    [Overlay(Name = "Input Trace", Version = 1.00,
+    [Overlay(Name = "Input Trace", Version = 1.00, OverlayType = OverlayType.Release,
         Description = "Live graph of steering, throttle and brake inputs.")]
     internal sealed class InputTraceOverlay : AbstractOverlay
     {
@@ -25,8 +25,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             internal int DataPoints { get; set; } = 300;
 
             [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
-            [IntRange(25, 70, 5)]
-            internal int Herz { get; set; } = 50;
+            [IntRange(10, 70, 5)]
+            internal int Herz { get; set; } = 30;
 
             public InputTraceConfig()
             {
@@ -37,8 +37,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
         private readonly int _originalHeight = 120;
         private readonly int _originalWidth = 300;
 
-        internal static InputTraceOverlay Instance;
-
         private InputGraph _graph;
         private InputDataCollector _inputDataCollector;
 
@@ -48,12 +46,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             this.Width = _originalWidth;
             this.Height = _originalHeight;
             this.RequestsDrawItself = true;
-            Instance = this;
         }
 
         public sealed override void BeforeStart()
         {
-            _inputDataCollector = new InputDataCollector() { TraceCount = this._originalWidth - 1, inputTraceConfig = _config };
+            _inputDataCollector = new InputDataCollector(this) { TraceCount = this._originalWidth - 1, inputTraceConfig = _config };
             _inputDataCollector.Start();
 
             _graph = new InputGraph(0, 0, this._originalWidth - 1, this._originalHeight - 1, _inputDataCollector, this._config);

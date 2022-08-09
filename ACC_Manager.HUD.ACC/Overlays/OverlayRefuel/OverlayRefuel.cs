@@ -1,5 +1,6 @@
 ﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.HUD.ACC.Data.Tracker.Laps;
+using ACCManager.Data.ACC.Database.LapDataDB;
+using ACCManager.Data.ACC.Tracker.Laps;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.OverlayUtil;
@@ -17,6 +18,10 @@ using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
 {
+#if DEBUG
+    [Overlay(Name = "Refuel Info", Version = 1.00,
+    Description = "Overlay to verify the fuel calculation during the race and help with pit stop strategy.", OverlayType = OverlayType.Release)]
+#endif
     internal sealed class RefuelInfoOverlay : AbstractOverlay
     {
 
@@ -195,7 +200,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
             g.SmoothingMode = previous;
         }
 
-        private void FuelHelperLapFinished(object sender, LapData lap)
+        private void FuelHelperLapFinished(object sender, DbLapData lap)
         {
 
             float fuelLevel = (int)(pagePhysics.Fuel);

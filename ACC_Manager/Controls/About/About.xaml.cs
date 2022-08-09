@@ -34,9 +34,21 @@ namespace ACCManager.Controls
             buttonDiscord.Click += (sender, e) => Process.Start("https://discord.gg/26AAEW5mUq"); ;
             buttonGithub.Click += (sender, e) => Process.Start("https://github.com/RiddleTime/ACC-Manager");
 
-            FillReleaseNotes();
+            this.Loaded += (s, e) => new Thread((x) => CheckNewestVersion()).Start();
 
-            this.Loaded += (s, e) => Task.Run(new Action(CheckNewestVersion));
+            this.IsVisibleChanged += (s, e) =>
+            {
+                if ((bool)e.NewValue)
+                    FillReleaseNotes();
+                else
+                    stackPanelReleaseNotes.Children.Clear();
+
+                ThreadPool.QueueUserWorkItem(x =>
+                {
+                    Thread.Sleep(5 * 1000);
+                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                });
+            };
         }
 
         private async void CheckNewestVersion()
@@ -45,6 +57,7 @@ namespace ACCManager.Controls
             TitleBar.Instance.SetAppTitle("Dev");
             return;
 #endif
+#pragma warning disable CS0162 // Unreachable code detected
             try
             {
                 GitHubClient client = new GitHubClient(new ProductHeaderValue("ACC-Manager"), new Uri("https://github.com/RiddleTime/ACC-Manager.git"));
@@ -87,6 +100,7 @@ namespace ACCManager.Controls
             catch (Exception)
             {
             }
+#pragma warning restore CS0162 // Unreachable code detected
         }
 
         private long VersionToLong(Version VersionInfo)

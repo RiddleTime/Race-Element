@@ -25,8 +25,13 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <FlowDocumentScrollViewer Grid.Column="0" Focusable="False" Cursor="Arrow">
-            <FlowDocument  x:Name="flowDocCompare" Focusable="False" Cursor="Arrow" Background="{DynamicResource MaterialDesignPaper}" FontFamily="{StaticResource RobotoMedium}" RenderOptions.ClearTypeHint="Enabled" AllowDrop="False">
+        <FlowDocumentScrollViewer Grid.Column="0" Focusable="False" Cursor="Arrow" VerticalScrollBarVisibility="Hidden">
+            <FlowDocument  x:Name="flowDocCompare" Focusable="False" 
+                           Cursor="Arrow" 
+                           Background="{DynamicResource MaterialDesignPaper}" 
+                           FontFamily="{StaticResource RobotoMedium}"
+                           RenderOptions.ClearTypeHint="Enabled"
+                           AllowDrop="False">
             </FlowDocument>
         </FlowDocumentScrollViewer>
     </Grid>

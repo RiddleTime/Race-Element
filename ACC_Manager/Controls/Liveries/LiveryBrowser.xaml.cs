@@ -64,6 +64,20 @@ namespace ACCManager.Controls
             {
                 LiveryTagCreator.Instance.Open();
             };
+
+            this.IsVisibleChanged += (s, e) =>
+            {
+                if ((bool)e.NewValue)
+                    LiveryDisplayer.Instance.ReloadLivery();
+                else
+                    LiveryDisplayer.Instance.Cache();
+
+                ThreadPool.QueueUserWorkItem(x =>
+                {
+                    Thread.Sleep(10 * 1000);
+                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                });
+            };
         }
 
         private void LiveryTreeViewKeyUp(TreeView treeView, object sender, KeyEventArgs e)
@@ -121,6 +135,7 @@ namespace ACCManager.Controls
 
 
                             LiveryDisplayer.Instance.SetLivery(treeCar);
+                            LiveryDisplayer.Instance.ReloadLivery();
                         }
                     }
                 }
@@ -167,8 +182,8 @@ namespace ACCManager.Controls
                             {
                                 LiveryTreeCar treeCar = new LiveryTreeCar() { CarsFile = carsFile, CarsRoot = carsRoot };
 
-                                if (treeCar.CarsRoot.customSkinName != null /*&& treeCar.carsRoot.teamName != null*/)
-                                    if (!treeCar.CarsRoot.customSkinName.Equals(string.Empty)
+                                if (treeCar.CarsRoot.CustomSkinName != null /*&& treeCar.carsRoot.teamName != null*/)
+                                    if (!treeCar.CarsRoot.CustomSkinName.Equals(string.Empty)
                                             //&& !treeCar.carsRoot.teamName.Equals(string.Empty)
                                             )
                                         liveryTreeCars.Add(treeCar);
@@ -177,8 +192,8 @@ namespace ACCManager.Controls
                     }
 
 
-                    var liveriesGroupedByCar = liveryTreeCars.GroupBy(g => ConversionFactory.GetCarName(g.CarsRoot.carModelType));
-                    var liveriesGroupedByTeam = liveryTreeCars.GroupBy(g => g.CarsRoot.teamName);
+                    var liveriesGroupedByCar = liveryTreeCars.GroupBy(g => ConversionFactory.GetCarName(g.CarsRoot.CarModelType));
+                    var liveriesGroupedByTeam = liveryTreeCars.GroupBy(g => g.CarsRoot.TeamName);
 
                     if (!tagsOnly)
                     {
@@ -239,13 +254,13 @@ namespace ACCManager.Controls
                 var cars = tItem.ToList();
                 cars.Sort((a, b) =>
                 {
-                    return $"{a.CarsRoot.customSkinName.ToLower()}".CompareTo($"{b.CarsRoot.customSkinName.ToLower()}");
+                    return $"{a.CarsRoot.CustomSkinName.ToLower()}".CompareTo($"{b.CarsRoot.CustomSkinName.ToLower()}");
                 });
                 foreach (LiveryTreeCar car in cars)
                 {
                     TextBlock skinHeader = new TextBlock()
                     {
-                        Text = $"{car.CarsRoot.customSkinName}",
+                        Text = $"{car.CarsRoot.CustomSkinName}",
                         Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style,
                         TextTrimming = TextTrimming.WordEllipsis,
                         Width = liveriesTreeViewTeams.Width - 5
@@ -315,14 +330,14 @@ namespace ACCManager.Controls
                 var cars = tItem.ToList();
                 cars.Sort((a, b) =>
                 {
-                    return $"{a.CarsRoot.customSkinName.ToLower()}".CompareTo($"{b.CarsRoot.customSkinName.ToLower()}");
+                    return $"{a.CarsRoot.CustomSkinName.ToLower()}".CompareTo($"{b.CarsRoot.CustomSkinName.ToLower()}");
                 });
 
                 foreach (LiveryTreeCar car in cars)
                 {
                     TextBlock skinHeader = new TextBlock()
                     {
-                        Text = $"{car.CarsRoot.customSkinName}",
+                        Text = $"{car.CarsRoot.CustomSkinName}",
                         Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style,
                         TextTrimming = TextTrimming.WordEllipsis,
                         Width = liveriesTreeViewTeams.Width - 5
@@ -406,14 +421,14 @@ namespace ACCManager.Controls
                 tagItem.ContextMenu = GetTagContextMenu(tagItem, liveryTag);
                 tagCars.Sort((a, b) =>
                 {
-                    return $"{a.CarsRoot.customSkinName.ToLower()}".CompareTo($"{b.CarsRoot.customSkinName.ToLower()}");
+                    return $"{a.CarsRoot.CustomSkinName.ToLower()}".CompareTo($"{b.CarsRoot.CustomSkinName.ToLower()}");
                 });
 
                 foreach (LiveryTreeCar car in tagCars)
                 {
                     TextBlock skinHeader = new TextBlock()
                     {
-                        Text = $"{car.CarsRoot.customSkinName}",
+                        Text = $"{car.CarsRoot.CustomSkinName}",
                         Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style,
                         TextTrimming = TextTrimming.WordEllipsis,
                         Width = liveriesTreeViewTeams.Width - 5
@@ -470,14 +485,14 @@ namespace ACCManager.Controls
 
                 liveriesWithoutTags.Sort((a, b) =>
                 {
-                    return $"{a.CarsRoot.teamName} / {a.CarsRoot.customSkinName}".CompareTo($"{b.CarsRoot.teamName} / {b.CarsRoot.customSkinName}");
+                    return $"{a.CarsRoot.TeamName} / {a.CarsRoot.CustomSkinName}".CompareTo($"{b.CarsRoot.TeamName} / {b.CarsRoot.CustomSkinName}");
                 });
 
                 foreach (LiveryTreeCar car in liveriesWithoutTags)
                 {
                     TextBlock skinHeader = new TextBlock()
                     {
-                        Text = $"{car.CarsRoot.teamName} / {car.CarsRoot.customSkinName}",
+                        Text = $"{car.CarsRoot.TeamName} / {car.CarsRoot.CustomSkinName}",
                         Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style,
                         TextTrimming = TextTrimming.WordEllipsis,
                         Width = liveriesTreeViewTeams.Width - 5
@@ -659,7 +674,7 @@ namespace ACCManager.Controls
                     LiveryTreeCar liveryTreeCar = (LiveryTreeCar)button.CommandParameter;
                     if (LiveryExporter.Instance.AddExportItem(liveryTreeCar))
                     {
-                        MainWindow.Instance.EnqueueSnackbarMessage($"Added {liveryTreeCar.CarsRoot.teamName}/{liveryTreeCar.CarsRoot.customSkinName} to skin pack.");
+                        MainWindow.Instance.EnqueueSnackbarMessage($"Added {liveryTreeCar.CarsRoot.TeamName}/{liveryTreeCar.CarsRoot.CustomSkinName} to skin pack.");
                     }
 
                     (button.Parent as ContextMenu).IsOpen = false;
@@ -682,7 +697,7 @@ namespace ACCManager.Controls
 
                     LiveryTreeCar liveryTreeCar = (LiveryTreeCar)button.CommandParameter;
 
-                    if (liveryTreeCar.CarsRoot.customSkinName == null || liveryTreeCar.CarsRoot.customSkinName.Length == 0)
+                    if (liveryTreeCar.CarsRoot.CustomSkinName == null || liveryTreeCar.CarsRoot.CustomSkinName.Length == 0)
                     {
                         goto closeMenu;
                     }
@@ -707,12 +722,12 @@ namespace ACCManager.Controls
 
                     LiveryTreeCar liveryTreeCar = (LiveryTreeCar)button.CommandParameter;
 
-                    if (liveryTreeCar.CarsRoot.customSkinName == null || liveryTreeCar.CarsRoot.customSkinName.Length == 0)
+                    if (liveryTreeCar.CarsRoot.CustomSkinName == null || liveryTreeCar.CarsRoot.CustomSkinName.Length == 0)
                     {
                         goto closeMenu;
                     }
 
-                    DirectoryInfo directory = new DirectoryInfo($"{FileUtil.LiveriesPath}{liveryTreeCar.CarsRoot.customSkinName}");
+                    DirectoryInfo directory = new DirectoryInfo($"{FileUtil.LiveriesPath}{liveryTreeCar.CarsRoot.CustomSkinName}");
                     Process.Start(directory.FullName);
 
                 closeMenu:
@@ -863,7 +878,7 @@ namespace ACCManager.Controls
 
                 LiveryTreeCar liveryTreeCar = (LiveryTreeCar)button.CommandParameter;
 
-                if (liveryTreeCar.CarsRoot.customSkinName == null || liveryTreeCar.CarsRoot.customSkinName.Length == 0)
+                if (liveryTreeCar.CarsRoot.CustomSkinName == null || liveryTreeCar.CarsRoot.CustomSkinName.Length == 0)
                 {
                     goto closeMenu;
                 }
@@ -874,7 +889,7 @@ namespace ACCManager.Controls
                 dlg.DefaultExt = ".zip";
                 dlg.AddExtension = true;
                 dlg.CheckPathExists = true;
-                dlg.FileName = $"{liveryTreeCar.CarsRoot.customSkinName}";
+                dlg.FileName = $"{liveryTreeCar.CarsRoot.CustomSkinName}";
                 dlg.DefaultExt = ".zip";
                 dlg.Filter = "Livery zip|*.zip";
                 Nullable<bool> result = dlg.ShowDialog();
@@ -891,11 +906,11 @@ namespace ACCManager.Controls
 
                     using (ZipArchive zipArchive = ZipArchive.Create())
                     {
-                        string liveriesFolder = $"Liveries\\{liveryTreeCar.CarsRoot.customSkinName}\\";
+                        string liveriesFolder = $"Liveries\\{liveryTreeCar.CarsRoot.CustomSkinName}\\";
                         string carsFolder = "Cars\\";
                         zipArchive.AddEntry($"{carsFolder}{liveryTreeCar.CarsFile.Name}", liveryTreeCar.CarsFile);
 
-                        DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + liveryTreeCar.CarsRoot.customSkinName);
+                        DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + liveryTreeCar.CarsRoot.CustomSkinName);
                         if (customSkinDir.Exists)
                         {
 
@@ -931,7 +946,7 @@ namespace ACCManager.Controls
                             using (FileStream outputStream = new FileStream(filename, FileMode.Create))
                             {
                                 zipArchive.SaveTo(outputStream);
-                                MainWindow.Instance.snackbar.MessageQueue.Enqueue($"Livery \"{liveryTreeCar.CarsRoot.teamName}\" saved as: {filename}");
+                                MainWindow.Instance.snackbar.MessageQueue.Enqueue($"Livery \"{liveryTreeCar.CarsRoot.TeamName}\" saved as: {filename}");
                             }
                         }
                     }

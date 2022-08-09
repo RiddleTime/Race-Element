@@ -9,13 +9,17 @@ using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput;
 using ACCManager.Util;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace ACCManager
@@ -26,6 +30,7 @@ namespace ACCManager
     public partial class MainWindow : Window
     {
         internal static MainWindow Instance { get; private set; }
+        private readonly UiSettings _uiSettings;
 
         public MainWindow()
         {
@@ -43,10 +48,16 @@ namespace ACCManager
                 // LogWriter.WriteToLog("Rounded corners are not supported for this machine, using square corners for the main window.");
             }
 
+            _uiSettings = new UiSettings();
+
 
             this.Title = $"ACC Manager {GetAssemblyFileVersion()}";
 
             this.titleBar.MouseLeftButtonDown += TitleBar_MouseLeftButtonDown;
+            this.titleBar.MouseLeftButtonUp += TitleBar_MouseLeftButtonUp;
+            this.titleBar.MouseLeave += (s, e) => { _stopDecreaseOpacty = true; e.Handled = true; this.Opacity = 1; };
+            this.titleBar.DragLeave += (s, e) => { _stopDecreaseOpacty = true; e.Handled = true; this.Opacity = 1; };
+            this.titleBar.MouseDoubleClick += (s, e) => { _stopDecreaseOpacty = true; e.Handled = true; this.Opacity = 1; };
 
             this.buttonPlayACC.Click += (sender, e) => System.Diagnostics.Process.Start("steam://rungameid/805550");
 
@@ -62,29 +73,59 @@ namespace ACCManager
 
             tabControl.SelectionChanged += (s, se) =>
             {
-                UiSettingsJson tempSettings = UiSettings.LoadJson();
+                UiSettingsJson tempSettings = _uiSettings.Get();
                 tempSettings.SelectedTabIndex = tabControl.SelectedIndex;
-                UiSettings.SaveJson(tempSettings);
+                _uiSettings.Save(tempSettings);
             };
 
-            tabControl.SelectedIndex = UiSettings.LoadJson().SelectedTabIndex.Clip(0, tabControl.Items.Count - 1);
+            tabControl.SelectedIndex = _uiSettings.Get().SelectedTabIndex.Clip(0, tabControl.Items.Count - 1);
 
-            UiSettingsJson uiSettings = UiSettings.LoadJson();
+            UiSettingsJson uiSettings = _uiSettings.Get();
             this.Left = uiSettings.X.Clip(0, (int)SystemParameters.PrimaryScreenWidth);
             this.Top = uiSettings.Y.Clip(0, (int)SystemParameters.PrimaryScreenHeight);
 
-            UiSettings.SaveJson(uiSettings);
+            _uiSettings.Save(uiSettings);
 
+
+            this.Drop += MainWindow_Drop;
 
             Instance = this;
+
+            // TODO refactor
+            ACCTrackerStarter.StartACCTrackers();
+        }
+
+        private void MainWindow_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data is DataObject)
+            {
+                DataObject data = (DataObject)e.Data;
+
+                StringCollection droppedItems = data.GetFileDropList();
+                if (droppedItems.Count == 1)
+                {
+                    string droppedItem = droppedItems[0];
+
+                    if (droppedItem.EndsWith(".json"))
+                    {
+                        if (SetupImporter.Instance.Open(droppedItem))
+                        {
+                            tabSetups.Focus();
+                            e.Handled = true;
+                            return;
+                        }
+                    }
+                }
+            }
+
         }
 
         public void SaveLocation()
         {
-            UiSettingsJson uiSettings = UiSettings.LoadJson();
+            UiSettingsJson uiSettings = _uiSettings.Get();
             uiSettings.X = (int)this.Left;
             uiSettings.Y = (int)this.Top;
-            UiSettings.SaveJson(uiSettings);
+            _uiSettings.Save(uiSettings);
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -102,14 +143,11 @@ namespace ACCManager
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            UiSettingsJson uiSettings = UiSettings.LoadJson();
-            uiSettings.X = (int)this.Left;
-            uiSettings.Y = (int)this.Top;
-            UiSettings.SaveJson(uiSettings);
+            SaveLocation();
 
             OverlaysACC.CloseAll();
             HudTrackers.StopAll();
-            DataTrackerDispose.Dispose();
+            ACCTrackerDispose.Dispose();
             HudOptions.Instance.DisposeKeyboardHooks();
             SteeringLockTracker.Instance.Dispose();
         }
@@ -118,7 +156,7 @@ namespace ACCManager
         {
             OverlaysACC.CloseAll();
             HudTrackers.StopAll();
-            DataTrackerDispose.Dispose();
+            ACCTrackerDispose.Dispose();
             HudOptions.Instance.DisposeKeyboardHooks();
             SteeringLockTracker.Instance.Dispose();
         }
@@ -135,11 +173,13 @@ namespace ACCManager
                     {
                         this.Activate();
                         rowTitleBar.Height = new GridLength(30);
+                        _stopDecreaseOpacty = true;
                         break;
                     }
                 case WindowState.Maximized:
                     {
                         rowTitleBar.Height = new GridLength(35);
+                        _stopDecreaseOpacty = true;
                         break;
                     }
             }
@@ -175,9 +215,52 @@ namespace ACCManager
                }));
         }
 
+
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            DecreaseOpacity(0.925, 0.0025);
             DragMove();
+            e.Handled = true;
+        }
+
+        private void TitleBar_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _stopDecreaseOpacty = true;
+            this.Opacity = 1.0;
+            e.Handled = true;
+        }
+
+        private bool _stopDecreaseOpacty;
+        private void DecreaseOpacity(double target, double steps)
+        {
+            _stopDecreaseOpacty = false;
+
+            new Thread(() =>
+            {
+                bool finalValueReached = false;
+
+                while (!finalValueReached)
+                {
+                    if (_stopDecreaseOpacty)
+                    {
+                        Dispatcher.Invoke(new Action(() =>
+                        {
+                            this.Opacity = 1;
+                        }));
+                        break;
+                    }
+
+                    Thread.Sleep(3);
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        this.Opacity -= steps;
+
+                        if (this.Opacity < target)
+                            finalValueReached = true;
+                    }));
+
+                }
+            }).Start();
         }
 
         public static string GetAssemblyFileVersion()
@@ -186,7 +269,6 @@ namespace ACCManager
             FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(assembly.Location);
             return fileVersion.FileVersion;
         }
-
 
         public enum DWMWINDOWATTRIBUTE
         {

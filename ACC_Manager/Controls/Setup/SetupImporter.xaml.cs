@@ -62,10 +62,10 @@ namespace ACCManager.Controls
 
                 trackItem.MouseLeftButtonUp += (s, e) =>
                 {
-                    CarModels model = ConversionFactory.ParseCarName(_currentSetup.carName);
+                    CarModels model = ConversionFactory.ParseCarName(_currentSetup.CarName);
                     string modelName = ConversionFactory.GetNameFromCarModel(model);
 
-                    FileInfo targetFile = new FileInfo(FileUtil.AccPath + "Setups\\" + _currentSetup.carName + "\\" + kv.Key + "\\" + _setupName + ".json");
+                    FileInfo targetFile = new FileInfo(FileUtil.AccPath + "Setups\\" + _currentSetup.CarName + "\\" + kv.Key + "\\" + _setupName + ".json");
 
                     if (targetFile.Exists)
                     {
@@ -73,6 +73,9 @@ namespace ACCManager.Controls
                         Close();
                         return;
                     }
+
+                    if (!targetFile.Directory.Exists)
+                        targetFile.Directory.Create();
 
                     FileInfo originalFile = new FileInfo(_originalSetupFile);
                     if (originalFile.Exists)
@@ -87,31 +90,33 @@ namespace ACCManager.Controls
             }
         }
 
-        public void Open(string setupFile)
+        public bool Open(string setupFile, bool showTrack = false)
         {
             FileInfo file = new FileInfo(setupFile);
             if (!file.Exists)
-                return;
+                return false;
 
             SetupJson.Root setupRoot = ConversionFactory.GetSetupJsonRoot(file);
             if (setupRoot == null)
-                return;
+                return false;
 
             Debug.WriteLine($"Importing {file.FullName}");
-            CarModels model = ConversionFactory.ParseCarName(setupRoot.carName);
+            CarModels model = ConversionFactory.ParseCarName(setupRoot.CarName);
             string modelName = ConversionFactory.GetNameFromCarModel(model);
             Debug.WriteLine($"Trying to import a setup for {modelName}");
             _currentSetup = setupRoot;
-            _setupName = file.Name;
+            _setupName = file.Name.Replace(".json", "");
             _originalSetupFile = setupFile;
 
             BuildTrackList();
             this.textBlockSetupName.Text = $"{modelName} - {file.Name}";
 
-            _renderer.LogSetup(ref this.flowDocument, setupFile, false);
+            _renderer.LogSetup(ref this.flowDocument, setupFile, showTrack);
 
             this.Visibility = Visibility.Visible;
             SetupsTab.Instance.tabControl.IsEnabled = false;
+
+            return true;
         }
 
         public void Close()

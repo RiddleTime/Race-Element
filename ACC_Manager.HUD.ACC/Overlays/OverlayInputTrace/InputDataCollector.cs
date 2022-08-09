@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACCManager.HUD.Overlay.Internal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
         public LinkedList<int> Brake = new LinkedList<int>();
         public LinkedList<int> Steering = new LinkedList<int>();
 
-        ACCSharedMemory sharedMemory = new ACCSharedMemory();
+        private AbstractOverlay _overlay;
+
+        public InputDataCollector(AbstractOverlay overlay)
+        {
+            _overlay = overlay;
+        }
 
         public void Collect(SPageFilePhysics filePhysics)
         {
@@ -59,8 +65,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
                 while (IsCollecting)
                 {
                     Thread.Sleep(1000 / inputTraceConfig.Herz);
-                    Collect(sharedMemory.ReadPhysicsPageFile());
-                    InputTraceOverlay.Instance.RequestRedraw();
+                    if (_overlay != null && _overlay.pagePhysics != null)
+                    {
+                        Collect(_overlay.pagePhysics);
+                        _overlay.RequestRedraw();
+                    }
                 }
             }).Start();
         }

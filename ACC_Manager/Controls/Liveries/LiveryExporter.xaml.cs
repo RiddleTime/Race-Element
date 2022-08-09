@@ -87,11 +87,11 @@ namespace ACCManager.Controls
                         {
                             foreach (LiveryTreeCar liveryTreeCar in exportItems)
                             {
-                                string liveriesFolder = $"Liveries\\{liveryTreeCar.CarsRoot.customSkinName}\\";
+                                string liveriesFolder = $"Liveries\\{liveryTreeCar.CarsRoot.CustomSkinName}\\";
                                 string carsFolder = "Cars\\";
                                 zipArchive.AddEntry($"{carsFolder}{liveryTreeCar.CarsFile.Name}", liveryTreeCar.CarsFile);
 
-                                DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + liveryTreeCar.CarsRoot.customSkinName);
+                                DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + liveryTreeCar.CarsRoot.CustomSkinName);
                                 if (customSkinDir.Exists)
                                 {
 
@@ -173,7 +173,7 @@ namespace ACCManager.Controls
 
             if (exportItems.Contains(skin))
             {
-                MainWindow.Instance.EnqueueSnackbarMessage($"Skin pack already contains {skin.CarsRoot.teamName}/{skin.CarsRoot.customSkinName}.");
+                MainWindow.Instance.EnqueueSnackbarMessage($"Skin pack already contains {skin.CarsRoot.TeamName}/{skin.CarsRoot.CustomSkinName}.");
                 return false;
             }
 
@@ -190,7 +190,7 @@ namespace ACCManager.Controls
             {
                 exportItems.Sort((a, b) =>
                 {
-                    return $"{a.CarsRoot.teamName}{a.CarsRoot.customSkinName}".CompareTo($"{b.CarsRoot.teamName}{b.CarsRoot.customSkinName}");
+                    return $"{a.CarsRoot.TeamName}{a.CarsRoot.CustomSkinName}".CompareTo($"{b.CarsRoot.TeamName}{b.CarsRoot.CustomSkinName}");
                 });
 
                 exportList.Items.Clear();
@@ -199,7 +199,7 @@ namespace ACCManager.Controls
                     ListBoxItem listBoxItem = new ListBoxItem()
                     {
                         AllowDrop = true,
-                        Content = $"{x.CarsRoot.teamName} / {x.CarsRoot.customSkinName}",
+                        Content = $"{x.CarsRoot.TeamName} / {x.CarsRoot.CustomSkinName}",
                         DataContext = x,
                         ToolTip = "Click to remove from skin pack"
                     };

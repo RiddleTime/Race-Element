@@ -23,6 +23,7 @@ namespace ACCManager.Controls
     /// </summary>
     public partial class Hardware : UserControl
     {
+        private readonly HardwareSettings _hardwareSettings;
         public Hardware()
         {
             InitializeComponent();
@@ -31,6 +32,7 @@ namespace ACCManager.Controls
 
             buttonCheckSteeringLockSupport.Click += ButtonCheckSteeringLockSupport_Click;
 
+            _hardwareSettings = new HardwareSettings();
             this.Loaded += (s, e) => LoadSettings();
         }
 
@@ -55,7 +57,8 @@ namespace ACCManager.Controls
         {
             SaveSettings();
             SteeringLockTracker.Instance.Dispose();
-            MainWindow.Instance.EnqueueSnackbarMessage("Disabled automatic hardware steering lock.");
+            TitleBar.Instance.SetIcons(TitleBar.ActivatedIcons.AutomaticSteeringHardLock, false);
+            //MainWindow.Instance.EnqueueSnackbarMessage("Disabled automatic hardware steering lock.");
 
         }
 
@@ -63,14 +66,15 @@ namespace ACCManager.Controls
         {
             SaveSettings();
             SteeringLockTracker.Instance.StartTracking();
-            MainWindow.Instance.EnqueueSnackbarMessage("Enabled automatic hardware steering lock.");
+            TitleBar.Instance.SetIcons(TitleBar.ActivatedIcons.AutomaticSteeringHardLock, true);
+            //MainWindow.Instance.EnqueueSnackbarMessage("Enabled automatic hardware steering lock.");
         }
 
         private void LoadSettings()
         {
             try
             {
-                var hardwareSettings = HardwareSettings.LoadJson();
+                var hardwareSettings = _hardwareSettings.Get();
 
                 toggleSteeringHardwareLock.IsChecked = hardwareSettings.UseHardwareSteeringLock;
             }
@@ -84,11 +88,11 @@ namespace ACCManager.Controls
         {
             try
             {
-                var hardwareSettings = HardwareSettings.LoadJson();
+                var hardwareSettings = _hardwareSettings.Get();
 
                 hardwareSettings.UseHardwareSteeringLock = toggleSteeringHardwareLock.IsChecked.Value;
 
-                HardwareSettings.SaveJson(hardwareSettings);
+                _hardwareSettings.Save(hardwareSettings);
             }
             catch (Exception e)
             {

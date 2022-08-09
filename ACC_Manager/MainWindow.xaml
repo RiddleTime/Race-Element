@@ -19,7 +19,8 @@
         WindowStyle="None"
         Title="MainWindow" MinWidth="1210" Width="1210" MinHeight="790" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" 
         WindowStartupLocation="Manual"
-        WindowState="Minimized">
+        WindowState="Minimized"
+        AllowDrop="True">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -52,7 +53,7 @@
 
         <TabControl x:Name="tabControl" Style="{StaticResource MaterialDesignTabControlBase}" TabStripPlacement="Left" Grid.Row="1">
 
-            <TabItem Style="{DynamicResource MaterialDesignTabItem}" Name="tabAbout" Height="60" VerticalAlignment="Bottom">
+            <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabAbout" Height="60" VerticalAlignment="Bottom">
                 <TabItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -88,7 +89,7 @@
 
             </TabItem>
 
-            <TabItem Style="{DynamicResource MaterialDesignTabItem}" Name="tabSetups" Height="60">
+            <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabSetups" Height="60">
                 <TabItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -124,7 +125,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Style="{DynamicResource MaterialDesignTabItem}" Name="tabLiveries" Height="60">
+            <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabLiveries" Height="60">
                 <TabItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -157,7 +158,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Style="{DynamicResource MaterialDesignTabItem}" Name="tabHUD" Height="60">
+            <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabHUD" Height="60">
                 <TabItem.Header>
                     <Grid  Margin="0">
                         <Grid.RowDefinitions>
@@ -191,8 +192,8 @@
                     </materialDesign:TransitioningContent>
                 </Grid>
             </TabItem>
-            
-            <TabItem Style="{DynamicResource MaterialDesignTabItem}" Name="tabTools" Height="60">
+
+            <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabTools" Height="60">
                 <TabItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -225,7 +226,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Style="{DynamicResource MaterialDesignTabItem}" Name="tabTelemetry" Height="60">
+            <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabTelemetry" Height="60">
                 <TabItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -260,7 +261,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Style="{DynamicResource MaterialDesignTabItem}" Name="tabSettings" Height="60">
+            <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabSettings" Height="60">
                 <TabItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>

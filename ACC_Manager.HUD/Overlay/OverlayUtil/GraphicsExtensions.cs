@@ -92,9 +92,6 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
             }
         }
 
-
-        #region Private Methods
-
         /// <summary>
         /// Returns the path for a rounded rectangle specified by a bounding <see cref="Rectangle"/> structure and four corner radius values.
         /// </summary>
@@ -103,7 +100,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
         /// <param name="radiusTopRight">Size of the top-right radius.</param>
         /// <param name="radiusBottomRight">Size of the bottom-right radius.</param>
         /// <param name="radiusBottomLeft">Size of the bottom-left radius.</param>
-        private static GraphicsPath CreateRoundedRectangle(Rectangle bounds, int radiusTopLeft, int radiusTopRight, int radiusBottomRight, int radiusBottomLeft)
+        public static GraphicsPath CreateRoundedRectangle(Rectangle bounds, int radiusTopLeft, int radiusTopRight, int radiusBottomRight, int radiusBottomLeft)
         {
             var size = new Size(radiusTopLeft << 1, radiusTopLeft << 1);
             var arc = new Rectangle(bounds.Location, size);
@@ -158,6 +155,8 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
             path.CloseFigure();
             return path;
         }
+
+        #region Private Methods
 
         /// <summary>
         /// Returns the path for a rounded rectangle specified by a bounding <see cref="Rectangle"/> structure and a common corner radius value for each corners.

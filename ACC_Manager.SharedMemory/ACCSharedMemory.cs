@@ -18,9 +18,9 @@ namespace ACCManager
     /// </summary>
     public unsafe class ACCSharedMemory
     {
-        private string physicsMap = "Local\\acpmf_physics";
-        private string graphicsMap = "Local\\acpmf_graphics";
-        private string staticMap = "Local\\acpmf_static";
+        private readonly string physicsMap = "Local\\acpmf_physics";
+        private readonly string graphicsMap = "Local\\acpmf_graphics";
+        private readonly string staticMap = "Local\\acpmf_static";
 
         public enum AcStatus : int
         {
@@ -309,7 +309,6 @@ namespace ACCManager
             public int gapBehindMillis;
 
 
-
             public static readonly int Size = Marshal.SizeOf(typeof(SPageFileGraphic));
             public static readonly byte[] Buffer = new byte[Size];
         };
@@ -321,10 +320,7 @@ namespace ACCManager
             public float Y;
             public float Z;
 
-            public override string ToString()
-            {
-                return $"X: {X}, Y: {Y}, Z: {Z}";
-            }
+            public override string ToString() => $"X: {X}, Y: {Y}, Z: {Z}";
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
@@ -547,7 +543,6 @@ namespace ACCManager
 
             public static readonly int Size = Marshal.SizeOf(typeof(SPageFilePhysics));
             public static readonly byte[] Buffer = new byte[Size];
-
         };
 
         [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]

@@ -66,6 +66,8 @@ namespace ACCManager.Data.ACC.Tracker
                     Error = error
                 };
 
+                Debug.WriteLine($"Udp remote client state change:\n{state}");
+
                 OnConnectionStateChanged?.Invoke(this, state);
             };
 

@@ -10,7 +10,7 @@ using System.Drawing.Text;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
 {
-    [Overlay(Name = "Inputs", Version = 1.00,
+    [Overlay(Name = "Inputs", Version = 1.00, OverlayType = OverlayType.Release,
         Description = "Live inputs of steering, throttle, brake and the selected gear.")]
     internal sealed class InputsOverlay : AbstractOverlay
     {

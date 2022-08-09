@@ -10,36 +10,36 @@ namespace ACCManager.LiveryParser
     {
         public class Root
         {
-            public int carGuid { get; set; }
-            public int teamGuid { get; set; }
-            public int raceNumber { get; set; }
-            public int raceNumberPadding { get; set; }
-            public int auxLightKey { get; set; }
-            public int auxLightColor { get; set; }
-            public int skinTemplateKey { get; set; }
-            public int skinColor1Id { get; set; }
-            public int skinColor2Id { get; set; }
-            public int skinColor3Id { get; set; }
-            public int sponsorId { get; set; }
-            public int skinMaterialType1 { get; set; }
-            public int skinMaterialType2 { get; set; }
-            public int skinMaterialType3 { get; set; }
-            public int rimColor1Id { get; set; }
-            public int rimColor2Id { get; set; }
-            public int rimMaterialType1 { get; set; }
-            public int rimMaterialType2 { get; set; }
-            public string teamName { get; set; }
-            public int nationality { get; set; }
-            public string displayName { get; set; }
-            public string competitorName { get; set; }
-            public int competitorNationality { get; set; }
-            public int teamTemplateKey { get; set; }
-            public int carModelType { get; set; }
-            public int cupCategory { get; set; }
-            public int licenseType { get; set; }
-            public int useEnduranceKit { get; set; }
-            public string customSkinName { get; set; }
-            public int bannerTemplateKey { get; set; }
+            public int CarGuid { get; set; }
+            public int TeamGuid { get; set; }
+            public int RaceNumber { get; set; }
+            public int RaceNumberPadding { get; set; }
+            public int AuxLightKey { get; set; }
+            public int AuxLightColor { get; set; }
+            public int SkinTemplateKey { get; set; }
+            public int SkinColor1Id { get; set; }
+            public int SkinColor2Id { get; set; }
+            public int SkinColor3Id { get; set; }
+            public int SponsorId { get; set; }
+            public int SkinMaterialType1 { get; set; }
+            public int SkinMaterialType2 { get; set; }
+            public int SkinMaterialType3 { get; set; }
+            public int RimColor1Id { get; set; }
+            public int RimColor2Id { get; set; }
+            public int RimMaterialType1 { get; set; }
+            public int RimMaterialType2 { get; set; }
+            public string TeamName { get; set; }
+            public int Nationality { get; set; }
+            public string DisplayName { get; set; }
+            public string CompetitorName { get; set; }
+            public int CompetitorNationality { get; set; }
+            public int TeamTemplateKey { get; set; }
+            public int CarModelType { get; set; }
+            public int CupCategory { get; set; }
+            public int LicenseType { get; set; }
+            public int UseEnduranceKit { get; set; }
+            public string CustomSkinName { get; set; }
+            public int BannerTemplateKey { get; set; }
         }
     }
 }

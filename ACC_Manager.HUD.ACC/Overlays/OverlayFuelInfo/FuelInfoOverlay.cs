@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
 {
-    [Overlay(Name = "Fuel Info", Version = 1.00,
+    [Overlay(Name = "Fuel Info", Version = 1.00, OverlayType = OverlayType.Release,
     Description = "A panel showing information about the fuel: laps left, fuel to end of race. Optionally showing stint information.")]
     internal sealed class FuelInfoOverlay : AbstractOverlay
     {

@@ -45,28 +45,11 @@ namespace ACCManager.Controls
 
             Instance = this;
 
-            this.Loaded += (s, e) => ReloadLivery();
             this.IsVisibleChanged += (s, e) =>
             {
                 if (!(bool)e.NewValue)
                 {
-                    foreach (var control in imageGrid.Children)
-                    {
-                        if (control is System.Windows.Controls.Image)
-                        {
-                            System.Windows.Controls.Image imageControl = (System.Windows.Controls.Image)control;
-                            BitmapImage image = (BitmapImage)imageControl.Source;
-                            if (image != null && image.StreamSource != null)
-                                image.StreamSource.Close();
-                            imageControl.Source = null;
-                            imageControl = null;
-                        }
-                    }
-                    imageGrid.Children.Clear();
-
-                    stackPanelLiveryInfo.Children.Clear();
-                    stackPanelMainInfo.Children.Clear();
-                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
+                    Cache();
                 }
             };
         }
@@ -107,15 +90,46 @@ namespace ACCManager.Controls
         public void ReloadLivery()
         {
             if (!_isLoading)
+            {
                 SetLivery(this.Livery);
+                this.Visibility = Visibility.Visible;
+            }
+        }
+
+        public void Cache()
+        {
+            foreach (var control in imageGrid.Children)
+            {
+                if (control is System.Windows.Controls.Image)
+                {
+                    System.Windows.Controls.Image imageControl = (System.Windows.Controls.Image)control;
+                    BitmapImage image = (BitmapImage)imageControl.Source;
+                    if (image != null && image.StreamSource != null)
+                    {
+                        image.StreamSource.Close();
+                        image.StreamSource.Dispose();
+                    }
+                    imageControl.Source = null;
+                    imageControl = null;
+                }
+            }
+            imageGrid.Children.Clear();
+            imageGrid.UpdateLayout();
+
+            stackPanelLiveryInfo.Children.Clear();
+            stackPanelMainInfo.Children.Clear();
+            skinMainInfo.Visibility = Visibility.Hidden;
+            buttonGenerateDDS.Visibility = Visibility.Hidden;
+
+            this.Visibility = Visibility.Collapsed;
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
         }
 
         internal void SetLivery(LiveryTreeCar livery)
         {
             _isLoading = true;
 
-            ThreadPool.QueueUserWorkItem(x => { GC.Collect(); });
-
+            imageGrid.Children.Clear();
             stackPanelLiveryInfo.Children.Clear();
             stackPanelMainInfo.Children.Clear();
             skinMainInfo.Visibility = Visibility.Hidden;
@@ -128,36 +142,32 @@ namespace ACCManager.Controls
             Livery.CarsRoot = LiveryImporter.GetLivery(livery.CarsFile);
             buttonGenerateDDS.Visibility = DDSutil.HasDdsFiles(Livery) ? Visibility.Hidden : Visibility.Visible;
 
-
-            ThreadPool.QueueUserWorkItem(x => { GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true); });
-
-
             ThreadPool.QueueUserWorkItem(x =>
             {
                 Instance.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     CarsJson.Root carsRoot = Livery.CarsRoot;
-                    string customSkinName = carsRoot.customSkinName;
+                    string customSkinName = carsRoot.CustomSkinName;
 
                     if (customSkinName != null && customSkinName.Length > 0)
                     {
                         skinMainInfo.Visibility = Visibility.Visible;
 
-                        if (carsRoot.teamName != String.Empty)
-                            stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.teamName}", HorizontalAlignment.Center, 25, "Team Name"));
-                        stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.customSkinName}", HorizontalAlignment.Center, 19, "Skin Name"));
-                        stackPanelMainInfo.Children.Add(GetInfoLabel($"{ConversionFactory.GetCarName(carsRoot.carModelType)}", HorizontalAlignment.Center, 16, "Car model type"));
+                        if (carsRoot.TeamName != String.Empty)
+                            stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.TeamName}", HorizontalAlignment.Center, 25, "Team Name"));
+                        stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.CustomSkinName}", HorizontalAlignment.Center, 19, "Skin Name"));
+                        stackPanelMainInfo.Children.Add(GetInfoLabel($"{ConversionFactory.GetCarName(carsRoot.CarModelType)}", HorizontalAlignment.Center, 16, "Car model type"));
 
-                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Display Name: {carsRoot.displayName}"));
-                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Race Number: {carsRoot.raceNumber}"));
-                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Nationality: {GetNationality(carsRoot.nationality)}"));
+                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Display Name: {carsRoot.DisplayName}"));
+                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Race Number: {carsRoot.RaceNumber}"));
+                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Nationality: {GetNationality(carsRoot.Nationality)}"));
 
                         stackPanelLiveryInfo.Children.Add(GetInfoLabel($""));
-                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Body Base Layer: {GetBodyMaterialType(carsRoot.skinMaterialType1)}"));
-                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Body Accent: {GetBodyMaterialType(carsRoot.skinMaterialType2)}"));
-                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Body Trim: {GetBodyMaterialType(carsRoot.skinMaterialType3)}"));
-                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Rim Base: {GetRimMaterialType(carsRoot.rimMaterialType1)}"));
-                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Rim Accent: {GetRimMaterialType(carsRoot.rimMaterialType2)}"));
+                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Body Base Layer: {GetBodyMaterialType(carsRoot.SkinMaterialType1)}"));
+                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Body Accent: {GetBodyMaterialType(carsRoot.SkinMaterialType2)}"));
+                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Body Trim: {GetBodyMaterialType(carsRoot.SkinMaterialType3)}"));
+                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Rim Base: {GetRimMaterialType(carsRoot.RimMaterialType1)}"));
+                        stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Rim Accent: {GetRimMaterialType(carsRoot.RimMaterialType2)}"));
 
                         DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + customSkinName);
                         if (customSkinDir.Exists)
@@ -175,7 +185,13 @@ namespace ACCManager.Controls
                                     Width = 366,
                                 };
                                 imageGrid.Children.Add(imageControl);
-                                LoadPhoto(imageControl, _decalsStream, decalsFile.FullName);
+                                LoadPhoto(imageControl, decalsFile.FullName);
+
+                                ThreadPool.QueueUserWorkItem(gc =>
+                                {
+                                    Thread.Sleep(1 * 1000);
+                                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                                });
                             }
 
 
@@ -210,9 +226,14 @@ namespace ACCManager.Controls
                             if (sponsorFiles != null && sponsorFiles.Length > 0)
                             {
                                 FileInfo sponsorsFile = sponsorFiles[0];
-                                System.Windows.Controls.Image imageControl = new System.Windows.Controls.Image() { Stretch = Stretch.Fill, Height = 366, Width = 366 };
+                                System.Windows.Controls.Image imageControl = new System.Windows.Controls.Image() { Stretch = Stretch.UniformToFill, Height = 366, Width = 366 };
                                 imageGrid.Children.Add(imageControl);
-                                LoadPhoto(imageControl, _sponsorsStream, sponsorsFile.FullName);
+                                LoadPhoto(imageControl, sponsorsFile.FullName);
+                                ThreadPool.QueueUserWorkItem(gc =>
+                                {
+                                    Thread.Sleep(2 * 1000);
+                                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                                });
                             }
 
 
@@ -264,6 +285,7 @@ namespace ACCManager.Controls
 
 
                             UpdateImageSize();
+                            this.Visibility = Visibility.Visible;
                             _isLoading = false;
                         }
                     }
@@ -271,12 +293,12 @@ namespace ACCManager.Controls
             });
         }
 
-        private void LoadPhoto(System.Windows.Controls.Image imageControl, FileStream stream, string path)
+        private void LoadPhoto(System.Windows.Controls.Image imageControl, string path)
         {
             ThreadPool.QueueUserWorkItem(x =>
             {
                 BitmapImage bmi = new BitmapImage();
-                using (stream = new FileStream(path, FileMode.Open))
+                using (var stream = new FileStream(path, FileMode.Open))
                 {
                     bmi.BeginInit();
                     bmi.CacheOption = BitmapCacheOption.OnLoad;
@@ -293,12 +315,8 @@ namespace ACCManager.Controls
                     imageControl.Source = bmi;
                 }));
 
-                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
             });
         }
-
-        private FileStream _sponsorsStream;
-        private FileStream _decalsStream;
 
         private Label GetInfoLabel(string text, HorizontalAlignment allignmment = HorizontalAlignment.Left, int size = 13, string toolTip = "")
         {

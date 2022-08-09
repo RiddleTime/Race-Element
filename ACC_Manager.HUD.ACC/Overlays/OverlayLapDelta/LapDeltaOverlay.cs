@@ -1,5 +1,5 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.HUD.ACC.Data.Tracker.Laps;
+﻿using ACCManager.Data.ACC.Database.LapDataDB;
+using ACCManager.Data.ACC.Tracker.Laps;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.OverlayUtil;
@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 {
-    [Overlay(Name = "Lap Delta", Version = 1.00,
+    [Overlay(Name = "Lap Delta", Version = 1.00, OverlayType = OverlayType.Release,
         Description = "A panel with a bar showing the current delta. Optionally showing the sector times and the potential best.")]
     internal sealed class LapDeltaOverlay : AbstractOverlay
     {
@@ -40,7 +40,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         private const int _overlayWidth = 202;
         private readonly InfoTable _table;
 
-        private LapData _lastLap = null;
+        private DbLapData _lastLap = null;
 
         public LapDeltaOverlay(Rectangle rectangle) : base(rectangle, "Lap Delta Overlay")
         {
@@ -66,7 +66,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             LapTracker.Instance.LapFinished -= Collector_LapFinished;
         }
 
-        private void Collector_LapFinished(object sender, LapData newLap)
+        private void Collector_LapFinished(object sender, DbLapData newLap)
         {
             if (newLap.Sector1 != -1 && newLap.Sector2 != -1 && newLap.Sector3 != -1)
                 _lastLap = newLap;
@@ -112,7 +112,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
         private void AddSectorLines()
         {
-            LapData lap = LapTracker.Instance.CurrentLap;
+            DbLapData lap = LapTracker.Instance.CurrentLap;
 
             if (_lastLap != null && pageGraphics.NormalizedCarPosition < 0.08 && lap.Index != _lastLap.Index && _lastLap.Sector3 != -1)
                 lap = _lastLap;

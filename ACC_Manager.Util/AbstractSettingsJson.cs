@@ -1,27 +1,34 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ACC_Manager.Util
 {
-    public interface IGenericSettingsJson { }
-
-    public abstract class AbstractSettingsJson<IGenericJson>
+    public interface IGenericSettingsJson
     {
-        public abstract IGenericJson Default();
+    }
 
+    public abstract class AbstractSettingsJson<T>
+        where T : IGenericSettingsJson
+    {
+        public abstract T Default();
         public abstract string Path { get; }
         public abstract string FileName { get; }
+        private FileInfo SettingsFile => new FileInfo(Path + FileName);
 
-        public FileInfo SettingsFile => new FileInfo(Path + FileName);
+        public static T Cached { get; private set; }
 
-        public IGenericJson LoadJson()
+        public AbstractSettingsJson()
         {
+            Cached = Get(false);
+        }
+
+        public T Get(bool cached = true)
+        {
+            if (cached && Cached != null)
+                return Cached;
+
             if (!SettingsFile.Exists)
                 return Default();
 
@@ -29,7 +36,8 @@ namespace ACC_Manager.Util
             {
                 using (FileStream fileStream = SettingsFile.OpenRead())
                 {
-                    return ReadJson(fileStream);
+                    Cached = ReadJson(fileStream);
+                    return Cached;
                 }
             }
             catch (Exception ex)
@@ -40,7 +48,26 @@ namespace ACC_Manager.Util
             return Default();
         }
 
-        public IGenericJson ReadJson(Stream stream)
+        public void Save(T genericJson)
+        {
+            try
+            {
+                string jsonString = JsonConvert.SerializeObject(genericJson, Formatting.Indented);
+
+                if (!SettingsFile.Exists && !Directory.Exists(Path))
+                    Directory.CreateDirectory(Path);
+
+                File.WriteAllText(Path + "\\" + FileName, jsonString);
+
+                Cached = genericJson;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+        }
+
+        private T ReadJson(Stream stream)
         {
             string jsonString = string.Empty;
             try
@@ -53,7 +80,7 @@ namespace ACC_Manager.Util
                     stream.Close();
                 }
 
-                return JsonConvert.DeserializeObject<IGenericJson>(jsonString);
+                return JsonConvert.DeserializeObject<T>(jsonString);
             }
             catch (Exception e)
             {
@@ -63,21 +90,17 @@ namespace ACC_Manager.Util
             return Default();
         }
 
-        public void SaveJson(IGenericJson genericJson)
-        {
-            string jsonString = JsonConvert.SerializeObject(genericJson, Formatting.Indented);
-
-            if (!SettingsFile.Exists)
-                if (!Directory.Exists(Path))
-                    Directory.CreateDirectory(Path);
-
-            File.WriteAllText(Path + "\\" + FileName, jsonString);
-        }
-
         public void Delete()
         {
-            if (SettingsFile.Exists)
-                SettingsFile.Delete();
+            try
+            {
+                if (SettingsFile.Exists)
+                    SettingsFile.Delete();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
         }
     }
 }

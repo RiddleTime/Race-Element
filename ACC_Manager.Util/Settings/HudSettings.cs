@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACCManager.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,13 +7,23 @@ using System.Threading.Tasks;
 
 namespace ACC_Manager.Util.Settings
 {
-    public class HudSettings
+    public class HudSettingsJson : IGenericSettingsJson
     {
-        private static bool _demoMode = false;
-        public static bool DemoMode
+        public bool DemoMode { get; set; }
+    }
+
+    public class HudSettings : AbstractSettingsJson<HudSettingsJson>
+    {
+        public override string Path => FileUtil.AccManangerSettingsPath;
+
+        public override string FileName => "HudSettings.json";
+
+        public override HudSettingsJson Default()
         {
-            get { return _demoMode; }
-            set { _demoMode = value; }
+            return new HudSettingsJson()
+            {
+                DemoMode = false
+            };
         }
     }
 }

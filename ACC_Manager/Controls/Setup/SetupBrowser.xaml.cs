@@ -22,6 +22,8 @@ namespace ACCManager.Controls
     {
         public static SetupBrowser Instance { get; set; }
 
+        private readonly string SetupsPath = FileUtil.AccPath + "Setups\\";
+
         private readonly FlowDocSetupRenderer _setupRenderer;
         private string _selectedSetup;
 
@@ -65,17 +67,18 @@ namespace ACCManager.Controls
                             if (root == null)
                                 return;
 
+#if DEBUG
                             // make edit button visible depending on whether there is a setup changer avaiable for the car
-                            if (GetChanger(ParseCarName(root.carName)) == null)
+                            if (GetChanger(ParseCarName(root.CarName)) == null)
                             {
                                 buttonEditSetup.Visibility = Visibility.Hidden;
                             }
                             else
                             {
-#if DEBUG
+
                                 buttonEditSetup.Visibility = Visibility.Visible;
-#endif
                             }
+#endif
 
                             _setupRenderer.LogSetup(ref flowDocument, file.FullName);
                             e.Handled = true;
@@ -90,6 +93,9 @@ namespace ACCManager.Controls
             try
             {
                 DirectoryInfo setupsDirectory = new DirectoryInfo(SetupsPath);
+
+                if (!setupsDirectory.Exists)
+                    return;
 
                 setupsTreeView.Items.Clear();
 
@@ -328,10 +334,35 @@ namespace ACCManager.Controls
 
             contextMenu.Items.Add(addToCompare1);
             contextMenu.Items.Add(addToCompare2);
+
+            Button copyToOtherTrack = new Button()
+            {
+                Content = "Copy to other track",
+                CommandParameter = file,
+                Style = Resources["MaterialDesignRaisedButton"] as Style,
+                Margin = new Thickness(0),
+                Height = 30,
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            copyToOtherTrack.Click += CopyToOtherTrack_Click;
+            contextMenu.Items.Add(copyToOtherTrack);
+
             contextMenu.HorizontalOffset = 0;
             contextMenu.VerticalOffset = 0;
 
             return contextMenu;
+        }
+
+        private void CopyToOtherTrack_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                FileInfo file = (FileInfo)button.DataContext;
+
+                SetupImporter.Instance.Open(file.FullName, true);
+
+                (button.Parent as ContextMenu).IsOpen = false;
+            }
         }
 
         private void AddToCompare2_Click(object sender, RoutedEventArgs e)
@@ -365,7 +396,5 @@ namespace ACCManager.Controls
             }
         }
 
-        private string AccPath => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "Assetto Corsa Competizione\\";
-        private string SetupsPath => AccPath + "Setups\\";
     }
 }

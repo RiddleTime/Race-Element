@@ -390,6 +390,10 @@
     <Compile Include="Controls\Setup\SetupEditor.xaml.cs">
       <DependentUpon>SetupEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Telemetry\RaceSessions\RaceSessionBrowser.xaml.cs">
+      <DependentUpon>RaceSessionBrowser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Util\ImageControlCreator.cs" />
     <Compile Include="Controls\Setup\SetupImporter.xaml.cs">
       <DependentUpon>SetupImporter.xaml</DependentUpon>
     </Compile>
@@ -505,6 +509,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\Telemetry\RaceSessions\RaceSessionBrowser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Telemetry\TelemetryDebug.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -600,6 +608,10 @@
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ACC_Manager.Broadcast\ACC_Manager.Broadcast.csproj">
+      <Project>{840220bd-8469-4a04-a6ec-1ed2bc743efb}</Project>
+      <Name>ACC_Manager.Broadcast</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ACC_Manager.Data.ACC\ACC_Manager.Data.ACC.csproj">
       <Project>{BB693CEB-CD96-4EB6-9F13-110D3CCECFFE}</Project>
       <Name>ACC_Manager.Data.ACC</Name>

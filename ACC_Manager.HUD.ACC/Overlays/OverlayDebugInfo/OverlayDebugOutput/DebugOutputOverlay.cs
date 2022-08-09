@@ -3,20 +3,15 @@ using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.HUD.Overlay.Util;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput.TraceOutputListener;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
 {
-    [Overlay(Name = "Debug Output", Version = 1.00,
-    Description = "A panel showing live debug output.")]
-    internal class DebugOutputOverlay : AbstractOverlay
+    [Overlay(Name = "Debug Output", Version = 1.00, OverlayType = OverlayType.Debug,
+        Description = "A panel showing live debug output.")]
+    internal sealed class DebugOutputOverlay : AbstractOverlay
     {
         private DebugOutputConfiguration _config = new DebugOutputConfiguration();
         private class DebugOutputConfiguration : OverlayConfiguration
@@ -59,7 +54,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
                 this.X = DebugInfoHelper.Instance.GetX(this);
         }
 
-        public override void BeforeStart()
+        public sealed override void BeforeStart()
         {
             if (this._config.Undock)
                 this.AllowReposition = true;
@@ -74,7 +69,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
             this.Height = (int)((_font.Height - 2) * _config.VisibleLines) + 1;
         }
 
-        public override void BeforeStop()
+        public sealed override void BeforeStop()
         {
             if (!this._config.Undock)
             {
@@ -83,18 +78,19 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
             }
         }
 
-        public override void Render(Graphics g)
+        public sealed override void Render(Graphics g)
         {
-            foreach (MessageOut output in TraceOutputListener.Instance.Outputs.Take(_config.VisibleLines))
-            {
-                DateTime time = DateTime.FromFileTime(output.time);
-                _table.AddRow($"{time:HH\\:mm\\:ss}", new string[] { output.message });
-            }
+            lock (TraceOutputListener.Instance.Outputs)
+                foreach (MessageOut output in TraceOutputListener.Instance.Outputs.Take(_config.VisibleLines))
+                {
+                    DateTime time = DateTime.FromFileTime(output.time);
+                    _table.AddRow($"{time:HH\\:mm\\:ss}", new string[] { output.message });
+                }
 
             _table.Draw(g);
         }
 
-        public override bool ShouldRender()
+        public sealed override bool ShouldRender()
         {
             return true;
         }

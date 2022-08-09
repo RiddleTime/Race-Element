@@ -30,6 +30,7 @@ namespace ACCManager.HUD.Overlay.Internal
             // Enumerate monitors
             EnumDisplayMonitors(IntPtr.Zero, IntPtr.Zero, MonitorEnum, IntPtr.Zero);
 
+#if DEBUG
             Debug.WriteLine("\nLogging Monitors");
             foreach (MonitorInfoWithHandle monitor in _monitorInfos)
             {
@@ -38,6 +39,7 @@ namespace ACCManager.HUD.Overlay.Internal
                 Debug.WriteLine($"Work: {monitor.MonitorInfo.monitor}");
                 Debug.WriteLine($"Size: {monitor.MonitorInfo.size}");
             }
+#endif
 
             // Return list
             return _monitorInfos.ToArray();

@@ -131,7 +131,7 @@ namespace ACCManager.Controls
                 Stream entryStream = x.OpenEntryStream();
                 CarsJson.Root carRoot = GetLivery(entryStream);
                 entryStream.Close();
-                return carRoot != null && carRoot.customSkinName != null && !carRoot.customSkinName.Equals(string.Empty);
+                return carRoot != null && carRoot.CustomSkinName != null && !carRoot.CustomSkinName.Equals(string.Empty);
             });
 
             // check importing strategy
@@ -167,9 +167,9 @@ namespace ACCManager.Controls
                     if (!x.Key.StartsWith("__MACOSX"))
                     {
                         CarsJson.Root carRoot = GetLivery(x.OpenEntryStream());
-                        if (carRoot != null && carRoot.customSkinName != null && carRoot.customSkinName != string.Empty)
+                        if (carRoot != null && carRoot.CustomSkinName != null && carRoot.CustomSkinName != string.Empty)
                         {
-                            Debug.WriteLine($"Found livery {carRoot.teamName} / {carRoot.customSkinName}");
+                            Debug.WriteLine($"Found livery {carRoot.TeamName} / {carRoot.CustomSkinName}");
 
                             string carsJsonFileName = $"{FileUtil.CarsPath}{FileUtil.GetFileName(x.Key)}";
 
@@ -191,11 +191,11 @@ namespace ACCManager.Controls
 
                             if (skinFiles.Count == 0)
                             {
-                                skinFiles = archiveEntries.FindAll(s => s.Key.Contains($"\\{carRoot.customSkinName}\\"));
+                                skinFiles = archiveEntries.FindAll(s => s.Key.Contains($"\\{carRoot.CustomSkinName}\\"));
                             }
                             if (skinFiles.Count == 0)
                             {
-                                skinFiles = archiveEntries.FindAll(s => s.Key.Contains($"\\\\{carRoot.customSkinName}\\\\"));
+                                skinFiles = archiveEntries.FindAll(s => s.Key.Contains($"\\\\{carRoot.CustomSkinName}\\\\"));
                             }
 
 
@@ -209,7 +209,7 @@ namespace ACCManager.Controls
                                     {
                                         if (skinFile.Key.ToLower().EndsWith(validSkinFiles[s]))
                                         {
-                                            string liveryFolder = $"{FileUtil.LiveriesPath}{carRoot.customSkinName}\\";
+                                            string liveryFolder = $"{FileUtil.LiveriesPath}{carRoot.CustomSkinName}\\";
                                             Directory.CreateDirectory(liveryFolder);
 
                                             string skinFileName = $"{liveryFolder}{FileUtil.GetFileName(skinFile.Key)}";
@@ -244,25 +244,25 @@ namespace ACCManager.Controls
                         Stream entryStream = x.OpenEntryStream();
                         CarsJson.Root carRoot = GetLivery(entryStream);
                         entryStream.Close();
-                        if (carRoot != null && carRoot.customSkinName != null && carRoot.customSkinName != string.Empty)
+                        if (carRoot != null && carRoot.CustomSkinName != null && carRoot.CustomSkinName != string.Empty)
                         {
-                            Debug.WriteLine($"Found livery {carRoot.teamName} / {carRoot.customSkinName}");
+                            Debug.WriteLine($"Found livery {carRoot.TeamName} / {carRoot.CustomSkinName}");
 
                             string carsJsonFileName = $"{FileUtil.CarsPath}{FileUtil.GetFileName(x.Key)}";
 
 
                             List<IArchiveEntry> skinFiles = archiveEntries.FindAll(s =>
                             {
-                                return s.Key.Contains($"/{carRoot.customSkinName}/") && !FileUtil.GetFileName(s.Key).StartsWith(".") && !s.Key.Contains("__MACOSX");
+                                return s.Key.Contains($"/{carRoot.CustomSkinName}/") && !FileUtil.GetFileName(s.Key).StartsWith(".") && !s.Key.Contains("__MACOSX");
                             });
 
                             if (skinFiles.Count == 0)
                             {
-                                skinFiles = archiveEntries.FindAll(s => s.Key.Contains($"\\{carRoot.customSkinName}\\"));
+                                skinFiles = archiveEntries.FindAll(s => s.Key.Contains($"\\{carRoot.CustomSkinName}\\"));
                             }
                             if (skinFiles.Count == 0)
                             {
-                                skinFiles = archiveEntries.FindAll(s => s.Key.Contains($"\\\\{carRoot.customSkinName}\\\\"));
+                                skinFiles = archiveEntries.FindAll(s => s.Key.Contains($"\\\\{carRoot.CustomSkinName}\\\\"));
                             }
 
                             if (skinFiles.Count > 0)
@@ -276,7 +276,7 @@ namespace ACCManager.Controls
                                     {
                                         if (skinFile.Key.ToLower().EndsWith(validSkinFiles[s]))
                                         {
-                                            string liveryFolder = $"{FileUtil.LiveriesPath}{carRoot.customSkinName}\\";
+                                            string liveryFolder = $"{FileUtil.LiveriesPath}{carRoot.CustomSkinName}\\";
                                             Directory.CreateDirectory(liveryFolder);
 
                                             string skinFileName = $"{liveryFolder}{FileUtil.GetFileName(skinFile.Key)}";

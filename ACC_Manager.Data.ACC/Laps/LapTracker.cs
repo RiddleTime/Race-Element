@@ -1,7 +1,7 @@
-﻿using ACCManager.Broadcast;
-using ACCManager.Broadcast.Structs;
+﻿using ACCManager.Broadcast.Structs;
+using ACCManager.Data.ACC.Database;
+using ACCManager.Data.ACC.Database.LapDataDB;
 using ACCManager.Data.ACC.Session;
-using ACCManager.Data.ACC.Tracker;
 using ACCManager.Util;
 using System;
 using System.Collections.Generic;
@@ -9,44 +9,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
-namespace ACCManager.HUD.ACC.Data.Tracker.Laps
+namespace ACCManager.Data.ACC.Tracker.Laps
 {
-
-    /// <summary>
-    /// All data except for the Index must be divided by 1000 to get the actual value (floating point precision is annoying)
-    /// </summary>
-    public class LapData
-    {
-        /// <summary>
-        /// Lap Index
-        /// </summary>
-        public int Index { get; set; } = -1;
-
-        /// <summary>
-        /// Lap Time
-        /// </summary>
-        public int Time { get; set; } = -1;
-        public bool IsValid { get; set; } = true;
-        public int Sector1 { get; set; } = -1;
-        public int Sector2 { get; set; } = -1;
-        public int Sector3 { get; set; } = -1;
-
-        public LapType LapType { get; set; } = LapType.ERROR;
-
-        /// <summary>
-        /// Fuel left at the end of the lap, divide by 1000...
-        /// </summary>
-        public int FuelUsage { get; set; } = -1;
-
-        public override string ToString()
-        {
-            return $"Lap: {Index}, Time: {this.GetLapTime():F3}, IsValid: {IsValid}, S1: {this.GetSector1():F3}, S2: {this.GetSector2():F3}, S3: {this.GetSector3():F3}";
-        }
-    }
-
-    internal class LapTracker
+    public class LapTracker
     {
         private static LapTracker _instance;
         public static LapTracker Instance
@@ -62,15 +28,14 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
         private ACCSharedMemory sharedMemory;
         private int CurrentSector = 0;
 
-        internal List<LapData> Laps = new List<LapData>();
-        internal LapData CurrentLap;
+        public Dictionary<int, DbLapData> Laps = new Dictionary<int, DbLapData>();
+        public DbLapData CurrentLap = new DbLapData();
 
-        public event EventHandler<LapData> LapFinished;
+        public event EventHandler<DbLapData> LapFinished;
 
         private LapTracker()
         {
             sharedMemory = new ACCSharedMemory();
-            CurrentLap = new LapData();
 
             if (!IsTracking)
                 this.Start();
@@ -87,8 +52,12 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
                 Laps.Clear();
 
             lock (CurrentLap)
-                CurrentLap = new LapData() { Index = pageGraphics.CompletedLaps + 1 };
-
+            {
+                if (RaceSessionTracker.Instance.CurrentSession == null)
+                    Debug.WriteLine("Lap Tracker cannot record a new lap on session type change, current session is null");
+                else
+                    CurrentLap = new DbLapData() { Index = pageGraphics.CompletedLaps + 1, RaceSessionGuid = RaceSessionTracker.Instance.CurrentSession._id };
+            }
             Debug.WriteLine("LapTracker: Resetted current lap and previous recorded laps.");
         }
 
@@ -112,25 +81,30 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
                     if (_lastLapInfo.Splits != null && _lastLapInfo.Splits.Count == 3)
                     {
                         lock (Laps)
-                            if (Laps.Any())
+                            if (Laps.Count != 0)
                             {
-                                LapData lastData = Laps.Last();
+                                DbLapData lastData = Laps[CurrentLap.Index - 1];
                                 if (_lastLapInfo.LaptimeMS == lastData.Time)
                                 {
                                     if (_lastLapInfo.Splits[2].HasValue)
                                     {
-                                        if (Laps[Laps.Count - 1].Sector3 != _lastLapInfo.Splits[2].Value)
+                                        if (Laps[CurrentLap.Index - 1].Sector3 != _lastLapInfo.Splits[2].Value)
                                         {
-                                            Laps[Laps.Count - 1].Sector3 = _lastLapInfo.Splits[2].Value;
-                                            Laps[Laps.Count - 1].IsValid = !_lastLapInfo.IsInvalid;
-                                            Laps[Laps.Count - 1].LapType = _lastLapInfo.Type;
+                                            Laps[CurrentLap.Index - 1].Sector3 = _lastLapInfo.Splits[2].Value;
+                                            Laps[CurrentLap.Index - 1].IsValid = !_lastLapInfo.IsInvalid;
+                                            Laps[CurrentLap.Index - 1].LapType = _lastLapInfo.Type;
 
-                                            Trace.WriteLine($"{Laps[Laps.Count - 1]}");
+                                            Trace.WriteLine($"{Laps[CurrentLap.Index - 1]}");
 
-                                            LapFinished?.Invoke(this, Laps[Laps.Count - 1]);
+                                            LapFinished?.Invoke(this, Laps[CurrentLap.Index - 1]);
+
+                                            if (RaceSessionTracker.Instance.CurrentSession != null)
+                                            {
+                                                Laps[CurrentLap.Index - 1].RaceSessionGuid = RaceSessionTracker.Instance.CurrentSession._id;
+                                                Laps[CurrentLap.Index - 1].UtcCompleted = DateTime.UtcNow;
+                                                LapDataCollection.Insert(Laps[CurrentLap.Index - 1]);
+                                            }
                                         }
-
-                                      
                                     }
                                 }
                             }
@@ -161,7 +135,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
                         if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF)
                         {
                             Laps.Clear();
-                            CurrentLap = new LapData() { Index = pageGraphics.CompletedLaps + 1 };
+                            CurrentLap = new DbLapData() { Index = pageGraphics.CompletedLaps + 1 };
                         }
 
 
@@ -196,10 +170,10 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
                             if (CurrentLap.Sector1 != -1)
                             {
                                 lock (Laps)
-                                    Laps.Add(CurrentLap);
+                                    Laps.Add(CurrentLap.Index, CurrentLap);
                             }
 
-                            CurrentLap = new LapData() { Index = pageGraphics.CompletedLaps + 1 };
+                            CurrentLap = new DbLapData() { Index = pageGraphics.CompletedLaps + 1 };
                         }
                     }
                     catch (Exception ex)
@@ -212,8 +186,6 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Laps
                 _instance = null;
                 IsTracking = false;
             }).Start();
-
-
         }
 
         internal void Stop()
