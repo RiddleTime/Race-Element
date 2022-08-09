@@ -59,7 +59,7 @@ namespace ACCManager.Controls
             ListView lapsListView = new ListView();
 
             List<DbLapData> laps = LapDataCollection.GetForSession(session._id);
-            foreach (DbLapData lapData in laps)
+            foreach (DbLapData lapData in laps.OrderByDescending(x => x.Index))
             {
                 ListViewItem lvi = new ListViewItem() { Content = lapData.ToString() };
                 if (!lapData.IsValid) lvi.Foreground = Brushes.OrangeRed;

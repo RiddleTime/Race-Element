@@ -81,28 +81,28 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                     if (_lastLapInfo.Splits != null && _lastLapInfo.Splits.Count == 3)
                     {
                         lock (Laps)
-                            if (Laps.Any())
+                            if (Laps.Count != 0)
                             {
-                                DbLapData lastData = Laps[Laps.Count - 1];
+                                DbLapData lastData = Laps[CurrentLap.Index - 1];
                                 if (_lastLapInfo.LaptimeMS == lastData.Time)
                                 {
                                     if (_lastLapInfo.Splits[2].HasValue)
                                     {
-                                        if (Laps[Laps.Count - 1].Sector3 != _lastLapInfo.Splits[2].Value)
+                                        if (Laps[CurrentLap.Index - 1].Sector3 != _lastLapInfo.Splits[2].Value)
                                         {
-                                            Laps[Laps.Count - 1].Sector3 = _lastLapInfo.Splits[2].Value;
-                                            Laps[Laps.Count - 1].IsValid = !_lastLapInfo.IsInvalid;
-                                            Laps[Laps.Count - 1].LapType = _lastLapInfo.Type;
+                                            Laps[CurrentLap.Index - 1].Sector3 = _lastLapInfo.Splits[2].Value;
+                                            Laps[CurrentLap.Index - 1].IsValid = !_lastLapInfo.IsInvalid;
+                                            Laps[CurrentLap.Index - 1].LapType = _lastLapInfo.Type;
 
-                                            Trace.WriteLine($"{Laps[Laps.Count - 1]}");
+                                            Trace.WriteLine($"{Laps[CurrentLap.Index - 1]}");
 
-                                            LapFinished?.Invoke(this, Laps[Laps.Count - 1]);
+                                            LapFinished?.Invoke(this, Laps[CurrentLap.Index - 1]);
 
                                             if (RaceSessionTracker.Instance.CurrentSession != null)
                                             {
-                                                Laps[Laps.Count - 1].RaceSessionGuid = RaceSessionTracker.Instance.CurrentSession._id;
-                                                Laps[Laps.Count - 1].UtcCompleted = DateTime.UtcNow;
-                                                LapDataCollection.Insert(Laps[Laps.Count - 1]);
+                                                Laps[CurrentLap.Index - 1].RaceSessionGuid = RaceSessionTracker.Instance.CurrentSession._id;
+                                                Laps[CurrentLap.Index - 1].UtcCompleted = DateTime.UtcNow;
+                                                LapDataCollection.Insert(Laps[CurrentLap.Index - 1]);
                                             }
                                         }
                                     }

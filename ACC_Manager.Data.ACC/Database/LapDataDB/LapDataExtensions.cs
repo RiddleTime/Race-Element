@@ -38,7 +38,7 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
 
         #endregion
 
-        #region List<DbLapData> Extensions
+        #region Dictionary<int, DbLapData> Extensions
 
         public static int GetPotentialFastestLapTime(this Dictionary<int, DbLapData> laps)
         {
@@ -68,8 +68,8 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
                 return -1;
 
             int total = 0;
-            for (int i = 0; i < lapAmount; i++)
-                total += laps[laps.Count - (lapAmount - i)].FuelUsage;
+            foreach (DbLapData lap in laps.Select(x => x.Value).OrderByDescending(x => x.Index).Take(lapAmount))
+                total += lap.FuelUsage;
 
             return total / lapAmount;
         }
@@ -97,9 +97,9 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
 
             int total = 0;
             int validCount = 0;
-            for (int i = 0; i < lapAmount; i++)
+
+            foreach (DbLapData lap in laps.Select(x => x.Value))
             {
-                DbLapData lap = laps[laps.Count - (lapAmount - i)];
                 if (onlyValidLaps)
                 {
                     if (lap.IsValid)
