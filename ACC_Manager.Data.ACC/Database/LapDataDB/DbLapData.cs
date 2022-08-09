@@ -72,9 +72,9 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
             Collection.Insert(lap);
         }
 
-        public static List<DbLapData> GetForSession(Guid sessionId)
+        public static Dictionary<int, DbLapData> GetForSession(Guid sessionId)
         {
-            return Collection.Find(x => x.RaceSessionGuid == sessionId).ToList();
+            return Collection.Find(x => x.RaceSessionGuid == sessionId).ToDictionary(x => x.Index);
         }
     }
 }

@@ -38,9 +38,12 @@ namespace ACCManager.Controls
 
         private void LoadSession()
         {
+            DbRaceSession session = GetSelectedRaceSession();
+            if (session == null) return;
+
+            Dictionary<int, DbLapData> laps = LapDataCollection.GetForSession(session._id);
             stackerSessionViewer.Children.Clear();
 
-            DbRaceSession session = GetSelectedRaceSession();
             if (session == null) return;
 
             stackerSessionViewer.Children.Add(new TextBlock()
@@ -56,17 +59,28 @@ namespace ACCManager.Controls
                 Text = $"Start: {session.UtcStart:U} \nEnd: {session.UtcEnd:U}"
             });
 
-            ListView lapsListView = new ListView();
-
-            List<DbLapData> laps = LapDataCollection.GetForSession(session._id);
-            foreach (DbLapData lapData in laps.OrderByDescending(x => x.Index))
+            int potentialBestLapTime = laps.GetPotentialFastestLapTime();
+            stackerSessionViewer.Children.Add(new TextBlock()
             {
-                ListViewItem lvi = new ListViewItem() { Content = lapData.ToString() };
+                Text = $"Potential best: {new TimeSpan(0, 0, 0, 0, potentialBestLapTime):mm\\:ss\\:fff}"
+            });
+
+            ListView lapsListView = new ListView();
+            int fastestLapIndex = laps.GetFastestLapIndex();
+            foreach (DbLapData lapData in laps.OrderByDescending(x => x.Key).Select(x => x.Value))
+            {
+                string lapDataText = $"Lap: {lapData.Index}, Time: {new TimeSpan(0, 0, 0, 0, lapData.Time):mm\\:ss\\:fff}, S1: {lapData.GetSector1():F3}, S2: {lapData.GetSector2():F3}, S3: {lapData.GetSector3():F3} - {lapData.LapType}";
+                lapDataText += $" | Fuel Used: {lapData.GetFuelUsage()}";
+
+                ListViewItem lvi = new ListViewItem() { Content = lapDataText };
                 if (!lapData.IsValid) lvi.Foreground = Brushes.OrangeRed;
+                if (lapData.IsValid && lapData.Index == fastestLapIndex) lvi.Foreground = Brushes.LimeGreen;
 
                 lapsListView.Items.Add(lvi);
             }
-            stackerSessionViewer.Children.Add(lapsListView);
+            ScrollViewer scroller = new ScrollViewer() { VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
+            scroller.Content = lapsListView;
+            stackerSessionViewer.Children.Add(scroller);
         }
 
         private Guid GetSelectedTrack()

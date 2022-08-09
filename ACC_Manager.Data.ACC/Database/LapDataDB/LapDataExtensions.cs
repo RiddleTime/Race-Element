@@ -56,6 +56,29 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
             return fastestSector1 + fastestSector2 + fastestSector3;
         }
 
+        /// <summary>
+        /// Finds the lap index of the fastest lap
+        /// </summary>
+        /// <returns>-1 if not fastest lap</returns>
+        public static int GetFastestLapIndex(this Dictionary<int, DbLapData> laps)
+        {
+            int fastestTime = int.MaxValue;
+            int fastestLapIndex = -1;
+
+            foreach (var key in laps.Keys)
+            {
+                DbLapData lap = laps[key];
+                if (lap.Time < fastestTime && lap.IsValid)
+                {
+                    fastestTime = lap.Time;
+                    fastestLapIndex = lap.Index;
+                }
+
+            }
+
+            return fastestLapIndex;
+        }
+
         public static int GetAverageFuelUsage(this Dictionary<int, DbLapData> laps)
         {
             return laps.GetAverageFuelUsage(laps.Count);

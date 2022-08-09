@@ -21,7 +21,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySpeedometer
         private SpeedometerConfiguration _config = new SpeedometerConfiguration();
         private class SpeedometerConfiguration : OverlayConfiguration
         {
-
             public SpeedometerConfiguration()
             {
                 AllowRescale = true;
