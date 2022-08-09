@@ -40,24 +40,26 @@ namespace ACCManager.Controls
         {
             stackerSessionViewer.Children.Clear();
 
-            DbRaceSession selected = GetSelectedRaceSession();
-            if (selected == null) return;
+            DbRaceSession session = GetSelectedRaceSession();
+            if (session == null) return;
 
             stackerSessionViewer.Children.Add(new TextBlock()
             {
-                Text = $"{ACCSharedMemory.SessionTypeToString(selected.SessionType)} - {(selected.IsOnline ? "On" : "Off")}line"
+                Text = $"{ACCSharedMemory.SessionTypeToString(session.SessionType)} - {(session.IsOnline ? "On" : "Off")}line"
             });
             stackerSessionViewer.Children.Add(new TextBlock()
             {
-                Text = $"Session Index: {selected.SessionIndex}"
+                Text = $"Session Index: {session.SessionIndex}"
             });
             stackerSessionViewer.Children.Add(new TextBlock()
             {
-                Text = $"Start: {selected.UtcStart:U} \nEnd: {selected.UtcEnd:U}"
+                Text = $"Start: {session.UtcStart:U} \nEnd: {session.UtcEnd:U}"
             });
 
             ListView lapsListView = new ListView();
-            foreach (DbLapData lapData in LapDataCollection.GetForSession(selected._id))
+
+            List<DbLapData> laps = LapDataCollection.GetForSession(session._id);
+            foreach (DbLapData lapData in laps)
             {
                 ListViewItem lvi = new ListViewItem() { Content = lapData.ToString() };
                 if (!lapData.IsValid) lvi.Foreground = Brushes.OrangeRed;

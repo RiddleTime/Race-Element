@@ -56,7 +56,7 @@ namespace ACCManager.Data.ACC.Database.SessionData
 
         public static List<DbRaceSession> GetAll()
         {
-            return Collection.FindAll().OrderBy(x => x.UtcStart).ToList();
+            return Collection.FindAll().OrderByDescending(x => x.UtcStart).ToList();
         }
 
         public static void Update(DbRaceSession raceSession)
