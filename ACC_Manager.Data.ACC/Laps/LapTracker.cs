@@ -28,7 +28,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
         private ACCSharedMemory sharedMemory;
         private int CurrentSector = 0;
 
-        public List<DbLapData> Laps = new List<DbLapData>();
+        public Dictionary<int, DbLapData> Laps = new Dictionary<int, DbLapData>();
         public DbLapData CurrentLap = new DbLapData();
 
         public event EventHandler<DbLapData> LapFinished;
@@ -83,7 +83,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                         lock (Laps)
                             if (Laps.Any())
                             {
-                                DbLapData lastData = Laps.Last();
+                                DbLapData lastData = Laps[Laps.Count - 1];
                                 if (_lastLapInfo.LaptimeMS == lastData.Time)
                                 {
                                     if (_lastLapInfo.Splits[2].HasValue)
@@ -170,7 +170,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                             if (CurrentLap.Sector1 != -1)
                             {
                                 lock (Laps)
-                                    Laps.Add(CurrentLap);
+                                    Laps.Add(CurrentLap.Index, CurrentLap);
                             }
 
                             CurrentLap = new DbLapData() { Index = pageGraphics.CompletedLaps + 1 };
