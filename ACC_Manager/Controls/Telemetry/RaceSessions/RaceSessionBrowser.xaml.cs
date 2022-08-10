@@ -70,7 +70,7 @@ namespace ACCManager.Controls
             foreach (DbLapData lapData in laps.OrderByDescending(x => x.Key).Select(x => x.Value))
             {
                 string lapDataText = $"Lap: {lapData.Index}, Time: {new TimeSpan(0, 0, 0, 0, lapData.Time):mm\\:ss\\:fff}, S1: {lapData.GetSector1():F3}, S2: {lapData.GetSector2():F3}, S3: {lapData.GetSector3():F3} - {lapData.LapType}";
-                lapDataText += $" | Fuel Used: {lapData.GetFuelUsage()}";
+                lapDataText += $" | ( Fuel Used: {lapData.GetFuelUsage()} | in tank: {lapData.FuelInTank:F3})";
 
                 ListViewItem lvi = new ListViewItem() { Content = lapDataText };
                 if (!lapData.IsValid) lvi.Foreground = Brushes.OrangeRed;

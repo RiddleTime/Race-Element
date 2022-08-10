@@ -45,6 +45,7 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
         /// Milliliters of Fuel left at the end of the lap, divide by 1000...
         /// </summary>
         public int FuelUsage { get; set; } = -1;
+        public float FuelInTank { get; set; } = -1;
 
         public override string ToString()
         {

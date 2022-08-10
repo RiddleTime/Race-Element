@@ -102,6 +102,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                                             {
                                                 Laps[CurrentLap.Index - 1].RaceSessionGuid = RaceSessionTracker.Instance.CurrentSession._id;
                                                 Laps[CurrentLap.Index - 1].UtcCompleted = DateTime.UtcNow;
+                                                Laps[CurrentLap.Index - 1].FuelInTank = new ACCSharedMemory().ReadPhysicsPageFile().Fuel;
                                                 LapDataCollection.Insert(Laps[CurrentLap.Index - 1]);
                                             }
                                         }
