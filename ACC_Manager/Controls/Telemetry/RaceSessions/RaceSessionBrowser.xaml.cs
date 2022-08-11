@@ -62,7 +62,6 @@ namespace ACCManager.Controls
                 Text = $"Potential best: {new TimeSpan(0, 0, 0, 0, potentialBestLapTime):mm\\:ss\\:fff}"
             });
 
-
             stackerSessionViewer.Children.Add(GetLapDataGrid(laps));
         }
 
