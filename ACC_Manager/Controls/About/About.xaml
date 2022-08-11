@@ -208,6 +208,22 @@
                                 </TextBlock>
                             </StackPanel>
 
+                            <StackPanel Margin="0,10,0,0">
+                                <TextBlock 
+                           Style="{StaticResource MaterialDesignBody1TextBlock}"
+                           HorizontalAlignment="Center" TextWrapping="Wrap" >
+                            <Bold><Italic>Telemetry</Italic></Bold>
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
+                                   Sessions:<LineBreak/>
+                                    - Displays Sessions recorded when ACC Manager is running.<LineBreak/>
+                                    - Select a track and then select a car to display sessions, then click a session to show the lap data.<LineBreak/>
+                                    - Reload the data list by re-opening the Telemetry tab.<LineBreak/>
+                                    - If no data is recorded make sure nothing is blocking the udp connection from acc manager to assetto corsa competizione.<LineBreak/>
+                                </TextBlock>
+                            </StackPanel>
+
+
                         </StackPanel>
                     </materialDesign:Card>
                 </ScrollViewer>
