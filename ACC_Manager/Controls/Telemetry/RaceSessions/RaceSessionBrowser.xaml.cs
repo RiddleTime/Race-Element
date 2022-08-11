@@ -72,7 +72,7 @@ namespace ACCManager.Controls
             var data = laps.OrderByDescending(x => x.Key).Select(x => x.Value);
             DataGrid grid = new DataGrid()
             {
-                Height = 350,
+                Height = 550,
                 ItemsSource = data,
                 AutoGenerateColumns = false,
                 CanUserDeleteRows = false,
@@ -118,6 +118,7 @@ namespace ACCManager.Controls
                 Header = "Lap",
                 Binding = new Binding("Index"),
                 SortDirection = System.ComponentModel.ListSortDirection.Descending,
+                FontWeight = FontWeights.DemiBold,
             });
             grid.Columns.Add(new DataGridTextColumn()
             {
@@ -216,6 +217,7 @@ namespace ACCManager.Controls
             List<DbRaceSession> allsessions = RaceSessionCollection.GetAll();
 
             listViewRaceSessions.Items.Clear();
+
             foreach (DbRaceSession session in allsessions.Where(x => x.TrackGuid == GetSelectedTrack() && x.CarGuid == GetSelectedCar()))
             {
                 DbCarData carData = CarDataCollection.GetCarData(session.CarGuid);
