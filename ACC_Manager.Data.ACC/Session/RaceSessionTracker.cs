@@ -19,6 +19,8 @@ namespace ACCManager.Data.ACC.Session
         private bool _isTracking = false;
         private ACCSharedMemory _sharedMemory;
 
+        private float _sessionTimeLeft;
+
         private AcSessionType _lastSessionType = AcSessionType.AC_UNKNOWN;
         public event EventHandler<AcSessionType> OnACSessionTypeChanged;
 
@@ -93,10 +95,30 @@ namespace ACCManager.Data.ACC.Session
                     TrackGuid = trackData._id,
                     IsOnline = staticPageFile.isOnline
                 };
+                _sessionTimeLeft = _sharedMemory.ReadGraphicsPageFile().SessionTimeLeft;
 
                 RaceSessionCollection.Insert(CurrentSession);
                 OnNewSessionStarted?.Invoke(this, CurrentSession);
             }
+        }
+
+        private void FinalizeCurrentSession()
+        {
+            if (CurrentSession != null)
+            {
+                _lastSessionIndex = -1;
+                _lastSessionType = AcSessionType.AC_UNKNOWN;
+                CurrentSession.UtcEnd = DateTime.UtcNow;
+
+                var lapData = LapDataCollection.GetForSession(CurrentSession._id);
+                if (lapData.Any())
+                    RaceSessionCollection.Update(CurrentSession);
+                else
+                    RaceSessionCollection.Delete(CurrentSession);
+            }
+
+            CurrentSession = null;
+            Debug.WriteLine("CurrentSession Reset to null");
         }
 
         private void StartTracking()
@@ -120,23 +142,8 @@ namespace ACCManager.Data.ACC.Session
 
                         if (_lastAcStatus == AcStatus.AC_OFF)
                         {
-                            _lastSessionIndex = -1;
-                            _lastSessionType = AcSessionType.AC_UNKNOWN;
-
-                            if (CurrentSession != null)
-                            {
-                                CurrentSession.UtcEnd = DateTime.UtcNow;
-
-                                var lapData = LapDataCollection.GetForSession(CurrentSession._id);
-                                if (lapData.Any())
-                                    RaceSessionCollection.Update(CurrentSession);
-                                else
-                                    RaceSessionCollection.Delete(CurrentSession);
-                            }
-
-                            CurrentSession = null;
+                            FinalizeCurrentSession();
                             OnSessionIndexChanged?.Invoke(this, _lastSessionIndex);
-                            Debug.WriteLine("CurrentSession Reset to null");
                         }
 
                         OnACStatusChanged?.Invoke(this, _lastAcStatus);
@@ -156,6 +163,15 @@ namespace ACCManager.Data.ACC.Session
                         Debug.WriteLine($"SessionType: {_lastSessionType} -> {pageGraphics.SessionType}");
                         _lastSessionType = pageGraphics.SessionType;
                         sessionTypeChanged = true;
+                    }
+
+                    if (pageGraphics.SessionTimeLeft > _sessionTimeLeft)
+                    {
+                        if (CurrentSession == null)
+                            _sessionTimeLeft = pageGraphics.SessionTimeLeft;
+
+                        Debug.WriteLine("Detected session restart.. finalizing current session");
+                        FinalizeCurrentSession();
                     }
 
                     if (sessionIndexChanged)
