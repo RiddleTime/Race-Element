@@ -1,4 +1,5 @@
-﻿using ACCManager.Controls.Telemetry.RaceSessions;
+﻿using ACCManager.Broadcast;
+using ACCManager.Controls.Telemetry.RaceSessions;
 using ACCManager.Data;
 using ACCManager.Data.ACC.Database.GameData;
 using ACCManager.Data.ACC.Database.LapDataDB;
@@ -70,24 +71,6 @@ namespace ACCManager.Controls
 
             var data = laps.OrderByDescending(x => x.Key).Select(x => x.Value);
             stackerSessionViewer.Children.Add(GetLapDataGrid(data));
-
-
-            ListView lapsListView = new ListView();
-            int fastestLapIndex = laps.GetFastestLapIndex();
-            foreach (DbLapData lapData in laps.OrderByDescending(x => x.Key).Select(x => x.Value))
-            {
-                string lapDataText = $"Lap: {lapData.Index}, Time: {new TimeSpan(0, 0, 0, 0, lapData.Time):mm\\:ss\\:fff}, S1: {lapData.GetSector1():F3}, S2: {lapData.GetSector2():F3}, S3: {lapData.GetSector3():F3} - {lapData.LapType}";
-                lapDataText += $" | ( Fuel Used: {lapData.GetFuelUsage()} | in tank: {lapData.FuelInTank:F3})";
-
-                ListViewItem lvi = new ListViewItem() { Content = lapDataText };
-                if (!lapData.IsValid) lvi.Foreground = Brushes.OrangeRed;
-                if (lapData.IsValid && lapData.Index == fastestLapIndex) lvi.Foreground = Brushes.LimeGreen;
-
-                lapsListView.Items.Add(lvi);
-            }
-            ScrollViewer scroller = new ScrollViewer() { VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
-            scroller.Content = lapsListView;
-            //stackerSessionViewer.Children.Add(scroller);
         }
 
         public DataGrid GetLapDataGrid(IEnumerable<DbLapData> data)
@@ -100,7 +83,12 @@ namespace ACCManager.Controls
                 CanUserDeleteRows = false,
                 CanUserAddRows = false,
                 IsReadOnly = true,
-                EnableRowVirtualization = false
+                EnableRowVirtualization = false,
+                SelectionMode = DataGridSelectionMode.Single,
+                SelectionUnit = DataGridSelectionUnit.FullRow,
+                GridLinesVisibility = DataGridGridLinesVisibility.Vertical,
+                AlternatingRowBackground = new SolidColorBrush(Color.FromArgb(25, 0, 0, 0)),
+                RowBackground = Brushes.Transparent,
             };
 
             // set foreground on invalid laps
@@ -110,6 +98,20 @@ namespace ACCManager.Controls
                 DbLapData lapData = (DbLapData)ev.Row.DataContext;
                 if (!lapData.IsValid)
                     ev.Row.Foreground = Brushes.OrangeRed;
+
+                switch (lapData.LapType)
+                {
+                    case LapType.Outlap:
+                        {
+                            ev.Row.FontStyle = FontStyles.Italic;
+                            break;
+                        }
+                    case LapType.Inlap:
+                        {
+                            ev.Row.FontStyle = FontStyles.Italic;
+                            break;
+                        }
+                }
             };
 
 
@@ -126,6 +128,7 @@ namespace ACCManager.Controls
             grid.Columns.Add(new DataGridTextColumn() { Header = "Sector 3", Binding = new Binding("Sector3") { Converter = new DivideBy1000ToFloatConverter() } });
             grid.Columns.Add(new DataGridTextColumn() { Header = "Fuel Used", Binding = new Binding("FuelUsage") { Converter = new DivideBy1000ToFloatConverter() } });
             grid.Columns.Add(new DataGridTextColumn() { Header = "Fuel in tank", Binding = new Binding("FuelInTank") });
+            grid.Columns.Add(new DataGridTextColumn() { Header = "Type", Binding = new Binding("LapType") });
 
 
             return grid;
