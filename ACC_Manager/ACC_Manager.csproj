@@ -390,6 +390,8 @@
     <Compile Include="Controls\Setup\SetupEditor.xaml.cs">
       <DependentUpon>SetupEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Telemetry\RaceSessions\DivideBy1000ToFloatConverter.cs" />
+    <Compile Include="Controls\Telemetry\RaceSessions\MillisecondsToFormattedTimeSpanString.cs" />
     <Compile Include="Controls\Telemetry\RaceSessions\RaceSessionBrowser.xaml.cs">
       <DependentUpon>RaceSessionBrowser.xaml</DependentUpon>
     </Compile>

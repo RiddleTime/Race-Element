@@ -1,10 +1,12 @@
-﻿using ACCManager.Data;
+﻿using ACCManager.Controls.Telemetry.RaceSessions;
+using ACCManager.Data;
 using ACCManager.Data.ACC.Database.GameData;
 using ACCManager.Data.ACC.Database.LapDataDB;
 using ACCManager.Data.ACC.Database.SessionData;
 using ACCManager.Data.ACC.Tracks;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -65,6 +67,11 @@ namespace ACCManager.Controls
                 Text = $"Potential best: {new TimeSpan(0, 0, 0, 0, potentialBestLapTime):mm\\:ss\\:fff}"
             });
 
+
+            var data = laps.OrderByDescending(x => x.Key).Select(x => x.Value);
+            stackerSessionViewer.Children.Add(GetLapDataGrid(data));
+
+
             ListView lapsListView = new ListView();
             int fastestLapIndex = laps.GetFastestLapIndex();
             foreach (DbLapData lapData in laps.OrderByDescending(x => x.Key).Select(x => x.Value))
@@ -80,7 +87,48 @@ namespace ACCManager.Controls
             }
             ScrollViewer scroller = new ScrollViewer() { VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
             scroller.Content = lapsListView;
-            stackerSessionViewer.Children.Add(scroller);
+            //stackerSessionViewer.Children.Add(scroller);
+        }
+
+        public DataGrid GetLapDataGrid(IEnumerable<DbLapData> data)
+        {
+            DataGrid grid = new DataGrid()
+            {
+                Height = 350,
+                ItemsSource = data,
+                AutoGenerateColumns = false,
+                CanUserDeleteRows = false,
+                CanUserAddRows = false,
+                IsReadOnly = true,
+                EnableRowVirtualization = false
+            };
+
+            // set foreground on invalid laps
+            grid.LoadingRow += (s, e) =>
+            {
+                DataGridRowEventArgs ev = e;
+                DbLapData lapData = (DbLapData)ev.Row.DataContext;
+                if (!lapData.IsValid)
+                    ev.Row.Foreground = Brushes.OrangeRed;
+            };
+
+
+            //grid.DataContext = laps.Select(x => x.Value).ToList();
+            grid.Columns.Add(new DataGridTextColumn()
+            {
+                Header = "Lap",
+                Binding = new Binding("Index"),
+                SortDirection = System.ComponentModel.ListSortDirection.Descending
+            });
+            grid.Columns.Add(new DataGridTextColumn() { Header = "Time", Binding = new Binding("Time") { Converter = new MillisecondsToFormattedTimeSpanString() } });
+            grid.Columns.Add(new DataGridTextColumn() { Header = "Sector 1", Binding = new Binding("Sector1") { Converter = new DivideBy1000ToFloatConverter() } });
+            grid.Columns.Add(new DataGridTextColumn() { Header = "Sector 2", Binding = new Binding("Sector2") { Converter = new DivideBy1000ToFloatConverter() } });
+            grid.Columns.Add(new DataGridTextColumn() { Header = "Sector 3", Binding = new Binding("Sector3") { Converter = new DivideBy1000ToFloatConverter() } });
+            grid.Columns.Add(new DataGridTextColumn() { Header = "Fuel Used", Binding = new Binding("FuelUsage") { Converter = new DivideBy1000ToFloatConverter() } });
+            grid.Columns.Add(new DataGridTextColumn() { Header = "Fuel in tank", Binding = new Binding("FuelInTank") });
+
+
+            return grid;
         }
 
         private Guid GetSelectedTrack()
