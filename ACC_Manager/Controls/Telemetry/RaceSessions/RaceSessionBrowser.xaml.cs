@@ -10,16 +10,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ACCManager.Controls
 {
@@ -114,21 +108,47 @@ namespace ACCManager.Controls
                 }
             };
 
-
-            //grid.DataContext = laps.Select(x => x.Value).ToList();
             grid.Columns.Add(new DataGridTextColumn()
             {
                 Header = "Lap",
                 Binding = new Binding("Index"),
-                SortDirection = System.ComponentModel.ListSortDirection.Descending
+                SortDirection = System.ComponentModel.ListSortDirection.Descending,
             });
-            grid.Columns.Add(new DataGridTextColumn() { Header = "Time", Binding = new Binding("Time") { Converter = new MillisecondsToFormattedTimeSpanString() } });
-            grid.Columns.Add(new DataGridTextColumn() { Header = "Sector 1", Binding = new Binding("Sector1") { Converter = new DivideBy1000ToFloatConverter() } });
-            grid.Columns.Add(new DataGridTextColumn() { Header = "Sector 2", Binding = new Binding("Sector2") { Converter = new DivideBy1000ToFloatConverter() } });
-            grid.Columns.Add(new DataGridTextColumn() { Header = "Sector 3", Binding = new Binding("Sector3") { Converter = new DivideBy1000ToFloatConverter() } });
-            grid.Columns.Add(new DataGridTextColumn() { Header = "Fuel Used", Binding = new Binding("FuelUsage") { Converter = new DivideBy1000ToFloatConverter() } });
-            grid.Columns.Add(new DataGridTextColumn() { Header = "Fuel in tank", Binding = new Binding("FuelInTank") });
-            grid.Columns.Add(new DataGridTextColumn() { Header = "Type", Binding = new Binding("LapType") });
+            grid.Columns.Add(new DataGridTextColumn()
+            {
+                Header = "Time",
+                Binding = new Binding("Time") { Converter = new MillisecondsToFormattedTimeSpanString() }
+            });
+            grid.Columns.Add(new DataGridTextColumn()
+            {
+                Header = "Sector 1",
+                Binding = new Binding("Sector1") { Converter = new DivideBy1000ToFloatConverter() }
+            });
+            grid.Columns.Add(new DataGridTextColumn()
+            {
+                Header = "Sector 2",
+                Binding = new Binding("Sector2") { Converter = new DivideBy1000ToFloatConverter() }
+            });
+            grid.Columns.Add(new DataGridTextColumn()
+            {
+                Header = "Sector 3",
+                Binding = new Binding("Sector3") { Converter = new DivideBy1000ToFloatConverter() }
+            });
+            grid.Columns.Add(new DataGridTextColumn()
+            {
+                Header = "Fuel Used",
+                Binding = new Binding("FuelUsage") { Converter = new DivideBy1000ToFloatConverter() }
+            });
+            grid.Columns.Add(new DataGridTextColumn()
+            {
+                Header = "Fuel in tank",
+                Binding = new Binding("FuelInTank")
+            });
+            grid.Columns.Add(new DataGridTextColumn()
+            {
+                Header = "Type",
+                Binding = new Binding("LapType")
+            });
 
 
             return grid;
