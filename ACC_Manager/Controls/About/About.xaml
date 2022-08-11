@@ -78,6 +78,23 @@
                                 <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" GitHub"></TextBlock>
                             </Grid>
                         </Button>
+                        <Button x:Name="buttonDonate" Margin="0,5,0,0" ToolTip="Donate RiddleTime a Coffee">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="18"/>
+                                    <ColumnDefinition Width="82"/>
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon
+                                Grid.Column="0"
+                                Kind="CreditCardWireless"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Height="32"
+                                Foreground="White"    
+                                />
+                                <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" Donate"></TextBlock>
+                            </Grid>
+                        </Button>
                     </StackPanel>
 
                 </Grid>

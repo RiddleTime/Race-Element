@@ -33,6 +33,7 @@ namespace ACCManager.Controls
 
             buttonDiscord.Click += (sender, e) => Process.Start("https://discord.gg/26AAEW5mUq"); ;
             buttonGithub.Click += (sender, e) => Process.Start("https://github.com/RiddleTime/ACC-Manager");
+            buttonDonate.Click += (sender, e) => Process.Start("https://paypal.me/CompetizioneManager");
 
             this.Loaded += (s, e) => new Thread((x) => CheckNewestVersion()).Start();
 
