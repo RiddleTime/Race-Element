@@ -42,6 +42,13 @@ namespace ACCManager.Data.ACC.Tracker.Laps
 
             BroadcastTracker.Instance.OnRealTimeLocalCarUpdate += Instance_OnRealTimeCarUpdate;
             RaceSessionTracker.Instance.OnACSessionTypeChanged += Instance_OnACSessionTypeChanged;
+            RaceSessionTracker.Instance.OnNewSessionStarted += Instance_OnNewSessionStarted;
+        }
+
+        private void Instance_OnNewSessionStarted(object sender, Database.SessionData.DbRaceSession e)
+        {
+            Laps.Clear();
+            CurrentLap = new DbLapData() { Index = sharedMemory.ReadGraphicsPageFile().CompletedLaps + 1 };
         }
 
         private void Instance_OnACSessionTypeChanged(object sender, ACCSharedMemory.AcSessionType e)

@@ -31,6 +31,8 @@ namespace ACCManager.Data.ACC.Session
         private int _lastSessionIndex = -1;
         public event EventHandler<int> OnSessionIndexChanged;
 
+        public event EventHandler<DbRaceSession> OnNewSessionStarted;
+
         internal DbRaceSession CurrentSession { get; private set; }
 
         private static RaceSessionTracker _instance;
@@ -93,7 +95,7 @@ namespace ACCManager.Data.ACC.Session
                 };
 
                 RaceSessionCollection.Insert(CurrentSession);
-
+                OnNewSessionStarted?.Invoke(this, CurrentSession);
             }
         }
 
