@@ -31,9 +31,24 @@ namespace ACCManager.Controls
         {
             InitializeComponent();
 
-            buttonDiscord.Click += (sender, e) => Process.Start("https://discord.gg/26AAEW5mUq"); ;
-            buttonGithub.Click += (sender, e) => Process.Start("https://github.com/RiddleTime/ACC-Manager");
-            buttonDonate.Click += (sender, e) => Process.Start("https://paypal.me/CompetizioneManager");
+            buttonDiscord.Click += (sender, e) => Process.Start(new ProcessStartInfo()
+            {
+                FileName = "cmd",
+                Arguments = $"/c start https://discord.gg/26AAEW5mUq",
+                WindowStyle = ProcessWindowStyle.Hidden,
+            });
+            buttonGithub.Click += (sender, e) => Process.Start(new ProcessStartInfo()
+            {
+                FileName = "cmd",
+                Arguments = $"/c start https://github.com/RiddleTime/ACC-Manager",
+                WindowStyle = ProcessWindowStyle.Hidden,
+            });
+            buttonDonate.Click += (sender, e) => Process.Start(new ProcessStartInfo()
+            {
+                FileName = "cmd",
+                Arguments = $"/c start https://paypal.me/CompetizioneManager",
+                WindowStyle = ProcessWindowStyle.Hidden,
+            });
 
             this.Loaded += (s, e) => new Thread((x) => CheckNewestVersion()).Start();
 
@@ -90,7 +105,12 @@ namespace ACCManager.Controls
                                      ToolTip = $"Release notes:\n{release.Body}"
                                  };
                                  ToolTipService.SetShowDuration(openReleaseButton, int.MaxValue);
-                                 openReleaseButton.Click += (s, e) => Process.Start(release.HtmlUrl);
+                                 openReleaseButton.Click += (s, e) => Process.Start(new ProcessStartInfo()
+                                 {
+                                     FileName = "cmd",
+                                     Arguments = $"/c start {release.HtmlUrl}",
+                                     WindowStyle = ProcessWindowStyle.Hidden,
+                                 });
                                  ReleaseStackPanel.Children.Add(openReleaseButton);
                              }));
                         }

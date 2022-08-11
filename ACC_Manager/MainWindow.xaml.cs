@@ -59,7 +59,12 @@ namespace ACCManager
             this.titleBar.DragLeave += (s, e) => { _stopDecreaseOpacty = true; e.Handled = true; this.Opacity = 1; };
             this.titleBar.MouseDoubleClick += (s, e) => { _stopDecreaseOpacty = true; e.Handled = true; this.Opacity = 1; };
 
-            this.buttonPlayACC.Click += (sender, e) => System.Diagnostics.Process.Start("steam://rungameid/805550");
+            this.buttonPlayACC.Click += (sender, e) => Process.Start(new ProcessStartInfo()
+            {
+                FileName = "cmd",
+                Arguments = $"/c start steam://rungameid/805550",
+                WindowStyle = ProcessWindowStyle.Hidden,
+            });
 
             this.StateChanged += MainWindow_StateChanged;
 
