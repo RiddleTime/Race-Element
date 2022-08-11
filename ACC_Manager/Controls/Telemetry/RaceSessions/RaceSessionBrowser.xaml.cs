@@ -63,12 +63,12 @@ namespace ACCManager.Controls
             });
 
 
-            var data = laps.OrderByDescending(x => x.Key).Select(x => x.Value);
-            stackerSessionViewer.Children.Add(GetLapDataGrid(data));
+            stackerSessionViewer.Children.Add(GetLapDataGrid(laps));
         }
 
-        public DataGrid GetLapDataGrid(IEnumerable<DbLapData> data)
+        public DataGrid GetLapDataGrid(Dictionary<int, DbLapData> laps)
         {
+            var data = laps.OrderByDescending(x => x.Key).Select(x => x.Value);
             DataGrid grid = new DataGrid()
             {
                 Height = 350,
@@ -85,13 +85,17 @@ namespace ACCManager.Controls
                 RowBackground = Brushes.Transparent,
             };
 
-            // set foreground on invalid laps
+            int fastestLapIndex = laps.GetFastestLapIndex();
             grid.LoadingRow += (s, e) =>
             {
                 DataGridRowEventArgs ev = e;
                 DbLapData lapData = (DbLapData)ev.Row.DataContext;
+
                 if (!lapData.IsValid)
                     ev.Row.Foreground = Brushes.OrangeRed;
+
+                if (lapData.Index == fastestLapIndex)
+                    ev.Row.Foreground = Brushes.LimeGreen;
 
                 switch (lapData.LapType)
                 {
