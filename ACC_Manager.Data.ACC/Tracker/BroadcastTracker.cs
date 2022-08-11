@@ -66,7 +66,7 @@ namespace ACCManager.Data.ACC.Tracker
                     Error = error
                 };
 
-                Debug.WriteLine($"Udp remote client state change:\n{state}");
+                Trace.WriteLine($"Udp remote client state change: ID: {connectionId} - succes?: {connectionSuccess}, error:\n{error}");
 
                 OnConnectionStateChanged?.Invoke(this, state);
             };

@@ -51,9 +51,11 @@ namespace ACCManager.Controls
             {
                 Text = $"Session Index: {session.SessionIndex}"
             });
+            session.UtcStart = DateTime.SpecifyKind(session.UtcStart, DateTimeKind.Utc);
+            session.UtcEnd = DateTime.SpecifyKind(session.UtcEnd, DateTimeKind.Utc);
             stackerSessionViewer.Children.Add(new TextBlock()
             {
-                Text = $"Start: {session.UtcStart:U} \nEnd: {session.UtcEnd:U}"
+                Text = $"Start: {session.UtcStart.ToLocalTime():U} \nEnd: {session.UtcEnd.ToLocalTime():U}"
             });
 
             int potentialBestLapTime = laps.GetPotentialFastestLapTime();
@@ -223,6 +225,7 @@ namespace ACCManager.Controls
                 string carName = ConversionFactory.GetNameFromCarModel(carModel);
                 TrackNames.Tracks.TryGetValue(trackData.ParseName, out string trackName);
 
+                session.UtcStart = DateTime.SpecifyKind(session.UtcStart, DateTimeKind.Utc);
                 ListViewItem listItem = new ListViewItem()
                 {
                     Content = $"{ACCSharedMemory.SessionTypeToString(session.SessionType)} - {session.UtcStart.ToLocalTime():U}",
