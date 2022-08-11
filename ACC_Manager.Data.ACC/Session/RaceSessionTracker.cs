@@ -1,5 +1,6 @@
 ﻿using ACCManager.Broadcast;
 using ACCManager.Data.ACC.Database.GameData;
+using ACCManager.Data.ACC.Database.LapDataDB;
 using ACCManager.Data.ACC.Database.SessionData;
 using ACCManager.Data.ACC.Tracker;
 using System;
@@ -90,7 +91,9 @@ namespace ACCManager.Data.ACC.Session
                     TrackGuid = trackData._id,
                     IsOnline = staticPageFile.isOnline
                 };
+
                 RaceSessionCollection.Insert(CurrentSession);
+
             }
         }
 
@@ -121,7 +124,12 @@ namespace ACCManager.Data.ACC.Session
                             if (CurrentSession != null)
                             {
                                 CurrentSession.UtcEnd = DateTime.UtcNow;
-                                RaceSessionCollection.Update(CurrentSession);
+
+                                var lapData = LapDataCollection.GetForSession(CurrentSession._id);
+                                if (lapData.Any())
+                                    RaceSessionCollection.Update(CurrentSession);
+                                else
+                                    RaceSessionCollection.Delete(CurrentSession);
                             }
 
                             CurrentSession = null;

@@ -82,5 +82,12 @@ namespace ACCManager.Data.ACC.Database.SessionData
             LocalDatabase.Database.Commit();
             Debug.WriteLine($"Inserted new race session {raceSession.SessionIndex} {raceSession.SessionType} {raceSession._id}");
         }
+
+        public static void Delete(DbRaceSession raceSession)
+        {
+            LocalDatabase.Database.BeginTrans();
+            Collection.Delete(raceSession._id);
+            LocalDatabase.Database.Commit();
+        }
     }
 }
