@@ -151,8 +151,8 @@
     <Reference Include="PaintDotNet.Base, Version=3.36.7079.22820, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DdsFileTypePlusHack.1.0.4\lib\net45\PaintDotNet.Base.dll</HintPath>
     </Reference>
-    <Reference Include="SharpCompress, Version=0.31.0.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpCompress.0.31.0\lib\net461\SharpCompress.dll</HintPath>
+    <Reference Include="SharpCompress, Version=0.32.1.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpCompress.0.32.1\lib\net461\SharpCompress.dll</HintPath>
     </Reference>
     <Reference Include="SLOBSharp, Version=1.1.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SLOBSharp.1.1.4\lib\netstandard2.0\SLOBSharp.dll</HintPath>

@@ -34,8 +34,8 @@
                     </Grid>
                 </TabItem.Header>
                 <StackPanel Grid.Column="0" Orientation="Vertical">
-                    <ComboBox x:Name="comboTracks" Height="30" ToolTip="Select a track"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></ComboBox>
-                    <ComboBox x:Name="comboCars" Height="30" ToolTip="Select a car"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></ComboBox>
+                    <ComboBox IsEnabled="False" x:Name="comboTracks" Height="30" ToolTip="Select a track"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></ComboBox>
+                    <ComboBox IsEnabled="False" x:Name="comboCars" Height="30" ToolTip="Select a car"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></ComboBox>
 
                     <ListView Margin="0,3,0,0" x:Name="listViewRaceSessions">
 
@@ -45,7 +45,7 @@
 
             <TabItem Height="35">
                 <TabItem.Header>
-                    <Grid>
+                    <Grid x:Name="gridTabHeaderLocalSession">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>

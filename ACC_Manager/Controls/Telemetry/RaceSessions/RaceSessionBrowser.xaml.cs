@@ -9,6 +9,7 @@ using ACCManager.Data.ACC.Session;
 using ACCManager.Data.ACC.Tracks;
 using ACCManager.Util;
 using LiteDB;
+using SharpCompress.Archives.Zip;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -42,6 +43,8 @@ namespace ACCManager.Controls
             comboTracks.SelectionChanged += (s, e) => FillCarComboBox();
             comboCars.SelectionChanged += (s, e) => LoadSessionList();
             listViewRaceSessions.SelectionChanged += (s, e) => LoadSession();
+
+            gridTabHeaderLocalSession.MouseRightButtonUp += (s, e) => FindRaceWeekends();
 
             RaceSessionTracker.Instance.OnRaceWeekendEnded += (s, e) => FindRaceWeekends();
 
@@ -95,25 +98,19 @@ namespace ACCManager.Controls
 
             if (session == null) return;
 
-            stackerSessionViewer.Children.Add(new TextBlock()
-            {
-                Text = $"{ACCSharedMemory.SessionTypeToString(session.SessionType)} - {(session.IsOnline ? "On" : "Off")}line"
-            });
-            stackerSessionViewer.Children.Add(new TextBlock()
-            {
-                Text = $"Session Index: {session.SessionIndex}"
-            });
-            session.UtcStart = DateTime.SpecifyKind(session.UtcStart, DateTimeKind.Utc);
-            session.UtcEnd = DateTime.SpecifyKind(session.UtcEnd, DateTimeKind.Utc);
-            stackerSessionViewer.Children.Add(new TextBlock()
-            {
-                Text = $"Start: {session.UtcStart.ToLocalTime():U} \nEnd: {session.UtcEnd.ToLocalTime():U}"
-            });
+            string sessionInfo = $"{(session.IsOnline ? "On" : "Off")}line {ACCSharedMemory.SessionTypeToString(session.SessionType)}";
+
+            TimeSpan duration = session.UtcEnd.Subtract(session.UtcStart);
+            sessionInfo += $" - Duration: {duration:hh\\:mm\\:ss}";
 
             int potentialBestLapTime = laps.GetPotentialFastestLapTime();
+            if (potentialBestLapTime != -1)
+                sessionInfo += $" - Potential best: {new TimeSpan(0, 0, 0, 0, potentialBestLapTime):mm\\:ss\\:fff}";
+
             stackerSessionViewer.Children.Add(new TextBlock()
             {
-                Text = $"Potential best: {new TimeSpan(0, 0, 0, 0, potentialBestLapTime):mm\\:ss\\:fff}"
+                Text = sessionInfo,
+                FontSize = 14
             });
 
             stackerSessionViewer.Children.Add(GetLapDataGrid(laps));
@@ -136,6 +133,7 @@ namespace ACCManager.Controls
                 GridLinesVisibility = DataGridGridLinesVisibility.Vertical,
                 AlternatingRowBackground = new SolidColorBrush(Color.FromArgb(25, 0, 0, 0)),
                 RowBackground = Brushes.Transparent,
+
             };
 
             int fastestLapIndex = laps.GetFastestLapIndex();
@@ -143,6 +141,9 @@ namespace ACCManager.Controls
             {
                 DataGridRowEventArgs ev = e;
                 DbLapData lapData = (DbLapData)ev.Row.DataContext;
+
+                ev.Row.Margin = new Thickness(0);
+                ev.Row.Padding = new Thickness(0);
 
                 if (!lapData.IsValid)
                     ev.Row.Foreground = Brushes.OrangeRed;
@@ -208,6 +209,13 @@ namespace ACCManager.Controls
                 Binding = new Binding("LapType")
             });
 
+
+            grid.SelectedCellsChanged += (s, e) =>
+            {
+                DbLapData lapdata = (DbLapData)grid.SelectedItem;
+
+                Debug.WriteLine(lapdata.Id);
+            };
 
             return grid;
         }
