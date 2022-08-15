@@ -36,6 +36,7 @@ namespace ACCManager.Data.ACC.Session
         public event EventHandler<int> OnSessionIndexChanged;
 
         public event EventHandler<DbRaceSession> OnNewSessionStarted;
+        public event EventHandler<DbRaceWeekend> OnRaceWeekendEnded;
 
         internal DbRaceSession CurrentSession { get; private set; }
 
@@ -127,6 +128,7 @@ namespace ACCManager.Data.ACC.Session
         private void FinalizeRaceWeekend()
         {
             RaceWeekendCollection.Current.UtcEnd = DateTime.UtcNow;
+            OnRaceWeekendEnded?.Invoke(this, RaceWeekendCollection.Current);
             RaceWeekendCollection.End();
         }
 

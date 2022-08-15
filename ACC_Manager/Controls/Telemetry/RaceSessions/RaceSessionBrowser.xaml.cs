@@ -42,7 +42,7 @@ namespace ACCManager.Controls
             comboCars.SelectionChanged += (s, e) => LoadSessionList();
             listViewRaceSessions.SelectionChanged += (s, e) => LoadSession();
 
-            RaceSessionTracker.Instance.OnNewSessionStarted += (s, e) => FindRaceWeekends();
+            RaceSessionTracker.Instance.OnRaceWeekendEnded += (s, e) => FindRaceWeekends();
 
             Instance = this;
         }
@@ -72,6 +72,9 @@ namespace ACCManager.Controls
 
         public void OpenRaceWeekendDatabase(string filename, bool focusCurrentWeekendTab = true)
         {
+            if (CurrentDatabase != null)
+                CurrentDatabase.Dispose();
+
             CurrentDatabase = RaceWeekendDatabase.OpenDatabase(filename);
             if (CurrentDatabase != null)
             {
