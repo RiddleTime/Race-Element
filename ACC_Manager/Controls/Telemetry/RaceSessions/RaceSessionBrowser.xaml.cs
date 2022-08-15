@@ -18,6 +18,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 using static ACCManager.Data.ACC.Tracks.TrackNames;
 using static System.Net.WebRequestMethods;
@@ -59,7 +60,7 @@ namespace ACCManager.Controls
                 foreach (FileInfo file in raceWeekendFiles)
                 {
                     TextBlock textBlock = new TextBlock() { Text = file.Name.Replace(file.Extension, ""), FontSize = 12 };
-                    ListViewItem lvi = new ListViewItem() { Content = textBlock, DataContext = file.FullName };
+                    ListViewItem lvi = new ListViewItem() { Content = textBlock, DataContext = file.FullName, Cursor = Cursors.Hand };
                     lvi.MouseLeftButtonUp += (s, e) =>
                     {
                         ListViewItem item = (ListViewItem)s;
