@@ -1,6 +1,8 @@
 ﻿using ACCManager.Broadcast;
+using ACCManager.Data.ACC.Database;
 using ACCManager.Data.ACC.Database.GameData;
 using ACCManager.Data.ACC.Database.LapDataDB;
+using ACCManager.Data.ACC.Database.RaceWeekend;
 using ACCManager.Data.ACC.Database.SessionData;
 using ACCManager.Data.ACC.Tracker;
 using System;
@@ -89,10 +91,11 @@ namespace ACCManager.Data.ACC.Session
                 CurrentSession = new DbRaceSession()
                 {
                     UtcStart = DateTime.UtcNow,
+                    RaceWeekendId = RaceWeekendCollection.Current.Id,
                     SessionIndex = _lastSessionIndex,
                     SessionType = _lastSessionType,
-                    CarGuid = carData._id,
-                    TrackGuid = trackData._id,
+                    CarId = carData.Id,
+                    TrackId = trackData.Id,
                     IsOnline = staticPageFile.isOnline
                 };
                 _sessionTimeLeft = _sharedMemory.ReadGraphicsPageFile().SessionTimeLeft;
@@ -110,7 +113,7 @@ namespace ACCManager.Data.ACC.Session
                 _lastSessionType = AcSessionType.AC_UNKNOWN;
                 CurrentSession.UtcEnd = DateTime.UtcNow;
 
-                var lapData = LapDataCollection.GetForSession(CurrentSession._id);
+                var lapData = LapDataCollection.GetForSession(CurrentSession.Id);
                 if (lapData.Any())
                     RaceSessionCollection.Update(CurrentSession);
                 else
@@ -119,6 +122,19 @@ namespace ACCManager.Data.ACC.Session
 
             CurrentSession = null;
             Debug.WriteLine("CurrentSession Reset to null");
+        }
+
+        private void FinalizeRaceWeekend()
+        {
+            RaceWeekendCollection.Current.UtcEnd = DateTime.UtcNow;
+            RaceWeekendCollection.End();
+        }
+
+        private void CreateNewRaceWeekend()
+        {
+            var pageStatic = _sharedMemory.ReadStaticPageFile();
+            RaceWeekendDatabase.CreateDatabase(pageStatic.Track, pageStatic.CarModel, DateTime.UtcNow);
+            RaceWeekendCollection.Insert(new DbRaceWeekend() { Id = Guid.NewGuid(), UtcStart = DateTime.UtcNow });
         }
 
         private void StartTracking()
@@ -138,11 +154,16 @@ namespace ACCManager.Data.ACC.Session
                     if (pageGraphics.Status != _lastAcStatus)
                     {
                         Debug.WriteLine($"AcStatus: {_lastAcStatus} -> {pageGraphics.Status}");
+
+                        if (_lastAcStatus == AcStatus.AC_OFF)
+                            CreateNewRaceWeekend();
+
                         _lastAcStatus = pageGraphics.Status;
 
                         if (_lastAcStatus == AcStatus.AC_OFF)
                         {
                             FinalizeCurrentSession();
+                            FinalizeRaceWeekend();
                             OnSessionIndexChanged?.Invoke(this, _lastSessionIndex);
                         }
 

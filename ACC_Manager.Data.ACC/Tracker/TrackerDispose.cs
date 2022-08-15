@@ -24,7 +24,7 @@ namespace ACCManager.Data.ACC.Tracker
             RaceSessionTracker.Instance.Stop();
             LapTracker.Instance.Stop();
 
-            LocalDatabase.Close();
+            RaceWeekendDatabase.Close();
         }
     }
 }

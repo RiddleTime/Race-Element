@@ -75,7 +75,8 @@
     <Compile Include="Database\GameData\DbTrackData.cs" />
     <Compile Include="Database\LapDataDB\DbLapData.cs" />
     <Compile Include="Database\LapDataDB\LapDataExtensions.cs" />
-    <Compile Include="Database\LocalDatabase.cs" />
+    <Compile Include="Database\RaceWeekendDatabase.cs" />
+    <Compile Include="Database\RaceWeekend\DbRaceWeekend.cs" />
     <Compile Include="Database\SessionData\DbRaceSession.cs" />
     <Compile Include="EntryList\EntryListTracker.cs" />
     <Compile Include="EntryList\TrackPositionGraph\CarPosition.cs" />

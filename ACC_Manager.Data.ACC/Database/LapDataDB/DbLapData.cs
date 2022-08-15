@@ -13,11 +13,9 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
     /// </summary>
     public class DbLapData
     {
-#pragma warning disable IDE1006 // Naming Styles
-        public Guid _id { get; set; }
-#pragma warning restore IDE1006 // Naming Styles
+        public Guid Id { get; set; }
 
-        public Guid RaceSessionGuid { get; set; } = Guid.NewGuid();
+        public Guid RaceSessionId { get; set; } = Guid.NewGuid();
 
         /// <summary>
         /// The time when this lap was completed
@@ -61,23 +59,28 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
             get
             {
                 if (_collection == null)
-                    _collection = LocalDatabase.Database.GetCollection<DbLapData>();
+                    _collection = RaceWeekendDatabase.Database.GetCollection<DbLapData>();
 
                 return _collection;
             }
         }
 
+        public static bool Any()
+        {
+            return Collection.Count() != 0;
+        }
+
         public static void Insert(DbLapData lap)
         {
-            LocalDatabase.Database.BeginTrans();
-            Collection.EnsureIndex(x => x._id, true);
+            RaceWeekendDatabase.Database.BeginTrans();
+            Collection.EnsureIndex(x => x.Id, true);
             Collection.Insert(lap);
-            LocalDatabase.Database.Commit();
+            RaceWeekendDatabase.Database.Commit();
         }
 
         public static Dictionary<int, DbLapData> GetForSession(Guid sessionId)
         {
-            return Collection.Find(x => x.RaceSessionGuid == sessionId).ToDictionary(x => x.Index);
+            return Collection.Find(x => x.RaceSessionId == sessionId).ToDictionary(x => x.Index);
         }
     }
 }

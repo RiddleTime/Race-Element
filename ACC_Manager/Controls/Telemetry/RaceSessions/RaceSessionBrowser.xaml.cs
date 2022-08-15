@@ -14,6 +14,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using static ACCManager.Data.ACC.Tracks.TrackNames;
 
 namespace ACCManager.Controls
 {
@@ -26,7 +27,7 @@ namespace ACCManager.Controls
         {
             InitializeComponent();
 
-            this.Loaded += (s, e) => FillTrackComboBox();
+            //this.Loaded += (s, e) => FillTrackComboBox();
 
             comboTracks.SelectionChanged += (s, e) => FillCarComboBox();
             comboCars.SelectionChanged += (s, e) => LoadSessionList();
@@ -38,7 +39,7 @@ namespace ACCManager.Controls
             DbRaceSession session = GetSelectedRaceSession();
             if (session == null) return;
 
-            Dictionary<int, DbLapData> laps = LapDataCollection.GetForSession(session._id);
+            Dictionary<int, DbLapData> laps = LapDataCollection.GetForSession(session.Id);
             stackerSessionViewer.Children.Clear();
 
             if (session == null) return;
@@ -187,11 +188,11 @@ namespace ACCManager.Controls
             List<DbCarData> allCars = CarDataCollection.GetAll();
 
             comboCars.Items.Clear();
-            foreach (DbCarData carData in allCars.Where(x => carGuidsForTrack.Contains(x._id)))
+            foreach (DbCarData carData in allCars.Where(x => carGuidsForTrack.Contains(x.Id)))
             {
                 var carModel = ConversionFactory.ParseCarName(carData.ParseName);
                 string carName = ConversionFactory.GetNameFromCarModel(carModel);
-                ComboBoxItem item = new ComboBoxItem() { DataContext = carData._id, Content = carName };
+                ComboBoxItem item = new ComboBoxItem() { DataContext = carData.Id, Content = carName };
                 comboCars.Items.Add(item);
             }
             comboCars.SelectedIndex = 0;
@@ -203,10 +204,12 @@ namespace ACCManager.Controls
             List<DbTrackData> allTracks = TrackDataCollection.GetAll();
             foreach (DbTrackData track in allTracks)
             {
-                TrackNames.Tracks.TryGetValue(track.ParseName, out string trackName);
-                if (trackName == null) trackName = track.ParseName;
+                string trackName;
+                TrackNames.Tracks.TryGetValue(track.ParseName, out TrackData trackData);
+                if (trackData == null) trackName = track.ParseName;
+                else trackName = trackData.FullName;
 
-                ComboBoxItem item = new ComboBoxItem() { DataContext = track._id, Content = trackName };
+                ComboBoxItem item = new ComboBoxItem() { DataContext = track.Id, Content = trackName };
                 comboTracks.Items.Add(item);
             }
             comboCars.SelectedIndex = -1;
@@ -218,14 +221,16 @@ namespace ACCManager.Controls
 
             listViewRaceSessions.Items.Clear();
 
-            foreach (DbRaceSession session in allsessions.Where(x => x.TrackGuid == GetSelectedTrack() && x.CarGuid == GetSelectedCar()))
+            foreach (DbRaceSession session in allsessions.Where(x => x.TrackId == GetSelectedTrack() && x.CarId == GetSelectedCar()))
             {
-                DbCarData carData = CarDataCollection.GetCarData(session.CarGuid);
-                DbTrackData trackData = TrackDataCollection.GetTrackData(session.TrackGuid);
+                DbCarData carData = CarDataCollection.GetCarData(session.CarId);
+                DbTrackData dbTrackData = TrackDataCollection.GetTrackData(session.TrackId);
 
                 var carModel = ConversionFactory.ParseCarName(carData.ParseName);
                 string carName = ConversionFactory.GetNameFromCarModel(carModel);
-                TrackNames.Tracks.TryGetValue(trackData.ParseName, out string trackName);
+                string trackName = dbTrackData.ParseName;
+                TrackNames.Tracks.TryGetValue(dbTrackData.ParseName, out TrackData trackData);
+                if (dbTrackData != null) trackName = trackData.FullName;
 
                 session.UtcStart = DateTime.SpecifyKind(session.UtcStart, DateTimeKind.Utc);
                 ListViewItem listItem = new ListViewItem()

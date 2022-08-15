@@ -63,7 +63,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                 if (RaceSessionTracker.Instance.CurrentSession == null)
                     Debug.WriteLine("Lap Tracker cannot record a new lap on session type change, current session is null");
                 else
-                    CurrentLap = new DbLapData() { Index = pageGraphics.CompletedLaps + 1, RaceSessionGuid = RaceSessionTracker.Instance.CurrentSession._id };
+                    CurrentLap = new DbLapData() { Index = pageGraphics.CompletedLaps + 1, RaceSessionId = RaceSessionTracker.Instance.CurrentSession.Id };
             }
             Debug.WriteLine("LapTracker: Resetted current lap and previous recorded laps.");
         }
@@ -107,7 +107,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
 
                                             if (RaceSessionTracker.Instance.CurrentSession != null)
                                             {
-                                                Laps[CurrentLap.Index - 1].RaceSessionGuid = RaceSessionTracker.Instance.CurrentSession._id;
+                                                Laps[CurrentLap.Index - 1].RaceSessionId = RaceSessionTracker.Instance.CurrentSession.Id;
                                                 Laps[CurrentLap.Index - 1].UtcCompleted = DateTime.UtcNow;
                                                 Laps[CurrentLap.Index - 1].FuelInTank = new ACCSharedMemory().ReadPhysicsPageFile().Fuel;
                                                 LapDataCollection.Insert(Laps[CurrentLap.Index - 1]);

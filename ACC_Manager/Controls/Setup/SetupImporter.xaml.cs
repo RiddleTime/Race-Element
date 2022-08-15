@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static ACCManager.Data.ACC.Tracks.TrackNames;
 using static ACCManager.Data.ConversionFactory;
 
 namespace ACCManager.Controls
@@ -51,12 +52,12 @@ namespace ACCManager.Controls
         private void BuildTrackList()
         {
             this.listViewTracks.Items.Clear();
-            foreach (KeyValuePair<string, string> kv in TrackNames.Tracks)
+            foreach (KeyValuePair<string, TrackData> kv in TrackNames.Tracks)
             {
                 ListViewItem trackItem = new ListViewItem()
                 {
                     FontWeight = FontWeights.Bold,
-                    Content = kv.Value,
+                    Content = kv.Value.FullName,
                     DataContext = kv.Key
                 };
 
@@ -81,7 +82,7 @@ namespace ACCManager.Controls
                     if (originalFile.Exists)
                         originalFile.CopyTo(targetFile.FullName);
 
-                    MainWindow.Instance.EnqueueSnackbarMessage($"Imported {_setupName} for {modelName} at {kv.Value}");
+                    MainWindow.Instance.EnqueueSnackbarMessage($"Imported {_setupName} for {modelName} at {kv.Value.FullName}");
 
                     SetupBrowser.Instance.FetchAllSetups();
                     Close();

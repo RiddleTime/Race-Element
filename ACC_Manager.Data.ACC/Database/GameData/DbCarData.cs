@@ -12,9 +12,7 @@ namespace ACCManager.Data.ACC.Database.GameData
 {
     public class DbCarData
     {
-#pragma warning disable IDE1006 // Naming Styles
-        public Guid _id { get; set; }
-#pragma warning restore IDE1006 // Naming Styles
+        public Guid Id { get; set; }
 
         public string ParseName { get; set; }
     }
@@ -27,7 +25,7 @@ namespace ACCManager.Data.ACC.Database.GameData
             get
             {
                 if (_collection == null)
-                    _collection = LocalDatabase.Database.GetCollection<DbCarData>();
+                    _collection = RaceWeekendDatabase.Database.GetCollection<DbCarData>();
 
                 return _collection;
             }
@@ -58,12 +56,12 @@ namespace ACCManager.Data.ACC.Database.GameData
 
         public static void Insert(DbCarData car)
         {
-            LocalDatabase.Database.BeginTrans();
-            Collection.EnsureIndex(x => x._id, true);
+            RaceWeekendDatabase.Database.BeginTrans();
+            Collection.EnsureIndex(x => x.Id, true);
             Collection.Insert(car);
-            LocalDatabase.Database.Commit();
+            RaceWeekendDatabase.Database.Commit();
 
-            Debug.WriteLine($"Inserted new car data {car._id} {car.ParseName}");
+            Debug.WriteLine($"Inserted new car data {car.Id} {car.ParseName}");
         }
     }
 }
