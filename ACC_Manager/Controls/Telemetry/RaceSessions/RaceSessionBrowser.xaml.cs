@@ -18,6 +18,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using static ACCManager.Data.ACC.Tracks.TrackNames;
+using static System.Net.WebRequestMethods;
 
 namespace ACCManager.Controls
 {
@@ -26,6 +27,8 @@ namespace ACCManager.Controls
     /// </summary>
     public partial class RaceSessionBrowser : UserControl
     {
+        public static RaceSessionBrowser Instance { get; private set; }
+
         public RaceSessionBrowser()
         {
             InitializeComponent();
@@ -37,6 +40,8 @@ namespace ACCManager.Controls
             comboTracks.SelectionChanged += (s, e) => FillCarComboBox();
             comboCars.SelectionChanged += (s, e) => LoadSessionList();
             listViewRaceSessions.SelectionChanged += (s, e) => LoadSession();
+
+            Instance = this;
         }
 
         private void FindRaceWeekends()
@@ -46,10 +51,16 @@ namespace ACCManager.Controls
                 if (file.Extension == ".rwdb")
                 {
                     Debug.WriteLine($"race weekend file found: {file.Name}");
-                    RaceWeekendDatabase.OpenDatabase(file.FullName);
-                    FillTrackComboBox();
+                    //RaceWeekendDatabase.OpenDatabase(file.FullName);
+                    //FillTrackComboBox();
                 }
             }
+        }
+
+        public void OpenRaceWeekendDatabase(string filename)
+        {
+            RaceWeekendDatabase.OpenDatabase(filename);
+            FillTrackComboBox();
         }
 
         private void LoadSession()

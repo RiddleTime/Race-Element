@@ -46,7 +46,7 @@ namespace ACCManager.Data.ACC.Database
 
         }
 
-        public static void OpenDatabase(string file)
+        public static bool OpenDatabase(string file)
         {
             try
             {
@@ -60,6 +60,8 @@ namespace ACCManager.Data.ACC.Database
             {
                 Debug.WriteLine(ex);
             }
+
+            return false;
         }
 
         public static LiteDatabase Database { get => _database; }

@@ -120,6 +120,14 @@ namespace ACCManager
                             return;
                         }
                     }
+
+                    if (droppedItem.EndsWith(".rwdb"))
+                    {
+                        RaceSessionBrowser.Instance.OpenRaceWeekendDatabase(droppedItem);
+                        tabTelemetry.Focus();
+                        e.Handled = true;
+                        return;
+                    }
                 }
             }
 
