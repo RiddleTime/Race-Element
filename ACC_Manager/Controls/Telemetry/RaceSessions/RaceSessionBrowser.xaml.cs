@@ -275,7 +275,9 @@ namespace ACCManager.Controls
             List<DbRaceSession> allsessions = RaceSessionCollection.GetAll(CurrentDatabase);
 
             listViewRaceSessions.Items.Clear();
-            var sessionsWithCorrectTrackAndCar = allsessions.Where(x => x.TrackId == GetSelectedTrack() && x.CarId == GetSelectedCar());
+            var sessionsWithCorrectTrackAndCar = allsessions
+                .Where(x => x.TrackId == GetSelectedTrack() && x.CarId == GetSelectedCar())
+                .OrderByDescending(x => x.UtcStart);
             if (sessionsWithCorrectTrackAndCar.Any())
             {
                 foreach (DbRaceSession session in sessionsWithCorrectTrackAndCar)
