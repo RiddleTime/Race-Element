@@ -50,7 +50,7 @@ namespace ACCManager.Controls
         private void FindRaceWeekends()
         {
             localRaceWeekends.Items.Clear();
-            foreach (FileInfo file in new DirectoryInfo(FileUtil.AccManangerDataPath).EnumerateFiles())
+            foreach (FileInfo file in new DirectoryInfo(FileUtil.AccManangerDataPath).EnumerateFiles().OrderByDescending(x => x.LastWriteTimeUtc))
             {
                 if (file.Extension == ".rwdb")
                 {
