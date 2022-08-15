@@ -29,9 +29,24 @@ namespace ACCManager.Data.ACC.Database.GameData
             }
         }
 
+        private static ILiteCollection<DbCarData> GetCollection(ILiteDatabase db)
+        {
+            return db.GetCollection<DbCarData>();
+        }
+
+        public static List<DbCarData> GetAll(LiteDatabase db)
+        {
+            return GetCollection(db).FindAll().OrderBy(x => x.ParseName).ToList();
+        }
+
         public static List<DbCarData> GetAll()
         {
             return Collection.FindAll().OrderBy(x => x.ParseName).ToList();
+        }
+
+        public static DbCarData GetCarData(ILiteDatabase db, Guid id)
+        {
+            return GetCollection(db).FindById(id);
         }
 
         public static DbCarData GetCarData(Guid id)

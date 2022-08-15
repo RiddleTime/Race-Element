@@ -1,4 +1,5 @@
-﻿using ACCManager.Data.ACC.Tracks;
+﻿using ACCManager.Data.ACC.Database.SessionData;
+using ACCManager.Data.ACC.Tracks;
 using LiteDB;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,20 @@ namespace ACCManager.Data.ACC.Database.GameData
             }
         }
 
+        private static ILiteCollection<DbTrackData> GetCollection(ILiteDatabase db)
+        {
+            return db.GetCollection<DbTrackData>();
+        }
+
+
+        public static List<DbTrackData> GetAll(ILiteDatabase db)
+        {
+            var allTracks = GetCollection(db).FindAll();
+            if (!allTracks.Any()) return new List<DbTrackData>();
+
+            return allTracks.OrderBy(x => x.ParseName).ToList();
+        }
+
         public static List<DbTrackData> GetAll()
         {
             var allTracks = Collection.FindAll();
@@ -40,8 +55,12 @@ namespace ACCManager.Data.ACC.Database.GameData
 
         public static DbTrackData GetTrackData(Guid id)
         {
-            var collection = RaceWeekendDatabase.Database.GetCollection<DbTrackData>();
             return Collection.FindById(id);
+        }
+
+        public static DbTrackData GetTrackData(ILiteDatabase db, Guid id)
+        {
+            return GetCollection(db).FindById(id);
         }
 
         public static DbTrackData GetTrackData(string trackParseName)

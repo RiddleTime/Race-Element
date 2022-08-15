@@ -76,6 +76,11 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
             RaceWeekendDatabase.Database.Commit();
         }
 
+        public static Dictionary<int, DbLapData> GetForSession(LiteDatabase db, Guid sessionId)
+        {
+            return db.GetCollection<DbLapData>().Find(x => x.RaceSessionId == sessionId).ToDictionary(x => x.Index);
+        }
+
         public static Dictionary<int, DbLapData> GetForSession(Guid sessionId)
         {
             return Collection.Find(x => x.RaceSessionId == sessionId).ToDictionary(x => x.Index);

@@ -8,6 +8,7 @@ using ACCManager.Data.ACC.Database.SessionData;
 using ACCManager.Data.ACC.Session;
 using ACCManager.Data.ACC.Tracks;
 using ACCManager.Util;
+using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,12 +30,11 @@ namespace ACCManager.Controls
     public partial class RaceSessionBrowser : UserControl
     {
         public static RaceSessionBrowser Instance { get; private set; }
+        private LiteDatabase CurrentDatabase;
 
         public RaceSessionBrowser()
         {
             InitializeComponent();
-
-            //this.Loaded += (s, e) => FillTrackComboBox();
 
             this.Loaded += (s, e) => FindRaceWeekends();
 
@@ -49,25 +49,35 @@ namespace ACCManager.Controls
 
         private void FindRaceWeekends()
         {
-            localRaceWeekends.Items.Clear();
-            foreach (FileInfo file in new DirectoryInfo(FileUtil.AccManangerDataPath).EnumerateFiles().OrderByDescending(x => x.LastWriteTimeUtc))
+            Dispatcher.Invoke(() =>
             {
-                if (file.Extension == ".rwdb")
+                localRaceWeekends.Items.Clear();
+                var raceWeekendFiles = new DirectoryInfo(FileUtil.AccManangerDataPath).EnumerateFiles()
+                    .Where(x => !x.Name.Contains("log") && x.Extension == ".rwdb")
+                    .OrderByDescending(x => x.LastWriteTimeUtc);
+
+                foreach (FileInfo file in raceWeekendFiles)
                 {
                     TextBlock textBlock = new TextBlock() { Text = file.Name.Replace(file.Extension, ""), FontSize = 12 };
-                    ListViewItem lvi = new ListViewItem() { Content = textBlock };
-                    lvi.MouseLeftButtonUp += (s, e) => OpenRaceWeekendDatabase(file.FullName);
+                    ListViewItem lvi = new ListViewItem() { Content = textBlock, DataContext = file.FullName };
+                    lvi.MouseLeftButtonUp += (s, e) =>
+                    {
+                        ListViewItem item = (ListViewItem)s;
+                        OpenRaceWeekendDatabase((string)item.DataContext);
+                    };
                     localRaceWeekends.Items.Add(lvi);
                 }
-            }
+            });
         }
 
-        public void OpenRaceWeekendDatabase(string filename)
+        public void OpenRaceWeekendDatabase(string filename, bool focusCurrentWeekendTab = true)
         {
-            if (RaceWeekendDatabase.OpenDatabase(filename))
+            CurrentDatabase = RaceWeekendDatabase.OpenDatabase(filename);
+            if (CurrentDatabase != null)
             {
                 FillTrackComboBox();
-                tabCurrentWeekend.Focus();
+                if (focusCurrentWeekendTab)
+                    tabCurrentWeekend.Focus();
             }
         }
 
@@ -76,7 +86,7 @@ namespace ACCManager.Controls
             DbRaceSession session = GetSelectedRaceSession();
             if (session == null) return;
 
-            Dictionary<int, DbLapData> laps = LapDataCollection.GetForSession(session.Id);
+            Dictionary<int, DbLapData> laps = LapDataCollection.GetForSession(CurrentDatabase, session.Id);
             stackerSessionViewer.Children.Clear();
 
             if (session == null) return;
@@ -221,8 +231,8 @@ namespace ACCManager.Controls
             if (GetSelectedTrack() == Guid.Empty)
                 return;
 
-            List<Guid> carGuidsForTrack = RaceSessionCollection.GetAllCarsForTrack(GetSelectedTrack());
-            List<DbCarData> allCars = CarDataCollection.GetAll();
+            List<Guid> carGuidsForTrack = RaceSessionCollection.GetAllCarsForTrack(CurrentDatabase, GetSelectedTrack());
+            List<DbCarData> allCars = CarDataCollection.GetAll(CurrentDatabase);
 
             comboCars.Items.Clear();
             foreach (DbCarData carData in allCars.Where(x => carGuidsForTrack.Contains(x.Id)))
@@ -238,7 +248,7 @@ namespace ACCManager.Controls
         public void FillTrackComboBox()
         {
             comboTracks.Items.Clear();
-            List<DbTrackData> allTracks = TrackDataCollection.GetAll();
+            List<DbTrackData> allTracks = TrackDataCollection.GetAll(CurrentDatabase);
             if (allTracks.Any())
             {
                 foreach (DbTrackData track in allTracks)
@@ -258,7 +268,7 @@ namespace ACCManager.Controls
 
         public void LoadSessionList()
         {
-            List<DbRaceSession> allsessions = RaceSessionCollection.GetAll();
+            List<DbRaceSession> allsessions = RaceSessionCollection.GetAll(CurrentDatabase);
 
             listViewRaceSessions.Items.Clear();
             var sessionsWithCorrectTrackAndCar = allsessions.Where(x => x.TrackId == GetSelectedTrack() && x.CarId == GetSelectedCar());
@@ -266,8 +276,8 @@ namespace ACCManager.Controls
             {
                 foreach (DbRaceSession session in sessionsWithCorrectTrackAndCar)
                 {
-                    DbCarData carData = CarDataCollection.GetCarData(session.CarId);
-                    DbTrackData dbTrackData = TrackDataCollection.GetTrackData(session.TrackId);
+                    DbCarData carData = CarDataCollection.GetCarData(CurrentDatabase, session.CarId);
+                    DbTrackData dbTrackData = TrackDataCollection.GetTrackData(CurrentDatabase, session.TrackId);
 
                     var carModel = ConversionFactory.ParseCarName(carData.ParseName);
                     string carName = ConversionFactory.GetNameFromCarModel(carModel);

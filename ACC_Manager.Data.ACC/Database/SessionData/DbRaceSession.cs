@@ -38,6 +38,11 @@ namespace ACCManager.Data.ACC.Database.SessionData
             }
         }
 
+        private static ILiteCollection<DbRaceSession> GetCollection(ILiteDatabase db)
+        {
+            return db.GetCollection<DbRaceSession>();
+        }
+
         /// <summary>
         /// Returns all db Car Guids which exist with the given track guid
         /// </summary>
@@ -49,6 +54,24 @@ namespace ACCManager.Data.ACC.Database.SessionData
                 .Select(x => x.CarId)
                 .Distinct()
                 .ToList();
+        }
+
+        /// <summary>
+        /// Returns all db Car Guids which exist with the given track guid
+        /// </summary>
+        /// <param name="trackId"></param>
+        /// <returns></returns>
+        public static List<Guid> GetAllCarsForTrack(ILiteDatabase db, Guid trackId)
+        {
+            return GetCollection(db).Find(x => x.TrackId == trackId)
+                .Select(x => x.CarId)
+                .Distinct()
+                .ToList();
+        }
+
+        public static List<DbRaceSession> GetAll(ILiteDatabase db)
+        {
+            return GetCollection(db).FindAll().OrderByDescending(x => x.UtcStart).ToList();
         }
 
         public static List<DbRaceSession> GetAll()

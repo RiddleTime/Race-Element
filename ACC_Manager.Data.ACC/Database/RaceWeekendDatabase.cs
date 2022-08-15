@@ -32,7 +32,7 @@ namespace ACCManager.Data.ACC.Database
 
 
                 if (_database == null)
-                    _database = new LiteDatabase($"Filename={fileName};");
+                    _database = new LiteDatabase($"Filename={fileName}; Initial Size=16KB;");
 
                 if (_database == null)
                     Trace.WriteLine("Something went wrong initializing the LocalDatabase.Database");
@@ -46,24 +46,23 @@ namespace ACCManager.Data.ACC.Database
 
         }
 
-        public static bool OpenDatabase(string file)
+        public static LiteDatabase OpenDatabase(string file)
         {
             try
             {
-                if (_database == null)
-                    _database = new LiteDatabase($"Filename={file};");
+                LiteDatabase db = new LiteDatabase($"Filename={file}; Mode=ReadOnly;");
 
-                if (_database == null)
+                if (db == null)
                     Trace.WriteLine("Something went wrong initializing the LocalDatabase.Database");
                 else
-                    return true;
+                    return db;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
             }
 
-            return false;
+            return null;
         }
 
         public static LiteDatabase Database { get => _database; }
