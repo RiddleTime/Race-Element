@@ -20,13 +20,11 @@ namespace ACCManager.Data.ACC.Database.GameData
 
     public class TrackDataCollection
     {
-        private static ILiteCollection<DbTrackData> _collection;
         private static ILiteCollection<DbTrackData> Collection
         {
             get
             {
-                if (_collection == null)
-                    _collection = RaceWeekendDatabase.Database.GetCollection<DbTrackData>();
+                ILiteCollection<DbTrackData> _collection = RaceWeekendDatabase.Database.GetCollection<DbTrackData>();
 
                 return _collection;
             }

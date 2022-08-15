@@ -53,13 +53,11 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
 
     public class LapDataCollection
     {
-        private static ILiteCollection<DbLapData> _collection;
         private static ILiteCollection<DbLapData> Collection
         {
             get
             {
-                if (_collection == null)
-                    _collection = RaceWeekendDatabase.Database.GetCollection<DbLapData>();
+                ILiteCollection<DbLapData> _collection = RaceWeekendDatabase.Database.GetCollection<DbLapData>();
 
                 return _collection;
             }

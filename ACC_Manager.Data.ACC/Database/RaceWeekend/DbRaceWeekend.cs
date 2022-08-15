@@ -1,6 +1,7 @@
 ﻿using LiteDB;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -20,16 +21,12 @@ namespace ACCManager.Data.ACC.Database.RaceWeekend
     {
         public static DbRaceWeekend Current { get; private set; }
 
-        private static ILiteCollection<DbRaceWeekend> _collection;
         private static ILiteCollection<DbRaceWeekend> Collection
         {
             get
             {
-                if (_collection == null)
-                {
-                    _collection = RaceWeekendDatabase.Database.GetCollection<DbRaceWeekend>();
-                    _collection.EnsureIndex(x => x.Id, true);
-                }
+                ILiteCollection<DbRaceWeekend> _collection = RaceWeekendDatabase.Database.GetCollection<DbRaceWeekend>();
+                _collection.EnsureIndex(x => x.Id, true);
                 return _collection;
             }
         }

@@ -1,13 +1,16 @@
 ﻿using ACCManager.Broadcast;
 using ACCManager.Controls.Telemetry.RaceSessions;
 using ACCManager.Data;
+using ACCManager.Data.ACC.Database;
 using ACCManager.Data.ACC.Database.GameData;
 using ACCManager.Data.ACC.Database.LapDataDB;
 using ACCManager.Data.ACC.Database.SessionData;
 using ACCManager.Data.ACC.Tracks;
+using ACCManager.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -29,9 +32,24 @@ namespace ACCManager.Controls
 
             //this.Loaded += (s, e) => FillTrackComboBox();
 
+            this.Loaded += (s, e) => FindRaceWeekends();
+
             comboTracks.SelectionChanged += (s, e) => FillCarComboBox();
             comboCars.SelectionChanged += (s, e) => LoadSessionList();
             listViewRaceSessions.SelectionChanged += (s, e) => LoadSession();
+        }
+
+        private void FindRaceWeekends()
+        {
+            foreach (FileInfo file in new DirectoryInfo(FileUtil.AccManangerDataPath).EnumerateFiles())
+            {
+                if (file.Extension == ".rwdb")
+                {
+                    Debug.WriteLine($"race weekend file found: {file.Name}");
+                    RaceWeekendDatabase.OpenDatabase(file.FullName);
+                    FillTrackComboBox();
+                }
+            }
         }
 
         private void LoadSession()

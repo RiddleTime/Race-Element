@@ -28,13 +28,11 @@ namespace ACCManager.Data.ACC.Database.SessionData
 
     public class RaceSessionCollection
     {
-        private static ILiteCollection<DbRaceSession> _collection;
         private static ILiteCollection<DbRaceSession> Collection
         {
             get
             {
-                if (_collection == null)
-                    _collection = RaceWeekendDatabase.Database.GetCollection<DbRaceSession>();
+                ILiteCollection<DbRaceSession> _collection = RaceWeekendDatabase.Database.GetCollection<DbRaceSession>();
 
                 return _collection;
             }
