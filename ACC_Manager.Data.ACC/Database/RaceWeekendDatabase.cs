@@ -55,6 +55,8 @@ namespace ACCManager.Data.ACC.Database
 
                 if (_database == null)
                     Trace.WriteLine("Something went wrong initializing the LocalDatabase.Database");
+                else
+                    return true;
             }
             catch (Exception ex)
             {

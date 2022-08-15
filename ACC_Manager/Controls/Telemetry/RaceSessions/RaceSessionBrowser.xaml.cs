@@ -59,8 +59,8 @@ namespace ACCManager.Controls
 
         public void OpenRaceWeekendDatabase(string filename)
         {
-            RaceWeekendDatabase.OpenDatabase(filename);
-            FillTrackComboBox();
+            if (RaceWeekendDatabase.OpenDatabase(filename))
+                FillTrackComboBox();
         }
 
         private void LoadSession()
@@ -231,17 +231,21 @@ namespace ACCManager.Controls
         {
             comboTracks.Items.Clear();
             List<DbTrackData> allTracks = TrackDataCollection.GetAll();
-            foreach (DbTrackData track in allTracks)
+            if (allTracks.Any())
             {
-                string trackName;
-                TrackNames.Tracks.TryGetValue(track.ParseName, out TrackData trackData);
-                if (trackData == null) trackName = track.ParseName;
-                else trackName = trackData.FullName;
+                foreach (DbTrackData track in allTracks)
+                {
+                    string trackName;
+                    TrackNames.Tracks.TryGetValue(track.ParseName, out TrackData trackData);
+                    if (trackData == null) trackName = track.ParseName;
+                    else trackName = trackData.FullName;
 
-                ComboBoxItem item = new ComboBoxItem() { DataContext = track.Id, Content = trackName };
-                comboTracks.Items.Add(item);
+                    ComboBoxItem item = new ComboBoxItem() { DataContext = track.Id, Content = trackName };
+                    comboTracks.Items.Add(item);
+                }
+
+                comboTracks.SelectedIndex = 0;
             }
-            comboCars.SelectedIndex = -1;
         }
 
         public void LoadSessionList()
@@ -249,25 +253,30 @@ namespace ACCManager.Controls
             List<DbRaceSession> allsessions = RaceSessionCollection.GetAll();
 
             listViewRaceSessions.Items.Clear();
-
-            foreach (DbRaceSession session in allsessions.Where(x => x.TrackId == GetSelectedTrack() && x.CarId == GetSelectedCar()))
+            var sessionsWithCorrectTrackAndCar = allsessions.Where(x => x.TrackId == GetSelectedTrack() && x.CarId == GetSelectedCar());
+            if (sessionsWithCorrectTrackAndCar.Any())
             {
-                DbCarData carData = CarDataCollection.GetCarData(session.CarId);
-                DbTrackData dbTrackData = TrackDataCollection.GetTrackData(session.TrackId);
-
-                var carModel = ConversionFactory.ParseCarName(carData.ParseName);
-                string carName = ConversionFactory.GetNameFromCarModel(carModel);
-                string trackName = dbTrackData.ParseName;
-                TrackNames.Tracks.TryGetValue(dbTrackData.ParseName, out TrackData trackData);
-                if (dbTrackData != null) trackName = trackData.FullName;
-
-                session.UtcStart = DateTime.SpecifyKind(session.UtcStart, DateTimeKind.Utc);
-                ListViewItem listItem = new ListViewItem()
+                foreach (DbRaceSession session in sessionsWithCorrectTrackAndCar)
                 {
-                    Content = $"{ACCSharedMemory.SessionTypeToString(session.SessionType)} - {session.UtcStart.ToLocalTime():U}",
-                    DataContext = session
-                };
-                listViewRaceSessions.Items.Add(listItem);
+                    DbCarData carData = CarDataCollection.GetCarData(session.CarId);
+                    DbTrackData dbTrackData = TrackDataCollection.GetTrackData(session.TrackId);
+
+                    var carModel = ConversionFactory.ParseCarName(carData.ParseName);
+                    string carName = ConversionFactory.GetNameFromCarModel(carModel);
+                    string trackName = dbTrackData.ParseName;
+                    TrackNames.Tracks.TryGetValue(dbTrackData.ParseName, out TrackData trackData);
+                    if (dbTrackData != null) trackName = trackData.FullName;
+
+                    session.UtcStart = DateTime.SpecifyKind(session.UtcStart, DateTimeKind.Utc);
+                    ListViewItem listItem = new ListViewItem()
+                    {
+                        Content = $"{ACCSharedMemory.SessionTypeToString(session.SessionType)} - {session.UtcStart.ToLocalTime():U}",
+                        DataContext = session
+                    };
+                    listViewRaceSessions.Items.Add(listItem);
+                }
+
+                listViewRaceSessions.SelectedIndex = 0;
             }
         }
     }
