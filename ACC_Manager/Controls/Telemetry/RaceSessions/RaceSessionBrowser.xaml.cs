@@ -5,6 +5,7 @@ using ACCManager.Data.ACC.Database;
 using ACCManager.Data.ACC.Database.GameData;
 using ACCManager.Data.ACC.Database.LapDataDB;
 using ACCManager.Data.ACC.Database.SessionData;
+using ACCManager.Data.ACC.Session;
 using ACCManager.Data.ACC.Tracks;
 using ACCManager.Util;
 using System;
@@ -41,18 +42,22 @@ namespace ACCManager.Controls
             comboCars.SelectionChanged += (s, e) => LoadSessionList();
             listViewRaceSessions.SelectionChanged += (s, e) => LoadSession();
 
+            RaceSessionTracker.Instance.OnNewSessionStarted += (s, e) => FindRaceWeekends();
+
             Instance = this;
         }
 
         private void FindRaceWeekends()
         {
+            localRaceWeekends.Items.Clear();
             foreach (FileInfo file in new DirectoryInfo(FileUtil.AccManangerDataPath).EnumerateFiles())
             {
                 if (file.Extension == ".rwdb")
                 {
-                    Debug.WriteLine($"race weekend file found: {file.Name}");
-                    //RaceWeekendDatabase.OpenDatabase(file.FullName);
-                    //FillTrackComboBox();
+                    TextBlock textBlock = new TextBlock() { Text = file.Name.Replace(file.Extension, ""), FontSize = 12 };
+                    ListViewItem lvi = new ListViewItem() { Content = textBlock };
+                    lvi.MouseLeftButtonUp += (s, e) => OpenRaceWeekendDatabase(file.FullName);
+                    localRaceWeekends.Items.Add(lvi);
                 }
             }
         }
@@ -60,7 +65,10 @@ namespace ACCManager.Controls
         public void OpenRaceWeekendDatabase(string filename)
         {
             if (RaceWeekendDatabase.OpenDatabase(filename))
+            {
                 FillTrackComboBox();
+                tabCurrentWeekend.Focus();
+            }
         }
 
         private void LoadSession()
