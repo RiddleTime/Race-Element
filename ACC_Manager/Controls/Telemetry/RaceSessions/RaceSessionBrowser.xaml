@@ -81,14 +81,19 @@
                             <TextBlock Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Inputs</TextBlock>
                         </TabItem.Header>
                     </TabItem>
-                    <TabItem x:Name="tabItemTemps">
-                        <TabItem.Header>
-                            <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Tyre temps</TextBlock>
-                        </TabItem.Header>
-                    </TabItem>
-                    <TabItem x:Name="tabItemPressures">
+                    <TabItem x:Name="tabItemTyrePressures">
                         <TabItem.Header>
                             <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Pressures</TextBlock>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem x:Name="tabItemTyreTemps">
+                        <TabItem.Header>
+                            <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Tyre Temps</TextBlock>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem x:Name="tabItemBrakeTemps">
+                        <TabItem.Header>
+                            <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Brake Temps</TextBlock>
                         </TabItem.Header>
                     </TabItem>
                 </TabControl>

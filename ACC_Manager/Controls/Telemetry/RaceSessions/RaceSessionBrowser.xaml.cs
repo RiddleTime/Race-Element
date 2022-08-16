@@ -334,12 +334,16 @@ namespace ACCManager.Controls
 
 
                 Grid tyreTabGrid = new Grid();
-                tabItemTemps.Content = tyreTabGrid;
+                tabItemTyreTemps.Content = tyreTabGrid;
                 tyreTabGrid.Children.Add(GetTyreTempPlot(tyreTabGrid, telemetry, dict));
 
                 Grid tyrePressureGrid = new Grid();
-                tabItemPressures.Content = tyrePressureGrid;
+                tabItemTyrePressures.Content = tyrePressureGrid;
                 tyrePressureGrid.Children.Add(GetTyrePressurePlot(tyrePressureGrid, telemetry, dict));
+
+                Grid brakeTempsGrid = new Grid();
+                tabItemBrakeTemps.Content = brakeTempsGrid;
+                brakeTempsGrid.Children.Add(GetBrakeTempsPlot(brakeTempsGrid, telemetry, dict));
             }
         }
 
@@ -378,6 +382,7 @@ namespace ACCManager.Controls
             plot.SetAxisLimitsY(-5, 105);
             plot.SetOuterViewLimits(0d, gasDatas.Length / telemetry.Herz, -3, 103);
             plot.XLabel("Time");
+            plot.AxisZoom(1, 1);
 
             wpfPlot.Refresh();
 
@@ -424,9 +429,12 @@ namespace ACCManager.Controls
                 plot.AddSignal(tyreTemps[i], sampleRate: telemetry.Herz, label: Enum.GetNames(typeof(Wheel))[i]);
             }
 
-            plot.SetAxisLimitsY(minTemp - 5, maxTemp + 5);
-            plot.SetOuterViewLimits(0d, tyreTemps[0].Length / telemetry.Herz, minTemp - 5, maxTemp + 5);
+
+            double padding = 2;
+            plot.SetAxisLimitsY(minTemp - padding, maxTemp + padding);
+            plot.SetOuterViewLimits(0d, tyreTemps[0].Length / telemetry.Herz, minTemp - padding, maxTemp + padding);
             plot.XLabel("Time");
+            plot.AxisZoom(1, 1);
 
             wpfPlot.Refresh();
 
@@ -454,7 +462,6 @@ namespace ACCManager.Controls
             };
 
 
-
             Plot plot = wpfPlot.Plot;
             plot.Palette = new ScottPlot.Palettes.Dark();
             plot.Style(new ScottPlot.Styles.Black());
@@ -475,9 +482,63 @@ namespace ACCManager.Controls
                 plot.AddSignal(tyrePressures[i], sampleRate: telemetry.Herz, label: Enum.GetNames(typeof(Wheel))[i]);
             }
 
-            plot.SetAxisLimitsY(minPressure - 1, maxPressure + 1);
-            plot.SetOuterViewLimits(0d, tyrePressures[0].Length / telemetry.Herz, minPressure - 1, maxPressure + 1);
+            double padding = 0.3;
+            plot.SetAxisLimitsY(minPressure - padding, maxPressure + padding);
+            plot.SetOuterViewLimits(0d, tyrePressures[0].Length / telemetry.Herz, minPressure - padding, maxPressure + padding);
             plot.XLabel("Time");
+            plot.AxisZoom(1, 1);
+
+            wpfPlot.Refresh();
+
+            return wpfPlot;
+        }
+
+        internal static WpfPlot GetBrakeTempsPlot(Grid outerGrid, DbLapTelemetry telemetry, Dictionary<long, TelemetryPoint> dict)
+        {
+            WpfPlot wpfPlot = new WpfPlot
+            {
+                Cursor = Cursors.Hand,
+            };
+
+            wpfPlot.Configuration.DoubleClickBenchmark = false;
+            wpfPlot.Configuration.LockVerticalAxis = true;
+
+            wpfPlot.Height = outerGrid.ActualHeight;
+            wpfPlot.MaxHeight = outerGrid.MaxHeight;
+            wpfPlot.MinHeight = outerGrid.MinHeight;
+            outerGrid.SizeChanged += (se, ev) =>
+            {
+                wpfPlot.Height = outerGrid.ActualHeight;
+                wpfPlot.MaxHeight = outerGrid.MaxHeight;
+                wpfPlot.MinHeight = outerGrid.MinHeight;
+            };
+
+
+            Plot plot = wpfPlot.Plot;
+            plot.Palette = new ScottPlot.Palettes.Dark();
+            plot.Style(new ScottPlot.Styles.Black());
+            plot.Benchmark(false);
+            plot.Legend(true);
+
+            double[][] brakeTemps = new double[4][];
+            double minTemp = int.MaxValue;
+            double maxTemp = int.MinValue;
+
+            for (int i = 0; i < 4; i++)
+            {
+                brakeTemps[i] = dict.Select(x => (double)x.Value.BrakeData.BrakeTemperature[i]).ToArray();
+
+                minTemp.ClipMax(brakeTemps[i].Min());
+                maxTemp.ClipMin(brakeTemps[i].Max());
+
+                plot.AddSignal(brakeTemps[i], sampleRate: telemetry.Herz, label: Enum.GetNames(typeof(Wheel))[i]);
+            }
+
+            double padding = 10;
+            plot.SetAxisLimitsY(minTemp - padding, maxTemp + padding);
+            plot.SetOuterViewLimits(0d, brakeTemps[0].Length / telemetry.Herz, minTemp - padding, maxTemp + padding);
+            plot.XLabel("Time");
+            plot.AxisZoom(1, 1);
 
             wpfPlot.Refresh();
 
