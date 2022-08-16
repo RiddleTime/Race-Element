@@ -66,9 +66,33 @@
         </TabControl>
 
 
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="5*"/>
+            </Grid.RowDefinitions>
+            <StackPanel x:Name="stackerSessionViewer" Grid.Row="0" Margin="3" Orientation="Vertical">
 
-        <StackPanel x:Name="stackerSessionViewer" Grid.Column="1" Margin="3" Orientation="Vertical">
-
-        </StackPanel>
+            </StackPanel>
+            <Grid Grid.Row="1" VerticalAlignment="Stretch">
+                <TabControl x:Name="tabControlPlots" TabStripPlacement="Top" Visibility="Collapsed">
+                    <TabItem x:Name="tabItemInputs">
+                        <TabItem.Header>
+                            <TextBlock Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Inputs</TextBlock>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem x:Name="tabItemTemps">
+                        <TabItem.Header>
+                            <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Tyre temps</TextBlock>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem x:Name="tabItemPressures">
+                        <TabItem.Header>
+                            <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Pressures</TextBlock>
+                        </TabItem.Header>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </Grid>
     </Grid>
 </UserControl>

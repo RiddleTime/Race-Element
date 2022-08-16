@@ -11,6 +11,7 @@ using ACCManager.Data.ACC.Session;
 using ACCManager.Data.ACC.Tracks;
 using ACCManager.Util;
 using LiteDB;
+using ScottPlot;
 using SharpCompress.Archives.Zip;
 using System;
 using System.Collections.Generic;
@@ -119,166 +120,6 @@ namespace ACCManager.Controls
             stackerSessionViewer.Children.Add(GetLapDataGrid(laps));
         }
 
-        public DataGrid GetLapDataGrid(Dictionary<int, DbLapData> laps)
-        {
-            var data = laps.OrderByDescending(x => x.Key).Select(x => x.Value);
-            DataGrid grid = new DataGrid()
-            {
-                Height = 550,
-                ItemsSource = data,
-                AutoGenerateColumns = false,
-                CanUserDeleteRows = false,
-                CanUserAddRows = false,
-                IsReadOnly = true,
-                EnableRowVirtualization = false,
-                SelectionMode = DataGridSelectionMode.Single,
-                SelectionUnit = DataGridSelectionUnit.FullRow,
-                GridLinesVisibility = DataGridGridLinesVisibility.Vertical,
-                AlternatingRowBackground = new SolidColorBrush(Color.FromArgb(25, 0, 0, 0)),
-                RowBackground = Brushes.Transparent,
-
-            };
-
-            int fastestLapIndex = laps.GetFastestLapIndex();
-            grid.LoadingRow += (s, e) =>
-            {
-                DataGridRowEventArgs ev = e;
-                DbLapData lapData = (DbLapData)ev.Row.DataContext;
-
-                ev.Row.Margin = new Thickness(0);
-                ev.Row.Padding = new Thickness(0);
-
-                if (!lapData.IsValid)
-                    ev.Row.Foreground = Brushes.OrangeRed;
-
-                if (lapData.Index == fastestLapIndex)
-                    ev.Row.Foreground = Brushes.LimeGreen;
-
-                switch (lapData.LapType)
-                {
-                    case LapType.Outlap:
-                        {
-                            ev.Row.FontStyle = FontStyles.Italic;
-                            break;
-                        }
-                    case LapType.Inlap:
-                        {
-                            ev.Row.FontStyle = FontStyles.Italic;
-                            break;
-                        }
-                }
-            };
-
-            grid.Columns.Add(new DataGridTextColumn()
-            {
-                Header = "Lap",
-                Binding = new Binding("Index"),
-                SortDirection = System.ComponentModel.ListSortDirection.Descending,
-                FontWeight = FontWeights.DemiBold,
-            });
-            grid.Columns.Add(new DataGridTextColumn()
-            {
-                Header = "Time",
-                Binding = new Binding("Time") { Converter = new MillisecondsToFormattedTimeSpanString() }
-            });
-            grid.Columns.Add(new DataGridTextColumn()
-            {
-                Header = "Sector 1",
-                Binding = new Binding("Sector1") { Converter = new DivideBy1000ToFloatConverter() }
-            });
-            grid.Columns.Add(new DataGridTextColumn()
-            {
-                Header = "Sector 2",
-                Binding = new Binding("Sector2") { Converter = new DivideBy1000ToFloatConverter() }
-            });
-            grid.Columns.Add(new DataGridTextColumn()
-            {
-                Header = "Sector 3",
-                Binding = new Binding("Sector3") { Converter = new DivideBy1000ToFloatConverter() }
-            });
-            grid.Columns.Add(new DataGridTextColumn()
-            {
-                Header = "Fuel Used",
-                Binding = new Binding("FuelUsage") { Converter = new DivideBy1000ToFloatConverter() }
-            });
-            grid.Columns.Add(new DataGridTextColumn()
-            {
-                Header = "Fuel in tank",
-                Binding = new Binding("FuelInTank")
-            });
-            grid.Columns.Add(new DataGridTextColumn()
-            {
-                Header = "Type",
-                Binding = new Binding("LapType")
-            });
-
-
-            grid.SelectedCellsChanged += (s, e) =>
-            {
-                DbLapData lapdata = (DbLapData)grid.SelectedItem;
-
-                Debug.WriteLine(lapdata.Id);
-
-                DbLapTelemetry telemetry = LapTelemetryCollection.GetForLap(CurrentDatabase.GetCollection<DbLapTelemetry>(), lapdata.Id);
-                if (telemetry != null)
-                {
-                    Dictionary<long, TelemetryPoint> dict = telemetry.DeserializeLapData();
-
-                    int highestGear = -1;
-
-                    float[] highestTyreTemps = new float[4];
-                    float[] highestTyrePressures = new float[4];
-
-                    float averageThrottleApplication = 0;
-                    float averageBrakeApplication = 0;
-
-                    float averageSteeringAngle = 0;
-
-                    Debug.WriteLine("Data points " + dict.Count);
-
-                    DateTime lapStart = DateTime.MinValue;
-                    foreach (var kv in dict)
-                    {
-                        if (lapStart == DateTime.MinValue)
-                            lapStart = new DateTime(kv.Key);
-
-                        highestGear.ClipMin(kv.Value.InputsData.Gear);
-
-                        for (int i = 0; i < 4; i++)
-                        {
-                            highestTyreTemps[i].ClipMin(kv.Value.TyreData.TyreCoreTemperature[i]);
-                            highestTyrePressures[i].ClipMin(kv.Value.TyreData.TyrePressure[i]);
-                        }
-
-                        averageBrakeApplication += kv.Value.InputsData.Brake;
-                        averageThrottleApplication += kv.Value.InputsData.Gas;
-                        averageSteeringAngle += kv.Value.InputsData.SteerAngle;
-                    }
-
-                    averageThrottleApplication /= dict.Count;
-                    averageBrakeApplication /= dict.Count;
-                    averageSteeringAngle /= dict.Count;
-
-
-                    Debug.WriteLine($"First datapoint {lapStart:T}");
-                    Debug.WriteLine($"Average throttle application: {averageThrottleApplication * 100:F2} %");
-                    Debug.WriteLine($"Average brake application: {averageBrakeApplication * 100:F2} %");
-                    Debug.WriteLine($"Average steering angle: {averageSteeringAngle * 100:F2}");
-                    Debug.WriteLine($"Highest gear: {highestGear}");
-
-                    for (int i = 0; i < 4; i++)
-                    {
-                        string[] wheelNames = Enum.GetNames(typeof(Wheel));
-                        Debug.WriteLine($"Highest {wheelNames[i]} Temp: {highestTyreTemps[i]:F3}");
-                        Debug.WriteLine($"Highest {wheelNames[i]} Pressure: {highestTyrePressures[i]:F3}");
-                    }
-                }
-
-            };
-
-            return grid;
-        }
-
         private Guid GetSelectedTrack()
         {
             if (comboTracks.SelectedIndex == -1) return Guid.Empty;
@@ -370,5 +211,278 @@ namespace ACCManager.Controls
                 listViewRaceSessions.SelectedIndex = 0;
             }
         }
+
+        public DataGrid GetLapDataGrid(Dictionary<int, DbLapData> laps)
+        {
+            var data = laps.OrderByDescending(x => x.Key).Select(x => x.Value);
+            DataGrid grid = new DataGrid()
+            {
+                Height = 550,
+                ItemsSource = data,
+                AutoGenerateColumns = false,
+                CanUserDeleteRows = false,
+                CanUserAddRows = false,
+                IsReadOnly = true,
+                EnableRowVirtualization = false,
+                SelectionMode = DataGridSelectionMode.Single,
+                SelectionUnit = DataGridSelectionUnit.FullRow,
+                GridLinesVisibility = DataGridGridLinesVisibility.Vertical,
+                AlternatingRowBackground = new SolidColorBrush(Color.FromArgb(25, 0, 0, 0)),
+                RowBackground = Brushes.Transparent,
+                VerticalScrollBarVisibility = ScrollBarVisibility.Auto
+            };
+
+            int fastestLapIndex = laps.GetFastestLapIndex();
+            grid.LoadingRow += (s, e) =>
+            {
+                DataGridRowEventArgs ev = e;
+                DbLapData lapData = (DbLapData)ev.Row.DataContext;
+
+                ev.Row.Margin = new Thickness(0);
+                ev.Row.Padding = new Thickness(0);
+
+                if (!lapData.IsValid)
+                    ev.Row.Foreground = Brushes.OrangeRed;
+
+                if (lapData.Index == fastestLapIndex)
+                    ev.Row.Foreground = Brushes.LimeGreen;
+
+                switch (lapData.LapType)
+                {
+                    case LapType.Outlap:
+                        {
+                            ev.Row.FontStyle = FontStyles.Italic;
+                            break;
+                        }
+                    case LapType.Inlap:
+                        {
+                            ev.Row.FontStyle = FontStyles.Italic;
+                            break;
+                        }
+                }
+            };
+
+            grid.Columns.Add(new DataGridTextColumn()
+            {
+                Header = "Lap",
+                Binding = new Binding("Index"),
+                SortDirection = System.ComponentModel.ListSortDirection.Descending,
+                FontWeight = FontWeights.DemiBold,
+            });
+            grid.Columns.Add(new DataGridTextColumn()
+            {
+                Header = "Time",
+                Binding = new Binding("Time") { Converter = new MillisecondsToFormattedTimeSpanString() }
+            });
+            grid.Columns.Add(new DataGridTextColumn()
+            {
+                Header = "Sector 1",
+                Binding = new Binding("Sector1") { Converter = new DivideBy1000ToFloatConverter() }
+            });
+            grid.Columns.Add(new DataGridTextColumn()
+            {
+                Header = "Sector 2",
+                Binding = new Binding("Sector2") { Converter = new DivideBy1000ToFloatConverter() }
+            });
+            grid.Columns.Add(new DataGridTextColumn()
+            {
+                Header = "Sector 3",
+                Binding = new Binding("Sector3") { Converter = new DivideBy1000ToFloatConverter() }
+            });
+            grid.Columns.Add(new DataGridTextColumn()
+            {
+                Header = "Fuel Used",
+                Binding = new Binding("FuelUsage") { Converter = new DivideBy1000ToFloatConverter() }
+            });
+            grid.Columns.Add(new DataGridTextColumn()
+            {
+                Header = "Fuel in tank",
+                Binding = new Binding("FuelInTank")
+            });
+            grid.Columns.Add(new DataGridTextColumn()
+            {
+                Header = "Type",
+                Binding = new Binding("LapType")
+            });
+
+
+            grid.SelectedCellsChanged += (s, e) =>
+            {
+                DbLapData lapdata = (DbLapData)grid.SelectedItem;
+                CreateCharts(lapdata.Id);
+            };
+
+            return grid;
+        }
+
+        private void CreateCharts(Guid lapId)
+        {
+            DbLapTelemetry telemetry = LapTelemetryCollection.GetForLap(CurrentDatabase.GetCollection<DbLapTelemetry>(), lapId);
+            if (telemetry == null)
+            {
+                tabControlPlots.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                tabControlPlots.Visibility = Visibility.Visible;
+
+                Dictionary<long, TelemetryPoint> dict = telemetry.DeserializeLapData();
+
+                Grid inputsTabGrid = new Grid();
+                tabItemInputs.Content = inputsTabGrid;
+                inputsTabGrid.Children.Add(GetInputPlot(inputsTabGrid, telemetry, dict));
+
+
+                Grid tyreTabGrid = new Grid();
+                tabItemTemps.Content = tyreTabGrid;
+                tyreTabGrid.Children.Add(GetTyreTempPlot(tyreTabGrid, telemetry, dict));
+
+                Grid tyrePressureGrid = new Grid();
+                tabItemPressures.Content = tyrePressureGrid;
+                tyrePressureGrid.Children.Add(GetTyrePressurePlot(tyrePressureGrid, telemetry, dict));
+            }
+        }
+
+        internal static WpfPlot GetInputPlot(Grid outerGrid, DbLapTelemetry telemetry, Dictionary<long, TelemetryPoint> dict)
+        {
+            WpfPlot wpfPlot = new WpfPlot
+            {
+                Cursor = Cursors.Hand,
+            };
+
+            wpfPlot.Configuration.DoubleClickBenchmark = false;
+            wpfPlot.Configuration.LockVerticalAxis = true;
+
+            wpfPlot.Height = outerGrid.ActualHeight;
+            wpfPlot.MaxHeight = outerGrid.MaxHeight;
+            wpfPlot.MinHeight = outerGrid.MinHeight;
+            outerGrid.SizeChanged += (se, ev) =>
+            {
+                wpfPlot.Height = outerGrid.ActualHeight;
+                wpfPlot.MaxHeight = outerGrid.MaxHeight;
+                wpfPlot.MinHeight = outerGrid.MinHeight;
+            };
+
+            double[] gasDatas = dict.Select(x => (double)x.Value.InputsData.Gas * 100).ToArray();
+            double[] brakeDatas = dict.Select(x => (double)x.Value.InputsData.Brake * 100).ToArray();
+
+            Plot plot = wpfPlot.Plot;
+            plot.Palette = new ScottPlot.Palettes.Dark();
+            plot.Style(new ScottPlot.Styles.Black());
+            plot.Benchmark(false);
+            plot.Legend(true);
+
+            plot.AddSignal(gasDatas, sampleRate: telemetry.Herz, color: System.Drawing.Color.Green, label: "Throttle");
+            plot.AddSignal(brakeDatas, sampleRate: telemetry.Herz, color: System.Drawing.Color.Red, label: "Brake");
+
+            plot.SetAxisLimitsY(-5, 105);
+            plot.SetOuterViewLimits(0d, gasDatas.Length / telemetry.Herz, -3, 103);
+            plot.XLabel("Time");
+
+            wpfPlot.Refresh();
+
+            return wpfPlot;
+        }
+
+
+        internal static WpfPlot GetTyreTempPlot(Grid outerGrid, DbLapTelemetry telemetry, Dictionary<long, TelemetryPoint> dict)
+        {
+            WpfPlot wpfPlot = new WpfPlot
+            {
+                Cursor = Cursors.Hand,
+            };
+
+            wpfPlot.Configuration.DoubleClickBenchmark = false;
+            wpfPlot.Configuration.LockVerticalAxis = true;
+
+            wpfPlot.Height = outerGrid.ActualHeight;
+            wpfPlot.MaxHeight = outerGrid.MaxHeight;
+            wpfPlot.MinHeight = outerGrid.MinHeight;
+            outerGrid.SizeChanged += (se, ev) =>
+            {
+                wpfPlot.Height = outerGrid.ActualHeight;
+                wpfPlot.MaxHeight = outerGrid.MaxHeight;
+                wpfPlot.MinHeight = outerGrid.MinHeight;
+            };
+
+            Plot plot = wpfPlot.Plot;
+            plot.Palette = new ScottPlot.Palettes.Dark();
+            plot.Style(new ScottPlot.Styles.Black());
+            plot.Benchmark(false);
+            plot.Legend(true);
+
+            double[][] tyreTemps = new double[4][];
+            double minTemp = int.MaxValue;
+            double maxTemp = int.MinValue;
+            for (int i = 0; i < 4; i++)
+            {
+                tyreTemps[i] = dict.Select(x => (double)x.Value.TyreData.TyreCoreTemperature[i]).ToArray();
+
+                minTemp.ClipMax(tyreTemps[i].Min());
+                maxTemp.ClipMin(tyreTemps[i].Max());
+
+                plot.AddSignal(tyreTemps[i], sampleRate: telemetry.Herz, label: Enum.GetNames(typeof(Wheel))[i]);
+            }
+
+            plot.SetAxisLimitsY(minTemp - 5, maxTemp + 5);
+            plot.SetOuterViewLimits(0d, tyreTemps[0].Length / telemetry.Herz, minTemp - 5, maxTemp + 5);
+            plot.XLabel("Time");
+
+            wpfPlot.Refresh();
+
+            return wpfPlot;
+        }
+
+        internal static WpfPlot GetTyrePressurePlot(Grid outerGrid, DbLapTelemetry telemetry, Dictionary<long, TelemetryPoint> dict)
+        {
+            WpfPlot wpfPlot = new WpfPlot
+            {
+                Cursor = Cursors.Hand,
+            };
+
+            wpfPlot.Configuration.DoubleClickBenchmark = false;
+            wpfPlot.Configuration.LockVerticalAxis = true;
+
+            wpfPlot.Height = outerGrid.ActualHeight;
+            wpfPlot.MaxHeight = outerGrid.MaxHeight;
+            wpfPlot.MinHeight = outerGrid.MinHeight;
+            outerGrid.SizeChanged += (se, ev) =>
+            {
+                wpfPlot.Height = outerGrid.ActualHeight;
+                wpfPlot.MaxHeight = outerGrid.MaxHeight;
+                wpfPlot.MinHeight = outerGrid.MinHeight;
+            };
+
+
+
+            Plot plot = wpfPlot.Plot;
+            plot.Palette = new ScottPlot.Palettes.Dark();
+            plot.Style(new ScottPlot.Styles.Black());
+            plot.Benchmark(false);
+            plot.Legend(true);
+
+            double[][] tyrePressures = new double[4][];
+            double minPressure = int.MaxValue;
+            double maxPressure = int.MinValue;
+
+            for (int i = 0; i < 4; i++)
+            {
+                tyrePressures[i] = dict.Select(x => (double)x.Value.TyreData.TyrePressure[i]).ToArray();
+
+                minPressure.ClipMax(tyrePressures[i].Min());
+                maxPressure.ClipMin(tyrePressures[i].Max());
+
+                plot.AddSignal(tyrePressures[i], sampleRate: telemetry.Herz, label: Enum.GetNames(typeof(Wheel))[i]);
+            }
+
+            plot.SetAxisLimitsY(minPressure - 1, maxPressure + 1);
+            plot.SetOuterViewLimits(0d, tyrePressures[0].Length / telemetry.Herz, minPressure - 1, maxPressure + 1);
+            plot.XLabel("Time");
+
+            wpfPlot.Refresh();
+
+            return wpfPlot;
+        }
+
     }
 }

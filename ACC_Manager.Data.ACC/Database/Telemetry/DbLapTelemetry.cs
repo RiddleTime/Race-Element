@@ -66,7 +66,16 @@ namespace ACCManager.Data.ACC.Database.Telemetry
 
         public static DbLapTelemetry GetForLap(ILiteCollection<DbLapTelemetry> collection, Guid lapId)
         {
-            return collection.FindOne(x => x.LapId == lapId);
+            if (lapId == Guid.Empty) return null;
+            try
+            {
+                return collection.FindOne(x => x.LapId == lapId);
+            }
+            catch (InvalidCastException e)
+            {
+                //System.InvalidCastException: 'Unable to cast object of type 'System.Collections.Generic.Dictionary`2[System.String, LiteDB.BsonValue]' to type 'System.Byte[]'.'
+                return null;
+            }
         }
     }
 }

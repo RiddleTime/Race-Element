@@ -48,7 +48,9 @@ namespace ACCManager.Data.ACC.Database.Telemetry
             };
             _lapData.Clear();
             var collection = RaceWeekendDatabase.Database.GetCollection<DbLapTelemetry>();
+            RaceWeekendDatabase.Database.BeginTrans();
             collection.Insert(lapTelemetry);
+            RaceWeekendDatabase.Database.Commit();
         }
 
         private void OnPageGraphicsUpdated(object sender, SPageFileGraphic e) => _pageGraphics = e;
@@ -68,26 +70,27 @@ namespace ACCManager.Data.ACC.Database.Telemetry
                     nextTick += interval;
                     long ticks = DateTime.Now.Ticks;
 
-                    _lapData.Add(ticks, new TelemetryPoint()
-                    {
-                        SplinePosition = _pageGraphics.NormalizedCarPosition,
-                        InputsData = new InputsData()
+                    if (!_lapData.Any() || _lapData.Last().Value.SplinePosition < _pageGraphics.NormalizedCarPosition)
+                        _lapData.Add(ticks, new TelemetryPoint()
                         {
-                            Gas = _pagePhysics.Gas,
-                            Brake = _pagePhysics.Brake,
-                            Gear = _pagePhysics.Gear,
-                            SteerAngle = _pagePhysics.SteerAngle
-                        },
-                        TyreData = new TyreData()
-                        {
-                            TyreCoreTemperature = _pagePhysics.TyreCoreTemperature,
-                            TyrePressure = _pagePhysics.WheelPressure,
-                        },
-                        BrakeData = new BrakeData()
-                        {
-                            BrakeTemperature = _pagePhysics.BrakeTemperature,
-                        }
-                    });
+                            SplinePosition = _pageGraphics.NormalizedCarPosition,
+                            InputsData = new InputsData()
+                            {
+                                Gas = _pagePhysics.Gas,
+                                Brake = _pagePhysics.Brake,
+                                Gear = _pagePhysics.Gear,
+                                SteerAngle = _pagePhysics.SteerAngle
+                            },
+                            TyreData = new TyreData()
+                            {
+                                TyreCoreTemperature = _pagePhysics.TyreCoreTemperature,
+                                TyrePressure = _pagePhysics.WheelPressure,
+                            },
+                            BrakeData = new BrakeData()
+                            {
+                                BrakeTemperature = _pagePhysics.BrakeTemperature,
+                            }
+                        });
                 }
             });
         }
