@@ -82,6 +82,10 @@ namespace ACCManager.Data.ACC.Database.Telemetry
                         {
                             TyreCoreTemperature = _pagePhysics.TyreCoreTemperature,
                             TyrePressure = _pagePhysics.WheelPressure,
+                        },
+                        BrakeData = new BrakeData()
+                        {
+                            BrakeTemperature = _pagePhysics.BrakeTemperature,
                         }
                     });
                 }

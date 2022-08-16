@@ -225,18 +225,53 @@ namespace ACCManager.Controls
                     Dictionary<long, TelemetryPoint> dict = telemetry.DeserializeLapData();
 
                     int highestGear = -1;
-                    float leftFrontTemp = -1;
-                    float leftFrontPressure = -1;
+
+                    float[] highestTyreTemps = new float[4];
+                    float[] highestTyrePressures = new float[4];
+
+                    float averageThrottleApplication = 0;
+                    float averageBrakeApplication = 0;
+
+                    float averageSteeringAngle = 0;
+
+                    Debug.WriteLine("Data points " + dict.Count);
+
+                    DateTime lapStart = DateTime.MinValue;
                     foreach (var kv in dict)
                     {
+                        if (lapStart == DateTime.MinValue)
+                            lapStart = new DateTime(kv.Key);
+
                         highestGear.ClipMin(kv.Value.InputsData.Gear);
-                        leftFrontTemp.ClipMin(kv.Value.TyreData.TyreCoreTemperature[(int)Wheel.FrontLeft]);
-                        leftFrontPressure.ClipMin(kv.Value.TyreData.TyrePressure[(int)Wheel.FrontLeft]);
+
+                        for (int i = 0; i < 4; i++)
+                        {
+                            highestTyreTemps[i].ClipMin(kv.Value.TyreData.TyreCoreTemperature[i]);
+                            highestTyrePressures[i].ClipMin(kv.Value.TyreData.TyrePressure[i]);
+                        }
+
+                        averageBrakeApplication += kv.Value.InputsData.Brake;
+                        averageThrottleApplication += kv.Value.InputsData.Gas;
+                        averageSteeringAngle += kv.Value.InputsData.SteerAngle;
                     }
 
+                    averageThrottleApplication /= dict.Count;
+                    averageBrakeApplication /= dict.Count;
+                    averageSteeringAngle /= dict.Count;
+
+
+                    Debug.WriteLine($"First datapoint {lapStart:T}");
+                    Debug.WriteLine($"Average throttle application: {averageThrottleApplication * 100:F2} %");
+                    Debug.WriteLine($"Average brake application: {averageBrakeApplication * 100:F2} %");
+                    Debug.WriteLine($"Average steering angle: {averageSteeringAngle * 100:F2}");
                     Debug.WriteLine($"Highest gear: {highestGear}");
-                    Debug.WriteLine($"Highest Left Front Temp: {leftFrontTemp:F3}");
-                    Debug.WriteLine($"Highest Left Front Pressure: {leftFrontPressure:F3}");
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        string[] wheelNames = Enum.GetNames(typeof(Wheel));
+                        Debug.WriteLine($"Highest {wheelNames[i]} Temp: {highestTyreTemps[i]:F3}");
+                        Debug.WriteLine($"Highest {wheelNames[i]} Pressure: {highestTyrePressures[i]:F3}");
+                    }
                 }
 
             };

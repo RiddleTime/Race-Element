@@ -22,6 +22,7 @@ namespace ACCManager.Data.ACC.Database.Telemetry
         public float SplinePosition { get; set; }
         public InputsData InputsData { get; set; }
         public TyreData TyreData { get; set; }
+        public BrakeData BrakeData { get; set; }
     }
 
     [Serializable]
@@ -38,6 +39,12 @@ namespace ACCManager.Data.ACC.Database.Telemetry
     {
         public float[] TyreCoreTemperature { get; set; }
         public float[] TyrePressure { get; set; }
+    }
+
+    [Serializable]
+    public class BrakeData
+    {
+        public float[] BrakeTemperature { get; set; }
     }
 
     public class LapTelemetryCollection
