@@ -78,6 +78,9 @@
     <Compile Include="Database\RaceWeekendDatabase.cs" />
     <Compile Include="Database\RaceWeekend\DbRaceWeekend.cs" />
     <Compile Include="Database\SessionData\DbRaceSession.cs" />
+    <Compile Include="Database\Telemetry\DbLapTelemetry.cs" />
+    <Compile Include="Database\Telemetry\DbLapTelemetryExtensions.cs" />
+    <Compile Include="Database\Telemetry\TelemetryRecorder.cs" />
     <Compile Include="EntryList\EntryListTracker.cs" />
     <Compile Include="EntryList\TrackPositionGraph\CarPosition.cs" />
     <Compile Include="EntryList\TrackPositionGraph\PositionGraph.cs" />

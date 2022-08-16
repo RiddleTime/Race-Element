@@ -101,16 +101,20 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                                             Laps[CurrentLap.Index - 1].IsValid = !_lastLapInfo.IsInvalid;
                                             Laps[CurrentLap.Index - 1].LapType = _lastLapInfo.Type;
 
-                                            Trace.WriteLine($"{Laps[CurrentLap.Index - 1]}");
 
-                                            LapFinished?.Invoke(this, Laps[CurrentLap.Index - 1]);
+
 
                                             if (RaceSessionTracker.Instance.CurrentSession != null)
                                             {
+                                                Laps[CurrentLap.Index - 1].Id = Guid.NewGuid();
                                                 Laps[CurrentLap.Index - 1].RaceSessionId = RaceSessionTracker.Instance.CurrentSession.Id;
                                                 Laps[CurrentLap.Index - 1].UtcCompleted = DateTime.UtcNow;
                                                 Laps[CurrentLap.Index - 1].FuelInTank = new ACCSharedMemory().ReadPhysicsPageFile().Fuel;
                                                 LapDataCollection.Insert(Laps[CurrentLap.Index - 1]);
+
+                                                Trace.WriteLine($"{Laps[CurrentLap.Index - 1]}");
+
+                                                LapFinished?.Invoke(this, Laps[CurrentLap.Index - 1]);
                                             }
                                         }
                                     }

@@ -1,10 +1,12 @@
-﻿using ACCManager.Broadcast;
+﻿using ACC_Manager.Util.SystemExtensions;
+using ACCManager.Broadcast;
 using ACCManager.Controls.Telemetry.RaceSessions;
 using ACCManager.Data;
 using ACCManager.Data.ACC.Database;
 using ACCManager.Data.ACC.Database.GameData;
 using ACCManager.Data.ACC.Database.LapDataDB;
 using ACCManager.Data.ACC.Database.SessionData;
+using ACCManager.Data.ACC.Database.Telemetry;
 using ACCManager.Data.ACC.Session;
 using ACCManager.Data.ACC.Tracks;
 using ACCManager.Util;
@@ -22,6 +24,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using static ACCManager.Data.ACC.Tracks.TrackNames;
+using static ACCManager.Data.SetupConverter;
 using static System.Net.WebRequestMethods;
 
 namespace ACCManager.Controls
@@ -215,6 +218,27 @@ namespace ACCManager.Controls
                 DbLapData lapdata = (DbLapData)grid.SelectedItem;
 
                 Debug.WriteLine(lapdata.Id);
+
+                DbLapTelemetry telemetry = LapTelemetryCollection.GetForLap(CurrentDatabase.GetCollection<DbLapTelemetry>(), lapdata.Id);
+                if (telemetry != null)
+                {
+                    Dictionary<long, TelemetryPoint> dict = telemetry.DeserializeLapData();
+
+                    int highestGear = -1;
+                    float leftFrontTemp = -1;
+                    float leftFrontPressure = -1;
+                    foreach (var kv in dict)
+                    {
+                        highestGear.ClipMin(kv.Value.InputsData.Gear);
+                        leftFrontTemp.ClipMin(kv.Value.TyreData.TyreCoreTemperature[(int)Wheel.FrontLeft]);
+                        leftFrontPressure.ClipMin(kv.Value.TyreData.TyrePressure[(int)Wheel.FrontLeft]);
+                    }
+
+                    Debug.WriteLine($"Highest gear: {highestGear}");
+                    Debug.WriteLine($"Highest Left Front Temp: {leftFrontTemp:F3}");
+                    Debug.WriteLine($"Highest Left Front Pressure: {leftFrontPressure:F3}");
+                }
+
             };
 
             return grid;

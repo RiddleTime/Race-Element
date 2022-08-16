@@ -4,6 +4,7 @@ using ACCManager.Data.ACC.Database.GameData;
 using ACCManager.Data.ACC.Database.LapDataDB;
 using ACCManager.Data.ACC.Database.RaceWeekend;
 using ACCManager.Data.ACC.Database.SessionData;
+using ACCManager.Data.ACC.Database.Telemetry;
 using ACCManager.Data.ACC.Tracker;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,7 @@ namespace ACCManager.Data.ACC.Session
         public event EventHandler<int> OnSessionIndexChanged;
 
         public event EventHandler<DbRaceSession> OnNewSessionStarted;
+        public event EventHandler<DbRaceSession> OnSessionFinished;
         public event EventHandler<DbRaceWeekend> OnRaceWeekendEnded;
 
         internal DbRaceSession CurrentSession { get; private set; }
@@ -103,6 +105,8 @@ namespace ACCManager.Data.ACC.Session
 
                 RaceSessionCollection.Insert(CurrentSession);
                 OnNewSessionStarted?.Invoke(this, CurrentSession);
+
+                new TelemetryRecorder().Record();
             }
         }
 
@@ -119,6 +123,8 @@ namespace ACCManager.Data.ACC.Session
                     RaceSessionCollection.Update(CurrentSession);
                 else
                     RaceSessionCollection.Delete(CurrentSession);
+
+                OnSessionFinished?.Invoke(this, CurrentSession);
             }
 
             CurrentSession = null;
