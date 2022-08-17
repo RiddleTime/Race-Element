@@ -15,7 +15,7 @@
         </Grid.ColumnDefinitions>
 
         <TabControl Grid.Column="0" TabStripPlacement="Top">
-            <TabItem x:Name="tabCurrentWeekend" Height="35">
+            <TabItem x:Name="tabCurrentWeekend" Height="40">
                 <TabItem.Header>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -43,7 +43,7 @@
                 </StackPanel>
             </TabItem>
 
-            <TabItem Height="35">
+            <TabItem Height="40">
                 <TabItem.Header>
                     <Grid x:Name="gridTabHeaderLocalSession">
                         <Grid.ColumnDefinitions>
@@ -74,24 +74,24 @@
             <StackPanel x:Name="stackerSessionViewer" Grid.Row="0" Margin="3" Orientation="Vertical">
 
             </StackPanel>
-            <Grid Grid.Row="1" VerticalAlignment="Stretch">
+            <Grid Grid.Row="1" VerticalAlignment="Stretch" Margin="3">
                 <TabControl x:Name="tabControlPlots" TabStripPlacement="Top" Visibility="Collapsed">
-                    <TabItem x:Name="tabItemInputs">
+                    <TabItem x:Name="tabItemInputs" Height="40">
                         <TabItem.Header>
                             <TextBlock Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Inputs</TextBlock>
                         </TabItem.Header>
                     </TabItem>
-                    <TabItem x:Name="tabItemTyrePressures">
+                    <TabItem x:Name="tabItemTyrePressures" Height="40">
                         <TabItem.Header>
                             <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Pressures</TextBlock>
                         </TabItem.Header>
                     </TabItem>
-                    <TabItem x:Name="tabItemTyreTemps">
+                    <TabItem x:Name="tabItemTyreTemps" Height="40">
                         <TabItem.Header>
                             <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Tyre Temps</TextBlock>
                         </TabItem.Header>
                     </TabItem>
-                    <TabItem x:Name="tabItemBrakeTemps">
+                    <TabItem x:Name="tabItemBrakeTemps" Height="40">
                         <TabItem.Header>
                             <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Brake Temps</TextBlock>
                         </TabItem.Header>

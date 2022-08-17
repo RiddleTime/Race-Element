@@ -12,13 +12,11 @@ using ACCManager.Data.ACC.Tracks;
 using ACCManager.Util;
 using LiteDB;
 using ScottPlot;
-using SharpCompress.Archives.Zip;
+using ScottPlot.Styles;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -26,7 +24,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using static ACCManager.Data.ACC.Tracks.TrackNames;
 using static ACCManager.Data.SetupConverter;
-using static System.Net.WebRequestMethods;
 
 namespace ACCManager.Controls
 {
@@ -37,6 +34,9 @@ namespace ACCManager.Controls
     {
         public static RaceSessionBrowser Instance { get; private set; }
         private LiteDatabase CurrentDatabase;
+
+        private readonly IStyle DefaultPlotStyle = ScottPlot.Style.Black;
+        private readonly IPalette WheelPositionPallete = Palette.OneHalfDark;
 
         public RaceSessionBrowser()
         {
@@ -332,7 +332,6 @@ namespace ACCManager.Controls
                 tabItemInputs.Content = inputsTabGrid;
                 inputsTabGrid.Children.Add(GetInputPlot(inputsTabGrid, telemetry, dict));
 
-
                 Grid tyreTabGrid = new Grid();
                 tabItemTyreTemps.Content = tyreTabGrid;
                 tyreTabGrid.Children.Add(GetTyreTempPlot(tyreTabGrid, telemetry, dict));
@@ -347,15 +346,14 @@ namespace ACCManager.Controls
             }
         }
 
-        internal static WpfPlot GetInputPlot(Grid outerGrid, DbLapTelemetry telemetry, Dictionary<long, TelemetryPoint> dict)
+        internal WpfPlot GetInputPlot(Grid outerGrid, DbLapTelemetry telemetry, Dictionary<long, TelemetryPoint> dict)
         {
             WpfPlot wpfPlot = new WpfPlot
             {
                 Cursor = Cursors.Hand,
             };
 
-            wpfPlot.Configuration.DoubleClickBenchmark = false;
-            wpfPlot.Configuration.LockVerticalAxis = true;
+            SetDefaultWpfPlotConfiguration(ref wpfPlot);
 
             wpfPlot.Height = outerGrid.ActualHeight;
             wpfPlot.MaxHeight = outerGrid.MaxHeight;
@@ -371,18 +369,20 @@ namespace ACCManager.Controls
             double[] brakeDatas = dict.Select(x => (double)x.Value.InputsData.Brake * 100).ToArray();
 
             Plot plot = wpfPlot.Plot;
-            plot.Palette = new ScottPlot.Palettes.Dark();
-            plot.Style(new ScottPlot.Styles.Black());
-            plot.Benchmark(false);
-            plot.Legend(true);
-
             plot.AddSignal(gasDatas, sampleRate: telemetry.Herz, color: System.Drawing.Color.Green, label: "Throttle");
             plot.AddSignal(brakeDatas, sampleRate: telemetry.Herz, color: System.Drawing.Color.Red, label: "Brake");
 
             plot.SetAxisLimitsY(-5, 105);
             plot.SetOuterViewLimits(0d, gasDatas.Length / telemetry.Herz, -3, 103);
             plot.XLabel("Time");
+            plot.YLabel("Percentage");
+
+
+            plot.Palette = new ScottPlot.Palettes.PolarNight();
+            plot.Style(DefaultPlotStyle);
             plot.AxisZoom(1, 1);
+            plot.Benchmark(false);
+            plot.Legend(true);
 
             wpfPlot.Refresh();
 
@@ -390,15 +390,14 @@ namespace ACCManager.Controls
         }
 
 
-        internal static WpfPlot GetTyreTempPlot(Grid outerGrid, DbLapTelemetry telemetry, Dictionary<long, TelemetryPoint> dict)
+        internal WpfPlot GetTyreTempPlot(Grid outerGrid, DbLapTelemetry telemetry, Dictionary<long, TelemetryPoint> dict)
         {
             WpfPlot wpfPlot = new WpfPlot
             {
                 Cursor = Cursors.Hand,
             };
 
-            wpfPlot.Configuration.DoubleClickBenchmark = false;
-            wpfPlot.Configuration.LockVerticalAxis = true;
+            SetDefaultWpfPlotConfiguration(ref wpfPlot);
 
             wpfPlot.Height = outerGrid.ActualHeight;
             wpfPlot.MaxHeight = outerGrid.MaxHeight;
@@ -411,8 +410,8 @@ namespace ACCManager.Controls
             };
 
             Plot plot = wpfPlot.Plot;
-            plot.Palette = new ScottPlot.Palettes.Dark();
-            plot.Style(new ScottPlot.Styles.Black());
+            plot.Palette = WheelPositionPallete;
+            plot.Style(DefaultPlotStyle);
             plot.Benchmark(false);
             plot.Legend(true);
 
@@ -434,6 +433,7 @@ namespace ACCManager.Controls
             plot.SetAxisLimitsY(minTemp - padding, maxTemp + padding);
             plot.SetOuterViewLimits(0d, tyreTemps[0].Length / telemetry.Herz, minTemp - padding, maxTemp + padding);
             plot.XLabel("Time");
+            plot.YLabel("Temperature (C)");
             plot.AxisZoom(1, 1);
 
             wpfPlot.Refresh();
@@ -441,15 +441,14 @@ namespace ACCManager.Controls
             return wpfPlot;
         }
 
-        internal static WpfPlot GetTyrePressurePlot(Grid outerGrid, DbLapTelemetry telemetry, Dictionary<long, TelemetryPoint> dict)
+        internal WpfPlot GetTyrePressurePlot(Grid outerGrid, DbLapTelemetry telemetry, Dictionary<long, TelemetryPoint> dict)
         {
             WpfPlot wpfPlot = new WpfPlot
             {
                 Cursor = Cursors.Hand,
             };
 
-            wpfPlot.Configuration.DoubleClickBenchmark = false;
-            wpfPlot.Configuration.LockVerticalAxis = true;
+            SetDefaultWpfPlotConfiguration(ref wpfPlot);
 
             wpfPlot.Height = outerGrid.ActualHeight;
             wpfPlot.MaxHeight = outerGrid.MaxHeight;
@@ -463,8 +462,8 @@ namespace ACCManager.Controls
 
 
             Plot plot = wpfPlot.Plot;
-            plot.Palette = new ScottPlot.Palettes.Dark();
-            plot.Style(new ScottPlot.Styles.Black());
+            plot.Palette = WheelPositionPallete;
+            plot.Style(DefaultPlotStyle);
             plot.Benchmark(false);
             plot.Legend(true);
 
@@ -486,22 +485,24 @@ namespace ACCManager.Controls
             plot.SetAxisLimitsY(minPressure - padding, maxPressure + padding);
             plot.SetOuterViewLimits(0d, tyrePressures[0].Length / telemetry.Herz, minPressure - padding, maxPressure + padding);
             plot.XLabel("Time");
+            plot.YLabel("Pressure (PSI)");
             plot.AxisZoom(1, 1);
+
+            plot.YAxis.Edge = ScottPlot.Renderable.Edge.Left;
 
             wpfPlot.Refresh();
 
             return wpfPlot;
         }
 
-        internal static WpfPlot GetBrakeTempsPlot(Grid outerGrid, DbLapTelemetry telemetry, Dictionary<long, TelemetryPoint> dict)
+        internal WpfPlot GetBrakeTempsPlot(Grid outerGrid, DbLapTelemetry telemetry, Dictionary<long, TelemetryPoint> dict)
         {
             WpfPlot wpfPlot = new WpfPlot
             {
                 Cursor = Cursors.Hand,
             };
 
-            wpfPlot.Configuration.DoubleClickBenchmark = false;
-            wpfPlot.Configuration.LockVerticalAxis = true;
+            SetDefaultWpfPlotConfiguration(ref wpfPlot);
 
             wpfPlot.Height = outerGrid.ActualHeight;
             wpfPlot.MaxHeight = outerGrid.MaxHeight;
@@ -513,10 +514,9 @@ namespace ACCManager.Controls
                 wpfPlot.MinHeight = outerGrid.MinHeight;
             };
 
-
             Plot plot = wpfPlot.Plot;
-            plot.Palette = new ScottPlot.Palettes.Dark();
-            plot.Style(new ScottPlot.Styles.Black());
+            plot.Palette = WheelPositionPallete;
+            plot.Style(DefaultPlotStyle);
             plot.Benchmark(false);
             plot.Legend(true);
 
@@ -538,6 +538,7 @@ namespace ACCManager.Controls
             plot.SetAxisLimitsY(minTemp - padding, maxTemp + padding);
             plot.SetOuterViewLimits(0d, brakeTemps[0].Length / telemetry.Herz, minTemp - padding, maxTemp + padding);
             plot.XLabel("Time");
+            plot.YLabel("Temperature (C)");
             plot.AxisZoom(1, 1);
 
             wpfPlot.Refresh();
@@ -545,5 +546,12 @@ namespace ACCManager.Controls
             return wpfPlot;
         }
 
+
+        private void SetDefaultWpfPlotConfiguration(ref WpfPlot wpfPlot)
+        {
+            wpfPlot.Configuration.DoubleClickBenchmark = false;
+            wpfPlot.Configuration.LockVerticalAxis = true;
+            wpfPlot.Configuration.Quality = ScottPlot.Control.QualityMode.High;
+        }
     }
 }
