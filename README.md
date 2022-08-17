@@ -15,4 +15,6 @@ https://discord.gg/26AAEW5mUq
 
 ### Frameworks
 - WPF
-- https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit
+- [MaterialDesign In Xaml Toolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit)
+- [LiteDB](https://github.com/mbdavid/LiteDB)
+- [ScottPlot](https://github.com/scottplot/scottplot)
