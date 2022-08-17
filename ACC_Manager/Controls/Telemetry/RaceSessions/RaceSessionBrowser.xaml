@@ -14,6 +14,11 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
         <TabControl Grid.Column="0" TabStripPlacement="Top">
             <TabItem x:Name="tabCurrentWeekend" Height="40">
                 <TabItem.Header>
@@ -34,12 +39,10 @@
                     </Grid>
                 </TabItem.Header>
                 <StackPanel Grid.Column="0" Orientation="Vertical">
-                    <ComboBox IsEnabled="False" x:Name="comboTracks" Height="30" ToolTip="Select a track"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></ComboBox>
-                    <ComboBox IsEnabled="False" x:Name="comboCars" Height="30" ToolTip="Select a car"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></ComboBox>
+                    <ComboBox IsEnabled="False" x:Name="comboTracks" Height="30" ToolTip="Select a track"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+                    <ComboBox IsEnabled="False" x:Name="comboCars" Height="30" ToolTip="Select a car"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
 
-                    <ListView Margin="0,3,0,0" x:Name="listViewRaceSessions">
-
-                    </ListView>
+                    <ListView Margin="0,3,0,0" x:Name="listViewRaceSessions" ScrollViewer.VerticalScrollBarVisibility="Auto" />
                 </StackPanel>
             </TabItem>
 
@@ -61,43 +64,42 @@
                         <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Local</TextBlock>
                     </Grid>
                 </TabItem.Header>
-                <ListView x:Name="localRaceWeekends"></ListView>
+                <ListView x:Name="localRaceWeekends" ScrollViewer.VerticalScrollBarVisibility="Auto" />
             </TabItem>
         </TabControl>
-
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="5*"/>
                 <RowDefinition Height="5*"/>
             </Grid.RowDefinitions>
-            <StackPanel x:Name="stackerSessionViewer" Grid.Row="0" Margin="3" Orientation="Vertical">
 
-            </StackPanel>
-            <Grid Grid.Row="1" VerticalAlignment="Stretch" Margin="3">
-                <TabControl x:Name="tabControlPlots" TabStripPlacement="Top" Visibility="Collapsed">
-                    <TabItem x:Name="tabItemInputs" Height="40">
-                        <TabItem.Header>
-                            <TextBlock Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Inputs</TextBlock>
-                        </TabItem.Header>
-                    </TabItem>
-                    <TabItem x:Name="tabItemTyrePressures" Height="40">
-                        <TabItem.Header>
-                            <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Pressures</TextBlock>
-                        </TabItem.Header>
-                    </TabItem>
-                    <TabItem x:Name="tabItemTyreTemps" Height="40">
-                        <TabItem.Header>
-                            <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Tyre Temps</TextBlock>
-                        </TabItem.Header>
-                    </TabItem>
-                    <TabItem x:Name="tabItemBrakeTemps" Height="40">
-                        <TabItem.Header>
-                            <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Brake Temps</TextBlock>
-                        </TabItem.Header>
-                    </TabItem>
-                </TabControl>
-            </Grid>
+            <StackPanel x:Name="stackerSessionViewer" Grid.Row="0" Margin="3" Orientation="Vertical" />
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Stretch" Margin="3">
+            <TabControl x:Name="tabControlPlots" TabStripPlacement="Top" Visibility="Collapsed" Foreground="White">
+                <TabItem x:Name="tabItemInputs" Height="40">
+                    <TabItem.Header>
+                        <TextBlock Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Inputs</TextBlock>
+                    </TabItem.Header>
+                </TabItem>
+                <TabItem x:Name="tabItemTyrePressures" Height="40">
+                    <TabItem.Header>
+                        <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Pressures</TextBlock>
+                    </TabItem.Header>
+                </TabItem>
+                <TabItem x:Name="tabItemTyreTemps" Height="40">
+                    <TabItem.Header>
+                        <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Tyre Temps</TextBlock>
+                    </TabItem.Header>
+                </TabItem>
+                <TabItem x:Name="tabItemBrakeTemps" Height="40">
+                    <TabItem.Header>
+                        <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Brake Temps</TextBlock>
+                    </TabItem.Header>
+                </TabItem>
+            </TabControl>
         </Grid>
     </Grid>
 </UserControl>

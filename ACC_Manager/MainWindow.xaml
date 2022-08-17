@@ -193,39 +193,6 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabTools" Height="60">
-                <TabItem.Header>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <materialDesign:PackIcon
-                            Grid.Row="0"
-                            Kind="Calculator"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            Height="20"
-                            Width="20"
-                        Foreground="White"    
-                        />
-                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Tools</TextBlock>
-                    </Grid>
-                </TabItem.Header>
-
-                <Grid HorizontalAlignment="Stretch">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <materialDesign:TransitioningContent Grid.Column="1">
-                        <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="FadeIn"/>
-                        </materialDesign:TransitioningContent.OpeningEffects>
-                        <controls:ToolsTabs></controls:ToolsTabs>
-                    </materialDesign:TransitioningContent>
-                </Grid>
-            </TabItem>
-
             <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabTelemetry" Height="60">
                 <TabItem.Header>
                     <Grid>
@@ -257,6 +224,39 @@
                             <materialDesign:TransitionEffect Kind="FadeIn"/>
                         </materialDesign:TransitioningContent.OpeningEffects>
                         <controls:TelemetryTab></controls:TelemetryTab>
+                    </materialDesign:TransitioningContent>
+                </Grid>
+            </TabItem>
+
+            <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabTools" Height="60">
+                <TabItem.Header>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <materialDesign:PackIcon
+                            Grid.Row="0"
+                            Kind="Calculator"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="20"
+                            Width="20"
+                        Foreground="White"    
+                        />
+                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Tools</TextBlock>
+                    </Grid>
+                </TabItem.Header>
+
+                <Grid HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:TransitioningContent Grid.Column="1">
+                        <materialDesign:TransitioningContent.OpeningEffects>
+                            <materialDesign:TransitionEffect Kind="FadeIn"/>
+                        </materialDesign:TransitioningContent.OpeningEffects>
+                        <controls:ToolsTabs></controls:ToolsTabs>
                     </materialDesign:TransitioningContent>
                 </Grid>
             </TabItem>

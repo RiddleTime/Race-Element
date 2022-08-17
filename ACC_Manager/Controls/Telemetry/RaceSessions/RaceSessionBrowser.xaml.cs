@@ -12,11 +12,13 @@ using ACCManager.Data.ACC.Tracks;
 using ACCManager.Util;
 using LiteDB;
 using ScottPlot;
+using ScottPlot.Plottable;
 using ScottPlot.Styles;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -344,6 +346,8 @@ namespace ACCManager.Controls
                 tabItemBrakeTemps.Content = brakeTempsGrid;
                 brakeTempsGrid.Children.Add(GetBrakeTempsPlot(brakeTempsGrid, telemetry, dict));
             }
+
+            ThreadPool.QueueUserWorkItem(x => GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true));
         }
 
         internal WpfPlot GetInputPlot(Grid outerGrid, DbLapTelemetry telemetry, Dictionary<long, TelemetryPoint> dict)
@@ -367,16 +371,26 @@ namespace ACCManager.Controls
 
             double[] gasDatas = dict.Select(x => (double)x.Value.InputsData.Gas * 100).ToArray();
             double[] brakeDatas = dict.Select(x => (double)x.Value.InputsData.Brake * 100).ToArray();
+            double[] steeringDatas = dict.Select(x => (double)x.Value.InputsData.SteerAngle).ToArray();
 
             Plot plot = wpfPlot.Plot;
+            plot.SetAxisLimitsY(-5, 105);
             plot.AddSignal(gasDatas, sampleRate: telemetry.Herz, color: System.Drawing.Color.Green, label: "Throttle");
             plot.AddSignal(brakeDatas, sampleRate: telemetry.Herz, color: System.Drawing.Color.Red, label: "Brake");
+            SignalPlot steeringPlot = plot.AddSignal(steeringDatas, sampleRate: telemetry.Herz, color: System.Drawing.Color.WhiteSmoke, label: "Steering");
+            steeringPlot.YAxisIndex = 1;
+            plot.SetAxisLimits(xMin: 0, xMax: gasDatas.Length, yMin: -1.05, yMax: 1.05, yAxisIndex: 1);
 
-            plot.SetAxisLimitsY(-5, 105);
+
+
             plot.SetOuterViewLimits(0d, gasDatas.Length / telemetry.Herz, -3, 103);
             plot.XLabel("Time");
             plot.YLabel("Percentage");
 
+            plot.SetOuterViewLimits(0d, gasDatas.Length / telemetry.Herz, -1.05, 1.05, yAxisIndex: 1);
+
+            plot.YAxis2.Ticks(true);
+            plot.YAxis2.Label("Steering");
 
             plot.Palette = new ScottPlot.Palettes.PolarNight();
             plot.Style(DefaultPlotStyle);
@@ -547,11 +561,13 @@ namespace ACCManager.Controls
         }
 
 
-        private void SetDefaultWpfPlotConfiguration(ref WpfPlot wpfPlot)
+        private void SetDefaultWpfPlotConfiguration(ref WpfPlot plot)
         {
-            wpfPlot.Configuration.DoubleClickBenchmark = false;
-            wpfPlot.Configuration.LockVerticalAxis = true;
-            wpfPlot.Configuration.Quality = ScottPlot.Control.QualityMode.High;
+            plot.Configuration.DoubleClickBenchmark = false;
+            plot.Configuration.LockVerticalAxis = true;
+            plot.Configuration.Quality = ScottPlot.Control.QualityMode.High;
+            plot.Configuration.MiddleClickDragZoom = false;
+            plot.Configuration.MiddleClickAutoAxis = true;
         }
     }
 }
