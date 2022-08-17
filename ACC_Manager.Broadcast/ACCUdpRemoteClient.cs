@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace ACCManager.Broadcast
         {
             IpPort = $"{ip}:{port}";
             MessageHandler = new BroadcastingNetworkProtocol(IpPort, Send);
-            _client = new UdpClient();
+            _client = new UdpClient(new IPEndPoint(IPAddress.Loopback, 0));
             _client.Connect(ip, port);
 
             DisplayName = displayName;
@@ -49,7 +50,7 @@ namespace ACCManager.Broadcast
                  if (t.Exception?.InnerExceptions?.Any() == true)
                      System.Diagnostics.Debug.WriteLine($"Broadcast Client shut down with {t.Exception.InnerExceptions.Count} errors");
                  //else
-                     //System.Diagnostics.Debug.WriteLine("Client shut down asynchronously");
+                 //System.Diagnostics.Debug.WriteLine("Client shut down asynchronously");
 
              });
         }

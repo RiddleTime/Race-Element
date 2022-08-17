@@ -65,8 +65,12 @@ namespace ACCManager.Data.ACC.Database.Telemetry
                 var nextTick = DateTime.Now + interval;
                 while (_isRunning)
                 {
-                    while (DateTime.Now < nextTick)
-                        Thread.Sleep(nextTick - DateTime.Now);
+                    try
+                    {
+                        while (DateTime.Now < nextTick)
+                            Thread.Sleep(nextTick - DateTime.Now);
+                    }
+                    catch { }
                     nextTick += interval;
                     long ticks = DateTime.Now.Ticks;
 
