@@ -14,8 +14,11 @@ namespace ACC_Manager.Broadcast
     {
         public class Root
         {
+            [JsonProperty("updListenerPort")]
             public int UpdListenerPort { get; set; }
+            [JsonProperty("connectionPassword")]
             public string ConnectionPassword { get; set; }
+            [JsonProperty("commandPassword")]
             public string CommandPassword { get; set; }
         }
 
