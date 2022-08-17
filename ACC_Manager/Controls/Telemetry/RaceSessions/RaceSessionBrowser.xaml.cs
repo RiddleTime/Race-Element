@@ -62,6 +62,11 @@ namespace ACCManager.Controls
             Dispatcher.Invoke(() =>
             {
                 localRaceWeekends.Items.Clear();
+
+                DirectoryInfo dataDir = new DirectoryInfo(FileUtil.AccManangerDataPath);
+                if (!dataDir.Exists)
+                    return;
+
                 var raceWeekendFiles = new DirectoryInfo(FileUtil.AccManangerDataPath).EnumerateFiles()
                     .Where(x => !x.Name.Contains("log") && x.Extension == ".rwdb")
                     .OrderByDescending(x => x.LastWriteTimeUtc);
