@@ -1,4 +1,5 @@
-﻿using ACC_Manager.Util.Settings;
+﻿using ACC_Manager.Broadcast;
+using ACC_Manager.Util.Settings;
 using ACC_Manager.Util.SystemExtensions;
 using ACCManager.Controls;
 using ACCManager.Data.ACC.Tracker;
@@ -96,8 +97,12 @@ namespace ACCManager
 
             Instance = this;
 
-            // TODO refactor
+            // --- TODO refactor
             ACCTrackerStarter.StartACCTrackers();
+
+            // warm up the broad cast config json.. make sure it's set up before we join any session
+            _ = BroadcastConfig.GetConfiguration();
+            // ---
         }
 
         private void MainWindow_Drop(object sender, DragEventArgs e)

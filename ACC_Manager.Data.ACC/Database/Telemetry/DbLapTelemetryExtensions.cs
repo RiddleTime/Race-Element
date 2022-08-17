@@ -30,8 +30,7 @@ namespace ACCManager.Data.ACC.Database.Telemetry
 
             using (var ms = new MemoryStream())
             {
-                var formatter =
-                   new BinaryFormatter();
+                var formatter = new BinaryFormatter();
 
                 formatter.Serialize(ms, dbLapTelemetry);
                 Data = ms.ToArray();

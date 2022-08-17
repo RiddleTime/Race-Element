@@ -48,9 +48,14 @@ namespace ACCManager.Data.ACC.Database.Telemetry
             };
             _lapData.Clear();
             var collection = RaceWeekendDatabase.Database.GetCollection<DbLapTelemetry>();
-            RaceWeekendDatabase.Database.BeginTrans();
-            collection.Insert(lapTelemetry);
-            RaceWeekendDatabase.Database.Commit();
+
+            var existing = collection.Find(x => x.LapId == e.Id);
+            if (existing == null)
+            {
+                RaceWeekendDatabase.Database.BeginTrans();
+                collection.Insert(lapTelemetry);
+                RaceWeekendDatabase.Database.Commit();
+            }
         }
 
         private void OnPageGraphicsUpdated(object sender, SPageFileGraphic e) => _pageGraphics = e;
