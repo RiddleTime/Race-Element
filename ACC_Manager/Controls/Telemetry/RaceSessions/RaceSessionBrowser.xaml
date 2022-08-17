@@ -78,25 +78,25 @@
         </Grid>
 
         <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Stretch" Margin="3">
-            <TabControl x:Name="tabControlPlots" TabStripPlacement="Top" Visibility="Collapsed" Foreground="White">
+            <TabControl x:Name="tabControlPlots" TabStripPlacement="Top" Visibility="Collapsed">
                 <TabItem x:Name="tabItemInputs" Height="40">
                     <TabItem.Header>
-                        <TextBlock Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Inputs</TextBlock>
+                        <TextBlock Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Foreground="White"> Inputs</TextBlock>
                     </TabItem.Header>
                 </TabItem>
                 <TabItem x:Name="tabItemTyrePressures" Height="40">
                     <TabItem.Header>
-                        <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Pressures</TextBlock>
+                        <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Foreground="White"> Pressures</TextBlock>
                     </TabItem.Header>
                 </TabItem>
                 <TabItem x:Name="tabItemTyreTemps" Height="40">
                     <TabItem.Header>
-                        <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Tyre Temps</TextBlock>
+                        <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Foreground="White"> Tyre Temps</TextBlock>
                     </TabItem.Header>
                 </TabItem>
                 <TabItem x:Name="tabItemBrakeTemps" Height="40">
                     <TabItem.Header>
-                        <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Brake Temps</TextBlock>
+                        <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"  Foreground="White"> Brake Temps</TextBlock>
                     </TabItem.Header>
                 </TabItem>
             </TabControl>
