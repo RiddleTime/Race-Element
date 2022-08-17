@@ -375,14 +375,15 @@ namespace ACCManager.Controls
 
             Plot plot = wpfPlot.Plot;
             plot.SetAxisLimitsY(-5, 105);
-            plot.AddSignal(gasDatas, sampleRate: telemetry.Herz, color: System.Drawing.Color.Green, label: "Throttle");
-            plot.AddSignal(brakeDatas, sampleRate: telemetry.Herz, color: System.Drawing.Color.Red, label: "Brake");
+            var gasPlot = plot.AddSignal(gasDatas, sampleRate: telemetry.Herz, color: System.Drawing.Color.Green, label: "Throttle");
+            gasPlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(90, 0, 255, 0), lowerColor: System.Drawing.Color.Transparent);
+            var brakePlot = plot.AddSignal(brakeDatas, sampleRate: telemetry.Herz, color: System.Drawing.Color.Red, label: "Brake");
+            brakePlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(90, 255, 0, 0), lowerColor: System.Drawing.Color.Transparent);
             SignalPlot steeringPlot = plot.AddSignal(steeringDatas, sampleRate: telemetry.Herz, color: System.Drawing.Color.WhiteSmoke, label: "Steering");
             steeringPlot.YAxisIndex = 1;
+
+
             plot.SetAxisLimits(xMin: 0, xMax: gasDatas.Length, yMin: -1.05, yMax: 1.05, yAxisIndex: 1);
-
-
-
             plot.SetOuterViewLimits(0d, gasDatas.Length / telemetry.Herz, -3, 103);
             plot.XLabel("Time");
             plot.YLabel("Percentage");
