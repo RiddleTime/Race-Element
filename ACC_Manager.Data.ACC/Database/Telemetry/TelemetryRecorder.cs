@@ -50,7 +50,7 @@ namespace ACCManager.Data.ACC.Database.Telemetry
             var collection = RaceWeekendDatabase.Database.GetCollection<DbLapTelemetry>();
 
             var existing = collection.Find(x => x.LapId == e.Id);
-            if (existing == null)
+            if (!existing.Any())
             {
                 RaceWeekendDatabase.Database.BeginTrans();
                 collection.Insert(lapTelemetry);
