@@ -586,6 +586,7 @@ namespace ACCManager.Controls
             plot.Configuration.Quality = ScottPlot.Control.QualityMode.High;
             plot.Configuration.MiddleClickDragZoom = false;
             plot.Configuration.MiddleClickAutoAxis = true;
+            plot.Configuration.RightClickDragZoom = false;
         }
     }
 }
