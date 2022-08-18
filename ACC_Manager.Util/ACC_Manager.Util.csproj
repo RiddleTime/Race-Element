@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractSettingsJson.cs" />
+    <Compile Include="Settings\AccManagerSettings.cs" />
     <Compile Include="Settings\AccSettings.cs" />
     <Compile Include="Settings\HardwareSettings.cs" />
     <Compile Include="Settings\HudSettings.cs" />

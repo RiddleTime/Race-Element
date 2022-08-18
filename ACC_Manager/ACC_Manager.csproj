@@ -378,7 +378,10 @@
       <DependentUpon>LiveryTagger.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Liveries\LiveryTagging.cs" />
-    <Compile Include="Controls\Settings\AccSettingsTab.xaml.cs">
+    <Compile Include="Controls\Settings\AccManagerSettings\AccManagerSettingsTab.xaml.cs">
+      <DependentUpon>AccManagerSettingsTab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Settings\AccSettings\AccSettingsTab.xaml.cs">
       <DependentUpon>AccSettingsTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Settings\AccSettings\AccServerListSettings.xaml.cs">
@@ -482,7 +485,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Settings\AccSettingsTab.xaml">
+    <Page Include="Controls\Settings\AccManagerSettings\AccManagerSettingsTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Settings\AccSettings\AccSettingsTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

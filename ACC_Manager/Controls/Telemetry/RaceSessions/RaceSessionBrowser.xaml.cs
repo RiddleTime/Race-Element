@@ -125,6 +125,8 @@ namespace ACCManager.Controls
             });
 
             stackerSessionViewer.Children.Add(GetLapDataGrid(laps));
+
+            transitionContentPlots.Visibility = Visibility.Collapsed;
         }
 
         private Guid GetSelectedTrack()
@@ -327,11 +329,11 @@ namespace ACCManager.Controls
             DbLapTelemetry telemetry = LapTelemetryCollection.GetForLap(CurrentDatabase.GetCollection<DbLapTelemetry>(), lapId);
             if (telemetry == null)
             {
-                tabControlPlots.Visibility = Visibility.Collapsed;
+                transitionContentPlots.Visibility = Visibility.Collapsed;
             }
             else
             {
-                tabControlPlots.Visibility = Visibility.Visible;
+                transitionContentPlots.Visibility = Visibility.Visible;
 
                 Dictionary<long, TelemetryPoint> dict = telemetry.DeserializeLapData();
 

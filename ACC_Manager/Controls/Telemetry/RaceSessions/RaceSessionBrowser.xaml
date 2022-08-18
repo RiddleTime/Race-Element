@@ -10,7 +10,7 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="310" />
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -38,12 +38,17 @@
                         <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Current</TextBlock>
                     </Grid>
                 </TabItem.Header>
-                <StackPanel Grid.Column="0" Orientation="Vertical">
-                    <ComboBox IsEnabled="False" x:Name="comboTracks" Height="30" ToolTip="Select a track"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
-                    <ComboBox IsEnabled="False" x:Name="comboCars" Height="30" ToolTip="Select a car"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+                <Grid Grid.Column="0" VerticalAlignment="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <ComboBox Grid.Row="0" IsEnabled="False" x:Name="comboTracks" Height="30" ToolTip="Select a track"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+                    <ComboBox Grid.Row="1" IsEnabled="False" x:Name="comboCars" Height="30" ToolTip="Select a car"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
 
-                    <ListView Margin="0,3,0,0" x:Name="listViewRaceSessions" ScrollViewer.VerticalScrollBarVisibility="Auto" />
-                </StackPanel>
+                    <ListView Grid.Row="2" Margin="0,3,0,0" x:Name="listViewRaceSessions" ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                </Grid>
             </TabItem>
 
             <TabItem Height="40">
@@ -77,29 +82,36 @@
             <StackPanel x:Name="stackerSessionViewer" Grid.Row="0" Margin="3" Orientation="Vertical" />
         </Grid>
 
-        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Stretch" Margin="3">
-            <TabControl x:Name="tabControlPlots" TabStripPlacement="Top" Visibility="Collapsed">
-                <TabItem x:Name="tabItemInputs" Height="40">
-                    <TabItem.Header>
-                        <TextBlock Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Foreground="White"> Inputs</TextBlock>
-                    </TabItem.Header>
-                </TabItem>
-                <TabItem x:Name="tabItemTyrePressures" Height="40">
-                    <TabItem.Header>
-                        <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Foreground="White"> Pressures</TextBlock>
-                    </TabItem.Header>
-                </TabItem>
-                <TabItem x:Name="tabItemTyreTemps" Height="40">
-                    <TabItem.Header>
-                        <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Foreground="White"> Tyre Temps</TextBlock>
-                    </TabItem.Header>
-                </TabItem>
-                <TabItem x:Name="tabItemBrakeTemps" Height="40">
-                    <TabItem.Header>
-                        <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"  Foreground="White"> Brake Temps</TextBlock>
-                    </TabItem.Header>
-                </TabItem>
-            </TabControl>
-        </Grid>
+        <materialDesign:TransitioningContent x:Name="transitionContentPlots" Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="2"  Visibility="Collapsed">
+            <materialDesign:TransitioningContent.OpeningEffects>
+                <materialDesign:TransitionEffect Kind="FadeIn"/>
+            </materialDesign:TransitioningContent.OpeningEffects>
+
+            <Grid Grid.ColumnSpan="2" VerticalAlignment="Stretch" Margin="3">
+                <TabControl x:Name="tabControlPlots" TabStripPlacement="Top">
+                    <TabItem x:Name="tabItemInputs" Height="40">
+                        <TabItem.Header>
+                            <TextBlock Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Foreground="White"> Inputs</TextBlock>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem x:Name="tabItemTyrePressures" Height="40">
+                        <TabItem.Header>
+                            <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Foreground="White"> Pressures</TextBlock>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem x:Name="tabItemTyreTemps" Height="40">
+                        <TabItem.Header>
+                            <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Foreground="White"> Tyre Temps</TextBlock>
+                        </TabItem.Header>
+                    </TabItem>
+                    <TabItem x:Name="tabItemBrakeTemps" Height="40">
+                        <TabItem.Header>
+                            <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"  Foreground="White"> Brake Temps</TextBlock>
+                        </TabItem.Header>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </materialDesign:TransitioningContent>
+
     </Grid>
 </UserControl>

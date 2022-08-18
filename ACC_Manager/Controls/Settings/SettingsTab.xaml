@@ -15,6 +15,21 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Image Source=".\..\..\new_icon.ico" 
+                               Stretch="UniformToFill"
+                                Height="36"
+                                Width="36"/>
+                    </Grid>
+                </TabItem.Header>
+                <local:AccManagerSettingsTab></local:AccManagerSettingsTab>
+            </TabItem>
+
+            <TabItem Height="60">
+                <TabItem.Header>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <materialDesign:PackIcon

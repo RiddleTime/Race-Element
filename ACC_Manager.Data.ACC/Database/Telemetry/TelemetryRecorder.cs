@@ -1,4 +1,5 @@
-﻿using ACCManager.Data.ACC.Session;
+﻿using ACC_Manager.Util.Settings;
+using ACCManager.Data.ACC.Session;
 using ACCManager.Data.ACC.Tracker;
 using ACCManager.Data.ACC.Tracker.Laps;
 using System;
@@ -39,22 +40,25 @@ namespace ACCManager.Data.ACC.Database.Telemetry
 
         private void OnLapFinished(object sender, LapDataDB.DbLapData e)
         {
-            DbLapTelemetry lapTelemetry = new DbLapTelemetry()
+            if (_isRunning)
             {
-                Id = Guid.NewGuid(),
-                LapId = e.Id,
-                LapData = _lapData.SerializeLapData(),
-                Herz = 1000 / this.IntervalMillis
-            };
-            _lapData.Clear();
-            var collection = RaceWeekendDatabase.Database.GetCollection<DbLapTelemetry>();
+                DbLapTelemetry lapTelemetry = new DbLapTelemetry()
+                {
+                    Id = Guid.NewGuid(),
+                    LapId = e.Id,
+                    LapData = _lapData.SerializeLapData(),
+                    Herz = 1000 / this.IntervalMillis
+                };
+                _lapData.Clear();
+                var collection = RaceWeekendDatabase.Database.GetCollection<DbLapTelemetry>();
 
-            var existing = collection.Find(x => x.LapId == e.Id);
-            if (!existing.Any())
-            {
-                RaceWeekendDatabase.Database.BeginTrans();
-                collection.Insert(lapTelemetry);
-                RaceWeekendDatabase.Database.Commit();
+                var existing = collection.Find(x => x.LapId == e.Id);
+                if (!existing.Any())
+                {
+                    RaceWeekendDatabase.Database.BeginTrans();
+                    collection.Insert(lapTelemetry);
+                    RaceWeekendDatabase.Database.Commit();
+                }
             }
         }
 
@@ -63,6 +67,9 @@ namespace ACCManager.Data.ACC.Database.Telemetry
 
         public void Record()
         {
+            if (!new AccManagerSettings().Get().TelemetryRecordDetailed)
+                return;
+
             _isRunning = true;
             ThreadPool.QueueUserWorkItem(x =>
             {
