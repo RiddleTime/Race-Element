@@ -16,6 +16,7 @@ using ScottPlot.Plottable;
 using ScottPlot.Styles;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -106,6 +107,7 @@ namespace ACCManager.Controls
 
             Dictionary<int, DbLapData> laps = LapDataCollection.GetForSession(CurrentDatabase, session.Id);
             stackerSessionViewer.Children.Clear();
+            gridSessionLaps.Children.Clear();
 
             if (session == null) return;
 
@@ -124,7 +126,7 @@ namespace ACCManager.Controls
                 FontSize = 14
             });
 
-            stackerSessionViewer.Children.Add(GetLapDataGrid(laps));
+            gridSessionLaps.Children.Add(GetLapDataGrid(laps));
 
             transitionContentPlots.Visibility = Visibility.Collapsed;
         }
@@ -226,7 +228,7 @@ namespace ACCManager.Controls
             var data = laps.OrderByDescending(x => x.Key).Select(x => x.Value);
             DataGrid grid = new DataGrid()
             {
-                Height = 550,
+                //Height = 550,
                 ItemsSource = data,
                 AutoGenerateColumns = false,
                 CanUserDeleteRows = false,
@@ -238,7 +240,8 @@ namespace ACCManager.Controls
                 GridLinesVisibility = DataGridGridLinesVisibility.Vertical,
                 AlternatingRowBackground = new SolidColorBrush(Color.FromArgb(25, 0, 0, 0)),
                 RowBackground = Brushes.Transparent,
-                VerticalScrollBarVisibility = ScrollBarVisibility.Auto
+                VerticalScrollBarVisibility = ScrollBarVisibility.Visible,
+                HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden,
             };
 
             int fastestLapIndex = laps.GetFastestLapIndex();
@@ -381,6 +384,9 @@ namespace ACCManager.Controls
             double[] brakeDatas = dict.Select(x => (double)x.Value.InputsData.Brake * 100).ToArray();
             double[] steeringDatas = dict.Select(x => (double)x.Value.InputsData.SteerAngle).ToArray();
 
+            if (splines.Length == 0)
+                return wpfPlot;
+
             Plot plot = wpfPlot.Plot;
             plot.SetAxisLimitsY(-5, 105);
             var gasPlot = plot.AddSignalXY(splines, gasDatas, color: System.Drawing.Color.Green, label: "Throttle");
@@ -438,6 +444,8 @@ namespace ACCManager.Controls
             double minTemp = int.MaxValue;
             double maxTemp = int.MinValue;
             double[] splines = dict.Select(x => (double)x.Value.SplinePosition).ToArray();
+            if (splines.Length == 0)
+                return wpfPlot;
 
             for (int i = 0; i < 4; i++)
             {
@@ -490,6 +498,8 @@ namespace ACCManager.Controls
             double maxPressure = int.MinValue;
 
             double[] splines = dict.Select(x => (double)x.Value.SplinePosition).ToArray();
+            if (splines.Length == 0)
+                return wpfPlot;
 
             for (int i = 0; i < 4; i++)
             {
@@ -541,7 +551,8 @@ namespace ACCManager.Controls
             double maxTemp = int.MinValue;
 
             double[] splines = dict.Select(x => (double)x.Value.SplinePosition).ToArray();
-
+            if (splines.Length == 0)
+                return wpfPlot;
 
             for (int i = 0; i < 4; i++)
             {
