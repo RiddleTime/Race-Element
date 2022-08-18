@@ -374,35 +374,34 @@ namespace ACCManager.Controls
                 wpfPlot.MinHeight = outerGrid.MinHeight;
             };
 
+            double[] splines = dict.Select(x => (double)x.Value.SplinePosition).ToArray();
             double[] gasDatas = dict.Select(x => (double)x.Value.InputsData.Gas * 100).ToArray();
             double[] brakeDatas = dict.Select(x => (double)x.Value.InputsData.Brake * 100).ToArray();
             double[] steeringDatas = dict.Select(x => (double)x.Value.InputsData.SteerAngle).ToArray();
 
             Plot plot = wpfPlot.Plot;
             plot.SetAxisLimitsY(-5, 105);
-            var gasPlot = plot.AddSignal(gasDatas, sampleRate: telemetry.Herz, color: System.Drawing.Color.Green, label: "Throttle");
+            var gasPlot = plot.AddSignalXY(splines, gasDatas, color: System.Drawing.Color.Green, label: "Throttle");
             gasPlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(90, 0, 255, 0), lowerColor: System.Drawing.Color.Transparent);
-            var brakePlot = plot.AddSignal(brakeDatas, sampleRate: telemetry.Herz, color: System.Drawing.Color.Red, label: "Brake");
+            var brakePlot = plot.AddSignalXY(splines, brakeDatas, color: System.Drawing.Color.Red, label: "Brake");
             brakePlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(90, 255, 0, 0), lowerColor: System.Drawing.Color.Transparent);
-            SignalPlot steeringPlot = plot.AddSignal(steeringDatas, sampleRate: telemetry.Herz, color: System.Drawing.Color.WhiteSmoke, label: "Steering");
+            var steeringPlot = plot.AddSignalXY(splines, steeringDatas, color: System.Drawing.Color.WhiteSmoke, label: "Steering");
             steeringPlot.YAxisIndex = 1;
 
 
             plot.SetAxisLimits(xMin: 0, xMax: gasDatas.Length, yMin: -1.05, yMax: 1.05, yAxisIndex: 1);
-            plot.SetOuterViewLimits(0d, gasDatas.Length / telemetry.Herz, -3, 103);
-            plot.XLabel("Time");
-            plot.YLabel("Percentage");
+            plot.SetOuterViewLimits(0, 1, -3, 103);
+            plot.SetOuterViewLimits(0, 1, -1.05, 1.05, yAxisIndex: 1);
 
-            plot.SetOuterViewLimits(0d, gasDatas.Length / telemetry.Herz, -1.05, 1.05, yAxisIndex: 1);
+            plot.XLabel("Distance (%)");
+            plot.YLabel("Percentage");
 
             plot.YAxis2.Ticks(true);
             plot.YAxis2.Label("Steering");
 
             plot.Palette = new ScottPlot.Palettes.PolarNight();
-            plot.Style(DefaultPlotStyle);
-            plot.AxisZoom(1, 1);
-            plot.Benchmark(false);
-            plot.Legend(true);
+
+            SetDefaultPlotStyles(ref plot);
 
             wpfPlot.Refresh();
 
@@ -431,13 +430,13 @@ namespace ACCManager.Controls
 
             Plot plot = wpfPlot.Plot;
             plot.Palette = WheelPositionPallete;
-            plot.Style(DefaultPlotStyle);
             plot.Benchmark(false);
-            plot.Legend(true);
 
             double[][] tyreTemps = new double[4][];
             double minTemp = int.MaxValue;
             double maxTemp = int.MinValue;
+            double[] splines = dict.Select(x => (double)x.Value.SplinePosition).ToArray();
+
             for (int i = 0; i < 4; i++)
             {
                 tyreTemps[i] = dict.Select(x => (double)x.Value.TyreData.TyreCoreTemperature[i]).ToArray();
@@ -445,16 +444,15 @@ namespace ACCManager.Controls
                 minTemp.ClipMax(tyreTemps[i].Min());
                 maxTemp.ClipMin(tyreTemps[i].Max());
 
-                plot.AddSignal(tyreTemps[i], sampleRate: telemetry.Herz, label: Enum.GetNames(typeof(Wheel))[i]);
+                plot.AddSignalXY(splines, tyreTemps[i], label: Enum.GetNames(typeof(Wheel))[i]);
             }
-
 
             double padding = 2;
             plot.SetAxisLimitsY(minTemp - padding, maxTemp + padding);
-            plot.SetOuterViewLimits(0d, tyreTemps[0].Length / telemetry.Herz, minTemp - padding, maxTemp + padding);
-            plot.XLabel("Time");
+            plot.SetOuterViewLimits(0, 1, minTemp - padding, maxTemp + padding);
+            plot.XLabel("Distance (%)");
             plot.YLabel("Temperature (C)");
-            plot.AxisZoom(1, 1);
+            SetDefaultPlotStyles(ref plot);
 
             wpfPlot.Refresh();
 
@@ -483,13 +481,13 @@ namespace ACCManager.Controls
 
             Plot plot = wpfPlot.Plot;
             plot.Palette = WheelPositionPallete;
-            plot.Style(DefaultPlotStyle);
             plot.Benchmark(false);
-            plot.Legend(true);
 
             double[][] tyrePressures = new double[4][];
             double minPressure = int.MaxValue;
             double maxPressure = int.MinValue;
+
+            double[] splines = dict.Select(x => (double)x.Value.SplinePosition).ToArray();
 
             for (int i = 0; i < 4; i++)
             {
@@ -498,17 +496,15 @@ namespace ACCManager.Controls
                 minPressure.ClipMax(tyrePressures[i].Min());
                 maxPressure.ClipMin(tyrePressures[i].Max());
 
-                plot.AddSignal(tyrePressures[i], sampleRate: telemetry.Herz, label: Enum.GetNames(typeof(Wheel))[i]);
+                plot.AddSignalXY(splines, tyrePressures[i], label: Enum.GetNames(typeof(Wheel))[i]);
             }
 
             double padding = 0.3;
             plot.SetAxisLimitsY(minPressure - padding, maxPressure + padding);
-            plot.SetOuterViewLimits(0d, tyrePressures[0].Length / telemetry.Herz, minPressure - padding, maxPressure + padding);
-            plot.XLabel("Time");
+            plot.SetOuterViewLimits(0, 1, minPressure - padding, maxPressure + padding);
+            plot.XLabel("Distance (%)");
             plot.YLabel("Pressure (PSI)");
-            plot.AxisZoom(1, 1);
-
-            plot.YAxis.Edge = ScottPlot.Renderable.Edge.Left;
+            SetDefaultPlotStyles(ref plot);
 
             wpfPlot.Refresh();
 
@@ -536,13 +532,14 @@ namespace ACCManager.Controls
 
             Plot plot = wpfPlot.Plot;
             plot.Palette = WheelPositionPallete;
-            plot.Style(DefaultPlotStyle);
             plot.Benchmark(false);
-            plot.Legend(true);
 
             double[][] brakeTemps = new double[4][];
             double minTemp = int.MaxValue;
             double maxTemp = int.MinValue;
+
+            double[] splines = dict.Select(x => (double)x.Value.SplinePosition).ToArray();
+
 
             for (int i = 0; i < 4; i++)
             {
@@ -551,21 +548,34 @@ namespace ACCManager.Controls
                 minTemp.ClipMax(brakeTemps[i].Min());
                 maxTemp.ClipMin(brakeTemps[i].Max());
 
-                plot.AddSignal(brakeTemps[i], sampleRate: telemetry.Herz, label: Enum.GetNames(typeof(Wheel))[i]);
+                plot.AddSignalXY(splines, brakeTemps[i], label: Enum.GetNames(typeof(Wheel))[i]);
             }
+
 
             double padding = 10;
             plot.SetAxisLimitsY(minTemp - padding, maxTemp + padding);
-            plot.SetOuterViewLimits(0d, brakeTemps[0].Length / telemetry.Herz, minTemp - padding, maxTemp + padding);
-            plot.XLabel("Time");
+            plot.SetOuterViewLimits(0, 1, minTemp - padding, maxTemp + padding);
+            plot.XLabel("Distance (%)");
             plot.YLabel("Temperature (C)");
-            plot.AxisZoom(1, 1);
 
+            SetDefaultPlotStyles(ref plot);
             wpfPlot.Refresh();
 
             return wpfPlot;
         }
 
+
+        private void SetDefaultPlotStyles(ref Plot plot)
+        {
+            plot.YAxis.TickLabelStyle(color: System.Drawing.Color.White);
+            plot.XAxis.TickLabelStyle(color: System.Drawing.Color.White);
+            plot.YAxis2.TickLabelStyle(color: System.Drawing.Color.White);
+            plot.AxisZoom(1, 1);
+            plot.Style(DefaultPlotStyle);
+            plot.Legend(true);
+            plot.YAxis.RulerMode(true);
+            plot.YAxis2.RulerMode(true);
+        }
 
         private void SetDefaultWpfPlotConfiguration(ref WpfPlot plot)
         {
