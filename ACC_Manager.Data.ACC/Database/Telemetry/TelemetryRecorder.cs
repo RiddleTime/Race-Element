@@ -21,7 +21,7 @@ namespace ACCManager.Data.ACC.Database.Telemetry
         private bool _isRunning = false;
         private ACCSharedMemory.SPageFilePhysics _pagePhysics;
         private ACCSharedMemory.SPageFileGraphic _pageGraphics;
-        private Dictionary<long, TelemetryPoint> _lapData = new Dictionary<long, TelemetryPoint>();
+        private readonly Dictionary<long, TelemetryPoint> _lapData = new Dictionary<long, TelemetryPoint>();
 
         public TelemetryRecorder(int intervalMillis = 50)
         {
@@ -31,6 +31,11 @@ namespace ACCManager.Data.ACC.Database.Telemetry
             PageGraphicsTracker.Instance.Tracker += OnPageGraphicsUpdated;
             LapTracker.Instance.LapFinished += OnLapFinished;
             RaceSessionTracker.Instance.OnSessionFinished += OnSessionFinished;
+
+
+            var sharedMem = new ACCSharedMemory();
+            _pageGraphics = sharedMem.ReadGraphicsPageFile();
+            _pagePhysics = sharedMem.ReadPhysicsPageFile();
         }
 
         private void OnSessionFinished(object sender, SessionData.DbRaceSession e)
@@ -87,6 +92,7 @@ namespace ACCManager.Data.ACC.Database.Telemetry
                     long ticks = DateTime.Now.Ticks;
 
                     if (_pagePhysics.BrakeBias > 0)
+                    { // prevent telemetry point recording when in pits or game paused)
                         if (!_lapData.Any() || _lapData.Last().Value.SplinePosition < _pageGraphics.NormalizedCarPosition)
                             _lapData.Add(ticks, new TelemetryPoint()
                             {
@@ -108,6 +114,7 @@ namespace ACCManager.Data.ACC.Database.Telemetry
                                     BrakeTemperature = _pagePhysics.BrakeTemperature,
                                 }
                             });
+                    }
                 }
             });
         }

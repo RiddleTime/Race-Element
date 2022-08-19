@@ -89,7 +89,7 @@ namespace ACCManager.Controls
         public void OpenRaceWeekendDatabase(string filename, bool focusCurrentWeekendTab = true)
         {
             if (CurrentDatabase != null)
-                CurrentDatabase.Dispose();
+                CurrentDatabase.Dispose(); ;
 
             CurrentDatabase = RaceWeekendDatabase.OpenDatabase(filename);
             if (CurrentDatabase != null)
@@ -97,11 +97,6 @@ namespace ACCManager.Controls
                 FillTrackComboBox();
                 if (focusCurrentWeekendTab)
                     tabCurrentWeekend.Focus();
-            }
-            else
-            {
-                if (RaceWeekendDatabase.Database != null)
-                    CurrentDatabase = RaceWeekendDatabase.Database;
             }
         }
 
