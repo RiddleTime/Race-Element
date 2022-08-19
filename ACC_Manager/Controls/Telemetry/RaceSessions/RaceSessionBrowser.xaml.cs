@@ -511,7 +511,14 @@ namespace ACCManager.Controls
                 plot.AddSignalXY(splines, tyrePressures[i], label: Enum.GetNames(typeof(Wheel))[i]);
             }
 
-            double padding = 0.3;
+            double padding = 0.2;
+            double defaultMinPressure = 27, defaultMaxPressure = 28;
+            if (minPressure > defaultMinPressure && maxPressure < defaultMaxPressure)
+            {
+                minPressure.ClipMax(defaultMinPressure);
+                maxPressure.ClipMin(defaultMaxPressure);
+            }
+
             plot.SetAxisLimitsY(minPressure - padding, maxPressure + padding);
             plot.SetOuterViewLimits(0, 1, minPressure - padding, maxPressure + padding);
             plot.XLabel("Distance (%)");
