@@ -98,6 +98,11 @@ namespace ACCManager.Controls
                 if (focusCurrentWeekendTab)
                     tabCurrentWeekend.Focus();
             }
+            else
+            {
+                if (RaceWeekendDatabase.Database != null)
+                    CurrentDatabase = RaceWeekendDatabase.Database;
+            }
         }
 
         private void LoadSession()
@@ -511,7 +516,7 @@ namespace ACCManager.Controls
                 plot.AddSignalXY(splines, tyrePressures[i], label: Enum.GetNames(typeof(Wheel))[i]);
             }
 
-            double padding = 0.2;
+            double padding = 0.1;
             double defaultMinPressure = 27, defaultMaxPressure = 28;
             if (minPressure > defaultMinPressure && maxPressure < defaultMaxPressure)
             {
