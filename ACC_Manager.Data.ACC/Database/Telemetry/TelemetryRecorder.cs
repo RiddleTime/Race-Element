@@ -93,7 +93,13 @@ namespace ACCManager.Data.ACC.Database.Telemetry
 
                     if (_pagePhysics.BrakeBias > 0)
                     { // prevent telemetry point recording when in pits or game paused)
-                        if (!_lapData.Any() || _lapData.Last().Value.SplinePosition < _pageGraphics.NormalizedCarPosition)
+
+                        bool isLapDataEmpty = !_lapData.Any();
+                        bool isPointFurther = false;
+                        if (!isLapDataEmpty)
+                            isPointFurther = _lapData.Last().Value.SplinePosition < _pageGraphics.NormalizedCarPosition;
+
+                        if (isLapDataEmpty || isPointFurther)
                             _lapData.Add(ticks, new TelemetryPoint()
                             {
                                 SplinePosition = _pageGraphics.NormalizedCarPosition,

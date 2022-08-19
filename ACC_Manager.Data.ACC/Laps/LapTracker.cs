@@ -182,7 +182,10 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                             if (CurrentLap.Sector1 != -1)
                             {
                                 lock (Laps)
-                                    Laps.Add(CurrentLap.Index, CurrentLap);
+                                {
+                                    if (!Laps.ContainsKey(CurrentLap.Index))
+                                        Laps.Add(CurrentLap.Index, CurrentLap);
+                                }
                             }
 
                             CurrentLap = new DbLapData() { Index = pageGraphics.CompletedLaps + 1 };
