@@ -23,7 +23,7 @@ namespace ACC_Manager.Util.Settings
         {
             var settings = new AccManagerSettingsJson()
             {
-                TelemetryRecordDetailed = false,
+                TelemetryRecordDetailed = true,
             };
 
             return settings;
