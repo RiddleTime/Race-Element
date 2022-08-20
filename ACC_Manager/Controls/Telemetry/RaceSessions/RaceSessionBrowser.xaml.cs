@@ -1,5 +1,6 @@
 ﻿using ACC_Manager.Util.SystemExtensions;
 using ACCManager.Broadcast;
+using ACCManager.Broadcast.Structs;
 using ACCManager.Controls.Telemetry.RaceSessions;
 using ACCManager.Data;
 using ACCManager.Data.ACC.Database;
@@ -24,7 +25,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using static ACCManager.Data.ACC.Tracks.TrackNames;
-using static ACCManager.Data.SetupConverter;
+using TrackData = ACCManager.Data.ACC.Tracks.TrackNames.TrackData;
 
 namespace ACCManager.Controls
 {
@@ -389,10 +390,13 @@ namespace ACCManager.Controls
 
             Plot plot = wpfPlot.Plot;
             plot.SetAxisLimitsY(-5, 105);
+
             var gasPlot = plot.AddSignalXY(splines, gasDatas, color: System.Drawing.Color.Green, label: "Throttle");
-            gasPlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(110, 0, 255, 0), lowerColor: System.Drawing.Color.Transparent);
+            gasPlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(95, 0, 255, 0), lowerColor: System.Drawing.Color.Transparent);
+
             var brakePlot = plot.AddSignalXY(splines, brakeDatas, color: System.Drawing.Color.Red, label: "Brake");
-            brakePlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(110, 255, 0, 0), lowerColor: System.Drawing.Color.Transparent);
+            brakePlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(140, 255, 0, 0), lowerColor: System.Drawing.Color.Transparent);
+
             var steeringPlot = plot.AddSignalXY(splines, steeringDatas, color: System.Drawing.Color.WhiteSmoke, label: "Steering");
             steeringPlot.YAxisIndex = 1;
 
@@ -401,7 +405,7 @@ namespace ACCManager.Controls
             plot.SetOuterViewLimits(0, trackData.TrackLength, -1.05, 1.05, yAxisIndex: 1);
 
             plot.XLabel("Distance (meters)");
-            plot.YLabel("Percentage");
+            plot.YLabel("Inputs");
 
             plot.YAxis2.Ticks(true);
             plot.YAxis2.Label("Steering");
@@ -435,6 +439,8 @@ namespace ACCManager.Controls
                 wpfPlot.MinHeight = outerGrid.MinHeight;
             };
 
+            TrackData trackData = TrackNames.Tracks.Values.First(x => x.Guid == GetSelectedTrack());
+
             Plot plot = wpfPlot.Plot;
             plot.Palette = WheelPositionPallete;
             plot.Benchmark(false);
@@ -453,12 +459,13 @@ namespace ACCManager.Controls
                 minTemp.ClipMax(tyreTemps[i].Min());
                 maxTemp.ClipMin(tyreTemps[i].Max());
 
-                plot.AddSignalXY(splines, tyreTemps[i], label: Enum.GetNames(typeof(Wheel))[i]);
+                plot.AddSignalXY(splines, tyreTemps[i], label: Enum.GetNames(typeof(SetupConverter.Wheel))[i]);
             }
 
             double padding = 2;
+            plot.SetAxisLimitsX(xMin: 0, xMax: trackData.TrackLength);
             plot.SetAxisLimitsY(minTemp - padding, maxTemp + padding);
-            plot.SetOuterViewLimits(0, 1, minTemp - padding, maxTemp + padding);
+            plot.SetOuterViewLimits(0, trackData.TrackLength, minTemp - padding, maxTemp + padding);
             plot.XLabel("Distance (%)");
             plot.YLabel("Temperature (C)");
             SetDefaultPlotStyles(ref plot);
@@ -474,6 +481,8 @@ namespace ACCManager.Controls
             {
                 Cursor = Cursors.Hand,
             };
+
+            TrackData trackData = TrackNames.Tracks.Values.First(x => x.Guid == GetSelectedTrack());
 
             SetDefaultWpfPlotConfiguration(ref wpfPlot);
 
@@ -507,7 +516,7 @@ namespace ACCManager.Controls
                 minPressure.ClipMax(tyrePressures[i].Min());
                 maxPressure.ClipMin(tyrePressures[i].Max());
 
-                plot.AddSignalXY(splines, tyrePressures[i], label: Enum.GetNames(typeof(Wheel))[i]);
+                plot.AddSignalXY(splines, tyrePressures[i], label: Enum.GetNames(typeof(SetupConverter.Wheel))[i]);
             }
 
             double padding = 0.1;
@@ -518,8 +527,9 @@ namespace ACCManager.Controls
                 maxPressure.ClipMin(defaultMaxPressure);
             }
 
+            plot.SetAxisLimitsX(xMin: 0, xMax: trackData.TrackLength);
             plot.SetAxisLimitsY(minPressure - padding, maxPressure + padding);
-            plot.SetOuterViewLimits(0, 1, minPressure - padding, maxPressure + padding);
+            plot.SetOuterViewLimits(0, trackData.TrackLength, minPressure - padding, maxPressure + padding);
             plot.XLabel("Distance (%)");
             plot.YLabel("Pressure (PSI)");
             SetDefaultPlotStyles(ref plot);
@@ -548,6 +558,8 @@ namespace ACCManager.Controls
                 wpfPlot.MinHeight = outerGrid.MinHeight;
             };
 
+            TrackData trackData = TrackNames.Tracks.Values.First(x => x.Guid == GetSelectedTrack());
+
             Plot plot = wpfPlot.Plot;
             plot.Palette = WheelPositionPallete;
             plot.Benchmark(false);
@@ -556,7 +568,7 @@ namespace ACCManager.Controls
             double minTemp = int.MaxValue;
             double maxTemp = int.MinValue;
 
-            double[] splines = dict.Select(x => (double)x.Value.SplinePosition).ToArray();
+            double[] splines = dict.Select(x => (double)x.Value.SplinePosition * trackData.TrackLength).ToArray();
             if (splines.Length == 0)
                 return wpfPlot;
 
@@ -567,13 +579,14 @@ namespace ACCManager.Controls
                 minTemp.ClipMax(brakeTemps[i].Min());
                 maxTemp.ClipMin(brakeTemps[i].Max());
 
-                plot.AddSignalXY(splines, brakeTemps[i], label: Enum.GetNames(typeof(Wheel))[i]);
+                plot.AddSignalXY(splines, brakeTemps[i], label: Enum.GetNames(typeof(SetupConverter.Wheel))[i]);
             }
 
 
             double padding = 10;
+            plot.SetAxisLimitsX(xMin: 0, xMax: trackData.TrackLength);
             plot.SetAxisLimitsY(minTemp - padding, maxTemp + padding);
-            plot.SetOuterViewLimits(0, 1, minTemp - padding, maxTemp + padding);
+            plot.SetOuterViewLimits(0, trackData.TrackLength, minTemp - padding, maxTemp + padding);
             plot.XLabel("Distance (meters)");
             plot.YLabel("Temperature (C)");
 

@@ -354,8 +354,6 @@ namespace ACCManager.Controls
 
         private void FillTreeViewTags(List<LiveryTreeCar> allLiveries)
         {
-            //LiveryTag tag = LiveryTagging.CreateNewTag("oNiD");
-
             List<TreeViewItem> tagTreeItems = new List<TreeViewItem>();
 
             List<LiveryTreeCar> liveriesWithTags = new List<LiveryTreeCar>();
@@ -455,6 +453,9 @@ namespace ACCManager.Controls
                     Width = liveriesTreeViewTeams.Width - 5,
                     Background = new SolidColorBrush(Colors.OrangeRed)
                 };
+                if(liveriesWithoutTags.Count == 0)
+                    tagHeader.Background = new SolidColorBrush(Colors.DarkOliveGreen);
+
                 TreeViewItem tagItem = new TreeViewItem()
                 {
                     Header = tagHeader,
