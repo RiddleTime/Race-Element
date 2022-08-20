@@ -53,11 +53,17 @@ namespace ACCManager.Data.ACC.Tracker
         {
             BroadcastConfig.Root config = BroadcastConfig.GetConfiguration();
             _client = new ACCUdpRemoteClient(IPAddress.Loopback.MapToIPv4().ToString()/* "127.0.0.1"*/, config.UpdListenerPort, string.Empty, config.ConnectionPassword, config.CommandPassword, 100);
-            _client.MessageHandler.OnRealtimeUpdate += (s, realTimeUpdate) =>
+
+            AddEventListeners(ref _client);
+        }
+
+        private void AddEventListeners(ref ACCUdpRemoteClient client)
+        {
+            client.MessageHandler.OnRealtimeUpdate += (s, realTimeUpdate) =>
             {
                 OnRealTimeUpdate?.Invoke(this, realTimeUpdate);
             };
-            _client.MessageHandler.OnConnectionStateChanged += (int connectionId, bool connectionSuccess, bool isReadonly, string error) =>
+            client.MessageHandler.OnConnectionStateChanged += (int connectionId, bool connectionSuccess, bool isReadonly, string error) =>
             {
                 ConnectionState state = new ConnectionState()
                 {
@@ -72,19 +78,19 @@ namespace ACCManager.Data.ACC.Tracker
                 OnConnectionStateChanged?.Invoke(this, state);
             };
 
-            _client.MessageHandler.OnEntrylistUpdate += (s, carInfo) =>
+            client.MessageHandler.OnEntrylistUpdate += (s, carInfo) =>
             {
                 OnEntryListUpdate?.Invoke(this, carInfo);
             };
 
-            _client.MessageHandler.OnBroadcastingEvent += (s, broadcastEvent) =>
+            client.MessageHandler.OnBroadcastingEvent += (s, broadcastEvent) =>
             {
                 OnBroadcastEvent?.Invoke(this, broadcastEvent);
             };
 
-            _client.MessageHandler.OnTrackDataUpdate += (s, trackData) => OnTrackDataUpdate?.Invoke(this, trackData);
+            client.MessageHandler.OnTrackDataUpdate += (s, trackData) => OnTrackDataUpdate?.Invoke(this, trackData);
 
-            _client.MessageHandler.OnRealtimeCarUpdate += (s, e) =>
+            client.MessageHandler.OnRealtimeCarUpdate += (s, e) =>
             {
                 OnRealTimeCarUpdate?.Invoke(this, e);
 

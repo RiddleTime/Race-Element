@@ -12,11 +12,9 @@ using ACCManager.Data.ACC.Tracks;
 using ACCManager.Util;
 using LiteDB;
 using ScottPlot;
-using ScottPlot.Plottable;
 using ScottPlot.Styles;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -398,8 +396,7 @@ namespace ACCManager.Controls
             var steeringPlot = plot.AddSignalXY(splines, steeringDatas, color: System.Drawing.Color.WhiteSmoke, label: "Steering");
             steeringPlot.YAxisIndex = 1;
 
-
-            plot.SetAxisLimits(xMin: 0, xMax: gasDatas.Length, yMin: -1.05, yMax: 1.05, yAxisIndex: 1);
+            plot.SetAxisLimits(xMin: 0, xMax: trackData.TrackLength, yMin: -1.05, yMax: 1.05, yAxisIndex: 1);
             plot.SetOuterViewLimits(0, trackData.TrackLength, -3, 103);
             plot.SetOuterViewLimits(0, trackData.TrackLength, -1.05, 1.05, yAxisIndex: 1);
 
