@@ -15,11 +15,33 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition/>
+            <RowDefinition Height="400"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
         <TabControl Grid.Column="0" TabStripPlacement="Top">
+           
+            <TabItem Height="40">
+                <TabItem.Header>
+                    <Grid x:Name="gridTabHeaderLocalSession">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon
+                            Grid.Column="0"
+                            Kind="Files"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="32"
+                        Foreground="White"    
+                        />
+                        <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Local</TextBlock>
+                    </Grid>
+                </TabItem.Header>
+                <ListView x:Name="localRaceWeekends" ScrollViewer.VerticalScrollBarVisibility="Auto" />
+            </TabItem>
+
             <TabItem x:Name="tabCurrentWeekend" Height="40">
                 <TabItem.Header>
                     <Grid>
@@ -51,26 +73,6 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Height="40">
-                <TabItem.Header>
-                    <Grid x:Name="gridTabHeaderLocalSession">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <materialDesign:PackIcon
-                            Grid.Column="0"
-                            Kind="Files"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            Height="32"
-                        Foreground="White"    
-                        />
-                        <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Local</TextBlock>
-                    </Grid>
-                </TabItem.Header>
-                <ListView x:Name="localRaceWeekends" ScrollViewer.VerticalScrollBarVisibility="Auto" />
-            </TabItem>
         </TabControl>
 
         <Grid Grid.Column="1">

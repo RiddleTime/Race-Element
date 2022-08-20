@@ -379,7 +379,9 @@ namespace ACCManager.Controls
                 wpfPlot.MinHeight = outerGrid.MinHeight;
             };
 
-            double[] splines = dict.Select(x => (double)x.Value.SplinePosition).ToArray();
+            TrackData trackData = TrackNames.Tracks.Values.First(x => x.Guid == GetSelectedTrack());
+
+            double[] splines = dict.Select(x => (double)x.Value.SplinePosition * trackData.TrackLength).ToArray();
             double[] gasDatas = dict.Select(x => (double)x.Value.InputsData.Gas * 100).ToArray();
             double[] brakeDatas = dict.Select(x => (double)x.Value.InputsData.Brake * 100).ToArray();
             double[] steeringDatas = dict.Select(x => (double)x.Value.InputsData.SteerAngle).ToArray();
@@ -390,18 +392,18 @@ namespace ACCManager.Controls
             Plot plot = wpfPlot.Plot;
             plot.SetAxisLimitsY(-5, 105);
             var gasPlot = plot.AddSignalXY(splines, gasDatas, color: System.Drawing.Color.Green, label: "Throttle");
-            gasPlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(90, 0, 255, 0), lowerColor: System.Drawing.Color.Transparent);
+            gasPlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(110, 0, 255, 0), lowerColor: System.Drawing.Color.Transparent);
             var brakePlot = plot.AddSignalXY(splines, brakeDatas, color: System.Drawing.Color.Red, label: "Brake");
-            brakePlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(90, 255, 0, 0), lowerColor: System.Drawing.Color.Transparent);
+            brakePlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(110, 255, 0, 0), lowerColor: System.Drawing.Color.Transparent);
             var steeringPlot = plot.AddSignalXY(splines, steeringDatas, color: System.Drawing.Color.WhiteSmoke, label: "Steering");
             steeringPlot.YAxisIndex = 1;
 
 
             plot.SetAxisLimits(xMin: 0, xMax: gasDatas.Length, yMin: -1.05, yMax: 1.05, yAxisIndex: 1);
-            plot.SetOuterViewLimits(0, 1, -3, 103);
-            plot.SetOuterViewLimits(0, 1, -1.05, 1.05, yAxisIndex: 1);
+            plot.SetOuterViewLimits(0, trackData.TrackLength, -3, 103);
+            plot.SetOuterViewLimits(0, trackData.TrackLength, -1.05, 1.05, yAxisIndex: 1);
 
-            plot.XLabel("Distance (%)");
+            plot.XLabel("Distance (meters)");
             plot.YLabel("Percentage");
 
             plot.YAxis2.Ticks(true);
@@ -575,7 +577,7 @@ namespace ACCManager.Controls
             double padding = 10;
             plot.SetAxisLimitsY(minTemp - padding, maxTemp + padding);
             plot.SetOuterViewLimits(0, 1, minTemp - padding, maxTemp + padding);
-            plot.XLabel("Distance (%)");
+            plot.XLabel("Distance (meters)");
             plot.YLabel("Temperature (C)");
 
             SetDefaultPlotStyles(ref plot);
@@ -590,7 +592,9 @@ namespace ACCManager.Controls
             plot.YAxis.TickLabelStyle(color: System.Drawing.Color.White);
             plot.XAxis.TickLabelStyle(color: System.Drawing.Color.White);
             plot.YAxis2.TickLabelStyle(color: System.Drawing.Color.White);
-            plot.AxisZoom(1, 1);
+
+            //plot.AxisZoom(1, 1);
+
             plot.Style(DefaultPlotStyle);
             plot.Legend(true);
             plot.YAxis.RulerMode(true);
