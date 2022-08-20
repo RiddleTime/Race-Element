@@ -448,7 +448,7 @@ namespace ACCManager.Controls
             double[][] tyreTemps = new double[4][];
             double minTemp = int.MaxValue;
             double maxTemp = int.MinValue;
-            double[] splines = dict.Select(x => (double)x.Value.SplinePosition).ToArray();
+            double[] splines = dict.Select(x => (double)x.Value.SplinePosition * trackData.TrackLength).ToArray();
             if (splines.Length == 0)
                 return wpfPlot;
 
@@ -466,7 +466,7 @@ namespace ACCManager.Controls
             plot.SetAxisLimitsX(xMin: 0, xMax: trackData.TrackLength);
             plot.SetAxisLimitsY(minTemp - padding, maxTemp + padding);
             plot.SetOuterViewLimits(0, trackData.TrackLength, minTemp - padding, maxTemp + padding);
-            plot.XLabel("Distance (%)");
+            plot.XLabel("Distance (meters)");
             plot.YLabel("Temperature (C)");
             SetDefaultPlotStyles(ref plot);
 
@@ -505,7 +505,7 @@ namespace ACCManager.Controls
             double minPressure = int.MaxValue;
             double maxPressure = int.MinValue;
 
-            double[] splines = dict.Select(x => (double)x.Value.SplinePosition).ToArray();
+            double[] splines = dict.Select(x => (double)x.Value.SplinePosition * trackData.TrackLength).ToArray();
             if (splines.Length == 0)
                 return wpfPlot;
 
@@ -530,7 +530,7 @@ namespace ACCManager.Controls
             plot.SetAxisLimitsX(xMin: 0, xMax: trackData.TrackLength);
             plot.SetAxisLimitsY(minPressure - padding, maxPressure + padding);
             plot.SetOuterViewLimits(0, trackData.TrackLength, minPressure - padding, maxPressure + padding);
-            plot.XLabel("Distance (%)");
+            plot.XLabel("Distance (meters)");
             plot.YLabel("Pressure (PSI)");
             SetDefaultPlotStyles(ref plot);
 
