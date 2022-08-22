@@ -3,6 +3,7 @@ using ACCManager.Broadcast;
 using ACCManager.Broadcast.Structs;
 using ACCManager.Controls.Telemetry.RaceSessions;
 using ACCManager.Data;
+using ACCManager.Data.ACC.Cars;
 using ACCManager.Data.ACC.Database;
 using ACCManager.Data.ACC.Database.GameData;
 using ACCManager.Data.ACC.Database.LapDataDB;
@@ -380,10 +381,13 @@ namespace ACCManager.Controls
 
             TrackData trackData = TrackNames.Tracks.Values.First(x => x.Guid == GetSelectedTrack());
 
+            int fullSteeringLock = SteeringLock.Get(CarDataCollection.GetCarData(CurrentDatabase, GetSelectedCar()).ParseName);
+
+
             double[] splines = dict.Select(x => (double)x.Value.SplinePosition * trackData.TrackLength).ToArray();
             double[] gasDatas = dict.Select(x => (double)x.Value.InputsData.Gas * 100).ToArray();
             double[] brakeDatas = dict.Select(x => (double)x.Value.InputsData.Brake * 100).ToArray();
-            double[] steeringDatas = dict.Select(x => (double)x.Value.InputsData.SteerAngle).ToArray();
+            double[] steeringDatas = dict.Select(x => (double)x.Value.InputsData.SteerAngle * fullSteeringLock / 2).ToArray();
 
             if (splines.Length == 0)
                 return wpfPlot;
@@ -400,15 +404,15 @@ namespace ACCManager.Controls
             var steeringPlot = plot.AddSignalXY(splines, steeringDatas, color: System.Drawing.Color.WhiteSmoke, label: "Steering");
             steeringPlot.YAxisIndex = 1;
 
-            plot.SetAxisLimits(xMin: 0, xMax: trackData.TrackLength, yMin: -1.05, yMax: 1.05, yAxisIndex: 1);
+            plot.SetAxisLimits(xMin: 0, xMax: trackData.TrackLength, yMin: -1.05 * fullSteeringLock / 2, yMax: 1.05 * fullSteeringLock / 2, yAxisIndex: 1);
             plot.SetOuterViewLimits(0, trackData.TrackLength, -3, 103);
-            plot.SetOuterViewLimits(0, trackData.TrackLength, -1.05, 1.05, yAxisIndex: 1);
+            plot.SetOuterViewLimits(0, trackData.TrackLength, -1.05 * fullSteeringLock / 2, 1.05 * fullSteeringLock / 2, yAxisIndex: 1);
 
             plot.XLabel("Distance (meters)");
             plot.YLabel("Inputs");
 
             plot.YAxis2.Ticks(true);
-            plot.YAxis2.Label("Steering");
+            plot.YAxis2.Label("Steering (Degrees)");
 
             plot.Palette = new ScottPlot.Palettes.PolarNight();
 
@@ -604,6 +608,16 @@ namespace ACCManager.Controls
             plot.YAxis2.TickLabelStyle(color: System.Drawing.Color.White);
 
             //plot.AxisZoom(1, 1);
+
+            ScottPlot.Renderable.Legend legend = plot.Legend();
+            legend.FillColor = System.Drawing.Color.FromArgb(160, 0, 0, 0);
+            legend.FontColor = System.Drawing.Color.White;
+            legend.OutlineColor = System.Drawing.Color.FromArgb(30, 255, 255, 255);
+            legend.ShadowColor = System.Drawing.Color.FromArgb(30, 255, 0, 0);
+            legend.FontSize = 13;
+            legend.FontBold = true;
+            legend.IsDetached = true;
+
 
             plot.Style(DefaultPlotStyle);
             plot.Legend(true);

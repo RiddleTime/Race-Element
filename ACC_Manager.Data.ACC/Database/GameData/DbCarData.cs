@@ -29,7 +29,7 @@ namespace ACCManager.Data.ACC.Database.GameData
             }
         }
 
-        private static ILiteCollection<DbCarData> GetCollection(ILiteDatabase db)
+        public static ILiteCollection<DbCarData> GetCollection(ILiteDatabase db)
         {
             return db.GetCollection<DbCarData>();
         }
