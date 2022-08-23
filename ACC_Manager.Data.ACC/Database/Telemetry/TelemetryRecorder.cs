@@ -40,7 +40,6 @@ namespace ACCManager.Data.ACC.Database.Telemetry
 
         private void OnSessionFinished(object sender, SessionData.DbRaceSession e)
         {
-            LogWriter.WriteToLog("TelemetryRecorder: Stop()");
             Stop();
         }
 
@@ -140,6 +139,7 @@ namespace ACCManager.Data.ACC.Database.Telemetry
 
         public void Stop()
         {
+            LogWriter.WriteToLog("TelemetryRecorder: Stop()");
             _isRunning = false;
             Thread.Sleep(IntervalMillis * 3);
             PagePhysicsTracker.Instance.Tracker -= OnPagePhysicsUpdated;
@@ -148,6 +148,4 @@ namespace ACCManager.Data.ACC.Database.Telemetry
             RaceSessionTracker.Instance.OnSessionFinished -= OnSessionFinished;
         }
     }
-
-
 }
