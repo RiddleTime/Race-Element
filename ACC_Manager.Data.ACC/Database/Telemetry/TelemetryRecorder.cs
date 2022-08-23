@@ -2,6 +2,7 @@
 using ACCManager.Data.ACC.Session;
 using ACCManager.Data.ACC.Tracker;
 using ACCManager.Data.ACC.Tracker.Laps;
+using ACCManager.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -32,7 +33,6 @@ namespace ACCManager.Data.ACC.Database.Telemetry
             LapTracker.Instance.LapFinished += OnLapFinished;
             RaceSessionTracker.Instance.OnSessionFinished += OnSessionFinished;
 
-
             var sharedMem = new ACCSharedMemory();
             _pageGraphics = sharedMem.ReadGraphicsPageFile();
             _pagePhysics = sharedMem.ReadPhysicsPageFile();
@@ -40,6 +40,7 @@ namespace ACCManager.Data.ACC.Database.Telemetry
 
         private void OnSessionFinished(object sender, SessionData.DbRaceSession e)
         {
+            LogWriter.WriteToLog("TelemetryRecorder: Stop()");
             Stop();
         }
 
@@ -47,6 +48,8 @@ namespace ACCManager.Data.ACC.Database.Telemetry
         {
             if (_isRunning)
             {
+                LogWriter.WriteToLog("TelemetryRecorder: OnLapFinished()");
+
                 DbLapTelemetry lapTelemetry = new DbLapTelemetry()
                 {
                     Id = Guid.NewGuid(),
@@ -60,6 +63,7 @@ namespace ACCManager.Data.ACC.Database.Telemetry
                 var existing = collection.Find(x => x.LapId == e.Id);
                 if (!existing.Any())
                 {
+                    LogWriter.WriteToLog("TelemetryRecorder: Inserting LapTelemetry");
                     RaceWeekendDatabase.Database.BeginTrans();
                     collection.Insert(lapTelemetry);
                     RaceWeekendDatabase.Database.Commit();
@@ -72,57 +76,66 @@ namespace ACCManager.Data.ACC.Database.Telemetry
 
         public void Record()
         {
-            if (!new AccManagerSettings().Get().TelemetryRecordDetailed)
-                return;
-
-            _isRunning = true;
-            ThreadPool.QueueUserWorkItem(x =>
+            try
             {
-                var interval = new TimeSpan(0, 0, 0, 0, IntervalMillis);
-                var nextTick = DateTime.Now + interval;
-                while (_isRunning)
+                LogWriter.WriteToLog("TelemetryRecorder: Record()");
+
+                if (!new AccManagerSettings().Get().TelemetryRecordDetailed)
+                    return;
+
+                _isRunning = true;
+                ThreadPool.QueueUserWorkItem(x =>
                 {
-                    try
+                    var interval = new TimeSpan(0, 0, 0, 0, IntervalMillis);
+                    var nextTick = DateTime.Now + interval;
+                    while (_isRunning)
                     {
-                        while (DateTime.Now < nextTick)
-                            Thread.Sleep(nextTick - DateTime.Now);
+                        try
+                        {
+                            while (DateTime.Now < nextTick)
+                                Thread.Sleep(nextTick - DateTime.Now);
+                        }
+                        catch { }
+                        nextTick += interval;
+                        long ticks = DateTime.Now.Ticks;
+
+                        if (_pagePhysics.BrakeBias > 0)
+                        { // prevent telemetry point recording when in pits or game paused)
+
+                            bool isLapDataEmpty = !_lapData.Any();
+                            bool isPointFurther = false;
+                            if (!isLapDataEmpty)
+                                isPointFurther = _lapData.Last().Value.SplinePosition < _pageGraphics.NormalizedCarPosition;
+
+                            if (isLapDataEmpty || isPointFurther)
+                                _lapData.Add(ticks, new TelemetryPoint()
+                                {
+                                    SplinePosition = _pageGraphics.NormalizedCarPosition,
+                                    InputsData = new InputsData()
+                                    {
+                                        Gas = _pagePhysics.Gas,
+                                        Brake = _pagePhysics.Brake,
+                                        Gear = _pagePhysics.Gear,
+                                        SteerAngle = _pagePhysics.SteerAngle
+                                    },
+                                    TyreData = new TyreData()
+                                    {
+                                        TyreCoreTemperature = _pagePhysics.TyreCoreTemperature,
+                                        TyrePressure = _pagePhysics.WheelPressure,
+                                    },
+                                    BrakeData = new BrakeData()
+                                    {
+                                        BrakeTemperature = _pagePhysics.BrakeTemperature,
+                                    }
+                                });
+                        }
                     }
-                    catch { }
-                    nextTick += interval;
-                    long ticks = DateTime.Now.Ticks;
-
-                    if (_pagePhysics.BrakeBias > 0)
-                    { // prevent telemetry point recording when in pits or game paused)
-
-                        bool isLapDataEmpty = !_lapData.Any();
-                        bool isPointFurther = false;
-                        if (!isLapDataEmpty)
-                            isPointFurther = _lapData.Last().Value.SplinePosition < _pageGraphics.NormalizedCarPosition;
-
-                        if (isLapDataEmpty || isPointFurther)
-                            _lapData.Add(ticks, new TelemetryPoint()
-                            {
-                                SplinePosition = _pageGraphics.NormalizedCarPosition,
-                                InputsData = new InputsData()
-                                {
-                                    Gas = _pagePhysics.Gas,
-                                    Brake = _pagePhysics.Brake,
-                                    Gear = _pagePhysics.Gear,
-                                    SteerAngle = _pagePhysics.SteerAngle
-                                },
-                                TyreData = new TyreData()
-                                {
-                                    TyreCoreTemperature = _pagePhysics.TyreCoreTemperature,
-                                    TyrePressure = _pagePhysics.WheelPressure,
-                                },
-                                BrakeData = new BrakeData()
-                                {
-                                    BrakeTemperature = _pagePhysics.BrakeTemperature,
-                                }
-                            });
-                    }
-                }
-            });
+                });
+            }
+            catch (Exception ex)
+            {
+                LogWriter.WriteToLog(ex);
+            }
         }
 
         public void Stop()
@@ -131,6 +144,8 @@ namespace ACCManager.Data.ACC.Database.Telemetry
             Thread.Sleep(IntervalMillis * 3);
             PagePhysicsTracker.Instance.Tracker -= OnPagePhysicsUpdated;
             PageGraphicsTracker.Instance.Tracker -= OnPageGraphicsUpdated;
+            LapTracker.Instance.LapFinished -= OnLapFinished;
+            RaceSessionTracker.Instance.OnSessionFinished -= OnSessionFinished;
         }
     }
 

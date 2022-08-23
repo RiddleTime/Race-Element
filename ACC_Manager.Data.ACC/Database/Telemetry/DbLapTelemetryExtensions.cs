@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACCManager.Util;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,11 +15,18 @@ namespace ACCManager.Data.ACC.Database.Telemetry
         {
             Dictionary<long, TelemetryPoint> Data = new Dictionary<long, TelemetryPoint>();
 
-            using (var ms = new MemoryStream(dbLapTelemetry.LapData))
+            try
             {
-                var formatter = new BinaryFormatter();
-                Data = (Dictionary<long, TelemetryPoint>)formatter.Deserialize(ms);
-                ms.Close();
+                using (var ms = new MemoryStream(dbLapTelemetry.LapData))
+                {
+                    var formatter = new BinaryFormatter();
+                    Data = (Dictionary<long, TelemetryPoint>)formatter.Deserialize(ms);
+                    ms.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogWriter.WriteToLog(ex);
             }
 
             return Data;
@@ -26,15 +34,22 @@ namespace ACCManager.Data.ACC.Database.Telemetry
 
         public static byte[] SerializeLapData(this Dictionary<long, TelemetryPoint> dbLapTelemetry)
         {
-            byte[] Data;
+            byte[] Data = new byte[0];
 
-            using (var ms = new MemoryStream())
+            try
             {
-                var formatter = new BinaryFormatter();
+                using (var ms = new MemoryStream())
+                {
+                    var formatter = new BinaryFormatter();
 
-                formatter.Serialize(ms, dbLapTelemetry);
-                Data = ms.ToArray();
-                ms.Close();
+                    formatter.Serialize(ms, dbLapTelemetry);
+                    Data = ms.ToArray();
+                    ms.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogWriter.WriteToLog(ex);
             }
 
             return Data;

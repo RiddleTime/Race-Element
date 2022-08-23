@@ -125,6 +125,7 @@ namespace ACCManager.Data.ACC.Session
                     RaceSessionCollection.Delete(CurrentSession);
 
                 OnSessionFinished?.Invoke(this, CurrentSession);
+                Debug.WriteLine("RaceSessionTracker: Finalized Current Session");
             }
 
             CurrentSession = null;
