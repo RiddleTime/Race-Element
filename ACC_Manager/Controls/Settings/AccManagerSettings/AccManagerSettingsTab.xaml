@@ -14,5 +14,12 @@
             <Label VerticalAlignment="Center">Telemetry: Record Extended Data</Label>
         </StackPanel>
 
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+            <Slider x:Name="sliderTelemetryHerz" Width="50" Height="35" VerticalAlignment="Center" Cursor="Hand"
+                    Minimum="20" Maximum="50" Interval="2" TickFrequency="2" TickPlacement="BottomRight" />
+            <Label VerticalAlignment="Center">Telemetry: Extended Data Herz</Label>
+        </StackPanel>
+
     </StackPanel>
 </UserControl>

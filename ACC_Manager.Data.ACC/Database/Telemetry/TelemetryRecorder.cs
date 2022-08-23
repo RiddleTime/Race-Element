@@ -24,9 +24,9 @@ namespace ACCManager.Data.ACC.Database.Telemetry
         private ACCSharedMemory.SPageFileGraphic _pageGraphics;
         private readonly Dictionary<long, TelemetryPoint> _lapData = new Dictionary<long, TelemetryPoint>();
 
-        public TelemetryRecorder(int intervalMillis = 50)
+        public TelemetryRecorder()
         {
-            IntervalMillis = intervalMillis;
+            IntervalMillis = 1000 / new AccManagerSettings().Get().TelemetryDetailedHerz;
 
             PagePhysicsTracker.Instance.Tracker += OnPagePhysicsUpdated;
             PageGraphicsTracker.Instance.Tracker += OnPageGraphicsUpdated;
@@ -47,8 +47,7 @@ namespace ACCManager.Data.ACC.Database.Telemetry
         {
             if (_isRunning)
             {
-                LogWriter.WriteToLog("TelemetryRecorder: OnLapFinished()");
-
+                LogWriter.WriteToLog($"TelemetryRecorder: Recorded {_lapData.Count} data points.");
                 DbLapTelemetry lapTelemetry = new DbLapTelemetry()
                 {
                     Id = Guid.NewGuid(),

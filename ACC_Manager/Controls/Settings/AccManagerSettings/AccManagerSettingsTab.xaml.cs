@@ -31,15 +31,19 @@ namespace ACCManager.Controls
 
             toggleRecordLapTelemetry.IsChecked = _settings.Get().TelemetryRecordDetailed;
 
-            toggleRecordLapTelemetry.Checked += (s, e) => SaveTelemetryRecordDetailed();
-            toggleRecordLapTelemetry.Unchecked += (s, e) => SaveTelemetryRecordDetailed();
+            toggleRecordLapTelemetry.Checked += (s, e) => SaveSettings();
+            toggleRecordLapTelemetry.Unchecked += (s, e) => SaveSettings();
+
+            sliderTelemetryHerz.Value = _settings.Get().TelemetryDetailedHerz;
+            sliderTelemetryHerz.ValueChanged += (s, e) => SaveSettings();
 
         }
 
-        private void SaveTelemetryRecordDetailed()
+        private void SaveSettings()
         {
             var settings = _settings.Get();
             settings.TelemetryRecordDetailed = toggleRecordLapTelemetry.IsChecked.Value;
+            settings.TelemetryDetailedHerz = (int)sliderTelemetryHerz.Value;
             _settings.Save(settings);
         }
     }

@@ -11,6 +11,7 @@ namespace ACC_Manager.Util.Settings
     public class AccManagerSettingsJson : IGenericSettingsJson
     {
         public bool TelemetryRecordDetailed { get; set; }
+        public int TelemetryDetailedHerz { get; set; }
     }
 
     public class AccManagerSettings : AbstractSettingsJson<AccManagerSettingsJson>
@@ -24,6 +25,7 @@ namespace ACC_Manager.Util.Settings
             var settings = new AccManagerSettingsJson()
             {
                 TelemetryRecordDetailed = true,
+                TelemetryDetailedHerz = 20,
             };
 
             return settings;
