@@ -99,8 +99,8 @@
 
                 <ComboBox Grid.Row="0" x:Name="comboBoxMetrics" Width="300"></ComboBox>
 
-                <Grid Grid.Row="1" x:Name="gridMetrics"></Grid>
-
+                <Grid Grid.Row="1" x:Name="gridMetrics">
+                </Grid>
             </Grid>
         </materialDesign:TransitioningContent>
 
