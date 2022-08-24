@@ -28,6 +28,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using static ACCManager.Data.ACC.Tracks.TrackNames;
+using static ACCManager.Data.SetupConverter;
 using TrackData = ACCManager.Data.ACC.Tracks.TrackNames.TrackData;
 
 namespace ACCManager.Controls
@@ -359,13 +360,12 @@ namespace ACCManager.Controls
                 _currentData = telemetry.DeserializeLapData();
                 telemetry = null;
 
-                Dictionary<string, Plotter> plots = new Dictionary<string, Plotter>
-                {
-                    { "Inputs", (g, d) => GetInputPlot(g, d) },
-                    { "Tyre Temperatures", (g, d) => GetTyreTempPlot(g, d) },
-                    { "Tyre Pressures", (g, d) => GetTyrePressurePlot(g, d) },
-                    { "Brake Temperatures", (g, d) => GetBrakeTempsPlot(g, d) }
-                };
+                Dictionary<string, Plotter> plots = new Dictionary<string, Plotter>();
+                plots.Add("Inputs", (g, d) => GetInputPlot(g, d));
+                plots.Add("Tyre Temperatures", (g, d) => GetTyreTempPlot(g, d));
+                plots.Add("Tyre Pressures", (g, d) => GetTyrePressurePlot(g, d));
+                plots.Add("Brake Temperatures", (g, d) => GetBrakeTempsPlot(g, d));
+                plots.Add("Wheel Slip", (g, d) => GetWheelSlipPlot(g, d));
 
                 if (_selectionChangedHandler != null)
                 {
@@ -475,7 +475,7 @@ namespace ACCManager.Controls
             plot.SetOuterViewLimits(0, trackData.TrackLength, -3, 103);
             plot.SetOuterViewLimits(0, trackData.TrackLength, -1.05 * fullSteeringLock / 2, 1.05 * fullSteeringLock / 2, yAxisIndex: 1);
 
-            plot.XLabel("Distance (meters)");
+            plot.XLabel("Meters");
             plot.YLabel("Inputs");
 
             plot.YAxis2.Ticks(true);
@@ -542,8 +542,8 @@ namespace ACCManager.Controls
             plot.SetAxisLimitsX(xMin: 0, xMax: trackData.TrackLength);
             plot.SetAxisLimitsY(minTemp - padding, maxTemp + padding);
             plot.SetOuterViewLimits(0, trackData.TrackLength, minTemp - padding, maxTemp + padding);
-            plot.XLabel("Distance (meters)");
-            plot.YLabel("Temperature (C)");
+            plot.XLabel("Meters");
+            plot.YLabel("Celsius");
             SetDefaultPlotStyles(ref plot);
 
             wpfPlot.RenderRequest();
@@ -609,8 +609,8 @@ namespace ACCManager.Controls
             plot.SetAxisLimitsX(xMin: 0, xMax: trackData.TrackLength);
             plot.SetAxisLimitsY(minPressure - padding, maxPressure + padding);
             plot.SetOuterViewLimits(0, trackData.TrackLength, minPressure - padding, maxPressure + padding);
-            plot.XLabel("Distance (meters)");
-            plot.YLabel("Pressure (PSI)");
+            plot.XLabel("Meters");
+            plot.YLabel("PSI");
             SetDefaultPlotStyles(ref plot);
 
             wpfPlot.RenderRequest();
@@ -665,13 +665,12 @@ namespace ACCManager.Controls
                 plot.AddSignalXY(splines, brakeTemps[i], label: Enum.GetNames(typeof(SetupConverter.Wheel))[i]);
             }
 
-
             double padding = 10;
             plot.SetAxisLimitsX(xMin: 0, xMax: trackData.TrackLength);
             plot.SetAxisLimitsY(minTemp - padding, maxTemp + padding);
             plot.SetOuterViewLimits(0, trackData.TrackLength, minTemp - padding, maxTemp + padding);
-            plot.XLabel("Distance (meters)");
-            plot.YLabel("Temperature (C)");
+            plot.XLabel("Meters");
+            plot.YLabel("Celsius");
 
             SetDefaultPlotStyles(ref plot);
             wpfPlot.RenderRequest();
@@ -679,6 +678,80 @@ namespace ACCManager.Controls
             return wpfPlot;
         }
 
+        internal WpfPlot GetWheelSlipPlot(Grid outerGrid, Dictionary<long, TelemetryPoint> dict)
+        {
+            WpfPlot wpfPlot = new WpfPlot
+            {
+                Cursor = Cursors.Hand,
+            };
+
+            SetDefaultWpfPlotConfiguration(ref wpfPlot);
+
+            wpfPlot.Height = outerGrid.ActualHeight;
+            wpfPlot.MaxHeight = outerGrid.MaxHeight;
+            wpfPlot.MinHeight = outerGrid.MinHeight;
+            outerGrid.SizeChanged += (se, ev) =>
+            {
+                wpfPlot.Height = outerGrid.ActualHeight;
+                wpfPlot.MaxHeight = outerGrid.MaxHeight;
+                wpfPlot.MinHeight = outerGrid.MinHeight;
+            };
+
+            TrackData trackData = TrackNames.Tracks.Values.First(x => x.Guid == GetSelectedTrack());
+
+            Plot plot = wpfPlot.Plot;
+            plot.Palette = WheelPositionPallete;
+            plot.Benchmark(false);
+
+            double[][] wheelSlips = new double[4][];
+            double minTemp = int.MaxValue;
+            double maxTemp = int.MinValue;
+            double[] splines = dict.Select(x => (double)x.Value.SplinePosition * trackData.TrackLength).ToArray();
+
+            if (splines.Length == 0)
+                return wpfPlot;
+
+            if (dict.First().Value.PhysicsData == null || dict.First().Value.PhysicsData.WheelSlip == null)
+                return wpfPlot;
+
+
+            double[] averageWheelSlips = dict.Select(x =>
+            {
+                float[] wheelSlip = x.Value.PhysicsData.WheelSlip;
+
+                float slipRatioFront = (wheelSlip[(int)Wheel.FrontLeft] + wheelSlip[(int)Wheel.FrontRight]) / 2;
+                float slipRatioRear = (wheelSlip[(int)Wheel.RearLeft] + wheelSlip[(int)Wheel.RearRight]) / 2;
+
+                double diff = 0;
+                // understeer
+                if (slipRatioFront > slipRatioRear)
+                    diff = slipRatioFront - slipRatioRear;
+
+                // oversteer
+                if (slipRatioRear > slipRatioFront)
+                    diff = (slipRatioRear - slipRatioFront) * -1;
+
+                return diff;
+            }).ToArray();
+
+            minTemp = averageWheelSlips.Min();
+            maxTemp = averageWheelSlips.Max();
+
+            plot.AddSignalXY(splines, averageWheelSlips, label: "US-OS");
+            textBlockMetricInfo.Text += $"Understeer is a positive value, Oversteer is a negative value.";
+
+            double padding = 2;
+            plot.SetAxisLimitsX(xMin: 0, xMax: trackData.TrackLength);
+            plot.SetAxisLimitsY(minTemp - padding, maxTemp + padding);
+            plot.SetOuterViewLimits(0, trackData.TrackLength, minTemp - padding, maxTemp + padding);
+            plot.XLabel("Meters");
+            plot.YLabel("Slip Angle");
+            SetDefaultPlotStyles(ref plot);
+
+            wpfPlot.RenderRequest();
+
+            return wpfPlot;
+        }
 
         private void SetDefaultPlotStyles(ref Plot plot)
         {

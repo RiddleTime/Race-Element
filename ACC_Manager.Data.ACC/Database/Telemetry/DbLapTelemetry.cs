@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.Data.ACC.Database.Telemetry
 {
@@ -23,6 +24,7 @@ namespace ACCManager.Data.ACC.Database.Telemetry
         public InputsData InputsData { get; set; }
         public TyreData TyreData { get; set; }
         public BrakeData BrakeData { get; set; }
+        public PhysicsData PhysicsData { get; set; }
     }
 
     [Serializable]
@@ -45,6 +47,13 @@ namespace ACCManager.Data.ACC.Database.Telemetry
     public class BrakeData
     {
         public float[] BrakeTemperature { get; set; }
+    }
+
+    [Serializable]
+    public class PhysicsData
+    {
+        public float[] WheelSlip { get; set; }
+        public float Speed { get; set; }
     }
 
     public class LapTelemetryCollection

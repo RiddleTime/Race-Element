@@ -129,6 +129,11 @@ namespace ACCManager.Data.ACC.Database.Telemetry
                                     BrakeData = new BrakeData()
                                     {
                                         BrakeTemperature = _pagePhysics.BrakeTemperature,
+                                    },
+                                    PhysicsData = new PhysicsData()
+                                    {
+                                        WheelSlip = _pagePhysics.WheelSlip,
+                                        Speed = _pagePhysics.SpeedKmh
                                     }
                                 });
                         }
