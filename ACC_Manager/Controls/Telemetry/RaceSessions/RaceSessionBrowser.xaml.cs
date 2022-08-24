@@ -327,8 +327,21 @@ namespace ACCManager.Controls
             return grid;
         }
 
+
+        delegate WpfPlot Plotter(Grid g, DbLapTelemetry telemetry, Dictionary<long, TelemetryPoint> dictio);
+
+        SelectionChangedEventHandler selectionChangedHandler;
+
         private void CreateCharts(Guid lapId)
         {
+            comboBoxMetrics.Items.Clear();
+            gridMetrics.Children.Clear();
+            ThreadPool.QueueUserWorkItem(x =>
+            {
+                Thread.Sleep(2000);
+                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
+            });
+
             DbLapTelemetry telemetry = LapTelemetryCollection.GetForLap(CurrentDatabase.GetCollection<DbLapTelemetry>(), lapId);
             if (telemetry == null)
             {
@@ -338,26 +351,52 @@ namespace ACCManager.Controls
             {
                 transitionContentPlots.Visibility = Visibility.Visible;
 
+
+
                 Dictionary<long, TelemetryPoint> dict = telemetry.DeserializeLapData();
 
-                Grid inputsTabGrid = new Grid();
-                tabItemInputs.Content = inputsTabGrid;
-                inputsTabGrid.Children.Add(GetInputPlot(inputsTabGrid, telemetry, dict));
 
-                Grid tyreTabGrid = new Grid();
-                tabItemTyreTemps.Content = tyreTabGrid;
-                tyreTabGrid.Children.Add(GetTyreTempPlot(tyreTabGrid, telemetry, dict));
+                Dictionary<string, Plotter> plots = new Dictionary<string, Plotter>
+                {
+                    { "Inputs", (g, t, d) => GetInputPlot(g, t, d) },
+                    { "Tyre Temperatures", (g, t, d) => GetTyreTempPlot(g, t, d) },
+                    { "Tyre Pressures", (g, t, d) => GetTyrePressurePlot(g, t, d) },
+                    { "Brake Temperatures", (g, t, d) => GetBrakeTempsPlot(g, t, d) }
+                };
 
-                Grid tyrePressureGrid = new Grid();
-                tabItemTyrePressures.Content = tyrePressureGrid;
-                tyrePressureGrid.Children.Add(GetTyrePressurePlot(tyrePressureGrid, telemetry, dict));
+                comboBoxMetrics.Items.Clear();
+                if (selectionChangedHandler != null)
+                    comboBoxMetrics.SelectionChanged -= selectionChangedHandler;
+                selectionChangedHandler = new SelectionChangedEventHandler((s, e) =>
+                {
+                    if (comboBoxMetrics.SelectedItem == null)
+                        return;
 
-                Grid brakeTempsGrid = new Grid();
-                tabItemBrakeTemps.Content = brakeTempsGrid;
-                brakeTempsGrid.Children.Add(GetBrakeTempsPlot(brakeTempsGrid, telemetry, dict));
+                    gridMetrics.Children.Clear();
+                    Plotter toPlot = (Plotter)(comboBoxMetrics.SelectedItem as ComboBoxItem).DataContext;
+                    gridMetrics.Children.Add(toPlot(gridMetrics, telemetry, dict));
+
+                    ThreadPool.QueueUserWorkItem(x =>
+                    {
+                        Thread.Sleep(2000);
+                        GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
+                    });
+                });
+                comboBoxMetrics.SelectionChanged += selectionChangedHandler;
+
+                foreach (var plot in plots)
+                {
+                    ComboBoxItem boxItem = new ComboBoxItem()
+                    {
+                        Content = plot.Key,
+                        DataContext = plot.Value
+                    };
+                    comboBoxMetrics.Items.Add(boxItem);
+                }
+
+                if (comboBoxMetrics.Items.Count > 0)
+                    comboBoxMetrics.SelectedIndex = 0;
             }
-
-            ThreadPool.QueueUserWorkItem(x => GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true));
         }
 
         internal WpfPlot GetInputPlot(Grid outerGrid, DbLapTelemetry telemetry, Dictionary<long, TelemetryPoint> dict)

@@ -20,7 +20,7 @@
         </Grid.RowDefinitions>
 
         <TabControl Grid.Column="0" TabStripPlacement="Top">
-           
+
             <TabItem Height="40">
                 <TabItem.Header>
                     <Grid x:Name="gridTabHeaderLocalSession">
@@ -91,28 +91,16 @@
             </materialDesign:TransitioningContent.OpeningEffects>
 
             <Grid Grid.ColumnSpan="2" VerticalAlignment="Stretch" Margin="3">
-                <TabControl x:Name="tabControlPlots" TabStripPlacement="Top">
-                    <TabItem x:Name="tabItemInputs" Height="40">
-                        <TabItem.Header>
-                            <TextBlock Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Foreground="White"> Inputs</TextBlock>
-                        </TabItem.Header>
-                    </TabItem>
-                    <TabItem x:Name="tabItemTyrePressures" Height="40">
-                        <TabItem.Header>
-                            <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Foreground="White"> Pressures</TextBlock>
-                        </TabItem.Header>
-                    </TabItem>
-                    <TabItem x:Name="tabItemTyreTemps" Height="40">
-                        <TabItem.Header>
-                            <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Foreground="White"> Tyre Temps</TextBlock>
-                        </TabItem.Header>
-                    </TabItem>
-                    <TabItem x:Name="tabItemBrakeTemps" Height="40">
-                        <TabItem.Header>
-                            <TextBlock  Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"  Foreground="White"> Brake Temps</TextBlock>
-                        </TabItem.Header>
-                    </TabItem>
-                </TabControl>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="0"/>
+                </Grid.RowDefinitions>
+
+                <ComboBox Grid.Row="0" x:Name="comboBoxMetrics" Width="300"></ComboBox>
+
+                <Grid Grid.Row="1" x:Name="gridMetrics"></Grid>
+
             </Grid>
         </materialDesign:TransitioningContent>
 
