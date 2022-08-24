@@ -90,7 +90,9 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                         lock (Laps)
                             if (Laps.Count != 0)
                             {
-                                DbLapData lastData = Laps[CurrentLap.Index - 1];
+                                if (!Laps.TryGetValue(CurrentLap.Index - 1, out DbLapData lastData))
+                                    return;
+
                                 if (_lastLapInfo.LaptimeMS == lastData.Time)
                                 {
                                     if (_lastLapInfo.Splits[2].HasValue)
@@ -100,9 +102,6 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                                             Laps[CurrentLap.Index - 1].Sector3 = _lastLapInfo.Splits[2].Value;
                                             Laps[CurrentLap.Index - 1].IsValid = !_lastLapInfo.IsInvalid;
                                             Laps[CurrentLap.Index - 1].LapType = _lastLapInfo.Type;
-
-
-
 
                                             if (RaceSessionTracker.Instance.CurrentSession != null)
                                             {

@@ -66,6 +66,10 @@ namespace ACCManager.Data.ACC.Database.Telemetry
                     collection.Insert(lapTelemetry);
                     RaceWeekendDatabase.Database.Commit();
                 }
+                else
+                {
+                    LogWriter.WriteToLog($"TelemetryRecorder: LapTelemetry already exists for lap id {e.Id}");
+                }
             }
         }
 
@@ -140,8 +144,8 @@ namespace ACCManager.Data.ACC.Database.Telemetry
         public void Stop()
         {
             LogWriter.WriteToLog("TelemetryRecorder: Stop()");
-            _isRunning = false;
             Thread.Sleep(IntervalMillis * 3);
+            _isRunning = false;
             PagePhysicsTracker.Instance.Tracker -= OnPagePhysicsUpdated;
             PageGraphicsTracker.Instance.Tracker -= OnPageGraphicsUpdated;
             LapTracker.Instance.LapFinished -= OnLapFinished;
