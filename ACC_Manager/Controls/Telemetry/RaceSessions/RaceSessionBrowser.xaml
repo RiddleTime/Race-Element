@@ -85,7 +85,8 @@
             <Grid Grid.Row="1" x:Name="gridSessionLaps"></Grid>
         </Grid>
 
-        <materialDesign:TransitioningContent x:Name="transitionContentPlots" Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="2"  Visibility="Collapsed">
+        <materialDesign:TransitioningContent x:Name="transitionContentPlots" Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="2" Visibility="Collapsed"
+                                             BorderThickness="0,1,0,0" BorderBrush="#99FF4500" Margin="0,2,0,0">
             <materialDesign:TransitioningContent.OpeningEffects>
                 <materialDesign:TransitionEffect Kind="FadeIn"/>
             </materialDesign:TransitioningContent.OpeningEffects>
@@ -97,9 +98,16 @@
                     <RowDefinition Height="0"/>
                 </Grid.RowDefinitions>
 
-                <ComboBox Grid.Row="0" x:Name="comboBoxMetrics" Width="300"></ComboBox>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
 
-                <Grid Grid.Row="1" x:Name="gridMetrics">
+                <ComboBox Grid.Row="0" Grid.Column="0" x:Name="comboBoxMetrics" HorizontalAlignment="Left" Width="200"
+                          FontWeight="Bold" FontSize="14" HorizontalContentAlignment="Center"></ComboBox>
+                <TextBlock Grid.Row="0" Grid.Column="1" x:Name="textBlockMetricInfo" Margin="10,0,0,0" VerticalAlignment="Center"></TextBlock>
+
+                <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="gridMetrics">
                 </Grid>
             </Grid>
         </materialDesign:TransitioningContent>

@@ -14,6 +14,7 @@ using ACCManager.Data.ACC.Tracks;
 using ACCManager.Util;
 using LiteDB;
 using ScottPlot;
+using ScottPlot.Drawing.Colormaps;
 using ScottPlot.Styles;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,8 @@ namespace ACCManager.Controls
 
         private readonly IStyle DefaultPlotStyle = ScottPlot.Style.Black;
         private readonly IPalette WheelPositionPallete = Palette.OneHalfDark;
+
+        private int previousTelemetryComboSelection = -1;
 
         public RaceSessionBrowser()
         {
@@ -338,6 +341,7 @@ namespace ACCManager.Controls
         {
             comboBoxMetrics.Items.Clear();
             gridMetrics.Children.Clear();
+            textBlockMetricInfo.Text = String.Empty;
 
             DbLapTelemetry telemetry = LapTelemetryCollection.GetForLap(CurrentDatabase.GetCollection<DbLapTelemetry>(), lapId);
 
@@ -374,7 +378,10 @@ namespace ACCManager.Controls
                     if (comboBoxMetrics.SelectedItem == null)
                         return;
 
+                    previousTelemetryComboSelection = comboBoxMetrics.SelectedIndex;
+
                     gridMetrics.Children.Clear();
+                    textBlockMetricInfo.Text = String.Empty;
 
                     Grid grid = new Grid();
                     gridMetrics.Children.Add(grid);
@@ -400,13 +407,11 @@ namespace ACCManager.Controls
                 }
 
                 if (comboBoxMetrics.Items.Count > 0)
-                    comboBoxMetrics.SelectedIndex = 0;
-
-                ThreadPool.QueueUserWorkItem(x =>
                 {
-                    Thread.Sleep(2000);
-                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
-                });
+                    int toSelect = previousTelemetryComboSelection;
+                    if (toSelect == -1) toSelect = 0;
+                    comboBoxMetrics.SelectedIndex = toSelect;
+                }
             }
         }
 
@@ -435,9 +440,21 @@ namespace ACCManager.Controls
 
 
             double[] splines = dict.Select(x => (double)x.Value.SplinePosition * trackData.TrackLength).ToArray();
-            double[] gasDatas = dict.Select(x => (double)x.Value.InputsData.Gas * 100).ToArray();
-            double[] brakeDatas = dict.Select(x => (double)x.Value.InputsData.Brake * 100).ToArray();
+            if (splines.Length == 0)
+                return wpfPlot;
+
+            var gasses = dict.Select(x => (double)x.Value.InputsData.Gas * 100);
+            double[] gasDatas = gasses.ToArray();
+            double averageGas = gasses.Average();
+
+            var brakes = dict.Select(x => (double)x.Value.InputsData.Brake * 100);
+            double[] brakeDatas = brakes.ToArray();
+            double averageBrakes = brakes.Average();
+
             double[] steeringDatas = dict.Select(x => (double)x.Value.InputsData.SteerAngle * fullSteeringLock / 2).ToArray();
+            string fourSpaces = "".FillEnd(4, ' ');
+            textBlockMetricInfo.Text += $"Av. Throttle: {averageGas:F2}%{fourSpaces}";
+            textBlockMetricInfo.Text += $"Av. Brake: {averageBrakes:F2}%{fourSpaces}";
 
             if (splines.Length == 0)
                 return wpfPlot;
@@ -503,12 +520,17 @@ namespace ACCManager.Controls
             double minTemp = int.MaxValue;
             double maxTemp = int.MinValue;
             double[] splines = dict.Select(x => (double)x.Value.SplinePosition * trackData.TrackLength).ToArray();
+
             if (splines.Length == 0)
                 return wpfPlot;
 
+            string fourSpaces = "".FillEnd(4, ' ');
             for (int i = 0; i < 4; i++)
             {
-                tyreTemps[i] = dict.Select(x => (double)x.Value.TyreData.TyreCoreTemperature[i]).ToArray();
+                var temps = dict.Select(x => (double)x.Value.TyreData.TyreCoreTemperature[i]);
+
+                textBlockMetricInfo.Text += $"Av. {Enum.GetNames(typeof(SetupConverter.Wheel))[i]}: {temps.Average():F2}{fourSpaces}";
+                tyreTemps[i] = temps.ToArray();
 
                 minTemp.ClipMax(tyreTemps[i].Min());
                 maxTemp.ClipMin(tyreTemps[i].Max());
@@ -563,9 +585,12 @@ namespace ACCManager.Controls
             if (splines.Length == 0)
                 return wpfPlot;
 
+            string fourSpaces = "".FillEnd(4, ' ');
             for (int i = 0; i < 4; i++)
             {
-                tyrePressures[i] = dict.Select(x => (double)x.Value.TyreData.TyrePressure[i]).ToArray();
+                var pressures = dict.Select(x => (double)x.Value.TyreData.TyrePressure[i]);
+                textBlockMetricInfo.Text += $"Av. {Enum.GetNames(typeof(SetupConverter.Wheel))[i]}: {pressures.Average():F2}{fourSpaces}";
+                tyrePressures[i] = pressures.ToArray();
 
                 minPressure.ClipMax(tyrePressures[i].Min());
                 maxPressure.ClipMin(tyrePressures[i].Max());
@@ -626,9 +651,13 @@ namespace ACCManager.Controls
             if (splines.Length == 0)
                 return wpfPlot;
 
+
+            string fourSpaces = "".FillEnd(4, ' ');
             for (int i = 0; i < 4; i++)
             {
-                brakeTemps[i] = dict.Select(x => (double)x.Value.BrakeData.BrakeTemperature[i]).ToArray();
+                var temps = dict.Select(x => (double)x.Value.BrakeData.BrakeTemperature[i]);
+                textBlockMetricInfo.Text += $"Av. {Enum.GetNames(typeof(SetupConverter.Wheel))[i]}: {temps.Average():F2}{fourSpaces}";
+                brakeTemps[i] = temps.ToArray();
 
                 minTemp.ClipMax(brakeTemps[i].Min());
                 maxTemp.ClipMin(brakeTemps[i].Max());
