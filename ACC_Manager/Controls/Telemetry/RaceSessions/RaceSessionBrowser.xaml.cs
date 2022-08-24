@@ -714,7 +714,6 @@ namespace ACCManager.Controls
             if (dict.First().Value.PhysicsData == null || dict.First().Value.PhysicsData.WheelSlip == null)
                 return wpfPlot;
 
-
             double[] averageWheelSlips = dict.Select(x =>
             {
                 float[] wheelSlip = x.Value.PhysicsData.WheelSlip;
@@ -738,7 +737,12 @@ namespace ACCManager.Controls
             maxTemp = averageWheelSlips.Max();
 
             plot.AddSignalXY(splines, averageWheelSlips, label: "US-OS");
-            textBlockMetricInfo.Text += $"Understeer is a positive value, Oversteer is a negative value.";
+
+            string fourSpaces = "".FillEnd(4, ' ');
+            double averageSlip = averageWheelSlips.Average();
+            textBlockMetricInfo.Text += $"Av. {averageSlip:F3}";
+            textBlockMetricInfo.Text += $"{fourSpaces} (Understeer is a positive value, Oversteer is a negative value.";
+
 
             double padding = 2;
             plot.SetAxisLimitsX(xMin: 0, xMax: trackData.TrackLength);
