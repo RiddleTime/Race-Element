@@ -84,18 +84,19 @@ namespace ACCManager.Data.ACC.Database.Telemetry
                 _isRunning = true;
                 ThreadPool.QueueUserWorkItem(x =>
                 {
+                    LogWriter.WriteToLog("Starting recording loop");
                     var interval = new TimeSpan(0, 0, 0, 0, IntervalMillis);
-                    var nextTick = DateTime.Now + interval;
+                    var nextTick = DateTime.UtcNow + interval;
                     while (_isRunning)
                     {
                         try
                         {
-                            while (DateTime.Now < nextTick)
-                                Thread.Sleep(nextTick - DateTime.Now);
+                            while (DateTime.UtcNow < nextTick)
+                                Thread.Sleep(nextTick - DateTime.UtcNow);
                         }
                         catch { }
                         nextTick += interval;
-                        long ticks = DateTime.Now.Ticks;
+                        long ticks = DateTime.UtcNow.Ticks;
 
                         if (_pagePhysics.BrakeBias > 0)
                         { // prevent telemetry point recording when in pits or game paused)
