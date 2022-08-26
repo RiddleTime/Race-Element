@@ -736,7 +736,8 @@ namespace ACCManager.Controls
             minTemp = averageWheelSlips.Min();
             maxTemp = averageWheelSlips.Max();
 
-            plot.AddSignalXY(splines, averageWheelSlips, label: "US-OS");
+            var wheelSlipPlot = plot.AddSignalXY(splines, averageWheelSlips, label: "US-OS", color: System.Drawing.Color.White);
+            wheelSlipPlot.FillAboveAndBelow(System.Drawing.Color.Blue, System.Drawing.Color.Red);
 
             string fourSpaces = "".FillEnd(4, ' ');
             double averageSlip = averageWheelSlips.Average();

@@ -10,7 +10,7 @@ namespace ACCManager.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.0.8.3", "- Added Sessions to Telemetry tab: These sessions contain information about the laps you have driven whilst acc manager was running."+
+            {"0.1.0.0", "- Added Sessions to Telemetry tab."+
                         "\n- Titlebar: Added icons for automatic steering lock and the stream setup hider."+
                         "\n- Setup Importer drag and drop now works on any part of the app."},
             {"0.0.8.2", "- HUD: Added Oversteer trace overlay. Displaying under and oversteer."+
