@@ -78,80 +78,73 @@ namespace ACCManager.Data.ACC.Database.Telemetry
 
         public void Record()
         {
-            try
-            {
-                LogWriter.WriteToLog("TelemetryRecorder: Record()");
+            LogWriter.WriteToLog("TelemetryRecorder: Record()");
 
-                if (!new AccManagerSettings().Get().TelemetryRecordDetailed)
-                    return;
+            if (!new AccManagerSettings().Get().TelemetryRecordDetailed)
+                return;
 
-                _isRunning = true;
-                new Thread(x =>
+            _isRunning = true;
+            new Thread(x =>
+                 {
+                     LogWriter.WriteToLog("Starting recording loop");
+                     var interval = new TimeSpan(0, 0, 0, 0, IntervalMillis);
+                     var nextTick = DateTime.UtcNow + interval;
+                     while (_isRunning)
                      {
-                         LogWriter.WriteToLog("Starting recording loop");
-                         var interval = new TimeSpan(0, 0, 0, 0, IntervalMillis);
-                         var nextTick = DateTime.UtcNow + interval;
-                         while (_isRunning)
+                         try
                          {
-                             try
-                             {
-                                 while (DateTime.UtcNow < nextTick)
-                                     Thread.Sleep(nextTick - DateTime.UtcNow);
-                             }
-                             catch { }
-                             nextTick += interval;
-                             long ticks = DateTime.UtcNow.Ticks;
+                             while (DateTime.UtcNow < nextTick)
+                                 Thread.Sleep(nextTick - DateTime.UtcNow);
+                         }
+                         catch { }
+                         nextTick += interval;
+                         long ticks = DateTime.UtcNow.Ticks;
 
-                             try
-                             {
-                                 if (_pagePhysics.BrakeBias > 0)
-                                 { // prevent telemetry point recording when in pits or game paused)
+                         try
+                         {
+                             if (_pagePhysics.BrakeBias > 0)
+                             { // prevent telemetry point recording when in pits or game paused)
 
-                                     bool hasLapData = _lapData.Any();
-                                     bool isPointFurther = false;
-                                     if (hasLapData)
-                                         isPointFurther = _lapData.Last().Value.SplinePosition < _pageGraphics.NormalizedCarPosition;
+                                 bool hasLapData = _lapData.Any();
+                                 bool isPointFurther = false;
+                                 if (hasLapData)
+                                     isPointFurther = _lapData.Last().Value.SplinePosition < _pageGraphics.NormalizedCarPosition;
 
-                                     if (!hasLapData || isPointFurther)
-                                         lock (_lapData)
-                                             _lapData.Add(ticks, new TelemetryPoint()
+                                 if (!hasLapData || isPointFurther)
+                                     lock (_lapData)
+                                         _lapData.Add(ticks, new TelemetryPoint()
+                                         {
+                                             SplinePosition = _pageGraphics.NormalizedCarPosition,
+                                             InputsData = new InputsData()
                                              {
-                                                 SplinePosition = _pageGraphics.NormalizedCarPosition,
-                                                 InputsData = new InputsData()
-                                                 {
-                                                     Gas = _pagePhysics.Gas,
-                                                     Brake = _pagePhysics.Brake,
-                                                     Gear = _pagePhysics.Gear,
-                                                     SteerAngle = _pagePhysics.SteerAngle
-                                                 },
-                                                 TyreData = new TyreData()
-                                                 {
-                                                     TyreCoreTemperature = _pagePhysics.TyreCoreTemperature,
-                                                     TyrePressure = _pagePhysics.WheelPressure,
-                                                 },
-                                                 BrakeData = new BrakeData()
-                                                 {
-                                                     BrakeTemperature = _pagePhysics.BrakeTemperature,
-                                                 },
-                                                 PhysicsData = new PhysicsData()
-                                                 {
-                                                     WheelSlip = _pagePhysics.WheelSlip,
-                                                     Speed = _pagePhysics.SpeedKmh
-                                                 }
-                                             });
-                                 }
-                             }
-                             catch (Exception ex)
-                             {
-                                 LogWriter.WriteToLog(ex);
+                                                 Gas = _pagePhysics.Gas,
+                                                 Brake = _pagePhysics.Brake,
+                                                 Gear = _pagePhysics.Gear,
+                                                 SteerAngle = _pagePhysics.SteerAngle
+                                             },
+                                             TyreData = new TyreData()
+                                             {
+                                                 TyreCoreTemperature = _pagePhysics.TyreCoreTemperature,
+                                                 TyrePressure = _pagePhysics.WheelPressure,
+                                             },
+                                             BrakeData = new BrakeData()
+                                             {
+                                                 BrakeTemperature = _pagePhysics.BrakeTemperature,
+                                             },
+                                             PhysicsData = new PhysicsData()
+                                             {
+                                                 WheelSlip = _pagePhysics.WheelSlip,
+                                                 Speed = _pagePhysics.SpeedKmh
+                                             }
+                                         });
                              }
                          }
-                     }).Start();
-            }
-            catch (Exception ex)
-            {
-                LogWriter.WriteToLog(ex);
-            }
+                         catch (Exception ex)
+                         {
+                             LogWriter.WriteToLog(ex);
+                         }
+                     }
+                 }).Start();
         }
 
         public void Stop()

@@ -2,6 +2,7 @@
 using ACCManager.Broadcast;
 using ACCManager.Broadcast.Structs;
 using ACCManager.Controls.Telemetry.RaceSessions;
+using ACCManager.Controls.Telemetry.RaceSessions.Plots;
 using ACCManager.Data;
 using ACCManager.Data.ACC.Cars;
 using ACCManager.Data.ACC.Database;
@@ -360,12 +361,16 @@ namespace ACCManager.Controls
                 _currentData = telemetry.DeserializeLapData();
                 telemetry = null;
 
+                TrackData trackData = TrackNames.Tracks.Values.First(x => x.Guid == GetSelectedTrack());
+
+                int fullSteeringLock = SteeringLock.Get(CarDataCollection.GetCarData(CurrentDatabase, GetSelectedCar()).ParseName);
+
                 Dictionary<string, Plotter> plots = new Dictionary<string, Plotter>();
-                plots.Add("Inputs", (g, d) => GetInputPlot(g, d));
+                plots.Add("Inputs", (g, d) => new InputsPlot(trackData, ref textBlockMetricInfo, fullSteeringLock).Create(g, d));
                 plots.Add("Tyre Temperatures", (g, d) => GetTyreTempPlot(g, d));
                 plots.Add("Tyre Pressures", (g, d) => GetTyrePressurePlot(g, d));
-                plots.Add("Brake Temperatures", (g, d) => GetBrakeTempsPlot(g, d));
-                plots.Add("Wheel Slip", (g, d) => GetWheelSlipPlot(g, d));
+                plots.Add("Brake Temperatures", (g, d) => new BrakeTempsPlot(trackData, ref textBlockMetricInfo).Create(g, d));
+                plots.Add("Wheel Slip", (g, d) => new WheelSplitPlot(trackData, ref textBlockMetricInfo).Create(g, d));
 
                 if (_selectionChangedHandler != null)
                 {
@@ -414,82 +419,6 @@ namespace ACCManager.Controls
                 }
             }
         }
-
-        internal WpfPlot GetInputPlot(Grid outerGrid, Dictionary<long, TelemetryPoint> dict)
-        {
-            WpfPlot wpfPlot = new WpfPlot
-            {
-                Cursor = Cursors.Hand,
-            };
-
-            SetDefaultWpfPlotConfiguration(ref wpfPlot);
-
-            wpfPlot.Height = outerGrid.ActualHeight;
-            wpfPlot.MaxHeight = outerGrid.MaxHeight;
-            wpfPlot.MinHeight = outerGrid.MinHeight;
-            outerGrid.SizeChanged += (se, ev) =>
-            {
-                wpfPlot.Height = outerGrid.ActualHeight;
-                wpfPlot.MaxHeight = outerGrid.MaxHeight;
-                wpfPlot.MinHeight = outerGrid.MinHeight;
-            };
-
-            TrackData trackData = TrackNames.Tracks.Values.First(x => x.Guid == GetSelectedTrack());
-
-            int fullSteeringLock = SteeringLock.Get(CarDataCollection.GetCarData(CurrentDatabase, GetSelectedCar()).ParseName);
-
-
-            double[] splines = dict.Select(x => (double)x.Value.SplinePosition * trackData.TrackLength).ToArray();
-            if (splines.Length == 0)
-                return wpfPlot;
-
-            var gasses = dict.Select(x => (double)x.Value.InputsData.Gas * 100);
-            double[] gasDatas = gasses.ToArray();
-            double averageGas = gasses.Average();
-
-            var brakes = dict.Select(x => (double)x.Value.InputsData.Brake * 100);
-            double[] brakeDatas = brakes.ToArray();
-            double averageBrakes = brakes.Average();
-
-            double[] steeringDatas = dict.Select(x => (double)x.Value.InputsData.SteerAngle * fullSteeringLock / 2).ToArray();
-            string fourSpaces = "".FillEnd(4, ' ');
-            textBlockMetricInfo.Text += $"Av. Throttle: {averageGas:F2}%{fourSpaces}";
-            textBlockMetricInfo.Text += $"Av. Brake: {averageBrakes:F2}%{fourSpaces}";
-
-            if (splines.Length == 0)
-                return wpfPlot;
-
-            Plot plot = wpfPlot.Plot;
-            plot.SetAxisLimitsY(-5, 105);
-
-            var gasPlot = plot.AddSignalXY(splines, gasDatas, color: System.Drawing.Color.Green, label: "Throttle");
-            gasPlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(95, 0, 255, 0), lowerColor: System.Drawing.Color.Transparent);
-
-            var brakePlot = plot.AddSignalXY(splines, brakeDatas, color: System.Drawing.Color.Red, label: "Brake");
-            brakePlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(140, 255, 0, 0), lowerColor: System.Drawing.Color.Transparent);
-
-            var steeringPlot = plot.AddSignalXY(splines, steeringDatas, color: System.Drawing.Color.WhiteSmoke, label: "Steering");
-            steeringPlot.YAxisIndex = 1;
-
-            plot.SetAxisLimits(xMin: 0, xMax: trackData.TrackLength, yMin: -1.05 * fullSteeringLock / 2, yMax: 1.05 * fullSteeringLock / 2, yAxisIndex: 1);
-            plot.SetOuterViewLimits(0, trackData.TrackLength, -3, 103);
-            plot.SetOuterViewLimits(0, trackData.TrackLength, -1.05 * fullSteeringLock / 2, 1.05 * fullSteeringLock / 2, yAxisIndex: 1);
-
-            plot.XLabel("Meters");
-            plot.YLabel("Inputs");
-
-            plot.YAxis2.Ticks(true);
-            plot.YAxis2.Label("Steering (Degrees)");
-
-            plot.Palette = new ScottPlot.Palettes.PolarNight();
-
-            SetDefaultPlotStyles(ref plot);
-
-            wpfPlot.RenderRequest();
-
-            return wpfPlot;
-        }
-
 
         internal WpfPlot GetTyreTempPlot(Grid outerGrid, Dictionary<long, TelemetryPoint> dict)
         {
@@ -611,146 +540,6 @@ namespace ACCManager.Controls
             plot.SetOuterViewLimits(0, trackData.TrackLength, minPressure - padding, maxPressure + padding);
             plot.XLabel("Meters");
             plot.YLabel("PSI");
-            SetDefaultPlotStyles(ref plot);
-
-            wpfPlot.RenderRequest();
-
-            return wpfPlot;
-        }
-
-        internal WpfPlot GetBrakeTempsPlot(Grid outerGrid, Dictionary<long, TelemetryPoint> dict)
-        {
-            WpfPlot wpfPlot = new WpfPlot
-            {
-                Cursor = Cursors.Hand,
-            };
-
-            SetDefaultWpfPlotConfiguration(ref wpfPlot);
-
-            wpfPlot.Height = outerGrid.ActualHeight;
-            wpfPlot.MaxHeight = outerGrid.MaxHeight;
-            wpfPlot.MinHeight = outerGrid.MinHeight;
-            outerGrid.SizeChanged += (se, ev) =>
-            {
-                wpfPlot.Height = outerGrid.ActualHeight;
-                wpfPlot.MaxHeight = outerGrid.MaxHeight;
-                wpfPlot.MinHeight = outerGrid.MinHeight;
-            };
-
-            TrackData trackData = TrackNames.Tracks.Values.First(x => x.Guid == GetSelectedTrack());
-
-            Plot plot = wpfPlot.Plot;
-            plot.Palette = WheelPositionPallete;
-            plot.Benchmark(false);
-
-            double[][] brakeTemps = new double[4][];
-            double minTemp = int.MaxValue;
-            double maxTemp = int.MinValue;
-
-            double[] splines = dict.Select(x => (double)x.Value.SplinePosition * trackData.TrackLength).ToArray();
-            if (splines.Length == 0)
-                return wpfPlot;
-
-
-            string fourSpaces = "".FillEnd(4, ' ');
-            for (int i = 0; i < 4; i++)
-            {
-                var temps = dict.Select(x => (double)x.Value.BrakeData.BrakeTemperature[i]);
-                textBlockMetricInfo.Text += $"Av. {Enum.GetNames(typeof(SetupConverter.Wheel))[i]}: {temps.Average():F2}{fourSpaces}";
-                brakeTemps[i] = temps.ToArray();
-
-                minTemp.ClipMax(brakeTemps[i].Min());
-                maxTemp.ClipMin(brakeTemps[i].Max());
-
-                plot.AddSignalXY(splines, brakeTemps[i], label: Enum.GetNames(typeof(SetupConverter.Wheel))[i]);
-            }
-
-            double padding = 10;
-            plot.SetAxisLimitsX(xMin: 0, xMax: trackData.TrackLength);
-            plot.SetAxisLimitsY(minTemp - padding, maxTemp + padding);
-            plot.SetOuterViewLimits(0, trackData.TrackLength, minTemp - padding, maxTemp + padding);
-            plot.XLabel("Meters");
-            plot.YLabel("Celsius");
-
-            SetDefaultPlotStyles(ref plot);
-            wpfPlot.RenderRequest();
-
-            return wpfPlot;
-        }
-
-        internal WpfPlot GetWheelSlipPlot(Grid outerGrid, Dictionary<long, TelemetryPoint> dict)
-        {
-            WpfPlot wpfPlot = new WpfPlot
-            {
-                Cursor = Cursors.Hand,
-            };
-
-            SetDefaultWpfPlotConfiguration(ref wpfPlot);
-
-            wpfPlot.Height = outerGrid.ActualHeight;
-            wpfPlot.MaxHeight = outerGrid.MaxHeight;
-            wpfPlot.MinHeight = outerGrid.MinHeight;
-            outerGrid.SizeChanged += (se, ev) =>
-            {
-                wpfPlot.Height = outerGrid.ActualHeight;
-                wpfPlot.MaxHeight = outerGrid.MaxHeight;
-                wpfPlot.MinHeight = outerGrid.MinHeight;
-            };
-
-            TrackData trackData = TrackNames.Tracks.Values.First(x => x.Guid == GetSelectedTrack());
-
-            Plot plot = wpfPlot.Plot;
-            plot.Palette = WheelPositionPallete;
-            plot.Benchmark(false);
-
-            double[][] wheelSlips = new double[4][];
-            double minTemp = int.MaxValue;
-            double maxTemp = int.MinValue;
-            double[] splines = dict.Select(x => (double)x.Value.SplinePosition * trackData.TrackLength).ToArray();
-
-            if (splines.Length == 0)
-                return wpfPlot;
-
-            if (dict.First().Value.PhysicsData == null || dict.First().Value.PhysicsData.WheelSlip == null)
-                return wpfPlot;
-
-            double[] averageWheelSlips = dict.Select(x =>
-            {
-                float[] wheelSlip = x.Value.PhysicsData.WheelSlip;
-
-                float slipRatioFront = (wheelSlip[(int)Wheel.FrontLeft] + wheelSlip[(int)Wheel.FrontRight]) / 2;
-                float slipRatioRear = (wheelSlip[(int)Wheel.RearLeft] + wheelSlip[(int)Wheel.RearRight]) / 2;
-
-                double diff = 0;
-                // understeer
-                if (slipRatioFront > slipRatioRear)
-                    diff = slipRatioFront - slipRatioRear;
-
-                // oversteer
-                if (slipRatioRear > slipRatioFront)
-                    diff = (slipRatioRear - slipRatioFront) * -1;
-
-                return diff;
-            }).ToArray();
-
-            minTemp = averageWheelSlips.Min();
-            maxTemp = averageWheelSlips.Max();
-
-            var wheelSlipPlot = plot.AddSignalXY(splines, averageWheelSlips, label: "US-OS", color: System.Drawing.Color.White);
-            wheelSlipPlot.FillAboveAndBelow(System.Drawing.Color.Blue, System.Drawing.Color.Red);
-
-            string fourSpaces = "".FillEnd(4, ' ');
-            double averageSlip = averageWheelSlips.Average();
-            textBlockMetricInfo.Text += $"Av. {averageSlip:F3}";
-            textBlockMetricInfo.Text += $"{fourSpaces} (Understeer is a positive value, Oversteer is a negative value.";
-
-
-            double padding = 2;
-            plot.SetAxisLimitsX(xMin: 0, xMax: trackData.TrackLength);
-            plot.SetAxisLimitsY(minTemp - padding, maxTemp + padding);
-            plot.SetOuterViewLimits(0, trackData.TrackLength, minTemp - padding, maxTemp + padding);
-            plot.XLabel("Meters");
-            plot.YLabel("Slip Angle");
             SetDefaultPlotStyles(ref plot);
 
             wpfPlot.RenderRequest();
