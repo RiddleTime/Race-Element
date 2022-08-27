@@ -96,9 +96,10 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             oversteerPlot.FillBelow(System.Drawing.Color.OrangeRed, System.Drawing.Color.Transparent);
 
             string fourSpaces = "".FillEnd(4, ' ');
-            //double averageSlip = averageWheelSlips.Average();
-            //_textBlockMetrics.Text += $"Av. {averageSlip:F3}";
-            //_textBlockMetrics.Text += $"{fourSpaces} (Understeer is a positive value, Oversteer is a negative value.";
+            double averageUndersteer = understeers.Average();
+            double averageOversteer = oversteers.Average();
+            _textBlockMetrics.Text += $"Av. Understeer {averageUndersteer:F3}";
+            _textBlockMetrics.Text += $"{fourSpaces}Av. Oversteer {averageOversteer:F3}";
 
             double minValue = 0;
             double maxValue = int.MinValue;
