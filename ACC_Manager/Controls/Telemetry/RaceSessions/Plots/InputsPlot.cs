@@ -28,7 +28,6 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             _fullSteeringLock = fullSteeringLock;
         }
 
-
         internal WpfPlot Create(Grid outerGrid, Dictionary<long, TelemetryPoint> dict)
         {
             WpfPlot wpfPlot = new WpfPlot
@@ -99,6 +98,5 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
 
             return wpfPlot;
         }
-
     }
 }

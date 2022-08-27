@@ -31,7 +31,6 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             legend.FontBold = true;
             legend.IsDetached = true;
 
-
             plot.Style(DefaultPlotStyle);
             plot.Legend(true);
             plot.YAxis.RulerMode(true);
