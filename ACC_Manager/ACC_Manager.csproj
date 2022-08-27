@@ -415,7 +415,7 @@
     <Compile Include="Controls\Telemetry\RaceSessions\Plots\PlotUtil.cs" />
     <Compile Include="Controls\Telemetry\RaceSessions\Plots\TyrePressurePlot.cs" />
     <Compile Include="Controls\Telemetry\RaceSessions\Plots\TyreTempsPlot.cs" />
-    <Compile Include="Controls\Telemetry\RaceSessions\Plots\WheelSplitPlot.cs" />
+    <Compile Include="Controls\Telemetry\RaceSessions\Plots\WheelSlipPlot.cs" />
     <Compile Include="Controls\Telemetry\RaceSessions\RaceSessionBrowser.xaml.cs">
       <DependentUpon>RaceSessionBrowser.xaml</DependentUpon>
     </Compile>

@@ -14,12 +14,12 @@ using static ACCManager.Data.ACC.Tracks.TrackNames;
 
 namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
 {
-    internal class WheelSplitPlot
+    internal class WheelSlipPlot
     {
         private readonly TextBlock _textBlockMetrics;
         private readonly TrackData _trackData;
 
-        public WheelSplitPlot(TrackData trackData, ref TextBlock textBlockMetrics)
+        public WheelSlipPlot(TrackData trackData, ref TextBlock textBlockMetrics)
         {
             _trackData = trackData;
             _textBlockMetrics = textBlockMetrics;

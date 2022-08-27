@@ -370,7 +370,7 @@ namespace ACCManager.Controls
                 plots.Add("Tyre Temperatures", (g, d) => new TyreTempsPlot(trackData, ref textBlockMetricInfo).Create(g, d));
                 plots.Add("Tyre Pressures", (g, d) => new TyrePressurePlot(trackData, ref textBlockMetricInfo).Create(g, d));
                 plots.Add("Brake Temperatures", (g, d) => new BrakeTempsPlot(trackData, ref textBlockMetricInfo).Create(g, d));
-                plots.Add("Wheel Slip", (g, d) => new WheelSplitPlot(trackData, ref textBlockMetricInfo).Create(g, d));
+                plots.Add("Wheel Slip", (g, d) => new WheelSlipPlot(trackData, ref textBlockMetricInfo).Create(g, d));
 
                 if (_selectionChangedHandler != null)
                 {
