@@ -216,10 +216,10 @@
                                 </TextBlock>
                                 <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
                                    Sessions:<LineBreak/>
-                                    - Displays Sessions recorded when ACC Manager is running.<LineBreak/>
-                                    - Select a track and then select a car to display sessions, then click a session to show the lap data.<LineBreak/>
-                                    - Reload the data list by re-opening the Telemetry tab.<LineBreak/>
-                                    - If no data is recorded make sure nothing is blocking the udp connection from acc manager to assetto corsa competizione.<LineBreak/>
+                                    - Displays each session of a Race Weekend recorded when ACC Manager is running.<LineBreak/>
+                                    - Select a Race Weekend and go to the Current tab<LineBreak/>
+                                    - When extended telemetry is recorded, select a lap and check out the charts.<LineBreak/>
+                                    - Reload the Local race weekends list by re-opening the Telemetry tab.<LineBreak/>
                                 </TextBlock>
                             </StackPanel>
 
