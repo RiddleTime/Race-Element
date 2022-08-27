@@ -11,6 +11,7 @@ using static ACCManager.Data.SetupConverter;
 using System.Windows.Controls;
 using System.Windows.Input;
 using static ACCManager.Data.ACC.Tracks.TrackNames;
+using ScottPlot.Drawing.Colormaps;
 
 namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
 {
@@ -49,8 +50,7 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             plot.Benchmark(false);
 
             double[][] wheelSlips = new double[4][];
-            double minTemp = int.MaxValue;
-            double maxTemp = int.MinValue;
+
             double[] splines = dict.Select(x => (double)x.Value.SplinePosition * _trackData.TrackLength).ToArray();
 
             if (splines.Length == 0)
@@ -59,41 +59,57 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             if (dict.First().Value.PhysicsData == null || dict.First().Value.PhysicsData.WheelSlip == null)
                 return wpfPlot;
 
-            double[] averageWheelSlips = dict.Select(x =>
+
+            double[] understeers = new double[splines.Length];
+            double[] oversteers = new double[splines.Length];
+
+            for (int i = 0; i < dict.Count; i++)
             {
-                float[] wheelSlip = x.Value.PhysicsData.WheelSlip;
+                float[] wheelSlip = dict.ElementAt(i).Value.PhysicsData.WheelSlip;
 
                 float slipRatioFront = (wheelSlip[(int)Wheel.FrontLeft] + wheelSlip[(int)Wheel.FrontRight]) / 2;
                 float slipRatioRear = (wheelSlip[(int)Wheel.RearLeft] + wheelSlip[(int)Wheel.RearRight]) / 2;
 
-                double diff = 0;
                 // understeer
                 if (slipRatioFront > slipRatioRear)
-                    diff = slipRatioFront - slipRatioRear;
+                {
+                    understeers[i] = slipRatioFront - slipRatioRear;
+                    oversteers[i] = 0;
+                }
+                else if (slipRatioRear > slipRatioFront)
+                { // oversteer
+                    oversteers[i] = (slipRatioRear - slipRatioFront);
+                    understeers[i] = 0;
+                }
+                else
+                {
+                    oversteers[i] = 0;
+                    understeers[i] = 0;
+                }
 
-                // oversteer
-                if (slipRatioRear > slipRatioFront)
-                    diff = (slipRatioRear - slipRatioFront) * -1;
+            }
 
-                return diff;
-            }).ToArray();
+            var understeerPlot = plot.AddSignalXY(splines, understeers, label: "Understeer", color: System.Drawing.Color.Blue);
+            understeerPlot.FillBelow(System.Drawing.Color.Blue, System.Drawing.Color.Transparent);
 
-            minTemp = averageWheelSlips.Min();
-            maxTemp = averageWheelSlips.Max();
-
-            var wheelSlipPlot = plot.AddSignalXY(splines, averageWheelSlips, label: "US-OS", color: System.Drawing.Color.White);
-            wheelSlipPlot.FillAboveAndBelow(System.Drawing.Color.Blue, System.Drawing.Color.Red);
+            var oversteerPlot = plot.AddSignalXY(splines, oversteers, label: "Oversteer", color: System.Drawing.Color.OrangeRed);
+            oversteerPlot.FillBelow(System.Drawing.Color.OrangeRed, System.Drawing.Color.Transparent);
 
             string fourSpaces = "".FillEnd(4, ' ');
-            double averageSlip = averageWheelSlips.Average();
-            _textBlockMetrics.Text += $"Av. {averageSlip:F3}";
-            _textBlockMetrics.Text += $"{fourSpaces} (Understeer is a positive value, Oversteer is a negative value.";
+            //double averageSlip = averageWheelSlips.Average();
+            //_textBlockMetrics.Text += $"Av. {averageSlip:F3}";
+            //_textBlockMetrics.Text += $"{fourSpaces} (Understeer is a positive value, Oversteer is a negative value.";
 
+            double minValue = 0;
+            double maxValue = int.MinValue;
 
-            double padding = 2;
+            maxValue.ClipMin(understeers.Max());
+            maxValue.ClipMin(oversteers.Max());
+
+            double padding = 0.5;
             plot.SetAxisLimitsX(xMin: 0, xMax: _trackData.TrackLength);
-            plot.SetAxisLimitsY(minTemp - padding, maxTemp + padding);
-            plot.SetOuterViewLimits(0, _trackData.TrackLength, minTemp - padding, maxTemp + padding);
+            plot.SetAxisLimitsY(minValue - padding, maxValue + padding);
+            plot.SetOuterViewLimits(0, _trackData.TrackLength, minValue - padding, maxValue + padding);
             plot.XLabel("Meters");
             plot.YLabel("Slip Angle");
             PlotUtil.SetDefaultPlotStyles(ref plot);
