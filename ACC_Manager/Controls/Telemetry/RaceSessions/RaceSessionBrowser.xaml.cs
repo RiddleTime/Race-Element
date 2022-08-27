@@ -362,7 +362,6 @@ namespace ACCManager.Controls
                 telemetry = null;
 
                 TrackData trackData = TrackNames.Tracks.Values.First(x => x.Guid == GetSelectedTrack());
-
                 int fullSteeringLock = SteeringLock.Get(CarDataCollection.GetCarData(CurrentDatabase, GetSelectedCar()).ParseName);
 
                 Dictionary<string, Plotter> plots = new Dictionary<string, Plotter>();
