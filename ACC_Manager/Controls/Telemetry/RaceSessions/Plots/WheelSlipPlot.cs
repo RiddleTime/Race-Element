@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using static ACCManager.Data.ACC.Tracks.TrackNames;
 using ScottPlot.Drawing.Colormaps;
+using ScottPlot.Plottable;
 
 namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
 {
@@ -63,7 +64,7 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             double[] understeers = new double[splines.Length];
             double[] oversteers = new double[splines.Length];
 
-            for (int i = 0; i < dict.Count; i++)
+            for (int i = 0; i != dict.Count; i++)
             {
                 float[] wheelSlip = dict.ElementAt(i).Value.PhysicsData.WheelSlip;
 
@@ -86,7 +87,6 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
                     oversteers[i] = 0;
                     understeers[i] = 0;
                 }
-
             }
 
             var understeerPlot = plot.AddSignalXY(splines, understeers, label: "Understeer", color: System.Drawing.Color.Blue);
@@ -113,6 +113,34 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             plot.SetOuterViewLimits(0, _trackData.TrackLength, minValue - padding, maxValue + padding);
             plot.XLabel("Meters");
             plot.YLabel("Slip Angle");
+
+            #region add markers
+
+            MarkerPlot osMarker = wpfPlot.Plot.AddPoint(0, 0, color: System.Drawing.Color.Blue);
+            MarkerPlot usMarker = wpfPlot.Plot.AddPoint(0, 0, color: System.Drawing.Color.OrangeRed);
+            PlotUtil.SetDefaultMarkerStyle(ref osMarker);
+            PlotUtil.SetDefaultMarkerStyle(ref usMarker);
+
+            outerGrid.MouseMove += (s, e) =>
+            {
+                (double mouseCoordsX, _) = wpfPlot.GetMouseCoordinates();
+
+                (double usX, double usY, int usIndex) = oversteerPlot.GetPointNearestX(mouseCoordsX);
+                usMarker.SetPoint(usX, usY);
+                usMarker.IsVisible = true;
+                oversteerPlot.Label = $"Oversteer: {oversteers[usIndex]:F3}";
+
+                (double osX, double osY, int osIndex) = understeerPlot.GetPointNearestX(mouseCoordsX);
+                osMarker.SetPoint(osX, osY);
+                osMarker.IsVisible = true;
+                understeerPlot.Label = $"Understeer: {understeers[osIndex]:F3}";
+
+                wpfPlot.RenderRequest();
+            };
+
+            #endregion
+
+
             PlotUtil.SetDefaultPlotStyles(ref plot);
 
             wpfPlot.RenderRequest();

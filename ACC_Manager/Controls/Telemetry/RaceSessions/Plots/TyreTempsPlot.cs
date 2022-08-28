@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using static ACCManager.Data.ACC.Tracks.TrackNames;
 using System.Windows.Input;
+using ScottPlot.Plottable;
 
 namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
 {
@@ -56,6 +57,7 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             if (splines.Length == 0)
                 return wpfPlot;
 
+            SignalPlotXY[] tyrePlots = new SignalPlotXY[4];
             string fourSpaces = "".FillEnd(4, ' ');
             for (int i = 0; i < 4; i++)
             {
@@ -67,7 +69,7 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
                 minTemp.ClipMax(tyreTemps[i].Min());
                 maxTemp.ClipMin(tyreTemps[i].Max());
 
-                plot.AddSignalXY(splines, tyreTemps[i], label: Enum.GetNames(typeof(SetupConverter.Wheel))[i]);
+                tyrePlots[i] = plot.AddSignalXY(splines, tyreTemps[i], label: Enum.GetNames(typeof(SetupConverter.Wheel))[i]);
             }
 
             double padding = 2;
@@ -76,6 +78,34 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             plot.SetOuterViewLimits(0, _trackData.TrackLength, minTemp - padding, maxTemp + padding);
             plot.XLabel("Meters");
             plot.YLabel("Celsius");
+
+
+            #region add markers
+
+            MarkerPlot[] tyreMarkers = new MarkerPlot[4];
+            for (int i = 0; i != tyreMarkers.Length; i++)
+            {
+                tyreMarkers[i] = wpfPlot.Plot.AddPoint(0, 0, color: tyrePlots[i].Color);
+                PlotUtil.SetDefaultMarkerStyle(ref tyreMarkers[i]);
+            }
+
+            outerGrid.MouseMove += (s, e) =>
+            {
+                (double mouseCoordsX, _) = wpfPlot.GetMouseCoordinates();
+
+                for (int i = 0; i != tyreMarkers.Length; i++)
+                {
+                    (double x, double y, int index) = tyrePlots[i].GetPointNearestX(mouseCoordsX);
+                    tyreMarkers[i].SetPoint(x, y);
+                    tyreMarkers[i].IsVisible = true;
+                    tyrePlots[i].Label = $"{Enum.GetNames(typeof(SetupConverter.Wheel))[i]}: {tyreTemps[i][index]:F3}";
+                }
+
+                wpfPlot.RenderRequest();
+            };
+
+            #endregion
+
             PlotUtil.SetDefaultPlotStyles(ref plot);
 
             wpfPlot.RenderRequest();

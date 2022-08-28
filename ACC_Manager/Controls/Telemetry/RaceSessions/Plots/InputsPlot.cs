@@ -4,6 +4,7 @@ using ACCManager.Data.ACC.Database.GameData;
 using ACCManager.Data.ACC.Database.Telemetry;
 using ACCManager.Data.ACC.Tracks;
 using ScottPlot;
+using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,8 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             {
                 Cursor = Cursors.Hand,
             };
+
+
 
             PlotUtil.SetDefaultWpfPlotConfiguration(ref wpfPlot);
 
@@ -78,7 +81,6 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             var brakePlot = plot.AddSignalXY(splines, brakeDatas, color: System.Drawing.Color.Red, label: "Brake");
             brakePlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(140, 255, 0, 0), lowerColor: System.Drawing.Color.Transparent);
             brakePlot.YAxisIndex = 1;
-            
 
             var steeringPlot = plot.AddSignalXY(splines, steeringDatas, color: System.Drawing.Color.WhiteSmoke, label: "Steering");
             steeringPlot.YAxisIndex = 0;
@@ -98,9 +100,53 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
 
             PlotUtil.SetDefaultPlotStyles(ref plot);
 
+
+            #region add markers
+
+            MarkerPlot gasMarker = wpfPlot.Plot.AddPoint(0, 0, color: System.Drawing.Color.Green);
+            PlotUtil.SetDefaultMarkerStyle(ref gasMarker);
+
+            MarkerPlot brakeMarker = wpfPlot.Plot.AddPoint(0, 0, color: System.Drawing.Color.Red);
+            PlotUtil.SetDefaultMarkerStyle(ref brakeMarker);
+
+            MarkerPlot steeringMarker = wpfPlot.Plot.AddPoint(0, 0, color: System.Drawing.Color.WhiteSmoke);
+            PlotUtil.SetDefaultMarkerStyle(ref steeringMarker);
+
+            outerGrid.MouseMove += (s, e) =>
+            {
+                (double mouseCoordsX, _) = wpfPlot.GetMouseCoordinates();
+
+                (double gasX, double gasY, int gasIndex) = gasPlot.GetPointNearestX(mouseCoordsX);
+                gasMarker.YAxisIndex = 1;
+                gasMarker.SetPoint(gasX, gasY);
+                gasMarker.IsVisible = true;
+                gasPlot.Label = $"Throttle: {gasDatas[gasIndex]:F3}";
+
+
+                (double brakeX, double brakeY, int brakeIndex) = brakePlot.GetPointNearestX(mouseCoordsX);
+                brakeMarker.YAxisIndex = 1;
+                brakeMarker.SetPoint(brakeX, brakeY);
+                brakeMarker.IsVisible = true;
+                brakePlot.Label = $"Brake: {brakeDatas[brakeIndex]:F3}";
+
+
+                (double steerX, double steerY, int steerIndex) = steeringPlot.GetPointNearestX(mouseCoordsX);
+                steeringMarker.YAxisIndex = 0;
+                steeringMarker.SetPoint(steerX, steerY);
+                steeringMarker.IsVisible = true;
+                steeringPlot.Label = $"Steering: {(steeringDatas[steerIndex]):F3}";
+
+                wpfPlot.RenderRequest();
+            };
+
+            #endregion
+
+
             wpfPlot.RenderRequest();
 
             return wpfPlot;
         }
+
+
     }
 }
