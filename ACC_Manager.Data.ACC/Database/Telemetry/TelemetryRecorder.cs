@@ -112,31 +112,34 @@ namespace ACCManager.Data.ACC.Database.Telemetry
 
                                  if (!hasLapData || isPointFurther)
                                      lock (_lapData)
-                                         _lapData.Add(ticks, new TelemetryPoint()
-                                         {
-                                             SplinePosition = _pageGraphics.NormalizedCarPosition,
-                                             InputsData = new InputsData()
+                                     {
+                                         if (!_lapData.ContainsKey(ticks))
+                                             _lapData.Add(ticks, new TelemetryPoint()
                                              {
-                                                 Gas = _pagePhysics.Gas,
-                                                 Brake = _pagePhysics.Brake,
-                                                 Gear = _pagePhysics.Gear,
-                                                 SteerAngle = _pagePhysics.SteerAngle
-                                             },
-                                             TyreData = new TyreData()
-                                             {
-                                                 TyreCoreTemperature = _pagePhysics.TyreCoreTemperature,
-                                                 TyrePressure = _pagePhysics.WheelPressure,
-                                             },
-                                             BrakeData = new BrakeData()
-                                             {
-                                                 BrakeTemperature = _pagePhysics.BrakeTemperature,
-                                             },
-                                             PhysicsData = new PhysicsData()
-                                             {
-                                                 WheelSlip = _pagePhysics.WheelSlip,
-                                                 Speed = _pagePhysics.SpeedKmh
-                                             }
-                                         });
+                                                 SplinePosition = _pageGraphics.NormalizedCarPosition,
+                                                 InputsData = new InputsData()
+                                                 {
+                                                     Gas = _pagePhysics.Gas,
+                                                     Brake = _pagePhysics.Brake,
+                                                     Gear = _pagePhysics.Gear,
+                                                     SteerAngle = _pagePhysics.SteerAngle
+                                                 },
+                                                 TyreData = new TyreData()
+                                                 {
+                                                     TyreCoreTemperature = _pagePhysics.TyreCoreTemperature,
+                                                     TyrePressure = _pagePhysics.WheelPressure,
+                                                 },
+                                                 BrakeData = new BrakeData()
+                                                 {
+                                                     BrakeTemperature = _pagePhysics.BrakeTemperature,
+                                                 },
+                                                 PhysicsData = new PhysicsData()
+                                                 {
+                                                     WheelSlip = _pagePhysics.WheelSlip,
+                                                     Speed = _pagePhysics.SpeedKmh
+                                                 }
+                                             });
+                                     }
                              }
                          }
                          catch (Exception ex)

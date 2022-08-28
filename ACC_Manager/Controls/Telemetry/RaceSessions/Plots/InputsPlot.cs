@@ -73,22 +73,26 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
 
             var gasPlot = plot.AddSignalXY(splines, gasDatas, color: System.Drawing.Color.Green, label: "Throttle");
             gasPlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(95, 0, 255, 0), lowerColor: System.Drawing.Color.Transparent);
+            gasPlot.YAxisIndex = 1;
 
             var brakePlot = plot.AddSignalXY(splines, brakeDatas, color: System.Drawing.Color.Red, label: "Brake");
             brakePlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(140, 255, 0, 0), lowerColor: System.Drawing.Color.Transparent);
+            brakePlot.YAxisIndex = 1;
+            
 
             var steeringPlot = plot.AddSignalXY(splines, steeringDatas, color: System.Drawing.Color.WhiteSmoke, label: "Steering");
-            steeringPlot.YAxisIndex = 1;
+            steeringPlot.YAxisIndex = 0;
 
-            plot.SetAxisLimits(xMin: 0, xMax: _trackData.TrackLength, yMin: -1.05 * _fullSteeringLock / 2, yMax: 1.05 * _fullSteeringLock / 2, yAxisIndex: 1);
-            plot.SetOuterViewLimits(0, _trackData.TrackLength, -3, 103);
-            plot.SetOuterViewLimits(0, _trackData.TrackLength, -1.05 * _fullSteeringLock / 2, 1.05 * _fullSteeringLock / 2, yAxisIndex: 1);
+            plot.SetAxisLimits(xMin: 0, xMax: _trackData.TrackLength, yMin: -1.05 * _fullSteeringLock / 2, yMax: 1.05 * _fullSteeringLock / 2, yAxisIndex: 0);
+            plot.SetOuterViewLimits(0, _trackData.TrackLength, -3, 103, yAxisIndex: 1);
+            plot.SetOuterViewLimits(0, _trackData.TrackLength, -1.05 * _fullSteeringLock / 2, 1.05 * _fullSteeringLock / 2, yAxisIndex: 0);
 
             plot.XLabel("Meters");
-            plot.YLabel("Inputs");
+            plot.YLabel("Steering (Degrees)");
 
             plot.YAxis2.Ticks(true);
-            plot.YAxis2.Label("Steering (Degrees)");
+            plot.YAxis2.Label("Inputs");
+            plot.YAxis2.Edge = ScottPlot.Renderable.Edge.Left;
 
             plot.Palette = new ScottPlot.Palettes.PolarNight();
 

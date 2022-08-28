@@ -20,9 +20,7 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             plot.XAxis.TickLabelStyle(color: System.Drawing.Color.White);
             plot.YAxis2.TickLabelStyle(color: System.Drawing.Color.White);
 
-            //plot.AxisZoom(1, 1);
-
-            ScottPlot.Renderable.Legend legend = plot.Legend();
+            ScottPlot.Renderable.Legend legend = plot.Legend(true, Alignment.LowerLeft);
             legend.FillColor = System.Drawing.Color.FromArgb(160, 0, 0, 0);
             legend.FontColor = System.Drawing.Color.White;
             legend.OutlineColor = System.Drawing.Color.FromArgb(30, 255, 255, 255);
@@ -32,7 +30,6 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             legend.IsDetached = true;
 
             plot.Style(DefaultPlotStyle);
-            plot.Legend(true);
             plot.YAxis.RulerMode(true);
             plot.YAxis2.RulerMode(true);
         }

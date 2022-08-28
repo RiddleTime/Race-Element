@@ -366,6 +366,7 @@ namespace ACCManager.Controls
 
                 Dictionary<string, Plotter> plots = new Dictionary<string, Plotter>();
                 plots.Add("Inputs", (g, d) => new InputsPlot(trackData, ref textBlockMetricInfo, fullSteeringLock).Create(g, d));
+                plots.Add("Speed/Gear", (g, d) => new SpeedGearPlot(trackData, ref textBlockMetricInfo).Create(g, d));
                 plots.Add("Wheel Slip", (g, d) => new WheelSlipPlot(trackData, ref textBlockMetricInfo).Create(g, d));
                 plots.Add("Tyre Temperatures", (g, d) => new TyreTempsPlot(trackData, ref textBlockMetricInfo).Create(g, d));
                 plots.Add("Tyre Pressures", (g, d) => new TyrePressurePlot(trackData, ref textBlockMetricInfo).Create(g, d));
