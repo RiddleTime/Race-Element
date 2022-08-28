@@ -39,7 +39,7 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid>
+    <Grid x:Name="mainGrid">
         <Grid.RowDefinitions>
             <RowDefinition x:Name="rowTitleBar" Height="30"/>
             <RowDefinition/>

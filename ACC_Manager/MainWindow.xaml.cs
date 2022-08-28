@@ -190,13 +190,15 @@ namespace ACCManager
                 case WindowState.Normal:
                     {
                         this.Activate();
-                        rowTitleBar.Height = new GridLength(30);
+                        mainGrid.Margin = new Thickness(0);
+                        //rowTitleBar.Height = new GridLength(30);
                         _stopDecreaseOpacty = true;
                         break;
                     }
                 case WindowState.Maximized:
                     {
-                        rowTitleBar.Height = new GridLength(35);
+                        mainGrid.Margin = new Thickness(8);
+                        //rowTitleBar.Height = new GridLength(35);
                         _stopDecreaseOpacty = true;
                         break;
                     }
