@@ -38,7 +38,7 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
         {
             plot.Configuration.DoubleClickBenchmark = false;
             plot.Configuration.LockVerticalAxis = true;
-            plot.Configuration.Quality = ScottPlot.Control.QualityMode.High;
+            //plot.Configuration.Quality = ScottPlot.Control.QualityMode.High;
             plot.Configuration.MiddleClickDragZoom = false;
             plot.Configuration.MiddleClickAutoAxis = true;
             plot.Configuration.RightClickDragZoom = false;
