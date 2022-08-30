@@ -119,8 +119,11 @@ namespace ACCManager.Controls
 
             string sessionInfo = $"{(session.IsOnline ? "On" : "Off")}line {ACCSharedMemory.SessionTypeToString(session.SessionType)}";
 
-            TimeSpan duration = session.UtcEnd.Subtract(session.UtcStart);
-            sessionInfo += $" - Duration: {duration:hh\\:mm\\:ss}";
+            if (session.UtcEnd > session.UtcStart)
+            {
+                TimeSpan duration = session.UtcEnd.Subtract(session.UtcStart);
+                sessionInfo += $" - Duration: {duration:hh\\:mm\\:ss}";
+            }
 
             int potentialBestLapTime = laps.GetPotentialFastestLapTime();
             if (potentialBestLapTime != -1)
