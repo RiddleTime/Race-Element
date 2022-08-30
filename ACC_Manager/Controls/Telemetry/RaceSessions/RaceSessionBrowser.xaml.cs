@@ -324,11 +324,13 @@ namespace ACCManager.Controls
             });
 
 
+#if DEBUG
             grid.SelectedCellsChanged += (s, e) =>
             {
                 DbLapData lapdata = (DbLapData)grid.SelectedItem;
                 CreateCharts(lapdata.Id);
             };
+#endif
 
             return grid;
         }

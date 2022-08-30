@@ -27,7 +27,7 @@
                         Foreground="White"    
                         />
                         <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center">
-                            Sessions
+                            Race Weekends
                         </TextBlock>
                     </Grid>
                 </TabItem.Header>

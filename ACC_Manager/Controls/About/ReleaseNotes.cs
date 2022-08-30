@@ -10,9 +10,11 @@ namespace ACCManager.Controls
     {
         public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.1.0.0", "- Added Sessions to Telemetry tab."+
+            {"0.0.9.0", "- Added Race Weekends tab to Telemetry tab."+
+                        "\n- ACC Manager now saves race weekend data(lap and sector times)."+
                         "\n- Titlebar: Added icons for automatic steering lock and the stream setup hider."+
-                        "\n- Setup Importer drag and drop now works on any part of the app."},
+                        "\n- Setup Importer drag and drop now works on any part of the app."+
+                        "\n- Changed order of main menu tabs." },
             {"0.0.8.2", "- HUD: Added Oversteer trace overlay. Displaying under and oversteer."+
                         "\n- HUDs tab: Double click overlays on the list items to toggle overlays on and off."+
                         "\n- Setups tab: Add strategy section to viewer and comparison."+

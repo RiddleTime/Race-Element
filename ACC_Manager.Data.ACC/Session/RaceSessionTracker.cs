@@ -106,7 +106,9 @@ namespace ACCManager.Data.ACC.Session
                 RaceSessionCollection.Insert(CurrentSession);
                 OnNewSessionStarted?.Invoke(this, CurrentSession);
 
+#if DEBUG
                 new TelemetryRecorder().Record();
+#endif
             }
         }
 

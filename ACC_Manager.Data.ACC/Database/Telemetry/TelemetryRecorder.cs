@@ -155,6 +155,7 @@ namespace ACCManager.Data.ACC.Database.Telemetry
             LogWriter.WriteToLog("TelemetryRecorder: Stop()");
             Thread.Sleep(IntervalMillis * 3);
             _isRunning = false;
+
             PagePhysicsTracker.Instance.Tracker -= OnPagePhysicsUpdated;
             PageGraphicsTracker.Instance.Tracker -= OnPageGraphicsUpdated;
             LapTracker.Instance.LapFinished -= OnLapFinished;

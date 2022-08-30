@@ -89,74 +89,6 @@
 
             </TabItem>
 
-            <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabSetups" Height="60">
-                <TabItem.Header>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <materialDesign:PackIcon
-                            Grid.Row="0"
-                            Kind="HammerScrewdriver"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            Height="20"
-                            Width="20"
-                        Foreground="White"    
-                        />
-                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Setups</TextBlock>
-                    </Grid>
-
-                </TabItem.Header>
-
-                <Grid HorizontalAlignment="Stretch">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <materialDesign:TransitioningContent Grid.Column="1">
-                        <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="FadeIn"/>
-                        </materialDesign:TransitioningContent.OpeningEffects>
-
-                        <controls:SetupsTab></controls:SetupsTab>
-
-                    </materialDesign:TransitioningContent>
-                </Grid>
-            </TabItem>
-
-            <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabLiveries" Height="60">
-                <TabItem.Header>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <materialDesign:PackIcon
-                            Grid.Row="0"
-                            Kind="Paintbrush"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            Height="20"
-                            Width="20"
-                        Foreground="White"    
-                        />
-                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Liveries</TextBlock>
-                    </Grid>
-                </TabItem.Header>
-
-                <Grid HorizontalAlignment="Stretch">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <materialDesign:TransitioningContent Grid.Column="1">
-                        <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="FadeIn"/>
-                        </materialDesign:TransitioningContent.OpeningEffects>
-                        <controls:LiveriesTab></controls:LiveriesTab>
-                    </materialDesign:TransitioningContent>
-                </Grid>
-            </TabItem>
 
             <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabHUD" Height="60">
                 <TabItem.Header>
@@ -224,6 +156,75 @@
                             <materialDesign:TransitionEffect Kind="FadeIn"/>
                         </materialDesign:TransitioningContent.OpeningEffects>
                         <controls:TelemetryTab></controls:TelemetryTab>
+                    </materialDesign:TransitioningContent>
+                </Grid>
+            </TabItem>
+
+            <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabSetups" Height="60">
+                <TabItem.Header>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <materialDesign:PackIcon
+                            Grid.Row="0"
+                            Kind="HammerScrewdriver"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="20"
+                            Width="20"
+                        Foreground="White"    
+                        />
+                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Setups</TextBlock>
+                    </Grid>
+
+                </TabItem.Header>
+
+                <Grid HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:TransitioningContent Grid.Column="1">
+                        <materialDesign:TransitioningContent.OpeningEffects>
+                            <materialDesign:TransitionEffect Kind="FadeIn"/>
+                        </materialDesign:TransitioningContent.OpeningEffects>
+
+                        <controls:SetupsTab></controls:SetupsTab>
+
+                    </materialDesign:TransitioningContent>
+                </Grid>
+            </TabItem>
+
+            <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabLiveries" Height="60">
+                <TabItem.Header>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <materialDesign:PackIcon
+                            Grid.Row="0"
+                            Kind="Paintbrush"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="20"
+                            Width="20"
+                        Foreground="White"    
+                        />
+                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Liveries</TextBlock>
+                    </Grid>
+                </TabItem.Header>
+
+                <Grid HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:TransitioningContent Grid.Column="1">
+                        <materialDesign:TransitioningContent.OpeningEffects>
+                            <materialDesign:TransitionEffect Kind="FadeIn"/>
+                        </materialDesign:TransitioningContent.OpeningEffects>
+                        <controls:LiveriesTab></controls:LiveriesTab>
                     </materialDesign:TransitioningContent>
                 </Grid>
             </TabItem>
