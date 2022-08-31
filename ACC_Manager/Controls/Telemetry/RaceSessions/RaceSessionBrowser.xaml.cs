@@ -137,6 +137,8 @@ namespace ACCManager.Controls
 
             gridSessionLaps.Children.Add(GetLapDataGrid(laps));
 
+            Grid.SetRowSpan(gridSessionViewer, 2);
+
             transitionContentPlots.Visibility = Visibility.Collapsed;
         }
 
@@ -343,6 +345,7 @@ namespace ACCManager.Controls
 
         private void CreateCharts(Guid lapId)
         {
+            //gridSessionViewer
             comboBoxMetrics.Items.Clear();
             gridMetrics.Children.Clear();
             textBlockMetricInfo.Text = String.Empty;
@@ -351,10 +354,12 @@ namespace ACCManager.Controls
 
             if (telemetry == null)
             {
+                Grid.SetRowSpan(gridSessionViewer, 2);
                 transitionContentPlots.Visibility = Visibility.Collapsed;
             }
             else
             {
+                Grid.SetRowSpan(gridSessionViewer, 1);
                 transitionContentPlots.Visibility = Visibility.Visible;
 
                 if (_currentData != null)
