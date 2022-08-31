@@ -58,10 +58,21 @@ namespace ACCManager.Controls
             listViewRaceSessions.SelectionChanged += (s, e) => LoadSession();
 
             gridTabHeaderLocalSession.MouseRightButtonUp += (s, e) => FindRaceWeekends();
+            textBlockMetricInfo.MouseLeftButtonUp += (s, e) => CloseTelemetry();
 
             RaceSessionTracker.Instance.OnRaceWeekendEnded += (s, e) => FindRaceWeekends();
 
             Instance = this;
+        }
+
+        private void CloseTelemetry()
+        {
+            comboBoxMetrics.Items.Clear();
+            gridMetrics.Children.Clear();
+            textBlockMetricInfo.Text = String.Empty;
+            transitionContentPlots.Visibility = Visibility.Collapsed;
+
+            Grid.SetRowSpan(gridSessionViewer, 2);
         }
 
         private void FindRaceWeekends()

@@ -28,10 +28,7 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
 
         internal WpfPlot Create(Grid outerGrid, Dictionary<long, TelemetryPoint> dict)
         {
-            WpfPlot wpfPlot = new WpfPlot
-            {
-                Cursor = Cursors.Hand,
-            };
+            WpfPlot wpfPlot = new WpfPlot();
 
             PlotUtil.SetDefaultWpfPlotConfiguration(ref wpfPlot);
 
