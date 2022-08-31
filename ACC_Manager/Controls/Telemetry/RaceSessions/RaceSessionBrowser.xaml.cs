@@ -73,6 +73,12 @@ namespace ACCManager.Controls
             transitionContentPlots.Visibility = Visibility.Collapsed;
 
             Grid.SetRowSpan(gridSessionViewer, 2);
+
+            ThreadPool.QueueUserWorkItem(x =>
+            {
+                Thread.Sleep(2000);
+                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+            });
         }
 
         private void FindRaceWeekends()
