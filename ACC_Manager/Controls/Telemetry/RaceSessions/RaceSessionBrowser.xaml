@@ -106,21 +106,7 @@
                 <ComboBox Grid.Row="0" Grid.Column="0" x:Name="comboBoxMetrics" HorizontalAlignment="Left" Width="200"
                           FontWeight="Bold" FontSize="14" HorizontalContentAlignment="Center"></ComboBox>
                 <TextBlock Grid.Row="0" Grid.Column="1" x:Name="textBlockMetricInfo" Margin="10,0,0,0" VerticalAlignment="Stretch" FontWeight="SemiBold">
-                    <TextBlock.Style>
-                        <Style TargetType="{x:Type TextBlock}">
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="TextBlock.Background" Value="#AFFF0000"/>
-                                    <Setter Property="TextBlock.Cursor" Value="Hand"/>
-                                </Trigger>
-                                <Trigger Property="IsMouseOver" Value="false">
-                                    <Setter Property="TextBlock.Background" Value="Transparent"/>
-                                    <Setter Property="TextBlock.Cursor" Value="Arrow"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
 
-                    </TextBlock.Style>
                 </TextBlock>
 
                 <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="gridMetrics">

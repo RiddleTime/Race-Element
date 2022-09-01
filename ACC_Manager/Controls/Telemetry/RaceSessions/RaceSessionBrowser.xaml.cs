@@ -1,6 +1,4 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Broadcast;
-using ACCManager.Broadcast.Structs;
+﻿using ACCManager.Broadcast;
 using ACCManager.Controls.Telemetry.RaceSessions;
 using ACCManager.Controls.Telemetry.RaceSessions.Plots;
 using ACCManager.Data;
@@ -15,11 +13,8 @@ using ACCManager.Data.ACC.Tracks;
 using ACCManager.Util;
 using LiteDB;
 using ScottPlot;
-using ScottPlot.Drawing.Colormaps;
-using ScottPlot.Styles;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -28,8 +23,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using static ACCManager.Data.ACC.Tracks.TrackNames;
-using static ACCManager.Data.SetupConverter;
 using TrackData = ACCManager.Data.ACC.Tracks.TrackNames.TrackData;
 
 namespace ACCManager.Controls
@@ -41,9 +34,6 @@ namespace ACCManager.Controls
     {
         public static RaceSessionBrowser Instance { get; private set; }
         private LiteDatabase CurrentDatabase;
-
-        private readonly IStyle DefaultPlotStyle = ScottPlot.Style.Black;
-        private readonly IPalette WheelPositionPallete = Palette.OneHalfDark;
 
         private int previousTelemetryComboSelection = -1;
 
@@ -58,7 +48,6 @@ namespace ACCManager.Controls
             listViewRaceSessions.SelectionChanged += (s, e) => LoadSession();
 
             gridTabHeaderLocalSession.MouseRightButtonUp += (s, e) => FindRaceWeekends();
-            textBlockMetricInfo.MouseLeftButtonUp += (s, e) => CloseTelemetry();
 
             RaceSessionTracker.Instance.OnRaceWeekendEnded += (s, e) => FindRaceWeekends();
 
@@ -300,6 +289,16 @@ namespace ACCManager.Controls
                             break;
                         }
                 }
+
+                ev.Row.PreviewMouseLeftButtonDown += (se, eve) =>
+                {
+                    if (ev.Row.IsSelected)
+                    {
+                        CloseTelemetry();
+                        ev.Row.IsSelected = false;
+                        eve.Handled = true;
+                    }
+                };
             };
 
             grid.Columns.Add(new DataGridTextColumn()
@@ -347,8 +346,12 @@ namespace ACCManager.Controls
 
             grid.SelectedCellsChanged += (s, e) =>
             {
-                DbLapData lapdata = (DbLapData)grid.SelectedItem;
-                CreateCharts(lapdata.Id);
+                if (grid.SelectedIndex != -1)
+                {
+                    DbLapData lapdata = (DbLapData)grid.SelectedItem;
+
+                    CreateCharts(lapdata.Id);
+                }
             };
 
             return grid;

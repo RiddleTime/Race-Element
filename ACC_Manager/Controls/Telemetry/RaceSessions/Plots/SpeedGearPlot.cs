@@ -55,13 +55,15 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
 
             var speeds = dict.Select(x => (double)x.Value.PhysicsData.Speed);
             double[] speedData = speeds.ToArray();
+            double minSpeed = speedData.Min();
             double maxSpeed = speedData.Max();
             double averageSpeed = speedData.Average();
 
             string fourSpaces = "".FillEnd(4, ' ');
             _textBlockMetrics.Text += $"Av. Gear: {averageGear:F2}{fourSpaces}";
-            _textBlockMetrics.Text += $"{fourSpaces}Av. Speed: {averageSpeed:F2} km/h";
-            _textBlockMetrics.Text += $"{fourSpaces}Top Speed: {maxSpeed:F2} km/h";
+            _textBlockMetrics.Text += $"{fourSpaces}Av. Speed: {averageSpeed:F3} km/h";
+            _textBlockMetrics.Text += $"{fourSpaces}Min Speed: {minSpeed:F3} km/h";
+            _textBlockMetrics.Text += $"{fourSpaces}Max Speed: {maxSpeed:F3} km/h";
 
             if (splines.Length == 0)
                 return wpfPlot;
@@ -76,7 +78,7 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             speedPlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(95, 0, 255, 0), lowerColor: System.Drawing.Color.Transparent);
             speedPlot.YAxisIndex = 1;
 
-            
+
             plot.SetOuterViewLimits(0, _trackData.TrackLength, -3, maxSpeed + 3, yAxisIndex: 1);
             plot.SetAxisLimits(0, _trackData.TrackLength, -3, maxSpeed + 3, yAxisIndex: 1);
 
