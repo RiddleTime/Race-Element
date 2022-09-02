@@ -71,6 +71,8 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             plot.SetAxisLimitsY(-5, 105);
 
             var axis2 = plot.AddAxis(Edge.Left, axisIndex: 2, title: "Inputs");
+            plot.SetOuterViewLimits(0, _trackData.TrackLength, -3, 103, yAxisIndex: 2);
+
             var gasPlot = plot.AddSignalXY(splines, gasDatas, color: System.Drawing.Color.Green, label: "Throttle");
             gasPlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(95, 0, 255, 0), lowerColor: System.Drawing.Color.Transparent);
             gasPlot.YAxisIndex = 2;
@@ -83,7 +85,6 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             steeringPlot.YAxisIndex = 0;
 
             plot.SetAxisLimits(xMin: 0, xMax: _trackData.TrackLength, yMin: -1.05 * _fullSteeringLock / 2, yMax: 1.05 * _fullSteeringLock / 2, yAxisIndex: 0);
-            plot.SetOuterViewLimits(0, _trackData.TrackLength, -3, 103, yAxisIndex: 1);
             plot.SetOuterViewLimits(0, _trackData.TrackLength, -1.05 * _fullSteeringLock / 2, 1.05 * _fullSteeringLock / 2, yAxisIndex: 0);
 
             plot.XLabel("Meters");
@@ -110,14 +111,14 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
                 (double mouseCoordsX, _) = wpfPlot.GetMouseCoordinates();
 
                 (double gasX, double gasY, int gasIndex) = gasPlot.GetPointNearestX(mouseCoordsX);
-                gasMarker.YAxisIndex = 1;
+                gasMarker.YAxisIndex = 2;
                 gasMarker.SetPoint(gasX, gasY);
                 gasMarker.IsVisible = true;
                 gasPlot.Label = $"Throttle: {gasDatas[gasIndex]:F3}";
 
 
                 (double brakeX, double brakeY, int brakeIndex) = brakePlot.GetPointNearestX(mouseCoordsX);
-                brakeMarker.YAxisIndex = 1;
+                brakeMarker.YAxisIndex = 2;
                 brakeMarker.SetPoint(brakeX, brakeY);
                 brakeMarker.IsVisible = true;
                 brakePlot.Label = $"Brake: {brakeDatas[brakeIndex]:F3}";

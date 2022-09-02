@@ -108,7 +108,7 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
                 (double mouseCoordsX, _) = wpfPlot.GetMouseCoordinates();
 
                 (double speedX, double speedY, int gasIndex) = speedPlot.GetPointNearestX(mouseCoordsX);
-                speedMarker.YAxisIndex = 1;
+                speedMarker.YAxisIndex = 2;
                 speedMarker.SetPoint(speedX, speedY);
                 speedMarker.IsVisible = true;
                 speedPlot.Label = $"Speed: {speedData[gasIndex]:F3}";
