@@ -452,6 +452,8 @@ namespace ACCManager.Controls
             overlay.pageGraphics = mem.ReadGraphicsPageFile();
             overlay.pageGraphics.NumberOfLaps = 30;
             overlay.pageGraphics.FuelXLap = 3.012f;
+            overlay.pageGraphics.SessionType = ACCSharedMemory.AcSessionType.AC_RACE;
+            overlay.pageGraphics.MandatoryPitDone = false;
 
             overlay.pagePhysics = mem.ReadPhysicsPageFile();
             overlay.pagePhysics.Fuel = 13.37f;
@@ -466,6 +468,7 @@ namespace ACCManager.Controls
             overlay.pageStatic.MaxFuel = 120f;
             overlay.pageStatic.MaxRpm = 9250;
             overlay.pageStatic.CarModel = "porsche_991ii_gt3_r";
+
 
             try
             {
