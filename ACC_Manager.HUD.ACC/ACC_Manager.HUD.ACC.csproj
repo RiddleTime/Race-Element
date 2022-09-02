@@ -92,7 +92,6 @@
     <Compile Include="Overlays\OverlayOversteerTrace\OversteerDataCollector.cs" />
     <Compile Include="Overlays\OverlayOversteerTrace\OversteerGraph.cs" />
     <Compile Include="Overlays\OverlayOversteerTrace\OversteerTraceOverlay.cs" />
-    <Compile Include="Overlays\OverlayTrackPosition\TrackPositionOverlay.cs" />
     <Compile Include="Overlays\OverlayTyreInfo\TyreInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayTrackInfo\TrackInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayWeather\WeatherOverlay.cs" />
