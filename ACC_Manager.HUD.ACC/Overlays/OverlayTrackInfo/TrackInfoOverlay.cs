@@ -49,9 +49,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
                 this.Height -= this._panel.FontHeight;
         }
 
-        public sealed override void BeforeStop()
-        {
-        }
+        public sealed override void BeforeStop() { }
 
         public sealed override void Render(Graphics g)
         {
