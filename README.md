@@ -4,8 +4,12 @@
 [![Discord](https://badgen.net/discord/members/26AAEW5mUq?icon=discord&color=5562ea&label=ACC%20Manager)](https://discord.gg/26AAEW5mUq)
 
 Provides tooling for Assetto Corsa Competizione.
+- HUDs
+- Telemetry
+- Setups
+- Liveries
+- Racing Tools
 
-All the data the software uses is provided by the game (ACC Shared Memory and Broadcast Socket).
 
 ### Requires .NET Framework 4.8
 [https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48)
