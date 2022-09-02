@@ -120,7 +120,14 @@ namespace ACCManager.Controls
                     {
                         CloseEventArgs args = (CloseEventArgs)e;
                         if (args.WasClean)
+                        {
                             Debug.WriteLine("Disconnected test connection.");
+                            if (args.Code == 4010)
+                            {
+                                MainWindow.Instance.ClearSnackbar();
+                                MainWindow.Instance.EnqueueSnackbarMessage($"Failed to make a connection to {streamSettings.StreamingSoftware}. It appears you are not running OBS WebSocket 4.9.1.");
+                            }
+                        }
                         else
                         {
                             MainWindow.Instance.ClearSnackbar();
@@ -136,8 +143,9 @@ namespace ACCManager.Controls
                     };
                     _obsWebSocket.Connect($"ws://{streamSettings.StreamingWebSocketIP}:{streamSettings.StreamingWebSocketPort}", streamSettings.StreamingWebSocketPassword);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    Debug.WriteLine(e);
                     MainWindow.Instance.ClearSnackbar();
                     MainWindow.Instance.EnqueueSnackbarMessage($"Failed to make a connection to OBS.");
                     Dispatcher.Invoke(() =>
