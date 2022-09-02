@@ -5,6 +5,7 @@ using ACCManager.Data.ACC.Database.Telemetry;
 using ACCManager.Data.ACC.Tracks;
 using ScottPlot;
 using ScottPlot.Plottable;
+using ScottPlot.Renderable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,13 +70,14 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             Plot plot = wpfPlot.Plot;
             plot.SetAxisLimitsY(-5, 105);
 
+            var axis2 = plot.AddAxis(Edge.Left, axisIndex: 2, title: "Inputs");
             var gasPlot = plot.AddSignalXY(splines, gasDatas, color: System.Drawing.Color.Green, label: "Throttle");
             gasPlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(95, 0, 255, 0), lowerColor: System.Drawing.Color.Transparent);
-            gasPlot.YAxisIndex = 1;
+            gasPlot.YAxisIndex = 2;
 
             var brakePlot = plot.AddSignalXY(splines, brakeDatas, color: System.Drawing.Color.Red, label: "Brake");
             brakePlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(140, 255, 0, 0), lowerColor: System.Drawing.Color.Transparent);
-            brakePlot.YAxisIndex = 1;
+            brakePlot.YAxisIndex = 2;
 
             var steeringPlot = plot.AddSignalXY(splines, steeringDatas, color: System.Drawing.Color.WhiteSmoke, label: "Steering");
             steeringPlot.YAxisIndex = 0;
@@ -86,10 +88,6 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
 
             plot.XLabel("Meters");
             plot.YLabel("Steering (Degrees)");
-
-            plot.YAxis2.Ticks(true);
-            plot.YAxis2.Label("Inputs");
-            plot.YAxis2.Edge = ScottPlot.Renderable.Edge.Left;
 
             plot.Palette = new ScottPlot.Palettes.PolarNight();
 

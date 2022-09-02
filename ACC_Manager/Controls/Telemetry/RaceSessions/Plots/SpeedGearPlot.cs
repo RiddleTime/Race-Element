@@ -2,6 +2,7 @@
 using ACCManager.Data.ACC.Database.Telemetry;
 using ScottPlot;
 using ScottPlot.Plottable;
+using ScottPlot.Renderable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,26 +72,23 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             Plot plot = wpfPlot.Plot;
             plot.SetAxisLimitsY(-5, 105);
 
+            // gearing axis
             var gearingPlot = plot.AddScatterStep(splines, gearDatas, color: System.Drawing.Color.OrangeRed, label: "Gear");
             gearingPlot.YAxisIndex = 0;
-
-            var speedPlot = plot.AddSignalXY(splines, speedData, color: System.Drawing.Color.White, label: "Speed");
-            speedPlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(95, 0, 255, 0), lowerColor: System.Drawing.Color.Transparent);
-            speedPlot.YAxisIndex = 1;
-
-
-            plot.SetOuterViewLimits(0, _trackData.TrackLength, -3, maxSpeed + 3, yAxisIndex: 1);
-            plot.SetAxisLimits(0, _trackData.TrackLength, -3, maxSpeed + 3, yAxisIndex: 1);
-
             plot.SetAxisLimits(xMin: 0, xMax: _trackData.TrackLength, yMin: 0, yMax: 1.05 * maxGear, yAxisIndex: 0);
             plot.SetOuterViewLimits(0, _trackData.TrackLength, 0, 1.05 * maxGear, yAxisIndex: 0);
 
+            // speed axis
+            plot.AddAxis(Edge.Left, axisIndex: 2, title: "Speed (km/h)");
+            var speedPlot = plot.AddSignalXY(splines, speedData, color: System.Drawing.Color.White, label: "Speed");
+            speedPlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(95, 0, 255, 0), lowerColor: System.Drawing.Color.Transparent);
+            speedPlot.YAxisIndex = 2;
+
+            plot.SetOuterViewLimits(0, _trackData.TrackLength, -3, maxSpeed + 3, yAxisIndex: 2);
+            plot.SetAxisLimits(0, _trackData.TrackLength, -3, maxSpeed + 3, yAxisIndex: 2);
+
             plot.XLabel("Meters");
             plot.YLabel("Gear");
-
-            plot.YAxis2.Ticks(true);
-            plot.YAxis2.Label("Speed (km/h)");
-            plot.YAxis2.Edge = ScottPlot.Renderable.Edge.Left;
 
             plot.Palette = new ScottPlot.Palettes.PolarNight();
 
