@@ -110,6 +110,9 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
 
             #endregion
 
+            wpfPlot.AxesChanged += PlotUtil.WpfPlot_AxesChanged;
+            if (PlotUtil.AxisLimitsCustom)
+                plot.SetAxisLimits(xAxisIndex: 0, xMin: PlotUtil.AxisLimits.XMin, xMax: PlotUtil.AxisLimits.XMax);
 
             PlotUtil.SetDefaultPlotStyles(ref plot);
 

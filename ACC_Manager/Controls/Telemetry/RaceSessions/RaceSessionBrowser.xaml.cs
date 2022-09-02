@@ -146,6 +146,9 @@ namespace ACCManager.Controls
             Grid.SetRowSpan(gridSessionViewer, 2);
 
             transitionContentPlots.Visibility = Visibility.Collapsed;
+
+            PlotUtil.AxisLimitsCustom = false;
+
         }
 
         private Guid GetSelectedTrack()

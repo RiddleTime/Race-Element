@@ -3,6 +3,7 @@ using ScottPlot.Plottable;
 using ScottPlot.Styles;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,8 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
     {
         private static readonly IStyle DefaultPlotStyle = Style.Black;
         public static readonly IPalette WheelPositionPallete = Palette.OneHalfDark;
+
+
 
         public static void SetDefaultPlotStyles(ref Plot plot)
         {
@@ -56,6 +59,17 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             marker.MarkerLineWidth = 2;
             marker.MarkerShape = ScottPlot.MarkerShape.openCircle;
             marker.IsVisible = false;
+        }
+
+        public static AxisLimits AxisLimits;
+        public static bool AxisLimitsCustom { get; internal set; } = false;
+
+        public static void WpfPlot_AxesChanged(object sender, EventArgs e)
+        {
+            WpfPlot wpfPlot = (WpfPlot)sender;
+            AxisLimits = wpfPlot.Plot.GetAxisLimits(xAxisIndex: 0);
+            AxisLimitsCustom = true;
+            Debug.WriteLine($"XMin: {AxisLimits.XMin}, XMax: {AxisLimits.XMax}, XCenter: {AxisLimits.XCenter}");
         }
     }
 }
