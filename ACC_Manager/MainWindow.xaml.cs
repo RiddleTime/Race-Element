@@ -168,6 +168,8 @@ namespace ACCManager
             ACCTrackerDispose.Dispose();
             HudOptions.Instance.DisposeKeyboardHooks();
             SteeringLockTracker.Instance.Dispose();
+
+            Environment.Exit(0);
         }
 
         private void CurrentDomain_ProcessExit(object sender, EventArgs e)
@@ -177,6 +179,8 @@ namespace ACCManager
             ACCTrackerDispose.Dispose();
             HudOptions.Instance.DisposeKeyboardHooks();
             SteeringLockTracker.Instance.Dispose();
+
+            Environment.Exit(0);
         }
 
         private void MainWindow_StateChanged(object sender, EventArgs e)
