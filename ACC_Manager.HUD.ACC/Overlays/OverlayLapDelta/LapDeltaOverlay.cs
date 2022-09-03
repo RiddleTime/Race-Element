@@ -24,6 +24,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             [ToolTip("Displays the time for each sector, green colored sectors are personal best.")]
             public bool ShowSectors { get; set; } = true;
 
+            [ToolTip("Displays the last lap time.")]
+            public bool ShowLastLap { get; set; } = true;
+
+            [ToolTip("Displays the best lap time.")]
+            public bool ShowBestLap { get; set; } = true;
+
             [ToolTip("Displays the potential best lap time based on your fastest sector times.")]
             public bool ShowPotentialBest { get; set; } = true;
 
@@ -46,7 +52,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         {
             _table = new InfoTable(10, new int[] { 85, 83 }) { Y = 17 };
             this.Width = _overlayWidth + 1;
-            this.Height = _table.FontHeight * 5 + 2 + 4;
+            this.Height = _table.FontHeight * 7 + 2 + 4;
             RefreshRateHz = 10;
         }
 
@@ -56,6 +62,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
                 this.Height -= this._table.FontHeight * 3;
 
             if (!this._config.ShowPotentialBest)
+                this.Height -= this._table.FontHeight;
+
+            if (!this._config.ShowLastLap)
+                this.Height -= this._table.FontHeight;
+
+            if (!this._config.ShowBestLap)
                 this.Height -= this._table.FontHeight;
 
             LapTracker.Instance.LapFinished += Collector_LapFinished;
@@ -87,6 +99,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
             if (this._config.ShowSectors)
                 AddSectorLines();
+
+            if (this._config.ShowLastLap)
+                AddLastLap();
+
+            if (this._config.ShowBestLap)
+                AddBestLap();
 
             if (this._config.ShowPotentialBest)
                 AddPotentialBest();
@@ -175,6 +193,38 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
                 _table.AddRow("S3 ", rowSector3, new Color[] { LapTracker.Instance.Laps.IsSectorFastest(3, lap.Sector3) ? Color.LimeGreen : Color.White, Color.Orange });
             else
                 _table.AddRow("S3 ", rowSector3, new Color[] { Color.White });
+        }
+
+        private void AddLastLap()
+        {
+            string[] LastLapValues = new string[2];
+
+            int lastLap = LapTracker.Instance.Laps.GetLastLapTime();
+            if (lastLap == -1)
+                LastLapValues[0] = $"--:--.---";
+            else
+            {
+                TimeSpan best = TimeSpan.FromMilliseconds(lastLap);
+                LastLapValues[0] = $"{best:mm\\:ss\\:fff}";
+            }
+
+            this._table.AddRow("Last", LastLapValues);
+        }
+
+        private void AddBestLap()
+        {
+            string[] bestLapValues = new string[2];
+
+            int bestLap = LapTracker.Instance.Laps.GetBestLapTime();
+            if (bestLap == -1)
+                bestLapValues[0] = $"--:--.---";
+            else
+            {
+                TimeSpan best = TimeSpan.FromMilliseconds(bestLap);
+                bestLapValues[0] = $"{best:mm\\:ss\\:fff}";
+            }
+
+            this._table.AddRow("Best", bestLapValues);
         }
 
         public sealed override bool ShouldRender()
