@@ -10,6 +10,8 @@ Provides tooling for Assetto Corsa Competizione.
 - Liveries
 - Racing Tools
 
+[Download Latest Release](https://github.com/RiddleTime/ACC-Manager/releases/latest)
+
 
 ### Requires .NET Framework 4.8
 [https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48)
