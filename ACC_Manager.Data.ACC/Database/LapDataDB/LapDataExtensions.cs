@@ -212,6 +212,36 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
             return fastest;
         }
 
+        public static int GetLastLapTime(this Dictionary<int, DbLapData> laps, bool onlyValidLaps = false)
+        {
+            if (laps.Count == 0) return -1;
+
+            int lastLapIndex = -1;
+
+            foreach (DbLapData lap in laps.Select(x => x.Value))
+            {
+                if (onlyValidLaps && !lap.IsValid)
+                {
+                    continue;
+                }
+
+                if (lastLapIndex < lap.Index)
+                    lastLapIndex = lap.Index;
+            }
+
+            return laps[lastLapIndex].Time;
+        }
+
+        public static int GetBestLapTime(this Dictionary<int, DbLapData> laps)
+        {
+            if (laps.Count == 0) return -1;
+
+            int idx = GetFastestLapIndex(laps);
+            laps.TryGetValue(idx, out DbLapData fastest);
+
+            return fastest.Time;
+        }
+
         #endregion
     }
 }
