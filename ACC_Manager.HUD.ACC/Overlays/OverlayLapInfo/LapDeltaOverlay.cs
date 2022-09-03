@@ -4,22 +4,17 @@ using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.OverlayUtil;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Text;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 {
-    [Overlay(Name = "Lap Delta", Version = 1.00, OverlayType = OverlayType.Release,
+    [Overlay(Name = "Lap Info", Version = 1.00, OverlayType = OverlayType.Release,
         Description = "A panel with a bar showing the current delta. Optionally showing the sector times and the potential best.")]
-    internal sealed class LapDeltaOverlay : AbstractOverlay
+    internal sealed class LapInfoOverlay : AbstractOverlay
     {
-        private readonly LapDeltaConfig _config = new LapDeltaConfig();
-        private class LapDeltaConfig : OverlayConfiguration
+        private readonly LapInfoConfig _config = new LapInfoConfig();
+        private class LapInfoConfig : OverlayConfiguration
         {
             [ToolTip("Displays the time for each sector, green colored sectors are personal best.")]
             public bool ShowSectors { get; set; } = true;
@@ -37,7 +32,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             [IntRange(1, 5, 1)]
             public int MaxDelta { get; set; } = 2;
 
-            public LapDeltaConfig() : base()
+            public LapInfoConfig() : base()
             {
                 this.AllowRescale = true;
             }
@@ -48,7 +43,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
         private DbLapData _lastLap = null;
 
-        public LapDeltaOverlay(Rectangle rectangle) : base(rectangle, "Lap Delta Overlay")
+        public LapInfoOverlay(Rectangle rectangle) : base(rectangle, "Lap Info Overlay")
         {
             _table = new InfoTable(10, new int[] { 85, 83 }) { Y = 17 };
             this.Width = _overlayWidth + 1;
