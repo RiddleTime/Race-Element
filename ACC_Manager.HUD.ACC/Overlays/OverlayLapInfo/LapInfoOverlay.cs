@@ -10,7 +10,7 @@ using System.Drawing.Text;
 namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 {
     [Overlay(Name = "Lap Info", Version = 1.00, OverlayType = OverlayType.Release,
-        Description = "A panel with a bar showing the current delta. Optionally showing the sector times and the potential best.")]
+        Description = "A panel with a bar showing the current delta.\nOptionally showing the sector times, last lap, best lap and the potential best.")]
     internal sealed class LapInfoOverlay : AbstractOverlay
     {
         private readonly LapInfoConfig _config = new LapInfoConfig();
