@@ -41,7 +41,7 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
         {
             plot.Configuration.DoubleClickBenchmark = false;
             plot.Configuration.LockVerticalAxis = true;
-            //plot.Configuration.Quality = ScottPlot.Control.QualityMode.High;
+            plot.Configuration.Quality = ScottPlot.Control.QualityMode.LowWhileDragging;
             plot.Configuration.MiddleClickDragZoom = false;
             plot.Configuration.MiddleClickAutoAxis = true;
             plot.Configuration.RightClickDragZoom = false;
@@ -69,7 +69,7 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             WpfPlot wpfPlot = (WpfPlot)sender;
             AxisLimits = wpfPlot.Plot.GetAxisLimits(xAxisIndex: 0);
             AxisLimitsCustom = true;
-            Debug.WriteLine($"XMin: {AxisLimits.XMin}, XMax: {AxisLimits.XMax}, XCenter: {AxisLimits.XCenter}");
+            //Debug.WriteLine($"XMin: {AxisLimits.XMin}, XMax: {AxisLimits.XMax}, XCenter: {AxisLimits.XCenter}");
         }
     }
 }

@@ -62,6 +62,7 @@ namespace ACCManager.Controls
             transitionContentPlots.Visibility = Visibility.Collapsed;
 
             Grid.SetRowSpan(gridSessionViewer, 2);
+            Grid.SetRowSpan(tabCurrentWeekend, 2);
 
             ThreadPool.QueueUserWorkItem(x =>
             {
@@ -144,6 +145,7 @@ namespace ACCManager.Controls
             gridSessionLaps.Children.Add(GetLapDataGrid(laps));
 
             Grid.SetRowSpan(gridSessionViewer, 2);
+            Grid.SetRowSpan(tabCurrentWeekend, 2);
 
             transitionContentPlots.Visibility = Visibility.Collapsed;
 
@@ -378,11 +380,13 @@ namespace ACCManager.Controls
             if (telemetry == null)
             {
                 Grid.SetRowSpan(gridSessionViewer, 2);
+                Grid.SetRowSpan(tabCurrentWeekend, 2);
                 transitionContentPlots.Visibility = Visibility.Collapsed;
             }
             else
             {
                 Grid.SetRowSpan(gridSessionViewer, 1);
+                Grid.SetRowSpan(tabCurrentWeekend, 1);
                 transitionContentPlots.Visibility = Visibility.Visible;
 
                 if (_currentData != null)
@@ -395,8 +399,8 @@ namespace ACCManager.Controls
                 int fullSteeringLock = SteeringLock.Get(CarDataCollection.GetCarData(CurrentDatabase, GetSelectedCar()).ParseName);
 
                 Dictionary<string, Plotter> plots = new Dictionary<string, Plotter>();
-                plots.Add("Inputs", (g, d) => new InputsPlot(trackData, ref textBlockMetricInfo, fullSteeringLock).Create(g, d));
                 plots.Add("Speed/Gear", (g, d) => new SpeedGearPlot(trackData, ref textBlockMetricInfo).Create(g, d));
+                plots.Add("Inputs", (g, d) => new InputsPlot(trackData, ref textBlockMetricInfo, fullSteeringLock).Create(g, d));
                 plots.Add("Wheel Slip", (g, d) => new WheelSlipPlot(trackData, ref textBlockMetricInfo).Create(g, d));
                 plots.Add("Tyre Temperatures", (g, d) => new TyreTempsPlot(trackData, ref textBlockMetricInfo).Create(g, d));
                 plots.Add("Tyre Pressures", (g, d) => new TyrePressurePlot(trackData, ref textBlockMetricInfo).Create(g, d));

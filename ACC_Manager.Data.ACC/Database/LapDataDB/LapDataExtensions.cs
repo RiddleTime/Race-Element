@@ -239,6 +239,9 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
             int idx = GetFastestLapIndex(laps);
             laps.TryGetValue(idx, out DbLapData fastest);
 
+            if (fastest == null)
+                return -1;
+
             return fastest.Time;
         }
 

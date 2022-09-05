@@ -15,12 +15,11 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="225"/>
+            <RowDefinition Height="275"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <TabControl Grid.Column="0" TabStripPlacement="Top">
-
+        <TabControl x:Name="tabControlWeekends" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" TabStripPlacement="Top">
             <TabItem Height="40">
                 <TabItem.Header>
                     <Grid x:Name="gridTabHeaderLocalSession">
