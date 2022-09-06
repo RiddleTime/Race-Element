@@ -31,7 +31,6 @@ namespace ACCManager.Data.ACC.Tracker
 
         private OBSWebsocket _obsWebSocket;
         private SlobsPipeClient _SlobsClient;
-        private ACCSharedMemory _sharedMemory;
 
         private bool _toggle = true;
 
@@ -59,16 +58,13 @@ namespace ACCManager.Data.ACC.Tracker
                     _SlobsClient = new SlobsPipeClient();
                 }
 
-                _sharedMemory = new ACCSharedMemory();
-
-
                 IsTracking = true;
                 new Thread(() =>
                 {
                     while (IsTracking)
                     {
                         Thread.Sleep(50);
-                        var pageGraphics = _sharedMemory.ReadGraphicsPageFile();
+                        var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile();
 
                         if (pageGraphics.Status != ACCSharedMemory.AcStatus.AC_OFF)
                             if (pageGraphics.IsSetupMenuVisible != _toggle)

@@ -157,11 +157,9 @@ namespace ACCManager.HUD.Overlay.Internal
                     BroadcastTracker.Instance.OnRealTimeLocalCarUpdate += BroadCastRealTimeLocalCarUpdateChanged;
                 }
 
-                ACCSharedMemory mem = new ACCSharedMemory();
-
-                pageStatic = mem.ReadStaticPageFile();
-                pageGraphics = mem.ReadGraphicsPageFile();
-                pagePhysics = mem.ReadPhysicsPageFile();
+                pageStatic = ACCSharedMemory.Instance.ReadStaticPageFile();
+                pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile();
+                pagePhysics = ACCSharedMemory.Instance.ReadPhysicsPageFile();
 
                 try
                 {

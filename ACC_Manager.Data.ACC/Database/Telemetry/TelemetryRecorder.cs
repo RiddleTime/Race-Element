@@ -33,9 +33,8 @@ namespace ACCManager.Data.ACC.Database.Telemetry
             LapTracker.Instance.LapFinished += OnLapFinished;
             RaceSessionTracker.Instance.OnSessionFinished += OnSessionFinished;
 
-            var sharedMem = new ACCSharedMemory();
-            _pageGraphics = sharedMem.ReadGraphicsPageFile();
-            _pagePhysics = sharedMem.ReadPhysicsPageFile();
+            _pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile();
+            _pagePhysics = ACCSharedMemory.Instance.ReadPhysicsPageFile();
         }
 
         private void OnSessionFinished(object sender, SessionData.DbRaceSession e)
@@ -102,14 +101,13 @@ namespace ACCManager.Data.ACC.Database.Telemetry
 
                          try
                          {
+                             bool hasLapData = _lapData.Any();
+                             bool isPointFurther = false;
+                             if (hasLapData)
+                                 isPointFurther = _lapData.Last().Value.SplinePosition < _pageGraphics.NormalizedCarPosition;
+
                              if (_pagePhysics.BrakeBias > 0)
                              { // prevent telemetry point recording when in pits or game paused)
-
-                                 bool hasLapData = _lapData.Any();
-                                 bool isPointFurther = false;
-                                 if (hasLapData)
-                                     isPointFurther = _lapData.Last().Value.SplinePosition < _pageGraphics.NormalizedCarPosition;
-
                                  if (!hasLapData || isPointFurther)
                                      lock (_lapData)
                                      {
@@ -141,6 +139,14 @@ namespace ACCManager.Data.ACC.Database.Telemetry
                                              });
                                      }
                              }
+                             else
+                             {
+                                 if (hasLapData)
+                                     isPointFurther = _lapData.Last().Value.SplinePosition < _pageGraphics.NormalizedCarPosition;
+
+                             }
+
+                             Trace.WriteLine($"BB > 0: {_pagePhysics.BrakeBias > 0}, hasLapData: {hasLapData}, pointFurther: {isPointFurther}");
                          }
                          catch (Exception ex)
                          {

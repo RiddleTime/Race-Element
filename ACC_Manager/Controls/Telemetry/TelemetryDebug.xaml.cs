@@ -28,8 +28,6 @@ namespace ACCManager.Controls
     {
         static TelemetryDebug Instance;
 
-        ACCSharedMemory sharedMemory = new ACCSharedMemory();
-
         public TelemetryDebug()
         {
             InitializeComponent();
@@ -50,7 +48,7 @@ namespace ACCManager.Controls
         {
             StackPanel stacker = new StackPanel() { Orientation = Orientation.Vertical };
 
-            SPageFileStatic pageStatic = sharedMemory.ReadStaticPageFile();
+            SPageFileStatic pageStatic = ACCSharedMemory.Instance.ReadStaticPageFile();
             FieldInfo[] members = pageStatic.GetType().GetFields();
             foreach (FieldInfo member in members)
             {
@@ -89,7 +87,7 @@ namespace ACCManager.Controls
         {
             StackPanel stacker = new StackPanel() { Orientation = Orientation.Vertical };
 
-            SPageFilePhysics pageStatic = sharedMemory.ReadPhysicsPageFile();
+            SPageFilePhysics pageStatic = ACCSharedMemory.Instance.ReadPhysicsPageFile();
             FieldInfo[] members = pageStatic.GetType().GetFields();
             foreach (FieldInfo member in members)
             {
@@ -125,7 +123,7 @@ namespace ACCManager.Controls
         {
             StackPanel stacker = new StackPanel() { Orientation = Orientation.Vertical };
 
-            SPageFileGraphic pageStatic = sharedMemory.ReadGraphicsPageFile();
+            SPageFileGraphic pageStatic = ACCSharedMemory.Instance.ReadGraphicsPageFile();
             FieldInfo[] members = pageStatic.GetType().GetFields();
             foreach (FieldInfo member in members)
             {

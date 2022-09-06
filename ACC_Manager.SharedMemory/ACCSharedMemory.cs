@@ -22,6 +22,29 @@ namespace ACCManager
         private readonly string graphicsMap = "Local\\acpmf_graphics";
         private readonly string staticMap = "Local\\acpmf_static";
 
+        public SPageFileStatic PageFileStatic { get; private set; }
+        public SPageFilePhysics PageFilePhysics { get; private set; }
+        public SPageFileGraphic PageFileGraphic { get; private set; }
+
+        private static ACCSharedMemory _instance;
+        public static ACCSharedMemory Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new ACCSharedMemory();
+
+                return _instance;
+            }
+        }
+
+        private ACCSharedMemory()
+        {
+            ReadStaticPageFile();
+            ReadPhysicsPageFile();
+            ReadGraphicsPageFile();
+        }
+
         public enum AcStatus : int
         {
             AC_OFF,
@@ -667,22 +690,22 @@ namespace ACCManager
         public SPageFileGraphic ReadGraphicsPageFile()
         {
             var mappedFile = MemoryMappedFile.CreateOrOpen(graphicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite);
-            SPageFileGraphic data = StructExtension.ToStruct<SPageFileGraphic>(mappedFile, SPageFileGraphic.Buffer);
-            return data;
+            PageFileGraphic = StructExtension.ToStruct<SPageFileGraphic>(mappedFile, SPageFileGraphic.Buffer);
+            return PageFileGraphic;
         }
 
         public SPageFileStatic ReadStaticPageFile()
         {
             var mappedFile = MemoryMappedFile.CreateOrOpen(staticMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite);
-            SPageFileStatic data = StructExtension.ToStruct<SPageFileStatic>(mappedFile, SPageFileStatic.Buffer);
-            return data;
+            PageFileStatic = StructExtension.ToStruct<SPageFileStatic>(mappedFile, SPageFileStatic.Buffer);
+            return PageFileStatic;
         }
 
         public SPageFilePhysics ReadPhysicsPageFile()
         {
             var mappedFile = MemoryMappedFile.CreateOrOpen(physicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite);
-            SPageFilePhysics data = StructExtension.ToStruct<SPageFilePhysics>(mappedFile, SPageFilePhysics.Buffer);
-            return data;
+            PageFilePhysics = StructExtension.ToStruct<SPageFilePhysics>(mappedFile, SPageFilePhysics.Buffer);
+            return PageFilePhysics;
         }
     }
 }

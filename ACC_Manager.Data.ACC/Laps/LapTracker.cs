@@ -25,7 +25,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
         }
 
         private bool IsTracking = false;
-        private ACCSharedMemory sharedMemory;
+        
         private int CurrentSector = 0;
 
         public Dictionary<int, DbLapData> Laps = new Dictionary<int, DbLapData>();
@@ -35,9 +35,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
 
         private LapTracker()
         {
-            sharedMemory = new ACCSharedMemory();
-
-            if (!IsTracking)
+                        if (!IsTracking)
                 this.Start();
 
             BroadcastTracker.Instance.OnRealTimeLocalCarUpdate += Instance_OnRealTimeCarUpdate;
@@ -48,12 +46,12 @@ namespace ACCManager.Data.ACC.Tracker.Laps
         private void Instance_OnNewSessionStarted(object sender, Database.SessionData.DbRaceSession e)
         {
             Laps.Clear();
-            CurrentLap = new DbLapData() { Index = sharedMemory.ReadGraphicsPageFile().CompletedLaps + 1 };
+            CurrentLap = new DbLapData() { Index = ACCSharedMemory.Instance.ReadGraphicsPageFile().CompletedLaps + 1 };
         }
 
         private void Instance_OnACSessionTypeChanged(object sender, ACCSharedMemory.AcSessionType e)
         {
-            var pageGraphics = sharedMemory.ReadGraphicsPageFile();
+            var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile();
 
             lock (Laps)
                 Laps.Clear();
@@ -108,7 +106,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                                                 Laps[CurrentLap.Index - 1].Id = Guid.NewGuid();
                                                 Laps[CurrentLap.Index - 1].RaceSessionId = RaceSessionTracker.Instance.CurrentSession.Id;
                                                 Laps[CurrentLap.Index - 1].UtcCompleted = DateTime.UtcNow;
-                                                Laps[CurrentLap.Index - 1].FuelInTank = new ACCSharedMemory().ReadPhysicsPageFile().Fuel;
+                                                Laps[CurrentLap.Index - 1].FuelInTank = ACCSharedMemory.Instance.ReadPhysicsPageFile().Fuel;
                                                 LapDataCollection.Insert(Laps[CurrentLap.Index - 1]);
 
                                                 Trace.WriteLine($"{Laps[CurrentLap.Index - 1]}");
@@ -141,7 +139,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                     {
                         Thread.Sleep(1000 / 10);
 
-                        var pageGraphics = sharedMemory.ReadGraphicsPageFile();
+                        var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile();
 
                         if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF)
                         {
@@ -176,7 +174,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                         if (CurrentLap.Index - 1 != pageGraphics.CompletedLaps && pageGraphics.LastTimeMs != int.MaxValue)
                         {
                             CurrentLap.Time = pageGraphics.LastTimeMs;
-                            CurrentLap.FuelUsage = (int)(sharedMemory.ReadGraphicsPageFile().FuelXLap * 1000);
+                            CurrentLap.FuelUsage = (int)(ACCSharedMemory.Instance.ReadGraphicsPageFile().FuelXLap * 1000);
 
                             if (CurrentLap.Sector1 != -1)
                             {

@@ -27,12 +27,11 @@ namespace ACCManager.Data.ACC.Tracker
         }
 
         private ACCUdpRemoteClient _client;
-        private readonly ACCSharedMemory _sharedMemory;
         public bool IsConnected { get; private set; }
 
         private BroadcastTracker()
         {
-            _sharedMemory = new ACCSharedMemory();
+
         }
 
         public event EventHandler<RealtimeUpdate> OnRealTimeUpdate;
@@ -94,7 +93,7 @@ namespace ACCManager.Data.ACC.Tracker
             {
                 OnRealTimeCarUpdate?.Invoke(this, e);
 
-                int localCarIndex = _sharedMemory.ReadGraphicsPageFile().PlayerCarID;
+                int localCarIndex = ACCSharedMemory.Instance.ReadGraphicsPageFile().PlayerCarID;
                 if (e.CarIndex == localCarIndex)
                     OnRealTimeLocalCarUpdate?.Invoke(this, e);
             };

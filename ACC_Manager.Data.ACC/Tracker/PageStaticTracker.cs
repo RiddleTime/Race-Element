@@ -27,20 +27,17 @@ namespace ACCManager.Data.ACC.Tracker
         private bool isTracking = false;
 
         private readonly Task trackingTask;
-        private readonly ACCSharedMemory sharedMemory;
         private SPageFileStatic _last = null;
 
         private PageStaticTracker()
         {
-            sharedMemory = new ACCSharedMemory();
-
             trackingTask = Task.Run(() =>
             {
                 isTracking = true;
                 while (isTracking)
                 {
                     Thread.Sleep(1);
-                    SPageFileStatic next = sharedMemory.ReadStaticPageFile();
+                    SPageFileStatic next = ACCSharedMemory.Instance.ReadStaticPageFile();
                     if (next != _last)
                         Tracker?.Invoke(this, next);
                 }

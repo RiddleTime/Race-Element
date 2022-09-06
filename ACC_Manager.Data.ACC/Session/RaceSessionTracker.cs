@@ -20,8 +20,7 @@ namespace ACCManager.Data.ACC.Session
     public class RaceSessionTracker
     {
         private bool _isTracking = false;
-        private ACCSharedMemory _sharedMemory;
-
+        
         private float _sessionTimeLeft;
 
         private AcSessionType _lastSessionType = AcSessionType.AC_UNKNOWN;
@@ -47,7 +46,7 @@ namespace ACCManager.Data.ACC.Session
         private RaceSessionTracker()
         {
             Debug.WriteLine("Started race session tracker.");
-            _sharedMemory = new ACCSharedMemory();
+        
             StartTracking();
             OnSessionIndexChanged += TryCreateNewSession;
             OnACSessionTypeChanged += TryCreateNewSession;
@@ -85,7 +84,7 @@ namespace ACCManager.Data.ACC.Session
                     RaceSessionCollection.Update(CurrentSession);
                 }
 
-                var staticPageFile = _sharedMemory.ReadStaticPageFile();
+                var staticPageFile = ACCSharedMemory.Instance.ReadStaticPageFile();
                 DbCarData carData = CarDataCollection.GetCarData(staticPageFile.CarModel);
                 DbTrackData trackData = TrackDataCollection.GetTrackData(staticPageFile.Track);
                 if (carData == null || trackData == null)
@@ -101,7 +100,7 @@ namespace ACCManager.Data.ACC.Session
                     TrackId = trackData.Id,
                     IsOnline = staticPageFile.isOnline
                 };
-                _sessionTimeLeft = _sharedMemory.ReadGraphicsPageFile().SessionTimeLeft;
+                _sessionTimeLeft = ACCSharedMemory.Instance.ReadGraphicsPageFile().SessionTimeLeft;
 
                 RaceSessionCollection.Insert(CurrentSession);
                 OnNewSessionStarted?.Invoke(this, CurrentSession);
@@ -141,7 +140,7 @@ namespace ACCManager.Data.ACC.Session
 
         private void CreateNewRaceWeekend()
         {
-            var pageStatic = _sharedMemory.ReadStaticPageFile();
+            var pageStatic = ACCSharedMemory.Instance.ReadStaticPageFile();
             RaceWeekendDatabase.CreateDatabase(pageStatic.Track, pageStatic.CarModel, DateTime.UtcNow);
             RaceWeekendCollection.Insert(new DbRaceWeekend() { Id = Guid.NewGuid(), UtcStart = DateTime.UtcNow });
         }
@@ -158,7 +157,7 @@ namespace ACCManager.Data.ACC.Session
                 {
                     Thread.Sleep(100);
 
-                    var pageGraphics = _sharedMemory.ReadGraphicsPageFile();
+                    var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile();
 
                     if (pageGraphics.Status != _lastAcStatus)
                     {

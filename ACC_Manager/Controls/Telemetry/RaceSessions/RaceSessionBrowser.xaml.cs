@@ -250,7 +250,6 @@ namespace ACCManager.Controls
             var data = laps.OrderByDescending(x => x.Key).Select(x => x.Value);
             DataGrid grid = new DataGrid()
             {
-                //Height = 550,
                 ItemsSource = data,
                 AutoGenerateColumns = false,
                 CanUserDeleteRows = false,

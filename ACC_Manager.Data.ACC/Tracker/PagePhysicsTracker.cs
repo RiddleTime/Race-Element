@@ -27,19 +27,16 @@ namespace ACCManager.Data.ACC.Tracker
         private bool isTracking = false;
 
         private readonly Task trackingTask;
-        private readonly ACCSharedMemory sharedMemory;
 
         private PagePhysicsTracker()
         {
-            sharedMemory = new ACCSharedMemory();
-
             trackingTask = Task.Run(() =>
             {
                 isTracking = true;
                 while (isTracking)
                 {
                     Thread.Sleep(1);
-                    Tracker?.Invoke(this, sharedMemory.ReadPhysicsPageFile());
+                    Tracker?.Invoke(this, ACCSharedMemory.Instance.ReadPhysicsPageFile());
                 }
             });
 

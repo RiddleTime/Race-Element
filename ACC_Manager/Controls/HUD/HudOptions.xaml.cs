@@ -448,14 +448,13 @@ namespace ACCManager.Controls
                 return;
             }
 
-            ACCSharedMemory mem = new ACCSharedMemory();
-            overlay.pageGraphics = mem.ReadGraphicsPageFile();
+            overlay.pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile();
             overlay.pageGraphics.NumberOfLaps = 30;
             overlay.pageGraphics.FuelXLap = 3.012f;
             overlay.pageGraphics.SessionType = ACCSharedMemory.AcSessionType.AC_RACE;
             overlay.pageGraphics.MandatoryPitDone = false;
 
-            overlay.pagePhysics = mem.ReadPhysicsPageFile();
+            overlay.pagePhysics = ACCSharedMemory.Instance.ReadPhysicsPageFile();
             overlay.pagePhysics.Fuel = 13.37f;
             overlay.pagePhysics.Rpms = 8500;
             overlay.pagePhysics.Gear = 3;
@@ -464,7 +463,7 @@ namespace ACCManager.Controls
             overlay.pagePhysics.PadLife = new float[] { 24f, 24f, 25f, 25f };
             overlay.pagePhysics.BrakeTemperature = new float[] { 300f, 250f, 450f, 460f };
 
-            overlay.pageStatic = mem.ReadStaticPageFile();
+            overlay.pageStatic = ACCSharedMemory.Instance.ReadStaticPageFile();
             overlay.pageStatic.MaxFuel = 120f;
             overlay.pageStatic.MaxRpm = 9250;
             overlay.pageStatic.CarModel = "porsche_991ii_gt3_r";
