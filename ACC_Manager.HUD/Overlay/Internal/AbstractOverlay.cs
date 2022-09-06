@@ -293,8 +293,6 @@ namespace ACCManager.HUD.Overlay.Internal
                         e.Graphics.SmoothingMode = previousSmoothingMode;
                         e.Graphics.TextRenderingHint = previousTextRenderHint;
                         e.Graphics.TextContrast = previousTextConstrast;
-
-
                         e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
                     }
                     catch (Exception ex)

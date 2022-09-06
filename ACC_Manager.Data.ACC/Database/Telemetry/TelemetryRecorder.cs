@@ -84,76 +84,71 @@ namespace ACCManager.Data.ACC.Database.Telemetry
 
             _isRunning = true;
             new Thread(x =>
-                 {
-                     LogWriter.WriteToLog("Starting recording loop");
-                     var interval = new TimeSpan(0, 0, 0, 0, IntervalMillis);
-                     var nextTick = DateTime.UtcNow + interval;
-                     while (_isRunning)
-                     {
-                         try
-                         {
-                             while (DateTime.UtcNow < nextTick)
-                                 Thread.Sleep(nextTick - DateTime.UtcNow);
-                         }
-                         catch { }
-                         nextTick += interval;
-                         long ticks = DateTime.UtcNow.Ticks;
+            {
+                LogWriter.WriteToLog("Starting recording loop");
+                var interval = new TimeSpan(0, 0, 0, 0, IntervalMillis);
+                var nextTick = DateTime.UtcNow + interval;
+                while (_isRunning)
+                {
+                    try
+                    {
+                        while (DateTime.UtcNow < nextTick)
+                            Thread.Sleep(nextTick - DateTime.UtcNow);
+                    }
+                    catch { }
+                    nextTick += interval;
+                    long ticks = DateTime.UtcNow.Ticks;
 
-                         try
-                         {
-                             bool hasLapData = _lapData.Any();
-                             bool isPointFurther = false;
-                             if (hasLapData)
-                                 isPointFurther = _lapData.Last().Value.SplinePosition < _pageGraphics.NormalizedCarPosition;
+                    try
+                    {
+                        bool hasLapData = _lapData.Any();
+                        bool isPointFurther = false;
+                        if (hasLapData)
+                            isPointFurther = _lapData.Last().Value.SplinePosition < _pageGraphics.NormalizedCarPosition;
 
-                             if (_pagePhysics.BrakeBias > 0)
-                             { // prevent telemetry point recording when in pits or game paused)
-                                 if (!hasLapData || isPointFurther)
-                                     lock (_lapData)
-                                     {
-                                         if (!_lapData.ContainsKey(ticks))
-                                             _lapData.Add(ticks, new TelemetryPoint()
-                                             {
-                                                 SplinePosition = _pageGraphics.NormalizedCarPosition,
-                                                 InputsData = new InputsData()
-                                                 {
-                                                     Gas = _pagePhysics.Gas,
-                                                     Brake = _pagePhysics.Brake,
-                                                     Gear = _pagePhysics.Gear,
-                                                     SteerAngle = _pagePhysics.SteerAngle
-                                                 },
-                                                 TyreData = new TyreData()
-                                                 {
-                                                     TyreCoreTemperature = _pagePhysics.TyreCoreTemperature,
-                                                     TyrePressure = _pagePhysics.WheelPressure,
-                                                 },
-                                                 BrakeData = new BrakeData()
-                                                 {
-                                                     BrakeTemperature = _pagePhysics.BrakeTemperature,
-                                                 },
-                                                 PhysicsData = new PhysicsData()
-                                                 {
-                                                     WheelSlip = _pagePhysics.WheelSlip,
-                                                     Speed = _pagePhysics.SpeedKmh
-                                                 }
-                                             });
-                                     }
-                             }
-                             else
-                             {
-                                 if (hasLapData)
-                                     isPointFurther = _lapData.Last().Value.SplinePosition < _pageGraphics.NormalizedCarPosition;
+                        if (!hasLapData || isPointFurther)
+                            lock (_lapData)
+                            {
+                                if (!_lapData.ContainsKey(ticks))
+                                    _lapData.Add(ticks, new TelemetryPoint()
+                                    {
+                                        SplinePosition = _pageGraphics.NormalizedCarPosition,
+                                        InputsData = new InputsData()
+                                        {
+                                            Gas = _pagePhysics.Gas,
+                                            Brake = _pagePhysics.Brake,
+                                            Gear = _pagePhysics.Gear,
+                                            SteerAngle = _pagePhysics.SteerAngle
+                                        },
+                                        TyreData = new TyreData()
+                                        {
+                                            TyreCoreTemperature = _pagePhysics.TyreCoreTemperature,
+                                            TyrePressure = _pagePhysics.WheelPressure,
+                                        },
+                                        BrakeData = new BrakeData()
+                                        {
+                                            BrakeTemperature = _pagePhysics.BrakeTemperature,
+                                        },
+                                        PhysicsData = new PhysicsData()
+                                        {
+                                            WheelSlip = _pagePhysics.WheelSlip,
+                                            Speed = _pagePhysics.SpeedKmh,
+                                        }
+                                    });
+                            }
+                        else
+                        {
+                            if (hasLapData)
+                                isPointFurther = _lapData.Last().Value.SplinePosition < _pageGraphics.NormalizedCarPosition;
 
-                             }
-
-                             Trace.WriteLine($"BB > 0: {_pagePhysics.BrakeBias > 0}, hasLapData: {hasLapData}, pointFurther: {isPointFurther}");
-                         }
-                         catch (Exception ex)
-                         {
-                             LogWriter.WriteToLog(ex);
-                         }
-                     }
-                 }).Start();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        LogWriter.WriteToLog(ex);
+                    }
+                }
+            }).Start();
         }
 
         public void Stop()
