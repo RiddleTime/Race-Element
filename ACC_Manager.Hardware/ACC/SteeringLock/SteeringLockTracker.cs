@@ -57,7 +57,7 @@ namespace ACCManager.Hardware.ACC.SteeringLock
 
                     try
                     {
-                        if (ACCSharedMemory.Instance.ReadGraphicsPageFile().Status != ACCSharedMemory.AcStatus.AC_OFF)
+                        if (ACCSharedMemory.Instance.ReadGraphicsPageFile(true).Status != ACCSharedMemory.AcStatus.AC_OFF)
                         {
                             SetHardwareLock();
                         }
@@ -80,7 +80,7 @@ namespace ACCManager.Hardware.ACC.SteeringLock
 
         private void SetHardwareLock()
         {
-            string currentModel = ACCSharedMemory.Instance.ReadStaticPageFile().CarModel;
+            string currentModel = ACCSharedMemory.Instance.ReadStaticPageFile(true).CarModel;
             if (_lastCar == currentModel) return;
 
             // car has changed, if we have no wheel, try to re-detect
@@ -91,7 +91,7 @@ namespace ACCManager.Hardware.ACC.SteeringLock
 
             ResetRotation();
             int rotation = Data.ACC.Cars.SteeringLock.Get(_lastCar);
-            
+
             Trace.WriteLine($"Set wheelbase rotation for {_lastCar} to {rotation}");
 
             if (!_wheel.Apply(rotation, false, out _lastRotation))

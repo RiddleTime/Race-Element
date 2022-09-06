@@ -33,8 +33,8 @@ namespace ACCManager.Data.ACC.Database.Telemetry
             LapTracker.Instance.LapFinished += OnLapFinished;
             RaceSessionTracker.Instance.OnSessionFinished += OnSessionFinished;
 
-            _pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile();
-            _pagePhysics = ACCSharedMemory.Instance.ReadPhysicsPageFile();
+            _pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
+            _pagePhysics = ACCSharedMemory.Instance.ReadPhysicsPageFile(true);
         }
 
         private void OnSessionFinished(object sender, SessionData.DbRaceSession e)

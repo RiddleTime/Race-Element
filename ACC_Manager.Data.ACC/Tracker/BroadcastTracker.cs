@@ -93,7 +93,7 @@ namespace ACCManager.Data.ACC.Tracker
             {
                 OnRealTimeCarUpdate?.Invoke(this, e);
 
-                int localCarIndex = ACCSharedMemory.Instance.ReadGraphicsPageFile().PlayerCarID;
+                int localCarIndex = ACCSharedMemory.Instance.ReadGraphicsPageFile(true).PlayerCarID;
                 if (e.CarIndex == localCarIndex)
                     OnRealTimeLocalCarUpdate?.Invoke(this, e);
             };

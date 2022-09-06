@@ -64,7 +64,7 @@ namespace ACCManager.Controls
         {
             try
             {
-                var memoryMap = ACCSharedMemory.Instance.ReadGraphicsPageFile();
+                var memoryMap = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
 
                 if (memoryMap.Status == ACCSharedMemory.AcStatus.AC_OFF)
                 {

@@ -67,7 +67,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Weather
                     {
                         Thread.Sleep(1000 / 10);
 
-                        var graphicsPage = ACCSharedMemory.Instance.ReadGraphicsPageFile();
+                        var graphicsPage = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
 
 
                         var newWeather = new WeatherInfo()

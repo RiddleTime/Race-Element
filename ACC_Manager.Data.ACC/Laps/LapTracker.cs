@@ -46,12 +46,12 @@ namespace ACCManager.Data.ACC.Tracker.Laps
         private void Instance_OnNewSessionStarted(object sender, Database.SessionData.DbRaceSession e)
         {
             Laps.Clear();
-            CurrentLap = new DbLapData() { Index = ACCSharedMemory.Instance.ReadGraphicsPageFile().CompletedLaps + 1 };
+            CurrentLap = new DbLapData() { Index = ACCSharedMemory.Instance.ReadGraphicsPageFile(true).CompletedLaps + 1 };
         }
 
         private void Instance_OnACSessionTypeChanged(object sender, ACCSharedMemory.AcSessionType e)
         {
-            var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile();
+            var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
 
             lock (Laps)
                 Laps.Clear();
@@ -139,7 +139,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                     {
                         Thread.Sleep(1000 / 10);
 
-                        var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile();
+                        var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
 
                         if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF)
                         {

@@ -64,7 +64,7 @@ namespace ACCManager.Data.ACC.Tracker
                     while (IsTracking)
                     {
                         Thread.Sleep(50);
-                        var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile();
+                        var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
 
                         if (pageGraphics.Status != ACCSharedMemory.AcStatus.AC_OFF)
                             if (pageGraphics.IsSetupMenuVisible != _toggle)

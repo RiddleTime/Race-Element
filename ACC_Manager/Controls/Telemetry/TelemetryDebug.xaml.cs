@@ -48,7 +48,7 @@ namespace ACCManager.Controls
         {
             StackPanel stacker = new StackPanel() { Orientation = Orientation.Vertical };
 
-            SPageFileStatic pageStatic = ACCSharedMemory.Instance.ReadStaticPageFile();
+            SPageFileStatic pageStatic = ACCSharedMemory.Instance.ReadStaticPageFile(true);
             FieldInfo[] members = pageStatic.GetType().GetFields();
             foreach (FieldInfo member in members)
             {
@@ -87,7 +87,7 @@ namespace ACCManager.Controls
         {
             StackPanel stacker = new StackPanel() { Orientation = Orientation.Vertical };
 
-            SPageFilePhysics pageStatic = ACCSharedMemory.Instance.ReadPhysicsPageFile();
+            SPageFilePhysics pageStatic = ACCSharedMemory.Instance.ReadPhysicsPageFile(true);
             FieldInfo[] members = pageStatic.GetType().GetFields();
             foreach (FieldInfo member in members)
             {
@@ -123,7 +123,7 @@ namespace ACCManager.Controls
         {
             StackPanel stacker = new StackPanel() { Orientation = Orientation.Vertical };
 
-            SPageFileGraphic pageStatic = ACCSharedMemory.Instance.ReadGraphicsPageFile();
+            SPageFileGraphic pageStatic = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
             FieldInfo[] members = pageStatic.GetType().GetFields();
             foreach (FieldInfo member in members)
             {

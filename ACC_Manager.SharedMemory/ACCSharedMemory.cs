@@ -687,22 +687,25 @@ namespace ACCManager
             public static readonly byte[] Buffer = new byte[Size];
         };
 
-        public SPageFileGraphic ReadGraphicsPageFile()
+        public SPageFileGraphic ReadGraphicsPageFile(bool fromCache = false)
         {
+            if (fromCache) return PageFileGraphic;
             var mappedFile = MemoryMappedFile.CreateOrOpen(graphicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite);
             PageFileGraphic = StructExtension.ToStruct<SPageFileGraphic>(mappedFile, SPageFileGraphic.Buffer);
             return PageFileGraphic;
         }
 
-        public SPageFileStatic ReadStaticPageFile()
+        public SPageFileStatic ReadStaticPageFile(bool fromCache = false)
         {
+            if (fromCache) return PageFileStatic;
             var mappedFile = MemoryMappedFile.CreateOrOpen(staticMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite);
             PageFileStatic = StructExtension.ToStruct<SPageFileStatic>(mappedFile, SPageFileStatic.Buffer);
             return PageFileStatic;
         }
 
-        public SPageFilePhysics ReadPhysicsPageFile()
+        public SPageFilePhysics ReadPhysicsPageFile(bool fromCache = false)
         {
+            if (fromCache) return PageFilePhysics;
             var mappedFile = MemoryMappedFile.CreateOrOpen(physicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite);
             PageFilePhysics = StructExtension.ToStruct<SPageFilePhysics>(mappedFile, SPageFilePhysics.Buffer);
             return PageFilePhysics;

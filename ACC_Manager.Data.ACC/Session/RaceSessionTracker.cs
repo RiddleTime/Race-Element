@@ -100,7 +100,7 @@ namespace ACCManager.Data.ACC.Session
                     TrackId = trackData.Id,
                     IsOnline = staticPageFile.isOnline
                 };
-                _sessionTimeLeft = ACCSharedMemory.Instance.ReadGraphicsPageFile().SessionTimeLeft;
+                _sessionTimeLeft = ACCSharedMemory.Instance.ReadGraphicsPageFile(true).SessionTimeLeft;
 
                 RaceSessionCollection.Insert(CurrentSession);
                 OnNewSessionStarted?.Invoke(this, CurrentSession);
@@ -157,7 +157,7 @@ namespace ACCManager.Data.ACC.Session
                 {
                     Thread.Sleep(100);
 
-                    var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile();
+                    var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
 
                     if (pageGraphics.Status != _lastAcStatus)
                     {
