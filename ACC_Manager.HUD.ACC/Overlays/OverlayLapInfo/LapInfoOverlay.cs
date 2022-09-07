@@ -82,7 +82,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         public sealed override void Render(Graphics g)
         {
             double delta = (double)pageGraphics.DeltaLapTimeMillis / 1000;
-            DeltaBar deltaBar = new DeltaBar(-this._config.MaxDelta, this._config.MaxDelta, delta) { DrawBackground = true };
+            DeltaBar deltaBar = new DeltaBar(-this._config.MaxDelta, this._config.MaxDelta, delta) { DrawBackground = true , IsValidLap = pageGraphics.IsValidLap };
             deltaBar.Draw(g, 0, 0, _overlayWidth, _table.FontHeight);
 
             g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
