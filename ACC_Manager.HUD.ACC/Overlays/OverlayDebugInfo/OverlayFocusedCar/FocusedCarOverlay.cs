@@ -1,4 +1,5 @@
 ﻿using ACCManager.Data.ACC.EntryList;
+using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,15 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayFocusedCar
         OverlayType = OverlayType.Debug, Version = 1.00)]
     internal class FocusedCarOverlay : AbstractOverlay
     {
+        private FocusedCarConfig _config = new FocusedCarConfig();
+        private class FocusedCarConfig : OverlayConfiguration
+        {
+            public FocusedCarConfig()
+            {
+                this.AllowRescale = true;
+            }
+        }
+
         public FocusedCarOverlay(Rectangle rectangle) : base(rectangle, "Focused Car Overlay")
         {
             this.Width = 600;
@@ -51,10 +61,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayFocusedCar
                         minY = float.MaxValue; maxY = float.MinValue;
                     }
 
-
-                    float x = carData.Value.RealtimeCarUpdate.WorldPosX;
-                    float y = carData.Value.RealtimeCarUpdate.WorldPosY;
-
                     int arrayIndex = -1;
                     for (int i = 0; i < pageGraphics.CarIds.Length; i++)
                     {
@@ -65,8 +71,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayFocusedCar
                         }
                     }
 
-                    x = pageGraphics.CarCoordinates[arrayIndex].X;
-                    y = pageGraphics.CarCoordinates[arrayIndex].Z;
+                    float x = pageGraphics.CarCoordinates[arrayIndex].X;
+                    float y = pageGraphics.CarCoordinates[arrayIndex].Z;
 
 
                     // x, y > min =  left, top
@@ -89,8 +95,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayFocusedCar
             {
                 GraphicsPath path = new GraphicsPath(FillMode.Winding);
 
-                int halfWidth = this.Width / 2;
-                int halfHeight = this.Height / 2;
+
 
                 float maxSize = 0;
                 if (minX * -1 > maxSize)
@@ -102,9 +107,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayFocusedCar
                 if (maxY > maxSize)
                     maxSize = maxY;
 
-                maxSize *= 1.1f;
+                maxSize *= 1.05f;
 
-
+                int halfWidth = (int)(this.Width / 2 / this.Scale);
+                int halfHeight = (int)(this.Height / 2 / this.Scale);
 
                 var traj = _trajectory.Select(x =>
                 {
@@ -117,7 +123,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayFocusedCar
                 Matrix transformMatrix = new Matrix();
                 transformMatrix.RotateAt(-90, new PointF(halfWidth, halfHeight));
                 path.Transform(transformMatrix);
-                Pen pen = new Pen(Color.OrangeRed, 1.5f);
+                Pen pen = new Pen(Color.OrangeRed, 2f);
                 g.SmoothingMode = SmoothingMode.AntiAlias;
                 g.DrawPath(pen, path);
 
