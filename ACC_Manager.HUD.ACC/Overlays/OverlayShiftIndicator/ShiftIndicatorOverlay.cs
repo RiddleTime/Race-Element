@@ -70,7 +70,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
                 g.DrawRoundedRectangle(Pens.DarkGray, new Rectangle(0, 0, (int)(_config.Width * this.Scale), (int)(_config.Height * this.Scale)), (int)(6 * Scale));
             });
 
-            _cachedRpmLines = new CachedBitmap(_config.Width, _config.Height, rpmG =>
+            _cachedRpmLines = new CachedBitmap((int)(_config.Width * this.Scale + 1), (int)(_config.Height * this.Scale + 1), g =>
             {
                 int lineCount = (int)Math.Floor(pageStatic.MaxRpm / 1000d);
 
@@ -81,12 +81,20 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
                 Pen linePen = new Pen(new SolidBrush(Color.FromArgb(90, Color.White)), 2);
 
                 double thousandPercent = 1000d / pageStatic.MaxRpm * lineCount;
-                double baseX = _config.Width / lineCount * thousandPercent;
+                double baseX = (_config.Width * this.Scale) / lineCount * thousandPercent;
                 for (int i = 1; i <= lineCount; i++)
                 {
                     int x = (int)(i * baseX);
-                    rpmG.DrawLine(linePen, x, 1, x, _config.Height - 1);
+
+                    g.DrawLine(linePen, x, 1, x, (_config.Height * this.Scale) - 1);
+
+                    if (i == lineCount - 1)
+                    {
+
+
+                    }
                 }
+
             });
         }
 
@@ -175,7 +183,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
                 if (percent > 1)
                     rpmColor = Color.Red;
 
-                percent.Clip(0.05, 1);
+                percent.Clip(0.05d, 1d);
 
                 g.FillRoundedRectangle(new SolidBrush(rpmColor), new Rectangle(0, 0, (int)(_config.Width * percent), _config.Height), 6);
             }
@@ -191,7 +199,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
                 _lastCar = pageStatic.CarModel;
             }
 
-            _cachedRpmLines.Draw(g);
+            _cachedRpmLines.Draw(g, _config.Width, _config.Height);
         }
 
         public sealed override bool ShouldRender()
