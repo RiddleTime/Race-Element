@@ -110,31 +110,45 @@ namespace ACCManager.Data.ACC.Database.Telemetry
                             lock (_lapData)
                             {
                                 if (!_lapData.ContainsKey(ticks))
-                                    _lapData.Add(ticks, new TelemetryPoint()
-                                    {
-                                        SplinePosition = _pageGraphics.NormalizedCarPosition,
-                                        InputsData = new InputsData()
+                                {
+                                    int playerCarIndex = -1;
+                                    for (int i = 0; i < _pageGraphics.CarIds.Length; i++)
+                                        if (_pageGraphics.CarIds[i] == _pageGraphics.PlayerCarID)
                                         {
-                                            Gas = _pagePhysics.Gas,
-                                            Brake = _pagePhysics.Brake,
-                                            Gear = _pagePhysics.Gear,
-                                            SteerAngle = _pagePhysics.SteerAngle
-                                        },
-                                        TyreData = new TyreData()
-                                        {
-                                            TyreCoreTemperature = _pagePhysics.TyreCoreTemperature,
-                                            TyrePressure = _pagePhysics.WheelPressure,
-                                        },
-                                        BrakeData = new BrakeData()
-                                        {
-                                            BrakeTemperature = _pagePhysics.BrakeTemperature,
-                                        },
-                                        PhysicsData = new PhysicsData()
-                                        {
-                                            WheelSlip = _pagePhysics.WheelSlip,
-                                            Speed = _pagePhysics.SpeedKmh,
+                                            playerCarIndex = i;
+                                            break;
                                         }
-                                    });
+
+                                    if (playerCarIndex != -1)
+                                        _lapData.Add(ticks, new TelemetryPoint()
+                                        {
+                                            SplinePosition = _pageGraphics.NormalizedCarPosition,
+                                            InputsData = new InputsData()
+                                            {
+                                                Gas = _pagePhysics.Gas,
+                                                Brake = _pagePhysics.Brake,
+                                                Gear = _pagePhysics.Gear,
+                                                SteerAngle = _pagePhysics.SteerAngle
+                                            },
+                                            TyreData = new TyreData()
+                                            {
+                                                TyreCoreTemperature = _pagePhysics.TyreCoreTemperature,
+                                                TyrePressure = _pagePhysics.WheelPressure,
+                                            },
+                                            BrakeData = new BrakeData()
+                                            {
+                                                BrakeTemperature = _pagePhysics.BrakeTemperature,
+                                            },
+                                            PhysicsData = new PhysicsData()
+                                            {
+                                                WheelSlip = _pagePhysics.WheelSlip,
+                                                Speed = _pagePhysics.SpeedKmh,
+                                                X = _pageGraphics.CarCoordinates[playerCarIndex].X,
+                                                Y = _pageGraphics.CarCoordinates[playerCarIndex].Z,
+                                                Heading = _pagePhysics.Heading,
+                                            }
+                                        });
+                                }
                             }
                         else
                         {

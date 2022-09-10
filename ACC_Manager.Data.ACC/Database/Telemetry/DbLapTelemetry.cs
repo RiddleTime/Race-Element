@@ -54,6 +54,9 @@ namespace ACCManager.Data.ACC.Database.Telemetry
     {
         public float[] WheelSlip { get; set; }
         public float Speed { get; set; }
+        public float X { get; set; }
+        public float Y { get; set; }
+        public float Heading { get; set; }
     }
 
     public class LapTelemetryCollection
