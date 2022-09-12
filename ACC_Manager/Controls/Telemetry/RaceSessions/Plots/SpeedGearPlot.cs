@@ -119,6 +119,8 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
                 gearMarker.IsVisible = true;
                 gearingPlot.Label = $"Gear: {gearDatas[gearIndex]:F0}";
 
+                PlotUtil.MarkerIndex = gearIndex;
+
                 wpfPlot.RenderRequest();
             };
 

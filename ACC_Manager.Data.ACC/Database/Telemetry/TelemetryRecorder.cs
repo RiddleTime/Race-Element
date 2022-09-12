@@ -120,6 +120,17 @@ namespace ACCManager.Data.ACC.Database.Telemetry
                                         }
 
                                     if (playerCarIndex != -1)
+                                    {
+                                        float xCoord = 0;
+                                        float yCoord = 0;
+                                        for (int i = 0; i < 4; i++)
+                                        {
+                                            xCoord += _pagePhysics.TyreContactPoint[i].X;
+                                            yCoord += _pagePhysics.TyreContactPoint[i].Z;
+                                        }
+                                        xCoord /= 4;
+                                        yCoord /= 4;
+
                                         _lapData.Add(ticks, new TelemetryPoint()
                                         {
                                             SplinePosition = _pageGraphics.NormalizedCarPosition,
@@ -143,11 +154,12 @@ namespace ACCManager.Data.ACC.Database.Telemetry
                                             {
                                                 WheelSlip = _pagePhysics.WheelSlip,
                                                 Speed = _pagePhysics.SpeedKmh,
-                                                X = _pageGraphics.CarCoordinates[playerCarIndex].X,
-                                                Y = _pageGraphics.CarCoordinates[playerCarIndex].Z,
+                                                X = xCoord,
+                                                Y = yCoord,
                                                 Heading = _pagePhysics.Heading,
                                             }
                                         });
+                                    }
                                 }
                             }
                         else

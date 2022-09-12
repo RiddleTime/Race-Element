@@ -1,4 +1,5 @@
-﻿using ScottPlot;
+﻿using ACCManager.Data.ACC.Tracks;
+using ScottPlot;
 using ScottPlot.Plottable;
 using ScottPlot.Styles;
 using System;
@@ -64,12 +65,26 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
         public static AxisLimits AxisLimits;
         public static bool AxisLimitsCustom { get; internal set; } = false;
 
+        internal static TrackNames.TrackData trackData;
+
+        internal static event EventHandler<int> MarkerIndexChanged;
+        private static int _markerIndex = -1;
+        internal static int MarkerIndex
+        {
+            get { return _markerIndex; }
+            set
+            {
+                _markerIndex = value;
+                MarkerIndexChanged?.Invoke(null, value);
+            }
+        }
+
         public static void WpfPlot_AxesChanged(object sender, EventArgs e)
         {
             WpfPlot wpfPlot = (WpfPlot)sender;
             AxisLimits = wpfPlot.Plot.GetAxisLimits(xAxisIndex: 0);
             AxisLimitsCustom = true;
-            //Debug.WriteLine($"XMin: {AxisLimits.XMin}, XMax: {AxisLimits.XMax}, XCenter: {AxisLimits.XCenter}");
+            Debug.WriteLine($"XMin: {AxisLimits.XMin}, XMax: {AxisLimits.XMax}, XCenter: {AxisLimits.XCenter}");
         }
     }
 }

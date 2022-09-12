@@ -60,6 +60,7 @@ namespace ACCManager.Controls
             gridMetrics.Children.Clear();
             textBlockMetricInfo.Text = String.Empty;
             transitionContentPlots.Visibility = Visibility.Collapsed;
+            trackMap.Visibility = Visibility.Collapsed;
 
             Grid.SetRowSpan(gridSessionViewer, 2);
             Grid.SetRowSpan(tabCurrentWeekend, 2);
@@ -148,6 +149,7 @@ namespace ACCManager.Controls
             Grid.SetRowSpan(tabCurrentWeekend, 2);
 
             transitionContentPlots.Visibility = Visibility.Collapsed;
+            trackMap.Visibility = Visibility.Collapsed;
 
             PlotUtil.AxisLimitsCustom = false;
 
@@ -381,6 +383,7 @@ namespace ACCManager.Controls
                 Grid.SetRowSpan(gridSessionViewer, 2);
                 Grid.SetRowSpan(tabCurrentWeekend, 2);
                 transitionContentPlots.Visibility = Visibility.Collapsed;
+                trackMap.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -388,13 +391,19 @@ namespace ACCManager.Controls
                 Grid.SetRowSpan(tabCurrentWeekend, 1);
                 transitionContentPlots.Visibility = Visibility.Visible;
 
+
                 if (_currentData != null)
                     _currentData.Clear();
 
                 _currentData = telemetry.DeserializeLapData();
                 telemetry = null;
 
+                trackMap.SetData(ref _currentData);
+                trackMap.Visibility = Visibility.Visible;
+
                 TrackData trackData = TrackNames.Tracks.Values.First(x => x.Guid == GetSelectedTrack());
+
+                PlotUtil.trackData = trackData;
                 int fullSteeringLock = SteeringLock.Get(CarDataCollection.GetCarData(CurrentDatabase, GetSelectedCar()).ParseName);
 
                 Dictionary<string, Plotter> plots = new Dictionary<string, Plotter>();

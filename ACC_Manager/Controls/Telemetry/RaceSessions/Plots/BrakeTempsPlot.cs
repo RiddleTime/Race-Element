@@ -92,6 +92,7 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
                 for (int i = 0; i != tyreMarkers.Length; i++)
                 {
                     (double x, double y, int index) = brakePlots[i].GetPointNearestX(mouseCoordsX);
+                    PlotUtil.MarkerIndex = index;
                     tyreMarkers[i].SetPoint(x, y);
                     tyreMarkers[i].IsVisible = true;
                     brakePlots[i].Label = $"{Enum.GetNames(typeof(SetupConverter.Wheel))[i]}: {brakeTemps[i][index]:F3}";

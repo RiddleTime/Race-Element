@@ -130,6 +130,8 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
                 steeringMarker.IsVisible = true;
                 steeringPlot.Label = $"Steering: {(steeringDatas[steerIndex]):F3}";
 
+                PlotUtil.MarkerIndex = steerIndex;
+
                 wpfPlot.RenderRequest();
             };
 

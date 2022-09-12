@@ -103,6 +103,8 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
                     tyreMarkers[i].SetPoint(x, y);
                     tyreMarkers[i].IsVisible = true;
                     tyrePlots[i].Label = $"{Enum.GetNames(typeof(SetupConverter.Wheel))[i]}: {tyrePressures[i][index]:F3}";
+
+                    PlotUtil.MarkerIndex = index;
                 }
 
                 wpfPlot.RenderRequest();

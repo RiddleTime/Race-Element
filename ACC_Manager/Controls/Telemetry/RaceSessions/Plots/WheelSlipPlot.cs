@@ -132,6 +132,8 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
                 osMarker.IsVisible = true;
                 understeerPlot.Label = $"Understeer: {understeers[osIndex]:F3}";
 
+                PlotUtil.MarkerIndex = osIndex;
+
                 wpfPlot.RenderRequest();
             };
 

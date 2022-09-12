@@ -71,32 +71,30 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayFocusedCar
                         }
                     }
 
-                    float x = pageGraphics.CarCoordinates[arrayIndex].X;
-                    float y = pageGraphics.CarCoordinates[arrayIndex].Z;
+                    if (arrayIndex != -1)
+                    {
+                        float x = pageGraphics.CarCoordinates[arrayIndex].X;
+                        float y = pageGraphics.CarCoordinates[arrayIndex].Z;
 
+                        // x, y > min =  left, top
 
-                    // x, y > min =  left, top
+                        if (x > maxX)
+                            maxX = x;
+                        if (x < minX)
+                            minX = x;
 
-                    if (x > maxX)
-                        maxX = x;
-                    if (x < minX)
-                        minX = x;
+                        if (y > maxY)
+                            maxY = y;
+                        if (y < minY)
+                            minY = y;
 
-                    if (y > maxY)
-                        maxY = y;
-                    if (y < minY)
-                        minY = y;
-
-                    _trajectory.AddLast(new PointF(x, y));
+                        _trajectory.AddLast(new PointF(x, y));
+                    }
                 }
             }
 
             if (_trajectory.Count > 0)
             {
-                GraphicsPath path = new GraphicsPath(FillMode.Winding);
-
-
-
                 float maxSize = 0;
                 if (minX * -1 > maxSize)
                     maxSize = minX * -1;
@@ -118,11 +116,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayFocusedCar
                     x.Y /= maxSize;
                     return new PointF(halfWidth + x.X * halfWidth, halfHeight + x.Y * halfHeight);
                 }).ToArray();
+                GraphicsPath path = new GraphicsPath(FillMode.Winding);
                 path.AddLines(traj);
 
                 Matrix transformMatrix = new Matrix();
                 transformMatrix.RotateAt(-90, new PointF(halfWidth, halfHeight));
                 path.Transform(transformMatrix);
+
                 Pen pen = new Pen(Color.OrangeRed, 2f);
                 g.SmoothingMode = SmoothingMode.AntiAlias;
                 g.DrawPath(pen, path);
