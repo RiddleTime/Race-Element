@@ -84,7 +84,7 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             WpfPlot wpfPlot = (WpfPlot)sender;
             AxisLimits = wpfPlot.Plot.GetAxisLimits(xAxisIndex: 0);
             AxisLimitsCustom = true;
-            Debug.WriteLine($"XMin: {AxisLimits.XMin}, XMax: {AxisLimits.XMax}, XCenter: {AxisLimits.XCenter}");
+            //Debug.WriteLine($"XMin: {AxisLimits.XMin}, XMax: {AxisLimits.XMax}, XCenter: {AxisLimits.XCenter}");
         }
     }
 }

@@ -4,6 +4,7 @@ using ACCManager.Controls.Util.SetupImage;
 using ACCManager.Data.ACC.Database.Telemetry;
 using ACCManager.HUD.Overlay.OverlayUtil;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace ACCManager.Controls
     /// </summary>
     public partial class TrackMap : UserControl
     {
-        private Dictionary<long, TelemetryPoint> dict;
+        private Dictionary<long, TelemetryPoint> _dict;
 
         private float _maxSize = 0;
         private CachedBitmap _cbDrivenCoordinates;
@@ -49,31 +50,33 @@ namespace ACCManager.Controls
 
             if (_cbDrivenCoordinates != null && index != -1)
             {
-
-
                 if (markerThread == null || !markerThread.IsAlive)
                 {
                     markerThread = new Thread(x =>
                     {
-                        TelemetryPoint tmPoint = dict.ElementAt(index).Value;
+                        TelemetryPoint tmPoint = _dict.ElementAt(index).Value;
 
-                        if (tmPoint.PhysicsData.X < 0.05 && tmPoint.PhysicsData.X > 0)
-                            return;
-                        if (tmPoint.PhysicsData.Y < 0.05 && tmPoint.PhysicsData.Y > 0)
-                            return;
-                        if (tmPoint.PhysicsData.X > -0.05 && tmPoint.PhysicsData.X < 0)
-                            return;
-                        if (tmPoint.PhysicsData.Y > -0.05 && tmPoint.PhysicsData.Y < 0)
+                        bool somethingWrong = false;
+                        if (tmPoint.PhysicsData.X < 1 && tmPoint.PhysicsData.X >= 0)
+                            somethingWrong = true;
+                        if (tmPoint.PhysicsData.Y < 1 && tmPoint.PhysicsData.Y >= 0)
+                            somethingWrong = true;
+                        if (tmPoint.PhysicsData.X > -1 && tmPoint.PhysicsData.X <= 0)
+                            somethingWrong = true;
+                        if (tmPoint.PhysicsData.Y > -1 && tmPoint.PhysicsData.Y <= 0)
+                            somethingWrong = true;
+
+                        if (somethingWrong)
                             return;
 
-                        tmPoint.PhysicsData.X /= _maxSize;
-                        tmPoint.PhysicsData.Y /= _maxSize;
+                        float xPoint = tmPoint.PhysicsData.X / _maxSize;
+                        float yPoint = tmPoint.PhysicsData.Y / _maxSize;
 
 
                         int halfWidth = _cbDrivenCoordinates.Width / 2;
                         int halfHeight = _cbDrivenCoordinates.Height / 2;
 
-                        var drawPoint = new PointF(halfWidth + tmPoint.PhysicsData.X * halfWidth, halfHeight + tmPoint.PhysicsData.Y * halfHeight);
+                        var drawPoint = new PointF(halfWidth + xPoint * halfWidth, halfHeight + yPoint * halfHeight);
 
                         int newX = (int)drawPoint.X;
                         int newY = (int)drawPoint.Y;
@@ -83,6 +86,8 @@ namespace ACCManager.Controls
 
                         _lastX = newX;
                         _lastY = newY;
+
+                        //Debug.WriteLine($"{tmPoint.PhysicsData.X}, {tmPoint.PhysicsData.Y}");
 
                         CachedBitmap mapWithMarker = new CachedBitmap(_cbDrivenCoordinates.Width, _cbDrivenCoordinates.Height, g =>
                         {
@@ -96,7 +101,8 @@ namespace ACCManager.Controls
                             transformMatrix.RotateAt(-90, new PointF(halfWidth, halfHeight));
                             path.Transform(transformMatrix);
 
-                            g.FillPath(Brushes.OrangeRed, path);
+                            Pen pen = new Pen(Color.White, 1.5f);
+                            g.DrawPath(pen, path);
 
                         });
 
@@ -108,6 +114,7 @@ namespace ACCManager.Controls
                             image.Source = ImageControlCreator.CreateImage(mapWithMarker.Width, mapWithMarker.Height, mapWithMarker).Source;
                         }, System.Windows.Threading.DispatcherPriority.Send);
 
+                        Thread.Sleep(10);
                     });
                     markerThread.Start();
                 }
@@ -118,13 +125,22 @@ namespace ACCManager.Controls
         {
             if (this.Visibility == Visibility.Visible)
             {
-                DrawMap(ref this.dict);
+                DrawMap(ref this._dict);
             }
         }
 
         public void SetData(ref Dictionary<long, TelemetryPoint> dict)
         {
-            this.dict = dict;
+            this._dict = dict;
+        }
+
+
+        public void DrawMap()
+        {
+            if (_dict == null)
+                return;
+
+            DrawMap(ref _dict);
         }
 
         private void DrawMap(ref Dictionary<long, TelemetryPoint> dict)
@@ -133,20 +149,29 @@ namespace ACCManager.Controls
 
             Grid parent = (Grid)this.Parent;
 
-            int width = (int)parent.ColumnDefinitions.First().Width.Value;
+            int width = (int)(parent.ColumnDefinitions.First().Width.Value);
             int height = width;
 
             _cbDrivenCoordinates = new CachedBitmap(width, height, g =>
             {
                 float minX = float.MaxValue, maxX = float.MinValue;
                 float minY = float.MaxValue, maxY = float.MinValue;
+
+                float averageX = 0;
+                float averageY = 0;
                 foreach (PointF point in points)
                 {
                     maxX.ClipMin(point.X);
                     minX.ClipMax(point.X);
                     maxY.ClipMin(point.Y);
                     minY.ClipMax(point.Y);
+
+                    averageX += point.X;
+                    averageY += point.Y;
                 }
+                averageX /= points.Length;
+                averageY /= points.Length;
+
 
                 if (points.Length > 0)
                 {
@@ -160,16 +185,24 @@ namespace ACCManager.Controls
                     if (maxY > _maxSize)
                         _maxSize = maxY;
 
-                    _maxSize *= 1.05f;
+
+                    Debug.WriteLine($"minX {minX}, maxX {maxX}, minY {minY}, maxY {maxY}");
+                    Debug.WriteLine($"avX {averageX}, avY {averageY}");
+
+                    float yRange = maxY - minY;
+                    float xRange = maxX - minX;
+                    Debug.WriteLine($"xRange {xRange}, yRange {yRange}");
+
+                    _maxSize *= 1.03f;
 
                     int halfWidth = (int)(width / 2);
                     int halfHeight = (int)(height / 2);
 
                     var traj = points.Select(x =>
                     {
-                        x.X /= _maxSize;
-                        x.Y /= _maxSize;
-                        return new PointF(halfWidth + x.X * halfWidth, halfHeight + x.Y * halfHeight);
+                        float xPoint = x.X / _maxSize;
+                        float yPoint = x.Y / _maxSize;
+                        return new PointF(halfHeight + xPoint * halfHeight, halfWidth + yPoint * halfWidth);
                     }).ToArray();
                     GraphicsPath path = new GraphicsPath(FillMode.Winding);
                     path.AddLines(traj);
@@ -178,25 +211,16 @@ namespace ACCManager.Controls
                     transformMatrix.RotateAt(-90, new PointF(halfWidth, halfHeight));
                     path.Transform(transformMatrix);
 
-                    Pen pen = new Pen(Color.White, 3f);
-                    g.SmoothingMode = SmoothingMode.AntiAlias;
+                    Pen pen = new Pen(Color.OrangeRed, 1f);
+                    g.SmoothingMode = SmoothingMode.HighQuality;
                     g.DrawPath(pen, path);
                 }
             });
 
-            //this.grid.Children.Clear();
-
-            image.Stretch = Stretch.UniformToFill;
+            image.Stretch = Stretch.Uniform;
             image.Width = _cbDrivenCoordinates.Width;
             image.Height = _cbDrivenCoordinates.Height;
             image.Source = ImageControlCreator.CreateImage(_cbDrivenCoordinates.Width, _cbDrivenCoordinates.Height, _cbDrivenCoordinates).Source;
-            //image.Width = 100;
-            //image.Height = 100;
-            //image.MaxHeight = 100;
-            //image.MaxWidth = 100;
-
-            //this.Width = 100;
-            //this.Height = 100;
         }
     }
 }

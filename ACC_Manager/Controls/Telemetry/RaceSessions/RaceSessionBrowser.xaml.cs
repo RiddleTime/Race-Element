@@ -399,6 +399,7 @@ namespace ACCManager.Controls
                 telemetry = null;
 
                 trackMap.SetData(ref _currentData);
+                trackMap.DrawMap();
                 trackMap.Visibility = Visibility.Visible;
 
                 TrackData trackData = TrackNames.Tracks.Values.First(x => x.Guid == GetSelectedTrack());

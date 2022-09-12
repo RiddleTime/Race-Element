@@ -131,6 +131,9 @@ namespace ACCManager.Data.ACC.Database.Telemetry
                                         xCoord /= 4;
                                         yCoord /= 4;
 
+                                        if (xCoord == 0 || yCoord == 0)
+                                            continue;
+
                                         _lapData.Add(ticks, new TelemetryPoint()
                                         {
                                             SplinePosition = _pageGraphics.NormalizedCarPosition,

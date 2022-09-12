@@ -61,7 +61,6 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             double averageSpeed = speedData.Average();
 
             string fourSpaces = "".FillEnd(4, ' ');
-            _textBlockMetrics.Text += $"Av. Gear: {averageGear:F2}{fourSpaces}";
             _textBlockMetrics.Text += $"{fourSpaces}Av. Speed: {averageSpeed:F3} km/h";
             _textBlockMetrics.Text += $"{fourSpaces}Min Speed: {minSpeed:F3} km/h";
             _textBlockMetrics.Text += $"{fourSpaces}Max Speed: {maxSpeed:F3} km/h";
