@@ -15,8 +15,8 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="275"/>
-            <RowDefinition/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
 
         <TabControl x:Name="tabControlWeekends" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" TabStripPlacement="Top">
