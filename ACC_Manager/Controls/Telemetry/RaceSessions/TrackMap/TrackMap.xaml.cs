@@ -3,6 +3,7 @@ using ACCManager.Controls.Telemetry.RaceSessions.Plots;
 using ACCManager.Controls.Util.SetupImage;
 using ACCManager.Data.ACC.Database.Telemetry;
 using ACCManager.HUD.Overlay.OverlayUtil;
+using Octokit;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -31,6 +32,9 @@ namespace ACCManager.Controls
 
         private int _markerIndex = -1;
         private int _lastX = -1, _lastY = -1;
+
+        float _xTranslate = 0;
+        float _yTranslate = 0;
 
         private Thread markerThread;
 
@@ -69,14 +73,10 @@ namespace ACCManager.Controls
                         if (somethingWrong)
                             return;
 
-                        float xPoint = tmPoint.PhysicsData.X / _maxSize;
-                        float yPoint = tmPoint.PhysicsData.Y / _maxSize;
+                        float xPoint = (tmPoint.PhysicsData.X + _xTranslate) / _maxSize;
+                        float yPoint = (tmPoint.PhysicsData.Y + _yTranslate) / _maxSize;
 
-
-                        int halfWidth = _cbDrivenCoordinates.Width / 2;
-                        int halfHeight = _cbDrivenCoordinates.Height / 2;
-
-                        var drawPoint = new PointF(halfWidth + xPoint * halfWidth, halfHeight + yPoint * halfHeight);
+                        var drawPoint = new PointF(xPoint * _cbDrivenCoordinates.Width, yPoint * _cbDrivenCoordinates.Height);
 
                         int newX = (int)drawPoint.X;
                         int newY = (int)drawPoint.Y;
@@ -98,12 +98,13 @@ namespace ACCManager.Controls
                             path.AddEllipse(drawPoint.X - ellipseSize / 2, drawPoint.Y - ellipseSize / 2, ellipseSize, ellipseSize);
 
                             Matrix transformMatrix = new Matrix();
-                            transformMatrix.RotateAt(-90, new PointF(halfWidth, halfHeight));
+                            //transformMatrix.RotateAt(-90, new PointF(halfWidth, halfHeight));
                             path.Transform(transformMatrix);
 
-                            Pen pen = new Pen(Color.White, 1.5f);
+                            Pen pen = new Pen(Color.OrangeRed, 2f);
                             g.DrawPath(pen, path);
 
+                            path = new GraphicsPath();
                         });
 
                         this.Dispatcher.Invoke(() =>
@@ -156,22 +157,44 @@ namespace ACCManager.Controls
             {
                 float minX = float.MaxValue, maxX = float.MinValue;
                 float minY = float.MaxValue, maxY = float.MinValue;
-
-                float averageX = 0;
-                float averageY = 0;
                 foreach (PointF point in points)
                 {
                     maxX.ClipMin(point.X);
                     minX.ClipMax(point.X);
                     maxY.ClipMin(point.Y);
                     minY.ClipMax(point.Y);
-
-                    averageX += point.X;
-                    averageY += point.Y;
                 }
-                averageX /= points.Length;
-                averageY /= points.Length;
+                Debug.WriteLine($"1; minX {minX}, maxX {maxX}, minY {minY}, maxY {maxY}");
 
+                _xTranslate = 0;
+                _yTranslate = 0;
+
+                if (minX >= 0)
+                    _xTranslate = minX * -1;
+                else
+                    _xTranslate = minX * -1;
+
+                if (minY >= 0)
+                    _yTranslate = minY * -1;
+                else
+                    _yTranslate = minY * -1;
+
+                _xTranslate += 100;
+                _yTranslate += 100;
+
+                Debug.WriteLine($"xTranslate {_xTranslate}, yTranslate {_yTranslate}");
+
+                points = points.Select(x => new PointF(x.X + _xTranslate, x.Y + _yTranslate)).ToArray();
+                minX = float.MaxValue; maxX = float.MinValue;
+                minY = float.MaxValue; maxY = float.MinValue;
+                foreach (PointF point in points)
+                {
+                    maxX.ClipMin(point.X);
+                    minX.ClipMax(point.X);
+                    maxY.ClipMin(point.Y);
+                    minY.ClipMax(point.Y);
+                }
+                Debug.WriteLine($"2; minX {minX}, maxX {maxX}, minY {minY}, maxY {maxY}");
 
                 if (points.Length > 0)
                 {
@@ -185,33 +208,27 @@ namespace ACCManager.Controls
                     if (maxY > _maxSize)
                         _maxSize = maxY;
 
+                    Debug.WriteLine($"maxSize: {_maxSize}");
 
-                    Debug.WriteLine($"minX {minX}, maxX {maxX}, minY {minY}, maxY {maxY}");
-                    Debug.WriteLine($"avX {averageX}, avY {averageY}");
-
-                    float yRange = maxY - minY;
-                    float xRange = maxX - minX;
-                    Debug.WriteLine($"xRange {xRange}, yRange {yRange}");
-
-                    _maxSize *= 1.03f;
+                    _maxSize *= 1.1f;
 
                     int halfWidth = (int)(width / 2);
                     int halfHeight = (int)(height / 2);
 
-                    var traj = points.Select(x =>
+                    points = points.Select(x =>
                     {
                         float xPoint = x.X / _maxSize;
                         float yPoint = x.Y / _maxSize;
-                        return new PointF(halfHeight + xPoint * halfHeight, halfWidth + yPoint * halfWidth);
+                        return new PointF(xPoint * width, yPoint * height);
                     }).ToArray();
                     GraphicsPath path = new GraphicsPath(FillMode.Winding);
-                    path.AddLines(traj);
+                    path.AddLines(points);
 
                     Matrix transformMatrix = new Matrix();
-                    transformMatrix.RotateAt(-90, new PointF(halfWidth, halfHeight));
+                    //transformMatrix.RotateAt(-90, new PointF(halfWidth, halfHeight));
                     path.Transform(transformMatrix);
 
-                    Pen pen = new Pen(Color.OrangeRed, 1f);
+                    Pen pen = new Pen(Color.White, 2f);
                     g.SmoothingMode = SmoothingMode.HighQuality;
                     g.DrawPath(pen, path);
                 }
