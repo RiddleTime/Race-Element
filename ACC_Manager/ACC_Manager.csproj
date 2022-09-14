@@ -145,8 +145,8 @@
     <Reference Include="obs-websocket-dotnet, Version=4.9.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\obs-websocket-dotnet.4.9.1\lib\netstandard2.0\obs-websocket-dotnet.dll</HintPath>
     </Reference>
-    <Reference Include="Octokit, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Octokit.2.0.1\lib\netstandard2.0\Octokit.dll</HintPath>
+    <Reference Include="Octokit, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Octokit.3.0.0\lib\netstandard2.0\Octokit.dll</HintPath>
     </Reference>
     <Reference Include="PaintDotNet.Base, Version=3.36.7079.22820, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DdsFileTypePlusHack.1.0.4\lib\net45\PaintDotNet.Base.dll</HintPath>
