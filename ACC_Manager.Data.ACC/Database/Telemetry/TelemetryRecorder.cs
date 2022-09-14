@@ -107,6 +107,7 @@ namespace ACCManager.Data.ACC.Database.Telemetry
                             isPointFurther = _lapData.Last().Value.SplinePosition < _pageGraphics.NormalizedCarPosition;
 
                         if (!hasLapData || isPointFurther)
+                        {
                             lock (_lapData)
                             {
                                 if (!_lapData.ContainsKey(ticks))
@@ -165,11 +166,11 @@ namespace ACCManager.Data.ACC.Database.Telemetry
                                     }
                                 }
                             }
+                        }
                         else
                         {
                             if (hasLapData)
                                 isPointFurther = _lapData.Last().Value.SplinePosition < _pageGraphics.NormalizedCarPosition;
-
                         }
                     }
                     catch (Exception ex)

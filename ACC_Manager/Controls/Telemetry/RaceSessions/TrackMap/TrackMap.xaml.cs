@@ -33,8 +33,8 @@ namespace ACCManager.Controls
         private int _markerIndex = -1;
         private int _lastX = -1, _lastY = -1;
 
-        float _xTranslate = 0;
-        float _yTranslate = 0;
+        private float _xTranslate = 0;
+        private float _yTranslate = 0;
 
         private Thread markerThread;
 
