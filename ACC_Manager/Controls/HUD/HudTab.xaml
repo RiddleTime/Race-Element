@@ -6,14 +6,16 @@
              xmlns:local="clr-namespace:ACCManager.Controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <local:HudOptions Margin="3"></local:HudOptions>
-    </Grid>
+             d:DesignHeight="450" d:DesignWidth="800" Margin="3">
+    <materialDesign:Card>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <local:HudOptions Margin="3"></local:HudOptions>
+        </Grid>
+    </materialDesign:Card>
 </UserControl>

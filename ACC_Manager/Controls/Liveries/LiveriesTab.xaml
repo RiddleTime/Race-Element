@@ -4,11 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ACCManager.Controls"
-            
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              MinWidth="1100"
-             Margin="3,0,3,0">
+             Margin="3">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -19,8 +19,10 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid>
-        <local:LiveryDeleter Panel.ZIndex="999"></local:LiveryDeleter>
-        <local:LiveryBrowser></local:LiveryBrowser>
-    </Grid>
+    <materialDesign:Card UniformCornerRadius="30">
+        <Grid>
+            <local:LiveryDeleter Panel.ZIndex="999"></local:LiveryDeleter>
+            <local:LiveryBrowser></local:LiveryBrowser>
+        </Grid>
+    </materialDesign:Card>
 </UserControl>

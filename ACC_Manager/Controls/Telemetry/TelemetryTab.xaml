@@ -7,18 +7,19 @@
                xmlns:controls="clr-namespace:ACCManager.Controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Margin="3,0,3,0">
-        <TabControl>
+             d:DesignHeight="450" d:DesignWidth="800" Margin="3">
+    <materialDesign:Card>
+        <Grid Margin="0,0,3,0">
+            <TabControl>
 
-            <TabItem>
-                <TabItem.Header>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <materialDesign:PackIcon
+                <TabItem>
+                    <TabItem.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon
                             Grid.Column="0"
                             Kind="TableEye"
                             VerticalAlignment="Center"
@@ -26,24 +27,24 @@
                             Height="32"
                         Foreground="White"    
                         />
-                        <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center">
+                            <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center">
                             Race Weekends
-                        </TextBlock>
-                    </Grid>
-                </TabItem.Header>
+                            </TextBlock>
+                        </Grid>
+                    </TabItem.Header>
 
-                <controls:RaceSessionBrowser></controls:RaceSessionBrowser>
-            </TabItem>
+                    <controls:RaceSessionBrowser></controls:RaceSessionBrowser>
+                </TabItem>
 
 
-            <TabItem>
-                <TabItem.Header>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <materialDesign:PackIcon
+                <TabItem>
+                    <TabItem.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon
                             Grid.Column="0"
                             Kind="DatabaseEye"
                             VerticalAlignment="Center"
@@ -51,15 +52,16 @@
                             Height="32"
                         Foreground="White"    
                         />
-                        <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center">
+                            <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center">
                             Raw Data
-                        </TextBlock>
-                    </Grid>
-                </TabItem.Header>
+                            </TextBlock>
+                        </Grid>
+                    </TabItem.Header>
 
-                <controls:TelemetryDebug></controls:TelemetryDebug>
-            </TabItem>
-        </TabControl>
+                    <controls:TelemetryDebug></controls:TelemetryDebug>
+                </TabItem>
+            </TabControl>
 
-    </Grid>
+        </Grid>
+    </materialDesign:Card>
 </UserControl>

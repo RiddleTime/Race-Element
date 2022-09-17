@@ -38,7 +38,7 @@
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
 
-            <Button Grid.Row="0" x:Name="buttonImportLiveries">Import Liveries</Button>
+            <Button Grid.Row="0" Margin="3,0,0,0" x:Name="buttonImportLiveries">Import Liveries</Button>
 
             <TabControl Grid.Row="1">
                 <TabItem>
@@ -132,13 +132,13 @@
                                 </TreeViewItem.Header>
                             </TreeViewItem>
                         </TreeView>
-                        <Button x:Name="buttonNewTag" Grid.Row="1" Content="Add new tag"></Button>
+                        <Button x:Name="buttonNewTag" Margin="3,0,0,0" Grid.Row="1" Content="Add new tag"></Button>
                     </Grid>
                 </TabItem>
 
             </TabControl>
 
-            <Button Grid.Row="2" x:Name="buttonGenerateAllDDS" ToolTip="This will check and generate DDS files for all liveries above.">Generate DDS Files</Button>
+            <Button Grid.Row="2" Margin="3,0,0,0" x:Name="buttonGenerateAllDDS" ToolTip="This will check and generate DDS files for all liveries above.">Generate DDS Files</Button>
         </Grid>
         <Grid Grid.Column="1" Margin="3,0,0,0">
             <local:LiveryDisplayer></local:LiveryDisplayer>

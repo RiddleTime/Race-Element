@@ -6,18 +6,19 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:ACCManager.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="1200">
-    <Grid HorizontalAlignment="Stretch">
-        <TabControl TabStripPlacement="Top" FlowDirection="LeftToRight" SelectedIndex="0" HorizontalAlignment="Stretch" Margin="3">
+             d:DesignHeight="450" d:DesignWidth="1200" Margin="3">
+    <materialDesign:Card>
+        <Grid HorizontalAlignment="Stretch">
+            <TabControl TabStripPlacement="Top" FlowDirection="LeftToRight" SelectedIndex="0" HorizontalAlignment="Stretch" Margin="3">
 
-            <TabItem Name="tabSetupTree" Style="{DynamicResource MaterialDesignTabItem}">
-                <TabItem.Header>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <materialDesign:PackIcon
+                <TabItem Name="tabSetupTree" Style="{DynamicResource MaterialDesignTabItem}">
+                    <TabItem.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon
                             Grid.Column="0"
                             Kind="FuelPump"
                             VerticalAlignment="Center"
@@ -25,15 +26,16 @@
                             Height="32"
                         Foreground="White"    
                         />
-                        <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Fuel Calculator</TextBlock>
+                            <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Fuel Calculator</TextBlock>
+                        </Grid>
+                    </TabItem.Header>
+
+                    <Grid>
+                        <local:FuelCalculator></local:FuelCalculator>
                     </Grid>
-                </TabItem.Header>
+                </TabItem>
 
-                <Grid>
-                    <local:FuelCalculator></local:FuelCalculator>
-                </Grid>
-            </TabItem>
-
-        </TabControl>
-    </Grid>
+            </TabControl>
+        </Grid>
+    </materialDesign:Card>
 </UserControl>
