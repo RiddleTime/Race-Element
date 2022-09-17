@@ -32,8 +32,7 @@ namespace ACCManager.Controls
     {
         private IKeyboardMouseEvents m_GlobalHook;
 
-        private static HudOptions _instance;
-        public static HudOptions Instance { get { return _instance; } }
+        public static HudOptions Instance { get; private set; }
 
         private readonly HudSettings _hudSettings;
         private HudSettingsJson _hudSettingsJson;
@@ -140,7 +139,7 @@ namespace ACCManager.Controls
                     LogWriter.WriteToLog(ex);
                 }
 
-            _instance = this;
+            Instance = this;
         }
 
 

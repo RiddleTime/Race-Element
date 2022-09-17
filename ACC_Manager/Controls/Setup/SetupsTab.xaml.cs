@@ -9,15 +9,14 @@ namespace ACCManager.Controls
     /// </summary>
     public partial class SetupsTab : UserControl
     {
-        private static SetupsTab _instance;
-        public static SetupsTab Instance { get { return _instance; } }
+        public static SetupsTab Instance { get; private set; }
 
         public SetupsTab()
         {
             InitializeComponent();
 
             tabSetupTree.ContextMenu = GetBrowseTabContextMenu();
-            _instance = this;
+            Instance = this;
         }
 
         private ContextMenu GetBrowseTabContextMenu()

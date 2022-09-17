@@ -11,8 +11,7 @@ namespace ACCManager.Controls
     /// </summary>
     public partial class TitleBar : UserControl
     {
-        private static TitleBar _instance;
-        internal static TitleBar Instance { get { return _instance; } }
+        internal static TitleBar Instance { get; private set; }
 
         private const string _AppName = "ACC Manager";
 
@@ -47,7 +46,7 @@ namespace ACCManager.Controls
 
 
             this.MouseDoubleClick += TitleBar_MouseDoubleClick;
-            _instance = this;
+            Instance = this;
         }
 
         internal void SetAppTitle(string launchType = "")

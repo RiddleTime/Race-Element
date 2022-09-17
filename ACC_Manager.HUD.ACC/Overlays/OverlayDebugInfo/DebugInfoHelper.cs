@@ -18,11 +18,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo
             }
         }
 
-        private static DebugInfoHelper _instance = new DebugInfoHelper();
-        public static DebugInfoHelper Instance
-        {
-            get { return _instance; }
-        }
+        public static DebugInfoHelper Instance { get; } = new DebugInfoHelper();
 
         private List<AbstractOverlay> _infoOverlays = new List<AbstractOverlay>();
 

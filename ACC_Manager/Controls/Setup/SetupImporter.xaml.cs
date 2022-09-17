@@ -18,8 +18,7 @@ namespace ACCManager.Controls
     /// </summary>
     public partial class SetupImporter : UserControl
     {
-        private static SetupImporter _instance;
-        internal static SetupImporter Instance { get { return _instance; } }
+        internal static SetupImporter Instance { get; private set; }
 
         private string _originalSetupFile;
         private string _setupName;
@@ -35,7 +34,7 @@ namespace ACCManager.Controls
 
             _renderer = new FlowDocSetupRenderer();
 
-            _instance = this;
+            Instance = this;
         }
 
         private void BuildTrackList()

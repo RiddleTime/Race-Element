@@ -12,14 +12,7 @@ namespace ACCManager.Controls
     /// </summary>
     public partial class AfterImport : UserControl
     {
-        private static AfterImport _instance;
-        public static AfterImport Instance
-        {
-            get
-            {
-                return _instance;
-            }
-        }
+        public static AfterImport Instance { get; private set; }
 
         private List<LiveryTreeCar> ImportedLiveries;
 
@@ -33,7 +26,7 @@ namespace ACCManager.Controls
             buttonClose.Click += (o, e) => Close();
             buttonAddTags.Click += (o, e) => AddTags();
 
-            _instance = this;
+            Instance = this;
         }
 
         private void LvImportedLiveries_SelectionChanged(object sender, SelectionChangedEventArgs e)

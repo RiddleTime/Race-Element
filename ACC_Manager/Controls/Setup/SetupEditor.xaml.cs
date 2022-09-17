@@ -16,14 +16,7 @@ namespace ACCManager.Controls
     /// </summary>
     public partial class SetupEditor : UserControl
     {
-        private static SetupEditor _instance;
-        public static SetupEditor Instance
-        {
-            get
-            {
-                return _instance;
-            }
-        }
+        public static SetupEditor Instance { get; private set; }
 
         private ISetupChanger SetupChanger { get; set; }
         private Root Setup { get; set; }
@@ -35,7 +28,7 @@ namespace ACCManager.Controls
             buttonSave.Click += (o, e) => Save();
             buttonCancel.Click += (o, e) => Close();
 
-            _instance = this;
+            Instance = this;
         }
 
         public void Open(string file)

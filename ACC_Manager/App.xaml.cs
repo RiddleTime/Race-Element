@@ -8,15 +8,14 @@ namespace ACCManager
     /// </summary>
     public partial class App : Application
     {
-        private static App _instance;
-        public static App Instance { get { return _instance; } }
+        public static App Instance { get; private set; }
         public bool StartMinimized = false;
 
         public App()
         {
             this.Startup += App_Startup;
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-           _instance = this;
+           Instance = this;
         }
 
         private void App_Startup(object sender, StartupEventArgs e)

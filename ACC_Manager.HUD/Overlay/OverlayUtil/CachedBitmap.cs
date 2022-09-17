@@ -11,7 +11,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
         public readonly int Height;
         public delegate void Renderer(Graphics g);
 
-        private Bitmap _bitmap;
+        private readonly Bitmap _bitmap;
         private Renderer _renderer;
 
         /// <summary>

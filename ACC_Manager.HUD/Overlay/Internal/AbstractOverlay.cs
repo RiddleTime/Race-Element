@@ -41,16 +41,11 @@ namespace ACCManager.HUD.Overlay.Internal
         public TrackData broadCastTrackData;
         public RealtimeCarUpdate broadCastLocalCar;
 
-
-        public int ScreenWidth => (int)SystemParameters.PrimaryScreenWidth;
-        public int ScreenHeight => (int)SystemParameters.PrimaryScreenHeight;
-
         public bool RequestsDrawItself = false;
 
         public bool AllowReposition { get; set; } = true;
 
-        private float _scale = 1f;
-        public float Scale { get { return _scale; } }
+        public float Scale { get; private set; } = 1f;
         private bool _allowRescale = false;
 
         private Window RepositionWindow;
@@ -122,7 +117,7 @@ namespace ACCManager.HUD.Overlay.Internal
                     if (overlayConfig.AllowRescale)
                     {
                         this._allowRescale = true;
-                        this._scale = overlayConfig.Scale;
+                        this.Scale = overlayConfig.Scale;
                     }
 
                     if (overlayConfig.Window)
@@ -172,8 +167,8 @@ namespace ACCManager.HUD.Overlay.Internal
                 }
                 if (_allowRescale)
                 {
-                    this.Width = (int)Math.Ceiling(this.Width * _scale);
-                    this.Height = (int)Math.Ceiling(this.Height * _scale);
+                    this.Width = (int)Math.Ceiling(this.Width * Scale);
+                    this.Height = (int)Math.Ceiling(this.Height * Scale);
                 }
 
 
@@ -280,7 +275,7 @@ namespace ACCManager.HUD.Overlay.Internal
                     try
                     {
                         if (_allowRescale)
-                            e.Graphics.ScaleTransform(_scale, _scale);
+                            e.Graphics.ScaleTransform(Scale, Scale);
 
                         CompositingQuality previousComposingQuality = e.Graphics.CompositingQuality;
                         SmoothingMode previousSmoothingMode = e.Graphics.SmoothingMode;

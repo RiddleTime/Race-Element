@@ -13,8 +13,8 @@ namespace ACCManager.HUD.Overlay.Util
         public int X = 0;
         public int Y = 0;
 
-        private int _fontHeight;
-        public int FontHeight { get { return this._fontHeight; } private set { this._fontHeight = value; } }
+        public int FontHeight { get; private set; }
+
         public bool DrawBackground = true;
         public bool DrawValueBackground = true;
         public bool DrawRowLines { get; set; } = true;

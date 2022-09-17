@@ -14,7 +14,6 @@ namespace ACCManager.Data.ACC.Database
     {
         private static string fileName;
 
-        private static LiteDatabase _database;
         internal static LiteDatabase CreateDatabase(string trackParseName, string carParseName, DateTime startTime)
         {
             try
@@ -26,10 +25,10 @@ namespace ACCManager.Data.ACC.Database
                 fileName = FileUtil.AccManangerDataPath + $"{trackParseName}-{carParseName}-" + $"{startTime:G}".Replace(":", ".").Replace("/", ".").Replace(" ", "-") + ".rwdb";
 
 
-                if (_database == null)
-                    _database = new LiteDatabase($"Filename={fileName}; Initial Size=16KB;");
+                if (Database == null)
+                    Database = new LiteDatabase($"Filename={fileName}; Initial Size=16KB;");
 
-                if (_database == null)
+                if (Database == null)
                     Trace.WriteLine("Something went wrong initializing the LocalDatabase.Database");
             }
             catch (Exception ex)
@@ -37,7 +36,7 @@ namespace ACCManager.Data.ACC.Database
                 Debug.WriteLine(ex);
             }
 
-            return _database;
+            return Database;
 
         }
 
@@ -60,16 +59,16 @@ namespace ACCManager.Data.ACC.Database
             return null;
         }
 
-        public static LiteDatabase Database { get => _database; }
+        public static LiteDatabase Database { get; private set; }
 
         public static void Close()
         {
-            if (_database == null)
+            if (Database == null)
                 return;
 
             bool anyLaps = LapDataCollection.Any();
-            _database.Dispose();
-            _database = null;
+            Database.Dispose();
+            Database = null;
 
             if (!anyLaps)
             {
