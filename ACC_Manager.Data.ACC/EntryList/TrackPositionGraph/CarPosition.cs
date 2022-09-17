@@ -1,11 +1,6 @@
 ﻿using ACC_Manager.Util.SystemExtensions;
 using ACCManager.Broadcast;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
 {

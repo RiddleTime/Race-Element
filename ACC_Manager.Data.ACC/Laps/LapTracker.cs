@@ -1,13 +1,10 @@
 ﻿using ACCManager.Broadcast.Structs;
-using ACCManager.Data.ACC.Database;
 using ACCManager.Data.ACC.Database.LapDataDB;
 using ACCManager.Data.ACC.Session;
 using ACCManager.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace ACCManager.Data.ACC.Tracker.Laps

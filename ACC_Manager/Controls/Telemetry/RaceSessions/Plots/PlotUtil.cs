@@ -3,11 +3,6 @@ using ScottPlot;
 using ScottPlot.Plottable;
 using ScottPlot.Styles;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
 {

@@ -3,13 +3,9 @@ using ACCManager.Data.ACC.Database.Telemetry;
 using ScottPlot;
 using ScottPlot.Plottable;
 using ScottPlot.Renderable;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Windows.Input;
 using static ACCManager.Data.ACC.Tracks.TrackNames;
 
 namespace ACCManager.Controls.Telemetry.RaceSessions.Plots

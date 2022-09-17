@@ -1,12 +1,8 @@
-﻿using ACCManager.Data.ACC.Database.GameData;
-using LiteDB;
+﻿using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.Data.ACC.Database.SessionData

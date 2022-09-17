@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ACCManager.LiveryParser
+﻿namespace ACCManager.LiveryParser
 {
     public class CarsJson
     {

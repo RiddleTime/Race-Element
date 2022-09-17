@@ -7,12 +7,9 @@ using ACCManager.Data.ACC.Database.SessionData;
 using ACCManager.Data.ACC.Database.Telemetry;
 using ACCManager.Data.ACC.Tracker;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.Data.ACC.Session

@@ -1,14 +1,9 @@
 ﻿using ACCManager.Data.ACC.Database.LapDataDB;
 using ACCManager.Util;
 using LiteDB;
-using LiteDB.Engine;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ACCManager.Data.ACC.Database
 {

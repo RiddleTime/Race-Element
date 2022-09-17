@@ -1,13 +1,9 @@
-﻿using ACCManager.Data.ACC.Database.SessionData;
-using ACCManager.Data.ACC.Tracks;
+﻿using ACCManager.Data.ACC.Tracks;
 using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using static ACCManager.Data.ACC.Tracks.TrackNames;
 
 namespace ACCManager.Data.ACC.Database.GameData

@@ -4,12 +4,7 @@ using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.Util;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static ACCManager.ACCSharedMemory;
 using static ACCManager.Data.SetupConverter;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo

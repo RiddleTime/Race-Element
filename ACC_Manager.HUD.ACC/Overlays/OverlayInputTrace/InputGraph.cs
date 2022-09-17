@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static ACCManager.HUD.ACC.Overlays.OverlayInputTrace.InputTraceOverlay;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace

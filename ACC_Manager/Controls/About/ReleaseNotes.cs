@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ACCManager.Controls
 {
     public static class ReleaseNotes
     {
-        public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
+        internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
             {"0.0.9.0", "- Added Race Weekends tab to Telemetry tab."+
                         "\n- ACC Manager now saves race weekend data(lap and sector times)."+

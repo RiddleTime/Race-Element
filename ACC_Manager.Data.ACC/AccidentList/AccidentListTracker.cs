@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.Data.ACC.AccidentList
 {

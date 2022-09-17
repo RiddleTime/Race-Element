@@ -1,17 +1,12 @@
-﻿using ACCManager.Util;
-using ACCManager.Util.Settings;
-using Newtonsoft.Json.Linq;
+﻿using ACCManager.Util.Settings;
 using OBSWebsocketDotNet;
 using OBSWebsocketDotNet.Types;
 using SLOBSharp.Client;
 using SLOBSharp.Client.Requests;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ACCManager.Data.ACC.Tracker
 {

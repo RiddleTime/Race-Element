@@ -1,18 +1,11 @@
-﻿using ACCManager.Broadcast.Structs;
-using ACCManager.Data.ACC.EntryList;
-using ACCManager.HUD.Overlay.Configuration;
+﻿using ACCManager.Data.ACC.EntryList;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.OverlayUtil;
-using ACCManager.HUD.Overlay.Util;
 using ACCManager.Util;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Text;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using static ACCManager.Data.ACC.EntryList.EntryListTracker;
 using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
 

@@ -1,18 +1,10 @@
 ﻿using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.Util;
-using ACCManager.Controls.Telemetry.SharedMemory;
 using ACCManager.Util;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo;
 using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
-using System.Drawing.Text;
 using ACCManager.HUD.Overlay.OverlayUtil;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayStaticInfo

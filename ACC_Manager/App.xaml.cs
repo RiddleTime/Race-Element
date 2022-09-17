@@ -1,11 +1,4 @@
-﻿using ACCManager.Util;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Globalization;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 using System.Windows;
 
 namespace ACCManager

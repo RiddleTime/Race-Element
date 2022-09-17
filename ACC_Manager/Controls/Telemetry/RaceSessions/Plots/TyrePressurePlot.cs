@@ -1,16 +1,12 @@
 ﻿using ACC_Manager.Util.SystemExtensions;
 using ACCManager.Data.ACC.Database.Telemetry;
-using ACCManager.Data.ACC.Tracks;
 using ACCManager.Data;
 using ScottPlot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using static ACCManager.Data.ACC.Tracks.TrackNames;
-using System.Windows.Input;
 using ScottPlot.Plottable;
 
 namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
