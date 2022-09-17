@@ -31,19 +31,23 @@
             <Grid Grid.Row="0" Margin="3" x:Name="gridRepositionToggler" Cursor="Hand" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="15"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <ToggleButton Grid.Column="0" x:Name="checkBoxReposition" Height="25" Cursor="Hand" ToolTip="Click scroll wheel to Toggle" VerticalAlignment="Center"></ToggleButton>
-                <Label Grid.Column="1" FontSize="18"  VerticalAlignment="Center" ToolTip="Move the overlays with the mouse or click the overlay and move it with the Arrow Keys.">Move Active Overlays (Ctrl + Home)</Label>
+                <materialDesign:PackIcon Grid.Column="1" VerticalAlignment="Center" Kind="ArrowAll"/>
+                <Label Grid.Column="2" FontSize="16"  VerticalAlignment="Center" ToolTip="Move the overlays with the mouse or click the overlay and move it with the Arrow Keys.">Move Active Overlays (Ctrl + Home)</Label>
             </Grid>
 
             <Grid Grid.Row="0" Margin="3" x:Name="gridDemoToggler" Cursor="Hand" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="15"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <ToggleButton Grid.Column="0" x:Name="checkBoxDemoMode" Height="25" Cursor="Hand" VerticalAlignment="Center"></ToggleButton>
-                <Label Grid.Column="1" FontSize="18"  VerticalAlignment="Center" ToolTip="Enables a mode for the huds so they always display.">Always Visible</Label>
+                <materialDesign:PackIcon Grid.Column="1" VerticalAlignment="Center" Kind="Visibility"/>
+                <Label Grid.Column="2" FontSize="16"  VerticalAlignment="Center" ToolTip="Enables a mode for the huds so they always display.">Always Visible</Label>
             </Grid>
         </StackPanel>
 
