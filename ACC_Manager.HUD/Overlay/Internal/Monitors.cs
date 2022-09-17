@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using static ACCManager.HUD.Overlay.Internal.WindowStructs;
 

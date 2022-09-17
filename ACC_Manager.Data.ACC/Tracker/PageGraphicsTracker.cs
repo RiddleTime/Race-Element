@@ -1,4 +1,5 @@
-﻿using ACCManager.Util;
+﻿using ACCManager.Data.ACC.EntryList;
+using ACCManager.Util;
 using System;
 using System.Diagnostics;
 using System.Threading;
