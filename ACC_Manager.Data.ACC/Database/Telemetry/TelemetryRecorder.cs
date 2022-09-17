@@ -27,15 +27,17 @@ namespace ACCManager.Data.ACC.Database.Telemetry
         }
 
         private readonly int IntervalMillis;
+        private readonly TimeSpan _intervalTimeSpan;
+
         private bool _isRunning = false;
-        private ACCSharedMemory.SPageFilePhysics _pagePhysics;
-        private ACCSharedMemory.SPageFileGraphic _pageGraphics;
+        private SPageFilePhysics _pagePhysics;
+        private SPageFileGraphic _pageGraphics;
         private readonly Dictionary<long, TelemetryPoint> _lapData = new Dictionary<long, TelemetryPoint>();
-        public long LapDataCount { get => _lapData.LongCount(); }
 
         private TelemetryRecorder()
         {
             IntervalMillis = 1000 / new AccManagerSettings().Get().TelemetryDetailedHerz;
+            _intervalTimeSpan = new TimeSpan(IntervalMillis);
 
             PagePhysicsTracker.Instance.Tracker += OnPagePhysicsUpdated;
             PageGraphicsTracker.Instance.Tracker += OnPageGraphicsUpdated;
@@ -102,8 +104,7 @@ namespace ACCManager.Data.ACC.Database.Telemetry
             new Thread(x =>
             {
                 LogWriter.WriteToLog("Starting recording loop");
-                var interval = new TimeSpan(0, 0, 0, 0, IntervalMillis);
-                var nextTick = DateTime.UtcNow + interval;
+                var nextTick = DateTime.UtcNow + _intervalTimeSpan;
                 while (_isRunning)
                 {
                     try
@@ -112,7 +113,7 @@ namespace ACCManager.Data.ACC.Database.Telemetry
                             Thread.Sleep(nextTick - DateTime.UtcNow);
                     }
                     catch { }
-                    nextTick += interval;
+                    nextTick += _intervalTimeSpan;
                     long ticks = DateTime.UtcNow.Ticks;
 
                     try
@@ -124,59 +125,51 @@ namespace ACCManager.Data.ACC.Database.Telemetry
 
                         if (!hasLapData || isPointFurther)
                         {
-                            lock (_lapData)
+
+                            if (!_lapData.ContainsKey(ticks))
                             {
-                                if (!_lapData.ContainsKey(ticks))
+                                float xCoord = 0;
+                                float yCoord = 0;
+                                for (int i = 0; i < 4; i++)
                                 {
-
-                                    float xCoord = 0;
-                                    float yCoord = 0;
-                                    for (int i = 0; i < 4; i++)
-                                    {
-                                        xCoord += _pagePhysics.TyreContactPoint[i].X;
-                                        yCoord += _pagePhysics.TyreContactPoint[i].Z;
-                                    }
-                                    xCoord /= 4;
-                                    yCoord /= 4;
-
-                                    if (xCoord == 0 || yCoord == 0)
-                                        continue;
-
-                                    _lapData.Add(ticks, new TelemetryPoint()
-                                    {
-                                        SplinePosition = _pageGraphics.NormalizedCarPosition,
-                                        InputsData = new InputsData()
-                                        {
-                                            Gas = _pagePhysics.Gas,
-                                            Brake = _pagePhysics.Brake,
-                                            Gear = _pagePhysics.Gear,
-                                            SteerAngle = _pagePhysics.SteerAngle
-                                        },
-                                        TyreData = new TyreData()
-                                        {
-                                            TyreCoreTemperature = _pagePhysics.TyreCoreTemperature,
-                                            TyrePressure = _pagePhysics.WheelPressure,
-                                        },
-                                        BrakeData = new BrakeData()
-                                        {
-                                            BrakeTemperature = _pagePhysics.BrakeTemperature,
-                                        },
-                                        PhysicsData = new PhysicsData()
-                                        {
-                                            WheelSlip = _pagePhysics.WheelSlip,
-                                            Speed = _pagePhysics.SpeedKmh,
-                                            X = xCoord,
-                                            Y = yCoord,
-                                            Heading = _pagePhysics.Heading,
-                                        }
-                                    });
+                                    xCoord += _pagePhysics.TyreContactPoint[i].X;
+                                    yCoord += _pagePhysics.TyreContactPoint[i].Z;
                                 }
+                                xCoord /= 4;
+                                yCoord /= 4;
+
+                                if (xCoord == 0 || yCoord == 0)
+                                    continue;
+
+                                _lapData.Add(ticks, new TelemetryPoint()
+                                {
+                                    SplinePosition = _pageGraphics.NormalizedCarPosition,
+                                    InputsData = new InputsData()
+                                    {
+                                        Gas = _pagePhysics.Gas,
+                                        Brake = _pagePhysics.Brake,
+                                        Gear = _pagePhysics.Gear,
+                                        SteerAngle = _pagePhysics.SteerAngle
+                                    },
+                                    TyreData = new TyreData()
+                                    {
+                                        TyreCoreTemperature = _pagePhysics.TyreCoreTemperature,
+                                        TyrePressure = _pagePhysics.WheelPressure,
+                                    },
+                                    BrakeData = new BrakeData()
+                                    {
+                                        BrakeTemperature = _pagePhysics.BrakeTemperature,
+                                    },
+                                    PhysicsData = new PhysicsData()
+                                    {
+                                        WheelSlip = _pagePhysics.WheelSlip,
+                                        Speed = _pagePhysics.SpeedKmh,
+                                        X = xCoord,
+                                        Y = yCoord,
+                                        Heading = _pagePhysics.Heading,
+                                    }
+                                });
                             }
-                        }
-                        else
-                        {
-                            if (hasLapData)
-                                isPointFurther = _lapData.Last().Value.SplinePosition < _pageGraphics.NormalizedCarPosition;
                         }
                     }
                     catch (Exception ex)
