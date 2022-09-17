@@ -22,7 +22,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
         }
 
         private bool IsTracking = false;
-        
+
         private int CurrentSector = 0;
 
         public Dictionary<int, DbLapData> Laps = new Dictionary<int, DbLapData>();
@@ -32,7 +32,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
 
         private LapTracker()
         {
-                        if (!IsTracking)
+            if (!IsTracking)
                 this.Start();
 
             BroadcastTracker.Instance.OnRealTimeLocalCarUpdate += Instance_OnRealTimeCarUpdate;
