@@ -3,9 +3,7 @@ using ACCManager.Controls.Telemetry.RaceSessions.Plots;
 using ACCManager.Controls.Util.SetupImage;
 using ACCManager.Data.ACC.Database.Telemetry;
 using ACCManager.HUD.Overlay.OverlayUtil;
-using Octokit;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -13,9 +11,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Brushes = System.Drawing.Brushes;
 using Color = System.Drawing.Color;
-using Matrix = System.Drawing.Drawing2D.Matrix;
 using Pen = System.Drawing.Pen;
 
 namespace ACCManager.Controls
@@ -87,7 +83,6 @@ namespace ACCManager.Controls
                         _lastX = newX;
                         _lastY = newY;
 
-                        //Debug.WriteLine($"{tmPoint.PhysicsData.X}, {tmPoint.PhysicsData.Y}");
 
                         CachedBitmap mapWithMarker = new CachedBitmap(_cbDrivenCoordinates.Width, _cbDrivenCoordinates.Height, g =>
                         {
@@ -96,10 +91,6 @@ namespace ACCManager.Controls
                             GraphicsPath path = new GraphicsPath();
                             int ellipseSize = 12;
                             path.AddEllipse(drawPoint.X - ellipseSize / 2, drawPoint.Y - ellipseSize / 2, ellipseSize, ellipseSize);
-
-                            Matrix transformMatrix = new Matrix();
-                            //transformMatrix.RotateAt(-90, new PointF(halfWidth, halfHeight));
-                            path.Transform(transformMatrix);
 
                             Pen pen = new Pen(Color.OrangeRed, 2f);
                             g.DrawPath(pen, path);
@@ -164,7 +155,6 @@ namespace ACCManager.Controls
                     maxY.ClipMin(point.Y);
                     minY.ClipMax(point.Y);
                 }
-                Debug.WriteLine($"1; minX {minX}, maxX {maxX}, minY {minY}, maxY {maxY}");
 
                 _xTranslate = 0;
                 _yTranslate = 0;
@@ -182,8 +172,6 @@ namespace ACCManager.Controls
                 _xTranslate += 100;
                 _yTranslate += 100;
 
-                Debug.WriteLine($"xTranslate {_xTranslate}, yTranslate {_yTranslate}");
-
                 points = points.Select(x => new PointF(x.X + _xTranslate, x.Y + _yTranslate)).ToArray();
                 minX = float.MaxValue; maxX = float.MinValue;
                 minY = float.MaxValue; maxY = float.MinValue;
@@ -194,7 +182,6 @@ namespace ACCManager.Controls
                     maxY.ClipMin(point.Y);
                     minY.ClipMax(point.Y);
                 }
-                Debug.WriteLine($"2; minX {minX}, maxX {maxX}, minY {minY}, maxY {maxY}");
 
                 if (points.Length > 0)
                 {
@@ -207,8 +194,6 @@ namespace ACCManager.Controls
                         _maxSize = minY * -1;
                     if (maxY > _maxSize)
                         _maxSize = maxY;
-
-                    Debug.WriteLine($"maxSize: {_maxSize}");
 
                     _maxSize *= 1.1f;
 
@@ -223,10 +208,6 @@ namespace ACCManager.Controls
                     }).ToArray();
                     GraphicsPath path = new GraphicsPath(FillMode.Winding);
                     path.AddLines(points);
-
-                    Matrix transformMatrix = new Matrix();
-                    //transformMatrix.RotateAt(-90, new PointF(halfWidth, halfHeight));
-                    path.Transform(transformMatrix);
 
                     Pen pen = new Pen(Color.White, 2f);
                     g.SmoothingMode = SmoothingMode.HighQuality;

@@ -84,13 +84,12 @@
             <Grid Grid.Row="1" x:Name="gridSessionLaps"></Grid>
         </Grid>
 
-        <local:TrackMap x:Name="trackMap" Grid.Row="1" Grid.Column="0" Margin="-1,2,0,0" BorderBrush="#99FF4500" BorderThickness="0,1,0,0" Visibility="Collapsed"></local:TrackMap>
-        
+        <local:TrackMap x:Name="trackMap" Grid.Row="1" Grid.Column="0" Margin="-1,2,0,0" 
+                        Background="#FB000000" VerticalContentAlignment="Center"
+                        BorderBrush="#99FF4500" BorderThickness="0,1,0,0" Visibility="Collapsed" />
+
         <materialDesign:TransitioningContent x:Name="transitionContentPlots" Grid.Row="1" Grid.Column="1"  Grid.ColumnSpan="1" Visibility="Collapsed"
                                              BorderThickness="1,1,0,0" BorderBrush="#99FF4500" Margin="0,2,0,0" Background="#FB000000" >
-            <materialDesign:TransitioningContent.OpeningEffects>
-                <materialDesign:TransitionEffect Kind="FadeIn"/>
-            </materialDesign:TransitioningContent.OpeningEffects>
 
             <Grid Grid.ColumnSpan="2" VerticalAlignment="Stretch" Margin="3">
                 <Grid.RowDefinitions>

@@ -20,7 +20,7 @@ namespace ACCManager.Data.ACC.Session
     public class RaceSessionTracker
     {
         private bool _isTracking = false;
-        
+
         private float _sessionTimeLeft;
 
         private AcSessionType _lastSessionType = AcSessionType.AC_UNKNOWN;
@@ -46,7 +46,7 @@ namespace ACCManager.Data.ACC.Session
         private RaceSessionTracker()
         {
             Debug.WriteLine("Started race session tracker.");
-        
+
             StartTracking();
             OnSessionIndexChanged += TryCreateNewSession;
             OnACSessionTypeChanged += TryCreateNewSession;
@@ -105,7 +105,7 @@ namespace ACCManager.Data.ACC.Session
                 RaceSessionCollection.Insert(CurrentSession);
                 OnNewSessionStarted?.Invoke(this, CurrentSession);
 
-                new TelemetryRecorder().Record();
+                TelemetryRecorder.Instance.Record();
             }
         }
 
