@@ -21,22 +21,21 @@
 
     <Grid Background="OrangeRed" x:Name="backGround">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="15"/>
+            <ColumnDefinition Width="7"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="140"/>
-            <ColumnDefinition Width="2"/>
         </Grid.ColumnDefinitions>
 
         <materialDesign:TransitioningContent Grid.Column="1">
             <materialDesign:TransitioningContent.OpeningEffects>
-                <materialDesign:TransitionEffect Kind="FadeIn" />
+                <materialDesign:TransitionEffect Kind="FadeIn"/>
             </materialDesign:TransitioningContent.OpeningEffects>
 
             <materialDesign:TransitioningContent.Effect>
                 <DropShadowEffect Color="Black" Opacity="0.7" BlurRadius="3" ShadowDepth="2"/>
             </materialDesign:TransitioningContent.Effect>
             <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="Title" Foreground="White" FontStyle="Italic" Style="{StaticResource MaterialDesignHeadline6TextBlock}" VerticalAlignment="Center">
+                <TextBlock x:Name="Title" Foreground="#EFEFEFEF" FontFamily="{StaticResource FontRedemption}" FontWeight="ExtraLight" FontSize="28"  FontStyle="Italic"  VerticalAlignment="Center">
                 </TextBlock>
 
                 <StackPanel x:Name="stackPanelActivatedIcons"  Orientation="Horizontal" Margin="10,0,0,0" HorizontalAlignment="Right">
