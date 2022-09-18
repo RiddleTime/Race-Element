@@ -30,7 +30,7 @@
 
                 <Grid>
                     <StackPanel Orientation="Vertical">
-                        <TextBlock FontStyle="Italic" FontFamily="{StaticResource FontRedemption}" FontSize="80" HorizontalAlignment="Center">
+                        <TextBlock FontStyle="Italic" FontFamily="{StaticResource FontRedemption}" Foreground="#EFEFEFEF" FontSize="80" HorizontalAlignment="Center">
                             <TextBlock.Text>Acc Manager</TextBlock.Text>
                         </TextBlock>
                         <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" Margin="0,-9,0,0" HorizontalAlignment="Center">
