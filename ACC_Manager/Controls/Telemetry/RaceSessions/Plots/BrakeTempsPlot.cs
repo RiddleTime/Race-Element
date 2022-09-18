@@ -56,7 +56,7 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             for (int i = 0; i < 4; i++)
             {
                 var temps = dict.Select(x => (double)x.Value.BrakeData.BrakeTemperature[i]);
-                _textBlockMetrics.Text += $"Av. {Enum.GetNames(typeof(SetupConverter.Wheel))[i]}: {temps.Average():F2}{fourSpaces}";
+                _textBlockMetrics.Text += $"Av. {Enum.GetNames(typeof(SetupConverter.Wheel))[i]}: {temps.Average():F1}{fourSpaces}";
                 brakeTemps[i] = temps.ToArray();
 
                 minTemp.ClipMax(brakeTemps[i].Min());
@@ -91,7 +91,7 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
                     PlotUtil.MarkerIndex = index;
                     tyreMarkers[i].SetPoint(x, y);
                     tyreMarkers[i].IsVisible = true;
-                    brakePlots[i].Label = $"{Enum.GetNames(typeof(SetupConverter.Wheel))[i]}: {brakeTemps[i][index]:F3}";
+                    brakePlots[i].Label = $"{Enum.GetNames(typeof(SetupConverter.Wheel))[i]}: {brakeTemps[i][index]:F2}";
                 }
 
                 wpfPlot.RenderRequest();
