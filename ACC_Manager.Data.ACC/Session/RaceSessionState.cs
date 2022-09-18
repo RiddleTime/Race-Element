@@ -4,9 +4,9 @@ namespace ACCManager.Data.ACC.Session
 {
     public class RaceSessionState
     {
-        public static bool IsPreSession(bool globalRed, SessionPhase phase)
+        public static bool IsFormationLap(bool globalRed, SessionPhase phase)
         {
-            return globalRed && phase == SessionPhase.PreSession;
+            return globalRed && (phase == SessionPhase.PreSession || phase == SessionPhase.FormationLap);
         }
     }
 }

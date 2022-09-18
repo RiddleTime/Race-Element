@@ -85,7 +85,7 @@ namespace ACCManager.HUD.Overlay.Internal
             if (pageGraphics.GlobalRed)
                 shouldRender = false;
 
-            if (RaceSessionState.IsPreSession(pageGraphics.GlobalRed, broadCastRealTime.Phase))
+            if (RaceSessionState.IsFormationLap(pageGraphics.GlobalRed, broadCastRealTime.Phase))
                 shouldRender = true;
 
             if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE)
