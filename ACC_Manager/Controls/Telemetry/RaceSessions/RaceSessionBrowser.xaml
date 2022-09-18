@@ -65,8 +65,10 @@
                         <RowDefinition Height="30"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <ComboBox Grid.Row="0" IsEnabled="False" x:Name="comboTracks" Height="30" ToolTip="Select a track"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
-                    <ComboBox Grid.Row="1" IsEnabled="False" x:Name="comboCars" Height="30" ToolTip="Select a car"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+                    <ComboBox Grid.Row="0" IsEnabled="False" x:Name="comboTracks" Height="30" ToolTip="Select a track"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                              FontWeight="Bold" Background="Black" />
+                    <ComboBox Grid.Row="1" IsEnabled="False" x:Name="comboCars" Height="30" ToolTip="Select a car"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
+                              FontWeight="Bold" Background="Black" />
 
                     <ListView Grid.Row="2" Margin="0,3,0,0" x:Name="listViewRaceSessions" ScrollViewer.VerticalScrollBarVisibility="Auto" />
                 </Grid>
@@ -74,7 +76,7 @@
 
         </TabControl>
 
-        <Grid x:Name="gridSessionViewer" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2">
+        <Grid x:Name="gridSessionViewer" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="5,0,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
@@ -84,34 +86,35 @@
             <Grid Grid.Row="1" x:Name="gridSessionLaps"></Grid>
         </Grid>
 
-        <local:TrackMap x:Name="trackMap" Grid.Row="1" Grid.Column="0" Margin="-1,2,0,0" 
+
+
+        <local:TrackMap x:Name="trackMap" Grid.Row="1" Grid.Column="0" Margin="-1,4,0,0" 
                         Background="#FB000000" VerticalContentAlignment="Center"
                         BorderBrush="#99FF4500" BorderThickness="0,1,0,0" Visibility="Collapsed" />
 
         <materialDesign:TransitioningContent x:Name="transitionContentPlots" Grid.Row="1" Grid.Column="1"  Grid.ColumnSpan="1" Visibility="Collapsed"
-                                             BorderThickness="1,1,0,0" BorderBrush="#99FF4500" Margin="0,2,0,0" Background="#FB000000" >
+                                             BorderThickness="1,1,0,0" BorderBrush="#99FF4500" Margin="0,4,0,0" Background="#FB000000" >
+            <materialDesign:Card Margin="3" HorizontalAlignment="Stretch">
+                <Grid Grid.ColumnSpan="2" VerticalAlignment="Stretch" Margin="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="0"/>
+                    </Grid.RowDefinitions>
 
-            <Grid Grid.ColumnSpan="2" VerticalAlignment="Stretch" Margin="3">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="35"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="0"/>
-                </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+                    <ComboBox Grid.Row="0" Grid.Column="0" x:Name="comboBoxMetrics" HorizontalAlignment="Left" Width="200"
+                          FontWeight="Bold" FontSize="14" HorizontalContentAlignment="Center" ToolTip="Scroll Me"/>
 
-                <ComboBox Grid.Row="0" Grid.Column="0" x:Name="comboBoxMetrics" HorizontalAlignment="Left" Width="200"
-                          FontWeight="Bold" FontSize="14" HorizontalContentAlignment="Center"></ComboBox>
-                <TextBlock Grid.Row="0" Grid.Column="1" x:Name="textBlockMetricInfo" Margin="10,0,0,0" VerticalAlignment="Stretch" FontWeight="SemiBold">
+                    <TextBlock Grid.Row="0" Grid.Column="1" x:Name="textBlockMetricInfo" Margin="10,0,0,0" VerticalAlignment="Stretch" FontWeight="SemiBold" />
 
-                </TextBlock>
-
-                <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="gridMetrics">
+                    <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="gridMetrics" />
                 </Grid>
-            </Grid>
+            </materialDesign:Card>
         </materialDesign:TransitioningContent>
 
     </Grid>
