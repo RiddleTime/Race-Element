@@ -54,7 +54,7 @@
         <Grid Grid.Row="1" x:Name="gridOverlays">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="300"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <TabControl Grid.Column="0" x:Name="tabControlListOverlays">
@@ -99,17 +99,19 @@
                     <ListView Grid.Column="0" x:Name="listDebugOverlays" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="0,3,0,0" Cursor="Hand"/>
                 </TabItem>
             </TabControl>
+            
+            <materialDesign:Card Grid.Column="1" Margin="7,0,2,0">
+                <Grid Background="#65101010">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="32*"/>
+                        <RowDefinition Height="68*"/>
+                    </Grid.RowDefinitions>
 
-            <Grid Grid.Column="1" Background="#65101010">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="32*"/>
-                    <RowDefinition Height="68*"/>
-                </Grid.RowDefinitions>
-
-                <Image Grid.Row="0" x:Name="previewImage"
+                    <Image Grid.Row="0" x:Name="previewImage"
                        ToolTip="This is a preview, the scaling will become visible once you Activate the overlay."/>
-                <StackPanel Grid.Row="1" x:Name="configStackPanel"/>
-            </Grid>
+                    <StackPanel Grid.Row="1" x:Name="configStackPanel"/>
+                </Grid>
+            </materialDesign:Card>
         </Grid>
     </Grid>
 </UserControl>

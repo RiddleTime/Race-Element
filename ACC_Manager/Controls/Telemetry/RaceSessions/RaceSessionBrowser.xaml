@@ -93,8 +93,8 @@
                         BorderBrush="#99FF4500" BorderThickness="0,1,0,0" Visibility="Collapsed" />
 
         <materialDesign:TransitioningContent x:Name="transitionContentPlots" Grid.Row="1" Grid.Column="1"  Grid.ColumnSpan="1" Visibility="Collapsed"
-                                             BorderThickness="1,1,0,0" BorderBrush="#99FF4500" Margin="0,4,0,0" Background="#FB000000" >
-            <materialDesign:Card Margin="3" HorizontalAlignment="Stretch">
+                                             BorderThickness="0,1,0,0" BorderBrush="#99FF4500" Margin="0,4,0,0" Background="#FB000000" >
+            <materialDesign:Card Margin="0,2,1,2" HorizontalAlignment="Stretch">
                 <Grid Grid.ColumnSpan="2" VerticalAlignment="Stretch" Margin="3">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="35"/>
