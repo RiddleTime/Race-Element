@@ -25,8 +25,10 @@ namespace ACCManager.Controls
 
         private float _maxSize = 0;
         private CachedBitmap _cbDrivenCoordinates;
+        private CachedBitmap _cbZoomedArea;
 
         private int _markerIndex = -1;
+        private int _nextMarkerIndex = -1;
         private int _lastX = -1, _lastY = -1;
 
         private float _xTranslate = 0;
@@ -39,6 +41,12 @@ namespace ACCManager.Controls
             InitializeComponent();
             this.IsVisibleChanged += TrackMap_IsVisibleChanged;
             PlotUtil.MarkerIndexChanged += PlotUtil_MarkerIndexChanged;
+            PlotUtil.AxisLimitsChanged += PlotUtil_AxisLimitsChanged;
+        }
+
+        private void PlotUtil_AxisLimitsChanged(object sender, ScottPlot.AxisLimits e)
+        {
+            DrawZoomedArea(ref _dict, e);
         }
 
         private void PlotUtil_MarkerIndexChanged(object sender, int index)
@@ -86,7 +94,10 @@ namespace ACCManager.Controls
 
                         CachedBitmap mapWithMarker = new CachedBitmap(_cbDrivenCoordinates.Width, _cbDrivenCoordinates.Height, g =>
                         {
-                            _cbDrivenCoordinates.Draw(g);
+                            if (_cbZoomedArea == null)
+                                _cbDrivenCoordinates.Draw(g);
+                            else
+                                _cbZoomedArea.Draw(g);
 
                             GraphicsPath path = new GraphicsPath();
                             int ellipseSize = 12;
@@ -106,9 +117,22 @@ namespace ACCManager.Controls
                             image.Source = ImageControlCreator.CreateImage(mapWithMarker.Width, mapWithMarker.Height, mapWithMarker).Source;
                         }, System.Windows.Threading.DispatcherPriority.Send);
 
-                        Thread.Sleep(10);
+                        Thread.Sleep(20);
+
+                        if (_nextMarkerIndex != -1)
+                        {
+                            new Thread(() =>
+                            {
+                                PlotUtil_MarkerIndexChanged(null, _nextMarkerIndex);
+                                _nextMarkerIndex = -1;
+                            }).Start();
+                        }
                     });
                     markerThread.Start();
+                }
+                else
+                {
+                    _nextMarkerIndex = index;
                 }
             }
         }
@@ -124,8 +148,8 @@ namespace ACCManager.Controls
         public void SetData(ref Dictionary<long, TelemetryPoint> dict)
         {
             this._dict = dict;
+            _cbZoomedArea = null;
         }
-
 
         public void DrawMap()
         {
@@ -133,6 +157,61 @@ namespace ACCManager.Controls
                 return;
 
             DrawMap(ref _dict);
+        }
+
+        private void DrawZoomedArea(ref Dictionary<long, TelemetryPoint> dict, ScottPlot.AxisLimits axisLimits)
+        {
+            if (_cbDrivenCoordinates == null || axisLimits.XMax == PlotUtil.trackData.TrackLength && axisLimits.XMin == 0)
+            {
+                _cbZoomedArea = null;
+                return;
+            }
+
+            PointF[] points = dict.Where(x =>
+            {
+                double trackPosition = PlotUtil.trackData.TrackLength * x.Value.SplinePosition;
+                return trackPosition < axisLimits.XMax && trackPosition > axisLimits.XMin;
+            }).Select(x => new PointF(x.Value.PhysicsData.X, x.Value.PhysicsData.Y)).ToArray();
+
+            if (points.Length >= dict.Count || points.Length < 10)
+            {
+                _cbZoomedArea = null;
+                return;
+            }
+
+            new Thread(() =>
+            {
+                _cbZoomedArea = new CachedBitmap(_cbDrivenCoordinates.Width, _cbDrivenCoordinates.Height, g =>
+                {
+                    if (points.Length > 0)
+                    {
+                        _cbDrivenCoordinates?.Draw(g);
+                        points = points.Select(x => new PointF(x.X + _xTranslate, x.Y + _yTranslate)).ToArray();
+                        points = points.Select(x =>
+                        {
+                            float xPoint = x.X / _maxSize;
+                            float yPoint = x.Y / _maxSize;
+                            return new PointF(xPoint * _cbDrivenCoordinates.Width, yPoint * _cbDrivenCoordinates.Height);
+                        }).ToArray();
+                        GraphicsPath path = new GraphicsPath(FillMode.Winding);
+                        path.AddLines(points);
+
+                        Color color = Color.Red;
+                        color = Color.FromArgb(190, color.R, color.G, color.B);
+                        Pen pen = new Pen(color, 3f);
+                        g.SmoothingMode = SmoothingMode.HighQuality;
+                        g.DrawPath(pen, path);
+                    }
+                });
+
+                this.Dispatcher.Invoke(() =>
+                {
+                    image.Stretch = Stretch.Uniform;
+                    image.Width = _cbDrivenCoordinates.Width;
+                    image.Height = _cbDrivenCoordinates.Height;
+                    image.Source = ImageControlCreator.CreateImage(_cbDrivenCoordinates.Width, _cbDrivenCoordinates.Height, _cbZoomedArea).Source;
+                }, System.Windows.Threading.DispatcherPriority.Send);
+            }).Start();
         }
 
         private void DrawMap(ref Dictionary<long, TelemetryPoint> dict)
@@ -196,9 +275,6 @@ namespace ACCManager.Controls
                         _maxSize = maxY;
 
                     _maxSize *= 1.1f;
-
-                    int halfWidth = (int)(width / 2);
-                    int halfHeight = (int)(height / 2);
 
                     points = points.Select(x =>
                     {

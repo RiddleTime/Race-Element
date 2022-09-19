@@ -59,6 +59,16 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
 
         public static AxisLimits AxisLimits;
         public static bool AxisLimitsCustom { get; internal set; } = false;
+        public static event EventHandler<AxisLimits> AxisLimitsChanged;
+
+        public static void WpfPlot_AxesChanged(object sender, EventArgs e)
+        {
+            WpfPlot wpfPlot = (WpfPlot)sender;
+            AxisLimits = wpfPlot.Plot.GetAxisLimits(xAxisIndex: 0);
+            AxisLimitsCustom = true;
+            AxisLimitsChanged?.Invoke(null, AxisLimits);
+            //Debug.WriteLine($"XMin: {AxisLimits.XMin}, XMax: {AxisLimits.XMax}, XCenter: {AxisLimits.XCenter}");
+        }
 
         internal static TrackNames.TrackData trackData;
 
@@ -74,12 +84,6 @@ namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
             }
         }
 
-        public static void WpfPlot_AxesChanged(object sender, EventArgs e)
-        {
-            WpfPlot wpfPlot = (WpfPlot)sender;
-            AxisLimits = wpfPlot.Plot.GetAxisLimits(xAxisIndex: 0);
-            AxisLimitsCustom = true;
-            //Debug.WriteLine($"XMin: {AxisLimits.XMin}, XMax: {AxisLimits.XMax}, XCenter: {AxisLimits.XCenter}");
-        }
+
     }
 }

@@ -14,7 +14,7 @@ namespace ACCManager.Controls.Util.SetupImage
 
             using (Graphics g = Graphics.FromImage(bitmap))
             {
-                cachedBitmap.Draw(g, 0, 0, width, height);
+                cachedBitmap?.Draw(g, 0, 0, width, height);
             }
 
             MemoryStream memStream = new MemoryStream();
