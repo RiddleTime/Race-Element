@@ -3,6 +3,7 @@ using ACCManager.Controls.Telemetry.RaceSessions.Plots;
 using ACCManager.Controls.Util.SetupImage;
 using ACCManager.Data.ACC.Database.Telemetry;
 using ACCManager.HUD.Overlay.OverlayUtil;
+using ScottPlot;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -27,14 +28,15 @@ namespace ACCManager.Controls
         private CachedBitmap _cbDrivenCoordinates;
         private CachedBitmap _cbZoomedArea;
 
+        private Thread markerThread;
         private int _markerIndex = -1;
         private int _nextMarkerIndex = -1;
+
         private int _lastX = -1, _lastY = -1;
 
         private float _xTranslate = 0;
         private float _yTranslate = 0;
 
-        private Thread markerThread;
 
         public TrackMap()
         {
@@ -117,7 +119,7 @@ namespace ACCManager.Controls
                             image.Source = ImageControlCreator.CreateImage(mapWithMarker.Width, mapWithMarker.Height, mapWithMarker).Source;
                         }, System.Windows.Threading.DispatcherPriority.Send);
 
-                        Thread.Sleep(20);
+                        Thread.Sleep(50);
 
                         if (_nextMarkerIndex != -1)
                         {
