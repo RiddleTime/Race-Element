@@ -3,7 +3,6 @@ using ACCManager.Controls.Telemetry.RaceSessions.Plots;
 using ACCManager.Controls.Util.SetupImage;
 using ACCManager.Data.ACC.Database.Telemetry;
 using ACCManager.HUD.Overlay.OverlayUtil;
-using ScottPlot;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -96,10 +95,8 @@ namespace ACCManager.Controls
 
                         CachedBitmap mapWithMarker = new CachedBitmap(_cbDrivenCoordinates.Width, _cbDrivenCoordinates.Height, g =>
                         {
-                            if (_cbZoomedArea == null)
-                                _cbDrivenCoordinates.Draw(g);
-                            else
-                                _cbZoomedArea.Draw(g);
+                            _cbDrivenCoordinates?.Draw(g);
+                            _cbZoomedArea?.Draw(g);
 
                             GraphicsPath path = new GraphicsPath();
                             int ellipseSize = 12;
