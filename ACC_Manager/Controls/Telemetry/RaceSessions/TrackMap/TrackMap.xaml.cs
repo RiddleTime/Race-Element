@@ -3,6 +3,7 @@ using ACCManager.Controls.Telemetry.RaceSessions.Plots;
 using ACCManager.Controls.Util.SetupImage;
 using ACCManager.Data.ACC.Database.Telemetry;
 using ACCManager.HUD.Overlay.OverlayUtil;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -141,6 +142,15 @@ namespace ACCManager.Controls
             if (this.Visibility == Visibility.Visible)
             {
                 DrawMap(ref this._dict);
+            }
+            else
+            {
+                image.Source = null;
+                ThreadPool.QueueUserWorkItem(x =>
+                {
+                    Thread.Sleep(2000);
+                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                });
             }
         }
 
