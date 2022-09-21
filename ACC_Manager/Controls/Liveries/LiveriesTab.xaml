@@ -19,7 +19,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <materialDesign:Card UniformCornerRadius="30">
+    <materialDesign:Card>
         <Grid>
             <local:LiveryDeleter Panel.ZIndex="999"></local:LiveryDeleter>
             <local:LiveryBrowser></local:LiveryBrowser>
