@@ -37,7 +37,7 @@ namespace ACCManager.Data.ACC.Database.Telemetry
         private TelemetryRecorder()
         {
             IntervalMillis = 1000 / new AccManagerSettings().Get().TelemetryDetailedHerz;
-            _intervalTimeSpan = new TimeSpan(IntervalMillis);
+            _intervalTimeSpan = new TimeSpan(0, 0, 0, IntervalMillis);
 
             PagePhysicsTracker.Instance.Tracker += OnPagePhysicsUpdated;
             PageGraphicsTracker.Instance.Tracker += OnPageGraphicsUpdated;
@@ -57,28 +57,31 @@ namespace ACCManager.Data.ACC.Database.Telemetry
         {
             if (_isRunning)
             {
-                LogWriter.WriteToLog($"TelemetryRecorder: Recorded {_lapData.Count} data points.");
-                DbLapTelemetry lapTelemetry = new DbLapTelemetry()
+                lock (_lapData)
                 {
-                    Id = Guid.NewGuid(),
-                    LapId = e.Id,
-                    LapData = _lapData.SerializeLapData(),
-                    Herz = 1000 / this.IntervalMillis
-                };
-                _lapData.Clear();
-                var collection = RaceWeekendDatabase.Database.GetCollection<DbLapTelemetry>();
+                    LogWriter.WriteToLog($"TelemetryRecorder: Recorded {_lapData.Count} data points.");
+                    DbLapTelemetry lapTelemetry = new DbLapTelemetry()
+                    {
+                        Id = Guid.NewGuid(),
+                        LapId = e.Id,
+                        LapData = _lapData.SerializeLapData(),
+                        Herz = 1000 / this.IntervalMillis
+                    };
+                    _lapData.Clear();
+                    var collection = RaceWeekendDatabase.Database.GetCollection<DbLapTelemetry>();
 
-                var existing = collection.Find(x => x.LapId == e.Id);
-                if (!existing.Any())
-                {
-                    LogWriter.WriteToLog("TelemetryRecorder: Inserting LapTelemetry");
-                    RaceWeekendDatabase.Database.BeginTrans();
-                    collection.Insert(lapTelemetry);
-                    RaceWeekendDatabase.Database.Commit();
-                }
-                else
-                {
-                    LogWriter.WriteToLog($"TelemetryRecorder: LapTelemetry already exists for lap id {e.Id}");
+                    var existing = collection.Find(x => x.LapId == e.Id);
+                    if (!existing.Any())
+                    {
+                        LogWriter.WriteToLog("TelemetryRecorder: Inserting LapTelemetry");
+                        RaceWeekendDatabase.Database.BeginTrans();
+                        collection.Insert(lapTelemetry);
+                        RaceWeekendDatabase.Database.Commit();
+                    }
+                    else
+                    {
+                        LogWriter.WriteToLog($"TelemetryRecorder: LapTelemetry already exists for lap id {e.Id}");
+                    }
                 }
             }
         }
@@ -104,7 +107,7 @@ namespace ACCManager.Data.ACC.Database.Telemetry
             new Thread(x =>
             {
                 LogWriter.WriteToLog("Starting recording loop");
-                var nextTick = DateTime.UtcNow + _intervalTimeSpan;
+                var nextTick = DateTime.UtcNow.AddMilliseconds(IntervalMillis);
                 while (_isRunning)
                 {
                     try
@@ -113,62 +116,79 @@ namespace ACCManager.Data.ACC.Database.Telemetry
                             Thread.Sleep(nextTick - DateTime.UtcNow);
                     }
                     catch { }
-                    nextTick += _intervalTimeSpan;
+                    nextTick = DateTime.UtcNow.AddMilliseconds(IntervalMillis);
                     long ticks = DateTime.UtcNow.Ticks;
 
                     try
                     {
-                        bool hasLapData = _lapData.Any();
-                        bool isPointFurther = false;
-                        if (hasLapData)
-                            isPointFurther = _lapData.Last().Value.SplinePosition < _pageGraphics.NormalizedCarPosition;
-
-                        if (!hasLapData || isPointFurther)
+                        lock (_lapData)
                         {
+                            bool hasLapData = _lapData.Any();
+                            bool isPointFurther = false;
+                            if (hasLapData)
+                                isPointFurther = _lapData.Last().Value.SplinePosition < _pageGraphics.NormalizedCarPosition;
 
-                            if (!_lapData.ContainsKey(ticks))
+                            if (_pageGraphics.NormalizedCarPosition == 1)
+                                continue;
+
+                            if (!hasLapData || isPointFurther)
                             {
-                                float xCoord = 0;
-                                float yCoord = 0;
-                                for (int i = 0; i < 4; i++)
+                                if (!_lapData.ContainsKey(ticks))
                                 {
-                                    xCoord += _pagePhysics.TyreContactPoint[i].X;
-                                    yCoord += _pagePhysics.TyreContactPoint[i].Z;
-                                }
-                                xCoord /= 4;
-                                yCoord /= 4;
-
-                                if (xCoord == 0 || yCoord == 0)
-                                    continue;
-
-                                _lapData.Add(ticks, new TelemetryPoint()
-                                {
-                                    SplinePosition = _pageGraphics.NormalizedCarPosition,
-                                    InputsData = new InputsData()
+                                    float xCoord = 0;
+                                    float yCoord = 0;
+                                    for (int i = 0; i < 4; i++)
                                     {
-                                        Gas = _pagePhysics.Gas,
-                                        Brake = _pagePhysics.Brake,
-                                        Gear = _pagePhysics.Gear,
-                                        SteerAngle = _pagePhysics.SteerAngle
-                                    },
-                                    TyreData = new TyreData()
-                                    {
-                                        TyreCoreTemperature = _pagePhysics.TyreCoreTemperature,
-                                        TyrePressure = _pagePhysics.WheelPressure,
-                                    },
-                                    BrakeData = new BrakeData()
-                                    {
-                                        BrakeTemperature = _pagePhysics.BrakeTemperature,
-                                    },
-                                    PhysicsData = new PhysicsData()
-                                    {
-                                        WheelSlip = _pagePhysics.WheelSlip,
-                                        Speed = _pagePhysics.SpeedKmh,
-                                        X = xCoord,
-                                        Y = yCoord,
-                                        Heading = _pagePhysics.Heading,
+                                        xCoord += _pagePhysics.TyreContactPoint[i].X;
+                                        yCoord += _pagePhysics.TyreContactPoint[i].Z;
                                     }
-                                });
+                                    xCoord /= 4;
+                                    yCoord /= 4;
+
+                                    if (xCoord == 0 || yCoord == 0)
+                                        continue;
+
+                                    _lapData.Add(ticks, new TelemetryPoint()
+                                    {
+                                        SplinePosition = _pageGraphics.NormalizedCarPosition,
+                                        InputsData = new InputsData()
+                                        {
+                                            Gas = _pagePhysics.Gas,
+                                            Brake = _pagePhysics.Brake,
+                                            Gear = _pagePhysics.Gear,
+                                            SteerAngle = _pagePhysics.SteerAngle
+                                        },
+                                        TyreData = new TyreData()
+                                        {
+                                            TyreCoreTemperature = _pagePhysics.TyreCoreTemperature,
+                                            TyrePressure = _pagePhysics.WheelPressure,
+                                        },
+                                        BrakeData = new BrakeData()
+                                        {
+                                            BrakeTemperature = _pagePhysics.BrakeTemperature,
+                                        },
+                                        PhysicsData = new PhysicsData()
+                                        {
+                                            WheelSlip = _pagePhysics.WheelSlip,
+                                            Speed = _pagePhysics.SpeedKmh,
+                                            X = xCoord,
+                                            Y = yCoord,
+                                            Heading = _pagePhysics.Heading,
+                                        }
+                                    });
+                                }
+                                else
+                                {
+                                    //LogWriter.WriteToLog("Telemetry Point for time tick already exists: " + ticks);
+                                }
+                            }
+                            else
+                            {
+                                //if (hasLapData)
+                                //{
+                                //    LogWriter.WriteToLog($"lapdata.count: {_lapData.Count}, Current Spline: {_pageGraphics.NormalizedCarPosition:F4}, Last spline: {_lapData.Last().Value.SplinePosition:F4} ");
+                                //}
+
                             }
                         }
                     }
