@@ -264,7 +264,7 @@ namespace ACCManager.Controls
                 AlternatingRowBackground = new SolidColorBrush(Color.FromArgb(25, 0, 0, 0)),
                 RowBackground = Brushes.Transparent,
                 VerticalScrollBarVisibility = ScrollBarVisibility.Visible,
-                HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden,
+                HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
             };
 
             int fastestLapIndex = laps.GetFastestLapIndex();
@@ -341,14 +341,25 @@ namespace ACCManager.Controls
             });
             grid.Columns.Add(new DataGridTextColumn()
             {
-                Header = "Fuel in tank",
-                Binding = new Binding("FuelInTank")
+                Header = "Fuel Left",
+                Binding = new Binding("FuelInTank") { Converter = new FormattedFloatConverter() }
             });
             grid.Columns.Add(new DataGridTextColumn()
             {
                 Header = "Type",
                 Binding = new Binding("LapType")
             });
+            grid.Columns.Add(new DataGridTextColumn()
+            {
+                Header = "Track Temp",
+                Binding = new Binding("TempTrack") { Converter = new FormattedFloatConverter() }
+            });
+            grid.Columns.Add(new DataGridTextColumn()
+            {
+                Header = "Air Temp",
+                Binding = new Binding("TempAmbient") { Converter = new FormattedFloatConverter() }
+            });
+
 
             grid.SelectedCellsChanged += (s, e) =>
             {

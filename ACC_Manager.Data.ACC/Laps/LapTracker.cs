@@ -104,6 +104,8 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                                                 Laps[CurrentLap.Index - 1].RaceSessionId = RaceSessionTracker.Instance.CurrentSession.Id;
                                                 Laps[CurrentLap.Index - 1].UtcCompleted = DateTime.UtcNow;
                                                 Laps[CurrentLap.Index - 1].FuelInTank = ACCSharedMemory.Instance.ReadPhysicsPageFile().Fuel;
+                                                Laps[CurrentLap.Index - 1].TempTrack = ACCSharedMemory.Instance.ReadPhysicsPageFile().RoadTemp;
+                                                Laps[CurrentLap.Index - 1].TempAmbient = ACCSharedMemory.Instance.ReadPhysicsPageFile().AirTemp;
                                                 LapDataCollection.Insert(Laps[CurrentLap.Index - 1]);
 
                                                 Trace.WriteLine($"{Laps[CurrentLap.Index - 1]}");

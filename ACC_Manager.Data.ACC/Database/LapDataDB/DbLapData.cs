@@ -43,6 +43,9 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
         public int FuelUsage { get; set; } = -1;
         public float FuelInTank { get; set; } = -1;
 
+        public float TempAmbient { get; set; } = -1;
+        public float TempTrack { get; set; } = -1;
+
         public override string ToString()
         {
             return $"Lap: {Index}, Time: {new TimeSpan(0, 0, 0, 0, Time):mm\\:ss\\:fff}, IsValid: {IsValid}, S1: {this.GetSector1():F3}, S2: {this.GetSector2():F3}, S3: {this.GetSector3():F3}, LapType: {this.LapType}";
