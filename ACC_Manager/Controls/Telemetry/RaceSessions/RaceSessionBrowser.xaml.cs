@@ -398,14 +398,15 @@ namespace ACCManager.Controls
                 _currentData = telemetry.DeserializeLapData();
                 telemetry = null;
 
-                trackMap.SetData(ref _currentData);
-                trackMap.DrawMap();
-                trackMap.Visibility = Visibility.Visible;
+
 
                 TrackData trackData = TrackNames.Tracks.Values.First(x => x.Guid == GetSelectedTrack());
-
                 PlotUtil.trackData = trackData;
                 int fullSteeringLock = SteeringLock.Get(CarDataCollection.GetCarData(CurrentDatabase, GetSelectedCar()).ParseName);
+
+                trackMap.SetData(ref _currentData);
+                trackMap.Visibility = Visibility.Visible;
+
 
                 Dictionary<string, Plotter> plots = new Dictionary<string, Plotter>();
                 plots.Add("Speed/Gear", (g, d) => new SpeedGearPlot(trackData, ref textBlockMetricInfo).Create(g, d));

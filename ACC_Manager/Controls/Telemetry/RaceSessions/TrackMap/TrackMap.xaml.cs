@@ -3,6 +3,7 @@ using ACCManager.Controls.Telemetry.RaceSessions.Plots;
 using ACCManager.Controls.Util.SetupImage;
 using ACCManager.Data.ACC.Database.Telemetry;
 using ACCManager.HUD.Overlay.OverlayUtil;
+using ScottPlot;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -12,6 +13,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Brushes = System.Drawing.Brushes;
 using Color = System.Drawing.Color;
 using Pen = System.Drawing.Pen;
 
@@ -23,6 +25,8 @@ namespace ACCManager.Controls
     public partial class TrackMap : UserControl
     {
         private Dictionary<long, TelemetryPoint> _dict;
+        PointF[] points = new PointF[0];
+
 
         private float _maxSize = 0;
         private CachedBitmap _cbDrivenCoordinates;
@@ -46,9 +50,9 @@ namespace ACCManager.Controls
             PlotUtil.AxisLimitsChanged += PlotUtil_AxisLimitsChanged;
         }
 
-        private void PlotUtil_AxisLimitsChanged(object sender, ScottPlot.AxisLimits e)
+        private void PlotUtil_AxisLimitsChanged(object sender, AxisLimits axisLimits)
         {
-            DrawZoomedArea(ref _dict, e);
+            DrawZoomedArea(ref _dict, axisLimits, true);
         }
 
         private void PlotUtil_MarkerIndexChanged(object sender, int index)
@@ -93,20 +97,15 @@ namespace ACCManager.Controls
                         _lastX = newX;
                         _lastY = newY;
 
-
                         CachedBitmap mapWithMarker = new CachedBitmap(_cbDrivenCoordinates.Width, _cbDrivenCoordinates.Height, g =>
                         {
                             _cbDrivenCoordinates?.Draw(g);
                             _cbZoomedArea?.Draw(g);
 
                             GraphicsPath path = new GraphicsPath();
-                            int ellipseSize = 12;
+                            int ellipseSize = 10;
                             path.AddEllipse(drawPoint.X - ellipseSize / 2, drawPoint.Y - ellipseSize / 2, ellipseSize, ellipseSize);
-
-                            Pen pen = new Pen(Color.OrangeRed, 2f);
-                            g.DrawPath(pen, path);
-
-                            path = new GraphicsPath();
+                            g.DrawPath(new Pen(Color.White, 2f), path);
                         });
 
                         this.Dispatcher.Invoke(() =>
@@ -115,9 +114,9 @@ namespace ACCManager.Controls
                             image.Width = _cbDrivenCoordinates.Width;
                             image.Height = _cbDrivenCoordinates.Height;
                             image.Source = ImageControlCreator.CreateImage(mapWithMarker.Width, mapWithMarker.Height, mapWithMarker).Source;
-                        }, System.Windows.Threading.DispatcherPriority.Send);
+                        }, System.Windows.Threading.DispatcherPriority.DataBind);
 
-                        Thread.Sleep(50);
+                        Thread.Sleep(80);
 
                         if (_nextMarkerIndex != -1)
                         {
@@ -127,6 +126,7 @@ namespace ACCManager.Controls
                                 _nextMarkerIndex = -1;
                             }).Start();
                         }
+
                     });
                     markerThread.Start();
                 }
@@ -141,15 +141,15 @@ namespace ACCManager.Controls
         {
             if (this.Visibility == Visibility.Visible)
             {
-                DrawMap(ref this._dict);
+                DrawMap();
             }
             else
             {
                 image.Source = null;
                 ThreadPool.QueueUserWorkItem(x =>
                 {
-                    Thread.Sleep(2000);
-                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                    Thread.Sleep(1000);
+                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
                 });
             }
         }
@@ -157,7 +157,7 @@ namespace ACCManager.Controls
         public void SetData(ref Dictionary<long, TelemetryPoint> dict)
         {
             this._dict = dict;
-            _cbZoomedArea = null;
+            DrawMap();
         }
 
         public void DrawMap()
@@ -165,65 +165,116 @@ namespace ACCManager.Controls
             if (_dict == null)
                 return;
 
-            DrawMap(ref _dict);
+            DrawDrivenCoordinates(ref _dict);
+            DrawZoomedArea(ref _dict, PlotUtil.AxisLimits, true);
         }
 
-        private void DrawZoomedArea(ref Dictionary<long, TelemetryPoint> dict, ScottPlot.AxisLimits axisLimits)
+        private Thread zoomedThread = null;
+        private AxisLimits? _nextAxisLimits = null;
+        private void DrawZoomedArea(ref Dictionary<long, TelemetryPoint> dict, ScottPlot.AxisLimits axisLimits, bool updateImageControl = false)
         {
+            bool justUpdate = false;
+
             if (_cbDrivenCoordinates == null || axisLimits.XMax == PlotUtil.trackData.TrackLength && axisLimits.XMin == 0)
             {
                 _cbZoomedArea = null;
-                return;
+                if (_cbZoomedArea != null)
+                    _cbZoomedArea.SetRenderer(g => { });
+                justUpdate = true;
             }
-
-            PointF[] points = dict.Where(x =>
+        
+            if (!justUpdate)
             {
-                double trackPosition = PlotUtil.trackData.TrackLength * x.Value.SplinePosition;
-                return trackPosition < axisLimits.XMax && trackPosition > axisLimits.XMin;
-            }).Select(x => new PointF(x.Value.PhysicsData.X, x.Value.PhysicsData.Y)).ToArray();
-
-            if (points.Length >= dict.Count || points.Length < 10)
-            {
-                _cbZoomedArea = null;
-                return;
-            }
-
-            new Thread(() =>
-            {
-                _cbZoomedArea = new CachedBitmap(_cbDrivenCoordinates.Width, _cbDrivenCoordinates.Height, g =>
+                points = dict.Where(x =>
                 {
-                    if (points.Length > 0)
-                    {
-                        _cbDrivenCoordinates?.Draw(g);
-                        points = points.Select(x => new PointF(x.X + _xTranslate, x.Y + _yTranslate)).ToArray();
-                        points = points.Select(x =>
-                        {
-                            float xPoint = x.X / _maxSize;
-                            float yPoint = x.Y / _maxSize;
-                            return new PointF(xPoint * _cbDrivenCoordinates.Width, yPoint * _cbDrivenCoordinates.Height);
-                        }).ToArray();
-                        GraphicsPath path = new GraphicsPath(FillMode.Winding);
-                        path.AddLines(points);
+                    double trackPosition = PlotUtil.trackData.TrackLength * x.Value.SplinePosition;
+                    return trackPosition < axisLimits.XMax && trackPosition > axisLimits.XMin;
+                }).Select(x => new PointF(x.Value.PhysicsData.X, x.Value.PhysicsData.Y)).ToArray();
 
-                        Color color = Color.Red;
-                        color = Color.FromArgb(190, color.R, color.G, color.B);
-                        Pen pen = new Pen(color, 3f);
-                        g.SmoothingMode = SmoothingMode.HighQuality;
-                        g.DrawPath(pen, path);
+                if (points.Length >= dict.Count || points.Length < 10)
+                {
+                    if (_cbZoomedArea != null)
+                        _cbZoomedArea.SetRenderer(g => { });
+                    justUpdate = true;
+                }
+            }
+            if (zoomedThread == null || !zoomedThread.IsAlive)
+            {
+                zoomedThread = new Thread(() =>
+                {
+                    if (!justUpdate)
+                        _cbZoomedArea = new CachedBitmap(_cbDrivenCoordinates.Width, _cbDrivenCoordinates.Height, g =>
+                        {
+                            if (points.Length > 0)
+                            {
+                                if (updateImageControl)
+                                    _cbDrivenCoordinates?.Draw(g);
+
+                                points = points.Select(x => new PointF(x.X + _xTranslate, x.Y + _yTranslate)).ToArray();
+                                points = points.Select(x =>
+                                {
+                                    float xPoint = x.X / _maxSize;
+                                    float yPoint = x.Y / _maxSize;
+                                    return new PointF(xPoint * _cbDrivenCoordinates.Width, yPoint * _cbDrivenCoordinates.Height);
+                                }).ToArray();
+
+                                GraphicsPath path = new GraphicsPath(FillMode.Winding);
+                                path.AddLines(points);
+                                Color color = Color.Blue;
+                                color = Color.FromArgb(220, color.R, color.G, color.B);
+                                Pen pen = new Pen(color, 4f);
+                                g.SmoothingMode = SmoothingMode.HighQuality;
+                                g.DrawPath(pen, path);
+                            }
+                        });
+
+                    if (updateImageControl || justUpdate)
+                    {
+                      
+
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            image.Stretch = Stretch.Uniform;
+                            image.Width = _cbDrivenCoordinates.Width;
+                            image.Height = _cbDrivenCoordinates.Height;
+
+                            if (updateImageControl)
+                            {
+                                CachedBitmap temp = new CachedBitmap(_cbDrivenCoordinates.Width, _cbDrivenCoordinates.Height, g =>
+                                {
+                                    _cbDrivenCoordinates?.Draw(g);
+                                    _cbZoomedArea?.Draw(g);
+                                });
+                                image.Source = ImageControlCreator.CreateImage(_cbDrivenCoordinates.Width, _cbDrivenCoordinates.Height, temp).Source;
+                            }
+                            else
+                                image.Source = ImageControlCreator.CreateImage(_cbDrivenCoordinates.Width, _cbDrivenCoordinates.Height, _cbZoomedArea).Source;
+
+                        }, System.Windows.Threading.DispatcherPriority.DataBind);
+                        
+                    }
+
+                    Thread.Sleep(80);
+
+                    if (_nextAxisLimits != null)
+                    {
+                        new Thread(() =>
+                        {
+                            DrawZoomedArea(ref _dict, _nextAxisLimits.Value, updateImageControl);
+                            _nextAxisLimits = null;
+                        }).Start();
                     }
                 });
+                zoomedThread.Start();
+            }
+            else
+            {
+                _nextAxisLimits = axisLimits;
+            }
 
-                this.Dispatcher.Invoke(() =>
-                {
-                    image.Stretch = Stretch.Uniform;
-                    image.Width = _cbDrivenCoordinates.Width;
-                    image.Height = _cbDrivenCoordinates.Height;
-                    image.Source = ImageControlCreator.CreateImage(_cbDrivenCoordinates.Width, _cbDrivenCoordinates.Height, _cbZoomedArea).Source;
-                }, System.Windows.Threading.DispatcherPriority.Send);
-            }).Start();
         }
 
-        private void DrawMap(ref Dictionary<long, TelemetryPoint> dict)
+        private void DrawDrivenCoordinates(ref Dictionary<long, TelemetryPoint> dict, bool updateImageControl = false)
         {
             PointF[] points = dict.Select(x => new PointF(x.Value.PhysicsData.X, x.Value.PhysicsData.Y)).ToArray();
 
@@ -300,10 +351,13 @@ namespace ACCManager.Controls
                 }
             });
 
-            image.Stretch = Stretch.Uniform;
-            image.Width = _cbDrivenCoordinates.Width;
-            image.Height = _cbDrivenCoordinates.Height;
-            image.Source = ImageControlCreator.CreateImage(_cbDrivenCoordinates.Width, _cbDrivenCoordinates.Height, _cbDrivenCoordinates).Source;
+            if (updateImageControl)
+            {
+                image.Stretch = Stretch.Uniform;
+                image.Width = _cbDrivenCoordinates.Width;
+                image.Height = _cbDrivenCoordinates.Height;
+                image.Source = ImageControlCreator.CreateImage(_cbDrivenCoordinates.Width, _cbDrivenCoordinates.Height, _cbDrivenCoordinates).Source;
+            }
         }
     }
 }
