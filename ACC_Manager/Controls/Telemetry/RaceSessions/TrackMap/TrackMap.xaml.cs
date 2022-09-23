@@ -214,8 +214,8 @@ namespace ACCManager.Controls
                 else
                     _yTranslate = minY * -1;
 
-                _xTranslate += 100;
-                _yTranslate += 100;
+                _xTranslate += 50;
+                _yTranslate += 50;
 
                 points = points.Select(x => new PointF(x.X + _xTranslate, x.Y + _yTranslate)).ToArray();
                 minX = float.MaxValue; maxX = float.MinValue;
