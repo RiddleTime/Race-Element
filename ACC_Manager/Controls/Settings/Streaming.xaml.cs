@@ -93,31 +93,27 @@ namespace ACCManager.Controls
                     OBSWebsocket _obsWebSocket = new OBSWebsocket();
                     _obsWebSocket.Connected += (s, e) =>
                     {
-                        bool foundSetupHider = _obsWebSocket.GetSourcesList().Find(x => x.Name == "SetupHider") != null;
+                        Task.Run(() =>
+                        {
+                            var list = _obsWebSocket.GetSceneItemList(_obsWebSocket.GetCurrentProgramScene());
 
-                        string message = "SetupHider source was not found in your current Scene.";
-                        if (foundSetupHider)
-                            message = $"Connection to {streamSettings.StreamingSoftware} is working.";
+                            bool foundSetupHider = list.Find(x => x.SourceName == "SetupHider") != null;
 
-                        MainWindow.Instance.ClearSnackbar();
-                        MainWindow.Instance.EnqueueSnackbarMessage(message);
+                            string message = "SetupHider source was not found in your current Scene.";
+                            if (foundSetupHider)
+                                message = $"Connection to {streamSettings.StreamingSoftware} is working.";
 
-                        _obsWebSocket.Disconnect();
+                            MainWindow.Instance.ClearSnackbar();
+                            MainWindow.Instance.EnqueueSnackbarMessage(message);
+
+                            _obsWebSocket.Disconnect();
+                        });
                     };
                     _obsWebSocket.Disconnected += (s, e) =>
                     {
-                        CloseEventArgs args = (CloseEventArgs)e;
-                        if (args.WasClean)
+                        if (e.WebsocketDisconnectionInfo.Type == Websocket.Client.DisconnectionType.Error)
                         {
                             Debug.WriteLine("Disconnected test connection.");
-                            if (args.Code == 4010)
-                            {
-                                MainWindow.Instance.ClearSnackbar();
-                                MainWindow.Instance.EnqueueSnackbarMessage($"Failed to make a connection to {streamSettings.StreamingSoftware}. It appears you are not running OBS WebSocket 4.9.1.");
-                            }
-                        }
-                        else
-                        {
                             MainWindow.Instance.ClearSnackbar();
                             MainWindow.Instance.EnqueueSnackbarMessage($"Failed to make a connection to {streamSettings.StreamingSoftware}.");
                         }
@@ -127,9 +123,8 @@ namespace ACCManager.Controls
                             buttonTestConnnection.Content = "Test Connection";
                             buttonTestConnnection.IsEnabled = true;
                         });
-
                     };
-                    _obsWebSocket.Connect($"ws://{streamSettings.StreamingWebSocketIP}:{streamSettings.StreamingWebSocketPort}", streamSettings.StreamingWebSocketPassword);
+                    _obsWebSocket.ConnectAsync($"ws://{streamSettings.StreamingWebSocketIP}:{streamSettings.StreamingWebSocketPort}", streamSettings.StreamingWebSocketPassword);
                 }
                 catch (Exception e)
                 {

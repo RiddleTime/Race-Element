@@ -6,6 +6,9 @@ namespace ACCManager.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.1.0.0", "- OBS Websocket updated to version 5, using the setup hider now requires OBS version 28 or higher."+
+                        "\n- Added Detailed Telemetry recording and displaying."+
+                        "\n- Updated design theme."},
             {"0.0.9.0", "- Added Race Weekends tab to Telemetry tab."+
                         "\n- ACC Manager now saves race weekend data(lap and sector times)."+
                         "\n- Titlebar: Added icons for automatic steering lock and the stream setup hider."+
