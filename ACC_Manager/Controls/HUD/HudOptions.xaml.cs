@@ -213,7 +213,7 @@ namespace ACCManager.Controls
                 FontFamily = FindResource("FontRedemption") as FontFamily,
                 BorderBrush = Brushes.OrangeRed,
                 BorderThickness = new Thickness(0, 0, 0, 1.5),
-                Margin = new Thickness(0, 0, 0, 5),
+                Margin = new Thickness(0, -1, 0, 5),
                 HorizontalAlignment = HorizontalAlignment.Center,
                 FontSize = 30,
                 FontStyle = FontStyles.Italic,
@@ -318,23 +318,41 @@ namespace ACCManager.Controls
 
             stackerOverlayInfo.MouseEnter += (s, e) =>
             {
+                stackerOverlayInfo.Background = stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(170, 0, 0, 0));
+
                 switch (toggle.IsChecked)
                 {
                     case true:
                         {
-                            stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(38, 255, 15, 15));
+                            overlayNameLabel.BorderBrush = Brushes.OrangeRed;
+                            stackerOverlayInfo.Background = stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(170, 0, 0, 0)); ;
                             break;
                         }
                     case false:
                         {
-                            stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(38, 15, 255, 15));
+                            overlayNameLabel.BorderBrush = Brushes.LimeGreen;
+                            stackerOverlayInfo.Background = stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(170, 0, 0, 0)); ;
                             break;
                         }
                 }
             };
             stackerOverlayInfo.MouseLeave += (s, e) =>
             {
-                stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(140, 0, 0, 0));
+                stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(127, 0, 0, 0));
+
+                switch (toggle.IsChecked)
+                {
+                    case true:
+                        {
+                            overlayNameLabel.BorderBrush = Brushes.Green;
+                            break;
+                        }
+                    case false:
+                        {
+                            overlayNameLabel.BorderBrush = Brushes.OrangeRed;
+                            break;
+                        }
+                }
             };
 
             activationPanel.Children.Add(toggle);
