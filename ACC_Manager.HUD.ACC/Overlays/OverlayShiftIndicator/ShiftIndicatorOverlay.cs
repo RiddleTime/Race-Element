@@ -18,7 +18,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
         private class ShiftIndicatorConfig : OverlayConfiguration
         {
             [ToolTip("Sets the Width of the shift indicator bar.")]
-            [IntRange(160, 500, 10)]
+            [IntRange(160, 600, 10)]
             internal int Width { get; set; } = 300;
 
             [ToolTip("Sets the Height of the shift indicator bar.")]
