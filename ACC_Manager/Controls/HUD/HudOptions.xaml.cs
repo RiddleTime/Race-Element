@@ -212,11 +212,12 @@ namespace ACCManager.Controls
                 Content = overlayAttribute.Name,
                 FontFamily = FindResource("FontRedemption") as FontFamily,
                 BorderBrush = Brushes.OrangeRed,
-                BorderThickness = new Thickness(0, 0, 0, 1),
+                BorderThickness = new Thickness(0, 0, 0, 1.5),
                 Margin = new Thickness(0, 0, 0, 5),
                 HorizontalAlignment = HorizontalAlignment.Center,
                 FontSize = 30,
-                FontStyle = FontStyles.Italic
+                FontStyle = FontStyles.Italic,
+                Foreground = Brushes.White
             };
             TextBlock overlayDescription = new TextBlock()
             {
@@ -230,12 +231,12 @@ namespace ACCManager.Controls
             StackPanel stackerOverlayInfo = new StackPanel()
             {
                 Orientation = Orientation.Vertical,
-                Margin = new Thickness(0, 3, 0, 3),
-                Background = new SolidColorBrush(Color.FromArgb(190, 0, 0, 0)),
+                Margin = new Thickness(7, 3, 7, 7),
+                Background = new SolidColorBrush(Color.FromArgb(140, 0, 0, 0)),
             };
+
             stackerOverlayInfo.Children.Add(overlayNameLabel);
             stackerOverlayInfo.Children.Add(overlayDescription);
-            configStackPanel.Children.Add(stackerOverlayInfo);
 
             StackPanel activationPanel = new StackPanel()
             {
@@ -244,21 +245,31 @@ namespace ACCManager.Controls
                 VerticalAlignment = VerticalAlignment.Center,
                 Cursor = Cursors.Hand,
                 Name = "activationStacker",
-                ToolTip = "You can else press Enter to activate this overlay."
+                Margin = new Thickness(0, 0, 0, 0),
             };
-            Label nameLabel = new Label() { Content = tempOverlaySettings.Enabled ? "Deactivate" : "Activate", VerticalAlignment = VerticalAlignment.Center };
-            ToggleButton toggle = new ToggleButton() { Height = 35, Width = 50, VerticalAlignment = VerticalAlignment.Center };
+            ToggleButton toggle = new ToggleButton()
+            {
+                Visibility = Visibility.Collapsed,
+                VerticalAlignment = VerticalAlignment.Center
+            };
             toggle.PreviewKeyDown += (s, e) => { if (e.Key == Key.Enter) e.Handled = true; };
             toggle.Checked += (s, e) =>
             {
+                stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(140, 0, 0, 0));
+
+                toggle.Background = Brushes.Green;
+                overlayNameLabel.Foreground = Brushes.LimeGreen;
+
+
                 lock (OverlaysACC.ActiveOverlays)
                 {
                     AbstractOverlay overlay = OverlaysACC.ActiveOverlays.Find(f => f.GetType() == type);
 
                     if (overlay == null)
                     {
+
+                        overlayNameLabel.BorderBrush = Brushes.Green;
                         listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 10, 255, 10));
-                        nameLabel.Content = "Deactivate";
                         overlay = (AbstractOverlay)Activator.CreateInstance(type, DefaultOverlayArgs);
 
                         overlay.Start();
@@ -272,10 +283,15 @@ namespace ACCManager.Controls
             };
             toggle.Unchecked += (s, e) =>
             {
+                stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(140, 0, 0, 0));
+
+                overlayNameLabel.BorderBrush = Brushes.OrangeRed;
+                overlayNameLabel.Foreground = Brushes.White;
+                toggle.Background = Brushes.Transparent;
                 lock (OverlaysACC.ActiveOverlays)
                 {
+
                     listViewItem.Background = Brushes.Transparent;
-                    nameLabel.Content = "Activate";
                     AbstractOverlay overlay = OverlaysACC.ActiveOverlays.Find(f => f.GetType() == type);
 
                     SaveOverlaySettings(overlay, false);
@@ -296,11 +312,34 @@ namespace ACCManager.Controls
 
                 toggle.IsChecked = true;
                 configStacker.IsEnabled = false;
+                overlayNameLabel.BorderBrush = Brushes.Green;
+                overlayNameLabel.Foreground = Brushes.LimeGreen;
             }
 
+            stackerOverlayInfo.MouseEnter += (s, e) =>
+            {
+                switch (toggle.IsChecked)
+                {
+                    case true:
+                        {
+                            stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(38, 255, 15, 15));
+                            break;
+                        }
+                    case false:
+                        {
+                            stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(38, 15, 255, 15));
+                            break;
+                        }
+                }
+            };
+            stackerOverlayInfo.MouseLeave += (s, e) =>
+            {
+                stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(140, 0, 0, 0));
+            };
+
             activationPanel.Children.Add(toggle);
-            activationPanel.Children.Add(nameLabel);
             configStackPanel.Children.Add(activationPanel);
+            configStackPanel.Children.Add(stackerOverlayInfo);
 
             // click overlay title/description to toggle overlay
             stackerOverlayInfo.Cursor = Cursors.Hand;
@@ -388,7 +427,8 @@ namespace ACCManager.Controls
                 if (overlayAttribute.OverlayType != overlayType)
                     continue;
 
-                TextBlock listViewText = new TextBlock() { Text = x.Key, Style = Resources["MaterialDesignButtonTextBlock"] as Style, };
+                TextBlock listViewText = new TextBlock() { Text = x.Key, Style = Resources["MaterialDesignButtonTextBlock"] as Style };
+
 
                 double marginTopBottom = 6.5d;
 
