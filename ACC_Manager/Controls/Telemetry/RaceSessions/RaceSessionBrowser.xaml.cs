@@ -15,6 +15,7 @@ using LiteDB;
 using ScottPlot;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -263,7 +264,7 @@ namespace ACCManager.Controls
                 GridLinesVisibility = DataGridGridLinesVisibility.Vertical,
                 AlternatingRowBackground = new SolidColorBrush(Color.FromArgb(25, 0, 0, 0)),
                 RowBackground = Brushes.Transparent,
-                VerticalScrollBarVisibility = ScrollBarVisibility.Visible,
+                VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
                 HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
             };
 
@@ -321,17 +322,17 @@ namespace ACCManager.Controls
             });
             grid.Columns.Add(new DataGridTextColumn()
             {
-                Header = "Sector 1",
+                Header = "S 1",
                 Binding = new Binding("Sector1") { Converter = new DivideBy1000ToFloatConverter() }
             });
             grid.Columns.Add(new DataGridTextColumn()
             {
-                Header = "Sector 2",
+                Header = "S 2",
                 Binding = new Binding("Sector2") { Converter = new DivideBy1000ToFloatConverter() }
             });
             grid.Columns.Add(new DataGridTextColumn()
             {
-                Header = "Sector 3",
+                Header = "S 3",
                 Binding = new Binding("Sector3") { Converter = new DivideBy1000ToFloatConverter() }
             });
             grid.Columns.Add(new DataGridTextColumn()
@@ -351,12 +352,12 @@ namespace ACCManager.Controls
             });
             grid.Columns.Add(new DataGridTextColumn()
             {
-                Header = "Track Temp",
+                Header = "°C Track",
                 Binding = new Binding("TempTrack") { Converter = new FormattedFloatConverter() }
             });
             grid.Columns.Add(new DataGridTextColumn()
             {
-                Header = "Air Temp",
+                Header = "°C Air",
                 Binding = new Binding("TempAmbient") { Converter = new FormattedFloatConverter() }
             });
 
@@ -379,6 +380,67 @@ namespace ACCManager.Controls
 
         private SelectionChangedEventHandler _selectionChangedHandler;
         private Dictionary<long, TelemetryPoint> _currentData;
+
+        private void FilterTelemetrySplines(Dictionary<long, TelemetryPoint> dictio)
+        {
+            float highestSplinePosition = -1;
+            float lastSplinePosition = -1;
+
+            long minKeyToTranslate = -1;
+            bool needsToTranslate = false;
+            foreach (var data in dictio)
+            {
+                if (!needsToTranslate)
+                {
+                    if (data.Value.SplinePosition < lastSplinePosition)
+                    {
+                        needsToTranslate = true;
+                        minKeyToTranslate = data.Key;
+                    }
+                    if (!needsToTranslate)
+                        lastSplinePosition = data.Value.SplinePosition;
+                }
+
+                if (needsToTranslate)
+                    if (data.Value.SplinePosition > highestSplinePosition)
+                        highestSplinePosition = data.Value.SplinePosition;
+            }
+
+            if (needsToTranslate)
+            {
+                float translation = 1 - dictio.First().Value.SplinePosition;
+                bool normalTranslation = false;
+
+                _currentData.Clear();
+
+                foreach (var data in dictio)
+                {
+                    if (!normalTranslation)
+                    {
+                        if (data.Key == minKeyToTranslate)
+                        {
+                            normalTranslation = true;
+
+                            var oldPoint = data.Value;
+                            oldPoint.SplinePosition += translation;
+                            _currentData.Add(data.Key, oldPoint);
+                        }
+                        else
+                        {
+                            var oldPoint = data.Value;
+                            oldPoint.SplinePosition = (oldPoint.SplinePosition + translation) - 1f;
+                            _currentData.Add(data.Key, oldPoint);
+                        }
+                    }
+                    else
+                    {
+                        var oldPoint = data.Value;
+                        oldPoint.SplinePosition += translation;
+                        _currentData.Add(data.Key, oldPoint);
+                    }
+                }
+            }
+        }
 
         private void CreateCharts(Guid lapId)
         {
@@ -409,6 +471,7 @@ namespace ACCManager.Controls
                 _currentData = telemetry.DeserializeLapData();
                 telemetry = null;
 
+                FilterTelemetrySplines(_currentData.ToDictionary(x => x.Key, x => x.Value));
 
 
                 TrackData trackData = TrackNames.Tracks.Values.First(x => x.Guid == GetSelectedTrack());

@@ -123,15 +123,20 @@ namespace ACCManager.Data.ACC.Database.Telemetry
                     {
                         lock (_lapData)
                         {
+                            float currentSplinePositio = _pageGraphics.NormalizedCarPosition;
+
+
                             bool hasLapData = _lapData.Any();
-                            bool isPointFurther = false;
+                            bool isSamePoint = false;
+
                             if (hasLapData)
-                                isPointFurther = _lapData.Last().Value.SplinePosition < _pageGraphics.NormalizedCarPosition;
+                                isSamePoint = _lapData.Last().Value.SplinePosition == currentSplinePositio;
+
 
                             if (_pageGraphics.NormalizedCarPosition == 1)
                                 continue;
 
-                            if (!hasLapData || isPointFurther)
+                            if (!hasLapData || (hasLapData && !isSamePoint))
                             {
                                 if (!_lapData.ContainsKey(ticks))
                                 {
