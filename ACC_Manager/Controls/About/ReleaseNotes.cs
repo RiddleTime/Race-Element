@@ -8,7 +8,8 @@ namespace ACCManager.Controls
         {
             {"0.1.0.0", "- OBS Websocket updated to version 5, using the setup hider now requires OBS version 28 or higher."+
                         "\n- Added Detailed Telemetry recording and displaying."+
-                        "\n- Updated design theme."},
+                        "\n- Updated design theme."+
+                        "\n- HUD tab: the title & description is now 1 big button to toggle hud activation."},
             {"0.0.9.0", "- Added Race Weekends tab to Telemetry tab."+
                         "\n- ACC Manager now saves race weekend data(lap and sector times)."+
                         "\n- Titlebar: Added icons for automatic steering lock and the stream setup hider."+

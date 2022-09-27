@@ -36,7 +36,7 @@
                         <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" Margin="0,-9,0,0" HorizontalAlignment="Center">
                             Provides tooling for Assetto Corsa Competizione.<LineBreak/>
                             Developed by RiddleTime.<LineBreak/>
-                            Thank You: KrisV147, Floriwan, Fbalazs and Jubka.
+                            Thank You: KrisV147, Floriwan, Pelice, Mominon, Fbalazs and Jubka.
                         </TextBlock>
                     </StackPanel>
 
