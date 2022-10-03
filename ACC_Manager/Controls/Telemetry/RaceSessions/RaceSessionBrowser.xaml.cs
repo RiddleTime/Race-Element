@@ -362,15 +362,15 @@ namespace ACCManager.Controls
             });
 
 
-            grid.SelectedCellsChanged += (s, e) =>
-            {
-                if (grid.SelectedIndex != -1)
-                {
-                    DbLapData lapdata = (DbLapData)grid.SelectedItem;
+            //grid.SelectedCellsChanged += (s, e) =>
+            //{
+            //    if (grid.SelectedIndex != -1)
+            //    {
+            //        DbLapData lapdata = (DbLapData)grid.SelectedItem;
 
-                    CreateCharts(lapdata.Id);
-                }
-            };
+            //        CreateCharts(lapdata.Id);
+            //    }
+            //};
 
             return grid;
         }
@@ -381,13 +381,46 @@ namespace ACCManager.Controls
         private SelectionChangedEventHandler _selectionChangedHandler;
         private Dictionary<long, TelemetryPoint> _currentData;
 
+        private void LogTelemetrySplinesInfo(Dictionary<long, TelemetryPoint> dictio)
+        {
+            Debug.WriteLine($"Spline[Start: {dictio.First().Value.SplinePosition:F6}, End: {dictio.Last().Value.SplinePosition:F6}, Count: {dictio.Count}]");
+
+            float previousSpline = -1;
+            int index = 0;
+            foreach (var node in dictio)
+            {
+                if (node.Value.SplinePosition < previousSpline)
+                {
+                    Debug.WriteLine($"Decreasing spline at index {index + 1}: {previousSpline}->{node.Value.SplinePosition:F6}");
+
+                    int tenPercentCount = dictio.Count / 10;
+
+                    break;
+                }
+                previousSpline = node.Value.SplinePosition;
+                index++;
+            }
+
+
+        }
+
         private void FilterTelemetrySplines(Dictionary<long, TelemetryPoint> dictio)
         {
+            Debug.WriteLine("-- Before Filtering --");
+            LogTelemetrySplinesInfo(_currentData);
+
+
             float highestSplinePosition = -1;
             float lastSplinePosition = -1;
 
             long minKeyToTranslate = -1;
             bool needsToTranslate = false;
+
+            bool lastCloseToZero = false;
+            if (dictio.Last().Value.SplinePosition < 0.1)
+                lastCloseToZero = true;
+
+
             foreach (var data in dictio)
             {
                 if (!needsToTranslate)
@@ -409,9 +442,16 @@ namespace ACCManager.Controls
             if (needsToTranslate)
             {
                 float translation = 1 - dictio.First().Value.SplinePosition;
+
+                if (lastCloseToZero)
+                    translation = dictio.Last().Value.SplinePosition;
+
                 bool normalTranslation = false;
 
                 _currentData.Clear();
+
+                if (lastCloseToZero)
+                    normalTranslation = true;
 
                 foreach (var data in dictio)
                 {
@@ -435,11 +475,19 @@ namespace ACCManager.Controls
                     else
                     {
                         var oldPoint = data.Value;
-                        oldPoint.SplinePosition += translation;
+                        if (lastCloseToZero)
+                            oldPoint.SplinePosition -= translation;
+                        else
+                            oldPoint.SplinePosition += translation;
                         _currentData.Add(data.Key, oldPoint);
                     }
                 }
+
+               
             }
+
+            Debug.WriteLine("-- After Filtering --");
+            LogTelemetrySplinesInfo(_currentData);
         }
 
         private void CreateCharts(Guid lapId)

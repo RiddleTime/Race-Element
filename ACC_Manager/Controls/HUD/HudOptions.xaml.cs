@@ -550,6 +550,8 @@ namespace ACCManager.Controls
 
         private StackPanel GetConfigStacker(Type overlayType, Orientation orientation)
         {
+            int fontSize = 14;
+
             StackPanel stacker = new StackPanel()
             {
                 Margin = new Thickness(10, 0, 0, 0),
@@ -639,6 +641,7 @@ namespace ACCManager.Controls
                             Content = $"{intLabel}: {sliderValue.ToString("F0").FillStart(maxValueChars, ' ')}",
                             VerticalAlignment = VerticalAlignment.Center,
                             VerticalContentAlignment = VerticalAlignment.Center,
+                            FontSize = fontSize
                         };
                         intStacker.Children.Add(sliderLabel);
 
@@ -649,7 +652,7 @@ namespace ACCManager.Controls
                             IsSnapToTickEnabled = true,
                             TickFrequency = tickFrequency,
                             Value = sliderValue,
-                            Width = 100,
+                            Width = 150,
                             Margin = new Thickness(0, 0, 3, 0),
                             VerticalAlignment = VerticalAlignment.Center,
                             VerticalContentAlignment = VerticalAlignment.Center,
@@ -708,7 +711,8 @@ namespace ACCManager.Controls
                         IsChecked = (bool)configField.Value,
                         Margin = new Thickness(0, 3, 5, 3),
                         VerticalAlignment = VerticalAlignment.Center,
-                        VerticalContentAlignment = VerticalAlignment.Center
+                        VerticalContentAlignment = VerticalAlignment.Center,
+                        FontSize = fontSize
                     };
                     checkStacker.PreviewMouseDown += (s, e) => { if (s == checkStacker && e.LeftButton == MouseButtonState.Pressed) { box.IsChecked = !box.IsChecked; e.Handled = true; } };
                     checkStacker.MouseEnter += (s, e) => checkStacker.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
@@ -768,6 +772,7 @@ namespace ACCManager.Controls
                                 Content = $"{floatLabel}: {sliderValue:F2}",
                                 VerticalAlignment = VerticalAlignment.Center,
                                 VerticalContentAlignment = VerticalAlignment.Center,
+                                FontSize = fontSize
                             };
                             sliderStacker.Children.Add(sliderLabel);
 
@@ -778,7 +783,7 @@ namespace ACCManager.Controls
                                 IsSnapToTickEnabled = true,
                                 TickFrequency = tickFrequency,
                                 Value = sliderValue,
-                                Width = 100,
+                                Width = 150,
                                 Margin = new Thickness(0, 0, 3, 0),
                                 VerticalAlignment = VerticalAlignment.Center,
                                 VerticalContentAlignment = VerticalAlignment.Center,

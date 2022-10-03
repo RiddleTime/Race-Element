@@ -6,7 +6,9 @@ using System.Drawing;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayRaceInfo
 {
+#if DEBUG
     [Overlay(Name = "Race Info", Description = "Description TODO!!!!", OverlayType = OverlayType.Release, Version = 1.00)]
+#endif
     internal class RaceInfoOverlay : AbstractOverlay
     {
         private readonly RaceInfoConfig _config = new RaceInfoConfig();

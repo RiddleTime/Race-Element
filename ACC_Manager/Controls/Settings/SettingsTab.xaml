@@ -11,7 +11,7 @@
         <Grid>
             <TabControl TabStripPlacement="Left" Margin="3">
 
-                <TabItem Height="60">
+                <!--<TabItem Height="60">
                     <TabItem.Header>
                         <Grid>
                             <Grid.RowDefinitions>
@@ -24,7 +24,7 @@
                         </Grid>
                     </TabItem.Header>
                     <local:AccManagerSettingsTab></local:AccManagerSettingsTab>
-                </TabItem>
+                </TabItem>-->
 
                 <TabItem Height="60">
                     <TabItem.Header>
