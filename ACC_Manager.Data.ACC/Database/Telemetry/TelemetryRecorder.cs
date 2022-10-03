@@ -36,7 +36,6 @@ namespace ACCManager.Data.ACC.Database.Telemetry
 
         private TelemetryRecorder()
         {
-            return;
             IntervalMillis = 1000 / new AccManagerSettings().Get().TelemetryDetailedHerz;
             _intervalTimeSpan = new TimeSpan(0, 0, 0, IntervalMillis);
 
@@ -92,8 +91,6 @@ namespace ACCManager.Data.ACC.Database.Telemetry
 
         public void Record()
         {
-            return;
-
             if (_isRunning)
             {
                 Debug.WriteLine("TelemetryRecorded: Already Recording");
