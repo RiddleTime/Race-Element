@@ -127,11 +127,11 @@
     <Reference Include="LiteDB, Version=5.0.12.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
       <HintPath>..\packages\LiteDB.5.0.12\lib\net45\LiteDB.dll</HintPath>
     </Reference>
-    <Reference Include="MaterialDesignColors, Version=2.0.7.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaterialDesignColors.2.0.7\lib\net462\MaterialDesignColors.dll</HintPath>
+    <Reference Include="MaterialDesignColors, Version=2.0.9.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignColors.2.0.9\lib\net462\MaterialDesignColors.dll</HintPath>
     </Reference>
-    <Reference Include="MaterialDesignThemes.Wpf, Version=4.6.0.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaterialDesignThemes.4.6.0\lib\net462\MaterialDesignThemes.Wpf.dll</HintPath>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=4.6.1.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.4.6.1\lib\net462\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
@@ -688,11 +688,11 @@
     <Error Condition="!Exists('..\packages\DdsFileTypePlusHack.1.0.4\build\DdsFileTypePlusHack.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\DdsFileTypePlusHack.1.0.4\build\DdsFileTypePlusHack.targets'))" />
     <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets'))" />
     <Error Condition="!Exists('..\packages\Fody.6.6.3\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.6.3\build\Fody.targets'))" />
-    <Error Condition="!Exists('..\packages\MaterialDesignThemes.4.6.0\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MaterialDesignThemes.4.6.0\build\MaterialDesignThemes.targets'))" />
+    <Error Condition="!Exists('..\packages\MaterialDesignThemes.4.6.1\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MaterialDesignThemes.4.6.1\build\MaterialDesignThemes.targets'))" />
   </Target>
   <Import Project="..\packages\Costura.Fody.5.7.0\build\Costura.Fody.targets" Condition="Exists('..\packages\Costura.Fody.5.7.0\build\Costura.Fody.targets')" />
   <Import Project="..\packages\DdsFileTypePlusHack.1.0.4\build\DdsFileTypePlusHack.targets" Condition="Exists('..\packages\DdsFileTypePlusHack.1.0.4\build\DdsFileTypePlusHack.targets')" />
   <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
   <Import Project="..\packages\Fody.6.6.3\build\Fody.targets" Condition="Exists('..\packages\Fody.6.6.3\build\Fody.targets')" />
-  <Import Project="..\packages\MaterialDesignThemes.4.6.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.6.0\build\MaterialDesignThemes.targets')" />
+  <Import Project="..\packages\MaterialDesignThemes.4.6.1\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.6.1\build\MaterialDesignThemes.targets')" />
 </Project>

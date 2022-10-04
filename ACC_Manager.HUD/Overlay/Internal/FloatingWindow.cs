@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -11,7 +12,8 @@ namespace ACCManager.HUD.Overlay.Internal
     public class FloatingWindow : NativeWindow, IDisposable
     {
         public string Name { get; internal set; }
-        internal bool WindowMode { get; set; }
+        internal bool WindowMode { get; set; } = false;
+        internal bool AlwaysOnTop { get; set; } = true;
 
         #region #  Enums  #
         public enum AnimateMode
@@ -327,14 +329,13 @@ namespace ACCManager.HUD.Overlay.Internal
             uint ui = User32.WS_POPUP;
             params1.Style = (int)ui;
 
-            int defaultStyle = User32.WS_EX_TOPMOST | User32.WS_EX_TOOLWINDOW | User32.WS_EX_LAYERED | User32.WS_EX_NOACTIVATE | User32.WS_EX_TRANSPARENT;
-            params1.ExStyle = defaultStyle;
+            params1.ExStyle = User32.WS_EX_LAYERED | User32.WS_EX_TRANSPARENT;
 
-            if (WindowMode)
-            {
-                int streamerStyle = User32.WS_EX_TOPMOST | User32.WS_EX_LAYERED | User32.WS_EX_TRANSPARENT;
-                params1.ExStyle = streamerStyle;
-            }
+            if (!WindowMode)
+                params1.ExStyle |= User32.WS_EX_TOOLWINDOW;
+
+            if (AlwaysOnTop)
+                params1.ExStyle |= User32.WS_EX_TOPMOST;
 
             this.CreateHandle(params1);
             this.UpdateLayeredWindow();

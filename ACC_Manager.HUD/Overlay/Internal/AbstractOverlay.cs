@@ -121,9 +121,9 @@ namespace ACCManager.HUD.Overlay.Internal
                     }
 
                     if (overlayConfig.Window)
-                    {
-                        this.WindowMode = true;
-                    }
+                        this.WindowMode = overlayConfig.Window;
+
+                    this.AlwaysOnTop = overlayConfig.AlwaysOnTop;
                 }
             }
         }
