@@ -1,4 +1,5 @@
-﻿using ACCManager.HUD.Overlay.Internal;
+﻿using ACCManager.HUD.Overlay.Configuration;
+using ACCManager.HUD.Overlay.Internal;
 using System.Drawing;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
@@ -7,16 +8,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
     Description = "Live graphs of the tyre pressures, green is within range, red is too high, blue is too low.")]
     internal sealed class PressureTraceOverlay : AbstractOverlay
     {
+        private PressureTraceOverlayConfig _config = new PressureTraceOverlayConfig();
+        private class PressureTraceOverlayConfig : OverlayConfiguration { }
+
         internal static PressureTraceOverlay Instance;
         private TyrePressureDataCollector _dataCollector;
 
         public PressureTraceOverlay(Rectangle rectangle) : base(rectangle, "Pressure Trace Overlay")
         {
-            //this.X = ScreenWidth - width;
-
             this.Width = 140;
             this.Height = 60 * 2;
-            //this.Y = (int)(ScreenHeight / 2) - this.Height / 2;
             this.RequestsDrawItself = true;
         }
 
