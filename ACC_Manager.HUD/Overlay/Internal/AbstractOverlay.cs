@@ -76,20 +76,24 @@ namespace ACCManager.HUD.Overlay.Internal
                 return true;
 
             bool shouldRender = true;
-            if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF || pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
-                shouldRender = false;
 
-            if (!pagePhysics.IsEngineRunning)
-                shouldRender = false;
+            if (pageGraphics != null)
+            {
+                if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF || pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
+                    shouldRender = false;
 
-            if (pageGraphics.GlobalRed)
-                shouldRender = false;
+                if (!pagePhysics.IsEngineRunning)
+                    shouldRender = false;
 
-            if (RaceSessionState.IsFormationLap(pageGraphics.GlobalRed, broadCastRealTime.Phase))
-                shouldRender = true;
+                if (pageGraphics.GlobalRed)
+                    shouldRender = false;
 
-            if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE)
-                shouldRender = false;
+                if (RaceSessionState.IsFormationLap(pageGraphics.GlobalRed, broadCastRealTime.Phase))
+                    shouldRender = true;
+
+                if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE)
+                    shouldRender = false;
+            }
 
             if (IsRepositioning) shouldRender = true;
 

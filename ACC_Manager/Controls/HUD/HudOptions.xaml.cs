@@ -516,6 +516,8 @@ namespace ACCManager.Controls
             overlay.pagePhysics.TyreCoreTemperature = new float[] { 92.6f, 88.5f, 65.9f, 67.2f };
             overlay.pagePhysics.PadLife = new float[] { 24f, 24f, 25f, 25f };
             overlay.pagePhysics.BrakeTemperature = new float[] { 300f, 250f, 450f, 460f };
+            overlay.pagePhysics.Gas = 0.78f;
+            overlay.pagePhysics.Brake = 0.133f;
 
             overlay.pageStatic = ACCSharedMemory.Instance.ReadStaticPageFile(true);
             overlay.pageStatic.MaxFuel = 120f;
