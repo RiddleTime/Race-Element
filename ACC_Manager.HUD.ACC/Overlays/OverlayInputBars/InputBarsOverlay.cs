@@ -12,7 +12,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
 {
     [Overlay(Name = "Input Bars", Version = 1.00, OverlayType = OverlayType.Release,
       Description = "Live input bars of throttle and brake.")]
-    internal class InputBarsOverlay : AbstractOverlay
+    internal sealed class InputBarsOverlay : AbstractOverlay
     {
         private InputBarsConfiguration _config = new InputBarsConfiguration();
         private class InputBarsConfiguration : OverlayConfiguration
@@ -45,7 +45,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
         {
             _cachedBackground = new CachedBitmap(this.Width, this.Height, g =>
             {
-                g.FillRectangle(new SolidBrush(Color.FromArgb(140, Color.Black)), 0, 0, _config.BarWidth * 2 + _config.BarSpacing, _config.BarHeight);
+                g.FillRectangle(new SolidBrush(Color.FromArgb(140, Color.Black)), 0, 0, _config.BarWidth, _config.BarHeight);
+
+                g.FillRectangle(new SolidBrush(Color.FromArgb(140, Color.Black)), _config.BarWidth + _config.BarSpacing, 0, _config.BarWidth, _config.BarHeight);
             });
         }
 
@@ -61,8 +63,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
             VerticalProgressBar throttleBar = new VerticalProgressBar(0, 1, pagePhysics.Gas);
             VerticalProgressBar brakeBar = new VerticalProgressBar(0, 1, pagePhysics.Brake);
 
-            throttleBar.Draw(g, 0, 0, _config.BarWidth, _config.BarHeight, Brushes.LimeGreen, Brushes.White);
-            brakeBar.Draw(g, _config.BarWidth + _config.BarSpacing, 0, _config.BarWidth, _config.BarHeight, Brushes.OrangeRed, Brushes.White);
+            Brush outlineBrush = new SolidBrush(Color.FromArgb(196, Color.Black));
+
+            throttleBar.Draw(g, 0, 0, _config.BarWidth, _config.BarHeight, Brushes.LimeGreen, outlineBrush);
+            brakeBar.Draw(g, _config.BarWidth + _config.BarSpacing, 0, _config.BarWidth, _config.BarHeight, Brushes.OrangeRed, outlineBrush);
         }
 
         public override bool ShouldRender() => DefaultShouldRender();
