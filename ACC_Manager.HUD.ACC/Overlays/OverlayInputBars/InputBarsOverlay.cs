@@ -20,7 +20,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
             [IntRange(10, 30, 1)]
             public int BarWidth { get; set; } = 15;
 
-            [IntRange(50, 150, 1)]
+            [IntRange(50, 200, 1)]
             public int BarHeight { get; set; } = 100;
 
             [IntRange(5, 15, 1)]
@@ -33,21 +33,22 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
         }
 
         private CachedBitmap _cachedBackground;
+        private readonly Brush _barOutlineBrush;
 
         public InputBarsOverlay(Rectangle rectangle) : base(rectangle, "Input Bars Overlay")
         {
             this.Width = _config.BarWidth * 2 + _config.BarSpacing + 1;
             this.Height = _config.BarHeight + 1;
-
+            _barOutlineBrush = new SolidBrush(Color.FromArgb(196, Color.Black));
         }
 
         public override void BeforeStart()
         {
             _cachedBackground = new CachedBitmap(this.Width, this.Height, g =>
             {
-                g.FillRectangle(new SolidBrush(Color.FromArgb(140, Color.Black)), 0, 0, _config.BarWidth, _config.BarHeight);
-
-                g.FillRectangle(new SolidBrush(Color.FromArgb(140, Color.Black)), _config.BarWidth + _config.BarSpacing, 0, _config.BarWidth, _config.BarHeight);
+                Brush brush = new SolidBrush(Color.FromArgb(140, Color.Black));
+                g.FillRoundedRectangle(brush, new Rectangle(0, 0, _config.BarWidth, _config.BarHeight), 3);
+                g.FillRoundedRectangle(brush, new Rectangle(_config.BarWidth + _config.BarSpacing, 0, _config.BarWidth, _config.BarHeight), 3);
             });
         }
 
@@ -60,13 +61,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
         {
             _cachedBackground?.Draw(g);
 
-            VerticalProgressBar throttleBar = new VerticalProgressBar(0, 1, pagePhysics.Gas);
-            VerticalProgressBar brakeBar = new VerticalProgressBar(0, 1, pagePhysics.Brake);
-
-            Brush outlineBrush = new SolidBrush(Color.FromArgb(196, Color.Black));
-
-            throttleBar.Draw(g, 0, 0, _config.BarWidth, _config.BarHeight, Brushes.LimeGreen, outlineBrush);
-            brakeBar.Draw(g, _config.BarWidth + _config.BarSpacing, 0, _config.BarWidth, _config.BarHeight, Brushes.OrangeRed, outlineBrush);
+            new VerticalProgressBar(0, 1, pagePhysics.Gas).Draw(g, 0, 0, _config.BarWidth, _config.BarHeight, Brushes.LimeGreen, _barOutlineBrush, true);
+            new VerticalProgressBar(0, 1, pagePhysics.Brake).Draw(g, _config.BarWidth + _config.BarSpacing, 0, _config.BarWidth, _config.BarHeight, Brushes.OrangeRed, _barOutlineBrush, true);
         }
 
         public override bool ShouldRender() => DefaultShouldRender();

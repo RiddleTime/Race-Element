@@ -21,16 +21,24 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
             this.Draw(g, x, y, width, height, Brushes.OrangeRed, Brushes.White);
         }
 
-        public void Draw(Graphics g, int x, int y, int width, int height, Brush fillbrush, Brush outlineBrush)
+        public void Draw(Graphics g, int x, int y, int width, int height, Brush fillbrush, Brush outlineBrush, bool rounded = false)
         {
             SmoothingMode previous = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
             double percent = Value / Max;
-            g.FillRectangle(fillbrush, new Rectangle(x, y + height - (int)(height * percent), width, (int)(height * percent)));
 
-            g.DrawRectangle(new Pen(outlineBrush), new Rectangle(x, y, width, height));
-
+            if (rounded)
+            {
+                if (percent >= 0.03f)
+                    g.FillRoundedRectangle(fillbrush, new Rectangle(x, y + height - (int)(height * percent), width, (int)(height * percent)), 3);
+                g.DrawRoundedRectangle(new Pen(outlineBrush), new Rectangle(x, y, width, height), 3);
+            }
+            else
+            {
+                g.FillRectangle(fillbrush, new Rectangle(x, y + height - (int)(height * percent), width, (int)(height * percent)));
+                g.DrawRectangle(new Pen(outlineBrush), new Rectangle(x, y, width, height));
+            }
             g.SmoothingMode = previous;
         }
     }
