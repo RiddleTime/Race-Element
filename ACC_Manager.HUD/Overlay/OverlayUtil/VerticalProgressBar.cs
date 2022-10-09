@@ -1,45 +1,62 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Windows.Media.Media3D;
 
 namespace ACCManager.HUD.Overlay.OverlayUtil
 {
     public class VerticalProgressBar
     {
-        internal double Min { get; set; }
-        internal double Max { get; set; }
-        internal double Value { get; set; }
+        // dimension
+        private int _width;
+        private int _height;
 
-        public VerticalProgressBar(double min, double max, double value)
+        // values
+        public double Min { private get; set; } = 0;
+        public double Max { private get; set; } = 1;
+        public double Value { private get; set; } = 0;
+
+        // style
+        public bool Rounded { private get; set; }
+        public Brush OutlineBrush { private get; set; } = Brushes.White;
+        public Brush FillBrush { private get; set; } = Brushes.OrangeRed;
+
+        private CachedBitmap _cachedOutline;
+
+        public VerticalProgressBar(int width, int height)
         {
-            Min = min;
-            Max = max;
-            Value = value;
+            _width = width;
+            _height = height;
         }
 
-        public void Draw(Graphics g, int x, int y, int width, int height)
+        public void Draw(Graphics g, int x, int y)
         {
-            this.Draw(g, x, y, width, height, Brushes.OrangeRed, Brushes.White);
-        }
+            if (_cachedOutline == null)
+                RenderCachedOutline();
 
-        public void Draw(Graphics g, int x, int y, int width, int height, Brush fillbrush, Brush outlineBrush, bool rounded = false)
-        {
             SmoothingMode previous = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
             double percent = Value / Max;
 
-            if (rounded)
+            if (Rounded)
             {
                 if (percent >= 0.03f)
-                    g.FillRoundedRectangle(fillbrush, new Rectangle(x, y + height - (int)(height * percent), width, (int)(height * percent)), 3);
-                g.DrawRoundedRectangle(new Pen(outlineBrush), new Rectangle(x, y, width, height), 3);
+                    g.FillRoundedRectangle(FillBrush, new Rectangle(x, y + _height - (int)(_height * percent), _width, (int)(_height * percent)), 3);
             }
             else
-            {
-                g.FillRectangle(fillbrush, new Rectangle(x, y + height - (int)(height * percent), width, (int)(height * percent)));
-                g.DrawRectangle(new Pen(outlineBrush), new Rectangle(x, y, width, height));
-            }
+                g.FillRectangle(FillBrush, new Rectangle(x, y + _height - (int)(_height * percent), _width, (int)(_height * percent)));
+
+            _cachedOutline?.Draw(g, x, y, _width, _height);
             g.SmoothingMode = previous;
+        }
+
+        private void RenderCachedOutline()
+        {
+            if (Rounded)
+                _cachedOutline = new CachedBitmap(_width, _height, g => g.DrawRoundedRectangle(new Pen(OutlineBrush), new Rectangle(0, 0, _width, _height), 3));
+            else
+                _cachedOutline = new CachedBitmap(_width, _height, g => g.DrawRectangle(new Pen(OutlineBrush), new Rectangle(0, 0, _width, _height)));
         }
     }
 }

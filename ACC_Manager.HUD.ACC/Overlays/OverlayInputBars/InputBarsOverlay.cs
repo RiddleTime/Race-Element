@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,7 +18,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
         private InputBarsConfiguration _config = new InputBarsConfiguration();
         private class InputBarsConfiguration : OverlayConfiguration
         {
-            [IntRange(10, 30, 1)]
+            [IntRange(10, 40, 1)]
             public int BarWidth { get; set; } = 15;
 
             [IntRange(50, 200, 1)]
@@ -33,13 +34,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
         }
 
         private CachedBitmap _cachedBackground;
-        private readonly Brush _barOutlineBrush;
+
+        private VerticalProgressBar _gasBar;
+        private VerticalProgressBar _brakeBar;
 
         public InputBarsOverlay(Rectangle rectangle) : base(rectangle, "Input Bars Overlay")
         {
             this.Width = _config.BarWidth * 2 + _config.BarSpacing + 1;
             this.Height = _config.BarHeight + 1;
-            _barOutlineBrush = new SolidBrush(Color.FromArgb(196, Color.Black));
         }
 
         public override void BeforeStart()
@@ -50,6 +52,26 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
                 g.FillRoundedRectangle(brush, new Rectangle(0, 0, _config.BarWidth, _config.BarHeight), 3);
                 g.FillRoundedRectangle(brush, new Rectangle(_config.BarWidth + _config.BarSpacing, 0, _config.BarWidth, _config.BarHeight), 3);
             });
+
+            Brush outlineBrush = new SolidBrush(Color.FromArgb(196, Color.Black));
+            _gasBar = new VerticalProgressBar(_config.BarWidth, _config.BarHeight)
+            {
+                Value = 0,
+                Min = 0,
+                Max = 1,
+                FillBrush = Brushes.LimeGreen,
+                OutlineBrush = outlineBrush,
+                Rounded = true,
+            };
+            _brakeBar = new VerticalProgressBar(_config.BarWidth, _config.BarHeight)
+            {
+                Value = 0,
+                Min = 0,
+                Max = 1,
+                FillBrush = Brushes.OrangeRed,
+                OutlineBrush = outlineBrush,
+                Rounded = true,
+            };
         }
 
         public override void BeforeStop()
@@ -61,8 +83,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
         {
             _cachedBackground?.Draw(g);
 
-            new VerticalProgressBar(0, 1, pagePhysics.Gas).Draw(g, 0, 0, _config.BarWidth, _config.BarHeight, Brushes.LimeGreen, _barOutlineBrush, true);
-            new VerticalProgressBar(0, 1, pagePhysics.Brake).Draw(g, _config.BarWidth + _config.BarSpacing, 0, _config.BarWidth, _config.BarHeight, Brushes.OrangeRed, _barOutlineBrush, true);
+         
+            _gasBar.Value = pagePhysics.Gas;
+            _gasBar.Draw(g, 0, 0);
+
+            _brakeBar.Value = pagePhysics.Brake;
+            _brakeBar.Draw(g, _config.BarWidth + _config.BarSpacing, 0);
         }
 
         public override bool ShouldRender() => DefaultShouldRender();
