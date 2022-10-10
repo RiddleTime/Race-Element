@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Media.Media3D;
@@ -10,6 +11,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
         // dimension
         private int _width;
         private int _height;
+        public float Scale { private get; set; } = 1f;
 
         // values
         public double Min { private get; set; } = 0;
@@ -18,6 +20,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
 
         // style
         public bool Rounded { private get; set; }
+        public float Rounding { private get; set; } = 3;
         public Brush OutlineBrush { private get; set; } = Brushes.White;
         public Brush FillBrush { private get; set; } = Brushes.OrangeRed;
 
@@ -34,29 +37,37 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
             if (_cachedOutline == null)
                 RenderCachedOutline();
 
-            SmoothingMode previous = g.SmoothingMode;
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-
             double percent = Value / Max;
 
-            if (Rounded)
-            {
-                if (percent >= 0.03f)
-                    g.FillRoundedRectangle(FillBrush, new Rectangle(x, y + _height - (int)(_height * percent), _width, (int)(_height * percent)), 3);
-            }
-            else
-                g.FillRectangle(FillBrush, new Rectangle(x, y + _height - (int)(_height * percent), _width, (int)(_height * percent)));
+            int scaledHeight = (int)(_height * Scale);
+            int scaledWidth = (int)(_width * Scale);
 
+            CachedBitmap barBitmap = new CachedBitmap(scaledWidth + 1, scaledHeight + 1, bg =>
+            {
+                if (Rounded)
+                {
+                    if (percent >= 0.035f)
+                    {
+                        int height = (int)(scaledHeight * percent);
+                        bg.FillRoundedRectangle(FillBrush, new Rectangle(0, 0 + scaledHeight - height, scaledWidth, height), (int)(Rounding * Scale));
+                    }
+                }
+                else
+                    bg.FillRectangle(FillBrush, new Rectangle(0, 0 + scaledHeight - (int)(scaledHeight * percent), scaledWidth, (int)(scaledHeight)));
+            });
+
+            barBitmap?.Draw(g, x, y, _width, _height);
             _cachedOutline?.Draw(g, x, y, _width, _height);
-            g.SmoothingMode = previous;
         }
 
         private void RenderCachedOutline()
         {
+            int scaledWidth = (int)(_width * Scale);
+            int scaledHeight = (int)(_height * Scale);
             if (Rounded)
-                _cachedOutline = new CachedBitmap(_width, _height, g => g.DrawRoundedRectangle(new Pen(OutlineBrush), new Rectangle(0, 0, _width, _height), 3));
+                _cachedOutline = new CachedBitmap(scaledWidth + 1, scaledHeight + 1, g => g.DrawRoundedRectangle(new Pen(OutlineBrush, 1 * Scale), new Rectangle(0, 0, scaledWidth, scaledHeight), (int)(Rounding * Scale)));
             else
-                _cachedOutline = new CachedBitmap(_width, _height, g => g.DrawRectangle(new Pen(OutlineBrush), new Rectangle(0, 0, _width, _height)));
+                _cachedOutline = new CachedBitmap(scaledWidth + 1, scaledHeight + 1, g => g.DrawRectangle(new Pen(OutlineBrush, 1 * Scale), new Rectangle(0, 0, scaledWidth, scaledHeight)));
         }
     }
 }

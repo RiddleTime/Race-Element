@@ -82,7 +82,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         public sealed override void Render(Graphics g)
         {
             double delta = (double)pageGraphics.DeltaLapTimeMillis / 1000;
-            DeltaBar deltaBar = new DeltaBar(-this._config.MaxDelta, this._config.MaxDelta, delta) { DrawBackground = true , IsValidLap = pageGraphics.IsValidLap };
+            DeltaBar deltaBar = new DeltaBar(-this._config.MaxDelta, this._config.MaxDelta, delta) { DrawBackground = true, IsValidLap = pageGraphics.IsValidLap };
             deltaBar.Draw(g, 0, 0, _overlayWidth, _table.FontHeight);
 
             g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
@@ -219,7 +219,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
                 bestLapValues[0] = $"{best:mm\\:ss\\:fff}";
             }
 
-            this._table.AddRow("Best", bestLapValues);
+            if (broadCastLocalCar.CarIndex == broadCastRealTime.BestLapCarIndex)
+                this._table.AddRow("Best", bestLapValues, new Color[] { Color.Purple });
+            else
+                this._table.AddRow("Best", bestLapValues);
         }
 
         public sealed override bool ShouldRender()
