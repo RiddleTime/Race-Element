@@ -21,7 +21,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
             [IntRange(10, 40, 1)]
             public int BarWidth { get; set; } = 15;
 
-            [IntRange(50, 200, 1)]
+            [IntRange(100, 200, 1)]
             public int BarHeight { get; set; } = 130;
 
             [IntRange(5, 15, 1)]
