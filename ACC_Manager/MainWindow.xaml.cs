@@ -144,10 +144,13 @@ namespace ACCManager
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             string loadString = $"Loaded ACC Manager {GetAssemblyFileVersion()}";
+            string fileHash = FileUtil.GetBase64Hash(FileUtil.AppFullName);
+
 #if DEBUG
             loadString += " - Debug";
 #endif
             Trace.WriteLine(loadString);
+            Trace.WriteLine($"Application Hash: {fileHash}");
             LogWriter.WriteToLog(loadString);
 
             if (!App.Instance.StartMinimized)

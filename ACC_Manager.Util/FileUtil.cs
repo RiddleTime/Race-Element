@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Security.Cryptography;
 
 namespace ACCManager.Util
 {
@@ -20,6 +22,7 @@ namespace ACCManager.Util
         public static string ConfigPath => AccPath + "Config\\";
 
         public static string AppDirectory => StripFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+        public static string AppFullName => AppDomain.CurrentDomain.BaseDirectory + AppDomain.CurrentDomain.FriendlyName;
 
 
         /// <summary>
@@ -50,6 +53,32 @@ namespace ACCManager.Util
             }
 
             return split[split.Length - 1].Replace("\\", "");
+        }
+
+        /// <summary>
+        /// Calculates the SHA256 Hash of given file
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns>base64 string of SHA256 hash, or empty string if file doesn't exist or when exception occurs</returns>
+        public static string GetBase64Hash(string file)
+        {
+            FileInfo fileInfo = new FileInfo(file);
+            if (!fileInfo.Exists) return string.Empty;
+
+            try
+            {
+                using (FileStream fileStream = File.OpenRead(file))
+                {
+                    byte[] hash = SHA256Managed.Create().ComputeHash((Stream)fileStream);
+                    fileStream.Close();
+                    return Convert.ToBase64String(hash);
+                }
+            }
+            catch (Exception e)
+            {
+                LogWriter.WriteToLog(e);
+                return string.Empty;
+            }
         }
     }
 }
