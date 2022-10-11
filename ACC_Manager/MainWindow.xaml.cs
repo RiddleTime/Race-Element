@@ -151,6 +151,7 @@ namespace ACCManager
 #endif
             Trace.WriteLine(loadString);
             Trace.WriteLine($"Application Hash: {fileHash}");
+            LogWriter.WriteToLog($"Application Hash: {fileHash}");
             LogWriter.WriteToLog(loadString);
 
             if (!App.Instance.StartMinimized)
