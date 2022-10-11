@@ -9,7 +9,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
       Description = "Live input bars of throttle and brake.")]
     internal sealed class InputBarsOverlay : AbstractOverlay
     {
-        private InputBarsConfiguration _config = new InputBarsConfiguration();
+        private readonly InputBarsConfiguration _config = new InputBarsConfiguration();
         private class InputBarsConfiguration : OverlayConfiguration
         {
             [ToolTip("Changes the width of each input bar.")]
@@ -42,7 +42,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
         {
             this.Width = _config.BarWidth * 2 + _config.BarSpacing + 1;
             this.Height = _config.BarHeight + 1;
-            RefreshRateHz = 25;
         }
 
         public override bool ShouldRender() => DefaultShouldRender();
