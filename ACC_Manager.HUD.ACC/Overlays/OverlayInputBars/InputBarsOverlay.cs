@@ -18,14 +18,20 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
         private InputBarsConfiguration _config = new InputBarsConfiguration();
         private class InputBarsConfiguration : OverlayConfiguration
         {
+            [ToolTip("Changes the width of each input bar.")]
             [IntRange(10, 40, 1)]
             public int BarWidth { get; set; } = 15;
 
+            [ToolTip("Changes the height of each input bar.")]
             [IntRange(100, 200, 1)]
             public int BarHeight { get; set; } = 130;
 
+            [ToolTip("Changes the spacing between the input bars")]
             [IntRange(5, 15, 1)]
             public int BarSpacing { get; set; } = 5;
+
+            [ToolTip("Displays a color change on the input bars when either abs or traction control is activated.")]
+            public bool ShowElectronics { get; set; } = true;
 
             public InputBarsConfiguration()
             {
@@ -42,8 +48,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
         {
             this.Width = _config.BarWidth * 2 + _config.BarSpacing + 1;
             this.Height = _config.BarHeight + 1;
-            RefreshRateHz = 1;
+            RefreshRateHz = 25;
         }
+
+        public override bool ShouldRender() => DefaultShouldRender();
 
         public override void BeforeStart()
         {
@@ -90,6 +98,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
         {
             _cachedBackground?.Draw(g, _config.BarWidth * 2 + _config.BarSpacing, _config.BarHeight);
 
+            if (_config.ShowElectronics)
+                ApplyElectronicsColors();
+
             _gasBar.Value = pagePhysics.Gas;
             _gasBar.Draw(g, 0, 0);
 
@@ -97,6 +108,17 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
             _brakeBar.Draw(g, _config.BarWidth + _config.BarSpacing, 0);
         }
 
-        public override bool ShouldRender() => DefaultShouldRender();
+        private void ApplyElectronicsColors()
+        {
+            if (pagePhysics.TC > 0)
+                _gasBar.FillBrush = Brushes.Orange;
+            else
+                _gasBar.FillBrush = Brushes.LimeGreen;
+
+            if (pagePhysics.Abs > 0)
+                _brakeBar.FillBrush = Brushes.Orange;
+            else
+                _brakeBar.FillBrush = Brushes.OrangeRed;
+        }
     }
 }
