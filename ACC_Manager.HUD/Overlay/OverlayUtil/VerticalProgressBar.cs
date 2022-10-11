@@ -1,8 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Windows.Media.Media3D;
+﻿using System.Drawing;
 
 namespace ACCManager.HUD.Overlay.OverlayUtil
 {
