@@ -64,7 +64,7 @@ namespace ACCManager.Controls
             trackMap.Visibility = Visibility.Collapsed;
 
             Grid.SetRowSpan(gridSessionViewer, 2);
-            Grid.SetRowSpan(tabCurrentWeekend, 2);
+            Grid.SetRowSpan(tabControlWeekends, 2);
 
             ThreadPool.QueueUserWorkItem(x =>
             {
@@ -147,7 +147,7 @@ namespace ACCManager.Controls
             gridSessionLaps.Children.Add(GetLapDataGrid(laps));
 
             Grid.SetRowSpan(gridSessionViewer, 2);
-            Grid.SetRowSpan(tabCurrentWeekend, 2);
+            Grid.SetRowSpan(tabControlWeekends, 2);
 
             transitionContentPlots.Visibility = Visibility.Collapsed;
             trackMap.Visibility = Visibility.Collapsed;
@@ -502,14 +502,14 @@ namespace ACCManager.Controls
             if (telemetry == null)
             {
                 Grid.SetRowSpan(gridSessionViewer, 2);
-                Grid.SetRowSpan(tabCurrentWeekend, 2);
+                Grid.SetRowSpan(tabControlWeekends, 2);
                 transitionContentPlots.Visibility = Visibility.Collapsed;
                 trackMap.Visibility = Visibility.Collapsed;
             }
             else
             {
                 Grid.SetRowSpan(gridSessionViewer, 1);
-                Grid.SetRowSpan(tabCurrentWeekend, 1);
+                Grid.SetRowSpan(tabControlWeekends, 1);
                 transitionContentPlots.Visibility = Visibility.Visible;
 
 
