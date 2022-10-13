@@ -133,7 +133,7 @@ namespace ACCManager.HUD.Overlay.Util
                         progressBar.Draw(g, bar.BarColor, Brushes.Transparent, new Rectangle(X + 3, Y + counter * FontHeight + 1, (int)MaxWidth - 6, (int)FontHeight - 2), false, false);
 
                         SizeF textWidth = g.MeasureString(bar.CenteredText, _font);
-                        g.DrawStringWithShadow($"{bar.CenteredText}", _font, Brushes.White, new PointF(X + MaxWidth / 2 - textWidth.Width / 2, Y + counter * (this.FontHeight + ExtraLineSpacing) + _addMonoY));
+                        g.DrawStringWithShadow($"{bar.CenteredText}", _font, Color.White, new PointF(X + MaxWidth / 2 - textWidth.Width / 2, Y + counter * (this.FontHeight + ExtraLineSpacing) + _addMonoY), 1f);
                     }
 
                     if (line.GetType() == typeof(CenteredTextedDeltabarLine))
