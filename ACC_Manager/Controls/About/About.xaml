@@ -18,7 +18,7 @@
     <Grid>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="140"/>
+            <RowDefinition Height="150"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -40,9 +40,9 @@
                         </TextBlock>
                     </StackPanel>
 
-                    <StackPanel x:Name="ReleaseStackPanel" Orientation="Vertical" HorizontalAlignment="Left" Width="250" VerticalAlignment="Top" Margin="0,5,5,0">
+                    <StackPanel x:Name="ReleaseStackPanel" Orientation="Vertical" HorizontalAlignment="Left" Width="250" VerticalAlignment="Top" Margin="10,5,5,0">
                     </StackPanel>
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Right" Width="100" VerticalAlignment="Top" Margin="0,5,5,0">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="100" VerticalAlignment="Bottom" Margin="10,-5,-5,7">
                         <Button x:Name="buttonDiscord" >
                             <Grid>
                                 <Grid.ColumnDefinitions>
