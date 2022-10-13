@@ -4,7 +4,7 @@ namespace ACC_Manager.Util.Settings
 {
     public class AccManagerSettingsJson : IGenericSettingsJson
     {
-        public bool TelemetryRecordDetailed { get; set; }
+        public bool TelemetryRecordDetailed { get; set; } = false;
         public int TelemetryDetailedHerz { get; set; }
     }
 
