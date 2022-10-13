@@ -262,6 +262,7 @@ namespace ACCManager.Controls
                 SelectionMode = DataGridSelectionMode.Single,
                 SelectionUnit = DataGridSelectionUnit.FullRow,
                 GridLinesVisibility = DataGridGridLinesVisibility.Vertical,
+                FontWeight = FontWeights.ExtraBold, 
                 AlternatingRowBackground = new SolidColorBrush(Color.FromArgb(25, 0, 0, 0)),
                 RowBackground = Brushes.Transparent,
                 VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
