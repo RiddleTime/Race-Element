@@ -172,9 +172,9 @@ namespace ACCManager.Controls
         {
             if (e.AddedItems.Count > 0)
             {
-                ListViewItem item = (ListViewItem)e.AddedItems[0];
-                KeyValuePair<string, Type> kv = (KeyValuePair<string, Type>)item.DataContext;
-                BuildOverlayConfigPanel(item, kv.Value);
+                ListViewItem listView = (ListViewItem)e.AddedItems[0];
+                KeyValuePair<string, Type> kv = (KeyValuePair<string, Type>)listView.DataContext;
+                BuildOverlayConfigPanel(listView, kv.Value);
                 e.Handled = true;
             }
             else
@@ -185,9 +185,9 @@ namespace ACCManager.Controls
         {
             if (e.AddedItems.Count > 0)
             {
-                ListViewItem item = (ListViewItem)e.AddedItems[0];
-                KeyValuePair<string, Type> kv = (KeyValuePair<string, Type>)item.DataContext;
-                BuildOverlayConfigPanel(item, kv.Value);
+                ListViewItem listView = (ListViewItem)e.AddedItems[0];
+                KeyValuePair<string, Type> kv = (KeyValuePair<string, Type>)listView.DataContext;
+                BuildOverlayConfigPanel(listView, kv.Value);
                 e.Handled = true;
             }
             else
@@ -509,7 +509,7 @@ namespace ACCManager.Controls
             overlay.pageGraphics.MandatoryPitDone = false;
 
             overlay.pagePhysics = ACCSharedMemory.Instance.ReadPhysicsPageFile(true);
-            overlay.pagePhysics.Fuel = 13.37f;
+            overlay.pagePhysics.Fuel = 92.07f;
             overlay.pagePhysics.Rpms = 8500;
             overlay.pagePhysics.Gear = 3;
             overlay.pagePhysics.WheelPressure = new float[] { 27.6f, 27.5f, 26.9f, 26.1f };
