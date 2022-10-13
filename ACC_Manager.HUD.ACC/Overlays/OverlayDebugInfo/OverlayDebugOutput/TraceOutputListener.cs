@@ -20,16 +20,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
         private long lastPosition = -1;
 
         private LinkedList<MessageOut> _outputs = new LinkedList<MessageOut>();
-        public LinkedList<MessageOut> Outputs
-        {
-            get
-            {
-                lock (_outputs)
-                {
-                    return _outputs;
-                }
-            }
-        }
+        public LinkedList<MessageOut> Outputs { get { lock (_outputs) return _outputs; } }
 
         private static TraceOutputListener _instance;
         public static TraceOutputListener Instance
