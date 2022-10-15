@@ -509,6 +509,7 @@ namespace ACCManager.Controls
             overlay.pageGraphics.MandatoryPitDone = false;
 
             overlay.pagePhysics = ACCSharedMemory.Instance.ReadPhysicsPageFile(true);
+            overlay.pagePhysics.SpeedKmh = 272.32f;
             overlay.pagePhysics.Fuel = 92.07f;
             overlay.pagePhysics.Rpms = 8500;
             overlay.pagePhysics.Gear = 3;

@@ -8,14 +8,15 @@ using System.Drawing;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlaySpeedometer
 {
-#if DEBUG
-    [Overlay(Name = "Speedometer", Description = "Shows a speedometer", OverlayType = OverlayType.Release)]
-#endif
+    [Overlay(Name = "Speedometer", Description = "Shows a speedometer", Version = 1.00, OverlayType = OverlayType.Release)]
     internal sealed class SpeedometerOverlay : AbstractOverlay
     {
-        private SpeedometerConfiguration _config = new SpeedometerConfiguration();
+        private readonly SpeedometerConfiguration _config = new SpeedometerConfiguration();
         private class SpeedometerConfiguration : OverlayConfiguration
         {
+            [ToolTip("Displays the maximum speed reached on each lap.")]
+            public bool ShowMaxSpeed { get; set; } = true;
+
             public SpeedometerConfiguration()
             {
                 AllowRescale = true;
@@ -28,18 +29,26 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySpeedometer
         public SpeedometerOverlay(Rectangle rectangle) : base(rectangle, "Speedometer Overlay")
         {
             this.Width = 150;
-            _panel = new InfoPanel(13, this.Width);
+            _panel = new InfoPanel(13, this.Width)
+            {
+                FirstRowLine = 1
+            };
             this.Height = _panel.FontHeight * 2 + 1;
         }
 
         public sealed override void BeforeStart()
         {
-            LapTracker.Instance.LapFinished += OnLapFinished;
+
+            if (!_config.ShowMaxSpeed)
+                this.Height -= _panel.FontHeight;
+            else
+                LapTracker.Instance.LapFinished += OnLapFinished;
         }
 
         public sealed override void BeforeStop()
         {
-            LapTracker.Instance.LapFinished -= OnLapFinished;
+            if (_config.ShowMaxSpeed)
+                LapTracker.Instance.LapFinished -= OnLapFinished;
         }
 
         private void OnLapFinished(object sender, DbLapData e)
@@ -49,10 +58,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySpeedometer
 
         public sealed override void Render(Graphics g)
         {
-            _maxSpeed.ClipMin(pagePhysics.SpeedKmh);
+            _panel.AddProgressBarWithCenteredText($"{pagePhysics.SpeedKmh:F0}".FillStart(3, ' '), 0, 320, pagePhysics.SpeedKmh);
 
-            _panel.AddLine("Max", $"{_maxSpeed:F2}");
-            _panel.AddLine("Speed", $"{pagePhysics.SpeedKmh:F2}");
+            if (_config.ShowMaxSpeed)
+            {
+                _maxSpeed.ClipMin(pagePhysics.SpeedKmh);
+                _panel.AddLine("Max", $"{_maxSpeed:F2}");
+            }
 
             _panel.Draw(g);
         }
