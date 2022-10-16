@@ -313,7 +313,7 @@ namespace ACCManager.Controls
 
             grid.Columns.Add(new DataGridTextColumn()
             {
-                Header = "Lap",
+                Header = new TextBlock() { Text = "#", ToolTip = "Lap" },
                 Binding = new Binding("Index"),
                 SortDirection = System.ComponentModel.ListSortDirection.Descending,
                 FontWeight = FontWeights.DemiBold,
@@ -343,14 +343,13 @@ namespace ACCManager.Controls
             StackPanel fuelUsagePanel = new StackPanel()
             {
                 Orientation = System.Windows.Controls.Orientation.Horizontal,
-                ToolTip = "Fuel used"
+                ToolTip = "Fuel used",
             };
             fuelUsagePanel.Children.Add(new PackIcon() { Kind = PackIconKind.Fuel });
-            fuelUsagePanel.Children.Add(new TextBlock() { Text = " Used" });
             grid.Columns.Add(new DataGridTextColumn()
             {
                 Header = fuelUsagePanel,
-                Binding = new Binding("FuelUsage") { Converter = new DivideBy1000ToFloatConverter() }
+                Binding = new Binding("FuelUsage") { Converter = new DivideBy1000ToFloatConverter() },
             });
 
             // fuel left
@@ -369,7 +368,7 @@ namespace ACCManager.Controls
 
             grid.Columns.Add(new DataGridTextColumn()
             {
-                Header = "Type",
+                Header = "Box",
                 Binding = new Binding("LapType") { Converter = new LapTypeConverter() }
             });
             grid.Columns.Add(new DataGridTextColumn()
