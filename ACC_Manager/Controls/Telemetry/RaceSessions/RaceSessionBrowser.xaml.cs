@@ -12,6 +12,7 @@ using ACCManager.Data.ACC.Session;
 using ACCManager.Data.ACC.Tracks;
 using ACCManager.Util;
 using LiteDB;
+using MaterialDesignThemes.Wpf;
 using ScottPlot;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using DataGridTextColumn = MaterialDesignThemes.Wpf.DataGridTextColumn;
 using TrackData = ACCManager.Data.ACC.Tracks.TrackNames.TrackData;
 
 namespace ACCManager.Controls
@@ -336,16 +338,35 @@ namespace ACCManager.Controls
                 Header = "S 3",
                 Binding = new Binding("Sector3") { Converter = new DivideBy1000ToFloatConverter() }
             });
+
+            // fuel used
+            StackPanel fuelUsagePanel = new StackPanel()
+            {
+                Orientation = System.Windows.Controls.Orientation.Horizontal,
+                ToolTip = "Fuel used"
+            };
+            fuelUsagePanel.Children.Add(new PackIcon() { Kind = PackIconKind.Fuel });
+            fuelUsagePanel.Children.Add(new TextBlock() { Text = " Used" });
             grid.Columns.Add(new DataGridTextColumn()
             {
-                Header = "Fuel Used",
+                Header = fuelUsagePanel,
                 Binding = new Binding("FuelUsage") { Converter = new DivideBy1000ToFloatConverter() }
             });
+
+            // fuel left
+            StackPanel fuelLeftPanel = new StackPanel()
+            {
+                Orientation = System.Windows.Controls.Orientation.Horizontal,
+                ToolTip = "Fuel left"
+            };
+            fuelLeftPanel.Children.Add(new PackIcon() { Kind = PackIconKind.Fuel });
+            fuelLeftPanel.Children.Add(new TextBlock() { Text = " Left" });
             grid.Columns.Add(new DataGridTextColumn()
             {
-                Header = "Fuel Left",
+                Header = fuelLeftPanel,
                 Binding = new Binding("FuelInTank") { Converter = new FormattedFloatConverter() }
             });
+
             grid.Columns.Add(new DataGridTextColumn()
             {
                 Header = "Type",
