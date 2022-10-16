@@ -349,7 +349,7 @@ namespace ACCManager.Controls
             grid.Columns.Add(new DataGridTextColumn()
             {
                 Header = "Type",
-                Binding = new Binding("LapType")
+                Binding = new Binding("LapType") { Converter = new LapTypeConverter() }
             });
             grid.Columns.Add(new DataGridTextColumn()
             {

@@ -412,6 +412,7 @@
     </Compile>
     <Compile Include="Controls\Telemetry\RaceSessions\DivideBy1000ToFloatConverter.cs" />
     <Compile Include="Controls\Telemetry\RaceSessions\FormattedFloatConverter.cs" />
+    <Compile Include="Controls\Telemetry\RaceSessions\LapTypeConverter.cs" />
     <Compile Include="Controls\Telemetry\RaceSessions\MillisecondsToFormattedTimeSpanString.cs" />
     <Compile Include="Controls\Telemetry\RaceSessions\Plots\BrakeTempsPlot.cs" />
     <Compile Include="Controls\Telemetry\RaceSessions\Plots\InputsPlot.cs" />
