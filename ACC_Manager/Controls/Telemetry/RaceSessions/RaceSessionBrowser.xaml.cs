@@ -262,7 +262,7 @@ namespace ACCManager.Controls
                 SelectionMode = DataGridSelectionMode.Single,
                 SelectionUnit = DataGridSelectionUnit.FullRow,
                 GridLinesVisibility = DataGridGridLinesVisibility.Vertical,
-                FontWeight = FontWeights.ExtraBold, 
+                FontWeight = FontWeights.ExtraBold,
                 AlternatingRowBackground = new SolidColorBrush(Color.FromArgb(25, 0, 0, 0)),
                 RowBackground = Brushes.Transparent,
                 VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
@@ -354,12 +354,12 @@ namespace ACCManager.Controls
             grid.Columns.Add(new DataGridTextColumn()
             {
                 Header = "°C Track",
-                Binding = new Binding("TempTrack") { Converter = new FormattedFloatConverter() }
+                Binding = new Binding("TempTrack") { Converter = new FormattedFloatConverter(2) }
             });
             grid.Columns.Add(new DataGridTextColumn()
             {
                 Header = "°C Air",
-                Binding = new Binding("TempAmbient") { Converter = new FormattedFloatConverter() }
+                Binding = new Binding("TempAmbient") { Converter = new FormattedFloatConverter(2) }
             });
 
 
@@ -484,7 +484,7 @@ namespace ACCManager.Controls
                     }
                 }
 
-               
+
             }
 
             Debug.WriteLine("-- After Filtering --");

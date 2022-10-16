@@ -10,12 +10,17 @@ namespace ACCManager.Controls.Telemetry.RaceSessions
 {
     internal class FormattedFloatConverter : IValueConverter
     {
+        private int _decimals;
+        public FormattedFloatConverter(int decimals = 3)
+        {
+            this._decimals = decimals;
+        }
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is float)
-            {
-                return $"{(float)value:F3}";
-            }
+                return ((float)value).ToString($"F{_decimals}");
+
             return string.Empty;
         }
 
