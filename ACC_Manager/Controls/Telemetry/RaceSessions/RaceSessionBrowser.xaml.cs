@@ -32,6 +32,7 @@ namespace ACCManager.Controls
 {
     /// <summary>
     /// Interaction logic for RaceSessionBrowser.xaml
+    /// - TODO: refactor into OOP
     /// </summary>
     public partial class RaceSessionBrowser : UserControl
     {
@@ -85,7 +86,7 @@ namespace ACCManager.Controls
                 if (!dataDir.Exists)
                     return;
 
-                var raceWeekendFiles = new DirectoryInfo(FileUtil.AccManangerDataPath).EnumerateFiles()
+                var raceWeekendFiles = dataDir.EnumerateFiles()
                     .Where(x => !x.Name.Contains("log") && x.Extension == ".rwdb")
                     .OrderByDescending(x => x.LastWriteTimeUtc);
 
@@ -313,7 +314,7 @@ namespace ACCManager.Controls
 
             grid.Columns.Add(new DataGridTextColumn()
             {
-                Header = new TextBlock() { Text = "#", ToolTip = "Lap" },
+                Header = new TextBlock() { Text = "#", ToolTip = "Lap", Margin= new Thickness(0) },
                 Binding = new Binding("Index"),
                 SortDirection = System.ComponentModel.ListSortDirection.Descending,
                 FontWeight = FontWeights.DemiBold,

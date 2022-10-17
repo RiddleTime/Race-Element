@@ -9,7 +9,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Margin="3">
     <materialDesign:Card>
-        <Grid Margin="0,0,3,0">
+        <controls:RaceSessionBrowser></controls:RaceSessionBrowser>
+        
+        
+        <!--<Grid Margin="0,0,3,0">
             <TabControl>
 
                 <TabItem>
@@ -33,7 +36,7 @@
                         </Grid>
                     </TabItem.Header>
 
-                    <controls:RaceSessionBrowser></controls:RaceSessionBrowser>
+                    
                 </TabItem>
 
 
@@ -62,6 +65,6 @@
                 </TabItem>
             </TabControl>
 
-        </Grid>
+        </Grid>-->
     </materialDesign:Card>
 </UserControl>

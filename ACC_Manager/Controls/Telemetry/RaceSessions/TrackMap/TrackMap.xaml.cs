@@ -114,9 +114,13 @@ namespace ACCManager.Controls
                             _cbDrivenCoordinates?.Draw(g);
 
                             GraphicsPath path = new GraphicsPath();
+
+                            // add current location marker
                             int ellipseSize = 12;
                             path.AddEllipse(drawPoint.X - ellipseSize / 2, drawPoint.Y - ellipseSize / 2, ellipseSize, ellipseSize);
-                            g.DrawPath(new Pen(Color.White, 2f), path);
+
+                            // draw t
+                            g.DrawPath(new Pen(Color.White, 1f), path);
                         });
 
                         this.Dispatcher.Invoke(() =>

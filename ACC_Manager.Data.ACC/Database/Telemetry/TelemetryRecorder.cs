@@ -123,6 +123,9 @@ namespace ACCManager.Data.ACC.Database.Telemetry
                     {
                         lock (_lapData)
                         {
+                            if (_pageGraphics.GlobalRed)
+                                continue;
+
                             float currentSplinePositio = _pageGraphics.NormalizedCarPosition;
 
 

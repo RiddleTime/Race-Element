@@ -4,7 +4,6 @@ using ACCManager.Data.ACC.Tracker.Laps;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.Util;
-using System;
 using System.Drawing;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlaySpeedometer

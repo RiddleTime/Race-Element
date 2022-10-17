@@ -36,7 +36,7 @@
                 </Grid.ColumnDefinitions>
                 <ToggleButton Grid.Column="0" x:Name="checkBoxReposition" Height="25" Cursor="Hand" ToolTip="Click scroll wheel to Toggle" VerticalAlignment="Center"></ToggleButton>
                 <materialDesign:PackIcon Grid.Column="1" VerticalAlignment="Center" Kind="ArrowAll"/>
-                <Label Grid.Column="2" FontSize="16"  VerticalAlignment="Center" ToolTip="Move the overlays with the mouse or click the overlay and move it with the Arrow Keys.">Move Active Overlays (Ctrl + Home)</Label>
+                <Label Grid.Column="2" FontSize="16"  VerticalAlignment="Center">Move Active Overlays (Ctrl + Home)</Label>
             </Grid>
 
             <Grid Grid.Row="0" Margin="3" x:Name="gridDemoToggler" Cursor="Hand" >
