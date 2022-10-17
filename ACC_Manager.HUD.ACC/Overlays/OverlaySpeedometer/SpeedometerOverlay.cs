@@ -15,7 +15,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySpeedometer
         private class SpeedometerConfiguration : OverlayConfiguration
         {
             [ToolTip("Displays the maximum speed reached on each lap.")]
-            public bool ShowMaxSpeed { get; set; } = true;
+            public bool ShowMaxSpeed { get; set; } = false;
 
             public SpeedometerConfiguration()
             {
@@ -28,7 +28,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySpeedometer
 
         public SpeedometerOverlay(Rectangle rectangle) : base(rectangle, "Speedometer Overlay")
         {
-            this.Width = 150;
+            this.Width = 130;
             _panel = new InfoPanel(13, this.Width)
             {
                 FirstRowLine = 1
