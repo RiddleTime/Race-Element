@@ -143,16 +143,21 @@ namespace ACCManager
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            string loadString = $"Loaded ACC Manager {GetAssemblyFileVersion()}";
-            string fileHash = FileUtil.GetBase64Hash(FileUtil.AppFullName);
+            ThreadPool.QueueUserWorkItem(x =>
+            {
+                Thread.Sleep(2000);
+                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                string loadString = $"Loaded ACC Manager {GetAssemblyFileVersion()}";
+                string fileHash = FileUtil.GetBase64Hash(FileUtil.AppFullName);
 
 #if DEBUG
-            loadString += " - Debug";
+                loadString += " - Debug";
 #endif
-            Trace.WriteLine(loadString);
-            Trace.WriteLine($"Application Hash: {fileHash}");
-            LogWriter.WriteToLog($"Application Hash: {fileHash}");
-            LogWriter.WriteToLog(loadString);
+                Trace.WriteLine(loadString);
+                Trace.WriteLine($"Application Hash: {fileHash}");
+                LogWriter.WriteToLog($"Application Hash: {fileHash}");
+                LogWriter.WriteToLog(loadString);
+            });
 
             if (!App.Instance.StartMinimized)
                 this.WindowState = WindowState.Normal;
