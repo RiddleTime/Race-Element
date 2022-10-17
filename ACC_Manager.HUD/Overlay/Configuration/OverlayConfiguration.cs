@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ACCManager.HUD.Overlay.Configuration
 {
@@ -15,6 +12,9 @@ namespace ACCManager.HUD.Overlay.Configuration
 
         [ToolTip("Allows other software to to detect this overlay as a Window, can be used for streaming apps.")]
         public bool Window { get; set; } = false;
+
+        [ToolTip("When streaming with Window enabled turn this off when you don't want to see the actual overlay on top of your game.")]
+        public bool AlwaysOnTop { get; set; } = true;
 
         public OverlayConfiguration()
         {

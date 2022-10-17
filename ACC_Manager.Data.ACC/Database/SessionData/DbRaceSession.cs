@@ -1,24 +1,19 @@
-﻿using ACCManager.Data.ACC.Database.GameData;
-using LiteDB;
+﻿using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.Data.ACC.Database.SessionData
 {
     public class DbRaceSession
     {
-#pragma warning disable IDE1006 // Naming Styles
-        public Guid _id { get; set; }
-#pragma warning restore IDE1006 // Naming Styles
+        public Guid Id { get; set; }
 
-        public Guid TrackGuid { get; set; }
-        public Guid CarGuid { get; set; }
+        public Guid RaceWeekendId { get; set; }
+        public Guid TrackId { get; set; }
+        public Guid CarId { get; set; }
 
         public DateTime UtcStart { get; set; }
         public DateTime UtcEnd { get; set; }
@@ -29,16 +24,19 @@ namespace ACCManager.Data.ACC.Database.SessionData
 
     public class RaceSessionCollection
     {
-        private static ILiteCollection<DbRaceSession> _collection;
         private static ILiteCollection<DbRaceSession> Collection
         {
             get
             {
-                if (_collection == null)
-                    _collection = LocalDatabase.Database.GetCollection<DbRaceSession>();
+                ILiteCollection<DbRaceSession> _collection = RaceWeekendDatabase.Database.GetCollection<DbRaceSession>();
 
                 return _collection;
             }
+        }
+
+        private static ILiteCollection<DbRaceSession> GetCollection(ILiteDatabase db)
+        {
+            return db.GetCollection<DbRaceSession>();
         }
 
         /// <summary>
@@ -48,10 +46,28 @@ namespace ACCManager.Data.ACC.Database.SessionData
         /// <returns></returns>
         public static List<Guid> GetAllCarsForTrack(Guid trackId)
         {
-            return Collection.Find(x => x.TrackGuid == trackId)
-                .Select(x => x.CarGuid)
+            return Collection.Find(x => x.TrackId == trackId)
+                .Select(x => x.CarId)
                 .Distinct()
                 .ToList();
+        }
+
+        /// <summary>
+        /// Returns all db Car Guids which exist with the given track guid
+        /// </summary>
+        /// <param name="trackId"></param>
+        /// <returns></returns>
+        public static List<Guid> GetAllCarsForTrack(ILiteDatabase db, Guid trackId)
+        {
+            return GetCollection(db).Find(x => x.TrackId == trackId)
+                .Select(x => x.CarId)
+                .Distinct()
+                .ToList();
+        }
+
+        public static List<DbRaceSession> GetAll(ILiteDatabase db)
+        {
+            return GetCollection(db).FindAll().OrderByDescending(x => x.UtcStart).ToList();
         }
 
         public static List<DbRaceSession> GetAll()
@@ -63,12 +79,12 @@ namespace ACCManager.Data.ACC.Database.SessionData
         {
             try
             {
-                var storedSession = Collection.FindOne(x => x._id == raceSession._id);
+                var storedSession = Collection.FindOne(x => x.Id == raceSession.Id);
                 if (storedSession != null)
                 {
                     storedSession = raceSession;
                     Collection.Update(storedSession);
-                    Debug.WriteLine($"Updated Race session {raceSession._id}");
+                    Debug.WriteLine($"Updated Race session {raceSession.Id}");
                 }
             }
             catch (Exception ex) { Debug.WriteLine(ex); }
@@ -76,10 +92,18 @@ namespace ACCManager.Data.ACC.Database.SessionData
 
         public static void Insert(DbRaceSession raceSession)
         {
-            Collection.EnsureIndex(x => x._id, true);
+            RaceWeekendDatabase.Database.BeginTrans();
+            Collection.EnsureIndex(x => x.Id, true);
             Collection.Insert(raceSession);
+            RaceWeekendDatabase.Database.Commit();
+            Debug.WriteLine($"Inserted new race session {raceSession.SessionIndex} {raceSession.SessionType} {raceSession.Id}");
+        }
 
-            Debug.WriteLine($"Inserted new race session {raceSession.SessionIndex} {raceSession.SessionType} {raceSession._id}");
+        public static void Delete(DbRaceSession raceSession)
+        {
+            RaceWeekendDatabase.Database.BeginTrans();
+            Collection.Delete(raceSession.Id);
+            RaceWeekendDatabase.Database.Commit();
         }
     }
 }

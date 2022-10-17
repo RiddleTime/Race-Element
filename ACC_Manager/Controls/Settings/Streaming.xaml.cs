@@ -1,26 +1,14 @@
 ﻿using ACCManager.Data.ACC.Tracker;
-using ACCManager.Util;
 using ACCManager.Util.Settings;
-using Newtonsoft.Json;
 using OBSWebsocketDotNet;
 using SLOBSharp.Client;
 using SLOBSharp.Client.Requests;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using WebSocketSharp;
 
 namespace ACCManager.Controls
@@ -105,24 +93,27 @@ namespace ACCManager.Controls
                     OBSWebsocket _obsWebSocket = new OBSWebsocket();
                     _obsWebSocket.Connected += (s, e) =>
                     {
-                        bool foundSetupHider = _obsWebSocket.GetSourcesList().Find(x => x.Name == "SetupHider") != null;
+                        Task.Run(() =>
+                        {
+                            var list = _obsWebSocket.GetSceneItemList(_obsWebSocket.GetCurrentProgramScene());
 
-                        string message = "SetupHider source was not found in your current Scene.";
-                        if (foundSetupHider)
-                            message = $"Connection to {streamSettings.StreamingSoftware} is working.";
+                            bool foundSetupHider = list.Find(x => x.SourceName == "SetupHider") != null;
 
-                        MainWindow.Instance.ClearSnackbar();
-                        MainWindow.Instance.EnqueueSnackbarMessage(message);
+                            string message = "SetupHider source was not found in your current Scene.";
+                            if (foundSetupHider)
+                                message = $"Connection to {streamSettings.StreamingSoftware} is working.";
 
-                        _obsWebSocket.Disconnect();
+                            MainWindow.Instance.ClearSnackbar();
+                            MainWindow.Instance.EnqueueSnackbarMessage(message);
+
+                            _obsWebSocket.Disconnect();
+                        });
                     };
                     _obsWebSocket.Disconnected += (s, e) =>
                     {
-                        CloseEventArgs args = (CloseEventArgs)e;
-                        if (args.WasClean)
-                            Debug.WriteLine("Disconnected test connection.");
-                        else
+                        if (e.WebsocketDisconnectionInfo.Type == Websocket.Client.DisconnectionType.Error)
                         {
+                            Debug.WriteLine("Disconnected test connection.");
                             MainWindow.Instance.ClearSnackbar();
                             MainWindow.Instance.EnqueueSnackbarMessage($"Failed to make a connection to {streamSettings.StreamingSoftware}.");
                         }
@@ -132,12 +123,12 @@ namespace ACCManager.Controls
                             buttonTestConnnection.Content = "Test Connection";
                             buttonTestConnnection.IsEnabled = true;
                         });
-
                     };
-                    _obsWebSocket.Connect($"ws://{streamSettings.StreamingWebSocketIP}:{streamSettings.StreamingWebSocketPort}", streamSettings.StreamingWebSocketPassword);
+                    _obsWebSocket.ConnectAsync($"ws://{streamSettings.StreamingWebSocketIP}:{streamSettings.StreamingWebSocketPort}", streamSettings.StreamingWebSocketPassword);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    Debug.WriteLine(e);
                     MainWindow.Instance.ClearSnackbar();
                     MainWindow.Instance.EnqueueSnackbarMessage($"Failed to make a connection to OBS.");
                     Dispatcher.Invoke(() =>

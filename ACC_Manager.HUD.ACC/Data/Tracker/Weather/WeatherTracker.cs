@@ -1,11 +1,7 @@
 ﻿using ACCManager.Util;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.HUD.ACC.Data.Tracker.Weather
@@ -41,7 +37,6 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Weather
         }
 
         private bool _isTracking = false;
-        private ACCSharedMemory sharedMemory;
 
         private WeatherInfo _lastWeather;
 
@@ -49,7 +44,6 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Weather
 
         private WeatherTracker()
         {
-            sharedMemory = new ACCSharedMemory();
             _lastWeather = new WeatherInfo();
 
             Start();
@@ -69,7 +63,7 @@ namespace ACCManager.HUD.ACC.Data.Tracker.Weather
                     {
                         Thread.Sleep(1000 / 10);
 
-                        var graphicsPage = sharedMemory.ReadGraphicsPageFile();
+                        var graphicsPage = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
 
 
                         var newWeather = new WeatherInfo()

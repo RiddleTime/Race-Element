@@ -1,12 +1,8 @@
 ﻿using ACCManager.Util;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ACC_Manager.Broadcast
 {
@@ -14,8 +10,11 @@ namespace ACC_Manager.Broadcast
     {
         public class Root
         {
+            [JsonProperty("updListenerPort")]
             public int UpdListenerPort { get; set; }
+            [JsonProperty("connectionPassword")]
             public string ConnectionPassword { get; set; }
+            [JsonProperty("commandPassword")]
             public string CommandPassword { get; set; }
         }
 

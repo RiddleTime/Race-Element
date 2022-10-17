@@ -18,8 +18,8 @@
             <Label HorizontalContentAlignment="Center" FontWeight="Bold" FontSize="18">Instruction</Label>
             <TextBlock TextAlignment="Center">
                Add any Source to your Active Scene called: <Bold>SetupHider</Bold><LineBreak/><LineBreak/>
-               <Italic> OBS requires obs-websocket 4.9.1, but allows streaming pcs.<LineBreak/>
-               Streamlabs works out of the box, but only locally.</Italic>
+               <Italic> OBS: Version 28 or higher is required.<LineBreak/>
+               Streamlabs: Use most recent version, only works locally.</Italic>
             </TextBlock>
         </StackPanel>
 

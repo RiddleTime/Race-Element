@@ -1,4 +1,5 @@
-﻿using ACC_Manager.Util.Settings;
+﻿using ACC_Manager.Broadcast;
+using ACC_Manager.Util.Settings;
 using ACC_Manager.Util.SystemExtensions;
 using ACCManager.Controls;
 using ACCManager.Data.ACC.Tracker;
@@ -8,18 +9,13 @@ using ACCManager.HUD.ACC.Data.Tracker;
 using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput;
 using ACCManager.Util;
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace ACCManager
@@ -59,7 +55,12 @@ namespace ACCManager
             this.titleBar.DragLeave += (s, e) => { _stopDecreaseOpacty = true; e.Handled = true; this.Opacity = 1; };
             this.titleBar.MouseDoubleClick += (s, e) => { _stopDecreaseOpacty = true; e.Handled = true; this.Opacity = 1; };
 
-            this.buttonPlayACC.Click += (sender, e) => System.Diagnostics.Process.Start("steam://rungameid/805550");
+            this.buttonPlayACC.Click += (sender, e) => Process.Start(new ProcessStartInfo()
+            {
+                FileName = "cmd",
+                Arguments = $"/c start steam://rungameid/805550",
+                WindowStyle = ProcessWindowStyle.Hidden,
+            });
 
             this.StateChanged += MainWindow_StateChanged;
 
@@ -91,8 +92,12 @@ namespace ACCManager
 
             Instance = this;
 
-            // TODO refactor
+            // --- TODO refactor
             ACCTrackerStarter.StartACCTrackers();
+
+            // warm up the broad cast config json.. make sure it's set up before we join any session
+            _ = BroadcastConfig.GetConfiguration();
+            // ---
         }
 
         private void MainWindow_Drop(object sender, DragEventArgs e)
@@ -115,6 +120,14 @@ namespace ACCManager
                             return;
                         }
                     }
+
+                    if (droppedItem.EndsWith(".rwdb"))
+                    {
+                        RaceSessionBrowser.Instance.OpenRaceWeekendDatabase(droppedItem);
+                        tabTelemetry.Focus();
+                        e.Handled = true;
+                        return;
+                    }
                 }
             }
 
@@ -130,12 +143,21 @@ namespace ACCManager
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            string loadString = $"Loaded ACC Manager {GetAssemblyFileVersion()}";
+            ThreadPool.QueueUserWorkItem(x =>
+            {
+                Thread.Sleep(2000);
+                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                string loadString = $"Loaded ACC Manager {GetAssemblyFileVersion()}";
+                string fileHash = FileUtil.GetBase64Hash(FileUtil.AppFullName);
+
 #if DEBUG
-            loadString += " - Debug";
+                loadString += " - Debug";
 #endif
-            Trace.WriteLine(loadString);
-            LogWriter.WriteToLog(loadString);
+                Trace.WriteLine(loadString);
+                Trace.WriteLine($"Application Hash: {fileHash}");
+                LogWriter.WriteToLog($"Application Hash: {fileHash}");
+                LogWriter.WriteToLog(loadString);
+            });
 
             if (!App.Instance.StartMinimized)
                 this.WindowState = WindowState.Normal;
@@ -150,6 +172,8 @@ namespace ACCManager
             ACCTrackerDispose.Dispose();
             HudOptions.Instance.DisposeKeyboardHooks();
             SteeringLockTracker.Instance.Dispose();
+
+            Environment.Exit(0);
         }
 
         private void CurrentDomain_ProcessExit(object sender, EventArgs e)
@@ -159,6 +183,8 @@ namespace ACCManager
             ACCTrackerDispose.Dispose();
             HudOptions.Instance.DisposeKeyboardHooks();
             SteeringLockTracker.Instance.Dispose();
+
+            Environment.Exit(0);
         }
 
         private void MainWindow_StateChanged(object sender, EventArgs e)
@@ -172,13 +198,15 @@ namespace ACCManager
                 case WindowState.Normal:
                     {
                         this.Activate();
-                        rowTitleBar.Height = new GridLength(30);
+                        mainGrid.Margin = new Thickness(0);
+                        //rowTitleBar.Height = new GridLength(30);
                         _stopDecreaseOpacty = true;
                         break;
                     }
                 case WindowState.Maximized:
                     {
-                        rowTitleBar.Height = new GridLength(35);
+                        mainGrid.Margin = new Thickness(8);
+                        //rowTitleBar.Height = new GridLength(35);
                         _stopDecreaseOpacty = true;
                         break;
                     }

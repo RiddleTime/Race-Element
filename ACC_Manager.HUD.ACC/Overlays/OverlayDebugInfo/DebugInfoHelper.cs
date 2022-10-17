@@ -2,9 +2,6 @@
 using ACCManager.HUD.Overlay.Internal;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo
 {
@@ -21,11 +18,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo
             }
         }
 
-        private static DebugInfoHelper _instance = new DebugInfoHelper();
-        public static DebugInfoHelper Instance
-        {
-            get { return _instance; }
-        }
+        public static DebugInfoHelper Instance { get; } = new DebugInfoHelper();
 
         private List<AbstractOverlay> _infoOverlays = new List<AbstractOverlay>();
 

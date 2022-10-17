@@ -2,29 +2,18 @@
 using ACCManager.Data;
 using ACCManager.LiveryParser;
 using ACCManager.Util;
-using Newtonsoft.Json;
 using SharpCompress.Archives;
-using SharpCompress.Archives.Rar;
 using SharpCompress.Archives.Zip;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net.Cache;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using static ACCManager.Controls.LiveryTagging;
 
 namespace ACCManager.Controls
@@ -365,8 +354,6 @@ namespace ACCManager.Controls
 
         private void FillTreeViewTags(List<LiveryTreeCar> allLiveries)
         {
-            //LiveryTag tag = LiveryTagging.CreateNewTag("oNiD");
-
             List<TreeViewItem> tagTreeItems = new List<TreeViewItem>();
 
             List<LiveryTreeCar> liveriesWithTags = new List<LiveryTreeCar>();
@@ -466,6 +453,9 @@ namespace ACCManager.Controls
                     Width = liveriesTreeViewTeams.Width - 5,
                     Background = new SolidColorBrush(Colors.OrangeRed)
                 };
+                if(liveriesWithoutTags.Count == 0)
+                    tagHeader.Background = new SolidColorBrush(Colors.DarkOliveGreen);
+
                 TreeViewItem tagItem = new TreeViewItem()
                 {
                     Header = tagHeader,

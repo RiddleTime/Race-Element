@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.IO.MemoryMappedFiles;
-using System.Linq;
-using System.Numerics;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using ACCManager.Controls.Telemetry.SharedMemory;
 
 namespace ACCManager
@@ -21,6 +13,29 @@ namespace ACCManager
         private readonly string physicsMap = "Local\\acpmf_physics";
         private readonly string graphicsMap = "Local\\acpmf_graphics";
         private readonly string staticMap = "Local\\acpmf_static";
+
+        public SPageFileStatic PageFileStatic { get; private set; }
+        public SPageFilePhysics PageFilePhysics { get; private set; }
+        public SPageFileGraphic PageFileGraphic { get; private set; }
+
+        private static ACCSharedMemory _instance;
+        public static ACCSharedMemory Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new ACCSharedMemory();
+
+                return _instance;
+            }
+        }
+
+        private ACCSharedMemory()
+        {
+            ReadStaticPageFile();
+            ReadPhysicsPageFile();
+            ReadGraphicsPageFile();
+        }
 
         public enum AcStatus : int
         {
@@ -664,25 +679,28 @@ namespace ACCManager
             public static readonly byte[] Buffer = new byte[Size];
         };
 
-        public SPageFileGraphic ReadGraphicsPageFile()
+        public SPageFileGraphic ReadGraphicsPageFile(bool fromCache = false)
         {
+            if (fromCache) return PageFileGraphic;
             var mappedFile = MemoryMappedFile.CreateOrOpen(graphicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite);
-            SPageFileGraphic data = StructExtension.ToStruct<SPageFileGraphic>(mappedFile, SPageFileGraphic.Buffer);
-            return data;
+            PageFileGraphic = StructExtension.ToStruct<SPageFileGraphic>(mappedFile, SPageFileGraphic.Buffer);
+            return PageFileGraphic;
         }
 
-        public SPageFileStatic ReadStaticPageFile()
+        public SPageFileStatic ReadStaticPageFile(bool fromCache = false)
         {
+            if (fromCache) return PageFileStatic;
             var mappedFile = MemoryMappedFile.CreateOrOpen(staticMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite);
-            SPageFileStatic data = StructExtension.ToStruct<SPageFileStatic>(mappedFile, SPageFileStatic.Buffer);
-            return data;
+            PageFileStatic = StructExtension.ToStruct<SPageFileStatic>(mappedFile, SPageFileStatic.Buffer);
+            return PageFileStatic;
         }
 
-        public SPageFilePhysics ReadPhysicsPageFile()
+        public SPageFilePhysics ReadPhysicsPageFile(bool fromCache = false)
         {
+            if (fromCache) return PageFilePhysics;
             var mappedFile = MemoryMappedFile.CreateOrOpen(physicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite);
-            SPageFilePhysics data = StructExtension.ToStruct<SPageFilePhysics>(mappedFile, SPageFilePhysics.Buffer);
-            return data;
+            PageFilePhysics = StructExtension.ToStruct<SPageFilePhysics>(mappedFile, SPageFilePhysics.Buffer);
+            return PageFilePhysics;
         }
     }
 }

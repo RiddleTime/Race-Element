@@ -1,13 +1,10 @@
 ﻿using ACCManager.Broadcast.Structs;
-using ACCManager.Data.ACC.Database;
 using ACCManager.Data.ACC.Database.LapDataDB;
 using ACCManager.Data.ACC.Session;
 using ACCManager.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace ACCManager.Data.ACC.Tracker.Laps
@@ -25,7 +22,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
         }
 
         private bool IsTracking = false;
-        private ACCSharedMemory sharedMemory;
+
         private int CurrentSector = 0;
 
         public Dictionary<int, DbLapData> Laps = new Dictionary<int, DbLapData>();
@@ -35,18 +32,23 @@ namespace ACCManager.Data.ACC.Tracker.Laps
 
         private LapTracker()
         {
-            sharedMemory = new ACCSharedMemory();
-
             if (!IsTracking)
                 this.Start();
 
             BroadcastTracker.Instance.OnRealTimeLocalCarUpdate += Instance_OnRealTimeCarUpdate;
             RaceSessionTracker.Instance.OnACSessionTypeChanged += Instance_OnACSessionTypeChanged;
+            RaceSessionTracker.Instance.OnNewSessionStarted += Instance_OnNewSessionStarted;
+        }
+
+        private void Instance_OnNewSessionStarted(object sender, Database.SessionData.DbRaceSession e)
+        {
+            Laps.Clear();
+            CurrentLap = new DbLapData() { Index = ACCSharedMemory.Instance.ReadGraphicsPageFile(true).CompletedLaps + 1 };
         }
 
         private void Instance_OnACSessionTypeChanged(object sender, ACCSharedMemory.AcSessionType e)
         {
-            var pageGraphics = sharedMemory.ReadGraphicsPageFile();
+            var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
 
             lock (Laps)
                 Laps.Clear();
@@ -56,7 +58,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                 if (RaceSessionTracker.Instance.CurrentSession == null)
                     Debug.WriteLine("Lap Tracker cannot record a new lap on session type change, current session is null");
                 else
-                    CurrentLap = new DbLapData() { Index = pageGraphics.CompletedLaps + 1, RaceSessionGuid = RaceSessionTracker.Instance.CurrentSession._id };
+                    CurrentLap = new DbLapData() { Index = pageGraphics.CompletedLaps + 1, RaceSessionId = RaceSessionTracker.Instance.CurrentSession.Id };
             }
             Debug.WriteLine("LapTracker: Resetted current lap and previous recorded laps.");
         }
@@ -83,7 +85,9 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                         lock (Laps)
                             if (Laps.Count != 0)
                             {
-                                DbLapData lastData = Laps[CurrentLap.Index - 1];
+                                if (!Laps.TryGetValue(CurrentLap.Index - 1, out DbLapData lastData))
+                                    return;
+
                                 if (_lastLapInfo.LaptimeMS == lastData.Time)
                                 {
                                     if (_lastLapInfo.Splits[2].HasValue)
@@ -94,15 +98,19 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                                             Laps[CurrentLap.Index - 1].IsValid = !_lastLapInfo.IsInvalid;
                                             Laps[CurrentLap.Index - 1].LapType = _lastLapInfo.Type;
 
-                                            Trace.WriteLine($"{Laps[CurrentLap.Index - 1]}");
-
-                                            LapFinished?.Invoke(this, Laps[CurrentLap.Index - 1]);
-
                                             if (RaceSessionTracker.Instance.CurrentSession != null)
                                             {
-                                                Laps[CurrentLap.Index - 1].RaceSessionGuid = RaceSessionTracker.Instance.CurrentSession._id;
+                                                Laps[CurrentLap.Index - 1].Id = Guid.NewGuid();
+                                                Laps[CurrentLap.Index - 1].RaceSessionId = RaceSessionTracker.Instance.CurrentSession.Id;
                                                 Laps[CurrentLap.Index - 1].UtcCompleted = DateTime.UtcNow;
+                                                Laps[CurrentLap.Index - 1].FuelInTank = ACCSharedMemory.Instance.ReadPhysicsPageFile().Fuel;
+                                                Laps[CurrentLap.Index - 1].TempTrack = ACCSharedMemory.Instance.ReadPhysicsPageFile().RoadTemp;
+                                                Laps[CurrentLap.Index - 1].TempAmbient = ACCSharedMemory.Instance.ReadPhysicsPageFile().AirTemp;
                                                 LapDataCollection.Insert(Laps[CurrentLap.Index - 1]);
+
+                                                Trace.WriteLine($"{Laps[CurrentLap.Index - 1]}");
+
+                                                LapFinished?.Invoke(this, Laps[CurrentLap.Index - 1]);
                                             }
                                         }
                                     }
@@ -130,7 +138,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                     {
                         Thread.Sleep(1000 / 10);
 
-                        var pageGraphics = sharedMemory.ReadGraphicsPageFile();
+                        var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
 
                         if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF)
                         {
@@ -165,12 +173,15 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                         if (CurrentLap.Index - 1 != pageGraphics.CompletedLaps && pageGraphics.LastTimeMs != int.MaxValue)
                         {
                             CurrentLap.Time = pageGraphics.LastTimeMs;
-                            CurrentLap.FuelUsage = (int)(sharedMemory.ReadGraphicsPageFile().FuelXLap * 1000);
+                            CurrentLap.FuelUsage = (int)(ACCSharedMemory.Instance.ReadGraphicsPageFile().FuelXLap * 1000);
 
                             if (CurrentLap.Sector1 != -1)
                             {
                                 lock (Laps)
-                                    Laps.Add(CurrentLap.Index, CurrentLap);
+                                {
+                                    if (!Laps.ContainsKey(CurrentLap.Index))
+                                        Laps.Add(CurrentLap.Index, CurrentLap);
+                                }
                             }
 
                             CurrentLap = new DbLapData() { Index = pageGraphics.CompletedLaps + 1 };

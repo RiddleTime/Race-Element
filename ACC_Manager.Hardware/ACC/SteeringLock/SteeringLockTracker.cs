@@ -1,12 +1,7 @@
-﻿using ACCManager.Data.ACC.Cars;
-using SharpDX.DirectInput;
+﻿using SharpDX.DirectInput;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ACCManager.Hardware.ACC.SteeringLock
 {
@@ -30,11 +25,9 @@ namespace ACCManager.Hardware.ACC.SteeringLock
         private string _lastCar;
         private int _lastRotation;
         private IWheelSteerLockSetter _wheel;
-        private readonly ACCSharedMemory _sharedMemory;
 
         private SteeringLockTracker()
         {
-            _sharedMemory = new ACCSharedMemory();
         }
 
         public void Dispose()
@@ -59,7 +52,7 @@ namespace ACCManager.Hardware.ACC.SteeringLock
 
                     try
                     {
-                        if (_sharedMemory.ReadGraphicsPageFile().Status != ACCSharedMemory.AcStatus.AC_OFF)
+                        if (ACCSharedMemory.Instance.ReadGraphicsPageFile(true).Status != ACCSharedMemory.AcStatus.AC_OFF)
                         {
                             SetHardwareLock();
                         }
@@ -82,7 +75,7 @@ namespace ACCManager.Hardware.ACC.SteeringLock
 
         private void SetHardwareLock()
         {
-            string currentModel = _sharedMemory.ReadStaticPageFile().CarModel;
+            string currentModel = ACCSharedMemory.Instance.ReadStaticPageFile(true).CarModel;
             if (_lastCar == currentModel) return;
 
             // car has changed, if we have no wheel, try to re-detect
@@ -93,7 +86,7 @@ namespace ACCManager.Hardware.ACC.SteeringLock
 
             ResetRotation();
             int rotation = Data.ACC.Cars.SteeringLock.Get(_lastCar);
-            
+
             Trace.WriteLine($"Set wheelbase rotation for {_lastCar} to {rotation}");
 
             if (!_wheel.Apply(rotation, false, out _lastRotation))

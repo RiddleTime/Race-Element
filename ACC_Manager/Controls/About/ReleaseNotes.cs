@@ -1,17 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ACCManager.Controls
 {
     public static class ReleaseNotes
     {
-        public readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
+        internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.0.8.3", "- Titlebar: Added icons for automatic steering lock and the stream setup hider."+
-                        "\n- Setup Importer drag and drop now works on any part of the app."},
+            {"0.1.0.2", "- HUDs: Added Always On top option to each overlay, allowing you to hide the overlay in the game whilst streaming using the Window option."+
+                        "\n- HUD: Added Input Bars Overlay, displaying live throttle and brake inputs in a vertical progress bars."},
+            {"0.1.0.1", "- OBS Websocket updated to version 5, using the setup hider now requires OBS version 28 or higher."+
+                        //"\n- Added Detailed Telemetry recording and displaying."+
+                        "\n- Updated design theme."+
+                        "\n- HUD tab: the title & description is now 1 big button to toggle hud activation."},
+            {"0.0.9.0", "- Added Race Weekends tab to Telemetry tab."+
+                        "\n- ACC Manager now saves race weekend data(lap and sector times)."+
+                        "\n- Titlebar: Added icons for automatic steering lock and the stream setup hider."+
+                        "\n- Setup Importer drag and drop now works on any part of the app."+
+                        "\n- Changed order of main menu tabs." },
             {"0.0.8.2", "- HUD: Added Oversteer trace overlay. Displaying under and oversteer."+
                         "\n- HUDs tab: Double click overlays on the list items to toggle overlays on and off."+
                         "\n- Setups tab: Add strategy section to viewer and comparison."+

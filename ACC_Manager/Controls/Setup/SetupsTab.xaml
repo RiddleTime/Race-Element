@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              MinWidth="1100"
-             Margin="3,3,3,3">
+             Margin="3">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -18,18 +18,20 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
-        <controls:SetupImporter HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="9999"></controls:SetupImporter>
-        <TabControl x:Name="tabControl" TabStripPlacement="Top" FlowDirection="LeftToRight" SelectedIndex="0" HorizontalAlignment="Stretch" >
+    <materialDesign:Card>
 
-            <TabItem Name="tabSetupTree" Style="{DynamicResource MaterialDesignTabItem}">
-                <TabItem.Header>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <materialDesign:PackIcon
+        <Grid>
+            <controls:SetupImporter HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="9999"></controls:SetupImporter>
+            <TabControl x:Name="tabControl" TabStripPlacement="Top" FlowDirection="LeftToRight" SelectedIndex="0" HorizontalAlignment="Stretch" >
+
+                <TabItem Name="tabSetupTree" Style="{DynamicResource MaterialDesignTabItem}">
+                    <TabItem.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon
                             Grid.Column="0"
                             Kind="FileTree"
                             VerticalAlignment="Center"
@@ -37,22 +39,22 @@
                             Height="32"
                         Foreground="White"    
                         />
-                        <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Browse</TextBlock>
-                    </Grid>
-                </TabItem.Header>
+                            <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Browse</TextBlock>
+                        </Grid>
+                    </TabItem.Header>
 
-                <Grid>
-                    <controls:SetupBrowser></controls:SetupBrowser>
-                </Grid>
-            </TabItem>
-            <TabItem Name="tabCompare" Style="{DynamicResource MaterialDesignTabItem}" ToolTip="Right click setups in the browser to add them">
-                <TabItem.Header>
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <materialDesign:PackIcon
+                        <controls:SetupBrowser></controls:SetupBrowser>
+                    </Grid>
+                </TabItem>
+                <TabItem Name="tabCompare" Style="{DynamicResource MaterialDesignTabItem}" ToolTip="Right click setups in the browser to add them">
+                    <TabItem.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon
                             Grid.Column="0"
                             Kind="Compare"
                             VerticalAlignment="Center"
@@ -60,14 +62,15 @@
                             Height="32"
                         Foreground="White"    
                         />
-                        <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Compare</TextBlock>
-                    </Grid>
-                </TabItem.Header>
+                            <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Compare</TextBlock>
+                        </Grid>
+                    </TabItem.Header>
 
-                <Grid>
-                    <controls:SetupComparer></controls:SetupComparer>
-                </Grid>
-            </TabItem>
-        </TabControl>
-    </Grid>
+                    <Grid>
+                        <controls:SetupComparer></controls:SetupComparer>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </materialDesign:Card>
 </UserControl>

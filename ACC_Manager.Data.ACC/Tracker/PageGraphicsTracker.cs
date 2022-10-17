@@ -1,10 +1,7 @@
 ﻿using ACCManager.Data.ACC.EntryList;
 using ACCManager.Util;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using static ACCManager.ACCSharedMemory;
@@ -30,12 +27,10 @@ namespace ACCManager.Data.ACC.Tracker
         private bool isTracking = false;
 
         private readonly Task trackingTask;
-        private readonly ACCSharedMemory sharedMemory;
-
+   
         private PageGraphicsTracker()
         {
-            sharedMemory = new ACCSharedMemory();
-
+       
             isTracking = true;
 
             trackingTask = Task.Run(() =>
@@ -43,7 +38,7 @@ namespace ACCManager.Data.ACC.Tracker
                 while (isTracking)
                 {
                     Thread.Sleep(1);
-                    Tracker?.Invoke(this, sharedMemory.ReadGraphicsPageFile());
+                    Tracker?.Invoke(this, ACCSharedMemory.Instance.ReadGraphicsPageFile());
                 }
             });
 
@@ -55,7 +50,7 @@ namespace ACCManager.Data.ACC.Tracker
                     {
                         Thread.Sleep(100);
 
-                        SPageFileGraphic sPageFileGraphic = sharedMemory.ReadGraphicsPageFile();
+                        SPageFileGraphic sPageFileGraphic = ACCSharedMemory.Instance.ReadGraphicsPageFile();
 
                         if (sPageFileGraphic.Status == AcStatus.AC_OFF)
                         {

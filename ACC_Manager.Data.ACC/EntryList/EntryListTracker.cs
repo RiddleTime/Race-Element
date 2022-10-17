@@ -2,13 +2,13 @@
 using ACCManager.Broadcast.Structs;
 using ACCManager.Data.ACC.EntryList.TrackPositionGraph;
 using ACCManager.Data.ACC.AccidentList;
-using ACCManager.Data.ACC.Tracker;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ACCManager.Data.ACC.Tracker;
 
 namespace ACCManager.Data.ACC.EntryList
 {
@@ -35,7 +35,7 @@ namespace ACCManager.Data.ACC.EntryList
 
         internal Dictionary<int, CarData> _entryListCars = new Dictionary<int, CarData>();
         private static AccidentListTracker _accidentListTracker = AccidentListTracker.Instance;
-      
+
         public List<KeyValuePair<int, CarData>> Cars
         {
             get
@@ -47,11 +47,10 @@ namespace ACCManager.Data.ACC.EntryList
             }
         }
         private bool _isRunning = false;
-        private readonly ACCSharedMemory _sharedMemory;
 
         private EntryListTracker()
         {
-            _sharedMemory = new ACCSharedMemory();
+
         }
 
         internal void Start()
@@ -94,7 +93,7 @@ namespace ACCManager.Data.ACC.EntryList
                     {
                         Thread.Sleep(100);
 
-                        int[] activeCarIds = _sharedMemory.ReadGraphicsPageFile().CarIds;
+                        int[] activeCarIds = ACCSharedMemory.Instance.ReadGraphicsPageFile().CarIds;
 
                         List<KeyValuePair<int, CarData>> datas = _entryListCars.ToList();
                         foreach (var entryListCar in datas)

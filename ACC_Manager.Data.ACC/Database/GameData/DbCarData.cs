@@ -3,39 +3,46 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using static ACCManager.Data.SetupConverter;
 
 namespace ACCManager.Data.ACC.Database.GameData
 {
     public class DbCarData
     {
-#pragma warning disable IDE1006 // Naming Styles
-        public Guid _id { get; set; }
-#pragma warning restore IDE1006 // Naming Styles
+        public Guid Id { get; set; }
 
         public string ParseName { get; set; }
     }
 
     public class CarDataCollection
     {
-        private static ILiteCollection<DbCarData> _collection;
         private static ILiteCollection<DbCarData> Collection
         {
             get
             {
-                if (_collection == null)
-                    _collection = LocalDatabase.Database.GetCollection<DbCarData>();
+                ILiteCollection<DbCarData> _collection = RaceWeekendDatabase.Database.GetCollection<DbCarData>();
 
                 return _collection;
             }
         }
 
+        public static ILiteCollection<DbCarData> GetCollection(ILiteDatabase db)
+        {
+            return db.GetCollection<DbCarData>();
+        }
+
+        public static List<DbCarData> GetAll(LiteDatabase db)
+        {
+            return GetCollection(db).FindAll().OrderBy(x => x.ParseName).ToList();
+        }
+
         public static List<DbCarData> GetAll()
         {
             return Collection.FindAll().OrderBy(x => x.ParseName).ToList();
+        }
+
+        public static DbCarData GetCarData(ILiteDatabase db, Guid id)
+        {
+            return GetCollection(db).FindById(id);
         }
 
         public static DbCarData GetCarData(Guid id)
@@ -58,10 +65,12 @@ namespace ACCManager.Data.ACC.Database.GameData
 
         public static void Insert(DbCarData car)
         {
-            Collection.EnsureIndex(x => x._id, true);
+            RaceWeekendDatabase.Database.BeginTrans();
+            Collection.EnsureIndex(x => x.Id, true);
             Collection.Insert(car);
+            RaceWeekendDatabase.Database.Commit();
 
-            Debug.WriteLine($"Inserted new car data {car._id} {car.ParseName}");
+            Debug.WriteLine($"Inserted new car data {car.Id} {car.ParseName}");
         }
     }
 }

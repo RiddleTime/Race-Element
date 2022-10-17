@@ -1,19 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using MaterialDesignThemes.Wpf;
 using System.IO;
 using System.Diagnostics;
 using Newtonsoft.Json;
@@ -29,14 +16,7 @@ namespace ACCManager.Controls
     /// </summary>
     public partial class SetupEditor : UserControl
     {
-        private static SetupEditor _instance;
-        public static SetupEditor Instance
-        {
-            get
-            {
-                return _instance;
-            }
-        }
+        public static SetupEditor Instance { get; private set; }
 
         private ISetupChanger SetupChanger { get; set; }
         private Root Setup { get; set; }
@@ -48,7 +28,7 @@ namespace ACCManager.Controls
             buttonSave.Click += (o, e) => Save();
             buttonCancel.Click += (o, e) => Close();
 
-            _instance = this;
+            Instance = this;
         }
 
         public void Open(string file)

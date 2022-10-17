@@ -45,16 +45,10 @@
     <Reference Include="Gma.System.MouseKeyHook, Version=5.6.130.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MouseKeyHook.5.6.0\lib\net40\Gma.System.MouseKeyHook.dll</HintPath>
     </Reference>
-    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\Trackers.cs" />
@@ -68,10 +62,12 @@
     <Compile Include="Overlays\OverlayDebugInfo\OverlayDebugOutput\TraceOutputListener.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayDebugOutput\DebugOutputOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayEntryList\EntryListOverlay.cs" />
+    <Compile Include="Overlays\OverlayDebugInfo\OverlayFocusedCar\FocusedCarOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayGraphicsInfo\GraphicsInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayPhysicsInfo\PhysicsInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayStaticInfo\StaticInfoOverlay.cs" />
-    <Compile Include="Overlays\OverlayLapDelta\LapDeltaOverlay.cs" />
+    <Compile Include="Overlays\OverlayInputBars\InputBarsOverlay.cs" />
+    <Compile Include="Overlays\OverlayLapInfo\LapInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayEcuMapInfo\EcuMapOverlay.cs" />
     <Compile Include="Overlays\OverlayEcuMapInfo\EcuMaps.cs" />
     <Compile Include="Overlays\OverlayFuelInfo\FuelInfoOverlay.cs" />
@@ -84,6 +80,7 @@
     <Compile Include="Overlays\OverlayPressureTrace\TyrePressureGraph.cs" />
     <Compile Include="Overlays\OverlayPressureTrace\TyrePressures.cs" />
     <Compile Include="Overlays\OverlayInputs\InputOverlay.cs" />
+    <Compile Include="Overlays\OverlayRaceInfo\RaceInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayRefuel\OverlayRefuel.cs" />
     <Compile Include="Overlays\OverlayShiftIndicator\ShiftIndicatorOverlay.cs" />
     <Compile Include="Overlays\OverlaySpeedometer\SpeedometerOverlay.cs" />
@@ -91,7 +88,6 @@
     <Compile Include="Overlays\OverlayOversteerTrace\OversteerDataCollector.cs" />
     <Compile Include="Overlays\OverlayOversteerTrace\OversteerGraph.cs" />
     <Compile Include="Overlays\OverlayOversteerTrace\OversteerTraceOverlay.cs" />
-    <Compile Include="Overlays\OverlayTrackPosition\TrackPositionOverlay.cs" />
     <Compile Include="Overlays\OverlayTyreInfo\TyreInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayTrackInfo\TrackInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayWeather\WeatherOverlay.cs" />

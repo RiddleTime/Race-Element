@@ -1,11 +1,7 @@
 ﻿using ACCManager.Data.ACC.Tracker;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ACCManager.Data.ACC.Session
 {

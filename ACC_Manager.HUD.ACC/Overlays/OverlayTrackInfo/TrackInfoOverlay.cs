@@ -1,14 +1,8 @@
-﻿using ACCManager.Data.ACC.Session;
-using ACCManager.HUD.Overlay.Configuration;
+﻿using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.Util;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
 {
@@ -55,9 +49,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
                 this.Height -= this._panel.FontHeight;
         }
 
-        public sealed override void BeforeStop()
-        {
-        }
+        public sealed override void BeforeStop() { }
 
         public sealed override void Render(Graphics g)
         {

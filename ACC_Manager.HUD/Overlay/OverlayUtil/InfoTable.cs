@@ -3,11 +3,8 @@ using ACCManager.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ACCManager.HUD.Overlay.OverlayUtil
 {
@@ -24,10 +21,8 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
         public int X = 0;
         public int Y = 0;
 
-        private Font _font;
-        public Font Font { get { return _font; } }
-        private int _fontHeight;
-        public int FontHeight { get { return _fontHeight; } private set { _fontHeight = value; } }
+        public Font Font { get; }
+        public int FontHeight { get; private set; }
 
         public bool DrawBackground { get; set; } = true;
         public bool DrawValueBackground { get; set; } = true;
@@ -42,9 +37,9 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
         {
             fontSize.ClipMin(9);
             _columnWidths = columnWidths;
-            _font = FontUtil.FontUnispace(fontSize);
-            _fontHeight = _font.Height;
-            _yMono = _font.Height / 8;
+            Font = FontUtil.FontUnispace(fontSize);
+            FontHeight = Font.Height;
+            _yMono = Font.Height / 8;
         }
 
         public void Draw(Graphics g)
@@ -55,9 +50,9 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
             {
                 if (previousRowCount != _rows.Count)
                 {
-                    _cachedBackground = new CachedBitmap((int)Math.Ceiling(GetTotalWidth()), _rows.Count * _fontHeight + (int)_yMono, bg =>
+                    _cachedBackground = new CachedBitmap((int)Math.Ceiling(GetTotalWidth()), _rows.Count * FontHeight + (int)_yMono, bg =>
                     {
-                        bg.FillRoundedRectangle(new SolidBrush(Color.FromArgb(140, Color.Black)), new Rectangle(0, 0, (int)GetTotalWidth(), _rows.Count * this._font.Height + (int)_yMono), 4);
+                        bg.FillRoundedRectangle(new SolidBrush(Color.FromArgb(140, Color.Black)), new Rectangle(0, 0, (int)GetTotalWidth(), _rows.Count * this.Font.Height + (int)_yMono), 4);
                     });
                     previousRowCount = _rows.Count;
                 }
@@ -77,15 +72,15 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
 
                 if (DrawValueBackground)
                 {
-                    g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(25, Color.White)), new Rectangle((int)_maxHeaderWidth + 5, Y, valueWidth - 4, _rows.Count * this._font.Height + (int)_yMono + 1), 4);
+                    g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(25, Color.White)), new Rectangle((int)_maxHeaderWidth + 5, Y, valueWidth - 4, _rows.Count * this.Font.Height + (int)_yMono + 1), 4);
                 }
                 while (counter < length)
                 {
                     TableRow row = _rows[counter];
-                    float rowY = Y + counter * _font.Height;
+                    float rowY = Y + counter * Font.Height;
 
                     if (row.HeaderBackground != Color.Transparent)
-                        g.FillRoundedRectangle(new SolidBrush(row.HeaderBackground), new Rectangle(X, (int)rowY, (int)_maxHeaderWidth + 5, _font.Height), 4);
+                        g.FillRoundedRectangle(new SolidBrush(row.HeaderBackground), new Rectangle(X, (int)rowY, (int)_maxHeaderWidth + 5, Font.Height), 4);
 
                     if (DrawRowLines && counter > 0)
                     {
@@ -100,13 +95,13 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                         _cachedLine.Draw(g, new Point(X + 1, (int)rowY));
                     }
 
-                    g.DrawStringWithShadow(row.Header, this._font, Color.White, new PointF(X, rowY + _yMono), _shadowDistance);
+                    g.DrawStringWithShadow(row.Header, this.Font, Color.White, new PointF(X, rowY + _yMono), _shadowDistance);
 
                     for (int i = 0; i < row.Columns.Length; i++)
                     {
                         float columnX = GetColumnX(i);
                         if (i == 0) columnX += Font.Size;
-                        g.DrawStringWithShadow(row.Columns[i], this._font, row.ColumnColors[i], new PointF(columnX, rowY + _yMono), _shadowDistance);
+                        g.DrawStringWithShadow(row.Columns[i], this.Font, row.ColumnColors[i], new PointF(columnX, rowY + _yMono), _shadowDistance);
                     }
                     counter++;
                 }
@@ -193,7 +188,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                     if (line != null)
                     {
                         SizeF titleWidth;
-                        if ((titleWidth = g.MeasureString(line.Header, _font)).Width > _maxHeaderWidth)
+                        if ((titleWidth = g.MeasureString(line.Header, Font)).Width > _maxHeaderWidth)
                             _maxHeaderWidth = titleWidth.Width;
 
                         counter++;
@@ -203,7 +198,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                 if (_maxHeaderWidth == 0)
                     return;
 
-                _maxHeaderWidth += _font.Size;
+                _maxHeaderWidth += Font.Size;
                 _headerWidthSet = true;
             }
         }

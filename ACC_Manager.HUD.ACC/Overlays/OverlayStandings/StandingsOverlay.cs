@@ -636,7 +636,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             }
 
             _cachedBackground.Draw(g, _x, _y);
-            g.DrawStringWithShadow(text, _fontFamily, fontBruch, new PointF(_x, _y));
+            var textOffset = 2;
+            g.DrawStringWithShadow(text, _fontFamily, fontBruch, new PointF(_x, _y + textOffset));
         }
     }
 
@@ -684,7 +685,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
                 g.FillRoundedRectangle(backgroundBrush, graphRect, 3);
             }
 
-            g.DrawStringWithShadow(TruncateString(text), _fontFamily, fontBruch, new PointF(_x, _y));
+            var textOffset = 2;
+            g.DrawStringWithShadow(TruncateString(text), _fontFamily, fontBruch, new PointF(_x, _y + textOffset));
 
         }
 
@@ -695,7 +697,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             var rectanle = new Rectangle(_x + Width, _y, (int)(fontSize.Width + 10), _height);
             var path = GraphicsExtensions.CreateRoundedRectangle(rectanle, 0, _height / 4, _height / 4, 0);
             g.FillPath(brush, path);
-            g.DrawString(text, _fontFamily, Brushes.White, new PointF(_x + (int)(Width + 5), _y));
+            var textOffset = 2;
+            g.DrawString(text, _fontFamily, Brushes.White, new PointF(_x + (int)(Width + 5), _y + textOffset));
 
         }
 
@@ -753,7 +756,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
             _cachedBackground.Draw(g, _x, _y);
             var numberWidth = g.MeasureString(number, _fontFamily).Width;
-            g.DrawString(number, _fontFamily, Brushes.White, new PointF(_x + _spacing / 2 + _maxFontWidth / 2 - numberWidth / 2, _y));
+            var textOffset = 2;
+            g.DrawString(number, _fontFamily, Brushes.White, new PointF(_x + _spacing / 2 + _maxFontWidth / 2 - numberWidth / 2, _y + textOffset));
 
         }
     }

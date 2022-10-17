@@ -1,17 +1,11 @@
-﻿using ACCManager.Util;
-using ACCManager.Util.Settings;
-using Newtonsoft.Json.Linq;
+﻿using ACCManager.Util.Settings;
 using OBSWebsocketDotNet;
-using OBSWebsocketDotNet.Types;
 using SLOBSharp.Client;
 using SLOBSharp.Client.Requests;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ACCManager.Data.ACC.Tracker
 {
@@ -31,7 +25,6 @@ namespace ACCManager.Data.ACC.Tracker
 
         private OBSWebsocket _obsWebSocket;
         private SlobsPipeClient _SlobsClient;
-        private ACCSharedMemory _sharedMemory;
 
         private bool _toggle = true;
 
@@ -59,16 +52,13 @@ namespace ACCManager.Data.ACC.Tracker
                     _SlobsClient = new SlobsPipeClient();
                 }
 
-                _sharedMemory = new ACCSharedMemory();
-
-
                 IsTracking = true;
                 new Thread(() =>
                 {
                     while (IsTracking)
                     {
                         Thread.Sleep(50);
-                        var pageGraphics = _sharedMemory.ReadGraphicsPageFile();
+                        var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
 
                         if (pageGraphics.Status != ACCSharedMemory.AcStatus.AC_OFF)
                             if (pageGraphics.IsSetupMenuVisible != _toggle)
@@ -89,7 +79,7 @@ namespace ACCManager.Data.ACC.Tracker
                 var streamSettings = _streamSettings.Get();
 
                 if (streamSettings.StreamingSoftware == "OBS")
-                    _obsWebSocket.Connect($"ws://{streamSettings.StreamingWebSocketIP}:{streamSettings.StreamingWebSocketPort}", streamSettings.StreamingWebSocketPassword);
+                    _obsWebSocket.ConnectAsync($"ws://{streamSettings.StreamingWebSocketIP}:{streamSettings.StreamingWebSocketPort}", streamSettings.StreamingWebSocketPassword);
             }
             catch (Exception)
             {
@@ -116,10 +106,13 @@ namespace ACCManager.Data.ACC.Tracker
             {
                 if (_obsWebSocket.IsConnected)
                 {
-                    SourceInfo setupHiderSource = _obsWebSocket.GetSourcesList().Find(x => x.Name == "SetupHider");
-                    if (setupHiderSource != null)
+                    string currentScene = _obsWebSocket.GetCurrentProgramScene();
+                    var list = _obsWebSocket.GetSceneItemList(currentScene);
+
+                    var sceneItemSetupHider = list.Find(x => x.SourceName == "SetupHider");
+                    if (sceneItemSetupHider != null)
                     {
-                        _obsWebSocket.SetSourceRender(setupHiderSource.Name, enable);
+                        _obsWebSocket.SetSceneItemEnabled(currentScene, sceneItemSetupHider.ItemId, enable);
                     }
                 }
             }

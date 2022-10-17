@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ACCManager.Broadcast.Structs
+﻿namespace ACCManager.Broadcast.Structs
 {
     public struct RealtimeCarUpdate
     {
         public int CarIndex { get; internal set; }
         public int DriverIndex { get; internal set; }
         public int Gear { get; internal set; }
+        public float Heading { get; internal set; }
         public float WorldPosX { get; internal set; }
         public float WorldPosY { get; internal set; }
-        public float Yaw { get; internal set; }
         public CarLocationEnum CarLocation { get; internal set; }
         public int Kmh { get; internal set; }
         public int Position { get; internal set; }

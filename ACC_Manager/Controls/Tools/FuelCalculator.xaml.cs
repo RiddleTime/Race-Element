@@ -1,20 +1,10 @@
 ﻿using ACCManager.Util;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ACCManager.Controls
 {
@@ -64,8 +54,7 @@ namespace ACCManager.Controls
         {
             try
             {
-                ACCSharedMemory sharedMemory = new ACCSharedMemory();
-                var memoryMap = sharedMemory.ReadGraphicsPageFile();
+                var memoryMap = ACCSharedMemory.Instance.ReadGraphicsPageFile(false);
 
                 if (memoryMap.Status == ACCSharedMemory.AcStatus.AC_OFF)
                 {

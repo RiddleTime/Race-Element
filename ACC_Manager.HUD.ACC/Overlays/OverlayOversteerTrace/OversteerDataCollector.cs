@@ -1,11 +1,7 @@
 ﻿using ACC_Manager.Util.SystemExtensions;
 using ACCManager.HUD.Overlay.Internal;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using static ACCManager.ACCSharedMemory;
 using static ACCManager.Data.SetupConverter;
 

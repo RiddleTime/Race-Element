@@ -1,11 +1,6 @@
 ﻿using ACC_Manager.Util.SystemExtensions;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ACCManager.HUD.Overlay.OverlayUtil
 {
@@ -19,6 +14,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
         private double Average { get; set; }
 
         public bool DrawBackground = false;
+        public bool IsValidLap = false;
         public bool DrawOutline = true;
         public Color PositiveColor = Color.OrangeRed;
         public Color NegativeColor = Color.LimeGreen;
@@ -40,8 +36,12 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
 
             Color drawingColor = Color.White;
 
-            if (DrawBackground)
-                g.FillRectangle(new SolidBrush(Color.FromArgb(120, Color.Black)), new Rectangle(x, y, width, height));
+            if (DrawBackground) { 
+                if (IsValidLap)
+                    g.FillRectangle(new SolidBrush(Color.FromArgb(120, Color.Black)), new Rectangle(x, y, width, height));
+                else
+                    g.FillRectangle(new SolidBrush(Color.FromArgb(120, Color.DarkRed)), new Rectangle(x, y, width, height));
+            }
 
             if (Value < Average)
             {
@@ -77,6 +77,10 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
             if (DrawOutline)
             {
                 Brush outlineBrush = new SolidBrush(drawingColor);
+                
+                if (!IsValidLap)
+                    outlineBrush = new SolidBrush(Color.DarkRed);
+
                 g.DrawRectangle(new Pen(outlineBrush), new Rectangle(x, y, width, height));
             }
 

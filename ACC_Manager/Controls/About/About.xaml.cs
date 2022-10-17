@@ -1,23 +1,12 @@
 ﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Util;
 using Octokit;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ACCManager.Controls
 {
@@ -31,8 +20,24 @@ namespace ACCManager.Controls
         {
             InitializeComponent();
 
-            buttonDiscord.Click += (sender, e) => Process.Start("https://discord.gg/26AAEW5mUq"); ;
-            buttonGithub.Click += (sender, e) => Process.Start("https://github.com/RiddleTime/ACC-Manager");
+            buttonDiscord.Click += (sender, e) => Process.Start(new ProcessStartInfo()
+            {
+                FileName = "cmd",
+                Arguments = $"/c start https://discord.gg/26AAEW5mUq",
+                WindowStyle = ProcessWindowStyle.Hidden,
+            });
+            buttonGithub.Click += (sender, e) => Process.Start(new ProcessStartInfo()
+            {
+                FileName = "cmd",
+                Arguments = $"/c start https://github.com/RiddleTime/ACC-Manager",
+                WindowStyle = ProcessWindowStyle.Hidden,
+            });
+            buttonDonate.Click += (sender, e) => Process.Start(new ProcessStartInfo()
+            {
+                FileName = "cmd",
+                Arguments = $"/c start https://paypal.me/CompetizioneManager",
+                WindowStyle = ProcessWindowStyle.Hidden,
+            });
 
             this.Loaded += (s, e) => new Thread((x) => CheckNewestVersion()).Start();
 
@@ -89,7 +94,12 @@ namespace ACCManager.Controls
                                      ToolTip = $"Release notes:\n{release.Body}"
                                  };
                                  ToolTipService.SetShowDuration(openReleaseButton, int.MaxValue);
-                                 openReleaseButton.Click += (s, e) => Process.Start(release.HtmlUrl);
+                                 openReleaseButton.Click += (s, e) => Process.Start(new ProcessStartInfo()
+                                 {
+                                     FileName = "cmd",
+                                     Arguments = $"/c start {release.HtmlUrl}",
+                                     WindowStyle = ProcessWindowStyle.Hidden,
+                                 });
                                  ReleaseStackPanel.Children.Add(openReleaseButton);
                              }));
                         }

@@ -4,25 +4,16 @@ using ACCManager.Broadcast.Structs;
 using ACCManager.Data;
 using ACCManager.Data.ACC.EntryList;
 using ACCManager.Data.ACC.EntryList.TrackPositionGraph;
-using ACCManager.Data.ACC.Tracker;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.HUD.Overlay.Util;
-using ACCManager.Util;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using static ACCManager.Data.ACC.EntryList.EntryListTracker;
-using static ACCManager.Data.ConversionFactory;
 using static ACCManager.Data.SetupConverter;
-using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
 using static ACCManager.HUD.Overlay.OverlayUtil.InfoTable;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList

@@ -80,7 +80,12 @@ namespace ACC_Manager.Util
                     stream.Close();
                 }
 
-                return JsonConvert.DeserializeObject<T>(jsonString);
+                T t = JsonConvert.DeserializeObject<T>(jsonString);
+
+                if (t == null)
+                    return Default();
+
+                return t;
             }
             catch (Exception e)
             {

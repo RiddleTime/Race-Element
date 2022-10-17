@@ -1,22 +1,8 @@
 ﻿using ACCManager.Util;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.Controls
@@ -27,8 +13,6 @@ namespace ACCManager.Controls
     public partial class TelemetryDebug : UserControl
     {
         static TelemetryDebug Instance;
-
-        ACCSharedMemory sharedMemory = new ACCSharedMemory();
 
         public TelemetryDebug()
         {
@@ -50,7 +34,7 @@ namespace ACCManager.Controls
         {
             StackPanel stacker = new StackPanel() { Orientation = Orientation.Vertical };
 
-            SPageFileStatic pageStatic = sharedMemory.ReadStaticPageFile();
+            SPageFileStatic pageStatic = ACCSharedMemory.Instance.ReadStaticPageFile(true);
             FieldInfo[] members = pageStatic.GetType().GetFields();
             foreach (FieldInfo member in members)
             {
@@ -89,7 +73,7 @@ namespace ACCManager.Controls
         {
             StackPanel stacker = new StackPanel() { Orientation = Orientation.Vertical };
 
-            SPageFilePhysics pageStatic = sharedMemory.ReadPhysicsPageFile();
+            SPageFilePhysics pageStatic = ACCSharedMemory.Instance.ReadPhysicsPageFile(true);
             FieldInfo[] members = pageStatic.GetType().GetFields();
             foreach (FieldInfo member in members)
             {
@@ -125,7 +109,7 @@ namespace ACCManager.Controls
         {
             StackPanel stacker = new StackPanel() { Orientation = Orientation.Vertical };
 
-            SPageFileGraphic pageStatic = sharedMemory.ReadGraphicsPageFile();
+            SPageFileGraphic pageStatic = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
             FieldInfo[] members = pageStatic.GetType().GetFields();
             foreach (FieldInfo member in members)
             {

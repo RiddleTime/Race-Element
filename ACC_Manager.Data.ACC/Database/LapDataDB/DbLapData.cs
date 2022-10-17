@@ -3,8 +3,6 @@ using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ACCManager.Data.ACC.Database.LapDataDB
 {
@@ -13,11 +11,9 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
     /// </summary>
     public class DbLapData
     {
-#pragma warning disable IDE1006 // Naming Styles
-        public Guid _id { get; set; }
-#pragma warning restore IDE1006 // Naming Styles
+        public Guid Id { get; set; }
 
-        public Guid RaceSessionGuid { get; set; } = Guid.NewGuid();
+        public Guid RaceSessionId { get; set; } = Guid.NewGuid();
 
         /// <summary>
         /// The time when this lap was completed
@@ -45,6 +41,10 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
         /// Milliliters of Fuel left at the end of the lap, divide by 1000...
         /// </summary>
         public int FuelUsage { get; set; } = -1;
+        public float FuelInTank { get; set; } = -1;
+
+        public float TempAmbient { get; set; } = -1;
+        public float TempTrack { get; set; } = -1;
 
         public override string ToString()
         {
@@ -54,27 +54,37 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
 
     public class LapDataCollection
     {
-        private static ILiteCollection<DbLapData> _collection;
         private static ILiteCollection<DbLapData> Collection
         {
             get
             {
-                if (_collection == null)
-                    _collection = LocalDatabase.Database.GetCollection<DbLapData>();
+                ILiteCollection<DbLapData> _collection = RaceWeekendDatabase.Database.GetCollection<DbLapData>();
 
                 return _collection;
             }
         }
 
+        public static bool Any()
+        {
+            return Collection.Count() != 0;
+        }
+
         public static void Insert(DbLapData lap)
         {
-            Collection.EnsureIndex(x => x._id, true);
+            RaceWeekendDatabase.Database.BeginTrans();
+            Collection.EnsureIndex(x => x.Id, true);
             Collection.Insert(lap);
+            RaceWeekendDatabase.Database.Commit();
+        }
+
+        public static Dictionary<int, DbLapData> GetForSession(LiteDatabase db, Guid sessionId)
+        {
+            return db.GetCollection<DbLapData>().Find(x => x.RaceSessionId == sessionId).ToDictionary(x => x.Index);
         }
 
         public static Dictionary<int, DbLapData> GetForSession(Guid sessionId)
         {
-            return Collection.Find(x => x.RaceSessionGuid == sessionId).ToDictionary(x => x.Index);
+            return Collection.Find(x => x.RaceSessionId == sessionId).ToDictionary(x => x.Index);
         }
     }
 }

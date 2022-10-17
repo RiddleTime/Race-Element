@@ -13,13 +13,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using static ACCManager.HUD.Overlay.Configuration.OverlayConfiguration;
@@ -35,8 +32,7 @@ namespace ACCManager.Controls
     {
         private IKeyboardMouseEvents m_GlobalHook;
 
-        private static HudOptions _instance;
-        public static HudOptions Instance { get { return _instance; } }
+        public static HudOptions Instance { get; private set; }
 
         private readonly HudSettings _hudSettings;
         private HudSettingsJson _hudSettingsJson;
@@ -143,7 +139,7 @@ namespace ACCManager.Controls
                     LogWriter.WriteToLog(ex);
                 }
 
-            _instance = this;
+            Instance = this;
         }
 
 
@@ -176,9 +172,9 @@ namespace ACCManager.Controls
         {
             if (e.AddedItems.Count > 0)
             {
-                ListViewItem item = (ListViewItem)e.AddedItems[0];
-                KeyValuePair<string, Type> kv = (KeyValuePair<string, Type>)item.DataContext;
-                BuildOverlayConfigPanel(item, kv.Value);
+                ListViewItem listView = (ListViewItem)e.AddedItems[0];
+                KeyValuePair<string, Type> kv = (KeyValuePair<string, Type>)listView.DataContext;
+                BuildOverlayConfigPanel(listView, kv.Value);
                 e.Handled = true;
             }
             else
@@ -189,9 +185,9 @@ namespace ACCManager.Controls
         {
             if (e.AddedItems.Count > 0)
             {
-                ListViewItem item = (ListViewItem)e.AddedItems[0];
-                KeyValuePair<string, Type> kv = (KeyValuePair<string, Type>)item.DataContext;
-                BuildOverlayConfigPanel(item, kv.Value);
+                ListViewItem listView = (ListViewItem)e.AddedItems[0];
+                KeyValuePair<string, Type> kv = (KeyValuePair<string, Type>)listView.DataContext;
+                BuildOverlayConfigPanel(listView, kv.Value);
                 e.Handled = true;
             }
             else
@@ -216,11 +212,12 @@ namespace ACCManager.Controls
                 Content = overlayAttribute.Name,
                 FontFamily = FindResource("FontRedemption") as FontFamily,
                 BorderBrush = Brushes.OrangeRed,
-                BorderThickness = new Thickness(0, 0, 0, 1),
-                Margin = new Thickness(0, 0, 0, 5),
+                BorderThickness = new Thickness(0, 0, 0, 1.5),
+                Margin = new Thickness(0, -1, 0, 5),
                 HorizontalAlignment = HorizontalAlignment.Center,
                 FontSize = 30,
-                FontStyle = FontStyles.Italic
+                FontStyle = FontStyles.Italic,
+                Foreground = Brushes.White
             };
             TextBlock overlayDescription = new TextBlock()
             {
@@ -234,12 +231,12 @@ namespace ACCManager.Controls
             StackPanel stackerOverlayInfo = new StackPanel()
             {
                 Orientation = Orientation.Vertical,
-                Margin = new Thickness(0, 3, 0, 3),
-                Background = new SolidColorBrush(Color.FromArgb(190, 0, 0, 0)),
+                Margin = new Thickness(7, 3, 7, 7),
+                Background = new SolidColorBrush(Color.FromArgb(140, 0, 0, 0)),
             };
+
             stackerOverlayInfo.Children.Add(overlayNameLabel);
             stackerOverlayInfo.Children.Add(overlayDescription);
-            configStackPanel.Children.Add(stackerOverlayInfo);
 
             StackPanel activationPanel = new StackPanel()
             {
@@ -248,21 +245,31 @@ namespace ACCManager.Controls
                 VerticalAlignment = VerticalAlignment.Center,
                 Cursor = Cursors.Hand,
                 Name = "activationStacker",
-                ToolTip = "You can else press Enter to activate this overlay."
+                Margin = new Thickness(0, 0, 0, 0),
             };
-            Label nameLabel = new Label() { Content = tempOverlaySettings.Enabled ? "Deactivate" : "Activate", VerticalAlignment = VerticalAlignment.Center };
-            ToggleButton toggle = new ToggleButton() { Height = 35, Width = 50, VerticalAlignment = VerticalAlignment.Center };
+            ToggleButton toggle = new ToggleButton()
+            {
+                Visibility = Visibility.Collapsed,
+                VerticalAlignment = VerticalAlignment.Center
+            };
             toggle.PreviewKeyDown += (s, e) => { if (e.Key == Key.Enter) e.Handled = true; };
             toggle.Checked += (s, e) =>
             {
+                stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(140, 0, 0, 0));
+
+                toggle.Background = Brushes.Green;
+                overlayNameLabel.Foreground = Brushes.LimeGreen;
+
+
                 lock (OverlaysACC.ActiveOverlays)
                 {
                     AbstractOverlay overlay = OverlaysACC.ActiveOverlays.Find(f => f.GetType() == type);
 
                     if (overlay == null)
                     {
+
+                        overlayNameLabel.BorderBrush = Brushes.Green;
                         listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 10, 255, 10));
-                        nameLabel.Content = "Deactivate";
                         overlay = (AbstractOverlay)Activator.CreateInstance(type, DefaultOverlayArgs);
 
                         overlay.Start();
@@ -276,10 +283,15 @@ namespace ACCManager.Controls
             };
             toggle.Unchecked += (s, e) =>
             {
+                stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(140, 0, 0, 0));
+
+                overlayNameLabel.BorderBrush = Brushes.OrangeRed;
+                overlayNameLabel.Foreground = Brushes.White;
+                toggle.Background = Brushes.Transparent;
                 lock (OverlaysACC.ActiveOverlays)
                 {
+
                     listViewItem.Background = Brushes.Transparent;
-                    nameLabel.Content = "Activate";
                     AbstractOverlay overlay = OverlaysACC.ActiveOverlays.Find(f => f.GetType() == type);
 
                     SaveOverlaySettings(overlay, false);
@@ -300,11 +312,52 @@ namespace ACCManager.Controls
 
                 toggle.IsChecked = true;
                 configStacker.IsEnabled = false;
+                overlayNameLabel.BorderBrush = Brushes.Green;
+                overlayNameLabel.Foreground = Brushes.LimeGreen;
             }
 
+            stackerOverlayInfo.MouseEnter += (s, e) =>
+            {
+                stackerOverlayInfo.Background = stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(170, 0, 0, 0));
+
+                switch (toggle.IsChecked)
+                {
+                    case true:
+                        {
+                            overlayNameLabel.BorderBrush = Brushes.OrangeRed;
+                            stackerOverlayInfo.Background = stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(170, 0, 0, 0)); ;
+                            break;
+                        }
+                    case false:
+                        {
+                            overlayNameLabel.BorderBrush = Brushes.LimeGreen;
+                            stackerOverlayInfo.Background = stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(170, 0, 0, 0)); ;
+                            break;
+                        }
+                }
+            };
+            stackerOverlayInfo.MouseLeave += (s, e) =>
+            {
+                stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(127, 0, 0, 0));
+
+                switch (toggle.IsChecked)
+                {
+                    case true:
+                        {
+                            overlayNameLabel.BorderBrush = Brushes.Green;
+                            break;
+                        }
+                    case false:
+                        {
+                            overlayNameLabel.BorderBrush = Brushes.OrangeRed;
+                            break;
+                        }
+                }
+            };
+
             activationPanel.Children.Add(toggle);
-            activationPanel.Children.Add(nameLabel);
             configStackPanel.Children.Add(activationPanel);
+            configStackPanel.Children.Add(stackerOverlayInfo);
 
             // click overlay title/description to toggle overlay
             stackerOverlayInfo.Cursor = Cursors.Hand;
@@ -392,7 +445,8 @@ namespace ACCManager.Controls
                 if (overlayAttribute.OverlayType != overlayType)
                     continue;
 
-                TextBlock listViewText = new TextBlock() { Text = x.Key, Style = Resources["MaterialDesignButtonTextBlock"] as Style, };
+                TextBlock listViewText = new TextBlock() { Text = x.Key, Style = Resources["MaterialDesignButtonTextBlock"] as Style };
+
 
                 double marginTopBottom = 6.5d;
 
@@ -448,24 +502,29 @@ namespace ACCManager.Controls
                 return;
             }
 
-            ACCSharedMemory mem = new ACCSharedMemory();
-            overlay.pageGraphics = mem.ReadGraphicsPageFile();
+            overlay.pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
             overlay.pageGraphics.NumberOfLaps = 30;
             overlay.pageGraphics.FuelXLap = 3.012f;
+            overlay.pageGraphics.SessionType = ACCSharedMemory.AcSessionType.AC_RACE;
+            overlay.pageGraphics.MandatoryPitDone = false;
 
-            overlay.pagePhysics = mem.ReadPhysicsPageFile();
-            overlay.pagePhysics.Fuel = 13.37f;
+            overlay.pagePhysics = ACCSharedMemory.Instance.ReadPhysicsPageFile(true);
+            overlay.pagePhysics.SpeedKmh = 272.32f;
+            overlay.pagePhysics.Fuel = 92.07f;
             overlay.pagePhysics.Rpms = 8500;
             overlay.pagePhysics.Gear = 3;
             overlay.pagePhysics.WheelPressure = new float[] { 27.6f, 27.5f, 26.9f, 26.1f };
             overlay.pagePhysics.TyreCoreTemperature = new float[] { 92.6f, 88.5f, 65.9f, 67.2f };
             overlay.pagePhysics.PadLife = new float[] { 24f, 24f, 25f, 25f };
             overlay.pagePhysics.BrakeTemperature = new float[] { 300f, 250f, 450f, 460f };
+            overlay.pagePhysics.Gas = 0.78f;
+            overlay.pagePhysics.Brake = 0.133f;
 
-            overlay.pageStatic = mem.ReadStaticPageFile();
+            overlay.pageStatic = ACCSharedMemory.Instance.ReadStaticPageFile(true);
             overlay.pageStatic.MaxFuel = 120f;
             overlay.pageStatic.MaxRpm = 9250;
             overlay.pageStatic.CarModel = "porsche_991ii_gt3_r";
+
 
             try
             {
@@ -494,6 +553,8 @@ namespace ACCManager.Controls
 
         private StackPanel GetConfigStacker(Type overlayType, Orientation orientation)
         {
+            int fontSize = 14;
+
             StackPanel stacker = new StackPanel()
             {
                 Margin = new Thickness(10, 0, 0, 0),
@@ -583,6 +644,7 @@ namespace ACCManager.Controls
                             Content = $"{intLabel}: {sliderValue.ToString("F0").FillStart(maxValueChars, ' ')}",
                             VerticalAlignment = VerticalAlignment.Center,
                             VerticalContentAlignment = VerticalAlignment.Center,
+                            FontSize = fontSize
                         };
                         intStacker.Children.Add(sliderLabel);
 
@@ -593,7 +655,7 @@ namespace ACCManager.Controls
                             IsSnapToTickEnabled = true,
                             TickFrequency = tickFrequency,
                             Value = sliderValue,
-                            Width = 100,
+                            Width = 150,
                             Margin = new Thickness(0, 0, 3, 0),
                             VerticalAlignment = VerticalAlignment.Center,
                             VerticalContentAlignment = VerticalAlignment.Center,
@@ -652,7 +714,8 @@ namespace ACCManager.Controls
                         IsChecked = (bool)configField.Value,
                         Margin = new Thickness(0, 3, 5, 3),
                         VerticalAlignment = VerticalAlignment.Center,
-                        VerticalContentAlignment = VerticalAlignment.Center
+                        VerticalContentAlignment = VerticalAlignment.Center,
+                        FontSize = fontSize
                     };
                     checkStacker.PreviewMouseDown += (s, e) => { if (s == checkStacker && e.LeftButton == MouseButtonState.Pressed) { box.IsChecked = !box.IsChecked; e.Handled = true; } };
                     checkStacker.MouseEnter += (s, e) => checkStacker.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
@@ -712,6 +775,7 @@ namespace ACCManager.Controls
                                 Content = $"{floatLabel}: {sliderValue:F2}",
                                 VerticalAlignment = VerticalAlignment.Center,
                                 VerticalContentAlignment = VerticalAlignment.Center,
+                                FontSize = fontSize
                             };
                             sliderStacker.Children.Add(sliderLabel);
 
@@ -722,7 +786,7 @@ namespace ACCManager.Controls
                                 IsSnapToTickEnabled = true,
                                 TickFrequency = tickFrequency,
                                 Value = sliderValue,
-                                Width = 100,
+                                Width = 150,
                                 Margin = new Thickness(0, 0, 3, 0),
                                 VerticalAlignment = VerticalAlignment.Center,
                                 VerticalContentAlignment = VerticalAlignment.Center,

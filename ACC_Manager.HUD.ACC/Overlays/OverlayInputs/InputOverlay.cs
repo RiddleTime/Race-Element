@@ -95,16 +95,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
 
         public sealed override void BeforeStop()
         {
-            if (_cachedBackground != null)
-                _cachedBackground.Dispose();
+            _cachedBackground?.Dispose();
         }
 
         public sealed override void Render(Graphics g)
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            if (_cachedBackground != null)
-                _cachedBackground.Draw(g, 0, 0, (int)_size, (int)_size);
+            _cachedBackground?.Draw(g, 0, 0, (int)_size, (int)_size);
 
             DrawSteeringIndicator(g);
 

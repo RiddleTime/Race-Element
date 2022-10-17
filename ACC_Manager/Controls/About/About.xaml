@@ -18,10 +18,9 @@
     <Grid>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="140"/>
+            <RowDefinition Height="150"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-
 
         <materialDesign:Card MinWidth="1100" Grid.Row="0">
             <materialDesign:TransitioningContent>
@@ -31,19 +30,19 @@
 
                 <Grid>
                     <StackPanel Orientation="Vertical">
-                        <TextBlock FontStyle="Italic" FontFamily="{StaticResource FontRedemption}" FontSize="80" HorizontalAlignment="Center">
+                        <TextBlock FontStyle="Italic" FontFamily="{StaticResource FontRedemption}" Foreground="#EFEFEFEF" FontSize="80" HorizontalAlignment="Center">
                             <TextBlock.Text>Acc Manager</TextBlock.Text>
                         </TextBlock>
                         <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" Margin="0,-9,0,0" HorizontalAlignment="Center">
                             Provides tooling for Assetto Corsa Competizione.<LineBreak/>
                             Developed by RiddleTime.<LineBreak/>
-                            Thank You: KrisV147, Floriwan, Fbalazs and Jubka.
+                            Thank You: KrisV147, Floriwan, Pelice, Mominon, Fbalazs and Jubka.
                         </TextBlock>
                     </StackPanel>
 
-                    <StackPanel x:Name="ReleaseStackPanel" Orientation="Vertical" HorizontalAlignment="Left" Width="250" VerticalAlignment="Top" Margin="0,5,5,0">
+                    <StackPanel x:Name="ReleaseStackPanel" Orientation="Vertical" HorizontalAlignment="Left" Width="250" VerticalAlignment="Top" Margin="10,5,5,0">
                     </StackPanel>
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Right" Width="100" VerticalAlignment="Top" Margin="0,5,5,0">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="100" VerticalAlignment="Bottom" Margin="10,-5,-5,7">
                         <Button x:Name="buttonDiscord" >
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -52,7 +51,7 @@
                                 </Grid.ColumnDefinitions>
                                 <materialDesign:PackIcon
                                 Grid.Column="0"
-                                Kind="Discord"
+                                Kind="Chat"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Left"
                                 Height="32"
@@ -78,13 +77,28 @@
                                 <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" GitHub"></TextBlock>
                             </Grid>
                         </Button>
+                        <Button x:Name="buttonDonate" Margin="0,5,0,0" ToolTip="Donate RiddleTime a Coffee">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="18"/>
+                                    <ColumnDefinition Width="82"/>
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon
+                                Grid.Column="0"
+                                Kind="CreditCardWireless"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Height="32"
+                                Foreground="White"    
+                                />
+                                <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" Donate"></TextBlock>
+                            </Grid>
+                        </Button>
                     </StackPanel>
 
                 </Grid>
             </materialDesign:TransitioningContent>
         </materialDesign:Card>
-
-
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -115,7 +129,39 @@
                 <ScrollViewer Style="{StaticResource MaterialDesignScrollViewer}" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Visible">
                     <materialDesign:Card Margin="0,0,3,0">
                         <StackPanel Orientation="Vertical" Margin="5,0,0,0" >
+                            <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                   HorizontalAlignment="Center" TextWrapping="Wrap" FontSize="16" FontWeight="ExtraBold">Start ACC Manager before you join a session.</TextBlock>
 
+                            <StackPanel Margin="0,10,0,0">
+                                <TextBlock 
+                                   Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                   HorizontalAlignment="Center" TextWrapping="Wrap" >   
+                                <Bold><Italic>HUD</Italic></Bold>
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
+                                - To (de)activate the displayed overlay: double click the overlay in the left side list or type Enter or click the title.<LineBreak/>
+                                - <Bold>Ctrl + Home</Bold> toggles reposition mode.<LineBreak/>
+                                - Overlays will become visible as soon as the engine is running. <LineBreak/>
+                                - When the game is in Fullscreen mode, hit F11 twice to display the overlays.<LineBreak/>
+                                </TextBlock>
+                            </StackPanel>
+
+                            <StackPanel Margin="0,10,0,0">
+                                <TextBlock 
+                           Style="{StaticResource MaterialDesignBody1TextBlock}"
+                           HorizontalAlignment="Center" TextWrapping="Wrap" >
+                            <Bold><Italic>Telemetry</Italic></Bold>
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
+                                   Race Weekends:<LineBreak/>
+                                    - Displays each session of a Race Weekend recorded when ACC Manager is running.<LineBreak/>
+                                    - Select a Race Weekend and go to the Current tab.<LineBreak/>
+                                    - Reload the Local race weekends list by re-opening the Telemetry tab.<LineBreak/>
+                                    - Drag and drop .rwdb(Race weekend databases) ontop of the app to view them.<LineBreak/>
+                                    - Race weekend databases are saved in My Documents/ACC Manager/Data.<LineBreak/>
+                                    <!--- When extended telemetry is recorded, select a lap and check out the charts.<LineBreak/>-->
+                                </TextBlock>
+                            </StackPanel>
 
                             <StackPanel Margin="0,10,0,0">
                                 <TextBlock
@@ -148,7 +194,7 @@
                                     - Right click skins to browse livery folder.<LineBreak/>
                                     - Right click skins to open json file.<LineBreak/>
                                     - Right click skins to delete (or press Delete key).<LineBreak/>
-                                    - Right click skins to tag them<LineBreak/><LineBreak/>
+                                    - Right click skins to tag them.<LineBreak/><LineBreak/>
                                    DDS(DirectDraw Surface) Generator:<LineBreak/>
                                     - Button is visible in viewer when dds_0 and dds_1 do not exist.<LineBreak/>
                                     - Generate dds_0 and dds_1 files.<LineBreak/>
@@ -162,20 +208,6 @@
                                     - Once you add 1 skin to skin pack a new panel opens.<LineBreak/>
                                     - Click items in the exporter to remove them from the pack.<LineBreak/>
                                     - Exports as zip.
-                                </TextBlock>
-                            </StackPanel>
-
-                            <StackPanel Margin="0,10,0,0">
-                                <TextBlock 
-                                   Style="{StaticResource MaterialDesignBody1TextBlock}"
-                                   HorizontalAlignment="Center" TextWrapping="Wrap" >   
-                                <Bold><Italic>HUD</Italic></Bold>
-                                </TextBlock>
-                                <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
-                                - To (de)activate the displayed overlay: double click the overlay in the left side list or type Enter or click the title or click the toggle button.<LineBreak/>
-                                - <Bold>Ctrl + Home</Bold> toggles reposition mode.<LineBreak/>
-                                - Overlays will become visible as soon as the engine is running. <LineBreak/>
-                                - When the game is in Fullscreen mode, hit F11 twice to display the overlays.<LineBreak/>
                                 </TextBlock>
                             </StackPanel>
 

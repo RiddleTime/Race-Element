@@ -1,20 +1,8 @@
-﻿using ACCManager.LiveryParser;
-using ACCManager.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
 using static ACCManager.Controls.LiveryBrowser;
 
 namespace ACCManager.Controls
@@ -24,14 +12,7 @@ namespace ACCManager.Controls
     /// </summary>
     public partial class AfterImport : UserControl
     {
-        private static AfterImport _instance;
-        public static AfterImport Instance
-        {
-            get
-            {
-                return _instance;
-            }
-        }
+        public static AfterImport Instance { get; private set; }
 
         private List<LiveryTreeCar> ImportedLiveries;
 
@@ -45,7 +26,7 @@ namespace ACCManager.Controls
             buttonClose.Click += (o, e) => Close();
             buttonAddTags.Click += (o, e) => AddTags();
 
-            _instance = this;
+            Instance = this;
         }
 
         private void LvImportedLiveries_SelectionChanged(object sender, SelectionChangedEventArgs e)

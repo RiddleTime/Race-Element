@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.InteropServices;
-using ACCManager.Hardware.ACC.SteeringLock;
 using HidLibrary;
 
 namespace ACCManager.Hardware.ACC.SteeringLock.Implementations

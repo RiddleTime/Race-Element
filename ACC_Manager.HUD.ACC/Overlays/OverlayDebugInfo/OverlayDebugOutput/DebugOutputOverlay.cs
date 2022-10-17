@@ -33,7 +33,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
             }
         }
 
-        private Font _font;
+        private readonly Font _font;
         private InfoTable _table;
 
         public DebugOutputOverlay(Rectangle rectangle) : base(rectangle, "Debug Output Overlay")

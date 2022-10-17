@@ -3,12 +3,9 @@ using DdsFileTypePlus;
 using PaintDotNet;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static ACCManager.Controls.LiveryBrowser;
 
 namespace ACCManager.Controls.Liveries
@@ -77,7 +74,7 @@ namespace ACCManager.Controls.Liveries
                 KeyValuePair<string, string> kvp = pngsToDDS.ElementAt(i);
 
                 DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + livery.CarsRoot.CustomSkinName);
-                if (customSkinDir.Exists)
+                if (customSkinDir != null && customSkinDir.Exists)
                 {
                     //check if png exists
                     FileInfo[] foundFiles = customSkinDir.GetFiles(kvp.Value);

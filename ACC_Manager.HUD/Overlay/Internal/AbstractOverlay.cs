@@ -41,16 +41,11 @@ namespace ACCManager.HUD.Overlay.Internal
         public TrackData broadCastTrackData;
         public RealtimeCarUpdate broadCastLocalCar;
 
-
-        public int ScreenWidth => (int)SystemParameters.PrimaryScreenWidth;
-        public int ScreenHeight => (int)SystemParameters.PrimaryScreenHeight;
-
         public bool RequestsDrawItself = false;
 
         public bool AllowReposition { get; set; } = true;
 
-        private float _scale = 1f;
-        public float Scale { get { return _scale; } }
+        public float Scale { get; private set; } = 1f;
         private bool _allowRescale = false;
 
         private Window RepositionWindow;
@@ -81,20 +76,24 @@ namespace ACCManager.HUD.Overlay.Internal
                 return true;
 
             bool shouldRender = true;
-            if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF || pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
-                shouldRender = false;
 
-            if (!pagePhysics.IsEngineRunning)
-                shouldRender = false;
+            if (pageGraphics != null)
+            {
+                if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF || pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
+                    shouldRender = false;
 
-            if (pageGraphics.GlobalRed)
-                shouldRender = false;
+                if (!pagePhysics.IsEngineRunning)
+                    shouldRender = false;
 
-            if (RaceSessionState.IsPreSession(pageGraphics.GlobalRed, broadCastRealTime.Phase))
-                shouldRender = true;
+                if (pageGraphics.GlobalRed)
+                    shouldRender = false;
 
-            if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE)
-                shouldRender = false;
+                if (RaceSessionState.IsFormationLap(pageGraphics.GlobalRed, broadCastRealTime.Phase))
+                    shouldRender = true;
+
+                if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE)
+                    shouldRender = false;
+            }
 
             if (IsRepositioning) shouldRender = true;
 
@@ -122,13 +121,13 @@ namespace ACCManager.HUD.Overlay.Internal
                     if (overlayConfig.AllowRescale)
                     {
                         this._allowRescale = true;
-                        this._scale = overlayConfig.Scale;
+                        this.Scale = overlayConfig.Scale;
                     }
 
                     if (overlayConfig.Window)
-                    {
-                        this.WindowMode = true;
-                    }
+                        this.WindowMode = overlayConfig.Window;
+
+                    this.AlwaysOnTop = overlayConfig.AlwaysOnTop;
                 }
             }
         }
@@ -157,11 +156,9 @@ namespace ACCManager.HUD.Overlay.Internal
                     BroadcastTracker.Instance.OnRealTimeLocalCarUpdate += BroadCastRealTimeLocalCarUpdateChanged;
                 }
 
-                ACCSharedMemory mem = new ACCSharedMemory();
-
-                pageStatic = mem.ReadStaticPageFile();
-                pageGraphics = mem.ReadGraphicsPageFile();
-                pagePhysics = mem.ReadPhysicsPageFile();
+                pageStatic = ACCSharedMemory.Instance.ReadStaticPageFile(true);
+                pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
+                pagePhysics = ACCSharedMemory.Instance.ReadPhysicsPageFile(true);
 
                 try
                 {
@@ -174,8 +171,8 @@ namespace ACCManager.HUD.Overlay.Internal
                 }
                 if (_allowRescale)
                 {
-                    this.Width = (int)Math.Ceiling(this.Width * _scale);
-                    this.Height = (int)Math.Ceiling(this.Height * _scale);
+                    this.Width = (int)Math.Ceiling(this.Width * Scale);
+                    this.Height = (int)Math.Ceiling(this.Height * Scale);
                 }
 
 
@@ -282,7 +279,7 @@ namespace ACCManager.HUD.Overlay.Internal
                     try
                     {
                         if (_allowRescale)
-                            e.Graphics.ScaleTransform(_scale, _scale);
+                            e.Graphics.ScaleTransform(Scale, Scale);
 
                         CompositingQuality previousComposingQuality = e.Graphics.CompositingQuality;
                         SmoothingMode previousSmoothingMode = e.Graphics.SmoothingMode;
@@ -295,8 +292,6 @@ namespace ACCManager.HUD.Overlay.Internal
                         e.Graphics.SmoothingMode = previousSmoothingMode;
                         e.Graphics.TextRenderingHint = previousTextRenderHint;
                         e.Graphics.TextContrast = previousTextConstrast;
-
-
                         e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
                     }
                     catch (Exception ex)

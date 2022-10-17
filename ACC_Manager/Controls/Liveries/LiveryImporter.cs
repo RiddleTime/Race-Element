@@ -2,15 +2,11 @@
 using ACCManager.Util;
 using Newtonsoft.Json;
 using SharpCompress.Archives;
-using SharpCompress.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Threading;
 using static ACCManager.Controls.LiveryBrowser;
 
 namespace ACCManager.Controls

@@ -4,27 +4,118 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ACCManager.Controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <Grid>
+    <Grid Margin="3">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="355" />
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" Orientation="Vertical">
-            <ComboBox x:Name="comboTracks" Height="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></ComboBox>
-            <ComboBox x:Name="comboCars" Height="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></ComboBox>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="5*"/>
+        </Grid.RowDefinitions>
 
-            <ListView Margin="0,3,0,0" x:Name="listViewRaceSessions">
+        <TabControl x:Name="tabControlWeekends" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" TabStripPlacement="Top">
+            <TabItem Height="40">
+                <TabItem.Header>
+                    <Grid x:Name="gridTabHeaderLocalSession">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon
+                            Grid.Column="0"
+                            Kind="Files"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="32"
+                        Foreground="White"    
+                        />
+                        <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Local</TextBlock>
+                    </Grid>
+                </TabItem.Header>
+                <ListView x:Name="localRaceWeekends" ScrollViewer.VerticalScrollBarVisibility="Auto" />
+            </TabItem>
 
-            </ListView>
+            <TabItem x:Name="tabCurrentWeekend" Height="40">
+                <TabItem.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon
+                            Grid.Column="0"
+                            Kind="WidgetHistogram"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="32"
+                        Foreground="White"    
+                        />
+                        <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Current</TextBlock>
+                    </Grid>
+                </TabItem.Header>
+                <Grid Grid.Column="0" VerticalAlignment="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <ComboBox Grid.Row="0" IsEnabled="False" x:Name="comboTracks" Height="30" ToolTip="Select a track"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                              FontWeight="Bold" Background="Black" />
+                    <ComboBox Grid.Row="1" IsEnabled="False" x:Name="comboCars" Height="30" ToolTip="Select a car"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
+                              FontWeight="Bold" Background="Black" />
 
-        </StackPanel>
+                    <ListView Grid.Row="2" Margin="0,3,0,0" x:Name="listViewRaceSessions" ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                </Grid>
+            </TabItem>
 
-        <StackPanel x:Name="stackerSessionViewer" Grid.Column="1" Margin="3" Orientation="Vertical">
+        </TabControl>
 
-        </StackPanel>
+        <Grid x:Name="gridSessionViewer" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="5,0,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel x:Name="stackerSessionViewer" Grid.Row="0" Margin="3" Orientation="Vertical"/>
+            <Grid Grid.Row="1" x:Name="gridSessionLaps"></Grid>
+        </Grid>
+
+
+
+        <local:TrackMap x:Name="trackMap" Grid.Row="1" Grid.Column="0" Margin="-1,4,0,0" 
+                        Background="#FB000000" 
+                        BorderBrush="#99FF4500" BorderThickness="0,1,0,0" Visibility="Collapsed" />
+
+        <materialDesign:TransitioningContent x:Name="transitionContentPlots" Grid.Row="1" Grid.Column="1"  Grid.ColumnSpan="1" Visibility="Collapsed"
+                                             BorderThickness="0,1,0,0" BorderBrush="#99FF4500" Margin="0,4,0,0" Background="#FB000000" >
+            <materialDesign:Card Margin="0,2,1,2" HorizontalAlignment="Stretch">
+                <Grid Grid.ColumnSpan="2" VerticalAlignment="Stretch" Margin="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="0"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Row="0" Grid.Column="0" x:Name="comboBoxMetrics" HorizontalAlignment="Left" Width="200"
+                          FontWeight="Bold" FontSize="14" HorizontalContentAlignment="Center" ToolTip="Scroll Me"/>
+
+                    <TextBlock Grid.Row="0" Grid.Column="1" x:Name="textBlockMetricInfo" Margin="10,0,0,0" VerticalAlignment="Stretch" FontWeight="SemiBold" />
+
+                    <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="gridMetrics" />
+                </Grid>
+            </materialDesign:Card>
+        </materialDesign:TransitioningContent>
+
     </Grid>
 </UserControl>

@@ -6,18 +6,34 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:ACCManager.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <TabControl TabStripPlacement="Left" Margin="3">
+             d:DesignHeight="450" d:DesignWidth="800" Margin="3">
+    <materialDesign:Card>
+        <Grid>
+            <TabControl TabStripPlacement="Left" Margin="3">
 
-            <TabItem Height="60">
-                <TabItem.Header>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <materialDesign:PackIcon
+                <TabItem Height="60">
+                    <TabItem.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Image Source=".\..\..\new_icon.ico" 
+                               Stretch="UniformToFill"
+                                Height="36"
+                                Width="36"/>
+                        </Grid>
+                    </TabItem.Header>
+                    <local:AccManagerSettingsTab></local:AccManagerSettingsTab>
+                </TabItem>
+
+                <TabItem Height="60">
+                    <TabItem.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <materialDesign:PackIcon
                             Grid.Row="0"
                             Kind="Steam"
                             VerticalAlignment="Center"
@@ -26,21 +42,21 @@
                             Width="20"
                         Foreground="White"    
                         />
-                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">ACC</TextBlock>
-                    </Grid>
-                </TabItem.Header>
-                <local:AccSettingsTab></local:AccSettingsTab>
-            </TabItem>
+                            <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">ACC</TextBlock>
+                        </Grid>
+                    </TabItem.Header>
+                    <local:AccSettingsTab></local:AccSettingsTab>
+                </TabItem>
 
 
-            <TabItem Height="60" x:Name="tabHardware">
-                <TabItem.Header>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <materialDesign:PackIcon
+                <TabItem Height="60" x:Name="tabHardware">
+                    <TabItem.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <materialDesign:PackIcon
                             Grid.Row="0"
                             Kind="UsbPort"
                             VerticalAlignment="Center"
@@ -49,20 +65,20 @@
                             Width="20"
                         Foreground="White"    
                         />
-                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Hardware</TextBlock>
-                    </Grid>
-                </TabItem.Header>
-                <local:Hardware></local:Hardware>
-            </TabItem>
+                            <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Hardware</TextBlock>
+                        </Grid>
+                    </TabItem.Header>
+                    <local:Hardware></local:Hardware>
+                </TabItem>
 
-            <TabItem Height="60" x:Name="tabStreaming">
-                <TabItem.Header>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <materialDesign:PackIcon
+                <TabItem Height="60" x:Name="tabStreaming">
+                    <TabItem.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <materialDesign:PackIcon
                             Grid.Row="0"
                             Kind="VideoWirelessOutline"
                             VerticalAlignment="Center"
@@ -71,13 +87,14 @@
                             Width="20"
                         Foreground="White"    
                         />
-                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Streaming</TextBlock>
-                    </Grid>
-                </TabItem.Header>
-                <local:Streaming></local:Streaming>
-            </TabItem>
+                            <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Streaming</TextBlock>
+                        </Grid>
+                    </TabItem.Header>
+                    <local:Streaming></local:Streaming>
+                </TabItem>
 
-        </TabControl>
+            </TabControl>
 
-    </Grid>
+        </Grid>
+    </materialDesign:Card>
 </UserControl>

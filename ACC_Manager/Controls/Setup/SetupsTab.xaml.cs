@@ -1,20 +1,6 @@
-﻿using ACCManager.Data;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ACCManager.Controls
 {
@@ -23,15 +9,14 @@ namespace ACCManager.Controls
     /// </summary>
     public partial class SetupsTab : UserControl
     {
-        private static SetupsTab _instance;
-        public static SetupsTab Instance { get { return _instance; } }
+        public static SetupsTab Instance { get; private set; }
 
         public SetupsTab()
         {
             InitializeComponent();
 
             tabSetupTree.ContextMenu = GetBrowseTabContextMenu();
-            _instance = this;
+            Instance = this;
         }
 
         private ContextMenu GetBrowseTabContextMenu()
