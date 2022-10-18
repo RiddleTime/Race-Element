@@ -1,7 +1,9 @@
 ﻿using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.OverlayUtil;
+using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
 {
@@ -52,9 +54,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
             int height = _config.BarHeight;
             _cachedBackground = new CachedBitmap((int)(width * this.Scale), (int)(height * this.Scale + 1), g =>
             {
-                Brush brush = new SolidBrush(Color.FromArgb(140, Color.Black));
-                g.FillRoundedRectangle(brush, new Rectangle(0, 0, (int)(_config.BarWidth * this.Scale), (int)(height * this.Scale)), (int)(3 * this.Scale));
-                g.FillRoundedRectangle(brush, new Rectangle((int)((_config.BarWidth + _config.BarSpacing) * this.Scale), 0, (int)(_config.BarWidth * this.Scale), (int)(height * this.Scale)), (int)(5 * this.Scale));
+                using (LinearGradientBrush gradientBrush = new LinearGradientBrush(new Rectangle(0, 0, (int)(_config.BarWidth * this.Scale), (int)(height * this.Scale)), Color.FromArgb(230, Color.Black), Color.FromArgb(140, Color.Black), LinearGradientMode.Vertical))
+                {
+                    g.FillRoundedRectangle(gradientBrush, new Rectangle(0, 0, (int)(_config.BarWidth * this.Scale), (int)(height * this.Scale)), (int)(3 * this.Scale));
+                    g.FillRoundedRectangle(gradientBrush, new Rectangle((int)((_config.BarWidth + _config.BarSpacing) * this.Scale), 0, (int)(_config.BarWidth * this.Scale), (int)(height * this.Scale)), (int)(5 * this.Scale));
+                }
             });
 
             Brush outlineBrush = new SolidBrush(Color.FromArgb(196, Color.Black));
@@ -95,9 +99,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
                 ApplyElectronicsColors();
 
             _brakeBar.Value = pagePhysics.Brake;
-            _brakeBar.Draw(g, 0, 0);
-
             _gasBar.Value = pagePhysics.Gas;
+
+            _brakeBar.Draw(g, 0, 0);
             _gasBar.Draw(g, _config.BarWidth + _config.BarSpacing, 0);
         }
 
