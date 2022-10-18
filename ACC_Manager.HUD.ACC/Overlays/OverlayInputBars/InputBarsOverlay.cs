@@ -58,23 +58,23 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
             });
 
             Brush outlineBrush = new SolidBrush(Color.FromArgb(196, Color.Black));
-            _gasBar = new VerticalProgressBar((int)(_config.BarWidth), (int)(_config.BarHeight))
-            {
-                Value = 0,
-                Min = 0,
-                Max = 1,
-                FillBrush = Brushes.LimeGreen,
-                OutlineBrush = outlineBrush,
-                Rounded = true,
-                Scale = this.Scale,
-                Rounding = 5,
-            };
             _brakeBar = new VerticalProgressBar((int)(_config.BarWidth), (int)(_config.BarHeight))
             {
                 Value = 0,
                 Min = 0,
                 Max = 1,
                 FillBrush = Brushes.OrangeRed,
+                OutlineBrush = outlineBrush,
+                Rounded = true,
+                Scale = this.Scale,
+                Rounding = 5,
+            };
+            _gasBar = new VerticalProgressBar((int)(_config.BarWidth), (int)(_config.BarHeight))
+            {
+                Value = 0,
+                Min = 0,
+                Max = 1,
+                FillBrush = Brushes.LimeGreen,
                 OutlineBrush = outlineBrush,
                 Rounded = true,
                 Scale = this.Scale,
@@ -94,24 +94,24 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
             if (_config.ShowElectronics)
                 ApplyElectronicsColors();
 
-            _gasBar.Value = pagePhysics.Gas;
-            _gasBar.Draw(g, 0, 0);
-
             _brakeBar.Value = pagePhysics.Brake;
-            _brakeBar.Draw(g, _config.BarWidth + _config.BarSpacing, 0);
+            _brakeBar.Draw(g, 0, 0);
+
+            _gasBar.Value = pagePhysics.Gas;
+            _gasBar.Draw(g, _config.BarWidth + _config.BarSpacing, 0);
         }
 
         private void ApplyElectronicsColors()
         {
-            if (pagePhysics.TC > 0)
-                _gasBar.FillBrush = Brushes.Orange;
-            else
-                _gasBar.FillBrush = Brushes.LimeGreen;
-
             if (pagePhysics.Abs > 0)
                 _brakeBar.FillBrush = Brushes.Orange;
             else
                 _brakeBar.FillBrush = Brushes.OrangeRed;
+
+            if (pagePhysics.TC > 0)
+                _gasBar.FillBrush = Brushes.Orange;
+            else
+                _gasBar.FillBrush = Brushes.LimeGreen;
         }
     }
 }
