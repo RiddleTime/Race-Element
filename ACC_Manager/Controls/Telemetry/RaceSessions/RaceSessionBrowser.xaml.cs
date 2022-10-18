@@ -374,14 +374,15 @@ namespace ACCManager.Controls
             });
             grid.Columns.Add(new DataGridTextColumn()
             {
-                Header = "°C Track",
-                Binding = new Binding("TempTrack") { Converter = new FormattedFloatConverter(2) }
-            });
-            grid.Columns.Add(new DataGridTextColumn()
-            {
                 Header = "°C Air",
                 Binding = new Binding("TempAmbient") { Converter = new FormattedFloatConverter(2) }
             });
+            grid.Columns.Add(new DataGridTextColumn()
+            {
+                Header = "°C Track",
+                Binding = new Binding("TempTrack") { Converter = new FormattedFloatConverter(2) }
+            });
+
 
 
             grid.SelectedCellsChanged += (s, e) =>
