@@ -59,6 +59,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
             {
                 // background
                 g.FillEllipse(new SolidBrush(Color.FromArgb(140, Color.Black)), new Rectangle(0, 0, (int)(_size * Scale), (int)(_size * Scale)));
+                g.DrawEllipse(new Pen(Color.FromArgb(230, Color.Black)), new Rectangle(0, 0, (int)(_size * Scale), (int)(_size * Scale)));
 
                 // steering background
                 g.DrawEllipse(new Pen(Color.FromArgb(80, Color.White), _wheelWidth / 2 * Scale), _size / 2 * Scale, _size / 2 * Scale, _size / 2 * Scale - _wheelWidth * Scale);
