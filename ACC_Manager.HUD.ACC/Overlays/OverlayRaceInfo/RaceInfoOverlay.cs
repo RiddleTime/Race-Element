@@ -31,8 +31,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRaceInfo
         public RaceInfoOverlay(Rectangle rectangle) : base(rectangle, "Race Info Overlay")
         {
             this.Width = 230;
-            this.Height = _panel.FontHeight * 5;
-            RefreshRateHz = 5;
+            this.Height = _panel.FontHeight * 6;
+            RefreshRateHz = 3;
         }
 
         public sealed override void BeforeStart()
@@ -64,9 +64,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRaceInfo
 
             TimeSpan sessionLength = broadCastRealTime.SessionEndTime.Add(broadCastRealTime.SessionTime);
 
-            this._panel.AddLine("Session End", $"{broadCastRealTime.SessionEndTime:hh\\:mm\\:ss}");
-            this._panel.AddLine("Session Time", $"{broadCastRealTime.SessionTime:hh\\:mm\\:ss}");
-            this._panel.AddLine("Session Length", $"{sessionLength:hh\\:mm\\:ss}");
+
+            _panel.AddLine("Position", $"{pageGraphics.Position}");
+            _panel.AddLine("Laps", $"{broadCastLocalCar.Laps}");
+
+            _panel.AddLine("Session End", $"{broadCastRealTime.SessionEndTime:hh\\:mm\\:ss}");
+            _panel.AddLine("Session Time", $"{broadCastRealTime.SessionTime:hh\\:mm\\:ss}");
+            _panel.AddLine("Session Length", $"{sessionLength:hh\\:mm\\:ss}");
 
             if (_config.ShowTrackLocation)
                 this._panel.AddLine("Location", $"{broadCastLocalCar.CarLocation}");
