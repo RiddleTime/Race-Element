@@ -28,26 +28,22 @@
 
 
         <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Grid Grid.Row="0" Margin="3" x:Name="gridRepositionToggler" Cursor="Hand" >
+            <Grid Grid.Row="0" Margin="3" x:Name="gridRepositionToggler" Cursor="Hand" Background="#2Fff4500">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25"/>
                     <ColumnDefinition Width="40"/>
-                    <ColumnDefinition Width="15"/>
-                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <ToggleButton Grid.Column="0" x:Name="checkBoxReposition" Height="25" Cursor="Hand" ToolTip="Click scroll wheel to Toggle" VerticalAlignment="Center"></ToggleButton>
-                <materialDesign:PackIcon Grid.Column="1" VerticalAlignment="Center" Kind="ArrowAll"/>
-                <Label Grid.Column="2" FontSize="16"  VerticalAlignment="Center">Move Active Overlays (Ctrl + Home)</Label>
+                <materialDesign:PackIcon Grid.Column="0" Height="24" Width="24" VerticalAlignment="Center" Kind="ArrowAll"/>
+                <ToggleButton Grid.Column="1" x:Name="checkBoxReposition" Height="25" Cursor="Hand" ToolTip="Click scroll wheel to Toggle" VerticalAlignment="Center"></ToggleButton>
             </Grid>
 
-            <Grid Grid.Row="0" Margin="3" x:Name="gridDemoToggler" Cursor="Hand" >
+            <Grid Grid.Row="0" Margin="3" x:Name="gridDemoToggler" Cursor="Hand" Background="#2Fff4500" ToolTip="Enables Always Visible. HUDs usually become visible when your engine starts. This allows you to enable them parmanently." >
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25"/>
                     <ColumnDefinition Width="40"/>
-                    <ColumnDefinition Width="15"/>
-                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <ToggleButton Grid.Column="0" x:Name="checkBoxDemoMode" Height="25" Cursor="Hand" VerticalAlignment="Center"></ToggleButton>
-                <materialDesign:PackIcon Grid.Column="1" VerticalAlignment="Center" Kind="Visibility"/>
-                <Label Grid.Column="2" FontSize="16"  VerticalAlignment="Center" ToolTip="Enables a mode for the huds so they always display.">Always Visible</Label>
+                <materialDesign:PackIcon Grid.Column="0" Height="24" Width="24"   VerticalAlignment="Center" Kind="Visibility"/>
+                <ToggleButton Grid.Column="1" x:Name="checkBoxDemoMode" Height="25" Cursor="Hand" VerticalAlignment="Center"></ToggleButton>
             </Grid>
         </StackPanel>
 
@@ -99,7 +95,7 @@
                     <ListView Grid.Column="0" x:Name="listDebugOverlays" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="0,3,0,0" Cursor="Hand"/>
                 </TabItem>
             </TabControl>
-            
+
             <materialDesign:Card Grid.Column="1" Margin="7,0,2,0">
                 <Grid Background="#65101010">
                     <Grid.RowDefinitions>
