@@ -314,7 +314,7 @@ namespace ACCManager.Controls
 
             grid.Columns.Add(new DataGridTextColumn()
             {
-                Header = new TextBlock() { Text = "#", ToolTip = "Lap", Margin= new Thickness(0) },
+                Header = new TextBlock() { Text = "#", ToolTip = "Lap", Margin = new Thickness(0) },
                 Binding = new Binding("Index"),
                 SortDirection = System.ComponentModel.ListSortDirection.Descending,
                 FontWeight = FontWeights.DemiBold,
@@ -414,7 +414,7 @@ namespace ACCManager.Controls
             {
                 if (node.Value.SplinePosition < previousSpline)
                 {
-                    Debug.WriteLine($"Decreasing spline at index {index + 1}: {previousSpline}->{node.Value.SplinePosition:F6}");
+                    Debug.WriteLine($"Decreasing spline at index {index + 1}: {previousSpline}->{node.Value.SplinePosition:F12}");
 
                     int tenPercentCount = dictio.Count / 10;
 
@@ -434,7 +434,6 @@ namespace ACCManager.Controls
 
 
             float highestSplinePosition = -1;
-            float lastSplinePosition = -1;
 
             long minKeyToTranslate = -1;
             bool needsToTranslate = false;
@@ -443,7 +442,7 @@ namespace ACCManager.Controls
             if (dictio.Last().Value.SplinePosition < 0.1)
                 lastCloseToZero = true;
 
-
+            float lastSplinePosition = -1;
             foreach (var data in dictio)
             {
                 if (!needsToTranslate)
@@ -464,26 +463,29 @@ namespace ACCManager.Controls
 
             if (needsToTranslate)
             {
+                Debug.WriteLine("-- Requires Filtering --");
                 float translation = 1 - dictio.First().Value.SplinePosition;
-
                 if (lastCloseToZero)
-                    translation = dictio.Last().Value.SplinePosition;
-
-                bool normalTranslation = false;
+                    translation = dictio.First().Value.SplinePosition;
 
                 _currentData.Clear();
 
-                if (lastCloseToZero)
-                    normalTranslation = true;
+                Debug.WriteLine($"Translation {translation}");
 
+                bool startTranslation = false;
                 foreach (var data in dictio)
                 {
-                    if (!normalTranslation)
+                    if (startTranslation)
+                    {
+                        var oldPoint = data.Value;
+                        oldPoint.SplinePosition -= translation;
+                        _currentData.Add(data.Key, oldPoint);
+                    }
+                    else
                     {
                         if (data.Key == minKeyToTranslate)
                         {
-                            normalTranslation = true;
-
+                            startTranslation = true;
                             var oldPoint = data.Value;
                             oldPoint.SplinePosition += translation;
                             _currentData.Add(data.Key, oldPoint);
@@ -494,15 +496,6 @@ namespace ACCManager.Controls
                             oldPoint.SplinePosition = (oldPoint.SplinePosition + translation) - 1f;
                             _currentData.Add(data.Key, oldPoint);
                         }
-                    }
-                    else
-                    {
-                        var oldPoint = data.Value;
-                        if (lastCloseToZero)
-                            oldPoint.SplinePosition -= translation;
-                        else
-                            oldPoint.SplinePosition += translation;
-                        _currentData.Add(data.Key, oldPoint);
                     }
                 }
 
