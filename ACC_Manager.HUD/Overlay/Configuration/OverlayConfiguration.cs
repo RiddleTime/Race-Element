@@ -58,6 +58,9 @@ namespace ACCManager.HUD.Overlay.Configuration
 
                         if (prop.PropertyType == typeof(bool))
                             prop.SetValue(this, field.Value);
+
+                        if (prop.PropertyType == typeof(byte))
+                            prop.SetValue(this, byte.Parse(field.Value.ToString()));
                     }
                 }
 

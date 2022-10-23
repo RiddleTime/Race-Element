@@ -598,6 +598,96 @@ namespace ACCManager.Controls
 
             foreach (PropertyInfo pi in props)
             {
+                if (pi.PropertyType == typeof(byte))
+                {
+                    ByteRangeAttribute byteRange = null;
+                    ToolTipAttribute toolTip = null;
+                    foreach (Attribute cad in Attribute.GetCustomAttributes(pi))
+                    {
+                        if (cad is ByteRangeAttribute)
+                            byteRange = (ByteRangeAttribute)cad;
+
+                        if (cad is ToolTipAttribute)
+                            toolTip = (ToolTipAttribute)cad;
+                    }
+
+                    if (byteRange == null)
+                        Debug.WriteLine($"Specify a ByteRangeAttribute for {pi.Name}");
+                    else
+                    {
+                        ConfigField configField = configFields.Where(cf => cf.Name == pi.Name).First();
+                        string byteLabel = string.Concat(configField.Name.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
+
+                        StackPanel intStacker = new StackPanel()
+                        {
+                            Name = byteLabel.Replace(" ", "_"),
+                            Margin = new Thickness(0, 0, 0, 0),
+                            Orientation = Orientation.Horizontal,
+                            VerticalAlignment = VerticalAlignment.Center,
+                            Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)),
+                        };
+
+                        if (toolTip != null)
+                            intStacker.ToolTip = toolTip.ToolTip;
+                        ToolTipService.SetShowDuration(intStacker, int.MaxValue);
+
+                        int min = byteRange.Min;
+                        int max = byteRange.Max;
+                        int tickFrequency = byteRange.Increment;
+                        int sliderValue = int.Parse(configField.Value.ToString());
+                        sliderValue.Clip(min, max);
+
+                        int maxValueChars = $"{max}".Length;
+
+                        Label sliderLabel = new Label
+                        {
+                            Content = $"{byteLabel}: {sliderValue.ToString("F0").FillStart(maxValueChars, ' ')}",
+                            VerticalAlignment = VerticalAlignment.Center,
+                            VerticalContentAlignment = VerticalAlignment.Center,
+                            FontSize = fontSize
+                        };
+                        intStacker.Children.Add(sliderLabel);
+
+                        Slider slider = new Slider()
+                        {
+                            Minimum = min,
+                            Maximum = max,
+                            IsSnapToTickEnabled = true,
+                            TickFrequency = tickFrequency,
+                            Value = sliderValue,
+                            Width = 150,
+                            Margin = new Thickness(0, 0, 3, 0),
+                            VerticalAlignment = VerticalAlignment.Center,
+                            VerticalContentAlignment = VerticalAlignment.Center,
+
+                        };
+                        slider.ValueChanged += (sender, args) =>
+                        {
+                            sliderLabel.Content = $"{byteLabel}: {slider.Value.ToString("F0").FillStart(maxValueChars, ' ')}";
+                            configField.Value = (int)slider.Value;
+                            configFields.RemoveAt(configFields.IndexOf(configField));
+                            configFields.Add(configField);
+
+                            SaveOverlayConfigFields(overlayName, configFields);
+                        };
+
+                        //intStacker.MouseRightButtonUp += (sender, args) => { slider.Value = 1.0; };
+                        intStacker.MouseWheel += (sender, args) =>
+                        {
+                            int delta = args.Delta;
+                            slider.Value += delta.Clip(-1, 1) * tickFrequency;
+                            args.Handled = true;
+                        };
+                        intStacker.MouseEnter += (sender, args) => { intStacker.Background = new SolidColorBrush(Color.FromArgb(50, 140, 0, 0)); }; ;
+                        intStacker.MouseLeave += (sender, args) => { intStacker.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)); };
+
+                        intStacker.Children.Add(slider);
+
+                        configStackers.Add(intStacker);
+                    }
+                }
+
+
                 if (pi.PropertyType == typeof(int))
                 {
                     IntRangeAttribute intRange = null;

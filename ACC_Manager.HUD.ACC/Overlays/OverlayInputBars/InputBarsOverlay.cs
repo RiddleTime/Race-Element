@@ -14,6 +14,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
         private readonly InputBarsConfiguration _config = new InputBarsConfiguration();
         private class InputBarsConfiguration : OverlayConfiguration
         {
+            [ToolTip("Displays a color change on the input bars when either abs or traction control is activated.")]
+            public bool ShowElectronics { get; set; } = true;
+
             [ToolTip("Changes the width of each input bar.")]
             [IntRange(10, 40, 1)]
             public int BarWidth { get; set; } = 15;
@@ -26,8 +29,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
             [IntRange(5, 15, 1)]
             public int BarSpacing { get; set; } = 5;
 
-            [ToolTip("Displays a color change on the input bars when either abs or traction control is activated.")]
-            public bool ShowElectronics { get; set; } = true;
+            [ToolTip("Defines the transparency of the bars.")]
+            [ByteRange(10, 255, 1)]
+            public byte BarAlpha { get; set; } = 185;
 
             public InputBarsConfiguration()
             {
@@ -67,7 +71,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
                 Value = 0,
                 Min = 0,
                 Max = 1,
-                FillBrush = Brushes.OrangeRed,
+                FillBrush = new SolidBrush(Color.FromArgb(_config.BarAlpha, Color.OrangeRed)),
                 OutlineBrush = outlineBrush,
                 Rounded = true,
                 Scale = this.Scale,
@@ -78,7 +82,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
                 Value = 0,
                 Min = 0,
                 Max = 1,
-                FillBrush = Brushes.LimeGreen,
+                FillBrush = new SolidBrush(Color.FromArgb(_config.BarAlpha, Color.LimeGreen)),
                 OutlineBrush = outlineBrush,
                 Rounded = true,
                 Scale = this.Scale,
@@ -96,7 +100,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
             _cachedBackground?.Draw(g, _config.BarWidth * 2 + _config.BarSpacing, _config.BarHeight);
 
             if (_config.ShowElectronics)
-                ApplyElectronicsColors();
+                ApplyFillColor();
 
             _brakeBar.Value = pagePhysics.Brake;
             _gasBar.Value = pagePhysics.Gas;
@@ -105,17 +109,20 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
             _gasBar.Draw(g, _config.BarWidth + _config.BarSpacing, 0);
         }
 
-        private void ApplyElectronicsColors()
+        /// <summary>
+        /// Applies a fill color to the brake and gas bar based on electronics
+        /// </summary>
+        private void ApplyFillColor()
         {
             if (pagePhysics.Abs > 0)
-                _brakeBar.FillBrush = new SolidBrush(Color.FromArgb(180, Color.Orange));
+                _brakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.BarAlpha, Color.Orange));
             else
-                _brakeBar.FillBrush = new SolidBrush(Color.FromArgb(180, Color.OrangeRed));
+                _brakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.BarAlpha, Color.OrangeRed));
 
             if (pagePhysics.TC > 0)
-                _gasBar.FillBrush = new SolidBrush(Color.FromArgb(180, Color.Orange));
+                _gasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.BarAlpha, Color.Orange));
             else
-                _gasBar.FillBrush = new SolidBrush(Color.FromArgb(180, Color.LimeGreen));
+                _gasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.BarAlpha, Color.LimeGreen));
         }
     }
 }
