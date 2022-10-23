@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -442,15 +443,17 @@ namespace ACCManager.Controls
             if (dictio.Last().Value.SplinePosition < 0.1)
                 lastCloseToZero = true;
 
+            Debug.WriteLine($" --- Min Key: {minKeyToTranslate}");
             float lastSplinePosition = -1;
             foreach (var data in dictio)
             {
                 if (!needsToTranslate)
                 {
-                    if (data.Value.SplinePosition < lastSplinePosition)
+                    if (data.Value.SplinePosition < lastSplinePosition && minKeyToTranslate == -1)
                     {
                         needsToTranslate = true;
                         minKeyToTranslate = data.Key;
+                        Debug.WriteLine($" --- Min Key: {minKeyToTranslate} - {data.Value.SplinePosition:F12}");
                     }
                     if (!needsToTranslate)
                         lastSplinePosition = data.Value.SplinePosition;
@@ -466,7 +469,7 @@ namespace ACCManager.Controls
                 Debug.WriteLine("-- Requires Filtering --");
                 float translation = 1 - dictio.First().Value.SplinePosition;
                 if (lastCloseToZero)
-                    translation = dictio.First().Value.SplinePosition;
+                    translation = dictio.First().Value.SplinePosition * -1;
 
                 _currentData.Clear();
 
@@ -475,27 +478,31 @@ namespace ACCManager.Controls
                 bool startTranslation = false;
                 foreach (var data in dictio)
                 {
-                    if (startTranslation)
-                    {
-                        var oldPoint = data.Value;
-                        oldPoint.SplinePosition -= translation;
-                        _currentData.Add(data.Key, oldPoint);
-                    }
-                    else
+                    if (!startTranslation)
                     {
                         if (data.Key == minKeyToTranslate)
-                        {
                             startTranslation = true;
-                            var oldPoint = data.Value;
-                            oldPoint.SplinePosition += translation;
-                            _currentData.Add(data.Key, oldPoint);
-                        }
                         else
                         {
                             var oldPoint = data.Value;
-                            oldPoint.SplinePosition = (oldPoint.SplinePosition + translation) - 1f;
+                            oldPoint.SplinePosition = (oldPoint.SplinePosition + translation);
+
+                            if (oldPoint.SplinePosition > 1)
+                                oldPoint.SplinePosition -= 1;
+
                             _currentData.Add(data.Key, oldPoint);
                         }
+                    }
+
+                    if (startTranslation)
+                    {
+                        var oldPoint = data.Value;
+                        oldPoint.SplinePosition = (1 + oldPoint.SplinePosition) + translation;
+
+                        if (oldPoint.SplinePosition > 2)
+                            oldPoint.SplinePosition -= 1;
+
+                        _currentData.Add(data.Key, oldPoint);
                     }
                 }
 
