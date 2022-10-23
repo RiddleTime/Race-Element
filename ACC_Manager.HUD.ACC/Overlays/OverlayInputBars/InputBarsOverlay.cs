@@ -62,7 +62,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
             });
 
             Brush outlineBrush = new SolidBrush(Color.FromArgb(196, Color.Black));
-            _brakeBar = new VerticalProgressBar((int)(_config.BarWidth), (int)(_config.BarHeight))
+            _brakeBar = new VerticalProgressBar(_config.BarWidth, _config.BarHeight)
             {
                 Value = 0,
                 Min = 0,
@@ -73,7 +73,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
                 Scale = this.Scale,
                 Rounding = 5,
             };
-            _gasBar = new VerticalProgressBar((int)(_config.BarWidth), (int)(_config.BarHeight))
+            _gasBar = new VerticalProgressBar(_config.BarWidth, _config.BarHeight)
             {
                 Value = 0,
                 Min = 0,
@@ -108,14 +108,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
         private void ApplyElectronicsColors()
         {
             if (pagePhysics.Abs > 0)
-                _brakeBar.FillBrush = Brushes.Orange;
+                _brakeBar.FillBrush = new SolidBrush(Color.FromArgb(180, Color.Orange));
             else
-                _brakeBar.FillBrush = Brushes.OrangeRed;
+                _brakeBar.FillBrush = new SolidBrush(Color.FromArgb(180, Color.OrangeRed));
 
             if (pagePhysics.TC > 0)
-                _gasBar.FillBrush = Brushes.Orange;
+                _gasBar.FillBrush = new SolidBrush(Color.FromArgb(180, Color.Orange));
             else
-                _gasBar.FillBrush = Brushes.LimeGreen;
+                _gasBar.FillBrush = new SolidBrush(Color.FromArgb(180, Color.LimeGreen));
         }
     }
 }
