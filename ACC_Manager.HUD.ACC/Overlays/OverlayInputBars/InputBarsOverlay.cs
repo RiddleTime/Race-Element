@@ -17,6 +17,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
             [ToolTip("Displays a color change on the input bars when either abs or traction control is activated.")]
             public bool ShowElectronics { get; set; } = true;
 
+            [ToolTip("Defines the transparency of the bars.")]
+            [ByteRange(40, 255, 1)]
+            public byte BarAlpha { get; set; } = 185;
+
             [ToolTip("Changes the width of each input bar.")]
             [IntRange(10, 40, 1)]
             public int BarWidth { get; set; } = 15;
@@ -28,10 +32,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
             [ToolTip("Changes the spacing between the input bars")]
             [IntRange(5, 15, 1)]
             public int BarSpacing { get; set; } = 5;
-
-            [ToolTip("Defines the transparency of the bars.")]
-            [ByteRange(10, 255, 1)]
-            public byte BarAlpha { get; set; } = 185;
 
             public InputBarsConfiguration()
             {
