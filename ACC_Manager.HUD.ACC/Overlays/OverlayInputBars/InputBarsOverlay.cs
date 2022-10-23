@@ -58,7 +58,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
             int height = _config.BarHeight;
             _cachedBackground = new CachedBitmap((int)(width * this.Scale), (int)(height * this.Scale + 1), g =>
             {
-                using (LinearGradientBrush gradientBrush = new LinearGradientBrush(new Rectangle(0, 0, (int)(_config.BarWidth * this.Scale), (int)(height * this.Scale)), Color.FromArgb(230, Color.Black), Color.FromArgb(140, Color.Black), LinearGradientMode.Vertical))
+                using (LinearGradientBrush gradientBrush = new LinearGradientBrush(new Rectangle(0, 0, (int)(_config.BarWidth * this.Scale), (int)(height * this.Scale)), Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical))
                 {
                     g.FillRoundedRectangle(gradientBrush, new Rectangle(0, 0, (int)(_config.BarWidth * this.Scale), (int)(height * this.Scale)), (int)(3 * this.Scale));
                     g.FillRoundedRectangle(gradientBrush, new Rectangle((int)((_config.BarWidth + _config.BarSpacing) * this.Scale), 0, (int)(_config.BarWidth * this.Scale), (int)(height * this.Scale)), (int)(5 * this.Scale));
