@@ -14,8 +14,8 @@ namespace ACCManager.Controls.Liveries
     {
         private static Dictionary<string, string> pngsToDDS = new Dictionary<string, string>()
             {
-                {"decals_0.dds","decals.png" },
-                {"sponsors_0.dds" ,"sponsors.png"},
+                //{"decals_0.dds","decals.png" },
+                //{"sponsors_0.dds" ,"sponsors.png"},
                 {"decals_1.dds","decals.png" },
                 {"sponsors_1.dds","sponsors.png" }
             };
