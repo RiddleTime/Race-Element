@@ -12,7 +12,7 @@ namespace ACCManager.Controls.Liveries
 {
     internal class DDSutil
     {
-        private static Dictionary<string, string> pngsToDDS = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> pngsToDDS = new Dictionary<string, string>()
             {
                 //{"decals_0.dds","decals.png" },
                 //{"sponsors_0.dds" ,"sponsors.png"},

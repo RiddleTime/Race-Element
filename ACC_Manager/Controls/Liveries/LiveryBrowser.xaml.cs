@@ -919,18 +919,18 @@ namespace ACCManager.Controls
                                 zipArchive.AddEntry($"{liveriesFolder}{sponsorsJson.Name}", sponsorsJson);
 
                             FileInfo decalsDds0 = new FileInfo(customSkinDir.FullName + "\\" + "decals_0.dds");
-                            FileInfo decalsDds1 = new FileInfo(customSkinDir.FullName + "\\" + "decals_1.dds");
+                            //FileInfo decalsDds1 = new FileInfo(customSkinDir.FullName + "\\" + "decals_1.dds");
                             FileInfo sponsorsDds0 = new FileInfo(customSkinDir.FullName + "\\" + "sponsors_0.dds");
-                            FileInfo sponsorsDds1 = new FileInfo(customSkinDir.FullName + "\\" + "sponsors_1.dds");
+                            //FileInfo sponsorsDds1 = new FileInfo(customSkinDir.FullName + "\\" + "sponsors_1.dds");
 
                             if (decalsDds0.Exists)
                                 zipArchive.AddEntry($"{liveriesFolder}{decalsDds0.Name}", decalsDds0);
-                            if (decalsDds1.Exists)
-                                zipArchive.AddEntry($"{liveriesFolder}{decalsDds1.Name}", decalsDds1);
+                            //if (decalsDds1.Exists)
+                            //    zipArchive.AddEntry($"{liveriesFolder}{decalsDds1.Name}", decalsDds1);
                             if (sponsorsDds0.Exists)
                                 zipArchive.AddEntry($"{liveriesFolder}{sponsorsDds0.Name}", sponsorsDds0);
-                            if (sponsorsDds1.Exists)
-                                zipArchive.AddEntry($"{liveriesFolder}{sponsorsDds1.Name}", sponsorsDds1);
+                            //if (sponsorsDds1.Exists)
+                            //    zipArchive.AddEntry($"{liveriesFolder}{sponsorsDds1.Name}", sponsorsDds1);
 
 
                             using (FileStream outputStream = new FileStream(filename, FileMode.Create))

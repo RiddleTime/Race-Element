@@ -7,7 +7,8 @@ namespace ACCManager.Controls
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
             {"0.1.0.2", "- HUDs: Added Always On top option to each overlay, allowing you to hide the overlay in the game whilst streaming using the Window option."+
-                        "\n- HUD: Added Input Bars Overlay, displaying live throttle and brake inputs in a vertical progress bars."},
+                        "\n- HUD: Added Input Bars Overlay, displaying live throttle and brake inputs in a vertical progress bars."+
+                        "\n- Liveries: Removed generating, import and export of dds_0 files."},
             {"0.1.0.1", "- OBS Websocket updated to version 5, using the setup hider now requires OBS version 28 or higher."+
                         //"\n- Added Detailed Telemetry recording and displaying."+
                         "\n- Updated design theme."+
