@@ -386,15 +386,15 @@ namespace ACCManager.Controls
 
 
 
-            grid.SelectedCellsChanged += (s, e) =>
-            {
-                if (grid.SelectedIndex != -1)
-                {
-                    DbLapData lapdata = (DbLapData)grid.SelectedItem;
+            //grid.SelectedCellsChanged += (s, e) =>
+            //{
+            //    if (grid.SelectedIndex != -1)
+            //    {
+            //        DbLapData lapdata = (DbLapData)grid.SelectedItem;
 
-                    CreateCharts(lapdata.Id);
-                }
-            };
+            //        CreateCharts(lapdata.Id);
+            //    }
+            //};
 
             return grid;
         }

@@ -102,7 +102,7 @@ namespace ACCManager.Data.ACC.Session
                 RaceSessionCollection.Insert(CurrentSession);
                 OnNewSessionStarted?.Invoke(this, CurrentSession);
 
-                TelemetryRecorder.Instance.Record();
+                //TelemetryRecorder.Instance.Record();
             }
         }
 

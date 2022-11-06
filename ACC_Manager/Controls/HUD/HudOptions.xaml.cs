@@ -84,23 +84,27 @@ namespace ACCManager.Controls
                     checkBoxReposition.Checked += (s, e) =>
                     {
                         SetRepositionMode(true);
-
+                        gridRepositionToggler.Background = new SolidColorBrush(Color.FromArgb(47, 69, 255, 00));
                     };
                     checkBoxReposition.Unchecked += (s, e) =>
                     {
                         SetRepositionMode(false);
+                        gridRepositionToggler.Background = new SolidColorBrush(Color.FromArgb(47, 255, 69, 00));
                     };
 
                     checkBoxDemoMode.Checked += (s, e) =>
                     {
                         _hudSettingsJson.DemoMode = true;
                         _hudSettings.Save(_hudSettingsJson);
+
+                        gridDemoToggler.Background = new SolidColorBrush(Color.FromArgb(47, 69, 255, 00));
                     };
 
                     checkBoxDemoMode.Unchecked += (s, e) =>
                     {
                         _hudSettingsJson.DemoMode = false;
                         _hudSettings.Save(_hudSettingsJson);
+                        gridDemoToggler.Background = new SolidColorBrush(Color.FromArgb(47, 255, 69, 00));
                     };
 
                     this.PreviewMouseUp += (s, e) =>
