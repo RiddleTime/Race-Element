@@ -15,6 +15,8 @@ namespace ACCManager.Controls
     /// </summary>
     public partial class About : UserControl
     {
+        private bool HasAddedDownloadButton = false;
+
 
         public About()
         {
@@ -65,6 +67,9 @@ namespace ACCManager.Controls
 #pragma warning disable CS0162 // Unreachable code detected
             try
             {
+                if (HasAddedDownloadButton)
+                    return;
+
                 GitHubClient client = new GitHubClient(new ProductHeaderValue("ACC-Manager"), new Uri("https://github.com/RiddleTime/ACC-Manager.git"));
                 var allTags = await client.Repository.GetAllTags("RiddleTime", "ACC-Manager");
 
@@ -101,6 +106,7 @@ namespace ACCManager.Controls
                                      WindowStyle = ProcessWindowStyle.Hidden,
                                  });
                                  ReleaseStackPanel.Children.Add(openReleaseButton);
+                                 HasAddedDownloadButton = true;
                              }));
                         }
                     }
