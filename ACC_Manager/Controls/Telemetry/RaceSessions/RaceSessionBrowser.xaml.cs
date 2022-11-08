@@ -46,7 +46,10 @@ namespace ACCManager.Controls
         {
             InitializeComponent();
 
-            this.Loaded += (s, e) => FindRaceWeekends();
+            this.Loaded += (s, e) => ThreadPool.QueueUserWorkItem(x =>
+            {
+                FindRaceWeekends();
+            });
 
             comboTracks.SelectionChanged += (s, e) => FillCarComboBox();
             comboCars.SelectionChanged += (s, e) => LoadSessionList();

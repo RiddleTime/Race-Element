@@ -6,7 +6,6 @@
         xmlns:local="clr-namespace:ACCManager"
         xmlns:controls="clr-namespace:ACCManager.Controls"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
         mc:Ignorable="d"
         
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -21,7 +20,6 @@
         WindowStartupLocation="Manual"
         WindowState="Minimized"
         AllowDrop="True">
-
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
