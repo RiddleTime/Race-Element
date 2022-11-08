@@ -46,6 +46,9 @@ namespace ACCManager.Controls
 
 
             buttonImportLiveries.Click += ButtonImportLiveries_Click;
+
+            buttonRefreshLiveries.Click += (s, e) => ThreadPool.QueueUserWorkItem(x => FetchAllCars()); ;
+
             buttonGenerateAllDDS.Click += ButtonGenerateAllDDS_Click;
 
 
@@ -453,7 +456,7 @@ namespace ACCManager.Controls
                     Width = liveriesTreeViewTeams.Width - 5,
                     Background = new SolidColorBrush(Colors.OrangeRed)
                 };
-                if(liveriesWithoutTags.Count == 0)
+                if (liveriesWithoutTags.Count == 0)
                     tagHeader.Background = new SolidColorBrush(Colors.DarkOliveGreen);
 
                 TreeViewItem tagItem = new TreeViewItem()

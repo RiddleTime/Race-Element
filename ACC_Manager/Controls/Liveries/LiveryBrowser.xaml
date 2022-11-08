@@ -38,9 +38,15 @@
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
 
-            <Button Grid.Row="0" Margin="3,0,0,0" x:Name="buttonImportLiveries">Import Liveries</Button>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-            <TabControl Grid.Row="1">
+            <Button Grid.Row="0" Grid.Column="0" Margin="3,0,0,0" x:Name="buttonImportLiveries">Import Liveries</Button>
+            <Button Grid.Row="0" Grid.Column="1" Margin="3,0,0,0" x:Name="buttonRefreshLiveries">Refresh</Button>
+
+            <TabControl Grid.Row="1" Grid.ColumnSpan="2">
                 <TabItem>
                     <TabItem.Header>
                         <Grid>
