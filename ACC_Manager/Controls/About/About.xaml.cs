@@ -133,29 +133,32 @@ namespace ACCManager.Controls
 
         private void FillReleaseNotes()
         {
-            stackPanelReleaseNotes.Children.Clear();
-            ReleaseNotes.Notes.ToList().ForEach(note =>
+            Dispatcher.BeginInvoke(new Action(() =>
             {
-                TextBlock noteTitle = new TextBlock()
+                stackPanelReleaseNotes.Children.Clear();
+                ReleaseNotes.Notes.ToList().ForEach(note =>
                 {
-                    Text = note.Key,
-                    Style = Resources["MaterialDesignBody1TextBlock"] as Style,
-                    FontWeight = FontWeights.Bold,
-                    FontStyle = FontStyles.Oblique
-                };
-                TextBlock noteDescription = new TextBlock()
-                {
-                    Text = note.Value,
-                    TextWrapping = TextWrapping.WrapWithOverflow,
-                    Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style
-                };
+                    TextBlock noteTitle = new TextBlock()
+                    {
+                        Text = note.Key,
+                        Style = Resources["MaterialDesignBody1TextBlock"] as Style,
+                        FontWeight = FontWeights.Bold,
+                        FontStyle = FontStyles.Oblique
+                    };
+                    TextBlock noteDescription = new TextBlock()
+                    {
+                        Text = note.Value,
+                        TextWrapping = TextWrapping.WrapWithOverflow,
+                        Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style
+                    };
 
-                StackPanel changePanel = new StackPanel() { Margin = new Thickness(0, 10, 0, 0) };
-                changePanel.Children.Add(noteTitle);
-                changePanel.Children.Add(noteDescription);
+                    StackPanel changePanel = new StackPanel() { Margin = new Thickness(0, 10, 0, 0) };
+                    changePanel.Children.Add(noteTitle);
+                    changePanel.Children.Add(noteDescription);
 
-                stackPanelReleaseNotes.Children.Add(changePanel);
-            });
+                    stackPanelReleaseNotes.Children.Add(changePanel);
+                });
+            }));
         }
     }
 }

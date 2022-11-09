@@ -34,7 +34,7 @@ namespace ACCManager.Controls
 
         public static HudOptions Instance { get; private set; }
 
-        private readonly HudSettings _hudSettings;
+        private HudSettings _hudSettings;
         private HudSettingsJson _hudSettingsJson;
 
         private readonly Dictionary<string, CachedPreview> _cachedPreviews = new Dictionary<string, CachedPreview>();
@@ -52,97 +52,99 @@ namespace ACCManager.Controls
         {
             InitializeComponent();
 
-            _hudSettings = new HudSettings();
-            _hudSettingsJson = _hudSettings.Get();
-
-
-            listOverlays.SelectionChanged += ListOverlays_SelectionChanged;
-            listDebugOverlays.SelectionChanged += ListDebugOverlays_SelectionChanged;
-            tabControlListOverlays.SelectionChanged += (s, e) =>
+            Dispatcher.BeginInvoke(new Action(() =>
             {
-                if (e.AddedItems.Count > 0)
+                _hudSettings = new HudSettings();
+                _hudSettingsJson = _hudSettings.Get();
+
+
+                listOverlays.SelectionChanged += ListOverlays_SelectionChanged;
+                listDebugOverlays.SelectionChanged += ListDebugOverlays_SelectionChanged;
+                tabControlListOverlays.SelectionChanged += (s, e) =>
                 {
-                    if (s is ListViewItem)
+                    if (e.AddedItems.Count > 0)
                     {
-                        e.Handled = true;
-                        return;
+                        if (s is ListViewItem)
+                        {
+                            e.Handled = true;
+                            return;
+                        }
                     }
-                }
 
-                configStackPanel.Children.Clear();
-                previewImage.Source = null;
-                listDebugOverlays.SelectedIndex = -1;
-                listOverlays.SelectedIndex = -1;
-            };
+                    configStackPanel.Children.Clear();
+                    previewImage.Source = null;
+                    listDebugOverlays.SelectedIndex = -1;
+                    listOverlays.SelectedIndex = -1;
+                };
 
-            bool designTime = System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject());
-            if (!designTime)
-                try
-                {
-                    BuildOverlayPanel();
-
-                    checkBoxReposition.Checked += (s, e) =>
+                bool designTime = System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject());
+                if (!designTime)
+                    try
                     {
-                        SetRepositionMode(true);
-                        gridRepositionToggler.Background = new SolidColorBrush(Color.FromArgb(47, 69, 255, 00));
-                    };
-                    checkBoxReposition.Unchecked += (s, e) =>
-                    {
-                        SetRepositionMode(false);
-                        gridRepositionToggler.Background = new SolidColorBrush(Color.FromArgb(47, 255, 69, 00));
-                    };
+                        BuildOverlayPanel();
 
-                    checkBoxDemoMode.Checked += (s, e) =>
-                    {
-                        _hudSettingsJson.DemoMode = true;
-                        _hudSettings.Save(_hudSettingsJson);
+                        checkBoxReposition.Checked += (s, e) =>
+                        {
+                            SetRepositionMode(true);
+                            gridRepositionToggler.Background = new SolidColorBrush(Color.FromArgb(47, 69, 255, 00));
+                        };
+                        checkBoxReposition.Unchecked += (s, e) =>
+                        {
+                            SetRepositionMode(false);
+                            gridRepositionToggler.Background = new SolidColorBrush(Color.FromArgb(47, 255, 69, 00));
+                        };
 
-                        gridDemoToggler.Background = new SolidColorBrush(Color.FromArgb(47, 69, 255, 00));
-                    };
+                        checkBoxDemoMode.Checked += (s, e) =>
+                        {
+                            _hudSettingsJson.DemoMode = true;
+                            _hudSettings.Save(_hudSettingsJson);
 
-                    checkBoxDemoMode.Unchecked += (s, e) =>
-                    {
-                        _hudSettingsJson.DemoMode = false;
-                        _hudSettings.Save(_hudSettingsJson);
-                        gridDemoToggler.Background = new SolidColorBrush(Color.FromArgb(47, 255, 69, 00));
-                    };
+                            gridDemoToggler.Background = new SolidColorBrush(Color.FromArgb(47, 69, 255, 00));
+                        };
 
-                    this.PreviewMouseUp += (s, e) =>
-                    {
-                        if (e.ChangedButton == MouseButton.Middle)
+                        checkBoxDemoMode.Unchecked += (s, e) =>
+                        {
+                            _hudSettingsJson.DemoMode = false;
+                            _hudSettings.Save(_hudSettingsJson);
+                            gridDemoToggler.Background = new SolidColorBrush(Color.FromArgb(47, 255, 69, 00));
+                        };
+
+                        this.PreviewMouseUp += (s, e) =>
+                        {
+                            if (e.ChangedButton == MouseButton.Middle)
+                            {
+                                this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
+                                e.Handled = true;
+                            }
+                        };
+
+                        listOverlays.MouseDoubleClick += (s, e) => { if (ToggleViewingOverlay()) e.Handled = true; };
+                        listDebugOverlays.MouseDoubleClick += (s, e) => { if (ToggleViewingOverlay()) e.Handled = true; };
+
+                        gridRepositionToggler.MouseUp += (s, e) =>
                         {
                             this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
                             e.Handled = true;
-                        }
-                    };
+                        };
+                        gridDemoToggler.MouseUp += (s, e) =>
+                        {
+                            this.checkBoxDemoMode.IsChecked = !this.checkBoxDemoMode.IsChecked;
+                        };
 
-                    listOverlays.MouseDoubleClick += (s, e) => { if (ToggleViewingOverlay()) e.Handled = true; };
-                    listDebugOverlays.MouseDoubleClick += (s, e) => { if (ToggleViewingOverlay()) e.Handled = true; };
+                        m_GlobalHook = Hook.GlobalEvents();
+                        m_GlobalHook.OnCombination(new Dictionary<Combination, Action> { { Combination.FromString("Control+Home"), () => this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked } });
 
-                    gridRepositionToggler.MouseUp += (s, e) =>
+                        this.PreviewKeyDown += HudOptions_PreviewKeyDown;
+
+
+                        checkBoxDemoMode.IsChecked = _hudSettingsJson.DemoMode;
+                    }
+                    catch (Exception ex)
                     {
-                        this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
-                        e.Handled = true;
-                    };
-                    gridDemoToggler.MouseUp += (s, e) =>
-                    {
-                        this.checkBoxDemoMode.IsChecked = !this.checkBoxDemoMode.IsChecked;
-                    };
-
-                    m_GlobalHook = Hook.GlobalEvents();
-                    m_GlobalHook.OnCombination(new Dictionary<Combination, Action> { { Combination.FromString("Control+Home"), () => this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked } });
-
-                    this.PreviewKeyDown += HudOptions_PreviewKeyDown;
-
-
-                    checkBoxDemoMode.IsChecked = _hudSettingsJson.DemoMode;
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex);
-                    LogWriter.WriteToLog(ex);
-                }
-
+                        Debug.WriteLine(ex);
+                        LogWriter.WriteToLog(ex);
+                    }
+            }));
             Instance = this;
         }
 

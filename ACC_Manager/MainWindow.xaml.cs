@@ -30,7 +30,9 @@ namespace ACCManager
 
         public MainWindow()
         {
+            DateTime startTime = DateTime.Now;
             InitializeComponent();
+            Debug.WriteLine($"Startup time(ms): {DateTime.Now.Subtract(startTime).TotalMilliseconds}");
 
             try
             {

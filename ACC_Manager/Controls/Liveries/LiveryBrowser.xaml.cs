@@ -34,7 +34,7 @@ namespace ACCManager.Controls
             InitializeComponent();
 
             Instance = this;
-            ThreadPool.QueueUserWorkItem(x => FetchAllCars());
+            this.Loaded += (s, e) => ThreadPool.QueueUserWorkItem(x => FetchAllCars());
 
             liveriesTreeViewTeams.SelectedItemChanged += LiveriesTreeView_SelectedItemChanged;
             liveriesTreeViewCars.SelectedItemChanged += LiveriesTreeView_SelectedItemChanged;

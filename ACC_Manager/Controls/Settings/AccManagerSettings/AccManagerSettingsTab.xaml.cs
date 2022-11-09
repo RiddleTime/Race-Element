@@ -1,4 +1,6 @@
 ﻿using ACC_Manager.Util.Settings;
+using System;
+using System.Threading;
 using System.Windows.Controls;
 
 namespace ACCManager.Controls
@@ -12,16 +14,23 @@ namespace ACCManager.Controls
 
         public AccManagerSettingsTab()
         {
-            _settings = new AccManagerSettings();
 
             InitializeComponent();
 
-            toggleRecordLapTelemetry.IsChecked = _settings.Get().TelemetryRecordDetailed;
+
+            ThreadPool.QueueUserWorkItem(x =>
+            {
+                _settings = new AccManagerSettings();
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    toggleRecordLapTelemetry.IsChecked = _settings.Get().TelemetryRecordDetailed;
+                    sliderTelemetryHerz.Value = _settings.Get().TelemetryDetailedHerz;
+                }));
+            });
 
             toggleRecordLapTelemetry.Checked += (s, e) => SaveSettings();
             toggleRecordLapTelemetry.Unchecked += (s, e) => SaveSettings();
 
-            sliderTelemetryHerz.Value = _settings.Get().TelemetryDetailedHerz;
             sliderTelemetryHerz.ValueChanged += (s, e) => SaveSettings();
 
         }
