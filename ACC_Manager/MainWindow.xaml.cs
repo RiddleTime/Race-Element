@@ -11,6 +11,7 @@ using ACCManager.Util;
 using System;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
@@ -159,10 +160,24 @@ namespace ACCManager
                 Trace.WriteLine($"Application Hash: {fileHash}");
                 LogWriter.WriteToLog($"Application Hash: {fileHash}");
                 LogWriter.WriteToLog(loadString);
+
+                UpdateUsage();
             });
 
             if (!App.Instance.StartMinimized)
                 this.WindowState = WindowState.Normal;
+        }
+
+        private void UpdateUsage()
+        {
+            try
+            {
+                string hitCounter = "https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FRiddleTime%2FACC-Manager";
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(hitCounter);
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                response.Close();
+            }
+            catch (Exception) { }
         }
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
