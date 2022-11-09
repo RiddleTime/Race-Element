@@ -28,4 +28,4 @@ Provides tooling for Assetto Corsa Competizione.
 ![image](https://user-images.githubusercontent.com/4581237/190435822-e174f425-b7d5-4952-bdbf-ca1aed66bf53.png)
 ![image](https://user-images.githubusercontent.com/4581237/190436083-0b229cdc-fb82-4c07-b4b8-ffe07399c28d.png)
 
-Times used: [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FRiddleTime%2FACC-Manager&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+Times used: [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FRiddleTime%2FACC-Manager&count_bg=%23FF4500&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Usage%3A+Today+%2F+All-time&edge_flat=false)](https://hits.seeyoufarm.com)
