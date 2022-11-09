@@ -12,6 +12,7 @@ using System;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Net;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
@@ -28,6 +29,7 @@ namespace ACCManager
     {
         internal static MainWindow Instance { get; private set; }
         private readonly UiSettings _uiSettings;
+        private readonly AccManagerSettings _accManagerSettings;
 
         public MainWindow()
         {
@@ -48,6 +50,7 @@ namespace ACCManager
             }
 
             _uiSettings = new UiSettings();
+            _accManagerSettings = new AccManagerSettings();
 
 
             this.Title = $"ACC Manager {GetAssemblyFileVersion()}";
@@ -92,6 +95,8 @@ namespace ACCManager
 
 
             this.Drop += MainWindow_Drop;
+
+            InitializeSystemTrayIcon();
 
             Instance = this;
 
@@ -204,12 +209,44 @@ namespace ACCManager
             Environment.Exit(0);
         }
 
+
+        private System.Windows.Forms.NotifyIcon _notifyIcon;
+        private void InitializeSystemTrayIcon()
+        {
+            _notifyIcon = new System.Windows.Forms.NotifyIcon()
+            {
+                Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location),
+                Visible = false,
+                ContextMenuStrip = CreateContextMenu(),
+                Text = "ACC Manager"
+            };
+
+            _notifyIcon.DoubleClick += (s, e) => Instance.WindowState = WindowState.Normal;
+
+        }
+        private System.Windows.Forms.ContextMenuStrip CreateContextMenu()
+        {
+            var openItem = new System.Windows.Forms.ToolStripMenuItem("Open");
+            openItem.Click += (s, e) => Instance.WindowState = WindowState.Normal;
+            var exitItem = new System.Windows.Forms.ToolStripMenuItem("Exit");
+            exitItem.Click += (s, e) => Environment.Exit(0);
+            var contextMenu = new System.Windows.Forms.ContextMenuStrip { Items = { openItem, exitItem } };
+            return contextMenu;
+        }
+
+
         private void MainWindow_StateChanged(object sender, EventArgs e)
         {
             switch (this.WindowState)
             {
                 case WindowState.Minimized:
                     {
+                        if (_accManagerSettings.Get().MinimizeToSystemTray)
+                        {
+                            _notifyIcon.Visible = true;
+                            ShowInTaskbar = false;
+                        }
+
                         break;
                     }
                 case WindowState.Normal:
@@ -218,6 +255,9 @@ namespace ACCManager
                         mainGrid.Margin = new Thickness(0);
                         //rowTitleBar.Height = new GridLength(30);
                         _stopDecreaseOpacty = true;
+                        ShowInTaskbar = true;
+
+                        _notifyIcon.Visible = false;
                         break;
                     }
                 case WindowState.Maximized:
@@ -225,6 +265,9 @@ namespace ACCManager
                         mainGrid.Margin = new Thickness(8);
                         //rowTitleBar.Height = new GridLength(35);
                         _stopDecreaseOpacty = true;
+                        ShowInTaskbar = true;
+
+                        _notifyIcon.Visible = false;
                         break;
                     }
             }

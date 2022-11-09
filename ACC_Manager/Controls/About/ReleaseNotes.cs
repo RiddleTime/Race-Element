@@ -6,7 +6,10 @@ namespace ACCManager.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.1.0.5", "- Liveries Tab: Added button to refresh the livery trees." },
+            {"0.1.0.5", "- Liveries Tab: Added button to refresh the livery trees."+
+                        "\n- ACC Manager: Added option to minimize the app to the system tray (default off)."+
+                        "\n- Decrease startup time."+
+                        "\n- Added startup counter (global)."},
             {"0.1.0.3", "- HUDs: Added Always On top option to each overlay, allowing you to hide the overlay in the game whilst streaming using the Window option."+
                         "\n- HUD: Added Input Bars Overlay, displaying live throttle and brake inputs with vertical progress bars."+
                         "\n- Liveries: Removed generating, import and export of dds_0 files."},
