@@ -14,28 +14,23 @@ namespace ACCManager.Controls
 
         public AccManagerSettingsTab()
         {
-
             InitializeComponent();
 
-            ThreadPool.QueueUserWorkItem(x =>
+            _settings = new AccManagerSettings();
+            Dispatcher.BeginInvoke(new Action(() =>
             {
-                _settings = new AccManagerSettings();
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    toggleRecordLapTelemetry.IsChecked = _settings.Get().TelemetryRecordDetailed;
-                    sliderTelemetryHerz.Value = _settings.Get().TelemetryDetailedHerz;
-                    toggleMinimizeToSystemTray.IsChecked = _settings.Get().MinimizeToSystemTray;
-                }));
-            });
+                toggleRecordLapTelemetry.IsChecked = _settings.Get().TelemetryRecordDetailed;
+                sliderTelemetryHerz.Value = _settings.Get().TelemetryDetailedHerz;
+                toggleMinimizeToSystemTray.IsChecked = _settings.Get().MinimizeToSystemTray;
 
-            toggleRecordLapTelemetry.Checked += (s, e) => SaveSettings();
-            toggleRecordLapTelemetry.Unchecked += (s, e) => SaveSettings();
+                toggleRecordLapTelemetry.Checked += (s, e) => SaveSettings();
+                toggleRecordLapTelemetry.Unchecked += (s, e) => SaveSettings();
 
-            toggleMinimizeToSystemTray.Checked += (s, e) => SaveSettings();
-            toggleMinimizeToSystemTray.Unchecked += (s, e) => SaveSettings();
+                toggleMinimizeToSystemTray.Checked += (s, e) => SaveSettings();
+                toggleMinimizeToSystemTray.Unchecked += (s, e) => SaveSettings();
 
-            sliderTelemetryHerz.ValueChanged += (s, e) => SaveSettings();
-
+                sliderTelemetryHerz.ValueChanged += (s, e) => SaveSettings();
+            }));
         }
 
         private void SaveSettings()
