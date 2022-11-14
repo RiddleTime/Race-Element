@@ -19,7 +19,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStaticInfo
         public StaticInfoOverlay(Rectangle rectangle) : base(rectangle, "Debug Static Overlay")
         {
             this.AllowReposition = false;
-            this.RefreshRateHz = 5;
             this.Width = 340;
             this.Height = 325;
 

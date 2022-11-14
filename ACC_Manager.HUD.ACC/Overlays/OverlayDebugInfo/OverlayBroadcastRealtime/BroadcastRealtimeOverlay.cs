@@ -24,7 +24,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
         public BroadcastRealtimeOverlay(Rectangle rectangle) : base(rectangle, "Debug BroadcastRealtime Overlay")
         {
             this.AllowReposition = false;
-            this.RefreshRateHz = 10;
             this.Width = 300;
             this.Height = 300;
 

@@ -47,7 +47,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
             _yMonoSmall = _fontFamilySmall.Height / 5;
             this.Width = 135;
             this.Height = 200;
-            this.RefreshRateHz = 10;
         }
 
         public sealed override void BeforeStart()

@@ -48,7 +48,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             _table = new InfoTable(10, new int[] { 85, 83 }) { Y = 17 };
             this.Width = _overlayWidth + 1;
             this.Height = _table.FontHeight * 7 + 2 + 4;
-            RefreshRateHz = 10;
         }
 
         public sealed override void BeforeStart()

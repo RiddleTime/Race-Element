@@ -85,13 +85,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
         {
             this.Height = _height;
             this.Width = _width;
-            this.RefreshRateHz = 10;
             InitCarClassEntryLists();
         }
 
         public sealed override void BeforeStart()
         {
-            this.RefreshRateHz = 1;
             RaceSessionTracker.Instance.OnACStatusChanged += StatusChanged;
             RaceSessionTracker.Instance.OnACSessionTypeChanged += SessionTypeChanged;
             BroadcastTracker.Instance.OnTrackDataUpdate += TrackDataUpdate;

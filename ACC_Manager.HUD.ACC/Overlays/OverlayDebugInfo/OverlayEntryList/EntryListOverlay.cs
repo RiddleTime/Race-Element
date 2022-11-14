@@ -52,7 +52,6 @@ Description = "A panel showing live broadcast track data.")]
         public EntryListOverlay(Rectangle rect) : base(rect, "Debug EntryList Overlay")
         {
             this.AllowReposition = false;
-            this.RefreshRateHz = 10;
 
             float fontSize = 9;
             var font = FontUtil.FontUnispace(fontSize);

@@ -32,7 +32,7 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public bool IsRepositioning { get; internal set; }
 
-        public int RefreshRateHz = 30;
+        public int MaximumRefreshRate = 60;
 
         public SPageFilePhysics pagePhysics;
         public SPageFileGraphic pageGraphics;
@@ -128,6 +128,7 @@ namespace ACCManager.HUD.Overlay.Internal
                         this.WindowMode = overlayConfig.Window;
 
                     this.AlwaysOnTop = overlayConfig.AlwaysOnTop;
+                    this.MaximumRefreshRate = overlayConfig.MaximumRefreshRate;
                 }
             }
         }
@@ -179,27 +180,35 @@ namespace ACCManager.HUD.Overlay.Internal
                 Draw = true;
                 this.Show();
 
-                new Thread(x =>
+                if (!RequestsDrawItself)
                 {
-                    this.RefreshRateHz.Clip(1, 100);
-                    while (Draw)
+                    new Thread(x =>
                     {
-                        lock (this)
+                        var lastRefreshTime = DateTime.UtcNow;
+                        while (Draw)
                         {
-                            Thread.Sleep(1000 / RefreshRateHz);
-                            if (this == null || this._disposed)
+                            lock (this)
                             {
-                                this.Stop();
-                                return;
-                            }
+                                var currenTime = DateTime.UtcNow;
+                                var nextRefreshTime = lastRefreshTime.AddSeconds(1.0 / this.MaximumRefreshRate);
+                                var waitTime = nextRefreshTime - currenTime;
+                                lastRefreshTime = nextRefreshTime;
+                                if (waitTime.Ticks > 0)
+                                    Thread.Sleep(waitTime);
 
-                            if (!RequestsDrawItself)
+                                if (this == null || this._disposed)
+                                {
+                                    this.Stop();
+                                    return;
+                                }
+
                                 this.UpdateLayeredWindow();
+                            }
                         }
-                    }
 
-                    this.Stop();
-                }).Start();
+                        this.Stop();
+                    }).Start();
+                }
             }
             catch (Exception ex) { Debug.WriteLine(ex); }
         }

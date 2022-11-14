@@ -19,7 +19,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayGraphicsInfo
         public GraphicsInfoOverlay(Rectangle rectangle) : base(rectangle, "Debug Graphics Overlay")
         {
             this.AllowReposition = false;
-            this.RefreshRateHz = 5;
             this.Width = 275;
             this.Height = 1105;
 

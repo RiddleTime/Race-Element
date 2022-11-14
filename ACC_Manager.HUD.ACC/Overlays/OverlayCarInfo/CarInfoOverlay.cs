@@ -44,7 +44,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
             this.infoPanel = new InfoPanel(10, panelWidth);
             this.Width = panelWidth + 1;
             this.Height = this.infoPanel.FontHeight * 5 + 1;
-            this.RefreshRateHz = 3;
         }
 
         public sealed override void BeforeStart()

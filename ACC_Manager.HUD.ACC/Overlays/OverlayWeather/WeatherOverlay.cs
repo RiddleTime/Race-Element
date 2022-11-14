@@ -27,7 +27,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayWeather
 
         public WeatherOverlay(Rectangle rectangle) : base(rectangle, "Overlay Weather")
         {
-            this.RefreshRateHz = 1;
             int panelWidth = 200;
             _panel = new InfoPanel(10, panelWidth);
 

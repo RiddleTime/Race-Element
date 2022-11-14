@@ -48,7 +48,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
 
         public ShiftIndicatorOverlay(Rectangle rectangle) : base(rectangle, "Shift Indicator Overlay")
         {
-            this.RefreshRateHz = 40;
             AllowReposition = true;
             this.Height = _config.Height + 1;
             this.Width = _config.Width + 1;
@@ -135,7 +134,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
         {
             g.DrawRoundedRectangle(_limiterBackground, new Rectangle(0, 0, _config.Width, _config.Height), 6);
 
-            if (_limiterColorSwitch > this.RefreshRateHz / 3) // makes this flash 3 times a second
+            if (_limiterColorSwitch > this.MaximumRefreshRate / 3) // makes this flash 3 times a second
             {
                 _limiterBackground.Color = _limiterBackground.Color == Color.Yellow ? Color.Transparent : Color.Yellow;
                 _limiterColorSwitch = 0;

@@ -34,7 +34,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
         {
             this.Width = 230;
             this.Height = _panel.FontHeight * 6; ;
-            RefreshRateHz = 5;
         }
 
         public sealed override void BeforeStart()

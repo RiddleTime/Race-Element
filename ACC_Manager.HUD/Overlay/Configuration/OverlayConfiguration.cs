@@ -16,6 +16,10 @@ namespace ACCManager.HUD.Overlay.Configuration
         [ToolTip("When streaming with Window enabled turn this off when you don't want to see the actual overlay on top of your game.")]
         public bool AlwaysOnTop { get; set; } = true;
 
+        [ToolTip("Refresh rate of the overlay will be capped at this value.")]
+        [IntRange(1, 1000, 1)]
+        public int MaximumRefreshRate { get; set; } = 60;
+
         public OverlayConfiguration()
         {
         }

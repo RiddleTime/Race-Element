@@ -42,8 +42,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
 
         public sealed override void BeforeStart()
         {
-            this.RefreshRateHz = 20;
-
             this.Width = 225;
             this.Height = this.Width;
 

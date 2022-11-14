@@ -62,7 +62,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
         {
             this.Width = windowWidth;
             this.Height = windowHeight;
-            this.RefreshRateHz = 5;
         }
 
 

@@ -19,7 +19,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
         public BroadcastTrackDataOverlay(Rectangle rectangle) : base(rectangle, "Debug BroadcastTrackData Overlay")
         {
             this.AllowReposition = false;
-            this.RefreshRateHz = 5;
             this.Width = 300;
             this.Height = 80;
 

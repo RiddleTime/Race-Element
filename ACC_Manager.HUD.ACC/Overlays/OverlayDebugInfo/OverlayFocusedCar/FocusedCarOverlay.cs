@@ -26,7 +26,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayFocusedCar
         {
             this.Width = 600;
             this.Height = 600;
-            this.RefreshRateHz = 10;
         }
 
         public override void BeforeStart()
