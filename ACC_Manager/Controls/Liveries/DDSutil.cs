@@ -69,25 +69,33 @@ namespace ACCManager.Controls.Liveries
 
         public static bool HasDdsFiles(LiveryTreeCar livery)
         {
-            for (int i = 0; i < pngsToDDS.Count; i++)
+            try
             {
-                KeyValuePair<string, string> kvp = pngsToDDS.ElementAt(i);
-
-                DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + livery.CarsRoot.CustomSkinName);
-                if (customSkinDir != null && customSkinDir.Exists)
+                for (int i = 0; i < pngsToDDS.Count; i++)
                 {
-                    //check if png exists
-                    FileInfo[] foundFiles = customSkinDir.GetFiles(kvp.Value);
+                    KeyValuePair<string, string> kvp = pngsToDDS.ElementAt(i);
 
-                    if (foundFiles != null && foundFiles.Length > 0)
+                    DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + livery.CarsRoot.CustomSkinName);
+                    if (customSkinDir != null && customSkinDir.Exists)
                     {
-                        foundFiles = customSkinDir.GetFiles(kvp.Key);
-                        if (foundFiles == null || foundFiles.Length == 0)
+                        //check if png exists
+                        FileInfo[] foundFiles = customSkinDir.GetFiles(kvp.Value);
+
+                        if (foundFiles != null && foundFiles.Length > 0)
                         {
-                            return false;
+                            foundFiles = customSkinDir.GetFiles(kvp.Key);
+                            if (foundFiles == null || foundFiles.Length == 0)
+                            {
+                                return false;
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                LogWriter.WriteToLog(e);
+                return false;
             }
 
             return true;
