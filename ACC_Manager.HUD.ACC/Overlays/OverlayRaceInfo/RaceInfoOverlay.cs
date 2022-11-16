@@ -60,6 +60,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRaceInfo
                         this._panel.AddLine("Pit Open In", $"{pitWindowStart.Subtract(broadCastRealTime.SessionTime):hh\\:mm\\:ss}");
                     else if (broadCastRealTime.SessionTime < pitWindowEnd)
                         this._panel.AddLine("Pit Closing", $"{pitWindowEnd.Subtract(broadCastRealTime.SessionTime):hh\\:mm\\:ss}");
+                    else this._panel.AddLine("Pit", "Closed");
                 }
 
             TimeSpan sessionLength = broadCastRealTime.SessionEndTime.Add(broadCastRealTime.SessionTime);
