@@ -38,6 +38,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySpeedometer
                 FirstRowLine = 1
             };
             this.Height = _panel.FontHeight * 3 + 1;
+            this.RefreshRateHz = 10;
         }
 
         public sealed override void BeforeStart()
