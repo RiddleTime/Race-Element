@@ -188,9 +188,8 @@ namespace ACCManager.HUD.Overlay.Internal
                         {
                             lock (this)
                             {
-                                var currenTime = DateTime.UtcNow;
                                 var nextRefreshTime = lastRefreshTime.AddSeconds(1.0 / this.RefreshRateHz);
-                                var waitTime = nextRefreshTime - currenTime;
+                                var waitTime = nextRefreshTime - DateTime.UtcNow;
                                 lastRefreshTime = nextRefreshTime;
                                 if (waitTime.Ticks > 0)
                                     Thread.Sleep(waitTime);
