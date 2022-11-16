@@ -6,6 +6,8 @@ namespace ACCManager.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.1.0.7", "-HUDs: Improvements to maintaining rendering frequency (Thank you FBalazs)."+
+                        "\n-ACC Manager: Fixed persistance of minimize app to systemt tray option."},
             {"0.1.0.5", "- Liveries Tab: Added button to refresh the livery trees."+
                         "\n- ACC Manager: Added option to minimize the app to the system tray (default off)."+
                         "\n- Decrease startup time."+
