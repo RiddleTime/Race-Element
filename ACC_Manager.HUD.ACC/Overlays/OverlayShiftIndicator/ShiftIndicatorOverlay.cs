@@ -41,6 +41,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
         private string _lastCar = string.Empty;
         private CachedBitmap _cachedBackground;
         private CachedBitmap _cachedRpmLines;
+        private CachedBitmap _cachedPitLimiterOutline;
 
         private Font _font;
         private float _halfRpmStringWidth = -1;
@@ -91,6 +92,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
                 }
 
             });
+
+            if (_config.ShowPitLimiter)
+                _cachedPitLimiterOutline = new CachedBitmap((int)(_config.Width * this.Scale + 1), (int)(_config.Height * this.Scale + 1), g =>
+                {
+                    g.DrawRoundedRectangle(new Pen(Color.Yellow, 2.5f), new Rectangle(0, 0, (int)(_config.Width * this.Scale), (int)(_config.Height * this.Scale)), (int)(6 * Scale));
+                });
         }
 
         public sealed override void BeforeStop()
@@ -130,16 +137,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
         }
 
         private int _limiterColorSwitch = 0;
-        private Pen _limiterBackground = new Pen(Color.Yellow, 2);
         private void DrawPitLimiterBar(Graphics g)
         {
-            g.DrawRoundedRectangle(_limiterBackground, new Rectangle(0, 0, _config.Width, _config.Height), 6);
+            if (_limiterColorSwitch > this.RefreshRateHz / 5)
+                _cachedPitLimiterOutline?.Draw(g, 0, 0, _config.Width, _config.Height);
 
-            if (_limiterColorSwitch > this.RefreshRateHz / 3) // makes this flash 3 times a second
-            {
-                _limiterBackground.Color = _limiterBackground.Color == Color.Yellow ? Color.Transparent : Color.Yellow;
+            if (_limiterColorSwitch > this.RefreshRateHz / 2) // makes this flash 3 times a second
                 _limiterColorSwitch = 0;
-            }
 
             _limiterColorSwitch++;
         }
