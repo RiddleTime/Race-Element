@@ -30,12 +30,14 @@ namespace ACCManager.Controls.Util.Updater
             if (!DownloadNewVersion(asset.BrowserDownloadUrl, currentAssemblyFile.FullName))
             {
                 LogWriter.WriteToLog("AutoUpdater: Something went wrong trying to download the newest version.");
+                RevertVersion(assemblyStart);
                 return;
             }
 
             if (!RunNewVersion(currentAssemblyFile.FullName))
             {
                 LogWriter.WriteToLog("AutoUpdater: Something went wrong trying to run the newest version.");
+                RevertVersion(assemblyStart);
                 return;
             }
         }
@@ -53,6 +55,22 @@ namespace ACCManager.Controls.Util.Updater
                 targetFile.Delete();
 
             toBeMoved.MoveTo(tempTargetFile);
+
+            Debug.WriteLine($"Current location of currentExecutable {toBeMoved.FullName} ");
+            return true;
+        }
+
+        private bool RevertVersion(string currentExecutableFullName)
+        {
+            Debug.WriteLine($"AutoUpdater: Reverting Executable from {FileUtil.AccManagerDocumentsPath} to {currentExecutableFullName}");
+
+            FileInfo toBeMoved = new FileInfo($"{FileUtil.AccManagerDocumentsPath}AccManager.exe");
+
+            FileInfo targetFile = new FileInfo(currentExecutableFullName);
+            if (targetFile.Exists)
+                targetFile.Delete();
+
+            toBeMoved.MoveTo(currentExecutableFullName);
 
             Debug.WriteLine($"Current location of currentExecutable {toBeMoved.FullName} ");
             return true;
