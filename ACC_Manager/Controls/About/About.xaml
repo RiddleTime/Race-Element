@@ -40,9 +40,7 @@
                         </TextBlock>
                     </StackPanel>
 
-                    <StackPanel x:Name="ReleaseStackPanel" Orientation="Vertical" HorizontalAlignment="Left" Width="250" VerticalAlignment="Top" Margin="10,5,5,0">
-                    </StackPanel>
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="100" VerticalAlignment="Bottom" Margin="10,-5,-5,7">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="100" VerticalAlignment="Top" Margin="10,7,-5,7">
                         <Button x:Name="buttonDiscord" >
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -94,6 +92,9 @@
                                 <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" Donate"></TextBlock>
                             </Grid>
                         </Button>
+                    </StackPanel>
+
+                    <StackPanel x:Name="ReleaseStackPanel" Orientation="Vertical" HorizontalAlignment="Right" Width="250" VerticalAlignment="Top" Margin="10,5,5,0">
                     </StackPanel>
 
                 </Grid>

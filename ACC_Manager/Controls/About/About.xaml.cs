@@ -1,7 +1,10 @@
 ﻿using ACC_Manager.Util.SystemExtensions;
+using ACCManager.Controls.Util.Updater;
+using ACCManager.Util;
 using Octokit;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -41,7 +44,7 @@ namespace ACCManager.Controls
                 WindowStyle = ProcessWindowStyle.Hidden,
             });
 
-            this.Loaded += (s, e) => new Thread((x) => CheckNewestVersion()).Start();
+            new Thread(() => CheckNewestVersion()).Start();
 
             this.IsVisibleChanged += (s, e) =>
             {
@@ -60,11 +63,13 @@ namespace ACCManager.Controls
 
         private async void CheckNewestVersion()
         {
+            RemoveTempVersionFile();
 #if DEBUG
             TitleBar.Instance.SetAppTitle("Dev");
             return;
 #endif
 #pragma warning disable CS0162 // Unreachable code detected
+
             try
             {
                 if (HasAddedDownloadButton)
@@ -89,22 +94,27 @@ namespace ACCManager.Controls
 
                         if (release != null)
                         {
+                            var accManagerAsset = release.Assets.Where(x => x.Name == "AccManager.exe").First();
+
                             await Dispatcher.BeginInvoke(new Action(() =>
                              {
                                  MainWindow.Instance.EnqueueSnackbarMessage($"A new version of ACC Manager is available: {latest.Name}");
                                  Button openReleaseButton = new Button()
                                  {
-                                     Margin = new Thickness(5, 0, 0, 0),
-                                     Content = $"Download {latest.Name} at GitHub",
+                                     Margin = new Thickness(0, 0, 0, 0),
+                                     Content = $"Auto-update to version {latest.Name}",
                                      ToolTip = $"Release notes:\n{release.Body}"
                                  };
                                  ToolTipService.SetShowDuration(openReleaseButton, int.MaxValue);
-                                 openReleaseButton.Click += (s, e) => Process.Start(new ProcessStartInfo()
+                                 openReleaseButton.Click += (s, e) =>
                                  {
-                                     FileName = "cmd",
-                                     Arguments = $"/c start {release.HtmlUrl}",
-                                     WindowStyle = ProcessWindowStyle.Hidden,
-                                 });
+                                     openReleaseButton.IsEnabled = false;
+                                     MainWindow.Instance.EnqueueSnackbarMessage($"Updating to version... {latest.Name}, this may take a while..");
+                                     new Thread(x =>
+                                     {
+                                         new AppUpdater().Update(accManagerAsset);
+                                     }).Start();
+                                 };
                                  ReleaseStackPanel.Children.Add(openReleaseButton);
                                  HasAddedDownloadButton = true;
                              }));
@@ -117,6 +127,22 @@ namespace ACCManager.Controls
             {
             }
 #pragma warning restore CS0162 // Unreachable code detected
+        }
+
+        private void RemoveTempVersionFile()
+        {
+            try
+            {
+                string tempTargetFile = $"{FileUtil.AccManagerDocumentsPath}AccManager.exe";
+                FileInfo tempFile = new FileInfo(tempTargetFile);
+
+                if (tempFile.Exists)
+                    tempFile.Delete();
+            }
+            catch (Exception e)
+            {
+                LogWriter.WriteToLog(e);
+            }
         }
 
         private long VersionToLong(Version VersionInfo)

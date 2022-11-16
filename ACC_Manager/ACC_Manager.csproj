@@ -449,6 +449,7 @@
     <Compile Include="Controls\Tools\ToolsTabs.xaml.cs">
       <DependentUpon>ToolsTabs.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Util\Updater\Updater.cs" />
     <Compile Include="LiveryParser\CarsJson.cs" />
     <Compile Include="LiveryParser\PaintDetailsJson.cs" />
     <Page Include="Controls\About\About.xaml">

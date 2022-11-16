@@ -110,9 +110,16 @@ namespace ACCManager.Controls
 
         public static string GetAssemblyFileVersion()
         {
-            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(assembly.Location);
-            return fileVersion.FileVersion;
+            try
+            {
+                System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(assembly.Location);
+                return fileVersion.FileVersion;
+            }
+            catch (Exception e)
+            {
+                return String.Empty;
+            }
         }
     }
 }
