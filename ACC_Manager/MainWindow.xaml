@@ -47,7 +47,7 @@
 
         </controls:TitleBar>
 
-        <materialDesign:Snackbar Grid.Row="1" Panel.ZIndex="1" Margin="70,0,0,0" HorizontalAlignment="Center" x:Name="snackbar" MessageQueue="{materialDesign:MessageQueue}" />
+        <materialDesign:Snackbar Grid.Row="1" Panel.ZIndex="4" Margin="70,0,0,0" HorizontalAlignment="Center" x:Name="snackbar" MessageQueue="{materialDesign:MessageQueue}" />
 
         <TabControl x:Name="tabControl" Style="{StaticResource MaterialDesignTabControl}" VerticalContentAlignment="Top" TabStripPlacement="Left" Grid.Row="1">
 

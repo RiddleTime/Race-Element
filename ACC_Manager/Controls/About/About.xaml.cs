@@ -63,6 +63,8 @@ namespace ACCManager.Controls
 
         private async void CheckNewestVersion()
         {
+            Thread.Sleep(2000);
+
             RemoveTempVersionFile();
 #if DEBUG
             TitleBar.Instance.SetAppTitle("Dev");
@@ -98,7 +100,7 @@ namespace ACCManager.Controls
 
                             await Dispatcher.BeginInvoke(new Action(() =>
                              {
-                                 MainWindow.Instance.EnqueueSnackbarMessage($"A new version of ACC Manager is available: {latest.Name}");
+                                 MainWindow.Instance.EnqueueSnackbarMessage($"A new version of ACC Manager is available: {latest.Name}", " Open About tab ", new Action(() => { MainWindow.Instance.tabAbout.Focus(); }));
                                  Button openReleaseButton = new Button()
                                  {
                                      Margin = new Thickness(0, 0, 0, 0),
