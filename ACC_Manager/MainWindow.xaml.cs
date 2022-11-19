@@ -364,7 +364,7 @@ namespace ACCManager
                 FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(assembly.Location);
                 return fileVersion.FileVersion;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return String.Empty;
             }
