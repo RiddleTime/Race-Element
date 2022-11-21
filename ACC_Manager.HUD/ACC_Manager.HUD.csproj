@@ -71,7 +71,8 @@
     <Compile Include="Overlay\OverlayUtil\InfoPanel.cs" />
     <Compile Include="Overlay\OverlayUtil\InfoTable.cs" />
     <Compile Include="Overlay\OverlayUtil\ProgressBar.cs" />
-    <Compile Include="Overlay\OverlayUtil\VerticalProgressBar.cs" />
+    <Compile Include="Overlay\OverlayUtil\ProgressBars\HorizontalProgressBar.cs" />
+    <Compile Include="Overlay\OverlayUtil\ProgressBars\VerticalProgressBar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

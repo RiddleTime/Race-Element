@@ -1,8 +1,13 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace ACCManager.HUD.Overlay.OverlayUtil
+namespace ACCManager.HUD.Overlay.OverlayUtil.ProgressBars
 {
-    public class VerticalProgressBar
+    public class HorizontalProgressBar
     {
         // dimension
         private int _width;
@@ -22,7 +27,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
 
         private CachedBitmap _cachedOutline;
 
-        public VerticalProgressBar(int width, int height)
+        public HorizontalProgressBar(int width, int height)
         {
             _width = width;
             _height = height;
@@ -44,12 +49,12 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                 {
                     if (percent >= 0.035f)
                     {
-                        int height = (int)(scaledHeight * percent);
-                        bg.FillRoundedRectangle(FillBrush, new Rectangle(0, 0 + scaledHeight - height, scaledWidth, height), (int)(Rounding * Scale));
+                        int width = (int)(scaledWidth * percent);
+                        bg.FillRoundedRectangle(FillBrush, new Rectangle(0, 0, scaledWidth - width, scaledHeight), (int)(Rounding * Scale));
                     }
                 }
                 else
-                    bg.FillRectangle(FillBrush, new Rectangle(0, 0 + scaledHeight - (int)(scaledHeight * percent), scaledWidth, (int)(scaledHeight)));
+                    bg.FillRectangle(FillBrush, new Rectangle(0, 0 + scaledHeight, scaledWidth - (int)(scaledWidth * percent), (int)(scaledHeight)));
             });
 
             barBitmap?.Draw(g, x, y, _width, _height);
