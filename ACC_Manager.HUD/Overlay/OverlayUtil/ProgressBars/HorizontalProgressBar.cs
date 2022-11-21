@@ -50,11 +50,11 @@ namespace ACCManager.HUD.Overlay.OverlayUtil.ProgressBars
                     if (percent >= 0.035f)
                     {
                         int width = (int)(scaledWidth * percent);
-                        bg.FillRoundedRectangle(FillBrush, new Rectangle(0, 0, scaledWidth - width, scaledHeight), (int)(Rounding * Scale));
+                        bg.FillRoundedRectangle(FillBrush, new Rectangle(0, 0, width, scaledHeight), (int)(Rounding * Scale));
                     }
                 }
                 else
-                    bg.FillRectangle(FillBrush, new Rectangle(0, 0 + scaledHeight, scaledWidth - (int)(scaledWidth * percent), (int)(scaledHeight)));
+                    bg.FillRectangle(FillBrush, new Rectangle(0, 0, scaledWidth - (int)(scaledWidth * percent), (int)(scaledHeight)));
             });
 
             barBitmap?.Draw(g, x, y, _width, _height);
