@@ -150,11 +150,11 @@
     <Reference Include="PaintDotNet.Base, Version=3.36.7079.22820, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DdsFileTypePlusHack.1.0.4\lib\net45\PaintDotNet.Base.dll</HintPath>
     </Reference>
-    <Reference Include="ScottPlot, Version=4.1.58.0, Culture=neutral, PublicKeyToken=86698dc10387c39e, processorArchitecture=MSIL">
-      <HintPath>..\packages\ScottPlot.4.1.58\lib\net462\ScottPlot.dll</HintPath>
+    <Reference Include="ScottPlot, Version=4.1.59.0, Culture=neutral, PublicKeyToken=86698dc10387c39e, processorArchitecture=MSIL">
+      <HintPath>..\packages\ScottPlot.4.1.59\lib\net462\ScottPlot.dll</HintPath>
     </Reference>
-    <Reference Include="ScottPlot.WPF, Version=4.1.58.0, Culture=neutral, PublicKeyToken=e53b06131e34a3aa, processorArchitecture=MSIL">
-      <HintPath>..\packages\ScottPlot.WPF.4.1.58\lib\net48\ScottPlot.WPF.dll</HintPath>
+    <Reference Include="ScottPlot.WPF, Version=4.1.59.0, Culture=neutral, PublicKeyToken=e53b06131e34a3aa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ScottPlot.WPF.4.1.59\lib\net48\ScottPlot.WPF.dll</HintPath>
     </Reference>
     <Reference Include="SharpCompress, Version=0.32.2.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpCompress.0.32.2\lib\net461\SharpCompress.dll</HintPath>
