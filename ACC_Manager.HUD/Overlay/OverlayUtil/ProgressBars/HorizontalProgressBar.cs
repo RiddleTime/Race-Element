@@ -54,7 +54,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil.ProgressBars
                     }
                 }
                 else
-                    bg.FillRectangle(FillBrush, new Rectangle(0, 0, scaledWidth - (int)(scaledWidth * percent), (int)(scaledHeight)));
+                    bg.FillRectangle(FillBrush, new Rectangle(0, 0, (int)(scaledWidth * percent), (int)(scaledHeight)));
             });
 
             barBitmap?.Draw(g, x, y, _width, _height);
