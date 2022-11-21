@@ -6,6 +6,8 @@ namespace ACCManager.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.1.1.2", "- HUD: Input bars overlay now has the option to set the bars to horizontal mode."+
+                        "- HUD: Added beta version of Race Info Overlay."},
             {"0.1.1.1", "- Changed dry tyres for Lamborghini Super Trofeo cars to GT4." },
             {"0.1.1.0", "- Auto Updater added: in the about tab when a new version is released there will be a 1 click button to update the app."+
                         "\n- HUDs: Improvements to maintaining rendering frequency (Thank you FBalazs)."+
