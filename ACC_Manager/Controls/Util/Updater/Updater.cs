@@ -29,7 +29,6 @@ namespace ACCManager.Controls.Util.Updater
 
             if (!DownloadNewVersion(asset.BrowserDownloadUrl, currentAssemblyFile.FullName))
             {
-                LogWriter.WriteToLog("AutoUpdater: Something went wrong trying to download the newest version.");
                 RevertVersion(assemblyStart);
                 return;
             }
@@ -62,17 +61,25 @@ namespace ACCManager.Controls.Util.Updater
 
         private bool RevertVersion(string currentExecutableFullName)
         {
-            Debug.WriteLine($"AutoUpdater: Reverting Executable from {FileUtil.AccManagerDocumentsPath} to {currentExecutableFullName}");
+            try
+            {
+                Debug.WriteLine($"AutoUpdater: Reverting Executable from {FileUtil.AccManagerDocumentsPath} to {currentExecutableFullName}");
 
-            FileInfo toBeMoved = new FileInfo($"{FileUtil.AccManagerDocumentsPath}AccManager.exe");
+                FileInfo toBeMoved = new FileInfo($"{FileUtil.AccManagerDocumentsPath}AccManager.exe");
 
-            FileInfo targetFile = new FileInfo(currentExecutableFullName);
-            if (targetFile.Exists)
-                targetFile.Delete();
+                FileInfo targetFile = new FileInfo(currentExecutableFullName);
+                if (targetFile.Exists)
+                    targetFile.Delete();
 
-            toBeMoved.MoveTo(currentExecutableFullName);
+                toBeMoved.MoveTo(currentExecutableFullName);
 
-            Debug.WriteLine($"Current location of currentExecutable {toBeMoved.FullName} ");
+                Debug.WriteLine($"Current location of currentExecutable {toBeMoved.FullName} ");
+            }
+            catch (Exception e)
+            {
+                LogWriter.WriteToLog("AutoUpdater: Something went wrong trying to revert the previous version.");
+                LogWriter.WriteToLog(e);
+            }
             return true;
         }
 
@@ -88,8 +95,10 @@ namespace ACCManager.Controls.Util.Updater
                 FileInfo newVersion = new FileInfo(targetFile);
                 return newVersion.Exists;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                LogWriter.WriteToLog("AutoUpdater: Something went wrong trying to download the newest version.");
+                LogWriter.WriteToLog(e);
                 return false;
             }
         }
