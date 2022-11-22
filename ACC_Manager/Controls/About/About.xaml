@@ -41,7 +41,7 @@
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="100" VerticalAlignment="Top" Margin="6,6,-5,7">
-                        <Button x:Name="buttonDiscord" Height="36" Padding="0">
+                        <Button x:Name="buttonDiscord" Height="36" Padding="0" Background="Black" BorderBrush="Black">
                             <Grid HorizontalAlignment="Stretch">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="5*"/>
@@ -59,7 +59,7 @@
                                 <TextBlock Grid.Column="1" Foreground="White" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Right" Text=" Discord"></TextBlock>
                             </Grid>
                         </Button>
-                        <Button x:Name="buttonGithub" Margin="0,12,0,0" Height="36" Padding="0">
+                        <Button x:Name="buttonGithub" Margin="0,12,0,0" Height="36" Padding="0" Background="Black" BorderBrush="Black">
                             <Grid HorizontalAlignment="Stretch">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="5*"/>
@@ -77,7 +77,7 @@
                                 <TextBlock Grid.Column="1" Foreground="White" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Right" Text=" GitHub"></TextBlock>
                             </Grid>
                         </Button>
-                        <Button x:Name="buttonDonate" Margin="0,12,0,0" Height="40" ToolTip="Support RiddleTime" Padding="0">
+                        <Button x:Name="buttonDonate" Margin="0,12,0,0" Height="40" ToolTip="Make RiddleTime save up for loadcell pedals." Padding="0" Background="Black" BorderBrush="Black">
                             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="5*"/>
@@ -85,14 +85,14 @@
                                 </Grid.ColumnDefinitions>
                                 <materialDesign:PackIcon
                                 Grid.Column="0"
-                                Kind="WeightLifter"
+                                Kind="RocketLaunchOutline"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Left"
                                 Width="22"
                                 Height="22"
                                 Foreground="Gold"    
                                 />
-                                <TextBlock Grid.Column="1" Foreground="White" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Right" Text=" Donate"></TextBlock>
+                                <TextBlock Grid.Column="1" Foreground="Gold" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Right" Text=" Donate"></TextBlock>
                             </Grid>
                         </Button>
                     </StackPanel>
