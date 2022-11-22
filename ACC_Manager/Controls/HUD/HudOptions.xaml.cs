@@ -584,6 +584,13 @@ namespace ACCManager.Controls
                 configFields = overlayConfig.GetConfigFields();
 
 
+            // discover classes in OverlaySettings class
+            List<MemberInfo> classes = overlayConfig.GetType().GetMembers().ToList();
+            foreach (MemberInfo type in classes)
+            {
+                Debug.WriteLine($"{type.GetType().Namespace}.{type.Name}");
+            }
+
 
             // translate properties into user controls using the given fields
             List<PropertyInfo> props = overlayConfig.GetProperties();
