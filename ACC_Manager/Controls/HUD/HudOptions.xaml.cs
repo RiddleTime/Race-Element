@@ -602,8 +602,7 @@ namespace ACCManager.Controls
                     StackPanel boxStacker = new StackPanel() { Orientation = Orientation.Vertical };
                     GroupBox box = new GroupBox()
                     {
-                        Header = cga.Title,
-                        ToolTip = cga.Description,
+                        Header = $"{cga.Title} - {cga.Description}",
                         Content = boxStacker,
                         Background = Brushes.Black,
                         Foreground = Brushes.Black
