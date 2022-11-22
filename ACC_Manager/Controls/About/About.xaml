@@ -200,9 +200,9 @@
                                     - Right click skins to delete (or press Delete key).<LineBreak/>
                                     - Right click skins to tag them.<LineBreak/><LineBreak/>
                                    DDS(DirectDraw Surface) Generator:<LineBreak/>
-                                    - Button is visible in viewer when dds_0 and dds_1 do not exist.<LineBreak/>
-                                    - Generate dds_0 and dds_1 files.<LineBreak/>
-                                    - Bulk generate dds_0 and dds_1 files, click the button below the livery browser.
+                                    - Button is visible in viewer when dds_1 do not exist.<LineBreak/>
+                                    - Generate dds_1 files.<LineBreak/>
+                                    - Bulk generate dds_1 files, click the button below the livery browser.
                                     <LineBreak/> <LineBreak/>
                                    Importer:<LineBreak/>
                                     - Import archives, supports multi-select and archives with multiple liveries.<LineBreak/>
@@ -211,6 +211,7 @@
                                    Exporter:<LineBreak/>
                                     - Once you add 1 skin to skin pack a new panel opens.<LineBreak/>
                                     - Click items in the exporter to remove them from the pack.<LineBreak/>
+                                    - Export with or without dds_1 files.
                                     - Exports as zip.
                                 </TextBlock>
                             </StackPanel>
