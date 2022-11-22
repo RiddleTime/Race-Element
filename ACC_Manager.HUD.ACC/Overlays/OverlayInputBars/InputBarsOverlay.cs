@@ -47,7 +47,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
 
         private HorizontalProgressBar _horizontalGasBar;
         private HorizontalProgressBar _horizontalBrakeBar;
-
         private VerticalProgressBar _verticalGasBar;
         private VerticalProgressBar _verticalBrakeBar;
 
