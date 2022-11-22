@@ -261,11 +261,10 @@ namespace ACCManager.Controls
             toggle.PreviewKeyDown += (s, e) => { if (e.Key == Key.Enter) e.Handled = true; };
             toggle.Checked += (s, e) =>
             {
-                stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(140, 0, 0, 0));
-
                 toggle.Background = Brushes.Green;
-                overlayNameLabel.Foreground = Brushes.LimeGreen;
 
+                stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(140, 0, 0, 0));
+                overlayNameLabel.Foreground = Brushes.LimeGreen;
 
                 lock (OverlaysACC.ActiveOverlays)
                 {
@@ -289,14 +288,14 @@ namespace ACCManager.Controls
             };
             toggle.Unchecked += (s, e) =>
             {
-                stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(140, 0, 0, 0));
+                toggle.Background = Brushes.Transparent;
 
+                stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(140, 0, 0, 0));
                 overlayNameLabel.BorderBrush = Brushes.OrangeRed;
                 overlayNameLabel.Foreground = Brushes.White;
-                toggle.Background = Brushes.Transparent;
+
                 lock (OverlaysACC.ActiveOverlays)
                 {
-
                     listViewItem.Background = Brushes.Transparent;
                     AbstractOverlay overlay = OverlaysACC.ActiveOverlays.Find(f => f.GetType() == type);
 
@@ -584,6 +583,9 @@ namespace ACCManager.Controls
             if (configFields == null)
                 configFields = overlayConfig.GetConfigFields();
 
+
+
+            // translate properties into user controls using the given fields
             List<PropertyInfo> props = overlayConfig.GetProperties();
             if (props.Count != configFields.Count)
             {
