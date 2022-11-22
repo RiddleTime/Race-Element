@@ -15,6 +15,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
         private readonly InputBarsConfiguration _config = new InputBarsConfiguration();
         private class InputBarsConfiguration : OverlayConfiguration
         {
+            [ConfigGrouping("Dimensions", "The size of the bars")]
+            public DimensionsGrouping Dimensions { get; set; } = new DimensionsGrouping();
+            public class DimensionsGrouping
+            {
+                public int Length { get; set; }
+                public int Thickness { get; set; }
+            }
+
             [ToolTip("Enables horizontal input bars.")]
             public bool HorizontalBars { get; set; } = false;
 

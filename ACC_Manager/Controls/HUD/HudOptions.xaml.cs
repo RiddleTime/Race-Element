@@ -584,12 +584,41 @@ namespace ACCManager.Controls
                 configFields = overlayConfig.GetConfigFields();
 
 
-            // discover classes in OverlaySettings class
-            List<MemberInfo> classes = overlayConfig.GetType().GetMembers().ToList();
-            foreach (MemberInfo type in classes)
+            // discover classes (Config Groupings) in OverlaySettings class
+            PropertyInfo[] types = overlayConfig.GetType().GetProperties().Where(x => x.IsDefined(typeof(ConfigGroupingAttribute))).ToArray();
+
+            foreach (PropertyInfo type in types)
             {
-                Debug.WriteLine($"{type.GetType().Namespace}.{type.Name}");
+
+                ConfigGroupingAttribute cga = null;
+                foreach (Attribute cad in Attribute.GetCustomAttributes(type))
+                    if (cad is ConfigGroupingAttribute attribute)
+                        cga = attribute;
+
+                if (cga != null)
+                {
+                    Debug.WriteLine($"1. {type.Name} -  {type.ReflectedType.FullName} - {type.PropertyType}");
+
+                    StackPanel boxStacker = new StackPanel() { Orientation = Orientation.Vertical };
+                    GroupBox box = new GroupBox()
+                    {
+                        Header = cga.Title,
+                        ToolTip = cga.Description,
+                        Content = boxStacker,
+                        Background = Brushes.Black,
+                        Foreground = Brushes.Black
+                    };
+                    foreach (PropertyInfo subType in type.PropertyType.GetProperties())
+                    {
+                        // Add control elements here..
+                        boxStacker.Children.Add(new Label() { Content = $"{type.Name}.{subType.Name}" });
+                        Debug.WriteLine($"2. {subType.Name} -  {subType.ReflectedType.FullName} - {subType.PropertyType}");
+                    }
+
+                    stacker.Children.Add(box);
+                }
             }
+
 
 
             // translate properties into user controls using the given fields
