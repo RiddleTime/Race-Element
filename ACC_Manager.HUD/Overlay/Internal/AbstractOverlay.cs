@@ -309,7 +309,8 @@ namespace ACCManager.HUD.Overlay.Internal
                 }
                 else
                 {
-                    e.Graphics.Clear(Color.Transparent);
+                    // scenario: memory load looping up, hope to fix?
+                    // e.Graphics.Clear(Color.Transparent);
                 }
             }
         }
