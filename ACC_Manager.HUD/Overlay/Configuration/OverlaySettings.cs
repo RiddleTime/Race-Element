@@ -29,7 +29,6 @@ namespace ACCManager.HUD.Overlay.Configuration
             return overlayDir;
         }
 
-
         public static OverlaySettingsJson LoadOverlaySettings(string overlayName)
         {
             DirectoryInfo overlayDir = GetOverlayDirectory();
