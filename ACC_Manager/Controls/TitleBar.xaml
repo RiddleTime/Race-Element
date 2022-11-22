@@ -32,7 +32,7 @@
             </materialDesign:TransitioningContent.OpeningEffects>
 
             <materialDesign:TransitioningContent.Effect>
-                <DropShadowEffect Color="Black" Opacity="0.7" BlurRadius="3" ShadowDepth="2"/>
+                <DropShadowEffect Color="Black" Opacity="0.85" BlurRadius="4" ShadowDepth="2.5"/>
             </materialDesign:TransitioningContent.Effect>
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="Title" Foreground="#EFEFEFEF" FontFamily="{StaticResource FontRedemption}" FontWeight="ExtraLight" FontSize="28"  FontStyle="Italic"  VerticalAlignment="Center">
