@@ -56,7 +56,7 @@
                                 Height="22"
                                 Foreground="White"    
                                 />
-                                <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Right" Text=" Discord"></TextBlock>
+                                <TextBlock Grid.Column="1" Foreground="White" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Right" Text=" Discord"></TextBlock>
                             </Grid>
                         </Button>
                         <Button x:Name="buttonGithub" Margin="0,12,0,0" Height="36" Padding="0">
@@ -74,25 +74,25 @@
                                 Height="22"
                                 Foreground="White"    
                                 />
-                                <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Right" Text=" GitHub"></TextBlock>
+                                <TextBlock Grid.Column="1" Foreground="White" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Right" Text=" GitHub"></TextBlock>
                             </Grid>
                         </Button>
-                        <Button x:Name="buttonDonate" Margin="0,12,0,0" Height="40" ToolTip="Donate RiddleTime a Coffee" Padding="0">
-                            <Grid HorizontalAlignment="Stretch">
+                        <Button x:Name="buttonDonate" Margin="0,12,0,0" Height="40" ToolTip="Support RiddleTime" Padding="0">
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="5*"/>
                                     <ColumnDefinition Width="8*"/>
                                 </Grid.ColumnDefinitions>
                                 <materialDesign:PackIcon
                                 Grid.Column="0"
-                                Kind="CreditCardWireless"
+                                Kind="WeightLifter"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Left"
                                 Width="22"
                                 Height="22"
-                                Foreground="White"    
+                                Foreground="Gold"    
                                 />
-                                <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Right" Text=" Donate"></TextBlock>
+                                <TextBlock Grid.Column="1" Foreground="White" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Right" Text=" Donate"></TextBlock>
                             </Grid>
                         </Button>
                     </StackPanel>
