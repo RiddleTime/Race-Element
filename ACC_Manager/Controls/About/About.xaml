@@ -40,56 +40,59 @@
                         </TextBlock>
                     </StackPanel>
 
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="100" VerticalAlignment="Top" Margin="10,7,-5,7">
-                        <Button x:Name="buttonDiscord" >
-                            <Grid>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="100" VerticalAlignment="Top" Margin="6,6,-5,7">
+                        <Button x:Name="buttonDiscord" Height="36" Padding="0">
+                            <Grid HorizontalAlignment="Stretch">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="18"/>
-                                    <ColumnDefinition Width="82"/>
+                                    <ColumnDefinition Width="5*"/>
+                                    <ColumnDefinition Width="10*"/>
                                 </Grid.ColumnDefinitions>
                                 <materialDesign:PackIcon
                                 Grid.Column="0"
                                 Kind="Chat"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Left"
-                                Height="32"
+                                Width="22"
+                                Height="22"
                                 Foreground="White"    
                                 />
-                                <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" Discord"></TextBlock>
+                                <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Right" Text=" Discord"></TextBlock>
                             </Grid>
                         </Button>
-                        <Button x:Name="buttonGithub" Margin="0,5,0,0">
-                            <Grid>
+                        <Button x:Name="buttonGithub" Margin="0,12,0,0" Height="36" Padding="0">
+                            <Grid HorizontalAlignment="Stretch">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="18"/>
-                                    <ColumnDefinition Width="82"/>
+                                    <ColumnDefinition Width="5*"/>
+                                    <ColumnDefinition Width="10*"/>
                                 </Grid.ColumnDefinitions>
                                 <materialDesign:PackIcon
                                 Grid.Column="0"
                                 Kind="Github"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Left"
-                                Height="32"
+                                Width="22"
+                                Height="22"
                                 Foreground="White"    
                                 />
-                                <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" GitHub"></TextBlock>
+                                <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Right" Text=" GitHub"></TextBlock>
                             </Grid>
                         </Button>
-                        <Button x:Name="buttonDonate" Margin="0,5,0,0" ToolTip="Donate RiddleTime a Coffee">
-                            <Grid>
+                        <Button x:Name="buttonDonate" Margin="0,12,0,0" Height="40" ToolTip="Donate RiddleTime a Coffee" Padding="0">
+                            <Grid HorizontalAlignment="Stretch">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="18"/>
-                                    <ColumnDefinition Width="82"/>
+                                    <ColumnDefinition Width="5*"/>
+                                    <ColumnDefinition Width="8*"/>
                                 </Grid.ColumnDefinitions>
                                 <materialDesign:PackIcon
                                 Grid.Column="0"
                                 Kind="CreditCardWireless"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Left"
-                                Height="32"
+                                Width="22"
+                                Height="22"
                                 Foreground="White"    
                                 />
-                                <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" Donate"></TextBlock>
+                                <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Right" Text=" Donate"></TextBlock>
                             </Grid>
                         </Button>
                     </StackPanel>
