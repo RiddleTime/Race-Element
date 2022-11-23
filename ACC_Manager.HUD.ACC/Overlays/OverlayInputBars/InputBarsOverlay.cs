@@ -15,7 +15,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
         private readonly InputBarsConfiguration _config = new InputBarsConfiguration();
         private class InputBarsConfiguration : OverlayConfiguration
         {
-            [ConfigGrouping("Shape", "The shape of the bars")]
+            [ConfigGrouping("Bars", "The shape and spacing of the bars")]
             public ShapeGrouping Shape { get; set; } = new ShapeGrouping();
             public class ShapeGrouping
             {
