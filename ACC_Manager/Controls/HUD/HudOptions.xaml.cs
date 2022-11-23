@@ -524,7 +524,7 @@ namespace ACCManager.Controls
 
                 if (cga != null)
                 {
-                    Debug.WriteLine($"1. {type.Name} -  {type.ReflectedType.FullName} - {type.PropertyType}");
+                    Debug.WriteLine($"{type.Name} -  {type.ReflectedType.FullName} - {type.PropertyType.Name}");
 
                     StackPanel boxStacker = new StackPanel() { Orientation = Orientation.Vertical };
                     GroupBox box = new GroupBox()
@@ -532,13 +532,14 @@ namespace ACCManager.Controls
                         Header = $"{cga.Title} - {cga.Description}",
                         Content = boxStacker,
                         Background = Brushes.Black,
-                        Foreground = Brushes.Black
+                        Foreground = Brushes.Black,
+                        Margin = new Thickness(2),
                     };
                     foreach (PropertyInfo subType in type.PropertyType.GetProperties())
                     {
                         // Add control elements here..
                         //boxStacker.Children.Add(CreateUserControls(subType, configFields, type.Name, fontSize, overlayName));
-                        Debug.WriteLine($"2. {subType.Name} -  {subType.ReflectedType.FullName} - {subType.PropertyType}");
+                        Debug.WriteLine($"   {subType.Name} -  {subType.ReflectedType.FullName} - {subType.PropertyType.Name}");
                     }
 
                     stacker.Children.Add(box);
