@@ -135,7 +135,7 @@ namespace ACCManager.Controls
         {
             try
             {
-                string tempTargetFile = $"{FileUtil.AccManagerDocumentsPath}AccManager.exe";
+                string tempTargetFile = $"{FileUtil.AccManagerAppDataPath}AccManager.exe";
                 FileInfo tempFile = new FileInfo(tempTargetFile);
 
                 if (tempFile.Exists)

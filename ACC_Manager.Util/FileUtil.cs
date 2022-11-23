@@ -6,13 +6,12 @@ namespace ACCManager.Util
 {
     public class FileUtil
     {
-
-        public static string AccManagerDocumentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "ACC Manager\\";
-        public static string AccManagerLogPath = AccManagerDocumentsPath + "Log\\";
-        public static string AccManagerTagsPath = AccManagerDocumentsPath + "Tag\\";
-        public static string AccManagerOverlayPath = AccManagerDocumentsPath + "Overlay\\";
-        public static string AccManangerSettingsPath = AccManagerDocumentsPath + "Settings\\";
-        public static string AccManangerDataPath = AccManagerDocumentsPath + "Data\\";
+        public static string AccManagerAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "ACC Manager\\";
+        public static string AccManagerLogPath = AccManagerAppDataPath + "Log\\";
+        public static string AccManagerTagsPath = AccManagerAppDataPath + "Tag\\";
+        public static string AccManagerOverlayPath = AccManagerAppDataPath + "Overlay\\";
+        public static string AccManangerSettingsPath = AccManagerAppDataPath + "Settings\\";
+        public static string AccManangerDataPath = AccManagerAppDataPath + "Data\\";
 
 
         public static string AccPath => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "Assetto Corsa Competizione\\";

@@ -43,11 +43,11 @@ namespace ACCManager.Controls.Util.Updater
 
         private bool MoveCurrentExecutableToDocumentsPath(string currentExecutableFullName)
         {
-            Debug.WriteLine($"AutoUpdater: Moving current Executable to {FileUtil.AccManagerDocumentsPath}");
+            Debug.WriteLine($"AutoUpdater: Moving current Executable to {FileUtil.AccManagerAppDataPath}");
 
             FileInfo toBeMoved = new FileInfo(currentExecutableFullName);
 
-            string tempTargetFile = $"{FileUtil.AccManagerDocumentsPath}AccManager.exe";
+            string tempTargetFile = $"{FileUtil.AccManagerAppDataPath}AccManager.exe";
 
             FileInfo targetFile = new FileInfo(tempTargetFile);
             if (targetFile.Exists)
@@ -63,9 +63,9 @@ namespace ACCManager.Controls.Util.Updater
         {
             try
             {
-                Debug.WriteLine($"AutoUpdater: Reverting Executable from {FileUtil.AccManagerDocumentsPath} to {currentExecutableFullName}");
+                Debug.WriteLine($"AutoUpdater: Reverting Executable from {FileUtil.AccManagerAppDataPath} to {currentExecutableFullName}");
 
-                FileInfo toBeMoved = new FileInfo($"{FileUtil.AccManagerDocumentsPath}AccManager.exe");
+                FileInfo toBeMoved = new FileInfo($"{FileUtil.AccManagerAppDataPath}AccManager.exe");
 
                 FileInfo targetFile = new FileInfo(currentExecutableFullName);
                 if (targetFile.Exists)

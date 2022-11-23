@@ -6,6 +6,8 @@ namespace ACCManager.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.1.1.3", "ACC Manager: Main folder changed from My Documents/ACC Manager to %AppData/ACC Manager."+
+                        "\n TODO???"},
             {"0.1.1.2", "- HUD: Input bars overlay now has the option to set the bars to horizontal mode."+
                         "\n- HUD: Added beta version of Race Info Overlay."},
             {"0.1.1.1", "- Changed dry tyres for Lamborghini Super Trofeo cars to GT4." },
