@@ -183,17 +183,19 @@ namespace ACCManager.HUD.Overlay.Internal
                 {
                     new Thread(x =>
                     {
-                        var lastRefreshTime = DateTime.UtcNow;
+                        double refreshRate = 1.0 / this.RefreshRateHz;
+                        DateTime lastRefreshTime = DateTime.UtcNow;
+
                         while (Draw)
                         {
+                            DateTime nextRefreshTime = lastRefreshTime.AddSeconds(refreshRate);
+                            TimeSpan waitTime = nextRefreshTime - DateTime.UtcNow;
+                            lastRefreshTime = nextRefreshTime;
+                            if (waitTime.Ticks > 0)
+                                Thread.Sleep(waitTime);
+
                             lock (this)
                             {
-                                var nextRefreshTime = lastRefreshTime.AddSeconds(1.0 / this.RefreshRateHz);
-                                var waitTime = nextRefreshTime - DateTime.UtcNow;
-                                lastRefreshTime = nextRefreshTime;
-                                if (waitTime.Ticks > 0)
-                                    Thread.Sleep(waitTime);
-
                                 if (this == null || this._disposed)
                                 {
                                     this.Stop();
