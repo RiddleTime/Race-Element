@@ -20,7 +20,8 @@
     <Grid>
 
         <Grid.ColumnDefinitions>
-            
+            <ColumnDefinition Width="270"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -29,7 +30,7 @@
 
         <Image x:Name="previewHud" Grid.RowSpan="2" Panel.ZIndex="999" Visibility="Hidden"></Image>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
             <Grid Grid.Row="0" Margin="3" x:Name="gridRepositionToggler" Cursor="Hand" Background="#2Fff4500" ToolTip="Enable Move Mode, this will allow you to drag the overlays with the mouse or when they are selected with the arrow keys.">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="25"/>
@@ -51,7 +52,7 @@
 
         <Grid Grid.Row="1" x:Name="gridOverlays">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="270"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
@@ -97,19 +98,19 @@
                     <ListView Grid.Column="0" x:Name="listDebugOverlays" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="0,3,0,0" Cursor="Hand"/>
                 </TabItem>
             </TabControl>
-
-            <materialDesign:Card Grid.Column="1" Margin="7,0,2,0">
-                <Grid Background="#65101010">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="32*"/>
-                        <RowDefinition Height="68*"/>
-                    </Grid.RowDefinitions>
-
-                    <Image Grid.Row="0" x:Name="previewImage"
-                       ToolTip="This is a preview, the scaling will become visible once you Activate the overlay."/>
-                    <StackPanel Grid.Row="1" x:Name="configStackPanel"/>
-                </Grid>
-            </materialDesign:Card>
         </Grid>
+
+        <materialDesign:Card Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="7,0,2,0">
+            <Grid Background="#65101010">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="32*"/>
+                    <RowDefinition Height="68*"/>
+                </Grid.RowDefinitions>
+
+                <Image Grid.Row="0" x:Name="previewImage"
+                       ToolTip="This is a preview, the scaling will become visible once you Activate the overlay."/>
+                <StackPanel Grid.Row="1" x:Name="configStackPanel"/>
+            </Grid>
+        </materialDesign:Card>
     </Grid>
 </UserControl>
