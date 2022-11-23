@@ -11,11 +11,12 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
     internal interface IControl
     {
         FrameworkElement Control { get; }
-        void Save();
     }
 
     internal interface IValueControl<T> : IControl
     {
         T Value { get; set; }
+
+        void Save();
     }
 }

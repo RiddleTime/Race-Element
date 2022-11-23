@@ -23,14 +23,17 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
 
         public BooleanValueControl(ConfigField configField)
         {
-            _grid = new Grid() { Width = 200, Background = new SolidColorBrush(Color.FromArgb(140, 2, 2, 2)), Cursor = Cursors.Hand };
+            _grid = new Grid()
+            {
+                Width = 220,
+                Margin = new Thickness(0, 0, 7, 0),
+                Background = new SolidColorBrush(Color.FromArgb(140, 2, 2, 2)),
+                Cursor = Cursors.Hand
+            };
             _grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(2, GridUnitType.Star) });
             _grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(8, GridUnitType.Star) });
 
-            _label = new Label()
-            {
-                HorizontalContentAlignment = HorizontalAlignment.Right
-            };
+            _label = new Label() { HorizontalContentAlignment = HorizontalAlignment.Right };
             _grid.Children.Add(_label);
             Grid.SetColumn(_label, 0);
 
@@ -38,11 +41,11 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
             _toggleButton.Checked += (s, e) => UpdateLabel();
             _toggleButton.Unchecked += (s, e) => UpdateLabel();
             _toggleButton.IsChecked = bool.Parse(configField.Value.ToString());
+            UpdateLabel();
             _grid.Children.Add(_toggleButton);
             Grid.SetColumn(_toggleButton, 1);
 
             _grid.MouseLeftButtonUp += (s, e) => { _toggleButton.IsChecked = !_toggleButton.IsChecked; };
-            UpdateLabel();
         }
 
         private void UpdateLabel()

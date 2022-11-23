@@ -1,5 +1,4 @@
-﻿using System.Drawing.Printing;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -20,7 +19,13 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
 
         public ByteValueControl(ByteRangeAttribute byteRange, ConfigField configField)
         {
-            _grid = new Grid() { Width = 200, Background = new SolidColorBrush(Color.FromArgb(140, 2, 2, 2)), Cursor = Cursors.Hand };
+            _grid = new Grid()
+            {
+                Width = 220,
+                Margin = new Thickness(0, 0, 7, 0),
+                Background = new SolidColorBrush(Color.FromArgb(140, 2, 2, 2)),
+                Cursor = Cursors.Hand
+            };
             _grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(2, GridUnitType.Star) });
             _grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(8, GridUnitType.Star) });
 
@@ -39,6 +44,7 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
                 TickFrequency = byteRange.Increment,
                 IsSnapToTickEnabled = true,
                 HorizontalAlignment = HorizontalAlignment.Right,
+                VerticalAlignment = VerticalAlignment.Center,
                 Width = 150
             };
             _slider.ValueChanged += (s, e) =>

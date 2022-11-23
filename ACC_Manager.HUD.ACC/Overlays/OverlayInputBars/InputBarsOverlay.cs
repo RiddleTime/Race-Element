@@ -22,6 +22,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
                 [ToolTip("Enables horizontal input bars.")]
                 public bool Horizontal { get; set; } = false;
 
+                [ToolTip("Displays a color change on the input bars when either abs or traction control is activated.")]
+                public bool ShowElectronics { get; set; } = true;
+
                 [ToolTip("Defines the transparency of the bars.")]
                 [ByteRange(40, 255, 1)]
                 public byte Transparency { get; set; } = 185;
@@ -38,9 +41,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
                 [IntRange(2, 15, 1)]
                 public int Spacing { get; set; } = 5;
             }
-
-            [ToolTip("Displays a color change on the input bars when either abs or traction control is activated.")]
-            public bool ShowElectronics { get; set; } = true;
 
             public InputBarsConfiguration()
             {
@@ -164,7 +164,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
         public override void Render(Graphics g)
         {
 
-            if (_config.ShowElectronics)
+            if (_config.Bars.ShowElectronics)
                 ApplyFillColor();
 
             if (_config.Bars.Horizontal)

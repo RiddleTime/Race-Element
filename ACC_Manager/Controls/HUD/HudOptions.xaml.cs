@@ -542,13 +542,14 @@ namespace ACCManager.Controls
                     {
                         Header = new Label()
                         {
-                            Content = $"{cga.Title}"/*- {cga.Description}*/,
+                            Content = $" {cga.Title}"/*- {cga.Description}*/,
                             Background = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0)),
                             Foreground = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255)),
                             //BorderBrush = Brushes.Transparent,
                             FontWeight = FontWeights.Bold,
-                            HorizontalContentAlignment = HorizontalAlignment.Center,
-                            FontSize = 15,
+                            FontStyle = FontStyles.Italic,
+                            HorizontalContentAlignment = HorizontalAlignment.Left,
+                            FontSize = 18,
                         },
                         Content = boxStacker,
                         Background = new SolidColorBrush(Color.FromArgb(130, 0, 0, 0)),
@@ -573,17 +574,19 @@ namespace ACCManager.Controls
 
                         if (configField != null)
                         {
-                            Debug.WriteLine(configField.Name);
+                            Debug.WriteLine($"   {configField.Name}");
                             // Add control elements here..
                             //boxStacker.Children.Add(CreateUserControls(subType, configFields, type.Name, fontSize, overlayName));
                             boxStacker.Children.Add(ControlFactory.Instance.GenerateOption($"{type.Name}", $"{subType.Name}", subType, configField));
-                            Debug.WriteLine($"   {subType.Name} - {subType.ReflectedType.FullName} - {subType.PropertyType.Name}");
+                            //Debug.WriteLine($"   {subType.Name} - {subType.ReflectedType.FullName} - {subType.PropertyType.Name}");
                         }
                     }
 
                     stacker.Children.Add(box);
                 }
             }
+
+
 
             // translate properties into user controls using the given fields
             List<PropertyInfo> props = overlayConfig.GetProperties();

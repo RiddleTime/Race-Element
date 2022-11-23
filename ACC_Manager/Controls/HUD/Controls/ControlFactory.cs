@@ -1,6 +1,7 @@
 ﻿using ACCManager.Controls.HUD.Controls.ValueControls;
 using ACCManager.HUD.Overlay.Configuration;
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,8 +18,8 @@ namespace ACCManager.Controls.HUD.Controls
         {
 
             Grid grid = new Grid() { Height = 30 };
-            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(70, GridUnitType.Star) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(150, GridUnitType.Star) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(120, GridUnitType.Pixel) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(240, GridUnitType.Pixel) });
             ListViewItem item = new ListViewItem()
             {
                 Margin = new Thickness(0),
@@ -26,7 +27,8 @@ namespace ACCManager.Controls.HUD.Controls
                 BorderThickness = new Thickness(0),
                 BorderBrush = System.Windows.Media.Brushes.OrangeRed,
                 Content = grid,
-                IsTabStop = false
+                IsTabStop = false,
+                VerticalContentAlignment = VerticalAlignment.Center,
             };
 
             Label lblControl = GenerateLabel(label);
@@ -34,6 +36,7 @@ namespace ACCManager.Controls.HUD.Controls
             Grid.SetColumn(lblControl, 0);
 
             IControl valueControl = GenerateValueControl(pi, configField);
+            valueControl.Control.HorizontalAlignment = HorizontalAlignment.Right;
 
             if (valueControl != null)
             {
@@ -48,12 +51,12 @@ namespace ACCManager.Controls.HUD.Controls
         {
             return new Label()
             {
-                Content = label,
+                Content = string.Concat(label.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' '),
                 Margin = new Thickness(0),
-                Padding = new Thickness(0),
+                Padding = new Thickness(7,0,0,0),
                 FontWeight = FontWeights.Bold,
                 FontSize = 13,
-                HorizontalAlignment = HorizontalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Center,
             };
         }
