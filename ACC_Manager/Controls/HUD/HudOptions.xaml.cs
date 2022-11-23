@@ -1,6 +1,7 @@
 ﻿using ACC_Manager.Util.Settings;
 using ACC_Manager.Util.SystemExtensions;
 using ACCManager.Controls.HUD;
+using ACCManager.Controls.HUD.Controls;
 using ACCManager.Controls.Util.SetupImage;
 using ACCManager.HUD.ACC;
 using ACCManager.HUD.ACC.Overlays.OverlayMousePosition;
@@ -159,7 +160,6 @@ namespace ACCManager.Controls
         private bool ToggleViewingOverlay()
         {
             // kind of stupid but it works.. gotta travel the generated tree in #BuildOverlayConfigPanel();
-
             if (_lastOverlayStart.AddMilliseconds(200) < DateTime.Now)
                 foreach (UIElement element in configStackPanel.Children)
                     if (element is StackPanel panel)
@@ -481,6 +481,14 @@ namespace ACCManager.Controls
             }
         }
 
+        /// <summary>
+        /// NEEDS REFACTOR
+        ///   decouple
+        ///   generics
+        /// </summary>
+        /// <param name="overlayType"></param>
+        /// <param name="orientation"></param>
+        /// <returns></returns>
         private StackPanel GetConfigStacker(Type overlayType, Orientation orientation)
         {
             int fontSize = 14;
@@ -526,20 +534,39 @@ namespace ACCManager.Controls
                 {
                     Debug.WriteLine($"{type.Name} -  {type.ReflectedType.FullName} - {type.PropertyType.Name}");
 
-                    StackPanel boxStacker = new StackPanel() { Orientation = Orientation.Vertical };
+                    StackPanel boxStacker = new StackPanel()
+                    {
+                        Orientation = Orientation.Vertical,
+                        HorizontalAlignment = HorizontalAlignment.Stretch
+                    };
                     GroupBox box = new GroupBox()
                     {
-                        Header = $"{cga.Title} - {cga.Description}",
+                        Header = new Label()
+                        {
+                            Content = $"{cga.Title}"/*- {cga.Description}*/,
+                            Background = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0)),
+                            Foreground = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255)),
+                            //BorderBrush = Brushes.Transparent,
+                            FontWeight = FontWeights.Bold,
+                            HorizontalContentAlignment = HorizontalAlignment.Center,
+                            FontSize = 15,
+                        },
                         Content = boxStacker,
-                        Background = Brushes.Black,
-                        Foreground = Brushes.Black,
-                        Margin = new Thickness(2),
+                        Background = new SolidColorBrush(Color.FromArgb(130, 0, 0, 0)),
+                        Foreground = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255)),
+                        Margin = new Thickness(3),
+                        Padding = new Thickness(0, 1, -1, -1),
+                        BorderThickness = new Thickness(0),
+                        Width = 360,
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        BorderBrush = Brushes.Transparent,
                     };
                     foreach (PropertyInfo subType in type.PropertyType.GetProperties())
                     {
                         // Add control elements here..
                         //boxStacker.Children.Add(CreateUserControls(subType, configFields, type.Name, fontSize, overlayName));
-                        Debug.WriteLine($"   {subType.Name} -  {subType.ReflectedType.FullName} - {subType.PropertyType.Name}");
+                        boxStacker.Children.Add(ControlFactory.Instance.GenerateOption($"{type.Name}", $"{subType.Name}", subType.PropertyType));
+                        Debug.WriteLine($"   {subType.Name} - {subType.ReflectedType.FullName} - {subType.PropertyType.Name}");
                     }
 
                     stacker.Children.Add(box);

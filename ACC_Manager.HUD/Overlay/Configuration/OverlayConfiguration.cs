@@ -10,9 +10,8 @@ namespace ACCManager.HUD.Overlay.Configuration
         public bool AllowRescale = false;
         public float Scale { get; set; } = 1.0f;
 
-        /// <summary>
-        ///  test for overlay groupings
-        /// </summary>
+        [ConfigGrouping("HUD", "General settings")]
+        public GenericConfig GenericConfiguration { get; set; } = new GenericConfig();
         public class GenericConfig
         {
             [ToolTip("Defines the scale of the overlay.")]
@@ -24,8 +23,7 @@ namespace ACCManager.HUD.Overlay.Configuration
             [ToolTip("When streaming with Window enabled turn this off when you don't want to see the actual overlay on top of your game.")]
             public bool AlwaysOnTop { get; set; } = true;
         }
-        [ConfigGrouping("General", "Interal settings for the HUD.")]
-        public GenericConfig GenericConfiguration { get; set; } = new GenericConfig();
+
 
         [ToolTip("Allows other software to to detect this overlay as a Window, can be used for streaming apps.")]
         public bool Window { get; set; } = false;

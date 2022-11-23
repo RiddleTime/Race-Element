@@ -345,6 +345,7 @@
     </Compile>
     <Compile Include="Controls\About\ReleaseNotes.cs" />
     <Compile Include="Controls\HUD\ConfigurationControls.cs" />
+    <Compile Include="Controls\HUD\Controls\ControlFactory.cs" />
     <Compile Include="Controls\HUD\HudOptions.xaml.cs">
       <DependentUpon>HudOptions.xaml</DependentUpon>
     </Compile>
