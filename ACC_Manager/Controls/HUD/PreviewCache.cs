@@ -1,0 +1,130 @@
+﻿using ACCManager.Controls.Util.SetupImage;
+using ACCManager.HUD.ACC;
+using ACCManager.HUD.Overlay.Internal;
+using ACCManager.HUD.Overlay.OverlayUtil;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+
+namespace ACCManager.Controls.HUD
+{
+    internal class PreviewCache
+    {
+        internal static readonly Dictionary<string, CachedPreview> _cachedPreviews = new Dictionary<string, CachedPreview>();
+        private static readonly object[] DefaultOverlayArgs = new object[] { new System.Drawing.Rectangle((int)SystemParameters.PrimaryScreenWidth / 2, (int)SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
+
+        public class CachedPreview
+        {
+            public int Width;
+            public int Height;
+            public CachedBitmap CachedBitmap;
+        }
+
+        internal static void UpdatePreviewImage(ListView listOverlays, Image previewImage, string overlayName)
+        {
+            if (listOverlays.SelectedIndex >= 0)
+            {
+                ListViewItem lvi = (ListViewItem)listOverlays.SelectedItem;
+                TextBlock tb = (TextBlock)lvi.Content;
+                string actualOverlayName = overlayName.Replace("Overlay", "").Trim();
+                if (tb.Text.Equals(actualOverlayName))
+                {
+                    PreviewCache.GeneratePreview(actualOverlayName);
+                    PreviewCache._cachedPreviews.TryGetValue(actualOverlayName, out CachedPreview preview);
+                    if (preview != null)
+                    {
+                        previewImage.Stretch = Stretch.UniformToFill;
+                        previewImage.Width = preview.Width;
+                        previewImage.Height = preview.Height;
+                        previewImage.Source = ImageControlCreator.CreateImage(preview.Width, preview.Height, preview.CachedBitmap).Source;
+                    }
+                    else
+                    {
+                        previewImage.Source = null;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="overlayName"></param>
+        /// <param name="cached">Chooses to use a cached version if there is one</param>
+        internal static void GeneratePreview(string overlayName, bool cached = false)
+        {
+            if (cached && _cachedPreviews.ContainsKey(overlayName))
+                return;
+
+            OverlaysACC.AbstractOverlays.TryGetValue(overlayName, out Type overlayType);
+
+            if (overlayType == null)
+                return;
+
+            AbstractOverlay overlay;
+            try
+            {
+                overlay = (AbstractOverlay)Activator.CreateInstance(overlayType, DefaultOverlayArgs);
+            }
+            catch (Exception)
+            {
+                return;
+            }
+
+            overlay.pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
+            overlay.pageGraphics.NumberOfLaps = 30;
+            overlay.pageGraphics.FuelXLap = 3.012f;
+            overlay.pageGraphics.SessionType = ACCSharedMemory.AcSessionType.AC_RACE;
+            overlay.pageGraphics.MandatoryPitDone = false;
+
+            overlay.pagePhysics = ACCSharedMemory.Instance.ReadPhysicsPageFile(true);
+            overlay.pagePhysics.SpeedKmh = 272.32f;
+            overlay.pagePhysics.Fuel = 92.07f;
+            overlay.pagePhysics.Rpms = 8500;
+            overlay.pagePhysics.Gear = 3;
+            overlay.pagePhysics.WheelPressure = new float[] { 27.6f, 27.5f, 26.9f, 26.1f };
+            overlay.pagePhysics.TyreCoreTemperature = new float[] { 92.6f, 88.5f, 65.9f, 67.2f };
+            overlay.pagePhysics.PadLife = new float[] { 24f, 24f, 25f, 25f };
+            overlay.pagePhysics.BrakeTemperature = new float[] { 300f, 250f, 450f, 460f };
+            overlay.pagePhysics.Gas = 0.78f;
+            overlay.pagePhysics.Brake = 0.133f;
+
+            overlay.pageStatic = ACCSharedMemory.Instance.ReadStaticPageFile(true);
+            overlay.pageStatic.MaxFuel = 120f;
+            overlay.pageStatic.MaxRpm = 9250;
+            overlay.pageStatic.CarModel = "porsche_991ii_gt3_r";
+
+
+            try
+            {
+                overlay.BeforeStart();
+                CachedPreview cachedPreview = new CachedPreview()
+                {
+                    Width = overlay.Width,
+                    Height = overlay.Height,
+                    CachedBitmap = new CachedBitmap(overlay.Width, overlay.Height, g => overlay.Render(g))
+                };
+
+                if (_cachedPreviews.ContainsKey(overlayName))
+                    _cachedPreviews[overlayName] = cachedPreview;
+                else
+                    _cachedPreviews.Add(overlayName, cachedPreview);
+
+                overlay.BeforeStop();
+            }
+            catch (Exception) { }
+            finally
+            {
+                overlay.Dispose();
+                overlay = null;
+            }
+        }
+
+
+    }
+}

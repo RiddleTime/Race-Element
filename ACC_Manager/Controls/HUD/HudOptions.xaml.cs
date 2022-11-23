@@ -1,5 +1,6 @@
 ﻿using ACC_Manager.Util.Settings;
 using ACC_Manager.Util.SystemExtensions;
+using ACCManager.Controls.HUD;
 using ACCManager.Controls.Util.SetupImage;
 using ACCManager.HUD.ACC;
 using ACCManager.HUD.ACC.Overlays.OverlayMousePosition;
@@ -36,8 +37,6 @@ namespace ACCManager.Controls
 
         private HudSettings _hudSettings;
         private HudSettingsJson _hudSettingsJson;
-
-        private readonly Dictionary<string, CachedPreview> _cachedPreviews = new Dictionary<string, CachedPreview>();
 
         private readonly object[] DefaultOverlayArgs = new object[] { new System.Drawing.Rectangle((int)SystemParameters.PrimaryScreenWidth / 2, (int)SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
 
@@ -209,7 +208,7 @@ namespace ACCManager.Controls
             tempAbstractOverlay.Dispose();
 
             OverlayAttribute overlayAttribute = GetOverlayAttribute(type);
-            GeneratePreview(overlayAttribute.Name, true);
+            PreviewCache.GeneratePreview(overlayAttribute.Name, true);
 
             StackPanel configStacker = GetConfigStacker(type, Orientation.Vertical);
 
@@ -380,7 +379,7 @@ namespace ACCManager.Controls
             configStackPanel.Children.Add(configStacker);
 
             // add preview iamge
-            _cachedPreviews.TryGetValue(overlayAttribute.Name, out CachedPreview preview);
+            PreviewCache._cachedPreviews.TryGetValue(overlayAttribute.Name, out PreviewCache.CachedPreview preview);
             if (preview == null)
                 previewImage.Source = null;
             else
@@ -482,80 +481,6 @@ namespace ACCManager.Controls
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="overlayName"></param>
-        /// <param name="cached">Chooses to use a cached version if there is one</param>
-        private void GeneratePreview(string overlayName, bool cached = false)
-        {
-            if (cached && _cachedPreviews.ContainsKey(overlayName))
-                return;
-
-            OverlaysACC.AbstractOverlays.TryGetValue(overlayName, out Type overlayType);
-
-            if (overlayType == null)
-                return;
-
-            AbstractOverlay overlay;
-            try
-            {
-                overlay = (AbstractOverlay)Activator.CreateInstance(overlayType, DefaultOverlayArgs);
-            }
-            catch (Exception)
-            {
-                return;
-            }
-
-            overlay.pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
-            overlay.pageGraphics.NumberOfLaps = 30;
-            overlay.pageGraphics.FuelXLap = 3.012f;
-            overlay.pageGraphics.SessionType = ACCSharedMemory.AcSessionType.AC_RACE;
-            overlay.pageGraphics.MandatoryPitDone = false;
-
-            overlay.pagePhysics = ACCSharedMemory.Instance.ReadPhysicsPageFile(true);
-            overlay.pagePhysics.SpeedKmh = 272.32f;
-            overlay.pagePhysics.Fuel = 92.07f;
-            overlay.pagePhysics.Rpms = 8500;
-            overlay.pagePhysics.Gear = 3;
-            overlay.pagePhysics.WheelPressure = new float[] { 27.6f, 27.5f, 26.9f, 26.1f };
-            overlay.pagePhysics.TyreCoreTemperature = new float[] { 92.6f, 88.5f, 65.9f, 67.2f };
-            overlay.pagePhysics.PadLife = new float[] { 24f, 24f, 25f, 25f };
-            overlay.pagePhysics.BrakeTemperature = new float[] { 300f, 250f, 450f, 460f };
-            overlay.pagePhysics.Gas = 0.78f;
-            overlay.pagePhysics.Brake = 0.133f;
-
-            overlay.pageStatic = ACCSharedMemory.Instance.ReadStaticPageFile(true);
-            overlay.pageStatic.MaxFuel = 120f;
-            overlay.pageStatic.MaxRpm = 9250;
-            overlay.pageStatic.CarModel = "porsche_991ii_gt3_r";
-
-
-            try
-            {
-                overlay.BeforeStart();
-                CachedPreview cachedPreview = new CachedPreview()
-                {
-                    Width = overlay.Width,
-                    Height = overlay.Height,
-                    CachedBitmap = new CachedBitmap(overlay.Width, overlay.Height, g => overlay.Render(g))
-                };
-
-                if (_cachedPreviews.ContainsKey(overlayName))
-                    _cachedPreviews[overlayName] = cachedPreview;
-                else
-                    _cachedPreviews.Add(overlayName, cachedPreview);
-
-                overlay.BeforeStop();
-            }
-            catch (Exception) { }
-            finally
-            {
-                overlay.Dispose();
-                overlay = null;
-            }
-        }
-
         private StackPanel GetConfigStacker(Type overlayType, Orientation orientation)
         {
             int fontSize = 14;
@@ -584,9 +509,11 @@ namespace ACCManager.Controls
                 configFields = overlayConfig.GetConfigFields();
 
 
+
+
+
             // discover classes (Config Groupings) in OverlaySettings class
             PropertyInfo[] types = overlayConfig.GetType().GetProperties().Where(x => x.IsDefined(typeof(ConfigGroupingAttribute))).ToArray();
-
             foreach (PropertyInfo type in types)
             {
 
@@ -610,15 +537,13 @@ namespace ACCManager.Controls
                     foreach (PropertyInfo subType in type.PropertyType.GetProperties())
                     {
                         // Add control elements here..
-                        boxStacker.Children.Add(new Label() { Content = $"{type.Name}.{subType.Name}" });
+                        //boxStacker.Children.Add(CreateUserControls(subType, configFields, type.Name, fontSize, overlayName));
                         Debug.WriteLine($"2. {subType.Name} -  {subType.ReflectedType.FullName} - {subType.PropertyType}");
                     }
 
                     stacker.Children.Add(box);
                 }
             }
-
-
 
             // translate properties into user controls using the given fields
             List<PropertyInfo> props = overlayConfig.GetProperties();
@@ -965,6 +890,259 @@ namespace ACCManager.Controls
             return stacker;
         }
 
+        private StackPanel CreateUserControls(PropertyInfo pi, List<ConfigField> configFields, string configFieldGrouping, int fontSize, string overlayName)
+        {
+            if (pi.PropertyType == typeof(byte))
+            {
+                ByteRangeAttribute byteRange = null;
+                ToolTipAttribute toolTip = null;
+                foreach (Attribute cad in Attribute.GetCustomAttributes(pi))
+                {
+                    if (cad is ByteRangeAttribute)
+                        byteRange = (ByteRangeAttribute)cad;
+
+                    if (cad is ToolTipAttribute)
+                        toolTip = (ToolTipAttribute)cad;
+                }
+
+                if (byteRange == null)
+                    Debug.WriteLine($"Specify a ByteRangeAttribute for {pi.Name}");
+                else
+                {
+                    ConfigField field = configFields.Where(x => x.Name == configFieldGrouping).ToArray().Where(x => x.Name == pi.Name).First();
+                    Debug.WriteLine("Found field " + field.Name + " " + field.Value);
+
+                    ConfigField configField = configFields.Where(cf => cf.Name == pi.Name).First();
+                    string byteLabel = string.Concat(configField.Name.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
+
+                    StackPanel intStacker = new StackPanel()
+                    {
+                        Name = byteLabel.Replace(" ", "_"),
+                        Margin = new Thickness(0, 0, 0, 0),
+                        Orientation = Orientation.Horizontal,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)),
+                    };
+
+                    if (toolTip != null)
+                        intStacker.ToolTip = toolTip.ToolTip;
+                    ToolTipService.SetShowDuration(intStacker, int.MaxValue);
+
+                    int min = byteRange.Min;
+                    int max = byteRange.Max;
+                    int tickFrequency = byteRange.Increment;
+                    int sliderValue = int.Parse(configField.Value.ToString());
+                    sliderValue.Clip(min, max);
+
+                    int maxValueChars = $"{max}".Length;
+
+                    Label sliderLabel = new Label
+                    {
+                        Content = $"{byteLabel}: {sliderValue.ToString("F0").FillStart(maxValueChars, ' ')}",
+                        VerticalAlignment = VerticalAlignment.Center,
+                        VerticalContentAlignment = VerticalAlignment.Center,
+                        FontSize = fontSize
+                    };
+                    intStacker.Children.Add(sliderLabel);
+
+                    Slider slider = new Slider()
+                    {
+                        Minimum = min,
+                        Maximum = max,
+                        IsSnapToTickEnabled = true,
+                        TickFrequency = tickFrequency,
+                        Value = sliderValue,
+                        Width = 150,
+                        Margin = new Thickness(0, 0, 3, 0),
+                        VerticalAlignment = VerticalAlignment.Center,
+                        VerticalContentAlignment = VerticalAlignment.Center,
+
+                    };
+                    slider.ValueChanged += (sender, args) =>
+                    {
+                        sliderLabel.Content = $"{byteLabel}: {slider.Value.ToString("F0").FillStart(maxValueChars, ' ')}";
+                        configField.Value = (int)slider.Value;
+                        configFields.RemoveAt(configFields.IndexOf(configField));
+                        configFields.Add(configField);
+
+                        SaveOverlayConfigFields(overlayName, configFields);
+                    };
+
+                    //intStacker.MouseRightButtonUp += (sender, args) => { slider.Value = 1.0; };
+                    intStacker.MouseWheel += (sender, args) =>
+                    {
+                        int delta = args.Delta;
+                        slider.Value += delta.Clip(-1, 1) * tickFrequency;
+                        args.Handled = true;
+                    };
+                    intStacker.MouseEnter += (sender, args) => { intStacker.Background = new SolidColorBrush(Color.FromArgb(50, 140, 0, 0)); }; ;
+                    intStacker.MouseLeave += (sender, args) => { intStacker.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)); };
+
+                    intStacker.Children.Add(slider);
+
+                    return intStacker;
+                }
+            }
+
+
+            if (pi.PropertyType == typeof(int))
+            {
+                IntRangeAttribute intRange = null;
+                ToolTipAttribute toolTip = null;
+                foreach (Attribute cad in Attribute.GetCustomAttributes(pi))
+                {
+                    if (cad is IntRangeAttribute)
+                        intRange = (IntRangeAttribute)cad;
+
+                    if (cad is ToolTipAttribute)
+                        toolTip = (ToolTipAttribute)cad;
+                }
+
+                if (intRange == null)
+                    Debug.WriteLine($"Specify an IntRangeAttribute for {pi.Name}");
+                else
+                {
+                    var field = configFields.Where(x => x.Name == configFieldGrouping).First();
+
+                    var actualField = (Newtonsoft.Json.Linq.JObject)field.Value;
+                    var field2 = actualField.Children().Where(x => x.Path == pi.Name).First();
+
+                    //.Where(x => x.Name == pi.Name).First();
+                    string value = " asdasd";
+                    Debug.WriteLine("Found field " + field2.Path + " " + field2.First);
+
+
+                    ConfigField configField = configFields.Where(cf => cf.Name == pi.Name).First();
+                    string intLabel = string.Concat(configField.Name.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
+
+                    StackPanel intStacker = new StackPanel()
+                    {
+                        Name = intLabel.Replace(" ", "_"),
+                        Margin = new Thickness(0, 0, 0, 0),
+                        Orientation = Orientation.Horizontal,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)),
+                    };
+
+                    if (toolTip != null)
+                        intStacker.ToolTip = toolTip.ToolTip;
+                    ToolTipService.SetShowDuration(intStacker, int.MaxValue);
+
+                    int min = intRange.Min;
+                    int max = intRange.Max;
+                    int tickFrequency = intRange.Increment;
+                    int sliderValue = int.Parse(configField.Value.ToString());
+                    sliderValue.Clip(min, max);
+
+                    int maxValueChars = $"{max}".Length;
+
+                    Label sliderLabel = new Label
+                    {
+                        Content = $"{intLabel}: {sliderValue.ToString("F0").FillStart(maxValueChars, ' ')}",
+                        VerticalAlignment = VerticalAlignment.Center,
+                        VerticalContentAlignment = VerticalAlignment.Center,
+                        FontSize = fontSize
+                    };
+                    intStacker.Children.Add(sliderLabel);
+
+                    Slider slider = new Slider()
+                    {
+                        Minimum = min,
+                        Maximum = max,
+                        IsSnapToTickEnabled = true,
+                        TickFrequency = tickFrequency,
+                        Value = sliderValue,
+                        Width = 150,
+                        Margin = new Thickness(0, 0, 3, 0),
+                        VerticalAlignment = VerticalAlignment.Center,
+                        VerticalContentAlignment = VerticalAlignment.Center,
+
+                    };
+                    slider.ValueChanged += (sender, args) =>
+                    {
+                        sliderLabel.Content = $"{intLabel}: {slider.Value.ToString("F0").FillStart(maxValueChars, ' ')}";
+                        configField.Value = (int)slider.Value;
+                        configFields.RemoveAt(configFields.IndexOf(configField));
+                        configFields.Add(configField);
+
+                        SaveOverlayConfigFields(overlayName, configFields);
+                    };
+
+                    //intStacker.MouseRightButtonUp += (sender, args) => { slider.Value = 1.0; };
+                    intStacker.MouseWheel += (sender, args) =>
+                    {
+                        int delta = args.Delta;
+                        slider.Value += delta.Clip(-1, 1) * tickFrequency;
+                        args.Handled = true;
+                    };
+                    intStacker.MouseEnter += (sender, args) => { intStacker.Background = new SolidColorBrush(Color.FromArgb(50, 140, 0, 0)); }; ;
+                    intStacker.MouseLeave += (sender, args) => { intStacker.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0)); };
+
+                    intStacker.Children.Add(slider);
+
+                    return intStacker;
+                }
+            }
+
+            if (pi.PropertyType == typeof(bool))
+            {
+                ToolTipAttribute toolTip = null;
+                foreach (Attribute cad in Attribute.GetCustomAttributes(pi))
+                {
+                    if (cad is ToolTipAttribute)
+                        toolTip = (ToolTipAttribute)cad;
+                }
+
+                StackPanel checkStacker = new StackPanel()
+                {
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Cursor = Cursors.Hand,
+                };
+                if (toolTip != null)
+                    checkStacker.ToolTip = toolTip.ToolTip;
+                ToolTipService.SetShowDuration(checkStacker, int.MaxValue);
+
+
+                ConfigField field = configFields.Where(x => x.Name == configFieldGrouping).ToArray().Where(x => x.Name == pi.Name).First();
+                Debug.WriteLine("Found field " + field.Name + " " + field.Value);
+
+                ConfigField configField = configFields.Where(cf => cf.Name == pi.Name).First();
+                string checkBoxlabel = string.Concat(configField.Name.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
+                CheckBox box = new CheckBox()
+                {
+                    Name = checkBoxlabel.Replace(" ", "_"),
+                    Content = checkBoxlabel,
+                    IsChecked = (bool)configField.Value,
+                    Margin = new Thickness(0, 3, 5, 3),
+                    VerticalAlignment = VerticalAlignment.Center,
+                    VerticalContentAlignment = VerticalAlignment.Center,
+                    FontSize = fontSize
+                };
+                checkStacker.PreviewMouseDown += (s, e) => { if (s == checkStacker && e.LeftButton == MouseButtonState.Pressed) { box.IsChecked = !box.IsChecked; e.Handled = true; } };
+                checkStacker.MouseEnter += (s, e) => checkStacker.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+                checkStacker.MouseLeave += (s, e) => checkStacker.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+                box.Checked += (sender, args) =>
+                {
+                    configField.Value = true;
+                    configFields.RemoveAt(configFields.IndexOf(configField));
+                    configFields.Add(configField);
+
+                    SaveOverlayConfigFields(overlayName, configFields);
+                };
+                box.Unchecked += (sender, args) =>
+                {
+                    configField.Value = false;
+                    configFields.RemoveAt(configFields.IndexOf(configField));
+                    configFields.Add(configField);
+
+                    SaveOverlayConfigFields(overlayName, configFields);
+                };
+                checkStacker.Children.Add(box);
+                return checkStacker;
+            }
+            return null;
+        }
+
         private void SaveOverlayConfigFields(string overlayName, List<ConfigField> configFields)
         {
             OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(overlayName);
@@ -987,8 +1165,8 @@ namespace ACCManager.Controls
                 string actualOverlayName = overlayName.Replace("Overlay", "").Trim();
                 if (tb.Text.Equals(actualOverlayName))
                 {
-                    GeneratePreview(actualOverlayName);
-                    _cachedPreviews.TryGetValue(actualOverlayName, out CachedPreview preview);
+                    PreviewCache.GeneratePreview(actualOverlayName);
+                    PreviewCache._cachedPreviews.TryGetValue(actualOverlayName, out PreviewCache.CachedPreview preview);
                     if (preview != null)
                     {
                         previewImage.Stretch = Stretch.UniformToFill;

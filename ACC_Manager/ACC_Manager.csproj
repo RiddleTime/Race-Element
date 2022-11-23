@@ -344,12 +344,14 @@
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\About\ReleaseNotes.cs" />
+    <Compile Include="Controls\HUD\ConfigurationControls.cs" />
     <Compile Include="Controls\HUD\HudOptions.xaml.cs">
       <DependentUpon>HudOptions.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\HUD\HudTab.xaml.cs">
       <DependentUpon>HudTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\HUD\PreviewCache.cs" />
     <Compile Include="Controls\Liveries\AfterImport.xaml.cs">
       <DependentUpon>AfterImport.xaml</DependentUpon>
     </Compile>
