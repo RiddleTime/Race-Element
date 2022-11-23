@@ -1,8 +1,11 @@
-﻿using Octokit;
+﻿using ACCManager.Controls.HUD.Controls.ValueControls;
+using ACCManager.HUD.Overlay.Configuration;
+using Octokit;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,8 +19,9 @@ namespace ACCManager.Controls.HUD.Controls
     {
         public static ControlFactory Instance { get; private set; } = new ControlFactory();
 
-        public ListViewItem GenerateOption(string group, string label, Type type)
+        public ListViewItem GenerateOption(string group, string label, PropertyInfo pi)
         {
+
             Grid grid = new Grid() { Height = 30 };
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(70, GridUnitType.Star) });
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(150, GridUnitType.Star) });
@@ -30,7 +34,24 @@ namespace ACCManager.Controls.HUD.Controls
                 Content = grid
             };
 
-            Label lblControl = new Label()
+            Label lblControl = GenerateLabel(label);
+            grid.Children.Add(lblControl);
+            Grid.SetColumn(lblControl, 0);
+
+            IControl valueControl = GenerateValueControl(pi);
+
+            if (valueControl != null)
+            {
+                Grid.SetColumn(valueControl.Control, 1);
+                grid.Children.Add(valueControl.Control);
+            }
+
+            return item;
+        }
+
+        private Label GenerateLabel(string label)
+        {
+            return new Label()
             {
                 Content = label,
                 Margin = new Thickness(0),
@@ -40,30 +61,55 @@ namespace ACCManager.Controls.HUD.Controls
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
             };
-            grid.Children.Add(lblControl);
+        }
 
-            ContentControl contentControl = null;
-            if (type == typeof(bool))
+        private IControl GenerateValueControl(PropertyInfo pi)
+        {
+            IControl contentControl = null;
+
+            if (pi.PropertyType == typeof(bool))
             {
-                contentControl = new ToggleButton();
+                IValueControl<bool> boolValueControl = new BooleanValueControl();
+                contentControl = (IControl)boolValueControl;
             }
-            else
+
+            if (pi.PropertyType == typeof(int))
             {
-                contentControl = new Label()
-                {
-                    Content = type.Name,
-                };
+                IntRangeAttribute intRange = null;
+                foreach (Attribute cad in Attribute.GetCustomAttributes(pi))
+                    if (cad is IntRangeAttribute)
+                        intRange = (IntRangeAttribute)cad;
+
+                IValueControl<int> intValueControl = new IntegerValueControl(intRange);
+                contentControl = (IControl)intValueControl;
             }
-            contentControl.HorizontalAlignment = HorizontalAlignment.Center;
-            contentControl.VerticalAlignment = VerticalAlignment.Center;
 
-            grid.Children.Add(contentControl);
+            if (pi.PropertyType == typeof(byte))
+            {
+                ByteRangeAttribute byteRange = null;
+                foreach (Attribute cad in Attribute.GetCustomAttributes(pi))
+                    if (cad is ByteRangeAttribute)
+                        byteRange = (ByteRangeAttribute)cad;
 
-            Grid.SetColumn(lblControl, 0);
-            if (contentControl != null)
-                Grid.SetColumn(contentControl, 1);
+                IValueControl<byte> intValueControl = new ByteValueControl(byteRange);
+                contentControl = (IControl)intValueControl;
+            }
 
-            return item;
+            //else
+            //{
+            //    //contentControl = new Label()
+            //    //{
+            //    //    Content = type.Name,
+            //    //};
+            //}
+
+            if (contentControl == null)
+                return null;
+
+            contentControl.Control.HorizontalAlignment = HorizontalAlignment.Center;
+            contentControl.Control.VerticalAlignment = VerticalAlignment.Center;
+
+            return contentControl;
         }
     }
 }

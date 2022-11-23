@@ -565,7 +565,7 @@ namespace ACCManager.Controls
                     {
                         // Add control elements here..
                         //boxStacker.Children.Add(CreateUserControls(subType, configFields, type.Name, fontSize, overlayName));
-                        boxStacker.Children.Add(ControlFactory.Instance.GenerateOption($"{type.Name}", $"{subType.Name}", subType.PropertyType));
+                        boxStacker.Children.Add(ControlFactory.Instance.GenerateOption($"{type.Name}", $"{subType.Name}", subType));
                         Debug.WriteLine($"   {subType.Name} - {subType.ReflectedType.FullName} - {subType.PropertyType.Name}");
                     }
 
