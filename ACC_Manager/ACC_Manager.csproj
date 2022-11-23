@@ -347,6 +347,7 @@
     <Compile Include="Controls\HUD\ConfigurationControls.cs" />
     <Compile Include="Controls\HUD\Controls\ControlFactory.cs" />
     <Compile Include="Controls\HUD\Controls\ValueControls\ByteValueControl.cs" />
+    <Compile Include="Controls\HUD\Controls\ValueControls\FloatValueControl.cs" />
     <Compile Include="Controls\HUD\Controls\ValueControls\IntegerValueControl.cs" />
     <Compile Include="Controls\HUD\Controls\ValueControls\IValueControl.cs" />
     <Compile Include="Controls\HUD\Controls\ValueControls\BooleanValueControl.cs" />

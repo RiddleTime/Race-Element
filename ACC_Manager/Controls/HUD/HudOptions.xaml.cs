@@ -524,7 +524,6 @@ namespace ACCManager.Controls
             PropertyInfo[] types = overlayConfig.GetType().GetProperties().Where(x => x.IsDefined(typeof(ConfigGroupingAttribute))).ToArray();
             foreach (PropertyInfo type in types)
             {
-
                 ConfigGroupingAttribute cga = null;
                 foreach (Attribute cad in Attribute.GetCustomAttributes(type))
                     if (cad is ConfigGroupingAttribute attribute)
@@ -563,10 +562,23 @@ namespace ACCManager.Controls
                     };
                     foreach (PropertyInfo subType in type.PropertyType.GetProperties())
                     {
-                        // Add control elements here..
-                        //boxStacker.Children.Add(CreateUserControls(subType, configFields, type.Name, fontSize, overlayName));
-                        boxStacker.Children.Add(ControlFactory.Instance.GenerateOption($"{type.Name}", $"{subType.Name}", subType));
-                        Debug.WriteLine($"   {subType.Name} - {subType.ReflectedType.FullName} - {subType.PropertyType.Name}");
+
+                        ConfigField configField = configFields.Where(x => x.Name == $"{type.Name}.{subType.Name}").FirstOrDefault();
+
+                        if (configField == null)
+                        {
+                            var typeValue = type.GetValue(overlayConfig);
+                            configField = new ConfigField() { Name = $"{type.Name}.{subType.Name}", Value = subType.GetValue(typeValue).ToString() };
+                        }
+
+                        if (configField != null)
+                        {
+                            Debug.WriteLine(configField.Name);
+                            // Add control elements here..
+                            //boxStacker.Children.Add(CreateUserControls(subType, configFields, type.Name, fontSize, overlayName));
+                            boxStacker.Children.Add(ControlFactory.Instance.GenerateOption($"{type.Name}", $"{subType.Name}", subType, configField));
+                            Debug.WriteLine($"   {subType.Name} - {subType.ReflectedType.FullName} - {subType.PropertyType.Name}");
+                        }
                     }
 
                     stacker.Children.Add(box);

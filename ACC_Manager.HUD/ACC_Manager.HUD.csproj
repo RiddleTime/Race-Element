@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Overlay\Configuration\ByteRangeAttribute.cs" />
+    <Compile Include="Overlay\Configuration\FloatRangeAttribute.cs" />
     <Compile Include="Overlay\Configuration\OverlayConfigurationGrouping.cs" />
     <Compile Include="Overlay\Configuration\ToolTipAttribute.cs" />
     <Compile Include="Overlay\Internal\AbstractOverlay.cs" />

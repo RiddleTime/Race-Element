@@ -15,6 +15,7 @@ namespace ACCManager.HUD.Overlay.Configuration
         public class GenericConfig
         {
             [ToolTip("Defines the scale of the overlay.")]
+            [FloatRange(0.5f, 2.0f, 0.01f, 2)]
             public float Scale { get; set; } = 1.0f;
 
             [ToolTip("Allows other software to to detect this overlay as a Window, can be used for streaming apps.")]
@@ -44,9 +45,22 @@ namespace ACCManager.HUD.Overlay.Configuration
         public List<ConfigField> GetConfigFields()
         {
             List<ConfigField> configFields = new List<ConfigField>();
-            foreach (var nested in this.GetType().GetRuntimeProperties())
+            var runtimeProperties = this.GetType().GetRuntimeProperties();
+            foreach (PropertyInfo nested in runtimeProperties)
             {
-                configFields.Add(new ConfigField() { Name = nested.Name, Value = nested.GetValue(this) });
+                ConfigGroupingAttribute groupingAttribute;
+                if ((groupingAttribute = nested.GetCustomAttribute<ConfigGroupingAttribute>()) != null)
+                {
+                    var nestedValue = nested.GetValue(this);
+                    foreach (PropertyInfo subNested in nested.PropertyType.GetRuntimeProperties())
+                    {
+                        configFields.Add(new ConfigField() { Name = $"{nested.Name}.{subNested.Name}", Value = subNested.GetValue(nestedValue) });
+                    }
+                }
+                else
+                {
+                    configFields.Add(new ConfigField() { Name = nested.Name, Value = nested.GetValue(this) });
+                }
             }
 
             return configFields;

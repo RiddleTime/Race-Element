@@ -1,16 +1,10 @@
 ﻿using ACCManager.Controls.HUD.Controls.ValueControls;
 using ACCManager.HUD.Overlay.Configuration;
-using Octokit;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
+using static ACCManager.HUD.Overlay.Configuration.OverlayConfiguration;
 using Label = System.Windows.Controls.Label;
 
 namespace ACCManager.Controls.HUD.Controls
@@ -19,7 +13,7 @@ namespace ACCManager.Controls.HUD.Controls
     {
         public static ControlFactory Instance { get; private set; } = new ControlFactory();
 
-        public ListViewItem GenerateOption(string group, string label, PropertyInfo pi)
+        public ListViewItem GenerateOption(string group, string label, PropertyInfo pi, ConfigField configField)
         {
 
             Grid grid = new Grid() { Height = 30 };
@@ -31,14 +25,15 @@ namespace ACCManager.Controls.HUD.Controls
                 Padding = new Thickness(0),
                 BorderThickness = new Thickness(0),
                 BorderBrush = System.Windows.Media.Brushes.OrangeRed,
-                Content = grid
+                Content = grid,
+                IsTabStop = false
             };
 
             Label lblControl = GenerateLabel(label);
             grid.Children.Add(lblControl);
             Grid.SetColumn(lblControl, 0);
 
-            IControl valueControl = GenerateValueControl(pi);
+            IControl valueControl = GenerateValueControl(pi, configField);
 
             if (valueControl != null)
             {
@@ -63,14 +58,14 @@ namespace ACCManager.Controls.HUD.Controls
             };
         }
 
-        private IControl GenerateValueControl(PropertyInfo pi)
+        private IControl GenerateValueControl(PropertyInfo pi, ConfigField configField)
         {
             IControl contentControl = null;
 
             if (pi.PropertyType == typeof(bool))
             {
-                IValueControl<bool> boolValueControl = new BooleanValueControl();
-                contentControl = (IControl)boolValueControl;
+                IValueControl<bool> boolValueControl = new BooleanValueControl(configField);
+                contentControl = boolValueControl;
             }
 
             if (pi.PropertyType == typeof(int))
@@ -80,8 +75,8 @@ namespace ACCManager.Controls.HUD.Controls
                     if (cad is IntRangeAttribute)
                         intRange = (IntRangeAttribute)cad;
 
-                IValueControl<int> intValueControl = new IntegerValueControl(intRange);
-                contentControl = (IControl)intValueControl;
+                IValueControl<int> intValueControl = new IntegerValueControl(intRange, configField);
+                contentControl = intValueControl;
             }
 
             if (pi.PropertyType == typeof(byte))
@@ -91,17 +86,21 @@ namespace ACCManager.Controls.HUD.Controls
                     if (cad is ByteRangeAttribute)
                         byteRange = (ByteRangeAttribute)cad;
 
-                IValueControl<byte> intValueControl = new ByteValueControl(byteRange);
-                contentControl = (IControl)intValueControl;
+                IValueControl<byte> intValueControl = new ByteValueControl(byteRange, configField);
+                contentControl = intValueControl;
             }
 
-            //else
-            //{
-            //    //contentControl = new Label()
-            //    //{
-            //    //    Content = type.Name,
-            //    //};
-            //}
+            if (pi.PropertyType == typeof(float))
+            {
+                FloatRangeAttribute floatRange = null;
+                foreach (Attribute cad in Attribute.GetCustomAttributes(pi))
+                    if (cad is FloatRangeAttribute)
+                        floatRange = (FloatRangeAttribute)cad;
+
+                IValueControl<float> floatValueControl = new FloatValueControl(floatRange, configField);
+                contentControl = floatValueControl;
+            }
+
 
             if (contentControl == null)
                 return null;
