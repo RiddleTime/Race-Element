@@ -18,46 +18,50 @@ namespace ACCManager.Controls.HUD.Controls
 
         public ListViewItem GenerateOption(string group, string label, Type type)
         {
+            Grid grid = new Grid() { Height = 30 };
+            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(70, GridUnitType.Star) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(150, GridUnitType.Star) });
             ListViewItem item = new ListViewItem()
             {
                 Margin = new Thickness(0),
                 Padding = new Thickness(0),
                 BorderThickness = new Thickness(0),
-                BorderBrush = System.Windows.Media.Brushes.OrangeRed
+                BorderBrush = System.Windows.Media.Brushes.OrangeRed,
+                Content = grid
             };
-            StackPanel panel = new StackPanel()
-            {
-                Orientation = Orientation.Horizontal,
-                Margin = new Thickness(0),
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-            };
-            item.Content = panel;
-            panel.Children.Add(new ListViewItem()
-            {
-                Content = new Label()
-                {
-                    Content = label,
-                    Margin = new Thickness(0),
-                    Padding = new Thickness(0),
-                    FontWeight = FontWeights.Bold,
-                    FontSize = 13,
-                }
-            });
 
+            Label lblControl = new Label()
+            {
+                Content = label,
+                Margin = new Thickness(0),
+                Padding = new Thickness(0),
+                FontWeight = FontWeights.Bold,
+                FontSize = 13,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            grid.Children.Add(lblControl);
+
+            ContentControl contentControl = null;
             if (type == typeof(bool))
             {
-                panel.Children.Add(new ToggleButton()
-                {
-                    HorizontalContentAlignment = HorizontalAlignment.Right
-                });
+                contentControl = new ToggleButton();
             }
             else
             {
-                panel.Children.Add(new Label()
+                contentControl = new Label()
                 {
-                    Content = type.Name
-                });
+                    Content = type.Name,
+                };
             }
+            contentControl.HorizontalAlignment = HorizontalAlignment.Center;
+            contentControl.VerticalAlignment = VerticalAlignment.Center;
+
+            grid.Children.Add(contentControl);
+
+            Grid.SetColumn(lblControl, 0);
+            if (contentControl != null)
+                Grid.SetColumn(contentControl, 1);
 
             return item;
         }
