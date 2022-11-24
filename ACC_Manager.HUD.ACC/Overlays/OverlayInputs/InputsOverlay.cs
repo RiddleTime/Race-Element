@@ -17,12 +17,18 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
         private readonly SteeringWheelConfig _config = new SteeringWheelConfig();
         private sealed class SteeringWheelConfig : OverlayConfiguration
         {
-            [ToolTip("Displays the throttle input.")]
-            public bool ShowThrottleInput { get; set; } = true;
-            [ToolTip("Displays the brake input.")]
-            public bool ShowBrakeInput { get; set; } = true;
-            [ToolTip("Displays the selected gear.")]
-            public bool ShowCurrentGear { get; set; } = true;
+            [ConfigGrouping("Information", "Show or hide inputs or the current gear.")]
+            public InputsGrouping Inputs { get; set; } = new InputsGrouping();
+            public class InputsGrouping
+            {
+                [ToolTip("Displays the selected gear.")]
+                public bool CurrentGear { get; set; } = true;
+
+                [ToolTip("Displays the throttle input.")]
+                public bool ThrottleInput { get; set; } = false;
+                [ToolTip("Displays the brake input.")]
+                public bool BrakeInput { get; set; } = false;
+            }
 
             public SteeringWheelConfig()
             {
@@ -52,7 +58,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
 
         public sealed override void BeforeStart()
         {
-            if (this._config.ShowCurrentGear)
+            if (this._config.Inputs.CurrentGear)
                 _gearIndicatorFont = FontUtil.FontOrbitron(40);
 
             _cachedBackground = new CachedBitmap((int)(Width * this.Scale), (int)(Height * this.Scale), g =>
@@ -65,20 +71,20 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
                 g.DrawEllipse(new Pen(Color.FromArgb(80, Color.White), _wheelWidth / 2 * Scale), _size / 2 * Scale, _size / 2 * Scale, _size / 2 * Scale - _wheelWidth * Scale);
 
                 // braking background
-                if (_config.ShowBrakeInput)
+                if (_config.Inputs.BrakeInput)
                 {
                     var brakeColor = Color.FromArgb(255, 240, 10, 10);
-                    int x = (int)((_wheelWidth * 2 + (_config.ShowThrottleInput ? this.innerWheelWidth : 0)) * Scale);
-                    int y = (int)((_wheelWidth * 2 + (_config.ShowThrottleInput ? this.innerWheelWidth : 0)) * Scale);
-                    int width = (int)((_size - (4 * _wheelWidth) - (2 * (_config.ShowThrottleInput ? this.innerWheelWidth : 0))) * Scale);
-                    int height = (int)((_size - (4 * _wheelWidth) - (2 * (_config.ShowThrottleInput ? this.innerWheelWidth : 0))) * Scale);
+                    int x = (int)((_wheelWidth * 2 + (_config.Inputs.ThrottleInput ? this.innerWheelWidth : 0)) * Scale);
+                    int y = (int)((_wheelWidth * 2 + (_config.Inputs.ThrottleInput ? this.innerWheelWidth : 0)) * Scale);
+                    int width = (int)((_size - (4 * _wheelWidth) - (2 * (_config.Inputs.ThrottleInput ? this.innerWheelWidth : 0))) * Scale);
+                    int height = (int)((_size - (4 * _wheelWidth) - (2 * (_config.Inputs.ThrottleInput ? this.innerWheelWidth : 0))) * Scale);
                     var brakingBackground = new Pen(Color.FromArgb(80, brakeColor), this.innerWheelWidth / 2 * Scale);
                     Rectangle rect = new Rectangle(x, y, width, height);
                     g.DrawArc(brakingBackground, rect, inputCircleMinAngle, inputCircleSweepAngle);
                 }
 
                 // throttle background
-                if (_config.ShowThrottleInput)
+                if (_config.Inputs.ThrottleInput)
                 {
                     var throttleColor = Color.FromArgb(255, 10, 240, 10);
                     var penBackground = new Pen(Color.FromArgb(80, throttleColor), this.innerWheelWidth / 2 * Scale);
@@ -107,13 +113,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
 
             DrawSteeringIndicator(g);
 
-            if (this._config.ShowThrottleInput)
+            if (this._config.Inputs.ThrottleInput)
                 DrawThrottleIndicator(g);
 
-            if (this._config.ShowBrakeInput)
+            if (this._config.Inputs.BrakeInput)
                 DrawBrakingIndicator(g);
 
-            if (this._config.ShowCurrentGear)
+            if (this._config.Inputs.CurrentGear)
                 DrawGearIndicator(g);
         }
 
@@ -144,10 +150,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
 
             Rectangle rect = new Rectangle()
             {
-                X = _wheelWidth * 2 + (_config.ShowThrottleInput ? this.innerWheelWidth : 0),
-                Y = _wheelWidth * 2 + (_config.ShowThrottleInput ? this.innerWheelWidth : 0),
-                Width = _size - (4 * _wheelWidth) - (2 * (_config.ShowThrottleInput ? this.innerWheelWidth : 0)),
-                Height = _size - (4 * _wheelWidth) - (2 * (_config.ShowThrottleInput ? this.innerWheelWidth : 0))
+                X = _wheelWidth * 2 + (_config.Inputs.ThrottleInput ? this.innerWheelWidth : 0),
+                Y = _wheelWidth * 2 + (_config.Inputs.ThrottleInput ? this.innerWheelWidth : 0),
+                Width = _size - (4 * _wheelWidth) - (2 * (_config.Inputs.ThrottleInput ? this.innerWheelWidth : 0)),
+                Height = _size - (4 * _wheelWidth) - (2 * (_config.Inputs.ThrottleInput ? this.innerWheelWidth : 0))
             };
             float brakeAngle = Rescale(1, inputCircleSweepAngle, pagePhysics.Brake);
             g.DrawArc(brakingForeground, rect, inputCircleMinAngle, brakeAngle);
