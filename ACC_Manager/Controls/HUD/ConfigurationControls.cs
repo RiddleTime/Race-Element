@@ -54,9 +54,9 @@ namespace ACCManager.Controls.HUD
 
         internal static void SaveOverlayConfigField(ConfigField configField)
         {
+            // fix exception when tab is different, needs different list (debug overlays)
             ListViewItem lvi = (ListViewItem)HudOptions.Instance.listOverlays.SelectedItem;
-            TextBlock tb = (TextBlock)lvi.Content;
-            string overlayName = tb.Text;
+            string overlayName = ((TextBlock)lvi.Content).Text;
 
             OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(overlayName);
             if (settings == null)
@@ -68,10 +68,7 @@ namespace ACCManager.Controls.HUD
 
             ConfigField field = null;
             if (settings.Config == null)
-            {
                 settings.Config = OverlayConfiguration.GetConfigFields(HudOptions.Instance.overlayConfig);
-
-            }
 
             field = settings.Config.Find(x => x.Name == configField.Name);
             if (field == null)
@@ -89,23 +86,21 @@ namespace ACCManager.Controls.HUD
             if (HudOptions.Instance.listOverlays.SelectedIndex >= 0)
             {
 
-                string actualOverlayName = overlayName.Replace("Overlay", "").Trim();
-                if (tb.Text.Equals(actualOverlayName))
+
+                PreviewCache.GeneratePreview(overlayName);
+                PreviewCache._cachedPreviews.TryGetValue(overlayName, out CachedPreview preview);
+                if (preview != null)
                 {
-                    PreviewCache.GeneratePreview(actualOverlayName);
-                    PreviewCache._cachedPreviews.TryGetValue(actualOverlayName, out CachedPreview preview);
-                    if (preview != null)
-                    {
-                        HudOptions.Instance.previewImage.Stretch = Stretch.UniformToFill;
-                        HudOptions.Instance.previewImage.Width = preview.Width;
-                        HudOptions.Instance.previewImage.Height = preview.Height;
-                        HudOptions.Instance.previewImage.Source = ImageControlCreator.CreateImage(preview.Width, preview.Height, preview.CachedBitmap).Source;
-                    }
-                    else
-                    {
-                        HudOptions.Instance.previewImage.Source = null;
-                    }
+                    HudOptions.Instance.previewImage.Stretch = Stretch.UniformToFill;
+                    HudOptions.Instance.previewImage.Width = preview.Width;
+                    HudOptions.Instance.previewImage.Height = preview.Height;
+                    HudOptions.Instance.previewImage.Source = ImageControlCreator.CreateImage(preview.Width, preview.Height, preview.CachedBitmap).Source;
                 }
+                else
+                {
+                    HudOptions.Instance.previewImage.Source = null;
+                }
+
             }
         }
 

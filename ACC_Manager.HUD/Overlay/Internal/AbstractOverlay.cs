@@ -1,5 +1,4 @@
 ﻿using ACC_Manager.Util.Settings;
-using ACC_Manager.Util.SystemExtensions;
 using ACCManager.Broadcast.Structs;
 using ACCManager.Data.ACC.Session;
 using ACCManager.Data.ACC.Tracker;
@@ -109,7 +108,8 @@ namespace ACCManager.HUD.Overlay.Internal
                 {
                     var overlayConfig = (OverlayConfiguration)Activator.CreateInstance(nested.FieldType, new object[] { });
 
-                    OverlaySettingsJson savedSettings = OverlaySettings.LoadOverlaySettings(this.Name);
+                    string name = this.GetType().GetCustomAttribute<OverlayAttribute>().Name;
+                    OverlaySettingsJson savedSettings = OverlaySettings.LoadOverlaySettings(name);
 
                     if (savedSettings == null)
                         return;

@@ -31,6 +31,7 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
                 Background = new SolidColorBrush(Color.FromArgb(140, 2, 2, 2)),
                 Cursor = Cursors.Hand
             };
+            _grid.MouseLeftButtonUp += (s, e) => Save(); 
             _grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(2, GridUnitType.Star) });
             _grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(8, GridUnitType.Star) });
 
@@ -54,7 +55,6 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
             _slider.ValueChanged += (s, e) =>
             {
                 _field.Value = _slider.Value.ToString($"F{floatRange.Decimals}");
-                Save();
                 UpdateLabel(floatRange.Decimals);
             };
 
@@ -77,7 +77,7 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
 
         private void UpdateLabel(int decimals)
         {
-            _label.Content = $"{_field.Value}";
+            _label.Content = $"{_slider.Value.ToString($"F{decimals}")}";
         }
 
         public void Save()

@@ -28,12 +28,13 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
                 Background = new SolidColorBrush(Color.FromArgb(140, 2, 2, 2)),
                 Cursor = Cursors.Hand
             };
+            _grid.MouseLeftButtonUp += (s, e) => Save();
             _grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(2, GridUnitType.Star) });
             _grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(8, GridUnitType.Star) });
 
             _label = new Label()
             {
-                Content = Value,
+                Content = _field.Value,
                 HorizontalContentAlignment = HorizontalAlignment.Right
             };
             _grid.Children.Add(_label);
@@ -52,11 +53,10 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
             _slider.ValueChanged += (s, e) =>
             {
                 _field.Value = _slider.Value.ToString();
-                Save();
                 _label.Content = _field.Value;
             };
 
-            int value = int.Parse(configField.Value.ToString());
+            int value = int.Parse(_field.Value.ToString());
             value.Clip(intRange.Min, intRange.Max);
             _slider.Value = value;
 
