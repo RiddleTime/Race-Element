@@ -10,23 +10,28 @@ using static ACCManager.Data.SetupConverter;
 namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
 {
     [Overlay(Name = "Car Info", Version = 1.00, OverlayType = OverlayType.Release,
-        Description = "A panel showing the damage time. Optionally showing current tyre set, av. fuel usage, exhaust temp and water temp.")]
+        Description = "A panel showing the damage time. Optionally showing current tyre set, fuel per lap, exhaust temp and water temp.")]
     internal sealed class CarInfoOverlay : AbstractOverlay
     {
         private readonly CarInfoConfiguration _config = new CarInfoConfiguration();
         private class CarInfoConfiguration : OverlayConfiguration
         {
-            [ToolTip("Displays your current tyre set")]
-            public bool ShowTyreSet { get; set; } = true;
+            [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
+            public InfoPanelGrouping InfoPanel { get; set; } = new InfoPanelGrouping();
+            public class InfoPanelGrouping
+            {
+                [ToolTip("Displays your current tyre set")]
+                public bool TyreSet { get; set; } = true;
 
-            [ToolTip("Displays the average fuel usage over the past 3 laps.\n(uses last lap info if not enough data)")]
-            public bool ShowAverageFuelUsage { get; set; } = false;
+                [ToolTip("Displays the average fuel usage over the past 3 laps.\n(uses last lap info if not enough data)")]
+                public bool FuelPerLap { get; set; } = false;
 
-            [ToolTip("Displays the exhaust temperature.")]
-            public bool ShowExhaustTemp { get; set; } = false;
+                [ToolTip("Displays the exhaust temperature.")]
+                public bool ExhaustTemp { get; set; } = false;
 
-            [ToolTip("Displays the water temperature of the engine.")]
-            public bool ShowWaterTemp { get; set; } = false;
+                [ToolTip("Displays the water temperature of the engine.")]
+                public bool WaterTemp { get; set; } = false;
+            }
 
             public CarInfoConfiguration()
             {
@@ -49,16 +54,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
 
         public sealed override void BeforeStart()
         {
-            if (!this._config.ShowAverageFuelUsage)
+            if (!this._config.InfoPanel.FuelPerLap)
                 this.Height -= this.infoPanel.FontHeight;
 
-            if (!this._config.ShowExhaustTemp)
+            if (!this._config.InfoPanel.ExhaustTemp)
                 this.Height -= this.infoPanel.FontHeight;
 
-            if (!this._config.ShowWaterTemp)
+            if (!this._config.InfoPanel.WaterTemp)
                 this.Height -= this.infoPanel.FontHeight;
 
-            if (!this._config.ShowTyreSet)
+            if (!this._config.InfoPanel.TyreSet)
                 this.Height -= this.infoPanel.FontHeight;
         }
 
@@ -72,10 +77,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
             Brush damageBrush = HasAnyDamage() ? Brushes.OrangeRed : Brushes.White;
             infoPanel.AddLine("Damage", $"{totalRepairTime:F1}", damageBrush);
 
-            if (_config.ShowTyreSet)
+            if (_config.InfoPanel.TyreSet)
                 infoPanel.AddLine("Tyre Set", $"{pageGraphics.currentTyreSet}");
 
-            if (this._config.ShowAverageFuelUsage)
+            if (this._config.InfoPanel.FuelPerLap)
             {
                 float fuelXLap = LapTracker.Instance.Laps.GetAverageFuelUsage(3);
                 if (fuelXLap != -1)
@@ -84,10 +89,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
                 infoPanel.AddLine("Fuel/Lap", $"{fuelXLap:F3}");
             }
 
-            if (this._config.ShowWaterTemp)
+            if (this._config.InfoPanel.WaterTemp)
                 infoPanel.AddLine("Water", $"{pagePhysics.WaterTemp:F0} C");
 
-            if (this._config.ShowExhaustTemp)
+            if (this._config.InfoPanel.ExhaustTemp)
                 infoPanel.AddLine("Exhaust", $"{pageGraphics.ExhaustTemperature:F0} C");
 
             infoPanel.Draw(g);
