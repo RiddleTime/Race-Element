@@ -49,7 +49,7 @@ Description = "A panel showing live broadcast track data.")]
 
 
 
-        public EntryListOverlay(Rectangle rect) : base(rect, "Debug EntryList Overlay")
+        public EntryListOverlay(Rectangle rect) : base(rect, "Entrylist Overlay")
         {
             this.AllowReposition = false;
             this.RefreshRateHz = 10;

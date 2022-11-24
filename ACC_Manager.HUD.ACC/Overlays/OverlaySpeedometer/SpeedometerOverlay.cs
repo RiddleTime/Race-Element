@@ -30,7 +30,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySpeedometer
         private float _maxSpeed = 0;
         private float _minSpeed = 0;
 
-        public SpeedometerOverlay(Rectangle rectangle) : base(rectangle, "Speedometer Overlay")
+        public SpeedometerOverlay(Rectangle rectangle) : base(rectangle, "Speedometer")
         {
             this.Width = 130;
             _panel = new InfoPanel(13, this.Width)

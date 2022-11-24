@@ -42,7 +42,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
         private readonly InfoPanel infoPanel;
         private const float MagicDamageMultiplier = 0.282f;
 
-        public CarInfoOverlay(Rectangle rectangle) : base(rectangle, "Car Info Overlay")
+        public CarInfoOverlay(Rectangle rectangle) : base(rectangle, "Car Info")
         {
             int panelWidth = 140;
 

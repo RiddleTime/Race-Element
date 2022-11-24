@@ -51,7 +51,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
         private float _halfRpmStringWidth = -1;
         private float _halfPitLimiterStringWidth = -1;
 
-        public ShiftIndicatorOverlay(Rectangle rectangle) : base(rectangle, "Shift Indicator Overlay")
+        public ShiftIndicatorOverlay(Rectangle rectangle) : base(rectangle, "Shift Indicator")
         {
             this.RefreshRateHz = 40;
             AllowReposition = true;

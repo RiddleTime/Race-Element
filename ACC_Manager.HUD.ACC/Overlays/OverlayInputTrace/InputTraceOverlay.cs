@@ -35,7 +35,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
         private InputGraph _graph;
         private InputDataCollector _inputDataCollector;
 
-        public InputTraceOverlay(Rectangle rectangle) : base(rectangle, "Input Trace Overlay")
+        public InputTraceOverlay(Rectangle rectangle) : base(rectangle, "Input Trace")
         {
             _originalWidth = this._config.DataPoints;
             this.Width = _originalWidth;

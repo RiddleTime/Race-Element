@@ -32,7 +32,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             }
         }
 
-        public FuelInfoOverlay(Rectangle rectangle) : base(rectangle, "Fuel Info Overlay")
+        public FuelInfoOverlay(Rectangle rectangle) : base(rectangle, "Fuel Info")
         {
             this.Width = 222;
             _infoPanel = new InfoPanel(10, this.Width - 1) { FirstRowLine = 1 };

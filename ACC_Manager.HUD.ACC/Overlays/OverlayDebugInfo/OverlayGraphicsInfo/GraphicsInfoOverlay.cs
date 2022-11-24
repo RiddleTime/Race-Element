@@ -16,7 +16,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayGraphicsInfo
         private readonly DebugConfig _config = new DebugConfig();
         private readonly InfoTable _table;
 
-        public GraphicsInfoOverlay(Rectangle rectangle) : base(rectangle, "Debug Graphics Overlay")
+        public GraphicsInfoOverlay(Rectangle rectangle) : base(rectangle, "Graphics Info")
         {
             this.AllowReposition = false;
             this.RefreshRateHz = 5;

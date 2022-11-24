@@ -36,7 +36,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
         private readonly Font _font;
         private InfoTable _table;
 
-        public DebugOutputOverlay(Rectangle rectangle) : base(rectangle, "Debug Output Overlay")
+        public DebugOutputOverlay(Rectangle rectangle) : base(rectangle, "Debug Output")
         {
             this.AllowReposition = false;
             this.RefreshRateHz = 5;

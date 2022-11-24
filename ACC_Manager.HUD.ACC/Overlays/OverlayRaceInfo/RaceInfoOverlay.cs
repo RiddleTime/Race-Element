@@ -26,7 +26,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRaceInfo
 
         private readonly InfoPanel _panel = new InfoPanel(10, 240);
 
-        public RaceInfoOverlay(Rectangle rectangle) : base(rectangle, "Race Info Overlay")
+        public RaceInfoOverlay(Rectangle rectangle) : base(rectangle, "Race Info")
         {
             this.Width = 230;
             this.Height = _panel.FontHeight * 6;

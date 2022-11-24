@@ -63,7 +63,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
         private VerticalProgressBar _verticalGasBar;
         private VerticalProgressBar _verticalBrakeBar;
 
-        public InputBarsOverlay(Rectangle rectangle) : base(rectangle, "Input Bars Overlay")
+        public InputBarsOverlay(Rectangle rectangle) : base(rectangle, "Input Bars")
         {
             if (_config.Bars.Horizontal)
             {

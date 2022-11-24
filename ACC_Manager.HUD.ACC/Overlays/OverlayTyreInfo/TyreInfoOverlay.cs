@@ -39,7 +39,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
         private readonly int _yMono;
         private readonly int _yMonoSmall;
 
-        public TyreInfoOverlay(Rectangle rectangle) : base(rectangle, "Tyre Info Overlay")
+        public TyreInfoOverlay(Rectangle rectangle) : base(rectangle, "Tyre Info")
         {
             _fontFamily = FontUtil.FontUnispace(10);
             _yMono = _fontFamily.Height / 6;

@@ -17,7 +17,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPhysicsInfo
         private readonly DebugConfig _config = new DebugConfig();
         private readonly InfoTable _table;
 
-        public PhysicsInfoOverlay(Rectangle rectangle) : base(rectangle, "Debug Physics Overlay")
+        public PhysicsInfoOverlay(Rectangle rectangle) : base(rectangle, "Physics Info")
         {
             this.AllowReposition = false;
             this.RefreshRateHz = 5;

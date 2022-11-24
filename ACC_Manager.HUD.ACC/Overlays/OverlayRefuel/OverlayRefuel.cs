@@ -58,7 +58,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
         private float _avgFuelConsumption = 0;
         private float _lastFuelConsumption = 0;
 
-        public RefuelInfoOverlay(Rectangle rect) : base(rect, "Fuelhelper")
+        public RefuelInfoOverlay(Rectangle rect) : base(rect, "Refuel Info")
         {
             this.Width = windowWidth;
             this.Height = windowHeight;

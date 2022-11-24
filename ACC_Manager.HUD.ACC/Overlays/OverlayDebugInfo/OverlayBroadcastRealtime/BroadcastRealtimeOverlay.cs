@@ -21,7 +21,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
 
         private InfoTable _table;
 
-        public BroadcastRealtimeOverlay(Rectangle rectangle) : base(rectangle, "Debug BroadcastRealtime Overlay")
+        public BroadcastRealtimeOverlay(Rectangle rectangle) : base(rectangle, "Broadcast Realtime")
         {
             this.AllowReposition = false;
             this.RefreshRateHz = 10;

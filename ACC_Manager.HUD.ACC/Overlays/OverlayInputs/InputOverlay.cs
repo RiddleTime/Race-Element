@@ -42,7 +42,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
 
         private Font _gearIndicatorFont;
 
-        public InputsOverlay(Rectangle rectangle) : base(rectangle, "Inputs Overlay")
+        public InputsOverlay(Rectangle rectangle) : base(rectangle, "Inputs")
         {
             this.Height = _size + 1;
             this.Width = _size + 1;

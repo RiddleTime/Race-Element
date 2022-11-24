@@ -81,7 +81,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
         };
 
-        public StandingsOverlay(Rectangle rectangle) : base(rectangle, "Standings Overlay")
+        public StandingsOverlay(Rectangle rectangle) : base(rectangle, "Live Standings")
         {
             this.Height = _height;
             this.Width = _width;

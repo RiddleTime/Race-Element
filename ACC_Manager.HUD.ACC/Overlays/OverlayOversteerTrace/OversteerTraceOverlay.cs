@@ -34,7 +34,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
         private readonly int _originalWidth;
         private readonly int _originalHeight = 120;
 
-        public OversteerTraceOverlay(Rectangle rectangle) : base(rectangle, "Oversteer Trace Overlay")
+        public OversteerTraceOverlay(Rectangle rectangle) : base(rectangle, "Oversteer Trace")
         {
             _originalWidth = this._config.DataPoints;
 

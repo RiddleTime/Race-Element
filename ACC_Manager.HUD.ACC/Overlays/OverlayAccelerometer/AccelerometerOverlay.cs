@@ -43,7 +43,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
         private int _gMeterSize = 200;
         private readonly LinkedList<Point> _trace = new LinkedList<Point>();
 
-        public AccelerometerOverlay(Rectangle rectangle) : base(rectangle, "Accelerometer Overlay") { }
+        public AccelerometerOverlay(Rectangle rectangle) : base(rectangle, "Accelerometer") { }
 
         public sealed override void BeforeStart()
         {

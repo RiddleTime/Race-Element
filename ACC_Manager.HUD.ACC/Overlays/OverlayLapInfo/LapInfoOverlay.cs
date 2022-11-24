@@ -43,7 +43,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
         private DbLapData _lastLap = null;
 
-        public LapInfoOverlay(Rectangle rectangle) : base(rectangle, "Lap Info Overlay")
+        public LapInfoOverlay(Rectangle rectangle) : base(rectangle, "Lap Info")
         {
             _table = new InfoTable(10, new int[] { 85, 83 }) { Y = 17 };
             this.Width = _overlayWidth + 1;

@@ -30,7 +30,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
 
         private readonly InfoPanel _panel = new InfoPanel(10, 240);
 
-        public TrackInfoOverlay(Rectangle rectangle) : base(rectangle, "Track Info Overlay")
+        public TrackInfoOverlay(Rectangle rectangle) : base(rectangle, "Track Info")
         {
             this.Width = 230;
             this.Height = _panel.FontHeight * 6; ;

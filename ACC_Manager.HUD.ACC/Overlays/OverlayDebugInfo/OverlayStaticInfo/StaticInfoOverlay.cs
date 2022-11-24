@@ -16,7 +16,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStaticInfo
         private readonly DebugConfig _config = new DebugConfig();
         private readonly InfoTable _table;
 
-        public StaticInfoOverlay(Rectangle rectangle) : base(rectangle, "Debug Static Overlay")
+        public StaticInfoOverlay(Rectangle rectangle) : base(rectangle, "Static Info")
         {
             this.AllowReposition = false;
             this.RefreshRateHz = 5;

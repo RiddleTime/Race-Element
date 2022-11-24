@@ -22,7 +22,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayFocusedCar
             }
         }
 
-        public FocusedCarOverlay(Rectangle rectangle) : base(rectangle, "Focused Car Overlay")
+        public FocusedCarOverlay(Rectangle rectangle) : base(rectangle, "Focused Car")
         {
             this.Width = 600;
             this.Height = 600;

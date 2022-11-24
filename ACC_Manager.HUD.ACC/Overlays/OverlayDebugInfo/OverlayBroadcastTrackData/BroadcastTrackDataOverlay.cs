@@ -16,7 +16,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
         private readonly DebugConfig _config = new DebugConfig();
         private InfoTable _table;
 
-        public BroadcastTrackDataOverlay(Rectangle rectangle) : base(rectangle, "Debug BroadcastTrackData Overlay")
+        public BroadcastTrackDataOverlay(Rectangle rectangle) : base(rectangle, "Broadcast Track Data")
         {
             this.AllowReposition = false;
             this.RefreshRateHz = 5;
