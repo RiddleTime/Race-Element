@@ -12,16 +12,21 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
         private readonly InputTraceConfig _config = new InputTraceConfig();
         internal class InputTraceConfig : OverlayConfiguration
         {
-            [ToolTip("Displays the steering input as a white line in the trace.")]
-            internal bool ShowSteeringInput { get; set; } = true;
+            [ConfigGrouping("Chart", "Customize the charts refresh rate, data points or hide the steering input.")]
+            public ChartGrouping InfoPanel { get; set; } = new ChartGrouping();
+            public class ChartGrouping
+            {
+                [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
+                [IntRange(150, 800, 10)]
+                public int DataPoints { get; set; } = 300;
 
-            [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
-            [IntRange(150, 800, 10)]
-            internal int DataPoints { get; set; } = 300;
+                [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
+                [IntRange(10, 70, 5)]
+                public int Herz { get; set; } = 30;
 
-            [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
-            [IntRange(10, 70, 5)]
-            internal int Herz { get; set; } = 30;
+                [ToolTip("Displays the steering input as a white line in the trace.")]
+                public bool SteeringInput { get; set; } = true;
+            }
 
             public InputTraceConfig()
             {
@@ -37,7 +42,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
 
         public InputTraceOverlay(Rectangle rectangle) : base(rectangle, "Input Trace")
         {
-            _originalWidth = this._config.DataPoints;
+            _originalWidth = this._config.InfoPanel.DataPoints;
             this.Width = _originalWidth;
             this.Height = _originalHeight;
             this.RequestsDrawItself = true;

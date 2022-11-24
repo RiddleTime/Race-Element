@@ -51,7 +51,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             if (_cachedBackground != null)
                 _cachedBackground.Draw(g);
 
-            if (this._config.ShowSteeringInput)
+            if (this._config.InfoPanel.SteeringInput)
                 DrawData(g, _collector.Steering, Color.FromArgb(190, Color.White));
 
             DrawData(g, _collector.Throttle, Color.ForestGreen);
