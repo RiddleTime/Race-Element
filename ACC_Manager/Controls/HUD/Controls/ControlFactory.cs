@@ -54,8 +54,8 @@ namespace ACCManager.Controls.HUD.Controls
                 Content = string.Concat(label.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' '),
                 Margin = new Thickness(0),
                 Padding = new Thickness(7,0,0,0),
-                FontWeight = FontWeights.Bold,
-                FontSize = 13,
+                FontWeight = FontWeights.Light,
+                FontSize = 15,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Center,
             };

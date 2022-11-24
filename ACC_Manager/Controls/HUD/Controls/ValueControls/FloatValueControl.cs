@@ -31,7 +31,7 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
                 Background = new SolidColorBrush(Color.FromArgb(140, 2, 2, 2)),
                 Cursor = Cursors.Hand
             };
-            _grid.MouseLeftButtonUp += (s, e) => Save(); 
+            _grid.PreviewMouseLeftButtonUp += (s, e) => Save();
             _grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(2, GridUnitType.Star) });
             _grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(8, GridUnitType.Star) });
 
@@ -70,6 +70,7 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
                 int delta = args.Delta;
                 _slider.Value += delta.Clip(-1, 1) * _floatRange.Increment;
                 args.Handled = true;
+                Save();
             };
 
             UpdateLabel(floatRange.Decimals);

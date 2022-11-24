@@ -7,7 +7,6 @@ using ACCManager.HUD.ACC;
 using ACCManager.HUD.ACC.Overlays.OverlayMousePosition;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.Util;
 using Gma.System.MouseKeyHook;
 using System;

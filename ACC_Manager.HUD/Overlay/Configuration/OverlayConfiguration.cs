@@ -80,10 +80,10 @@ namespace ACCManager.HUD.Overlay.Configuration
                     if (prop.Name == field.Name)
                     {
                         ConfigGroupingAttribute groupingAttribute;
-                        if ((groupingAttribute = prop.GetCustomAttribute<ConfigGroupingAttribute>()) != null)
+                        if ((groupingAttribute = type.GetCustomAttribute<ConfigGroupingAttribute>()) != null)
                         {
                             var nestedValue = prop.GetValue(this);
-                            foreach (PropertyInfo subNested in prop.PropertyType.GetRuntimeProperties())
+                            foreach (PropertyInfo subNested in nestedValue.GetType().GetRuntimeProperties())
                             {
                                 if (subNested.PropertyType == typeof(Single))
                                     subNested.SetValue(nestedValue, Single.Parse(field.Value.ToString()));
