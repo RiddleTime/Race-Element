@@ -15,8 +15,8 @@ namespace ACCManager.HUD.Overlay.Configuration
         public class GenericConfig
         {
             [ToolTip("Defines the scale of the overlay.")]
-            [FloatRange(0.5f, 2.0f, 0.01f, 2)]
-            public float Scale { get; set; } = 1.0f;
+            [FloatRange(0.50f, 2.00f, 0.01f, 2)]
+            public float Scale { get; set; } = 1.00f;
 
             [ToolTip("Allows other software to to detect this overlay as a Window, can be used for streaming apps.")]
             public bool Window { get; set; } = false;
@@ -74,13 +74,13 @@ namespace ACCManager.HUD.Overlay.Configuration
             foreach (var field in configFields)
             {
                 Type type = this.GetType();
-
-                foreach (var prop in type.GetRuntimeProperties())
+                var runtimeProperties = type.GetRuntimeProperties();
+                foreach (var prop in runtimeProperties)
                 {
                     if (prop.Name == field.Name)
                     {
                         ConfigGroupingAttribute groupingAttribute;
-                        if ((groupingAttribute = type.GetCustomAttribute<ConfigGroupingAttribute>()) != null)
+                        if ((groupingAttribute = prop.PropertyType.GetCustomAttribute<ConfigGroupingAttribute>()) != null)
                         {
                             var nestedValue = prop.GetValue(this);
                             foreach (PropertyInfo subNested in nestedValue.GetType().GetRuntimeProperties())

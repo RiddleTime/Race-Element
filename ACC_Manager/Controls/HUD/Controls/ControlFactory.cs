@@ -17,7 +17,7 @@ namespace ACCManager.Controls.HUD.Controls
 
         public ListViewItem GenerateOption(string group, string label, PropertyInfo pi, ConfigField configField)
         {
-            Grid grid = new Grid() { Height = 30 };
+            Grid grid = new Grid() { Height = 26 };
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(120, GridUnitType.Pixel) });
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(240, GridUnitType.Pixel) });
             ListViewItem item = new ListViewItem()
@@ -53,9 +53,10 @@ namespace ACCManager.Controls.HUD.Controls
             {
                 Content = string.Concat(label.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' '),
                 Margin = new Thickness(0),
-                Padding = new Thickness(7,0,0,0),
-                FontWeight = FontWeights.Light,
-                FontSize = 15,
+                Padding = new Thickness(7, 0, 0, 0),
+                FontStyle = FontStyles.Italic,
+                FontWeight = FontWeights.SemiBold,
+                FontSize = 14,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Center,
             };

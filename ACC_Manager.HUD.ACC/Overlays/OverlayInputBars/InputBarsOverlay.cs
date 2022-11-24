@@ -19,9 +19,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
             public BarsGrouping Bars { get; set; } = new BarsGrouping();
             public class BarsGrouping
             {
-                [ToolTip("Enables horizontal input bars.")]
-                public bool Horizontal { get; set; } = false;
-
                 [ToolTip("Length of the input bars.")]
                 [IntRange(100, 250, 1)]
                 public int Length { get; set; } = 200;
@@ -38,8 +35,19 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
                 [ByteRange(40, 255, 1)]
                 public byte Transparency { get; set; } = 185;
 
-                [ToolTip("Displays a color change on the input bars when either abs or traction control is activated.")]
-                public bool ShowElectronics { get; set; } = true;
+                [ToolTip("Enables horizontal input bars.")]
+                public bool Horizontal { get; set; } = false;
+            }
+
+            [ConfigGrouping("Electronics", "Color changes for the bars when electronics kick in.")]
+            public ElectronicsGrouping Electronics { get; set; } = new ElectronicsGrouping();
+            public class ElectronicsGrouping
+            {
+                [ToolTip("Displays a color change on the throttle bar when traction control is activated.")]
+                public bool TractionControl { get; set; } = true;
+
+                [ToolTip("Displays a color change on the brake bar when ABS is activated.")]
+                public bool AntiLockBrakes { get; set; } = true;
             }
 
             public InputBarsConfiguration()
@@ -164,7 +172,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
         public override void Render(Graphics g)
         {
 
-            if (_config.Bars.ShowElectronics)
+            if (_config.Electronics.AntiLockBrakes || _config.Electronics.TractionControl)
                 ApplyFillColor();
 
             if (_config.Bars.Horizontal)
