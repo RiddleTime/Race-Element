@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -8,7 +9,6 @@ namespace ACCManager.HUD.Overlay.Configuration
     public abstract class OverlayConfiguration
     {
         public bool AllowRescale = false;
-        public float Scale { get; set; } = 1.0f;
 
         [ConfigGrouping("HUD", "General settings")]
         public GenericConfig GenericConfiguration { get; set; } = new GenericConfig();
@@ -24,13 +24,6 @@ namespace ACCManager.HUD.Overlay.Configuration
             [ToolTip("When streaming with Window enabled turn this off when you don't want to see the actual overlay on top of your game.")]
             public bool AlwaysOnTop { get; set; } = true;
         }
-
-
-        [ToolTip("Allows other software to to detect this overlay as a Window, can be used for streaming apps.")]
-        public bool Window { get; set; } = false;
-
-        [ToolTip("When streaming with Window enabled turn this off when you don't want to see the actual overlay on top of your game.")]
-        public bool AlwaysOnTop { get; set; } = true;
 
         public OverlayConfiguration()
         {
@@ -71,37 +64,50 @@ namespace ACCManager.HUD.Overlay.Configuration
             if (configFields == null)
                 return;
 
+            Type type = this.GetType();
+            var runtimeProperties = type.GetRuntimeProperties();
+
             foreach (var field in configFields)
             {
-                Type type = this.GetType();
-                var runtimeProperties = type.GetRuntimeProperties();
-                foreach (var prop in runtimeProperties)
+                bool isGrouped = field.Name.Contains(".");
+                if (isGrouped)
                 {
-                    if (prop.Name == field.Name)
+                    string[] groupSplit = field.Name.Split('.');
+                    string groupName = groupSplit[0];
+                    string propName = groupSplit[1];
+                    //Debug.WriteLine($"Group: {groupName}, PropName: {propName}");
+                    foreach (var prop in runtimeProperties)
                     {
-                        ConfigGroupingAttribute groupingAttribute;
-                        if ((groupingAttribute = prop.PropertyType.GetCustomAttribute<ConfigGroupingAttribute>()) != null)
+                        if (prop.Name == groupName)
                         {
                             var nestedValue = prop.GetValue(this);
                             foreach (PropertyInfo subNested in nestedValue.GetType().GetRuntimeProperties())
                             {
-                                if (subNested.PropertyType == typeof(Single))
-                                    subNested.SetValue(nestedValue, Single.Parse(field.Value.ToString()));
-                                else
-                                if (subNested.PropertyType == typeof(int))
-                                    subNested.SetValue(nestedValue, int.Parse(field.Value.ToString()));
-                                else
-                                if (subNested.PropertyType == typeof(bool))
-                                    subNested.SetValue(nestedValue, field.Value);
-                                else
-                                if (subNested.PropertyType == typeof(byte))
-                                    subNested.SetValue(nestedValue, byte.Parse(field.Value.ToString()));
-
-                                subNested.SetValue(nestedValue, Single.Parse(field.Value.ToString()));
-                                //configFields.Add(new ConfigField() { Name = $"{prop.Name}.{subNested.Name}", Value = subNested.GetValue(nestedValue) });
+                                if (subNested.Name == propName)
+                                {
+                                    if (subNested.PropertyType == typeof(Single))
+                                        subNested.SetValue(nestedValue, Single.Parse(field.Value.ToString()));
+                                    else
+                                    if (subNested.PropertyType == typeof(int))
+                                        subNested.SetValue(nestedValue, int.Parse(field.Value.ToString()));
+                                    else
+                                    if (subNested.PropertyType == typeof(bool))
+                                        subNested.SetValue(nestedValue, field.Value);
+                                    else
+                                    if (subNested.PropertyType == typeof(byte))
+                                        subNested.SetValue(nestedValue, byte.Parse(field.Value.ToString()));
+                                }
                             }
+
+
                         }
-                        else
+                    }
+                }
+                else
+                {
+                    foreach (var prop in runtimeProperties)
+                    {
+                        if (prop.Name == field.Name)
                         {
                             if (prop.PropertyType == typeof(Single))
                                 prop.SetValue(this, Single.Parse(field.Value.ToString()));
@@ -117,7 +123,6 @@ namespace ACCManager.HUD.Overlay.Configuration
                         }
                     }
                 }
-
             }
         }
 

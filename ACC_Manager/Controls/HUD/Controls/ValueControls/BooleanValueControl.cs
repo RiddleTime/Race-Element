@@ -41,7 +41,6 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
             {
                 IsChecked = bool.Parse(_field.Value.ToString())
             };
-            Debug.WriteLine("Is Checked " + _toggleButton.IsChecked.Value.ToString());
             _toggleButton.Checked += ToggleButtonValueChanged;
             _toggleButton.Unchecked += ToggleButtonValueChanged;
             UpdateLabel();

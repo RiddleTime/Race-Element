@@ -121,13 +121,13 @@ namespace ACCManager.HUD.Overlay.Internal
                     if (overlayConfig.AllowRescale)
                     {
                         this._allowRescale = true;
-                        this.Scale = overlayConfig.Scale;
+                        this.Scale = overlayConfig.GenericConfiguration.Scale;
                     }
 
-                    if (overlayConfig.Window)
-                        this.WindowMode = overlayConfig.Window;
+                    if (overlayConfig.GenericConfiguration.Window)
+                        this.WindowMode = overlayConfig.GenericConfiguration.Window;
 
-                    this.AlwaysOnTop = overlayConfig.AlwaysOnTop;
+                    this.AlwaysOnTop = overlayConfig.GenericConfiguration.AlwaysOnTop;
                 }
             }
         }
