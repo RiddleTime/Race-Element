@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using static ACCManager.HUD.Overlay.Configuration.OverlayConfiguration;
 using Label = System.Windows.Controls.Label;
 
@@ -16,7 +17,6 @@ namespace ACCManager.Controls.HUD.Controls
 
         public ListViewItem GenerateOption(string group, string label, PropertyInfo pi, ConfigField configField)
         {
-
             Grid grid = new Grid() { Height = 30 };
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(120, GridUnitType.Pixel) });
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(240, GridUnitType.Pixel) });
@@ -70,7 +70,6 @@ namespace ACCManager.Controls.HUD.Controls
                 IValueControl<bool> boolValueControl = new BooleanValueControl(configField);
                 contentControl = boolValueControl;
             }
-
             if (pi.PropertyType == typeof(int))
             {
                 IntRangeAttribute intRange = null;
@@ -81,7 +80,6 @@ namespace ACCManager.Controls.HUD.Controls
                 IValueControl<int> intValueControl = new IntegerValueControl(intRange, configField);
                 contentControl = intValueControl;
             }
-
             if (pi.PropertyType == typeof(byte))
             {
                 ByteRangeAttribute byteRange = null;
@@ -92,7 +90,6 @@ namespace ACCManager.Controls.HUD.Controls
                 IValueControl<byte> intValueControl = new ByteValueControl(byteRange, configField);
                 contentControl = intValueControl;
             }
-
             if (pi.PropertyType == typeof(float))
             {
                 FloatRangeAttribute floatRange = null;

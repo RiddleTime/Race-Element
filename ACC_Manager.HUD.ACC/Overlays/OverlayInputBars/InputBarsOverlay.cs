@@ -22,13 +22,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
                 [ToolTip("Enables horizontal input bars.")]
                 public bool Horizontal { get; set; } = false;
 
-                [ToolTip("Displays a color change on the input bars when either abs or traction control is activated.")]
-                public bool ShowElectronics { get; set; } = true;
-
-                [ToolTip("Defines the transparency of the bars.")]
-                [ByteRange(40, 255, 1)]
-                public byte Transparency { get; set; } = 185;
-
                 [ToolTip("Length of the input bars.")]
                 [IntRange(100, 250, 1)]
                 public int Length { get; set; } = 200;
@@ -40,6 +33,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
                 [ToolTip("Changes the spacing between the input bars")]
                 [IntRange(2, 15, 1)]
                 public int Spacing { get; set; } = 5;
+
+                [ToolTip("Defines the transparency of the bars.")]
+                [ByteRange(40, 255, 1)]
+                public byte Transparency { get; set; } = 185;
+
+                [ToolTip("Displays a color change on the input bars when either abs or traction control is activated.")]
+                public bool ShowElectronics { get; set; } = true;
             }
 
             public InputBarsConfiguration()

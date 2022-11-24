@@ -17,9 +17,11 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
         public FrameworkElement Control => _grid;
         public float Value { get; set; }
         private readonly FloatRangeAttribute _floatRange;
+        private readonly ConfigField _field;
 
         public FloatValueControl(FloatRangeAttribute floatRange, ConfigField configField)
         {
+            _field = configField;
             _floatRange = floatRange;
 
             _grid = new Grid()
@@ -49,7 +51,12 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
                 VerticalAlignment = VerticalAlignment.Center,
                 Width = 150
             };
-            _slider.ValueChanged += (s, e) => UpdateLabel();
+            _slider.ValueChanged += (s, e) =>
+            {
+                _field.Value = _slider.Value.ToString($"F{floatRange.Decimals}");
+                Save();
+                UpdateLabel(floatRange.Decimals);
+            };
 
             float value = float.Parse(configField.Value.ToString());
             value.Clip(floatRange.Min, floatRange.Max);
@@ -64,16 +71,18 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
                 _slider.Value += delta.Clip(-1, 1) * _floatRange.Increment;
                 args.Handled = true;
             };
+
+            UpdateLabel(floatRange.Decimals);
         }
 
-        private void UpdateLabel()
+        private void UpdateLabel(int decimals)
         {
-            _label.Content = $"{_slider.Value.ToString($"F{_floatRange.Decimals}")}";
+            _label.Content = $"{_field.Value}";
         }
 
         public void Save()
         {
-            throw new System.NotImplementedException();
+            ConfigurationControls.SaveOverlayConfigField(_field);
         }
     }
 }

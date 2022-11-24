@@ -42,16 +42,16 @@ namespace ACCManager.HUD.Overlay.Configuration
             public object Value { get; set; }
         }
 
-        public List<ConfigField> GetConfigFields()
+        public static List<ConfigField> GetConfigFields(OverlayConfiguration overlayConfiguration)
         {
             List<ConfigField> configFields = new List<ConfigField>();
-            var runtimeProperties = this.GetType().GetRuntimeProperties();
+            var runtimeProperties = overlayConfiguration.GetType().GetRuntimeProperties();
             foreach (PropertyInfo nested in runtimeProperties)
             {
                 ConfigGroupingAttribute groupingAttribute;
                 if ((groupingAttribute = nested.GetCustomAttribute<ConfigGroupingAttribute>()) != null)
                 {
-                    var nestedValue = nested.GetValue(this);
+                    var nestedValue = nested.GetValue(overlayConfiguration);
                     foreach (PropertyInfo subNested in nested.PropertyType.GetRuntimeProperties())
                     {
                         configFields.Add(new ConfigField() { Name = $"{nested.Name}.{subNested.Name}", Value = subNested.GetValue(nestedValue) });
@@ -59,7 +59,7 @@ namespace ACCManager.HUD.Overlay.Configuration
                 }
                 else
                 {
-                    configFields.Add(new ConfigField() { Name = nested.Name, Value = nested.GetValue(this) });
+                    configFields.Add(new ConfigField() { Name = nested.Name, Value = nested.GetValue(overlayConfiguration) });
                 }
             }
 
@@ -79,17 +79,42 @@ namespace ACCManager.HUD.Overlay.Configuration
                 {
                     if (prop.Name == field.Name)
                     {
-                        if (prop.PropertyType == typeof(Single))
-                            prop.SetValue(this, Single.Parse(field.Value.ToString()));
+                        ConfigGroupingAttribute groupingAttribute;
+                        if ((groupingAttribute = prop.GetCustomAttribute<ConfigGroupingAttribute>()) != null)
+                        {
+                            var nestedValue = prop.GetValue(this);
+                            foreach (PropertyInfo subNested in prop.PropertyType.GetRuntimeProperties())
+                            {
+                                if (subNested.PropertyType == typeof(Single))
+                                    subNested.SetValue(nestedValue, Single.Parse(field.Value.ToString()));
 
-                        if (prop.PropertyType == typeof(int))
-                            prop.SetValue(this, int.Parse(field.Value.ToString()));
+                                if (subNested.PropertyType == typeof(int))
+                                    subNested.SetValue(nestedValue, int.Parse(field.Value.ToString()));
 
-                        if (prop.PropertyType == typeof(bool))
-                            prop.SetValue(this, field.Value);
+                                if (subNested.PropertyType == typeof(bool))
+                                    subNested.SetValue(nestedValue, field.Value);
 
-                        if (prop.PropertyType == typeof(byte))
-                            prop.SetValue(this, byte.Parse(field.Value.ToString()));
+                                if (subNested.PropertyType == typeof(byte))
+                                    subNested.SetValue(nestedValue, byte.Parse(field.Value.ToString()));
+
+                                subNested.SetValue(nestedValue, Single.Parse(field.Value.ToString()));
+                                //configFields.Add(new ConfigField() { Name = $"{prop.Name}.{subNested.Name}", Value = subNested.GetValue(nestedValue) });
+                            }
+                        }
+                        else
+                        {
+                            if (prop.PropertyType == typeof(Single))
+                                prop.SetValue(this, Single.Parse(field.Value.ToString()));
+
+                            if (prop.PropertyType == typeof(int))
+                                prop.SetValue(this, int.Parse(field.Value.ToString()));
+
+                            if (prop.PropertyType == typeof(bool))
+                                prop.SetValue(this, field.Value);
+
+                            if (prop.PropertyType == typeof(byte))
+                                prop.SetValue(this, byte.Parse(field.Value.ToString()));
+                        }
                     }
                 }
 

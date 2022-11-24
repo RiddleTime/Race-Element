@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -20,9 +16,11 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
 
         public FrameworkElement Control => _grid;
         public bool Value { get; set; }
+        private readonly ConfigField _field;
 
         public BooleanValueControl(ConfigField configField)
         {
+            _field = configField;
             _grid = new Grid()
             {
                 Width = 220,
@@ -33,29 +31,45 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
             _grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(2, GridUnitType.Star) });
             _grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(8, GridUnitType.Star) });
 
+            // add label
             _label = new Label() { HorizontalContentAlignment = HorizontalAlignment.Right };
             _grid.Children.Add(_label);
             Grid.SetColumn(_label, 0);
 
-            _toggleButton = new ToggleButton();
-            _toggleButton.Checked += (s, e) => UpdateLabel();
-            _toggleButton.Unchecked += (s, e) => UpdateLabel();
-            _toggleButton.IsChecked = bool.Parse(configField.Value.ToString());
+            // add toggle button
+            _toggleButton = new ToggleButton()
+            {
+                IsChecked = bool.Parse(_field.Value.ToString())
+            };
+            Debug.WriteLine("Is Checked " + _toggleButton.IsChecked.Value.ToString());
+            _toggleButton.Checked += ToggleButtonValueChanged;
+            _toggleButton.Unchecked += ToggleButtonValueChanged;
             UpdateLabel();
             _grid.Children.Add(_toggleButton);
             Grid.SetColumn(_toggleButton, 1);
 
-            _grid.MouseLeftButtonUp += (s, e) => { _toggleButton.IsChecked = !_toggleButton.IsChecked; };
+            // add entire grid as toggle button decheck
+            _grid.MouseLeftButtonUp += (s, e) =>
+            {
+                _toggleButton.IsChecked = !_toggleButton.IsChecked;
+            };
+        }
+
+        private void ToggleButtonValueChanged(object sender, RoutedEventArgs e)
+        {
+            _field.Value = _toggleButton.IsChecked;
+            UpdateLabel();
+            Save();
         }
 
         private void UpdateLabel()
         {
-            _label.Content = _toggleButton.IsChecked.Value ? "On" : "Off";
+            _label.Content = bool.Parse(_field.Value.ToString()) ? "On" : "Off";
         }
 
         public void Save()
         {
-            throw new NotImplementedException();
+            ConfigurationControls.SaveOverlayConfigField(_field);
         }
     }
 }

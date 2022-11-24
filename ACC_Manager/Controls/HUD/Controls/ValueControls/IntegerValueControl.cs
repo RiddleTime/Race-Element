@@ -16,9 +16,11 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
 
         public FrameworkElement Control => _grid;
         public int Value { get; set; }
+        private readonly ConfigField _field;
 
         public IntegerValueControl(IntRangeAttribute intRange, ConfigField configField)
         {
+            _field = configField;
             _grid = new Grid()
             {
                 Width = 220,
@@ -49,7 +51,9 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
             };
             _slider.ValueChanged += (s, e) =>
             {
-                _label.Content = _slider.Value;
+                _field.Value = _slider.Value.ToString();
+                Save();
+                _label.Content = _field.Value;
             };
 
             int value = int.Parse(configField.Value.ToString());
@@ -69,7 +73,7 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
 
         public void Save()
         {
-            throw new System.NotImplementedException();
+            ConfigurationControls.SaveOverlayConfigField(_field);
         }
     }
 }
