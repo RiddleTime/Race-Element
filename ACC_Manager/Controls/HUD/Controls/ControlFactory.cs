@@ -1,5 +1,6 @@
 ﻿using ACCManager.Controls.HUD.Controls.ValueControls;
 using ACCManager.HUD.Overlay.Configuration;
+using Octokit;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -20,16 +21,32 @@ namespace ACCManager.Controls.HUD.Controls
             Grid grid = new Grid() { Height = 26 };
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(120, GridUnitType.Pixel) });
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(240, GridUnitType.Pixel) });
+
+
             ListViewItem item = new ListViewItem()
             {
-                Margin = new Thickness(0),
+                Margin = new Thickness(0, 0, -1, 0),
                 Padding = new Thickness(0),
-                BorderThickness = new Thickness(0),
+                BorderThickness = new Thickness(1, 0, 0, 0),
                 BorderBrush = System.Windows.Media.Brushes.OrangeRed,
                 Content = grid,
                 IsTabStop = false,
+                Focusable = false,
                 VerticalContentAlignment = VerticalAlignment.Center,
             };
+
+            // add tooltip if exists.
+            foreach (Attribute cad in Attribute.GetCustomAttributes(pi))
+            {
+                if (cad is ToolTipAttribute)
+                {
+                    ToolTipAttribute toolTip = (ToolTipAttribute)cad;
+                    item.ToolTip = toolTip.ToolTip;
+                    break;
+                }
+            }
+
+
 
             Label lblControl = GenerateLabel(label);
             grid.Children.Add(lblControl);
@@ -54,7 +71,6 @@ namespace ACCManager.Controls.HUD.Controls
                 Content = string.Concat(label.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' '),
                 Margin = new Thickness(0),
                 Padding = new Thickness(7, 0, 0, 0),
-                FontStyle = FontStyles.Italic,
                 FontWeight = FontWeights.Normal,
                 FontSize = 14,
                 HorizontalAlignment = HorizontalAlignment.Left,

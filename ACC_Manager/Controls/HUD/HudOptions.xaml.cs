@@ -514,7 +514,7 @@ namespace ACCManager.Controls
             {
                 Margin = new Thickness(10, 0, 0, 0),
                 Orientation = Orientation.Vertical,
-                VerticalAlignment = VerticalAlignment.Center
+                VerticalAlignment = VerticalAlignment.Center,
             };
             List<FrameworkElement> configStackers = new List<FrameworkElement>();
 
@@ -550,34 +550,30 @@ namespace ACCManager.Controls
                 {
                     Debug.WriteLine($"{type.Name} -  {type.ReflectedType.FullName} - {type.PropertyType.Name}");
 
-                    StackPanel boxStacker = new StackPanel()
+                    ListView listView = new ListView()
                     {
-                        Orientation = Orientation.Vertical,
-                        HorizontalAlignment = HorizontalAlignment.Stretch
-                    };
-                    GroupBox box = new GroupBox()
-                    {
-                        Header = new Label()
-                        {
-                            Content = $" {cga.Title}",
-                            Background = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0)),
-                            Foreground = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255)),
-                            FontWeight = FontWeights.Bold,
-                            FontStyle = FontStyles.Italic,
-                            HorizontalContentAlignment = HorizontalAlignment.Left,
-                            FontSize = 18,
-                            ToolTip = $"{cga.Description}"
-                        },
-                        Content = boxStacker,
-                        Background = new SolidColorBrush(Color.FromArgb(130, 0, 0, 0)),
-                        Foreground = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255)),
-                        Margin = new Thickness(3),
-                        Padding = new Thickness(0, 1, -1, -1),
-                        BorderThickness = new Thickness(0),
                         Width = 360,
                         HorizontalAlignment = HorizontalAlignment.Left,
-                        BorderBrush = Brushes.Transparent,
+                        Margin = new Thickness(0, 0, 0, 5)
                     };
+
+                    listView.Items.Add(new ListViewItem()
+                    {
+                        Content = $" {cga.Title}",
+                        Background = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0)),
+                        Foreground = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255)),
+                        FontWeight = FontWeights.Bold,
+                        FontStyle = FontStyles.Italic,
+                        HorizontalContentAlignment = HorizontalAlignment.Left,
+                        FontSize = 18,
+                        ToolTip = $"{cga.Description}",
+                        Focusable = false,
+                        Margin = new Thickness(0),
+                        Padding = new Thickness(2, 2, 0, 2),
+                        BorderThickness = new Thickness(1, 1, 0, 0),
+                        BorderBrush = Brushes.OrangeRed
+                    });
+
                     foreach (PropertyInfo subType in type.PropertyType.GetProperties())
                     {
 
@@ -593,17 +589,16 @@ namespace ACCManager.Controls
                         {
                             Debug.WriteLine($"   {configField.Name} - {configField.Value}");
                             // Add control elements here..
-                            //boxStacker.Children.Add(CreateUserControls(subType, configFields, type.Name, fontSize, overlayName));
 
                             Dispatcher.BeginInvoke(new Action(() =>
                             {
-                                boxStacker.Children.Add(ControlFactory.Instance.GenerateOption($"{type.Name}", $"{subType.Name}", subType, configField));
+                                listView.Items.Add(ControlFactory.Instance.GenerateOption($"{type.Name}", $"{subType.Name}", subType, configField));
                             }));
                             //Debug.WriteLine($"   {subType.Name} - {subType.ReflectedType.FullName} - {subType.PropertyType.Name}");
                         }
                     }
 
-                    stacker.Children.Add(box);
+                    stacker.Children.Add(listView);
                 }
             }
 
