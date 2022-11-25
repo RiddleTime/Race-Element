@@ -108,6 +108,11 @@ namespace ACCManager.Controls
                                 this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
                                 e.Handled = true;
                             }
+
+                            if (e.ChangedButton == MouseButton.Right)
+                            {
+                                // activate selected hud
+                            }
                         };
 
                         listOverlays.MouseDoubleClick += (s, e) => { if (ToggleViewingOverlay()) e.Handled = true; };
@@ -127,7 +132,7 @@ namespace ACCManager.Controls
                         m_GlobalHook.OnCombination(new Dictionary<Combination, Action> { { Combination.FromString("Control+Home"), () => this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked } });
 
                         this.PreviewKeyDown += HudOptions_PreviewKeyDown;
-
+                        this.PreviewMouseDown += HudOptions_PreviewMouseDown;
 
                         checkBoxDemoMode.IsChecked = _hudSettingsJson.DemoMode;
                     }
@@ -140,6 +145,14 @@ namespace ACCManager.Controls
             Instance = this;
         }
 
+        private void HudOptions_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.RightButton == MouseButtonState.Pressed)
+            {
+                if (ToggleViewingOverlay())
+                    e.Handled = true;
+            }
+        }
 
         private DateTime _lastOverlayStart = DateTime.MinValue;
         private void HudOptions_PreviewKeyDown(object sender, KeyEventArgs e)

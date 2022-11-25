@@ -14,11 +14,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySpeedometer
         private readonly SpeedometerConfiguration _config = new SpeedometerConfiguration();
         private class SpeedometerConfiguration : OverlayConfiguration
         {
-            [ToolTip("Displays the maximum speed reached on each lap.")]
-            public bool ShowMaxSpeed { get; set; } = false;
+            [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
+            public InfoPanelGrouping InfoPanel { get; set; } = new InfoPanelGrouping();
+            public class InfoPanelGrouping
+            {
+                [ToolTip("Displays the maximum speed reached on each lap.")]
+                public bool MaxSpeed { get; set; } = false;
 
-            [ToolTip("Displays the minimum speed reached on each lap.")]
-            public bool ShowMinSpeed { get; set; } = false;
+                [ToolTip("Displays the minimum speed reached on each lap.")]
+                public bool MinSpeed { get; set; } = false;
+            }
 
             public SpeedometerConfiguration()
             {
@@ -44,18 +49,18 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySpeedometer
         public sealed override void BeforeStart()
         {
 
-            if (_config.ShowMaxSpeed || _config.ShowMinSpeed)
+            if (_config.InfoPanel.MaxSpeed || _config.InfoPanel.MinSpeed)
                 LapTracker.Instance.LapFinished += OnLapFinished;
 
-            if (!_config.ShowMinSpeed)
+            if (!_config.InfoPanel.MinSpeed)
                 this.Height -= _panel.FontHeight;
-            if (!_config.ShowMaxSpeed)
+            if (!_config.InfoPanel.MaxSpeed)
                 this.Height -= _panel.FontHeight;
         }
 
         public sealed override void BeforeStop()
         {
-            if (_config.ShowMinSpeed || _config.ShowMaxSpeed)
+            if (_config.InfoPanel.MinSpeed || _config.InfoPanel.MaxSpeed)
                 LapTracker.Instance.LapFinished -= OnLapFinished;
         }
 
@@ -69,13 +74,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySpeedometer
         {
             _panel.AddProgressBarWithCenteredText($"{pagePhysics.SpeedKmh:F0}".FillStart(3, ' '), 0, 320, pagePhysics.SpeedKmh);
 
-            if (_config.ShowMaxSpeed)
+            if (_config.InfoPanel.MaxSpeed)
             {
                 _maxSpeed.ClipMin(pagePhysics.SpeedKmh);
                 _panel.AddLine("Max", $"{_maxSpeed:F2}");
             }
 
-            if (_config.ShowMinSpeed)
+            if (_config.InfoPanel.MinSpeed)
             {
                 _minSpeed.ClipMax(pagePhysics.SpeedKmh);
                 _panel.AddLine("Min", $"{_minSpeed:F2}");

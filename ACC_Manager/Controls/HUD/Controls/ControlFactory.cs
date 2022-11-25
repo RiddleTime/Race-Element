@@ -55,7 +55,7 @@ namespace ACCManager.Controls.HUD.Controls
                 Margin = new Thickness(0),
                 Padding = new Thickness(7, 0, 0, 0),
                 FontStyle = FontStyles.Italic,
-                FontWeight = FontWeights.SemiBold,
+                FontWeight = FontWeights.Normal,
                 FontSize = 14,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Center,
@@ -74,32 +74,41 @@ namespace ACCManager.Controls.HUD.Controls
             if (pi.PropertyType == typeof(int))
             {
                 IntRangeAttribute intRange = null;
-                foreach (Attribute cad in Attribute.GetCustomAttributes(pi))
-                    if (cad is IntRangeAttribute)
-                        intRange = (IntRangeAttribute)cad;
+                foreach (Attribute customAttribute in Attribute.GetCustomAttributes(pi))
+                    if (customAttribute is IntRangeAttribute intRangeAttribute)
+                        intRange = intRangeAttribute;
 
-                IValueControl<int> intValueControl = new IntegerValueControl(intRange, configField);
-                contentControl = intValueControl;
+                if (intRange != null)
+                {
+                    IValueControl<int> intValueControl = new IntegerValueControl(intRange, configField);
+                    contentControl = intValueControl;
+                }
             }
             if (pi.PropertyType == typeof(byte))
             {
                 ByteRangeAttribute byteRange = null;
-                foreach (Attribute cad in Attribute.GetCustomAttributes(pi))
-                    if (cad is ByteRangeAttribute)
-                        byteRange = (ByteRangeAttribute)cad;
+                foreach (Attribute customattribute in Attribute.GetCustomAttributes(pi))
+                    if (customattribute is ByteRangeAttribute byteRangeAttribute)
+                        byteRange = byteRangeAttribute;
 
-                IValueControl<byte> intValueControl = new ByteValueControl(byteRange, configField);
-                contentControl = intValueControl;
+                if (byteRange != null)
+                {
+                    IValueControl<byte> intValueControl = new ByteValueControl(byteRange, configField);
+                    contentControl = intValueControl;
+                }
             }
             if (pi.PropertyType == typeof(float))
             {
                 FloatRangeAttribute floatRange = null;
-                foreach (Attribute cad in Attribute.GetCustomAttributes(pi))
-                    if (cad is FloatRangeAttribute)
-                        floatRange = (FloatRangeAttribute)cad;
+                foreach (Attribute customAttribute in Attribute.GetCustomAttributes(pi))
+                    if (customAttribute is FloatRangeAttribute floatRangeAttribute)
+                        floatRange = floatRangeAttribute;
 
-                IValueControl<float> floatValueControl = new FloatValueControl(floatRange, configField);
-                contentControl = floatValueControl;
+                if (floatRange != null)
+                {
+                    IValueControl<float> floatValueControl = new FloatValueControl(floatRange, configField);
+                    contentControl = floatValueControl;
+                }
             }
 
 

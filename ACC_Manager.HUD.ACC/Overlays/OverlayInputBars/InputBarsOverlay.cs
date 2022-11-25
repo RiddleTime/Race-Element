@@ -19,6 +19,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
             public BarsGrouping Bars { get; set; } = new BarsGrouping();
             public class BarsGrouping
             {
+                [ToolTip("Enables horizontal input bars.")]
+                public bool Horizontal { get; set; } = false;
+
                 [ToolTip("Length of the input bars.")]
                 [IntRange(100, 250, 1)]
                 public int Length { get; set; } = 200;
@@ -34,9 +37,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
                 [ToolTip("Defines the transparency of the bars.")]
                 [ByteRange(40, 255, 1)]
                 public byte Transparency { get; set; } = 185;
-
-                [ToolTip("Enables horizontal input bars.")]
-                public bool Horizontal { get; set; } = false;
             }
 
             [ConfigGrouping("Electronics", "Color changes for the bars when electronics kick in.")]
