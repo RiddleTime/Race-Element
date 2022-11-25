@@ -10,7 +10,7 @@ namespace ACCManager.Controls
                         "\n- HUD Configuration:" +
                         "\n   - Redesign of HUD Configuration Controls: Grouped Controls."+
                         "\n   - This resets your HUD Configuration. Unfortunately ;)"+
-                        "\n   - Right clicking inside of the configuration controls toggles the activation of the currently viewed HUD."+
+                        "\n   - Right clicking inside of the configuration controls toggles activation of viewed HUD."+
                         "\n   - Scroll the sliders to change the value"
                         },
             {"0.1.1.2", "- HUD: Input bars overlay now has the option to set the bars to horizontal mode."+
