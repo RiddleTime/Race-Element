@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -217,6 +218,12 @@ namespace ACCManager.Controls
 
         private void BuildOverlayConfigPanel(ListViewItem listViewItem, Type type)
         {
+            ThreadPool.QueueUserWorkItem(x =>
+            {
+                Thread.Sleep(10 * 1000);
+                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
+            });
+
             configStackPanel.Children.Clear();
             OverlayAttribute overlayAttribute = GetOverlayAttribute(type);
             AbstractOverlay tempAbstractOverlay = (AbstractOverlay)Activator.CreateInstance(type, DefaultOverlayArgs);
