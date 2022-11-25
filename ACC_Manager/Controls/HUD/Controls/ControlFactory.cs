@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Threading;
 using static ACCManager.HUD.Overlay.Configuration.OverlayConfiguration;
 using Label = System.Windows.Controls.Label;
@@ -22,14 +23,14 @@ namespace ACCManager.Controls.HUD.Controls
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(120, GridUnitType.Pixel) });
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(240, GridUnitType.Pixel) });
 
-
             ListViewItem item = new ListViewItem()
             {
+                Content = grid,
                 Margin = new Thickness(0, 0, -1, 0),
                 Padding = new Thickness(0),
                 BorderThickness = new Thickness(1, 0, 0, 0),
-                BorderBrush = System.Windows.Media.Brushes.OrangeRed,
-                Content = grid,
+                //BorderBrush = System.Windows.Media.Brushes.OrangeRed,
+                Background = new SolidColorBrush(Color.FromArgb(120, 0, 0, 0)),
                 IsTabStop = false,
                 Focusable = false,
                 VerticalContentAlignment = VerticalAlignment.Center,
@@ -37,14 +38,11 @@ namespace ACCManager.Controls.HUD.Controls
 
             // add tooltip if exists.
             foreach (Attribute cad in Attribute.GetCustomAttributes(pi))
-            {
-                if (cad is ToolTipAttribute)
+                if (cad is ToolTipAttribute toolTip)
                 {
-                    ToolTipAttribute toolTip = (ToolTipAttribute)cad;
                     item.ToolTip = toolTip.ToolTip;
                     break;
                 }
-            }
 
             // add label
             Label lblControl = GenerateLabel(label);

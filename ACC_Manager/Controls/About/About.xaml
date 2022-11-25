@@ -144,9 +144,10 @@
                                 <Bold><Italic>- HUD</Italic></Bold>
                                 </TextBlock>
                                 <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
-                                - To (de)activate the displayed overlay: double click the overlay in the left side list or type Enter or click the title.<LineBreak/>
-                                - <Bold>Ctrl + Home</Bold> toggles reposition mode.<LineBreak/>
-                                - Overlays will become visible as soon as the engine is running. <LineBreak/>
+                                - Activate the HUDs you want to see, activated overlays will show a green background in the list.<LineBreak/>
+                                - Mouse Right Click: (De)Activate HUD. (you can also click the title)<LineBreak/>
+                                - Mouse Middle Click or Ctrl + Home: Toggle move mode.<LineBreak/>
+                                - HUDs will become visible as soon as the engine is running.<LineBreak/>
                                 - When the game is in Fullscreen mode, hit F11 twice to display the overlays.<LineBreak/>
                                 </TextBlock>
                             </StackPanel>
@@ -160,11 +161,11 @@
                                 </TextBlock>
                                 <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
                                    Race Weekends:<LineBreak/>
-                                    - Displays each session of a Race Weekend recorded when ACC Manager is running.<LineBreak/>
+                                    - Displays each session of a Race Weekend recorded when ACC Manager is running.<LineBreak/>b 
                                     - Select a Race Weekend and go to the Current tab.<LineBreak/>
                                     - Reload the Local race weekends list by re-opening the Telemetry tab.<LineBreak/>
                                     - Drag and drop .rwdb(Race weekend databases) ontop of the app to view them.<LineBreak/>
-                                    - Race weekend databases are saved in My Documents/ACC Manager/Data.<LineBreak/>
+                                    - Race weekend databases are saved in %appdata%/ACC Manager/Data.<LineBreak/>
                                     <!--- When extended telemetry is recorded, select a lap and check out the charts.<LineBreak/>-->
                                 </TextBlock>
                             </StackPanel>

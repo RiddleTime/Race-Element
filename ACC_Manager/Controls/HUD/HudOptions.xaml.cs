@@ -548,14 +548,15 @@ namespace ACCManager.Controls
                     {
                         Width = 360,
                         HorizontalAlignment = HorizontalAlignment.Left,
-                        Margin = new Thickness(0, 0, 0, 5)
+                        Margin = new Thickness(0, 0, 0, 5),
+                        Background = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0)),
                     };
 
                     listView.Items.Add(new ListViewItem()
                     {
                         Content = $" {cga.Title}",
                         Background = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0)),
-                        Foreground = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255)),
+                        Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255)),
                         FontWeight = FontWeights.Bold,
                         FontStyle = FontStyles.Italic,
                         HorizontalContentAlignment = HorizontalAlignment.Left,

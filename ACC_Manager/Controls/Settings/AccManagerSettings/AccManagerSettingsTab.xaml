@@ -8,13 +8,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Margin="2,0,2,0">
     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-
+        <Button x:Name="buttonOpenAccManagerFolder">Open ACC Manager Folder</Button>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
             <ToggleButton x:Name="toggleMinimizeToSystemTray" Width="50" Height="35" VerticalAlignment="Center" Cursor="Hand"/>
             <Label VerticalAlignment="Center">Minimize ACC Manager to system tray</Label>
         </StackPanel>
-
 
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" IsEnabled="False">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">

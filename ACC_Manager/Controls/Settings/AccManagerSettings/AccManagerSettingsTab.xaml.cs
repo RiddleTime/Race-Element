@@ -1,7 +1,11 @@
 ﻿using ACC_Manager.Util.Settings;
+using ACCManager.Util;
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using System.Windows.Controls;
+using static ACCManager.Controls.LiveryBrowser;
 
 namespace ACCManager.Controls
 {
@@ -30,7 +34,15 @@ namespace ACCManager.Controls
                 toggleMinimizeToSystemTray.Unchecked += (s, e) => SaveSettings();
 
                 sliderTelemetryHerz.ValueChanged += (s, e) => SaveSettings();
+
+                buttonOpenAccManagerFolder.Click += ButtonOpenAccManagerFolder_Click;
             }));
+        }
+
+        private void ButtonOpenAccManagerFolder_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            DirectoryInfo directory = new DirectoryInfo($"{FileUtil.AccManagerAppDataPath}");
+            Process.Start(directory.FullName);
         }
 
         private void SaveSettings()
