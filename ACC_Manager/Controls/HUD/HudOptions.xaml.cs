@@ -109,11 +109,6 @@ namespace ACCManager.Controls
                                 this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
                                 e.Handled = true;
                             }
-
-                            if (e.ChangedButton == MouseButton.Right)
-                            {
-                                // activate selected hud
-                            }
                         };
 
                         listOverlays.MouseDoubleClick += (s, e) => { if (ToggleViewingOverlay()) e.Handled = true; };
@@ -165,6 +160,9 @@ namespace ACCManager.Controls
 
         private bool ToggleViewingOverlay()
         {
+            if (checkBoxReposition.IsChecked.Value)
+                return false;
+
             // kind of stupid but it works.. gotta travel the generated tree in #BuildOverlayConfigPanel();
             if (_lastOverlayStart.AddMilliseconds(200) < DateTime.Now)
                 foreach (UIElement element in configStackPanel.Children)
@@ -423,6 +421,7 @@ namespace ACCManager.Controls
         private void SetRepositionMode(bool enabled)
         {
             gridOverlays.IsEnabled = !enabled;
+            cardOverlayConfig.IsEnabled = !enabled;
 
             if (enabled)
             {
