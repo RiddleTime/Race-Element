@@ -58,9 +58,9 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
             int value = int.Parse(configField.Value.ToString());
             value.Clip(byteRange.Min, byteRange.Max);
             _slider.Value = value;
-
             _grid.Children.Add(_slider);
             Grid.SetColumn(_slider, 1);
+            _label.Content = _slider.Value;
 
             Control.MouseWheel += (sender, args) =>
             {

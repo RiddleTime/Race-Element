@@ -55,14 +55,13 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
                 _field.Value = _slider.Value.ToString();
                 _label.Content = _field.Value;
             };
-
             int value = int.Parse(_field.Value.ToString());
             value.Clip(intRange.Min, intRange.Max);
             _slider.Value = value;
-
             _grid.Children.Add(_slider);
             Grid.SetColumn(_slider, 1);
 
+            _label.Content = _field.Value;
             Control.MouseWheel += (sender, args) =>
             {
                 int delta = args.Delta;

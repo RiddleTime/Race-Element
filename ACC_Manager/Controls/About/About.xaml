@@ -144,11 +144,12 @@
                                 <Bold><Italic>- HUD</Italic></Bold>
                                 </TextBlock>
                                 <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
+                                - HUDs will become visible as soon as the engine is running.<LineBreak/>
+                                - When the game is in Fullscreen mode, hit F11 twice to display the overlays.<LineBreak/>
                                 - Activate the HUDs you want to see, activated HUDs will be green in the list.<LineBreak/>
                                 - Mouse Right Click: (De)Activate HUD. (you can also click the title)<LineBreak/>
                                 - Mouse Middle Click or Ctrl + Home: Toggle move mode.<LineBreak/>
-                                - HUDs will become visible as soon as the engine is running.<LineBreak/>
-                                - When the game is in Fullscreen mode, hit F11 twice to display the overlays.<LineBreak/>
+                                - Scrolling the sliders will change their value.<LineBreak/>
                                 </TextBlock>
                             </StackPanel>
 
