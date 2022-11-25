@@ -12,11 +12,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRaceInfo
         private readonly RaceInfoConfig _config = new RaceInfoConfig();
         private class RaceInfoConfig : OverlayConfiguration
         {
-            [ToolTip("Shows a timer when the pit window starts and ends.")]
-            internal bool ShowPitWindow { get; set; } = true;
+            [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
+            public InfoPanelGrouping InfoPanel { get; set; } = new InfoPanelGrouping();
+            public class InfoPanelGrouping
+            {
+                [ToolTip("Shows a timer when the pit window starts and ends.")]
+                public bool PitWindow { get; set; } = true;
 
-            [ToolTip("Shows the current location on track.")]
-            internal bool ShowTrackLocation { get; set; } = true;
+                [ToolTip("Shows the current location on track.")]
+                public bool TrackLocation { get; set; } = true;
+            }
 
             public RaceInfoConfig()
             {
@@ -35,10 +40,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRaceInfo
 
         public sealed override void BeforeStart()
         {
-            if (!_config.ShowPitWindow)
+            if (!_config.InfoPanel.PitWindow)
                 this.Height -= _panel.FontHeight;
 
-            if (!_config.ShowTrackLocation)
+            if (!_config.InfoPanel.TrackLocation)
                 this.Height -= _panel.FontHeight;
         }
 
@@ -48,7 +53,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRaceInfo
 
         public sealed override void Render(Graphics g)
         {
-            if (_config.ShowPitWindow)
+            if (_config.InfoPanel.PitWindow)
                 if (pageGraphics.SessionType == ACCSharedMemory.AcSessionType.AC_RACE && !pageGraphics.MandatoryPitDone)
                 {
                     TimeSpan pitWindowStart = TimeSpan.FromMilliseconds(pageStatic.PitWindowStart);
@@ -71,7 +76,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRaceInfo
             _panel.AddLine("Session Time", $"{broadCastRealTime.SessionTime:hh\\:mm\\:ss}");
             _panel.AddLine("Session Length", $"{sessionLength:hh\\:mm\\:ss}");
 
-            if (_config.ShowTrackLocation)
+            if (_config.InfoPanel.TrackLocation)
                 this._panel.AddLine("Location", $"{broadCastLocalCar.CarLocation}");
 
 

@@ -26,6 +26,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
 
                 [ToolTip("Displays the throttle input.")]
                 public bool ThrottleInput { get; set; } = false;
+
                 [ToolTip("Displays the brake input.")]
                 public bool BrakeInput { get; set; } = false;
             }

@@ -11,17 +11,22 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
         private readonly OversteerTraceConfiguration _config = new OversteerTraceConfiguration();
         private class OversteerTraceConfiguration : OverlayConfiguration
         {
-            [ToolTip("Sets the maximum amount of slip angle displayed.")]
-            [IntRange(1, 90, 1)]
-            public int MaxSlipAngle { get; set; } = 4;
+            [ConfigGrouping("Chart", "Customize the charts refresh rate, data points or change the max slip angle shown.")]
+            public ChartGrouping Chart { get; set; } = new ChartGrouping();
+            public class ChartGrouping
+            {
+                [ToolTip("Sets the maximum amount of slip angle displayed.")]
+                [IntRange(1, 90, 1)]
+                public int MaxSlipAngle { get; set; } = 4;
 
-            [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
-            [IntRange(150, 800, 10)]
-            public int DataPoints { get; set; } = 300;
+                [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
+                [IntRange(150, 800, 10)]
+                public int DataPoints { get; set; } = 300;
 
-            [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
-            [IntRange(10, 70, 5)]
-            internal int Herz { get; set; } = 40;
+                [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
+                [IntRange(10, 70, 5)]
+                public int Herz { get; set; } = 30;
+            }
 
             public OversteerTraceConfiguration()
             {
@@ -36,7 +41,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
 
         public OversteerTraceOverlay(Rectangle rectangle) : base(rectangle, "Oversteer Trace")
         {
-            _originalWidth = this._config.DataPoints;
+            _originalWidth = this._config.Chart.DataPoints;
 
             this.Width = _originalWidth;
             this.Height = _originalHeight;
@@ -48,8 +53,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
             _collector = new OversteerDataCollector(this)
             {
                 TraceCount = _originalWidth - 1,
-                MaxSlipAngle = _config.MaxSlipAngle,
-                Herz = _config.Herz
+                MaxSlipAngle = _config.Chart.MaxSlipAngle,
+                Herz = _config.Chart.Herz
             };
             _collector.Start();
 
