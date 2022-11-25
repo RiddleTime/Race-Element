@@ -46,15 +46,14 @@ namespace ACCManager.Controls.HUD.Controls
                 }
             }
 
-
-
+            // add label
             Label lblControl = GenerateLabel(label);
             grid.Children.Add(lblControl);
             Grid.SetColumn(lblControl, 0);
 
+            // add generated control but only if it is not null
             IControl valueControl = GenerateValueControl(pi, configField);
             valueControl.Control.HorizontalAlignment = HorizontalAlignment.Right;
-
             if (valueControl != null)
             {
                 Grid.SetColumn(valueControl.Control, 1);
@@ -71,8 +70,8 @@ namespace ACCManager.Controls.HUD.Controls
                 Content = string.Concat(label.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' '),
                 Margin = new Thickness(0),
                 Padding = new Thickness(7, 0, 0, 0),
-                FontWeight = FontWeights.Normal,
-                FontSize = 14,
+                FontWeight = FontWeights.SemiBold,
+                FontSize = 13,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Center,
             };

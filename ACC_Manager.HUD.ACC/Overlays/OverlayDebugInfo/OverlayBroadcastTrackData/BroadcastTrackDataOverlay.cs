@@ -34,7 +34,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
 
         public sealed override void BeforeStart()
         {
-            if (this._config.Undock)
+            if (this._config.Dock.Undock)
                 this.AllowReposition = true;
             else
             {
@@ -47,7 +47,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
 
         public sealed override void BeforeStop()
         {
-            if (!this._config.Undock)
+            if (!this._config.Dock.Undock)
             {
                 DebugInfoHelper.Instance.RemoveOverlay(this);
                 DebugInfoHelper.Instance.WidthChanged -= Instance_WidthChanged;

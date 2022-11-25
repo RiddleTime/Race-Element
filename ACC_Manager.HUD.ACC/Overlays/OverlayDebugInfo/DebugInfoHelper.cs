@@ -9,8 +9,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo
     {
         public class DebugConfig : OverlayConfiguration
         {
-            [ToolTip("Allows you to reposition this debug panel.")]
-            internal bool Undock { get; set; } = false;
+            [ConfigGrouping("Dock", "Provides settings for overlay docking.")]
+            public DockConfigGrouping Dock { get; set; } = new DockConfigGrouping();
+            public class DockConfigGrouping
+            {
+                [ToolTip("Allows you to reposition this debug panel.")]
+                public bool Undock { get; set; } = false;
+            }
 
             public DebugConfig()
             {

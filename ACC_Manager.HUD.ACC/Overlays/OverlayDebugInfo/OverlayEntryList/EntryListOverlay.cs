@@ -27,10 +27,21 @@ Description = "A panel showing live broadcast track data.")]
         private readonly EntryListDebugConfig _config = new EntryListDebugConfig();
         private class EntryListDebugConfig : OverlayConfiguration
         {
-            internal bool ShowExtendedData { get; set; } = false;
+            [ConfigGrouping("EntryList", "Provides settings for overlay docking.")]
+            public EntryListGrouping Entrylist { get; set; } = new EntryListGrouping();
+            public class EntryListGrouping
+            {
+                [ToolTip("Show extended data, adds a new row for each car.")]
+                public bool ExtendedData { get; set; } = false;
+            }
 
-            [ToolTip("Allows you to reposition this debug panel.")]
-            internal bool Undock { get; set; } = false;
+            [ConfigGrouping("Dock", "Provides settings for overlay docking.")]
+            public DockConfigGrouping Dock { get; set; } = new DockConfigGrouping();
+            public class DockConfigGrouping
+            {
+                [ToolTip("Allows you to reposition this debug panel.")]
+                public bool Undock { get; set; } = false;
+            }
 
             public EntryListDebugConfig()
             {
@@ -70,7 +81,7 @@ Description = "A panel showing live broadcast track data.")]
 
         public sealed override void BeforeStart()
         {
-            if (this._config.Undock)
+            if (this._config.Dock.Undock)
                 this.AllowReposition = true;
             else
             {
@@ -83,7 +94,7 @@ Description = "A panel showing live broadcast track data.")]
 
         public sealed override void BeforeStop()
         {
-            if (!this._config.Undock)
+            if (!this._config.Dock.Undock)
             {
                 DebugInfoHelper.Instance.RemoveOverlay(this);
                 DebugInfoHelper.Instance.WidthChanged -= Instance_WidthChanged;
@@ -113,7 +124,7 @@ Description = "A panel showing live broadcast track data.")]
                 {
                     AddCarFirstRow(kv);
 
-                    if (_config.ShowExtendedData)
+                    if (_config.Entrylist.ExtendedData)
                     {
                         string speed = $"{kv.Value.RealtimeCarUpdate.Kmh} km/h".FillStart(8, ' ');
 

@@ -29,34 +29,40 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
     public sealed class StandingsOverlay : AbstractOverlay
     {
-        private StandingsConfiguration _config = new StandingsConfiguration();
-
+        private readonly StandingsConfiguration _config = new StandingsConfiguration();
         private sealed class StandingsConfiguration : OverlayConfiguration
         {
+            [ConfigGrouping("Information", "Show or hide additional information in the standings.")]
+            public InformationGrouping Information { get; set; } = new InformationGrouping();
+            public class InformationGrouping
+            {
+                [ToolTip("Multiclass")]
+                public bool MultiClass { get; set; } = true;
+
+                [ToolTip("Time Delta")]
+                public bool TimeDelta { get; set; } = true;
+
+                [ToolTip("Show an indicator for invalid laps.")]
+                public bool InvalidLap { get; set; } = true;
+            }
+
+            [ConfigGrouping("Layout", "Change the layout of the standings.")]
+            public LayoutGrouping Layout { get; set; } = new LayoutGrouping();
+            public class LayoutGrouping
+            {
+                [ToolTip("Additional Rows in front and behind.")]
+                [IntRange(1, 5, 1)]
+                public int AdditionalRows { get; set; } = 2;
+
+                [ToolTip("Multiclass Rows")]
+                [IntRange(1, 10, 1)]
+                public int MulticlassRows { get; set; } = 4;
+            }
+
             public StandingsConfiguration()
             {
                 this.AllowRescale = true;
             }
-
-            [ToolTip("Multiclass")]
-            internal bool ShowMulticlass { get; set; } = true;
-
-            [ToolTip("Time Delta")]
-            internal bool ShowTimeDelta { get; set; } = true;
-
-            [ToolTip("Invalid Lap Indicator")]
-            internal bool ShowInvalidLapIndicator { get; set; } = true;
-
-
-
-            [ToolTip("Rows in front and behind")]
-            [IntRange(1, 5, 1)]
-            public int PlacesAroundMyCar { get; set; } = 2;
-
-            [ToolTip("Multiclass Rows")]
-            [IntRange(1, 10, 1)]
-            public int MulticlassRows { get; set; } = 4;
-
         }
 
         private const int _height = 800;
@@ -161,7 +167,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
             Dictionary<CarClasses, List<StandingsTableRow>> tableRows = new Dictionary<CarClasses, List<StandingsTableRow>>();
 
-            if (_config.ShowMulticlass)
+            if (_config.Information.MultiClass)
             {
                 foreach (CarClasses carClass in Enum.GetValues(typeof(CarClasses)))
                 {
@@ -182,7 +188,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             int height = 0;
             foreach (KeyValuePair<CarClasses, List<StandingsTableRow>> kvp in tableRows)
             {
-                ost.Draw(g, height, kvp.Value, _config.MulticlassRows, _carClassToBrush[kvp.Key], kvp.Key.ToString() + " / " + _entryListForCarClass[kvp.Key].Count() + " Cars", _driverLastName, _config.ShowTimeDelta, _config.ShowInvalidLapIndicator);
+                ost.Draw(g, height, kvp.Value, _config.Layout.MulticlassRows, _carClassToBrush[kvp.Key], kvp.Key.ToString() + " / " + _entryListForCarClass[kvp.Key].Count() + " Cars", _driverLastName, _config.Information.TimeDelta, _config.Information.InvalidLap);
                 height = ost.Height;
             }
         }
@@ -190,15 +196,15 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
         private void AddDriversRow(List<StandingsTableRow> standingsTableRows, List<KeyValuePair<int, CarData>> list)
         {
             var playersIndex = GetDriversIndex(list);
-            if (playersIndex == -1 || playersIndex < _config.MulticlassRows)
+            if (playersIndex == -1 || playersIndex < _config.Layout.MulticlassRows)
             {
                 return;
             }
 
-            int startIdx = (playersIndex - _config.PlacesAroundMyCar) < 0 ? 0 : (playersIndex + _config.PlacesAroundMyCar - _config.MulticlassRows);
-            int endIdx = (playersIndex + _config.PlacesAroundMyCar + 1) > list.Count() ? list.Count() : (playersIndex + _config.PlacesAroundMyCar + 1);
+            int startIdx = (playersIndex - _config.Layout.AdditionalRows) < 0 ? 0 : (playersIndex + _config.Layout.AdditionalRows - _config.Layout.MulticlassRows);
+            int endIdx = (playersIndex + _config.Layout.AdditionalRows + 1) > list.Count() ? list.Count() : (playersIndex + _config.Layout.AdditionalRows + 1);
 
-            if (startIdx < _config.MulticlassRows) startIdx = _config.MulticlassRows;
+            if (startIdx < _config.Layout.MulticlassRows) startIdx = _config.Layout.MulticlassRows;
 
             for (int i = startIdx; i < endIdx; i++)
             {
@@ -225,7 +231,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
         private void EntryListToTableRow(List<StandingsTableRow> tableRows, List<KeyValuePair<int, CarData>> entryList)
         {
-            for (int i = 0; i < (entryList.Count() < _config.MulticlassRows ? entryList.Count() : _config.MulticlassRows); i++)
+            for (int i = 0; i < (entryList.Count() < _config.Layout.MulticlassRows ? entryList.Count() : _config.Layout.MulticlassRows); i++)
             {
                 CarData carData = entryList[i].Value;
                 //AddCarDataTableRow(carData, tableRows[carClass], (carData.RealtimeCarUpdate.LastLap.LaptimeMS == bestSessionLapMS));

@@ -18,21 +18,24 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
 #endif
     internal sealed class RefuelInfoOverlay : AbstractOverlay
     {
-
-        private RefuelConfiguration config = new RefuelConfiguration();
+        private readonly RefuelConfiguration _config = new RefuelConfiguration();
         private class RefuelConfiguration : OverlayConfiguration
         {
+            [ConfigGrouping("Refuel Info", "Show or hide additional information in the panel.")]
+            public InfoPanelGrouping RefuelInfoGrouping { get; set; } = new InfoPanelGrouping();
+            public class InfoPanelGrouping
+            {
+                public bool SolidProgressBar { get; set; } = false;
+
+                [ToolTip("Amount of extra laps for fuel calculation.")]
+                [IntRange(1, 5, 1)]
+                public int ExtraLaps { get; set; } = 2;
+            }
+
             public RefuelConfiguration()
             {
                 this.AllowRescale = true;
             }
-
-            internal bool SolidProgressBar { get; set; } = false;
-
-            [ToolTip("Amount of extra laps for fuel calculation.")]
-            [IntRange(1, 5, 1)]
-            public int ExtraLaps { get; set; } = 2;
-
         }
 
         private SolidBrush _whiteBrush = new SolidBrush(Color.White);
@@ -97,7 +100,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(100, 0, 0, 0)), new Rectangle(0, 0, windowWidth, windowHeight), 10);
 
             // complete progress bar
-            DrawProgressBarBackground(g, widgetMinXPos, widgetMaxWidth, this.config.SolidProgressBar);
+            DrawProgressBarBackground(g, widgetMinXPos, widgetMaxWidth, this._config.RefuelInfoGrouping.SolidProgressBar);
 
             // checkered flag
             for (int i = 0; i < 4; i++)
@@ -188,7 +191,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
             g.DrawString($"{this._refuelToTheEnd.ToString("0.0")}l ", drawFont, drawBrush, widgetMinXPos + 110, barYPos + pitBarHeight + 30, drawFormat);
 
             drawFont = FontUtil.FontOrbitron(8);
-            g.DrawString($"{config.ExtraLaps} extra laps", drawFont, _whiteBrush, widgetMinXPos, barYPos + pitBarHeight + 50, drawFormat);
+            g.DrawString($"{_config.RefuelInfoGrouping.ExtraLaps} extra laps", drawFont, _whiteBrush, widgetMinXPos, barYPos + pitBarHeight + 50, drawFormat);
 
             g.TextRenderingHint = previousHint;
             g.SmoothingMode = previous;
@@ -206,7 +209,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
 
             float sessionTimeLeft = pageGraphics.SessionTimeLeft;
             float lapsUntilTheEnd = sessionTimeLeft / averageLapTime;
-            float fuelUntilTheEnd = _lastFuelConsumption * (lapsUntilTheEnd + config.ExtraLaps);
+            float fuelUntilTheEnd = _lastFuelConsumption * (lapsUntilTheEnd + _config.RefuelInfoGrouping.ExtraLaps);
             this._refuelToTheEnd = fuelUntilTheEnd - fuelLevel;
             this._raceProgressWithFuelPercentage = ((averageLapTime * this._lapsWithFuel) * 100) / _sessionLength;
             this._raceProgressWithFuelPercentage += GetRaceProgressPercentage();
@@ -214,7 +217,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
 
             // the time where we will make it to the end with a full tank.
             float lapsWithMaxFuel = (int)(pageStatic.MaxFuel) / _lastFuelConsumption;
-            lapsWithMaxFuel -= config.ExtraLaps;
+            lapsWithMaxFuel -= _config.RefuelInfoGrouping.ExtraLaps;
             //float lapsInSession = sessionLength / averageLapTime;
             int timeWithMaxFuel = (int)(lapsWithMaxFuel * averageLapTime);
             float refuelTimeWithMaxFuel = _sessionLength - timeWithMaxFuel;
