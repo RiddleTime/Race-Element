@@ -13,14 +13,19 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
         private readonly TrackInfoConfig _config = new TrackInfoConfig();
         private class TrackInfoConfig : OverlayConfiguration
         {
-            [ToolTip("Shows the global track flag.")]
-            internal bool ShowGlobalFlag { get; set; } = true;
+            [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
+            public InfoPanelGrouping InfoPanel { get; set; } = new InfoPanelGrouping();
+            public class InfoPanelGrouping
+            {
+                [ToolTip("Shows the global track flag.")]
+                public bool GlobalFlag { get; set; } = true;
 
-            [ToolTip("Shows the type of the session.")]
-            internal bool ShowSessionType { get; set; } = true;
+                [ToolTip("Shows the type of the session.")]
+                public bool SessionType { get; set; } = true;
 
-            [ToolTip("Displays the actual time on track.")]
-            internal bool ShowTimeOfDay { get; set; } = true;
+                [ToolTip("Displays the actual time on track.")]
+                public bool TimeOfDay { get; set; } = true;
+            }
 
             public TrackInfoConfig()
             {
@@ -39,13 +44,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
 
         public sealed override void BeforeStart()
         {
-            if (!this._config.ShowGlobalFlag)
+            if (!this._config.InfoPanel.GlobalFlag)
                 this.Height -= this._panel.FontHeight;
 
-            if (!this._config.ShowSessionType)
+            if (!this._config.InfoPanel.SessionType)
                 this.Height -= this._panel.FontHeight;
 
-            if (!this._config.ShowTimeOfDay)
+            if (!this._config.InfoPanel.TimeOfDay)
                 this.Height -= this._panel.FontHeight;
         }
 
@@ -53,16 +58,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
 
         public sealed override void Render(Graphics g)
         {
-            if (this._config.ShowTimeOfDay)
+            if (this._config.InfoPanel.TimeOfDay)
             {
                 TimeSpan time = TimeSpan.FromMilliseconds(broadCastRealTime.TimeOfDay.TotalMilliseconds * 1000);
                 this._panel.AddLine("Time", $"{time:hh\\:mm\\:ss}");
             }
 
-            if (this._config.ShowGlobalFlag)
+            if (this._config.InfoPanel.GlobalFlag)
                 _panel.AddLine("Flag", ACCSharedMemory.FlagTypeToString(pageGraphics.Flag));
 
-            if (this._config.ShowSessionType)
+            if (this._config.InfoPanel.SessionType)
                 _panel.AddLine("Session", ACCSharedMemory.SessionTypeToString(pageGraphics.SessionType));
 
             _panel.AddLine("Grip", pageGraphics.trackGripStatus.ToString());

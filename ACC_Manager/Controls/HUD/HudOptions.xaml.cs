@@ -178,6 +178,17 @@ namespace ACCManager.Controls
             return false;
         }
 
+        public string GetCurrentlyViewedOverlayName()
+        {
+            foreach (UIElement element in configStackPanel.Children)
+                if (element is StackPanel panel)
+                    foreach (UIElement child in panel.Children)
+                        if (child is Label label)
+                            return label.Content.ToString();
+
+            return string.Empty;
+        }
+
         private void ListOverlays_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count > 0)

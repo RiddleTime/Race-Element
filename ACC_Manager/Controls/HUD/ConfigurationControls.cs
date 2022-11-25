@@ -54,9 +54,7 @@ namespace ACCManager.Controls.HUD
 
         internal static void SaveOverlayConfigField(ConfigField configField)
         {
-            // fix exception when tab is different, needs different list (debug overlays)
-            ListViewItem lvi = (ListViewItem)HudOptions.Instance.listOverlays.SelectedItem;
-            string overlayName = ((TextBlock)lvi.Content).Text;
+            string overlayName = HudOptions.Instance.GetCurrentlyViewedOverlayName();
 
             OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(overlayName);
             if (settings == null)

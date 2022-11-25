@@ -19,7 +19,7 @@ using static ACCManager.HUD.Overlay.OverlayUtil.InfoTable;
 namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 {
 #if DEBUG
-    [Overlay(Name = "Entrylist Overlay", Version = 1.00, OverlayType = OverlayType.Release,
+    [Overlay(Name = "Entrylist Overlay", Version = 1.00, OverlayType = OverlayType.Debug,
 Description = "A panel showing live broadcast track data.")]
 #endif
     internal sealed class EntryListOverlay : AbstractOverlay
