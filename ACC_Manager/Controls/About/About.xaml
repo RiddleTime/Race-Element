@@ -144,7 +144,7 @@
                                 <Bold><Italic>- HUD</Italic></Bold>
                                 </TextBlock>
                                 <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
-                                - Activate the HUDs you want to see, activated overlays will show a green background in the list.<LineBreak/>
+                                - Activate the HUDs you want to see, activated HUDs will be green in the list.<LineBreak/>
                                 - Mouse Right Click: (De)Activate HUD. (you can also click the title)<LineBreak/>
                                 - Mouse Middle Click or Ctrl + Home: Toggle move mode.<LineBreak/>
                                 - HUDs will become visible as soon as the engine is running.<LineBreak/>
@@ -161,7 +161,7 @@
                                 </TextBlock>
                                 <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
                                    Race Weekends:<LineBreak/>
-                                    - Displays each session of a Race Weekend recorded when ACC Manager is running.<LineBreak/>b 
+                                    - Displays each session of a Race Weekend recorded when ACC Manager is running.<LineBreak/> 
                                     - Select a Race Weekend and go to the Current tab.<LineBreak/>
                                     - Reload the Local race weekends list by re-opening the Telemetry tab.<LineBreak/>
                                     - Drag and drop .rwdb(Race weekend databases) ontop of the app to view them.<LineBreak/>
