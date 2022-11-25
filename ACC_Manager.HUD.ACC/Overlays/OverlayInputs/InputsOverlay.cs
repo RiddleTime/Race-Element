@@ -64,8 +64,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
 
             _cachedBackground = new CachedBitmap((int)(Width * this.Scale), (int)(Height * this.Scale), g =>
             {
+                GraphicsPath gradientPath = new GraphicsPath();
+                gradientPath.AddEllipse(0, 0, (int)(_size * Scale), (int)(_size * Scale));
+                PathGradientBrush pthGrBrush = new PathGradientBrush(gradientPath);
+                pthGrBrush.CenterColor = Color.FromArgb(40, 0, 0, 0);
+                pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(220, 0, 0, 0) };
+
                 // background
-                g.FillEllipse(new SolidBrush(Color.FromArgb(140, Color.Black)), new Rectangle(0, 0, (int)(_size * Scale), (int)(_size * Scale)));
+                g.FillEllipse(pthGrBrush, new Rectangle(0, 0, (int)(_size * Scale), (int)(_size * Scale)));
                 g.DrawEllipse(new Pen(Color.FromArgb(230, Color.Black)), new Rectangle(0, 0, (int)(_size * Scale), (int)(_size * Scale)));
 
                 // steering background
