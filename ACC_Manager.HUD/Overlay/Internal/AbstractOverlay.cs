@@ -337,6 +337,7 @@ namespace ACCManager.HUD.Overlay.Internal
                     if (this.RepositionWindow != null)
                         return;
 
+                    System.Windows.Media.Brush brush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(30, 0, 0, 0));
                     this.RepositionWindow = new Window()
                     {
                         Width = this.Width,
@@ -348,11 +349,12 @@ namespace ACCManager.HUD.Overlay.Internal
                         Title = this.Name,
                         ToolTip = this.Name,
                         Topmost = true,
-                        BorderBrush = System.Windows.Media.Brushes.Red,
-                        BorderThickness = new Thickness(1),
+                        Background = brush,
+                        BorderBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(70, 255, 0, 0)),
+                        BorderThickness = new Thickness(2),
                         ShowInTaskbar = false,
                         AllowsTransparency = true,
-                        Opacity = 0.25,
+                        Opacity = 1,
                         Cursor = System.Windows.Input.Cursors.None
                     };
 
@@ -361,7 +363,7 @@ namespace ACCManager.HUD.Overlay.Internal
                     {
                         if (this.RepositionWindow == null)
                             return;
-                        this.RepositionWindow.BorderBrush = System.Windows.Media.Brushes.Green;
+                        this.RepositionWindow.BorderBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(70, 0, 255, 0));
                         this.RepositionWindow.BorderThickness = new Thickness(3);
                         this.RepositionWindow.DragMove();
                     };
@@ -378,8 +380,8 @@ namespace ACCManager.HUD.Overlay.Internal
                     {
                         if (this.RepositionWindow == null)
                             return;
-                        this.RepositionWindow.BorderBrush = System.Windows.Media.Brushes.Red;
-                        this.RepositionWindow.BorderThickness = new Thickness(1);
+                        this.RepositionWindow.BorderBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(70, 255, 0, 0));
+                        this.RepositionWindow.BorderThickness = new Thickness(2);
 
                     };
 
@@ -387,7 +389,7 @@ namespace ACCManager.HUD.Overlay.Internal
                     {
                         if (this.RepositionWindow == null)
                             return;
-                        this.RepositionWindow.BorderBrush = System.Windows.Media.Brushes.Green;
+                        this.RepositionWindow.BorderBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(70, 0, 255, 0));
                         this.RepositionWindow.BorderThickness = new Thickness(3);
                         switch (e.Key)
                         {
