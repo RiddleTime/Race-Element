@@ -45,7 +45,7 @@ using System.Windows;
 //      Minor Version
 //      Build Number
 //      Revision
-[assembly: AssemblyVersion("0.1.2.0")]
-[assembly: AssemblyFileVersion("0.1.2.0")]
+[assembly: AssemblyVersion("0.1.2.1")]
+[assembly: AssemblyFileVersion("0.1.2.1")]
 [assembly: Guid("6f44e635-5134-44dd-8638-088a881e4a76")]
 [assembly: NeutralResourcesLanguage("")]

@@ -6,6 +6,7 @@ namespace ACCManager.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.1.2.1", "- Reworked design of several HUDs." },
             {"0.1.2.0", "- Main folder changed from My Documents/ACC Manager to %AppData%/ACC Manager."+
                         "\n   - You can copy the old Data folder containing your race weekends to the new location."+
                         "\n- HUD Configuration:" +
