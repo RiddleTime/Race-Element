@@ -37,6 +37,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
                 [ToolTip("Defines the transparency of the bars.")]
                 [ByteRange(40, 255, 1)]
                 public byte Transparency { get; set; } = 185;
+
+                [ToolTip("Changes the order of the bars, throttle first and brake second.(left to right and top to bottem)")]
+                public bool ThrottleFirst { get; set; } = false;
             }
 
             [ConfigGrouping("Electronics", "Color changes for the bars when electronics kick in.")]
@@ -58,8 +61,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
 
         private CachedBitmap _cachedBackground;
 
+        private HorizontalProgressBar[] _horizontalBars;
         private HorizontalProgressBar _horizontalGasBar;
         private HorizontalProgressBar _horizontalBrakeBar;
+
+        private VerticalProgressBar[] _verticalBars;
         private VerticalProgressBar _verticalGasBar;
         private VerticalProgressBar _verticalBrakeBar;
 
@@ -67,11 +73,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
         {
             if (_config.Bars.Horizontal)
             {
+                _horizontalBars = new HorizontalProgressBar[2];
                 this.Width = _config.Bars.Length + 1;
                 this.Height = _config.Bars.Thickness * 2 + _config.Bars.Spacing + 1;
             }
             else
             {
+                _verticalBars = new VerticalProgressBar[2];
                 this.Width = _config.Bars.Thickness * 2 + _config.Bars.Spacing + 1;
                 this.Height = _config.Bars.Length + 1;
             }
@@ -136,6 +144,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
                     Scale = this.Scale,
                     Rounding = 5,
                 };
+                if (_config.Bars.ThrottleFirst)
+                {
+                    _horizontalBars[0] = _horizontalGasBar;
+                    _horizontalBars[1] = _horizontalBrakeBar;
+                }
+                else
+                {
+                    _horizontalBars[0] = _horizontalBrakeBar;
+                    _horizontalBars[1] = _horizontalGasBar;
+                }
             }
             else
             {
@@ -161,6 +179,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
                     Scale = this.Scale,
                     Rounding = 5,
                 };
+                if (_config.Bars.ThrottleFirst)
+                {
+                    _verticalBars[0] = _verticalGasBar;
+                    _verticalBars[1] = _verticalBrakeBar;
+                }
+                else
+                {
+                    _verticalBars[0] = _verticalBrakeBar;
+                    _verticalBars[1] = _verticalGasBar;
+                }
             }
         }
 
@@ -182,8 +210,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
                 _horizontalGasBar.Value = pagePhysics.Gas;
                 _horizontalBrakeBar.Value = pagePhysics.Brake;
 
-                _horizontalGasBar?.Draw(g, 0, 0);
-                _horizontalBrakeBar?.Draw(g, 0, _config.Bars.Thickness + _config.Bars.Spacing);
+                _horizontalBars[0]?.Draw(g, 0, 0);
+                _horizontalBars[1]?.Draw(g, 0, _config.Bars.Thickness + _config.Bars.Spacing);
             }
             else
             {
@@ -192,8 +220,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
                 _verticalBrakeBar.Value = pagePhysics.Brake;
                 _verticalGasBar.Value = pagePhysics.Gas;
 
-                _verticalGasBar?.Draw(g, 0, 0);
-                _verticalBrakeBar?.Draw(g, _config.Bars.Thickness + _config.Bars.Spacing, 0);
+                _verticalBars[0]?.Draw(g, 0, 0);
+                _verticalBars[1]?.Draw(g, _config.Bars.Thickness + _config.Bars.Spacing, 0);
             }
         }
 
