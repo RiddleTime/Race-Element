@@ -38,7 +38,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
                 [ByteRange(40, 255, 1)]
                 public byte Transparency { get; set; } = 185;
 
-                [ToolTip("Changes the order of the bars, throttle first and brake second.(left to right and top to bottem)")]
+                [ToolTip("Changes the order of the bars, throttle first and brake second (left to right and top to bottom).")]
                 public bool ThrottleFirst { get; set; } = false;
             }
 
