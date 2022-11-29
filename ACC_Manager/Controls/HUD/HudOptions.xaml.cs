@@ -224,9 +224,7 @@ namespace ACCManager.Controls
 
             configStackPanel.Children.Clear();
             OverlayAttribute overlayAttribute = GetOverlayAttribute(type);
-            AbstractOverlay tempAbstractOverlay = (AbstractOverlay)Activator.CreateInstance(type, DefaultOverlayArgs);
             OverlaySettingsJson tempOverlaySettings = OverlaySettings.LoadOverlaySettings(overlayAttribute.Name);
-            tempAbstractOverlay.Dispose();
 
             PreviewCache.GeneratePreview(overlayAttribute.Name, true);
 
@@ -486,6 +484,7 @@ namespace ACCManager.Controls
                     if (tempOverlaySettings.Enabled)
                     {
                         listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 10, 255, 10));
+
                         lock (OverlaysACC.ActiveOverlays)
                         {
                             AbstractOverlay overlay = (AbstractOverlay)Activator.CreateInstance(x.Value, args);
