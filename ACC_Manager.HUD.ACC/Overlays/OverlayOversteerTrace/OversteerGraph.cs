@@ -27,7 +27,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
             _cachedBackground = new CachedBitmap(_width, _height, g =>
             {
                 Rectangle graphRect = new Rectangle(0, 0, _width, _height);
-                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(196, Color.Black)), graphRect, 3);
+                LinearGradientBrush gradientBrush = new LinearGradientBrush(graphRect, Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical);
+                g.FillRoundedRectangle(gradientBrush, graphRect, 3);
                 g.DrawRoundedRectangle(new Pen(Color.FromArgb(196, Color.Black)), graphRect, 3);
             });
         }

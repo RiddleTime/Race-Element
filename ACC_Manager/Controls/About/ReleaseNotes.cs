@@ -7,7 +7,9 @@ namespace ACCManager.Controls
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
             {"0.1.2.1", "- Reworked design of several HUDs."+
-                        "\n   - Input bars: Added option to switch around throttle and brake bars."},
+                        "\n   - Input bars: Added option to switch around throttle and brake bars."+
+                        "\n   - Inputs: Added gradual contrast."+
+                        "\n   - Input and Oversteer Traces: Added gradual contrast."},
             {"0.1.2.0", "- Main folder changed from My Documents/ACC Manager to %AppData%/ACC Manager."+
                         "\n   - You can copy the old Data folder containing your race weekends to the new location."+
                         "\n- HUD Configuration:" +
@@ -15,8 +17,7 @@ namespace ACCManager.Controls
                         "\n   - This resets your HUD Configuration. Unfortunately ;)"+
                         "\n   - Right clicking inside of the configuration controls toggles activation of viewed HUD."+
                         "\n   - Scroll the sliders to change the value."+
-                        "\n- Added button to ACC Manager settings to open the ACC Manager folder."
-                        },
+                        "\n- Added button to ACC Manager settings to open the ACC Manager folder."},
             {"0.1.1.2", "- HUD: Input bars overlay now has the option to set the bars to horizontal mode."+
                         "\n- HUD: Added beta version of Race Info Overlay."},
             {"0.1.1.1", "- Changed dry tyres for Lamborghini Super Trofeo cars to GT4." },
