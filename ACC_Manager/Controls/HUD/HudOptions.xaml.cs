@@ -87,21 +87,7 @@ namespace ACCManager.Controls
                             gridRepositionToggler.Background = new SolidColorBrush(Color.FromArgb(47, 255, 69, 00));
                         };
 
-                        checkBoxDemoMode.Checked += (s, e) =>
-                        {
-                            _hudSettingsJson.DemoMode = true;
-                            _hudSettings.Save(_hudSettingsJson);
-
-                            gridDemoToggler.Background = new SolidColorBrush(Color.FromArgb(47, 69, 255, 00));
-                        };
-
-                        checkBoxDemoMode.Unchecked += (s, e) =>
-                        {
-                            _hudSettingsJson.DemoMode = false;
-                            _hudSettings.Save(_hudSettingsJson);
-                            gridDemoToggler.Background = new SolidColorBrush(Color.FromArgb(47, 255, 69, 00));
-                        };
-
+                        // middle button to activate reposition mode
                         this.PreviewMouseUp += (s, e) =>
                         {
                             if (e.ChangedButton == MouseButton.Middle)
@@ -111,6 +97,25 @@ namespace ACCManager.Controls
                             }
                         };
 
+
+                        checkBoxDemoMode.Checked += (s, e) =>
+                        {
+                            _hudSettingsJson.DemoMode = true;
+                            _hudSettings.Save(_hudSettingsJson);
+                            gridDemoToggler.Background = new SolidColorBrush(Color.FromArgb(47, 69, 255, 00));
+                        };
+                        checkBoxDemoMode.Unchecked += (s, e) =>
+                        {
+                            _hudSettingsJson.DemoMode = false;
+                            _hudSettings.Save(_hudSettingsJson);
+                            gridDemoToggler.Background = new SolidColorBrush(Color.FromArgb(47, 255, 69, 00));
+                        };
+                        gridDemoToggler.MouseUp += (s, e) =>
+                        {
+                            this.checkBoxDemoMode.IsChecked = !this.checkBoxDemoMode.IsChecked;
+                        };
+
+                        // double click to activate overlays in the lists
                         listOverlays.MouseDoubleClick += (s, e) => { if (ToggleViewingOverlay()) e.Handled = true; };
                         listDebugOverlays.MouseDoubleClick += (s, e) => { if (ToggleViewingOverlay()) e.Handled = true; };
 
@@ -119,10 +124,7 @@ namespace ACCManager.Controls
                             this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
                             e.Handled = true;
                         };
-                        gridDemoToggler.MouseUp += (s, e) =>
-                        {
-                            this.checkBoxDemoMode.IsChecked = !this.checkBoxDemoMode.IsChecked;
-                        };
+
 
                         m_GlobalHook = Hook.GlobalEvents();
                         m_GlobalHook.OnCombination(new Dictionary<Combination, Action> { { Combination.FromString("Control+Home"), () => this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked } });
@@ -292,8 +294,7 @@ namespace ACCManager.Controls
 
                         overlayNameLabel.BorderBrush = Brushes.Green;
                         listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
-                        listViewItem.BorderBrush = new SolidColorBrush(Colors.OrangeRed);
-                        listViewItem.BorderThickness = new Thickness(1, 1, 0, 0);
+                        listViewItem.BorderBrush = new SolidColorBrush(Colors.LimeGreen);
                         overlay = (AbstractOverlay)Activator.CreateInstance(type, DefaultOverlayArgs);
 
                         overlay.Start();
@@ -316,7 +317,7 @@ namespace ACCManager.Controls
                 lock (OverlaysACC.ActiveOverlays)
                 {
                     listViewItem.Background = Brushes.Transparent;
-                    listViewItem.BorderThickness = new Thickness(0, 0, 0, 0);
+                    listViewItem.BorderBrush = new SolidColorBrush(Colors.Transparent);
                     AbstractOverlay overlay = OverlaysACC.ActiveOverlays.Find(f => f.GetType() == type);
 
                     SaveOverlaySettings(overlay, false);
@@ -483,11 +484,15 @@ namespace ACCManager.Controls
                     DataContext = x,
                     HorizontalContentAlignment = HorizontalAlignment.Center,
                     Padding = new Thickness(0, marginTopBottom, 0, marginTopBottom),
+                    Margin = new Thickness(0, 1, 0, 1),
+                    BorderBrush = new SolidColorBrush(Colors.Transparent),
+                    BorderThickness = new Thickness(0, 0, 2, 0),
                 };
                 if (tempOverlaySettings != null)
                     if (tempOverlaySettings.Enabled)
                     {
-                        listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 10, 255, 10));
+                        listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+                        listViewItem.BorderBrush = new SolidColorBrush(Colors.LimeGreen);
 
                         lock (OverlaysACC.ActiveOverlays)
                         {
