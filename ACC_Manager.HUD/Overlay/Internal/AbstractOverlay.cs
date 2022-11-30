@@ -336,7 +336,7 @@ namespace ACCManager.HUD.Overlay.Internal
                     if (this.RepositionWindow != null)
                         return;
 
-                    System.Windows.Media.Brush brush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(30, 0, 0, 0));
+                    System.Windows.Media.Brush brush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(60, 0, 0, 0));
                     this.RepositionWindow = new Window()
                     {
                         Width = this.Width,
