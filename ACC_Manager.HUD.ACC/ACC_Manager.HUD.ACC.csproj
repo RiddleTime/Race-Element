@@ -84,6 +84,7 @@
     <Compile Include="Overlays\OverlayRefuel\OverlayRefuel.cs" />
     <Compile Include="Overlays\OverlayShiftIndicator\ShiftIndicatorOverlay.cs" />
     <Compile Include="Overlays\OverlaySpeedometer\SpeedometerOverlay.cs" />
+    <Compile Include="Overlays\OverlaySpotter\OverlaySpotter.cs" />
     <Compile Include="Overlays\OverlayStandings\StandingsOverlay.cs" />
     <Compile Include="Overlays\OverlayOversteerTrace\OversteerDataCollector.cs" />
     <Compile Include="Overlays\OverlayOversteerTrace\OversteerGraph.cs" />

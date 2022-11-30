@@ -291,7 +291,9 @@ namespace ACCManager.Controls
                     {
 
                         overlayNameLabel.BorderBrush = Brushes.Green;
-                        listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 10, 255, 10));
+                        listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+                        listViewItem.BorderBrush = new SolidColorBrush(Colors.OrangeRed);
+                        listViewItem.BorderThickness = new Thickness(1, 1, 0, 0);
                         overlay = (AbstractOverlay)Activator.CreateInstance(type, DefaultOverlayArgs);
 
                         overlay.Start();
@@ -314,6 +316,7 @@ namespace ACCManager.Controls
                 lock (OverlaysACC.ActiveOverlays)
                 {
                     listViewItem.Background = Brushes.Transparent;
+                    listViewItem.BorderThickness = new Thickness(0, 0, 0, 0);
                     AbstractOverlay overlay = OverlaysACC.ActiveOverlays.Find(f => f.GetType() == type);
 
                     SaveOverlaySettings(overlay, false);
@@ -423,7 +426,8 @@ namespace ACCManager.Controls
 
             if (enabled)
             {
-                mousePositionOverlay = new MousePositionOverlay(new System.Drawing.Rectangle(0, 0, 150, 150), "Mouse Position");
+                if (mousePositionOverlay == null)
+                    mousePositionOverlay = new MousePositionOverlay(new System.Drawing.Rectangle(0, 0, 150, 150), "Mouse Position");
                 mousePositionOverlay.Start(false);
             }
             else

@@ -6,15 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCManager.HUD.ACC.Overlays
+namespace ACCManager.HUD.ACC.Overlays.OverlaySpotter
 {
 #if DEBUG
     [Overlay(Name = "Spotter", Version = 1.00, OverlayType = OverlayType.Release,
    Description = "TODO (spots things?)")]
 #endif
-    internal class OverlaySpotter : AbstractOverlay
+    internal sealed class SpotterOverlay : AbstractOverlay
     {
-        public OverlaySpotter(Rectangle rectangle) : base(rectangle, "Spotter")
+        public SpotterOverlay(Rectangle rectangle) : base(rectangle, "Spotter")
         {
         }
 
