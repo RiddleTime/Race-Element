@@ -13,12 +13,6 @@ namespace ACC_Manager.Util.Settings
         public override string Path => FileUtil.AccManangerSettingsPath;
         public override string FileName => "ACC.json";
 
-        public override AccSettingsJson Default()
-        {
-            return new AccSettingsJson()
-            {
-                UnlistedAccServer = Guid.Empty,
-            };
-        }
+        public override AccSettingsJson Default() => new AccSettingsJson() { UnlistedAccServer = Guid.Empty };
     }
 }

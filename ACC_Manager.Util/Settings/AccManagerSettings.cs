@@ -4,7 +4,7 @@ namespace ACC_Manager.Util.Settings
 {
     public class AccManagerSettingsJson : IGenericSettingsJson
     {
-        public bool MinimizeToSystemTray { get; set; } = false;
+        public bool MinimizeToSystemTray { get; set; }
         public bool TelemetryRecordDetailed { get; set; } = false;
         public int TelemetryDetailedHerz { get; set; }
     }
@@ -15,15 +15,12 @@ namespace ACC_Manager.Util.Settings
 
         public override string FileName => "AccManager.json";
 
-        public override AccManagerSettingsJson Default()
+        public override AccManagerSettingsJson Default() => new AccManagerSettingsJson()
         {
-            var settings = new AccManagerSettingsJson()
-            {
-                TelemetryRecordDetailed = true,
-                TelemetryDetailedHerz = 20,
-            };
+            MinimizeToSystemTray = false,
+            TelemetryRecordDetailed = false,
+            TelemetryDetailedHerz = 20,
+        };
 
-            return settings;
-        }
     }
 }
