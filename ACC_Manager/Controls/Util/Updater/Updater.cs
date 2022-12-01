@@ -112,12 +112,17 @@ namespace ACCManager.Controls.Util.Updater
             if (!newVersion.Exists)
                 return false;
 
-            Process.Start(new ProcessStartInfo()
+            string fullName = newVersion.FullName.Replace('\\', '/');
+            ProcessStartInfo startInfo = new ProcessStartInfo()
             {
                 FileName = "cmd",
-                Arguments = $"/c start {targetFile}",
+                Arguments = $"/c start \"AccManager.exe\" \"{fullName}\"",
                 WindowStyle = ProcessWindowStyle.Hidden,
-            });
+            };
+            LogWriter.WriteToLog(startInfo.Arguments);
+
+
+            Process.Start(startInfo);
 
             Environment.Exit(0);
 
