@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccidentList\AccidentListTracker.cs" />
+    <Compile Include="Cars\Damage.cs" />
     <Compile Include="Cars\SteeringLock.cs" />
     <Compile Include="Database\GameData\DbCarData.cs" />
     <Compile Include="Database\GameData\DbTrackData.cs" />

@@ -56,6 +56,7 @@
     <Compile Include="OverlaysACC.cs" />
     <Compile Include="Overlays\OverlayAccelerometer\AccelerometerOverlay.cs" />
     <Compile Include="Overlays\OverlayCarInfo\CarInfoOverlay.cs" />
+    <Compile Include="Overlays\OverlayDamage\DamageOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\DebugInfoHelper.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayBroadcastRealtime\BroadcastRealtimeOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayBroadcastTrackData\BroadcastTrackDataOverlay.cs" />

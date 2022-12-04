@@ -1,4 +1,5 @@
-﻿using ACCManager.Data.ACC.Database.LapDataDB;
+﻿using ACCManager.Data.ACC.Cars;
+using ACCManager.Data.ACC.Database.LapDataDB;
 using ACCManager.Data.ACC.Tracker.Laps;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
@@ -40,7 +41,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
         }
 
         private readonly InfoPanel infoPanel;
-        private const float MagicDamageMultiplier = 0.282f;
 
         public CarInfoOverlay(Rectangle rectangle) : base(rectangle, "Car Info")
         {
@@ -73,8 +73,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
 
         public sealed override void Render(Graphics g)
         {
-            float totalRepairTime = GetTotalRepairTime();
-            Brush damageBrush = HasAnyDamage() ? Brushes.OrangeRed : Brushes.White;
+            float totalRepairTime = Damage.GetTotalRepairTime(pagePhysics);
+            Brush damageBrush = Damage.HasAnyDamage(pagePhysics) ? Brushes.OrangeRed : Brushes.White;
             infoPanel.AddLine("Damage", $"{totalRepairTime:F1}", damageBrush);
 
             if (_config.InfoPanel.TyreSet)
@@ -101,60 +101,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
         public sealed override bool ShouldRender()
         {
             return DefaultShouldRender();
-        }
-
-        private float GetTotalRepairTime()
-        {
-            float totalRepairTime = 0;
-
-            totalRepairTime += GetBodyWorkDamage(CarDamagePosition.Centre);
-
-            foreach (Wheel wheel in Enum.GetValues(typeof(Wheel)))
-                totalRepairTime += GetSuspensionDamage(wheel);
-
-            return totalRepairTime;
-        }
-
-        private bool HasAnyDamage()
-        {
-            foreach (int i in Enum.GetValues(typeof(CarDamagePosition)))
-                if (pagePhysics.CarDamage[i] > 0)
-                    return true;
-
-            foreach (int i in Enum.GetValues(typeof(Wheel)))
-                if (pagePhysics.SuspensionDamage[i] > 0)
-                    return true;
-
-            return false;
-        }
-
-        /// <summary>
-        /// Gets the amount of damage/repair-time for the given wheel
-        /// </summary>
-        /// <param name="wheel"></param>
-        /// <returns></returns>
-        private float GetSuspensionDamage(Wheel wheel)
-        {
-            return pagePhysics.SuspensionDamage[(int)wheel] * 30;
-        }
-
-        /// <summary>
-        /// Gets the amount of bodywork damage/repair-time for the given car damage position
-        /// </summary>
-        /// <param name="position"></param>
-        /// <returns></returns>
-        private float GetBodyWorkDamage(CarDamagePosition position)
-        {
-            return pagePhysics.CarDamage[(int)position] * MagicDamageMultiplier;
-        }
-
-        private enum CarDamagePosition : int
-        {
-            Front,
-            Rear,
-            Left,
-            Right,
-            Centre
         }
     }
 }
