@@ -4,9 +4,7 @@ using ACCManager.Data.ACC.Tracker.Laps;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.Util;
-using System;
 using System.Drawing;
-using static ACCManager.Data.SetupConverter;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
 {
@@ -52,6 +50,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
             this.RefreshRateHz = 3;
         }
 
+        public sealed override bool ShouldRender() => DefaultShouldRender();
+
         public sealed override void BeforeStart()
         {
             if (!this._config.InfoPanel.FuelPerLap)
@@ -67,9 +67,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
                 this.Height -= this.infoPanel.FontHeight;
         }
 
-        public sealed override void BeforeStop()
-        {
-        }
+        public sealed override void BeforeStop() { }
 
         public sealed override void Render(Graphics g)
         {
@@ -96,11 +94,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
                 infoPanel.AddLine("Exhaust", $"{pageGraphics.ExhaustTemperature:F0} C");
 
             infoPanel.Draw(g);
-        }
-
-        public sealed override bool ShouldRender()
-        {
-            return DefaultShouldRender();
         }
     }
 }
