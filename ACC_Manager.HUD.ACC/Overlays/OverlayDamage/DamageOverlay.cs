@@ -99,6 +99,15 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
             _suspensionDamage?.SetRenderer(g =>
             {
                 float suspensionDamageFrontLeft = Damage.GetSuspensionDamage(pagePhysics, ACCManager.Data.SetupConverter.Wheel.FrontLeft);
+                float suspensionDamageFrontRight = Damage.GetSuspensionDamage(pagePhysics, ACCManager.Data.SetupConverter.Wheel.FrontRight);
+                float suspensionDamageRearLeft = Damage.GetSuspensionDamage(pagePhysics, ACCManager.Data.SetupConverter.Wheel.RearLeft);
+                float suspensionDamageRearRight = Damage.GetSuspensionDamage(pagePhysics, ACCManager.Data.SetupConverter.Wheel.RearRight);
+
+                DrawTextWithOutline(g, Color.Green, $"{suspensionDamageFrontLeft:F2}", horizontalPadding * 2, verticalPadding * 2);
+                DrawTextWithOutline(g, Color.Green, $"{suspensionDamageFrontRight:F2}", scaledWidth - horizontalPadding * 2, verticalPadding * 2);
+
+                DrawTextWithOutline(g, Color.Green, $"{suspensionDamageRearLeft:F2}", horizontalPadding * 2, scaledHeight - verticalPadding * 2);
+                DrawTextWithOutline(g, Color.Green, $"{suspensionDamageRearRight:F2}", scaledWidth - horizontalPadding * 2, scaledHeight - verticalPadding * 2);
 
             });
         }
@@ -118,26 +127,21 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
                 float bodyDamageRight = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Right);
                 float bodyDamageCentre = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Centre);
 
+                DrawTextWithOutline(g, Color.Black, $"{bodyDamageFront:F2}", scaledWidth / 2, verticalPadding / 2);
+                DrawTextWithOutline(g, Color.Black, $"{bodyDamageRear:F2}", scaledWidth / 2, scaledHeight - verticalPadding * 1);
 
-                DrawTextWithOutline(g, $"{bodyDamageFront:F2}", scaledWidth / 2, verticalPadding);
-                DrawTextWithOutline(g, $"{bodyDamageRear:F2}", scaledWidth / 2, scaledHeight - verticalPadding * 2);
-
-                DrawTextWithOutline(g, $"{bodyDamageLeft:F2}", horizontalPadding * 2, scaledHeight / 2);
-                DrawTextWithOutline(g, $"{bodyDamageRight:F2}", scaledWidth - horizontalPadding * 2, scaledHeight / 2);
-
-
-                string rear = $"{bodyDamageRear}";
-
+                DrawTextWithOutline(g, Color.Black, $"{bodyDamageLeft:F2}", horizontalPadding * 2, scaledHeight / 2);
+                DrawTextWithOutline(g, Color.Black, $"{bodyDamageRight:F2}", scaledWidth - horizontalPadding * 2, scaledHeight / 2);
             });
         }
 
-        private void DrawTextWithOutline(Graphics g, string text, int x, int y)
+        private void DrawTextWithOutline(Graphics g, Color textColor, string text, int x, int y)
         {
             int textWidth = (int)g.MeasureString(text, _font).Width;
             Rectangle backgroundDimension = new Rectangle(x - textWidth / 2, y, (int)textWidth, _font.Height);
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 255, 255, 255)), backgroundDimension, 2);
             g.DrawRoundedRectangle(new Pen(Color.White), backgroundDimension, 2);
-            g.DrawStringWithShadow(text, _font, Color.Black, new PointF(x - textWidth / 2, y));
+            g.DrawStringWithShadow(text, _font, textColor, new PointF(x - textWidth / 2, y));
         }
     }
 }
