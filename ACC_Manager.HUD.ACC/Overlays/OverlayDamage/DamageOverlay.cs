@@ -1,15 +1,10 @@
-﻿using ACCManager.Data.ACC.Cars;
-using ACCManager.HUD.Overlay.Configuration;
+﻿using System.Drawing;
+using System.Drawing.Drawing2D;
+using ACCManager.Data.ACC.Cars;
 using ACCManager.HUD.Overlay.Internal;
+using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.HUD.Overlay.Util;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
 {
@@ -36,7 +31,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
 
         private float _damageTime = 0;
 
-
         public DamageOverlay(Rectangle rectangle) : base(rectangle, "Damage")
         {
             this.RefreshRateHz = 2;
@@ -50,23 +44,23 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
 
         public override void BeforeStart()
         {
-            int width = (int)(this.Width * this.Scale);
-            int height = (int)(this.Height * this.Scale);
-            _carOutline = new CachedBitmap(width, height, g =>
+            int scaledWidth = (int)(this.Width * this.Scale);
+            int scaledHeight = (int)(this.Height * this.Scale);
+            _carOutline = new CachedBitmap(scaledWidth, scaledHeight, g =>
             {
                 GraphicsPath path = new GraphicsPath();
 
-                int width10 = (int)(width * 0.1);
-                int height10 = (int)(height * 0.1);
+                int horizontalPadding = (int)(scaledWidth * 0.05);
+                int verticalPadding = (int)(scaledHeight * 0.025);
 
-                path.AddRectangle(new Rectangle(width10, height10, width - width10 * 2, height - height10 * 2));
+                path.AddRectangle(new Rectangle(horizontalPadding, verticalPadding, scaledWidth - horizontalPadding * 2, scaledHeight - verticalPadding * 2));
 
                 g.DrawPath(Pens.White, path);
 
             });
 
-            _suspensionDamage = new CachedBitmap(width, height, g => { });
-            _bodyDamage = new CachedBitmap(width, height, g => { });
+            _suspensionDamage = new CachedBitmap(scaledWidth, scaledHeight, g => { });
+            _bodyDamage = new CachedBitmap(scaledWidth, scaledHeight, g => { });
         }
 
         public override void BeforeStop()
@@ -79,7 +73,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
         public override void Render(Graphics g)
         {
             float newDamageTime = Damage.GetTotalRepairTime(pagePhysics);
-
             if (newDamageTime != _damageTime)
             {
                 _damageTime = newDamageTime;
@@ -94,23 +87,34 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
 
         private void UpdateSuspensionDamage()
         {
-            int width = (int)(OriginalWidth * this.Scale);
-            int height = (int)(OriginalHeight * this.Scale);
-            int width10 = (int)(width * 0.1);
-            int height10 = (int)(height * 0.1);
+            int scaledWidth = (int)(OriginalWidth * this.Scale);
+            int scaledHeight = (int)(OriginalHeight * this.Scale);
+            int horizontalPadding = (int)(scaledWidth * 0.1);
+            int verticalPadding = (int)(scaledHeight * 0.1);
 
             _suspensionDamage?.SetRenderer(g =>
             {
                 string text = "23.3";
                 SizeF textWidth = g.MeasureString(text, _font);
 
-                g.DrawStringWithShadow(text, _font, Brushes.White, new PointF(width / 2 - textWidth.Width / 2, height10));
+                g.DrawStringWithShadow(text, _font, Brushes.White, new PointF(scaledWidth / 2 - textWidth.Width / 2, verticalPadding));
             });
         }
 
         private void UpdateBodyDamage()
         {
-            _bodyDamage?.SetRenderer(g => { });
+            _bodyDamage?.SetRenderer(g =>
+            {
+                float bodyDamageFront = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Front);
+                float bodyDamageRear = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Rear);
+                float bodyDamageLeft = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Left);
+                float bodyDamageRight = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Right);
+                float bodyDamageCentre = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Centre);
+
+
+                
+
+            });
         }
     }
 }

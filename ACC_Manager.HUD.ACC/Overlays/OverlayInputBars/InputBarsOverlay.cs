@@ -27,11 +27,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
                 public int Length { get; set; } = 200;
 
                 [ToolTip("Changes the thickness of each input bar.")]
-                [IntRange(10, 40, 1)]
+                [IntRange(10, 45, 1)]
                 public int Thickness { get; set; } = 20;
 
                 [ToolTip("Changes the spacing between the input bars")]
-                [IntRange(2, 15, 1)]
+                [IntRange(1, 250, 1)]
                 public int Spacing { get; set; } = 5;
 
                 [ToolTip("Defines the transparency of the bars.")]
@@ -39,7 +39,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
                 public byte Transparency { get; set; } = 185;
 
                 [ToolTip("Changes the order of the bars, throttle first and brake second (left to right and top to bottom).")]
-                public bool ThrottleFirst { get; set; } = false;
+                internal bool ThrottleFirst { get; set; }
             }
 
             [ConfigGrouping("Electronics", "Color changes for the bars when electronics kick in.")]
@@ -120,6 +120,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
 
             Brush outlineBrush = new SolidBrush(Color.FromArgb(196, Color.Black));
 
+            _config.Bars.ThrottleFirst = _config.Bars.Horizontal;
             if (_config.Bars.Horizontal)
             {
                 _horizontalBrakeBar = new HorizontalProgressBar(_config.Bars.Length, _config.Bars.Thickness)

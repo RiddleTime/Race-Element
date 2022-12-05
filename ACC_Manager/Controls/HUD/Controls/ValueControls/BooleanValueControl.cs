@@ -32,7 +32,11 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
             _grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(8, GridUnitType.Star) });
 
             // add label
-            _label = new Label() { HorizontalContentAlignment = HorizontalAlignment.Right };
+            _label = new Label()
+            {
+                HorizontalContentAlignment = HorizontalAlignment.Right,
+                FontWeight = FontWeights.Bold
+            };
             _grid.Children.Add(_label);
             Grid.SetColumn(_label, 0);
 

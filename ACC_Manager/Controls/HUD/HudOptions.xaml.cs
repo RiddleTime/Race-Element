@@ -88,7 +88,7 @@ namespace ACCManager.Controls
                         };
 
                         // middle button to activate reposition mode
-                        this.PreviewMouseUp += (s, e) =>
+                        this.MouseUp += (s, e) =>
                         {
                             if (e.ChangedButton == MouseButton.Middle)
                             {
@@ -117,6 +117,7 @@ namespace ACCManager.Controls
 
                         // double click to activate overlays in the lists
                         listOverlays.MouseDoubleClick += (s, e) => { if (ToggleViewingOverlay()) e.Handled = true; };
+                        listOverlays.MouseLeftButtonDown += (s, e) => { if (ToggleViewingOverlay()) e.Handled = true; };
                         listDebugOverlays.MouseDoubleClick += (s, e) => { if (ToggleViewingOverlay()) e.Handled = true; };
 
                         gridRepositionToggler.MouseUp += (s, e) =>

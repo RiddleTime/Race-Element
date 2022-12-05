@@ -35,7 +35,8 @@ namespace ACCManager.Controls.HUD.Controls.ValueControls
             _label = new Label()
             {
                 Content = Value,
-                HorizontalContentAlignment = HorizontalAlignment.Right
+                HorizontalContentAlignment = HorizontalAlignment.Right,
+                FontWeight = FontWeights.Bold
             };
             _grid.Children.Add(_label);
             Grid.SetColumn(_label, 0);
