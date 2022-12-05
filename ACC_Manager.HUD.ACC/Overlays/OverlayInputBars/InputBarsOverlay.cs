@@ -31,7 +31,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
                 public int Thickness { get; set; } = 20;
 
                 [ToolTip("Changes the spacing between the input bars")]
-                [IntRange(1, 250, 1)]
+                [IntRange(1, 150, 1)]
                 public int Spacing { get; set; } = 5;
 
                 [ToolTip("Defines the transparency of the bars.")]

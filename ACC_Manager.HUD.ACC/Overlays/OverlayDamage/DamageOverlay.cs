@@ -5,6 +5,7 @@ using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.HUD.Overlay.Util;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
 {
@@ -61,6 +62,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
 
             _suspensionDamage = new CachedBitmap(scaledWidth, scaledHeight, g => { });
             _bodyDamage = new CachedBitmap(scaledWidth, scaledHeight, g => { });
+
+            UpdateSuspensionDamage();
+            UpdateBodyDamage();
         }
 
         public override void BeforeStop()
@@ -94,15 +98,18 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
 
             _suspensionDamage?.SetRenderer(g =>
             {
-                string text = "23.3";
-                SizeF textWidth = g.MeasureString(text, _font);
+                float suspensionDamageFrontLeft = Damage.GetSuspensionDamage(pagePhysics, ACCManager.Data.SetupConverter.Wheel.FrontLeft);
 
-                g.DrawStringWithShadow(text, _font, Brushes.White, new PointF(scaledWidth / 2 - textWidth.Width / 2, verticalPadding));
             });
         }
 
         private void UpdateBodyDamage()
         {
+
+            int scaledWidth = (int)(OriginalWidth * this.Scale);
+            int scaledHeight = (int)(OriginalHeight * this.Scale);
+            int horizontalPadding = (int)(scaledWidth * 0.1);
+            int verticalPadding = (int)(scaledHeight * 0.1);
             _bodyDamage?.SetRenderer(g =>
             {
                 float bodyDamageFront = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Front);
@@ -112,9 +119,25 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
                 float bodyDamageCentre = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Centre);
 
 
-                
+                DrawTextWithOutline(g, $"{bodyDamageFront:F2}", scaledWidth / 2, verticalPadding);
+                DrawTextWithOutline(g, $"{bodyDamageRear:F2}", scaledWidth / 2, scaledHeight - verticalPadding * 2);
+
+                DrawTextWithOutline(g, $"{bodyDamageLeft:F2}", horizontalPadding * 2, scaledHeight / 2);
+                DrawTextWithOutline(g, $"{bodyDamageRight:F2}", scaledWidth - horizontalPadding * 2, scaledHeight / 2);
+
+
+                string rear = $"{bodyDamageRear}";
 
             });
+        }
+
+        private void DrawTextWithOutline(Graphics g, string text, int x, int y)
+        {
+            int textWidth = (int)g.MeasureString(text, _font).Width;
+            Rectangle backgroundDimension = new Rectangle(x - textWidth / 2, y, (int)textWidth, _font.Height);
+            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 255, 255, 255)), backgroundDimension, 2);
+            g.DrawRoundedRectangle(new Pen(Color.White), backgroundDimension, 2);
+            g.DrawStringWithShadow(text, _font, Color.Black, new PointF(x - textWidth / 2, y));
         }
     }
 }
