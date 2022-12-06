@@ -6,16 +6,25 @@ using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.HUD.Overlay.Util;
 using System.IO;
+using ACC_Manager.Util.SystemExtensions;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
 {
     [Overlay(Name = "Damage", Version = 1.00, OverlayType = OverlayType.Release,
-        Description = "Shows relevant information about damage on your car.")]
+        Description = "Total repair time is displayed in red text.\nSuspension damage is displayed in percentages, whilst bodywork damage is displayed in repair time.")]
     internal sealed class DamageOverlay : AbstractOverlay
     {
         private readonly DamageConfiguration _config = new DamageConfiguration();
         private class DamageConfiguration : OverlayConfiguration
         {
+            [ConfigGrouping("Damage", "Changes the behavior of the Damage HUD")]
+            public DamageGrouping Damage { get; set; } = new DamageGrouping();
+            public class DamageGrouping
+            {
+                [ToolTip("Only show the HUD when there is actual damage on the car.")]
+                public bool AutoHide { get; set; } = false;
+            }
+
             public DamageConfiguration()
             {
                 AllowRescale = true;
@@ -47,12 +56,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
         private PathShape _shapeSuspensionRearLeft;
         private PathShape _shapeSuspensionRearRight;
 
-
         private float _damageTime = 0;
 
         public DamageOverlay(Rectangle rectangle) : base(rectangle, "Damage")
         {
-            this.RefreshRateHz = 2;
+            this.RefreshRateHz = 1;
 
             _font = FontUtil.FontUnispace(10 * this.Scale);
             this.Width = OriginalWidth;
@@ -60,6 +68,83 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
         }
 
         public override bool ShouldRender() => DefaultShouldRender();
+
+        public override void BeforeStart()
+        {
+            CreatePathShapes();
+
+            int scaledWidth = (int)(this.Width * this.Scale) - 1;
+            int scaledHeight = (int)(this.Height * this.Scale) - 1;
+            _carOutline = new CachedBitmap(scaledWidth, scaledHeight, g =>
+            {
+                GraphicsPath path = new GraphicsPath();
+
+                float horizontalPadding = scaledWidth * 0.05f;
+                float verticalPadding = scaledHeight * 0.025f;
+
+                Pen bodyOutlinePen = new Pen(new SolidBrush(Color.FromArgb(185, 255, 255, 255)), 0.8f * this.Scale);
+
+                float frontRearWidth = scaledWidth - horizontalPadding * 6;
+                g.FillRectangle(new SolidBrush(Color.FromArgb(125, 0, 0, 0)), new RectangleF(horizontalPadding + frontRearWidth / 7, verticalPadding * 3, frontRearWidth, scaledHeight - verticalPadding * 6));
+
+                g.FillPath(_shapeBodyFront.Brush, _shapeBodyFront.Path);
+                g.DrawPath(bodyOutlinePen, _shapeBodyFront.Path);
+
+                g.FillPath(_shapeBodyRear.Brush, _shapeBodyRear.Path);
+                g.DrawPath(bodyOutlinePen, _shapeBodyRear.Path);
+
+                g.FillPath(_shapeBodyLeft.Brush, _shapeBodyLeft.Path);
+                g.DrawPath(bodyOutlinePen, _shapeBodyLeft.Path);
+
+                g.FillPath(_shapeBodyRight.Brush, _shapeBodyRight.Path);
+                g.DrawPath(bodyOutlinePen, _shapeBodyRight.Path);
+
+                g.FillPath(_shapeSuspensionFrontLeft.Brush, _shapeSuspensionFrontLeft.Path);
+                g.DrawPath(bodyOutlinePen, _shapeSuspensionFrontLeft.Path);
+
+                g.FillPath(_shapeSuspensionFrontRight.Brush, _shapeSuspensionFrontRight.Path);
+                g.DrawPath(bodyOutlinePen, _shapeSuspensionFrontRight.Path);
+
+                g.FillPath(_shapeSuspensionRearLeft.Brush, _shapeSuspensionRearLeft.Path);
+                g.DrawPath(bodyOutlinePen, _shapeSuspensionRearLeft.Path);
+
+                g.FillPath(_shapeSuspensionRearRight.Brush, _shapeSuspensionRearRight.Path);
+                g.DrawPath(bodyOutlinePen, _shapeSuspensionRearRight.Path);
+            });
+
+            _suspensionDamage = new CachedBitmap(scaledWidth, scaledHeight, g => { });
+            _bodyDamage = new CachedBitmap(scaledWidth, scaledHeight, g => { });
+
+            UpdateShapeDamageColors();
+            UpdateSuspensionDamage();
+            UpdateBodyDamage();
+        }
+
+        public override void BeforeStop()
+        {
+            _carOutline?.Dispose();
+            _suspensionDamage?.Dispose();
+            _bodyDamage?.Dispose();
+        }
+
+        public override void Render(Graphics g)
+        {
+            float newDamageTime = Damage.GetTotalRepairTime(pagePhysics);
+            if (newDamageTime != _damageTime)
+            {
+                _damageTime = newDamageTime;
+                UpdateShapeDamageColors();
+                UpdateSuspensionDamage();
+                UpdateBodyDamage();
+            }
+
+            if (newDamageTime == 0 && _config.Damage.AutoHide)
+                return;
+
+            _carOutline?.Draw(g, 0, 0, OriginalWidth, OriginalHeight);
+            _suspensionDamage?.Draw(g, 0, 0, OriginalWidth, OriginalHeight);
+            _bodyDamage?.Draw(g, 0, 0, OriginalWidth, OriginalHeight);
+        }
 
         private void CreatePathShapes()
         {
@@ -79,7 +164,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
             _shapeBodyFront = new PathShape()
             {
                 Shape = bodyFront,
-                Brush = new LinearGradientBrush(bodyFront, Color.Red, Color.Transparent, LinearGradientMode.Vertical),
+                Brush = new LinearGradientBrush(bodyFront, baseColor, Color.Transparent, LinearGradientMode.Vertical),
                 Path = pathBodyFront
             };
 
@@ -134,7 +219,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
             _shapeSuspensionFrontLeft = new PathShape()
             {
                 Shape = wheelFrontLeft,
-                Brush = new LinearGradientBrush(wheelFrontLeft, Color.Red, Color.Transparent, LinearGradientMode.Horizontal),
+                Brush = new LinearGradientBrush(wheelFrontLeft, baseColor, Color.Transparent, LinearGradientMode.Horizontal),
                 Path = pathWheelFrontLeft,
             };
 
@@ -171,85 +256,46 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
                 Brush = new LinearGradientBrush(wheelRearRight, Color.Transparent, baseColor, LinearGradientMode.Horizontal),
                 Path = pathWheelRearRight,
             };
-
-
         }
 
-        public override void BeforeStart()
+        private void UpdateShapeDamageColors()
         {
-            CreatePathShapes();
+            Color baseColor = Color.FromArgb(185, 0, 0, 0);
 
-            int scaledWidth = (int)(this.Width * this.Scale) - 1;
-            int scaledHeight = (int)(this.Height * this.Scale) - 1;
-            _carOutline = new CachedBitmap(scaledWidth, scaledHeight, g =>
-            {
-                GraphicsPath path = new GraphicsPath();
+            /// BODY DAMAGE
+            /// 
+            float bodyDamageFront = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Front);
+            float bodyDamageRear = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Rear);
+            float bodyDamageLeft = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Left);
+            float bodyDamageRight = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Right);
+            _shapeBodyFront.Brush = new LinearGradientBrush(_shapeBodyFront.Shape, bodyDamageFront > 0 ? Color.Red : baseColor, Color.Transparent, LinearGradientMode.Vertical);
+            _shapeBodyRear.Brush = new LinearGradientBrush(_shapeBodyRear.Shape, Color.Transparent, bodyDamageRear > 0 ? Color.Red : baseColor, LinearGradientMode.Vertical);
+            _shapeBodyLeft.Brush = new LinearGradientBrush(_shapeBodyLeft.Shape, bodyDamageLeft > 0 ? Color.Red : baseColor, Color.Transparent, LinearGradientMode.Horizontal);
+            _shapeBodyRight.Brush = new LinearGradientBrush(_shapeBodyRight.Shape, Color.Transparent, bodyDamageRight > 0 ? Color.Red : baseColor, LinearGradientMode.Horizontal);
 
-                float horizontalPadding = scaledWidth * 0.05f;
-                float verticalPadding = scaledHeight * 0.025f;
+            /// SUSPENSION DAMAGE
+            /// 
+            float suspensionDamageFrontLeft = Damage.GetSuspensionDamage(pagePhysics, ACCManager.Data.SetupConverter.Wheel.FrontLeft);
+            float suspensionDamageFrontRight = Damage.GetSuspensionDamage(pagePhysics, ACCManager.Data.SetupConverter.Wheel.FrontRight);
+            float suspensionDamageRearLeft = Damage.GetSuspensionDamage(pagePhysics, ACCManager.Data.SetupConverter.Wheel.RearLeft);
+            float suspensionDamageRearRight = Damage.GetSuspensionDamage(pagePhysics, ACCManager.Data.SetupConverter.Wheel.RearRight);
 
-                Pen bodyOutlinePen = new Pen(new SolidBrush(Color.FromArgb(185, 255, 255, 255)), 0.8f * this.Scale);
+            _shapeSuspensionFrontLeft.Brush = new LinearGradientBrush(_shapeSuspensionFrontLeft.Shape, suspensionDamageFrontLeft > 0 ? Color.Red : baseColor, Color.Transparent, LinearGradientMode.Horizontal);
+            _shapeSuspensionFrontRight.Brush = new LinearGradientBrush(_shapeSuspensionFrontRight.Shape, Color.Transparent, suspensionDamageFrontRight > 0 ? Color.Red : baseColor, LinearGradientMode.Horizontal);
+            _shapeSuspensionRearLeft.Brush = new LinearGradientBrush(_shapeSuspensionRearLeft.Shape, suspensionDamageRearLeft > 0 ? Color.Red : baseColor, Color.Transparent, LinearGradientMode.Horizontal);
+            _shapeSuspensionRearRight.Brush = new LinearGradientBrush(_shapeSuspensionRearRight.Shape, Color.Transparent, suspensionDamageRearRight > 0 ? Color.Red : baseColor, LinearGradientMode.Horizontal);
 
-                g.FillPath(_shapeBodyFront.Brush, _shapeBodyFront.Path);
-                g.DrawPath(bodyOutlinePen, _shapeBodyFront.Path);
-
-                g.FillPath(_shapeBodyRear.Brush, _shapeBodyRear.Path);
-                g.DrawPath(bodyOutlinePen, _shapeBodyRear.Path);
-
-                g.FillPath(_shapeBodyLeft.Brush, _shapeBodyLeft.Path);
-                g.DrawPath(bodyOutlinePen, _shapeBodyLeft.Path);
-
-                g.FillPath(_shapeBodyRight.Brush, _shapeBodyRight.Path);
-                g.DrawPath(bodyOutlinePen, _shapeBodyRight.Path);
-
-                g.FillPath(_shapeSuspensionFrontLeft.Brush, _shapeSuspensionFrontLeft.Path);
-                g.DrawPath(bodyOutlinePen, _shapeSuspensionFrontLeft.Path);
-
-                g.FillPath(_shapeSuspensionFrontRight.Brush, _shapeSuspensionFrontRight.Path);
-                g.DrawPath(bodyOutlinePen, _shapeSuspensionFrontRight.Path);
-
-                g.FillPath(_shapeSuspensionRearLeft.Brush, _shapeSuspensionRearLeft.Path);
-                g.DrawPath(bodyOutlinePen, _shapeSuspensionRearLeft.Path);
-
-                g.FillPath(_shapeSuspensionRearRight.Brush, _shapeSuspensionRearRight.Path);
-                g.DrawPath(bodyOutlinePen, _shapeSuspensionRearRight.Path);
-            });
-
-            _suspensionDamage = new CachedBitmap(scaledWidth, scaledHeight, g => { });
-            _bodyDamage = new CachedBitmap(scaledWidth, scaledHeight, g => { });
-
-            UpdateSuspensionDamage();
-            UpdateBodyDamage();
-        }
-
-        public override void BeforeStop()
-        {
-            _carOutline?.Dispose();
-            _suspensionDamage?.Dispose();
-            _bodyDamage?.Dispose();
-        }
-
-        public override void Render(Graphics g)
-        {
-            float newDamageTime = Damage.GetTotalRepairTime(pagePhysics);
-            if (newDamageTime != _damageTime)
-            {
-                _damageTime = newDamageTime;
-                UpdateSuspensionDamage();
-                UpdateBodyDamage();
-            }
-
-            _carOutline?.Draw(g, 0, 0, OriginalWidth, OriginalHeight);
-            _suspensionDamage?.Draw(g, 0, 0, OriginalWidth, OriginalHeight);
-            _bodyDamage?.Draw(g, 0, 0, OriginalWidth, OriginalHeight);
+            // re-render car outline
+            _carOutline.Render();
         }
 
         private void UpdateSuspensionDamage()
         {
-            int scaledWidth = (int)(OriginalWidth * this.Scale);
-            int scaledHeight = (int)(OriginalHeight * this.Scale);
-            int horizontalPadding = (int)(scaledWidth * 0.1);
-            int verticalPadding = (int)(scaledHeight * 0.1);
+            float scaledWidth = (OriginalWidth * this.Scale) - 1;
+            float scaledHeight = (OriginalHeight * this.Scale) - 1;
+            float horizontalPadding = scaledWidth * 0.1f;
+            float verticalPadding = scaledHeight * 0.1f;
+            float halfFontHeight = _font.Height / 2f;
 
             _suspensionDamage?.SetRenderer(g =>
             {
@@ -259,26 +305,37 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
                 float suspensionDamageRearRight = Damage.GetSuspensionDamage(pagePhysics, ACCManager.Data.SetupConverter.Wheel.RearRight);
 
                 if (suspensionDamageFrontLeft > 0)
-                    DrawTextWithOutline(g, Color.Green, $"{suspensionDamageFrontLeft:F1}", horizontalPadding * 3, verticalPadding * 2);
+                    DrawTextWithOutline(g, Color.Black, $"{GetPercentage(suspensionDamageFrontLeft, 30):F0}%", (int)(horizontalPadding * 2.67f), (int)(verticalPadding * 1.9f - halfFontHeight));
 
                 if (suspensionDamageFrontRight > 0)
-                    DrawTextWithOutline(g, Color.Green, $"{suspensionDamageFrontRight:F1}", scaledWidth - horizontalPadding * 3, verticalPadding * 2);
+                    DrawTextWithOutline(g, Color.Black, $"{GetPercentage(suspensionDamageFrontRight, 30):F0}%", (int)(scaledWidth - horizontalPadding * 2.67f), (int)(verticalPadding * 1.9f - halfFontHeight));
 
                 if (suspensionDamageRearLeft > 0)
-                    DrawTextWithOutline(g, Color.Green, $"{suspensionDamageRearLeft:F1}", horizontalPadding * 3, scaledHeight - verticalPadding * 2);
+                    DrawTextWithOutline(g, Color.Black, $"{GetPercentage(suspensionDamageRearLeft, 30):F0}%", (int)(horizontalPadding * 2.67f), (int)(scaledHeight - verticalPadding * 2.1f));
 
                 if (suspensionDamageRearRight > 0)
-                    DrawTextWithOutline(g, Color.Green, $"{suspensionDamageRearRight:F1}", scaledWidth - horizontalPadding * 3, scaledHeight - verticalPadding * 2);
+                    DrawTextWithOutline(g, Color.Black, $"{GetPercentage(suspensionDamageRearRight, 30):F0}%", (int)(scaledWidth - horizontalPadding * 2.67f), (int)(scaledHeight - verticalPadding * 2.1f));
 
+                if (_damageTime > 0)
+                    DrawTextWithOutline(g, Color.Red, $"{_damageTime:F1}", (int)(scaledWidth / 2), (int)(scaledHeight / 2 - halfFontHeight));
             });
+        }
+
+        private float GetPercentage(float current, float max)
+        {
+            float percentage = 100f * current / max;
+            percentage.Clip(0, 100);
+            return percentage;
         }
 
         private void UpdateBodyDamage()
         {
-            int scaledWidth = (int)(OriginalWidth * this.Scale);
-            int scaledHeight = (int)(OriginalHeight * this.Scale);
-            int horizontalPadding = (int)(scaledWidth * 0.1);
-            int verticalPadding = (int)(scaledHeight * 0.1);
+            float scaledWidth = (OriginalWidth * this.Scale);
+            float scaledHeight = (OriginalHeight * this.Scale);
+            float horizontalPadding = scaledWidth * 0.1f;
+            float verticalPadding = scaledHeight * 0.1f;
+
+            float halfFontHeight = _font.Height / 2f;
             _bodyDamage?.SetRenderer(g =>
             {
                 float bodyDamageFront = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Front);
@@ -288,29 +345,26 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
                 float bodyDamageCentre = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Centre);
 
                 if (bodyDamageFront > 0)
-                    DrawTextWithOutline(g, Color.Black, $"{bodyDamageFront:F1}", scaledWidth / 2, verticalPadding / 2);
+                    DrawTextWithOutline(g, Color.Black, $"{bodyDamageFront:F1}", (int)(scaledWidth / 2), (int)(verticalPadding * 1.1f - halfFontHeight * 2));
 
                 if (bodyDamageRear > 0)
-                    DrawTextWithOutline(g, Color.Black, $"{bodyDamageRear:F1}", scaledWidth / 2, scaledHeight - verticalPadding * 1);
+                    DrawTextWithOutline(g, Color.Black, $"{bodyDamageRear:F1}", (int)(scaledWidth / 2), (int)(scaledHeight - verticalPadding * 0.9f - halfFontHeight));
 
                 if (bodyDamageLeft > 0)
-                    DrawTextWithOutline(g, Color.Black, $"{bodyDamageLeft:F1}", horizontalPadding * 2, scaledHeight / 2);
+                    DrawTextWithOutline(g, Color.Black, $"{bodyDamageLeft:F1}", (int)(horizontalPadding * 1.75f), (int)(scaledHeight / 2 - halfFontHeight));
 
                 if (bodyDamageRight > 0)
-                    DrawTextWithOutline(g, Color.Black, $"{bodyDamageRight:F1}", scaledWidth - horizontalPadding * 2, scaledHeight / 2);
+                    DrawTextWithOutline(g, Color.Black, $"{bodyDamageRight:F1}", (int)(scaledWidth - horizontalPadding * 1.75f), (int)(scaledHeight / 2 - halfFontHeight));
             });
         }
 
         private void DrawTextWithOutline(Graphics g, Color textColor, string text, int x, int y)
         {
-#if DEBUG
-            //return;
-#endif
             int textWidth = (int)g.MeasureString(text, _font).Width;
             Rectangle backgroundDimension = new Rectangle(x - textWidth / 2, y, (int)textWidth, _font.Height);
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 255, 255, 255)), backgroundDimension, 2);
             g.DrawRoundedRectangle(new Pen(Color.White), backgroundDimension, 2);
-            g.DrawStringWithShadow(text, _font, textColor, new PointF(x - textWidth / 2, y));
+            g.DrawStringWithShadow(text, _font, textColor, new PointF(x - textWidth / 2, y + _font.Height / 8));
         }
     }
 }

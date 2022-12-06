@@ -76,13 +76,13 @@ namespace ACCManager.Controls.HUD
                 return;
             }
 
-            overlay.pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
+            overlay.pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(false);
             overlay.pageGraphics.NumberOfLaps = 30;
             overlay.pageGraphics.FuelXLap = 3.012f;
             overlay.pageGraphics.SessionType = ACCSharedMemory.AcSessionType.AC_RACE;
             overlay.pageGraphics.MandatoryPitDone = false;
 
-            overlay.pagePhysics = ACCSharedMemory.Instance.ReadPhysicsPageFile(true);
+            overlay.pagePhysics = ACCSharedMemory.Instance.ReadPhysicsPageFile(false);
             overlay.pagePhysics.SpeedKmh = 272.32f;
             overlay.pagePhysics.Fuel = 92.07f;
             overlay.pagePhysics.Rpms = 8500;
@@ -95,8 +95,16 @@ namespace ACCManager.Controls.HUD
             overlay.pagePhysics.Brake = 0.133f;
 
             overlay.pagePhysics.CarDamage[0] = 20;
+            overlay.pagePhysics.CarDamage[1] = 20;
+            overlay.pagePhysics.CarDamage[2] = 35;
+            overlay.pagePhysics.CarDamage[3] = 20;
 
-            overlay.pageStatic = ACCSharedMemory.Instance.ReadStaticPageFile(true);
+            overlay.pagePhysics.SuspensionDamage[0] = 0.1f;
+            overlay.pagePhysics.SuspensionDamage[1] = 0.2f;
+            overlay.pagePhysics.SuspensionDamage[2] = 0.05f;
+            overlay.pagePhysics.SuspensionDamage[3] = 0.13f;
+
+            overlay.pageStatic = ACCSharedMemory.Instance.ReadStaticPageFile(false);
             overlay.pageStatic.MaxFuel = 120f;
             overlay.pageStatic.MaxRpm = 9250;
             overlay.pageStatic.CarModel = "porsche_991ii_gt3_r";
