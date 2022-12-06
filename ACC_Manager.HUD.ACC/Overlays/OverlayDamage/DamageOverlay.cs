@@ -11,7 +11,7 @@ using ACC_Manager.Util.SystemExtensions;
 namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
 {
     [Overlay(Name = "Damage", Version = 1.00, OverlayType = OverlayType.Release,
-        Description = "Total repair time is displayed in red text.\nSuspension damage is displayed in percentages, whilst bodywork damage is displayed in repair time.")]
+        Description = "Total repair time is displayed in the center.\nSuspension damage is displayed in percentages, whilst bodywork damage is displayed in repair time.")]
     internal sealed class DamageOverlay : AbstractOverlay
     {
         private readonly DamageConfiguration _config = new DamageConfiguration();
