@@ -5,6 +5,7 @@ using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.HUD.Overlay.Util;
+using System.IO;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
 {
@@ -21,6 +22,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
             }
         }
 
+        private class PathShape
+        {
+            public RectangleF Shape { get; set; }
+            public GraphicsPath Path { get; set; }
+            public Brush Brush { get; set; }
+        }
+
         private readonly Font _font;
         private const int OriginalWidth = 100;
         private const int OriginalHeight = 200;
@@ -28,6 +36,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
         private CachedBitmap _carOutline;
         private CachedBitmap _suspensionDamage;
         private CachedBitmap _bodyDamage;
+
+        private PathShape _shapeBodyFront;
+        private PathShape _shapeBodyRear;
+        private PathShape _shapeBodyLeft;
+        private PathShape _shapeBodyRight;
 
         private float _damageTime = 0;
 
@@ -42,57 +55,92 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
 
         public override bool ShouldRender() => DefaultShouldRender();
 
+        private void CreatePathShapes()
+        {
+            int scaledWidth = (int)(this.Width * this.Scale) - 1;
+            int scaledHeight = (int)(this.Height * this.Scale) - 1;
+            float horizontalPadding = scaledWidth * 0.05f;
+            float verticalPadding = scaledHeight * 0.025f;
+
+            Color baseColor = Color.FromArgb(185, 0, 0, 0);
+
+            // body shapes Front
+            RectangleF bodyFront = new RectangleF(horizontalPadding, verticalPadding, scaledWidth - horizontalPadding * 2, verticalPadding * 4);
+            GraphicsPath pathBodyFront = new GraphicsPath();
+            pathBodyFront.AddArc(bodyFront, 180, 180);
+            _shapeBodyFront = new PathShape()
+            {
+                Shape = bodyFront,
+                Brush = new LinearGradientBrush(bodyFront, baseColor, Color.Transparent, LinearGradientMode.Vertical),
+                Path = pathBodyFront
+            };
+
+            // body shape rear
+            RectangleF bodyRear = new RectangleF(horizontalPadding, scaledHeight - verticalPadding * 5, scaledWidth - horizontalPadding * 2, verticalPadding * 4);
+            GraphicsPath pathBodyRear = new GraphicsPath();
+            pathBodyRear.AddArc(bodyRear, 180, -180);
+            _shapeBodyRear = new PathShape()
+            {
+                Shape = bodyRear,
+                Brush = new LinearGradientBrush(bodyRear, Color.Transparent, baseColor, LinearGradientMode.Vertical),
+                Path = pathBodyRear,
+            };
+
+            // body shapes left and right
+            float bodyLeftRightWidth = horizontalPadding * 6;
+            float bodyLeftRightHeight = verticalPadding * 16;
+
+            // body shape left
+            RectangleF bodyLeft = new RectangleF(0 + horizontalPadding, scaledHeight / 2 - bodyLeftRightHeight / 2, bodyLeftRightWidth, bodyLeftRightHeight);
+            GraphicsPath pathBodyLeft = new GraphicsPath();
+            pathBodyLeft.AddArc(bodyLeft, 90, 180);
+            _shapeBodyLeft = new PathShape()
+            {
+                Shape = bodyLeft,
+                Brush = new LinearGradientBrush(bodyLeft, baseColor, Color.Transparent, LinearGradientMode.Horizontal),
+                Path = pathBodyLeft
+            };
+
+            // Body shape right
+            RectangleF bodyRight = new RectangleF(scaledWidth - bodyLeftRightWidth - horizontalPadding, scaledHeight / 2 - bodyLeftRightHeight / 2, bodyLeftRightWidth, bodyLeftRightHeight);
+            GraphicsPath pathBodyRight = new GraphicsPath();
+            pathBodyRight.AddArc(bodyRight, -90, 180);
+            _shapeBodyRight = new PathShape()
+            {
+                Shape = bodyRight,
+                Brush = new LinearGradientBrush(bodyRight, Color.Transparent, baseColor, LinearGradientMode.Horizontal),
+                Path = pathBodyRight
+            };
+        }
+
         public override void BeforeStart()
         {
-            int scaledWidth = (int)(this.Width * this.Scale);
-            int scaledHeight = (int)(this.Height * this.Scale);
+            CreatePathShapes();
+
+            int scaledWidth = (int)(this.Width * this.Scale) - 1;
+            int scaledHeight = (int)(this.Height * this.Scale) - 1;
             _carOutline = new CachedBitmap(scaledWidth, scaledHeight, g =>
             {
                 GraphicsPath path = new GraphicsPath();
-                LinearGradientBrush gradientBrush;
 
                 float horizontalPadding = scaledWidth * 0.05f;
                 float verticalPadding = scaledHeight * 0.025f;
 
-                // body shapes Front
-                RectangleF bodyFront = new RectangleF(horizontalPadding, verticalPadding, scaledWidth - horizontalPadding * 2, verticalPadding * 4);
-                path.AddArc(bodyFront, -180, 180);
-                gradientBrush = new LinearGradientBrush(bodyFront, Color.Red, Color.Transparent, LinearGradientMode.Vertical);
-                g.FillPath(gradientBrush, path);
+                Pen bodyOutlinePen = new Pen(Brushes.White, 1 * this.Scale);
 
+                g.FillPath(_shapeBodyFront.Brush, _shapeBodyFront.Path);
+                g.DrawPath(bodyOutlinePen, _shapeBodyFront.Path);
 
-                path.Reset();
+                g.FillPath(_shapeBodyRear.Brush, _shapeBodyRear.Path);
+                g.DrawPath(bodyOutlinePen, _shapeBodyRear.Path);
 
-                // body shape rear
-                RectangleF bodyRear = new RectangleF(horizontalPadding, scaledHeight - verticalPadding * 5, scaledWidth - horizontalPadding * 2, verticalPadding * 4);
-                path.AddArc(bodyRear, 180, -180);
-                gradientBrush = new LinearGradientBrush(bodyRear, Color.Transparent, Color.Red, LinearGradientMode.Vertical);
-                g.FillPath(gradientBrush, path);
+                g.FillPath(_shapeBodyLeft.Brush, _shapeBodyLeft.Path);
+                g.DrawPath(bodyOutlinePen, _shapeBodyLeft.Path);
 
+                g.FillPath(_shapeBodyRight.Brush, _shapeBodyRight.Path);
+                g.DrawPath(bodyOutlinePen, _shapeBodyRight.Path);
 
-                path.Reset();
-
-                float bodyLeftRightWidth = horizontalPadding * 6;
-                float bodyLeftRightHeight = verticalPadding * 16;
-
-                // Body shape left
-                RectangleF bodyLeft = new RectangleF(0, scaledHeight / 2 - bodyLeftRightHeight / 2, bodyLeftRightWidth, bodyLeftRightHeight);
-                path.AddArc(bodyLeft, 90, 180);
-                gradientBrush = new LinearGradientBrush(bodyLeft, Color.Red, Color.Transparent, LinearGradientMode.Horizontal);
-                g.FillPath(gradientBrush, path);
-
-
-                path.Reset();
-
-                // Body shape right
-                RectangleF bodyRight = new RectangleF(scaledWidth - bodyLeftRightWidth, scaledHeight / 2 - bodyLeftRightHeight / 2, bodyLeftRightWidth, bodyLeftRightHeight);
-                path.AddArc(bodyRight, -90, 180);
-                gradientBrush = new LinearGradientBrush(bodyRight, Color.Transparent, Color.Red, LinearGradientMode.Horizontal);
-                g.FillPath(gradientBrush, path);
-
-                path.Reset();
-
-                bool drawWheels = true;
+                bool drawWheels = false;
 
 
                 if (drawWheels)
@@ -228,6 +276,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
 
         private void DrawTextWithOutline(Graphics g, Color textColor, string text, int x, int y)
         {
+#if DEBUG
+            return;
+#endif
             int textWidth = (int)g.MeasureString(text, _font).Width;
             Rectangle backgroundDimension = new Rectangle(x - textWidth / 2, y, (int)textWidth, _font.Height);
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 255, 255, 255)), backgroundDimension, 2);
