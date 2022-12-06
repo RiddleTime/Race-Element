@@ -106,6 +106,7 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                                                 Laps[CurrentLap.Index - 1].FuelInTank = ACCSharedMemory.Instance.ReadPhysicsPageFile().Fuel;
                                                 Laps[CurrentLap.Index - 1].TempTrack = ACCSharedMemory.Instance.ReadPhysicsPageFile().RoadTemp;
                                                 Laps[CurrentLap.Index - 1].TempAmbient = ACCSharedMemory.Instance.ReadPhysicsPageFile().AirTemp;
+                                                Laps[CurrentLap.Index - 1].GripStatus = ACCSharedMemory.Instance.ReadGraphicsPageFile().trackGripStatus;
                                                 LapDataCollection.Insert(Laps[CurrentLap.Index - 1]);
 
                                                 Trace.WriteLine($"{Laps[CurrentLap.Index - 1]}");

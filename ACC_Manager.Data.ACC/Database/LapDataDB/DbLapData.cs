@@ -3,6 +3,7 @@ using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static ACCManager.ACCSharedMemory;
 
 namespace ACCManager.Data.ACC.Database.LapDataDB
 {
@@ -45,6 +46,7 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
 
         public float TempAmbient { get; set; } = -1;
         public float TempTrack { get; set; } = -1;
+        public AcTrackGripStatus GripStatus { get; set; } = AcTrackGripStatus.Optimum;
 
         public override string ToString()
         {

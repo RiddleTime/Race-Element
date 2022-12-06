@@ -377,6 +377,11 @@ namespace ACCManager.Controls
             });
             grid.Columns.Add(new DataGridTextColumn()
             {
+                Header = "Track",
+                Binding = new Binding("GripStatus") { }
+            });
+            grid.Columns.Add(new DataGridTextColumn()
+            {
                 Header = "°C Air",
                 Binding = new Binding("TempAmbient") { Converter = new FormattedFloatConverter(2) }
             });

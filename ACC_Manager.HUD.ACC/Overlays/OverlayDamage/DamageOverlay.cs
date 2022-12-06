@@ -51,11 +51,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
                 GraphicsPath path = new GraphicsPath();
                 LinearGradientBrush gradientBrush;
 
-                int horizontalPadding = (int)(scaledWidth * 0.05);
-                int verticalPadding = (int)(scaledHeight * 0.025);
+                float horizontalPadding = scaledWidth * 0.05f;
+                float verticalPadding = scaledHeight * 0.025f;
 
                 // body shapes Front
-                RectangleF bodyFront = new Rectangle(horizontalPadding, verticalPadding, scaledWidth - horizontalPadding * 2, verticalPadding * 4);
+                RectangleF bodyFront = new RectangleF(horizontalPadding, verticalPadding, scaledWidth - horizontalPadding * 2, verticalPadding * 4);
                 path.AddArc(bodyFront, -180, 180);
                 gradientBrush = new LinearGradientBrush(bodyFront, Color.Red, Color.Transparent, LinearGradientMode.Vertical);
                 g.FillPath(gradientBrush, path);
@@ -64,7 +64,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
                 path.Reset();
 
                 // body shape rear
-                RectangleF bodyRear = new Rectangle(horizontalPadding, scaledHeight - verticalPadding * 5, scaledWidth - horizontalPadding * 2, verticalPadding * 4);
+                RectangleF bodyRear = new RectangleF(horizontalPadding, scaledHeight - verticalPadding * 5, scaledWidth - horizontalPadding * 2, verticalPadding * 4);
                 path.AddArc(bodyRear, 180, -180);
                 gradientBrush = new LinearGradientBrush(bodyRear, Color.Transparent, Color.Red, LinearGradientMode.Vertical);
                 g.FillPath(gradientBrush, path);
@@ -72,8 +72,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
 
                 path.Reset();
 
-                int bodyLeftRightWidth = horizontalPadding * 6;
-                int bodyLeftRightHeight = verticalPadding * 16;
+                float bodyLeftRightWidth = horizontalPadding * 6;
+                float bodyLeftRightHeight = verticalPadding * 16;
 
                 // Body shape left
                 RectangleF bodyLeft = new RectangleF(0, scaledHeight / 2 - bodyLeftRightHeight / 2, bodyLeftRightWidth, bodyLeftRightHeight);
@@ -92,35 +92,62 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
 
                 path.Reset();
 
-
-                // add wheels
-                int wheelSize = verticalPadding * 7;
-
-                // wheel left front
-                RectangleF wheelFrontLeft = new RectangleF(0, wheelSize / 2, wheelSize, wheelSize);
-                path.AddEllipse(wheelFrontLeft);
-                g.FillPath(Brushes.OrangeRed, path);
-
-                path.Reset();
-
-                // wheel front right
-                RectangleF wheelFrontRight = new RectangleF(scaledWidth - wheelSize, wheelSize / 2, wheelSize, wheelSize);
-                path.AddEllipse(wheelFrontRight);
-                g.FillPath(Brushes.OrangeRed, path);
+                bool drawWheels = true;
 
 
-                // wheel left Rear
-                RectangleF wheelRearLeft = new RectangleF(0, scaledHeight - wheelSize * 1.5f, wheelSize, wheelSize);
-                path.AddEllipse(wheelRearLeft);
-                g.FillPath(Brushes.OrangeRed, path);
+                if (drawWheels)
+                {
+                    // add wheels
+                    float wheelSize = verticalPadding * 7f;
+                    PathGradientBrush pthGrBrush;
 
-                path.Reset();
 
-                // wheel right rear
-                RectangleF wheelRearRight = new RectangleF(scaledWidth - wheelSize, scaledHeight - wheelSize * 1.5f, wheelSize, wheelSize);
-                path.AddEllipse(wheelRearRight);
-                g.FillPath(Brushes.OrangeRed, path);
+                    // wheel left front
+                    RectangleF wheelFrontLeft = new RectangleF(0, wheelSize / 2, wheelSize, wheelSize);
+                    path.AddEllipse(wheelFrontLeft);
+                    pthGrBrush = new PathGradientBrush(path)
+                    {
+                        CenterColor = Color.FromArgb(40, 255, 0, 0),
+                        SurroundColors = new Color[] { Color.FromArgb(220, 255, 0, 0) }
+                    };
+                    g.FillPath(pthGrBrush, path);
 
+                    path.Reset();
+
+                    // wheel front right
+                    RectangleF wheelFrontRight = new RectangleF(scaledWidth - wheelSize, wheelSize / 2, wheelSize, wheelSize);
+                    path.AddEllipse(wheelFrontRight);
+                    pthGrBrush = new PathGradientBrush(path)
+                    {
+                        CenterColor = Color.FromArgb(40, 255, 0, 0),
+                        SurroundColors = new Color[] { Color.FromArgb(220, 255, 0, 0) }
+                    };
+                    g.FillPath(pthGrBrush, path);
+
+                    path.Reset();
+
+                    // wheel left Rear
+                    RectangleF wheelRearLeft = new RectangleF(0, scaledHeight - wheelSize * 1.5f, wheelSize, wheelSize);
+                    path.AddEllipse(wheelRearLeft);
+                    pthGrBrush = new PathGradientBrush(path)
+                    {
+                        CenterColor = Color.FromArgb(40, 255, 0, 0),
+                        SurroundColors = new Color[] { Color.FromArgb(220, 255, 0, 0) }
+                    };
+                    g.FillPath(pthGrBrush, path);
+
+                    path.Reset();
+
+                    // wheel right rear
+                    RectangleF wheelRearRight = new RectangleF(scaledWidth - wheelSize, scaledHeight - wheelSize * 1.5f, wheelSize, wheelSize);
+                    path.AddEllipse(wheelRearRight);
+                    pthGrBrush = new PathGradientBrush(path)
+                    {
+                        CenterColor = Color.FromArgb(40, 255, 0, 0),
+                        SurroundColors = new Color[] { Color.FromArgb(220, 255, 0, 0) }
+                    };
+                    g.FillPath(pthGrBrush, path);
+                }
 
 
             });
@@ -179,7 +206,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
 
         private void UpdateBodyDamage()
         {
-
             int scaledWidth = (int)(OriginalWidth * this.Scale);
             int scaledHeight = (int)(OriginalHeight * this.Scale);
             int horizontalPadding = (int)(scaledWidth * 0.1);
