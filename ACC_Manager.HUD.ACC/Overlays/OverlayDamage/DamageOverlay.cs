@@ -30,8 +30,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
         }
 
         private readonly Font _font;
-        private const int OriginalWidth = 100;
-        private const int OriginalHeight = 200;
+        private const int OriginalWidth = 150;
+        private const int OriginalHeight = 220;
 
         private CachedBitmap _carOutline;
         private CachedBitmap _suspensionDamage;
@@ -41,6 +41,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
         private PathShape _shapeBodyRear;
         private PathShape _shapeBodyLeft;
         private PathShape _shapeBodyRight;
+
+        private PathShape _shapeSuspensionFrontLeft;
+        private PathShape _shapeSuspensionFrontRight;
+        private PathShape _shapeSuspensionRearLeft;
+        private PathShape _shapeSuspensionRearRight;
+
 
         private float _damageTime = 0;
 
@@ -61,22 +67,24 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
             int scaledHeight = (int)(this.Height * this.Scale) - 1;
             float horizontalPadding = scaledWidth * 0.05f;
             float verticalPadding = scaledHeight * 0.025f;
-
             Color baseColor = Color.FromArgb(185, 0, 0, 0);
 
+
+            //// BODY DAMAGE
+            float frontRearWidth = scaledWidth - horizontalPadding * 6;
             // body shapes Front
-            RectangleF bodyFront = new RectangleF(horizontalPadding, verticalPadding, scaledWidth - horizontalPadding * 2, verticalPadding * 4);
+            RectangleF bodyFront = new RectangleF(horizontalPadding + frontRearWidth / 7, verticalPadding, frontRearWidth, verticalPadding * 4);
             GraphicsPath pathBodyFront = new GraphicsPath();
             pathBodyFront.AddArc(bodyFront, 180, 180);
             _shapeBodyFront = new PathShape()
             {
                 Shape = bodyFront,
-                Brush = new LinearGradientBrush(bodyFront, baseColor, Color.Transparent, LinearGradientMode.Vertical),
+                Brush = new LinearGradientBrush(bodyFront, Color.Red, Color.Transparent, LinearGradientMode.Vertical),
                 Path = pathBodyFront
             };
 
             // body shape rear
-            RectangleF bodyRear = new RectangleF(horizontalPadding, scaledHeight - verticalPadding * 5, scaledWidth - horizontalPadding * 2, verticalPadding * 4);
+            RectangleF bodyRear = new RectangleF(horizontalPadding + frontRearWidth / 7, scaledHeight - verticalPadding * 5, frontRearWidth, verticalPadding * 4);
             GraphicsPath pathBodyRear = new GraphicsPath();
             pathBodyRear.AddArc(bodyRear, 180, -180);
             _shapeBodyRear = new PathShape()
@@ -87,8 +95,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
             };
 
             // body shapes left and right
-            float bodyLeftRightWidth = horizontalPadding * 6;
-            float bodyLeftRightHeight = verticalPadding * 16;
+            float bodyLeftRightWidth = horizontalPadding * 4;
+            float bodyLeftRightHeight = verticalPadding * 34;
 
             // body shape left
             RectangleF bodyLeft = new RectangleF(0 + horizontalPadding, scaledHeight / 2 - bodyLeftRightHeight / 2, bodyLeftRightWidth, bodyLeftRightHeight);
@@ -111,6 +119,60 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
                 Brush = new LinearGradientBrush(bodyRight, Color.Transparent, baseColor, LinearGradientMode.Horizontal),
                 Path = pathBodyRight
             };
+
+
+            //// SUSPENSION DAMAGE
+            float wheelWidth = verticalPadding * 5f;
+            float wheelHeight = wheelWidth * 1.3f;
+            float verticalWheelPadding = verticalPadding * 4;
+
+            // wheel left front
+            RectangleF wheelFrontLeft = new RectangleF(bodyLeftRightWidth / 2 + horizontalPadding * 1.5f, verticalWheelPadding, wheelWidth, wheelHeight);
+            GraphicsPath pathWheelFrontLeft = new GraphicsPath();
+            pathWheelFrontLeft.AddRectangle(wheelFrontLeft);
+
+            _shapeSuspensionFrontLeft = new PathShape()
+            {
+                Shape = wheelFrontLeft,
+                Brush = new LinearGradientBrush(wheelFrontLeft, Color.Red, Color.Transparent, LinearGradientMode.Horizontal),
+                Path = pathWheelFrontLeft,
+            };
+
+            // wheel right front
+            RectangleF wheelFrontRight = new RectangleF(scaledWidth - (bodyLeftRightWidth / 2 + horizontalPadding * 1.5f + wheelWidth), verticalWheelPadding, wheelWidth, wheelHeight);
+            GraphicsPath pathWheelFrontRight = new GraphicsPath();
+            pathWheelFrontRight.AddRectangle(wheelFrontRight);
+            _shapeSuspensionFrontRight = new PathShape()
+            {
+                Shape = wheelFrontRight,
+                Brush = new LinearGradientBrush(wheelFrontRight, Color.Transparent, baseColor, LinearGradientMode.Horizontal),
+                Path = pathWheelFrontRight,
+            };
+
+
+            // wheel left Rear
+            RectangleF wheelRearLeft = new RectangleF(bodyLeftRightWidth / 2 + horizontalPadding * 1.5f, scaledHeight - verticalWheelPadding - wheelHeight, wheelWidth, wheelHeight);
+            GraphicsPath pathWheelRearLeft = new GraphicsPath();
+            pathWheelRearLeft.AddRectangle(wheelRearLeft);
+            _shapeSuspensionRearLeft = new PathShape()
+            {
+                Shape = wheelRearLeft,
+                Brush = new LinearGradientBrush(wheelRearLeft, baseColor, Color.Transparent, LinearGradientMode.Horizontal),
+                Path = pathWheelRearLeft,
+            };
+
+            // wheel right Rear
+            RectangleF wheelRearRight = new RectangleF(scaledWidth - (bodyLeftRightWidth / 2 + horizontalPadding * 1.5f + wheelWidth), scaledHeight - verticalWheelPadding - wheelHeight, wheelWidth, wheelHeight);
+            GraphicsPath pathWheelRearRight = new GraphicsPath();
+            pathWheelRearRight.AddRectangle(wheelRearRight);
+            _shapeSuspensionRearRight = new PathShape()
+            {
+                Shape = wheelRearRight,
+                Brush = new LinearGradientBrush(wheelRearRight, Color.Transparent, baseColor, LinearGradientMode.Horizontal),
+                Path = pathWheelRearRight,
+            };
+
+
         }
 
         public override void BeforeStart()
@@ -126,7 +188,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
                 float horizontalPadding = scaledWidth * 0.05f;
                 float verticalPadding = scaledHeight * 0.025f;
 
-                Pen bodyOutlinePen = new Pen(Brushes.White, 1 * this.Scale);
+                Pen bodyOutlinePen = new Pen(new SolidBrush(Color.FromArgb(185, 255, 255, 255)), 0.8f * this.Scale);
 
                 g.FillPath(_shapeBodyFront.Brush, _shapeBodyFront.Path);
                 g.DrawPath(bodyOutlinePen, _shapeBodyFront.Path);
@@ -140,64 +202,17 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
                 g.FillPath(_shapeBodyRight.Brush, _shapeBodyRight.Path);
                 g.DrawPath(bodyOutlinePen, _shapeBodyRight.Path);
 
-                bool drawWheels = false;
+                g.FillPath(_shapeSuspensionFrontLeft.Brush, _shapeSuspensionFrontLeft.Path);
+                g.DrawPath(bodyOutlinePen, _shapeSuspensionFrontLeft.Path);
 
+                g.FillPath(_shapeSuspensionFrontRight.Brush, _shapeSuspensionFrontRight.Path);
+                g.DrawPath(bodyOutlinePen, _shapeSuspensionFrontRight.Path);
 
-                if (drawWheels)
-                {
-                    // add wheels
-                    float wheelSize = verticalPadding * 7f;
-                    PathGradientBrush pthGrBrush;
+                g.FillPath(_shapeSuspensionRearLeft.Brush, _shapeSuspensionRearLeft.Path);
+                g.DrawPath(bodyOutlinePen, _shapeSuspensionRearLeft.Path);
 
-
-                    // wheel left front
-                    RectangleF wheelFrontLeft = new RectangleF(0, wheelSize / 2, wheelSize, wheelSize);
-                    path.AddEllipse(wheelFrontLeft);
-                    pthGrBrush = new PathGradientBrush(path)
-                    {
-                        CenterColor = Color.FromArgb(40, 255, 0, 0),
-                        SurroundColors = new Color[] { Color.FromArgb(220, 255, 0, 0) }
-                    };
-                    g.FillPath(pthGrBrush, path);
-
-                    path.Reset();
-
-                    // wheel front right
-                    RectangleF wheelFrontRight = new RectangleF(scaledWidth - wheelSize, wheelSize / 2, wheelSize, wheelSize);
-                    path.AddEllipse(wheelFrontRight);
-                    pthGrBrush = new PathGradientBrush(path)
-                    {
-                        CenterColor = Color.FromArgb(40, 255, 0, 0),
-                        SurroundColors = new Color[] { Color.FromArgb(220, 255, 0, 0) }
-                    };
-                    g.FillPath(pthGrBrush, path);
-
-                    path.Reset();
-
-                    // wheel left Rear
-                    RectangleF wheelRearLeft = new RectangleF(0, scaledHeight - wheelSize * 1.5f, wheelSize, wheelSize);
-                    path.AddEllipse(wheelRearLeft);
-                    pthGrBrush = new PathGradientBrush(path)
-                    {
-                        CenterColor = Color.FromArgb(40, 255, 0, 0),
-                        SurroundColors = new Color[] { Color.FromArgb(220, 255, 0, 0) }
-                    };
-                    g.FillPath(pthGrBrush, path);
-
-                    path.Reset();
-
-                    // wheel right rear
-                    RectangleF wheelRearRight = new RectangleF(scaledWidth - wheelSize, scaledHeight - wheelSize * 1.5f, wheelSize, wheelSize);
-                    path.AddEllipse(wheelRearRight);
-                    pthGrBrush = new PathGradientBrush(path)
-                    {
-                        CenterColor = Color.FromArgb(40, 255, 0, 0),
-                        SurroundColors = new Color[] { Color.FromArgb(220, 255, 0, 0) }
-                    };
-                    g.FillPath(pthGrBrush, path);
-                }
-
-
+                g.FillPath(_shapeSuspensionRearRight.Brush, _shapeSuspensionRearRight.Path);
+                g.DrawPath(bodyOutlinePen, _shapeSuspensionRearRight.Path);
             });
 
             _suspensionDamage = new CachedBitmap(scaledWidth, scaledHeight, g => { });
@@ -243,11 +258,17 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
                 float suspensionDamageRearLeft = Damage.GetSuspensionDamage(pagePhysics, ACCManager.Data.SetupConverter.Wheel.RearLeft);
                 float suspensionDamageRearRight = Damage.GetSuspensionDamage(pagePhysics, ACCManager.Data.SetupConverter.Wheel.RearRight);
 
-                DrawTextWithOutline(g, Color.Green, $"{suspensionDamageFrontLeft:F1}", horizontalPadding * 2, verticalPadding * 2);
-                DrawTextWithOutline(g, Color.Green, $"{suspensionDamageFrontRight:F1}", scaledWidth - horizontalPadding * 2, verticalPadding * 2);
+                if (suspensionDamageFrontLeft > 0)
+                    DrawTextWithOutline(g, Color.Green, $"{suspensionDamageFrontLeft:F1}", horizontalPadding * 3, verticalPadding * 2);
 
-                DrawTextWithOutline(g, Color.Green, $"{suspensionDamageRearLeft:F1}", horizontalPadding * 2, scaledHeight - verticalPadding * 2);
-                DrawTextWithOutline(g, Color.Green, $"{suspensionDamageRearRight:F1}", scaledWidth - horizontalPadding * 2, scaledHeight - verticalPadding * 2);
+                if (suspensionDamageFrontRight > 0)
+                    DrawTextWithOutline(g, Color.Green, $"{suspensionDamageFrontRight:F1}", scaledWidth - horizontalPadding * 3, verticalPadding * 2);
+
+                if (suspensionDamageRearLeft > 0)
+                    DrawTextWithOutline(g, Color.Green, $"{suspensionDamageRearLeft:F1}", horizontalPadding * 3, scaledHeight - verticalPadding * 2);
+
+                if (suspensionDamageRearRight > 0)
+                    DrawTextWithOutline(g, Color.Green, $"{suspensionDamageRearRight:F1}", scaledWidth - horizontalPadding * 3, scaledHeight - verticalPadding * 2);
 
             });
         }
@@ -266,18 +287,24 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
                 float bodyDamageRight = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Right);
                 float bodyDamageCentre = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Centre);
 
-                DrawTextWithOutline(g, Color.Black, $"{bodyDamageFront:F1}", scaledWidth / 2, verticalPadding / 2);
-                DrawTextWithOutline(g, Color.Black, $"{bodyDamageRear:F1}", scaledWidth / 2, scaledHeight - verticalPadding * 1);
+                if (bodyDamageFront > 0)
+                    DrawTextWithOutline(g, Color.Black, $"{bodyDamageFront:F1}", scaledWidth / 2, verticalPadding / 2);
 
-                DrawTextWithOutline(g, Color.Black, $"{bodyDamageLeft:F1}", horizontalPadding * 2, scaledHeight / 2);
-                DrawTextWithOutline(g, Color.Black, $"{bodyDamageRight:F1}", scaledWidth - horizontalPadding * 2, scaledHeight / 2);
+                if (bodyDamageRear > 0)
+                    DrawTextWithOutline(g, Color.Black, $"{bodyDamageRear:F1}", scaledWidth / 2, scaledHeight - verticalPadding * 1);
+
+                if (bodyDamageLeft > 0)
+                    DrawTextWithOutline(g, Color.Black, $"{bodyDamageLeft:F1}", horizontalPadding * 2, scaledHeight / 2);
+
+                if (bodyDamageRight > 0)
+                    DrawTextWithOutline(g, Color.Black, $"{bodyDamageRight:F1}", scaledWidth - horizontalPadding * 2, scaledHeight / 2);
             });
         }
 
         private void DrawTextWithOutline(Graphics g, Color textColor, string text, int x, int y)
         {
 #if DEBUG
-            return;
+            //return;
 #endif
             int textWidth = (int)g.MeasureString(text, _font).Width;
             Rectangle backgroundDimension = new Rectangle(x - textWidth / 2, y, (int)textWidth, _font.Height);

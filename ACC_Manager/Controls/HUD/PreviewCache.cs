@@ -94,6 +94,8 @@ namespace ACCManager.Controls.HUD
             overlay.pagePhysics.Gas = 0.78f;
             overlay.pagePhysics.Brake = 0.133f;
 
+            overlay.pagePhysics.CarDamage[0] = 20;
+
             overlay.pageStatic = ACCSharedMemory.Instance.ReadStaticPageFile(true);
             overlay.pageStatic.MaxFuel = 120f;
             overlay.pageStatic.MaxRpm = 9250;
