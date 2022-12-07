@@ -22,7 +22,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
             public class DamageGrouping
             {
                 [ToolTip("Displays the total repair time in the center of the HUD with red colored text.")]
-                public bool RepairTime { get; set; } = true;
+                public bool TotalRepairTime { get; set; } = true;
 
                 [ToolTip("Only show the HUD when there is actual damage on the car.")]
                 public bool AutoHide { get; set; } = false;
@@ -318,8 +318,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
                 if (suspensionDamageRearRight > 0)
                     DrawTextWithOutline(g, Color.Black, $"{GetPercentage(suspensionDamageRearRight, 30):F0}%", (int)(scaledWidth - horizontalPadding * 2.67f), (int)(scaledHeight - verticalPadding * 2.0f - halfFontHeight));
 
-                if (_damageTime > 0 && _config.Damage.RepairTime)
-                    DrawTextWithOutline(g, Color.Red, $"{_damageTime:F1}", (int)(scaledWidth / 2), (int)(scaledHeight / 2 - halfFontHeight));
+                if (_damageTime > 0 && _config.Damage.TotalRepairTime)
+                    DrawTextWithOutline(g, Color.OrangeRed, $"{_damageTime:F1}", (int)(scaledWidth / 2), (int)(scaledHeight / 2 - halfFontHeight));
             });
         }
 
