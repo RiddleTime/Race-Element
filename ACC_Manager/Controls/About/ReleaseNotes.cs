@@ -6,7 +6,7 @@ namespace ACCManager.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.1.2.3", "- Design of Damage HUD, blends in better. Increased Font Size." },
+            {"0.1.3.0", "- Design of Damage HUD, blends in better. Increased Font Size." },
             {"0.1.2.2", "- HUD: Added Damage HUD, displaying body damage in repair time and suspension damage in percentage."+
                         "\n- Added track condition to basic lap telemetry recording."},
             {"0.1.2.1", "- Reworked design of several HUDs."+
