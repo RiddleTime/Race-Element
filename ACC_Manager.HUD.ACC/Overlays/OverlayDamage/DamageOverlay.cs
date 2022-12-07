@@ -21,11 +21,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
             public DamageGrouping Damage { get; set; } = new DamageGrouping();
             public class DamageGrouping
             {
+                [ToolTip("Displays the total repair time in the center of the HUD with red colored text.")]
+                public bool RepairTime { get; set; } = true;
+
                 [ToolTip("Only show the HUD when there is actual damage on the car.")]
                 public bool AutoHide { get; set; } = false;
-
-                [ToolTip("Displays the total repair time in the center of the HUD.")]
-                public bool RepairTime { get; set; } = true;
             }
 
             public DamageConfiguration()
