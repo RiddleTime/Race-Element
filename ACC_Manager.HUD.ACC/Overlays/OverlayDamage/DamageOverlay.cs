@@ -23,6 +23,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
             {
                 [ToolTip("Only show the HUD when there is actual damage on the car.")]
                 public bool AutoHide { get; set; } = false;
+
+                [ToolTip("Displays the total repair time in the center of the HUD.")]
+                public bool RepairTime { get; set; } = true;
             }
 
             public DamageConfiguration()
@@ -62,7 +65,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
         {
             this.RefreshRateHz = 1;
 
-            _font = FontUtil.FontUnispace(10 * this.Scale);
+            _font = FontUtil.FontUnispace(11 * this.Scale);
             this.Width = OriginalWidth;
             this.Height = OriginalHeight;
         }
@@ -82,7 +85,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
                 float horizontalPadding = scaledWidth * 0.05f;
                 float verticalPadding = scaledHeight * 0.025f;
 
-                Pen bodyOutlinePen = new Pen(new SolidBrush(Color.FromArgb(185, 255, 255, 255)), 0.8f * this.Scale);
+                Pen bodyOutlinePen = new Pen(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), 0.8f * this.Scale);
 
                 float frontRearWidth = scaledWidth - horizontalPadding * 6;
                 g.FillRectangle(new SolidBrush(Color.FromArgb(125, 0, 0, 0)), new RectangleF(horizontalPadding + frontRearWidth / 7, verticalPadding * 3, frontRearWidth, scaledHeight - verticalPadding * 6));
@@ -157,6 +160,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
 
             //// BODY DAMAGE
             float frontRearWidth = scaledWidth - horizontalPadding * 6;
+
             // body shapes Front
             RectangleF bodyFront = new RectangleF(horizontalPadding + frontRearWidth / 7, verticalPadding, frontRearWidth, verticalPadding * 4);
             GraphicsPath pathBodyFront = new GraphicsPath();
@@ -208,14 +212,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
 
             //// SUSPENSION DAMAGE
             float wheelWidth = verticalPadding * 5f;
-            float wheelHeight = wheelWidth * 1.3f;
+            float wheelHeight = wheelWidth * 1.6f;
             float verticalWheelPadding = verticalPadding * 4;
 
             // wheel left front
             RectangleF wheelFrontLeft = new RectangleF(bodyLeftRightWidth / 2 + horizontalPadding * 1.5f, verticalWheelPadding, wheelWidth, wheelHeight);
             GraphicsPath pathWheelFrontLeft = new GraphicsPath();
             pathWheelFrontLeft.AddRectangle(wheelFrontLeft);
-
             _shapeSuspensionFrontLeft = new PathShape()
             {
                 Shape = wheelFrontLeft,
@@ -233,7 +236,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
                 Brush = new LinearGradientBrush(wheelFrontRight, Color.Transparent, baseColor, LinearGradientMode.Horizontal),
                 Path = pathWheelFrontRight,
             };
-
 
             // wheel left Rear
             RectangleF wheelRearLeft = new RectangleF(bodyLeftRightWidth / 2 + horizontalPadding * 1.5f, scaledHeight - verticalWheelPadding - wheelHeight, wheelWidth, wheelHeight);
@@ -305,18 +307,18 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
                 float suspensionDamageRearRight = Damage.GetSuspensionDamage(pagePhysics, ACCManager.Data.SetupConverter.Wheel.RearRight);
 
                 if (suspensionDamageFrontLeft > 0)
-                    DrawTextWithOutline(g, Color.Black, $"{GetPercentage(suspensionDamageFrontLeft, 30):F0}%", (int)(horizontalPadding * 2.67f), (int)(verticalPadding * 1.9f - halfFontHeight));
+                    DrawTextWithOutline(g, Color.Black, $"{GetPercentage(suspensionDamageFrontLeft, 30):F0}%", (int)(horizontalPadding * 2.67f), (int)(verticalPadding * 2.0f - halfFontHeight));
 
                 if (suspensionDamageFrontRight > 0)
-                    DrawTextWithOutline(g, Color.Black, $"{GetPercentage(suspensionDamageFrontRight, 30):F0}%", (int)(scaledWidth - horizontalPadding * 2.67f), (int)(verticalPadding * 1.9f - halfFontHeight));
+                    DrawTextWithOutline(g, Color.Black, $"{GetPercentage(suspensionDamageFrontRight, 30):F0}%", (int)(scaledWidth - horizontalPadding * 2.67f), (int)(verticalPadding * 2.0f - halfFontHeight));
 
                 if (suspensionDamageRearLeft > 0)
-                    DrawTextWithOutline(g, Color.Black, $"{GetPercentage(suspensionDamageRearLeft, 30):F0}%", (int)(horizontalPadding * 2.67f), (int)(scaledHeight - verticalPadding * 2.1f));
+                    DrawTextWithOutline(g, Color.Black, $"{GetPercentage(suspensionDamageRearLeft, 30):F0}%", (int)(horizontalPadding * 2.67f), (int)(scaledHeight - verticalPadding * 2.0f - halfFontHeight));
 
                 if (suspensionDamageRearRight > 0)
-                    DrawTextWithOutline(g, Color.Black, $"{GetPercentage(suspensionDamageRearRight, 30):F0}%", (int)(scaledWidth - horizontalPadding * 2.67f), (int)(scaledHeight - verticalPadding * 2.1f));
+                    DrawTextWithOutline(g, Color.Black, $"{GetPercentage(suspensionDamageRearRight, 30):F0}%", (int)(scaledWidth - horizontalPadding * 2.67f), (int)(scaledHeight - verticalPadding * 2.0f - halfFontHeight));
 
-                if (_damageTime > 0)
+                if (_damageTime > 0 && _config.Damage.RepairTime)
                     DrawTextWithOutline(g, Color.Red, $"{_damageTime:F1}", (int)(scaledWidth / 2), (int)(scaledHeight / 2 - halfFontHeight));
             });
         }
@@ -345,7 +347,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
                 float bodyDamageCentre = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Centre);
 
                 if (bodyDamageFront > 0)
-                    DrawTextWithOutline(g, Color.Black, $"{bodyDamageFront:F1}", (int)(scaledWidth / 2), (int)(verticalPadding * 1.1f - halfFontHeight * 2));
+                    DrawTextWithOutline(g, Color.Black, $"{bodyDamageFront:F1}", (int)(scaledWidth / 2), (int)(verticalPadding * 1.2f - halfFontHeight * 2));
 
                 if (bodyDamageRear > 0)
                     DrawTextWithOutline(g, Color.Black, $"{bodyDamageRear:F1}", (int)(scaledWidth / 2), (int)(scaledHeight - verticalPadding * 0.9f - halfFontHeight));
@@ -363,8 +365,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
             int textWidth = (int)g.MeasureString(text, _font).Width;
             Rectangle backgroundDimension = new Rectangle(x - textWidth / 2, y, (int)textWidth, _font.Height);
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 255, 255, 255)), backgroundDimension, 2);
-            g.DrawRoundedRectangle(new Pen(Color.White), backgroundDimension, 2);
-            g.DrawStringWithShadow(text, _font, textColor, new PointF(x - textWidth / 2, y + _font.Height / 8));
+            g.DrawRoundedRectangle(new Pen(Color.FromArgb(210, 0, 0, 0), 0.8f * this.Scale), backgroundDimension, 2);
+            g.DrawStringWithShadow(text, _font, textColor, new PointF(x - textWidth / 2, y + _font.GetHeight(g) / 11f), 0.75f * this.Scale);
         }
     }
 }

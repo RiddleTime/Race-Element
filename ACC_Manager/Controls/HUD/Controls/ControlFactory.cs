@@ -69,7 +69,7 @@ namespace ACCManager.Controls.HUD.Controls
                 Margin = new Thickness(0),
                 Padding = new Thickness(7, 0, 0, 0),
                 FontWeight = FontWeights.Normal,
-                FontSize = 15,
+                FontSize = 13.5,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Center,
             };
