@@ -5,7 +5,9 @@ using ACCManager.Data.ACC.Database.LapDataDB;
 using ACCManager.Data.ACC.Database.RaceWeekend;
 using ACCManager.Data.ACC.Database.SessionData;
 using ACCManager.Data.ACC.Database.Telemetry;
+using ACCManager.Data.ACC.HotKey;
 using ACCManager.Data.ACC.Tracker;
+using ACCManager.Util;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -37,6 +39,8 @@ namespace ACCManager.Data.ACC.Session
         public event EventHandler<DbRaceWeekend> OnRaceWeekendEnded;
 
         internal DbRaceSession CurrentSession { get; private set; }
+
+        private DateTime _lastReplaySave;
 
         private static RaceSessionTracker _instance;
 
@@ -99,6 +103,8 @@ namespace ACCManager.Data.ACC.Session
                 };
                 _sessionTimeLeft = ACCSharedMemory.Instance.ReadGraphicsPageFile(true).SessionTimeLeft;
 
+                _lastReplaySave = DateTime.UtcNow;
+
                 RaceSessionCollection.Insert(CurrentSession);
                 OnNewSessionStarted?.Invoke(this, CurrentSession);
 
@@ -149,6 +155,7 @@ namespace ACCManager.Data.ACC.Session
             new Thread(() =>
             {
                 BroadcastTracker.Instance.OnRealTimeUpdate += Instance_OnRealTimeUpdate;
+
 
                 while (_isTracking)
                 {
@@ -205,12 +212,21 @@ namespace ACCManager.Data.ACC.Session
                     if (sessionTypeChanged)
                         OnACSessionTypeChanged?.Invoke(this, _lastSessionType);
 
-
+                    HandleReplaySave();
                 }
 
                 BroadcastTracker.Instance.OnRealTimeUpdate -= Instance_OnRealTimeUpdate;
             }).Start();
 
+        }
+
+        private void HandleReplaySave()
+        {
+            if (_lastReplaySave.AddHours(1) > DateTime.UtcNow)
+            {
+                LogWriter.WriteToLog($"Automatically Saving Replay after {_lastReplaySave.Subtract(DateTime.UtcNow)}");
+                _lastReplaySave = AccHotkeys.SaveReplay();
+            }
         }
 
         private void Instance_OnRealTimeUpdate(object sender, Broadcast.Structs.RealtimeUpdate e)

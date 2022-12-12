@@ -100,6 +100,7 @@
     <Compile Include="EntryList\EntryListTracker.cs" />
     <Compile Include="EntryList\TrackPositionGraph\CarPosition.cs" />
     <Compile Include="EntryList\TrackPositionGraph\PositionGraph.cs" />
+    <Compile Include="HotKey\AccHotkeys.cs" />
     <Compile Include="Laps\LapTracker.cs" />
     <Compile Include="Session\RaceSessionTracker.cs" />
     <Compile Include="Session\RaceSessionState.cs" />
