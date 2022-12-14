@@ -181,12 +181,14 @@ namespace ACCManager.HUD.Overlay.Internal
                 Draw = true;
                 this.Show();
 
+
                 if (!RequestsDrawItself)
                 {
                     new Thread(x =>
                     {
                         double refreshRate = 1.0 / this.RefreshRateHz;
                         DateTime lastRefreshTime = DateTime.UtcNow;
+                        bool hasClosed = false;
 
                         while (Draw)
                         {
@@ -196,15 +198,27 @@ namespace ACCManager.HUD.Overlay.Internal
                             if (waitTime.Ticks > 0)
                                 Thread.Sleep(waitTime);
 
-                            lock (this)
+
+                            if (this == null || this._disposed)
                             {
-                                if (this == null || this._disposed)
+                                this.Stop();
+                                return;
+                            }
+
+                            if (ShouldRender())
+                            {
+                                if (hasClosed)
                                 {
-                                    this.Stop();
-                                    return;
+                                    this.Show();
+                                    hasClosed = false;
                                 }
 
                                 this.UpdateLayeredWindow();
+                            }
+                            else
+                            {
+                                this.Hide();
+                                hasClosed = true;
                             }
                         }
 
@@ -233,7 +247,6 @@ namespace ACCManager.HUD.Overlay.Internal
         public void RequestRedraw()
         {
             this.UpdateLayeredWindow();
-
         }
 
         private void PagePhysicsChanged(object sender, SPageFilePhysics e)

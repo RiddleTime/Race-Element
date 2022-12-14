@@ -221,6 +221,7 @@ namespace ACCManager.Controls
         {
             ThreadPool.QueueUserWorkItem(x =>
             {
+                Debug.WriteLine("Collecting garbage");
                 Thread.Sleep(10 * 1000);
                 GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
             });
@@ -463,9 +464,8 @@ namespace ACCManager.Controls
 
             foreach (KeyValuePair<string, Type> x in OverlaysACC.AbstractOverlays)
             {
-                object[] args = new object[] { new System.Drawing.Rectangle((int)SystemParameters.PrimaryScreenWidth / 2, (int)SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
 
-                AbstractOverlay tempAbstractOverlay = (AbstractOverlay)Activator.CreateInstance(x.Value, args);
+                AbstractOverlay tempAbstractOverlay = (AbstractOverlay)Activator.CreateInstance(x.Value, DefaultOverlayArgs);
                 var overlayAttribute = GetOverlayAttribute(x.Value);
                 OverlaySettingsJson tempOverlaySettings = OverlaySettings.LoadOverlaySettings(overlayAttribute.Name);
                 tempAbstractOverlay.Dispose();
@@ -495,9 +495,10 @@ namespace ACCManager.Controls
                         listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
                         listViewItem.BorderBrush = new SolidColorBrush(Colors.LimeGreen);
 
+                        // TODO
                         lock (OverlaysACC.ActiveOverlays)
                         {
-                            AbstractOverlay overlay = (AbstractOverlay)Activator.CreateInstance(x.Value, args);
+                            AbstractOverlay overlay = (AbstractOverlay)Activator.CreateInstance(x.Value, DefaultOverlayArgs);
 
                             overlay.Start();
 

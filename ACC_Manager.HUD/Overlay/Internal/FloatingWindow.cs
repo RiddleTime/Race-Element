@@ -58,6 +58,7 @@ namespace ACCManager.HUD.Overlay.Internal
         {
             this.UpdateLayeredWindow();
         }
+
         protected void UpdateLayeredWindow()
         {
             Bitmap bitmap1 = new Bitmap(this.Size.Width, this.Size.Height, PixelFormat.Format32bppPArgb);
