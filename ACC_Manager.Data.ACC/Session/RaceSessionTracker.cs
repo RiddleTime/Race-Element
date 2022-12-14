@@ -215,7 +215,7 @@ namespace ACCManager.Data.ACC.Session
                         if (sessionTypeChanged)
                             OnACSessionTypeChanged?.Invoke(this, _lastSessionType);
 
-                        HandleReplaySave();
+                        //HandleReplaySave();
 
                     }
                 }
