@@ -1,5 +1,6 @@
 ﻿using ACC_Manager.Util.Settings;
 using ACCManager.Broadcast.Structs;
+using ACCManager.Data.ACC.Core;
 using ACCManager.Data.ACC.Session;
 using ACCManager.Data.ACC.Tracker;
 using ACCManager.HUD.Overlay.Configuration;
@@ -74,6 +75,12 @@ namespace ACCManager.HUD.Overlay.Internal
             if (HudSettings.Cached.DemoMode)
                 return true;
 
+            if (IsRepositioning)
+                return true;
+
+            if (!AccProcess.IsRunning)
+                return false;
+
             bool shouldRender = true;
 
             if (pageGraphics != null)
@@ -93,8 +100,6 @@ namespace ACCManager.HUD.Overlay.Internal
                 if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE)
                     shouldRender = false;
             }
-
-            if (IsRepositioning) shouldRender = true;
 
             return shouldRender;
         }

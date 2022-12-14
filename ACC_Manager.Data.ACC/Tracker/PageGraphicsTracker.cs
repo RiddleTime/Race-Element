@@ -1,4 +1,5 @@
-﻿using ACCManager.Data.ACC.EntryList;
+﻿using ACCManager.Data.ACC.Core;
+using ACCManager.Data.ACC.EntryList;
 using ACCManager.Util;
 using System;
 using System.Diagnostics;
@@ -27,10 +28,10 @@ namespace ACCManager.Data.ACC.Tracker
         private bool isTracking = false;
 
         private readonly Task trackingTask;
-   
+
         private PageGraphicsTracker()
         {
-       
+
             isTracking = true;
 
             trackingTask = Task.Run(() =>
@@ -50,9 +51,38 @@ namespace ACCManager.Data.ACC.Tracker
                     {
                         Thread.Sleep(100);
 
-                        SPageFileGraphic sPageFileGraphic = ACCSharedMemory.Instance.ReadGraphicsPageFile();
+                        if (AccProcess.IsRunning)
+                        {
+                            SPageFileGraphic sPageFileGraphic = ACCSharedMemory.Instance.ReadGraphicsPageFile();
 
-                        if (sPageFileGraphic.Status == AcStatus.AC_OFF)
+                            if (sPageFileGraphic.Status == AcStatus.AC_OFF)
+                            {
+                                if (BroadcastTracker.Instance.IsConnected)
+                                {
+                                    BroadcastTracker.Instance.Disconnect();
+#if DEBUG
+                                    EntryListTracker.Instance.Stop();
+#endif
+                                }
+
+                                if (SetupHiderTracker.Instance.IsTracking)
+                                    SetupHiderTracker.Instance.Dispose();
+                            }
+                            else if (sPageFileGraphic.Status != AcStatus.AC_OFF)
+                            {
+                                if (!BroadcastTracker.Instance.IsConnected)
+                                {
+                                    BroadcastTracker.Instance.Connect();
+#if DEBUG
+                                    EntryListTracker.Instance.Start();
+#endif
+                                }
+
+                                if (!SetupHiderTracker.Instance.IsTracking)
+                                    SetupHiderTracker.Instance.StartTracker();
+                            }
+                        }
+                        else
                         {
                             if (BroadcastTracker.Instance.IsConnected)
                             {
@@ -61,22 +91,6 @@ namespace ACCManager.Data.ACC.Tracker
                                 EntryListTracker.Instance.Stop();
 #endif
                             }
-
-                            if (SetupHiderTracker.Instance.IsTracking)
-                                SetupHiderTracker.Instance.Dispose();
-                        }
-                        else if (sPageFileGraphic.Status != AcStatus.AC_OFF)
-                        {
-                            if (!BroadcastTracker.Instance.IsConnected)
-                            {
-                                BroadcastTracker.Instance.Connect();
-#if DEBUG
-                                EntryListTracker.Instance.Start();
-#endif
-                            }
-
-                            if (!SetupHiderTracker.Instance.IsTracking)
-                                SetupHiderTracker.Instance.StartTracker();
                         }
                     }
                     catch (Exception e)

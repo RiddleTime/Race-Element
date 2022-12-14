@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACCManager.Data.ACC.Core;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using static ACCManager.ACCSharedMemory;
@@ -34,9 +35,13 @@ namespace ACCManager.Data.ACC.Tracker
                 while (isTracking)
                 {
                     Thread.Sleep(1);
-                    SPageFileStatic next = ACCSharedMemory.Instance.ReadStaticPageFile();
-                    if (next != _last)
-                        Tracker?.Invoke(this, next);
+
+                    if (AccProcess.IsRunning)
+                    {
+                        SPageFileStatic next = ACCSharedMemory.Instance.ReadStaticPageFile();
+                        if (next != _last)
+                            Tracker?.Invoke(this, next);
+                    }
                 }
             });
 

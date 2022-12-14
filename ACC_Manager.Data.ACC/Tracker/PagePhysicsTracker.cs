@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACCManager.Data.ACC.Core;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using static ACCManager.ACCSharedMemory;
@@ -33,7 +34,9 @@ namespace ACCManager.Data.ACC.Tracker
                 while (isTracking)
                 {
                     Thread.Sleep(1);
-                    Tracker?.Invoke(this, ACCSharedMemory.Instance.ReadPhysicsPageFile());
+
+                    if (AccProcess.IsRunning)
+                        Tracker?.Invoke(this, ACCSharedMemory.Instance.ReadPhysicsPageFile());
                 }
             });
 
