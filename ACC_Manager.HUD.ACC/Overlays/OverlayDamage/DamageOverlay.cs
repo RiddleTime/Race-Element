@@ -25,7 +25,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
                 public bool TotalRepairTime { get; set; } = true;
 
                 [ToolTip("Only show the HUD when there is actual damage on the car.")]
-                public bool AutoHide { get; set; } = false;
+                public bool AutoHide { get; set; } = true;
             }
 
             public DamageConfiguration()

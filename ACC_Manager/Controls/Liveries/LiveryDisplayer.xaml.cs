@@ -110,7 +110,7 @@ namespace ACCManager.Controls
             buttonGenerateDDS.Visibility = Visibility.Hidden;
 
             this.Visibility = Visibility.Collapsed;
-            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
         }
 
         internal void SetLivery(LiveryTreeCar livery)
@@ -220,7 +220,7 @@ namespace ACCManager.Controls
                                 ThreadPool.QueueUserWorkItem(gc =>
                                 {
                                     Thread.Sleep(2 * 1000);
-                                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
                                 });
                             }
 
