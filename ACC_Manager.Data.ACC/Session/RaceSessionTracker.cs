@@ -227,7 +227,7 @@ namespace ACCManager.Data.ACC.Session
 
         private void HandleReplaySave()
         {
-            if (_lastReplaySave.AddHours(1) > DateTime.UtcNow)
+            if (_lastReplaySave.AddHours(1) < DateTime.UtcNow)
             {
                 LogWriter.WriteToLog($"Automatically Saving Replay after {_lastReplaySave.Subtract(DateTime.UtcNow)}");
                 _lastReplaySave = AccHotkeys.SaveReplay();

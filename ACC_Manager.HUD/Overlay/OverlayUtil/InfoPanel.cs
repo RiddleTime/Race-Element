@@ -47,7 +47,7 @@ namespace ACCManager.HUD.Overlay.Util
         {
             _cachedBackground = new CachedBitmap(MaxWidth, Lines.Count * (this.FontHeight + ExtraLineSpacing), g =>
             {
-                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(140, 0, 0, 0)), new Rectangle(X, Y, this.MaxWidth, Lines.Count * (this.FontHeight + ExtraLineSpacing)), 4);
+                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(138, 0, 0, 0)), new Rectangle(X, Y, this.MaxWidth, Lines.Count * (this.FontHeight + ExtraLineSpacing)), 4);
 
                 if (DrawValueBackground)
                 {
@@ -58,7 +58,7 @@ namespace ACCManager.HUD.Overlay.Util
                     int x = (int)(MaxTitleWidth + characterWidth);
                     int width = (int)(MaxWidth - MaxTitleWidth - characterWidth);
 
-                    g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(8, Color.White)), new Rectangle(x, y, width, height), 4);
+                    g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(198, Color.Black)), new Rectangle(x, y, width, height), 4);
                 }
             });
         }
