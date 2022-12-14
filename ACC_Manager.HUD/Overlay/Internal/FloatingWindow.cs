@@ -338,8 +338,12 @@ namespace ACCManager.HUD.Overlay.Internal
             if (AlwaysOnTop)
                 params1.ExStyle |= User32.WS_EX_TOPMOST;
 
-            this.CreateHandle(params1);
-            this.UpdateLayeredWindow();
+            try
+            {
+                this.CreateHandle(params1);
+                this.UpdateLayeredWindow();
+            }
+            catch (InvalidOperationException) { }
         }
         #endregion
 

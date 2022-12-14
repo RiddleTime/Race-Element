@@ -25,6 +25,9 @@ namespace ACCManager.Data.ACC.Core
         private class ProcessTracker : IDisposable
         {
             public bool IsRunning = false;
+
+            public event EventHandler<bool> IsRunningChanged;
+
             private Process _acc;
             public Process Process
             {
@@ -72,10 +75,13 @@ namespace ACCManager.Data.ACC.Core
                         if (processes != null)
                         {
                             IsRunning = true;
+                            IsRunningChanged?.Invoke(this, IsRunning);
+
                             _acc = processes;
                             _acc.Exited += (s, e) =>
                             {
                                 IsRunning = false;
+                                IsRunningChanged?.Invoke(this, IsRunning);
                                 _acc?.Dispose();
                                 _acc = null;
                             };
@@ -85,6 +91,7 @@ namespace ACCManager.Data.ACC.Core
                             _acc?.Dispose();
                             _acc = null;
                             IsRunning = false;
+                            IsRunningChanged?.Invoke(this, IsRunning);
                         }
                     }
 

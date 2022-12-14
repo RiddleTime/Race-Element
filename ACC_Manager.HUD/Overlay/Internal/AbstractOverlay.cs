@@ -144,6 +144,7 @@ namespace ACCManager.HUD.Overlay.Internal
             }
         }
 
+        bool hasClosed = false;
         public void Start(bool addTrackers = true)
         {
             try
@@ -180,15 +181,12 @@ namespace ACCManager.HUD.Overlay.Internal
 
                 Draw = true;
                 this.Show();
-
-
                 if (!RequestsDrawItself)
                 {
                     new Thread(x =>
                     {
                         double refreshRate = 1.0 / this.RefreshRateHz;
                         DateTime lastRefreshTime = DateTime.UtcNow;
-                        bool hasClosed = false;
 
                         while (Draw)
                         {
@@ -205,7 +203,7 @@ namespace ACCManager.HUD.Overlay.Internal
                                 return;
                             }
 
-                            if (ShouldRender())
+                            if (ShouldRender() || IsRepositioning)
                             {
                                 if (hasClosed)
                                 {
@@ -345,6 +343,12 @@ namespace ACCManager.HUD.Overlay.Internal
                     return;
 
                 this.IsRepositioning = enabled;
+                if (hasClosed)
+                {
+                    this.Show();
+                    hasClosed = false;
+                    this.UpdateLayeredWindow();
+                }
 
                 if (enabled)
                 {
