@@ -33,7 +33,7 @@ namespace ACCManager.Data.ACC.Tracker
                 isTracking = true;
                 while (isTracking)
                 {
-                    Thread.Sleep(1);
+                    Thread.Sleep(2);
 
                     if (AccProcess.IsRunning)
                         Tracker?.Invoke(this, ACCSharedMemory.Instance.ReadPhysicsPageFile());

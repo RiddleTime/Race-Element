@@ -42,7 +42,6 @@ namespace ACCManager.Data.ACC.Core
             public ProcessTracker(string name)
             {
                 _name = name;
-                Debug.WriteLine("created new processhandler");
                 FindProcess();
                 TrackProcess();
             }
@@ -67,24 +66,23 @@ namespace ACCManager.Data.ACC.Core
             {
                 if (_lastCheck.AddSeconds(3) < DateTime.UtcNow)
                 {
-                    Debug.WriteLine($"Finding process.... {_name}");
-
                     if (!IsRunning || _acc == null || _acc.HasExited)
                     {
-                        Process[] processes = Process.GetProcessesByName(_name);
-                        if (processes.Length != 0)
+                        Process processes = Process.GetProcesses().FirstOrDefault(x => x.ProcessName == _name);
+                        if (processes != null)
                         {
                             IsRunning = true;
-                            _acc = processes[0];
+                            _acc = processes;
                             _acc.Exited += (s, e) =>
                             {
-                                Debug.WriteLine("process exited");
                                 IsRunning = false;
+                                _acc?.Dispose();
                                 _acc = null;
                             };
                         }
                         else
                         {
+                            _acc?.Dispose();
                             _acc = null;
                             IsRunning = false;
                         }
@@ -96,6 +94,7 @@ namespace ACCManager.Data.ACC.Core
 
             public void Dispose()
             {
+                _acc?.Dispose();
                 _acc = null;
                 _shouldTrack = false;
             }

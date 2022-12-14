@@ -1,4 +1,5 @@
 ﻿using ACCManager.Broadcast.Structs;
+using ACCManager.Data.ACC.Core;
 using ACCManager.Data.ACC.Database.LapDataDB;
 using ACCManager.Data.ACC.Session;
 using ACCManager.Util;
@@ -137,55 +138,64 @@ namespace ACCManager.Data.ACC.Tracker.Laps
                 {
                     try
                     {
-                        Thread.Sleep(1000 / 10);
 
-                        var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
 
-                        if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF)
+                        if (AccProcess.IsRunning)
                         {
-                            Laps.Clear();
-                            CurrentLap = new DbLapData() { Index = pageGraphics.CompletedLaps + 1 };
-                        }
+                            Thread.Sleep(1000 / 10);
 
+                            var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
 
-                        // TOdo if current lap is inlap/outlap reset the lap data.
-
-                        // collect sector times.
-                        if (CurrentSector != pageGraphics.CurrentSectorIndex)
-                        {
-                            if (CurrentLap.Sector1 == -1 && CurrentSector != 0)
+                            if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF)
                             {
-                                // simply don't collect, we're already into a lap and passed sector 1, can't properly calculate the sector times now.
-                            }
-                            else
-                                switch (pageGraphics.CurrentSectorIndex)
-                                {
-                                    case 1: CurrentLap.Sector1 = pageGraphics.LastSectorTime; break;
-                                    case 2: CurrentLap.Sector2 = pageGraphics.LastSectorTime - CurrentLap.Sector1; break;
-
-                                        // this sector time is now finalized with the FinalizeCurrentLapData() function    
-                                        //case 0: CurrentLap.Sector3 = pageGraphics.LastTimeMs - CurrentLap.Sector2 - CurrentLap.Sector1; break;
-                                }
-
-                            CurrentSector = pageGraphics.CurrentSectorIndex;
-                        }
-
-                        // finalize lap time data and add it to history.
-                        if (CurrentLap.Index - 1 != pageGraphics.CompletedLaps && pageGraphics.LastTimeMs != int.MaxValue)
-                        {
-                            CurrentLap.Time = pageGraphics.LastTimeMs;
-                            CurrentLap.FuelUsage = (int)(ACCSharedMemory.Instance.ReadGraphicsPageFile().FuelXLap * 1000);
-
-                            if (CurrentLap.Sector1 != -1)
-                            {
-                                lock (Laps)
-                                {
-                                    if (!Laps.ContainsKey(CurrentLap.Index))
-                                        Laps.Add(CurrentLap.Index, CurrentLap);
-                                }
+                                Laps.Clear();
+                                CurrentLap = new DbLapData() { Index = pageGraphics.CompletedLaps + 1 };
                             }
 
-                            CurrentLap = new DbLapData() { Index = pageGraphics.CompletedLaps + 1 };
+
+                            // TOdo if current lap is inlap/outlap reset the lap data.
+
+                            // collect sector times.
+                            if (CurrentSector != pageGraphics.CurrentSectorIndex)
+                            {
+                                if (CurrentLap.Sector1 == -1 && CurrentSector != 0)
+                                {
+                                    // simply don't collect, we're already into a lap and passed sector 1, can't properly calculate the sector times now.
+                                }
+                                else
+                                    switch (pageGraphics.CurrentSectorIndex)
+                                    {
+                                        case 1: CurrentLap.Sector1 = pageGraphics.LastSectorTime; break;
+                                        case 2: CurrentLap.Sector2 = pageGraphics.LastSectorTime - CurrentLap.Sector1; break;
+
+                                            // this sector time is now finalized with the FinalizeCurrentLapData() function    
+                                            //case 0: CurrentLap.Sector3 = pageGraphics.LastTimeMs - CurrentLap.Sector2 - CurrentLap.Sector1; break;
+                                    }
+
+                                CurrentSector = pageGraphics.CurrentSectorIndex;
+                            }
+
+                            // finalize lap time data and add it to history.
+                            if (CurrentLap.Index - 1 != pageGraphics.CompletedLaps && pageGraphics.LastTimeMs != int.MaxValue)
+                            {
+                                CurrentLap.Time = pageGraphics.LastTimeMs;
+                                CurrentLap.FuelUsage = (int)(ACCSharedMemory.Instance.ReadGraphicsPageFile().FuelXLap * 1000);
+
+                                if (CurrentLap.Sector1 != -1)
+                                {
+                                    lock (Laps)
+                                    {
+                                        if (!Laps.ContainsKey(CurrentLap.Index))
+                                            Laps.Add(CurrentLap.Index, CurrentLap);
+                                    }
+                                }
+
+                                CurrentLap = new DbLapData() { Index = pageGraphics.CompletedLaps + 1 };
+                            }
+                        }
+                        else
+                        {
+                            Thread.Sleep(1000);
                         }
                     }
                     catch (Exception ex)

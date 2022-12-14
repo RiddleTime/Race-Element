@@ -38,7 +38,7 @@ namespace ACCManager.Data.ACC.Tracker
             {
                 while (isTracking)
                 {
-                    Thread.Sleep(1);
+                    Thread.Sleep(2);
                     Tracker?.Invoke(this, ACCSharedMemory.Instance.ReadGraphicsPageFile());
                 }
             });
@@ -53,7 +53,7 @@ namespace ACCManager.Data.ACC.Tracker
 
                         if (AccProcess.IsRunning)
                         {
-                            SPageFileGraphic sPageFileGraphic = ACCSharedMemory.Instance.ReadGraphicsPageFile();
+                            SPageFileGraphic sPageFileGraphic = ACCSharedMemory.Instance.ReadGraphicsPageFile(false);
 
                             if (sPageFileGraphic.Status == AcStatus.AC_OFF)
                             {

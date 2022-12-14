@@ -1,4 +1,5 @@
 ﻿using ACCManager.Broadcast;
+using ACCManager.Data.ACC.Core;
 using ACCManager.Data.ACC.Database;
 using ACCManager.Data.ACC.Database.GameData;
 using ACCManager.Data.ACC.Database.LapDataDB;
@@ -161,58 +162,62 @@ namespace ACCManager.Data.ACC.Session
                 {
                     Thread.Sleep(100);
 
-                    var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
-
-                    if (pageGraphics.Status != _lastAcStatus)
+                    if (AccProcess.IsRunning)
                     {
-                        Debug.WriteLine($"AcStatus: {_lastAcStatus} -> {pageGraphics.Status}");
+                        var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
 
-                        if (_lastAcStatus == AcStatus.AC_OFF)
-                            CreateNewRaceWeekend();
-
-                        _lastAcStatus = pageGraphics.Status;
-
-                        if (_lastAcStatus == AcStatus.AC_OFF)
+                        if (pageGraphics.Status != _lastAcStatus)
                         {
-                            FinalizeCurrentSession();
-                            FinalizeRaceWeekend();
-                            OnSessionIndexChanged?.Invoke(this, _lastSessionIndex);
+                            Debug.WriteLine($"AcStatus: {_lastAcStatus} -> {pageGraphics.Status}");
+
+                            if (_lastAcStatus == AcStatus.AC_OFF)
+                                CreateNewRaceWeekend();
+
+                            _lastAcStatus = pageGraphics.Status;
+
+                            if (_lastAcStatus == AcStatus.AC_OFF)
+                            {
+                                FinalizeCurrentSession();
+                                FinalizeRaceWeekend();
+                                OnSessionIndexChanged?.Invoke(this, _lastSessionIndex);
+                            }
+
+                            OnACStatusChanged?.Invoke(this, _lastAcStatus);
                         }
 
-                        OnACStatusChanged?.Invoke(this, _lastAcStatus);
+                        bool sessionIndexChanged = false;
+                        if (pageGraphics.SessionIndex != _lastSessionIndex && _lastAcStatus != AcStatus.AC_OFF)
+                        {
+                            Debug.WriteLine($"SessionIndex: {_lastSessionIndex} -> {pageGraphics.SessionIndex}");
+                            _lastSessionIndex = pageGraphics.SessionIndex;
+                            sessionIndexChanged = true;
+                        }
+
+                        bool sessionTypeChanged = false;
+                        if (pageGraphics.SessionType != _lastSessionType && _lastAcStatus != AcStatus.AC_OFF)
+                        {
+                            Debug.WriteLine($"SessionType: {_lastSessionType} -> {pageGraphics.SessionType}");
+                            _lastSessionType = pageGraphics.SessionType;
+                            sessionTypeChanged = true;
+                        }
+
+                        if (pageGraphics.SessionTimeLeft > _sessionTimeLeft)
+                        {
+                            if (CurrentSession == null)
+                                _sessionTimeLeft = pageGraphics.SessionTimeLeft;
+
+                            Debug.WriteLine("Detected session restart.. finalizing current session");
+                            FinalizeCurrentSession();
+                        }
+
+                        if (sessionIndexChanged)
+                            OnSessionIndexChanged?.Invoke(this, _lastSessionIndex);
+                        if (sessionTypeChanged)
+                            OnACSessionTypeChanged?.Invoke(this, _lastSessionType);
+
+                        HandleReplaySave();
+
                     }
-
-                    bool sessionIndexChanged = false;
-                    if (pageGraphics.SessionIndex != _lastSessionIndex && _lastAcStatus != AcStatus.AC_OFF)
-                    {
-                        Debug.WriteLine($"SessionIndex: {_lastSessionIndex} -> {pageGraphics.SessionIndex}");
-                        _lastSessionIndex = pageGraphics.SessionIndex;
-                        sessionIndexChanged = true;
-                    }
-
-                    bool sessionTypeChanged = false;
-                    if (pageGraphics.SessionType != _lastSessionType && _lastAcStatus != AcStatus.AC_OFF)
-                    {
-                        Debug.WriteLine($"SessionType: {_lastSessionType} -> {pageGraphics.SessionType}");
-                        _lastSessionType = pageGraphics.SessionType;
-                        sessionTypeChanged = true;
-                    }
-
-                    if (pageGraphics.SessionTimeLeft > _sessionTimeLeft)
-                    {
-                        if (CurrentSession == null)
-                            _sessionTimeLeft = pageGraphics.SessionTimeLeft;
-
-                        Debug.WriteLine("Detected session restart.. finalizing current session");
-                        FinalizeCurrentSession();
-                    }
-
-                    if (sessionIndexChanged)
-                        OnSessionIndexChanged?.Invoke(this, _lastSessionIndex);
-                    if (sessionTypeChanged)
-                        OnACSessionTypeChanged?.Invoke(this, _lastSessionType);
-
-                    HandleReplaySave();
                 }
 
                 BroadcastTracker.Instance.OnRealTimeUpdate -= Instance_OnRealTimeUpdate;
