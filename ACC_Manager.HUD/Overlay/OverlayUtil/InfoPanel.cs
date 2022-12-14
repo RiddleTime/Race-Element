@@ -51,9 +51,14 @@ namespace ACCManager.HUD.Overlay.Util
 
                 if (DrawValueBackground)
                 {
-                    int valueBackgroundY = Y + _font.Height * FirstRowLine;
-                    int valueBackgroundHeight = (Lines.Count - FirstRowLine) * (this.FontHeight + ExtraLineSpacing) + (int)_addMonoY - 2;
-                    g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(8, Color.White)), new Rectangle((int)MaxTitleWidth, valueBackgroundY, (int)(MaxWidth - MaxTitleWidth), valueBackgroundHeight), 4);
+                    int y = Y + _font.Height * FirstRowLine;
+                    int height = (Lines.Count - FirstRowLine) * (this.FontHeight + ExtraLineSpacing) + (int)_addMonoY - 2;
+
+                    int characterWidth = (int)g.MeasureString("M", _font).Width / 2;
+                    int x = (int)(MaxTitleWidth + characterWidth);
+                    int width = (int)(MaxWidth - MaxTitleWidth - characterWidth);
+
+                    g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(8, Color.White)), new Rectangle(x, y, width, height), 4);
                 }
             });
         }
