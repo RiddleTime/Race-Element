@@ -1,10 +1,14 @@
-﻿using System;
+﻿using ACCManager.HUD.Overlay.Configuration;
+using System;
 using System.Configuration;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using static ACCManager.HUD.Overlay.Configuration.OverlaySettings;
 using static ACCManager.HUD.Overlay.Internal.WindowStructs;
 
 namespace ACCManager.HUD.Overlay.Internal
@@ -14,6 +18,8 @@ namespace ACCManager.HUD.Overlay.Internal
         public string Name { get; internal set; }
         internal bool WindowMode { get; set; } = false;
         internal bool AlwaysOnTop { get; set; } = true;
+
+
 
         #region #  Enums  #
         public enum AnimateMode
@@ -47,9 +53,6 @@ namespace ACCManager.HUD.Overlay.Internal
         /// <param name="e">A <see cref="PaintEventArgs"/> containing the event data.</param>
         protected virtual void PerformPaint(PaintEventArgs e)
         {
-            using (LinearGradientBrush b = new LinearGradientBrush(this.Bound, Color.LightBlue, Color.DarkGoldenrod, 45f))
-                e.Graphics.FillRectangle(b, this.Bound);
-            e.Graphics.DrawString("Overide this PerformPaint method...", new Font(FontFamily.GenericSansSerif, 12f, FontStyle.Regular), new SolidBrush(Color.FromArgb(170, Color.Red)), new PointF(0f, 10f));
         }
         #endregion
 
@@ -61,6 +64,9 @@ namespace ACCManager.HUD.Overlay.Internal
 
         protected void UpdateLayeredWindow()
         {
+            if (base.Handle == IntPtr.Zero) //if handle don't equal to zero - window was created and just hided
+                this.CreateWindowOnly(GetExStyle());
+
             Bitmap bitmap1 = new Bitmap(this.Size.Width, this.Size.Height, PixelFormat.Format32bppPArgb);
             using (Graphics graphics1 = Graphics.FromImage(bitmap1))
             {
@@ -102,10 +108,23 @@ namespace ACCManager.HUD.Overlay.Internal
         /// </summary>
         public virtual void Show()
         {
-            if (base.Handle == IntPtr.Zero) //if handle don't equal to zero - window was created and just hided
-                this.CreateWindowOnly();
+            if (base.Handle == IntPtr.Zero)
+            {  //if handle don't equal to zero - window was created and just hided
+                Debug.WriteLine("Creating window only with normal style");
+                this.CreateWindowOnly(GetExStyle());
+            }
+
             User32.ShowWindow(base.Handle, User32.SW_SHOWNOACTIVATE);
         }
+
+          public virtual void SetDraggy(bool toggle)
+        {
+            if (toggle)
+                User32.SetWindowLong(base.Handle, -20, GetExStyleDrag());
+            else
+                User32.SetWindowLong(base.Handle, -20, GetExStyle());
+        }
+
         /// <summary>
         /// Shows the window.
         /// </summary>
@@ -159,7 +178,7 @@ namespace ACCManager.HUD.Overlay.Internal
                     break;
             }
             if (base.Handle == IntPtr.Zero)
-                this.CreateWindowOnly();
+                this.CreateWindowOnly(GetExStyle());
             if ((dwFlag & User32.AW_BLEND) != 0)
                 this.AnimateWithBlend(true, time);
             else
@@ -185,8 +204,9 @@ namespace ACCManager.HUD.Overlay.Internal
         {
             if (base.Handle == IntPtr.Zero)
                 return;
+
+            User32.SetWindowLong(base.Handle, -20, GetExStyle());
             User32.ShowWindow(base.Handle, User32.SW_HIDE);
-            this.DestroyHandle();
         }
         /// <summary>
         /// Hides the window with animation effect and release it's handle.
@@ -243,6 +263,7 @@ namespace ACCManager.HUD.Overlay.Internal
         /// </summary>
         public virtual void Close()
         {
+            this.DestroyHandle();
             this.Hide();
             this.Dispose();
         }
@@ -270,10 +291,8 @@ namespace ACCManager.HUD.Overlay.Internal
                 this.UpdateLayeredWindow();
         }
 
-        private void CreateWindowOnly()
+        private void CreateWindowOnly(int exStyle)
         {
-            CreateParams params1 = new CreateParams();
-            params1.Caption = Name;
             int nX = this._location.X;
             int nY = this._location.Y;
 
@@ -322,6 +341,8 @@ namespace ACCManager.HUD.Overlay.Internal
             this._location = new Point(nX, nY);
             Size size1 = this._size;
             Point point1 = this._location;
+            CreateParams params1 = new CreateParams();
+            params1.Caption = Name;
             params1.X = nX;
             params1.Y = nY;
             params1.Height = size1.Height;
@@ -329,14 +350,7 @@ namespace ACCManager.HUD.Overlay.Internal
             params1.Parent = IntPtr.Zero;
             uint ui = User32.WS_POPUP;
             params1.Style = (int)ui;
-
-            params1.ExStyle = User32.WS_EX_LAYERED | User32.WS_EX_TRANSPARENT;
-
-            if (!WindowMode)
-                params1.ExStyle |= User32.WS_EX_TOOLWINDOW;
-
-            if (AlwaysOnTop)
-                params1.ExStyle |= User32.WS_EX_TOPMOST;
+            params1.ExStyle = exStyle;
 
             try
             {
@@ -346,6 +360,26 @@ namespace ACCManager.HUD.Overlay.Internal
             catch (InvalidOperationException) { }
         }
         #endregion
+
+        public int GetExStyle()
+        {
+            int exStyle = User32.WS_EX_LAYERED | User32.WS_EX_TRANSPARENT;
+
+            if (!WindowMode)
+                exStyle |= User32.WS_EX_TOOLWINDOW;
+
+            if (AlwaysOnTop)
+                exStyle |= User32.WS_EX_TOPMOST;
+
+            return exStyle;
+        }
+
+        public int GetExStyleDrag()
+        {
+            int exStyle = User32.WS_EX_TRANSPARENT | User32.WS_EX_TOPMOST;
+            this.Alpha = 0;
+            return exStyle;
+        }
 
         #region == Other messages ==
         private void PerformWmPaint_WmPrintClient(ref Message m, bool isPaintMessage)
@@ -369,20 +403,316 @@ namespace ACCManager.HUD.Overlay.Internal
                 User32.EndPaint(m.HWnd, ref paintstruct1);
         }
 
+        private bool PerformWmNcHitTest(ref Message m)
+        {
+            POINT point1;
+            Point p = Control.MousePosition;
+            point1.x = p.X;
+            point1.y = p.Y;
+            point1 = this.MousePositionToClient(point1);
+
+            Rectangle rect = new Rectangle(Location, Size);
+            if (!rect.Contains(point1.x, point1.y))
+                return false;
+
+            m.Result = (IntPtr)(-1);
+            return true;
+        }
+
+
         protected override void WndProc(ref Message m)
         {
-            if (m.Msg == 15) // WM_PAINT
+            if (m.Msg <= 0x1c) // WM_PAINT
             {
-                this.PerformWmPaint_WmPrintClient(ref m, true);
-                return;
+                if (m.Msg == 15) // WM_PAINT
+                {
+                    this.PerformWmPaint_WmPrintClient(ref m, true);
+                    return;
+                }
             }
             else if (m.Msg == 0x318) // WM_PRINTCLIENT
             {
                 this.PerformWmPaint_WmPrintClient(ref m, false);
                 return;
             }
+            //Debug.WriteLine($"{m.Msg}");
+
+            switch (m.Msg)
+            {
+                //case 0x20: // WM_SETCURSOR
+                //    {
+                //        this.PerformWmSetCursor(ref m);
+                //        return;
+                //    }
+                case 0x21: // WM_MOUSEACTIVATE
+                    {
+                        this.PerformWmMouseActivate(ref m);
+                        return;
+                    }
+                case 0x84: // WM_NCHITTEST
+                    {
+                        if (!this.PerformWmNcHitTest(ref m))
+                        {
+                            base.WndProc(ref m);
+                        }
+                        return;
+                    }
+                case 0x200: // WM_MOUSEMOVE
+                    if (!this.isMouseIn)
+                    {
+                        this.OnMouseEnter();
+                        this.isMouseIn = true;
+
+                    }
+                    Point p6 = new Point(m.LParam.ToInt32());
+                    this.OnMouseMove(new MouseEventArgs(Control.MouseButtons, 1, p6.X, p6.X, 0));
+                    if (this.onMouseMove)
+                    {
+                        //Debug.WriteLine($"mouse is in {p6}");
+                        this.PerformWmMouseMove(ref m);
+                        this.onMouseMove = false;
+                    }
+                    break;
+                case 0x201: // WM_MOUSEDOWN
+                    {
+                        //Debug.WriteLine("mouse down");
+                        POINT point1;
+                        this.lastMouseDown = new Point(m.LParam.ToInt32());
+                        point1 = new POINT();
+                        point1.x = this.lastMouseDown.X;
+                        point1.y = this.lastMouseDown.Y;
+                        point1 = this.MousePositionToScreen(point1);
+                        deltaX = point1.x - this.Location.X;
+                        deltaY = point1.y - this.Location.Y;
+                        this.OnMouseDown(new MouseEventArgs(Control.MouseButtons, 1, lastMouseDown.X, lastMouseDown.Y, 0));
+                        if (this.onMouseDown)
+                        {
+                            this.PerformWmMouseDown(ref m);
+                            this.onMouseDown = false;
+                        }
+
+                        return;
+                    }
+                case 0x202: // WM_LBUTTONUP
+                    {
+                        Point p = new Point(m.LParam.ToInt32());
+                        this.OnMouseUp(new MouseEventArgs(Control.MouseButtons, 1, p.X, p.Y, 0));
+                        if (this.onMouseUp)
+                        {
+                            this.PerformWmMouseUp(ref m);
+                            this.onMouseUp = false;
+                        }
+                        return;
+                    }
+                case 0x02A3: // WM_MOUSELEAVE
+                    {
+                        if (this.isMouseIn)
+                        {
+                            this.OnMouseLeave();
+                            this.isMouseIn = false;
+                        }
+                        break;
+                    }
+            }
+
+
             base.WndProc(ref m);
         }
+        #endregion
+
+        #region == Mouse ==
+
+        private int deltaX;
+        private int deltaY;
+        private bool captured;
+        private bool isMouseIn;
+        private bool onMouseMove;
+        private bool onMouseDown;
+        private bool onMouseUp;
+
+        private Point lastMouseDown = Point.Empty;
+
+        private POINT MousePositionToClient(POINT point)
+        {
+            POINT point1;
+            point1.x = point.x;
+            point1.y = point.y;
+            User32.ScreenToClient(base.Handle, ref point1);
+            return point1;
+        }
+        private POINT MousePositionToScreen(MSG msg)
+        {
+            POINT point1;
+            point1.x = (short)(((int)msg.lParam) & 0xffff);
+            point1.y = (short)((((int)msg.lParam) & -65536) >> 0x10);
+            if ((((msg.message != 0xa2) && (msg.message != 0xa8)) && ((msg.message != 0xa5) && (msg.message != 0xac))) && (((msg.message != 0xa1) && (msg.message != 0xa7)) && ((msg.message != 0xa4) && (msg.message != 0xab))))
+            {
+                User32.ClientToScreen(msg.hwnd, ref point1);
+            }
+            return point1;
+        }
+        private POINT MousePositionToScreen(POINT point)
+        {
+            POINT point1;
+            point1.x = point.x;
+            point1.y = point.y;
+            User32.ClientToScreen(base.Handle, ref point1);
+            return point1;
+        }
+        private POINT MousePositionToScreen(Message msg)
+        {
+            POINT point1;
+            point1.x = (short)(((int)msg.LParam) & 0xffff);
+            point1.y = (short)((((int)msg.LParam) & -65536) >> 0x10);
+            if ((((msg.Msg != 0xa2) && (msg.Msg != 0xa8)) && ((msg.Msg != 0xa5) && (msg.Msg != 0xac))) && (((msg.Msg != 0xa1) && (msg.Msg != 0xa7)) && ((msg.Msg != 0xa4) && (msg.Msg != 0xab))))
+            {
+                User32.ClientToScreen(msg.HWnd, ref point1);
+            }
+            return point1;
+        }
+
+        private void PerformWmMouseDown(ref Message m)
+        {
+            if (!new Rectangle(Location, Size).Contains(this.lastMouseDown))
+            {
+                this.captured = true;
+                User32.SetCapture(base.Handle);
+            }
+        }
+        private void PerformWmMouseMove(ref Message m)
+        {
+            Point p = Control.MousePosition;
+            POINT point1 = new POINT();
+            point1.x = p.X;
+            point1.y = p.Y;
+            point1 = this.MousePositionToClient(point1);
+
+            if (/*this.resizing || */ new Rectangle(Location, Size).Contains(point1.x, point1.y))
+            {
+                Cursor.Current = Cursors.SizeNWSE;
+            }
+            else
+                Cursor.Current = Cursors.Arrow;
+            if (this.captured)
+            {
+
+                //if (this.resizing)
+                //{
+                //    int w = System.Math.Max(50, (p.X + deltaX) - this.Location.X);
+                //    int h = System.Math.Max(50, (p.Y + deltaY) - this.Location.Y);
+                //    this.Size = new Size(w, h);
+                //}
+                //else
+                //{
+                this.Location = new Point(p.X - deltaX, p.Y - deltaY);
+                //}
+            }
+        }
+        private void PerformWmMouseUp(ref Message m)
+        {
+            //this.resizing = false;
+            if (this.captured)
+            {
+                this.captured = false;
+                User32.ReleaseCapture();
+            }
+        }
+        private void PerformWmMouseActivate(ref Message m)
+        {
+            m.Result = (IntPtr)3;
+        }
+
+
+        protected virtual void OnMouseMove(MouseEventArgs e)
+        {
+            if (this.MouseMove != null)
+            {
+                this.MouseMove(this, e);
+            }
+            this.onMouseMove = true;
+        }
+        protected virtual void OnMouseDown(MouseEventArgs e)
+        {
+            if (this.MouseDown != null)
+            {
+                this.MouseDown(this, e);
+            }
+            this.onMouseDown = true;
+        }
+        protected virtual void OnMouseUp(MouseEventArgs e)
+        {
+            if (this.MouseUp != null)
+            {
+                this.MouseUp(this, e);
+            }
+            this.onMouseUp = true;
+        }
+
+        protected virtual void OnMouseEnter()
+        {
+            if (this.MouseEnter != null)
+            {
+                this.MouseEnter(this, EventArgs.Empty);
+            }
+        }
+        protected virtual void OnMouseLeave()
+        {
+            if (this.MouseLeave != null)
+            {
+                this.MouseLeave(this, EventArgs.Empty);
+            }
+        }
+
+        #endregion
+
+        #region #  Events  #
+
+        public event PaintEventHandler Paint;
+        public event EventHandler SizeChanged;
+        public event EventHandler LocationChanged;
+        public event EventHandler Move;
+        public event EventHandler Resize;
+        public event MouseEventHandler MouseDown;
+        public event MouseEventHandler MouseUp;
+        public event MouseEventHandler MouseMove;
+        public event EventHandler MouseEnter;
+        public event EventHandler MouseLeave;
+
+        #endregion
+
+        #region == Event Methods ==
+
+        protected virtual void OnLocationChanged(EventArgs e)
+        {
+            this.OnMove(EventArgs.Empty);
+            if (this.LocationChanged != null)
+            {
+                this.LocationChanged(this, e);
+            }
+        }
+        protected virtual void OnSizeChanged(EventArgs e)
+        {
+            this.OnResize(EventArgs.Empty);
+            if (this.SizeChanged != null)
+            {
+                this.SizeChanged(this, e);
+            }
+        }
+        protected virtual void OnMove(EventArgs e)
+        {
+            if (this.Move != null)
+            {
+                this.Move(this, e);
+            }
+        }
+        protected virtual void OnResize(EventArgs e)
+        {
+            if (this.Resize != null)
+            {
+                this.Resize(this, e);
+            }
+        }
+
         #endregion
 
         #region == Size and Location ==

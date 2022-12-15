@@ -16,6 +16,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Threading;
 using static ACCManager.ACCSharedMemory;
 using static ACCManager.HUD.Overlay.Configuration.OverlaySettings;
 
@@ -68,6 +69,9 @@ namespace ACCManager.HUD.Overlay.Internal
                 LoadFieldConfig();
             }
             catch (Exception) { }
+
+
+
         }
 
         public bool DefaultShouldRender()
@@ -205,7 +209,7 @@ namespace ACCManager.HUD.Overlay.Internal
 
                             if (ShouldRender() || IsRepositioning)
                             {
-                                if (hasClosed)
+                                if (hasClosed && !IsRepositioning)
                                 {
                                     this.Show();
                                     hasClosed = false;
@@ -215,8 +219,11 @@ namespace ACCManager.HUD.Overlay.Internal
                             }
                             else
                             {
-                                this.Hide();
-                                hasClosed = true;
+                                if (!hasClosed)
+                                {
+                                    this.Hide();
+                                    hasClosed = true;
+                                }
                             }
                         }
 
@@ -329,153 +336,43 @@ namespace ACCManager.HUD.Overlay.Internal
             }
         }
 
-
-        [DllImport("user32.dll")]
-        private static extern int SetWindowLong(IntPtr window, int index, int value);
-        [DllImport("user32.dll")]
-        private static extern int GetWindowLong(IntPtr window, int index);
-
         public void EnableReposition(bool enabled)
         {
-            try
+            //Debug.WriteLine($"{this.Name}: {this.IsRepositioning} -> {enabled}");
+
+            if (!AllowReposition)
+                return;
+
+            lock (this)
             {
-                if (!AllowReposition)
-                    return;
-
-                this.IsRepositioning = enabled;
-                if (hasClosed)
+                try
                 {
-                    this.Show();
-                    hasClosed = false;
-                    this.UpdateLayeredWindow();
-                }
+                    this.IsRepositioning = enabled;
 
-                if (enabled)
-                {
-                    if (this.RepositionWindow != null)
-                        return;
-
-                    System.Windows.Media.Brush brush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(60, 0, 0, 0));
-                    this.RepositionWindow = new Window()
+                    if (enabled)
                     {
-                        Width = this.Width,
-                        Height = this.Height,
-                        WindowStyle = WindowStyle.None,
-                        ResizeMode = ResizeMode.NoResize,
-                        Left = X,
-                        Top = Y,
-                        Title = this.Name,
-                        ToolTip = this.Name,
-                        Topmost = true,
-                        Background = brush,
-                        BorderBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(70, 255, 0, 0)),
-                        BorderThickness = new Thickness(2),
-                        ShowInTaskbar = false,
-                        AllowsTransparency = true,
-                        Opacity = 1,
-                        Cursor = System.Windows.Input.Cursors.None
-                    };
-
-
-                    this.RepositionWindow.MouseLeftButtonDown += (s, e) =>
-                    {
-                        if (this.RepositionWindow == null)
-                            return;
-                        this.RepositionWindow.BorderBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(70, 0, 255, 0));
-                        this.RepositionWindow.BorderThickness = new Thickness(3);
-                        this.RepositionWindow.DragMove();
-                    };
-
-                    this.RepositionWindow.LocationChanged += (s, e) =>
-                    {
-                        if (this.RepositionWindow == null)
-                            return;
-                        X = (int)this.RepositionWindow.Left;
-                        Y = (int)this.RepositionWindow.Top;
-                    };
-
-                    this.RepositionWindow.Deactivated += (s, e) =>
-                    {
-                        if (this.RepositionWindow == null)
-                            return;
-                        this.RepositionWindow.BorderBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(70, 255, 0, 0));
-                        this.RepositionWindow.BorderThickness = new Thickness(2);
-
-                    };
-
-                    this.RepositionWindow.KeyDown += (s, e) =>
-                    {
-                        if (this.RepositionWindow == null)
-                            return;
-                        this.RepositionWindow.BorderBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(70, 0, 255, 0));
-                        this.RepositionWindow.BorderThickness = new Thickness(3);
-                        switch (e.Key)
-                        {
-                            case System.Windows.Input.Key.Right:
-                                {
-                                    this.RepositionWindow.Left += 1;
-                                    break;
-                                }
-                            case System.Windows.Input.Key.Left:
-                                {
-                                    this.RepositionWindow.Left -= 1;
-                                    break;
-                                }
-
-                            case System.Windows.Input.Key.Up:
-                                {
-                                    this.RepositionWindow.Top -= 1;
-                                    break;
-                                }
-                            case System.Windows.Input.Key.Down:
-                                {
-                                    this.RepositionWindow.Top += 1;
-                                    break;
-                                }
-                            default: break;
-                        }
-
-                    };
-
-                    RepositionWindow.Show();
-                }
-                else
-                {
-                    if (this.RepositionWindow != null)
-                    {
-                        this.RepositionWindow.Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            try
-                            {
-                                if (this.RepositionWindow != null)
-                                {
-                                    this.RepositionWindow.ToolTip = null;
-                                    this.RepositionWindow.Hide();
-                                    this.RepositionWindow.Close();
-                                    this.RepositionWindow = null;
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Debug.WriteLine(ex);
-                                LogWriter.WriteToLog(ex);
-                            }
-                        }));
+                        if (this.hasClosed)
+                            this.Show();
+                        this.SetDraggy(true);
                     }
+                    else
+                    {
+                        OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(this.Name);
+                        if (settings == null)
+                            return;
+                        settings.X = X;
+                        settings.Y = Y;
 
-                    OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(this.Name);
-                    if (settings == null)
-                        return;
-                    settings.X = X;
-                    settings.Y = Y;
+                        OverlaySettings.SaveOverlaySettings(this.Name, settings);
 
-                    OverlaySettings.SaveOverlaySettings(this.Name, settings);
+                        this.SetDraggy(false);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-                LogWriter.WriteToLog(ex);
+                catch
+                (Exception e)
+                {
+                    Debug.WriteLine(e);
+                }
             }
         }
     }
