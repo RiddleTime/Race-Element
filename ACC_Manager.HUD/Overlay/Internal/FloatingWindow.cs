@@ -39,7 +39,7 @@ namespace ACCManager.HUD.Overlay.Internal
 
         #region #  Fields  #
         protected bool _disposed = false;
-        private byte _alpha = 255;
+        private byte _alpha = 0;
         private Size _size = new Size(250, 50);
         private Point _location = new Point(50, 50);
         #endregion
@@ -64,39 +64,43 @@ namespace ACCManager.HUD.Overlay.Internal
 
         protected void UpdateLayeredWindow()
         {
-            if (base.Handle == IntPtr.Zero) //if handle don't equal to zero - window was created and just hided
-                this.CreateWindowOnly(GetExStyle());
-
-            Bitmap bitmap1 = new Bitmap(this.Size.Width, this.Size.Height, PixelFormat.Format32bppPArgb);
-            using (Graphics graphics1 = Graphics.FromImage(bitmap1))
+            try
             {
-                Rectangle rectangle1;
-                SIZE size1;
-                POINT point1;
-                POINT point2;
-                BLENDFUNCTION blendfunction1;
-                rectangle1 = new Rectangle(0, 0, this.Size.Width, this.Size.Height);
-                this.PerformPaint(new PaintEventArgs(graphics1, rectangle1));
-                IntPtr ptr1 = User32.GetDC(IntPtr.Zero);
-                IntPtr ptr2 = Gdi32.CreateCompatibleDC(ptr1);
-                IntPtr ptr3 = bitmap1.GetHbitmap(Color.FromArgb(0));
-                IntPtr ptr4 = Gdi32.SelectObject(ptr2, ptr3);
-                size1.cx = this.Size.Width;
-                size1.cy = this.Size.Height;
-                point1.x = this.Location.X;
-                point1.y = this.Location.Y;
-                point2.x = 0;
-                point2.y = 0;
-                blendfunction1 = new BLENDFUNCTION();
-                blendfunction1.BlendOp = 0;
-                blendfunction1.BlendFlags = 0;
-                blendfunction1.SourceConstantAlpha = this._alpha;
-                blendfunction1.AlphaFormat = 1;
-                User32.UpdateLayeredWindow(base.Handle, ptr1, ref point1, ref size1, ptr2, ref point2, 0, ref blendfunction1, 2); //2=ULW_ALPHA
-                Gdi32.SelectObject(ptr2, ptr4);
-                User32.ReleaseDC(IntPtr.Zero, ptr1);
-                Gdi32.DeleteObject(ptr3);
-                Gdi32.DeleteDC(ptr2);
+                Bitmap bitmap1 = new Bitmap(this.Size.Width, this.Size.Height, PixelFormat.Format32bppPArgb);
+                using (Graphics graphics1 = Graphics.FromImage(bitmap1))
+                {
+                    Rectangle rectangle1;
+                    SIZE size1;
+                    POINT point1;
+                    POINT point2;
+                    BLENDFUNCTION blendfunction1;
+                    rectangle1 = new Rectangle(0, 0, this.Size.Width, this.Size.Height);
+                    this.PerformPaint(new PaintEventArgs(graphics1, rectangle1));
+                    IntPtr ptr1 = User32.GetDC(IntPtr.Zero);
+                    IntPtr ptr2 = Gdi32.CreateCompatibleDC(ptr1);
+                    IntPtr ptr3 = bitmap1.GetHbitmap(Color.FromArgb(0));
+                    IntPtr ptr4 = Gdi32.SelectObject(ptr2, ptr3);
+                    size1.cx = this.Size.Width;
+                    size1.cy = this.Size.Height;
+                    point1.x = this.Location.X;
+                    point1.y = this.Location.Y;
+                    point2.x = 0;
+                    point2.y = 0;
+                    blendfunction1 = new BLENDFUNCTION();
+                    blendfunction1.BlendOp = 0;
+                    blendfunction1.BlendFlags = 0;
+                    blendfunction1.SourceConstantAlpha = this._alpha;
+                    blendfunction1.AlphaFormat = 1;
+                    User32.UpdateLayeredWindow(base.Handle, ptr1, ref point1, ref size1, ptr2, ref point2, 0, ref blendfunction1, 2); //2=ULW_ALPHA
+                    Gdi32.SelectObject(ptr2, ptr4);
+                    User32.ReleaseDC(IntPtr.Zero, ptr1);
+                    Gdi32.DeleteObject(ptr3);
+                    Gdi32.DeleteDC(ptr2);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
             }
         }
 
@@ -108,6 +112,7 @@ namespace ACCManager.HUD.Overlay.Internal
         /// </summary>
         public virtual void Show()
         {
+            Debug.WriteLine("base handle: " + base.Handle);
             if (base.Handle == IntPtr.Zero)
             {  //if handle don't equal to zero - window was created and just hided
                 Debug.WriteLine("Creating window only with normal style");
@@ -115,14 +120,31 @@ namespace ACCManager.HUD.Overlay.Internal
             }
 
             User32.ShowWindow(base.Handle, User32.SW_SHOWNOACTIVATE);
+            Debug.WriteLine("Showing window");
+            //SetBoundsCore(X, Y, Width, Height);
         }
 
-          public virtual void SetDraggy(bool toggle)
+        public virtual void SetDraggy(bool toggle)
         {
+            if (base.Handle == IntPtr.Zero)
+            {  //if handle don't equal to zero - window was created and just hided
+                Debug.WriteLine($"Creating window only with draggy style: {toggle}");
+                this.CreateWindowOnly(toggle ? GetExStyleDrag() : GetExStyle());
+            }
+
+            Debug.WriteLine($"Settings Draggy style: {toggle}");
+
+            Debug.WriteLine("Current style" + User32.GetWindowLong(this.Handle, -20));
+            Debug.WriteLine("Drag style " + GetExStyleDrag());
+            Debug.WriteLine("Normal style" + GetExStyle());
+
             if (toggle)
-                User32.SetWindowLong(base.Handle, -20, GetExStyleDrag());
+                User32.SetWindowLong(base.Handle, -20, (uint)GetExStyleDrag());
             else
-                User32.SetWindowLong(base.Handle, -20, GetExStyle());
+                User32.SetWindowLong(base.Handle, -20, (uint)GetExStyle());
+
+            //SetBoundsCore(X, Y, Width, Height);
+            User32.ShowWindow(base.Handle, User32.SW_SHOWNOACTIVATE);
         }
 
         /// <summary>
@@ -205,7 +227,7 @@ namespace ACCManager.HUD.Overlay.Internal
             if (base.Handle == IntPtr.Zero)
                 return;
 
-            User32.SetWindowLong(base.Handle, -20, GetExStyle());
+            Debug.WriteLine("Hiding Window");
             User32.ShowWindow(base.Handle, User32.SW_HIDE);
         }
         /// <summary>
@@ -350,7 +372,7 @@ namespace ACCManager.HUD.Overlay.Internal
             params1.Parent = IntPtr.Zero;
             uint ui = User32.WS_POPUP;
             params1.Style = (int)ui;
-            params1.ExStyle = exStyle;
+            params1.ExStyle = (int)exStyle;
 
             try
             {
@@ -363,7 +385,7 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public int GetExStyle()
         {
-            int exStyle = User32.WS_EX_LAYERED | User32.WS_EX_TRANSPARENT;
+            int exStyle = User32.WS_EX_LAYERED | User32.WS_EX_TRANSPARENT | User32.WS_EX_NOACTIVATE;
 
             if (!WindowMode)
                 exStyle |= User32.WS_EX_TOOLWINDOW;
@@ -376,14 +398,14 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public int GetExStyleDrag()
         {
-            int exStyle = User32.WS_EX_TRANSPARENT | User32.WS_EX_TOPMOST;
-            this.Alpha = 0;
+            int exStyle = User32.WS_EX_TRANSPARENT | User32.WS_EX_TOPMOST | User32.WS_EX_NOACTIVATE | 0x00020000;
             return exStyle;
         }
 
         #region == Other messages ==
         private void PerformWmPaint_WmPrintClient(ref Message m, bool isPaintMessage)
         {
+            try { 
             PAINTSTRUCT paintstruct1;
             RECT rect1;
             Rectangle rectangle1;
@@ -401,6 +423,10 @@ namespace ACCManager.HUD.Overlay.Internal
             }
             if (isPaintMessage)
                 User32.EndPaint(m.HWnd, ref paintstruct1);
+            }catch(Exception e)
+            {
+                Debug.WriteLine(e);
+            }
         }
 
         private bool PerformWmNcHitTest(ref Message m)
@@ -422,20 +448,18 @@ namespace ACCManager.HUD.Overlay.Internal
 
         protected override void WndProc(ref Message m)
         {
-            if (m.Msg <= 0x1c) // WM_PAINT
+
+            if (m.Msg == 15) // WM_PAINT
             {
-                if (m.Msg == 15) // WM_PAINT
-                {
-                    this.PerformWmPaint_WmPrintClient(ref m, true);
-                    return;
-                }
+                this.PerformWmPaint_WmPrintClient(ref m, true);
+                return;
             }
+
             else if (m.Msg == 0x318) // WM_PRINTCLIENT
             {
                 this.PerformWmPaint_WmPrintClient(ref m, false);
                 return;
             }
-            //Debug.WriteLine($"{m.Msg}");
 
             switch (m.Msg)
             {
@@ -451,6 +475,7 @@ namespace ACCManager.HUD.Overlay.Internal
                     }
                 case 0x84: // WM_NCHITTEST
                     {
+                        //Debug.WriteLine("WM_NCHITTEST");
                         if (!this.PerformWmNcHitTest(ref m))
                         {
                             base.WndProc(ref m);
@@ -458,6 +483,8 @@ namespace ACCManager.HUD.Overlay.Internal
                         return;
                     }
                 case 0x200: // WM_MOUSEMOVE
+                    //Debug.WriteLine("WM_MOUSEMOVE");
+
                     if (!this.isMouseIn)
                     {
                         this.OnMouseEnter();
@@ -475,7 +502,7 @@ namespace ACCManager.HUD.Overlay.Internal
                     break;
                 case 0x201: // WM_MOUSEDOWN
                     {
-                        //Debug.WriteLine("mouse down");
+                        //Debug.WriteLine("WM_MOUSEDOWN");
                         POINT point1;
                         this.lastMouseDown = new Point(m.LParam.ToInt32());
                         point1 = new POINT();
@@ -495,6 +522,7 @@ namespace ACCManager.HUD.Overlay.Internal
                     }
                 case 0x202: // WM_LBUTTONUP
                     {
+                        //Debug.WriteLine("WM_LBUTTONUP");
                         Point p = new Point(m.LParam.ToInt32());
                         this.OnMouseUp(new MouseEventArgs(Control.MouseButtons, 1, p.X, p.Y, 0));
                         if (this.onMouseUp)
@@ -506,6 +534,7 @@ namespace ACCManager.HUD.Overlay.Internal
                     }
                 case 0x02A3: // WM_MOUSELEAVE
                     {
+                        //Debug.WriteLine("WM_MOUSELEAVE");
                         if (this.isMouseIn)
                         {
                             this.OnMouseLeave();
@@ -513,8 +542,48 @@ namespace ACCManager.HUD.Overlay.Internal
                         }
                         break;
                     }
+
+                case 0x001c: // WM_ACTIVATEAPP 
+                    {
+                        //Debug.WriteLine("WM_ACTIVATEAPP");
+
+                        return;
+                    }
+
+                case 0x002: //WM_Destroy
+                    {
+                        Debug.WriteLine("WM_Destroy");
+
+                        return;
+                    }
+
+                case 0x0046:
+                    {
+                        //Debug.WriteLine("WM_WINDOWPOSCHANGING");
+                        return;
+                    }
+
+                case 0x0047:
+                    {
+                        //Debug.WriteLine("WM_WINDOWPOSCHANGED");
+                        return;
+                    }
+
+                case 0x007C:
+                    {
+
+                        //Debug.WriteLine("WM_STYLECHANGING");
+                        return;
+                    }
+
+                case 0x007D:
+                    {
+                        Debug.WriteLine("WM_STYLECHANGED");
+                        return;
+                    }
             }
 
+            //Debug.WriteLine($"{m.Msg}");
 
             base.WndProc(ref m);
         }
@@ -592,7 +661,7 @@ namespace ACCManager.HUD.Overlay.Internal
                 Cursor.Current = Cursors.SizeNWSE;
             }
             else
-                Cursor.Current = Cursors.Arrow;
+                Cursor.Current = Cursors.Hand;
             if (this.captured)
             {
 
@@ -999,7 +1068,7 @@ namespace ACCManager.HUD.Overlay.Internal
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
         internal static extern IntPtr SetFocus(IntPtr hWnd);
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
-        internal static extern int SetWindowLong(IntPtr hWnd, int nIndex, int newLong);
+        internal static extern int SetWindowLong(IntPtr hWnd, int nIndex, uint newLong);
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
         internal static extern int SetWindowPos(IntPtr hWnd, IntPtr hWndAfter, int X, int Y, int Width, int Height, uint flags);
         [DllImport("User32.dll", CharSet = CharSet.Auto)]

@@ -185,6 +185,7 @@ namespace ACCManager.HUD.Overlay.Internal
 
                 Draw = true;
                 this.Show();
+                this.hasClosed = false;
                 if (!RequestsDrawItself)
                 {
                     new Thread(x =>
@@ -203,30 +204,34 @@ namespace ACCManager.HUD.Overlay.Internal
 
                             if (this == null || this._disposed)
                             {
+                                Debug.WriteLine("!! ----   Stop render loop");
                                 this.Stop();
                                 return;
                             }
 
+
+
                             if (ShouldRender() || IsRepositioning)
                             {
-                                if (hasClosed && !IsRepositioning)
+                                if (hasClosed)
                                 {
                                     this.Show();
                                     hasClosed = false;
                                 }
-
-                                this.UpdateLayeredWindow();
                             }
                             else
                             {
                                 if (!hasClosed)
                                 {
-                                    this.Hide();
                                     hasClosed = true;
+                                    this.Hide();
                                 }
                             }
+
+                            this.UpdateLayeredWindow();
                         }
 
+                        Debug.WriteLine("Render loop finished");
                         this.Stop();
                     }).Start();
                 }
@@ -293,6 +298,7 @@ namespace ACCManager.HUD.Overlay.Internal
             Draw = false;
 
             this.Close();
+            this.DestroyHandle();
         }
 
         protected sealed override void PerformPaint(PaintEventArgs e)
@@ -302,10 +308,16 @@ namespace ACCManager.HUD.Overlay.Internal
 
             if (Draw)
             {
-                if (ShouldRender())
+                if (ShouldRender() || IsRepositioning)
                 {
                     try
                     {
+                        if (hasClosed)
+                        {
+                            this.Show();
+                            hasClosed = false;
+                        }
+
                         if (_allowRescale)
                             e.Graphics.ScaleTransform(Scale, Scale);
 
@@ -330,15 +342,21 @@ namespace ACCManager.HUD.Overlay.Internal
                 }
                 else
                 {
-                    // scenario: memory load looping up, hope to fix?
-                    // e.Graphics.Clear(Color.Transparent);
+                    if (!hasClosed)
+                    {
+                        e.Graphics.Clear(Color.Transparent);
+                        hasClosed = true;
+                        this.Hide();
+                    }
                 }
             }
         }
 
         public void EnableReposition(bool enabled)
         {
-            //Debug.WriteLine($"{this.Name}: {this.IsRepositioning} -> {enabled}");
+            if (this == null)
+                Debug.WriteLine("WTF");
+            Debug.WriteLine($"{this.Name}: {this.IsRepositioning} -> {enabled}");
 
             if (!AllowReposition)
                 return;
@@ -347,16 +365,24 @@ namespace ACCManager.HUD.Overlay.Internal
             {
                 try
                 {
-                    this.IsRepositioning = enabled;
-
                     if (enabled)
                     {
-                        if (this.hasClosed)
-                            this.Show();
+                        this.IsRepositioning = enabled;
+                        //if (this.hasClosed)
+                        //{
+                        //    this.Show();
+                        //    this.UpdateLayeredWindow();
+                        //}
                         this.SetDraggy(true);
                     }
                     else
                     {
+                        if (base.Handle == null)
+                        {
+                            Debug.WriteLine("Noob destroyed the window");
+                            this.Show();
+                            return;
+                        }
                         OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(this.Name);
                         if (settings == null)
                             return;
@@ -366,6 +392,7 @@ namespace ACCManager.HUD.Overlay.Internal
                         OverlaySettings.SaveOverlaySettings(this.Name, settings);
 
                         this.SetDraggy(false);
+                        this.IsRepositioning = enabled;
                     }
                 }
                 catch
