@@ -1,14 +1,9 @@
-﻿using ACCManager.HUD.Overlay.Configuration;
-using System;
-using System.Configuration;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using static ACCManager.HUD.Overlay.Configuration.OverlaySettings;
 using static ACCManager.HUD.Overlay.Internal.WindowStructs;
 
 namespace ACCManager.HUD.Overlay.Internal
@@ -39,7 +34,7 @@ namespace ACCManager.HUD.Overlay.Internal
 
         #region #  Fields  #
         protected bool _disposed = false;
-        private byte _alpha = 0;
+        private byte _alpha = 255;
         private Size _size = new Size(250, 50);
         private Point _location = new Point(50, 50);
         #endregion
@@ -82,10 +77,10 @@ namespace ACCManager.HUD.Overlay.Internal
                     IntPtr ptr4 = Gdi32.SelectObject(ptr2, ptr3);
                     size1.cx = this.Size.Width;
                     size1.cy = this.Size.Height;
-                    point1.x = this.Location.X;
-                    point1.y = this.Location.Y;
-                    point2.x = 0;
-                    point2.y = 0;
+                    point1.X = this.Location.X;
+                    point1.Y = this.Location.Y;
+                    point2.X = 0;
+                    point2.Y = 0;
                     blendfunction1 = new BLENDFUNCTION();
                     blendfunction1.BlendOp = 0;
                     blendfunction1.BlendFlags = 0;
@@ -285,8 +280,8 @@ namespace ACCManager.HUD.Overlay.Internal
         /// </summary>
         public virtual void Close()
         {
-            this.DestroyHandle();
-            this.Hide();
+            if (this.Handle != IntPtr.Zero)
+                this.Hide();
             this.Dispose();
         }
 
@@ -431,16 +426,27 @@ namespace ACCManager.HUD.Overlay.Internal
             }
         }
 
+        [DllImport("user32.dll")]
+        private static extern bool GetCursorPos(out POINT lpPoint);
+
+        private static POINT GetCursorPosition()
+        {
+            POINT lpPoint;
+            GetCursorPos(out lpPoint);
+            // NOTE: If you need error handling
+            // bool success = GetCursorPos(out lpPoint);
+            // if (!success)
+
+            return lpPoint;
+        }
+
         private bool PerformWmNcHitTest(ref Message m)
         {
-            POINT point1;
-            Point p = Control.MousePosition;
-            point1.x = p.X;
-            point1.y = p.Y;
-            point1 = this.MousePositionToClient(point1);
-
-            Rectangle rect = new Rectangle(Location, Size);
-            if (!rect.Contains(point1.x, point1.y))
+            POINT point1 = GetCursorPosition();
+            point1.X -= _location.X;
+            point1.Y -= _location.Y;
+            Rectangle rect = new Rectangle(_location.Y, _location.X, _size.Width, _size.Height);
+            if (!rect.Contains(point1.X, point1.Y))
                 return false;
 
             m.Result = (IntPtr)(-1);
@@ -454,7 +460,7 @@ namespace ACCManager.HUD.Overlay.Internal
             if (m.Msg == 15) // WM_PAINT
             {
                 this.PerformWmPaint_WmPrintClient(ref m, true);
-                return;
+                //return;
             }
 
             else if (m.Msg == 0x318) // WM_PRINTCLIENT
@@ -465,25 +471,19 @@ namespace ACCManager.HUD.Overlay.Internal
 
             switch (m.Msg)
             {
-                //case 0x20: // WM_SETCURSOR
-                //    {
-                //        this.PerformWmSetCursor(ref m);
-                //        return;
-                //    }
                 case 0x21: // WM_MOUSEACTIVATE
                     {
                         this.PerformWmMouseActivate(ref m);
                         return;
                     }
-                case 0x84: // WM_NCHITTEST
-                    {
-                        //Debug.WriteLine("WM_NCHITTEST");
-                        if (!this.PerformWmNcHitTest(ref m))
-                        {
-                            base.WndProc(ref m);
-                        }
-                        return;
-                    }
+                //case 0x84: // WM_NCHITTEST
+                //    {
+                //        Debug.WriteLine("WM_NCHITTEST");
+                //        //if (!this.PerformWmNcHitTest(ref m))
+                //        //{
+                //        //    Debug.WriteLine("not in");
+                //        //}
+                //    }
                 case 0x200: // WM_MOUSEMOVE
                     //Debug.WriteLine("WM_MOUSEMOVE");
 
@@ -491,31 +491,33 @@ namespace ACCManager.HUD.Overlay.Internal
                     {
                         this.OnMouseEnter();
                         this.isMouseIn = true;
-
                     }
                     Point p6 = new Point(m.LParam.ToInt32());
                     this.OnMouseMove(new MouseEventArgs(Control.MouseButtons, 1, p6.X, p6.X, 0));
                     if (this.onMouseMove)
                     {
-                        //Debug.WriteLine($"mouse is in {p6}");
                         this.PerformWmMouseMove(ref m);
                         this.onMouseMove = false;
                     }
                     break;
                 case 0x201: // WM_MOUSEDOWN
                     {
-                        //Debug.WriteLine("WM_MOUSEDOWN");
+                        Debug.WriteLine("WM_MOUSEDOWN");
                         POINT point1;
                         this.lastMouseDown = new Point(m.LParam.ToInt32());
                         point1 = new POINT();
-                        point1.x = this.lastMouseDown.X;
-                        point1.y = this.lastMouseDown.Y;
+                        point1.X = this.lastMouseDown.X;
+                        point1.Y = this.lastMouseDown.Y;
                         point1 = this.MousePositionToScreen(point1);
-                        deltaX = point1.x - this.Location.X;
-                        deltaY = point1.y - this.Location.Y;
+                        deltaX = point1.X - this.Location.X;
+                        deltaY = point1.Y - this.Location.Y;
+                        Debug.WriteLine($"mouse is in {lastMouseDown}");
+
+
                         this.OnMouseDown(new MouseEventArgs(Control.MouseButtons, 1, lastMouseDown.X, lastMouseDown.Y, 0));
                         if (this.onMouseDown)
                         {
+                            Debug.WriteLine("");
                             this.PerformWmMouseDown(ref m);
                             this.onMouseDown = false;
                         }
@@ -545,44 +547,44 @@ namespace ACCManager.HUD.Overlay.Internal
                         break;
                     }
 
-                case 0x001c: // WM_ACTIVATEAPP 
-                    {
-                        //Debug.WriteLine("WM_ACTIVATEAPP");
+                    //case 0x001c: // WM_ACTIVATEAPP 
+                    //    {
+                    //        //Debug.WriteLine("WM_ACTIVATEAPP");
 
-                        return;
-                    }
+                    //        return;
+                    //    }
 
-                case 0x002: //WM_Destroy
-                    {
-                        Debug.WriteLine("WM_Destroy");
+                    //case 0x002: //WM_Destroy
+                    //    {
+                    //        //Debug.WriteLine("WM_Destroy");
 
-                        return;
-                    }
+                    //        return;
+                    //    }
 
-                case 0x0046:
-                    {
-                        //Debug.WriteLine("WM_WINDOWPOSCHANGING");
-                        return;
-                    }
+                    //case 0x0046:
+                    //    {
+                    //        //Debug.WriteLine("WM_WINDOWPOSCHANGING");
+                    //        return;
+                    //    }
 
-                case 0x0047:
-                    {
-                        //Debug.WriteLine("WM_WINDOWPOSCHANGED");
-                        return;
-                    }
+                    //case 0x0047:
+                    //    {
+                    //        //Debug.WriteLine("WM_WINDOWPOSCHANGED");
+                    //        return;
+                    //    }
 
-                case 0x007C:
-                    {
+                    //case 0x007C:
+                    //    {
 
-                        //Debug.WriteLine("WM_STYLECHANGING");
-                        return;
-                    }
+                    //        //Debug.WriteLine("WM_STYLECHANGING");
+                    //        return;
+                    //    }
 
-                case 0x007D:
-                    {
-                        Debug.WriteLine("WM_STYLECHANGED");
-                        return;
-                    }
+                    //case 0x007D:
+                    //    {
+                    //        //Debug.WriteLine("WM_STYLECHANGED");
+                    //        return;
+                    //    }
             }
 
             //Debug.WriteLine($"{m.Msg}");
@@ -606,16 +608,16 @@ namespace ACCManager.HUD.Overlay.Internal
         private POINT MousePositionToClient(POINT point)
         {
             POINT point1;
-            point1.x = point.x;
-            point1.y = point.y;
+            point1.X = point.X;
+            point1.Y = point.Y;
             User32.ScreenToClient(base.Handle, ref point1);
             return point1;
         }
         private POINT MousePositionToScreen(MSG msg)
         {
             POINT point1;
-            point1.x = (short)(((int)msg.lParam) & 0xffff);
-            point1.y = (short)((((int)msg.lParam) & -65536) >> 0x10);
+            point1.X = (short)(((int)msg.lParam) & 0xffff);
+            point1.Y = (short)((((int)msg.lParam) & -65536) >> 0x10);
             if ((((msg.message != 0xa2) && (msg.message != 0xa8)) && ((msg.message != 0xa5) && (msg.message != 0xac))) && (((msg.message != 0xa1) && (msg.message != 0xa7)) && ((msg.message != 0xa4) && (msg.message != 0xab))))
             {
                 User32.ClientToScreen(msg.hwnd, ref point1);
@@ -625,16 +627,16 @@ namespace ACCManager.HUD.Overlay.Internal
         private POINT MousePositionToScreen(POINT point)
         {
             POINT point1;
-            point1.x = point.x;
-            point1.y = point.y;
+            point1.X = point.X;
+            point1.Y = point.Y;
             User32.ClientToScreen(base.Handle, ref point1);
             return point1;
         }
         private POINT MousePositionToScreen(Message msg)
         {
             POINT point1;
-            point1.x = (short)(((int)msg.LParam) & 0xffff);
-            point1.y = (short)((((int)msg.LParam) & -65536) >> 0x10);
+            point1.X = (short)(((int)msg.LParam) & 0xffff);
+            point1.Y = (short)((((int)msg.LParam) & -65536) >> 0x10);
             if ((((msg.Msg != 0xa2) && (msg.Msg != 0xa8)) && ((msg.Msg != 0xa5) && (msg.Msg != 0xac))) && (((msg.Msg != 0xa1) && (msg.Msg != 0xa7)) && ((msg.Msg != 0xa4) && (msg.Msg != 0xab))))
             {
                 User32.ClientToScreen(msg.HWnd, ref point1);
@@ -644,7 +646,8 @@ namespace ACCManager.HUD.Overlay.Internal
 
         private void PerformWmMouseDown(ref Message m)
         {
-            if (!new Rectangle(Location, Size).Contains(this.lastMouseDown))
+            POINT location = MousePositionToClient(new POINT() { X = Location.X, Y = Location.Y });
+            if (new Rectangle(location, Size).Contains(this.lastMouseDown))
             {
                 this.captured = true;
                 User32.SetCapture(base.Handle);
@@ -654,14 +657,18 @@ namespace ACCManager.HUD.Overlay.Internal
         {
             Point p = Control.MousePosition;
             POINT point1 = new POINT();
-            point1.x = p.X;
-            point1.y = p.Y;
+            point1.X = p.X;
+            point1.Y = p.Y;
             point1 = this.MousePositionToClient(point1);
 
-            if (new Rectangle(0, 0, Size.Width, Size.Height).Contains(point1.x, point1.y))
+            if (new Rectangle(0, 0, Size.Width, Size.Height).Contains(point1.X, point1.Y))
                 Cursor.Current = Cursors.Hand;
             else
                 Cursor.Current = Cursors.Arrow;
+
+            //Debug.WriteLine($"{deltaX}, {deltaY}");
+
+
             if (this.captured)
             {
 

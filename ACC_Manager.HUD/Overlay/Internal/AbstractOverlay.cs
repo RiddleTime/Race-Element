@@ -1,4 +1,5 @@
 ﻿using ACC_Manager.Util.Settings;
+using ACC_Manager.Util.SystemExtensions;
 using ACCManager.Broadcast.Structs;
 using ACCManager.Data.ACC.Core;
 using ACCManager.Data.ACC.Session;
@@ -12,11 +13,9 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Threading;
 using static ACCManager.ACCSharedMemory;
 using static ACCManager.HUD.Overlay.Configuration.OverlaySettings;
 
@@ -232,7 +231,7 @@ namespace ACCManager.HUD.Overlay.Internal
                         }
 
                         Debug.WriteLine("Render loop finished");
-                        this.Stop();
+                        //this.Stop();
                     }).Start();
                 }
             }
@@ -279,7 +278,7 @@ namespace ACCManager.HUD.Overlay.Internal
             if (animate)
                 this.HideAnimate(AnimateMode.Blend | AnimateMode.ExpandCollapse, 200);
 
-            this.EnableReposition(false);
+            //this.EnableReposition(false);
             try
             {
                 BeforeStop();
@@ -298,7 +297,6 @@ namespace ACCManager.HUD.Overlay.Internal
             Draw = false;
 
             this.Close();
-            this.DestroyHandle();
         }
 
         protected sealed override void PerformPaint(PaintEventArgs e)
@@ -326,6 +324,9 @@ namespace ACCManager.HUD.Overlay.Internal
                         TextRenderingHint previousTextRenderHint = e.Graphics.TextRenderingHint;
                         int previousTextConstrast = e.Graphics.TextContrast;
 
+                        if (IsRepositioning)
+                            e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(95, Color.Red)), new Rectangle(0, 0, (int)(Width - 1 * Scale), (int)(Height - 1 * Scale)));
+
                         Render(e.Graphics);
 
                         e.Graphics.CompositingQuality = previousComposingQuality;
@@ -346,7 +347,6 @@ namespace ACCManager.HUD.Overlay.Internal
                     {
                         e.Graphics.Clear(Color.Transparent);
                         hasClosed = true;
-                        this.Hide();
                     }
                 }
             }
@@ -386,8 +386,10 @@ namespace ACCManager.HUD.Overlay.Internal
                         OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(this.Name);
                         if (settings == null)
                             return;
-                        settings.X = X;
-                        settings.Y = Y;
+                        int x = X; x.ClipMin(1);
+                        int y = Y; y.ClipMin(1);
+                        settings.X = x;
+                        settings.Y = y;
 
                         OverlaySettings.SaveOverlaySettings(this.Name, settings);
 
