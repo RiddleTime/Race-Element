@@ -316,6 +316,10 @@ namespace ACCManager.HUD.Overlay.Internal
                             hasClosed = false;
                         }
 
+                        if (IsRepositioning)
+                            e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(95, Color.Red)), new Rectangle(0, 0, Width, Height));
+
+
                         if (_allowRescale)
                             e.Graphics.ScaleTransform(Scale, Scale);
 
@@ -324,8 +328,6 @@ namespace ACCManager.HUD.Overlay.Internal
                         TextRenderingHint previousTextRenderHint = e.Graphics.TextRenderingHint;
                         int previousTextConstrast = e.Graphics.TextContrast;
 
-                        if (IsRepositioning)
-                            e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(95, Color.Red)), new Rectangle(0, 0, (int)(Width - 1 * Scale), (int)(Height - 1 * Scale)));
 
                         Render(e.Graphics);
 
@@ -354,9 +356,7 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public void EnableReposition(bool enabled)
         {
-            if (this == null)
-                Debug.WriteLine("WTF");
-            Debug.WriteLine($"{this.Name}: {this.IsRepositioning} -> {enabled}");
+            //Debug.WriteLine($"{this.Name}: {this.IsRepositioning} -> {enabled}");
 
             if (!AllowReposition)
                 return;
@@ -379,7 +379,7 @@ namespace ACCManager.HUD.Overlay.Internal
                     {
                         if (base.Handle == null)
                         {
-                            Debug.WriteLine("Noob destroyed the window");
+                            //Debug.WriteLine("Noob destroyed the window");
                             this.Show();
                             return;
                         }

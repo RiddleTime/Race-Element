@@ -107,15 +107,15 @@ namespace ACCManager.HUD.Overlay.Internal
         /// </summary>
         public virtual void Show()
         {
-            Debug.WriteLine("base handle: " + base.Handle);
+            //Debug.WriteLine("base handle: " + base.Handle);
             if (base.Handle == IntPtr.Zero)
             {  //if handle don't equal to zero - window was created and just hided
-                Debug.WriteLine("Creating window only with normal style");
+                //Debug.WriteLine("Creating window only with normal style");
                 this.CreateWindowOnly(GetExStyle());
             }
 
             User32.ShowWindow(base.Handle, User32.SW_SHOWNOACTIVATE);
-            Debug.WriteLine("Showing window");
+            //Debug.WriteLine("Showing window");
             //SetBoundsCore(X, Y, Width, Height);
         }
 
@@ -123,15 +123,15 @@ namespace ACCManager.HUD.Overlay.Internal
         {
             if (base.Handle == IntPtr.Zero)
             {  //if handle don't equal to zero - window was created and just hided
-                Debug.WriteLine($"Creating window only with draggy style: {toggle}");
+                //Debug.WriteLine($"Creating window only with draggy style: {toggle}");
                 this.CreateWindowOnly(toggle ? GetExStyleDrag() : GetExStyle());
             }
 
-            Debug.WriteLine($"Settings Draggy style: {toggle}");
+            //Debug.WriteLine($"Settings Draggy style: {toggle}");
 
-            Debug.WriteLine("Current style" + User32.GetWindowLong(this.Handle, -20));
-            Debug.WriteLine("Drag style " + GetExStyleDrag());
-            Debug.WriteLine("Normal style" + GetExStyle());
+            //Debug.WriteLine("Current style" + User32.GetWindowLong(this.Handle, -20));
+            //Debug.WriteLine("Drag style " + GetExStyleDrag());
+            //Debug.WriteLine("Normal style" + GetExStyle());
 
             if (toggle)
                 User32.SetWindowLong(base.Handle, -20, (uint)GetExStyleDrag());
@@ -222,7 +222,7 @@ namespace ACCManager.HUD.Overlay.Internal
             if (base.Handle == IntPtr.Zero)
                 return;
 
-            Debug.WriteLine("Hiding Window");
+            //Debug.WriteLine("Hiding Window");
             User32.ShowWindow(base.Handle, User32.SW_HIDE);
         }
         /// <summary>
