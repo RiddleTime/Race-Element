@@ -217,6 +217,8 @@ namespace ACCManager.HUD.Overlay.Internal
                                     this.Show();
                                     hasClosed = false;
                                 }
+
+                                this.UpdateLayeredWindow();
                             }
                             else
                             {
@@ -226,8 +228,6 @@ namespace ACCManager.HUD.Overlay.Internal
                                     this.Hide();
                                 }
                             }
-
-                            this.UpdateLayeredWindow();
                         }
 
                         Debug.WriteLine("Render loop finished");
@@ -395,6 +395,7 @@ namespace ACCManager.HUD.Overlay.Internal
 
                         this.SetDraggy(false);
                         this.IsRepositioning = enabled;
+                        UpdateLayeredWindow();
                     }
                 }
                 catch
