@@ -398,32 +398,34 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public int GetExStyleDrag()
         {
-            int exStyle = User32.WS_EX_TRANSPARENT | User32.WS_EX_TOPMOST | User32.WS_EX_NOACTIVATE | 0x00020000;
+            int exStyle = User32.WS_EX_LAYERED | User32.WS_EX_TOPMOST | User32.WS_EX_NOACTIVATE | 0x00020000;
             return exStyle;
         }
 
         #region == Other messages ==
         private void PerformWmPaint_WmPrintClient(ref Message m, bool isPaintMessage)
         {
-            try { 
-            PAINTSTRUCT paintstruct1;
-            RECT rect1;
-            Rectangle rectangle1;
-            paintstruct1 = new PAINTSTRUCT();
-            IntPtr ptr1 = isPaintMessage ? User32.BeginPaint(m.HWnd, ref paintstruct1) : m.WParam;
-            rect1 = new RECT();
-            User32.GetWindowRect(base.Handle, ref rect1);
-            rectangle1 = new Rectangle(0, 0, rect1.right - rect1.left, rect1.bottom - rect1.top);
-            using (Graphics graphics1 = Graphics.FromHdc(ptr1))
+            try
             {
-                Bitmap bitmap1 = new Bitmap(rectangle1.Width, rectangle1.Height);
-                using (Graphics graphics2 = Graphics.FromImage(bitmap1))
-                    this.PerformPaint(new PaintEventArgs(graphics2, rectangle1));
-                graphics1.DrawImageUnscaled(bitmap1, 0, 0);
+                PAINTSTRUCT paintstruct1;
+                RECT rect1;
+                Rectangle rectangle1;
+                paintstruct1 = new PAINTSTRUCT();
+                IntPtr ptr1 = isPaintMessage ? User32.BeginPaint(m.HWnd, ref paintstruct1) : m.WParam;
+                rect1 = new RECT();
+                User32.GetWindowRect(base.Handle, ref rect1);
+                rectangle1 = new Rectangle(0, 0, rect1.right - rect1.left, rect1.bottom - rect1.top);
+                using (Graphics graphics1 = Graphics.FromHdc(ptr1))
+                {
+                    Bitmap bitmap1 = new Bitmap(rectangle1.Width, rectangle1.Height);
+                    using (Graphics graphics2 = Graphics.FromImage(bitmap1))
+                        this.PerformPaint(new PaintEventArgs(graphics2, rectangle1));
+                    graphics1.DrawImageUnscaled(bitmap1, 0, 0);
+                }
+                if (isPaintMessage)
+                    User32.EndPaint(m.HWnd, ref paintstruct1);
             }
-            if (isPaintMessage)
-                User32.EndPaint(m.HWnd, ref paintstruct1);
-            }catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine(e);
             }
@@ -656,12 +658,10 @@ namespace ACCManager.HUD.Overlay.Internal
             point1.y = p.Y;
             point1 = this.MousePositionToClient(point1);
 
-            if (/*this.resizing || */ new Rectangle(Location, Size).Contains(point1.x, point1.y))
-            {
-                Cursor.Current = Cursors.SizeNWSE;
-            }
-            else
+            if (new Rectangle(0, 0, Size.Width, Size.Height).Contains(point1.x, point1.y))
                 Cursor.Current = Cursors.Hand;
+            else
+                Cursor.Current = Cursors.Arrow;
             if (this.captured)
             {
 
