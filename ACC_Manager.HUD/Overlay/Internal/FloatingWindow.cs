@@ -312,50 +312,7 @@ namespace ACCManager.HUD.Overlay.Internal
         {
             int nX = this._location.X;
             int nY = this._location.Y;
-
-            var monitors = Monitors.GetMonitors();
-            bool isInsideMonitor = false;
-            foreach (var monitor in monitors)
-            {
-                int monitorWidth = monitor.MonitorInfo.monitor.right - monitor.MonitorInfo.monitor.left;
-                int monitorHeight = monitor.MonitorInfo.monitor.bottom - monitor.MonitorInfo.monitor.top;
-                int monitorX = monitor.MonitorInfo.monitor.left;
-                int monitorY = monitor.MonitorInfo.monitor.top;
-
-                if (nX > monitorX && nX < monitorX + monitorWidth)
-                {
-                    if (nY > monitorY && nY < monitorY + monitorHeight)
-                    {
-                        isInsideMonitor = true;
-
-                        if ((nX + this._size.Width) > monitorX + monitorWidth)
-                        {
-                            nX = monitorX + monitorWidth - this._size.Width;
-                        }
-                        if ((nY + this._size.Height) > monitorY + monitorHeight)
-                        {
-                            nY = monitorY + monitorHeight - this._size.Height;
-                        }
-
-                        break;
-                    }
-                }
-            }
-
-            if (!isInsideMonitor)
-            {
-                Screen screen1 = Screen.FromHandle(base.Handle);
-                if ((nX + this._size.Width) > screen1.Bounds.Width)
-                {
-                    nX = screen1.Bounds.Width - this._size.Width;
-                }
-                if ((nY + this._size.Height) > screen1.Bounds.Height)
-                {
-                    nY = screen1.Bounds.Height - this._size.Height;
-                }
-            }
-
-            this._location = new Point(nX, nY);
+            this._location = Monitors.IsInsideMonitor(nX, nY, this._size.Width, this._size.Height, this.Handle);
             Size size1 = this._size;
             Point point1 = this._location;
             CreateParams params1 = new CreateParams();

@@ -18,6 +18,7 @@ using System.Windows;
 using System.Windows.Forms;
 using static ACCManager.ACCSharedMemory;
 using static ACCManager.HUD.Overlay.Configuration.OverlaySettings;
+using Point = System.Drawing.Point;
 
 namespace ACCManager.HUD.Overlay.Internal
 {
@@ -356,8 +357,6 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public void EnableReposition(bool enabled)
         {
-            //Debug.WriteLine($"{this.Name}: {this.IsRepositioning} -> {enabled}");
-
             if (!AllowReposition)
                 return;
 
@@ -368,28 +367,23 @@ namespace ACCManager.HUD.Overlay.Internal
                     if (enabled)
                     {
                         this.IsRepositioning = enabled;
-                        //if (this.hasClosed)
-                        //{
-                        //    this.Show();
-                        //    this.UpdateLayeredWindow();
-                        //}
                         this.SetDraggy(true);
                     }
                     else
                     {
                         if (base.Handle == null)
                         {
-                            //Debug.WriteLine("Noob destroyed the window");
                             this.Show();
                             return;
                         }
+
+                        // save overlay settings
                         OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(this.Name);
                         if (settings == null)
                             return;
-                        int x = X; x.ClipMin(1);
-                        int y = Y; y.ClipMin(1);
-                        settings.X = x;
-                        settings.Y = y;
+                        Point point = Monitors.IsInsideMonitor(X, Y, this.Size.Width, this.Size.Height, this.Handle);
+                        settings.X = point.X;
+                        settings.Y = point.Y;
 
                         OverlaySettings.SaveOverlaySettings(this.Name, settings);
 
@@ -398,8 +392,7 @@ namespace ACCManager.HUD.Overlay.Internal
                         UpdateLayeredWindow();
                     }
                 }
-                catch
-                (Exception e)
+                catch (Exception e)
                 {
                     Debug.WriteLine(e);
                 }

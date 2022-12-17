@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using static ACCManager.HUD.Overlay.Internal.WindowStructs;
 
 namespace ACCManager.HUD.Overlay.Internal
@@ -40,6 +42,54 @@ namespace ACCManager.HUD.Overlay.Internal
 
             // Return list
             return _monitorInfos.ToArray();
+        }
+
+        public static Point IsInsideMonitor(int nX, int nY, int width, int height, IntPtr baseHandle)
+        {
+            var monitors = Monitors.GetMonitors();
+            bool isInsideMonitor = false;
+
+            foreach (var monitor in monitors)
+            {
+                int monitorWidth = monitor.MonitorInfo.monitor.right - monitor.MonitorInfo.monitor.left;
+                int monitorHeight = monitor.MonitorInfo.monitor.bottom - monitor.MonitorInfo.monitor.top;
+                int monitorX = monitor.MonitorInfo.monitor.left;
+                int monitorY = monitor.MonitorInfo.monitor.top;
+
+                if (nX > monitorX && nX < monitorX + monitorWidth)
+                {
+                    if (nY > monitorY && nY < monitorY + monitorHeight)
+                    {
+                        isInsideMonitor = true;
+
+                        if ((nX + width) > monitorX + monitorWidth)
+                        {
+                            nX = monitorX + monitorWidth - width;
+                        }
+                        if ((nY + height) > monitorY + monitorHeight)
+                        {
+                            nY = monitorY + monitorHeight - height;
+                        }
+
+                        break;
+                    }
+                }
+            }
+
+            if (!isInsideMonitor)
+            {
+                Screen screen1 = Screen.FromHandle(baseHandle);
+                if ((nX + width) > screen1.Bounds.Width)
+                {
+                    nX = screen1.Bounds.Width - width;
+                }
+                if ((nY + height) > screen1.Bounds.Height)
+                {
+                    nY = screen1.Bounds.Height - height;
+                }
+            }
+
+            return new Point(nX, nY);
         }
 
         /// <summary>
