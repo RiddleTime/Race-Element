@@ -337,10 +337,13 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public int GetExStyle()
         {
-            int exStyle = User32.WS_EX_LAYERED | User32.WS_EX_TRANSPARENT | User32.WS_EX_NOACTIVATE;
+            int exStyle = User32.WS_EX_LAYERED | User32.WS_EX_TRANSPARENT;
 
             if (!WindowMode)
+            {
                 exStyle |= User32.WS_EX_TOOLWINDOW;
+                exStyle |= User32.WS_EX_NOACTIVATE;
+            }
 
             if (AlwaysOnTop)
                 exStyle |= User32.WS_EX_TOPMOST;
