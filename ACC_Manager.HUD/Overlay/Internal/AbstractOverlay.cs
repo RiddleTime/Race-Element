@@ -1,5 +1,4 @@
 ﻿using ACC_Manager.Util.Settings;
-using ACC_Manager.Util.SystemExtensions;
 using ACCManager.Broadcast.Structs;
 using ACCManager.Data.ACC.Core;
 using ACCManager.Data.ACC.Session;
@@ -14,7 +13,6 @@ using System.Drawing.Text;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using System.Windows;
 using System.Windows.Forms;
 using static ACCManager.ACCSharedMemory;
 using static ACCManager.HUD.Overlay.Configuration.OverlaySettings;
@@ -48,9 +46,6 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public float Scale { get; private set; } = 1f;
         private bool _allowRescale = false;
-
-        private Window RepositionWindow;
-
 
         protected AbstractOverlay(Rectangle rectangle, string Name)
         {
@@ -148,7 +143,7 @@ namespace ACCManager.HUD.Overlay.Internal
             }
         }
 
-        bool hasClosed = false;
+       public bool hasClosed = true;
         public void Start(bool addTrackers = true)
         {
             try
@@ -201,7 +196,6 @@ namespace ACCManager.HUD.Overlay.Internal
                             if (waitTime.Ticks > 0)
                                 Thread.Sleep(waitTime);
 
-
                             if (this == null || this._disposed)
                             {
                                 Debug.WriteLine("!! ----   Stop render loop");
@@ -209,24 +203,15 @@ namespace ACCManager.HUD.Overlay.Internal
                                 return;
                             }
 
-
-
                             if (ShouldRender() || IsRepositioning)
-                            {
-                                if (hasClosed)
-                                {
-                                    this.Show();
-                                    hasClosed = false;
-                                }
-
                                 this.UpdateLayeredWindow();
-                            }
                             else
                             {
                                 if (!hasClosed)
                                 {
                                     hasClosed = true;
                                     this.Hide();
+                                    Debug.WriteLine("Hidden");
                                 }
                             }
                         }
@@ -256,6 +241,12 @@ namespace ACCManager.HUD.Overlay.Internal
 
         public void RequestRedraw()
         {
+            if (hasClosed)
+            {
+                this.Show();
+                hasClosed = false;
+            }
+
             this.UpdateLayeredWindow();
         }
 
@@ -304,7 +295,7 @@ namespace ACCManager.HUD.Overlay.Internal
         {
             if (base.Handle == IntPtr.Zero)
                 return;
-
+            Debug.WriteLine("rendering");
             if (Draw)
             {
                 if (ShouldRender() || IsRepositioning)

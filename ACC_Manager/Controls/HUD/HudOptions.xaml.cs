@@ -217,14 +217,24 @@ namespace ACCManager.Controls
                 configStackPanel.Children.Clear();
         }
 
+        private bool _collectingGarbage = false;
+        private void CollectGarbage()
+        {
+            if (!_collectingGarbage)
+                ThreadPool.QueueUserWorkItem(x =>
+                {
+                    _collectingGarbage = true;
+                    Debug.WriteLine("Collecting garbage");
+                    Thread.Sleep(10 * 1000);
+                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                    _collectingGarbage = false;
+                });
+        }
+
         private void BuildOverlayConfigPanel(ListViewItem listViewItem, Type type)
         {
-            ThreadPool.QueueUserWorkItem(x =>
-            {
-                Debug.WriteLine("Collecting garbage");
-                Thread.Sleep(10 * 1000);
-                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
-            });
+
+            CollectGarbage();
 
             configStackPanel.Children.Clear();
             OverlayAttribute overlayAttribute = GetOverlayAttribute(type);

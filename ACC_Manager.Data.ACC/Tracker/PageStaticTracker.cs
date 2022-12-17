@@ -33,10 +33,15 @@ namespace ACCManager.Data.ACC.Tracker
                 isTracking = true;
                 while (isTracking)
                 {
-                    Thread.Sleep(2);
-
                     if (AccProcess.IsRunning)
+                    {
+                        Thread.Sleep(2);
                         Tracker?.Invoke(this, ACCSharedMemory.Instance.ReadStaticPageFile());
+                    }
+                    else
+                    {
+                        Thread.Sleep(500);
+                    }
                 }
             });
 

@@ -38,8 +38,15 @@ namespace ACCManager.Data.ACC.Tracker
             {
                 while (isTracking)
                 {
-                    Thread.Sleep(2);
-                    Tracker?.Invoke(this, ACCSharedMemory.Instance.ReadGraphicsPageFile());
+                    if (AccProcess.IsRunning)
+                    {
+                        Thread.Sleep(2);
+                        Tracker?.Invoke(this, ACCSharedMemory.Instance.ReadGraphicsPageFile());
+                    }
+                    else
+                    {
+                        Thread.Sleep(500);
+                    }
                 }
             });
 

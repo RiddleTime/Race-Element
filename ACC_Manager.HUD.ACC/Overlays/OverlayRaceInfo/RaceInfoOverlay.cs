@@ -35,7 +35,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayRaceInfo
         {
             this.Width = 230;
             this.Height = _panel.FontHeight * 6;
-            RefreshRateHz = 3;
+            RefreshRateHz = 1;
         }
 
         public sealed override void BeforeStart()

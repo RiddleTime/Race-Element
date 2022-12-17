@@ -61,8 +61,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
 
         private void GlobalMouseMove(object sender, MouseEventArgs e)
         {
-            this.X = e.Location.X - _circleWidth;
-            this.Y = e.Location.Y - _circleWidth;
+            this.Location = new Point(e.Location.X - _circleWidth, e.Location.Y - _circleWidth);
         }
 
         private void GlobalMouseUp(object sender, MouseEventArgs e)
