@@ -6,7 +6,8 @@ namespace ACCManager.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.1.3.3", "- Reworked hud internals. " },
+            {"0.1.4.0", "- Reworked hud internals."+
+                        "\n- Reduced idle cpu usage to almost 0% when ACC is not running."},
             {"0.1.3.2", "- Fix bug when repositioning huds."},
             {"0.1.3.1", "- Internal optimizations."+
                         "\n- Improved contrast of hud text panels."+

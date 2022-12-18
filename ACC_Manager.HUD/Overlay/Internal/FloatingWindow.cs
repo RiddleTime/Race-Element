@@ -317,8 +317,8 @@ namespace ACCManager.HUD.Overlay.Internal
             Point point1 = this._location;
             CreateParams params1 = new CreateParams();
             params1.Caption = Name;
-            params1.X = nX;
-            params1.Y = nY;
+            params1.X = _location.X;
+            params1.Y = _location.Y;
             params1.Height = size1.Height;
             params1.Width = size1.Width;
             params1.Parent = IntPtr.Zero;
@@ -504,6 +504,12 @@ namespace ACCManager.HUD.Overlay.Internal
                             this.OnMouseLeave();
                             this.isMouseIn = false;
                         }
+                        break;
+                    }
+
+                case 0x0100: // WM_KEYDOWN
+                    {
+                        Debug.WriteLine("Key down");
                         break;
                     }
 

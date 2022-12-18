@@ -41,7 +41,7 @@
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="100" VerticalAlignment="Top" Margin="5,5,0,0">
-                        <Button x:Name="buttonDiscord" Height="36" Padding="0" Background="Black" BorderBrush="Black">
+                        <Button x:Name="buttonDiscord" Height="36" Padding="0" Background="Black" BorderBrush="Black" ToolTip="Chat/Help/Suggestions">
                             <Grid HorizontalAlignment="Stretch">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="5*"/>

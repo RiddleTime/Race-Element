@@ -198,7 +198,6 @@ namespace ACCManager.HUD.Overlay.Internal
 
                             if (this == null || this._disposed)
                             {
-                                Debug.WriteLine("!! ----   Stop render loop");
                                 this.Stop();
                                 return;
                             }
@@ -211,7 +210,6 @@ namespace ACCManager.HUD.Overlay.Internal
                                 {
                                     hasClosed = true;
                                     this.Hide();
-                                    Debug.WriteLine("Hidden");
                                 }
                             }
                         }
@@ -295,7 +293,7 @@ namespace ACCManager.HUD.Overlay.Internal
         {
             if (base.Handle == IntPtr.Zero)
                 return;
-            Debug.WriteLine("rendering");
+
             if (Draw)
             {
                 if (ShouldRender() || IsRepositioning)
