@@ -6,6 +6,7 @@ namespace ACCManager.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.1.4.1", "- Added request for admin rights, the app uses this to detect whether ACC is running. Without these rights you may experience unexpected app crashes." },
             {"0.1.4.0", "- Reworked hud internals."+
                         "\n- Reduced idle cpu usage to almost 0% when ACC is not running."},
             {"0.1.3.2", "- Fix bug when repositioning huds."},
