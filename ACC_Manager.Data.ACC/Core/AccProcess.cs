@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACCManager.Util;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -57,10 +58,18 @@ namespace ACCManager.Data.ACC.Core
                     {
                         Thread.Sleep(5000);
 
-                        if (!IsRunning || _acc == null)
-                            FindProcess();
-                        else if (_acc != null && _acc.HasExited)
-                            FindProcess();
+                        try
+                        {
+                            if (!IsRunning || _acc == null)
+                                FindProcess();
+                            else if (_acc != null && _acc.Handle != IntPtr.Zero && _acc.HasExited )
+                                FindProcess();
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine(e);
+                            LogWriter.WriteToLog(e);
+                        }
                     }
                 }).Start();
             }
