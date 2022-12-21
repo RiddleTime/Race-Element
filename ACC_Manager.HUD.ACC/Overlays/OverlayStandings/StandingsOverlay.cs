@@ -29,11 +29,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
     public sealed class StandingsOverlay : AbstractOverlay
     {
-
+        private readonly StandingsConfiguration _config = new StandingsConfiguration();
         private const int _height = 800;
         private const int _width = 800;
         private float _trackMeter = 0;
-        private readonly StandingsConfiguration _config = new StandingsConfiguration();
+
         private readonly Dictionary<CarClasses, SolidBrush> _carClassToBrush = new Dictionary<CarClasses, SolidBrush>()
         {
             {CarClasses.GT3, new SolidBrush(Color.FromArgb(150, Color.Yellow))},
@@ -178,7 +178,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             {
                 CarData carData = list[i].Value;
                 //AddCarDataTableRow(carData, tableRows[carClass], (carData.RealtimeCarUpdate.LastLap.LaptimeMS == bestSessionLapMS));
-                var gab = GetGabToCarInFront(list, i);
+                var gab = GetGapToCarInFront(list, i);
                 AddCarDataTableRow(carData, standingsTableRows, gab, false);
             }
         }
@@ -203,12 +203,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             {
                 CarData carData = entryList[i].Value;
                 //AddCarDataTableRow(carData, tableRows[carClass], (carData.RealtimeCarUpdate.LastLap.LaptimeMS == bestSessionLapMS));
-                var gab = GetGabToCarInFront(entryList, i);
+                var gab = GetGapToCarInFront(entryList, i);
                 AddCarDataTableRow(carData, tableRows, gab, false);
             }
         }
 
-        private string GetGabToCarInFront(List<KeyValuePair<int, CarData>> list, int i)
+        private string GetGapToCarInFront(List<KeyValuePair<int, CarData>> list, int i)
         {
             // inspired by acc bradcasting client
 
