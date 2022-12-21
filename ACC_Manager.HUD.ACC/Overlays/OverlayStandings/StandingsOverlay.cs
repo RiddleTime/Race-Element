@@ -5,7 +5,6 @@ using ACCManager.Data.ACC.EntryList;
 using ACCManager.Data.ACC.EntryList.TrackPositionGraph;
 using ACCManager.Data.ACC.Session;
 using ACCManager.Data.ACC.Tracker;
-using ACCManager.HUD.Overlay.Configuration;
 using ACCManager.HUD.Overlay.Internal;
 using ACCManager.HUD.Overlay.OverlayUtil;
 using ACCManager.HUD.Overlay.Util;
@@ -56,13 +55,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
         {
             this.Height = _height;
             this.Width = _width;
-            this.RefreshRateHz = 10;
-            InitCarClassEntryLists();
+            this.RefreshRateHz = 1;
         }
 
         public sealed override void BeforeStart()
         {
-            this.RefreshRateHz = 1;
+            InitCarClassEntryLists();
             RaceSessionTracker.Instance.OnACStatusChanged += StatusChanged;
             RaceSessionTracker.Instance.OnACSessionTypeChanged += SessionTypeChanged;
             BroadcastTracker.Instance.OnTrackDataUpdate += TrackDataUpdate;
