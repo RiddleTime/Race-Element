@@ -29,54 +29,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
 
     public sealed class StandingsOverlay : AbstractOverlay
     {
-        private readonly StandingsConfiguration _config = new StandingsConfiguration();
-        private sealed class StandingsConfiguration : OverlayConfiguration
-        {
-            [ConfigGrouping("Information", "Show or hide additional information in the standings.")]
-            public InformationGrouping Information { get; set; } = new InformationGrouping();
-            public class InformationGrouping
-            {
-                [ToolTip("Multiclass")]
-                public bool MultiClass { get; set; } = true;
-
-                [ToolTip("Time Delta")]
-                public bool TimeDelta { get; set; } = true;
-
-                [ToolTip("Show an indicator for invalid laps.")]
-                public bool InvalidLap { get; set; } = true;
-            }
-
-            [ConfigGrouping("Layout", "Change the layout of the standings.")]
-            public LayoutGrouping Layout { get; set; } = new LayoutGrouping();
-            public class LayoutGrouping
-            {
-                [ToolTip("Additional Rows in front and behind.")]
-                [IntRange(1, 5, 1)]
-                public int AdditionalRows { get; set; } = 2;
-
-                [ToolTip("Multiclass Rows")]
-                [IntRange(1, 10, 1)]
-                public int MulticlassRows { get; set; } = 4;
-            }
-
-            public StandingsConfiguration()
-            {
-                this.AllowRescale = true;
-            }
-        }
 
         private const int _height = 800;
         private const int _width = 800;
         private float _trackMeter = 0;
-
-        private CarClasses _driversClass = CarClasses.GT3;
-        private String _driverLastName = "";
-        private AcStatus _currentAcStatus = AcStatus.AC_OFF;
-
-        // the entry list splint into separate lists for every car class
-        private Dictionary<CarClasses, List<KeyValuePair<int, CarData>>> _entryListForCarClass = new Dictionary<CarClasses, List<KeyValuePair<int, CarData>>>();
-
-        private Dictionary<CarClasses, SolidBrush> _carClassToBrush = new Dictionary<CarClasses, SolidBrush>()
+        private readonly StandingsConfiguration _config = new StandingsConfiguration();
+        private readonly Dictionary<CarClasses, SolidBrush> _carClassToBrush = new Dictionary<CarClasses, SolidBrush>()
         {
             {CarClasses.GT3, new SolidBrush(Color.FromArgb(150, Color.Yellow))},
             {CarClasses.GT4, new SolidBrush(Color.FromArgb(150, Color.LightBlue))},
@@ -86,6 +44,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             {CarClasses.CHL, new SolidBrush(Color.FromArgb(150, Color.DarkBlue))},
 
         };
+
+        private CarClasses _driversClass = CarClasses.GT3;
+        private String _driverLastName = "";
+        private AcStatus _currentAcStatus = AcStatus.AC_OFF;
+
+        // the entry list splint into separate lists for every car class
+        private Dictionary<CarClasses, List<KeyValuePair<int, CarData>>> _entryListForCarClass = new Dictionary<CarClasses, List<KeyValuePair<int, CarData>>>();
 
         public StandingsOverlay(Rectangle rectangle) : base(rectangle, "Live Standings")
         {
@@ -111,6 +76,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             BroadcastTracker.Instance.OnTrackDataUpdate -= TrackDataUpdate;
 
         }
+
 
         private void TrackDataUpdate(object sender, TrackData e)
         {
@@ -148,6 +114,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
                 _entryListForCarClass[carClass] = new List<KeyValuePair<int, CarData>>();
             }
         }
+
+        public sealed override bool ShouldRender() => DefaultShouldRender();
 
         public sealed override void Render(Graphics g)
         {
@@ -188,7 +156,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
             int height = 0;
             foreach (KeyValuePair<CarClasses, List<StandingsTableRow>> kvp in tableRows)
             {
-                ost.Draw(g, height, kvp.Value, _config.Layout.MulticlassRows, _carClassToBrush[kvp.Key], kvp.Key.ToString() + " / " + _entryListForCarClass[kvp.Key].Count() + " Cars", _driverLastName, _config.Information.TimeDelta, _config.Information.InvalidLap);
+                ost.Draw(g, height, kvp.Value, _config.Layout.MulticlassRows, _carClassToBrush[kvp.Key], $"{kvp.Key} / {_entryListForCarClass[kvp.Key].Count()} Cars", _driverLastName, _config.Information.TimeDelta, _config.Information.InvalidLap);
                 height = ost.Height;
             }
         }
@@ -476,11 +444,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
                 }
             }
 
-        }
-
-        public sealed override bool ShouldRender()
-        {
-            return DefaultShouldRender();
         }
 
     }
