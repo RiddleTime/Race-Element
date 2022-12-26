@@ -1,11 +1,10 @@
 ﻿using ACC_Manager.Util;
 using ACCManager.Util;
 using Newtonsoft.Json;
-using System;
 
 namespace ACCManager.Data.ACC.Core.Config
 {
-    public class ReplayJson : IGenericSettingsJson
+    public class ReplaySettingsJson : IGenericSettingsJson
     {
         [JsonProperty("replayQuality")]
         public int ReplayQuality { get; set; }
@@ -44,15 +43,15 @@ namespace ACCManager.Data.ACC.Core.Config
         public int AutoSaveMinTimeSeconds { get; set; }
     }
 
-    public class ReplaySettingsJson : AbstractSettingsJson<ReplayJson>
+    public class ReplaySettings : AbstractSettingsJson<ReplaySettingsJson>
     {
         public override string Path => FileUtil.AccConfigPath;
 
         public override string FileName => "replay.json";
 
-        public override ReplayJson Default()
+        public override ReplaySettingsJson Default()
         {
-            return new ReplayJson();
+            return new ReplaySettingsJson();
         }
     }
 }

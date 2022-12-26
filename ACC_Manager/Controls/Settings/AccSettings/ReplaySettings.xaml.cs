@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACC_Manager.Util.Settings;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,13 @@ namespace ACCManager.Controls
         public ReplaySettings()
         {
             InitializeComponent();
+
+            AccSettingsJson accSettings = new AccSettings().Get();
+            accSettings.AutoRecordReplay = true;
+            if (accSettings.AutoRecordReplay)
+            {
+                TitleBar.Instance.SetIcons(TitleBar.ActivatedIcons.AutomaticSaveReplay, true);
+            }
         }
     }
 }

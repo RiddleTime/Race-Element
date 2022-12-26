@@ -1,5 +1,6 @@
 ﻿using ACCManager.Broadcast;
 using ACCManager.Data.ACC.Core;
+using ACCManager.Data.ACC.Core.Config;
 using ACCManager.Data.ACC.Database;
 using ACCManager.Data.ACC.Database.GameData;
 using ACCManager.Data.ACC.Database.LapDataDB;
@@ -52,6 +53,10 @@ namespace ACCManager.Data.ACC.Session
             StartTracking();
             OnSessionIndexChanged += TryCreateNewSession;
             OnACSessionTypeChanged += TryCreateNewSession;
+
+            ReplaySettings replaySettingsJson = new ReplaySettings();
+            var json = replaySettingsJson.Get(false);
+            Debug.WriteLine(json);
         }
 
         public static RaceSessionTracker Instance

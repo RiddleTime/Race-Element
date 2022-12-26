@@ -27,6 +27,7 @@ namespace ACCManager.Controls
 
             ThreadPool.QueueUserWorkItem(x =>
             {
+                Thread.Sleep(1000);
                 _streamSettings = new StreamSettings();
                 Dispatcher.BeginInvoke(new Action(() =>
                 {

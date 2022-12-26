@@ -44,6 +44,13 @@ namespace ACCManager.Controls
                 e.Handled = true;
             };
 
+            this.iconAutoSaveReplay.MouseRightButtonDown += (s, e) =>
+            {
+
+                MainWindow.Instance.tabSettings.Focus();
+                SettingsTab.Instance.tabAccSettings.Focus();
+            };
+
 
             this.MouseDoubleClick += TitleBar_MouseDoubleClick;
             Instance = this;
@@ -87,12 +94,17 @@ namespace ACCManager.Controls
                     {
                         iconSteeringLock.Visibility = enabled ? Visibility.Visible : Visibility.Collapsed;
                         break;
-                    };
+                    }
                 case ActivatedIcons.SetupHider:
                     {
                         iconSetupHider.Visibility = enabled ? Visibility.Visible : Visibility.Collapsed;
                         break;
-                    };
+                    }
+                case ActivatedIcons.AutomaticSaveReplay:
+                    {
+                        iconAutoSaveReplay.Visibility = enabled ? Visibility.Visible : Visibility.Collapsed;
+                        break;
+                    }
             }
         }
 
@@ -100,6 +112,7 @@ namespace ACCManager.Controls
         {
             AutomaticSteeringHardLock,
             SetupHider,
+            AutomaticSaveReplay
         }
 
         private void ButtonExit_Click(object sender, RoutedEventArgs e)

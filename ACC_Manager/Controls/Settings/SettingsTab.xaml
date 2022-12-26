@@ -26,7 +26,7 @@
                     <local:AccManagerSettingsTab></local:AccManagerSettingsTab>
                 </TabItem>
 
-                <TabItem Height="60">
+                <TabItem Height="60" x:Name="tabAccSettings">
                     <TabItem.Header>
                         <Grid>
                             <Grid.RowDefinitions>
