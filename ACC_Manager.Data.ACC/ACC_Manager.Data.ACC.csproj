@@ -88,6 +88,7 @@
     <Compile Include="Cars\Damage.cs" />
     <Compile Include="Cars\SteeringLock.cs" />
     <Compile Include="Core\AccProcess.cs" />
+    <Compile Include="Core\Config\ReplayJson.cs" />
     <Compile Include="Database\GameData\DbCarData.cs" />
     <Compile Include="Database\GameData\DbTrackData.cs" />
     <Compile Include="Database\LapDataDB\DbLapData.cs" />

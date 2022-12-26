@@ -24,7 +24,7 @@ namespace ACC_Manager.Broadcast
         {
             lock (_lock)
             {
-                FileInfo broadcastingConfig = new FileInfo(FileUtil.ConfigPath + "broadcasting.json");
+                FileInfo broadcastingConfig = new FileInfo(FileUtil.AccConfigPath + "broadcasting.json");
 
                 if (broadcastingConfig.Exists)
                 {
@@ -38,7 +38,7 @@ namespace ACC_Manager.Broadcast
                             {
                                 config.UpdListenerPort = 9000;
                                 File.WriteAllText(broadcastingConfig.FullName, JsonConvert.SerializeObject(config, Formatting.Indented));
-                                LogWriter.WriteToLog($"Auto-Changed the port number in \"{FileUtil.ConfigPath}broadcasting.json\" from 0 to 9000.");
+                                LogWriter.WriteToLog($"Auto-Changed the port number in \"{FileUtil.AccConfigPath}broadcasting.json\" from 0 to 9000.");
                             }
 
                             return config;
