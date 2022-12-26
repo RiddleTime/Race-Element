@@ -96,7 +96,10 @@ namespace ACCManager
 
             _uiSettings.Save(uiSettings);
 
-
+            this.PreviewDrop += (s, e) =>
+            {
+                Debug.WriteLine(e);
+            };
             this.Drop += MainWindow_Drop;
 
             InitializeSystemTrayIcon();
@@ -112,6 +115,12 @@ namespace ACCManager
 
         private void MainWindow_Drop(object sender, DragEventArgs e)
         {
+            /// https://stackoverflow.com/questions/3794462/enable-dragdrop-from-explorer-to-run-as-administrator-application
+            /// 
+            // run new service with less elevated rights... this one will be able to accept drag and drop.
+
+
+
             if (e.Data is DataObject)
             {
                 DataObject data = (DataObject)e.Data;
@@ -218,16 +227,23 @@ namespace ACCManager
         private System.Windows.Forms.NotifyIcon _notifyIcon;
         private void InitializeSystemTrayIcon()
         {
-            _notifyIcon = new System.Windows.Forms.NotifyIcon()
+            try
             {
-                Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location),
-                Visible = false,
-                ContextMenuStrip = CreateContextMenu(),
-                Text = "ACC Manager"
-            };
+                _notifyIcon = new System.Windows.Forms.NotifyIcon()
+                {
+                    Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location),
+                    Visible = false,
+                    ContextMenuStrip = CreateContextMenu(),
+                    Text = "ACC Manager"
+                };
 
-            _notifyIcon.DoubleClick += (s, e) => Instance.WindowState = WindowState.Normal;
-
+                _notifyIcon.DoubleClick += (s, e) => Instance.WindowState = WindowState.Normal;
+            }
+            catch (Exception e)
+            {
+                LogWriter.WriteToLog(e);
+                Debug.WriteLine(e);
+            }
         }
         private System.Windows.Forms.ContextMenuStrip CreateContextMenu()
         {
