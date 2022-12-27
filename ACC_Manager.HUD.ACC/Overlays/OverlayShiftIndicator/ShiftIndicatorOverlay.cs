@@ -67,7 +67,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
             _cachedBackground = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
             {
                 g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(160, 0, 0, 0)), new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), (int)(6 * Scale));
-                g.DrawRoundedRectangle(Pens.DarkGray, new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), (int)(6 * Scale));
+                g.DrawRoundedRectangle(Pens.Black, new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), (int)(6 * Scale));
             });
 
             _cachedRpmLines = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
@@ -78,7 +78,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
                 if (leftOver < 70)
                     lineCount--;
 
-                Pen linePen = new Pen(new SolidBrush(Color.FromArgb(90, Color.White)), 2);
+                Pen linePen = new Pen(new SolidBrush(Color.FromArgb(90, Color.White)), 1 * this.Scale);
 
                 double thousandPercent = 1000d / pageStatic.MaxRpm * lineCount;
                 double baseX = (_config.Bar.Width * this.Scale) / lineCount * thousandPercent;
