@@ -307,16 +307,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
                 float suspensionDamageRearRight = Damage.GetSuspensionDamage(pagePhysics, ACCManager.Data.SetupConverter.Wheel.RearRight);
 
                 if (suspensionDamageFrontLeft > 0)
-                    DrawTextWithOutline(g, Color.Black, $"{GetPercentage(suspensionDamageFrontLeft, 30):F0}%", (int)(horizontalPadding * 2.67f), (int)(verticalPadding * 2.0f - halfFontHeight));
+                    DrawTextWithOutline(g, Color.White, $"{GetPercentage(suspensionDamageFrontLeft, 30):F0}%", (int)(horizontalPadding * 2.67f), (int)(verticalPadding * 2.0f - halfFontHeight));
 
                 if (suspensionDamageFrontRight > 0)
-                    DrawTextWithOutline(g, Color.Black, $"{GetPercentage(suspensionDamageFrontRight, 30):F0}%", (int)(scaledWidth - horizontalPadding * 2.67f), (int)(verticalPadding * 2.0f - halfFontHeight));
+                    DrawTextWithOutline(g, Color.White, $"{GetPercentage(suspensionDamageFrontRight, 30):F0}%", (int)(scaledWidth - horizontalPadding * 2.67f), (int)(verticalPadding * 2.0f - halfFontHeight));
 
                 if (suspensionDamageRearLeft > 0)
-                    DrawTextWithOutline(g, Color.Black, $"{GetPercentage(suspensionDamageRearLeft, 30):F0}%", (int)(horizontalPadding * 2.67f), (int)(scaledHeight - verticalPadding * 2.0f - halfFontHeight));
+                    DrawTextWithOutline(g, Color.White, $"{GetPercentage(suspensionDamageRearLeft, 30):F0}%", (int)(horizontalPadding * 2.67f), (int)(scaledHeight - verticalPadding * 2.0f - halfFontHeight));
 
                 if (suspensionDamageRearRight > 0)
-                    DrawTextWithOutline(g, Color.Black, $"{GetPercentage(suspensionDamageRearRight, 30):F0}%", (int)(scaledWidth - horizontalPadding * 2.67f), (int)(scaledHeight - verticalPadding * 2.0f - halfFontHeight));
+                    DrawTextWithOutline(g, Color.White, $"{GetPercentage(suspensionDamageRearRight, 30):F0}%", (int)(scaledWidth - horizontalPadding * 2.67f), (int)(scaledHeight - verticalPadding * 2.0f - halfFontHeight));
 
                 if (_damageTime > 0 && _config.Damage.TotalRepairTime)
                     DrawTextWithOutline(g, Color.OrangeRed, $"{_damageTime:F1}", (int)(scaledWidth / 2), (int)(scaledHeight / 2 - halfFontHeight));
@@ -347,16 +347,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
                 float bodyDamageCentre = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Centre);
 
                 if (bodyDamageFront > 0)
-                    DrawTextWithOutline(g, Color.Black, $"{bodyDamageFront:F1}", (int)(scaledWidth / 2), (int)(verticalPadding * 1.2f - halfFontHeight * 2));
+                    DrawTextWithOutline(g, Color.White, $"{bodyDamageFront:F1}", (int)(scaledWidth / 2), (int)(verticalPadding * 1.2f - halfFontHeight * 2));
 
                 if (bodyDamageRear > 0)
-                    DrawTextWithOutline(g, Color.Black, $"{bodyDamageRear:F1}", (int)(scaledWidth / 2), (int)(scaledHeight - verticalPadding * 0.9f - halfFontHeight));
+                    DrawTextWithOutline(g, Color.White, $"{bodyDamageRear:F1}", (int)(scaledWidth / 2), (int)(scaledHeight - verticalPadding * 0.9f - halfFontHeight));
 
                 if (bodyDamageLeft > 0)
-                    DrawTextWithOutline(g, Color.Black, $"{bodyDamageLeft:F1}", (int)(horizontalPadding * 1.75f), (int)(scaledHeight / 2 - halfFontHeight));
+                    DrawTextWithOutline(g, Color.White, $"{bodyDamageLeft:F1}", (int)(horizontalPadding * 1.75f), (int)(scaledHeight / 2 - halfFontHeight));
 
                 if (bodyDamageRight > 0)
-                    DrawTextWithOutline(g, Color.Black, $"{bodyDamageRight:F1}", (int)(scaledWidth - horizontalPadding * 1.75f), (int)(scaledHeight / 2 - halfFontHeight));
+                    DrawTextWithOutline(g, Color.White, $"{bodyDamageRight:F1}", (int)(scaledWidth - horizontalPadding * 1.75f), (int)(scaledHeight / 2 - halfFontHeight));
             });
         }
 
@@ -364,8 +364,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
         {
             int textWidth = (int)g.MeasureString(text, _font).Width;
             Rectangle backgroundDimension = new Rectangle(x - textWidth / 2, y, (int)textWidth, _font.Height);
-            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 255, 255, 255)), backgroundDimension, 2);
-            g.DrawRoundedRectangle(new Pen(Color.FromArgb(210, 0, 0, 0), 0.8f * this.Scale), backgroundDimension, 2);
+            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 0, 0, 0)), backgroundDimension, 2);
+            g.DrawRoundedRectangle(new Pen(Color.FromArgb(210, 255, 255, 255), 0.6f * this.Scale), backgroundDimension, 2);
             g.DrawStringWithShadow(text, _font, textColor, new PointF(x - textWidth / 2, y + _font.GetHeight(g) / 11f), 0.75f * this.Scale);
         }
     }
