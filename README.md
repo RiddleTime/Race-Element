@@ -1,6 +1,6 @@
 # ![ACC Manager](https://raw.githubusercontent.com/RiddleTime/ACC-Manager/dev/other%20resources/acc%20manager%20-%20name.png)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/u6yxjmncb1g8484h/branch/dev?svg=true)](https://ci.appveyor.com/project/RiddleTime/race-element/branch/dev)
+[![Build status](https://ci.appveyor.com/api/projects/status/wnbn1pdscccqwegg?svg=true)](https://ci.appveyor.com/project/RiddleTime/race-element)
 [![Discord](https://badgen.net/discord/members/26AAEW5mUq?icon=discord&color=5562ea&label=ACC%20Manager)](https://discord.gg/26AAEW5mUq)
 [![Hits](https://hits.seeyoufarm.com/api/count/keep/badge.svg?url=https%3A%2F%2Fgithub.com%2FRiddleTime%2FACC-Manager&count_bg=%23FF4500&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Usage%3A+Today+%2F+All-time&edge_flat=false)](https://hits.seeyoufarm.com)
 
