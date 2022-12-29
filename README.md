@@ -1,4 +1,5 @@
-# ![ACC Manager](https://raw.githubusercontent.com/RiddleTime/ACC-Manager/dev/other%20resources/acc%20manager%20-%20name.png)
+# ![Race Element - Name](https://user-images.githubusercontent.com/4581237/209894151-3f8a5dc5-45de-4d7c-a46a-8c5a2a57cd91.png)
+
 
 [![Build status](https://ci.appveyor.com/api/projects/status/wnbn1pdscccqwegg?svg=true)](https://ci.appveyor.com/project/RiddleTime/race-element)
 [![Discord](https://badgen.net/discord/members/26AAEW5mUq?icon=discord&color=5562ea&label=Race%20Element)](https://discord.gg/26AAEW5mUq)
@@ -11,7 +12,7 @@ Provides tooling for Sim Racing
 - Liveries
 - Racing Tools
 
-[Download Latest Release](https://github.com/RiddleTime/ACC-Manager/releases/latest)
+[Download Latest Release](https://github.com/RiddleTime/Race-Element/releases/latest)
 
 
 ### Requires .NET Framework 4.8
