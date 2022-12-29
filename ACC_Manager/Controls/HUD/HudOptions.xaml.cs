@@ -247,7 +247,7 @@ namespace RaceElement.Controls
             Label overlayNameLabel = new Label()
             {
                 Content = overlayAttribute.Name,
-                FontFamily = FindResource("FontRedemption") as FontFamily,
+                FontFamily = FindResource("Conthrax") as FontFamily,
                 BorderBrush = Brushes.OrangeRed,
                 BorderThickness = new Thickness(0, 0, 0, 1.5),
                 Margin = new Thickness(0, -1, 0, 5),

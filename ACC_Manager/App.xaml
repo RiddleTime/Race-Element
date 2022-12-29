@@ -7,7 +7,7 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <FontFamily x:Key="RobotoMedium" >"pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/#Roboto-Medium</FontFamily>
-        <FontFamily x:Key="FontRedemption">pack://application:,,,./Fonts/#Redemption</FontFamily>
+        <FontFamily x:Key="Conthrax">pack://application:,,,./Fonts/#Conthrax Sb</FontFamily>
 
 
         <!-- https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit -->

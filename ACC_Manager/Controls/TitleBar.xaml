@@ -35,7 +35,7 @@
                 <DropShadowEffect Color="Black" Opacity="0.85" BlurRadius="4" ShadowDepth="2.5"/>
             </materialDesign:TransitioningContent.Effect>
             <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="Title" Foreground="#EFEFEFEF" FontFamily="{StaticResource FontRedemption}" FontWeight="ExtraLight" FontSize="28"  FontStyle="Italic"  VerticalAlignment="Center">
+                <TextBlock x:Name="Title" Foreground="#EFEFEFEF" FontFamily="{StaticResource Conthrax}" FontSize="24" FontWeight="SemiBold" VerticalAlignment="Center">
                 </TextBlock>
 
                 <StackPanel x:Name="stackPanelActivatedIcons"  Orientation="Horizontal" Margin="10,0,0,0" HorizontalAlignment="Right">
