@@ -2,11 +2,11 @@
 using System.IO;
 using System.Security.Cryptography;
 
-namespace ACCManager.Util
+namespace RaceElement.Util
 {
     public class FileUtil
     {
-        public static string AccManagerAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "ACC Manager\\";
+        public static string AccManagerAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "Race Element\\";
         public static string AccManagerLogPath = AccManagerAppDataPath + "Log\\";
         public static string AccManagerTagsPath = AccManagerAppDataPath + "Tag\\";
         public static string AccManagerOverlayPath = AccManagerAppDataPath + "Overlay\\";

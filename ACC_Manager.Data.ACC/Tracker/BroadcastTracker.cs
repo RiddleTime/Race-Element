@@ -1,12 +1,12 @@
-﻿using ACC_Manager.Broadcast;
-using ACC_Manager.Broadcast.Structs;
-using ACCManager.Broadcast;
-using ACCManager.Broadcast.Structs;
+﻿using RaceElement.Broadcast;
+using RaceElement.Broadcast.Structs;
+using RaceElement.Broadcast;
+using RaceElement.Broadcast.Structs;
 using System;
 using System.Diagnostics;
 using System.Net;
 
-namespace ACCManager.Data.ACC.Tracker
+namespace RaceElement.Data.ACC.Tracker
 {
     public class BroadcastTracker : IDisposable
     {

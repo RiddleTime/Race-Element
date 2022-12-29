@@ -1,12 +1,12 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.HUD.Overlay.OverlayUtil;
+﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.HUD.Overlay.OverlayUtil;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
+namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
 {
     internal class OversteerGraph : IDisposable
     {

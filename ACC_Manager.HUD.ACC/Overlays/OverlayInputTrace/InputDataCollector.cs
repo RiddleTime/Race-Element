@@ -1,10 +1,10 @@
-﻿using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.Util;
+﻿using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.Util;
 using System.Collections.Generic;
 using System.Threading;
-using static ACCManager.ACCSharedMemory;
+using static RaceElement.ACCSharedMemory;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
+namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
 {
     internal class InputDataCollector
     {

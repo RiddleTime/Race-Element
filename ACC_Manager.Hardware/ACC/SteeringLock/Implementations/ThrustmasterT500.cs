@@ -2,7 +2,7 @@
 using System.Linq;
 using HidLibrary;
 
-namespace ACCManager.Hardware.ACC.SteeringLock.Implementations
+namespace RaceElement.Hardware.ACC.SteeringLock.Implementations
 {
     internal class ThrustmasterT500 : IWheelSteerLockSetter {
         public virtual string ControllerName => "Thrustmaster T500RS";

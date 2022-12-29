@@ -1,10 +1,10 @@
-﻿using ACCManager.Data.ACC.Tracks;
+﻿using RaceElement.Data.ACC.Tracks;
 using ScottPlot;
 using ScottPlot.Plottable;
 using ScottPlot.Styles;
 using System;
 
-namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
+namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
 {
     internal static class PlotUtil
     {

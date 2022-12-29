@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using static ACCManager.HUD.Overlay.Internal.WindowStructs;
+using static RaceElement.HUD.Overlay.Internal.WindowStructs;
 
-namespace ACCManager.HUD.Overlay.Internal
+namespace RaceElement.HUD.Overlay.Internal
 {
     // from https://xcalibursystems.com/accessing-monitor-information-with-c-part-2-getting-a-monitor-associated-with-a-window-handle/
     public class Monitors

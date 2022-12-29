@@ -1,11 +1,11 @@
-﻿using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.OverlayUtil;
+﻿using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
 using System.Drawing;
 using System.Windows.Forms;
 using Gma.System.MouseKeyHook;
 using System.Runtime.InteropServices;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
+namespace RaceElement.HUD.ACC.Overlays.OverlayMousePosition
 {
     public sealed class MousePositionOverlay : AbstractOverlay
     {

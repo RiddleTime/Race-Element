@@ -1,13 +1,13 @@
-﻿using ACC_Manager.Broadcast;
-using ACC_Manager.Util.Settings;
-using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Controls;
-using ACCManager.Data.ACC.Tracker;
-using ACCManager.Hardware.ACC.SteeringLock;
-using ACCManager.HUD.ACC;
-using ACCManager.HUD.ACC.Data.Tracker;
-using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput;
-using ACCManager.Util;
+﻿using RaceElement.Broadcast;
+using RaceElement.Util.Settings;
+using RaceElement.Util.SystemExtensions;
+using RaceElement.Controls;
+using RaceElement.Data.ACC.Tracker;
+using RaceElement.Hardware.ACC.SteeringLock;
+using RaceElement.HUD.ACC;
+using RaceElement.HUD.ACC.Data.Tracker;
+using RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput;
+using RaceElement.Util;
 using System;
 using System.Collections.Specialized;
 using System.Diagnostics;
@@ -20,7 +20,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
 
-namespace ACCManager
+namespace RaceElement
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -56,7 +56,7 @@ namespace ACCManager
             _accManagerSettings = new AccManagerSettings();
 
 
-            this.Title = $"ACC Manager {GetAssemblyFileVersion()}";
+            this.Title = $"Race Element {GetAssemblyFileVersion()}";
 
             this.titleBar.MouseLeftButtonDown += TitleBar_MouseLeftButtonDown;
             this.titleBar.MouseLeftButtonUp += TitleBar_MouseLeftButtonUp;
@@ -166,7 +166,7 @@ namespace ACCManager
             {
                 Thread.Sleep(2000);
                 GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
-                string loadString = $"Loaded ACC Manager {GetAssemblyFileVersion()}";
+                string loadString = $"Loaded Race Element {GetAssemblyFileVersion()}";
                 string fileHash = FileUtil.GetBase64Hash(FileUtil.AppFullName);
 
 #if DEBUG
@@ -234,7 +234,7 @@ namespace ACCManager
                     Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location),
                     Visible = false,
                     ContextMenuStrip = CreateContextMenu(),
-                    Text = "ACC Manager"
+                    Text = "Race Element"
                 };
 
                 _notifyIcon.DoubleClick += (s, e) => Instance.WindowState = WindowState.Normal;

@@ -1,9 +1,9 @@
-﻿using ACCManager.Data.ACC.Session;
-using ACCManager.Data.ACC.Tracker.Laps;
+﻿using RaceElement.Data.ACC.Session;
+using RaceElement.Data.ACC.Tracker.Laps;
 using System.Diagnostics;
 using System.Threading;
 
-namespace ACCManager.Data.ACC.Tracker
+namespace RaceElement.Data.ACC.Tracker
 {
     public class ACCTrackerStarter
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCManager.HUD.Overlay.OverlayUtil.ProgressBars
+namespace RaceElement.HUD.Overlay.OverlayUtil.ProgressBars
 {
     public class HorizontalProgressBar
     {

@@ -1,4 +1,4 @@
-﻿using ACCManager.Util;
+﻿using RaceElement.Util;
 using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
 using System;
@@ -9,9 +9,9 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using static ACCManager.Controls.LiveryBrowser;
+using static RaceElement.Controls.LiveryBrowser;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for LiveryExporter.xaml

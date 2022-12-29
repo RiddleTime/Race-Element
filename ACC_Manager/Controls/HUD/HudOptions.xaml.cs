@@ -1,13 +1,13 @@
-﻿using ACC_Manager.Util.Settings;
-using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Controls.HUD;
-using ACCManager.Controls.HUD.Controls;
-using ACCManager.Controls.Util.SetupImage;
-using ACCManager.HUD.ACC;
-using ACCManager.HUD.ACC.Overlays.OverlayMousePosition;
-using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.Util;
+﻿using RaceElement.Util.Settings;
+using RaceElement.Util.SystemExtensions;
+using RaceElement.Controls.HUD;
+using RaceElement.Controls.HUD.Controls;
+using RaceElement.Controls.Util.SetupImage;
+using RaceElement.HUD.ACC;
+using RaceElement.HUD.ACC.Overlays.OverlayMousePosition;
+using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.Util;
 using Gma.System.MouseKeyHook;
 using System;
 using System.Collections.Generic;
@@ -21,11 +21,11 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-using static ACCManager.HUD.Overlay.Configuration.OverlayConfiguration;
-using static ACCManager.HUD.Overlay.Configuration.OverlaySettings;
+using static RaceElement.HUD.Overlay.Configuration.OverlayConfiguration;
+using static RaceElement.HUD.Overlay.Configuration.OverlaySettings;
 
 // https://github.com/gmamaladze/globalmousekeyhook
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for HudOptions.xaml

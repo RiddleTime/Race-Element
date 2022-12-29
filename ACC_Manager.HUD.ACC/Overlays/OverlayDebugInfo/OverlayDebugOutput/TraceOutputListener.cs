@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
+namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
 {
     public class TraceOutputListener
     {

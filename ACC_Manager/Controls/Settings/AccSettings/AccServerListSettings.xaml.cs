@@ -1,6 +1,6 @@
-﻿using ACC_Manager.Util;
-using ACC_Manager.Util.Settings;
-using ACCManager.Util;
+﻿using RaceElement.Util;
+using RaceElement.Util.Settings;
+using RaceElement.Util;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -9,7 +9,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for AccServerListSettings.xaml

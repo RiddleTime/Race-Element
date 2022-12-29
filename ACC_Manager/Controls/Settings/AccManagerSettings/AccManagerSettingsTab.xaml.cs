@@ -1,13 +1,13 @@
-﻿using ACC_Manager.Util.Settings;
-using ACCManager.Util;
+﻿using RaceElement.Util.Settings;
+using RaceElement.Util;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows.Controls;
-using static ACCManager.Controls.LiveryBrowser;
+using static RaceElement.Controls.LiveryBrowser;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for AccManagerSettingsTab.xaml

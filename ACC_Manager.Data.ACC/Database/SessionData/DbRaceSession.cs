@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using static ACCManager.ACCSharedMemory;
+using static RaceElement.ACCSharedMemory;
 
-namespace ACCManager.Data.ACC.Database.SessionData
+namespace RaceElement.Data.ACC.Database.SessionData
 {
     public class DbRaceSession
     {

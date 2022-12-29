@@ -2,11 +2,11 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using ACC_Manager.Util.SystemExtensions;
-using ACCManager.HUD.Overlay.Configuration;
-using static ACCManager.HUD.Overlay.Configuration.OverlayConfiguration;
+using RaceElement.Util.SystemExtensions;
+using RaceElement.HUD.Overlay.Configuration;
+using static RaceElement.HUD.Overlay.Configuration.OverlayConfiguration;
 
-namespace ACCManager.Controls.HUD.Controls.ValueControls
+namespace RaceElement.Controls.HUD.Controls.ValueControls
 {
     internal class ByteValueControl : IValueControl<byte>, IControl
     {

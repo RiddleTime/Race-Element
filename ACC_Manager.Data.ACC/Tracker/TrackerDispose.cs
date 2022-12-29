@@ -1,10 +1,10 @@
-﻿using ACCManager.Data.ACC.Database;
-using ACCManager.Data.ACC.EntryList;
-using ACCManager.Data.ACC.Session;
-using ACCManager.Data.ACC.Tracker.Laps;
+﻿using RaceElement.Data.ACC.Database;
+using RaceElement.Data.ACC.EntryList;
+using RaceElement.Data.ACC.Session;
+using RaceElement.Data.ACC.Tracker.Laps;
 using System.Diagnostics;
 
-namespace ACCManager.Data.ACC.Tracker
+namespace RaceElement.Data.ACC.Tracker
 {
     public class ACCTrackerDispose
     {

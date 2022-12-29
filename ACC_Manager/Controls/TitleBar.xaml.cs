@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for TitleBar.xaml
@@ -13,7 +13,7 @@ namespace ACCManager.Controls
     {
         internal static TitleBar Instance { get; private set; }
 
-        private const string _AppName = "ACC Manager";
+        private const string _AppName = "Race Element";
 
         public TitleBar()
         {

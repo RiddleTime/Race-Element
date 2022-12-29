@@ -1,8 +1,8 @@
-﻿using ACC_Manager.Util;
-using ACCManager.Util;
+﻿using RaceElement.Util;
+using RaceElement.Util;
 using Newtonsoft.Json;
 
-namespace ACCManager.Data.ACC.Core.Config
+namespace RaceElement.Data.ACC.Core.Config
 {
     public class ReplaySettingsJson : IGenericSettingsJson
     {

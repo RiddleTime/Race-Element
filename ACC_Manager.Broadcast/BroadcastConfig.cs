@@ -1,10 +1,10 @@
-﻿using ACCManager.Util;
+﻿using RaceElement.Util;
 using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace ACC_Manager.Broadcast
+namespace RaceElement.Broadcast
 {
     public class BroadcastConfig
     {

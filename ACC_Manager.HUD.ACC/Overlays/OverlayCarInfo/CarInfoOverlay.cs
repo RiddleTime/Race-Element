@@ -1,12 +1,12 @@
-﻿using ACCManager.Data.ACC.Cars;
-using ACCManager.Data.ACC.Database.LapDataDB;
-using ACCManager.Data.ACC.Tracker.Laps;
-using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.Util;
+﻿using RaceElement.Data.ACC.Cars;
+using RaceElement.Data.ACC.Database.LapDataDB;
+using RaceElement.Data.ACC.Tracker.Laps;
+using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.Util;
 using System.Drawing;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayCarInfo
+namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
 {
     [Overlay(Name = "Car Info", Version = 1.00, OverlayType = OverlayType.Release,
         Description = "A panel showing the damage time. Optionally showing current tyre set, fuel per lap, exhaust temp and water temp.")]

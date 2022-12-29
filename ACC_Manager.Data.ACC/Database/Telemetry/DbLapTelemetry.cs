@@ -1,7 +1,7 @@
 ﻿using LiteDB;
 using System;
 
-namespace ACCManager.Data.ACC.Database.Telemetry
+namespace RaceElement.Data.ACC.Database.Telemetry
 {
     public class DbLapTelemetry
     {

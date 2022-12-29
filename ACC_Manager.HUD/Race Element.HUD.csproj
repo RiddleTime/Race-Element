@@ -78,21 +78,21 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ACC_Manager.Broadcast\ACC_Manager.Broadcast.csproj">
+    <ProjectReference Include="..\ACC_Manager.Broadcast\Race Element.Broadcast.csproj">
       <Project>{840220BD-8469-4A04-A6EC-1ED2BC743EFB}</Project>
-      <Name>ACC_Manager.Broadcast</Name>
+      <Name>Race Element.Broadcast</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ACC_Manager.Data.ACC\ACC_Manager.Data.ACC.csproj">
+    <ProjectReference Include="..\ACC_Manager.Data.ACC\Race Element.Data.ACC.csproj">
       <Project>{BB693CEB-CD96-4EB6-9F13-110D3CCECFFE}</Project>
-      <Name>ACC_Manager.Data.ACC</Name>
+      <Name>Race Element.Data.ACC</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ACC_Manager.SharedMemory\ACC_Manager.SharedMemory.csproj">
+    <ProjectReference Include="..\ACC_Manager.SharedMemory\Race Element.SharedMemory.csproj">
       <Project>{9f9be520-14c4-4ab6-8119-5e14bcca9a0f}</Project>
-      <Name>ACC_Manager.SharedMemory</Name>
+      <Name>Race Element.SharedMemory</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ACC_Manager.Util\ACC_Manager.Util.csproj">
+    <ProjectReference Include="..\ACC_Manager.Util\Race Element.Util.csproj">
       <Project>{AAB23116-299B-415B-8305-96CB86148CE7}</Project>
-      <Name>ACC_Manager.Util</Name>
+      <Name>Race Element.Util</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,12 +1,12 @@
-﻿using ACCManager.Data.ACC.Tracks;
+﻿using RaceElement.Data.ACC.Tracks;
 using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using static ACCManager.Data.ACC.Tracks.TrackNames;
+using static RaceElement.Data.ACC.Tracks.TrackNames;
 
-namespace ACCManager.Data.ACC.Database.GameData
+namespace RaceElement.Data.ACC.Database.GameData
 {
     public class DbTrackData
     {

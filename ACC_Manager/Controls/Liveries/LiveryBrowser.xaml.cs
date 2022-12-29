@@ -1,7 +1,7 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Data;
-using ACCManager.LiveryParser;
-using ACCManager.Util;
+﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.Data;
+using RaceElement.LiveryParser;
+using RaceElement.Util;
 using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
 using System;
@@ -14,9 +14,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using static ACCManager.Controls.LiveryTagging;
+using static RaceElement.Controls.LiveryTagging;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for LiveryBrowser.xaml

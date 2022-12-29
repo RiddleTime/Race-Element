@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     public static class ReleaseNotes
     {

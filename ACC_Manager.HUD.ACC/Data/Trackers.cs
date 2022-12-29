@@ -1,7 +1,7 @@
-﻿using ACCManager.Data.ACC.Tracker.Laps;
-using ACCManager.HUD.ACC.Data.Tracker.Weather;
+﻿using RaceElement.Data.ACC.Tracker.Laps;
+using RaceElement.HUD.ACC.Data.Tracker.Weather;
 
-namespace ACCManager.HUD.ACC.Data.Tracker
+namespace RaceElement.HUD.ACC.Data.Tracker
 {
     public static class HudTrackers
     {

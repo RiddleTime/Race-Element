@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace ACCManager.Controls.HUD.Controls.ValueControls
+namespace RaceElement.Controls.HUD.Controls.ValueControls
 {
     internal interface IControl
     {

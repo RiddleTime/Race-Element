@@ -1,13 +1,13 @@
-﻿using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.OverlayUtil;
-using ACCManager.Util;
+﻿using RaceElement.HUD.ACC.Overlays.OverlayDebugInfo;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.Util;
 using System;
 using System.Drawing;
 using System.Reflection;
-using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
+using static RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayPhysicsInfo
+namespace RaceElement.HUD.ACC.Overlays.OverlayPhysicsInfo
 {
 
     [Overlay(Name = "Physics Info", Version = 1.00,

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ACCManager.Hardware.ACC.SteeringLock.Implementations
+namespace RaceElement.Hardware.ACC.SteeringLock.Implementations
 {
     internal class ThrustmasterTSPC : ThrustmasterT500 {
         public override string ControllerName => "Thrustmaster TS-PC Racer";

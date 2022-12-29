@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Windows;
 
-namespace ACCManager
+namespace RaceElement
 {
     /// <summary>
     /// Interaction logic for App.xaml

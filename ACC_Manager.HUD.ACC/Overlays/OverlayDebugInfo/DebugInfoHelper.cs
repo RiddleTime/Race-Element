@@ -1,9 +1,9 @@
-﻿using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
+﻿using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
 using System;
 using System.Collections.Generic;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo
+namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo
 {
     internal class DebugInfoHelper
     {

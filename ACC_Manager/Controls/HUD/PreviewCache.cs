@@ -1,7 +1,7 @@
-﻿using ACCManager.Controls.Util.SetupImage;
-using ACCManager.HUD.ACC;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.OverlayUtil;
+﻿using RaceElement.Controls.Util.SetupImage;
+using RaceElement.HUD.ACC;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace ACCManager.Controls.HUD
+namespace RaceElement.Controls.HUD
 {
     internal class PreviewCache
     {

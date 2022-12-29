@@ -1,6 +1,6 @@
-﻿using ACCManager.Broadcast;
+﻿using RaceElement.Broadcast;
 
-namespace ACCManager.Data.ACC.Session
+namespace RaceElement.Data.ACC.Session
 {
     public class RaceSessionState
     {

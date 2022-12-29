@@ -1,8 +1,8 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Broadcast;
+﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.Broadcast;
 using System.Diagnostics;
 
-namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
+namespace RaceElement.Data.ACC.EntryList.TrackPositionGraph
 {
     public class Car
     {

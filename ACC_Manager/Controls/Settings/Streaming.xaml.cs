@@ -1,5 +1,5 @@
-﻿using ACCManager.Data.ACC.Tracker;
-using ACCManager.Util.Settings;
+﻿using RaceElement.Data.ACC.Tracker;
+using RaceElement.Util.Settings;
 using OBSWebsocketDotNet;
 using SLOBSharp.Client;
 using SLOBSharp.Client.Requests;
@@ -12,7 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using WebSocketSharp;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for Streaming.xaml

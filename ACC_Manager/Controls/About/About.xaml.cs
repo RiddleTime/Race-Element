@@ -1,6 +1,6 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Controls.Util.Updater;
-using ACCManager.Util;
+﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.Controls.Util.Updater;
+using RaceElement.Util;
 using Octokit;
 using System;
 using System.Diagnostics;
@@ -11,7 +11,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for About.xaml
@@ -100,7 +100,7 @@ namespace ACCManager.Controls
 
                             await Dispatcher.BeginInvoke(new Action(() =>
                              {
-                                 MainWindow.Instance.EnqueueSnackbarMessage($"A new version of ACC Manager is available: {latest.Name}", " Open About tab ", new Action(() => { MainWindow.Instance.tabAbout.Focus(); }));
+                                 MainWindow.Instance.EnqueueSnackbarMessage($"A new version of Race Element is available: {latest.Name}", " Open About tab ", new Action(() => { MainWindow.Instance.tabAbout.Focus(); }));
                                  Button openReleaseButton = new Button()
                                  {
                                      Margin = new Thickness(0, 0, 0, 0),

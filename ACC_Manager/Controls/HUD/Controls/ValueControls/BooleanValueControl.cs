@@ -4,9 +4,9 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-using static ACCManager.HUD.Overlay.Configuration.OverlayConfiguration;
+using static RaceElement.HUD.Overlay.Configuration.OverlayConfiguration;
 
-namespace ACCManager.Controls.HUD.Controls.ValueControls
+namespace RaceElement.Controls.HUD.Controls.ValueControls
 {
     internal class BooleanValueControl : IValueControl<bool>, IControl
     {

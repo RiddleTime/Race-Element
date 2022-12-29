@@ -1,7 +1,7 @@
-﻿using ACCManager.Controls.Liveries;
-using ACCManager.Data;
-using ACCManager.LiveryParser;
-using ACCManager.Util;
+﻿using RaceElement.Controls.Liveries;
+using RaceElement.Data;
+using RaceElement.LiveryParser;
+using RaceElement.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,9 +11,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using static ACCManager.Controls.LiveryBrowser;
+using static RaceElement.Controls.LiveryBrowser;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for LiveryDisplayer.xaml

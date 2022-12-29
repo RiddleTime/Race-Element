@@ -6,11 +6,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ACC Manager")]
-[assembly: AssemblyDescription("Universal Tools for Assetto Corsa Competizione")]
+[assembly: AssemblyTitle("Race Element")]
+[assembly: AssemblyDescription("Universal Tools for Sim Racing.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Element Future")]
-[assembly: AssemblyProduct("ACC Manager")]
+[assembly: AssemblyProduct("Race Element")]
 [assembly: AssemblyCopyright("Copyright 2022 © Reinier Klarenberg")]
 [assembly: AssemblyTrademark("Element Future")]
 [assembly: AssemblyCulture("")]

@@ -1,14 +1,14 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.OverlayUtil;
-using ACCManager.HUD.Overlay.Util;
+﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayShiftIndicator
+namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 {
     [Overlay(Name = "Shift Indicator", Version = 1.00,
         Description = "A bar showing the current RPM, optionally showing when the pit limiter is enabled.")]

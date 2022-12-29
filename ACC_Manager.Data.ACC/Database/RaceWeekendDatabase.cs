@@ -1,11 +1,11 @@
-﻿using ACCManager.Data.ACC.Database.LapDataDB;
-using ACCManager.Util;
+﻿using RaceElement.Data.ACC.Database.LapDataDB;
+using RaceElement.Util;
 using LiteDB;
 using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace ACCManager.Data.ACC.Database
+namespace RaceElement.Data.ACC.Database
 {
     /// <summary>
     /// https://github.com/mbdavid/LiteDB

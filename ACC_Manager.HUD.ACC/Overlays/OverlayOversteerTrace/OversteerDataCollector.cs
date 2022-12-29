@@ -1,11 +1,11 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.HUD.Overlay.Internal;
+﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.HUD.Overlay.Internal;
 using System.Collections.Generic;
 using System.Threading;
-using static ACCManager.ACCSharedMemory;
-using static ACCManager.Data.SetupConverter;
+using static RaceElement.ACCSharedMemory;
+using static RaceElement.Data.SetupConverter;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
+namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
 {
     internal class OversteerDataCollector
     {

@@ -1,13 +1,13 @@
-﻿using ACCManager.Broadcast;
-using ACCManager.Broadcast.Structs;
-using ACCManager.Data;
-using ACCManager.Data.ACC.EntryList;
-using ACCManager.Data.ACC.EntryList.TrackPositionGraph;
-using ACCManager.Data.ACC.Session;
-using ACCManager.Data.ACC.Tracker;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.OverlayUtil;
-using ACCManager.HUD.Overlay.Util;
+﻿using RaceElement.Broadcast;
+using RaceElement.Broadcast.Structs;
+using RaceElement.Data;
+using RaceElement.Data.ACC.EntryList;
+using RaceElement.Data.ACC.EntryList.TrackPositionGraph;
+using RaceElement.Data.ACC.Session;
+using RaceElement.Data.ACC.Tracker;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,11 +15,11 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Linq;
-using static ACCManager.ACCSharedMemory;
-using static ACCManager.Data.ACC.EntryList.EntryListTracker;
-using static ACCManager.Data.SetupConverter;
+using static RaceElement.ACCSharedMemory;
+using static RaceElement.Data.ACC.EntryList.EntryListTracker;
+using static RaceElement.Data.SetupConverter;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
+namespace RaceElement.HUD.ACC.Overlays.OverlayStandings
 {
 #if DEBUG
     [Overlay(Name = "Live Standings", Version = 1.00,

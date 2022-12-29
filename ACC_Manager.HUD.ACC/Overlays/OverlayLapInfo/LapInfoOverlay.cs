@@ -1,13 +1,13 @@
-﻿using ACCManager.Data.ACC.Database.LapDataDB;
-using ACCManager.Data.ACC.Tracker.Laps;
-using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.OverlayUtil;
+﻿using RaceElement.Data.ACC.Database.LapDataDB;
+using RaceElement.Data.ACC.Tracker.Laps;
+using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
 using System;
 using System.Drawing;
 using System.Drawing.Text;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
+namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
 {
     [Overlay(Name = "Lap Info", Version = 1.00, OverlayType = OverlayType.Release,
         Description = "A panel with a bar showing the current delta.\nOptionally showing the sector times, last lap, best lap and the potential best.")]

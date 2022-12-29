@@ -1,13 +1,13 @@
-﻿using ACCManager.Data.ACC.EntryList;
-using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
+﻿using RaceElement.Data.ACC.EntryList;
+using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using static ACCManager.Data.ACC.EntryList.EntryListTracker;
+using static RaceElement.Data.ACC.EntryList.EntryListTracker;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayFocusedCar
+namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayFocusedCar
 {
     [Overlay(Name = "Focused Car", Description = "Shows information regarding the focused car",
         OverlayType = OverlayType.Debug, Version = 1.00)]

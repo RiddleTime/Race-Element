@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ACCManager.HUD.Overlay.Configuration
+namespace RaceElement.HUD.Overlay.Configuration
 {
     public class FloatRangeAttribute : Attribute
     {

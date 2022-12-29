@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
-namespace ACCManager.HUD.Overlay.Configuration
+namespace RaceElement.HUD.Overlay.Configuration
 {
     public abstract class OverlayConfiguration
     {

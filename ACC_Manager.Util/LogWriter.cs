@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace ACCManager.Util
+namespace RaceElement.Util
 {
     /// <summary>
     /// Simple thread safe logging helper

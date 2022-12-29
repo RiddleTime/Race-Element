@@ -1,14 +1,14 @@
-﻿using ACCManager.Controls.Setup.FlowDocUtil;
-using ACCManager.Data;
+﻿using RaceElement.Controls.Setup.FlowDocUtil;
+using RaceElement.Data;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
-using static ACCManager.Data.ConversionFactory;
-using static ACCManager.Data.SetupConverter;
+using static RaceElement.Data.ConversionFactory;
+using static RaceElement.Data.SetupConverter;
 
-namespace ACCManager.Controls.Setup
+namespace RaceElement.Controls.Setup
 {
     public class FlowDocCompareSetupRenderer
     {

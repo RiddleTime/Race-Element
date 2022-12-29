@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Runtime.InteropServices;
 
-namespace ACCManager.HUD.Overlay.Internal
+namespace RaceElement.HUD.Overlay.Internal
 {
     public class WindowStructs
     {

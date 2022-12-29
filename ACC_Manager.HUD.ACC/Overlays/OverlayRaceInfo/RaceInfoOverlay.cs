@@ -1,10 +1,10 @@
-﻿using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.Util;
+﻿using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Drawing;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayRaceInfo
+namespace RaceElement.HUD.ACC.Overlays.OverlayRaceInfo
 {
     [Overlay(Name = "Race Info", Description = "(BETA) Provides information for the current race session.", OverlayType = OverlayType.Release, Version = 1.00)]
     internal class RaceInfoOverlay : AbstractOverlay

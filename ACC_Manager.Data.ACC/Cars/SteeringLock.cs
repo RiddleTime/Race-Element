@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ACCManager.Data.ACC.Cars
+namespace RaceElement.Data.ACC.Cars
 {
     public class SteeringLock
     {

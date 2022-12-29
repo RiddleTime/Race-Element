@@ -1,4 +1,4 @@
-﻿namespace ACCManager.Hardware.ACC.SteeringLock
+﻿namespace RaceElement.Hardware.ACC.SteeringLock
 {
     internal interface IWheelSteerLockSetter
     {

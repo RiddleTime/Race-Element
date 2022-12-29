@@ -1,13 +1,13 @@
-﻿using ACCManager.HUD.Overlay.Internal;
-using ACCManager.Util;
+﻿using RaceElement.HUD.Overlay.Internal;
+using RaceElement.Util;
 using System;
 using System.Drawing;
 using System.Reflection;
-using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo;
-using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
-using ACCManager.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.ACC.Overlays.OverlayDebugInfo;
+using static RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
+using RaceElement.HUD.Overlay.OverlayUtil;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayStaticInfo
+namespace RaceElement.HUD.ACC.Overlays.OverlayStaticInfo
 {
     [Overlay(Name = "Static Info", Version = 1.00,
         Description = "Shared Memory Static Page", OverlayType = OverlayType.Debug)]

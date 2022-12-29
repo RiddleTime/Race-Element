@@ -1,4 +1,4 @@
-﻿namespace ACCManager.Broadcast.Structs
+﻿namespace RaceElement.Broadcast.Structs
 {
     public struct RealtimeCarUpdate
     {

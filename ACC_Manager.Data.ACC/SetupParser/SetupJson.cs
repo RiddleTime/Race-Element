@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ACCManager.Data
+namespace RaceElement.Data
 {
     public class SetupJson
     {

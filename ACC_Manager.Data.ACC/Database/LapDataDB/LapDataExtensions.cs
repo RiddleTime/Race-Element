@@ -1,8 +1,8 @@
-﻿using ACC_Manager.Util.SystemExtensions;
+﻿using RaceElement.Util.SystemExtensions;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ACCManager.Data.ACC.Database.LapDataDB
+namespace RaceElement.Data.ACC.Database.LapDataDB
 {
     public static class LapDataExtensions
     {

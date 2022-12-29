@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 
-namespace ACCManager.Controls.Setup.FlowDocUtil
+namespace RaceElement.Controls.Setup.FlowDocUtil
 {
     public static class DocUtil
     {

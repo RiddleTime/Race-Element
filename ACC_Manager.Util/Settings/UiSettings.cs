@@ -1,7 +1,7 @@
-﻿using ACCManager.Util;
+﻿using RaceElement.Util;
 using System.Windows;
 
-namespace ACC_Manager.Util.Settings
+namespace RaceElement.Util.Settings
 {
     public class UiSettingsJson : IGenericSettingsJson
     {

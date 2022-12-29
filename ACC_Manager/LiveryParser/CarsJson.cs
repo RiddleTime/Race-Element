@@ -1,4 +1,4 @@
-﻿namespace ACCManager.LiveryParser
+﻿namespace RaceElement.LiveryParser
 {
     public class CarsJson
     {

@@ -1,4 +1,4 @@
-﻿using ACC_Manager.Util.Settings;
+﻿using RaceElement.Util.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for ReplaySettings.xaml

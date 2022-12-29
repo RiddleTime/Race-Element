@@ -1,8 +1,8 @@
 ﻿using System;
-using static ACCManager.ACCSharedMemory;
-using static ACCManager.Data.SetupConverter;
+using static RaceElement.ACCSharedMemory;
+using static RaceElement.Data.SetupConverter;
 
-namespace ACCManager.Data.ACC.Cars
+namespace RaceElement.Data.ACC.Cars
 {
     public class Damage
     {

@@ -1,14 +1,14 @@
-﻿using ACCManager.Data;
-using ACCManager.Util;
+﻿using RaceElement.Data;
+using RaceElement.Util;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using static ACCManager.Controls.LiveryBrowser;
+using static RaceElement.Controls.LiveryBrowser;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for LiveryDeleter.xaml

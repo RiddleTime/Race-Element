@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="ACCManager.Controls.About"
+﻿<UserControl x:Class="RaceElement.Controls.About"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ACCManager.Controls"
+             xmlns:local="clr-namespace:RaceElement.Controls"
               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Margin="3">
@@ -31,10 +31,10 @@
                 <Grid>
                     <StackPanel Orientation="Vertical">
                         <TextBlock FontStyle="Italic" FontFamily="{StaticResource FontRedemption}" Foreground="#EFEFEFEF" FontSize="80" HorizontalAlignment="Center">
-                            <TextBlock.Text>Acc Manager</TextBlock.Text>
+                            <TextBlock.Text>Race Element</TextBlock.Text>
                         </TextBlock>
                         <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" Margin="0,-9,0,0" HorizontalAlignment="Center">
-                            Provides tooling for Assetto Corsa Competizione.<LineBreak/>
+                            Provides tooling for Sim Racing.<LineBreak/>
                             Developed by RiddleTime.<LineBreak/>
                             Thank You: KrisV147, Floriwan, Pelice, Mominon, Fbalazs and Jubka.
                         </TextBlock>
@@ -134,7 +134,7 @@
                     <materialDesign:Card Margin="0,0,3,0">
                         <StackPanel Orientation="Vertical" Margin="5,0,0,0" >
                             <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}"
-                                   HorizontalAlignment="Center" TextWrapping="Wrap" FontSize="16" FontWeight="ExtraBold">Start ACC Manager before you join a session.</TextBlock>
+                                   HorizontalAlignment="Center" TextWrapping="Wrap" FontSize="16" FontWeight="ExtraBold">Start Race Element before you join a session.</TextBlock>
 
                             <StackPanel Margin="0,10,0,0">
                                 <TextBlock 
@@ -162,11 +162,11 @@
                                 </TextBlock>
                                 <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
                                    Race Weekends:<LineBreak/>
-                                    - Displays each session of a Race Weekend recorded when ACC Manager is running.<LineBreak/> 
+                                    - Displays each session of a Race Weekend recorded when Race Element is running.<LineBreak/> 
                                     - Select a Race Weekend and go to the Current tab.<LineBreak/>
                                     - Reload the Local race weekends list by re-opening the Telemetry tab.<LineBreak/>
                                     - Drag and drop .rwdb(Race weekend databases) ontop of the app to view them.<LineBreak/>
-                                    - Race weekend databases are saved in %appdata%/ACC Manager/Data.<LineBreak/>
+                                    - Race weekend databases are saved in %appdata%/Race Element/Data.<LineBreak/>
                                     <!--- When extended telemetry is recorded, select a lap and check out the charts.<LineBreak/>-->
                                 </TextBlock>
                             </StackPanel>

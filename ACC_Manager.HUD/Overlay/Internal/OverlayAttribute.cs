@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ACCManager.HUD.Overlay.Internal
+namespace RaceElement.HUD.Overlay.Internal
 {
     public class OverlayAttribute : Attribute
     {

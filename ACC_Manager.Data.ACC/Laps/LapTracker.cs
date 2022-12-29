@@ -1,14 +1,14 @@
-﻿using ACCManager.Broadcast.Structs;
-using ACCManager.Data.ACC.Core;
-using ACCManager.Data.ACC.Database.LapDataDB;
-using ACCManager.Data.ACC.Session;
-using ACCManager.Util;
+﻿using RaceElement.Broadcast.Structs;
+using RaceElement.Data.ACC.Core;
+using RaceElement.Data.ACC.Database.LapDataDB;
+using RaceElement.Data.ACC.Session;
+using RaceElement.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 
-namespace ACCManager.Data.ACC.Tracker.Laps
+namespace RaceElement.Data.ACC.Tracker.Laps
 {
     public class LapTracker
     {

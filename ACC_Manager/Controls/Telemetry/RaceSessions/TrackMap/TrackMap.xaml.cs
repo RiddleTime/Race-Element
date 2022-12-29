@@ -1,8 +1,8 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Controls.Telemetry.RaceSessions.Plots;
-using ACCManager.Controls.Util.SetupImage;
-using ACCManager.Data.ACC.Database.Telemetry;
-using ACCManager.HUD.Overlay.OverlayUtil;
+﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.Controls.Telemetry.RaceSessions.Plots;
+using RaceElement.Controls.Util.SetupImage;
+using RaceElement.Data.ACC.Database.Telemetry;
+using RaceElement.HUD.Overlay.OverlayUtil;
 using ScottPlot;
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ using Brushes = System.Drawing.Brushes;
 using Color = System.Drawing.Color;
 using Pen = System.Drawing.Pen;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for TrackMap.xaml                        

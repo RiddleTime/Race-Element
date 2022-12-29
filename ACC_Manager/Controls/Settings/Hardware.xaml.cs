@@ -1,11 +1,11 @@
-﻿using ACC_Manager.Util.Settings;
-using ACCManager.Hardware.ACC.SteeringLock;
+﻿using RaceElement.Util.Settings;
+using RaceElement.Hardware.ACC.SteeringLock;
 using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for Hardware.xaml

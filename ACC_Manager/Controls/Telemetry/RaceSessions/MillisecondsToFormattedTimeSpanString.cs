@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace ACCManager.Controls.Telemetry.RaceSessions
+namespace RaceElement.Controls.Telemetry.RaceSessions
 {
     internal class MillisecondsToFormattedTimeSpanString : IValueConverter
     {

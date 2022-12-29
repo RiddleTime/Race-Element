@@ -1,12 +1,12 @@
-﻿using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.OverlayUtil;
-using ACCManager.HUD.Overlay.OverlayUtil.ProgressBars;
+﻿using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.OverlayUtil.ProgressBars;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
+namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
 {
     [Overlay(Name = "Input Bars", Version = 1.00, OverlayType = OverlayType.Release,
       Description = "Live input bars of throttle and brake.")]

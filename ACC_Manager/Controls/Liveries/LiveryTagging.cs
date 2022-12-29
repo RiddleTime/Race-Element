@@ -1,12 +1,12 @@
-﻿using ACCManager.Util;
+﻿using RaceElement.Util;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using static ACCManager.Controls.LiveryBrowser;
+using static RaceElement.Controls.LiveryBrowser;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     internal class LiveryTagging
     {

@@ -1,12 +1,12 @@
-﻿using ACCManager.Util;
+﻿using RaceElement.Util;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using static ACCManager.HUD.Overlay.Configuration.OverlayConfiguration;
+using static RaceElement.HUD.Overlay.Configuration.OverlayConfiguration;
 
-namespace ACCManager.HUD.Overlay.Configuration
+namespace RaceElement.HUD.Overlay.Configuration
 {
     public class OverlaySettings
     {

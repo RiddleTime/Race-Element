@@ -1,8 +1,8 @@
-﻿using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
+﻿using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
 using System.Drawing;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
+namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace
 {
     [Overlay(Name = "Pressure Trace", Version = 1.00, OverlayType = OverlayType.Release,
     Description = "Live graphs of the tyre pressures, green is within range, red is too high, blue is too low.")]

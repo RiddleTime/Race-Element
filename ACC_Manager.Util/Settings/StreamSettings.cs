@@ -1,7 +1,7 @@
-﻿using ACC_Manager.Util;
+﻿using RaceElement.Util;
 using System;
 
-namespace ACCManager.Util.Settings
+namespace RaceElement.Util.Settings
 {
     public class StreamingSettingsJson : IGenericSettingsJson
     {

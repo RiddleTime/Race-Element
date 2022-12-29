@@ -1,11 +1,11 @@
-﻿using ACCManager.Util;
+﻿using RaceElement.Util;
 using System;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using static ACCManager.ACCSharedMemory;
+using static RaceElement.ACCSharedMemory;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for TelemetryDebug.xaml

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using static ACCManager.Data.ConversionFactory;
-using static ACCManager.Data.SetupConverter;
+using static RaceElement.Data.ConversionFactory;
+using static RaceElement.Data.SetupConverter;
 
-namespace ACCManager.Data.Cars.GTC
+namespace RaceElement.Data.Cars.GTC
 {
     internal class Porsche991IIGT3Cup_2017 : ICarSetupConversion
     {

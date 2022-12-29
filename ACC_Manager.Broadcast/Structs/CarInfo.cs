@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ACCManager.Broadcast.Structs
+namespace RaceElement.Broadcast.Structs
 {
     public class CarInfo
     {

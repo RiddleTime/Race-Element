@@ -1,8 +1,8 @@
-﻿using ACCManager.Data.ACC.Core;
-using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.OverlayUtil;
-using ACCManager.HUD.Overlay.Util;
+﻿using RaceElement.Data.ACC.Core;
+using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayACC
+namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayACC
 {
 #if DEBUG
     [Overlay(Name = "ACC Process", Version = 1.00, OverlayType = OverlayType.Debug,

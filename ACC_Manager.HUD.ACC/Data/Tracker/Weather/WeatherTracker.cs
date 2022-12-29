@@ -1,10 +1,10 @@
-﻿using ACCManager.Util;
+﻿using RaceElement.Util;
 using System;
 using System.Diagnostics;
 using System.Threading;
-using static ACCManager.ACCSharedMemory;
+using static RaceElement.ACCSharedMemory;
 
-namespace ACCManager.HUD.ACC.Data.Tracker.Weather
+namespace RaceElement.HUD.ACC.Data.Tracker.Weather
 {
     public class WeatherInfo
     {

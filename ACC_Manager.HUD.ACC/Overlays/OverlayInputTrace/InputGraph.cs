@@ -1,13 +1,13 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.HUD.Overlay.OverlayUtil;
+﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.HUD.Overlay.OverlayUtil;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using static ACCManager.HUD.ACC.Overlays.OverlayInputTrace.InputTraceOverlay;
+using static RaceElement.HUD.ACC.Overlays.OverlayInputTrace.InputTraceOverlay;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
+namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
 {
     internal class InputGraph : IDisposable
     {

@@ -69,13 +69,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ACC_Manager.Data.ACC\ACC_Manager.Data.ACC.csproj">
+    <ProjectReference Include="..\ACC_Manager.Data.ACC\Race Element.Data.ACC.csproj">
       <Project>{BB693CEB-CD96-4EB6-9F13-110D3CCECFFE}</Project>
-      <Name>ACC_Manager.Data.ACC</Name>
+      <Name>Race Element.Data.ACC</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ACC_Manager.SharedMemory\ACC_Manager.SharedMemory.csproj">
+    <ProjectReference Include="..\ACC_Manager.SharedMemory\Race Element.SharedMemory.csproj">
       <Project>{9f9be520-14c4-4ab6-8119-5e14bcca9a0f}</Project>
-      <Name>ACC_Manager.SharedMemory</Name>
+      <Name>Race Element.SharedMemory</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

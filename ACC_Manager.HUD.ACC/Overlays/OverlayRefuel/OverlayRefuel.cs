@@ -1,16 +1,16 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Data.ACC.Database.LapDataDB;
-using ACCManager.Data.ACC.Tracker.Laps;
-using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.OverlayUtil;
-using ACCManager.HUD.Overlay.Util;
+﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.Data.ACC.Database.LapDataDB;
+using RaceElement.Data.ACC.Tracker.Laps;
+using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.Util;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using static ACCManager.ACCSharedMemory;
+using static RaceElement.ACCSharedMemory;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayRefuel
+namespace RaceElement.HUD.ACC.Overlays.OverlayRefuel
 {
 #if DEBUG
     [Overlay(Name = "Refuel Info", Version = 1.00,

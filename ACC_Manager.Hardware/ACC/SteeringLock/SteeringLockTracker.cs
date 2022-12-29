@@ -1,10 +1,10 @@
-﻿using ACCManager.Data.ACC.Core;
+﻿using RaceElement.Data.ACC.Core;
 using SharpDX.DirectInput;
 using System;
 using System.Diagnostics;
 using System.Threading;
 
-namespace ACCManager.Hardware.ACC.SteeringLock
+namespace RaceElement.Hardware.ACC.SteeringLock
 {
     /// <summary>
     /// Partially From https://github.com/Havner/acc-steering-lock

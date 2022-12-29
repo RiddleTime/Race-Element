@@ -1,14 +1,14 @@
-﻿using ACCManager.HUD.Overlay.Configuration;
+﻿using RaceElement.HUD.Overlay.Configuration;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
-using ACCManager.Controls.Util.SetupImage;
-using static ACCManager.HUD.Overlay.Configuration.OverlaySettings;
-using static ACCManager.Controls.HUD.PreviewCache;
-using static ACCManager.HUD.Overlay.Configuration.OverlayConfiguration;
+using RaceElement.Controls.Util.SetupImage;
+using static RaceElement.HUD.Overlay.Configuration.OverlaySettings;
+using static RaceElement.Controls.HUD.PreviewCache;
+using static RaceElement.HUD.Overlay.Configuration.OverlayConfiguration;
 using System.Collections.Generic;
 
-namespace ACCManager.Controls.HUD
+namespace RaceElement.Controls.HUD
 {
     internal class ConfigurationControls
     {

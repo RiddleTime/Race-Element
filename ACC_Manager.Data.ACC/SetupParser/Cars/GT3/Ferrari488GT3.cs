@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using static ACCManager.Data.ConversionFactory;
-using static ACCManager.Data.SetupConverter;
+using static RaceElement.Data.ConversionFactory;
+using static RaceElement.Data.SetupConverter;
 
-namespace ACCManager.Data.Cars.GT3
+namespace RaceElement.Data.Cars.GT3
 {
     internal class Ferrari488GT3 : ICarSetupConversion
     {

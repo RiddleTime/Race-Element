@@ -1,10 +1,10 @@
-﻿using ACCManager.HUD.Overlay.Internal;
+﻿using RaceElement.HUD.Overlay.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace ACCManager.HUD.ACC
+namespace RaceElement.HUD.ACC
 {
     public class OverlaysACC
     {

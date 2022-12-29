@@ -1,16 +1,16 @@
-﻿using ACCManager.Broadcast;
-using ACCManager.Controls.Telemetry.RaceSessions;
-using ACCManager.Controls.Telemetry.RaceSessions.Plots;
-using ACCManager.Data;
-using ACCManager.Data.ACC.Cars;
-using ACCManager.Data.ACC.Database;
-using ACCManager.Data.ACC.Database.GameData;
-using ACCManager.Data.ACC.Database.LapDataDB;
-using ACCManager.Data.ACC.Database.SessionData;
-using ACCManager.Data.ACC.Database.Telemetry;
-using ACCManager.Data.ACC.Session;
-using ACCManager.Data.ACC.Tracks;
-using ACCManager.Util;
+﻿using RaceElement.Broadcast;
+using RaceElement.Controls.Telemetry.RaceSessions;
+using RaceElement.Controls.Telemetry.RaceSessions.Plots;
+using RaceElement.Data;
+using RaceElement.Data.ACC.Cars;
+using RaceElement.Data.ACC.Database;
+using RaceElement.Data.ACC.Database.GameData;
+using RaceElement.Data.ACC.Database.LapDataDB;
+using RaceElement.Data.ACC.Database.SessionData;
+using RaceElement.Data.ACC.Database.Telemetry;
+using RaceElement.Data.ACC.Session;
+using RaceElement.Data.ACC.Tracks;
+using RaceElement.Util;
 using LiteDB;
 using MaterialDesignThemes.Wpf;
 using ScottPlot;
@@ -26,9 +26,9 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using DataGridTextColumn = MaterialDesignThemes.Wpf.DataGridTextColumn;
-using TrackData = ACCManager.Data.ACC.Tracks.TrackNames.TrackData;
+using TrackData = RaceElement.Data.ACC.Tracks.TrackNames.TrackData;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for RaceSessionBrowser.xaml

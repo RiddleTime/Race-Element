@@ -1,15 +1,15 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.OverlayUtil;
-using ACCManager.HUD.Overlay.Util;
+﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
+namespace RaceElement.HUD.ACC.Overlays.OverlayAccelerometer
 {
     [Overlay(Name = "Accelerometer", Version = 1.00, OverlayType = OverlayType.Release,
         Description = "G-meter showing lateral and longitudinal g-forces.")]

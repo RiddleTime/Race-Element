@@ -1,4 +1,4 @@
-﻿using ACCManager.Util;
+﻿using RaceElement.Util;
 using DdsFileTypePlus;
 using PaintDotNet;
 using System;
@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using static ACCManager.Controls.LiveryBrowser;
+using static RaceElement.Controls.LiveryBrowser;
 
-namespace ACCManager.Controls.Liveries
+namespace RaceElement.Controls.Liveries
 {
     internal class DDSutil
     {

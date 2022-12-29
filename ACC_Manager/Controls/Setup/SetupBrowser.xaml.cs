@@ -1,5 +1,5 @@
-﻿using ACCManager.Controls.Setup;
-using ACCManager.Util;
+﻿using RaceElement.Controls.Setup;
+using RaceElement.Util;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -8,13 +8,13 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using static ACCManager.Data.SetupJson;
-using static ACCManager.Data.ConversionFactory;
-using ACC_Manager.Util.SystemExtensions;
+using static RaceElement.Data.SetupJson;
+using static RaceElement.Data.ConversionFactory;
+using RaceElement.Util.SystemExtensions;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for SetupBrowser.xaml

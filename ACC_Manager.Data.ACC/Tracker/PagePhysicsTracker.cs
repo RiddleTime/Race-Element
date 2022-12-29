@@ -1,10 +1,10 @@
-﻿using ACCManager.Data.ACC.Core;
+﻿using RaceElement.Data.ACC.Core;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using static ACCManager.ACCSharedMemory;
+using static RaceElement.ACCSharedMemory;
 
-namespace ACCManager.Data.ACC.Tracker
+namespace RaceElement.Data.ACC.Tracker
 {
     public class PagePhysicsTracker : IDisposable
     {

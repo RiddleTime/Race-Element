@@ -1,15 +1,15 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Data;
-using ACCManager.Data.ACC.Database.Telemetry;
+﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.Data;
+using RaceElement.Data.ACC.Database.Telemetry;
 using ScottPlot;
 using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
-using static ACCManager.Data.ACC.Tracks.TrackNames;
+using static RaceElement.Data.ACC.Tracks.TrackNames;
 
-namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
+namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
 {
     internal class BrakeTempsPlot
     {

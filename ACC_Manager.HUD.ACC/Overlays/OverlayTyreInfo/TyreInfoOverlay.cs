@@ -1,14 +1,14 @@
-﻿using ACCManager.HUD.Overlay.Internal;
+﻿using RaceElement.HUD.Overlay.Internal;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using ACCManager.HUD.Overlay.Util;
-using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.ACC.Overlays.OverlayPressureTrace;
-using ACCManager.HUD.Overlay.OverlayUtil;
-using static ACCManager.Data.SetupConverter;
+using RaceElement.HUD.Overlay.Util;
+using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.ACC.Overlays.OverlayPressureTrace;
+using RaceElement.HUD.Overlay.OverlayUtil;
+using static RaceElement.Data.SetupConverter;
 using System.Drawing.Text;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
+namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
 {
     [Overlay(Name = "Tyre Info", Version = 1.00, OverlayType = OverlayType.Release,
         Description = "Shows indicators for tyre pressures. Additionally shows tyre temperature, brake temps and pad life. Overlays the in-game tyre info.")]

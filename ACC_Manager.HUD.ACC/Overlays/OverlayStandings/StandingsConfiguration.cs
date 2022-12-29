@@ -1,11 +1,11 @@
-﻿using ACCManager.HUD.Overlay.Configuration;
+﻿using RaceElement.HUD.Overlay.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayStandings
+namespace RaceElement.HUD.ACC.Overlays.OverlayStandings
 {
     internal sealed class StandingsConfiguration : OverlayConfiguration
     {

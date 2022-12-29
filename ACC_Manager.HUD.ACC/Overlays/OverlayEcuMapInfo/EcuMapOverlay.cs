@@ -1,9 +1,9 @@
-﻿using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.Util;
+﻿using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.Util;
 using System.Drawing;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
+namespace RaceElement.HUD.ACC.Overlays.OverlayEcuMapInfo
 {
     [Overlay(Name = "ECU Maps", Version = 1.00, OverlayType = OverlayType.Release,
         Description = "A panel showing information about the current ECU Map.")]

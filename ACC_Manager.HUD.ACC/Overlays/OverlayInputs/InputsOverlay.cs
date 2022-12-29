@@ -1,14 +1,14 @@
-﻿using ACCManager.Data.ACC.Cars;
-using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.OverlayUtil;
-using ACCManager.HUD.Overlay.Util;
+﻿using RaceElement.Data.ACC.Cars;
+using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayInputs
+namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
 {
     [Overlay(Name = "Inputs", Version = 1.00, OverlayType = OverlayType.Release,
         Description = "Live inputs of steering, throttle, brake and the selected gear.")]

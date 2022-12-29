@@ -1,11 +1,11 @@
-﻿using ACCManager.Broadcast;
+﻿using RaceElement.Broadcast;
 using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static ACCManager.ACCSharedMemory;
+using static RaceElement.ACCSharedMemory;
 
-namespace ACCManager.Data.ACC.Database.LapDataDB
+namespace RaceElement.Data.ACC.Database.LapDataDB
 {
     /// <summary>
     /// All data except for the Index must be divided by 1000 to get the actual value (floating point precision is annoying)

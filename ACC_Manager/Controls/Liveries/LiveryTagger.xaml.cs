@@ -2,10 +2,10 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using static ACCManager.Controls.LiveryBrowser;
-using static ACCManager.Controls.LiveryTagging;
+using static RaceElement.Controls.LiveryBrowser;
+using static RaceElement.Controls.LiveryTagging;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for LiveryTagger.xaml

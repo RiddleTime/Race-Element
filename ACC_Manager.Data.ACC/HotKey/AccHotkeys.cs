@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Windows.Forms;
 
-namespace ACCManager.Data.ACC.HotKey
+namespace RaceElement.Data.ACC.HotKey
 {
     public class AccHotkeys
     {

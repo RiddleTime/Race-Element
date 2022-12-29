@@ -1,14 +1,14 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Data.ACC.Session;
-using ACCManager.HUD.ACC.Data.Tracker.Weather;
-using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.Util;
+﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.Data.ACC.Session;
+using RaceElement.HUD.ACC.Data.Tracker.Weather;
+using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Diagnostics;
 using System.Drawing;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayWeather
+namespace RaceElement.HUD.ACC.Overlays.OverlayWeather
 {
     internal class WeatherOverlay : AbstractOverlay
     {

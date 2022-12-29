@@ -1,4 +1,4 @@
-﻿using ACCManager.Broadcast;
+﻿using RaceElement.Broadcast;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace ACCManager.Controls.Telemetry.RaceSessions
+namespace RaceElement.Controls.Telemetry.RaceSessions
 {
     internal class LapTypeConverter : IValueConverter
     {

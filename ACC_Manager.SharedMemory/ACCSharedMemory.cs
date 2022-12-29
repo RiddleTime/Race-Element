@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO.MemoryMappedFiles;
 using System.Runtime.InteropServices;
-using ACCManager.Controls.Telemetry.SharedMemory;
+using RaceElement.Controls.Telemetry.SharedMemory;
 
-namespace ACCManager
+namespace RaceElement
 {
     /// <summary>
     /// Used certain shared memory from https://github.com/gro-ove/actools

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ACCManager.Data.ACC.Tracks
+namespace RaceElement.Data.ACC.Tracks
 {
     public class TrackNames
     {

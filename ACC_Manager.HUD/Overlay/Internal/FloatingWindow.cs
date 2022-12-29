@@ -4,9 +4,9 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using static ACCManager.HUD.Overlay.Internal.WindowStructs;
+using static RaceElement.HUD.Overlay.Internal.WindowStructs;
 
-namespace ACCManager.HUD.Overlay.Internal
+namespace RaceElement.HUD.Overlay.Internal
 {
     public class FloatingWindow : NativeWindow, IDisposable
     {
@@ -462,7 +462,7 @@ namespace ACCManager.HUD.Overlay.Internal
                     break;
                 case 0x201: // WM_MOUSEDOWN
                     {
-                        Debug.WriteLine("WM_MOUSEDOWN");
+                        //Debug.WriteLine("WM_MOUSEDOWN");
                         POINT point1;
                         this.lastMouseDown = new Point(m.LParam.ToInt32());
                         point1 = new POINT();
@@ -471,13 +471,13 @@ namespace ACCManager.HUD.Overlay.Internal
                         point1 = this.MousePositionToScreen(point1);
                         deltaX = point1.X - this.Location.X;
                         deltaY = point1.Y - this.Location.Y;
-                        Debug.WriteLine($"mouse is in {lastMouseDown}");
+                        //Debug.WriteLine($"mouse is in {lastMouseDown}");
 
 
                         this.OnMouseDown(new MouseEventArgs(Control.MouseButtons, 1, lastMouseDown.X, lastMouseDown.Y, 0));
                         if (this.onMouseDown)
                         {
-                            Debug.WriteLine("");
+                            //Debug.WriteLine("");
                             this.PerformWmMouseDown(ref m);
                             this.onMouseDown = false;
                         }
@@ -507,11 +507,11 @@ namespace ACCManager.HUD.Overlay.Internal
                         break;
                     }
 
-                case 0x0100: // WM_KEYDOWN
-                    {
-                        Debug.WriteLine("Key down");
-                        break;
-                    }
+                    //case 0x0100: // WM_KEYDOWN
+                    //    {
+                    //        Debug.WriteLine("Key down");
+                    //        break;
+                    //    }
 
                     //case 0x001c: // WM_ACTIVATEAPP 
                     //    {

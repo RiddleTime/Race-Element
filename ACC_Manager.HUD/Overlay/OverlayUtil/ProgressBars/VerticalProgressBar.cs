@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace ACCManager.HUD.Overlay.OverlayUtil.ProgressBars
+namespace RaceElement.HUD.Overlay.OverlayUtil.ProgressBars
 {
     public class VerticalProgressBar
     {

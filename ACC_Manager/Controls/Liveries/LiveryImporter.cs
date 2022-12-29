@@ -1,5 +1,5 @@
-﻿using ACCManager.LiveryParser;
-using ACCManager.Util;
+﻿using RaceElement.LiveryParser;
+using RaceElement.Util;
 using Newtonsoft.Json;
 using SharpCompress.Archives;
 using System;
@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using static ACCManager.Controls.LiveryBrowser;
+using static RaceElement.Controls.LiveryBrowser;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     internal static class LiveryImporter
     {

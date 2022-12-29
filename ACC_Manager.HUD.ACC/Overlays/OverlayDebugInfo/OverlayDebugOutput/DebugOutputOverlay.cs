@@ -1,13 +1,13 @@
-﻿using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.OverlayUtil;
-using ACCManager.HUD.Overlay.Util;
+﻿using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Drawing;
 using System.Linq;
-using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput.TraceOutputListener;
+using static RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput.TraceOutputListener;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
+namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
 {
     [Overlay(Name = "Debug Output", Version = 1.00, OverlayType = OverlayType.Debug,
         Description = "A panel showing live debug output.")]

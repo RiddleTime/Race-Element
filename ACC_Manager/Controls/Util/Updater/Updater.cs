@@ -1,4 +1,4 @@
-﻿using ACCManager.Util;
+﻿using RaceElement.Util;
 using Octokit;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCManager.Controls.Util.Updater
+namespace RaceElement.Controls.Util.Updater
 {
     internal class AppUpdater
     {

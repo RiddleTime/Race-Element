@@ -1,8 +1,8 @@
-﻿using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
+﻿using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
 using System.Drawing;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlaySlipAngle
+namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
 {
     [Overlay(Name = "Oversteer Trace", Version = 1.00,
         Description = "Live graph of oversteer in red and understeer in blue.", OverlayType = OverlayType.Release)]

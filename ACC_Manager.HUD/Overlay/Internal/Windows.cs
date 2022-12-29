@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using static ACCManager.HUD.Overlay.Internal.WindowStructs;
+using static RaceElement.HUD.Overlay.Internal.WindowStructs;
 
-namespace ACCManager.HUD.Overlay.Internal
+namespace RaceElement.HUD.Overlay.Internal
 {
     public class Windows
     {

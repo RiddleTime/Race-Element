@@ -1,10 +1,10 @@
-﻿using ACCManager.Util;
+﻿using RaceElement.Util;
 using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
-namespace ACCManager.Data.ACC.Core
+namespace RaceElement.Data.ACC.Core
 {
     public class AccProcess
     {

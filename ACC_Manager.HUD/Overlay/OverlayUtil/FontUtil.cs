@@ -5,7 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace ACCManager.HUD.Overlay.Util
+namespace RaceElement.HUD.Overlay.Util
 {
     public class FontUtil
     {

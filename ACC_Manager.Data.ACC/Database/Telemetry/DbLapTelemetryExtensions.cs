@@ -1,10 +1,10 @@
-﻿using ACCManager.Util;
+﻿using RaceElement.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace ACCManager.Data.ACC.Database.Telemetry
+namespace RaceElement.Data.ACC.Database.Telemetry
 {
     public static class DbLapTelemetryExtensions
     {

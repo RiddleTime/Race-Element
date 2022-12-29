@@ -1,4 +1,4 @@
-﻿using ACCManager.HUD.Overlay.Internal;
+﻿using RaceElement.HUD.Overlay.Internal;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlaySpotter
+namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 {
 #if DEBUG
     [Overlay(Name = "Spotter", Version = 1.00, OverlayType = OverlayType.Release,

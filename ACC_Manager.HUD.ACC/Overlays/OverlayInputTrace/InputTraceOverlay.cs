@@ -1,9 +1,9 @@
-﻿using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.Configuration;
+﻿using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.Configuration;
 using System.Drawing;
 
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
+namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
 {
     [Overlay(Name = "Input Trace", Version = 1.00, OverlayType = OverlayType.Release,
         Description = "Live graph of steering, throttle and brake inputs.")]

@@ -1,12 +1,12 @@
-﻿using ACCManager.Broadcast;
-using ACCManager.Broadcast.Structs;
-using ACCManager.Data.ACC.Tracker;
+﻿using RaceElement.Broadcast;
+using RaceElement.Broadcast.Structs;
+using RaceElement.Data.ACC.Tracker;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace ACCManager.Data.ACC.AccidentList
+namespace RaceElement.Data.ACC.AccidentList
 {
     public sealed class AccidentListTracker
     {

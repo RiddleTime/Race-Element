@@ -1,16 +1,16 @@
-﻿using ACC_Manager.Util.Settings;
-using ACCManager.Data.ACC.Session;
-using ACCManager.Data.ACC.Tracker;
-using ACCManager.Data.ACC.Tracker.Laps;
-using ACCManager.Util;
+﻿using RaceElement.Util.Settings;
+using RaceElement.Data.ACC.Session;
+using RaceElement.Data.ACC.Tracker;
+using RaceElement.Data.ACC.Tracker.Laps;
+using RaceElement.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using static ACCManager.ACCSharedMemory;
+using static RaceElement.ACCSharedMemory;
 
-namespace ACCManager.Data.ACC.Database.Telemetry
+namespace RaceElement.Data.ACC.Database.Telemetry
 {
     internal class TelemetryRecorder
     {

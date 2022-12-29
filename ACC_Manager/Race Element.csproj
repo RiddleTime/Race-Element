@@ -7,8 +7,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{DEA7B2CA-611A-4CB8-BEDA-988F3EA11AF9}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>ACCManager</RootNamespace>
-    <AssemblyName>AccManager</AssemblyName>
+    <RootNamespace>RaceElement</RootNamespace>
+    <AssemblyName>RaceElement</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -63,7 +63,7 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>ACCManager.App</StartupObject>
+    <StartupObject>RaceElement.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>new_icon.ico</ApplicationIcon>
@@ -666,33 +666,33 @@
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ACC_Manager.Broadcast\ACC_Manager.Broadcast.csproj">
+    <ProjectReference Include="..\ACC_Manager.Broadcast\Race Element.Broadcast.csproj">
       <Project>{840220bd-8469-4a04-a6ec-1ed2bc743efb}</Project>
-      <Name>ACC_Manager.Broadcast</Name>
+      <Name>Race Element.Broadcast</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ACC_Manager.Data.ACC\ACC_Manager.Data.ACC.csproj">
+    <ProjectReference Include="..\ACC_Manager.Data.ACC\Race Element.Data.ACC.csproj">
       <Project>{BB693CEB-CD96-4EB6-9F13-110D3CCECFFE}</Project>
-      <Name>ACC_Manager.Data.ACC</Name>
+      <Name>Race Element.Data.ACC</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ACC_Manager.Hardware\ACC_Manager.Hardware.csproj">
+    <ProjectReference Include="..\ACC_Manager.Hardware\Race Element.Hardware.csproj">
       <Project>{8A7A4857-2F0A-4E85-98C5-3EA1228A8CE2}</Project>
-      <Name>ACC_Manager.Hardware</Name>
+      <Name>Race Element.Hardware</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ACC_Manager.HUD.ACC\ACC_Manager.HUD.ACC.csproj">
+    <ProjectReference Include="..\ACC_Manager.HUD.ACC\Race Element.HUD.ACC.csproj">
       <Project>{f1699f70-54a1-49f2-896d-b70b1edabf74}</Project>
-      <Name>ACC_Manager.HUD.ACC</Name>
+      <Name>Race Element.HUD.ACC</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ACC_Manager.HUD\ACC_Manager.HUD.csproj">
+    <ProjectReference Include="..\ACC_Manager.HUD\Race Element.HUD.csproj">
       <Project>{3717a55e-4629-40ed-9c93-24058d9ef18c}</Project>
-      <Name>ACC_Manager.HUD</Name>
+      <Name>Race Element.HUD</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ACC_Manager.SharedMemory\ACC_Manager.SharedMemory.csproj">
+    <ProjectReference Include="..\ACC_Manager.SharedMemory\Race Element.SharedMemory.csproj">
       <Project>{9f9be520-14c4-4ab6-8119-5e14bcca9a0f}</Project>
-      <Name>ACC_Manager.SharedMemory</Name>
+      <Name>Race Element.SharedMemory</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ACC_Manager.Util\ACC_Manager.Util.csproj">
+    <ProjectReference Include="..\ACC_Manager.Util\Race Element.Util.csproj">
       <Project>{AAB23116-299B-415B-8305-96CB86148CE7}</Project>
-      <Name>ACC_Manager.Util</Name>
+      <Name>Race Element.Util</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

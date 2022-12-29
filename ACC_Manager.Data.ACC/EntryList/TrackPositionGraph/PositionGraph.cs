@@ -1,8 +1,8 @@
-﻿using ACCManager.Data.ACC.Session;
+﻿using RaceElement.Data.ACC.Session;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace ACCManager.Data.ACC.EntryList.TrackPositionGraph
+namespace RaceElement.Data.ACC.EntryList.TrackPositionGraph
 {
     public class PositionGraph
     {

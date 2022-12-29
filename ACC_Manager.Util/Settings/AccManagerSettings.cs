@@ -1,6 +1,6 @@
-﻿using ACCManager.Util;
+﻿using RaceElement.Util;
 
-namespace ACC_Manager.Util.Settings
+namespace RaceElement.Util.Settings
 {
     public class AccManagerSettingsJson : IGenericSettingsJson
     {

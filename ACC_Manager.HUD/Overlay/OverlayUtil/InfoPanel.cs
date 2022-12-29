@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Text;
-using ACC_Manager.Util.SystemExtensions;
-using ACCManager.HUD.Overlay.OverlayUtil;
+using RaceElement.Util.SystemExtensions;
+using RaceElement.HUD.Overlay.OverlayUtil;
 
-namespace ACCManager.HUD.Overlay.Util
+namespace RaceElement.HUD.Overlay.Util
 {
     public class InfoPanel
     {

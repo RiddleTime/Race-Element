@@ -1,18 +1,18 @@
-﻿<UserControl x:Class="ACCManager.Controls.AccManagerSettingsTab"
+﻿<UserControl x:Class="RaceElement.Controls.AccManagerSettingsTab"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ACCManager.Controls"
+             xmlns:local="clr-namespace:RaceElement.Controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Margin="2,0,2,0">
     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-        <Button x:Name="buttonOpenAccManagerFolder">Open ACC Manager Folder</Button>
+        <Button x:Name="buttonOpenAccManagerFolder">Open Race Element Folder</Button>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
             <ToggleButton x:Name="toggleMinimizeToSystemTray" Width="50" Height="35" VerticalAlignment="Center" Cursor="Hand"/>
-            <Label VerticalAlignment="Center">Minimize ACC Manager to system tray</Label>
+            <Label VerticalAlignment="Center">Minimize Race Element to system tray</Label>
         </StackPanel>
 
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" IsEnabled="False">

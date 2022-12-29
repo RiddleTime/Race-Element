@@ -1,15 +1,15 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Data.ACC.Database.Telemetry;
-using ACCManager.Data;
+﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.Data.ACC.Database.Telemetry;
+using RaceElement.Data;
 using ScottPlot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
-using static ACCManager.Data.ACC.Tracks.TrackNames;
+using static RaceElement.Data.ACC.Tracks.TrackNames;
 using ScottPlot.Plottable;
 
-namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
+namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
 {
     internal class TyreTempsPlot
     {

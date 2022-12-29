@@ -1,22 +1,22 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Broadcast;
-using ACCManager.Broadcast.Structs;
-using ACCManager.Data;
-using ACCManager.Data.ACC.EntryList;
-using ACCManager.Data.ACC.EntryList.TrackPositionGraph;
-using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.OverlayUtil;
-using ACCManager.HUD.Overlay.Util;
+﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.Broadcast;
+using RaceElement.Broadcast.Structs;
+using RaceElement.Data;
+using RaceElement.Data.ACC.EntryList;
+using RaceElement.Data.ACC.EntryList.TrackPositionGraph;
+using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using static ACCManager.Data.ACC.EntryList.EntryListTracker;
-using static ACCManager.Data.SetupConverter;
-using static ACCManager.HUD.Overlay.OverlayUtil.InfoTable;
+using static RaceElement.Data.ACC.EntryList.EntryListTracker;
+using static RaceElement.Data.SetupConverter;
+using static RaceElement.HUD.Overlay.OverlayUtil.InfoTable;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
+namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 {
 #if DEBUG
     [Overlay(Name = "Entrylist Overlay", Version = 1.00, OverlayType = OverlayType.Debug,

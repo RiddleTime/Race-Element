@@ -1,22 +1,22 @@
-﻿using ACCManager.Broadcast;
-using ACCManager.Data.ACC.Core;
-using ACCManager.Data.ACC.Core.Config;
-using ACCManager.Data.ACC.Database;
-using ACCManager.Data.ACC.Database.GameData;
-using ACCManager.Data.ACC.Database.LapDataDB;
-using ACCManager.Data.ACC.Database.RaceWeekend;
-using ACCManager.Data.ACC.Database.SessionData;
-using ACCManager.Data.ACC.Database.Telemetry;
-using ACCManager.Data.ACC.HotKey;
-using ACCManager.Data.ACC.Tracker;
-using ACCManager.Util;
+﻿using RaceElement.Broadcast;
+using RaceElement.Data.ACC.Core;
+using RaceElement.Data.ACC.Core.Config;
+using RaceElement.Data.ACC.Database;
+using RaceElement.Data.ACC.Database.GameData;
+using RaceElement.Data.ACC.Database.LapDataDB;
+using RaceElement.Data.ACC.Database.RaceWeekend;
+using RaceElement.Data.ACC.Database.SessionData;
+using RaceElement.Data.ACC.Database.Telemetry;
+using RaceElement.Data.ACC.HotKey;
+using RaceElement.Data.ACC.Tracker;
+using RaceElement.Util;
 using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using static ACCManager.ACCSharedMemory;
+using static RaceElement.ACCSharedMemory;
 
-namespace ACCManager.Data.ACC.Session
+namespace RaceElement.Data.ACC.Session
 {
     public class RaceSessionTracker
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ACCManager.Data.SetupRanges
+namespace RaceElement.Data.SetupRanges
 {
     public class SetupDoubleRange
     {

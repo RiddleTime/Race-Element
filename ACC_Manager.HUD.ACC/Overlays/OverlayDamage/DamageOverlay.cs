@@ -1,14 +1,14 @@
 ﻿using System.Drawing;
 using System.Drawing.Drawing2D;
-using ACCManager.Data.ACC.Cars;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.OverlayUtil;
-using ACCManager.HUD.Overlay.Util;
+using RaceElement.Data.ACC.Cars;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.Util;
 using System.IO;
-using ACC_Manager.Util.SystemExtensions;
+using RaceElement.Util.SystemExtensions;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
+namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
 {
     [Overlay(Name = "Damage", Version = 1.00, OverlayType = OverlayType.Release,
         Description = "Total repair time is displayed in the center.\nSuspension damage is displayed in percentages, whilst bodywork damage is displayed in repair time.")]
@@ -277,10 +277,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
 
             /// SUSPENSION DAMAGE
             /// 
-            float suspensionDamageFrontLeft = Damage.GetSuspensionDamage(pagePhysics, ACCManager.Data.SetupConverter.Wheel.FrontLeft);
-            float suspensionDamageFrontRight = Damage.GetSuspensionDamage(pagePhysics, ACCManager.Data.SetupConverter.Wheel.FrontRight);
-            float suspensionDamageRearLeft = Damage.GetSuspensionDamage(pagePhysics, ACCManager.Data.SetupConverter.Wheel.RearLeft);
-            float suspensionDamageRearRight = Damage.GetSuspensionDamage(pagePhysics, ACCManager.Data.SetupConverter.Wheel.RearRight);
+            float suspensionDamageFrontLeft = Damage.GetSuspensionDamage(pagePhysics, RaceElement.Data.SetupConverter.Wheel.FrontLeft);
+            float suspensionDamageFrontRight = Damage.GetSuspensionDamage(pagePhysics, RaceElement.Data.SetupConverter.Wheel.FrontRight);
+            float suspensionDamageRearLeft = Damage.GetSuspensionDamage(pagePhysics, RaceElement.Data.SetupConverter.Wheel.RearLeft);
+            float suspensionDamageRearRight = Damage.GetSuspensionDamage(pagePhysics, RaceElement.Data.SetupConverter.Wheel.RearRight);
 
             _shapeSuspensionFrontLeft.Brush = new LinearGradientBrush(_shapeSuspensionFrontLeft.Shape, suspensionDamageFrontLeft > 0 ? Color.Red : baseColor, Color.Transparent, LinearGradientMode.Horizontal);
             _shapeSuspensionFrontRight.Brush = new LinearGradientBrush(_shapeSuspensionFrontRight.Shape, Color.Transparent, suspensionDamageFrontRight > 0 ? Color.Red : baseColor, LinearGradientMode.Horizontal);
@@ -301,10 +301,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
 
             _suspensionDamage?.SetRenderer(g =>
             {
-                float suspensionDamageFrontLeft = Damage.GetSuspensionDamage(pagePhysics, ACCManager.Data.SetupConverter.Wheel.FrontLeft);
-                float suspensionDamageFrontRight = Damage.GetSuspensionDamage(pagePhysics, ACCManager.Data.SetupConverter.Wheel.FrontRight);
-                float suspensionDamageRearLeft = Damage.GetSuspensionDamage(pagePhysics, ACCManager.Data.SetupConverter.Wheel.RearLeft);
-                float suspensionDamageRearRight = Damage.GetSuspensionDamage(pagePhysics, ACCManager.Data.SetupConverter.Wheel.RearRight);
+                float suspensionDamageFrontLeft = Damage.GetSuspensionDamage(pagePhysics, RaceElement.Data.SetupConverter.Wheel.FrontLeft);
+                float suspensionDamageFrontRight = Damage.GetSuspensionDamage(pagePhysics, RaceElement.Data.SetupConverter.Wheel.FrontRight);
+                float suspensionDamageRearLeft = Damage.GetSuspensionDamage(pagePhysics, RaceElement.Data.SetupConverter.Wheel.RearLeft);
+                float suspensionDamageRearRight = Damage.GetSuspensionDamage(pagePhysics, RaceElement.Data.SetupConverter.Wheel.RearRight);
 
                 if (suspensionDamageFrontLeft > 0)
                     DrawTextWithOutline(g, Color.White, $"{GetPercentage(suspensionDamageFrontLeft, 30):F0}%", (int)(horizontalPadding * 2.67f), (int)(verticalPadding * 2.0f - halfFontHeight));
@@ -365,7 +365,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDamage
             int textWidth = (int)g.MeasureString(text, _font).Width;
             Rectangle backgroundDimension = new Rectangle(x - textWidth / 2, y, (int)textWidth, _font.Height);
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 0, 0, 0)), backgroundDimension, 2);
-            g.DrawRoundedRectangle(new Pen(Color.FromArgb(210, 255, 255, 255), 0.6f * this.Scale), backgroundDimension, 2);
+            g.DrawRoundedRectangle(new Pen(Color.FromArgb(135, 230, 0, 0), 0.6f * this.Scale), backgroundDimension, 2);
             g.DrawStringWithShadow(text, _font, textColor, new PointF(x - textWidth / 2, y + _font.GetHeight(g) / 11f), 0.75f * this.Scale);
         }
     }

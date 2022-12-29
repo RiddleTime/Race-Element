@@ -1,12 +1,12 @@
 ﻿using System.Windows.Controls;
 using System.Windows;
-using ACC_Manager.Util.SystemExtensions;
-using ACCManager.HUD.Overlay.Configuration;
+using RaceElement.Util.SystemExtensions;
+using RaceElement.HUD.Overlay.Configuration;
 using System.Windows.Media;
 using System.Windows.Input;
-using static ACCManager.HUD.Overlay.Configuration.OverlayConfiguration;
+using static RaceElement.HUD.Overlay.Configuration.OverlayConfiguration;
 
-namespace ACCManager.Controls.HUD.Controls.ValueControls
+namespace RaceElement.Controls.HUD.Controls.ValueControls
 {
     internal class FloatValueControl : IValueControl<float>, IControl
     {

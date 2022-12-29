@@ -1,10 +1,10 @@
-﻿using ACC_Manager.Util.Settings;
-using ACCManager.Broadcast.Structs;
-using ACCManager.Data.ACC.Core;
-using ACCManager.Data.ACC.Session;
-using ACCManager.Data.ACC.Tracker;
-using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.Util;
+﻿using RaceElement.Util.Settings;
+using RaceElement.Broadcast.Structs;
+using RaceElement.Data.ACC.Core;
+using RaceElement.Data.ACC.Session;
+using RaceElement.Data.ACC.Tracker;
+using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.Util;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -14,11 +14,11 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-using static ACCManager.ACCSharedMemory;
-using static ACCManager.HUD.Overlay.Configuration.OverlaySettings;
+using static RaceElement.ACCSharedMemory;
+using static RaceElement.HUD.Overlay.Configuration.OverlaySettings;
 using Point = System.Drawing.Point;
 
-namespace ACCManager.HUD.Overlay.Internal
+namespace RaceElement.HUD.Overlay.Internal
 {
     public abstract class AbstractOverlay : FloatingWindow
     {

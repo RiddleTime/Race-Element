@@ -1,10 +1,10 @@
-﻿using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.Util;
+﻿using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Drawing;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
+namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
 {
     [Overlay(Name = "Track Info", Version = 1.00, OverlayType = OverlayType.Release,
         Description = "A panel showing information about the track state: grip, temperatures and wind.\nOptionally showing the global flag, session type and time of day.")]

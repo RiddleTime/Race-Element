@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace ACCManager.Controls.Telemetry.RaceSessions
+namespace RaceElement.Controls.Telemetry.RaceSessions
 {
     internal class FormattedFloatConverter : IValueConverter
     {
