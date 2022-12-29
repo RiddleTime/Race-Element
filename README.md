@@ -1,4 +1,5 @@
-# ![ACC Manager](https://raw.githubusercontent.com/RiddleTime/ACC-Manager/dev/other%20resources/acc%20manager%20-%20name.png)
+# ![Race Element - Name](https://user-images.githubusercontent.com/4581237/209894070-ae0566aa-580b-4700-8099-614acdaa890b.png)
+
 
 [![Build status](https://ci.appveyor.com/api/projects/status/wnbn1pdscccqwegg?svg=true)](https://ci.appveyor.com/project/RiddleTime/race-element)
 [![Discord](https://badgen.net/discord/members/26AAEW5mUq?icon=discord&color=5562ea&label=Race%20Element)](https://discord.gg/26AAEW5mUq)
