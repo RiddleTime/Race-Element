@@ -11,7 +11,7 @@ Provides tooling for Sim Racing
 - Liveries
 - Racing Tools
 
-[Download Latest Release](https://github.com/RiddleTime/ACC-Manager/releases/latest)
+[Download Latest Release](https://github.com/RiddleTime/Race-Element/releases/latest)
 
 
 ### Requires .NET Framework 4.8
