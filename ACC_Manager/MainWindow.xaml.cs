@@ -191,7 +191,7 @@ namespace RaceElement
 #endif
             try
             {
-                string hitCounter = "https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FRiddleTime%2FACC-Manager";
+                string hitCounter = "https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FRiddleTime%2FRace-Element";
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(hitCounter);
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 response.Close();
