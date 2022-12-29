@@ -1,6 +1,5 @@
 ﻿using RaceElement.Util;
 using RaceElement.Util.Settings;
-using RaceElement.Util;
 using System;
 using System.Collections.Generic;
 using System.Windows;
