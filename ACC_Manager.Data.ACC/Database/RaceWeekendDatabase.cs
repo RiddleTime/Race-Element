@@ -18,11 +18,11 @@ namespace RaceElement.Data.ACC.Database
         {
             try
             {
-                DirectoryInfo dataDir = new DirectoryInfo(FileUtil.AccManangerDataPath);
+                DirectoryInfo dataDir = new DirectoryInfo(FileUtil.RaceElementDataPath);
                 if (!dataDir.Exists)
                     dataDir.Create();
 
-                fileName = FileUtil.AccManangerDataPath + $"{trackParseName}-{carParseName}-" + $"{startTime:G}".Replace(":", ".").Replace("/", ".").Replace(" ", "-") + ".rwdb";
+                fileName = FileUtil.RaceElementDataPath + $"{trackParseName}-{carParseName}-" + $"{startTime:G}".Replace(":", ".").Replace("/", ".").Replace(" ", "-") + ".rwdb";
 
 
                 if (Database == null)

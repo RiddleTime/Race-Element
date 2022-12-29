@@ -12,7 +12,7 @@ namespace RaceElement.Util.Settings
 
     public class UiSettings : AbstractSettingsJson<UiSettingsJson>
     {
-        public override string Path => FileUtil.AccManangerSettingsPath;
+        public override string Path => FileUtil.RaceElementSettingsPath;
 
         public override string FileName => "UI.json";
 

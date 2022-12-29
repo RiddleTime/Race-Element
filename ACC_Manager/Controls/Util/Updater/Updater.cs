@@ -43,11 +43,11 @@ namespace RaceElement.Controls.Util.Updater
 
         private bool MoveCurrentExecutableToDocumentsPath(string currentExecutableFullName)
         {
-            Debug.WriteLine($"AutoUpdater: Moving current Executable to {FileUtil.AccManagerAppDataPath}");
+            Debug.WriteLine($"AutoUpdater: Moving current Executable to {FileUtil.RaceElementAppDataPath}");
 
             FileInfo toBeMoved = new FileInfo(currentExecutableFullName);
 
-            string tempTargetFile = $"{FileUtil.AccManagerAppDataPath}AccManager.exe";
+            string tempTargetFile = $"{FileUtil.RaceElementAppDataPath}RaceElement.exe";
 
             FileInfo targetFile = new FileInfo(tempTargetFile);
             if (targetFile.Exists)
@@ -63,9 +63,9 @@ namespace RaceElement.Controls.Util.Updater
         {
             try
             {
-                Debug.WriteLine($"AutoUpdater: Reverting Executable from {FileUtil.AccManagerAppDataPath} to {currentExecutableFullName}");
+                Debug.WriteLine($"AutoUpdater: Reverting Executable from {FileUtil.RaceElementAppDataPath} to {currentExecutableFullName}");
 
-                FileInfo toBeMoved = new FileInfo($"{FileUtil.AccManagerAppDataPath}AccManager.exe");
+                FileInfo toBeMoved = new FileInfo($"{FileUtil.RaceElementAppDataPath}RaceElement.exe");
 
                 FileInfo targetFile = new FileInfo(currentExecutableFullName);
                 if (targetFile.Exists)
@@ -116,7 +116,7 @@ namespace RaceElement.Controls.Util.Updater
             ProcessStartInfo startInfo = new ProcessStartInfo()
             {
                 FileName = "cmd",
-                Arguments = $"/c start \"AccManager.exe\" \"{fullName}\"",
+                Arguments = $"/c start \"RaceElement.exe\" \"{fullName}\"",
                 WindowStyle = ProcessWindowStyle.Hidden,
             };
             LogWriter.WriteToLog(startInfo.Arguments);

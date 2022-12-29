@@ -135,7 +135,7 @@ namespace RaceElement.Controls
         {
             try
             {
-                string tempTargetFile = $"{FileUtil.AccManagerAppDataPath}AccManager.exe";
+                string tempTargetFile = $"{FileUtil.RaceElementAppDataPath}AccManager.exe";
                 FileInfo tempFile = new FileInfo(tempTargetFile);
 
                 if (tempFile.Exists)

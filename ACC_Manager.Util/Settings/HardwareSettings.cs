@@ -9,7 +9,7 @@ namespace RaceElement.Util.Settings
 
     public class HardwareSettings : AbstractSettingsJson<HardwareSettingsJson>
     {
-        public override string Path => FileUtil.AccManangerSettingsPath;
+        public override string Path => FileUtil.RaceElementSettingsPath;
 
         public override string FileName => "Hardware.json";
 

@@ -6,6 +6,8 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.1.4.2", "- Renamed app to Race Element"+
+                        "\n- Removed request for admin rights, if you have run as admin enabled, disable it."},
             {"0.1.4.1", "- Added request for admin rights, the app uses this to detect whether ACC is running. Without these rights you may experience unexpected app crashes." },
             {"0.1.4.0", "- Reworked hud internals."+
                         "\n- Reduced idle cpu usage to almost 0% when ACC is not running."},

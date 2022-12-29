@@ -11,7 +11,7 @@ namespace RaceElement.Util.Settings
 
     public class AccSettings : AbstractSettingsJson<AccSettingsJson>
     {
-        public override string Path => FileUtil.AccManangerSettingsPath;
+        public override string Path => FileUtil.RaceElementSettingsPath;
         public override string FileName => "ACC.json";
 
         public override AccSettingsJson Default() => new AccSettingsJson()

@@ -136,7 +136,7 @@ namespace RaceElement.Controls
 
             if (tagFiles.Length == 0)
             {
-                liveryFile = new FileInfo($"{FileUtil.AccManagerTagsPath}{tag.Name}.json");
+                liveryFile = new FileInfo($"{FileUtil.RaceElementTagsPath}{tag.Name}.json");
             }
             else
             {
@@ -201,7 +201,7 @@ namespace RaceElement.Controls
 
         private static DirectoryInfo GetTagDirectory()
         {
-            DirectoryInfo tagDir = new DirectoryInfo(FileUtil.AccManagerTagsPath);
+            DirectoryInfo tagDir = new DirectoryInfo(FileUtil.RaceElementTagsPath);
 
             if (!tagDir.Exists)
             {

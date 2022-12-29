@@ -38,7 +38,7 @@ namespace RaceElement.Util
         /// <summary>
         /// Path to save log files
         /// </summary>
-        private static string LogPath = FileUtil.AccManagerLogPath;
+        private static string LogPath = FileUtil.RaceElementLogPath;
 
         /// <summary>
         /// Lof file name

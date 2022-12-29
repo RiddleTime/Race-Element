@@ -6,12 +6,12 @@ namespace RaceElement.Util
 {
     public class FileUtil
     {
-        public static string AccManagerAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "Race Element\\";
-        public static string AccManagerLogPath = AccManagerAppDataPath + "Log\\";
-        public static string AccManagerTagsPath = AccManagerAppDataPath + "Tag\\";
-        public static string AccManagerOverlayPath = AccManagerAppDataPath + "Overlay\\";
-        public static string AccManangerSettingsPath = AccManagerAppDataPath + "Settings\\";
-        public static string AccManangerDataPath = AccManagerAppDataPath + "Data\\";
+        public static string RaceElementAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "Race Element\\";
+        public static string RaceElementLogPath = RaceElementAppDataPath + "Log\\";
+        public static string RaceElementTagsPath = RaceElementAppDataPath + "Tag\\";
+        public static string RaceElementOverlayPath = RaceElementAppDataPath + "Overlay\\";
+        public static string RaceElementSettingsPath = RaceElementAppDataPath + "Settings\\";
+        public static string RaceElementDataPath = RaceElementAppDataPath + "Data\\";
 
 
         public static string AccPath => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "Assetto Corsa Competizione\\";

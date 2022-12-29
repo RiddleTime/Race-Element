@@ -19,7 +19,7 @@ namespace RaceElement.HUD.Overlay.Configuration
 
         private static DirectoryInfo GetOverlayDirectory()
         {
-            DirectoryInfo overlayDir = new DirectoryInfo(FileUtil.AccManagerOverlayPath);
+            DirectoryInfo overlayDir = new DirectoryInfo(FileUtil.RaceElementOverlayPath);
 
             if (!overlayDir.Exists)
             {
@@ -61,7 +61,7 @@ namespace RaceElement.HUD.Overlay.Configuration
 
             if (tagFiles.Length == 0)
             {
-                overlaySettingsFile = new FileInfo($"{FileUtil.AccManagerOverlayPath}{overlayName}.json");
+                overlaySettingsFile = new FileInfo($"{FileUtil.RaceElementOverlayPath}{overlayName}.json");
             }
             else
             {
@@ -76,7 +76,7 @@ namespace RaceElement.HUD.Overlay.Configuration
             }
 
             if (overlaySettingsFile == null)
-                overlaySettingsFile = new FileInfo($"{FileUtil.AccManagerOverlayPath}{overlayName}.json");
+                overlaySettingsFile = new FileInfo($"{FileUtil.RaceElementOverlayPath}{overlayName}.json");
 
             string jsonString = JsonConvert.SerializeObject(settings, Formatting.Indented);
 

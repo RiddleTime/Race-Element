@@ -85,7 +85,7 @@ namespace RaceElement.Controls
             {
                 localRaceWeekends.Items.Clear();
 
-                DirectoryInfo dataDir = new DirectoryInfo(FileUtil.AccManangerDataPath);
+                DirectoryInfo dataDir = new DirectoryInfo(FileUtil.RaceElementDataPath);
                 if (!dataDir.Exists)
                     return;
 

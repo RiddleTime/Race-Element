@@ -8,7 +8,13 @@ using System.Windows;
 // associated with an assembly.
 [assembly: AssemblyTitle("Race Element")]
 [assembly: AssemblyDescription("Universal Tools for Sim Racing.")]
-[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyConfiguration(
+#if DEBUG 
+    "Dev"
+#else
+    "Release"
+#endif
+)]
 [assembly: AssemblyCompany("Element Future")]
 [assembly: AssemblyProduct("Race Element")]
 [assembly: AssemblyCopyright("Copyright 2022 © Reinier Klarenberg")]
@@ -45,6 +51,6 @@ using System.Windows;
 //      Minor Version
 //      Build Number
 //      Revision
-[assembly: AssemblyVersion("0.1.4.2")]
-[assembly: AssemblyFileVersion("0.1.4.2")]
+[assembly: AssemblyVersion("0.1.5.0")]
+[assembly: AssemblyFileVersion("0.1.5.0")]
 [assembly: NeutralResourcesLanguage("")]

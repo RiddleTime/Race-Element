@@ -253,7 +253,7 @@ namespace RaceElement.Controls
         }
         internal class UnlistedServersSettingsJson : AbstractSettingsJson<UnlistedServersJson>
         {
-            public override string Path => FileUtil.AccManangerSettingsPath;
+            public override string Path => FileUtil.RaceElementSettingsPath;
             public override string FileName => "ACC_UnlistedServers.json";
 
             public override UnlistedServersJson Default()
