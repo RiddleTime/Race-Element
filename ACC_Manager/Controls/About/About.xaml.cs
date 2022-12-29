@@ -34,7 +34,7 @@ namespace RaceElement.Controls
             buttonGithub.Click += (sender, e) => Process.Start(new ProcessStartInfo()
             {
                 FileName = "cmd",
-                Arguments = $"/c start https://github.com/RiddleTime/ACC-Manager",
+                Arguments = $"/c start https://github.com/RiddleTime/Race-Element",
                 WindowStyle = ProcessWindowStyle.Hidden,
             });
             buttonDonate.Click += (sender, e) => Process.Start(new ProcessStartInfo()
@@ -77,8 +77,8 @@ namespace RaceElement.Controls
                 if (HasAddedDownloadButton)
                     return;
 
-                GitHubClient client = new GitHubClient(new ProductHeaderValue("ACC-Manager"), new Uri("https://github.com/RiddleTime/ACC-Manager.git"));
-                var allTags = await client.Repository.GetAllTags("RiddleTime", "ACC-Manager");
+                GitHubClient client = new GitHubClient(new ProductHeaderValue("Race-Element"), new Uri("https://github.com/RiddleTime/Race-Element.git"));
+                var allTags = await client.Repository.GetAllTags("RiddleTime", "Race-Element");
 
                 if (allTags != null && allTags.Count > 0)
                 {
@@ -92,11 +92,11 @@ namespace RaceElement.Controls
 
                     if (remoteVersion > localVersion)
                     {
-                        Release release = await client.Repository.Release.GetLatest("RiddleTime", "ACC-Manager");
+                        Release release = await client.Repository.Release.GetLatest("RiddleTime", "Race-Element");
 
                         if (release != null)
                         {
-                            var accManagerAsset = release.Assets.Where(x => x.Name == "AccManager.exe").First();
+                            var accManagerAsset = release.Assets.Where(x => x.Name == "RaceElement.exe").First();
 
                             await Dispatcher.BeginInvoke(new Action(() =>
                              {

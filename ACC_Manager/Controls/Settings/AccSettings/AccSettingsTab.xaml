@@ -10,7 +10,7 @@
     <Grid>
         <TabControl TabStripPlacement="Left">
             
-            <TabItem Height="60">
+            <!--<TabItem Height="60">
                 <TabItem.Header>
                     <Grid ToolTip="This allows you to save and activate unlisted server ips for lan discovery in the game.">
                         <Grid.RowDefinitions>
@@ -30,7 +30,7 @@
                     </Grid>
                 </TabItem.Header>
                 <local:ReplaySettings Margin="2,0,0,0"></local:ReplaySettings>
-            </TabItem>
+            </TabItem>-->
 
             <TabItem Height="60">
                 <TabItem.Header>
