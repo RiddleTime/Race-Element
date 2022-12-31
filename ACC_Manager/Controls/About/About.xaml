@@ -33,10 +33,12 @@
                         <TextBlock FontWeight="SemiBold" FontFamily="{StaticResource Conthrax}" Foreground="#EFEFEFEF" FontSize="80" HorizontalAlignment="Center">
                             <TextBlock.Text>Race Element</TextBlock.Text>
                         </TextBlock>
-                        <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" Margin="0,-9,0,0" HorizontalAlignment="Center">
+                        <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" FontSize="17" FontFamily="{StaticResource Conthrax}"  Margin="0,-9,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"> 
                             Provides tooling for Sim Racing.<LineBreak/>
-                            Developed by RiddleTime.<LineBreak/>
-                            Thank You: KrisV147, Floriwan, Pelice, Mominon, Fbalazs and Jubka.
+                        </TextBlock>
+
+                        <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" Margin="0,-9,0,0" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                            Developed by RiddleTime. Contributors: KrisV147, Floriwan, Pelice, Mominon, Fbalazs and Jubka.
                         </TextBlock>
                     </StackPanel>
 
