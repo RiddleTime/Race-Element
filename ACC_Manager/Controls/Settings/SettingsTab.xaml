@@ -17,7 +17,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <Image Source=".\..\..\race-element-icon 2.ico" 
+                            <Image Source=".\..\..\Resources\race element icon 2.ico"
                                Stretch="UniformToFill"
                                 Height="36"
                                 Width="36"/>
