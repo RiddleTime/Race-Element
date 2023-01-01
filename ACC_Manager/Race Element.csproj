@@ -66,7 +66,7 @@
     <StartupObject>RaceElement.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>race-element-icon.ico</ApplicationIcon>
+    <ApplicationIcon>race-element-icon-2.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -659,7 +659,9 @@
     <EmbeddedResource Include="costura32\DdsFileTypePlusIO_x86.dll" />
     <EmbeddedResource Include="costura64\DdsFileTypePlusIO_x64.dll" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="race-element-icon-2.ico" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ACC_Manager.Broadcast\Race Element.Broadcast.csproj">
       <Project>{840220bd-8469-4a04-a6ec-1ed2bc743efb}</Project>
@@ -694,7 +696,7 @@
     <Resource Include="race-element-icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\race-element-icon.ico" />
+    <Resource Include="Resources\race element icon 2.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
