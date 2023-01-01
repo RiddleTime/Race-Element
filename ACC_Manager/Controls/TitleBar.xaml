@@ -19,7 +19,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Background="OrangeRed" x:Name="backGround">
+    <Grid Background="#9F000000" x:Name="backGround">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="7"/>
             <ColumnDefinition Width="*"/>
