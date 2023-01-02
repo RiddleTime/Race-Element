@@ -15,7 +15,6 @@ namespace RaceElement.Data.ACC.Core.Game.Tasks
         {
             _replaySettings = new ReplaySettings();
             _replaySettings.Get(false);
-
             return true;
         }
 

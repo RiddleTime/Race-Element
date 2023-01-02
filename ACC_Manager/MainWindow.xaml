@@ -297,7 +297,7 @@
 
         </TabControl>
 
-        <Button x:Name="buttonPlayACC" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="90" Height="55" Margin="3" Style="{StaticResource MaterialDesignRaisedDarkButton}" ToolTip="Launch Assetto Corsa Competizione">
+        <Button x:Name="buttonPlayACC" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="104" Height="55" Margin="4" Style="{StaticResource MaterialDesignRaisedDarkButton}" ToolTip="Launch Assetto Corsa Competizione">
             <TextBlock TextAlignment="Center" FontFamily="{StaticResource Conthrax}" FontSize="18">
                 <materialDesign:PackIcon
                     Grid.Row="0"

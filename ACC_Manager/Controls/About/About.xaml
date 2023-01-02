@@ -30,14 +30,16 @@
 
                 <Grid>
                     <StackPanel Orientation="Vertical">
-                        <TextBlock FontWeight="SemiBold" FontFamily="{StaticResource Conthrax}" Foreground="#EFEFEFEF" FontSize="80" HorizontalAlignment="Center">
+                        <TextBlock FontWeight="SemiBold" FontFamily="{StaticResource Conthrax}" Foreground="#FEFF4500" FontSize="80" HorizontalAlignment="Center">
                             <TextBlock.Text>Race Element</TextBlock.Text>
                         </TextBlock>
-                        <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" FontSize="17" FontFamily="{StaticResource Conthrax}"  Margin="0,-9,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"> 
+                        <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" Foreground="#EFFFFFFF" FontSize="22" FontFamily="{StaticResource Conthrax}"  Margin="0,-18,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"> 
                             Provides tooling for Sim Racing.<LineBreak/>
                         </TextBlock>
 
-                        <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" Margin="0,-9,0,0" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                        <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" 
+                                    Foreground="#CFFFFFFF" 
+                                   HorizontalAlignment="Center" Margin="0,-14,0,0" VerticalAlignment="Bottom" FontSize="13"  FontFamily="{StaticResource Conthrax}">
                             Developed by RiddleTime. Contributors: KrisV147, Floriwan, Pelice, Mominon, Fbalazs and Jubka.
                         </TextBlock>
                     </StackPanel>
@@ -94,7 +96,7 @@
                                 Height="22"
                                 Foreground="Gold"    
                                 />
-                                <TextBlock Grid.Column="1" Foreground="Gold" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Right" Text=" Donate"></TextBlock>
+                                <TextBlock Grid.Column="1" FontWeight="Bold" Foreground="Gold" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Right" Text=" Donate"></TextBlock>
                             </Grid>
                         </Button>
                     </StackPanel>
@@ -125,7 +127,7 @@
                         </materialDesign:TransitioningContent.Effect>
 
                         <TextBlock 
-                           Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                           Style="{StaticResource MaterialDesignHeadline5TextBlock}" FontFamily="{StaticResource Conthrax}" 
                            HorizontalAlignment="Center">Guide
                         </TextBlock>
 
@@ -255,7 +257,7 @@
                         </materialDesign:TransitioningContent.Effect>
 
                         <TextBlock 
-                           Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                           Style="{StaticResource MaterialDesignHeadline5TextBlock}" FontFamily="{StaticResource Conthrax}" 
                            HorizontalAlignment="Center">Changelog
                         </TextBlock>
 
@@ -264,7 +266,7 @@
 
                 <ScrollViewer Style="{StaticResource MaterialDesignScrollViewer}" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Visible">
                     <materialDesign:Card Margin="6,0,3,0">
-                        <StackPanel x:Name="stackPanelReleaseNotes" Orientation="Vertical" Margin="5,0,0,10" >
+                        <StackPanel x:Name="stackPanelReleaseNotes" Orientation="Vertical" Margin="5,0,0,10">
 
                         </StackPanel>
                     </materialDesign:Card>

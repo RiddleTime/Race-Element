@@ -28,9 +28,9 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ProductName>ACC Manager</ProductName>
+    <ProductName>Race Element</ProductName>
     <PublisherName>Reinier Klarenberg</PublisherName>
-    <SuiteName>ACC Manager</SuiteName>
+    <SuiteName>Race Element</SuiteName>
     <ApplicationRevision>6</ApplicationRevision>
     <ApplicationVersion>0.0.2.6</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
