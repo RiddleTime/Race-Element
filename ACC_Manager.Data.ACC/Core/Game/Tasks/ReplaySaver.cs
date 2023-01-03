@@ -14,7 +14,10 @@ namespace RaceElement.Data.ACC.Core.Game.Tasks
         public override bool Init()
         {
             _replaySettings = new ReplaySettings();
-            _replaySettings.Get(false);
+            var replayJson = _replaySettings.Get(false);
+            int replaySaveIntervals = replayJson.AutoSaveMinTimeSeconds;
+
+
             return true;
         }
 

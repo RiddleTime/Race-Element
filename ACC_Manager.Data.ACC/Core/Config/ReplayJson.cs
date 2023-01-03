@@ -1,5 +1,4 @@
 ﻿using RaceElement.Util;
-using RaceElement.Util;
 using Newtonsoft.Json;
 
 namespace RaceElement.Data.ACC.Core.Config
