@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using ACCManager.Data.ACC.Core.Game;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Quartz;
 using Quartz.Impl;
@@ -29,10 +30,9 @@ namespace RaceElement
                  {
                      q.UseMicrosoftDependencyInjectionJobFactory();
 
-                     IJobDetail job = JobBuilder.Create<ReplaySaver>().WithIdentity(ReplaySaver.Key).Build();
-                     q.ScheduleJob<ReplaySaver>(trigger => trigger.WithIdentity("aaaa").WithSimpleSchedule(x => x.WithIntervalInSeconds(5).WithRepeatCount(5))
-                                                           .ForJob(ReplaySaver.Key)
-                            );
+                   
+
+                     ACCJobs.RegisterJobs(q);
                  });
                  services.AddQuartzHostedService(opt =>
                  {
