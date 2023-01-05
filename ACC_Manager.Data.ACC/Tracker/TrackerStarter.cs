@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace RaceElement.Data.ACC.Tracker
 {
-    public class ACCTrackerStarter
+    public static class ACCTrackerStarter
     {
         public static void StartACCTrackers()
         {

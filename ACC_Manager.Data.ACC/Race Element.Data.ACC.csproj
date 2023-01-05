@@ -225,7 +225,7 @@
     <Compile Include="Cars\SteeringLock.cs" />
     <Compile Include="Core\AccProcess.cs" />
     <Compile Include="Core\Config\ReplayJson.cs" />
-    <Compile Include="Core\Game\JobCreator.cs" />
+    <Compile Include="Core\Game\Scheduler.cs" />
     <Compile Include="Core\Game\Jobs\ReplaySaver.cs" />
     <Compile Include="Database\GameData\DbCarData.cs" />
     <Compile Include="Database\GameData\DbTrackData.cs" />

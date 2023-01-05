@@ -23,16 +23,13 @@ namespace RaceElement
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             Instance = this;
 
-            var builder = Host.CreateDefaultBuilder()
-             .ConfigureServices((cxt, services) =>
+            var builder = Host.CreateDefaultBuilder().ConfigureServices((cxt, services) =>
              {
                  services.AddQuartz(q =>
                  {
                      q.UseMicrosoftDependencyInjectionJobFactory();
 
-                   
-
-                     ACCJobs.RegisterJobs(q);
+                     Scheduler.RegisterJobs(q);
                  });
                  services.AddQuartzHostedService(opt =>
                  {

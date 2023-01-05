@@ -22,7 +22,8 @@ namespace RaceElement.Data.ACC.Core.Game.Jobs
 
         public async Task Execute(IJobExecutionContext context)
         {
-            Debug.WriteLine("-------------------            Replay Saver is executing");
+            Debug.WriteLine($"-------------------            Replay Saver is executing");
+            Debug.WriteLine($"{context.FireTimeUtc:T}.{context.FireTimeUtc:fffffff}\n");
         }
     }
 }

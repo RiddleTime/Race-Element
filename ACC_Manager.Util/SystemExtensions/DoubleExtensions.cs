@@ -1,4 +1,6 @@
-﻿namespace RaceElement.Util.SystemExtensions
+﻿using System.Text;
+
+namespace RaceElement.Util.SystemExtensions
 {
     public static class DoubleExtensions
     {
@@ -44,15 +46,15 @@
 
         public static string ToString(this double[] values, int decimals)
         {
-            var value = string.Empty;
+            var builder = new StringBuilder();
             for (int i = 0; i < values.Length; i++)
             {
                 double v = values[i];
-                value += $"{{{v.ToString($"F{decimals}")}}}";
+                builder.Append($"{{{v.ToString($"F{decimals}")}}}");
                 if (i < values.Length - 1)
-                    value += ", ";
+                    builder.Append(", ");
             }
-            return value;
+            return builder.ToString();
         }
     }
 }
