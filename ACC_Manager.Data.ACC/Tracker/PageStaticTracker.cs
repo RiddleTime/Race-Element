@@ -1,6 +1,6 @@
 ﻿using ACCManager.Data.ACC.Core.Game;
 using Quartz;
-using RaceElement.Data.ACC.Core.Game.Jobs;
+using RaceElement.Data.ACC.Core;
 using System;
 using System.Threading.Tasks;
 using static RaceElement.ACCSharedMemory;
@@ -16,7 +16,8 @@ namespace RaceElement.Data.ACC.Tracker
 
         public async Task Execute(IJobExecutionContext context)
         {
-            Tracker?.Invoke(null, ACCSharedMemory.Instance.ReadStaticPageFile());
+            if (AccProcess.IsRunning)
+                Tracker?.Invoke(null, ACCSharedMemory.Instance.ReadStaticPageFile());
         }
 
         public static void Schedule()
