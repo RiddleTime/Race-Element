@@ -6,6 +6,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <StackPanel Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch"
+                        ToolTip="TODO">
+                <ToggleButton x:Name="toggleAutoSaveReplay" Width="50" Height="35" VerticalAlignment="Center" Cursor="Hand"/>
+                <Label VerticalAlignment="Center">Enable auto save replay</Label>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </UserControl>

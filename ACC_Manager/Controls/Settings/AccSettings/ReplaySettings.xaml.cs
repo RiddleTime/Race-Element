@@ -21,16 +21,32 @@ namespace RaceElement.Controls
     /// </summary>
     public partial class ReplaySettings : UserControl
     {
+        private AccSettingsJson _accSettings;
+
         public ReplaySettings()
         {
             InitializeComponent();
 
-            AccSettingsJson accSettings = new AccSettings().Get();
-            accSettings.AutoRecordReplay = true;
-            if (accSettings.AutoRecordReplay)
-            {
-                TitleBar.Instance.SetIcons(TitleBar.ActivatedIcons.AutomaticSaveReplay, true);
-            }
+            this.Loaded += (s, e) => LoadSettings();
+
+            this.toggleAutoSaveReplay.Checked += (s, e) => SaveSettings();
+            this.toggleAutoSaveReplay.Unchecked += (s, e) => SaveSettings();
+        }
+
+        private void SaveSettings()
+        {
+            _accSettings.AutoRecordReplay = toggleAutoSaveReplay.IsChecked.Value;
+            TitleBar.Instance.SetIcons(TitleBar.ActivatedIcons.AutomaticSaveReplay, _accSettings.AutoRecordReplay);
+
+            new AccSettings().Save(_accSettings);
+        }
+
+        private void LoadSettings()
+        {
+            _accSettings = new AccSettings().Get();
+
+            toggleAutoSaveReplay.IsChecked = _accSettings.AutoRecordReplay;
+            TitleBar.Instance.SetIcons(TitleBar.ActivatedIcons.AutomaticSaveReplay, _accSettings.AutoRecordReplay);
         }
     }
 }

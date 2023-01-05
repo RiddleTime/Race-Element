@@ -789,9 +789,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="race-element-icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\race element icon 2.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
