@@ -1,6 +1,7 @@
 ﻿using Quartz;
 using Quartz.Impl;
 using RaceElement.Data.ACC.Core.Game.Jobs;
+using RaceElement.Data.ACC.Tracker;
 
 namespace ACCManager.Data.ACC.Core.Game
 {
@@ -15,6 +16,7 @@ namespace ACCManager.Data.ACC.Core.Game
             Scheduler.Start();
 
             ReplaySaver.Schedule();
+            PageStaticTracker.Schedule();
         }
     }
 }

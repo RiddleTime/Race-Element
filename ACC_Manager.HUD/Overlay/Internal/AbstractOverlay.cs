@@ -150,7 +150,7 @@ namespace RaceElement.HUD.Overlay.Internal
             {
                 if (addTrackers)
                 {
-                    PageStaticTracker.Instance.Tracker += PageStaticChanged;
+                    PageStaticTracker.Tracker += PageStaticChanged;
                     PageGraphicsTracker.Instance.Tracker += PageGraphicsChanged;
                     PagePhysicsTracker.Instance.Tracker += PagePhysicsChanged;
                     BroadcastTracker.Instance.OnRealTimeUpdate += BroadCastRealTimeChanged;
@@ -277,7 +277,7 @@ namespace RaceElement.HUD.Overlay.Internal
             {
                 LogWriter.WriteToLog(ex);
             }
-            PageStaticTracker.Instance.Tracker -= PageStaticChanged;
+            PageStaticTracker.Tracker -= PageStaticChanged;
             PageGraphicsTracker.Instance.Tracker -= PageGraphicsChanged;
             PagePhysicsTracker.Instance.Tracker -= PagePhysicsChanged;
             BroadcastTracker.Instance.OnRealTimeUpdate -= BroadCastRealTimeChanged;
