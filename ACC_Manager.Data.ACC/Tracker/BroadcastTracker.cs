@@ -1,7 +1,5 @@
 ﻿using RaceElement.Broadcast;
 using RaceElement.Broadcast.Structs;
-using RaceElement.Broadcast;
-using RaceElement.Broadcast.Structs;
 using System;
 using System.Diagnostics;
 using System.Net;

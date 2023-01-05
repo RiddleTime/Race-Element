@@ -20,20 +20,13 @@ namespace RaceElement.Data.ACC.Core
 
         public static bool IsRunning { get => Handler.IsRunning; }
 
-        private class ProcessTracker : IDisposable
+        private sealed class ProcessTracker : IDisposable
         {
             public bool IsRunning = false;
 
             public event EventHandler<bool> IsRunningChanged;
 
             private Process _acc;
-            public Process Process
-            {
-                get
-                {
-                    return _acc;
-                }
-            }
 
             private readonly string _name;
 

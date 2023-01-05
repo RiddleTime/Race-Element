@@ -29,7 +29,7 @@ namespace RaceElement
                  {
                      q.UseMicrosoftDependencyInjectionJobFactory();
 
-                     Scheduler.RegisterJobs(q);
+                     AccScheduler.RegisterJobs();
                  });
                  services.AddQuartzHostedService(opt =>
                  {
