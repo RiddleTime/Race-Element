@@ -31,7 +31,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayBoostGauge
             this.Width = 130;
             _panel = new InfoPanel(13, this.Width)
             {
-                FirstRowLine = 1
+                FirstRowLine = 1,
             };
             this.Height = _panel.FontHeight * 1 + 1;
             this.RefreshRateHz = 10;

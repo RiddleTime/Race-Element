@@ -15,7 +15,7 @@ namespace ACCManager.Data.ACC.Core.Game
             Scheduler = factory.GetScheduler().Result;
             Scheduler.Start();
 
-            ReplaySaver.Schedule();
+            //ReplaySaver.Schedule();
             PageStaticTracker.Schedule();
         }
     }

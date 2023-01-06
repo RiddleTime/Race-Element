@@ -6,7 +6,8 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.1.5.1", "- Reworked about tab."},
+            {"0.1.5.1", "- Reworked Titlebar, Icon and About Tab."+
+                        "\n- HUD: Added boost gauge, showing boost percentage."},
             {"0.1.5.0", "- ACC Manager is now known as Race Element."+
                         "\n- Removed request for admin rights, if you have run as admin enabled, disable it."+
                         "\n- You can copy all the entire contents of the ACC Manager folder to the Race Element folder. This to keep all your data and settings."},
