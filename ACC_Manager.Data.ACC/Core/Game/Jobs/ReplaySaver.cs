@@ -14,6 +14,8 @@ namespace RaceElement.Data.ACC.Core.Game.Jobs
         public static readonly JobKey JobKey = new JobKey("replay-saver", "acc-jobs");
         public static readonly TriggerKey TriggerKey = new TriggerKey("replaySaverTrigger");
 
+        private static DateTime LastReplaySave = DateTime.MinValue;
+
         public async Task Execute(IJobExecutionContext context)
         {
             if (AccProcess.IsRunning)
@@ -25,10 +27,13 @@ namespace RaceElement.Data.ACC.Core.Game.Jobs
                 {
                     if (ACCSharedMemory.Instance.ReadGraphicsPageFile().Status == ACCSharedMemory.AcStatus.AC_LIVE)
                     {
-                        Debug.WriteLine("Auto save is enabled");
-                        var lastUtcSave = AccHotkeys.SaveReplay();
+                        if (DateTime.UtcNow.Subtract(LastReplaySave) > new TimeSpan(0, 0, replayJson.MaxTimeReplaySeconds))
+                        {
+                            Debug.WriteLine("Auto save is enabled");
+                            LastReplaySave = AccHotkeys.SaveReplay();
 
-                        Debug.WriteLine(lastUtcSave);
+                            Debug.WriteLine(LastReplaySave);
+                        }
                     }
                 }
                 else

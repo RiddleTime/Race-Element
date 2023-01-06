@@ -55,6 +55,7 @@
     <Compile Include="Data\Tracker\Weather\WeatherTracker.cs" />
     <Compile Include="OverlaysACC.cs" />
     <Compile Include="Overlays\OverlayAccelerometer\AccelerometerOverlay.cs" />
+    <Compile Include="Overlays\OverlayBoostGauge\BoostGaugeOverlay.cs" />
     <Compile Include="Overlays\OverlayCarInfo\CarInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayDamage\DamageOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\DebugInfoHelper.cs" />
@@ -126,5 +127,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
