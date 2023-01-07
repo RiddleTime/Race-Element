@@ -145,6 +145,8 @@ namespace RaceElement.Controls
                             stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.TeamName}", HorizontalAlignment.Center, 25, "Team Name"));
                         stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.CustomSkinName}", HorizontalAlignment.Center, 19, "Skin Name"));
                         stackPanelMainInfo.Children.Add(GetInfoLabel($"{ConversionFactory.GetCarName(carsRoot.CarModelType)}", HorizontalAlignment.Center, 16, "Car model type"));
+                        if (carsRoot.CompetitorName != String.Empty)
+                            stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.CompetitorName}", HorizontalAlignment.Center, 16, "Competitor Name"));
 
                         stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Display Name: {carsRoot.DisplayName}"));
                         stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Race Number: {carsRoot.RaceNumber}"));
