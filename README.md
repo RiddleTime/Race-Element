@@ -25,7 +25,7 @@ Provides tooling for Sim Racing
 - [ScottPlot](https://github.com/scottplot/scottplot)
 
 ## Preview Images
-![image](https://user-images.githubusercontent.com/4581237/210020328-ee038168-6561-4ddf-bc15-295f76eb91ea.png)
+![image](https://user-images.githubusercontent.com/4581237/211129256-f3259631-9633-449f-9091-391c32423599.png)
 ![image](https://user-images.githubusercontent.com/4581237/190435640-9e5eef21-8cfc-4599-b4f0-668e266c8b33.png)
 ![image](https://user-images.githubusercontent.com/4581237/190435822-e174f425-b7d5-4952-bdbf-ca1aed66bf53.png)
 ![image](https://user-images.githubusercontent.com/4581237/190436083-0b229cdc-fb82-4c07-b4b8-ffe07399c28d.png)
