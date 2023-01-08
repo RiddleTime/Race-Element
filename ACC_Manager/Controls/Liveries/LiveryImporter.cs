@@ -17,15 +17,18 @@ namespace RaceElement.Controls
         private static int liveryCount = 0;
         private static List<LiveryTreeCar> ImportedLiveries = new List<LiveryTreeCar>();
 
-        public static void ImportLiveryZips()
+        public static void ImportLiveryZips(FileInfo file = null)
         {
             liveryCount = 0;
             ImportedLiveries.Clear();
+           
 
             try
             {
                 LiveryBrowser.Instance.Dispatcher.BeginInvoke(new Action(() =>
                 {
+                    MainWindow.Instance.tabLiveries.Focus();
+
                     LiveryBrowser.Instance.liveriesTreeViewTeams.IsEnabled = false;
                     LiveryBrowser.Instance.liveriesTreeViewCars.IsEnabled = false;
                     LiveryBrowser.Instance.liveriesTreeViewTags.IsEnabled = false;
@@ -38,38 +41,43 @@ namespace RaceElement.Controls
                 }));
 
                 Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-
-                // Set filter for file extension and default file extension 
-                dlg.AddExtension = true;
-                dlg.CheckPathExists = true;
-                dlg.Filter = "Livery archive|*.zip;*.rar;*.7z";
-                dlg.Multiselect = true;
-                Nullable<bool> result = dlg.ShowDialog();
-
-                if (result == true)
+                if (file == null)
                 {
-                    string[] fileNames = dlg.FileNames;
-                    if (fileNames != null && fileNames.Length > 0)
-                    {
-                        for (int i = 0; i < fileNames.Length; i++)
-                        {
-                            FileInfo fi = new FileInfo(fileNames[i]);
-                            if (fi.Exists)
-                            {
-                                FileStream fs = fi.OpenRead();
-                                if (fs != null)
-                                    ImportArchive(fi);
+                    // Set filter for file extension and default file extension 
+                    dlg.AddExtension = true;
+                    dlg.CheckPathExists = true;
+                    dlg.Filter = "Livery archive|*.zip;*.rar;*.7z";
+                    dlg.Multiselect = true;
+                    Nullable<bool> result = dlg.ShowDialog();
 
-                                fs.Close();
+                    if (result == true)
+                    {
+                        string[] fileNames = dlg.FileNames;
+                        if (fileNames != null && fileNames.Length > 0)
+                        {
+                            for (int i = 0; i < fileNames.Length; i++)
+                            {
+                                FileInfo fi = new FileInfo(fileNames[i]);
+                                if (fi.Exists)
+                                {
+                                    FileStream fs = fi.OpenRead();
+                                    if (fs != null)
+                                        ImportArchive(fi);
+
+                                    fs.Close();
+                                }
                             }
                         }
+                    }
+                    else
+                    {
+                        goto enableUI;
                     }
                 }
                 else
                 {
-                    goto enableUI;
+                    ImportArchive(file);
                 }
-
             }
             catch (Exception ex)
             {
@@ -106,8 +114,10 @@ namespace RaceElement.Controls
             }));
         }
 
-        private static void ImportArchive(FileInfo fi)
+        public static void ImportArchive(FileInfo fi)
         {
+
+
             IArchive archive = null;
 
             switch (fi.Extension)

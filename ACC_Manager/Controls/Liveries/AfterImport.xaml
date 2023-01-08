@@ -29,6 +29,9 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="85"/>
                     </Grid.RowDefinitions>
+
+                    <Button x:Name="buttonClose" Margin="3" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Panel.ZIndex="5">Close</Button>
+
                     <TextBlock HorizontalAlignment="Center" Grid.Row="0" Style="{StaticResource MaterialDesignHeadline4TextBlock}">Imported liveries</TextBlock>
 
                     <ListBox x:Name="lvImportedLiveries" Grid.Row="1" SelectionMode="Multiple" ScrollViewer.VerticalScrollBarVisibility="Visible">
@@ -36,7 +39,6 @@
 
                     <StackPanel Orientation="Vertical" Grid.Row="2" VerticalAlignment="Bottom" Margin="3">
                         <Button x:Name="buttonAddTags" Margin="3" ToolTip="Select items in the above list">Add tags</Button>
-                        <Button x:Name="buttonClose" Margin="3">Close</Button>
                     </StackPanel>
                 </Grid>
             </materialDesign:Card>

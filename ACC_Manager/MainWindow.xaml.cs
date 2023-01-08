@@ -19,6 +19,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
+using System.IO;
 
 namespace RaceElement
 {
@@ -147,6 +148,15 @@ namespace RaceElement
                         e.Handled = true;
                         return;
                     }
+
+                    if (droppedItem.EndsWith(".7z") || droppedItem.EndsWith(".zip") || droppedItem.EndsWith(".rar"))
+                    {
+                        Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            LiveryImporter.ImportLiveryZips(new FileInfo(droppedItem));
+                        }));
+                    }
+
                 }
             }
 

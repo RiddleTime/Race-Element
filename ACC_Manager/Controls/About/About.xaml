@@ -203,6 +203,7 @@
                                 </TextBlock>
                                 <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
                                    Browser:<LineBreak/>
+                                    - Drag and Drop proper .zip/7.zip/.rar skin packs or single liveries on top of the app to import them.<LineBreak/>
                                     - Right click cars/teams to add to skin pack.<LineBreak/>
                                     - Right click skins to add to skin pack.<LineBreak/>
                                     - Right click skins to browse livery folder.<LineBreak/>

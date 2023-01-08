@@ -6,7 +6,8 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.1.5.2", "- Liveries: Added competitor name to viewer if it's used in the livery."+
+            {"0.1.5.2", "- Liveries can now be dragged and dropped ontop of the app."+
+                        "\n- Liveries Viewer: Added competitor name to viewer if it's used in the livery."+
                         "\n- Further design changes according to rebrand."},
             {"0.1.5.1", "- Reworked Titlebar, Icon and About Tab."+
                         "\n- HUD: Added boost gauge, showing boost percentage."},

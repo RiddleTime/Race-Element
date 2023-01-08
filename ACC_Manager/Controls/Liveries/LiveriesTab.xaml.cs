@@ -7,9 +7,12 @@ namespace RaceElement.Controls
     /// </summary>
     public partial class LiveriesTab : UserControl
     {
+
+        public static LiveriesTab Instance;
         public LiveriesTab()
         {
             InitializeComponent();
+            Instance = this;
         }
     }
 }
