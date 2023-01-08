@@ -26,7 +26,7 @@
                             Height="32"
                         Foreground="White"    
                         />
-                            <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Fuel Calculator</TextBlock>
+                            <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" FontFamily="{StaticResource Conthrax}" VerticalAlignment="Center"> Fuel Calculator</TextBlock>
                         </Grid>
                     </TabItem.Header>
 

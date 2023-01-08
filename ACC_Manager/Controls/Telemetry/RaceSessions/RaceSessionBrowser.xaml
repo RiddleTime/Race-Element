@@ -35,7 +35,7 @@
                             Height="32"
                         Foreground="White"    
                         />
-                        <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Local</TextBlock>
+                        <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" FontFamily="{StaticResource Conthrax}" VerticalAlignment="Center"> Local</TextBlock>
                     </Grid>
                 </TabItem.Header>
                 <ListView x:Name="localRaceWeekends" ScrollViewer.VerticalScrollBarVisibility="Auto" />
@@ -56,7 +56,7 @@
                             Height="32"
                         Foreground="White"    
                         />
-                        <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Current</TextBlock>
+                        <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" FontFamily="{StaticResource Conthrax}" VerticalAlignment="Center"> Current</TextBlock>
                     </Grid>
                 </TabItem.Header>
                 <Grid Grid.Column="0" VerticalAlignment="Top">

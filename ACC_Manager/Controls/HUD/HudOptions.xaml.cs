@@ -500,7 +500,7 @@ namespace RaceElement.Controls
                     Padding = new Thickness(0, marginTopBottom, 0, marginTopBottom),
                     Margin = new Thickness(0, 1, 0, 1),
                     BorderBrush = new SolidColorBrush(Colors.Transparent),
-                    BorderThickness = new Thickness(0, 0, 2, 0),
+                    BorderThickness = new Thickness(2, 0, 0, 0),
                 };
                 if (tempOverlaySettings != null)
                     if (tempOverlaySettings.Enabled)

@@ -62,17 +62,11 @@
                             Height="32"
                         Foreground="White"    
                         />
-                            <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" Cars"></TextBlock>
+                            <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" FontFamily="{StaticResource Conthrax}"    VerticalAlignment="Center" Text=" Cars"></TextBlock>
                         </Grid>
                     </TabItem.Header>
                     <TreeView x:Name="liveriesTreeViewCars" Grid.Column="0" Style="{StaticResource MaterialDesignTreeView}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                        <TreeViewItem>
-                            <TreeViewItem.Header>
-                                <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}">
-                                    Team A
-                                </TextBlock>
-                            </TreeViewItem.Header>
-                        </TreeViewItem>
+                      
                     </TreeView>
                 </TabItem>
 
@@ -91,17 +85,11 @@
                             Height="32"
                         Foreground="White"    
                         />
-                            <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}"  VerticalAlignment="Center" Text=" Teams"></TextBlock>
+                            <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" FontFamily="{StaticResource Conthrax}"  VerticalAlignment="Center" Text=" Teams"></TextBlock>
                         </Grid>
                     </TabItem.Header>
                     <TreeView x:Name="liveriesTreeViewTeams" Grid.Column="0" Style="{StaticResource MaterialDesignTreeView}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                        <TreeViewItem>
-                            <TreeViewItem.Header>
-                                <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}">
-                                    Team A
-                                </TextBlock>
-                            </TreeViewItem.Header>
-                        </TreeViewItem>
+                      
                     </TreeView>
                 </TabItem>
 
@@ -120,7 +108,7 @@
                             Height="32"
                         Foreground="White"    
                         />
-                            <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" Tags"></TextBlock>
+                            <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" FontFamily="{StaticResource Conthrax}" VerticalAlignment="Center" Text=" Tags"></TextBlock>
                         </Grid>
                     </TabItem.Header>
                     <Grid>
@@ -130,13 +118,7 @@
                         </Grid.RowDefinitions>
 
                         <TreeView x:Name="liveriesTreeViewTags" Grid.Column="0" Style="{StaticResource MaterialDesignTreeView}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                            <TreeViewItem>
-                                <TreeViewItem.Header>
-                                    <TextBlock Style="{StaticResource MaterialDesignDataGridTextColumnStyle}">
-                                    Team A
-                                    </TextBlock>
-                                </TreeViewItem.Header>
-                            </TreeViewItem>
+                         
                         </TreeView>
                         <Button x:Name="buttonNewTag" Margin="3,0,0,0" Grid.Row="1" Content="Add new tag"></Button>
                     </Grid>
