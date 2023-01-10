@@ -35,18 +35,20 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 
         public CornerNamesOverlay(Rectangle rectangle) : base(rectangle, "Corner Names")
         {
+            _font = FontUtil.FontOrbitron(14 * this.Scale);
+
+            this.Height = (int)(_font.Height * 1.3);
+            this.Width = (int)(300 * this.Scale);
         }
 
         public override void BeforeStart()
         {
-            _font = FontUtil.FontOrbitron(15);
-
-            this.Height = (int)(_font.Height * 1.5);
-            this.Width = 300;
-
-            _cachedBackground = new CachedBitmap((int)(this.Width * this.Scale), (int)(this.Height * this.Scale), g =>
+            _cachedBackground = new CachedBitmap((int)((this.Width + 1) * this.Scale), (int)((this.Height + 1) * this.Scale), g =>
             {
-                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), new Rectangle(0, 0, Width, Height), (int)(3 * this.Scale));
+                Rectangle rectangle = new Rectangle(0, 0, (int)(this.Width * this.Scale), (int)(this.Height * this.Scale));
+                int cornerRadius = (int)(4 * this.Scale);
+                g.DrawRoundedRectangle(new Pen(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), 3 * this.Scale), rectangle, cornerRadius);
+                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), rectangle, cornerRadius);
             });
 
             RaceSessionTracker.Instance.OnNewSessionStarted += Instance_OnNewSessionStarted;
@@ -69,12 +71,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
         {
             if (CurrentTrack != null)
             {
-                _cachedBackground.Draw(g, (int)(Width * this.Scale), (int)(Height * this.Scale));
+                _cachedBackground.Draw(g, Width, Height);
 
                 string cornerName = CurrentTrack.CornerNames.FirstOrDefault(x => x.Key.IsInRange(pageGraphics.NormalizedCarPosition)).Value;
                 float textWidht = g.MeasureString(cornerName, _font).Width;
-                PointF location = new PointF(Width / 2 - textWidht / 2, _font.GetHeight() / 3);
-                g.DrawStringWithShadow(cornerName, _font, Brushes.White, location);
+                PointF location = new PointF(Width / 2 - textWidht / 2, this.Height / 2 - _font.Height / 2);
+                g.DrawStringWithShadow(cornerName, _font, Color.White, location, 0.75f * this.Scale);
             }
         }
 
