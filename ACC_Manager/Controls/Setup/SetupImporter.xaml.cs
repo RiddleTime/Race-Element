@@ -8,7 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using static RaceElement.Data.ACC.Tracks.TrackNames;
+using static RaceElement.Data.ACC.Tracks.TrackData;
 using static RaceElement.Data.ConversionFactory;
 
 namespace RaceElement.Controls
@@ -40,7 +40,7 @@ namespace RaceElement.Controls
         private void BuildTrackList()
         {
             this.listViewTracks.Items.Clear();
-            foreach (KeyValuePair<string, TrackData> kv in TrackNames.Tracks)
+            foreach (KeyValuePair<string, Data.ACC.Tracks.TrackData.AbstractTrackData> kv in Data.ACC.Tracks.TrackData.Tracks)
             {
                 ListViewItem trackItem = new ListViewItem()
                 {

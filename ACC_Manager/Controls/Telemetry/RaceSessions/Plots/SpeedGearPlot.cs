@@ -6,16 +6,16 @@ using ScottPlot.Renderable;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
-using static RaceElement.Data.ACC.Tracks.TrackNames;
+using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
 {
     internal class SpeedGearPlot
     {
         private readonly TextBlock _textBlockMetrics;
-        private readonly TrackData _trackData;
+        private readonly AbstractTrackData _trackData;
 
-        public SpeedGearPlot(TrackData trackData, ref TextBlock textBlockMetrics)
+        public SpeedGearPlot(AbstractTrackData trackData, ref TextBlock textBlockMetrics)
         {
             _trackData = trackData;
             _textBlockMetrics = textBlockMetrics;

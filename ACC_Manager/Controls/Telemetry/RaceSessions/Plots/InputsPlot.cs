@@ -6,17 +6,17 @@ using ScottPlot.Renderable;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
-using static RaceElement.Data.ACC.Tracks.TrackNames;
+using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
 {
     internal class InputsPlot
     {
         private readonly TextBlock _textBlockMetrics;
-        private readonly TrackData _trackData;
+        private readonly AbstractTrackData _trackData;
         private readonly int _fullSteeringLock;
 
-        public InputsPlot(TrackData trackData, ref TextBlock textBlockMetrics, int fullSteeringLock)
+        public InputsPlot(AbstractTrackData trackData, ref TextBlock textBlockMetrics, int fullSteeringLock)
         {
             _trackData = trackData;
             _textBlockMetrics = textBlockMetrics;

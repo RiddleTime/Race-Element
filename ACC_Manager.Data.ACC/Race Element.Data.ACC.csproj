@@ -143,6 +143,9 @@
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
+    <Reference Include="System.Collections.Immutable, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.7.0.0\lib\net462\System.Collections.Immutable.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -301,7 +304,29 @@
     <Compile Include="Tracker\PagePhysicsTracker.cs" />
     <Compile Include="Tracker\PageStaticTracker.cs" />
     <Compile Include="Tracker\TrackerStarter.cs" />
-    <Compile Include="Tracks\TrackNames.cs" />
+    <Compile Include="Tracks\Data\Barcelona.cs" />
+    <Compile Include="Tracks\Data\BrandsHatch.cs" />
+    <Compile Include="Tracks\Data\Cota.cs" />
+    <Compile Include="Tracks\Data\Donington.cs" />
+    <Compile Include="Tracks\Data\Hungaroring.cs" />
+    <Compile Include="Tracks\Data\Imola.cs" />
+    <Compile Include="Tracks\Data\Indianapolis.cs" />
+    <Compile Include="Tracks\Data\Kyalami.cs" />
+    <Compile Include="Tracks\Data\LagunaSeca.cs" />
+    <Compile Include="Tracks\Data\Misano.cs" />
+    <Compile Include="Tracks\Data\Monza.cs" />
+    <Compile Include="Tracks\Data\MountPanorama.cs" />
+    <Compile Include="Tracks\Data\Nurburgring.cs" />
+    <Compile Include="Tracks\Data\OultonPark.cs" />
+    <Compile Include="Tracks\Data\PaulRicard.cs" />
+    <Compile Include="Tracks\Data\Silverstone.cs" />
+    <Compile Include="Tracks\Data\Snetterton.cs" />
+    <Compile Include="Tracks\Data\SpaFrancorchamps.cs" />
+    <Compile Include="Tracks\Data\Suzuka.cs" />
+    <Compile Include="Tracks\Data\WatkinsGlen.cs" />
+    <Compile Include="Tracks\Data\Zandvoort.cs" />
+    <Compile Include="Tracks\Data\Zolder.cs" />
+    <Compile Include="Tracks\TrackData.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ACC_Manager.Broadcast\Race Element.Broadcast.csproj">

@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
-using static RaceElement.Data.ACC.Tracks.TrackNames;
+using static RaceElement.Data.ACC.Tracks.TrackData;
 using ScottPlot.Plottable;
 
 namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
@@ -14,9 +14,9 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
     internal class TyreTempsPlot
     {
         private readonly TextBlock _textBlockMetrics;
-        private readonly TrackData _trackData;
+        private readonly AbstractTrackData _trackData;
 
-        public TyreTempsPlot(TrackData trackData, ref TextBlock textBlockMetrics)
+        public TyreTempsPlot(AbstractTrackData trackData, ref TextBlock textBlockMetrics)
         {
             _trackData = trackData;
             _textBlockMetrics = textBlockMetrics;

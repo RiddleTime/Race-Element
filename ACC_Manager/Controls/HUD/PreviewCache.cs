@@ -81,6 +81,7 @@ namespace RaceElement.Controls.HUD
             overlay.pageGraphics.FuelXLap = 3.012f;
             overlay.pageGraphics.SessionType = ACCSharedMemory.AcSessionType.AC_RACE;
             overlay.pageGraphics.MandatoryPitDone = false;
+            overlay.pageGraphics.NormalizedCarPosition = 0.1455904f;
 
             overlay.pagePhysics = ACCSharedMemory.Instance.ReadPhysicsPageFile(false);
             overlay.pagePhysics.SpeedKmh = 272.32f;
@@ -108,6 +109,7 @@ namespace RaceElement.Controls.HUD
             overlay.pageStatic.MaxFuel = 120f;
             overlay.pageStatic.MaxRpm = 9250;
             overlay.pageStatic.CarModel = "porsche_991ii_gt3_r";
+            overlay.pageStatic.Track = "Spa";
 
 
             try

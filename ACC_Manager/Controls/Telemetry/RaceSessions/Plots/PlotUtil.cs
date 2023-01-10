@@ -70,7 +70,7 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
             //Debug.WriteLine($"XMin: {AxisLimits.XMin}, XMax: {AxisLimits.XMax}, XCenter: {AxisLimits.XCenter}");
         }
 
-        internal static TrackNames.TrackData trackData;
+        internal static TrackData.AbstractTrackData trackData;
 
         internal static event EventHandler<int> MarkerIndexChanged;
         private static int _markerIndex = -1;

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using static RaceElement.Data.ACC.Tracks.TrackNames;
+using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace RaceElement.Data.ACC.Database.GameData
 {
@@ -64,7 +64,7 @@ namespace RaceElement.Data.ACC.Database.GameData
             var result = Collection.FindOne(x => x.ParseName == trackParseName);
             if (result == null)
             {
-                TrackNames.Tracks.TryGetValue(trackParseName, out TrackData trackData);
+                TrackData.Tracks.TryGetValue(trackParseName, out AbstractTrackData trackData);
                 Insert(new DbTrackData() { ParseName = trackParseName, Id = trackData.Guid });
                 result = Collection.FindOne(x => x.ParseName == trackParseName);
             }

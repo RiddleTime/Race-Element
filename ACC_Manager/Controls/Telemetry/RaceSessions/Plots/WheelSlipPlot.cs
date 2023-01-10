@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using static RaceElement.Data.SetupConverter;
 using System.Windows.Controls;
-using static RaceElement.Data.ACC.Tracks.TrackNames;
+using static RaceElement.Data.ACC.Tracks.TrackData;
 using ScottPlot.Plottable;
 
 namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
@@ -13,9 +13,9 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
     internal class WheelSlipPlot
     {
         private readonly TextBlock _textBlockMetrics;
-        private readonly TrackData _trackData;
+        private readonly AbstractTrackData _trackData;
 
-        public WheelSlipPlot(TrackData trackData, ref TextBlock textBlockMetrics)
+        public WheelSlipPlot(AbstractTrackData trackData, ref TextBlock textBlockMetrics)
         {
             _trackData = trackData;
             _textBlockMetrics = textBlockMetrics;
