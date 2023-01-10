@@ -1,7 +1,7 @@
 ﻿using LiteDB;
 using System;
 
-namespace ACCManager.Data.ACC.Database.Telemetry
+namespace RaceElement.Data.ACC.Database.Telemetry
 {
     public class DbLapTelemetry
     {
@@ -77,7 +77,7 @@ namespace ACCManager.Data.ACC.Database.Telemetry
             {
                 return collection.FindOne(x => x.LapId == lapId);
             }
-            catch (InvalidCastException e)
+            catch (InvalidCastException)
             {
                 //System.InvalidCastException: 'Unable to cast object of type 'System.Collections.Generic.Dictionary`2[System.String, LiteDB.BsonValue]' to type 'System.Byte[]'.'
                 return null;

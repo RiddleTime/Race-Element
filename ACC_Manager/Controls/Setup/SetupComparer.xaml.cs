@@ -1,8 +1,8 @@
-﻿using ACCManager.Controls.Setup;
+﻿using RaceElement.Controls.Setup;
 using System.IO;
 using System.Windows.Controls;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for SetupComparer.xaml

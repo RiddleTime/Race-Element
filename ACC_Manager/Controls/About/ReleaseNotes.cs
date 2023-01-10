@@ -1,15 +1,56 @@
 ﻿using System.Collections.Generic;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     public static class ReleaseNotes
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.1.0.2", "- HUDs: Added Always On top option to each overlay, allowing you to hide the overlay in the game whilst streaming using the Window option."+
-                        "\n- HUD: Added Input Bars Overlay, displaying live throttle and brake inputs in a vertical progress bars."},
+            {"0.1.5.3", "- Fix setup hider." },
+            {"0.1.5.2", "- Liveries can now be dragged and dropped ontop of the app."+
+                        "\n- Liveries Viewer: Added competitor name to viewer if it's used in the livery."+
+                        "\n- Further design changes according to rebrand."},
+            {"0.1.5.1", "- Reworked Titlebar, Icon and About Tab."+
+                        "\n- HUD: Added boost gauge, showing boost percentage."},
+            {"0.1.5.0", "- ACC Manager is now known as Race Element."+
+                        "\n- Removed request for admin rights, if you have run as admin enabled, disable it."+
+                        "\n- You can copy all the entire contents of the ACC Manager folder to the Race Element folder. This to keep all your data and settings."},
+            {"0.1.4.1", "- Added request for admin rights, the app uses this to detect whether ACC is running. Without these rights you may experience unexpected app crashes." },
+            {"0.1.4.0", "- Reworked hud internals."+
+                        "\n- Reduced idle cpu usage to almost 0% when ACC is not running."},
+            {"0.1.3.2", "- Fix bug when repositioning huds."},
+            {"0.1.3.1", "- Internal optimizations."+
+                        "\n- Improved contrast of hud text panels."+
+                        "\n- HUDs now show when the engine is not running."},
+            {"0.1.3.0", "- Design of Damage HUD, blends in better. Increased Font Size." },
+            {"0.1.2.2", "- HUD: Added Damage HUD, displaying body damage in repair time and suspension damage in percentage."+
+                        "\n- Added track condition to basic lap telemetry recording."},
+            {"0.1.2.1", "- Reworked design of several HUDs."+
+                        "\n   - Input bars: Added option to switch around throttle and brake bars."+
+                        "\n   - Inputs: Added gradual contrast."+
+                        "\n   - Input and Oversteer Traces: Added gradual contrast."},
+            {"0.1.2.0", "- Main folder changed from My Documents/ACC Manager to %AppData%/ACC Manager."+
+                        "\n   - You can copy the old Data folder containing your race weekends to the new location."+
+                        "\n- HUD Configuration:" +
+                        "\n   - Redesign of HUD Configuration Controls: Grouped Controls."+
+                        "\n   - This resets your HUD Configuration. Unfortunately ;)"+
+                        "\n   - Right clicking inside of the configuration controls toggles activation of viewed HUD."+
+                        "\n   - Scroll the sliders to change the value."+
+                        "\n- Added button to ACC Manager settings to open the ACC Manager folder."},
+            {"0.1.1.2", "- HUD: Input bars overlay now has the option to set the bars to horizontal mode."+
+                        "\n- HUD: Added beta version of Race Info Overlay."},
+            {"0.1.1.1", "- Changed dry tyres for Lamborghini Super Trofeo cars to GT4." },
+            {"0.1.1.0", "- Auto Updater added: in the about tab when a new version is released there will be a 1 click button to update the app."+
+                        "\n- HUDs: Improvements to maintaining rendering frequency (Thank you FBalazs)."+
+                        "\n- ACC Manager: Fixed persistence of minimize app to system tray option."},
+            {"0.1.0.5", "- Liveries Tab: Added button to refresh the livery trees."+
+                        "\n- ACC Manager: Added option to minimize the app to the system tray (default off)."+
+                        "\n- Decrease startup time."+
+                        "\n- Added startup counter (global)."},
+            {"0.1.0.3", "- HUDs: Added Always On top option to each overlay, allowing you to hide the overlay in the game whilst streaming using the Window option."+
+                        "\n- HUD: Added Input Bars Overlay, displaying live throttle and brake inputs with vertical progress bars."+
+                        "\n- Liveries: Removed generating, import and export of dds_0 files."},
             {"0.1.0.1", "- OBS Websocket updated to version 5, using the setup hider now requires OBS version 28 or higher."+
-                        //"\n- Added Detailed Telemetry recording and displaying."+
                         "\n- Updated design theme."+
                         "\n- HUD tab: the title & description is now 1 big button to toggle hud activation."},
             {"0.0.9.0", "- Added Race Weekends tab to Telemetry tab."+

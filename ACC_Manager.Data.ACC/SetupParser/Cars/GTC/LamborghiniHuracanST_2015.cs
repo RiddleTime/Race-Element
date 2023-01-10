@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using static ACCManager.Data.ConversionFactory;
-using static ACCManager.Data.SetupConverter;
+using static RaceElement.Data.ConversionFactory;
+using static RaceElement.Data.SetupConverter;
 
-namespace ACCManager.Data.Cars.GTC
+namespace RaceElement.Data.Cars.GTC
 {
     internal class LamborghiniHuracanST_2015 : ICarSetupConversion
     {
         public CarModels CarModel => CarModels.Lamborghini_Huracan_ST_2015;
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.ST; // did this for tyre pressures, should be 'GTC'
-        public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHE2020;
+        public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHE2020_GT4;
 
         AbstractTyresSetup ICarSetupConversion.TyresSetup => new TyreSetup();
         private class TyreSetup : AbstractTyresSetup

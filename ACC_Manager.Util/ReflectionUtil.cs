@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Reflection;
-using static ACCManager.ACCSharedMemory;
+using static RaceElement.ACCSharedMemory;
 
-namespace ACCManager.Util
+namespace RaceElement.Util
 {
     public class ReflectionUtil
     {

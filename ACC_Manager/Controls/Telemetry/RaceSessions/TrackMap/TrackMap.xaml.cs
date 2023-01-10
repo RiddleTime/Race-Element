@@ -1,8 +1,8 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Controls.Telemetry.RaceSessions.Plots;
-using ACCManager.Controls.Util.SetupImage;
-using ACCManager.Data.ACC.Database.Telemetry;
-using ACCManager.HUD.Overlay.OverlayUtil;
+﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.Controls.Telemetry.RaceSessions.Plots;
+using RaceElement.Controls.Util.SetupImage;
+using RaceElement.Data.ACC.Database.Telemetry;
+using RaceElement.HUD.Overlay.OverlayUtil;
 using ScottPlot;
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ using Brushes = System.Drawing.Brushes;
 using Color = System.Drawing.Color;
 using Pen = System.Drawing.Pen;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for TrackMap.xaml                        
@@ -114,9 +114,13 @@ namespace ACCManager.Controls
                             _cbDrivenCoordinates?.Draw(g);
 
                             GraphicsPath path = new GraphicsPath();
+
+                            // add current location marker
                             int ellipseSize = 12;
                             path.AddEllipse(drawPoint.X - ellipseSize / 2, drawPoint.Y - ellipseSize / 2, ellipseSize, ellipseSize);
-                            g.DrawPath(new Pen(Color.White, 2f), path);
+
+                            // draw t
+                            g.DrawPath(new Pen(Color.White, 1f), path);
                         });
 
                         this.Dispatcher.Invoke(() =>

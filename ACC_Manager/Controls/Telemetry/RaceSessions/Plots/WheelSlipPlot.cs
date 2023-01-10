@@ -1,21 +1,21 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Data.ACC.Database.Telemetry;
+﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.Data.ACC.Database.Telemetry;
 using ScottPlot;
 using System.Collections.Generic;
 using System.Linq;
-using static ACCManager.Data.SetupConverter;
+using static RaceElement.Data.SetupConverter;
 using System.Windows.Controls;
-using static ACCManager.Data.ACC.Tracks.TrackNames;
+using static RaceElement.Data.ACC.Tracks.TrackData;
 using ScottPlot.Plottable;
 
-namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
+namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
 {
     internal class WheelSlipPlot
     {
         private readonly TextBlock _textBlockMetrics;
-        private readonly TrackData _trackData;
+        private readonly AbstractTrackData _trackData;
 
-        public WheelSlipPlot(TrackData trackData, ref TextBlock textBlockMetrics)
+        public WheelSlipPlot(AbstractTrackData trackData, ref TextBlock textBlockMetrics)
         {
             _trackData = trackData;
             _textBlockMetrics = textBlockMetrics;

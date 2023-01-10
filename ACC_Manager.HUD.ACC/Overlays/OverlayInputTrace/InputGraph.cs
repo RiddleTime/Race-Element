@@ -1,13 +1,13 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.HUD.Overlay.OverlayUtil;
+﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.HUD.Overlay.OverlayUtil;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using static ACCManager.HUD.ACC.Overlays.OverlayInputTrace.InputTraceOverlay;
+using static RaceElement.HUD.ACC.Overlays.OverlayInputTrace.InputTraceOverlay;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
+namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
 {
     internal class InputGraph : IDisposable
     {
@@ -30,7 +30,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             _cachedBackground = new CachedBitmap(_width, _height, g =>
             {
                 Rectangle graphRect = new Rectangle(_x, _y, _width, _height);
-                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(196, Color.Black)), graphRect, 3);
+                LinearGradientBrush gradientBrush = new LinearGradientBrush(graphRect, Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical);
+                g.FillRoundedRectangle(gradientBrush, graphRect, 3);
                 g.DrawRoundedRectangle(new Pen(Color.FromArgb(196, Color.Black)), graphRect, 3);
             });
         }
@@ -51,7 +52,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             if (_cachedBackground != null)
                 _cachedBackground.Draw(g);
 
-            if (this._config.ShowSteeringInput)
+            if (this._config.InfoPanel.SteeringInput)
                 DrawData(g, _collector.Steering, Color.FromArgb(190, Color.White));
 
             DrawData(g, _collector.Throttle, Color.ForestGreen);

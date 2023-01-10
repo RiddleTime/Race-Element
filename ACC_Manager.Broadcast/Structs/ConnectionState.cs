@@ -1,4 +1,4 @@
-﻿namespace ACC_Manager.Broadcast.Structs
+﻿namespace RaceElement.Broadcast.Structs
 {
     public struct ConnectionState
     {

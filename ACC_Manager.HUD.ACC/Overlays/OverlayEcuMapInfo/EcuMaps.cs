@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using static ACCManager.Data.ConversionFactory;
-using static ACCManager.Data.ConversionFactory.CarModels;
+using static RaceElement.Data.ConversionFactory;
+using static RaceElement.Data.ConversionFactory.CarModels;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
+namespace RaceElement.HUD.ACC.Overlays.OverlayEcuMapInfo
 {
     internal class EcuMaps
     {

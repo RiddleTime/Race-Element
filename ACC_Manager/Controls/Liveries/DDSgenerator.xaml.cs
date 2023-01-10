@@ -1,6 +1,6 @@
-﻿using ACCManager.Controls.Liveries;
-using ACCManager.LiveryParser;
-using ACCManager.Util;
+﻿using RaceElement.Controls.Liveries;
+using RaceElement.LiveryParser;
+using RaceElement.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,9 +9,9 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using static ACCManager.Controls.LiveryBrowser;
+using static RaceElement.Controls.LiveryBrowser;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for DDSgenerator.xaml

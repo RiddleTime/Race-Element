@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for TelemetryTab.xaml

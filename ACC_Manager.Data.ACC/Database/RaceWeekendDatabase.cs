@@ -1,11 +1,11 @@
-﻿using ACCManager.Data.ACC.Database.LapDataDB;
-using ACCManager.Util;
+﻿using RaceElement.Data.ACC.Database.LapDataDB;
+using RaceElement.Util;
 using LiteDB;
 using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace ACCManager.Data.ACC.Database
+namespace RaceElement.Data.ACC.Database
 {
     /// <summary>
     /// https://github.com/mbdavid/LiteDB
@@ -18,11 +18,11 @@ namespace ACCManager.Data.ACC.Database
         {
             try
             {
-                DirectoryInfo dataDir = new DirectoryInfo(FileUtil.AccManangerDataPath);
+                DirectoryInfo dataDir = new DirectoryInfo(FileUtil.RaceElementDataPath);
                 if (!dataDir.Exists)
                     dataDir.Create();
 
-                fileName = FileUtil.AccManangerDataPath + $"{trackParseName}-{carParseName}-" + $"{startTime:G}".Replace(":", ".").Replace("/", ".").Replace(" ", "-") + ".rwdb";
+                fileName = FileUtil.RaceElementDataPath + $"{trackParseName}-{carParseName}-" + $"{startTime:G}".Replace(":", ".").Replace("/", ".").Replace(" ", "-") + ".rwdb";
 
 
                 if (Database == null)

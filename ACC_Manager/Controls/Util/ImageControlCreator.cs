@@ -4,11 +4,11 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Media.Imaging;
 
-namespace ACCManager.Controls.Util.SetupImage
+namespace RaceElement.Controls.Util.SetupImage
 {
     internal class ImageControlCreator
     {
-        public static System.Windows.Controls.Image CreateImage(int width, int height, HUD.Overlay.OverlayUtil.CachedBitmap cachedBitmap)
+        public static System.Windows.Controls.Image CreateImage(int width, int height, RaceElement.HUD.Overlay.OverlayUtil.CachedBitmap cachedBitmap)
         {
             Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format32bppPArgb);
 

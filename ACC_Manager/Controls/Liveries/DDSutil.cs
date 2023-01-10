@@ -1,4 +1,4 @@
-﻿using ACCManager.Util;
+﻿using RaceElement.Util;
 using DdsFileTypePlus;
 using PaintDotNet;
 using System;
@@ -6,16 +6,16 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using static ACCManager.Controls.LiveryBrowser;
+using static RaceElement.Controls.LiveryBrowser;
 
-namespace ACCManager.Controls.Liveries
+namespace RaceElement.Controls.Liveries
 {
     internal class DDSutil
     {
-        private static Dictionary<string, string> pngsToDDS = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> pngsToDDS = new Dictionary<string, string>()
             {
-                {"decals_0.dds","decals.png" },
-                {"sponsors_0.dds" ,"sponsors.png"},
+                //{"decals_0.dds","decals.png" },
+                //{"sponsors_0.dds" ,"sponsors.png"},
                 {"decals_1.dds","decals.png" },
                 {"sponsors_1.dds","sponsors.png" }
             };
@@ -69,25 +69,33 @@ namespace ACCManager.Controls.Liveries
 
         public static bool HasDdsFiles(LiveryTreeCar livery)
         {
-            for (int i = 0; i < pngsToDDS.Count; i++)
+            try
             {
-                KeyValuePair<string, string> kvp = pngsToDDS.ElementAt(i);
-
-                DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + livery.CarsRoot.CustomSkinName);
-                if (customSkinDir != null && customSkinDir.Exists)
+                for (int i = 0; i < pngsToDDS.Count; i++)
                 {
-                    //check if png exists
-                    FileInfo[] foundFiles = customSkinDir.GetFiles(kvp.Value);
+                    KeyValuePair<string, string> kvp = pngsToDDS.ElementAt(i);
 
-                    if (foundFiles != null && foundFiles.Length > 0)
+                    DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + livery.CarsRoot.CustomSkinName);
+                    if (customSkinDir != null && customSkinDir.Exists)
                     {
-                        foundFiles = customSkinDir.GetFiles(kvp.Key);
-                        if (foundFiles == null || foundFiles.Length == 0)
+                        //check if png exists
+                        FileInfo[] foundFiles = customSkinDir.GetFiles(kvp.Value);
+
+                        if (foundFiles != null && foundFiles.Length > 0)
                         {
-                            return false;
+                            foundFiles = customSkinDir.GetFiles(kvp.Key);
+                            if (foundFiles == null || foundFiles.Length == 0)
+                            {
+                                return false;
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                LogWriter.WriteToLog(e);
+                return false;
             }
 
             return true;

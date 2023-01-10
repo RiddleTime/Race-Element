@@ -1,4 +1,4 @@
-﻿namespace ACCManager.LiveryParser
+﻿namespace RaceElement.LiveryParser
 {
     // (Sponsors.json + Decals.json)
     public class PaintDetailsJson

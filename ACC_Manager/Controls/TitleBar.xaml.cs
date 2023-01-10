@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for TitleBar.xaml
@@ -13,7 +13,7 @@ namespace ACCManager.Controls
     {
         internal static TitleBar Instance { get; private set; }
 
-        private const string _AppName = "ACC Manager";
+        private const string _AppName = "Race Element";
 
         public TitleBar()
         {
@@ -42,6 +42,13 @@ namespace ACCManager.Controls
                 MainWindow.Instance.tabSettings.Focus();
                 SettingsTab.Instance.tabStreaming.Focus();
                 e.Handled = true;
+            };
+
+            this.iconAutoSaveReplay.MouseRightButtonDown += (s, e) =>
+            {
+
+                MainWindow.Instance.tabSettings.Focus();
+                SettingsTab.Instance.tabAccSettings.Focus();
             };
 
 
@@ -87,12 +94,17 @@ namespace ACCManager.Controls
                     {
                         iconSteeringLock.Visibility = enabled ? Visibility.Visible : Visibility.Collapsed;
                         break;
-                    };
+                    }
                 case ActivatedIcons.SetupHider:
                     {
                         iconSetupHider.Visibility = enabled ? Visibility.Visible : Visibility.Collapsed;
                         break;
-                    };
+                    }
+                case ActivatedIcons.AutomaticSaveReplay:
+                    {
+                        iconAutoSaveReplay.Visibility = enabled ? Visibility.Visible : Visibility.Collapsed;
+                        break;
+                    }
             }
         }
 
@@ -100,6 +112,7 @@ namespace ACCManager.Controls
         {
             AutomaticSteeringHardLock,
             SetupHider,
+            AutomaticSaveReplay
         }
 
         private void ButtonExit_Click(object sender, RoutedEventArgs e)
@@ -110,9 +123,16 @@ namespace ACCManager.Controls
 
         public static string GetAssemblyFileVersion()
         {
-            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(assembly.Location);
-            return fileVersion.FileVersion;
+            try
+            {
+                System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(assembly.Location);
+                return fileVersion.FileVersion;
+            }
+            catch (Exception)
+            {
+                return String.Empty;
+            }
         }
     }
 }

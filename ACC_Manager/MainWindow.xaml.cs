@@ -1,24 +1,27 @@
-﻿using ACC_Manager.Broadcast;
-using ACC_Manager.Util.Settings;
-using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Controls;
-using ACCManager.Data.ACC.Tracker;
-using ACCManager.Hardware.ACC.SteeringLock;
-using ACCManager.HUD.ACC;
-using ACCManager.HUD.ACC.Data.Tracker;
-using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput;
-using ACCManager.Util;
+﻿using RaceElement.Broadcast;
+using RaceElement.Util.Settings;
+using RaceElement.Util.SystemExtensions;
+using RaceElement.Controls;
+using RaceElement.Data.ACC.Tracker;
+using RaceElement.Hardware.ACC.SteeringLock;
+using RaceElement.HUD.ACC;
+using RaceElement.HUD.ACC.Data.Tracker;
+using RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput;
+using RaceElement.Util;
 using System;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.Net;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
+using System.IO;
 
-namespace ACCManager
+namespace RaceElement
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -27,10 +30,16 @@ namespace ACCManager
     {
         internal static MainWindow Instance { get; private set; }
         private readonly UiSettings _uiSettings;
+        private readonly AccManagerSettings _accManagerSettings;
 
         public MainWindow()
         {
+            DateTime startTime = DateTime.Now;
+
             InitializeComponent();
+            Instance = this;
+
+            Debug.WriteLine($"Startup time(ms): {DateTime.Now.Subtract(startTime).TotalMilliseconds}");
 
             try
             {
@@ -45,9 +54,10 @@ namespace ACCManager
             }
 
             _uiSettings = new UiSettings();
+            _accManagerSettings = new AccManagerSettings();
 
 
-            this.Title = $"ACC Manager {GetAssemblyFileVersion()}";
+            this.Title = $"Race Element {GetAssemblyFileVersion()}";
 
             this.titleBar.MouseLeftButtonDown += TitleBar_MouseLeftButtonDown;
             this.titleBar.MouseLeftButtonUp += TitleBar_MouseLeftButtonUp;
@@ -87,10 +97,14 @@ namespace ACCManager
 
             _uiSettings.Save(uiSettings);
 
-
+            this.PreviewDrop += (s, e) =>
+            {
+                Debug.WriteLine(e);
+            };
             this.Drop += MainWindow_Drop;
 
-            Instance = this;
+            InitializeSystemTrayIcon();
+
 
             // --- TODO refactor
             ACCTrackerStarter.StartACCTrackers();
@@ -102,6 +116,12 @@ namespace ACCManager
 
         private void MainWindow_Drop(object sender, DragEventArgs e)
         {
+            /// https://stackoverflow.com/questions/3794462/enable-dragdrop-from-explorer-to-run-as-administrator-application
+            /// 
+            // run new service with less elevated rights... this one will be able to accept drag and drop.
+
+
+
             if (e.Data is DataObject)
             {
                 DataObject data = (DataObject)e.Data;
@@ -128,6 +148,15 @@ namespace ACCManager
                         e.Handled = true;
                         return;
                     }
+
+                    if (droppedItem.EndsWith(".7z") || droppedItem.EndsWith(".zip") || droppedItem.EndsWith(".rar"))
+                    {
+                        Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            LiveryImporter.ImportLiveryZips(new FileInfo(droppedItem));
+                        }));
+                    }
+
                 }
             }
 
@@ -147,7 +176,7 @@ namespace ACCManager
             {
                 Thread.Sleep(2000);
                 GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
-                string loadString = $"Loaded ACC Manager {GetAssemblyFileVersion()}";
+                string loadString = $"Loaded Race Element {GetAssemblyFileVersion()}";
                 string fileHash = FileUtil.GetBase64Hash(FileUtil.AppFullName);
 
 #if DEBUG
@@ -157,10 +186,27 @@ namespace ACCManager
                 Trace.WriteLine($"Application Hash: {fileHash}");
                 LogWriter.WriteToLog($"Application Hash: {fileHash}");
                 LogWriter.WriteToLog(loadString);
+
+                UpdateUsage();
             });
 
             if (!App.Instance.StartMinimized)
                 this.WindowState = WindowState.Normal;
+        }
+
+        private void UpdateUsage()
+        {
+#if DEBUG
+            return;
+#endif
+            try
+            {
+                string hitCounter = "https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FRiddleTime%2FRace-Element";
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(hitCounter);
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                response.Close();
+            }
+            catch (Exception) { }
         }
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -187,12 +233,51 @@ namespace ACCManager
             Environment.Exit(0);
         }
 
+
+        private System.Windows.Forms.NotifyIcon _notifyIcon;
+        private void InitializeSystemTrayIcon()
+        {
+            try
+            {
+                _notifyIcon = new System.Windows.Forms.NotifyIcon()
+                {
+                    Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location),
+                    Visible = false,
+                    ContextMenuStrip = CreateContextMenu(),
+                    Text = "Race Element"
+                };
+
+                _notifyIcon.DoubleClick += (s, e) => Instance.WindowState = WindowState.Normal;
+            }
+            catch (Exception e)
+            {
+                LogWriter.WriteToLog(e);
+                Debug.WriteLine(e);
+            }
+        }
+        private System.Windows.Forms.ContextMenuStrip CreateContextMenu()
+        {
+            var openItem = new System.Windows.Forms.ToolStripMenuItem("Open");
+            openItem.Click += (s, e) => Instance.WindowState = WindowState.Normal;
+            var exitItem = new System.Windows.Forms.ToolStripMenuItem("Exit");
+            exitItem.Click += (s, e) => Environment.Exit(0);
+            var contextMenu = new System.Windows.Forms.ContextMenuStrip { Items = { openItem, exitItem } };
+            return contextMenu;
+        }
+
+
         private void MainWindow_StateChanged(object sender, EventArgs e)
         {
             switch (this.WindowState)
             {
                 case WindowState.Minimized:
                     {
+                        if (_accManagerSettings.Get().MinimizeToSystemTray)
+                        {
+                            _notifyIcon.Visible = true;
+                            ShowInTaskbar = false;
+                        }
+
                         break;
                     }
                 case WindowState.Normal:
@@ -201,6 +286,9 @@ namespace ACCManager
                         mainGrid.Margin = new Thickness(0);
                         //rowTitleBar.Height = new GridLength(30);
                         _stopDecreaseOpacty = true;
+                        ShowInTaskbar = true;
+
+                        _notifyIcon.Visible = false;
                         break;
                     }
                 case WindowState.Maximized:
@@ -208,6 +296,9 @@ namespace ACCManager
                         mainGrid.Margin = new Thickness(8);
                         //rowTitleBar.Height = new GridLength(35);
                         _stopDecreaseOpacty = true;
+                        ShowInTaskbar = true;
+
+                        _notifyIcon.Visible = false;
                         break;
                     }
             }
@@ -246,7 +337,7 @@ namespace ACCManager
 
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            DecreaseOpacity(0.925, 0.0025);
+            DecreaseOpacity(0.850, 0.025);
             DragMove();
             e.Handled = true;
         }
@@ -293,9 +384,16 @@ namespace ACCManager
 
         public static string GetAssemblyFileVersion()
         {
-            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(assembly.Location);
-            return fileVersion.FileVersion;
+            try
+            {
+                System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(assembly.Location);
+                return fileVersion.FileVersion;
+            }
+            catch (Exception)
+            {
+                return String.Empty;
+            }
         }
 
         public enum DWMWINDOWATTRIBUTE

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ACC_Manager.Util.SystemExtensions
+namespace RaceElement.Util.SystemExtensions
 {
     public static class StringExtensions
     {

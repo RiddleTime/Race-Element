@@ -1,7 +1,13 @@
-﻿using System.Globalization;
+﻿using ACCManager.Data.ACC.Core.Game;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Quartz;
+using Quartz.Impl;
+using RaceElement.Data.ACC.Core.Game.Jobs;
+using System.Globalization;
 using System.Windows;
 
-namespace ACCManager
+namespace RaceElement
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -15,7 +21,24 @@ namespace ACCManager
         {
             this.Startup += App_Startup;
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-           Instance = this;
+            Instance = this;
+
+            var builder = Host.CreateDefaultBuilder().ConfigureServices((cxt, services) =>
+             {
+                 services.AddQuartz(q =>
+                 {
+                     q.UseMicrosoftDependencyInjectionJobFactory();
+
+                     AccScheduler.RegisterJobs();
+                 });
+                 services.AddQuartzHostedService(opt =>
+                 {
+                     opt.WaitForJobsToComplete = false;
+                     opt.AwaitApplicationStarted = true;
+                 });
+             }).Build();
+
+            builder.RunAsync();
         }
 
         private void App_Startup(object sender, StartupEventArgs e)

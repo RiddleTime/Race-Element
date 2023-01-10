@@ -1,22 +1,22 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Data.ACC.Database.Telemetry;
-using ACCManager.Data;
+﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.Data.ACC.Database.Telemetry;
+using RaceElement.Data;
 using ScottPlot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
-using static ACCManager.Data.ACC.Tracks.TrackNames;
+using static RaceElement.Data.ACC.Tracks.TrackData;
 using ScottPlot.Plottable;
 
-namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
+namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
 {
     internal class TyrePressurePlot
     {
         private readonly TextBlock _textBlockMetrics;
-        private readonly TrackData _trackData;
+        private readonly AbstractTrackData _trackData;
 
-        public TyrePressurePlot(TrackData trackData, ref TextBlock textBlockMetrics)
+        public TyrePressurePlot(AbstractTrackData trackData, ref TextBlock textBlockMetrics)
         {
             _trackData = trackData;
             _textBlockMetrics = textBlockMetrics;

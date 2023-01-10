@@ -1,10 +1,10 @@
-﻿using ACCManager.HUD.Overlay.Internal;
+﻿using RaceElement.HUD.Overlay.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace ACCManager.HUD.ACC
+namespace RaceElement.HUD.ACC
 {
     public class OverlaysACC
     {
@@ -28,9 +28,8 @@ namespace ACCManager.HUD.ACC
             lock (ActiveOverlays)
                 while (ActiveOverlays.Count > 0)
                 {
-                    ActiveOverlays.ElementAt(0).EnableReposition(false);
+                    //ActiveOverlays.ElementAt(0).EnableReposition(false);
                     ActiveOverlays.ElementAt(0).Stop();
-                    ActiveOverlays.ElementAt(0).Dispose();
                     ActiveOverlays.Remove(ActiveOverlays.ElementAt(0));
                 }
         }

@@ -1,4 +1,4 @@
-﻿using ACCManager.Util;
+﻿using RaceElement.Util;
 using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for FuelCalculator.xaml

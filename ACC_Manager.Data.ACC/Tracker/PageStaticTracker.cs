@@ -1,52 +1,31 @@
-﻿using System;
-using System.Threading;
+﻿using ACCManager.Data.ACC.Core.Game;
+using Quartz;
+using RaceElement.Data.ACC.Core;
+using System;
 using System.Threading.Tasks;
-using static ACCManager.ACCSharedMemory;
+using static RaceElement.ACCSharedMemory;
 
-namespace ACCManager.Data.ACC.Tracker
+namespace RaceElement.Data.ACC.Tracker
 {
-    public class PageStaticTracker : IDisposable
+    public class PageStaticTracker : IJob
     {
-        private static PageStaticTracker _instance;
-        public static PageStaticTracker Instance
-        {
-            get
-            {
-                if (_instance == null)
-                    _instance = new PageStaticTracker();
+        public static readonly JobKey JobKey = new JobKey("PageStaticTracker", "acc-jobs");
+        public static readonly TriggerKey TriggerKey = new TriggerKey("PageStaticTracker");
 
-                return _instance;
-            }
+        public static event EventHandler<SPageFileStatic> Tracker;
+
+        public async Task Execute(IJobExecutionContext context)
+        {
+            if (AccProcess.IsRunning)
+                Tracker?.Invoke(null, ACCSharedMemory.Instance.ReadStaticPageFile());
         }
 
-        public event EventHandler<SPageFileStatic> Tracker;
-
-        private bool isTracking = false;
-
-        private readonly Task trackingTask;
-        private SPageFileStatic _last = null;
-
-        private PageStaticTracker()
+        public static void Schedule()
         {
-            trackingTask = Task.Run(() =>
-            {
-                isTracking = true;
-                while (isTracking)
-                {
-                    Thread.Sleep(1);
-                    SPageFileStatic next = ACCSharedMemory.Instance.ReadStaticPageFile();
-                    if (next != _last)
-                        Tracker?.Invoke(this, next);
-                }
-            });
-
-            _instance = this;
-        }
-
-        public void Dispose()
-        {
-            isTracking = false;
-            trackingTask.Dispose();
+            IJobDetail job = JobBuilder.Create<PageStaticTracker>().WithIdentity(JobKey).Build();
+            AccScheduler.Scheduler.ScheduleJob(job, TriggerBuilder.Create()
+                        .WithIdentity(TriggerKey)
+                        .WithSimpleSchedule(x => x.WithInterval(new TimeSpan(0, 0, 0, 0, 500)).RepeatForever()).ForJob(JobKey).Build());
         }
     }
 }

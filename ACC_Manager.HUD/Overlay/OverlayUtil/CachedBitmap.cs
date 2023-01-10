@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 
-namespace ACCManager.HUD.Overlay.OverlayUtil
+namespace RaceElement.HUD.Overlay.OverlayUtil
 {
     public class CachedBitmap : IDisposable
     {

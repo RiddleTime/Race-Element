@@ -1,18 +1,22 @@
-﻿using ACCManager.Broadcast;
-using ACCManager.Data.ACC.Database;
-using ACCManager.Data.ACC.Database.GameData;
-using ACCManager.Data.ACC.Database.LapDataDB;
-using ACCManager.Data.ACC.Database.RaceWeekend;
-using ACCManager.Data.ACC.Database.SessionData;
-using ACCManager.Data.ACC.Database.Telemetry;
-using ACCManager.Data.ACC.Tracker;
+﻿using RaceElement.Broadcast;
+using RaceElement.Data.ACC.Core;
+using RaceElement.Data.ACC.Core.Config;
+using RaceElement.Data.ACC.Database;
+using RaceElement.Data.ACC.Database.GameData;
+using RaceElement.Data.ACC.Database.LapDataDB;
+using RaceElement.Data.ACC.Database.RaceWeekend;
+using RaceElement.Data.ACC.Database.SessionData;
+using RaceElement.Data.ACC.Database.Telemetry;
+using RaceElement.Data.ACC.HotKey;
+using RaceElement.Data.ACC.Tracker;
+using RaceElement.Util;
 using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using static ACCManager.ACCSharedMemory;
+using static RaceElement.ACCSharedMemory;
 
-namespace ACCManager.Data.ACC.Session
+namespace RaceElement.Data.ACC.Session
 {
     public class RaceSessionTracker
     {
@@ -38,6 +42,8 @@ namespace ACCManager.Data.ACC.Session
 
         internal DbRaceSession CurrentSession { get; private set; }
 
+        private DateTime _lastReplaySave;
+
         private static RaceSessionTracker _instance;
 
         private RaceSessionTracker()
@@ -47,6 +53,10 @@ namespace ACCManager.Data.ACC.Session
             StartTracking();
             OnSessionIndexChanged += TryCreateNewSession;
             OnACSessionTypeChanged += TryCreateNewSession;
+
+            ReplaySettings replaySettingsJson = new ReplaySettings();
+            var json = replaySettingsJson.Get(false);
+            Debug.WriteLine(json);
         }
 
         public static RaceSessionTracker Instance
@@ -99,10 +109,12 @@ namespace ACCManager.Data.ACC.Session
                 };
                 _sessionTimeLeft = ACCSharedMemory.Instance.ReadGraphicsPageFile(true).SessionTimeLeft;
 
+                _lastReplaySave = DateTime.UtcNow;
+
                 RaceSessionCollection.Insert(CurrentSession);
                 OnNewSessionStarted?.Invoke(this, CurrentSession);
 
-                TelemetryRecorder.Instance.Record();
+                //TelemetryRecorder.Instance.Record();
             }
         }
 
@@ -150,67 +162,81 @@ namespace ACCManager.Data.ACC.Session
             {
                 BroadcastTracker.Instance.OnRealTimeUpdate += Instance_OnRealTimeUpdate;
 
+
                 while (_isTracking)
                 {
                     Thread.Sleep(100);
 
-                    var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
-
-                    if (pageGraphics.Status != _lastAcStatus)
+                    if (AccProcess.IsRunning)
                     {
-                        Debug.WriteLine($"AcStatus: {_lastAcStatus} -> {pageGraphics.Status}");
+                        var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
 
-                        if (_lastAcStatus == AcStatus.AC_OFF)
-                            CreateNewRaceWeekend();
-
-                        _lastAcStatus = pageGraphics.Status;
-
-                        if (_lastAcStatus == AcStatus.AC_OFF)
+                        if (pageGraphics.Status != _lastAcStatus)
                         {
-                            FinalizeCurrentSession();
-                            FinalizeRaceWeekend();
-                            OnSessionIndexChanged?.Invoke(this, _lastSessionIndex);
+                            Debug.WriteLine($"AcStatus: {_lastAcStatus} -> {pageGraphics.Status}");
+
+                            if (_lastAcStatus == AcStatus.AC_OFF)
+                                CreateNewRaceWeekend();
+
+                            _lastAcStatus = pageGraphics.Status;
+
+                            if (_lastAcStatus == AcStatus.AC_OFF)
+                            {
+                                FinalizeCurrentSession();
+                                FinalizeRaceWeekend();
+                                OnSessionIndexChanged?.Invoke(this, _lastSessionIndex);
+                            }
+
+                            OnACStatusChanged?.Invoke(this, _lastAcStatus);
                         }
 
-                        OnACStatusChanged?.Invoke(this, _lastAcStatus);
+                        bool sessionIndexChanged = false;
+                        if (pageGraphics.SessionIndex != _lastSessionIndex && _lastAcStatus != AcStatus.AC_OFF)
+                        {
+                            Debug.WriteLine($"SessionIndex: {_lastSessionIndex} -> {pageGraphics.SessionIndex}");
+                            _lastSessionIndex = pageGraphics.SessionIndex;
+                            sessionIndexChanged = true;
+                        }
+
+                        bool sessionTypeChanged = false;
+                        if (pageGraphics.SessionType != _lastSessionType && _lastAcStatus != AcStatus.AC_OFF)
+                        {
+                            Debug.WriteLine($"SessionType: {_lastSessionType} -> {pageGraphics.SessionType}");
+                            _lastSessionType = pageGraphics.SessionType;
+                            sessionTypeChanged = true;
+                        }
+
+                        if (pageGraphics.SessionTimeLeft > _sessionTimeLeft)
+                        {
+                            if (CurrentSession == null)
+                                _sessionTimeLeft = pageGraphics.SessionTimeLeft;
+
+                            Debug.WriteLine("Detected session restart.. finalizing current session");
+                            FinalizeCurrentSession();
+                        }
+
+                        if (sessionIndexChanged)
+                            OnSessionIndexChanged?.Invoke(this, _lastSessionIndex);
+                        if (sessionTypeChanged)
+                            OnACSessionTypeChanged?.Invoke(this, _lastSessionType);
+
+                        //HandleReplaySave();
+
                     }
-
-                    bool sessionIndexChanged = false;
-                    if (pageGraphics.SessionIndex != _lastSessionIndex && _lastAcStatus != AcStatus.AC_OFF)
-                    {
-                        Debug.WriteLine($"SessionIndex: {_lastSessionIndex} -> {pageGraphics.SessionIndex}");
-                        _lastSessionIndex = pageGraphics.SessionIndex;
-                        sessionIndexChanged = true;
-                    }
-
-                    bool sessionTypeChanged = false;
-                    if (pageGraphics.SessionType != _lastSessionType && _lastAcStatus != AcStatus.AC_OFF)
-                    {
-                        Debug.WriteLine($"SessionType: {_lastSessionType} -> {pageGraphics.SessionType}");
-                        _lastSessionType = pageGraphics.SessionType;
-                        sessionTypeChanged = true;
-                    }
-
-                    if (pageGraphics.SessionTimeLeft > _sessionTimeLeft)
-                    {
-                        if (CurrentSession == null)
-                            _sessionTimeLeft = pageGraphics.SessionTimeLeft;
-
-                        Debug.WriteLine("Detected session restart.. finalizing current session");
-                        FinalizeCurrentSession();
-                    }
-
-                    if (sessionIndexChanged)
-                        OnSessionIndexChanged?.Invoke(this, _lastSessionIndex);
-                    if (sessionTypeChanged)
-                        OnACSessionTypeChanged?.Invoke(this, _lastSessionType);
-
-
                 }
 
                 BroadcastTracker.Instance.OnRealTimeUpdate -= Instance_OnRealTimeUpdate;
             }).Start();
 
+        }
+
+        private void HandleReplaySave()
+        {
+            if (_lastReplaySave.AddHours(1) < DateTime.UtcNow)
+            {
+                LogWriter.WriteToLog($"Automatically Saving Replay after {_lastReplaySave.Subtract(DateTime.UtcNow)}");
+                _lastReplaySave = AccHotkeys.SaveReplay();
+            }
         }
 
         private void Instance_OnRealTimeUpdate(object sender, Broadcast.Structs.RealtimeUpdate e)

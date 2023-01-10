@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
-namespace ACCManager.Broadcast
+namespace RaceElement.Broadcast
 {
     public class ACCUdpRemoteClient : IDisposable
     {

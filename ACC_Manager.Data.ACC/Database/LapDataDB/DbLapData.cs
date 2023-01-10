@@ -1,10 +1,11 @@
-﻿using ACCManager.Broadcast;
+﻿using RaceElement.Broadcast;
 using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static RaceElement.ACCSharedMemory;
 
-namespace ACCManager.Data.ACC.Database.LapDataDB
+namespace RaceElement.Data.ACC.Database.LapDataDB
 {
     /// <summary>
     /// All data except for the Index must be divided by 1000 to get the actual value (floating point precision is annoying)
@@ -45,6 +46,7 @@ namespace ACCManager.Data.ACC.Database.LapDataDB
 
         public float TempAmbient { get; set; } = -1;
         public float TempTrack { get; set; } = -1;
+        public AcTrackGripStatus GripStatus { get; set; } = AcTrackGripStatus.Optimum;
 
         public override string ToString()
         {

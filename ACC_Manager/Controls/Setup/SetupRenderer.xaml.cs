@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using ACCManager.Controls.Setup;
-using ACCManager.Util;
+using RaceElement.Controls.Setup;
+using RaceElement.Util;
 using System.Diagnostics;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for SetupRenderer.xaml

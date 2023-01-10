@@ -1,7 +1,7 @@
-﻿using ACCManager.Util;
+﻿using RaceElement.Util;
 using System.Windows;
 
-namespace ACC_Manager.Util.Settings
+namespace RaceElement.Util.Settings
 {
     public class UiSettingsJson : IGenericSettingsJson
     {
@@ -12,7 +12,7 @@ namespace ACC_Manager.Util.Settings
 
     public class UiSettings : AbstractSettingsJson<UiSettingsJson>
     {
-        public override string Path => FileUtil.AccManangerSettingsPath;
+        public override string Path => FileUtil.RaceElementSettingsPath;
 
         public override string FileName => "UI.json";
 

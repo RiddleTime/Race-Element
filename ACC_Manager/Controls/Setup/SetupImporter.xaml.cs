@@ -1,17 +1,17 @@
-﻿using ACCManager.Controls.Setup;
-using ACCManager.Data;
-using ACCManager.Data.ACC.Tracks;
-using ACCManager.Util;
+﻿using RaceElement.Controls.Setup;
+using RaceElement.Data;
+using RaceElement.Data.ACC.Tracks;
+using RaceElement.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using static ACCManager.Data.ACC.Tracks.TrackNames;
-using static ACCManager.Data.ConversionFactory;
+using static RaceElement.Data.ACC.Tracks.TrackData;
+using static RaceElement.Data.ConversionFactory;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for SetupImporter.xaml
@@ -40,7 +40,7 @@ namespace ACCManager.Controls
         private void BuildTrackList()
         {
             this.listViewTracks.Items.Clear();
-            foreach (KeyValuePair<string, TrackData> kv in TrackNames.Tracks)
+            foreach (KeyValuePair<string, Data.ACC.Tracks.TrackData.AbstractTrackData> kv in Data.ACC.Tracks.TrackData.Tracks)
             {
                 ListViewItem trackItem = new ListViewItem()
                 {

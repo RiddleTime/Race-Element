@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ACCManager.Hardware.ACC.SteeringLock.Implementations
+namespace RaceElement.Hardware.ACC.SteeringLock.Implementations
 {
     internal class ThrustmasterFerrariF1TSPC : ThrustmasterT500
     {

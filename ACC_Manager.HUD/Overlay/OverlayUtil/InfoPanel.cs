@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Text;
-using ACC_Manager.Util.SystemExtensions;
-using ACCManager.HUD.Overlay.OverlayUtil;
+using RaceElement.Util.SystemExtensions;
+using RaceElement.HUD.Overlay.OverlayUtil;
 
-namespace ACCManager.HUD.Overlay.Util
+namespace RaceElement.HUD.Overlay.Util
 {
     public class InfoPanel
     {
@@ -47,13 +47,18 @@ namespace ACCManager.HUD.Overlay.Util
         {
             _cachedBackground = new CachedBitmap(MaxWidth, Lines.Count * (this.FontHeight + ExtraLineSpacing), g =>
             {
-                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(140, 0, 0, 0)), new Rectangle(X, Y, this.MaxWidth, Lines.Count * (this.FontHeight + ExtraLineSpacing)), 4);
+                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(158, 0, 0, 0)), new Rectangle(X, Y, this.MaxWidth, Lines.Count * (this.FontHeight + ExtraLineSpacing)), 4);
 
                 if (DrawValueBackground)
                 {
-                    int valueBackgroundY = Y + _font.Height * FirstRowLine;
-                    int valueBackgroundHeight = (Lines.Count - FirstRowLine) * (this.FontHeight + ExtraLineSpacing) + (int)_addMonoY - 2;
-                    g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(8, Color.White)), new Rectangle((int)MaxTitleWidth, valueBackgroundY, (int)(MaxWidth - MaxTitleWidth), valueBackgroundHeight), 4);
+                    int y = Y + _font.Height * FirstRowLine;
+                    int height = (Lines.Count - FirstRowLine) * (this.FontHeight + ExtraLineSpacing) + (int)_addMonoY - 2;
+
+                    int characterWidth = (int)g.MeasureString("M", _font).Width / 2;
+                    int x = (int)(MaxTitleWidth + characterWidth);
+                    int width = (int)(MaxWidth - MaxTitleWidth - characterWidth);
+
+                    g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(80, Color.Black)), new Rectangle(x, y, width, height), 4);
                 }
             });
         }

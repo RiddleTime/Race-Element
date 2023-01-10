@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 
-namespace ACCManager.Data.ACC.Database.RaceWeekend
+namespace RaceElement.Data.ACC.Database.RaceWeekend
 {
     public class DbRaceWeekend
     {

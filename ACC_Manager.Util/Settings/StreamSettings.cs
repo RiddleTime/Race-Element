@@ -1,7 +1,7 @@
-﻿using ACC_Manager.Util;
+﻿using RaceElement.Util;
 using System;
 
-namespace ACCManager.Util.Settings
+namespace RaceElement.Util.Settings
 {
     public class StreamingSettingsJson : IGenericSettingsJson
     {
@@ -15,7 +15,7 @@ namespace ACCManager.Util.Settings
 
     public class StreamSettings : AbstractSettingsJson<StreamingSettingsJson>
     {
-        public override string Path => FileUtil.AccManangerSettingsPath;
+        public override string Path => FileUtil.RaceElementSettingsPath;
         public override string FileName => "Streaming.json";
 
 

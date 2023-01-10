@@ -1,11 +1,11 @@
-﻿using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.OverlayUtil;
+﻿using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
 using System.Drawing;
 using System.Windows.Forms;
 using Gma.System.MouseKeyHook;
 using System.Runtime.InteropServices;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
+namespace RaceElement.HUD.ACC.Overlays.OverlayMousePosition
 {
     public sealed class MousePositionOverlay : AbstractOverlay
     {
@@ -32,6 +32,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
             this.Width = _circleWidth * 2 + 1;
             this.Height = Width;
             this.RequestsDrawItself = true;
+            this.AllowReposition = false;
         }
 
         public sealed override void BeforeStart()
@@ -47,10 +48,20 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
             this.RequestRedraw();
         }
 
+        public sealed override void BeforeStop()
+        {
+            _globalKbmHook.MouseDown -= GlobalMouseDown;
+            _globalKbmHook.MouseUp -= GlobalMouseUp;
+            _globalKbmHook.MouseMove -= GlobalMouseMove;
+            _globalKbmHook.Dispose();
+
+            if (_cachedCursor != null)
+                _cachedCursor.Dispose();
+        }
+
         private void GlobalMouseMove(object sender, MouseEventArgs e)
         {
-            this.X = e.Location.X - _circleWidth;
-            this.Y = e.Location.Y - _circleWidth;
+            this.Location = new Point(e.Location.X - _circleWidth, e.Location.Y - _circleWidth);
         }
 
         private void GlobalMouseUp(object sender, MouseEventArgs e)
@@ -63,17 +74,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayMousePosition
         {
             _cachedCursor.SetRenderer(MouseDownRenderer);
             this.RequestRedraw();
-        }
-
-        public sealed override void BeforeStop()
-        {
-            _globalKbmHook.MouseDown -= GlobalMouseDown;
-            _globalKbmHook.MouseUp -= GlobalMouseUp;
-            _globalKbmHook.MouseMove -= GlobalMouseMove;
-            _globalKbmHook.Dispose();
-
-            if (_cachedCursor != null)
-                _cachedCursor.Dispose();
         }
 
         public sealed override void Render(Graphics g) => _cachedCursor?.Draw(g, Width, Height);

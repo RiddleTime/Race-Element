@@ -1,15 +1,22 @@
-﻿using System.Reflection;
+﻿using System.Resources;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ACC Manager")]
-[assembly: AssemblyDescription("Universal Tools for Assetto Corsa Competizione")]
-[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyTitle("Race Element")]
+[assembly: AssemblyDescription("Universal Tools for Sim Racing.")]
+[assembly: AssemblyConfiguration(
+#if DEBUG 
+    "Dev"
+#else
+    "Release"
+#endif
+)]
 [assembly: AssemblyCompany("Element Future")]
-[assembly: AssemblyProduct("ACC Manager")]
+[assembly: AssemblyProduct("Race Element")]
 [assembly: AssemblyCopyright("Copyright 2022 © Reinier Klarenberg")]
 [assembly: AssemblyTrademark("Element Future")]
 [assembly: AssemblyCulture("")]
@@ -44,5 +51,6 @@ using System.Windows;
 //      Minor Version
 //      Build Number
 //      Revision
-[assembly: AssemblyVersion("0.1.0.2")]
-[assembly: AssemblyFileVersion("0.1.0.2")]
+[assembly: AssemblyVersion("0.1.5.3")]
+[assembly: AssemblyFileVersion("0.1.5.3")]
+[assembly: NeutralResourcesLanguage("")]

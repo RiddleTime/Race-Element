@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace ACCManager.Util
+namespace RaceElement.Util
 {
     /// <summary>
     /// Simple thread safe logging helper
@@ -38,7 +38,7 @@ namespace ACCManager.Util
         /// <summary>
         /// Path to save log files
         /// </summary>
-        private static string LogPath = FileUtil.AccManagerLogPath;
+        private static string LogPath = FileUtil.RaceElementLogPath;
 
         /// <summary>
         /// Lof file name

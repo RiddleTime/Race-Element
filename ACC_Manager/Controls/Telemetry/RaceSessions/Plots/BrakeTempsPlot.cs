@@ -1,22 +1,22 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Data;
-using ACCManager.Data.ACC.Database.Telemetry;
+﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.Data;
+using RaceElement.Data.ACC.Database.Telemetry;
 using ScottPlot;
 using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
-using static ACCManager.Data.ACC.Tracks.TrackNames;
+using static RaceElement.Data.ACC.Tracks.TrackData;
 
-namespace ACCManager.Controls.Telemetry.RaceSessions.Plots
+namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
 {
     internal class BrakeTempsPlot
     {
         private readonly TextBlock _textBlockMetrics;
-        private readonly TrackData _trackData;
+        private readonly AbstractTrackData _trackData;
 
-        public BrakeTempsPlot(TrackData trackData, ref TextBlock textBlockMetrics)
+        public BrakeTempsPlot(AbstractTrackData trackData, ref TextBlock textBlockMetrics)
         {
             _trackData = trackData;
             _textBlockMetrics = textBlockMetrics;

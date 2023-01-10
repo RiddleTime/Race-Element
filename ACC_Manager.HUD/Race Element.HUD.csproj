@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3717A55E-4629-40ED-9C93-24058D9EF18C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ACCManager.HUD</RootNamespace>
+    <AssemblyName>ACC_Manager.HUD</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug Minimized|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug Minimized\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Overlay\Configuration\ByteRangeAttribute.cs" />
+    <Compile Include="Overlay\Configuration\FloatRangeAttribute.cs" />
+    <Compile Include="Overlay\Configuration\OverlayConfigurationGrouping.cs" />
+    <Compile Include="Overlay\Configuration\ToolTipAttribute.cs" />
+    <Compile Include="Overlay\Internal\AbstractOverlay.cs" />
+    <Compile Include="Overlay\Configuration\IntRangeAttribute.cs" />
+    <Compile Include="Overlay\Internal\FloatingWindow.cs" />
+    <Compile Include="Overlay\Configuration\OverlayConfiguration.cs" />
+    <Compile Include="Overlay\Configuration\OverlaySettings.cs" />
+    <Compile Include="Overlay\Internal\Monitors.cs" />
+    <Compile Include="Overlay\Internal\OverlayAttribute.cs" />
+    <Compile Include="Overlay\Internal\WindowStructs.cs" />
+    <Compile Include="Overlay\Internal\Windows.cs" />
+    <Compile Include="Overlay\OverlayUtil\CachedBitmap.cs" />
+    <Compile Include="Overlay\OverlayUtil\DeltaBar.cs" />
+    <Compile Include="Overlay\OverlayUtil\FontUtil.cs" />
+    <Compile Include="Overlay\OverlayUtil\GraphicsExtensions.cs" />
+    <Compile Include="Overlay\OverlayUtil\InfoPanel.cs" />
+    <Compile Include="Overlay\OverlayUtil\InfoTable.cs" />
+    <Compile Include="Overlay\OverlayUtil\ProgressBar.cs" />
+    <Compile Include="Overlay\OverlayUtil\ProgressBars\HorizontalProgressBar.cs" />
+    <Compile Include="Overlay\OverlayUtil\ProgressBars\VerticalProgressBar.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ACC_Manager.Broadcast\Race Element.Broadcast.csproj">
+      <Project>{840220BD-8469-4A04-A6EC-1ED2BC743EFB}</Project>
+      <Name>Race Element.Broadcast</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ACC_Manager.Data.ACC\Race Element.Data.ACC.csproj">
+      <Project>{BB693CEB-CD96-4EB6-9F13-110D3CCECFFE}</Project>
+      <Name>Race Element.Data.ACC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ACC_Manager.SharedMemory\Race Element.SharedMemory.csproj">
+      <Project>{9f9be520-14c4-4ab6-8119-5e14bcca9a0f}</Project>
+      <Name>Race Element.SharedMemory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ACC_Manager.Util\Race Element.Util.csproj">
+      <Project>{AAB23116-299B-415B-8305-96CB86148CE7}</Project>
+      <Name>Race Element.Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Fonts\orbitron-medium.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Fonts\unispace.bold.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

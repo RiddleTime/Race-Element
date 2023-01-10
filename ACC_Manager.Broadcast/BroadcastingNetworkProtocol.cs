@@ -1,5 +1,5 @@
-﻿using ACCManager.Broadcast.Structs;
-using ACCManager.Util;
+﻿using RaceElement.Broadcast.Structs;
+using RaceElement.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace ACCManager.Broadcast
+namespace RaceElement.Broadcast
 {
     public enum OutboundMessageTypes : byte
     {

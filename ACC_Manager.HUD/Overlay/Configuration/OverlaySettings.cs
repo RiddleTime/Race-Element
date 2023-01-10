@@ -1,12 +1,12 @@
-﻿using ACCManager.Util;
+﻿using RaceElement.Util;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using static ACCManager.HUD.Overlay.Configuration.OverlayConfiguration;
+using static RaceElement.HUD.Overlay.Configuration.OverlayConfiguration;
 
-namespace ACCManager.HUD.Overlay.Configuration
+namespace RaceElement.HUD.Overlay.Configuration
 {
     public class OverlaySettings
     {
@@ -19,7 +19,7 @@ namespace ACCManager.HUD.Overlay.Configuration
 
         private static DirectoryInfo GetOverlayDirectory()
         {
-            DirectoryInfo overlayDir = new DirectoryInfo(FileUtil.AccManagerOverlayPath);
+            DirectoryInfo overlayDir = new DirectoryInfo(FileUtil.RaceElementOverlayPath);
 
             if (!overlayDir.Exists)
             {
@@ -28,7 +28,6 @@ namespace ACCManager.HUD.Overlay.Configuration
 
             return overlayDir;
         }
-
 
         public static OverlaySettingsJson LoadOverlaySettings(string overlayName)
         {
@@ -62,7 +61,7 @@ namespace ACCManager.HUD.Overlay.Configuration
 
             if (tagFiles.Length == 0)
             {
-                overlaySettingsFile = new FileInfo($"{FileUtil.AccManagerOverlayPath}{overlayName}.json");
+                overlaySettingsFile = new FileInfo($"{FileUtil.RaceElementOverlayPath}{overlayName}.json");
             }
             else
             {
@@ -77,7 +76,7 @@ namespace ACCManager.HUD.Overlay.Configuration
             }
 
             if (overlaySettingsFile == null)
-                overlaySettingsFile = new FileInfo($"{FileUtil.AccManagerOverlayPath}{overlayName}.json");
+                overlaySettingsFile = new FileInfo($"{FileUtil.RaceElementOverlayPath}{overlayName}.json");
 
             string jsonString = JsonConvert.SerializeObject(settings, Formatting.Indented);
 

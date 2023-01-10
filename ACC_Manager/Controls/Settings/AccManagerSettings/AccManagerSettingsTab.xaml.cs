@@ -1,7 +1,13 @@
-﻿using ACC_Manager.Util.Settings;
+﻿using RaceElement.Util.Settings;
+using RaceElement.Util;
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Threading;
 using System.Windows.Controls;
+using static RaceElement.Controls.LiveryBrowser;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for AccManagerSettingsTab.xaml
@@ -12,23 +18,39 @@ namespace ACCManager.Controls
 
         public AccManagerSettingsTab()
         {
-            _settings = new AccManagerSettings();
-
             InitializeComponent();
 
-            toggleRecordLapTelemetry.IsChecked = _settings.Get().TelemetryRecordDetailed;
+            _settings = new AccManagerSettings();
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                toggleRecordLapTelemetry.IsChecked = _settings.Get().TelemetryRecordDetailed;
+                sliderTelemetryHerz.Value = _settings.Get().TelemetryDetailedHerz;
+                toggleMinimizeToSystemTray.IsChecked = _settings.Get().MinimizeToSystemTray;
 
-            toggleRecordLapTelemetry.Checked += (s, e) => SaveSettings();
-            toggleRecordLapTelemetry.Unchecked += (s, e) => SaveSettings();
+                toggleRecordLapTelemetry.Checked += (s, e) => SaveSettings();
+                toggleRecordLapTelemetry.Unchecked += (s, e) => SaveSettings();
 
-            sliderTelemetryHerz.Value = _settings.Get().TelemetryDetailedHerz;
-            sliderTelemetryHerz.ValueChanged += (s, e) => SaveSettings();
+                toggleMinimizeToSystemTray.Checked += (s, e) => SaveSettings();
+                toggleMinimizeToSystemTray.Unchecked += (s, e) => SaveSettings();
 
+                sliderTelemetryHerz.ValueChanged += (s, e) => SaveSettings();
+
+                buttonOpenAccManagerFolder.Click += ButtonOpenAccManagerFolder_Click;
+            }));
+        }
+
+        private void ButtonOpenAccManagerFolder_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            DirectoryInfo directory = new DirectoryInfo($"{FileUtil.RaceElementAppDataPath}");
+            Process.Start(directory.FullName);
         }
 
         private void SaveSettings()
         {
             var settings = _settings.Get();
+
+            settings.MinimizeToSystemTray = toggleMinimizeToSystemTray.IsChecked.Value;
+
             settings.TelemetryRecordDetailed = toggleRecordLapTelemetry.IsChecked.Value;
             settings.TelemetryDetailedHerz = (int)sliderTelemetryHerz.Value;
             _settings.Save(settings);

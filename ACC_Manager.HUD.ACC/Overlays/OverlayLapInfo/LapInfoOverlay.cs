@@ -1,13 +1,13 @@
-﻿using ACCManager.Data.ACC.Database.LapDataDB;
-using ACCManager.Data.ACC.Tracker.Laps;
-using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.OverlayUtil;
+﻿using RaceElement.Data.ACC.Database.LapDataDB;
+using RaceElement.Data.ACC.Tracker.Laps;
+using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
 using System;
 using System.Drawing;
 using System.Drawing.Text;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
+namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
 {
     [Overlay(Name = "Lap Info", Version = 1.00, OverlayType = OverlayType.Release,
         Description = "A panel with a bar showing the current delta.\nOptionally showing the sector times, last lap, best lap and the potential best.")]
@@ -16,21 +16,26 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         private readonly LapInfoConfig _config = new LapInfoConfig();
         private class LapInfoConfig : OverlayConfiguration
         {
-            [ToolTip("Displays the time for each sector, green colored sectors are personal best.")]
-            public bool ShowSectors { get; set; } = true;
+            [ConfigGrouping("Lap Info", "Show or hide inputs or the current gear.")]
+            public InfoPanelGrouping InfoPanel { get; set; } = new InfoPanelGrouping();
+            public class InfoPanelGrouping
+            {
+                [ToolTip("Sets the maximum range in seconds for the delta bar.")]
+                [IntRange(1, 5, 1)]
+                public int MaxDelta { get; set; } = 2;
 
-            [ToolTip("Displays the last lap time.")]
-            public bool ShowLastLap { get; set; } = true;
+                [ToolTip("Displays the time for each sector, green colored sectors are personal best.")]
+                public bool Sectors { get; set; } = true;
 
-            [ToolTip("Displays the best lap time.")]
-            public bool ShowBestLap { get; set; } = true;
+                [ToolTip("Displays the last lap time.")]
+                public bool LastLap { get; set; } = true;
 
-            [ToolTip("Displays the potential best lap time based on your fastest sector times.")]
-            public bool ShowPotentialBest { get; set; } = true;
+                [ToolTip("Displays the best lap time.")]
+                public bool BestLap { get; set; } = true;
 
-            [ToolTip("Sets the maximum range in seconds for the delta bar.")]
-            [IntRange(1, 5, 1)]
-            public int MaxDelta { get; set; } = 2;
+                [ToolTip("Displays the potential best lap time based on your fastest sector times.")]
+                public bool PotentialBest { get; set; } = true;
+            }
 
             public LapInfoConfig() : base()
             {
@@ -43,7 +48,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
         private DbLapData _lastLap = null;
 
-        public LapInfoOverlay(Rectangle rectangle) : base(rectangle, "Lap Info Overlay")
+        public LapInfoOverlay(Rectangle rectangle) : base(rectangle, "Lap Info")
         {
             _table = new InfoTable(10, new int[] { 85, 83 }) { Y = 17 };
             this.Width = _overlayWidth + 1;
@@ -53,16 +58,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
 
         public sealed override void BeforeStart()
         {
-            if (!this._config.ShowSectors)
+            if (!this._config.InfoPanel.Sectors)
                 this.Height -= this._table.FontHeight * 3;
 
-            if (!this._config.ShowPotentialBest)
+            if (!this._config.InfoPanel.PotentialBest)
                 this.Height -= this._table.FontHeight;
 
-            if (!this._config.ShowLastLap)
+            if (!this._config.InfoPanel.LastLap)
                 this.Height -= this._table.FontHeight;
 
-            if (!this._config.ShowBestLap)
+            if (!this._config.InfoPanel.BestLap)
                 this.Height -= this._table.FontHeight;
 
             LapTracker.Instance.LapFinished += Collector_LapFinished;
@@ -82,7 +87,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
         public sealed override void Render(Graphics g)
         {
             double delta = (double)pageGraphics.DeltaLapTimeMillis / 1000;
-            DeltaBar deltaBar = new DeltaBar(-this._config.MaxDelta, this._config.MaxDelta, delta) { DrawBackground = true, IsValidLap = pageGraphics.IsValidLap };
+            DeltaBar deltaBar = new DeltaBar(-this._config.InfoPanel.MaxDelta, this._config.InfoPanel.MaxDelta, delta) { DrawBackground = true, IsValidLap = pageGraphics.IsValidLap };
             deltaBar.Draw(g, 0, 0, _overlayWidth, _table.FontHeight);
 
             g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
@@ -92,16 +97,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayLapDelta
             SizeF textWidth = g.MeasureString(deltaText, _table.Font);
             g.DrawStringWithShadow(deltaText, _table.Font, Color.White, new PointF(_overlayWidth / 2 - textWidth.Width + textWidth.Width / 2, _table.FontHeight / 8f));
 
-            if (this._config.ShowSectors)
+            if (this._config.InfoPanel.Sectors)
                 AddSectorLines();
 
-            if (this._config.ShowLastLap)
+            if (this._config.InfoPanel.LastLap)
                 AddLastLap();
 
-            if (this._config.ShowBestLap)
+            if (this._config.InfoPanel.BestLap)
                 AddBestLap();
 
-            if (this._config.ShowPotentialBest)
+            if (this._config.InfoPanel.PotentialBest)
                 AddPotentialBest();
 
             _table.Draw(g);

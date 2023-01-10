@@ -2,7 +2,7 @@
 using System.IO.MemoryMappedFiles;
 using System.Runtime.InteropServices;
 
-namespace ACCManager.Controls.Telemetry.SharedMemory
+namespace RaceElement.Controls.Telemetry.SharedMemory
 {
     /// <summary>
     /// From ACManager.Tools https://github.com/gro-ove/actools/blob/master/AcManager.Tools/SharedMemory/StructExtension.cs

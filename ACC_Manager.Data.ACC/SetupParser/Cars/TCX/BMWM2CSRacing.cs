@@ -1,10 +1,10 @@
-﻿using ACCManager.Data.SetupRanges;
+﻿using RaceElement.Data.SetupRanges;
 using System;
 using System.Collections.Generic;
-using static ACCManager.Data.ConversionFactory;
-using static ACCManager.Data.SetupConverter;
+using static RaceElement.Data.ConversionFactory;
+using static RaceElement.Data.SetupConverter;
 
-namespace ACCManager.Data.Cars.TCX
+namespace RaceElement.Data.Cars.TCX
 {
     internal class BMWM2CSRacing : ICarSetupConversion, ISetupChanger
     {

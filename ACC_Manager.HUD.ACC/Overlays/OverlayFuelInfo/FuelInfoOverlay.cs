@@ -1,11 +1,11 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.Util;
+﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Drawing;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
+namespace RaceElement.HUD.ACC.Overlays.OverlayFuelInfo
 {
     [Overlay(Name = "Fuel Info", Version = 1.00, OverlayType = OverlayType.Release,
     Description = "A panel showing information about the fuel: laps left, fuel to end of race. Optionally showing stint information.")]
@@ -16,15 +16,20 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
         private readonly FuelInfoConfig _config = new FuelInfoConfig();
         private class FuelInfoConfig : OverlayConfiguration
         {
-            [ToolTip("Displays Fuel time remaining which is green if it's higher than stint time or session time and red if it is not.")]
-            internal bool ShowFuelTime { get; set; } = true;
+            [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
+            public InfoPanelGrouping InfoPanel { get; set; } = new InfoPanelGrouping();
+            public class InfoPanelGrouping
+            {
+                [ToolTip("Sets the number of additional laps as a fuel buffer.")]
+                [IntRange(0, 3, 1)]
+                public int FuelBufferLaps { get; set; } = 0;
 
-            [ToolTip("Displays stint time remaining and the suggested amount of fuel to the end of the stint or the session.")]
-            internal bool ShowStintInfo { get; set; } = true;
+                [ToolTip("Displays Fuel time remaining which is green if it's higher than stint time or session time and red if it is not.")]
+                public bool FuelTime { get; set; } = true;
 
-            [ToolTip("Sets the number of additional laps as a fuel buffer.")]
-            [IntRange(0, 3, 1)]
-            internal int FuelBufferLaps { get; set; } = 0;
+                [ToolTip("Displays stint time remaining and the suggested amount of fuel to the end of the stint or the session.")]
+                public bool StintInfo { get; set; } = true;
+            }
 
             public FuelInfoConfig()
             {
@@ -32,7 +37,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             }
         }
 
-        public FuelInfoOverlay(Rectangle rectangle) : base(rectangle, "Fuel Info Overlay")
+        public FuelInfoOverlay(Rectangle rectangle) : base(rectangle, "Fuel Info")
         {
             this.Width = 222;
             _infoPanel = new InfoPanel(10, this.Width - 1) { FirstRowLine = 1 };
@@ -42,10 +47,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
 
         public sealed override void BeforeStart()
         {
-            if (!_config.ShowStintInfo)
+            if (!_config.InfoPanel.StintInfo)
                 this.Height -= _infoPanel.FontHeight * 2;
 
-            if (!_config.ShowFuelTime)
+            if (!_config.InfoPanel.FuelTime)
                 this.Height -= _infoPanel.FontHeight;
         }
 
@@ -54,7 +59,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
         public sealed override void Render(Graphics g)
         {
             // Some global variants
-            double lapBufferVar = pageGraphics.FuelXLap * this._config.FuelBufferLaps;
+            double lapBufferVar = pageGraphics.FuelXLap * this._config.InfoPanel.FuelBufferLaps;
             double bestLapTime = pageGraphics.BestTimeMs; bestLapTime.ClipMax(180000);
             double fuelTimeLeft = pageGraphics.FuelEstimatedLaps * bestLapTime;
             double stintDebug = pageGraphics.DriverStintTimeLeft; stintDebug.ClipMin(-1);
@@ -74,10 +79,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayFuelInfo
             _infoPanel.AddLine("Fuel-End", $"{fuelToEnd + lapBufferVar:F1} : Add {fuelToAdd:F0}");
             //End (Basic)
             //Magic Start (Advanced)
-            if (this._config.ShowFuelTime)
+            if (this._config.InfoPanel.FuelTime)
                 _infoPanel.AddLine("Fuel Time", fuelTime, fuelTimeBrush);
 
-            if (_config.ShowStintInfo)
+            if (_config.InfoPanel.StintInfo)
             {
                 _infoPanel.AddLine("Stint Time", stintTime);
 

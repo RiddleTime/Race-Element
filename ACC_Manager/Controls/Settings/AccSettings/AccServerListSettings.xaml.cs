@@ -1,6 +1,5 @@
-﻿using ACC_Manager.Util;
-using ACC_Manager.Util.Settings;
-using ACCManager.Util;
+﻿using RaceElement.Util;
+using RaceElement.Util.Settings;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -9,7 +8,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace ACCManager.Controls.Settings.AccUiSettings
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for AccServerListSettings.xaml
@@ -254,7 +253,7 @@ namespace ACCManager.Controls.Settings.AccUiSettings
         }
         internal class UnlistedServersSettingsJson : AbstractSettingsJson<UnlistedServersJson>
         {
-            public override string Path => FileUtil.AccManangerSettingsPath;
+            public override string Path => FileUtil.RaceElementSettingsPath;
             public override string FileName => "ACC_UnlistedServers.json";
 
             public override UnlistedServersJson Default()

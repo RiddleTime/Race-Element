@@ -1,9 +1,10 @@
-﻿using System;
+﻿using RaceElement.Data.ACC.Core;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using static ACCManager.ACCSharedMemory;
+using static RaceElement.ACCSharedMemory;
 
-namespace ACCManager.Data.ACC.Tracker
+namespace RaceElement.Data.ACC.Tracker
 {
     public class PagePhysicsTracker : IDisposable
     {
@@ -32,8 +33,17 @@ namespace ACCManager.Data.ACC.Tracker
                 isTracking = true;
                 while (isTracking)
                 {
-                    Thread.Sleep(1);
-                    Tracker?.Invoke(this, ACCSharedMemory.Instance.ReadPhysicsPageFile());
+
+
+                    if (AccProcess.IsRunning)
+                    {
+                        Thread.Sleep(2);
+                        Tracker?.Invoke(this, ACCSharedMemory.Instance.ReadPhysicsPageFile());
+                    }
+                    else
+                    {
+                        Thread.Sleep(500);
+                    }
                 }
             });
 

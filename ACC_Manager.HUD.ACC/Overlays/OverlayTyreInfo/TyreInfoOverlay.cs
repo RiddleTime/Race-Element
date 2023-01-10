@@ -1,14 +1,14 @@
-﻿using ACCManager.HUD.Overlay.Internal;
+﻿using RaceElement.HUD.Overlay.Internal;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using ACCManager.HUD.Overlay.Util;
-using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.ACC.Overlays.OverlayPressureTrace;
-using ACCManager.HUD.Overlay.OverlayUtil;
-using static ACCManager.Data.SetupConverter;
+using RaceElement.HUD.Overlay.Util;
+using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.ACC.Overlays.OverlayPressureTrace;
+using RaceElement.HUD.Overlay.OverlayUtil;
+using static RaceElement.Data.SetupConverter;
 using System.Drawing.Text;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
+namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
 {
     [Overlay(Name = "Tyre Info", Version = 1.00, OverlayType = OverlayType.Release,
         Description = "Shows indicators for tyre pressures. Additionally shows tyre temperature, brake temps and pad life. Overlays the in-game tyre info.")]
@@ -17,15 +17,20 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
         private readonly TyreInfoConfig _config = new TyreInfoConfig();
         private class TyreInfoConfig : OverlayConfiguration
         {
-            [ToolTip("Displays the percentage of brake pad life above the brake pads.")]
-            public bool ShowPadLife { get; set; } = true;
+            [ConfigGrouping("Info", "Show additional information about the condition of the tyres.")]
+            public InfoGrouping Information { get; set; } = new InfoGrouping();
+            public class InfoGrouping
+            {
+                [ToolTip("Displays the percentage of brake pad life above the brake pads.")]
+                public bool PadLife { get; set; } = true;
 
-            [ToolTip("Displays the average of front and rear brake temperatures under the brake pads.")]
-            public bool ShowBrakeTemps { get; set; } = true;
+                [ToolTip("Displays the average of front and rear brake temperatures under the brake pads.")]
+                public bool BrakeTemps { get; set; } = true;
 
-            [ToolTip("Displays the tyre temperature for each tyre whilst displaying colors." +
-                "\nGreen is optimal, Red is too hot, Blue is too cold.")]
-            public bool ShowTyreTemps { get; set; } = true;
+                [ToolTip("Displays the tyre temperature for each tyre whilst displaying colors." +
+                    "\nGreen is optimal, Red is too hot, Blue is too cold.")]
+                public bool TyreTemps { get; set; } = true;
+            }
 
             public TyreInfoConfig()
             {
@@ -39,7 +44,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
         private readonly int _yMono;
         private readonly int _yMonoSmall;
 
-        public TyreInfoOverlay(Rectangle rectangle) : base(rectangle, "Tyre Info Overlay")
+        public TyreInfoOverlay(Rectangle rectangle) : base(rectangle, "Tyre Info")
         {
             _fontFamily = FontUtil.FontUnispace(10);
             _yMono = _fontFamily.Height / 6;
@@ -62,19 +67,19 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTyreInfo
         {
             DrawPressureBackgrounds(g);
 
-            if (this._config.ShowPadLife)
+            if (this._config.Information.PadLife)
             {
                 DrawPadWearText(g, 68, 29, Position.Front);
                 DrawPadWearText(g, 68, 113, Position.Rear);
             }
 
-            if (this._config.ShowBrakeTemps)
+            if (this._config.Information.BrakeTemps)
             {
                 DrawBrakeTemps(g, 68, 81, Position.Front);
                 DrawBrakeTemps(g, 68, 166, Position.Rear);
             }
 
-            if (this._config.ShowTyreTemps)
+            if (this._config.Information.TyreTemps)
             {
                 DrawTyreTemp(g, 28, 55, Wheel.FrontLeft);
                 DrawTyreTemp(g, 106, 55, Wheel.FrontRight);

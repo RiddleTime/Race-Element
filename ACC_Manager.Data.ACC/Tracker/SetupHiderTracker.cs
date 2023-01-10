@@ -1,4 +1,4 @@
-﻿using ACCManager.Util.Settings;
+﻿using RaceElement.Util.Settings;
 using OBSWebsocketDotNet;
 using SLOBSharp.Client;
 using SLOBSharp.Client.Requests;
@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
-namespace ACCManager.Data.ACC.Tracker
+namespace RaceElement.Data.ACC.Tracker
 {
     public class SetupHiderTracker : IDisposable
     {
@@ -26,7 +26,7 @@ namespace ACCManager.Data.ACC.Tracker
         private OBSWebsocket _obsWebSocket;
         private SlobsPipeClient _SlobsClient;
 
-        private bool _toggle = true;
+        private bool _toggle = false;
 
         private readonly StreamSettings _streamSettings;
 

@@ -1,16 +1,16 @@
-﻿using ACCManager.Broadcast;
-using ACCManager.Controls.Telemetry.RaceSessions;
-using ACCManager.Controls.Telemetry.RaceSessions.Plots;
-using ACCManager.Data;
-using ACCManager.Data.ACC.Cars;
-using ACCManager.Data.ACC.Database;
-using ACCManager.Data.ACC.Database.GameData;
-using ACCManager.Data.ACC.Database.LapDataDB;
-using ACCManager.Data.ACC.Database.SessionData;
-using ACCManager.Data.ACC.Database.Telemetry;
-using ACCManager.Data.ACC.Session;
-using ACCManager.Data.ACC.Tracks;
-using ACCManager.Util;
+﻿using RaceElement.Broadcast;
+using RaceElement.Controls.Telemetry.RaceSessions;
+using RaceElement.Controls.Telemetry.RaceSessions.Plots;
+using RaceElement.Data;
+using RaceElement.Data.ACC.Cars;
+using RaceElement.Data.ACC.Database;
+using RaceElement.Data.ACC.Database.GameData;
+using RaceElement.Data.ACC.Database.LapDataDB;
+using RaceElement.Data.ACC.Database.SessionData;
+using RaceElement.Data.ACC.Database.Telemetry;
+using RaceElement.Data.ACC.Session;
+using RaceElement.Data.ACC.Tracks;
+using RaceElement.Util;
 using LiteDB;
 using MaterialDesignThemes.Wpf;
 using ScottPlot;
@@ -26,12 +26,13 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using DataGridTextColumn = MaterialDesignThemes.Wpf.DataGridTextColumn;
-using TrackData = ACCManager.Data.ACC.Tracks.TrackNames.TrackData;
+using AbstractTrackData = RaceElement.Data.ACC.Tracks.TrackData.AbstractTrackData;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for RaceSessionBrowser.xaml
+    /// - TODO: refactor into OOP
     /// </summary>
     public partial class RaceSessionBrowser : UserControl
     {
@@ -44,7 +45,10 @@ namespace ACCManager.Controls
         {
             InitializeComponent();
 
-            this.Loaded += (s, e) => FindRaceWeekends();
+            this.Loaded += (s, e) => ThreadPool.QueueUserWorkItem(x =>
+            {
+                FindRaceWeekends();
+            });
 
             comboTracks.SelectionChanged += (s, e) => FillCarComboBox();
             comboCars.SelectionChanged += (s, e) => LoadSessionList();
@@ -81,11 +85,11 @@ namespace ACCManager.Controls
             {
                 localRaceWeekends.Items.Clear();
 
-                DirectoryInfo dataDir = new DirectoryInfo(FileUtil.AccManangerDataPath);
+                DirectoryInfo dataDir = new DirectoryInfo(FileUtil.RaceElementDataPath);
                 if (!dataDir.Exists)
                     return;
 
-                var raceWeekendFiles = new DirectoryInfo(FileUtil.AccManangerDataPath).EnumerateFiles()
+                var raceWeekendFiles = dataDir.EnumerateFiles()
                     .Where(x => !x.Name.Contains("log") && x.Extension == ".rwdb")
                     .OrderByDescending(x => x.LastWriteTimeUtc);
 
@@ -204,7 +208,7 @@ namespace ACCManager.Controls
                 foreach (DbTrackData track in allTracks)
                 {
                     string trackName;
-                    TrackNames.Tracks.TryGetValue(track.ParseName, out TrackData trackData);
+                    TrackData.Tracks.TryGetValue(track.ParseName, out AbstractTrackData trackData);
                     if (trackData == null) trackName = track.ParseName;
                     else trackName = trackData.FullName;
 
@@ -234,7 +238,7 @@ namespace ACCManager.Controls
                     var carModel = ConversionFactory.ParseCarName(carData.ParseName);
                     string carName = ConversionFactory.GetNameFromCarModel(carModel);
                     string trackName = dbTrackData.ParseName;
-                    TrackNames.Tracks.TryGetValue(dbTrackData.ParseName, out TrackData trackData);
+                    TrackData.Tracks.TryGetValue(dbTrackData.ParseName, out AbstractTrackData trackData);
                     if (dbTrackData != null) trackName = trackData.FullName;
 
                     session.UtcStart = DateTime.SpecifyKind(session.UtcStart, DateTimeKind.Utc);
@@ -313,7 +317,7 @@ namespace ACCManager.Controls
 
             grid.Columns.Add(new DataGridTextColumn()
             {
-                Header = new TextBlock() { Text = "#", ToolTip = "Lap" },
+                Header = new TextBlock() { Text = "#", ToolTip = "Lap", Margin = new Thickness(0) },
                 Binding = new Binding("Index"),
                 SortDirection = System.ComponentModel.ListSortDirection.Descending,
                 FontWeight = FontWeights.DemiBold,
@@ -373,25 +377,31 @@ namespace ACCManager.Controls
             });
             grid.Columns.Add(new DataGridTextColumn()
             {
-                Header = "°C Track",
-                Binding = new Binding("TempTrack") { Converter = new FormattedFloatConverter(2) }
+                Header = "Track",
+                Binding = new Binding("GripStatus") { }
             });
             grid.Columns.Add(new DataGridTextColumn()
             {
                 Header = "°C Air",
                 Binding = new Binding("TempAmbient") { Converter = new FormattedFloatConverter(2) }
             });
-
-
-            grid.SelectedCellsChanged += (s, e) =>
+            grid.Columns.Add(new DataGridTextColumn()
             {
-                if (grid.SelectedIndex != -1)
-                {
-                    DbLapData lapdata = (DbLapData)grid.SelectedItem;
+                Header = "°C Track",
+                Binding = new Binding("TempTrack") { Converter = new FormattedFloatConverter(2) }
+            });
 
-                    CreateCharts(lapdata.Id);
-                }
-            };
+
+
+            //grid.SelectedCellsChanged += (s, e) =>
+            //{
+            //    if (grid.SelectedIndex != -1)
+            //    {
+            //        DbLapData lapdata = (DbLapData)grid.SelectedItem;
+
+            //        CreateCharts(lapdata.Id);
+            //    }
+            //};
 
             return grid;
         }
@@ -412,7 +422,7 @@ namespace ACCManager.Controls
             {
                 if (node.Value.SplinePosition < previousSpline)
                 {
-                    Debug.WriteLine($"Decreasing spline at index {index + 1}: {previousSpline}->{node.Value.SplinePosition:F6}");
+                    Debug.WriteLine($"Decreasing spline at index {index + 1}: {previousSpline}->{node.Value.SplinePosition:F12}");
 
                     int tenPercentCount = dictio.Count / 10;
 
@@ -432,7 +442,6 @@ namespace ACCManager.Controls
 
 
             float highestSplinePosition = -1;
-            float lastSplinePosition = -1;
 
             long minKeyToTranslate = -1;
             bool needsToTranslate = false;
@@ -441,15 +450,17 @@ namespace ACCManager.Controls
             if (dictio.Last().Value.SplinePosition < 0.1)
                 lastCloseToZero = true;
 
-
+            Debug.WriteLine($" --- Min Key: {minKeyToTranslate}");
+            float lastSplinePosition = -1;
             foreach (var data in dictio)
             {
                 if (!needsToTranslate)
                 {
-                    if (data.Value.SplinePosition < lastSplinePosition)
+                    if (data.Value.SplinePosition < lastSplinePosition && minKeyToTranslate == -1)
                     {
                         needsToTranslate = true;
                         minKeyToTranslate = data.Key;
+                        Debug.WriteLine($" --- Min Key: {minKeyToTranslate} - {data.Value.SplinePosition:F12}");
                     }
                     if (!needsToTranslate)
                         lastSplinePosition = data.Value.SplinePosition;
@@ -462,44 +473,42 @@ namespace ACCManager.Controls
 
             if (needsToTranslate)
             {
+                Debug.WriteLine("-- Requires Filtering --");
                 float translation = 1 - dictio.First().Value.SplinePosition;
-
                 if (lastCloseToZero)
-                    translation = dictio.Last().Value.SplinePosition;
-
-                bool normalTranslation = false;
+                    translation = dictio.First().Value.SplinePosition * -1;
 
                 _currentData.Clear();
 
-                if (lastCloseToZero)
-                    normalTranslation = true;
+                Debug.WriteLine($"Translation {translation}");
 
+                bool startTranslation = false;
                 foreach (var data in dictio)
                 {
-                    if (!normalTranslation)
+                    if (!startTranslation)
                     {
                         if (data.Key == minKeyToTranslate)
-                        {
-                            normalTranslation = true;
-
-                            var oldPoint = data.Value;
-                            oldPoint.SplinePosition += translation;
-                            _currentData.Add(data.Key, oldPoint);
-                        }
+                            startTranslation = true;
                         else
                         {
                             var oldPoint = data.Value;
-                            oldPoint.SplinePosition = (oldPoint.SplinePosition + translation) - 1f;
+                            oldPoint.SplinePosition = (oldPoint.SplinePosition + translation);
+
+                            if (oldPoint.SplinePosition > 1)
+                                oldPoint.SplinePosition -= 1;
+
                             _currentData.Add(data.Key, oldPoint);
                         }
                     }
-                    else
+
+                    if (startTranslation)
                     {
                         var oldPoint = data.Value;
-                        if (lastCloseToZero)
-                            oldPoint.SplinePosition -= translation;
-                        else
-                            oldPoint.SplinePosition += translation;
+                        oldPoint.SplinePosition = (1 + oldPoint.SplinePosition) + translation;
+
+                        if (oldPoint.SplinePosition > 2)
+                            oldPoint.SplinePosition -= 1;
+
                         _currentData.Add(data.Key, oldPoint);
                     }
                 }
@@ -543,7 +552,7 @@ namespace ACCManager.Controls
                 FilterTelemetrySplines(_currentData.ToDictionary(x => x.Key, x => x.Value));
 
 
-                TrackData trackData = TrackNames.Tracks.Values.First(x => x.Guid == GetSelectedTrack());
+                AbstractTrackData trackData = TrackData.Tracks.Values.First(x => x.Guid == GetSelectedTrack());
                 PlotUtil.trackData = trackData;
                 int fullSteeringLock = SteeringLock.Get(CarDataCollection.GetCarData(CurrentDatabase, GetSelectedCar()).ParseName);
 

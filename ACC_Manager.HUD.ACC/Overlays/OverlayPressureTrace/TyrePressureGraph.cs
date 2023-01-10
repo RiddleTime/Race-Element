@@ -1,10 +1,10 @@
-﻿using ACC_Manager.Util.SystemExtensions;
+﻿using RaceElement.Util.SystemExtensions;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
+namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace
 {
     internal class TyrePressureGraph
     {

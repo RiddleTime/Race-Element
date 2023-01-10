@@ -1,12 +1,12 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.HUD.Overlay.Util;
+﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
 
-namespace ACCManager.HUD.Overlay.OverlayUtil
+namespace RaceElement.HUD.Overlay.OverlayUtil
 {
     public class InfoTable
     {
@@ -52,7 +52,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
                 {
                     _cachedBackground = new CachedBitmap((int)Math.Ceiling(GetTotalWidth()), _rows.Count * FontHeight + (int)_yMono, bg =>
                     {
-                        bg.FillRoundedRectangle(new SolidBrush(Color.FromArgb(140, Color.Black)), new Rectangle(0, 0, (int)GetTotalWidth(), _rows.Count * this.Font.Height + (int)_yMono), 4);
+                        bg.FillRoundedRectangle(new SolidBrush(Color.FromArgb(158, Color.Black)), new Rectangle(0, 0, (int)GetTotalWidth(), _rows.Count * this.Font.Height + (int)_yMono), 4);
                     });
                     previousRowCount = _rows.Count;
                 }
@@ -72,7 +72,7 @@ namespace ACCManager.HUD.Overlay.OverlayUtil
 
                 if (DrawValueBackground)
                 {
-                    g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(25, Color.White)), new Rectangle((int)_maxHeaderWidth + 5, Y, valueWidth - 4, _rows.Count * this.Font.Height + (int)_yMono + 1), 4);
+                    g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(80, Color.Black)), new Rectangle((int)_maxHeaderWidth + 5, Y, valueWidth - 4, _rows.Count * this.Font.Height + (int)_yMono + 1), 4);
                 }
                 while (counter < length)
                 {

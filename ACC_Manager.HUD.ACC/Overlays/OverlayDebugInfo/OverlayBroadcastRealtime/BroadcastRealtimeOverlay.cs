@@ -1,15 +1,15 @@
-﻿using ACCManager.Data.ACC.EntryList;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.OverlayUtil;
-using ACCManager.Util;
+﻿using RaceElement.Data.ACC.EntryList;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.Util;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
-using static ACCManager.Data.ACC.EntryList.EntryListTracker;
-using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
+using static RaceElement.Data.ACC.EntryList.EntryListTracker;
+using static RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
+namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
 {
 #if DEBUG
     [Overlay(Name = "Broadcast Realtime", Version = 1.00, OverlayType = OverlayType.Debug,
@@ -21,7 +21,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
 
         private InfoTable _table;
 
-        public BroadcastRealtimeOverlay(Rectangle rectangle) : base(rectangle, "Debug BroadcastRealtime Overlay")
+        public BroadcastRealtimeOverlay(Rectangle rectangle) : base(rectangle, "Broadcast Realtime")
         {
             this.AllowReposition = false;
             this.RefreshRateHz = 10;
@@ -39,7 +39,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
 
         public sealed override void BeforeStart()
         {
-            if (this._config.Undock)
+            if (this._config.Dock.Undock)
                 this.AllowReposition = true;
             else
             {
@@ -52,7 +52,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
 
         public sealed override void BeforeStop()
         {
-            if (!this._config.Undock)
+            if (!this._config.Dock.Undock)
             {
                 DebugInfoHelper.Instance.RemoveOverlay(this);
                 DebugInfoHelper.Instance.WidthChanged -= Instance_WidthChanged;

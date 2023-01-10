@@ -4,12 +4,12 @@ using System.Windows.Controls;
 using System.IO;
 using System.Diagnostics;
 using Newtonsoft.Json;
-using static ACCManager.Data.SetupConverter;
-using ACCManager.Data;
-using static ACCManager.Data.SetupJson;
-using ACCManager.Data.SetupRanges;
+using static RaceElement.Data.SetupConverter;
+using RaceElement.Data;
+using static RaceElement.Data.SetupJson;
+using RaceElement.Data.SetupRanges;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for SetupEditor.xaml

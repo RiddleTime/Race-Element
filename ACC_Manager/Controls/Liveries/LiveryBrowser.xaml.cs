@@ -1,7 +1,7 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.Data;
-using ACCManager.LiveryParser;
-using ACCManager.Util;
+﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.Data;
+using RaceElement.LiveryParser;
+using RaceElement.Util;
 using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
 using System;
@@ -14,9 +14,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using static ACCManager.Controls.LiveryTagging;
+using static RaceElement.Controls.LiveryTagging;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for LiveryBrowser.xaml
@@ -34,7 +34,7 @@ namespace ACCManager.Controls
             InitializeComponent();
 
             Instance = this;
-            ThreadPool.QueueUserWorkItem(x => FetchAllCars());
+            this.Loaded += (s, e) => ThreadPool.QueueUserWorkItem(x => FetchAllCars());
 
             liveriesTreeViewTeams.SelectedItemChanged += LiveriesTreeView_SelectedItemChanged;
             liveriesTreeViewCars.SelectedItemChanged += LiveriesTreeView_SelectedItemChanged;
@@ -46,6 +46,9 @@ namespace ACCManager.Controls
 
 
             buttonImportLiveries.Click += ButtonImportLiveries_Click;
+
+            buttonRefreshLiveries.Click += (s, e) => ThreadPool.QueueUserWorkItem(x => FetchAllCars()); ;
+
             buttonGenerateAllDDS.Click += ButtonGenerateAllDDS_Click;
 
 
@@ -453,7 +456,7 @@ namespace ACCManager.Controls
                     Width = liveriesTreeViewTeams.Width - 5,
                     Background = new SolidColorBrush(Colors.OrangeRed)
                 };
-                if(liveriesWithoutTags.Count == 0)
+                if (liveriesWithoutTags.Count == 0)
                     tagHeader.Background = new SolidColorBrush(Colors.DarkOliveGreen);
 
                 TreeViewItem tagItem = new TreeViewItem()
@@ -919,18 +922,18 @@ namespace ACCManager.Controls
                                 zipArchive.AddEntry($"{liveriesFolder}{sponsorsJson.Name}", sponsorsJson);
 
                             FileInfo decalsDds0 = new FileInfo(customSkinDir.FullName + "\\" + "decals_0.dds");
-                            FileInfo decalsDds1 = new FileInfo(customSkinDir.FullName + "\\" + "decals_1.dds");
+                            //FileInfo decalsDds1 = new FileInfo(customSkinDir.FullName + "\\" + "decals_1.dds");
                             FileInfo sponsorsDds0 = new FileInfo(customSkinDir.FullName + "\\" + "sponsors_0.dds");
-                            FileInfo sponsorsDds1 = new FileInfo(customSkinDir.FullName + "\\" + "sponsors_1.dds");
+                            //FileInfo sponsorsDds1 = new FileInfo(customSkinDir.FullName + "\\" + "sponsors_1.dds");
 
                             if (decalsDds0.Exists)
                                 zipArchive.AddEntry($"{liveriesFolder}{decalsDds0.Name}", decalsDds0);
-                            if (decalsDds1.Exists)
-                                zipArchive.AddEntry($"{liveriesFolder}{decalsDds1.Name}", decalsDds1);
+                            //if (decalsDds1.Exists)
+                            //    zipArchive.AddEntry($"{liveriesFolder}{decalsDds1.Name}", decalsDds1);
                             if (sponsorsDds0.Exists)
                                 zipArchive.AddEntry($"{liveriesFolder}{sponsorsDds0.Name}", sponsorsDds0);
-                            if (sponsorsDds1.Exists)
-                                zipArchive.AddEntry($"{liveriesFolder}{sponsorsDds1.Name}", sponsorsDds1);
+                            //if (sponsorsDds1.Exists)
+                            //    zipArchive.AddEntry($"{liveriesFolder}{sponsorsDds1.Name}", sponsorsDds1);
 
 
                             using (FileStream outputStream = new FileStream(filename, FileMode.Create))

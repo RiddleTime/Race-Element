@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace ACCManager.Hardware.ACC.SteeringLock
+namespace RaceElement.Hardware.ACC.SteeringLock
 {
     /// <summary>
     /// From https://github.com/Havner/acc-steering-lock

@@ -1,9 +1,9 @@
-﻿using ACCManager.Data.ACC.Tracker;
+﻿using RaceElement.Data.ACC.Tracker;
 using System;
 using System.Diagnostics;
 using System.Threading;
 
-namespace ACCManager.Data.ACC.Session
+namespace RaceElement.Data.ACC.Session
 {
     public class SessionTimeTracker
     {

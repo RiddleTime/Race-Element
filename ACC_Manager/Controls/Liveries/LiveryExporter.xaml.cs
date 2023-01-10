@@ -1,4 +1,4 @@
-﻿using ACCManager.Util;
+﻿using RaceElement.Util;
 using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
 using System;
@@ -9,9 +9,9 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using static ACCManager.Controls.LiveryBrowser;
+using static RaceElement.Controls.LiveryBrowser;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for LiveryExporter.xaml
@@ -103,17 +103,17 @@ namespace ACCManager.Controls
 
                                     if (shouldExportDDS)
                                     {
-                                        FileInfo decalsDds0 = new FileInfo(customSkinDir.FullName + "\\" + "decals_0.dds");
+                                        //FileInfo decalsDds0 = new FileInfo(customSkinDir.FullName + "\\" + "decals_0.dds");
                                         FileInfo decalsDds1 = new FileInfo(customSkinDir.FullName + "\\" + "decals_1.dds");
-                                        FileInfo sponsorsDds0 = new FileInfo(customSkinDir.FullName + "\\" + "sponsors_0.dds");
+                                        //FileInfo sponsorsDds0 = new FileInfo(customSkinDir.FullName + "\\" + "sponsors_0.dds");
                                         FileInfo sponsorsDds1 = new FileInfo(customSkinDir.FullName + "\\" + "sponsors_1.dds");
 
-                                        if (decalsDds0.Exists)
-                                            zipArchive.AddEntry($"{liveriesFolder}{decalsDds0.Name}", decalsDds0);
+                                        //if (decalsDds0.Exists)
+                                        //    zipArchive.AddEntry($"{liveriesFolder}{decalsDds0.Name}", decalsDds0);
                                         if (decalsDds1.Exists)
                                             zipArchive.AddEntry($"{liveriesFolder}{decalsDds1.Name}", decalsDds1);
-                                        if (sponsorsDds0.Exists)
-                                            zipArchive.AddEntry($"{liveriesFolder}{sponsorsDds0.Name}", sponsorsDds0);
+                                        //if (sponsorsDds0.Exists)
+                                        //    zipArchive.AddEntry($"{liveriesFolder}{sponsorsDds0.Name}", sponsorsDds0);
                                         if (sponsorsDds1.Exists)
                                             zipArchive.AddEntry($"{liveriesFolder}{sponsorsDds1.Name}", sponsorsDds1);
                                     }

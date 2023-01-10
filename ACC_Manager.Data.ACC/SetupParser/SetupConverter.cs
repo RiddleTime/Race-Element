@@ -1,9 +1,9 @@
-﻿using ACCManager.Data.SetupRanges;
+﻿using RaceElement.Data.SetupRanges;
 using System;
 using System.Collections.Generic;
-using static ACCManager.Data.ConversionFactory;
+using static RaceElement.Data.ConversionFactory;
 
-namespace ACCManager.Data
+namespace RaceElement.Data
 {
     public class SetupConverter
     {

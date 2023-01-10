@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace ACCManager.HUD.Overlay.OverlayUtil
+namespace RaceElement.HUD.Overlay.OverlayUtil
 {
     public static class GraphicsExtensions
     {

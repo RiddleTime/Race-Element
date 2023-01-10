@@ -1,13 +1,13 @@
-﻿using ACCManager.HUD.ACC.Overlays.OverlayDebugInfo;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.OverlayUtil;
-using ACCManager.Util;
+﻿using RaceElement.HUD.ACC.Overlays.OverlayDebugInfo;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.Util;
 using System;
 using System.Drawing;
 using System.Reflection;
-using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
+using static RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayPhysicsInfo
+namespace RaceElement.HUD.ACC.Overlays.OverlayPhysicsInfo
 {
 
     [Overlay(Name = "Physics Info", Version = 1.00,
@@ -17,7 +17,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPhysicsInfo
         private readonly DebugConfig _config = new DebugConfig();
         private readonly InfoTable _table;
 
-        public PhysicsInfoOverlay(Rectangle rectangle) : base(rectangle, "Debug Physics Overlay")
+        public PhysicsInfoOverlay(Rectangle rectangle) : base(rectangle, "Physics Info")
         {
             this.AllowReposition = false;
             this.RefreshRateHz = 5;
@@ -35,7 +35,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPhysicsInfo
 
         public sealed override void BeforeStart()
         {
-            if (this._config.Undock)
+            if (this._config.Dock.Undock)
                 this.AllowReposition = true;
             else
             {
@@ -48,7 +48,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayPhysicsInfo
 
         public sealed override void BeforeStop()
         {
-            if (!this._config.Undock)
+            if (!this._config.Dock.Undock)
             {
                 DebugInfoHelper.Instance.RemoveOverlay(this);
                 DebugInfoHelper.Instance.WidthChanged -= Instance_WidthChanged;

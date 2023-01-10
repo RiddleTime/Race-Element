@@ -1,9 +1,12 @@
-﻿using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.OverlayUtil;
+﻿using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.OverlayUtil.ProgressBars;
+using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
+namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
 {
     [Overlay(Name = "Input Bars", Version = 1.00, OverlayType = OverlayType.Release,
       Description = "Live input bars of throttle and brake.")]
@@ -12,20 +15,43 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
         private readonly InputBarsConfiguration _config = new InputBarsConfiguration();
         private class InputBarsConfiguration : OverlayConfiguration
         {
-            [ToolTip("Changes the width of each input bar.")]
-            [IntRange(10, 40, 1)]
-            public int BarWidth { get; set; } = 15;
+            [ConfigGrouping("Bars", "The shape and spacing of the bars")]
+            public BarsGrouping Bars { get; set; } = new BarsGrouping();
+            public class BarsGrouping
+            {
+                [ToolTip("Enables horizontal input bars.")]
+                public bool Horizontal { get; set; } = false;
 
-            [ToolTip("Changes the height of each input bar.")]
-            [IntRange(100, 200, 1)]
-            public int BarHeight { get; set; } = 130;
+                [ToolTip("Length of the input bars.")]
+                [IntRange(100, 250, 1)]
+                public int Length { get; set; } = 200;
 
-            [ToolTip("Changes the spacing between the input bars")]
-            [IntRange(5, 15, 1)]
-            public int BarSpacing { get; set; } = 5;
+                [ToolTip("Changes the thickness of each input bar.")]
+                [IntRange(10, 45, 1)]
+                public int Thickness { get; set; } = 20;
 
-            [ToolTip("Displays a color change on the input bars when either abs or traction control is activated.")]
-            public bool ShowElectronics { get; set; } = true;
+                [ToolTip("Changes the spacing between the input bars")]
+                [IntRange(1, 150, 1)]
+                public int Spacing { get; set; } = 5;
+
+                [ToolTip("Defines the transparency of the bars.")]
+                [ByteRange(40, 255, 1)]
+                public byte Transparency { get; set; } = 185;
+
+                [ToolTip("Changes the order of the bars, throttle first and brake second (left to right and top to bottom).")]
+                internal bool ThrottleFirst { get; set; }
+            }
+
+            [ConfigGrouping("Electronics", "Color changes for the bars when electronics kick in.")]
+            public ElectronicsGrouping Electronics { get; set; } = new ElectronicsGrouping();
+            public class ElectronicsGrouping
+            {
+                [ToolTip("Displays a color change on the throttle bar when traction control is activated.")]
+                public bool TractionControl { get; set; } = true;
+
+                [ToolTip("Displays a color change on the brake bar when ABS is activated.")]
+                public bool AntiLockBrakes { get; set; } = true;
+            }
 
             public InputBarsConfiguration()
             {
@@ -35,83 +61,200 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputBars
 
         private CachedBitmap _cachedBackground;
 
-        private VerticalProgressBar _gasBar;
-        private VerticalProgressBar _brakeBar;
+        private HorizontalProgressBar[] _horizontalBars;
+        private HorizontalProgressBar _horizontalGasBar;
+        private HorizontalProgressBar _horizontalBrakeBar;
 
-        public InputBarsOverlay(Rectangle rectangle) : base(rectangle, "Input Bars Overlay")
+        private VerticalProgressBar[] _verticalBars;
+        private VerticalProgressBar _verticalGasBar;
+        private VerticalProgressBar _verticalBrakeBar;
+
+        public InputBarsOverlay(Rectangle rectangle) : base(rectangle, "Input Bars")
         {
-            this.Width = _config.BarWidth * 2 + _config.BarSpacing + 1;
-            this.Height = _config.BarHeight + 1;
+            if (_config.Bars.Horizontal)
+            {
+                _horizontalBars = new HorizontalProgressBar[2];
+                this.Width = _config.Bars.Length + 1;
+                this.Height = _config.Bars.Thickness * 2 + _config.Bars.Spacing + 1;
+            }
+            else
+            {
+                _verticalBars = new VerticalProgressBar[2];
+                this.Width = _config.Bars.Thickness * 2 + _config.Bars.Spacing + 1;
+                this.Height = _config.Bars.Length + 1;
+            }
         }
 
         public override bool ShouldRender() => DefaultShouldRender();
 
         public override void BeforeStart()
         {
-            int width = _config.BarWidth * 2 + _config.BarSpacing;
-            int height = _config.BarHeight;
-            _cachedBackground = new CachedBitmap((int)(width * this.Scale), (int)(height * this.Scale + 1), g =>
+            int width = _config.Bars.Thickness * 2 + _config.Bars.Spacing;
+            int height = _config.Bars.Length;
+
+            if (_config.Bars.Horizontal)
             {
-                Brush brush = new SolidBrush(Color.FromArgb(140, Color.Black));
-                g.FillRoundedRectangle(brush, new Rectangle(0, 0, (int)(_config.BarWidth * this.Scale), (int)(height * this.Scale)), (int)(3 * this.Scale));
-                g.FillRoundedRectangle(brush, new Rectangle((int)((_config.BarWidth + _config.BarSpacing) * this.Scale), 0, (int)(_config.BarWidth * this.Scale), (int)(height * this.Scale)), (int)(5 * this.Scale));
+                width = _config.Bars.Length;
+                height = _config.Bars.Thickness * 2 + _config.Bars.Spacing;
+            }
+
+            _cachedBackground = new CachedBitmap((int)(width * this.Scale), (int)(height * this.Scale), g =>
+            {
+                if (_config.Bars.Horizontal)
+                {
+                    using (LinearGradientBrush gradientBrush = new LinearGradientBrush(new Rectangle(0, 0, (int)(_config.Bars.Length * this.Scale), (int)(_config.Bars.Thickness * this.Scale)), Color.FromArgb(120, Color.Black), Color.FromArgb(230, Color.Black), LinearGradientMode.Horizontal))
+                    {
+                        g.FillRoundedRectangle(gradientBrush, new Rectangle(0, 0, (int)(_config.Bars.Length * this.Scale), (int)(_config.Bars.Thickness * this.Scale)), (int)(5 * this.Scale));
+                        g.FillRoundedRectangle(gradientBrush, new Rectangle(0, (int)((_config.Bars.Thickness + _config.Bars.Spacing) * this.Scale), (int)(_config.Bars.Length * this.Scale), (int)(_config.Bars.Thickness * this.Scale)), (int)(5 * this.Scale));
+                    }
+                }
+                else
+                {
+                    using (LinearGradientBrush gradientBrush = new LinearGradientBrush(new Rectangle(0, 0, (int)(_config.Bars.Thickness * this.Scale), (int)(height * this.Scale)), Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical))
+                    {
+                        g.FillRoundedRectangle(gradientBrush, new Rectangle(0, 0, (int)(_config.Bars.Thickness * this.Scale), (int)(height * this.Scale)), (int)(6 * this.Scale));
+                        g.FillRoundedRectangle(gradientBrush, new Rectangle((int)((_config.Bars.Thickness + _config.Bars.Spacing) * this.Scale), 0, (int)(_config.Bars.Thickness * this.Scale), (int)(height * this.Scale)), (int)(5 * this.Scale));
+                    }
+                }
             });
 
             Brush outlineBrush = new SolidBrush(Color.FromArgb(196, Color.Black));
-            _gasBar = new VerticalProgressBar((int)(_config.BarWidth), (int)(_config.BarHeight))
+
+            _config.Bars.ThrottleFirst = _config.Bars.Horizontal;
+            if (_config.Bars.Horizontal)
             {
-                Value = 0,
-                Min = 0,
-                Max = 1,
-                FillBrush = Brushes.LimeGreen,
-                OutlineBrush = outlineBrush,
-                Rounded = true,
-                Scale = this.Scale,
-                Rounding = 5,
-            };
-            _brakeBar = new VerticalProgressBar((int)(_config.BarWidth), (int)(_config.BarHeight))
+                _horizontalBrakeBar = new HorizontalProgressBar(_config.Bars.Length, _config.Bars.Thickness)
+                {
+                    Value = 0,
+                    Min = 0,
+                    Max = 1,
+                    FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.OrangeRed)),
+                    OutlineBrush = outlineBrush,
+                    Rounded = true,
+                    Scale = this.Scale,
+                    Rounding = 5,
+                };
+                _horizontalGasBar = new HorizontalProgressBar(_config.Bars.Length, _config.Bars.Thickness)
+                {
+                    Value = 0,
+                    Min = 0,
+                    Max = 1,
+                    FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.LimeGreen)),
+                    OutlineBrush = outlineBrush,
+                    Rounded = true,
+                    Scale = this.Scale,
+                    Rounding = 5,
+                };
+                if (_config.Bars.ThrottleFirst)
+                {
+                    _horizontalBars[0] = _horizontalGasBar;
+                    _horizontalBars[1] = _horizontalBrakeBar;
+                }
+                else
+                {
+                    _horizontalBars[0] = _horizontalBrakeBar;
+                    _horizontalBars[1] = _horizontalGasBar;
+                }
+            }
+            else
             {
-                Value = 0,
-                Min = 0,
-                Max = 1,
-                FillBrush = Brushes.OrangeRed,
-                OutlineBrush = outlineBrush,
-                Rounded = true,
-                Scale = this.Scale,
-                Rounding = 5,
-            };
+                _verticalBrakeBar = new VerticalProgressBar(_config.Bars.Thickness, _config.Bars.Length)
+                {
+                    Value = 0,
+                    Min = 0,
+                    Max = 1,
+                    FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.OrangeRed)),
+                    OutlineBrush = outlineBrush,
+                    Rounded = true,
+                    Scale = this.Scale,
+                    Rounding = 5,
+                };
+                _verticalGasBar = new VerticalProgressBar(_config.Bars.Thickness, _config.Bars.Length)
+                {
+                    Value = 0,
+                    Min = 0,
+                    Max = 1,
+                    FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.LimeGreen)),
+                    OutlineBrush = outlineBrush,
+                    Rounded = true,
+                    Scale = this.Scale,
+                    Rounding = 5,
+                };
+                if (_config.Bars.ThrottleFirst)
+                {
+                    _verticalBars[0] = _verticalGasBar;
+                    _verticalBars[1] = _verticalBrakeBar;
+                }
+                else
+                {
+                    _verticalBars[0] = _verticalBrakeBar;
+                    _verticalBars[1] = _verticalGasBar;
+                }
+            }
         }
 
         public override void BeforeStop()
         {
-            _cachedBackground.Dispose();
+            _cachedBackground?.Dispose();
         }
 
         public override void Render(Graphics g)
         {
-            _cachedBackground?.Draw(g, _config.BarWidth * 2 + _config.BarSpacing, _config.BarHeight);
 
-            if (_config.ShowElectronics)
-                ApplyElectronicsColors();
+            if (_config.Electronics.AntiLockBrakes || _config.Electronics.TractionControl)
+                ApplyFillColor();
 
-            _gasBar.Value = pagePhysics.Gas;
-            _gasBar.Draw(g, 0, 0);
+            if (_config.Bars.Horizontal)
+            {
+                _cachedBackground?.Draw(g, _config.Bars.Length, _config.Bars.Thickness * 2 + _config.Bars.Spacing);
 
-            _brakeBar.Value = pagePhysics.Brake;
-            _brakeBar.Draw(g, _config.BarWidth + _config.BarSpacing, 0);
+                _horizontalGasBar.Value = pagePhysics.Gas;
+                _horizontalBrakeBar.Value = pagePhysics.Brake;
+
+                _horizontalBars[0]?.Draw(g, 0, 0);
+                _horizontalBars[1]?.Draw(g, 0, _config.Bars.Thickness + _config.Bars.Spacing);
+            }
+            else
+            {
+                _cachedBackground?.Draw(g, _config.Bars.Thickness * 2 + _config.Bars.Spacing, _config.Bars.Length);
+
+                _verticalBrakeBar.Value = pagePhysics.Brake;
+                _verticalGasBar.Value = pagePhysics.Gas;
+
+                _verticalBars[0]?.Draw(g, 0, 0);
+                _verticalBars[1]?.Draw(g, _config.Bars.Thickness + _config.Bars.Spacing, 0);
+            }
         }
 
-        private void ApplyElectronicsColors()
+        /// <summary>
+        /// Applies a fill color to the brake and gas bar based on electronics
+        /// </summary>
+        private void ApplyFillColor()
         {
-            if (pagePhysics.TC > 0)
-                _gasBar.FillBrush = Brushes.Orange;
-            else
-                _gasBar.FillBrush = Brushes.LimeGreen;
+            if (_config.Bars.Horizontal)
+            {
+                if (pagePhysics.Abs > 0)
+                    _horizontalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.Orange));
+                else
+                    _horizontalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.OrangeRed));
 
-            if (pagePhysics.Abs > 0)
-                _brakeBar.FillBrush = Brushes.Orange;
+                if (pagePhysics.TC > 0)
+                    _horizontalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.Orange));
+                else
+                    _horizontalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.LimeGreen));
+            }
             else
-                _brakeBar.FillBrush = Brushes.OrangeRed;
+            {
+                if (pagePhysics.Abs > 0)
+                    _verticalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.Orange));
+                else
+                    _verticalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.OrangeRed));
+
+                if (pagePhysics.TC > 0)
+                    _verticalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.Orange));
+                else
+                    _verticalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.LimeGreen));
+            }
         }
     }
 }

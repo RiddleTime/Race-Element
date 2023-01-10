@@ -2,24 +2,23 @@
 using System.IO;
 using System.Security.Cryptography;
 
-namespace ACCManager.Util
+namespace RaceElement.Util
 {
     public class FileUtil
     {
-
-        public static string AccManagerDocumentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "ACC Manager\\";
-        public static string AccManagerLogPath = AccManagerDocumentsPath + "Log\\";
-        public static string AccManagerTagsPath = AccManagerDocumentsPath + "Tag\\";
-        public static string AccManagerOverlayPath = AccManagerDocumentsPath + "Overlay\\";
-        public static string AccManangerSettingsPath = AccManagerDocumentsPath + "Settings\\";
-        public static string AccManangerDataPath = AccManagerDocumentsPath + "Data\\";
+        public static string RaceElementAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "Race Element\\";
+        public static string RaceElementLogPath = RaceElementAppDataPath + "Log\\";
+        public static string RaceElementTagsPath = RaceElementAppDataPath + "Tag\\";
+        public static string RaceElementOverlayPath = RaceElementAppDataPath + "Overlay\\";
+        public static string RaceElementSettingsPath = RaceElementAppDataPath + "Settings\\";
+        public static string RaceElementDataPath = RaceElementAppDataPath + "Data\\";
 
 
         public static string AccPath => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "Assetto Corsa Competizione\\";
         public static string CustomsPath => AccPath + "Customs\\";
         public static string CarsPath => CustomsPath + "Cars\\";
         public static string LiveriesPath => CustomsPath + "Liveries\\";
-        public static string ConfigPath => AccPath + "Config\\";
+        public static string AccConfigPath => AccPath + "Config\\";
 
         public static string AppDirectory => StripFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
         public static string AppFullName => AppDomain.CurrentDomain.BaseDirectory + AppDomain.CurrentDomain.FriendlyName;

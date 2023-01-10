@@ -1,10 +1,10 @@
-﻿using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.Util;
+﻿using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Drawing;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
+namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
 {
     [Overlay(Name = "Track Info", Version = 1.00, OverlayType = OverlayType.Release,
         Description = "A panel showing information about the track state: grip, temperatures and wind.\nOptionally showing the global flag, session type and time of day.")]
@@ -13,14 +13,19 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
         private readonly TrackInfoConfig _config = new TrackInfoConfig();
         private class TrackInfoConfig : OverlayConfiguration
         {
-            [ToolTip("Shows the global track flag.")]
-            internal bool ShowGlobalFlag { get; set; } = true;
+            [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
+            public InfoPanelGrouping InfoPanel { get; set; } = new InfoPanelGrouping();
+            public class InfoPanelGrouping
+            {
+                [ToolTip("Shows the global track flag.")]
+                public bool GlobalFlag { get; set; } = true;
 
-            [ToolTip("Shows the type of the session.")]
-            internal bool ShowSessionType { get; set; } = true;
+                [ToolTip("Shows the type of the session.")]
+                public bool SessionType { get; set; } = true;
 
-            [ToolTip("Displays the actual time on track.")]
-            internal bool ShowTimeOfDay { get; set; } = true;
+                [ToolTip("Displays the actual time on track.")]
+                public bool TimeOfDay { get; set; } = true;
+            }
 
             public TrackInfoConfig()
             {
@@ -30,7 +35,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
 
         private readonly InfoPanel _panel = new InfoPanel(10, 240);
 
-        public TrackInfoOverlay(Rectangle rectangle) : base(rectangle, "Track Info Overlay")
+        public TrackInfoOverlay(Rectangle rectangle) : base(rectangle, "Track Info")
         {
             this.Width = 230;
             this.Height = _panel.FontHeight * 6; ;
@@ -39,13 +44,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
 
         public sealed override void BeforeStart()
         {
-            if (!this._config.ShowGlobalFlag)
+            if (!this._config.InfoPanel.GlobalFlag)
                 this.Height -= this._panel.FontHeight;
 
-            if (!this._config.ShowSessionType)
+            if (!this._config.InfoPanel.SessionType)
                 this.Height -= this._panel.FontHeight;
 
-            if (!this._config.ShowTimeOfDay)
+            if (!this._config.InfoPanel.TimeOfDay)
                 this.Height -= this._panel.FontHeight;
         }
 
@@ -53,16 +58,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayTrackInfo
 
         public sealed override void Render(Graphics g)
         {
-            if (this._config.ShowTimeOfDay)
+            if (this._config.InfoPanel.TimeOfDay)
             {
                 TimeSpan time = TimeSpan.FromMilliseconds(broadCastRealTime.TimeOfDay.TotalMilliseconds * 1000);
                 this._panel.AddLine("Time", $"{time:hh\\:mm\\:ss}");
             }
 
-            if (this._config.ShowGlobalFlag)
+            if (this._config.InfoPanel.GlobalFlag)
                 _panel.AddLine("Flag", ACCSharedMemory.FlagTypeToString(pageGraphics.Flag));
 
-            if (this._config.ShowSessionType)
+            if (this._config.InfoPanel.SessionType)
                 _panel.AddLine("Session", ACCSharedMemory.SessionTypeToString(pageGraphics.SessionType));
 
             _panel.AddLine("Grip", pageGraphics.trackGripStatus.ToString());

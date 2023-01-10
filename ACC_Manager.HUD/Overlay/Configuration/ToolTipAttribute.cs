@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ACCManager.HUD.Overlay.Configuration
+namespace RaceElement.HUD.Overlay.Configuration
 {
     public class ToolTipAttribute : Attribute
     {

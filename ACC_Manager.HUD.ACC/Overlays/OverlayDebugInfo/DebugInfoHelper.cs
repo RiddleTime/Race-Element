@@ -1,16 +1,21 @@
-﻿using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
+﻿using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
 using System;
 using System.Collections.Generic;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo
+namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo
 {
     internal class DebugInfoHelper
     {
         public class DebugConfig : OverlayConfiguration
         {
-            [ToolTip("Allows you to reposition this debug panel.")]
-            internal bool Undock { get; set; } = false;
+            [ConfigGrouping("Dock", "Provides settings for overlay docking.")]
+            public DockConfigGrouping Dock { get; set; } = new DockConfigGrouping();
+            public class DockConfigGrouping
+            {
+                [ToolTip("Allows you to reposition this debug panel.")]
+                public bool Undock { get; set; } = false;
+            }
 
             public DebugConfig()
             {

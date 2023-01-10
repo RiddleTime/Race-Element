@@ -1,9 +1,10 @@
-﻿using ACCManager.HUD.Overlay.Internal;
+﻿using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.Util;
 using System.Collections.Generic;
 using System.Threading;
-using static ACCManager.ACCSharedMemory;
+using static RaceElement.ACCSharedMemory;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
+namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
 {
     internal class InputDataCollector
     {
@@ -60,7 +61,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayInputTrace
             {
                 while (IsCollecting)
                 {
-                    Thread.Sleep(1000 / inputTraceConfig.Herz);
+                    Thread.Sleep(1000 / inputTraceConfig.InfoPanel.Herz);
                     if (_overlay != null && _overlay.pagePhysics != null)
                     {
                         Collect(_overlay.pagePhysics);

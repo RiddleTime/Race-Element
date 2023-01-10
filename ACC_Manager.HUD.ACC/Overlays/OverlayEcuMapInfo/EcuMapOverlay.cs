@@ -1,9 +1,9 @@
-﻿using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.Util;
+﻿using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.Util;
 using System.Drawing;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
+namespace RaceElement.HUD.ACC.Overlays.OverlayEcuMapInfo
 {
     [Overlay(Name = "ECU Maps", Version = 1.00, OverlayType = OverlayType.Release,
         Description = "A panel showing information about the current ECU Map.")]
@@ -15,8 +15,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
         private EcuMapConfiguration _config = new EcuMapConfiguration();
         private class EcuMapConfiguration : OverlayConfiguration
         {
-            [ToolTip("Displays the number of the ecu map.")]
-            public bool ShowMapNumber { get; set; } = true;
+            [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
+            public InfoPanelGrouping InfoPanel { get; set; } = new InfoPanelGrouping();
+            public class InfoPanelGrouping
+            {
+                [ToolTip("Displays the number of the ecu map.")]
+                public bool MapNumber { get; set; } = true;
+            }
 
             public EcuMapConfiguration()
             {
@@ -24,7 +29,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
             }
         }
 
-        public EcuMapOverlay(Rectangle rectangle) : base(rectangle, "ECU Maps Overlay")
+        public EcuMapOverlay(Rectangle rectangle) : base(rectangle, "ECU Maps")
         {
             this.RefreshRateHz = 3;
 
@@ -34,7 +39,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
 
         public sealed override void BeforeStart()
         {
-            if (!this._config.ShowMapNumber)
+            if (!this._config.InfoPanel.MapNumber)
             {
                 this.Height -= _panel.FontHeight;
             }
@@ -47,7 +52,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayEcuMapInfo
 
             if (current != null)
             {
-                if (this._config.ShowMapNumber)
+                if (this._config.InfoPanel.MapNumber)
                     _panel.AddLine("Map", $"{current.Index}");
                 _panel.AddLine("Power", $"{current.Power}");
                 _panel.AddLine("Condition", $"{current.Conditon}");

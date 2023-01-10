@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace ACC_Manager.Util
+namespace RaceElement.Util
 {
     public interface IGenericSettingsJson
     {

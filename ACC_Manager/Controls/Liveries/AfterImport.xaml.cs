@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using static ACCManager.Controls.LiveryBrowser;
+using static RaceElement.Controls.LiveryBrowser;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for AfterImport.xaml

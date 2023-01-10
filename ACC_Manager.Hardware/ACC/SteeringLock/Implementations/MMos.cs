@@ -3,7 +3,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using HidLibrary;
 
-namespace ACCManager.Hardware.ACC.SteeringLock.Implementations
+namespace RaceElement.Hardware.ACC.SteeringLock.Implementations
 {
     internal class MMos : IWheelSteerLockSetter
     {

@@ -1,8 +1,8 @@
-﻿using ACCManager.Data;
-using static ACCManager.Data.ConversionFactory;
-using static ACCManager.Data.SetupConverter;
+﻿using RaceElement.Data;
+using static RaceElement.Data.ConversionFactory;
+using static RaceElement.Data.SetupConverter;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
+namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace
 {
     internal static class TyrePressures
     {

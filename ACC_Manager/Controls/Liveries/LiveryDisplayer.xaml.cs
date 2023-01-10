@@ -1,7 +1,7 @@
-﻿using ACCManager.Controls.Liveries;
-using ACCManager.Data;
-using ACCManager.LiveryParser;
-using ACCManager.Util;
+﻿using RaceElement.Controls.Liveries;
+using RaceElement.Data;
+using RaceElement.LiveryParser;
+using RaceElement.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,9 +11,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using static ACCManager.Controls.LiveryBrowser;
+using static RaceElement.Controls.LiveryBrowser;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for LiveryDisplayer.xaml
@@ -110,7 +110,7 @@ namespace ACCManager.Controls
             buttonGenerateDDS.Visibility = Visibility.Hidden;
 
             this.Visibility = Visibility.Collapsed;
-            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
         }
 
         internal void SetLivery(LiveryTreeCar livery)
@@ -145,6 +145,8 @@ namespace ACCManager.Controls
                             stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.TeamName}", HorizontalAlignment.Center, 25, "Team Name"));
                         stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.CustomSkinName}", HorizontalAlignment.Center, 19, "Skin Name"));
                         stackPanelMainInfo.Children.Add(GetInfoLabel($"{ConversionFactory.GetCarName(carsRoot.CarModelType)}", HorizontalAlignment.Center, 16, "Car model type"));
+                        if (carsRoot.CompetitorName != String.Empty)
+                            stackPanelMainInfo.Children.Add(GetInfoLabel($"{carsRoot.CompetitorName}", HorizontalAlignment.Center, 16, "Competitor Name"));
 
                         stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Display Name: {carsRoot.DisplayName}"));
                         stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Race Number: {carsRoot.RaceNumber}"));
@@ -220,7 +222,7 @@ namespace ACCManager.Controls
                                 ThreadPool.QueueUserWorkItem(gc =>
                                 {
                                     Thread.Sleep(2 * 1000);
-                                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
                                 });
                             }
 

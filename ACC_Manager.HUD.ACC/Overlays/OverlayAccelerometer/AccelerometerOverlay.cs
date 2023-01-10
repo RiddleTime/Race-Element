@@ -1,28 +1,33 @@
-﻿using ACC_Manager.Util.SystemExtensions;
-using ACCManager.HUD.Overlay.Configuration;
-using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.OverlayUtil;
-using ACCManager.HUD.Overlay.Util;
+﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
+namespace RaceElement.HUD.ACC.Overlays.OverlayAccelerometer
 {
     [Overlay(Name = "Accelerometer", Version = 1.00, OverlayType = OverlayType.Release,
         Description = "G-meter showing lateral and longitudinal g-forces.")]
     internal sealed class AccelerometerOverlay : AbstractOverlay
     {
-        private AccelleroConfig _config = new AccelleroConfig();
+        private readonly AccelleroConfig _config = new AccelleroConfig();
         private class AccelleroConfig : OverlayConfiguration
         {
-            [ToolTip("Displays fading dots representing history of the g-forces.")]
-            internal bool ShowTrace { get; set; } = true;
+            [ConfigGrouping("Accelerometer", "Additional options for the Accelerometer")]
+            public AccelerometerGrouping Accelerometer { get; set; } = new AccelerometerGrouping();
+            public class AccelerometerGrouping
+            {
+                [ToolTip("Displays fading dots representing history of the g-forces.")]
+                public bool HistoryTrace { get; set; } = true;
 
-            [ToolTip("Displays the lateral and longitudinal g-forces as text.")]
-            internal bool ShowText { get; set; } = false;
+                [ToolTip("Displays the lateral and longitudinal g-forces as text.")]
+                public bool GText { get; set; } = false;
+            }
 
             public AccelleroConfig()
             {
@@ -38,7 +43,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
         private int _gMeterSize = 200;
         private readonly LinkedList<Point> _trace = new LinkedList<Point>();
 
-        public AccelerometerOverlay(Rectangle rectangle) : base(rectangle, "Accelerometer Overlay") { }
+        public AccelerometerOverlay(Rectangle rectangle) : base(rectangle, "Accelerometer") { }
 
         public sealed override void BeforeStart()
         {
@@ -47,7 +52,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             this.Width = 225;
             this.Height = this.Width;
 
-            if (!this._config.ShowText)
+            if (!this._config.Accelerometer.GText)
             {
                 this.Width = _gMeterSize + 1;
                 this.Height = this.Width;
@@ -101,7 +106,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
             if (_cachedBackground != null)
                 _cachedBackground.Draw(g, _gMeterX, _gMeterY, _gMeterSize, _gMeterSize);
 
-            if (this._config.ShowText)
+            if (this._config.Accelerometer.GText)
             {
                 string x = $"{pagePhysics.AccG[0]:F2}".FillStart(5, ' ');
                 string y = $"{pagePhysics.AccG[2]:F2}".FillStart(5, ' ');
@@ -151,7 +156,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayAccelerometer
 
             g.FillEllipse(new SolidBrush(Color.FromArgb(224, 82, 2)), new Rectangle(gDotPosX, gDotPosY, gDotSize, gDotSize));
 
-            if (_config.ShowTrace)
+            if (_config.Accelerometer.HistoryTrace)
             {
                 lock (_trace)
                 {

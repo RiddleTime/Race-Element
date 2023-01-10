@@ -1,4 +1,6 @@
-﻿namespace ACC_Manager.Util.SystemExtensions
+﻿using System.Text;
+
+namespace RaceElement.Util.SystemExtensions
 {
     public static class IntegerExtensions
     {
@@ -44,15 +46,15 @@
 
         public static string ToString(this int[] values)
         {
-            var value = string.Empty;
+            var builder = new StringBuilder();
             for (int i = 0; i < values.Length; i++)
             {
                 double v = values[i];
-                value += $"{{{v}}}";
+                builder.Append($"{{{v}}}");
                 if (i < values.Length - 1)
-                    value += ", ";
+                    builder.Append(", ");
             }
-            return value;
+            return builder.ToString();
         }
     }
 }

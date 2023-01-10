@@ -1,32 +1,39 @@
-﻿using ACCManager.Data.ACC.Tracker;
-using ACCManager.Util.Settings;
+﻿using RaceElement.Data.ACC.Tracker;
+using RaceElement.Util.Settings;
 using OBSWebsocketDotNet;
 using SLOBSharp.Client;
 using SLOBSharp.Client.Requests;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using WebSocketSharp;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     /// <summary>
     /// Interaction logic for Streaming.xaml
     /// </summary>
     public partial class Streaming : UserControl
     {
-        private readonly StreamSettings _streamSettings;
+        private StreamSettings _streamSettings;
 
         public Streaming()
         {
             InitializeComponent();
 
-            _streamSettings = new StreamSettings();
-
-            TitleBar.Instance.SetIcons(TitleBar.ActivatedIcons.SetupHider, _streamSettings.Get().SetupHider);
+            ThreadPool.QueueUserWorkItem(x =>
+            {
+                Thread.Sleep(1000);
+                _streamSettings = new StreamSettings();
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    TitleBar.Instance.SetIcons(TitleBar.ActivatedIcons.SetupHider, _streamSettings.Get().SetupHider);
+                }));
+            });
 
             comboStreamSoftware.Items.Add("OBS");
             comboStreamSoftware.Items.Add("Streamlabs");

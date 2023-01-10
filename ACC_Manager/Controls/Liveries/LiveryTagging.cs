@@ -1,12 +1,12 @@
-﻿using ACCManager.Util;
+﻿using RaceElement.Util;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using static ACCManager.Controls.LiveryBrowser;
+using static RaceElement.Controls.LiveryBrowser;
 
-namespace ACCManager.Controls
+namespace RaceElement.Controls
 {
     internal class LiveryTagging
     {
@@ -136,7 +136,7 @@ namespace ACCManager.Controls
 
             if (tagFiles.Length == 0)
             {
-                liveryFile = new FileInfo($"{FileUtil.AccManagerTagsPath}{tag.Name}.json");
+                liveryFile = new FileInfo($"{FileUtil.RaceElementTagsPath}{tag.Name}.json");
             }
             else
             {
@@ -201,7 +201,7 @@ namespace ACCManager.Controls
 
         private static DirectoryInfo GetTagDirectory()
         {
-            DirectoryInfo tagDir = new DirectoryInfo(FileUtil.AccManagerTagsPath);
+            DirectoryInfo tagDir = new DirectoryInfo(FileUtil.RaceElementTagsPath);
 
             if (!tagDir.Exists)
             {

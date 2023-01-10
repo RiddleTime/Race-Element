@@ -1,12 +1,12 @@
-﻿using ACCManager.HUD.Overlay.Internal;
-using ACCManager.HUD.Overlay.OverlayUtil;
-using ACCManager.Util;
+﻿using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.Util;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
-using static ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
+using static RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
+namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
 {
 
     [Overlay(Name = "Broadcast Track Data", Version = 1.00, OverlayType = OverlayType.Debug,
@@ -16,7 +16,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
         private readonly DebugConfig _config = new DebugConfig();
         private InfoTable _table;
 
-        public BroadcastTrackDataOverlay(Rectangle rectangle) : base(rectangle, "Debug BroadcastTrackData Overlay")
+        public BroadcastTrackDataOverlay(Rectangle rectangle) : base(rectangle, "Broadcast Track Data")
         {
             this.AllowReposition = false;
             this.RefreshRateHz = 5;
@@ -34,7 +34,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
 
         public sealed override void BeforeStart()
         {
-            if (this._config.Undock)
+            if (this._config.Dock.Undock)
                 this.AllowReposition = true;
             else
             {
@@ -47,7 +47,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
 
         public sealed override void BeforeStop()
         {
-            if (!this._config.Undock)
+            if (!this._config.Dock.Undock)
             {
                 DebugInfoHelper.Instance.RemoveOverlay(this);
                 DebugInfoHelper.Instance.WidthChanged -= Instance_WidthChanged;

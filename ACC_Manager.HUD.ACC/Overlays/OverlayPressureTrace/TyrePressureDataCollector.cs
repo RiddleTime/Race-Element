@@ -1,10 +1,10 @@
-﻿using ACC_Manager.Util.SystemExtensions;
+﻿using RaceElement.Util.SystemExtensions;
 using System.Collections.Generic;
 using System.Threading;
-using static ACCManager.ACCSharedMemory;
-using static ACCManager.Data.SetupConverter;
+using static RaceElement.ACCSharedMemory;
+using static RaceElement.Data.SetupConverter;
 
-namespace ACCManager.HUD.ACC.Overlays.OverlayPressureTrace
+namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace
 {
     internal class TyrePressureDataCollector
     {
