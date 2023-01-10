@@ -28,10 +28,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
             }
         }
 
-
-        private AbstractTrackData CurrentTrack;
+        private readonly Font _font;
         private CachedBitmap _cachedBackground;
-        private Font _font;
+        private AbstractTrackData _currentTrack;
 
         public CornerNamesOverlay(Rectangle rectangle) : base(rectangle, "Corner Names")
         {
@@ -53,13 +52,13 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 
             RaceSessionTracker.Instance.OnNewSessionStarted += Instance_OnNewSessionStarted;
 
-            if (CurrentTrack == null)
-                CurrentTrack = Tracks.FirstOrDefault(x => x.Key == pageStatic.Track).Value;
+            if (_currentTrack == null)
+                _currentTrack = Tracks.FirstOrDefault(x => x.Key == pageStatic.Track).Value;
         }
 
         private void Instance_OnNewSessionStarted(object sender, RaceElement.Data.ACC.Database.SessionData.DbRaceSession e)
         {
-            CurrentTrack = Tracks.FirstOrDefault(x => x.Key == pageStatic.Track).Value;
+            _currentTrack = Tracks.FirstOrDefault(x => x.Key == pageStatic.Track).Value;
         }
 
         public override void BeforeStop()
@@ -69,11 +68,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 
         public override void Render(Graphics g)
         {
-            if (CurrentTrack != null)
+            if (_currentTrack != null)
             {
                 _cachedBackground.Draw(g, Width, Height);
 
-                string cornerName = CurrentTrack.CornerNames.FirstOrDefault(x => x.Key.IsInRange(pageGraphics.NormalizedCarPosition)).Value;
+                string cornerName = _currentTrack.CornerNames.FirstOrDefault(x => x.Key.IsInRange(pageGraphics.NormalizedCarPosition)).Value;
                 float textWidht = g.MeasureString(cornerName, _font).Width;
                 PointF location = new PointF(Width / 2 - textWidht / 2, this.Height / 2 - _font.Height / 2);
                 g.DrawStringWithShadow(cornerName, _font, Color.White, location, 0.75f * this.Scale);
