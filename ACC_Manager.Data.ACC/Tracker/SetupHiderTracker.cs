@@ -26,7 +26,7 @@ namespace RaceElement.Data.ACC.Tracker
         private OBSWebsocket _obsWebSocket;
         private SlobsPipeClient _SlobsClient;
 
-        private bool _toggle = true;
+        private bool _toggle = false;
 
         private readonly StreamSettings _streamSettings;
 
