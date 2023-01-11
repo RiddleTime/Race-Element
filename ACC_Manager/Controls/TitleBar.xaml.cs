@@ -51,6 +51,19 @@ namespace RaceElement.Controls
                 SettingsTab.Instance.tabAccSettings.Focus();
             };
 
+            copySpline.Click += (s, e) =>
+            {
+                try
+                {
+                    float spline = ACCSharedMemory.Instance.ReadGraphicsPageFile().NormalizedCarPosition;
+                    MainWindow.Instance.EnqueueSnackbarMessage($"Copied spline position {spline}");
+
+                    Clipboard.SetText($"{spline}");
+                }
+                catch (Exception)
+                {// 
+                }
+            };
 
             this.MouseDoubleClick += TitleBar_MouseDoubleClick;
             Instance = this;
