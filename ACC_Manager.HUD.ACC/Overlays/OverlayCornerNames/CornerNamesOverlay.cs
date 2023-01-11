@@ -70,9 +70,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
         {
             if (_currentTrack != null)
             {
-                _cachedBackground.Draw(g, InitialWidth, InitialHeight);
-
                 string cornerName = _currentTrack.CornerNames.FirstOrDefault(x => x.Key.IsInRange(pageGraphics.NormalizedCarPosition)).Value;
+
+                _cachedBackground.Draw(g, InitialWidth, InitialHeight);
                 float textWidht = g.MeasureString(cornerName, _font).Width;
                 PointF location = new PointF(InitialWidth / 2 - textWidht / 2, InitialHeight / 2 - _font.Height / 2);
                 g.DrawStringWithShadow(cornerName, _font, Color.White, location, 0.75f * this.Scale);

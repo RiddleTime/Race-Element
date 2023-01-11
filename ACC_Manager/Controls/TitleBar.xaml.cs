@@ -56,9 +56,9 @@ namespace RaceElement.Controls
                 try
                 {
                     float spline = ACCSharedMemory.Instance.ReadGraphicsPageFile().NormalizedCarPosition;
-                    MainWindow.Instance.EnqueueSnackbarMessage($"Copied spline position {spline}");
+                    MainWindow.Instance.EnqueueSnackbarMessage($"Copied spline position {spline}f");
 
-                    Clipboard.SetText($"{spline}");
+                    Clipboard.SetText($"{spline}f");
                 }
                 catch (Exception)
                 {// 
