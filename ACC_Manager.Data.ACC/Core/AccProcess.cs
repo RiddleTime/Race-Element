@@ -75,20 +75,9 @@ namespace RaceElement.Data.ACC.Core
                         {
                             IsRunning = true;
                             IsRunningChanged?.Invoke(this, IsRunning);
-
-                            _acc = processes;
-                            _acc.Exited += (s, e) =>
-                            {
-                                IsRunning = false;
-                                IsRunningChanged?.Invoke(this, IsRunning);
-                                _acc?.Dispose();
-                                _acc = null;
-                            };
                         }
                         else
                         {
-                            _acc?.Dispose();
-                            _acc = null;
                             IsRunning = false;
                             IsRunningChanged?.Invoke(this, IsRunning);
                         }
