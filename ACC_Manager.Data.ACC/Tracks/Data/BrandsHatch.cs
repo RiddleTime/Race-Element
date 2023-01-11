@@ -14,6 +14,18 @@ namespace ACCManager.Data.ACC.Tracks.Data
         public override string FullName => "Brands Hatch Circuit";
         public override int TrackLength => 3908;
 
-        public override Dictionary<FloatRangeStruct, string> CornerNames => new Dictionary<FloatRangeStruct, string>();
+        public override Dictionary<FloatRangeStruct, string> CornerNames => new Dictionary<FloatRangeStruct, string>()
+        {
+            { new FloatRangeStruct(0.02583388f, 0.09228041f), "Paddock Hill Bend" },
+            { new FloatRangeStruct(0.128806f, 0.1749151f), "Druids" },
+            { new FloatRangeStruct(0.2037492f, 0.2366925f), "Graham Hill Bend" },
+            { new FloatRangeStruct(0.2918635f, 0.3475159f), "Surtees" },
+            { new FloatRangeStruct(0.4960743f, 0.5494739f), "Hawthorn Bend" },
+            { new FloatRangeStruct(0.5836455f, 0.6203906f), "Westfield Bend" },
+            { new FloatRangeStruct(0.65591f, 0.6856291f), "Dingle Dell" },
+            { new FloatRangeStruct(0.6919114f, 0.7209466f), "Sheene's" },
+            { new FloatRangeStruct(0.7484918f, 0.7844133f), "Stirlings" },
+            { new FloatRangeStruct(0.8544036f, 0.9092523f), "Clark Curve" },
+        };
     }
 }
