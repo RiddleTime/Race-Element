@@ -53,7 +53,6 @@ namespace RaceElement.HUD.Overlay.Internal
             this.Y = rectangle.Y;
             this.Width = rectangle.Width;
             this.Height = rectangle.Height;
-            this.Alpha = 255;
             this.Name = Name;
 
             try
@@ -125,6 +124,8 @@ namespace RaceElement.HUD.Overlay.Internal
                         this.Scale = overlayConfig.GenericConfiguration.Scale;
                     }
 
+                    this.Alpha = (byte)(255 * overlayConfig.GenericConfiguration.Opacity);
+
                     if (overlayConfig.GenericConfiguration.Window)
                         this.WindowMode = overlayConfig.GenericConfiguration.Window;
 
@@ -143,7 +144,7 @@ namespace RaceElement.HUD.Overlay.Internal
             }
         }
 
-       public bool hasClosed = true;
+        public bool hasClosed = true;
         public void Start(bool addTrackers = true)
         {
             try
