@@ -51,6 +51,8 @@ namespace RaceElement.Controls
                 SettingsTab.Instance.tabAccSettings.Focus();
             };
 
+
+#if DEBUG
             copySpline.Click += (s, e) =>
             {
                 try
@@ -64,7 +66,9 @@ namespace RaceElement.Controls
                 {// 
                 }
             };
-
+#else
+            copySpline.Visibility = Visibility.Collapsed;
+#endif
             this.MouseDoubleClick += TitleBar_MouseDoubleClick;
             Instance = this;
         }

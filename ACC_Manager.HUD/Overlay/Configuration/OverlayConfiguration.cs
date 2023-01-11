@@ -18,8 +18,8 @@ namespace RaceElement.HUD.Overlay.Configuration
             [FloatRange(0.50f, 2.00f, 0.01f, 2)]
             public float Scale { get; set; } = 1.00f;
 
-            [ToolTip("Sets the transparency of the HUD. This will become noticable once you active the HUD.")]
-            [FloatRange(0.1f, 1f, 0.01f, 2)]
+            [ToolTip("Sets the transparency of the HUD. This will become noticeable once you active the HUD.")]
+            [FloatRange(0.25f, 1f, 0.01f, 2)]
             public float Opacity { get; set; } = 1f;
 
             [ToolTip("Allows other software to to detect this overlay as a Window, can be used for streaming apps.")]
