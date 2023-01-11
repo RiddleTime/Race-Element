@@ -18,7 +18,7 @@ namespace ACCManager.Data.ACC.Tracks.Data
         {
             { new FloatRangeStruct(0.1577717f, 0.2195874f), "Elf" },
             { new FloatRangeStruct(0.2282194f, 0.3202321f), "Renault" },
-            { new FloatRangeStruct(0.3537325f, 0.4274578f), "Repsol" },
+            { new FloatRangeStruct(0.3504574f, 0.4274578f), "Repsol" },
             { new FloatRangeStruct(0.4452616f, 0.4849422f), "Seat" },
             { new FloatRangeStruct(0.5345824f, 0.5912151f), "Würth" },
             { new FloatRangeStruct(0.6078672f, 0.6661669f), "Campsa" },
