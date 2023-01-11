@@ -27,24 +27,24 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
                 this.AllowRescale = true;
             }
         }
+        private const int InitialWidth = 400, InitialHeight = 30;
 
-        private readonly Font _font;
+        private Font _font;
         private CachedBitmap _cachedBackground;
         private AbstractTrackData _currentTrack;
 
         public CornerNamesOverlay(Rectangle rectangle) : base(rectangle, "Corner Names")
         {
-            _font = FontUtil.FontOrbitron(14 * this.Scale);
-
-            this.Height = (int)(_font.Height * 1.3);
-            this.Width = (int)(300 * this.Scale);
+            this.Width = InitialWidth + 1;
+            this.Height = InitialHeight + 1;
         }
 
         public override void BeforeStart()
         {
-            _cachedBackground = new CachedBitmap((int)((this.Width + 1) * this.Scale), (int)((this.Height + 1) * this.Scale), g =>
+            _font = FontUtil.FontOrbitron(14);
+            _cachedBackground = new CachedBitmap((int)((InitialWidth + 1) * this.Scale), (int)((InitialHeight + 1) * this.Scale), g =>
             {
-                Rectangle rectangle = new Rectangle(0, 0, (int)(this.Width * this.Scale), (int)(this.Height * this.Scale));
+                Rectangle rectangle = new Rectangle(0, 0, (int)(InitialWidth * this.Scale), (int)(InitialHeight * this.Scale));
                 int cornerRadius = (int)(4 * this.Scale);
                 g.DrawRoundedRectangle(new Pen(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), 3 * this.Scale), rectangle, cornerRadius);
                 g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), rectangle, cornerRadius);
@@ -70,11 +70,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
         {
             if (_currentTrack != null)
             {
-                _cachedBackground.Draw(g, Width, Height);
+                _cachedBackground.Draw(g, InitialWidth, InitialHeight);
 
                 string cornerName = _currentTrack.CornerNames.FirstOrDefault(x => x.Key.IsInRange(pageGraphics.NormalizedCarPosition)).Value;
                 float textWidht = g.MeasureString(cornerName, _font).Width;
-                PointF location = new PointF(Width / 2 - textWidht / 2, this.Height / 2 - _font.Height / 2);
+                PointF location = new PointF(InitialWidth / 2 - textWidht / 2, InitialHeight / 2 - _font.Height / 2);
                 g.DrawStringWithShadow(cornerName, _font, Color.White, location, 0.75f * this.Scale);
             }
         }
