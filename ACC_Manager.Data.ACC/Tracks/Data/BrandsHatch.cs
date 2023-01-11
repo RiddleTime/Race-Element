@@ -25,7 +25,7 @@ namespace ACCManager.Data.ACC.Tracks.Data
             { new FloatRangeStruct(0.65591f, 0.6856291f), "Dingle Dell" },
             { new FloatRangeStruct(0.6919114f, 0.7209466f), "Sheene's" },
             { new FloatRangeStruct(0.7484918f, 0.7844133f), "Stirlings" },
-            { new FloatRangeStruct(0.8544036f, 0.9092523f), "Clark Curve" },
+            { new FloatRangeStruct(0.8544036f, 0.9092523f), "Clark Curve" }
         };
     }
 }
