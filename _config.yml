@@ -26,13 +26,13 @@ dash:
       color: purple
     - url: https://paypal.me/CompetizioneManager
       icon: paypal
-      color: white
+      color: orange
     - url: https://www.patreon.com/RaceElement
       icon: patreon
-      color: white
+      color: orange
     - url: https://github.com/RiddleTime/Race-Element/releases/latest
       icon: github
-      color: white  
+      color: orange  
       
   avatar_source: local
   avatar_path: /other resources/race element icon.png
