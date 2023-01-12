@@ -6,8 +6,8 @@ description: > # this means to ignore newlines until "show_exerpts:"
   Provides tooling for Sim Racing
 
 # Build settings
-#theme: jekyll-dash
+theme: jekyll-dash
 
 #plugins:
-#  - liquid-md5
+  - liquid-md5
 #  - jekyll/tagging
