@@ -18,9 +18,6 @@ tag_page_dir: tag
 dash:
   date_format: "%b %-d, %Y"
 
-  disqus:
-    shortname: bitbrain-github-io
-
   # generate social links in footer
   # supported colors: green, red, orange, blue, cyan, pink, teal, yellow, indigo, purple
   social_links:
@@ -28,8 +25,8 @@ dash:
       icon: discord
       color: purple
       
-#  avatar_source: local
-#  avatar_path: /public/avatar.gif
+  avatar_source: local
+  avatar_path: other resources/race element icon.png
 
 # Build settings
 theme: jekyll-dash
