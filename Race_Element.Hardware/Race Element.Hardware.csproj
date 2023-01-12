@@ -7,8 +7,8 @@
     <ProjectGuid>{8A7A4857-2F0A-4E85-98C5-3EA1228A8CE2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ACCManager.Hardware</RootNamespace>
-    <AssemblyName>ACC_Manager.Hardware</AssemblyName>
+    <RootNamespace>RaceElement.Hardware</RootNamespace>
+    <AssemblyName>RaceElement.Hardware</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -69,11 +69,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ACC_Manager.Data.ACC\Race Element.Data.ACC.csproj">
+    <ProjectReference Include="..\Race_Element.Data.ACC\Race Element.Data.ACC.csproj">
       <Project>{BB693CEB-CD96-4EB6-9F13-110D3CCECFFE}</Project>
       <Name>Race Element.Data.ACC</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ACC_Manager.SharedMemory\Race Element.SharedMemory.csproj">
+    <ProjectReference Include="..\Race_Element.SharedMemory\Race Element.SharedMemory.csproj">
       <Project>{9f9be520-14c4-4ab6-8119-5e14bcca9a0f}</Project>
       <Name>Race Element.SharedMemory</Name>
     </ProjectReference>

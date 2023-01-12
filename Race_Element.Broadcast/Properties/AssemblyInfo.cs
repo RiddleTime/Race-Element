@@ -4,13 +4,13 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ACC_Manager.HUD")]
+[assembly: AssemblyTitle("RaceElement.Broadcast")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Element Future")]
-[assembly: AssemblyProduct("ACC_Manager.HUD")]
-[assembly: AssemblyCopyright("Copyright 2022 © Reinier Klarenberg")]
-[assembly: AssemblyTrademark("Element Future")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("RaceElement.Broadcast")]
+[assembly: AssemblyCopyright("Copyright ©  2022")]
+[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("3717a55e-4629-40ed-9c93-24058d9ef18c")]
+[assembly: Guid("840220bd-8469-4a04-a6ec-1ed2bc743efb")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ACC_Manager.Util")]
+[assembly: AssemblyTitle("RaceElement.SharedMemory")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Element Future")]
-[assembly: AssemblyProduct("ACC_Manager.Util")]
+[assembly: AssemblyProduct("RaceElement.SharedMemory")]
 [assembly: AssemblyCopyright("Copyright 2022 © Reinier Klarenberg")]
 [assembly: AssemblyTrademark("Element Future")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("aab23116-299b-415b-8305-96cb86148ce7")]
+[assembly: Guid("9f9be520-14c4-4ab6-8119-5e14bcca9a0f")]
 
 // Version information for an assembly consists of the following four values:
 //
