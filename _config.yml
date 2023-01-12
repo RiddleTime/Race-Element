@@ -28,8 +28,8 @@ dash:
       icon: github-square
       color: white
     - url: https://github.com/RiddleTime/Race-Element/releases/latest
-      icon: square-down
-      color: orange
+      icon: arrow-down
+      color: white
     
       
   avatar_source: local
