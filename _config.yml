@@ -32,7 +32,7 @@ dash:
       color: orange  
       
   avatar_source: local
-  avatar_path: /other resources/race element icon.png
+  avatar_path: /other resources/race element icon 2.png
 
 # Build settings
 theme: jekyll-dash
