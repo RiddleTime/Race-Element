@@ -4,6 +4,7 @@ author: RiddleTime
 
 description: > # this means to ignore newlines until "show_exerpts:"
   Provides tooling for Sim Racing
+  <br>[Download Latest Release](https://github.com/RiddleTime/Race-Element/releases/latest)
 show_excerpts: false # set to true to show excerpts on the homepage
 
 paginate: 5
