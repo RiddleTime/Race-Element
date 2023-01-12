@@ -21,14 +21,14 @@ dash:
   # generate social links in footer
   # supported colors: green, red, orange, blue, cyan, pink, teal, yellow, indigo, purple
   social_links:
-    - url:  https://discord.gg/26AAEW5mUq 
+    - url: https://discord.gg/26AAEW5mUq 
       icon: discord
       color: purple
     - url: https://github.com/RiddleTime/Race-Element
       icon: github-square
       color: white
     - url: https://github.com/RiddleTime/Race-Element/releases/latest
-      icon: download
+      icon: square-down
       color: orange
     
       
