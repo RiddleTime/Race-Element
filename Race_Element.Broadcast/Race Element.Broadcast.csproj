@@ -62,13 +62,13 @@
     <Compile Include="Structs\TrackData.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Race_Element.Util\Race Element.Util.csproj">
       <Project>{AAB23116-299B-415B-8305-96CB86148CE7}</Project>
       <Name>Race Element.Util</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

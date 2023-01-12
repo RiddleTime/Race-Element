@@ -762,8 +762,11 @@
     <Resource Include="race-element-icon-2.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\race element icon 2.ico" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Race_Element.Broadcast\Race Element.Broadcast.csproj">
-      <Project>{840220bd-8469-4a04-a6ec-1ed2bc743efb}</Project>
+      <Project>{840220BD-8469-4A04-A6EC-1ED2BC743EFB}</Project>
       <Name>Race Element.Broadcast</Name>
     </ProjectReference>
     <ProjectReference Include="..\Race_Element.Data.ACC\Race Element.Data.ACC.csproj">
@@ -775,24 +778,21 @@
       <Name>Race Element.Hardware</Name>
     </ProjectReference>
     <ProjectReference Include="..\Race_Element.HUD.ACC\Race Element.HUD.ACC.csproj">
-      <Project>{f1699f70-54a1-49f2-896d-b70b1edabf74}</Project>
+      <Project>{F1699F70-54A1-49F2-896D-B70B1EDABF74}</Project>
       <Name>Race Element.HUD.ACC</Name>
     </ProjectReference>
     <ProjectReference Include="..\Race_Element.HUD\Race Element.HUD.csproj">
-      <Project>{3717a55e-4629-40ed-9c93-24058d9ef18c}</Project>
+      <Project>{3717A55E-4629-40ED-9C93-24058D9EF18C}</Project>
       <Name>Race Element.HUD</Name>
     </ProjectReference>
     <ProjectReference Include="..\Race_Element.SharedMemory\Race Element.SharedMemory.csproj">
-      <Project>{9f9be520-14c4-4ab6-8119-5e14bcca9a0f}</Project>
+      <Project>{9F9BE520-14C4-4AB6-8119-5E14BCCA9A0F}</Project>
       <Name>Race Element.SharedMemory</Name>
     </ProjectReference>
     <ProjectReference Include="..\Race_Element.Util\Race Element.Util.csproj">
       <Project>{AAB23116-299B-415B-8305-96CB86148CE7}</Project>
       <Name>Race Element.Util</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\race element icon 2.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

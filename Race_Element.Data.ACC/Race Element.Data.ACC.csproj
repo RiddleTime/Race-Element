@@ -329,6 +329,10 @@
     <Compile Include="Tracks\TrackData.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Race_Element.Broadcast\Race Element.Broadcast.csproj">
       <Project>{840220BD-8469-4A04-A6EC-1ED2BC743EFB}</Project>
       <Name>Race Element.Broadcast</Name>
@@ -342,10 +346,5 @@
       <Name>Race Element.Util</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

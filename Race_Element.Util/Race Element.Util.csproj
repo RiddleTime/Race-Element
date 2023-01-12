@@ -66,13 +66,13 @@
     <Compile Include="ReflectionUtil.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Race_Element.SharedMemory\Race Element.SharedMemory.csproj">
       <Project>{9F9BE520-14C4-4AB6-8119-5E14BCCA9A0F}</Project>
       <Name>Race Element.SharedMemory</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

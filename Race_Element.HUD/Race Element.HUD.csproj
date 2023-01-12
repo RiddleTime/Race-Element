@@ -78,6 +78,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Fonts\orbitron-medium.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Fonts\unispace.bold.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Race_Element.Broadcast\Race Element.Broadcast.csproj">
       <Project>{840220BD-8469-4A04-A6EC-1ED2BC743EFB}</Project>
       <Name>Race Element.Broadcast</Name>
@@ -87,23 +97,13 @@
       <Name>Race Element.Data.ACC</Name>
     </ProjectReference>
     <ProjectReference Include="..\Race_Element.SharedMemory\Race Element.SharedMemory.csproj">
-      <Project>{9f9be520-14c4-4ab6-8119-5e14bcca9a0f}</Project>
+      <Project>{9F9BE520-14C4-4AB6-8119-5E14BCCA9A0F}</Project>
       <Name>Race Element.SharedMemory</Name>
     </ProjectReference>
     <ProjectReference Include="..\Race_Element.Util\Race Element.Util.csproj">
       <Project>{AAB23116-299B-415B-8305-96CB86148CE7}</Project>
       <Name>Race Element.Util</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Fonts\orbitron-medium.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Fonts\unispace.bold.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

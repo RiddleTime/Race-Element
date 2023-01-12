@@ -116,6 +116,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Race_Element.Broadcast\Race Element.Broadcast.csproj">
       <Project>{840220BD-8469-4A04-A6EC-1ED2BC743EFB}</Project>
       <Name>Race Element.Broadcast</Name>
@@ -125,7 +132,7 @@
       <Name>Race Element.Data.ACC</Name>
     </ProjectReference>
     <ProjectReference Include="..\Race_Element.HUD\Race Element.HUD.csproj">
-      <Project>{3717a55e-4629-40ed-9c93-24058d9ef18c}</Project>
+      <Project>{3717A55E-4629-40ED-9C93-24058D9EF18C}</Project>
       <Name>Race Element.HUD</Name>
     </ProjectReference>
     <ProjectReference Include="..\Race_Element.SharedMemory\Race Element.SharedMemory.csproj">
@@ -137,13 +144,5 @@
       <Name>Race Element.Util</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\.editorconfig">
-      <Link>.editorconfig</Link>
-    </None>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
