@@ -24,13 +24,15 @@ dash:
     - url: https://discord.gg/26AAEW5mUq 
       icon: discord
       color: purple
-    - url: https://github.com/RiddleTime/Race-Element
-      icon: github-square
+    - url: https://paypal.me/CompetizioneManager
+      icon: paypal
+      color: white
+    - url: https://www.patreon.com/AccManager
+      icon: patreon
       color: white
     - url: https://github.com/RiddleTime/Race-Element/releases/latest
-      icon: arrow-down
-      color: white
-    
+      icon: github
+      color: white  
       
   avatar_source: local
   avatar_path: /other resources/race element icon.png
