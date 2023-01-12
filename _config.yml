@@ -26,7 +26,7 @@ dash:
       color: purple
       
   avatar_source: local
-  avatar_path: other resources/race element icon.png
+  avatar_path: /other resources/race element icon.png
 
 # Build settings
 theme: jekyll-dash
