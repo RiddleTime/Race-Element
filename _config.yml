@@ -27,9 +27,6 @@ dash:
     - url: https://paypal.me/CompetizioneManager
       icon: paypal
       color: orange
-    - url: https://www.patreon.com/RaceElement
-      icon: patreon
-      color: orange
     - url: https://github.com/RiddleTime/Race-Element/releases/latest
       icon: github
       color: orange  
