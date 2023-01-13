@@ -28,7 +28,7 @@ dash:
       icon: paypal
       color: orange
     - url: https://github.com/RiddleTime/Race-Element/releases/latest
-      icon: github
+      icon: download
       color: orange  
       
   avatar_source: local
