@@ -1,7 +1,7 @@
 ---
 layout: post
 title: How to use the liveries tab
-description: A short intruduction about ACC Liveries and Race Element.
+description: ACC Liveries and Race Element.
 tags: guide
 ---
 
