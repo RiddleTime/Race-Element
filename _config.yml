@@ -26,7 +26,7 @@ dash:
       color: purple
     - url: https://paypal.me/CompetizioneManager
       icon: heart
-      color: orange
+      color: red
     - url: https://github.com/RiddleTime/Race-Element/releases/latest
       icon: arrow-alt-circle-down
       color: orange  
