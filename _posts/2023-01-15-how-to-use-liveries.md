@@ -12,7 +12,7 @@ By right clicking a livery in the list, options appear to open the json file of 
 This should give you easy access to the correct folder when for example creating a livery and you want to open up the files inside.
 You can also Delete the livery files, this is permanent so be warned!
 
-If you have manually imported a livery
+If you have manually imported a livery you can click the refresh button to rescan the livery folders.
 
 ## Importing liveries
 You can either Drag and Drop ".rar, .7z and .zip" on top of Race Element or click the Import Liveries button and select them by hand. 
