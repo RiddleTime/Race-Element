@@ -104,7 +104,7 @@ namespace RaceElement.Controls
                                  Button openReleaseButton = new Button()
                                  {
                                      Margin = new Thickness(0, 0, 0, 0),
-                                     Content = $"Auto-update to version {latest.Name}",
+                                     Content = $"Update to {latest.Name}",
                                      ToolTip = $"Release notes:\n{release.Body}"
                                  };
                                  ToolTipService.SetShowDuration(openReleaseButton, int.MaxValue);

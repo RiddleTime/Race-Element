@@ -6,6 +6,7 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.1.5.4", "- HUD: Add Track Corners." },
             {"0.1.5.3", "- HUDs: Added Opacity Slider, this will allow you to set the overal transparency for each HUD separately."+
                         "\n- Fix setup hider." },
             {"0.1.5.2", "- Liveries can now be dragged and dropped ontop of the app."+
