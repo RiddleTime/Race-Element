@@ -66,7 +66,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
             _cachedBackground = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
             {
-                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(160, 0, 0, 0)), new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), (int)(6 * Scale));
+
+                int midHeight = (int)(_config.Bar.Height * this.Scale) / 2;
+                var linerBrush = new LinearGradientBrush(new Point(0, midHeight), new Point((int)(_config.Bar.Width * this.Scale), midHeight), Color.FromArgb(230, 0, 0, 0), Color.FromArgb(160, 0, 0, 0));
+                g.FillRoundedRectangle(linerBrush, new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), (int)(6 * Scale));
                 g.DrawRoundedRectangle(Pens.Black, new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), (int)(6 * Scale));
             });
 
