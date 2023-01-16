@@ -27,7 +27,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
             _collector = collector;
             _config = config;
 
-            _cachedBackground = new CachedBitmap(_width, _height, g =>
+            _cachedBackground = new CachedBitmap(_width + 1, _height + 1, g =>
             {
                 Rectangle graphRect = new Rectangle(_x, _y, _width, _height);
                 LinearGradientBrush gradientBrush = new LinearGradientBrush(graphRect, Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical);
