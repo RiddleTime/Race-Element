@@ -16,7 +16,9 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 {
+#if DEBUG
     [Overlay(Name = "Corner Names", Description = "Shows corner/sector names for each track.", OverlayType = OverlayType.Release, Version = 1.00)]
+#endif
     internal class CornerNamesOverlay : AbstractOverlay
     {
         private readonly CornerNamesConfig _config = new CornerNamesConfig();
