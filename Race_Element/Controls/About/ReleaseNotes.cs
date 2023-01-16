@@ -9,7 +9,8 @@ namespace RaceElement.Controls
             {"0.1.5.4", "- Reworked Input and Oversteer trace."+
                         "\n- Reworked background of shift indicator."+
                         "\n- Reworked internal structure of the app."+
-                        "\n- Updated About Tab."},
+                        "\n- Updated About Tab."+
+                        "\n- Open livery json now opens a new explorer window and selects the livery json file."},
             {"0.1.5.3", "- HUDs: Added Opacity Slider, this will allow you to set the overal transparency for each HUD separately."+
                         "\n- Fix setup hider." },
             {"0.1.5.2", "- Liveries can now be dragged and dropped ontop of the app."+

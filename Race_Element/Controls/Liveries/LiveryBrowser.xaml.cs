@@ -533,7 +533,7 @@ namespace RaceElement.Controls
 
             Button openLiveryJson = new Button()
             {
-                Content = $"Open Livery Json",
+                Content = $"Open Livery Json in Explorer",
                 CommandParameter = liveryTreeCar,
                 Style = Resources["MaterialDesignRaisedButton"] as Style,
                 Margin = new Thickness(0),
@@ -696,7 +696,7 @@ namespace RaceElement.Controls
                     }
 
                     FileInfo carsJsonFile = new FileInfo($"{liveryTreeCar.CarsFile}");
-                    Process.Start($"{FileUtil.CarsPath}{carsJsonFile.Name}");
+                    Process.Start($"explorer", $"/select,{FileUtil.CarsPath}{carsJsonFile.Name}");
 
                 closeMenu:
                     (button.Parent as ContextMenu).IsOpen = false;
