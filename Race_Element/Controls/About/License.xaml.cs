@@ -25,19 +25,12 @@ namespace RaceElement.Controls
         {
             InitializeComponent();
 
-
             this.IsVisibleChanged += (s, e) =>
             {
                 if ((bool)e.NewValue)
-                {
                     TextBlockLicense.Text = LicenseText;
-                    Debug.WriteLine("rendered text");
-                }
                 else
-                {
                     TextBlockLicense.Text = string.Empty;
-                    Debug.WriteLine("hidden text");
-                }
             };
         }
 
