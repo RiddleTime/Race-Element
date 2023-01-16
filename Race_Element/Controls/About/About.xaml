@@ -245,36 +245,35 @@
                 </ScrollViewer>
             </Grid>
 
-            <Grid Grid.Column="1" Margin="0,0,0,2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="55"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
 
-                <materialDesign:Card Grid.Row="0"  Margin="6,5,0,5">
-                    <materialDesign:TransitioningContent  VerticalAlignment="Center">
-                        <materialDesign:TransitioningContent.Effect>
-                            <DropShadowEffect Color="Black" Opacity="0.7" BlurRadius="2" ShadowDepth="2"/>
-                        </materialDesign:TransitioningContent.Effect>
+            <TabControl Grid.Column="1" Margin="2,0,0,2">
+                <TabItem>
+                    <TabItem.Header>
+                        <TextBlock Grid.Column="1" FontFamily="{StaticResource Conthrax}" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Changelog</TextBlock>
+                    </TabItem.Header>
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
 
-                        <TextBlock 
-                           Style="{StaticResource MaterialDesignHeadline5TextBlock}" FontFamily="{StaticResource Conthrax}" 
-                           HorizontalAlignment="Center">Changelog
-                        </TextBlock>
+                        <ScrollViewer Style="{StaticResource MaterialDesignScrollViewer}" Grid.Row="1" Margin="0,5,0,0" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                            <materialDesign:Card Margin="6,0,3,0">
+                                <StackPanel x:Name="stackPanelReleaseNotes" Orientation="Vertical" Margin="5,0,0,10">
 
-                    </materialDesign:TransitioningContent>
-                </materialDesign:Card>
+                                </StackPanel>
+                            </materialDesign:Card>
+                        </ScrollViewer>
 
-                <ScrollViewer Style="{StaticResource MaterialDesignScrollViewer}" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Visible">
-                    <materialDesign:Card Margin="6,0,3,0">
-                        <StackPanel x:Name="stackPanelReleaseNotes" Orientation="Vertical" Margin="5,0,0,10">
+                    </Grid>
+                </TabItem>
 
-                        </StackPanel>
-                    </materialDesign:Card>
-                </ScrollViewer>
-
-            </Grid>
-
+                <TabItem>
+                    <TabItem.Header>
+                        <TextBlock Grid.Column="1" FontFamily="{StaticResource Conthrax}" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> License</TextBlock>
+                    </TabItem.Header>
+                    <local:License/>
+                </TabItem>
+            </TabControl>
         </Grid>
 
     </Grid>

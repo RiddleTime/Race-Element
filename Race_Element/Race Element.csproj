@@ -442,6 +442,9 @@
     <Compile Include="Controls\About\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\About\License.xaml.cs">
+      <DependentUpon>License.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\About\ReleaseNotes.cs" />
     <Compile Include="Controls\HUD\ConfigurationControls.cs" />
     <Compile Include="Controls\HUD\Controls\ControlFactory.cs" />
@@ -563,6 +566,10 @@
     <Compile Include="LiveryParser\CarsJson.cs" />
     <Compile Include="LiveryParser\PaintDetailsJson.cs" />
     <Page Include="Controls\About\About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\About\License.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
