@@ -22,7 +22,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             public class BarsGrouping
             {
                 [ToolTip("Sets the Width of the shift indicator bar.")]
-                [IntRange(160, 600, 10)]
+                [IntRange(160, 800, 10)]
                 public int Width { get; set; } = 300;
 
                 [ToolTip("Sets the Height of the shift indicator bar.")]
@@ -34,6 +34,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
                 [ToolTip("Displays when the pit limiter is active.")]
                 public bool ShowPitLimiter { get; set; } = true;
+
+                [ToolTip("Sets the refresh rate.")]
+                [IntRange(20, 80, 5)]
+                public int RefreshRate { get; set; } = 50;
             }
 
             public ShiftIndicatorConfig()
@@ -53,7 +57,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
         public ShiftIndicatorOverlay(Rectangle rectangle) : base(rectangle, "Shift Indicator")
         {
-            this.RefreshRateHz = 40;
+            this.RefreshRateHz = this._config.Bar.RefreshRate;
             AllowReposition = true;
             this.Height = _config.Bar.Height + 1;
             this.Width = _config.Bar.Width + 1;
@@ -68,9 +72,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             {
 
                 int midHeight = (int)(_config.Bar.Height * this.Scale) / 2;
-                var linerBrush = new LinearGradientBrush(new Point(0, midHeight), new Point((int)(_config.Bar.Width * this.Scale), midHeight), Color.FromArgb(230, 0, 0, 0), Color.FromArgb(160, 0, 0, 0));
+                var linerBrush = new LinearGradientBrush(new Point(0, midHeight), new Point((int)(_config.Bar.Width * this.Scale), midHeight), Color.FromArgb(160, 0, 0, 0), Color.FromArgb(230, 0, 0, 0));
                 g.FillRoundedRectangle(linerBrush, new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), (int)(6 * Scale));
-                g.DrawRoundedRectangle(Pens.Black, new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), (int)(6 * Scale));
+                g.DrawRoundedRectangle(new Pen(Color.Black, 1 * this.Scale), new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), (int)(6 * Scale));
             });
 
             _cachedRpmLines = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
@@ -81,7 +85,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
                 if (leftOver < 70)
                     lineCount--;
 
-                Pen linePen = new Pen(new SolidBrush(Color.FromArgb(90, Color.White)), 1 * this.Scale);
+                Pen linePen = new Pen(new SolidBrush(Color.FromArgb(90, Color.White)), 2 * this.Scale);
 
                 double thousandPercent = 1000d / pageStatic.MaxRpm * lineCount;
                 double baseX = (_config.Bar.Width * this.Scale) / lineCount * thousandPercent;
@@ -91,11 +95,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
                     g.DrawLine(linePen, x, 1, x, (_config.Bar.Height * this.Scale) - 1);
 
-                    if (i == lineCount - 1)
-                    {
+                    //if (i == lineCount - 1)
+                    //{
 
 
-                    }
+                    //}
                 }
 
             });
@@ -179,11 +183,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
             if (percent > 0)
             {
-                Color rpmColor = Color.FromArgb(120, 255, 255, 255);
-
-                if (percent > 0.94)
+                Color rpmColor = Color.FromArgb(195, 255, 255, 15);
+                if (percent > 0.7 && percent <= 0.94)
+                    rpmColor = Color.FromArgb(135, 5, 240, 5);
+                else if (percent > 0.94)
                     rpmColor = Color.FromArgb(195, 255, 120, 7);
-                if (percent > 0.973)
+                else if (percent > 0.973)
                     rpmColor = Color.FromArgb(195, 255, 7, 7);
 
                 if (percent > 1)
