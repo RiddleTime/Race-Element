@@ -29,11 +29,14 @@ namespace RaceElement
     public partial class MainWindow : Window
     {
         internal static MainWindow Instance { get; private set; }
+        public const double MaxOpacity = 0.975;
+
         private readonly UiSettings _uiSettings;
         private readonly AccManagerSettings _accManagerSettings;
 
         public MainWindow()
         {
+            this.Opacity = MaxOpacity;
             DateTime startTime = DateTime.Now;
 
             InitializeComponent();
@@ -61,9 +64,9 @@ namespace RaceElement
 
             this.titleBar.MouseLeftButtonDown += TitleBar_MouseLeftButtonDown;
             this.titleBar.MouseLeftButtonUp += TitleBar_MouseLeftButtonUp;
-            this.titleBar.MouseLeave += (s, e) => { _stopDecreaseOpacty = true; e.Handled = true; this.Opacity = 1; };
-            this.titleBar.DragLeave += (s, e) => { _stopDecreaseOpacty = true; e.Handled = true; this.Opacity = 1; };
-            this.titleBar.MouseDoubleClick += (s, e) => { _stopDecreaseOpacty = true; e.Handled = true; this.Opacity = 1; };
+            this.titleBar.MouseLeave += (s, e) => { _stopDecreaseOpacty = true; e.Handled = true; this.Opacity = MaxOpacity; };
+            this.titleBar.DragLeave += (s, e) => { _stopDecreaseOpacty = true; e.Handled = true; this.Opacity = MaxOpacity; };
+            this.titleBar.MouseDoubleClick += (s, e) => { _stopDecreaseOpacty = true; e.Handled = true; this.Opacity = MaxOpacity; };
 
             this.buttonPlayACC.Click += (sender, e) => Process.Start(new ProcessStartInfo()
             {
@@ -345,7 +348,7 @@ namespace RaceElement
         private void TitleBar_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             _stopDecreaseOpacty = true;
-            this.Opacity = 1.0;
+            this.Opacity = MaxOpacity;
             e.Handled = true;
         }
 
@@ -364,7 +367,7 @@ namespace RaceElement
                     {
                         Dispatcher.Invoke(new Action(() =>
                         {
-                            this.Opacity = 1;
+                            this.Opacity = MaxOpacity;
                         }));
                         break;
                     }
