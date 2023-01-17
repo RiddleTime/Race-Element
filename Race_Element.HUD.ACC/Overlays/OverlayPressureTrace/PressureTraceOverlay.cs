@@ -9,7 +9,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace
     internal sealed class PressureTraceOverlay : AbstractOverlay
     {
         private PressureTraceOverlayConfig _config = new PressureTraceOverlayConfig();
-        private class PressureTraceOverlayConfig : OverlayConfiguration { }
+        private class PressureTraceOverlayConfig : OverlayConfiguration
+        {
+
+            public PressureTraceOverlayConfig()
+            {
+                AllowRescale = true;
+            }
+        }
 
         internal static PressureTraceOverlay Instance;
         private TyrePressureDataCollector _dataCollector;

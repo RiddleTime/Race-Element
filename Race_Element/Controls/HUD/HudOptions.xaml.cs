@@ -493,9 +493,9 @@ namespace RaceElement.Controls
                 {
                     Text = x.Key,
                     Style = Resources["MaterialDesignButtonTextBlock"] as Style,
-                    Margin = new Thickness(14, 1, 0, 1),
+                    Margin = new Thickness(14, 0, 0, 0),
                     //FontFamily = new FontFamily(new Uri("pack://application:,,,./Fonts/#Conthrax Sb"), "Conthrax"),
-                    FontSize = 14,
+                    FontSize = 15,
                     //FontWeight = FontWeights.UltraLight,
                 };
 
@@ -508,7 +508,7 @@ namespace RaceElement.Controls
                     DataContext = x,
                     HorizontalContentAlignment = HorizontalAlignment.Left,
                     Padding = new Thickness(0, marginTopBottom, 0, marginTopBottom),
-                    Margin = new Thickness(0, 1, 0, 1),
+                    Margin = new Thickness(0, 0.5, 0, 0.5),
                     BorderBrush = new SolidColorBrush(Colors.Transparent),
                     BorderThickness = new Thickness(3, 0, 0, 0),
                 };

@@ -107,7 +107,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             if (_config.Bar.ShowPitLimiter)
                 _cachedPitLimiterOutline = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
                 {
-                    g.DrawRoundedRectangle(new Pen(Color.Yellow, 2.5f), new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), (int)(6 * Scale));
+                    g.DrawRoundedRectangle(new Pen(Color.Yellow, 2.5f), new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), (int)(8 * Scale));
                 });
         }
 
@@ -130,18 +130,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
                 _cachedBackground.Draw(g, _config.Bar.Width, _config.Bar.Height);
 
             if (_config.Bar.ShowPitLimiter && pagePhysics.PitLimiterOn)
-            {
                 DrawPitLimiterBar(g);
 
-                string pitLimiter = "!Pit Limiter!";
-
-                if (_halfPitLimiterStringWidth < 0)
-                    _halfPitLimiterStringWidth = g.MeasureString(pitLimiter, _font).Width / 2;
-
-                g.DrawStringWithShadow(pitLimiter, _font, Brushes.White, new PointF(_config.Bar.Width / 2 - _halfPitLimiterStringWidth, _config.Bar.Height / 2 - _font.Height / 2 + 1));
-            }
-            else
-                DrawRpmBar(g);
+            DrawRpmBar(g);
 
             if (_config.Bar.ShowRpm)
                 DrawRpmText(g);
@@ -161,9 +152,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
         private void DrawRpmText(Graphics g)
         {
-            if (_config.Bar.ShowPitLimiter && pagePhysics.PitLimiterOn)
-                return;
-
             string currentRpm = $"{pagePhysics.Rpms}".FillStart(4, ' ');
 
             if (_halfRpmStringWidth < 0)
@@ -183,7 +171,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
             if (percent > 0)
             {
-                Color rpmColor = Color.FromArgb(195, 255, 255, 15);
+                Color rpmColor = Color.FromArgb(125, 255, 255, 15);
                 if (percent > 0.7 && percent <= 0.94)
                     rpmColor = Color.FromArgb(135, 5, 240, 5);
                 else if (percent > 0.94)

@@ -29,7 +29,7 @@ namespace RaceElement
     public partial class MainWindow : Window
     {
         internal static MainWindow Instance { get; private set; }
-        public const double MaxOpacity = 0.975;
+        public const double MaxOpacity = 0.9902;
 
         private readonly UiSettings _uiSettings;
         private readonly AccManagerSettings _accManagerSettings;

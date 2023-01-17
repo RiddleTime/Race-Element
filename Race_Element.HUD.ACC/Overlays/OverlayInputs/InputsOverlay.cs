@@ -21,6 +21,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
             public InputsGrouping Inputs { get; set; } = new InputsGrouping();
             public class InputsGrouping
             {
+                public enum TextOutputs
+                {
+                    Gear,
+                    Speed,
+                    Rpm,
+                }
+                public TextOutputs TextOutput { get; set; } = TextOutputs.Gear;
+
                 [ToolTip("Displays the selected gear.")]
                 public bool CurrentGear { get; set; } = true;
 
