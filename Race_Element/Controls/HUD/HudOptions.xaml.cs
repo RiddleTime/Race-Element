@@ -487,7 +487,17 @@ namespace RaceElement.Controls
                 if (overlayAttribute.OverlayType != overlayType)
                     continue;
 
-                TextBlock listViewText = new TextBlock() { Text = x.Key, Style = Resources["MaterialDesignButtonTextBlock"] as Style };
+
+                Style listTextStyle = new Style();
+                TextBlock listViewText = new TextBlock()
+                {
+                    Text = x.Key,
+                    Style = Resources["MaterialDesignButtonTextBlock"] as Style,
+                    Margin = new Thickness(14, 1, 0, 1),
+                    //FontFamily = new FontFamily(new Uri("pack://application:,,,./Fonts/#Conthrax Sb"), "Conthrax"),
+                    FontSize = 14,
+                    //FontWeight = FontWeights.UltraLight,
+                };
 
 
                 double marginTopBottom = 6.5d;
@@ -496,11 +506,11 @@ namespace RaceElement.Controls
                 {
                     Content = listViewText,
                     DataContext = x,
-                    HorizontalContentAlignment = HorizontalAlignment.Center,
+                    HorizontalContentAlignment = HorizontalAlignment.Left,
                     Padding = new Thickness(0, marginTopBottom, 0, marginTopBottom),
                     Margin = new Thickness(0, 1, 0, 1),
                     BorderBrush = new SolidColorBrush(Colors.Transparent),
-                    BorderThickness = new Thickness(2, 0, 0, 0),
+                    BorderThickness = new Thickness(3, 0, 0, 0),
                 };
                 if (tempOverlaySettings != null)
                     if (tempOverlaySettings.Enabled)
