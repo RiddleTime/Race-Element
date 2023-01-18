@@ -210,7 +210,10 @@ namespace RaceElement.HUD.Overlay.Internal
                                 if (!hasClosed)
                                 {
                                     hasClosed = true;
-                                    this.Hide();
+                                    if (WindowMode) // Don't destroy the handle of this window since some stream/vr apps cannot "redetect" the hud window.
+                                        this.UpdateLayeredWindow();
+                                    else
+                                        this.Hide();
                                 }
                             }
                         }
