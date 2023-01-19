@@ -16,7 +16,7 @@ namespace ACCManager.Data.ACC.Tracks.Data
 
         public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
         {
-            { new FloatRangeStruct(0.1577717f, 0.2195874f), (1,"Elf") },
+            { new FloatRangeStruct(0.1577717f, 0.2195874f), (1, "Elf") },
             { new FloatRangeStruct(0.2282194f, 0.3202321f), (1, "Renault") },
             { new FloatRangeStruct(0.3504574f, 0.4274578f), (1, "Repsol") },
             { new FloatRangeStruct(0.4452616f, 0.4849422f), (1, "Seat") },

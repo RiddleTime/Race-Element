@@ -37,28 +37,30 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
                 this.AllowRescale = true;
             }
         }
-        private const int InitialWidth = 400, InitialHeight = 30;
+        private int InitialWidth = 450, InitialHeight = 45;
 
         private Font _font;
         private CachedBitmap _cachedBackground;
         private AbstractTrackData _currentTrack;
 
+        private float _maxTextWidth = 0;
+
         public CornerNamesOverlay(Rectangle rectangle) : base(rectangle, "Corner Names")
         {
             this.Width = InitialWidth + 1;
-            this.Height = InitialHeight + 1;
+
+            _font = FontUtil.FontOrbitron(13 * this.Scale);
+            InitialHeight = (int)(_font.Height * 1.3 + 1);
+            this.Height = InitialHeight;
         }
 
         public override void BeforeStart()
         {
-            _font = FontUtil.FontOrbitron(14);
-            _cachedBackground = new CachedBitmap((int)((InitialWidth + 1) * this.Scale), (int)((InitialHeight + 1) * this.Scale), g =>
-            {
-                Rectangle rectangle = new Rectangle(0, 0, (int)(InitialWidth * this.Scale), (int)(InitialHeight * this.Scale));
-                int cornerRadius = (int)(4 * this.Scale);
-                g.DrawRoundedRectangle(new Pen(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), 3 * this.Scale), rectangle, cornerRadius);
-                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), rectangle, cornerRadius);
-            });
+
+            if (_currentTrack == null)
+                _currentTrack = TrackData.Tracks.FirstOrDefault(x => x.Key == pageStatic.Track).Value;
+
+            RenderBackground();
 
             RaceSessionTracker.Instance.OnNewSessionStarted += Instance_OnNewSessionStarted;
 
@@ -69,6 +71,44 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
         private void Instance_OnNewSessionStarted(object sender, RaceElement.Data.ACC.Database.SessionData.DbRaceSession e)
         {
             _currentTrack = Tracks.FirstOrDefault(x => x.Key == pageStatic.Track).Value;
+            RenderBackground();
+        }
+
+        private void SetMaxTextWidth()
+        {
+            _maxTextWidth = 0;
+            new CachedBitmap((int)((InitialWidth + 1) * this.Scale), (int)((InitialHeight + 1) * this.Scale), g =>
+                 {
+                     if (_currentTrack != null)
+                     {
+                         foreach ((int, string) value in _currentTrack.CornerNames.Values)
+                         {
+                             StringBuilder builder = new StringBuilder();
+                             builder.Append(" ");
+                             builder.Append(value.Item1);
+                             if (_config.CornerNames.Names && value.Item2 != string.Empty)
+                                 builder.Append(" - " + value.Item2);
+                             builder.Append(" ");
+
+                             float textWidth = g.MeasureString(builder.ToString(), _font).Width;
+
+                             if (textWidth > _maxTextWidth)
+                                 _maxTextWidth = textWidth;
+                         }
+                     }
+                 }).Render();
+        }
+
+        private void RenderBackground()
+        {
+            SetMaxTextWidth();
+            _cachedBackground = new CachedBitmap((int)((InitialWidth + 1) * this.Scale), (int)((InitialHeight + 1) * this.Scale), g =>
+            {
+                Rectangle rectangle = new Rectangle(0, 0, (int)(_maxTextWidth * this.Scale), (int)(InitialHeight * this.Scale));
+                int cornerRadius = (int)(4 * this.Scale);
+                g.DrawRoundedRectangle(new Pen(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), 3 * this.Scale), rectangle, cornerRadius);
+                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), rectangle, cornerRadius);
+            });
         }
 
         public override void BeforeStop()
@@ -82,18 +122,20 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
             {
                 (int, string) cornerName = _currentTrack.CornerNames.FirstOrDefault(x => x.Key.IsInRange(pageGraphics.NormalizedCarPosition)).Value;
 
-                _cachedBackground.Draw(g, InitialWidth, InitialHeight);
+                _cachedBackground.Draw(g, 0, 0, InitialWidth, InitialHeight);
 
                 if (cornerName.Item1 != 0)
                 {
                     StringBuilder builder = new StringBuilder();
+                    builder.Append(" ");
                     builder.Append(cornerName.Item1);
-                    if (_config.CornerNames.Names)
+                    if (_config.CornerNames.Names && cornerName.Item2 != string.Empty)
                         builder.Append(" - " + cornerName.Item2);
+                    builder.Append(" ");
                     string text = builder.ToString();
 
-                    float textWidht = g.MeasureString(text, _font).Width;
-                    PointF location = new PointF(InitialWidth / 2 - textWidht / 2, InitialHeight / 2 - _font.Height / 2);
+                    float textWidth = g.MeasureString(text, _font).Width;
+                    PointF location = new PointF(_maxTextWidth / 2 - textWidth / 2, InitialHeight / 2 - _font.Height / 2);
                     g.DrawStringWithShadow(text, _font, Color.White, location, 0.75f * this.Scale);
                 }
             }
