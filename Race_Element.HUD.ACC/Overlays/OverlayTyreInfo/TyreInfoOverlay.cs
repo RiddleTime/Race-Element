@@ -241,8 +241,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
         private void DrawTyrePressure(Graphics g, int x, int y, Wheel wheel, TyrePressureRange range)
         {
             int alpha = 255;
-            if (_config.Information.Decimals > 1) // draw the text manually, so block out the original tyre pressure text.
-                alpha = 255;
 
             Color brushColor = Color.FromArgb(alpha, 0, 255, 0);
 
@@ -254,11 +252,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
 
             SmoothingMode previous = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.FillRoundedRectangle(new SolidBrush(brushColor), new Rectangle(x, y, 58, 20), 3);
 
+            int width = 58;
+            g.FillRoundedRectangle(new SolidBrush(brushColor), new Rectangle(x, y, width, 20), 3);
 
-            //if (_config.Information.Decimals > 1) // draw the text manually
-            DrawTextWithOutline(g, Color.White, pagePhysics.WheelPressure[(int)wheel].ToString($"F{_config.Information.Decimals}"), x + 58 / 2, y + 1);
+            DrawTextWithOutline(g, Color.White, pagePhysics.WheelPressure[(int)wheel].ToString($"F{_config.Information.Decimals}"), x + width / 2, y + 1);
 
             g.SmoothingMode = previous;
         }
