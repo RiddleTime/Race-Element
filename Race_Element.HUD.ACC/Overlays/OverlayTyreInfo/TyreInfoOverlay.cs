@@ -38,6 +38,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
             }
         }
 
+        private const int InitialWidth = 135;
+        private const int InitialHeight = 190;
+
         private const double MaxPadLife = 29;
         private readonly Font _fontFamily;
         private readonly Font _fontFamilySmall;
@@ -50,8 +53,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
             _yMono = _fontFamily.Height / 6;
             _fontFamilySmall = FontUtil.FontUnispace(9);
             _yMonoSmall = _fontFamilySmall.Height / 5;
-            this.Width = 135;
-            this.Height = 200;
+            this.Width = InitialWidth;
+            this.Height = InitialHeight;
             this.RefreshRateHz = 10;
         }
 
@@ -65,26 +68,33 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
 
         public sealed override void Render(Graphics g)
         {
+            if (this.IsRepositioning)
+            {
+                Pen repositionLinePen = new Pen(Brushes.Red, 2 * this.Scale);
+                g.DrawLine(repositionLinePen, new Point(InitialWidth / 2, 0), new Point(InitialWidth / 2, InitialHeight));
+                g.DrawLine(repositionLinePen, new Point(0, InitialHeight / 2), new Point(InitialWidth, InitialHeight / 2));
+            }
+
             DrawPressureBackgrounds(g);
 
             if (this._config.Information.PadLife)
             {
-                DrawPadWearText(g, 68, 29, Position.Front);
-                DrawPadWearText(g, 68, 113, Position.Rear);
+                DrawPadWearText(g, 68, 19, Position.Front);
+                DrawPadWearText(g, 68, 103, Position.Rear);
             }
 
             if (this._config.Information.BrakeTemps)
             {
-                DrawBrakeTemps(g, 68, 81, Position.Front);
-                DrawBrakeTemps(g, 68, 166, Position.Rear);
+                DrawBrakeTemps(g, 68, 71, Position.Front);
+                DrawBrakeTemps(g, 68, 156, Position.Rear);
             }
 
             if (this._config.Information.TyreTemps)
             {
-                DrawTyreTemp(g, 28, 55, Wheel.FrontLeft);
-                DrawTyreTemp(g, 106, 55, Wheel.FrontRight);
-                DrawTyreTemp(g, 28, 139, Wheel.RearLeft);
-                DrawTyreTemp(g, 106, 139, Wheel.RearRight);
+                DrawTyreTemp(g, 28, 45, Wheel.FrontLeft);
+                DrawTyreTemp(g, 106, 45, Wheel.FrontRight);
+                DrawTyreTemp(g, 28, 129, Wheel.RearLeft);
+                DrawTyreTemp(g, 106, 129, Wheel.RearRight);
             }
         }
 
@@ -94,10 +104,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
 
             if (range != null)
             {
-                DrawPressureBackground(g, 0, 10, Wheel.FrontLeft, range);
-                DrawPressureBackground(g, 76, 10, Wheel.FrontRight, range);
-                DrawPressureBackground(g, 0, 179, Wheel.RearLeft, range);
-                DrawPressureBackground(g, 76, 179, Wheel.RearRight, range);
+                DrawPressureBackground(g, 0, 0, Wheel.FrontLeft, range);
+                DrawPressureBackground(g, 76, 0, Wheel.FrontRight, range);
+                DrawPressureBackground(g, 0, 169, Wheel.RearLeft, range);
+                DrawPressureBackground(g, 76, 169, Wheel.RearRight, range);
             }
         }
 

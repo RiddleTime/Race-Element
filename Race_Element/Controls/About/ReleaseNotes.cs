@@ -6,7 +6,8 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.1.5.5", "- HUDs: When the Window toggle is enabled the HUD windows will now be always enabled and allow for better detection by Streaming and VR apps." },
+            {"0.1.5.5", "- HUDs: When the Window toggle is enabled the HUD windows will now be always enabled and allow for better detection by Streaming and VR apps."+
+                        "\n- Reworked Tyre Info HUD, added guidelines when repositioning."},
             {"0.1.5.4", "- Reworked Input and Oversteer trace."+
                         "\n- Reworked background of shift indicator."+
                         "\n- Reworked internal structure of the app."+
