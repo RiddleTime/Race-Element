@@ -37,9 +37,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
                 this.AllowRescale = true;
             }
         }
-        private int InitialWidth = 450, InitialHeight = 45;
 
-        private Font _font;
+        private readonly int InitialWidth = 450;
+        private readonly int InitialHeight;
+        private readonly Font _font;
+
         private CachedBitmap _cachedBackground;
         private AbstractTrackData _currentTrack;
 
