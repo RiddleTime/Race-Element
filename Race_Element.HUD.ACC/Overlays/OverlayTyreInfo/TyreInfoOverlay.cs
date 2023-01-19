@@ -267,7 +267,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
             Rectangle backgroundDimension = new Rectangle(x - textWidth / 2, y, (int)textWidth, _fontFamilyLarge.Height);
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 0, 0, 0)), backgroundDimension, 2);
             g.DrawRoundedRectangle(new Pen(Color.FromArgb(135, 0, 0, 0), 0.6f * this.Scale), backgroundDimension, 2);
-            g.DrawStringWithShadow(text, _fontFamilyLarge, textColor, new PointF(x - textWidth / 2, y + _fontFamilyLarge.GetHeight(g) / 11f), 0.75f * this.Scale);
+            g.DrawStringWithShadow(text, _fontFamilyLarge, textColor, new PointF(x - textWidth / 2, y + _fontFamilyLarge.GetHeight(g) / 11f), 1.3f * this.Scale);
         }
 
         public sealed override bool ShouldRender()
