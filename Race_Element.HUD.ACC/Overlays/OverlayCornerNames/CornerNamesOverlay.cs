@@ -24,6 +24,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
         private readonly CornerNamesConfig _config = new CornerNamesConfig();
         private sealed class CornerNamesConfig : OverlayConfiguration
         {
+            [ConfigGrouping("Corner Names", "Configure options specific to the Corner Names HUD.")]
+            public CornerNamesGrouping CornerNames { get; set; } = new CornerNamesGrouping();
+            public class CornerNamesGrouping
+            {
+                [ToolTip("Show corner names in addition to the already displayin corner numbers.\nNot Every corner has got a name.")]
+                public bool Names { get; set; } = true;
+            }
+
             public CornerNamesConfig()
             {
                 this.AllowRescale = true;
@@ -78,9 +86,15 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 
                 if (cornerName.Item1 != 0)
                 {
-                    float textWidht = g.MeasureString($"{cornerName.Item1}", _font).Width;
+                    StringBuilder builder = new StringBuilder();
+                    builder.Append(cornerName.Item1);
+                    if (_config.CornerNames.Names)
+                        builder.Append(" - " + cornerName.Item2);
+                    string text = builder.ToString();
+
+                    float textWidht = g.MeasureString(text, _font).Width;
                     PointF location = new PointF(InitialWidth / 2 - textWidht / 2, InitialHeight / 2 - _font.Height / 2);
-                    g.DrawStringWithShadow($"{cornerName.Item1}", _font, Color.White, location, 0.75f * this.Scale);
+                    g.DrawStringWithShadow(text, _font, Color.White, location, 0.75f * this.Scale);
                 }
             }
         }
