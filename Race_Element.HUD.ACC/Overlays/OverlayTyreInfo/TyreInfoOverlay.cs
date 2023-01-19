@@ -82,7 +82,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
                 g.DrawLine(repositionLinePen, new Point(0, InitialHeight / 2), new Point(InitialWidth, InitialHeight / 2));
             }
 
-            DrawPressureBackgrounds(g);
+            DrawTyrePressures(g);
 
             if (this._config.Information.PadLife)
             {
@@ -105,16 +105,16 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
             }
         }
 
-        private void DrawPressureBackgrounds(Graphics g)
+        private void DrawTyrePressures(Graphics g)
         {
             TyrePressureRange range = TyrePressures.GetCurrentRange(pageGraphics.TyreCompound, pageStatic.CarModel);
 
             if (range != null)
             {
-                DrawPressureBackground(g, 0, 0, Wheel.FrontLeft, range);
-                DrawPressureBackground(g, 76, 0, Wheel.FrontRight, range);
-                DrawPressureBackground(g, 0, 169, Wheel.RearLeft, range);
-                DrawPressureBackground(g, 76, 169, Wheel.RearRight, range);
+                DrawTyrePressure(g, 0, 0, Wheel.FrontLeft, range);
+                DrawTyrePressure(g, 76, 0, Wheel.FrontRight, range);
+                DrawTyrePressure(g, 0, 169, Wheel.RearLeft, range);
+                DrawTyrePressure(g, 76, 169, Wheel.RearRight, range);
             }
         }
 
@@ -238,7 +238,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
             g.TextRenderingHint = previousHint;
         }
 
-        private void DrawPressureBackground(Graphics g, int x, int y, Wheel wheel, TyrePressureRange range)
+        private void DrawTyrePressure(Graphics g, int x, int y, Wheel wheel, TyrePressureRange range)
         {
             int alpha = 255;
             if (_config.Information.Decimals > 1) // draw the text manually, so block out the original tyre pressure text.
