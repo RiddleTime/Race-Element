@@ -7,11 +7,12 @@ using RaceElement.HUD.ACC.Overlays.OverlayPressureTrace;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using static RaceElement.Data.SetupConverter;
 using System.Drawing.Text;
+using System;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
 {
     [Overlay(Name = "Tyre Info", Version = 1.00, OverlayType = OverlayType.Release,
-        Description = "Shows indicators for tyre pressures. Additionally shows tyre temperature, brake temps and pad life. Overlays the in-game tyre info.")]
+        Description = "Shows tyre pressures. Additionally shows tyre temperature, brake temps and pad life. Overlays the in-game tyre info.")]
     internal sealed class TyreInfoOverlay : AbstractOverlay
     {
         private readonly TyreInfoConfig _config = new TyreInfoConfig();
@@ -30,6 +31,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
                 [ToolTip("Displays the tyre temperature for each tyre whilst displaying colors." +
                     "\nGreen is optimal, Red is too hot, Blue is too cold.")]
                 public bool TyreTemps { get; set; } = true;
+
+                [ToolTip("Defines the amount of decimals for the tyre pressure text.")]
+                [IntRange(1, 2, 1)]
+                public int Decimals { get; set; } = 1;
             }
 
             public TyreInfoConfig()
@@ -42,6 +47,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
         private const int InitialHeight = 190;
 
         private const double MaxPadLife = 29;
+        private readonly Font _fontFamilyLarge;
         private readonly Font _fontFamily;
         private readonly Font _fontFamilySmall;
         private readonly int _yMono;
@@ -49,6 +55,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
 
         public TyreInfoOverlay(Rectangle rectangle) : base(rectangle, "Tyre Info")
         {
+            _fontFamilyLarge = FontUtil.FontUnispace(12);
             _fontFamily = FontUtil.FontUnispace(10);
             _yMono = _fontFamily.Height / 6;
             _fontFamilySmall = FontUtil.FontUnispace(9);
@@ -233,7 +240,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
 
         private void DrawPressureBackground(Graphics g, int x, int y, Wheel wheel, TyrePressureRange range)
         {
-            int alpha = 60;
+            int alpha = 255;
+            if (_config.Information.Decimals > 1) // draw the text manually, so block out the original tyre pressure text.
+                alpha = 255;
 
             Color brushColor = Color.FromArgb(alpha, 0, 255, 0);
 
@@ -246,7 +255,21 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
             SmoothingMode previous = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.FillRoundedRectangle(new SolidBrush(brushColor), new Rectangle(x, y, 58, 20), 3);
+
+
+            //if (_config.Information.Decimals > 1) // draw the text manually
+            DrawTextWithOutline(g, Color.White, pagePhysics.WheelPressure[(int)wheel].ToString($"F{_config.Information.Decimals}"), x + 58 / 2, y + 1);
+
             g.SmoothingMode = previous;
+        }
+
+        private void DrawTextWithOutline(Graphics g, Color textColor, string text, int x, int y)
+        {
+            int textWidth = (int)g.MeasureString(text, _fontFamilyLarge).Width;
+            Rectangle backgroundDimension = new Rectangle(x - textWidth / 2, y, (int)textWidth, _fontFamilyLarge.Height);
+            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 0, 0, 0)), backgroundDimension, 2);
+            g.DrawRoundedRectangle(new Pen(Color.FromArgb(135, 0, 0, 0), 0.6f * this.Scale), backgroundDimension, 2);
+            g.DrawStringWithShadow(text, _fontFamilyLarge, textColor, new PointF(x - textWidth / 2, y + _fontFamilyLarge.GetHeight(g) / 11f), 0.75f * this.Scale);
         }
 
         public sealed override bool ShouldRender()

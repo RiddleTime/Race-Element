@@ -28,7 +28,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
             public CornerNamesGrouping CornerNames { get; set; } = new CornerNamesGrouping();
             public class CornerNamesGrouping
             {
-                [ToolTip("Show corner names in addition to the already displayin corner numbers.\nNot Every corner has got a name.")]
+                [ToolTip("Show corner names in addition to the already displayin corner numbers.\nNot Every corner has got a name and some tracks don't have corner names at all.")]
                 public bool Names { get; set; } = true;
             }
 
