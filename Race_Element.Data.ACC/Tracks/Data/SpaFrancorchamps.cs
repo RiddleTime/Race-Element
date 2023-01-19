@@ -14,23 +14,23 @@ namespace ACCManager.Data.ACC.Tracks.Data
         public override string FullName => "Circuit De Spa-Francorchamps";
         public override int TrackLength => 7004;
 
-        public override Dictionary<FloatRangeStruct, string> CornerNames => new Dictionary<FloatRangeStruct, string>()
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
         {
-            { new FloatRangeStruct(0.03371242f, 0.05937995f), "La Source" },
-            { new FloatRangeStruct(0.1435904f, 0.1541221f), "Eau Rouge" },
-            { new FloatRangeStruct(0.1541221f, 0.1960247f), "Raidillon" },
-            { new FloatRangeStruct(0.2178622f, 0.2374316f), "Kemmel" },
-            { new FloatRangeStruct(0.3228342f, 0.3612153f), "Les Combes" },
-            { new FloatRangeStruct(0.3668639f, 0.3903512f), "Malmedy" },
-            { new FloatRangeStruct(0.4134307f, 0.4498297f), "Bruxelles" },
-            { new FloatRangeStruct(0.4582162f, 0.4808743f), "Speaker's Corner" },
-            { new FloatRangeStruct(0.5299657f, 0.5979356f), "Pouhon" },
-            { new FloatRangeStruct(0.622636f, 0.6775055f), "Les Fagnes" },
-            { new FloatRangeStruct(0.6919841f, 0.7136846f), "Campus" },
-            { new FloatRangeStruct(0.7219031f, 0.7557863f), "Stavelot" },
-            { new FloatRangeStruct(0.7856864f, 0.8112493f), "Courbe Paul Frere" },
-            { new FloatRangeStruct(0.8585455f, 0.8978195f), "Blanchimont" },
-            { new FloatRangeStruct(0.9418995f, 0.978526f), "Chicane" }
+            { new FloatRangeStruct(0.03371242f, 0.05937995f), (1, "La Source")},
+            { new FloatRangeStruct(0.1435904f, 0.1541221f), (1, "Eau Rouge") },
+            { new FloatRangeStruct(0.1541221f, 0.1960247f), (1, "Raidillon") },
+            { new FloatRangeStruct(0.2178622f, 0.2374316f), (1, "Kemmel") },
+            { new FloatRangeStruct(0.3228342f, 0.3612153f), (1, "Les Combes") },
+            { new FloatRangeStruct(0.3668639f, 0.3903512f), (1, "Malmedy") },
+            { new FloatRangeStruct(0.4134307f, 0.4498297f), (1, "Bruxelles") },
+            { new FloatRangeStruct(0.4582162f, 0.4808743f), (1, "Speaker's Corner") },
+            { new FloatRangeStruct(0.5299657f, 0.5979356f), (1, "Pouhon") },
+            { new FloatRangeStruct(0.622636f, 0.6775055f), (1, "Les Fagnes") },
+            { new FloatRangeStruct(0.6919841f, 0.7136846f), (1, "Campus") },
+            { new FloatRangeStruct(0.7219031f, 0.7557863f), (1, "Stavelot") },
+            { new FloatRangeStruct(0.7856864f, 0.8112493f), (1, "Courbe Paul Frere") },
+            { new FloatRangeStruct(0.8585455f, 0.8978195f), (1, "Blanchimont") },
+            { new FloatRangeStruct(0.9418995f, 0.978526f), (1, "Chicane") }
         };
     }
 }
