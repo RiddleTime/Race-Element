@@ -256,9 +256,20 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
             int width = 58;
             g.FillRoundedRectangle(new SolidBrush(brushColor), new Rectangle(x, y, width, 20), 3);
 
+
+            CompositingQuality previousComposingQuality = g.CompositingQuality;
+            TextRenderingHint previousTextRenderingHint = g.TextRenderingHint;
+            int previousTextContrast = g.TextContrast;
+
+            g.CompositingQuality = CompositingQuality.HighQuality;
+            g.TextRenderingHint = TextRenderingHint.AntiAlias;
+            g.TextContrast = 1;
             DrawTextWithOutline(g, Color.White, pagePhysics.WheelPressure[(int)wheel].ToString($"F{_config.Information.Decimals}"), x + width / 2, y + 1);
 
             g.SmoothingMode = previous;
+            g.CompositingQuality = previousComposingQuality;
+            g.TextContrast = previousTextContrast;
+            g.TextRenderingHint = previousTextRenderingHint;
         }
 
         private void DrawTextWithOutline(Graphics g, Color textColor, string text, int x, int y)
