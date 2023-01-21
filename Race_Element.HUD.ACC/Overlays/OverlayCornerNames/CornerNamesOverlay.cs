@@ -17,14 +17,14 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 {
 #if DEBUG
-    [Overlay(Name = "Corner Names", Description = "Shows corner/sector names for each track.", OverlayType = OverlayType.Release, Version = 1.00)]
+    [Overlay(Name = "Corners", Description = "Shows corner/sector names for each track.", OverlayType = OverlayType.Release, Version = 1.00)]
 #endif
-    internal class CornerNamesOverlay : AbstractOverlay
+    internal class CornersOverlay : AbstractOverlay
     {
         private readonly CornerNamesConfig _config = new CornerNamesConfig();
         private sealed class CornerNamesConfig : OverlayConfiguration
         {
-            [ConfigGrouping("Corner Names", "Configure options specific to the Corner Names HUD.")]
+            [ConfigGrouping("Names", "Configure options specific to the Corner Names HUD.")]
             public CornerNamesGrouping CornerNames { get; set; } = new CornerNamesGrouping();
             public class CornerNamesGrouping
             {
@@ -47,7 +47,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 
         private float _maxTextWidth = 0;
 
-        public CornerNamesOverlay(Rectangle rectangle) : base(rectangle, "Corner Names")
+        public CornersOverlay(Rectangle rectangle) : base(rectangle, "Corners")
         {
             this.Width = InitialWidth + 1;
 

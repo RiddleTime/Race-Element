@@ -14,7 +14,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace
 
             public PressureTraceOverlayConfig()
             {
-                AllowRescale = true;
+                AllowRescale = false;
             }
         }
 

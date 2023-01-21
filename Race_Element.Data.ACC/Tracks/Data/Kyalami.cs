@@ -32,7 +32,6 @@ namespace ACCManager.Data.ACC.Tracks.Data
             { new FloatRangeStruct(0.8374949f, 0.8632089f), (14, "The Crocodiles")},
             { new FloatRangeStruct(0.866816f, 0.8997451f), (15, "Cheetah")},
             { new FloatRangeStruct(0.9204187f, 0.962459f), (16, "Ingwe")},
-
         };
     }
 }
