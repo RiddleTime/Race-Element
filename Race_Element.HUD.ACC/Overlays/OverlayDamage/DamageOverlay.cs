@@ -141,7 +141,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
                 UpdateBodyDamage();
             }
 
-            if (newDamageTime == 0 && (_config.Damage.AutoHide && !this.AllowReposition))
+            if (newDamageTime == 0 && _config.Damage.AutoHide && !this.IsRepositioning)
                 return;
 
             _carOutline?.Draw(g, 0, 0, OriginalWidth, OriginalHeight);

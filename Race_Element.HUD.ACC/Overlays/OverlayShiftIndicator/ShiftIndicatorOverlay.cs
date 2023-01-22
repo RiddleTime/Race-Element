@@ -174,10 +174,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
                 Color rpmColor = Color.FromArgb(125, 255, 255, 255);
                 if (percent > 0.7 && percent <= 0.94)
                     rpmColor = Color.FromArgb(135, 5, 255, 5);
-                else if (percent > 0.94)
-                    rpmColor = Color.FromArgb(165, 255, 7, 7);
                 else if (percent > 0.973)
                     rpmColor = Color.FromArgb(225, 255, 4, 4);
+                else if (percent > 0.94)
+                    rpmColor = Color.FromArgb(185, 255, 255, 0);
+              
 
                 if (percent >= 1)
                     rpmColor = Color.Red;
