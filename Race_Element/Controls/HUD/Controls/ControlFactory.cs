@@ -19,7 +19,7 @@ namespace RaceElement.Controls.HUD.Controls
 
         public ListViewItem GenerateOption(string group, string label, PropertyInfo pi, ConfigField configField)
         {
-            Grid grid = new Grid() { Height = 26 };
+            Grid grid = new Grid() { /*Height = 26*/ };
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(120, GridUnitType.Pixel) });
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(240, GridUnitType.Pixel) });
 
@@ -122,6 +122,12 @@ namespace RaceElement.Controls.HUD.Controls
                     IValueControl<float> floatValueControl = new FloatValueControl(floatRange, configField);
                     contentControl = floatValueControl;
                 }
+            }
+
+            if (pi.PropertyType == typeof(System.Drawing.Color))
+            {
+                IValueControl<System.Drawing.Color> valueControl = new ColorValueControl(configField);
+                contentControl = valueControl;
             }
 
 

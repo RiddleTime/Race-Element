@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 
@@ -100,6 +101,9 @@ namespace RaceElement.HUD.Overlay.Configuration
                                     else
                                     if (subNested.PropertyType == typeof(byte))
                                         subNested.SetValue(nestedValue, byte.Parse(field.Value.ToString()));
+                                    else
+                                    if (subNested.PropertyType == typeof(Color))
+                                        subNested.SetValue(nestedValue, ColorFromToString(field.Value.ToString()));
                                 }
                             }
 
@@ -124,6 +128,9 @@ namespace RaceElement.HUD.Overlay.Configuration
                             else
                             if (prop.PropertyType == typeof(byte))
                                 prop.SetValue(this, byte.Parse(field.Value.ToString()));
+                            else
+                            if (prop.PropertyType == typeof(Color))
+                                prop.SetValue(this, ColorFromToString(field.Value.ToString()));
                         }
                     }
                 }
@@ -136,5 +143,24 @@ namespace RaceElement.HUD.Overlay.Configuration
             return properties;
         }
 
+        private System.Drawing.Color ColorFromToString(string value)
+        {
+            // format to convert from (System.Drawing.Color.ToString())
+            // Color [A=135, R=5, G=255, B=5]
+
+            if (value.Contains("#"))
+            {
+                value = value.Replace("Color [", "");
+                value = value.Replace("]", "");
+                return System.Drawing.Color.FromName(value);
+            }
+
+            int a = int.Parse(value.Split('A')[1].Split(',')[0].Replace("=", ""));
+            int r = int.Parse(value.Split('R')[1].Split(',')[0].Replace("=", ""));
+            int g = int.Parse(value.Split('G')[1].Split(',')[0].Replace("=", ""));
+            int b = int.Parse(value.Split('B')[1].Split(']')[0].Replace("=", ""));
+
+            return System.Drawing.Color.FromArgb(a, r, g, b);
+        }
     }
 }
