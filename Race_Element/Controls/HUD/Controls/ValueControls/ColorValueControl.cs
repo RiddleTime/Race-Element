@@ -24,9 +24,7 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
         public FrameworkElement Control => _grid;
 
         private readonly ConfigField _field;
-
         private readonly Grid _grid;
-        private readonly Label _label;
 
         public ColorValueControl(ConfigField configField)
         {
@@ -41,17 +39,12 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
                 VerticalAlignment = VerticalAlignment.Center,
             };
 
-
-            // add color slider
-
+            // add color picker
             ColorPicker colorPicker = new ColorPicker()
             {
                 HueSliderPosition = Dock.Bottom,
-                Margin = new Thickness(0, -5, 0, -5),
+                Margin = new Thickness(0, 0, 0, -7),
             };
-
-            string originalValue = configField.Value.ToString();
-            Debug.WriteLine(originalValue);
             System.Drawing.Color loadedColor = FromToString(configField.Value.ToString());
             colorPicker.Color = System.Windows.Media.Color.FromArgb(loadedColor.A, loadedColor.R, loadedColor.G, loadedColor.B);
             colorPicker.PreviewMouseLeftButtonUp += (s, e) =>
@@ -64,7 +57,6 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
                 Debug.WriteLine($"new field value: {_field.Value}");
                 Save();
             };
-
             _grid.Children.Add(colorPicker);
         }
 

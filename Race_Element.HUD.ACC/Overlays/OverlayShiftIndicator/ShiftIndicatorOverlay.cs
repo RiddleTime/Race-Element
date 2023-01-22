@@ -16,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
     internal class ShiftIndicatorOverlay : AbstractOverlay
     {
         private readonly ShiftIndicatorConfig _config = new ShiftIndicatorConfig();
-        private class ShiftIndicatorConfig : OverlayConfiguration
+        private sealed class ShiftIndicatorConfig : OverlayConfiguration
         {
             [ConfigGrouping("Bar", "The shape and options of the shift indicator bar.")]
             public BarsGrouping Bar { get; set; } = new BarsGrouping();
@@ -45,9 +45,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             public ColorsGrouping Colors { get; set; } = new ColorsGrouping();
             public class ColorsGrouping
             {
-                public Color Percent70 { get; set; } = Color.FromArgb(135, 5, 255, 5);
-                public Color Percent94 { get; set; } = Color.FromArgb(185, 255, 255, 0);
-                public Color Percent97 { get; set; } = Color.FromArgb(225, 255, 4, 4);
+                public Color Percent70 { get; set; } = Color.FromArgb(255, 5, 255, 5);
+                public Color Percent94 { get; set; } = Color.FromArgb(255, 255, 255, 0);
+                public Color Percent97 { get; set; } = Color.FromArgb(255, 255, 4, 4);
             }
 
             public ShiftIndicatorConfig()
