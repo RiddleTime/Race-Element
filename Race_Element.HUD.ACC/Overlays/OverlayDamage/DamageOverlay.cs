@@ -70,8 +70,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
             this.Height = OriginalHeight;
         }
 
-        public override bool ShouldRender() => DefaultShouldRender();
-
         public override void BeforeStart()
         {
             CreatePathShapes();
@@ -130,6 +128,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
             _bodyDamage?.Dispose();
         }
 
+        public override bool ShouldRender() => DefaultShouldRender();
+
         public override void Render(Graphics g)
         {
             float newDamageTime = Damage.GetTotalRepairTime(pagePhysics);
@@ -141,7 +141,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
                 UpdateBodyDamage();
             }
 
-            if (newDamageTime == 0 && _config.Damage.AutoHide)
+            if (newDamageTime == 0 && (_config.Damage.AutoHide && !this.AllowReposition))
                 return;
 
             _carOutline?.Draw(g, 0, 0, OriginalWidth, OriginalHeight);
