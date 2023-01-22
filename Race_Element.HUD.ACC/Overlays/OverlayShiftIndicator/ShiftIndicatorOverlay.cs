@@ -41,6 +41,15 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
                 public int RefreshRate { get; set; } = 50;
             }
 
+            [ConfigGrouping("Colors", "Adjust the colors used in the shift bar")]
+            public ColorsGrouping Colors { get; set; } = new ColorsGrouping();
+            public class ColorsGrouping
+            {
+                public Color Percent70 { get; set; } = Color.FromArgb(135, 5, 255, 5);
+                public Color Percent94 { get; set; } = Color.FromArgb(185, 255, 255, 0);
+                public Color Percent97 { get; set; } = Color.FromArgb(225, 255, 4, 4);
+            }
+
             public ShiftIndicatorConfig()
             {
                 this.AllowRescale = true;
@@ -54,7 +63,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
         private Font _font;
         private float _halfRpmStringWidth = -1;
-        private float _halfPitLimiterStringWidth = -1;
+        private List<(float, Color)> colors;
 
         public ShiftIndicatorOverlay(Rectangle rectangle) : base(rectangle, "Shift Indicator")
         {
@@ -68,6 +77,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
         {
             if (_config.Bar.ShowRpm || _config.Bar.ShowPitLimiter)
                 _font = FontUtil.FontUnispace(15);
+
+            colors = new List<(float, Color)>
+                {
+                    (0.7f, Color.FromArgb(135, _config.Colors.Percent70)),
+                    (0.94f, Color.FromArgb(185, _config.Colors.Percent94)),
+                    (0.973f, Color.FromArgb(225, _config.Colors.Percent97))
+                };
 
             _cachedBackground = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
             {
@@ -170,16 +186,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             if (maxRpm > 0 && currentRpm > 0)
                 percent = currentRpm / maxRpm;
 
-          
-
             if (percent > 0)
             {
                 Color rpmColor = Color.FromArgb(125, 255, 255, 255);
 
-                List<(float, Color)> colors = new List<(float, Color)>();
-                colors.Add((0.7f, Color.FromArgb(135, 5, 255, 5)));
-                colors.Add((0.94f, Color.FromArgb(185, 255, 255, 0)));
-                colors.Add((0.973f, Color.FromArgb(225, 255, 4, 4)));
                 foreach ((float, Color) colorRange in colors)
                     if (percent > colorRange.Item1)
                         rpmColor = colorRange.Item2;
