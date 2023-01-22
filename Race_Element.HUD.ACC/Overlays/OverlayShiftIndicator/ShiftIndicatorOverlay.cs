@@ -7,6 +7,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+using System.Collections.Generic;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 {
@@ -169,16 +170,19 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             if (maxRpm > 0 && currentRpm > 0)
                 percent = currentRpm / maxRpm;
 
+          
+
             if (percent > 0)
             {
                 Color rpmColor = Color.FromArgb(125, 255, 255, 255);
-                if (percent > 0.7 && percent <= 0.94)
-                    rpmColor = Color.FromArgb(135, 5, 255, 5);
-                else if (percent > 0.973)
-                    rpmColor = Color.FromArgb(225, 255, 4, 4);
-                else if (percent > 0.94)
-                    rpmColor = Color.FromArgb(185, 255, 255, 0);
-              
+
+                List<(float, Color)> colors = new List<(float, Color)>();
+                colors.Add((0.7f, Color.FromArgb(135, 5, 255, 5)));
+                colors.Add((0.94f, Color.FromArgb(185, 255, 255, 0)));
+                colors.Add((0.973f, Color.FromArgb(225, 255, 4, 4)));
+                foreach ((float, Color) colorRange in colors)
+                    if (percent > colorRange.Item1)
+                        rpmColor = colorRange.Item2;
 
                 if (percent >= 1)
                     rpmColor = Color.Red;
