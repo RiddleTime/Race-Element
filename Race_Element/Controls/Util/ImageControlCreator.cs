@@ -43,7 +43,7 @@ namespace RaceElement.Controls.Util.SetupImage
             memStream.Close();
             memStream.Dispose();
 
-            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false);
 
             return image;
         }
