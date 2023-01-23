@@ -68,7 +68,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
         public ShiftIndicatorOverlay(Rectangle rectangle) : base(rectangle, "Shift Indicator")
         {
             this.RefreshRateHz = this._config.Bar.RefreshRate;
-            AllowReposition = true;
             this.Height = _config.Bar.Height + 1;
             this.Width = _config.Bar.Width + 1;
         }
