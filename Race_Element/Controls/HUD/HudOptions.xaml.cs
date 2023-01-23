@@ -65,6 +65,8 @@ namespace RaceElement.Controls
                     }
 
                     configStackPanel.Children.Clear();
+                    titleBar.Children.Clear();
+
                     previewImage.Source = null;
                     listDebugOverlays.SelectedIndex = -1;
                     listOverlays.SelectedIndex = -1;
@@ -168,7 +170,7 @@ namespace RaceElement.Controls
 
             // kind of stupid but it works.. gotta travel the generated tree in #BuildOverlayConfigPanel();
             if (_lastOverlayStart.AddMilliseconds(200) < DateTime.Now)
-                foreach (UIElement element in configStackPanel.Children)
+                foreach (UIElement element in titleBar.Children)
                     if (element is StackPanel panel)
                         foreach (UIElement child in panel.Children)
                             if (child is ToggleButton toggle)
@@ -182,7 +184,7 @@ namespace RaceElement.Controls
 
         public string GetCurrentlyViewedOverlayName()
         {
-            foreach (UIElement element in configStackPanel.Children)
+            foreach (UIElement element in titleBar.Children)
                 if (element is StackPanel panel)
                     foreach (UIElement child in panel.Children)
                         if (child is Label label)
@@ -201,7 +203,10 @@ namespace RaceElement.Controls
                 e.Handled = true;
             }
             else
+            {
                 configStackPanel.Children.Clear();
+                titleBar.Children.Clear();
+            }
         }
 
         private void ListDebugOverlays_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -214,7 +219,10 @@ namespace RaceElement.Controls
                 e.Handled = true;
             }
             else
-                configStackPanel.Children.Clear();
+            {
+                configStackPanel.Children.Clear(); 
+                titleBar.Children.Clear();
+            }
         }
 
         private bool _collectingGarbage = false;
@@ -237,6 +245,7 @@ namespace RaceElement.Controls
             CollectGarbage();
 
             configStackPanel.Children.Clear();
+            titleBar.Children.Clear();
             OverlayAttribute overlayAttribute = GetOverlayAttribute(type);
             OverlaySettingsJson tempOverlaySettings = OverlaySettings.LoadOverlaySettings(overlayAttribute.Name);
 
@@ -251,22 +260,23 @@ namespace RaceElement.Controls
                 BorderBrush = Brushes.OrangeRed,
                 BorderThickness = new Thickness(0, 0, 0, 1.5),
                 Margin = new Thickness(0, 0, 0, 5),
-                HorizontalAlignment = HorizontalAlignment.Left,
-                FontSize = 30,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                FontSize = 32,
                 Foreground = Brushes.White
             };
             TextBlock overlayDescription = new TextBlock()
             {
                 Text = overlayAttribute.Description,
-                HorizontalAlignment = HorizontalAlignment.Left,
+                HorizontalAlignment = HorizontalAlignment.Center,
                 TextWrapping = TextWrapping.Wrap,
+                TextAlignment= TextAlignment.Center,
                 FontSize = 13.5,
-                Margin = new Thickness(9, 0, 0, 3),
+                Margin = new Thickness(0, 0, 0, 2),
             };
             StackPanel stackerOverlayInfo = new StackPanel()
             {
                 Orientation = Orientation.Vertical,
-                Margin = new Thickness(7, 3, 7, 7),
+                Margin = new Thickness(0, 0, 0, 0),
                 Background = new SolidColorBrush(Color.FromArgb(140, 0, 0, 0)),
             };
 
@@ -392,8 +402,8 @@ namespace RaceElement.Controls
             };
 
             activationPanel.Children.Add(toggle);
-            configStackPanel.Children.Add(activationPanel);
-            configStackPanel.Children.Add(stackerOverlayInfo);
+            titleBar.Children.Add(activationPanel);
+            titleBar.Children.Add(stackerOverlayInfo);
 
             // click overlay title/description to toggle overlay
             stackerOverlayInfo.Cursor = Cursors.Hand;
@@ -583,8 +593,8 @@ namespace RaceElement.Controls
 
                     ListView listView = new ListView()
                     {
-                        Width = 360,
-                        HorizontalAlignment = HorizontalAlignment.Left,
+                        Width = 390,
+                        HorizontalAlignment = HorizontalAlignment.Center,
                         Margin = new Thickness(0, 0, 0, 5),
                         Background = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0)),
                     };

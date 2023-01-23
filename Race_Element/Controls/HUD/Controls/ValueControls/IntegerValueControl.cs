@@ -23,7 +23,7 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
             _field = configField;
             _grid = new Grid()
             {
-                Width = 220,
+                Width = 250,
                 Margin = new Thickness(0, 0, 7, 0),
                 Background = new SolidColorBrush(Color.FromArgb(140, 2, 2, 2)),
                 Cursor = Cursors.Hand
@@ -50,7 +50,7 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
                 IsSnapToTickEnabled = true,
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Center,
-                Width = 150,
+                Width = 180,
             };
             _slider.ValueChanged += (s, e) =>
             {

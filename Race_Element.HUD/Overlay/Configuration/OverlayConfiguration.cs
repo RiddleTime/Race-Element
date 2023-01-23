@@ -148,19 +148,43 @@ namespace RaceElement.HUD.Overlay.Configuration
             // format to convert from (System.Drawing.Color.ToString())
             // Color [A=135, R=5, G=255, B=5]
 
+            // format to convert from (System.Drawing.Color.ToString())
+            // Color [A=135, R=5, G=255, B=5]
+
             if (value.Contains("#"))
             {
                 value = value.Replace("Color [", "");
                 value = value.Replace("]", "");
-                return System.Drawing.Color.FromName(value);
+                return (System.Drawing.Color)new System.Drawing.ColorConverter().ConvertFromString(value);
             }
 
-            int a = int.Parse(value.Split('A')[1].Split(',')[0].Replace("=", ""));
-            int r = int.Parse(value.Split('R')[1].Split(',')[0].Replace("=", ""));
-            int g = int.Parse(value.Split('G')[1].Split(',')[0].Replace("=", ""));
-            int b = int.Parse(value.Split('B')[1].Split(']')[0].Replace("=", ""));
-
-            return System.Drawing.Color.FromArgb(a, r, g, b);
+            try
+            {
+                int a = int.Parse(value.Split('A')[1].Split(',')[0].Replace("=", ""));
+                int r = int.Parse(value.Split('R')[1].Split(',')[0].Replace("=", ""));
+                int g = int.Parse(value.Split('G')[1].Split(',')[0].Replace("=", ""));
+                int b = int.Parse(value.Split('B')[1].Split(']')[0].Replace("=", ""));
+                return System.Drawing.Color.FromArgb(a, r, g, b);
+            }
+            catch (Exception)
+            {
+                try
+                {
+                    string[] split = value.Split(',');
+                    int r = int.Parse(split[0]);
+                    int g = int.Parse(split[1]);
+                    int b = int.Parse(split[2]);
+                    return System.Drawing.Color.FromArgb(255, r, g, b);
+                }
+                catch (Exception)
+                {
+                    return Color.Red;
+                }
+            }
+            finally
+            {
+                Debug.WriteLine(value);
+            }
         }
     }
 }

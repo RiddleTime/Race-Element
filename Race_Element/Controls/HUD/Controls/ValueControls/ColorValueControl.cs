@@ -1,6 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
 using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -9,7 +8,7 @@ using static RaceElement.HUD.Overlay.Configuration.OverlayConfiguration;
 
 namespace RaceElement.Controls.HUD.Controls.ValueControls
 {
-    internal class ColorValueControl : IValueControl<System.Drawing.Color>, IControl
+    internal class ColorValueControl : IValueControl<System.Drawing.Color>
     {
         System.Drawing.Color IValueControl<System.Drawing.Color>.Value { get; set; }
         public FrameworkElement Control => _grid;
@@ -22,7 +21,7 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
             _field = configField;
             _grid = new Grid()
             {
-                Width = 220,
+                Width = 250,
                 Height = 66,
                 Margin = new Thickness(0, 1, 7, 1),
                 Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(140, 2, 2, 2)),
@@ -50,9 +49,6 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
 
         private System.Drawing.Color FromToString(string value)
         {
-            // format to convert from (System.Drawing.Color.ToString())
-            // Color [A=135, R=5, G=255, B=5]
-
             if (value.Contains("#"))
             {
                 value = value.Replace("Color [", "");
@@ -70,11 +66,18 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
             }
             catch (Exception)
             {
-                return System.Drawing.Color.Red;
-            }
-            finally
-            {
-                Debug.WriteLine(value);
+                try
+                {
+                    string[] split = value.Split(',');
+                    int r = int.Parse(split[0]);
+                    int g = int.Parse(split[1]);
+                    int b = int.Parse(split[2]);
+                    return System.Drawing.Color.FromArgb(255, r, g, b);
+                }
+                catch (Exception)
+                {
+                    return System.Drawing.Color.Red;
+                }
             }
         }
 
