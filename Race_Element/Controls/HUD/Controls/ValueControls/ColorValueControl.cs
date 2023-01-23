@@ -1,17 +1,8 @@
 ﻿using MaterialDesignThemes.Wpf;
-using RaceElement.Util.SystemExtensions;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Printing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using static RaceElement.HUD.Overlay.Configuration.OverlayConfiguration;
@@ -46,15 +37,12 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
                 Margin = new Thickness(0, 0, 0, -7),
             };
             System.Drawing.Color loadedColor = FromToString(configField.Value.ToString());
-            colorPicker.Color = System.Windows.Media.Color.FromArgb(loadedColor.A, loadedColor.R, loadedColor.G, loadedColor.B);
+            colorPicker.Color = Color.FromArgb(loadedColor.A, loadedColor.R, loadedColor.G, loadedColor.B);
             colorPicker.PreviewMouseLeftButtonUp += (s, e) =>
             {
-                Debug.WriteLine($"new Color: {colorPicker.Color.ToString()}");
-
                 var drawingColor = System.Drawing.Color.FromArgb(colorPicker.Color.A, colorPicker.Color.R, colorPicker.Color.G, colorPicker.Color.B);
                 _field.Value = drawingColor.ToString();
 
-                Debug.WriteLine($"new field value: {_field.Value}");
                 Save();
             };
             _grid.Children.Add(colorPicker);

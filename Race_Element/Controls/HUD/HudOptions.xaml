@@ -107,7 +107,7 @@
                     <RowDefinition Height="66*"/>
                 </Grid.RowDefinitions>
 
-                <Image Grid.Row="0" x:Name="previewImage" HorizontalAlignment="Left"
+                <Image Grid.Row="0" x:Name="previewImage" HorizontalAlignment="Center" Margin="9,0,0,0"
                        ToolTip="This is a preview, the scaling will become visible once you Activate the overlay."/>
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                     <StackPanel  x:Name="configStackPanel"/>
