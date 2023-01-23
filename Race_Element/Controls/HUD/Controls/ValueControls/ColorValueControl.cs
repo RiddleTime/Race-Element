@@ -80,7 +80,14 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
                 int b = int.Parse(value.Split('B')[1].Split(']')[0].Replace("=", ""));
                 return System.Drawing.Color.FromArgb(a, r, g, b);
             }
-            catch (Exception) { return System.Drawing.Color.Red; }
+            catch (Exception)
+            {
+                return System.Drawing.Color.Red;
+            }
+            finally
+            {
+                Debug.WriteLine(value);
+            }
         }
 
         public void Save()

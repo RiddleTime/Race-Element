@@ -13,6 +13,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static RaceElement.Data.ACC.Tracks.TrackData;
+using System.Drawing.Text;
+using System.Drawing.Drawing2D;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 {
@@ -138,6 +140,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 
                     float textWidth = g.MeasureString(text, _font).Width;
                     PointF location = new PointF(_maxTextWidth / 2 - textWidth / 2, InitialHeight / 2 - _font.Height / 2);
+                    g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+                    g.CompositingQuality = CompositingQuality.HighQuality;
                     g.DrawStringWithShadow(text, _font, Color.White, location, 0.75f * this.Scale);
                 }
             }

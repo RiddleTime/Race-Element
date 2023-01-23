@@ -45,9 +45,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             public ColorsGrouping Colors { get; set; } = new ColorsGrouping();
             public class ColorsGrouping
             {
-                public Color Percent70 { get; set; } = Color.FromArgb(255, 5, 255, 5);
-                public Color Percent94 { get; set; } = Color.FromArgb(255, 255, 255, 0);
-                public Color Percent97 { get; set; } = Color.FromArgb(255, 255, 4, 4);
+                public Color NormalRange { get; set; } = Color.FromArgb(255, 5, 255, 5);
+                public Color EarlyUpshift { get; set; } = Color.FromArgb(255, 255, 255, 0);
+                public Color Upshift { get; set; } = Color.FromArgb(255, 255, 4, 4);
             }
 
             public ShiftIndicatorConfig()
@@ -80,9 +80,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
             colors = new List<(float, Color)>
                 {
-                    (0.7f, Color.FromArgb(135, _config.Colors.Percent70)),
-                    (0.94f, Color.FromArgb(185, _config.Colors.Percent94)),
-                    (0.973f, Color.FromArgb(225, _config.Colors.Percent97))
+                    (0.7f, Color.FromArgb(135, _config.Colors.NormalRange)),
+                    (0.94f, Color.FromArgb(185, _config.Colors.EarlyUpshift)),
+                    (0.973f, Color.FromArgb(225, _config.Colors.Upshift))
                 };
 
             _cachedBackground = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>

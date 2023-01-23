@@ -250,20 +250,18 @@ namespace RaceElement.Controls
                 FontFamily = FindResource("Conthrax") as FontFamily,
                 BorderBrush = Brushes.OrangeRed,
                 BorderThickness = new Thickness(0, 0, 0, 1.5),
-                Margin = new Thickness(0, -1, 0, 5),
-                HorizontalAlignment = HorizontalAlignment.Center,
+                Margin = new Thickness(0, 0, 0, 5),
+                HorizontalAlignment = HorizontalAlignment.Left,
                 FontSize = 30,
-                FontStyle = FontStyles.Italic,
                 Foreground = Brushes.White
             };
             TextBlock overlayDescription = new TextBlock()
             {
                 Text = overlayAttribute.Description,
-                HorizontalAlignment = HorizontalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Left,
                 TextWrapping = TextWrapping.Wrap,
-                TextAlignment = TextAlignment.Center,
                 FontSize = 13.5,
-                Margin = new Thickness(0, 0, 0, 3),
+                Margin = new Thickness(9, 0, 0, 3),
             };
             StackPanel stackerOverlayInfo = new StackPanel()
             {

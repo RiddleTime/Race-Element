@@ -19,7 +19,7 @@ namespace RaceElement.Controls.HUD.Controls
 
         public ListViewItem GenerateOption(string group, string label, PropertyInfo pi, ConfigField configField)
         {
-            Grid grid = new Grid() { /*Height = 26*/ };
+            Grid grid = new Grid() { Margin = new Thickness(0, 0, 0, 2) /*Height = 26*/ };
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(120, GridUnitType.Pixel) });
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(240, GridUnitType.Pixel) });
 
@@ -66,12 +66,12 @@ namespace RaceElement.Controls.HUD.Controls
             return new Label()
             {
                 Content = string.Concat(label.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' '),
-                Margin = new Thickness(0),
+                Margin = new Thickness(0, 2, 0, 0),
                 Padding = new Thickness(7, 0, 0, 0),
                 FontWeight = FontWeights.Normal,
                 FontSize = 13.5,
                 HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Top,
             };
         }
 
