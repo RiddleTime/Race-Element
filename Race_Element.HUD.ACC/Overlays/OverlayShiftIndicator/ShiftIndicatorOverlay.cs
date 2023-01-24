@@ -14,7 +14,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 {
     [Overlay(Name = "Shift Indicator", Version = 1.00,
         Description = "A bar showing the current RPM, optionally showing when the pit limiter is enabled.")]
-    internal class ShiftIndicatorOverlay : AbstractOverlay
+    internal sealed class ShiftIndicatorOverlay : AbstractOverlay
     {
         private readonly ShiftIndicatorConfiguration _config = new ShiftIndicatorConfiguration();
 

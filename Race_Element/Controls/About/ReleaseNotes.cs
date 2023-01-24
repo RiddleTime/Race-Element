@@ -6,7 +6,7 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.1.5.9", "- Shift Indicator HUD: added configurable opacity for each color state." },
+            {"0.1.5.9", "- Shift Indicator HUD: Added configurable opacity for each color state." },
             {"0.1.5.8", "- Damage HUD will now display during movement mode even if autohide is enabled."+
                         "\n- Colors of Shift Indicator HUD can now be adjusted."},
             {"0.1.5.7", "- Improved rendering quality of pressures in tyre info hud." },
