@@ -225,11 +225,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
                         index = _colors.IndexOf(colorRange);
                     }
 
-                var cachedBitmap = new CachedBitmap((int)(_config.Bar.Width * this.Scale * percent), (int)(_config.Bar.Height * this.Scale), cg =>
+                int barDrawWidth = (int)(_config.Bar.Width * percent);
+                var cachedBitmap = new CachedBitmap(barDrawWidth, _config.Bar.Height, cg =>
                   {
                       _cachedColorBars[index].Draw(cg);
                   });
-                cachedBitmap.Draw(g, 0, 0, (int)(_config.Bar.Width * percent), _config.Bar.Height - 1);
+                cachedBitmap.Draw(g, 0, 0, barDrawWidth, _config.Bar.Height - 1);
                 cachedBitmap.Dispose();
             }
 

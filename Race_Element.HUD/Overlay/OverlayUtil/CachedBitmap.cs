@@ -11,7 +11,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil
         public readonly int Height;
         public delegate void Renderer(Graphics g);
 
-        private readonly Bitmap _bitmap;
+        private Bitmap _bitmap;
         private Renderer _renderer;
 
         /// <summary>
@@ -26,12 +26,9 @@ namespace RaceElement.HUD.Overlay.OverlayUtil
             this.Width = width;
             this.Height = height;
             _renderer = renderer;
-            _bitmap = new Bitmap(Width, Height, PixelFormat.Format32bppPArgb);
 
             if (preRender)
                 Render();
-
-
         }
 
         /// <summary>
@@ -52,6 +49,9 @@ namespace RaceElement.HUD.Overlay.OverlayUtil
 
         public void Render()
         {
+            if (_bitmap == null)
+                _bitmap = new Bitmap(Width, Height, PixelFormat.Format32bppPArgb);
+
             lock (_bitmap)
             {
                 using (Graphics g = Graphics.FromImage(_bitmap))
@@ -94,7 +94,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil
 
         public void Dispose()
         {
-            _bitmap.Dispose();
+            _bitmap?.Dispose();
         }
     }
 }
