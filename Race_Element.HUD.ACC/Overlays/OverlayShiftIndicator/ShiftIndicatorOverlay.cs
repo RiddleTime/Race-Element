@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 {
@@ -45,9 +46,17 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             public ColorsGrouping Colors { get; set; } = new ColorsGrouping();
             public class ColorsGrouping
             {
-                public Color NormalRange { get; set; } = Color.FromArgb(255, 5, 255, 5);
-                public Color EarlyUpshift { get; set; } = Color.FromArgb(255, 255, 255, 0);
-                public Color Upshift { get; set; } = Color.FromArgb(255, 255, 4, 4);
+                public Color NormalColor { get; set; } = Color.FromArgb(255, 5, 255, 5);
+                [IntRange(75, 255, 1)]
+                public int NormalOpacity { get; set; } = 255;
+
+                public Color EarlyColor { get; set; } = Color.FromArgb(255, 255, 255, 0);
+                [IntRange(75, 255, 1)]
+                public int EarlyOpacity { get; set; } = 255;
+
+                public Color UpshiftColor { get; set; } = Color.FromArgb(255, 255, 4, 4);
+                [IntRange(75, 255, 1)]
+                public int UpshiftOpacity { get; set; } = 255;
             }
 
             public ShiftIndicatorConfig()
@@ -63,7 +72,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
         private Font _font;
         private float _halfRpmStringWidth = -1;
-        private List<(float, Color)> colors;
+
+        private List<(float, Color)> _colors;
+        private List<CachedBitmap> _cachedColorBars;
 
         public ShiftIndicatorOverlay(Rectangle rectangle) : base(rectangle, "Shift Indicator")
         {
@@ -75,14 +86,29 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
         public sealed override void BeforeStart()
         {
             if (_config.Bar.ShowRpm || _config.Bar.ShowPitLimiter)
-                _font = FontUtil.FontUnispace(15);
+            {
+                float height = _config.Bar.Height - 14;
+                height.Clip(11, 22);
+                _font = FontUtil.FontUnispace(height);
+            }
 
-            colors = new List<(float, Color)>
+            _colors = new List<(float, Color)>
                 {
-                    (0.7f, Color.FromArgb(135, _config.Colors.NormalRange)),
-                    (0.94f, Color.FromArgb(185, _config.Colors.EarlyUpshift)),
-                    (0.973f, Color.FromArgb(225, _config.Colors.Upshift))
+                    (0.7f, Color.FromArgb(_config.Colors.NormalOpacity, _config.Colors.NormalColor)),
+                    (0.94f, Color.FromArgb(_config.Colors.EarlyOpacity, _config.Colors.EarlyColor)),
+                    (0.973f, Color.FromArgb(_config.Colors.UpshiftOpacity, _config.Colors.UpshiftColor))
                 };
+
+            _cachedColorBars = new List<CachedBitmap>();
+            foreach (var color in _colors.Select(x => x.Item2))
+            {
+                _cachedColorBars.Add(new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
+                {
+                    Rectangle rect = new Rectangle(0, 1, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale));
+                    LinearGradientBrush pathGradient = new LinearGradientBrush(rect, Color.FromArgb(color.A - 50, color), color, LinearGradientMode.Horizontal);
+                    g.FillRoundedRectangle(pathGradient, rect, (int)(6 * this.Scale));
+                }));
+            }
 
             _cachedBackground = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
             {
@@ -101,23 +127,15 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
                 if (leftOver < 70)
                     lineCount--;
 
-                Pen linePen = new Pen(new SolidBrush(Color.FromArgb(90, Color.White)), 2 * this.Scale);
+                Pen linePen = new Pen(new SolidBrush(Color.FromArgb(110, Color.Black)), 2 * this.Scale);
 
                 double thousandPercent = 1000d / pageStatic.MaxRpm * lineCount;
                 double baseX = (_config.Bar.Width * this.Scale) / lineCount * thousandPercent;
                 for (int i = 1; i <= lineCount; i++)
                 {
                     int x = (int)(i * baseX);
-
                     g.DrawLine(linePen, x, 1, x, (_config.Bar.Height * this.Scale) - 1);
-
-                    //if (i == lineCount - 1)
-                    //{
-
-
-                    //}
                 }
-
             });
 
             if (_config.Bar.ShowPitLimiter)
@@ -129,17 +147,23 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
         public sealed override void BeforeStop()
         {
-            if (_cachedBackground != null)
-                _cachedBackground.Dispose();
+            _cachedBackground?.Dispose();
+            _cachedRpmLines?.Dispose();
 
-            if (_cachedRpmLines != null)
-                _cachedRpmLines.Dispose();
+            _cachedPitLimiterOutline?.Dispose();
+            if (_cachedColorBars != null)
+                foreach (CachedBitmap cachedBitmap in _cachedColorBars)
+                {
+                    cachedBitmap?.Dispose();
+                }
         }
+
+        public sealed override bool ShouldRender() => DefaultShouldRender();
 
         public sealed override void Render(Graphics g)
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+            g.TextRenderingHint = TextRenderingHint.AntiAlias;
             g.TextContrast = 1;
 
             if (_cachedBackground != null)
@@ -171,9 +195,16 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             string currentRpm = $"{pagePhysics.Rpms}".FillStart(4, ' ');
 
             if (_halfRpmStringWidth < 0)
-                _halfRpmStringWidth = g.MeasureString(currentRpm, _font).Width / 2;
+                _halfRpmStringWidth = g.MeasureString("9999", _font).Width / 2;
 
-            g.DrawStringWithShadow(currentRpm, _font, Brushes.White, new PointF(_config.Bar.Width / 2 - _halfRpmStringWidth, _config.Bar.Height / 2 - _font.Height / 2 + 1));
+            DrawTextWithOutline(g, Color.White, currentRpm, (int)(_config.Bar.Width / 2), (int)(_config.Bar.Height / 2 - _font.Height / 2.05));
+        }
+
+        private void DrawTextWithOutline(Graphics g, Color textColor, string text, int x, int y)
+        {
+            Rectangle backgroundDimension = new Rectangle((int)(x - _halfRpmStringWidth), y, (int)(_halfRpmStringWidth * 2), _font.Height);
+            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), backgroundDimension, 2);
+            g.DrawStringWithShadow(text, _font, textColor, new PointF(x - _halfRpmStringWidth, y + _font.Height / 14f), 1.5f * this.Scale);
         }
 
         private void DrawRpmBar(Graphics g)
@@ -187,18 +218,19 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
             if (percent > 0)
             {
-                Color rpmColor = Color.FromArgb(125, 255, 255, 255);
-
-                foreach ((float, Color) colorRange in colors)
+                int index = 0;
+                foreach ((float, Color) colorRange in _colors)
                     if (percent > colorRange.Item1)
-                        rpmColor = colorRange.Item2;
+                    {
+                        index = _colors.IndexOf(colorRange);
+                    }
 
-                if (percent >= 1)
-                    rpmColor = Color.Red;
-
-                percent.Clip(0.05d, 1d);
-
-                g.FillRoundedRectangle(new SolidBrush(rpmColor), new Rectangle(0, 0, (int)(_config.Bar.Width * percent), _config.Bar.Height), 6);
+                var cachedBitmap = new CachedBitmap((int)(_config.Bar.Width * this.Scale * percent), (int)(_config.Bar.Height * this.Scale), cg =>
+                  {
+                      _cachedColorBars[index].Draw(cg);
+                  });
+                cachedBitmap.Draw(g, 0, 0, (int)(_config.Bar.Width * percent), _config.Bar.Height - 1);
+                cachedBitmap.Dispose();
             }
 
             DrawRpmBar1kLines(g);
@@ -213,11 +245,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             }
 
             _cachedRpmLines.Draw(g, _config.Bar.Width, _config.Bar.Height);
-        }
-
-        public sealed override bool ShouldRender()
-        {
-            return DefaultShouldRender();
         }
     }
 }
