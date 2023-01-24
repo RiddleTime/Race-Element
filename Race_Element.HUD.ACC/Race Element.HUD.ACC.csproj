@@ -90,6 +90,7 @@
     <Compile Include="Overlays\OverlayInputs\InputsOverlay.cs" />
     <Compile Include="Overlays\OverlayRaceInfo\RaceInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayRefuel\OverlayRefuel.cs" />
+    <Compile Include="Overlays\OverlayShiftIndicator\ShiftIndicatorConfiguration.cs" />
     <Compile Include="Overlays\OverlayShiftIndicator\ShiftIndicatorOverlay.cs" />
     <Compile Include="Overlays\OverlaySpeedometer\SpeedometerOverlay.cs" />
     <Compile Include="Overlays\OverlaySpotter\OverlaySpotter.cs" />
