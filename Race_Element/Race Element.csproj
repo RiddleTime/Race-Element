@@ -533,7 +533,6 @@
     </None>
     <Resource Include="Fonts\ConthraxSb.ttf" />
     <None Include="key.snk" />
-    <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

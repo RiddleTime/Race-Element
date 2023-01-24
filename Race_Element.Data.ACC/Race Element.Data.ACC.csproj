@@ -213,7 +213,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Race_Element.Broadcast\Race Element.Broadcast.csproj">
