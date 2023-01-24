@@ -5,7 +5,7 @@ using System.Drawing.Imaging;
 
 namespace RaceElement.HUD.Overlay.OverlayUtil
 {
-    public class CachedBitmap : IDisposable
+    public sealed class CachedBitmap : IDisposable
     {
         public readonly int Width;
         public readonly int Height;
@@ -95,6 +95,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil
         public void Dispose()
         {
             _bitmap?.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

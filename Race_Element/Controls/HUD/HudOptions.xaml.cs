@@ -220,7 +220,7 @@ namespace RaceElement.Controls
             }
             else
             {
-                configStackPanel.Children.Clear(); 
+                configStackPanel.Children.Clear();
                 titleBar.Children.Clear();
             }
         }
@@ -269,7 +269,7 @@ namespace RaceElement.Controls
                 Text = overlayAttribute.Description,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 TextWrapping = TextWrapping.Wrap,
-                TextAlignment= TextAlignment.Center,
+                TextAlignment = TextAlignment.Center,
                 FontSize = 13.5,
                 Margin = new Thickness(0, 0, 0, 2),
             };
@@ -589,7 +589,7 @@ namespace RaceElement.Controls
 
                 if (cga != null)
                 {
-                    Debug.WriteLine($"{type.Name} -  {type.ReflectedType.FullName} - {type.PropertyType.Name}");
+                    //Debug.WriteLine($"{type.Name} -  {type.ReflectedType.FullName} - {type.PropertyType.Name}");
 
                     ListView listView = new ListView()
                     {
@@ -626,12 +626,10 @@ namespace RaceElement.Controls
                         }
 
                         if (configField != null)
-                        {
                             Dispatcher.BeginInvoke(new Action(() =>
                             {
                                 listView.Items.Add(ControlFactory.Instance.GenerateOption($"{type.Name}", $"{subType.Name}", subType, configField));
                             }));
-                        }
                     }
 
                     stacker.Children.Add(listView);

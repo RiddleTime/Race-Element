@@ -1,13 +1,11 @@
 ﻿using RaceElement.Controls.HUD.Controls.ValueControls;
 using RaceElement.HUD.Overlay.Configuration;
-using Octokit;
 using System;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Threading;
 using static RaceElement.HUD.Overlay.Configuration.OverlayConfiguration;
 using Label = System.Windows.Controls.Label;
 

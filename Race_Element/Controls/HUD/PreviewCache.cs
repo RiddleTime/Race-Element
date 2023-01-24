@@ -41,7 +41,7 @@ namespace RaceElement.Controls.HUD
                         previewImage.Stretch = Stretch.UniformToFill;
                         previewImage.Width = preview.Width;
                         previewImage.Height = preview.Height;
-                        previewImage.Source = ImageControlCreator.CreateImage(preview.Width, preview.Height, preview.CachedBitmap).Source;
+                        previewImage.Source = ImageControlCreator.CreateImage(preview.Width + 1, preview.Height + 1, preview.CachedBitmap).Source;
                     }
                     else
                     {

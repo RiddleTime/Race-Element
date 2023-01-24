@@ -24,7 +24,7 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
                 Width = 250,
                 Height = 66,
                 Margin = new Thickness(0, 1, 7, 1),
-                Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(140, 2, 2, 2)),
+                Background = new SolidColorBrush(Color.FromArgb(140, 2, 2, 2)),
                 Cursor = Cursors.Hand,
                 VerticalAlignment = VerticalAlignment.Center,
             };

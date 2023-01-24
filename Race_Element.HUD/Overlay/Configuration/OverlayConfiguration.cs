@@ -181,10 +181,6 @@ namespace RaceElement.HUD.Overlay.Configuration
                     return Color.Red;
                 }
             }
-            finally
-            {
-                Debug.WriteLine(value);
-            }
         }
     }
 }
