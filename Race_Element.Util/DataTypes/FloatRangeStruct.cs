@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RaceElement.Util.DataTypes
 {
-    public struct FloatRangeStruct
+    public readonly struct FloatRangeStruct
     {
         readonly float From;
         readonly float To;

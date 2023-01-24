@@ -77,57 +77,63 @@ namespace RaceElement.Controls.HUD.Controls
         {
             IControl contentControl = null;
 
-            if (pi.PropertyType == typeof(bool))
+            switch (pi.PropertyType)
             {
-                IValueControl<bool> boolValueControl = new BooleanValueControl(configField);
-                contentControl = boolValueControl;
-            }
-            if (pi.PropertyType == typeof(int))
-            {
-                IntRangeAttribute intRange = null;
-                foreach (Attribute customAttribute in Attribute.GetCustomAttributes(pi))
-                    if (customAttribute is IntRangeAttribute intRangeAttribute)
-                        intRange = intRangeAttribute;
+                case Type _ when pi.PropertyType == typeof(bool):
+                    {
+                        IValueControl<bool> boolValueControl = new BooleanValueControl(configField);
+                        contentControl = boolValueControl;
+                        break;
+                    }
+                case Type _ when pi.PropertyType == typeof(int):
+                    {
+                        IntRangeAttribute intRange = null;
+                        foreach (Attribute customAttribute in Attribute.GetCustomAttributes(pi))
+                            if (customAttribute is IntRangeAttribute intRangeAttribute)
+                                intRange = intRangeAttribute;
 
-                if (intRange != null)
-                {
-                    IValueControl<int> intValueControl = new IntegerValueControl(intRange, configField);
-                    contentControl = intValueControl;
-                }
-            }
-            if (pi.PropertyType == typeof(byte))
-            {
-                ByteRangeAttribute byteRange = null;
-                foreach (Attribute customattribute in Attribute.GetCustomAttributes(pi))
-                    if (customattribute is ByteRangeAttribute byteRangeAttribute)
-                        byteRange = byteRangeAttribute;
+                        if (intRange != null)
+                        {
+                            IValueControl<int> intValueControl = new IntegerValueControl(intRange, configField);
+                            contentControl = intValueControl;
+                        }
+                        break;
+                    }
+                case Type _ when pi.PropertyType == typeof(byte):
+                    {
+                        ByteRangeAttribute byteRange = null;
+                        foreach (Attribute customattribute in Attribute.GetCustomAttributes(pi))
+                            if (customattribute is ByteRangeAttribute byteRangeAttribute)
+                                byteRange = byteRangeAttribute;
 
-                if (byteRange != null)
-                {
-                    IValueControl<byte> intValueControl = new ByteValueControl(byteRange, configField);
-                    contentControl = intValueControl;
-                }
-            }
-            if (pi.PropertyType == typeof(float))
-            {
-                FloatRangeAttribute floatRange = null;
-                foreach (Attribute customAttribute in Attribute.GetCustomAttributes(pi))
-                    if (customAttribute is FloatRangeAttribute floatRangeAttribute)
-                        floatRange = floatRangeAttribute;
+                        if (byteRange != null)
+                        {
+                            IValueControl<byte> intValueControl = new ByteValueControl(byteRange, configField);
+                            contentControl = intValueControl;
+                        }
+                        break;
+                    }
+                case Type _ when pi.PropertyType == typeof(float):
+                    {
+                        FloatRangeAttribute floatRange = null;
+                        foreach (Attribute customAttribute in Attribute.GetCustomAttributes(pi))
+                            if (customAttribute is FloatRangeAttribute floatRangeAttribute)
+                                floatRange = floatRangeAttribute;
 
-                if (floatRange != null)
-                {
-                    IValueControl<float> floatValueControl = new FloatValueControl(floatRange, configField);
-                    contentControl = floatValueControl;
-                }
+                        if (floatRange != null)
+                        {
+                            IValueControl<float> floatValueControl = new FloatValueControl(floatRange, configField);
+                            contentControl = floatValueControl;
+                        }
+                        break;
+                    }
+                case Type _ when pi.PropertyType == typeof(System.Drawing.Color):
+                    {
+                        IValueControl<System.Drawing.Color> valueControl = new ColorValueControl(configField);
+                        contentControl = valueControl;
+                        break;
+                    }
             }
-
-            if (pi.PropertyType == typeof(System.Drawing.Color))
-            {
-                IValueControl<System.Drawing.Color> valueControl = new ColorValueControl(configField);
-                contentControl = valueControl;
-            }
-
 
             if (contentControl == null)
                 return null;
