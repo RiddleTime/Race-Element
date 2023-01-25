@@ -6,6 +6,7 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.1.6.1", "Hotfix: Fix app crash during movement mode activation." },
             {"0.1.6.0", "- Better precision and clarity for Shift Indicator HUD."+
                         "\n- Improved visibility of IMO/OMI coloring for Tyre Info HUD."+
                         "\n- Improved memory management of HUDs."},

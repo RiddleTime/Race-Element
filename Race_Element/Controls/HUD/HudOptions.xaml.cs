@@ -41,6 +41,9 @@ namespace RaceElement.Controls
 
         private readonly object[] DefaultOverlayArgs = new object[] { new System.Drawing.Rectangle((int)SystemParameters.PrimaryScreenWidth / 2, (int)SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
 
+        private DateTime _lastMovementModeChange = DateTime.MinValue;
+        private const int MovementModeDebounce = 250;
+
         public HudOptions()
         {
             InitializeComponent();
@@ -78,13 +81,25 @@ namespace RaceElement.Controls
                     {
                         BuildOverlayPanel();
 
+                        checkBoxReposition.PreviewMouseDown += (s, e) =>
+                        {
+                            if (_lastMovementModeChange.AddMilliseconds(MovementModeDebounce) > DateTime.Now)
+                            {
+                                e.Handled = true;
+                                Debug.WriteLine("debounced");
+                            }
+                        };
                         checkBoxReposition.Checked += (s, e) =>
                         {
+                            _lastMovementModeChange = DateTime.Now;
+
                             SetRepositionMode(true);
                             gridRepositionToggler.Background = new SolidColorBrush(Color.FromArgb(47, 69, 255, 00));
                         };
                         checkBoxReposition.Unchecked += (s, e) =>
                         {
+                            _lastMovementModeChange = DateTime.Now;
+
                             SetRepositionMode(false);
                             gridRepositionToggler.Background = new SolidColorBrush(Color.FromArgb(47, 255, 69, 00));
                         };
@@ -94,8 +109,11 @@ namespace RaceElement.Controls
                         {
                             if (e.ChangedButton == MouseButton.Middle)
                             {
-                                this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
-                                e.Handled = true;
+                                if (_lastMovementModeChange.AddMilliseconds(MovementModeDebounce) < DateTime.Now)
+                                {
+                                    this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
+                                    e.Handled = true;
+                                }
                             }
                         };
 
@@ -130,7 +148,12 @@ namespace RaceElement.Controls
 
 
                         m_GlobalHook = Hook.GlobalEvents();
-                        m_GlobalHook.OnCombination(new Dictionary<Combination, Action> { { Combination.FromString("Control+Home"), () => this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked } });
+                        m_GlobalHook.OnCombination(new Dictionary<Combination, Action> {
+                            { Combination.FromString("Control+Home"), () => {
+                                 if (_lastMovementModeChange.AddMilliseconds(MovementModeDebounce) < DateTime.Now)
+                                    this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
+                            }}
+                        });
 
                         this.PreviewKeyDown += HudOptions_PreviewKeyDown;
                         this.PreviewMouseDown += HudOptions_PreviewMouseDown;

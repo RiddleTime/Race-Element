@@ -227,7 +227,6 @@ namespace RaceElement.HUD.Overlay.Internal
 
             //Debug.WriteLine("Hiding Window");
             User32.ShowWindow(base.Handle, User32.SW_HIDE);
-            bitmap?.Dispose();
         }
         /// <summary>
         /// Hides the window with animation effect and release it's handle.
@@ -914,6 +913,7 @@ namespace RaceElement.HUD.Overlay.Internal
         {
             if (!this._disposed)
             {
+                bitmap?.Dispose();
                 this.DestroyHandle();
                 this._disposed = true;
             }
