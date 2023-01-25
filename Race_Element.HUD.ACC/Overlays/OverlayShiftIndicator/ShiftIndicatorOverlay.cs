@@ -153,7 +153,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             if (_halfRpmStringWidth < 0)
                 _halfRpmStringWidth = g.MeasureString("9999", _font).Width / 2;
 
-            int x = (int)((_halfRpmStringWidth + 8) * this.Scale);
+            int x = (int)((_halfRpmStringWidth + 8));
             int y = (int)(_config.Bar.Height / 2 - _font.Height / 2.05);
             DrawTextWithOutline(g, Color.White, currentRpm, x, y);
         }
