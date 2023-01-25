@@ -109,9 +109,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             _cachedPitLimiterOutline?.Dispose();
             if (_cachedColorBars != null)
                 foreach (CachedBitmap cachedBitmap in _cachedColorBars)
-                {
                     cachedBitmap?.Dispose();
-                }
         }
 
         public sealed override bool ShouldRender() => DefaultShouldRender();
@@ -187,17 +185,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
                 double adjustedPercent = (currentRpm - 3000) / (maxRpm - 3000);
                 var barDrawWidth = (int)(_config.Bar.Width * adjustedPercent);
-                //var cachedBitmap = new CachedBitmap(barDrawWidth, _config.Bar.Height, cg =>
-                //  {
-                //      cg.SetClip(new Rectangle(0, 0, barDrawWidth, _config.Bar.Height));
-
-                //  })
 
                 g.SetClip(new Rectangle(0, 0, barDrawWidth, _config.Bar.Height));
                 _cachedColorBars[index].Draw(g, 1, 0, _config.Bar.Width - 1, _config.Bar.Height - 1);
-                //cachedBitmap.Draw(g, 1, 0, barDrawWidth - 1, _config.Bar.Height - 1);
-                //cachedBitmap.Dispose
-                //
+
                 g.SetClip(new Rectangle(0, 0, _config.Bar.Width, _config.Bar.Height));
             }
 

@@ -63,9 +63,6 @@ namespace RaceElement.HUD.Overlay.Internal
                 LoadFieldConfig();
             }
             catch (Exception) { }
-
-
-
         }
 
         public bool DefaultShouldRender()

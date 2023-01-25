@@ -87,21 +87,21 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
             if (this._config.Information.PadLife)
             {
                 DrawPadWearText(g, 68, 19, Position.Front);
-                DrawPadWearText(g, 68, 156, Position.Rear);  // 103
+                DrawPadWearText(g, 68, 156, Position.Rear);
             }
 
             if (this._config.Information.BrakeTemps)
             {
                 DrawBrakeTemps(g, 68, 71, Position.Front);
-                DrawBrakeTemps(g, 68, 103, Position.Rear); // 156
+                DrawBrakeTemps(g, 68, 103, Position.Rear);
             }
 
             if (this._config.Information.TyreTemps)
             {
-                DrawTyreTemp(g, 28, 45, Wheel.FrontLeft);
-                DrawTyreTemp(g, 106, 45, Wheel.FrontRight);
-                DrawTyreTemp(g, 28, 129, Wheel.RearLeft);
-                DrawTyreTemp(g, 106, 129, Wheel.RearRight);
+                DrawTyreTemp(g, 28, 60, Wheel.FrontLeft);
+                DrawTyreTemp(g, 106, 60, Wheel.FrontRight);
+                DrawTyreTemp(g, 28, 114, Wheel.RearLeft);
+                DrawTyreTemp(g, 106, 114, Wheel.RearRight);
             }
         }
 

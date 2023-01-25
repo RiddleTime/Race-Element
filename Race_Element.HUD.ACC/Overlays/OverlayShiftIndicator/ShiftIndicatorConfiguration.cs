@@ -1,10 +1,5 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 {
@@ -16,11 +11,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
         {
             [ToolTip("Sets the Width of the shift indicator bar.")]
             [IntRange(160, 800, 10)]
-            public int Width { get; set; } = 300;
+            public int Width { get; set; } = 460;
 
             [ToolTip("Sets the Height of the shift indicator bar.")]
             [IntRange(20, 45, 5)]
-            public int Height { get; set; } = 30;
+            public int Height { get; set; } = 40;
 
             [ToolTip("Displays the current RPM inside of the shift indicator bar.")]
             public bool ShowRpm { get; set; } = true;
