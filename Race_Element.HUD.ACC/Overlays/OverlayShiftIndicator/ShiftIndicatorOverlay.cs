@@ -44,6 +44,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
                 height.Clip(11, 22);
                 _font = FontUtil.FontUnispace(height);
             }
+            int cornerRadius = (int)(10 * this.Scale);
 
             _colors = new List<(float, Color)>
                 {
@@ -59,7 +60,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
                 {
                     Rectangle rect = new Rectangle(0, 1, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale));
                     HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightDownwardDiagonal, color, Color.FromArgb(color.A - 50, color));
-                    g.FillRoundedRectangle(hatchBrush, rect, (int)(6 * this.Scale));
+                    g.FillRoundedRectangle(hatchBrush, rect, cornerRadius);
                 }));
             }
 
@@ -68,21 +69,23 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
                 int midHeight = (int)(_config.Bar.Height * this.Scale) / 2;
                 var linerBrush = new LinearGradientBrush(new Point(0, midHeight), new Point((int)(_config.Bar.Width * this.Scale), midHeight), Color.FromArgb(160, 0, 0, 0), Color.FromArgb(230, 0, 0, 0));
-                g.FillRoundedRectangle(linerBrush, new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), (int)(6 * Scale));
-                g.DrawRoundedRectangle(new Pen(Color.Black, 1 * this.Scale), new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), (int)(6 * Scale));
+                g.FillRoundedRectangle(linerBrush, new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), cornerRadius);
+                g.DrawRoundedRectangle(new Pen(Color.Black, 1 * this.Scale), new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), cornerRadius);
             });
 
             _cachedRpmLines = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
             {
-                int lineCount = (int)Math.Floor(pageStatic.MaxRpm / 1000d);
+                int lineCount = (int)Math.Floor((pageStatic.MaxRpm - 3000) / 1000d);
 
-                int leftOver = pageStatic.MaxRpm % 1000;
+                int leftOver = (pageStatic.MaxRpm - 3000) % 1000;
                 if (leftOver < 70)
                     lineCount--;
 
-                Pen linePen = new Pen(new SolidBrush(Color.FromArgb(110, Color.Black)), 2 * this.Scale);
+                lineCount.ClipMin(0);
 
-                double thousandPercent = 1000d / pageStatic.MaxRpm * lineCount;
+                Pen linePen = new Pen(new SolidBrush(Color.FromArgb(220, Color.Black)), 1.5f * this.Scale);
+
+                double thousandPercent = (1000d / (pageStatic.MaxRpm - 3000)) * lineCount;
                 double baseX = (_config.Bar.Width * this.Scale) / lineCount * thousandPercent;
                 for (int i = 1; i <= lineCount; i++)
                 {
@@ -94,7 +97,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             if (_config.Bar.ShowPitLimiter)
                 _cachedPitLimiterOutline = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
                 {
-                    g.DrawRoundedRectangle(new Pen(Color.Yellow, 2.5f), new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), (int)(8 * Scale));
+                    g.DrawRoundedRectangle(new Pen(Color.Yellow, 2.5f), new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), cornerRadius);
                 });
         }
 
@@ -115,9 +118,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
         public sealed override void Render(Graphics g)
         {
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.TextRenderingHint = TextRenderingHint.AntiAlias;
-            g.TextContrast = 1;
 
             if (_cachedBackground != null)
                 _cachedBackground.Draw(g, _config.Bar.Width, _config.Bar.Height);
@@ -126,6 +126,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
                 DrawPitLimiterBar(g);
 
             DrawRpmBar(g);
+
+
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.TextRenderingHint = TextRenderingHint.AntiAlias;
+            g.TextContrast = 1;
 
             if (_config.Bar.ShowRpm)
                 DrawRpmText(g);
@@ -137,7 +142,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             if (_limiterColorSwitch > this.RefreshRateHz / 5)
                 _cachedPitLimiterOutline?.Draw(g, 0, 0, _config.Bar.Width, _config.Bar.Height);
 
-            if (_limiterColorSwitch > this.RefreshRateHz / 2) // makes this flash 3 times a second
+            if (_limiterColorSwitch > this.RefreshRateHz / 2)
                 _limiterColorSwitch = 0;
 
             _limiterColorSwitch++;
@@ -150,7 +155,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             if (_halfRpmStringWidth < 0)
                 _halfRpmStringWidth = g.MeasureString("9999", _font).Width / 2;
 
-            DrawTextWithOutline(g, Color.White, currentRpm, (int)(_config.Bar.Width / 2), (int)(_config.Bar.Height / 2 - _font.Height / 2.05));
+            int x = (int)((_halfRpmStringWidth + 8) * this.Scale);
+            int y = (int)(_config.Bar.Height / 2 - _font.Height / 2.05);
+            DrawTextWithOutline(g, Color.White, currentRpm, x, y);
         }
 
         private void DrawTextWithOutline(Graphics g, Color textColor, string text, int x, int y)
@@ -178,14 +185,20 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
                         index = _colors.IndexOf(colorRange);
                     }
 
-                int barDrawWidth = (int)(_config.Bar.Width * percent);
-                var cachedBitmap = new CachedBitmap(barDrawWidth, (int)(_config.Bar.Height), cg =>
-                  {
-                      cg.SetClip(new Rectangle(0, 0, barDrawWidth, _config.Bar.Height));
-                      _cachedColorBars[index].Draw(cg, _config.Bar.Width, _config.Bar.Height);
-                  });
-                cachedBitmap.Draw(g, 1, 0, barDrawWidth - 1, _config.Bar.Height - 1);
-                cachedBitmap.Dispose();
+                double adjustedPercent = (currentRpm - 3000) / (maxRpm - 3000);
+                var barDrawWidth = (int)(_config.Bar.Width * adjustedPercent);
+                //var cachedBitmap = new CachedBitmap(barDrawWidth, _config.Bar.Height, cg =>
+                //  {
+                //      cg.SetClip(new Rectangle(0, 0, barDrawWidth, _config.Bar.Height));
+
+                //  })
+
+                g.SetClip(new Rectangle(0, 0, barDrawWidth, _config.Bar.Height));
+                _cachedColorBars[index].Draw(g, 1, 0, _config.Bar.Width - 1, _config.Bar.Height - 1);
+                //cachedBitmap.Draw(g, 1, 0, barDrawWidth - 1, _config.Bar.Height - 1);
+                //cachedBitmap.Dispose
+                //
+                g.SetClip(new Rectangle(0, 0, _config.Bar.Width, _config.Bar.Height));
             }
 
             DrawRpmBar1kLines(g);

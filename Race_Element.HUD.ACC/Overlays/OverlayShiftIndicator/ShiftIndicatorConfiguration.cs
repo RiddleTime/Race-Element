@@ -29,7 +29,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             public bool ShowPitLimiter { get; set; } = true;
 
             [ToolTip("Sets the refresh rate.")]
-            [IntRange(20, 80, 5)]
+            [IntRange(20, 70, 2)]
             public int RefreshRate { get; set; } = 50;
         }
 

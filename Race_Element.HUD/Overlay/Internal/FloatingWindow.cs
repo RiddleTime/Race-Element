@@ -64,17 +64,18 @@ namespace RaceElement.HUD.Overlay.Internal
                 Bitmap bitmap1 = new Bitmap(this.Size.Width, this.Size.Height, PixelFormat.Format32bppPArgb);
                 using (Graphics graphics1 = Graphics.FromImage(bitmap1))
                 {
-                    Rectangle rectangle1;
-                    SIZE size1;
+                    
                     POINT point1;
                     POINT point2;
                     BLENDFUNCTION blendfunction1;
-                    rectangle1 = new Rectangle(0, 0, this.Size.Width, this.Size.Height);
+                    Rectangle rectangle1 = new Rectangle(0, 0, this.Size.Width, this.Size.Height);
                     this.PerformPaint(new PaintEventArgs(graphics1, rectangle1));
                     IntPtr ptr1 = User32.GetDC(IntPtr.Zero);
                     IntPtr ptr2 = Gdi32.CreateCompatibleDC(ptr1);
                     IntPtr ptr3 = bitmap1.GetHbitmap(Color.FromArgb(0));
                     IntPtr ptr4 = Gdi32.SelectObject(ptr2, ptr3);
+
+                    SIZE size1;
                     size1.cx = this.Size.Width;
                     size1.cy = this.Size.Height;
                     point1.X = this.Location.X;
