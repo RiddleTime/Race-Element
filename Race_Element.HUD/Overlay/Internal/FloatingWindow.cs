@@ -57,44 +57,40 @@ namespace RaceElement.HUD.Overlay.Internal
             this.UpdateLayeredWindow();
         }
 
-        private Graphics graphics;
-        private Bitmap bitmap;
         protected void UpdateLayeredWindow()
         {
             try
             {
-                bitmap?.Dispose();
-                bitmap = new Bitmap(this.Size.Width, this.Size.Height, PixelFormat.Format32bppPArgb);
-                using (graphics = Graphics.FromImage(bitmap))
-                {
-                    POINT point1;
-                    POINT point2;
-                    BLENDFUNCTION blendfunction1;
-                    Rectangle rectangle1 = new Rectangle(0, 0, this.Size.Width, this.Size.Height);
-                    this.PerformPaint(new PaintEventArgs(graphics, rectangle1));
-                    IntPtr ptr1 = User32.GetDC(IntPtr.Zero);
-                    IntPtr ptr2 = Gdi32.CreateCompatibleDC(ptr1);
-                    IntPtr ptr3 = bitmap.GetHbitmap(Color.FromArgb(0));
-                    IntPtr ptr4 = Gdi32.SelectObject(ptr2, ptr3);
+                using Bitmap bitmap = new Bitmap(this.Size.Width, this.Size.Height, PixelFormat.Format32bppPArgb);
+                using Graphics graphics = Graphics.FromImage(bitmap);
 
-                    SIZE size1;
-                    size1.cx = this.Size.Width;
-                    size1.cy = this.Size.Height;
-                    point1.X = this.Location.X;
-                    point1.Y = this.Location.Y;
-                    point2.X = 0;
-                    point2.Y = 0;
-                    blendfunction1 = new BLENDFUNCTION();
-                    blendfunction1.BlendOp = 0;
-                    blendfunction1.BlendFlags = 0;
-                    blendfunction1.SourceConstantAlpha = this._alpha;
-                    blendfunction1.AlphaFormat = 1;
-                    User32.UpdateLayeredWindow(base.Handle, ptr1, ref point1, ref size1, ptr2, ref point2, 0, ref blendfunction1, 2); //2=ULW_ALPHA
-                    Gdi32.SelectObject(ptr2, ptr4);
-                    User32.ReleaseDC(IntPtr.Zero, ptr1);
-                    Gdi32.DeleteObject(ptr3);
-                    Gdi32.DeleteDC(ptr2);
-                }
+                POINT point1;
+                POINT point2;
+                BLENDFUNCTION blendfunction1;
+                Rectangle rectangle1 = new Rectangle(0, 0, this.Size.Width, this.Size.Height);
+                this.PerformPaint(new PaintEventArgs(graphics, rectangle1));
+                IntPtr ptr1 = User32.GetDC(IntPtr.Zero);
+                IntPtr ptr2 = Gdi32.CreateCompatibleDC(ptr1);
+                IntPtr ptr3 = bitmap.GetHbitmap(Color.FromArgb(0));
+                IntPtr ptr4 = Gdi32.SelectObject(ptr2, ptr3);
+
+                SIZE size1;
+                size1.cx = this.Size.Width;
+                size1.cy = this.Size.Height;
+                point1.X = this.Location.X;
+                point1.Y = this.Location.Y;
+                point2.X = 0;
+                point2.Y = 0;
+                blendfunction1 = new BLENDFUNCTION();
+                blendfunction1.BlendOp = 0;
+                blendfunction1.BlendFlags = 0;
+                blendfunction1.SourceConstantAlpha = this._alpha;
+                blendfunction1.AlphaFormat = 1;
+                User32.UpdateLayeredWindow(base.Handle, ptr1, ref point1, ref size1, ptr2, ref point2, 0, ref blendfunction1, 2); //2=ULW_ALPHA
+                Gdi32.SelectObject(ptr2, ptr4);
+                User32.ReleaseDC(IntPtr.Zero, ptr1);
+                Gdi32.DeleteObject(ptr3);
+                Gdi32.DeleteDC(ptr2);
             }
             catch (Exception e)
             {
@@ -913,7 +909,6 @@ namespace RaceElement.HUD.Overlay.Internal
         {
             if (!this._disposed)
             {
-                bitmap?.Dispose();
                 this.DestroyHandle();
                 this._disposed = true;
             }

@@ -53,7 +53,6 @@ namespace RaceElement.Controls
                 _hudSettings = new HudSettings();
                 _hudSettingsJson = _hudSettings.Get();
 
-
                 listOverlays.SelectionChanged += ListOverlays_SelectionChanged;
                 listDebugOverlays.SelectionChanged += ListDebugOverlays_SelectionChanged;
                 tabControlListOverlays.SelectionChanged += (s, e) =>
@@ -84,10 +83,7 @@ namespace RaceElement.Controls
                         checkBoxReposition.PreviewMouseDown += (s, e) =>
                         {
                             if (_lastMovementModeChange.AddMilliseconds(MovementModeDebounce) > DateTime.Now)
-                            {
                                 e.Handled = true;
-                                Debug.WriteLine("debounced");
-                            }
                         };
                         checkBoxReposition.Checked += (s, e) =>
                         {
@@ -111,7 +107,10 @@ namespace RaceElement.Controls
                             {
                                 if (_lastMovementModeChange.AddMilliseconds(MovementModeDebounce) < DateTime.Now)
                                 {
-                                    this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
+                                    Dispatcher.BeginInvoke(new Action(() =>
+                                    {
+                                        this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
+                                    }));
                                     e.Handled = true;
                                 }
                             }
@@ -150,8 +149,11 @@ namespace RaceElement.Controls
                         m_GlobalHook = Hook.GlobalEvents();
                         m_GlobalHook.OnCombination(new Dictionary<Combination, Action> {
                             { Combination.FromString("Control+Home"), () => {
-                                 if (_lastMovementModeChange.AddMilliseconds(MovementModeDebounce) < DateTime.Now)
-                                    this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
+                                if (_lastMovementModeChange.AddMilliseconds(MovementModeDebounce) < DateTime.Now) {
+                                    Dispatcher.BeginInvoke(new Action(() => {
+                                        this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
+                                    }));
+                                }
                             }}
                         });
 
