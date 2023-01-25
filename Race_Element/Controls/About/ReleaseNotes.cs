@@ -8,7 +8,7 @@ namespace RaceElement.Controls
         {
             {"0.1.6.0", "- Better precision and clarity for Shift Indiciator HUD."+
                         "\n- Improved visibility of IMO/OMI coloring for Tyre Info HUD."+
-                        "- Improved memory management of HUDs."},
+                        "\n- Improved memory management of HUDs."},
             {"0.1.5.9", "- Shift Indicator HUD:" +
                         "\n  - Added configurable opacity for each color state."+
                         "\n  - Added background for RPM Text where as the font size now scales with bar height."},
