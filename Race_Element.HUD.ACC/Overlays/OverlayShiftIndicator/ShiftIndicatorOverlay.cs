@@ -58,8 +58,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
                 _cachedColorBars.Add(new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
                 {
                     Rectangle rect = new Rectangle(0, 1, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale));
-                    LinearGradientBrush pathGradient = new LinearGradientBrush(rect, Color.FromArgb(color.A - 50, color), color, LinearGradientMode.Horizontal);
-                    g.FillRoundedRectangle(pathGradient, rect, (int)(6 * this.Scale));
+                    HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightDownwardDiagonal, color, Color.FromArgb(color.A - 50, color));
+                    g.FillRoundedRectangle(hatchBrush, rect, (int)(6 * this.Scale));
                 }));
             }
 
@@ -179,11 +179,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
                     }
 
                 int barDrawWidth = (int)(_config.Bar.Width * percent);
-                var cachedBitmap = new CachedBitmap(barDrawWidth, _config.Bar.Height, cg =>
+                var cachedBitmap = new CachedBitmap(barDrawWidth, (int)(_config.Bar.Height), cg =>
                   {
-                      _cachedColorBars[index].Draw(cg);
+                      cg.SetClip(new Rectangle(0, 0, barDrawWidth, _config.Bar.Height));
+                      _cachedColorBars[index].Draw(cg, _config.Bar.Width, _config.Bar.Height);
                   });
-                cachedBitmap.Draw(g, 0, 0, barDrawWidth, _config.Bar.Height - 1);
+                cachedBitmap.Draw(g, 1, 0, barDrawWidth - 1, _config.Bar.Height - 1);
                 cachedBitmap.Dispose();
             }
 
