@@ -57,22 +57,24 @@ namespace RaceElement.HUD.Overlay.Internal
             this.UpdateLayeredWindow();
         }
 
+        private Graphics graphics;
+        private Bitmap bitmap;
         protected void UpdateLayeredWindow()
         {
             try
             {
-                Bitmap bitmap1 = new Bitmap(this.Size.Width, this.Size.Height, PixelFormat.Format32bppPArgb);
-                using (Graphics graphics1 = Graphics.FromImage(bitmap1))
+                bitmap?.Dispose();
+                bitmap = new Bitmap(this.Size.Width, this.Size.Height, PixelFormat.Format32bppPArgb);
+                using (graphics = Graphics.FromImage(bitmap))
                 {
-                    
                     POINT point1;
                     POINT point2;
                     BLENDFUNCTION blendfunction1;
                     Rectangle rectangle1 = new Rectangle(0, 0, this.Size.Width, this.Size.Height);
-                    this.PerformPaint(new PaintEventArgs(graphics1, rectangle1));
+                    this.PerformPaint(new PaintEventArgs(graphics, rectangle1));
                     IntPtr ptr1 = User32.GetDC(IntPtr.Zero);
                     IntPtr ptr2 = Gdi32.CreateCompatibleDC(ptr1);
-                    IntPtr ptr3 = bitmap1.GetHbitmap(Color.FromArgb(0));
+                    IntPtr ptr3 = bitmap.GetHbitmap(Color.FromArgb(0));
                     IntPtr ptr4 = Gdi32.SelectObject(ptr2, ptr3);
 
                     SIZE size1;
@@ -225,6 +227,7 @@ namespace RaceElement.HUD.Overlay.Internal
 
             //Debug.WriteLine("Hiding Window");
             User32.ShowWindow(base.Handle, User32.SW_HIDE);
+            bitmap?.Dispose();
         }
         /// <summary>
         /// Hides the window with animation effect and release it's handle.
