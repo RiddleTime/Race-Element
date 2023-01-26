@@ -2,8 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Quartz;
-using Quartz.Impl;
-using RaceElement.Data.ACC.Core.Game.Jobs;
+using RaceElement.HUD.ACC.Overlays.OverlayStartScreen;
+using RaceElement.Util.Settings;
 using System.Globalization;
 using System.Windows;
 
@@ -17,11 +17,18 @@ namespace RaceElement
         public static App Instance { get; private set; }
         public bool StartMinimized = false;
 
+        internal StartScreenOverlay _startScreenOverlay;
+
         public App()
         {
             this.Startup += App_Startup;
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             Instance = this;
+
+            var uiSettings = new UiSettings().Get();
+
+            _startScreenOverlay = new StartScreenOverlay(new System.Drawing.Rectangle(uiSettings.X, uiSettings.Y, 150, 150));
+            _startScreenOverlay.Start(false);
 
             var builder = Host.CreateDefaultBuilder().ConfigureServices((cxt, services) =>
              {
@@ -39,6 +46,7 @@ namespace RaceElement
              }).Build();
 
             builder.RunAsync();
+
         }
 
         private void App_Startup(object sender, StartupEventArgs e)

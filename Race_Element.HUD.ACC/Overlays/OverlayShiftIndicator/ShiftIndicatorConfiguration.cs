@@ -22,7 +22,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             public int HideRpm { get; set; } = 3000;
 
             [ToolTip("Displays the current RPM inside of the shift indicator bar.")]
-            public bool ShowRpm { get; set; } = true;
+            public bool ShowRpmText { get; set; } = true;
 
             [ToolTip("Displays when the pit limiter is active.")]
             public bool ShowPitLimiter { get; set; } = true;

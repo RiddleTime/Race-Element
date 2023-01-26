@@ -30,6 +30,11 @@ namespace RaceElement.HUD.Overlay.Util
             return GetSpecialFont(size - 1, "RaceElement.HUD.Fonts.unispace.bold.ttf", "Unispace");
         }
 
+        public static Font FontConthrax(float size)
+        {
+            return GetSpecialFont(size, "RaceElement.HUD.Fonts.ConthraxSb.ttf", "Conthrax Sb");
+        }
+
         private static Font GetSpecialFont(float size, string resourceName, string fontName)
         {
             Font font = null;

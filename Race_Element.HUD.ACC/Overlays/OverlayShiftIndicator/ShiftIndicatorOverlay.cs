@@ -1,5 +1,4 @@
 ﻿using RaceElement.Util.SystemExtensions;
-using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
@@ -38,7 +37,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
         public sealed override void BeforeStart()
         {
-            if (_config.Bar.ShowRpm || _config.Bar.ShowPitLimiter)
+            if (_config.Bar.ShowRpmText || _config.Bar.ShowPitLimiter)
             {
                 float height = _config.Bar.Height - 14;
                 height.Clip(11, 22);
@@ -126,7 +125,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
             g.TextContrast = 1;
 
-            if (_config.Bar.ShowRpm)
+            if (_config.Bar.ShowRpmText)
                 DrawRpmText(g);
         }
 

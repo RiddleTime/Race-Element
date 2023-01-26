@@ -324,7 +324,7 @@ namespace RaceElement.Controls
             return label;
         }
 
-        private static Dictionary<int, string> Nationalities = new Dictionary<int, string>()
+        private static readonly Dictionary<int, string> Nationalities = new Dictionary<int, string>()
             {
                 {0,"Other" },
                 {49,"Andorra" },

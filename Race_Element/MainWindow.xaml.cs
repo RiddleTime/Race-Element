@@ -20,6 +20,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using System.IO;
+using RaceElement.HUD.ACC.Overlays.OverlayStartScreen;
 
 namespace RaceElement
 {
@@ -41,6 +42,8 @@ namespace RaceElement
 
             InitializeComponent();
             Instance = this;
+            
+         
 
             Debug.WriteLine($"Startup time(ms): {DateTime.Now.Subtract(startTime).TotalMilliseconds}");
 
@@ -175,6 +178,9 @@ namespace RaceElement
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            App.Instance._startScreenOverlay.Stop(true);
+            App.Instance._startScreenOverlay.Dispose();
+
             ThreadPool.QueueUserWorkItem(x =>
             {
                 Thread.Sleep(2000);

@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <EmbeddedResource Include="Fonts\ConthraxSb.ttf" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Race_Element.Broadcast\Race Element.Broadcast.csproj">
