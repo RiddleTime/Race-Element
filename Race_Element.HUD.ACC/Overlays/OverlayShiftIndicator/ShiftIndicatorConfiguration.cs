@@ -17,6 +17,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             [IntRange(20, 45, 5)]
             public int Height { get; set; } = 40;
 
+            [ToolTip("Hide Rpms in the bar, starting from 0.")]
+            [IntRange(0, 3000, 100)]
+            public int HideRpm { get; set; } = 3000;
+
             [ToolTip("Displays the current RPM inside of the shift indicator bar.")]
             public bool ShowRpm { get; set; } = true;
 

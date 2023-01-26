@@ -66,7 +66,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
             _cachedBackground = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
             {
-
                 int midHeight = (int)(_config.Bar.Height * this.Scale) / 2;
                 var linerBrush = new LinearGradientBrush(new Point(0, midHeight), new Point((int)(_config.Bar.Width * this.Scale), midHeight), Color.FromArgb(160, 0, 0, 0), Color.FromArgb(230, 0, 0, 0));
                 g.FillRoundedRectangle(linerBrush, new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), cornerRadius);
@@ -75,9 +74,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
             _cachedRpmLines = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
             {
-                int lineCount = (int)Math.Floor((pageStatic.MaxRpm - 3000) / 1000d);
+                int lineCount = (int)Math.Floor((pageStatic.MaxRpm - _config.Bar.HideRpm) / 1000d);
 
-                int leftOver = (pageStatic.MaxRpm - 3000) % 1000;
+                int leftOver = (pageStatic.MaxRpm - _config.Bar.HideRpm) % 1000;
                 if (leftOver < 70)
                     lineCount--;
 
@@ -85,7 +84,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
                 Pen linePen = new Pen(new SolidBrush(Color.FromArgb(220, Color.Black)), 1.5f * this.Scale);
 
-                double thousandPercent = (1000d / (pageStatic.MaxRpm - 3000)) * lineCount;
+                double thousandPercent = (1000d / (pageStatic.MaxRpm - _config.Bar.HideRpm)) * lineCount;
                 double baseX = (_config.Bar.Width * this.Scale) / lineCount * thousandPercent;
                 for (int i = 1; i <= lineCount; i++)
                 {
@@ -116,15 +115,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
         public sealed override void Render(Graphics g)
         {
-
-            if (_cachedBackground != null)
-                _cachedBackground.Draw(g, _config.Bar.Width, _config.Bar.Height);
+            _cachedBackground?.Draw(g, _config.Bar.Width, _config.Bar.Height);
 
             if (_config.Bar.ShowPitLimiter && pagePhysics.PitLimiterOn)
                 DrawPitLimiterBar(g);
 
             DrawRpmBar(g);
-
 
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
@@ -179,11 +175,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
                 int index = 0;
                 foreach ((float, Color) colorRange in _colors)
                     if (percent > colorRange.Item1)
-                    {
                         index = _colors.IndexOf(colorRange);
-                    }
 
-                double adjustedPercent = (currentRpm - 3000) / (maxRpm - 3000);
+                double adjustedPercent = (currentRpm - _config.Bar.HideRpm) / (maxRpm - _config.Bar.HideRpm);
                 var barDrawWidth = (int)(_config.Bar.Width * adjustedPercent);
 
                 g.SetClip(new Rectangle(0, 0, barDrawWidth, _config.Bar.Height));
