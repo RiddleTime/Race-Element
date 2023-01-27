@@ -16,6 +16,15 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
         private readonly CurrentGearConfiguration _config = new CurrentGearConfiguration();
         private sealed class CurrentGearConfiguration : OverlayConfiguration
         {
+            [ConfigGrouping("Colors", "Adjust colors")]
+            public ColorsGrouping Colors { get; set; } = new ColorsGrouping();
+            public class ColorsGrouping
+            {
+                public Color TextColor { get; set; } = Color.FromArgb(255, 255, 255, 255);
+                [IntRange(75, 255, 1)]
+                public int TextOpacity { get; set; } = 255;
+            }
+
             public CurrentGearConfiguration() { AllowRescale = true; }
         }
 
@@ -53,7 +62,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
                     g.FillRoundedRectangle(hatchBrush, renderRectangle, (int)(6 * this.Scale));
 
                     int textWidth = (int)g.MeasureString(gear, font).Width;
-                    g.DrawStringWithShadow(gear, font, Color.White, new Point(renderRectangle.Width / 2 - textWidth / 2, (int)(renderRectangle.Height / 2 - font.Height / 2.18)), 1.5f * this.Scale);
+                    g.DrawStringWithShadow(gear, font, Color.FromArgb(_config.Colors.TextOpacity, _config.Colors.TextColor), new Point(renderRectangle.Width / 2 - textWidth / 2, (int)(renderRectangle.Height / 2 - font.Height / 2.18)), 1.5f * this.Scale);
                 }));
             }
 
