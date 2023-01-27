@@ -62,6 +62,7 @@
     <Compile Include="Overlays\OverlayBoostGauge\BoostGaugeOverlay.cs" />
     <Compile Include="Overlays\OverlayCarInfo\CarInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayCornerNames\CornerNamesOverlay.cs" />
+    <Compile Include="Overlays\OverlayCurrentGear\CurrentGearOverlay.cs" />
     <Compile Include="Overlays\OverlayDamage\DamageOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\DebugInfoHelper.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayACC\AccOverlay.cs" />

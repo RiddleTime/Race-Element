@@ -15,7 +15,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
         {
             this.X = rectangle.X;
             this.Y = rectangle.Y;
-            this.Width = 350;
+            this.Width = 360;
             this.Height = 45;
             this.RefreshRateHz = 1;
         }
@@ -25,10 +25,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
             cachedBitmap = new CachedBitmap(this.Width, this.Height, g =>
             {
                 Rectangle rectangle = new Rectangle(0, 0, Width - 1, Height - 1);
-                var brush = new LinearGradientBrush(new Point(0, 0), new Point(Width, 0), Color.FromArgb(147, Color.Black), Color.FromArgb(137, Color.Black));
-                g.FillRoundedRectangle(brush, rectangle, 8);
+                HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightDownwardDiagonal, Color.FromArgb(225, Color.Black), Color.FromArgb(185, Color.Black));
+                g.FillRoundedRectangle(hatchBrush, rectangle, 8);
+                hatchBrush.Dispose();
 
-                g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+                g.TextRenderingHint = TextRenderingHint.AntiAlias;
                 g.TextContrast = 1;
 
                 string header = "Race Element is starting";

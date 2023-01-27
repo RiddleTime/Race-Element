@@ -60,7 +60,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
         public sealed override void BeforeStart()
         {
             if (this._config.Inputs.CurrentGear)
-                _gearIndicatorFont = FontUtil.FontOrbitron(40);
+                _gearIndicatorFont = FontUtil.FontConthrax(40);
 
             _cachedBackground = new CachedBitmap((int)(Width * this.Scale), (int)(Height * this.Scale), g =>
             {
@@ -116,7 +116,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            _cachedBackground?.Draw(g, 0, 0, (int)_size, (int)_size);
+            _cachedBackground?.Draw(g, 0, 0, _size, _size);
 
             DrawSteeringIndicator(g);
 
