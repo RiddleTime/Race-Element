@@ -4,6 +4,7 @@ using RaceElement.Data.ACC.Tracks;
 using RaceElement.Util;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
@@ -40,7 +41,7 @@ namespace RaceElement.Controls
         private void BuildTrackList()
         {
             this.listViewTracks.Items.Clear();
-            foreach (KeyValuePair<string, Data.ACC.Tracks.TrackData.AbstractTrackData> kv in Data.ACC.Tracks.TrackData.Tracks)
+            foreach (KeyValuePair<string, AbstractTrackData> kv in Tracks.ToImmutableArray().Sort((x, y) => x.Key.CompareTo(y.Key)))
             {
                 ListViewItem trackItem = new ListViewItem()
                 {

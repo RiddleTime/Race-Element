@@ -14,8 +14,8 @@ namespace RaceElement
     /// </summary>
     public partial class App : Application
     {
-        public static App Instance { get; private set; }
-        public bool StartMinimized = false;
+        internal static App Instance { get; private set; }
+        internal bool StartMinimized { get; private set; } = false;
 
         internal StartScreenOverlay _startScreenOverlay;
 
