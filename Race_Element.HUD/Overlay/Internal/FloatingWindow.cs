@@ -17,6 +17,7 @@ namespace RaceElement.HUD.Overlay.Internal
 
 
         #region #  Enums  #
+        [Flags]
         public enum AnimateMode
         {
             Blend,
@@ -708,7 +709,6 @@ namespace RaceElement.HUD.Overlay.Internal
 
         #region #  Events  #
 
-        public event PaintEventHandler Paint;
         public event EventHandler SizeChanged;
         public event EventHandler LocationChanged;
         public event EventHandler Move;
