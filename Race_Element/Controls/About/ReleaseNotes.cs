@@ -6,7 +6,8 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.1.6.4", "- Internal optimizations." },
+            {"0.1.6.4", "- Internal optimizations."+
+                        "\n- Prevent HUDs from showing during replay whilst being in a session."},
             {"0.1.6.3", "- Added color picker to Current Gear HUD."},
             {"0.1.6.2", "- Added splash screen when starting the app."+
                         "\n- Added Current Gear HUD."},

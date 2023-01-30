@@ -89,7 +89,7 @@ namespace RaceElement.HUD.Overlay.Internal
                 if (RaceSessionState.IsFormationLap(pageGraphics.GlobalRed, broadCastRealTime.Phase))
                     shouldRender = true;
 
-                if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE)
+                if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE || pageGraphics.Status == ACCSharedMemory.AcStatus.AC_REPLAY)
                     shouldRender = false;
             }
 
