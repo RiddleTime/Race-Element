@@ -20,7 +20,6 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using System.IO;
-using RaceElement.HUD.ACC.Overlays.OverlayStartScreen;
 
 namespace RaceElement
 {
@@ -42,8 +41,7 @@ namespace RaceElement
 
             InitializeComponent();
             Instance = this;
-            
-         
+
 
             Debug.WriteLine($"Startup time(ms): {DateTime.Now.Subtract(startTime).TotalMilliseconds}");
 
@@ -122,12 +120,6 @@ namespace RaceElement
 
         private void MainWindow_Drop(object sender, DragEventArgs e)
         {
-            /// https://stackoverflow.com/questions/3794462/enable-dragdrop-from-explorer-to-run-as-administrator-application
-            /// 
-            // run new service with less elevated rights... this one will be able to accept drag and drop.
-
-
-
             if (e.Data is DataObject)
             {
                 DataObject data = (DataObject)e.Data;
@@ -161,11 +153,11 @@ namespace RaceElement
                         {
                             LiveryImporter.ImportLiveryZips(new FileInfo(droppedItem));
                         }));
-                    }
 
+                        e.Handled = true;
+                    }
                 }
             }
-
         }
 
         public void SaveLocation()
@@ -184,7 +176,7 @@ namespace RaceElement
             ThreadPool.QueueUserWorkItem(x =>
             {
                 Thread.Sleep(2000);
-                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
                 string loadString = $"Loaded Race Element {GetAssemblyFileVersion()}";
                 string fileHash = FileUtil.GetBase64Hash(FileUtil.AppFullName);
 

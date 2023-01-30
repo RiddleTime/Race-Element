@@ -15,7 +15,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
     internal sealed class DamageOverlay : AbstractOverlay
     {
         private readonly DamageConfiguration _config = new DamageConfiguration();
-        private class DamageConfiguration : OverlayConfiguration
+        private sealed class DamageConfiguration : OverlayConfiguration
         {
             [ConfigGrouping("Damage", "Changes the behavior of the Damage HUD")]
             public DamageGrouping Damage { get; set; } = new DamageGrouping();
@@ -34,14 +34,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
             }
         }
 
-        private class PathShape
+        private sealed class PathShape
         {
             public RectangleF Shape { get; set; }
             public GraphicsPath Path { get; set; }
             public Brush Brush { get; set; }
         }
 
-        private readonly Font _font;
+        private Font _font;
         private const int OriginalWidth = 150;
         private const int OriginalHeight = 220;
 
@@ -65,21 +65,20 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
         {
             this.RefreshRateHz = 1;
 
-            _font = FontUtil.FontUnispace(11 * this.Scale);
             this.Width = OriginalWidth;
             this.Height = OriginalHeight;
         }
 
         public override void BeforeStart()
         {
+            _font = FontUtil.FontUnispace(11 * this.Scale);
+
             CreatePathShapes();
 
             int scaledWidth = (int)(this.Width * this.Scale) - 1;
             int scaledHeight = (int)(this.Height * this.Scale) - 1;
             _carOutline = new CachedBitmap(scaledWidth, scaledHeight, g =>
             {
-                GraphicsPath path = new GraphicsPath();
-
                 float horizontalPadding = scaledWidth * 0.05f;
                 float verticalPadding = scaledHeight * 0.025f;
 
@@ -344,7 +343,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
                 float bodyDamageRear = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Rear);
                 float bodyDamageLeft = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Left);
                 float bodyDamageRight = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Right);
-                float bodyDamageCentre = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Centre);
 
                 if (bodyDamageFront > 0)
                     DrawTextWithOutline(g, Color.White, $"{bodyDamageFront:F1}", (int)(scaledWidth / 2), (int)(verticalPadding * 1.2f - halfFontHeight * 2));
@@ -363,7 +361,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
         private void DrawTextWithOutline(Graphics g, Color textColor, string text, int x, int y)
         {
             int textWidth = (int)g.MeasureString(text, _font).Width;
-            Rectangle backgroundDimension = new Rectangle(x - textWidth / 2, y, (int)textWidth, _font.Height);
+            Rectangle backgroundDimension = new Rectangle(x - textWidth / 2, y, textWidth, _font.Height);
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 0, 0, 0)), backgroundDimension, 2);
             g.DrawRoundedRectangle(new Pen(Color.FromArgb(135, 230, 0, 0), 0.6f * this.Scale), backgroundDimension, 2);
             g.DrawStringWithShadow(text, _font, textColor, new PointF(x - textWidth / 2, y + _font.GetHeight(g) / 11f), 0.75f * this.Scale);

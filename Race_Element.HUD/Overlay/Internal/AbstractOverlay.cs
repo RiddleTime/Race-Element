@@ -215,8 +215,6 @@ namespace RaceElement.HUD.Overlay.Internal
                             }
                         }
 
-                        Debug.WriteLine("Render loop finished");
-                        //this.Stop();
                     }).Start();
                 }
             }
@@ -269,7 +267,6 @@ namespace RaceElement.HUD.Overlay.Internal
             if (animate)
                 this.HideAnimate(AnimateMode.Blend | AnimateMode.ExpandCollapse, 200);
 
-            //this.EnableReposition(false);
             try
             {
                 BeforeStop();

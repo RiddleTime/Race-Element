@@ -143,7 +143,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
         private void DrawRpmText(Graphics g)
         {
-            string currentRpm = $"{pagePhysics.Rpms}".FillStart(4, ' ');
+            string currentRpm = $"{pagePhysics.Rpms}".FillStart(4, '0');
 
             if (_halfRpmStringWidth < 0)
                 _halfRpmStringWidth = g.MeasureString("9999", _font).Width / 2;

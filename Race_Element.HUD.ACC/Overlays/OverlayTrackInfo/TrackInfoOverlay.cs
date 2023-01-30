@@ -38,8 +38,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
         public TrackInfoOverlay(Rectangle rectangle) : base(rectangle, "Track Info")
         {
             this.Width = 230;
-            this.Height = _panel.FontHeight * 6; ;
-            RefreshRateHz = 5;
+            this.Height = _panel.FontHeight * 6;
+            RefreshRateHz = 2;
         }
 
         public sealed override void BeforeStart()

@@ -53,39 +53,32 @@ namespace RaceElement.Controls
 
         private void SetupsTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (e.NewValue != null)
+            if (e.NewValue != null && e.NewValue.GetType() == typeof(TreeViewItem))
             {
-                if (e.NewValue.GetType() == typeof(TreeViewItem))
+                TreeViewItem item = (TreeViewItem)e.NewValue;
+                if (item.DataContext is FileInfo file)
                 {
-                    TreeViewItem item = (TreeViewItem)e.NewValue;
-                    if (item.DataContext != null)
-                    {
-                        if (item.DataContext.GetType() == typeof(FileInfo))
-                        {
-                            FileInfo file = (FileInfo)item.DataContext;
-                            _selectedSetup = file.FullName;
+                    _selectedSetup = file.FullName;
 
-                            Root root = GetSetupJsonRoot(file);
-                            if (root == null)
-                                return;
+                    Root root = GetSetupJsonRoot(file);
+                    if (root == null)
+                        return;
 
 #if DEBUG
-                            // make edit button visible depending on whether there is a setup changer avaiable for the car
-                            if (GetChanger(ParseCarName(root.CarName)) == null)
-                            {
-                                buttonEditSetup.Visibility = Visibility.Hidden;
-                            }
-                            else
-                            {
+                    // make edit button visible depending on whether there is a setup changer avaiable for the car
+                    if (GetChanger(ParseCarName(root.CarName)) == null)
+                    {
+                        buttonEditSetup.Visibility = Visibility.Hidden;
+                    }
+                    else
+                    {
 
-                                buttonEditSetup.Visibility = Visibility.Visible;
-                            }
+                        buttonEditSetup.Visibility = Visibility.Visible;
+                    }
 #endif
 
-                            _setupRenderer.LogSetup(ref flowDocument, file.FullName);
-                            e.Handled = true;
-                        }
-                    }
+                    _setupRenderer.LogSetup(ref flowDocument, file.FullName);
+                    e.Handled = true;
                 }
             }
         }

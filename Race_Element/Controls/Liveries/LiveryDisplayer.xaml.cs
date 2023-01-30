@@ -88,9 +88,8 @@ namespace RaceElement.Controls
         {
             foreach (var control in imageGrid.Children)
             {
-                if (control is System.Windows.Controls.Image)
+                if (control is Image imageControl)
                 {
-                    System.Windows.Controls.Image imageControl = (System.Windows.Controls.Image)control;
                     BitmapImage image = (BitmapImage)imageControl.Source;
                     if (image != null && image.StreamSource != null)
                     {
@@ -98,9 +97,9 @@ namespace RaceElement.Controls
                         image.StreamSource.Dispose();
                     }
                     imageControl.Source = null;
-                    imageControl = null;
                 }
             }
+
             imageGrid.Children.Clear();
             imageGrid.UpdateLayout();
 
@@ -130,7 +129,7 @@ namespace RaceElement.Controls
             Livery.CarsRoot = LiveryImporter.GetLivery(livery.CarsFile);
             buttonGenerateDDS.Visibility = DDSutil.HasDdsFiles(Livery) ? Visibility.Hidden : Visibility.Visible;
 
-            ThreadPool.QueueUserWorkItem(x =>
+            _ = ThreadPool.QueueUserWorkItem(x =>
             {
                 Instance.Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -180,7 +179,7 @@ namespace RaceElement.Controls
                                 ThreadPool.QueueUserWorkItem(gc =>
                                 {
                                     Thread.Sleep(1 * 1000);
-                                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
                                 });
                             }
 
@@ -288,23 +287,30 @@ namespace RaceElement.Controls
             ThreadPool.QueueUserWorkItem(x =>
             {
                 BitmapImage bmi = new BitmapImage();
-                using (var stream = new FileStream(path, FileMode.Open))
-                {
-                    bmi.BeginInit();
-                    bmi.CacheOption = BitmapCacheOption.OnLoad;
-                    bmi.StreamSource = stream;
-                    bmi.EndInit();
 
-                    bmi.Freeze();
-                    stream.Close();
-                    stream.Dispose();
+                try
+                {
+                    using (var stream = new FileStream(path, FileMode.Open))
+                    {
+                        bmi.BeginInit();
+                        bmi.CacheOption = BitmapCacheOption.OnLoad;
+                        bmi.StreamSource = stream;
+                        bmi.EndInit();
+
+                        bmi.Freeze();
+                        stream.Close();
+                    }
+
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        imageControl.Source = bmi;
+                    }));
                 }
-
-                Dispatcher.BeginInvoke(new Action(() =>
+                catch (Exception)
                 {
-                    imageControl.Source = bmi;
-                }));
-
+                    bmi.StreamSource?.Close();
+                    bmi.StreamSource?.Dispose();
+                }
             });
         }
 
