@@ -13,6 +13,8 @@ using static RaceElement.Data.ConversionFactory;
 using RaceElement.Util.SystemExtensions;
 using System.Collections.Generic;
 using System.Threading;
+using System.Collections.Specialized;
+using System.Threading.Tasks;
 
 namespace RaceElement.Controls
 {
@@ -198,7 +200,7 @@ namespace RaceElement.Controls
                                         };
                                         setupTreeViewItem.MouseLeftButtonUp += (s, e) => e.Handled = true;
 
-                                        setupTreeViewItem.ContextMenu = GetCompareContextMenu(trackFile);
+                                        setupTreeViewItem.ContextMenu = GetSetupContextMenu(trackFile);
 
                                         trackTreeViewItem.Items.Add(setupTreeViewItem);
                                     }
@@ -297,7 +299,7 @@ namespace RaceElement.Controls
             }
         }
 
-        private ContextMenu GetCompareContextMenu(FileInfo file)
+        private ContextMenu GetSetupContextMenu(FileInfo file)
         {
             ContextMenu contextMenu = new ContextMenu()
             {
@@ -333,6 +335,18 @@ namespace RaceElement.Controls
             contextMenu.Items.Add(addToCompare1);
             contextMenu.Items.Add(addToCompare2);
 
+            Button copyToClipBoard = new Button()
+            {
+                Content = "Copy to Clipboard",
+                CommandParameter = file,
+                Style = Resources["MaterialDesignRaisedButton"] as Style,
+                Margin = new Thickness(0),
+                Height = 30,
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            copyToClipBoard.Click += CopyToClipBoard_Click;
+            contextMenu.Items.Add(copyToClipBoard);
+
             Button copyToOtherTrack = new Button()
             {
                 Content = "Copy to other track",
@@ -345,10 +359,35 @@ namespace RaceElement.Controls
             copyToOtherTrack.Click += CopyToOtherTrack_Click;
             contextMenu.Items.Add(copyToOtherTrack);
 
+
             contextMenu.HorizontalOffset = 0;
             contextMenu.VerticalOffset = 0;
 
             return contextMenu;
+        }
+
+        private void CopyToClipBoard_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                FileInfo file = (FileInfo)button.DataContext;
+                Thread thread = new Thread(() =>
+                {
+                    Clipboard.SetFileDropList(new StringCollection
+                    {
+                        file.FullName
+                    });
+
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        MainWindow.Instance.EnqueueSnackbarMessage($"Copied setup \'{file.Name}\' to the clipboard.");
+                    }));
+                });
+                thread.SetApartmentState(ApartmentState.STA);
+                thread.Start();
+
+                (button.Parent as ContextMenu).IsOpen = false;
+            }
         }
 
         private void CopyToOtherTrack_Click(object sender, RoutedEventArgs e)
