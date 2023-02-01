@@ -664,7 +664,7 @@ namespace RaceElement.Controls
             menu.Items.Add(addTagToSkinPack);
 
             MenuItem deleteTag = ContextMenuHelper.DefaultMenuItem("Delete Tag", PackIconKind.TagRemoveOutline);
-            deleteTag.ToolTip = "Warning! This permantely deletes this tag!";
+            deleteTag.ToolTip = "Warning! This permanently deletes this tag!";
             deleteTag.Click += (e, s) => LiveryTagging.DeleteTag(tag);
             menu.Items.Add(deleteTag);
 

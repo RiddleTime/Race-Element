@@ -41,7 +41,7 @@ namespace RaceElement.Controls.Util
                 HorizontalOffset = horizontalOffset,
                 VerticalOffset = verticalOffset,
                 UsesItemContainerTemplate = true,
-                Background = new SolidColorBrush(Color.FromArgb(220, 0, 0, 0)),
+                Background = new SolidColorBrush(Color.FromArgb(235, 5, 5, 5)),
             };
         }
     }

@@ -125,7 +125,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
             Brush tyreBrush = Brushes.LimeGreen;
 
             if (temp > 90)
-                tyreBrush = Brushes.OrangeRed;
+                tyreBrush = Brushes.IndianRed;
             if (temp < 75)
                 tyreBrush = Brushes.Cyan;
 
@@ -133,7 +133,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
             {
                 tyreBrush = Brushes.LimeGreen;
                 if (temp > 65)
-                    tyreBrush = Brushes.OrangeRed;
+                    tyreBrush = Brushes.IndianRed;
                 if (temp < 25)
                     tyreBrush = Brushes.Cyan;
             }

@@ -181,7 +181,7 @@ namespace RaceElement.Controls
             ContextMenu menu = ContextMenuHelper.DefaultContextMenu();
 
             MenuItem deleteEntry = ContextMenuHelper.DefaultMenuItem("Delete", PackIconKind.Delete);
-            deleteEntry.ToolTip = "Warning! This permantely deletes this entry.";
+            deleteEntry.ToolTip = "Warning! This permanently deletes this entry.";
             deleteEntry.Click += (e, s) =>
             {
                 var serverList = _unlistedServerSettingsJson.Get();
