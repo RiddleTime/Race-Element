@@ -26,7 +26,7 @@ Skin packs can be created by right clicking single liveries/Teams/Cars and click
 After you have chosen the liveries you can decide to not include the dds files as these will increase the size of your skin pack.
 
 ## Tagging Liveries
-Liveries once imported can be tagged with a so called Tag. Tagged liveries can also be exported by right clicking them.
+Liveries once imported can be tagged with a so called Tag. Livery Tags can be exported by right clicking in them in the list.
 Before you can tag a livery you will need to create a new Tag which can be done in the Tags tab.
 
 ## Generating DDS(DirectDraw Surface) files
