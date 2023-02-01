@@ -73,9 +73,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
             _cachedRpmLines = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
             {
-                int lineCount = (int)Math.Floor((pageStatic.MaxRpm - _config.Bar.Range) / 1000d);
+                int lineCount = (int)Math.Floor((pageStatic.MaxRpm - _config.Bar.HideRpm) / 1000d);
 
-                int leftOver = (pageStatic.MaxRpm - _config.Bar.Range) % 1000;
+                int leftOver = (pageStatic.MaxRpm - _config.Bar.HideRpm) % 1000;
                 if (leftOver < 70)
                     lineCount--;
 
@@ -83,7 +83,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
                 Pen linePen = new Pen(new SolidBrush(Color.FromArgb(220, Color.Black)), 1.5f * this.Scale);
 
-                double thousandPercent = (1000d / (pageStatic.MaxRpm - _config.Bar.Range)) * lineCount;
+                double thousandPercent = (1000d / (pageStatic.MaxRpm - _config.Bar.HideRpm)) * lineCount;
                 double baseX = (_config.Bar.Width * this.Scale) / lineCount * thousandPercent;
                 for (int i = 1; i <= lineCount; i++)
                 {
@@ -143,7 +143,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
         private void DrawRpmText(Graphics g)
         {
-            string currentRpm = $"{pagePhysics.Rpms}".FillStart(4, ' ');
+            string currentRpm = $"{pagePhysics.Rpms}".FillStart(4, '0');
 
             if (_halfRpmStringWidth < 0)
                 _halfRpmStringWidth = g.MeasureString("9999", _font).Width / 2;
@@ -176,7 +176,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
                     if (percent > colorRange.Item1)
                         index = _colors.IndexOf(colorRange);
 
-                double adjustedPercent = (currentRpm - _config.Bar.Range) / (maxRpm - _config.Bar.Range);
+                double adjustedPercent = (currentRpm - _config.Bar.HideRpm) / (maxRpm - _config.Bar.HideRpm);
                 var barDrawWidth = (int)(_config.Bar.Width * adjustedPercent);
 
                 g.SetClip(new Rectangle(0, 0, barDrawWidth, _config.Bar.Height));
