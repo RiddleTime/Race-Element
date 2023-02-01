@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using MaterialDesignThemes.Wpf;
+using RaceElement.Controls.Util;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -15,32 +17,22 @@ namespace RaceElement.Controls
         {
             InitializeComponent();
 
-            tabSetupTree.ContextMenu = GetBrowseTabContextMenu();
+            this.Loaded += SetupsTab_Loaded;
             Instance = this;
+        }
+
+        private void SetupsTab_Loaded(object sender, RoutedEventArgs e)
+        {
+            tabSetupTree.ContextMenu = GetBrowseTabContextMenu();
         }
 
         private ContextMenu GetBrowseTabContextMenu()
         {
-            ContextMenu contextMenu = new ContextMenu()
-            {
-                Style = Resources["MaterialDesignContextMenu"] as Style,
-                Margin = new Thickness(0),
-                Padding = new Thickness(0),
-                GroupStyleSelector = null,
-                UsesItemContainerTemplate = true,
-                Background = new SolidColorBrush(Color.FromArgb(220, 0, 0, 0))
-            };
+            ContextMenu contextMenu = ContextMenuHelper.DefaultContextMenu();
 
-            Button refreshSetupTree = new Button()
-            {
-                Content = $"Refresh",
-                Style = Resources["MaterialDesignRaisedButton"] as Style,
-                Margin = new Thickness(0),
-                Height = 30,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
-            refreshSetupTree.Click += (s, e) => { SetupBrowser.Instance.FetchAllSetups(); ((s as Button).Parent as ContextMenu).IsOpen = false; };
-            contextMenu.Items.Add(refreshSetupTree);
+            MenuItem refresh = ContextMenuHelper.DefaultMenuItem("Refresh", PackIconKind.Refresh);
+            refresh.Click += (s, e) => SetupBrowser.Instance.FetchAllSetups();
+            contextMenu.Items.Add(refresh);
 
             return contextMenu;
         }

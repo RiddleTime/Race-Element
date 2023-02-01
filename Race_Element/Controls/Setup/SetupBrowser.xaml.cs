@@ -15,6 +15,9 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
+using RaceElement.Controls.Util;
+using System.Windows.Input;
+using MaterialDesignThemes.Wpf;
 
 namespace RaceElement.Controls
 {
@@ -232,135 +235,62 @@ namespace RaceElement.Controls
 
         private ContextMenu GetCarContextMenu(DirectoryInfo directory)
         {
-            ContextMenu menu = new ContextMenu()
-            {
-                Style = Resources["MaterialDesignContextMenu"] as Style,
-                Margin = new Thickness(-22, -16, -22, -16),
-                Padding = new Thickness(0),
-                UsesItemContainerTemplate = true,
-                Background = new SolidColorBrush(Color.FromArgb(220, 0, 0, 0)),
-            };
+            ContextMenu menu = ContextMenuHelper.DefaultContextMenu();
 
+            MenuItem folder = ContextMenuHelper.DefaultMenuItem("Open in explorer", PackIconKind.FolderOpen);
+            folder.CommandParameter = directory;
+            folder.Click += OpenFolder_Click;
 
-            Button openFolder = new Button()
-            {
-                Content = "Open in explorer",
-                CommandParameter = directory,
-                Style = Resources["MaterialDesignRaisedButton"] as Style,
-                Margin = new Thickness(0),
-                Height = 30,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
-            openFolder.Click += OpenFolder_Click;
-
-            menu.Items.Add(openFolder);
-
+            menu.Items.Add(folder);
             return menu;
         }
 
         private ContextMenu GetTrackContextMenu(DirectoryInfo directory)
         {
-            ContextMenu menu = new ContextMenu()
-            {
-                Style = Resources["MaterialDesignContextMenu"] as Style,
-                Margin = new Thickness(-22, -16, -22, -16),
-                Padding = new Thickness(0),
-                UsesItemContainerTemplate = true,
-                Background = new SolidColorBrush(Color.FromArgb(220, 0, 0, 0))
-            };
+            ContextMenu menu = ContextMenuHelper.DefaultContextMenu();
 
+            MenuItem folder = ContextMenuHelper.DefaultMenuItem("Open in explorer", PackIconKind.FolderOpen);
+            folder.CommandParameter = directory;
+            folder.Click += OpenFolder_Click;
 
-            Button openFolder = new Button()
-            {
-                Content = "Open in explorer",
-                CommandParameter = directory,
-                Style = Resources["MaterialDesignRaisedButton"] as Style,
-                Margin = new Thickness(0),
-                Height = 30,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
-            openFolder.Click += OpenFolder_Click;
-
-            menu.Items.Add(openFolder);
+            menu.Items.Add(folder);
 
             return menu;
         }
 
         private void OpenFolder_Click(object sender, RoutedEventArgs e)
         {
-            if (sender.GetType() == typeof(Button))
+            if (sender.GetType() == typeof(MenuItem))
             {
-                Button button = (Button)sender;
+                MenuItem button = (MenuItem)sender;
 
                 DirectoryInfo directory = (DirectoryInfo)button.CommandParameter;
                 Process.Start(directory.FullName);
-
-                (button.Parent as ContextMenu).IsOpen = false;
             }
         }
 
         private ContextMenu GetSetupContextMenu(FileInfo file)
         {
-            ContextMenu contextMenu = new ContextMenu()
-            {
-                Style = Resources["MaterialDesignContextMenu"] as Style,
-                Margin = new Thickness(-22,-16,-22,-16),
-                Padding = new Thickness(-20),
-                UsesItemContainerTemplate = true,
-                Background = new SolidColorBrush(Color.FromArgb(220, 0, 0, 0)),
-            };
+            ContextMenu contextMenu = ContextMenuHelper.DefaultContextMenu();
 
-            Button copyToClipBoard = new Button()
-            {
-                Content = "Copy to Clipboard",
-                CommandParameter = file,
-                Style = Resources["MaterialDesignRaisedButton"] as Style,
-                Margin = new Thickness(0),
-                Height = 30,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
-            copyToClipBoard.Click += CopyToClipBoard_Click;
+            MenuItem copy = ContextMenuHelper.DefaultMenuItem("Copy to clipboard", PackIconKind.ContentCopy);
+            copy.CommandParameter = file;
+            copy.Click += CopyToClipBoard_Click;
+            contextMenu.Items.Add(copy);
 
-            Button addToCompare1 = new Button()
-            {
-                Content = "Add to compare 1",
-                CommandParameter = file,
-                Style = Resources["MaterialDesignRaisedButton"] as Style,
-                Margin = new Thickness(0),
-                Height = 30,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
-            addToCompare1.Click += AddToCompare1_Click;
+            MenuItem addCompare1 = ContextMenuHelper.DefaultMenuItem("Add to compare 1", PackIconKind.Compare);
+            addCompare1.CommandParameter = file;
+            addCompare1.Click += AddToCompare1_Click;
+            contextMenu.Items.Add(addCompare1);
 
-            Button addToCompare2 = new Button()
-            {
-                Content = "Add to compare 2",
-                CommandParameter = file,
-                Style = Resources["MaterialDesignRaisedButton"] as Style,
-                Margin = new Thickness(0),
-                Height = 30,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
-            addToCompare2.Click += AddToCompare2_Click;
+            MenuItem addCompare2 = ContextMenuHelper.DefaultMenuItem("Add to compare 2", PackIconKind.Compare);
+            addCompare2.CommandParameter = file;
+            addCompare2.Click += AddToCompare2_Click;
+            contextMenu.Items.Add(addCompare2);
 
-            Button copyToOtherTrack = new Button()
-            {
-                Content = "Copy to other track",
-                CommandParameter = file,
-                Style = Resources["MaterialDesignRaisedButton"] as Style,
-                Margin = new Thickness(0),
-                Height = 30,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
+            MenuItem copyToOtherTrack = ContextMenuHelper.DefaultMenuItem("Copy to other track", PackIconKind.SwapVertical);
+            copyToOtherTrack.CommandParameter = file;
             copyToOtherTrack.Click += CopyToOtherTrack_Click;
-
-
-            contextMenu.HorizontalOffset = 0;
-            contextMenu.VerticalOffset = 0;
-
-            contextMenu.Items.Add(copyToClipBoard);
-            contextMenu.Items.Add(addToCompare1);
-            contextMenu.Items.Add(addToCompare2);
             contextMenu.Items.Add(copyToOtherTrack);
 
             return contextMenu;
@@ -368,9 +298,9 @@ namespace RaceElement.Controls
 
         private void CopyToClipBoard_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button)
+            if (sender is MenuItem button)
             {
-                FileInfo file = (FileInfo)button.DataContext;
+                FileInfo file = (FileInfo)button.CommandParameter;
                 Thread thread = new Thread(() =>
                 {
                     Clipboard.SetFileDropList(new StringCollection
@@ -385,14 +315,12 @@ namespace RaceElement.Controls
                 });
                 thread.SetApartmentState(ApartmentState.STA);
                 thread.Start();
-
-                (button.Parent as ContextMenu).IsOpen = false;
             }
         }
 
         private void CopyToOtherTrack_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button)
+            if (sender is MenuItem button)
             {
                 FileInfo file = (FileInfo)button.DataContext;
 
@@ -404,9 +332,9 @@ namespace RaceElement.Controls
 
         private void AddToCompare2_Click(object sender, RoutedEventArgs e)
         {
-            if (sender.GetType() == typeof(Button))
+            if (sender.GetType() == typeof(MenuItem))
             {
-                Button button = (Button)sender;
+                MenuItem button = (MenuItem)sender;
 
                 SetupComparer.Instance.SetSetup2((FileInfo)button.CommandParameter);
 
@@ -420,9 +348,9 @@ namespace RaceElement.Controls
         private void AddToCompare1_Click(object sender, RoutedEventArgs e)
         {
 
-            if (sender.GetType() == typeof(Button))
+            if (sender.GetType() == typeof(MenuItem))
             {
-                Button button = (Button)sender;
+                MenuItem button = (MenuItem)sender;
 
                 SetupComparer.Instance.SetSetup1((FileInfo)button.CommandParameter);
 

@@ -15,6 +15,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using static RaceElement.Controls.LiveryTagging;
+using RaceElement.Controls.Util;
+using MaterialDesignThemes.Wpf;
 
 namespace RaceElement.Controls
 {
@@ -510,106 +512,48 @@ namespace RaceElement.Controls
 
         private ContextMenu GetSkinContextMenu(LiveryTreeCar liveryTreeCar, LiveryTag tag)
         {
-            ContextMenu menu = new ContextMenu()
-            {
-                Style = Resources["MaterialDesignContextMenu"] as Style,
-                Margin = new Thickness(0),
-                Padding = new Thickness(0),
-                UsesItemContainerTemplate = true,
-                Background = new SolidColorBrush(Color.FromArgb(220, 0, 0, 0))
-            };
+            ContextMenu menu = ContextMenuHelper.DefaultContextMenu();
 
-            Button openLiveryDirectory = new Button()
-            {
-                Content = $"Open Livery Directory",
-                CommandParameter = liveryTreeCar,
-                Style = Resources["MaterialDesignRaisedButton"] as Style,
-                Margin = new Thickness(0),
-                Height = 30,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
+            MenuItem openLiveryDirectory = ContextMenuHelper.DefaultMenuItem("Open Livery Directory", PackIconKind.FolderOpen);
+            openLiveryDirectory.CommandParameter = liveryTreeCar;
             openLiveryDirectory.Click += OpenLiveryDirectory_Click;
             menu.Items.Add(openLiveryDirectory);
 
-            Button openLiveryJson = new Button()
-            {
-                Content = $"Open Livery Json in Explorer",
-                CommandParameter = liveryTreeCar,
-                Style = Resources["MaterialDesignRaisedButton"] as Style,
-                Margin = new Thickness(0),
-                Height = 30,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
-            openLiveryJson.Click += OpenLiveryJson_Click;
-            menu.Items.Add(openLiveryJson);
+            MenuItem viewInExplorer = ContextMenuHelper.DefaultMenuItem("View Livery Json in Explorer", PackIconKind.FolderEye);
+            viewInExplorer.CommandParameter = liveryTreeCar;
+            viewInExplorer.Click += OpenLiveryJson_Click;
+            menu.Items.Add(viewInExplorer);
 
-            Button createZipButton = new Button()
-            {
-                Content = $"Save Skin as zip archive",
-                CommandParameter = liveryTreeCar,
-                Style = Resources["MaterialDesignRaisedButton"] as Style,
-                Margin = new Thickness(0),
-                Height = 30,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
+            MenuItem createZipButton = ContextMenuHelper.DefaultMenuItem("Save as Zip Archive", PackIconKind.ArchiveOutline);
+            createZipButton.CommandParameter = liveryTreeCar;
             createZipButton.Click += CreateZipButton_Click;
             menu.Items.Add(createZipButton);
 
-            Button addSkinToSkinPack = new Button()
-            {
-                Content = $"Add to Skin Pack",
-                CommandParameter = liveryTreeCar,
-                Style = Resources["MaterialDesignRaisedButton"] as Style,
-                Margin = new Thickness(0),
-                Height = 30,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
+            MenuItem addSkinToSkinPack = ContextMenuHelper.DefaultMenuItem("Add to Skin Pack", PackIconKind.ArchiveAddOutline);
+            addSkinToSkinPack.CommandParameter = liveryTreeCar;
             addSkinToSkinPack.Click += AddSkinToSkinPack_Click;
             menu.Items.Add(addSkinToSkinPack);
 
             if (tag == null)
             {
-                Button addSkinToTag = new Button()
-                {
-                    Content = $"Add to Tag",
-                    CommandParameter = liveryTreeCar,
-                    Style = Resources["MaterialDesignRaisedButton"] as Style,
-                    Margin = new Thickness(0),
-                    Height = 30,
-                    VerticalAlignment = VerticalAlignment.Center,
-                };
+                MenuItem addSkinToTag = ContextMenuHelper.DefaultMenuItem("Add to Tag", PackIconKind.TagPlusOutline);
+                addSkinToTag.CommandParameter = liveryTreeCar;
                 addSkinToTag.Click += AddSkinToTag_Click;
                 menu.Items.Add(addSkinToTag);
             }
             else
             {
-                Button removeSkinFromTag = new Button()
-                {
-                    Content = $"Remove from tag",
-                    CommandParameter = liveryTreeCar,
-                    Style = Resources["MaterialDesignRaisedButton"] as Style,
-                    Margin = new Thickness(0),
-                    Height = 30,
-                    VerticalAlignment = VerticalAlignment.Center,
-                };
+                MenuItem removeSkinFromTag = ContextMenuHelper.DefaultMenuItem("Remove from Tag", PackIconKind.TagMinusOutline);
                 removeSkinFromTag.Click += (e, s) =>
                 {
                     LiveryTagging.RemoveFromTag(tag, liveryTreeCar);
-                    menu.IsOpen = false;
                     FetchAllCars();
                 };
                 menu.Items.Add(removeSkinFromTag);
             }
 
-            Button deleteLivery = new Button()
-            {
-                Content = $"Delete",
-                CommandParameter = liveryTreeCar,
-                Style = Resources["MaterialDesignRaisedButton"] as Style,
-                Margin = new Thickness(0),
-                Height = 30,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
+            MenuItem deleteLivery = ContextMenuHelper.DefaultMenuItem("Delete", PackIconKind.Delete);
+            deleteLivery.CommandParameter = liveryTreeCar;
             deleteLivery.Click += DeleteLivery_Click;
             menu.Items.Add(deleteLivery);
 
@@ -620,10 +564,9 @@ namespace RaceElement.Controls
         {
             try
             {
-                if (sender.GetType() == typeof(Button))
+                if (sender.GetType() == typeof(MenuItem))
                 {
-                    Button button = (Button)sender;
-                    (button.Parent as ContextMenu).IsOpen = false;
+                    MenuItem button = (MenuItem)sender;
 
                     LiveryTreeCar liveryTreeCar = (LiveryTreeCar)button.CommandParameter;
 
@@ -640,13 +583,11 @@ namespace RaceElement.Controls
         {
             try
             {
-                if (sender.GetType() == typeof(Button))
+                if (sender.GetType() == typeof(MenuItem))
                 {
-                    Button button = (Button)sender;
-                    (button.Parent as ContextMenu).IsOpen = false;
+                    MenuItem button = (MenuItem)sender;
 
                     LiveryTreeCar liveryTreeCar = (LiveryTreeCar)button.CommandParameter;
-
                     LiveryDeleter.Instance.Open(liveryTreeCar);
                 }
             }
@@ -660,17 +601,13 @@ namespace RaceElement.Controls
         {
             try
             {
-                if (sender.GetType() == typeof(Button))
+                if (sender.GetType() == typeof(MenuItem))
                 {
-                    Button button = (Button)sender;
+                    MenuItem button = (MenuItem)sender;
 
                     LiveryTreeCar liveryTreeCar = (LiveryTreeCar)button.CommandParameter;
                     if (LiveryExporter.Instance.AddExportItem(liveryTreeCar))
-                    {
                         MainWindow.Instance.EnqueueSnackbarMessage($"Added {liveryTreeCar.CarsRoot.TeamName}/{liveryTreeCar.CarsRoot.CustomSkinName} to skin pack.");
-                    }
-
-                    (button.Parent as ContextMenu).IsOpen = false;
                 }
             }
             catch (Exception ex)
@@ -683,23 +620,16 @@ namespace RaceElement.Controls
         {
             try
             {
-                if (sender.GetType() == typeof(Button))
+                if (sender.GetType() == typeof(MenuItem))
                 {
-
-                    Button button = (Button)sender;
-
+                    MenuItem button = (MenuItem)sender;
                     LiveryTreeCar liveryTreeCar = (LiveryTreeCar)button.CommandParameter;
 
                     if (liveryTreeCar.CarsRoot.CustomSkinName == null || liveryTreeCar.CarsRoot.CustomSkinName.Length == 0)
-                    {
-                        goto closeMenu;
-                    }
+                        return;
 
                     FileInfo carsJsonFile = new FileInfo($"{liveryTreeCar.CarsFile}");
                     Process.Start($"explorer", $"/select,{FileUtil.CarsPath}{carsJsonFile.Name}");
-
-                closeMenu:
-                    (button.Parent as ContextMenu).IsOpen = false;
                 }
             }
             catch (Exception ex) { LogWriter.WriteToLog(ex); }
@@ -709,22 +639,16 @@ namespace RaceElement.Controls
         {
             try
             {
-                if (sender.GetType() == typeof(Button))
+                if (sender.GetType() == typeof(MenuItem))
                 {
-                    Button button = (Button)sender;
-
+                    MenuItem button = (MenuItem)sender;
                     LiveryTreeCar liveryTreeCar = (LiveryTreeCar)button.CommandParameter;
 
                     if (liveryTreeCar.CarsRoot.CustomSkinName == null || liveryTreeCar.CarsRoot.CustomSkinName.Length == 0)
-                    {
-                        goto closeMenu;
-                    }
+                        return;
 
                     DirectoryInfo directory = new DirectoryInfo($"{FileUtil.LiveriesPath}{liveryTreeCar.CarsRoot.CustomSkinName}");
                     Process.Start(directory.FullName);
-
-                closeMenu:
-                    (button.Parent as ContextMenu).IsOpen = false;
                 }
             }
             catch (Exception ex) { LogWriter.WriteToLog(ex); }
@@ -732,79 +656,32 @@ namespace RaceElement.Controls
 
         private ContextMenu GetTagContextMenu(TreeViewItem teamItem, LiveryTag tag)
         {
-            ContextMenu menu = new ContextMenu()
-            {
-                Style = Resources["MaterialDesignContextMenu"] as Style,
-                Margin = new Thickness(0),
-                Padding = new Thickness(0),
-                UsesItemContainerTemplate = true,
-                Background = new SolidColorBrush(Color.FromArgb(220, 0, 0, 0))
-            };
+            ContextMenu menu = ContextMenuHelper.DefaultContextMenu();
 
-            Button addTeamToSkinPack = new Button()
-            {
-                Content = $"Add to Skin Pack",
-                CommandParameter = teamItem,
-                Style = Resources["MaterialDesignRaisedButton"] as Style,
-                Margin = new Thickness(0),
-                Height = 30,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
-            addTeamToSkinPack.Click += AddTeamToSkinPack_Click;
-            menu.Items.Add(addTeamToSkinPack);
+            MenuItem addTagToSkinPack = ContextMenuHelper.DefaultMenuItem("Add to Skin Pack", PackIconKind.ArchiveAddOutline);
+            addTagToSkinPack.CommandParameter = teamItem;
+            addTagToSkinPack.Click += AddTeamToSkinPack_Click;
+            menu.Items.Add(addTagToSkinPack);
 
-            Button deleteTagButton = new Button()
-            {
-                Content = $"Delete Tag",
-                CommandParameter = teamItem,
-                Style = Resources["MaterialDesignRaisedButton"] as Style,
-                Margin = new Thickness(0),
-                Height = 30,
-                ToolTip = "Warning! This permantely deletes this tag!",
-                VerticalAlignment = VerticalAlignment.Center,
-            };
-            deleteTagButton.Click += (e, s) =>
-            {
-                LiveryTagging.DeleteTag(tag);
-                menu.IsOpen = false;
-            };
-            menu.Items.Add(deleteTagButton);
+            MenuItem deleteTag = ContextMenuHelper.DefaultMenuItem("Delete Tag", PackIconKind.TagRemoveOutline);
+            deleteTag.ToolTip = "Warning! This permantely deletes this tag!";
+            deleteTag.Click += (e, s) => LiveryTagging.DeleteTag(tag);
+            menu.Items.Add(deleteTag);
 
             return menu;
         }
 
         private ContextMenu GetTeamContextMenu(TreeViewItem teamItem)
         {
-            ContextMenu menu = new ContextMenu()
-            {
-                Style = Resources["MaterialDesignContextMenu"] as Style,
-                Margin = new Thickness(0),
-                Padding = new Thickness(0),
-                UsesItemContainerTemplate = true,
-                Background = new SolidColorBrush(Color.FromArgb(220, 0, 0, 0))
-            };
+            ContextMenu menu = ContextMenuHelper.DefaultContextMenu();
 
-            Button addTeamToSkinPack = new Button()
-            {
-                Content = $"Add to Skin Pack",
-                CommandParameter = teamItem,
-                Style = Resources["MaterialDesignRaisedButton"] as Style,
-                Margin = new Thickness(0),
-                Height = 30,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
+            MenuItem addTeamToSkinPack = ContextMenuHelper.DefaultMenuItem("Add to Skin Pack", PackIconKind.ArchivePlusOutline);
+            addTeamToSkinPack.CommandParameter = teamItem;
             addTeamToSkinPack.Click += AddTeamToSkinPack_Click;
             menu.Items.Add(addTeamToSkinPack);
 
-            Button addTeamToTag = new Button()
-            {
-                Content = $"Add to Tag",
-                CommandParameter = teamItem,
-                Style = Resources["MaterialDesignRaisedButton"] as Style,
-                Margin = new Thickness(0),
-                Height = 30,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
+            MenuItem addTeamToTag = ContextMenuHelper.DefaultMenuItem("Add to Tag", PackIconKind.TagPlusOutline);
+            addTeamToTag.CommandParameter = teamItem;
             addTeamToTag.Click += AddTeamToTag_Click;
             menu.Items.Add(addTeamToTag);
 
@@ -815,9 +692,9 @@ namespace RaceElement.Controls
         {
             try
             {
-                if (sender.GetType() == typeof(Button))
+                if (sender.GetType() == typeof(MenuItem))
                 {
-                    Button button = (Button)sender;
+                    MenuItem button = (MenuItem)sender;
 
                     TreeViewItem treeItem = (TreeViewItem)button.CommandParameter;
                     List<LiveryTreeCar> treeCars = new List<LiveryTreeCar>();
@@ -828,8 +705,6 @@ namespace RaceElement.Controls
                     });
 
                     LiveryTagger.Instance.Open(treeCars);
-
-                    (button.Parent as ContextMenu).IsOpen = false;
                 }
             }
             catch (Exception ex)
@@ -842,9 +717,9 @@ namespace RaceElement.Controls
         {
             try
             {
-                if (sender.GetType() == typeof(Button))
+                if (sender.GetType() == typeof(MenuItem))
                 {
-                    Button button = (Button)sender;
+                    MenuItem button = (MenuItem)sender;
 
                     TreeViewItem treeItem = (TreeViewItem)button.CommandParameter;
                     List<LiveryTreeCar> treeCars = new List<LiveryTreeCar>();
@@ -853,8 +728,6 @@ namespace RaceElement.Controls
                     {
                         LiveryExporter.Instance.AddExportItem((LiveryTreeCar)x.DataContext);
                     });
-
-                    (button.Parent as ContextMenu).IsOpen = false;
                 }
             }
             catch (Exception ex)
@@ -865,16 +738,14 @@ namespace RaceElement.Controls
 
         private void CreateZipButton_Click(object sender, RoutedEventArgs e)
         {
-            if (sender.GetType() == typeof(Button))
+            if (sender.GetType() == typeof(MenuItem))
             {
-                Button button = (Button)sender;
+                MenuItem button = (MenuItem)sender;
 
                 LiveryTreeCar liveryTreeCar = (LiveryTreeCar)button.CommandParameter;
 
                 if (liveryTreeCar.CarsRoot.CustomSkinName == null || liveryTreeCar.CarsRoot.CustomSkinName.Length == 0)
-                {
-                    goto closeMenu;
-                }
+                    return;
 
                 Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
 
@@ -895,7 +766,7 @@ namespace RaceElement.Controls
                     string filename = dlg.FileName;
 
                     if (filename == null)
-                        goto closeMenu;
+                        return;
 
                     using (ZipArchive zipArchive = ZipArchive.Create())
                     {
@@ -945,8 +816,7 @@ namespace RaceElement.Controls
                     }
                 }
 
-            closeMenu:
-                (button.Parent as ContextMenu).IsOpen = false;
+
             }
         }
     }

@@ -1,4 +1,6 @@
-﻿using RaceElement.Util;
+﻿using MaterialDesignThemes.Wpf;
+using RaceElement.Controls.Util;
+using RaceElement.Util;
 using RaceElement.Util.Settings;
 using System;
 using System.Collections.Generic;
@@ -176,26 +178,11 @@ namespace RaceElement.Controls
 
         private ContextMenu GetListContextMenu(UnlistedAccServer unlistedAccServer)
         {
-            ContextMenu menu = new ContextMenu()
-            {
-                Style = Resources["MaterialDesignContextMenu"] as Style,
-                Margin = new Thickness(0),
-                Padding = new Thickness(0),
-                UsesItemContainerTemplate = true,
-                Background = new SolidColorBrush(Color.FromArgb(220, 0, 0, 0))
-            };
+            ContextMenu menu = ContextMenuHelper.DefaultContextMenu();
 
-            Button deleteTagButton = new Button()
-            {
-                Content = $"Delete",
-                CommandParameter = unlistedAccServer,
-                Style = Resources["MaterialDesignRaisedButton"] as Style,
-                Margin = new Thickness(0),
-                Height = 30,
-                ToolTip = "Warning! This permantely deletes this entry.",
-                VerticalAlignment = VerticalAlignment.Center,
-            };
-            deleteTagButton.Click += (e, s) =>
+            MenuItem deleteEntry = ContextMenuHelper.DefaultMenuItem("Delete", PackIconKind.Delete);
+            deleteEntry.ToolTip = "Warning! This permantely deletes this entry.";
+            deleteEntry.Click += (e, s) =>
             {
                 var serverList = _unlistedServerSettingsJson.Get();
                 serverList.UnlistedServers.Remove(unlistedAccServer);
@@ -208,8 +195,7 @@ namespace RaceElement.Controls
                 stackPanelServerDescription.Children.Clear();
                 FillListView();
             };
-
-            menu.Items.Add(deleteTagButton);
+            menu.Items.Add(deleteEntry);
 
             return menu;
         }

@@ -337,6 +337,7 @@
     <Compile Include="Controls\Telemetry\RaceSessions\TrackMap\TrackMap.xaml.cs">
       <DependentUpon>TrackMap.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Util\ContextMenuHelper.cs" />
     <Compile Include="Controls\Util\ImageControlCreator.cs" />
     <Compile Include="Controls\Setup\SetupImporter.xaml.cs">
       <DependentUpon>SetupImporter.xaml</DependentUpon>
