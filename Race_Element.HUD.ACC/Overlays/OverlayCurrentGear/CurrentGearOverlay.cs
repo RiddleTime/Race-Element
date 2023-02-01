@@ -28,13 +28,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
             public CurrentGearConfiguration() { AllowRescale = true; }
         }
 
-        private const int InitialSize = 80;
+        private const int InitialWidth = 80;
+        private const int InitialHeight = 72;
         private readonly List<CachedBitmap> gearBitmaps = new List<CachedBitmap>();
 
         public CurrentGearOverlay(Rectangle rectangle) : base(rectangle, "Current Gear")
         {
-            Width = InitialSize;
-            Height = InitialSize;
+            Width = InitialWidth;
+            Height = InitialHeight;
             RefreshRateHz = 20;
         }
 
@@ -43,7 +44,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
             Font font = FontUtil.FontConthrax(50 * this.Scale);
             HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightDownwardDiagonal, Color.FromArgb(225, Color.Black), Color.FromArgb(185, Color.Black));
 
-            Rectangle renderRectangle = new Rectangle(0, 0, (int)(InitialSize * this.Scale), (int)(InitialSize * this.Scale));
+            Rectangle renderRectangle = new Rectangle(0, 0, (int)(InitialWidth * this.Scale), (int)(InitialHeight * this.Scale));
             for (int i = 0; i <= 7; i++)
             {
                 string gear;
@@ -54,7 +55,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
                     default: gear = $"{i - 1}"; break;
                 }
 
-                gearBitmaps.Add(new CachedBitmap((int)(InitialSize * this.Scale) + 1, (int)(InitialSize * this.Scale) + 1, g =>
+                gearBitmaps.Add(new CachedBitmap((int)(InitialWidth * this.Scale) + 1, (int)(InitialHeight * this.Scale) + 1, g =>
                 {
                     g.TextRenderingHint = TextRenderingHint.AntiAlias;
                     g.TextContrast = 1;
@@ -77,6 +78,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
         }
 
         public override bool ShouldRender() => DefaultShouldRender();
-        public override void Render(Graphics g) => gearBitmaps[pagePhysics.Gear]?.Draw(g, InitialSize, InitialSize);
+        public override void Render(Graphics g) => gearBitmaps[pagePhysics.Gear]?.Draw(g, InitialWidth, InitialHeight);
     }
 }

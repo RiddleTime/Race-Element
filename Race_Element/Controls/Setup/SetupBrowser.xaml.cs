@@ -235,10 +235,10 @@ namespace RaceElement.Controls
             ContextMenu menu = new ContextMenu()
             {
                 Style = Resources["MaterialDesignContextMenu"] as Style,
-                Margin = new Thickness(0),
+                Margin = new Thickness(-22, -16, -22, -16),
                 Padding = new Thickness(0),
                 UsesItemContainerTemplate = true,
-                Background = new SolidColorBrush(Color.FromArgb(220, 0, 0, 0))
+                Background = new SolidColorBrush(Color.FromArgb(220, 0, 0, 0)),
             };
 
 
@@ -263,7 +263,7 @@ namespace RaceElement.Controls
             ContextMenu menu = new ContextMenu()
             {
                 Style = Resources["MaterialDesignContextMenu"] as Style,
-                Margin = new Thickness(0),
+                Margin = new Thickness(-22, -16, -22, -16),
                 Padding = new Thickness(0),
                 UsesItemContainerTemplate = true,
                 Background = new SolidColorBrush(Color.FromArgb(220, 0, 0, 0))
@@ -304,11 +304,22 @@ namespace RaceElement.Controls
             ContextMenu contextMenu = new ContextMenu()
             {
                 Style = Resources["MaterialDesignContextMenu"] as Style,
-                Margin = new Thickness(0),
-                Padding = new Thickness(0),
+                Margin = new Thickness(-22,-16,-22,-16),
+                Padding = new Thickness(-20),
                 UsesItemContainerTemplate = true,
                 Background = new SolidColorBrush(Color.FromArgb(220, 0, 0, 0)),
             };
+
+            Button copyToClipBoard = new Button()
+            {
+                Content = "Copy to Clipboard",
+                CommandParameter = file,
+                Style = Resources["MaterialDesignRaisedButton"] as Style,
+                Margin = new Thickness(0),
+                Height = 30,
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            copyToClipBoard.Click += CopyToClipBoard_Click;
 
             Button addToCompare1 = new Button()
             {
@@ -332,21 +343,6 @@ namespace RaceElement.Controls
             };
             addToCompare2.Click += AddToCompare2_Click;
 
-            contextMenu.Items.Add(addToCompare1);
-            contextMenu.Items.Add(addToCompare2);
-
-            Button copyToClipBoard = new Button()
-            {
-                Content = "Copy to Clipboard",
-                CommandParameter = file,
-                Style = Resources["MaterialDesignRaisedButton"] as Style,
-                Margin = new Thickness(0),
-                Height = 30,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
-            copyToClipBoard.Click += CopyToClipBoard_Click;
-            contextMenu.Items.Add(copyToClipBoard);
-
             Button copyToOtherTrack = new Button()
             {
                 Content = "Copy to other track",
@@ -357,11 +353,15 @@ namespace RaceElement.Controls
                 VerticalAlignment = VerticalAlignment.Center,
             };
             copyToOtherTrack.Click += CopyToOtherTrack_Click;
-            contextMenu.Items.Add(copyToOtherTrack);
 
 
             contextMenu.HorizontalOffset = 0;
             contextMenu.VerticalOffset = 0;
+
+            contextMenu.Items.Add(copyToClipBoard);
+            contextMenu.Items.Add(addToCompare1);
+            contextMenu.Items.Add(addToCompare2);
+            contextMenu.Items.Add(copyToOtherTrack);
 
             return contextMenu;
         }

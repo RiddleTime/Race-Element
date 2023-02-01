@@ -122,20 +122,20 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
         {
             float temp = pagePhysics.TyreCoreTemperature[(int)wheel];
 
-            Brush tyreBrush = Brushes.DarkOliveGreen;
+            Brush tyreBrush = Brushes.LimeGreen;
 
             if (temp > 90)
-                tyreBrush = Brushes.DarkRed;
+                tyreBrush = Brushes.OrangeRed;
             if (temp < 75)
-                tyreBrush = Brushes.DarkCyan;
+                tyreBrush = Brushes.Cyan;
 
             if (pageGraphics.TyreCompound == "wet_compound")
             {
-                tyreBrush = Brushes.DarkOliveGreen;
+                tyreBrush = Brushes.LimeGreen;
                 if (temp > 65)
-                    tyreBrush = Brushes.DarkRed;
+                    tyreBrush = Brushes.OrangeRed;
                 if (temp < 25)
-                    tyreBrush = Brushes.DarkCyan;
+                    tyreBrush = Brushes.Cyan;
             }
 
 
@@ -150,8 +150,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
 
             Rectangle backgroundDimension = new Rectangle(x - textWidth / 2, y, (int)textWidth, _fontFamily.Height);
 
-            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 255, 255, 255)), backgroundDimension, 2);
-            g.DrawRoundedRectangle(new Pen(tyreBrush), backgroundDimension, 2);
+            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), backgroundDimension, 2);
+            //g.DrawRoundedRectangle(new Pen(tyreBrush), backgroundDimension, 2);
 
             g.DrawStringWithShadow(text, _fontFamily, tyreBrush, new PointF(x - textWidth / 2, y + _yMono - 1));
         }
