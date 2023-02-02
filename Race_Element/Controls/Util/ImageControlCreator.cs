@@ -6,7 +6,7 @@ using System.Windows.Media.Imaging;
 
 namespace RaceElement.Controls.Util.SetupImage
 {
-    internal class ImageControlCreator
+    internal static class ImageControlCreator
     {
         public static System.Windows.Controls.Image CreateImage(int width, int height, RaceElement.HUD.Overlay.OverlayUtil.CachedBitmap cachedBitmap)
         {

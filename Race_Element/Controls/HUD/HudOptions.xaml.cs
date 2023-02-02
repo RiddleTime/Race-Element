@@ -484,21 +484,12 @@ namespace RaceElement.Controls
 
             lock (OverlaysACC.ActiveOverlays)
                 foreach (AbstractOverlay overlay in OverlaysACC.ActiveOverlays)
-                {
-                    if (overlay != null)
-                        overlay.EnableReposition(enabled);
-                    else
-                        overlay.Start();
-                }
-
+                    overlay.EnableReposition(enabled);
         }
 
         private void BuildOverlayPanel()
         {
             OverlaysACC.GenerateDictionary();
-
-            //BuildOverlayStackPanel(stackPanelOverlaysRelease, OverlayType.Release);
-            //BuildOverlayStackPanel(stackPanelOverlaysDebug, OverlayType.Debug);
 
             BuildOverlayListView(listOverlays, OverlayType.Release);
             BuildOverlayListView(listDebugOverlays, OverlayType.Debug);
@@ -510,34 +501,24 @@ namespace RaceElement.Controls
 
             foreach (KeyValuePair<string, Type> x in OverlaysACC.AbstractOverlays)
             {
-
                 AbstractOverlay tempAbstractOverlay = (AbstractOverlay)Activator.CreateInstance(x.Value, DefaultOverlayArgs);
                 var overlayAttribute = GetOverlayAttribute(x.Value);
                 OverlaySettingsJson tempOverlaySettings = OverlaySettings.LoadOverlaySettings(overlayAttribute.Name);
                 tempAbstractOverlay.Dispose();
 
-
                 if (overlayAttribute.OverlayType != overlayType)
                     continue;
 
-
-                Style listTextStyle = new Style();
-                TextBlock listViewText = new TextBlock()
-                {
-                    Text = x.Key,
-                    Style = Resources["MaterialDesignButtonTextBlock"] as Style,
-                    Margin = new Thickness(14, 0, 0, 0),
-                    //FontFamily = new FontFamily(new Uri("pack://application:,,,./Fonts/#Conthrax Sb"), "Conthrax"),
-                    FontSize = 13.8,
-                    //FontWeight = FontWeights.UltraLight,
-                };
-
-
                 double marginTopBottom = 6.5d;
-
                 ListViewItem listViewItem = new ListViewItem()
                 {
-                    Content = listViewText,
+                    Content = new TextBlock()
+                    {
+                        Text = x.Key,
+                        Style = Resources["MaterialDesignButtonTextBlock"] as Style,
+                        Margin = new Thickness(14, 0, 0, 0),
+                        FontSize = 13.8,
+                    },
                     DataContext = x,
                     HorizontalContentAlignment = HorizontalAlignment.Left,
                     Padding = new Thickness(0, marginTopBottom, 0, marginTopBottom),
@@ -545,13 +526,13 @@ namespace RaceElement.Controls
                     BorderBrush = new SolidColorBrush(Colors.Transparent),
                     BorderThickness = new Thickness(4, 0, 0, 0),
                 };
+
                 if (tempOverlaySettings != null)
                     if (tempOverlaySettings.Enabled)
                     {
                         listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
                         listViewItem.BorderBrush = new SolidColorBrush(Colors.LimeGreen);
 
-                        // TODO
                         lock (OverlaysACC.ActiveOverlays)
                         {
                             AbstractOverlay overlay = (AbstractOverlay)Activator.CreateInstance(x.Value, DefaultOverlayArgs);
