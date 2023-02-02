@@ -89,7 +89,7 @@ namespace RaceElement.Controls.HUD
             overlay.pagePhysics.Rpms = 8500;
             overlay.pagePhysics.Gear = 3;
             overlay.pagePhysics.WheelPressure = new float[] { 27.61f, 27.56f, 26.94f, 26.13f };
-            overlay.pagePhysics.TyreCoreTemperature = new float[] { 92.6f, 88.5f, 65.9f, 67.2f };
+            overlay.pagePhysics.TyreCoreTemperature = new float[] { 92.67f, 88.51f, 74.92f, 67.23f };
             overlay.pagePhysics.PadLife = new float[] { 24f, 24f, 25f, 25f };
             overlay.pagePhysics.BrakeTemperature = new float[] { 300f, 250f, 450f, 460f };
             overlay.pagePhysics.Gas = 0.78f;
