@@ -1,5 +1,6 @@
 ﻿using MaterialDesignThemes.Wpf;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -35,22 +36,18 @@ namespace RaceElement.Controls.Util
             return menuItem;
         }
 
+        private const int horizontalMargin = -18;
+        private const int verticalMargin = -18;
         public static ContextMenu DefaultContextMenu()
         {
-            int horizontalOffset = -18;
-            int verticalOffset = -18;
-
-            var menu = new ContextMenu()
+            return new ContextMenu()
             {
-                Margin = new Thickness(horizontalOffset, verticalOffset, horizontalOffset, verticalOffset),
+                Margin = new Thickness(horizontalMargin, verticalMargin, horizontalMargin, verticalMargin),
                 Padding = new Thickness(0, 0, 0, 0),
-                HorizontalOffset = horizontalOffset,
-                VerticalOffset = verticalOffset,
-                UsesItemContainerTemplate = true,
+                HorizontalOffset = horizontalMargin - 32,
+                VerticalOffset = verticalMargin - 16,
                 Background = new SolidColorBrush(Color.FromArgb(235, 17, 17, 17)),
-            };
-
-            return menu;
+            }; ;
         }
     }
 }

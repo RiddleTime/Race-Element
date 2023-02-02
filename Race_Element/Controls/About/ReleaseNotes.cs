@@ -7,7 +7,7 @@ namespace RaceElement.Controls
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
             {"0.1.6.5", "- Setup Browser: Added option to copy a setup json directly to the clipboard."+
-                        "\n- Reworked all custom context menu's in the app: Added icons and improved design."+
+                        "\n- Reworked all custom context menus in the app: Added icons and improved design."+
                         "\n- Tyre Info HUD: Reworked tyre temperature text."},
             {"0.1.6.4", "- Internal optimizations."+
                         "\n- Prevent HUDs from showing during replay whilst being in a session."},
