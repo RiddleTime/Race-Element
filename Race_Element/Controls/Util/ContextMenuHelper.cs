@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -12,18 +13,23 @@ namespace RaceElement.Controls.Util
         {
             var menuItem = new MenuItem()
             {
-                Header = header,
+                Header = new TextBlock()
+                {
+                    Text = header,
+                    Style = MainWindow.Instance.Resources["MaterialDesignSubtitle2TextBlock"] as Style,
+                    Margin = new Thickness(0),
+                    Padding = new Thickness(0),
+                },
                 Cursor = Cursors.Hand,
                 Icon = new PackIcon()
                 {
                     Kind = icon,
-                    Height = 36,
-                    Margin = new Thickness(0),
-                    Padding = new Thickness(0),
                     VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    HorizontalContentAlignment = HorizontalAlignment.Center,
                 },
                 Style = MainWindow.Instance.Resources["MaterialDesignMenuItem"] as Style,
-                Height = 36,
+                Height = 32,
             };
 
             return menuItem;
@@ -31,18 +37,20 @@ namespace RaceElement.Controls.Util
 
         public static ContextMenu DefaultContextMenu()
         {
-            int horizontalOffset = -20;
-            int verticalOffset = -16;
+            int horizontalOffset = -18;
+            int verticalOffset = -18;
 
-            return new ContextMenu()
+            var menu = new ContextMenu()
             {
                 Margin = new Thickness(horizontalOffset, verticalOffset, horizontalOffset, verticalOffset),
                 Padding = new Thickness(0, 0, 0, 0),
                 HorizontalOffset = horizontalOffset,
                 VerticalOffset = verticalOffset,
                 UsesItemContainerTemplate = true,
-                Background = new SolidColorBrush(Color.FromArgb(235, 5, 5, 5)),
+                Background = new SolidColorBrush(Color.FromArgb(235, 17, 17, 17)),
             };
+
+            return menu;
         }
     }
 }
