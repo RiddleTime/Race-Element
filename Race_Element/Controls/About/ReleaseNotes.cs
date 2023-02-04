@@ -6,6 +6,7 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.1.6.6", "- Data tab: Added context menu to copy race weekends to clipboard and show them in windows explorer." },
             {"0.1.6.5", "- Setup Browser: Added option to copy a setup json directly to the clipboard."+
                         "\n- Reworked all custom context menus in the app: Added icons and improved design."+
                         "\n- Tyre Info HUD: Reworked tyre temperature text."},

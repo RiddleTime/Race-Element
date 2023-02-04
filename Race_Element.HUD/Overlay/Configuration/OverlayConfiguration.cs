@@ -92,22 +92,27 @@ namespace RaceElement.HUD.Overlay.Configuration
                                 {
                                     if (subNested.PropertyType == typeof(Single))
                                         subNested.SetValue(nestedValue, Single.Parse(field.Value.ToString()));
-                                    else
-                                    if (subNested.PropertyType == typeof(int))
+                                    else if (subNested.PropertyType == typeof(int))
                                         subNested.SetValue(nestedValue, int.Parse(field.Value.ToString()));
-                                    else
-                                    if (subNested.PropertyType == typeof(bool))
+                                    else if (subNested.PropertyType == typeof(bool))
                                         subNested.SetValue(nestedValue, field.Value);
-                                    else
-                                    if (subNested.PropertyType == typeof(byte))
+                                    else if (subNested.PropertyType == typeof(byte))
                                         subNested.SetValue(nestedValue, byte.Parse(field.Value.ToString()));
-                                    else
-                                    if (subNested.PropertyType == typeof(Color))
+                                    else if (subNested.PropertyType == typeof(Color))
                                         subNested.SetValue(nestedValue, ColorFromToString(field.Value.ToString()));
+                                    else if (subNested.PropertyType.BaseType == typeof(Enum))
+                                    {
+                                        var enumObject = Enum.Parse(prop.PropertyType, field.Value.ToString());
+                                        subNested.SetValue(nestedValue, enumObject);
+                                    }
+                                    else
+                                    {
+                                        Debug.WriteLine($"{prop.PropertyType} - {nestedValue}");
+                                    }
+
+
                                 }
                             }
-
-
                         }
                     }
                 }
@@ -119,18 +124,16 @@ namespace RaceElement.HUD.Overlay.Configuration
                         {
                             if (prop.PropertyType == typeof(Single))
                                 prop.SetValue(this, Single.Parse(field.Value.ToString()));
-                            else
-                            if (prop.PropertyType == typeof(int))
+                            else if (prop.PropertyType == typeof(int))
                                 prop.SetValue(this, int.Parse(field.Value.ToString()));
-                            else
-                            if (prop.PropertyType == typeof(bool))
+                            else if (prop.PropertyType == typeof(bool))
                                 prop.SetValue(this, field.Value);
-                            else
-                            if (prop.PropertyType == typeof(byte))
+                            else if (prop.PropertyType == typeof(byte))
                                 prop.SetValue(this, byte.Parse(field.Value.ToString()));
-                            else
-                            if (prop.PropertyType == typeof(Color))
+                            else if (prop.PropertyType == typeof(Color))
                                 prop.SetValue(this, ColorFromToString(field.Value.ToString()));
+                            else if (prop.PropertyType.BaseType == typeof(Enum))
+                                prop.SetValue(this, Enum.Parse(prop.PropertyType, field.Value.ToString()));
                         }
                     }
                 }

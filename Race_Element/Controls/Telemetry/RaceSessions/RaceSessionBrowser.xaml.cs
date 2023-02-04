@@ -27,6 +27,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using DataGridTextColumn = MaterialDesignThemes.Wpf.DataGridTextColumn;
 using AbstractTrackData = RaceElement.Data.ACC.Tracks.TrackData.AbstractTrackData;
+using RaceElement.Controls.Util;
+using static RaceElement.Controls.LiveryBrowser;
+using System.Collections.Specialized;
 
 namespace RaceElement.Controls
 {
@@ -97,6 +100,9 @@ namespace RaceElement.Controls
                 {
                     TextBlock textBlock = new TextBlock() { Text = file.Name.Replace(file.Extension, ""), FontSize = 12 };
                     ListViewItem lvi = new ListViewItem() { Content = textBlock, DataContext = file.FullName, Cursor = Cursors.Hand };
+
+                    lvi.ContextMenu = GetRwdbContextMenu(file);
+
                     lvi.MouseLeftButtonUp += (s, e) =>
                     {
                         ListViewItem item = (ListViewItem)s;
@@ -105,6 +111,37 @@ namespace RaceElement.Controls
                     localRaceWeekends.Items.Add(lvi);
                 }
             });
+        }
+
+        ContextMenu GetRwdbContextMenu(FileInfo file)
+        {
+            var contextMenu = ContextMenuHelper.DefaultContextMenu();
+
+            MenuItem copyToClipboard = ContextMenuHelper.DefaultMenuItem("Copy to Clipboard", PackIconKind.ContentCopy);
+            copyToClipboard.Click += (s, e) =>
+            {
+                Thread thread = new Thread(() =>
+                {
+                    Clipboard.SetFileDropList(new StringCollection
+                        {
+                        file.FullName
+                        });
+
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        MainWindow.Instance.EnqueueSnackbarMessage($"Copied race weekend database \'{file.Name}\' to the clipboard.");
+                    }));
+                });
+                thread.SetApartmentState(ApartmentState.STA);
+                thread.Start();
+            };
+            contextMenu.Items.Add(copyToClipboard);
+
+            MenuItem showInDirectory = ContextMenuHelper.DefaultMenuItem("Show in explorer", PackIconKind.FolderEye);
+            showInDirectory.Click += (s, e) => Process.Start($"explorer", $"/select,{file.FullName}");
+            contextMenu.Items.Add(showInDirectory);
+
+            return contextMenu;
         }
 
         public void OpenRaceWeekendDatabase(string filename, bool focusCurrentWeekendTab = true)

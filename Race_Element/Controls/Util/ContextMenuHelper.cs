@@ -43,9 +43,9 @@ namespace RaceElement.Controls.Util
                 Margin = new Thickness(horizontalMargin, verticalMargin, horizontalMargin, verticalMargin),
                 Padding = new Thickness(0, 0, 0, 0),
                 HorizontalOffset = horizontalMargin - 32,
-                VerticalOffset = verticalMargin - 16,
+                VerticalOffset = verticalMargin - 12,
                 Background = new SolidColorBrush(Color.FromArgb(235, 17, 17, 17)),
-            }; ;
+            };
         }
     }
 }

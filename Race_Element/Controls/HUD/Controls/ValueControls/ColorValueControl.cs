@@ -11,9 +11,9 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
     internal class ColorValueControl : IValueControl<System.Drawing.Color>
     {
         System.Drawing.Color IValueControl<System.Drawing.Color>.Value { get; set; }
-        public FrameworkElement Control => _grid;
 
         private readonly ConfigField _field;
+        public FrameworkElement Control => _grid;
         private readonly Grid _grid;
 
         public ColorValueControl(ConfigField configField)

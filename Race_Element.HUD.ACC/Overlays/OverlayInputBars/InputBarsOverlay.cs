@@ -15,12 +15,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
         private readonly InputBarsConfiguration _config = new InputBarsConfiguration();
         private class InputBarsConfiguration : OverlayConfiguration
         {
+            public enum BarOrientation { Horizontal, Vertical };
+
             [ConfigGrouping("Bars", "The shape and spacing of the bars")]
             public BarsGrouping Bars { get; set; } = new BarsGrouping();
             public class BarsGrouping
             {
-                [ToolTip("Enables horizontal input bars.")]
-                public bool Horizontal { get; set; } = false;
+                public BarOrientation Orientation { get; set; } = BarOrientation.Vertical;
 
                 [ToolTip("Length of the input bars.")]
                 [IntRange(100, 250, 1)]
@@ -71,7 +72,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
 
         public InputBarsOverlay(Rectangle rectangle) : base(rectangle, "Input Bars")
         {
-            if (_config.Bars.Horizontal)
+            Debug.WriteLine($"constructor: {_config.Bars.Orientation}");
+            if (_config.Bars.Orientation == InputBarsConfiguration.BarOrientation.Horizontal)
             {
                 _horizontalBars = new HorizontalProgressBar[2];
                 this.Width = _config.Bars.Length + 1;
@@ -89,10 +91,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
 
         public override void BeforeStart()
         {
+            Debug.WriteLine($"beforeStart: {_config.Bars.Orientation}");
             int width = _config.Bars.Thickness * 2 + _config.Bars.Spacing;
             int height = _config.Bars.Length;
 
-            if (_config.Bars.Horizontal)
+            if (_config.Bars.Orientation == InputBarsConfiguration.BarOrientation.Horizontal)
             {
                 width = _config.Bars.Length;
                 height = _config.Bars.Thickness * 2 + _config.Bars.Spacing;
@@ -100,7 +103,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
 
             _cachedBackground = new CachedBitmap((int)(width * this.Scale), (int)(height * this.Scale), g =>
             {
-                if (_config.Bars.Horizontal)
+                if (_config.Bars.Orientation == InputBarsConfiguration.BarOrientation.Horizontal)
                 {
                     using (LinearGradientBrush gradientBrush = new LinearGradientBrush(new Rectangle(0, 0, (int)(_config.Bars.Length * this.Scale), (int)(_config.Bars.Thickness * this.Scale)), Color.FromArgb(120, Color.Black), Color.FromArgb(230, Color.Black), LinearGradientMode.Horizontal))
                     {
@@ -120,8 +123,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
 
             Brush outlineBrush = new SolidBrush(Color.FromArgb(196, Color.Black));
 
-            _config.Bars.ThrottleFirst = _config.Bars.Horizontal;
-            if (_config.Bars.Horizontal)
+            _config.Bars.ThrottleFirst = _config.Bars.Orientation == InputBarsConfiguration.BarOrientation.Horizontal;
+            if (_config.Bars.Orientation == InputBarsConfiguration.BarOrientation.Horizontal)
             {
                 _horizontalBrakeBar = new HorizontalProgressBar(_config.Bars.Length, _config.Bars.Thickness)
                 {
@@ -204,7 +207,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
             if (_config.Electronics.AntiLockBrakes || _config.Electronics.TractionControl)
                 ApplyFillColor();
 
-            if (_config.Bars.Horizontal)
+            if (_config.Bars.Orientation == InputBarsConfiguration.BarOrientation.Horizontal)
             {
                 _cachedBackground?.Draw(g, _config.Bars.Length, _config.Bars.Thickness * 2 + _config.Bars.Spacing);
 
@@ -231,7 +234,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
         /// </summary>
         private void ApplyFillColor()
         {
-            if (_config.Bars.Horizontal)
+            if (_config.Bars.Orientation == InputBarsConfiguration.BarOrientation.Horizontal)
             {
                 if (pagePhysics.Abs > 0)
                     _horizontalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.Orange));

@@ -246,6 +246,7 @@
     <Compile Include="Controls\HUD\Controls\ControlFactory.cs" />
     <Compile Include="Controls\HUD\Controls\ValueControls\ByteValueControl.cs" />
     <Compile Include="Controls\HUD\Controls\ValueControls\ColorValueControl.cs" />
+    <Compile Include="Controls\HUD\Controls\ValueControls\EnumValueControl.cs" />
     <Compile Include="Controls\HUD\Controls\ValueControls\FloatValueControl.cs" />
     <Compile Include="Controls\HUD\Controls\ValueControls\IntegerValueControl.cs" />
     <Compile Include="Controls\HUD\Controls\ValueControls\IValueControl.cs" />

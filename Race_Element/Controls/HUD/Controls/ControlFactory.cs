@@ -1,6 +1,7 @@
 ﻿using RaceElement.Controls.HUD.Controls.ValueControls;
 using RaceElement.HUD.Overlay.Configuration;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -49,7 +50,6 @@ namespace RaceElement.Controls.HUD.Controls
 
             // add generated control but only if the generated label is not null
             IControl valueControl = GenerateValueControl(pi, configField);
-            valueControl.Control.HorizontalAlignment = HorizontalAlignment.Right;
             if (valueControl != null)
             {
                 Grid.SetColumn(valueControl.Control, 1);
@@ -131,6 +131,12 @@ namespace RaceElement.Controls.HUD.Controls
                     {
                         IValueControl<System.Drawing.Color> valueControl = new ColorValueControl(configField);
                         contentControl = valueControl;
+                        break;
+                    }
+
+                case Type _ when pi.PropertyType.BaseType == typeof(Enum):
+                    {
+                        contentControl = new EnumValueControl(configField, pi.PropertyType);
                         break;
                     }
             }

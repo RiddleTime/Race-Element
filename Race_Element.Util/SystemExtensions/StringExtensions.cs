@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace RaceElement.Util.SystemExtensions
 {
@@ -30,6 +31,20 @@ namespace RaceElement.Util.SystemExtensions
             }
 
             return text;
+        }
+
+
+        public static string ToString(this string[] values)
+        {
+            var builder = new StringBuilder();
+            for (int i = 0; i < values.Length; i++)
+            {
+                string v = values[i];
+                builder.Append($"{{{v}}}");
+                if (i < values.Length - 1)
+                    builder.Append(", ");
+            }
+            return builder.ToString();
         }
     }
 }

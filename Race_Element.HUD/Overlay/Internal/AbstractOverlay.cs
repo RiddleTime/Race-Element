@@ -111,8 +111,14 @@ namespace RaceElement.HUD.Overlay.Internal
                     if (savedSettings == null)
                         return;
 
-                    overlayConfig.SetConfigFields(savedSettings.Config);
-
+                    try
+                    {
+                        overlayConfig.SetConfigFields(savedSettings.Config);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex);
+                    }
                     nested.SetValue(this, overlayConfig);
 
                     if (overlayConfig.AllowRescale)
