@@ -102,8 +102,9 @@ namespace RaceElement.HUD.Overlay.Configuration
                                         subNested.SetValue(nestedValue, ColorFromToString(field.Value.ToString()));
                                     else if (subNested.PropertyType.BaseType == typeof(Enum))
                                     {
-                                        var enumObject = Enum.Parse(prop.PropertyType, field.Value.ToString());
-                                        subNested.SetValue(nestedValue, enumObject);
+                                        var enumList = Enum.GetValues(subNested.PropertyType).Cast<Enum>().ToList();
+                                        var enumItem = enumList.FirstOrDefault(x => x.ToString().Equals(field.Value.ToString()));
+                                        subNested.SetValue(nestedValue, enumItem);
                                     }
                                     else
                                     {
@@ -133,7 +134,11 @@ namespace RaceElement.HUD.Overlay.Configuration
                             else if (prop.PropertyType == typeof(Color))
                                 prop.SetValue(this, ColorFromToString(field.Value.ToString()));
                             else if (prop.PropertyType.BaseType == typeof(Enum))
-                                prop.SetValue(this, Enum.Parse(prop.PropertyType, field.Value.ToString()));
+                            {
+                                var enumList = Enum.GetValues(prop.PropertyType).Cast<Enum>().ToList();
+                                var enumItem = enumList.FirstOrDefault(x => x.ToString().Equals(field.Value.ToString()));
+                                prop.SetValue(this, enumItem);
+                            }
                         }
                     }
                 }
