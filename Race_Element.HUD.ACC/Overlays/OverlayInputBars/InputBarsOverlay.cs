@@ -13,7 +13,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
     internal sealed class InputBarsOverlay : AbstractOverlay
     {
         private readonly InputBarsConfiguration _config = new InputBarsConfiguration();
-        private class InputBarsConfiguration : OverlayConfiguration
+        private sealed class InputBarsConfiguration : OverlayConfiguration
         {
             public enum BarOrientation { Horizontal, Vertical };
 
