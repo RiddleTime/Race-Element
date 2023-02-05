@@ -3,6 +3,7 @@ using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
+using RaceElement.Util.SystemExtensions;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -48,7 +49,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
             }
         }
 
-        private const int _size = 150;
+        private const int InitialSize = 150;
         private const int _wheelWidth = 15;
         private const int indicatorWidth = 15;
 
@@ -58,33 +59,34 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
 
         public SteeringOverlay(Rectangle rectangle) : base(rectangle, "Steering")
         {
-            this.Height = _size + 1;
-            this.Width = _size + 1;
+            this.Height = InitialSize + 1;
+            this.Width = InitialSize + 1;
         }
 
         public sealed override void BeforeStart()
         {
             switch (_config.Info.Text)
             {
+                case SteeringConfig.InputsText.SteeringAngle: _font = FontUtil.FontUnispace(32); break;
                 case SteeringConfig.InputsText.Gear: _font = FontUtil.FontConthrax(40); break;
-                case SteeringConfig.InputsText.Speed: _font = FontUtil.FontConthrax(25); break;
+                case SteeringConfig.InputsText.Speed: _font = FontUtil.FontUnispace(32); break;
+                case SteeringConfig.InputsText.Rpm: _font = FontUtil.FontUnispace(22); break;
             }
 
             _cachedBackground = new CachedBitmap((int)(Width * this.Scale), (int)(Height * this.Scale), g =>
             {
                 GraphicsPath gradientPath = new GraphicsPath();
-                gradientPath.AddEllipse(0, 0, (int)(_size * Scale), (int)(_size * Scale));
+                gradientPath.AddEllipse(0, 0, (int)(InitialSize * Scale), (int)(InitialSize * Scale));
                 PathGradientBrush pthGrBrush = new PathGradientBrush(gradientPath);
                 pthGrBrush.CenterColor = Color.FromArgb(40, 0, 0, 0);
                 pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(220, 0, 0, 0) };
 
-                // background
-                g.FillEllipse(pthGrBrush, new Rectangle(0, 0, (int)(_size * Scale), (int)(_size * Scale)));
-                g.DrawEllipse(new Pen(Color.FromArgb(230, Color.Black)), new Rectangle(0, 0, (int)(_size * Scale), (int)(_size * Scale)));
+                // draw background
+                g.FillEllipse(pthGrBrush, new Rectangle(0, 0, (int)(InitialSize * Scale), (int)(InitialSize * Scale)));
+                g.DrawEllipse(new Pen(Color.FromArgb(230, Color.Black)), new Rectangle(0, 0, (int)(InitialSize * Scale), (int)(InitialSize * Scale)));
 
-                // steering background
-                g.DrawEllipse(new Pen(Color.FromArgb(_config.Colors.RingOpacity, _config.Colors.RingColor), _wheelWidth / 2 * Scale), _size / 2 * Scale, _size / 2 * Scale, _size / 2 * Scale - _wheelWidth * Scale);
-
+                // draw steering ring
+                g.DrawEllipse(new Pen(Color.FromArgb(_config.Colors.RingOpacity, _config.Colors.RingColor), _wheelWidth / 2 * Scale), InitialSize / 2 * Scale, InitialSize / 2 * Scale, InitialSize / 2 * Scale - _wheelWidth * Scale);
             });
         }
 
@@ -99,7 +101,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            _cachedBackground?.Draw(g, 0, 0, _size, _size);
+            _cachedBackground?.Draw(g, 0, 0, InitialSize, InitialSize);
 
             DrawSteeringIndicator(g);
 
@@ -116,7 +118,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
             float accSteering = (pagePhysics.SteerAngle / 2 + 1) * 100; // map acc value to 0 - 200
             float angle = Rescale(200, SteeringLock.Get(pageStatic.CarModel) * 2, accSteering) - (SteeringLock.Get(pageStatic.CarModel));
 
-            Rectangle rect = new Rectangle(0 + _wheelWidth, 0 + _wheelWidth, _size - (2 * _wheelWidth), _size - (2 * _wheelWidth));
+            Rectangle rect = new Rectangle(0 + _wheelWidth, 0 + _wheelWidth, InitialSize - (2 * _wheelWidth), InitialSize - (2 * _wheelWidth));
             float drawAngle = angle + 270 - (indicatorWidth / 2);
             g.DrawArc(new Pen(Color.White, _wheelWidth), rect, drawAngle, indicatorWidth);
         }
@@ -130,9 +132,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
         private void DrawSpeed(Graphics g)
         {
             string speed = ((int)pagePhysics.SpeedKmh).ToString();
+            speed.FillStart(3, ' ');
+
             float stringWidth = g.MeasureString(speed, _font).Width;
-            int xPos = (int)(_size / 2 - stringWidth / 2);
-            int yPos = _size / 2 - _font.Height / 2;
+            int xPos = (int)(InitialSize / 2 - stringWidth / 2);
+            int yPos = InitialSize / 2 - _font.Height / 2;
 
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
             g.DrawStringWithShadow(speed, _font, Color.White, new PointF(xPos, yPos), 2.5f);
@@ -149,8 +153,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
             }
 
             float gearStringWidth = g.MeasureString(gear, _font).Width;
-            int xPos = (int)(_size / 2 - gearStringWidth / 2);
-            int yPos = _size / 2 - _font.Height / 2;
+            int xPos = (int)(InitialSize / 2 - gearStringWidth / 2);
+            int yPos = InitialSize / 2 - _font.Height / 2;
 
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
             g.DrawStringWithShadow(gear, _font, Color.White, new PointF(xPos, yPos), 2.5f);
