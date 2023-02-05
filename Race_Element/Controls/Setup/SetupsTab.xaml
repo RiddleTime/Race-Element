@@ -70,6 +70,32 @@
                         <controls:SetupComparer></controls:SetupComparer>
                     </Grid>
                 </TabItem>
+
+
+                <TabItem Name="tabAffiliate" Visibility="Collapsed" Style="{DynamicResource MaterialDesignTabItem}" ToolTip="Support Race Element by using affiliate links to buy setups.">
+                    <TabItem.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon
+                            Grid.Column="0"
+                            Kind="Link"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="32"
+                        Foreground="White"    
+                        />
+                            <TextBlock Grid.Column="1" FontFamily="{StaticResource Conthrax}" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Buy</TextBlock>
+                        </Grid>
+                    </TabItem.Header>
+
+                    <Grid>
+                        <!--<controls:SetupComparer></controls:SetupComparer>-->
+                    </Grid>
+                </TabItem>
+
             </TabControl>
         </Grid>
     </materialDesign:Card>
