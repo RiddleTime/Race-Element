@@ -47,13 +47,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
             Rectangle renderRectangle = new Rectangle(0, 0, (int)(InitialWidth * this.Scale), (int)(InitialHeight * this.Scale));
             for (int i = 0; i <= 7; i++)
             {
-                string gear;
-                switch (i)
+                string gear = i switch
                 {
-                    case 0: gear = "R"; break;
-                    case 1: gear = "N"; break;
-                    default: gear = $"{i - 1}"; break;
-                }
+                    0 => "R",
+                    1 => "N",
+                    _ => $"{i - 1}",
+                };
 
                 gearBitmaps.Add(new CachedBitmap((int)(InitialWidth * this.Scale) + 1, (int)(InitialHeight * this.Scale) + 1, g =>
                 {

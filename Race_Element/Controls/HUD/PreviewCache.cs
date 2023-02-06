@@ -94,6 +94,7 @@ namespace RaceElement.Controls.HUD
             overlay.pagePhysics.BrakeTemperature = new float[] { 300f, 250f, 450f, 460f };
             overlay.pagePhysics.Gas = 0.78f;
             overlay.pagePhysics.Brake = 0.133f;
+            overlay.pagePhysics.SteerAngle = 0.053f;
 
             overlay.pagePhysics.CarDamage[0] = 20;
             overlay.pagePhysics.CarDamage[1] = 20;

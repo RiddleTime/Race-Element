@@ -24,7 +24,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
                 SteeringAngle,
                 Gear,
                 Speed,
-                Rpm,
             }
 
             [ConfigGrouping("Information", "Set the text that is displayed within the steering circle.")]
@@ -40,7 +39,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
             {
                 public Color RingColor { get; set; } = Color.FromArgb(255, 255, 0, 0);
                 [IntRange(75, 255, 1)]
-                public int RingOpacity { get; set; } = 80;
+                public int RingOpacity { get; set; } = 117;
             }
 
             public SteeringConfig()
@@ -67,10 +66,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
         {
             switch (_config.Info.Text)
             {
-                case SteeringConfig.InputsText.SteeringAngle: _font = FontUtil.FontUnispace(32); break;
+                case SteeringConfig.InputsText.SteeringAngle: _font = FontUtil.FontUnispace(28); break;
                 case SteeringConfig.InputsText.Gear: _font = FontUtil.FontConthrax(40); break;
                 case SteeringConfig.InputsText.Speed: _font = FontUtil.FontUnispace(32); break;
-                case SteeringConfig.InputsText.Rpm: _font = FontUtil.FontUnispace(22); break;
             }
 
             _cachedBackground = new CachedBitmap((int)(Width * this.Scale), (int)(Height * this.Scale), g =>
@@ -93,6 +91,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
         public sealed override void BeforeStop()
         {
             _cachedBackground?.Dispose();
+            _font?.Dispose();
         }
 
         public sealed override bool ShouldRender() => DefaultShouldRender();
@@ -108,6 +107,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
             if (_config.Info.Text != SteeringConfig.InputsText.None)
                 switch (_config.Info.Text)
                 {
+                    case SteeringConfig.InputsText.SteeringAngle: DrawSteeringAngle(g); break;
                     case SteeringConfig.InputsText.Gear: DrawGear(g); break;
                     case SteeringConfig.InputsText.Speed: DrawSpeed(g); break;
                 }
@@ -142,16 +142,28 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
             g.DrawStringWithShadow(speed, _font, Color.White, new PointF(xPos, yPos), 2.5f);
         }
 
+        private void DrawSteeringAngle(Graphics g)
+        {
+            float angle = pagePhysics.SteerAngle * SteeringLock.Get(pageStatic.CarModel) / 2;
+            string speed = $"{angle:f0}";
+            speed.FillStart(4, ' ');
+
+            float stringWidth = g.MeasureString(speed, _font).Width;
+            int xPos = (int)(InitialSize / 2 - stringWidth / 2);
+            int yPos = InitialSize / 2 - _font.Height / 2;
+
+            g.TextRenderingHint = TextRenderingHint.AntiAlias;
+            g.DrawStringWithShadow(speed, _font, Color.White, new PointF(xPos, yPos), 2.5f);
+        }
+
         private void DrawGear(Graphics g)
         {
-            string gear;
-            switch (pagePhysics.Gear)
+            string gear = pagePhysics.Gear switch
             {
-                case 0: gear = "R"; break;
-                case 1: gear = "N"; break;
-                default: gear = $"{pagePhysics.Gear - 1}"; break;
-            }
-
+                0 => "R",
+                1 => "N",
+                _ => $"{pagePhysics.Gear - 1}",
+            };
             float gearStringWidth = g.MeasureString(gear, _font).Width;
             int xPos = (int)(InitialSize / 2 - gearStringWidth / 2);
             int yPos = InitialSize / 2 - _font.Height / 2;
