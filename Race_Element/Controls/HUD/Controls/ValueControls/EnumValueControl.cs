@@ -36,18 +36,21 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
                 VerticalAlignment = VerticalAlignment.Center,
             };
 
-            string[] names = Enum.GetNames(type);
             int selectedIndex = 0;
+            string[] names = Enum.GetNames(type);
+            ComboBoxItem[] items = new ComboBoxItem[names.Length];
             for (int i = 0; i < names.Length; i++)
             {
                 if (names[i].Equals(field.Value))
                     selectedIndex = i;
+
+                items[i] = new ComboBoxItem() { Content = string.Concat(names[i].Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ') };
             }
 
             Debug.WriteLine($"Configured fieldValue: {field.Value}");
             _comboBox = new ComboBox()
             {
-                ItemsSource = names,
+                ItemsSource = items,
                 SelectedIndex = selectedIndex,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 HorizontalContentAlignment = HorizontalAlignment.Left,
