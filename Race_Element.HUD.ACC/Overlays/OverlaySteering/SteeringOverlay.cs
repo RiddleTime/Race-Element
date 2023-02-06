@@ -64,12 +64,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
 
         public sealed override void BeforeStart()
         {
-            switch (_config.Info.Text)
+            _font = _config.Info.Text switch
             {
-                case SteeringConfig.InputsText.SteeringAngle: _font = FontUtil.FontUnispace(28); break;
-                case SteeringConfig.InputsText.Gear: _font = FontUtil.FontConthrax(40); break;
-                case SteeringConfig.InputsText.Speed: _font = FontUtil.FontUnispace(32); break;
-            }
+                SteeringConfig.InputsText.SteeringAngle => FontUtil.FontUnispace(28),
+                SteeringConfig.InputsText.Gear => FontUtil.FontConthrax(40),
+                SteeringConfig.InputsText.Speed => FontUtil.FontUnispace(32),
+                _ => null,
+            };
 
             _cachedBackground = new CachedBitmap((int)(Width * this.Scale), (int)(Height * this.Scale), g =>
             {
