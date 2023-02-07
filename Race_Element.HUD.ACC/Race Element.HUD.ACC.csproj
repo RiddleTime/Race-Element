@@ -76,6 +76,7 @@
     <Compile Include="Overlays\OverlayDebugInfo\OverlayPhysicsInfo\PhysicsInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayStaticInfo\StaticInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayInputBars\InputBarsOverlay.cs" />
+    <Compile Include="Overlays\OverlayLapDelta\LapDeltaOverlay.cs" />
     <Compile Include="Overlays\OverlayLapInfo\LapInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayEcuMapInfo\EcuMapOverlay.cs" />
     <Compile Include="Overlays\OverlayEcuMapInfo\EcuMaps.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Overlays\OverlayInputTrace\InputGraph.cs" />
     <Compile Include="Overlays\OverlayInputTrace\InputTraceOverlay.cs" />
     <Compile Include="Overlays\OverlayMousePosition\MousePositionOverlay.cs" />
+    <Compile Include="Overlays\OverlayOpponent\OpponentOverlay.cs" />
     <Compile Include="Overlays\OverlayPressureTrace\PressureTraceOverlay.cs" />
     <Compile Include="Overlays\OverlayPressureTrace\TyrePressureDataCollector.cs" />
     <Compile Include="Overlays\OverlayPressureTrace\TyrePressureGraph.cs" />
@@ -134,5 +136,6 @@
       <Name>Race Element.Util</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
