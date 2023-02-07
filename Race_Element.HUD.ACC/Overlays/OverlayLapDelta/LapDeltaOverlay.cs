@@ -47,8 +47,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
                 [IntRange(25, 55, 5)]
                 public int Height { get; set; } = 30;
 
-                public Color PositiveColor { get; set; } = Color.FromArgb(255, Color.LimeGreen);
-                public Color NegativeColor { get; set; } = Color.FromArgb(255, Color.OrangeRed);
+                [ToolTip("Sets the color when the delta is positive (slower).")]
+                public Color PositiveColor { get; set; } = Color.FromArgb(255, Color.OrangeRed);
+                [ToolTip("Sets the color when the delta is negative (faster).")]
+                public Color NegativeColor { get; set; } = Color.FromArgb(255, Color.LimeGreen);
             }
 
             public LapDeltaConfiguration()
@@ -91,14 +93,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
             {
                 Rectangle rect = new Rectangle(0, 0, (int)(_config.Bar.Width / 2 * this.Scale), (int)(_config.Bar.Height * this.Scale));
                 using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(rect, cornerRadius, 0, 0, cornerRadius);
-                g.FillPath(new SolidBrush(Color.FromArgb(100, _config.Bar.PositiveColor)), path);
+                g.FillPath(new SolidBrush(Color.FromArgb(185, _config.Bar.PositiveColor)), path);
             });
 
             _cachedNegativeDelta = new CachedBitmap((int)(_config.Bar.Width / 2 * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
             {
-                Rectangle rect = new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale));
+                Rectangle rect = new Rectangle(0, 0, (int)(_config.Bar.Width / 2 * this.Scale), (int)(_config.Bar.Height * this.Scale));
                 using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(rect, 0, cornerRadius, cornerRadius, 0);
-                g.FillPath(new SolidBrush(Color.FromArgb(100, _config.Bar.NegativeColor)), path);
+                g.FillPath(new SolidBrush(Color.FromArgb(185, _config.Bar.NegativeColor)), path);
             });
         }
 
@@ -127,10 +129,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
             float delta = (float)pageGraphics.DeltaLapTimeMillis / 1000;
             delta.Clip(-_config.Delta.MaxDelta, _config.Delta.MaxDelta);
 
-            if (delta < 0)
+            if (delta > 0)
             {
-                float fillPercent = delta / -_config.Delta.MaxDelta;
-                Debug.WriteLine(fillPercent);
+                float fillPercent = delta / _config.Delta.MaxDelta;
                 float halfBarWidth = _config.Bar.Width / 2f;
                 float drawWidth = halfBarWidth * fillPercent;
 
@@ -138,10 +139,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
                 _cachedPositiveDelta?.Draw(g, 0, 0, (int)halfBarWidth, _config.Bar.Height);
                 g.ResetClip();
             }
-            if (delta > 0)
+            if (delta < 0)
             {
-                float fillPercent = delta / _config.Delta.MaxDelta;
-                Debug.WriteLine(fillPercent);
+                float fillPercent = delta / -_config.Delta.MaxDelta;
                 float halfBarWidth = _config.Bar.Width / 2f;
                 float drawWidth = halfBarWidth * fillPercent;
 
@@ -156,7 +156,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
             double delta = (double)pageGraphics.DeltaLapTimeMillis / 1000;
             delta.Clip(-9.999, 9.999);
 
-            string currentDelta = $"{delta.ToString($"F{_config.Delta.Decimals}")}".FillStart(_config.Delta.Decimals + 3, ' ');
+            string currentDelta = $"{delta.ToString($"F{_config.Delta.Decimals}")}";
+            if (delta > 0) currentDelta = "+" + currentDelta;
+            currentDelta.FillStart(_config.Delta.Decimals + 3, ' ');
 
             if (_deltaStringWidth < 0)
                 _deltaStringWidth = g.MeasureString(currentDelta, _font).Width;
@@ -176,7 +178,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
             g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
             g.TextContrast = 1;
 
-            g.DrawStringWithShadow(text, _font, textColor, new PointF(x - _deltaStringWidth / 2, y), 1f * this.Scale);
+            g.DrawStringWithShadow(text, _font, textColor, new PointF(x - _deltaStringWidth / 2, y), 1.3f);
         }
 
     }
