@@ -82,6 +82,8 @@ namespace RaceElement.Controls.HUD
             overlay.pageGraphics.SessionType = ACCSharedMemory.AcSessionType.AC_RACE;
             overlay.pageGraphics.MandatoryPitDone = false;
             overlay.pageGraphics.NormalizedCarPosition = 0.0472972f;
+            overlay.pageGraphics.DeltaLapTimeMillis = 167;
+            overlay.pageGraphics.IsValidLap = true;
 
             overlay.pagePhysics = ACCSharedMemory.Instance.ReadPhysicsPageFile(false);
             overlay.pagePhysics.SpeedKmh = 272.32f;

@@ -64,9 +64,9 @@ namespace RaceElement.Controls.HUD.Controls
             return new Label()
             {
                 Content = string.Concat(label.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' '),
-                Margin = new Thickness(0, 2, 0, 0),
+                Margin = new Thickness(0, 5, 0, -5),
                 Padding = new Thickness(7, 0, 0, 0),
-                FontWeight = FontWeights.Normal,
+                FontWeight = FontWeights.Medium,
                 FontSize = 13.5,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Top,
