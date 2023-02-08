@@ -50,8 +50,6 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
             {
                 ItemsSource = items,
                 SelectedIndex = selectedIndex,
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                HorizontalContentAlignment = HorizontalAlignment.Left,
                 Padding = new Thickness(6, 6, 0, 6),
                 FontWeight = FontWeights.Bold,
             };
@@ -62,6 +60,8 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
             };
 
             _grid.Children.Add(_comboBox);
+            _comboBox.HorizontalAlignment= HorizontalAlignment.Stretch;
+            _comboBox.HorizontalContentAlignment= HorizontalAlignment.Left;
         }
 
         public void Save() => ConfigurationControls.SaveOverlayConfigField(_field);

@@ -37,12 +37,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
         {
             try
             {
-                int cornerRadius = (int)(10 * this.Scale);
+                int cornerRadius = (int)(_config.Bar.Roundness * this.Scale);
 
                 _cachedBackground = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
                 {
                     Color bgColor = Color.FromArgb(185, 0, 0, 0);
-                    HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightDownwardDiagonal, bgColor, Color.FromArgb(bgColor.A - 50, bgColor));
+                    HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightUpwardDiagonal, bgColor, Color.FromArgb(bgColor.A - 50, bgColor));
                     g.FillRoundedRectangle(hatchBrush, new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), cornerRadius);
                     g.DrawRoundedRectangle(new Pen(Color.Black, 1 * this.Scale), new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), cornerRadius);
                 });
@@ -121,6 +121,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
 
             string currentDelta = $"{delta.ToString($"F{_config.Delta.Decimals}")}";
             if (delta > 0) currentDelta = "+" + currentDelta;
+
             currentDelta.FillStart(_config.Delta.Decimals + 3, ' '); // (+3) = ('-' or '+') plus "0."
 
             if (_deltaStringWidth < 0)
