@@ -50,8 +50,6 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
                 Maximum = _floatRange.Max,
                 TickFrequency = _floatRange.Increment,
                 IsSnapToTickEnabled = true,
-                HorizontalAlignment = HorizontalAlignment.Right,
-                VerticalAlignment = VerticalAlignment.Center,
                 Width = 180
             };
             _slider.ValueChanged += (s, e) =>
@@ -65,6 +63,8 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
             _slider.Value = value;
 
             _grid.Children.Add(_slider);
+            _slider.HorizontalAlignment= HorizontalAlignment.Right;
+            _slider.VerticalAlignment= VerticalAlignment.Center;
             Grid.SetColumn(_slider, 1);
 
             Control.MouseWheel += (sender, args) =>

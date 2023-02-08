@@ -62,17 +62,16 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
 
         private CachedBitmap _cachedBackground;
 
-        private HorizontalProgressBar[] _horizontalBars;
+        private readonly HorizontalProgressBar[] _horizontalBars;
         private HorizontalProgressBar _horizontalGasBar;
         private HorizontalProgressBar _horizontalBrakeBar;
 
-        private VerticalProgressBar[] _verticalBars;
+        private readonly VerticalProgressBar[] _verticalBars;
         private VerticalProgressBar _verticalGasBar;
         private VerticalProgressBar _verticalBrakeBar;
 
         public InputBarsOverlay(Rectangle rectangle) : base(rectangle, "Input Bars")
         {
-            Debug.WriteLine($"constructor: {_config.Bars.Orientation}");
             if (_config.Bars.Orientation == InputBarsConfiguration.BarOrientation.Horizontal)
             {
                 _horizontalBars = new HorizontalProgressBar[2];
@@ -91,7 +90,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
 
         public override void BeforeStart()
         {
-            Debug.WriteLine($"beforeStart: {_config.Bars.Orientation}");
             int width = _config.Bars.Thickness * 2 + _config.Bars.Spacing;
             int height = _config.Bars.Length;
 

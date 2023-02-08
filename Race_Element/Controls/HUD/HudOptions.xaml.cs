@@ -259,7 +259,7 @@ namespace RaceElement.Controls
                     _collectingGarbage = true;
                     Debug.WriteLine("Collecting garbage");
                     Thread.Sleep(10 * 1000);
-                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
                     _collectingGarbage = false;
                 });
         }
@@ -271,6 +271,7 @@ namespace RaceElement.Controls
 
             configStackPanel.Children.Clear();
             titleBar.Children.Clear();
+
             OverlayAttribute overlayAttribute = GetOverlayAttribute(type);
             OverlaySettingsJson tempOverlaySettings = OverlaySettings.LoadOverlaySettings(overlayAttribute.Name);
 

@@ -28,7 +28,6 @@ namespace RaceElement.Controls.HUD.Controls
                 Margin = new Thickness(0, 0, -1, 0),
                 Padding = new Thickness(0),
                 BorderThickness = new Thickness(1, 0, 0, 0),
-                //BorderBrush = System.Windows.Media.Brushes.OrangeRed,
                 Background = new SolidColorBrush(Color.FromArgb(120, 0, 0, 0)),
                 IsTabStop = false,
                 Focusable = false,

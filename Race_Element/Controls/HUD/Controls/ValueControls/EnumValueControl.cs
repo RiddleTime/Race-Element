@@ -32,23 +32,13 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
                 Margin = new Thickness(0, 1, 7, 1),
                 Background = new SolidColorBrush(Color.FromArgb(140, 2, 2, 2)),
                 Cursor = Cursors.Hand,
-                VerticalAlignment = VerticalAlignment.Center,
             };
 
             int selectedIndex = 0;
+
             string[] names = Enum.GetNames(type);
-            ComboBoxItem[] items = new ComboBoxItem[names.Length];
-            for (int i = 0; i < names.Length; i++)
-            {
-                if (names[i].Equals(field.Value))
-                    selectedIndex = i;
-
-                items[i] = new ComboBoxItem() { Content = string.Concat(names[i].Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ') };
-            }
-
             _comboBox = new ComboBox()
             {
-                ItemsSource = items,
                 SelectedIndex = selectedIndex,
                 Padding = new Thickness(6, 6, 0, 6),
                 FontWeight = FontWeights.Bold,
@@ -58,6 +48,18 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
                 _field.Value = names[_comboBox.SelectedIndex];
                 Save();
             };
+            
+
+           
+            ComboBoxItem[] items = new ComboBoxItem[names.Length];
+            for (int i = 0; i < names.Length; i++)
+            {
+                if (names[i].Equals(field.Value))
+                    selectedIndex = i;
+
+                items[i] = new ComboBoxItem() { Content = string.Concat(names[i].Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ') };
+            }
+            _comboBox.ItemsSource = items;
 
             _grid.Children.Add(_comboBox);
             _comboBox.HorizontalAlignment= HorizontalAlignment.Stretch;

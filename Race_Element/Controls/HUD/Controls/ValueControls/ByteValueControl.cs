@@ -47,8 +47,6 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
                 Maximum = byteRange.Max,
                 TickFrequency = byteRange.Increment,
                 IsSnapToTickEnabled = true,
-                HorizontalAlignment = HorizontalAlignment.Right,
-                VerticalAlignment = VerticalAlignment.Center,
                 Width = 180
             };
             _slider.ValueChanged += (s, e) =>
@@ -60,6 +58,8 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
             value.Clip(byteRange.Min, byteRange.Max);
             _slider.Value = value;
             _grid.Children.Add(_slider);
+            _slider.HorizontalAlignment= HorizontalAlignment.Right;
+            _slider.VerticalAlignment= VerticalAlignment.Center;
             Grid.SetColumn(_slider, 1);
             _label.Content = _slider.Value;
 

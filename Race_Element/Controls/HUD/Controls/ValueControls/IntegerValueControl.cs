@@ -35,11 +35,11 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
             _label = new Label()
             {
                 Content = _field.Value,
-                HorizontalContentAlignment = HorizontalAlignment.Right,
                 FontWeight = FontWeights.Bold,
                 FontSize = 13,
             };
             _grid.Children.Add(_label);
+            _label.HorizontalContentAlignment = HorizontalAlignment.Right;
             Grid.SetColumn(_label, 0);
 
             _slider = new Slider()
@@ -48,8 +48,6 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
                 Maximum = intRange.Max,
                 TickFrequency = intRange.Increment,
                 IsSnapToTickEnabled = true,
-                HorizontalAlignment = HorizontalAlignment.Right,
-                VerticalAlignment = VerticalAlignment.Center,
                 Width = 180,
             };
             _slider.ValueChanged += (s, e) =>
@@ -61,6 +59,8 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
             value.Clip(intRange.Min, intRange.Max);
             _slider.Value = value;
             _grid.Children.Add(_slider);
+            _slider.HorizontalAlignment= HorizontalAlignment.Right;
+            _slider.VerticalAlignment= VerticalAlignment.Center;
             Grid.SetColumn(_slider, 1);
 
             _label.Content = _field.Value;
