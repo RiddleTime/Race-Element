@@ -279,6 +279,7 @@ namespace RaceElement.HUD.Overlay.Internal
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex);
                 LogWriter.WriteToLog(ex);
             }
             PageStaticTracker.Tracker -= PageStaticChanged;

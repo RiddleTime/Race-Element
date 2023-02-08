@@ -17,11 +17,10 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
     internal class EnumValueControl : IValueControl<Enum>
     {
         Enum IValueControl<Enum>.Value { get; set; }
-
-        private readonly ConfigField _field;
         FrameworkElement IControl.Control => _grid;
+        
         private readonly Grid _grid;
-
+        private readonly ConfigField _field;
         private readonly ComboBox _comboBox;
 
         public EnumValueControl(ConfigField field, Type type)
@@ -47,7 +46,6 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
                 items[i] = new ComboBoxItem() { Content = string.Concat(names[i].Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ') };
             }
 
-            Debug.WriteLine($"Configured fieldValue: {field.Value}");
             _comboBox = new ComboBox()
             {
                 ItemsSource = items,
@@ -59,20 +57,13 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
             };
             _comboBox.SelectionChanged += (s, e) =>
             {
-                Debug.WriteLine($"Saving: {names[_comboBox.SelectedIndex]}");
                 _field.Value = names[_comboBox.SelectedIndex];
-                Debug.WriteLine($"Saved: {_field.Value}");
                 Save();
             };
 
             _grid.Children.Add(_comboBox);
         }
 
-        public void Save()
-        {
-            Debug.WriteLine($"Saving from Value Control: {_field.Value}");
-
-            ConfigurationControls.SaveOverlayConfigField(_field);
-        }
+        public void Save() => ConfigurationControls.SaveOverlayConfigField(_field);
     }
 }
