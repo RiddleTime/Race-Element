@@ -10,7 +10,7 @@ using System.Diagnostics;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
 {
-    [Overlay(Name = "Lap Delta", Description = "A Delta Bar", OverlayType = OverlayType.Release, Version = 1)]
+    [Overlay(Name = "Lap Delta", Description = "A customizable Lap Delta Bar", OverlayType = OverlayType.Release, Version = 1)]
     internal class LapDeltaOverlay : AbstractOverlay
     {
         private readonly LapDeltaConfiguration _config = new LapDeltaConfiguration();
@@ -51,14 +51,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
                 {
                     Rectangle rect = new Rectangle(0, 0, (int)(_config.Bar.Width / 2 * this.Scale), (int)(_config.Bar.Height * this.Scale));
                     using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(rect, cornerRadius, 0, 0, cornerRadius);
-                    g.FillPath(new SolidBrush(Color.FromArgb(185, _config.Colors.SlowerColor)), path);
+                    g.FillPath(new SolidBrush(Color.FromArgb(_config.Colors.SlowerOpacity, _config.Colors.SlowerColor)), path);
                 });
 
                 _cachedNegativeDelta = new CachedBitmap((int)(_config.Bar.Width / 2 * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
                 {
                     Rectangle rect = new Rectangle(0, 0, (int)(_config.Bar.Width / 2 * this.Scale), (int)(_config.Bar.Height * this.Scale));
                     using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(rect, 0, cornerRadius, cornerRadius, 0);
-                    g.FillPath(new SolidBrush(Color.FromArgb(185, _config.Colors.FasterColor)), path);
+                    g.FillPath(new SolidBrush(Color.FromArgb(_config.Colors.FasterOpacity, _config.Colors.FasterColor)), path);
                 });
             }
             catch (Exception e)
@@ -97,6 +97,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
                 float fillPercent = delta / _config.Delta.MaxDelta;
                 float halfBarWidth = _config.Bar.Width / 2f;
                 float drawWidth = halfBarWidth * fillPercent;
+                drawWidth.ClipMin(1);
 
                 g.SetClip(new Rectangle((int)(halfBarWidth - drawWidth), 0, (int)drawWidth, _config.Bar.Height));
                 _cachedPositiveDelta?.Draw(g, 0, 0, (int)halfBarWidth, _config.Bar.Height);
@@ -107,6 +108,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
                 float fillPercent = delta / -_config.Delta.MaxDelta;
                 float halfBarWidth = _config.Bar.Width / 2f;
                 float drawWidth = halfBarWidth * fillPercent;
+                drawWidth.ClipMin(1);
 
                 g.SetClip(new Rectangle((int)(halfBarWidth), 0, (int)drawWidth, _config.Bar.Height));
                 _cachedNegativeDelta?.Draw(g, (int)halfBarWidth, 0, (int)halfBarWidth, _config.Bar.Height);
@@ -117,10 +119,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
         private void DrawDeltaText(Graphics g)
         {
             double delta = (double)pageGraphics.DeltaLapTimeMillis / 1000;
-            delta.Clip(-9.999, 9.999);
+            delta.Clip(-9.0, 9.0);
 
             string currentDelta = $"{delta.ToString($"F{_config.Delta.Decimals}")}";
-            if (delta > 0) currentDelta = "+" + currentDelta;
+            if (delta >= 0) currentDelta = "+" + currentDelta;
 
             currentDelta.FillStart(_config.Delta.Decimals + 3, ' '); // (+3) = ('-' or '+') plus "0."
 
