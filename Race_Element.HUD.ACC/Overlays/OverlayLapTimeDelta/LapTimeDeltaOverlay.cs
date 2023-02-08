@@ -10,10 +10,10 @@ using System.Diagnostics;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
 {
-    [Overlay(Name = "Lap Delta", Description = "A customizable Lap Delta Bar", OverlayType = OverlayType.Release, Version = 1)]
-    internal class LapDeltaOverlay : AbstractOverlay
+    [Overlay(Name = "Laptime Delta", Description = "A customizable Laptime Delta Bar", OverlayType = OverlayType.Release, Version = 1)]
+    internal class LapTimeDeltaOverlay : AbstractOverlay
     {
-        private readonly LapDeltaConfiguration _config = new LapDeltaConfiguration();
+        private readonly LapTimeDeltaConfiguration _config = new LapTimeDeltaConfiguration();
 
         private float _deltaStringWidth = -1;
         private readonly Font _font;
@@ -22,7 +22,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
         private CachedBitmap _cachedPositiveDelta;
         private CachedBitmap _cachedNegativeDelta;
 
-        public LapDeltaOverlay(Rectangle rectangle) : base(rectangle, "Lap Delta")
+        public LapTimeDeltaOverlay(Rectangle rectangle) : base(rectangle, "Laptime Delta")
         {
             this.Width = _config.Bar.Width + 1;
             this.Height = _config.Bar.Height + 1;

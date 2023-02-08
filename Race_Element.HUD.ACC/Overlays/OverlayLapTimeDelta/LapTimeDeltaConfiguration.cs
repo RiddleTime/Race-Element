@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
 {
-    internal sealed class LapDeltaConfiguration : OverlayConfiguration
+    internal sealed class LapTimeDeltaConfiguration : OverlayConfiguration
     {
         [ConfigGrouping("Delta", "Adjust how the delta is displayed")]
         public DeltaGrouping Delta { get; set; } = new DeltaGrouping();
@@ -53,7 +53,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
             public int SlowerOpacity { get; set; } = 255;
         }
 
-        public LapDeltaConfiguration()
+        public LapTimeDeltaConfiguration()
         {
             this.AllowRescale = true;
         }

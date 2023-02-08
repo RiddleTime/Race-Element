@@ -76,8 +76,8 @@
     <Compile Include="Overlays\OverlayDebugInfo\OverlayPhysicsInfo\PhysicsInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayStaticInfo\StaticInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayInputBars\InputBarsOverlay.cs" />
-    <Compile Include="Overlays\OverlayLapDelta\LapDeltaConfiguration.cs" />
-    <Compile Include="Overlays\OverlayLapDelta\LapDeltaOverlay.cs" />
+    <Compile Include="Overlays\OverlayLapTimeDelta\LapTimeDeltaConfiguration.cs" />
+    <Compile Include="Overlays\OverlayLapTimeDelta\LapTimeDeltaOverlay.cs" />
     <Compile Include="Overlays\OverlayLapInfo\LapInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayEcuMapInfo\EcuMapOverlay.cs" />
     <Compile Include="Overlays\OverlayEcuMapInfo\EcuMaps.cs" />
