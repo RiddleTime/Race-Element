@@ -29,6 +29,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
 
             _font = FontUtil.FontUnispace(_config.Delta.FontSize);
             this.Height += _font.Height * 1;
+
+            this.RefreshRateHz = 5;
         }
 
         public override void BeforeStart()
@@ -49,14 +51,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
                 {
                     Rectangle rect = new Rectangle(0, 0, (int)(_config.Bar.Width / 2 * this.Scale), (int)(_config.Bar.Height * this.Scale));
                     using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(rect, cornerRadius, 0, 0, cornerRadius);
-                    g.FillPath(new SolidBrush(Color.FromArgb(185, _config.Bar.PositiveColor)), path);
+                    g.FillPath(new SolidBrush(Color.FromArgb(185, _config.Colors.SlowerColor)), path);
                 });
 
                 _cachedNegativeDelta = new CachedBitmap((int)(_config.Bar.Width / 2 * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
                 {
                     Rectangle rect = new Rectangle(0, 0, (int)(_config.Bar.Width / 2 * this.Scale), (int)(_config.Bar.Height * this.Scale));
                     using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(rect, 0, cornerRadius, cornerRadius, 0);
-                    g.FillPath(new SolidBrush(Color.FromArgb(185, _config.Bar.NegativeColor)), path);
+                    g.FillPath(new SolidBrush(Color.FromArgb(185, _config.Colors.FasterColor)), path);
                 });
             }
             catch (Exception e)

@@ -9,6 +9,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
         public DeltaGrouping Delta { get; set; } = new DeltaGrouping();
         public class DeltaGrouping
         {
+            [ToolTip("Sets the size of the font.")]
+            [IntRange(12, 30, 1)]
+            public int FontSize { get; set; } = 12;
+
             [ToolTip("Sets the amount of decimals.")]
             [IntRange(1, 3, 1)]
             public int Decimals { get; set; } = 2;
@@ -16,10 +20,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
             [ToolTip("Sets the maximum range in seconds for the delta bar.")]
             [IntRange(1, 5, 1)]
             public int MaxDelta { get; set; } = 2;
-
-            [ToolTip("Sets the size of the font.")]
-            [IntRange(12, 30, 1)]
-            public int FontSize { get; set; } = 12;
         }
 
         [ConfigGrouping("Bar", "Adjust bar behavior.")]
@@ -31,14 +31,19 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
             public int Width { get; set; } = 300;
 
             [ToolTip("Sets the Height of the Delta Bar.")]
-            [IntRange(20, 55, 5)]
+            [IntRange(18, 60, 2)]
             public int Height { get; set; } = 30;
+        }
+
+        [ConfigGrouping("Colors", "Adjust Colors.")]
+        public ColorsGrouping Colors { get; set; } = new ColorsGrouping();
+        public class ColorsGrouping
+        {
+            [ToolTip("Sets the color when the delta is negative (faster).")]
+            public Color FasterColor { get; set; } = Color.FromArgb(255, Color.LimeGreen);
 
             [ToolTip("Sets the color when the delta is positive (slower).")]
-            public Color PositiveColor { get; set; } = Color.FromArgb(255, Color.OrangeRed);
-
-            [ToolTip("Sets the color when the delta is negative (faster).")]
-            public Color NegativeColor { get; set; } = Color.FromArgb(255, Color.LimeGreen);
+            public Color SlowerColor { get; set; } = Color.FromArgb(255, Color.OrangeRed);
         }
 
         public LapDeltaConfiguration()
