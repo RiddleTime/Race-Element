@@ -23,7 +23,7 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
             _field = configField;
             _grid = new Grid()
             {
-                Width = 250,
+                Width = 290,
                 Margin = new Thickness(0, 0, 7, 0),
                 Background = new SolidColorBrush(Color.FromArgb(140, 2, 2, 2)),
                 Cursor = Cursors.Hand
@@ -47,7 +47,7 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
                 Maximum = byteRange.Max,
                 TickFrequency = byteRange.Increment,
                 IsSnapToTickEnabled = true,
-                Width = 180
+                Width = 220
             };
             _slider.ValueChanged += (s, e) =>
             {

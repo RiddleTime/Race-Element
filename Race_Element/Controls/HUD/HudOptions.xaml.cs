@@ -600,7 +600,7 @@ namespace RaceElement.Controls
 
                     ListView listView = new ListView()
                     {
-                        Width = 390,
+                        Width = 430,
                         HorizontalAlignment = HorizontalAlignment.Center,
                         Margin = new Thickness(0, 0, 0, 5),
                         Background = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0)),
@@ -611,15 +611,16 @@ namespace RaceElement.Controls
                         Content = $" {cga.Title}",
                         Background = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0)),
                         Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255)),
-                        FontWeight = FontWeights.Bold,
-                        FontStyle = FontStyles.Italic,
+                        //FontWeight = FontWeights.Bold,
+                        //FontStyle = FontStyles.Italic,
+                        FontFamily = FindResource("Conthrax") as FontFamily,
                         HorizontalContentAlignment = HorizontalAlignment.Left,
                         FontSize = 18,
                         ToolTip = $"{cga.Description}",
                         Focusable = false,
                         Margin = new Thickness(0),
-                        Padding = new Thickness(2, 2, 0, 2),
-                        BorderThickness = new Thickness(1, 1, 0, 0),
+                        Padding = new Thickness(4, 2, 0, 2),
+                        BorderThickness = new Thickness(1, 0, 0, 0),
                         BorderBrush = Brushes.OrangeRed
                     });
 

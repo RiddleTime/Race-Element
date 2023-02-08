@@ -20,7 +20,7 @@ namespace RaceElement.Controls.HUD.Controls
         {
             Grid grid = new Grid() { Margin = new Thickness(0, 0, 0, 2) /*Height = 26*/ };
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(120, GridUnitType.Pixel) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(270, GridUnitType.Pixel) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(310, GridUnitType.Pixel) });
 
             ListViewItem item = new ListViewItem()
             {

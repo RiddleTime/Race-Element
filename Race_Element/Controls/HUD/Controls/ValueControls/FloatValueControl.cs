@@ -16,17 +16,15 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
 
         public FrameworkElement Control => _grid;
         public float Value { get; set; }
-        private readonly FloatRangeAttribute _floatRange;
         private readonly ConfigField _field;
 
         public FloatValueControl(FloatRangeAttribute floatRange, ConfigField configField)
         {
             _field = configField;
-            _floatRange = floatRange;
 
             _grid = new Grid()
             {
-                Width = 250,
+                Width = 290,
                 Margin = new Thickness(0, 0, 7, 0),
                 Background = new SolidColorBrush(Color.FromArgb(140, 2, 2, 2)),
                 Cursor = Cursors.Hand
@@ -46,11 +44,11 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
 
             _slider = new Slider()
             {
-                Minimum = _floatRange.Min,
-                Maximum = _floatRange.Max,
-                TickFrequency = _floatRange.Increment,
+                Minimum = floatRange.Min,
+                Maximum = floatRange.Max,
+                TickFrequency = floatRange.Increment,
                 IsSnapToTickEnabled = true,
-                Width = 180
+                Width = 220
             };
             _slider.ValueChanged += (s, e) =>
             {
@@ -70,7 +68,7 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
             Control.MouseWheel += (sender, args) =>
             {
                 int delta = args.Delta;
-                _slider.Value += delta.Clip(-1, 1) * _floatRange.Increment;
+                _slider.Value += delta.Clip(-1, 1) * floatRange.Increment;
                 args.Handled = true;
                 Save();
             };
