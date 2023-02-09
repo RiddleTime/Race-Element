@@ -8,7 +8,10 @@ namespace RaceElement.Controls
         {
             {"0.1.6.8", "- Fix: Dropdown menus not saving."+
                         "\n- HUD:"+
-                        "\n    - Input Trace and Oversteer Trace can now be customized in height."},
+                        "\n    - Input Trace: customizable height."+
+                        "\n    - Oversteer Trace:"+
+                        "\n        - Customizable height"+
+                        "\n        - Increase selectable max slip angle."},
             {"0.1.6.7", "- Added Laptime Delta HUD: a customizable lap delta bar." },
             {"0.1.6.6", "- Data tab: Added context menu to copy race weekends to clipboard and show them in windows explorer."+
                         "\n- Input Bars HUD: Add proper option to either set the bars horizontal of vertical. Vertical is default."+

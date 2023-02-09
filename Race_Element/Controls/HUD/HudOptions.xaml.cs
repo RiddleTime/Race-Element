@@ -103,16 +103,13 @@ namespace RaceElement.Controls
                         // middle button to activate reposition mode
                         this.MouseUp += (s, e) =>
                         {
-                            if (e.ChangedButton == MouseButton.Middle)
+                            if (e.ChangedButton == MouseButton.Middle && _lastMovementModeChange.AddMilliseconds(MovementModeDebounce) < DateTime.Now)
                             {
-                                if (_lastMovementModeChange.AddMilliseconds(MovementModeDebounce) < DateTime.Now)
+                                e.Handled = true;
+                                Dispatcher.BeginInvoke(new Action(() =>
                                 {
-                                    Dispatcher.BeginInvoke(new Action(() =>
-                                    {
-                                        this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
-                                    }));
-                                    e.Handled = true;
-                                }
+                                    this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
+                                }));
                             }
                         };
 
@@ -259,7 +256,7 @@ namespace RaceElement.Controls
                     _collectingGarbage = true;
                     Debug.WriteLine("Collecting garbage");
                     Thread.Sleep(10 * 1000);
-                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
+                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Optimized, false, true);
                     _collectingGarbage = false;
                 });
         }
