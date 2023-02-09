@@ -9,19 +9,23 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
     internal sealed class OversteerTraceOverlay : AbstractOverlay
     {
         private readonly OversteerTraceConfiguration _config = new OversteerTraceConfiguration();
-        private class OversteerTraceConfiguration : OverlayConfiguration
+        private sealed class OversteerTraceConfiguration : OverlayConfiguration
         {
             [ConfigGrouping("Chart", "Customize the charts refresh rate, data points or change the max slip angle shown.")]
             public ChartGrouping Chart { get; set; } = new ChartGrouping();
             public class ChartGrouping
             {
-                [ToolTip("Sets the maximum amount of slip angle displayed.")]
-                [IntRange(1, 90, 1)]
-                public int MaxSlipAngle { get; set; } = 4;
+                [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
+                [IntRange(50, 800, 10)]
+                public int Width { get; set; } = 300;
 
                 [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
-                [IntRange(150, 800, 10)]
-                public int DataPoints { get; set; } = 300;
+                [IntRange(80, 250, 10)]
+                public int Height { get; set; } = 120;
+
+                [ToolTip("Sets the maximum amount of slip angle displayed.")]
+                [FloatRange(0.1f, 10f, 0.1f, 1)]
+                public float MaxSlipAngle { get; set; } = 1.5f;
 
                 [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
                 [IntRange(10, 70, 5)]
@@ -36,15 +40,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
 
         private OversteerDataCollector _collector;
         private OversteerGraph _graph;
-        private readonly int _originalWidth;
-        private readonly int _originalHeight = 120;
 
         public OversteerTraceOverlay(Rectangle rectangle) : base(rectangle, "Oversteer Trace")
         {
-            _originalWidth = this._config.Chart.DataPoints;
-
-            this.Width = _originalWidth;
-            this.Height = _originalHeight;
+            this.Width = _config.Chart.Width;
+            this.Height = _config.Chart.Height;
             this.RequestsDrawItself = true;
         }
 
@@ -52,13 +52,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
         {
             _collector = new OversteerDataCollector(this)
             {
-                TraceCount = _originalWidth - 1,
+                TraceCount = _config.Chart.Width - 1,
                 MaxSlipAngle = _config.Chart.MaxSlipAngle,
                 Herz = _config.Chart.Herz
             };
             _collector.Start();
 
-            _graph = new OversteerGraph(0, 0, _originalWidth - 1, _originalHeight - 1, _collector);
+            _graph = new OversteerGraph(0, 0, _config.Chart.Width - 1, _config.Chart.Height - 1, _collector);
         }
 
         public sealed override void BeforeStop()

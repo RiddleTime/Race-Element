@@ -14,7 +14,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayFuelInfo
         private readonly InfoPanel _infoPanel;
 
         private readonly FuelInfoConfig _config = new FuelInfoConfig();
-        private class FuelInfoConfig : OverlayConfiguration
+        private sealed class FuelInfoConfig : OverlayConfiguration
         {
             [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
             public InfoPanelGrouping InfoPanel { get; set; } = new InfoPanelGrouping();

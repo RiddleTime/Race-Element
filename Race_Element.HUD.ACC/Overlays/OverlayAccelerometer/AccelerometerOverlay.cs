@@ -16,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayAccelerometer
     internal sealed class AccelerometerOverlay : AbstractOverlay
     {
         private readonly AccelleroConfig _config = new AccelleroConfig();
-        private class AccelleroConfig : OverlayConfiguration
+        private sealed class AccelleroConfig : OverlayConfiguration
         {
             [ConfigGrouping("Accelerometer", "Additional options for the Accelerometer")]
             public AccelerometerGrouping Accelerometer { get; set; } = new AccelerometerGrouping();

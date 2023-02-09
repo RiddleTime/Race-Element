@@ -34,7 +34,7 @@
                             <TextBlock.Text>Race Element</TextBlock.Text>
                         </TextBlock>
                         <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" Foreground="#EFFFFFFF" FontSize="22" FontFamily="{StaticResource Conthrax}"  Margin="0,-18,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"> 
-                            Provides tooling for Sim Racing.<LineBreak/>
+                            Provides Solutions for Sim Racing.<LineBreak/>
                         </TextBlock>
 
                         <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" 

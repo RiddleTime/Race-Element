@@ -18,10 +18,11 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
     {
         Enum IValueControl<Enum>.Value { get; set; }
         FrameworkElement IControl.Control => _grid;
-        
+
         private readonly Grid _grid;
         private readonly ConfigField _field;
         private readonly ComboBox _comboBox;
+        private readonly string[] _names;
 
         public EnumValueControl(ConfigField field, Type type)
         {
@@ -36,7 +37,7 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
 
             int selectedIndex = 0;
 
-            string[] names = Enum.GetNames(type);
+            _names = Enum.GetNames(type);
             _comboBox = new ComboBox()
             {
                 SelectedIndex = selectedIndex,
@@ -45,27 +46,29 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
             };
             _comboBox.SelectionChanged += (s, e) =>
             {
-                _field.Value = names[_comboBox.SelectedIndex];
                 Save();
             };
-            
 
-           
-            ComboBoxItem[] items = new ComboBoxItem[names.Length];
-            for (int i = 0; i < names.Length; i++)
+            ComboBoxItem[] items = new ComboBoxItem[_names.Length];
+            for (int i = 0; i < _names.Length; i++)
             {
-                if (names[i].Equals(field.Value))
+                if (_names[i].Equals(field.Value))
                     selectedIndex = i;
 
-                items[i] = new ComboBoxItem() { Content = string.Concat(names[i].Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ') };
+                items[i] = new ComboBoxItem() { Content = string.Concat(_names[i].Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ') };
             }
             _comboBox.ItemsSource = items;
+            _comboBox.SelectedIndex = selectedIndex;
 
             _grid.Children.Add(_comboBox);
-            _comboBox.HorizontalAlignment= HorizontalAlignment.Stretch;
-            _comboBox.HorizontalContentAlignment= HorizontalAlignment.Left;
+            _comboBox.HorizontalAlignment = HorizontalAlignment.Stretch;
+            _comboBox.HorizontalContentAlignment = HorizontalAlignment.Left;
         }
 
-        public void Save() => ConfigurationControls.SaveOverlayConfigField(_field);
+        public void Save()
+        {
+            _field.Value = _names[_comboBox.SelectedIndex];
+            ConfigurationControls.SaveOverlayConfigField(_field);
+        }
     }
 }

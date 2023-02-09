@@ -13,7 +13,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
     internal sealed class CarInfoOverlay : AbstractOverlay
     {
         private readonly CarInfoConfiguration _config = new CarInfoConfiguration();
-        private class CarInfoConfiguration : OverlayConfiguration
+        private sealed class CarInfoConfiguration : OverlayConfiguration
         {
             [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
             public InfoPanelGrouping InfoPanel { get; set; } = new InfoPanelGrouping();

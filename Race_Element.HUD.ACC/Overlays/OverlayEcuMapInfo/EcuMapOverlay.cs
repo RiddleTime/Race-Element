@@ -13,7 +13,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayEcuMapInfo
         private readonly InfoPanel _panel = new InfoPanel(10, PanelWidth);
 
         private EcuMapConfiguration _config = new EcuMapConfiguration();
-        private class EcuMapConfiguration : OverlayConfiguration
+        private sealed class EcuMapConfiguration : OverlayConfiguration
         {
             [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
             public InfoPanelGrouping InfoPanel { get; set; } = new InfoPanelGrouping();

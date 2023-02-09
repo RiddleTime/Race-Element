@@ -17,8 +17,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
             public class ChartGrouping
             {
                 [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
-                [IntRange(150, 800, 10)]
-                public int DataPoints { get; set; } = 300;
+                [IntRange(50, 800, 10)]
+                public int Width { get; set; } = 300;
+
+                [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
+                [IntRange(80, 250, 10)]
+                public int Height { get; set; } = 120;
 
                 [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
                 [IntRange(10, 70, 5)]
@@ -34,26 +38,22 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
             }
         }
 
-        private readonly int _originalHeight = 120;
-        private readonly int _originalWidth = 300;
-
         private InputGraph _graph;
         private InputDataCollector _inputDataCollector;
 
         public InputTraceOverlay(Rectangle rectangle) : base(rectangle, "Input Trace")
         {
-            _originalWidth = this._config.InfoPanel.DataPoints;
-            this.Width = _originalWidth;
-            this.Height = _originalHeight;
+            this.Width = _config.InfoPanel.Width;
+            this.Height = _config.InfoPanel.Height;
             this.RequestsDrawItself = true;
         }
 
         public sealed override void BeforeStart()
         {
-            _inputDataCollector = new InputDataCollector(this) { TraceCount = this._originalWidth - 1, inputTraceConfig = _config };
+            _inputDataCollector = new InputDataCollector(this) { TraceCount = _config.InfoPanel.Width - 1, inputTraceConfig = _config };
             _inputDataCollector.Start();
 
-            _graph = new InputGraph(0, 0, this._originalWidth - 1, this._originalHeight - 1, _inputDataCollector, this._config);
+            _graph = new InputGraph(0, 0, _config.InfoPanel.Width - 1, _config.InfoPanel.Height - 1, _inputDataCollector, this._config);
         }
 
         public sealed override void BeforeStop()

@@ -16,7 +16,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayBoostGauge
     internal class BoostGaugeOverlay : AbstractOverlay
     {
         private readonly BoostConfiguration _config = new BoostConfiguration();
-        private class BoostConfiguration : OverlayConfiguration
+        private sealed class BoostConfiguration : OverlayConfiguration
         {
             public BoostConfiguration()
             {

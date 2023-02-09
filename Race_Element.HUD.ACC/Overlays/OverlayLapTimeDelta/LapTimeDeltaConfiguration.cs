@@ -10,7 +10,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
         public class DeltaGrouping
         {
             [ToolTip("Sets the maximum range in seconds for the delta bar.")]
-            [FloatRange(0.2f, 5.00f, 0.05f, 2)]
+            [FloatRange(0.02f, 5.00f, 0.02f, 2)]
             public float MaxDelta { get; set; } = 2;
 
             [ToolTip("Sets the amount of decimals.")]
@@ -34,7 +34,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
             [IntRange(20, 60, 2)]
             public int Height { get; set; } = 32;
 
-            [IntRange(1, 6, 1)]
+            [IntRange(1, 9, 1)]
             public int Roundness { get; set; } = 5;
         }
 
