@@ -39,12 +39,12 @@
 
                         <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" 
                                     Foreground="#CFFFFFFF" 
-                                   HorizontalAlignment="Center" Margin="0,-2,0,0" VerticalAlignment="Bottom" FontSize="15" FontFamily="{StaticResource Conthrax}">
+                                   HorizontalAlignment="Center" Margin="0,-10,0,0" VerticalAlignment="Bottom" FontSize="15" FontFamily="{StaticResource Conthrax}">
                             Developed by RiddleTime.
                         </TextBlock>
                         <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" 
                                     Foreground="#CFFFFFFF" 
-                                   HorizontalAlignment="Center" Margin="0,-9,0,0" VerticalAlignment="Bottom" FontSize="9"  FontFamily="{StaticResource Conthrax}">
+                                   HorizontalAlignment="Center" Margin="0,-7,0,0" VerticalAlignment="Bottom" FontSize="12"  FontFamily="{StaticResource Conthrax}">
                              Contributors: KrisV147, Floriwan, rs-blade, RPelice, Mominon, Fbalazs and Jubka.
                         </TextBlock>
                     </StackPanel>
