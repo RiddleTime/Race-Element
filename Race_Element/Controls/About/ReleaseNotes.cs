@@ -6,7 +6,7 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.1.6.7", "- Added Lap Delta HUD: a customizable lap delta bar." },
+            {"0.1.6.7", "- Added Laptime Delta HUD: a customizable lap delta bar." },
             {"0.1.6.6", "- Data tab: Added context menu to copy race weekends to clipboard and show them in windows explorer."+
                         "\n- Input Bars HUD: Add proper option to either set the bars horizontal of vertical. Vertical is default."+
                         "\n- Inputs HUD is now known as Steering HUD: Added additional text display options and setting color."},
@@ -135,8 +135,7 @@ namespace RaceElement.Controls
             {"0.0.6.7", "- HUDs: Improved 'should render' status detection."+
                         "\n- HUD: Fixed average brake temps in Tyre Info Overlay."+
                         "\n- HUD: Added Inputs Overlay by Floriwan."+
-                        "\n- Livery exporter: Added option to exclude dds files."
-                        },
+                        "\n- Livery exporter: Added option to exclude dds files."},
             {"0.0.6.6", "- HUD: Added configurable data point amount for the Input Trace Overlay."+
                         "\n- HUD: Lap Delta bar outlines positive or negative delta color."+
                         "\n- HUD: Added subtle value background and row lines to info table and panel."+
@@ -149,8 +148,7 @@ namespace RaceElement.Controls
                         "\n- HUD: Overlays can now be scaled on with 1% steps, providing more precision."+
                         "\n- HUD: Overlays can now be moved with the arrow keys as well for finetuning of position."+
                         "\n- Added startup argument to start in minimized window state: ( /StartMinimized )."+
-                        "\n- Added Tyre Info overlay, this can be placed on top of the kunos tyre info."
-            },
+                        "\n- Added Tyre Info overlay, this can be placed on top of the kunos tyre info."},
             {"0.0.6.3", "- Lap Data Collector: Fix Average Fuel usage calculation after adding new fuel." },
             {"0.0.6.2", "- Integrate broadcast data, available for overlay developers."+
                         "\n- HUD: Added Car Info Overlay."+
@@ -166,8 +164,7 @@ namespace RaceElement.Controls
                         "\n    - Added tooltips."+
                         "\n- HUD: Track Info Overlay:" +
                         "\n    - Added configurable Time of Day information."+
-                        "\n    - Added tooltips."
-            },
+                        "\n    - Added tooltips."},
             {"0.0.6.1", "- Improve logging for overlays." },
             {"0.0.6.0", "- HUD Tab:"+
                         "\n    - Scroll the scale control to adjust the scale."+
