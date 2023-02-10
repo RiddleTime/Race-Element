@@ -5,7 +5,7 @@
 [![Discord](https://badgen.net/discord/members/26AAEW5mUq?icon=discord&color=5562ea&label=Race%20Element)](https://discord.gg/26AAEW5mUq)
 [![Hits](https://hits.seeyoufarm.com/api/count/keep/badge.svg?url=https%3A%2F%2Fgithub.com%2FRiddleTime%2FRace-Element&count_bg=%23FF4500&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Usage%3A+Today+%2F+All-time&edge_flat=false)](https://hits.seeyoufarm.com)
 
-Provides tooling for Sim Racing
+Provides Solutions for Sim Racing
 - HUDs
 - Telemetry
 - Setups
