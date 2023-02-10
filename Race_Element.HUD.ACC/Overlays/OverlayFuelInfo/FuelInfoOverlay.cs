@@ -42,7 +42,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayFuelInfo
                 [FloatRange(0.30f, 0.75f, 0.01f, 2)]
                 public float MediumPercent { get; set; } = 0.5f;
                 [ToolTip("Change the color of the fuel bar when medium fuel.")]
-                public Color MediumColor { get; set; } = Color.FromArgb(255, Color.OrangeRed);
+                public Color MediumColor { get; set; } = Color.FromArgb(255, 255, 135, 0);
 
                 [ToolTip("Change the low fuel percentage for the fuel bar to change color.")]
                 [FloatRange(0.01f, 0.25f, 0.01f, 2)]
