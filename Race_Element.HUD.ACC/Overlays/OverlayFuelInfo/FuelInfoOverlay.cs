@@ -31,6 +31,26 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayFuelInfo
                 public bool StintInfo { get; set; } = true;
             }
 
+            [ConfigGrouping("Colors", "Adjust colors for the fuel bar.")]
+            public ColorsGrouping Colors { get; set; } = new ColorsGrouping();
+            public class ColorsGrouping
+            {
+                [ToolTip("Change the color of the fuel bar when full fuel.")]
+                public Color FullColor { get; set; } = Color.FromArgb(255, Color.Green);
+
+                [ToolTip("Change the medium fuel percentage for the fuel bar to change color.")]
+                [FloatRange(0.30f, 0.75f, 0.01f, 2)]
+                public float MediumPercent { get; set; } = 0.5f;
+                [ToolTip("Change the color of the fuel bar when medium fuel.")]
+                public Color MediumColor { get; set; } = Color.FromArgb(255, Color.OrangeRed);
+
+                [ToolTip("Change the low fuel percentage for the fuel bar to change color.")]
+                [FloatRange(0.01f, 0.25f, 0.01f, 2)]
+                public float LowPercent { get; set; } = 0.15f;
+                [ToolTip("Change the color of the fuel bar when low fuel.")]
+                public Color LowColor { get; set; } = Color.FromArgb(255, Color.Red);
+            }
+
             public FuelInfoConfig()
             {
                 this.AllowRescale = true;
@@ -71,7 +91,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayFuelInfo
             string fuelTime = $"{TimeSpan.FromMilliseconds(fuelTimeLeft):hh\\:mm\\:ss}";
             string stintTime = $"{TimeSpan.FromMilliseconds(stintDebug):hh\\:mm\\:ss}";
             //**********************
-            Brush fuelBarBrush = pagePhysics.Fuel / pageStatic.MaxFuel < 0.15 ? Brushes.Red : Brushes.OrangeRed;
+            Brush fuelBarBrush = GetFuelBarBrush();
+
             Brush fuelTimeBrush = GetFuelTimeBrush(fuelTimeLeft, stintDebug);
             //Start (Basic)
             _infoPanel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel:F2} L", 0, pageStatic.MaxFuel, pagePhysics.Fuel, fuelBarBrush);
@@ -104,6 +125,17 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayFuelInfo
                 fuel = Math.Min(stintFuel - pagePhysics.Fuel, pageStatic.MaxFuel) + lapBufferVar;
             fuel.ClipMin(0);
             return fuel;
+        }
+
+        private Brush GetFuelBarBrush()
+        {
+            float percentage = pagePhysics.Fuel / pageStatic.MaxFuel;
+
+            Color color = _config.Colors.FullColor;
+            if (percentage <= _config.Colors.MediumPercent) color = _config.Colors.MediumColor;
+            if (percentage <= _config.Colors.LowPercent) color = _config.Colors.LowColor;
+
+            return new SolidBrush(color);
         }
 
         private Brush GetFuelTimeBrush(double fuelTimeLeft, double stintDebug)

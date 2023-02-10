@@ -87,7 +87,7 @@ namespace RaceElement.Controls.HUD
 
             overlay.pagePhysics = ACCSharedMemory.Instance.ReadPhysicsPageFile(false);
             overlay.pagePhysics.SpeedKmh = 272.32f;
-            overlay.pagePhysics.Fuel = 92.07f;
+            overlay.pagePhysics.Fuel = 76.07f;
             overlay.pagePhysics.Rpms = 8500;
             overlay.pagePhysics.Gear = 3;
             overlay.pagePhysics.WheelPressure = new float[] { 27.61f, 27.56f, 26.94f, 26.13f };
