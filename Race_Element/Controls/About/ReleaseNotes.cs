@@ -6,6 +6,7 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.1.6.9", "- Fuel Info HUD: Add option to change fuel bar color based on fuel percentage." },
             {"0.1.6.8", "- HUD:"+
                         "\n  - Fix: Dropdown menus not saving."+
                         "\n  - Input Trace: customizable height."+
