@@ -85,6 +85,8 @@
     <Compile Include="Overlays\OverlayInputTrace\InputDataCollector.cs" />
     <Compile Include="Overlays\OverlayInputTrace\InputGraph.cs" />
     <Compile Include="Overlays\OverlayInputTrace\InputTraceOverlay.cs" />
+    <Compile Include="Overlays\OverlayLaptimeTable\LapTimeTableConfiguration.cs" />
+    <Compile Include="Overlays\OverlayLaptimeTable\LapTimeTableOverlay.cs" />
     <Compile Include="Overlays\OverlayMousePosition\MousePositionOverlay.cs" />
     <Compile Include="Overlays\OverlayOpponent\OpponentOverlay.cs" />
     <Compile Include="Overlays\OverlayPressureTrace\PressureTraceOverlay.cs" />

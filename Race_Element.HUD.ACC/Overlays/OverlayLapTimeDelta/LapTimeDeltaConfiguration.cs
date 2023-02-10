@@ -53,9 +53,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
             public int SlowerOpacity { get; set; } = 255;
         }
 
-        public LapTimeDeltaConfiguration()
-        {
-            this.AllowRescale = true;
-        }
+        public LapTimeDeltaConfiguration() => this.AllowRescale = true;
     }
 }
