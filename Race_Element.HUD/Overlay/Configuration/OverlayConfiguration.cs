@@ -102,9 +102,16 @@ namespace RaceElement.HUD.Overlay.Configuration
                                         subNested.SetValue(nestedValue, ColorFromToString(field.Value.ToString()));
                                     else if (subNested.PropertyType.BaseType == typeof(Enum))
                                     {
-                                        var enumList = Enum.GetValues(subNested.PropertyType).Cast<Enum>().ToList();
-                                        var enumItem = enumList.FirstOrDefault(x => x.ToString().Equals(field.Value.ToString()));
-                                        subNested.SetValue(nestedValue, enumItem);
+                                        try
+                                        {
+                                            var enumList = Enum.GetValues(subNested.PropertyType).Cast<Enum>().ToList();
+                                            var enumItem = enumList.FirstOrDefault(x => x.ToString().Equals(field.Value.ToString()));
+                                            subNested.SetValue(nestedValue, enumItem);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Debug.WriteLine(e.ToString());
+                                        }
                                     }
                                     else
                                     {
@@ -153,12 +160,6 @@ namespace RaceElement.HUD.Overlay.Configuration
 
         private System.Drawing.Color ColorFromToString(string value)
         {
-            // format to convert from (System.Drawing.Color.ToString())
-            // Color [A=135, R=5, G=255, B=5]
-
-            // format to convert from (System.Drawing.Color.ToString())
-            // Color [A=135, R=5, G=255, B=5]
-
             if (value.Contains("#"))
             {
                 value = value.Replace("Color [", "");
@@ -166,15 +167,24 @@ namespace RaceElement.HUD.Overlay.Configuration
                 return (System.Drawing.Color)new System.Drawing.ColorConverter().ConvertFromString(value);
             }
 
-            try
+
+            if (value.Contains("A") && value.Contains("R") && value.Contains("G") && value.Contains("B"))
             {
-                int a = int.Parse(value.Split('A')[1].Split(',')[0].Replace("=", ""));
-                int r = int.Parse(value.Split('R')[1].Split(',')[0].Replace("=", ""));
-                int g = int.Parse(value.Split('G')[1].Split(',')[0].Replace("=", ""));
-                int b = int.Parse(value.Split('B')[1].Split(']')[0].Replace("=", ""));
-                return System.Drawing.Color.FromArgb(a, r, g, b);
+                try
+                {
+                    int a = int.Parse(value.Split('A')[1].Split(',')[0].Replace("=", ""));
+                    int r = int.Parse(value.Split('R')[1].Split(',')[0].Replace("=", ""));
+                    int g = int.Parse(value.Split('G')[1].Split(',')[0].Replace("=", ""));
+                    int b = int.Parse(value.Split('B')[1].Split(']')[0].Replace("=", ""));
+                    return System.Drawing.Color.FromArgb(a, r, g, b);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.StackTrace);
+                    return Color.Red;
+                }
             }
-            catch (Exception)
+            else
             {
                 try
                 {
@@ -184,11 +194,13 @@ namespace RaceElement.HUD.Overlay.Configuration
                     int b = int.Parse(split[2]);
                     return System.Drawing.Color.FromArgb(255, r, g, b);
                 }
-                catch (Exception)
+                catch (Exception ea)
                 {
+                    Debug.WriteLine(ea);
                     return Color.Red;
                 }
             }
+
         }
     }
 }

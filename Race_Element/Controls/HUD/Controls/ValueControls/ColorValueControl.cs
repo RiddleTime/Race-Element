@@ -1,5 +1,6 @@
 ﻿using MaterialDesignThemes.Wpf;
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -56,15 +57,23 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
                 return (System.Drawing.Color)new System.Drawing.ColorConverter().ConvertFromString(value);
             }
 
-            try
+            if (value.Contains("A") && value.Contains("R") && value.Contains("G") && value.Contains("B"))
             {
-                int a = int.Parse(value.Split('A')[1].Split(',')[0].Replace("=", ""));
-                int r = int.Parse(value.Split('R')[1].Split(',')[0].Replace("=", ""));
-                int g = int.Parse(value.Split('G')[1].Split(',')[0].Replace("=", ""));
-                int b = int.Parse(value.Split('B')[1].Split(']')[0].Replace("=", ""));
-                return System.Drawing.Color.FromArgb(a, r, g, b);
+                try
+                {
+                    int a = int.Parse(value.Split('A')[1].Split(',')[0].Replace("=", ""));
+                    int r = int.Parse(value.Split('R')[1].Split(',')[0].Replace("=", ""));
+                    int g = int.Parse(value.Split('G')[1].Split(',')[0].Replace("=", ""));
+                    int b = int.Parse(value.Split('B')[1].Split(']')[0].Replace("=", ""));
+                    return System.Drawing.Color.FromArgb(a, r, g, b);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.StackTrace);
+                    return System.Drawing.Color.Red;
+                }
             }
-            catch (Exception)
+            else
             {
                 try
                 {
@@ -74,8 +83,9 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
                     int b = int.Parse(split[2]);
                     return System.Drawing.Color.FromArgb(255, r, g, b);
                 }
-                catch (Exception)
+                catch (Exception ea)
                 {
+                    Debug.WriteLine(ea);
                     return System.Drawing.Color.Red;
                 }
             }

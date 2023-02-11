@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Navigation;
-using System.Xml.Linq;
 using static RaceElement.HUD.Overlay.Configuration.OverlayConfiguration;
 
 namespace RaceElement.Controls.HUD.Controls.ValueControls
@@ -50,12 +45,26 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
             };
 
             ComboBoxItem[] items = new ComboBoxItem[_names.Length];
-            for (int i = 0; i < _names.Length; i++)
+            try
             {
-                if (_names[i].Equals(field.Value))
-                    selectedIndex = i;
+                for (int i = 0; i < _names.Length; i++)
+                {
+                    if (_names[i].Equals(field.Value))
+                        selectedIndex = i;
 
-                items[i] = new ComboBoxItem() { Content = string.Concat(_names[i].Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ') };
+
+                    items[i] = new ComboBoxItem()
+                    {
+                        Content = string.Concat(_names[i].Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' '),
+                        HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                        VerticalContentAlignment = VerticalAlignment.Stretch,
+                    };
+
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
             }
             _comboBox.ItemsSource = items;
             _comboBox.SelectedIndex = selectedIndex;

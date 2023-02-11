@@ -1,7 +1,6 @@
 ﻿using RaceElement.Controls.HUD.Controls.ValueControls;
 using RaceElement.HUD.Overlay.Configuration;
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -46,6 +45,8 @@ namespace RaceElement.Controls.HUD.Controls
             Label lblControl = GenerateLabel(label);
             grid.Children.Add(lblControl);
             Grid.SetColumn(lblControl, 0);
+            lblControl.HorizontalAlignment = HorizontalAlignment.Left;
+            lblControl.VerticalAlignment = VerticalAlignment.Top;
 
             // add generated control but only if the generated label is not null
             IControl valueControl = GenerateValueControl(pi, configField);
@@ -53,6 +54,9 @@ namespace RaceElement.Controls.HUD.Controls
             {
                 Grid.SetColumn(valueControl.Control, 1);
                 grid.Children.Add(valueControl.Control);
+
+                valueControl.Control.HorizontalAlignment = HorizontalAlignment.Center;
+                valueControl.Control.VerticalAlignment = VerticalAlignment.Center;
             }
 
             return item;
@@ -67,8 +71,6 @@ namespace RaceElement.Controls.HUD.Controls
                 Padding = new Thickness(7, 0, 0, 0),
                 FontWeight = FontWeights.Medium,
                 FontSize = 13.5,
-                HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Top,
             };
         }
 
@@ -143,8 +145,6 @@ namespace RaceElement.Controls.HUD.Controls
             if (contentControl == null)
                 return null;
 
-            contentControl.Control.HorizontalAlignment = HorizontalAlignment.Center;
-            contentControl.Control.VerticalAlignment = VerticalAlignment.Center;
 
             return contentControl;
         }
