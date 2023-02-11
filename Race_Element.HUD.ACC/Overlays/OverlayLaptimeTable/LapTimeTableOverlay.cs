@@ -65,7 +65,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLaptimeTable
 
                             string sector1 = $"{lap.Value.GetSector1():F3}";
                             string sector2 = $"{lap.Value.GetSector2():F3}";
-                            string sector3 = $"{lap.Value.GetSector2():F3}";
+                            string sector3 = $"{lap.Value.GetSector3():F3}";
 
                             _table.AddRow($"{lap.Key}", new string[] { $"{lapTimeValue}", sector1, sector2, sector3 });
                         }
