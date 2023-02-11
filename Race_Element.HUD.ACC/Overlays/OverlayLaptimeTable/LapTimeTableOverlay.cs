@@ -1,4 +1,5 @@
-﻿using RaceElement.Data.ACC.Tracker.Laps;
+﻿using RaceElement.Data.ACC.Database.LapDataDB;
+using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -19,7 +20,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLaptimeTable
         private InfoTable _table;
         public LapTimeTableOverlay(Rectangle rectangle) : base(rectangle, "Laptime Table")
         {
-            this.Width = 30;
+            this.Width = 51;
             this.Height = 1;
             this.RefreshRateHz = 3;
         }
@@ -53,7 +54,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLaptimeTable
 
         public override void Render(Graphics g)
         {
-            var laps = LapTracker.Instance.Laps;
+            var laps = LapTracker.Instance.Laps.ToList();
             var lapList = laps.OrderByDescending(x => x.Key).Take(_config.Table.Rows);
 
             switch (_config.Table.ShowSectors)
@@ -71,8 +72,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLaptimeTable
                                 lapTimeValue = $"{best:mm\\:ss\\:fff}";
                             }
 
+                            string sector1 = $"{lap.Value.GetSector1():F3}";
+                            string sector2 = $"{lap.Value.GetSector2():F3}";
+                            string sector3 = $"{lap.Value.GetSector2():F3}";
 
-                            _table.AddRow($"{lap.Key}", new string[] { $"{lapTimeValue}" });
+                            _table.AddRow($"{lap.Key}", new string[] { $"{lapTimeValue}", sector1, sector2, sector3 });
                         }
                         break;
                     }

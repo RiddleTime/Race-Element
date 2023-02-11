@@ -23,10 +23,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayEcuMapInfo
                 public bool MapNumber { get; set; } = true;
             }
 
-            public EcuMapConfiguration()
-            {
-                this.AllowRescale = true;
-            }
+            public EcuMapConfiguration() => this.AllowRescale = true;
         }
 
         public EcuMapOverlay(Rectangle rectangle) : base(rectangle, "ECU Maps")
