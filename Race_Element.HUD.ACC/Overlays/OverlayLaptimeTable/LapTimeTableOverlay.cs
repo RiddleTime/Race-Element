@@ -27,22 +27,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLaptimeTable
 
         public override void BeforeStart()
         {
-            switch (_config.Table.ShowSectors)
+            int[] columnWidths = _config.Table.ShowSectors switch
             {
-                case true:
-                    {
-                        int[] columnWidths = { 120, 100, 100, 100 };
-                        _table = new InfoTable(12, columnWidths);
-                        this.Width += columnWidths.Sum();
-                        break;
-                    }
-                case false:
-                    {
-                        _table = new InfoTable(12, new int[] { 100 });
-                        this.Width += 100;
-                        break;
-                    }
-            }
+                true => new int[] { 120, 100, 100, 100 },
+                false => new int[] { 120 }
+            };
+            _table = new InfoTable(12, columnWidths);
+            this.Width += columnWidths.Sum();
             this.Height += _table.FontHeight * (_config.Table.Rows + 1);
         }
 
@@ -83,7 +74,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLaptimeTable
                 case false:
                     {
                         _table.AddRow("#  ", new string[] { "Time" });
-
 
                         foreach (var lap in lapList)
                         {
