@@ -22,7 +22,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLaptimeTable
         {
             this.Width = 51;
             this.Height = 1;
-            this.RefreshRateHz = 3;
+            this.RefreshRateHz = 2;
         }
 
         public override void BeforeStart()
