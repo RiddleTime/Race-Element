@@ -1,14 +1,10 @@
 ﻿using RaceElement.Data.ACC.Database.LapDataDB;
 using RaceElement.Data.ACC.Tracker.Laps;
-using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayLaptimeTable
 {
@@ -29,17 +25,15 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLaptimeTable
         {
             int[] columnWidths = _config.Table.ShowSectors switch
             {
-                true => new int[] { 120, 100, 100, 100 },
-                false => new int[] { 120 }
+                true => new int[] { 130, 90, 90, 90 },
+                false => new int[] { 130 }
             };
             _table = new InfoTable(12, columnWidths);
             this.Width += columnWidths.Sum();
             this.Height += _table.FontHeight * (_config.Table.Rows + 1);
         }
 
-        public override void BeforeStop()
-        {
-        }
+        public override void BeforeStop() { }
 
         public override bool ShouldRender() => DefaultShouldRender();
 
@@ -52,7 +46,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLaptimeTable
             {
                 case true:
                     {
-                        _table.AddRow("#  ", new string[] { "Time", "S1", "S2", "S3" });
+                        _table?.AddRow("#  ", new string[] { "Time", "S1", "S2", "S3" });
 
                         foreach (var lap in lapList)
                         {
@@ -67,13 +61,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLaptimeTable
                             string sector2 = $"{lap.Value.GetSector2():F3}";
                             string sector3 = $"{lap.Value.GetSector3():F3}";
 
-                            _table.AddRow($"{lap.Key}", new string[] { $"{lapTimeValue}", sector1, sector2, sector3 });
+                            _table?.AddRow($"{lap.Key}", new string[] { $"{lapTimeValue}", sector1, sector2, sector3 });
                         }
                         break;
                     }
                 case false:
                     {
-                        _table.AddRow("#  ", new string[] { "Time" });
+                        _table?.AddRow("#  ", new string[] { "Time" });
 
                         foreach (var lap in lapList)
                         {
@@ -83,11 +77,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLaptimeTable
                                 TimeSpan best = TimeSpan.FromMilliseconds(lap.Value.Time);
                                 lapTimeValue = $"{best:mm\\:ss\\:fff}";
                             }
-                            _table.AddRow($"{lap.Key}", new string[] { $"{lapTimeValue}" });
+                            _table?.AddRow($"{lap.Key}", new string[] { $"{lapTimeValue}" });
                         }
                         break;
                     }
             }
+
             _table?.Draw(g);
         }
     }
