@@ -123,22 +123,18 @@ namespace RaceElement.Controls
 
                             foreach (var file in monthGroup.OrderByDescending(x => x.CreationTimeUtc))
                             {
-                                ListViewItem lvi = new ListViewItem
+                                TreeViewItem lvi = new TreeViewItem
                                 {
-                                    Content = new TextBlock()
-                                    {
-                                        Text = file.Name.Replace(file.Extension, ""),
-                                        FontSize = 12,
-                                    },
+                                    Header = file.Name.Replace(file.Extension, ""),
                                     DataContext = file.FullName,
                                     Cursor = Cursors.Hand,
                                     ContextMenu = GetRwdbContextMenu(file),
                                     Margin = new Thickness(0),
-                                    Padding = new Thickness(0),
+                                    Padding = itemThickness,
                                 };
-                                lvi.PreviewMouseLeftButtonUp += (s, e) =>
+                                lvi.MouseLeftButtonUp += (s, e) =>
                                 {
-                                    ListViewItem item = (ListViewItem)s;
+                                    TreeViewItem item = (TreeViewItem)s;
                                     OpenRaceWeekendDatabase((string)item.DataContext);
                                     e.Handled = true;
                                 };
