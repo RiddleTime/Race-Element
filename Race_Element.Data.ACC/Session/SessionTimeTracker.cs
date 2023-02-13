@@ -40,7 +40,6 @@ namespace RaceElement.Data.ACC.Session
                 while (_isTracking)
                 {
                     Thread.Sleep(1000);
-
                 }
 
                 BroadcastTracker.Instance.OnRealTimeUpdate -= Instance_OnRealTimeUpdate;

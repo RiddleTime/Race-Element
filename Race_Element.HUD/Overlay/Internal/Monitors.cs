@@ -20,7 +20,6 @@ namespace RaceElement.HUD.Overlay.Internal
         public static MonitorInfoWithHandle[] GetMonitors()
         {
             if (_monitorInfos == null)
-                // New List
                 _monitorInfos = new List<MonitorInfoWithHandle>();
             else if (_monitorInfos.Count > 0)
                 return _monitorInfos.ToArray();
@@ -57,36 +56,26 @@ namespace RaceElement.HUD.Overlay.Internal
                 int monitorY = monitor.MonitorInfo.monitor.top;
 
                 if (nX > monitorX && nX < monitorX + monitorWidth)
-                {
                     if (nY > monitorY && nY < monitorY + monitorHeight)
                     {
                         isInsideMonitor = true;
 
                         if ((nX + width) > monitorX + monitorWidth)
-                        {
                             nX = monitorX + monitorWidth - width;
-                        }
                         if ((nY + height) > monitorY + monitorHeight)
-                        {
                             nY = monitorY + monitorHeight - height;
-                        }
 
                         break;
                     }
-                }
             }
 
             if (!isInsideMonitor)
             {
                 Screen screen1 = Screen.FromHandle(baseHandle);
                 if ((nX + width) > screen1.Bounds.Width)
-                {
                     nX = screen1.Bounds.Width - width;
-                }
                 if ((nY + height) > screen1.Bounds.Height)
-                {
                     nY = screen1.Bounds.Height - height;
-                }
             }
 
             return new Point(nX, nY);
@@ -105,7 +94,6 @@ namespace RaceElement.HUD.Overlay.Internal
             var mi = new MONITORINFO();
             mi.size = (uint)Marshal.SizeOf(mi);
             GetMonitorInfo(hMonitor, ref mi);
-
 
             var miwh = new MonitorInfoWithHandle(hMonitor, mi);
             // Add to monitor info

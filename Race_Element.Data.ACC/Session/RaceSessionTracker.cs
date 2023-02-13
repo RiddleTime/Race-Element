@@ -6,7 +6,6 @@ using RaceElement.Data.ACC.Database.GameData;
 using RaceElement.Data.ACC.Database.LapDataDB;
 using RaceElement.Data.ACC.Database.RaceWeekend;
 using RaceElement.Data.ACC.Database.SessionData;
-using RaceElement.Data.ACC.Database.Telemetry;
 using RaceElement.Data.ACC.HotKey;
 using RaceElement.Data.ACC.Tracker;
 using RaceElement.Util;
