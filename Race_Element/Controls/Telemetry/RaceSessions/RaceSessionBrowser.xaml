@@ -27,7 +27,7 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <materialDesign:PackIcon
+                        <materialDesign:PackIcon    
                             Grid.Column="0"
                             Kind="Files"
                             VerticalAlignment="Center"
@@ -38,7 +38,7 @@
                         <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" FontFamily="{StaticResource Conthrax}" VerticalAlignment="Center"> Local</TextBlock>
                     </Grid>
                 </TabItem.Header>
-                <ListView x:Name="localRaceWeekends" ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                <TreeView x:Name="localRaceWeekends" ScrollViewer.VerticalScrollBarVisibility="Auto" />
             </TabItem>
 
             <TabItem x:Name="tabCurrentWeekend" Height="40">

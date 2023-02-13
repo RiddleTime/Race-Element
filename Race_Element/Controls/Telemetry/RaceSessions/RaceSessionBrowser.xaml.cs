@@ -28,8 +28,8 @@ using System.Windows.Media;
 using DataGridTextColumn = MaterialDesignThemes.Wpf.DataGridTextColumn;
 using AbstractTrackData = RaceElement.Data.ACC.Tracks.TrackData.AbstractTrackData;
 using RaceElement.Controls.Util;
-using static RaceElement.Controls.LiveryBrowser;
 using System.Collections.Specialized;
+using System.Globalization;
 
 namespace RaceElement.Controls
 {
@@ -78,39 +78,77 @@ namespace RaceElement.Controls
             ThreadPool.QueueUserWorkItem(x =>
             {
                 Thread.Sleep(2000);
-                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
             });
         }
 
         private void FindRaceWeekends()
         {
-            Dispatcher.Invoke(() =>
+            new Thread(x =>
             {
-                localRaceWeekends.Items.Clear();
-
                 DirectoryInfo dataDir = new DirectoryInfo(FileUtil.RaceElementDataPath);
                 if (!dataDir.Exists)
                     return;
 
-                var raceWeekendFiles = dataDir.EnumerateFiles()
+                var yearGroupings = dataDir.EnumerateFiles()
                     .Where(x => !x.Name.Contains("log") && x.Extension == ".rwdb")
-                    .OrderByDescending(x => x.LastWriteTimeUtc);
+                    .OrderByDescending(x => x.LastWriteTimeUtc)
+                    .GroupBy(x => x.CreationTimeUtc.Year);
 
-                foreach (FileInfo file in raceWeekendFiles)
+                Dispatcher.Invoke(() =>
                 {
-                    TextBlock textBlock = new TextBlock() { Text = file.Name.Replace(file.Extension, ""), FontSize = 12 };
-                    ListViewItem lvi = new ListViewItem() { Content = textBlock, DataContext = file.FullName, Cursor = Cursors.Hand };
+                    localRaceWeekends.Items.Clear();
 
-                    lvi.ContextMenu = GetRwdbContextMenu(file);
-
-                    lvi.MouseLeftButtonUp += (s, e) =>
+                    Thickness itemThickness = new Thickness(2, 5, 2, 5);
+                    foreach (var yearGroup in yearGroupings)
                     {
-                        ListViewItem item = (ListViewItem)s;
-                        OpenRaceWeekendDatabase((string)item.DataContext);
-                    };
-                    localRaceWeekends.Items.Add(lvi);
-                }
-            });
+                        TreeViewItem yearItem = new TreeViewItem()
+                        {
+                            Header = yearGroup.Key,
+                            Cursor = Cursors.Hand,
+                            Padding = itemThickness,
+                        };
+                        localRaceWeekends.Items.Add(yearItem);
+
+                        var monthGroupings = yearGroup.GroupBy(x => x.CreationTimeUtc.Month);
+                        foreach (var monthGroup in monthGroupings)
+                        {
+                            TreeViewItem monthItem = new TreeViewItem()
+                            {
+                                Header = CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(monthGroup.Key),
+                                Cursor = Cursors.Hand,
+                                Padding = itemThickness,
+                            };
+                            yearItem.Items.Add(monthItem);
+
+                            foreach (var file in monthGroup.OrderByDescending(x => x.CreationTimeUtc))
+                            {
+                                ListViewItem lvi = new ListViewItem
+                                {
+                                    Content = new TextBlock()
+                                    {
+                                        Text = file.Name.Replace(file.Extension, ""),
+                                        FontSize = 12,
+                                    },
+                                    DataContext = file.FullName,
+                                    Cursor = Cursors.Hand,
+                                    ContextMenu = GetRwdbContextMenu(file),
+                                    Margin = new Thickness(0),
+                                    Padding = new Thickness(0),
+                                };
+                                lvi.PreviewMouseLeftButtonUp += (s, e) =>
+                                {
+                                    ListViewItem item = (ListViewItem)s;
+                                    OpenRaceWeekendDatabase((string)item.DataContext);
+                                    e.Handled = true;
+                                };
+
+                                monthItem.Items.Add(lvi);
+                            }
+                        }
+                    }
+                });
+            }).Start();
         }
 
         ContextMenu GetRwdbContextMenu(FileInfo file)
