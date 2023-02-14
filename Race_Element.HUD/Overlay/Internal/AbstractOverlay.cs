@@ -189,17 +189,12 @@ namespace RaceElement.HUD.Overlay.Internal
                 {
                     new Thread(x =>
                     {
-                        double refreshRate = 1.0 / this.RefreshRateHz;
-                        DateTime lastRefreshTime = DateTime.UtcNow;
+                        double refreshRate = 1000.0 / this.RefreshRateHz;
+
+                        Stopwatch stopwatch = Stopwatch.StartNew();
 
                         while (Draw)
                         {
-                            DateTime nextRefreshTime = lastRefreshTime.AddSeconds(refreshRate);
-                            TimeSpan waitTime = nextRefreshTime - DateTime.UtcNow;
-                            lastRefreshTime = nextRefreshTime;
-                            if (waitTime.Ticks > 0)
-                                Thread.Sleep(waitTime);
-
                             if (this == null || this._disposed)
                             {
                                 this.Stop();
@@ -219,6 +214,11 @@ namespace RaceElement.HUD.Overlay.Internal
                                         this.Hide();
                                 }
                             }
+
+                            double msToWait = refreshRate - stopwatch.ElapsedMilliseconds;
+                            if (msToWait > 0)
+                                Thread.Sleep((int)msToWait);
+                            stopwatch.Restart();
                         }
 
                     }).Start();

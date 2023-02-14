@@ -96,15 +96,15 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayAccelerometer
 
         public sealed override void BeforeStop()
         {
-            if (_cachedBackground != null)
-                _cachedBackground.Dispose();
+            _cachedBackground?.Dispose();
         }
+
+        public sealed override bool ShouldRender() => DefaultShouldRender();
 
         public sealed override void Render(Graphics g)
         {
             g.SmoothingMode = SmoothingMode.HighQuality;
-            if (_cachedBackground != null)
-                _cachedBackground.Draw(g, _gMeterX, _gMeterY, _gMeterSize, _gMeterSize);
+            _cachedBackground?.Draw(g, _gMeterX, _gMeterY, _gMeterSize, _gMeterSize);
 
             if (this._config.Accelerometer.GText)
             {
@@ -174,9 +174,5 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayAccelerometer
             }
         }
 
-        public sealed override bool ShouldRender()
-        {
-            return DefaultShouldRender();
-        }
     }
 }
