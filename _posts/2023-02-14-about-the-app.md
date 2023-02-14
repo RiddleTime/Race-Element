@@ -1,7 +1,7 @@
 ---
 layout: post
-title: About the app
-description: What is Race Element?
+title: What is Race Element?
+description: A brief introduction
 tags: guide
 ---
 
@@ -27,5 +27,5 @@ Whilst usually one has to start the game to view car setups, the app itself pres
 ### Liveries
 The Liveries tab provides functionality to manage liveries. These liveries can be browsed, imported, exported and categorized. Race Element provides some highly effecient methods to do so.
 
-### Streaming tools
+### Streaming
 During your stream the app provides a smart functionality that is able to automatically enable a Source when you visit the setup screen in-game. This will allow you to present any kind of Source on top of your existing sources to for example hide your setup and/or provide information about your setups.
