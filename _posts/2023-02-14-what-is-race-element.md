@@ -8,6 +8,9 @@ tags: guide
 # Race Element
 Race Element is a lightweight application that is designed to run with minimum system requirements.
 
+## Supported Simulators
+- Assetto Corsa Competizione (ACC)
+
 ## Main Features
 - HUDs
 - Data
