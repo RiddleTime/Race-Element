@@ -190,15 +190,14 @@ namespace RaceElement.HUD.Overlay.Internal
                     new Thread(x =>
                     {
                         double refreshRate = 1000.0 / this.RefreshRateHz;
-
                         Stopwatch stopwatch = Stopwatch.StartNew();
 
                         while (Draw)
                         {
-                            if (this == null || this._disposed)
+                            if (this._disposed)
                             {
                                 this.Stop();
-                                return;
+                                break;
                             }
 
                             if (ShouldRender() || IsRepositioning)
@@ -221,6 +220,7 @@ namespace RaceElement.HUD.Overlay.Internal
                             stopwatch.Restart();
                         }
 
+                        stopwatch.Stop();
                     }).Start();
                 }
             }

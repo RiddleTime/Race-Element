@@ -45,25 +45,23 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
         {
             this.Width = _config.InfoPanel.Width;
             this.Height = _config.InfoPanel.Height;
-            this.RequestsDrawItself = true;
+            this.RefreshRateHz = _config.InfoPanel.Herz;
         }
 
         public sealed override void BeforeStart()
         {
-            _inputDataCollector = new InputDataCollector(this) { TraceCount = _config.InfoPanel.Width - 1, inputTraceConfig = _config };
-            _inputDataCollector.Start();
-
+            _inputDataCollector = new InputDataCollector(_config.InfoPanel.Width - 1);
             _graph = new InputGraph(0, 0, _config.InfoPanel.Width - 1, _config.InfoPanel.Height - 1, _inputDataCollector, this._config);
         }
 
         public sealed override void BeforeStop()
         {
-            _inputDataCollector.Stop();
             _graph.Dispose();
         }
 
         public sealed override void Render(Graphics g)
         {
+            _inputDataCollector.Collect(pagePhysics);
             _graph.Draw(g);
         }
 

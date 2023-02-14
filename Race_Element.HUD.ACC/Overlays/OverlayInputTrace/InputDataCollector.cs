@@ -8,19 +8,21 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
 {
     internal class InputDataCollector
     {
-        private bool IsCollecting = false;
         public int TraceCount = 300;
-        public InputTraceOverlay.InputTraceConfig inputTraceConfig;
 
         public LinkedList<int> Throttle = new LinkedList<int>();
         public LinkedList<int> Brake = new LinkedList<int>();
         public LinkedList<int> Steering = new LinkedList<int>();
 
-        private AbstractOverlay _overlay;
-
-        public InputDataCollector(AbstractOverlay overlay)
+        public InputDataCollector(int traceCount)
         {
-            _overlay = overlay;
+            TraceCount = traceCount;
+            for (int i = 0; i < TraceCount; i++)
+            {
+                Throttle.AddLast(0);
+                Brake.AddLast(0);
+                Steering.AddLast(50);
+            }
         }
 
         public void Collect(SPageFilePhysics filePhysics)
@@ -44,36 +46,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
                 if (Steering.Count > TraceCount)
                     Steering.RemoveLast();
             }
-        }
-
-        public void Start()
-        {
-            IsCollecting = true;
-
-            for (int i = 0; i < TraceCount; i++)
-            {
-                Throttle.AddLast(0);
-                Brake.AddLast(0);
-                Steering.AddLast(50);
-            }
-
-            new Thread(x =>
-            {
-                while (IsCollecting)
-                {
-                    Thread.Sleep(1000 / inputTraceConfig.InfoPanel.Herz);
-                    if (_overlay != null && _overlay.pagePhysics != null)
-                    {
-                        Collect(_overlay.pagePhysics);
-                        _overlay.RequestRedraw();
-                    }
-                }
-            }).Start();
-        }
-
-        public void Stop()
-        {
-            IsCollecting = false;
         }
     }
 }
