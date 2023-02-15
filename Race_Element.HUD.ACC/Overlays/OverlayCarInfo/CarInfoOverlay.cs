@@ -32,10 +32,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
                 public bool WaterTemp { get; set; } = false;
             }
 
-            public CarInfoConfiguration()
-            {
-                this.AllowRescale = true;
-            }
+            public CarInfoConfiguration() => this.AllowRescale = true;
         }
 
         private readonly InfoPanel infoPanel;
