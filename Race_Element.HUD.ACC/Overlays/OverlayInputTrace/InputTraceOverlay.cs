@@ -56,7 +56,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
 
         public sealed override void BeforeStop()
         {
-            _graph.Dispose();
+            _graph?.Dispose();
         }
 
         public sealed override void Render(Graphics g)

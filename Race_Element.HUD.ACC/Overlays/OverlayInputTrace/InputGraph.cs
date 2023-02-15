@@ -46,20 +46,15 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
 
         public void Draw(Graphics g)
         {
-            SmoothingMode previous = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.HighQuality;
 
-            if (_cachedBackground != null)
-                _cachedBackground.Draw(g);
+            _cachedBackground?.Draw(g);
 
             if (this._config.InfoPanel.SteeringInput)
                 DrawData(g, _collector.Steering, Color.FromArgb(190, Color.White));
 
             DrawData(g, _collector.Throttle, Color.ForestGreen);
             DrawData(g, _collector.Brake, Color.Red);
-
-
-            g.SmoothingMode = previous;
         }
 
         private void DrawData(Graphics g, LinkedList<int> Data, Color color)
@@ -95,7 +90,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
 
         public void Dispose()
         {
-            _cachedBackground.Dispose();
+            _cachedBackground?.Dispose();
         }
     }
 }

@@ -37,6 +37,7 @@ namespace RaceElement.HUD.Overlay.Internal
         protected bool _disposed = false;
         private byte _alpha = 255;
         private Size _size = new Size(250, 50);
+        private Rectangle _drawingRect;
         private Point _location = new Point(50, 50);
         #endregion
 
@@ -68,8 +69,7 @@ namespace RaceElement.HUD.Overlay.Internal
                 POINT point1;
                 POINT point2;
                 BLENDFUNCTION blendfunction1;
-                Rectangle rectangle1 = new Rectangle(0, 0, this.Size.Width, this.Size.Height);
-                this.PerformPaint(new PaintEventArgs(graphics, rectangle1));
+                this.PerformPaint(new PaintEventArgs(graphics, _drawingRect));
                 IntPtr ptr1 = User32.GetDC(IntPtr.Zero);
                 IntPtr ptr2 = Gdi32.CreateCompatibleDC(ptr1);
                 IntPtr ptr3 = bitmap.GetHbitmap(Color.FromArgb(0));
@@ -828,6 +828,8 @@ namespace RaceElement.HUD.Overlay.Internal
                 {
                     this._size = value;
                 }
+
+                _drawingRect = new Rectangle(0, 0, this._size.Width, this._size.Height);
             }
         }
         /// <summary>
