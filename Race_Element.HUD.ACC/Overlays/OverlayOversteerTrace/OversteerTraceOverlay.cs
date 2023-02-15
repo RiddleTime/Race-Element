@@ -9,7 +9,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
     internal sealed class OversteerTraceOverlay : AbstractOverlay
     {
         private readonly OversteerTraceConfiguration _config = new OversteerTraceConfiguration();
-        private sealed class OversteerTraceConfiguration : OverlayConfiguration
+        internal sealed class OversteerTraceConfiguration : OverlayConfiguration
         {
             [ConfigGrouping("Chart", "Customize the charts refresh rate, data points or change the max slip angle shown.")]
             public ChartGrouping Chart { get; set; } = new ChartGrouping();
@@ -22,6 +22,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
                 [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
                 [IntRange(80, 250, 10)]
                 public int Height { get; set; } = 120;
+
+                [ToolTip("Set the thickness of the lines in the chart.")]
+                [IntRange(1, 4, 1)]
+                public int LineThickness { get; set; } = 1;
 
                 [ToolTip("Sets the maximum amount of slip angle displayed.")]
                 [FloatRange(0.1f, 10f, 0.1f, 1)]
@@ -45,30 +49,29 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
         {
             this.Width = _config.Chart.Width;
             this.Height = _config.Chart.Height;
-            this.RequestsDrawItself = true;
+            this.RefreshRateHz = _config.Chart.Herz;
         }
 
         public sealed override void BeforeStart()
         {
-            _collector = new OversteerDataCollector(this)
+            _collector = new OversteerDataCollector(_config.Chart.Width - 1)
             {
                 TraceCount = _config.Chart.Width - 1,
                 MaxSlipAngle = _config.Chart.MaxSlipAngle,
                 Herz = _config.Chart.Herz
             };
-            _collector.Start();
 
-            _graph = new OversteerGraph(0, 0, _config.Chart.Width - 1, _config.Chart.Height - 1, _collector);
+            _graph = new OversteerGraph(0, 0, _config.Chart.Width - 1, _config.Chart.Height - 1, _collector, _config);
         }
 
         public sealed override void BeforeStop()
         {
-            _collector.Stop();
             _graph.Dispose();
         }
 
         public sealed override void Render(Graphics g)
         {
+            _collector.Collect(pagePhysics);
             _graph.Draw(g);
         }
 

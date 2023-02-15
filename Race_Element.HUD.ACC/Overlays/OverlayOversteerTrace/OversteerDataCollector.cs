@@ -9,8 +9,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
 {
     internal class OversteerDataCollector
     {
-
-        private bool IsCollecting = false;
         public int TraceCount = 300;
         public int Herz = 30;
         public float MaxSlipAngle { get; set; }
@@ -18,11 +16,15 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
         public LinkedList<float> OversteerData = new LinkedList<float>();
         public LinkedList<float> UndersteerData = new LinkedList<float>();
 
-        private AbstractOverlay _overlay;
 
-        public OversteerDataCollector(AbstractOverlay overlay)
+        public OversteerDataCollector(int traceCount)
         {
-            _overlay = overlay;
+            TraceCount = traceCount;
+            for (int i = 0; i < TraceCount; i++)
+            {
+                OversteerData.AddLast(0);
+                UndersteerData.AddLast(0);
+            }
         }
 
         public void Collect(SPageFilePhysics pagePhysics)
@@ -59,35 +61,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
             lock (UndersteerData)
                 if (UndersteerData.Count > TraceCount)
                     UndersteerData.RemoveLast();
-        }
-
-        public void Start()
-        {
-            IsCollecting = true;
-
-            for (int i = 0; i < TraceCount; i++)
-            {
-                OversteerData.AddLast(0);
-                UndersteerData.AddLast(0);
-            }
-
-            new Thread(x =>
-            {
-                while (IsCollecting)
-                {
-                    Thread.Sleep(1000 / Herz);
-                    if (_overlay != null && _overlay.pagePhysics != null)
-                    {
-                        Collect(_overlay.pagePhysics);
-                        _overlay.RequestRedraw();
-                    }
-                }
-            }).Start();
-        }
-
-        public void Stop()
-        {
-            IsCollecting = false;
         }
     }
 }

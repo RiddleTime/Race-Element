@@ -7,8 +7,9 @@ namespace RaceElement.Controls
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
             {"0.1.7.0", "- Data tab: Grouped race weekends by year and month."+
-                        "\n- HUDs: Improved CPU usage."+
-                        "\n- Input Trace HUD: Add configurable line thickness."},
+                        "\n- HUDs: Improved overal CPU usage."+
+                        "\n- Input Trace HUD: Added configurable line thickness."+
+                        "\n- Oversteer Trace HUD: Added configurable line thickness."},
             {"0.1.6.9", "- Fuel Info HUD: Add option to change fuel bar color based on fuel percentage."+
                         "\n- Add Laptime Table HUD: configurable rows and information."},
             {"0.1.6.8", "- HUD:"+

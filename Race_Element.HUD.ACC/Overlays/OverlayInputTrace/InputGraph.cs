@@ -11,12 +11,15 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
 {
     internal class InputGraph : IDisposable
     {
-        private int _x, _y;
-        private int _width, _height;
+        private readonly int _x, _y;
+        private readonly int _width, _height;
         private readonly InputTraceConfig _config;
         private readonly InputDataCollector _collector;
 
         private readonly CachedBitmap _cachedBackground;
+        private readonly Pen _throttlePen;
+        private readonly Pen _brakePen;
+        private readonly Pen _steeringPen;
 
         public InputGraph(int x, int y, int width, int height, InputDataCollector collector, InputTraceConfig config)
         {
@@ -26,6 +29,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
             _height = height;
             _collector = collector;
             _config = config;
+
+            _throttlePen = new Pen(Color.ForestGreen, _config.InfoPanel.LineThickness);
+            _brakePen = new Pen(Color.Red, _config.InfoPanel.LineThickness);
+            _steeringPen = new Pen(Color.FromArgb(190, Color.White), _config.InfoPanel.LineThickness);
 
             _cachedBackground = new CachedBitmap(_width + 1, _height + 1, g =>
             {
@@ -46,18 +53,18 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
 
         public void Draw(Graphics g)
         {
-            g.SmoothingMode = SmoothingMode.HighQuality;
-
             _cachedBackground?.Draw(g);
 
-            if (this._config.InfoPanel.SteeringInput)
-                DrawData(g, _collector.Steering, Color.FromArgb(190, Color.White));
+            g.SmoothingMode = SmoothingMode.HighQuality;
 
-            DrawData(g, _collector.Throttle, Color.ForestGreen);
-            DrawData(g, _collector.Brake, Color.Red);
+            if (this._config.InfoPanel.SteeringInput)
+                DrawData(g, _collector.Steering, _steeringPen);
+
+            DrawData(g, _collector.Throttle, _throttlePen);
+            DrawData(g, _collector.Brake, _brakePen);
         }
 
-        private void DrawData(Graphics g, LinkedList<int> Data, Color color)
+        private void DrawData(Graphics g, LinkedList<int> Data, Pen pen)
         {
             if (Data.Count > 0)
             {
@@ -69,28 +76,36 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
                         lock (Data)
                         {
                             int y = _y + GetRelativeNodeY(Data.ElementAt(i));
-                            y.ClipMax(_y + _height);
 
                             if (x < _x)
                                 break;
 
                             points.Add(new Point(x, y));
                         }
-
                     }
 
                 if (points.Count > 0)
                 {
                     GraphicsPath path = new GraphicsPath();
                     path.AddLines(points.ToArray());
-                    g.DrawPath(new Pen(color, _config.InfoPanel.LineThickness), path);
+                    g.DrawPath(pen, path);
+                    path?.Dispose();
                 }
             }
         }
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
             _cachedBackground?.Dispose();
+            _throttlePen?.Dispose();
+            _brakePen?.Dispose();
+            _steeringPen?.Dispose();
         }
     }
 }

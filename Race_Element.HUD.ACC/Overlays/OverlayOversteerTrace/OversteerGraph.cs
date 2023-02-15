@@ -5,24 +5,30 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using static RaceElement.HUD.ACC.Overlays.OverlaySlipAngle.OversteerTraceOverlay;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
 {
     internal class OversteerGraph : IDisposable
     {
-        private int _x, _y;
-        private int _width, _height;
+        private readonly int _x, _y;
+        private readonly int _width, _height;
         private readonly OversteerDataCollector _collector;
 
         private readonly CachedBitmap _cachedBackground;
+        private readonly Pen _penOversteer;
+        private readonly Pen _penUndersteer;
 
-        public OversteerGraph(int x, int y, int width, int height, OversteerDataCollector collector)
+        public OversteerGraph(int x, int y, int width, int height, OversteerDataCollector collector, OversteerTraceConfiguration config)
         {
             _x = x;
             _y = y;
             _width = width;
             _height = height;
             _collector = collector;
+
+            _penOversteer = new Pen(Color.OrangeRed, config.Chart.LineThickness);
+            _penUndersteer = new Pen(Color.DeepSkyBlue, config.Chart.LineThickness);
 
             _cachedBackground = new CachedBitmap(_width + 1, _height + 1, g =>
             {
@@ -43,21 +49,15 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
 
         public void Draw(Graphics g)
         {
-            SmoothingMode previous = g.SmoothingMode;
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.CompositingQuality = CompositingQuality.GammaCorrected;
+            g.SmoothingMode = SmoothingMode.HighQuality;
 
-            if (_cachedBackground != null)
-                _cachedBackground.Draw(g, _x, _y, _width, _height);
+            _cachedBackground?.Draw(g, _x, _y, _width, _height);
 
-            DrawData(g, _collector.OversteerData, Color.OrangeRed);
-            DrawData(g, _collector.UndersteerData, Color.DeepSkyBlue);
-
-
-            g.SmoothingMode = previous;
+            DrawData(g, _collector.OversteerData, _penOversteer);
+            DrawData(g, _collector.UndersteerData, _penUndersteer);
         }
 
-        private void DrawData(Graphics g, LinkedList<float> Data, Color color)
+        private void DrawData(Graphics g, LinkedList<float> Data, Pen pen)
         {
             if (Data.Count > 0)
             {
@@ -69,28 +69,35 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
                         lock (Data)
                         {
                             int y = _y + GetRelativeNodeY(Data.ElementAt(i));
-                            y.ClipMax(_y + _height);
 
                             if (x < _x)
                                 break;
 
                             points.Add(new Point(x, y));
                         }
-
                     }
 
                 if (points.Count > 0)
                 {
                     GraphicsPath path = new GraphicsPath();
                     path.AddLines(points.ToArray());
-                    g.DrawPath(new Pen(color, 1f), path);
+                    g.DrawPath(pen, path);
+                    path?.Dispose();
                 }
             }
         }
 
         public void Dispose()
         {
-            _cachedBackground.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            _cachedBackground?.Dispose();
+            _penOversteer?.Dispose();
+            _penUndersteer?.Dispose();
         }
     }
 }
