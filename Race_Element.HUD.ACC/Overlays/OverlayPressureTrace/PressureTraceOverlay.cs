@@ -1,4 +1,5 @@
-﻿using RaceElement.HUD.Overlay.Configuration;
+﻿using RaceElement.Data.ACC.Session;
+using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using System.Drawing;
 
@@ -8,10 +9,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace
     Description = "Live graphs of the tyre pressures, green is within range, red is too high, blue is too low.")]
     internal sealed class PressureTraceOverlay : AbstractOverlay
     {
-        private PressureTraceOverlayConfig _config = new PressureTraceOverlayConfig();
-        private class PressureTraceOverlayConfig : OverlayConfiguration
+        private readonly PressureTraceOverlayConfig _config = new PressureTraceOverlayConfig();
+        private sealed class PressureTraceOverlayConfig : OverlayConfiguration
         {
-
             public PressureTraceOverlayConfig()
             {
                 AllowRescale = false;
@@ -32,16 +32,24 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace
         {
             Instance = this;
 
-            TyrePressureGraph.PressureRange = TyrePressures.GetCurrentRange(pageGraphics.TyreCompound, pageStatic.CarModel);
             _dataCollector = new TyrePressureDataCollector() { TraceCount = this.Width / 2 - 1 };
             _dataCollector.Start();
+            RaceSessionTracker.Instance.OnNewSessionStarted += Instance_OnNewSessionStarted;
+        }
+
+        private void Instance_OnNewSessionStarted(object sender, RaceElement.Data.ACC.Database.SessionData.DbRaceSession e)
+        {
+            TyrePressureGraph.PressureRange = TyrePressures.GetCurrentRange(pageGraphics.TyreCompound, pageStatic.CarModel);
         }
 
         public sealed override void BeforeStop()
         {
+            RaceSessionTracker.Instance.OnNewSessionStarted -= Instance_OnNewSessionStarted;
             _dataCollector.Stop();
             Instance = null;
         }
+
+        public sealed override bool ShouldRender() => DefaultShouldRender();
 
         public sealed override void Render(Graphics g)
         {
@@ -55,11 +63,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace
             graph1.Draw(g);
             graph2.Draw(g);
             graph3.Draw(g);
-        }
-
-        public sealed override bool ShouldRender()
-        {
-            return DefaultShouldRender();
         }
     }
 }
