@@ -63,15 +63,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
             _graph?.Dispose();
         }
 
+        public sealed override bool ShouldRender() => DefaultShouldRender();
+
         public sealed override void Render(Graphics g)
         {
             _inputDataCollector.Collect(pagePhysics);
             _graph.Draw(g);
-        }
-
-        public sealed override bool ShouldRender()
-        {
-            return DefaultShouldRender();
         }
     }
 }

@@ -56,11 +56,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
         {
             _collector = new OversteerDataCollector(_config.Chart.Width - 1)
             {
-                TraceCount = _config.Chart.Width - 1,
                 MaxSlipAngle = _config.Chart.MaxSlipAngle,
                 Herz = _config.Chart.Herz
             };
-
             _graph = new OversteerGraph(0, 0, _config.Chart.Width - 1, _config.Chart.Height - 1, _collector, _config);
         }
 
@@ -69,12 +67,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
             _graph.Dispose();
         }
 
+        public sealed override bool ShouldRender() => DefaultShouldRender();
+
         public sealed override void Render(Graphics g)
         {
             _collector.Collect(pagePhysics);
             _graph.Draw(g);
         }
-
-        public sealed override bool ShouldRender() => DefaultShouldRender();
     }
 }

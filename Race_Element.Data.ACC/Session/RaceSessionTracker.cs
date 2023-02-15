@@ -106,7 +106,7 @@ namespace RaceElement.Data.ACC.Session
                     TrackId = trackData.Id,
                     IsOnline = staticPageFile.isOnline
                 };
-                _sessionTimeLeft = ACCSharedMemory.Instance.ReadGraphicsPageFile(true).SessionTimeLeft;
+                _sessionTimeLeft = ACCSharedMemory.Instance.ReadGraphicsPageFile().SessionTimeLeft;
 
                 _lastReplaySave = DateTime.UtcNow;
 
@@ -168,7 +168,7 @@ namespace RaceElement.Data.ACC.Session
 
                     if (AccProcess.IsRunning)
                     {
-                        var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
+                        var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile();
 
                         if (pageGraphics.Status != _lastAcStatus)
                         {
