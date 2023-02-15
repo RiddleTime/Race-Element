@@ -83,7 +83,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
                 {
                     GraphicsPath path = new GraphicsPath();
                     path.AddLines(points.ToArray());
-                    g.DrawPath(new Pen(color, 2f), path);
+                    g.DrawPath(new Pen(color, _config.InfoPanel.LineThickness), path);
                 }
             }
         }

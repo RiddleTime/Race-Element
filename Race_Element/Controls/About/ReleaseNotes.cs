@@ -6,7 +6,8 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.1.7.0", "- Data tab: Grouped race weekends by year and month." },
+            {"0.1.7.0", "- Data tab: Grouped race weekends by year and month."+
+                        "\n- HUDs: Improved CPU usage."},
             {"0.1.6.9", "- Fuel Info HUD: Add option to change fuel bar color based on fuel percentage."+
                         "\n- Add Laptime Table HUD: configurable rows and information."},
             {"0.1.6.8", "- HUD:"+

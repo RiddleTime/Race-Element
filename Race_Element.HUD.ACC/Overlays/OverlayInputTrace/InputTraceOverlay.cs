@@ -30,6 +30,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
 
                 [ToolTip("Displays the steering input as a white line in the trace.")]
                 public bool SteeringInput { get; set; } = true;
+
+                [IntRange(1, 3, 1)]
+                public int LineThickness { get; set; } = 1;
             }
 
             public InputTraceConfig()
