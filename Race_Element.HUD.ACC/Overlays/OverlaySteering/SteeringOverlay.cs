@@ -38,7 +38,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
             public RingGrouping Ring { get; set; } = new RingGrouping();
             public class RingGrouping
             {
-                [IntRange(4, 14, 1)]
+                [IntRange(4, 12, 1)]
                 public int RingThickness { get; set; } = 5;
 
                 public Color RingColor { get; set; } = Color.FromArgb(255, 255, 0, 0);
