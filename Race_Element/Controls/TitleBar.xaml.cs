@@ -25,9 +25,16 @@ namespace RaceElement.Controls
             buttonMaximize.Click += (e, s) =>
             {
                 if (App.Current.MainWindow.WindowState == WindowState.Maximized)
+                {
                     App.Current.MainWindow.WindowState = WindowState.Normal;
+                    minMaxButton.Kind = MaterialDesignThemes.Wpf.PackIconKind.WindowMaximize;
+                }
                 else
+                {
                     App.Current.MainWindow.WindowState = WindowState.Maximized;
+                    minMaxButton.Kind = MaterialDesignThemes.Wpf.PackIconKind.WindowRestore;
+                }
+
             };
 
             this.iconSteeringLock.MouseRightButtonDown += (s, e) =>
