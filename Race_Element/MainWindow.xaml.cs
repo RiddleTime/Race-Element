@@ -267,7 +267,20 @@ namespace RaceElement
         }
 
 
-        private void MainWindow_StateChanged(object sender, EventArgs e)
+
+          //if (App.Current.MainWindow.WindowState == WindowState.Maximized)
+          //      {
+          //          App.Current.MainWindow.WindowState = WindowState.Normal;
+          //          minMaxButton.Kind = MaterialDesignThemes.Wpf.PackIconKind.WindowMaximize;
+          //      }
+          //      else
+          //      {
+          //          App.Current.MainWindow.WindowState = WindowState.Maximized;
+          //          minMaxButton.Kind = MaterialDesignThemes.Wpf.PackIconKind.WindowRestore;
+          //      }
+
+
+private void MainWindow_StateChanged(object sender, EventArgs e)
         {
             switch (this.WindowState)
             {
@@ -286,6 +299,7 @@ namespace RaceElement
                         this.Activate();
                         mainGrid.Margin = new Thickness(0);
                         //rowTitleBar.Height = new GridLength(30);
+                        TitleBar.Instance.minMaxButton.Kind = MaterialDesignThemes.Wpf.PackIconKind.WindowMaximize;
                         _stopDecreaseOpacty = true;
                         ShowInTaskbar = true;
 
@@ -295,6 +309,7 @@ namespace RaceElement
                 case WindowState.Maximized:
                     {
                         mainGrid.Margin = new Thickness(8);
+                        TitleBar.Instance.minMaxButton.Kind = MaterialDesignThemes.Wpf.PackIconKind.WindowRestore;
                         //rowTitleBar.Height = new GridLength(35);
                         _stopDecreaseOpacty = true;
                         ShowInTaskbar = true;

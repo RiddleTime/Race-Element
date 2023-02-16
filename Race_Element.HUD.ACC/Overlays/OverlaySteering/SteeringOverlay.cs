@@ -8,6 +8,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+using System.Windows.Forms;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
 {
@@ -34,9 +35,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
             }
 
             [ConfigGrouping("Colors", "Adjust the colors used in the Steering HUD.")]
-            public ColorGrouping Colors { get; set; } = new ColorGrouping();
-            public class ColorGrouping
+            public RingGrouping Ring { get; set; } = new RingGrouping();
+            public class RingGrouping
             {
+                [IntRange(4, 14, 1)]
+                public int RingThickness { get; set; } = 5;
+
                 public Color RingColor { get; set; } = Color.FromArgb(255, 255, 0, 0);
                 [IntRange(75, 255, 1)]
                 public int RingOpacity { get; set; } = 117;
@@ -48,31 +52,33 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
             }
         }
 
-        private const int InitialSize = 150;
-        private const int _wheelWidth = 15;
+        private const int InitialSize = 140;
         private const int indicatorWidth = 15;
 
-        private CachedBitmap _cachedBackground;
+        private int _wheelThickness = 13;
 
+        private CachedBitmap _cachedBackground;
         private Font _font;
 
         public SteeringOverlay(Rectangle rectangle) : base(rectangle, "Steering")
         {
-            this.Height = InitialSize + 1;
-            this.Width = InitialSize + 1;
+            RefreshRateHz = 60;
         }
 
         public sealed override void BeforeStart()
         {
+            this.Height = (int)(InitialSize + (1 * this.Scale));
+            this.Width = (int)(InitialSize + (1 * this.Scale));
+            _wheelThickness = _config.Ring.RingThickness;
             _font = _config.Info.Text switch
             {
                 SteeringConfig.InputsText.SteeringAngle => FontUtil.FontUnispace(28),
                 SteeringConfig.InputsText.Gear => FontUtil.FontConthrax(40),
-                SteeringConfig.InputsText.Speed => FontUtil.FontUnispace(32),
+                SteeringConfig.InputsText.Speed => FontUtil.FontUnispace(34),
                 _ => null,
             };
 
-            _cachedBackground = new CachedBitmap((int)(Width * this.Scale), (int)(Height * this.Scale), g =>
+            _cachedBackground = new CachedBitmap((int)(Width * this.Scale + (1 * this.Scale)), (int)(Height * this.Scale + (1 * this.Scale)), g =>
             {
                 GraphicsPath gradientPath = new GraphicsPath();
                 gradientPath.AddEllipse(0, 0, (int)(InitialSize * Scale), (int)(InitialSize * Scale));
@@ -85,7 +91,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
                 g.DrawEllipse(new Pen(Color.FromArgb(230, Color.Black)), new Rectangle(0, 0, (int)(InitialSize * Scale), (int)(InitialSize * Scale)));
 
                 // draw steering ring
-                g.DrawEllipse(new Pen(Color.FromArgb(_config.Colors.RingOpacity, _config.Colors.RingColor), _wheelWidth / 2 * Scale), InitialSize / 2 * Scale, InitialSize / 2 * Scale, InitialSize / 2 * Scale - _wheelWidth * Scale);
+                int padding = 2;
+                g.DrawEllipse(new Pen(Color.FromArgb(_config.Ring.RingOpacity, _config.Ring.RingColor),
+                    _wheelThickness / 2 * Scale),
+                    InitialSize / 2 * Scale,
+                InitialSize / 2 * Scale,
+                    InitialSize / 2 * Scale - _wheelThickness * Scale - padding * 2);
             });
         }
 
@@ -99,9 +110,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
 
         public sealed override void Render(Graphics g)
         {
-            g.SmoothingMode = SmoothingMode.AntiAlias;
 
             _cachedBackground?.Draw(g, 0, 0, InitialSize, InitialSize);
+            g.SmoothingMode = SmoothingMode.AntiAlias;
 
             DrawSteeringIndicator(g);
 
@@ -119,9 +130,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
             float accSteering = (pagePhysics.SteerAngle / 2 + 1) * 100; // map acc value to 0 - 200
             float angle = Rescale(200, SteeringLock.Get(pageStatic.CarModel) * 2, accSteering) - (SteeringLock.Get(pageStatic.CarModel));
 
-            Rectangle rect = new Rectangle(0 + _wheelWidth, 0 + _wheelWidth, InitialSize - (2 * _wheelWidth), InitialSize - (2 * _wheelWidth));
+            int padding = 1;
+            Rectangle rect = new Rectangle(0 + _wheelThickness / 2 + padding, 0 + _wheelThickness / 2 + padding, InitialSize - (2 * _wheelThickness / 2) - padding * 2, InitialSize - (2 * _wheelThickness / 2) - padding * 2);
             float drawAngle = angle + 270 - (indicatorWidth / 2);
-            g.DrawArc(new Pen(Color.White, _wheelWidth), rect, drawAngle, indicatorWidth);
+            g.DrawArc(new Pen(Color.White, _wheelThickness), rect, drawAngle, indicatorWidth);
         }
 
         // map value input from range 0 - fromMax into range 0 - toMax

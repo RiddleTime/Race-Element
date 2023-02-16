@@ -16,7 +16,7 @@ namespace RaceElement.HUD.Overlay.Configuration
         public class GenericConfig
         {
             [ToolTip("Defines the scale of the overlay.")]
-            [FloatRange(0.50f, 2.00f, 0.01f, 2)]
+            [FloatRange(0.650f, 2.000f, 0.001f, 3)]
             public float Scale { get; set; } = 1.00f;
 
             [ToolTip("Sets the transparency of the HUD. This will become noticeable once you active the HUD.")]
