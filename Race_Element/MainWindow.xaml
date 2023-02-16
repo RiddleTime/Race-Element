@@ -67,7 +67,7 @@
                             Width="24"
                         Foreground="White"    
                         />
-                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" FontFamily="{StaticResource Conthrax}" FontSize="14" >About</TextBlock>
+                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" FontFamily="{StaticResource Conthrax}" FontSize="14">Info</TextBlock>
                     </Grid>
                 </TabItem.Header>
 
@@ -80,7 +80,7 @@
                             <materialDesign:TransitionEffect Kind="FadeIn"/>
                         </materialDesign:TransitioningContent.OpeningEffects>
 
-                        <controls:About></controls:About>
+                        <controls:Info></controls:Info>
 
                     </materialDesign:TransitioningContent>
                 </Grid>

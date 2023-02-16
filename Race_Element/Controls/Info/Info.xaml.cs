@@ -16,12 +16,12 @@ namespace RaceElement.Controls
     /// <summary>
     /// Interaction logic for About.xaml
     /// </summary>
-    public partial class About : UserControl
+    public partial class Info : UserControl
     {
         private bool HasAddedDownloadButton = false;
 
 
-        public About()
+        public Info()
         {
             InitializeComponent();
 
