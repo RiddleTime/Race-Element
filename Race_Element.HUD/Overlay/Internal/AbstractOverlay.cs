@@ -31,7 +31,7 @@ namespace RaceElement.HUD.Overlay.Internal
 
         public bool IsRepositioning { get; internal set; }
 
-        public int RefreshRateHz = 30;
+        public double RefreshRateHz = 30;
 
         public SPageFilePhysics pagePhysics;
         public SPageFileGraphic pageGraphics;

@@ -39,7 +39,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
         {
             this.Width = 230;
             this.Height = _panel.FontHeight * 6;
-            RefreshRateHz = 2;
+            RefreshRateHz = 1.5;
         }
 
         public sealed override void BeforeStart()

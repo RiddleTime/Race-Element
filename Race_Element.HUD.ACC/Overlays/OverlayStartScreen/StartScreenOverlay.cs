@@ -7,7 +7,7 @@ using System.Drawing.Text;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
 {
-    public class StartScreenOverlay : AbstractOverlay
+    public sealed class StartScreenOverlay : AbstractOverlay
     {
         private CachedBitmap cachedBitmap;
 
@@ -17,7 +17,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
             this.Y = rectangle.Y;
             this.Width = 360;
             this.Height = 45;
-            this.RefreshRateHz = 1;
+            this.RefreshRateHz = 0.02;
         }
 
         public override void BeforeStart()
