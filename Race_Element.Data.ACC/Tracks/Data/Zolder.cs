@@ -1,9 +1,6 @@
 ﻿using RaceElement.Util.DataTypes;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.Data.ACC.Tracks.Data
@@ -22,8 +19,9 @@ namespace ACCManager.Data.ACC.Tracks.Data
             { new FloatRangeStruct(0.17827821f, 0.2351831f), (3, "Kanaalbocht") },
             { new FloatRangeStruct(0.2595046f, 0.3127186f), (4, "Lucien Bianchibocht") },
             { new FloatRangeStruct(0.4122366f, 0.4614663f), (5, "Kleine Chicane") },
-            { new FloatRangeStruct(0.5095074f, 0.5512679f), (6, "Butte") },
-            { new FloatRangeStruct(0.5667552f, 0.6171156f), (1, "Gille Villeneuve Chicane") },
+            { new FloatRangeStruct(0.4122366f, 0.4614663f), (6, "Kleine Chicane") },
+            { new FloatRangeStruct(0.5095074f, 0.5512679f), (7, "Butte") },
+            { new FloatRangeStruct(0.5667552f, 0.6171156f), (8, "Gille Villeneuve Chicane") },
             { new FloatRangeStruct(0.6240816f, 0.6695773f), (1, "Terlamenbocht") },
             { new FloatRangeStruct(0.7329645f, 0.7745231f), (1, "Bolderberghaarspeldbocht") },
             { new FloatRangeStruct(0.7820684f, 0.8041771f), (1, "Jochen Rindtbocht") },
