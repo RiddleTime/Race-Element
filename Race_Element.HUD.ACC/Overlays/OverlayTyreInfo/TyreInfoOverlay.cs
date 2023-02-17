@@ -12,7 +12,7 @@ using System;
 namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
 {
     [Overlay(Name = "Tyre Info", Version = 1.00, OverlayType = OverlayType.Release,
-        Description = "Shows tyre pressures. Additionally shows tyre temperature, brake temps and pad life. Overlays the in-game tyre info.")]
+        Description = "Shows tyre temperatures and more. Put it on top of vanilla in-game tyre hud.")]
     internal sealed class TyreInfoOverlay : AbstractOverlay
     {
         private readonly TyreInfoConfig _config = new TyreInfoConfig();
@@ -28,9 +28,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
                 [ToolTip("Displays the average of front and rear brake temperatures under the brake pads.")]
                 public bool BrakeTemps { get; set; } = true;
 
-                [ToolTip("Displays the tyre temperature for each tyre whilst displaying colors." +
-                    "\nGreen is optimal, Red is too hot, Blue is too cold.")]
-                public bool TyreTemps { get; set; } = true;
+                [ToolTip("Draws pressures and colored indicators on top vanilla tyre widget.")]
+                public bool Pressures { get; set; } = true;
 
                 [ToolTip("Defines the amount of decimals for the tyre pressure text.")]
                 [IntRange(1, 2, 1)]
@@ -82,7 +81,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
                 g.DrawLine(repositionLinePen, new Point(0, InitialHeight / 2), new Point(InitialWidth, InitialHeight / 2));
             }
 
-            DrawTyrePressures(g);
+            if (_config.Information.Pressures)
+                DrawTyrePressures(g);
 
             if (this._config.Information.PadLife)
             {
@@ -96,13 +96,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
                 DrawBrakeTemps(g, 68, 103, Position.Rear);
             }
 
-            if (this._config.Information.TyreTemps)
-            {
-                DrawTyreTemp(g, 28, 60, Wheel.FrontLeft);
-                DrawTyreTemp(g, 106, 60, Wheel.FrontRight);
-                DrawTyreTemp(g, 28, 114, Wheel.RearLeft);
-                DrawTyreTemp(g, 106, 114, Wheel.RearRight);
-            }
+
+            DrawTyreTemp(g, 28, 60, Wheel.FrontLeft);
+            DrawTyreTemp(g, 106, 60, Wheel.FrontRight);
+            DrawTyreTemp(g, 28, 114, Wheel.RearLeft);
+            DrawTyreTemp(g, 106, 114, Wheel.RearRight);
         }
 
         private void DrawTyrePressures(Graphics g)
