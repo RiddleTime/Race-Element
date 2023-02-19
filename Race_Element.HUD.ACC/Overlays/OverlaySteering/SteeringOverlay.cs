@@ -4,11 +4,9 @@ using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.Util.SystemExtensions;
-using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using System.Windows.Forms;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
 {
@@ -46,10 +44,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
                 public int RingOpacity { get; set; } = 117;
             }
 
-            public SteeringConfig()
-            {
-                this.AllowRescale = true;
-            }
+            public SteeringConfig() => this.AllowRescale = true;
         }
 
         private const int InitialSize = 140;
@@ -95,7 +90,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
                 g.DrawEllipse(new Pen(Color.FromArgb(_config.Ring.RingOpacity, _config.Ring.RingColor),
                     _wheelThickness / 2 * Scale),
                     InitialSize / 2 * Scale,
-                InitialSize / 2 * Scale,
+                    InitialSize / 2 * Scale,
                     InitialSize / 2 * Scale - _wheelThickness * Scale - padding * 2);
             });
         }
