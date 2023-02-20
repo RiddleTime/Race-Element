@@ -29,14 +29,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayFocusedCar
             this.RefreshRateHz = 10;
         }
 
-        public override void BeforeStart()
-        {
-        }
-
-        public override void BeforeStop()
-        {
-        }
-
         private float minX = float.MaxValue, maxX = float.MinValue;
         private float minY = float.MaxValue, maxY = float.MinValue;
 
@@ -127,9 +119,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayFocusedCar
             }
         }
 
-        public override bool ShouldRender()
-        {
-            return true;
-        }
+        public sealed override bool ShouldRender() => true;
     }
 }

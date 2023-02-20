@@ -47,10 +47,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayRaceInfo
                 this.Height -= _panel.FontHeight;
         }
 
-        public sealed override void BeforeStop()
-        {
-        }
-
         public sealed override void Render(Graphics g)
         {
             if (_config.InfoPanel.PitWindow)
@@ -82,7 +78,5 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayRaceInfo
 
             _panel.Draw(g);
         }
-
-        public sealed override bool ShouldRender() => DefaultShouldRender();
     }
 }

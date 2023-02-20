@@ -81,9 +81,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayACC
             _panel.Draw(g);
         }
 
-        public override bool ShouldRender()
-        {
-            return true;
-        }
+        public override bool ShouldRender() => true;
     }
 }

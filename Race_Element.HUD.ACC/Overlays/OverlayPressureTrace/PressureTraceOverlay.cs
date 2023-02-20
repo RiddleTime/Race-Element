@@ -49,8 +49,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace
             Instance = null;
         }
 
-        public sealed override bool ShouldRender() => DefaultShouldRender();
-
         public sealed override void Render(Graphics g)
         {
             TyrePressureGraph.PressureRange = TyrePressures.GetCurrentRange(pageGraphics.TyreCompound, pageStatic.CarModel);

@@ -37,11 +37,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayEcuMapInfo
         public sealed override void BeforeStart()
         {
             if (!this._config.InfoPanel.MapNumber)
-            {
                 this.Height -= _panel.FontHeight;
-            }
         }
-        public sealed override void BeforeStop() { }
 
         public sealed override void Render(Graphics g)
         {
@@ -65,11 +62,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayEcuMapInfo
             }
 
             _panel.Draw(g);
-        }
-
-        public sealed override bool ShouldRender()
-        {
-            return DefaultShouldRender();
         }
     }
 }

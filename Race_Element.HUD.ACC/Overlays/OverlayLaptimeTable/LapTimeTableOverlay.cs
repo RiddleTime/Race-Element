@@ -33,10 +33,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLaptimeTable
             this.Height += _table.FontHeight * (_config.Table.Rows + 1);
         }
 
-        public override void BeforeStop() { }
-
-        public override bool ShouldRender() => DefaultShouldRender();
-
         public override void Render(Graphics g)
         {
             var laps = LapTracker.Instance.Laps.ToList();

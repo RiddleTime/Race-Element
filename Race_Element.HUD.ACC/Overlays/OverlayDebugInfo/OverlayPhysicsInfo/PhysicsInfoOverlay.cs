@@ -77,9 +77,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPhysicsInfo
             _table.Draw(g);
         }
 
-        public sealed override bool ShouldRender()
-        {
-            return true;
-        }
+        public sealed override bool ShouldRender() => true;
     }
 }

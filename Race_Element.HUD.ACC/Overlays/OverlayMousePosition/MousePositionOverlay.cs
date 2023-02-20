@@ -78,10 +78,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayMousePosition
 
         public sealed override void Render(Graphics g) => _cachedCursor?.Draw(g, Width, Height);
 
-        public sealed override bool ShouldRender()
-        {
-            return true;
-        }
+        public sealed override bool ShouldRender() => true;
 
         [DllImport("user32.dll")]
         private static extern bool GetCursorPos(out POINT lpPoint);

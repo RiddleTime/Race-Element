@@ -88,10 +88,5 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpeedometer
 
             _panel.Draw(g);
         }
-
-        public sealed override bool ShouldRender()
-        {
-            return DefaultShouldRender();
-        }
     }
 }

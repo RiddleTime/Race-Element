@@ -127,8 +127,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
             _bodyDamage?.Dispose();
         }
 
-        public override bool ShouldRender() => DefaultShouldRender();
-
         public override void Render(Graphics g)
         {
             float newDamageTime = Damage.GetTotalRepairTime(pagePhysics);

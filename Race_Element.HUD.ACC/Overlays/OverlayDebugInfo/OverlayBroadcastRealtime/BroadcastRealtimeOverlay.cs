@@ -80,9 +80,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
             }
         }
 
-        public sealed override bool ShouldRender()
-        {
-            return true;
-        }
+        public sealed override bool ShouldRender() => true;
     }
 }

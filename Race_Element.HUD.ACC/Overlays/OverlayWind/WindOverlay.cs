@@ -27,23 +27,15 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
             _panel = new InfoPanel(13, 300);
         }
 
-        public override void BeforeStart() { }
-
-        public override void BeforeStop() { }
-
-        public override bool ShouldRender() => DefaultShouldRender();
-
         public override void Render(Graphics g)
         {
-
             double vaneAngle = 90 + pageGraphics.WindDirection * -1;
-
             double carDirection = (pagePhysics.Heading * 180d) / Math.PI;
             vaneAngle -= carDirection;
 
-
             g.DrawArc(new Pen(Brushes.Red, 5), new Rectangle(60, 60, 80, 80), (float)vaneAngle - 35, 20);
             g.DrawEllipse(new Pen(Color.FromArgb(195, 255, 255, 255), 8), new Rectangle(50, 50, 100, 100));
+
             _panel.AddLine("Speed", $"{pageGraphics.WindSpeed:F3}");
             _panel.Draw(g);
         }

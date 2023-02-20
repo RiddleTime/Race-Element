@@ -2,12 +2,7 @@
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.Util.SystemExtensions;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayBoostGauge
 {
@@ -37,15 +32,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayBoostGauge
             this.RefreshRateHz = 10;
         }
 
-        public override void BeforeStart()
-        {
-        }
-
-        public override void BeforeStop()
-        {
-        }
-
-        public override bool ShouldRender() => DefaultShouldRender();
+        public override void BeforeStart() { }
+        public override void BeforeStop() { }
 
         public override void Render(Graphics g)
         {

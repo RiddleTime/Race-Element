@@ -76,8 +76,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
             _font?.Dispose();
         }
 
-        public override bool ShouldRender() => DefaultShouldRender();
-
         public override void Render(Graphics g)
         {
             _cachedBackground?.Draw(g, 0, 0, _config.Bar.Width, _config.Bar.Height);

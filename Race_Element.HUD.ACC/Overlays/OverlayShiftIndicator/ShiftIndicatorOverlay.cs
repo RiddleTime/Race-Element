@@ -110,8 +110,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
                     cachedBitmap?.Dispose();
         }
 
-        public sealed override bool ShouldRender() => DefaultShouldRender();
-
         public sealed override void Render(Graphics g)
         {
             _cachedBackground?.Draw(g, _config.Bar.Width, _config.Bar.Height);

@@ -1,20 +1,15 @@
-﻿using RaceElement.Util.DataTypes;
-using RaceElement.Data.ACC.Session;
+﻿using RaceElement.Data.ACC.Session;
 using RaceElement.Data.ACC.Tracks;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using static RaceElement.Data.ACC.Tracks.TrackData;
 using System.Drawing.Text;
 using System.Drawing.Drawing2D;
+using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 {
@@ -147,6 +142,5 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
             }
         }
 
-        public override bool ShouldRender() => DefaultShouldRender();
     }
 }

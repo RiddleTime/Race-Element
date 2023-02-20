@@ -99,8 +99,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayAccelerometer
             _cachedBackground?.Dispose();
         }
 
-        public sealed override bool ShouldRender() => DefaultShouldRender();
-
         public sealed override void Render(Graphics g)
         {
             g.SmoothingMode = SmoothingMode.HighQuality;

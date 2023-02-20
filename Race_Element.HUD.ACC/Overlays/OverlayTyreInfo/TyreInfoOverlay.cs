@@ -16,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
     internal sealed class TyreInfoOverlay : AbstractOverlay
     {
         private readonly TyreInfoConfig _config = new TyreInfoConfig();
-        private class TyreInfoConfig : OverlayConfiguration
+        private sealed class TyreInfoConfig : OverlayConfiguration
         {
             [ConfigGrouping("Info", "Show additional information about the condition of the tyres.")]
             public InfoGrouping Information { get; set; } = new InfoGrouping();
@@ -62,14 +62,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
             this.Width = InitialWidth;
             this.Height = InitialHeight;
             this.RefreshRateHz = 10;
-        }
-
-        public sealed override void BeforeStart()
-        {
-        }
-
-        public sealed override void BeforeStop()
-        {
         }
 
         public sealed override void Render(Graphics g)
@@ -142,14 +134,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
             g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
             g.TextContrast = 1;
 
-
             string text = $"{temp:F1}";
             int textWidth = (int)g.MeasureString(text, _fontFamily).Width;
 
-            Rectangle backgroundDimension = new Rectangle(x - textWidth / 2, y, (int)textWidth, _fontFamily.Height);
+            Rectangle backgroundDimension = new Rectangle(x - textWidth / 2, y, textWidth, _fontFamily.Height);
 
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), backgroundDimension, 2);
-            //g.DrawRoundedRectangle(new Pen(tyreBrush), backgroundDimension, 2);
 
             g.DrawStringWithShadow(text, _fontFamily, tyreBrush, new PointF(x - textWidth / 2, y + _yMono - 1));
         }
@@ -277,11 +267,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 0, 0, 0)), backgroundDimension, 2);
             g.DrawRoundedRectangle(new Pen(Color.FromArgb(135, 0, 0, 0), 0.6f * this.Scale), backgroundDimension, 2);
             g.DrawStringWithShadow(text, _fontFamilyLarge, textColor, new PointF(x - textWidth / 2, y + _fontFamilyLarge.GetHeight(g) / 11f), 1.3f * this.Scale);
-        }
-
-        public sealed override bool ShouldRender()
-        {
-            return DefaultShouldRender();
         }
     }
 }

@@ -72,9 +72,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStandings
             RaceSessionTracker.Instance.OnACStatusChanged -= StatusChanged;
             RaceSessionTracker.Instance.OnACSessionTypeChanged -= SessionTypeChanged;
             BroadcastTracker.Instance.OnTrackDataUpdate -= TrackDataUpdate;
-
         }
-
 
         private void TrackDataUpdate(object sender, TrackData e)
         {
@@ -112,8 +110,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStandings
                 _entryListForCarClass[carClass] = new List<KeyValuePair<int, CarData>>();
             }
         }
-
-        public sealed override bool ShouldRender() => DefaultShouldRender();
 
         public sealed override void Render(Graphics g)
         {

@@ -58,12 +58,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
             _graph = new InputGraph(0, 0, _config.InfoPanel.Width - 1, _config.InfoPanel.Height - 1, _inputDataCollector, this._config);
         }
 
-        public sealed override void BeforeStop()
-        {
-            _graph?.Dispose();
-        }
-
-        public sealed override bool ShouldRender() => DefaultShouldRender();
+        public sealed override void BeforeStop() => _graph?.Dispose();
 
         public sealed override void Render(Graphics g)
         {

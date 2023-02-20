@@ -62,12 +62,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
             _graph = new OversteerGraph(0, 0, _config.Chart.Width - 1, _config.Chart.Height - 1, _collector, _config);
         }
 
-        public sealed override void BeforeStop()
-        {
-            _graph.Dispose();
-        }
-
-        public sealed override bool ShouldRender() => DefaultShouldRender();
+        public sealed override void BeforeStop() => _graph.Dispose();
 
         public sealed override void Render(Graphics g)
         {

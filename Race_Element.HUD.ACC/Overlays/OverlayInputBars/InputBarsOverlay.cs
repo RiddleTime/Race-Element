@@ -86,8 +86,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
             }
         }
 
-        public override bool ShouldRender() => DefaultShouldRender();
-
         public override void BeforeStart()
         {
             int width = _config.Bars.Thickness * 2 + _config.Bars.Spacing;
@@ -194,10 +192,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
             }
         }
 
-        public override void BeforeStop()
-        {
-            _cachedBackground?.Dispose();
-        }
+        public override void BeforeStop() => _cachedBackground?.Dispose();
 
         public override void Render(Graphics g)
         {

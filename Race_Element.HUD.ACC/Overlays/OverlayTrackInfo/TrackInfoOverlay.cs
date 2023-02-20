@@ -54,8 +54,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
                 this.Height -= this._panel.FontHeight;
         }
 
-        public sealed override void BeforeStop() { }
-
         public sealed override void Render(Graphics g)
         {
             if (this._config.InfoPanel.TimeOfDay)
@@ -76,11 +74,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
             _panel.AddLine("Air - Track", $"{airTemp} C - {roadTemp} C");
             _panel.AddLine("Wind", $"{Math.Round(pageGraphics.WindSpeed, 2)} km/h");
             _panel.Draw(g);
-        }
-
-        public sealed override bool ShouldRender()
-        {
-            return DefaultShouldRender();
         }
     }
 }

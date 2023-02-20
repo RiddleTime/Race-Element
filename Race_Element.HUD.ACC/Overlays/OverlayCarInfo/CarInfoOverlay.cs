@@ -47,8 +47,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
             this.RefreshRateHz = 3;
         }
 
-        public sealed override bool ShouldRender() => DefaultShouldRender();
-
         public sealed override void BeforeStart()
         {
             if (!this._config.InfoPanel.FuelPerLap)
@@ -63,8 +61,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
             if (!this._config.InfoPanel.TyreSet)
                 this.Height -= this.infoPanel.FontHeight;
         }
-
-        public sealed override void BeforeStop() { }
 
         public sealed override void Render(Graphics g)
         {

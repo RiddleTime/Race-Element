@@ -74,8 +74,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayFuelInfo
                 this.Height -= _infoPanel.FontHeight;
         }
 
-        public sealed override void BeforeStop() { }
-
         public sealed override void Render(Graphics g)
         {
             // Some global variants
@@ -146,11 +144,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayFuelInfo
             else
                 brush = fuelTimeLeft <= pageGraphics.SessionTimeLeft ? Brushes.Red : Brushes.LimeGreen;
             return brush;
-        }
-
-        public sealed override bool ShouldRender()
-        {
-            return DefaultShouldRender();
         }
     }
 }

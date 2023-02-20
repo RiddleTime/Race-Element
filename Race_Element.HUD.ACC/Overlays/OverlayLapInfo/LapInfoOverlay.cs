@@ -229,10 +229,5 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
             else
                 this._table.AddRow("Best", bestLapValues);
         }
-
-        public sealed override bool ShouldRender()
-        {
-            return DefaultShouldRender();
-        }
     }
 }

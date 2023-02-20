@@ -386,10 +386,7 @@ Description = "A panel showing live broadcast track data.")]
 
         }
 
-        public sealed override bool ShouldRender()
-        {
-            return true;
-        }
+        public sealed override bool ShouldRender() => true;
 
     }
 }

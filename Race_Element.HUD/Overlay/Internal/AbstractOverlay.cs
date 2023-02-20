@@ -22,9 +22,9 @@ namespace RaceElement.HUD.Overlay.Internal
 {
     public abstract class AbstractOverlay : FloatingWindow
     {
-        public abstract void BeforeStart();
-        public abstract void BeforeStop();
-        public abstract bool ShouldRender();
+        public virtual void BeforeStart() { }
+        public virtual void BeforeStop() { }
+        public virtual bool ShouldRender() => DefaultShouldRender();
         public abstract void Render(Graphics g);
 
         private bool Draw = false;

@@ -13,7 +13,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWeather
     internal class WeatherOverlay : AbstractOverlay
     {
         private readonly WeatherConfiguration _config = new WeatherConfiguration();
-        private class WeatherConfiguration : OverlayConfiguration
+        private sealed class WeatherConfiguration : OverlayConfiguration
         {
             public WeatherConfiguration()
             {
@@ -98,11 +98,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWeather
             _panel.AddLine("Multiplier", $"{multiplierText}");
 
             _panel.Draw(g);
-        }
-
-        public sealed override bool ShouldRender()
-        {
-            return DefaultShouldRender();
         }
     }
 }

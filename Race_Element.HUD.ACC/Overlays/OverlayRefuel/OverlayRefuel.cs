@@ -68,7 +68,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayRefuel
             this.RefreshRateHz = 5;
         }
 
-
         public sealed override void BeforeStart()
         {
             LapTracker.Instance.LapFinished += FuelHelperLapFinished;
@@ -317,13 +316,5 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayRefuel
 
         }
 
-        public sealed override bool ShouldRender()
-        {
-            return DefaultShouldRender();
-        }
-
     }
-
-
-
 }

@@ -76,7 +76,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
                 cachedBitmap?.Dispose();
         }
 
-        public override bool ShouldRender() => DefaultShouldRender();
         public override void Render(Graphics g) => gearBitmaps[pagePhysics.Gear]?.Draw(g, InitialWidth, InitialHeight);
     }
 }
