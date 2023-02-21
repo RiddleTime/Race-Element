@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayWind
 {
-    [Overlay(Name = "Wind", Description = "Shows wind speed and direction",
+    [Overlay(Name = "Wind", Description = "Shows wind direction vs heading",
         OverlayType = OverlayType.Release,
         OverlayCategory = OverlayCategory.Weather,
         Version = 1.00)]
@@ -20,13 +20,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
             public ShapeGrouping Shape { get; set; } = new ShapeGrouping();
             public sealed class ShapeGrouping
             {
-                [IntRange(130, 200, 1)]
+                [IntRange(100, 200, 1)]
                 public int Size { get; set; } = 150;
             }
 
             public WindOverlayConfiguration() => AllowRescale = true;
         }
-
 
         private CachedBitmap _background;
 
@@ -57,12 +56,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
 
             double vaneAngle = pageGraphics.WindDirection * -1;
             double carDirection = (pagePhysics.Heading * -180d) / Math.PI;
-            vaneAngle += carDirection;
+            double relativeAngle = vaneAngle + carDirection;
 
-            g.DrawArc(new Pen(Brushes.LimeGreen, 5), new Rectangle(5, 5, _config.Shape.Size - 10, _config.Shape.Size - 10), (float)vaneAngle - 35, 20);
-
-            //double reversedAngle = vaneAngle + 180;
-            //g.DrawArc(new Pen(Brushes.Red, 5), new Rectangle(5, 5, _config.Shape.Size - 10, _config.Shape.Size - 10), (float)reversedAngle - 35, 20);
+            // draw Blown To Direction of Wind in pen color
+            g.DrawArc(new Pen(Brushes.LimeGreen, 5), new Rectangle(5, 5, _config.Shape.Size - 10, _config.Shape.Size - 10), (float)relativeAngle - 35, 20);
         }
     }
 }
