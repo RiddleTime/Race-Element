@@ -44,7 +44,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
 
             _background = new CachedBitmap(scaledSize, scaledSize, g =>
             {
-                g.DrawEllipse(new Pen(Color.FromArgb(195, 0, 0, 0), 8), new Rectangle(5, 5, scaledSize - 10, scaledSize - 10));
+                g.DrawEllipse(new Pen(Color.FromArgb(195, 0, 0, 0), 10), new Rectangle(5, 5, scaledSize - 10, scaledSize - 10));
             });
         }
 
@@ -59,7 +59,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
             double relativeAngle = vaneAngle + carDirection;
 
             // draw Blown To Direction of Wind in pen color
-            g.DrawArc(new Pen(Brushes.LimeGreen, 5), new Rectangle(5, 5, _config.Shape.Size - 10, _config.Shape.Size - 10), (float)relativeAngle - 35, 20);
+            g.DrawArc(new Pen(Brushes.LimeGreen, 6), new Rectangle(5, 5, _config.Shape.Size - 10, _config.Shape.Size - 10), (float)relativeAngle - 35, 20);
         }
     }
 }
