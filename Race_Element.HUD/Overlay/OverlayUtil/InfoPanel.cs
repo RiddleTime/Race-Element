@@ -185,8 +185,8 @@ namespace RaceElement.HUD.Overlay.Util
                     if (line.GetType() == typeof(TitledProgressBarLine))
                     {
                         TitledProgressBarLine titledProgressBar = (TitledProgressBarLine)line;
-                        SizeF titleWidth;
-                        if ((titleWidth = g.MeasureString(titledProgressBar.Title, _font)).Width > MaxTitleWidth)
+                        SizeF titleWidth = g.MeasureString(titledProgressBar.Title, _font);
+                        if (titleWidth.Width > MaxTitleWidth)
                             MaxTitleWidth = titleWidth.Width;
                     }
 

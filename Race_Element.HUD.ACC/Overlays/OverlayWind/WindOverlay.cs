@@ -1,43 +1,68 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayWind
 {
-#if DEBUG
-    [Overlay(Name = "Wind", Description = "Shows wind speed and direction", OverlayType = OverlayType.Release, Version = 1.00)]
-#endif
+    [Overlay(Name = "Wind", Description = "Shows wind speed and direction",
+        OverlayType = OverlayType.Release,
+        OverlayCategory = OverlayCategory.Weather,
+        Version = 1.00)]
     internal sealed class WindOverlay : AbstractOverlay
     {
-        private WindOverlayConfiguration _config = new WindOverlayConfiguration();
+        private readonly WindOverlayConfiguration _config = new WindOverlayConfiguration();
         private sealed class WindOverlayConfiguration : OverlayConfiguration
         {
+            [ConfigGrouping("Shape", "Adjust the shape")]
+            public ShapeGrouping Shape { get; set; } = new ShapeGrouping();
+            public sealed class ShapeGrouping
+            {
+                [IntRange(130, 200, 1)]
+                public int Size { get; set; } = 150;
+            }
+
             public WindOverlayConfiguration() => AllowRescale = true;
         }
 
-        // make panel
-        InfoPanel _panel;
+
+        private CachedBitmap _background;
 
         public WindOverlay(Rectangle rectangle) : base(rectangle, "Wind")
         {
-            this.Width = 200;
-            this.Height = 200;
-            _panel = new InfoPanel(13, 300);
+            Width = _config.Shape.Size;
+            Height = _config.Shape.Size;
+            RefreshRateHz = 5;
         }
 
-        public override void Render(Graphics g)
+        public sealed override void BeforeStart() => RenderBackground();
+
+        private void RenderBackground()
         {
-            double vaneAngle = 90 + pageGraphics.WindDirection * -1;
-            double carDirection = (pagePhysics.Heading * 180d) / Math.PI;
-            vaneAngle -= carDirection;
+            int scaledSize = (int)(_config.Shape.Size * Scale);
 
-            g.DrawArc(new Pen(Brushes.Red, 5), new Rectangle(60, 60, 80, 80), (float)vaneAngle - 35, 20);
-            g.DrawEllipse(new Pen(Color.FromArgb(195, 255, 255, 255), 8), new Rectangle(50, 50, 100, 100));
+            _background = new CachedBitmap(scaledSize, scaledSize, g =>
+            {
+                g.DrawEllipse(new Pen(Color.FromArgb(195, 0, 0, 0), 8), new Rectangle(5, 5, scaledSize - 10, scaledSize - 10));
+            });
+        }
 
-            _panel.AddLine("Speed", $"{pageGraphics.WindSpeed:F3}");
-            _panel.Draw(g);
+        public sealed override void BeforeStop() => _background?.Dispose();
+
+        public sealed override void Render(Graphics g)
+        {
+            _background?.Draw(g, 0, 0, _config.Shape.Size, _config.Shape.Size);
+
+            double vaneAngle = pageGraphics.WindDirection * -1;
+            double carDirection = (pagePhysics.Heading * -180d) / Math.PI;
+            vaneAngle += carDirection;
+
+            g.DrawArc(new Pen(Brushes.LimeGreen, 5), new Rectangle(5, 5, _config.Shape.Size - 10, _config.Shape.Size - 10), (float)vaneAngle - 35, 20);
+
+            //double reversedAngle = vaneAngle + 180;
+            //g.DrawArc(new Pen(Brushes.Red, 5), new Rectangle(5, 5, _config.Shape.Size - 10, _config.Shape.Size - 10), (float)reversedAngle - 35, 20);
         }
     }
 }
