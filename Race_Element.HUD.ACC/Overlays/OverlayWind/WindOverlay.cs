@@ -22,8 +22,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
 
         public WindOverlay(Rectangle rectangle) : base(rectangle, "Wind")
         {
-            this.Width = 300;
-            this.Height = 300;
+            this.Width = 200;
+            this.Height = 200;
             _panel = new InfoPanel(13, 300);
         }
 
