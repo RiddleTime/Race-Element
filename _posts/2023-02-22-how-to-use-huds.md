@@ -4,6 +4,8 @@ title: How to use the HUD tab
 description: Custom HUDs with Sim Racing
 tags: guide
 ---
+
+# HUDs
 The app contains HUDs(Heads up displays)/Overlays, these can be found in the HUD tab. HUDs are 2D graphics that overlay the game.
 
 ## Activation
@@ -30,7 +32,3 @@ You can toggle the movement mode by:
 HUDs can be customized using the options in the right side panel.
 By default every HUD contains an option to set the Scale, the Opacity, Enabling \'Window mode\' and choosing whether the HUDs should be \'Always On Top\'.
 Aside from these default options there are HUD specific options.
-
-
-
-
