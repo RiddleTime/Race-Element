@@ -29,6 +29,7 @@ You can toggle the movement mode by:
 - Clicking your scroll wheel(middle mouse button) in the right side panel.
 
 ## Customization
-HUDs can be customized using the options in the right side panel.
+HUDs can be customized using the options in the right side panel. HUDs can only be customized when they are **not activated**. You will be able to see the changes you make in the preview image.
 By default every HUD contains an option to set the Scale, the Opacity, Enabling \'Window mode\' and choosing whether the HUDs should be \'Always On Top\'.
 Aside from these default options there are HUD specific options.
+
