@@ -11,7 +11,8 @@ using System.Drawing.Text;
 namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
 {
     [Overlay(Name = "Steering", Version = 1.00, OverlayType = OverlayType.Release,
-        Description = "Displays the Steering Input.")]
+        Description = "Displays the Steering Input.",
+        OverlayCategory = OverlayCategory.Inputs)]
     internal sealed class SteeringOverlay : AbstractOverlay
     {
         private readonly SteeringConfig _config = new SteeringConfig();

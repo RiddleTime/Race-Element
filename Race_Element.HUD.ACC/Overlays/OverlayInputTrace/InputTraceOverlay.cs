@@ -2,11 +2,11 @@
 using RaceElement.HUD.Overlay.Configuration;
 using System.Drawing;
 
-
 namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
 {
     [Overlay(Name = "Input Trace", Version = 1.00, OverlayType = OverlayType.Release,
-        Description = "Live graph of steering, throttle and brake inputs.")]
+        Description = "Live graph of steering, throttle and brake inputs.",
+        OverlayCategory = OverlayCategory.Inputs)]
     internal sealed class InputTraceOverlay : AbstractOverlay
     {
         private readonly InputTraceConfig _config = new InputTraceConfig();

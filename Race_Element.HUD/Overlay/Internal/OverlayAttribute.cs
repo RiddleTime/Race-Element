@@ -6,7 +6,7 @@ namespace RaceElement.HUD.Overlay.Internal
     {
         public string Name { get; set; }
         public OverlayType OverlayType { get; set; }
-        public OverlayCategory OverlayCategory { get; set; }
+        public OverlayCategory OverlayCategory { get; set; } = OverlayCategory.All;
 
         public double Version { get; set; }
         public string Description { get; set; }
@@ -21,6 +21,11 @@ namespace RaceElement.HUD.Overlay.Internal
 
     public enum OverlayCategory
     {
-         Weather
+        All,
+        Inputs,
+        Lap,
+        Physics,
+        Track,
+        Weather,
     }
 }

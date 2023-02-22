@@ -9,7 +9,8 @@ using System.Drawing.Drawing2D;
 namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
 {
     [Overlay(Name = "Input Bars", Version = 1.00, OverlayType = OverlayType.Release,
-      Description = "Live input bars of throttle and brake.")]
+      Description = "Live input bars of throttle and brake.",
+      OverlayCategory = OverlayCategory.Inputs)]
     internal sealed class InputBarsOverlay : AbstractOverlay
     {
         private readonly InputBarsConfiguration _config = new InputBarsConfiguration();

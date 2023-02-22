@@ -28,7 +28,7 @@ namespace RaceElement.HUD.ACC
             lock (ActiveOverlays)
                 while (ActiveOverlays.Count > 0)
                 {
-                    //ActiveOverlays.ElementAt(0).EnableReposition(false);
+                    ActiveOverlays.ElementAt(0).EnableReposition(false);
                     ActiveOverlays.ElementAt(0).Stop();
                     ActiveOverlays.Remove(ActiveOverlays.ElementAt(0));
                 }

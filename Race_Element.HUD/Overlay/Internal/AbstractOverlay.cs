@@ -292,6 +292,7 @@ namespace RaceElement.HUD.Overlay.Internal
             Draw = false;
 
             this.Close();
+            this.Dispose();
         }
 
         protected sealed override void PerformPaint(PaintEventArgs e)

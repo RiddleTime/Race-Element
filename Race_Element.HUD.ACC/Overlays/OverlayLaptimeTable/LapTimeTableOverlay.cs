@@ -8,7 +8,8 @@ using System.Linq;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayLaptimeTable
 {
-    [Overlay(Name = "Laptime Table", Description = "A table showing laptimes.", OverlayType = OverlayType.Release, Version = 1.00)]
+    [Overlay(Name = "Laptime Table", Description = "A table showing laptimes.", OverlayType = OverlayType.Release, Version = 1.00,
+        OverlayCategory = OverlayCategory.Lap)]
     internal sealed class LapTimeTableOverlay : AbstractOverlay
     {
         private readonly LapTimeTableConfiguration _config = new LapTimeTableConfiguration();

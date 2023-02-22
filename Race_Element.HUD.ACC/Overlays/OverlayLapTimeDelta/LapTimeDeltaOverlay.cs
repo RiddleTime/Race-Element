@@ -10,7 +10,8 @@ using System.Diagnostics;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
 {
-    [Overlay(Name = "Laptime Delta", Description = "A customizable Laptime Delta Bar", OverlayType = OverlayType.Release, Version = 1)]
+    [Overlay(Name = "Laptime Delta", Description = "A customizable Laptime Delta Bar", OverlayType = OverlayType.Release, Version = 1,
+        OverlayCategory = OverlayCategory.Lap)]
     internal class LapTimeDeltaOverlay : AbstractOverlay
     {
         private readonly LapTimeDeltaConfiguration _config = new LapTimeDeltaConfiguration();

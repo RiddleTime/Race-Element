@@ -12,6 +12,7 @@ using System.Linq;
 namespace RaceElement.HUD.ACC.Overlays.OverlayAccelerometer
 {
     [Overlay(Name = "Accelerometer", Version = 1.00, OverlayType = OverlayType.Release,
+        OverlayCategory = OverlayCategory.Physics,
         Description = "G-meter showing lateral and longitudinal g-forces.")]
     internal sealed class AccelerometerOverlay : AbstractOverlay
     {

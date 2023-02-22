@@ -1,7 +1,6 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
-using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Drawing;
 
@@ -58,7 +57,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
             double carDirection = (pagePhysics.Heading * -180d) / Math.PI;
             double relativeAngle = vaneAngle + carDirection;
 
-            // draw Blown To Direction of Wind in pen color
             g.DrawArc(new Pen(Brushes.LimeGreen, 6), new Rectangle(5, 5, _config.Shape.Size - 10, _config.Shape.Size - 10), (float)relativeAngle - 35, 20);
         }
     }

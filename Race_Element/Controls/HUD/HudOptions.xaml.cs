@@ -78,6 +78,8 @@ namespace RaceElement.Controls
                 if (!designTime)
                     try
                     {
+                        PopulateCategoryCombobox(comboOverlays, listOverlays, OverlayType.Release);
+                        PopulateCategoryCombobox(comboDebugOverlays, listDebugOverlays, OverlayType.Debug);
                         BuildOverlayPanel();
 
                         checkBoxReposition.PreviewMouseDown += (s, e) =>
@@ -345,7 +347,9 @@ namespace RaceElement.Controls
                         SaveOverlaySettings(overlay, true);
 
                         configStacker.IsEnabled = false;
-                        OverlaysACC.ActiveOverlays.Add(overlay);
+
+                        if (OverlaysACC.ActiveOverlays.FindIndex(o => o.Name == overlay.Name) == -1)
+                            OverlaysACC.ActiveOverlays.Add(overlay);
                     }
                 }
             };
@@ -365,12 +369,15 @@ namespace RaceElement.Controls
 
                     SaveOverlaySettings(overlay, false);
 
+
+
+                    int index = OverlaysACC.ActiveOverlays.FindIndex(o => o.Name == overlay.Name);
+                    if (index != -1)
+                        OverlaysACC.ActiveOverlays.RemoveAt(index);
                     Task.Run(() =>
                     {
                         overlay?.Stop(true);
                     });
-
-                    OverlaysACC.ActiveOverlays.Remove(overlay);
                     configStacker.IsEnabled = true;
                 }
             };
@@ -489,11 +496,34 @@ namespace RaceElement.Controls
         {
             OverlaysACC.GenerateDictionary();
 
-            BuildOverlayListView(listOverlays, OverlayType.Release);
-            BuildOverlayListView(listDebugOverlays, OverlayType.Debug);
+            BuildOverlayListView(listOverlays, OverlayType.Release, (OverlayCategory)((ComboBoxItem)comboOverlays.SelectedItem).DataContext);
+            BuildOverlayListView(listDebugOverlays, OverlayType.Debug, (OverlayCategory)((ComboBoxItem)comboOverlays.SelectedItem).DataContext);
         }
 
-        private void BuildOverlayListView(ListView listView, OverlayType overlayType)
+        private void PopulateCategoryCombobox(ComboBox box, ListView listView, OverlayType overlayType)
+        {
+            box.Items.Clear();
+
+            foreach (OverlayCategory category in Enum.GetValues(typeof(OverlayCategory)))
+            {
+                ComboBoxItem item = new ComboBoxItem()
+                {
+                    Content = string.Concat(category.ToString().Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' '),
+                    DataContext = category,
+                    FontWeight = FontWeights.Bold,
+                };
+                box.Items.Add(item);
+            }
+
+            box.SelectedIndex = 0;
+
+            box.SelectionChanged += (s, e) =>
+            {
+                BuildOverlayListView(listView, overlayType, (OverlayCategory)((ComboBoxItem)box.SelectedItem).DataContext);
+            };
+        }
+
+        private void BuildOverlayListView(ListView listView, OverlayType overlayType, OverlayCategory category)
         {
             listView.Items.Clear();
 
@@ -501,6 +531,9 @@ namespace RaceElement.Controls
             {
                 AbstractOverlay tempAbstractOverlay = (AbstractOverlay)Activator.CreateInstance(x.Value, DefaultOverlayArgs);
                 var overlayAttribute = GetOverlayAttribute(x.Value);
+                if (overlayAttribute.OverlayCategory != category && category != OverlayCategory.All)
+                    continue;
+
                 OverlaySettingsJson tempOverlaySettings = OverlaySettings.LoadOverlaySettings(overlayAttribute.Name);
                 tempAbstractOverlay.Dispose();
 
@@ -534,12 +567,16 @@ namespace RaceElement.Controls
                         lock (OverlaysACC.ActiveOverlays)
                         {
                             AbstractOverlay overlay = (AbstractOverlay)Activator.CreateInstance(x.Value, DefaultOverlayArgs);
-
-                            overlay.Start();
-
-                            SaveOverlaySettings(overlay, true);
-
-                            OverlaysACC.ActiveOverlays.Add(overlay);
+                            if (OverlaysACC.ActiveOverlays.FindIndex(o => o.Name == overlay.Name) == -1)
+                            {
+                                SaveOverlaySettings(overlay, true);
+                                OverlaysACC.ActiveOverlays.Add(overlay);
+                                overlay.Start();
+                            }
+                            else
+                            {
+                                overlay.Dispose();
+                            }
                         }
                     }
 
@@ -656,7 +693,6 @@ namespace RaceElement.Controls
 
             OverlaySettings.SaveOverlaySettings(overlay.Name, settings);
         }
-
 
         private void SaveOverlayConfig(Type overlay, OverlayConfiguration overlayConfiguration)
         {

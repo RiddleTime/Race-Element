@@ -75,7 +75,15 @@
                             <TextBlock Grid.Column="1"  FontFamily="{StaticResource Conthrax}" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" General"></TextBlock>
                         </Grid>
                     </TabItem.Header>
-                    <ListView Grid.Column="0" Foreground="White" x:Name="listOverlays" ScrollViewer.VerticalScrollBarVisibility="Visible"  Margin="0,3,0,0" Cursor="Hand"/>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <ComboBox x:Name="comboOverlays" HorizontalContentAlignment="Center" 
+                                   FontFamily="{StaticResource Conthrax}" FontSize="12" FontWeight="Bold"></ComboBox>
+                        <ListView Grid.Row="1"  Grid.Column="0" Foreground="White" x:Name="listOverlays" ScrollViewer.VerticalScrollBarVisibility="Visible"  Margin="0,3,0,0" Cursor="Hand"/>
+                    </Grid>
                 </TabItem>
                 <TabItem  x:Name="tabItemDebugOverlays">
                     <TabItem.Header>
@@ -95,7 +103,15 @@
                             <TextBlock Grid.Column="1" FontFamily="{StaticResource Conthrax}" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" Debug"></TextBlock>
                         </Grid>
                     </TabItem.Header>
-                    <ListView Grid.Column="0" x:Name="listDebugOverlays" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="0,3,0,0" Cursor="Hand"/>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <ComboBox x:Name="comboDebugOverlays" HorizontalContentAlignment="Center" 
+                                   FontFamily="{StaticResource Conthrax}" FontSize="12" FontWeight="Bold"></ComboBox>
+                        <ListView Grid.Row="1" Grid.Column="0" x:Name="listDebugOverlays" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="0,3,0,0" Cursor="Hand"/>
+                    </Grid>
                 </TabItem>
             </TabControl>
         </Grid>
