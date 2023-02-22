@@ -1,8 +1,10 @@
-﻿using RaceElement.HUD.Overlay.Configuration;
+﻿using LiteDB;
+using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using System;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayWind
 {
@@ -27,12 +29,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
         }
 
         private CachedBitmap _background;
+        private const int padding = 50;
 
         public WindOverlay(Rectangle rectangle) : base(rectangle, "Wind")
         {
             Width = _config.Shape.Size;
             Height = _config.Shape.Size;
-            RefreshRateHz = 5;
+            RefreshRateHz = 8;
         }
 
         public sealed override void BeforeStart() => RenderBackground();
@@ -41,9 +44,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
         {
             int scaledSize = (int)(_config.Shape.Size * Scale);
 
-            _background = new CachedBitmap(scaledSize, scaledSize, g =>
+            int scaledPadding = (int)(padding * this.Scale);
+            _background = new CachedBitmap(scaledSize + 1, scaledSize + 1, g =>
             {
-                g.DrawEllipse(new Pen(Color.FromArgb(195, 0, 0, 0), 10), new Rectangle(5, 5, scaledSize - 10, scaledSize - 10));
+                g.DrawEllipse(new Pen(Color.FromArgb(165, 0, 0, 0), 18 * this.Scale), new Rectangle(scaledPadding / 2, scaledPadding / 2, scaledSize - scaledPadding, scaledSize - scaledPadding));
             });
         }
 
@@ -53,11 +57,19 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
         {
             _background?.Draw(g, 0, 0, _config.Shape.Size, _config.Shape.Size);
 
-            double vaneAngle = pageGraphics.WindDirection * -1;
-            double carDirection = (pagePhysics.Heading * -180d) / Math.PI;
+            double vaneAngle = pageGraphics.WindDirection;
+            double carDirection = 90 + (pagePhysics.Heading * -180d) / Math.PI;
             double relativeAngle = vaneAngle + carDirection;
 
-            g.DrawArc(new Pen(Brushes.LimeGreen, 6), new Rectangle(5, 5, _config.Shape.Size - 10, _config.Shape.Size - 10), (float)relativeAngle - 35, 20);
+            g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+
+            Rectangle rect = new Rectangle(padding / 2, padding / 2, _config.Shape.Size - padding, _config.Shape.Size - padding);
+
+            // draw relative angle (blowing to)
+            g.DrawArc(new Pen(Brushes.LimeGreen, 16), rect, (float)relativeAngle - 4, 8);
+
+            g.DrawArc(new Pen(Brushes.Red, 8), rect, (float)relativeAngle - 180 - 35, 70);    // (float)relativeAngle - 180 - 4, 8)
+
         }
     }
 }
