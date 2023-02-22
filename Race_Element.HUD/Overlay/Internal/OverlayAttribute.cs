@@ -22,6 +22,7 @@ namespace RaceElement.HUD.Overlay.Internal
     public enum OverlayCategory
     {
         All,
+        Car,
         Driving,
         Inputs,
         Lap,
