@@ -7,6 +7,7 @@ using System.Drawing;
 namespace ACCManager.HUD.ACC.Overlays.OverlayBoostGauge
 {
     [Overlay(Name = "Boost Gauge", Version = 1.00, OverlayType = OverlayType.Release,
+        OverlayCategory = OverlayCategory.Driving,
       Description = "Progress bar showing boost percentage.")]
     internal class BoostGaugeOverlay : AbstractOverlay
     {

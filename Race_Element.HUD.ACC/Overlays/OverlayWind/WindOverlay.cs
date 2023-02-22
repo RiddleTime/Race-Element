@@ -8,7 +8,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
 {
     [Overlay(Name = "Wind", Description = "Shows wind direction vs heading",
         OverlayType = OverlayType.Release,
-        OverlayCategory = OverlayCategory.Weather,
+        OverlayCategory = OverlayCategory.Track,
         Version = 1.00)]
     internal sealed class WindOverlay : AbstractOverlay
     {

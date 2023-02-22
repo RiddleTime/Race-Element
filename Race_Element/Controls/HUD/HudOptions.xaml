@@ -24,13 +24,13 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
         <Image x:Name="previewHud" Grid.RowSpan="2" Panel.ZIndex="999" Visibility="Hidden"></Image>
 
-        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
             <Grid Grid.Row="0" Margin="3" x:Name="gridRepositionToggler" Cursor="Hand" Background="#2Fff4500" ToolTip="Enable Move Mode, this will allow you to drag the overlays with the mouse or when they are selected with the arrow keys.">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="25"/>
@@ -50,7 +50,7 @@
             </Grid>
         </StackPanel>
 
-        <Grid Grid.Row="1" x:Name="gridOverlays">
+        <Grid Grid.Row="0" x:Name="gridOverlays">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="270"/>
                 <ColumnDefinition Width="*"/>
@@ -77,11 +77,11 @@
                     </TabItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="45"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <ComboBox x:Name="comboOverlays" HorizontalContentAlignment="Center" 
-                                   FontFamily="{StaticResource Conthrax}" FontSize="12" FontWeight="Bold"></ComboBox>
+                                   FontFamily="{StaticResource Conthrax}" FontSize="13" FontWeight="Bold"></ComboBox>
                         <ListView Grid.Row="1"  Grid.Column="0" Foreground="White" x:Name="listOverlays" ScrollViewer.VerticalScrollBarVisibility="Visible"  Margin="0,3,0,0" Cursor="Hand"/>
                     </Grid>
                 </TabItem>
@@ -105,11 +105,11 @@
                     </TabItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="45"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <ComboBox x:Name="comboDebugOverlays" HorizontalContentAlignment="Center" 
-                                   FontFamily="{StaticResource Conthrax}" FontSize="12" FontWeight="Bold"></ComboBox>
+                                   FontFamily="{StaticResource Conthrax}" FontSize="13" FontWeight="Bold"></ComboBox>
                         <ListView Grid.Row="1" Grid.Column="0" x:Name="listDebugOverlays" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="0,3,0,0" Cursor="Hand"/>
                     </Grid>
                 </TabItem>

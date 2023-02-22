@@ -22,10 +22,10 @@ namespace RaceElement.HUD.Overlay.Internal
     public enum OverlayCategory
     {
         All,
+        Driving,
         Inputs,
         Lap,
         Physics,
         Track,
-        Weather,
     }
 }
