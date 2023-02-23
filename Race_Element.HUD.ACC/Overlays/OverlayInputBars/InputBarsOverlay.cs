@@ -14,52 +14,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
     internal sealed class InputBarsOverlay : AbstractOverlay
     {
         private readonly InputBarsConfiguration _config = new InputBarsConfiguration();
-        private sealed class InputBarsConfiguration : OverlayConfiguration
-        {
-            public enum BarOrientation { Horizontal, Vertical };
-
-            [ConfigGrouping("Bars", "The shape and spacing of the bars")]
-            public BarsGrouping Bars { get; set; } = new BarsGrouping();
-            public class BarsGrouping
-            {
-                public BarOrientation Orientation { get; set; } = BarOrientation.Vertical;
-
-                [ToolTip("Length of the input bars.")]
-                [IntRange(100, 250, 1)]
-                public int Length { get; set; } = 200;
-
-                [ToolTip("Changes the thickness of each input bar.")]
-                [IntRange(10, 45, 1)]
-                public int Thickness { get; set; } = 20;
-
-                [ToolTip("Changes the spacing between the input bars")]
-                [IntRange(1, 150, 1)]
-                public int Spacing { get; set; } = 5;
-
-                [ToolTip("Defines the transparency of the bars.")]
-                [ByteRange(40, 255, 1)]
-                public byte Transparency { get; set; } = 255;
-
-                [ToolTip("Changes the order of the bars, throttle first and brake second (left to right and top to bottom).")]
-                internal bool ThrottleFirst { get; set; }
-            }
-
-            [ConfigGrouping("Electronics", "Color changes for the bars when electronics kick in.")]
-            public ElectronicsGrouping Electronics { get; set; } = new ElectronicsGrouping();
-            public class ElectronicsGrouping
-            {
-                [ToolTip("Displays a color change on the throttle bar when traction control is activated.")]
-                public bool TractionControl { get; set; } = true;
-
-                [ToolTip("Displays a color change on the brake bar when ABS is activated.")]
-                public bool AntiLockBrakes { get; set; } = true;
-            }
-
-            public InputBarsConfiguration()
-            {
-                AllowRescale = true;
-            }
-        }
 
         private CachedBitmap _cachedBackground;
 
@@ -128,7 +82,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
                     Value = 0,
                     Min = 0,
                     Max = 1,
-                    FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.OrangeRed)),
+                    FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.ThrottleOpacity, _config.Colors.ThrottleColor)),
                     OutlineBrush = outlineBrush,
                     Rounded = true,
                     Scale = this.Scale,
@@ -139,7 +93,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
                     Value = 0,
                     Min = 0,
                     Max = 1,
-                    FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.LimeGreen)),
+                    FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.BrakeOpacity, _config.Colors.BrakeColor)),
                     OutlineBrush = outlineBrush,
                     Rounded = true,
                     Scale = this.Scale,
@@ -163,7 +117,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
                     Value = 0,
                     Min = 0,
                     Max = 1,
-                    FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.OrangeRed)),
+                    FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.BrakeOpacity, _config.Colors.BrakeColor)),
                     OutlineBrush = outlineBrush,
                     Rounded = true,
                     Scale = this.Scale,
@@ -174,7 +128,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
                     Value = 0,
                     Min = 0,
                     Max = 1,
-                    FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.LimeGreen)),
+                    FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.ThrottleOpacity, _config.Colors.ThrottleColor)),
                     OutlineBrush = outlineBrush,
                     Rounded = true,
                     Scale = this.Scale,
@@ -231,26 +185,26 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
             if (_config.Bars.Orientation == InputBarsConfiguration.BarOrientation.Horizontal)
             {
                 if (pagePhysics.Abs > 0)
-                    _horizontalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.Orange));
+                    _horizontalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.BrakeOpacity, Color.Orange));
                 else
-                    _horizontalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.OrangeRed));
+                    _horizontalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.BrakeOpacity, _config.Colors.BrakeColor));
 
                 if (pagePhysics.TC > 0)
-                    _horizontalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.Orange));
+                    _horizontalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.ThrottleOpacity, Color.Orange));
                 else
-                    _horizontalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.LimeGreen));
+                    _horizontalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.ThrottleOpacity, _config.Colors.ThrottleColor));
             }
             else
             {
                 if (pagePhysics.Abs > 0)
-                    _verticalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.Orange));
+                    _verticalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.ThrottleOpacity, Color.Orange));
                 else
-                    _verticalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.OrangeRed));
+                    _verticalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.ThrottleOpacity, _config.Colors.ThrottleColor));
 
                 if (pagePhysics.TC > 0)
-                    _verticalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.Orange));
+                    _verticalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.BrakeOpacity, Color.Orange));
                 else
-                    _verticalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Bars.Transparency, Color.LimeGreen));
+                    _verticalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.BrakeOpacity, _config.Colors.BrakeColor));
             }
         }
     }
