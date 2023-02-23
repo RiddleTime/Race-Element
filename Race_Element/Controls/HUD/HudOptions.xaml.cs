@@ -120,7 +120,7 @@ namespace RaceElement.Controls
                         {
                             _hudSettingsJson.DemoMode = true;
                             _hudSettings.Save(_hudSettingsJson);
-                            listBoxItemToggleDemoMode.Foreground = Brushes.LimeGreen;
+                            listBoxItemToggleDemoMode.Foreground = Brushes.Cyan;
                         };
                         listBoxItemToggleDemoMode.Unselected += (s, e) =>
                         {
