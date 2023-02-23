@@ -6,6 +6,7 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.1.7.3", "- Fix: Input Bars HUD." },
             {"0.1.7.2", "- HUD Tab: Adjusted toggle-button colors when main options are activated, blue for always visible and green for movement mode."+
                         "\n- Input Bars HUD: Add adjustable colors."},
             {"0.1.7.1", "- HUD Tab: Added HUD Categories, you can filter the HUDs with the drop-down menu."+

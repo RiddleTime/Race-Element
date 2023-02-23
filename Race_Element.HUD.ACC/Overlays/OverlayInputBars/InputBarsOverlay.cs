@@ -57,14 +57,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
                 if (_config.Bars.Orientation == InputBarsConfiguration.BarOrientation.Horizontal)
                 {
                     using LinearGradientBrush gradientBrush = new LinearGradientBrush(new Rectangle(0, 0, (int)(_config.Bars.Length * this.Scale), (int)(_config.Bars.Thickness * this.Scale)), Color.FromArgb(120, Color.Black), Color.FromArgb(230, Color.Black), LinearGradientMode.Horizontal);
-                    
+
                     g.FillRoundedRectangle(gradientBrush, new Rectangle(0, 0, (int)(_config.Bars.Length * this.Scale), (int)(_config.Bars.Thickness * this.Scale)), (int)(5 * this.Scale));
                     g.FillRoundedRectangle(gradientBrush, new Rectangle(0, (int)((_config.Bars.Thickness + _config.Bars.Spacing) * this.Scale), (int)(_config.Bars.Length * this.Scale), (int)(_config.Bars.Thickness * this.Scale)), (int)(5 * this.Scale));
                 }
                 else
                 {
                     using LinearGradientBrush gradientBrush = new LinearGradientBrush(new Rectangle(0, 0, (int)(_config.Bars.Thickness * this.Scale), (int)(height * this.Scale)), Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical);
-                    
+
                     g.FillRoundedRectangle(gradientBrush, new Rectangle(0, 0, (int)(_config.Bars.Thickness * this.Scale), (int)(height * this.Scale)), (int)(6 * this.Scale));
                     g.FillRoundedRectangle(gradientBrush, new Rectangle((int)((_config.Bars.Thickness + _config.Bars.Spacing) * this.Scale), 0, (int)(_config.Bars.Thickness * this.Scale), (int)(height * this.Scale)), (int)(5 * this.Scale));
                 }
@@ -80,7 +80,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
                     Value = 0,
                     Min = 0,
                     Max = 1,
-                    FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.ThrottleOpacity, _config.Colors.ThrottleColor)),
+                    FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.BrakeOpacity, _config.Colors.BrakeColor)),
                     OutlineBrush = outlineBrush,
                     Rounded = true,
                     Scale = this.Scale,
@@ -91,7 +91,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
                     Value = 0,
                     Min = 0,
                     Max = 1,
-                    FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.BrakeOpacity, _config.Colors.BrakeColor)),
+                    FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.ThrottleOpacity, _config.Colors.ThrottleColor)),
                     OutlineBrush = outlineBrush,
                     Rounded = true,
                     Scale = this.Scale,
@@ -181,26 +181,26 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
             if (_config.Bars.Orientation == InputBarsConfiguration.BarOrientation.Horizontal)
             {
                 if (pagePhysics.Abs > 0)
-                    _horizontalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.BrakeOpacity, Color.Orange));
+                    _horizontalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.BrakeOpacity - 60, _config.Colors.BrakeColor));
                 else
-                    _horizontalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.BrakeOpacity, Color.FromArgb(_config.Colors.BrakeColor.A - 60, _config.Colors.BrakeColor)));
+                    _horizontalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.BrakeOpacity, _config.Colors.BrakeColor));
 
                 if (pagePhysics.TC > 0)
-                    _horizontalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.ThrottleOpacity, Color.FromArgb(_config.Colors.ThrottleColor.A - 60, _config.Colors.ThrottleColor)));
+                    _horizontalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.ThrottleOpacity - 60, _config.Colors.ThrottleColor));
                 else
                     _horizontalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.ThrottleOpacity, _config.Colors.ThrottleColor));
             }
             else
             {
                 if (pagePhysics.Abs > 0)
-                    _verticalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.ThrottleOpacity, Color.FromArgb(_config.Colors.ThrottleColor.A - 60, _config.Colors.ThrottleColor)));
+                    _verticalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.BrakeOpacity - 60, _config.Colors.BrakeColor));
                 else
-                    _verticalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.ThrottleOpacity, _config.Colors.ThrottleColor));
+                    _verticalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.BrakeOpacity, _config.Colors.BrakeColor));
 
                 if (pagePhysics.TC > 0)
-                    _verticalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.BrakeOpacity, Color.FromArgb(_config.Colors.BrakeColor.A - 60, _config.Colors.BrakeColor)));
+                    _verticalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.ThrottleOpacity - 60, _config.Colors.ThrottleColor));
                 else
-                    _verticalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.BrakeOpacity, _config.Colors.BrakeColor));
+                    _verticalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.ThrottleOpacity, _config.Colors.ThrottleColor));
             }
         }
     }
