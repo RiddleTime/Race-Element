@@ -99,7 +99,7 @@ namespace RaceElement.Controls
                             _lastMovementModeChange = DateTime.Now;
 
                             SetRepositionMode(false);
-                            listBoxItemToggleMovementMode.Foreground = Brushes.Red;
+                            listBoxItemToggleMovementMode.Foreground = Brushes.Gray;
                         };
 
                         // middle button to activate reposition mode
@@ -126,7 +126,7 @@ namespace RaceElement.Controls
                         {
                             _hudSettingsJson.DemoMode = false;
                             _hudSettings.Save(_hudSettingsJson);
-                            listBoxItemToggleDemoMode.Foreground = Brushes.Red;
+                            listBoxItemToggleDemoMode.Foreground = Brushes.Gray;
                         };
 
                         // double click to activate overlays in the lists
