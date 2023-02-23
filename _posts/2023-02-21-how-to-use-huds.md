@@ -17,7 +17,7 @@ You can activate a HUD by:
 
 ## Visibility
 By default the activated HUDs will only become visible once you are driving and the engine of the car is running.
-Now if you want to have them showing at any time, you can enable the Always Visible mode, this is a toggle-button on the top-left of the HUD tab.
+Now if you want to have them showing at any time, you can enable the Always Visible mode, this is a Eye toggle-button on the bottom-left of the HUD tab.
 - Don't see any HUDs? make sure you have activated the ones you want to use. 
 - When the game is in Fullscreen mode, tap F11 twice. This will allow other windows to be on top whilst in full screen mode.
 
@@ -25,7 +25,7 @@ Now if you want to have them showing at any time, you can enable the Always Visi
 Activated HUDs can be moved with the mouse by enabling the \'movement mode\'.
 You can toggle the movement mode by:
 - Keyboard: Control + Home
-- Click the movement mode button.
+- Click the movement mode button in the bottom right.
 - Clicking your scroll wheel(middle mouse button) in the right side panel.
 
 ## Customization
