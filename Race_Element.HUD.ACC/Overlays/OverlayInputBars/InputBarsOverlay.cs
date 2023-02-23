@@ -38,7 +38,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
 
                 [ToolTip("Defines the transparency of the bars.")]
                 [ByteRange(40, 255, 1)]
-                public byte Transparency { get; set; } = 185;
+                public byte Transparency { get; set; } = 255;
 
                 [ToolTip("Changes the order of the bars, throttle first and brake second (left to right and top to bottom).")]
                 internal bool ThrottleFirst { get; set; }
