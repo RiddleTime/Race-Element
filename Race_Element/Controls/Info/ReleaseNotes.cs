@@ -7,9 +7,11 @@ namespace RaceElement.Controls
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
             {"0.1.7.1", "- HUD Tab: Added HUD Categories, you can filter the HUDs with the drop-down menu."+
+                        "\n- HUD Tab: Moved the redesigned movement and demo mode toggles to the left bottom."+
                         "\n- HUDs: increased decimals for scale, up to 3 now."+
                         "\n- Steering HUD: Reworked design, added ring thickness option."+
-                        "\n- Tyre Info HUD: Tyre temps are now default enabled, added option to hide pressures."},
+                        "\n- Tyre Info HUD: Tyre temps are now default enabled, added option to hide pressures."+
+                        "\n- Added Wind Info HUD: Shows wind direction relative to the car."},
             {"0.1.7.0", "- Data tab: Grouped race weekends by year and month."+
                         "\n- HUDs: Improved overal CPU usage."+
                         "\n- Input Trace HUD: Added configurable line thickness."+

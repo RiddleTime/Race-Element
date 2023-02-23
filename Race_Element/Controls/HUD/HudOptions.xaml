@@ -29,16 +29,16 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
-            <ListBox SelectionMode="Extended" Focusable="False"
-                 Style="{StaticResource MaterialDesignToolToggleFlatListBox}" Padding="0" Margin="0,4,4,0">
+            <ListBox SelectionMode="Extended" Focusable="False"  
+                 Style="{StaticResource MaterialDesignToolToggleFlatListBox}" Padding="0" Margin="0,4,0,0">
 
                 <ListBoxItem Width="80" x:Name="listBoxItemToggleDemoMode" ToolTip="Toggles Always Visible. (By default HUDs become visible once the engine is running)"
-                    Content="{materialDesign:PackIcon Kind=Visibility}" HorizontalContentAlignment="Center"  Foreground="Red"
-                    Cursor="Hand"/>
+                    Content="{materialDesign:PackIcon Kind=Visibility}" HorizontalContentAlignment="Center" Foreground="Red"
+                    Cursor="Hand" Style="{StaticResource MaterialDesignNavigationListBoxItem}" />
 
                 <ListBoxItem Width="80" x:Name="listBoxItemToggleMovementMode" ToolTip="Toggles Movement mode. (Keyboard: Control + Home)"
                     Content="{materialDesign:PackIcon Kind=ArrowAll}" HorizontalContentAlignment="Center" Foreground="Red"
-                    Cursor="Hand"/>
+                    Cursor="Hand" Style="{StaticResource MaterialDesignNavigationListBoxItem}" />
             </ListBox>
         </StackPanel>
 
