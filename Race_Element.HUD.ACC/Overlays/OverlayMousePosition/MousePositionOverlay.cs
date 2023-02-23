@@ -18,7 +18,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayMousePosition
         {
             g.DrawEllipse(Pens.White, _circleWidth, _circleWidth, _circleWidth);
             g.DrawEllipse(Pens.White, _circleWidth, _circleWidth, 3);
-            g.FillEllipse(new SolidBrush(Color.FromArgb(140, Color.Red)), 5, 5, 5);
+            g.FillEllipse(new SolidBrush(Color.FromArgb(140, Color.LimeGreen)), 5, 5, 5);
         };
         private readonly CachedBitmap.Renderer MouseUpRenderer = g =>
         {

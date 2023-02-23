@@ -42,16 +42,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
             public int BrakeOpacity { get; set; } = 255;
         }
 
-        [ConfigGrouping("Electronics", "Color changes for the bars when electronics kick in.")]
-        public ElectronicsGrouping Electronics { get; set; } = new ElectronicsGrouping();
-        public class ElectronicsGrouping
-        {
-            [ToolTip("Displays a color change on the throttle bar when traction control is activated.")]
-            public bool TractionControl { get; set; } = true;
-
-            [ToolTip("Displays a color change on the brake bar when ABS is activated.")]
-            public bool AntiLockBrakes { get; set; } = true;
-        }
 
         public InputBarsConfiguration()
         {
