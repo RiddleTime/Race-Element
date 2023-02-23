@@ -1,14 +1,13 @@
-﻿using LiteDB;
-using RaceElement.HUD.Overlay.Configuration;
+﻿using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using System;
 using System.Drawing;
-using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayWind
 {
-    [Overlay(Name = "Wind", Description = "Shows wind direction vs heading",
+    [Overlay(Name = "Wind", Description = "Shows wind direction vs car heading.",
         OverlayType = OverlayType.Release,
         OverlayCategory = OverlayCategory.Track,
         Version = 1.00)]
@@ -22,7 +21,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
             public sealed class ShapeGrouping
             {
                 [IntRange(100, 200, 1)]
-                public int Size { get; set; } = 150;
+                public int Size { get; set; } = 120;
             }
 
             public WindOverlayConfiguration() => AllowRescale = true;
@@ -61,8 +60,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
             double carDirection = 90 + (pagePhysics.Heading * -180d) / Math.PI;
             double relativeAngle = vaneAngle + carDirection;
 
-            g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-
+            g.SmoothingMode = SmoothingMode.AntiAlias;
             Rectangle rect = new Rectangle(padding / 2, padding / 2, _config.Shape.Size - padding, _config.Shape.Size - padding);
 
             // draw relative angle (blowing to)

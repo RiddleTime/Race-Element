@@ -82,24 +82,24 @@ namespace RaceElement.Controls
                         PopulateCategoryCombobox(comboDebugOverlays, listDebugOverlays, OverlayType.Debug);
                         BuildOverlayPanel();
 
-                        checkBoxReposition.PreviewMouseDown += (s, e) =>
+                        listBoxItemToggleMovementMode.PreviewMouseDown += (s, e) =>
                         {
                             if (_lastMovementModeChange.AddMilliseconds(MovementModeDebounce) > DateTime.Now)
                                 e.Handled = true;
                         };
-                        checkBoxReposition.Checked += (s, e) =>
+                        listBoxItemToggleMovementMode.Selected += (s, e) =>
                         {
                             _lastMovementModeChange = DateTime.Now;
 
                             SetRepositionMode(true);
-                            gridRepositionToggler.Background = new SolidColorBrush(Color.FromArgb(47, 69, 255, 00));
+                            listBoxItemToggleMovementMode.Foreground = Brushes.LimeGreen;
                         };
-                        checkBoxReposition.Unchecked += (s, e) =>
+                        listBoxItemToggleMovementMode.Unselected += (s, e) =>
                         {
                             _lastMovementModeChange = DateTime.Now;
 
                             SetRepositionMode(false);
-                            gridRepositionToggler.Background = new SolidColorBrush(Color.FromArgb(47, 255, 69, 00));
+                            listBoxItemToggleMovementMode.Foreground = Brushes.Red;
                         };
 
                         // middle button to activate reposition mode
@@ -110,27 +110,23 @@ namespace RaceElement.Controls
                                 e.Handled = true;
                                 Dispatcher.BeginInvoke(new Action(() =>
                                 {
-                                    this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
+                                    this.listBoxItemToggleMovementMode.IsSelected = !this.listBoxItemToggleMovementMode.IsSelected;
                                 }));
                             }
                         };
 
 
-                        checkBoxDemoMode.Checked += (s, e) =>
+                        listBoxItemToggleDemoMode.Selected += (s, e) =>
                         {
                             _hudSettingsJson.DemoMode = true;
                             _hudSettings.Save(_hudSettingsJson);
-                            gridDemoToggler.Background = new SolidColorBrush(Color.FromArgb(47, 69, 255, 00));
+                            listBoxItemToggleDemoMode.Foreground = Brushes.LimeGreen;
                         };
-                        checkBoxDemoMode.Unchecked += (s, e) =>
+                        listBoxItemToggleDemoMode.Unselected += (s, e) =>
                         {
                             _hudSettingsJson.DemoMode = false;
                             _hudSettings.Save(_hudSettingsJson);
-                            gridDemoToggler.Background = new SolidColorBrush(Color.FromArgb(47, 255, 69, 00));
-                        };
-                        gridDemoToggler.MouseUp += (s, e) =>
-                        {
-                            this.checkBoxDemoMode.IsChecked = !this.checkBoxDemoMode.IsChecked;
+                            listBoxItemToggleDemoMode.Foreground = Brushes.Red;
                         };
 
                         // double click to activate overlays in the lists
@@ -138,19 +134,12 @@ namespace RaceElement.Controls
                         listOverlays.MouseLeftButtonDown += (s, e) => { if (ToggleViewingOverlay()) e.Handled = true; };
                         listDebugOverlays.MouseDoubleClick += (s, e) => { if (ToggleViewingOverlay()) e.Handled = true; };
 
-                        gridRepositionToggler.MouseUp += (s, e) =>
-                        {
-                            this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
-                            e.Handled = true;
-                        };
-
-
                         m_GlobalHook = Hook.GlobalEvents();
                         m_GlobalHook.OnCombination(new Dictionary<Combination, Action> {
                             { Combination.FromString("Control+Home"), () => {
                                 if (_lastMovementModeChange.AddMilliseconds(MovementModeDebounce) < DateTime.Now) {
                                     Dispatcher.BeginInvoke(new Action(() => {
-                                        this.checkBoxReposition.IsChecked = !this.checkBoxReposition.IsChecked;
+                                        this.listBoxItemToggleMovementMode.IsSelected = !this.listBoxItemToggleMovementMode.IsSelected;
                                     }));
                                 }
                             }}
@@ -159,7 +148,7 @@ namespace RaceElement.Controls
                         this.PreviewKeyDown += HudOptions_PreviewKeyDown;
                         this.PreviewMouseDown += HudOptions_PreviewMouseDown;
 
-                        checkBoxDemoMode.IsChecked = _hudSettingsJson.DemoMode;
+                        listBoxItemToggleDemoMode.IsSelected = _hudSettingsJson.DemoMode;
                     }
                     catch (Exception ex)
                     {
@@ -189,7 +178,7 @@ namespace RaceElement.Controls
 
         private bool ToggleViewingOverlay()
         {
-            if (checkBoxReposition.IsChecked.Value)
+            if (listBoxItemToggleMovementMode.IsSelected)
                 return false;
 
             // kind of stupid but it works.. gotta travel the generated tree in #BuildOverlayConfigPanel();

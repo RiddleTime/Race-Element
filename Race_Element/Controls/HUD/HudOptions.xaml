@@ -28,26 +28,18 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
-        <Image x:Name="previewHud" Grid.RowSpan="2" Panel.ZIndex="999" Visibility="Hidden"></Image>
-
         <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Grid Grid.Row="0" Margin="3" x:Name="gridRepositionToggler" Cursor="Hand" Background="#2Fff4500" ToolTip="Enable Move Mode, this will allow you to drag the overlays with the mouse or when they are selected with the arrow keys.">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="25"/>
-                    <ColumnDefinition Width="45"/>
-                </Grid.ColumnDefinitions>
-                <materialDesign:PackIcon Grid.Column="0" Height="24" Width="24" VerticalAlignment="Center" Kind="ArrowAll"/>
-                <ToggleButton Grid.Column="1" Margin="3,0,0,0" x:Name="checkBoxReposition" Height="25" Cursor="Hand" ToolTip="Click scroll wheel to Toggle" VerticalAlignment="Center"></ToggleButton>
-            </Grid>
+            <ListBox SelectionMode="Extended" Focusable="False"
+                 Style="{StaticResource MaterialDesignToolToggleFlatListBox}" Padding="0" Margin="0,4,4,0">
 
-            <Grid Grid.Row="0" Margin="3" x:Name="gridDemoToggler" Cursor="Hand" Background="#2Fff4500" ToolTip="Enables Always Visible. HUDs usually become visible when your engine starts. This allows you to enable them parmanently." >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="25"/>
-                    <ColumnDefinition Width="45"/>
-                </Grid.ColumnDefinitions>
-                <materialDesign:PackIcon Grid.Column="0" Margin="3,0,0,0" Height="24" Width="24" VerticalAlignment="Center" Kind="Visibility"/>
-                <ToggleButton Grid.Column="1" x:Name="checkBoxDemoMode" Height="25" Cursor="Hand" VerticalAlignment="Center" HorizontalContentAlignment="Center"></ToggleButton>
-            </Grid>
+                <ListBoxItem Width="80" x:Name="listBoxItemToggleDemoMode" ToolTip="Toggles Always Visible. (By default HUDs become visible once the engine is running)"
+                    Content="{materialDesign:PackIcon Kind=Visibility}" HorizontalContentAlignment="Center"  Foreground="Red"
+                    Cursor="Hand"/>
+
+                <ListBoxItem Width="80" x:Name="listBoxItemToggleMovementMode" ToolTip="Toggles Movement mode. (Keyboard: Control + Home)"
+                    Content="{materialDesign:PackIcon Kind=ArrowAll}" HorizontalContentAlignment="Center" Foreground="Red"
+                    Cursor="Hand"/>
+            </ListBox>
         </StackPanel>
 
         <Grid Grid.Row="0" x:Name="gridOverlays">
@@ -81,7 +73,7 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <ComboBox x:Name="comboOverlays" HorizontalContentAlignment="Center" 
-                                   FontFamily="{StaticResource Conthrax}" FontSize="13" FontWeight="Bold"></ComboBox>
+                                   FontFamily="{StaticResource Conthrax}" FontSize="13" FontWeight="Bold" ToolTip="Filter HUDs based on category."></ComboBox>
                         <ListView Grid.Row="1"  Grid.Column="0" Foreground="White" x:Name="listOverlays" ScrollViewer.VerticalScrollBarVisibility="Visible"  Margin="0,3,0,0" Cursor="Hand"/>
                     </Grid>
                 </TabItem>
@@ -109,7 +101,7 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <ComboBox x:Name="comboDebugOverlays" HorizontalContentAlignment="Center" 
-                                   FontFamily="{StaticResource Conthrax}" FontSize="13" FontWeight="Bold"></ComboBox>
+                                   FontFamily="{StaticResource Conthrax}" FontSize="13" FontWeight="Bold" ToolTip="Filter HUDs based on category."></ComboBox>
                         <ListView Grid.Row="1" Grid.Column="0" x:Name="listDebugOverlays" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="0,3,0,0" Cursor="Hand"/>
                     </Grid>
                 </TabItem>

@@ -17,7 +17,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
             this.Y = rectangle.Y;
             this.Width = 360;
             this.Height = 45;
-            this.RefreshRateHz = 0.02;
+            this.RefreshRateHz = 2;
         }
 
         public override void BeforeStart()
