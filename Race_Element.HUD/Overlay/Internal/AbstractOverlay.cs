@@ -313,7 +313,7 @@ namespace RaceElement.HUD.Overlay.Internal
                         }
 
                         if (IsRepositioning)
-                            e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(95, Color.Red)), new Rectangle(0, 0, Width, Height));
+                            e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(95, Color.LimeGreen)), new Rectangle(0, 0, Width, Height));
 
                         if (_allowRescale)
                             e.Graphics.ScaleTransform(Scale, Scale);
