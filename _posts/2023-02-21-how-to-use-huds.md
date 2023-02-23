@@ -25,11 +25,11 @@ Now if you want to have them showing at any time, you can enable the Always Visi
 Activated HUDs can be moved with the mouse by enabling the \'movement mode\'.
 You can toggle the movement mode by:
 - Keyboard: Control + Home
-- Click the movement mode button in the bottom right.
+- Click the movement mode button in the bottom-left.
 - Clicking your scroll wheel(middle mouse button) in the right side panel.
 
 ## Customization
-HUDs can be customized using the options in the right side panel. HUDs can only be customized when they are **not activated**. You will be able to see the changes you make in the preview image.
+HUDs can be customized using the options in the right side panel. HUDs can only be customized when they are **not activated** and when the movement mode is disabled. You will be able to see a the preview image based on the hud configuration.
 By default every HUD contains an option to set the Scale, the Opacity, Enabling \'Window mode\' and choosing whether the HUDs should be \'Always On Top\'.
-Aside from these default options there are HUD specific options.
+Aside from these default options there are HUD specific options like changes in shape, color or information.
 
