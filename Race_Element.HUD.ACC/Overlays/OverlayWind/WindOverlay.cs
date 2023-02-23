@@ -7,14 +7,14 @@ using System.Drawing.Drawing2D;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayWind
 {
-    [Overlay(Name = "Wind", Description = "Shows wind direction vs car heading.",
+    [Overlay(Name = "Wind Direction", Description = "Shows wind direction relative to car heading.",
         OverlayType = OverlayType.Release,
         OverlayCategory = OverlayCategory.Track,
         Version = 1.00)]
-    internal sealed class WindOverlay : AbstractOverlay
+    internal sealed class WindDirectionOverlay : AbstractOverlay
     {
-        private readonly WindOverlayConfiguration _config = new WindOverlayConfiguration();
-        private sealed class WindOverlayConfiguration : OverlayConfiguration
+        private readonly WindDirectionConfiguration _config = new WindDirectionConfiguration();
+        private sealed class WindDirectionConfiguration : OverlayConfiguration
         {
             [ConfigGrouping("Shape", "Adjust the shape")]
             public ShapeGrouping Shape { get; set; } = new ShapeGrouping();
@@ -24,13 +24,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
                 public int Size { get; set; } = 120;
             }
 
-            public WindOverlayConfiguration() => AllowRescale = true;
+            public WindDirectionConfiguration() => AllowRescale = true;
         }
 
         private CachedBitmap _background;
         private const int padding = 50;
 
-        public WindOverlay(Rectangle rectangle) : base(rectangle, "Wind")
+        public WindDirectionOverlay(Rectangle rectangle) : base(rectangle, "Wind Direction")
         {
             Width = _config.Shape.Size;
             Height = _config.Shape.Size;
@@ -66,7 +66,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
             // draw relative angle (blowing to)
             g.DrawArc(new Pen(Brushes.LimeGreen, 16), rect, (float)relativeAngle - 4, 8);
 
-            g.DrawArc(new Pen(Brushes.Red, 8), rect, (float)relativeAngle - 180 - 35, 70);    // (float)relativeAngle - 180 - 4, 8)
+            // draw angle where the wind is coming from
+            g.DrawArc(new Pen(Brushes.Red, 8), rect, (float)relativeAngle - 180 - 35, 70);
 
         }
     }
