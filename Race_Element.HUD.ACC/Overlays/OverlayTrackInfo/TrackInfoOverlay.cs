@@ -18,14 +18,17 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
             public InfoPanelGrouping InfoPanel { get; set; } = new InfoPanelGrouping();
             public class InfoPanelGrouping
             {
+                [ToolTip("Displays the actual time on track.")]
+                public bool TimeOfDay { get; set; } = true;
+
                 [ToolTip("Shows the global track flag.")]
                 public bool GlobalFlag { get; set; } = true;
 
                 [ToolTip("Shows the type of the session.")]
                 public bool SessionType { get; set; } = true;
 
-                [ToolTip("Displays the actual time on track.")]
-                public bool TimeOfDay { get; set; } = true;
+                [ToolTip("Displays the track temperature")]
+                public bool TrackTemperature { get; set; } = true;
             }
 
             public TrackInfoConfig()
@@ -34,12 +37,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
             }
         }
 
-        private readonly InfoPanel _panel = new InfoPanel(10, 240);
+        private readonly InfoPanel _panel = new InfoPanel(10, 166);
 
         public TrackInfoOverlay(Rectangle rectangle) : base(rectangle, "Track Info")
         {
-            this.Width = 230;
-            this.Height = _panel.FontHeight * 6;
+            this.Width = 166;
+            this.Height = _panel.FontHeight * 7;
             RefreshRateHz = 1.5;
         }
 
@@ -52,6 +55,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
                 this.Height -= this._panel.FontHeight;
 
             if (!this._config.InfoPanel.TimeOfDay)
+                this.Height -= this._panel.FontHeight;
+
+            if (!this._config.InfoPanel.TrackTemperature)
                 this.Height -= this._panel.FontHeight;
         }
 
@@ -70,10 +76,18 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
                 _panel.AddLine("Session", ACCSharedMemory.SessionTypeToString(pageGraphics.SessionType));
 
             _panel.AddLine("Grip", pageGraphics.trackGripStatus.ToString());
+
             string airTemp = Math.Round(pagePhysics.AirTemp, 2).ToString("F2");
-            string roadTemp = Math.Round(pagePhysics.RoadTemp, 2).ToString("F2");
-            _panel.AddLine("Air - Track", $"{airTemp} C - {roadTemp} C");
+            _panel.AddLine("Air", $"{airTemp} C");
+
             _panel.AddLine("Wind", $"{Math.Round(pageGraphics.WindSpeed, 2)} km/h");
+
+            if (this._config.InfoPanel.TrackTemperature)
+            {
+                string roadTemp = Math.Round(pagePhysics.RoadTemp, 2).ToString("F2");
+                _panel.AddLine("Track", $"{roadTemp} C");
+            }
+
             _panel.Draw(g);
         }
     }

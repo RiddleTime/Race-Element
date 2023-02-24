@@ -29,7 +29,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayRaceInfo
             }
         }
 
-        private readonly InfoPanel _panel = new InfoPanel(10, 240);
+        private readonly InfoPanel _panel = new InfoPanel(10, 230);
 
         public RaceInfoOverlay(Rectangle rectangle) : base(rectangle, "Race Info")
         {

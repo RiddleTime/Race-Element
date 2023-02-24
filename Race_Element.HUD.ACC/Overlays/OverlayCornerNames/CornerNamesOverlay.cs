@@ -14,8 +14,8 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 {
 #if DEBUG
-    [Overlay(Name = "Corners", 
-        Description = "Shows corner/sector names for each track.", 
+    [Overlay(Name = "Corners",
+        Description = "Shows corner/sector names for each track.",
         OverlayType = OverlayType.Release,
         OverlayCategory = OverlayCategory.Track,
         Version = 1.00)]
@@ -61,7 +61,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
         {
 
             if (_currentTrack == null)
-                _currentTrack = TrackData.Tracks.FirstOrDefault(x => x.Key == pageStatic.Track).Value;
+                _currentTrack = Tracks.FirstOrDefault(x => x.Key == pageStatic.Track).Value;
 
             RenderBackground();
 

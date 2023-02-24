@@ -63,6 +63,8 @@ namespace RaceElement.HUD.Overlay.Util
             });
         }
 
+        private readonly StringFormat _rightAlligned = new StringFormat() { Alignment = StringAlignment.Center };
+
         public void Draw(Graphics g)
         {
             if (!MaxTitleWidthSet)
@@ -97,24 +99,27 @@ namespace RaceElement.HUD.Overlay.Util
                     {
                         float rowY = counter * (this.FontHeight + ExtraLineSpacing);
 
-                        if (_cachedLine == null)
-                        {
-                            _cachedLine = new CachedBitmap(this.MaxWidth - 2, 1, cr =>
+                        _cachedLine ??= new CachedBitmap(this.MaxWidth - 2, 1, cr =>
                             {
                                 cr.DrawLine(new Pen(Color.FromArgb(42, Color.White)), new Point(1, 0), new Point(this.MaxWidth - 2, 0));
                             });
-                        }
+
                         _cachedLine.Draw(g, new Point(X + 1, (int)rowY));
                     }
 
                     IPanelLine line = Lines[counter];
+
 
                     if (line.GetType() == typeof(TextLine))
                     {
                         TextLine textLine = (TextLine)line;
 
                         g.DrawStringWithShadow($"{textLine.Title}", _font, Color.White, new PointF(X, Y + counter * (this.FontHeight + ExtraLineSpacing) + _addMonoY));
-                        g.DrawStringWithShadow($"{textLine.Value}", _font, textLine.ValueBrush, new PointF(X + MaxTitleWidth + _font.Size, Y + counter * (this.FontHeight + ExtraLineSpacing) + _addMonoY));
+                        Rectangle valueRectangle = new Rectangle((int)(X + MaxTitleWidth),
+                                Y + counter * (this.FontHeight + ExtraLineSpacing) + _addMonoY,
+                                (int)(MaxWidth - MaxTitleWidth),
+                                this.FontHeight);
+                        g.DrawStringWithShadow($"{textLine.Value}", _font, textLine.ValueBrush, valueRectangle, _rightAlligned);
                     }
 
                     if (line.GetType() == typeof(TitledProgressBarLine))
