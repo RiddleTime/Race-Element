@@ -8,8 +8,8 @@ tags: guide
 # HUDs
 The HUD Tab contains HUDs(Heads up displays)/Overlays. HUDs are 2D graphics that overlay the game. Every HUD can be moved around and can be freely customized.
 
-https://user-images.githubusercontent.com/4581237/221090266-d89dd14e-2b2f-4312-a4a6-8930ce05ca82.mov
-
+[https://user-images.githubusercontent.com/126239/151127893-5c98ba8d-c431-4a25-bb1f-e0b33645a2b6.mp4](https://user-images.githubusercontent.com/4581237/221090266-d89dd14e-2b2f-4312-a4a6-8930ce05ca82.mov)
+ 
 ## Activation
 Activated HUDs will show a green marker in the left side HUD list.
 You can activate a HUD by:
