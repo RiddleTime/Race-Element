@@ -8,6 +8,8 @@ tags: guide
 # HUDs
 The HUD Tab contains HUDs(Heads up displays)/Overlays. HUDs are 2D graphics that overlay the game. Every HUD can be moved around and can be freely customized.
 
+https://user-images.githubusercontent.com/4581237/221090266-d89dd14e-2b2f-4312-a4a6-8930ce05ca82.mov
+
 ## Activation
 Activated HUDs will show a green marker in the left side HUD list.
 You can activate a HUD by:
@@ -32,6 +34,3 @@ You can toggle the movement mode by:
 HUDs can be customized using the options in the right side panel. HUDs can only be customized when they are **not activated** and when the movement mode is disabled. You will be able to see a the preview image based on the hud configuration.
 By default every HUD contains an option to set the Scale, the Opacity, Enabling \'Window mode\' and choosing whether the HUDs should be \'Always On Top\'.
 Aside from these default options there are HUD specific options like changes in shape, color or information.
-
-https://user-images.githubusercontent.com/4581237/221090266-d89dd14e-2b2f-4312-a4a6-8930ce05ca82.mov
-
