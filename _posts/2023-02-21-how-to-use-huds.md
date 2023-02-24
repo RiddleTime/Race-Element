@@ -33,4 +33,5 @@ HUDs can be customized using the options in the right side panel. HUDs can only 
 By default every HUD contains an option to set the Scale, the Opacity, Enabling \'Window mode\' and choosing whether the HUDs should be \'Always On Top\'.
 Aside from these default options there are HUD specific options like changes in shape, color or information.
 
-![](https://user-images.githubusercontent.com/4581237/221089328-c67a7a92-89a3-4458-b8ab-d5c4da2dfc07.mp4)
+<video src="https://user-images.githubusercontent.com/4581237/221089328-c67a7a92-89a3-4458-b8ab-d5c4da2dfc07.mp4"></video>
+
