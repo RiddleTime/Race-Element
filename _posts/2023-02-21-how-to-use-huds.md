@@ -34,4 +34,4 @@ By default every HUD contains an option to set the Scale, the Opacity, Enabling 
 Aside from these default options there are HUD specific options like changes in shape, color or information.
 
 ## Adjusting a HUD
-<video src="https://user-images.githubusercontent.com/4581237/221090266-d89dd14e-2b2f-4312-a4a6-8930ce05ca82.mov"></video>
+<video src="https://user-images.githubusercontent.com/4581237/221090266-d89dd14e-2b2f-4312-a4a6-8930ce05ca82.mov" controls></video>
