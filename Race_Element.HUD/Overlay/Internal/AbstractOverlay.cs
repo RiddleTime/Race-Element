@@ -80,7 +80,7 @@ namespace RaceElement.HUD.Overlay.Internal
 
             if (pageGraphics != null)
             {
-                if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF || pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE || (pageGraphics.IsInPitLane == true && !pagePhysics.IgnitionOn))
+                if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF || pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE || !pagePhysics.IgnitionOn)
                     shouldRender = false;
 
                 if (pageGraphics.GlobalRed)
