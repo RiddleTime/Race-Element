@@ -315,7 +315,7 @@ namespace RaceElement.HUD.Overlay.Internal
                         if (IsRepositioning)
                             e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(95, Color.LimeGreen)), new Rectangle(0, 0, Width, Height));
 
-                        if (_allowRescale)
+                        if (_allowRescale && Scale != 1f)
                             e.Graphics.ScaleTransform(Scale, Scale);
 
                         CompositingQuality previousComposingQuality = e.Graphics.CompositingQuality;

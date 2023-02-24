@@ -1,8 +1,11 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.OverlayUtil.InfoPanel;
 using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
 {
@@ -37,28 +40,112 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
             }
         }
 
-        private readonly InfoPanel _panel = new InfoPanel(10, 166);
+        private Font _font;
+
+        private PanelText _timeHeader;
+        private PanelText _timeValue;
+        private PanelText _globalFlagHeader;
+        private PanelText _globalFlagValue;
+        private PanelText _sessionTypeLabel;
+        private PanelText _sessionTypeValue;
+        private PanelText _ambientTempLabel;
+        private PanelText _ambientTempValue;
+        private PanelText _trackTempLabel;
+        private PanelText _trackTempValue;
+        private PanelText _gripLabel;
+        private PanelText _gripValue;
+        private PanelText _windLabel;
+        private PanelText _windValue;
 
         public TrackInfoOverlay(Rectangle rectangle) : base(rectangle, "Track Info")
         {
-            this.Width = 166;
-            this.Height = _panel.FontHeight * 7;
-            RefreshRateHz = 1.5;
+            RefreshRateHz = 1;
         }
 
         public sealed override void BeforeStart()
         {
-            if (!this._config.InfoPanel.GlobalFlag)
-                this.Height -= this._panel.FontHeight;
+            _font = FontUtil.FontUnispace(10f);
 
-            if (!this._config.InfoPanel.SessionType)
-                this.Height -= this._panel.FontHeight;
+            int lineHeight = _font.Height + 1;
+            int headerWidth = 70;
+            int valueWidth = 85;
+            int roundingRadius = 6;
 
-            if (!this._config.InfoPanel.TimeOfDay)
-                this.Height -= this._panel.FontHeight;
+            RectangleF headerRect = new RectangleF(0, 0, headerWidth, lineHeight);
+            RectangleF valueRect = new RectangleF(headerWidth, 0, valueWidth, lineHeight);
+            StringFormat headerFormat = new StringFormat() { Alignment = StringAlignment.Near };
+            StringFormat valueFormat = new StringFormat() { Alignment = StringAlignment.Center };
 
-            if (!this._config.InfoPanel.TrackTemperature)
-                this.Height -= this._panel.FontHeight;
+            Color accentColor = Color.FromArgb(25, 255, 0, 0);
+            CachedBitmap headerBackground = new CachedBitmap(headerWidth, lineHeight, g =>
+            {
+                Rectangle panelRect = new Rectangle(0, 0, headerWidth, lineHeight);
+                using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(panelRect, 0, 0, 0, roundingRadius);
+                g.FillPath(new SolidBrush(Color.FromArgb(225, 5, 5, 5)), path);
+                g.DrawLine(new Pen(accentColor), 0 + roundingRadius / 2, lineHeight, headerWidth, lineHeight - 1);
+            });
+            CachedBitmap valueBackground = new CachedBitmap(valueWidth, lineHeight, g =>
+            {
+                Rectangle panelRect = new Rectangle(0, 0, valueWidth, lineHeight);
+                using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(panelRect, 0, roundingRadius, 0, 0);
+                g.FillPath(new SolidBrush(Color.FromArgb(225, 0, 0, 0)), path);
+                g.DrawLine(new Pen(accentColor), 0, lineHeight - 1, valueWidth, lineHeight - 1);
+            });
+
+            if (this._config.InfoPanel.TimeOfDay)
+            {
+                _timeHeader = new PanelText(_font, headerBackground, headerRect) { StringFormat = headerFormat };
+                _timeValue = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
+                headerRect.Offset(0, lineHeight);
+                valueRect.Offset(0, lineHeight);
+            }
+
+            if (this._config.InfoPanel.GlobalFlag)
+            {
+                _globalFlagHeader = new PanelText(_font, headerBackground, headerRect) { StringFormat = headerFormat };
+                _globalFlagValue = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
+                headerRect.Offset(0, lineHeight);
+                valueRect.Offset(0, lineHeight);
+            }
+
+            if (this._config.InfoPanel.SessionType)
+            {
+                _sessionTypeLabel = new PanelText(_font, headerBackground, headerRect) { StringFormat = headerFormat };
+                _sessionTypeValue = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
+                headerRect.Offset(0, lineHeight);
+                valueRect.Offset(0, lineHeight);
+            }
+
+            _gripLabel = new PanelText(_font, headerBackground, headerRect) { StringFormat = headerFormat };
+            _gripValue = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
+            headerRect.Offset(0, lineHeight);
+            valueRect.Offset(0, lineHeight);
+
+            _ambientTempLabel = new PanelText(_font, headerBackground, headerRect) { StringFormat = headerFormat };
+            _ambientTempValue = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
+            headerRect.Offset(0, lineHeight);
+            valueRect.Offset(0, lineHeight);
+
+            if (this._config.InfoPanel.TrackTemperature)
+            {
+                _trackTempLabel = new PanelText(_font, headerBackground, headerRect) { StringFormat = headerFormat };
+                _trackTempValue = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
+                headerRect.Offset(0, lineHeight);
+                valueRect.Offset(0, lineHeight);
+            }
+
+            _windLabel = new PanelText(_font, headerBackground, headerRect) { StringFormat = headerFormat };
+            _windValue = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
+            headerRect.Offset(0, lineHeight);
+            valueRect.Offset(0, lineHeight);
+
+            this.Width = headerWidth + valueWidth;
+            this.Height = (int)(headerRect.Top);
+        }
+
+        public override void BeforeStop()
+        {
+            _font?.Dispose();
         }
 
         public sealed override void Render(Graphics g)
@@ -66,29 +153,38 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
             if (this._config.InfoPanel.TimeOfDay)
             {
                 TimeSpan time = TimeSpan.FromMilliseconds(broadCastRealTime.TimeOfDay.TotalMilliseconds * 1000);
-                this._panel.AddLine("Time", $"{time:hh\\:mm\\:ss}");
+                _timeHeader.Draw(g, "Time");
+                _timeValue.Draw(g, $"{time:hh\\:mm\\:ss}");
             }
 
             if (this._config.InfoPanel.GlobalFlag)
-                _panel.AddLine("Flag", ACCSharedMemory.FlagTypeToString(pageGraphics.Flag));
+            {
+                _globalFlagHeader.Draw(g, "Flag");
+                _globalFlagValue.Draw(g, ACCSharedMemory.FlagTypeToString(pageGraphics.Flag));
+            }
 
             if (this._config.InfoPanel.SessionType)
-                _panel.AddLine("Session", ACCSharedMemory.SessionTypeToString(pageGraphics.SessionType));
+            {
+                _sessionTypeLabel.Draw(g, "Session");
+                _sessionTypeValue.Draw(g, ACCSharedMemory.SessionTypeToString(pageGraphics.SessionType));
+            }
 
-            _panel.AddLine("Grip", pageGraphics.trackGripStatus.ToString());
+            _gripLabel.Draw(g, "Grip");
+            _gripValue.Draw(g, pageGraphics.trackGripStatus.ToString());
 
             string airTemp = Math.Round(pagePhysics.AirTemp, 2).ToString("F2");
-            _panel.AddLine("Air", $"{airTemp} C");
-
-            _panel.AddLine("Wind", $"{Math.Round(pageGraphics.WindSpeed, 2)} km/h");
+            _ambientTempLabel.Draw(g, "Ambient");
+            _ambientTempValue.Draw(g, $"{airTemp} C");
 
             if (this._config.InfoPanel.TrackTemperature)
             {
+                _trackTempLabel.Draw(g, "Track");
                 string roadTemp = Math.Round(pagePhysics.RoadTemp, 2).ToString("F2");
-                _panel.AddLine("Track", $"{roadTemp} C");
+                _trackTempValue.Draw(g, $"{roadTemp} C");
             }
 
-            _panel.Draw(g);
+            _windLabel.Draw(g, "Wind");
+            _windValue.Draw(g, $"{Math.Round(pageGraphics.WindSpeed, 2)} km/h");
         }
     }
 }
