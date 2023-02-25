@@ -55,10 +55,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
 
         public TyreInfoOverlay(Rectangle rectangle) : base(rectangle, "Tyre Info")
         {
-            _fontFamilyLarge = FontUtil.FontUnispace(12);
-            _fontFamily = FontUtil.FontUnispace(10);
+            _fontFamilyLarge = FontUtil.FontSegoeMono(12);
+            _fontFamily = FontUtil.FontSegoeMono(11);
             _yMono = _fontFamily.Height / 6;
-            _fontFamilySmall = FontUtil.FontUnispace(9);
+            _fontFamilySmall = FontUtil.FontSegoeMono(10);
             _yMonoSmall = _fontFamilySmall.Height / 5;
             this.Width = InitialWidth;
             this.Height = InitialHeight;
@@ -79,14 +79,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
 
             if (this._config.Information.PadLife)
             {
-                DrawPadWearText(g, 68, 19, Position.Front);
-                DrawPadWearText(g, 68, 156, Position.Rear);
+                DrawPadWearText(g, 67, 19, Position.Front);
+                DrawPadWearText(g, 67, 156, Position.Rear);
             }
 
             if (this._config.Information.BrakeTemps)
             {
-                DrawBrakeTemps(g, 68, 71, Position.Front);
-                DrawBrakeTemps(g, 68, 103, Position.Rear);
+                DrawBrakeTemps(g, 67, 71, Position.Front);
+                DrawBrakeTemps(g, 67, 103, Position.Rear);
             }
 
 

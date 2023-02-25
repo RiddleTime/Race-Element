@@ -25,9 +25,9 @@ namespace RaceElement.HUD.Overlay.Util
             return GetSpecialFont(size, "RaceElement.HUD.Fonts.orbitron-medium.ttf", "Orbitron");
         }
 
-        public static Font FontUnispace(float size)
+        public static Font FontSegoeMono(float size)
         {
-            return GetSpecialFont(size - 1, "RaceElement.HUD.Fonts.unispace.bold.ttf", "Unispace");
+            return GetSpecialFont(size, "RaceElement.HUD.Fonts.segoe-ui-mono-w01-bold.ttf", "Segoe UI Mono W01");
         }
 
         public static Font FontConthrax(float size)

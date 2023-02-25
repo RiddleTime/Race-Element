@@ -44,7 +44,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             {
                 float height = _config.Bar.Height - 14;
                 height.Clip(11, 22);
-                _font = FontUtil.FontUnispace(height);
+                _font = FontUtil.FontSegoeMono(height);
             }
             int cornerRadius = (int)(10 * this.Scale);
 

@@ -8,14 +8,12 @@ using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
 {
-    //#if DEBUG
+#if DEBUG
     [Overlay(Name = "ABC", Description = "scrabble this, testing", OverlayType = OverlayType.Release)]
-    //#endif
+#endif
     internal sealed class AbcOverlay : AbstractOverlay
     {
         private Font _font;
-
-        private InfoPanelContainer _infoPanel;
 
         private PanelText[][] panelTexts;
         private CachedBitmap panelBackground;
@@ -41,8 +39,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
 
         public override void BeforeStart()
         {
-            _infoPanel = new InfoPanelContainer();
-            _font = FontUtil.FontOrbitron(12);
+            _font = FontUtil.FontSegoeMono(12);
 
             RefreshRateHz = _config.Test.Herz;
 
@@ -57,8 +54,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
                 Rectangle panelRect = new Rectangle(0, 0, panelWidth, panelHeight);
                 g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), panelRect, 6);
             });
-
-            
 
             panelTexts = new PanelText[_config.Test.RowCount][];
             for (int row = 0; row < _config.Test.RowCount; row++)
@@ -81,8 +76,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
         {
             _font?.Dispose();
             panelBackground?.Dispose();
-
-            _infoPanel?.Dispose();
         }
 
         public override void Render(Graphics g)

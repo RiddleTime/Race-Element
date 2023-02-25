@@ -3,8 +3,11 @@ using RaceElement.Data.ACC.Database.LapDataDB;
 using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.OverlayUtil.InfoPanel;
 using RaceElement.HUD.Overlay.Util;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
 {
@@ -36,58 +39,134 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
             public CarInfoConfiguration() => this.AllowRescale = true;
         }
 
-        private readonly InfoPanel infoPanel;
+        private Font _font;
+        private PanelText _damageHeader;
+        private PanelText _damageValue;
+        private PanelText _fuelPerLapHeader;
+        private PanelText _fuelPerLapValue;
+        private PanelText _tyreSetHeader;
+        private PanelText _tyreSetValue;
+        private PanelText _exhaustHeader;
+        private PanelText _exhaustValue;
+        private PanelText _waterHeader;
+        private PanelText _waterValue;
 
         public CarInfoOverlay(Rectangle rectangle) : base(rectangle, "Car Info")
         {
-            int panelWidth = 140;
-
-            this.infoPanel = new InfoPanel(10, panelWidth);
-            this.Width = panelWidth + 1;
-            this.Height = this.infoPanel.FontHeight * 5 + 1;
-            this.RefreshRateHz = 3;
+            this.RefreshRateHz = 1;
         }
 
         public sealed override void BeforeStart()
         {
-            if (!this._config.InfoPanel.FuelPerLap)
-                this.Height -= this.infoPanel.FontHeight;
+            _font = FontUtil.FontSegoeMono(10f);
+            int lineHeight = _font.Height + 1;
+            int headerWidth = 80;
+            int valueWidth = 75;
+            int roundingRadius = 6;
 
-            if (!this._config.InfoPanel.ExhaustTemp)
-                this.Height -= this.infoPanel.FontHeight;
+            RectangleF headerRect = new RectangleF(0, 0, headerWidth, lineHeight);
+            RectangleF valueRect = new RectangleF(headerWidth, 0, valueWidth, lineHeight);
+            StringFormat headerFormat = new StringFormat() { Alignment = StringAlignment.Near };
+            StringFormat valueFormat = new StringFormat() { Alignment = StringAlignment.Center };
 
-            if (!this._config.InfoPanel.WaterTemp)
-                this.Height -= this.infoPanel.FontHeight;
+            Color accentColor = Color.FromArgb(25, 255, 0, 0);
+            CachedBitmap headerBackground = new CachedBitmap(headerWidth, lineHeight, g =>
+            {
+                Rectangle panelRect = new Rectangle(0, 0, headerWidth, lineHeight);
+                using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(panelRect, 0, 0, 0, roundingRadius);
+                g.FillPath(new SolidBrush(Color.FromArgb(225, 10, 10, 10)), path);
+                g.DrawLine(new Pen(accentColor), 0 + roundingRadius / 2, lineHeight, headerWidth, lineHeight - 1);
+            });
+            CachedBitmap valueBackground = new CachedBitmap(valueWidth, lineHeight, g =>
+            {
+                Rectangle panelRect = new Rectangle(0, 0, valueWidth, lineHeight);
+                using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(panelRect, 0, roundingRadius, 0, 0);
+                g.FillPath(new SolidBrush(Color.FromArgb(225, 0, 0, 0)), path);
+                g.DrawLine(new Pen(accentColor), 0, lineHeight - 1, valueWidth, lineHeight - 1);
+            });
 
-            if (!this._config.InfoPanel.TyreSet)
-                this.Height -= this.infoPanel.FontHeight;
+            _damageHeader = new PanelText(_font, headerBackground, headerRect) { StringFormat = headerFormat };
+            _damageValue = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
+            headerRect.Offset(0, lineHeight);
+            valueRect.Offset(0, lineHeight);
+
+
+            if (_config.InfoPanel.TyreSet)
+            {
+                _tyreSetHeader = new PanelText(_font, headerBackground, headerRect) { StringFormat = headerFormat };
+                _tyreSetValue = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
+                headerRect.Offset(0, lineHeight);
+                valueRect.Offset(0, lineHeight);
+            }
+
+            if (_config.InfoPanel.FuelPerLap)
+            {
+                _fuelPerLapHeader = new PanelText(_font, headerBackground, headerRect) { StringFormat = headerFormat };
+                _fuelPerLapValue = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
+                headerRect.Offset(0, lineHeight);
+                valueRect.Offset(0, lineHeight);
+            }
+
+            if (_config.InfoPanel.ExhaustTemp)
+            {
+                _exhaustHeader = new PanelText(_font, headerBackground, headerRect) { StringFormat = headerFormat };
+                _exhaustValue = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
+                headerRect.Offset(0, lineHeight);
+                valueRect.Offset(0, lineHeight);
+            }
+
+            if (_config.InfoPanel.WaterTemp)
+            {
+                _waterHeader = new PanelText(_font, headerBackground, headerRect) { StringFormat = headerFormat };
+                _waterValue = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
+                headerRect.Offset(0, lineHeight);
+                valueRect.Offset(0, lineHeight);
+            }
+
+            this.Width = headerWidth + valueWidth;
+            this.Height = (int)(headerRect.Top);
+        }
+
+        public override void BeforeStop()
+        {
+            _font?.Dispose();
         }
 
         public sealed override void Render(Graphics g)
         {
+            _damageHeader.Draw(g, "Damage");
             float totalRepairTime = Damage.GetTotalRepairTime(pagePhysics);
             Brush damageBrush = Damage.HasAnyDamage(pagePhysics) ? Brushes.OrangeRed : Brushes.White;
-            infoPanel.AddLine("Damage", $"{totalRepairTime:F1}", damageBrush);
+            _damageValue.Brush = damageBrush;
+            _damageValue.Draw(g, $"{totalRepairTime:F1}");
 
             if (_config.InfoPanel.TyreSet)
-                infoPanel.AddLine("Tyre Set", $"{pageGraphics.currentTyreSet}");
-
-            if (this._config.InfoPanel.FuelPerLap)
             {
+                _tyreSetHeader.Draw(g, "Tyre Set");
+                _tyreSetValue.Draw(g, $"{pageGraphics.currentTyreSet}");
+            }
+
+            if (_config.InfoPanel.FuelPerLap)
+            {
+                _fuelPerLapHeader.Draw(g, "Fuel/Lap");
                 float fuelXLap = LapTracker.Instance.Laps.GetAverageFuelUsage(3);
                 if (fuelXLap != -1)
                     fuelXLap /= 1000f;
                 else fuelXLap = pageGraphics.FuelXLap;
-                infoPanel.AddLine("Fuel/Lap", $"{fuelXLap:F3}");
+                _fuelPerLapValue.Draw(g, $"{fuelXLap:F3}");
             }
 
-            if (this._config.InfoPanel.WaterTemp)
-                infoPanel.AddLine("Water", $"{pagePhysics.WaterTemp:F0} C");
+            if (_config.InfoPanel.ExhaustTemp)
+            {
+                _exhaustHeader.Draw(g, "Exhaust");
+                _exhaustValue.Draw(g, $"{pageGraphics.ExhaustTemperature:F0} C");
+            }
 
-            if (this._config.InfoPanel.ExhaustTemp)
-                infoPanel.AddLine("Exhaust", $"{pageGraphics.ExhaustTemperature:F0} C");
-
-            infoPanel.Draw(g);
+            if (_config.InfoPanel.WaterTemp)
+            {
+                _waterHeader.Draw(g, "Water");
+                _waterValue.Draw(g, $"{pagePhysics.WaterTemp:F0} C");
+            }
         }
     }
 }

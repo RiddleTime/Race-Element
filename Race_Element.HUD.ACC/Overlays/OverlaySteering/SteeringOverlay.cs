@@ -68,9 +68,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
             _wheelThickness = _config.Ring.RingThickness;
             _font = _config.Info.Text switch
             {
-                SteeringConfig.InputsText.SteeringAngle => FontUtil.FontUnispace(28),
+                SteeringConfig.InputsText.SteeringAngle => FontUtil.FontSegoeMono(28),
                 SteeringConfig.InputsText.Gear => FontUtil.FontConthrax(40),
-                SteeringConfig.InputsText.Speed => FontUtil.FontUnispace(34),
+                SteeringConfig.InputsText.Speed => FontUtil.FontSegoeMono(34),
                 _ => null,
             };
 

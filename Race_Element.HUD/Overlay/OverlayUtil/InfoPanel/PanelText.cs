@@ -51,6 +51,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.InfoPanel
                     if (_font != null)
                     {
                         g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+                        g.TextContrast = 1;
                         g.DrawStringWithShadow(text, _font, Brush, relativeRectangle, StringFormat);
                     }
                 });

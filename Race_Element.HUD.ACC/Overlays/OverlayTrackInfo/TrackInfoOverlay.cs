@@ -15,7 +15,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
     internal sealed class TrackInfoOverlay : AbstractOverlay
     {
         private readonly TrackInfoConfig _config = new TrackInfoConfig();
-        private class TrackInfoConfig : OverlayConfiguration
+        private sealed class TrackInfoConfig : OverlayConfiguration
         {
             [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
             public InfoPanelGrouping InfoPanel { get; set; } = new InfoPanelGrouping();
@@ -64,11 +64,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
 
         public sealed override void BeforeStart()
         {
-            _font = FontUtil.FontUnispace(10f);
+            _font = FontUtil.FontSegoeMono(10f);
 
             int lineHeight = _font.Height + 1;
             int headerWidth = 70;
-            int valueWidth = 85;
+            int valueWidth = 90;
             int roundingRadius = 6;
 
             RectangleF headerRect = new RectangleF(0, 0, headerWidth, lineHeight);
@@ -81,7 +81,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
             {
                 Rectangle panelRect = new Rectangle(0, 0, headerWidth, lineHeight);
                 using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(panelRect, 0, 0, 0, roundingRadius);
-                g.FillPath(new SolidBrush(Color.FromArgb(225, 5, 5, 5)), path);
+                g.FillPath(new SolidBrush(Color.FromArgb(225, 10, 10, 10)), path);
                 g.DrawLine(new Pen(accentColor), 0 + roundingRadius / 2, lineHeight, headerWidth, lineHeight - 1);
             });
             CachedBitmap valueBackground = new CachedBitmap(valueWidth, lineHeight, g =>

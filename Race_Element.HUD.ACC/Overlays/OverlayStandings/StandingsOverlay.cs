@@ -480,7 +480,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStandings
 
             if (tableData.Count == 0) return;
 
-            OverlayStandingTableHeaderLabel tableHeader = new OverlayStandingTableHeaderLabel(g, _x, rowPosY, classBackground, FontUtil.FontUnispace(_fontSize));
+            OverlayStandingTableHeaderLabel tableHeader = new OverlayStandingTableHeaderLabel(g, _x, rowPosY, classBackground, FontUtil.FontSegoeMono(_fontSize));
             tableHeader.Draw(g, Brushes.White, header);
             rowPosY += tableHeader.Height + _rowGab;
 
@@ -503,19 +503,19 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStandings
                 //String deltaString = $"{tableData[i].Delta / 1000f:F2}".FillStart(6, ' ');
                 String deltaString = $"{TimeSpan.FromMilliseconds(tableData[i].Delta):ss\\.f}";
 
-                OverlayStandingsTablePositionLabel position = new OverlayStandingsTablePositionLabel(g, columnPosX, rowPosY, backgroundColor, classBackground, FontUtil.FontUnispace(_fontSize));
+                OverlayStandingsTablePositionLabel position = new OverlayStandingsTablePositionLabel(g, columnPosX, rowPosY, backgroundColor, classBackground, FontUtil.FontSegoeMono(_fontSize));
                 position.Draw(g, tableData[i].Position.ToString());
 
                 columnPosX += position.Width + _columnGab;
-                OverlayStandingsTableTextLabel raceNumber = new OverlayStandingsTableTextLabel(g, columnPosX, rowPosY, 4, FontUtil.FontUnispace(_fontSize));
+                OverlayStandingsTableTextLabel raceNumber = new OverlayStandingsTableTextLabel(g, columnPosX, rowPosY, 4, FontUtil.FontSegoeMono(_fontSize));
                 raceNumber.Draw(g, backgroundColor, (SolidBrush)Brushes.White, Brushes.White, "#" + tableData[i].RaceNumber.ToString(), false);
 
                 columnPosX += raceNumber.Width + _columnGab;
-                OverlayStandingsTableTextLabel driverName = new OverlayStandingsTableTextLabel(g, columnPosX, rowPosY, 20, FontUtil.FontUnispace(_fontSize));
+                OverlayStandingsTableTextLabel driverName = new OverlayStandingsTableTextLabel(g, columnPosX, rowPosY, 20, FontUtil.FontSegoeMono(_fontSize));
                 driverName.Draw(g, backgroundColor, (SolidBrush)Brushes.Purple, Brushes.White, tableData[i].DriverName, false);
 
                 columnPosX += driverName.Width + _columnGab;
-                OverlayStandingsTableTextLabel deltaTime = new OverlayStandingsTableTextLabel(g, columnPosX, rowPosY, 5, FontUtil.FontUnispace(_fontSize));
+                OverlayStandingsTableTextLabel deltaTime = new OverlayStandingsTableTextLabel(g, columnPosX, rowPosY, 5, FontUtil.FontSegoeMono(_fontSize));
                 if (tableData[i].Delta < -100)
                 {
                     deltaTime.Draw(g, backgroundColor, (SolidBrush)Brushes.DarkGreen, Brushes.White, "-" + deltaString, true);
@@ -533,13 +533,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStandings
                 columnPosX += deltaTime.Width + _columnGab;
                 if (showDeltaRow)
                 {
-                    OverlayStandingsTableTextLabel gabTime = new OverlayStandingsTableTextLabel(g, columnPosX, rowPosY, 3, FontUtil.FontUnispace(_fontSize));
+                    OverlayStandingsTableTextLabel gabTime = new OverlayStandingsTableTextLabel(g, columnPosX, rowPosY, 3, FontUtil.FontSegoeMono(_fontSize));
                     gabTime.Draw(g, backgroundColor, (SolidBrush)Brushes.Green, Brushes.White, tableData[i].Gab, false);
                     columnPosX += gabTime.Width + _columnGab;
                 }
 
 
-                OverlayStandingsTableTextLabel laptTime = new OverlayStandingsTableTextLabel(g, columnPosX, rowPosY, 9, FontUtil.FontUnispace(_fontSize));
+                OverlayStandingsTableTextLabel laptTime = new OverlayStandingsTableTextLabel(g, columnPosX, rowPosY, 9, FontUtil.FontSegoeMono(_fontSize));
                 laptTime.Draw(g, backgroundColor, (SolidBrush)Brushes.Purple, Brushes.White, tableData[i].LapTime, tableData[i].FastestLapTime);
 
                 if (tableData[i].AdditionalInfo != "")

@@ -36,7 +36,7 @@ namespace RaceElement.HUD.Overlay.Util
         {
             fontSize.ClipMin(10);
             this.MaxWidth = maxWidth;
-            this._font = FontUtil.FontUnispace((float)fontSize);
+            this._font = FontUtil.FontSegoeMono((float)fontSize);
             this.FontHeight = _font.Height;
             _addMonoY = _font.Height / 8;
         }

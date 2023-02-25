@@ -70,8 +70,6 @@
     <Compile Include="Overlay\OverlayUtil\FontUtil.cs" />
     <Compile Include="Overlay\OverlayUtil\GraphicsExtensions.cs" />
     <Compile Include="Overlay\OverlayUtil\InfoPanel.cs" />
-    <Compile Include="Overlay\OverlayUtil\InfoPanel\Panel.cs" />
-    <Compile Include="Overlay\OverlayUtil\InfoPanel\InfoPanelContainer.cs" />
     <Compile Include="Overlay\OverlayUtil\InfoPanel\PanelText.cs" />
     <Compile Include="Overlay\OverlayUtil\InfoTable.cs" />
     <Compile Include="Overlay\OverlayUtil\ProgressBar.cs" />
@@ -83,11 +81,9 @@
     <EmbeddedResource Include="Fonts\orbitron-medium.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Fonts\unispace.bold.ttf" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <EmbeddedResource Include="Fonts\ConthraxSb.ttf" />
+    <EmbeddedResource Include="Fonts\segoe-ui-mono-w01-bold.ttf" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Race_Element.Broadcast\Race Element.Broadcast.csproj">

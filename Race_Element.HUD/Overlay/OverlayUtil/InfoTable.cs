@@ -37,7 +37,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil
         {
             fontSize.ClipMin(9);
             _columnWidths = columnWidths;
-            Font = FontUtil.FontUnispace(fontSize);
+            Font = FontUtil.FontSegoeMono(fontSize);
             FontHeight = Font.Height;
             _yMono = Font.Height / 8;
         }

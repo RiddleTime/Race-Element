@@ -66,7 +66,7 @@ Description = "A panel showing live broadcast track data.")]
             this.RefreshRateHz = 10;
 
             float fontSize = 9;
-            var font = FontUtil.FontUnispace(fontSize);
+            var font = FontUtil.FontSegoeMono(fontSize);
             _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 13), (int)(font.Size * 13), (int)(font.Size * 8), (int)(font.Size * 8) });
 
             this.Width = 415;

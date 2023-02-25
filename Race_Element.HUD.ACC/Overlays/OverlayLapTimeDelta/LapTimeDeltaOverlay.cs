@@ -28,7 +28,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
             this.Width = _config.Bar.Width + 1;
             this.Height = _config.Bar.Height + 1;
 
-            _font = FontUtil.FontUnispace(_config.Delta.FontSize);
+            _font = FontUtil.FontSegoeMono(_config.Delta.FontSize);
             this.Height += _font.Height * 1;
 
             this.RefreshRateHz = 5;

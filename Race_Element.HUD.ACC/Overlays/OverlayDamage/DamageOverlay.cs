@@ -72,7 +72,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
 
         public override void BeforeStart()
         {
-            _font = FontUtil.FontUnispace(11 * this.Scale);
+            _font = FontUtil.FontSegoeMono(11 * this.Scale);
 
             CreatePathShapes();
 
@@ -359,6 +359,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
 
         private void DrawTextWithOutline(Graphics g, Color textColor, string text, int x, int y)
         {
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
             int textWidth = (int)g.MeasureString(text, _font).Width;
             Rectangle backgroundDimension = new Rectangle(x - textWidth / 2, y, textWidth, _font.Height);
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 0, 0, 0)), backgroundDimension, 2);

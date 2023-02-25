@@ -4,9 +4,6 @@ using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -84,6 +81,10 @@ namespace RaceElement.Controls.HUD
             overlay.pageGraphics.NormalizedCarPosition = 0.0472972f;
             overlay.pageGraphics.DeltaLapTimeMillis = -0137;
             overlay.pageGraphics.IsValidLap = true;
+            overlay.pageGraphics.WindDirection = 0.1f;
+            overlay.pageGraphics.WindSpeed = 16.92f;
+            overlay.pageGraphics.ExhaustTemperature = 325.24f;
+            overlay.pageGraphics.currentTyreSet = 3;
 
             overlay.pagePhysics = ACCSharedMemory.Instance.ReadPhysicsPageFile(false);
             overlay.pagePhysics.SpeedKmh = 272.32f;
@@ -97,6 +98,7 @@ namespace RaceElement.Controls.HUD
             overlay.pagePhysics.Gas = 0.78f;
             overlay.pagePhysics.Brake = 0.133f;
             overlay.pagePhysics.SteerAngle = 0.053f;
+            overlay.pagePhysics.WaterTemp = 98.3f;
 
             overlay.pagePhysics.CarDamage[0] = 20;
             overlay.pagePhysics.CarDamage[1] = 20;
