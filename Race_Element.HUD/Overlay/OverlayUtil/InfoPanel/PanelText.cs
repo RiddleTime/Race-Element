@@ -44,6 +44,9 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.InfoPanel
             {
                 _cachedPanelText = new CachedBitmap((int)_rect.Width, (int)_rect.Height, g =>
                 {
+                    if (g == null)
+                        return;
+
                     RectangleF relativeRectangle = _rect;
                     relativeRectangle.X = 0;
                     relativeRectangle.Y = 0;

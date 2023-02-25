@@ -8,7 +8,8 @@ namespace RaceElement.Controls
         {
             {"0.1.7.4", "- HUDs: Centered value texts in Info Panels"+
                         "\n- Track Info HUD: Configurable track temp."+
-                        "\n- HUDs should now hide when in menu during Hotlap."},
+                        "\n- HUDs should now hide when in menu during Hotlap."+
+                        "\n- New font for HUDs."},
             {"0.1.7.3", "- Fix: Input Bars HUD." },
             {"0.1.7.2", "- HUD Tab: Adjusted toggle-button colors when main options are activated, blue for always visible and green for movement mode."+
                         "\n- Input Bars HUD: Add adjustable colors."},
