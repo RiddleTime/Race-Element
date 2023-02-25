@@ -99,6 +99,7 @@ namespace RaceElement.Controls.HUD
             overlay.pagePhysics.Brake = 0.133f;
             overlay.pagePhysics.SteerAngle = 0.053f;
             overlay.pagePhysics.WaterTemp = 98.3f;
+            overlay.pagePhysics.BrakeBias = 0.88f;
 
             overlay.pagePhysics.CarDamage[0] = 20;
             overlay.pagePhysics.CarDamage[1] = 20;

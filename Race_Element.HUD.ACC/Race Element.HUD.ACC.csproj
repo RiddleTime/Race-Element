@@ -76,6 +76,7 @@
     <Compile Include="Overlays\OverlayDebugInfo\OverlayGraphicsInfo\GraphicsInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayPhysicsInfo\PhysicsInfoOverlay.cs" />
     <Compile Include="Overlays\OverlayDebugInfo\OverlayStaticInfo\StaticInfoOverlay.cs" />
+    <Compile Include="Overlays\OverlayElectronics\ElectronicsOverlay.cs" />
     <Compile Include="Overlays\OverlayInputBars\InputBarsConfiguration.cs" />
     <Compile Include="Overlays\OverlayInputBars\InputBarsOverlay.cs" />
     <Compile Include="Overlays\OverlayLapTimeDelta\LapTimeDeltaConfiguration.cs" />

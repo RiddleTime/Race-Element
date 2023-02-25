@@ -107,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccidentList\AccidentListTracker.cs" />
+    <Compile Include="Cars\BrakeBias.cs" />
     <Compile Include="Cars\Damage.cs" />
     <Compile Include="Cars\SteeringLock.cs" />
     <Compile Include="Core\AccProcess.cs" />
