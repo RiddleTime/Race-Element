@@ -58,11 +58,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
 
         public sealed override void BeforeStart()
         {
-            _font = FontUtil.FontSegoeMono(10f);
+            _font = FontUtil.FontSegoeMono(10f * this.Scale);
             int lineHeight = _font.Height + 1;
-            int headerWidth = 80;
-            int valueWidth = 75;
-            int roundingRadius = 6;
+            int unscaledHeaderWidth = 80;
+            int unscaledValueWidth = 75;
+
+            int headerWidth = (int)(unscaledHeaderWidth * this.Scale);
+            int valueWidth = (int)(unscaledValueWidth * this.Scale);
+            int roundingRadius = (int)(6 * this.Scale);
 
             RectangleF headerRect = new RectangleF(0, 0, headerWidth, lineHeight);
             RectangleF valueRect = new RectangleF(headerWidth, 0, valueWidth, lineHeight);
@@ -123,8 +126,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
                 valueRect.Offset(0, lineHeight);
             }
 
-            this.Width = headerWidth + valueWidth;
-            this.Height = (int)(headerRect.Top);
+            this.Width = unscaledHeaderWidth + unscaledValueWidth;
+            this.Height = (int)(headerRect.Top / this.Scale);
         }
 
         public override void BeforeStop()
@@ -134,38 +137,38 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
 
         public sealed override void Render(Graphics g)
         {
-            _damageHeader.Draw(g, "Damage");
+            _damageHeader.Draw(g, "Damage", this.Scale);
             float totalRepairTime = Damage.GetTotalRepairTime(pagePhysics);
             Brush damageBrush = Damage.HasAnyDamage(pagePhysics) ? Brushes.OrangeRed : Brushes.White;
             _damageValue.Brush = damageBrush;
-            _damageValue.Draw(g, $"{totalRepairTime:F1}");
+            _damageValue.Draw(g, $"{totalRepairTime:F1}", this.Scale);
 
             if (_config.InfoPanel.TyreSet)
             {
-                _tyreSetHeader.Draw(g, "Tyre Set");
-                _tyreSetValue.Draw(g, $"{pageGraphics.currentTyreSet}");
+                _tyreSetHeader.Draw(g, "Tyre Set", this.Scale);
+                _tyreSetValue.Draw(g, $"{pageGraphics.currentTyreSet}", this.Scale);
             }
 
             if (_config.InfoPanel.FuelPerLap)
             {
-                _fuelPerLapHeader.Draw(g, "Fuel/Lap");
+                _fuelPerLapHeader.Draw(g, "Fuel/Lap", this.Scale);
                 float fuelXLap = LapTracker.Instance.Laps.GetAverageFuelUsage(3);
                 if (fuelXLap != -1)
                     fuelXLap /= 1000f;
                 else fuelXLap = pageGraphics.FuelXLap;
-                _fuelPerLapValue.Draw(g, $"{fuelXLap:F3}");
+                _fuelPerLapValue.Draw(g, $"{fuelXLap:F3}", this.Scale);
             }
 
             if (_config.InfoPanel.ExhaustTemp)
             {
-                _exhaustHeader.Draw(g, "Exhaust");
-                _exhaustValue.Draw(g, $"{pageGraphics.ExhaustTemperature:F0} C");
+                _exhaustHeader.Draw(g, "Exhaust", this.Scale);
+                _exhaustValue.Draw(g, $"{pageGraphics.ExhaustTemperature:F0} C", this.Scale);
             }
 
             if (_config.InfoPanel.WaterTemp)
             {
-                _waterHeader.Draw(g, "Water");
-                _waterValue.Draw(g, $"{pagePhysics.WaterTemp:F0} C");
+                _waterHeader.Draw(g, "Water", this.Scale);
+                _waterValue.Draw(g, $"{pagePhysics.WaterTemp:F0} C", this.Scale);
             }
         }
     }

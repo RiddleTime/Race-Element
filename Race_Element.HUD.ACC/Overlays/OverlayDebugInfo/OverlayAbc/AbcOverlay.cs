@@ -82,7 +82,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
         {
             for (int row = 0; row < _config.Test.RowCount; row++)
                 for (int col = 0; col < 2; col++)
-                    panelTexts[row][col].Draw(g, $"{pagePhysics.AirTemp:F2}");
+                    panelTexts[row][col].Draw(g, $"{pagePhysics.AirTemp:F2}", this.Scale);
         }
     }
 }

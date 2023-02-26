@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Text;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Shapes;
 
 namespace RaceElement.HUD.Overlay.OverlayUtil.InfoPanel
 {
@@ -36,9 +29,9 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.InfoPanel
             _cachedBackground = cachedBackground;
         }
 
-        public void Draw(Graphics g, string text)
+        public void Draw(Graphics g, string text, float scale)
         {
-            _cachedBackground?.Draw(g, new Point((int)_rect.X, (int)_rect.Y));
+            _cachedBackground?.Draw(g, (int)(_rect.X / scale), (int)(_rect.Y / scale), (int)(_rect.Width / scale), (int)(_rect.Height / scale));
 
             if (!_text.Equals(text) || _cachedPanelText == null)
             {
@@ -61,7 +54,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.InfoPanel
             }
             _text = text;
 
-            _cachedPanelText?.Draw(g, new Point((int)_rect.X, (int)_rect.Y));
+            _cachedPanelText?.Draw(g, (int)(_rect.X / scale), (int)(_rect.Y / scale), (int)(_rect.Width / scale), (int)(_rect.Height / scale));
         }
 
         public void Dispose()

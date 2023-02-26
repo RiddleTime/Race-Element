@@ -64,12 +64,16 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
 
         public sealed override void BeforeStart()
         {
-            _font = FontUtil.FontSegoeMono(10f);
+            _font = FontUtil.FontSegoeMono(10f * this.Scale);
 
             int lineHeight = _font.Height + 1;
-            int headerWidth = 70;
-            int valueWidth = 90;
-            int roundingRadius = 6;
+
+            int unscaledHeaderWidth = 70;
+            int unscaledValueWidth = 90;
+
+            int headerWidth = (int)(unscaledHeaderWidth * this.Scale);
+            int valueWidth = (int)(unscaledValueWidth * this.Scale);
+            int roundingRadius = (int)(6 * this.Scale);
 
             RectangleF headerRect = new RectangleF(0, 0, headerWidth, lineHeight);
             RectangleF valueRect = new RectangleF(headerWidth, 0, valueWidth, lineHeight);
@@ -139,8 +143,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
             headerRect.Offset(0, lineHeight);
             valueRect.Offset(0, lineHeight);
 
-            this.Width = headerWidth + valueWidth;
-            this.Height = (int)(headerRect.Top);
+            this.Width = unscaledHeaderWidth + unscaledValueWidth;
+            this.Height = (int)(headerRect.Top / this.Scale);
         }
 
         public override void BeforeStop()
@@ -153,38 +157,38 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
             if (this._config.InfoPanel.TimeOfDay)
             {
                 TimeSpan time = TimeSpan.FromMilliseconds(broadCastRealTime.TimeOfDay.TotalMilliseconds * 1000);
-                _timeHeader.Draw(g, "Time");
-                _timeValue.Draw(g, $"{time:hh\\:mm\\:ss}");
+                _timeHeader.Draw(g, "Time", this.Scale);
+                _timeValue.Draw(g, $"{time:hh\\:mm\\:ss}", this.Scale);
             }
 
             if (this._config.InfoPanel.GlobalFlag)
             {
-                _globalFlagHeader.Draw(g, "Flag");
-                _globalFlagValue.Draw(g, ACCSharedMemory.FlagTypeToString(pageGraphics.Flag));
+                _globalFlagHeader.Draw(g, "Flag", this.Scale);
+                _globalFlagValue.Draw(g, ACCSharedMemory.FlagTypeToString(pageGraphics.Flag), this.Scale);
             }
 
             if (this._config.InfoPanel.SessionType)
             {
-                _sessionTypeLabel.Draw(g, "Session");
-                _sessionTypeValue.Draw(g, ACCSharedMemory.SessionTypeToString(pageGraphics.SessionType));
+                _sessionTypeLabel.Draw(g, "Session", this.Scale);
+                _sessionTypeValue.Draw(g, ACCSharedMemory.SessionTypeToString(pageGraphics.SessionType), this.Scale);
             }
 
-            _gripLabel.Draw(g, "Grip");
-            _gripValue.Draw(g, pageGraphics.trackGripStatus.ToString());
+            _gripLabel.Draw(g, "Grip", this.Scale);
+            _gripValue.Draw(g, pageGraphics.trackGripStatus.ToString(), this.Scale);
 
             string airTemp = Math.Round(pagePhysics.AirTemp, 2).ToString("F2");
-            _ambientTempLabel.Draw(g, "Ambient");
-            _ambientTempValue.Draw(g, $"{airTemp} C");
+            _ambientTempLabel.Draw(g, "Ambient", this.Scale);
+            _ambientTempValue.Draw(g, $"{airTemp} C", this.Scale);
 
             if (this._config.InfoPanel.TrackTemperature)
             {
-                _trackTempLabel.Draw(g, "Track");
+                _trackTempLabel.Draw(g, "Track", this.Scale);
                 string roadTemp = Math.Round(pagePhysics.RoadTemp, 2).ToString("F2");
-                _trackTempValue.Draw(g, $"{roadTemp} C");
+                _trackTempValue.Draw(g, $"{roadTemp} C", this.Scale);
             }
 
-            _windLabel.Draw(g, "Wind");
-            _windValue.Draw(g, $"{Math.Round(pageGraphics.WindSpeed, 2)} km/h");
+            _windLabel.Draw(g, "Wind", this.Scale);
+            _windValue.Draw(g, $"{Math.Round(pageGraphics.WindSpeed, 2)} km/h", this.Scale);
         }
     }
 }

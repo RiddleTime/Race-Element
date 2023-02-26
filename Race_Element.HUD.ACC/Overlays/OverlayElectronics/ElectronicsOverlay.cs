@@ -34,7 +34,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayElectronics
         private PanelText _mapHeader;
         private PanelText _mapValue;
 
-
         public ElectronicsOverlay(Rectangle rectangle) : base(rectangle, "Electronics")
         {
             RefreshRateHz = 2;
@@ -42,12 +41,15 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayElectronics
 
         public override void BeforeStart()
         {
-            _font = FontUtil.FontSegoeMono(10f);
+            _font = FontUtil.FontSegoeMono(10f * this.Scale);
 
             int lineHeight = _font.Height + 1;
-            int headerWidth = 35;
-            int valueWidth = 45;
-            int roundingRadius = 6;
+            int unscaledHeaderWidth = 35;
+            int unscaledValueWidth = 45;
+
+            int headerWidth = (int)(unscaledHeaderWidth * this.Scale);
+            int valueWidth = (int)(unscaledValueWidth * this.Scale);
+            int roundingRadius = (int)(6 * this.Scale);
 
             RectangleF headerRect = new RectangleF(0, 0, headerWidth, lineHeight);
             RectangleF valueRect = new RectangleF(headerWidth, 0, valueWidth, lineHeight);
@@ -96,8 +98,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayElectronics
             valueRect.Offset(0, lineHeight);
 
 
-            this.Width = headerWidth + valueWidth;
-            this.Height = (int)(headerRect.Top);
+            this.Width = unscaledHeaderWidth + unscaledValueWidth;
+            this.Height = (int)(headerRect.Top / this.Scale);
         }
 
         public override void BeforeStop()
@@ -110,20 +112,20 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayElectronics
             float brakeBias = pagePhysics.BrakeBias * 100 + BrakeBias.Get(pageStatic.CarModel);
             if (brakeBias < 0)
                 brakeBias = 0;
-            _brakeBiasHeader.Draw(g, "BB");
-            _brakeBiasValue.Draw(g, $"{brakeBias:F1}");
+            _brakeBiasHeader.Draw(g, "BB", this.Scale);
+            _brakeBiasValue.Draw(g, $"{brakeBias:F1}", this.Scale);
 
-            _tc1Header.Draw(g, "TC1");
-            _tc1Value.Draw(g, $"{pageGraphics.TC}");
+            _tc1Header.Draw(g, "TC1", this.Scale);
+            _tc1Value.Draw(g, $"{pageGraphics.TC}", this.Scale);
 
-            _tc2Header.Draw(g, "TC2");
-            _tc2Value.Draw(g, $"{pageGraphics.TCCut}");
+            _tc2Header.Draw(g, "TC2", this.Scale);
+            _tc2Value.Draw(g, $"{pageGraphics.TCCut}", this.Scale);
 
-            _absHeader.Draw(g, "ABS");
-            _absValue.Draw(g, $"{pageGraphics.ABS}");
+            _absHeader.Draw(g, "ABS", this.Scale);
+            _absValue.Draw(g, $"{pageGraphics.ABS}", this.Scale);
 
-            _mapHeader.Draw(g, "Map");
-            _mapValue.Draw(g, $"{pageGraphics.EngineMap + 1}");
+            _mapHeader.Draw(g, "Map", this.Scale);
+            _mapValue.Draw(g, $"{pageGraphics.EngineMap + 1}", this.Scale);
         }
     }
 }
