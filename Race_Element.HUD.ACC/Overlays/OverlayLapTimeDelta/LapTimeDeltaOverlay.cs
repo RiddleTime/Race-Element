@@ -77,6 +77,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
             _font?.Dispose();
         }
 
+        public override bool ShouldRender()
+        {
+            if (_config.Delta.OnlyQualifying && !this.IsRepositioning && pageGraphics.SessionType != ACCSharedMemory.AcSessionType.AC_QUALIFY)
+                return false;
+
+            return base.ShouldRender();
+        }
+
         public override void Render(Graphics g)
         {
             _cachedBackground?.Draw(g, 0, 0, _config.Bar.Width, _config.Bar.Height);

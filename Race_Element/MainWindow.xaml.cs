@@ -175,8 +175,7 @@ namespace RaceElement
 
             ThreadPool.QueueUserWorkItem(x =>
             {
-                Thread.Sleep(2000);
-                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
+
                 string loadString = $"Loaded Race Element {GetAssemblyFileVersion()}";
                 string fileHash = FileUtil.GetBase64Hash(FileUtil.AppFullName);
 
@@ -188,6 +187,8 @@ namespace RaceElement
                 LogWriter.WriteToLog($"Application Hash: {fileHash}");
                 LogWriter.WriteToLog(loadString);
 
+                Thread.Sleep(2000);
+                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
                 UpdateUsage();
             });
 
