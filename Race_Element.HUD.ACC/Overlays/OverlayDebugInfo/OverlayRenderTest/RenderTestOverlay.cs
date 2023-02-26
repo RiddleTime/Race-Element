@@ -18,7 +18,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
             public TestGrouping Test { get; set; } = new TestGrouping();
             public class TestGrouping
             {
-                [IntRange(1, 500, 1)]
+                [IntRange(1, 250, 1)]
                 public int Herz { get; set; } = 50;
             }
 
@@ -48,13 +48,15 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
 
         private float timer = 0;
 
-
-        DateTime _lastTime;
+        private DateTime _lastTime;
         private int _framesRendered = 0;
         private double _fps;
 
         public override void Render(Graphics g)
         {
+            UpdateFps();
+
+
             Matrix transform = g.Transform;
             float sinus = (float)(Math.Sin(timer / 2) * Width / this.Scale / 4);
             transform.Translate(sinus, sinus);
@@ -75,13 +77,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
             {
                 Alignment = StringAlignment.Center,
                 LineAlignment = StringAlignment.Center,
+                FormatFlags = StringFormatFlags.NoWrap,
             });
+
 
             timer += 0.2f;
 
             g.ResetTransform();
 
-            UpdateFps();
             DrawFpsCounter(g);
         }
 
@@ -89,9 +92,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
         {
             _framesRendered++;
 
-            if ((DateTime.Now - _lastTime).TotalSeconds >= 2)
+            const double measureSeconds = 2;
+            if ((DateTime.Now - _lastTime).TotalMilliseconds >= measureSeconds * 1000)
             {
-                _fps = _framesRendered / 2d;
+                _fps = _framesRendered / measureSeconds;
                 _framesRendered = 0;
                 _lastTime = DateTime.Now;
             }
@@ -100,7 +104,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
         private void DrawFpsCounter(Graphics g)
         {
             Rectangle fpsRect = new Rectangle(0, 0, 120, font.Height);
-            g.FillRectangle(new SolidBrush(Color.FromArgb(185, Color.Black)), fpsRect);
+            g.FillRectangle(Brushes.Black, fpsRect);
             g.DrawStringWithShadow($"{_fps:F1} FPS", font, Brushes.White, fpsRect);
         }
     }

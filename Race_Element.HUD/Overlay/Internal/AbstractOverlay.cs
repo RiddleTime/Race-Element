@@ -8,8 +8,6 @@ using RaceElement.Util;
 using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Text;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -17,8 +15,6 @@ using System.Windows.Forms;
 using static RaceElement.ACCSharedMemory;
 using static RaceElement.HUD.Overlay.Configuration.OverlaySettings;
 using Point = System.Drawing.Point;
-using System.Threading.Tasks;
-using System.Windows.Threading;
 
 namespace RaceElement.HUD.Overlay.Internal
 {
@@ -189,43 +185,46 @@ namespace RaceElement.HUD.Overlay.Internal
                 this.hasClosed = false;
                 if (!RequestsDrawItself)
                 {
-                    Thread renderThread = new Thread(() =>
-                      {
-                          double tickRefreshRate = (1000 / this.RefreshRateHz);
-                          Stopwatch stopwatch = Stopwatch.StartNew();
+                    new Thread(() =>
+                     {
+                         double tickRefreshRate = (1000 / this.RefreshRateHz);
+                         Stopwatch stopwatch = Stopwatch.StartNew();
 
-                          while (Draw)
-                          {
-                              stopwatch.Restart();
-
-                              if (this._disposed)
-                              {
-                                  this.Stop();
-                                  break;
-                              }
+                         while (Draw)
+                         {
+                             if (this._disposed)
+                             {
+                                 this.Stop();
+                                 break;
+                             }
 
 
-                              if (ShouldRender() || IsRepositioning)
-                                  this.UpdateLayeredWindow();
-                              else
-                              {
-                                  if (!hasClosed)
-                                  {
-                                      hasClosed = true;
-                                      if (WindowMode) // Don't destroy the handle of this window since some stream/vr apps cannot "redetect" the hud window.
-                                          this.UpdateLayeredWindow();
-                                      else
-                                          this.Hide();
-                                  }
-                              }
+                             if (ShouldRender() || IsRepositioning)
+                                 this.UpdateLayeredWindow();
+                             else
+                             {
+                                 if (!hasClosed)
+                                 {
+                                     hasClosed = true;
+                                     if (WindowMode) // Don't destroy the handle of this window since some stream/vr apps cannot "redetect" the hud window.
+                                         this.UpdateLayeredWindow();
+                                     else
+                                         this.Hide();
+                                 }
+                             }
 
-                              int millisToWait = (int)(tickRefreshRate - stopwatch.ElapsedMilliseconds);
-                              if (millisToWait > 0)
-                                  Thread.Sleep(millisToWait);
-                          }
+                             int millisToWait = (int)Math.Floor(tickRefreshRate - stopwatch.ElapsedMilliseconds);
+                             if (millisToWait > 0)
+                                 Thread.Sleep(millisToWait);
+#if DEBUG
+                             else
+                                 Debug.WriteLine($"Overlay {Name}.Render(Graphics g) is taking {millisToWait} milliseconds too long\n  - decrease herz or improve performance.");
+#endif
 
-                      });
-                    renderThread.Start();
+                             stopwatch.Restart();
+                         }
+
+                     }).Start();
                 }
             }
             catch (Exception ex) { Debug.WriteLine(ex); }
@@ -322,19 +321,7 @@ namespace RaceElement.HUD.Overlay.Internal
                         if (_allowRescale && Scale != 1f)
                             e.Graphics.ScaleTransform(Scale, Scale);
 
-                        CompositingQuality previousComposingQuality = e.Graphics.CompositingQuality;
-                        SmoothingMode previousSmoothingMode = e.Graphics.SmoothingMode;
-                        TextRenderingHint previousTextRenderHint = e.Graphics.TextRenderingHint;
-                        int previousTextConstrast = e.Graphics.TextContrast;
-
-
                         Render(e.Graphics);
-
-                        e.Graphics.CompositingQuality = previousComposingQuality;
-                        e.Graphics.SmoothingMode = previousSmoothingMode;
-                        e.Graphics.TextRenderingHint = previousTextRenderHint;
-                        e.Graphics.TextContrast = previousTextConstrast;
-                        e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
                     }
                     catch (Exception ex)
                     {
