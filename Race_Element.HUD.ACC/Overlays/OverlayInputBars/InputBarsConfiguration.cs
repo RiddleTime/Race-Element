@@ -40,6 +40,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
             public Color BrakeColor { get; set; } = Color.FromArgb(255, 255, 69, 0);
             [IntRange(75, 255, 1)]
             public int BrakeOpacity { get; set; } = 255;
+
+            public Color ElectronicsColor { get; set; } = Color.FromArgb(255, 255, 69, 0);
+            public int ElectronicsOpacity { get; set; } = 255;
         }
 
 
