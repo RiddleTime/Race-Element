@@ -21,8 +21,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
             [IntRange(12, 30, 2)]
             public int FontSize { get; set; } = 20;
 
-            [ToolTip("Only show the Delta HUD during qualifying.")]
-            public bool OnlyQualifying { get; set; } = false;
+            [ToolTip("Hide the Lap Delta HUD during a Race session.")]
+            public bool HideForRace { get; set; } = false;
         }
 
         [ConfigGrouping("Bar", "Adjust bar behavior.")]

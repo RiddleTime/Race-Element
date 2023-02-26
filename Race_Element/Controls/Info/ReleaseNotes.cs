@@ -7,7 +7,8 @@ namespace RaceElement.Controls
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
             {"0.1.7.6", "- Add Electronics HUD showing TC1, TC2, ABS, BB and chosen engine map."+
-                        "\n- Added configurable assists color on Input Bars."},
+                        "\n- Added configurable assists color on Input Bars."+
+                        "\n- Lap Delta: added option to hide the HUD during race sessions."},
             {"0.1.7.4", "- HUDs: Centered value texts in Info Panels"+
                         "\n- Track Info HUD: Configurable track temp."+
                         "\n- HUDs should now hide when in menu during Hotlap."+

@@ -79,7 +79,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
 
         public override bool ShouldRender()
         {
-            if (_config.Delta.OnlyQualifying && !this.IsRepositioning && pageGraphics.SessionType != ACCSharedMemory.AcSessionType.AC_QUALIFY)
+            if (_config.Delta.HideForRace && !this.IsRepositioning && pageGraphics.SessionType == ACCSharedMemory.AcSessionType.AC_RACE)
                 return false;
 
             return base.ShouldRender();

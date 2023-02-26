@@ -18,6 +18,7 @@ using static RaceElement.ACCSharedMemory;
 using static RaceElement.HUD.Overlay.Configuration.OverlaySettings;
 using Point = System.Drawing.Point;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace RaceElement.HUD.Overlay.Internal
 {
@@ -190,7 +191,7 @@ namespace RaceElement.HUD.Overlay.Internal
                 {
                     Thread renderThread = new Thread(() =>
                       {
-                          long tickRefreshRate = (long)(new TimeSpan(0, 0, 1).Ticks / this.RefreshRateHz);
+                          double tickRefreshRate = (1000 / this.RefreshRateHz);
                           Stopwatch stopwatch = Stopwatch.StartNew();
 
                           while (Draw)
@@ -202,6 +203,7 @@ namespace RaceElement.HUD.Overlay.Internal
                                   this.Stop();
                                   break;
                               }
+
 
                               if (ShouldRender() || IsRepositioning)
                                   this.UpdateLayeredWindow();
@@ -217,9 +219,9 @@ namespace RaceElement.HUD.Overlay.Internal
                                   }
                               }
 
-                              long ticksToWait = tickRefreshRate - stopwatch.ElapsedTicks;
-                              if (ticksToWait > 0)
-                                  Thread.Sleep(TimeSpan.FromTicks(ticksToWait));
+                              int millisToWait = (int)(tickRefreshRate - stopwatch.ElapsedMilliseconds);
+                              if (millisToWait > 0)
+                                  Thread.Sleep(millisToWait);
                           }
 
                       });

@@ -18,7 +18,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
             public TestGrouping Test { get; set; } = new TestGrouping();
             public class TestGrouping
             {
-                [IntRange(1, 100, 1)]
+                [IntRange(1, 500, 1)]
                 public int Herz { get; set; } = 50;
             }
 
@@ -89,9 +89,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
         {
             _framesRendered++;
 
-            if ((DateTime.Now - _lastTime).TotalSeconds >= 5)
+            if ((DateTime.Now - _lastTime).TotalSeconds >= 2)
             {
-                _fps = _framesRendered / 5d;
+                _fps = _framesRendered / 2d;
                 _framesRendered = 0;
                 _lastTime = DateTime.Now;
             }
