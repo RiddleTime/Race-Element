@@ -21,7 +21,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
             [IntRange(10, 45, 1)]
             public int Thickness { get; set; } = 20;
 
-            [ToolTip("Changes the spacing between the input bars")]
+            [ToolTip("Changes the spacing between the input bars.")]
             [IntRange(1, 150, 1)]
             public int Spacing { get; set; } = 5;
 
@@ -33,14 +33,17 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
         public ColorsGrouping Colors { get; set; } = new ColorsGrouping();
         public class ColorsGrouping
         {
+            [ToolTip("Changes the color of the throttle bar.")]
             public Color ThrottleColor { get; set; } = Color.FromArgb(255, 50, 205, 1);
             [IntRange(75, 255, 1)]
             public int ThrottleOpacity { get; set; } = 255;
 
+            [ToolTip("Changes the color of the brake bar.")]
             public Color BrakeColor { get; set; } = Color.FromArgb(255, 255, 69, 0);
             [IntRange(75, 255, 1)]
             public int BrakeOpacity { get; set; } = 255;
 
+            [ToolTip("Changes the color when either ABS or TC is activated.")]
             public Color AssistsColor { get; set; } = Color.FromArgb(255, 255, 247, 0);
             [IntRange(75, 255, 1)]
             public int AssistsOpacity { get; set; } = 255;
