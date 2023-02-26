@@ -187,7 +187,7 @@ namespace RaceElement.HUD.Overlay.Internal
                 {
                     new Thread(() =>
                      {
-                         double tickRefreshRate = (1000 / this.RefreshRateHz);
+                         double tickRefreshRate = 1000 / this.RefreshRateHz;
                          Stopwatch stopwatch = Stopwatch.StartNew();
 
                          while (Draw)
@@ -213,12 +213,12 @@ namespace RaceElement.HUD.Overlay.Internal
                                  }
                              }
 
-                             int millisToWait = (int)Math.Floor(tickRefreshRate - stopwatch.ElapsedMilliseconds);
+                             int millisToWait = (int)(tickRefreshRate - stopwatch.ElapsedMilliseconds);
                              if (millisToWait > 0)
                                  Thread.Sleep(millisToWait);
 #if DEBUG
                              else
-                                 Debug.WriteLine($"Overlay {Name}.Render(Graphics g) is taking {millisToWait} milliseconds too long\n  - decrease herz or improve performance.");
+                                 Debug.WriteLine($"Overlay [{Name}].Render(Graphics g) is taking {-millisToWait} milliseconds too long\n  - decrease herz or improve performance.");
 #endif
 
                              stopwatch.Restart();
