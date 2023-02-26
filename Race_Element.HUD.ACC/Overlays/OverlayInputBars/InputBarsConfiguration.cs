@@ -35,16 +35,19 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
         {
             [ToolTip("Changes the color of the throttle bar.")]
             public Color ThrottleColor { get; set; } = Color.FromArgb(255, 50, 205, 1);
+            [ToolTip("Changes the opacity of the color of the throttle bar.")]
             [IntRange(75, 255, 1)]
             public int ThrottleOpacity { get; set; } = 255;
 
             [ToolTip("Changes the color of the brake bar.")]
             public Color BrakeColor { get; set; } = Color.FromArgb(255, 255, 69, 0);
+            [ToolTip("Changes the opacity of the color of the brake bar.")]
             [IntRange(75, 255, 1)]
             public int BrakeOpacity { get; set; } = 255;
 
             [ToolTip("Changes the color when either ABS or TC is activated.")]
             public Color AssistsColor { get; set; } = Color.FromArgb(255, 255, 247, 0);
+            [ToolTip("Changes the opacity of the color when either ABS or TC is activated.")]
             [IntRange(75, 255, 1)]
             public int AssistsOpacity { get; set; } = 255;
         }
