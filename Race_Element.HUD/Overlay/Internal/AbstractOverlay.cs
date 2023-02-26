@@ -17,6 +17,7 @@ using System.Windows.Forms;
 using static RaceElement.ACCSharedMemory;
 using static RaceElement.HUD.Overlay.Configuration.OverlaySettings;
 using Point = System.Drawing.Point;
+using System.Threading.Tasks;
 
 namespace RaceElement.HUD.Overlay.Internal
 {
@@ -187,41 +188,42 @@ namespace RaceElement.HUD.Overlay.Internal
                 this.hasClosed = false;
                 if (!RequestsDrawItself)
                 {
-                    new Thread(x =>
-                    {
-                        double refreshRate = 1000.0 / this.RefreshRateHz;
-                        Stopwatch stopwatch = Stopwatch.StartNew();
+                    Thread renderThread = new Thread(() =>
+                      {
+                          long tickRefreshRate = (long)(new TimeSpan(0, 0, 1).Ticks / this.RefreshRateHz);
+                          Stopwatch stopwatch = Stopwatch.StartNew();
 
-                        while (Draw)
-                        {
-                            if (this._disposed)
-                            {
-                                this.Stop();
-                                break;
-                            }
+                          while (Draw)
+                          {
+                              stopwatch.Restart();
 
-                            if (ShouldRender() || IsRepositioning)
-                                this.UpdateLayeredWindow();
-                            else
-                            {
-                                if (!hasClosed)
-                                {
-                                    hasClosed = true;
-                                    if (WindowMode) // Don't destroy the handle of this window since some stream/vr apps cannot "redetect" the hud window.
-                                        this.UpdateLayeredWindow();
-                                    else
-                                        this.Hide();
-                                }
-                            }
+                              if (this._disposed)
+                              {
+                                  this.Stop();
+                                  break;
+                              }
 
-                            double msToWait = refreshRate - stopwatch.ElapsedMilliseconds;
-                            if (msToWait > 0)
-                                Thread.Sleep((int)msToWait);
-                            stopwatch.Restart();
-                        }
+                              if (ShouldRender() || IsRepositioning)
+                                  this.UpdateLayeredWindow();
+                              else
+                              {
+                                  if (!hasClosed)
+                                  {
+                                      hasClosed = true;
+                                      if (WindowMode) // Don't destroy the handle of this window since some stream/vr apps cannot "redetect" the hud window.
+                                          this.UpdateLayeredWindow();
+                                      else
+                                          this.Hide();
+                                  }
+                              }
 
-                        stopwatch.Stop();
-                    }).Start();
+                              long ticksToWait = tickRefreshRate - stopwatch.ElapsedTicks;
+                              if (ticksToWait > 0)
+                                  Thread.Sleep(TimeSpan.FromTicks(ticksToWait));
+                          }
+
+                      });
+                    renderThread.Start();
                 }
             }
             catch (Exception ex) { Debug.WriteLine(ex); }

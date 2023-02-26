@@ -20,6 +20,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace RaceElement
 {
@@ -42,8 +43,7 @@ namespace RaceElement
             InitializeComponent();
             Instance = this;
 
-
-            Debug.WriteLine($"Startup time(ms): {DateTime.Now.Subtract(startTime).TotalMilliseconds}");
+            LogWriter.WriteToLog($"Startup time(ms): {DateTime.Now.Subtract(startTime).TotalMilliseconds}");
 
             try
             {

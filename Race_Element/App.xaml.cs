@@ -3,8 +3,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Quartz;
 using RaceElement.HUD.ACC.Overlays.OverlayStartScreen;
+using RaceElement.Util;
 using RaceElement.Util.Settings;
 using System.Globalization;
+using System.IO;
+using System.Runtime;
 using System.Windows;
 
 namespace RaceElement
@@ -21,6 +24,7 @@ namespace RaceElement
 
         public App()
         {
+
             this.Startup += App_Startup;
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             Instance = this;
@@ -56,6 +60,11 @@ namespace RaceElement
                 if (e.Args[i] == "/StartMinimized")
                     StartMinimized = true;
             }
+
+            DirectoryInfo internalPath = new DirectoryInfo(FileUtil.RaceElementInternalPath);
+            if (!internalPath.Exists) internalPath.Create();
+            ProfileOptimization.SetProfileRoot(FileUtil.RaceElementInternalPath);
+            ProfileOptimization.StartProfile("RaceElementProfile");
         }
 
     }

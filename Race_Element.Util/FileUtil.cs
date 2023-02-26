@@ -7,6 +7,8 @@ namespace RaceElement.Util
     public class FileUtil
     {
         public static string RaceElementAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "Race Element\\";
+
+        public static string RaceElementInternalPath = RaceElementAppDataPath + "Internal\\";
         public static string RaceElementLogPath = RaceElementAppDataPath + "Log\\";
         public static string RaceElementTagsPath = RaceElementAppDataPath + "Tag\\";
         public static string RaceElementOverlayPath = RaceElementAppDataPath + "Overlay\\";

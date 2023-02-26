@@ -210,7 +210,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
                     }
             }
 
-            string text = $"{percentage * 100:F0} %";
+            string text = $"{percentage * 100:F0}%";
             int textWidth = (int)g.MeasureString(text, _fontFamilySmall).Width;
 
             SmoothingMode previous = g.SmoothingMode;

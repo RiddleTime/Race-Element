@@ -10,6 +10,5 @@
              d:DesignHeight="450" d:DesignWidth="800" Margin="3">
     <materialDesign:Card>
         <controls:RaceSessionBrowser></controls:RaceSessionBrowser>
-      
     </materialDesign:Card>
 </UserControl>
