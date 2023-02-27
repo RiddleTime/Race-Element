@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Drawing.Text;
 
 namespace RaceElement.HUD.Overlay.OverlayUtil
 {
@@ -60,6 +61,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil
                     g.SmoothingMode = SmoothingMode.AntiAlias;
                     g.CompositingQuality = CompositingQuality.GammaCorrected;
                     g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 
                     _renderer(g);
                 }

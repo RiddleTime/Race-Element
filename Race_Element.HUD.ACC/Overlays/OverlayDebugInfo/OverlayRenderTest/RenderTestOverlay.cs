@@ -8,92 +8,116 @@ using System.Drawing.Drawing2D;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
 {
-    [Overlay(Name = "Render Test", Description = "Just to test", OverlayType = OverlayType.Debug)]
+    [Overlay(Name = "Render Test",
+        Description = "Heat Your Room",
+        OverlayType = OverlayType.Debug)]
     internal sealed class RenderTestOverlay : AbstractOverlay
     {
-        private readonly AbcConfiguration _config = new AbcConfiguration();
-        private sealed class AbcConfiguration : OverlayConfiguration
+        private readonly RenderTestConfiguration _config = new RenderTestConfiguration();
+        private sealed class RenderTestConfiguration : OverlayConfiguration
         {
-            [ConfigGrouping("test", "Description here")]
+            [ConfigGrouping("Render", "Higher Is More Heat")]
             public TestGrouping Test { get; set; } = new TestGrouping();
             public class TestGrouping
             {
-                [IntRange(1, 250, 1)]
-                public int Herz { get; set; } = 50;
-            }
+                internal int Herz = 300;
 
-            public AbcConfiguration() => AllowRescale = true;
+                [FloatRange(0.001f, 0.080f, 0.001f, 3)]
+                public float TimeMultiplier { get; set; } = 0.008f;
+
+                [IntRange(2, 18, 2)]
+                public int Elements { get; set; } = 10;
+
+                [ToolTip("Decreases performance")]
+                public bool FpsCounter { get; set; } = false;
+            }
         }
 
+        private CachedBitmap _cachedImage;
+
+        const int initialSize = 350;
         public RenderTestOverlay(Rectangle rectangle) : base(rectangle, "Render Test")
         {
-            Width = 300;
-            Height = 300;
+            Width = initialSize;
+            Height = Width;
+            this.RefreshRateHz = _config.Test.Herz;
         }
 
-        private Font font;
+        private Font _font;
 
         public override void BeforeStart()
         {
-            font = FontUtil.FontSegoeMono(15);
-            this.RefreshRateHz = _config.Test.Herz;
+            _font = FontUtil.FontSegoeMono(16);
+
+            int scaledWidth = (int)(Width * Scale);
+            int scaledHeight = (int)(Height * Scale);
+            _cachedImage = new CachedBitmap(scaledWidth, scaledHeight, g =>
+            {
+                using SolidBrush brushBackground = new SolidBrush(Color.FromArgb(10, 0, 0, 0));
+                int boxSize = 60;
+                Rectangle box = new Rectangle(scaledWidth / 2 - boxSize / 2, scaledHeight / 2 - boxSize / 2, boxSize, boxSize);
+
+                g.FillRectangle(brushBackground, box);
+
+                if (_font != null)
+                {
+                    using StringFormat format = new StringFormat()
+                    {
+                        Alignment = StringAlignment.Center,
+                        LineAlignment = StringAlignment.Center,
+                    };
+                    using SolidBrush brushForeground = new SolidBrush(Color.FromArgb(85, 255, 69, 0));
+                    g.DrawStringWithShadow("|", _font, brushForeground, box, format);
+                }
+            });
         }
 
         public override void BeforeStop()
         {
-            font?.Dispose();
+            _font?.Dispose();
+            _cachedImage?.Dispose();
         }
 
         public override bool ShouldRender() => true;
 
-        private float timer = 0;
+        private float multiplier = 0;
 
         private DateTime _lastTime;
         private int _framesRendered = 0;
-        private double _fps;
+        private double _fps = 0;
 
         public override void Render(Graphics g)
         {
-            UpdateFps();
-
-
-            Matrix transform = g.Transform;
-            float sinus = (float)(Math.Sin(timer / 2) * Width / this.Scale / 4);
-            transform.Translate(sinus, sinus);
-            transform.RotateAt(timer * 10, new PointF((int)(Width / this.Scale / 2), (int)(Height / this.Scale / 2)));
-            transform.Shear(-sinus / 500, sinus / 500);
-
-            g.Transform = transform;
-
-            int boxSize = 50;
-            Rectangle box = new Rectangle((int)(Width / this.Scale / 2 - boxSize / 2), (int)(Height / this.Scale / 2 - boxSize / 2), boxSize, boxSize);
-
-            g.CompositingQuality = CompositingQuality.HighQuality;
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.FillRectangle(Brushes.White, box);
-
-            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
-            g.DrawStringWithShadow("Render", font, Brushes.OrangeRed, box, new StringFormat()
+            if (_config.Test.FpsCounter)
             {
-                Alignment = StringAlignment.Center,
-                LineAlignment = StringAlignment.Center,
-                FormatFlags = StringFormatFlags.NoWrap,
-            });
+                UpdateFps();
+                DrawFpsCounter(g);
+            }
 
+            using (Matrix transform = g.Transform)
+                for (int i = 1; i <= _config.Test.Elements; i++)
+                {
+                    int toggle = 1; // 1 or -1;
+                    if (i % 2 == 0) toggle *= -1;
 
-            timer += 0.2f;
+                    int translateDivider = 20;
+                    float sinus = (float)(Math.Sin(i * multiplier / translateDivider)) * toggle;
 
-            g.ResetTransform();
+                    transform.Translate((sinus * initialSize) * Scale / translateDivider, (sinus * initialSize * Scale / translateDivider) * toggle);
+                    transform.RotateAt(sinus * 2 * 180, new PointF((initialSize * Scale / 2), (initialSize * Scale / 2)));
+                    transform.Shear(-sinus / 50, sinus / 50);
+                    g.Transform = transform;
+                    _cachedImage.Draw(g, 0, 0, (int)(Width / Scale), (int)(Height / Scale));
+                }
 
-            DrawFpsCounter(g);
+            multiplier += _config.Test.TimeMultiplier;
+            _framesRendered++;
         }
 
         private void UpdateFps()
         {
-            _framesRendered++;
-
-            const double measureSeconds = 2;
-            if ((DateTime.Now - _lastTime).TotalMilliseconds >= measureSeconds * 1000)
+            const double measureSeconds = 1;
+            if ((DateTime.Now - _lastTime).TotalMilliseconds > measureSeconds * 1000)
             {
                 _fps = _framesRendered / measureSeconds;
                 _framesRendered = 0;
@@ -103,9 +127,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
 
         private void DrawFpsCounter(Graphics g)
         {
-            Rectangle fpsRect = new Rectangle(0, 0, 120, font.Height);
-            g.FillRectangle(Brushes.Black, fpsRect);
-            g.DrawStringWithShadow($"{_fps:F1} FPS", font, Brushes.White, fpsRect);
+            Rectangle fpsRect = new Rectangle(0, 0, (int)(120 * this.Scale), _font.Height);
+            g.DrawStringWithShadow($"{_fps:F0}", _font, Brushes.White, fpsRect);
         }
     }
 }

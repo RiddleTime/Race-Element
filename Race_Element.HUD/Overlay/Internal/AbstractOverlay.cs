@@ -185,46 +185,44 @@ namespace RaceElement.HUD.Overlay.Internal
                 this.hasClosed = false;
                 if (!RequestsDrawItself)
                 {
-                    new Thread(() =>
-                     {
-                         double tickRefreshRate = 1000 / this.RefreshRateHz;
-                         Stopwatch stopwatch = Stopwatch.StartNew();
+                    Thread renderThread = new Thread(() =>
+                      {
+                          double tickRefreshRate = Math.Ceiling(1000 / this.RefreshRateHz);
+                          Stopwatch stopwatch = Stopwatch.StartNew();
 
-                         while (Draw)
-                         {
-                             if (this._disposed)
-                             {
-                                 this.Stop();
-                                 break;
-                             }
+                          while (Draw)
+                          {
+                              stopwatch.Restart();
+
+                              if (this._disposed)
+                              {
+                                  this.Stop();
+                                  break;
+                              }
 
 
-                             if (ShouldRender() || IsRepositioning)
-                                 this.UpdateLayeredWindow();
-                             else
-                             {
-                                 if (!hasClosed)
-                                 {
-                                     hasClosed = true;
-                                     if (WindowMode) // Don't destroy the handle of this window since some stream/vr apps cannot "redetect" the hud window.
-                                         this.UpdateLayeredWindow();
-                                     else
-                                         this.Hide();
-                                 }
-                             }
+                              if (ShouldRender() || IsRepositioning)
+                                  this.UpdateLayeredWindow();
+                              else
+                              {
+                                  if (!hasClosed)
+                                  {
+                                      hasClosed = true;
+                                      if (WindowMode) // Don't destroy the handle of this window since some stream/vr apps cannot "redetect" the hud window.
+                                          this.UpdateLayeredWindow();
+                                      else
+                                          this.Hide();
+                                  }
+                              }
 
-                             int millisToWait = (int)(tickRefreshRate - stopwatch.ElapsedMilliseconds);
-                             if (millisToWait > 0)
-                                 Thread.Sleep(millisToWait);
-#if DEBUG
-                             else
-                                 Debug.WriteLine($"Overlay [{Name}].Render(Graphics g) is taking {-millisToWait} milliseconds too long\n  - decrease herz or improve performance.");
-#endif
+                              int millisToWait = (int)Math.Floor(tickRefreshRate - stopwatch.ElapsedMilliseconds - 0.05);
+                              if (millisToWait > 0)
+                                  Thread.Sleep(millisToWait);
+                          }
 
-                             stopwatch.Restart();
-                         }
-
-                     }).Start();
+                      });
+                    renderThread.SetApartmentState(ApartmentState.MTA);
+                    renderThread.Start();
                 }
             }
             catch (Exception ex) { Debug.WriteLine(ex); }
