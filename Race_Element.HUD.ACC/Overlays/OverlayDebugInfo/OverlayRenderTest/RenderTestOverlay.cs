@@ -20,7 +20,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
             public TestGrouping Test { get; set; } = new TestGrouping();
             public class TestGrouping
             {
-                internal int Herz = 300;
+                internal int Herz = 200;
 
                 [FloatRange(0.001f, 0.080f, 0.001f, 3)]
                 public float TimeMultiplier { get; set; } = 0.008f;
