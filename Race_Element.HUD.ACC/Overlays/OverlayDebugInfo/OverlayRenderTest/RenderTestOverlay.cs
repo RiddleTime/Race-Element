@@ -53,7 +53,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
             int scaledHeight = (int)(Height * Scale);
             _cachedImage = new CachedBitmap(scaledWidth, scaledHeight, g =>
             {
-                using SolidBrush brushBackground = new SolidBrush(Color.FromArgb(10, 0, 0, 0));
+                using SolidBrush brushBackground = new SolidBrush(Color.FromArgb(12, 0, 0, 0));
                 int boxSize = 60;
                 Rectangle box = new Rectangle(scaledWidth / 2 - boxSize / 2, scaledHeight / 2 - boxSize / 2, boxSize, boxSize);
 
@@ -66,8 +66,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
                         Alignment = StringAlignment.Center,
                         LineAlignment = StringAlignment.Center,
                     };
-                    using SolidBrush brushForeground = new SolidBrush(Color.FromArgb(85, 255, 69, 0));
-                    g.DrawStringWithShadow("|", _font, brushForeground, box, format);
+                    using SolidBrush brushForeground = new SolidBrush(Color.FromArgb(135, 255, 69, 0));
+                    g.DrawStringWithShadow("_", _font, brushForeground, box, format);
                 }
             });
         }
