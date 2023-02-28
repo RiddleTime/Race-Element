@@ -15,8 +15,8 @@ Provides Solutions for Sim Racing
 [Download Latest Release](https://github.com/RiddleTime/Race-Element/releases/latest)
 
 
-### Requires .NET Framework 4.8
-[https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48)
+### Requires .NET Framework 4.8.1
+[https://dotnet.microsoft.com/en-us/download/dotnet-framework/net481](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net4818)
 
 ### Frameworks
 - WPF
