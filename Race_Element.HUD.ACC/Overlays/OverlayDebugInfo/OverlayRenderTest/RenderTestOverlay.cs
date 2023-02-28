@@ -20,12 +20,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
             public TestGrouping Test { get; set; } = new TestGrouping();
             public class TestGrouping
             {
-                internal int Herz = 200;
+                internal int Herz = 100;
 
-                [FloatRange(0.001f, 0.080f, 0.001f, 3)]
+                [FloatRange(0.001f, 0.160f, 0.001f, 3)]
                 public float TimeMultiplier { get; set; } = 0.008f;
 
-                [IntRange(2, 18, 2)]
+                [IntRange(2, 40, 2)]
                 public int Elements { get; set; } = 10;
 
                 [ToolTip("Decreases performance")]
@@ -108,6 +108,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
                     transform.Shear(-sinus / 50, sinus / 50);
                     g.Transform = transform;
                     _cachedImage.Draw(g, 0, 0, (int)(Width / Scale), (int)(Height / Scale));
+                    g.ResetTransform();
                 }
 
             multiplier += _config.Test.TimeMultiplier;
