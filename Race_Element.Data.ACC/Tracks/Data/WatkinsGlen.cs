@@ -17,15 +17,20 @@ namespace ACCManager.Data.ACC.Tracks.Data
         public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
         {
             { new FloatRangeStruct(0.03883164f, 0.08408849f), (1, "The 90") },
-            { new FloatRangeStruct(0.1122197f, 0.2610424f), (1, "The Esses") },
-            { new FloatRangeStruct(0.3331092f, 0.395433f), (1, "Inner Loop") },
-            { new FloatRangeStruct(0.3954331f, 0.4644593f), (1, "Outer Loop") },
-            { new FloatRangeStruct(0.4897895f, 0.5415458f), (1, "Chute") },
-            { new FloatRangeStruct(0.583251f, 0.6384665f), (1, "Toe") },
-            { new FloatRangeStruct(0.7093781f, 0.757032f), (1, "Heel") },
-            { new FloatRangeStruct(0.776354f, 0.8196481f), (1, "Turn 9") },
-            { new FloatRangeStruct(0.8520821f, 0.889021f), (1, "Turn 10") },
-            { new FloatRangeStruct(0.9098449f, 0.9501061f), (1, "Turn 11") }
+            { new FloatRangeStruct(0.1122197f, 0.1562921f), (2, "The Esses") },
+            { new FloatRangeStruct(0.1569853f, 0.1971038f), (3, "The Esses") },
+            { new FloatRangeStruct(0.1981151f, 0.2610424f), (4, "The Esses") },
+            { new FloatRangeStruct(0.3331092f, 0.355317f), (5, "Inner Loop") },
+            { new FloatRangeStruct(0.3558367f, 0.3658298f), (6, "Inner Loop") },
+            { new FloatRangeStruct(0.367707f, 0.3769202f), (7, "Inner Loop") },
+            { new FloatRangeStruct(0.3781044f, 0.395433f), (8, "Inner Loop") },
+            { new FloatRangeStruct(0.3954331f, 0.4644593f), (9, "Outer Loop") },
+            { new FloatRangeStruct(0.4897895f, 0.5415458f), (10, "Chute") },
+            { new FloatRangeStruct(0.583251f, 0.6384665f), (11, "Toe") },
+            { new FloatRangeStruct(0.7093781f, 0.757032f), (12, "Heel") },
+            { new FloatRangeStruct(0.776354f, 0.8196481f), (13, string.Empty) },
+            { new FloatRangeStruct(0.8520821f, 0.889021f), (14, string.Empty) },
+            { new FloatRangeStruct(0.9098449f, 0.9501061f), (15, string.Empty) }
         };
     }
 }
