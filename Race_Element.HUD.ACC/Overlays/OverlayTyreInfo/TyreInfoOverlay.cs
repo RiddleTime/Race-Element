@@ -90,10 +90,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
             }
 
 
-            DrawTyreTemp(g, 28, 60, Wheel.FrontLeft);
-            DrawTyreTemp(g, 106, 60, Wheel.FrontRight);
-            DrawTyreTemp(g, 28, 114, Wheel.RearLeft);
-            DrawTyreTemp(g, 106, 114, Wheel.RearRight);
+            DrawTyreTemp(g, 28, 58, Wheel.FrontLeft);
+            DrawTyreTemp(g, 106, 58, Wheel.FrontRight);
+            DrawTyreTemp(g, 28, 116, Wheel.RearLeft);
+            DrawTyreTemp(g, 106, 116, Wheel.RearRight);
         }
 
         private void DrawTyrePressures(Graphics g)
@@ -135,7 +135,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
             g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
             g.TextContrast = 1;
 
-            string text = $"{temp:F1}";
+            string text = $"{temp:F1}°";
             int textWidth = (int)g.MeasureString(text, _fontFamily).Width;
 
             Rectangle backgroundDimension = new Rectangle(x - textWidth / 2, y, textWidth, _fontFamily.Height);
@@ -166,7 +166,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
                     }
             }
 
-            string text = $"{averageBrakeTemps:F0} C";
+            string text = $"{averageBrakeTemps:F0}°";
             int textWidth = (int)g.MeasureString(text, _fontFamilySmall).Width;
 
             SmoothingMode previous = g.SmoothingMode;
