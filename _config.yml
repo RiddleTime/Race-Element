@@ -22,12 +22,12 @@ dash:
   # generate social links in footer
   # supported colors: green, red, orange, blue, cyan, pink, teal, yellow, indigo, purple
   social_links:
-    - url: https://discord.gg/26AAEW5mUq 
-      icon: discord
-      color: purple
     - url: https://paypal.me/CompetizioneManager
       icon: heart
       color: red
+    - url: https://discord.gg/26AAEW5mUq 
+      icon: discord
+      color: purple
     - url: https://github.com/RiddleTime/Race-Element
       icon: github
       color: white
