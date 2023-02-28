@@ -35,7 +35,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
 
         private CachedBitmap _cachedImage;
 
-        const int initialSize = 350;
+        const int initialSize = 500;
         public RenderTestOverlay(Rectangle rectangle) : base(rectangle, "Render Test")
         {
             Width = initialSize;
