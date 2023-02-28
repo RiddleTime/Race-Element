@@ -13,7 +13,6 @@ namespace ACCManager.Data.ACC.Tracks.Data
 
         public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
         {
-            // https://upload.wikimedia.org/wikipedia/commons/5/54/Spa-Francorchamps_of_Belgium.svg
             { new FloatRangeStruct(0.03371242f, 0.05937995f), (1, "La Source")},
             { new FloatRangeStruct(0.08617536f, 0.109296f), (2, string.Empty)},
             { new FloatRangeStruct(0.1435904f, 0.1520347f), (3, "Eau Rouge") },
