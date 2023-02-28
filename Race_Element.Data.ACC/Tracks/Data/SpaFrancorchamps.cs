@@ -1,9 +1,6 @@
 ﻿using RaceElement.Util.DataTypes;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.Data.ACC.Tracks.Data
@@ -16,10 +13,11 @@ namespace ACCManager.Data.ACC.Tracks.Data
 
         public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
         {
+            // https://upload.wikimedia.org/wikipedia/commons/5/54/Spa-Francorchamps_of_Belgium.svg
             { new FloatRangeStruct(0.03371242f, 0.05937995f), (1, "La Source")},
-            { new FloatRangeStruct(0.1435904f, 0.1541221f), (1, "Eau Rouge") },
+            { new FloatRangeStruct(0.1435904f, 0.1541221f), (3, "Eau Rouge") },
             { new FloatRangeStruct(0.1541221f, 0.1960247f), (1, "Raidillon") },
-            { new FloatRangeStruct(0.2178622f, 0.2374316f), (1, "Kemmel") },
+            { new FloatRangeStruct(0.2178622f, 0.2374316f), (6, "Kemmel") },
             { new FloatRangeStruct(0.3228342f, 0.3612153f), (1, "Les Combes") },
             { new FloatRangeStruct(0.3668639f, 0.3903512f), (1, "Malmedy") },
             { new FloatRangeStruct(0.4134307f, 0.4498297f), (1, "Bruxelles") },
