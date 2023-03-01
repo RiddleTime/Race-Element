@@ -24,9 +24,7 @@ namespace RaceElement.HUD.Overlay.Configuration
             List<byte> collection = new List<byte>();
 
             for (byte i = intRange.Min; i < intRange.Max + intRange.Increment; i += intRange.Increment)
-            {
                 collection.Add(i);
-            }
 
             return collection.ToArray();
         }

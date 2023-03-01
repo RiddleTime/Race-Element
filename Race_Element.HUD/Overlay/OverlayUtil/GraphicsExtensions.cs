@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using static System.Windows.Forms.DataFormats;
 
 namespace RaceElement.HUD.Overlay.OverlayUtil
 {
     public static class GraphicsExtensions
     {
+        #region // Draw String With Shadow in at Location
         public static void DrawStringWithShadow(this Graphics g, string text, Font font, Color color, PointF location, StringFormat format = null)
         {
             DrawStringWithShadow(g, text, font, color, Color.FromArgb(60, Color.Black), location, 0.75f, format);
@@ -29,19 +29,22 @@ namespace RaceElement.HUD.Overlay.OverlayUtil
 
         public static void DrawStringWithShadow(this Graphics g, string text, Font font, Brush brush, Color shadowColor, PointF location, float shadowDistance, StringFormat format = null)
         {
-            format ??= new StringFormat();
+            format ??= StringFormat.GenericDefault;
             g.DrawString(text, font, new SolidBrush(shadowColor), new PointF(location.X + shadowDistance, location.Y + shadowDistance), format);
             g.DrawString(text, font, brush, location, format);
         }
 
         public static void DrawStringWithShadow(this Graphics g, string text, Font font, Color color, Color shadowColor, PointF location, float shadowDistance, StringFormat format = null)
         {
-            format ??= new StringFormat();
+            format ??= StringFormat.GenericDefault;
 
             g.DrawString(text, font, new SolidBrush(shadowColor), new PointF(location.X + shadowDistance, location.Y + shadowDistance), format);
             g.DrawString(text, font, new SolidBrush(color), location, format);
         }
+        #endregion
 
+
+        #region // Draw String With Shadow in Rectangle.
         public static void DrawStringWithShadow(this Graphics g, string text, Font font, Color color, RectangleF rectangle, StringFormat format = null)
         {
             DrawStringWithShadow(g, text, font, color, Color.FromArgb(60, Color.Black), rectangle, 0.75f, format);
@@ -54,7 +57,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil
 
         public static void DrawStringWithShadow(this Graphics g, string text, Font font, Color color, Color shadowColor, RectangleF rectangle, float shadowDistance, StringFormat format = null)
         {
-            format ??= new StringFormat();
+            format ??= StringFormat.GenericDefault;
 
             rectangle.Y += shadowDistance;
             g.DrawString(text, font, new SolidBrush(shadowColor), rectangle, format);
@@ -64,13 +67,14 @@ namespace RaceElement.HUD.Overlay.OverlayUtil
 
         public static void DrawStringWithShadow(this Graphics g, string text, Font font, Brush color, Brush shadowColor, RectangleF rectangle, float shadowDistance, StringFormat format = null)
         {
-            format ??= new StringFormat();
+            format ??= StringFormat.GenericDefault;
 
             rectangle.Y += shadowDistance;
             g.DrawString(text, font, shadowColor, rectangle, format);
             rectangle.Y -= shadowDistance;
             g.DrawString(text, font, color, rectangle, format);
         }
+        #endregion
 
         public static void DrawEllipse(this Graphics graphics, Pen pen,
                                   float centerX, float centerY, float radius)

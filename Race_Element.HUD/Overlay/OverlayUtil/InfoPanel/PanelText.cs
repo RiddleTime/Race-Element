@@ -6,7 +6,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.InfoPanel
     public class PanelText
     {
         private readonly Font _font;
-        private readonly RectangleF _rect;
+        private RectangleF _rect;
 
         private readonly CachedBitmap _cachedBackground;
         private CachedBitmap _cachedPanelText;
@@ -28,6 +28,9 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.InfoPanel
             _text = text;
             _cachedBackground = cachedBackground;
         }
+
+        public void SetWidth(int width) => _rect.Width = width;
+        public void SetHeight(int height) => _rect.Height = height;
 
         public void Draw(Graphics g, string text, float scale)
         {

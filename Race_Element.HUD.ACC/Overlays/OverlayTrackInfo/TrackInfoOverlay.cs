@@ -68,8 +68,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
 
             int lineHeight = _font.Height + 1;
 
-            int unscaledHeaderWidth = 70;
-            int unscaledValueWidth = 90;
+            int unscaledHeaderWidth = 66;
+            int unscaledValueWidth = 94;
 
             int headerWidth = (int)(unscaledHeaderWidth * this.Scale);
             int valueWidth = (int)(unscaledValueWidth * this.Scale);
@@ -78,7 +78,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
             RectangleF headerRect = new RectangleF(0, 0, headerWidth, lineHeight);
             RectangleF valueRect = new RectangleF(headerWidth, 0, valueWidth, lineHeight);
             StringFormat headerFormat = new StringFormat() { Alignment = StringAlignment.Near };
-            StringFormat valueFormat = new StringFormat() { Alignment = StringAlignment.Center };
+            StringFormat valueFormat = new StringFormat() { Alignment = StringAlignment.Far };
 
             Color accentColor = Color.FromArgb(25, 255, 0, 0);
             CachedBitmap headerBackground = new CachedBitmap(headerWidth, lineHeight, g =>
@@ -178,13 +178,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
 
             string airTemp = Math.Round(pagePhysics.AirTemp, 2).ToString("F2");
             _ambientTempLabel.Draw(g, "Ambient", this.Scale);
-            _ambientTempValue.Draw(g, $"{airTemp} C", this.Scale);
+            _ambientTempValue.Draw(g, $"{airTemp} °C", this.Scale);
 
             if (this._config.InfoPanel.TrackTemperature)
             {
                 _trackTempLabel.Draw(g, "Track", this.Scale);
                 string roadTemp = Math.Round(pagePhysics.RoadTemp, 2).ToString("F2");
-                _trackTempValue.Draw(g, $"{roadTemp} C", this.Scale);
+                _trackTempValue.Draw(g, $"{roadTemp} °C", this.Scale);
             }
 
             _windLabel.Draw(g, "Wind", this.Scale);

@@ -60,9 +60,6 @@ namespace RaceElement
             _uiSettings = new UiSettings();
             _accManagerSettings = new AccManagerSettings();
 
-
-            this.Title = $"Race Element {GetAssemblyFileVersion()}";
-
             this.titleBar.MouseLeftButtonDown += TitleBar_MouseLeftButtonDown;
             this.titleBar.MouseLeftButtonUp += TitleBar_MouseLeftButtonUp;
             this.titleBar.MouseLeave += (s, e) => { _stopDecreaseOpacty = true; e.Handled = true; this.Opacity = MaxOpacity; };

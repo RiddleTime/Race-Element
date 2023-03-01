@@ -60,8 +60,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
         {
             _font = FontUtil.FontSegoeMono(10f * this.Scale);
             int lineHeight = _font.Height + 1;
-            int unscaledHeaderWidth = 80;
-            int unscaledValueWidth = 75;
+            int unscaledHeaderWidth = 76;
+            int unscaledValueWidth = 55;
 
             int headerWidth = (int)(unscaledHeaderWidth * this.Scale);
             int valueWidth = (int)(unscaledValueWidth * this.Scale);
@@ -70,7 +70,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
             RectangleF headerRect = new RectangleF(0, 0, headerWidth, lineHeight);
             RectangleF valueRect = new RectangleF(headerWidth, 0, valueWidth, lineHeight);
             StringFormat headerFormat = new StringFormat() { Alignment = StringAlignment.Near };
-            StringFormat valueFormat = new StringFormat() { Alignment = StringAlignment.Center };
+            StringFormat valueFormat = new StringFormat() { Alignment = StringAlignment.Far };
 
             Color accentColor = Color.FromArgb(25, 255, 0, 0);
             CachedBitmap headerBackground = new CachedBitmap(headerWidth, lineHeight, g =>
