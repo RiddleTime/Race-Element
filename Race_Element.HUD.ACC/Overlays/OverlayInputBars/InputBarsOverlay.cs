@@ -181,24 +181,24 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
             if (_config.Bars.Orientation == InputBarsConfiguration.BarOrientation.Horizontal)
             {
                 if (pagePhysics.Abs > 0)
-                    _horizontalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.AssistsOpacity, _config.Colors.AssistsColor));
+                    _horizontalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.AbsOpacity, _config.Colors.AbsColor));
                 else
                     _horizontalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.BrakeOpacity, _config.Colors.BrakeColor));
 
                 if (pagePhysics.TC > 0)
-                    _horizontalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.AssistsOpacity, _config.Colors.AssistsColor));
+                    _horizontalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.TcOpacity, _config.Colors.TcColor));
                 else
                     _horizontalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.ThrottleOpacity, _config.Colors.ThrottleColor));
             }
             else
             {
                 if (pagePhysics.Abs > 0)
-                    _verticalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.AssistsOpacity, _config.Colors.AssistsColor));
+                    _verticalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.AbsOpacity, _config.Colors.AbsColor));
                 else
                     _verticalBrakeBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.BrakeOpacity, _config.Colors.BrakeColor));
 
                 if (pagePhysics.TC > 0)
-                    _verticalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.AssistsOpacity, _config.Colors.AssistsColor));
+                    _verticalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.TcOpacity, _config.Colors.TcColor));
                 else
                     _verticalGasBar.FillBrush = new SolidBrush(Color.FromArgb(_config.Colors.ThrottleOpacity, _config.Colors.ThrottleColor));
             }
