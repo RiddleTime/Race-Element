@@ -14,8 +14,19 @@ namespace ACCManager.Data.ACC.Tracks.Data
         public override string FullName => "Monza Circuit";
         public override int TrackLength => 5793;
 
-        // https://upload.wikimedia.org/wikipedia/commons/f/f8/Monza_track_map.svg
-        // https://static.wikia.nocookie.net/f1wikia/images/c/cc/Monza2000.png/revision/latest?cb=20120502050754
-        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>();
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
+        {
+            //{ new FloatRangeStruct(0, 0), (1, "Variante del Rettifilo") },
+            //{ new FloatRangeStruct(0, 0), (2, "Variante del Rettifilo") },
+            //{ new FloatRangeStruct(0, 0), (3, "Curva Biassono") },
+            //{ new FloatRangeStruct(0, 0), (4, "Variante della Roggia") },
+            //{ new FloatRangeStruct(0, 0), (5, "Variante della Roggia") },
+            //{ new FloatRangeStruct(0, 0), (6, "Curva di Lesmo") },
+            //{ new FloatRangeStruct(0, 0), (7, "Curva di Lesmo") },
+            //{ new FloatRangeStruct(0, 0), (8, "Variante Ascari") },
+            //{ new FloatRangeStruct(0, 0), (9, "Variante Ascari") },
+            //{ new FloatRangeStruct(0, 0), (10, "Variante Ascari") },
+            //{ new FloatRangeStruct(0, 0), (11, "Curva Parabolica") },
+        };
     }
 }

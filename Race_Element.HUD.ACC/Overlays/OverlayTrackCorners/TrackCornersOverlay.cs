@@ -11,6 +11,7 @@ using RaceElement.HUD.Overlay.OverlayUtil.InfoPanel;
 using RaceElement.Util.SystemExtensions;
 using System;
 using static RaceElement.Data.ACC.Tracks.TrackData;
+using System.Diagnostics;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 {
@@ -58,7 +59,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 
             RectangleF headerRect = new RectangleF(0, 0, headerWidth, lineHeight);
             StringFormat headerFormat = new StringFormat() { Alignment = StringAlignment.Center };
-            StringFormat valueFormat = new StringFormat() { Alignment = StringAlignment.Center };
+            StringFormat valueFormat = new StringFormat() { Alignment = StringAlignment.Near };
 
             CachedBitmap headerBackground = new CachedBitmap(headerWidth, lineHeight, g =>
             {
@@ -75,8 +76,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
             if (_config.CornerNames.Names)
             {
                 RectangleF valueRect = new RectangleF(headerWidth, 0, 10, lineHeight);
-                CachedBitmap valueBackground = GetCachedValueBackGround(10, lineHeight);
-                _cornerTextValue = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
+                _cornerTextValue = new PanelText(_font, GetCachedValueBackGround(10, lineHeight), valueRect) { StringFormat = valueFormat };
                 valueRect.Offset(0, lineHeight);
             }
 
@@ -87,6 +87,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 
         private void Instance_OnNewSessionStarted(object sender, RaceElement.Data.ACC.Database.SessionData.DbRaceSession e)
         {
+            Trace.WriteLine("Resetting current track, updating width.");
             _currentTrack = null;
             UpdateWidth();
         }
@@ -106,7 +107,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 
         private void UpdateWidth()
         {
-            if (pageGraphics.Status != RaceElement.ACCSharedMemory.AcStatus.AC_LIVE)
+            if (!(pageGraphics.Status == RaceElement.ACCSharedMemory.AcStatus.AC_PAUSE || pageGraphics.Status == RaceElement.ACCSharedMemory.AcStatus.AC_LIVE))
                 return;
 
             _currentTrack = Tracks.FirstOrDefault(x => x.Key == pageStatic.Track).Value;
