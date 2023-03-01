@@ -35,7 +35,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
 
         private CachedBitmap _cachedImage;
 
-        const int initialSize = 500;
+        private const int initialSize = 800;
         public RenderTestOverlay(Rectangle rectangle) : base(rectangle, "Render Test")
         {
             Width = initialSize;
@@ -57,7 +57,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
                 int boxSize = 60;
                 Rectangle box = new Rectangle(scaledWidth / 2 - boxSize / 2, scaledHeight / 2 - boxSize / 2, boxSize, boxSize);
 
-                g.FillRectangle(brushBackground, box);
+                g.FillEllipse(brushBackground, box);
 
                 if (_font != null)
                 {
