@@ -6,14 +6,11 @@ using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Drawing.Text;
 using System.Drawing.Drawing2D;
-using static RaceElement.Data.ACC.Tracks.TrackData;
 using RaceElement.HUD.Overlay.OverlayUtil.InfoPanel;
-using System.Diagnostics;
 using RaceElement.Util.SystemExtensions;
 using System;
+using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 {
@@ -35,16 +32,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
                 public bool Names { get; set; } = true;
             }
 
-            public CornerNamesConfig()
-            {
-                this.AllowRescale = true;
-            }
+            public CornerNamesConfig() => this.AllowRescale = true;
         }
-        private Font _font;
 
+        private Font _font;
         private PanelText _cornerNumberHeader;
         private PanelText _cornerTextValue;
-
         private AbstractTrackData _currentTrack;
 
         private int RoundingRadius => (int)(6 * Scale);
