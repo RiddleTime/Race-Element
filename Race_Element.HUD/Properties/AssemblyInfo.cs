@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Element Future")]
 [assembly: AssemblyProduct("RaceElement.HUD")]
-[assembly: AssemblyCopyright("Copyright 2022 © Reinier Klarenberg")]
+[assembly: AssemblyCopyright("Copyright 2023 © Reinier Klarenberg")]
 [assembly: AssemblyTrademark("Element Future")]
 [assembly: AssemblyCulture("")]
 
