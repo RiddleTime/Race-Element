@@ -8,8 +8,8 @@ namespace RaceElement.HUD.Overlay.OverlayUtil
 {
     public sealed class CachedBitmap : IDisposable
     {
-        public readonly int Width;
-        public readonly int Height;
+        public int Width;
+        public int Height;
         public delegate void Renderer(Graphics g);
 
         private Bitmap _bitmap;

@@ -77,6 +77,7 @@ namespace RaceElement.Controls.HUD
             overlay.pageGraphics.NumberOfLaps = 30;
             overlay.pageGraphics.FuelXLap = 3.012f;
             overlay.pageGraphics.SessionType = ACCSharedMemory.AcSessionType.AC_RACE;
+            overlay.pageGraphics.Status = ACCSharedMemory.AcStatus.AC_LIVE;
             overlay.pageGraphics.MandatoryPitDone = false;
             overlay.pageGraphics.NormalizedCarPosition = 0.0472972f;
             overlay.pageGraphics.DeltaLapTimeMillis = -0137;

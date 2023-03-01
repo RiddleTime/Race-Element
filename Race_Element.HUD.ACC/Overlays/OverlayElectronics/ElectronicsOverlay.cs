@@ -41,7 +41,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayElectronics
 
         public override void BeforeStart()
         {
-            _font = FontUtil.FontSegoeMono(10f * this.Scale);
+            _font = FontUtil.FontSegoeMono(11f * this.Scale);
 
             int lineHeight = _font.Height + 1;
             int unscaledHeaderWidth = 32;

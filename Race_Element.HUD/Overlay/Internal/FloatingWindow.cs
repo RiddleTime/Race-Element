@@ -840,7 +840,7 @@ namespace RaceElement.HUD.Overlay.Internal
             get { return this._size.Height; }
             set
             {
-                this._size = new Size(this._size.Width, value);
+                this.Size = new Size(this._size.Width, value);
             }
         }
         /// <summary>
@@ -851,7 +851,7 @@ namespace RaceElement.HUD.Overlay.Internal
             get { return this._size.Width; }
             set
             {
-                this._size = new Size(value, this._size.Height);
+                this.Size = new Size(value, this._size.Height);
             }
         }
         /// <summary>

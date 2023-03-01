@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Text;
 
 namespace RaceElement.HUD.Overlay.OverlayUtil.InfoPanel
@@ -6,10 +7,12 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.InfoPanel
     public class PanelText
     {
         private readonly Font _font;
-        private RectangleF _rect;
+        public RectangleF Rectangle;
 
-        private readonly CachedBitmap _cachedBackground;
         private CachedBitmap _cachedPanelText;
+
+
+        public CachedBitmap CachedBackground;
 
         // text properties
         public StringFormat StringFormat { get; set; } = new StringFormat()
@@ -23,27 +26,24 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.InfoPanel
 
         public PanelText(Font font, CachedBitmap cachedBackground, RectangleF rectangle, string text = " ")
         {
-            _rect = rectangle;
+            Rectangle = rectangle;
             _font = font;
             _text = text;
-            _cachedBackground = cachedBackground;
+            CachedBackground = cachedBackground;
         }
-
-        public void SetWidth(int width) => _rect.Width = width;
-        public void SetHeight(int height) => _rect.Height = height;
 
         public void Draw(Graphics g, string text, float scale)
         {
-            _cachedBackground?.Draw(g, (int)(_rect.X / scale), (int)(_rect.Y / scale), (int)(_rect.Width / scale), (int)(_rect.Height / scale));
+            CachedBackground?.Draw(g, (int)(Rectangle.X / scale), (int)(Rectangle.Y / scale), (int)(Rectangle.Width / scale), (int)(Rectangle.Height / scale));
 
             if (!_text.Equals(text) || _cachedPanelText == null)
             {
-                _cachedPanelText = new CachedBitmap((int)_rect.Width, (int)_rect.Height, g =>
+                _cachedPanelText = new CachedBitmap((int)Rectangle.Width, (int)Rectangle.Height, g =>
                 {
                     if (g == null)
                         return;
 
-                    RectangleF relativeRectangle = _rect;
+                    RectangleF relativeRectangle = Rectangle;
                     relativeRectangle.X = 0;
                     relativeRectangle.Y = 0;
 
@@ -57,7 +57,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.InfoPanel
             }
             _text = text;
 
-            _cachedPanelText?.Draw(g, (int)(_rect.X / scale), (int)(_rect.Y / scale), (int)(_rect.Width / scale), (int)(_rect.Height / scale));
+            _cachedPanelText?.Draw(g, (int)(Rectangle.X / scale), (int)(Rectangle.Y / scale), (int)(Rectangle.Width / scale), (int)(Rectangle.Height / scale));
         }
 
         public void Dispose()
