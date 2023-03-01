@@ -44,8 +44,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayElectronics
             _font = FontUtil.FontSegoeMono(10f * this.Scale);
 
             int lineHeight = _font.Height + 1;
-            int unscaledHeaderWidth = 35;
-            int unscaledValueWidth = 45;
+            int unscaledHeaderWidth = 32;
+            int unscaledValueWidth = 42;
 
             int headerWidth = (int)(unscaledHeaderWidth * this.Scale);
             int valueWidth = (int)(unscaledValueWidth * this.Scale);
