@@ -90,13 +90,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
             this.Height = (int)(headerRect.Top / Scale);
 
             RaceSessionTracker.Instance.OnNewSessionStarted += Instance_OnNewSessionStarted;
-            RaceSessionTracker.Instance.OnRaceWeekendEnded += Instance_OnRaceWeekendEnded;
-        }
-
-        private void Instance_OnRaceWeekendEnded(object sender, RaceElement.Data.ACC.Database.RaceWeekend.DbRaceWeekend e)
-        {
-            //_currentTrack = null;
-            //UpdateWidth();
         }
 
         private void Instance_OnNewSessionStarted(object sender, RaceElement.Data.ACC.Database.SessionData.DbRaceSession e)
@@ -121,15 +114,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
         private void UpdateWidth()
         {
             if (pageGraphics.Status != RaceElement.ACCSharedMemory.AcStatus.AC_LIVE)
-            {
                 return;
-            }
-            Debug.WriteLine("Updating Width");
-            _currentTrack = Tracks.FirstOrDefault(x => x.Key == pageStatic.Track).Value;
-            Debug.WriteLine(_currentTrack);
 
-            this.Width = (int)(_cornerNumberHeader.Rectangle.Width);
-            Debug.WriteLine($"Header Width: {Width}");
+            _currentTrack = Tracks.FirstOrDefault(x => x.Key == pageStatic.Track).Value;
+
+            this.Width = (int)_cornerNumberHeader.Rectangle.Width;
 
             if (_config.CornerNames.Names)
             {
@@ -138,19 +127,17 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
                 float maxTextWidth = GetMaxTextWidth();
                 maxTextWidth.ClipMin(10);
                 maxTextWidth = (float)Math.Ceiling(maxTextWidth);
-                Debug.WriteLine(maxTextWidth);
 
-                _cornerTextValue.CachedBackground = GetCachedValueBackGround((int)(maxTextWidth), _font.Height + 1);
+                _cornerTextValue.CachedBackground = GetCachedValueBackGround((int)maxTextWidth, _font.Height + 1);
                 _cornerTextValue.Rectangle.Width = _cornerTextValue.CachedBackground.Width;
-                this.Width += (int)(_cornerTextValue.Rectangle.Width);
-            }
 
-            Debug.WriteLine($"Total Width: {Width}");
+                this.Width += (int)_cornerTextValue.Rectangle.Width;
+            }
         }
 
         private float GetMaxTextWidth()
         {
-            float _maxTextWidth = 0;
+            float maxTextWidth = 0;
 
             CachedBitmap b = new CachedBitmap(1, 1, g =>
             {
@@ -159,19 +146,19 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
                     {
                         float textWidth = g.MeasureString(value.Item2.ToString(), _font).Width;
 
-                        if (textWidth > _maxTextWidth)
-                            _maxTextWidth = textWidth;
+                        if (textWidth > maxTextWidth)
+                            maxTextWidth = textWidth;
                     }
             });
             b.Dispose();
 
-            return _maxTextWidth;
+            return maxTextWidth;
         }
 
         public override void BeforeStop()
         {
             RaceSessionTracker.Instance.OnNewSessionStarted -= Instance_OnNewSessionStarted;
-            RaceSessionTracker.Instance.OnRaceWeekendEnded -= Instance_OnRaceWeekendEnded;
+
             _cornerNumberHeader?.Dispose();
             _cornerTextValue?.Dispose();
             _font?.Dispose();
