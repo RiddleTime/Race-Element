@@ -55,7 +55,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
 
         public TyreInfoOverlay(Rectangle rectangle) : base(rectangle, "Tyre Info")
         {
-            _fontFamilyLarge = FontUtil.FontSegoeMono(12);
+            _fontFamilyLarge = FontUtil.FontSegoeMono(13);
             _fontFamily = FontUtil.FontSegoeMono(11);
             _yMono = _fontFamily.Height / 6;
             _fontFamilySmall = FontUtil.FontSegoeMono(10);
