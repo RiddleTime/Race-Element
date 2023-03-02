@@ -66,7 +66,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
         {
             _font = FontUtil.FontSegoeMono(10f * this.Scale);
 
-            int lineHeight = _font.Height + 1;
+            int lineHeight = _font.Height;
 
             int unscaledHeaderWidth = 66;
             int unscaledValueWidth = 94;
