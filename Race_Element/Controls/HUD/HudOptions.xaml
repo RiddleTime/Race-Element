@@ -48,7 +48,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <TabControl Grid.Column="0" x:Name="tabControlListOverlays">
+            <TabControl Grid.Column="0" x:Name="tabControlListOverlays" TabStripPlacement="Bottom">
                 <TabItem x:Name="tabItemOverlays">
                     <TabItem.Header>
                         <Grid>

@@ -29,6 +29,9 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
                 Cursor = Cursors.Hand,
                 VerticalAlignment = VerticalAlignment.Center,
             };
+            //_grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(235, GridUnitType.Pixel) });
+            //_grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(55, GridUnitType.Pixel) });
+
 
             // add color picker
             ColorPicker colorPicker = new ColorPicker()
@@ -46,6 +49,23 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
                 Save();
             };
             _grid.Children.Add(colorPicker);
+            //Grid.SetColumn(colorPicker, 0);
+
+
+            //StackPanel rgbStacker = new StackPanel()
+            //{
+            //    Orientation = Orientation.Vertical,
+            //    Margin = new Thickness(5),
+            //};
+
+            //int fontSize = 13;
+            //rgbStacker.Children.Add(new TextBox() { Text = $"{loadedColor.R}", FontSize = fontSize, Margin = new Thickness(0), Padding = new Thickness(0), });
+            //rgbStacker.Children.Add(new TextBox() { Text = $"{loadedColor.G}", FontSize = fontSize, Margin = new Thickness(0), Padding = new Thickness(0), });
+            //rgbStacker.Children.Add(new TextBox() { Text = $"{loadedColor.B}", FontSize = fontSize, Margin = new Thickness(0), Padding = new Thickness(0), });
+
+            //_grid.Children.Add(rgbStacker);
+            //Grid.SetColumn(rgbStacker, 1);
+
         }
 
         private System.Drawing.Color FromToString(string value)
