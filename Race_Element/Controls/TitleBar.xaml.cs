@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Octokit;
+using RaceElement.Controls.Util.Updater;
+using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -151,6 +154,22 @@ namespace RaceElement.Controls
             {
                 return String.Empty;
             }
+        }
+
+        public void SetUpdateButton(string version, string releaseNotes, ReleaseAsset asset)
+        {
+            updateButton.Visibility = Visibility.Visible;
+            updateButton.Content = $"Update to {version}";
+            updateButton.ToolTip = releaseNotes;
+            updateButton.Click += (s, e) =>
+            {
+                updateButton.IsEnabled = false;
+                MainWindow.Instance.EnqueueSnackbarMessage($"Updating to version... {version}, this may take a while..");
+                new Thread(x =>
+                {
+                    new AppUpdater().Update(asset);
+                }).Start();
+            };
         }
     }
 }

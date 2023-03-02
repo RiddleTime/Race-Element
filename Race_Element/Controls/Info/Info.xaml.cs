@@ -68,8 +68,8 @@ namespace RaceElement.Controls
 
             RemoveTempVersionFile();
 #if DEBUG
-            TitleBar.Instance.SetAppTitle("Dev");
-            return;
+                        TitleBar.Instance.SetAppTitle("Dev");
+                        return;
 #endif
 #pragma warning disable CS0162 // Unreachable code detected
 
@@ -79,7 +79,8 @@ namespace RaceElement.Controls
                     return;
 
                 GitHubClient client = new GitHubClient(new ProductHeaderValue("Race-Element"), new Uri("https://github.com/RiddleTime/Race-Element.git"));
-                var releases = await client.Repository.Release.GetAll("RiddleTime", "Race-Element", new ApiOptions() { PageSize = 20 });
+                var rateLimits = await client.RateLimit.GetRateLimits();
+                var releases = await client.Repository.Release.GetAll("RiddleTime", "Race-Element", new ApiOptions() { PageSize = 5 });
 
                 if (releases != null && releases.Count > 0)
                 {
@@ -109,23 +110,9 @@ namespace RaceElement.Controls
                             await Dispatcher.BeginInvoke(new Action(() =>
                              {
                                  MainWindow.Instance.EnqueueSnackbarMessage($"A new version of Race Element is available: {latest.Name}", " Open About tab ", new Action(() => { MainWindow.Instance.tabAbout.Focus(); }));
-                                 Button openReleaseButton = new Button()
-                                 {
-                                     Margin = new Thickness(0, 0, 0, 0),
-                                     Content = $"Update to {latest.Name}",
-                                     ToolTip = $"Release notes:\n{releaseNotes}"
-                                 };
-                                 ToolTipService.SetShowDuration(openReleaseButton, int.MaxValue);
-                                 openReleaseButton.Click += (s, e) =>
-                                 {
-                                     openReleaseButton.IsEnabled = false;
-                                     MainWindow.Instance.EnqueueSnackbarMessage($"Updating to version... {latest.Name}, this may take a while..");
-                                     new Thread(x =>
-                                     {
-                                         new AppUpdater().Update(accManagerAsset);
-                                     }).Start();
-                                 };
-                                 ReleaseStackPanel.Children.Add(openReleaseButton);
+
+                                 TitleBar.Instance.SetUpdateButton(latest.Name, releaseNotes.ToString(), accManagerAsset);
+
                                  HasAddedDownloadButton = true;
                              }));
                         }

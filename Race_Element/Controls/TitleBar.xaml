@@ -23,6 +23,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="7"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="140"/>
         </Grid.ColumnDefinitions>
 
@@ -90,6 +91,14 @@
         </materialDesign:TransitioningContent>
 
         <Grid Grid.Column="2">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Visibility="Collapsed" Width="160" x:Name="updateButton" Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}">
+                    Update to 0.1.7.6
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Column="3">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
