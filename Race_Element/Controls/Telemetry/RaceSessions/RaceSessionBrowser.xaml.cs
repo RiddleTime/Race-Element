@@ -453,12 +453,12 @@ namespace RaceElement.Controls
             });
             grid.Columns.Add(new DataGridTextColumn()
             {
-                Header = "°C Air",
+                Header = "Air °C ",
                 Binding = new Binding("TempAmbient") { Converter = new FormattedFloatConverter(2) }
             });
             grid.Columns.Add(new DataGridTextColumn()
             {
-                Header = "°C Track",
+                Header = "Track °C",
                 Binding = new Binding("TempTrack") { Converter = new FormattedFloatConverter(2) }
             });
 

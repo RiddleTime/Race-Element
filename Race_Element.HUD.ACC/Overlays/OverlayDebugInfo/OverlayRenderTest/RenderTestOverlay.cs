@@ -26,14 +26,15 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
                 public float TimeMultiplier { get; set; } = 0.008f;
 
                 [IntRange(2, 40, 2)]
-                public int Elements { get; set; } = 10;
+                public int Elements { get; set; } = 20;
 
                 [ToolTip("Decreases performance")]
                 public bool FpsCounter { get; set; } = false;
             }
         }
 
-        private CachedBitmap _cachedImage;
+        private CachedBitmap _cachedPositiveImage;
+        private CachedBitmap _cachedNegativeImage;
 
         private const int initialSize = 800;
         public RenderTestOverlay(Rectangle rectangle) : base(rectangle, "Render Test")
@@ -51,10 +52,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
 
             int scaledWidth = (int)(Width * Scale);
             int scaledHeight = (int)(Height * Scale);
-            _cachedImage = new CachedBitmap(scaledWidth, scaledHeight, g =>
+            _cachedPositiveImage = new CachedBitmap(scaledWidth, scaledHeight, g =>
             {
-                using SolidBrush brushBackground = new SolidBrush(Color.FromArgb(12, 0, 0, 0));
-                int boxSize = 60;
+                using SolidBrush brushBackground = new SolidBrush(Color.FromArgb(14, 0, 0, 0));
+                int boxSize = 16;
                 Rectangle box = new Rectangle(scaledWidth / 2 - boxSize / 2, scaledHeight / 2 - boxSize / 2, boxSize, boxSize);
 
                 g.FillEllipse(brushBackground, box);
@@ -65,9 +66,31 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
                     {
                         Alignment = StringAlignment.Center,
                         LineAlignment = StringAlignment.Center,
+                        Trimming = StringTrimming.EllipsisCharacter,
                     };
-                    using SolidBrush brushForeground = new SolidBrush(Color.FromArgb(135, 255, 69, 0));
-                    g.DrawStringWithShadow("_", _font, brushForeground, box, format);
+                    using SolidBrush brushForeground = new SolidBrush(Color.FromArgb(185, 255, 69, 0));
+                    g.DrawStringWithShadow("+", _font, brushForeground, box, format);
+                }
+            });
+
+            _cachedNegativeImage = new CachedBitmap(scaledWidth, scaledHeight, g =>
+            {
+                using SolidBrush brushBackground = new SolidBrush(Color.FromArgb(14, 0, 0, 0));
+                int boxSize = 16;
+                Rectangle box = new Rectangle(scaledWidth / 2 - boxSize / 2, scaledHeight / 2 - boxSize / 2, boxSize, boxSize);
+
+                g.FillEllipse(brushBackground, box);
+
+                if (_font != null)
+                {
+                    using StringFormat format = new StringFormat()
+                    {
+                        Alignment = StringAlignment.Center,
+                        LineAlignment = StringAlignment.Center,
+                        Trimming = StringTrimming.EllipsisCharacter,
+                    };
+                    using SolidBrush brushForeground = new SolidBrush(Color.FromArgb(185, 69, 255, 0));
+                    g.DrawStringWithShadow("-", _font, brushForeground, box, format);
                 }
             });
         }
@@ -75,7 +98,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
         public override void BeforeStop()
         {
             _font?.Dispose();
-            _cachedImage?.Dispose();
+            _cachedPositiveImage?.Dispose();
+            _cachedNegativeImage?.Dispose();
         }
 
         public override bool ShouldRender() => true;
@@ -95,21 +119,36 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
             }
 
             using (Matrix transform = g.Transform)
+            {
                 for (int i = 1; i <= _config.Test.Elements; i++)
                 {
-                    int toggle = 1; // 1 or -1;
-                    if (i % 2 == 0) toggle *= -1;
-
-                    int translateDivider = 20;
+                    int toggle = i % 2 == 0 ? -1 : 1;
+                    int translateDivider = 40;
                     float sinus = (float)(Math.Sin(i * multiplier / translateDivider)) * toggle;
 
                     transform.Translate((sinus * initialSize) * Scale / translateDivider, (sinus * initialSize * Scale / translateDivider) * toggle);
                     transform.RotateAt(sinus * 2 * 180, new PointF((initialSize * Scale / 2), (initialSize * Scale / 2)));
                     transform.Shear(-sinus / 50, sinus / 50);
                     g.Transform = transform;
-                    _cachedImage.Draw(g, 0, 0, (int)(Width / Scale), (int)(Height / Scale));
-                    g.ResetTransform();
+                    _cachedPositiveImage.Draw(g, 0, 0, (int)(Width / Scale), (int)(Height / Scale));
                 }
+                g.ResetTransform();
+
+                for (int i = 1; i <= _config.Test.Elements; i++)
+                {
+                    int toggle = i % 2 == 0 ? -1 : 1;
+                    int translateDivider = 40;
+                    float sinus = (float)(Math.Sin(i * multiplier * -1 / translateDivider)) * toggle;
+
+                    transform.Translate((sinus * initialSize) * Scale / translateDivider, (sinus * initialSize * Scale / translateDivider) * toggle);
+                    transform.RotateAt(sinus * 2 * 180, new PointF((initialSize * Scale / 2), (initialSize * Scale / 2)));
+                    transform.Shear(-sinus / 50, sinus / 50);
+                    g.Transform = transform;
+                    _cachedNegativeImage.Draw(g, 0, 0, (int)(Width / Scale), (int)(Height / Scale));
+                }
+                g.ResetTransform();
+
+            }
 
             multiplier += _config.Test.TimeMultiplier;
             _framesRendered++;

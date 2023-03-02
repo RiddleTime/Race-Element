@@ -122,6 +122,7 @@ namespace RaceElement
                 DataObject data = (DataObject)e.Data;
 
                 StringCollection droppedItems = data.GetFileDropList();
+                Debug.WriteLine(data.GetText());
                 if (droppedItems.Count == 1)
                 {
                     string droppedItem = droppedItems[0];

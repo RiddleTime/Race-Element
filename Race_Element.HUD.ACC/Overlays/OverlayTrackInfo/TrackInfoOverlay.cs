@@ -48,8 +48,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
         private PanelText _globalFlagValue;
         private PanelText _sessionTypeLabel;
         private PanelText _sessionTypeValue;
-        private PanelText _ambientTempLabel;
-        private PanelText _ambientTempValue;
+        private PanelText _airTempLabel;
+        private PanelText _airTempValue;
         private PanelText _trackTempLabel;
         private PanelText _trackTempValue;
         private PanelText _gripLabel;
@@ -125,8 +125,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
             headerRect.Offset(0, lineHeight);
             valueRect.Offset(0, lineHeight);
 
-            _ambientTempLabel = new PanelText(_font, headerBackground, headerRect) { StringFormat = headerFormat };
-            _ambientTempValue = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
+            _airTempLabel = new PanelText(_font, headerBackground, headerRect) { StringFormat = headerFormat };
+            _airTempValue = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
             headerRect.Offset(0, lineHeight);
             valueRect.Offset(0, lineHeight);
 
@@ -177,8 +177,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
             _gripValue.Draw(g, pageGraphics.trackGripStatus.ToString(), this.Scale);
 
             string airTemp = Math.Round(pagePhysics.AirTemp, 2).ToString("F2");
-            _ambientTempLabel.Draw(g, "Ambient", this.Scale);
-            _ambientTempValue.Draw(g, $"{airTemp} °C", this.Scale);
+            _airTempLabel.Draw(g, "Air", this.Scale);
+            _airTempValue.Draw(g, $"{airTemp} °C", this.Scale);
 
             if (this._config.InfoPanel.TrackTemperature)
             {
