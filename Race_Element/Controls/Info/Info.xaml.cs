@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Text;
 
 namespace RaceElement.Controls
 {
@@ -78,25 +79,32 @@ namespace RaceElement.Controls
                     return;
 
                 GitHubClient client = new GitHubClient(new ProductHeaderValue("Race-Element"), new Uri("https://github.com/RiddleTime/Race-Element.git"));
-                var allTags = await client.Repository.GetAllTags("RiddleTime", "Race-Element");
+                var releases = await client.Repository.Release.GetAll("RiddleTime", "Race-Element", new ApiOptions() { PageSize = 20 });
 
-                if (allTags != null && allTags.Count > 0)
+                if (releases != null && releases.Count > 0)
                 {
-                    RepositoryTag latest = allTags.First();
+                    Release latest = releases.First();
 
                     long localVersion = VersionToLong(Assembly.GetEntryAssembly().GetName().Version);
                     long remoteVersion = VersionToLong(new Version(latest.Name));
+
+                    var newerVersions = releases.Where(x => VersionToLong(new Version(x.Name)) > localVersion);
 
                     if (localVersion > remoteVersion)
                         TitleBar.Instance.SetAppTitle("Beta");
 
                     if (remoteVersion > localVersion)
                     {
-                        Release release = await client.Repository.Release.GetLatest("RiddleTime", "Race-Element");
-
-                        if (release != null)
+                        if (latest != null)
                         {
-                            var accManagerAsset = release.Assets.Where(x => x.Name == "RaceElement.exe").First();
+                            var accManagerAsset = latest.Assets.Where(x => x.Name == "RaceElement.exe").First();
+
+                            StringBuilder releaseNotes = new StringBuilder();
+                            foreach (Release newRelease in newerVersions)
+                            {
+                                releaseNotes.AppendLine(newRelease.Name);
+                                releaseNotes.AppendLine(newRelease.Body);
+                            }
 
                             await Dispatcher.BeginInvoke(new Action(() =>
                              {
@@ -105,7 +113,7 @@ namespace RaceElement.Controls
                                  {
                                      Margin = new Thickness(0, 0, 0, 0),
                                      Content = $"Update to {latest.Name}",
-                                     ToolTip = $"Release notes:\n{release.Body}"
+                                     ToolTip = $"Release notes:\n{releaseNotes}"
                                  };
                                  ToolTipService.SetShowDuration(openReleaseButton, int.MaxValue);
                                  openReleaseButton.Click += (s, e) =>

@@ -68,7 +68,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
 
             // draw angle where the wind is coming from
             g.DrawArc(new Pen(Brushes.Red, 8), rect, (float)relativeAngle - 180 - 35, 70);
-
         }
     }
 }
