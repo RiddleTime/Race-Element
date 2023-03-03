@@ -27,7 +27,7 @@ namespace ACCManager.Data.ACC.Tracks.Data
             { new FloatRangeStruct(0.5299657f, 0.5979356f), (12, "Pouhon") },
             { new FloatRangeStruct(0.622636f, 0.650161f), (13, "Les Fagnes") },
             { new FloatRangeStruct(0.651161f, 0.6814184f), (14, "Les Fagnes") },
-            { new FloatRangeStruct(0.6919841f, 0.7136846f), (15, "Stavelot") },
+            { new FloatRangeStruct(0.6919841f, 0.7136846f), (15, "Campus") },
             { new FloatRangeStruct(0.7219031f, 0.8112493f), (16, "Courbe Paul Frère") },
             { new FloatRangeStruct(0.8262254f, 0.8535456f), (17, "Blanchimont") },
             { new FloatRangeStruct(0.8585456f, 0.8978195f), (18, "Blanchimont") },
