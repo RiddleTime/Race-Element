@@ -59,7 +59,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
         public sealed override void BeforeStart()
         {
             _font = FontUtil.FontSegoeMono(10f * this.Scale);
-            int lineHeight = _font.Height + 1;
+            int lineHeight = _font.Height;
             int unscaledHeaderWidth = 76;
             int unscaledValueWidth = 55;
 

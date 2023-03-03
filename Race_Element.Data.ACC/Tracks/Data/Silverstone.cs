@@ -18,11 +18,13 @@ namespace ACCManager.Data.ACC.Tracks.Data
         // https://pbs.twimg.com/media/Dfa74LlW0AAcHU_.jpg
         public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
         {
+            { new FloatRangeStruct(0, 0), (-1, "Hamilton Straight")},
             { new FloatRangeStruct(0, 0), (1, "Abbey")},
             { new FloatRangeStruct(0, 0), (2, "Farm Curve")},
             { new FloatRangeStruct(0, 0), (3, "Village")},
             { new FloatRangeStruct(0, 0), (4, "The Loop")},
             { new FloatRangeStruct(0, 0), (5, "Alntree")},
+            { new FloatRangeStruct(0, 0), (-1, "Wellington Straight")},
             { new FloatRangeStruct(0, 0), (6, "Brooklands")},
             { new FloatRangeStruct(0, 0), (7, "Luffield ")},
             { new FloatRangeStruct(0, 0), (8, "Woodcote")},
@@ -32,6 +34,7 @@ namespace ACCManager.Data.ACC.Tracks.Data
             { new FloatRangeStruct(0, 0), (12, "Becketts")},
             { new FloatRangeStruct(0, 0), (13, "Becketts")},
             { new FloatRangeStruct(0, 0), (14, "Chapel")},
+            { new FloatRangeStruct(0, 0), (-1, "Hanger Straight")},
             { new FloatRangeStruct(0, 0), (15, "Stowe")},
             { new FloatRangeStruct(0, 0), (16, "Vale")},
             { new FloatRangeStruct(0, 0), (17, "Vale")},

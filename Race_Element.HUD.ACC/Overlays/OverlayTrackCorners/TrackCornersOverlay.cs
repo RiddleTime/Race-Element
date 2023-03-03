@@ -52,7 +52,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
         {
             _font = FontUtil.FontSegoeMono(14f * this.Scale);
 
-            int lineHeight = _font.Height + 1;
+            int lineHeight = _font.Height;
             int unscaledHeaderWidth = 48;
 
             int headerWidth = (int)(unscaledHeaderWidth * this.Scale);
@@ -176,6 +176,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
                     if (_config.CornerNames.Names)
                         cornerName = corner.Item2;
                 }
+                if (corner.Item1 == -1)
+                    if (_config.CornerNames.Names)
+                        cornerName = corner.Item2;
             }
 
             _cornerNumberHeader?.Draw(g, cornerNumber, Scale);

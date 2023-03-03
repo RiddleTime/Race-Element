@@ -43,7 +43,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayElectronics
         {
             _font = FontUtil.FontSegoeMono(11f * this.Scale);
 
-            int lineHeight = _font.Height + 1;
+            int lineHeight = _font.Height;
             int unscaledHeaderWidth = 38;
             int unscaledValueWidth = 44;
 

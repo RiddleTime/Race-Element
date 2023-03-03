@@ -16,6 +16,7 @@ namespace RaceElement.Data.ACC.Tracks
 
             /// <summary>
             /// the float range is the normalized track position(spline position).
+            /// (int, string) => (corner number, corner name). -1 will only show "name", use for straights.
             /// </summary>
             public abstract Dictionary<FloatRangeStruct, (int, string)> CornerNames { get; }
         }
