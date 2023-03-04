@@ -55,33 +55,33 @@ namespace RaceElement.Data.ACC.EntryList
 
         internal void Start()
         {
-#if DEBUG
+//#if DEBUG
 
             _isRunning = true;
             BroadcastTracker.Instance.OnRealTimeCarUpdate += RealTimeCarUpdate_EventHandler;
             BroadcastTracker.Instance.OnEntryListUpdate += EntryListUpdate_EventHandler;
             BroadcastTracker.Instance.OnBroadcastEvent += Broadcast_EventHandler;
 
-            _accidentListTracker.Start();
+            //_accidentListTracker.Start();
 
             StartEntryListCleanupTracker();
             Debug.WriteLine("Entrylist tracker started.");
-#endif
+//#endif
         }
 
         internal void Stop()
         {
-#if DEBUG
+//#if DEBUG
             Debug.WriteLine("Stopping EntryListTracker");
             _isRunning = false;
             BroadcastTracker.Instance.OnRealTimeCarUpdate -= RealTimeCarUpdate_EventHandler;
             BroadcastTracker.Instance.OnEntryListUpdate -= EntryListUpdate_EventHandler;
             BroadcastTracker.Instance.OnBroadcastEvent -= Broadcast_EventHandler;
 
-            _accidentListTracker.Stop();
+            //_accidentListTracker.Stop();
 
             _entryListCars?.Clear();
-#endif
+//#endif
         }
 
         private void StartEntryListCleanupTracker()

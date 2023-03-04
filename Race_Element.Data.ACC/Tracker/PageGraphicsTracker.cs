@@ -16,8 +16,7 @@ namespace RaceElement.Data.ACC.Tracker
         {
             get
             {
-                if (_instance == null)
-                    _instance = new PageGraphicsTracker();
+                _instance ??= new PageGraphicsTracker();
 
                 return _instance;
             }
@@ -71,9 +70,9 @@ namespace RaceElement.Data.ACC.Tracker
                                     if (sPageFilePhysics.PacketId <= previousPhysicsPackedId || sPageFilePhysics.PacketId == 0)
                                     {
                                         BroadcastTracker.Instance.Disconnect();
-//#if DEBUG
+                                        //#if DEBUG
                                         EntryListTracker.Instance.Stop();
-//#endif
+                                        //#endif
 
                                         previousPhysicsPackedId = 0;
                                     }
@@ -84,9 +83,9 @@ namespace RaceElement.Data.ACC.Tracker
                                         if (sPageFilePhysics.PacketId != previousPhysicsPackedId)
                                         {
                                             BroadcastTracker.Instance.Connect();
-//#if DEBUG
+                                            //#if DEBUG
                                             EntryListTracker.Instance.Start();
-//#endif
+                                            //#endif
                                         }
 
                                 }
@@ -102,9 +101,9 @@ namespace RaceElement.Data.ACC.Tracker
                                 if (!BroadcastTracker.Instance.IsConnected)
                                 {
                                     BroadcastTracker.Instance.Connect();
-#if DEBUG
+                                    //#if DEBUG
                                     EntryListTracker.Instance.Start();
-#endif
+                                    //#endif
                                 }
 
                                 if (!SetupHiderTracker.Instance.IsTracking)
@@ -116,9 +115,9 @@ namespace RaceElement.Data.ACC.Tracker
                             if (BroadcastTracker.Instance.IsConnected)
                             {
                                 BroadcastTracker.Instance.Disconnect();
-#if DEBUG
+                                //#if DEBUG
                                 EntryListTracker.Instance.Stop();
-#endif
+                                //#endif
                             }
                         }
                     }

@@ -18,10 +18,10 @@ using static RaceElement.HUD.Overlay.OverlayUtil.InfoTable;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 {
-#if DEBUG
+    //#if DEBUG
     [Overlay(Name = "Entrylist Overlay", Version = 1.00, OverlayType = OverlayType.Debug,
 Description = "A panel showing live broadcast track data.")]
-#endif
+    //#endif
     internal sealed class EntryListOverlay : AbstractOverlay
     {
         private readonly EntryListDebugConfig _config = new EntryListDebugConfig();
