@@ -48,6 +48,7 @@ namespace RaceElement.Data.ACC.Tracker
             _client = new ACCUdpRemoteClient(IPAddress.Loopback.MapToIPv4().ToString()/* "127.0.0.1"*/, config.UpdListenerPort, string.Empty, config.ConnectionPassword, config.CommandPassword, 100);
 
             AddEventListeners(ref _client);
+            Debug.WriteLine("Connected broadcast client");
         }
 
         private void AddEventListeners(ref ACCUdpRemoteClient client)
@@ -112,6 +113,7 @@ namespace RaceElement.Data.ACC.Tracker
                 _client.Shutdown();
                 _client.Dispose();
             }
+            Debug.WriteLine("Disconnected broadcast client");
         }
 
         public void Dispose()

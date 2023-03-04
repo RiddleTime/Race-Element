@@ -52,6 +52,7 @@ namespace RaceElement.Data.ACC.Tracker
 
             Task.Run(() =>
             {
+                int previousPhysicsPackedId = 0;
                 while (isTracking)
                 {
                     try
@@ -61,16 +62,37 @@ namespace RaceElement.Data.ACC.Tracker
                         if (AccProcess.IsRunning)
                         {
                             SPageFileGraphic sPageFileGraphic = ACCSharedMemory.Instance.ReadGraphicsPageFile(false);
+                            SPageFilePhysics sPageFilePhysics = ACCSharedMemory.Instance.ReadPhysicsPageFile(false);
 
                             if (sPageFileGraphic.Status == AcStatus.AC_OFF)
                             {
                                 if (BroadcastTracker.Instance.IsConnected)
                                 {
-                                    BroadcastTracker.Instance.Disconnect();
-#if DEBUG
-                                    EntryListTracker.Instance.Stop();
-#endif
+                                    if (sPageFilePhysics.PacketId <= previousPhysicsPackedId || sPageFilePhysics.PacketId == 0)
+                                    {
+                                        BroadcastTracker.Instance.Disconnect();
+//#if DEBUG
+                                        EntryListTracker.Instance.Stop();
+//#endif
+
+                                        previousPhysicsPackedId = 0;
+                                    }
                                 }
+                                else
+                                {
+                                    if (!BroadcastTracker.Instance.IsConnected)
+                                        if (sPageFilePhysics.PacketId != previousPhysicsPackedId)
+                                        {
+                                            BroadcastTracker.Instance.Connect();
+//#if DEBUG
+                                            EntryListTracker.Instance.Start();
+//#endif
+                                        }
+
+                                }
+
+
+                                previousPhysicsPackedId = sPageFilePhysics.PacketId;
 
                                 if (SetupHiderTracker.Instance.IsTracking)
                                     SetupHiderTracker.Instance.Dispose();

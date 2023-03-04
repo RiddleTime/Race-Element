@@ -65,6 +65,7 @@ namespace RaceElement.Data.ACC.EntryList
             _accidentListTracker.Start();
 
             StartEntryListCleanupTracker();
+            Debug.WriteLine("Entrylist tracker started.");
 #endif
         }
 
@@ -93,16 +94,16 @@ namespace RaceElement.Data.ACC.EntryList
                     {
                         Thread.Sleep(100);
 
-                        int[] activeCarIds = ACCSharedMemory.Instance.ReadGraphicsPageFile().CarIds;
+                        //int[] activeCarIds = ACCSharedMemory.Instance.ReadGraphicsPageFile().CarIds;
 
-                        List<KeyValuePair<int, CarData>> datas = _entryListCars.ToList();
-                        foreach (var entryListCar in datas)
-                        {
-                            bool isInServer = activeCarIds.Contains(entryListCar.Key);
-                            if (!isInServer)
-                                lock (_entryListCars)
-                                    _entryListCars.Remove(entryListCar.Key);
-                        }
+                        //List<KeyValuePair<int, CarData>> datas = _entryListCars.ToList();
+                        //foreach (var entryListCar in datas)
+                        //{
+                        //    bool isInServer = activeCarIds.Contains(entryListCar.Key);
+                        //    if (!isInServer)
+                        //        lock (_entryListCars)
+                        //            _entryListCars.Remove(entryListCar.Key);
+                        //}
                     }
                 }
                 catch (Exception ex)
