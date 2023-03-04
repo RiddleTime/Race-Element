@@ -18,7 +18,6 @@
     </UserControl.Resources>
 
     <Grid>
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="270"/>
             <ColumnDefinition Width="*"/>
@@ -29,22 +28,22 @@
 
         <Grid Grid.Row="0" Grid.Column="1" Panel.ZIndex="500"
                  Margin="14,350,0,0" Opacity="0.95">
-            <Border BorderBrush="#28000000" BorderThickness="2,0,0,0" Background="#0F000000" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Border BorderBrush="#38000000" BorderThickness="3,3,0,0" Background="#0F000000" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <StackPanel Orientation="Vertical">
                     <ListBox SelectionMode="Extended" Background="Transparent" Focusable="False" HorizontalContentAlignment="Center" 
                         Style="{StaticResource MaterialDesignToolToggleFlatListBox}" Margin="0" Padding="0">
 
                         <ListBoxItem Width="90" Height="80" x:Name="listBoxItemToggleDemoMode" ToolTip="Toggles Always Visible. (By default HUDs become visible once the engine is running)" 
-                    Content="{materialDesign:PackIcon Kind=Visibility,Size=48}" HorizontalContentAlignment="Center" Foreground="DarkGray" Padding="0"
-                    Cursor="Hand" Focusable="False" Style="{StaticResource MaterialDesignNavigationListBoxItem}" />
+                            Content="{materialDesign:PackIcon Kind=Visibility,Size=48}" HorizontalContentAlignment="Center" Foreground="DarkGray" Padding="0"
+                            Cursor="Hand" Focusable="False" Style="{StaticResource MaterialDesignNavigationListBoxItem}" /> 
                     </ListBox>
 
                     <ListBox SelectionMode="Extended" Background="Transparent" Focusable="False" HorizontalContentAlignment="Center" 
                         Style="{StaticResource MaterialDesignToolToggleFlatListBox}"  Margin="0" Padding="0">
 
                         <ListBoxItem Width="90" Height="80" x:Name="listBoxItemToggleMovementMode" ToolTip="Toggles Movement mode. (Keyboard: Control + Home)" 
-                    Content="{materialDesign:PackIcon Kind=ArrowAll, Size=48}" HorizontalContentAlignment="Center" Foreground="DarkGray" Padding="0"
-                    Cursor="Hand" Focusable="False" Style="{StaticResource MaterialDesignNavigationListBoxItem}" />
+                            Content="{materialDesign:PackIcon Kind=ArrowAll, Size=48}" HorizontalContentAlignment="Center" Foreground="DarkGray" Padding="0"
+                            Cursor="Hand" Focusable="False" Style="{StaticResource MaterialDesignNavigationListBoxItem}" />
                     </ListBox>
                 </StackPanel>
             </Border>

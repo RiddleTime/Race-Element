@@ -15,11 +15,14 @@ using System.Diagnostics;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 {
+
+#if DEBUG
     [Overlay(Name = "Track Corners",
         Description = "Shows corner/sector names for each track.",
         OverlayType = OverlayType.Release,
         OverlayCategory = OverlayCategory.Track,
         Version = 1.00)]
+#endif
     internal sealed class TrackCornersOverlay : AbstractOverlay
     {
         private readonly CornerNamesConfig _config = new CornerNamesConfig();
