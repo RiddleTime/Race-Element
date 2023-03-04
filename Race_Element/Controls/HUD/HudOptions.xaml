@@ -27,8 +27,8 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Grid.Column="1" Panel.ZIndex="500"
-                 Margin="14,350,0,0" Opacity="0.95">
-            <Border BorderBrush="#38000000" BorderThickness="3,3,0,0" Background="#0F000000" HorizontalAlignment="Left" VerticalAlignment="Top">
+                 Margin="6,350,0,0" Opacity="0.95">
+            <Border BorderBrush="#38000000" BorderThickness="3,0,0,0" Background="#0F000000" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical">
                     <ListBox SelectionMode="Extended" Background="Transparent" Focusable="False" HorizontalContentAlignment="Center" 
                         Style="{StaticResource MaterialDesignToolToggleFlatListBox}" Margin="0" Padding="0">
@@ -120,15 +120,15 @@
         <materialDesign:Card x:Name="cardOverlayConfig" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="5,0,2,0">
             <Grid Background="#65101010">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" MinHeight="80" MaxHeight="90"/>
                     <RowDefinition Height="260"/>
+                    <RowDefinition Height="*" MaxHeight="90"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0" x:Name="titleBar" />
-
-                <Image Grid.Row="1" x:Name="previewImage" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0"
+                <Image Grid.Row="0" x:Name="previewImage" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0"
                        ToolTip="This is a preview, the scaling will become visible once you Activate the overlay."/>
+
+                <StackPanel Grid.Row="1" x:Name="titleBar" />
 
                 <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
                     <StackPanel  x:Name="configStackPanel"/>
