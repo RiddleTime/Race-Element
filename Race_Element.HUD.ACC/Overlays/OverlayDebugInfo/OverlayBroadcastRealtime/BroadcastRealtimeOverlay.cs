@@ -25,8 +25,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
         {
             this.AllowReposition = false;
             this.RefreshRateHz = 10;
-            this.Width = 300;
-            this.Height = 300;
+            this.Width = 370;
+            this.Height = 280;
 
             _table = new InfoTable(9, new int[] { 200 });
         }

@@ -67,9 +67,9 @@ Description = "A panel showing live broadcast track data.")]
 
             float fontSize = 9;
             var font = FontUtil.FontSegoeMono(fontSize);
-            _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 13), (int)(font.Size * 13), (int)(font.Size * 8), (int)(font.Size * 8) });
+            _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 20), (int)(font.Size * 8), (int)(font.Size * 8), (int)(font.Size * 8) });
 
-            this.Width = 415;
+            this.Width = 420;
             this.Height = 800;
         }
 
@@ -295,7 +295,6 @@ Description = "A panel showing live broadcast track data.")]
 
             switch (broadCastRealTime.SessionType)
             {
-                case RaceSessionType.Practice:
                 case RaceSessionType.Race:
                     {
                         switch (broadCastRealTime.Phase)
@@ -343,7 +342,7 @@ Description = "A panel showing live broadcast track data.")]
                         break;
                     }
 
-
+                case RaceSessionType.Practice:
                 case RaceSessionType.Qualifying:
                     {
                         cars.Sort((a, b) =>

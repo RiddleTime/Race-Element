@@ -123,37 +123,40 @@ namespace RaceElement
 
                 StringCollection droppedItems = data.GetFileDropList();
                 Debug.WriteLine(data.GetText());
+
+                string droppedItem = string.Empty;
+
                 if (droppedItems.Count == 1)
+                    droppedItem = droppedItems[0];
+                //else
+                //    droppedItem = data.GetText();
+
+                if (droppedItem.EndsWith(".json"))
                 {
-                    string droppedItem = droppedItems[0];
-
-                    if (droppedItem.EndsWith(".json"))
+                    if (SetupImporter.Instance.Open(droppedItem))
                     {
-                        if (SetupImporter.Instance.Open(droppedItem))
-                        {
-                            tabSetups.Focus();
-                            e.Handled = true;
-                            return;
-                        }
-                    }
-
-                    if (droppedItem.EndsWith(".rwdb"))
-                    {
-                        RaceSessionBrowser.Instance.OpenRaceWeekendDatabase(droppedItem);
-                        tabTelemetry.Focus();
+                        tabSetups.Focus();
                         e.Handled = true;
                         return;
                     }
+                }
 
-                    if (droppedItem.EndsWith(".7z") || droppedItem.EndsWith(".zip") || droppedItem.EndsWith(".rar"))
+                if (droppedItem.EndsWith(".rwdb"))
+                {
+                    RaceSessionBrowser.Instance.OpenRaceWeekendDatabase(droppedItem);
+                    tabTelemetry.Focus();
+                    e.Handled = true;
+                    return;
+                }
+
+                if (droppedItem.EndsWith(".7z") || droppedItem.EndsWith(".zip") || droppedItem.EndsWith(".rar"))
+                {
+                    Dispatcher.BeginInvoke(new Action(() =>
                     {
-                        Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            LiveryImporter.ImportLiveryZips(new FileInfo(droppedItem));
-                        }));
+                        LiveryImporter.ImportLiveryZips(new FileInfo(droppedItem));
+                    }));
 
-                        e.Handled = true;
-                    }
+                    e.Handled = true;
                 }
             }
         }
