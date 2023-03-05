@@ -55,7 +55,7 @@ namespace RaceElement.Data.ACC.EntryList
 
         internal void Start()
         {
-//#if DEBUG
+            //#if DEBUG
 
             _isRunning = true;
             BroadcastTracker.Instance.OnRealTimeCarUpdate += RealTimeCarUpdate_EventHandler;
@@ -66,12 +66,12 @@ namespace RaceElement.Data.ACC.EntryList
 
             StartEntryListCleanupTracker();
             Debug.WriteLine("Entrylist tracker started.");
-//#endif
+            //#endif
         }
 
         internal void Stop()
         {
-//#if DEBUG
+            //#if DEBUG
             Debug.WriteLine("Stopping EntryListTracker");
             _isRunning = false;
             BroadcastTracker.Instance.OnRealTimeCarUpdate -= RealTimeCarUpdate_EventHandler;
@@ -81,18 +81,34 @@ namespace RaceElement.Data.ACC.EntryList
             //_accidentListTracker.Stop();
 
             _entryListCars?.Clear();
-//#endif
+            //#endif
         }
 
         private void StartEntryListCleanupTracker()
         {
-            new Task(() =>
+            new Thread(() =>
             {
                 try
                 {
                     while (_isRunning)
                     {
                         Thread.Sleep(100);
+
+                        foreach (var entry in _entryListCars)
+                        {
+                            if (entry.Value != null)
+                            {
+                                if (entry.Value.CarInfo == null)
+                                {
+                                    Debug.WriteLine("Removed entry ");
+                                    Debug.WriteLine($"Entry: {entry.Value.CarInfo.GetCurrentDriverName()}");
+
+                                    Debug.WriteLine(_entryListCars.Count());
+                                    _entryListCars.Remove(entry.Key);
+                                    Debug.WriteLine(_entryListCars.Count());
+                                }
+                            }
+                        }
 
                         //int[] activeCarIds = ACCSharedMemory.Instance.ReadGraphicsPageFile().CarIds;
 
@@ -123,21 +139,21 @@ namespace RaceElement.Data.ACC.EntryList
                         {
                             if (broadcastingEvent.CarData == null)
                                 break;
-                            //lock (_entryListCars)
-                            //{
-                            //    CarData carData;
-                            //    if (_entryListCars.TryGetValue(broadcastingEvent.CarData.CarIndex, out carData))
-                            //    {
-                            //        carData.CarInfo = broadcastingEvent.CarData;
-                            //    }
-                            //    else
-                            //    {
-                            //        //Debug.WriteLine($"BroadcastingCarEventType.LapCompleted car index: {broadcastingEvent.CarData.CarIndex} not found in entry list");
-                            //        carData = new CarData();
-                            //        carData.CarInfo = broadcastingEvent.CarData;
-                            //        _entryListCars.Add(broadcastingEvent.CarData.CarIndex, carData);
-                            //    }
-                            //}
+                            lock (_entryListCars)
+                            {
+                                CarData carData;
+                                if (_entryListCars.TryGetValue(broadcastingEvent.CarData.CarIndex, out carData))
+                                {
+                                    carData.CarInfo = broadcastingEvent.CarData;
+                                }
+                                else
+                                {
+                                    //Debug.WriteLine($"BroadcastingCarEventType.LapCompleted car index: {broadcastingEvent.CarData.CarIndex} not found in entry list");
+                                    carData = new CarData();
+                                    carData.CarInfo = broadcastingEvent.CarData;
+                                    _entryListCars.Add(broadcastingEvent.CarData.CarIndex, carData);
+                                }
+                            }
                             break;
                         }
                     case BroadcastingCarEventType.Accident:

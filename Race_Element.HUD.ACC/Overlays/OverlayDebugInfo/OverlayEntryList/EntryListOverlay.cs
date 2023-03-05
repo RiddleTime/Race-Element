@@ -15,6 +15,8 @@ using System.Linq;
 using static RaceElement.Data.ACC.EntryList.EntryListTracker;
 using static RaceElement.Data.SetupConverter;
 using static RaceElement.HUD.Overlay.OverlayUtil.InfoTable;
+using static RaceElement.Data.ACC.Tracks.TrackData;
+using System.Text;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 {
@@ -25,7 +27,7 @@ Description = "A panel showing live broadcast track data.")]
     internal sealed class EntryListOverlay : AbstractOverlay
     {
         private readonly EntryListDebugConfig _config = new EntryListDebugConfig();
-        private class EntryListDebugConfig : OverlayConfiguration
+        private sealed class EntryListDebugConfig : OverlayConfiguration
         {
             [ConfigGrouping("EntryList", "Provides settings for overlay docking.")]
             public EntryListGrouping Entrylist { get; set; } = new EntryListGrouping();
@@ -58,19 +60,17 @@ Description = "A panel showing live broadcast track data.")]
         private readonly Color StColor = Color.FromArgb(255, 0, 96, 136);
         private readonly Color ChlColor = Color.FromArgb(255, 112, 110, 0);
 
-
-
         public EntryListOverlay(Rectangle rect) : base(rect, "Entrylist Overlay")
         {
             this.AllowReposition = false;
-            this.RefreshRateHz = 10;
+            this.RefreshRateHz = 5;
 
             float fontSize = 9;
             var font = FontUtil.FontSegoeMono(fontSize);
-            _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 20), (int)(font.Size * 8), (int)(font.Size * 8), (int)(font.Size * 8) });
+            _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 15), (int)(font.Size * 8), (int)(font.Size * 8), (int)(font.Size * 8), (int)(font.Size * 20) });
 
-            this.Width = 420;
-            this.Height = 800;
+            this.Width = 600;
+            this.Height = 600;
         }
 
         private void Instance_WidthChanged(object sender, bool e)
@@ -165,13 +165,14 @@ Description = "A panel showing live broadcast track data.")]
 
         private void AddCarFirstRow(KeyValuePair<int, CarData> kv)
         {
-            string[] firstRow = new string[] { String.Empty, String.Empty, String.Empty, String.Empty };
-            Color[] firstRowColors = new Color[] { Color.White, Color.White, Color.White, Color.White };
+            string[] firstRow = new string[] { String.Empty, String.Empty, String.Empty, String.Empty, String.Empty };
+            Color[] firstRowColors = new Color[] { Color.White, Color.White, Color.White, Color.White, Color.White };
 
             DriverInfo currentDriver = kv.Value.CarInfo.Drivers[kv.Value.CarInfo.CurrentDriverIndex];
             string firstName = currentDriver.FirstName;
             if (firstName.Length > 0) firstName = firstName.First() + "";
             firstRow[0] = $"{firstName}. {currentDriver.LastName}";
+            firstRow[0] = new string(firstRow[0].Take(15).ToArray());
 
             firstRow[1] = $"{kv.Value.CarInfo.RaceNumber}";
 
@@ -211,7 +212,18 @@ Description = "A panel showing live broadcast track data.")]
                                 firstRow[2] = $"{fastestLapTime:mm\\:ss\\.fff}";
                             }
                             else
-                                firstRow[2] = $"--:--.---";
+                            {
+                                if (kv.Value.RealtimeCarUpdate.LastLap != null && kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.HasValue)
+                                {
+                                    TimeSpan fastestLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.Value);
+                                    firstRow[2] = $"{fastestLapTime:mm\\:ss\\.fff}";
+                                    firstRowColors[2] = Color.OrangeRed;
+                                }
+                                else
+                                {
+                                    firstRow[2] = $"--:--.---";
+                                }
+                            }
                         break;
                     }
                 default: break;
@@ -239,6 +251,33 @@ Description = "A panel showing live broadcast track data.")]
                     {
                         firstRow[3] = $"{kv.Value.RealtimeCarUpdate.Delta / 1000f:F2}".FillStart(6, ' ');
                         firstRowColors[3] = kv.Value.RealtimeCarUpdate.Delta > 0 ? Color.OrangeRed : Color.LimeGreen;
+
+                        if (kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.HasValue && broadCastRealTime.BestSessionLap != null)
+                        {
+                            if (kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.Value + kv.Value.RealtimeCarUpdate.Delta < broadCastRealTime.BestSessionLap.LaptimeMS)
+                            {
+                                // purple if delta is faster than server best lap
+                                firstRowColors[3] = Color.FromArgb(255, 207, 97, 255);
+                            }
+                        }
+
+                        var currentTrack = Tracks.First(x => x.Value.FullName == broadCastTrackData.TrackName).Value;
+                        if (currentTrack != null)
+                        {
+                            var item = currentTrack.CornerNames.FirstOrDefault(x => x.Key.IsInRange(kv.Value.RealtimeCarUpdate.SplinePosition));
+                            if (item.Value.Item1 != 0)
+                            {
+                                (int, string) corner = item.Value;
+                                if (corner.Item1 != 0)
+                                {
+                                    StringBuilder builder = new StringBuilder();
+                                    builder.Append(corner.Item1 + " ");
+                                    builder.Append(corner.Item2);
+                                    firstRow[4] = $"{builder}";
+                                }
+                            }
+                        }
+
                         break;
                     }
                 default: break;
@@ -282,10 +321,12 @@ Description = "A panel showing live broadcast track data.")]
                 HeaderBackground = headerBackgroundColor
             };
 
-            if (kv.Key == pageGraphics.PlayerCarID)
-                row.HeaderBackground = Color.FromArgb(120, Color.Red);
-            else
-                if (kv.Key == broadCastRealTime.FocusedCarIndex) row.HeaderBackground = Color.FromArgb(90, Color.Red);
+
+            // config??
+            //if (kv.Key == pageGraphics.PlayerCarID)
+            //    row.HeaderBackground = Color.FromArgb(120, Color.Red);
+            //else
+            if (kv.Key == broadCastRealTime.FocusedCarIndex) row.HeaderBackground = Color.FromArgb(90, Color.Red);
 
             _table.AddRow(row);
         }
@@ -326,10 +367,14 @@ Description = "A panel showing live broadcast track data.")]
                                         if (carCarb == null) return 1;
 
                                         var aSpline = carCarA.SplinePosition;
+                                        if (a.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane || a.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.NONE)
+                                            aSpline = 0;
                                         var bSpline = carCarb.SplinePosition;
+                                        if (b.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane || b.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.NONE)
+                                            bSpline = 0;
 
-                                        var aLaps = carCarA.LapIndex;
-                                        var bLaps = carCarb.LapIndex;
+                                        var aLaps = a.Value.RealtimeCarUpdate.Laps;
+                                        var bLaps = b.Value.RealtimeCarUpdate.Laps;
 
                                         float aPosition = aLaps + aSpline / 10;
                                         float bPosition = bLaps + bSpline / 10;

@@ -8,7 +8,7 @@ namespace ACCManager.Data.ACC.Tracks.Data
     internal class SpaFrancorchamps : AbstractTrackData
     {
         public override Guid Guid => new Guid("a56b5381-6c59-4380-8a32-679c8734a9a9");
-        public override string FullName => "Circuit De Spa-Francorchamps";
+        public override string FullName => "Circuit de Spa-Francorchamps";
         public override int TrackLength => 7004;
 
         public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()

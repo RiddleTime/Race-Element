@@ -1,4 +1,5 @@
 ﻿using RaceElement.Data.ACC.EntryList;
+using RaceElement.Data.ACC.EntryList.TrackPositionGraph;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.Util;
@@ -22,7 +23,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
         public BroadcastRealtimeOverlay(Rectangle rectangle) : base(rectangle, "Broadcast Realtime")
         {
             this.AllowReposition = false;
-            this.RefreshRateHz = 10;
+            this.RefreshRateHz = 5;
             this.Width = 370;
             this.Height = 280;
 
@@ -63,6 +64,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
             {
                 if (carData.Key == broadCastRealTime.FocusedCarIndex)
                 {
+                    if (carData.Value.CarInfo == null)
+                        continue;
+
+                    string driverName = carData.Value.CarInfo.GetCurrentDriverName();
+
+                    string firstName = carData.Value.CarInfo.Drivers[carData.Value.CarInfo.CurrentDriverIndex].FirstName;
+                    _table.AddRow("Name", new string[] { $"{firstName} {driverName}" });
+
                     FieldInfo[] members = carData.Value.RealtimeCarUpdate.GetType().GetRuntimeFields().ToArray();
                     foreach (FieldInfo member in members)
                     {

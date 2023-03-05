@@ -75,6 +75,14 @@ namespace RaceElement.Data.ACC.Tracker
             client.MessageHandler.OnEntrylistUpdate += (s, carInfo) =>
             {
                 OnEntryListUpdate?.Invoke(this, carInfo);
+
+                Debug.WriteLine("");
+                Debug.WriteLine("---- OnEntryListUpdate (s, carinfo) ----");
+                Debug.WriteLine($"#{carInfo.RaceNumber}, Index:{carInfo.CarIndex}, Name: {carInfo.GetCurrentDriverName()}");
+
+
+
+                Debug.WriteLine("");
             };
 
             client.MessageHandler.OnBroadcastingEvent += (s, broadcastEvent) =>
