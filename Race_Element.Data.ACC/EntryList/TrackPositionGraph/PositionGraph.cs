@@ -48,6 +48,12 @@ namespace RaceElement.Data.ACC.EntryList.TrackPositionGraph
             return null;
         }
 
+        public void RemoveCar(int carIndex)
+        {
+            if (_cars.ContainsKey(carIndex))
+                _cars.Remove(carIndex);
+        }
+
         public void ResetData()
         {
             Debug.WriteLine("Reset Position Graph");

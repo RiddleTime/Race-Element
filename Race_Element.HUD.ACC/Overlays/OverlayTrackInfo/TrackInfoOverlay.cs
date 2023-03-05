@@ -152,6 +152,21 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
         public override void BeforeStop()
         {
             _font?.Dispose();
+
+            _timeHeader?.Dispose();
+            _timeValue?.Dispose();
+            _globalFlagHeader?.Dispose();
+            _globalFlagValue?.Dispose();
+            _sessionTypeLabel?.Dispose();
+            _sessionTypeValue?.Dispose();
+            _airTempLabel?.Dispose();
+            _airTempValue?.Dispose();
+            _trackTempLabel?.Dispose();
+            _trackTempValue?.Dispose();
+            _gripLabel?.Dispose();
+            _gripValue?.Dispose();
+            _windLabel?.Dispose();
+            _windValue?.Dispose();
         }
 
         public sealed override void Render(Graphics g)

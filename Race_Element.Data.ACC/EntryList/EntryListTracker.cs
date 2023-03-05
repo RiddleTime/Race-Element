@@ -94,32 +94,43 @@ namespace RaceElement.Data.ACC.EntryList
                     {
                         Thread.Sleep(100);
 
-                        foreach (var entry in _entryListCars)
+                        try
                         {
-                            if (entry.Value != null)
+                            List<KeyValuePair<int, CarData>> datas = _entryListCars.ToList();
+                            foreach (var entry in datas)
                             {
-                                if (entry.Value.CarInfo == null)
+                                if (entry.Value != null)
                                 {
-                                    Debug.WriteLine("Removed entry ");
-                                    Debug.WriteLine($"Entry: {entry.Value.CarInfo.GetCurrentDriverName()}");
+                                    if (entry.Value.CarInfo == null)
+                                    {
+                                        Debug.WriteLine("Removed entry ");
+                                        Debug.WriteLine($"Entry: {entry.Value.CarInfo.GetCurrentDriverName()}");
 
-                                    Debug.WriteLine(_entryListCars.Count());
-                                    _entryListCars.Remove(entry.Key);
-                                    Debug.WriteLine(_entryListCars.Count());
+                                        Debug.WriteLine(_entryListCars.Count());
+                                        PositionGraph.Instance.RemoveCar(entry.Value.CarInfo.CarIndex);
+                                        _entryListCars.Remove(entry.Key);
+                                        Debug.WriteLine(_entryListCars.Count());
+                                    }
                                 }
                             }
+
+                            //int[] activeCarIds = ACCSharedMemory.Instance.ReadGraphicsPageFile().CarIds;
+
+                            //List<KeyValuePair<int, CarData>> datas = _entryListCars.ToList();
+                            //foreach (var entryListCar in datas)
+                            //{
+                            //    bool isInServer = activeCarIds.Contains(entryListCar.Key);
+                            //    if (!isInServer)
+                            //        lock (_entryListCars)
+                            //            _entryListCars.Remove(entryListCar.Key);
+                            //}
+
+
                         }
-
-                        //int[] activeCarIds = ACCSharedMemory.Instance.ReadGraphicsPageFile().CarIds;
-
-                        //List<KeyValuePair<int, CarData>> datas = _entryListCars.ToList();
-                        //foreach (var entryListCar in datas)
-                        //{
-                        //    bool isInServer = activeCarIds.Contains(entryListCar.Key);
-                        //    if (!isInServer)
-                        //        lock (_entryListCars)
-                        //            _entryListCars.Remove(entryListCar.Key);
-                        //}
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine(e);
+                        }
                     }
                 }
                 catch (Exception ex)

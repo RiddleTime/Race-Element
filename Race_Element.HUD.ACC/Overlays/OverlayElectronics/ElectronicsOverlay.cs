@@ -104,6 +104,17 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayElectronics
 
         public override void BeforeStop()
         {
+            _brakeBiasHeader?.Dispose();
+            _brakeBiasValue?.Dispose();
+            _tc1Header?.Dispose();
+            _tc1Value?.Dispose();
+            _tc2Header?.Dispose();
+            _tc2Value?.Dispose();
+            _absHeader?.Dispose();
+            _absValue?.Dispose();
+            _mapHeader?.Dispose();
+            _mapValue?.Dispose();
+
             _font?.Dispose();
         }
 

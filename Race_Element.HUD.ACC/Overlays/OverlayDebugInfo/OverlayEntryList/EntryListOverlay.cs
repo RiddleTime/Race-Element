@@ -261,6 +261,8 @@ Description = "A panel showing live broadcast track data.")]
                             }
                         }
 
+                        firstRow[4] = $"{kv.Value.RealtimeCarUpdate.Laps} ";
+
                         if (Tracks.Any())
                         {
                             var matchingTracks = Tracks.Where(x => x.Value.FullName == broadCastTrackData.TrackName);
@@ -279,7 +281,7 @@ Description = "A panel showing live broadcast track data.")]
                                                 StringBuilder builder = new StringBuilder();
                                                 builder.Append(corner.Item1 + " ");
                                                 builder.Append(corner.Item2);
-                                                firstRow[4] = $"{builder}";
+                                                firstRow[4] += $"{builder}";
                                             }
                                         }
                                 }

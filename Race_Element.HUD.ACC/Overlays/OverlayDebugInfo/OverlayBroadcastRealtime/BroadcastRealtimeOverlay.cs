@@ -1,4 +1,5 @@
-﻿using RaceElement.Data.ACC.EntryList;
+﻿using RaceElement.Data;
+using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.EntryList.TrackPositionGraph;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -27,7 +28,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
             this.Width = 370;
             this.Height = 280;
 
-            _table = new InfoTable(9, new int[] { 200 });
+            _table = new InfoTable(9, new int[] { 250 });
         }
 
         private void Instance_WidthChanged(object sender, bool e)
@@ -70,17 +71,27 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
                     string driverName = carData.Value.CarInfo.GetCurrentDriverName();
 
                     string firstName = carData.Value.CarInfo.Drivers[carData.Value.CarInfo.CurrentDriverIndex].FirstName;
+                    _table.AddRow("P", new string[] { $"{carData.Value.RealtimeCarUpdate.Position}" });
                     _table.AddRow("Name", new string[] { $"{firstName} {driverName}" });
+                    _table.AddRow("Team", new string[] { $"{carData.Value.CarInfo.TeamName}" });
 
-                    FieldInfo[] members = carData.Value.RealtimeCarUpdate.GetType().GetRuntimeFields().ToArray();
-                    foreach (FieldInfo member in members)
-                    {
-                        var value = member.GetValue(carData.Value.RealtimeCarUpdate);
-                        value = ReflectionUtil.FieldTypeValue(member, value);
+                    var name = ConversionFactory.GetCarName(carData.Value.CarInfo.CarModelType);
+                    _table.AddRow("Car", new string[] { $"{name}" });
 
-                        if (value != null)
-                            _table.AddRow($"{member.Name.Replace("<", "").Replace(">k__BackingField", "")}", new string[] { value.ToString() });
-                    }
+                    _table.AddRow("Lap", new string[] { $"{carData.Value.RealtimeCarUpdate.Laps}" });
+
+
+                    _table.AddRow("", new string[] { $"" });
+
+                    //FieldInfo[] members = carData.Value.RealtimeCarUpdate.GetType().GetRuntimeFields().ToArray();
+                    //foreach (FieldInfo member in members)
+                    //{
+                    //    var value = member.GetValue(carData.Value.RealtimeCarUpdate);
+                    //    value = ReflectionUtil.FieldTypeValue(member, value);
+
+                    //    if (value != null)
+                    //        _table.AddRow($"{member.Name.Replace("<", "").Replace(">k__BackingField", "")}", new string[] { value.ToString() });
+                    //}
 
                     _table.Draw(g);
                 }
