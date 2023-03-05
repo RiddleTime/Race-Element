@@ -212,6 +212,7 @@
     <Compile Include="Tracks\Data\Zandvoort.cs" />
     <Compile Include="Tracks\Data\Zolder.cs" />
     <Compile Include="Tracks\TrackData.cs" />
+    <Compile Include="Tyres\TyresTracker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -2,6 +2,7 @@
 using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.Session;
 using RaceElement.Data.ACC.Tracker.Laps;
+using RaceElement.Data.ACC.Tyres;
 using System.Diagnostics;
 
 namespace RaceElement.Data.ACC.Tracker
@@ -19,6 +20,7 @@ namespace RaceElement.Data.ACC.Tracker
 
             RaceSessionTracker.Instance.Stop();
             LapTracker.Instance.Stop();
+            TyresTracker.Instance.Stop();
 
             RaceWeekendDatabase.Close();
         }
