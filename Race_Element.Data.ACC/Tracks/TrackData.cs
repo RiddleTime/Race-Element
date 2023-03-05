@@ -21,7 +21,7 @@ namespace RaceElement.Data.ACC.Tracks
             public abstract Dictionary<FloatRangeStruct, (int, string)> CornerNames { get; }
         }
 
-        public static readonly ImmutableDictionary<string, AbstractTrackData> Tracks = new Dictionary<string, AbstractTrackData>() {
+        public static readonly Dictionary<string, AbstractTrackData> Tracks = new Dictionary<string, AbstractTrackData>() {
             {"Barcelona", new Barcelona() },
             {"brands_hatch", new BrandsHatch() },
             {"cota", new Cota() },
@@ -44,6 +44,6 @@ namespace RaceElement.Data.ACC.Tracks
             {"watkins_glen",  new WatkinsGlen() },
             {"Zandvoort",  new Zandvoort() },
             {"Zolder",  new Zolder() },
-        }.ToImmutableDictionary();
+        };
     }
 }

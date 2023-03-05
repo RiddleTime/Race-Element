@@ -12,11 +12,11 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using static RaceElement.Data.ACC.EntryList.EntryListTracker;
 using static RaceElement.Data.SetupConverter;
 using static RaceElement.HUD.Overlay.OverlayUtil.InfoTable;
 using static RaceElement.Data.ACC.Tracks.TrackData;
 using System.Text;
+using static RaceElement.Data.ACC.EntryList.EntryListTracker;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 {
@@ -67,7 +67,7 @@ Description = "A panel showing live broadcast track data.")]
 
             float fontSize = 9;
             var font = FontUtil.FontSegoeMono(fontSize);
-            _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 15), (int)(font.Size * 8), (int)(font.Size * 8), (int)(font.Size * 8), (int)(font.Size * 20) });
+            _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 15), (int)(font.Size * 5), (int)(font.Size * 8), (int)(font.Size * 8), (int)(font.Size * 20) });
 
             this.Width = 600;
             this.Height = 600;
@@ -261,23 +261,30 @@ Description = "A panel showing live broadcast track data.")]
                             }
                         }
 
-                        var currentTrack = Tracks.First(x => x.Value.FullName == broadCastTrackData.TrackName).Value;
-                        if (currentTrack != null)
+                        if (Tracks.Any())
                         {
-                            var item = currentTrack.CornerNames.FirstOrDefault(x => x.Key.IsInRange(kv.Value.RealtimeCarUpdate.SplinePosition));
-                            if (item.Value.Item1 != 0)
+                            var matchingTracks = Tracks.Where(x => x.Value.FullName == broadCastTrackData.TrackName);
+                            if (matchingTracks.Any())
                             {
-                                (int, string) corner = item.Value;
-                                if (corner.Item1 != 0)
+                                var currentTrack = matchingTracks.First().Value;
+                                if (currentTrack.CornerNames.Any())
                                 {
-                                    StringBuilder builder = new StringBuilder();
-                                    builder.Append(corner.Item1 + " ");
-                                    builder.Append(corner.Item2);
-                                    firstRow[4] = $"{builder}";
+                                    var items = currentTrack.CornerNames.Where(x => x.Key.IsInRange(kv.Value.RealtimeCarUpdate.SplinePosition));
+                                    if (items.Any())
+                                        if (items.First().Value.Item1 != 0)
+                                        {
+                                            (int, string) corner = items.First().Value;
+                                            if (corner.Item1 != 0)
+                                            {
+                                                StringBuilder builder = new StringBuilder();
+                                                builder.Append(corner.Item1 + " ");
+                                                builder.Append(corner.Item2);
+                                                firstRow[4] = $"{builder}";
+                                            }
+                                        }
                                 }
                             }
                         }
-
                         break;
                     }
                 default: break;
