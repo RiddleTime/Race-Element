@@ -6,6 +6,7 @@ using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.ACC.Overlays.OverlayPressureTrace;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using static RaceElement.Data.SetupConverter;
+using RaceElement.Data.ACC.Tyres;
 using System.Drawing.Text;
 using System;
 
@@ -32,6 +33,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
                 [ToolTip("Draws pressures and colored indicators on top vanilla tyre widget.")]
                 public bool Pressures { get; set; } = true;
 
+                [ToolTip("Displays the loss of pressure for each tyre.")]
+                public bool LossOfPressure { get; set; } = true;
+
                 [ToolTip("Defines the amount of decimals for the tyre pressure text.")]
                 [IntRange(1, 2, 1)]
                 public int Decimals { get; set; } = 1;
@@ -52,6 +56,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
         private readonly Font _fontFamilySmall;
         private readonly int _yMono;
         private readonly int _yMonoSmall;
+        private TyresTracker.TyresInfo _lastTyresInfo;
 
         public TyreInfoOverlay(Rectangle rectangle) : base(rectangle, "Tyre Info")
         {
@@ -63,6 +68,26 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
             this.Width = InitialWidth;
             this.Height = InitialHeight;
             this.RefreshRateHz = 10;
+        }
+
+        public override void BeforeStart()
+        {
+            TyresTracker.Instance.OnTyresInfoChanged += OnTyresInfoChanged;
+        }
+
+        public override void BeforeStop()
+        {
+            TyresTracker.Instance.OnTyresInfoChanged -= OnTyresInfoChanged;
+        }
+
+        private void OnTyresInfoChanged(object sender, TyresTracker.TyresInfo e)
+        {
+            _lastTyresInfo = e;
+        }
+
+        public override void SetupPreviewData()
+        {
+            _lastTyresInfo = TyresTracker.GetPreviewTyresInfo();
         }
 
         public sealed override void Render(Graphics g)
@@ -79,8 +104,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
 
             if (this._config.Information.PadLife)
             {
-                DrawPadWearText(g, 66, 19, Position.Front);
-                DrawPadWearText(g, 66, 156, Position.Rear);
+                DrawPadWearText(g, 66, 20, Position.Front);
+                DrawPadWearText(g, 66, 154, Position.Rear);
             }
 
             if (this._config.Information.BrakeTemps)
@@ -89,6 +114,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
                 DrawBrakeTemps(g, 66, 131, Position.Rear);
             }
 
+            if (this._config.Information.LossOfPressure)
+            {
+                DrawTyrePressureLoss(g, 22, 20, Wheel.FrontLeft);
+                DrawTyrePressureLoss(g, 110, 20, Wheel.FrontRight);
+                DrawTyrePressureLoss(g, 22, 154, Wheel.RearLeft);
+                DrawTyrePressureLoss(g, 110, 154, Wheel.RearRight);
+            }
 
             DrawTyreTemp(g, 27, 64, Wheel.FrontLeft);
             DrawTyreTemp(g, 106, 64, Wheel.FrontRight);
@@ -107,6 +139,31 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
                 DrawTyrePressure(g, 0, 169, Wheel.RearLeft, range);
                 DrawTyrePressure(g, 76, 169, Wheel.RearRight, range);
             }
+        }
+
+        private void DrawTyrePressureLoss(Graphics g, int x, int y, Wheel wheel)
+        {
+            if (_lastTyresInfo == null)
+                return;
+
+            float pressureLoss = _lastTyresInfo.PressureLoss[(int)wheel];
+
+            if (pressureLoss == 0)
+                return;
+
+            SmoothingMode previous = g.SmoothingMode;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            TextRenderingHint previousHint = g.TextRenderingHint;
+            g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+            g.TextContrast = 1;
+
+            string text = $"-{pressureLoss:F2}";
+            int textWidth = (int)g.MeasureString(text, _fontFamilySmall).Width;
+            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(120, 0, 0, 0)), new Rectangle(x - textWidth / 2, y, textWidth, _fontFamilySmall.Height), 2);
+            g.DrawStringWithShadow(text, _fontFamilySmall, Brushes.DarkOrange, new PointF(x - textWidth / 2, y + _yMonoSmall / 2));
+
+            g.SmoothingMode = previous;
+            g.TextRenderingHint = previousHint;
         }
 
         private void DrawTyreTemp(Graphics g, int x, int y, Wheel wheel)
