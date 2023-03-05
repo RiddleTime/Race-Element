@@ -85,14 +85,16 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
             {
                 Rectangle panelRect = new Rectangle(0, 0, headerWidth, lineHeight);
                 using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(panelRect, 0, 0, 0, roundingRadius);
-                g.FillPath(new SolidBrush(Color.FromArgb(225, 10, 10, 10)), path);
+                using LinearGradientBrush brush = new LinearGradientBrush(panelRect, Color.FromArgb(185, 0, 0, 0), Color.FromArgb(255, 10, 10, 10), LinearGradientMode.BackwardDiagonal);
+                g.FillPath(brush, path);
                 g.DrawLine(new Pen(accentColor), 0 + roundingRadius / 2, lineHeight, headerWidth, lineHeight - 1);
             });
             CachedBitmap valueBackground = new CachedBitmap(valueWidth, lineHeight, g =>
             {
                 Rectangle panelRect = new Rectangle(0, 0, valueWidth, lineHeight);
                 using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(panelRect, 0, roundingRadius, 0, 0);
-                g.FillPath(new SolidBrush(Color.FromArgb(225, 0, 0, 0)), path);
+                using LinearGradientBrush brush = new LinearGradientBrush(panelRect, Color.FromArgb(255, 0, 0, 0), Color.FromArgb(185, 0, 0, 0), LinearGradientMode.ForwardDiagonal);
+                g.FillPath(brush, path);
                 g.DrawLine(new Pen(accentColor), 0, lineHeight - 1, valueWidth, lineHeight - 1);
             });
 

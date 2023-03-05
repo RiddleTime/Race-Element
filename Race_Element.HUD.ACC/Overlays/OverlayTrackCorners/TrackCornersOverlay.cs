@@ -67,7 +67,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
                 Color accentColor = Color.FromArgb(25, 255, 0, 0);
                 Rectangle panelRect = new Rectangle(0, 0, headerWidth, lineHeight);
                 using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(panelRect, 0, _config.CornerNames.Names ? 0 : RoundingRadius, 0, RoundingRadius);
-                g.FillPath(new SolidBrush(Color.FromArgb(225, 10, 10, 10)), path);
+                using LinearGradientBrush brush = new LinearGradientBrush(panelRect, Color.FromArgb(185, 0, 0, 0), Color.FromArgb(255, 10, 10, 10), LinearGradientMode.BackwardDiagonal);
+                g.FillPath(brush, path);
                 g.DrawLine(new Pen(accentColor), 0 + RoundingRadius / 2, lineHeight, headerWidth, lineHeight - 1);
             });
 
@@ -100,7 +101,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
                 Color accentColor = Color.FromArgb(25, 255, 0, 0);
                 Rectangle panelRect = new Rectangle(0, 0, valueWidth, lineHeight);
                 using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(panelRect, 0, RoundingRadius, 0, 0);
-                using SolidBrush brush = new SolidBrush(Color.FromArgb(225, 0, 0, 0));
+                using LinearGradientBrush brush = new LinearGradientBrush(panelRect, Color.FromArgb(255, 0, 0, 0), Color.FromArgb(185, 0, 0, 0), LinearGradientMode.ForwardDiagonal);
                 g.FillPath(brush, path);
                 g.DrawLine(new Pen(accentColor), 0, lineHeight - 1, valueWidth, lineHeight - 1);
             });
