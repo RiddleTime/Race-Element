@@ -63,6 +63,10 @@ namespace RaceElement.HUD.Overlay.Internal
             catch (Exception) { }
         }
 
+        public virtual void SetupPreviewData()
+        {
+        }
+
         public bool DefaultShouldRender()
         {
             if (HudSettings.Cached.DemoMode)

@@ -121,6 +121,7 @@ namespace RaceElement.Controls.HUD
             overlay.pageStatic.CarModel = "porsche_991ii_gt3_r";
             overlay.pageStatic.Track = "Spa";
 
+            overlay.SetupPreviewData();
 
             try
             {
