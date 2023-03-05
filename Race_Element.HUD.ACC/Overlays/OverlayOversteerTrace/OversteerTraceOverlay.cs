@@ -34,7 +34,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
                 public float MaxSlipAngle { get; set; } = 1.5f;
 
                 [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
-                [IntRange(10, 70, 5)]
+                [IntRange(10, 100, 5)]
                 public int Herz { get; set; } = 30;
             }
 

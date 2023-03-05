@@ -35,7 +35,7 @@
 
                         <ListBoxItem Width="90" Height="80" x:Name="listBoxItemToggleDemoMode" ToolTip="Toggles Always Visible. (By default HUDs become visible once the engine is running)" 
                             Content="{materialDesign:PackIcon Kind=Visibility,Size=48}" HorizontalContentAlignment="Center" Foreground="DarkGray" Padding="0"
-                            Cursor="Hand" Focusable="False" Style="{StaticResource MaterialDesignNavigationListBoxItem}" /> 
+                            Cursor="Hand" Focusable="False" Style="{StaticResource MaterialDesignNavigationListBoxItem}" />
                     </ListBox>
 
                     <ListBox SelectionMode="Extended" Background="Transparent" Focusable="False" HorizontalContentAlignment="Center" 
@@ -68,21 +68,22 @@
                             Kind="TooltipImage"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
-                            Height="32"
+                            Height="26"
+                            Width="26"
                             Foreground="White"    
                         />
-                            <TextBlock Grid.Column="1" FontSize="18" FontFamily="{StaticResource Conthrax}" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" Main"></TextBlock>
+                            <TextBlock Grid.Column="1" FontSize="18" FontFamily="{StaticResource Conthrax}" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" Drive"></TextBlock>
                         </Grid>
                     </TabItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
-                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="40"/>
                         </Grid.RowDefinitions>
 
                         <ListView Grid.Row="0"  Grid.Column="0" Foreground="White" x:Name="listOverlays" VerticalAlignment="Bottom" Margin="0,3,0,0" Cursor="Hand"/>
-                        <ComboBox Grid.Row="1" x:Name="comboOverlays" HorizontalContentAlignment="Center" 
-                                   FontFamily="{StaticResource Conthrax}" FontSize="15" FontWeight="Bold" ToolTip="Filter HUDs based on category."></ComboBox>
+                        <ComboBox Grid.Row="1" x:Name="comboOverlays" HorizontalContentAlignment="Center"  HorizontalAlignment="Stretch"
+                                   FontFamily="{StaticResource Conthrax}" FontSize="16" FontWeight="Bold" ToolTip="Filter HUDs based on category."></ComboBox>
                     </Grid>
                 </TabItem>
                 <TabItem  x:Name="tabItemDebugOverlays">
@@ -94,46 +95,56 @@
                             </Grid.ColumnDefinitions>
                             <materialDesign:PackIcon
                             Grid.Column="0"
-                            Kind="WrenchClock"
+                            Kind="WrenchClockOutline"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
-                            Height="32"
+                            Height="26"
+                            Width="26"
                             Foreground="White"    
                         />
-                            <TextBlock Grid.Column="1" FontSize="18" FontFamily="{StaticResource Conthrax}" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" Debug"></TextBlock>
+                            <TextBlock Grid.Column="1" FontSize="18" FontFamily="{StaticResource Conthrax}" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" Text=" Pitwall"></TextBlock>
                         </Grid>
                     </TabItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
-                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="40"/>
                         </Grid.RowDefinitions>
 
                         <ListView Grid.Row="0" Grid.Column="0" x:Name="listDebugOverlays" VerticalAlignment="Bottom" Margin="0,3,0,0" Cursor="Hand"/>
                         <ComboBox Grid.Row="1" x:Name="comboDebugOverlays" HorizontalContentAlignment="Center" 
-                                   FontFamily="{StaticResource Conthrax}" FontSize="15" FontWeight="Bold" ToolTip="Filter HUDs based on category."></ComboBox>
+                                   FontFamily="{StaticResource Conthrax}" FontSize="16" FontWeight="Bold" ToolTip="Filter HUDs based on category."></ComboBox>
                     </Grid>
                 </TabItem>
             </TabControl>
         </Grid>
 
-        <materialDesign:Card x:Name="cardOverlayConfig" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="5,0,2,0">
-            <Grid Background="#65101010">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="260"/>
-                    <RowDefinition Height="*" MaxHeight="90"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
 
-                <Image Grid.Row="0" x:Name="previewImage" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0"
+        <materialDesign:TransitioningContent x:Name="cardOverlayConfig"  Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Visibility="Hidden">
+            <materialDesign:TransitioningContent.OpeningEffects>
+                <materialDesign:TransitionEffect Kind="FadeIn" />
+            </materialDesign:TransitioningContent.OpeningEffects>
+
+            <materialDesign:Card Margin="5,0,2,0" >
+                <Grid Background="#65101010">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="260"/>
+                        <RowDefinition Height="*" MaxHeight="90"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Image Grid.Row="0" x:Name="previewImage" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0"
                        ToolTip="This is a preview, the scaling will become visible once you Activate the overlay."/>
 
-                <StackPanel Grid.Row="1" x:Name="titleBar" />
+                    <StackPanel Grid.Row="1" x:Name="titleBar" />
 
-                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
-                    <StackPanel  x:Name="configStackPanel"/>
-                </ScrollViewer>
-            </Grid>
-        </materialDesign:Card>
+                    <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+                        <StackPanel  x:Name="configStackPanel"/>
+                    </ScrollViewer>
+                </Grid>
+            </materialDesign:Card>
+
+
+        </materialDesign:TransitioningContent>
     </Grid>
 </UserControl>

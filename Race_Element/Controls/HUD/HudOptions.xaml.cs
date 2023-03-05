@@ -255,6 +255,8 @@ namespace RaceElement.Controls
         private void BuildOverlayConfigPanel(ListViewItem listViewItem, Type type)
         {
 
+            cardOverlayConfig.Visibility = Visibility.Collapsed;
+
             CollectGarbage();
 
             configStackPanel.Children.Clear();
@@ -450,6 +452,7 @@ namespace RaceElement.Controls
                 previewImage.Height = preview.Height;
                 previewImage.Source = ImageControlCreator.CreateImage(preview.Width, preview.Height, preview.CachedBitmap).Source;
             }
+            cardOverlayConfig.Visibility = Visibility.Visible;
         }
 
         public void DisposeKeyboardHooks()

@@ -29,7 +29,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
                 public int LineThickness { get; set; } = 1;
 
                 [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
-                [IntRange(10, 70, 5)]
+                [IntRange(10, 100, 5)]
                 public int Herz { get; set; } = 30;
 
                 [ToolTip("Displays the steering input as a white line in the trace.")]
