@@ -94,7 +94,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
         {
             if (this.IsRepositioning)
             {
-                Pen repositionLinePen = new Pen(Brushes.Red, 2 * this.Scale);
+                using Pen repositionLinePen = new Pen(Brushes.Red, 2 * this.Scale);
                 g.DrawLine(repositionLinePen, new Point(InitialWidth / 2, 0), new Point(InitialWidth / 2, InitialHeight));
                 g.DrawLine(repositionLinePen, new Point(0, InitialHeight / 2), new Point(InitialWidth, InitialHeight / 2));
             }
