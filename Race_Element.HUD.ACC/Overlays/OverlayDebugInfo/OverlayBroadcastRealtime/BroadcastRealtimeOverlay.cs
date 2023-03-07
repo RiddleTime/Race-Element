@@ -90,11 +90,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
 
                         _table.AddRow("Speed", new string[] { $"{carData.Value.RealtimeCarUpdate.Kmh} km/h" });
 
-
-                        if (carData.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.HasValue)
+                        if (carData.Value.RealtimeCarUpdate.CurrentLap != null && carData.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.HasValue)
                         {
                             _table.AddRow("", new string[] { carData.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.HasValue ? $"{carData.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.Value / 1000}" : "" });
                         }
+
+                        _table.AddRow("Coords", new string[] { $"X: {carData.Value.RealtimeCarUpdate.WorldPosX:F3}, Y: {carData.Value.RealtimeCarUpdate.WorldPosY:F3}" });
 
                         //FieldInfo[] members = carData.Value.RealtimeCarUpdate.GetType().GetRuntimeFields().ToArray();
                         //foreach (FieldInfo member in members)

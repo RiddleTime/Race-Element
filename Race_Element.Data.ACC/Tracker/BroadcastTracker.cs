@@ -2,6 +2,7 @@
 using RaceElement.Broadcast.Structs;
 using System;
 using System.Diagnostics;
+using System.Dynamic;
 using System.Net;
 
 namespace RaceElement.Data.ACC.Tracker
@@ -76,20 +77,19 @@ namespace RaceElement.Data.ACC.Tracker
             {
                 OnEntryListUpdate?.Invoke(this, carInfo);
 
-                Debug.WriteLine("");
-                Debug.WriteLine("---- OnEntryListUpdate (s, carinfo) ----");
-                Debug.WriteLine($"#{carInfo.RaceNumber}, Index:{carInfo.CarIndex}, Name: {carInfo.GetCurrentDriverName()}");
-
-
-
-                Debug.WriteLine("");
+                //Debug.WriteLine("");
+                //Debug.WriteLine("---- OnEntryListUpdate (s, carinfo) ----");
+                //Debug.WriteLine($"#{carInfo.RaceNumber}, Index:{carInfo.CarIndex}, Name: {carInfo.GetCurrentDriverName()}");
+                //Debug.WriteLine("");
             };
 
             client.MessageHandler.OnBroadcastingEvent += (s, broadcastEvent) =>
             {
+                //Debug.WriteLine("");
+                //Debug.WriteLine("---- OnBroadcastingEvent (s, broadcastEvent) ----");
+                //Debug.WriteLine($"#{broadcastEvent.CarData.RaceNumber}, Index:{broadcastEvent.CarId}, Type: {broadcastEvent.Type}, Msg: {broadcastEvent.Msg}");
                 OnBroadcastEvent?.Invoke(this, broadcastEvent);
             };
-
             client.MessageHandler.OnTrackDataUpdate += (s, trackData) => OnTrackDataUpdate?.Invoke(this, trackData);
 
             client.MessageHandler.OnRealtimeCarUpdate += (s, e) =>

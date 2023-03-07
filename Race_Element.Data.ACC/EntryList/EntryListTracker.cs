@@ -90,29 +90,69 @@ namespace RaceElement.Data.ACC.EntryList
             {
                 try
                 {
+                    List<(int, int)> previousTimes = new List<(int, int)>();
                     while (_isRunning)
                     {
-                        Thread.Sleep(100);
+                        const int waitTime = 5000;
+                        Thread.Sleep(waitTime);
 
                         try
                         {
-                            List<KeyValuePair<int, CarData>> datas = _entryListCars.ToList();
-                            foreach (var entry in datas)
+                            List<KeyValuePair<int, CarData>> newDatas = _entryListCars.ToList();
+                            foreach (var entry in newDatas)
                             {
                                 if (entry.Value != null)
                                 {
                                     if (entry.Value.CarInfo == null)
                                     {
-                                        Debug.WriteLine("Removed entry ");
-                                        Debug.WriteLine($"Entry: {entry.Value.CarInfo.GetCurrentDriverName()}");
+                                        //Debug.WriteLine($"Removed entry {entry.Key} - CarInfo null");  
 
-                                        Debug.WriteLine(_entryListCars.Count());
-                                        PositionGraph.Instance.RemoveCar(entry.Value.CarInfo.CarIndex);
-                                        _entryListCars.Remove(entry.Key);
-                                        Debug.WriteLine(_entryListCars.Count());
+                                        PositionGraph.Instance.RemoveCar(entry.Key);
+                                        lock (_entryListCars)
+                                        {
+                                            _entryListCars.Remove(entry.Key);
+                                        }
+                                        continue;
                                     }
+
+                                    if (entry.Value.RealtimeCarUpdate.CurrentLap == null)
+                                    {
+                                        //Debug.WriteLine($"Removed entry {entry.Key} - CurrentLap null");
+
+                                        PositionGraph.Instance.RemoveCar(entry.Key);
+                                        lock (_entryListCars)
+                                        {
+                                            _entryListCars.Remove(entry.Key);
+                                        }
+                                        continue;
+                                    }
+
+                                    int previousIndex = previousTimes.FindIndex(x => x.Item1 == entry.Key);
+                                    if (previousIndex == -1)
+                                        previousTimes.Add((entry.Key, entry.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.Value));
+                                    else
+                                    {
+                                        int currentLapTime = entry.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.Value;
+                                        if (currentLapTime > 0 && currentLapTime == previousTimes[previousIndex].Item2)
+                                        {
+                                            //Debug.WriteLine($"Possible leaver?: {entry.Key}, {previousIndex} - #{entry.Value.CarInfo.RaceNumber} - {entry.Value.CarInfo.GetCurrentDriverName()} - time: {entry.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS}");
+
+                                            Debug.WriteLine($"Removed entry {entry.Key} #{entry.Value.CarInfo.RaceNumber} - Laptime is frozen (above 0)");
+                                            PositionGraph.Instance.RemoveCar(entry.Key);
+                                            lock (_entryListCars)
+                                            {
+                                                _entryListCars.Remove(entry.Key);
+                                                previousTimes.RemoveAt(previousIndex);
+                                            }
+                                            continue;
+                                        }
+
+                                        previousTimes[previousIndex] = (previousIndex, entry.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.Value);
+                                    }
+
                                 }
                             }
+
 
                             //int[] activeCarIds = ACCSharedMemory.Instance.ReadGraphicsPageFile().CarIds;
 
@@ -124,7 +164,6 @@ namespace RaceElement.Data.ACC.EntryList
                             //        lock (_entryListCars)
                             //            _entryListCars.Remove(entryListCar.Key);
                             //}
-
 
                         }
                         catch (Exception e)
@@ -146,6 +185,19 @@ namespace RaceElement.Data.ACC.EntryList
             {
                 switch (broadcastingEvent.Type)
                 {
+                    case BroadcastingCarEventType.BestSessionLap:
+                        {
+                            if (broadcastingEvent.Msg == "--:--.---")
+                            {
+                                lock (_entryListCars)
+                                {
+                                    _entryListCars.Remove(broadcastingEvent.CarId);
+                                    PositionGraph.Instance.RemoveCar(broadcastingEvent.CarId);
+                                    Debug.WriteLine($"Deleted car from entry list, empty best session lap {broadcastingEvent.CarId}");
+                                }
+                            }
+                            break;
+                        }
                     case BroadcastingCarEventType.LapCompleted:
                         {
                             if (broadcastingEvent.CarData == null)

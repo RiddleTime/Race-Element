@@ -70,7 +70,7 @@ Description = "A panel showing live broadcast track data.")]
             _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 20), (int)(font.Size * 9), (int)(font.Size * 8), (int)(font.Size * 30) });
 
             this.Width = 700;
-            this.Height = 500;
+            this.Height = 900;
         }
 
         private void Instance_WidthChanged(object sender, bool e)
@@ -153,7 +153,11 @@ Description = "A panel showing live broadcast track data.")]
                             carAhead = carCar;
                         }
 
-                        _table.AddRow(String.Empty, new string[] { String.Empty, $"{distanceText}", speed });
+                        string currentLap = "|----- NO LAP";
+
+                        if (kv.Value.RealtimeCarUpdate.CurrentLap != null)
+                            currentLap = kv.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.HasValue ? $"|----- {kv.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.Value / 1000}" : "|----- ";
+                        _table.AddRow(String.Empty, new string[] { String.Empty, $"{distanceText}", speed, currentLap });
                     }
                 }
             }
@@ -356,6 +360,9 @@ Description = "A panel showing live broadcast track data.")]
                                 {
                                     cars.Sort((a, b) =>
                                     {
+                                        if (a.Value.RealtimeCarUpdate.CupPosition == b.Value.RealtimeCarUpdate.CupPosition)
+                                            return a.Value.CarInfo.RaceNumber.CompareTo(b.Value.CarInfo.RaceNumber);
+
                                         return a.Value.RealtimeCarUpdate.CupPosition.CompareTo(b.Value.RealtimeCarUpdate.CupPosition);
                                     });
                                     break;
@@ -383,6 +390,13 @@ Description = "A panel showing live broadcast track data.")]
                                         if (b.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane || b.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.NONE)
                                             bSpline = 0;
 
+                                        if (a.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane && b.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane)
+                                        {
+                                            if (a.Value.RealtimeCarUpdate.CupPosition == b.Value.RealtimeCarUpdate.CupPosition)
+                                                return a.Value.CarInfo.RaceNumber.CompareTo(b.Value.CarInfo.RaceNumber);
+                                            return a.Value.RealtimeCarUpdate.Position.CompareTo(b.Value.RealtimeCarUpdate.Position);
+                                        }
+
                                         var aLaps = a.Value.RealtimeCarUpdate.Laps;
                                         var bLaps = b.Value.RealtimeCarUpdate.Laps;
 
@@ -402,6 +416,9 @@ Description = "A panel showing live broadcast track data.")]
                     {
                         cars.Sort((a, b) =>
                         {
+                            if (a.Value.RealtimeCarUpdate.CupPosition == b.Value.RealtimeCarUpdate.CupPosition)
+                                return -1;
+
                             return a.Value.RealtimeCarUpdate.CupPosition.CompareTo(b.Value.RealtimeCarUpdate.CupPosition);
                         });
                         break;
