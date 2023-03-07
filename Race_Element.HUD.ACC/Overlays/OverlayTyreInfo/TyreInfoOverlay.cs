@@ -67,7 +67,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
             _yMonoSmall = _fontFamilySmall.Height / 5;
             this.Width = InitialWidth;
             this.Height = InitialHeight;
-            this.RefreshRateHz = 10;
+            this.RefreshRateHz = 8;
         }
 
         public override void BeforeStart()

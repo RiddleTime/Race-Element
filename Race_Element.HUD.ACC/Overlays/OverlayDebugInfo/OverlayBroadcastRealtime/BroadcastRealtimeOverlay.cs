@@ -4,6 +4,7 @@ using RaceElement.Data.ACC.EntryList.TrackPositionGraph;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.Util;
+using RaceElement.Util.SystemExtensions;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -61,39 +62,52 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
 
         public sealed override void Render(Graphics g)
         {
-            foreach (KeyValuePair<int, CarData> carData in EntryListTracker.Instance.Cars)
+            lock (EntryListTracker.Instance.Cars)
             {
-                if (carData.Key == broadCastRealTime.FocusedCarIndex)
+                foreach (KeyValuePair<int, CarData> carData in EntryListTracker.Instance.Cars)
                 {
-                    if (carData.Value.CarInfo == null)
-                        continue;
 
-                    string driverName = carData.Value.CarInfo.GetCurrentDriverName();
+                    if (carData.Key == broadCastRealTime.FocusedCarIndex)
+                    {
+                        if (carData.Value.CarInfo == null)
+                            continue;
 
-                    string firstName = carData.Value.CarInfo.Drivers[carData.Value.CarInfo.CurrentDriverIndex].FirstName;
-                    _table.AddRow("P", new string[] { $"{carData.Value.RealtimeCarUpdate.Position}" });
-                    _table.AddRow("Name", new string[] { $"{firstName} {driverName}" });
-                    _table.AddRow("Team", new string[] { $"{carData.Value.CarInfo.TeamName}" });
+                        string driverName = carData.Value.CarInfo.GetCurrentDriverName();
 
-                    var name = ConversionFactory.GetCarName(carData.Value.CarInfo.CarModelType);
-                    _table.AddRow("Car", new string[] { $"{name}" });
+                        string firstName = carData.Value.CarInfo.Drivers[carData.Value.CarInfo.CurrentDriverIndex].FirstName;
+                        _table.AddRow("P", new string[] { $"{carData.Value.RealtimeCarUpdate.Position}" });
+                        _table.AddRow($"{carData.Value.CarInfo.RaceNumber}", new string[] { $"{firstName} {driverName}" });
+                        _table.AddRow("Team", new string[] { $"{carData.Value.CarInfo.TeamName}" });
 
-                    _table.AddRow("Lap", new string[] { $"{carData.Value.RealtimeCarUpdate.Laps}" });
+                        var name = ConversionFactory.GetCarName(carData.Value.CarInfo.CarModelType);
+                        _table.AddRow("Car", new string[] { $"{name}" });
 
 
-                    _table.AddRow("", new string[] { $"" });
+                        string lapType = string.Empty;
+                        if (carData.Value.RealtimeCarUpdate.CurrentLap != null)
+                            lapType = $" - {carData.Value.RealtimeCarUpdate.CurrentLap.Type}";
+                        _table.AddRow("Lap", new string[] { $"{carData.Value.RealtimeCarUpdate.Laps}{lapType}" });
 
-                    //FieldInfo[] members = carData.Value.RealtimeCarUpdate.GetType().GetRuntimeFields().ToArray();
-                    //foreach (FieldInfo member in members)
-                    //{
-                    //    var value = member.GetValue(carData.Value.RealtimeCarUpdate);
-                    //    value = ReflectionUtil.FieldTypeValue(member, value);
+                        _table.AddRow("Speed", new string[] { $"{carData.Value.RealtimeCarUpdate.Kmh} km/h" });
 
-                    //    if (value != null)
-                    //        _table.AddRow($"{member.Name.Replace("<", "").Replace(">k__BackingField", "")}", new string[] { value.ToString() });
-                    //}
 
-                    _table.Draw(g);
+                        if (carData.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.HasValue)
+                        {
+                            _table.AddRow("", new string[] { carData.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.HasValue ? $"{carData.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.Value / 1000}" : "" });
+                        }
+
+                        //FieldInfo[] members = carData.Value.RealtimeCarUpdate.GetType().GetRuntimeFields().ToArray();
+                        //foreach (FieldInfo member in members)
+                        //{
+                        //    var value = member.GetValue(carData.Value.RealtimeCarUpdate);
+                        //    value = ReflectionUtil.FieldTypeValue(member, value);
+
+                        //    if (value != null)
+                        //        _table.AddRow($"{member.Name.Replace("<", "").Replace(">k__BackingField", "")}", new string[] { value.ToString() });
+                        //}
+
+                        _table.Draw(g);
+                    }
                 }
             }
         }

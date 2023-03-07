@@ -63,14 +63,14 @@ Description = "A panel showing live broadcast track data.")]
         public EntryListOverlay(Rectangle rect) : base(rect, "Entrylist Overlay")
         {
             this.AllowReposition = false;
-            this.RefreshRateHz = 5;
+            this.RefreshRateHz = 4;
 
             float fontSize = 9;
             var font = FontUtil.FontSegoeMono(fontSize);
-            _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 15), (int)(font.Size * 5), (int)(font.Size * 8), (int)(font.Size * 8), (int)(font.Size * 20) });
+            _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 20), (int)(font.Size * 9), (int)(font.Size * 8), (int)(font.Size * 30) });
 
-            this.Width = 600;
-            this.Height = 600;
+            this.Width = 700;
+            this.Height = 500;
         }
 
         private void Instance_WidthChanged(object sender, bool e)
@@ -169,12 +169,12 @@ Description = "A panel showing live broadcast track data.")]
             Color[] firstRowColors = new Color[] { Color.White, Color.White, Color.White, Color.White, Color.White };
 
             DriverInfo currentDriver = kv.Value.CarInfo.Drivers[kv.Value.CarInfo.CurrentDriverIndex];
+            firstRow[0] = $"{kv.Value.CarInfo.RaceNumber.ToString().FillEnd(5, ' ')}";
             string firstName = currentDriver.FirstName;
             if (firstName.Length > 0) firstName = firstName.First() + "";
-            firstRow[0] = $"{firstName}. {currentDriver.LastName}";
-            firstRow[0] = new string(firstRow[0].Take(15).ToArray());
+            string name = $"{firstName}. {currentDriver.LastName}";
+            firstRow[0] += new string(name.Take(15).ToArray());
 
-            firstRow[1] = $"{kv.Value.CarInfo.RaceNumber}";
 
             int bestSessionLapMS = -1;
             if (broadCastRealTime.BestSessionLap != null)
@@ -191,10 +191,10 @@ Description = "A panel showing live broadcast track data.")]
                                         firstRowColors[2] = Color.FromArgb(255, 207, 97, 255);
 
                                 TimeSpan fastestLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.Value);
-                                firstRow[2] = $"{fastestLapTime:mm\\:ss\\.fff}";
+                                firstRow[1] = $"{fastestLapTime:mm\\:ss\\.fff}";
                             }
                             else
-                                firstRow[2] = $"--:--.---";
+                                firstRow[1] = $"--:--.---";
                         break;
                     }
 
@@ -206,22 +206,22 @@ Description = "A panel showing live broadcast track data.")]
                             {
                                 if (broadCastRealTime.BestSessionLap != null)
                                     if (kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS == bestSessionLapMS)
-                                        firstRowColors[2] = Color.FromArgb(255, 207, 97, 255);
+                                        firstRowColors[1] = Color.FromArgb(255, 207, 97, 255);
 
                                 TimeSpan fastestLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.Value);
-                                firstRow[2] = $"{fastestLapTime:mm\\:ss\\.fff}";
+                                firstRow[1] = $"{fastestLapTime:mm\\:ss\\.fff}";
                             }
                             else
                             {
                                 if (kv.Value.RealtimeCarUpdate.LastLap != null && kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.HasValue)
                                 {
                                     TimeSpan fastestLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.Value);
-                                    firstRow[2] = $"{fastestLapTime:mm\\:ss\\.fff}";
-                                    firstRowColors[2] = Color.OrangeRed;
+                                    firstRow[1] = $"{fastestLapTime:mm\\:ss\\.fff}";
+                                    firstRowColors[1] = Color.OrangeRed;
                                 }
                                 else
                                 {
-                                    firstRow[2] = $"--:--.---";
+                                    firstRow[1] = $"--:--.---";
                                 }
                             }
                         break;
@@ -233,35 +233,35 @@ Description = "A panel showing live broadcast track data.")]
             {
                 case CarLocationEnum.PitEntry:
                     {
-                        firstRow[3] += " (PI)";
+                        firstRow[2] += " (PI)";
                         break;
                     }
                 case CarLocationEnum.PitExit:
                     {
-                        firstRow[3] += " (PE)";
+                        firstRow[2] += " (PE)";
                         break;
                     }
                 case CarLocationEnum.Pitlane:
                     {
-                        firstRow[3] += " (P)";
+                        firstRow[2] += " (P)";
                         break;
                     }
 
                 case CarLocationEnum.Track:
                     {
-                        firstRow[3] = $"{kv.Value.RealtimeCarUpdate.Delta / 1000f:F2}".FillStart(6, ' ');
-                        firstRowColors[3] = kv.Value.RealtimeCarUpdate.Delta > 0 ? Color.OrangeRed : Color.LimeGreen;
+                        firstRow[2] = $"{kv.Value.RealtimeCarUpdate.Delta / 1000f:F2}".FillStart(6, ' ');
+                        firstRowColors[2] = kv.Value.RealtimeCarUpdate.Delta > 0 ? Color.OrangeRed : Color.LimeGreen;
 
                         if (kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.HasValue && broadCastRealTime.BestSessionLap != null)
                         {
                             if (kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.Value + kv.Value.RealtimeCarUpdate.Delta < broadCastRealTime.BestSessionLap.LaptimeMS)
                             {
                                 // purple if delta is faster than server best lap
-                                firstRowColors[3] = Color.FromArgb(255, 207, 97, 255);
+                                firstRowColors[2] = Color.FromArgb(255, 207, 97, 255);
                             }
                         }
 
-                        firstRow[4] = $"{kv.Value.RealtimeCarUpdate.Laps} ";
+                        firstRow[3] = $"L{kv.Value.RealtimeCarUpdate.Laps} | ";
 
                         if (Tracks.Any())
                         {
@@ -279,9 +279,10 @@ Description = "A panel showing live broadcast track data.")]
                                             if (corner.Item1 != 0)
                                             {
                                                 StringBuilder builder = new StringBuilder();
-                                                builder.Append(corner.Item1 + " ");
+                                                builder.Append("T");
+                                                builder.Append(corner.Item1.ToString().FillEnd(2, ' ') + ' ');
                                                 builder.Append(corner.Item2);
-                                                firstRow[4] += $"{builder}";
+                                                firstRow[3] += $"{builder}";
                                             }
                                         }
                                 }
