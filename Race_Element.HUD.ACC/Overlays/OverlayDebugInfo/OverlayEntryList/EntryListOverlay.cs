@@ -360,6 +360,13 @@ Description = "A panel showing live broadcast track data.")]
                                 {
                                     cars.Sort((a, b) =>
                                     {
+                                        if (a.Value.CarInfo == null)
+                                            return -1;
+
+                                        if (b.Value.CarInfo == null)
+                                            return 1;
+
+
                                         if (a.Value.RealtimeCarUpdate.CupPosition == b.Value.RealtimeCarUpdate.CupPosition)
                                             return a.Value.CarInfo.RaceNumber.CompareTo(b.Value.CarInfo.RaceNumber);
 
@@ -416,6 +423,12 @@ Description = "A panel showing live broadcast track data.")]
                     {
                         cars.Sort((a, b) =>
                         {
+                            if (a.Value.CarInfo == null)
+                                return -1;
+
+                            if (b.Value.CarInfo == null)
+                                return 1;
+
                             if (a.Value.RealtimeCarUpdate.CupPosition == b.Value.RealtimeCarUpdate.CupPosition)
                                 return -1;
 
