@@ -22,7 +22,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 {
     //#if DEBUG
     [Overlay(Name = "Entrylist Overlay", Version = 1.00, OverlayType = OverlayType.Debug,
-Description = "A panel showing live broadcast track data.")]
+Description = "(BETA) A table representing a leaderboard.")]
     //#endif
     internal sealed class EntryListOverlay : AbstractOverlay
     {
@@ -333,7 +333,7 @@ Description = "A panel showing live broadcast track data.")]
             string cupPosition = $"{kv.Value.RealtimeCarUpdate.CupPosition}";
             TableRow row = new TableRow()
             {
-                Header = $"  {cupPosition}",
+                Header = $"{cupPosition}".FillStart(3, ' '),
                 Columns = firstRow,
                 ColumnColors = firstRowColors,
                 HeaderBackground = headerBackgroundColor
@@ -388,6 +388,13 @@ Description = "A panel showing live broadcast track data.")]
                                         if (b.Value.CarInfo == null)
                                             return 1;
 
+                                        if (a.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane && b.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane)
+                                        {
+                                            if (a.Value.RealtimeCarUpdate.CupPosition == b.Value.RealtimeCarUpdate.CupPosition)
+                                                return a.Value.CarInfo.RaceNumber.CompareTo(b.Value.CarInfo.RaceNumber);
+                                            return a.Value.RealtimeCarUpdate.CupPosition.CompareTo(b.Value.RealtimeCarUpdate.CupPosition);
+                                        }
+
                                         Car carCarA = PositionGraph.Instance.GetCar(a.Value.CarInfo.CarIndex);
                                         Car carCarb = PositionGraph.Instance.GetCar(b.Value.CarInfo.CarIndex);
 
@@ -401,12 +408,7 @@ Description = "A panel showing live broadcast track data.")]
                                         if (b.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane || b.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.NONE)
                                             bSpline = 0;
 
-                                        if (a.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane && b.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane)
-                                        {
-                                            if (a.Value.RealtimeCarUpdate.CupPosition == b.Value.RealtimeCarUpdate.CupPosition)
-                                                return a.Value.CarInfo.RaceNumber.CompareTo(b.Value.CarInfo.RaceNumber);
-                                            return a.Value.RealtimeCarUpdate.Position.CompareTo(b.Value.RealtimeCarUpdate.Position);
-                                        }
+                                  
 
                                         var aLaps = a.Value.RealtimeCarUpdate.Laps;
                                         var bLaps = b.Value.RealtimeCarUpdate.Laps;
@@ -470,11 +472,8 @@ Description = "A panel showing live broadcast track data.")]
 
 
             return cars.First().Value;
-
-
         }
 
         public sealed override bool ShouldRender() => true;
-
     }
 }
