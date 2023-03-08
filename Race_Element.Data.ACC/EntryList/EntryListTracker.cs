@@ -187,15 +187,15 @@ namespace RaceElement.Data.ACC.EntryList
                 {
                     case BroadcastingCarEventType.BestSessionLap:
                         {
-                            if (broadcastingEvent.Msg == "--:--.---")
-                            {
-                                lock (_entryListCars)
-                                {
-                                    _entryListCars.Remove(broadcastingEvent.CarId);
-                                    PositionGraph.Instance.RemoveCar(broadcastingEvent.CarId);
-                                    Debug.WriteLine($"Deleted car from entry list, empty best session lap {broadcastingEvent.CarId}");
-                                }
-                            }
+                            //if (broadcastingEvent.Msg == "--:--.---")
+                            //{
+                            //    lock (_entryListCars)
+                            //    {
+                            //        _entryListCars.Remove(broadcastingEvent.CarId);
+                            //        PositionGraph.Instance.RemoveCar(broadcastingEvent.CarId);
+                            //        Debug.WriteLine($"Deleted car from entry list, empty best session lap {broadcastingEvent.CarId}");
+                            //    }
+                            //}
                             break;
                         }
                     case BroadcastingCarEventType.LapCompleted:
