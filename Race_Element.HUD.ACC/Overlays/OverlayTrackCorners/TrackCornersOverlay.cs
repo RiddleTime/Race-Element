@@ -85,11 +85,17 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
             this.Height = (int)(headerRect.Top / Scale);
 
             RaceSessionTracker.Instance.OnNewSessionStarted += Instance_OnNewSessionStarted;
+            RaceSessionTracker.Instance.OnRaceWeekendEnded += Instance_OnRaceWeekendEnded;
+        }
+
+        private void Instance_OnRaceWeekendEnded(object sender, RaceElement.Data.ACC.Database.RaceWeekend.DbRaceWeekend e)
+        {
+            _currentTrack = null;
+            UpdateWidth();
         }
 
         private void Instance_OnNewSessionStarted(object sender, RaceElement.Data.ACC.Database.SessionData.DbRaceSession e)
         {
-            Trace.WriteLine("Resetting current track, updating width.");
             _currentTrack = null;
             UpdateWidth();
         }
@@ -154,6 +160,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
         public override void BeforeStop()
         {
             RaceSessionTracker.Instance.OnNewSessionStarted -= Instance_OnNewSessionStarted;
+            RaceSessionTracker.Instance.OnRaceWeekendEnded -= Instance_OnRaceWeekendEnded;
 
             _cornerNumberHeader?.Dispose();
             _cornerTextValue?.Dispose();
