@@ -134,7 +134,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil
 
         public void AddRow(string header, string[] columns, Color[] columnColors = null)
         {
-            this.AddRow(new TableRow() { Header = header, Columns = columns, ColumnColors = columnColors }); ;
+            this.AddRow(new TableRow() { Header = header, Columns = columns, ColumnColors = columnColors });
         }
 
         public void AddRow(TableRow row)

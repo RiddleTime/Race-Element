@@ -104,6 +104,10 @@ Description = "A panel showing live broadcast track data.")]
 
         public sealed override void Render(Graphics g)
         {
+            // table titles
+
+            _table.AddRow("P", new string[] { "#    Driver", $"Previous", "Delta", "Lap| Turn" });
+
             List<KeyValuePair<int, CarData>> cars = EntryListTracker.Instance.Cars;
 
             if (cars.Count == 0)
