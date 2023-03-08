@@ -120,6 +120,7 @@ namespace RaceElement.Data.ACC.Tracker
             {
                 _client.Shutdown();
                 _client.Dispose();
+                _client = null;
             }
             Debug.WriteLine("Disconnected broadcast client");
         }

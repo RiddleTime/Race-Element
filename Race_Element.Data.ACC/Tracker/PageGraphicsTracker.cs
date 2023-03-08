@@ -79,17 +79,16 @@ namespace RaceElement.Data.ACC.Tracker
                                 }
                                 else
                                 {
-                                    if (!BroadcastTracker.Instance.IsConnected)
-                                        if (sPageFilePhysics.PacketId != previousPhysicsPackedId)
-                                        {
-                                            BroadcastTracker.Instance.Connect();
-                                            //#if DEBUG
-                                            EntryListTracker.Instance.Start();
-                                            //#endif
-                                        }
+                                    if (sPageFilePhysics.PacketId > previousPhysicsPackedId)
+                                    {
+                                        Thread.Sleep(1000);
+                                        BroadcastTracker.Instance.Connect();
+                                        //#if DEBUG
+                                        EntryListTracker.Instance.Start();
+                                        //#endif
+                                    }
 
                                 }
-
 
                                 previousPhysicsPackedId = sPageFilePhysics.PacketId;
 
