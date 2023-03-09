@@ -17,10 +17,6 @@ namespace RaceElement.Data.ACC.Tracker
                 _ = TyresTracker.Instance;
 
                 Debug.WriteLine("Started ACC.Trackers");
-
-
-
-
             }).Start();
         }
     }

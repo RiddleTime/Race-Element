@@ -5,6 +5,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
 {
     internal sealed class InputBarsConfiguration : OverlayConfiguration
     {
+        public InputBarsConfiguration() => AllowRescale = true;
+
         public enum BarOrientation { Horizontal, Vertical };
 
         [ConfigGrouping("Bars", "The shape and spacing of the bars")]
@@ -56,12 +58,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
             [ToolTip("Changes the opacity of the brake bar color when ABS is activated.")]
             [IntRange(75, 255, 1)]
             public int AbsOpacity { get; set; } = 255;
-        }
-
-
-        public InputBarsConfiguration()
-        {
-            AllowRescale = true;
         }
     }
 }

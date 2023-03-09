@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using RaceElement.Util;
+using static RaceElement.Data.SetupConverter;
 
 namespace RaceElement.Data.ACC.Tyres
 {
@@ -60,10 +61,10 @@ namespace RaceElement.Data.ACC.Tyres
                     {
                         Thread.Sleep(100);
 
-                        var physicsPage = ACCSharedMemory.Instance.ReadPhysicsPageFile(true);
+                        var physicsPage = ACCSharedMemory.Instance.ReadPhysicsPageFile();
                         float[] currentReading = physicsPage.WheelPressure;
 
-                        var graphicsPage = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
+                        var graphicsPage = ACCSharedMemory.Instance.ReadGraphicsPageFile();
                         int currentTyreSetIndex = graphicsPage.currentTyreSet;
                         CheckTyreSetChange(currentTyreSetIndex);
                         CheckWetTyreSetChange(graphicsPage);
@@ -123,12 +124,13 @@ namespace RaceElement.Data.ACC.Tyres
             // Debug.WriteLine($"TyresTracker: Pressure variation: [{string.Join(", ", pressureVariation)}]");
 
             bool hasLostPressure = false;
-            for (int i = 0; i < 4; ++i)
+            foreach (Wheel wheel in Enum.GetValues(typeof(Wheel)))
             {
-                if (!(pressureVariation[i] <= -0.03f) || !(pressureVariation[i] > -3f))
+                int wheelIndex = (int)wheel;
+                if (!(pressureVariation[wheelIndex] <= -0.03f) || !(pressureVariation[wheelIndex] > -3f))
                     continue;
 
-                _lastPressureLosses[i] += pressureVariation[i] * -1;
+                _lastPressureLosses[wheelIndex] += pressureVariation[wheelIndex] * -1;
                 hasLostPressure = true;
             }
 

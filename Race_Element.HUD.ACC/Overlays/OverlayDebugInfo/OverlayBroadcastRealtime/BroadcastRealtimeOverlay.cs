@@ -76,7 +76,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
 
                         string firstName = carData.Value.CarInfo.Drivers[carData.Value.CarInfo.CurrentDriverIndex].FirstName;
                         _table.AddRow("P", new string[] { $"{carData.Value.RealtimeCarUpdate.Position}" });
-                        _table.AddRow($"{carData.Value.CarInfo.RaceNumber}", new string[] { $"{firstName} {driverName}" });
+                        _table.AddRow($"", new string[] { $"#{carData.Value.CarInfo.RaceNumber.ToString().FillEnd(4, ' ')}- {firstName} {driverName}" });
                         _table.AddRow("Team", new string[] { $"{carData.Value.CarInfo.TeamName}" });
 
                         var name = ConversionFactory.GetCarName(carData.Value.CarInfo.CarModelType);

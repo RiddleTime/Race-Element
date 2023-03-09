@@ -49,13 +49,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
 
         private const int InitialWidth = 135;
         private const int InitialHeight = 190;
-
         private const double MaxPadLife = 29;
+
         private readonly Font _fontFamilyLarge;
         private readonly Font _fontFamily;
         private readonly Font _fontFamilySmall;
         private readonly int _yMono;
         private readonly int _yMonoSmall;
+
         private TyresTracker.TyresInfo _lastTyresInfo;
 
         public TyreInfoOverlay(Rectangle rectangle) : base(rectangle, "Tyre Info")
@@ -65,6 +66,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
             _yMono = _fontFamily.Height / 6;
             _fontFamilySmall = FontUtil.FontSegoeMono(10);
             _yMonoSmall = _fontFamilySmall.Height / 5;
+
             this.Width = InitialWidth;
             this.Height = InitialHeight;
             this.RefreshRateHz = 8;
