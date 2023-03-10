@@ -435,8 +435,16 @@ Description = "(BETA) A table representing a leaderboard.")]
                             if (b.Value.CarInfo == null)
                                 return 1;
 
+
+                            if (a.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane && b.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane)
+                            {
+                                if (a.Value.RealtimeCarUpdate.CupPosition == b.Value.RealtimeCarUpdate.CupPosition)
+                                    return a.Value.CarInfo.RaceNumber.CompareTo(b.Value.CarInfo.RaceNumber);
+                                return a.Value.RealtimeCarUpdate.CupPosition.CompareTo(b.Value.RealtimeCarUpdate.CupPosition);
+                            }
+
                             if (a.Value.RealtimeCarUpdate.CupPosition == b.Value.RealtimeCarUpdate.CupPosition)
-                                return -1;
+                                return a.Value.CarInfo.RaceNumber.CompareTo(b.Value.CarInfo.RaceNumber);
 
                             return a.Value.RealtimeCarUpdate.CupPosition.CompareTo(b.Value.RealtimeCarUpdate.CupPosition);
                         });
@@ -456,7 +464,18 @@ Description = "(BETA) A table representing a leaderboard.")]
                     return -1;
 
                 if (b.Value.CarInfo == null)
-                    return -1;
+                    return 1;
+
+                if (a.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane && b.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane)
+                {
+                    if (a.Value.RealtimeCarUpdate.CupPosition == b.Value.RealtimeCarUpdate.CupPosition)
+                        return a.Value.CarInfo.RaceNumber.CompareTo(b.Value.CarInfo.RaceNumber);
+                    return a.Value.RealtimeCarUpdate.CupPosition.CompareTo(b.Value.RealtimeCarUpdate.CupPosition);
+                }
+
+                if (a.Value.RealtimeCarUpdate.CupPosition == b.Value.RealtimeCarUpdate.CupPosition)
+                    return a.Value.CarInfo.RaceNumber.CompareTo(b.Value.CarInfo.RaceNumber);
+
 
                 var aSpline = PositionGraph.Instance.GetCar(a.Value.CarInfo.CarIndex)?.SplinePosition;
                 var bSpline = PositionGraph.Instance.GetCar(b.Value.CarInfo.CarIndex)?.SplinePosition;

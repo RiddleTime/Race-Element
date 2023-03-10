@@ -59,7 +59,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
 
             // draw wheel specific slip based on outline size
             float wheelSlip = pagePhysics.WheelSlip[(int)wheel];
-            float maxSlip = 1.5f;
+            float maxSlip = 2f;
 
             wheelSlip.ClipMax(maxSlip);
 
