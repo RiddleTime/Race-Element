@@ -93,6 +93,9 @@ namespace RaceElement.HUD.Overlay.Internal
 
                 if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE || pageGraphics.Status == ACCSharedMemory.AcStatus.AC_REPLAY)
                     shouldRender = false;
+
+                if (broadCastRealTime.FocusedCarIndex != pageGraphics.PlayerCarID)
+                    shouldRender = false;
             }
 
             return shouldRender;

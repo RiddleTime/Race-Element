@@ -62,7 +62,7 @@ namespace RaceElement.Data.ACC.EntryList
             BroadcastTracker.Instance.OnEntryListUpdate += EntryListUpdate_EventHandler;
             BroadcastTracker.Instance.OnBroadcastEvent += Broadcast_EventHandler;
 
-            //_accidentListTracker.Start();
+            _accidentListTracker.Start();
 
             StartEntryListCleanupTracker();
             Debug.WriteLine("Entrylist tracker started.");
@@ -78,7 +78,7 @@ namespace RaceElement.Data.ACC.EntryList
             BroadcastTracker.Instance.OnEntryListUpdate -= EntryListUpdate_EventHandler;
             BroadcastTracker.Instance.OnBroadcastEvent -= Broadcast_EventHandler;
 
-            //_accidentListTracker.Stop();
+            _accidentListTracker.Stop();
 
             _entryListCars?.Clear();
             //#endif
@@ -187,15 +187,6 @@ namespace RaceElement.Data.ACC.EntryList
                 {
                     case BroadcastingCarEventType.BestSessionLap:
                         {
-                            //if (broadcastingEvent.Msg == "--:--.---")
-                            //{
-                            //    lock (_entryListCars)
-                            //    {
-                            //        _entryListCars.Remove(broadcastingEvent.CarId);
-                            //        PositionGraph.Instance.RemoveCar(broadcastingEvent.CarId);
-                            //        Debug.WriteLine($"Deleted car from entry list, empty best session lap {broadcastingEvent.CarId}");
-                            //    }
-                            //}
                             break;
                         }
                     case BroadcastingCarEventType.LapCompleted:
@@ -305,17 +296,16 @@ namespace RaceElement.Data.ACC.EntryList
                 Debug.WriteLine(ex);
             }
 
-            /*var accidentList = _accidentListTracker.GetNewAccidents();
-            foreach (var broadcastEventList in accidentList)
-            {
-                if (broadcastEventList.Count == 0) continue;
+            //var accidentList = _accidentListTracker.GetNewAccidents();
+            //foreach (var broadcastEventList in accidentList)
+            //{
+            //    if (broadcastEventList.Count() == 0) continue;
 
-                string carNumbers = string.Join(" ", broadcastEventList.Select(x => x.CarData.RaceNumber).ToArray());
-                string accidentMessage = $"accident between [{carNumbers}]";
-                Debug.WriteLine($"{accidentMessage}");
+            //    string carNumbers = string.Join(" ", broadcastEventList.Select(x => x.CarData.RaceNumber).ToArray());
+            //    string accidentMessage = $"accident between [{carNumbers}]";
+            //    Debug.WriteLine($"{accidentMessage}");
 
-            }*/
-
+            //}
         }
     }
 }
