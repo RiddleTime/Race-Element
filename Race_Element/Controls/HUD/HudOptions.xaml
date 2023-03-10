@@ -81,7 +81,7 @@
                             <RowDefinition Height="40"/>
                         </Grid.RowDefinitions>
 
-                        <ListView Grid.Row="0"  Grid.Column="0" Foreground="White" x:Name="listOverlays" VerticalAlignment="Bottom" Margin="0,3,0,0" Cursor="Hand"/>
+                        <ListView Grid.Row="0"  Grid.Column="0" Foreground="White" x:Name="listOverlays" VerticalAlignment="Top" Margin="0,3,0,0" Cursor="Hand"/>
                         <ComboBox Grid.Row="1" x:Name="comboOverlays" HorizontalContentAlignment="Center"  HorizontalAlignment="Stretch"
                                    FontFamily="{StaticResource Conthrax}" FontSize="16" FontWeight="Bold" ToolTip="Filter HUDs based on category."></ComboBox>
                     </Grid>
@@ -111,7 +111,7 @@
                             <RowDefinition Height="40"/>
                         </Grid.RowDefinitions>
 
-                        <ListView Grid.Row="0" Grid.Column="0" x:Name="listDebugOverlays" VerticalAlignment="Bottom" Margin="0,3,0,0" Cursor="Hand"/>
+                        <ListView Grid.Row="0" Grid.Column="0" x:Name="listDebugOverlays" VerticalAlignment="Top" Margin="0,3,0,0" Cursor="Hand"/>
                         <ComboBox Grid.Row="1" x:Name="comboDebugOverlays" HorizontalContentAlignment="Center" 
                                    FontFamily="{StaticResource Conthrax}" FontSize="16" FontWeight="Bold" ToolTip="Filter HUDs based on category."></ComboBox>
                     </Grid>
