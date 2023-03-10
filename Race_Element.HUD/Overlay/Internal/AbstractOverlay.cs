@@ -354,11 +354,10 @@ namespace RaceElement.HUD.Overlay.Internal
             {
                 try
                 {
+                    this.IsRepositioning = enabled;
+
                     if (enabled)
-                    {
-                        this.IsRepositioning = enabled;
                         this.SetDraggy(true);
-                    }
                     else
                     {
                         if (base.Handle == null)
@@ -378,7 +377,6 @@ namespace RaceElement.HUD.Overlay.Internal
                         OverlaySettings.SaveOverlaySettings(this.Name, settings);
 
                         this.SetDraggy(false);
-                        this.IsRepositioning = enabled;
                         UpdateLayeredWindow();
                     }
                 }
