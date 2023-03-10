@@ -21,6 +21,7 @@ using System.Windows.Interop;
 using System.Windows.Threading;
 using System.IO;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace RaceElement
 {
@@ -93,8 +94,15 @@ namespace RaceElement
             tabControl.SelectedIndex = _uiSettings.Get().SelectedTabIndex.Clip(0, tabControl.Items.Count - 1);
 
             UiSettingsJson uiSettings = _uiSettings.Get();
-            this.Left = uiSettings.X.Clip(0, (int)SystemParameters.PrimaryScreenWidth);
-            this.Top = uiSettings.Y.Clip(0, (int)SystemParameters.PrimaryScreenHeight);
+
+            this.Left = uiSettings.X.Clip(0, (int)SystemParameters.PrimaryScreenHeight - 1);
+            this.Top = uiSettings.Y.Clip(0, (int)SystemParameters.PrimaryScreenHeight - 1);
+
+            if (!System.Windows.Forms.Screen.AllScreens.Any(screen => screen.WorkingArea.IntersectsWith(new System.Drawing.Rectangle((int)this.Left, (int)this.Top, (int)this.Width, (int)this.Height))))
+            {
+                this.Left = 50;
+                this.Top = 50;
+            }
 
             _uiSettings.Save(uiSettings);
 
