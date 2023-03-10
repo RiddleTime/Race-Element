@@ -3,7 +3,6 @@ using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.Util.SystemExtensions;
 using System;
-using System.Buffers.Text;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using static RaceElement.Data.SetupConverter;
@@ -16,22 +15,31 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
         OverlayType = OverlayType.Release)]
     internal sealed class WheelSlipOverlay : AbstractOverlay
     {
-        private WheelSlipConfiguration _config = new WheelSlipConfiguration();
-        private class WheelSlipConfiguration : OverlayConfiguration
+        private readonly WheelSlipConfiguration _config = new WheelSlipConfiguration();
+        private sealed class WheelSlipConfiguration : OverlayConfiguration
         {
+            [ConfigGrouping("Slip Settings", "Adjust the configuration for the wheel slip hud")]
+            public SlipGrouping Slip { get; set; } = new SlipGrouping();
+            public sealed class SlipGrouping
+            {
+                [FloatRange(0.5f, 5f, 0.1f, 1)]
+                public float MaxSlipAmount { get; set; } = 2f;
+            }
+
             public WheelSlipConfiguration() => AllowRescale = true;
         }
 
         public WheelSlipOverlay(Rectangle rectangle) : base(rectangle, "Wheel Slip")
         {
-            RefreshRateHz = 20;
+            RefreshRateHz = 10;
             Width = 130;
             Height = 130;
         }
 
         public override void SetupPreviewData()
         {
-            pagePhysics.WheelSlip = new float[] { 0.3f, 0.6f, 0.3f, 0.745f };
+            pagePhysics.WheelSlip = new float[] { 0.3f, 0.3f, 0.6f, 0.745f };
+            pagePhysics.SlipAngle = new float[] { 0.01f, 0.02f, -0.2f, -0.3f };
         }
 
         public override void Render(Graphics g)
@@ -50,8 +58,9 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
         private void DrawWheelSlip(Graphics g, int x, int y, int size, Wheel wheel)
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
-
+            g.CompositingQuality = CompositingQuality.HighQuality;
             var wheelRect = new Rectangle(x, y, size, size);
+
             // draw outline
             g.FillEllipse(Brushes.Black, wheelRect);
             g.DrawEllipse(Pens.Red, wheelRect);
@@ -59,11 +68,9 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
 
             // draw wheel specific slip based on outline size
             float wheelSlip = pagePhysics.WheelSlip[(int)wheel];
-            float maxSlip = 2f;
+            wheelSlip.ClipMax(_config.Slip.MaxSlipAmount);
 
-            wheelSlip.ClipMax(maxSlip);
-
-            float percentage = (float)wheelSlip * 100 / maxSlip;
+            float percentage = (float)wheelSlip * 100 / _config.Slip.MaxSlipAmount;
             percentage.ClipMax(100);
             int centerX = x + size / 2;
             int centerY = y + size / 2;
