@@ -5,6 +5,7 @@ using RaceElement.Util.SystemExtensions;
 using System;
 using System.Buffers.Text;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using static RaceElement.Data.SetupConverter;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
@@ -48,6 +49,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
 
         private void DrawWheelSlip(Graphics g, int x, int y, int size, Wheel wheel)
         {
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+
             var wheelRect = new Rectangle(x, y, size, size);
             // draw outline
             g.FillEllipse(Brushes.Black, wheelRect);
