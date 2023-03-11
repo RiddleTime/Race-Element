@@ -31,6 +31,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
 
         private CachedBitmap _cachedCircleBackground;
         private const int _wheelRadius = 50;
+        private Brush _wheelBrush;
+        private Pen _wheelPen;
 
         public WheelSlipOverlay(Rectangle rectangle) : base(rectangle, "Wheel Slip")
         {
@@ -47,10 +49,13 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
 
         public override void BeforeStart()
         {
+            _wheelBrush = new SolidBrush(Color.FromArgb(183, Color.Red));
+            _wheelPen = new Pen(Brushes.White, 4);
+
             int scaledRadius = (int)(_wheelRadius * Scale);
             _cachedCircleBackground = new CachedBitmap(scaledRadius + 1, scaledRadius + 1, g =>
             {
-                var wheelRect = new Rectangle(0, 0, scaledRadius, scaledRadius);
+                var wheelRect = new Rectangle(1, 1, scaledRadius - 1, scaledRadius - 1);
 
                 using GraphicsPath gradientPath = new GraphicsPath();
                 gradientPath.AddEllipse(wheelRect);
@@ -65,7 +70,12 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
 
         }
 
-        public override void BeforeStop() => _cachedCircleBackground?.Dispose();
+        public override void BeforeStop()
+        {
+            _cachedCircleBackground?.Dispose();
+            _wheelBrush?.Dispose();
+            _wheelPen?.Dispose();
+        }
 
         public override void Render(Graphics g)
         {
@@ -98,10 +108,10 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
             int centerX = x + size / 2;
             int centerY = y + size / 2;
 
-            g.FillEllipse(Brushes.Red, centerX, centerY, size / 2 * percentage / 100);
+            g.FillEllipse(_wheelBrush, centerX, centerY, size / 2 * percentage / 100);
 
-            float slipAngle = (float)(pagePhysics.SlipAngle[(int)wheel] * 180d / Math.PI) - 90;
-            g.DrawArc(new Pen(Brushes.White, 4), wheelRect, slipAngle - 5, 10);
+            float slipAngle = (float)(pagePhysics.SlipAngle[(int)wheel] * 180d / Math.PI * 2) - 90;
+            g.DrawArc(_wheelPen, wheelRect, slipAngle - 10, 20);
         }
     }
 }
