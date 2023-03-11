@@ -29,6 +29,9 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
             public WheelSlipConfiguration() => AllowRescale = true;
         }
 
+        private CachedBitmap _cachedCircleBackground;
+        private const int _wheelRadius = 50;
+
         public WheelSlipOverlay(Rectangle rectangle) : base(rectangle, "Wheel Slip")
         {
             RefreshRateHz = 10;
@@ -42,11 +45,33 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
             pagePhysics.SlipAngle = new float[] { 0.01f, 0.02f, -0.2f, -0.3f };
         }
 
+        public override void BeforeStart()
+        {
+            int scaledRadius = (int)(_wheelRadius * Scale);
+            _cachedCircleBackground = new CachedBitmap(scaledRadius + 1, scaledRadius + 1, g =>
+            {
+                var wheelRect = new Rectangle(0, 0, scaledRadius, scaledRadius);
+
+                using GraphicsPath gradientPath = new GraphicsPath();
+                gradientPath.AddEllipse(wheelRect);
+                using PathGradientBrush pthGrBrush = new PathGradientBrush(gradientPath);
+                pthGrBrush.CenterColor = Color.FromArgb(40, 0, 0, 0);
+                pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(220, 0, 0, 0) };
+
+                g.FillEllipse(pthGrBrush, wheelRect);
+
+                g.DrawEllipse(Pens.Red, wheelRect);
+            });
+
+        }
+
+        public override void BeforeStop() => _cachedCircleBackground?.Dispose();
+
         public override void Render(Graphics g)
         {
             int baseX = 10;
             int baseY = 10;
-            int wheelSize = 50;
+            int wheelSize = _wheelRadius;
             int gap = 10;
 
             DrawWheelSlip(g, baseX + 0, baseY + 0, wheelSize, Wheel.FrontLeft);
@@ -62,9 +87,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
             var wheelRect = new Rectangle(x, y, size, size);
 
             // draw outline
-            g.FillEllipse(Brushes.Black, wheelRect);
-            g.DrawEllipse(Pens.Red, wheelRect);
-
+            _cachedCircleBackground?.Draw(g, x, y, size, size);
 
             // draw wheel specific slip based on outline size
             float wheelSlip = pagePhysics.WheelSlip[(int)wheel];
