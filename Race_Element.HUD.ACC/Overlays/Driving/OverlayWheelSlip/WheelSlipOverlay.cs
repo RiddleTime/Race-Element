@@ -10,7 +10,7 @@ using static RaceElement.Data.SetupConverter;
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
 {
     [Overlay(Name = "Wheel Slip",
-        Description = "Shows wheel slip of each tyre",
+        Description = "Shows wheel slip angle and amount of each tyre.",
         OverlayCategory = OverlayCategory.Physics,
         OverlayType = OverlayType.Release)]
     internal sealed class WheelSlipOverlay : AbstractOverlay
@@ -22,6 +22,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
             public SlipGrouping Slip { get; set; } = new SlipGrouping();
             public sealed class SlipGrouping
             {
+                [ToolTip("Increase the maximum amount of wheel slip displayed with the circles.")]
                 [FloatRange(0.5f, 5f, 0.1f, 1)]
                 public float MaxSlipAmount { get; set; } = 2f;
             }
@@ -30,15 +31,15 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
         }
 
         private CachedBitmap _cachedCircleBackground;
-        private const int _wheelRadius = 50;
+        private const int _wheelRadius = 52;
         private Brush _wheelBrush;
         private Pen _wheelPen;
 
         public WheelSlipOverlay(Rectangle rectangle) : base(rectangle, "Wheel Slip")
         {
-            RefreshRateHz = 10;
-            Width = 130;
-            Height = 130;
+            RefreshRateHz = 12;
+            Width = 128;
+            Height = 128;
         }
 
         public override void SetupPreviewData()
@@ -64,7 +65,6 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
                 pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(220, 0, 0, 0) };
 
                 g.FillEllipse(pthGrBrush, wheelRect);
-
                 g.DrawEllipse(Pens.Black, wheelRect);
             });
 
@@ -92,7 +92,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
 
         private void DrawWheelSlip(Graphics g, int x, int y, int size, Wheel wheel)
         {
-       
+
             var wheelRect = new Rectangle(x, y, size, size);
 
             // draw outline
