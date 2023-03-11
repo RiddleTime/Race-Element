@@ -49,7 +49,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
 
         public override void BeforeStart()
         {
-            _wheelBrush = new SolidBrush(Color.FromArgb(183, Color.Red));
+            _wheelBrush = new SolidBrush(Color.FromArgb(175, Color.Red));
             _wheelPen = new Pen(Brushes.White, 4);
 
             int scaledRadius = (int)(_wheelRadius * Scale);
@@ -65,7 +65,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
 
                 g.FillEllipse(pthGrBrush, wheelRect);
 
-                g.DrawEllipse(Pens.Red, wheelRect);
+                g.DrawEllipse(Pens.Black, wheelRect);
             });
 
         }
@@ -79,10 +79,10 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
 
         public override void Render(Graphics g)
         {
-            int baseX = 10;
-            int baseY = 10;
+            int baseX = 8;
+            int baseY = 8;
             int wheelSize = _wheelRadius;
-            int gap = 10;
+            int gap = 8;
 
             DrawWheelSlip(g, baseX + 0, baseY + 0, wheelSize, Wheel.FrontLeft);
             DrawWheelSlip(g, baseX + wheelSize + gap, baseY + 0, wheelSize, Wheel.FrontRight);
@@ -92,12 +92,15 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
 
         private void DrawWheelSlip(Graphics g, int x, int y, int size, Wheel wheel)
         {
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.CompositingQuality = CompositingQuality.HighQuality;
+       
             var wheelRect = new Rectangle(x, y, size, size);
 
             // draw outline
             _cachedCircleBackground?.Draw(g, x, y, size, size);
+
+
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.CompositingQuality = CompositingQuality.HighQuality;
 
             // draw wheel specific slip based on outline size
             float wheelSlip = pagePhysics.WheelSlip[(int)wheel];
