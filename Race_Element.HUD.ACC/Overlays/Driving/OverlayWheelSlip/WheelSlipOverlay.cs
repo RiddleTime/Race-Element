@@ -23,7 +23,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
             public sealed class DataGrouping
             {
                 [ToolTip("Adjust maximum amount of wheel slip displayed.")]
-                [FloatRange(0.5f, 5f, 0.1f, 1)]
+                [FloatRange(0.5f, 10f, 0.1f, 1)]
                 public float MaxSlipAmount { get; set; } = 2f;
             }
 
@@ -32,7 +32,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
             public sealed class ShapeGrouping
             {
                 [ToolTip("Adjust maximum amount of wheel slip displayed.")]
-                [IntRange(30, 100, 2)]
+                [IntRange(40, 100, 2)]
                 public int WheelSize { get; set; } = 52;
             }
 
@@ -51,7 +51,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
         public override void SetupPreviewData()
         {
             pagePhysics.WheelSlip = new float[] { 0.3f, 0.3f, 0.6f, 0.745f };
-            pagePhysics.SlipAngle = new float[] { 0.01f, 0.02f, -0.2f, -0.3f };
+            pagePhysics.SlipAngle = new float[] { 0, 0, -0.45f, -0.35f };
         }
 
         public override void BeforeStart()
@@ -62,7 +62,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
             int scaledRadius = (int)(_config.Shape.WheelSize * Scale);
             _cachedCircleBackground = new CachedBitmap(scaledRadius + 1, scaledRadius + 1, g =>
             {
-                var wheelRect = new Rectangle(1, 1, scaledRadius - 1, scaledRadius - 1);
+                var wheelRect = new Rectangle(0, 0, scaledRadius, scaledRadius);
 
                 using GraphicsPath gradientPath = new GraphicsPath();
                 gradientPath.AddEllipse(wheelRect);
@@ -75,11 +75,11 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
             });
 
 
-            int baseX = 8;
-            int baseY = 8;
+            int baseX = 2;
+            int baseY = 2;
             int wheelSize = _config.Shape.WheelSize;
             int gap = 8;
-            int size = baseX + wheelSize * 2 + gap * 2;
+            int size = baseX * 2 + wheelSize * 2 + gap;
             Width = size;
             Height = size;
 
@@ -94,8 +94,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
 
         public override void Render(Graphics g)
         {
-            int baseX = 8;
-            int baseY = 8;
+            int baseX = 2;
+            int baseY = 2;
             int wheelSize = _config.Shape.WheelSize;
             int gap = 8;
 
