@@ -18,28 +18,34 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
         private readonly WheelSlipConfiguration _config = new WheelSlipConfiguration();
         private sealed class WheelSlipConfiguration : OverlayConfiguration
         {
-            [ConfigGrouping("Slip Settings", "Adjust the configuration for the wheel slip hud")]
-            public SlipGrouping Slip { get; set; } = new SlipGrouping();
-            public sealed class SlipGrouping
+            [ConfigGrouping("Data", "Adjust the data displayed.")]
+            public DataGrouping Data { get; set; } = new DataGrouping();
+            public sealed class DataGrouping
             {
-                [ToolTip("Increase the maximum amount of wheel slip displayed with the circles.")]
+                [ToolTip("Adjust maximum amount of wheel slip displayed.")]
                 [FloatRange(0.5f, 5f, 0.1f, 1)]
                 public float MaxSlipAmount { get; set; } = 2f;
+            }
+
+            [ConfigGrouping("Shape", "Adjust the shape.")]
+            public ShapeGrouping Shape { get; set; } = new ShapeGrouping();
+            public sealed class ShapeGrouping
+            {
+                [ToolTip("Adjust maximum amount of wheel slip displayed.")]
+                [IntRange(30, 100, 2)]
+                public int WheelSize { get; set; } = 52;
             }
 
             public WheelSlipConfiguration() => AllowRescale = true;
         }
 
         private CachedBitmap _cachedCircleBackground;
-        private const int _wheelRadius = 52;
         private Brush _wheelBrush;
         private Pen _wheelPen;
 
         public WheelSlipOverlay(Rectangle rectangle) : base(rectangle, "Wheel Slip")
         {
-            RefreshRateHz = 12;
-            Width = 128;
-            Height = 128;
+            RefreshRateHz = 60;
         }
 
         public override void SetupPreviewData()
@@ -53,7 +59,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
             _wheelBrush = new SolidBrush(Color.FromArgb(175, Color.Red));
             _wheelPen = new Pen(Brushes.White, 4);
 
-            int scaledRadius = (int)(_wheelRadius * Scale);
+            int scaledRadius = (int)(_config.Shape.WheelSize * Scale);
             _cachedCircleBackground = new CachedBitmap(scaledRadius + 1, scaledRadius + 1, g =>
             {
                 var wheelRect = new Rectangle(1, 1, scaledRadius - 1, scaledRadius - 1);
@@ -68,6 +74,15 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
                 g.DrawEllipse(Pens.Black, wheelRect);
             });
 
+
+            int baseX = 8;
+            int baseY = 8;
+            int wheelSize = _config.Shape.WheelSize;
+            int gap = 8;
+            int size = baseX + wheelSize * 2 + gap * 2;
+            Width = size;
+            Height = size;
+
         }
 
         public override void BeforeStop()
@@ -81,7 +96,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
         {
             int baseX = 8;
             int baseY = 8;
-            int wheelSize = _wheelRadius;
+            int wheelSize = _config.Shape.WheelSize;
             int gap = 8;
 
             DrawWheelSlip(g, baseX + 0, baseY + 0, wheelSize, Wheel.FrontLeft);
@@ -104,14 +119,20 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
 
             // draw wheel specific slip based on outline size
             float wheelSlip = pagePhysics.WheelSlip[(int)wheel];
-            wheelSlip.ClipMax(_config.Slip.MaxSlipAmount);
+            wheelSlip.ClipMax(_config.Data.MaxSlipAmount);
 
-            float percentage = (float)wheelSlip * 100 / _config.Slip.MaxSlipAmount;
+            float percentage = (float)wheelSlip * 100 / _config.Data.MaxSlipAmount;
             percentage.ClipMax(100);
             int centerX = x + size / 2;
             int centerY = y + size / 2;
 
-            g.FillEllipse(_wheelBrush, centerX, centerY, size / 2 * percentage / 100);
+            using GraphicsPath gradientPath = new GraphicsPath();
+            gradientPath.AddEllipse(wheelRect);
+            using PathGradientBrush pthGrBrush = new PathGradientBrush(gradientPath);
+            pthGrBrush.CenterColor = Color.FromArgb(185, 255, 0, 0);
+            pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(40, 0, 0, 0) };
+
+            g.FillEllipse(pthGrBrush, centerX, centerY, size / 2 * percentage / 100);
 
             float slipAngle = (float)(pagePhysics.SlipAngle[(int)wheel] * 180d / Math.PI * 2) - 90;
             g.DrawArc(_wheelPen, wheelRect, slipAngle - 10, 20);
