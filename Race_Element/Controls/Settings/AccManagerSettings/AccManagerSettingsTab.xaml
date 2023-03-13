@@ -15,7 +15,7 @@
             <Label VerticalAlignment="Center">Minimize Race Element to system tray</Label>
         </StackPanel>
 
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" IsEnabled="False">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                 <ToggleButton x:Name="toggleRecordLapTelemetry" Width="50" Height="35" VerticalAlignment="Center" Cursor="Hand"/>
                 <Label VerticalAlignment="Center">Telemetry: Record Extended Data</Label>
