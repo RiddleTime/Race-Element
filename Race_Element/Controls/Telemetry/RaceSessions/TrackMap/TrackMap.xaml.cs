@@ -143,7 +143,15 @@ namespace RaceElement.Controls
                         }
 
                     });
-                    markerThread.Start();
+                    try
+                    {
+                        if (!markerThread.IsAlive)
+                            markerThread.Start();
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
                 }
                 else
                 {

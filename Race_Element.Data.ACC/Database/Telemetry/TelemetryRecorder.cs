@@ -214,10 +214,10 @@ namespace RaceElement.Data.ACC.Database.Telemetry
             LogWriter.WriteToLog("TelemetryRecorder: Stop()");
             Thread.Sleep(IntervalMillis * 3);
 
-            //PagePhysicsTracker.Instance.Tracker -= OnPagePhysicsUpdated;
-            //PageGraphicsTracker.Instance.Tracker -= OnPageGraphicsUpdated;
-            //LapTracker.Instance.LapFinished -= OnLapFinished;
-            //RaceSessionTracker.Instance.OnSessionFinished -= OnSessionFinished;
+            PagePhysicsTracker.Instance.Tracker -= OnPagePhysicsUpdated;
+            PageGraphicsTracker.Instance.Tracker -= OnPageGraphicsUpdated;
+            LapTracker.Instance.LapFinished -= OnLapFinished;
+            RaceSessionTracker.Instance.OnSessionFinished -= OnSessionFinished;
         }
     }
 }

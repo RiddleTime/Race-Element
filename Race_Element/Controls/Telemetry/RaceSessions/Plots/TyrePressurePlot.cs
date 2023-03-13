@@ -111,6 +111,7 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
             wpfPlot.AxesChanged += PlotUtil.WpfPlot_AxesChanged;
             if (PlotUtil.AxisLimitsCustom)
                 plot.SetAxisLimits(xAxisIndex: 0, xMin: PlotUtil.AxisLimits.XMin, xMax: PlotUtil.AxisLimits.XMax);
+            PlotUtil.AddCorners(ref wpfPlot, _trackData);
 
             PlotUtil.SetDefaultPlotStyles(ref plot);
 

@@ -125,6 +125,8 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
             if (PlotUtil.AxisLimitsCustom)
                 plot.SetAxisLimits(xAxisIndex: 0, xMin: PlotUtil.AxisLimits.XMin, xMax: PlotUtil.AxisLimits.XMax);
 
+            PlotUtil.AddCorners(ref wpfPlot, _trackData);
+
             wpfPlot.RenderRequest();
 
             return wpfPlot;

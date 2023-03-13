@@ -3,6 +3,10 @@ using ScottPlot;
 using ScottPlot.Plottable;
 using ScottPlot.Styles;
 using System;
+using System.Diagnostics;
+using System.Drawing;
+using System.Linq;
+using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
 {
@@ -11,6 +15,7 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
         private static readonly IStyle DefaultPlotStyle = Style.Black;
         public static readonly IPalette WheelPositionPallete = Palette.OneHalfDark;
 
+        public static float SplineTranslation = 0;
 
 
         public static void SetDefaultPlotStyles(ref Plot plot)
@@ -55,6 +60,23 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
             marker.MarkerLineWidth = 2;
             marker.MarkerShape = ScottPlot.MarkerShape.openCircle;
             marker.IsVisible = false;
+        }
+
+        public static void AddCorners(ref WpfPlot plot, AbstractTrackData trackData)
+        {
+            if (trackData.CornerNames.Count > 0)
+                foreach (var corner in trackData.CornerNames)
+                {
+                    double from = (corner.Key.From + SplineTranslation) * trackData.TrackLength;
+                    double to = (corner.Key.To + SplineTranslation) * trackData.TrackLength;
+
+                    plot.Plot.AddHorizontalSpan(from, to, color: Color.FromArgb(15, Color.White));
+
+                    var line = plot.Plot.AddVerticalLine(from, color: Color.Transparent);
+                    line.PositionLabel = true;
+                    line.PositionFormatter = pos => corner.Value.Item1.ToString();
+                    line.PositionLabelOppositeAxis = true;
+                }
         }
 
         public static AxisLimits AxisLimits;
