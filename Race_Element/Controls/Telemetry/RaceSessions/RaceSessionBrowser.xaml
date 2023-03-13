@@ -15,11 +15,12 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="4*"/>
-            <RowDefinition Height="5*"/>
+            <RowDefinition Height="*" MinHeight="200"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="*" MinHeight="300"/>
         </Grid.RowDefinitions>
 
-        <TabControl x:Name="tabControlWeekends" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" TabStripPlacement="Top">
+        <TabControl x:Name="tabControlWeekends" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" TabStripPlacement="Top">
             <TabItem Height="40">
                 <TabItem.Header>
                     <Grid x:Name="gridTabHeaderLocalSession">
@@ -86,13 +87,14 @@
             <Grid Grid.Row="1" x:Name="gridSessionLaps"></Grid>
         </Grid>
 
+        <GridSplitter x:Name="gridSplitter" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Height="3" HorizontalAlignment="Stretch" ResizeDirection="Rows"
+                      Visibility="Collapsed"></GridSplitter>
 
-
-        <local:TrackMap x:Name="trackMap" Grid.Row="1" Grid.Column="0" Margin="-1,4,0,0" 
+        <local:TrackMap x:Name="trackMap" Grid.Row="2" Grid.Column="0" Margin="-1,4,0,0" 
                         Background="#FB000000" 
                         BorderBrush="#99FF4500" BorderThickness="0,1,0,0" Visibility="Collapsed" />
 
-        <materialDesign:TransitioningContent x:Name="transitionContentPlots" Grid.Row="1" Grid.Column="1"  Grid.ColumnSpan="1" Visibility="Collapsed"
+        <materialDesign:TransitioningContent x:Name="transitionContentPlots" Grid.Row="2" Grid.Column="1"  Grid.ColumnSpan="1" Visibility="Collapsed"
                                              BorderThickness="0,1,0,0" BorderBrush="#99FF4500" Margin="0,4,0,0" Background="#FB000000" >
             <materialDesign:Card Margin="0,2,1,2" HorizontalAlignment="Stretch">
                 <Grid Grid.ColumnSpan="2" VerticalAlignment="Stretch" Margin="3">

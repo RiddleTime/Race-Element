@@ -196,7 +196,7 @@ namespace RaceElement.Controls
 
             Grid parent = (Grid)this.Parent;
             int width = (int)(parent.ColumnDefinitions.First().ActualWidth);
-            int height = (int)(parent.RowDefinitions.ElementAt(1).ActualHeight);
+            int height = (int)(parent.RowDefinitions.ElementAt(2).ActualHeight);
 
             width.ClipMax(height);
             height.ClipMax(width);

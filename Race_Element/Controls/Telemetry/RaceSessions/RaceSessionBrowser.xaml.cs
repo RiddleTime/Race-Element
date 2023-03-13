@@ -72,8 +72,9 @@ namespace RaceElement.Controls
             transitionContentPlots.Visibility = Visibility.Collapsed;
             trackMap.Visibility = Visibility.Collapsed;
 
-            Grid.SetRowSpan(gridSessionViewer, 2);
-            Grid.SetRowSpan(tabControlWeekends, 2);
+            Grid.SetRowSpan(gridSessionViewer, 3);
+            Grid.SetRowSpan(tabControlWeekends, 3);
+            gridSplitter.Visibility = Visibility.Collapsed;
 
             ThreadPool.QueueUserWorkItem(x =>
             {
@@ -223,11 +224,12 @@ namespace RaceElement.Controls
 
             gridSessionLaps.Children.Add(GetLapDataGrid(laps));
 
-            Grid.SetRowSpan(gridSessionViewer, 2);
-            Grid.SetRowSpan(tabControlWeekends, 2);
+            Grid.SetRowSpan(gridSessionViewer, 3);
+            Grid.SetRowSpan(tabControlWeekends, 3);
 
             transitionContentPlots.Visibility = Visibility.Collapsed;
             trackMap.Visibility = Visibility.Collapsed;
+            gridSplitter.Visibility = Visibility.Collapsed;
 
             PlotUtil.AxisLimitsCustom = false;
 
@@ -603,17 +605,18 @@ namespace RaceElement.Controls
 
             if (telemetry == null)
             {
-                Grid.SetRowSpan(gridSessionViewer, 2);
-                Grid.SetRowSpan(tabControlWeekends, 2);
+                Grid.SetRowSpan(gridSessionViewer, 3);
+                Grid.SetRowSpan(tabControlWeekends, 3);
                 transitionContentPlots.Visibility = Visibility.Collapsed;
                 trackMap.Visibility = Visibility.Collapsed;
+                gridSplitter.Visibility = Visibility.Collapsed;
             }
             else
             {
                 Grid.SetRowSpan(gridSessionViewer, 1);
                 Grid.SetRowSpan(tabControlWeekends, 1);
                 transitionContentPlots.Visibility = Visibility.Visible;
-
+                gridSplitter.Visibility = Visibility.Visible;
 
                 if (_currentData != null)
                     _currentData.Clear();
