@@ -92,7 +92,7 @@
     <Compile Include="Overlays\Driving\OverlayInputTrace\InputTraceOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayLaptimeTable\LapTimeTableConfiguration.cs" />
     <Compile Include="Overlays\Driving\OverlayLaptimeTable\LapTimeTableOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayMousePosition\MousePositionOverlay.cs" />
+    <Compile Include="Overlays\System\OverlayMousePosition\MousePositionOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayOpponent\OpponentOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayPressureTrace\PressureTraceOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayPressureTrace\TyrePressureDataCollector.cs" />
@@ -110,7 +110,7 @@
     <Compile Include="Overlays\Driving\OverlayOversteerTrace\OversteerDataCollector.cs" />
     <Compile Include="Overlays\Driving\OverlayOversteerTrace\OversteerGraph.cs" />
     <Compile Include="Overlays\Driving\OverlayOversteerTrace\OversteerTraceOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayStartScreen\StartScreenOverlay.cs" />
+    <Compile Include="Overlays\System\OverlayStartScreen\StartScreenOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayTyreInfo\TyreInfoOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayTrackInfo\TrackInfoOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayWeather\WeatherOverlay.cs" />

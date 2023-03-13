@@ -40,7 +40,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
                 g.DrawStringWithShadow(header, font16, Color.FromArgb(215, Color.White), new Point(x, 0), 2f);
                 font16.Dispose();
 
-                string subHeader = "by RiddleTime";
+                string subHeader = "by Reinier Klarenberg";
                 Font font11 = FontUtil.FontConthrax(11);
                 g.DrawStringWithShadow(subHeader, font11, Color.FromArgb(185, Color.White), new Point(x + 2, font16Height));
                 font11.Dispose();
