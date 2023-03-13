@@ -69,10 +69,11 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
                 {
                     double from = (corner.Key.From + SplineTranslation) * trackData.TrackLength;
                     double to = (corner.Key.To + SplineTranslation) * trackData.TrackLength;
+                    double center = (from + to) / 2;
 
                     plot.Plot.AddHorizontalSpan(from, to, color: Color.FromArgb(15, Color.White));
 
-                    var line = plot.Plot.AddVerticalLine(from, color: Color.Transparent);
+                    var line = plot.Plot.AddVerticalLine(center, color: Color.Transparent);
                     line.PositionLabel = true;
                     line.PositionFormatter = pos => corner.Value.Item1.ToString();
                     line.PositionLabelOppositeAxis = true;
