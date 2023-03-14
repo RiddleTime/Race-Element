@@ -48,7 +48,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
         }
 
         private const int InitialWidth = 135;
-        private const int InitialHeight = 190;
+        private const int InitialHeight = 222;
         private const double MaxPadLife = 29;
 
         private readonly Font _fontFamilyLarge;
@@ -106,40 +106,41 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
 
             if (this._config.Information.PadLife)
             {
-                DrawPadWearText(g, 66, 20, Position.Front);
-                DrawPadWearText(g, 66, 154, Position.Rear);
+                DrawPadWearText(g, 66, 36, Position.Front);
+                DrawPadWearText(g, 66, 170, Position.Rear);
             }
 
             if (this._config.Information.BrakeTemps)
             {
-                DrawBrakeTemps(g, 66, 43, Position.Front);
-                DrawBrakeTemps(g, 66, 131, Position.Rear);
+                DrawBrakeTemps(g, 66, 59, Position.Front);
+                DrawBrakeTemps(g, 66, 147, Position.Rear);
             }
 
             if (this._config.Information.LossOfPressure)
             {
-                DrawTyrePressureLoss(g, 22, 20, Wheel.FrontLeft);
-                DrawTyrePressureLoss(g, 110, 20, Wheel.FrontRight);
-                DrawTyrePressureLoss(g, 22, 154, Wheel.RearLeft);
-                DrawTyrePressureLoss(g, 110, 154, Wheel.RearRight);
+                DrawTyrePressureLoss(g, 22, 0, Wheel.FrontLeft);
+                DrawTyrePressureLoss(g, 110, 0, Wheel.FrontRight);
+                DrawTyrePressureLoss(g, 22, 206, Wheel.RearLeft);
+                DrawTyrePressureLoss(g, 110, 206, Wheel.RearRight);
             }
 
-            DrawTyreTemp(g, 27, 64, Wheel.FrontLeft);
-            DrawTyreTemp(g, 106, 64, Wheel.FrontRight);
-            DrawTyreTemp(g, 27, 108, Wheel.RearLeft);
-            DrawTyreTemp(g, 106, 108, Wheel.RearRight);
+            DrawTyreTemp(g, 27, 80, Wheel.FrontLeft);
+            DrawTyreTemp(g, 106, 80, Wheel.FrontRight);
+            DrawTyreTemp(g, 27, 122, Wheel.RearLeft);
+            DrawTyreTemp(g, 106, 122, Wheel.RearRight);
         }
 
         private void DrawTyrePressures(Graphics g)
         {
             TyrePressureRange range = TyrePressures.GetCurrentRange(pageGraphics.TyreCompound, pageStatic.CarModel);
 
+            int baseY = 16;
             if (range != null)
             {
-                DrawTyrePressure(g, 0, 0, Wheel.FrontLeft, range);
-                DrawTyrePressure(g, 76, 0, Wheel.FrontRight, range);
-                DrawTyrePressure(g, 0, 169, Wheel.RearLeft, range);
-                DrawTyrePressure(g, 76, 169, Wheel.RearRight, range);
+                DrawTyrePressure(g, 0, baseY, Wheel.FrontLeft, range);
+                DrawTyrePressure(g, 76, baseY, Wheel.FrontRight, range);
+                DrawTyrePressure(g, 0, baseY + 168, Wheel.RearLeft, range);
+                DrawTyrePressure(g, 76, baseY + 168, Wheel.RearRight, range);
             }
         }
 
