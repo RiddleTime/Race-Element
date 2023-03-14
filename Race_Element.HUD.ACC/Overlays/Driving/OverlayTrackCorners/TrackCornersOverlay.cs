@@ -1,5 +1,4 @@
 ﻿using RaceElement.Data.ACC.Session;
-using RaceElement.Data.ACC.Tracks;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -11,7 +10,6 @@ using RaceElement.HUD.Overlay.OverlayUtil.InfoPanel;
 using RaceElement.Util.SystemExtensions;
 using System;
 using static RaceElement.Data.ACC.Tracks.TrackData;
-using System.Diagnostics;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 {
@@ -91,7 +89,6 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
         private void Instance_OnRaceWeekendEnded(object sender, RaceElement.Data.ACC.Database.RaceWeekend.DbRaceWeekend e)
         {
             _currentTrack = null;
-            UpdateWidth();
         }
 
         private void Instance_OnNewSessionStarted(object sender, RaceElement.Data.ACC.Database.SessionData.DbRaceSession e)

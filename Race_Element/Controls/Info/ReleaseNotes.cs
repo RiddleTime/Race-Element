@@ -9,7 +9,7 @@ namespace RaceElement.Controls
             {"0.1.7.8", "- Added Wheel Slip HUD: Displaying live wheel slip amount and angle for each wheel."+
                         "\n- Added Track Corners HUD: Displays corner numbers and names for each corner of each track."+
                         "\n- Added Tyre Pressure Loss to Tyre Info HUD, by Mominon."+
-                        "\n- (BETA) Added extended telemetry recording."+
+                        "\n- (BETA) Added extended telemetry recording. Try this by enabling it in Race Element settings."+
                         "\n- (BETA) Added charts for each lap to Data tab, this for race weekends with extended telemetry enabled."},
             {"0.1.7.6", "- Upgraded to net framework to 4.8.1."+
                         "\n- Reworked usability of HUD Tab."+
