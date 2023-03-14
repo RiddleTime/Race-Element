@@ -67,6 +67,10 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
             if (trackData.CornerNames.Count > 0)
                 foreach (var corner in trackData.CornerNames)
                 {
+                    // -1 means a straight and not a corner, no need to include these.
+                    if (corner.Value.Item1 == -1)
+                        continue;
+
                     double from = (corner.Key.From + SplineTranslation) * trackData.TrackLength;
                     double to = (corner.Key.To + SplineTranslation) * trackData.TrackLength;
                     double center = (from + to) / 2;
