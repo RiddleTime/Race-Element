@@ -45,7 +45,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
 
         public WheelSlipOverlay(Rectangle rectangle) : base(rectangle, "Wheel Slip")
         {
-            RefreshRateHz = 60;
+            RefreshRateHz = 30;
         }
 
         public override void SetupPreviewData()
@@ -76,13 +76,11 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
 
 
             int baseX = 2;
-            int baseY = 2;
             int wheelSize = _config.Shape.WheelSize;
             int gap = 8;
             int size = baseX * 2 + wheelSize * 2 + gap;
             Width = size;
             Height = size;
-
         }
 
         public override void BeforeStop()
@@ -115,7 +113,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
 
 
             g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.CompositingQuality = CompositingQuality.HighQuality;
+            g.CompositingQuality = CompositingQuality.Default;
 
             // draw wheel specific slip based on outline size
             float wheelSlip = pagePhysics.WheelSlip[(int)wheel];
