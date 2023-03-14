@@ -25,6 +25,7 @@ namespace RaceElement.Controls
             {
                 toggleRecordLapTelemetry.IsChecked = _settings.Get().TelemetryRecordDetailed;
                 sliderTelemetryHerz.Value = _settings.Get().TelemetryDetailedHerz;
+                labelTelemetryHerz.Content = $"Telemetry: Extended Data Herz: {_settings.Get().TelemetryDetailedHerz}";
                 toggleMinimizeToSystemTray.IsChecked = _settings.Get().MinimizeToSystemTray;
 
                 toggleRecordLapTelemetry.Checked += (s, e) => SaveSettings();
@@ -53,6 +54,9 @@ namespace RaceElement.Controls
 
             settings.TelemetryRecordDetailed = toggleRecordLapTelemetry.IsChecked.Value;
             settings.TelemetryDetailedHerz = (int)sliderTelemetryHerz.Value;
+
+            labelTelemetryHerz.Content = $"Telemetry: Extended Data Herz: {settings.TelemetryDetailedHerz}";
+
             _settings.Save(settings);
         }
     }
