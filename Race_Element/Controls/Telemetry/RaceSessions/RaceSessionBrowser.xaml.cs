@@ -553,7 +553,11 @@ namespace RaceElement.Controls
 
                 _currentData.Clear();
 
+                if (dictio.First().Value.SplinePosition + translation >= 1)
+                    translation -= 1;
+
                 Debug.WriteLine($"Translation {translation}");
+
                 PlotUtil.SplineTranslation = translation;
 
                 bool startTranslation = false;

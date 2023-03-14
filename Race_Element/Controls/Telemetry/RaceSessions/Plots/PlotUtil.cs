@@ -71,8 +71,20 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
                     if (corner.Value.Item1 == -1)
                         continue;
 
-                    double from = (corner.Key.From + SplineTranslation) * trackData.TrackLength;
-                    double to = (corner.Key.To + SplineTranslation) * trackData.TrackLength;
+                    double from;
+                    double to;
+                    if (corner.Key.From + SplineTranslation >= 0)
+                    {
+                        from = (corner.Key.From + SplineTranslation) * trackData.TrackLength;
+                        to = (corner.Key.To + SplineTranslation) * trackData.TrackLength;
+                    }
+                    else
+                    {
+                        double alternativeTranslation = 1 + SplineTranslation;
+                        from = (corner.Key.From + alternativeTranslation) * trackData.TrackLength;
+                        to = (corner.Key.To + alternativeTranslation) * trackData.TrackLength;
+                    }
+
                     double center = (from + to) / 2;
 
                     plot.Plot.AddHorizontalSpan(from, to, color: Color.FromArgb(15, Color.White));

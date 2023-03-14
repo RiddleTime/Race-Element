@@ -178,7 +178,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
             if (_currentTrack != null)
             {
                 (int, string) corner = _currentTrack.CornerNames.FirstOrDefault(x => x.Key.IsInRange(pageGraphics.NormalizedCarPosition)).Value;
-                if (corner.Item1 != 0)
+                if (corner.Item1 > 0)
                 {
                     cornerNumber = $"{corner.Item1}";
 
