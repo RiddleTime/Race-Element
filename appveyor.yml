@@ -19,4 +19,4 @@ deploy:
 - provider: Webhook
   url: https://app.signpath.io/API/v1/9bd5dbe6-3047-4e42-9dbb-0bf694ed7e48/Integrations/AppVeyor?ProjectSlug=Race-Element&SigningPolicySlug=release-signing&ArtifactConfigurationSlug=Race_Element_Release
   authorization:
-    secure: xu6OvYVM65rFmgKZmOXv88pautpnVfXHnNw6uzPbn59htoQGkoZ3wam7lJQvnFdWK/LcHJRqMvscNqfVk7AZG6gG8iXtkiJP0b2Z6NtwQLw=
+    secure: ZSp/0mv5AntjXzQfutYp/fchY9AvoTDAOewtaSRjbFmDCXfYswTQ2a3/OtdXbjWlBJPvztnWmO8pOusQnUt/tw==
