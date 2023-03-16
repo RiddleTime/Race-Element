@@ -20,10 +20,28 @@ namespace RaceElement.HUD.Overlay.Internal
 {
     public abstract class AbstractOverlay : FloatingWindow
     {
+        public abstract void Render(Graphics g);
         public virtual void BeforeStart() { }
         public virtual void BeforeStop() { }
         public virtual bool ShouldRender() => DefaultShouldRender();
-        public abstract void Render(Graphics g);
+
+        protected AbstractOverlay(Rectangle rectangle, string Name)
+        {
+            this.X = rectangle.X;
+            this.Y = rectangle.Y;
+            this.Width = rectangle.Width;
+            this.Height = rectangle.Height;
+            this.Name = Name;
+
+            try
+            {
+                if (AllowReposition)
+                    ApplyOverlaySettings();
+
+                LoadFieldConfig();
+            }
+            catch (Exception) { }
+        }
 
         private bool Draw = false;
 
@@ -45,23 +63,7 @@ namespace RaceElement.HUD.Overlay.Internal
         public float Scale { get; private set; } = 1f;
         private bool _allowRescale = false;
 
-        protected AbstractOverlay(Rectangle rectangle, string Name)
-        {
-            this.X = rectangle.X;
-            this.Y = rectangle.Y;
-            this.Width = rectangle.Width;
-            this.Height = rectangle.Height;
-            this.Name = Name;
 
-            try
-            {
-                if (AllowReposition)
-                    ApplyOverlaySettings();
-
-                LoadFieldConfig();
-            }
-            catch (Exception) { }
-        }
 
         public virtual void SetupPreviewData()
         {
