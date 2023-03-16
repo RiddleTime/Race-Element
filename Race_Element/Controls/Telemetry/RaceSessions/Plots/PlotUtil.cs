@@ -85,14 +85,17 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
                         to = (corner.Key.To + alternativeTranslation) * trackData.TrackLength;
                     }
 
+                    var span = plot.Plot.AddHorizontalSpan(from, to, color: Color.FromArgb(9, Color.White));
+                    span.BorderColor = Color.FromArgb(36, 235, 255, 235);
+                    span.BorderLineWidth = 1.2f;
+                    span.BorderLineStyle = LineStyle.Dash;
+
                     double center = (from + to) / 2;
-
-                    plot.Plot.AddHorizontalSpan(from, to, color: Color.FromArgb(15, Color.White));
-
                     var line = plot.Plot.AddVerticalLine(center, color: Color.Transparent);
                     line.PositionLabel = true;
                     line.PositionFormatter = pos => corner.Value.Item1.ToString();
                     line.PositionLabelOppositeAxis = true;
+                    line.PositionLabelFont.Size = 14;
                 }
         }
 
