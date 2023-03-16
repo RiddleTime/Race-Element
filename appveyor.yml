@@ -1,4 +1,4 @@
-version: 0.0.{build}.{branch}
+version: 0.1.{build}.{branch}
 branches:
   only:
   - release
