@@ -105,15 +105,12 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
 
         private void DrawWheelSlip(Graphics g, int x, int y, int size, Wheel wheel)
         {
-
             var wheelRect = new Rectangle(x, y, size, size);
 
             // draw outline
             _cachedCircleBackground?.Draw(g, x, y, size, size);
 
-
             g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.CompositingQuality = CompositingQuality.Default;
 
             // draw wheel specific slip based on outline size
             float wheelSlip = pagePhysics.WheelSlip[(int)wheel];
