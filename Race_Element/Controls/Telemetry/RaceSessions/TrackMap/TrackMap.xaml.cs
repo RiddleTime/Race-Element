@@ -131,7 +131,7 @@ namespace RaceElement.Controls
                             image.Source = ImageControlCreator.CreateImage(mapWithMarker.Width, mapWithMarker.Height, mapWithMarker).Source;
                         }, System.Windows.Threading.DispatcherPriority.DataBind);
 
-                        Thread.Sleep(38);
+                        Thread.Sleep(50);
 
                         if (_nextMarkerIndex != -1)
                         {
@@ -167,11 +167,7 @@ namespace RaceElement.Controls
             else
             {
                 image.Source = null;
-                ThreadPool.QueueUserWorkItem(x =>
-                {
-                    Thread.Sleep(1000);
-                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
-                });
+                GC.Collect(GC.MaxGeneration, GCCollectionMode.Optimized, false);
             }
         }
 
