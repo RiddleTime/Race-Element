@@ -1,7 +1,6 @@
-version: 1.0.{build}.{branch}
+version: 0.0.{build}.{branch}
 branches:
   only:
-  - dev
   - release
 image: Visual Studio 2022
 configuration: Release
@@ -14,7 +13,7 @@ build:
 test: off
 artifacts:
 - path: '**\bin\Release\RaceElement.exe'
-  name: Race Element Beta
+  name: Race Element
 deploy:
 - provider: Webhook
   url: https://app.signpath.io/API/v1/9bd5dbe6-3047-4e42-9dbb-0bf694ed7e48/Integrations/AppVeyor?ProjectSlug=Race-Element&SigningPolicySlug=test-signing
