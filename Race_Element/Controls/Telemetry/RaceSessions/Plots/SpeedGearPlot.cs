@@ -76,7 +76,7 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
             // speed axis
             plot.AddAxis(Edge.Left, axisIndex: 2, title: "Speed (km/h)");
             var speedPlot = plot.AddSignalXY(splines, speedData, color: System.Drawing.Color.White, label: "Speed");
-            speedPlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(95, 0, 255, 0), lowerColor: System.Drawing.Color.Transparent);
+            //speedPlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(95, 0, 255, 0), lowerColor: System.Drawing.Color.Transparent);
             speedPlot.YAxisIndex = 2;
 
             plot.SetOuterViewLimits(0, _trackData.TrackLength, -3, maxSpeed + 3, yAxisIndex: 2);
