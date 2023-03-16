@@ -85,7 +85,8 @@
                         Visibility="Collapsed"
                         Cursor="Hand"
                     />
-                    <Button x:Name="copySpline">Copy Spline</Button>
+
+                    <!--<Button x:Name="copySpline" Visibility="Collapsed">Copy Spline</Button>-->
                 </StackPanel>
             </StackPanel>
         </materialDesign:TransitioningContent>

@@ -56,23 +56,25 @@ namespace RaceElement.Controls
             };
 
 
-#if DEBUG
-            copySpline.Click += (s, e) =>
-            {
-                try
-                {
-                    float spline = ACCSharedMemory.Instance.ReadGraphicsPageFile().NormalizedCarPosition;
-                    MainWindow.Instance.EnqueueSnackbarMessage($"Copied spline position {spline}f");
 
-                    Clipboard.SetText($"{spline}f");
-                }
-                catch (Exception)
-                {// 
-                }
-            };
-#else
-            copySpline.Visibility = Visibility.Collapsed;
-#endif
+//// used for collecting corner numbers in data.acc.tracks
+//#if DEBUG
+//            copySpline.Click += (s, e) =>
+//            {
+//                try
+//                {
+//                    float spline = ACCSharedMemory.Instance.ReadGraphicsPageFile().NormalizedCarPosition;
+//                    MainWindow.Instance.EnqueueSnackbarMessage($"Copied spline position {spline}f");
+
+//                    Clipboard.SetText($"{spline}f");
+//                }
+//                catch (Exception)
+//                {// 
+//                }
+//            };
+//#else
+//            copySpline.Visibility = Visibility.Collapsed;
+//#endif
             this.MouseDoubleClick += TitleBar_MouseDoubleClick;
             Instance = this;
         }
