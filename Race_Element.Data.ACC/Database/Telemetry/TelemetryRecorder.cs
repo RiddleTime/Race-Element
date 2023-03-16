@@ -107,17 +107,16 @@ namespace RaceElement.Data.ACC.Database.Telemetry
             new Thread(x =>
             {
                 LogWriter.WriteToLog("Starting recording loop");
-                var nextTick = DateTime.UtcNow.AddMilliseconds(IntervalMillis);
+
+
+                double tickRefreshRate = IntervalMillis;
+                Stopwatch stopwatch = Stopwatch.StartNew();
+
                 while (_isRunning)
                 {
-                    try
-                    {
-                        while (DateTime.UtcNow < nextTick)
-                            Thread.Sleep(nextTick - DateTime.UtcNow);
-                    }
-                    catch { }
-                    nextTick = DateTime.UtcNow.AddMilliseconds(IntervalMillis);
-                    long ticks = DateTime.UtcNow.Ticks;
+                    int millisToWait = (int)Math.Floor(tickRefreshRate - stopwatch.ElapsedMilliseconds - 0.05);
+                    if (millisToWait > 0)
+                        Thread.Sleep(millisToWait);
 
                     try
                     {
@@ -141,6 +140,7 @@ namespace RaceElement.Data.ACC.Database.Telemetry
 
                             if (!hasLapData || (hasLapData && !isSamePoint))
                             {
+                                long ticks = DateTime.Now.Ticks;
                                 if (!_lapData.ContainsKey(ticks))
                                 {
                                     float xCoord = 0;
