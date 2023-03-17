@@ -169,7 +169,7 @@ namespace RaceElement.Controls
                 double[] ys = dict.Select(x => (double)x.Value.PhysicsData.Y).ToArray();
 
                 _scatter = plot.AddScatter(xs, ys);
-                _scatter.LineWidth = 1f;
+                _scatter.LineWidth = 2f;
                 _scatter.LineColor = Color.White;
                 _scatter.MarkerSize = 0;
 
