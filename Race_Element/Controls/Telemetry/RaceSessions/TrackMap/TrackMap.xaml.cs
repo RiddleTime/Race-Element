@@ -173,7 +173,6 @@ namespace RaceElement.Controls
                 _scatter.LineColor = Color.White;
                 _scatter.MarkerSize = 0;
 
-
                 Dispatcher.Invoke(() =>
                 {
                     wpfPlot.RenderRequest();
