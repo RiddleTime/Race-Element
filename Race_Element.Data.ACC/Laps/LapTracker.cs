@@ -190,7 +190,8 @@ namespace RaceElement.Data.ACC.Tracker.Laps
                                     }
                                 }
 
-                                CurrentLap = new DbLapData() { Index = pageGraphics.CompletedLaps + 1 };
+                                int previousLapIndex = CurrentLap.Index;
+                                CurrentLap = new DbLapData() { Index = previousLapIndex + 1 };
                             }
                         }
                         else
