@@ -32,6 +32,7 @@ namespace RaceElement.Controls
 
             PlotUtil.SetDefaultWpfPlotConfiguration(ref wpfPlot);
             wpfPlot.Configuration.Zoom = false;
+            wpfPlot.Configuration.Pan = false;
             var plot = wpfPlot.Plot;
             PlotUtil.SetDefaultPlotStyles(ref plot);
             plot.Frameless(true);
