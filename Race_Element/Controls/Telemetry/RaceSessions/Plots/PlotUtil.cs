@@ -20,6 +20,8 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
 
         public static void SetDefaultPlotStyles(ref Plot plot)
         {
+            plot.Benchmark(false);
+
             plot.YAxis.TickLabelStyle(color: System.Drawing.Color.White);
             plot.XAxis.TickLabelStyle(color: System.Drawing.Color.White);
             plot.YAxis2.TickLabelStyle(color: System.Drawing.Color.White);

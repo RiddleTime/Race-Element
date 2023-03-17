@@ -1,7 +1,7 @@
 version: 0.1.{build}.{branch}
 branches:
   only:
-  - release
+  - dev
 image: Visual Studio 2022
 configuration: Release
 before_build:
@@ -19,3 +19,4 @@ deploy:
   url: https://app.signpath.io/API/v1/9bd5dbe6-3047-4e42-9dbb-0bf694ed7e48/Integrations/AppVeyor?ProjectKey=Race-Element&SigningPolicyKey=test-signing
   authorization:
     secure: H+at4ZC2qvHHDcdgGw+882oDYFv3G7zChPU97QGl5l0WCSoUgCtW34OG7Ky0x1cQ7HWdVJJGP5cHl6+j6z7Z5A==
+
