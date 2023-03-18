@@ -332,6 +332,7 @@
     <Compile Include="Controls\Telemetry\RaceSessions\Plots\InputsPlot.cs" />
     <Compile Include="Controls\Telemetry\RaceSessions\Plots\PlotUtil.cs" />
     <Compile Include="Controls\Telemetry\RaceSessions\Plots\SpeedGearPlot.cs" />
+    <Compile Include="Controls\Telemetry\RaceSessions\Plots\TractionCirclePlot.cs" />
     <Compile Include="Controls\Telemetry\RaceSessions\Plots\TyrePressurePlot.cs" />
     <Compile Include="Controls\Telemetry\RaceSessions\Plots\TyreTempsPlot.cs" />
     <Compile Include="Controls\Telemetry\RaceSessions\Plots\WheelSlipPlot.cs" />
