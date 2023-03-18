@@ -68,7 +68,7 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
                 int index = new Nearest2D(lateralAcceleration, longAcceleration).SnapIndex(new Coordinate(tractionMarker.X, tractionMarker.Y));
                 PlotUtil.MarkerIndex = index;
 
-                tractionMarker.Label = $"lat: {lateralAcceleration[index]:F3}, long:{longAcceleration[index]:F3}";
+                tractionMarker.Label = $"Lat: {lateralAcceleration[index]:F3}, Long: {longAcceleration[index]:F3}";
             };
 
             wpfPlot.MouseLeftButtonUp += (s, e) =>
@@ -78,7 +78,7 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
                 tractionMarker.SetPoint(lateralAcceleration[index], longAcceleration[index]);
 
                 PlotUtil.MarkerIndex = index;
-                tractionMarker.Label = $"lat: {lateralAcceleration[index]:F3}, long:{longAcceleration[index]:F3}";
+                tractionMarker.Label = $"Lat: {lateralAcceleration[index]:F3}, Long: {longAcceleration[index]:F3}";
             };
 
             plot.XAxis.Label("Lateral Acceleration");

@@ -48,6 +48,7 @@ namespace RaceElement.Data.ACC.Database.Telemetry
     {
         public float[] WheelSlip { get; set; }
         public float[] WheelSlipAngle { get; set; }
+        
         /// <summary>
         /// X, Y acceleration (G)
         /// </summary>
