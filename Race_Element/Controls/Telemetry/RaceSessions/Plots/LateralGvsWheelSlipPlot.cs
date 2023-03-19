@@ -60,7 +60,7 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
             plot.XAxis.LockLimits(true);
 
             plot.YAxis.Label("Average Wheel Slip");
-            plot.SetAxisLimitsY(0, 3);
+            plot.SetAxisLimitsY(0, 2);
             plot.YAxis.LockLimits(true);
 
             if (dict.First().Value.PhysicsData.Acceleration == null)
