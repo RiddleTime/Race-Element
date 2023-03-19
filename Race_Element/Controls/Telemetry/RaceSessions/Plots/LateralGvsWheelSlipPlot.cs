@@ -123,7 +123,7 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
                 tractionMarker.IsVisible = true;
 
                 PlotUtil.MarkerIndex = filteredFirstIndex + index;
-                tractionMarker.Label = $"Lat: {xs[index]:F3}, Slip: {ys[index]:F3}";
+                tractionMarker.Label = $"Lat: {xs[index]:F3}, Av. Slip: {ys[index]:F3}";
             };
             wpfPlot.MouseLeftButtonUp += (s, e) =>
             {
@@ -134,7 +134,7 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
                 tractionMarker.IsVisible = true;
 
                 PlotUtil.MarkerIndex = filteredFirstIndex + index;
-                tractionMarker.Label = $"Lat: {xs[index]:F3}, Long: {ys[index]:F3}";
+                tractionMarker.Label = $"Lat: {xs[index]:F3}, Av. Slip: {ys[index]:F3}";
             };
 
 
