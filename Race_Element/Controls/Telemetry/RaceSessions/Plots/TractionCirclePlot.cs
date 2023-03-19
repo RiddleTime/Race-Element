@@ -55,13 +55,14 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
             {
                 double x = lateralAcceleration[i];
                 double y = longAcceleration[i];
-                double colorFraction = Math.Sqrt(x * x + y * y);
-                var color = Colormap.Viridis.GetColor(colorFraction);
+                double colorFraction = Math.Sqrt(x * x + y * y) / 2.5;
+                var color = Colormap.Jet.GetColor(colorFraction);
 
                 plot.AddPoint(x, y, color, 3);
             }
 
-            var tractionMarker = wpfPlot.Plot.AddMarkerDraggable(lateralAcceleration[0], longAcceleration[0], color: System.Drawing.Color.White);
+            var tractionMarker = wpfPlot.Plot.AddMarkerDraggable(lateralAcceleration[0], longAcceleration[0], size: 20, color: System.Drawing.Color.OrangeRed, shape: MarkerShape.openCircle);
+            tractionMarker.MarkerLineWidth = 3;
             tractionMarker.DragSnap = new Nearest2D(lateralAcceleration, longAcceleration);
             tractionMarker.Dragged += (s, e) =>
             {
@@ -70,7 +71,6 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
 
                 tractionMarker.Label = $"Lat: {lateralAcceleration[index]:F3}, Long: {longAcceleration[index]:F3}";
             };
-
             wpfPlot.MouseLeftButtonUp += (s, e) =>
             {
                 var coords = wpfPlot.GetMouseCoordinates();
