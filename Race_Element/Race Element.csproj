@@ -330,6 +330,7 @@
     <Compile Include="Controls\Telemetry\RaceSessions\MillisecondsToFormattedTimeSpanString.cs" />
     <Compile Include="Controls\Telemetry\RaceSessions\Plots\BrakeTempsPlot.cs" />
     <Compile Include="Controls\Telemetry\RaceSessions\Plots\InputsPlot.cs" />
+    <Compile Include="Controls\Telemetry\RaceSessions\Plots\LongitudinalAccelerationPlot.cs" />
     <Compile Include="Controls\Telemetry\RaceSessions\Plots\PlotUtil.cs" />
     <Compile Include="Controls\Telemetry\RaceSessions\Plots\SpeedGearPlot.cs" />
     <Compile Include="Controls\Telemetry\RaceSessions\Plots\TractionCirclePlot.cs" />

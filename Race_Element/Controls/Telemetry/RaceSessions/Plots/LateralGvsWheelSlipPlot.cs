@@ -1,22 +1,26 @@
-﻿using RaceElement.Data.ACC.Database.Telemetry;
+﻿using Quartz;
+using RaceElement.Data.ACC.Database.Telemetry;
 using ScottPlot;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using static RaceElement.Data.ACC.Tracks.TrackData;
-using System.Windows.Controls;
 using ScottPlot.Drawing;
 using ScottPlot.SnapLogic;
+using ScottPlot.Statistics;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Controls;
+using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
 {
-    internal class TractionCirclePlot
+    internal class LateralGvsWheelSlipPlot
     {
         private readonly TextBlock _textBlockMetrics;
         private readonly AbstractTrackData _trackData;
 
-        public TractionCirclePlot(AbstractTrackData trackData, ref TextBlock textBlockMetrics)
+        public LateralGvsWheelSlipPlot(AbstractTrackData trackData, ref TextBlock textBlockMetrics)
         {
             _trackData = trackData;
             _textBlockMetrics = textBlockMetrics;
@@ -51,12 +55,19 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
             plot.YAxis.TickMarkDirection(false);
             plot.XAxis.TickLabelNotation(multiplier: true);
 
+            plot.XAxis.Label("Lateral Acceleration");
+            plot.SetAxisLimitsX(-3, 3);
+            plot.XAxis.LockLimits(true);
+
+            plot.YAxis.Label("Average Wheel Slip");
+            plot.SetAxisLimitsY(0, 3);
+            plot.YAxis.LockLimits(true);
 
             if (dict.First().Value.PhysicsData.Acceleration == null)
                 return wpfPlot;
 
-            double[] lateralAcceleration;
-            double[] longAcceleration;
+            double[] xs;
+            double[] ys;
 
 
             Dictionary<long, TelemetryPoint> filteredDict = dict;
@@ -72,20 +83,20 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
 
                 PlotUtil.UpdateAxisLimits(wpfPlot, PlotUtil.AxisLimits);
 
-                lateralAcceleration = filteredDict.Select(x => (double)x.Value.PhysicsData.Acceleration[0]).ToArray();
-                longAcceleration = filteredDict.Select(x => (double)x.Value.PhysicsData.Acceleration[1]).ToArray();
+                xs = filteredDict.Select(x => (double)x.Value.PhysicsData.Acceleration[0]).ToArray();
+                ys = filteredDict.Select(x => (double)x.Value.PhysicsData.WheelSlip.Average()).ToArray();
             }
             else
             {
-                lateralAcceleration = dict.Select(x => (double)x.Value.PhysicsData.Acceleration[0]).ToArray();
-                longAcceleration = dict.Select(x => (double)x.Value.PhysicsData.Acceleration[1]).ToArray();
+                xs = dict.Select(x => (double)x.Value.PhysicsData.Acceleration[0]).ToArray();
+                ys = dict.Select(x => (double)x.Value.PhysicsData.WheelSlip.Average()).ToArray();
             }
 
 
-            for (int i = 0; i < lateralAcceleration.Length; i++)
+            for (int i = 0; i < xs.Length; i++)
             {
-                double x = lateralAcceleration[i];
-                double y = longAcceleration[i];
+                double x = xs[i];
+                double y = ys[i];
                 double colorFraction = Math.Sqrt(x * x + y * y) / 2.5;
                 var color = Colormap.Jet.GetColor(colorFraction);
 
@@ -93,48 +104,42 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
             }
 
             // add convex hull of points
-            List<PointF> points = filteredDict.Select(x => new PointF(x.Value.PhysicsData.Acceleration[0], x.Value.PhysicsData.Acceleration[1])).ToList();
+            List<PointF> points = filteredDict.Select(x => new PointF(x.Value.PhysicsData.Acceleration[0], x.Value.PhysicsData.WheelSlip.Average())).ToList();
             List<PointF> convexPoints = ConvexHull.GetConvexHull(points);
             plot.AddPolygon(convexPoints.Select(x => (double)x.X).ToArray(), convexPoints.Select(x => (double)x.Y).ToArray(), fillColor: Color.FromArgb(12, Color.White));
 
             plot.AddHorizontalLine(0, Color.White);
             plot.AddVerticalLine(0, Color.White);
 
-            var tractionMarker = wpfPlot.Plot.AddMarkerDraggable(lateralAcceleration[0], longAcceleration[0], size: 20, color: System.Drawing.Color.OrangeRed, shape: MarkerShape.openCircle);
+            var tractionMarker = wpfPlot.Plot.AddMarkerDraggable(xs[0], ys[0], size: 20, color: System.Drawing.Color.OrangeRed, shape: MarkerShape.openCircle);
             tractionMarker.MarkerLineWidth = 3;
             tractionMarker.IsVisible = false;
             tractionMarker.Dragged += (s, e) =>
             {
                 var coords = wpfPlot.GetMouseCoordinates();
 
-                int index = new Nearest2D(lateralAcceleration, longAcceleration).SnapIndex(new Coordinate(coords.x, coords.y));
-                tractionMarker.SetPoint(lateralAcceleration[index], longAcceleration[index]);
+                int index = new Nearest2D(xs, ys).SnapIndex(new Coordinate(coords.x, coords.y));
+                tractionMarker.SetPoint(xs[index], ys[index]);
                 tractionMarker.IsVisible = true;
 
                 PlotUtil.MarkerIndex = filteredFirstIndex + index;
-                tractionMarker.Label = $"Lat: {lateralAcceleration[index]:F3}, Long: {longAcceleration[index]:F3}";
+                tractionMarker.Label = $"Lat: {xs[index]:F3}, Slip: {ys[index]:F3}";
             };
             wpfPlot.MouseLeftButtonUp += (s, e) =>
             {
                 var coords = wpfPlot.GetMouseCoordinates();
 
-                int index = new Nearest2D(lateralAcceleration, longAcceleration).SnapIndex(new Coordinate(coords.x, coords.y));
-                tractionMarker.SetPoint(lateralAcceleration[index], longAcceleration[index]);
+                int index = new Nearest2D(xs, ys).SnapIndex(new Coordinate(coords.x, coords.y));
+                tractionMarker.SetPoint(xs[index], ys[index]);
                 tractionMarker.IsVisible = true;
 
                 PlotUtil.MarkerIndex = filteredFirstIndex + index;
-                tractionMarker.Label = $"Lat: {lateralAcceleration[index]:F3}, Long: {longAcceleration[index]:F3}";
+                tractionMarker.Label = $"Lat: {xs[index]:F3}, Long: {ys[index]:F3}";
             };
 
 
 
-            plot.XAxis.Label("Lateral Acceleration");
-            plot.SetAxisLimitsX(-3, 3);
-            plot.XAxis.LockLimits(true);
 
-            plot.YAxis.Label("Longitudinal Acceleration");
-            plot.SetAxisLimitsY(-2.5, 1.5);
-            plot.YAxis.LockLimits(true);
 
             PlotUtil.SetDefaultPlotStyles(ref plot);
 
