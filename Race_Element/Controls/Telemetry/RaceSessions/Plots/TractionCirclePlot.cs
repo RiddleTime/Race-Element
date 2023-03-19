@@ -3,14 +3,11 @@ using ScottPlot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static RaceElement.Data.ACC.Tracks.TrackData;
 using System.Windows.Controls;
 using ScottPlot.Drawing;
-using System.Windows.Media.Media3D;
-using ScottPlot.Plottable;
 using ScottPlot.SnapLogic;
+using System.Drawing;
 
 namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
 {
@@ -61,6 +58,11 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
                 plot.AddPoint(x, y, color, 3);
             }
 
+            List<PointF> points = dict.Select(x => new PointF(x.Value.PhysicsData.Acceleration[0], x.Value.PhysicsData.Acceleration[1])).ToList();
+            points = ConvexHull.GetConvexHull(points);
+            var poly = plot.AddPolygon(points.Select(x => (double)x.X).ToArray(), points.Select(x => (double)x.Y).ToArray(), fillColor: Color.FromArgb(12, Color.White));
+
+
             var tractionMarker = wpfPlot.Plot.AddMarkerDraggable(lateralAcceleration[0], longAcceleration[0], size: 20, color: System.Drawing.Color.OrangeRed, shape: MarkerShape.openCircle);
             tractionMarker.MarkerLineWidth = 3;
             tractionMarker.DragSnap = new Nearest2D(lateralAcceleration, longAcceleration);
@@ -82,7 +84,7 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
             };
 
             plot.XAxis.Label("Lateral Acceleration");
-            plot.SetAxisLimitsX(-3, 3);
+            //plot.SetAxisLimitsX(-3, 3);
 
             plot.YAxis.Label("Longitudinal Acceleration");
 
@@ -91,6 +93,48 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
             wpfPlot.RenderRequest();
 
             return wpfPlot;
+        }
+
+
+        private class ConvexHull
+        {
+            private static float Cross(PointF O, PointF A, PointF B)
+            {
+                return (A.X - O.X) * (B.Y - O.Y) - (A.Y - O.Y) * (B.X - O.X);
+            }
+
+            public static List<PointF> GetConvexHull(List<PointF> points)
+            {
+                if (points == null)
+                    return null;
+
+                if (points.Count() <= 1)
+                    return points;
+
+                int n = points.Count(), k = 0;
+                List<PointF> H = new List<PointF>(new PointF[2 * n]);
+
+                points.Sort((a, b) =>
+                     a.X == b.X ? a.Y.CompareTo(b.Y) : a.X.CompareTo(b.X));
+
+                // Build lower hull
+                for (int i = 0; i < n; ++i)
+                {
+                    while (k >= 2 && Cross(H[k - 2], H[k - 1], points[i]) <= 0)
+                        k--;
+                    H[k++] = points[i];
+                }
+
+                // Build upper hull
+                for (int i = n - 2, t = k + 1; i >= 0; i--)
+                {
+                    while (k >= t && Cross(H[k - 2], H[k - 1], points[i]) <= 0)
+                        k--;
+                    H[k++] = points[i];
+                }
+
+                return H.Take(k - 1).ToList();
+            }
         }
     }
 }
