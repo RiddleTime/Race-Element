@@ -40,9 +40,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayAccelerometer
         private CachedBitmap _cachedBackground;
         private InfoPanel _panel;
         private const int MaxG = 3;
-        private int _gMeterX = 22;
-        private int _gMeterY = 22;
-        private int _gMeterSize = 200;
+        private int _gMeterX = 0;
+        private int _gMeterY = 0;
+        private readonly int _gMeterSize = 200;
         private readonly LinkedList<Point> _trace = new LinkedList<Point>();
 
         public AccelerometerOverlay(Rectangle rectangle) : base(rectangle, "Accelerometer") { }
@@ -51,18 +51,18 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayAccelerometer
         {
             this.RefreshRateHz = 20;
 
-            this.Width = 225;
+            this.Width = _gMeterSize;
             this.Height = this.Width;
 
-            if (!this._config.Accelerometer.GText)
-            {
-                this.Width = _gMeterSize + 1;
-                this.Height = this.Width;
-                _gMeterX = 0;
-                _gMeterY = 0;
-            }
-            else
-                _panel = new InfoPanel(10, 62) { DrawBackground = true, DrawRowLines = false };
+            //if (!this._config.Accelerometer.GText)
+            //{
+            //this.Width = _gMeterSize + 1;
+            //this.Height = this.Width;
+            //_gMeterX = 0;
+            //_gMeterY = 0;
+            //}
+            //else
+            _panel = new InfoPanel(10, 62) { DrawBackground = true, DrawRowLines = false, X = _gMeterSize / 2 - 27, Y = _gMeterSize - 32 };
 
             RenderBackgroundBitmap();
         }
@@ -79,32 +79,33 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayAccelerometer
                 int x = 0;
                 int y = 0;
 
-                Pen accPen = new Pen(Color.FromArgb(100, 255, 255, 255), 1 * Scale);
-
-                g.DrawLine(accPen, x, y + size / 2, x + size, y + size / 2);
-                g.DrawLine(accPen, x + size / 2, y, x + size / 2, y + size);
-
-                float scaledPartSize = size / 3f;
+                float partSize = (float)Math.Floor(size / 3f);
 
                 using GraphicsPath gradientPath = new GraphicsPath();
                 gradientPath.AddEllipse(new Rectangle(0, 0, size, size));
                 using PathGradientBrush pthGrBrush = new PathGradientBrush(gradientPath);
                 pthGrBrush.CenterPoint = new Point(size / 2, size / 2);
+                pthGrBrush.CenterColor = Color.FromArgb(40, Color.Black);
 
-                Rectangle inner = new Rectangle((int)(x + (scaledPartSize * 1.5) - scaledPartSize / 4), (int)(y + (scaledPartSize * 1.5) - scaledPartSize / 4), (int)(size - scaledPartSize * 2 - scaledPartSize / 2), (int)(size - scaledPartSize * 2 - scaledPartSize / 2));
-                pthGrBrush.CenterColor = Color.FromArgb(200, 10, 10, 255);
-                pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(60, 0, 0, 0) };
-                g.DrawArc(new Pen(pthGrBrush, scaledPartSize / 2), inner, 0, 360);
+                Rectangle inner = new Rectangle((int)(x + (partSize * 1.5f) - partSize / 4), (int)(y + (partSize * 1.5f) - partSize / 4), (int)(size - partSize * 2 - partSize / 2), (int)(size - partSize * 2 - partSize / 2));
+                pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(225, 10, 10, 25) };
+                g.DrawArc(new Pen(pthGrBrush, partSize / 2 + 1), inner, 0, 360);
+                g.DrawArc(new Pen(Color.FromArgb(13, Color.DarkOliveGreen), partSize / 2), inner, 60, 60);
 
-                Rectangle middle = new Rectangle((int)(x + scaledPartSize - scaledPartSize / 4), (int)(y + scaledPartSize - scaledPartSize / 4), (int)(size - scaledPartSize - scaledPartSize / 2), (int)(size - scaledPartSize - scaledPartSize / 2));
-                pthGrBrush.CenterColor = Color.FromArgb(185, 0, 0, 0);
-                pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(185, 0, 255, 0) };
-                g.DrawArc(new Pen(pthGrBrush, scaledPartSize / 2), middle, 0, 360);
+                Rectangle middle = new Rectangle((int)(x + partSize - partSize / 4), (int)(y + partSize - partSize / 4), (int)(size - partSize - partSize / 2), (int)(size - partSize - partSize / 2));
+                pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(185, 10, 20, 10) };
+                g.DrawArc(new Pen(pthGrBrush, partSize / 2), middle, 0, 360);
+                g.DrawArc(new Pen(Color.FromArgb(7, Color.Firebrick), partSize / 2), middle, 250, 40);
+                g.DrawArc(new Pen(Color.FromArgb(13, Color.LimeGreen), partSize / 2), middle, 60, 60);
 
-                Rectangle outer = new Rectangle((int)(x + scaledPartSize / 4), (int)(y + scaledPartSize / 4), (int)(size - scaledPartSize / 2), (int)(size - scaledPartSize / 2));
-                pthGrBrush.CenterColor = Color.FromArgb(185, 0, 0, 0);
-                pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(182, 255, 0, 0) };
-                g.DrawArc(new Pen(pthGrBrush, scaledPartSize / 2), outer, 0, 360);
+                Rectangle outer = new Rectangle((int)(x + partSize / 4), (int)(y + partSize / 4), (int)(size - partSize / 2), (int)(size - partSize / 2));
+                outer.X += 1;
+                outer.Y += 1;
+                outer.Width -= 2;
+                outer.Height -= 2;
+                pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(225, 15, 10, 10) };
+                g.DrawArc(new Pen(pthGrBrush, partSize / 2), outer, 120, 300);
+                g.DrawArc(new Pen(Color.FromArgb(14, Color.Red), partSize / 2), outer, 250, 40);
             });
         }
 
@@ -166,7 +167,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayAccelerometer
             int gDotPosX = (int)(middle.X + (size / 2 * horizontalPlacement) - (gDotSize / 2));
             int gDotPosY = (int)(middle.Y + (size / 2 * verticalPlacement) - (gDotSize / 2));
 
-            g.FillEllipse(new SolidBrush(Color.FromArgb(224, 82, 2)), new Rectangle(gDotPosX, gDotPosY, gDotSize, gDotSize));
+            g.FillEllipse(new SolidBrush(Color.FromArgb(170, 255, 255, 255)), new Rectangle(gDotPosX, gDotPosY, gDotSize, gDotSize));
 
             if (_config.Accelerometer.HistoryTrace)
             {
@@ -180,7 +181,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayAccelerometer
                     for (int i = 0; i < _trace.Count; i++)
                     {
                         Point traceItem = _trace.ElementAt(i);
-                        g.FillEllipse(new SolidBrush(Color.FromArgb(90 - i * 5, 242, 82, 2)), new Rectangle(traceItem.X, traceItem.Y, gDotSize, gDotSize));
+                        g.FillEllipse(new SolidBrush(Color.FromArgb(90 - i * 5, 220, 220, 220)), new Rectangle(traceItem.X, traceItem.Y, gDotSize, gDotSize));
                     }
                 }
             }
