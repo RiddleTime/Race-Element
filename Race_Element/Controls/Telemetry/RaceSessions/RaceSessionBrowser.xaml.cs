@@ -347,6 +347,7 @@ namespace RaceElement.Controls
                 VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
                 HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
             };
+            grid.Margin = new Thickness(0);
 
             int fastestLapIndex = laps.GetFastestLapIndex();
             grid.LoadingRow += (s, e) =>
@@ -398,7 +399,7 @@ namespace RaceElement.Controls
             grid.Columns.Add(new DataGridTextColumn()
             {
                 Header = "Time",
-                Binding = new Binding("Time") { Converter = new MillisecondsToFormattedTimeSpanString() }
+                Binding = new Binding("Time") { Converter = new MillisecondsToFormattedTimeSpanString() },
             });
             grid.Columns.Add(new DataGridTextColumn()
             {
@@ -450,7 +451,7 @@ namespace RaceElement.Controls
             });
             grid.Columns.Add(new DataGridTextColumn()
             {
-                Header = "Track",
+                Header = "Grip",
                 Binding = new Binding("GripStatus") { }
             });
             grid.Columns.Add(new DataGridTextColumn()

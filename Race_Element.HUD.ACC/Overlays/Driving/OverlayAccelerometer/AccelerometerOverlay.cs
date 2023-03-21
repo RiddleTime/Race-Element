@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Diagnostics.Metrics;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayAccelerometer
 {
@@ -73,25 +74,37 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayAccelerometer
             if (Scale != 1)
                 size = (int)Math.Floor(size * Scale);
 
-            _cachedBackground = new CachedBitmap(size + 1, size + 1, g =>
+            _cachedBackground = new CachedBitmap(size, size, g =>
             {
-                SolidBrush backgroundBrush = new SolidBrush(Color.FromArgb(140, Color.Black));
-                g.FillEllipse(backgroundBrush, new Rectangle(0, 0, size, size));
-
-                // Draws the lines and circles
-                Pen AccPen = new Pen(Color.FromArgb(100, 255, 255, 255), 1);
-                Pen AccPen2 = new Pen(Color.FromArgb(30, 255, 255, 255), 3);
-                Pen AccPen3 = new Pen(Color.FromArgb(100, 255, 255, 255), 4);
-                Pen AccPen4 = new Pen(Color.FromArgb(200, 200, 200, 200), 5);
-
                 int x = 0;
                 int y = 0;
 
-                g.DrawLine(AccPen, x, y + size / 2, x + size, y + size / 2);
-                g.DrawLine(AccPen, x + size / 2, y, x + size / 2, y + size);
-                g.DrawEllipse(AccPen4, x + 2, y + 2, size - 4, size - 4);
-                g.DrawEllipse(AccPen3, x + size / 6, y + size / 6, (size / 3) * 2, (size / 3) * 2);
-                g.DrawEllipse(AccPen2, x + size / 3, y + size / 3, size / 3, size / 3);
+                Pen accPen = new Pen(Color.FromArgb(100, 255, 255, 255), 1 * Scale);
+
+                g.DrawLine(accPen, x, y + size / 2, x + size, y + size / 2);
+                g.DrawLine(accPen, x + size / 2, y, x + size / 2, y + size);
+
+                float scaledPartSize = size / 3f;
+
+                using GraphicsPath gradientPath = new GraphicsPath();
+                gradientPath.AddEllipse(new Rectangle(0, 0, size, size));
+                using PathGradientBrush pthGrBrush = new PathGradientBrush(gradientPath);
+                pthGrBrush.CenterPoint = new Point(size / 2, size / 2);
+
+                Rectangle inner = new Rectangle((int)(x + (scaledPartSize * 1.5) - scaledPartSize / 4), (int)(y + (scaledPartSize * 1.5) - scaledPartSize / 4), (int)(size - scaledPartSize * 2 - scaledPartSize / 2), (int)(size - scaledPartSize * 2 - scaledPartSize / 2));
+                pthGrBrush.CenterColor = Color.FromArgb(200, 10, 10, 255);
+                pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(60, 0, 0, 0) };
+                g.DrawArc(new Pen(pthGrBrush, scaledPartSize / 2), inner, 0, 360);
+
+                Rectangle middle = new Rectangle((int)(x + scaledPartSize - scaledPartSize / 4), (int)(y + scaledPartSize - scaledPartSize / 4), (int)(size - scaledPartSize - scaledPartSize / 2), (int)(size - scaledPartSize - scaledPartSize / 2));
+                pthGrBrush.CenterColor = Color.FromArgb(185, 0, 0, 0);
+                pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(185, 0, 255, 0) };
+                g.DrawArc(new Pen(pthGrBrush, scaledPartSize / 2), middle, 0, 360);
+
+                Rectangle outer = new Rectangle((int)(x + scaledPartSize / 4), (int)(y + scaledPartSize / 4), (int)(size - scaledPartSize / 2), (int)(size - scaledPartSize / 2));
+                pthGrBrush.CenterColor = Color.FromArgb(185, 0, 0, 0);
+                pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(182, 255, 0, 0) };
+                g.DrawArc(new Pen(pthGrBrush, scaledPartSize / 2), outer, 0, 360);
             });
         }
 
