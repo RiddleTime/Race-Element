@@ -10,7 +10,7 @@ namespace RaceElement.Data.Cars.GTC
         public CarModels CarModel => CarModels.Lamborghini_Huracan_ST_2015;
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.ST; // did this for tyre pressures, should be 'GTC'
-        public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHE2020_GT4;
+        public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHE2020;
 
         AbstractTyresSetup ICarSetupConversion.TyresSetup => new TyreSetup();
         private class TyreSetup : AbstractTyresSetup
