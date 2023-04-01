@@ -68,7 +68,7 @@
     <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Primitives" Version="7.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="obs-websocket-dotnet" Version="5.0.0.3" />
     <PackageReference Include="Quartz" Version="3.6.0" />
     <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.6.0" />
