@@ -6,6 +6,9 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.1.8.0", "- Reverted both old and new huracan evo back to gt3 tyres."+
+                        "\n- Reworked Accelerometer"+
+                        "\n- (BETA) Added traction circle to extended telemetry."},
             {"0.1.7.8", "- Added Wheel Slip HUD: Displaying live wheel slip amount and angle for each wheel."+
                         "\n- Added Track Corners HUD: Displays corner numbers and names for each corner of each track."+
                         "\n- Added Tyre Pressure Loss to Tyre Info HUD, by Mominon."+
