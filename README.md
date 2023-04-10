@@ -16,7 +16,7 @@ Provides Solutions for Sim Racing
 
 
 ### Requires .NET Framework 4.8.1
-[https://dotnet.microsoft.com/en-us/download/dotnet-framework/net481](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net4818)
+[https://dotnet.microsoft.com/en-us/download/dotnet-framework/net481](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net481)
 
 ### Frameworks
 - WPF
