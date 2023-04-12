@@ -27,6 +27,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
             [IntRange(1, 150, 1)]
             public int Spacing { get; set; } = 5;
 
+            [ToolTip("Refresh rate in Hz of the HUD.")]
+            [IntRange(30, 70, 1)]
+            public int RefreshRate { get; set; } = 30;
+
             [ToolTip("Changes the order of the bars, throttle first and brake second (left to right and top to bottom).")]
             internal bool ThrottleFirst { get; set; }
         }

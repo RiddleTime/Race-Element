@@ -6,6 +6,7 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.1.8.2", "- Input Bars HUD: Add configurable refresh rate." },
             {"0.1.8.0", "- Reverted both old and new huracan evo back to gt3 tyres."+
                         "\n- Reworked Accelerometer."+
                         "\n- (BETA) Added traction circle to extended telemetry."},
