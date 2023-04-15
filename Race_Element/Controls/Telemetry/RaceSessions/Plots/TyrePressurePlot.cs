@@ -75,7 +75,8 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
 
             plot.SetAxisLimitsX(xMin: 0, xMax: _trackData.TrackLength);
             plot.SetAxisLimitsY(minPressure - padding, maxPressure + padding);
-            plot.SetOuterViewLimits(0, _trackData.TrackLength, minPressure - padding, maxPressure + padding);
+            plot.XAxis.SetBoundary(0, _trackData.TrackLength);
+            plot.YAxis.SetBoundary(minPressure - padding, maxPressure + padding);
             plot.XLabel("Meters");
             plot.YLabel("PSI");
 

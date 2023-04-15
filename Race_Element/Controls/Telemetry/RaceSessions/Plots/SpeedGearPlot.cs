@@ -71,7 +71,8 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
             var gearingPlot = plot.AddScatterStep(splines, gearDatas, color: System.Drawing.Color.OrangeRed, label: "Gear");
             gearingPlot.YAxisIndex = 0;
             plot.SetAxisLimits(xMin: 0, xMax: _trackData.TrackLength, yMin: 0, yMax: 1.05 * maxGear, yAxisIndex: 0);
-            plot.SetOuterViewLimits(0, _trackData.TrackLength, 0, 1.05 * maxGear, yAxisIndex: 0);
+            plot.XAxis.SetBoundary(0, _trackData.TrackLength);
+            plot.YAxis.SetBoundary(0, 1.05 * maxGear);
 
             // speed axis
             plot.AddAxis(Edge.Left, axisIndex: 2, title: "Speed (km/h)");
@@ -79,7 +80,8 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
             //speedPlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(95, 0, 255, 0), lowerColor: System.Drawing.Color.Transparent);
             speedPlot.YAxisIndex = 2;
 
-            plot.SetOuterViewLimits(0, _trackData.TrackLength, -3, maxSpeed + 3, yAxisIndex: 2);
+            plot.XAxis2.SetBoundary(0, _trackData.TrackLength);
+            plot.YAxis2.SetBoundary(-3, maxSpeed + 3);
             plot.SetAxisLimits(0, _trackData.TrackLength, -3, maxSpeed + 3, yAxisIndex: 2);
 
             plot.XLabel("Meters");

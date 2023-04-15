@@ -101,7 +101,8 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
             double padding = 0.5;
             plot.SetAxisLimitsX(xMin: 0, xMax: _trackData.TrackLength);
             plot.SetAxisLimitsY(minValue - padding / 2, maxValue + padding);
-            plot.SetOuterViewLimits(0, _trackData.TrackLength, minValue - 0.05, maxValue + padding);
+            plot.XAxis.SetBoundary(0, _trackData.TrackLength);
+            plot.YAxis.SetBoundary(minValue - 0.05, maxValue + padding);
             plot.XLabel("Meters");
             plot.YLabel("Slip Angle");
 

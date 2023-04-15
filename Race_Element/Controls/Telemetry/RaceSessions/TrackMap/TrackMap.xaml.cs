@@ -119,7 +119,7 @@ namespace RaceElement.Controls
                         if (!markerThread.IsAlive)
                             markerThread.Start();
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
 
                     }

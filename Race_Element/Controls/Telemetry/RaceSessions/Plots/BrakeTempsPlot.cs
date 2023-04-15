@@ -68,7 +68,8 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
             double padding = 10;
             plot.SetAxisLimitsX(xMin: 0, xMax: _trackData.TrackLength);
             plot.SetAxisLimitsY(minTemp - padding, maxTemp + padding);
-            plot.SetOuterViewLimits(0, _trackData.TrackLength, minTemp - padding, maxTemp + padding);
+            plot.XAxis.SetBoundary(0,_trackData.TrackLength);
+            plot.YAxis.SetBoundary(minTemp - padding, maxTemp + padding);
             plot.XLabel("Meters");
             plot.YLabel("Celsius");
 
