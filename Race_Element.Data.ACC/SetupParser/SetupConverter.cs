@@ -21,6 +21,7 @@ namespace RaceElement.Data
         {
             DHE2020_GT4,
             DHE2020,
+            DHF2023,
         }
 
         public enum Wheel : int

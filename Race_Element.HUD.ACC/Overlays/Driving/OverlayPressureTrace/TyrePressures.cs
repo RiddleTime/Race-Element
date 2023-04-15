@@ -23,6 +23,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace
             OptimalMaximum = 30.5
         };
 
+        public static TyrePressureRange DRY_DHF2023 = new TyrePressureRange()
+        {
+            OptimalMinimum = 26.0,
+            OptimalMaximum = 27.0,
+        };
+
 
         public static TyrePressureRange GetCurrentRange(string compound, string carModel)
         {
