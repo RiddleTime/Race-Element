@@ -29,6 +29,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace
             OptimalMaximum = 27.0,
         };
 
+        // public static TyrePressureRange WET_WH2023 = new TyrePressureRange()
+        // {
+            
+        // };
+
 
         public static TyrePressureRange GetCurrentRange(string compound, string carModel)
         {
@@ -41,11 +46,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace
             ICarSetupConversion setupConversion = GetConversion(model);
 
             if (setupConversion != null)
-                switch (setupConversion.DryTyreCompound)
+                return setupConversion.DryTyreCompound switch
                 {
-                    case DryTyreCompounds.DHE2020: return DRY_DHE2020;
-                    default: return DRY_DHE2020_GT4;
-                }
+                    DryTyreCompounds.DHE2020 => DRY_DHE2020,
+                    _ => DRY_DHE2020_GT4,
+                };
 
             // gotta return something.. I know isn't nice, but solutions..
             return DRY_DHE2020;
