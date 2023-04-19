@@ -42,6 +42,7 @@ namespace RaceElement.Data.ACC.Cars
             {"nissan_gt_r_gt3_2018", 640},
             {"porsche_991_gt3_r", 800},
             {"porsche_991ii_gt3_r", 800},
+            {"porsche_992_gt3_r", 800 },
             {"lamborghini_gallardo_rex", 720},
             // GT4
             {"alpine_a110_gt4", 720},
