@@ -208,6 +208,7 @@
     <Compile Include="Tracks\Data\Snetterton.cs" />
     <Compile Include="Tracks\Data\SpaFrancorchamps.cs" />
     <Compile Include="Tracks\Data\Suzuka.cs" />
+    <Compile Include="Tracks\Data\Valencia.cs" />
     <Compile Include="Tracks\Data\WatkinsGlen.cs" />
     <Compile Include="Tracks\Data\Zandvoort.cs" />
     <Compile Include="Tracks\Data\Zolder.cs" />

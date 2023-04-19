@@ -41,6 +41,7 @@ namespace RaceElement.Data.ACC.Tracks
             {"snetterton",  new Snetterton() },
             {"Spa",  new SpaFrancorchamps() },
             {"Suzuka",  new Suzuka() },
+            {"Valencia", new Valencia() },
             {"watkins_glen",  new WatkinsGlen() },
             {"Zandvoort",  new Zandvoort() },
             {"Zolder",  new Zolder() },
