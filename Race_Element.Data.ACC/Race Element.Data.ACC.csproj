@@ -91,7 +91,7 @@
     <PackageReference Include="System.Threading.Channels" Version="7.0.0" />
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-    <PackageReference Include="Websocket.Client" Version="4.6.0" />
+    <PackageReference Include="Websocket.Client" Version="4.6.1" />
     <PackageReference Include="WebSocketSharp-netstandard" Version="1.0.1" />
   </ItemGroup>
   <ItemGroup>
