@@ -11,7 +11,7 @@ namespace RaceElement.Data.Cars.TCX
         public CarModels CarModel => CarModels.BMW_M2_Cup_2020;
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.TCX;
-        public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHE2020_GT4;
+        public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHF2023_GT4;
 
 
         private static readonly double[] casters = new double[] { 8.5 };

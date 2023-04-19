@@ -10,7 +10,7 @@ namespace RaceElement.Data.Cars.GT3
         public CarModels CarModel => CarModels.Lamborghini_Gallardo_G3_Reiter_2017;
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
-        public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHE2020;
+        public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHF2023;
 
         AbstractTyresSetup ICarSetupConversion.TyresSetup => new TyreSetup();
         private class TyreSetup : AbstractTyresSetup
