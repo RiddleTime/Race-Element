@@ -62,7 +62,8 @@ namespace RaceElement.Data
             Porsche_991_II_GT3_Cup_2017,
             Porsche_911_II_GT3_R_2019,
             Porsche_911_GT3_R_2018,
-            Porsche_992_GT3_Cup_2021
+            Porsche_992_GT3_Cup_2021,
+            Porsche_992_GT3_R_2023,
         }
 
         private static readonly Dictionary<CarModels, ISetupChanger> Changers = new Dictionary<CarModels, ISetupChanger>()
@@ -245,7 +246,8 @@ namespace RaceElement.Data
             {Porsche_991_II_GT3_Cup_2017, "Porsche 911 II GT3 Cup 2017" },
             {Porsche_911_II_GT3_R_2019, "Porsche 911 II GT3 R 2019" },
             {Porsche_911_GT3_R_2018, "Porsche 911 GT3 R 2018" },
-            {Porsche_992_GT3_Cup_2021, "Porsche 992 GT3 Cup 2021" }
+            {Porsche_992_GT3_Cup_2021, "Porsche 992 GT3 Cup 2021" },
+            {Porsche_992_GT3_R_2023, "Porsche 992 GT3 R 2023" }
         };
 
         public static string GetNameFromCarModel(CarModels model)
@@ -299,7 +301,8 @@ namespace RaceElement.Data
             {"porsche_991_gt3_r", Porsche_911_GT3_R_2018 },
             {"porsche_991ii_gt3_cup", Porsche_991_II_GT3_Cup_2017 },
             {"porsche_991ii_gt3_r", Porsche_911_II_GT3_R_2019 },
-            {"porsche_992_gt3_cup", Porsche_992_GT3_Cup_2021 }
+            {"porsche_992_gt3_cup", Porsche_992_GT3_Cup_2021 },
+            {"porsche_992_gt3_r", Porsche_992_GT3_R_2023 },
         };
 
         public static CarModels ParseCarName(string parseName)
