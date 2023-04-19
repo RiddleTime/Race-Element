@@ -31,29 +31,16 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace
 
         // public static TyrePressureRange WET_WH2023 = new TyrePressureRange()
         // {
-            
+
         // };
 
 
         public static TyrePressureRange GetCurrentRange(string compound, string carModel)
         {
             if (compound == "wet_compound")
-            {
                 return WET_ALL;
-            }
 
-            CarModels model = ConversionFactory.ParseCarName(carModel);
-            ICarSetupConversion setupConversion = GetConversion(model);
-
-            if (setupConversion != null)
-                return setupConversion.DryTyreCompound switch
-                {
-                    DryTyreCompounds.DHE2020 => DRY_DHE2020,
-                    _ => DRY_DHE2020_GT4,
-                };
-
-            // gotta return something.. I know isn't nice, but solutions..
-            return DRY_DHE2020;
+            return DRY_DHF2023;
         }
     }
 
