@@ -143,6 +143,7 @@ namespace RaceElement.Data
             {BMW_M4_GT3_2021, new BmwM4GT3() },
             {BMW_M6_GT3_2017, new BmwM6GT3_2017() } ,
             {Emil_Frey_Jaguar_G3_2021, new JaguarG3GT3() },
+            {Ferrari_296_GT3_2023, new Ferrari296GT3() },
             {Ferrari_488_GT3_2018, new Ferrari488GT3() },
             {Ferrari_488_GT3_Evo_2020, new Ferrari488GT3evo() },
             {Honda_NSX_GT3_2017, new HondaNsxGT3() },
