@@ -8,7 +8,7 @@ namespace RaceElement.Data.Cars.GT3
 {
     internal class Porsche992GT3R : ICarSetupConversion, ISetupChanger
     {
-        public CarModels CarModel => CarModels.Porsche_911_GT3_R_2023;
+        public CarModels CarModel => CarModels.Porsche_992_GT3_R_2023;
         
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
         public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHF2023;
