@@ -98,6 +98,7 @@ namespace RaceElement.Data
             //{Nissan_GT_R_Nismo_GT3_2015, new NissanGtrGT3_2015() },
             //{Nissan_GT_R_Nismo_GT3_2018, new NissanGtrGT3_2018() },
             {Porsche_911_II_GT3_R_2019, new Porsche911IIGT3R() },
+            {Porsche_992_GT3_R_2023, new Porsche992GT3R() },
             //{Porsche_911_GT3_R_2018, new Porsche991GT3R() },
             
             // GT4
