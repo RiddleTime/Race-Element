@@ -65,7 +65,7 @@ namespace RaceElement.Data
             Porsche_911_II_GT3_R_2019,
             Porsche_911_GT3_R_2018,
             Porsche_992_GT3_Cup_2021,
-            Porsche_992_GT3_R_2023,
+            Porsche_992_GT3_R_2023
         }
 
         private static readonly Dictionary<CarModels, ISetupChanger> Changers = new Dictionary<CarModels, ISetupChanger>()
@@ -160,6 +160,7 @@ namespace RaceElement.Data
             {Nissan_GT_R_Nismo_GT3_2018, new NissanGtrGT3_2018() },
             {Porsche_911_II_GT3_R_2019, new Porsche911IIGT3R() },
             {Porsche_911_GT3_R_2018, new Porsche991GT3R() },
+            {Porsche_911_GT3_R_2023, new Porsche992GT3R() },
             
             // GT4
             {Alpine_A110_GT4_2018, new AlpineA110GT4() },
