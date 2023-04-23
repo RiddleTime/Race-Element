@@ -161,6 +161,7 @@
     <Compile Include="SetupParser\Cars\GT3\NissanGtrGT3_2018.cs" />
     <Compile Include="SetupParser\Cars\GT3\Porsche911IIGT3R.cs" />
     <Compile Include="SetupParser\Cars\GT3\Porsche991GT3R.cs" />
+    <Compile Include="SetupParser\Cars\GT3\Porsche992GT3R.cs" />
     <Compile Include="SetupParser\Cars\GT4\AlpineA110GT4.cs" />
     <Compile Include="SetupParser\Cars\GT4\AMRV8VantageGT4.cs" />
     <Compile Include="SetupParser\Cars\GT4\AudiR8GT4.cs" />
