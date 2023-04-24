@@ -55,8 +55,8 @@ namespace RaceElement.Controls
                     _limitedDict = _dict.Where(x =>
                     {
                         double trackPosition = PlotUtil.trackData.TrackLength * x.Value.SplinePosition;
-                        int buffer = 50;
-                        return trackPosition < axisLimits.XMax + buffer && trackPosition > (axisLimits.XMin - buffer);
+                        //int buffer = 50;
+                        return trackPosition < axisLimits.XMax && trackPosition > (axisLimits.XMin);
                     }).ToDictionary(x => x.Key, x => x.Value);
                     if (_limitedDict != null)
                         lock (_limitedDict)
@@ -119,7 +119,7 @@ namespace RaceElement.Controls
                         if (!markerThread.IsAlive)
                             markerThread.Start();
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
 
                     }

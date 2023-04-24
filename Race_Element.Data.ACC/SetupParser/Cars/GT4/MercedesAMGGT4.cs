@@ -10,7 +10,7 @@ namespace RaceElement.Data.Cars.GT4
         public CarModels CarModel => CarModels.Mercedes_AMG_GT4_2016;
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT4;
-        public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHE2020_GT4;
+        public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHF2023_GT4;
 
         AbstractTyresSetup ICarSetupConversion.TyresSetup => new TyreSetup();
         private class TyreSetup : AbstractTyresSetup

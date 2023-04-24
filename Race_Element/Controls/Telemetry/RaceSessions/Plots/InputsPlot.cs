@@ -64,7 +64,8 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
             plot.SetAxisLimitsY(-5, 105);
 
             var axis2 = plot.AddAxis(Edge.Left, axisIndex: 2, title: "Inputs");
-            plot.SetOuterViewLimits(0, _trackData.TrackLength, -3, 103, yAxisIndex: 2);
+            plot.XAxis2.SetBoundary(0, _trackData.TrackLength);
+            plot.YAxis2.SetBoundary(-3, 103);
 
             var gasPlot = plot.AddSignalXY(splines, gasDatas, color: System.Drawing.Color.Green, label: "Throttle");
             //gasPlot.FillBelow(upperColor: System.Drawing.Color.FromArgb(95, 0, 255, 0), lowerColor: System.Drawing.Color.Transparent);
@@ -78,7 +79,8 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
             steeringPlot.YAxisIndex = 0;
 
             plot.SetAxisLimits(xMin: 0, xMax: _trackData.TrackLength, yMin: -1.05 * _fullSteeringLock / 2, yMax: 1.05 * _fullSteeringLock / 2, yAxisIndex: 0);
-            plot.SetOuterViewLimits(0, _trackData.TrackLength, -1.05 * _fullSteeringLock / 2, 1.05 * _fullSteeringLock / 2, yAxisIndex: 0);
+            plot.XAxis.SetBoundary(0, _trackData.TrackLength);
+            plot.YAxis.SetBoundary(-1.05 * _fullSteeringLock / 2, 1.05 * _fullSteeringLock / 2);
 
             plot.XLabel("Meters");
             plot.YLabel("Steering (Degrees)");

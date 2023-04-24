@@ -347,6 +347,7 @@ namespace RaceElement.Controls
                 VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
                 HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
             };
+            grid.Margin = new Thickness(0);
 
             int fastestLapIndex = laps.GetFastestLapIndex();
             grid.LoadingRow += (s, e) =>
@@ -398,7 +399,7 @@ namespace RaceElement.Controls
             grid.Columns.Add(new DataGridTextColumn()
             {
                 Header = "Time",
-                Binding = new Binding("Time") { Converter = new MillisecondsToFormattedTimeSpanString() }
+                Binding = new Binding("Time") { Converter = new MillisecondsToFormattedTimeSpanString() },
             });
             grid.Columns.Add(new DataGridTextColumn()
             {
@@ -450,7 +451,7 @@ namespace RaceElement.Controls
             });
             grid.Columns.Add(new DataGridTextColumn()
             {
-                Header = "Track",
+                Header = "Grip",
                 Binding = new Binding("GripStatus") { }
             });
             grid.Columns.Add(new DataGridTextColumn()
@@ -646,6 +647,8 @@ namespace RaceElement.Controls
                 plots.Add("Tyre Temperatures", (g, d) => new TyreTempsPlot(trackData, ref textBlockMetricInfo).Create(g, d));
                 plots.Add("Tyre Pressures", (g, d) => new TyrePressurePlot(trackData, ref textBlockMetricInfo).Create(g, d));
                 plots.Add("Brake Temperatures", (g, d) => new BrakeTempsPlot(trackData, ref textBlockMetricInfo).Create(g, d));
+                plots.Add("Traction Circle", (g, d) => new TractionCirclePlot(trackData, ref textBlockMetricInfo).Create(g, d));
+                plots.Add("Lateral-G vs Wheel Slip", (g, d) => new LateralGvsWheelSlipPlot(trackData, ref textBlockMetricInfo).Create(g, d));
 
                 if (_selectionChangedHandler != null)
                 {

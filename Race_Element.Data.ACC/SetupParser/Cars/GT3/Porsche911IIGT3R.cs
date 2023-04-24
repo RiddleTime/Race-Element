@@ -11,7 +11,7 @@ namespace RaceElement.Data.Cars.GT3
         public CarModels CarModel => CarModels.Porsche_911_II_GT3_R_2019;
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
-        public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHE2020;
+        public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHF2023;
 
         private static readonly double[] casters = new double[] { 4.4, 4.6, 4.8, 5.1, 5.3, 5.5, 5.7, 5.9, 6.1, 6.3, 6.5,
                 6.7, 6.9, 7.1, 7.3, 7.5, 7.7, 7.8, 8.0, 8.2, 8.4, 8.6, 8.8, 9.0, 9.2, 9.4, 9.6, 9.8, 10.0, 10.2,

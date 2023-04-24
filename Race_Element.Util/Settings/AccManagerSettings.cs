@@ -5,7 +5,7 @@ namespace RaceElement.Util.Settings
     public class AccManagerSettingsJson : IGenericSettingsJson
     {
         public bool MinimizeToSystemTray { get; set; }
-        public bool TelemetryRecordDetailed { get; set; } = false;
+        public bool TelemetryRecordDetailed { get; set; }
         public int TelemetryDetailedHerz { get; set; }
     }
 

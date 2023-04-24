@@ -187,7 +187,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayEcuMapInfo
                     new EcuMap(){ Index = 3, Power = PowerDelivery.Lowest, Conditon = EcuMapConditions.PaceCar, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.Lowest },
                 }
             },
-            {   new CarModels[] { Porsche_911_GT3_R_2018, Porsche_911_II_GT3_R_2019 },
+            {   new CarModels[] { Porsche_911_GT3_R_2018, Porsche_911_II_GT3_R_2019, Porsche_992_GT3_R_2023 },
                 new EcuMap[] {
                     new EcuMap(){ Index = 1, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Dry, ThrottleMap = "Least progressive", FuelConsumption = FuelConsumptions.Medium },
                     new EcuMap(){ Index = 2, Power = PowerDelivery.Medium, Conditon = EcuMapConditions.Dry, ThrottleMap = "Progressive", FuelConsumption = FuelConsumptions.Medium },

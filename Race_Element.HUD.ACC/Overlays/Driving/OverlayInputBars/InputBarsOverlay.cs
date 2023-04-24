@@ -27,6 +27,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
 
         public InputBarsOverlay(Rectangle rectangle) : base(rectangle, "Input Bars")
         {
+            this.RefreshRateHz = _config.Bars.RefreshRate;
+
             if (_config.Bars.Orientation == InputBarsConfiguration.BarOrientation.Horizontal)
             {
                 _horizontalBars = new HorizontalProgressBar[2];

@@ -19,8 +19,8 @@ namespace RaceElement.Data
 
         public enum DryTyreCompounds
         {
-            DHE2020_GT4,
-            DHE2020,
+            DHF2023_GT4,
+            DHF2023,
         }
 
         public enum Wheel : int
@@ -229,8 +229,8 @@ namespace RaceElement.Data
             {
                 switch (compound)
                 {
-                    case DryTyreCompounds.DHE2020: return Math.Round(20.3f + 0.1f * rawValue[(int)wheel], 2);
-                    case DryTyreCompounds.DHE2020_GT4: return Math.Round(17.0f + 0.1f * rawValue[(int)wheel], 2);
+                    case DryTyreCompounds.DHF2023: return Math.Round(20.3f + 0.1f * rawValue[(int)wheel], 2);
+                    case DryTyreCompounds.DHF2023_GT4: return Math.Round(17.0f + 0.1f * rawValue[(int)wheel], 2);
 
                     default: return -1;
                 }

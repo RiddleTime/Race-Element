@@ -36,6 +36,7 @@ namespace RaceElement.Data
             BMW_M6_GT3_2017,
             Chevrolet_Camaro_GT4_R_2017,
             Emil_Frey_Jaguar_G3_2021,
+            Ferrari_296_GT3_2023,
             Ferrari_488_Challenge_Evo_2020,
             Ferrari_488_GT3_2018,
             Ferrari_488_GT3_Evo_2020,
@@ -46,6 +47,7 @@ namespace RaceElement.Data
             Lexus_RCF_GT3_2016,
             Lamborghini_Huracan_GT3_2015,
             Lamborghini_Huracan_GT3_Evo_2019,
+            Lamborghini_Huracan_GT3_Evo2_2023,
             Lamborghini_Huracan_ST_2015,
             Lamborghini_Huracan_ST_Evo2_2021,
             Lamborghini_Gallardo_G3_Reiter_2017,
@@ -62,7 +64,8 @@ namespace RaceElement.Data
             Porsche_991_II_GT3_Cup_2017,
             Porsche_911_II_GT3_R_2019,
             Porsche_911_GT3_R_2018,
-            Porsche_992_GT3_Cup_2021
+            Porsche_992_GT3_Cup_2021,
+            Porsche_992_GT3_R_2023
         }
 
         private static readonly Dictionary<CarModels, ISetupChanger> Changers = new Dictionary<CarModels, ISetupChanger>()
@@ -95,6 +98,7 @@ namespace RaceElement.Data
             //{Nissan_GT_R_Nismo_GT3_2015, new NissanGtrGT3_2015() },
             //{Nissan_GT_R_Nismo_GT3_2018, new NissanGtrGT3_2018() },
             {Porsche_911_II_GT3_R_2019, new Porsche911IIGT3R() },
+            {Porsche_992_GT3_R_2023, new Porsche992GT3R() },
             //{Porsche_911_GT3_R_2018, new Porsche991GT3R() },
             
             // GT4
@@ -139,6 +143,7 @@ namespace RaceElement.Data
             {BMW_M4_GT3_2021, new BmwM4GT3() },
             {BMW_M6_GT3_2017, new BmwM6GT3_2017() } ,
             {Emil_Frey_Jaguar_G3_2021, new JaguarG3GT3() },
+            {Ferrari_296_GT3_2023, new Ferrari296GT3() },
             {Ferrari_488_GT3_2018, new Ferrari488GT3() },
             {Ferrari_488_GT3_Evo_2020, new Ferrari488GT3evo() },
             {Honda_NSX_GT3_2017, new HondaNsxGT3() },
@@ -146,6 +151,7 @@ namespace RaceElement.Data
             {Lamborghini_Gallardo_G3_Reiter_2017, new LamborghiniGallardoG3Reiter_2017() },
             {Lamborghini_Huracan_GT3_2015, new LamborghiniHuracanGT3() },
             {Lamborghini_Huracan_GT3_Evo_2019, new LamborghiniHuracanGT3evo() },
+            {Lamborghini_Huracan_GT3_Evo2_2023, new LamborghiniHuracanGT3evo2() },
             {Lamborghini_Huracan_ST_2015, new LamborghiniHuracanST_2015() },
             {Lamborghini_Huracan_ST_Evo2_2021, new LamborghiniHuracanSTEvo22021() },
             {Lexus_RCF_GT3_2016, new LexusRcfGT3() },
@@ -157,6 +163,7 @@ namespace RaceElement.Data
             {Nissan_GT_R_Nismo_GT3_2018, new NissanGtrGT3_2018() },
             {Porsche_911_II_GT3_R_2019, new Porsche911IIGT3R() },
             {Porsche_911_GT3_R_2018, new Porsche991GT3R() },
+            {Porsche_992_GT3_R_2023, new Porsche992GT3R() },
             
             // GT4
             {Alpine_A110_GT4_2018, new AlpineA110GT4() },
@@ -219,6 +226,7 @@ namespace RaceElement.Data
             {BMW_M2_Cup_2020, "BMW M2 Cup 2020" },
             {Chevrolet_Camaro_GT4_R_2017, "Chevrolet Camaro GT4 R 2017"},
             {Emil_Frey_Jaguar_G3_2021, "Emil Frey Jaguar G3 2012" },
+            {Ferrari_296_GT3_2023, "Ferrari 296 GT3 2023" },
             {Ferrari_488_Challenge_Evo_2020, "Ferrari 488 Challenge Evo 2020" },
             {Ferrari_488_GT3_2018, "Ferrari 488 GT3 2018" },
             {Ferrari_488_GT3_Evo_2020, "Ferrari 488 GT3 Evo 2020" },
@@ -230,6 +238,7 @@ namespace RaceElement.Data
             {Lamborghini_Gallardo_G3_Reiter_2017, "Lamborghini Gallardo G3 Reiter 2017" },
             {Lamborghini_Huracan_GT3_2015, "Lamborghini Huracán GT3 2015" },
             {Lamborghini_Huracan_GT3_Evo_2019, "Lamborghini Huracán GT3 Evo 2019" },
+            {Lamborghini_Huracan_GT3_Evo2_2023, "Lamborghini Huracán GT3 Evo2 2023" },
             {Lamborghini_Huracan_ST_2015, "Lamborghini Huracán ST 2015" },
             {Lamborghini_Huracan_ST_Evo2_2021, "Lamborghini Huracán ST Evo2 2021" },
             {Maserati_Gran_Turismo_MC_GT4_2016, "Maserati Gran Turismo MC GT4 2016" },
@@ -245,7 +254,8 @@ namespace RaceElement.Data
             {Porsche_991_II_GT3_Cup_2017, "Porsche 911 II GT3 Cup 2017" },
             {Porsche_911_II_GT3_R_2019, "Porsche 911 II GT3 R 2019" },
             {Porsche_911_GT3_R_2018, "Porsche 911 GT3 R 2018" },
-            {Porsche_992_GT3_Cup_2021, "Porsche 992 GT3 Cup 2021" }
+            {Porsche_992_GT3_Cup_2021, "Porsche 992 GT3 Cup 2021" },
+            {Porsche_992_GT3_R_2023, "Porsche 992 GT3 R 2023" }
         };
 
         public static string GetNameFromCarModel(CarModels model)
@@ -272,6 +282,7 @@ namespace RaceElement.Data
             {"bmw_m4_gt4", BMW_M4_GT4_2018 },
             {"bmw_m6_gt3", BMW_M6_GT3_2017 },
             {"chevrolet_camaro_gt4r", Chevrolet_Camaro_GT4_R_2017 },
+            {"ferrari_296_gt3", Ferrari_296_GT3_2023 },
             {"ferrari_488_challenge_evo", Ferrari_488_Challenge_Evo_2020 },
             {"ferrari_488_gt3", Ferrari_488_GT3_2018 },
             {"ferrari_488_gt3_evo", Ferrari_488_GT3_Evo_2020 },
@@ -283,6 +294,7 @@ namespace RaceElement.Data
             {"lamborghini_gallardo_rex", Lamborghini_Gallardo_G3_Reiter_2017 },
             {"lamborghini_huracan_gt3", Lamborghini_Huracan_GT3_2015 },
             {"lamborghini_huracan_gt3_evo", Lamborghini_Huracan_GT3_Evo_2019 },
+            {"lamborghini_huracan_gt3_evo2", Lamborghini_Huracan_GT3_Evo2_2023 },
             {"lamborghini_huracan_st", Lamborghini_Huracan_ST_2015 },
             {"lamborghini_huracan_st_evo2", Lamborghini_Huracan_ST_Evo2_2021 },
             {"lexus_rc_f_gt3", Lexus_RCF_GT3_2016 },
@@ -299,7 +311,8 @@ namespace RaceElement.Data
             {"porsche_991_gt3_r", Porsche_911_GT3_R_2018 },
             {"porsche_991ii_gt3_cup", Porsche_991_II_GT3_Cup_2017 },
             {"porsche_991ii_gt3_r", Porsche_911_II_GT3_R_2019 },
-            {"porsche_992_gt3_cup", Porsche_992_GT3_Cup_2021 }
+            {"porsche_992_gt3_cup", Porsche_992_GT3_Cup_2021 },
+            {"porsche_992_gt3_r", Porsche_992_GT3_R_2023 },
         };
 
         public static CarModels ParseCarName(string parseName)
@@ -343,6 +356,9 @@ namespace RaceElement.Data
             {29, Lamborghini_Huracan_ST_Evo2_2021 },
             {30, BMW_M4_GT3_2021 },
             {31, Audi_R8_LMS_Evo_II_2022 },
+            {32, Ferrari_296_GT3_2023 },
+            {33, Lamborghini_Huracan_GT3_Evo2_2023 },
+            {34, Porsche_992_GT3_R_2023 },
             {50, Alpine_A110_GT4_2018 },
             {51, Aston_Martin_Vantage_AMR_GT4_2018 },
             {52, Audi_R8_LMS_GT4_2016 },

@@ -10,7 +10,7 @@ namespace RaceElement.Data.Cars.GTC
         public CarModels CarModel => CarModels.Porsche_991_II_GT3_Cup_2017;
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.CUP; // did this for tyre pressures, should be 'GTC' 
-        public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHE2020;
+        public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHF2023;
 
 
         AbstractTyresSetup ICarSetupConversion.TyresSetup => new TyreSetup();

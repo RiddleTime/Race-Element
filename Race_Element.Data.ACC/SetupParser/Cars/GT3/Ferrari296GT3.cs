@@ -5,9 +5,9 @@ using static RaceElement.Data.SetupConverter;
 
 namespace RaceElement.Data.Cars.GT3
 {
-    internal class NissanGtrGT3_2015 : ICarSetupConversion
+    internal class Ferrari296GT3 : ICarSetupConversion
     {
-        public CarModels CarModel => CarModels.Nissan_GT_R_Nismo_GT3_2015;
+        public CarModels CarModel => CarModels.Ferrari_296_GT3_2023;
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
         public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHF2023;
@@ -25,12 +25,11 @@ namespace RaceElement.Data.Cars.GT3
                 }
             }
 
+            private readonly double[] casters = new double[] {
+                8.5, 8.7, 8.9, 9.1, 9.2, 9.4, 9.6, 9.8, 9.9, 10.1, 10.3, 10.5, 10.6,
+                10.8, 11.0, 11.2, 11.3, 11.5, 11.7, 11.9, 12.0, 12.2, 12.4, 12.6,
+                12.7, 12.9, 13.1, 13.3, 13.4, 13.6, 13.8 };
 
-            private readonly double[] casters = new double[] { 6.0, 6.2, 6.4, 6.6, 6.8, 7.0, 7.2,
-                7.3, 7.5, 7.7, 7.9, 8.1, 8.3, 8.5, 8.7, 8.9, 9.1, 9.3, 9.5, 9.7, 9.8, 10.0, 10.2,
-                10.4, 10.6, 10.8, 11.0, 11.2, 11.4, 11.6, 11.7, 11.9, 12.1, 12.3, 12.5, 12.7, 12.9,
-                13.1, 13.2, 13.4, 13.6, 13.8, 14.0, 14.2, 14.4, 14.5, 14.7, 14.9, 15.1, 15.3, 15.5,
-                15.6, 15.8, 16.0, 16.2, 16.4, 16.5, 16.7, 16.9, 17.1, 17.3 };
             public override double Caster(int rawValue)
             {
                 return Math.Round(casters[rawValue], 2);
@@ -38,15 +37,9 @@ namespace RaceElement.Data.Cars.GT3
 
             public override double Toe(Wheel wheel, List<int> rawValue)
             {
-
-                switch (GetPosition(wheel))
-                {
-                    case Position.Front: return Math.Round(-0.2 + 0.01 * rawValue[(int)wheel], 2);
-                    case Position.Rear: return Math.Round(0.0 + 0.01 * rawValue[(int)wheel], 2);
-                    default: return -1;
-                }
-
+                return Math.Round(-0.4 + 0.01 * rawValue[(int)wheel], 2);
             }
+
         }
 
         IMechanicalSetup ICarSetupConversion.MechanicalSetup => new MechSetup();
@@ -64,7 +57,7 @@ namespace RaceElement.Data.Cars.GT3
 
             public double BrakeBias(int rawValue)
             {
-                return Math.Round(47.5 + 0.3 * rawValue, 2);
+                return Math.Round(50.0 + 0.2 * rawValue, 2);
             }
 
             public int BrakePower(int rawValue)
@@ -79,7 +72,12 @@ namespace RaceElement.Data.Cars.GT3
 
             public int BumpstopRate(List<int> rawValue, Wheel wheel)
             {
-                return 300 + 100 * rawValue[(int)wheel];
+                switch (GetPosition(wheel))
+                {
+                    case Position.Front: return 300 + 100 * rawValue[(int)wheel];
+                    case Position.Rear: return 400 + 200 * rawValue[(int)wheel];
+                    default: return -1;
+                }
             }
 
             public int PreloadDifferential(int rawValue)
@@ -89,11 +87,12 @@ namespace RaceElement.Data.Cars.GT3
 
             public double SteeringRatio(int rawValue)
             {
-                return Math.Round(12d + rawValue, 2);
+                return Math.Round(13d + rawValue, 2);
             }
 
-            private readonly int[] fronts = new int[] { 122000, 132000, 142000, 152000, 162000, 172000, 182000 };
-            private readonly int[] rears = new int[] { 94000, 104000, 114000, 124000, 134000, 144000, 154000 };
+            private readonly int[] fronts = new int[] { 163769, 170068, 176367, 182666, 188964, 195263, 201562, 207861, 214160 };
+            private readonly int[] rears = new int[] { 122091, 129273, 136455, 143637, 150818, 158000, 165182, 172364, 179546 };
+
             public int WheelRate(List<int> rawValue, Wheel wheel)
             {
                 switch (GetPosition(wheel))
@@ -124,8 +123,8 @@ namespace RaceElement.Data.Cars.GT3
             {
                 switch (position)
                 {
-                    case Position.Front: return 55 + rawValue[0];
-                    case Position.Rear: return 55 + rawValue[2];
+                    case Position.Front: return 50 + rawValue[0];
+                    case Position.Rear: return 50 + rawValue[2];
                     default: return -1;
                 }
             }

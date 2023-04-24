@@ -10,7 +10,7 @@ namespace RaceElement.Data.Cars.GT3
         public CarModels CarModel => CarModels.Porsche_911_GT3_R_2018;
 
         CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
-        public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHE2020;
+        public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHF2023;
 
         AbstractTyresSetup ICarSetupConversion.TyresSetup => new TyreSetup();
         private class TyreSetup : AbstractTyresSetup

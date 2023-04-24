@@ -81,7 +81,7 @@ namespace RaceElement.HUD.Overlay.Util
                     previousLineCount = Lines.Count;
                 }
 
-                _cachedBackground.Draw(g);
+                _cachedBackground.Draw(g, new Point(X, Y));
             }
 
             TextRenderingHint previousHint = g.TextRenderingHint;

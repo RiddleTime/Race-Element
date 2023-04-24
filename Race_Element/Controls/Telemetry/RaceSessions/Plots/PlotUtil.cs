@@ -105,13 +105,23 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
         public static bool AxisLimitsCustom { get; internal set; } = false;
         public static event EventHandler<AxisLimits> AxisLimitsChanged;
 
+        public static void UpdateAxisLimits(object sender, AxisLimits axisLimits)
+        {
+            WpfPlot wpfPlot = (WpfPlot)sender;
+            AxisLimits = axisLimits;
+            AxisLimitsCustom = true;
+            AxisLimitsChanged?.Invoke(null, axisLimits);
+            Debug.WriteLine($"XMin: {axisLimits.XMin}, XMax: {axisLimits.XMax}, XCenter: {axisLimits.XCenter}");
+        }
+
+
         public static void WpfPlot_AxesChanged(object sender, EventArgs e)
         {
             WpfPlot wpfPlot = (WpfPlot)sender;
             AxisLimits = wpfPlot.Plot.GetAxisLimits(xAxisIndex: 0);
             AxisLimitsCustom = true;
             AxisLimitsChanged?.Invoke(null, AxisLimits);
-            //Debug.WriteLine($"XMin: {AxisLimits.XMin}, XMax: {AxisLimits.XMax}, XCenter: {AxisLimits.XCenter}");
+            Debug.WriteLine($"XMin: {AxisLimits.XMin}, XMax: {AxisLimits.XMax}, XCenter: {AxisLimits.XCenter}");
         }
 
         internal static TrackData.AbstractTrackData trackData;

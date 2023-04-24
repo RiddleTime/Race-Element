@@ -47,6 +47,12 @@ namespace RaceElement.Data.ACC.Database.Telemetry
     public class PhysicsData
     {
         public float[] WheelSlip { get; set; }
+        public float[] WheelSlipAngle { get; set; }
+        
+        /// <summary>
+        /// X, Y acceleration (G)
+        /// </summary>
+        public float[] Acceleration { get; set; }
         public float Speed { get; set; }
         public float X { get; set; }
         public float Y { get; set; }

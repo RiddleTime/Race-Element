@@ -6,6 +6,14 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.1.9.0", "- Input Bars HUD: Add configurable refresh rate."+
+                        "\n- Added steering locks for porsche 992 gt3, huracan evo2 gt3 and ferrari 296 gt3."+
+                        "\n- Added base data for Valencia track."+
+                        "\n- Updated tyre pressure HUD."+
+                        "\n- Track corners and setup viewer for the new dlc will come soon."},
+            {"0.1.8.0", "- Reverted both old and new huracan evo back to gt3 tyres."+
+                        "\n- Reworked Accelerometer."+
+                        "\n- (BETA) Added traction circle to extended telemetry."},
             {"0.1.7.8", "- Added Wheel Slip HUD: Displaying live wheel slip amount and angle for each wheel."+
                         "\n- Added Track Corners HUD: Displays corner numbers and names for each corner of each track."+
                         "\n- Added Tyre Pressure Loss to Tyre Info HUD, by Mominon."+
