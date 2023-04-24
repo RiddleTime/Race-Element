@@ -23,3 +23,10 @@ Provides Solutions for Sim Racing
 - [MaterialDesign In Xaml Toolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit)
 - [LiteDB](https://github.com/mbdavid/LiteDB)
 - [ScottPlot](https://github.com/scottplot/scottplot)
+
+
+### Code Signing
+Race Element is digitally signed courtesy of [SignPath](https://www.signpath.io)
+<a href="https://www.signpath.io">
+    <img src="https://about.signpath.io/assets/logo_signpath_500.png" width="150">
+</a>
