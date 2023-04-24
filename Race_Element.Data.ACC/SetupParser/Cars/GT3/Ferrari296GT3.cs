@@ -25,9 +25,9 @@ namespace RaceElement.Data.Cars.GT3
                 }
             }
 
-            private readonly double[] casters = new double[] { 
-                8.5, 8.7, 8.9, 9.1, 9.2, 9.4, 9.6, 9.8, 9.9, 10.1, 10.3, 10.5, 10.6, 
-                10.8, 11.0, 11.2, 11.3, 11.5, 11.7, 11.9, 12.0, 12.2, 12.4, 12.6, 
+            private readonly double[] casters = new double[] {
+                8.5, 8.7, 8.9, 9.1, 9.2, 9.4, 9.6, 9.8, 9.9, 10.1, 10.3, 10.5, 10.6,
+                10.8, 11.0, 11.2, 11.3, 11.5, 11.7, 11.9, 12.0, 12.2, 12.4, 12.6,
                 12.7, 12.9, 13.1, 13.3, 13.4, 13.6, 13.8 };
 
             public override double Caster(int rawValue)
@@ -72,7 +72,12 @@ namespace RaceElement.Data.Cars.GT3
 
             public int BumpstopRate(List<int> rawValue, Wheel wheel)
             {
-                return 300 + 100 * rawValue[(int)wheel];
+                switch (GetPosition(wheel))
+                {
+                    case Position.Front: return 300 + 100 * rawValue[(int)wheel];
+                    case Position.Rear: return 400 + 200 * rawValue[(int)wheel];
+                    default: return -1;
+                }
             }
 
             public int PreloadDifferential(int rawValue)
