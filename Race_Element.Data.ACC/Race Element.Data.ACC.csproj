@@ -144,6 +144,7 @@
     <Compile Include="SetupParser\Cars\GT3\BentleyContinentalGT3_2018.cs" />
     <Compile Include="SetupParser\Cars\GT3\BmwM4GT3.cs" />
     <Compile Include="SetupParser\Cars\GT3\BmwM6GT3_2017.cs" />
+    <Compile Include="SetupParser\Cars\GT3\Ferrari296GT3.cs" />
     <Compile Include="SetupParser\Cars\GT3\Ferrari488GT3.cs" />
     <Compile Include="SetupParser\Cars\GT3\Ferrari488GT3evo.cs" />
     <Compile Include="SetupParser\Cars\GT3\HondaNsxGT3.cs" />
@@ -152,6 +153,7 @@
     <Compile Include="SetupParser\Cars\GT3\LamborghiniGallardoG3Reiter_2017.cs" />
     <Compile Include="SetupParser\Cars\GT3\LamborghiniHuracanGT3.cs" />
     <Compile Include="SetupParser\Cars\GT3\LamborghiniHuracanGT3evo.cs" />
+    <Compile Include="SetupParser\Cars\GT3\LamborghiniHuracanGT3evo2.cs" />
     <Compile Include="SetupParser\Cars\GT3\LexusRcfGT3.cs" />
     <Compile Include="SetupParser\Cars\GT3\Mclaren650sGT3_2015.cs" />
     <Compile Include="SetupParser\Cars\GT3\Mclaren720sGT3.cs" />
