@@ -123,8 +123,8 @@ namespace RaceElement.Data.Cars.GT3
             {
                 switch (position)
                 {
-                    case Position.Front: return 55 + rawValue[0];
-                    case Position.Rear: return 55 + rawValue[2];
+                    case Position.Front: return 50 + rawValue[0];
+                    case Position.Rear: return 50 + rawValue[2];
                     default: return -1;
                 }
             }
