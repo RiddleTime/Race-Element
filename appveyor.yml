@@ -5,7 +5,12 @@ branches:
 image: Visual Studio 2022
 configuration: Release
 before_build:
+- cmd: nuget restore
+build:
+  project: Race Element.sln
+  parallel: true
+  verbosity: minimal
 test: off
 artifacts:
 - path: '**\bin\Release\RaceElement.exe'
-  name: Race Element Beta
+  name: Race Element
