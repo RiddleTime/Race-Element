@@ -150,7 +150,7 @@
     <PackageReference Include="NETStandard.Library" Version="2.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="obs-websocket-dotnet" Version="5.0.0.3" />
-    <PackageReference Include="Octokit" Version="5.0.4" />
+    <PackageReference Include="Octokit" Version="5.1.0" />
     <PackageReference Include="Quartz" Version="3.6.2" />
     <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.6.2" />
     <PackageReference Include="Quartz.Extensions.Hosting" Version="3.6.2" />
