@@ -1,5 +1,4 @@
-﻿using RaceElement.Util;
-using System.Windows;
+﻿using System.Windows;
 
 namespace RaceElement.Util.Settings
 {

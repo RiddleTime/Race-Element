@@ -19,7 +19,7 @@ namespace RaceElement.Util
 
         public static T Cached { get; private set; }
 
-        public AbstractSettingsJson()
+        protected AbstractSettingsJson()
         {
             Cached = Get(false);
         }
