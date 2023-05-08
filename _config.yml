@@ -10,6 +10,10 @@ description: > # this means to ignore newlines until "show_exerpts:"
     a { 
       color: #FF4500;
     }
+    
+    h1, h2, h3, h4, h5, h6 {
+      color: #FF8E64;
+    }
   </style>
 show_excerpts: false # set to true to show excerpts on the homepage
 
