@@ -7,6 +7,7 @@ namespace RaceElement.Controls
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
             {"0.1.9.4", "- Race Element GUI: Set Default Window Opacity to 100%, now only transparent whilst dragging."+
+                        "- You can now drag and drop for setups (for example from discord) directly ontop of race element. It will download it for you and show it in the importer."+
                         "\n- ?"},
             {"0.1.9.2", "- Add Setup Conversion for Porsche 992 R GT3, Lamborghini Huracán GT3 Evo2 2023 and Ferrari 296 GT3 2023 by andreasmaier." },
             {"0.1.9.0", "- Input Bars HUD: Add configurable refresh rate."+

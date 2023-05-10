@@ -130,14 +130,16 @@ namespace RaceElement
                 DataObject data = (DataObject)e.Data;
 
                 StringCollection droppedItems = data.GetFileDropList();
-                Debug.WriteLine(data.GetText());
 
                 string droppedItem = string.Empty;
 
                 if (droppedItems.Count == 1)
                     droppedItem = droppedItems[0];
-                //else
-                //    droppedItem = data.GetText();
+                else
+                {
+                    droppedItem = data.GetText();
+                    //Debug.WriteLine($"link?: {droppedItem}");
+                }
 
                 if (droppedItem.EndsWith(".json"))
                 {
