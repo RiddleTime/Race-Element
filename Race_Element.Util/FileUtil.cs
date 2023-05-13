@@ -89,7 +89,8 @@ namespace RaceElement.Util
             new Thread(x =>
             {
                 DirectoryInfo downloadCache = new DirectoryInfo(RaceElementDownloadCachePath);
-                downloadCache.Delete(true);
+                if (downloadCache.Exists)
+                    downloadCache.Delete(true);
             }).Start();
         }
     }
