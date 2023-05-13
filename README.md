@@ -26,7 +26,9 @@ Provides Solutions for Sim Racing
 
 
 ### Code Signing
-Race Element is digitally signed courtesy of [SignPath](https://www.signpath.io)
+
 <a href="https://www.signpath.io">
     <img src="https://about.signpath.io/assets/logo_signpath_500.png" width="150">
-</a>
+</a> 
+
+Free code signing provided by [SignPath.io](https://signpath.io?utm_source=foundation&utm_medium=github&utm_campaign=race-element), certificate by [SignPath Foundation](https://signpath.org?utm_source=foundation&utm_medium=github&utm_campaign=race-element)

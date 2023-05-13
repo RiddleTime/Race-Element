@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using static RaceElement.Data.ACC.Tracks.TrackData;
@@ -82,8 +83,39 @@ namespace RaceElement.Controls
 
         public bool Open(string setupFile, bool showTrack = false)
         {
-            FileInfo file = new FileInfo(setupFile);
-            if (!file.Exists)
+            FileInfo file = null;
+
+            if (setupFile.StartsWith("https"))
+            {
+                try
+                {
+                    using (var client = new WebClient())
+                    {
+                        string fileName;
+                        string[] splits = setupFile.Split(new char[] { '/' });
+                        fileName = splits[splits.Length - 1];
+
+                        DirectoryInfo downloadCache = new DirectoryInfo(FileUtil.RaceElementDownloadCachePath);
+
+                        if (!downloadCache.Exists) downloadCache.Create();
+
+                        string fullName = FileUtil.RaceElementDownloadCachePath + fileName;
+                        client.DownloadFile(setupFile, fullName);
+                        setupFile = fullName;
+                        file = new FileInfo(fullName);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+            }
+            else
+            {
+                file = new FileInfo(setupFile);
+            }
+
+            if (file == null || !file.Exists)
                 return false;
 
             SetupJson.Root setupRoot = ConversionFactory.GetSetupJsonRoot(file);
@@ -98,14 +130,17 @@ namespace RaceElement.Controls
             _setupName = file.Name.Replace(".json", "");
             _originalSetupFile = setupFile;
 
-            BuildTrackList();
-            this.textBlockSetupName.Text = $"{modelName} - {file.Name}";
+            try
+            {
+                BuildTrackList();
+                this.textBlockSetupName.Text = $"{modelName} - {file.Name}";
 
-            _renderer.LogSetup(ref this.flowDocument, setupFile, showTrack);
+                _renderer.LogSetup(ref this.flowDocument, setupFile, showTrack);
 
-            this.Visibility = Visibility.Visible;
-            SetupsTab.Instance.tabControl.IsEnabled = false;
-
+                this.Visibility = Visibility.Visible;
+                SetupsTab.Instance.tabControl.IsEnabled = false;
+            }
+            catch (Exception ex) { Debug.WriteLine(ex); }
             return true;
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Threading;
 
 namespace RaceElement.Util
 {
@@ -14,6 +15,7 @@ namespace RaceElement.Util
         public static string RaceElementOverlayPath = RaceElementAppDataPath + "Overlay\\";
         public static string RaceElementSettingsPath = RaceElementAppDataPath + "Settings\\";
         public static string RaceElementDataPath = RaceElementAppDataPath + "Data\\";
+        public static string RaceElementDownloadCachePath = RaceElementAppDataPath + "DownloadCache\\";
 
 
         public static string AccPath => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "Assetto Corsa Competizione\\";
@@ -80,6 +82,15 @@ namespace RaceElement.Util
                 LogWriter.WriteToLog(e);
                 return string.Empty;
             }
+        }
+
+        public static void CleanDownloadCache()
+        {
+            new Thread(x =>
+            {
+                DirectoryInfo downloadCache = new DirectoryInfo(RaceElementDownloadCachePath);
+                downloadCache.Delete(true);
+            }).Start();
         }
     }
 }

@@ -2,7 +2,6 @@
 using System.Linq;
 using RaceElement.Data.Cars.GT3;
 using RaceElement.Data.Cars.GT4;
-
 using RaceElement.Data.Cars.GTC;
 using RaceElement.Data.Cars.TCX;
 using System.IO;

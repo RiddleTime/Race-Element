@@ -31,7 +31,7 @@ namespace RaceElement
     public partial class MainWindow : Window
     {
         internal static MainWindow Instance { get; private set; }
-        public const double MaxOpacity = 0.9931;
+        public const double MaxOpacity = 1;
 
         private readonly UiSettings _uiSettings;
         private readonly AccManagerSettings _accManagerSettings;
@@ -130,14 +130,16 @@ namespace RaceElement
                 DataObject data = (DataObject)e.Data;
 
                 StringCollection droppedItems = data.GetFileDropList();
-                Debug.WriteLine(data.GetText());
 
                 string droppedItem = string.Empty;
 
                 if (droppedItems.Count == 1)
                     droppedItem = droppedItems[0];
-                //else
-                //    droppedItem = data.GetText();
+                else
+                {
+                    droppedItem = data.GetText();
+                    //Debug.WriteLine($"link?: {droppedItem}");
+                }
 
                 if (droppedItem.EndsWith(".json"))
                 {
@@ -199,6 +201,7 @@ namespace RaceElement
                 Thread.Sleep(2000);
                 GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
                 UpdateUsage();
+                FileUtil.CleanDownloadCache();
             });
 
             if (!App.Instance.StartMinimized)

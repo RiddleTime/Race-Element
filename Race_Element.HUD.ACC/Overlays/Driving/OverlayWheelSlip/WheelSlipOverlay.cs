@@ -32,8 +32,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
             public sealed class ShapeGrouping
             {
                 [ToolTip("Adjust maximum amount of wheel slip displayed.")]
-                [IntRange(40, 100, 2)]
-                public int WheelSize { get; set; } = 52;
+                [IntRange(40, 120, 2)]
+                public int WheelSize { get; set; } = 92;
             }
 
             public WheelSlipConfiguration() => AllowRescale = true;

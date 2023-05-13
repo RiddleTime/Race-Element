@@ -21,15 +21,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
             public InfoPanelGrouping InfoPanel { get; set; } = new InfoPanelGrouping();
             public class InfoPanelGrouping
             {
-                [ToolTip("Sets the maximum range in seconds for the delta bar.")]
-                [IntRange(1, 5, 1)]
-                public int MaxDelta { get; set; } = 2;
-
                 [ToolTip("Displays the time for each sector, green colored sectors are personal best.")]
                 public bool Sectors { get; set; } = true;
-
-                [ToolTip("Displays the last lap time.")]
-                public bool LastLap { get; set; } = true;
 
                 [ToolTip("Displays the best lap time.")]
                 public bool BestLap { get; set; } = true;
@@ -44,16 +37,16 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
             }
         }
 
-        private const int _overlayWidth = 202;
+        private const int _overlayWidth = 205;
         private readonly InfoTable _table;
 
         private DbLapData _lastLap = null;
 
         public LapInfoOverlay(Rectangle rectangle) : base(rectangle, "Lap Info")
         {
-            _table = new InfoTable(10, new int[] { 85, 83 }) { Y = 17 };
+            _table = new InfoTable(10, new int[] { 85, 83 });
             this.Width = _overlayWidth + 1;
-            this.Height = _table.FontHeight * 7 + 2 + 4;
+            this.Height = _table.FontHeight * 7 + 2;
             RefreshRateHz = 10;
         }
 
@@ -62,13 +55,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
             if (!this._config.InfoPanel.Sectors)
                 this.Height -= this._table.FontHeight * 3;
 
-            if (!this._config.InfoPanel.PotentialBest)
-                this.Height -= this._table.FontHeight;
-
-            if (!this._config.InfoPanel.LastLap)
-                this.Height -= this._table.FontHeight;
-
             if (!this._config.InfoPanel.BestLap)
+                this.Height -= this._table.FontHeight;
+
+            if (!this._config.InfoPanel.PotentialBest)
                 this.Height -= this._table.FontHeight;
 
             LapTracker.Instance.LapFinished += Collector_LapFinished;
@@ -87,22 +77,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
 
         public sealed override void Render(Graphics g)
         {
-            double delta = (double)pageGraphics.DeltaLapTimeMillis / 1000;
-            DeltaBar deltaBar = new DeltaBar(-this._config.InfoPanel.MaxDelta, this._config.InfoPanel.MaxDelta, delta) { DrawBackground = true, IsValidLap = pageGraphics.IsValidLap };
-            deltaBar.Draw(g, 0, 0, _overlayWidth, _table.FontHeight);
-
             g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
             g.TextContrast = 1;
-
-            string deltaText = $"{delta:F3}";
-            SizeF textWidth = g.MeasureString(deltaText, _table.Font);
-            g.DrawStringWithShadow(deltaText, _table.Font, Color.White, new PointF(_overlayWidth / 2 - textWidth.Width + textWidth.Width / 2, _table.FontHeight / 8f));
 
             if (this._config.InfoPanel.Sectors)
                 AddSectorLines();
 
-            if (this._config.InfoPanel.LastLap)
-                AddLastLap();
+            AddLastLap();
 
             if (this._config.InfoPanel.BestLap)
                 AddBestLap();
