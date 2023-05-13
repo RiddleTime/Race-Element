@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Threading;
 
 namespace RaceElement.Util
 {
@@ -81,6 +82,15 @@ namespace RaceElement.Util
                 LogWriter.WriteToLog(e);
                 return string.Empty;
             }
+        }
+
+        public static void CleanDownloadCache()
+        {
+            new Thread(x =>
+            {
+                DirectoryInfo downloadCache = new DirectoryInfo(RaceElementDownloadCachePath);
+                downloadCache.Delete(true);
+            }).Start();
         }
     }
 }

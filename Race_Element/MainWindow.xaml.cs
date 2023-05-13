@@ -201,6 +201,7 @@ namespace RaceElement
                 Thread.Sleep(2000);
                 GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
                 UpdateUsage();
+                FileUtil.CleanDownloadCache();
             });
 
             if (!App.Instance.StartMinimized)
