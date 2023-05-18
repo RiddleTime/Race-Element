@@ -70,8 +70,21 @@ namespace RaceElement.Data.ACC.Tyres
                         CheckWetTyreSetChange(graphicsPage);
 
                         _isInPitLane = graphicsPage.IsInPitLane;
-                        if (!_isInPitLane)
+                        if (_isInPitLane)
+                        {
+                            // Assume that during a practice session you always exit the pits with fresh tyres.
+                            if (graphicsPage.SessionType == ACCSharedMemory.AcSessionType.AC_PRACTICE)
+                            {
+                                ResetPressureLosses();
+                                SendTyresInfoUpdate();
+                            }
+                        }
+                        else
+                        {
                             UpdatePressureLosses(currentReading);
+                        }
+
+
 
                         _lastPressureReading = currentReading;
                     }

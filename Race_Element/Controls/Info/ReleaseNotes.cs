@@ -6,6 +6,7 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.1.9.6", "- TODO!." },
             {"0.1.9.4", "- Race Element GUI: Set Default Window Opacity to 100%, now only transparent whilst dragging."+
                         "\n- You can now drag and drop setups from the web directly ontop of race element(for example from discord). It will download it for you and show it in the importer."+
                         "\n- Lap Info HUD: removed lap delta bar as there is a lap delta HUD."},
