@@ -116,8 +116,8 @@
     <PackageReference Include="DdsFileTypePlusHack" Version="1.0.4" />
     <PackageReference Include="Fody" Version="6.7.0" PrivateAssets="all" />
     <PackageReference Include="LiteDB" Version="5.0.16" />
-    <PackageReference Include="MaterialDesignColors" Version="2.1.2" />
-    <PackageReference Include="MaterialDesignThemes" Version="4.8.0" />
+    <PackageReference Include="MaterialDesignColors" Version="2.1.4" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
