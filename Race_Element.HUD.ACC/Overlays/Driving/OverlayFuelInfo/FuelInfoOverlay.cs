@@ -7,9 +7,9 @@ using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayFuelInfo
 {
-    [Overlay(Name = "Fuel Info", 
+    [Overlay(Name = "Fuel Info",
         Description = "A panel showing information about the fuel: laps left, fuel to end of race. Optionally showing stint information.",
-        Version = 1.00, 
+        Version = 1.00,
         OverlayType = OverlayType.Release,
         OverlayCategory = OverlayCategory.Car)]
     internal sealed class FuelInfoOverlay : AbstractOverlay
@@ -32,6 +32,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayFuelInfo
 
                 [ToolTip("Displays stint time remaining and the suggested amount of fuel to the end of the stint or the session.")]
                 public bool StintInfo { get; set; } = true;
+
+                [ToolTip("When viewing the setup menu it will still display the HUD.\nOverriding the default.")]
+                public bool ShowInSetup { get; set; } = false;
             }
 
             [ConfigGrouping("Colors", "Adjust colors for the fuel bar.")]
@@ -75,6 +78,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayFuelInfo
 
             if (!_config.InfoPanel.FuelTime)
                 this.Height -= _infoPanel.FontHeight;
+        }
+
+        public sealed override bool ShouldRender()
+        {
+            if (_config.InfoPanel.ShowInSetup && pageGraphics.IsSetupMenuVisible)
+                return true;
+
+            return base.ShouldRender();
         }
 
         public sealed override void Render(Graphics g)

@@ -12,7 +12,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayEcuMapInfo
         private const int PanelWidth = 270;
         private readonly InfoPanel _panel = new InfoPanel(10, PanelWidth);
 
-        private EcuMapConfiguration _config = new EcuMapConfiguration();
+        private readonly EcuMapConfiguration _config = new EcuMapConfiguration();
         private sealed class EcuMapConfiguration : OverlayConfiguration
         {
             [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
@@ -57,7 +57,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayEcuMapInfo
             {
                 _panel.AddLine("Car", "Not supported");
                 _panel.AddLine("Model", pageStatic.CarModel);
-                _panel.AddLine("Condition", "");
                 _panel.AddLine("Map", $"{pageGraphics.EngineMap + 1}");
             }
 

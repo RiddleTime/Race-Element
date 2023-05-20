@@ -37,7 +37,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
 
                 [ToolTip("Defines the amount of decimals for the tyre pressure text.")]
                 [IntRange(1, 2, 1)]
-                public int Decimals { get; set; } = 1;
+                public int Decimals { get; set; } = 2;
             }
 
             public TyreInfoConfig()

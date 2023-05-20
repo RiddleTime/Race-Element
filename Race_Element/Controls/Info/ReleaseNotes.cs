@@ -6,6 +6,10 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.1.9.6", "- Reset tyre pressure loss in free practice sessions when visiting the setup screen in-game."+
+                        "\n- Fuel Info HUD: Added option to show the hud when viewing the setup screen in-game."+
+                        "\n- Tyre Info HUD: Set default amount of decimals to 2."+
+                        "\n- Data Tab: Now opens current month automatically in the tree view."},
             {"0.1.9.4", "- Race Element GUI: Set Default Window Opacity to 100%, now only transparent whilst dragging."+
                         "\n- You can now drag and drop setups from the web directly ontop of race element(for example from discord). It will download it for you and show it in the importer."+
                         "\n- Lap Info HUD: removed lap delta bar as there is a lap delta HUD."},

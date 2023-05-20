@@ -5,7 +5,6 @@ using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
-using System.IO;
 using RaceElement.Util.SystemExtensions;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
@@ -18,6 +17,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
         private readonly DamageConfiguration _config = new DamageConfiguration();
         private sealed class DamageConfiguration : OverlayConfiguration
         {
+            public DamageConfiguration() => AllowRescale = true;
+
             [ConfigGrouping("Damage", "Changes the behavior of the Damage HUD")]
             public DamageGrouping Damage { get; set; } = new DamageGrouping();
             public class DamageGrouping
@@ -27,11 +28,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
 
                 [ToolTip("Only show the HUD when there is actual damage on the car.")]
                 public bool AutoHide { get; set; } = true;
-            }
-
-            public DamageConfiguration()
-            {
-                AllowRescale = true;
             }
         }
 
@@ -64,20 +60,20 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
 
         public DamageOverlay(Rectangle rectangle) : base(rectangle, "Damage")
         {
-            this.RefreshRateHz = 1;
-
-            this.Width = OriginalWidth;
-            this.Height = OriginalHeight;
+            Width = OriginalWidth;
+            Height = OriginalHeight;
+            RefreshRateHz = 1;
         }
 
         public override void BeforeStart()
         {
+            int scaledWidth = (int)(this.Width * this.Scale) - 1;
+            int scaledHeight = (int)(this.Height * this.Scale) - 1;
+
             _font = FontUtil.FontSegoeMono(11 * this.Scale);
 
             CreatePathShapes();
 
-            int scaledWidth = (int)(this.Width * this.Scale) - 1;
-            int scaledHeight = (int)(this.Height * this.Scale) - 1;
             _carOutline = new CachedBitmap(scaledWidth, scaledHeight, g =>
             {
                 float horizontalPadding = scaledWidth * 0.05f;

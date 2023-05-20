@@ -100,6 +100,8 @@ namespace RaceElement.Controls
                 {
                     localRaceWeekends.Items.Clear();
 
+                    DateTime now = DateTime.Now;
+
                     Thickness itemThickness = new Thickness(2, 5, 2, 5);
                     foreach (var yearGroup in yearGroupings)
                     {
@@ -109,6 +111,9 @@ namespace RaceElement.Controls
                             Cursor = Cursors.Hand,
                             Padding = itemThickness,
                         };
+                        if (yearGroup.Key == now.Year)
+                            yearItem.IsExpanded = true;
+
                         localRaceWeekends.Items.Add(yearItem);
 
                         var monthGroupings = yearGroup.GroupBy(x => x.CreationTimeUtc.Month);
@@ -120,6 +125,8 @@ namespace RaceElement.Controls
                                 Cursor = Cursors.Hand,
                                 Padding = itemThickness,
                             };
+                            if (yearItem.IsExpanded && monthGroup.Key == now.Month)
+                                monthItem.IsExpanded = true;
                             yearItem.Items.Add(monthItem);
 
                             foreach (var file in monthGroup.OrderByDescending(x => x.CreationTimeUtc))

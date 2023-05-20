@@ -69,9 +69,17 @@ namespace RaceElement.Data.ACC.Tyres
                         CheckTyreSetChange(currentTyreSetIndex);
                         CheckWetTyreSetChange(graphicsPage);
 
-                        _isInPitLane = graphicsPage.IsInPitLane;
-                        if (!_isInPitLane)
-                            UpdatePressureLosses(currentReading);
+                        if (graphicsPage.IsSetupMenuVisible)
+                        {
+                            ResetPressureLosses();
+                            SendTyresInfoUpdate();
+                        }
+                        else
+                        {
+                            _isInPitLane = graphicsPage.IsInPitLane;
+                            if (!_isInPitLane)
+                                UpdatePressureLosses(currentReading);
+                        }
 
                         _lastPressureReading = currentReading;
                     }
@@ -144,7 +152,7 @@ namespace RaceElement.Data.ACC.Tyres
             if (!hasTyreSetChanged)
                 return;
 
-            Debug.WriteLine($"TyresTracker: Tyre set has changed from [{_lastTyreSetIndexValue.ToString()}] to [{currentTyreSetIndex.ToString()}]");
+            Debug.WriteLine($"TyresTracker: Tyre set has changed from [{_lastTyreSetIndexValue}] to [{currentTyreSetIndex}]");
 
             ResetPressureLosses();
             SendTyresInfoUpdate();
