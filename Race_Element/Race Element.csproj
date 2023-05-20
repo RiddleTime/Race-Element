@@ -154,8 +154,8 @@
     <PackageReference Include="Quartz" Version="3.6.2" />
     <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.6.2" />
     <PackageReference Include="Quartz.Extensions.Hosting" Version="3.6.2" />
-    <PackageReference Include="ScottPlot" Version="4.1.63" />
-    <PackageReference Include="ScottPlot.WPF" Version="4.1.63" />
+    <PackageReference Include="ScottPlot" Version="4.1.64" />
+    <PackageReference Include="ScottPlot.WPF" Version="4.1.64" />
     <PackageReference Include="SharpCompress" Version="0.33.0" />
     <PackageReference Include="SLOBSharp" Version="1.1.4" />
     <PackageReference Include="System.AppContext" Version="4.3.0" />
