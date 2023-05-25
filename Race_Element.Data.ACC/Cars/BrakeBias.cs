@@ -42,6 +42,7 @@ namespace RaceElement.Data.ACC.Cars
             {"lexus_rc_f_gt3", -14},
             {"mclaren_650s_gt3", -17},
             {"mclaren_720s_gt3", -17},
+            {"mclaren_720s_gt3_evo", -17},
             {"mercedes_amg_gt3", -14},
             {"mercedes_amg_gt3_evo", -14},
             {"nissan_gt_r_gt3_2017", -15},

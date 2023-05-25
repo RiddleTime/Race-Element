@@ -523,7 +523,6 @@ namespace RaceElement
             [Obsolete]
             public int AbsInAction;
 
-            //[Obsolete]
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] SuspensionDamage;
 
