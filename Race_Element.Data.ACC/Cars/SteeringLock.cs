@@ -27,7 +27,7 @@ namespace RaceElement.Data.ACC.Cars
             {"bmw_m4_gt3", 516},
             {"bmw_m6_gt3", 566},
             {"jaguar_g3", 720},
-            {"ferrari_296_gt3", 400 },
+            {"ferrari_296_gt3", 800 },
             {"ferrari_488_gt3", 480},
             {"ferrari_488_gt3_evo", 480},
             {"honda_nsx_gt3", 620},
