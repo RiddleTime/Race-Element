@@ -133,6 +133,7 @@
     <Compile Include="Session\RaceSessionTracker.cs" />
     <Compile Include="Session\RaceSessionState.cs" />
     <Compile Include="Session\SessionTimeTracker.cs" />
+    <Compile Include="SetupParser\Cars\GT3\Mclaren720sEvoGT3.cs" />
     <Compile Include="Tracker\BroadcastTracker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SetupParser\Cars\GT3\AMRV12VantageGT3.cs" />
