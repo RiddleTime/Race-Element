@@ -7,7 +7,7 @@ namespace RaceElement.Controls
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
             {"0.1.9.8", "- Steering Locks: Added McLaren 720s Evo GT3 and updated Ferrari 296 GT3."+
-                        "\n- Setup Viewer: Added supprot for new McLaren 720s Evo GT3."},
+                        "\n- Setup Viewer: Added support for new McLaren 720s Evo GT3."},
             {"0.1.9.6", "- Reset tyre pressure loss in free practice sessions when visiting the setup screen in-game."+
                         "\n- Fuel Info HUD: Added option to show the hud when viewing the setup screen in-game."+
                         "\n- Tyre Info HUD: Set default amount of decimals to 2."+
