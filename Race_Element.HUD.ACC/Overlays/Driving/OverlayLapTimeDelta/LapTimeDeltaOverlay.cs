@@ -138,7 +138,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
 
             int x = _config.Bar.Width / 2;
             int y = _config.Bar.Height + 2;
-            DrawTextWithOutline(g, Color.White, currentDelta, x, y);
+            DrawTextWithOutline(g, pageGraphics.IsValidLap ? Color.White : Color.Red, currentDelta, x, y);
         }
 
         private void DrawTextWithOutline(Graphics g, Color textColor, string text, int x, int y)

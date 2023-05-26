@@ -6,6 +6,7 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.2.0.2", "- Laptime Delta HUD: text turns red on invalidated lap." },
             {"0.2.0.0", "- Fix 296 GT3 steering, now 800." },
             {"0.1.9.8", "- Steering Locks: Added McLaren 720s Evo GT3 and updated Ferrari 296 GT3."+
                         "\n- Setup Viewer: Added support for new McLaren 720s Evo GT3."},
