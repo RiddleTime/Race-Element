@@ -99,10 +99,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
             float delta = (float)pageGraphics.DeltaLapTimeMillis / 1000;
             delta.Clip(-_config.Delta.MaxDelta, _config.Delta.MaxDelta);
 
+            float halfBarWidth = _config.Bar.Width / 2f;
+
             if (delta > 0)
             {
                 float fillPercent = delta / _config.Delta.MaxDelta;
-                float halfBarWidth = _config.Bar.Width / 2f;
                 float drawWidth = halfBarWidth * fillPercent;
                 drawWidth.ClipMin(1);
 
@@ -113,7 +114,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
             if (delta < 0)
             {
                 float fillPercent = delta / -_config.Delta.MaxDelta;
-                float halfBarWidth = _config.Bar.Width / 2f;
                 float drawWidth = halfBarWidth * fillPercent;
                 drawWidth.ClipMin(1);
 
