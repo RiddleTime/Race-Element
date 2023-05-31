@@ -97,13 +97,23 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
             int wheelSize = _config.Shape.WheelSize;
             int gap = 8;
 
-            DrawWheelSlip(g, baseX + 0, baseY + 0, wheelSize, Wheel.FrontLeft);
-            DrawWheelSlip(g, baseX + wheelSize + gap, baseY + 0, wheelSize, Wheel.FrontRight);
-            DrawWheelSlip(g, baseX + 0, baseY + wheelSize + gap, wheelSize, Wheel.RearLeft);
-            DrawWheelSlip(g, baseX + wheelSize + gap, baseY + wheelSize + gap, wheelSize, Wheel.RearRight);
+            float slipRatioFront = (pagePhysics.WheelSlip[(int)Wheel.FrontLeft] + pagePhysics.WheelSlip[(int)Wheel.FrontRight]) / 2;
+            float slipRatioRear = (pagePhysics.WheelSlip[(int)Wheel.RearLeft] + pagePhysics.WheelSlip[(int)Wheel.RearRight]) / 2;
+
+            bool isUnderSteering = slipRatioFront > slipRatioRear + 0.3;
+            bool isOverSteering = slipRatioRear > slipRatioFront + 0.3;
+
+            Color oversteer = Color.FromArgb(185, 255, 0, 0);
+            Color understeer = Color.FromArgb(185, 0, 0, 255);
+            Color neutral = Color.FromArgb(185, 255, 255, 255);
+
+            DrawWheelSlip(g, baseX + 0, baseY + 0, wheelSize, Wheel.FrontLeft, isUnderSteering ? understeer : neutral);
+            DrawWheelSlip(g, baseX + wheelSize + gap, baseY + 0, wheelSize, Wheel.FrontRight, isUnderSteering ? understeer : neutral);
+            DrawWheelSlip(g, baseX + 0, baseY + wheelSize + gap, wheelSize, Wheel.RearLeft, isOverSteering ? oversteer : neutral);
+            DrawWheelSlip(g, baseX + wheelSize + gap, baseY + wheelSize + gap, wheelSize, Wheel.RearRight, isOverSteering ? oversteer : neutral);
         }
 
-        private void DrawWheelSlip(Graphics g, int x, int y, int size, Wheel wheel)
+        private void DrawWheelSlip(Graphics g, int x, int y, int size, Wheel wheel, Color color)
         {
             var wheelRect = new Rectangle(x, y, size, size);
 
@@ -124,7 +134,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
             using GraphicsPath gradientPath = new GraphicsPath();
             gradientPath.AddEllipse(wheelRect);
             using PathGradientBrush pthGrBrush = new PathGradientBrush(gradientPath);
-            pthGrBrush.CenterColor = Color.FromArgb(185, 255, 0, 0);
+            pthGrBrush.CenterColor = color;
             pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(40, 0, 0, 0) };
 
             g.FillEllipse(pthGrBrush, centerX, centerY, size / 2 * percentage / 100);
