@@ -269,7 +269,7 @@ Description = "(BETA) A table representing a leaderboard.")]
                             }
                         }
 
-                        firstRow[3] = $"L{kv.Value.RealtimeCarUpdate.Laps} | ";
+                        firstRow[3] = $"L{kv.Value.RealtimeCarUpdate.Laps + 1} | ";
 
                         if (Tracks.Any())
                         {
@@ -408,7 +408,7 @@ Description = "(BETA) A table representing a leaderboard.")]
                                         if (b.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane || b.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.NONE)
                                             bSpline = 0;
 
-                                  
+
 
                                         var aLaps = a.Value.RealtimeCarUpdate.Laps;
                                         var bLaps = b.Value.RealtimeCarUpdate.Laps;

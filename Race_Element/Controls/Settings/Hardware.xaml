@@ -7,7 +7,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center">
             <Label HorizontalContentAlignment="Center" FontWeight="Bold" FontSize="18">Automatic Steering Hard Lock</Label>
             <TextBlock TextAlignment="Left">
                 In ACC, set the steering rotation in-game to 10.<LineBreak/>
@@ -23,6 +27,22 @@
                 <Label VerticalAlignment="Center">Enable Automatic Steering Hard Lock</Label>
             </StackPanel>
             <Button x:Name="buttonCheckSteeringLockSupport" Margin="0,5,0,0">Check whether wheelbase is supported</Button>
+
+
         </StackPanel>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" FontSize="16" Content="All Steering locks, Lock to Lock. (when your hardware is not supported)"/>
+
+            <ScrollViewer Grid.Row="1">
+                <StackPanel x:Name="stackerAllLocks">
+
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </UserControl>
