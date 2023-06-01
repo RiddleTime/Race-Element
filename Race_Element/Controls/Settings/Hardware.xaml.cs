@@ -4,6 +4,11 @@ using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using RaceElement.Data.ACC.Cars;
+using static RaceElement.Data.ConversionFactory;
+using SharpCompress;
+using RaceElement.Data;
+using System.Linq;
 
 namespace RaceElement.Controls
 {
@@ -22,7 +27,11 @@ namespace RaceElement.Controls
             buttonCheckSteeringLockSupport.Click += ButtonCheckSteeringLockSupport_Click;
 
             _hardwareSettings = new HardwareSettings();
-            this.Loaded += (s, e) => LoadSettings();
+            this.Loaded += (s, e) =>
+            {
+                PopulateSteeringLocks();
+                LoadSettings();
+            };
         }
 
         private void ButtonCheckSteeringLockSupport_Click(object sender, RoutedEventArgs e)
@@ -57,6 +66,30 @@ namespace RaceElement.Controls
             SteeringLockTracker.Instance.StartTracking();
             TitleBar.Instance.SetIcons(TitleBar.ActivatedIcons.AutomaticSteeringHardLock, true);
             //MainWindow.Instance.EnqueueSnackbarMessage("Enabled automatic hardware steering lock.");
+        }
+
+        private void PopulateSteeringLocks()
+        {
+            stackerAllLocks.Children.Clear();
+
+            CarModels[] carModels = (CarModels[])Enum.GetValues(typeof(CarModels));
+            carModels.ForEach(carModel =>
+            {
+                var search = ConversionFactory.ParseNames.Where(x => x.Value == carModel);
+                if (search.Any())
+                {
+                    int lockToLock = SteeringLock.Get(search.First().Key);
+                    string carName = ConversionFactory.GetNameFromCarModel(carModel);
+
+                    Label label = new Label()
+                    {
+                        Content = $"{lockToLock} - {carName}",
+                    };
+                    stackerAllLocks.Children.Add(label);
+                }
+
+
+            });
         }
 
         private void LoadSettings()
