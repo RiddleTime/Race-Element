@@ -25,6 +25,10 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
                 [ToolTip("Adjust maximum amount of wheel slip displayed.")]
                 [FloatRange(0.5f, 10f, 0.1f, 1)]
                 public float MaxSlipAmount { get; set; } = 2f;
+
+                [ToolTip("Adjust the amount of slip required to show either over or understeer colors.\nThis is blue for understeer and red for oversteer.")]
+                [FloatRange(0.1f, 1.5f, 0.1f, 1)]
+                public float IndicatorOffset { get; set; } = 0.3f;
             }
 
             [ConfigGrouping("Shape", "Adjust the shape.")]
@@ -100,8 +104,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
             float slipRatioFront = (pagePhysics.WheelSlip[(int)Wheel.FrontLeft] + pagePhysics.WheelSlip[(int)Wheel.FrontRight]) / 2;
             float slipRatioRear = (pagePhysics.WheelSlip[(int)Wheel.RearLeft] + pagePhysics.WheelSlip[(int)Wheel.RearRight]) / 2;
 
-            bool isUnderSteering = slipRatioFront > slipRatioRear + 0.3;
-            bool isOverSteering = slipRatioRear > slipRatioFront + 0.3;
+            bool isUnderSteering = slipRatioFront > slipRatioRear + _config.Data.IndicatorOffset;
+            bool isOverSteering = slipRatioRear > slipRatioFront + _config.Data.IndicatorOffset;
 
             Color oversteer = Color.FromArgb(185, 255, 0, 0);
             Color understeer = Color.FromArgb(185, 0, 0, 255);
