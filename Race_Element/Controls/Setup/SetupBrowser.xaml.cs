@@ -324,7 +324,7 @@ namespace RaceElement.Controls
             {
                 FileInfo file = (FileInfo)button.DataContext;
 
-                SetupImporter.Instance.Open(file.FullName, true);
+                SetupImporter.Instance.Open(file.FullName, true, true);
 
                 (button.Parent as ContextMenu).IsOpen = false;
             }
