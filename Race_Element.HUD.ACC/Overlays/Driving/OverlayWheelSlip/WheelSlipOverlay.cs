@@ -10,7 +10,7 @@ using static RaceElement.Data.SetupConverter;
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
 {
     [Overlay(Name = "Wheel Slip",
-        Description = "Shows wheel slip angle and amount of each tyre.",
+        Description = "Shows wheel slip angle and ratio of each tyre.",
         OverlayCategory = OverlayCategory.Physics,
         OverlayType = OverlayType.Release)]
     internal sealed class WheelSlipOverlay : AbstractOverlay
@@ -26,8 +26,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
                 [FloatRange(0.5f, 10f, 0.1f, 1)]
                 public float MaxSlipAmount { get; set; } = 2f;
 
-                [ToolTip("Adjust the amount of slip required to show either over or understeer colors.\nThis is blue for understeer and red for oversteer.")]
-                [FloatRange(0.1f, 1.5f, 0.1f, 1)]
+                [ToolTip("Adjust the amount of slip ratio offset required to show either over or understeer colors.\nThis is blue for understeer and red for oversteer.")]
+                [FloatRange(0.1f, 1.5f, 0.02f, 2)]
                 public float IndicatorOffset { get; set; } = 0.3f;
             }
 
