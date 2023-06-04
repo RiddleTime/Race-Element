@@ -6,6 +6,8 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.2.0.4", "- Wheel Slip HUD: Better fidelity between US and OS."+
+                        "\n- Setup Tab: Copy to other track now uses multi-select."},
             {"0.2.0.2", "- Laptime Delta HUD: text turns red on invalidated lap."+
                         "\n- All steering locks are now displayed in the Settings -> Hardware tab."+
                         "\n- Wheel Slip HUD: Add slip offset to configuration, this allows you to configure the amount of over/under-steer before colors indicate either of them."},
