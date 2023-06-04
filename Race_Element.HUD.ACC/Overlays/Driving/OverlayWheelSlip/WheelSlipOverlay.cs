@@ -48,7 +48,6 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
         }
 
         private CachedBitmap _cachedCircleBackground;
-        private Brush _wheelBrush;
         private Pen _wheelPen;
 
         public WheelSlipOverlay(Rectangle rectangle) : base(rectangle, "Wheel Slip")
@@ -64,7 +63,6 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
 
         public override void BeforeStart()
         {
-            _wheelBrush = new SolidBrush(Color.FromArgb(175, Color.Red));
             _wheelPen = new Pen(Brushes.White, 4);
 
             int scaledRadius = (int)(_config.Shape.WheelSize * Scale);
@@ -94,7 +92,6 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
         public override void BeforeStop()
         {
             _cachedCircleBackground?.Dispose();
-            _wheelBrush?.Dispose();
             _wheelPen?.Dispose();
         }
 
