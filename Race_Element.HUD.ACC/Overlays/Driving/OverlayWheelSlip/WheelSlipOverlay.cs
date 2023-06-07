@@ -22,15 +22,15 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
             public DataGrouping Data { get; set; } = new DataGrouping();
             public sealed class DataGrouping
             {
-                [ToolTip("Adjust maximum amount of wheel slip displayed.")]
-                [FloatRange(0.5f, 10f, 0.1f, 1)]
-                public float MaxSlipAmount { get; set; } = 2f;
+                [ToolTip("Adjust maximum ratio of wheel slip displayed over all 4 wheels.")]
+                [FloatRange(0.5f, 10f, 0.1f, 2)]
+                public float MaxSlipRatio { get; set; } = 2f;
 
-                [ToolTip("Adjust the amount of slip ratio offset required to show understeer color on the fronts.")]
+                [ToolTip("Adjust the amount of slip ratio offset required to show understeer color on the front wheels.")]
                 [FloatRange(0.1f, 1.5f, 0.02f, 2)]
                 public float UndersteerOffset { get; set; } = 0.3f;
 
-                [ToolTip("Adjust the amount of slip ratio offset required to show oversteer color on the rears.")]
+                [ToolTip("Adjust the amount of slip ratio offset required to show oversteer color on the rear wheels.")]
                 [FloatRange(0.1f, 1.5f, 0.02f, 2)]
                 public float OversteerOffset { get; set; } = 0.3f;
             }
@@ -129,9 +129,9 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
 
             // draw wheel specific slip based on outline size
             float wheelSlip = pagePhysics.WheelSlip[(int)wheel];
-            wheelSlip.ClipMax(_config.Data.MaxSlipAmount);
+            wheelSlip.ClipMax(_config.Data.MaxSlipRatio);
 
-            float percentage = (float)wheelSlip * 100 / _config.Data.MaxSlipAmount;
+            float percentage = wheelSlip * 100 / _config.Data.MaxSlipRatio;
             percentage.ClipMax(100);
             int centerX = x + size / 2;
             int centerY = y + size / 2;
