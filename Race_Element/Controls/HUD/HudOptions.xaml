@@ -120,12 +120,12 @@
         </Grid>
 
 
-        <materialDesign:TransitioningContent x:Name="cardOverlayConfig"  Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Visibility="Hidden">
+        <materialDesign:TransitioningContent x:Name="cardOverlayConfig" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Visibility="Hidden">
             <materialDesign:TransitioningContent.OpeningEffects>
-                <materialDesign:TransitionEffect Kind="FadeIn" />
+                <materialDesign:TransitionEffect Kind="ExpandIn"/>
             </materialDesign:TransitioningContent.OpeningEffects>
 
-            <materialDesign:Card Margin="5,0,2,0" >
+            <materialDesign:Card Margin="5,0,2,0">
                 <Grid Background="#65101010">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="260"/>
