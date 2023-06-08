@@ -20,6 +20,7 @@
     <StackPanel Orientation="Vertical">
         <StackPanel Orientation="Vertical">
             <Button x:Name="buttonCancel" Panel.ZIndex="99" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,-100">Cancel</Button>
+            <Button x:Name="buttonImportMulti" Panel.ZIndex="99" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150,0,0,0" Width="100" Foreground="White">Import</Button>
             <TextBlock HorizontalAlignment="Center" Style="{StaticResource MaterialDesignHeadline5TextBlock}" FontWeight="Bold">Setup Importer</TextBlock>
             <TextBlock x:Name="textBlockSetupName" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignHeadline6TextBlock}" FontWeight="Light"></TextBlock>
         </StackPanel>

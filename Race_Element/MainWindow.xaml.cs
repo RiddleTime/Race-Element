@@ -143,7 +143,7 @@ namespace RaceElement
 
                 if (droppedItem.EndsWith(".json"))
                 {
-                    if (SetupImporter.Instance.Open(droppedItem))
+                    if (SetupImporter.Instance.Open(droppedItem, false))
                     {
                         tabSetups.Focus();
                         e.Handled = true;
