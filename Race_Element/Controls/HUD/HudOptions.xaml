@@ -122,7 +122,6 @@
 
         <materialDesign:TransitioningContent x:Name="cardOverlayConfig" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Visibility="Hidden">
             <materialDesign:TransitioningContent.OpeningEffects>
-                <materialDesign:TransitionEffect Kind="ExpandIn"/>
             </materialDesign:TransitioningContent.OpeningEffects>
 
             <materialDesign:Card Margin="5,0,2,0">
