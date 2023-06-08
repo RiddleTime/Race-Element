@@ -8,6 +8,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -39,8 +40,17 @@ namespace RaceElement.Controls
                 MainWindow.Instance.EnqueueSnackbarMessage($"Importing setups, please wait...");
                 if (listViewTracks.SelectedItems.Count > 0 && listViewTracks.SelectionMode == SelectionMode.Multiple)
                 {
+                    StringBuilder sb = new StringBuilder();
+
                     foreach (ListViewItem selectedItem in listViewTracks.SelectedItems)
-                        Import((string)selectedItem.DataContext);
+                    {
+                        Import((string)selectedItem.DataContext, false);
+                        sb.Append($", {Tracks[(string)selectedItem.DataContext].FullName}");
+                    }
+
+                    CarModels model = ConversionFactory.ParseCarName(_currentSetup.CarName);
+                    string modelName = ConversionFactory.GetNameFromCarModel(model);
+                    MainWindow.Instance.EnqueueSnackbarMessage($"Imported setup \"{_setupName}\" for {modelName} at{sb}");
 
                     SetupBrowser.Instance.FetchAllSetups();
 
@@ -68,7 +78,7 @@ namespace RaceElement.Controls
                 if (listViewTracks.SelectionMode == SelectionMode.Single)
                     trackItem.MouseLeftButtonUp += (s, e) =>
                     {
-                        Import(kv.Key);
+                        Import(kv.Key, true);
 
                         SetupBrowser.Instance.FetchAllSetups();
 
@@ -80,7 +90,7 @@ namespace RaceElement.Controls
         }
 
 
-        private void Import(string track)
+        private void Import(string track, bool displayMessage)
         {
             CarModels model = ConversionFactory.ParseCarName(_currentSetup.CarName);
             string modelName = ConversionFactory.GetNameFromCarModel(model);
@@ -101,7 +111,8 @@ namespace RaceElement.Controls
             if (originalFile.Exists)
                 originalFile.CopyTo(targetFile.FullName);
 
-            MainWindow.Instance.EnqueueSnackbarMessage($"Imported setup \"{_setupName}\" for {modelName} at {Tracks[track].FullName}");
+            if (displayMessage)
+                MainWindow.Instance.EnqueueSnackbarMessage($"Imported setup \"{_setupName}\" for {modelName} at {Tracks[track].FullName}");
         }
 
         public bool Open(string setupFile, bool selectMultipleTracks, bool showTrack = false)
