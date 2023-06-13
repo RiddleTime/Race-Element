@@ -32,6 +32,19 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             public int RefreshRate { get; set; } = 50;
         }
 
+        [ConfigGrouping("Upshift Percentages", "Adjust the percentage when the colors change.")]
+        public UpshiftGrouping Upshift { get; set; } = new UpshiftGrouping();
+        public class UpshiftGrouping
+        {
+            [ToolTip("Sets the percentage of max rpm required to activate the early upshift color")]
+            [FloatRange(80.0f, 94.0f, 0.02f, 2)]
+            public float Early { get; set; } = 94.0f;
+
+            [ToolTip("Sets the percentage of max rpm required to activate the upshift color")]
+            [FloatRange(94.5f, 99.5f, 0.02f, 2)]
+            public float Upshift { get; set; } = 97.3f;
+        }
+
         [ConfigGrouping("Colors", "Adjust the colors used in the shift bar")]
         public ColorsGrouping Colors { get; set; } = new ColorsGrouping();
         public class ColorsGrouping

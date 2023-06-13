@@ -51,8 +51,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             _colors = new List<(float, Color)>
                 {
                     (0.7f, Color.FromArgb(_config.Colors.NormalOpacity, _config.Colors.NormalColor)),
-                    (0.94f, Color.FromArgb(_config.Colors.EarlyOpacity, _config.Colors.EarlyColor)),
-                    (0.973f, Color.FromArgb(_config.Colors.UpshiftOpacity, _config.Colors.UpshiftColor))
+                    (_config.Upshift.Early / 100f, Color.FromArgb(_config.Colors.EarlyOpacity, _config.Colors.EarlyColor)),
+                    (_config.Upshift.Upshift / 100f, Color.FromArgb(_config.Colors.UpshiftOpacity, _config.Colors.UpshiftColor))
                 };
 
             _cachedColorBars = new List<CachedBitmap>();
