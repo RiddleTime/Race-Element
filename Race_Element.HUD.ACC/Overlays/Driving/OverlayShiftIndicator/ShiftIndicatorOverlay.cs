@@ -47,6 +47,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
         {
             int maxRpm = ACCSharedMemory.Instance.ReadStaticPageFile().MaxRpm;
             if (maxRpm == 0) maxRpm = 9250; // porsche 911 max rpm..
+            pagePhysics.Rpms = (int)(maxRpm * 0.9f);
             if (maxRpm > 0)
             {
                 pageStatic.MaxRpm = maxRpm;
@@ -145,8 +146,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             if (_config.Bar.ShowRpmText)
                 DrawRpmText(g);
 
+
+            // draw calculated early and upshift rpm, this gets activated by the SetupPreviewData() override. (Used in GUI only).
             if (_drawShiftRPM)
-            {
+            {       
                 int x = (int)((_halfRpmStringWidth + 8) + _halfRpmStringWidth * 2 + 5);
                 int y = (int)(_config.Bar.Height / 2 - _font.Height / 2.05);
                 string earlyShiftRpm = $"Early:{(_config.Upshift.Early / 100f * pageStatic.MaxRpm):F0}";
