@@ -41,7 +41,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             public float Early { get; set; } = 94.0f;
 
             [ToolTip("Sets the percentage of max rpm required to activate the upshift color")]
-            [FloatRange(94.5f, 99.5f, 0.02f, 2)]
+            [FloatRange(94.5f, 99.98f, 0.02f, 2)]
             public float Upshift { get; set; } = 97.3f;
         }
 
