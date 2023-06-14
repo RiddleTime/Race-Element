@@ -12,7 +12,7 @@ using System.Linq;
 namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 {
     [Overlay(Name = "Shift Indicator",
-        Description = "A bar showing the current RPM, optionally showing when the pit limiter is enabled.",
+        Description = "Shift Bar with RPM Text. Adjustable colors and percentages.",
         Version = 1.00,
         OverlayType = OverlayType.Release,
         OverlayCategory = OverlayCategory.Driving)]
@@ -31,11 +31,26 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
         private List<(float, Color)> _colors;
         private List<CachedBitmap> _cachedColorBars;
 
+        /// <summary>
+        /// Used to display the early and upshift RPM in text.
+        /// </summary>
+        private bool _drawShiftRPM = false;
+
         public ShiftIndicatorOverlay(Rectangle rectangle) : base(rectangle, "Shift Indicator")
         {
             this.RefreshRateHz = this._config.Bar.RefreshRate;
             this.Height = _config.Bar.Height + 1;
             this.Width = _config.Bar.Width + 1;
+        }
+
+        public override void SetupPreviewData()
+        {
+            int maxRpm = ACCSharedMemory.Instance.ReadStaticPageFile().MaxRpm;
+            if (maxRpm == 0) maxRpm = 9250; // porsche 911 max rpm..
+
+            pagePhysics.Rpms = (int)(maxRpm * 0.9f);
+            pageStatic.MaxRpm = maxRpm;
+            _drawShiftRPM = true;
         }
 
         public sealed override void BeforeStart()
@@ -51,8 +66,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             _colors = new List<(float, Color)>
                 {
                     (0.7f, Color.FromArgb(_config.Colors.NormalOpacity, _config.Colors.NormalColor)),
-                    (0.94f, Color.FromArgb(_config.Colors.EarlyOpacity, _config.Colors.EarlyColor)),
-                    (0.973f, Color.FromArgb(_config.Colors.UpshiftOpacity, _config.Colors.UpshiftColor))
+                    (_config.Upshift.Early / 100f, Color.FromArgb(_config.Colors.EarlyOpacity, _config.Colors.EarlyColor)),
+                    (_config.Upshift.Upshift / 100f, Color.FromArgb(_config.Colors.UpshiftOpacity, _config.Colors.UpshiftColor))
                 };
 
             _cachedColorBars = new List<CachedBitmap>();
@@ -128,6 +143,25 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
             if (_config.Bar.ShowRpmText)
                 DrawRpmText(g);
+
+
+            // draw calculated early and upshift rpm, this gets activated by the SetupPreviewData() override. (Used in GUI only).
+            if (_drawShiftRPM)
+            {
+                int x = (int)((_halfRpmStringWidth + 8) + _halfRpmStringWidth * 2 + 5);
+                int y = (int)(_config.Bar.Height / 2 - _font.Height / 2.05);
+                string earlyShiftRpm = $"Early:{(_config.Upshift.Early / 100f * pageStatic.MaxRpm):F0}";
+                float earlyWidth = g.MeasureString(earlyShiftRpm, _font).Width;
+                Rectangle earlyRect = new Rectangle((int)(x - earlyWidth / 5), y, (int)(earlyWidth), _font.Height);
+                DrawTextWithOutline(g, Color.White, earlyShiftRpm, x, y, earlyRect);
+
+                x += (int)(earlyWidth + 5);
+                string upshiftRpm = $"Up:{(_config.Upshift.Upshift / 100f * pageStatic.MaxRpm):F0}";
+                float upshiftWidth = g.MeasureString(upshiftRpm, _font).Width;
+                Rectangle upshiftRect = new Rectangle((int)(x - upshiftWidth / 3.5), y, (int)(upshiftWidth), _font.Height);
+                DrawTextWithOutline(g, Color.White, upshiftRpm, x, y, upshiftRect);
+            }
+
         }
 
         private int _limiterColorSwitch = 0;
@@ -151,13 +185,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
             int x = (int)((_halfRpmStringWidth + 8));
             int y = (int)(_config.Bar.Height / 2 - _font.Height / 2.05);
-            DrawTextWithOutline(g, Color.White, currentRpm, x, y);
+            Rectangle backgroundDimension = new Rectangle((int)(x - _halfRpmStringWidth), y, (int)(_halfRpmStringWidth * 2), _font.Height);
+            DrawTextWithOutline(g, Color.White, currentRpm, x, y, backgroundDimension);
         }
 
-        private void DrawTextWithOutline(Graphics g, Color textColor, string text, int x, int y)
+        private void DrawTextWithOutline(Graphics g, Color textColor, string text, int x, int y, Rectangle rect)
         {
-            Rectangle backgroundDimension = new Rectangle((int)(x - _halfRpmStringWidth), y, (int)(_halfRpmStringWidth * 2), _font.Height);
-            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), backgroundDimension, 2);
+            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), rect, 2);
             g.DrawStringWithShadow(text, _font, textColor, new PointF(x - _halfRpmStringWidth, y + _font.Height / 14f), 1.5f * this.Scale);
         }
 

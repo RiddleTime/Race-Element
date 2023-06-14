@@ -10,8 +10,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
         public class BarsGrouping
         {
             [ToolTip("Sets the Width of the shift indicator bar.")]
-            [IntRange(200, 800, 10)]
-            public int Width { get; set; } = 460;
+            [IntRange(430, 800, 10)]
+            public int Width { get; set; } = 530;
 
             [ToolTip("Sets the Height of the shift indicator bar.")]
             [IntRange(20, 50, 5)]
@@ -30,6 +30,21 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             [ToolTip("Sets the refresh rate.")]
             [IntRange(20, 70, 2)]
             public int RefreshRate { get; set; } = 50;
+        }
+
+        [ConfigGrouping("Upshift Percentages", "Adjust the Early and Upshift percentages.\n" +
+            "The displayed early and upshift RPM texts only show in the GUI.\n" +
+            "These RPMs will update if you are currently in a lobby, once you adjust any of the settings.")]
+        public UpshiftGrouping Upshift { get; set; } = new UpshiftGrouping();
+        public class UpshiftGrouping
+        {
+            [ToolTip("Sets the percentage of max rpm required to activate the early upshift color")]
+            [FloatRange(80.0f, 96.8f, 0.02f, 2)]
+            public float Early { get; set; } = 94.0f;
+
+            [ToolTip("Sets the percentage of max rpm required to activate the upshift color")]
+            [FloatRange(97f, 99.98f, 0.02f, 2)]
+            public float Upshift { get; set; } = 97.3f;
         }
 
         [ConfigGrouping("Colors", "Adjust the colors used in the shift bar")]
