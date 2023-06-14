@@ -90,13 +90,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayAccelerometer
                 Rectangle inner = new Rectangle((int)(x + (partSize * 1.5f) - partSize / 4), (int)(y + (partSize * 1.5f) - partSize / 4), (int)(size - partSize * 2 - partSize / 2), (int)(size - partSize * 2 - partSize / 2));
                 pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(225, 10, 10, 25) };
                 g.DrawArc(new Pen(pthGrBrush, partSize / 2 + 1), inner, 0, 360);
-                g.DrawArc(new Pen(Color.FromArgb(13, Color.DarkOliveGreen), partSize / 2), inner, 60, 60);
+                g.DrawArc(new Pen(Color.FromArgb(15, Color.DarkOliveGreen), partSize / 2), inner, 60, 60);
 
                 Rectangle middle = new Rectangle((int)(x + partSize - partSize / 4), (int)(y + partSize - partSize / 4), (int)(size - partSize - partSize / 2), (int)(size - partSize - partSize / 2));
                 pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(185, 10, 20, 10) };
                 g.DrawArc(new Pen(pthGrBrush, partSize / 2), middle, 0, 360);
                 g.DrawArc(new Pen(Color.FromArgb(9, Color.DarkRed), partSize / 2), middle, 250, 40);
-                g.DrawArc(new Pen(Color.FromArgb(13, Color.LimeGreen), partSize / 2), middle, 60, 60);
+                g.DrawArc(new Pen(Color.FromArgb(15, Color.LimeGreen), partSize / 2), middle, 60, 60);
 
                 Rectangle outer = new Rectangle((int)(x + partSize / 4), (int)(y + partSize / 4), (int)(size - partSize / 2), (int)(size - partSize / 2));
                 outer.X += 1;
@@ -105,7 +105,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayAccelerometer
                 outer.Height -= 2;
                 pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(225, 15, 10, 10) };
                 g.DrawArc(new Pen(pthGrBrush, partSize / 2), outer, 120, 300);
-                g.DrawArc(new Pen(Color.FromArgb(14, Color.Red), partSize / 2), outer, 250, 40);
+                g.DrawArc(new Pen(Color.FromArgb(15, Color.Red), partSize / 2), outer, 250, 40);
             });
         }
 

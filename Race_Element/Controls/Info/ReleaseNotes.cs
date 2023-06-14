@@ -7,7 +7,8 @@ namespace RaceElement.Controls
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
             {"0.2.0.6", "- Shift Indicator: Add adjustable percentages for early and upshift."+
-                        "\n........"},
+                        "\n- Accelerometer: Increased background color brightness."+
+                        "\n- Race Element: You can drag to move the app from empty places within the app."},
             {"0.2.0.4", "- Wheel Slip HUD: Better fidelity between US and OS, both can now be adjusted separately."+
                         "\n- Setup Tab: Copy to other track now uses multi-select."},
             {"0.2.0.2", "- Laptime Delta HUD: text turns red on invalidated lap."+
