@@ -33,7 +33,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
         }
 
         [ConfigGrouping("Upshift Percentages", "Adjust the Early and Upshift percentages.\n" +
-            "The displayed early and upshift RPM text values are not shown when the HUD is running.\n"+
+            "The displayed early and upshift RPM texts only show in the GUI.\n" +
             "These RPMs will update if you are currently in a lobby, once you adjust any of the settings.")]
         public UpshiftGrouping Upshift { get; set; } = new UpshiftGrouping();
         public class UpshiftGrouping

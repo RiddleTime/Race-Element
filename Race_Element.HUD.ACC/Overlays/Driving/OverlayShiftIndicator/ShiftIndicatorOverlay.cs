@@ -12,7 +12,7 @@ using System.Linq;
 namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 {
     [Overlay(Name = "Shift Indicator",
-        Description = "A bar showing the current RPM, optionally showing when the pit limiter is enabled.",
+        Description = "Shift Bar with RPM Text. Adjustable colors and percentages.",
         Version = 1.00,
         OverlayType = OverlayType.Release,
         OverlayCategory = OverlayCategory.Driving)]
@@ -47,12 +47,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
         {
             int maxRpm = ACCSharedMemory.Instance.ReadStaticPageFile().MaxRpm;
             if (maxRpm == 0) maxRpm = 9250; // porsche 911 max rpm..
+
             pagePhysics.Rpms = (int)(maxRpm * 0.9f);
-            if (maxRpm > 0)
-            {
-                pageStatic.MaxRpm = maxRpm;
-                _drawShiftRPM = true;
-            }
+            pageStatic.MaxRpm = maxRpm;
+            _drawShiftRPM = true;
         }
 
         public sealed override void BeforeStart()
@@ -149,7 +147,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
             // draw calculated early and upshift rpm, this gets activated by the SetupPreviewData() override. (Used in GUI only).
             if (_drawShiftRPM)
-            {       
+            {
                 int x = (int)((_halfRpmStringWidth + 8) + _halfRpmStringWidth * 2 + 5);
                 int y = (int)(_config.Bar.Height / 2 - _font.Height / 2.05);
                 string earlyShiftRpm = $"Early:{(_config.Upshift.Early / 100f * pageStatic.MaxRpm):F0}";
