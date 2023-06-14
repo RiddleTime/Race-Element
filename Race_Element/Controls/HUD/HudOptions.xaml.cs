@@ -372,7 +372,7 @@ namespace RaceElement.Controls
                     configStacker.IsEnabled = true;
                 }
             };
-            activationPanel.MouseLeftButtonUp += (s, e) => toggle.IsChecked = !toggle.IsChecked;
+            activationPanel.PreviewMouseLeftButtonDown += (s, e) => toggle.IsChecked = !toggle.IsChecked;
 
             if (tempOverlaySettings.Enabled)
             {
@@ -428,7 +428,7 @@ namespace RaceElement.Controls
 
             // click overlay title/description to toggle overlay
             stackerOverlayInfo.Cursor = Cursors.Hand;
-            stackerOverlayInfo.PreviewMouseUp += (s, e) =>
+            stackerOverlayInfo.PreviewMouseDown += (s, e) =>
             {
                 if (_lastOverlayStart.AddMilliseconds(200) < DateTime.Now)
                 {
