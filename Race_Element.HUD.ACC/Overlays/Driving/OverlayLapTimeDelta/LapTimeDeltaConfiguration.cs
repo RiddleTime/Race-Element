@@ -23,6 +23,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
 
             [ToolTip("Hide the Lap Delta HUD during a Race session.")]
             public bool HideForRace { get; set; } = false;
+
+            [ToolTip("Show the Lap Delta HUD when spectating.")]
+            public bool Spectator { get; set; } = true;
         }
 
         [ConfigGrouping("Bar", "Adjust bar behavior.")]
