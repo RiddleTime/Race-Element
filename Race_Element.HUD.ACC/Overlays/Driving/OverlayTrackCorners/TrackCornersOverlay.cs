@@ -10,6 +10,8 @@ using RaceElement.HUD.Overlay.OverlayUtil.InfoPanel;
 using RaceElement.Util.SystemExtensions;
 using System;
 using static RaceElement.Data.ACC.Tracks.TrackData;
+using RaceElement.Data.ACC.EntryList;
+using System.Diagnostics;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 {
@@ -30,6 +32,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
             {
                 [ToolTip("Show corner names in addition to the already displayin corner numbers.\nNot Every corner has got a name and some tracks don't have corner names at all.")]
                 public bool Names { get; set; } = true;
+
+                [ToolTip("Show the HUD when spectating.")]
+                public bool Spectator { get; set; } = true;
             }
 
             public CornerNamesConfig() => this.AllowRescale = true;
@@ -164,6 +169,14 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
             _font?.Dispose();
         }
 
+        public override bool ShouldRender()
+        {
+            if (_config.CornerNames.Spectator && broadCastRealTime.FocusedCarIndex != pageGraphics.PlayerCarID && broadCastRealTime.FocusedCarIndex > 0)
+                return true;
+
+            return base.ShouldRender();
+        }
+
         public override void Render(Graphics g)
         {
             string cornerNumber = "";
@@ -172,9 +185,26 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
             if (_currentTrack == null)
                 UpdateWidth();
 
+
+            float carPosition = pageGraphics.NormalizedCarPosition;
+
+            if (_config.CornerNames.Spectator)
+            {
+                int focusedIndex = broadCastRealTime.FocusedCarIndex;
+                if (focusedIndex != pageGraphics.PlayerCarID && focusedIndex > 0)
+                    lock (EntryListTracker.Instance.Cars)
+                    {
+                        if (EntryListTracker.Instance.Cars.Any())
+                        {
+                            var car = EntryListTracker.Instance.Cars.Where(car => car.Value.RealtimeCarUpdate.CarIndex == focusedIndex).First();
+                            carPosition = car.Value.RealtimeCarUpdate.SplinePosition;
+                        }
+                    }
+            }
+
             if (_currentTrack != null)
             {
-                (int, string) corner = _currentTrack.CornerNames.FirstOrDefault(x => x.Key.IsInRange(pageGraphics.NormalizedCarPosition)).Value;
+                (int, string) corner = _currentTrack.CornerNames.FirstOrDefault(x => x.Key.IsInRange(carPosition)).Value;
                 if (corner.Item1 > 0)
                 {
                     cornerNumber = $"{corner.Item1}";

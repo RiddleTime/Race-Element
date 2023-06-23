@@ -96,6 +96,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
                         }
 
                         _table.AddRow("Coords", new string[] { $"X: {carData.Value.RealtimeCarUpdate.WorldPosX:F3}, Y: {carData.Value.RealtimeCarUpdate.WorldPosY:F3}" });
+                        _table.AddRow("%", new string[] { $"{carData.Value.RealtimeCarUpdate.SplinePosition:F3}" });
 
                         //FieldInfo[] members = carData.Value.RealtimeCarUpdate.GetType().GetRuntimeFields().ToArray();
                         //foreach (FieldInfo member in members)
