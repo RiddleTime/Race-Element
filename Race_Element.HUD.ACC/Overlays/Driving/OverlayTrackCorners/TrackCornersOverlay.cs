@@ -171,7 +171,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 
         public override bool ShouldRender()
         {
-            if (_config.CornerNames.Spectator && broadCastRealTime.FocusedCarIndex != pageGraphics.PlayerCarID && broadCastRealTime.FocusedCarIndex > 0)
+            if (_config.CornerNames.Spectator && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
                 return true;
 
             return base.ShouldRender();
@@ -191,12 +191,12 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
             if (_config.CornerNames.Spectator)
             {
                 int focusedIndex = broadCastRealTime.FocusedCarIndex;
-                if (focusedIndex != pageGraphics.PlayerCarID && focusedIndex > 0)
+                if (RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, focusedIndex))
                     lock (EntryListTracker.Instance.Cars)
                     {
                         if (EntryListTracker.Instance.Cars.Any())
                         {
-                            var car = EntryListTracker.Instance.Cars.Where(car => car.Value.RealtimeCarUpdate.CarIndex == focusedIndex).First();
+                            var car = EntryListTracker.Instance.Cars.First(car => car.Value.RealtimeCarUpdate.CarIndex == focusedIndex);
                             carPosition = car.Value.RealtimeCarUpdate.SplinePosition;
                         }
                     }

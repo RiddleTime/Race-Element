@@ -8,5 +8,10 @@ namespace RaceElement.Data.ACC.Session
         {
             return globalRed && (phase == SessionPhase.PreSession || phase == SessionPhase.FormationLap);
         }
+
+        public static bool IsSpectating(int localPlayedIndex, int spectatingPlayerIndex)
+        {
+            return localPlayedIndex != spectatingPlayerIndex && spectatingPlayerIndex > 0;
+        }
     }
 }
