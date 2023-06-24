@@ -119,13 +119,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
                     }
             }
 
+            delta.Clip(-_config.Delta.MaxDelta, _config.Delta.MaxDelta);
+
             return delta;
         }
 
         private void DrawDeltaBar(Graphics g)
         {
             float delta = GetDelta();
-            delta.Clip(-_config.Delta.MaxDelta, _config.Delta.MaxDelta);
 
             float halfBarWidth = _config.Bar.Width / 2f;
 
@@ -154,8 +155,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
         private void DrawDeltaText(Graphics g)
         {
             float delta = GetDelta();
-            delta.Clip(-9.0f, 9.0f);
-
             string currentDelta = $"{delta.ToString($"F{_config.Delta.Decimals}")}";
             if (delta >= 0) currentDelta = "+" + currentDelta;
 
