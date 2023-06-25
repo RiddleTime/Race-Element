@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Quartz;
+using RaceElement.Controls;
 using RaceElement.HUD.ACC.Overlays.OverlayStartScreen;
 using RaceElement.Util;
 using RaceElement.Util.Settings;
@@ -32,6 +33,7 @@ namespace RaceElement
             var uiSettings = new UiSettings().Get();
 
             _startScreenOverlay = new StartScreenOverlay(new System.Drawing.Rectangle(uiSettings.X, uiSettings.Y, 150, 150));
+            _startScreenOverlay.Version = TitleBar.GetAssemblyFileVersion();
             _startScreenOverlay.Start(false);
 
             var builder = Host.CreateDefaultBuilder().ConfigureServices((cxt, services) =>

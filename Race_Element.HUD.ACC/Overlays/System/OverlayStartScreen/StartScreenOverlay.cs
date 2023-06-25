@@ -1,21 +1,32 @@
 ﻿using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
+using System.Diagnostics;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+using System.Runtime.CompilerServices;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
 {
+#if DEBUG
+    [Overlay(Name = "Start Screen",
+     Description = "Shows a start screen",
+     Version = 1.00,
+     OverlayType = OverlayType.Debug)]
+#endif
     public sealed class StartScreenOverlay : AbstractOverlay
     {
         private CachedBitmap cachedBitmap;
+
+        public string Version { get; set; }
 
         public StartScreenOverlay(Rectangle rectangle) : base(rectangle, "Start Screen")
         {
             this.X = rectangle.X;
             this.Y = rectangle.Y;
-            this.Width = 360;
+            this.Width = 320;
             this.Height = 45;
             this.RefreshRateHz = 2;
         }
@@ -32,7 +43,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
                 g.TextRenderingHint = TextRenderingHint.AntiAlias;
                 g.TextContrast = 1;
 
-                string header = "Race Element is starting";
+                string header = $"Race Element {Version}";
                 Font font16 = FontUtil.FontConthrax(16);
                 int font16Height = font16.Height;
                 int halfStringLength = (int)(g.MeasureString(header, font16).Width / 2);

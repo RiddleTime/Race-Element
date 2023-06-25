@@ -1,4 +1,6 @@
-﻿using RaceElement.HUD.Overlay.Configuration;
+﻿using RaceElement.Data.ACC.EntryList;
+using RaceElement.Data.ACC.Session;
+using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
@@ -6,6 +8,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+using System.Linq;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
 {
@@ -17,6 +20,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
         private readonly CurrentGearConfiguration _config = new CurrentGearConfiguration();
         private sealed class CurrentGearConfiguration : OverlayConfiguration
         {
+            [ConfigGrouping("Gear", "Options for the Current Gear HUD")]
+            public GearGrouping Gear { get; set; } = new GearGrouping();
+            public class GearGrouping
+            {
+                [ToolTip("Show the current gear HUD when spectating")]
+                public bool Spectator { get; set; } = true;
+            }
+
             [ConfigGrouping("Colors", "Adjust colors")]
             public ColorsGrouping Colors { get; set; } = new ColorsGrouping();
             public class ColorsGrouping
@@ -77,6 +88,35 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
                 cachedBitmap?.Dispose();
         }
 
-        public override void Render(Graphics g) => gearBitmaps[pagePhysics.Gear]?.Draw(g, InitialWidth, InitialHeight);
+        public override bool ShouldRender()
+        {
+            if (_config.Gear.Spectator && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
+                return true;
+
+            return base.ShouldRender();
+        }
+
+        private int GetCurrentGear()
+        {
+            int currentGear = pagePhysics.Gear;
+
+            if (_config.Gear.Spectator)
+            {
+                int focusedIndex = broadCastRealTime.FocusedCarIndex;
+                if (RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, focusedIndex))
+                    lock (EntryListTracker.Instance.Cars)
+                    {
+                        if (EntryListTracker.Instance.Cars.Any())
+                        {
+                            var car = EntryListTracker.Instance.Cars.First(car => car.Value.RealtimeCarUpdate.CarIndex == focusedIndex);
+                            currentGear = car.Value.RealtimeCarUpdate.Gear;
+                        }
+                    }
+            }
+
+            return currentGear;
+        }
+
+        public override void Render(Graphics g) => gearBitmaps[GetCurrentGear()]?.Draw(g, InitialWidth, InitialHeight);
     }
 }

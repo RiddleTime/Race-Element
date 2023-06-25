@@ -7,6 +7,9 @@ using RaceElement.Util.SystemExtensions;
 using RaceElement.HUD.Overlay.Util;
 using System.Drawing.Text;
 using System.Diagnostics;
+using RaceElement.Data.ACC.Session;
+using RaceElement.Data.ACC.EntryList;
+using System.Linq;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
 {
@@ -82,6 +85,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
             if (_config.Delta.HideForRace && !this.IsRepositioning && pageGraphics.SessionType == ACCSharedMemory.AcSessionType.AC_RACE)
                 return false;
 
+            if (_config.Delta.Spectator && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
+                return true;
+
             return base.ShouldRender();
         }
 
@@ -89,16 +95,36 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
         {
             _cachedBackground?.Draw(g, 0, 0, _config.Bar.Width, _config.Bar.Height);
 
-            DrawDeltaBar(g);
-
-            DrawDeltaText(g);
+            float delta = GetDelta();
+            DrawDeltaBar(g, delta);
+            DrawDeltaText(g, delta);
         }
 
-        private void DrawDeltaBar(Graphics g)
+        private float GetDelta()
         {
             float delta = (float)pageGraphics.DeltaLapTimeMillis / 1000;
+
+            if (_config.Delta.Spectator)
+            {
+                int focusedIndex = broadCastRealTime.FocusedCarIndex;
+                if (RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, focusedIndex))
+                    lock (EntryListTracker.Instance.Cars)
+                    {
+                        if (EntryListTracker.Instance.Cars.Any())
+                        {
+                            var car = EntryListTracker.Instance.Cars.First(car => car.Value.RealtimeCarUpdate.CarIndex == focusedIndex);
+                            delta = car.Value.RealtimeCarUpdate.Delta / 1000f;
+                        }
+                    }
+            }
+
             delta.Clip(-_config.Delta.MaxDelta, _config.Delta.MaxDelta);
 
+            return delta;
+        }
+
+        private void DrawDeltaBar(Graphics g, float delta)
+        {
             float halfBarWidth = _config.Bar.Width / 2f;
 
             if (delta > 0)
@@ -111,7 +137,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
                 _cachedPositiveDelta?.Draw(g, 0, 0, (int)halfBarWidth, _config.Bar.Height);
                 g.ResetClip();
             }
-            if (delta < 0)
+            else if (delta < 0)
             {
                 float fillPercent = delta / -_config.Delta.MaxDelta;
                 float drawWidth = halfBarWidth * fillPercent;
@@ -123,11 +149,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
             }
         }
 
-        private void DrawDeltaText(Graphics g)
+        private void DrawDeltaText(Graphics g, float delta)
         {
-            double delta = (double)pageGraphics.DeltaLapTimeMillis / 1000;
-            delta.Clip(-9.0, 9.0);
-
             string currentDelta = $"{delta.ToString($"F{_config.Delta.Decimals}")}";
             if (delta >= 0) currentDelta = "+" + currentDelta;
 
