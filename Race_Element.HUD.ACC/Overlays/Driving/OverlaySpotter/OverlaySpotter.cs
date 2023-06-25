@@ -102,6 +102,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                                 Distance = distance,
                             };
 
+
+                            var car = EntryListTracker.Instance.Cars.FirstOrDefault(x => x.Key == spottable.Index);
+                            if (car.Value != null)
+                                spottable.Heading = car.Value.RealtimeCarUpdate.Heading;
+
                             if (!spottables.Contains(spottable))
                                 spottables.Add(spottable);
                         }
@@ -114,15 +119,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
                 // draw spottable cars
                 int rectHeight = 18;
-                int rectWidth = 8;
+                int rectWidth = 7;
                 float centerX = Width / 2f;
                 float centerY = Height / 2f;
 
                 RectangleF localCar = new RectangleF(centerX - rectWidth / 2, centerY - rectHeight / 2, rectWidth, rectHeight);
                 g.FillRectangle(Brushes.Green, localCar);
 
-                Brush brush = Brushes.White;
-
+                Brush brush;
                 foreach (SpottableCar car in spottables)
                 {
                     float multiplier = 4f;
@@ -135,12 +139,20 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
                     RectangleF otherCar = new RectangleF(centerX - rectWidth / 2, centerY - rectHeight / 2, rectWidth, rectHeight);
                     otherCar.Offset(newX, newY);
+                    var transform = g.Transform;
+                    transform.RotateAt((float)(-(playerHeading - car.Heading) * 180 / Math.PI), new PointF(otherCar.Left + rectWidth / 2, otherCar.Top + rectHeight / 2));
 
+                    g.Transform = transform;
                     brush = Brushes.White;
-                    if (car.Distance < 15)
+                    if (car.Distance < 10)
                         brush = Brushes.Red;
 
+                    g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                     g.FillRectangle(brush, otherCar);
+
+
+
                     g.ResetTransform();
                 }
 
