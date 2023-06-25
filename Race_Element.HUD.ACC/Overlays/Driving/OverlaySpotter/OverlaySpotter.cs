@@ -88,7 +88,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
                         float distance = DistanceBetween(playerX, playerY, x, y);
 
-                        if (distance < 100)
+                        if (distance < 40)
                         {
                             var spottable = new SpottableCar()
                             {
