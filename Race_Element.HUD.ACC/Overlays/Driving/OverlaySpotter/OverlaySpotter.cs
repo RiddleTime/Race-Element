@@ -27,8 +27,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
         public SpotterOverlay(Rectangle rectangle) : base(rectangle, "Spotter")
         {
-            Width = 300;
-            Height = 300;
+            Width = 200;
+            Height = 400;
             RefreshRateHz = 10;
         }
 
@@ -52,7 +52,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
         public override void Render(Graphics g)
         {
-            g.FillRectangle(new SolidBrush(Color.FromArgb(110, Color.Black)), new Rectangle(0, 0, Width, Height));
 
             try
             {
@@ -66,8 +65,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                 float playerX = 0;
                 float playerY = 0;
                 float playerHeading = playerCar.Value.RealtimeCarUpdate.Heading;
-                float playerAngle = (float)(playerHeading * 180 / Math.PI);
-
 
                 List<SpottableCar> spottables = new List<SpottableCar>();
 
@@ -102,7 +99,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                                 Distance = distance,
                             };
 
-
                             var car = EntryListTracker.Instance.Cars.FirstOrDefault(x => x.Key == spottable.Index);
                             if (car.Value != null)
                                 spottable.Heading = car.Value.RealtimeCarUpdate.Heading;
@@ -116,31 +112,34 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                 if (!spottables.Any())
                     return;
 
+                g.FillRectangle(new SolidBrush(Color.FromArgb(110, Color.Black)), new Rectangle(0, 0, Width, Height));
+
 
                 // draw spottable cars
-                int rectHeight = 18;
-                int rectWidth = 7;
+                int rectHeight = 20;
+                int rectWidth = 8;
                 float centerX = Width / 2f;
                 float centerY = Height / 2f;
 
                 RectangleF localCar = new RectangleF(centerX - rectWidth / 2, centerY - rectHeight / 2, rectWidth, rectHeight);
-                g.FillRectangle(Brushes.Green, localCar);
+                g.FillRectangle(Brushes.LimeGreen, localCar);
+                g.DrawRectangle(Pens.White, centerX - rectWidth / 2, centerY - rectHeight / 2, rectWidth, rectHeight);
 
                 Brush brush;
                 foreach (SpottableCar car in spottables)
                 {
-                    float multiplier = 4f;
+                    float multiplier = 5f;
                     float xOffset = (playerX - car.X) * multiplier;
                     float yOffset = (playerY - car.Y) * multiplier;
 
-                    float heading = -1.5f + playerHeading;
+                    float heading = (float)(-Math.PI / 2 + playerHeading);
                     float newX = (float)(xOffset * Math.Cos(heading) + yOffset * Math.Sin(heading));
                     float newY = (float)(-xOffset * Math.Sin(heading) + yOffset * Math.Cos(heading));
 
-                    RectangleF otherCar = new RectangleF(centerX - rectWidth / 2, centerY - rectHeight / 2, rectWidth, rectHeight);
+                    RectangleF otherCar = new RectangleF(centerX - rectWidth / 2f, centerY - rectHeight / 2f, rectWidth, rectHeight);
                     otherCar.Offset(newX, newY);
                     var transform = g.Transform;
-                    transform.RotateAt((float)(-(playerHeading - car.Heading) * 180 / Math.PI), new PointF(otherCar.Left + rectWidth / 2, otherCar.Top + rectHeight / 2));
+                    transform.RotateAt((float)(-(playerHeading - car.Heading) * 180f / Math.PI), new PointF(otherCar.Left + rectWidth / 2f, otherCar.Top + rectHeight / 2f));
 
                     g.Transform = transform;
                     brush = Brushes.White;
@@ -149,9 +148,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
                     g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
                     g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
                     g.FillRectangle(brush, otherCar);
-
-
 
                     g.ResetTransform();
                 }
@@ -164,9 +162,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
         }
 
-        private float DistanceBetween(float x1, float y1, float x2, float y2)
-        {
-            return (float)Math.Sqrt(Math.Pow(x1 - x2, 2) + Math.Pow(y1 - y2, 2));
-        }
+        private float DistanceBetween(float x1, float y1, float x2, float y2) => (float)Math.Sqrt(Math.Pow(x1 - x2, 2) + Math.Pow(y1 - y2, 2));
     }
 }
