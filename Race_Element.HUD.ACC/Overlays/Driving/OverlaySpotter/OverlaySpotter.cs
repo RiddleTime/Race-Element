@@ -11,14 +11,12 @@ using System.Linq;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 {
-#if DEBUG
     [Overlay(Name = "Spotter",
         Description = "TODO (spots things?)",
         Version = 1.00,
         OverlayType = OverlayType.Release,
         OverlayCategory = OverlayCategory.Driving
     )]
-#endif
     internal sealed class SpotterOverlay : AbstractOverlay
     {
         private readonly SpotterConfiguration _config = new SpotterConfiguration();
@@ -29,8 +27,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
         public SpotterOverlay(Rectangle rectangle) : base(rectangle, "Spotter")
         {
-            Width = 200;
-            Height = 200;
+            Width = 300;
+            Height = 300;
             RefreshRateHz = 10;
         }
 
@@ -54,6 +52,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
         public override void Render(Graphics g)
         {
+            g.FillRectangle(new SolidBrush(Color.FromArgb(110, Color.Black)), new Rectangle(0, 0, Width, Height));
+
             try
             {
                 if (!EntryListTracker.Instance.Cars.Any())
@@ -71,6 +71,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
                 List<SpottableCar> spottables = new List<SpottableCar>();
 
+                // find local player id
                 for (int i = 0; i < pageGraphics.CarIds.Length; i++)
                 {
                     if (pageGraphics.CarIds[i] == playerID)
@@ -80,6 +81,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                     }
                 }
 
+                // find spottable cars
                 for (int i = 0; i < pageGraphics.CarIds.Length; i++)
                 {
                     if (pageGraphics.CarIds[i] != playerID && pageGraphics.CarIds[i] != 0)
@@ -109,19 +111,23 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                 if (!spottables.Any())
                     return;
 
-                int rectHeight = 8;
-                int rectWidth = 4;
+
+                // draw spottable cars
+                int rectHeight = 18;
+                int rectWidth = 8;
                 float centerX = Width / 2f;
                 float centerY = Height / 2f;
 
                 RectangleF localCar = new RectangleF(centerX - rectWidth / 2, centerY - rectHeight / 2, rectWidth, rectHeight);
-                g.FillRectangle(Brushes.White, localCar);
+                g.FillRectangle(Brushes.Green, localCar);
 
+                Brush brush = Brushes.White;
 
                 foreach (SpottableCar car in spottables)
                 {
-                    float xOffset = (playerX - car.X);
-                    float yOffset = (playerY - car.Y);
+                    float multiplier = 4f;
+                    float xOffset = (playerX - car.X) * multiplier;
+                    float yOffset = (playerY - car.Y) * multiplier;
 
                     float heading = -1.5f + playerHeading;
                     float newX = (float)(xOffset * Math.Cos(heading) + yOffset * Math.Sin(heading));
@@ -130,10 +136,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                     RectangleF otherCar = new RectangleF(centerX - rectWidth / 2, centerY - rectHeight / 2, rectWidth, rectHeight);
                     otherCar.Offset(newX, newY);
 
+                    brush = Brushes.White;
+                    if (car.Distance < 15)
+                        brush = Brushes.Red;
 
-                    g.FillRectangle(Brushes.Red, otherCar);
+                    g.FillRectangle(brush, otherCar);
                     g.ResetTransform();
-
                 }
 
             }
