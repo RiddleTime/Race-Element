@@ -12,7 +12,7 @@ using System.Linq;
 namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 {
     [Overlay(Name = "Spotter",
-        Description = "TODO (spots things?)",
+        Description = "Alpha! (A basic car spotter) (no rescaling for now)",
         Version = 1.00,
         OverlayType = OverlayType.Release,
         OverlayCategory = OverlayCategory.Driving
@@ -22,7 +22,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
         private readonly SpotterConfiguration _config = new SpotterConfiguration();
         private class SpotterConfiguration : OverlayConfiguration
         {
-            public SpotterConfiguration() => AllowRescale = true;
+            public SpotterConfiguration() => AllowRescale = false;
         }
 
         public SpotterOverlay(Rectangle rectangle) : base(rectangle, "Spotter")
@@ -35,7 +35,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
         public override bool ShouldRender()
         {
 
-            if (/*_config.Delta.Spectator &&*/ RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
+            if (RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
                 return true;
 
             return base.ShouldRender();
