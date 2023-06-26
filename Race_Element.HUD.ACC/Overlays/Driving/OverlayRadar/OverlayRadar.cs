@@ -21,16 +21,25 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
     internal sealed class RadarOverlay : AbstractOverlay
     {
         private readonly RadarConfiguration _config = new RadarConfiguration();
-        private class RadarConfiguration : OverlayConfiguration
+        private sealed class RadarConfiguration : OverlayConfiguration
         {
             public RadarConfiguration() => AllowRescale = true;
 
-
-            public readonly RadarGrouping Radar = new RadarGrouping();
+            [ConfigGrouping("Radar", "General options for the radar")]
+            public RadarGrouping Radar { get; set; } = new RadarGrouping();
             public class RadarGrouping
             {
                 [ToolTip("Display cars inside of the pits.")]
                 public bool ShowPitted { get; set; } = true;
+            }
+
+            [ConfigGrouping("Proximity", "Options related to proximity of other cars")]
+            public ProximityGrouping Proxmity { get; set; } = new ProximityGrouping();
+            public class ProximityGrouping
+            {
+                [ToolTip("Adjust the distance before the HUD will show.")]
+                [FloatRange(4f, 40f, 0.02f, 2)]
+                public float ShowDistance { get; set; } = 16f;
             }
         }
 
@@ -69,6 +78,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
         public override void SetupPreviewData()
         {
+            _spottables.Clear();
+
             _playerY = 0; _playerX = 0; _playerHeading = 0.12f;
 
             var car1 = new SpottableCar { Index = 2, X = 4, Y = 5.7f, Heading = -0.1f };
@@ -100,6 +111,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                 pthGrBrush.CenterColor = Color.FromArgb(220, 0, 0, 0);
                 pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(60, 0, 0, 0) };
                 g.FillRoundedRectangle(pthGrBrush, new Rectangle(0, 0, scaledWidth - 1, scaledHeight - 1), 3);
+
+                using Pen pen = new Pen(new SolidBrush(Color.FromArgb(180, Color.White)));
+                pen.DashPattern = new float[] { 2, 4 };
+                pen.Width = 2f * Scale;
+                g.DrawLine(pen, new PointF(0, scaledHeight / 2), new PointF(scaledWidth, scaledHeight / 2));
+                g.DrawLine(pen, new PointF(scaledWidth / 2, 0), new PointF(scaledWidth / 2, scaledHeight));
             });
         }
 
@@ -132,17 +149,21 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
                 //Debug.WriteLine($"{_spottables.Count}");
 
+                g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+
                 _cachedBackground?.Draw(g, Width, Height);
 
                 // draw spottable cars
                 int rectHeight = 20;
-                int rectWidth = 8;
+                int rectWidth = 10;
                 float centerX = Width / 2f;
                 float centerY = Height / 2f;
 
                 RectangleF localCar = new RectangleF(centerX - rectWidth / 2, centerY - rectHeight / 2, rectWidth, rectHeight);
-                g.FillRectangle(Brushes.LimeGreen, localCar);
-                g.DrawRectangle(Pens.White, centerX - rectWidth / 2, centerY - rectHeight / 2, rectWidth, rectHeight);
+                g.FillRoundedRectangle(Brushes.LimeGreen, new Rectangle((int)(centerX - rectWidth / 2), (int)(centerY - rectHeight / 2), rectWidth, rectHeight), 3);
+                g.DrawRoundedRectangle(Pens.Black, new Rectangle((int)(centerX - rectWidth / 2), (int)(centerY - rectHeight / 2), rectWidth, rectHeight), 3);
 
                 Brush brush;
                 foreach (SpottableCar car in _spottables)
@@ -155,8 +176,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                     float newX = (float)(xOffset * Math.Cos(heading) + yOffset * Math.Sin(heading));
                     float newY = (float)(-xOffset * Math.Sin(heading) + yOffset * Math.Cos(heading));
 
-                    RectangleF otherCar = new RectangleF(centerX - rectWidth / 2f, centerY - rectHeight / 2f, rectWidth, rectHeight);
-                    otherCar.Offset(newX, newY);
+                    Rectangle otherCar = new Rectangle((int)(centerX - rectWidth / 2f), (int)(centerY - rectHeight / 2f), rectWidth, rectHeight);
+                    otherCar.Offset((int)newX, (int)newY);
                     var transform = g.Transform;
                     transform.RotateAt((float)(-(_playerHeading - car.Heading) * 180f / Math.PI), new PointF(otherCar.Left + rectWidth / 2f, otherCar.Top + rectHeight / 2f));
 
@@ -167,10 +188,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                     else if (car.Distance < 8)
                         brush = Brushes.Yellow;
 
-                    g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-                    g.FillRectangle(brush, otherCar);
+                    g.FillRoundedRectangle(brush, otherCar, 3);
+                    g.DrawRoundedRectangle(Pens.Black, otherCar, 3);
 
                     g.ResetTransform();
                 }
@@ -196,7 +216,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
                     float distance = DistanceBetween(_playerY, _playerX, x, y);
 
-                    if (distance < 12)
+                    if (distance < _config.Proxmity.ShowDistance)
                     {
                         var spottable = new SpottableCar()
                         {
@@ -213,6 +233,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                             if (!_config.Radar.ShowPitted && car.Value.RealtimeCarUpdate.CarLocation == Broadcast.CarLocationEnum.Pitlane)
                                 continue;
                         }
+
                         if (!_spottables.Contains(spottable))
                             _spottables.Add(spottable);
                     }
