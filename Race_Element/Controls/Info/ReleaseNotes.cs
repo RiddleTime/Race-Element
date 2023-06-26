@@ -6,6 +6,8 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.2.1.2", "- Fix Current Gear HUD."+
+                        "\n- Add Spotter HUD (Alpha Version)." },
             {"0.2.1.0", "- HUD: Add spectator mode to: Track Corners, Laptime Delta and Current Gear."+
                         "\n- Startup screen now shows version number."},
             {"0.2.0.8", "- Fix HUD Activation panel behaving like a non-clickable area." },
