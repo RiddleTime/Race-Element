@@ -104,7 +104,7 @@
     <Compile Include="Overlays\Driving\OverlayShiftIndicator\ShiftIndicatorConfiguration.cs" />
     <Compile Include="Overlays\Driving\OverlayShiftIndicator\ShiftIndicatorOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlaySpeedometer\SpeedometerOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlaySpotter\OverlaySpotter.cs" />
+    <Compile Include="Overlays\Driving\OverlayRadar\OverlayRadar.cs" />
     <Compile Include="Overlays\Driving\OverlayStandings\StandingsConfiguration.cs" />
     <Compile Include="Overlays\Driving\OverlayStandings\StandingsOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayOversteerTrace\OversteerDataCollector.cs" />

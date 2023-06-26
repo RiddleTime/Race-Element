@@ -11,21 +11,21 @@ using System.Linq;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 {
-    [Overlay(Name = "Spotter",
+    [Overlay(Name = "Radar",
         Description = "Alpha! (A basic car spotter) (no rescaling for now)",
         Version = 1.00,
         OverlayType = OverlayType.Release,
         OverlayCategory = OverlayCategory.Driving
     )]
-    internal sealed class SpotterOverlay : AbstractOverlay
+    internal sealed class RadarOverlay : AbstractOverlay
     {
-        private readonly SpotterConfiguration _config = new SpotterConfiguration();
-        private class SpotterConfiguration : OverlayConfiguration
+        private readonly RadarConfiguration _config = new RadarConfiguration();
+        private class RadarConfiguration : OverlayConfiguration
         {
-            public SpotterConfiguration() => AllowRescale = false;
+            public RadarConfiguration() => AllowRescale = false;
         }
 
-        public SpotterOverlay(Rectangle rectangle) : base(rectangle, "Spotter")
+        public RadarOverlay(Rectangle rectangle) : base(rectangle, "Radar")
         {
             Width = 200;
             Height = 400;
