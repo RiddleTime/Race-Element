@@ -108,8 +108,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
                     {
                         if (EntryListTracker.Instance.Cars.Any())
                         {
-                            var car = EntryListTracker.Instance.Cars.First(car => car.Value.RealtimeCarUpdate.CarIndex == focusedIndex);
-                            currentGear = car.Value.RealtimeCarUpdate.Gear;
+                            var car = EntryListTracker.Instance.Cars.First(car => car.Key == focusedIndex);
+                            currentGear = car.Value.RealtimeCarUpdate.Gear + 2;
                         }
                     }
             }

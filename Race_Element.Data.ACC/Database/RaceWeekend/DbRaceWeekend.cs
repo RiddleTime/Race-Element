@@ -45,6 +45,7 @@ namespace RaceElement.Data.ACC.Database.RaceWeekend
 
         public static void Insert(DbRaceWeekend raceWeekend)
         {
+            if (RaceWeekendDatabase.Database == null) return;
             RaceWeekendDatabase.Database.BeginTrans();
             Collection.Insert(raceWeekend);
             RaceWeekendDatabase.Database.Commit();

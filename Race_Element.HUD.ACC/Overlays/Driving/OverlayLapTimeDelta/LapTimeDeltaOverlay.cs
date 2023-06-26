@@ -112,7 +112,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
                     {
                         if (EntryListTracker.Instance.Cars.Any())
                         {
-                            var car = EntryListTracker.Instance.Cars.First(car => car.Value.RealtimeCarUpdate.CarIndex == focusedIndex);
+                            var car = EntryListTracker.Instance.Cars.First(car => car.Key == focusedIndex);
                             delta = car.Value.RealtimeCarUpdate.Delta / 1000f;
                         }
                     }

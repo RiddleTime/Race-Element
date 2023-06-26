@@ -95,7 +95,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
                             _table.AddRow("", new string[] { carData.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.HasValue ? $"{carData.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.Value / 1000}" : "" });
                         }
 
-                        _table.AddRow("Coords", new string[] { $"X: {carData.Value.RealtimeCarUpdate.WorldPosX:F3}, Y: {carData.Value.RealtimeCarUpdate.WorldPosY:F3}" });
+                        _table.AddRow("Coords", new string[] { $"X: {carData.Value.RealtimeCarUpdate.WorldPosX * 1000:F3}, Y: {carData.Value.RealtimeCarUpdate.WorldPosY * 1000:F3}" });
                         _table.AddRow("%", new string[] { $"{carData.Value.RealtimeCarUpdate.SplinePosition:F3}" });
 
                         //FieldInfo[] members = carData.Value.RealtimeCarUpdate.GetType().GetRuntimeFields().ToArray();
