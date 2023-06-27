@@ -65,7 +65,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
         {
             Width = InitialWidth;
             Height = InitialHeight;
-            RefreshRateHz = 10;
+            RefreshRateHz = 20;
         }
 
         public override bool ShouldRender()
