@@ -105,11 +105,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
             int scaledHeight = (int)(Height * Scale);
             _cachedBackground = new CachedBitmap(scaledWidth, scaledHeight, g =>
             {
-                GraphicsPath gradientPath = new GraphicsPath();
+                using GraphicsPath gradientPath = new GraphicsPath();
                 gradientPath.AddEllipse(0, 0, (int)(InitialWidth * Scale), (int)(InitialHeight * Scale));
-                PathGradientBrush pthGrBrush = new PathGradientBrush(gradientPath);
-                pthGrBrush.CenterColor = Color.FromArgb(220, 0, 0, 0);
-                pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(60, 0, 0, 0) };
+                using PathGradientBrush pthGrBrush = new PathGradientBrush(gradientPath);
+                pthGrBrush.CenterColor = Color.FromArgb(172, 0, 0, 0);
+                pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(5, 0, 0, 0) };
                 g.FillRoundedRectangle(pthGrBrush, new Rectangle(0, 0, scaledWidth - 1, scaledHeight - 1), 3);
 
                 using Pen pen = new Pen(new SolidBrush(Color.FromArgb(180, Color.White)));
