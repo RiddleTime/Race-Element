@@ -68,29 +68,37 @@ namespace RaceElement.HUD.Overlay.OverlayUtil
             }
         }
 
-        public void Draw(Graphics g)
+        public void Draw(Graphics g, float opacity = 1f)
         {
-            Draw(g, 0, 0, Width, Height);
+            Draw(g, 0, 0, Width, Height, opacity);
         }
 
-        public void Draw(Graphics g, Point p)
+        public void Draw(Graphics g, Point p, float opacity = 1f)
         {
-            Draw(g, p.X, p.Y, Width, Height);
+            Draw(g, p.X, p.Y, Width, Height, opacity);
         }
 
-        public void Draw(Graphics g, int width, int height)
+        public void Draw(Graphics g, int width, int height, float opacity = 1f)
         {
-            Draw(g, 0, 0, width, height);
+            Draw(g, 0, 0, width, height, opacity);
         }
 
-        public void Draw(Graphics g, int x, int y, int width, int height)
+        public void Draw(Graphics g, int x, int y, int width, int height, float opacity = 1f)
         {
             if (_bitmap == null)
                 return;
 
             lock (_bitmap)
             {
-                g.DrawImage(_bitmap, x, y, width, height);
+                if (opacity != 1f)
+                {
+                    ColorMatrix colormatrix = new ColorMatrix { Matrix33 = opacity };
+                    using ImageAttributes imgAttribute = new ImageAttributes();
+                    imgAttribute.SetColorMatrix(colormatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+                    g.DrawImage(_bitmap, new Rectangle(x, y, Width, Height), 0, 0, width, height, GraphicsUnit.Pixel, imgAttribute);
+                }
+                else
+                    g.DrawImage(_bitmap, x, y, width, height);
             }
         }
 

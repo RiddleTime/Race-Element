@@ -211,7 +211,7 @@ namespace RaceElement.Data.ACC.Session
                             if (CurrentSession == null)
                                 _sessionTimeLeft = pageGraphics.SessionTimeLeft;
 
-                            Debug.WriteLine("Detected session restart.. finalizing current session");
+                            Trace.WriteLine("Detected session restart.. finalizing current session");
                             FinalizeCurrentSession();
                         }
 

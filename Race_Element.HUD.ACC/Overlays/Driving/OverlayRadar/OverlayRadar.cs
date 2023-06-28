@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Linq;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
@@ -149,11 +150,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
                 //Debug.WriteLine($"{_spottables.Count}");
 
-                g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                g.CompositingQuality = CompositingQuality.HighQuality;
+                g.SmoothingMode = SmoothingMode.AntiAlias;
 
 
-                _cachedBackground?.Draw(g, Width, Height);
+                _cachedBackground?.Draw(g, 0, 0, Width, Height, 1f);
 
                 // draw spottable cars
                 int rectHeight = 20;
@@ -242,5 +243,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
         }
 
         private float DistanceBetween(float x1, float y1, float x2, float y2) => (float)Math.Sqrt(Math.Pow(x1 - x2, 2) + Math.Pow(y1 - y2, 2));
+
     }
 }
