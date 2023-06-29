@@ -154,7 +154,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                 g.SmoothingMode = SmoothingMode.AntiAlias;
 
 
-                _cachedBackground?.Draw(g, 0, 0, Width, Height, 1f);
+                _cachedBackground?.Draw(g, 0, 0, Width, Height);
 
                 // draw spottable cars
                 int rectHeight = 20;

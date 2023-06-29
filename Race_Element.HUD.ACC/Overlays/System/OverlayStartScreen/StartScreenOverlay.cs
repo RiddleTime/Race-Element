@@ -1,12 +1,11 @@
 ﻿using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
-using System.Diagnostics;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using System.Runtime.CompilerServices;
+using Unglide;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
 {
@@ -18,9 +17,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
 #endif
     public sealed class StartScreenOverlay : AbstractOverlay
     {
-        private CachedBitmap cachedBitmap;
-
         public string Version { get; set; }
+
+        private CachedBitmap cachedBitmap;
+        private Tweener tweener;
+        private DateTime tweenStart;
 
         public StartScreenOverlay(Rectangle rectangle) : base(rectangle, "Start Screen")
         {
@@ -28,11 +29,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
             this.Y = rectangle.Y;
             this.Width = 320;
             this.Height = 45;
-            this.RefreshRateHz = 2;
+            this.RefreshRateHz = 30;
         }
 
         public override void BeforeStart()
         {
+            tweener = new Tweener();
+
             cachedBitmap = new CachedBitmap(this.Width, this.Height, g =>
             {
                 Rectangle rectangle = new Rectangle(0, 0, Width - 1, Height - 1);
@@ -55,13 +58,21 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
                 Font font11 = FontUtil.FontConthrax(11);
                 g.DrawStringWithShadow(subHeader, font11, Color.FromArgb(185, Color.White), new Point(x + 2, font16Height));
                 font11.Dispose();
-            });
+            }, opacity: 0);
+
+
+            tweener.Tween(cachedBitmap, new { Opacity = 1f }, 4).Ease(Ease.BackIn);
+            tweenStart = DateTime.Now;
         }
 
         public override void BeforeStop() => cachedBitmap?.Dispose();
 
         public override bool ShouldRender() => true;
 
-        public override void Render(Graphics g) => cachedBitmap?.Draw(g);
+        public override void Render(Graphics g)
+        {
+            tweener.Update((float)DateTime.Now.Subtract(tweenStart).TotalSeconds);
+            cachedBitmap?.Draw(g);
+        }
     }
 }
