@@ -34,8 +34,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
 
         public override void BeforeStart()
         {
-            tweener = new Tweener();
-
             _cachedBitmap = new CachedBitmap(this.Width, this.Height, g =>
             {
                 Rectangle rectangle = new Rectangle(0, 0, Width - 1, Height - 1);
@@ -60,7 +58,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
                 font11.Dispose();
             }, opacity: 0);
 
-
+            tweener = new Tweener();
             tweener.Tween(_cachedBitmap, new { Opacity = 1f }, 4).Ease(Ease.BackIn);
             tweenStart = DateTime.Now;
         }

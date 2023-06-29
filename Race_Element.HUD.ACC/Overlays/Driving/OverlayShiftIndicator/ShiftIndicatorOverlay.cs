@@ -8,6 +8,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Collections.Generic;
 using System.Linq;
+using Unglide;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 {
@@ -23,6 +24,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
         private string _lastCar = string.Empty;
         private CachedBitmap _cachedBackground;
         private CachedBitmap _cachedRpmLines;
+
+        private Tweener _pitLimiterTweener;
+        private DateTime _pitLimiterStart = DateTime.Now;
         private CachedBitmap _cachedPitLimiterOutline;
 
         private Font _font;
@@ -111,10 +115,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             });
 
             if (_config.Bar.ShowPitLimiter)
-                _cachedPitLimiterOutline = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
+            {
+                _pitLimiterTweener = new Tweener();
+                _cachedPitLimiterOutline = new CachedBitmap((int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale), g =>
                 {
-                    g.DrawRoundedRectangle(new Pen(Color.Yellow, 2.5f), new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), cornerRadius);
+                    g.DrawRoundedRectangle(new Pen(Color.FromArgb(170, Color.Yellow), 5), new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale - 1), (int)(_config.Bar.Height * this.Scale - 1)), cornerRadius);
                 });
+            }
         }
 
         public sealed override void BeforeStop()
@@ -164,16 +171,27 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
         }
 
-        private int _limiterColorSwitch = 0;
         private void DrawPitLimiterBar(Graphics g)
         {
-            if (_limiterColorSwitch > this.RefreshRateHz / 5)
-                _cachedPitLimiterOutline?.Draw(g, 0, 0, _config.Bar.Width, _config.Bar.Height);
+            if (_cachedPitLimiterOutline.Opacity == 1f)
+            {
+                if (DateTime.Now.Subtract(_pitLimiterStart).TotalSeconds > 0.71)
+                {
+                    _pitLimiterStart = DateTime.Now;
+                    _pitLimiterTweener.Tween(_cachedPitLimiterOutline, new { Opacity = 0.25f }, 0.2f);
+                }
+            }
+            else
+            {
+                if (DateTime.Now.Subtract(_pitLimiterStart).TotalSeconds > 0.21)
+                {
+                    _pitLimiterStart = DateTime.Now;
+                    _pitLimiterTweener.Tween(_cachedPitLimiterOutline, new { Opacity = 1f }, 0.5f);
+                }
+            }
+            _pitLimiterTweener.Update((float)DateTime.Now.Subtract(_pitLimiterStart).TotalSeconds);
 
-            if (_limiterColorSwitch > this.RefreshRateHz / 2)
-                _limiterColorSwitch = 0;
-
-            _limiterColorSwitch++;
+            _cachedPitLimiterOutline?.Draw(g, 0, 0, _config.Bar.Width, _config.Bar.Height);
         }
 
         private void DrawRpmText(Graphics g)
