@@ -30,6 +30,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
             public RadarGrouping Radar { get; set; } = new RadarGrouping();
             public class RadarGrouping
             {
+                [IntRange(50, 250, 2)]
+                public int Width { get; set; } = 250;
+
+                [IntRange(50, 250, 2)]
+                public int Height { get; set; } = 250;
+
                 [ToolTip("Display cars inside of the pits.")]
                 public bool ShowPitted { get; set; } = true;
             }
@@ -52,7 +58,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
             public float Heading;
             public float Distance;
         }
-        private const int InitialWidth = 150, InitialHeight = 250;
 
         private readonly List<SpottableCar> _spottables = new List<SpottableCar>();
 
@@ -64,13 +69,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
         public RadarOverlay(Rectangle rectangle) : base(rectangle, "Radar")
         {
-            Width = InitialWidth;
-            Height = InitialHeight;
+
             RefreshRateHz = 20;
         }
 
         public override bool ShouldRender()
         {
+
+
             if (RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
                 return true;
 
@@ -102,12 +108,15 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
         public override void BeforeStart()
         {
+            Width = _config.Radar.Width;
+            Height = _config.Radar.Height;
+
             int scaledWidth = (int)(Width * Scale);
             int scaledHeight = (int)(Height * Scale);
             _cachedBackground = new CachedBitmap(scaledWidth, scaledHeight, g =>
             {
                 using GraphicsPath gradientPath = new GraphicsPath();
-                gradientPath.AddEllipse(0, 0, (int)(InitialWidth * Scale), (int)(InitialHeight * Scale));
+                gradientPath.AddEllipse(0, 0, (int)(_config.Radar.Width * Scale), (int)(_config.Radar.Height * Scale));
                 using PathGradientBrush pthGrBrush = new PathGradientBrush(gradientPath);
                 pthGrBrush.CenterColor = Color.FromArgb(172, 0, 0, 0);
                 pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(5, 0, 0, 0) };

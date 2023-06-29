@@ -128,8 +128,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
         {
             _cachedBackground?.Dispose();
             _cachedRpmLines?.Dispose();
-
             _cachedPitLimiterOutline?.Dispose();
+
             if (_cachedColorBars != null)
                 foreach (CachedBitmap cachedBitmap in _cachedColorBars)
                     cachedBitmap?.Dispose();
