@@ -24,7 +24,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
         private readonly RadarConfiguration _config = new RadarConfiguration();
         private sealed class RadarConfiguration : OverlayConfiguration
         {
-            public RadarConfiguration() => AllowRescale = true;
+            public RadarConfiguration() => AllowRescale = false;
 
             [ConfigGrouping("Radar", "General options for the radar")]
             public RadarGrouping Radar { get; set; } = new RadarGrouping();

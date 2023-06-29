@@ -19,7 +19,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
     {
         public string Version { get; set; }
 
-        private CachedBitmap cachedBitmap;
+        private CachedBitmap _cachedBitmap;
         private Tweener tweener;
         private DateTime tweenStart;
 
@@ -36,7 +36,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
         {
             tweener = new Tweener();
 
-            cachedBitmap = new CachedBitmap(this.Width, this.Height, g =>
+            _cachedBitmap = new CachedBitmap(this.Width, this.Height, g =>
             {
                 Rectangle rectangle = new Rectangle(0, 0, Width - 1, Height - 1);
                 HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightDownwardDiagonal, Color.FromArgb(225, Color.Black), Color.FromArgb(185, Color.Black));
@@ -61,7 +61,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
             }, opacity: 0);
 
 
-            tweener.Tween(cachedBitmap, new { Opacity = 1f }, 4).Ease(Ease.BackIn);
+            tweener.Tween(_cachedBitmap, new { Opacity = 1f }, 4).Ease(Ease.BackIn);
             tweenStart = DateTime.Now;
         }
 
@@ -72,7 +72,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
         public override void Render(Graphics g)
         {
             tweener.Update((float)DateTime.Now.Subtract(tweenStart).TotalSeconds);
-            cachedBitmap?.Draw(g);
+            _cachedBitmap?.Draw(g);
         }
     }
 }
