@@ -145,7 +145,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
                 CollectSpottableCars(playerID);
 
-                if (!_spottables.Any())
+                if (!_spottables.Any() && !IsRepositioning)
                     return;
 
                 //Debug.WriteLine($"{_spottables.Count}");

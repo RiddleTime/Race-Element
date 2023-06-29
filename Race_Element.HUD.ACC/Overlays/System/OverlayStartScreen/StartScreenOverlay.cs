@@ -65,7 +65,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
             tweenStart = DateTime.Now;
         }
 
-        public override void BeforeStop() => cachedBitmap?.Dispose();
+        public override void BeforeStop() => _cachedBitmap?.Dispose();
 
         public override bool ShouldRender() => true;
 
