@@ -46,7 +46,7 @@ namespace RaceElement.Data.ACC.Tracker
         private void ConnectDataClient()
         {
             BroadcastConfig.Root config = BroadcastConfig.GetConfiguration();
-            _client = new ACCUdpRemoteClient(IPAddress.Loopback.MapToIPv4().ToString()/* "127.0.0.1"*/, config.UpdListenerPort, string.Empty, config.ConnectionPassword, config.CommandPassword, 100);
+            _client = new ACCUdpRemoteClient(IPAddress.Loopback.MapToIPv4().ToString()/* "127.0.0.1"*/, config.UpdListenerPort, string.Empty, config.ConnectionPassword, config.CommandPassword, 50);
 
             AddEventListeners(ref _client);
             Debug.WriteLine("Connected broadcast client");

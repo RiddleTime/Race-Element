@@ -42,6 +42,9 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="EdCanHack.Unglide">
+      <Version>2.0.0</Version>
+    </PackageReference>
     <PackageReference Include="MouseKeyHook" Version="5.7.1" />
     <PackageReference Include="System.Buffers" Version="4.5.1" />
     <PackageReference Include="System.Collections.Immutable" Version="7.0.0" />
@@ -104,7 +107,7 @@
     <Compile Include="Overlays\Driving\OverlayShiftIndicator\ShiftIndicatorConfiguration.cs" />
     <Compile Include="Overlays\Driving\OverlayShiftIndicator\ShiftIndicatorOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlaySpeedometer\SpeedometerOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlaySpotter\OverlaySpotter.cs" />
+    <Compile Include="Overlays\Driving\OverlayRadar\OverlayRadar.cs" />
     <Compile Include="Overlays\Driving\OverlayStandings\StandingsConfiguration.cs" />
     <Compile Include="Overlays\Driving\OverlayStandings\StandingsOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayOversteerTrace\OversteerDataCollector.cs" />

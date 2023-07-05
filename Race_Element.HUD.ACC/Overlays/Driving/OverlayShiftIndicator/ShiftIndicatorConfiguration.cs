@@ -14,7 +14,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             public int Width { get; set; } = 530;
 
             [ToolTip("Sets the Height of the shift indicator bar.")]
-            [IntRange(20, 50, 5)]
+            [IntRange(25, 50, 5)]
             public int Height { get; set; } = 40;
 
             [ToolTip("Hide Rpms in the bar, starting from 0.")]
