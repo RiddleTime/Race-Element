@@ -3,6 +3,7 @@ using RaceElement.Data.ACC.Session;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.Util.SystemExtensions;
 using SLOBSharp.Client.Responses;
 using System;
 using System.Collections.Generic;
@@ -71,20 +72,19 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
         private CachedBitmap _cachedLocalCar;
         private CachedBitmap _cachedFarCar;
         private CachedBitmap _cachedCloseCar;
+        private CachedBitmap _cachedNearCar;
 
         private CarDrawingData _carDrawingData = new CarDrawingData();
         private class CarDrawingData
         {
-            public static int CarWidth = 10;
-            public static int CarHeight = 20;
+            public static readonly int CarWidth = 10;
+            public static readonly int CarHeight = 22;
             public float ScaledCarWidth;
             public float ScaledCarHeight;
         }
 
         public RadarOverlay(Rectangle rectangle) : base(rectangle, "Radar")
         {
-
-
             RefreshRateHz = 20;
         }
 
@@ -104,7 +104,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
             _playerY = 0; _playerX = 0; _playerHeading = 0.12f;
 
-            var car1 = new SpottableCar { Index = 2, X = 4, Y = 5.7f, Heading = -0.1f };
+            var car1 = new SpottableCar { Index = 2, X = 3, Y = 5.7f, Heading = -0.1f };
             car1.Distance = DistanceBetween(_playerX, _playerY, car1.X, car1.Y);
             _spottables.Add(car1);
 
@@ -148,7 +148,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
             });
 
 
-            Rectangle carRectangle = new Rectangle(0, 0, (int)_carDrawingData.ScaledCarWidth, (int)_carDrawingData.ScaledCarHeight);
+            Rectangle carRectangle = new Rectangle(0, 0, (int)Math.Ceiling(_carDrawingData.ScaledCarWidth), (int)Math.Ceiling(_carDrawingData.ScaledCarHeight));
             _cachedLocalCar = new CachedBitmap(carRectangle.Width + 1, carRectangle.Height + 1, g =>
             {
                 g.FillRoundedRectangle(Brushes.LimeGreen, carRectangle, (int)(3 * Scale));
@@ -156,13 +156,18 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
             });
             _cachedFarCar = new CachedBitmap(carRectangle.Width + 1, carRectangle.Height + 1, g =>
             {
-                g.FillRoundedRectangle(Brushes.Yellow, carRectangle, (int)(3 * Scale));
-                g.DrawRoundedRectangle(Pens.White, carRectangle, (int)(3 * Scale));
+                g.FillRoundedRectangle(Brushes.White, carRectangle, (int)(3 * Scale));
+                g.DrawRoundedRectangle(Pens.Black, carRectangle, (int)(3 * Scale));
             });
+            _cachedNearCar = new CachedBitmap(carRectangle.Width + 1, carRectangle.Height + 1, g =>
+                {
+                    g.FillRoundedRectangle(Brushes.Yellow, carRectangle, (int)(3 * Scale));
+                    g.DrawRoundedRectangle(Pens.Black, carRectangle, (int)(3 * Scale));
+                });
             _cachedCloseCar = new CachedBitmap(carRectangle.Width + 1, carRectangle.Height + 1, g =>
             {
                 g.FillRoundedRectangle(Brushes.Red, carRectangle, (int)(3 * Scale));
-                g.DrawRoundedRectangle(Pens.White, carRectangle, (int)(3 * Scale));
+                g.DrawRoundedRectangle(Pens.Black, carRectangle, (int)(3 * Scale));
             });
         }
 
@@ -224,15 +229,24 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                     transform.RotateAt((float)(-(_playerHeading - car.Heading) * 180f / Math.PI), new PointF(otherCar.Left, otherCar.Top));
                     g.Transform = transform;
 
-                    _cachedFarCar.Opacity = 1f - car.Distance / _config.Proxmity.ShowDistance * 2;
-                    _cachedFarCar.Draw(g, otherCar.Left, otherCar.Top, otherCar.Width, otherCar.Height);
+                    float opacity = 1f - car.Distance / _config.Proxmity.ShowDistance * 1.5f;
+                    opacity.ClipMin(0.015f);
+
+                    CachedBitmap selected = car.Distance switch
+                    {
+                        float x when (x < 6f) => _cachedCloseCar,
+                        float x when (x >= 6f && x < 8f) => _cachedNearCar,
+                        _ => _cachedFarCar
+                    };
+                    selected.Opacity = opacity;
+                    selected.Draw(g, otherCar.Left, otherCar.Top, otherCar.Width, otherCar.Height);
 
 
-                    brush = Brushes.White;
-                    if (car.Distance < 6)
-                        brush = Brushes.Red;
-                    else if (car.Distance < 8)
-                        brush = Brushes.Yellow;
+                    //brush = Brushes.White;
+                    //if (car.Distance < 6)
+                    //    brush = Brushes.Red;
+                    //else if (car.Distance < 8)
+                    //    brush = Brushes.Yellow;
 
 
                     //g.FillRoundedRectangle(brush, otherCar, 3);
