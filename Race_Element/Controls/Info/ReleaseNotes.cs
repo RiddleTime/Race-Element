@@ -6,7 +6,7 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.2.1.4", "- Radar HUD: more progress on scaling and design, beta version now."+
+            {"0.2.1.4", "- Radar HUD: more progress on and design, beta version now."+
                         "\n- Shift Indicator HUD: Pit limiter indication is now animated."},
             {"0.2.1.2", "- Fix Current Gear HUD."+
                         "\n- Add Spotter HUD (Alpha Version)." },
