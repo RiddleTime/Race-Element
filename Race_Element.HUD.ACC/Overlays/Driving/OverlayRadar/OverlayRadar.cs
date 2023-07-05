@@ -4,19 +4,17 @@ using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.Util.SystemExtensions;
-using SLOBSharp.Client.Responses;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using System.Linq;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 {
     [Overlay(Name = "Radar",
-        Description = "Alpha! (A basic car spotter) (no rescaling for now)",
+        Description = "Beta! (Rescaling is work in progress)",
         Version = 1.00,
         OverlayType = OverlayType.Release,
         OverlayCategory = OverlayCategory.Driving
@@ -240,17 +238,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                     };
                     selected.Opacity = opacity;
                     selected.Draw(g, otherCar.Left, otherCar.Top, otherCar.Width, otherCar.Height);
-
-
-                    //brush = Brushes.White;
-                    //if (car.Distance < 6)
-                    //    brush = Brushes.Red;
-                    //else if (car.Distance < 8)
-                    //    brush = Brushes.Yellow;
-
-
-                    //g.FillRoundedRectangle(brush, otherCar, 3);
-                    //g.DrawRoundedRectangle(Pens.Black, otherCar, 3);
 
                     g.Transform = originalTransform;
                 }
