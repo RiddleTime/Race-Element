@@ -3,6 +3,7 @@ using RaceElement.Data.ACC.Session;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
+using SLOBSharp.Client.Responses;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -34,7 +35,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                 public int Width { get; set; } = 250;
 
                 [IntRange(50, 250, 2)]
-                public int Height { get; set; } = 250;
+                public int Height { get; set; } = 150;
 
                 [ToolTip("Display cars inside of the pits.")]
                 public bool ShowPitted { get; set; } = true;
@@ -68,8 +69,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
         private CachedBitmap _cachedBackground;
 
         private CachedBitmap _cachedLocalCar;
-        private CachedBitmap _cachedYellowCar;
-        private CachedBitmap _cachedRedCar;
+        private CachedBitmap _cachedFarCar;
+        private CachedBitmap _cachedCloseCar;
 
         private CarDrawingData _carDrawingData = new CarDrawingData();
         private class CarDrawingData
@@ -147,21 +148,18 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
             });
 
 
-
             Rectangle carRectangle = new Rectangle(0, 0, (int)_carDrawingData.ScaledCarWidth, (int)_carDrawingData.ScaledCarHeight);
             _cachedLocalCar = new CachedBitmap(carRectangle.Width + 1, carRectangle.Height + 1, g =>
             {
                 g.FillRoundedRectangle(Brushes.LimeGreen, carRectangle, (int)(3 * Scale));
                 g.DrawRoundedRectangle(Pens.White, carRectangle, (int)(3 * Scale));
             });
-
-            _cachedYellowCar = new CachedBitmap(carRectangle.Width + 1, carRectangle.Height + 1, g =>
+            _cachedFarCar = new CachedBitmap(carRectangle.Width + 1, carRectangle.Height + 1, g =>
             {
                 g.FillRoundedRectangle(Brushes.Yellow, carRectangle, (int)(3 * Scale));
                 g.DrawRoundedRectangle(Pens.White, carRectangle, (int)(3 * Scale));
             });
-
-            _cachedRedCar = new CachedBitmap(carRectangle.Width + 1, carRectangle.Height + 1, g =>
+            _cachedCloseCar = new CachedBitmap(carRectangle.Width + 1, carRectangle.Height + 1, g =>
             {
                 g.FillRoundedRectangle(Brushes.Red, carRectangle, (int)(3 * Scale));
                 g.DrawRoundedRectangle(Pens.White, carRectangle, (int)(3 * Scale));
@@ -204,31 +202,32 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                 _cachedBackground?.Draw(g, 0, 0, _config.Radar.Width, _config.Radar.Height);
 
                 // draw spottable cars
-                int rectHeight = 20;
-                int rectWidth = 10;
                 float centerX = _config.Radar.Width / 2f;
                 float centerY = _config.Radar.Height / 2f;
 
                 _cachedLocalCar?.Draw(g, (int)(centerX - CarDrawingData.CarWidth / 2), (int)(centerY - CarDrawingData.CarHeight / 2), CarDrawingData.CarWidth, CarDrawingData.CarHeight);
 
                 Brush brush;
+                Matrix originalTransform = g.Transform;
                 foreach (SpottableCar car in _spottables)
                 {
                     float multiplier = 5f;
-                    float xOffset = (_playerY - car.X) * multiplier;
-                    float yOffset = (_playerX - car.Y) * multiplier;
+                    float xOffset = (_playerY - car.X);
+                    float yOffset = (_playerX - car.Y);
 
                     float heading = (float)(-Math.PI / 2 + _playerHeading);
-                    float newX = (float)(xOffset * Math.Cos(heading) + yOffset * Math.Sin(heading));
-                    float newY = (float)(-xOffset * Math.Sin(heading) + yOffset * Math.Cos(heading));
+                    float newX = (float)(xOffset * Math.Cos(heading) + yOffset * Math.Sin(heading)) * multiplier;
+                    float newY = (float)(-xOffset * Math.Sin(heading) + yOffset * Math.Cos(heading)) * multiplier;
 
-                    Rectangle otherCar = new Rectangle((int)(centerX - rectWidth / 2f), (int)(centerY - rectHeight / 2f), rectWidth, rectHeight);
-                    otherCar.Offset((int)newX, (int)newY);
+                    Rectangle otherCar = new Rectangle((int)(centerX - CarDrawingData.CarWidth / 2f + newX), (int)(centerY - CarDrawingData.CarHeight / 2f + newY), CarDrawingData.CarWidth, CarDrawingData.CarHeight);
                     var transform = g.Transform;
-                    transform.RotateAt((float)(-(_playerHeading - car.Heading) * 180f / Math.PI), new PointF(otherCar.Left + rectWidth / 2f, otherCar.Top + rectHeight / 2f));
-
-
+                    transform.RotateAt((float)(-(_playerHeading - car.Heading) * 180f / Math.PI), new PointF(otherCar.Left, otherCar.Top));
                     g.Transform = transform;
+
+                    _cachedFarCar.Opacity = 1f - car.Distance / _config.Proxmity.ShowDistance * 2;
+                    _cachedFarCar.Draw(g, otherCar.Left, otherCar.Top, otherCar.Width, otherCar.Height);
+
+
                     brush = Brushes.White;
                     if (car.Distance < 6)
                         brush = Brushes.Red;
@@ -236,10 +235,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                         brush = Brushes.Yellow;
 
 
-                    g.FillRoundedRectangle(brush, otherCar, 3);
-                    g.DrawRoundedRectangle(Pens.Black, otherCar, 3);
+                    //g.FillRoundedRectangle(brush, otherCar, 3);
+                    //g.DrawRoundedRectangle(Pens.Black, otherCar, 3);
 
-                    g.ResetTransform();
+                    g.Transform = originalTransform;
                 }
 
                 _spottables.Clear();
