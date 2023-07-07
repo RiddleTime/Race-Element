@@ -97,7 +97,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil
                     ColorMatrix colormatrix = new ColorMatrix { Matrix33 = Opacity };
                     using ImageAttributes imgAttribute = new ImageAttributes();
                     imgAttribute.SetColorMatrix(colormatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-                    g.DrawImage(_bitmap, new Rectangle(x, y, Width, Height), 0, 0, width, height, GraphicsUnit.Pixel, imgAttribute);
+                    g.DrawImage(_bitmap, new Rectangle(x, y, width, height), 0, 0, width, height, GraphicsUnit.Pixel, imgAttribute);
                 }
                 else
                     g.DrawImage(_bitmap, x, y, width, height);

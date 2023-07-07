@@ -24,7 +24,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
         private readonly RadarConfiguration _config = new RadarConfiguration();
         private sealed class RadarConfiguration : OverlayConfiguration
         {
-            public RadarConfiguration() => AllowRescale = false;
+            public RadarConfiguration() => AllowRescale = true;
 
             [ConfigGrouping("Radar", "General options for the radar")]
             public RadarGrouping Radar { get; set; } = new RadarGrouping();
@@ -72,8 +72,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
         private CachedBitmap _cachedCloseCar;
         private CachedBitmap _cachedNearCar;
 
-        private CarDrawingData _carDrawingData = new CarDrawingData();
-        private class CarDrawingData
+        private readonly CarDrawingData _carDrawingData = new CarDrawingData();
+        private sealed class CarDrawingData
         {
             public static readonly int CarWidth = 10;
             public static readonly int CarHeight = 22;
@@ -83,13 +83,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
         public RadarOverlay(Rectangle rectangle) : base(rectangle, "Radar")
         {
-            RefreshRateHz = 20;
+            RefreshRateHz = 10;
         }
 
         public override bool ShouldRender()
         {
-
-
             if (RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
                 return true;
 
@@ -210,7 +208,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
                 _cachedLocalCar?.Draw(g, (int)(centerX - CarDrawingData.CarWidth / 2), (int)(centerY - CarDrawingData.CarHeight / 2), CarDrawingData.CarWidth, CarDrawingData.CarHeight);
 
-                Brush brush;
                 Matrix originalTransform = g.Transform;
                 foreach (SpottableCar car in _spottables)
                 {
@@ -227,8 +224,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                     transform.RotateAt((float)(-(_playerHeading - car.Heading) * 180f / Math.PI), new PointF(otherCar.Left, otherCar.Top));
                     g.Transform = transform;
 
-                    float opacity = 1f - car.Distance / _config.Proxmity.ShowDistance * 1.5f;
-                    opacity.ClipMin(0.015f);
+                    float opacity = 1f - car.Distance / _config.Proxmity.ShowDistance * 0.75f;
+                    opacity.ClipMin(0.25f);
 
                     CachedBitmap selected = car.Distance switch
                     {
@@ -237,7 +234,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                         _ => _cachedFarCar
                     };
                     selected.Opacity = opacity;
-                    selected.Draw(g, otherCar.Left, otherCar.Top, otherCar.Width, otherCar.Height);
+                    selected.Draw(g, otherCar.Left, otherCar.Top, CarDrawingData.CarWidth, CarDrawingData.CarHeight);
 
                     g.Transform = originalTransform;
                 }
