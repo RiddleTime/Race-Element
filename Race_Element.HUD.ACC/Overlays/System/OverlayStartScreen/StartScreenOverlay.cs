@@ -59,7 +59,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
             }, opacity: 0);
 
             tweener = new Tweener();
-            tweener.Tween(_cachedBitmap, new { Opacity = 1f }, 4).Ease(Ease.BackIn);
+            tweener.Tween(_cachedBitmap, new { Opacity = 1f }, 6).Ease(Ease.BackIn);
             tweenStart = DateTime.Now;
         }
 
