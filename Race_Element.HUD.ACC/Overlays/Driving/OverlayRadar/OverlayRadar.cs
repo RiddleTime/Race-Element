@@ -88,6 +88,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
         public override bool ShouldRender()
         {
+            if (RaceSessionState.IsFormationLap(pageGraphics.GlobalRed, broadCastRealTime.Phase))
+                return false;
+
             if (RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
                 return true;
 
