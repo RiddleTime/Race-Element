@@ -30,6 +30,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
             public RadarGrouping Radar { get; set; } = new RadarGrouping();
             public class RadarGrouping
             {
+
+                [IntRange(1, 20, 2)]
+                [ToolTip("The refreshrate of this HUD.")]
+                public int Herz { get; set; } = 20;
+
                 [IntRange(50, 250, 2)]
                 public int Width { get; set; } = 250;
 
@@ -83,7 +88,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
         public RadarOverlay(Rectangle rectangle) : base(rectangle, "Radar")
         {
-            RefreshRateHz = 16;
+            RefreshRateHz = _config.Radar.Herz;
         }
 
         public override bool ShouldRender()
@@ -139,7 +144,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                 pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(5, 0, 0, 0) };
                 g.FillRoundedRectangle(pthGrBrush, new Rectangle(0, 0, scaledWidth, scaledHeight), (int)(3 * this.Scale));
 
-                using Pen pen = new Pen(new SolidBrush(Color.FromArgb(180, Color.White)));
+                using Pen pen = new Pen(new SolidBrush(Color.FromArgb(160, Color.White)));
                 pen.DashPattern = new float[] { 2 / this.Scale, 4 / this.Scale };
                 pen.Width = 2f * Scale;
                 g.DrawLine(pen, new PointF(0, scaledHeight / 2), new PointF(scaledWidth, scaledHeight / 2));
