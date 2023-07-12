@@ -83,7 +83,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
         public RadarOverlay(Rectangle rectangle) : base(rectangle, "Radar")
         {
-            RefreshRateHz = 15;
+            RefreshRateHz = 16;
         }
 
         public override bool ShouldRender()

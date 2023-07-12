@@ -181,7 +181,7 @@ namespace RaceElement
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            App.Instance._startScreenOverlay.Stop(true);
+            App.Instance._startScreenOverlay.Stop(false);
             App.Instance._startScreenOverlay.Dispose();
 
             ThreadPool.QueueUserWorkItem(x =>
