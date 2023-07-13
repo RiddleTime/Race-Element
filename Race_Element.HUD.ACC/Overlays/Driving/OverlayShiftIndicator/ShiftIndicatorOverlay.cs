@@ -119,7 +119,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
                 _pitLimiterTweener = new Tweener();
                 _cachedPitLimiterOutline = new CachedBitmap((int)(Width * this.Scale), (int)(Height * this.Scale), g =>
                 {
-                    g.DrawRoundedRectangle(new Pen(Color.FromArgb(190, Color.Yellow), 20 * Scale), new Rectangle(0, 0, (int)(Width * this.Scale - 1), (int)(Height * this.Scale - 1)), cornerRadius);
+                    g.DrawRoundedRectangle(new Pen(Color.FromArgb(190, Color.Yellow), 5 * Scale), new Rectangle(0, 0, (int)(Width * this.Scale - 1), (int)(Height * this.Scale - 1)), cornerRadius);
                 });
             }
         }

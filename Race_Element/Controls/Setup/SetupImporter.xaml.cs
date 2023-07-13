@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -45,7 +46,8 @@ namespace RaceElement.Controls
                     foreach (ListViewItem selectedItem in listViewTracks.SelectedItems)
                     {
                         Import((string)selectedItem.DataContext, false);
-                        sb.Append($", {Tracks[(string)selectedItem.DataContext].FullName}");
+                        var trackData = NewTracks.FirstOrDefault(x => x.GameName == (string)selectedItem.DataContext);
+                        sb.Append($", {trackData.FullName}");
                     }
 
                     CarModels model = ConversionFactory.ParseCarName(_currentSetup.CarName);
@@ -66,19 +68,19 @@ namespace RaceElement.Controls
         private void BuildTrackList()
         {
             this.listViewTracks.Items.Clear();
-            foreach (KeyValuePair<string, AbstractTrackData> kv in Tracks.ToImmutableArray().Sort((x, y) => x.Key.CompareTo(y.Key)))
+            foreach (AbstractTrackData trackData in NewTracks)
             {
                 ListViewItem trackItem = new ListViewItem()
                 {
                     FontWeight = FontWeights.Bold,
-                    Content = kv.Value.FullName,
-                    DataContext = kv.Key
+                    Content = trackData.FullName,
+                    DataContext = trackData.GameName
                 };
 
                 if (listViewTracks.SelectionMode == SelectionMode.Single)
                     trackItem.MouseLeftButtonUp += (s, e) =>
                     {
-                        Import(kv.Key, true);
+                        Import(trackData.GameName, true);
 
                         SetupBrowser.Instance.FetchAllSetups();
 
@@ -112,7 +114,10 @@ namespace RaceElement.Controls
                 originalFile.CopyTo(targetFile.FullName);
 
             if (displayMessage)
-                MainWindow.Instance.EnqueueSnackbarMessage($"Imported setup \"{_setupName}\" for {modelName} at {Tracks[track].FullName}");
+            {
+                AbstractTrackData trackData = NewTracks.FirstOrDefault(x => x.GameName == track);
+                MainWindow.Instance.EnqueueSnackbarMessage($"Imported setup \"{_setupName}\" for {modelName} at {trackData.FullName}");
+            }
         }
 
         public bool Open(string setupFile, bool selectMultipleTracks, bool showTrack = false)

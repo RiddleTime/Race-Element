@@ -8,6 +8,7 @@ namespace ACCManager.Data.ACC.Tracks.Data
     internal class Cota : AbstractTrackData
     {
         public override Guid Guid => new Guid("f45eac53-7a77-4fe5-812f-064b30ac22df");
+        public override string GameName => "cota";
         public override string FullName => "Circuit of the Americas";
         public override int TrackLength => 5513;
 

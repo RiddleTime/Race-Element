@@ -8,6 +8,7 @@ namespace ACCManager.Data.ACC.Tracks.Data
     internal class Snetterton : AbstractTrackData
     {
         public override Guid Guid => new Guid("9248d360-e1ba-45be-bdec-dc939fb3959b");
+        public override string GameName => "snetterton";
         public override string FullName => "Snetterton Circuit";
         public override int TrackLength => 4779;
 

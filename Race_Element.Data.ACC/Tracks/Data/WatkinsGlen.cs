@@ -8,6 +8,7 @@ namespace ACCManager.Data.ACC.Tracks.Data
     internal class WatkinsGlen : AbstractTrackData
     {
         public override Guid Guid => new Guid("6c4d5fe4-105d-47b0-8699-49c10a92c591");
+        public override string GameName => "watkins_glen";
         public override string FullName => "Watkins Glen International";
         public override int TrackLength => 5552;
 

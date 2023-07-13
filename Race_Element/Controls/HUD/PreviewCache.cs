@@ -119,7 +119,6 @@ namespace RaceElement.Controls.HUD
             overlay.pageStatic.MaxFuel = 120f;
             overlay.pageStatic.MaxRpm = 9250;
             overlay.pageStatic.CarModel = "porsche_991ii_gt3_r";
-            overlay.pageStatic.Track = "Spa";
 
             overlay.SetupPreviewData();
 

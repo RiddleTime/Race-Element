@@ -8,6 +8,7 @@ namespace ACCManager.Data.ACC.Tracks.Data
     internal class Zolder : AbstractTrackData
     {
         public override Guid Guid => new Guid("eaca1a4d-aa7e-4c31-bfc5-6035bfa30395");
+        public override string GameName => "Zolder";
         public override string FullName => "Circuit Zolder";
         public override int TrackLength => 4011;
 

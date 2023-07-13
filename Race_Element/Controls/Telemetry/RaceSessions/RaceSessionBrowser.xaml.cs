@@ -30,6 +30,7 @@ using AbstractTrackData = RaceElement.Data.ACC.Tracks.TrackData.AbstractTrackDat
 using RaceElement.Controls.Util;
 using System.Collections.Specialized;
 using System.Globalization;
+using RaceElement.Broadcast.Structs;
 
 namespace RaceElement.Controls
 {
@@ -288,7 +289,7 @@ namespace RaceElement.Controls
                 foreach (DbTrackData track in allTracks)
                 {
                     string trackName;
-                    TrackData.Tracks.TryGetValue(track.ParseName, out AbstractTrackData trackData);
+                    var trackData = Data.ACC.Tracks.TrackData.NewTracks.FirstOrDefault(x => x.GameName == track.ParseName);
                     if (trackData == null) trackName = track.ParseName;
                     else trackName = trackData.FullName;
 
@@ -318,7 +319,7 @@ namespace RaceElement.Controls
                     var carModel = ConversionFactory.ParseCarName(carData.ParseName);
                     string carName = ConversionFactory.GetNameFromCarModel(carModel);
                     string trackName = dbTrackData.ParseName;
-                    TrackData.Tracks.TryGetValue(dbTrackData.ParseName, out AbstractTrackData trackData);
+                    var trackData = Data.ACC.Tracks.TrackData.NewTracks.FirstOrDefault(x => x.GameName == dbTrackData.ParseName);
                     if (dbTrackData != null) trackName = trackData.FullName;
 
                     session.UtcStart = DateTime.SpecifyKind(session.UtcStart, DateTimeKind.Utc);
@@ -639,7 +640,7 @@ namespace RaceElement.Controls
                 FilterTelemetrySplines(_currentData.ToDictionary(x => x.Key, x => x.Value));
 
 
-                AbstractTrackData trackData = TrackData.Tracks.Values.First(x => x.Guid == GetSelectedTrack());
+                var trackData = Data.ACC.Tracks.TrackData.NewTracks.FirstOrDefault(x => x.Guid == GetSelectedTrack());
                 PlotUtil.trackData = trackData;
                 int fullSteeringLock = SteeringLock.Get(CarDataCollection.GetCarData(CurrentDatabase, GetSelectedCar()).ParseName);
 

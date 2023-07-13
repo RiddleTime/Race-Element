@@ -39,7 +39,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                 public int Width { get; set; } = 250;
 
                 [IntRange(50, 250, 2)]
-                public int Height { get; set; } = 150;
+                public int Height { get; set; } = 250;
 
                 [ToolTip("Display cars inside of the pits.")]
                 public bool ShowPitted { get; set; } = true;
