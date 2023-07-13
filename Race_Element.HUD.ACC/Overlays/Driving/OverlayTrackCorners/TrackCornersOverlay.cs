@@ -189,11 +189,10 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
             string cornerName = "";
 
             if (_currentTrack == null)
-            {
-                Debug.WriteLine(NewTracks.Count);
                 UpdateWidth();
-            }
 
+            if (_currentTrack?.GameName != pageStatic.Track)
+                UpdateWidth();
 
             float carPosition = pageGraphics.NormalizedCarPosition;
 
