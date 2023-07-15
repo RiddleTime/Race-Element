@@ -35,7 +35,7 @@ namespace RaceElement.Data.ACC.Cars
             {"ferrari_488_gt3", -17},
             {"ferrari_488_gt3_evo", -17},
             {"honda_nsx_gt3", -14},
-            {"honda_nsx_gt3_evo", -14},
+            {"honda_nsx_gt3_evo", -20},
             {"lamborghini_huracan_gt3", -14},
             {"lamborghini_huracan_gt3_evo", -14},
             {"lamborghini_huracan_gt3_evo2", -14 },
