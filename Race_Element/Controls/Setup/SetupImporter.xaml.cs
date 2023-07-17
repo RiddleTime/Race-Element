@@ -94,29 +94,36 @@ namespace RaceElement.Controls
 
         private void Import(string track, bool displayMessage)
         {
-            CarModels model = ConversionFactory.ParseCarName(_currentSetup.CarName);
-            string modelName = ConversionFactory.GetNameFromCarModel(model);
-
-
-            FileInfo targetFile = new FileInfo(FileUtil.AccPath + "Setups\\" + _currentSetup.CarName + "\\" + track + "\\" + _setupName + ".json");
-
-            if (targetFile.Exists)
+            try
             {
-                MainWindow.Instance.EnqueueSnackbarMessage($"Setup already exists: {targetFile.FullName}");
-                return;
+                CarModels model = ConversionFactory.ParseCarName(_currentSetup.CarName);
+                string modelName = ConversionFactory.GetNameFromCarModel(model);
+
+
+                FileInfo targetFile = new FileInfo(FileUtil.AccPath + "Setups\\" + _currentSetup.CarName + "\\" + track + "\\" + _setupName + ".json");
+
+                if (targetFile.Exists)
+                {
+                    MainWindow.Instance.EnqueueSnackbarMessage($"Setup already exists: {targetFile.FullName}");
+                    return;
+                }
+
+                if (!targetFile.Directory.Exists)
+                    targetFile.Directory.Create();
+
+                FileInfo originalFile = new FileInfo(_originalSetupFile);
+                if (originalFile.Exists)
+                    originalFile.CopyTo(targetFile.FullName);
+
+                if (displayMessage)
+                {
+                    AbstractTrackData trackData = NewTracks.FirstOrDefault(x => x.GameName == track);
+                    MainWindow.Instance.EnqueueSnackbarMessage($"Imported setup \"{_setupName}\" for {modelName} at {trackData.FullName}");
+                }
             }
-
-            if (!targetFile.Directory.Exists)
-                targetFile.Directory.Create();
-
-            FileInfo originalFile = new FileInfo(_originalSetupFile);
-            if (originalFile.Exists)
-                originalFile.CopyTo(targetFile.FullName);
-
-            if (displayMessage)
+            catch (Exception e)
             {
-                AbstractTrackData trackData = NewTracks.FirstOrDefault(x => x.GameName == track);
-                MainWindow.Instance.EnqueueSnackbarMessage($"Imported setup \"{_setupName}\" for {modelName} at {trackData.FullName}");
+                LogWriter.WriteToLog(e);
             }
         }
 

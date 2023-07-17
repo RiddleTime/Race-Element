@@ -86,12 +86,17 @@ namespace RaceElement.Util
 
         public static void CleanDownloadCache()
         {
-            new Thread(x =>
+
+            try
             {
                 DirectoryInfo downloadCache = new DirectoryInfo(RaceElementDownloadCachePath);
                 if (downloadCache.Exists)
                     downloadCache.Delete(true);
-            }).Start();
+            }
+            catch (Exception e)
+            {
+                LogWriter.WriteToLog(e);
+            }
         }
     }
 }

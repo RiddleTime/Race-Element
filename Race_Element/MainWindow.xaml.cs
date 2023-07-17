@@ -201,7 +201,6 @@ namespace RaceElement
                 Thread.Sleep(2000);
                 GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
                 UpdateUsage();
-                FileUtil.CleanDownloadCache();
             });
 
             if (!App.Instance.StartMinimized)
@@ -232,6 +231,7 @@ namespace RaceElement
             ACCTrackerDispose.Dispose();
             HudOptions.Instance.DisposeKeyboardHooks();
             SteeringLockTracker.Instance.Dispose();
+            FileUtil.CleanDownloadCache();
 
             Environment.Exit(0);
         }
@@ -243,6 +243,7 @@ namespace RaceElement
             ACCTrackerDispose.Dispose();
             HudOptions.Instance.DisposeKeyboardHooks();
             SteeringLockTracker.Instance.Dispose();
+            FileUtil.CleanDownloadCache();
 
             Environment.Exit(0);
         }
