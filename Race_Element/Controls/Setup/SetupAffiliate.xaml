@@ -6,10 +6,11 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:RaceElement.Controls"
              mc:Ignorable="d" 
+             Background="#22000000"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="30"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -19,9 +20,9 @@
 
         <Grid Grid.Row="1" VerticalAlignment="Top">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Image Margin="0,5,0,0" Height="200" Source="pack://application:,,,/Resources/affiliate_image_luke_addison.jpg"/>
+                <Image Margin="0,5,0,0" Width="800" Source="pack://application:,,,/Resources/affiliate_image_luke_addison.jpg"/>
 
-                <Button x:Name="buttonLukeAddison" Margin="0,5,0,0" Width="500" Height="44" ToolTip="Open lukeaddison-racing.com with the race element affiliate id." Padding="0" Background="#280137" BorderBrush="Black">
+                <Button x:Name="buttonLukeAddison" Margin="0,5,0,0" Width="600" Height="44" ToolTip="Open lukeaddison-racing.com with the race element affiliate id." Padding="0" Background="#280137" BorderBrush="Black">
                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="25"/>
@@ -36,12 +37,12 @@
                                 Height="22"
                                 Foreground="Gold"    
                                 />
-                        <TextBlock Grid.Column="1" FontWeight="Bold" Foreground="White" Style="{DynamicResource MaterialDesignButtonTextBlock}"
-                                   VerticalAlignment="Center" HorizontalAlignment="Right" Text=" Visit Luke Addison Racing: Coaching and ACC Setups."></TextBlock>
+                        <TextBlock Grid.Column="1" FontWeight="Bold" FontSize="16" Foreground="White" Style="{DynamicResource MaterialDesignButtonTextBlock}"
+                                   VerticalAlignment="Center" HorizontalAlignment="Right" Text=" Visit Luke Addison Racing: Coaching and ACC Setups"></TextBlock>
                     </Grid>
                 </Button>
 
-                <TextBlock Margin="0,5,0,0" Padding="5" TextWrapping="WrapWithOverflow" TextAlignment="Center" FontSize="15" Background="#AA000000">
+                <TextBlock Margin="0,5,0,0" Width="800" Padding="5" TextWrapping="WrapWithOverflow" TextAlignment="Center" FontStyle="Italic" FontSize="15" Background="#66000000">
                     Luke Addison Racing is a platform where you can develop further as a simracer in Assetto Corsa Competizione through setups and coaching.
                     <LineBreak/><LineBreak/>
                     Luke wants to help people who share his interest in sim racing by creating setups that could help get your laptimes down by having a setup that is stable, fast and consistent.

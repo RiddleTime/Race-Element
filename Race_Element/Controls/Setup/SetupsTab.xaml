@@ -81,7 +81,7 @@
                             </Grid.ColumnDefinitions>
                             <materialDesign:PackIcon
                             Grid.Column="0"
-                            Kind="Link"
+                            Kind="LinkVariant"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
                             Height="32"
