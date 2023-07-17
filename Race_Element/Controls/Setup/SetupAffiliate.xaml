@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="RaceElement.Controls.SetupAffiliate"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:RaceElement.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Margin="0,5,0,0" HorizontalAlignment="Center" FontWeight="Bold">
+            Affiliate disclosure: Should you click any of the buttons below that opens a website and make a purchase, Race Element may receive a small commision at no extra cost to you.
+        </TextBlock>
+
+        <Grid Grid.Row="1" VerticalAlignment="Top">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image Margin="0,5,0,0" Height="200" Source="pack://application:,,,/Resources/affiliate_image_luke_addison.jpg"/>
+
+                <Button x:Name="buttonLukeAddison" Margin="0,5,0,0" Width="500" Height="44" ToolTip="Open lukeaddison-racing.com with the race element affiliate id." Padding="0" Background="#280137" BorderBrush="Black">
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="25"/>
+                            <ColumnDefinition Width="8*"/>
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon
+                                Grid.Column="0"
+                                Kind="Web"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Width="22"
+                                Height="22"
+                                Foreground="Gold"    
+                                />
+                        <TextBlock Grid.Column="1" FontWeight="Bold" Foreground="White" Style="{DynamicResource MaterialDesignButtonTextBlock}"
+                                   VerticalAlignment="Center" HorizontalAlignment="Right" Text=" Visit Luke Addison Racing: Coaching and ACC Setups."></TextBlock>
+                    </Grid>
+                </Button>
+
+                <TextBlock Margin="0,5,0,0" Padding="5" TextWrapping="WrapWithOverflow" TextAlignment="Center" FontSize="15" Background="#AA000000">
+                    Luke Addison Racing is a platform where you can develop further as a simracer in Assetto Corsa Competizione through setups and coaching.
+                    <LineBreak/><LineBreak/>
+                    Luke wants to help people who share his interest in sim racing by creating setups that could help get your laptimes down by having a setup that is stable, fast and consistent.
+                    <LineBreak/>
+                    Luke also offers coaching if you need guidance on where to find those extra tenths or seconds you’re missing.
+                </TextBlock>
+
+            </StackPanel>
+
+        </Grid>
+    </Grid>
+</UserControl>

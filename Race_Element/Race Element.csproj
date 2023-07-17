@@ -314,6 +314,9 @@
     </Compile>
     <Compile Include="Controls\Setup\FlowDocUtil\DocUtil.cs" />
     <Compile Include="Controls\Setup\FlowDocUtil\FlowDocCompareSetupRenderer.cs" />
+    <Compile Include="Controls\Setup\SetupAffiliate.xaml.cs">
+      <DependentUpon>SetupAffiliate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Setup\SetupBrowser.xaml.cs">
       <DependentUpon>SetupBrowser.xaml</DependentUpon>
     </Compile>
@@ -443,6 +446,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Settings\Streaming.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Setup\SetupAffiliate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -596,6 +603,9 @@
       <Project>{AAB23116-299B-415B-8305-96CB86148CE7}</Project>
       <Name>Race Element.Util</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\affiliate_image_luke_addison.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

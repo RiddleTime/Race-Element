@@ -47,6 +47,7 @@
                         <controls:SetupBrowser></controls:SetupBrowser>
                     </Grid>
                 </TabItem>
+
                 <TabItem Name="tabCompare" Style="{DynamicResource MaterialDesignTabItem}" ToolTip="Right click setups in the browser to add them">
                     <TabItem.Header>
                         <Grid>
@@ -71,8 +72,7 @@
                     </Grid>
                 </TabItem>
 
-
-                <TabItem Name="tabAffiliate" Visibility="Collapsed" Style="{DynamicResource MaterialDesignTabItem}" ToolTip="Support Race Element by using affiliate links to buy setups.">
+                <TabItem Name="tabAffiliate" Style="{DynamicResource MaterialDesignTabItem}" ToolTip="Support Race Element by using affiliate links to buy setups or coaching.">
                     <TabItem.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -87,12 +87,12 @@
                             Height="32"
                         Foreground="White"    
                         />
-                            <TextBlock Grid.Column="1" FontFamily="{StaticResource Conthrax}" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Buy</TextBlock>
+                            <TextBlock Grid.Column="1" FontFamily="{StaticResource Conthrax}" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center"> Affiliate</TextBlock>
                         </Grid>
                     </TabItem.Header>
 
                     <Grid>
-                        <!--<controls:SetupComparer></controls:SetupComparer>-->
+                        <controls:SetupAffiliate></controls:SetupAffiliate>
                     </Grid>
                 </TabItem>
 
