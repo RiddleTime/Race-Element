@@ -11,7 +11,6 @@ using RaceElement.Util.SystemExtensions;
 using System;
 using static RaceElement.Data.ACC.Tracks.TrackData;
 using RaceElement.Data.ACC.EntryList;
-using System.Diagnostics;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 {
@@ -50,6 +49,11 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
         public TrackCornersOverlay(Rectangle rectangle) : base(rectangle, "Track Corners")
         {
             RefreshRateHz = 3;
+        }
+
+        public override void SetupPreviewData()
+        {
+            pageStatic.Track = "Spa";
         }
 
         public override void BeforeStart()
@@ -120,7 +124,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
             if (!(pageGraphics.Status == RaceElement.ACCSharedMemory.AcStatus.AC_PAUSE || pageGraphics.Status == RaceElement.ACCSharedMemory.AcStatus.AC_LIVE))
                 return;
 
-            _currentTrack = Tracks.FirstOrDefault(x => x.Key == pageStatic.Track).Value;
+            _currentTrack = NewTracks.FirstOrDefault(x => x.GameName == pageStatic.Track);
 
             this.Width = (int)_cornerNumberHeader.Rectangle.Width;
 
@@ -185,6 +189,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
             if (_currentTrack == null)
                 UpdateWidth();
 
+            if (_currentTrack?.GameName != pageStatic.Track)
+                UpdateWidth();
 
             float carPosition = pageGraphics.NormalizedCarPosition;
 

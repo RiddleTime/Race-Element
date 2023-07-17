@@ -9,6 +9,7 @@ namespace ACCManager.Data.ACC.Tracks.Data
     internal class Nurburgring : AbstractTrackData
     {
         public override Guid Guid => new Guid("20200ee1-89c1-4580-86f1-3ded3018e9e3");
+        public override string GameName => "nurburgring";
         public override string FullName => "Nürburgring";
         public override int TrackLength => 5137;
 

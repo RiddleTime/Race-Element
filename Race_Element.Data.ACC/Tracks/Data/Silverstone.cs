@@ -8,6 +8,7 @@ namespace ACCManager.Data.ACC.Tracks.Data
     internal class Silverstone : AbstractTrackData
     {
         public override Guid Guid => new Guid("8636837e-e916-4d4b-8f29-625cf6bf4695");
+        public override string GameName => "Silverstone";
         public override string FullName => "Silverstone";
         public override int TrackLength => 5891;
 

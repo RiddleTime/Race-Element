@@ -17,7 +17,7 @@
 
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                <ToggleButton x:Name="toggleRecordLapTelemetry" Width="50" Height="35" VerticalAlignment="Center" Cursor="Hand"/>
+                <ToggleButton x:Name="toggleRecordLapTelemetry" Width="50" Height="35" VerticalAlignment="Center" Cursor="Hand" IsChecked="False"/>
                 <Label VerticalAlignment="Center">Telemetry: Record Extended Data (BETA)</Label>
             </StackPanel>
 

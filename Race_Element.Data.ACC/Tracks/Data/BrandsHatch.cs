@@ -8,6 +8,7 @@ namespace ACCManager.Data.ACC.Tracks.Data
     internal class BrandsHatch : AbstractTrackData
     {
         public override Guid Guid => new Guid("7827823f-6df1-4295-bc24-93bc83d71855");
+        public override string GameName => "brands_hatch";
         public override string FullName => "Brands Hatch Circuit";
         public override int TrackLength => 3908;
 

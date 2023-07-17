@@ -117,9 +117,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             if (_config.Bar.ShowPitLimiter)
             {
                 _pitLimiterTweener = new Tweener();
-                _cachedPitLimiterOutline = new CachedBitmap((int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale), g =>
+                _cachedPitLimiterOutline = new CachedBitmap((int)(Width * this.Scale), (int)(Height * this.Scale), g =>
                 {
-                    g.DrawRoundedRectangle(new Pen(Color.FromArgb(170, Color.Yellow), 5), new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale - 1), (int)(_config.Bar.Height * this.Scale - 1)), cornerRadius);
+                    g.DrawRoundedRectangle(new Pen(Color.FromArgb(190, Color.Yellow), 5 * Scale), new Rectangle(0, 0, (int)(Width * this.Scale - 1), (int)(Height * this.Scale - 1)), cornerRadius);
                 });
             }
         }
@@ -191,7 +191,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             }
             _pitLimiterTweener.Update((float)DateTime.Now.Subtract(_pitLimiterStart).TotalSeconds);
 
-            _cachedPitLimiterOutline?.Draw(g, 0, 0, _config.Bar.Width, _config.Bar.Height);
+            _cachedPitLimiterOutline?.Draw(g, 0, 0, (int)(Width / Scale), (int)(Height / Scale));
         }
 
         private void DrawRpmText(Graphics g)

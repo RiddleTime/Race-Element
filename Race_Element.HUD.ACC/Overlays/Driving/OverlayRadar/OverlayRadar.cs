@@ -24,17 +24,22 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
         private readonly RadarConfiguration _config = new RadarConfiguration();
         private sealed class RadarConfiguration : OverlayConfiguration
         {
-            public RadarConfiguration() => AllowRescale = false;
+            public RadarConfiguration() => AllowRescale = true;
 
             [ConfigGrouping("Radar", "General options for the radar")]
             public RadarGrouping Radar { get; set; } = new RadarGrouping();
             public class RadarGrouping
             {
+
+                [IntRange(1, 20, 2)]
+                [ToolTip("The refreshrate of this HUD.")]
+                public int Herz { get; set; } = 20;
+
                 [IntRange(50, 250, 2)]
                 public int Width { get; set; } = 250;
 
                 [IntRange(50, 250, 2)]
-                public int Height { get; set; } = 150;
+                public int Height { get; set; } = 250;
 
                 [ToolTip("Display cars inside of the pits.")]
                 public bool ShowPitted { get; set; } = true;
@@ -72,8 +77,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
         private CachedBitmap _cachedCloseCar;
         private CachedBitmap _cachedNearCar;
 
-        private CarDrawingData _carDrawingData = new CarDrawingData();
-        private class CarDrawingData
+        private readonly CarDrawingData _carDrawingData = new CarDrawingData();
+        private sealed class CarDrawingData
         {
             public static readonly int CarWidth = 10;
             public static readonly int CarHeight = 22;
@@ -83,12 +88,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
         public RadarOverlay(Rectangle rectangle) : base(rectangle, "Radar")
         {
-            RefreshRateHz = 20;
+            RefreshRateHz = _config.Radar.Herz;
         }
 
         public override bool ShouldRender()
         {
-
+            if (RaceSessionState.IsFormationLap(pageGraphics.GlobalRed, broadCastRealTime.Phase))
+                return false;
 
             if (RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
                 return true;
@@ -138,7 +144,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                 pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(5, 0, 0, 0) };
                 g.FillRoundedRectangle(pthGrBrush, new Rectangle(0, 0, scaledWidth, scaledHeight), (int)(3 * this.Scale));
 
-                using Pen pen = new Pen(new SolidBrush(Color.FromArgb(180, Color.White)));
+                using Pen pen = new Pen(new SolidBrush(Color.FromArgb(160, Color.White)));
                 pen.DashPattern = new float[] { 2 / this.Scale, 4 / this.Scale };
                 pen.Width = 2f * Scale;
                 g.DrawLine(pen, new PointF(0, scaledHeight / 2), new PointF(scaledWidth, scaledHeight / 2));
@@ -210,7 +216,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 
                 _cachedLocalCar?.Draw(g, (int)(centerX - CarDrawingData.CarWidth / 2), (int)(centerY - CarDrawingData.CarHeight / 2), CarDrawingData.CarWidth, CarDrawingData.CarHeight);
 
-                Brush brush;
                 Matrix originalTransform = g.Transform;
                 foreach (SpottableCar car in _spottables)
                 {
@@ -227,8 +232,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                     transform.RotateAt((float)(-(_playerHeading - car.Heading) * 180f / Math.PI), new PointF(otherCar.Left, otherCar.Top));
                     g.Transform = transform;
 
-                    float opacity = 1f - car.Distance / _config.Proxmity.ShowDistance * 1.5f;
-                    opacity.ClipMin(0.015f);
+                    float opacity = 1f - car.Distance / _config.Proxmity.ShowDistance * 0.75f;
+                    opacity.ClipMin(0.25f);
 
                     CachedBitmap selected = car.Distance switch
                     {
@@ -237,7 +242,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                         _ => _cachedFarCar
                     };
                     selected.Opacity = opacity;
-                    selected.Draw(g, otherCar.Left, otherCar.Top, otherCar.Width, otherCar.Height);
+                    selected.Draw(g, otherCar.Left, otherCar.Top, CarDrawingData.CarWidth, CarDrawingData.CarHeight);
 
                     g.Transform = originalTransform;
                 }

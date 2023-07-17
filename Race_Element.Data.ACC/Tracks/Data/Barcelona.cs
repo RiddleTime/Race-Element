@@ -8,6 +8,7 @@ namespace ACCManager.Data.ACC.Tracks.Data
     internal class Barcelona : AbstractTrackData
     {
         public override Guid Guid => new Guid("c47d348d-4cac-4377-90ff-be3613bc6519");
+        public override string GameName => "Barcelona";
         public override string FullName => "Circuit de Barcelona-Catalunya";
         public override int TrackLength => 4655;
 
@@ -30,5 +31,6 @@ namespace ACCManager.Data.ACC.Tracks.Data
             { new FloatRangeStruct(0.9000266f, 0.9133028f), (15, "Chicane RACC") },
             { new FloatRangeStruct(0.917703f, 0.9730397f), (16, "New Holland") }
         };
+
     }
 }

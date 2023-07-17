@@ -64,7 +64,7 @@ namespace RaceElement.Data.ACC.Database.GameData
             var result = Collection.FindOne(x => x.ParseName == trackParseName);
             if (result == null)
             {
-                TrackData.Tracks.TryGetValue(trackParseName, out AbstractTrackData trackData);
+                AbstractTrackData trackData = NewTracks.FirstOrDefault(x => x.GameName == trackParseName);
                 Insert(new DbTrackData() { ParseName = trackParseName, Id = trackData.Guid });
                 result = Collection.FindOne(x => x.ParseName == trackParseName);
             }

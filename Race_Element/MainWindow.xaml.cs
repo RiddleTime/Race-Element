@@ -61,8 +61,6 @@ namespace RaceElement
             _uiSettings = new UiSettings();
             _accManagerSettings = new AccManagerSettings();
 
-            this.MouseLeftButtonDown += TitleBar_MouseLeftButtonDown;
-            this.MouseLeftButtonUp += TitleBar_MouseLeftButtonUp;
             this.titleBar.MouseLeftButtonDown += TitleBar_MouseLeftButtonDown;
             this.titleBar.MouseLeftButtonUp += TitleBar_MouseLeftButtonUp;
             this.titleBar.MouseLeave += (s, e) => { _stopDecreaseOpacty = true; e.Handled = true; this.Opacity = MaxOpacity; };
@@ -183,7 +181,7 @@ namespace RaceElement
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            App.Instance._startScreenOverlay.Stop(true);
+            App.Instance._startScreenOverlay.Stop(false);
             App.Instance._startScreenOverlay.Dispose();
 
             ThreadPool.QueueUserWorkItem(x =>
@@ -203,7 +201,6 @@ namespace RaceElement
                 Thread.Sleep(2000);
                 GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
                 UpdateUsage();
-                FileUtil.CleanDownloadCache();
             });
 
             if (!App.Instance.StartMinimized)
@@ -234,6 +231,7 @@ namespace RaceElement
             ACCTrackerDispose.Dispose();
             HudOptions.Instance.DisposeKeyboardHooks();
             SteeringLockTracker.Instance.Dispose();
+            FileUtil.CleanDownloadCache();
 
             Environment.Exit(0);
         }
@@ -245,6 +243,7 @@ namespace RaceElement
             ACCTrackerDispose.Dispose();
             HudOptions.Instance.DisposeKeyboardHooks();
             SteeringLockTracker.Instance.Dispose();
+            FileUtil.CleanDownloadCache();
 
             Environment.Exit(0);
         }

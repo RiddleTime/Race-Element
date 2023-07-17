@@ -8,6 +8,7 @@ namespace ACCManager.Data.ACC.Tracks.Data
     internal class Zandvoort : AbstractTrackData
     {
         public override Guid Guid => new Guid("e7a091a3-b2c1-4903-8768-591a937858ea");
+        public override string GameName => "Zandvoort";
         public override string FullName => "Circuit Zandvoort";
         public override int TrackLength => 4252;
 

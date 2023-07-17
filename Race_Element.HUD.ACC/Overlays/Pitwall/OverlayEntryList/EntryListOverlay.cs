@@ -271,12 +271,12 @@ Description = "(BETA) A table representing a leaderboard.")]
 
                         firstRow[3] = $"L{kv.Value.RealtimeCarUpdate.Laps + 1} | ";
 
-                        if (Tracks.Any())
+                        if (NewTracks.Any())
                         {
-                            var matchingTracks = Tracks.Where(x => x.Value.FullName == broadCastTrackData.TrackName);
+                            var matchingTracks = NewTracks.Where(x => x.GameName == broadCastTrackData.TrackName);
                             if (matchingTracks.Any())
                             {
-                                var currentTrack = matchingTracks.First().Value;
+                                var currentTrack = matchingTracks.First();
                                 if (currentTrack.CornerNames.Any())
                                 {
                                     var items = currentTrack.CornerNames.Where(x => x.Key.IsInRange(kv.Value.RealtimeCarUpdate.SplinePosition));
