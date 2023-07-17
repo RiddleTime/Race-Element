@@ -8,7 +8,8 @@ namespace RaceElement.Controls
         {
             {"0.2.1.6", "- Radar HUD: Updated scaling."+
                         "\n- Track Corners HUD: Updated trigger that updates the track."+
-                        "\n- Fix Brake bias data for Honda NSX GT3 Evo (2019)."},
+                        "\n- Fix Brake bias data for Honda NSX GT3 Evo (2019)."+
+                        "\n- Fix cleaning of setup importer download cache intervening with importing of setups."},
             {"0.2.1.4", "- Radar HUD: more progress on and design, beta version now."+
                         "\n- Shift Indicator HUD: Pit limiter indication is now animated."},
             {"0.2.1.2", "- Fix Current Gear HUD."+

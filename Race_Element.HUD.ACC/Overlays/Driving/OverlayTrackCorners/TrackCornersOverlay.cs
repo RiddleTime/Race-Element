@@ -11,8 +11,6 @@ using RaceElement.Util.SystemExtensions;
 using System;
 using static RaceElement.Data.ACC.Tracks.TrackData;
 using RaceElement.Data.ACC.EntryList;
-using RaceElement.Data.ACC.Tracks;
-using System.Diagnostics;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 {
