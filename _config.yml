@@ -46,12 +46,15 @@ dash:
     - url: https://discord.gg/26AAEW5mUq 
       icon: discord
       color: purple
+    - url: https://twitter.com/Race_Element
+      icon: twitter
+      color: blue
     - url: https://github.com/RiddleTime/Race-Element
       icon: github
       color: white
     - url: https://race.elementfuture.com/2023/01/12/get-started.html
       icon: arrow-alt-circle-down
-      color: orange  
+      color: orange
       
   avatar_source: local
   avatar_path: /other resources/race element icon 2.png
