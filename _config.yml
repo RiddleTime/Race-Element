@@ -23,6 +23,9 @@ description: > # this means to ignore newlines until "show_exerpts:"
       font-family: 'Roboto', sans-serif;
     }
   </style>
+  <head>
+    <link rel="icon" type="image/png" href="/other resources/race element icon 2.png">
+  </head>
 show_excerpts: false # set to true to show excerpts on the homepage
 
 paginate: 5
