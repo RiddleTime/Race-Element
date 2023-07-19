@@ -26,7 +26,8 @@ description: > # this means to ignore newlines until "show_exerpts:"
   
   <script>
     (function() {
-      var link = document.querySelector("link[rel*='png']") || document.createElement('link');
+      document.querySelector("link[rel*='icon']").remove();
+      var link =  ocument.createElement('link');
       link.type = 'image/png';
       link.rel = 'icon';
       link.href = '/other resources/race element icon 2.png';
