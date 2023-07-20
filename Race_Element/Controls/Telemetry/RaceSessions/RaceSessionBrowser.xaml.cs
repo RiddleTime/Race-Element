@@ -354,6 +354,7 @@ namespace RaceElement.Controls
                 RowBackground = Brushes.Transparent,
                 VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
                 HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                CanUserResizeColumns = false,
             };
             grid.Margin = new Thickness(0);
 
