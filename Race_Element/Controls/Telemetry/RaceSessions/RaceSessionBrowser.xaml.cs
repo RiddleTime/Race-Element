@@ -26,11 +26,9 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using DataGridTextColumn = MaterialDesignThemes.Wpf.DataGridTextColumn;
-using AbstractTrackData = RaceElement.Data.ACC.Tracks.TrackData.AbstractTrackData;
 using RaceElement.Controls.Util;
 using System.Collections.Specialized;
 using System.Globalization;
-using RaceElement.Broadcast.Structs;
 
 namespace RaceElement.Controls
 {
@@ -94,7 +92,6 @@ namespace RaceElement.Controls
 
                 var yearGroupings = dataDir.EnumerateFiles()
                     .Where(x => !x.Name.Contains("log") && x.Extension == ".rwdb")
-                    .OrderByDescending(x => x.LastWriteTimeUtc)
                     .GroupBy(x => x.CreationTimeUtc.Year);
 
                 Dispatcher.Invoke(() =>
@@ -104,7 +101,7 @@ namespace RaceElement.Controls
                     DateTime now = DateTime.Now;
 
                     Thickness itemThickness = new Thickness(2, 5, 2, 5);
-                    foreach (var yearGroup in yearGroupings)
+                    foreach (var yearGroup in yearGroupings.OrderByDescending(x => x.First().CreationTime.Year))
                     {
                         TreeViewItem yearItem = new TreeViewItem()
                         {
@@ -117,7 +114,7 @@ namespace RaceElement.Controls
 
                         localRaceWeekends.Items.Add(yearItem);
 
-                        var monthGroupings = yearGroup.GroupBy(x => x.CreationTimeUtc.Month);
+                        var monthGroupings = yearGroup.OrderByDescending(x => x.CreationTime.Month).GroupBy(x => x.CreationTimeUtc.Month);
                         foreach (var monthGroup in monthGroupings)
                         {
                             TreeViewItem monthItem = new TreeViewItem()
@@ -349,7 +346,6 @@ namespace RaceElement.Controls
                 SelectionMode = DataGridSelectionMode.Single,
                 SelectionUnit = DataGridSelectionUnit.FullRow,
                 GridLinesVisibility = DataGridGridLinesVisibility.Vertical,
-                FontWeight = FontWeights.ExtraBold,
                 AlternatingRowBackground = new SolidColorBrush(Color.FromArgb(25, 0, 0, 0)),
                 RowBackground = Brushes.Transparent,
                 VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
