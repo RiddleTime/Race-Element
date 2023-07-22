@@ -7,8 +7,8 @@ namespace RaceElement.Controls
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
             {"0.2.1.8", "- Track Corner Names: Adjusted Mount Panorama."+
-                        "\n- Data Tab: Updated styling of laptime table."+
-                        "\n- Main Menu: Bigger icons, smaller width."},
+                        "\n- Data Tab: New Design of Laptime Table."+
+                        "\n- New Design of Left Side Menu."},
             {"0.2.1.6", "- Radar HUD: Updated scaling."+
                         "\n- Track Corners HUD: Updated trigger that updates the track."+
                         "\n- Fix Brake bias data for Honda NSX GT3 Evo (2019)."+
