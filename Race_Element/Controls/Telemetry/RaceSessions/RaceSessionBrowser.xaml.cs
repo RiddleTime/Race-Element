@@ -352,16 +352,12 @@ namespace RaceElement.Controls
                 HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
                 CanUserResizeColumns = false,
             };
-            grid.Margin = new Thickness(0);
 
             int fastestLapIndex = laps.GetFastestLapIndex();
             grid.LoadingRow += (s, e) =>
             {
                 DataGridRowEventArgs ev = e;
                 DbLapData lapData = (DbLapData)ev.Row.DataContext;
-
-                ev.Row.Margin = new Thickness(0);
-                ev.Row.Padding = new Thickness(0);
 
                 if (!lapData.IsValid)
                     ev.Row.Foreground = Brushes.OrangeRed;
@@ -396,7 +392,7 @@ namespace RaceElement.Controls
 
             grid.Columns.Add(new DataGridTextColumn()
             {
-                Header = new TextBlock() { Text = "#", ToolTip = "Lap", Margin = new Thickness(0) },
+                Header = new TextBlock() { Text = "#", ToolTip = "Lap" },
                 Binding = new Binding("Index"),
                 SortDirection = System.ComponentModel.ListSortDirection.Descending,
                 FontWeight = FontWeights.DemiBold,

@@ -13,7 +13,7 @@
         <!-- https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit -->
         <ResourceDictionary x:Key="materialTheme">
             <ResourceDictionary.MergedDictionaries>
-                <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="Cyan" />
+                <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="DeepOrange" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
