@@ -65,8 +65,8 @@
                             Kind="Information"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
-                            Height="24"
-                            Width="24"
+                            Height="32"
+                            Width="32"
                         Foreground="White"    
                         />
                         <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" FontFamily="{StaticResource Conthrax}" FontSize="14">Info</TextBlock>
@@ -92,7 +92,7 @@
 
             <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabHUD" Height="66">
                 <TabItem.Header>
-                    <Grid  Margin="0">
+                    <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
@@ -102,8 +102,8 @@
                             Kind="MonitorDashboard"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
-                            Height="24"
-                            Width="24"
+                            Height="32"
+                            Width="32"
                         Foreground="White"    
                         />
                         <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" FontFamily="{StaticResource Conthrax}" FontSize="14" >
@@ -137,8 +137,8 @@
                             Kind="Analytics"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
-                            Height="24"
-                            Width="24"
+                            Height="32"
+                            Width="32"
                         Foreground="White"    
                         />
                         <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" FontFamily="{StaticResource Conthrax}" FontSize="14" >
@@ -172,8 +172,8 @@
                             Kind="SpannerOutline"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
-                            Height="24"
-                            Width="24"
+                            Height="32"
+                            Width="32"
                         Foreground="White"    
                         />
                         <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" FontFamily="{StaticResource Conthrax}" FontSize="14" >Setups</TextBlock>
@@ -208,8 +208,8 @@
                             Kind="Paintbrush"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
-                            Height="24"
-                            Width="24"
+                            Height="32"
+                            Width="32"
                         Foreground="White"    
                         />
                         <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" FontFamily="{StaticResource Conthrax}" FontSize="14" >Liveries</TextBlock>
@@ -241,8 +241,8 @@
                             Kind="Calculator"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
-                            Height="24"
-                            Width="24"
+                            Height="32"
+                            Width="32"
                         Foreground="White"    
                         />
                         <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" FontFamily="{StaticResource Conthrax}" FontSize="14" >Tools</TextBlock>
@@ -274,8 +274,8 @@
                             Kind="Cog"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
-                            Height="24"
-                            Width="24"
+                            Height="32"
+                            Width="32"
                         Foreground="White"    
                         />
                         <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" FontFamily="{StaticResource Conthrax}" FontSize="14" >
@@ -299,15 +299,15 @@
 
         </TabControl>
 
-        <Button x:Name="buttonPlayACC" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="104" Height="55" Margin="4" Style="{StaticResource MaterialDesignRaisedDarkButton}" ToolTip="Launch Assetto Corsa Competizione">
+        <Button x:Name="buttonPlayACC" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="92" Height="64" Margin="4" Style="{StaticResource MaterialDesignRaisedDarkButton}" ToolTip="Launch Assetto Corsa Competizione">
             <TextBlock TextAlignment="Center" FontFamily="{StaticResource Conthrax}" FontSize="18">
                 <materialDesign:PackIcon
                     Grid.Row="0"
                     Kind="Steam"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"
-                    Height="26"
-                    Width="26"
+                    Height="32"
+                    Width="32"
                     Foreground="White"/>
                 <LineBreak/>
                 Play
