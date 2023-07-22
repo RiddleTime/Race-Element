@@ -19,20 +19,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <!--Background="#7F000000"-->
-    <Grid  x:Name="backGround">
-        <Grid.Style>
-            <Style TargetType="{x:Type Grid}">
-                <Setter Property="Background">
-                    <Setter.Value>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="0.5,0">
-                            <GradientStop Color="#35FF4500" Offset="0.0"/>
-                            <GradientStop Color="#90000000" Offset="0.8"/>
-                        </LinearGradientBrush>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-        </Grid.Style>
+    <Grid Background="#7F000000" x:Name="backGround">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="7"/>
             <ColumnDefinition Width="*"/>
