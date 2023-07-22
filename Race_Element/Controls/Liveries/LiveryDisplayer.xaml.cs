@@ -381,6 +381,7 @@ namespace RaceElement.Controls
                 {85,"Malta" },
                 {29,"Mexico" },
                 {15,"Monaco" },
+                {88,"Morocco" },
                 {63,"Nepal" },
                 {12,"Netherlands" },
                 {64,"New Caledonia" },

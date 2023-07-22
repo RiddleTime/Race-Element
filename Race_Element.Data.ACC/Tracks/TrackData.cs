@@ -28,12 +28,14 @@ namespace RaceElement.Data.ACC.Tracks
         {
             get
             {
-                if (_tracks.Count == 0)
+                if (!_tracks.Any())
                 {
                     foreach (var type in Assembly.GetExecutingAssembly().GetTypes().Where(x => x.IsClass && x.UnderlyingSystemType.BaseType == typeof(AbstractTrackData)))
                         _tracks.Add((AbstractTrackData)Activator.CreateInstance(type));
+
                     _tracks.Sort((x, y) => x.GameName.CompareTo(y.GameName));
                 }
+
                 return _tracks;
             }
         }

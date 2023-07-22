@@ -86,7 +86,7 @@
                                 <TextBlock Grid.Column="1" Foreground="White" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Right" Text=" GitHub"></TextBlock>
                             </Grid>
                         </Button>
-                        <Button x:Name="buttonDonate" Margin="0,10,0,0" Height="44" ToolTip="Make RiddleTime save up for loadcell pedals." Padding="0" Background="Black" BorderBrush="Black">
+                        <Button x:Name="buttonDonate" Margin="0,10,0,0" Height="44" ToolTip="Support Development" Padding="0" Background="Black" BorderBrush="Black">
                             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="5*"/>
