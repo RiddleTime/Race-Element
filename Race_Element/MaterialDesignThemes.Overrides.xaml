@@ -20,8 +20,53 @@
             </Style>
 
             <Style BasedOn="{StaticResource MaterialDesignTabItem}" x:Key="MaterialDesignTabItem" TargetType="{x:Type TabItem}">
-                <Setter Property="Padding" Value="10,0"/>
+                <Setter Property="Padding" Value="0"/>
                 <Setter Property="Margin" Value="0"/>
+                <Setter Property="IsTabStop" Value="False"/>
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Background" Value="#A2FF4500"/>
+                            <Setter.Value>
+                                <LinearGradientBrush StartPoint="0.2,0.2" EndPoint="1,1">
+                                    <GradientStop Color="#FFFF4500" Offset="0.0"/>
+                                    <GradientStop Color="#90000000" Offset="1.0"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="HoverGrid" TargetType="{x:Type Grid}">
+                <Setter Property="Height" Value="64"/>
+                <Setter Property="Width" Value="88"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0.2,0.2" EndPoint="1,0.8">
+                            <GradientStop Color="#10FFFFFF" Offset="0.0"/>
+                            <GradientStop Color="#45000000" Offset="0.8"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+
+                <Setter Property="UseLayoutRounding" Value="True"/>
+
+
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="#20FFFFFF" Offset="0.0"/>
+                                    <GradientStop Color="#80000000" Offset="0.8"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Opacity" Value="1"/>
+                    </Trigger>
+                </Style.Triggers>
             </Style>
         </ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>

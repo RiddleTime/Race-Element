@@ -67,7 +67,7 @@ namespace RaceElement
             this.titleBar.DragLeave += (s, e) => { _stopDecreaseOpacty = true; e.Handled = true; this.Opacity = MaxOpacity; };
             this.titleBar.MouseDoubleClick += (s, e) => { _stopDecreaseOpacty = true; e.Handled = true; this.Opacity = MaxOpacity; };
 
-            this.buttonPlayACC.Click += (sender, e) => Process.Start(new ProcessStartInfo()
+            this.gridPlayACC.MouseLeftButtonUp += (sender, e) => Process.Start(new ProcessStartInfo()
             {
                 FileName = "cmd",
                 Arguments = $"/c start steam://rungameid/805550",
