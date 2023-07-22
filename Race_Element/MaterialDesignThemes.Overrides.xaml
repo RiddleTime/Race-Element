@@ -4,6 +4,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
         <ResourceDictionary>
+            
             <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="{x:Type DataGridCell}">
                 <Setter Property="Padding" Value="6,3,8,5" />
                 <Setter Property="FontStyle" Value="Normal"/>
@@ -26,6 +27,7 @@
                 <Style.Triggers>
                     <Trigger Property="IsSelected" Value="True">
                         <Setter Property="Background" Value="#A2FF4500"/>
+                        <Setter Property="Background">
                             <Setter.Value>
                                 <LinearGradientBrush StartPoint="0.2,0.2" EndPoint="1,1">
                                     <GradientStop Color="#FFFF4500" Offset="0.0"/>
@@ -41,6 +43,8 @@
                 <Setter Property="Height" Value="64"/>
                 <Setter Property="Width" Value="88"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="UseLayoutRounding" Value="True"/>
+
                 <Setter Property="Background">
                     <Setter.Value>
                         <LinearGradientBrush StartPoint="0.2,0.2" EndPoint="1,0.8">
@@ -49,9 +53,6 @@
                         </LinearGradientBrush>
                     </Setter.Value>
                 </Setter>
-
-                <Setter Property="UseLayoutRounding" Value="True"/>
-
 
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
@@ -68,6 +69,7 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
+            
         </ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
