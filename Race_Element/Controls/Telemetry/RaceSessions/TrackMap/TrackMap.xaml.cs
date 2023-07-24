@@ -1,5 +1,6 @@
 ﻿using RaceElement.Controls.Telemetry.RaceSessions.Plots;
 using RaceElement.Data.ACC.Database.Telemetry;
+using RaceElement.Util;
 using ScottPlot;
 using ScottPlot.Plottable;
 using System;
@@ -30,17 +31,26 @@ namespace RaceElement.Controls
         {
             InitializeComponent();
 
-            PlotUtil.SetDefaultWpfPlotConfiguration(ref wpfPlot);
-            wpfPlot.Configuration.Zoom = false;
-            wpfPlot.Configuration.Pan = false;
-            var plot = wpfPlot.Plot;
-            PlotUtil.SetDefaultPlotStyles(ref plot);
-            plot.Frameless(true);
-            plot.Grid(false);
-            plot.AxisScaleLock(true, EqualScaleMode.ZoomOut);
+            Loaded += (s, e) =>
+            {
+                try
+                {
+                    PlotUtil.SetDefaultWpfPlotConfiguration(ref wpfPlot);
+                    wpfPlot.Configuration.Zoom = false;
+                    wpfPlot.Configuration.Pan = false;
+                    var plot = wpfPlot.Plot;
+                    PlotUtil.SetDefaultPlotStyles(ref plot);
+                    plot.Frameless(true);
+                    plot.Grid(false);
+                    plot.AxisScaleLock(true, EqualScaleMode.ZoomOut);
+                }
+                catch (Exception ex)
+                {
+                    LogWriter.WriteToLog(ex);
+                }
+            };
 
             this.IsVisibleChanged += TrackMap_IsVisibleChanged;
-
 
             PlotUtil.MarkerIndexChanged += PlotUtil_MarkerIndexChanged;
             PlotUtil.AxisLimitsChanged += PlotUtil_AxisLimitsChanged;
