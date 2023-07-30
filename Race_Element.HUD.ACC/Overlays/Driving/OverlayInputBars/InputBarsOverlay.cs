@@ -1,8 +1,6 @@
-﻿using RaceElement.HUD.Overlay.Configuration;
-using RaceElement.HUD.Overlay.Internal;
+﻿using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.OverlayUtil.ProgressBars;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
