@@ -10,7 +10,7 @@ using System.Drawing.Drawing2D;
 namespace RaceElement.HUD.ACC.Overlays.OverlayElectronics
 {
     [Overlay(Name = "Electronics",
-        Description = "Shows current Brake Bias, TC1, TC2, ABS and engine map setting.",
+        Description = "Shows current Brake Bias, ABS, TC1, TC2 and engine map setting.",
         OverlayCategory = OverlayCategory.Car,
         OverlayType = OverlayType.Release)]
     internal sealed class ElectronicsOverlay : AbstractOverlay
@@ -44,7 +44,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayElectronics
             _font = FontUtil.FontSegoeMono(11f * this.Scale);
 
             int lineHeight = _font.Height;
-            int unscaledHeaderWidth = 38;
+            int unscaledHeaderWidth = 36;
             int unscaledValueWidth = 44;
 
             int headerWidth = (int)(unscaledHeaderWidth * this.Scale);
@@ -77,6 +77,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayElectronics
             headerRect.Offset(0, lineHeight);
             valueRect.Offset(0, lineHeight);
 
+            _absHeader = new PanelText(_font, headerBackground, headerRect) { StringFormat = headerFormat };
+            _absValue = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
+            headerRect.Offset(0, lineHeight);
+            valueRect.Offset(0, lineHeight);
+
             _tc1Header = new PanelText(_font, headerBackground, headerRect) { StringFormat = headerFormat };
             _tc1Value = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
             headerRect.Offset(0, lineHeight);
@@ -87,16 +92,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayElectronics
             headerRect.Offset(0, lineHeight);
             valueRect.Offset(0, lineHeight);
 
-            _absHeader = new PanelText(_font, headerBackground, headerRect) { StringFormat = headerFormat };
-            _absValue = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
-            headerRect.Offset(0, lineHeight);
-            valueRect.Offset(0, lineHeight);
-
             _mapHeader = new PanelText(_font, headerBackground, headerRect) { StringFormat = headerFormat };
             _mapValue = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
             headerRect.Offset(0, lineHeight);
             valueRect.Offset(0, lineHeight);
-
 
             this.Width = unscaledHeaderWidth + unscaledValueWidth;
             this.Height = (int)(headerRect.Top / this.Scale);
@@ -126,14 +125,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayElectronics
             _brakeBiasHeader.Draw(g, "BB", this.Scale);
             _brakeBiasValue.Draw(g, $"{brakeBias:F1}", this.Scale);
 
+            _absHeader.Draw(g, "ABS", this.Scale);
+            _absValue.Draw(g, $"{pageGraphics.ABS}", this.Scale);
+
             _tc1Header.Draw(g, "TC1", this.Scale);
             _tc1Value.Draw(g, $"{pageGraphics.TC}", this.Scale);
 
             _tc2Header.Draw(g, "TC2", this.Scale);
             _tc2Value.Draw(g, $"{pageGraphics.TCCut}", this.Scale);
-
-            _absHeader.Draw(g, "ABS", this.Scale);
-            _absValue.Draw(g, $"{pageGraphics.ABS}", this.Scale);
 
             _mapHeader.Draw(g, "Map", this.Scale);
             _mapValue.Draw(g, $"{pageGraphics.EngineMap + 1}", this.Scale);
