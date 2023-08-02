@@ -7,7 +7,8 @@ namespace RaceElement.Controls
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
             {"0.2.2.0", "- Laptime Table HUD: Invalid laps now show in red."+
-                        "\n- Electronics HUD: Repositioned ABS after BB instead of after TC2."},
+                        "\n- Electronics HUD: Repositioned ABS after BB instead of after TC2."+
+                        "\n- Tyre Info HUD: Add configurable refreshrate."},
             {"0.2.1.8", "- Track Corner Names: Adjusted Mount Panorama."+
                         "\n- Data Tab: New Design of Laptime Table."+
                         "\n- New Design of Left Side Menu."},
