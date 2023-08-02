@@ -38,6 +38,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
                 [ToolTip("Defines the amount of decimals for the tyre pressure text.")]
                 [IntRange(1, 2, 1)]
                 public int Decimals { get; set; } = 2;
+
+                [ToolTip("Refresh rate in Hz of the HUD.")]
+                [IntRange(1, 8, 1)]
+                public int RefreshRate { get; set; } = 8;
             }
 
             public TyreInfoConfig()
@@ -68,7 +72,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
 
             this.Width = InitialWidth;
             this.Height = InitialHeight;
-            this.RefreshRateHz = 8;
+            this.RefreshRateHz = _config.Information.RefreshRate;
         }
 
         public override void BeforeStart()

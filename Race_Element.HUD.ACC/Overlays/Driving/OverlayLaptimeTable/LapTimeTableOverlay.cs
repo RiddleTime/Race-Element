@@ -5,6 +5,7 @@ using RaceElement.HUD.Overlay.OverlayUtil;
 using System;
 using System.Drawing;
 using System.Linq;
+using static RaceElement.HUD.Overlay.OverlayUtil.InfoTable;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayLaptimeTable
 {
@@ -20,6 +21,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLaptimeTable
             this.Width = 51;
             this.Height = 1;
             this.RefreshRateHz = 2;
+        }
+        public override void SetupPreviewData()
+        {
+            
         }
 
         public override void BeforeStart()
@@ -58,7 +63,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLaptimeTable
                             string sector2 = $"{lap.Value.GetSector2():F3}";
                             string sector3 = $"{lap.Value.GetSector3():F3}";
 
-                            _table?.AddRow($"{lap.Key}", new string[] { $"{lapTimeValue}", sector1, sector2, sector3 });
+                            TableRow row = new TableRow() { Header = $"{lap.Key}", Columns = new string[] { $"{lapTimeValue}", sector1, sector2, sector3 } };
+                            if (!lap.Value.IsValid)
+                                row.ColumnColors = new Color[] { Color.OrangeRed, Color.OrangeRed, Color.OrangeRed, Color.OrangeRed };
+
+                            _table?.AddRow(row);
                         }
                         break;
                     }
@@ -74,7 +83,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLaptimeTable
                                 TimeSpan best = TimeSpan.FromMilliseconds(lap.Value.Time);
                                 lapTimeValue = $"{best:mm\\:ss\\:fff}";
                             }
-                            _table?.AddRow($"{lap.Key}", new string[] { $"{lapTimeValue}" });
+                            TableRow row = new TableRow() { Header = $"{lap.Key}", Columns = new string[] { $"{lapTimeValue}" } };
+                            if (!lap.Value.IsValid)
+                                row.ColumnColors = new Color[] { Color.OrangeRed };
+
+                            _table?.AddRow(row);
                         }
                         break;
                     }
