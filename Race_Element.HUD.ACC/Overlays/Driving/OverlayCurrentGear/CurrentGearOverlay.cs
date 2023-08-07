@@ -4,11 +4,13 @@ using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Linq;
+using Unglide;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
 {
@@ -42,13 +44,26 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
 
         private const int InitialWidth = 80;
         private const int InitialHeight = 72;
-        private readonly List<CachedBitmap> gearBitmaps = new List<CachedBitmap>();
+        private readonly List<CachedBitmap> _gearBitmaps = new List<CachedBitmap>();
+
+        private int _lastGear = -2;
+        private const float MaxOpacity = 1f;
+        private float _opacity = MaxOpacity;
+        private Tweener _gearTweener;
+        private DateTime _gearTweenerStart = DateTime.Now;
+
 
         public CurrentGearOverlay(Rectangle rectangle) : base(rectangle, "Current Gear")
         {
             Width = InitialWidth;
             Height = InitialHeight;
-            RefreshRateHz = 20;
+            RefreshRateHz = 30;
+        }
+
+        public override void SetupPreviewData()
+        {
+            _lastGear = 3;
+            pagePhysics.Gear = 3;
         }
 
         public override void BeforeStart()
@@ -66,7 +81,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
                     _ => $"{i - 1}",
                 };
 
-                gearBitmaps.Add(new CachedBitmap((int)(InitialWidth * this.Scale) + 1, (int)(InitialHeight * this.Scale) + 1, g =>
+                _gearBitmaps.Add(new CachedBitmap((int)(InitialWidth * this.Scale) + 1, (int)(InitialHeight * this.Scale) + 1, g =>
                 {
                     g.TextRenderingHint = TextRenderingHint.AntiAlias;
                     g.TextContrast = 1;
@@ -80,11 +95,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
 
             font.Dispose();
             hatchBrush.Dispose();
+
+            _gearTweener = new Tweener();
         }
 
         public override void BeforeStop()
         {
-            foreach (CachedBitmap cachedBitmap in gearBitmaps)
+            foreach (CachedBitmap cachedBitmap in _gearBitmaps)
                 cachedBitmap?.Dispose();
         }
 
@@ -103,20 +120,37 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
             if (_config.Gear.Spectator)
             {
                 int focusedIndex = broadCastRealTime.FocusedCarIndex;
+
                 if (RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, focusedIndex))
                     lock (EntryListTracker.Instance.Cars)
-                    {
                         if (EntryListTracker.Instance.Cars.Any())
                         {
                             var car = EntryListTracker.Instance.Cars.First(car => car.Key == focusedIndex);
                             currentGear = car.Value.RealtimeCarUpdate.Gear + 2;
                         }
-                    }
             }
 
             return currentGear;
         }
 
-        public override void Render(Graphics g) => gearBitmaps[GetCurrentGear()]?.Draw(g, InitialWidth, InitialHeight);
+        public override void Render(Graphics g)
+        {
+            int currentGear = GetCurrentGear();
+
+            if (_lastGear != currentGear)
+            {
+                _opacity = 0.8f;
+                _gearTweenerStart = DateTime.Now;
+                _gearTweener.Tween(this, new { _opacity = MaxOpacity }, 0.8f);
+                _lastGear = currentGear;
+            }
+
+            if (_opacity < MaxOpacity)
+                _gearTweener.Update(secondsElapsed: (float)DateTime.Now.Subtract(_gearTweenerStart).TotalSeconds);
+
+            CachedBitmap bitmap = _gearBitmaps[currentGear];
+            bitmap.Opacity = _opacity;
+            bitmap?.Draw(g, InitialWidth, InitialHeight);
+        }
     }
 }

@@ -6,7 +6,7 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.2.2.2", "-.. TODO." },
+            {"0.2.2.2", "- Current Gear HUD: Gear shifts are now animated." },
             {"0.2.2.0", "- Laptime Table HUD: Invalid laps now show in red."+
                         "\n- Electronics HUD: Repositioned ABS after BB instead of after TC2."+
                         "\n- Tyre Info HUD: Add configurable refreshrate."+
