@@ -95,6 +95,7 @@
     <Compile Include="Overlays\Driving\OverlayInputTrace\InputTraceOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayLaptimeTable\LapTimeTableConfiguration.cs" />
     <Compile Include="Overlays\Driving\OverlayLaptimeTable\LapTimeTableOverlay.cs" />
+    <Compile Include="Overlays\System\Overlay3D\3dOverlay.cs" />
     <Compile Include="Overlays\System\OverlayMousePosition\MousePositionOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayOpponent\OpponentOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayPressureTrace\PressureTraceOverlay.cs" />
@@ -127,6 +128,10 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Race Element.Core\Race Element.Core.csproj">
+      <Project>{6b29d63b-57cb-4a13-bc5f-9b5f726a3430}</Project>
+      <Name>Race Element.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Race_Element.Broadcast\Race Element.Broadcast.csproj">
       <Project>{840220BD-8469-4A04-A6EC-1ED2BC743EFB}</Project>
       <Name>Race Element.Broadcast</Name>

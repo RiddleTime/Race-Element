@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,6 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Graphics\3D\Enumerations.cs" />
+    <Compile Include="Graphics\3D\GlobalSuppressions.cs" />
+    <Compile Include="Graphics\3D\Orientation3D.cs" />
+    <Compile Include="Graphics\3D\Plotter3D.cs" />
+    <Compile Include="Graphics\3D\Point3D.cs" />
+    <Compile Include="Graphics\3D\Vector3D.cs" />
     <Compile Include="Jobs\AbstractJob.cs" />
     <Compile Include="Jobs\JobScheduler.cs" />
     <Compile Include="Jobs\JobStatus.cs" />
