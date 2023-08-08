@@ -7,12 +7,10 @@ using System.Drawing.Drawing2D;
 namespace RaceElement.HUD.ACC.Overlays.System.Overlay3D
 {
 
-#if DEBUG
     [Overlay(Name = "3D",
-     Description = "3d testing",
-     Version = 1.00,
-     OverlayType = OverlayType.Debug)]
-#endif
+         Description = "3d testing",
+         Version = 1.00,
+         OverlayType = OverlayType.Debug)]
     internal class _3dOverlay : AbstractOverlay
     {
         private _3dConfiguration _config = new _3dConfiguration();
@@ -30,8 +28,8 @@ namespace RaceElement.HUD.ACC.Overlays.System.Overlay3D
 
         public _3dOverlay(Rectangle rectangle) : base(rectangle, "3D")
         {
-            this.Width = 320;
-            this.Height = 300;
+            this.Width = 500;
+            this.Height = 500;
             this.RefreshRateHz = _config.Animation.RefreshRate;
         }
 
@@ -51,8 +49,8 @@ namespace RaceElement.HUD.ACC.Overlays.System.Overlay3D
             plotter3d.PenUp();
             plotter3d.TurnRight(angle * 0.5);
             plotter3d.TurnUp(-angle * 1.2);
-            float cubeSize = 25;
-            plotter3d.MoveTo(new Point3D(160 - cubeSize / 2, 160 - cubeSize / 2, z));
+            float cubeSize = 30;
+            plotter3d.MoveTo(new Point3D(this.Width / 2 - cubeSize / 2, this.Height / 2 - cubeSize / 2, z));
             plotter3d.PenColor = zoomIn ? Color.OrangeRed : Color.Cyan;
             plotter3d.PenWidth = 1.5f;
             plotter3d.PenDown();
@@ -62,18 +60,31 @@ namespace RaceElement.HUD.ACC.Overlays.System.Overlay3D
 
 
             float zAdd = .5f;
+            float maxZoom = 30;
             if (zoomIn)
             {
                 z += zAdd;
-                if (z > 45)
+                if (z > maxZoom)
                     zoomIn = false;
             }
             else
             {
                 z -= zAdd;
-                if (z < -45)
+                if (z < -maxZoom)
                     zoomIn = true;
             }
+
+
+            cubeSize = 25;
+            plotter3d.PenUp();
+            plotter3d.TurnRight(-angle * 1.2);
+            plotter3d.TurnUp(angle * .5);
+            plotter3d.MoveTo(new Point3D(this.Width / 2 - cubeSize / 2, this.Height / 2 - cubeSize / 2, -z));
+            plotter3d.PenColor = zoomIn ? Color.Cyan : Color.OrangeRed;
+            plotter3d.PenWidth = 1.5f;
+            plotter3d.PenDown();
+
+            DrawCube(plotter3d, cubeSize);
         }
 
         public void DrawCube(Plotter3D p, float sideLength)
