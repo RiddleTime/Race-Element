@@ -1,6 +1,7 @@
 ﻿using CPI.Plot3D;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
@@ -10,12 +11,18 @@ namespace RaceElement.HUD.ACC.Overlays.System.Overlay3D
     [Overlay(Name = "3D",
          Description = "3d testing",
          Version = 1.00,
-         OverlayType = OverlayType.Debug)]
+         OverlayType = OverlayType.Release)]
     internal class _3dOverlay : AbstractOverlay
     {
         private _3dConfiguration _config = new _3dConfiguration();
         private class _3dConfiguration : OverlayConfiguration
         {
+
+            public _3dConfiguration()
+            {
+                AllowRescale = true;
+            }
+
             [ConfigGrouping("Animation", "Change animation properties")]
             public AnimationGrouping Animation { get; set; } = new AnimationGrouping();
             public class AnimationGrouping
@@ -23,44 +30,60 @@ namespace RaceElement.HUD.ACC.Overlays.System.Overlay3D
                 [ToolTip("Refreshrate in Hz.")]
                 [IntRange(1, 100, 1)]
                 public int RefreshRate { get; set; } = 30;
+
+                [IntRange(8, 18, 2)]
+                public int CubeSize { get; set; } = 10;
             }
         }
 
+        private DateTime _Timestart = DateTime.Now;
+
         public _3dOverlay(Rectangle rectangle) : base(rectangle, "3D")
         {
-            this.Width = 500;
-            this.Height = 500;
+            this.Width = 300;
+            this.Height = 300;
             this.RefreshRateHz = _config.Animation.RefreshRate;
         }
 
-        int angle = 0;
 
         float z = 0;
         bool zoomIn = false;
 
+        public override void SetupPreviewData()
+        {
+            _Timestart = DateTime.Now.Subtract(new TimeSpan(0, 12, 5));
+            z = 10;
+        }
+
         public override bool ShouldRender() => true;
         public override void Render(Graphics g)
         {
+            using SolidBrush backgroundBrush = new SolidBrush(Color.FromArgb(130, Color.Black));
+            g.FillRectangle(backgroundBrush, new Rectangle(0, 0, this.Width, this.Height));
+
             g.CompositingQuality = CompositingQuality.HighQuality;
             g.SmoothingMode = SmoothingMode.AntiAlias;
-            using Plotter3D plotter3d = new Plotter3D(g, new Point3D(this.Width / 2, this.Height / 2, -90f));
-            plotter3d.AngleMeasurement = AngleMeasurement.Degrees;
+            float scaledWidth = this.Width / this.Scale;
+            float scaledHeight = this.Height / this.Scale;
+
+            using Plotter3D plotter3d = new Plotter3D(g, new Point3D(scaledWidth / 2 + 110, scaledHeight / 2 - 90, _config.Animation.CubeSize * 2.5f));
+
+            float angle = (float)DateTime.Now.Subtract(_Timestart).TotalSeconds;
+            float cubeSize = _config.Animation.CubeSize;
 
             plotter3d.PenUp();
-            plotter3d.TurnRight(angle * 0.5);
-            plotter3d.TurnUp(-angle * 1.2);
-            float cubeSize = 30;
-            plotter3d.MoveTo(new Point3D(this.Width / 2 - cubeSize / 2, this.Height / 2 - cubeSize / 2, z));
-            plotter3d.PenColor = zoomIn ? Color.OrangeRed : Color.Cyan;
-            plotter3d.PenWidth = 1.5f;
+            plotter3d.TurnRight(Math.Sin(angle) * 1.5 + z);
+            plotter3d.TurnUp(-Math.Sin(angle) * 1.2);
+            plotter3d.MoveTo(new Point3D(scaledWidth / 2 - cubeSize, scaledHeight / 2 - cubeSize / 2, z * (z > 0 ? -2 : 2)));
+            plotter3d.PenColor = !zoomIn ? Color.OrangeRed : Color.Cyan;
+            plotter3d.PenWidth = 0.5f;
             plotter3d.PenDown();
 
             DrawCube(plotter3d, cubeSize);
-            angle += 1;
+            plotter3d.PenUp();
 
-
-            float zAdd = .5f;
-            float maxZoom = 30;
+            float zAdd = .25f;
+            float maxZoom = 25;
             if (zoomIn)
             {
                 z += zAdd;
@@ -75,16 +98,16 @@ namespace RaceElement.HUD.ACC.Overlays.System.Overlay3D
             }
 
 
-            cubeSize = 25;
             plotter3d.PenUp();
-            plotter3d.TurnRight(-angle * 1.2);
-            plotter3d.TurnUp(angle * .5);
-            plotter3d.MoveTo(new Point3D(this.Width / 2 - cubeSize / 2, this.Height / 2 - cubeSize / 2, -z));
-            plotter3d.PenColor = zoomIn ? Color.Cyan : Color.OrangeRed;
-            plotter3d.PenWidth = 1.5f;
+            plotter3d.TurnRight(-Math.Sin(angle) * 0.24);
+            plotter3d.TurnUp(Math.Sin(angle) * .5);
+            plotter3d.MoveTo(new Point3D(scaledWidth / 2 - cubeSize / 2 + cubeSize * 3, scaledHeight / 2 - cubeSize / 2, -z * .3f));
+            plotter3d.PenColor = !zoomIn ? Color.Cyan : Color.OrangeRed;
+            plotter3d.PenWidth = 0.5f;
             plotter3d.PenDown();
 
             DrawCube(plotter3d, cubeSize);
+            plotter3d.PenUp();
         }
 
         public void DrawCube(Plotter3D p, float sideLength)
