@@ -49,6 +49,8 @@ namespace RaceElement.HUD.ACC.Overlays.System.Overlay3D
         float z = 0;
         bool zoomIn = false;
 
+        public DateTime StarTime { get; private set; }
+
         public override void SetupPreviewData()
         {
             _Timestart = DateTime.Now.Subtract(new TimeSpan(0, 12, 5));
@@ -56,6 +58,10 @@ namespace RaceElement.HUD.ACC.Overlays.System.Overlay3D
         }
 
         public override bool ShouldRender() => true;
+        public override void BeforeStart()
+        {
+            StarTime = DateTime.UtcNow;
+        }
         public override void Render(Graphics g)
         {
             using SolidBrush backgroundBrush = new SolidBrush(Color.FromArgb(130, Color.Black));
@@ -68,7 +74,7 @@ namespace RaceElement.HUD.ACC.Overlays.System.Overlay3D
 
             using Plotter3D plotter3d = new Plotter3D(g, new Point3D(scaledWidth / 2 + 110, scaledHeight / 2 - 90, _config.Animation.CubeSize * 2.5f));
 
-            float angle = (float)DateTime.Now.Subtract(_Timestart).TotalSeconds;
+            float angle = (float)Math.Sin((float)DateTime.Now.Subtract(_Timestart).TotalSeconds);
             float cubeSize = _config.Animation.CubeSize;
 
             plotter3d.PenUp();
