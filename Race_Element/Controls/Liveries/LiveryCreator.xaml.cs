@@ -24,6 +24,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.IO;
 using Newtonsoft.Json.Serialization;
 using RaceElement.LiveryParser;
+using System.Threading;
 
 namespace RaceElement.Controls.Liveries
 {
@@ -157,6 +158,7 @@ namespace RaceElement.Controls.Liveries
 
             this.Visibility = Visibility.Hidden;
             ClearInput();
+            ThreadPool.QueueUserWorkItem(x => LiveryBrowser.Instance.FetchAllCars());
         }
 
         private void ClearInput()
