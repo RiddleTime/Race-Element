@@ -52,8 +52,6 @@ namespace RaceElement.Controls.Liveries
             textBoxCarNumber.PreviewTextInput += (s, e) => { };
         }
 
-
-
         public static void Show()
         {
             if (Instance == null)
