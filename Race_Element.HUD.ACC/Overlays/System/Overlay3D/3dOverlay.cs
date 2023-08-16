@@ -11,7 +11,7 @@ namespace RaceElement.HUD.ACC.Overlays.System.Overlay3D
     [Overlay(Name = "3D",
          Description = "3d testing",
          Version = 1.00,
-         OverlayType = OverlayType.Release)]
+         OverlayType = OverlayType.Debug)]
     internal class _3dOverlay : AbstractOverlay
     {
         private _3dConfiguration _config = new _3dConfiguration();
