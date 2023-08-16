@@ -330,7 +330,7 @@ namespace RaceElement.Controls
             return label;
         }
 
-        private static readonly Dictionary<int, string> Nationalities = new Dictionary<int, string>()
+        public static readonly Dictionary<int, string> Nationalities = new Dictionary<int, string>()
             {
                 {0,"Other" },
                 {49,"Andorra" },

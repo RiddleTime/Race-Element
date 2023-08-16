@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RaceElement.Controls.Liveries"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Background="#EE111111" Visibility="Collapsed">
@@ -27,13 +28,13 @@
                 <ComboBox x:Name="comboCarModel" Grid.Column="1" />
             </Grid>
 
-            <Grid Margin="0,0,0,5">
+            <Grid Margin="0,0,0,5" ToolTip="This will be used for the name of the custom skin folder">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Label Grid.Column="0" HorizontalAlignment="Center">Livery Name</Label>
+                <Label Grid.Column="0" HorizontalAlignment="Center">Custom Livery Name</Label>
                 <TextBox x:Name="textBoxLiveryName" Grid.Column="1"></TextBox>
             </Grid>
 
@@ -44,11 +45,53 @@
                 </Grid.ColumnDefinitions>
 
                 <Label Grid.Column="0" HorizontalAlignment="Center">Car Number</Label>
-                <TextBox x:Name="textBoxCarNumber" Grid.Column="1" Text="1"></TextBox>
+                <TextBox x:Name="textBoxCarNumber" Grid.Column="1" Text="1"
+                         materialDesign:TextFieldAssist.PrefixText="#" MaxLength="3" materialDesign:TextFieldAssist.CharacterCounterVisibility="Collapsed" />
+            </Grid>
+
+            <Grid Margin="0,0,0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" HorizontalAlignment="Center">Driver Name</Label>
+                <TextBox x:Name="textBoxDriverName" Grid.Column="1" Text=""></TextBox>
+            </Grid>
+
+            <Grid Margin="0,0,0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" HorizontalAlignment="Center">Team Name</Label>
+                <TextBox x:Name="textBoxTeamName" Grid.Column="1" Text=""></TextBox>
+            </Grid>
+
+            <Grid Margin="0,0,0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" HorizontalAlignment="Center">Display Name</Label>
+                <TextBox x:Name="textBoxDisplayName" Grid.Column="1" Text=""></TextBox>
             </Grid>
 
 
-            <Button x:Name="buttonCreate">Create</Button>
+            <Grid Margin="0,0,0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" HorizontalAlignment="Center">Nationality</Label>
+                <ComboBox x:Name="comboNationality" Grid.Column="1" />
+            </Grid>
+
+
+            <Button x:Name="buttonCreate" Margin="0,30,0,0">Create custom livery file and folder</Button>
         </StackPanel>
     </Grid>
 </UserControl>
