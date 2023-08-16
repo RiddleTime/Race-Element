@@ -48,7 +48,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpeedometer
 
         public sealed override void BeforeStart()
         {
-
             if (_config.InfoPanel.MaxSpeed || _config.InfoPanel.MinSpeed)
                 LapTracker.Instance.LapFinished += OnLapFinished;
 

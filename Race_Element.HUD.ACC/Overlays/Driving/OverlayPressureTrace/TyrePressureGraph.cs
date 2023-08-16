@@ -44,9 +44,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace
 
             if (TirePressures.Count > 0)
             {
-                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                g.SmoothingMode = SmoothingMode.AntiAlias;
                 DrawData(g, TirePressures);
-                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
+                g.SmoothingMode = SmoothingMode.Default;
 
                 g.DrawRectangle(new Pen(Color.FromArgb(196, Color.Black)), graphRect);
 

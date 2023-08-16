@@ -126,7 +126,8 @@
 
             </TabControl>
 
-            <Button Grid.Row="2" Margin="3,0,0,0" x:Name="buttonGenerateAllDDS" ToolTip="This will check and generate DDS files for all liveries above.">Generate DDS Files</Button>
+            <Button Grid.Row="2" Margin="3,0,3,0"  x:Name="buttonGenerateAllDDS" ToolTip="This will check and generate DDS files for all liveries above.">Generate DDS Files</Button>
+            <Button Grid.Row="2" Grid.Column="1" Margin="3,0,3,0" x:Name="buttonNewCustomLivery" ToolTip="Create all the files and folders for a new custom livery">Create New Livery</Button>
         </Grid>
         <Grid Grid.Column="1" Margin="3,0,0,0">
             <local:LiveryDisplayer></local:LiveryDisplayer>

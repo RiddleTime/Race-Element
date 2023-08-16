@@ -325,7 +325,7 @@ namespace RaceElement.Data
             else return None;
         }
 
-        private static readonly Dictionary<int, CarModels> IdsToCarModel = new Dictionary<int, CarModels>()
+        public static readonly Dictionary<int, CarModels> IdsToCarModel = new Dictionary<int, CarModels>()
         {
             {0, Porsche_911_GT3_R_2018 },
             {1, Mercedes_AMG_GT3_2015 },
