@@ -17,6 +17,7 @@ using System.Windows.Media;
 using static RaceElement.Controls.LiveryTagging;
 using RaceElement.Controls.Util;
 using MaterialDesignThemes.Wpf;
+using RaceElement.Controls.Liveries;
 
 namespace RaceElement.Controls
 {
@@ -52,6 +53,7 @@ namespace RaceElement.Controls
             buttonRefreshLiveries.Click += (s, e) => ThreadPool.QueueUserWorkItem(x => FetchAllCars()); ;
 
             buttonGenerateAllDDS.Click += ButtonGenerateAllDDS_Click;
+            buttonNewCustomLivery.Click += (s, e) => LiveryCreator.Show();
 
 
             buttonNewTag.Click += (sender, args) =>

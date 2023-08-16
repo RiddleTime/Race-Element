@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RaceElement.Controls"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+             xmlns:liveries="clr-namespace:RaceElement.Controls.Liveries"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              MinWidth="1100"
@@ -21,6 +22,7 @@
 
     <materialDesign:Card>
         <Grid>
+            <liveries:LiveryCreator Panel.ZIndex="999"></liveries:LiveryCreator>
             <local:LiveryDeleter Panel.ZIndex="999"></local:LiveryDeleter>
             <local:LiveryBrowser></local:LiveryBrowser>
         </Grid>
