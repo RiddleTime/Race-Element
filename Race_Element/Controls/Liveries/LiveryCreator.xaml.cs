@@ -37,7 +37,11 @@ namespace RaceElement.Controls.Liveries
         public LiveryCreator()
         {
             InitializeComponent();
-            buttonClose.Click += (s, e) => Instance.Visibility = Visibility.Collapsed;
+            buttonClose.Click += (s, e) =>
+            {
+                Instance.Visibility = Visibility.Collapsed;
+                ClearInput();
+            };
             buttonCreate.Click += (s, e) => Create();
             this.Loaded += (s, e) =>
             {
@@ -90,7 +94,6 @@ namespace RaceElement.Controls.Liveries
         {
             if (!ValidateInput()) return;
 
-
             ComboBoxItem boxItemCarModel = (ComboBoxItem)comboCarModel.SelectedItem;
             ConversionFactory.CarModels selectedModel = (ConversionFactory.CarModels)boxItemCarModel.DataContext;
 
@@ -99,14 +102,14 @@ namespace RaceElement.Controls.Liveries
 
             LiveryTreeCar liveryTreeCar = new LiveryTreeCar()
             {
-                CarsFile = new System.IO.FileInfo($"{RaceElement.Util.FileUtil.CarsPath}{Guid.NewGuid()}.json"),
-                CarsRoot = new LiveryParser.CarsJson.Root()
+                CarsFile = new FileInfo($"{RaceElement.Util.FileUtil.CarsPath}{Guid.NewGuid()}.json"),
+                CarsRoot = new CarsJson.Root()
                 {
                     CarModelType = ConversionFactory.IdsToCarModel.FirstOrDefault(x => x.Value == selectedModel).Key,
                     CustomSkinName = textBoxLiveryName.Text,
 
                     // TODO
-                    RaceNumber = Int32.Parse(textBoxCarNumber.Text),
+                    RaceNumber = int.Parse(textBoxCarNumber.Text),
                     CompetitorName = textBoxDriverName.Text,
                     TeamName = textBoxTeamName.Text,
                     DisplayName = textBoxDisplayName.Text,
@@ -140,7 +143,7 @@ namespace RaceElement.Controls.Liveries
             var jsonSettings = new JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() };
             string carsFileJsonString = JsonConvert.SerializeObject(liveryTreeCar.CarsRoot, Formatting.Indented, jsonSettings);
             File.WriteAllText(liveryTreeCar.CarsFile.FullName, carsFileJsonString);
-            
+
             // create cars folder
             carFolder.Create();
 
@@ -155,6 +158,18 @@ namespace RaceElement.Controls.Liveries
             }
 
             this.Visibility = Visibility.Hidden;
+            ClearInput();
+        }
+
+        private void ClearInput()
+        {
+            textBoxCarNumber.Text = "1";
+            textBoxDisplayName.Text = string.Empty;
+            textBoxDriverName.Text = string.Empty;
+            textBoxLiveryName.Text = string.Empty;
+            textBoxTeamName.Text = string.Empty;
+            comboCarModel.SelectedIndex = 0;
+            comboNationality.SelectedIndex = 0;
         }
 
         private bool ValidateInput()
