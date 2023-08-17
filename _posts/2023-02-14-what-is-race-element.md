@@ -28,7 +28,7 @@ The app represents data recorded during driving into so called Race Weekend Data
 Whilst usually one has to start the game to view car setups, the app itself presents them to be viewed and compared in the Setups tab. Additionally you are able to quickly copy them to the clipboard and import them by drag-and-dropping them on top of the app.
 
 ### Liveries
-The Liveries tab provides functionality to manage liveries. These liveries can be browsed, imported, exported and categorized. Race Element provides some highly effecient methods to do so.
+The Liveries tab provides functionality to manage liveries. These liveries can be created, browsed, imported, exported and categorized. Race Element provides some highly effecient methods to do so.
 
 ### Streaming
 During your stream the app provides a smart functionality that is able to automatically enable a Source when you visit the setup screen in-game. This will allow you to present any kind of Source on top of your existing sources to for example hide your setup and/or provide information about your setups.
