@@ -63,7 +63,8 @@ namespace RaceElement.Controls.Liveries
 
         private void SetupData()
         {
-            foreach (var item in ConversionFactory.CarModelToCarName)
+            if (comboCarModel.Items.Count == 0)
+                foreach (var item in ConversionFactory.CarModelToCarName)
             {
                 if (item.Key == ConversionFactory.CarModels.None)
                     continue;
@@ -77,15 +78,16 @@ namespace RaceElement.Controls.Liveries
             }
             comboCarModel.SelectedIndex = 0;
 
-            foreach (var item in LiveryDisplayer.Nationalities)
-            {
-                ComboBoxItem comboBoxItem = new ComboBoxItem
+            if (comboNationality.Items.Count == 0)
+                foreach (var item in LiveryDisplayer.Nationalities)
                 {
-                    DataContext = item.Key,
-                    Content = item.Value
-                };
-                comboNationality.Items.Add(comboBoxItem);
-            }
+                    ComboBoxItem comboBoxItem = new ComboBoxItem
+                    {
+                        DataContext = item.Key,
+                        Content = item.Value
+                    };
+                    comboNationality.Items.Add(comboBoxItem);
+                }
             comboNationality.SelectedIndex = 0;
         }
 
