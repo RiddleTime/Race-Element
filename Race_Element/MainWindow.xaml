@@ -162,7 +162,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabLiveries" ToolTip="View, Import and Export your Custom Liveries." Height="64">
+            <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabLiveries" ToolTip="View, Create, Import and Export Custom Liveries." Height="64">
                 <TabItem.Header>
                     <Grid Style="{DynamicResource HoverGrid}">
                         <Grid.RowDefinitions>

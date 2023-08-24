@@ -24,6 +24,7 @@
             <ColumnDefinition Width="7"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="140"/>
         </Grid.ColumnDefinitions>
 
@@ -100,6 +101,26 @@
         </Grid>
 
         <Grid Grid.Column="3">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" x:Name="buttonHelp" Margin="0" Padding="0" Style="{StaticResource MaterialDesignFlatSecondaryDarkBgButton}" Background="Transparent" BorderBrush="Transparent" Focusable="False" VerticalAlignment="Center">
+                    <materialDesign:PackIcon
+                        Margin="0"
+                        Kind="QuestionMarkCircleOutline"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Foreground="White"    
+                        Width="24"
+                        Height="24"
+                     />
+                </Button>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="4">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
