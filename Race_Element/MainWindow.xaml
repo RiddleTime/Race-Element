@@ -42,7 +42,7 @@
 
     <Grid x:Name="mainGrid">
         <Grid.RowDefinitions>
-            <RowDefinition x:Name="rowTitleBar" Height="30"/>
+            <RowDefinition x:Name="rowTitleBar" Height="32"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
