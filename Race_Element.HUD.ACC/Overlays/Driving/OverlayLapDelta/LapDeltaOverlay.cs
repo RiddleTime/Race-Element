@@ -13,9 +13,9 @@ using System.Linq;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
 {
-    [Overlay(Name = "Laptime Delta", Description = "A customizable Laptime Delta Bar", OverlayType = OverlayType.Release, Version = 1,
+    [Overlay(Name = "Lap Delta Bar", Description = "A customizable Laptime Delta Bar", OverlayType = OverlayType.Release, Version = 1,
         OverlayCategory = OverlayCategory.Lap)]
-    internal class LapTimeDeltaOverlay : AbstractOverlay
+    internal class LapDeltaOverlay : AbstractOverlay
     {
         private readonly LapTimeDeltaConfiguration _config = new LapTimeDeltaConfiguration();
 
@@ -26,7 +26,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
         private CachedBitmap _cachedPositiveDelta;
         private CachedBitmap _cachedNegativeDelta;
 
-        public LapTimeDeltaOverlay(Rectangle rectangle) : base(rectangle, "Laptime Delta")
+        public LapDeltaOverlay(Rectangle rectangle) : base(rectangle, "Laptime Delta Bar")
         {
             this.Width = _config.Bar.Width + 1;
             this.Height = _config.Bar.Height + 1;

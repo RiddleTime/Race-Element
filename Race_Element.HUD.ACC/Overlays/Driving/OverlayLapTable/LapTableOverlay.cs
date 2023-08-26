@@ -7,16 +7,16 @@ using System.Drawing;
 using System.Linq;
 using static RaceElement.HUD.Overlay.OverlayUtil.InfoTable;
 
-namespace RaceElement.HUD.ACC.Overlays.OverlayLaptimeTable
+namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
 {
-    [Overlay(Name = "Laptime Table", Description = "A table showing laptimes.", OverlayType = OverlayType.Release, Version = 1.00,
+    [Overlay(Name = "Lap Table", Description = "A table showing time for each lap and optionally sectors.", OverlayType = OverlayType.Release, Version = 1.00,
         OverlayCategory = OverlayCategory.Lap)]
-    internal sealed class LapTimeTableOverlay : AbstractOverlay
+    internal sealed class LapTableOverlay : AbstractOverlay
     {
         private readonly LapTimeTableConfiguration _config = new LapTimeTableConfiguration();
 
         private InfoTable _table;
-        public LapTimeTableOverlay(Rectangle rectangle) : base(rectangle, "Laptime Table")
+        public LapTableOverlay(Rectangle rectangle) : base(rectangle, "Lap Table")
         {
             this.Width = 51;
             this.Height = 1;
