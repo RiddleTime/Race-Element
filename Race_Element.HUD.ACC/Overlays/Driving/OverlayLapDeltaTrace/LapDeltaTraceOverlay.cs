@@ -9,10 +9,10 @@ using System.Linq;
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
 {
     [Overlay(Name = "Lap Delta Trace",
-        Description = "Shows a graph of the delta.",
+        Description = "Shows a graph of the lap delta.",
         OverlayCategory = OverlayCategory.Lap,
         OverlayType = OverlayType.Release,
-        Version = 0.1)]
+        Version = 1)]
     internal sealed class LapDeltaTraceOverlay : AbstractOverlay
     {
         private readonly LapDeltaTraceConfiguration _config = new LapDeltaTraceConfiguration();
@@ -78,7 +78,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
             _collector?.SetupPreviewData();
         }
 
-        public sealed override void BeforeStop() => _graph.Dispose();
+        public sealed override void BeforeStop() => _graph?.Dispose();
 
         public override bool ShouldRender()
         {
@@ -93,8 +93,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
 
         public override void Render(Graphics g)
         {
-            _collector.Collect(GetDelta());
-            _graph.Draw(g);
+            _collector?.Collect(GetDelta());
+            _graph?.Draw(g);
         }
 
         private float GetDelta()

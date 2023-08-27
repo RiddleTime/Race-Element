@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
 {
@@ -14,7 +13,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
         public LapDeltaDataCollector(int traceCount)
         {
             TraceCount = traceCount;
-            for(int i = 0; i < TraceCount; i++)
+            for (int i = 0; i < TraceCount; i++)
             {
                 PositiveDeltaData.AddLast(0);
                 NegativeDeltaData.AddLast(0);
@@ -25,20 +24,16 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
         {
             PositiveDeltaData.Clear();
             NegativeDeltaData.Clear();
-            for (int i = 0; i < TraceCount / 3; i++)
+
+            for (int i = 0; i < TraceCount / 2; i++)
             {
                 PositiveDeltaData.AddLast(0);
-                NegativeDeltaData.AddLast((float)(1 + Math.Sin(i / 30d)));
-            }
-            for (int i = 0; i < TraceCount / 3 * 1; i++)
-            {
-                PositiveDeltaData.AddLast(0);
-                NegativeDeltaData.AddLast(0);
+                NegativeDeltaData.AddLast(MaxDelta / 2);
             }
 
-            for (int i = TraceCount / 3 * 2; i < TraceCount; i++)
+            for (int i = TraceCount / 2; i < TraceCount; i++)
             {
-                PositiveDeltaData.AddLast((float)(1 + -Math.Cos(i / 30d)));
+                PositiveDeltaData.AddLast(MaxDelta / 2);
                 NegativeDeltaData.AddLast(0);
             }
         }

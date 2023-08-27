@@ -6,7 +6,7 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.2.2.4", "- Track Corners HUD: Added Circuit Ricardo Tormo Valencia."+
+            {"0.2.3.0", "- Track Corners HUD: Added Circuit Ricardo Tormo Valencia."+
                         "\n- Added Lap Delta Trace HUD: Shows a history of your laptime delta over time."+
                         "\n- Added option for horizontal grid lines for the input trace HUD."+
                         "\n- Main menu: Info tab is now at the bottom."+
