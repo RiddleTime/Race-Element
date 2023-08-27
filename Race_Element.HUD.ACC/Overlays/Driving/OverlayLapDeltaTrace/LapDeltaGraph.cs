@@ -18,6 +18,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
         private readonly CachedBitmap _cachedBackground;
         private readonly Pen _penPositiveDelta;
         private readonly Pen _penNegativeDelta;
+        private readonly Pen _penZeroDelta;
 
         public LapDeltaGraph(int x, int y, int width, int height, LapDeltaDataCollector collector, LapDeltaTraceConfiguration config)
         {
@@ -29,6 +30,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
 
             _penPositiveDelta = new Pen(Color.OrangeRed, config.Chart.LineThickness);
             _penNegativeDelta = new Pen(Color.LimeGreen, config.Chart.LineThickness);
+            _penZeroDelta = new Pen(Color.White, config.Chart.LineThickness);
 
             _cachedBackground = new CachedBitmap(_width + 1, _height + 1, g =>
             {
@@ -55,7 +57,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
 
             DrawData(g, _collector.PositiveDeltaData, _penPositiveDelta);
             DrawData(g, _collector.NegativeDeltaData, _penNegativeDelta);
-            DrawNoData(g, _collector.PositiveDeltaData, _collector.NegativeDeltaData, Pens.White);
+            DrawNoData(g, _collector.PositiveDeltaData, _collector.NegativeDeltaData, _penZeroDelta);
         }
 
         private void DrawNoData(Graphics g, LinkedList<float> data1, LinkedList<float> data2, Pen pen)
@@ -68,6 +70,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
                     {
                         List<Point> subList = new List<Point>();
 
+                        bool first = true;
                         for (int i = 0; i < data1.Count - 1; i++)
                         {
                             float one = data1.ElementAt(i);
@@ -75,13 +78,29 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
 
                             if (one != 0 || two != 0)
                             {
-                                if (subList.Count >= 2)
+                                if (subList.Any())
+                                {
+                                    int x = _x + _width - i * (_width / data1.Count);
+                                    int y = _y + GetRelativeNodeY(0);
+                                    subList.Add(new Point(x, y));
+
                                     points.Add(subList.ToArray());
+                                }
 
                                 subList.Clear();
                             }
                             else
                             {
+                                if (subList.Count == 0 && i > 0)
+                                {
+                                    int xBefore = _x + _width - i - 1 * (_width / data1.Count);
+                                    int yBefore = _y + GetRelativeNodeY(0);
+                                    if (xBefore < _x)
+                                        break;
+
+                                    subList.Add(new Point(xBefore, yBefore));
+                                }
+
                                 int x = _x + _width - i * (_width / data1.Count);
                                 int y = _y + GetRelativeNodeY(0);
 
