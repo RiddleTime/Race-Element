@@ -1,6 +1,6 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
 
-namespace RaceElement.HUD.ACC.Overlays.OverlayLaptimeTable
+namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
 {
     internal sealed class LapTimeTableConfiguration : OverlayConfiguration
     {

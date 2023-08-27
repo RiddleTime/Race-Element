@@ -24,14 +24,21 @@ namespace RaceElement.Controls
             SetAppTitle();
             buttonExit.Click += ButtonExit_Click;
 
-            buttonMinimize.Click += (e, s) => { App.Current.MainWindow.WindowState = WindowState.Minimized; };
-            buttonMaximize.Click += (e, s) =>
+            buttonMinimize.Click += (s, e) => { App.Current.MainWindow.WindowState = WindowState.Minimized; };
+            buttonMaximize.Click += (s, e) =>
             {
                 if (App.Current.MainWindow.WindowState == WindowState.Maximized)
                     App.Current.MainWindow.WindowState = WindowState.Normal;
                 else
                     App.Current.MainWindow.WindowState = WindowState.Maximized;
 
+            };
+            buttonHelp.Click += (s, e) =>
+            {
+                if (MainWindow.Instance.tabControl.SelectedIndex == MainWindow.Instance.tabControl.Items.Count - 1)
+                    MainWindow.Instance.EnqueueSnackbarMessage("The Info tab is already open.");
+                else
+                    MainWindow.Instance.tabControl.SelectedIndex = MainWindow.Instance.tabControl.Items.Count - 1;
             };
 
             this.iconSteeringLock.MouseRightButtonDown += (s, e) =>
@@ -57,24 +64,24 @@ namespace RaceElement.Controls
 
 
 
-//// used for collecting corner numbers in data.acc.tracks
-//#if DEBUG
-//            copySpline.Click += (s, e) =>
-//            {
-//                try
-//                {
-//                    float spline = ACCSharedMemory.Instance.ReadGraphicsPageFile().NormalizedCarPosition;
-//                    MainWindow.Instance.EnqueueSnackbarMessage($"Copied spline position {spline}f");
+            //// used for collecting corner numbers in data.acc.tracks
+            //#if DEBUG
+            //            copySpline.Click += (s, e) =>
+            //            {
+            //                try
+            //                {
+            //                    float spline = ACCSharedMemory.Instance.ReadGraphicsPageFile().NormalizedCarPosition;
+            //                    MainWindow.Instance.EnqueueSnackbarMessage($"Copied spline position {spline}f");
 
-//                    Clipboard.SetText($"{spline}f");
-//                }
-//                catch (Exception)
-//                {// 
-//                }
-//            };
-//#else
-//            copySpline.Visibility = Visibility.Collapsed;
-//#endif
+            //                    Clipboard.SetText($"{spline}f");
+            //                }
+            //                catch (Exception)
+            //                {// 
+            //                }
+            //            };
+            //#else
+            //            copySpline.Visibility = Visibility.Collapsed;
+            //#endif
             this.MouseDoubleClick += TitleBar_MouseDoubleClick;
             Instance = this;
         }

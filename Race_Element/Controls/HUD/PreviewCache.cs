@@ -80,7 +80,7 @@ namespace RaceElement.Controls.HUD
             overlay.pageGraphics.Status = ACCSharedMemory.AcStatus.AC_LIVE;
             overlay.pageGraphics.MandatoryPitDone = false;
             overlay.pageGraphics.NormalizedCarPosition = 0.0472972f;
-            overlay.pageGraphics.DeltaLapTimeMillis = -0137;
+            //overlay.pageGraphics.DeltaLapTimeMillis = -0137;
             overlay.pageGraphics.IsValidLap = true;
             overlay.pageGraphics.WindDirection = 0.1f;
             overlay.pageGraphics.WindSpeed = 16.92f;

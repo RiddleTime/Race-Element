@@ -47,6 +47,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayAccelerometer
 
         public AccelerometerOverlay(Rectangle rectangle) : base(rectangle, "Accelerometer") { }
 
+
+        public override void SetupPreviewData()
+        {
+            pagePhysics.AccG[0] = 0f;
+            pagePhysics.AccG[2] = 0f;
+        }
+
         public sealed override void BeforeStart()
         {
             this.RefreshRateHz = 20;
@@ -54,14 +61,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayAccelerometer
             this.Width = _gMeterSize;
             this.Height = this.Width;
 
-            //if (!this._config.Accelerometer.GText)
-            //{
-            //this.Width = _gMeterSize + 1;
-            //this.Height = this.Width;
-            //_gMeterX = 0;
-            //_gMeterY = 0;
-            //}
-            //else
             _panel = new InfoPanel(10, 62) { DrawBackground = false, DrawRowLines = false, X = _gMeterSize / 2 - 28, Y = _gMeterSize - 34 };
 
             RenderBackgroundBitmap();

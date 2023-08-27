@@ -65,6 +65,9 @@
     <Compile Include="Overlays\Driving\OverlayAccelerometer\AccelerometerOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayBoostGauge\BoostGaugeOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayCarInfo\CarInfoOverlay.cs" />
+    <Compile Include="Overlays\Driving\OverlayLapDeltaTrace\LapDeltaTraceOverlay.cs" />
+    <Compile Include="Overlays\Driving\OverlayLapDeltaTrace\LapDeltaDataCollector.cs" />
+    <Compile Include="Overlays\Driving\OverlayLapDeltaTrace\LapDeltaGraph.cs" />
     <Compile Include="Overlays\Driving\OverlayTrackCorners\TrackCornersOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayCurrentGear\CurrentGearOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayDamage\DamageOverlay.cs" />
@@ -84,8 +87,8 @@
     <Compile Include="Overlays\Driving\OverlayElectronics\ElectronicsOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayInputBars\InputBarsConfiguration.cs" />
     <Compile Include="Overlays\Driving\OverlayInputBars\InputBarsOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayLapTimeDelta\LapTimeDeltaConfiguration.cs" />
-    <Compile Include="Overlays\Driving\OverlayLapTimeDelta\LapTimeDeltaOverlay.cs" />
+    <Compile Include="Overlays\Driving\OverlayLapDelta\LapTimeDeltaConfiguration.cs" />
+    <Compile Include="Overlays\Driving\OverlayLapDelta\LapDeltaOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayLapInfo\LapInfoOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayEcuMapInfo\EcuMapOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayEcuMapInfo\EcuMaps.cs" />
@@ -93,8 +96,8 @@
     <Compile Include="Overlays\Driving\OverlayInputTrace\InputDataCollector.cs" />
     <Compile Include="Overlays\Driving\OverlayInputTrace\InputGraph.cs" />
     <Compile Include="Overlays\Driving\OverlayInputTrace\InputTraceOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayLaptimeTable\LapTimeTableConfiguration.cs" />
-    <Compile Include="Overlays\Driving\OverlayLaptimeTable\LapTimeTableOverlay.cs" />
+    <Compile Include="Overlays\Driving\OverlayLapTable\LapTimeTableConfiguration.cs" />
+    <Compile Include="Overlays\Driving\OverlayLapTable\LapTableOverlay.cs" />
     <Compile Include="Overlays\System\Overlay3D\3dOverlay.cs" />
     <Compile Include="Overlays\System\OverlayMousePosition\MousePositionOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayOpponent\OpponentOverlay.cs" />

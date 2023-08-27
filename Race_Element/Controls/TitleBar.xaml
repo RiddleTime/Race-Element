@@ -24,6 +24,7 @@
             <ColumnDefinition Width="7"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="140"/>
         </Grid.ColumnDefinitions>
 
@@ -103,6 +104,28 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" x:Name="buttonHelp" Margin="0" Padding="0" Style="{StaticResource MaterialDesignFlatSecondaryDarkBgButton}" 
+                        Background="Transparent" BorderBrush="Transparent" Focusable="False" VerticalAlignment="Center"
+                        ToolTip="Opens the Info Tab">
+                    <materialDesign:PackIcon
+                        Margin="0"
+                        Kind="QuestionMarkCircleOutline"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Foreground="White"    
+                        Width="22"
+                        Height="22"
+                     />
+                </Button>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="4">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
@@ -111,29 +134,32 @@
 
                 <Button Grid.Column="0" x:Name="buttonMinimize" Margin="0,0,2,0" Style="{StaticResource MaterialDesignFlatSecondaryLightButton}" Focusable="False" VerticalAlignment="Center">
                     <materialDesign:PackIcon
-                            Kind="WindowMinimize"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            Height="32"
+                        Kind="WindowMinimize"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Width="20"
+                        Height="20"
                         Foreground="White"    
                         />
                 </Button>
                 <Button Grid.Column="1" x:Name="buttonMaximize" Margin="0,0,2,0" Style="{StaticResource MaterialDesignFlatSecondaryLightButton}" Focusable="False" VerticalAlignment="Center">
                     <materialDesign:PackIcon
-                            x:Name="minMaxButton"
-                            Kind="WindowMaximize"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            Height="32"
+                        x:Name="minMaxButton"
+                        Kind="WindowMaximize"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Width="20"
+                        Height="20"
                         Foreground="White"    
                         />
                 </Button>
                 <Button Grid.Column="2" x:Name="buttonExit" Style="{StaticResource MaterialDesignFlatButton}" Focusable="False" VerticalAlignment="Center" >
                     <materialDesign:PackIcon
-                            Kind="CloseBox"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            Height="32"
+                        Kind="CloseBox"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Width="20"
+                        Height="20"
                         Foreground="White">
                     </materialDesign:PackIcon>
                 </Button>

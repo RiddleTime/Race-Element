@@ -54,6 +54,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
         public override void SetupPreviewData()
         {
             pageStatic.Track = "Spa";
+            pageGraphics.NormalizedCarPosition = 0.0472972f;
         }
 
         public override void BeforeStart()
@@ -66,8 +67,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
             int headerWidth = (int)(unscaledHeaderWidth * this.Scale);
 
             RectangleF headerRect = new RectangleF(0, 0, headerWidth, lineHeight);
-            StringFormat headerFormat = new StringFormat() { Alignment = StringAlignment.Center };
-            StringFormat valueFormat = new StringFormat() { Alignment = StringAlignment.Near };
+            StringFormat headerFormat = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near };
+            StringFormat valueFormat = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near };
 
             CachedBitmap headerBackground = new CachedBitmap(headerWidth, lineHeight, g =>
             {

@@ -26,7 +26,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
 
                 [ToolTip("Set the thickness of the lines in the chart.")]
                 [IntRange(1, 4, 1)]
-                public int LineThickness { get; set; } = 1;
+                public int LineThickness { get; set; } = 2;
 
                 [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
                 [IntRange(10, 100, 5)]
@@ -34,6 +34,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
 
                 [ToolTip("Displays the steering input as a white line in the trace.")]
                 public bool SteeringInput { get; set; } = true;
+
+                [ToolTip("Show horizontal grid lines.")]
+                public bool GridLines { get; set; } = true;
             }
 
             public InputTraceConfig()

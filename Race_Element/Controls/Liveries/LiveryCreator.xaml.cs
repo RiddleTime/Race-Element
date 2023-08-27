@@ -63,29 +63,31 @@ namespace RaceElement.Controls.Liveries
 
         private void SetupData()
         {
-            foreach (var item in ConversionFactory.CarModelToCarName)
-            {
-                if (item.Key == ConversionFactory.CarModels.None)
-                    continue;
-
-                ComboBoxItem comboBoxItem = new ComboBoxItem
+            if (comboCarModel.Items.Count == 0)
+                foreach (var item in ConversionFactory.CarModelToCarName)
                 {
-                    DataContext = item.Key,
-                    Content = item.Value
-                };
-                comboCarModel.Items.Add(comboBoxItem);
-            }
+                    if (item.Key == ConversionFactory.CarModels.None)
+                        continue;
+
+                    ComboBoxItem comboBoxItem = new ComboBoxItem
+                    {
+                        DataContext = item.Key,
+                        Content = item.Value
+                    };
+                    comboCarModel.Items.Add(comboBoxItem);
+                }
             comboCarModel.SelectedIndex = 0;
 
-            foreach (var item in LiveryDisplayer.Nationalities)
-            {
-                ComboBoxItem comboBoxItem = new ComboBoxItem
+            if (comboNationality.Items.Count == 0)
+                foreach (var item in LiveryDisplayer.Nationalities)
                 {
-                    DataContext = item.Key,
-                    Content = item.Value
-                };
-                comboNationality.Items.Add(comboBoxItem);
-            }
+                    ComboBoxItem comboBoxItem = new ComboBoxItem
+                    {
+                        DataContext = item.Key,
+                        Content = item.Value
+                    };
+                    comboNationality.Items.Add(comboBoxItem);
+                }
             comboNationality.SelectedIndex = 0;
         }
 
@@ -180,6 +182,9 @@ namespace RaceElement.Controls.Liveries
             if (!ValidateCarNumber())
                 return false;
 
+            if (!ValidateTeamName())
+                return false;
+
             return true;
         }
 
@@ -200,6 +205,17 @@ namespace RaceElement.Controls.Liveries
             if (illegalCharIndex >= 0)
             {
                 MainWindow.Instance.EnqueueSnackbarMessage($"Custom Livery Name: {input[illegalCharIndex]} is not an allowed character.");
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool ValidateTeamName()
+        {
+            if (textBoxTeamName.Text == string.Empty)
+            {
+                MainWindow.Instance.EnqueueSnackbarMessage($"Team Name cannot be empty.");
                 return false;
             }
 
