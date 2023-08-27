@@ -34,6 +34,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
 
                 [ToolTip("Displays the steering input as a white line in the trace.")]
                 public bool SteeringInput { get; set; } = true;
+
+                [ToolTip("Show horizontal grid lines.")]
+                public bool GridLines { get; set; } = true;
             }
 
             public InputTraceConfig()

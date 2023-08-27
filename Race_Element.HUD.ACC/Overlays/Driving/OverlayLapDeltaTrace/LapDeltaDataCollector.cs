@@ -15,6 +15,17 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
         public LapDeltaDataCollector(int traceCount)
         {
             TraceCount = traceCount;
+            for(int i = 0; i < TraceCount; i++)
+            {
+                PositiveDeltaData.AddLast(0);
+                NegativeDeltaData.AddLast(0);
+            }
+        }
+
+        public void SetupPreviewData()
+        {
+            PositiveDeltaData.Clear();
+            NegativeDeltaData.Clear();
             for (int i = 0; i < TraceCount / 3; i++)
             {
                 PositiveDeltaData.AddLast(0);

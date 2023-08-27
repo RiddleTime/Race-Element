@@ -13,7 +13,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
         OverlayCategory = OverlayCategory.Lap,
         OverlayType = OverlayType.Release,
         Version = 0.1)]
-    internal class LapDeltaTraceOverlay : AbstractOverlay
+    internal sealed class LapDeltaTraceOverlay : AbstractOverlay
     {
         private readonly LapDeltaTraceConfiguration _config = new LapDeltaTraceConfiguration();
         internal sealed class LapDeltaTraceConfiguration : OverlayConfiguration
@@ -35,15 +35,18 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
                 public int LineThickness { get; set; } = 1;
 
                 [ToolTip("Sets the maximum amount of delta displayed.")]
-                [FloatRange(0.2f, 10f, 0.1f, 1)]
-                public float MaxDelta { get; set; } = 1.5f;
+                [FloatRange(0.5f, 5f, 0.5f, 1)]
+                public float MaxDelta { get; set; } = 2f;
 
                 [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
                 [IntRange(5, 20, 5)]
                 public int Herz { get; set; } = 5;
 
-                [ToolTip("Show the lap delta trace")]
+                [ToolTip("Show the lap delta trace.")]
                 public bool Spectator { get; set; } = true;
+
+                [ToolTip("Show horizontal grid lines.")]
+                public bool GridLines { get; set; } = true;
             }
 
             public LapDeltaTraceConfiguration()
@@ -52,18 +55,14 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
             }
         }
 
-        private LapDeltaDataCollector _collector;
-        private LapDeltaGraph _graph;
+        private readonly LapDeltaDataCollector _collector;
+        private readonly LapDeltaGraph _graph;
 
         public LapDeltaTraceOverlay(Rectangle rectangle) : base(rectangle, "Lap Delta Trace")
         {
             this.Width = _config.Chart.Width;
             this.Height = _config.Chart.Height;
             this.RefreshRateHz = _config.Chart.Herz;
-        }
-
-        public sealed override void BeforeStart()
-        {
             _collector = new LapDeltaDataCollector(_config.Chart.Width - 1)
             {
                 MaxDelta = _config.Chart.MaxDelta,
@@ -72,8 +71,12 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
             _graph = new LapDeltaGraph(0, 0, _config.Chart.Width - 1, _config.Chart.Height - 1, _collector, _config);
         }
 
-        public sealed override void BeforeStop() => _graph.Dispose();
+        public override void SetupPreviewData()
+        {
+            _collector?.SetupPreviewData();
+        }
 
+        public sealed override void BeforeStop() => _graph.Dispose();
 
         public override bool ShouldRender()
         {
