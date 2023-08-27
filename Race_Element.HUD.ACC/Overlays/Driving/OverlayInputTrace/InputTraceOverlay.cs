@@ -26,7 +26,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
 
                 [ToolTip("Set the thickness of the lines in the chart.")]
                 [IntRange(1, 4, 1)]
-                public int LineThickness { get; set; } = 1;
+                public int LineThickness { get; set; } = 2;
 
                 [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
                 [IntRange(10, 100, 5)]

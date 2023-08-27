@@ -32,21 +32,24 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
 
                 [ToolTip("Set the thickness of the lines in the chart.")]
                 [IntRange(1, 4, 1)]
-                public int LineThickness { get; set; } = 1;
+                public int LineThickness { get; set; } = 2;
 
                 [ToolTip("Sets the maximum amount of delta displayed.")]
-                [FloatRange(0.5f, 5f, 0.5f, 1)]
-                public float MaxDelta { get; set; } = 2f;
+                [FloatRange(0.5f, 3f, 0.5f, 1)]
+                public float MaxDelta { get; set; } = 1f;
 
                 [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
                 [IntRange(5, 20, 5)]
                 public int Herz { get; set; } = 5;
 
-                [ToolTip("Show the lap delta trace.")]
-                public bool Spectator { get; set; } = true;
-
                 [ToolTip("Show horizontal grid lines.")]
                 public bool GridLines { get; set; } = true;
+
+                [ToolTip("Show the lap delta trace when spectating other cars.")]
+                public bool Spectator { get; set; } = true;
+
+                [ToolTip("Hide the Lap Delta Trace HUD during a Race session.")]
+                public bool HideForRace { get; set; } = false;
             }
 
             public LapDeltaTraceConfiguration()
@@ -80,6 +83,9 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
 
         public override bool ShouldRender()
         {
+            if (_config.Chart.HideForRace && !this.IsRepositioning && pageGraphics.SessionType == ACCSharedMemory.AcSessionType.AC_RACE)
+                return false;
+
             if (_config.Chart.Spectator && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
                 return true;
 

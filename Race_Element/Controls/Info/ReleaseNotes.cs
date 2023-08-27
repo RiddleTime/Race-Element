@@ -7,7 +7,8 @@ namespace RaceElement.Controls
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
             {"0.2.2.4", "- Track Corners HUD: Added Circuit Ricardo Tormo Valencia."+
-                        "\n- Renamed several Lap related HUDs, you might need to reconfigure them."},
+                        "\n- Added Lap Delta Trace: Shows a history of your laptime delta over time."+
+                        "\n- Added option for horizontal grid lines for the input trace HUD."},
             {"0.2.2.2", "- Current Gear HUD: Gear shifts are now animated."+
                         "\n- Livery tab: Add Create Livery button, creates files and folders required for a new custom livery."},
             {"0.2.2.0", "- Laptime Table HUD: Invalid laps now show in red."+

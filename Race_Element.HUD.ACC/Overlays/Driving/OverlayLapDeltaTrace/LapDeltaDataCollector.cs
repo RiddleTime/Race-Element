@@ -6,7 +6,6 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
     internal class LapDeltaDataCollector
     {
         private readonly int TraceCount = 300;
-        public int Herz = 30;
         public float MaxDelta { get; set; }
 
         public LinkedList<float> PositiveDeltaData = new LinkedList<float>();
