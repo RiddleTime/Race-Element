@@ -37,6 +37,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
             this.RefreshRateHz = 5;
         }
 
+        public override void SetupPreviewData()
+        {
+            pageGraphics.DeltaLapTimeMillis = -0137;
+        }
+
         public override void BeforeStart()
         {
             try

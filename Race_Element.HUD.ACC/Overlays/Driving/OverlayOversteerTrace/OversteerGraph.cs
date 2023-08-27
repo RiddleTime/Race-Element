@@ -66,15 +66,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
                     for (int i = 0; i < Data.Count - 1; i++)
                     {
                         int x = _x + _width - i * (_width / Data.Count);
-                        lock (Data)
-                        {
-                            int y = _y + GetRelativeNodeY(Data.ElementAt(i));
 
-                            if (x < _x)
-                                break;
+                        int y = _y + GetRelativeNodeY(Data.ElementAt(i));
 
-                            points.Add(new Point(x, y));
-                        }
+                        if (x < _x)
+                            break;
+
+                        points.Add(new Point(x, y));
                     }
 
                 if (points.Count > 0)

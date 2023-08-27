@@ -65,7 +65,9 @@
     <Compile Include="Overlays\Driving\OverlayAccelerometer\AccelerometerOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayBoostGauge\BoostGaugeOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayCarInfo\CarInfoOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayLapDeltaGraph\LapDeltaGraphOverlay.cs" />
+    <Compile Include="Overlays\Driving\OverlayLapDeltaTrace\LapDeltaTraceOverlay.cs" />
+    <Compile Include="Overlays\Driving\OverlayLapDeltaTrace\LapDeltaDataCollector.cs" />
+    <Compile Include="Overlays\Driving\OverlayLapDeltaTrace\LapDeltaGraph.cs" />
     <Compile Include="Overlays\Driving\OverlayTrackCorners\TrackCornersOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayCurrentGear\CurrentGearOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayDamage\DamageOverlay.cs" />
