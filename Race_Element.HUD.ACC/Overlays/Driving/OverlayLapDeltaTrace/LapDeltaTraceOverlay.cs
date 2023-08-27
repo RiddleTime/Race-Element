@@ -69,7 +69,6 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
             _collector = new LapDeltaDataCollector(_config.Chart.Width - 1)
             {
                 MaxDelta = _config.Chart.MaxDelta,
-                Herz = _config.Chart.Herz
             };
             _graph = new LapDeltaGraph(0, 0, _config.Chart.Width - 1, _config.Chart.Height - 1, _collector, _config);
         }

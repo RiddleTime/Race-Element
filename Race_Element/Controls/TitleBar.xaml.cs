@@ -33,7 +33,13 @@ namespace RaceElement.Controls
                     App.Current.MainWindow.WindowState = WindowState.Maximized;
 
             };
-            buttonHelp.Click += (s, e) => MainWindow.Instance.tabControl.SelectedIndex = MainWindow.Instance.tabControl.Items.Count - 1;
+            buttonHelp.Click += (s, e) =>
+            {
+                if (MainWindow.Instance.tabControl.SelectedIndex == MainWindow.Instance.tabControl.Items.Count - 1)
+                    MainWindow.Instance.EnqueueSnackbarMessage("The Info tab is already open.");
+                else
+                    MainWindow.Instance.tabControl.SelectedIndex = MainWindow.Instance.tabControl.Items.Count - 1;
+            };
 
             this.iconSteeringLock.MouseRightButtonDown += (s, e) =>
             {
