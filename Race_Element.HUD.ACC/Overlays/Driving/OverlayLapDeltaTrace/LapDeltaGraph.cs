@@ -71,55 +71,50 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
             if (data1.Count > 0 && data2.Count > 0 && data1.Count == data2.Count)
             {
                 List<Point[]> points = new List<Point[]>();
-                lock (data1)
-                    lock (data2)
+                List<Point> subPoints = new List<Point>();
+
+                for (int i = 0; i < data1.Count - 1; i++)
+                {
+                    float one = data1.ElementAt(i);
+                    float two = data2.ElementAt(i);
+
+                    if (one != 0 || two != 0)
                     {
-                        List<Point> subList = new List<Point>();
-
-                        bool first = true;
-                        for (int i = 0; i < data1.Count - 1; i++)
+                        if (subPoints.Any())
                         {
-                            float one = data1.ElementAt(i);
-                            float two = data2.ElementAt(i);
+                            int x = _x + _width - i * (_width / data1.Count);
+                            int y = _y + GetRelativeNodeY(0);
+                            //subPoints.Add(new Point(x, y));  // TODO: better connection between other line segments
 
-                            if (one != 0 || two != 0)
-                            {
-                                if (subList.Any())
-                                {
-                                    int x = _x + _width - i * (_width / data1.Count);
-                                    int y = _y + GetRelativeNodeY(0);
-                                    subList.Add(new Point(x, y));
-
-                                    points.Add(subList.ToArray());
-                                }
-
-                                subList.Clear();
-                            }
-                            else
-                            {
-                                if (subList.Count == 0 && i > 0)
-                                {
-                                    int xBefore = _x + _width - i - 1 * (_width / data1.Count);
-                                    int yBefore = _y + GetRelativeNodeY(0);
-                                    if (xBefore < _x)
-                                        break;
-
-                                    subList.Add(new Point(xBefore, yBefore));
-                                }
-
-                                int x = _x + _width - i * (_width / data1.Count);
-                                int y = _y + GetRelativeNodeY(0);
-
-                                if (x < _x)
-                                    break;
-
-                                subList.Add(new Point(x, y));
-                            }
+                            points.Add(subPoints.ToArray());
                         }
 
-                        if (subList.Any())
-                            points.Add(subList.ToArray());
+                        subPoints.Clear();
                     }
+                    else
+                    {
+                        if (subPoints.Count == 0 && i > 0)
+                        {
+                            int xBefore = _x + _width - i - 1 * (_width / data1.Count);
+                            int yBefore = _y + GetRelativeNodeY(0);
+                            if (xBefore < _x)
+                                break;
+
+                            subPoints.Add(new Point(xBefore, yBefore));
+                        }
+
+                        int x = _x + _width - i * (_width / data1.Count);
+                        int y = _y + GetRelativeNodeY(0);
+
+                        if (x < _x)
+                            break;
+
+                        subPoints.Add(new Point(x, y));
+                    }
+                }
+
+                if (subPoints.Any())
+                    points.Add(subPoints.ToArray());
 
                 if (points.Count > 0)
                     foreach (Point[] subList in points)

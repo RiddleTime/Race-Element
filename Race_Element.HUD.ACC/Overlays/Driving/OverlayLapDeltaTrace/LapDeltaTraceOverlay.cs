@@ -3,6 +3,7 @@ using RaceElement.Data.ACC.Session;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.Util.SystemExtensions;
+using System;
 using System.Drawing;
 using System.Linq;
 
@@ -75,7 +76,21 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
 
         public override void SetupPreviewData()
         {
-            _collector?.SetupPreviewData();
+            if (_collector != null)
+            {
+                _collector.PositiveDeltaData.Clear();
+                _collector.NegativeDeltaData.Clear();
+
+                for (int i = 0; i <= _config.Chart.Width + 10; i++)
+                {
+                    float randomDelta = (float)Math.Sin(i / Math.PI / 10f);
+                    randomDelta *= (float)Math.Pow(randomDelta, _config.Chart.MaxDelta);
+           
+                    randomDelta.Clip(-_config.Chart.MaxDelta, _config.Chart.MaxDelta);
+
+                    _collector.Collect(randomDelta);
+                }
+            }
         }
 
         public sealed override void BeforeStop() => _graph?.Dispose();
