@@ -55,6 +55,15 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
                 public bool HideForRace { get; set; } = false;
             }
 
+            [ConfigGrouping("Preview", "Customize the data for the preview image.")]
+            public PreviewGrouping Preview { get; set; } = new PreviewGrouping();
+            public class PreviewGrouping
+            {
+                [ToolTip("Data seed for the generated data in the preview image above.")]
+                [IntRange(1, 500, 1)]
+                public int Seed { get; set; } = 121;
+            }
+
             public LapDeltaTraceConfiguration()
             {
                 this.AllowRescale = true;
@@ -83,8 +92,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
                 _collector.PositiveDeltaData.Clear();
                 _collector.NegativeDeltaData.Clear();
 
-                var rand = new Random(120);
-                int walkingMultiplier = 8;
+                var rand = new Random(_config.Preview.Seed);
+                int walkingMultiplier = 100 / _config.Chart.Herz;
                 float[] data = DataGen.RandomWalk(rand, _config.Chart.Width * walkingMultiplier, 0.08f, -0.9f);
                 for (int i = 0; i < data.Length; i += walkingMultiplier)
                 {
