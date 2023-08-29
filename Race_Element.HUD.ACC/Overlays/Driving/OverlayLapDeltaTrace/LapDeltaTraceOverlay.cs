@@ -3,9 +3,11 @@ using RaceElement.Data.ACC.Session;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.Util.SystemExtensions;
+using ScottPlot;
 using System;
 using System.Drawing;
 using System.Linq;
+using System.Security.AccessControl;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
 {
@@ -81,14 +83,15 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
                 _collector.PositiveDeltaData.Clear();
                 _collector.NegativeDeltaData.Clear();
 
-                for (int i = 0; i <= _config.Chart.Width + 10; i++)
+                var rand = new Random(120);
+                int walkingMultiplier = 8;
+                float[] data = DataGen.RandomWalk(rand, _config.Chart.Width * walkingMultiplier, 0.08f, -0.9f);
+                for (int i = 0; i < data.Length; i += walkingMultiplier)
                 {
-                    float randomDelta = (float)Math.Sin(i / Math.PI / 10f);
-                    randomDelta *= (float)Math.Pow(randomDelta, _config.Chart.MaxDelta);
-           
-                    randomDelta.Clip(-_config.Chart.MaxDelta, _config.Chart.MaxDelta);
-
-                    _collector.Collect(randomDelta);
+                    float dataPoint = data[i];
+                    dataPoint *= -0.5f;
+                    dataPoint.Clip(-_config.Chart.MaxDelta, _config.Chart.MaxDelta);
+                    _collector.Collect(dataPoint);
                 }
             }
         }
