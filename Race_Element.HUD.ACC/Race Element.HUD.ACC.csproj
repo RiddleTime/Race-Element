@@ -91,8 +91,8 @@
     <Compile Include="Overlays\Driving\OverlayElectronics\ElectronicsOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayInputBars\InputBarsConfiguration.cs" />
     <Compile Include="Overlays\Driving\OverlayInputBars\InputBarsOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayLapDelta\LapTimeDeltaConfiguration.cs" />
-    <Compile Include="Overlays\Driving\OverlayLapDelta\LapDeltaOverlay.cs" />
+    <Compile Include="Overlays\Driving\OverlayLapDeltaBar\LapTimeDeltaConfiguration.cs" />
+    <Compile Include="Overlays\Driving\OverlayLapDeltaBar\LapDeltaOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayLapInfo\LapInfoOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayEcuMapInfo\EcuMapOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayEcuMapInfo\EcuMaps.cs" />
