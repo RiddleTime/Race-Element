@@ -23,7 +23,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaTrace
 
             [ToolTip("Set the thickness of the lines in the chart.")]
             [IntRange(1, 4, 1)]
-            public int LineThickness { get; set; } = 2;
+            public int LineThickness { get; set; } = 1;
 
             [ToolTip("Sets the maximum amount of delta displayed.")]
             [FloatRange(0.5f, 3f, 0.5f, 1)]
