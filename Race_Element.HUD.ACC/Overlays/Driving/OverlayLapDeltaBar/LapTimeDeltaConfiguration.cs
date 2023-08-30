@@ -1,7 +1,7 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
 using System.Drawing;
 
-namespace RaceElement.HUD.ACC.Overlays.OverlayLapDelta
+namespace RaceElement.HUD.ACC.Overlays.OverlayLapDeltaBar
 {
     internal sealed class LapTimeDeltaConfiguration : OverlayConfiguration
     {

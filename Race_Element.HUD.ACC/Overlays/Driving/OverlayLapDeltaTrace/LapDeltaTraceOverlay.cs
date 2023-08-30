@@ -1,12 +1,13 @@
 ﻿using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.Session;
-using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.Util.SystemExtensions;
+using ScottPlot;
+using System;
 using System.Drawing;
 using System.Linq;
 
-namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
+namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaTrace
 {
     [Overlay(Name = "Lap Delta Trace",
         Description = "Shows a graph of the lap delta.",
@@ -16,48 +17,6 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
     internal sealed class LapDeltaTraceOverlay : AbstractOverlay
     {
         private readonly LapDeltaTraceConfiguration _config = new LapDeltaTraceConfiguration();
-        internal sealed class LapDeltaTraceConfiguration : OverlayConfiguration
-        {
-            [ConfigGrouping("Chart", "Customize the charts refresh rate, data points or change the max amount of delta time.")]
-            public ChartGrouping Chart { get; set; } = new ChartGrouping();
-            public class ChartGrouping
-            {
-                [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
-                [IntRange(50, 800, 10)]
-                public int Width { get; set; } = 300;
-
-                [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
-                [IntRange(80, 250, 10)]
-                public int Height { get; set; } = 120;
-
-                [ToolTip("Set the thickness of the lines in the chart.")]
-                [IntRange(1, 4, 1)]
-                public int LineThickness { get; set; } = 2;
-
-                [ToolTip("Sets the maximum amount of delta displayed.")]
-                [FloatRange(0.5f, 3f, 0.5f, 1)]
-                public float MaxDelta { get; set; } = 1f;
-
-                [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
-                [IntRange(5, 20, 5)]
-                public int Herz { get; set; } = 5;
-
-                [ToolTip("Show horizontal grid lines.")]
-                public bool GridLines { get; set; } = true;
-
-                [ToolTip("Show the lap delta trace when spectating other cars.")]
-                public bool Spectator { get; set; } = true;
-
-                [ToolTip("Hide the Lap Delta Trace HUD during a Race session.")]
-                public bool HideForRace { get; set; } = false;
-            }
-
-            public LapDeltaTraceConfiguration()
-            {
-                this.AllowRescale = true;
-            }
-        }
-
         private readonly LapDeltaDataCollector _collector;
         private readonly LapDeltaGraph _graph;
 
@@ -75,7 +34,22 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
 
         public override void SetupPreviewData()
         {
-            _collector?.SetupPreviewData();
+            if (_collector != null)
+            {
+                _collector.PositiveDeltaData.Clear();
+                _collector.NegativeDeltaData.Clear();
+
+                var rand = new Random(_config.Preview.Seed);
+                int walkingMultiplier = 100 / _config.Chart.Herz * 20;
+                float[] data = DataGen.RandomWalk(rand, _config.Chart.Width * walkingMultiplier, 0.08f / 20, -1.8f / 20);
+                for (int i = 0; i < data.Length; i += walkingMultiplier)
+                {
+                    float dataPoint = data[i];
+                    dataPoint *= -0.5f;
+                    dataPoint.Clip(-_config.Chart.MaxDelta, _config.Chart.MaxDelta);
+                    _collector.Collect(dataPoint);
+                }
+            }
         }
 
         public sealed override void BeforeStop() => _graph?.Dispose();

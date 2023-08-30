@@ -26,6 +26,13 @@ namespace RaceElement.Controls
         {
             InitializeComponent();
 
+
+            buttonWebsite.Click += (sender, e) => Process.Start(new ProcessStartInfo()
+            {
+                FileName = "cmd",
+                Arguments = $"/c start https://race.elementfuture.com/",
+                WindowStyle = ProcessWindowStyle.Hidden,
+            });
             buttonDiscord.Click += (sender, e) => Process.Start(new ProcessStartInfo()
             {
                 FileName = "cmd",
@@ -44,6 +51,10 @@ namespace RaceElement.Controls
                 Arguments = $"/c start https://paypal.me/CompetizioneManager",
                 WindowStyle = ProcessWindowStyle.Hidden,
             });
+            ToolTipService.SetInitialShowDelay(buttonWebsite, 1);
+            ToolTipService.SetInitialShowDelay(buttonDiscord, 1);
+            ToolTipService.SetInitialShowDelay(buttonGithub, 1);
+            ToolTipService.SetInitialShowDelay(buttonDonate, 1);
 
             new Thread(() => CheckNewestVersion()).Start();
 
@@ -68,8 +79,8 @@ namespace RaceElement.Controls
 
             RemoveTempVersionFile();
 #if DEBUG
-                        TitleBar.Instance.SetAppTitle("Dev");
-                        return;
+            TitleBar.Instance.SetAppTitle("Dev");
+            return;
 #endif
 #pragma warning disable CS0162 // Unreachable code detected
 

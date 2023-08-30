@@ -49,62 +49,71 @@
                         </TextBlock>
                     </StackPanel>
 
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="100" VerticalAlignment="Top" Margin="5,5,0,0" >
-                        <Button x:Name="buttonDiscord" Height="36" Padding="0" Background="Black" BorderBrush="Black" ToolTip="Chat/Help/Suggestions">
-                            <Grid HorizontalAlignment="Stretch">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="5*"/>
-                                    <ColumnDefinition Width="10*"/>
-                                </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0" >
+                        <Button x:Name="buttonWebsite"  Height="38" Width="38" ToolTip="Race Element Website" Padding="0" Background="Black" BorderBrush="Black">
+                            <Grid HorizontalAlignment="Center" Style="{DynamicResource HoverGrid}">
                                 <materialDesign:PackIcon
-                                Grid.Column="0"
-                                Kind="Chat"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Left"
-                                Width="22"
-                                Height="22"
-                                Foreground="White"    
-                                />
-                                <TextBlock Grid.Column="1" Foreground="White" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Right" Text=" Discord"></TextBlock>
+                                 Grid.Column="0"
+                                 Kind="Web"
+                                 VerticalAlignment="Stretch"
+                                 HorizontalAlignment="Stretch"
+                                 Width="24"
+                                 Height="24"
+                                 Foreground="White"    
+                                 />
                             </Grid>
                         </Button>
-                        <Button x:Name="buttonGithub" Margin="0,10,0,0" Height="36" Padding="0" Background="Black" BorderBrush="Black">
-                            <Grid HorizontalAlignment="Stretch">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="5*"/>
-                                    <ColumnDefinition Width="10*"/>
-                                </Grid.ColumnDefinitions>
+
+                        <Button x:Name="buttonDiscord" Margin="10,0,0,0" Height="38" Width="38" Padding="0" Background="Black" BorderBrush="Black" ToolTip="Discord - (Guides/Help/Suggestions)">
+                            <Grid HorizontalAlignment="Center" Style="{DynamicResource HoverGrid}">
+                                <materialDesign:PackIcon
+                                    Grid.Column="0"
+                                    Kind="Chat"
+                                    VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Stretch"
+                                    Width="24"
+                                    Height="24"
+                                    Foreground="White"    
+                                    />
+                            </Grid>
+                        </Button>
+                        <Button x:Name="buttonGithub" Margin="10,0,0,0"  Height="38" Width="38" Padding="0" Background="Black" BorderBrush="Black" ToolTip="Race Element Github">
+                            <Grid HorizontalAlignment="Center" Style="{DynamicResource HoverGrid}">
                                 <materialDesign:PackIcon
                                 Grid.Column="0"
                                 Kind="Github"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Left"
-                                Width="22"
-                                Height="22"
+                                VerticalAlignment="Stretch"
+                                HorizontalAlignment="Stretch"
+                                Width="24"
+                                Height="24"
                                 Foreground="White"    
                                 />
-                                <TextBlock Grid.Column="1" Foreground="White" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Right" Text=" GitHub"></TextBlock>
                             </Grid>
                         </Button>
-                        <Button x:Name="buttonDonate" Margin="0,10,0,0" Height="44" ToolTip="Support Development" Padding="0" Background="Black" BorderBrush="Black">
-                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="5*"/>
-                                    <ColumnDefinition Width="8*"/>
-                                </Grid.ColumnDefinitions>
+
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,52,0,0" >
+                        <Button x:Name="buttonDonate" Height="58" ToolTip="Support Development" Padding="0" Background="Black" BorderBrush="Black">
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{DynamicResource HoverGrid}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="9*"/>
+                                    <RowDefinition Height="8*"/>
+                                </Grid.RowDefinitions>
                                 <materialDesign:PackIcon
-                                Grid.Column="0"
+                                Grid.Row="0"
                                 Kind="RocketLaunchOutline"
                                 VerticalAlignment="Center"
-                                HorizontalAlignment="Left"
-                                Width="22"
-                                Height="22"
+                                HorizontalAlignment="Center"
+                                Width="26"
+                                Height="26"
                                 Foreground="Gold"    
                                 />
-                                <TextBlock Grid.Column="1" FontWeight="Bold" Foreground="Gold" Style="{DynamicResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Right" Text=" Donate"></TextBlock>
+                                <TextBlock Grid.Row="1" FontWeight="Bold" FontSize="16" Foreground="Gold" Style="{DynamicResource MaterialDesignButtonTextBlock}" HorizontalAlignment="Center" Text="Donate"></TextBlock>
                             </Grid>
                         </Button>
                     </StackPanel>
+
 
                     <StackPanel x:Name="ReleaseStackPanel" Orientation="Vertical" HorizontalAlignment="Right" Width="250" VerticalAlignment="Top" Margin="10,5,5,0">
                     </StackPanel>

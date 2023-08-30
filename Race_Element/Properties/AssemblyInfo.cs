@@ -42,6 +42,6 @@ using System.Windows;
 )]
 
 //      Major Version, Minor Version, Build Number, Revision
-[assembly: AssemblyVersion("0.2.3.0")]
-[assembly: AssemblyFileVersion("0.2.3.0")]
+[assembly: AssemblyVersion("0.2.3.2")]
+[assembly: AssemblyFileVersion("0.2.3.2")]
 [assembly: NeutralResourcesLanguage("")]

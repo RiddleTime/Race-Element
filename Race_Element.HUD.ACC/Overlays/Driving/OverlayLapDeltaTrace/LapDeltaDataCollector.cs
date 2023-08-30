@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using RaceElement.Util.SystemExtensions;
+using System;
+using System.Collections.Generic;
 
-namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
+namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaTrace
 {
     internal class LapDeltaDataCollector
     {
@@ -20,24 +22,6 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
             }
         }
 
-        public void SetupPreviewData()
-        {
-            PositiveDeltaData.Clear();
-            NegativeDeltaData.Clear();
-
-            for (int i = 0; i < TraceCount / 2; i++)
-            {
-                PositiveDeltaData.AddLast(0);
-                NegativeDeltaData.AddLast(MaxDelta / 2);
-            }
-
-            for (int i = TraceCount / 2; i < TraceCount; i++)
-            {
-                PositiveDeltaData.AddLast(MaxDelta / 2);
-                NegativeDeltaData.AddLast(0);
-            }
-        }
-
         public void Collect(float delta)
         {
             if (delta < 0)
@@ -51,13 +35,11 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
                 NegativeDeltaData.AddFirst(0);
             }
 
-            lock (PositiveDeltaData)
-                if (PositiveDeltaData.Count > TraceCount)
-                    PositiveDeltaData.RemoveLast();
+            if (PositiveDeltaData.Count > TraceCount)
+                PositiveDeltaData.RemoveLast();
 
-            lock (NegativeDeltaData)
-                if (NegativeDeltaData.Count > TraceCount)
-                    NegativeDeltaData.RemoveLast();
+            if (NegativeDeltaData.Count > TraceCount)
+                NegativeDeltaData.RemoveLast();
         }
     }
 }
