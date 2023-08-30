@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaGraph
+namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaTrace
 {
     internal class LapDeltaDataCollector
     {
