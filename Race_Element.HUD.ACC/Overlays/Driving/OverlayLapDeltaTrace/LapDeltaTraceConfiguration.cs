@@ -30,7 +30,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaTrace
             public float MaxDelta { get; set; } = 1f;
 
             [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
-            [IntRange(5, 20, 5)]
+            [IntRange(5, 20, 1)]
             public int Herz { get; set; } = 5;
 
             [ToolTip("Show horizontal grid lines.")]
@@ -49,7 +49,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaTrace
         {
             [ToolTip("Data seed for the generated data in the preview image above.")]
             [IntRange(1, 500, 1)]
-            public int Seed { get; set; } = 121;
+            public int Seed { get; set; } = 122;
         }
 
         public LapDeltaTraceConfiguration()
