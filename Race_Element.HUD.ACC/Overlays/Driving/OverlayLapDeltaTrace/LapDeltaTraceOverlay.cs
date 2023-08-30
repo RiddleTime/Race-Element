@@ -40,8 +40,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaTrace
                 _collector.NegativeDeltaData.Clear();
 
                 var rand = new Random(_config.Preview.Seed);
-                int walkingMultiplier = 100 / _config.Chart.Herz;
-                float[] data = DataGen.RandomWalk(rand, _config.Chart.Width * walkingMultiplier, 0.08f, -0.9f);
+                int walkingMultiplier = 100 / _config.Chart.Herz * 20;
+                float[] data = DataGen.RandomWalk(rand, _config.Chart.Width * walkingMultiplier, 0.08f / 20, -1.8f / 20);
                 for (int i = 0; i < data.Length; i += walkingMultiplier)
                 {
                     float dataPoint = data[i];
