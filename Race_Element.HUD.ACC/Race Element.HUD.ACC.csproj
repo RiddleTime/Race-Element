@@ -102,6 +102,7 @@
     <Compile Include="Overlays\Driving\OverlayInputTrace\InputTraceOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayLapTable\LapTimeTableConfiguration.cs" />
     <Compile Include="Overlays\Driving\OverlayLapTable\LapTableOverlay.cs" />
+    <Compile Include="Overlays\Pitwall\OverlayClock\ClockOverlay.cs" />
     <Compile Include="Overlays\System\Overlay3D\3dOverlay.cs" />
     <Compile Include="Overlays\System\OverlayMousePosition\MousePositionOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayOpponent\OpponentOverlay.cs" />
