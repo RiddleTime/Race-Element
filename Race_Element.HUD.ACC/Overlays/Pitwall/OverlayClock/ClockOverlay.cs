@@ -24,12 +24,15 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayClock
                 AmPm
             }
 
-            [ConfigGrouping("Time", "Change settings that alter the presentation of the time.")]
+            [ConfigGrouping("Clock", "Change settings that alter the presentation of the time.")]
             public InfoPanelGrouping InfoPanel { get; set; } = new InfoPanelGrouping();
             public class InfoPanelGrouping
             {
                 [ToolTip("Change between Full(24h) and AM/PM notation of time.")]
                 public TimeFormat Format { get; set; } = TimeFormat.Full;
+
+                [ToolTip("Renders this HUD regardless of the whether the engine is running or not.")]
+                public bool AlwaysShow { get; set; } = true;
             }
 
             public SystemTimeConfig() => this.AllowRescale = true;
@@ -97,6 +100,14 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayClock
 
             _timeHeader?.Dispose();
             _timeValue?.Dispose();
+        }
+
+        public override bool ShouldRender()
+        {
+            if (_config.InfoPanel.AlwaysShow)
+                return true;
+
+            return base.ShouldRender();
         }
 
         public override void Render(Graphics g)
