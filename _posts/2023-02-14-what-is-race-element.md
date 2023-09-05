@@ -6,7 +6,8 @@ tags: guide
 ---
 
 # Race Element
-Race Element is a lightweight application that is designed to run with minimum system requirements.
+Race Element is a lightweight application for sim racing that is designed to run with minimum system requirements.
+- Get started and download the app: https://race.elementfuture.com/2023/01/12/get-started.html
 
 ## Supported Simulators
 - Assetto Corsa Competizione (ACC)
@@ -21,9 +22,10 @@ Race Element is a lightweight application that is designed to run with minimum s
 ### HUDs
 HUDs(Head-up displays) are 2D graphics that can be used to provide you data whilst driving. There are a various amount of HUDs that each provides you useful information in a minimalistic manner whilst being highly configurable.
 - Scalable
+- Modular
+- Custom Configuration
 - Low performance hit
 - Can be used for stream only
-- Custom Configuration
 
 ### Data
 The app represents data recorded during driving into so called Race Weekend Databases(RWDB files). These Race Weekends can be viewed in the Data tab of the application and provide you essential information such as lap- and sectortimes, fuel usage and the conditions of each lap.
@@ -42,4 +44,5 @@ The Liveries tab provides functionality to manage liveries, Race ELement automat
 - Tag Liveries to Categorize them, create a friends tag
 
 ### Streaming
-During your stream the app provides a smart functionality that is able to automatically enable a Source when you visit the setup screen in-game. This will allow you to present any kind of Source on top of your existing sources to for example hide your setup and/or provide information about your setups.
+- Setup Hider for OBS and Streamlabs.
+- Display HUDs on stream with OBS and Streamlabs.
