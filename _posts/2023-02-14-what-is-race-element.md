@@ -36,7 +36,7 @@ Whilst usually one has to start the game to view car setups, the app itself pres
 - Import setups by drag and drop on-top of the app(even works straight from discord)
 
 ### Liveries
-The Liveries tab provides functionality to manage liveries, Race ELement automatically scans the right folders and shows you all your custom liveries.
+The Liveries tab provides functionality to manage liveries, Race Element automatically scans the right folders and shows you all your custom liveries.
 - Browse the Files and folders of a livery straight from the app
 - Create the base for a Custom Livery on the fly, the days of manually setting up a custom livery are gone
 - Drag and Drop to Import Livery Archives(.zip, .rar, .7z), either single liveries or livery packs
