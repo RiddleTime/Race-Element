@@ -7,7 +7,7 @@ tags: guide
 
 # Race Element
 Race Element is a lightweight application for sim racing that is designed to run with minimum system requirements.
-- Get started and download the app: https://race.elementfuture.com/2023/01/12/get-started.html
+- Get started and download the app: **[Download](https://race.elementfuture.com/2023/01/12/get-started.html "Download")**
 
 ## Supported Simulators
 - Assetto Corsa Competizione (ACC)
