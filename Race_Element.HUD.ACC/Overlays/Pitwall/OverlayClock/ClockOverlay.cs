@@ -112,7 +112,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayClock
 
         public override void Render(Graphics g)
         {
-            _timeHeader.Draw(g, "Time", this.Scale);
+            _timeHeader.Draw(g, "Clock", this.Scale);
             string format = string.Empty;
             switch (_config.InfoPanel.Format)
             {
