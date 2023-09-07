@@ -6,7 +6,8 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.2.3.4", "- Added Clock HUD to Pitwall Tab: Displays your system time in either 24h or am/pm format." },
+            {"0.2.3.4", "- Added Clock HUD to Pitwall Tab: Displays your system time in either 24h or am/pm format."+
+                        "\n- Setup Browser: When opening the tab or refreshing, the current car and track will open in the tree."},
             {"0.2.3.2", "- Fixed Lap Delta Bar HUD Activation."+
                         "\n- Lap Delta Trace HUD: Better data for preview image and more precise adjustment of data collection rate(Herz)."+
                         "\n- Slight rework of Info tab design."},
