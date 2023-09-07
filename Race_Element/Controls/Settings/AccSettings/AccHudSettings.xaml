@@ -19,6 +19,11 @@
                 <Label VerticalAlignment="Center">Show server stats widget</Label>
             </StackPanel>
 
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" ToolTip="Displays or Hides the fps widget in the right bottom of the screen.">
+                <ToggleButton x:Name="toggleFps" Width="50" Height="35" VerticalAlignment="Center" Cursor="Hand"/>
+                <Label VerticalAlignment="Center">Show fps widget</Label>
+            </StackPanel>
+
 
         </StackPanel> 
     </Grid>
