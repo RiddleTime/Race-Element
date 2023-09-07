@@ -18,6 +18,9 @@ using System.Threading.Tasks;
 using RaceElement.Controls.Util;
 using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
+using RaceElement.Data;
+using RaceElement.Data.ACC.Tracks;
+using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace RaceElement.Controls
 {
@@ -33,6 +36,8 @@ namespace RaceElement.Controls
         private readonly FlowDocSetupRenderer _setupRenderer;
         private string _selectedSetup;
 
+
+        // car -> track
         private Dictionary<string, List<string>> _expandedHeaders = new Dictionary<string, List<string>>();
 
         public SetupBrowser()
@@ -40,10 +45,7 @@ namespace RaceElement.Controls
             InitializeComponent();
 
             _setupRenderer = new FlowDocSetupRenderer();
-            ThreadPool.QueueUserWorkItem(x =>
-            {
-                FetchAllSetups();
-            });
+
             setupsTreeView.SelectedItemChanged += SetupsTreeView_SelectedItemChanged;
 
             buttonEditSetup.Click += (o, e) =>
@@ -52,9 +54,28 @@ namespace RaceElement.Controls
                     SetupEditor.Instance.Open(_selectedSetup);
             };
 
+            this.Loaded += (s, e) => ThreadPool.QueueUserWorkItem(x => FetchAllSetups());
+
             Instance = this;
         }
 
+
+        private void ExpandCurrentCombination(string track, string carParseName)
+        {
+            if (track == string.Empty || carParseName == string.Empty)
+                return;
+
+            CarModels carModel = ConversionFactory.ParseCarName(carParseName);
+            ConversionFactory.CarModelToCarName.TryGetValue(carModel, out string carName);
+            AbstractTrackData trackData = TrackData.Tracks.Find(x => track == x.GameName);
+
+            if (!_expandedHeaders.TryGetValue(carName, out List<string> list))
+                _expandedHeaders.Add(carName, new List<string>() { trackData.GameName });
+            else if (!list.Contains(trackData.GameName))
+                _expandedHeaders[carName].Add(Regex.Replace(trackData.GameName, "^[a-z]", m => m.Value.ToUpper()));
+
+            Debug.WriteLine($"Driving: {carName} at: {trackData.FullName}");
+        }
 
         private void SetupsTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
@@ -100,6 +121,13 @@ namespace RaceElement.Controls
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     setupsTreeView.Items.Clear();
+
+
+                    // Pre-expand the current car and track leafs
+                    var staticPage = ACCSharedMemory.Instance.ReadStaticPageFile();
+                    string track = staticPage.Track;
+                    string carModel = staticPage.CarModel;
+                    ExpandCurrentCombination(track, carModel);
 
                     // Find car directories
                     foreach (var carDir in setupsDirectory.GetDirectories())

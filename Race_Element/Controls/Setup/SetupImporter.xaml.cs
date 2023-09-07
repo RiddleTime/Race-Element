@@ -46,7 +46,7 @@ namespace RaceElement.Controls
                     foreach (ListViewItem selectedItem in listViewTracks.SelectedItems)
                     {
                         Import((string)selectedItem.DataContext, false);
-                        var trackData = NewTracks.FirstOrDefault(x => x.GameName == (string)selectedItem.DataContext);
+                        var trackData = Tracks.FirstOrDefault(x => x.GameName == (string)selectedItem.DataContext);
                         sb.Append($", {trackData.FullName}");
                     }
 
@@ -68,7 +68,7 @@ namespace RaceElement.Controls
         private void BuildTrackList()
         {
             this.listViewTracks.Items.Clear();
-            foreach (AbstractTrackData trackData in NewTracks)
+            foreach (AbstractTrackData trackData in Tracks)
             {
                 ListViewItem trackItem = new ListViewItem()
                 {
@@ -117,7 +117,7 @@ namespace RaceElement.Controls
 
                 if (displayMessage)
                 {
-                    AbstractTrackData trackData = NewTracks.FirstOrDefault(x => x.GameName == track);
+                    AbstractTrackData trackData = Tracks.FirstOrDefault(x => x.GameName == track);
                     MainWindow.Instance.EnqueueSnackbarMessage($"Imported setup \"{_setupName}\" for {modelName} at {trackData.FullName}");
                 }
             }
