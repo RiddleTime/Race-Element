@@ -22,6 +22,7 @@ namespace RaceElement.Util
         public static string CustomsPath => AccPath + "Customs\\";
         public static string CarsPath => CustomsPath + "Cars\\";
         public static string LiveriesPath => CustomsPath + "Liveries\\";
+        public static string SetupsPath = AccPath + "Setups\\";
         public static string AccConfigPath => AccPath + "Config\\";
 
         public static string AppDirectory => StripFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
