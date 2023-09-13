@@ -37,7 +37,7 @@
                         <StackPanel x:Name="stackPanelMainInfo" Orientation="Vertical" Grid.Row="0">
                         </StackPanel>
                     </materialDesign:Card>
-                    <Button x:Name="buttonGenerateDDS" Grid.Row="1" Visibility="Hidden" Margin="3" ToolTip="Generate the _0 and _1 dds files so the game doesn't have to do it for you.">Generate DDS Files</Button>
+                    <Button x:Name="buttonGenerateDDS" Grid.Row="1" Visibility="Hidden" Margin="3" ToolTip="Generate the _1 dds files so the game doesn't have to do it for you.">Generate DDS Files</Button>
                 </Grid>
                 <StackPanel x:Name="stackPanelLiveryInfo" Grid.Column="1" HorizontalAlignment="Left" Orientation="Vertical" ScrollViewer.HorizontalScrollBarVisibility="Auto">
                 </StackPanel>

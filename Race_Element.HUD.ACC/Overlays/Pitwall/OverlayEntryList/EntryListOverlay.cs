@@ -271,9 +271,9 @@ Description = "(BETA) A table representing a leaderboard.")]
 
                         firstRow[3] = $"L{kv.Value.RealtimeCarUpdate.Laps + 1} | ";
 
-                        if (NewTracks.Any())
+                        if (Tracks.Any())
                         {
-                            var matchingTracks = NewTracks.Where(x => x.GameName == broadCastTrackData.TrackName);
+                            var matchingTracks = Tracks.Where(x => x.GameName == broadCastTrackData.TrackName);
                             if (matchingTracks.Any())
                             {
                                 var currentTrack = matchingTracks.First();

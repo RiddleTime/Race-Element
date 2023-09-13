@@ -125,7 +125,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
             if (!(pageGraphics.Status == RaceElement.ACCSharedMemory.AcStatus.AC_PAUSE || pageGraphics.Status == RaceElement.ACCSharedMemory.AcStatus.AC_LIVE))
                 return;
 
-            _currentTrack = NewTracks.FirstOrDefault(x => x.GameName == pageStatic.Track);
+            _currentTrack = Tracks.FirstOrDefault(x => x.GameName == pageStatic.Track);
 
             this.Width = (int)_cornerNumberHeader.Rectangle.Width;
 

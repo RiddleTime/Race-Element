@@ -5,14 +5,59 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:RaceElement.Controls"
+             xmlns:hudSettings="clr-namespace:RaceElement.Controls.AccHudSettingsNS"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Margin="2,0,2,0">
     <Grid>
         <TabControl TabStripPlacement="Left">
-            
-            <!--<TabItem Height="60">
+
+            <TabItem Height="60">
                 <TabItem.Header>
-                    <Grid ToolTip="This allows you to save and activate unlisted server ips for lan discovery in the game.">
+                    <Grid ToolTip="This allows you to modify livery settings for acc.">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <materialDesign:PackIcon
+                            Grid.Row="0"
+                            Kind="PaintbrushOutline"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="20"
+                            Width="20"
+                            Foreground="White"    
+                        />
+                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Liveries</TextBlock>
+                    </Grid>
+                </TabItem.Header>
+                <local:AccLiverySettings Margin="2,0,0,0"></local:AccLiverySettings>
+            </TabItem>
+
+            <TabItem Height="60">
+                <TabItem.Header>
+                    <Grid ToolTip="Adjust settings for the in-game ACC HUD.">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <materialDesign:PackIcon
+                       Grid.Row="0"
+                       Kind="MonitorDashboard"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       Height="20"
+                       Width="20"
+                       Foreground="White"    
+                       />
+                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">HUD</TextBlock>
+                    </Grid>
+                </TabItem.Header>
+                <hudSettings:AccHudSettings Margin="2,0,0,0"></hudSettings:AccHudSettings>
+            </TabItem>
+
+            <TabItem Height="60">
+                <TabItem.Header>
+                    <Grid ToolTip="This allows you to modify external camera settings for acc.">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
@@ -24,13 +69,13 @@
                             HorizontalAlignment="Center"
                             Height="20"
                             Width="20"
-                        Foreground="White"    
+                            Foreground="White"    
                         />
-                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Replays</TextBlock>
+                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Camera</TextBlock>
                     </Grid>
                 </TabItem.Header>
-                <local:ReplaySettings Margin="2,0,0,0"></local:ReplaySettings>
-            </TabItem>-->
+                <local:AccCameraSettings Margin="2,0,0,0"></local:AccCameraSettings>
+            </TabItem>
 
             <TabItem Height="60">
                 <TabItem.Header>
@@ -46,7 +91,7 @@
                             HorizontalAlignment="Center"
                             Height="20"
                             Width="20"
-                        Foreground="White"    
+                            Foreground="White"    
                         />
                         <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Serverlist</TextBlock>
                     </Grid>

@@ -248,7 +248,6 @@ namespace RaceElement
             Environment.Exit(0);
         }
 
-
         private System.Windows.Forms.NotifyIcon _notifyIcon;
         private void InitializeSystemTrayIcon()
         {

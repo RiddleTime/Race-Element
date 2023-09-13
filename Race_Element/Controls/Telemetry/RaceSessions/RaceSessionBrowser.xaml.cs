@@ -286,7 +286,7 @@ namespace RaceElement.Controls
                 foreach (DbTrackData track in allTracks)
                 {
                     string trackName;
-                    var trackData = Data.ACC.Tracks.TrackData.NewTracks.FirstOrDefault(x => x.GameName == track.ParseName);
+                    var trackData = Data.ACC.Tracks.TrackData.Tracks.FirstOrDefault(x => x.GameName == track.ParseName);
                     if (trackData == null) trackName = track.ParseName;
                     else trackName = trackData.FullName;
 
@@ -316,7 +316,7 @@ namespace RaceElement.Controls
                     var carModel = ConversionFactory.ParseCarName(carData.ParseName);
                     string carName = ConversionFactory.GetNameFromCarModel(carModel);
                     string trackName = dbTrackData.ParseName;
-                    var trackData = Data.ACC.Tracks.TrackData.NewTracks.FirstOrDefault(x => x.GameName == dbTrackData.ParseName);
+                    var trackData = Data.ACC.Tracks.TrackData.Tracks.FirstOrDefault(x => x.GameName == dbTrackData.ParseName);
                     if (dbTrackData != null) trackName = trackData.FullName;
 
                     session.UtcStart = DateTime.SpecifyKind(session.UtcStart, DateTimeKind.Utc);
@@ -633,7 +633,7 @@ namespace RaceElement.Controls
                 FilterTelemetrySplines(_currentData.ToDictionary(x => x.Key, x => x.Value));
 
 
-                var trackData = Data.ACC.Tracks.TrackData.NewTracks.FirstOrDefault(x => x.Guid == GetSelectedTrack());
+                var trackData = Data.ACC.Tracks.TrackData.Tracks.FirstOrDefault(x => x.Guid == GetSelectedTrack());
                 PlotUtil.trackData = trackData;
                 int fullSteeringLock = SteeringLock.Get(CarDataCollection.GetCarData(CurrentDatabase, GetSelectedCar()).ParseName);
 

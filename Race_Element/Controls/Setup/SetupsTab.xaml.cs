@@ -1,5 +1,7 @@
 ﻿using MaterialDesignThemes.Wpf;
 using RaceElement.Controls.Util;
+using System.Diagnostics;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -17,24 +19,21 @@ namespace RaceElement.Controls
         {
             InitializeComponent();
 
-            this.Loaded += SetupsTab_Loaded;
+            tabSetupTree.MouseRightButtonUp += (s, e) =>
+            {
+                ThreadPool.QueueUserWorkItem(x =>
+                {
+                    Debug.WriteLine("Refreshting setups with right click");
+                    MainWindow.Instance.EnqueueSnackbarMessage("Refreshing Setups.... Please wait");
+                    SetupBrowser.Instance.FetchAllSetups();
+                    MainWindow.Instance.ClearSnackbar();
+                    MainWindow.Instance.EnqueueSnackbarMessage("Refreshed Setups");
+                });
+                e.Handled = true;
+            };
+
             Instance = this;
         }
 
-        private void SetupsTab_Loaded(object sender, RoutedEventArgs e)
-        {
-            tabSetupTree.ContextMenu = GetBrowseTabContextMenu();
-        }
-
-        private ContextMenu GetBrowseTabContextMenu()
-        {
-            ContextMenu contextMenu = ContextMenuHelper.DefaultContextMenu();
-
-            MenuItem refresh = ContextMenuHelper.DefaultMenuItem("Refresh", PackIconKind.Refresh);
-            refresh.Click += (s, e) => SetupBrowser.Instance.FetchAllSetups();
-            contextMenu.Items.Add(refresh);
-
-            return contextMenu;
-        }
     }
 }

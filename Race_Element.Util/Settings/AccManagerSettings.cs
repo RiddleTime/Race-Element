@@ -5,6 +5,7 @@
         public bool MinimizeToSystemTray { get; set; }
         public bool TelemetryRecordDetailed { get; set; }
         public int TelemetryDetailedHerz { get; set; }
+        public bool Generate4kDDS { get; set; }
     }
 
     public class AccManagerSettings : AbstractSettingsJson<AccManagerSettingsJson>
@@ -18,6 +19,7 @@
             MinimizeToSystemTray = false,
             TelemetryRecordDetailed = false,
             TelemetryDetailedHerz = 20,
+            Generate4kDDS = false,
         };
 
     }
