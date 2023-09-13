@@ -8,10 +8,11 @@ namespace RaceElement.Controls
         {
             {"0.2.3.4", "- Added Clock HUD to Pitwall Tab: Displays your system time in either 24h or am/pm format."+
                         "\n- Setup Browser: When refreshing the livery browser, the current car and track combo will open in the tree."+
-                        "\n- Added Race Element option to by default generate 4K dds_1 files instead of downsizing them to 2k like the game does."+
-                        "\n- Settings Tab: Added ACC Settings only available through json editing."+
-                        "\n  - ACC HUD Settings: Allows you enable or disable settings like the rating widget."+
-                        "\n  - ACC Camera Settings: Allows you to modify helicam settings."},
+                        "\n- Race Element Settings Tab: Added option to by default generate 4K dds_1 files instead of downsizing them to 2K resulution like the game does."+
+                        "\n- ACC Settings Tab: Added ACC Settings only available through json editing."+
+                        "\n  - ACC HUD Settings: Allows you to toggle settings like the rating widget."+
+                        "\n  - ACC Camera Settings: Allows you to modify helicam settings."+
+                        "\n  - ACC Livery Settings: Allows you to toggle settings like texDDS."},
             {"0.2.3.2", "- Fixed Lap Delta Bar HUD Activation."+
                         "\n- Lap Delta Trace HUD: Better data for preview image and more precise adjustment of data collection rate(Herz)."+
                         "\n- Slight rework of Info tab design."},

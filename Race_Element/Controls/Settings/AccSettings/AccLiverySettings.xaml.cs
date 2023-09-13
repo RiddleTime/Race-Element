@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -30,22 +31,38 @@ namespace RaceElement.Controls
         {
             InitializeComponent();
             this.Loaded += (s, e) => LoadSettings();
-            buttonResetLiverySettings.Click += (s, e) => menu.ResetLiverySettings();
+            buttonResetLiverySettings.Click += (s, e) =>
+            {
+                menu.ResetLiverySettings();
+                LoadSettings();
+            };
+
+            AddToggleListener(toggleTexDDS);
+            AddToggleListener(toggleTexCap);
+        }
+
+        private void AddToggleListener(ToggleButton button)
+        {
+            button.Checked += (s, e) => SaveSettings();
+            button.Unchecked += (s, e) => SaveSettings();
         }
 
         private void LoadSettings()
         {
             var settings = menu.Settings().Get(false);
-            if (settings != null)
-                Debug.WriteLine(JsonConvert.SerializeObject(settings, Formatting.Indented));
 
-            int texCap = settings.TexCap;
-            int texDDS = settings.TexDDS;
+            toggleTexDDS.IsChecked = settings.TexCap == 1;
+            toggleTexCap.IsChecked = settings.TexDDS == 0;
         }
 
         private void SaveSettings()
         {
+            var settings = menu.Settings().Get(false);
 
+            settings.TexCap = toggleTexDDS.IsChecked.Value ? 1 : 0;
+            settings.TexDDS = toggleTexCap.IsChecked.Value ? 0 : 1;
+
+            menu.Settings().Save(settings);
         }
     }
 }

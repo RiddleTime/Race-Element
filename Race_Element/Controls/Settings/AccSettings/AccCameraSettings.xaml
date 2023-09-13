@@ -40,9 +40,6 @@
                     ToolTipService.InitialShowDelay="0" ToolTipService.BetweenShowDelay="0" ToolTipService.ShowDuration="99999999" ToolTipService.ToolTip="{Binding Path=Value, ElementName=sliderHelicamInterpolationTime}"></Slider>
                 <Label VerticalAlignment="Center" Content="{Binding Path=Value, ElementName=sliderHelicamInterpolationTime}" ContentStringFormat="Helicam Target Interpolation Time: {0}"></Label>
             </StackPanel>
-
-
-
         </StackPanel>
     </Grid>
 </UserControl>

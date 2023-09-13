@@ -112,6 +112,7 @@
     <Compile Include="Cars\Damage.cs" />
     <Compile Include="Cars\SteeringLock.cs" />
     <Compile Include="Config\CameraSettingService.cs" />
+    <Compile Include="Config\HudSettingsService.cs" />
     <Compile Include="Config\MenuSettingsService.cs" />
     <Compile Include="Core\AccProcess.cs" />
     <Compile Include="Core\Config\ReplayJson.cs" />
