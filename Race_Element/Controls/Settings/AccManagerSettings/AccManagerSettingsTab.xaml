@@ -15,6 +15,11 @@
             <Label VerticalAlignment="Center">Minimize Race Element to system tray</Label>
         </StackPanel>
 
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+            <ToggleButton x:Name="toggleGenerate4kDDS" Width="50" Height="35" VerticalAlignment="Center" Cursor="Hand"/>
+            <Label VerticalAlignment="Center">Generates 4k dds_1 files.</Label>
+        </StackPanel>
+
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                 <ToggleButton x:Name="toggleRecordLapTelemetry" Width="50" Height="35" VerticalAlignment="Center" Cursor="Hand" IsChecked="False"/>

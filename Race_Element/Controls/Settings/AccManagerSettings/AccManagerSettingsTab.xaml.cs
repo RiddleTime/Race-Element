@@ -23,10 +23,10 @@ namespace RaceElement.Controls
             _settings = new AccManagerSettings();
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                toggleRecordLapTelemetry.IsChecked = _settings.Get().TelemetryRecordDetailed;
-                sliderTelemetryHerz.Value = _settings.Get().TelemetryDetailedHerz;
-                labelTelemetryHerz.Content = $"Telemetry: Extended Data Herz: {_settings.Get().TelemetryDetailedHerz}";
-                toggleMinimizeToSystemTray.IsChecked = _settings.Get().MinimizeToSystemTray;
+                LoadSettings();
+
+                toggleGenerate4kDDS.Checked += (s, e) => SaveSettings();
+                toggleGenerate4kDDS.Unchecked += (s, e) => SaveSettings();
 
                 toggleRecordLapTelemetry.Checked += (s, e) => SaveSettings();
                 toggleRecordLapTelemetry.Unchecked += (s, e) => SaveSettings();
@@ -38,6 +38,15 @@ namespace RaceElement.Controls
 
                 buttonOpenAccManagerFolder.Click += ButtonOpenAccManagerFolder_Click;
             }));
+        }
+
+        private void LoadSettings()
+        {
+            toggleRecordLapTelemetry.IsChecked = _settings.Get().TelemetryRecordDetailed;
+            sliderTelemetryHerz.Value = _settings.Get().TelemetryDetailedHerz;
+            labelTelemetryHerz.Content = $"Telemetry: Extended Data Herz: {_settings.Get().TelemetryDetailedHerz}";
+            toggleMinimizeToSystemTray.IsChecked = _settings.Get().MinimizeToSystemTray;
+            toggleGenerate4kDDS.IsChecked = _settings.Get().Generate4kDDS;
         }
 
         private void ButtonOpenAccManagerFolder_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -54,6 +63,7 @@ namespace RaceElement.Controls
 
             settings.TelemetryRecordDetailed = toggleRecordLapTelemetry.IsChecked.Value;
             settings.TelemetryDetailedHerz = (int)sliderTelemetryHerz.Value;
+            settings.Generate4kDDS = toggleGenerate4kDDS.IsChecked.Value;
 
             labelTelemetryHerz.Content = $"Telemetry: Extended Data Herz: {settings.TelemetryDetailedHerz}";
 

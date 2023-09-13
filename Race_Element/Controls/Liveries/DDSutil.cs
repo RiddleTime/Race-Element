@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using static RaceElement.Controls.LiveryBrowser;
+using RaceElement.Util.Settings;
 
 namespace RaceElement.Controls.Liveries
 {
@@ -22,6 +23,8 @@ namespace RaceElement.Controls.Liveries
 
         public static void GenerateDDS(LiveryTreeCar livery)
         {
+            AccManagerSettingsJson accManagerSettings = new AccManagerSettings().Get(false);
+
             try
             {
                 for (int i = 0; i < pngsToDDS.Count; i++)
@@ -41,10 +44,8 @@ namespace RaceElement.Controls.Liveries
 
                         Bitmap bitmap = new Bitmap(actualFileStream);
 
-                        if (pngsToDDS.ElementAt(i).Key.Contains("_1"))
-                        {
+                        if (!accManagerSettings.Generate4kDDS && pngsToDDS.ElementAt(i).Key.Contains("_1"))
                             bitmap = ResizeBitmap(bitmap, 2048, 2048);
-                        }
 
                         Surface surface = Surface.CopyFromBitmap(bitmap);
 
