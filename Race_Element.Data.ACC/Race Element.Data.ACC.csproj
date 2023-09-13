@@ -111,6 +111,7 @@
     <Compile Include="Cars\BrakeBias.cs" />
     <Compile Include="Cars\Damage.cs" />
     <Compile Include="Cars\SteeringLock.cs" />
+    <Compile Include="Config\CameraSettingService.cs" />
     <Compile Include="Core\AccProcess.cs" />
     <Compile Include="Core\Config\ReplayJson.cs" />
     <Compile Include="Core\Game\AccScheduler.cs" />

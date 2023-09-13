@@ -11,9 +11,9 @@
     <Grid>
         <TabControl TabStripPlacement="Left">
             
-            <!--<TabItem Height="60">
+            <TabItem Height="60">
                 <TabItem.Header>
-                    <Grid ToolTip="This allows you to save and activate unlisted server ips for lan discovery in the game.">
+                    <Grid ToolTip="This allows you to modify external camera settings for acc.">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
@@ -27,11 +27,11 @@
                             Width="20"
                         Foreground="White"    
                         />
-                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Replays</TextBlock>
+                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Camera</TextBlock>
                     </Grid>
                 </TabItem.Header>
-                <local:ReplaySettings Margin="2,0,0,0"></local:ReplaySettings>
-            </TabItem>-->
+                <local:AccCameraSettings Margin="2,0,0,0"></local:AccCameraSettings>
+            </TabItem>
 
             <TabItem Height="60">
                 <TabItem.Header>

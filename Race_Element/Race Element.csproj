@@ -297,6 +297,9 @@
     <Compile Include="Controls\Settings\AccManagerSettings\AccManagerSettingsTab.xaml.cs">
       <DependentUpon>AccManagerSettingsTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Settings\AccSettings\AccCameraSettings.xaml.cs">
+      <DependentUpon>AccCameraSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Settings\AccSettings\AccHudSettings.xaml.cs">
       <DependentUpon>AccHudSettings.xaml</DependentUpon>
     </Compile>
@@ -432,6 +435,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Settings\AccManagerSettings\AccManagerSettingsTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Settings\AccSettings\AccCameraSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
