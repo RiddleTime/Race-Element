@@ -37,6 +37,8 @@ namespace RaceElement.Controls
             sliderHelicamDistance.ValueChanged += (s, e) => SaveSettings();
             sliderHelicamFOV.ValueChanged += (s, e) => SaveSettings();
             sliderHelicamTargetMoreCars.ValueChanged += (s, e) => SaveSettings();
+            sliderHelicamInterpolationTime.ValueChanged += (s, e) => SaveSettings();
+            sliderHelicamTargetMaxDistance.ValueChanged += (s, e) => SaveSettings();
         }
 
         private void LoadSettings()
@@ -46,6 +48,8 @@ namespace RaceElement.Controls
             sliderHelicamDistance.Value = settings.HelicamDistance;
             sliderHelicamFOV.Value = settings.HelicamFOV;
             sliderHelicamTargetMoreCars.Value = settings.HelicamTargetMoreCars;
+            sliderHelicamInterpolationTime.Value = settings.HelicamTargetInterpTime;
+            sliderHelicamTargetMaxDistance.Value = settings.HelicamTargetCarsMaxDist;
         }
 
         private void SaveSettings()
@@ -55,6 +59,8 @@ namespace RaceElement.Controls
             settings.HelicamDistance = (int)sliderHelicamDistance.Value;
             settings.HelicamFOV = (int)sliderHelicamFOV.Value;
             settings.HelicamTargetMoreCars = (int)sliderHelicamTargetMoreCars.Value;
+            settings.HelicamTargetCarsMaxDist = (int)sliderHelicamTargetMaxDistance.Value;
+            settings.HelicamTargetInterpTime = (int)sliderHelicamInterpolationTime.Value;
 
             camera.Settings().Save(settings);
         }
