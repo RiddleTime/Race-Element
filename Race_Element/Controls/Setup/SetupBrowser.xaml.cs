@@ -40,7 +40,7 @@ namespace RaceElement.Controls
             InitializeComponent();
 
             _setupRenderer = new FlowDocSetupRenderer();
-
+            ThreadPool.QueueUserWorkItem(x => FetchAllSetups());
             setupsTreeView.SelectedItemChanged += SetupsTreeView_SelectedItemChanged;
 
             buttonEditSetup.Click += (o, e) =>
@@ -49,17 +49,10 @@ namespace RaceElement.Controls
                     SetupEditor.Instance.Open(_selectedSetup);
             };
 
-            this.Loaded += (s, e) => ThreadPool.QueueUserWorkItem(x => FetchAllSetups());
-            this.Unloaded += (s, e) =>
-            {
-                setupsTreeView.Items.Clear();
-            };
-
             Instance = this;
         }
 
-
-        private void ExpandCurrentCombination(string track, string carParseName)
+        private void ExpandCombination(string track, string carParseName)
         {
             if (track == string.Empty || carParseName == string.Empty)
                 return;
@@ -70,10 +63,8 @@ namespace RaceElement.Controls
 
             if (!_expandedHeaders.TryGetValue(carName, out List<string> list))
                 _expandedHeaders.Add(carName, new List<string>() { trackData.GameName });
-            else if (!list.Contains(trackData.GameName))
+            else
                 _expandedHeaders[carName].Add(Regex.Replace(trackData.GameName, "^[a-z]", m => m.Value.ToUpper()));
-
-            Debug.WriteLine($"Driving: {carName} at: {trackData.FullName}");
         }
 
         private void SetupsTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -105,7 +96,6 @@ namespace RaceElement.Controls
 
         internal void FetchAllSetups()
         {
-
             DirectoryInfo setupsDirectory = new DirectoryInfo(FileUtil.SetupsPath);
 
             if (!setupsDirectory.Exists)
@@ -120,7 +110,7 @@ namespace RaceElement.Controls
                 var staticPage = ACCSharedMemory.Instance.ReadStaticPageFile();
                 string track = staticPage.Track;
                 string carModel = staticPage.CarModel;
-                ExpandCurrentCombination(track, carModel);
+                ExpandCombination(track, carModel);
 
                 // Find car directories
                 foreach (var carDir in setupsDirectory.GetDirectories())
