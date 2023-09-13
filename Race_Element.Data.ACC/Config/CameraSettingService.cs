@@ -13,13 +13,6 @@ namespace RaceElement.Data.ACC.Config
     {
         private readonly CameraSettings cameraSettings = new CameraSettings();
 
-        public CameraSettingService()
-        {
-            var json = cameraSettings.Get(false);
-            if (json != null)
-                Debug.WriteLine(JsonConvert.SerializeObject(json, Formatting.Indented));
-        }
-
         public CameraSettings Settings() => cameraSettings;
 
         public void ResetTvCamSettings()
@@ -53,10 +46,7 @@ namespace RaceElement.Data.ACC.Config
 
             public override string FileName => "cameraSettings.json";
 
-            public override CameraSettingsJson Default()
-            {
-                return new CameraSettingsJson();
-            }
+            public override CameraSettingsJson Default()    => new CameraSettingsJson();
         }
 
         public class CameraSettingsJson : IGenericSettingsJson

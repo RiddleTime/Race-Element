@@ -1,5 +1,6 @@
 ﻿using MaterialDesignThemes.Wpf;
 using RaceElement.Controls.Util;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,21 +19,21 @@ namespace RaceElement.Controls
         {
             InitializeComponent();
 
-            this.Loaded += SetupsTab_Loaded;
+            tabSetupTree.MouseRightButtonUp += (s, e) =>
+            {
+                ThreadPool.QueueUserWorkItem(x =>
+                {
+                    Debug.WriteLine("Refreshting setups with right click");
+                    MainWindow.Instance.EnqueueSnackbarMessage("Refreshing Setups.... Please wait");
+                    SetupBrowser.Instance.FetchAllSetups();
+                    MainWindow.Instance.ClearSnackbar();
+                    MainWindow.Instance.EnqueueSnackbarMessage("Refreshed Setups");
+                });
+                e.Handled = true;
+            };
+
             Instance = this;
         }
 
-        private void SetupsTab_Loaded(object sender, RoutedEventArgs e)
-        {
-            tabSetupTree.MouseUp += (s, e) =>
-            {
-                if (e.ChangedButton == System.Windows.Input.MouseButton.Right)
-                    ThreadPool.QueueUserWorkItem(x =>
-                    {
-                        SetupBrowser.Instance.FetchAllSetups();
-                        MainWindow.Instance.EnqueueSnackbarMessage("Refreshed Setups");
-                    });
-            };
-        }
     }
 }

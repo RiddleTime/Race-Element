@@ -11,28 +11,7 @@
     <Grid>
         <TabControl TabStripPlacement="Left">
             
-            <TabItem Height="60">
-                <TabItem.Header>
-                    <Grid ToolTip="This allows you to modify external camera settings for acc.">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <materialDesign:PackIcon
-                            Grid.Row="0"
-                            Kind="Camcorder"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            Height="20"
-                            Width="20"
-                        Foreground="White"    
-                        />
-                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Camera</TextBlock>
-                    </Grid>
-                </TabItem.Header>
-                <local:AccCameraSettings Margin="2,0,0,0"></local:AccCameraSettings>
-            </TabItem>
-
+          
             <TabItem Height="60">
                 <TabItem.Header>
                     <Grid ToolTip="Adjust specific settings for the HUD for ACC.">
@@ -55,6 +34,49 @@
                 <hudSettings:AccHudSettings Margin="2,0,0,0"></hudSettings:AccHudSettings>
             </TabItem>
 
+            <TabItem Height="60">
+                <TabItem.Header>
+                    <Grid ToolTip="This allows you to modify external camera settings for acc.">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <materialDesign:PackIcon
+                  Grid.Row="0"
+                  Kind="Camcorder"
+                  VerticalAlignment="Center"
+                  HorizontalAlignment="Center"
+                  Height="20"
+                  Width="20"
+              Foreground="White"    
+              />
+                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Camera</TextBlock>
+                    </Grid>
+                </TabItem.Header>
+                <local:AccCameraSettings Margin="2,0,0,0"></local:AccCameraSettings>
+            </TabItem>
+
+            <TabItem Height="60">
+                <TabItem.Header>
+                    <Grid ToolTip="This allows you to modify livery settings for acc.">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <materialDesign:PackIcon
+                            Grid.Row="0"
+                            Kind="PaintbrushOutline"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="20"
+                            Width="20"
+                        Foreground="White"    
+                        />  
+                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}">Liveries</TextBlock>
+                    </Grid>
+                </TabItem.Header>
+                <local:AccLiverySettings Margin="2,0,0,0"></local:AccLiverySettings>
+            </TabItem>
 
             <TabItem Height="60">
                 <TabItem.Header>

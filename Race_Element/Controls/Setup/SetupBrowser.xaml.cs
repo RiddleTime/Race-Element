@@ -106,6 +106,7 @@ namespace RaceElement.Controls
                 setupsTreeView.Items.Clear();
 
 
+
                 // Pre-expand the current car and track leafs
                 var staticPage = ACCSharedMemory.Instance.ReadStaticPageFile();
                 string track = staticPage.Track;
@@ -235,6 +236,11 @@ namespace RaceElement.Controls
                             setupsTreeView.Items.Add(carTreeViewItem);
                     }
                 }
+                ThreadPool.QueueUserWorkItem(x =>
+                {
+                    Thread.Sleep(2000);
+                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
+                });
             }));
         }
 

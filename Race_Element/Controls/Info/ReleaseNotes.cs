@@ -7,11 +7,11 @@ namespace RaceElement.Controls
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
             {"0.2.3.4", "- Added Clock HUD to Pitwall Tab: Displays your system time in either 24h or am/pm format."+
-                        "\n- Setup Browser: When opening the tab or refreshing, the current car and track will open in the tree."+
+                        "\n- Setup Browser: When refreshing the livery browser, the current car and track combo will open in the tree."+
                         "\n- Added Race Element option to by default generate 4K dds_1 files instead of downsizing them to 2k like the game does."+
-                        "\n- Settings Tab:"+
-                        "\n  - Added HUD Settings: Allows you enable or disable settings like the rating widget."+
-                        "\n  - Added Camera Settings: Allows you to modify helicam settings."},
+                        "\n- Settings Tab: Added ACC Settings only available through json editing."+
+                        "\n  - ACC HUD Settings: Allows you enable or disable settings like the rating widget."+
+                        "\n  - ACC Camera Settings: Allows you to modify helicam settings."},
             {"0.2.3.2", "- Fixed Lap Delta Bar HUD Activation."+
                         "\n- Lap Delta Trace HUD: Better data for preview image and more precise adjustment of data collection rate(Herz)."+
                         "\n- Slight rework of Info tab design."},
