@@ -26,7 +26,7 @@
 
                 <TabItem Name="tabSetupTree" Style="{DynamicResource MaterialDesignTabItem}">
                     <TabItem.Header>
-                        <Grid>
+                        <Grid x:Name="headerSetupTree" Cursor="Hand">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>

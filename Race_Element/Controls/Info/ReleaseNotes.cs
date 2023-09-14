@@ -6,6 +6,7 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.2.3.6", "- Fix Setup browser from intercepting right clicks." },
             {"0.2.3.4", "- Added Clock HUD to Pitwall Tab: Displays your system time in either 24h or am/pm format."+
                         "\n- Setup Browser: When refreshing the livery browser, the current car and track combo will open in the tree."+
                         "\n- Race Element Settings Tab: Added option to by default generate 4K dds_1 files instead of downsizing them to 2K resolution like the game does."+
