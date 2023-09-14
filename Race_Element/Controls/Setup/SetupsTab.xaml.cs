@@ -19,7 +19,7 @@ namespace RaceElement.Controls
         {
             InitializeComponent();
 
-            tabSetupTree.MouseRightButtonUp += (s, e) =>
+            headerSetupTree.MouseRightButtonUp += (s, e) =>
             {
                 ThreadPool.QueueUserWorkItem(x =>
                 {
