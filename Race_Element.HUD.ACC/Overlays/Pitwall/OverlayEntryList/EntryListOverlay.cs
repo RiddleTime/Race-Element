@@ -67,9 +67,9 @@ Description = "(BETA) A table representing a leaderboard.")]
 
             float fontSize = 9;
             var font = FontUtil.FontSegoeMono(fontSize);
-            _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 20), (int)(font.Size * 9), (int)(font.Size * 8), (int)(font.Size * 30) });
+            _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 18), (int)(font.Size * 9), (int)(font.Size * 8), (int)(font.Size * 30) });
 
-            this.Width = 700;
+            this.Width = 650;
             this.Height = 900;
         }
 
