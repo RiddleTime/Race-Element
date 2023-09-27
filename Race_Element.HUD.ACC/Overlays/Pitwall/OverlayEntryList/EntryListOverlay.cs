@@ -271,28 +271,24 @@ Description = "(BETA) A table representing a leaderboard.")]
 
                         firstRow[3] = $"L{kv.Value.RealtimeCarUpdate.Laps + 1} | ";
 
-                        if (Tracks.Any())
+                        var matchingTracks = Tracks.Where(x => x.FullName == broadCastTrackData.TrackName).ToList();
+                        if (matchingTracks.Any())
                         {
-                            var matchingTracks = Tracks.Where(x => x.GameName == broadCastTrackData.TrackName);
-                            if (matchingTracks.Any())
+                            var currentTrack = matchingTracks[0];
+                            if (currentTrack.CornerNames.Any())
                             {
-                                var currentTrack = matchingTracks.First();
-                                if (currentTrack.CornerNames.Any())
+                                var items = currentTrack.CornerNames.Where(x => x.Key.IsInRange(kv.Value.RealtimeCarUpdate.SplinePosition));
+                                if (items.Any() && items.First().Value.Item1 != 0)
                                 {
-                                    var items = currentTrack.CornerNames.Where(x => x.Key.IsInRange(kv.Value.RealtimeCarUpdate.SplinePosition));
-                                    if (items.Any())
-                                        if (items.First().Value.Item1 != 0)
-                                        {
-                                            (int, string) corner = items.First().Value;
-                                            if (corner.Item1 != 0)
-                                            {
-                                                StringBuilder builder = new StringBuilder();
-                                                builder.Append("T");
-                                                builder.Append(corner.Item1.ToString().FillEnd(2, ' ') + ' ');
-                                                builder.Append(corner.Item2);
-                                                firstRow[3] += $"{builder}";
-                                            }
-                                        }
+                                    (int, string) corner = items.First().Value;
+                                    if (corner.Item1 != 0)
+                                    {
+                                        StringBuilder builder = new StringBuilder();
+                                        builder.Append("T");
+                                        builder.Append(corner.Item1.ToString().FillEnd(2, ' ') + ' ');
+                                        builder.Append(corner.Item2);
+                                        firstRow[3] += $"{builder}";
+                                    }
                                 }
                             }
                         }

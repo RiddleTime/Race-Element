@@ -211,17 +211,22 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 
             if (_currentTrack != null)
             {
-                (int, string) corner = _currentTrack.CornerNames.FirstOrDefault(x => x.Key.IsInRange(carPosition)).Value;
-                if (corner.Item1 > 0)
+                var items = _currentTrack.CornerNames.Where(x => x.Key.IsInRange(carPosition));
+                if (items.Any())
                 {
-                    cornerNumber = $"{corner.Item1}";
 
-                    if (_config.CornerNames.Names)
-                        cornerName = corner.Item2;
+                    (int, string) corner = items.First().Value;
+                    if (corner.Item1 > 0)
+                    {
+                        cornerNumber = $"{corner.Item1}";
+
+                        if (_config.CornerNames.Names)
+                            cornerName = corner.Item2;
+                    }
+                    if (corner.Item1 == -1)
+                        if (_config.CornerNames.Names)
+                            cornerName = corner.Item2;
                 }
-                if (corner.Item1 == -1)
-                    if (_config.CornerNames.Names)
-                        cornerName = corner.Item2;
             }
 
             _cornerNumberHeader?.Draw(g, cornerNumber, Scale);
