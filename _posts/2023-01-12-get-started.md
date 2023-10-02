@@ -8,7 +8,7 @@ tags: guide
 ## How to get started
 First of all, **[Download](https://github.com/RiddleTime/Race-Element/releases/latest "Download")** the app. The link will lead you to the latest version at GitHub.
 
-Place **RaceElement.exe** on your boot drive, best practice is to make a folder for it in My Documents. If the app is not located on your boot drive you will encounter issues with the auto-updater.
+Place **RaceElement.exe** in any folder of My Documents. If the app is not located there you will encounter issues with the auto-updater.
 
 Then simply run the app. Do **not** run it as admin, since this will prevent some features from working.
 
