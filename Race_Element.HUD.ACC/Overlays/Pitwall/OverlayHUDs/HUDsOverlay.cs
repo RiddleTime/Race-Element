@@ -28,25 +28,27 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayHUDs
         public sealed override void BeforeStop() => _panel = null;
 
         public sealed override bool ShouldRender() => true;
-
         public sealed override void Render(Graphics g)
         {
+            // add summary line
             long totalPixels = 0;
             long pixelsPerSecond = 0;
-
             OverlaysACC.ActiveOverlays.ForEach(hud =>
             {
                 long pixels = (long)(hud.Scale * hud.Width * hud.Height);
                 pixelsPerSecond += (long)(pixels * hud.RefreshRateHz);
                 totalPixels += pixels;
             });
+            _panel.AddLine($"  - {OverlaysACC.ActiveOverlays.Count} HUDs -  ", $"Pixels: {totalPixels}, Per Second: {pixelsPerSecond}");
 
-            _panel.AddLine($"{OverlaysACC.ActiveOverlays.Count} activated", $"Pixels Area: {totalPixels}, Per Second: {pixelsPerSecond}");
+            // add details lines for all active huds
             OverlaysACC.ActiveOverlays.ForEach(hud =>
             {
                 long pixels = (long)(hud.Scale * hud.Width * hud.Height);
-                _panel.AddLine(hud.Name, $"X: {hud.X}, Y:{hud.Y}, Scale: {hud.Scale:F3}, Herz: {hud.RefreshRateHz}, Visible: {hud.ShouldRender()}, Pixels: {pixels:F0}, PPS: {hud.RefreshRateHz * pixels:F0}");
+                _panel.AddLine(hud.Name, $"({hud.X}, {hud.Y}, {hud.Width}, {hud.Height}, scale: {hud.Scale:F3}), herz: {hud.RefreshRateHz}, vis: {hud.ShouldRender()}, pix: {pixels:F0}, PPS: {hud.RefreshRateHz * pixels:F0}");
             });
+
+            // draw the panel
             _panel.Draw(g);
         }
     }
