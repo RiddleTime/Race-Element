@@ -1,12 +1,7 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayHUDs
 {
@@ -28,17 +23,15 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayHUDs
             Height = 170;
             RefreshRateHz = 10;
         }
-        public sealed override void BeforeStart()
-        {
-            _panel = new InfoPanel(11, Width);
-        }
-        public override bool ShouldRender() => true;
 
-        public override void Render(Graphics g)
-        {
-            foreach (var item in OverlaysACC.ActiveOverlays)
-                _panel.AddLine(item.Name, $"X: {item.X}, Y:{item.Y}, Scale: {item.Scale:F3}, Herz: {item.RefreshRateHz}, Visible: {item.ShouldRender()}");
+        public sealed override void BeforeStart() => _panel = new InfoPanel(11, Width);
+        public sealed override void BeforeStop() => _panel = null;
 
+        public sealed override bool ShouldRender() => true;
+
+        public sealed override void Render(Graphics g)
+        {
+            OverlaysACC.ActiveOverlays.ForEach(hud => _panel.AddLine(hud.Name, $"X: {hud.X}, Y:{hud.Y}, Scale: {hud.Scale:F3}, Herz: {hud.RefreshRateHz}, Visible: {hud.ShouldRender()}"));
             _panel.Draw(g);
         }
     }
