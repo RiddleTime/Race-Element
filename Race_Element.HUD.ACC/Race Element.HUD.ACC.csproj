@@ -78,6 +78,7 @@
     <Compile Include="Overlays\Driving\OverlayDamage\DamageOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayWheelSlip\WheelSlipOverlay.cs" />
     <Compile Include="Overlays\Pitwall\DebugInfoHelper.cs" />
+    <Compile Include="Overlays\Pitwall\OverlayHUDs\HUDsOverlay.cs" />
     <Compile Include="Overlays\Pitwall\OverlayRenderTest\RenderTestOverlay.cs" />
     <Compile Include="Overlays\Pitwall\OverlayACC\AccOverlay.cs" />
     <Compile Include="Overlays\Pitwall\OverlayBroadcastRealtime\BroadcastRealtimeOverlay.cs" />
