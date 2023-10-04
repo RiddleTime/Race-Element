@@ -61,6 +61,18 @@ namespace RaceElement
             _uiSettings = new UiSettings();
             _accManagerSettings = new AccManagerSettings();
 
+            this.KeyUp += (s, e) =>
+            {
+                if (Keyboard.Modifiers == ModifierKeys.Control && (e.Key == Key.F4 || e.Key == Key.W))
+                {
+                    EnqueueSnackbarMessage("Shutting down Race Element");
+                    MainWindow.Instance.SaveLocation();
+                    Environment.Exit(0);
+                }
+            };
+
+
+            // titlebar mouse actions
             this.titleBar.MouseLeftButtonDown += TitleBar_MouseLeftButtonDown;
             this.titleBar.MouseLeftButtonUp += TitleBar_MouseLeftButtonUp;
             this.titleBar.MouseLeave += (s, e) => { _stopDecreaseOpacty = true; e.Handled = true; this.Opacity = MaxOpacity; };
