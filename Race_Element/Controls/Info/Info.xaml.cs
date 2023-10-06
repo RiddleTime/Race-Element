@@ -90,7 +90,6 @@ namespace RaceElement.Controls
                     return;
 
                 GitHubClient client = new GitHubClient(new ProductHeaderValue("Race-Element"), new Uri("https://github.com/RiddleTime/Race-Element.git"));
-                var rateLimits = await client.RateLimit.GetRateLimits();
                 var releases = await client.Repository.Release.GetAll("RiddleTime", "Race-Element", new ApiOptions() { PageSize = 5 });
 
                 if (releases != null && releases.Count > 0)
@@ -131,8 +130,9 @@ namespace RaceElement.Controls
                 }
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Debug.WriteLine(e);
             }
 #pragma warning restore CS0162 // Unreachable code detected
         }
