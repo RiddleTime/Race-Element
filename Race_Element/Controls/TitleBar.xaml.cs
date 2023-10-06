@@ -147,6 +147,7 @@ namespace RaceElement.Controls
 
         private void ButtonExit_Click(object sender, RoutedEventArgs e)
         {
+            MainWindow.Instance.EnqueueSnackbarMessage("Shutting down Race Element");
             MainWindow.Instance.SaveLocation();
             Environment.Exit(0);
         }

@@ -32,7 +32,7 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="0" Orientation="Vertical">
-                <ListView x:Name="listViewTracks" HorizontalContentAlignment="Center"
+                <ListView x:Name="listViewTracks" HorizontalContentAlignment="Center" FontSize="12"
                   ToolTip="Click the correct track and the setup will automatically be copied in the correct folder." Cursor="Hand">
                 </ListView>
             </StackPanel>
