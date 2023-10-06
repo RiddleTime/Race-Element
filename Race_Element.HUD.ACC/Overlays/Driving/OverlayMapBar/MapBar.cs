@@ -4,11 +4,13 @@ using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayMapBar
 {
+#if DEBUG
     [Overlay(Name = "Map Bar",
         Description = "A circle showing all drivers on track",
         OverlayType = OverlayType.Release,
         OverlayCategory = OverlayCategory.Track
         )]
+#endif
     internal sealed class MapBar : AbstractOverlay
     {
         private readonly MapBarConfiguration _config = new MapBarConfiguration();

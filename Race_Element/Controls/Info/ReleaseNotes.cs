@@ -7,7 +7,8 @@ namespace RaceElement.Controls
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
             {"0.2.3.8", "- App hotkeys: Added Ctrl + (F4/W) to shut down the app when the gui is open."+
-                        "\n- Adaptive text scaling by windows is now permanently disabled for the app."},
+                        "\n- Adaptive text scaling by windows is now permanently disabled for the app."+
+                        "\n- Add HUDs hud in pitwall tab to display all active huds and some extra information about them."},
             {"0.2.3.6", "- Fix Setup browser from intercepting right clicks." },
             {"0.2.3.4", "- Added Clock HUD to Pitwall Tab: Displays your system time in either 24h or am/pm format."+
                         "\n- Setup Browser: When refreshing the livery browser, the current car and track combo will open in the tree."+
