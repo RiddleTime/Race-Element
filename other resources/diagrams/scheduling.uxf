@@ -1,8 +1,24 @@
-<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><element><id>UMLPackage</id><coordinates><x>90</x><y>10</y><w>390</w><h>290</h></coordinates><panel_attributes>Core.Job
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLPackage</id><coordinates><x>90</x><y>330</y><w>390</w><h>340</h></coordinates><panel_attributes>ACC.Data</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>100</x><y>50</y><w>90</w><h>110</h></coordinates><panel_attributes>JobStatus
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><element><id>UMLPackage</id><coordinates><x>20</x><y>10</y><w>180</w><h>280</h></coordinates><panel_attributes>Core.Job
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLPackage</id><coordinates><x>30</x><y>580</y><w>390</w><h>340</h></coordinates><panel_attributes>ACC.Data</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>30</x><y>60</y><w>90</w><h>100</h></coordinates><panel_attributes>JobStatus
 Enum
 --
 None
 Initiating
 Executing
-Completing</panel_attributes><additional_attributes></additional_attributes></element></diagram>
+Completing</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>30</x><y>170</y><w>150</w><h>110</h></coordinates><panel_attributes>Job
+Interface
+--
++Guid: Guid
++Name: string
++Status: JobStatus
++Type: JobType</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>320</x><y>40</y><w>210</w><h>190</h></coordinates><panel_attributes>JobScheduler
+--
+...
+--
+....
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLPackage</id><coordinates><x>230</x><y>10</y><w>710</w><h>440</h></coordinates><panel_attributes>Core.Job.Scheduler</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>130</x><y>60</y><w>60</w><h>90</h></coordinates><panel_attributes>JobType
+Enum
+--
+Single
+Repeat
+Future</panel_attributes><additional_attributes></additional_attributes></element></diagram>
