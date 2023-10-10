@@ -1,0 +1,8 @@
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><element><id>UMLPackage</id><coordinates><x>90</x><y>10</y><w>390</w><h>290</h></coordinates><panel_attributes>Core.Job
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLPackage</id><coordinates><x>90</x><y>330</y><w>390</w><h>340</h></coordinates><panel_attributes>ACC.Data</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>100</x><y>50</y><w>90</w><h>110</h></coordinates><panel_attributes>JobStatus
+Enum
+--
+None
+Initiating
+Executing
+Completing</panel_attributes><additional_attributes></additional_attributes></element></diagram>
