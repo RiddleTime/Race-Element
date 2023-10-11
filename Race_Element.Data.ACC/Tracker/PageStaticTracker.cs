@@ -1,5 +1,4 @@
 ﻿using ACCManager.Data.ACC.Core.Game;
-using Quartz;
 using RaceElement.Data.ACC.Core;
 using System;
 using System.Threading.Tasks;

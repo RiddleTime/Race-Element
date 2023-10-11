@@ -1,5 +1,5 @@
 ﻿using ACCManager.Data.ACC.Core.Game;
-using Quartz;
+using RaceElement.Core.Jobs;
 using RaceElement.Data.ACC.Core.Config;
 using RaceElement.Data.ACC.HotKey;
 using RaceElement.Util.Settings;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RaceElement.Data.ACC.Core.Game.Jobs
 {
-    public class ReplaySaver : IJob
+    public class ReplaySaver : AbstractJob
     {
         public static readonly JobKey JobKey = new JobKey("replay-saver", "acc-jobs");
         public static readonly TriggerKey TriggerKey = new TriggerKey("replaySaverTrigger");
@@ -46,11 +46,26 @@ namespace RaceElement.Data.ACC.Core.Game.Jobs
 
         public static void Schedule()
         {
-            IJobDetail job = JobBuilder.Create<ReplaySaver>().WithIdentity(JobKey).Build();
-            if (!AccScheduler.Scheduler.CheckExists(JobKey).Result)
-                AccScheduler.Scheduler.ScheduleJob(job, TriggerBuilder.Create()
-                            .WithIdentity(TriggerKey)
-                            .WithSimpleSchedule(x => x.WithInterval(new TimeSpan(0, 0, 15)).RepeatForever()).ForJob(JobKey).Build());
+            //IJobDetail job = JobBuilder.Create<ReplaySaver>().WithIdentity(JobKey).Build();
+            //if (!AccScheduler.Scheduler.CheckExists(JobKey).Result)
+            //    AccScheduler.Scheduler.ScheduleJob(job, TriggerBuilder.Create()
+            //                .WithIdentity(TriggerKey)
+            //                .WithSimpleSchedule(x => x.WithInterval(new TimeSpan(0, 0, 15)).RepeatForever()).ForJob(JobKey).Build());
+        }
+
+        public override JobStatus Initiate()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override JobStatus Execute()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Complete()
+        {
+            throw new NotImplementedException();
         }
     }
 }

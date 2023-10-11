@@ -151,9 +151,6 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="obs-websocket-dotnet" Version="5.0.0.3" />
     <PackageReference Include="Octokit" Version="8.0.1" />
-    <PackageReference Include="Quartz" Version="3.6.3" />
-    <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.6.3" />
-    <PackageReference Include="Quartz.Extensions.Hosting" Version="3.6.3" />
     <PackageReference Include="ScottPlot" Version="4.1.68" />
     <PackageReference Include="ScottPlot.WPF" Version="4.1.68" />
     <PackageReference Include="SharpCompress" Version="0.34.1" />

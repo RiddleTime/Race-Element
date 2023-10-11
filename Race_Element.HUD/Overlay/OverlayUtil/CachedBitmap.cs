@@ -50,6 +50,12 @@ namespace RaceElement.HUD.Overlay.OverlayUtil
                 Render();
         }
 
+        public void RenderBlurred( int amount)
+        {
+            Render();
+            _bitmap.Blur(new Rectangle(0, 0, Width, Height), amount);   
+        }
+
         public void Render()
         {
             if (_bitmap == null)

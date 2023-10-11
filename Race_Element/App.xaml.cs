@@ -35,24 +35,6 @@ namespace RaceElement
             _startScreenOverlay = new StartScreenOverlay(new System.Drawing.Rectangle(uiSettings.X, uiSettings.Y, 150, 150));
             _startScreenOverlay.Version = TitleBar.GetAssemblyFileVersion();
             _startScreenOverlay.Start(false);
-
-            var builder = Host.CreateDefaultBuilder().ConfigureServices((cxt, services) =>
-             {
-                 services.AddQuartz(q =>
-                 {
-                     q.UseMicrosoftDependencyInjectionJobFactory();
-
-                     AccScheduler.RegisterJobs();
-                 });
-                 services.AddQuartzHostedService(opt =>
-                 {
-                     opt.WaitForJobsToComplete = false;
-                     opt.AwaitApplicationStarted = true;
-                 });
-             }).Build();
-
-            builder.RunAsync();
-
         }
 
         private void App_Startup(object sender, StartupEventArgs e)

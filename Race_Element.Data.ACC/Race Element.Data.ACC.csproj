@@ -70,8 +70,6 @@
     <PackageReference Include="Microsoft.Extensions.Primitives" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="obs-websocket-dotnet" Version="5.0.0.3" />
-    <PackageReference Include="Quartz" Version="3.6.3" />
-    <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.6.3" />
     <PackageReference Include="SLOBSharp" Version="1.1.4" />
     <PackageReference Include="System.Buffers" Version="4.5.1" />
     <PackageReference Include="System.Collections.Immutable" Version="7.0.0" />
@@ -226,6 +224,10 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Race Element.Core\Race Element.Core.csproj">
+      <Project>{6B29D63B-57CB-4A13-BC5F-9B5F726A3430}</Project>
+      <Name>Race Element.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Race_Element.Broadcast\Race Element.Broadcast.csproj">
       <Project>{840220BD-8469-4A04-A6EC-1ED2BC743EFB}</Project>
       <Name>Race Element.Broadcast</Name>
