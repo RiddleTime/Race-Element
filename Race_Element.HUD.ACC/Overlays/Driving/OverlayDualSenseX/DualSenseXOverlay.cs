@@ -1,6 +1,7 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.Util;
+using RaceElement.Util.SystemExtensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,11 +12,12 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayDualSenseX
 {
     [Overlay(Name = "Dual Sense X",
-        Description = "Adds haptic trigger feedback using Dual Sense X",
+        Description = "Adds haptic trigger feedback using Dual Sense X. See Discord Guide section for instructions.",
         OverlayCategory = OverlayCategory.Inputs,
         OverlayType = OverlayType.Debug)]
     internal class DualSenseXOverlay : AbstractOverlay
@@ -29,15 +31,12 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayDualSenseX
             public class HapticsGrouping
             {
                 [ToolTip("Frequency of the haptics.")]
-                [IntRange(4, 50, 1)]
-                public int Frequency { get; set; } = 10;
+                [IntRange(75, 150, 1)]
+                public int Frequency { get; set; } = 75;
 
                 [ToolTip("Force of the haptics.")]
-                [IntRange(1, 10, 1)]
-                public int Force { get; set; } = 5;
-
-                public CustomTriggerValues LeftType { get; set; } = CustomTriggerValues.VibratePulseB;
-                public CustomTriggerValues RightType { get; set; } = CustomTriggerValues.VibratePulseB;
+                [IntRange(100, 255, 1)]
+                public int Force { get; set; } = 255;
             }
         }
 
@@ -45,7 +44,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayDualSenseX
         public DualSenseXOverlay(Rectangle rectangle) : base(rectangle, "Dual Sense X")
         {
             this.Width = 1; this.Height = 1;
-            RefreshRateHz = 20;
+            RefreshRateHz = 30;
         }
 
         public override void BeforeStart()
@@ -60,61 +59,67 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayDualSenseX
             return true;
         }
 
-        string last = string.Empty;
         public override void Render(Graphics g)
         {
 
             StringBuilder sb = new StringBuilder();
-
             if (pagePhysics.Abs > 0)
             {
-                sb.Append($"{PropertyLeftTrigger}={TriggerStates.CustomTriggerValue}");
-                sb.Append("\n");
-
-                sb.Append($"{PropertyCustomTriggerValueLeftMode}={GetStringValue(_config.Haptics.LeftType)}");
-                sb.Append("\n");
-
-                int force = (int)(pagePhysics.Brake * _config.Haptics.Force);
-                sb.Append($"{PropertyForceLeftTrigger}=({_config.Haptics.Frequency})({force})(0)(0)(0)(0)(0)");
-                sb.Append("\n");
+                sb.AppendLine($"{PropertyLeftTrigger}={TriggerStates.CustomTriggerValue}\n");
+                sb.AppendLine($"{PropertyCustomTriggerValueLeftMode}={GetStringValue(CustomTriggerValues.VibrateResistanceB)}");
+                sb.AppendLine($"{PropertyForceLeftTrigger}=({_config.Haptics.Frequency})({_config.Haptics.Force})(0)(0)(0)(0)(0)");
             }
             else
             {
-                sb.Append($"{PropertyLeftTrigger}={TriggerStates.Normal}");
-                sb.Append("\n");
+
+                if (pagePhysics.Brake > 0.001f)
+                {
+                    sb.AppendLine($"{PropertyLeftTrigger}={TriggerStates.CustomTriggerValue}\n");
+                    sb.AppendLine($"{PropertyCustomTriggerValueLeftMode}={GetStringValue(CustomTriggerValues.Rigid)}");
+
+                    int force = (int)(pagePhysics.Brake * _config.Haptics.Force);
+                    force.Clip(0, 255);
+                    sb.AppendLine($"{PropertyForceLeftTrigger}=({force})({force})(0)(0)(0)(0)(0)");
+                }
+                else
+                {
+                    sb.AppendLine($"{PropertyLeftTrigger}={TriggerStates.Normal}");
+                    sb.AppendLine($"{PropertyForceLeftTrigger}=(0)(0)(0)(0)(0)(0)(0)");
+                }
             }
 
             if (pagePhysics.TC > 0)
             {
-                sb.Append($"{PropertyRightTrigger}={TriggerStates.CustomTriggerValue}");
-                sb.Append("\n");
-
-                sb.Append($"{PropertyCustomTriggerValueRightMode}={GetStringValue(_config.Haptics.RightType)}");
-                sb.Append("\n");
-
-                int force = (int)(pagePhysics.Gas * _config.Haptics.Force);
-                sb.Append($"{PropertyForceRightTrigger}=({_config.Haptics.Frequency})({force})(0)(0)(0)(0)(0)");
-                sb.Append("\n");
+                sb.AppendLine($"{PropertyRightTrigger}={TriggerStates.CustomTriggerValue}");
+                sb.AppendLine($"{PropertyCustomTriggerValueRightMode}={GetStringValue(CustomTriggerValues.VibrateResistanceB)}");
+                sb.AppendLine($"{PropertyForceRightTrigger}=({_config.Haptics.Frequency})({_config.Haptics.Force})(0)(0)(0)(0)(0)");
             }
             else
             {
-                sb.Append($"{PropertyRightTrigger}={TriggerStates.Normal}");
-                sb.Append("\n");
+                sb.AppendLine($"{PropertyRightTrigger}={TriggerStates.Normal}");
+                sb.AppendLine($"{PropertyForceRightTrigger}=(0)(0)(0)(0)(0)(0)(0)");
             }
 
-            string newTriggers = sb.ToString();
+            UpdateDualSenseFile(sb.ToString());
+        }
 
+        string last = string.Empty;
+        public void UpdateDualSenseFile(string newTriggers)
+        {
             if (newTriggers != last)
                 for (int i = 0; i < 10; i++)
                     try
                     {
+                        using FileStream stream = File.Open(_textFile.FullName, FileMode.Truncate);
+                        stream.Close();
+
                         File.WriteAllText(_textFile.FullName, $"{newTriggers}");
                         last = newTriggers;
                         break;
                     }
                     catch (IOException)
                     {
-                        Thread.Sleep(2);
+                        Thread.Sleep(1);
                     }
         }
 
