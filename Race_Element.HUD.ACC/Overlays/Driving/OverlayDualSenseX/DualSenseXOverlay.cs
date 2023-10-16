@@ -1,4 +1,5 @@
-﻿using RaceElement.HUD.Overlay.Internal;
+﻿using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
 using RaceElement.Util;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,27 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayDualSenseX
         OverlayType = OverlayType.Debug)]
     internal class DualSenseXOverlay : AbstractOverlay
     {
+
+        private readonly DualSenseXConfiguration _config = new DualSenseXConfiguration();
+        private sealed class DualSenseXConfiguration : OverlayConfiguration
+        {
+            [ConfigGrouping("Haptics", "Adjust the haptics")]
+            public HapticsGrouping Haptics { get; set; } = new HapticsGrouping();
+            public class HapticsGrouping
+            {
+                [ToolTip("Frequency of the haptics.")]
+                [IntRange(4, 255, 1)]
+                public int Frequency { get; set; } = 50;
+
+                [ToolTip("Force of the haptics.")]
+                [IntRange(1, 255, 1)]
+                public int Force { get; set; } = 1;
+
+                public CustomTriggerValues LeftType { get; set; } = CustomTriggerValues.VibratePulseAB;
+                public CustomTriggerValues RightType { get; set; } = CustomTriggerValues.VibratePulseAB;
+            }
+        }
+
         private FileInfo _textFile;
         public DualSenseXOverlay(Rectangle rectangle) : base(rectangle, "Dual Sense X")
         {
@@ -48,11 +70,11 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayDualSenseX
                 sb.Append($"{PropertyLeftTrigger}={TriggerStates.CustomTriggerValue}");
                 sb.Append("\n");
 
-                sb.Append($"{PropertyCustomTriggerValueLeftMode}={GetStringValue(CustomTriggerValues.VibratePulseAB)}");
+                sb.Append($"{PropertyCustomTriggerValueLeftMode}={GetStringValue(_config.Haptics.LeftType)}");
                 sb.Append("\n");
 
-                int force = (int)(pagePhysics.Brake * 10);
-                sb.Append($"{PropertyForceLeftTrigger}=(100)({force})(0)(0)(0)(0)(0)");
+                int force = (int)(pagePhysics.Brake * _config.Haptics.Force);
+                sb.Append($"{PropertyForceLeftTrigger}=({_config.Haptics.Frequency})({force})(0)(0)(0)(0)(0)");
                 sb.Append("\n");
             }
             else
@@ -66,11 +88,11 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayDualSenseX
                 sb.Append($"{PropertyRightTrigger}={TriggerStates.CustomTriggerValue}");
                 sb.Append("\n");
 
-                sb.Append($"{PropertyCustomTriggerValueRightMode}={GetStringValue(CustomTriggerValues.VibratePulseAB)}");
+                sb.Append($"{PropertyCustomTriggerValueRightMode}={GetStringValue(_config.Haptics.RightType)}");
                 sb.Append("\n");
 
-                int force = (int)(pagePhysics.Gas * 10);
-                sb.Append($"{PropertyForceRightTrigger}=(100)({force})(0)(0)(0)(0)(0)");
+                int force = (int)(pagePhysics.Gas * _config.Haptics.Force);
+                sb.Append($"{PropertyForceRightTrigger}=({_config.Haptics.Frequency})({force})(0)(0)(0)(0)(0)");
                 sb.Append("\n");
             }
             else
