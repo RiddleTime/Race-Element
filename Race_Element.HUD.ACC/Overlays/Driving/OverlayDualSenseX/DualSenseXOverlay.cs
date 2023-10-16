@@ -16,27 +16,29 @@ using System.Windows.Forms;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayDualSenseX
 {
-    [Overlay(Name = "Dual Sense X",
-        Description = "Adds haptic trigger feedback using Dual Sense X. See Discord Guide section for instructions.",
+    [Overlay(Name = "DualSense X",
+        Description = "Adds variable trigger haptics and feedback for the Dual Sense 5 controller.\n See Discord Guide section for instructions.",
         OverlayCategory = OverlayCategory.Inputs,
         OverlayType = OverlayType.Debug)]
-    internal class DualSenseXOverlay : AbstractOverlay
+    internal sealed class DualSenseXOverlay : AbstractOverlay
     {
-
         private readonly DualSenseXConfiguration _config = new DualSenseXConfiguration();
         private sealed class DualSenseXConfiguration : OverlayConfiguration
         {
-            [ConfigGrouping("Haptics", "Adjust the haptics")]
+            [ConfigGrouping("Haptics", "Adjust the haptics for the left and right trigger.")]
             public HapticsGrouping Haptics { get; set; } = new HapticsGrouping();
             public class HapticsGrouping
             {
-                [ToolTip("Frequency of the haptics.")]
+                [ToolTip("Frequency of the ABS and TC haptics.")]
                 [IntRange(75, 150, 1)]
                 public int Frequency { get; set; } = 75;
 
+                [ToolTip("Adds progressive load to the left trigger(braking).")]
+                public bool BrakeLoad { get; set; } = true;
+
                 [ToolTip("Force of the haptics.")]
-                [IntRange(100, 255, 1)]
-                public int Force { get; set; } = 255;
+                [IntRange(10, 255, 1)]
+                public int MaxForce { get; set; } = 255;
             }
         }
 
@@ -44,7 +46,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayDualSenseX
         public DualSenseXOverlay(Rectangle rectangle) : base(rectangle, "Dual Sense X")
         {
             this.Width = 1; this.Height = 1;
-            RefreshRateHz = 30;
+            RefreshRateHz = 50;
         }
 
         public override void BeforeStart()
@@ -67,18 +69,18 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayDualSenseX
             {
                 sb.AppendLine($"{PropertyLeftTrigger}={TriggerStates.CustomTriggerValue}\n");
                 sb.AppendLine($"{PropertyCustomTriggerValueLeftMode}={GetStringValue(CustomTriggerValues.VibrateResistanceB)}");
-                sb.AppendLine($"{PropertyForceLeftTrigger}=({_config.Haptics.Frequency})({_config.Haptics.Force})(0)(0)(0)(0)(0)");
+                int force = (int)(pagePhysics.Brake * _config.Haptics.MaxForce);
+                sb.AppendLine($"{PropertyForceLeftTrigger}=({_config.Haptics.Frequency})({force})(0)(0)(0)(0)(0)");
             }
             else
             {
-
-                if (pagePhysics.Brake > 0.001f)
+                if (_config.Haptics.BrakeLoad && pagePhysics.Brake > 0.001f)
                 {
                     sb.AppendLine($"{PropertyLeftTrigger}={TriggerStates.CustomTriggerValue}\n");
                     sb.AppendLine($"{PropertyCustomTriggerValueLeftMode}={GetStringValue(CustomTriggerValues.Rigid)}");
 
-                    int force = (int)(pagePhysics.Brake * _config.Haptics.Force);
-                    force.Clip(0, 255);
+                    int force = (int)(pagePhysics.Brake * _config.Haptics.MaxForce);
+                    force.Clip(0, _config.Haptics.MaxForce);
                     sb.AppendLine($"{PropertyForceLeftTrigger}=({force})({force})(0)(0)(0)(0)(0)");
                 }
                 else
@@ -92,7 +94,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayDualSenseX
             {
                 sb.AppendLine($"{PropertyRightTrigger}={TriggerStates.CustomTriggerValue}");
                 sb.AppendLine($"{PropertyCustomTriggerValueRightMode}={GetStringValue(CustomTriggerValues.VibrateResistanceB)}");
-                sb.AppendLine($"{PropertyForceRightTrigger}=({_config.Haptics.Frequency})({_config.Haptics.Force})(0)(0)(0)(0)(0)");
+                sb.AppendLine($"{PropertyForceRightTrigger}=({_config.Haptics.Frequency})({_config.Haptics.MaxForce})(0)(0)(0)(0)(0)");
             }
             else
             {
@@ -195,40 +197,16 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayDualSenseX
             VibratePulseAB,
         }
 
-        private class StringValueAttribute : Attribute
+        private sealed class StringValueAttribute : Attribute
         {
+            public string StringValue { get; private set; }
 
-            #region Properties
-
-            /// <summary>
-            /// Holds the stringvalue for a value in an enum.
-            /// </summary>
-            public string StringValue { get; protected set; }
-
-            #endregion
-
-            #region Constructor
-
-            /// <summary>
-            /// Constructor used to init a StringValue Attribute
-            /// </summary>
-            /// <param name="value"></param>
             public StringValueAttribute(string value)
             {
                 this.StringValue = value;
             }
-
-            #endregion
-
         }
 
-        /// <summary>
-        /// Will get the string value for a given enums value, this will
-        /// only work if you assign the StringValue attribute to
-        /// the items in your enum.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
         public static string GetStringValue(Enum value)
         {
             // Get the type
