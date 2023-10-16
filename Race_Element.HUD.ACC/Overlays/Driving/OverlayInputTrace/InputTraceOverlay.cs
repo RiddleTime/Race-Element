@@ -17,7 +17,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
             public class ChartGrouping
             {
                 [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
-                [IntRange(50, 800, 10)]
+                [IntRange(10, 800, 10)]
                 public int Width { get; set; } = 300;
 
                 [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
