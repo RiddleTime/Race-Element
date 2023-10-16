@@ -29,15 +29,15 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayDualSenseX
             public class HapticsGrouping
             {
                 [ToolTip("Frequency of the haptics.")]
-                [IntRange(4, 255, 1)]
-                public int Frequency { get; set; } = 50;
+                [IntRange(4, 50, 1)]
+                public int Frequency { get; set; } = 10;
 
                 [ToolTip("Force of the haptics.")]
-                [IntRange(1, 255, 1)]
-                public int Force { get; set; } = 1;
+                [IntRange(1, 10, 1)]
+                public int Force { get; set; } = 5;
 
-                public CustomTriggerValues LeftType { get; set; } = CustomTriggerValues.VibratePulseAB;
-                public CustomTriggerValues RightType { get; set; } = CustomTriggerValues.VibratePulseAB;
+                public CustomTriggerValues LeftType { get; set; } = CustomTriggerValues.VibratePulseB;
+                public CustomTriggerValues RightType { get; set; } = CustomTriggerValues.VibratePulseB;
             }
         }
 
@@ -45,7 +45,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayDualSenseX
         public DualSenseXOverlay(Rectangle rectangle) : base(rectangle, "Dual Sense X")
         {
             this.Width = 1; this.Height = 1;
-            RefreshRateHz = 10;
+            RefreshRateHz = 20;
         }
 
         public override void BeforeStart()
@@ -60,6 +60,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayDualSenseX
             return true;
         }
 
+        string last = string.Empty;
         public override void Render(Graphics g)
         {
 
@@ -101,20 +102,20 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayDualSenseX
                 sb.Append("\n");
             }
 
-            for (int i = 0; i < 10; i++)
-                try
-                {
-                    using FileStream stream = File.Open(_textFile.FullName, FileMode.Truncate);
-                    stream.Close();
-                    stream.Dispose();
-                    File.WriteAllText(_textFile.FullName, $"{sb}");
-                    Debug.WriteLine($"writing triggers:\n{sb}");
-                    break;
-                }
-                catch (IOException)
-                {
-                    Thread.Sleep(1);
-                }
+            string newTriggers = sb.ToString();
+
+            if (newTriggers != last)
+                for (int i = 0; i < 10; i++)
+                    try
+                    {
+                        File.WriteAllText(_textFile.FullName, $"{newTriggers}");
+                        last = newTriggers;
+                        break;
+                    }
+                    catch (IOException)
+                    {
+                        Thread.Sleep(2);
+                    }
         }
 
 
