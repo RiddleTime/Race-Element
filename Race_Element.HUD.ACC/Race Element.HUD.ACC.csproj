@@ -68,7 +68,7 @@
     <Compile Include="Overlays\Driving\OverlayAccelerometer\AccelerometerOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayBoostGauge\BoostGaugeOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayCarInfo\CarInfoOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayDualSenseX\DualSenseXOverlay.cs" />
+    <Compile Include="Overlays\Pitwall\OverlayDualSenseXFree\DualSenseXFreeOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayLapDeltaTrace\LapDeltaTraceConfiguration.cs" />
     <Compile Include="Overlays\Driving\OverlayLapDeltaTrace\LapDeltaTraceOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayLapDeltaTrace\LapDeltaDataCollector.cs" />
@@ -79,6 +79,9 @@
     <Compile Include="Overlays\Driving\OverlayDamage\DamageOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayWheelSlip\WheelSlipOverlay.cs" />
     <Compile Include="Overlays\Pitwall\DebugInfoHelper.cs" />
+    <Compile Include="Overlays\Pitwall\OverlayDualSenseX\DualSenseXOverlay.cs" />
+    <Compile Include="Overlays\Pitwall\OverlayDualSenseX\DualSenseXResources.cs" />
+    <Compile Include="Overlays\Pitwall\OverlayDualSenseX\TriggerHaptics.cs" />
     <Compile Include="Overlays\Pitwall\OverlayHUDs\HUDsOverlay.cs" />
     <Compile Include="Overlays\Pitwall\OverlayRenderTest\RenderTestOverlay.cs" />
     <Compile Include="Overlays\Pitwall\OverlayACC\AccOverlay.cs" />

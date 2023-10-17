@@ -14,13 +14,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayDualSenseX
+namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseXFree
 {
-    [Overlay(Name = "DualSense X",
-        Description = "Adds variable trigger haptics and feedback for the Dual Sense 5 controller.\n See Discord Guide section for instructions.",
+    [Overlay(Name = "DualSense X Free",
+        Description = "Adds variable trigger haptics and feedback for the DualSense 5 controller using DualSense X 1.4.9.\n See Guide in the Discord of Race Element for instructions.",
         OverlayCategory = OverlayCategory.Inputs,
         OverlayType = OverlayType.Debug)]
-    internal sealed class DualSenseXOverlay : AbstractOverlay
+    internal sealed class DualSenseXFreeOverlay : AbstractOverlay
     {
         private readonly DualSenseXConfiguration _config = new DualSenseXConfiguration();
         private sealed class DualSenseXConfiguration : OverlayConfiguration
@@ -29,24 +29,20 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayDualSenseX
             public HapticsGrouping Haptics { get; set; } = new HapticsGrouping();
             public class HapticsGrouping
             {
-                [ToolTip("Frequency of the ABS and TC haptics.")]
-                [IntRange(75, 150, 1)]
-                public int Frequency { get; set; } = 75;
-
                 [ToolTip("Adds progressive load to the left trigger(braking).")]
                 public bool BrakeLoad { get; set; } = true;
 
                 [ToolTip("Force of the haptics.")]
-                [IntRange(10, 255, 1)]
-                public int MaxForce { get; set; } = 255;
+                [IntRange(1, 50, 1)]
+                public int MaxForce { get; set; } = 5;
             }
         }
 
         private FileInfo _textFile;
-        public DualSenseXOverlay(Rectangle rectangle) : base(rectangle, "Dual Sense X")
+        public DualSenseXFreeOverlay(Rectangle rectangle) : base(rectangle, "DualSense X Free")
         {
             this.Width = 1; this.Height = 1;
-            RefreshRateHz = 50;
+            RefreshRateHz = 70;
         }
 
         public override void BeforeStart()
@@ -61,19 +57,27 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayDualSenseX
             return true;
         }
 
+        bool wasTcOn = false;
+        bool wasAbsOn = false;
         public override void Render(Graphics g)
         {
 
             StringBuilder sb = new StringBuilder();
             if (pagePhysics.Abs > 0)
             {
-                sb.AppendLine($"{PropertyLeftTrigger}={TriggerStates.CustomTriggerValue}\n");
-                sb.AppendLine($"{PropertyCustomTriggerValueLeftMode}={GetStringValue(CustomTriggerValues.VibrateResistanceB)}");
-                int force = (int)(pagePhysics.Brake * _config.Haptics.MaxForce);
-                sb.AppendLine($"{PropertyForceLeftTrigger}=({_config.Haptics.Frequency})({force})(0)(0)(0)(0)(0)");
+                if (!wasAbsOn)
+                {
+                    sb.AppendLine($"{PropertyLeftTrigger}={TriggerStates.CustomTriggerValue}\n");
+                    sb.AppendLine($"{PropertyCustomTriggerValueLeftMode}={GetStringValue(CustomTriggerValues.VibrateResistanceB)}");
+                    int force = (int)(pagePhysics.Brake * _config.Haptics.MaxForce);
+                    sb.AppendLine($"{PropertyForceLeftTrigger}=({65})({force})(0)(0)(0)(0)(0)");
+                    wasAbsOn = true;
+                }
             }
             else
             {
+                wasAbsOn = false;
+
                 if (_config.Haptics.BrakeLoad && pagePhysics.Brake > 0.001f)
                 {
                     sb.AppendLine($"{PropertyLeftTrigger}={TriggerStates.CustomTriggerValue}\n");
@@ -81,7 +85,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayDualSenseX
 
                     int force = (int)(pagePhysics.Brake * _config.Haptics.MaxForce);
                     force.Clip(0, _config.Haptics.MaxForce);
-                    sb.AppendLine($"{PropertyForceLeftTrigger}=({force})({force})(0)(0)(0)(0)(0)");
+                    sb.AppendLine($"{PropertyForceLeftTrigger}=({155})({force})(0)(0)(0)(0)(0)");
                 }
                 else
                 {
@@ -92,14 +96,30 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayDualSenseX
 
             if (pagePhysics.TC > 0)
             {
-                sb.AppendLine($"{PropertyRightTrigger}={TriggerStates.CustomTriggerValue}");
-                sb.AppendLine($"{PropertyCustomTriggerValueRightMode}={GetStringValue(CustomTriggerValues.VibrateResistanceB)}");
-                sb.AppendLine($"{PropertyForceRightTrigger}=({_config.Haptics.Frequency})({_config.Haptics.MaxForce})(0)(0)(0)(0)(0)");
+                if (!wasTcOn)
+                {
+                    sb.AppendLine($"{PropertyRightTrigger}={TriggerStates.CustomTriggerValue}");
+                    sb.AppendLine($"{PropertyCustomTriggerValueRightMode}={GetStringValue(CustomTriggerValues.VibrateResistanceB)}");
+                    sb.AppendLine($"{PropertyForceRightTrigger}=({65})({_config.Haptics.MaxForce / 2})(0)(0)(0)(0)(0)");
+                    wasTcOn = true;
+                }
             }
             else
             {
-                sb.AppendLine($"{PropertyRightTrigger}={TriggerStates.Normal}");
-                sb.AppendLine($"{PropertyForceRightTrigger}=(0)(0)(0)(0)(0)(0)(0)");
+                wasTcOn = false;
+
+                // trigger upshift feedback
+                if (pagePhysics.Gas > 0.6f && pagePhysics.Rpms > (pageStatic.MaxRpm - 50))
+                {
+                    sb.AppendLine($"{PropertyRightTrigger}={TriggerStates.CustomTriggerValue}\n");
+                    sb.AppendLine($"{PropertyCustomTriggerValueRightMode}={GetStringValue(CustomTriggerValues.VibrateResistance)}");
+                    sb.AppendLine($"{PropertyForceRightTrigger}=({220})({1})(0)(0)(0)(0)(0)");
+                }
+                else
+                {
+                    sb.AppendLine($"{PropertyRightTrigger}={TriggerStates.Normal}");
+                    sb.AppendLine($"{PropertyForceRightTrigger}=(0)(0)(0)(0)(0)(0)(0)");
+                }
             }
 
             UpdateDualSenseFile(sb.ToString());
