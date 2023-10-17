@@ -14,26 +14,12 @@ using static RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX.DualSenseXRe
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
 {
     [Overlay(Name = "DualSense X",
-        Description = "Adds variable trigger haptics and feedback for the DualSense 5 controller using DualSense V2($5 on steam).\n See Guide in the Discord of Race Element for instructions.",
+        Description = "Adds active triggers for the DualSense 5 controller using DualSense V2($5 on steam).\n See Guide in the Discord of Race Element for instructions.",
         OverlayCategory = OverlayCategory.Inputs,
         OverlayType = OverlayType.Debug)]
     internal sealed class DualSenseXOverlay : AbstractOverlay
     {
         private readonly DualSenseXConfiguration _config = new DualSenseXConfiguration();
-        private sealed class DualSenseXConfiguration : OverlayConfiguration
-        {
-            [ConfigGrouping("Haptics", "Adjust the haptics for the left and right trigger.")]
-            public HapticsGrouping Haptics { get; set; } = new HapticsGrouping();
-            public class HapticsGrouping
-            {
-                [ToolTip("Adds progressive load to the left trigger(braking).")]
-                public bool BrakeLoad { get; set; } = true;
-
-                [ToolTip("Force of the haptics.")]
-                [IntRange(1, 50, 1)]
-                public int MaxForce { get; set; } = 5;
-            }
-        }
 
         private UdpClient _client;
         private IPEndPoint _endPoint;
@@ -47,7 +33,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
         public DualSenseXOverlay(Rectangle rectangle) : base(rectangle, "DualSense X")
         {
             this.Width = 1; this.Height = 1;
-            RefreshRateHz = 50;
+            RefreshRateHz = 70;
         }
 
         public override void SetupPreviewData() => IsRenderingPreview = true;
@@ -66,24 +52,23 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
             if (_client == null)
             {
                 CreateEndPoint();
-                Thread.Sleep(500);
                 SetLighting();
             }
 
-            Packet tcPacket = TriggerHaptics.HandleTractionControl(pagePhysics);
+            Packet tcPacket = TriggerHaptics.HandleAcceleration(pagePhysics, _config.ThrottleHaptics);
             if (tcPacket != null)
             {
                 Send(tcPacket);
-                ServerResponse response = Receive(ref _endPoint);
-                HandleResponse(response);
+                ServerResponse response = Receive();
+                //HandleResponse(response);
             }
 
-            Packet absPacket = TriggerHaptics.HandleABS(pagePhysics);
+            Packet absPacket = TriggerHaptics.HandleBraking(pagePhysics, _config.BrakeHaptics);
             if (absPacket != null)
             {
                 Send(absPacket);
-                ServerResponse response = Receive(ref _endPoint);
-                HandleResponse(response);
+                ServerResponse response = Receive();
+                //HandleResponse(response);
             }
         }
 
@@ -98,7 +83,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
             p.instructions[0].parameters = new object[] { controllerIndex, 255, 69, 0 };
 
             Send(p);
-            ServerResponse lightingReponse = Receive(ref _endPoint);
+            ServerResponse lightingReponse = Receive();
             HandleResponse(lightingReponse);
         }
 
@@ -117,7 +102,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
             _timeSent = DateTime.Now;
         }
 
-        private ServerResponse Receive(ref IPEndPoint endPoint)
+        private ServerResponse Receive()
         {
             byte[] bytesReceivedFromServer = _client.Receive(ref _endPoint);
 

@@ -79,6 +79,7 @@
     <Compile Include="Overlays\Driving\OverlayDamage\DamageOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayWheelSlip\WheelSlipOverlay.cs" />
     <Compile Include="Overlays\Pitwall\DebugInfoHelper.cs" />
+    <Compile Include="Overlays\Pitwall\OverlayDualSenseX\DualSenseXConfiguration.cs" />
     <Compile Include="Overlays\Pitwall\OverlayDualSenseX\DualSenseXOverlay.cs" />
     <Compile Include="Overlays\Pitwall\OverlayDualSenseX\DualSenseXResources.cs" />
     <Compile Include="Overlays\Pitwall\OverlayDualSenseX\TriggerHaptics.cs" />
