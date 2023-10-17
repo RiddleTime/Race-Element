@@ -36,10 +36,10 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" FontSize="16" Content="All Steering locks, Lock to Lock. (when your hardware is not supported)"/>
+            <Label Grid.Row="0" FontSize="16" Content="ACC Steering locks, Lock to Lock" HorizontalAlignment="Center"/>
 
             <ScrollViewer Grid.Row="1">
-                <StackPanel x:Name="stackerAllLocks">
+                <StackPanel x:Name="stackerAllLocks" >
 
                 </StackPanel>
             </ScrollViewer>
