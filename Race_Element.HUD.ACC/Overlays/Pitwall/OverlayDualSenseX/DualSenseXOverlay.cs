@@ -14,7 +14,7 @@ using static RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX.DualSenseXRe
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
 {
     [Overlay(Name = "DualSense X",
-        Description = "Adds active triggers for the DualSense 5 controller using DualSense V2($5 on steam).\n See Guide in the Discord of Race Element for instructions.",
+        Description = "Adds active triggers for the DualSense 5 controller using DSX on steam.\n See Guide in the Discord of Race Element for instructions.",
         OverlayCategory = OverlayCategory.Inputs,
         OverlayType = OverlayType.Debug)]
     internal sealed class DualSenseXOverlay : AbstractOverlay

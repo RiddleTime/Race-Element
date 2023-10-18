@@ -55,7 +55,6 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
                     {
                         float totalBrakePressure = 0;
                         Array.ForEach(pagePhysics.brakePressure, tyre => totalBrakePressure += tyre);
-                        totalBrakePressure = (float)Math.Ceiling(totalBrakePressure);
                         totalBrakePressure.Clip(0, 2);
 
                         instructions.Add(new Instruction()

@@ -17,7 +17,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
         public BrakeHapticsConfig BrakeHaptics { get; set; } = new BrakeHapticsConfig();
         public sealed class BrakeHapticsConfig
         {
-            [ToolTip("Dynamically adjust load on trigger based on brake load.")]
+            [ToolTip("Dynamically adjust load on trigger based on the brake pressure.")]
             public bool ActiveLoad { get; set; } = true;
 
             [ToolTip("Adds haptics when abs is activated.")]
