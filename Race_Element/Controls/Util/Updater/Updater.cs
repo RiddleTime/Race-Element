@@ -1,13 +1,9 @@
 ﻿using RaceElement.Util;
 using Octokit;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaceElement.Controls.Util.Updater
 {
@@ -20,6 +16,7 @@ namespace RaceElement.Controls.Util.Updater
                 LogWriter.WriteToLog("AutoUpdater: Unable to verify release asset.");
                 return;
             }
+            LogWriter.WriteToLog($"Updater started");
 
             string assemblyStart = System.Reflection.Assembly.GetExecutingAssembly().Location;
 
@@ -43,7 +40,7 @@ namespace RaceElement.Controls.Util.Updater
 
         private bool MoveCurrentExecutableToDocumentsPath(string currentExecutableFullName)
         {
-            Debug.WriteLine($"AutoUpdater: Moving current Executable to {FileUtil.RaceElementAppDataPath}");
+            LogWriter.WriteToLog($"AutoUpdater: Moving current Executable to {FileUtil.RaceElementAppDataPath}");
 
             FileInfo toBeMoved = new FileInfo(currentExecutableFullName);
 
@@ -55,7 +52,7 @@ namespace RaceElement.Controls.Util.Updater
 
             toBeMoved.MoveTo(tempTargetFile);
 
-            Debug.WriteLine($"Current location of currentExecutable {toBeMoved.FullName} ");
+            LogWriter.WriteToLog($"Current location of currentExecutable {toBeMoved.FullName} ");
             return true;
         }
 
@@ -63,7 +60,7 @@ namespace RaceElement.Controls.Util.Updater
         {
             try
             {
-                Debug.WriteLine($"AutoUpdater: Reverting Executable from {FileUtil.RaceElementAppDataPath} to {currentExecutableFullName}");
+                LogWriter.WriteToLog($"AutoUpdater: Reverting Executable from {FileUtil.RaceElementAppDataPath} to {currentExecutableFullName}");
 
                 FileInfo toBeMoved = new FileInfo($"{FileUtil.RaceElementAppDataPath}RaceElement.exe");
 
@@ -73,7 +70,7 @@ namespace RaceElement.Controls.Util.Updater
 
                 toBeMoved.MoveTo(currentExecutableFullName);
 
-                Debug.WriteLine($"Current location of currentExecutable {toBeMoved.FullName} ");
+                LogWriter.WriteToLog($"Current location of currentExecutable {toBeMoved.FullName} ");
             }
             catch (Exception e)
             {
@@ -87,7 +84,7 @@ namespace RaceElement.Controls.Util.Updater
         {
             try
             {
-                var client = new WebClient();
+                using var client = new WebClient();
                 client.DownloadFile(downloadUrl, targetFile);
 
                 LogWriter.WriteToLog($"AutoUpdater: Downloaded latest version from {downloadUrl} to file:\n{targetFile}");
