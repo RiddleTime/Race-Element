@@ -60,6 +60,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
             {
                 Send(tcPacket);
                 ServerResponse response = Receive();
+                //ServerResponse response = Receive();
                 //HandleResponse(response);
             }
 
@@ -67,7 +68,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
             if (absPacket != null)
             {
                 Send(absPacket);
-                ServerResponse response = Receive();
+                //ServerResponse response = Receive();
                 //HandleResponse(response);
             }
         }
