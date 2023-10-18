@@ -59,7 +59,6 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
             if (tcPacket != null)
             {
                 Send(tcPacket);
-                ServerResponse response = Receive();
                 //ServerResponse response = Receive();
                 //HandleResponse(response);
             }
