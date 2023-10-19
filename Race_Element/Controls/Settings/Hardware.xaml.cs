@@ -9,6 +9,7 @@ using static RaceElement.Data.ConversionFactory;
 using SharpCompress;
 using RaceElement.Data;
 using System.Linq;
+using System.Windows.Media;
 
 namespace RaceElement.Controls
 {
@@ -83,7 +84,12 @@ namespace RaceElement.Controls
 
                     Label label = new Label()
                     {
-                        Content = $"{lockToLock} - {carName}",
+                        Content = $"  {lockToLock}   |   {carName}",
+                        FontWeight = FontWeights.Bold,
+                        FontStyle = FontStyles.Italic,
+                        FontSize = 15,
+                        BorderBrush = new SolidColorBrush(Color.FromArgb(90,0,0,0)),
+                        BorderThickness = new Thickness(0,0,0,2),
                     };
                     stackerAllLocks.Children.Add(label);
                 }

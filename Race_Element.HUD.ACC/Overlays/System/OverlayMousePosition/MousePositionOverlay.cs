@@ -24,14 +24,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayMousePosition
         {
             g.DrawEllipse(Pens.White, _circleWidth, _circleWidth, _circleWidth);
             g.DrawEllipse(Pens.White, _circleWidth, _circleWidth, 3);
-            g.FillEllipse(new SolidBrush(Color.FromArgb(140, Color.White)), 5, 5, 5);
+            g.FillEllipse(new SolidBrush(Color.FromArgb(181, Color.White)), 5, 5, 5);
         };
 
         public MousePositionOverlay(Rectangle rectangle, string Name) : base(rectangle, Name)
         {
             this.Width = _circleWidth * 2 + 1;
             this.Height = Width;
-            this.RequestsDrawItself = true;
+            //this.RequestsDrawItself = true;
             this.AllowReposition = false;
         }
 
@@ -45,6 +45,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayMousePosition
 
             this.X = GetCursorPosition().X - _circleWidth;
             this.Y = GetCursorPosition().Y - _circleWidth;
+
             this.RequestRedraw();
         }
 
@@ -55,13 +56,15 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayMousePosition
             _globalKbmHook.MouseMove -= GlobalMouseMove;
             _globalKbmHook.Dispose();
 
-            if (_cachedCursor != null)
-                _cachedCursor.Dispose();
+            _cachedCursor?.Dispose();
         }
 
         private void GlobalMouseMove(object sender, MouseEventArgs e)
         {
-            this.Location = new Point(e.Location.X - _circleWidth, e.Location.Y - _circleWidth);
+            Point cursor = GetCursorPosition();
+            this.Location = new Point(cursor.X - _circleWidth, cursor.Y - _circleWidth);
+
+            _cachedCursor.SetRenderer(MouseUpRenderer);
         }
 
         private void GlobalMouseUp(object sender, MouseEventArgs e)
@@ -76,7 +79,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayMousePosition
             this.RequestRedraw();
         }
 
-        public sealed override void Render(Graphics g) => _cachedCursor?.Draw(g, Width, Height);
+        float opacity = 0.3f;
+        public sealed override void Render(Graphics g)
+        {
+            //_cachedCursor.Opacity = opacity;
+            _cachedCursor.Draw(g, Width, Height);
+
+        }
 
         public sealed override bool ShouldRender() => true;
 
