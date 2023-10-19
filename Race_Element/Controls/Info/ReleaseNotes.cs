@@ -6,7 +6,10 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.2.4.0", "- Added Active Triggers for Playstation DualSense Controller (see discord for guide)." },
+            {"0.2.4.0", "- Added Active Triggers support for Playstation DualSense Controller (see discord for guide)."+
+                        "\n- Input Trace HUD can have a smaller width."+
+                        "\n- Added better logging for auto-updater."+
+                        "\n- Fix app manifest not being embedded."},
             {"0.2.3.8", "- App hotkeys: Added Ctrl + (F4/W) to shut down the app when the gui is open."+
                         "\n- Adaptive text scaling by windows is now permanently disabled for the app."+
                         "\n- Add HUDs hud in pitwall tab to display all active huds and some extra information about them."},
