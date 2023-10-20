@@ -6,6 +6,12 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.2.4.2", "- Removed affiliate links:"+
+                        "\nRace Element is free to run software, I do not want to encourage anyone ever again to pay to become faster."+
+                        "\nLearn to create your own setups, there are tons of guides out there, even from one of the developers of Assetto Corsa Competizione."+
+                        "\nI dare you to create fast setups and share them for free!"+
+                        "\nIf you want to support Race Element, provide code, ideas.. support.. whatever you like.. I appreciate it all."+
+                        "\nBe honest about your performance, is it the setup or is it you?"},
             {"0.2.4.0", "- Added Active Triggers support for Playstation DualSense Controller (see discord for guide)."+
                         "\n- Input Trace HUD can have a smaller width."+
                         "\n- Added better logging for auto-updater."+
