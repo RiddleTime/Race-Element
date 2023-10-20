@@ -6,6 +6,7 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.2.4.2", "- External affiliate update(Removed links)." },
             {"0.2.4.0", "- Added Active Triggers support for Playstation DualSense Controller (see discord for guide)."+
                         "\n- Input Trace HUD can have a smaller width."+
                         "\n- Added better logging for auto-updater."+
