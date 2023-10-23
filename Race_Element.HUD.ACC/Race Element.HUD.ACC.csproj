@@ -71,7 +71,8 @@
     <Compile Include="Overlays\Driving\OverlayAccelerometer\AccelerometerOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayBoostGauge\BoostGaugeOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayCarInfo\CarInfoOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayCornerSpeeds\CornerSpeedsOverlay.cs" />
+    <Compile Include="Overlays\Driving\OverlayCornerSpeeds\CornerDataCollector.cs" />
+    <Compile Include="Overlays\Driving\OverlayCornerSpeeds\CornerDataOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayTrackMap\TrackMapOverlay.cs" />
     <Compile Include="Overlays\Pitwall\OverlayDualSenseXFree\DualSenseXFreeOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayLapDeltaTrace\LapDeltaTraceConfiguration.cs" />
@@ -197,6 +198,9 @@
     <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\watkins.svg" />
     <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\zandvoort.svg" />
     <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\zolder-n.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Overlays\Driving\OverlayTrackMap\Maps\credits.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
