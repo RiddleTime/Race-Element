@@ -71,6 +71,7 @@
     <Compile Include="Overlays\Driving\OverlayAccelerometer\AccelerometerOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayBoostGauge\BoostGaugeOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayCarInfo\CarInfoOverlay.cs" />
+    <Compile Include="Overlays\Driving\OverlayCornerSpeeds\CornerSpeedsOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayTrackMap\TrackMapOverlay.cs" />
     <Compile Include="Overlays\Pitwall\OverlayDualSenseXFree\DualSenseXFreeOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayLapDeltaTrace\LapDeltaTraceConfiguration.cs" />
