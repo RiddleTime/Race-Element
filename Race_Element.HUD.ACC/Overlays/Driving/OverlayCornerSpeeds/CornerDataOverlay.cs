@@ -43,20 +43,22 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
                 _cornerDatas.Add(new CornerData()
                 {
                     CornerNumber = i,
-                    MinimumSpeed = (float)(rand.NextDouble() * 100f)
+                    MinimumSpeed = (float)(rand.NextDouble() * 100f),
+                    MaxLatG = (float)(rand.NextDouble() * 3)
                 });
             }
         }
 
         public override void BeforeStart()
         {
-            _table = new InfoTable(10, new int[] { 10, 60 });
+            _table = new InfoTable(10, new int[] { 90, 60, 60 });
             RaceSessionTracker.Instance.OnNewSessionStarted += OnNewSessionStarted;
         }
 
         private void OnNewSessionStarted(object sender, DbRaceSession rs)
         {
             _currentTrack = GetCurrentTrack();
+            _cornerDatas.Clear();
         }
 
         public override void BeforeStop()
@@ -90,10 +92,14 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
         {
             public int CornerNumber { get; set; }
             public float MinimumSpeed { get; set; }
+            public float MaxLatG { get; set; }
         }
 
         public override void Render(Graphics g)
         {
+            if (_config.Table.ShowHeader)
+                _table.AddRow($" #", new string[] { $"Min km/h", $"Lat G" });
+
             int currentCorner = GetCurrentCorner();
             if (currentCorner == -1 && _previousCorner != -1)
             {  // corner exited
@@ -111,9 +117,14 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
                     if (_currentCorner.MinimumSpeed > pagePhysics.SpeedKmh)
                         _currentCorner.MinimumSpeed = pagePhysics.SpeedKmh;
 
+                    float latG = pagePhysics.AccG[0];
+                    if (latG < 0) latG *= -1;
+                    if (_currentCorner.MaxLatG < latG)
+                        _currentCorner.MaxLatG = latG;
+
                     string minSpeed = $"{_currentCorner.MinimumSpeed:F1}";
                     minSpeed = minSpeed.FillStart(5, ' ');
-                    _table.AddRow($"{currentCorner.ToString().FillStart(2, ' ')}", new string[] { $"{minSpeed}" });
+                    _table.AddRow($"{currentCorner.ToString().FillStart(2, ' ')}", new string[] { $"{minSpeed}", $"{_currentCorner.MaxLatG:F2}" });
                 }
                 else
                 {
@@ -127,11 +138,13 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
                 }
             }
 
+
+
             foreach (var corner in _cornerDatas.Skip(_cornerDatas.Count - _config.Table.CornerCount).Reverse().Take(isInCorner ? _config.Table.CornerCount - 1 : _config.Table.CornerCount))
             {
                 string minSpeed = $"{corner.MinimumSpeed:F1}";
                 minSpeed = minSpeed.FillStart(5, ' ');
-                _table.AddRow($"{corner.CornerNumber.ToString().FillStart(2, ' ')}", new string[] { $"{minSpeed}" });
+                _table.AddRow($"{corner.CornerNumber.ToString().FillStart(2, ' ')}", new string[] { $"{minSpeed}", $"{corner.MaxLatG:F2}" });
             }
 
             // draw table of previous corners, min speed? corner g? min gear? 
