@@ -53,7 +53,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
 
         public override void BeforeStart()
         {
-            _table = new InfoTable(10, new int[] { 10, 70 });
+            _table = new InfoTable(10, new int[] { 10, 60 });
             RaceSessionTracker.Instance.OnNewSessionStarted += OnNewSessionStarted;
         }
 
@@ -76,6 +76,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
 
         public int GetCurrentCorner()
         {
+            _currentTrack ??= GetCurrentTrack();
             if (_currentTrack == null) return -1;
 
             try
@@ -110,6 +111,10 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
                     // we're still in the current corner..., perhaps do some checks?
                     if (_currentCorner.MinimumSpeed > pagePhysics.SpeedKmh)
                         _currentCorner.MinimumSpeed = pagePhysics.SpeedKmh;
+
+                    string minSpeed = $"{_currentCorner.MinimumSpeed:F1}";
+                    minSpeed = minSpeed.FillStart(5, ' ');
+                    _table.AddRow($"{currentCorner}", new string[] { $"{minSpeed}" });
                 }
                 else
                 {
@@ -126,7 +131,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
             foreach (var corner in _cornerDatas.Skip(_cornerDatas.Count - _config.Table.CornerCount).Reverse())
             {
                 string minSpeed = $"{corner.MinimumSpeed:F1}";
-                minSpeed.FillStart(5, ' ');
+                minSpeed = minSpeed.FillStart(5, ' ');
                 _table.AddRow($"{corner.CornerNumber}", new string[] { $"{minSpeed}" });
             }
 
