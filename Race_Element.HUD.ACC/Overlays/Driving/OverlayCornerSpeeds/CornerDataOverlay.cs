@@ -20,16 +20,26 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
             OverlayType = OverlayType.Release)]
     internal sealed class CornerDataOverlay : AbstractOverlay
     {
-        private readonly CornerDataConfiguration _config = new CornerDataConfiguration();
+        internal readonly CornerDataConfiguration _config = new CornerDataConfiguration();
 
-        private readonly List<CornerData> _cornerDatas;
-        private InfoTable _table;
-        private AbstractTrackData _currentTrack;
-        private int _previousCorner = -1;
-        private CornerData _currentCorner;
+        internal struct CornerData
+        {
+            public int CornerNumber { get; set; }
+            public float MinimumSpeed { get; set; }
+            public float MaxLatG { get; set; }
+        }
+
+        private CornerDataCollector _collector;
+
+        internal readonly List<CornerData> _cornerDatas;
+        internal InfoTable _table;
+        internal AbstractTrackData _currentTrack;
+        internal int _previousCorner = -1;
+        internal CornerData _currentCorner;
 
         public CornerDataOverlay(Rectangle rectangle) : base(rectangle, "Corner Data")
         {
+            RefreshRateHz = 5;
             _cornerDatas = new List<CornerData>();
         }
 
@@ -49,6 +59,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
 
         public override void BeforeStart()
         {
+            _collector = new CornerDataCollector();
+
             List<int> columnWidths = new List<int>();
             columnWidths.Add(90);
             if (_config.Data.MaxLatG)
@@ -61,6 +73,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
             Width = 30 + columnWidths.Sum();
 
             RaceSessionTracker.Instance.OnNewSessionStarted += OnNewSessionStarted;
+            _collector.Start(this);
         }
 
         private void OnNewSessionStarted(object sender, DbRaceSession rs)
@@ -72,6 +85,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
         public override void BeforeStop()
         {
             RaceSessionTracker.Instance.OnNewSessionStarted -= OnNewSessionStarted;
+            _collector.Stop();
         }
 
         public AbstractTrackData GetCurrentTrack()
@@ -96,13 +110,6 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
             }
         }
 
-        private struct CornerData
-        {
-            public int CornerNumber { get; set; }
-            public float MinimumSpeed { get; set; }
-            public float MaxLatG { get; set; }
-        }
-
         public override void Render(Graphics g)
         {
             if (_config.Table.ShowHeader)
@@ -113,25 +120,17 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
                 if (_config.Data.MaxLatG)
                     headerColumns.Add("LatG");
 
-                _table.AddRow("  ", headerColumns.ToArray());
+                _table.AddRow("   ", headerColumns.ToArray());
             }
 
             int currentCorner = GetCurrentCorner(pageGraphics.NormalizedCarPosition);
-            if (currentCorner == -1 && _previousCorner != -1)
-            {  // corner exited
-                _cornerDatas.Add(_currentCorner);
-                _previousCorner = -1;
-            }
-
             bool isInCorner = false;
             if (currentCorner != -1)
             {
                 if (currentCorner == _previousCorner)
                 {
                     isInCorner = true;
-                    // we're still in the current corner..., check the data and build the first row
-                    if (_currentCorner.MinimumSpeed > pagePhysics.SpeedKmh)
-                        _currentCorner.MinimumSpeed = pagePhysics.SpeedKmh;
+
 
                     List<string> columns = new List<string>();
                     string minSpeed = $"{_currentCorner.MinimumSpeed:F1}";
@@ -140,25 +139,10 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
 
                     if (_config.Data.MaxLatG)
                     {
-                        float latG = pagePhysics.AccG[0];
-                        if (latG < 0) latG *= -1;
-                        if (_currentCorner.MaxLatG < latG)
-                            _currentCorner.MaxLatG = latG;
-
                         columns.Add($"{_currentCorner.MaxLatG:F2}");
                     }
 
                     _table.AddRow($"{currentCorner.ToString().FillStart(2, ' ')}", columns.ToArray());
-                }
-                else
-                {
-                    _previousCorner = currentCorner;
-                    Debug.WriteLine("Entered a new corner!");
-                    _currentCorner = new CornerData()
-                    {
-                        CornerNumber = currentCorner,
-                        MinimumSpeed = float.MaxValue
-                    };
                 }
             }
 
