@@ -31,8 +31,6 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
         public CornerDataOverlay(Rectangle rectangle) : base(rectangle, "Corner Data")
         {
             _cornerDatas = new List<CornerData>();
-            Width = 200;
-            Height = 150;
         }
 
         public override void SetupPreviewData()
@@ -43,7 +41,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
                 _cornerDatas.Add(new CornerData()
                 {
                     CornerNumber = i,
-                    MinimumSpeed = (float)(rand.NextDouble() * 100f),
+                    MinimumSpeed = (float)(rand.NextDouble() * 220f),
                     MaxLatG = (float)(rand.NextDouble() * 3)
                 });
             }
@@ -51,7 +49,17 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
 
         public override void BeforeStart()
         {
-            _table = new InfoTable(10, new int[] { 90, 60, 60 });
+            List<int> columnWidths = new List<int>();
+            columnWidths.Add(90);
+            if (_config.Data.MaxLatG)
+                columnWidths.Add(60);
+            _table = new InfoTable(12, columnWidths.ToArray());
+
+            // set Width and Height of HUD based on amount of rows and columns in table
+            Height = (int)Math.Abs(_table.Font.GetHeight(120) * _config.Table.CornerCount);
+            if (_config.Table.ShowHeader) Height += (int)Math.Abs(_table.Font.GetHeight(120));
+            Width = 30 + columnWidths.Sum();
+
             RaceSessionTracker.Instance.OnNewSessionStarted += OnNewSessionStarted;
         }
 
@@ -73,14 +81,14 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
             return Tracks.Find(x => x.GameName == pageStatic.Track);
         }
 
-        public int GetCurrentCorner()
+        public int GetCurrentCorner(float normalizedTrackPosition)
         {
             _currentTrack ??= GetCurrentTrack();
             if (_currentTrack == null) return -1;
 
             try
             {
-                return _currentTrack.CornerNames.First(x => pageGraphics.NormalizedCarPosition > x.Key.From && pageGraphics.NormalizedCarPosition < x.Key.To).Value.Item1;
+                return _currentTrack.CornerNames.First(x => normalizedTrackPosition > x.Key.From && normalizedTrackPosition < x.Key.To).Value.Item1;
             }
             catch (Exception)
             {
@@ -98,9 +106,17 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
         public override void Render(Graphics g)
         {
             if (_config.Table.ShowHeader)
-                _table.AddRow($" #", new string[] { $"Min km/h", $"Lat G" });
+            {
+                List<string> headerColumns = new List<string>();
+                headerColumns.Add("MinKmh");
 
-            int currentCorner = GetCurrentCorner();
+                if (_config.Data.MaxLatG)
+                    headerColumns.Add("LatG");
+
+                _table.AddRow("  ", headerColumns.ToArray());
+            }
+
+            int currentCorner = GetCurrentCorner(pageGraphics.NormalizedCarPosition);
             if (currentCorner == -1 && _previousCorner != -1)
             {  // corner exited
                 _cornerDatas.Add(_currentCorner);
@@ -113,18 +129,26 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
                 if (currentCorner == _previousCorner)
                 {
                     isInCorner = true;
-                    // we're still in the current corner..., perhaps do some checks?
+                    // we're still in the current corner..., check the data and build the first row
                     if (_currentCorner.MinimumSpeed > pagePhysics.SpeedKmh)
                         _currentCorner.MinimumSpeed = pagePhysics.SpeedKmh;
 
-                    float latG = pagePhysics.AccG[0];
-                    if (latG < 0) latG *= -1;
-                    if (_currentCorner.MaxLatG < latG)
-                        _currentCorner.MaxLatG = latG;
-
+                    List<string> columns = new List<string>();
                     string minSpeed = $"{_currentCorner.MinimumSpeed:F1}";
                     minSpeed = minSpeed.FillStart(5, ' ');
-                    _table.AddRow($"{currentCorner.ToString().FillStart(2, ' ')}", new string[] { $"{minSpeed}", $"{_currentCorner.MaxLatG:F2}" });
+                    columns.Add($"{minSpeed}");
+
+                    if (_config.Data.MaxLatG)
+                    {
+                        float latG = pagePhysics.AccG[0];
+                        if (latG < 0) latG *= -1;
+                        if (_currentCorner.MaxLatG < latG)
+                            _currentCorner.MaxLatG = latG;
+
+                        columns.Add($"{_currentCorner.MaxLatG:F2}");
+                    }
+
+                    _table.AddRow($"{currentCorner.ToString().FillStart(2, ' ')}", columns.ToArray());
                 }
                 else
                 {
@@ -138,13 +162,18 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
                 }
             }
 
-
-
             foreach (var corner in _cornerDatas.Skip(_cornerDatas.Count - _config.Table.CornerCount).Reverse().Take(isInCorner ? _config.Table.CornerCount - 1 : _config.Table.CornerCount))
             {
+                List<string> columns = new List<string>();
+
                 string minSpeed = $"{corner.MinimumSpeed:F1}";
                 minSpeed = minSpeed.FillStart(5, ' ');
-                _table.AddRow($"{corner.CornerNumber.ToString().FillStart(2, ' ')}", new string[] { $"{minSpeed}", $"{corner.MaxLatG:F2}" });
+                columns.Add($"{minSpeed}");
+
+                if (_config.Data.MaxLatG)
+                    columns.Add($"{corner.MaxLatG:F2}");
+
+                _table.AddRow($"{corner.CornerNumber.ToString().FillStart(2, ' ')}", columns.ToArray());
             }
 
             // draw table of previous corners, min speed? corner g? min gear? 
