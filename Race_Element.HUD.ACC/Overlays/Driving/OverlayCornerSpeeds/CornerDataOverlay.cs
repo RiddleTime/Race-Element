@@ -131,7 +131,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
             {
                 string minSpeed = $"{corner.MinimumSpeed:F1}";
                 minSpeed = minSpeed.FillStart(5, ' ');
-                _table.AddRow($"{corner.CornerNumber}", new string[] { $"{minSpeed}" });
+                _table.AddRow($"{corner.CornerNumber.ToString().FillStart(2, ' ')}", new string[] { $"{minSpeed}" });
             }
 
             // draw table of previous corners, min speed? corner g? min gear? 
