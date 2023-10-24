@@ -5,6 +5,7 @@ using RaceElement.Data.ACC.Tracks;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.Util.SystemExtensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,52 +18,24 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
 {
     [Overlay(Name = "Corner Data",
-            Description = "Shows corner data for each corner.",
+            Description = "Shows minimum speed and other data for each corner.",
             OverlayCategory = OverlayCategory.Lap,
             OverlayType = OverlayType.Release)]
     internal sealed class CornerDataOverlay : AbstractOverlay
     {
-        private readonly CornerSpeedsConfiguration _config = new CornerSpeedsConfiguration();
-        private sealed class CornerSpeedsConfiguration : OverlayConfiguration
-        {
-            [ConfigGrouping("Table", "Adjust what is shown in the table")]
-            public readonly TableGrouping Table = new TableGrouping();
-            public sealed class TableGrouping
-            {
-                [ToolTip("Adjust the amount corners shown as history.")]
-                [IntRange(1, 5, 1)]
-                public int CornerCount { get; set; } = 3;
-            }
+        private readonly CornerDataConfiguration _config = new CornerDataConfiguration();
 
-            private class DataGrouping
-            {
-                public bool CornerG { get; set; } = false;
-            }
-
-            public CornerSpeedsConfiguration() => AllowRescale = true;
-        }
-
+        private readonly List<CornerData> _cornerDatas;
         private InfoTable _table;
         private AbstractTrackData _currentTrack;
         private int _previousCorner = -1;
-        private List<CornerData> _cornerDatas = new List<CornerData>();
+        private CornerData _currentCorner;
 
         public CornerDataOverlay(Rectangle rectangle) : base(rectangle, "Corner Data")
         {
+            _cornerDatas = new List<CornerData>();
             Width = 300;
             Height = 150;
-
-        }
-
-        public override void BeforeStart()
-        {
-            _table = new InfoTable(10, new int[] { 10, 70 });
-            RaceSessionTracker.Instance.OnNewSessionStarted += OnNewSessionStarted;
-        }
-
-        private void OnNewSessionStarted(object sender, DbRaceSession rs)
-        {
-            _currentTrack = GetCurrentTrack();
         }
 
         public override void SetupPreviewData()
@@ -76,6 +49,17 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
                     MinimumSpeed = (float)(rand.NextDouble() * 100f)
                 });
             }
+        }
+
+        public override void BeforeStart()
+        {
+            _table = new InfoTable(10, new int[] { 10, 70 });
+            RaceSessionTracker.Instance.OnNewSessionStarted += OnNewSessionStarted;
+        }
+
+        private void OnNewSessionStarted(object sender, DbRaceSession rs)
+        {
+            _currentTrack = GetCurrentTrack();
         }
 
         public override void BeforeStop()
@@ -113,30 +97,39 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
         public override void Render(Graphics g)
         {
             int currentCorner = GetCurrentCorner();
+            if (currentCorner == -1 && _previousCorner != -1)
+            {  // corner exited
+                _cornerDatas.Add(_currentCorner);
+                _previousCorner = -1;
+            }
+
             if (currentCorner != -1)
-            {  // in a corner
-
-
-                if (currentCorner != _previousCorner)
+            {
+                if (currentCorner == _previousCorner)
                 {
-                    Debug.WriteLine("Next Corner!");
-                    _cornerDatas.Add(new CornerData()
-                    {
-                        CornerNumber = _previousCorner,
-                        MinimumSpeed = pagePhysics.SpeedKmh
-                    });
+                    // we're still in the current corner..., perhaps do some checks?
+                    if (_currentCorner.MinimumSpeed > pagePhysics.SpeedKmh)
+                        _currentCorner.MinimumSpeed = pagePhysics.SpeedKmh;
+                }
+                else
+                {
                     _previousCorner = currentCorner;
-                    Debug.WriteLine("We just entered a new corner!");
+                    Debug.WriteLine("Entered a new corner!");
+                    _currentCorner = new CornerData()
+                    {
+                        CornerNumber = currentCorner,
+                        MinimumSpeed = float.MaxValue
+                    };
                 }
             }
-            else
-            {  // no corner
 
-            }
-            foreach (var corner in _cornerDatas.Skip(_cornerDatas.Count - _config.Table.CornerCount))
+            foreach (var corner in _cornerDatas.Skip(_cornerDatas.Count - _config.Table.CornerCount).Reverse())
             {
-                _table.AddRow($"{corner.CornerNumber}", new string[] { $"{corner.MinimumSpeed:F2}" });
+                string minSpeed = $"{corner.MinimumSpeed:F1}";
+                minSpeed.FillStart(5, ' ');
+                _table.AddRow($"{corner.CornerNumber}", new string[] { $"{minSpeed}" });
             }
+
             // draw table of previous corners, min speed? corner g? min gear? 
             _table.Draw(g);
         }
