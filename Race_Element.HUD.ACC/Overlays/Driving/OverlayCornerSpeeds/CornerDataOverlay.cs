@@ -1,8 +1,5 @@
-﻿using RaceElement.Data.ACC.Database.RaceWeekend;
-using RaceElement.Data.ACC.Database.SessionData;
+﻿using RaceElement.Data.ACC.Database.SessionData;
 using RaceElement.Data.ACC.Session;
-using RaceElement.Data.ACC.Tracks;
-using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.Util.SystemExtensions;
