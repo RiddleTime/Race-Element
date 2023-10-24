@@ -113,7 +113,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
 
                     string minSpeed = $"{_currentCorner.MinimumSpeed:F1}";
                     minSpeed = minSpeed.FillStart(5, ' ');
-                    _table.AddRow($"{currentCorner}", new string[] { $"{minSpeed}" });
+                    _table.AddRow($"{currentCorner.ToString().FillStart(2, ' ')}", new string[] { $"{minSpeed}" });
                 }
                 else
                 {
