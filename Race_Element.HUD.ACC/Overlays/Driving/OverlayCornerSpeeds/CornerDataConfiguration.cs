@@ -9,7 +9,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
         public class TableGrouping
         {
             [ToolTip("Adjust the amount corners shown as history.")]
-            [IntRange(1, 5, 1)]
+            [IntRange(1, 10, 1)]
             public int CornerCount { get; set; } = 3;
         }
 

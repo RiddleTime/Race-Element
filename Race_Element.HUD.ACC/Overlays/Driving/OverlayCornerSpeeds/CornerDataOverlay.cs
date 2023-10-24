@@ -34,7 +34,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
         public CornerDataOverlay(Rectangle rectangle) : base(rectangle, "Corner Data")
         {
             _cornerDatas = new List<CornerData>();
-            Width = 300;
+            Width = 200;
             Height = 150;
         }
 
@@ -104,10 +104,12 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
                 _previousCorner = -1;
             }
 
+            bool isInCorner = false;
             if (currentCorner != -1)
             {
                 if (currentCorner == _previousCorner)
                 {
+                    isInCorner = true;
                     // we're still in the current corner..., perhaps do some checks?
                     if (_currentCorner.MinimumSpeed > pagePhysics.SpeedKmh)
                         _currentCorner.MinimumSpeed = pagePhysics.SpeedKmh;
@@ -128,7 +130,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
                 }
             }
 
-            foreach (var corner in _cornerDatas.Skip(_cornerDatas.Count - _config.Table.CornerCount).Reverse())
+            foreach (var corner in _cornerDatas.Skip(_cornerDatas.Count - _config.Table.CornerCount).Reverse().Take(isInCorner ? _config.Table.CornerCount - 1 : _config.Table.CornerCount))
             {
                 string minSpeed = $"{corner.MinimumSpeed:F1}";
                 minSpeed = minSpeed.FillStart(5, ' ');
