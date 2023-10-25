@@ -1,6 +1,6 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
 
-namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
+namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
 {
     internal sealed class CornerDataConfiguration : OverlayConfiguration
     {

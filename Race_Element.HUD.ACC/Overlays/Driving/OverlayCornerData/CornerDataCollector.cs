@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using static RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds.CornerDataOverlay;
+using static RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData.CornerDataOverlay;
 
-namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
+namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
 {
     internal class CornerDataCollector
     {

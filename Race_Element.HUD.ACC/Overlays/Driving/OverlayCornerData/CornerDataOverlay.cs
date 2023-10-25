@@ -11,7 +11,7 @@ using System.Drawing;
 using System.Linq;
 using static RaceElement.Data.ACC.Tracks.TrackData;
 
-namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
+namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
 {
     [Overlay(Name = "Corner Data",
             Description = "Shows minimum speed and other data for each corner.",
@@ -83,7 +83,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
             Trace.WriteLine(e.ToString());
             int maxCornerCount = _currentTrack.CornerNames.Count;
             var cornerData = _cornerDatas.Take(maxCornerCount);
-    
+            Trace.Write($"max: {maxCornerCount}, found: {cornerData}");
 
             //}
         }
