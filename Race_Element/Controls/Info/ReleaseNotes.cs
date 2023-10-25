@@ -6,6 +6,7 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.2.4.4", "- Added Corner Data HUD, showing min speed and max lateral g forces." },
             {"0.2.4.2", "- Removed affiliate links:"+
                         "\nRace Element is free to run software, I do not want to encourage anyone ever again to pay to become faster."+
                         "\nLearn to create your own setups, there are tons of guides out there, even from one of the developers of Assetto Corsa Competizione."+
