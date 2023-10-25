@@ -8,12 +8,12 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
         public TableGrouping Table { get; set; } = new TableGrouping();
         public sealed class TableGrouping
         {
+            [ToolTip("Draws the first row as a header showing labels for each column.")]
+            public bool Header { get; set; } = true;
+
             [ToolTip("Adjust the amount corners shown as history.")]
             [IntRange(1, 10, 1)]
-            public int CornerCount { get; set; } = 3;
-
-            [ToolTip("Draws the first row as a header showing labels for each column.")]
-            public bool ShowHeader { get; set; } = true;
+            public int CornerAmount { get; set; } = 3;
         }
 
         [ConfigGrouping("Data", "Show or hide extra data")]

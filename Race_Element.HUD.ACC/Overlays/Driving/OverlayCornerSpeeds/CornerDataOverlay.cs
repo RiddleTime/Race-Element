@@ -46,7 +46,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
         public override void SetupPreviewData()
         {
             Random rand = new Random();
-            for (int i = 1; i < _config.Table.CornerCount + 1; i++)
+            for (int i = 1; i < _config.Table.CornerAmount + 1; i++)
             {
                 _cornerDatas.Add(new CornerData()
                 {
@@ -68,8 +68,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
             _table = new InfoTable(12, columnWidths.ToArray());
 
             // set Width and Height of HUD based on amount of rows and columns in table
-            Height = (int)Math.Abs(_table.Font.GetHeight(120) * _config.Table.CornerCount);
-            if (_config.Table.ShowHeader) Height += (int)Math.Abs(_table.Font.GetHeight(120));
+            Height = (int)Math.Abs(_table.Font.GetHeight(120) * _config.Table.CornerAmount);
+            if (_config.Table.Header) Height += (int)Math.Abs(_table.Font.GetHeight(120));
             Width = 30 + columnWidths.Sum();
 
             RaceSessionTracker.Instance.OnNewSessionStarted += OnNewSessionStarted;
@@ -85,17 +85,18 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
         public override void BeforeStop()
         {
             RaceSessionTracker.Instance.OnNewSessionStarted -= OnNewSessionStarted;
+            _cornerDatas.Clear();
             _collector.Stop();
         }
 
-        public AbstractTrackData GetCurrentTrack()
+        internal AbstractTrackData GetCurrentTrack()
         {
             if (pageStatic.Track == string.Empty) return null;
 
             return Tracks.Find(x => x.GameName == pageStatic.Track);
         }
 
-        public int GetCurrentCorner(float normalizedTrackPosition)
+        internal int GetCurrentCorner(float normalizedTrackPosition)
         {
             _currentTrack ??= GetCurrentTrack();
             if (_currentTrack == null) return -1;
@@ -112,7 +113,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
 
         public override void Render(Graphics g)
         {
-            if (_config.Table.ShowHeader)
+            if (_config.Table.Header)
             {
                 List<string> headerColumns = new List<string>();
                 headerColumns.Add("MinKmh");
@@ -146,7 +147,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
                 }
             }
 
-            foreach (var corner in _cornerDatas.Skip(_cornerDatas.Count - _config.Table.CornerCount).Reverse().Take(isInCorner ? _config.Table.CornerCount - 1 : _config.Table.CornerCount))
+            foreach (var corner in _cornerDatas.Skip(_cornerDatas.Count - _config.Table.CornerAmount).Reverse().Take(isInCorner ? _config.Table.CornerAmount - 1 : _config.Table.CornerAmount))
             {
                 List<string> columns = new List<string>();
 
