@@ -13,7 +13,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
 
             [ToolTip("Adjust the amount corners shown as history.")]
             [IntRange(1, 10, 1)]
-            public int CornerAmount { get; set; } = 3;
+            public int CornerAmount { get; set; } = 4;
         }
 
         [ConfigGrouping("Data", "Show or hide extra data")]
