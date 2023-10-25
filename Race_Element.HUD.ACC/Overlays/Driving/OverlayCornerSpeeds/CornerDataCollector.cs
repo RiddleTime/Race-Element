@@ -1,13 +1,7 @@
 ﻿using RaceElement.Util.SystemExtensions;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics.PerformanceData;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Web.UI.WebControls;
 using static RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds.CornerDataOverlay;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
@@ -18,15 +12,16 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
 
         public void Start(CornerDataOverlay overlay)
         {
-            IsCollecting = true;
+            if (overlay == null) return;
 
+            IsCollecting = true;
             new Thread(x =>
             {
                 while (IsCollecting)
                 {
                     Thread.Sleep(20);
 
-                    if (overlay != null && overlay.pagePhysics != null)
+                    if (overlay.pagePhysics != null)
                     {
                         int currentCorner = overlay.GetCurrentCorner(overlay.pageGraphics.NormalizedCarPosition);
                         if (currentCorner == -1 && overlay._previousCorner != -1)
@@ -35,12 +30,10 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
                             overlay._previousCorner = -1;
                         }
 
-                        bool isInCorner = false;
                         if (currentCorner != -1)
                         {
                             if (currentCorner == overlay._previousCorner)
                             {
-                                isInCorner = true;
                                 // we're still in the current corner..., check the data and build the first row
                                 if (overlay._currentCorner.MinimumSpeed > overlay.pagePhysics.SpeedKmh)
                                     overlay._currentCorner.MinimumSpeed = overlay.pagePhysics.SpeedKmh;
@@ -56,7 +49,6 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
                                     if (latG < 0) latG *= -1;
                                     if (overlay._currentCorner.MaxLatG < latG)
                                         overlay._currentCorner.MaxLatG = latG;
-
                                 }
 
                             }
@@ -73,6 +65,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
                         }
                     }
                 }
+                IsCollecting = false;
             }).Start();
         }
 

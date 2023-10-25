@@ -5,11 +5,8 @@ using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.Util.SystemExtensions;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
@@ -39,7 +36,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
 
         public CornerDataOverlay(Rectangle rectangle) : base(rectangle, "Corner Data")
         {
-            RefreshRateHz = 5;
+            RefreshRateHz = 3;
             _cornerDatas = new List<CornerData>();
         }
 
@@ -61,8 +58,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
         {
             _collector = new CornerDataCollector();
 
-            List<int> columnWidths = new List<int>();
-            columnWidths.Add(90);
+            List<int> columnWidths = new List<int> { 90 };
             if (_config.Data.MaxLatG)
                 columnWidths.Add(60);
             _table = new InfoTable(12, columnWidths.ToArray());
@@ -115,8 +111,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
         {
             if (_config.Table.Header)
             {
-                List<string> headerColumns = new List<string>();
-                headerColumns.Add("MinKmh");
+                List<string> headerColumns = new List<string> { "MinKmh" };
 
                 if (_config.Data.MaxLatG)
                     headerColumns.Add("LatG");
@@ -127,25 +122,21 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
             int currentCorner = GetCurrentCorner(pageGraphics.NormalizedCarPosition);
             bool isInCorner = false;
             if (currentCorner != -1)
-            {
                 if (currentCorner == _previousCorner)
                 {
                     isInCorner = true;
-
-
+                    
                     List<string> columns = new List<string>();
+
                     string minSpeed = $"{_currentCorner.MinimumSpeed:F1}";
                     minSpeed = minSpeed.FillStart(5, ' ');
                     columns.Add($"{minSpeed}");
 
                     if (_config.Data.MaxLatG)
-                    {
                         columns.Add($"{_currentCorner.MaxLatG:F2}");
-                    }
 
                     _table.AddRow($"{currentCorner.ToString().FillStart(2, ' ')}", columns.ToArray());
                 }
-            }
 
             foreach (var corner in _cornerDatas.Skip(_cornerDatas.Count - _config.Table.CornerAmount).Reverse().Take(isInCorner ? _config.Table.CornerAmount - 1 : _config.Table.CornerAmount))
             {
