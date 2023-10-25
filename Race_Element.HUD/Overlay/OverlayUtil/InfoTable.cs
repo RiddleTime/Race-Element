@@ -53,6 +53,10 @@ namespace RaceElement.HUD.Overlay.OverlayUtil
                     _cachedBackground = new CachedBitmap((int)Math.Ceiling(GetTotalWidth()), _rows.Count * FontHeight + (int)_yMono, bg =>
                     {
                         bg.FillRoundedRectangle(new SolidBrush(Color.FromArgb(158, Color.Black)), new Rectangle(0, 0, (int)GetTotalWidth(), _rows.Count * this.Font.Height + (int)_yMono), 4);
+                        using SolidBrush linebrush = new SolidBrush(Color.FromArgb(130, Color.OrangeRed));
+                        using Pen pen = new Pen(linebrush, 2);
+                        int maxWidth = (int)Math.Ceiling(GetTotalWidth());
+                        bg.DrawLine(pen, 4, 0, maxWidth - 4, 0);
                     });
                     previousRowCount = _rows.Count;
                 }
