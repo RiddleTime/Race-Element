@@ -1,10 +1,12 @@
 ﻿using RaceElement.Data.ACC.Database.SessionData;
 using RaceElement.Data.ACC.Session;
+using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.Util.SystemExtensions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using static RaceElement.Data.ACC.Tracks.TrackData;
@@ -58,6 +60,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
         {
             _collector = new CornerDataCollector();
 
+            // create info table based on selected data and columns
             List<int> columnWidths = new List<int> { 90 };
             if (_config.Data.MaxLatG)
                 columnWidths.Add(60);
@@ -69,7 +72,20 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
             Width = 30 + columnWidths.Sum();
 
             RaceSessionTracker.Instance.OnNewSessionStarted += OnNewSessionStarted;
+            LapTracker.Instance.LapFinished += OnLapFinished;
             _collector.Start(this);
+        }
+
+        private void OnLapFinished(object sender, RaceElement.Data.ACC.Database.LapDataDB.DbLapData e)
+        {
+            //if (e.IsValid && e.LapType == Broadcast.LapType.Regular)
+            //{  // update best lap corner data 
+            Trace.WriteLine(e.ToString());
+            int maxCornerCount = _currentTrack.CornerNames.Count;
+            var cornerData = _cornerDatas.Take(maxCornerCount);
+    
+
+            //}
         }
 
         private void OnNewSessionStarted(object sender, DbRaceSession rs)
@@ -81,6 +97,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
         public override void BeforeStop()
         {
             RaceSessionTracker.Instance.OnNewSessionStarted -= OnNewSessionStarted;
+            LapTracker.Instance.LapFinished -= OnLapFinished;
             _cornerDatas.Clear();
             _collector.Stop();
         }
@@ -129,6 +146,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
                     List<string> columns = new List<string>();
                     List<Color> colors = new List<Color>();
 
+                    // add min speed column
                     string minSpeed = string.Empty;
                     if (_currentCorner.MinimumSpeed != float.MaxValue) // initial value for min speed is float.maxvalue
                         minSpeed = $"{_currentCorner.MinimumSpeed}";
@@ -136,7 +154,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
                     columns.Add($"{minSpeed}");
                     colors.Add(Color.FromArgb(190, Color.White));
 
-
+                    // add max lateral g column
                     if (_config.Data.MaxLatG)
                     {
                         columns.Add($"{_currentCorner.MaxLatG:F2}");

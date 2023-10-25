@@ -16,12 +16,15 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
             public int CornerAmount { get; set; } = 4;
         }
 
-        [ConfigGrouping("Data", "Show or hide extra data")]
+        [ConfigGrouping("Data", "Show or hide extra data/columns")]
         public DataGrouping Data { get; set; } = new DataGrouping();
         public sealed class DataGrouping
         {
             [ToolTip("Shows the maximum lateral G force for each corner.")]
             public bool MaxLatG { get; set; } = true;
+
+            [ToolTip("Shows for each column a delta compared to your best valid lap.")]
+            public bool BestLapDelta { get; set; } = true;
         }
 
         public CornerDataConfiguration() => AllowRescale = true;
