@@ -36,7 +36,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
 
         public CornerDataOverlay(Rectangle rectangle) : base(rectangle, "Corner Data")
         {
-            RefreshRateHz = 3;
+            RefreshRateHz = 2;
             _cornerDatas = new List<CornerData>();
         }
 
@@ -129,10 +129,13 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
                     List<string> columns = new List<string>();
                     List<Color> colors = new List<Color>();
 
-                    string minSpeed = $"{_currentCorner.MinimumSpeed:F1}";
+                    string minSpeed = string.Empty;
+                    if (_currentCorner.MinimumSpeed != float.MaxValue) // initial value for min speed is float.maxvalue
+                        minSpeed = $"{_currentCorner.MinimumSpeed}";
                     minSpeed = minSpeed.FillStart(5, ' ');
                     columns.Add($"{minSpeed}");
                     colors.Add(Color.FromArgb(190, Color.White));
+
 
                     if (_config.Data.MaxLatG)
                     {

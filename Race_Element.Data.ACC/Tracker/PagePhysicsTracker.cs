@@ -33,8 +33,6 @@ namespace RaceElement.Data.ACC.Tracker
                 isTracking = true;
                 while (isTracking)
                 {
-
-
                     if (AccProcess.IsRunning)
                     {
                         Thread.Sleep(2);
