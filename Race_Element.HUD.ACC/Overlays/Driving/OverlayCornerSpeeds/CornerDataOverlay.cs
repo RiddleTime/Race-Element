@@ -27,9 +27,9 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
         }
 
         private CornerDataCollector _collector;
+        private InfoTable _table;
 
         internal readonly List<CornerData> _cornerDatas;
-        internal InfoTable _table;
         internal AbstractTrackData _currentTrack;
         internal int _previousCorner = -1;
         internal CornerData _currentCorner;
@@ -132,12 +132,12 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
                     string minSpeed = $"{_currentCorner.MinimumSpeed:F1}";
                     minSpeed = minSpeed.FillStart(5, ' ');
                     columns.Add($"{minSpeed}");
-                    colors.Add(Color.LightSlateGray);
+                    colors.Add(Color.FromArgb(190, Color.White));
 
                     if (_config.Data.MaxLatG)
                     {
                         columns.Add($"{_currentCorner.MaxLatG:F2}");
-                        colors.Add(Color.LightSlateGray);
+                        colors.Add(Color.FromArgb(190, Color.White));
                     }
 
                     _table.AddRow($"{currentCorner.ToString().FillStart(2, ' ')}", columns.ToArray(), colors.ToArray());

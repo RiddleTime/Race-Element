@@ -54,8 +54,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
                             }
                             else
                             {
+                                // entered a new corner
                                 overlay._previousCorner = currentCorner;
-                                Debug.WriteLine("Entered a new corner!");
                                 overlay._currentCorner = new CornerData()
                                 {
                                     CornerNumber = currentCorner,
