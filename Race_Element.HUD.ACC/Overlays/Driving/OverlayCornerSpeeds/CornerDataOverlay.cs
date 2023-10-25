@@ -116,7 +116,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
                 if (_config.Data.MaxLatG)
                     headerColumns.Add("LatG");
 
-                _table.AddRow("   ", headerColumns.ToArray());
+                _table.AddRow("  ", headerColumns.ToArray());
             }
 
             int currentCorner = GetCurrentCorner(pageGraphics.NormalizedCarPosition);
@@ -125,17 +125,22 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerSpeeds
                 if (currentCorner == _previousCorner)
                 {
                     isInCorner = true;
-                    
+
                     List<string> columns = new List<string>();
+                    List<Color> colors = new List<Color>();
 
                     string minSpeed = $"{_currentCorner.MinimumSpeed:F1}";
                     minSpeed = minSpeed.FillStart(5, ' ');
                     columns.Add($"{minSpeed}");
+                    colors.Add(Color.LightSlateGray);
 
                     if (_config.Data.MaxLatG)
+                    {
                         columns.Add($"{_currentCorner.MaxLatG:F2}");
+                        colors.Add(Color.LightSlateGray);
+                    }
 
-                    _table.AddRow($"{currentCorner.ToString().FillStart(2, ' ')}", columns.ToArray());
+                    _table.AddRow($"{currentCorner.ToString().FillStart(2, ' ')}", columns.ToArray(), colors.ToArray());
                 }
 
             foreach (var corner in _cornerDatas.Skip(_cornerDatas.Count - _config.Table.CornerAmount).Reverse().Take(isInCorner ? _config.Table.CornerAmount - 1 : _config.Table.CornerAmount))
