@@ -83,6 +83,9 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
             Trace.WriteLine(e.ToString());
             int maxCornerCount = _currentTrack.CornerNames.Count;
             var cornerData = _cornerDatas.Take(maxCornerCount);
+            foreach (var data in cornerData)
+                Trace.WriteLine($"{data.CornerNumber} - {data.MinimumSpeed:F2}");
+            // save this fastest corner data something?
             Trace.Write($"max: {maxCornerCount}, found: {cornerData.Count()}");
 
             //}
