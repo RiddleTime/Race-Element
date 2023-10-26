@@ -1,6 +1,5 @@
 ﻿using RaceElement.Util.SystemExtensions;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 using static RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData.CornerDataOverlay;
 

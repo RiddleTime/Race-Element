@@ -60,7 +60,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
         {
             _collector = new CornerDataCollector();
 
-            // create info table based on selected data and columns
+            // create info table based on selected config
             List<int> columnWidths = new List<int> { 90 };
             if (_config.Data.MaxLatG)
                 columnWidths.Add(60);
@@ -83,7 +83,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
             Trace.WriteLine(e.ToString());
             int maxCornerCount = _currentTrack.CornerNames.Count;
             var cornerData = _cornerDatas.Take(maxCornerCount);
-            Trace.Write($"max: {maxCornerCount}, found: {cornerData}");
+            Trace.Write($"max: {maxCornerCount}, found: {cornerData.Count()}");
 
             //}
         }
@@ -149,7 +149,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                     // add min speed column
                     string minSpeed = string.Empty;
                     if (_currentCorner.MinimumSpeed != float.MaxValue) // initial value for min speed is float.maxvalue
-                        minSpeed = $"{_currentCorner.MinimumSpeed}";
+                        minSpeed = $"{_currentCorner.MinimumSpeed:F2}";
                     minSpeed = minSpeed.FillStart(5, ' ');
                     columns.Add($"{minSpeed}");
                     colors.Add(Color.FromArgb(190, Color.White));
@@ -168,7 +168,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
             {
                 List<string> columns = new List<string>();
 
-                string minSpeed = $"{corner.MinimumSpeed:F1}";
+                string minSpeed = $"{corner.MinimumSpeed:F2}";
                 minSpeed = minSpeed.FillStart(5, ' ');
                 columns.Add($"{minSpeed}");
 
