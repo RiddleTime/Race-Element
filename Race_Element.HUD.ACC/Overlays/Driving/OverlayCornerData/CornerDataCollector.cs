@@ -37,6 +37,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                                 if (overlay._currentCorner.MinimumSpeed > overlay.pagePhysics.SpeedKmh)
                                     overlay._currentCorner.MinimumSpeed = overlay.pagePhysics.SpeedKmh;
 
+                                overlay._currentCorner.AverageSpeed = (overlay.pagePhysics.SpeedKmh + overlay._currentCorner.AverageSpeed) / 2;
+
                                 if (overlay._config.Data.MaxLatG)
                                 {
                                     float latG = overlay.pagePhysics.AccG[0];
@@ -52,7 +54,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                                 overlay._currentCorner = new CornerData()
                                 {
                                     CornerNumber = currentCornerIndex,
-                                    MinimumSpeed = float.MaxValue
+                                    MinimumSpeed = float.MaxValue,
+                                    AverageSpeed = overlay.pagePhysics.SpeedKmh
                                 };
                             }
                         }

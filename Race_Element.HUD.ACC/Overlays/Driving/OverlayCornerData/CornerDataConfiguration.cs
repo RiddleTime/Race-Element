@@ -25,6 +25,9 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
             [ToolTip("Adjust source of the delta for each column")]
             public DeltaSource DeltaSource { get; set; } = DeltaSource.BestSessionLap;
 
+            [ToolTip("Shows the average speed through each corner.")]
+            public bool AverageSpeed { get; set; } = true;
+
             [ToolTip("Shows the maximum lateral G force for each corner.")]
             public bool MaxLatG { get; set; } = true;
         }

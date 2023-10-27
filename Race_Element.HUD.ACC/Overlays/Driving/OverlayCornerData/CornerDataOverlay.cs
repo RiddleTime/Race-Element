@@ -26,6 +26,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
         {
             public int CornerNumber { get; set; }
             public float MinimumSpeed { get; set; }
+            public float AverageSpeed { get; set; }
             public float MaxLatG { get; set; }
         }
 
@@ -57,6 +58,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                 {
                     CornerNumber = i,
                     MinimumSpeed = minimumSpeed,
+                    AverageSpeed = minimumSpeed + (float)(rand.NextDouble() * 2.5f),
                     MaxLatG = maxLatG
                 });
 
@@ -67,6 +69,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                 {
                     CornerNumber = i,
                     MinimumSpeed = minimumSpeed + randMinSpeed,
+                    AverageSpeed = minimumSpeed + 2 + (float)(rand.NextDouble() * 4.5f),
                     MaxLatG = (float)(maxLatG + rand.NextDouble() + .5 * 0.08f)
                 });
             }
@@ -80,6 +83,9 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
             List<int> columnWidths = new List<int> { 90 };
             if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
                 columnWidths.Add(50);
+
+            if (_config.Data.AverageSpeed)
+                columnWidths.Add(90);
 
             if (_config.Data.MaxLatG)
                 columnWidths.Add(60);
@@ -168,6 +174,9 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                     case CornerDataConfiguration.DeltaSource.Off: break;
                 }
 
+                if (_config.Data.AverageSpeed)
+                    headerColumns.Add("AvgKmh");
+
                 if (_config.Data.MaxLatG)
                     headerColumns.Add("LatG");
 
@@ -194,6 +203,14 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
 
                     if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
                         columns.Add(string.Empty);
+
+                    if (_config.Data.AverageSpeed)
+                    {
+                        string avgSpeed = $"{_currentCorner.AverageSpeed:F2}";
+                        avgSpeed.FillStart(6, ' ');
+                        columns.Add(avgSpeed);
+                        colors.Add(Color.FromArgb(190, Color.White));
+                    }
 
                     // add max lateral g column
                     if (_config.Data.MaxLatG)
@@ -236,6 +253,15 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                     else
                         columns.Add(string.Empty);
                 }
+
+                if (_config.Data.AverageSpeed)
+                {
+                    string avgSpeed = $"{corner.AverageSpeed:F2}";
+                    avgSpeed.FillStart(6, ' ');
+                    columns.Add(avgSpeed);
+                    colors.Add(Color.White);
+                }
+
 
                 if (_config.Data.MaxLatG)
                     columns.Add($"{corner.MaxLatG:F2}");
