@@ -268,7 +268,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                 string deltaDeltaString = $"{deltaDelta / 1000f:F3}";
                 if (deltaDelta > 0) deltaDeltaString = "+" + deltaDeltaString;
                 columns.Add(deltaDeltaString);
-                Color deltaColor = deltaDelta > 0 ? Color.LimeGreen : Color.Red;
+                Color deltaColor = deltaDelta < 0 ? Color.LimeGreen : Color.Red;
                 colors.Add(deltaColor);
 
                 // add min speed column
