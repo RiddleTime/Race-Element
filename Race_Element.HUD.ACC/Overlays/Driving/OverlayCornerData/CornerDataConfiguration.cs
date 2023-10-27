@@ -22,6 +22,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
         public DataGrouping Data { get; set; } = new DataGrouping();
         public sealed class DataGrouping
         {
+            [ToolTip("Adjust source of the delta for each column")]
             public DeltaSource DeltaSource { get; set; } = DeltaSource.BestSessionLap;
 
             [ToolTip("Shows the maximum lateral G force for each corner.")]

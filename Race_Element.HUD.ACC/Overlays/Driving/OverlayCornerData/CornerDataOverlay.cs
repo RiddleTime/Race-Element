@@ -61,7 +61,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                 });
 
                 float randMinSpeed = (float)(rand.NextDouble() * 2.5f);
-                if (rand.NextDouble() > 0.5d)
+                if (rand.NextDouble() > 0.617d)
                     randMinSpeed *= -1;
                 _bestLapCorners.Add(i, new CornerData()
                 {
@@ -100,21 +100,19 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
         {
             if (_config.Data.DeltaSource == CornerDataConfiguration.DeltaSource.BestSessionLap)
                 if (!e.IsValid && e.LapType != Broadcast.LapType.Regular)
-                    return;
+                    return; // TODO
 
-            if (e.IsValid && e.LapType == Broadcast.LapType.Regular)
-            {  // update best lap corner data 
-                Trace.WriteLine(e.ToString());
-                int maxCornerCount = _currentTrack.CornerNames.Count;
-                var cornerData = _cornerDatas.Take(maxCornerCount);
-                if (cornerData.Any())
-                {
-                    Debug.WriteLine("first corner " + cornerData.First().CornerNumber);
-                    Debug.WriteLine("last corner " + cornerData.Last().CornerNumber);
-                    _bestLapCorners.Clear();
-                    foreach (var data in cornerData)
-                        _bestLapCorners.Add(data.CornerNumber, data);
-                }
+            // update best lap corner data 
+            Trace.WriteLine(e.ToString());
+            int maxCornerCount = _currentTrack.CornerNames.Count;
+            var cornerData = _cornerDatas.Take(maxCornerCount);
+            if (cornerData.Any())
+            {
+                Debug.WriteLine("first corner " + cornerData.First().CornerNumber);
+                Debug.WriteLine("last corner " + cornerData.Last().CornerNumber);
+                _bestLapCorners.Clear();
+                foreach (var data in cornerData)
+                    _bestLapCorners.Add(data.CornerNumber, data);
             }
         }
 
@@ -165,8 +163,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                     headerColumns.Add("Δ");
                 switch (_config.Data.DeltaSource)
                 {
-                    case CornerDataConfiguration.DeltaSource.LastLap: headerColours.Add(Color.White); break;
-                    case CornerDataConfiguration.DeltaSource.BestSessionLap: headerColours.Add(Color.LimeGreen); break;
+                    case CornerDataConfiguration.DeltaSource.LastLap: headerColours.Add(Color.Cyan); break;
+                    case CornerDataConfiguration.DeltaSource.BestSessionLap: headerColours.Add(Color.LightGreen); break;
                     case CornerDataConfiguration.DeltaSource.Off: break;
                 }
 
@@ -190,7 +188,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                     string minSpeed = string.Empty;
                     if (_currentCorner.MinimumSpeed != float.MaxValue) // initial value for min speed is float.maxvalue
                         minSpeed = $"{_currentCorner.MinimumSpeed:F2}";
-                    minSpeed = minSpeed.FillStart(5, ' ');
+                    minSpeed = minSpeed.FillStart(6, ' ');
                     columns.Add($"{minSpeed}");
                     colors.Add(Color.FromArgb(190, Color.White));
 
