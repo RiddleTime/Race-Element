@@ -25,6 +25,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                         int currentCornerIndex = overlay.GetCurrentCorner(overlay.pageGraphics.NormalizedCarPosition);
                         if (currentCornerIndex == -1 && overlay._previousCorner != -1)
                         {  // corner exited
+                            overlay._currentCorner.ExitDeltaMilliseconds = overlay.pageGraphics.DeltaLapTimeMillis;
                             overlay._cornerDatas.Add(overlay._currentCorner);
                             overlay._previousCorner = -1;
                         }
@@ -55,7 +56,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                                 {
                                     CornerNumber = currentCornerIndex,
                                     MinimumSpeed = float.MaxValue,
-                                    AverageSpeed = overlay.pagePhysics.SpeedKmh
+                                    AverageSpeed = overlay.pagePhysics.SpeedKmh,
+                                    EntryDeltaMilliseconds = overlay.pageGraphics.DeltaLapTimeMillis,
                                 };
                             }
                         }
