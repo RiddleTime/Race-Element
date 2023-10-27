@@ -16,15 +16,16 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
             public int CornerAmount { get; set; } = 4;
         }
 
+        public enum DeltaSource { BestSessionLap, LastLap, Off };
+
         [ConfigGrouping("Data", "Show or hide extra data/columns")]
         public DataGrouping Data { get; set; } = new DataGrouping();
         public sealed class DataGrouping
         {
+            public DeltaSource DeltaSource { get; set; } = DeltaSource.BestSessionLap;
+
             [ToolTip("Shows the maximum lateral G force for each corner.")]
             public bool MaxLatG { get; set; } = true;
-
-            [ToolTip("Shows for each column a delta compared to your best valid lap.")]
-            public bool BestLapDelta { get; set; } = true;
         }
 
         public CornerDataConfiguration() => AllowRescale = true;

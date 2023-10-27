@@ -22,25 +22,20 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
 
                     if (overlay.pagePhysics != null)
                     {
-                        int currentCorner = overlay.GetCurrentCorner(overlay.pageGraphics.NormalizedCarPosition);
-                        if (currentCorner == -1 && overlay._previousCorner != -1)
+                        int currentCornerIndex = overlay.GetCurrentCorner(overlay.pageGraphics.NormalizedCarPosition);
+                        if (currentCornerIndex == -1 && overlay._previousCorner != -1)
                         {  // corner exited
                             overlay._cornerDatas.Add(overlay._currentCorner);
                             overlay._previousCorner = -1;
                         }
 
-                        if (currentCorner != -1)
+                        if (currentCornerIndex != -1)
                         {
-                            if (currentCorner == overlay._previousCorner)
+                            if (currentCornerIndex == overlay._previousCorner)
                             {
-                                // we're still in the current corner..., check the data and build the first row
+                                // we're still in the current corner..., check the data
                                 if (overlay._currentCorner.MinimumSpeed > overlay.pagePhysics.SpeedKmh)
                                     overlay._currentCorner.MinimumSpeed = overlay.pagePhysics.SpeedKmh;
-
-                                List<string> columns = new List<string>();
-                                string minSpeed = $"{overlay._currentCorner.MinimumSpeed:F1}";
-                                minSpeed = minSpeed.FillStart(5, ' ');
-                                columns.Add($"{minSpeed}");
 
                                 if (overlay._config.Data.MaxLatG)
                                 {
@@ -49,15 +44,14 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                                     if (overlay._currentCorner.MaxLatG < latG)
                                         overlay._currentCorner.MaxLatG = latG;
                                 }
-
                             }
                             else
                             {
                                 // entered a new corner
-                                overlay._previousCorner = currentCorner;
+                                overlay._previousCorner = currentCornerIndex;
                                 overlay._currentCorner = new CornerData()
                                 {
-                                    CornerNumber = currentCorner,
+                                    CornerNumber = currentCornerIndex,
                                     MinimumSpeed = float.MaxValue
                                 };
                             }
