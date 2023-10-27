@@ -80,12 +80,16 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
             _collector = new CornerDataCollector();
 
             // create info table based on selected config
-            List<int> columnWidths = new List<int> { 90 };
+            List<int> columnWidths = new List<int> { 80 };
             if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
                 columnWidths.Add(50);
 
             if (_config.Data.AverageSpeed)
-                columnWidths.Add(90);
+            {
+                columnWidths.Add(80);
+                if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
+                    columnWidths.Add(50);
+            }
 
             if (_config.Data.MaxLatG)
                 columnWidths.Add(60);
@@ -175,7 +179,20 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                 }
 
                 if (_config.Data.AverageSpeed)
+                {
                     headerColumns.Add("AvgKmh");
+                    headerColours.Add(Color.White);
+
+                    if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
+                        headerColumns.Add("Δ");
+
+                    switch (_config.Data.DeltaSource)
+                    {
+                        case CornerDataConfiguration.DeltaSource.LastLap: headerColours.Add(Color.Cyan); break;
+                        case CornerDataConfiguration.DeltaSource.BestSessionLap: headerColours.Add(Color.LightGreen); break;
+                        case CornerDataConfiguration.DeltaSource.Off: break;
+                    }
+                }
 
                 if (_config.Data.MaxLatG)
                     headerColumns.Add("LatG");
@@ -210,6 +227,9 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                         avgSpeed.FillStart(6, ' ');
                         columns.Add(avgSpeed);
                         colors.Add(Color.FromArgb(190, Color.White));
+
+                        if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
+                            columns.Add(string.Empty);
                     }
 
                     // add max lateral g column
@@ -239,6 +259,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                         float delta = best.MinimumSpeed - corner.MinimumSpeed;
 
                         string deltaText = $"{delta:F1}";
+                        if (delta > 0)
+                            deltaText = "+" + deltaText;
                         deltaText.FillStart(4, ' ');
                         columns.Add(deltaText);
 
@@ -257,9 +279,33 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                 if (_config.Data.AverageSpeed)
                 {
                     string avgSpeed = $"{corner.AverageSpeed:F2}";
-                    avgSpeed.FillStart(6, ' ');
+                    avgSpeed = avgSpeed.FillStart(6, ' ');
                     columns.Add(avgSpeed);
                     colors.Add(Color.White);
+
+                    if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
+                    {
+                        if (_bestLapCorners.TryGetValue(corner.CornerNumber, out CornerData best))
+                        {
+                            float delta = best.AverageSpeed - corner.AverageSpeed;
+
+                            string deltaText = $"{delta:F1}";
+                            if (delta > 0)
+                                deltaText = "+" + deltaText;
+                            deltaText.FillStart(4, ' ');
+                            columns.Add(deltaText);
+
+                            Color deltaColor = delta switch
+                            {
+                                var d when d > 0 => Color.LimeGreen,
+                                var d when d < 0 => Color.Red,
+                                _ => Color.White,
+                            };
+                            colors.Add(deltaColor);
+                        }
+                        else
+                            columns.Add(string.Empty);
+                    }
                 }
 
 
