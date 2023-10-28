@@ -22,8 +22,11 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
         public DataGrouping Data { get; set; } = new DataGrouping();
         public sealed class DataGrouping
         {
-            [ToolTip("Adjust source of the delta for each column")]
+            [ToolTip("Adjust source of the delta for each column, if enabled it will show for both the minimum and average speed.")]
             public DeltaSource DeltaSource { get; set; } = DeltaSource.BestSessionLap;
+
+            [ToolTip("Shows the minimum speed through each corner")]
+            public bool MinimumSpeed { get; set; } = true;
 
             [ToolTip("Shows the average speed through each corner.")]
             public bool AverageSpeed { get; set; } = true;

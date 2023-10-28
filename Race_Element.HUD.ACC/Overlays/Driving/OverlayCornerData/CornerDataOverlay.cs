@@ -15,7 +15,7 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
 {
     [Overlay(Name = "Corner Data",
-            Description = "Shows minimum speed and other data for each corner.",
+            Description = "Shows Corner Delta and other data like speeds for each corner.",
             OverlayCategory = OverlayCategory.Lap,
             OverlayType = OverlayType.Release)]
     internal sealed class CornerDataOverlay : AbstractOverlay
@@ -88,9 +88,14 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
             _collector = new CornerDataCollector();
 
             // create info table based on selected config
-            List<int> columnWidths = new List<int> { 80, 80 }; // delta and min speed
-            if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
-                columnWidths.Add(50);
+            List<int> columnWidths = new List<int> { 80 }; // delta
+
+            if (_config.Data.MinimumSpeed)
+            {
+                columnWidths.Add(80);
+                if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
+                    columnWidths.Add(50);
+            }
 
             if (_config.Data.AverageSpeed)
             {
@@ -177,16 +182,22 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
         {
             if (_config.Table.Header)
             {
-                List<string> headerColumns = new List<string> { "Delta", "MinKmh" };
-                List<Color> headerColours = new List<Color> { Color.White, Color.White };
+                List<string> headerColumns = new List<string> { "Delta" };
+                List<Color> headerColours = new List<Color> { Color.White };
 
-                if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
-                    headerColumns.Add("Δ");
-                switch (_config.Data.DeltaSource)
+                if (_config.Data.MinimumSpeed)
                 {
-                    case CornerDataConfiguration.DeltaSource.LastLap: headerColours.Add(Color.Cyan); break;
-                    case CornerDataConfiguration.DeltaSource.BestSessionLap: headerColours.Add(Color.LightGreen); break;
-                    case CornerDataConfiguration.DeltaSource.Off: break;
+                    headerColumns.Add("MinKmh");
+                    headerColours.Add(Color.White);
+
+                    if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
+                        headerColumns.Add("Δ");
+                    switch (_config.Data.DeltaSource)
+                    {
+                        case CornerDataConfiguration.DeltaSource.LastLap: headerColours.Add(Color.Cyan); break;
+                        case CornerDataConfiguration.DeltaSource.BestSessionLap: headerColours.Add(Color.LightGreen); break;
+                        case CornerDataConfiguration.DeltaSource.Off: break;
+                    }
                 }
 
                 if (_config.Data.AverageSpeed)
@@ -226,16 +237,19 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                     columns.Add($"{delta / 1000:F3}");
                     colors.Add(Color.White);
 
-                    // add min speed column
-                    string minSpeed = string.Empty;
-                    if (_currentCorner.MinimumSpeed != float.MaxValue) // initial value for min speed is float.maxvalue
-                        minSpeed = $"{_currentCorner.MinimumSpeed:F2}";
-                    minSpeed = minSpeed.FillStart(6, ' ');
-                    columns.Add($"{minSpeed}");
-                    colors.Add(Color.FromArgb(190, Color.White));
+                    if (_config.Data.MinimumSpeed)
+                    {
+                        // add min speed column
+                        string minSpeed = string.Empty;
+                        if (_currentCorner.MinimumSpeed != float.MaxValue) // initial value for min speed is float.maxvalue
+                            minSpeed = $"{_currentCorner.MinimumSpeed:F2}";
+                        minSpeed = minSpeed.FillStart(6, ' ');
+                        columns.Add($"{minSpeed}");
+                        colors.Add(Color.FromArgb(190, Color.White));
 
-                    if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
-                        columns.Add(string.Empty);
+                        if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
+                            columns.Add(string.Empty);
+                    }
 
                     if (_config.Data.AverageSpeed)
                     {
@@ -271,37 +285,40 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                 Color deltaColor = deltaDelta < 0 ? Color.LimeGreen : Color.Red;
                 colors.Add(deltaColor);
 
-                // add min speed column
-                string minSpeed = $"{corner.MinimumSpeed:F2}";
-                minSpeed = minSpeed.FillStart(6, ' ');
-                if (corner.MinimumSpeed == float.MaxValue)
-                    minSpeed = string.Empty;
-                columns.Add($"{minSpeed}");
-                colors.Add(Color.White);
-
-                // if any delta source is enabled add delta compared to best for min speed
-                if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
+                if (_config.Data.MinimumSpeed)
                 {
-                    if (_bestLapCorners.TryGetValue(corner.CornerNumber, out CornerData bestCorner))
+                    // add min speed column
+                    string minSpeed = $"{corner.MinimumSpeed:F2}";
+                    minSpeed = minSpeed.FillStart(6, ' ');
+                    if (corner.MinimumSpeed == float.MaxValue)
+                        minSpeed = string.Empty;
+                    columns.Add($"{minSpeed}");
+                    colors.Add(Color.White);
+
+                    // if any delta source is enabled add delta compared to best for min speed
+                    if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
                     {
-                        float minSpeedDelta = bestCorner.MinimumSpeed - corner.MinimumSpeed;
-
-                        string deltaText = $"{minSpeedDelta:F1}";
-                        if (minSpeedDelta > 0)
-                            deltaText = "+" + deltaText;
-                        deltaText.FillStart(4, ' ');
-                        columns.Add(deltaText);
-
-                        Color minSpeedDeltaColor = minSpeedDelta switch
+                        if (_bestLapCorners.TryGetValue(corner.CornerNumber, out CornerData bestCorner))
                         {
-                            var d when d > 0 => Color.LimeGreen,
-                            var d when d < 0 => Color.Red,
-                            _ => Color.White,
-                        };
-                        colors.Add(minSpeedDeltaColor);
+                            float minSpeedDelta = bestCorner.MinimumSpeed - corner.MinimumSpeed;
+
+                            string deltaText = $"{minSpeedDelta:F1}";
+                            if (minSpeedDelta > 0)
+                                deltaText = "+" + deltaText;
+                            deltaText.FillStart(4, ' ');
+                            columns.Add(deltaText);
+
+                            Color minSpeedDeltaColor = minSpeedDelta switch
+                            {
+                                var d when d > 0 => Color.LimeGreen,
+                                var d when d < 0 => Color.Red,
+                                _ => Color.White,
+                            };
+                            colors.Add(minSpeedDeltaColor);
+                        }
+                        else
+                            columns.Add(string.Empty);
                     }
-                    else
-                        columns.Add(string.Empty);
                 }
 
                 // if average speed is enabled, add column for it
