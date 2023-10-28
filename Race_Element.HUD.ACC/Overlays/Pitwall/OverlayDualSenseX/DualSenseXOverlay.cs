@@ -90,9 +90,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
         private void CreateEndPoint()
         {
             _client = new UdpClient();
-            var portNumber = File.ReadAllText(@"C:\Temp\DualSenseX\DualSenseX_PortNumber.txt");
-            _endPoint = new IPEndPoint(Triggers.localhost, Convert.ToInt32(portNumber));
-            Debug.WriteLine($"Port number found is: {portNumber}\n");
+            _endPoint = new IPEndPoint(Triggers.localhost, _config.UDP.Port);
         }
 
         private void Send(Packet data)

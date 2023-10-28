@@ -4,6 +4,15 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
 {
     internal sealed class DualSenseXConfiguration : OverlayConfiguration
     {
+        [ConfigGrouping("DSX UDP", "Adjust the port DSX uses, 6969 is default.")]
+        public UdpConfig UDP { get; set; } = new UdpConfig();
+        public sealed class UdpConfig
+        {
+            [ToolTip("Adjust the port used by DSX, 6969 is default.")]
+            [IntRange(0, 65535, 1)]
+            public int Port { get; set; } = 6969;
+        }
+
         [ConfigGrouping("Acceleration", "Adjust the haptics for the left and right trigger.")]
         public ThrottleHapticsConfig ThrottleHaptics { get; set; } = new ThrottleHapticsConfig();
         public sealed class ThrottleHapticsConfig
