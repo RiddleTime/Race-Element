@@ -82,6 +82,9 @@ namespace RaceElement.Controls
                         PopulateCategoryCombobox(comboDebugOverlays, listDebugOverlays, OverlayType.Debug);
                         BuildOverlayPanel();
 
+                        ToolTipService.SetInitialShowDelay(listBoxItemToggleDemoMode, 1);
+                        ToolTipService.SetInitialShowDelay(listBoxItemToggleMovementMode, 1);
+
                         listBoxItemToggleMovementMode.PreviewMouseDown += (s, e) =>
                         {
                             if (_lastMovementModeChange.AddMilliseconds(MovementModeDebounce) > DateTime.Now)
