@@ -1,10 +1,10 @@
-﻿using RaceElement.Data.ACC.Database.SessionData;
+﻿using RaceElement.Data.ACC.Database.LapDataDB;
+using RaceElement.Data.ACC.Database.SessionData;
 using RaceElement.Data.ACC.Session;
 using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.Util.SystemExtensions;
-using ScottPlot.Drawing.Colormaps;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -122,20 +122,21 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
             _collector.Start(this);
         }
 
-        private void OnLapFinished(object sender, RaceElement.Data.ACC.Database.LapDataDB.DbLapData e)
+        private void OnLapFinished(object sender, DbLapData finishedLap)
         {
-            if (_config.Data.DeltaSource == CornerDataConfiguration.DeltaSource.BestSessionLap)
-                if (!e.IsValid && e.LapType != Broadcast.LapType.Regular)
-                    return; // TODO
+            // don't update if source is set to best session lap.. (obviously don't update when finished lap isn't the fastest one or is an in or outlap)
+            if (_config.Data.DeltaSource == CornerDataConfiguration.DeltaSource.BestSessionLap
+                && (finishedLap.Index != LapTracker.Instance.Laps.GetFastestLapIndex() || finishedLap.LapType != Broadcast.LapType.Regular))
+                return;
 
             // update best lap corner data 
-            Trace.WriteLine(e.ToString());
+            Trace.WriteLine($"Updating best lap corner data:\n{finishedLap}");
             int maxCornerCount = _currentTrack.CornerNames.Count;
             var cornerData = _cornerDatas.Take(maxCornerCount);
             if (cornerData.Any())
             {
-                Debug.WriteLine("first corner " + cornerData.First().CornerNumber);
-                Debug.WriteLine("last corner " + cornerData.Last().CornerNumber);
+                //Debug.WriteLine("first corner " + cornerData.First().CornerNumber);
+                //Debug.WriteLine("last corner " + cornerData.Last().CornerNumber);
                 _bestLapCorners.Clear();
                 foreach (var data in cornerData)
                     _bestLapCorners.Add(data.CornerNumber, data);

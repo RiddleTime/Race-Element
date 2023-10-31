@@ -54,7 +54,7 @@ namespace RaceElement.Data.ACC.Database.LapDataDB
         }
 
         /// <summary>
-        /// Finds the lap index of the fastest lap
+        /// Finds the lap index of the fastest valid lap
         /// </summary>
         /// <returns>-1 if not fastest lap</returns>
         public static int GetFastestLapIndex(this Dictionary<int, DbLapData> laps)

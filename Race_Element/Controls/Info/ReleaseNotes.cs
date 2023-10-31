@@ -6,7 +6,7 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
-            {"0.2.4.4", "- Added Corner Data HUD, showing corner delta and optionally: min speed, avg speed and max lateral g force."+
+            {"0.2.4.4", "- Added Corner Data HUD, showing corner delta and optionally: minimum speed, average speed and max lateral g force."+
                         "\n- DualSenseX module now allows to set a custom port for DSX(6969 is default)."+
                         "\n- Updated styling of info tables uses in a various amount of HUDs."},
             {"0.2.4.2", "- Removed affiliate links:"+
