@@ -296,7 +296,6 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                 List<Color> colors = new List<Color>();
 
                 // add delta column
-
                 if (_bestLapCorners.Count == _currentTrack.CornerNames.Count)
                 {
                     int deltaDelta = corner.ExitDeltaMilliseconds - corner.EntryDeltaMilliseconds;
