@@ -2,6 +2,7 @@
 using RaceElement.Data.ACC.Database.SessionData;
 using RaceElement.Data.ACC.Session;
 using RaceElement.Data.ACC.Tracker.Laps;
+using RaceElement.Data.ACC.Tracks;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.Util.SystemExtensions;
@@ -50,9 +51,15 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
 
         public override void SetupPreviewData()
         {
+            var trackKyalami = TrackData.Tracks.FirstOrDefault(x => x.GameName == "Kyalami");
+            if (trackKyalami == null)
+                return;
+            pageStatic.Track = trackKyalami.GameName;
+            _currentTrack = GetCurrentTrack();
+
             Random rand = new Random();
             int delta = rand.Next(-200, 600);
-            for (int i = 1; i < 12 + 1; i++)
+            for (int i = 1; i < _currentTrack.CornerNames.Count + 1; i++)
             {
                 delta += rand.Next(-15, 15);
                 float minimumSpeed = (float)(rand.NextDouble() * 230f);
@@ -88,7 +95,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
             _collector = new CornerDataCollector();
 
             // create info table based on selected config
-            List<int> columnWidths = new List<int> { 80 }; // delta
+            List<int> columnWidths = new List<int> { 90 }; // delta
 
             if (_config.Data.MinimumSpeed)
             {
@@ -243,7 +250,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                     // add delta column
                     int delta = _currentCorner.EntryDeltaMilliseconds - pageGraphics.DeltaLapTimeMillis;
                     columns.Add($"{delta / 1000:F3}");
-                    colors.Add(Color.White);
+                    colors.Add(Color.FromArgb(190, Color.White));
 
                     if (_config.Data.MinimumSpeed)
                     {
@@ -267,7 +274,10 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                         colors.Add(Color.FromArgb(190, Color.White));
 
                         if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
+                        {
                             columns.Add(string.Empty);
+                            colors.Add(Color.FromArgb(190, Color.White));
+                        }
                     }
 
                     // add max lateral g column
@@ -286,12 +296,22 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                 List<Color> colors = new List<Color>();
 
                 // add delta column
-                int deltaDelta = corner.ExitDeltaMilliseconds - corner.EntryDeltaMilliseconds;
-                string deltaDeltaString = $"{deltaDelta / 1000f:F3}";
-                if (deltaDelta > 0) deltaDeltaString = "+" + deltaDeltaString;
-                columns.Add(deltaDeltaString);
-                Color deltaColor = deltaDelta < 0 ? Color.LimeGreen : Color.Red;
-                colors.Add(deltaColor);
+
+                if (_bestLapCorners.Count == _currentTrack.CornerNames.Count)
+                {
+                    int deltaDelta = corner.ExitDeltaMilliseconds - corner.EntryDeltaMilliseconds;
+                    string deltaDeltaString = $"{deltaDelta / 1000f:F3}";
+                    if (deltaDelta < 0) deltaDeltaString = deltaDeltaString.Substring(1);
+                    deltaDeltaString.FillStart(6, ' ');
+                    columns.Add(deltaDeltaString);
+                    Color deltaColor = deltaDelta < 0 ? Color.LimeGreen : Color.Red;
+                    colors.Add(deltaColor);
+                }
+                else
+                {
+                    columns.Add("-");
+                    colors.Add(Color.FromArgb(190, Color.White));
+                }
 
                 if (_config.Data.MinimumSpeed)
                 {
