@@ -115,11 +115,16 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
             Width = 30 + columnWidths.Sum();
 
             RaceSessionTracker.Instance.OnNewSessionStarted += OnNewSessionStarted;
-
-            if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
-                LapTracker.Instance.LapFinished += OnLapFinished;
+            RaceSessionTracker.Instance.OnSessionIndexChanged += Instance_OnSessionIndexChanged;// reset during sessions?
+            if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off) LapTracker.Instance.LapFinished += OnLapFinished;
 
             _collector.Start(this);
+        }
+
+        private void Instance_OnSessionIndexChanged(object sender, int e)
+        {
+            _currentTrack = GetCurrentTrack();
+            _cornerDatas.Clear();
         }
 
         private void OnLapFinished(object sender, DbLapData finishedLap)
@@ -152,7 +157,9 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
         public override void BeforeStop()
         {
             RaceSessionTracker.Instance.OnNewSessionStarted -= OnNewSessionStarted;
-            LapTracker.Instance.LapFinished -= OnLapFinished;
+            RaceSessionTracker.Instance.OnSessionIndexChanged += Instance_OnSessionIndexChanged;
+            if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off) LapTracker.Instance.LapFinished -= OnLapFinished;
+
             _cornerDatas.Clear();
             _collector.Stop();
         }
