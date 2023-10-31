@@ -8,12 +8,12 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
         public TableGrouping Table { get; set; } = new TableGrouping();
         public sealed class TableGrouping
         {
-            [ToolTip("Draws the first row as a header showing labels for each column.")]
-            public bool Header { get; set; } = true;
-
             [ToolTip("Adjust the amount corners shown as history.")]
             [IntRange(1, 10, 1)]
             public int CornerAmount { get; set; } = 4;
+
+            [ToolTip("Draws the first row as a header showing labels for each column.")]
+            public bool Header { get; set; } = true;
         }
 
         public enum DeltaSource { BestSessionLap, LastLap, Off };
