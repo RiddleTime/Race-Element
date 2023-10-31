@@ -4,7 +4,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
 {
     internal sealed class CornerDataConfiguration : OverlayConfiguration
     {
-        [ConfigGrouping("Table", "Adjust what is shown in the table")]
+        [ConfigGrouping("Table", "Show or hide extra laps or hide the header.")]
         public TableGrouping Table { get; set; } = new TableGrouping();
         public sealed class TableGrouping
         {
