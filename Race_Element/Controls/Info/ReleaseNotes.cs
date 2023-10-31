@@ -8,7 +8,8 @@ namespace RaceElement.Controls
         {
             {"0.2.4.4", "- Added Corner Data HUD, showing corner delta and optionally: minimum speed, average speed and max lateral g force."+
                         "\n- DualSenseX module now allows to set a custom port for DSX(6969 is default)."+
-                        "\n- Updated styling of info tables uses in a various amount of HUDs."},
+                        "\n- Updated styling of info tables used in a various amount of HUDs."+
+                        "\n- HUD Tab: Switched movement mode and always visible buttons around"},
             {"0.2.4.2", "- Removed affiliate links:"+
                         "\nRace Element is free to run software, I do not want to encourage anyone ever again to pay to become faster."+
                         "\nLearn to create your own setups, there are tons of guides out there, even from one of the developers of Assetto Corsa Competizione."+
