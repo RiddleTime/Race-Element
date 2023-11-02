@@ -1,4 +1,5 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
+using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
 {
@@ -16,7 +17,12 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
             public bool Header { get; set; } = true;
         }
 
-        public enum DeltaSource { BestSessionLap, LastLap, Off };
+        public enum DeltaSource
+        {
+            BestSessionLap,
+            LastLap,
+            Off
+        };
 
         [ConfigGrouping("Data", "Show or hide extra data/columns")]
         public DataGrouping Data { get; set; } = new DataGrouping();
@@ -33,6 +39,21 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
 
             [ToolTip("Shows the maximum lateral G force for each corner.")]
             public bool MaxLatG { get; set; } = true;
+        }
+
+        [ConfigGrouping("Colors", "Adjust colors used for delta")]
+        public ColorGrouping Colors { get; set; } = new ColorGrouping();
+        public sealed class ColorGrouping
+        {
+            [ToolTip("Sets the color for the delta colum when the delta is better.")]
+            public Color DeltaFaster { get; set; } = Color.FromArgb(50, 205, 50);
+            [ToolTip("Sets the color for the delta colum when the delta is worse.")]
+            public Color DeltaSlower { get; set; } = Color.FromArgb(255, 255, 0);
+
+            [ToolTip("Sets the color for the both the avg and min speed colum when the speed is faster.")]
+            public Color SpeedFaster { get; set; } = Color.FromArgb(50, 205, 50);
+            [ToolTip("Sets the color for the both the avg and min speed colum when the speed is slower.")]
+            public Color SpeedSlower { get; set; } = Color.FromArgb(255, 0, 0);
         }
 
         public CornerDataConfiguration() => AllowRescale = true;

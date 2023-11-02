@@ -303,7 +303,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                     if (deltaDelta < 0) deltaDeltaString = deltaDeltaString.Substring(1);
                     deltaDeltaString.FillStart(6, ' ');
                     columns.Add(deltaDeltaString);
-                    Color deltaColor = deltaDelta < 0 ? Color.LimeGreen : Color.Red;
+                    Color deltaColor = deltaDelta < 0 ? _config.Colors.DeltaFaster: _config.Colors.DeltaSlower;
                     colors.Add(deltaColor);
                 }
                 else
@@ -337,8 +337,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
 
                             Color minSpeedDeltaColor = minSpeedDelta switch
                             {
-                                var d when d > 0 => Color.LimeGreen,
-                                var d when d < 0 => Color.Red,
+                                var d when d > 0 => _config.Colors.SpeedFaster,
+                                var d when d < 0 => _config.Colors.SpeedSlower,
                                 _ => Color.White,
                             };
                             colors.Add(minSpeedDeltaColor);
@@ -371,8 +371,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
 
                             Color avgSpeedDeltaColor = avgSpeedDelta switch
                             {
-                                var d when d > 0 => Color.LimeGreen,
-                                var d when d < 0 => Color.Red,
+                                var d when d > 0 => _config.Colors.SpeedFaster,
+                                var d when d < 0 => _config.Colors.SpeedSlower,
                                 _ => Color.White,
                             };
                             colors.Add(avgSpeedDeltaColor);
