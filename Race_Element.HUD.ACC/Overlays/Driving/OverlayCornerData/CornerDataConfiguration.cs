@@ -48,12 +48,12 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
             [ToolTip("Sets the color for the delta colum when the delta is better.")]
             public Color DeltaFaster { get; set; } = Color.FromArgb(50, 205, 50);
             [ToolTip("Sets the color for the delta colum when the delta is worse.")]
-            public Color DeltaSlower { get; set; } = Color.FromArgb(255, 255, 0);
+            public Color DeltaSlower { get; set; } = Color.FromArgb(255, 0, 0);
 
             [ToolTip("Sets the color for the both the avg and min speed colum when the speed is faster.")]
             public Color SpeedFaster { get; set; } = Color.FromArgb(50, 205, 50);
             [ToolTip("Sets the color for the both the avg and min speed colum when the speed is slower.")]
-            public Color SpeedSlower { get; set; } = Color.FromArgb(255, 0, 0);
+            public Color SpeedSlower { get; set; } = Color.FromArgb(255, 255, 0);
         }
 
         public CornerDataConfiguration() => AllowRescale = true;
