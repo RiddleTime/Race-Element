@@ -181,7 +181,13 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
         internal int GetCurrentCorner(float normalizedTrackPosition)
         {
             _currentTrack ??= GetCurrentTrack();
+
             if (_currentTrack == null) return -1;
+            if (pageStatic.Track != _currentTrack.GameName)
+            {
+                _currentTrack = GetCurrentTrack();
+                if (_currentTrack == null) return -1;
+            }
 
             try
             {
@@ -303,7 +309,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                     if (deltaDelta < 0) deltaDeltaString = deltaDeltaString.Substring(1);
                     deltaDeltaString.FillStart(6, ' ');
                     columns.Add(deltaDeltaString);
-                    Color deltaColor = deltaDelta < 0 ? _config.Colors.DeltaFaster: _config.Colors.DeltaSlower;
+                    Color deltaColor = deltaDelta < 0 ? _config.Colors.DeltaFaster : _config.Colors.DeltaSlower;
                     colors.Add(deltaColor);
                 }
                 else
