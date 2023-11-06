@@ -9,8 +9,7 @@ namespace RaceElement.HUD.Overlay.Internal
         public OverlayCategory OverlayCategory { get; set; } = OverlayCategory.All;
 
         public double Version { get; set; }
-        public string Description { get; set; }
-
+        public string Description { get; set; } = string.Empty;
     }
 
     public enum OverlayType
