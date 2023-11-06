@@ -4,6 +4,14 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
 {
     internal sealed class DualSenseXConfiguration : OverlayConfiguration
     {
+        public DualSenseXConfiguration()
+        {
+            this.GenericConfiguration.AlwaysOnTop = false;
+            this.GenericConfiguration.Window = false;
+            this.GenericConfiguration.Opacity = 1.0f;
+            this.AllowRescale = false;
+        }
+
         [ConfigGrouping("DSX UDP", "Adjust the port DSX uses, 6969 is default.")]
         public UdpConfig UDP { get; set; } = new UdpConfig();
         public sealed class UdpConfig
