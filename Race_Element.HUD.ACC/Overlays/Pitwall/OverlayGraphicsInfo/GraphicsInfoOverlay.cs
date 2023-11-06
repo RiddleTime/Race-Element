@@ -10,7 +10,7 @@ using static RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
 namespace RaceElement.HUD.ACC.Overlays.OverlayGraphicsInfo
 {
     [Overlay(Name = "Graphics Info", Version = 1.00,
-        Description = "Shared Memory Graphics Page", OverlayType = OverlayType.Debug)]
+        Description = "Shared Memory Graphics Page", OverlayType = OverlayType.Pitwall)]
     internal sealed class GraphicsInfoOverlay : AbstractOverlay
     {
         private readonly DebugConfig _config = new DebugConfig();

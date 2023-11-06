@@ -9,7 +9,7 @@ using static RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
 namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
 {
 
-    [Overlay(Name = "Broadcast Track Data", Version = 1.00, OverlayType = OverlayType.Debug,
+    [Overlay(Name = "Broadcast Track Data", Version = 1.00, OverlayType = OverlayType.Pitwall,
         Description = "A panel showing live broadcast track data.")]
     internal sealed class BroadcastTrackDataOverlay : AbstractOverlay
     {

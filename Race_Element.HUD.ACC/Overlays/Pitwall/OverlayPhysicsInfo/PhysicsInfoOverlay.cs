@@ -12,7 +12,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPhysicsInfo
 
     [Overlay(Name = "Physics Info", Version = 1.00,
         Description = "Shared Memory Physics Page", 
-        OverlayType = OverlayType.Debug,
+        OverlayType = OverlayType.Pitwall,
         OverlayCategory = OverlayCategory.Physics)]
     internal sealed class PhysicsInfoOverlay : AbstractOverlay
     {

@@ -16,7 +16,7 @@ namespace RaceElement.HUD.Overlay.Internal
     public enum OverlayType
     {
         Release,
-        Debug,
+        Pitwall,
     }
 
     public enum OverlayCategory

@@ -10,7 +10,7 @@ using RaceElement.HUD.Overlay.OverlayUtil;
 namespace RaceElement.HUD.ACC.Overlays.OverlayStaticInfo
 {
     [Overlay(Name = "Static Info", Version = 1.00,
-        Description = "Shared Memory Static Page", OverlayType = OverlayType.Debug)]
+        Description = "Shared Memory Static Page", OverlayType = OverlayType.Pitwall)]
     internal sealed class StaticInfoOverlay : AbstractOverlay
     {
         private readonly DebugConfig _config = new DebugConfig();
