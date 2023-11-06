@@ -107,7 +107,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
                 instructions.Add(new Instruction()
                 {
                     type = InstructionType.TriggerUpdate,
-                    parameters = new object[] { controllerIndex, Trigger.Right, TriggerMode.CustomTriggerValue, CustomTriggerValueMode.VibrateResistanceB, 130, 10, 0, 0, 0, 0, 0 }
+                    parameters = new object[] { controllerIndex, Trigger.Right, TriggerMode.CustomTriggerValue, CustomTriggerValueMode.VibrateResistanceB, throttleConfig.TcFrequency /*130*/, 10, 0, 0, 0, 0, 0 }
                     /// Start: 0-9 Strength:0-8 Frequency:0-255
                     //parameters = new object[] { controllerIndex, Trigger.Right, TriggerMode.AutomaticGun, 0, 6, 65 }
                 });

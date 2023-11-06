@@ -13,7 +13,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
     [Overlay(Name = "Start Screen",
      Description = "Shows a start screen",
      Version = 1.00,
-     OverlayType = OverlayType.Debug)]
+     OverlayType = OverlayType.Pitwall)]
 #endif
     public sealed class StartScreenOverlay : AbstractOverlay
     {

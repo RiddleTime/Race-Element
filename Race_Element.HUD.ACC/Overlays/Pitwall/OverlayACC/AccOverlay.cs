@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayACC
 {
 #if DEBUG
-    [Overlay(Name = "ACC Process", Version = 1.00, OverlayType = OverlayType.Debug,
+    [Overlay(Name = "ACC Process", Version = 1.00, OverlayType = OverlayType.Pitwall,
        Description = "A panel showing information about ACC.")]
 #endif
     internal class AccProcessOverlay : AbstractOverlay
