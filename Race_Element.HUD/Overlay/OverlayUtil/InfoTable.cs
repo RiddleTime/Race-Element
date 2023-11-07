@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
+using System.Drawing.Drawing2D;
 
 namespace RaceElement.HUD.Overlay.OverlayUtil
 {
@@ -52,7 +53,9 @@ namespace RaceElement.HUD.Overlay.OverlayUtil
                 {
                     _cachedBackground = new CachedBitmap((int)Math.Ceiling(GetTotalWidth()), _rows.Count * FontHeight + (int)_yMono, bg =>
                     {
-                        bg.FillRoundedRectangle(new SolidBrush(Color.FromArgb(158, Color.Black)), new Rectangle(0, 0, (int)GetTotalWidth(), _rows.Count * this.Font.Height + (int)_yMono), 4);
+                        Color color = Color.FromArgb(120, Color.Black);
+                        using HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightUpwardDiagonal, color, Color.FromArgb(color.A - 50, color));
+                        bg.FillRoundedRectangle(hatchBrush, new Rectangle(0, 0, (int)GetTotalWidth(), _rows.Count * this.Font.Height + (int)_yMono), 4);
                         using SolidBrush linebrush = new SolidBrush(Color.FromArgb(130, Color.OrangeRed));
                         using Pen pen = new Pen(linebrush, 2);
                         int maxWidth = (int)Math.Ceiling(GetTotalWidth());
