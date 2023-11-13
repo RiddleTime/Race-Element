@@ -14,7 +14,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
         private readonly GridTestConfiguration _config = new GridTestConfiguration();
         private sealed class GridTestConfiguration : OverlayConfiguration
         {
-            public GridTestConfiguration() => AllowRescale = false;
+            public GridTestConfiguration() => AllowRescale = true;
 
             [ConfigGrouping("Grid", "Customize rows and columns")]
             public GridGrouping Grid { get; set; } = new GridGrouping();
@@ -25,6 +25,9 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
 
                 [IntRange(4, 100, 2)]
                 public int Columns { get; set; } = 20;
+
+                [IntRange(1, 50, 1)]
+                public int RefreshRate { get; set; } = 30;
             }
         }
 
@@ -33,12 +36,12 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
         public GridTestOverlay(Rectangle rectangle) : base(rectangle, "Grid Test")
         {
             testgrid = new GraphicsGrid(_config.Grid.Rows, _config.Grid.Columns);
-            RefreshRateHz = 2;
+            RefreshRateHz = _config.Grid.RefreshRate;
         }
 
         public override void BeforeStart()
         {
-            Font font = FontUtil.FontSegoeMono(12);
+            Font font = FontUtil.FontSegoeMono(12 * Scale);
             float fontHeight = font.GetHeight(120);
             int columnWidth = (int)fontHeight;
             int columnHeight = (int)fontHeight;
@@ -69,11 +72,9 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
         public override void Render(Graphics g)
         {
             Random rand = new Random();
-            double opacityRange = 0.85;
             for (int row = 0; row < testgrid.Rows; row++)
                 for (int column = 0; column < testgrid.Columns; column++)
                 {
-                    //testgrid.Grid[row][column].CachedBackground.Opacity = (float)(rand.NextDouble() * opacityRange + 1 - opacityRange);
                     ((DrawableTextCell)testgrid.Grid[row][column]).UpdateText($"{rand.Next(10)}");
                 }
 

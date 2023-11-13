@@ -18,8 +18,8 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
 
         public void Draw(Graphics g, float scaling)
         {
-            CachedBackground?.Draw(g, (int)Math.Round(Rectangle.X * scaling), (int)Math.Round(Rectangle.Y * scaling), (int)Math.Round(CachedBackground.Width * scaling), (int)Math.Round(CachedBackground.Height * scaling));
-            CachedForeground?.Draw(g, (int)Math.Round(Rectangle.X * scaling), (int)Math.Round(Rectangle.Y * scaling), (int)Math.Round(CachedForeground.Width * scaling), (int)Math.Round(CachedForeground.Height * scaling));
+            CachedBackground?.Draw(g, (int)Math.Ceiling(Rectangle.X * scaling), (int)Math.Ceiling(Rectangle.Y * scaling), (int)Math.Ceiling(CachedBackground.Width * scaling), (int)Math.Ceiling(CachedBackground.Height * scaling));
+            CachedForeground?.Draw(g, (int)Math.Ceiling(Rectangle.X * scaling), (int)Math.Ceiling(Rectangle.Y * scaling), (int)Math.Ceiling(CachedForeground.Width * scaling), (int)Math.Ceiling(CachedForeground.Height * scaling));
         }
 
         public void Dispose()

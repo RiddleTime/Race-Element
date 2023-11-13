@@ -37,7 +37,6 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
             {
                 if (Font != null)
                 {
-                    g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
                     g.TextContrast = 1;
                     RectangleF rect = new RectangleF(0, 0, Rectangle.Width, Rectangle.Height);
                     g.DrawStringWithShadow(text, Font, TextBrush, rect, StringFormat);
@@ -48,6 +47,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
         public void Dispose()
         {
             base.Dispose();
+            TextBrush?.Dispose();
             Font?.Dispose();
         }
     }
