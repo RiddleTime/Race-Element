@@ -90,6 +90,7 @@
     <Compile Include="Overlays\Pitwall\OverlayDualSenseX\DualSenseXOverlay.cs" />
     <Compile Include="Overlays\Pitwall\OverlayDualSenseX\DualSenseXResources.cs" />
     <Compile Include="Overlays\Pitwall\OverlayDualSenseX\TriggerHaptics.cs" />
+    <Compile Include="Overlays\Pitwall\OverlayGridTest\GridTestOverlay.cs" />
     <Compile Include="Overlays\Pitwall\OverlayHUDs\HUDsOverlay.cs" />
     <Compile Include="Overlays\Pitwall\OverlayRenderTest\RenderTestOverlay.cs" />
     <Compile Include="Overlays\Pitwall\OverlayACC\AccOverlay.cs" />
