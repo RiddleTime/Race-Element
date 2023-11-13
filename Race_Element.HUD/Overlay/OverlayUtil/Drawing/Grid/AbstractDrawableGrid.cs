@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
 {
-    public abstract class AbstractDrawableGrid<T> : IDrawable where T : IDrawable
+    public abstract class AbstractDrawableGrid<T> : IScalableDrawing where T : IScalableDrawing
     {
         public int Rows { get; private set; }
         public int Columns { get; private set; }
@@ -31,7 +31,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
             }
         }
 
-        public abstract void Draw(Graphics g);
+        public abstract void Draw(Graphics g, float scaling);
 
         public void Dispose()
         {

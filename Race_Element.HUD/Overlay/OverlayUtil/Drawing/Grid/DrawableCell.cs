@@ -1,9 +1,10 @@
-﻿using System;
+﻿using RaceElement.Util.DataTypes;
+using System;
 using System.Drawing;
 
 namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
 {
-    public class DrawableCell : IDrawable
+    public class DrawableCell : IScalableDrawing
     {
         public RectangleF Rectangle { get; private set; }
         public CachedBitmap CachedBackground;
@@ -16,10 +17,10 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
             CachedForeground = new CachedBitmap((int)rect.Width, (int)rect.Height, g => { });
         }
 
-        public void Draw(Graphics g)
+        public void Draw(Graphics g, float scaling)
         {
-            CachedBackground?.Draw(g, (int)Rectangle.X, (int)Rectangle.Y, CachedBackground.Width, CachedBackground.Height);
-            CachedForeground?.Draw(g, (int)Rectangle.X, (int)Rectangle.Y, CachedForeground.Width, CachedForeground.Height);
+            CachedBackground?.Draw(g, (int)Math.Round(Rectangle.X * scaling), (int)Math.Round(Rectangle.Y * scaling), (int)Math.Round(CachedBackground.Width * scaling), (int)Math.Round(CachedBackground.Height * scaling));
+            CachedForeground?.Draw(g, (int)Math.Round(Rectangle.X * scaling), (int)Math.Round(Rectangle.Y * scaling), (int)Math.Round(CachedForeground.Width * scaling), (int)Math.Round(CachedForeground.Height * scaling));
         }
 
         public void Dispose()

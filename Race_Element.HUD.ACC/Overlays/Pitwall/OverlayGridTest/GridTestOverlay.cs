@@ -4,6 +4,7 @@ using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
 using System;
 using System.Drawing;
+using System.Net.NetworkInformation;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
 {
@@ -21,10 +22,10 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
             public GridGrouping Grid { get; set; } = new GridGrouping();
             public sealed class GridGrouping
             {
-                [IntRange(1, 50, 1)]
+                [IntRange(4, 50, 2)]
                 public int Rows { get; set; } = 20;
 
-                [IntRange(1, 50, 1)]
+                [IntRange(4, 50, 2)]
                 public int Columns { get; set; } = 20;
             }
 
@@ -32,7 +33,11 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
 
         private readonly GraphicsGrid testgrid;
 
-        public GridTestOverlay(Rectangle rectangle) : base(rectangle, "Grid Test") => testgrid = new GraphicsGrid(_config.Grid.Rows, _config.Grid.Columns);
+        public GridTestOverlay(Rectangle rectangle) : base(rectangle, "Grid Test")
+        {
+            testgrid = new GraphicsGrid(_config.Grid.Rows, _config.Grid.Columns);
+            RefreshRateHz = 2;
+        }
 
         public override void BeforeStart()
         {
@@ -47,18 +52,22 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
 
                     cell.CachedBackground = new CachedBitmap((int)cell.Rectangle.Width, (int)cell.Rectangle.Height, g =>
                     {
-                        g.FillRectangle(new SolidBrush(Color.FromArgb(rand.Next(255), rand.Next(255), rand.Next(255))), new Rectangle(0, 0, (int)cell.Rectangle.Width, (int)cell.Rectangle.Height));
+                        g.FillRectangle(new SolidBrush(Color.FromArgb(200 + rand.Next(55), rand.Next(255), rand.Next(75))), new Rectangle(0, 0, (int)cell.Rectangle.Width, (int)cell.Rectangle.Height));
                     });
+                    cell.CachedBackground.Opacity = (float)(rand.NextDouble() / 2 + 0.5d);
 
                     testgrid.Grid[row][column] = cell;
                 }
-
-            Width = testgrid.Rows * columnWidth;
-            Height = testgrid.Columns * columnHeight;
+            Width = (int)(testgrid.Rows * columnWidth * Scale);
+            Height = (int)(testgrid.Columns * columnHeight * Scale);
         }
 
         public override void BeforeStop() => testgrid?.Dispose();
 
-        public override void Render(Graphics g) => testgrid?.Draw(g);
+        public override bool ShouldRender()
+        {
+            return true;
+        }
+        public override void Render(Graphics g) => testgrid?.Draw(g, (float)(Scale));
     }
 }
