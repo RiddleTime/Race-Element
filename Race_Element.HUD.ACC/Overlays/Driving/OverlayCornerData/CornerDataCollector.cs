@@ -35,8 +35,10 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
             if (overlay.pagePhysics != null)
             {
                 int currentCornerIndex = overlay.GetCurrentCorner(overlay.pageGraphics.NormalizedCarPosition);
+
                 if (currentCornerIndex == -1 && overlay._previousCorner != -1)
-                {  // corner exited
+                {
+                    // corner exited
                     overlay._currentCorner.ExitDeltaMilliseconds = overlay.pageGraphics.DeltaLapTimeMillis;
                     overlay._cornerDatas.Add(overlay._currentCorner);
                     overlay._previousCorner = -1;
@@ -62,6 +64,14 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                     }
                     else
                     {
+                        if (overlay._previousCorner != -1)
+                        {
+                            // corner exited
+                            overlay._currentCorner.ExitDeltaMilliseconds = overlay.pageGraphics.DeltaLapTimeMillis;
+                            overlay._cornerDatas.Add(overlay._currentCorner);
+                            overlay._previousCorner = -1;
+                        }
+
                         // entered a new corner
                         overlay._previousCorner = currentCornerIndex;
                         overlay._currentCorner = new CornerData()
