@@ -4,14 +4,10 @@ using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
 using System;
 using System.Drawing;
-using System.Net.NetworkInformation;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
 {
-#if DEBUG
     [Overlay(Name = "Grid Test", Description = "Testing of the grid", OverlayType = OverlayType.Release)]
-#endif
     internal sealed class GridTestOverlay : AbstractOverlay
     {
         private readonly GridTestConfiguration _config = new GridTestConfiguration();

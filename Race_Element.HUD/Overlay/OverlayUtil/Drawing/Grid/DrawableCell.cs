@@ -1,5 +1,4 @@
-﻿using RaceElement.Util.DataTypes;
-using System;
+﻿using System;
 using System.Drawing;
 
 namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
