@@ -43,6 +43,10 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
 
             [ToolTip("Adds haptics when abs is activated.")]
             public bool AbsEffect { get; set; } = true;
+
+            [ToolTip("Sets the frequency of the abs haptics.")]
+            [IntRange(10, 150, 1)]
+            public int AbsFrequency { get; set; } = 85;
         }
     }
 }

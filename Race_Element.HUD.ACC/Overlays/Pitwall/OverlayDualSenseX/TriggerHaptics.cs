@@ -28,7 +28,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
                     type = InstructionType.TriggerUpdate,
                     /// Start: 0-9 Strength:0-8 Frequency:0-255
                     //parameters = new object[] { controllerIndex, Trigger.Left, TriggerMode.AutomaticGun, 0, 6, 45 } // vibrate is not enough
-                    parameters = new object[] { controllerIndex, Trigger.Left, TriggerMode.CustomTriggerValue, CustomTriggerValueMode.VibrateResistanceB, 85, 1, 0, 0, 0, 0, 0 }
+                    parameters = new object[] { controllerIndex, Trigger.Left, TriggerMode.CustomTriggerValue, CustomTriggerValueMode.VibrateResistanceB, brakeConfig.AbsFrequency/*85*/, 1, 0, 0, 0, 0, 0 }
                 });
 
             }
