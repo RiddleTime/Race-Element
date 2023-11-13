@@ -5,6 +5,7 @@ using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
 using System;
 using System.Drawing;
 using System.Net.NetworkInformation;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
 {
@@ -16,7 +17,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
         private readonly GridTestConfiguration _config = new GridTestConfiguration();
         private sealed class GridTestConfiguration : OverlayConfiguration
         {
-            public GridTestConfiguration() => AllowRescale = true;
+            public GridTestConfiguration() => AllowRescale = false;
 
             [ConfigGrouping("Grid", "Customize rows and columns")]
             public GridGrouping Grid { get; set; } = new GridGrouping();
@@ -36,7 +37,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
         public GridTestOverlay(Rectangle rectangle) : base(rectangle, "Grid Test")
         {
             testgrid = new GraphicsGrid(_config.Grid.Rows, _config.Grid.Columns);
-            RefreshRateHz = 2;
+            RefreshRateHz = 1;
         }
 
         public override void BeforeStart()
@@ -52,7 +53,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
 
                     cell.CachedBackground = new CachedBitmap((int)cell.Rectangle.Width, (int)cell.Rectangle.Height, g =>
                     {
-                        g.FillRectangle(new SolidBrush(Color.FromArgb(200 + rand.Next(55), rand.Next(255), rand.Next(75))), new Rectangle(0, 0, (int)cell.Rectangle.Width, (int)cell.Rectangle.Height));
+                        g.FillRectangle(new SolidBrush(Color.FromArgb(230 + rand.Next(25), rand.Next(185), rand.Next(75))), new Rectangle(0, 0, (int)cell.Rectangle.Width, (int)cell.Rectangle.Height));
                     });
                     cell.CachedBackground.Opacity = (float)(rand.NextDouble() / 2 + 0.5d);
 
@@ -64,10 +65,19 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
 
         public override void BeforeStop() => testgrid?.Dispose();
 
-        public override bool ShouldRender()
+        public override bool ShouldRender() => true;
+
+        public override void Render(Graphics g)
         {
-            return true;
+            Random rand = new Random();
+            double opacityRange = 0.85;
+            for (int row = 0; row < testgrid.Rows; row++)
+                for (int column = 0; column < testgrid.Columns; column++)
+                {
+                    testgrid.Grid[row][column].CachedBackground.Opacity = (float)(rand.NextDouble() * opacityRange + 1 - opacityRange);
+                }
+
+            testgrid.Draw(g, (float)(Scale));
         }
-        public override void Render(Graphics g) => testgrid?.Draw(g, (float)(Scale));
     }
 }
