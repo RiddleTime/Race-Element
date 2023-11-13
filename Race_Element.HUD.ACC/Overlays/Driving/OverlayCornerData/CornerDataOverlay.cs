@@ -202,46 +202,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
         public override void Render(Graphics g)
         {
             if (_config.Table.Header)
-            {
-                List<string> headerColumns = new List<string> { "Delta" };
-                List<Color> headerColours = new List<Color> { Color.White };
-
-                if (_config.Data.MinimumSpeed)
-                {
-                    headerColumns.Add("MinKmh");
-                    headerColours.Add(Color.White);
-
-                    if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
-                        headerColumns.Add("Δ");
-                    switch (_config.Data.DeltaSource)
-                    {
-                        case CornerDataConfiguration.DeltaSource.LastLap: headerColours.Add(Color.Cyan); break;
-                        case CornerDataConfiguration.DeltaSource.BestSessionLap: headerColours.Add(Color.LightGreen); break;
-                        case CornerDataConfiguration.DeltaSource.Off: break;
-                    }
-                }
-
-                if (_config.Data.AverageSpeed)
-                {
-                    headerColumns.Add("AvgKmh");
-                    headerColours.Add(Color.White);
-
-                    if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
-                        headerColumns.Add("Δ");
-
-                    switch (_config.Data.DeltaSource)
-                    {
-                        case CornerDataConfiguration.DeltaSource.LastLap: headerColours.Add(Color.Cyan); break;
-                        case CornerDataConfiguration.DeltaSource.BestSessionLap: headerColours.Add(Color.LightGreen); break;
-                        case CornerDataConfiguration.DeltaSource.Off: break;
-                    }
-                }
-
-                if (_config.Data.MaxLatG)
-                    headerColumns.Add("LatG");
-
-                _table.AddRow("  ", headerColumns.ToArray(), headerColours.ToArray());
-            }
+                AddHeaderRow();
 
             int currentCorner = GetCurrentCorner(pageGraphics.NormalizedCarPosition);
             bool isInCorner = false;
@@ -398,5 +359,48 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
             // draw table of previous corners, min speed? corner g? min gear? 
             _table.Draw(g);
         }
+
+        private void AddHeaderRow()
+        {
+            List<string> headerColumns = new List<string> { "Delta" };
+            List<Color> headerColours = new List<Color> { Color.White };
+
+            if (_config.Data.MinimumSpeed)
+            {
+                headerColumns.Add("MinKmh");
+                headerColours.Add(Color.White);
+
+                if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
+                    headerColumns.Add("Δ");
+                switch (_config.Data.DeltaSource)
+                {
+                    case CornerDataConfiguration.DeltaSource.LastLap: headerColours.Add(Color.Cyan); break;
+                    case CornerDataConfiguration.DeltaSource.BestSessionLap: headerColours.Add(Color.LightGreen); break;
+                    case CornerDataConfiguration.DeltaSource.Off: break;
+                }
+            }
+
+            if (_config.Data.AverageSpeed)
+            {
+                headerColumns.Add("AvgKmh");
+                headerColours.Add(Color.White);
+
+                if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
+                    headerColumns.Add("Δ");
+
+                switch (_config.Data.DeltaSource)
+                {
+                    case CornerDataConfiguration.DeltaSource.LastLap: headerColours.Add(Color.Cyan); break;
+                    case CornerDataConfiguration.DeltaSource.BestSessionLap: headerColours.Add(Color.LightGreen); break;
+                    case CornerDataConfiguration.DeltaSource.Off: break;
+                }
+            }
+
+            if (_config.Data.MaxLatG)
+                headerColumns.Add("LatG");
+
+            _table.AddRow("  ", headerColumns.ToArray(), headerColours.ToArray());
+        }
+
     }
 }

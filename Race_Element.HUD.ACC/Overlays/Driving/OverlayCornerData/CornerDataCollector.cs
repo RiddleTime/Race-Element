@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Diagnostics;
+using System.Threading;
 using static RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData.CornerDataOverlay;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
@@ -38,10 +39,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
 
                 if (currentCornerIndex == -1 && overlay._previousCorner != -1)
                 {
-                    // corner exited
-                    overlay._currentCorner.ExitDeltaMilliseconds = overlay.pageGraphics.DeltaLapTimeMillis;
-                    overlay._cornerDatas.Add(overlay._currentCorner);
-                    overlay._previousCorner = -1;
+                    CornerExited(overlay);
                 }
 
                 if (currentCornerIndex != -1)
@@ -66,10 +64,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                     {
                         if (overlay._previousCorner != -1)
                         {
-                            // corner exited
-                            overlay._currentCorner.ExitDeltaMilliseconds = overlay.pageGraphics.DeltaLapTimeMillis;
-                            overlay._cornerDatas.Add(overlay._currentCorner);
-                            overlay._previousCorner = -1;
+                            CornerExited(overlay);
                         }
 
                         // entered a new corner
@@ -86,5 +81,15 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
             }
         }
 
+        private void CornerExited(CornerDataOverlay overlay)
+        {
+            // corner exited
+            overlay._currentCorner.ExitDeltaMilliseconds = overlay.pageGraphics.DeltaLapTimeMillis;
+            overlay._cornerDatas.Add(overlay._currentCorner);
+            overlay._previousCorner = -1;
+            Debug.WriteLine("Exited corner");
+        }
+
     }
+
 }
