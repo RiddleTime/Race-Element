@@ -26,9 +26,9 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
             Font = font;
         }
 
-        public void UpdateText(string text)
+        public void UpdateText(string text, bool forced = false)
         {
-            if (Text == text)
+            if (Text == text && !forced)
                 return;
 
             Text = text;

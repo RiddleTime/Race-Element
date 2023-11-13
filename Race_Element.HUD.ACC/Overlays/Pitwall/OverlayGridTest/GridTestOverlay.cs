@@ -51,7 +51,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
             for (int row = 0; row < testgrid.Rows; row++)
                 for (int column = 0; column < testgrid.Columns; column++)
                 {
-                    DrawableTextCell cell = new DrawableTextCell(new RectangleF(row * columnWidth, column * columnHeight, columnWidth, columnHeight), font);
+                    DrawableTextCell cell = new DrawableTextCell(new RectangleF(row * columnHeight, column * columnWidth, columnWidth, columnHeight), font);
 
                     cell.CachedBackground = new CachedBitmap((int)cell.Rectangle.Width, (int)cell.Rectangle.Height, g =>
                     {
@@ -75,7 +75,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
             for (int row = 0; row < testgrid.Rows; row++)
                 for (int column = 0; column < testgrid.Columns; column++)
                 {
-                    ((DrawableTextCell)testgrid.Grid[row][column]).UpdateText($"{rand.Next(10)}");
+                    ((DrawableTextCell)testgrid.Grid[row][column]).UpdateText($"{(rand.Next(100) == 1 ? 1 : 0)}");
                 }
 
             testgrid.Draw(g, Scale);
