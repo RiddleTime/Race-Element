@@ -21,7 +21,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
             for (int row = 0; row < testgrid.Rows; row++)
                 for (int column = 0; column < testgrid.Columns; column++)
                 {
-                    GridCell cell = new GridCell(new RectangleF(row * columnWidth, column * columnHeight, columnWidth, columnHeight));
+                    DrawableCell cell = new DrawableCell(new RectangleF(row * columnWidth, column * columnHeight, columnWidth, columnHeight));
 
                     cell.CachedBackground = new CachedBitmap((int)cell.Rectangle.Width, (int)cell.Rectangle.Height, g =>
                     {

@@ -3,13 +3,13 @@ using System.Drawing;
 
 namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
 {
-    public class GridCell : IDrawable
+    public class DrawableCell : IDrawable
     {
         public RectangleF Rectangle { get; private set; }
         public CachedBitmap CachedBackground;
         public CachedBitmap CachedForeground;
 
-        public GridCell(RectangleF rect)
+        public DrawableCell(RectangleF rect)
         {
             Rectangle = rect;
             CachedBackground = new CachedBitmap((int)rect.Width, (int)rect.Height, g => { });
