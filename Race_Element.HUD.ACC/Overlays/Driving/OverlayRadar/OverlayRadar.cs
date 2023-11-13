@@ -14,7 +14,7 @@ using System.Linq;
 namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
 {
     [Overlay(Name = "Radar",
-        Description = "Beta! (Rescaling is work in progress and disabled for now.)",
+        Description = "Beta",
         Version = 1.00,
         OverlayType = OverlayType.Release,
         OverlayCategory = OverlayCategory.Driving
