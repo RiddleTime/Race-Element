@@ -4,15 +4,16 @@ using System.Drawing.Text;
 
 namespace RaceElement.HUD.Overlay.OverlayUtil.InfoPanel
 {
-    public class PanelText
+    public class PanelText : AbstractPanel
     {
-        private readonly Font _font;
         public RectangleF Rectangle;
+        public CachedBitmap CachedBackground;
+
+        private readonly Font _font;
 
         private CachedBitmap _cachedPanelText;
 
 
-        public CachedBitmap CachedBackground;
 
         // text properties
         public StringFormat StringFormat { get; set; } = new StringFormat()
@@ -31,6 +32,8 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.InfoPanel
             _text = text;
             CachedBackground = cachedBackground;
         }
+
+
 
         public void Draw(Graphics g, string text, float scale)
         {
@@ -62,7 +65,14 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.InfoPanel
 
         public void Dispose()
         {
+            CachedBackground?.Dispose();
             _cachedPanelText?.Dispose();
+            GC.SuppressFinalize(this);
+        }
+
+        public override void Draw(Graphics g)
+        {
+            throw new NotImplementedException();
         }
     }
 }
