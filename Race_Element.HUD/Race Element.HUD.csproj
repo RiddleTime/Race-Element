@@ -68,10 +68,11 @@
     <Compile Include="Overlay\Internal\Windows.cs" />
     <Compile Include="Overlay\OverlayUtil\CachedBitmap.cs" />
     <Compile Include="Overlay\OverlayUtil\DeltaBar.cs" />
+    <Compile Include="Overlay\OverlayUtil\Drawing\Grid\DrawableTextCell.cs" />
     <Compile Include="Overlay\OverlayUtil\FontUtil.cs" />
     <Compile Include="Overlay\OverlayUtil\GraphicsExtensions.cs" />
     <Compile Include="Overlay\OverlayUtil\InfoPanel.cs" />
-    <Compile Include="Overlay\OverlayUtil\Drawing\Grid\DrawableCell.cs" />
+    <Compile Include="Overlay\OverlayUtil\Drawing\Grid\AbstractDrawableCell.cs" />
     <Compile Include="Overlay\OverlayUtil\Drawing\Grid\AbstractDrawableGrid.cs" />
     <Compile Include="Overlay\OverlayUtil\Drawing\IScalableDrawing.cs" />
     <Compile Include="Overlay\OverlayUtil\InfoPanel\PanelText.cs" />

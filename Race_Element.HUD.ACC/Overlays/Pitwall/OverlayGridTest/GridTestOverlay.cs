@@ -2,6 +2,7 @@
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
+using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Drawing;
 
@@ -37,26 +38,25 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
 
         public override void BeforeStart()
         {
-            int columnWidth = 10;
-            int columnHeight = 10;
+            Font font = FontUtil.FontSegoeMono(12);
+            float fontHeight = font.GetHeight(120);
+            int columnWidth = (int)fontHeight;
+            int columnHeight = (int)fontHeight;
             Random rand = new Random();
+
 
             for (int row = 0; row < testgrid.Rows; row++)
                 for (int column = 0; column < testgrid.Columns; column++)
                 {
-                    DrawableCell cell = new DrawableCell(new RectangleF(row * columnWidth, column * columnHeight, columnWidth, columnHeight));
+                    DrawableTextCell cell = new DrawableTextCell(new RectangleF(row * columnWidth, column * columnHeight, columnWidth, columnHeight), font);
 
                     cell.CachedBackground = new CachedBitmap((int)cell.Rectangle.Width, (int)cell.Rectangle.Height, g =>
                     {
                         g.FillRectangle(new SolidBrush(Color.FromArgb(230 + rand.Next(25), rand.Next(185), rand.Next(75))), new Rectangle(0, 0, (int)cell.Rectangle.Width, (int)cell.Rectangle.Height));
                     });
                     cell.CachedBackground.Opacity = (float)(rand.NextDouble() / 2 + 0.5d);
-
-                    cell.CachedForeground = new CachedBitmap((int)cell.Rectangle.Width, (int)cell.Rectangle.Height, g =>
-                    {
-                        g.FillRectangle(new SolidBrush(Color.FromArgb(130 + rand.Next(60), 0, 0, 0)), new Rectangle(0, 0, (int)cell.Rectangle.Width, (int)cell.Rectangle.Height));
-                    });
-                    cell.CachedForeground.Opacity = (float)(rand.NextDouble() / 2 + 0.5d);
+                    cell.UpdateText($"{rand.Next(10)}");
+                    cell.StringFormat.Alignment = rand.Next(0, 1) == 1 ? StringAlignment.Far : StringAlignment.Center;
 
                     testgrid.Grid[row][column] = cell;
                 }
@@ -73,11 +73,11 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
             for (int row = 0; row < testgrid.Rows; row++)
                 for (int column = 0; column < testgrid.Columns; column++)
                 {
-                    testgrid.Grid[row][column].CachedBackground.Opacity = (float)(rand.NextDouble() * opacityRange + 1 - opacityRange);
-                    testgrid.Grid[row][column].CachedForeground.Opacity = (float)(rand.NextDouble() * opacityRange + 1 - opacityRange);
+                    //testgrid.Grid[row][column].CachedBackground.Opacity = (float)(rand.NextDouble() * opacityRange + 1 - opacityRange);
+                    ((DrawableTextCell)testgrid.Grid[row][column]).UpdateText($"{rand.Next(10)}");
                 }
 
-            testgrid.Draw(g, (float)(Scale));
+            testgrid.Draw(g, Scale);
         }
     }
 }

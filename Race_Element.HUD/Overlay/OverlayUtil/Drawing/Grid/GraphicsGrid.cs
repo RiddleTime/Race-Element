@@ -2,7 +2,7 @@
 
 namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
 {
-    public class GraphicsGrid : AbstractDrawableGrid<DrawableCell>
+    public class GraphicsGrid : AbstractDrawableGrid<AbstractDrawableCell>
     {
         public GraphicsGrid(int rows, int columns) : base(rows, columns)
         {
