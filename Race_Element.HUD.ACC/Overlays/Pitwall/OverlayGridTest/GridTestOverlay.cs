@@ -25,7 +25,6 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
                 [IntRange(4, 100, 2)]
                 public int Columns { get; set; } = 20;
             }
-
         }
 
         private readonly GraphicsGrid testgrid;
@@ -33,7 +32,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
         public GridTestOverlay(Rectangle rectangle) : base(rectangle, "Grid Test")
         {
             testgrid = new GraphicsGrid(_config.Grid.Rows, _config.Grid.Columns);
-            RefreshRateHz = 1;
+            RefreshRateHz = 2;
         }
 
         public override void BeforeStart()
@@ -66,9 +65,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
         }
 
         public override void BeforeStop() => testgrid?.Dispose();
-
         public override bool ShouldRender() => true;
-
         public override void Render(Graphics g)
         {
             Random rand = new Random();
