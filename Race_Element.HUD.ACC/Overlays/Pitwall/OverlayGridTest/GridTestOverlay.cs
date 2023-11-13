@@ -19,10 +19,10 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
             public GridGrouping Grid { get; set; } = new GridGrouping();
             public sealed class GridGrouping
             {
-                [IntRange(4, 50, 2)]
+                [IntRange(4, 100, 2)]
                 public int Rows { get; set; } = 20;
 
-                [IntRange(4, 50, 2)]
+                [IntRange(4, 100, 2)]
                 public int Columns { get; set; } = 20;
             }
 
@@ -53,6 +53,12 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
                     });
                     cell.CachedBackground.Opacity = (float)(rand.NextDouble() / 2 + 0.5d);
 
+                    cell.CachedForeground = new CachedBitmap((int)cell.Rectangle.Width, (int)cell.Rectangle.Height, g =>
+                    {
+                        g.FillRectangle(new SolidBrush(Color.FromArgb(130 + rand.Next(60), 0, 0, 0)), new Rectangle(0, 0, (int)cell.Rectangle.Width, (int)cell.Rectangle.Height));
+                    });
+                    cell.CachedForeground.Opacity = (float)(rand.NextDouble() / 2 + 0.5d);
+
                     testgrid.Grid[row][column] = cell;
                 }
             Width = (int)(testgrid.Rows * columnWidth * Scale);
@@ -71,6 +77,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
                 for (int column = 0; column < testgrid.Columns; column++)
                 {
                     testgrid.Grid[row][column].CachedBackground.Opacity = (float)(rand.NextDouble() * opacityRange + 1 - opacityRange);
+                    testgrid.Grid[row][column].CachedForeground.Opacity = (float)(rand.NextDouble() * opacityRange + 1 - opacityRange);
                 }
 
             testgrid.Draw(g, (float)(Scale));
