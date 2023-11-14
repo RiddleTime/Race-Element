@@ -1,9 +1,14 @@
-﻿using RaceElement.HUD.ACC.Overlays.OverlayDebugInfo;
+﻿using RaceElement.Broadcast;
+using RaceElement.HUD.ACC.Overlays.OverlayDebugInfo;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
+using RaceElement.HUD.Overlay.Util;
 using RaceElement.Util;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Reflection;
 using static RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
 
@@ -11,22 +16,18 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPhysicsInfo
 {
 
     [Overlay(Name = "Physics Info", Version = 1.00,
-        Description = "Shared Memory Physics Page", 
+        Description = "Shared Memory Physics Page",
         OverlayType = OverlayType.Pitwall,
         OverlayCategory = OverlayCategory.Physics)]
     internal sealed class PhysicsInfoOverlay : AbstractOverlay
     {
         private readonly DebugConfig _config = new DebugConfig();
-        private readonly InfoTable _table;
-
+        private GraphicsGrid _graphicsGrid;
+        private List<string> fieldNames = new List<string>();
         public PhysicsInfoOverlay(Rectangle rectangle) : base(rectangle, "Physics Info")
         {
             this.AllowReposition = false;
             this.RefreshRateHz = 5;
-            this.Width = 600;
-            this.Height = 700;
-
-            _table = new InfoTable(9, new int[] { 450 });
         }
 
         private void Instance_WidthChanged(object sender, bool e)
@@ -37,6 +38,44 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPhysicsInfo
 
         public sealed override void BeforeStart()
         {
+            Font font = FontUtil.FontSegoeMono(8 * Scale);
+            float fontHeight = font.GetHeight(120);
+            int columnHeight = (int)fontHeight - 1;
+
+            FieldInfo[] fields = pagePhysics.GetType().GetFields();
+
+            foreach (FieldInfo member in fields)
+            {
+                bool isObsolete = false;
+                foreach (CustomAttributeData cad in member.CustomAttributes)
+                    if (cad.AttributeType == typeof(ObsoleteAttribute)) isObsolete = true;
+
+                if (!isObsolete && !member.Name.Equals("Buffer") && !member.Name.Equals("Size"))
+                    fieldNames.Add(member.Name);
+            }
+            int rows = fieldNames.Count;
+
+            int maxNameLength = (int)Math.Ceiling(fieldNames.Max(x => x.Length) * font.SizeInPoints);
+
+            _graphicsGrid = new GraphicsGrid(rows, 2);
+
+            for (int row = 0; row < rows; row++)
+            {
+                DrawableTextCell headerCell = new DrawableTextCell(new RectangleF(0, columnHeight * row, maxNameLength, columnHeight), font);
+                headerCell.CachedBackground.SetRenderer(g => { g.FillRectangle(Brushes.Black, new RectangleF(0, 0, headerCell.Rectangle.Width, headerCell.Rectangle.Height)); });
+                headerCell.StringFormat.Alignment = StringAlignment.Near;
+                headerCell.UpdateText(fieldNames[row]);
+                _graphicsGrid.Grid[row][0] = headerCell;
+
+                DrawableTextCell valueCell = new DrawableTextCell(new RectangleF(headerCell.Rectangle.Width, columnHeight * row, 500, columnHeight), font);
+                valueCell.CachedBackground.SetRenderer(g => { g.FillRectangle(Brushes.Black, new RectangleF(0, 0, valueCell.Rectangle.Width, valueCell.Rectangle.Height)); });
+                _graphicsGrid.Grid[row][1] = valueCell;
+            }
+
+            Height = rows * columnHeight;
+            Width = maxNameLength + 500;
+
+
             if (this._config.Dock.Undock)
                 this.AllowReposition = true;
             else
@@ -60,23 +99,21 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPhysicsInfo
         public sealed override void Render(Graphics g)
         {
             FieldInfo[] members = pagePhysics.GetType().GetFields();
+
+            int rowCount = 0;
             foreach (FieldInfo member in members)
             {
-                var value = member.GetValue(pagePhysics);
-                bool isObsolete = false;
-                foreach (CustomAttributeData cad in member.CustomAttributes)
+                if (fieldNames.Contains(member.Name))
                 {
-                    if (cad.AttributeType == typeof(ObsoleteAttribute)) { isObsolete = true; break; }
-                }
-
-                if (!isObsolete && !member.Name.Equals("Buffer") && !member.Name.Equals("Size"))
-                {
+                    var value = member.GetValue(pagePhysics);
                     value = ReflectionUtil.FieldTypeValue(member, value);
-                    _table.AddRow($"{member.Name}", new string[] { value.ToString() });
+                    DrawableTextCell cell = (DrawableTextCell)_graphicsGrid.Grid[rowCount][1];
+                    cell.UpdateText(value.ToString());
+                    rowCount++;
                 }
             }
 
-            _table.Draw(g);
+            _graphicsGrid.Draw(g, Scale);
         }
 
         public sealed override bool ShouldRender() => true;

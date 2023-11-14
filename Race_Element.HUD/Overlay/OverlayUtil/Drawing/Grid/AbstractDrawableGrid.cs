@@ -11,7 +11,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
     {
         public int Rows { get; private set; }
         public int Columns { get; private set; }
-        public T[][] Grid;
+        public T[][] Grid { get; private set; }
 
         protected AbstractDrawableGrid(int rows, int columns)
         {
@@ -38,6 +38,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
             for (int row = 0; row < Rows; row++)
                 for (int column = 0; column < Columns; column++)
                     Grid[row][column]?.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

@@ -33,6 +33,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
         }
 
         private readonly GraphicsGrid testgrid;
+        private Font Font;
 
         public GridTestOverlay(Rectangle rectangle) : base(rectangle, "Grid Test")
         {
@@ -42,8 +43,8 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
 
         public override void BeforeStart()
         {
-            Font font = FontUtil.FontSegoeMono(12 * Scale);
-            float fontHeight = font.GetHeight(120);
+            Font = FontUtil.FontSegoeMono(12 * Scale);
+            float fontHeight = Font.GetHeight(120);
             int columnWidth = (int)fontHeight;
             int columnHeight = (int)fontHeight;
             Random rand = new Random();
@@ -51,7 +52,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
             for (int row = 0; row < testgrid.Rows; row++)
                 for (int column = 0; column < testgrid.Columns; column++)
                 {
-                    DrawableTextCell cell = new DrawableTextCell(new RectangleF(column * columnWidth, row * columnHeight, columnWidth, columnHeight), font);
+                    DrawableTextCell cell = new DrawableTextCell(new RectangleF(column * columnWidth, row * columnHeight, columnWidth, columnHeight), Font);
 
                     cell.CachedBackground = new CachedBitmap((int)cell.Rectangle.Width, (int)cell.Rectangle.Height, g =>
                     {
@@ -59,7 +60,6 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
                     });
                     cell.CachedBackground.Opacity = (float)(rand.NextDouble() / 2 + 0.5d);
                     cell.UpdateText($"{rand.Next(10)}");
-                    cell.StringFormat.Alignment = rand.Next(0, 1) == 1 ? StringAlignment.Far : StringAlignment.Center;
 
                     testgrid.Grid[row][column] = cell;
                 }
@@ -67,7 +67,11 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
             Height = (int)(testgrid.Rows * columnHeight * Scale);
         }
 
-        public override void BeforeStop() => testgrid?.Dispose();
+        public override void BeforeStop()
+        {
+            testgrid?.Dispose();
+        }
+
         public override bool ShouldRender() => true;
         public override void Render(Graphics g)
         {

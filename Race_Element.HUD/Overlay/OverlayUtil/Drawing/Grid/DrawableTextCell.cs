@@ -14,16 +14,18 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
         private string Text;
         private Font Font;
 
-        public Brush TextBrush { get; set; } = Brushes.White;
-        public StringFormat StringFormat { get; set; } = new StringFormat()
-        {
-            Alignment = StringAlignment.Center,
-            LineAlignment = StringAlignment.Center
-        };
+        public Brush TextBrush { get; set; }
+        public StringFormat StringFormat { get; set; }
 
         public DrawableTextCell(RectangleF rect, Font font) : base(rect)
         {
             Font = font;
+            TextBrush = Brushes.White;
+            StringFormat = new StringFormat()
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center
+            };
         }
 
         public void UpdateText(string text, bool forced = false)
@@ -42,13 +44,6 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
                     g.DrawStringWithShadow(text, Font, TextBrush, rect, StringFormat);
                 }
             });
-        }
-
-        public void Dispose()
-        {
-            base.Dispose();
-            TextBrush?.Dispose();
-            Font?.Dispose();
         }
     }
 }
