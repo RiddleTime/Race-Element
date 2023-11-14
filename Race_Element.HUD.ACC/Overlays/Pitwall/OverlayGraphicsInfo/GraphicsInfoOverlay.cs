@@ -1,6 +1,5 @@
 ﻿using RaceElement.HUD.ACC.Overlays.OverlayDebugInfo;
 using RaceElement.HUD.Overlay.Internal;
-using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.Util;
@@ -21,8 +20,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayGraphicsInfo
 
         private GraphicsGrid _graphicsGrid;
         private readonly List<string> fieldNames = new List<string>();
-
-
 
         public GraphicsInfoOverlay(Rectangle rectangle) : base(rectangle, "Graphics Info")
         {

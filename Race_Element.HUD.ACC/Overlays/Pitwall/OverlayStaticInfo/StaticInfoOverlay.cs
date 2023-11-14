@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Reflection;
 using RaceElement.HUD.ACC.Overlays.OverlayDebugInfo;
 using static RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
-using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
 using System.Collections.Generic;
 using RaceElement.HUD.Overlay.Util;
