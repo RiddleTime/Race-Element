@@ -72,7 +72,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStaticInfo
             Height = rows * columnHeight;
             Width = maxNameLength + 300;
 
-
             if (this._config.Dock.Undock)
                 this.AllowReposition = true;
             else
