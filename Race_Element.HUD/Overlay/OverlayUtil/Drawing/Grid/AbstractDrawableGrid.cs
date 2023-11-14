@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
 {
@@ -31,13 +27,14 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
             }
         }
 
-        public abstract void Draw(Graphics g, float scaling);
+        public abstract void Draw(Graphics g, float scaling = 1);
 
         public void Dispose()
         {
             for (int row = 0; row < Rows; row++)
                 for (int column = 0; column < Columns; column++)
                     Grid[row][column]?.Dispose();
+
             GC.SuppressFinalize(this);
         }
     }

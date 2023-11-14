@@ -1,5 +1,7 @@
 ﻿using RaceElement.HUD.Overlay.Internal;
 using RaceElement.Util;
+using RaceElement.Util.SystemExtensions;
+using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Drawing;
 using System.Reflection;
@@ -7,8 +9,9 @@ using RaceElement.HUD.ACC.Overlays.OverlayDebugInfo;
 using static RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
 using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
 using System.Collections.Generic;
-using RaceElement.HUD.Overlay.Util;
 using System.Linq;
+using System.Drawing.Drawing2D;
+using RaceElement.HUD.Overlay.OverlayUtil;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayStaticInfo
 {
@@ -35,7 +38,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStaticInfo
 
         public sealed override void BeforeStart()
         {
-            int valueWidth = (int)Math.Ceiling(300 * Scale);
+            int valueWidth = (int)Math.Ceiling(200 * Scale);
             Font font = FontUtil.FontSegoeMono(8 * Scale);
             float fontHeight = font.GetHeight(120);
             int columnHeight = (int)fontHeight - 1;
@@ -57,16 +60,21 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStaticInfo
 
             _graphicsGrid = new GraphicsGrid(rows, 2);
 
+            Color color = Color.FromArgb(230, Color.Black);
+            using HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightUpwardDiagonal, color, Color.FromArgb(color.A - 75, color));
+
             for (int row = 0; row < rows; row++)
             {
                 DrawableTextCell headerCell = new DrawableTextCell(new RectangleF(0, columnHeight * row, maxNameLength, columnHeight), font);
-                headerCell.CachedBackground.SetRenderer(g => { g.FillRectangle(Brushes.Black, new RectangleF(0, 0, headerCell.Rectangle.Width, headerCell.Rectangle.Height)); });
+                headerCell.CachedBackground.SetRenderer(g => g.FillRoundedRectangle(hatchBrush, new Rectangle(0, 0, (int)headerCell.Rectangle.Width, (int)headerCell.Rectangle.Height), (int)(4 * Scale)));
                 headerCell.StringFormat.Alignment = StringAlignment.Near;
                 headerCell.UpdateText(fieldNames[row]);
                 _graphicsGrid.Grid[row][0] = headerCell;
 
                 DrawableTextCell valueCell = new DrawableTextCell(new RectangleF(headerCell.Rectangle.Width, columnHeight * row, valueWidth, columnHeight), font);
-                valueCell.CachedBackground.SetRenderer(g => { g.FillRectangle(Brushes.Black, new RectangleF(0, 0, valueCell.Rectangle.Width, valueCell.Rectangle.Height)); });
+                valueCell.CachedBackground.SetRenderer(g => g.FillRoundedRectangle(hatchBrush, new Rectangle(0, 0, (int)valueCell.Rectangle.Width, (int)valueCell.Rectangle.Height), (int)(4 * Scale)));
+                valueCell.StringFormat.Alignment = StringAlignment.Far;
+
                 _graphicsGrid.Grid[row][1] = valueCell;
             }
 
