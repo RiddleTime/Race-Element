@@ -8,7 +8,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
         {
         }
 
-        public override void Draw(Graphics g, float scaling)
+        public override void Draw(Graphics g, float scaling = 1)
         {
             for (int row = 0; row < Rows; row++)
                 for (int column = 0; column < Columns; column++)

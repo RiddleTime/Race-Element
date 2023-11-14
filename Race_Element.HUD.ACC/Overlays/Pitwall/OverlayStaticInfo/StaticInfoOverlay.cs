@@ -35,6 +35,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStaticInfo
 
         public sealed override void BeforeStart()
         {
+            int valueWidth = (int)Math.Ceiling(300 * Scale);
             Font font = FontUtil.FontSegoeMono(8 * Scale);
             float fontHeight = font.GetHeight(120);
             int columnHeight = (int)fontHeight - 1;
@@ -64,13 +65,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStaticInfo
                 headerCell.UpdateText(fieldNames[row]);
                 _graphicsGrid.Grid[row][0] = headerCell;
 
-                DrawableTextCell valueCell = new DrawableTextCell(new RectangleF(headerCell.Rectangle.Width, columnHeight * row, 300, columnHeight), font);
+                DrawableTextCell valueCell = new DrawableTextCell(new RectangleF(headerCell.Rectangle.Width, columnHeight * row, valueWidth, columnHeight), font);
                 valueCell.CachedBackground.SetRenderer(g => { g.FillRectangle(Brushes.Black, new RectangleF(0, 0, valueCell.Rectangle.Width, valueCell.Rectangle.Height)); });
                 _graphicsGrid.Grid[row][1] = valueCell;
             }
 
             Height = rows * columnHeight;
-            Width = maxNameLength + 300;
+            Width = maxNameLength + valueWidth;
 
             if (this._config.Dock.Undock)
                 this.AllowReposition = true;
@@ -105,7 +106,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStaticInfo
                 rowCount++;
             }
 
-            _graphicsGrid.Draw(g, Scale);
+            _graphicsGrid.Draw(g);
         }
 
         public sealed override bool ShouldRender() => true;
