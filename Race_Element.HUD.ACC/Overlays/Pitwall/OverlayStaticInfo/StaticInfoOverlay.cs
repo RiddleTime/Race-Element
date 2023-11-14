@@ -1,7 +1,7 @@
 ﻿using RaceElement.HUD.Overlay.Internal;
-using RaceElement.Util;
-using RaceElement.Util.SystemExtensions;
+using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
+using RaceElement.Util;
 using System;
 using System.Drawing;
 using System.Reflection;
@@ -11,7 +11,6 @@ using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Drawing.Drawing2D;
-using RaceElement.HUD.Overlay.OverlayUtil;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayStaticInfo
 {
@@ -38,10 +37,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStaticInfo
 
         public sealed override void BeforeStart()
         {
-            int valueWidth = (int)Math.Ceiling(200 * Scale);
             Font font = FontUtil.FontSegoeMono(8 * Scale);
             float fontHeight = font.GetHeight(120);
             int columnHeight = (int)fontHeight - 1;
+
+            int valueWidth = (int)Math.Ceiling(150 * Scale);
 
             FieldInfo[] fields = pageStatic.GetType().GetFields();
 
@@ -66,13 +66,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStaticInfo
             for (int row = 0; row < rows; row++)
             {
                 DrawableTextCell headerCell = new DrawableTextCell(new RectangleF(0, columnHeight * row, maxNameLength, columnHeight), font);
-                headerCell.CachedBackground.SetRenderer(g => g.FillRoundedRectangle(hatchBrush, new Rectangle(0, 0, (int)headerCell.Rectangle.Width, (int)headerCell.Rectangle.Height), (int)(4 * Scale)));
+                headerCell.CachedBackground.SetRenderer(g => g.FillRoundedRectangle(hatchBrush, new Rectangle(0, 0, (int)headerCell.Rectangle.Width, (int)headerCell.Rectangle.Height), (int)(3 * Scale)));
                 headerCell.StringFormat.Alignment = StringAlignment.Near;
                 headerCell.UpdateText(fieldNames[row]);
                 _graphicsGrid.Grid[row][0] = headerCell;
 
                 DrawableTextCell valueCell = new DrawableTextCell(new RectangleF(headerCell.Rectangle.Width, columnHeight * row, valueWidth, columnHeight), font);
-                valueCell.CachedBackground.SetRenderer(g => g.FillRoundedRectangle(hatchBrush, new Rectangle(0, 0, (int)valueCell.Rectangle.Width, (int)valueCell.Rectangle.Height), (int)(4 * Scale)));
+                valueCell.CachedBackground.SetRenderer(g => g.FillRoundedRectangle(hatchBrush, new Rectangle(0, 0, (int)valueCell.Rectangle.Width, (int)valueCell.Rectangle.Height), (int)(3 * Scale)));
                 valueCell.StringFormat.Alignment = StringAlignment.Far;
 
                 _graphicsGrid.Grid[row][1] = valueCell;
@@ -110,7 +110,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStaticInfo
                 var value = member.GetValue(pageStatic);
                 value = ReflectionUtil.FieldTypeValue(member, value);
                 DrawableTextCell cell = (DrawableTextCell)_graphicsGrid.Grid[rowCount][1];
-                cell.UpdateText(value.ToString());
+                cell.UpdateText($"{value}");
                 rowCount++;
             }
 
