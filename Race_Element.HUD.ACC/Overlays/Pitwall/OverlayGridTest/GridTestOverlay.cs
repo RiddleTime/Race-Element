@@ -4,6 +4,7 @@ using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
 using RaceElement.HUD.Overlay.Util;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
@@ -20,10 +21,10 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
             public GridGrouping Grid { get; set; } = new GridGrouping();
             public sealed class GridGrouping
             {
-                [IntRange(4, 100, 2)]
+                [IntRange(1, 50, 1)]
                 public int Rows { get; set; } = 20;
 
-                [IntRange(4, 100, 2)]
+                [IntRange(1, 50, 1)]
                 public int Columns { get; set; } = 20;
 
                 [IntRange(1, 50, 1)]
@@ -47,11 +48,10 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
             int columnHeight = (int)fontHeight;
             Random rand = new Random();
 
-
             for (int row = 0; row < testgrid.Rows; row++)
                 for (int column = 0; column < testgrid.Columns; column++)
                 {
-                    DrawableTextCell cell = new DrawableTextCell(new RectangleF(row * columnHeight, column * columnWidth, columnWidth, columnHeight), font);
+                    DrawableTextCell cell = new DrawableTextCell(new RectangleF(column * columnWidth, row * columnHeight, columnWidth, columnHeight), font);
 
                     cell.CachedBackground = new CachedBitmap((int)cell.Rectangle.Width, (int)cell.Rectangle.Height, g =>
                     {
@@ -63,8 +63,8 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
 
                     testgrid.Grid[row][column] = cell;
                 }
-            Width = (int)(testgrid.Rows * columnWidth * Scale);
-            Height = (int)(testgrid.Columns * columnHeight * Scale);
+            Width = (int)(testgrid.Columns * columnWidth * Scale);
+            Height = (int)(testgrid.Rows * columnHeight * Scale);
         }
 
         public override void BeforeStop() => testgrid?.Dispose();
@@ -75,7 +75,11 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
             for (int row = 0; row < testgrid.Rows; row++)
                 for (int column = 0; column < testgrid.Columns; column++)
                 {
-                    ((DrawableTextCell)testgrid.Grid[row][column]).UpdateText($"{(rand.Next(100) == 1 ? 1 : 0)}");
+                    DrawableTextCell cell = (DrawableTextCell)testgrid.Grid[row][column];
+                    if (column == 0)
+                        cell.CachedBackground.SetRenderer(g => g.FillRectangle(new SolidBrush(Color.FromArgb(230 + rand.Next(25), rand.Next(185), rand.Next(75))), new Rectangle(0, 0, (int)cell.Rectangle.Width, (int)cell.Rectangle.Height)));
+                    else
+                        cell.UpdateText($"{(rand.Next(50) == 1 ? 1 : 0)}");
                 }
 
             testgrid.Draw(g, Scale);
