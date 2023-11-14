@@ -22,8 +22,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPhysicsInfo
     internal sealed class PhysicsInfoOverlay : AbstractOverlay
     {
         private readonly DebugConfig _config = new DebugConfig();
+       
         private GraphicsGrid _graphicsGrid;
-        private List<string> fieldNames = new List<string>();
+        private readonly List<string> fieldNames = new List<string>();
+
         public PhysicsInfoOverlay(Rectangle rectangle) : base(rectangle, "Physics Info")
         {
             this.AllowReposition = false;
@@ -87,6 +89,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPhysicsInfo
             }
         }
 
+
         public sealed override void BeforeStop()
         {
             if (!this._config.Dock.Undock)
@@ -94,23 +97,19 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPhysicsInfo
                 DebugInfoHelper.Instance.RemoveOverlay(this);
                 DebugInfoHelper.Instance.WidthChanged -= Instance_WidthChanged;
             }
+            _graphicsGrid?.Dispose();
         }
 
         public sealed override void Render(Graphics g)
         {
-            FieldInfo[] members = pagePhysics.GetType().GetFields();
-
             int rowCount = 0;
-            foreach (FieldInfo member in members)
+            foreach (var member in pagePhysics.GetType().GetFields().Where(member => fieldNames.Contains(member.Name)))
             {
-                if (fieldNames.Contains(member.Name))
-                {
-                    var value = member.GetValue(pagePhysics);
-                    value = ReflectionUtil.FieldTypeValue(member, value);
-                    DrawableTextCell cell = (DrawableTextCell)_graphicsGrid.Grid[rowCount][1];
-                    cell.UpdateText(value.ToString());
-                    rowCount++;
-                }
+                var value = member.GetValue(pagePhysics);
+                value = ReflectionUtil.FieldTypeValue(member, value);
+                DrawableTextCell cell = (DrawableTextCell)_graphicsGrid.Grid[rowCount][1];
+                cell.UpdateText(value.ToString());
+                rowCount++;
             }
 
             _graphicsGrid.Draw(g, Scale);
