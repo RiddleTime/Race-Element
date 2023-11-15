@@ -4,8 +4,9 @@ using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
-using RaceElement.HUD.Overlay.OverlayUtil.InfoPanel;
+using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
 using RaceElement.HUD.Overlay.Util;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
@@ -40,16 +41,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
         }
 
         private Font _font;
-        private PanelText _damageHeader;
-        private PanelText _damageValue;
-        private PanelText _fuelPerLapHeader;
-        private PanelText _fuelPerLapValue;
-        private PanelText _tyreSetHeader;
-        private PanelText _tyreSetValue;
-        private PanelText _exhaustHeader;
-        private PanelText _exhaustValue;
-        private PanelText _waterHeader;
-        private PanelText _waterValue;
+        private DrawableTextCell _damageValue1;
+        private DrawableTextCell _tyreSetValue1;
+        private DrawableTextCell _fuelPerLapValue1;
+        private DrawableTextCell _exhaustValue1;
+        private DrawableTextCell _waterValue1;
+
+        private GraphicsGrid _graphicsGrid;
 
         public CarInfoOverlay(Rectangle rectangle) : base(rectangle, "Car Info")
         {
@@ -59,117 +57,163 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
         public sealed override void BeforeStart()
         {
             _font = FontUtil.FontSegoeMono(10f * this.Scale);
-            int lineHeight = _font.Height;
-            int unscaledHeaderWidth = 76;
-            int unscaledValueWidth = 55;
 
-            int headerWidth = (int)(unscaledHeaderWidth * this.Scale);
-            int valueWidth = (int)(unscaledValueWidth * this.Scale);
-            int roundingRadius = (int)(6 * this.Scale);
+            int rows = 1;
 
-            RectangleF headerRect = new RectangleF(0, 0, headerWidth, lineHeight);
-            RectangleF valueRect = new RectangleF(headerWidth, 0, valueWidth, lineHeight);
-            StringFormat headerFormat = new StringFormat() { Alignment = StringAlignment.Near };
-            StringFormat valueFormat = new StringFormat() { Alignment = StringAlignment.Far };
+            if (_config.InfoPanel.TyreSet) rows++;
+            if (_config.InfoPanel.FuelPerLap) rows++;
+            if (_config.InfoPanel.ExhaustTemp) rows++;
+            if (_config.InfoPanel.WaterTemp) rows++;
+            _graphicsGrid = new GraphicsGrid(rows, 2);
 
+            float fontHeight = (int)(_font.GetHeight(120));
+            int columnHeight = (int)(fontHeight - 2f * Scale);
+            int headerColumnWidth = (int)Math.Ceiling(76f * Scale);
+            int valueColumnWidth = (int)Math.Ceiling(56f * Scale);
+            float roundingRadius = 6f * Scale;
+            RectangleF headerRectangle = new RectangleF(0, 0, headerColumnWidth, columnHeight);
+            RectangleF valueRectangle = new RectangleF(headerColumnWidth, 0, valueColumnWidth, columnHeight);
+
+            // create value and header backgrounds
             Color accentColor = Color.FromArgb(25, 255, 0, 0);
-            CachedBitmap headerBackground = new CachedBitmap(headerWidth, lineHeight, g =>
+            CachedBitmap headerBackground = new CachedBitmap(headerColumnWidth, columnHeight, g =>
             {
-                Rectangle panelRect = new Rectangle(0, 0, headerWidth, lineHeight);
-                using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(panelRect, 0, 0, 0, roundingRadius);
+                Rectangle panelRect = new Rectangle(0, 0, headerColumnWidth, columnHeight);
+                using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(panelRect, 0, 0, 0, (int)roundingRadius);
                 g.FillPath(new SolidBrush(Color.FromArgb(225, 10, 10, 10)), path);
-                g.DrawLine(new Pen(accentColor), 0 + roundingRadius / 2, lineHeight, headerWidth, lineHeight - 1);
+                g.DrawLine(new Pen(accentColor), 0 + roundingRadius / 2, columnHeight, headerColumnWidth, columnHeight - 1 * Scale);
             });
-            CachedBitmap valueBackground = new CachedBitmap(valueWidth, lineHeight, g =>
+            CachedBitmap valueBackground = new CachedBitmap(valueColumnWidth, columnHeight, g =>
             {
-                Rectangle panelRect = new Rectangle(0, 0, valueWidth, lineHeight);
-                using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(panelRect, 0, roundingRadius, 0, 0);
+                Rectangle panelRect = new Rectangle(0, 0, valueColumnWidth, columnHeight);
+                using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(panelRect, 0, (int)roundingRadius, 0, 0);
                 g.FillPath(new SolidBrush(Color.FromArgb(225, 0, 0, 0)), path);
-                g.DrawLine(new Pen(accentColor), 0, lineHeight - 1, valueWidth, lineHeight - 1);
+                g.DrawLine(new Pen(accentColor), 0, columnHeight - 1 * Scale, valueColumnWidth, columnHeight - 1 * Scale);
             });
 
-            _damageHeader = new PanelText(_font, headerBackground, headerRect) { StringFormat = headerFormat };
-            _damageValue = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
-            headerRect.Offset(0, lineHeight);
-            valueRect.Offset(0, lineHeight);
+            // add data rows
 
+            // Damage
+            int currentRow = 0;
+            DrawableTextCell damageHeader = new DrawableTextCell(headerRectangle, _font);
+            damageHeader.CachedBackground = headerBackground;
+            damageHeader.StringFormat.Alignment = StringAlignment.Near;
+            damageHeader.UpdateText("Damage");
+            _graphicsGrid.Grid[currentRow][0] = damageHeader;
+            _damageValue1 = new DrawableTextCell(valueRectangle, _font);
+            _damageValue1.CachedBackground = valueBackground;
+            _damageValue1.StringFormat.Alignment = StringAlignment.Far;
+            _graphicsGrid.Grid[currentRow][1] = _damageValue1;
 
             if (_config.InfoPanel.TyreSet)
             {
-                _tyreSetHeader = new PanelText(_font, headerBackground, headerRect) { StringFormat = headerFormat };
-                _tyreSetValue = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
-                headerRect.Offset(0, lineHeight);
-                valueRect.Offset(0, lineHeight);
+                currentRow++;
+
+                headerRectangle.Offset(0, columnHeight);
+                valueRectangle.Offset(0, columnHeight);
+
+                DrawableTextCell header = new DrawableTextCell(headerRectangle, _font);
+                header.CachedBackground = headerBackground;
+                header.StringFormat.Alignment = StringAlignment.Near;
+                header.UpdateText("Tyre set");
+                _graphicsGrid.Grid[currentRow][0] = header;
+
+                _tyreSetValue1 = new DrawableTextCell(valueRectangle, _font);
+                _tyreSetValue1.CachedBackground = valueBackground;
+                _tyreSetValue1.StringFormat.Alignment = StringAlignment.Far;
+                _graphicsGrid.Grid[currentRow][1] = _tyreSetValue1;
             }
 
             if (_config.InfoPanel.FuelPerLap)
             {
-                _fuelPerLapHeader = new PanelText(_font, headerBackground, headerRect) { StringFormat = headerFormat };
-                _fuelPerLapValue = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
-                headerRect.Offset(0, lineHeight);
-                valueRect.Offset(0, lineHeight);
+                currentRow++;
+                headerRectangle.Offset(0, columnHeight);
+                valueRectangle.Offset(0, columnHeight);
+
+                DrawableTextCell header = new DrawableTextCell(headerRectangle, _font);
+                header.CachedBackground = headerBackground;
+                header.StringFormat.Alignment = StringAlignment.Near;
+                header.UpdateText("Fuel/Lap");
+                _graphicsGrid.Grid[currentRow][0] = header;
+
+                _fuelPerLapValue1 = new DrawableTextCell(valueRectangle, _font);
+                _fuelPerLapValue1.CachedBackground = valueBackground;
+                _fuelPerLapValue1.StringFormat.Alignment = StringAlignment.Far;
+                _graphicsGrid.Grid[currentRow][1] = _fuelPerLapValue1;
             }
 
             if (_config.InfoPanel.ExhaustTemp)
             {
-                _exhaustHeader = new PanelText(_font, headerBackground, headerRect) { StringFormat = headerFormat };
-                _exhaustValue = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
-                headerRect.Offset(0, lineHeight);
-                valueRect.Offset(0, lineHeight);
+                currentRow++;
+                headerRectangle.Offset(0, columnHeight);
+                valueRectangle.Offset(0, columnHeight);
+
+                DrawableTextCell header = new DrawableTextCell(headerRectangle, _font);
+                header.CachedBackground = headerBackground;
+                header.StringFormat.Alignment = StringAlignment.Near;
+                header.UpdateText("Exhaust");
+                _graphicsGrid.Grid[currentRow][0] = header;
+
+                _exhaustValue1 = new DrawableTextCell(valueRectangle, _font);
+                _exhaustValue1.CachedBackground = valueBackground;
+                _exhaustValue1.StringFormat.Alignment = StringAlignment.Far;
+                _graphicsGrid.Grid[currentRow][1] = _exhaustValue1;
             }
 
             if (_config.InfoPanel.WaterTemp)
             {
-                _waterHeader = new PanelText(_font, headerBackground, headerRect) { StringFormat = headerFormat };
-                _waterValue = new PanelText(_font, valueBackground, valueRect) { StringFormat = valueFormat };
-                headerRect.Offset(0, lineHeight);
-                valueRect.Offset(0, lineHeight);
+                currentRow++;
+                headerRectangle.Offset(0, columnHeight);
+                valueRectangle.Offset(0, columnHeight);
+
+                DrawableTextCell header = new DrawableTextCell(headerRectangle, _font);
+                header.CachedBackground = headerBackground;
+                header.StringFormat.Alignment = StringAlignment.Near;
+                header.UpdateText("Water");
+                _graphicsGrid.Grid[currentRow][0] = header;
+
+                _waterValue1 = new DrawableTextCell(valueRectangle, _font);
+                _waterValue1.CachedBackground = valueBackground;
+                _waterValue1.StringFormat.Alignment = StringAlignment.Far;
+                _graphicsGrid.Grid[currentRow][1] = _waterValue1;
             }
 
-            this.Width = unscaledHeaderWidth + unscaledValueWidth;
-            this.Height = (int)(headerRect.Top / this.Scale);
+            // set HUD Width + Height based on amount of rows and columns
+            Width = (int)(headerColumnWidth + valueColumnWidth);
+            Height = (int)(rows * columnHeight);
         }
 
         public override void BeforeStop()
         {
             _font?.Dispose();
+            _graphicsGrid?.Dispose();
         }
 
         public sealed override void Render(Graphics g)
         {
-            _damageHeader.Draw(g, "Damage", this.Scale);
             float totalRepairTime = Damage.GetTotalRepairTime(pagePhysics);
-            Brush damageBrush = Damage.HasAnyDamage(pagePhysics) ? Brushes.OrangeRed : Brushes.White;
-            _damageValue.Brush = damageBrush;
-            _damageValue.Draw(g, $"{totalRepairTime:F1}", this.Scale);
+            _damageValue1.TextBrush = totalRepairTime > 0 ? Brushes.OrangeRed : Brushes.White;
+            _damageValue1.UpdateText($"{totalRepairTime:F1}");
 
             if (_config.InfoPanel.TyreSet)
-            {
-                _tyreSetHeader.Draw(g, "Tyre Set", this.Scale);
-                _tyreSetValue.Draw(g, $"{pageGraphics.currentTyreSet}", this.Scale);
-            }
+                _tyreSetValue1.UpdateText($"{pageGraphics.currentTyreSet}");
 
             if (_config.InfoPanel.FuelPerLap)
             {
-                _fuelPerLapHeader.Draw(g, "Fuel/Lap", this.Scale);
                 float fuelXLap = LapTracker.Instance.Laps.GetAverageFuelUsage(3);
                 if (fuelXLap != -1)
                     fuelXLap /= 1000f;
                 else fuelXLap = pageGraphics.FuelXLap;
-                _fuelPerLapValue.Draw(g, $"{fuelXLap:F3}", this.Scale);
+                _fuelPerLapValue1.UpdateText($"{fuelXLap:F3}");
             }
 
             if (_config.InfoPanel.ExhaustTemp)
-            {
-                _exhaustHeader.Draw(g, "Exhaust", this.Scale);
-                _exhaustValue.Draw(g, $"{pageGraphics.ExhaustTemperature:F0} C", this.Scale);
-            }
+                _exhaustValue1.UpdateText($"{pageGraphics.ExhaustTemperature:F0} C");
 
             if (_config.InfoPanel.WaterTemp)
-            {
-                _waterHeader.Draw(g, "Water", this.Scale);
-                _waterValue.Draw(g, $"{pagePhysics.WaterTemp:F0} C", this.Scale);
-            }
+                _waterValue1.UpdateText($"{pagePhysics.WaterTemp:F0} C");
+
+            _graphicsGrid?.Draw(g);
         }
     }
 }

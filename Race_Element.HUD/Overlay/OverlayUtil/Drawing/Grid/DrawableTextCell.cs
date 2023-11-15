@@ -5,7 +5,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
     public sealed class DrawableTextCell : AbstractDrawableCell
     {
         private string Text;
-        private Font Font;
+        private readonly Font Font;
 
         public Brush TextBrush { get; set; }
         public StringFormat StringFormat { get; set; }
@@ -32,8 +32,8 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
             {
                 if (Font != null)
                 {
-                    g.TextContrast = 1;
-                    RectangleF rect = new RectangleF(0, 0, Rectangle.Width, Rectangle.Height);
+                    g.TextContrast = 2;
+                    Rectangle rect = new Rectangle(0, 0, (int)Rectangle.Width, (int)Rectangle.Height);
                     g.DrawStringWithShadow(text, Font, TextBrush, rect, StringFormat);
                 }
             });
