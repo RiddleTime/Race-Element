@@ -108,7 +108,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
             if (_config.InfoPanel.TyreSet)
             {
                 currentRow++;
-
                 headerRectangle.Offset(0, columnHeight);
                 valueRectangle.Offset(0, columnHeight);
 
@@ -208,10 +207,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
             }
 
             if (_config.InfoPanel.ExhaustTemp)
-                _exhaustValue1.UpdateText($"{pageGraphics.ExhaustTemperature:F0} C");
+                _exhaustValue1.UpdateText($"{pageGraphics.ExhaustTemperature:F0} °C");
 
             if (_config.InfoPanel.WaterTemp)
-                _waterValue1.UpdateText($"{pagePhysics.WaterTemp:F0} C");
+                _waterValue1.UpdateText($"{pagePhysics.WaterTemp:F0} °C");
 
             _graphicsGrid?.Draw(g);
         }
