@@ -16,15 +16,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
     internal sealed class LapTableOverlay : AbstractOverlay
     {
         private readonly LapTimeTableConfiguration _config = new LapTimeTableConfiguration();
-
         private GraphicsGrid _graphicsGrid;
         private Font _font;
         private CachedBitmap[] _columnBackgrounds;
 
-        public LapTableOverlay(Rectangle rectangle) : base(rectangle, "Lap Table")
-        {
-            this.RefreshRateHz = 2;
-        }
+        public LapTableOverlay(Rectangle rectangle) : base(rectangle, "Lap Table") => this.RefreshRateHz = 2;
 
         public override void BeforeStart()
         {

@@ -178,8 +178,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
             }
 
             // set HUD Width + Height based on amount of rows and columns
-            Width = (int)(headerColumnWidth + valueColumnWidth);
-            Height = (int)(rows * columnHeight);
+            Width = headerColumnWidth + valueColumnWidth;
+            Height = rows * columnHeight;
         }
 
         public override void BeforeStop()
