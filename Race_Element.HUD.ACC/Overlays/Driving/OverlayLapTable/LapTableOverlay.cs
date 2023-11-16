@@ -19,11 +19,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
 
         private GraphicsGrid _graphicsGrid;
         private Font _font;
+        private CachedBitmap[] _columnBackgrounds;
 
         public LapTableOverlay(Rectangle rectangle) : base(rectangle, "Lap Table")
         {
-            this.Width = 51;
-            this.Height = 1;
             this.RefreshRateHz = 2;
         }
 
@@ -45,9 +44,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
             // set up background rendering
             Color color = Color.FromArgb(230, Color.Black);
             using HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightUpwardDiagonal, color, Color.FromArgb(color.A - 75, color));
-            CachedBitmap[] columnBackgrounds = new CachedBitmap[columns];
+            _columnBackgrounds = new CachedBitmap[columns];
             for (int i = 0; i < columns; i++)
-                columnBackgrounds[i] = new CachedBitmap(columnWidths[i], columnHeight, g =>
+                _columnBackgrounds[i] = new CachedBitmap(columnWidths[i], columnHeight, g =>
                 {
                     g.FillRoundedRectangle(hatchBrush, new Rectangle(0, 0, columnWidths[i], columnHeight), (int)(3 * Scale));
                 });
@@ -55,12 +54,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
             int totalWidth = columnWidths[0] + columnWidths[1];
             // add header row
             DrawableTextCell col0 = new DrawableTextCell(new Rectangle(0, 0, columnWidths[0], columnHeight), _font);
-            col0.CachedBackground = columnBackgrounds[0];
+            col0.CachedBackground = _columnBackgrounds[0];
             col0.UpdateText("#");
             _graphicsGrid.Grid[0][0] = col0;
 
             DrawableTextCell col1 = new DrawableTextCell(new RectangleF(col0.Rectangle.Width, 0, columnWidths[1], columnHeight), _font);
-            col1.CachedBackground = columnBackgrounds[1];
+            col1.CachedBackground = _columnBackgrounds[1];
             col1.UpdateText("Time");
             _graphicsGrid.Grid[0][1] = col1;
 
@@ -70,13 +69,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
 
                 // add header row                
                 DrawableTextCell col2 = new DrawableTextCell(new RectangleF(col1.Rectangle.X + columnWidths[1], 0, columnWidths[2], columnHeight), _font);
-                col2.CachedBackground = columnBackgrounds[2];
+                col2.CachedBackground = _columnBackgrounds[2];
                 col2.UpdateText("S1");
                 DrawableTextCell col3 = new DrawableTextCell(new RectangleF(col2.Rectangle.X + columnWidths[2], 0, columnWidths[3], columnHeight), _font);
-                col3.CachedBackground = columnBackgrounds[3];
+                col3.CachedBackground = _columnBackgrounds[3];
                 col3.UpdateText("S2");
                 DrawableTextCell col4 = new DrawableTextCell(new RectangleF(col3.Rectangle.X + columnWidths[3], 0, columnWidths[4], columnHeight), _font);
-                col4.CachedBackground = columnBackgrounds[4];
+                col4.CachedBackground = _columnBackgrounds[4];
                 col4.UpdateText("S3");
                 _graphicsGrid.Grid[0][2] = col2;
                 _graphicsGrid.Grid[0][3] = col3;
@@ -87,7 +86,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
             this.Height = columnHeight * (_config.Table.Rows + 1); // +1 for header
 
             // config data rows
-
             for (int row = 1; row <= _config.Table.Rows; row++)
             {
                 for (int column = 0; column < columns; column++)
@@ -97,7 +95,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
                     int width = columnWidths[column];
                     RectangleF rect = new RectangleF(x, y, width, columnHeight);
                     DrawableTextCell cell = new DrawableTextCell(rect, _font);
-                    cell.CachedBackground = columnBackgrounds[column];
+                    cell.CachedBackground = _columnBackgrounds[column];
                     _graphicsGrid.Grid[row][column] = cell;
                 }
             }
@@ -107,6 +105,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
         {
             _graphicsGrid?.Dispose();
             _font?.Dispose();
+            for (int i = 0; i < _columnBackgrounds.Length; i++)
+                _columnBackgrounds[i].Dispose();
         }
 
         public override void Render(Graphics g)
