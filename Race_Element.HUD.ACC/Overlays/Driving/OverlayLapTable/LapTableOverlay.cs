@@ -20,7 +20,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
         private Font _font;
         private CachedBitmap[] _columnBackgrounds;
 
-        public LapTableOverlay(Rectangle rectangle) : base(rectangle, "Lap Table") => this.RefreshRateHz = 2;
+        public LapTableOverlay(Rectangle rectangle) : base(rectangle, "Lap Table") => this.RefreshRateHz = 30;
 
         public override void BeforeStart()
         {
@@ -36,19 +36,17 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
             float fontHeight = (int)(_font.GetHeight(120));
             int columnHeight = (int)(fontHeight - 2f * Scale);
             int[] columnWidths = new int[] { (int)(45f * Scale), (int)(130f * Scale), (int)(90f * Scale), (int)(90f * Scale), (int)(90f * Scale) };
+            int totalWidth = columnWidths[0] + columnWidths[1];
 
             // set up background rendering
             Color color = Color.FromArgb(230, Color.Black);
             using HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightUpwardDiagonal, color, Color.FromArgb(color.A - 75, color));
             _columnBackgrounds = new CachedBitmap[columns];
             for (int i = 0; i < columns; i++)
-                _columnBackgrounds[i] = new CachedBitmap(columnWidths[i], columnHeight, g =>
-                {
-                    g.FillRoundedRectangle(hatchBrush, new Rectangle(0, 0, columnWidths[i], columnHeight), (int)(3 * Scale));
-                });
+                _columnBackgrounds[i] = new CachedBitmap(columnWidths[i], columnHeight, g => g.FillRoundedRectangle(hatchBrush, new Rectangle(0, 0, columnWidths[i], columnHeight), (int)(3 * Scale)));
 
-            int totalWidth = columnWidths[0] + columnWidths[1];
-            // add header row
+
+            // add header row, base columns
             DrawableTextCell col0 = new DrawableTextCell(new Rectangle(0, 0, columnWidths[0], columnHeight), _font);
             col0.CachedBackground = _columnBackgrounds[0];
             col0.UpdateText("#");
@@ -59,11 +57,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
             col1.UpdateText("Time");
             _graphicsGrid.Grid[0][1] = col1;
 
+            // add header columns for sectors
             if (_config.Table.ShowSectors)
             {
                 totalWidth += columnWidths[2] + columnWidths[3] + columnWidths[4];
 
-                // add header row                
                 DrawableTextCell col2 = new DrawableTextCell(new RectangleF(col1.Rectangle.X + columnWidths[1], 0, columnWidths[2], columnHeight), _font);
                 col2.CachedBackground = _columnBackgrounds[2];
                 col2.UpdateText("S1");
@@ -113,9 +111,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
             int row = 1;
             foreach (var lap in lapList)
             {
-                using Brush textBrush = lap.Value.IsValid ? Brushes.White : Brushes.OrangeRed;
+                Brush textBrush = lap.Value.IsValid ? Brushes.White : Brushes.OrangeRed;
 
-                DrawableTextCell lapCell = ((DrawableTextCell)_graphicsGrid.Grid[row][0]);
+                ((DrawableTextCell)_graphicsGrid.Grid[row][0]).TextBrush = textBrush;
+                DrawableTextCell lapCell = (DrawableTextCell)_graphicsGrid.Grid[row][0];
                 lapCell.TextBrush = textBrush;
                 lapCell.UpdateText($"{lap.Key}");
 
@@ -126,6 +125,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
                     lapTimeValue = $"{best:mm\\:ss\\:fff}";
                 }
 
+                ((DrawableTextCell)_graphicsGrid.Grid[row][1]).TextBrush = textBrush;
                 ((DrawableTextCell)_graphicsGrid.Grid[row][1]).UpdateText($"{lapTimeValue}");
 
                 if (_config.Table.ShowSectors)
