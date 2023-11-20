@@ -17,7 +17,8 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
             StringFormat = new StringFormat()
             {
                 Alignment = StringAlignment.Center,
-                LineAlignment = StringAlignment.Center
+                LineAlignment = StringAlignment.Center,
+                Trimming = StringTrimming.None,
             };
         }
 
@@ -33,7 +34,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
                 if (Font != null)
                 {
                     g.TextContrast = 2;
-                    Rectangle rect = new Rectangle(0, 0, (int)Rectangle.Width, (int)Rectangle.Height);
+                    RectangleF rect = new RectangleF(0, 0, Rectangle.Width, Rectangle.Height);
                     g.DrawStringWithShadow(text, Font, TextBrush, rect, StringFormat);
                 }
             });

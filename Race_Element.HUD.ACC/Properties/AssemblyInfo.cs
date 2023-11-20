@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Element Future")]
 [assembly: AssemblyProduct("RaceElement.HUD.ACC")]
-[assembly: AssemblyCopyright("Copyright 2023 © Reinier Klarenberg")]
+[assembly: AssemblyCopyright("Copyright 2024 © Reinier Klarenberg")]
 [assembly: AssemblyTrademark("Element Future")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.0.1")]
+[assembly: AssemblyFileVersion("1.0.0.1")]
