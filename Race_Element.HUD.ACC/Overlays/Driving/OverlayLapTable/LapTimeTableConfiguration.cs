@@ -16,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
             public int Rows { get; set; } = 3;
 
             [ToolTip("Changed the amount of corner roundering for each cell in the table.")]
-            [IntRange (2, 12, 2)]
+            [IntRange (0, 12, 2)]
             public int Roundness { get; set; } = 2;
         }
 
