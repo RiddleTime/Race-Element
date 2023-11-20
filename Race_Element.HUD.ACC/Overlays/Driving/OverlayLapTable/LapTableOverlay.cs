@@ -76,20 +76,30 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
 
             float fontHeight = (int)(_font.GetHeight(120));
             int columnHeight = (int)(Math.Ceiling(fontHeight) + 1 * scale);
-            int[] columnWidths = new int[] { (int)(45f * scale), (int)(100f * scale), (int)(75f * scale), (int)(75f * scale), (int)(75f * scale) };
+            int[] columnWidths = new int[] { (int)(45f * scale), (int)(95f * scale), (int)(78f * scale), (int)(78f * scale), (int)(78f * scale) };
             int totalWidth = columnWidths[0] + columnWidths[1];
 
             // set up backgrounds and invalid ones
-            Color colorValid = Color.FromArgb(230, Color.Black);
-            Color colorInvalid = Color.FromArgb(170, Color.Red);
+            Color colorValid = Color.FromArgb(150, Color.Black);
+            Color colorInvalid = Color.FromArgb(150, Color.Red);
             using HatchBrush columnBrushValid = new HatchBrush(HatchStyle.LightUpwardDiagonal, colorValid, Color.FromArgb(colorValid.A - 75, colorValid));
-            using HatchBrush columnBrushInvalid = new HatchBrush(HatchStyle.LightUpwardDiagonal, colorInvalid, Color.FromArgb(colorInvalid.A - 125, colorInvalid));
+            using HatchBrush columnBrushInvalid = new HatchBrush(HatchStyle.LightUpwardDiagonal, colorInvalid, Color.FromArgb(colorInvalid.A - 75, colorInvalid));
             _columnBackgroundsValid = new CachedBitmap[columns];
             _columnBackgroundsInvalid = new CachedBitmap[columns];
             for (int i = 0; i < columns; i++)
-                _columnBackgroundsValid[i] = new CachedBitmap(columnWidths[i], columnHeight, g => g.FillRoundedRectangle(columnBrushValid, new Rectangle(0, 0, columnWidths[i], columnHeight), (int)(_config.Table.Roundness * scale)));
+                _columnBackgroundsValid[i] = new CachedBitmap(columnWidths[i], columnHeight, g =>
+                {
+                    using LinearGradientBrush brush = new LinearGradientBrush(new PointF(columnWidths[i], columnHeight), new PointF(0, 0), Color.FromArgb(0, 0, 0, 0), Color.FromArgb(colorValid.A, 10, 10, 10));
+                    g.FillRoundedRectangle(brush, new Rectangle(0, 0, columnWidths[i], columnHeight), (int)(_config.Table.Roundness * scale));
+                    g.FillRoundedRectangle(columnBrushValid, new Rectangle(0, 0, columnWidths[i], columnHeight), (int)(_config.Table.Roundness * scale));
+                });
             for (int i = 0; i < columns; i++)
-                _columnBackgroundsInvalid[i] = new CachedBitmap(columnWidths[i], columnHeight, g => g.FillRoundedRectangle(columnBrushInvalid, new Rectangle(0, 0, columnWidths[i], columnHeight), (int)(_config.Table.Roundness * scale)));
+                _columnBackgroundsInvalid[i] = new CachedBitmap(columnWidths[i], columnHeight, g =>
+                {
+                    using LinearGradientBrush brush = new LinearGradientBrush(new PointF(0, 0), new PointF(columnWidths[i], columnHeight), Color.FromArgb(0, 0, 0, 0), Color.FromArgb(colorInvalid.A, colorInvalid.R, 10, 10));
+                    g.FillRoundedRectangle(brush, new Rectangle(0, 0, columnWidths[i], columnHeight), (int)(_config.Table.Roundness * scale));
+                    g.FillRoundedRectangle(columnBrushInvalid, new Rectangle(0, 0, columnWidths[i], columnHeight), (int)(_config.Table.Roundness * scale));
+                });
 
             // add header row, base columns
             DrawableTextCell col0 = new DrawableTextCell(new Rectangle(0, 0, columnWidths[0], columnHeight), _font);
