@@ -80,10 +80,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
             int totalWidth = columnWidths[0] + columnWidths[1];
 
             // set up backgrounds and invalid ones
-            Color colorValid = Color.FromArgb(150, Color.Black);
+            Color colorValid = Color.FromArgb(190, Color.Black);
             Color colorInvalid = Color.FromArgb(150, Color.Red);
-            using HatchBrush columnBrushValid = new HatchBrush(HatchStyle.LightUpwardDiagonal, colorValid, Color.FromArgb(colorValid.A - 75, colorValid));
-            using HatchBrush columnBrushInvalid = new HatchBrush(HatchStyle.LightUpwardDiagonal, colorInvalid, Color.FromArgb(colorInvalid.A - 75, colorInvalid));
+            using HatchBrush columnBrushValid = new HatchBrush(HatchStyle.LightUpwardDiagonal, colorValid, Color.FromArgb(colorValid.A - 25, colorValid));
+            using HatchBrush columnBrushInvalid = new HatchBrush(HatchStyle.LightUpwardDiagonal, colorValid, Color.FromArgb(colorInvalid.A - 75, colorInvalid));
             _columnBackgroundsValid = new CachedBitmap[columns];
             _columnBackgroundsInvalid = new CachedBitmap[columns];
             for (int i = 0; i < columns; i++)
