@@ -235,7 +235,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
 
                     DrawableTextCell sector1Cell = (DrawableTextCell)_graphicsGrid.Grid[row][2];
                     sector1Cell.UpdateText($"{sector1 / 1000d:F3}");
-                    if (sector1 <= fastestSector1 && lap.Value.IsValid)
+                    if (sector1 < fastestSector1 && lap.Value.IsValid)
                         sector1Cell.CachedBackground = _columnBackgroundsPurple[2];
                     else if (bestLap != null)
                     {
