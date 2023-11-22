@@ -12,7 +12,8 @@ namespace RaceElement.Controls
                         "\n- Revamped internals of several HUDs to lower cpu usage:"+
                         "\n  - Lap Table HUD"+
                         "\n  - Car Info HUD"+
-                        "\n  - Shared Memory page HUDs"},
+                        "\n  - Shared Memory page HUDs"+
+                        "\n- Wind Direction HUD: Added Wind Treshold slider for only showing the hud above a certain wind speed."},
             {"0.2.4.2", "- Removed affiliate links:"+
                         "\nRace Element is free to run software, I do not want to encourage anyone ever again to pay to become faster."+
                         "\nLearn to create your own setups, there are tons of guides out there, even from one of the developers of Assetto Corsa Competizione."+
