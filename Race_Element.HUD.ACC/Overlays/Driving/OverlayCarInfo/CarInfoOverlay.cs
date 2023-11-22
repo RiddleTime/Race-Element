@@ -41,11 +41,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
         }
 
         private Font _font;
-        private DrawableTextCell _damageValue1;
-        private DrawableTextCell _tyreSetValue1;
-        private DrawableTextCell _fuelPerLapValue1;
-        private DrawableTextCell _exhaustValue1;
-        private DrawableTextCell _waterValue1;
+        private DrawableTextCell _damageValue;
+        private DrawableTextCell _tyreSetValue;
+        private DrawableTextCell _fuelPerLapValue;
+        private DrawableTextCell _exhaustValue;
+        private DrawableTextCell _waterValue;
 
         private GraphicsGrid _graphicsGrid;
 
@@ -100,10 +100,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
             damageHeader.StringFormat.Alignment = StringAlignment.Near;
             damageHeader.UpdateText("Damage");
             _graphicsGrid.Grid[currentRow][0] = damageHeader;
-            _damageValue1 = new DrawableTextCell(valueRectangle, _font);
-            _damageValue1.CachedBackground = valueBackground;
-            _damageValue1.StringFormat.Alignment = StringAlignment.Far;
-            _graphicsGrid.Grid[currentRow][1] = _damageValue1;
+            _damageValue = new DrawableTextCell(valueRectangle, _font);
+            _damageValue.CachedBackground = valueBackground;
+            _damageValue.StringFormat.Alignment = StringAlignment.Far;
+            _graphicsGrid.Grid[currentRow][1] = _damageValue;
 
             if (_config.InfoPanel.TyreSet)
             {
@@ -117,10 +117,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
                 header.UpdateText("Tyre set");
                 _graphicsGrid.Grid[currentRow][0] = header;
 
-                _tyreSetValue1 = new DrawableTextCell(valueRectangle, _font);
-                _tyreSetValue1.CachedBackground = valueBackground;
-                _tyreSetValue1.StringFormat.Alignment = StringAlignment.Far;
-                _graphicsGrid.Grid[currentRow][1] = _tyreSetValue1;
+                _tyreSetValue = new DrawableTextCell(valueRectangle, _font);
+                _tyreSetValue.CachedBackground = valueBackground;
+                _tyreSetValue.StringFormat.Alignment = StringAlignment.Far;
+                _graphicsGrid.Grid[currentRow][1] = _tyreSetValue;
             }
 
             if (_config.InfoPanel.FuelPerLap)
@@ -135,10 +135,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
                 header.UpdateText("Fuel/Lap");
                 _graphicsGrid.Grid[currentRow][0] = header;
 
-                _fuelPerLapValue1 = new DrawableTextCell(valueRectangle, _font);
-                _fuelPerLapValue1.CachedBackground = valueBackground;
-                _fuelPerLapValue1.StringFormat.Alignment = StringAlignment.Far;
-                _graphicsGrid.Grid[currentRow][1] = _fuelPerLapValue1;
+                _fuelPerLapValue = new DrawableTextCell(valueRectangle, _font);
+                _fuelPerLapValue.CachedBackground = valueBackground;
+                _fuelPerLapValue.StringFormat.Alignment = StringAlignment.Far;
+                _graphicsGrid.Grid[currentRow][1] = _fuelPerLapValue;
             }
 
             if (_config.InfoPanel.ExhaustTemp)
@@ -153,10 +153,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
                 header.UpdateText("Exhaust");
                 _graphicsGrid.Grid[currentRow][0] = header;
 
-                _exhaustValue1 = new DrawableTextCell(valueRectangle, _font);
-                _exhaustValue1.CachedBackground = valueBackground;
-                _exhaustValue1.StringFormat.Alignment = StringAlignment.Far;
-                _graphicsGrid.Grid[currentRow][1] = _exhaustValue1;
+                _exhaustValue = new DrawableTextCell(valueRectangle, _font);
+                _exhaustValue.CachedBackground = valueBackground;
+                _exhaustValue.StringFormat.Alignment = StringAlignment.Far;
+                _graphicsGrid.Grid[currentRow][1] = _exhaustValue;
             }
 
             if (_config.InfoPanel.WaterTemp)
@@ -171,10 +171,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
                 header.UpdateText("Water");
                 _graphicsGrid.Grid[currentRow][0] = header;
 
-                _waterValue1 = new DrawableTextCell(valueRectangle, _font);
-                _waterValue1.CachedBackground = valueBackground;
-                _waterValue1.StringFormat.Alignment = StringAlignment.Far;
-                _graphicsGrid.Grid[currentRow][1] = _waterValue1;
+                _waterValue = new DrawableTextCell(valueRectangle, _font);
+                _waterValue.CachedBackground = valueBackground;
+                _waterValue.StringFormat.Alignment = StringAlignment.Far;
+                _graphicsGrid.Grid[currentRow][1] = _waterValue;
             }
 
             // set HUD Width + Height based on amount of rows and columns
@@ -191,11 +191,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
         public sealed override void Render(Graphics g)
         {
             float totalRepairTime = Damage.GetTotalRepairTime(pagePhysics);
-            _damageValue1.TextBrush = totalRepairTime > 0 ? Brushes.OrangeRed : Brushes.White;
-            _damageValue1.UpdateText($"{totalRepairTime:F1}");
+            _damageValue.TextBrush = totalRepairTime > 0 ? Brushes.OrangeRed : Brushes.White;
+            _damageValue.UpdateText($"{totalRepairTime:F1}");
 
             if (_config.InfoPanel.TyreSet)
-                _tyreSetValue1.UpdateText($"{pageGraphics.currentTyreSet}");
+                _tyreSetValue.UpdateText($"{pageGraphics.currentTyreSet}");
 
             if (_config.InfoPanel.FuelPerLap)
             {
@@ -203,14 +203,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
                 if (fuelXLap != -1)
                     fuelXLap /= 1000f;
                 else fuelXLap = pageGraphics.FuelXLap;
-                _fuelPerLapValue1.UpdateText($"{fuelXLap:F3}");
+                _fuelPerLapValue.UpdateText($"{fuelXLap:F3}");
             }
 
             if (_config.InfoPanel.ExhaustTemp)
-                _exhaustValue1.UpdateText($"{pageGraphics.ExhaustTemperature:F0} °C");
+                _exhaustValue.UpdateText($"{pageGraphics.ExhaustTemperature:F0} °C");
 
             if (_config.InfoPanel.WaterTemp)
-                _waterValue1.UpdateText($"{pagePhysics.WaterTemp:F0} °C");
+                _waterValue.UpdateText($"{pagePhysics.WaterTemp:F0} °C");
 
             _graphicsGrid?.Draw(g);
         }
