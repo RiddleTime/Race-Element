@@ -196,10 +196,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
             {
                 Random rand = new Random();
                 int maxSectorDeviation = 10000;
-                fastestSector1 = 27525 + rand.Next(-maxSectorDeviation, maxSectorDeviation);
+                fastestSector1 = 23525 + rand.Next(-maxSectorDeviation, maxSectorDeviation);
                 fastestSector2 = 37842 + rand.Next(-maxSectorDeviation, maxSectorDeviation);
                 fastestSector3 = 35840 + rand.Next(-maxSectorDeviation, maxSectorDeviation);
-                bestLap = new DbLapData { Sector1 = fastestSector1 + 20, Sector2 = fastestSector2 + 50, Sector3 = fastestSector3 + 30 };
+                bestLap = new DbLapData { Sector1 = fastestSector1 - 250, Sector2 = fastestSector2 + 50, Sector3 = fastestSector3 + 30 };
             }
 
             int row = 1;
@@ -224,8 +224,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
                 }
                 if (!lap.Value.IsValid)
                     lapTimeCell.CachedBackground = _columnBackgroundsInvalid[1];
-
                 lapTimeCell.UpdateText($"{lapTimeValue}");
+
 
                 if (_config.Table.ShowSectors)
                 {
@@ -235,11 +235,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
 
                     DrawableTextCell sector1Cell = (DrawableTextCell)_graphicsGrid.Grid[row][2];
                     sector1Cell.UpdateText($"{sector1 / 1000d:F3}");
-                    if (sector1 < fastestSector1 && lap.Value.IsValid)
+                    if (sector1 <= fastestSector1 && lap.Value.IsValid)
                         sector1Cell.CachedBackground = _columnBackgroundsPurple[2];
                     else if (bestLap != null)
                     {
-                        if (sector1 <= bestLap.Sector1 && sector1Cell.CachedBackground != _columnBackgroundsValid[2])
+                        if (sector1 == bestLap.Sector1 && sector1Cell.CachedBackground != _columnBackgroundsValid[2])
                             sector1Cell.CachedBackground = _columnBackgroundsGreen[2];
                     }
                     else
@@ -252,7 +252,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
                         sector2Cell.CachedBackground = _columnBackgroundsPurple[3];
                     else if (bestLap != null)
                     {
-                        if (sector2 <= bestLap.Sector2 && sector2Cell.CachedBackground != _columnBackgroundsValid[3])
+                        if (sector2 == bestLap.Sector2 && sector2Cell.CachedBackground != _columnBackgroundsValid[3])
                             sector2Cell.CachedBackground = _columnBackgroundsGreen[3];
                     }
                     else
@@ -265,7 +265,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
                         sector3Cell.CachedBackground = _columnBackgroundsPurple[4];
                     else if (bestLap != null)
                     {
-                        if (sector3 <= bestLap.Sector3 && sector3Cell.CachedBackground != _columnBackgroundsValid[4])
+                        if (sector3 == bestLap.Sector3 && sector3Cell.CachedBackground != _columnBackgroundsValid[4])
                             sector3Cell.CachedBackground = _columnBackgroundsGreen[4];
                     }
                     else
