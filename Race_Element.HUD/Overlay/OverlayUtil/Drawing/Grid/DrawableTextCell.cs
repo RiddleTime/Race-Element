@@ -4,11 +4,11 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
 {
     public sealed class DrawableTextCell : AbstractDrawableCell
     {
-        private string Text;
-        private readonly Font Font;
-
         public Brush TextBrush { get; set; }
         public StringFormat StringFormat { get; set; }
+
+        private readonly Font Font;
+        private string Text;
 
         public DrawableTextCell(RectangleF rect, Font font) : base(rect)
         {
