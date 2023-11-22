@@ -21,6 +21,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
         private Font _font;
         private CachedBitmap[] _columnBackgroundsValid;
         private CachedBitmap[] _columnBackgroundsInvalid;
+        private CachedBitmap[] _columnBackgroundsFastest;
 
         private List<KeyValuePair<int, DbLapData>> _storedLaps;
         private bool _dataIsPreview = false;
@@ -37,11 +38,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
 
             Dictionary<int, DbLapData> Laps = new Dictionary<int, DbLapData>();
             Random rand = new Random();
-            int min = -10000, max = 10000;
-            int s1 = 28525 + rand.Next(min, max);
-            int s2 = 38842 + rand.Next(min, max);
-            int s3 = 36840 + rand.Next(min, max);
+            int maxSectorDeviation = 10000;
+            int s1 = 28525 + rand.Next(-maxSectorDeviation, maxSectorDeviation);
+            int s2 = 38842 + rand.Next(-maxSectorDeviation, maxSectorDeviation);
+            int s3 = 36840 + rand.Next(-maxSectorDeviation, maxSectorDeviation);
             int startLapIndex = 100 + rand.Next(-50, 800);
+
             for (int i = startLapIndex; i < _config.Table.Rows + startLapIndex; i++)
             {
                 DbLapData randomData = new DbLapData()
@@ -80,16 +82,19 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
             int totalWidth = columnWidths[0] + columnWidths[1];
 
             // set up backgrounds and invalid ones
-            Color colorValid = Color.FromArgb(190, Color.Black);
+            Color colorDefault = Color.FromArgb(190, Color.Black);
             Color colorInvalid = Color.FromArgb(150, Color.Red);
-            using HatchBrush columnBrushValid = new HatchBrush(HatchStyle.LightUpwardDiagonal, colorValid, Color.FromArgb(colorValid.A - 25, colorValid));
-            using HatchBrush columnBrushInvalid = new HatchBrush(HatchStyle.LightUpwardDiagonal, colorValid, Color.FromArgb(colorInvalid.A - 75, colorInvalid));
+            Color colorFastest = Color.FromArgb(150, Color.LimeGreen);
+            using HatchBrush columnBrushValid = new HatchBrush(HatchStyle.LightUpwardDiagonal, colorDefault, Color.FromArgb(colorDefault.A - 25, colorDefault));
+            using HatchBrush columnBrushInvalid = new HatchBrush(HatchStyle.LightUpwardDiagonal, colorDefault, Color.FromArgb(colorInvalid.A - 75, colorInvalid));
+            using HatchBrush columnBrushFastest = new HatchBrush(HatchStyle.LightUpwardDiagonal, colorDefault, Color.FromArgb(colorFastest.A - 25, colorFastest));
             _columnBackgroundsValid = new CachedBitmap[columns];
             _columnBackgroundsInvalid = new CachedBitmap[columns];
+            _columnBackgroundsFastest = new CachedBitmap[columns];
             for (int i = 0; i < columns; i++)
                 _columnBackgroundsValid[i] = new CachedBitmap(columnWidths[i], columnHeight, g =>
                 {
-                    using LinearGradientBrush brush = new LinearGradientBrush(new PointF(columnWidths[i], columnHeight), new PointF(0, 0), Color.FromArgb(0, 0, 0, 0), Color.FromArgb(colorValid.A, 10, 10, 10));
+                    using LinearGradientBrush brush = new LinearGradientBrush(new PointF(columnWidths[i], columnHeight), new PointF(0, 0), Color.FromArgb(0, 0, 0, 0), Color.FromArgb(colorDefault.A, 10, 10, 10));
                     g.FillRoundedRectangle(brush, new Rectangle(0, 0, columnWidths[i], columnHeight), (int)(_config.Table.Roundness * scale));
                     g.FillRoundedRectangle(columnBrushValid, new Rectangle(0, 0, columnWidths[i], columnHeight), (int)(_config.Table.Roundness * scale));
                 });
@@ -99,6 +104,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
                     using LinearGradientBrush brush = new LinearGradientBrush(new PointF(0, 0), new PointF(columnWidths[i], columnHeight), Color.FromArgb(0, 0, 0, 0), Color.FromArgb(colorInvalid.A, colorInvalid.R, 10, 10));
                     g.FillRoundedRectangle(brush, new Rectangle(0, 0, columnWidths[i], columnHeight), (int)(_config.Table.Roundness * scale));
                     g.FillRoundedRectangle(columnBrushInvalid, new Rectangle(0, 0, columnWidths[i], columnHeight), (int)(_config.Table.Roundness * scale));
+                });
+            for (int i = 0; i < columns; i++)
+                _columnBackgroundsFastest[i] = new CachedBitmap(columnWidths[i], columnHeight, g =>
+                {
+                    using LinearGradientBrush brush = new LinearGradientBrush(new PointF(0, 0), new PointF(columnWidths[i], columnHeight), Color.FromArgb(0, 0, 0, 0), Color.FromArgb(colorFastest.A, colorFastest.R, 10, 10));
+                    g.FillRoundedRectangle(brush, new Rectangle(0, 0, columnWidths[i], columnHeight), (int)(_config.Table.Roundness * scale));
+                    g.FillRoundedRectangle(columnBrushFastest, new Rectangle(0, 0, columnWidths[i], columnHeight), (int)(_config.Table.Roundness * scale));
                 });
 
             // add header row, base columns
@@ -161,6 +173,15 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
             if (!_dataIsPreview)
                 _storedLaps = LapTracker.Instance.Laps.OrderByDescending(x => x.Key).Take(_config.Table.Rows).ToList();
 
+            int fastestLapIndex = LapTracker.Instance.Laps.GetFastestLapIndex();
+            DbLapData bestLap = null;
+            if(fastestLapIndex!=-1)
+                bestLap = LapTracker.Instance.Laps[fastestLapIndex];
+
+            int fastestSector1 = LapTracker.Instance.Laps.GetFastestSector(1);
+            int fastestSector2 = LapTracker.Instance.Laps.GetFastestSector(2);
+            int fastestSector3 = LapTracker.Instance.Laps.GetFastestSector(3);
+
             int row = 1;
             foreach (var lap in _storedLaps)
             {
@@ -180,9 +201,21 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
 
                 if (_config.Table.ShowSectors)
                 {
-                    ((DrawableTextCell)_graphicsGrid.Grid[row][2]).UpdateText($"{lap.Value.GetSector1():F3}");
-                    ((DrawableTextCell)_graphicsGrid.Grid[row][3]).UpdateText($"{lap.Value.GetSector2():F3}");
-                    ((DrawableTextCell)_graphicsGrid.Grid[row][4]).UpdateText($"{lap.Value.GetSector3():F3}");
+                    int sector1 = lap.Value.Sector1;
+                    int sector2 = lap.Value.Sector2;
+                    int sector3 = lap.Value.Sector3;
+
+                    DrawableTextCell sector1Cell = (DrawableTextCell)_graphicsGrid.Grid[row][2];
+                    sector1Cell.UpdateText($"{sector1 / 1000d:F3}");
+                    sector1Cell.CachedBackground = sector1 <= fastestSector1 ? _columnBackgroundsFastest[2] : _columnBackgroundsValid[2];
+
+                    DrawableTextCell sector2Cell = (DrawableTextCell)_graphicsGrid.Grid[row][3];
+                    sector2Cell.UpdateText($"{sector2 / 1000d:F3}");
+                    sector2Cell.CachedBackground = sector2 <= fastestSector2 ? _columnBackgroundsFastest[3] : _columnBackgroundsValid[3];
+
+                    DrawableTextCell sector3Cell = (DrawableTextCell)_graphicsGrid.Grid[row][4];
+                    sector3Cell.UpdateText($"{sector3 / 1000d:F3}");
+                    sector3Cell.CachedBackground = sector3 <= fastestSector3 ? _columnBackgroundsFastest[4] : _columnBackgroundsValid[4];
                 }
 
                 row++;
