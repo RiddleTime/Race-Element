@@ -155,17 +155,20 @@ namespace RaceElement.Data.ACC.Database.LapDataDB
                 case 1:
                     foreach (DbLapData timing in data.Select(x => x.Value))
                         if (timing.IsValid && timing.Sector1 < time)
-                            return false; break;
+                            return false;
+                    break;
 
                 case 2:
                     foreach (DbLapData timing in data.Select(x => x.Value))
                         if (timing.IsValid && timing.Sector2 < time)
-                            return false; break;
+                            return false;
+                    break;
 
                 case 3:
                     foreach (DbLapData timing in data.Select(x => x.Value))
                         if (timing.IsValid && timing.Sector3 < time)
-                            return false; break;
+                            return false;
+                    break;
 
                 default: return true;
             }
@@ -191,17 +194,20 @@ namespace RaceElement.Data.ACC.Database.LapDataDB
                 case 1:
                     foreach (DbLapData lap in laps.Select(x => x.Value))
                         if (lap.IsValid && (lap.Sector1 < fastest) && lap.Sector1 != -1)
-                            fastest = lap.Sector1; break;
+                            fastest = lap.Sector1;
+                    break;
 
                 case 2:
                     foreach (DbLapData lap in laps.Select(x => x.Value))
                         if (lap.IsValid && (lap.Sector2 < fastest) && lap.Sector2 != -1)
-                            fastest = lap.Sector2; break;
+                            fastest = lap.Sector2;
+                    break;
 
                 case 3:
                     foreach (DbLapData lap in laps.Select(x => x.Value))
                         if (lap.IsValid && (lap.Sector3 < fastest) && lap.Sector3 != -1)
-                            fastest = lap.Sector3; break;
+                            fastest = lap.Sector3;
+                    break;
 
                 default: return fastest;
             }

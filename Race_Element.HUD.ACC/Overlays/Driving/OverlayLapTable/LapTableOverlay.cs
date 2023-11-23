@@ -227,56 +227,31 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
                     lapTimeCell.CachedBackground = _columnBackgroundsInvalid[1];
                 lapTimeCell.UpdateText($"{lapTimeValue}");
 
-
                 if (_config.Table.ShowSectors)
                 {
-                    int sector1 = lap.Value.Sector1;
-                    int sector2 = lap.Value.Sector2;
-                    int sector3 = lap.Value.Sector3;
-
-                    DrawableTextCell sector1Cell = (DrawableTextCell)_graphicsGrid.Grid[row][2];
-                    sector1Cell.UpdateText($"{sector1 / 1000d:F3}");
-                    if (sector1 <= fastestSector1 && lap.Value.IsValid)
-                        sector1Cell.CachedBackground = _columnBackgroundsPurple[2];
-                    else if (bestLap != null)
-                    {
-                        if (sector1 == bestLap.Sector1 && sector1Cell.CachedBackground != _columnBackgroundsValid[2])
-                            sector1Cell.CachedBackground = _columnBackgroundsGreen[2];
-                    }
-                    else
-                        sector1Cell.CachedBackground = _columnBackgroundsValid[2];
-
-
-                    DrawableTextCell sector2Cell = (DrawableTextCell)_graphicsGrid.Grid[row][3];
-                    sector2Cell.UpdateText($"{sector2 / 1000d:F3}");
-                    if (sector2 <= fastestSector2 && lap.Value.IsValid)
-                        sector2Cell.CachedBackground = _columnBackgroundsPurple[3];
-                    else if (bestLap != null)
-                    {
-                        if (sector2 == bestLap.Sector2 && sector2Cell.CachedBackground != _columnBackgroundsValid[3])
-                            sector2Cell.CachedBackground = _columnBackgroundsGreen[3];
-                    }
-                    else
-                        sector2Cell.CachedBackground = _columnBackgroundsValid[3];
-
-
-                    DrawableTextCell sector3Cell = (DrawableTextCell)_graphicsGrid.Grid[row][4];
-                    sector3Cell.UpdateText($"{sector3 / 1000d:F3}");
-                    if (sector3 <= fastestSector3 && lap.Value.IsValid)
-                        sector3Cell.CachedBackground = _columnBackgroundsPurple[4];
-                    else if (bestLap != null)
-                    {
-                        if (sector3 == bestLap.Sector3 && sector3Cell.CachedBackground != _columnBackgroundsValid[4])
-                            sector3Cell.CachedBackground = _columnBackgroundsGreen[4];
-                    }
-                    else
-                        sector3Cell.CachedBackground = _columnBackgroundsValid[4];
+                    UpdateSectorTime(row, 2, lap, bestLap, lap.Value.Sector1, fastestSector1);
+                    UpdateSectorTime(row, 3, lap, bestLap, lap.Value.Sector2, fastestSector2);
+                    UpdateSectorTime(row, 4, lap, bestLap, lap.Value.Sector3, fastestSector3);
                 }
 
                 row++;
             }
 
             _graphicsGrid?.Draw(g);
+        }
+
+        private void UpdateSectorTime(int row, int column, KeyValuePair<int, DbLapData> lap, DbLapData bestLap, int sectorTime, int fastestSectorTime)
+        {
+            DrawableTextCell sectorCell = (DrawableTextCell)_graphicsGrid.Grid[row][column];
+            sectorCell.UpdateText($"{sectorTime / 1000d:F3}");
+
+            sectorCell.CachedBackground = _columnBackgroundsValid[column];
+
+            if (sectorTime <= fastestSectorTime && lap.Value.IsValid)
+                sectorCell.CachedBackground = _columnBackgroundsPurple[column];
+
+            if (bestLap != null && sectorTime == bestLap.Sector1 && sectorCell.CachedBackground != _columnBackgroundsValid[column])
+                sectorCell.CachedBackground = _columnBackgroundsGreen[column];
         }
     }
 }
