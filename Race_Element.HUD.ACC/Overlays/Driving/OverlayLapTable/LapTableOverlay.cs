@@ -29,7 +29,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
 
         public LapTableOverlay(Rectangle rectangle) : base(rectangle, "Lap Table")
         {
-            this.RefreshRateHz = 2;
+            this.RefreshRateHz = 3;
             _storedLaps = new List<KeyValuePair<int, DbLapData>>();
         }
 
