@@ -215,7 +215,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                     List<Color> colors = new List<Color>();
 
                     // add delta column
-                    int delta = _currentCorner.EntryDeltaMilliseconds - pageGraphics.DeltaLapTimeMillis;
+                    int delta = -(_currentCorner.EntryDeltaMilliseconds - pageGraphics.DeltaLapTimeMillis);
                     columns.Add($"{delta / 1000d:F3}");
                     colors.Add(Color.FromArgb(190, Color.White));
 
