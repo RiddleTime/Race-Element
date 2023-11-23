@@ -97,29 +97,30 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
             _columnBackgroundsPurple = new CachedBitmap[columns];
             for (int i = 0; i < columns; i++)
             {
+                Rectangle rect = new Rectangle(0, 0, columnWidths[i], columnHeight);
                 _columnBackgroundsValid[i] = new CachedBitmap(columnWidths[i], columnHeight, g =>
                 {
                     using LinearGradientBrush brush = new LinearGradientBrush(new PointF(columnWidths[i], columnHeight), new PointF(0, 0), Color.FromArgb(0, 0, 0, 0), Color.FromArgb(colorDefault.A, 10, 10, 10));
-                    g.FillRoundedRectangle(brush, new Rectangle(0, 0, columnWidths[i], columnHeight), (int)(_config.Table.Roundness * scale));
-                    g.FillRoundedRectangle(columnBrushDefault, new Rectangle(0, 0, columnWidths[i], columnHeight), (int)(_config.Table.Roundness * scale));
+                    g.FillRoundedRectangle(brush, rect, (int)(_config.Table.Roundness * scale));
+                    g.FillRoundedRectangle(columnBrushDefault, rect, (int)(_config.Table.Roundness * scale));
                 });
                 _columnBackgroundsInvalid[i] = new CachedBitmap(columnWidths[i], columnHeight, g =>
                 {
                     using LinearGradientBrush brush = new LinearGradientBrush(new PointF(0, 0), new PointF(columnWidths[i], columnHeight), Color.FromArgb(0, 0, 0, 0), Color.FromArgb(colorRed.A, colorRed.R, 10, 10));
-                    g.FillRoundedRectangle(brush, new Rectangle(0, 0, columnWidths[i], columnHeight), (int)(_config.Table.Roundness * scale));
-                    g.FillRoundedRectangle(columnBrushRed, new Rectangle(0, 0, columnWidths[i], columnHeight), (int)(_config.Table.Roundness * scale));
+                    g.FillRoundedRectangle(brush, rect, (int)(_config.Table.Roundness * scale));
+                    g.FillRoundedRectangle(columnBrushRed, rect, (int)(_config.Table.Roundness * scale));
                 });
                 _columnBackgroundsGreen[i] = new CachedBitmap(columnWidths[i], columnHeight, g =>
                 {
                     using LinearGradientBrush brush = new LinearGradientBrush(new PointF(0, 0), new PointF(columnWidths[i], columnHeight), Color.FromArgb(0, 0, 0, 0), Color.FromArgb(colorGreen.A, colorGreen.R, 10, 10));
-                    g.FillRoundedRectangle(brush, new Rectangle(0, 0, columnWidths[i], columnHeight), (int)(_config.Table.Roundness * scale));
-                    g.FillRoundedRectangle(columnBrushGreen, new Rectangle(0, 0, columnWidths[i], columnHeight), (int)(_config.Table.Roundness * scale));
+                    g.FillRoundedRectangle(brush, rect, (int)(_config.Table.Roundness * scale));
+                    g.FillRoundedRectangle(columnBrushGreen, rect, (int)(_config.Table.Roundness * scale));
                 });
                 _columnBackgroundsPurple[i] = new CachedBitmap(columnWidths[i], columnHeight, g =>
                 {
                     using LinearGradientBrush brush = new LinearGradientBrush(new PointF(0, 0), new PointF(columnWidths[i], columnHeight), Color.FromArgb(0, 0, 0, 0), Color.FromArgb(colorPurple.A, colorPurple.R, 10, 10));
-                    g.FillRoundedRectangle(brush, new Rectangle(0, 0, columnWidths[i], columnHeight), (int)(_config.Table.Roundness * scale));
-                    g.FillRoundedRectangle(columnBrushPurple, new Rectangle(0, 0, columnWidths[i], columnHeight), (int)(_config.Table.Roundness * scale));
+                    g.FillRoundedRectangle(brush, rect, (int)(_config.Table.Roundness * scale));
+                    g.FillRoundedRectangle(columnBrushPurple, rect, (int)(_config.Table.Roundness * scale));
                 });
             }
 
