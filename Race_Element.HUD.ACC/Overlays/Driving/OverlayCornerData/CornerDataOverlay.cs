@@ -216,7 +216,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
 
                     // add delta column
                     int delta = _currentCorner.EntryDeltaMilliseconds - pageGraphics.DeltaLapTimeMillis;
-                    columns.Add($"{delta / 1000:F3}");
+                    columns.Add($"{delta / 1000d:F3}");
                     colors.Add(Color.FromArgb(190, Color.White));
 
                     if (_config.Data.MinimumSpeed)
@@ -230,7 +230,10 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                         colors.Add(Color.FromArgb(190, Color.White));
 
                         if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
+                        {
                             columns.Add(string.Empty);
+                            colors.Add(Color.FromArgb(190, Color.White));
+                        }
                     }
 
                     if (_config.Data.AverageSpeed)
