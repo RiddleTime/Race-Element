@@ -20,7 +20,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
         private GraphicsGrid _graphicsGrid;
         private Font _font;
         private CachedBitmap[] _columnBackgroundsValid;
-        private CachedBitmap[] _columnBackgroundsInvalid;
+        private CachedBitmap[] _columnBackgroundsRed;
         private CachedBitmap[] _columnBackgroundsGreen;
         private CachedBitmap[] _columnBackgroundsPurple;
 
@@ -92,7 +92,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
             using HatchBrush columnBrushGreen = new HatchBrush(HatchStyle.LightUpwardDiagonal, colorDefault, Color.FromArgb(colorGreen.A - 25, colorGreen));
             using HatchBrush columnBrushPurple = new HatchBrush(HatchStyle.LightUpwardDiagonal, colorDefault, Color.FromArgb(colorPurple.A - 25, colorPurple));
             _columnBackgroundsValid = new CachedBitmap[columns];
-            _columnBackgroundsInvalid = new CachedBitmap[columns];
+            _columnBackgroundsRed = new CachedBitmap[columns];
             _columnBackgroundsGreen = new CachedBitmap[columns];
             _columnBackgroundsPurple = new CachedBitmap[columns];
             for (int i = 0; i < columns; i++)
@@ -104,7 +104,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
                     g.FillRoundedRectangle(brush, rect, (int)(_config.Table.Roundness * scale));
                     g.FillRoundedRectangle(columnBrushDefault, rect, (int)(_config.Table.Roundness * scale));
                 });
-                _columnBackgroundsInvalid[i] = new CachedBitmap(columnWidths[i], columnHeight, g =>
+                _columnBackgroundsRed[i] = new CachedBitmap(columnWidths[i], columnHeight, g =>
                 {
                     using LinearGradientBrush brush = new LinearGradientBrush(new PointF(0, 0), new PointF(columnWidths[i], columnHeight), Color.FromArgb(0, 0, 0, 0), Color.FromArgb(colorRed.A, colorRed.R, 10, 10));
                     g.FillRoundedRectangle(brush, rect, (int)(_config.Table.Roundness * scale));
@@ -224,14 +224,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
                         lapTimeCell.CachedBackground = _columnBackgroundsGreen[1];
                 }
                 if (!lap.Value.IsValid)
-                    lapTimeCell.CachedBackground = _columnBackgroundsInvalid[1];
+                    lapTimeCell.CachedBackground = _columnBackgroundsRed[1];
                 lapTimeCell.UpdateText($"{lapTimeValue}");
 
                 if (_config.Table.ShowSectors)
                 {
-                    UpdateSectorTime(row, 2, lap, bestLap, lap.Value.Sector1, fastestSector1);
-                    UpdateSectorTime(row, 3, lap, bestLap, lap.Value.Sector2, fastestSector2);
-                    UpdateSectorTime(row, 4, lap, bestLap, lap.Value.Sector3, fastestSector3);
+                    UpdateSectorTime(row, 2, lap, lap.Value.Sector1, fastestSector1, bestLap == null ? int.MaxValue : bestLap.Sector1);
+                    UpdateSectorTime(row, 3, lap, lap.Value.Sector2, fastestSector2, bestLap == null ? int.MaxValue : bestLap.Sector2);
+                    UpdateSectorTime(row, 4, lap, lap.Value.Sector3, fastestSector3, bestLap == null ? int.MaxValue : bestLap.Sector3);
                 }
 
                 row++;
@@ -240,17 +240,17 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
             _graphicsGrid?.Draw(g);
         }
 
-        private void UpdateSectorTime(int row, int column, KeyValuePair<int, DbLapData> lap, DbLapData bestLap, int sectorTime, int fastestSectorTime)
+        private void UpdateSectorTime(int row, int column, KeyValuePair<int, DbLapData> lap, int sectorTime, int fastestSectorTime, int bestSectorTime)
         {
             DrawableTextCell sectorCell = (DrawableTextCell)_graphicsGrid.Grid[row][column];
             sectorCell.UpdateText($"{sectorTime / 1000d:F3}");
 
             sectorCell.CachedBackground = _columnBackgroundsValid[column];
 
-            if (sectorTime <= fastestSectorTime && lap.Value.IsValid)
+            if (sectorTime == fastestSectorTime && lap.Value.IsValid)
                 sectorCell.CachedBackground = _columnBackgroundsPurple[column];
 
-            if (bestLap != null && sectorTime == bestLap.Sector1 && sectorCell.CachedBackground != _columnBackgroundsValid[column])
+            if (sectorTime == bestSectorTime && sectorCell.CachedBackground != _columnBackgroundsValid[column])
                 sectorCell.CachedBackground = _columnBackgroundsGreen[column];
         }
     }
