@@ -214,10 +214,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
                 {
                     TimeSpan best = TimeSpan.FromMilliseconds(lap.Value.Time);
                     lapTimeValue = $"{best:mm\\:ss\\:fff}";
-
                 }
 
                 DrawableTextCell lapTimeCell = (DrawableTextCell)_graphicsGrid.Grid[row][1];
+                lapTimeCell.CachedBackground = _columnBackgroundsValid[1];
                 if (bestLap != null)
                 {
                     if (lap.Value.Time == bestLap.Sector1 + bestLap.Sector2 + bestLap.Sector3)
