@@ -184,6 +184,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
             if (!_dataIsPreview)
                 _storedLaps = LapTracker.Instance.Laps.OrderByDescending(x => x.Key).Take(_config.Table.Rows).ToList();
 
+
+            int bestLapInLobby = -1;
+            if (broadCastRealTime.BestSessionLap != null)
+            {
+                bestLapInLobby = broadCastRealTime.BestSessionLap.LaptimeMS.Value;
+            }
+
             int fastestLapIndex = LapTracker.Instance.Laps.GetFastestLapIndex();
             DbLapData bestLap = null;
             if (fastestLapIndex != -1)
@@ -218,11 +225,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
 
                 DrawableTextCell lapTimeCell = (DrawableTextCell)_graphicsGrid.Grid[row][1];
                 lapTimeCell.CachedBackground = _columnBackgroundsValid[1];
-                if (bestLap != null)
-                {
-                    if (lap.Value.Time == bestLap.Sector1 + bestLap.Sector2 + bestLap.Sector3)
-                        lapTimeCell.CachedBackground = _columnBackgroundsGreen[1];
-                }
+                if (bestLap != null && lap.Value.Time == bestLap.Sector1 + bestLap.Sector2 + bestLap.Sector3)
+                    lapTimeCell.CachedBackground = _columnBackgroundsGreen[1];
+
+                if (lap.Value.IsValid && lap.Value.Time == bestLapInLobby)
+                    lapTimeCell.CachedBackground = _columnBackgroundsPurple[1];
+
                 if (!lap.Value.IsValid)
                     lapTimeCell.CachedBackground = _columnBackgroundsRed[1];
                 lapTimeCell.UpdateText($"{lapTimeValue}");
