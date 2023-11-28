@@ -294,6 +294,8 @@ namespace RaceElement.Controls
                     {
                         bmi.BeginInit();
                         bmi.CacheOption = BitmapCacheOption.OnLoad;
+                        bmi.DecodePixelWidth = (int)imageControl.ActualWidth;
+                        bmi.DecodePixelHeight = (int)imageControl.ActualWidth;
                         bmi.StreamSource = stream;
                         bmi.EndInit();
 
