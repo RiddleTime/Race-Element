@@ -100,25 +100,25 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
                 Rectangle rect = new Rectangle(0, 0, columnWidths[i], columnHeight);
                 _columnBackgroundsValid[i] = new CachedBitmap(columnWidths[i], columnHeight, g =>
                 {
-                    using LinearGradientBrush brush = new LinearGradientBrush(new PointF(columnWidths[i], columnHeight), new PointF(0, 0), Color.FromArgb(0, 0, 0, 0), Color.FromArgb(colorDefault.A, 10, 10, 10));
+                    using LinearGradientBrush brush = new LinearGradientBrush(new PointF(columnWidths[i], columnHeight), new PointF(0, 0), Color.FromArgb(90, 0, 0, 0), Color.FromArgb(colorDefault.A, 10, 10, 10));
                     g.FillRoundedRectangle(brush, rect, (int)(_config.Table.Roundness * scale));
                     g.FillRoundedRectangle(columnBrushDefault, rect, (int)(_config.Table.Roundness * scale));
                 });
                 _columnBackgroundsRed[i] = new CachedBitmap(columnWidths[i], columnHeight, g =>
                 {
-                    using LinearGradientBrush brush = new LinearGradientBrush(new PointF(0, 0), new PointF(columnWidths[i], columnHeight), Color.FromArgb(0, 0, 0, 0), Color.FromArgb(colorRed.A, colorRed.R, 10, 10));
+                    using LinearGradientBrush brush = new LinearGradientBrush(new PointF(0, 0), new PointF(columnWidths[i], columnHeight), Color.FromArgb(90, 0, 0, 0), Color.FromArgb(colorRed.A, colorRed.R, 10, 10));
                     g.FillRoundedRectangle(brush, rect, (int)(_config.Table.Roundness * scale));
                     g.FillRoundedRectangle(columnBrushRed, rect, (int)(_config.Table.Roundness * scale));
                 });
                 _columnBackgroundsGreen[i] = new CachedBitmap(columnWidths[i], columnHeight, g =>
                 {
-                    using LinearGradientBrush brush = new LinearGradientBrush(new PointF(0, 0), new PointF(columnWidths[i], columnHeight), Color.FromArgb(0, 0, 0, 0), Color.FromArgb(colorGreen.A, colorGreen.R, 10, 10));
+                    using LinearGradientBrush brush = new LinearGradientBrush(new PointF(0, 0), new PointF(columnWidths[i], columnHeight), Color.FromArgb(90, 0, 0, 0), Color.FromArgb(colorGreen.A, colorGreen.R, 10, 10));
                     g.FillRoundedRectangle(brush, rect, (int)(_config.Table.Roundness * scale));
                     g.FillRoundedRectangle(columnBrushGreen, rect, (int)(_config.Table.Roundness * scale));
                 });
                 _columnBackgroundsPurple[i] = new CachedBitmap(columnWidths[i], columnHeight, g =>
                 {
-                    using LinearGradientBrush brush = new LinearGradientBrush(new PointF(0, 0), new PointF(columnWidths[i], columnHeight), Color.FromArgb(0, 0, 0, 0), Color.FromArgb(colorPurple.A, colorPurple.R, 10, 10));
+                    using LinearGradientBrush brush = new LinearGradientBrush(new PointF(0, 0), new PointF(columnWidths[i], columnHeight), Color.FromArgb(90, 0, 0, 0), Color.FromArgb(colorPurple.A, colorPurple.R, 10, 10));
                     g.FillRoundedRectangle(brush, rect, (int)(_config.Table.Roundness * scale));
                     g.FillRoundedRectangle(columnBrushPurple, rect, (int)(_config.Table.Roundness * scale));
                 });
@@ -152,8 +152,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
                 _graphicsGrid.Grid[0][4] = col4;
             }
 
-            this.Width = totalWidth;
-            this.Height = columnHeight * (_config.Table.Rows + 1); // +1 for header
+            this.Width = totalWidth + 1;
+            this.Height = columnHeight * (_config.Table.Rows + 1) + 1; // +1 for header
 
             // config data rows
             for (int row = 1; row <= _config.Table.Rows; row++)
@@ -186,9 +186,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
 
             int bestLapInLobby = -1;
             if (broadCastRealTime.BestSessionLap != null)
-            {
                 bestLapInLobby = broadCastRealTime.BestSessionLap.LaptimeMS.Value;
-            }
 
             int fastestLapIndex = LapTracker.Instance.Laps.GetFastestLapIndex();
             DbLapData bestLap = null;
@@ -247,10 +245,19 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
             _graphicsGrid?.Draw(g);
         }
 
+        /// <summary>
+        /// All times are millisecond based integers and need to be divided by 1000d
+        /// </summary>
+        /// <param name="row">the row in the graphics grid</param>
+        /// <param name="column">the column in the graphics grid</param>
+        /// <param name="lap">the actual lap</param>
+        /// <param name="sectorTime">sector time</param>
+        /// <param name="fastestSectorTime">sector time based on fastest sector time disregarding whether it's the best valid lap</param>
+        /// <param name="bestSectorTime">sector time based on best valid lap</param>
         private void UpdateSectorTime(int row, int column, KeyValuePair<int, DbLapData> lap, int sectorTime, int fastestSectorTime, int bestSectorTime)
         {
             DrawableTextCell sectorCell = (DrawableTextCell)_graphicsGrid.Grid[row][column];
-            sectorCell.UpdateText($"{sectorTime / 1000d:F3}");
+            sectorCell.UpdateText(FormatSectorTime(sectorTime));
 
             sectorCell.CachedBackground = _columnBackgroundsValid[column];
 
@@ -260,5 +267,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
             if (sectorTime == bestSectorTime && sectorCell.CachedBackground != _columnBackgroundsValid[column])
                 sectorCell.CachedBackground = _columnBackgroundsGreen[column];
         }
+
+        /// <summary>
+        /// Creates a string reprenting the given sector time.
+        ///  If the given sector time is equal or higher than 1,000,000 milliseconds, the returned value will be '-' to prevent overflow.
+        /// </summary>
+        private string FormatSectorTime(int sectorTimeMilliseconds) => sectorTimeMilliseconds > 999_999 ? "-" : $"{sectorTimeMilliseconds / 1000d:F3}";
+
     }
 }
