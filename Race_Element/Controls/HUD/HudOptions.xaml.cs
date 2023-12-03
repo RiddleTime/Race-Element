@@ -78,9 +78,12 @@ namespace RaceElement.Controls
                 if (!designTime)
                     try
                     {
-                        PopulateCategoryCombobox(comboOverlays, listOverlays, OverlayType.Release);
-                        PopulateCategoryCombobox(comboDebugOverlays, listDebugOverlays, OverlayType.Debug);
+                        PopulateCategoryCombobox(comboOverlays, listOverlays, OverlayType.Drive);
+                        PopulateCategoryCombobox(comboDebugOverlays, listDebugOverlays, OverlayType.Pitwall);
                         BuildOverlayPanel();
+
+                        ToolTipService.SetInitialShowDelay(listBoxItemToggleDemoMode, 1);
+                        ToolTipService.SetInitialShowDelay(listBoxItemToggleMovementMode, 1);
 
                         listBoxItemToggleMovementMode.PreviewMouseDown += (s, e) =>
                         {
@@ -488,8 +491,8 @@ namespace RaceElement.Controls
         {
             OverlaysACC.GenerateDictionary();
 
-            BuildOverlayListView(listOverlays, OverlayType.Release, (OverlayCategory)((ComboBoxItem)comboOverlays.SelectedItem).DataContext);
-            BuildOverlayListView(listDebugOverlays, OverlayType.Debug, (OverlayCategory)((ComboBoxItem)comboOverlays.SelectedItem).DataContext);
+            BuildOverlayListView(listOverlays, OverlayType.Drive, (OverlayCategory)((ComboBoxItem)comboOverlays.SelectedItem).DataContext);
+            BuildOverlayListView(listDebugOverlays, OverlayType.Pitwall, (OverlayCategory)((ComboBoxItem)comboOverlays.SelectedItem).DataContext);
         }
 
         private void PopulateCategoryCombobox(ComboBox box, ListView listView, OverlayType overlayType)

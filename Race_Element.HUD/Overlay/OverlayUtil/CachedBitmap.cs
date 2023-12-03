@@ -10,7 +10,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil
     {
         public int Width;
         public int Height;
-        public float Opacity { get; set; } = 1;
+        public float Opacity { get; set; }
         public delegate void Renderer(Graphics g);
 
         private Bitmap _bitmap;
@@ -52,8 +52,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil
 
         public void Render()
         {
-            if (_bitmap == null)
-                _bitmap = new Bitmap(Width, Height, PixelFormat.Format32bppPArgb);
+            _bitmap ??= new Bitmap(Width, Height, PixelFormat.Format32bppPArgb);
 
             lock (_bitmap)
             {

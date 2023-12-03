@@ -10,7 +10,7 @@ using static RaceElement.Data.ACC.EntryList.EntryListTracker;
 namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayFocusedCar
 {
     [Overlay(Name = "Focused Car", Description = "Shows information regarding the focused car",
-        OverlayType = OverlayType.Debug, Version = 1.00)]
+        OverlayType = OverlayType.Pitwall, Version = 1.00)]
     internal class FocusedCarOverlay : AbstractOverlay
     {
         private FocusedCarConfig _config = new FocusedCarConfig();

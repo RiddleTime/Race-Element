@@ -14,7 +14,7 @@ using Unglide;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
 {
-    [Overlay(Name = "Current Gear", Version = 1.00, OverlayType = OverlayType.Release,
+    [Overlay(Name = "Current Gear", Version = 1.00, OverlayType = OverlayType.Drive,
         OverlayCategory = OverlayCategory.Driving,
     Description = "Shows the selected gear.")]
     internal sealed class CurrentGearOverlay : AbstractOverlay
@@ -69,7 +69,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
         public override void BeforeStart()
         {
             Font font = FontUtil.FontConthrax(50 * this.Scale);
-            HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightDownwardDiagonal, Color.FromArgb(225, Color.Black), Color.FromArgb(185, Color.Black));
+            HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightUpwardDiagonal, Color.FromArgb(225, Color.Black), Color.FromArgb(185, Color.Black));
 
             Rectangle renderRectangle = new Rectangle(0, 0, (int)(InitialWidth * this.Scale), (int)(InitialHeight * this.Scale));
             for (int i = 0; i <= 8; i++)

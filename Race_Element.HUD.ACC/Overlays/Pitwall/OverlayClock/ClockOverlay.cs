@@ -11,7 +11,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayClock
 {
     [Overlay(Name = "Clock",
         Description = "Displays the system time of your operation system.",
-        OverlayType = OverlayType.Debug,
+        OverlayType = OverlayType.Pitwall,
         OverlayCategory = OverlayCategory.All)]
     internal sealed class ClockOverlay : AbstractOverlay
     {

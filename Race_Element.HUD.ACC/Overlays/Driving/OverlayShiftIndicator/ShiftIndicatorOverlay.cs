@@ -15,7 +15,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
     [Overlay(Name = "Shift Indicator",
         Description = "Shift Bar with RPM Text. Adjustable colors and percentages.",
         Version = 1.00,
-        OverlayType = OverlayType.Release,
+        OverlayType = OverlayType.Drive,
         OverlayCategory = OverlayCategory.Driving)]
     internal sealed class ShiftIndicatorOverlay : AbstractOverlay
     {
@@ -80,7 +80,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
                 _cachedColorBars.Add(new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
                 {
                     Rectangle rect = new Rectangle(0, 1, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale));
-                    HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightDownwardDiagonal, color, Color.FromArgb(color.A - 50, color));
+                    HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightUpwardDiagonal, color, Color.FromArgb(color.A - 50, color));
                     g.FillRoundedRectangle(hatchBrush, rect, cornerRadius);
                 }));
             }

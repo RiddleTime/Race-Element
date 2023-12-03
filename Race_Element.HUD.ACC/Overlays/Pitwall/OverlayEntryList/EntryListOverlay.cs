@@ -21,7 +21,7 @@ using static RaceElement.Data.ACC.EntryList.EntryListTracker;
 namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList
 {
     //#if DEBUG
-    [Overlay(Name = "Entrylist Overlay", Version = 1.00, OverlayType = OverlayType.Debug,
+    [Overlay(Name = "Entrylist Overlay", Version = 1.00, OverlayType = OverlayType.Pitwall,
 Description = "(BETA) A table representing a leaderboard.")]
     //#endif
     internal sealed class EntryListOverlay : AbstractOverlay

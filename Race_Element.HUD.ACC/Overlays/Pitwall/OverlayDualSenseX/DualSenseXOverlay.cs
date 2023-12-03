@@ -16,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
     [Overlay(Name = "DualSense X",
         Description = "Adds active triggers for the DualSense 5 controller using DSX on steam.\n See Guide in the Discord of Race Element for instructions.",
         OverlayCategory = OverlayCategory.Inputs,
-        OverlayType = OverlayType.Debug)]
+        OverlayType = OverlayType.Pitwall)]
     internal sealed class DualSenseXOverlay : AbstractOverlay
     {
         private readonly DualSenseXConfiguration _config = new DualSenseXConfiguration();
@@ -90,9 +90,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
         private void CreateEndPoint()
         {
             _client = new UdpClient();
-            var portNumber = File.ReadAllText(@"C:\Temp\DualSenseX\DualSenseX_PortNumber.txt");
-            _endPoint = new IPEndPoint(Triggers.localhost, Convert.ToInt32(portNumber));
-            Debug.WriteLine($"Port number found is: {portNumber}\n");
+            _endPoint = new IPEndPoint(Triggers.localhost, _config.UDP.Port);
         }
 
         private void Send(Packet data)

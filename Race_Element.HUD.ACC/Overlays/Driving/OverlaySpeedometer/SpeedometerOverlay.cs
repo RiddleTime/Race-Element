@@ -8,7 +8,7 @@ using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlaySpeedometer
 {
-    [Overlay(Name = "Speedometer", Description = "Shows a speedometer", Version = 1.00, OverlayType = OverlayType.Release)]
+    [Overlay(Name = "Speedometer", Description = "Shows a speedometer", Version = 1.00, OverlayType = OverlayType.Drive)]
     internal sealed class SpeedometerOverlay : AbstractOverlay
     {
         private readonly SpeedometerConfiguration _config = new SpeedometerConfiguration();

@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
 {
-    [Overlay(Name = "Input Trace", Version = 1.00, OverlayType = OverlayType.Release,
+    [Overlay(Name = "Input Trace", Version = 1.00, OverlayType = OverlayType.Drive,
         Description = "Live graph of steering, throttle and brake inputs.",
         OverlayCategory = OverlayCategory.Inputs)]
     internal sealed class InputTraceOverlay : AbstractOverlay

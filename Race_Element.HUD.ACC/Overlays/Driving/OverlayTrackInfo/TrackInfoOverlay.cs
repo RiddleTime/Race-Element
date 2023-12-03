@@ -9,7 +9,7 @@ using System.Drawing.Drawing2D;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
 {
-    [Overlay(Name = "Track Info", Version = 1.00, OverlayType = OverlayType.Release,
+    [Overlay(Name = "Track Info", Version = 1.00, OverlayType = OverlayType.Drive,
         OverlayCategory = OverlayCategory.Track,
         Description = "A panel showing information about the track state: grip, temperatures and wind.\nOptionally showing the global flag, session type and time of day.")]
     internal sealed class TrackInfoOverlay : AbstractOverlay

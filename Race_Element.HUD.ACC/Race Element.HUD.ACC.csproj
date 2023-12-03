@@ -49,6 +49,9 @@
     <PackageReference Include="ScottPlot">
       <Version>4.1.68</Version>
     </PackageReference>
+    <PackageReference Include="Svg">
+      <Version>3.4.4</Version>
+    </PackageReference>
     <PackageReference Include="System.Buffers" Version="4.5.1" />
     <PackageReference Include="System.Collections.Immutable" Version="7.0.0" />
     <PackageReference Include="System.Memory" Version="4.5.5" />
@@ -68,6 +71,10 @@
     <Compile Include="Overlays\Driving\OverlayAccelerometer\AccelerometerOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayBoostGauge\BoostGaugeOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayCarInfo\CarInfoOverlay.cs" />
+    <Compile Include="Overlays\Driving\OverlayCornerData\CornerDataCollector.cs" />
+    <Compile Include="Overlays\Driving\OverlayCornerData\CornerDataConfiguration.cs" />
+    <Compile Include="Overlays\Driving\OverlayCornerData\CornerDataOverlay.cs" />
+    <Compile Include="Overlays\Driving\OverlayTrackMap\TrackMapOverlay.cs" />
     <Compile Include="Overlays\Pitwall\OverlayDualSenseXFree\DualSenseXFreeOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayLapDeltaTrace\LapDeltaTraceConfiguration.cs" />
     <Compile Include="Overlays\Driving\OverlayLapDeltaTrace\LapDeltaTraceOverlay.cs" />
@@ -83,6 +90,7 @@
     <Compile Include="Overlays\Pitwall\OverlayDualSenseX\DualSenseXOverlay.cs" />
     <Compile Include="Overlays\Pitwall\OverlayDualSenseX\DualSenseXResources.cs" />
     <Compile Include="Overlays\Pitwall\OverlayDualSenseX\TriggerHaptics.cs" />
+    <Compile Include="Overlays\Pitwall\OverlayGridTest\GridTestOverlay.cs" />
     <Compile Include="Overlays\Pitwall\OverlayHUDs\HUDsOverlay.cs" />
     <Compile Include="Overlays\Pitwall\OverlayRenderTest\RenderTestOverlay.cs" />
     <Compile Include="Overlays\Pitwall\OverlayACC\AccOverlay.cs" />
@@ -168,6 +176,5 @@
       <Name>Race Element.Util</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

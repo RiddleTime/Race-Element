@@ -8,7 +8,7 @@ using System.Drawing.Drawing2D;
 namespace RaceElement.HUD.ACC.Overlays.OverlayWind
 {
     [Overlay(Name = "Wind Direction", Description = "Shows wind direction relative to car heading.",
-        OverlayType = OverlayType.Release,
+        OverlayType = OverlayType.Drive,
         OverlayCategory = OverlayCategory.Track,
         Version = 1.00)]
     internal sealed class WindDirectionOverlay : AbstractOverlay
@@ -16,6 +16,15 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
         private readonly WindDirectionConfiguration _config = new WindDirectionConfiguration();
         private sealed class WindDirectionConfiguration : OverlayConfiguration
         {
+            [ConfigGrouping("Wind", "Adjust settings related to the wind")]
+            public WindGrouping Wind { get; set; } = new WindGrouping();
+            public sealed class WindGrouping
+            {
+                [ToolTip("Below this wind speed(km/h) the hud will hide itself.")]
+                [FloatRange(0f, 10f, 0.5f, 1)]
+                public float ShowThreshold { get; set; } = 0.5f;
+            }
+
             [ConfigGrouping("Shape", "Adjust the shape")]
             public ShapeGrouping Shape { get; set; } = new ShapeGrouping();
             public sealed class ShapeGrouping
@@ -51,6 +60,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
         }
 
         public sealed override void BeforeStop() => _background?.Dispose();
+
+        public override bool ShouldRender()
+        {
+            if (_config.Wind.ShowThreshold > pageGraphics.WindSpeed && !this.IsRepositioning)
+                return false;
+
+            return base.ShouldRender();
+        }
 
         public sealed override void Render(Graphics g)
         {

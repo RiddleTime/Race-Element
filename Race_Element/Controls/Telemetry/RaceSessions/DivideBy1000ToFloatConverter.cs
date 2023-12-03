@@ -10,7 +10,7 @@ namespace RaceElement.Controls.Telemetry.RaceSessions
         {
             if (value is int)
             {
-                float result = (int)value / 1000f;
+                double result = (int)value / 1000d;
                 return $"{result:F3}";
             }
             return string.Empty;

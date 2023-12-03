@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayLapDeltaBar
 {
-    [Overlay(Name = "Lap Delta Bar", Description = "A customizable Laptime Delta Bar", OverlayType = OverlayType.Release, Version = 1,
+    [Overlay(Name = "Lap Delta Bar", Description = "A customizable Laptime Delta Bar", OverlayType = OverlayType.Drive, Version = 1,
         OverlayCategory = OverlayCategory.Lap)]
     internal class LapDeltaOverlay : AbstractOverlay
     {

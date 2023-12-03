@@ -9,7 +9,7 @@ using static RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput.Tr
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
 {
-    [Overlay(Name = "Debug Output", Version = 1.00, OverlayType = OverlayType.Debug,
+    [Overlay(Name = "Debug Output", Version = 1.00, OverlayType = OverlayType.Pitwall,
         Description = "A panel showing live debug output.")]
     internal sealed class DebugOutputOverlay : AbstractOverlay
     {

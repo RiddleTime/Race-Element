@@ -8,6 +8,11 @@ using static RaceElement.Data.SetupConverter;
 
 namespace RaceElement.Data.ACC.Tyres
 {
+    /// <summary>
+    /// Tracks changes in tyre pressure like pressure loss but is aware of tyre sets.   
+    /// <br/><br/>
+    /// <i>Originally written by Mominon in abc2823be1740d7a8c911f34880bc7a01753fba2 -	Add TyresTracker to track pressure losses</i>
+    /// </summary>
     public class TyresTracker
     {
         public class TyresInfo
@@ -112,7 +117,7 @@ namespace RaceElement.Data.ACC.Tyres
                 PressureLoss = _lastPressureLosses
             };
 
-            Debug.WriteLine($"TyresTracker: TyresInfo changed: | PressureLoss: [{string.Join(", ", tyresInfo.PressureLoss)}]");
+            // Debug.WriteLine($"TyresTracker: TyresInfo changed: | PressureLoss: [{string.Join(", ", tyresInfo.PressureLoss)}]");
 
             OnTyresInfoChanged?.Invoke(this, tyresInfo);
         }
