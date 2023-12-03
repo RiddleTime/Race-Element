@@ -176,33 +176,5 @@
       <Name>Race Element.Util</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\barcelona-n.svg" />
-    <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\bathurst.svg" />
-    <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\brands-hatch-n.svg" />
-    <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\cota.svg" />
-    <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\donington.svg" />
-    <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\hungaroring-n.svg" />
-    <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\imola.svg" />
-    <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\indi.svg" />
-    <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\kyalami.svg" />
-    <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\laguna.svg" />
-    <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\misano-n.svg" />
-    <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\monza-n.svg" />
-    <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\nurburgring-n.svg" />
-    <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\oulton.svg" />
-    <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\paul-ricard-n.svg" />
-    <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\silverstone-n.svg" />
-    <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\snetterton.svg" />
-    <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\spa-n.svg" />
-    <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\suzuka.svg" />
-    <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\valencia.svg" />
-    <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\watkins.svg" />
-    <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\zandvoort.svg" />
-    <EmbeddedResource Include="Overlays\Driving\OverlayTrackMap\Maps\zolder-n.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Overlays\Driving\OverlayTrackMap\Maps\credits.txt" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

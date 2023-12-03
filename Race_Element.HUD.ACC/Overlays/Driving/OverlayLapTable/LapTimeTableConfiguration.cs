@@ -12,8 +12,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
             public bool ShowSectors { get; set; } = false;
 
             [ToolTip("Change the amount of visible rows in the table.")]
-            [IntRange(1, 10, 1)]
-            public int Rows { get; set; } = 3;
+            [IntRange(1, 12, 1)]
+            public int Rows { get; set; } = 4;
 
             [ToolTip("Changed the amount of corner roundering for each cell in the table.")]
             [IntRange (0, 12, 2)]
