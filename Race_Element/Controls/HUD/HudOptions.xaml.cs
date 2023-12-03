@@ -78,7 +78,7 @@ namespace RaceElement.Controls
                 if (!designTime)
                     try
                     {
-                        PopulateCategoryCombobox(comboOverlays, listOverlays, OverlayType.Release);
+                        PopulateCategoryCombobox(comboOverlays, listOverlays, OverlayType.Drive);
                         PopulateCategoryCombobox(comboDebugOverlays, listDebugOverlays, OverlayType.Pitwall);
                         BuildOverlayPanel();
 
@@ -491,7 +491,7 @@ namespace RaceElement.Controls
         {
             OverlaysACC.GenerateDictionary();
 
-            BuildOverlayListView(listOverlays, OverlayType.Release, (OverlayCategory)((ComboBoxItem)comboOverlays.SelectedItem).DataContext);
+            BuildOverlayListView(listOverlays, OverlayType.Drive, (OverlayCategory)((ComboBoxItem)comboOverlays.SelectedItem).DataContext);
             BuildOverlayListView(listDebugOverlays, OverlayType.Pitwall, (OverlayCategory)((ComboBoxItem)comboOverlays.SelectedItem).DataContext);
         }
 

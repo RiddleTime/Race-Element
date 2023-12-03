@@ -10,7 +10,7 @@ using System.Drawing.Text;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
 {
-    [Overlay(Name = "Steering", Version = 1.00, OverlayType = OverlayType.Release,
+    [Overlay(Name = "Steering", Version = 1.00, OverlayType = OverlayType.Drive,
         Description = "Displays the Steering Input.",
         OverlayCategory = OverlayCategory.Inputs)]
     internal sealed class SteeringOverlay : AbstractOverlay

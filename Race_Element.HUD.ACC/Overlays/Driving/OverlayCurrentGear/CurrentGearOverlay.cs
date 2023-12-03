@@ -14,7 +14,7 @@ using Unglide;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
 {
-    [Overlay(Name = "Current Gear", Version = 1.00, OverlayType = OverlayType.Release,
+    [Overlay(Name = "Current Gear", Version = 1.00, OverlayType = OverlayType.Drive,
         OverlayCategory = OverlayCategory.Driving,
     Description = "Shows the selected gear.")]
     internal sealed class CurrentGearOverlay : AbstractOverlay

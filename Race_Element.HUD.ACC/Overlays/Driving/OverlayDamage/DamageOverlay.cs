@@ -10,7 +10,7 @@ using System.Drawing.Text;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
 {
-    [Overlay(Name = "Damage", Version = 1.00, OverlayType = OverlayType.Release,
+    [Overlay(Name = "Damage", Version = 1.00, OverlayType = OverlayType.Drive,
         Description = "Total repair time is displayed in the center.\nSuspension damage is displayed in percentages, whilst bodywork damage is displayed in repair time.",
         OverlayCategory = OverlayCategory.Car)]
     internal sealed class DamageOverlay : AbstractOverlay

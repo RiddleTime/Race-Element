@@ -14,7 +14,7 @@ namespace RaceElement.HUD.Overlay.Internal
 
     public enum OverlayType
     {
-        Release,
+        Drive,
         Pitwall,
     }
 

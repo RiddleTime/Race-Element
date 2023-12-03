@@ -16,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
     [Overlay(Name = "Radar",
         Description = "Beta",
         Version = 1.00,
-        OverlayType = OverlayType.Release,
+        OverlayType = OverlayType.Drive,
         OverlayCategory = OverlayCategory.Driving
     )]
     internal sealed class RadarOverlay : AbstractOverlay

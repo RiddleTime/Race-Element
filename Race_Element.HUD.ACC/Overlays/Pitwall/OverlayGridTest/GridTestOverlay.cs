@@ -8,7 +8,7 @@ using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
 {
-    [Overlay(Name = "Grid Test", Description = "Testing of the grid", OverlayType = OverlayType.Release)]
+    [Overlay(Name = "Grid Test", Description = "Testing of the grid", OverlayType = OverlayType.Drive)]
     internal sealed class GridTestOverlay : AbstractOverlay
     {
         private readonly GridTestConfiguration _config = new GridTestConfiguration();

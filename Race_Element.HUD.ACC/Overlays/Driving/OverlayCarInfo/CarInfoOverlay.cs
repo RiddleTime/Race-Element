@@ -12,7 +12,7 @@ using System.Drawing.Drawing2D;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
 {
-    [Overlay(Name = "Car Info", Version = 1.00, OverlayType = OverlayType.Release,
+    [Overlay(Name = "Car Info", Version = 1.00, OverlayType = OverlayType.Drive,
         Description = "A panel showing the damage time. Optionally showing current tyre set, fuel per lap, exhaust temp and water temp.",
         OverlayCategory = OverlayCategory.Car)]
     internal sealed class CarInfoOverlay : AbstractOverlay

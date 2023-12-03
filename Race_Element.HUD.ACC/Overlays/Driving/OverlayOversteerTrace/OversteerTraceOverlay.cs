@@ -6,7 +6,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
 {
     [Overlay(Name = "Oversteer Trace", Version = 1.00,
         Description = "Live graph of oversteer in red and understeer in blue.",
-        OverlayType = OverlayType.Release,
+        OverlayType = OverlayType.Drive,
         OverlayCategory = OverlayCategory.Physics)]
     internal sealed class OversteerTraceOverlay : AbstractOverlay
     {

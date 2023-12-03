@@ -12,7 +12,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaTrace
     [Overlay(Name = "Lap Delta Trace",
         Description = "Shows a graph of the lap delta.",
         OverlayCategory = OverlayCategory.Lap,
-        OverlayType = OverlayType.Release,
+        OverlayType = OverlayType.Drive,
         Version = 1)]
     internal sealed class LapDeltaTraceOverlay : AbstractOverlay
     {
