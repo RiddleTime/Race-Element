@@ -185,7 +185,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
                 _storedLaps = LapTracker.Instance.Laps.OrderByDescending(x => x.Key).Take(_config.Table.Rows).ToList();
 
             int bestLapInLobby = -1;
-            if (broadCastRealTime.BestSessionLap != null)
+            if (broadCastRealTime.BestSessionLap.LaptimeMS.HasValue)
                 bestLapInLobby = broadCastRealTime.BestSessionLap.LaptimeMS.Value;
 
             int fastestLapIndex = LapTracker.Instance.Laps.GetFastestLapIndex();
