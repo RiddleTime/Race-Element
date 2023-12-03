@@ -17,7 +17,7 @@ using System.Windows;
 )]
 [assembly: AssemblyCompany("Element Future")]
 [assembly: AssemblyProduct("Race Element")]
-[assembly: AssemblyCopyright("Copyright 2023 © Reinier Klarenberg")]
+[assembly: AssemblyCopyright("Copyright 2024 © Reinier Klarenberg")]
 [assembly: AssemblyTrademark("Element Future")]
 [assembly: AssemblyCulture("")]
 
