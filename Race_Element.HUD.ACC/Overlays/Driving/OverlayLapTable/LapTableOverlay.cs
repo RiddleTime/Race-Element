@@ -287,7 +287,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
 
             if (!lap.Value.IsValid)
             {
-                if (sector >= lap.Value.InvalidatedSectorIndex + 1)
+                if (sector == lap.Value.InvalidatedSectorIndex + 1)
                     sectorCell.CachedBackground = _columnBackgroundsRed[column];
             }
 
