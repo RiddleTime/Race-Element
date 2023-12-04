@@ -240,7 +240,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
                 if (lap.Value.Time != -1)
                 {
                     TimeSpan best = TimeSpan.FromMilliseconds(lap.Value.Time);
-                    lapTimeValue = $"{best:mm\\:ss\\:fff}";
+                    lapTimeValue = $"{best:mm\\:ss\\.fff}";
                 }
 
                 DrawableTextCell lapTimeCell = (DrawableTextCell)_graphicsGrid.Grid[row][1];
