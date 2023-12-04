@@ -140,9 +140,9 @@ namespace RaceElement.Data.ACC.Tracker.Laps
                     {
 
 
-                        if (AccProcess.IsRunning)
+                        if (AccProcess.IsRunning && RaceSessionTracker.Instance.CurrentSession != null)
                         {
-                            Thread.Sleep(1000 / 10);
+                            Thread.Sleep(1000 / 20);
 
                             var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
 
@@ -153,12 +153,16 @@ namespace RaceElement.Data.ACC.Tracker.Laps
                             }
 
 
-                            // TOdo if current lap is inlap/outlap reset the lap data.
+                            if (CurrentLap?.InvalidatedSectorIndex == -1 && !pageGraphics.IsValidLap)
+                            {
+                                CurrentLap.InvalidatedSectorIndex = pageGraphics.CurrentSectorIndex;
+                                Debug.WriteLine($"invalidated lap in sector {CurrentLap.InvalidatedSectorIndex + 1}");
+                            }
 
                             // collect sector times.
                             if (CurrentSector != pageGraphics.CurrentSectorIndex)
                             {
-                                if (CurrentLap.Sector1 == -1 && CurrentSector != 0)
+                                if (CurrentLap?.Sector1 == -1 && CurrentSector != 0 || CurrentLap == null)
                                 {
                                     // simply don't collect, we're already into a lap and passed sector 1, can't properly calculate the sector times now.
                                 }

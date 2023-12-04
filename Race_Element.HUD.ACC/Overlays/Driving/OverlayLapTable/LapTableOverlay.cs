@@ -210,10 +210,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
             if (broadCastRealTime.BestSessionLap != null && broadCastRealTime.BestSessionLap.LaptimeMS.HasValue)
                 bestLapInLobby = broadCastRealTime.BestSessionLap.LaptimeMS.Value;
 
+
             int fastestLapIndex = LapTracker.Instance.Laps.GetFastestLapIndex();
             DbLapData bestLap = null;
             if (fastestLapIndex != -1)
-                bestLap = LapTracker.Instance.Laps[fastestLapIndex];
+                bestLap = LapTracker.Instance.Laps.FirstOrDefault(x => x.Value.Index == fastestLapIndex).Value;
 
             int fastestSector1 = LapTracker.Instance.Laps.GetFastestSector(1);
             int fastestSector2 = LapTracker.Instance.Laps.GetFastestSector(2);
@@ -256,9 +257,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
 
                 if (_config.Table.ShowSectors)
                 {
-                    UpdateSectorTime(row, 2, lap, lap.Value.Sector1, fastestSector1, bestLap == null ? int.MaxValue : bestLap.Sector1);
-                    UpdateSectorTime(row, 3, lap, lap.Value.Sector2, fastestSector2, bestLap == null ? int.MaxValue : bestLap.Sector2);
-                    UpdateSectorTime(row, 4, lap, lap.Value.Sector3, fastestSector3, bestLap == null ? int.MaxValue : bestLap.Sector3);
+                    UpdateSectorTime(row, 2, 1, lap, lap.Value.Sector1, fastestSector1, bestLap == null ? int.MaxValue : bestLap.Sector1);
+                    UpdateSectorTime(row, 3, 2, lap, lap.Value.Sector2, fastestSector2, bestLap == null ? int.MaxValue : bestLap.Sector2);
+                    UpdateSectorTime(row, 4, 3, lap, lap.Value.Sector3, fastestSector3, bestLap == null ? int.MaxValue : bestLap.Sector3);
                 }
 
                 row++;
@@ -272,22 +273,29 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
         /// </summary>
         /// <param name="row">the row in the graphics grid</param>
         /// <param name="column">the column in the graphics grid</param>
+        /// <param name="sector">the sector (1,2,3...)</param>
         /// <param name="lap">the actual lap</param>
         /// <param name="sectorTime">sector time</param>
         /// <param name="fastestSectorTime">sector time based on fastest sector time disregarding whether it's the best valid lap</param>
         /// <param name="bestSectorTime">sector time based on best valid lap</param>
-        private void UpdateSectorTime(int row, int column, KeyValuePair<int, DbLapData> lap, int sectorTime, int fastestSectorTime, int bestSectorTime)
+        private void UpdateSectorTime(int row, int column, int sector, KeyValuePair<int, DbLapData> lap, int sectorTime, int fastestSectorTime, int bestSectorTime)
         {
             DrawableTextCell sectorCell = (DrawableTextCell)_graphicsGrid.Grid[row][column];
             sectorCell.UpdateText(FormatSectorTime(sectorTime));
 
             sectorCell.CachedBackground = _columnBackgroundsValid[column];
 
+            if (!lap.Value.IsValid)
+            {
+                if (sector == lap.Value.InvalidatedSectorIndex + 1)
+                    sectorCell.CachedBackground = _columnBackgroundsRed[column];
+            }
+
+            if (sectorTime == bestSectorTime && lap.Value.IsValid)
+                sectorCell.CachedBackground = _columnBackgroundsGreen[column];
+
             if (sectorTime == fastestSectorTime && lap.Value.IsValid)
                 sectorCell.CachedBackground = _columnBackgroundsPurple[column];
-
-            if (sectorTime == bestSectorTime && sectorCell.CachedBackground != _columnBackgroundsValid[column])
-                sectorCell.CachedBackground = _columnBackgroundsGreen[column];
         }
 
         /// <summary>

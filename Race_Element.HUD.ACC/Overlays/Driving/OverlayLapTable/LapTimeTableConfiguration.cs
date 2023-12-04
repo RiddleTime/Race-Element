@@ -8,8 +8,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
         public TableGrouping Table { get; set; } = new TableGrouping();
         public class TableGrouping                                  
         {
+            public bool PotentialFastestLap { get; set; } = true;
+
             [ToolTip("Display Columns with sector times for each lap in the table.")]
-            public bool ShowSectors { get; set; } = false;
+            public bool ShowSectors { get; set; } = true;
 
             [ToolTip("Change the amount of visible rows in the table.")]
             [IntRange(1, 12, 1)]
