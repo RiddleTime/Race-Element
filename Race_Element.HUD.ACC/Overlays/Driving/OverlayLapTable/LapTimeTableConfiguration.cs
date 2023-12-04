@@ -6,10 +6,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
     {
         [ConfigGrouping("Table", "Change the behavior of the table")]
         public TableGrouping Table { get; set; } = new TableGrouping();
-        public class TableGrouping                                  
+        public class TableGrouping
         {
-            public bool PotentialFastestLap { get; set; } = true;
-
             [ToolTip("Display Columns with sector times for each lap in the table.")]
             public bool ShowSectors { get; set; } = true;
 
@@ -18,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
             public int Rows { get; set; } = 4;
 
             [ToolTip("Changed the amount of corner roundering for each cell in the table.")]
-            [IntRange (0, 12, 2)]
+            [IntRange(0, 12, 2)]
             public int Roundness { get; set; } = 2;
         }
 
