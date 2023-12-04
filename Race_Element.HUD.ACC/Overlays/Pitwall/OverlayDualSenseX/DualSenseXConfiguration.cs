@@ -30,7 +30,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
 
             [ToolTip("Sets the frequency of the traction control haptics.")]
             [IntRange(10, 150, 1)]
-            public int TcFrequency { get; set; } = 130;
+            public int TcFrequency { get; set; } = 90;
         }
 
 
