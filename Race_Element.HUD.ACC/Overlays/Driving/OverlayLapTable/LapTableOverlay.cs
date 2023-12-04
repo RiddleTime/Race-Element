@@ -293,8 +293,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
 
             if (sectorTime == bestSectorTime && lap.Value.IsValid)
                 sectorCell.CachedBackground = _columnBackgroundsGreen[column];
-
-            if (sectorTime == fastestSectorTime && lap.Value.IsValid)
+            else if (sectorTime == fastestSectorTime && lap.Value.IsValid)
                 sectorCell.CachedBackground = _columnBackgroundsPurple[column];
         }
 
