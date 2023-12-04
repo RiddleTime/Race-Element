@@ -204,7 +204,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
         {
             if (!_dataIsPreview)
                 _storedLaps = LapTracker.Instance.Laps.OrderByDescending(x => x.Key).Take(_config.Table.Rows).ToList();
-
             //if (_storedLaps.Count == 0) return;
 
             int bestLapInLobby = -1;
