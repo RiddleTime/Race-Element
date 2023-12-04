@@ -290,11 +290,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
                 if (sector == lap.Value.InvalidatedSectorIndex + 1)
                     sectorCell.CachedBackground = _columnBackgroundsRed[column];
             }
-
-            if (sectorTime == bestSectorTime && lap.Value.IsValid)
-                sectorCell.CachedBackground = _columnBackgroundsGreen[column];
-            else if (sectorTime == fastestSectorTime && lap.Value.IsValid)
-                sectorCell.CachedBackground = _columnBackgroundsPurple[column];
+            else
+            {
+                if (sectorTime == bestSectorTime)
+                    sectorCell.CachedBackground = _columnBackgroundsGreen[column];
+                else if (sectorTime == fastestSectorTime)
+                    sectorCell.CachedBackground = _columnBackgroundsPurple[column];
+            }
         }
 
         /// <summary>
