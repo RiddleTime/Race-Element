@@ -35,6 +35,10 @@ namespace RaceElement.Data.ACC.Database.LapDataDB
         public int Sector3 { get; set; } = -1;
 
         public bool IsValid { get; set; } = true;
+        /// <summary>
+        /// (0 = sector 1)
+        /// </summary>
+        public int InvalidatedSectorIndex = -1;
 
         public LapType LapType { get; set; } = LapType.ERROR;
 

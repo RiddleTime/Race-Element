@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace RaceElement.HUD.ACC.Overlays.OverlayOpponent
 {
 #if DEBUG
-    [Overlay(Name = "Opponent", Description = "Shows info about the car in front and behind.", OverlayType = OverlayType.Release, Version = 1.00)]
+    [Overlay(Name = "Opponent", Description = "Shows info about the car in front and behind.", OverlayType = OverlayType.Drive, Version = 1.00)]
 #endif
     internal class OpponentOverlay : AbstractOverlay
     {

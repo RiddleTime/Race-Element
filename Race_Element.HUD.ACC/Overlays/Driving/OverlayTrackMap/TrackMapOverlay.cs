@@ -17,7 +17,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackMap
     [Overlay(Name = "Track Map",
         Description = "Shows a track map",
         OverlayCategory = OverlayCategory.Track,
-        OverlayType = OverlayType.Release)]
+        OverlayType = OverlayType.Drive)]
 #endif
     internal sealed class TrackMapOverlay : AbstractOverlay
     {

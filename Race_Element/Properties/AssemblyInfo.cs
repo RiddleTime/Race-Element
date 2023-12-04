@@ -17,7 +17,7 @@ using System.Windows;
 )]
 [assembly: AssemblyCompany("Element Future")]
 [assembly: AssemblyProduct("Race Element")]
-[assembly: AssemblyCopyright("Copyright 2023 © Reinier Klarenberg")]
+[assembly: AssemblyCopyright("Copyright 2024 © Reinier Klarenberg")]
 [assembly: AssemblyTrademark("Element Future")]
 [assembly: AssemblyCulture("")]
 
@@ -42,6 +42,6 @@ using System.Windows;
 )]
 
 //      Major Version, Minor Version, Build Number, Revision
-[assembly: AssemblyVersion("0.3.0.0")]
-[assembly: AssemblyFileVersion("0.3.0.0")]
+[assembly: AssemblyVersion("0.3.0.2")]
+[assembly: AssemblyFileVersion("0.3.0.2")]
 [assembly: NeutralResourcesLanguage("")]

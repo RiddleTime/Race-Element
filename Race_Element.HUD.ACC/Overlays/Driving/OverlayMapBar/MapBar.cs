@@ -7,7 +7,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayMapBar
 #if DEBUG
     [Overlay(Name = "Map Bar",
         Description = "A circle showing all drivers on track",
-        OverlayType = OverlayType.Release,
+        OverlayType = OverlayType.Drive,
         OverlayCategory = OverlayCategory.Track
         )]
 #endif
