@@ -23,7 +23,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStandings
 {
 #if DEBUG
     [Overlay(Name = "Live Standings", Version = 1.00,
-    Description = "Shows race standings table for different car classes.", OverlayType = OverlayType.Release)]
+    Description = "Shows race standings table for different car classes.", OverlayType = OverlayType.Drive)]
 #endif
 
     public sealed class StandingsOverlay : AbstractOverlay

@@ -6,6 +6,7 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.3.0.2", "- Lap Table HUD: Clear data when a new session starts." },
             {"0.3.0.0", "- Added Corner Data HUD(Alpha version/early access), showing corner delta and optionally: minimum speed, average speed and max lateral g force."+
                         "\n- DualSenseX module now allows to set a custom port for DSX(6969 is default)."+
                         "\n- Lap table HUD: Reworked design and functionality, now shows personal fastest and best sectors based on valid laps."+

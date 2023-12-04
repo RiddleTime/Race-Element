@@ -1,4 +1,5 @@
 ﻿using RaceElement.Data.ACC.Database.LapDataDB;
+using RaceElement.Data.ACC.Session;
 using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -169,10 +170,30 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
                     _graphicsGrid.Grid[row][column] = cell;
                 }
             }
+
+            RaceSessionTracker.Instance.OnNewSessionStarted += OnNewSessionStarted;
+        }
+
+        private void OnNewSessionStarted(object sender, RaceElement.Data.ACC.Database.SessionData.DbRaceSession e)
+        {
+            ClearData();
+        }
+
+        private void ClearData()
+        {
+            for (int row = 1; row < this._graphicsGrid.Rows; row++)
+                for (int column = 0; column < this._graphicsGrid.Columns; column++)
+                {
+                    var cell = (DrawableTextCell)_graphicsGrid.Grid[row][column];
+                    cell.CachedBackground = this._columnBackgroundsValid[column];
+                    cell.UpdateText("");
+                }
         }
 
         public override void BeforeStop()
         {
+            RaceSessionTracker.Instance.OnNewSessionStarted -= OnNewSessionStarted;
+
             _graphicsGrid?.Dispose();
             _font?.Dispose();
             for (int i = 0; i < _columnBackgroundsValid.Length; i++)
@@ -183,6 +204,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
         {
             if (!_dataIsPreview)
                 _storedLaps = LapTracker.Instance.Laps.OrderByDescending(x => x.Key).Take(_config.Table.Rows).ToList();
+
+            //if (_storedLaps.Count == 0) return;
 
             int bestLapInLobby = -1;
             if (broadCastRealTime.BestSessionLap != null && broadCastRealTime.BestSessionLap.LaptimeMS.HasValue)
