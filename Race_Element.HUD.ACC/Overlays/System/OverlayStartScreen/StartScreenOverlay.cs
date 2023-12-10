@@ -20,6 +20,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
         public string Version { get; set; }
 
         private CachedBitmap _cachedBitmap;
+        private CachedBitmap _slider;
         private Tweener tweener;
         private DateTime tweenStart;
 
@@ -58,19 +59,44 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
                 font11.Dispose();
             }, opacity: 0);
 
+
+            int sliderWidth = 20;
+            _slider = new CachedBitmap(sliderWidth, Height, g =>
+            {
+                RectangleF rect = new RectangleF(0, 0, sliderWidth, Height);
+                GraphicsPath gradientPath = new GraphicsPath();
+                gradientPath.AddRectangle(rect);
+                PathGradientBrush pthGrBrush = new PathGradientBrush(gradientPath);
+                pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(0, 0, 0, 0) };
+                pthGrBrush.CenterColor = Color.FromArgb(80, 255, 0, 0);
+
+                g.FillRectangle(pthGrBrush, rect);
+            }, opacity: 0);
+
             tweener = new Tweener();
-            tweener.Tween(_cachedBitmap, new { Opacity = 1f }, 6).Ease(Ease.BackIn);
+            tweener.AddTween(tweener.Tween(_cachedBitmap, new { Opacity = 1f }, 1).Ease(Ease.BackIn));
+            tweener.AddTween(tweener.Tween(_slider, new { Opacity = 1f }, 2).Ease(Ease.ExpoIn));
             tweenStart = DateTime.Now;
         }
 
-        public override void BeforeStop() => _cachedBitmap?.Dispose();
+        public override void BeforeStop()
+        {
+            _cachedBitmap?.Dispose();
+            _slider?.Dispose();
+        }
 
         public override bool ShouldRender() => true;
 
+        private int sliderX = -20;
         public override void Render(Graphics g)
         {
             tweener.Update((float)DateTime.Now.Subtract(tweenStart).TotalSeconds);
             _cachedBitmap?.Draw(g);
+
+
+            if (sliderX > Width) sliderX = -20;
+            _slider.Draw(g, new Point(sliderX, 0));
+            sliderX += 10;
         }
     }
 }
