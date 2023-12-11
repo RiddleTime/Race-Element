@@ -3,18 +3,16 @@ using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
 using RaceElement.HUD.Overlay.Util;
-using RaceElement.Util.SystemExtensions;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayInputValues
 {
-    [Overlay(Name = "Input Values", Description = "Shows raw Throttle and Brake data.")]
+    [Overlay(Name = "Input Values",
+        Description = "Shows raw Throttle and Brake data.",
+        OverlayCategory = OverlayCategory.Inputs,
+        OverlayType = OverlayType.Drive
+        )]
     internal class InputValuesOverlay : AbstractOverlay
     {
         private readonly InputValuesConfiguration _config = new InputValuesConfiguration();
@@ -26,7 +24,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayInputValues
             public FormatGrouping Format { get; set; } = new FormatGrouping();
             public class FormatGrouping
             {
-                [IntRange(0, 2, 1)]
+                [IntRange(0, 3, 1)]
                 public int Decimals { get; set; } = 2;
             }
         }
