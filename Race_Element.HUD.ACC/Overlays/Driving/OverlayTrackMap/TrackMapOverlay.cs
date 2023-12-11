@@ -1,6 +1,6 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
-using Svg;
+//using Svg;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -45,33 +45,33 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackMap
             map?.Dispose();
         }
 
-        private void ProcessNodes(IEnumerable<SvgElement> nodes, SvgPaintServer colorServer)
-        {
-            foreach (var node in nodes)
-            {
-                if (node.Fill != SvgPaintServer.None) node.Fill = colorServer;
-                if (node.Color != SvgPaintServer.None) node.Color = colorServer;
-                if (node.Stroke != SvgPaintServer.None) node.Stroke = colorServer;
-                node.StrokeWidth = 1;
+        //private void ProcessNodes(IEnumerable<SvgElement> nodes, SvgPaintServer colorServer)
+        //{
+        //    foreach (var node in nodes)
+        //    {
+        //        if (node.Fill != SvgPaintServer.None) node.Fill = colorServer;
+        //        if (node.Color != SvgPaintServer.None) node.Color = colorServer;
+        //        if (node.Stroke != SvgPaintServer.None) node.Stroke = colorServer;
+        //        node.StrokeWidth = 1;
 
-                ProcessNodes(node.Descendants(), colorServer);
-            }
-        }
+        //        ProcessNodes(node.Descendants(), colorServer);
+        //    }
+        //}
 
         public override void Render(Graphics g)
         {
-            var names = Assembly.GetExecutingAssembly().GetManifestResourceNames().Where(x => x.EndsWith(".svg"));
+            //var names = Assembly.GetExecutingAssembly().GetManifestResourceNames().Where(x => x.EndsWith(".svg"));
 
-            var name = names.ElementAt(new Random().Next(0, names.Count() - 1));
+            //var name = names.ElementAt(new Random().Next(0, names.Count() - 1));
 
-            XmlDocument doc = new XmlDocument();
-            doc.Load(Assembly.GetExecutingAssembly().GetManifestResourceStream(name));
-            var svgDoc = SvgDocument.Open(doc);
-            svgDoc.Fill = new SvgColourServer(Color.FromArgb(130, 0, 0, 0));
-            ProcessNodes(svgDoc.Descendants(), new SvgColourServer(Color.White));
-            map = svgDoc.Draw();
+            //XmlDocument doc = new XmlDocument();
+            //doc.Load(Assembly.GetExecutingAssembly().GetManifestResourceStream(name));
+            //var svgDoc = SvgDocument.Open(doc);
+            //svgDoc.Fill = new SvgColourServer(Color.FromArgb(130, 0, 0, 0));
+            //ProcessNodes(svgDoc.Descendants(), new SvgColourServer(Color.White));
+            //map = svgDoc.Draw();
 
-            g.DrawImage(map, 0, 0, Width, Height);
+            //g.DrawImage(map, 0, 0, Width, Height);
 
         }
     }
