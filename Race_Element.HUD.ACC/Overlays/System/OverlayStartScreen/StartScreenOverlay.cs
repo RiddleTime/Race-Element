@@ -24,6 +24,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
         private Tweener tweener;
         private DateTime tweenStart;
 
+        private const int SliderWidth = 80;
+        private int sliderX = -SliderWidth;
+
         public StartScreenOverlay(Rectangle rectangle) : base(rectangle, "Start Screen")
         {
             this.X = rectangle.X;
@@ -59,18 +62,16 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
                 font11.Dispose();
             }, opacity: 0);
 
-
-            int sliderWidth = 20;
-            _slider = new CachedBitmap(sliderWidth, Height, g =>
+            _slider = new CachedBitmap(SliderWidth, Height, g =>
             {
-                RectangleF rect = new RectangleF(0, 0, sliderWidth, Height);
+                RectangleF rect = new RectangleF(0, 0, SliderWidth, Height);
                 GraphicsPath gradientPath = new GraphicsPath();
-                gradientPath.AddRectangle(rect);
+                gradientPath.AddEllipse(rect);
                 PathGradientBrush pthGrBrush = new PathGradientBrush(gradientPath);
-                pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(0, 0, 0, 0) };
-                pthGrBrush.CenterColor = Color.FromArgb(80, 255, 0, 0);
+                pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(0, 255, 0, 0) };
+                pthGrBrush.CenterColor = Color.FromArgb(70, 255, 0, 0);
 
-                g.FillRectangle(pthGrBrush, rect);
+                g.FillRoundedRectangle(pthGrBrush, new Rectangle(0, 0, SliderWidth, Height), 8);
             }, opacity: 0);
 
             tweener = new Tweener();
@@ -87,14 +88,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
 
         public override bool ShouldRender() => true;
 
-        private int sliderX = -20;
         public override void Render(Graphics g)
         {
             tweener.Update((float)DateTime.Now.Subtract(tweenStart).TotalSeconds);
             _cachedBitmap?.Draw(g);
-
-
-            if (sliderX > Width) sliderX = -20;
+            if (sliderX > Width - SliderWidth / 2) sliderX = -SliderWidth;
             _slider.Draw(g, new Point(sliderX, 0));
             sliderX += 10;
         }
