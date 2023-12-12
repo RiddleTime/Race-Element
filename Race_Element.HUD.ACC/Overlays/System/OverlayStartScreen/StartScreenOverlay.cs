@@ -34,7 +34,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
             this.Y = rectangle.Y;
             this.Width = 620;
             this.Height = 74;
-            this.RefreshRateHz = 40;
+            this.RefreshRateHz = 60;
         }
 
         public override void BeforeStart()
@@ -42,7 +42,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
             _cachedBackground = new CachedBitmap(this.Width, this.Height, g =>
             {
                 Rectangle rectangle = new Rectangle(0, 0, Width - 1, Height - 1);
-                using HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightUpwardDiagonal, Color.FromArgb(255, Color.Black), Color.FromArgb(170, Color.Black));
+                using HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightUpwardDiagonal, Color.FromArgb(255, Color.Black), Color.FromArgb(230, Color.Black));
                 g.FillRoundedRectangle(hatchBrush, rectangle, 8);
             }, opacity: 0);
 
@@ -85,7 +85,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
             }, opacity: 0);
 
             tweener = new Tweener();
-            tweener.AddTween(tweener.Tween(_cachedBackground, new { Opacity = 0.8f }, 2f).Ease(Ease.SineIn));
+            tweener.AddTween(tweener.Tween(_cachedBackground, new { Opacity = 1f }, 2f).Ease(Ease.SineIn));
             tweener.AddTween(tweener.Tween(_cachedText, new { Opacity = 0.95f }, 1.3f).Ease(Ease.ExpoIn));
             tweener.AddTween(tweener.Tween(_slider, new { Opacity = 1f }, 2f).Ease(Ease.ExpoIn));
             tweenStart = DateTime.Now;
@@ -108,7 +108,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
 
             if (sliderX > Width) sliderX = -SliderWidth;
             _slider?.Draw(g, new Point(sliderX, 0));
-            sliderX += 10;
+            sliderX += 16;
 
             _cachedText?.Draw(g);
         }
