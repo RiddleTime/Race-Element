@@ -1,6 +1,8 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
+using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -37,6 +39,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
         }
 
         private CachedBitmap _background;
+        private DrawableTextCell _textCell;
         private const int padding = 50;
 
         public WindDirectionOverlay(Rectangle rectangle) : base(rectangle, "Wind Direction")
@@ -55,11 +58,22 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
             int scaledPadding = (int)(padding * this.Scale);
             _background = new CachedBitmap(scaledSize + 1, scaledSize + 1, g =>
             {
+                Rectangle rect = new Rectangle(scaledPadding / 2, scaledPadding / 2, scaledSize - scaledPadding, scaledSize - scaledPadding);
+                using SolidBrush brush = new SolidBrush(Color.FromArgb(90, 0, 0, 0));
+                g.FillEllipse(brush, rect);
                 g.DrawEllipse(new Pen(Color.FromArgb(165, 0, 0, 0), 18 * this.Scale), new Rectangle(scaledPadding / 2, scaledPadding / 2, scaledSize - scaledPadding, scaledSize - scaledPadding));
             });
+
+            Font font = FontUtil.FontSegoeMono(15f * Scale);
+            Rectangle rect = new Rectangle(0, 0, scaledSize, scaledSize);
+            _textCell = new DrawableTextCell(rect, font);
         }
 
-        public sealed override void BeforeStop() => _background?.Dispose();
+        public sealed override void BeforeStop()
+        {
+            _background?.Dispose();
+            _textCell?.Dispose();
+        }
 
         public override bool ShouldRender()
         {
@@ -85,6 +99,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
 
             // draw angle where the wind is coming from
             g.DrawArc(new Pen(Brushes.Red, 8), rect, (float)relativeAngle - 180 - 35, 70);
+
+            _textCell?.UpdateText($"{pageGraphics.WindSpeed:F1}");
+            _textCell?.Draw(g, 1f / Scale);
         }
     }
 }
