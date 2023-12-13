@@ -16,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayInputValues
     internal class InputValuesOverlay : AbstractOverlay
     {
         private readonly InputValuesConfiguration _config = new InputValuesConfiguration();
-        private class InputValuesConfiguration : OverlayConfiguration
+        private sealed class InputValuesConfiguration : OverlayConfiguration
         {
             public InputValuesConfiguration() => AllowRescale = true;
 
@@ -24,6 +24,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayInputValues
             public FormatGrouping Format { get; set; } = new FormatGrouping();
             public class FormatGrouping
             {
+                [ToolTip("Change the amount of decimals shown.")]
                 [IntRange(0, 3, 1)]
                 public int Decimals { get; set; } = 2;
             }
@@ -85,7 +86,6 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayInputValues
                 g.DrawRoundedRectangle(pen, rect, (int)(2f * Scale));
             });
             _graphicsGrid.Grid[1][0] = _brakeCell;
-
 
             Width = (int)baseWidth;
             Height = (int)(baseHeight * 2f) + 1;
