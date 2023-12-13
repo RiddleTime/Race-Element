@@ -40,8 +40,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayInputValues
 
         public override void SetupPreviewData()
         {
-            pagePhysics.Gas = 99.86f;
-            pagePhysics.Brake = 0.012f;
+            pagePhysics.Gas = 0.9986f;
+            pagePhysics.Brake = 0.0127f;
         }
 
         public override void BeforeStart()
@@ -100,8 +100,11 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayInputValues
 
         public override void Render(Graphics g)
         {
-            _throttleCell.UpdateText($"{pagePhysics.Gas.ToString($"F{_config.Format.Decimals}")}");
-            _brakeCell.UpdateText($"{pagePhysics.Brake.ToString($"F{_config.Format.Decimals}")}");
+            _throttleCell.CachedBackground.Opacity = 0.7f + 0.3f * pagePhysics.Gas;
+            _throttleCell.UpdateText($"{(pagePhysics.Gas * 100f).ToString($"F{_config.Format.Decimals}")}");
+
+            _brakeCell.CachedBackground.Opacity = 0.7f + 0.3f * pagePhysics.Brake;
+            _brakeCell.UpdateText($"{(pagePhysics.Brake * 100f).ToString($"F{_config.Format.Decimals}")}");
             _graphicsGrid.Draw(g);
         }
     }
