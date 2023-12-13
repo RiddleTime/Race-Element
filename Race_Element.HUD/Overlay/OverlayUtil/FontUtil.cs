@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RaceElement.HUD.Overlay.OverlayUtil;
+using System;
 using System.Drawing;
 using System.Drawing.Text;
 using System.IO;
@@ -33,6 +34,19 @@ namespace RaceElement.HUD.Overlay.Util
         public static Font FontConthrax(float size)
         {
             return GetSpecialFont(size, "RaceElement.HUD.Fonts.ConthraxSb.ttf", "Conthrax Sb");
+        }
+
+        public static float MeasureWidth(Font font, string text)
+        {
+            float width = 0;
+
+            CachedBitmap c = new CachedBitmap(1, 1, g =>
+            {
+                width = g.MeasureString(text, font).Width;
+            });
+            c.Dispose();
+
+            return width;
         }
 
         private static Font GetSpecialFont(float size, string resourceName, string fontName)

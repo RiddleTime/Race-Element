@@ -6,6 +6,8 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.3.0.4", "- Added Input Values HUD: Showing raw throttle and brake values"+
+                        "\n- Wind Direction HUD: Now shows wind speed in km/h in the center."},
             {"0.3.0.2", "- Lap Table HUD:"+
                         "\n   - Clear graphics grid when a new session starts."+
                         "\n   - Add sector based lap invalidation."+

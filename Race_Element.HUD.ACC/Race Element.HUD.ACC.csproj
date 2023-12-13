@@ -49,9 +49,6 @@
     <PackageReference Include="ScottPlot">
       <Version>4.1.68</Version>
     </PackageReference>
-    <PackageReference Include="Svg">
-      <Version>3.4.4</Version>
-    </PackageReference>
     <PackageReference Include="System.Buffers" Version="4.5.1" />
     <PackageReference Include="System.Collections.Immutable" Version="7.0.0" />
     <PackageReference Include="System.Memory" Version="4.5.5" />
@@ -74,6 +71,7 @@
     <Compile Include="Overlays\Driving\OverlayCornerData\CornerDataCollector.cs" />
     <Compile Include="Overlays\Driving\OverlayCornerData\CornerDataConfiguration.cs" />
     <Compile Include="Overlays\Driving\OverlayCornerData\CornerDataOverlay.cs" />
+    <Compile Include="Overlays\Driving\OverlayInputValues\InputValuesOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayTrackMap\TrackMapOverlay.cs" />
     <Compile Include="Overlays\Pitwall\OverlayDualSenseXFree\DualSenseXFreeOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayLapDeltaTrace\LapDeltaTraceConfiguration.cs" />
