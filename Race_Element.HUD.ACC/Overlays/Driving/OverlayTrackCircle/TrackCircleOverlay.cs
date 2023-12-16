@@ -1,4 +1,5 @@
 ﻿using RaceElement.Data.ACC.EntryList;
+using RaceElement.Data.ACC.Session;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -19,6 +20,14 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
         private sealed class TrackCircleConfiguration : OverlayConfiguration
         {
             public TrackCircleConfiguration() => AllowRescale = true;
+
+            [ConfigGrouping("View", "Adjust track circle settings.")]
+            public ViewingGroup Viewing { get; set; } = new ViewingGroup();
+            public sealed class ViewingGroup
+            {
+                [ToolTip("Show the Track Circle HUD when spectating.")]
+                public bool Spectator { get; set; } = true;
+            }
         }
         private const int dimension = 400;
 
@@ -58,6 +67,14 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
         public override void BeforeStop()
         {
             _background?.Dispose();
+        }
+
+        public override bool ShouldRender()
+        {
+            if (_config.Viewing.Spectator && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
+                return true;
+
+            return base.ShouldRender();
         }
 
         public override void Render(Graphics g)
@@ -101,11 +118,12 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
                 float size = 26;
                 Rectangle rect = new Rectangle((int)(center.X - size / 2f), (int)(center.Y - size / 2f), (int)size, (int)size);
 
-                g.DrawArc(inPitlane ? penRed : isSpeedZero ? penYellow : pen, circleRect, -90 + 360 * carProgression - 1, .5f);
+                bool isViewingCar = broadCastRealTime.FocusedCarIndex == item.Key;
+                g.DrawArc(inPitlane ? Pens.WhiteSmoke : isSpeedZero ? penYellow : isViewingCar ? penRed : pen, circleRect, -90 + 360 * carProgression - 1, .5f);
                 using Brush brush = new SolidBrush(Color.FromArgb(150, 0, 0, 0));
 
                 g.FillEllipse(brush, rect);
-                Brush textBrush = inPitlane ? Brushes.Red : isSpeedZero ? Brushes.Yellow : Brushes.White;
+                Brush textBrush = inPitlane ? Brushes.White : isSpeedZero ? Brushes.Yellow : Brushes.White;
                 g.DrawStringWithShadow($"{item.Value.RealtimeCarUpdate.Position}", _font, textBrush, rect, stringFormat);
             }
         }
