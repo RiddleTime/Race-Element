@@ -38,7 +38,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
 
         public TrackCircleOverlay(Rectangle rectangle) : base(rectangle, "Track Circle")
         {
-            RefreshRateHz = 2;
+            RefreshRateHz = 3;
         }
 
         public override void BeforeStart()
@@ -112,25 +112,34 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
 
                 bool inPitlane = item.Value.RealtimeCarUpdate.CarLocation == Broadcast.CarLocationEnum.Pitlane;
 
-                bool isSpeedZero = item.Value.RealtimeCarUpdate.Kmh < 33;
+                bool islowSpeed = item.Value.RealtimeCarUpdate.Kmh < 33;
 
-                int offset = (int)((inPitlane ? 120 : isSpeedZero ? 140 : 20) * Scale);
+                int offset = (int)((inPitlane ? 140 : islowSpeed ? 150 : 20) * Scale);
 
                 Point center = PointOnCircle((dimension * Scale - offset) / 2f, -90 + 360 * carProgression, origin);
                 float size = 26;
+
+                string text = $"{item.Value.RealtimeCarUpdate.Position}";
+                if (inPitlane || islowSpeed)
+                {
+                    text = $"{item.Value.CarInfo?.RaceNumber}";
+                    size = 40;
+                }
+
                 Rectangle rect = new Rectangle((int)(center.X - size / 2f), (int)(center.Y - size / 2f), (int)size, (int)size);
 
                 bool isViewingCar = broadCastRealTime.FocusedCarIndex == item.Key;
-                g.DrawArc(inPitlane ? penPits : isSpeedZero ? penYellow : isViewingCar ? penRed : pen, circleRect, -90 + 360 * carProgression - 1, .5f);
+                g.DrawArc(inPitlane ? penPits : islowSpeed ? penYellow : isViewingCar ? penRed : pen, circleRect, -90 + 360 * carProgression - 1, .5f);
                 using Brush brush = new SolidBrush(Color.FromArgb(150, 0, 0, 0));
 
                 g.FillEllipse(brush, rect);
-                Brush textBrush = inPitlane ? Brushes.White : isSpeedZero ? Brushes.Yellow : isViewingCar ? Brushes.Red : Brushes.White;
-                g.DrawStringWithShadow($"{item.Value.RealtimeCarUpdate.Position}", _font, textBrush, rect, stringFormat);
+                Brush textBrush = inPitlane ? Brushes.White : islowSpeed ? Brushes.Yellow : isViewingCar ? Brushes.Red : Brushes.White;
+
+                g.DrawStringWithShadow(text, _font, textBrush, rect, stringFormat);
             }
         }
 
-        public static Point PointOnCircle(float radius, float angleInDegrees, PointF origin)
+        private Point PointOnCircle(float radius, float angleInDegrees, PointF origin)
         {
             // Convert from degrees to radians via multiplication by PI/180        
             float x = (float)(radius * Math.Cos(angleInDegrees * Math.PI / 180F)) + origin.X;
