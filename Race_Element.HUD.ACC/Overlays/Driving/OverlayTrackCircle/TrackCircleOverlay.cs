@@ -1,7 +1,5 @@
-﻿using RaceElement.Data.ACC.Database;
-using RaceElement.Data.ACC.EntryList;
+﻿using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.Session;
-using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -33,8 +31,6 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
             }
         }
         private const int dimension = 400;
-
-        private readonly Dictionary<int, float> _Progression = new Dictionary<int, float>();
 
         private CachedBitmap _background;
         private Font _font;
@@ -110,6 +106,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
             using Pen penRed = new Pen(Brushes.Red, penWidth);
             using Pen penYellow = new Pen(Brushes.Yellow, penWidth);
             using Pen penPits = new Pen(Brushes.Cyan, penWidth / 2);
+            using Pen penSector = new Pen(Brushes.Aquamarine, penWidth);
 
             Rectangle circleRect = new Rectangle((int)(penWidth), (int)(penWidth), (int)(dimension * Scale - penWidth * 2), (int)(dimension * Scale - penWidth * 2));
             g.DrawArc(pen, circleRect, 269, 2);
@@ -117,8 +114,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
             var currentTrack = GetCurrentTrack();
             if (currentTrack != null)
                 for (int i = 0; i < currentTrack.Sectors.Count; i++)
-                    g.DrawArc(pen, circleRect, 270 + 359.5f * currentTrack.Sectors[i], 1);
-
+                    g.DrawArc(penSector, circleRect, 270 + 359.5f * currentTrack.Sectors[i], 1);
 
 
             using StringFormat stringFormat = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
@@ -127,15 +123,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
             data.Reverse();
             foreach (var item in data)
             {
-                float carProgression = 0;
-                if (!_Progression.TryGetValue(item.Key, out carProgression))
-                    _Progression.Add(item.Key, carProgression);
-
-                _Progression[item.Key] = item.Value.RealtimeCarUpdate.SplinePosition;
-                carProgression = _Progression[item.Key];
-
+                float carProgression = item.Value.RealtimeCarUpdate.SplinePosition;
                 bool inPitlane = item.Value.RealtimeCarUpdate.CarLocation == Broadcast.CarLocationEnum.Pitlane;
-
                 bool islowSpeed = item.Value.RealtimeCarUpdate.Kmh < 33;
 
                 int offset = (int)((inPitlane ? 140 : islowSpeed ? 150 : 20) * Scale);
