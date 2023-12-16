@@ -12,7 +12,7 @@ namespace ACCManager.Data.ACC.Tracks.Data
         public override string FullName => "Circuit of the Americas";
         public override int TrackLength => 5513;
 
-        public override List<float> Sectors => new List<float>() { };
+        public override List<float> Sectors => new List<float>() { 0.236f, 0.647f };
 
         public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
         {

@@ -12,7 +12,7 @@ namespace ACCManager.Data.ACC.Tracks.Data
         public override string FullName => "Monza Circuit";
         public override int TrackLength => 5793;
 
-        public override List<float> Sectors => new List<float>() { };
+        public override List<float> Sectors => new List<float>() { 0.334f, 0.661f };
 
         public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
         {

@@ -12,7 +12,7 @@ namespace ACCManager.Data.ACC.Tracks.Data
         public override string FullName => "Brands Hatch Circuit";
         public override int TrackLength => 3908;
 
-        public override List<float> Sectors => new List<float>() { };
+        public override List<float> Sectors => new List<float>() { 0.287f, 0.563f };
 
         public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
         {

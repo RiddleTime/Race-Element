@@ -12,7 +12,7 @@ namespace ACCManager.Data.ACC.Tracks.Data
         public override string FullName => "Autodromo Enzo e Dino Ferrari";
         public override int TrackLength => 4959;
 
-        public override List<float> Sectors => new List<float>() { };
+        public override List<float> Sectors => new List<float>() { 0.247f, 0.552f };
 
         public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
         {

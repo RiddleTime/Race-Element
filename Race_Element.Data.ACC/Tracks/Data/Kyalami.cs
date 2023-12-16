@@ -12,7 +12,7 @@ namespace ACCManager.Data.ACC.Tracks.Data
         public override string FullName => "Kyalami Grand Prix Circuit";
         public override int TrackLength => 4522;
 
-        public override List<float> Sectors => new List<float>() { };
+        public override List<float> Sectors => new List<float>() { 0.316f, 0.710f };
 
         public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
         {
