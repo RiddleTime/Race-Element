@@ -6,6 +6,7 @@ namespace RaceElement.Controls
     {
         internal readonly static Dictionary<string, string> Notes = new Dictionary<string, string>()
         {
+            {"0.3.0.6", "Shift Indicator HUD: Now flashes after upshift percentage has been reached." },
             {"0.3.0.4", "- Added Input Values HUD: Showing raw throttle and brake values"+
                         "\n- Wind Direction HUD: Now shows wind speed in km/h in the center."},
             {"0.3.0.2", "- Lap Table HUD:"+

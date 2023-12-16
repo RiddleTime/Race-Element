@@ -9,6 +9,7 @@ using System.Drawing.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Unglide;
+using System.Diagnostics;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 {
@@ -34,6 +35,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
         private List<(float, Color)> _colors;
         private List<CachedBitmap> _cachedColorBars;
+
+        private Tweener _upShiftTweener;
+        private Tween _upShiftTween;
+        private DateTime _tweenStart;
 
         /// <summary>
         /// Used to display the early and upshift RPM in text.
@@ -122,6 +127,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
                     g.DrawRoundedRectangle(new Pen(Color.FromArgb(190, Color.Yellow), 5 * Scale), new Rectangle(0, 0, (int)(Width * this.Scale - 1), (int)(Height * this.Scale - 1)), cornerRadius);
                 });
             }
+
+            _upShiftTweener = new Tweener();
+            _upShiftTween = new Tween();
+
+            _tweenStart = DateTime.Now;
         }
 
         public sealed override void BeforeStop()
@@ -228,6 +238,22 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
                 foreach ((float, Color) colorRange in _colors)
                     if (percent > colorRange.Item1)
                         index = _colors.IndexOf(colorRange);
+
+                // tween the opacity of the color bar when upshift time!
+                if (percent > _colors[_colors.Count - 1].Item1)
+                {
+                    if (_upShiftTween.Paused || _upShiftTween.TimeRemaining == 0)
+                    {
+                        _cachedColorBars[_colors.Count - 1].Opacity = 1f;
+                        _upShiftTween = _upShiftTweener.Tween(_cachedColorBars[_colors.Count - 1], new { Opacity = 0.2f }, 0.15f).Ease(Ease.ExpoOut);
+                        _tweenStart = DateTime.Now;
+                    }
+                    else
+                    {
+                        _upShiftTweener.Update((float)DateTime.Now.Subtract(_tweenStart).TotalSeconds);
+                    }
+                }
+
 
                 double adjustedPercent = (currentRpm - _config.Bar.HideRpm) / (maxRpm - _config.Bar.HideRpm);
                 var barDrawWidth = (int)(_config.Bar.Width * adjustedPercent);
