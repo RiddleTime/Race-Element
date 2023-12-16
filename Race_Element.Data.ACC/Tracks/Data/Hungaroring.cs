@@ -12,6 +12,8 @@ namespace ACCManager.Data.ACC.Tracks.Data
         public override string FullName => "Hungaroring";
         public override int TrackLength => 4381;
 
+        public override List<float> Sectors => new List<float>() { };
+
         public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
         {
             { new FloatRangeStruct(0.117462f, 0.1763413f), (1, string.Empty) },

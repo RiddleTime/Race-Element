@@ -12,6 +12,8 @@ namespace ACCManager.Data.ACC.Tracks.Data
         public override string FullName => "Oulton Park";
         public override int TrackLength => 4307;
 
+        public override List<float> Sectors => new List<float>() { };
+
         public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
         {
               { new FloatRangeStruct(0.03764982f, 0.09288816f), (1, "Old Hall Corner")},

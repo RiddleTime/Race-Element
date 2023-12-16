@@ -12,6 +12,8 @@ namespace ACCManager.Data.ACC.Tracks.Data
         public override string FullName => "Indianapolis Motor Speedway";
         public override int TrackLength => 4167;
 
+        public override List<float> Sectors => new List<float>() { };
+
         public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
         {
             { new FloatRangeStruct(0.1243783f, 0.1692718f), (1, string.Empty) },

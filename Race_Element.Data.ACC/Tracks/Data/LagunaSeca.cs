@@ -12,6 +12,8 @@ namespace ACCManager.Data.ACC.Tracks.Data
         public override string FullName => "Weathertech Raceway Laguna Seca";
         public override int TrackLength => 3602;
 
+        public override List<float> Sectors => new List<float>() { 0.25f, 0.63f };
+
         public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
         {
             { new FloatRangeStruct(0.00000001f, 0.05178322f), (1, string.Empty)},

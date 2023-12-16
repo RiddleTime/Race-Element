@@ -12,6 +12,8 @@ namespace ACCManager.Data.ACC.Tracks.Data
         public override string FullName => "Circuit de Barcelona-Catalunya";
         public override int TrackLength => 4655;
 
+        public override List<float> Sectors => new List<float>() { 0.348f, 0.730f };
+
         public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
         {
             { new FloatRangeStruct(0.1577717f, 0.1954681f), (1, "Elf") },

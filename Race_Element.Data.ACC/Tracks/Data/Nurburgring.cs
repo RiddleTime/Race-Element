@@ -13,6 +13,8 @@ namespace ACCManager.Data.ACC.Tracks.Data
         public override string FullName => "Nürburgring";
         public override int TrackLength => 5137;
 
+        public override List<float> Sectors => new List<float>() { };
+
         // https://www.paradigmshiftracing.com/uploads/4/8/2/6/48261497/nurburgring-map_orig.png
         public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
         {

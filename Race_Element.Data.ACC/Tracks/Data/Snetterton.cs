@@ -12,6 +12,8 @@ namespace ACCManager.Data.ACC.Tracks.Data
         public override string FullName => "Snetterton Circuit";
         public override int TrackLength => 4779;
 
+        public override List<float> Sectors => new List<float>() { };
+
         public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
         {
               { new FloatRangeStruct(0.05055097f, 0.1186151f), (1, "Riches")},

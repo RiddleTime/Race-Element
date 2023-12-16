@@ -21,6 +21,7 @@ namespace RaceElement.Data.ACC.Tracks
             /// (int, string) => (corner number, corner name). -1 will only show "name", use for straights.
             /// </summary>
             public abstract Dictionary<FloatRangeStruct, (int, string)> CornerNames { get; }
+            public abstract List<float> Sectors { get; }
         }
 
         private static readonly List<AbstractTrackData> _tracks = new List<AbstractTrackData>();

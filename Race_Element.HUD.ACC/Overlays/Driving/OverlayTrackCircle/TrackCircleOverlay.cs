@@ -1,5 +1,7 @@
-﻿using RaceElement.Data.ACC.EntryList;
+﻿using RaceElement.Data.ACC.Database;
+using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.Session;
+using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -9,6 +11,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
 {
@@ -39,6 +42,11 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
         public TrackCircleOverlay(Rectangle rectangle) : base(rectangle, "Track Circle")
         {
             RefreshRateHz = 3;
+        }
+
+        public override void SetupPreviewData()
+        {
+            pageStatic.Track = "Laguna_Seca";
         }
 
         public override void BeforeStart()
@@ -77,9 +85,23 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
             return base.ShouldRender();
         }
 
+        internal AbstractTrackData GetCurrentTrack()
+        {
+            if (pageStatic.Track == string.Empty) return null;
+
+            return Tracks.Find(x => x.GameName == pageStatic.Track);
+        }
+
         public override void Render(Graphics g)
         {
             _background?.Draw(g, (int)(5 * Scale), (int)(5 * Scale), (int)((dimension - 10) * Scale), (int)((dimension - 10) * Scale));
+
+
+            g.CompositingQuality = CompositingQuality.HighQuality;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            g.TextRenderingHint = TextRenderingHint.AntiAlias;
+
 
             PointF origin = new PointF(Width / Scale / 2f, Height / Scale / 2f);
 
@@ -92,10 +114,12 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
             Rectangle circleRect = new Rectangle((int)(penWidth), (int)(penWidth), (int)(dimension * Scale - penWidth * 2), (int)(dimension * Scale - penWidth * 2));
             g.DrawArc(pen, circleRect, 269, 2);
 
-            g.CompositingQuality = CompositingQuality.HighQuality;
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            g.TextRenderingHint = TextRenderingHint.AntiAlias;
+            var currentTrack = GetCurrentTrack();
+            if (currentTrack != null)
+                for (int i = 0; i < currentTrack.Sectors.Count; i++)
+                    g.DrawArc(pen, circleRect, 270 + 359.5f * currentTrack.Sectors[i], 1);
+
+
 
             using StringFormat stringFormat = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
             var data = EntryListTracker.Instance.Cars;
