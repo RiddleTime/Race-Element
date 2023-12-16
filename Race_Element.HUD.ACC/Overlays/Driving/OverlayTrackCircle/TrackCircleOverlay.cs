@@ -18,7 +18,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
         {
             public TrackCircleConfiguration() => AllowRescale = true;
         }
-        private const int dimension = 200;
+        private const int dimension = 300;
 
         private readonly Dictionary<int, float> _Progression = new Dictionary<int, float>();
 
@@ -37,12 +37,12 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
 
             _background = new CachedBitmap(scaledDimension, scaledDimension, g =>
             {
-                float penWidth = 28f;
+                float penWidth = 35f;
                 Rectangle rect = new Rectangle((int)penWidth, (int)penWidth, (int)(scaledDimension - penWidth * 2), (int)(scaledDimension - penWidth * 2));
                 using Pen pen = new Pen(Brushes.Black, penWidth);
                 g.DrawArc(pen, rect, 0, 360);
             });
-            _font = FontUtil.FontSegoeMono(10);
+            _font = FontUtil.FontSegoeMono(11);
         }
 
         public override void BeforeStop()
@@ -57,6 +57,10 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
 
             PointF origin = new PointF(Width / Scale / 2f, Height / Scale / 2f);
 
+            float penWidth = 40f;
+            using Pen pen = new Pen(Brushes.White, penWidth);
+            g.DrawArc(pen, new Rectangle((int)penWidth, (int)penWidth, (int)(dimension - penWidth * 2), (int)(dimension - penWidth * 2)), 269, 2);
+
             using StringFormat stringFormat = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
             foreach (var item in EntryListTracker.Instance.Cars)
             {
@@ -67,12 +71,12 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
                 _Progression[item.Key] = item.Value.RealtimeCarUpdate.SplinePosition;
                 carProgression = _Progression[item.Key];
 
-                Point center = PointOnCircle((dimension - 60) * Scale / 2, -90 + 360 * carProgression, origin);
+                Point center = PointOnCircle((dimension - 80) * Scale / 2, -90 + 360 * carProgression, origin);
                 float size = 30;
                 Rectangle rect = new Rectangle((int)(center.X - size / 2f), (int)(center.Y - size / 2f), (int)size, (int)size);
                 g.DrawArc(item.Value.RealtimeCarUpdate.CarLocation == Broadcast.CarLocationEnum.Pitlane ? Pens.Red : Pens.White, rect, 0, 360);
 
-                g.DrawStringWithShadow($"{item.Value.CarInfo.RaceNumber}", _font, Brushes.White, rect, stringFormat);
+                g.DrawStringWithShadow($"{item.Value.RealtimeCarUpdate.Position}", _font, Brushes.White, rect, stringFormat);
             }
         }
 
