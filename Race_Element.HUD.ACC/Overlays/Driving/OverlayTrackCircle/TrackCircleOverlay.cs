@@ -38,7 +38,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
 
         public TrackCircleOverlay(Rectangle rectangle) : base(rectangle, "Track Circle")
         {
-            RefreshRateHz = 3;
+            RefreshRateHz = 2;
         }
 
         public override void BeforeStart()
@@ -87,6 +87,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
             using Pen pen = new Pen(Brushes.White, penWidth);
             using Pen penRed = new Pen(Brushes.Red, penWidth);
             using Pen penYellow = new Pen(Brushes.Yellow, penWidth);
+            using Pen penPits = new Pen(Brushes.Cyan, penWidth / 2);
+
             Rectangle circleRect = new Rectangle((int)(penWidth), (int)(penWidth), (int)(dimension * Scale - penWidth * 2), (int)(dimension * Scale - penWidth * 2));
             g.DrawArc(pen, circleRect, 269, 2);
 
@@ -119,11 +121,11 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
                 Rectangle rect = new Rectangle((int)(center.X - size / 2f), (int)(center.Y - size / 2f), (int)size, (int)size);
 
                 bool isViewingCar = broadCastRealTime.FocusedCarIndex == item.Key;
-                g.DrawArc(inPitlane ? Pens.WhiteSmoke : isSpeedZero ? penYellow : isViewingCar ? penRed : pen, circleRect, -90 + 360 * carProgression - 1, .5f);
+                g.DrawArc(inPitlane ? penPits : isSpeedZero ? penYellow : isViewingCar ? penRed : pen, circleRect, -90 + 360 * carProgression - 1, .5f);
                 using Brush brush = new SolidBrush(Color.FromArgb(150, 0, 0, 0));
 
                 g.FillEllipse(brush, rect);
-                Brush textBrush = inPitlane ? Brushes.White : isSpeedZero ? Brushes.Yellow : Brushes.White;
+                Brush textBrush = inPitlane ? Brushes.White : isSpeedZero ? Brushes.Yellow : isViewingCar ? Brushes.Red : Brushes.White;
                 g.DrawStringWithShadow($"{item.Value.RealtimeCarUpdate.Position}", _font, textBrush, rect, stringFormat);
             }
         }
