@@ -52,7 +52,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
                 using Pen pen = new Pen(pthGrBrush, penWidth);
                 g.DrawArc(pen, rect, 0, 360);
             });
-            _font = FontUtil.FontSegoeMono(11);
+            _font = FontUtil.FontSegoeMono(10);
         }
 
         public override void BeforeStop()
@@ -93,17 +93,16 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
 
                 bool inPitlane = item.Value.RealtimeCarUpdate.CarLocation == Broadcast.CarLocationEnum.Pitlane;
 
-                int offset = inPitlane ? 130 : 20;
+                bool isSpeedZero = item.Value.RealtimeCarUpdate.Kmh < 33;
 
-                Point center = PointOnCircle((dimension - offset) * Scale / 2, -90 + 360 * carProgression, origin);
+                int offset = (int)((inPitlane ? 120 : isSpeedZero ? 140 : 20) * Scale);
+
+                Point center = PointOnCircle((dimension * Scale - offset) / 2f, -90 + 360 * carProgression, origin);
                 float size = 26;
                 Rectangle rect = new Rectangle((int)(center.X - size / 2f), (int)(center.Y - size / 2f), (int)size, (int)size);
-                // g.DrawArc(item.Value.RealtimeCarUpdate.CarLocation == Broadcast.CarLocationEnum.Pitlane ? Pens.Red : Pens.White, rect, 0, 360);
-
-                bool isSpeedZero = item.Value.RealtimeCarUpdate.Kmh < 20;
 
                 g.DrawArc(inPitlane ? penRed : isSpeedZero ? penYellow : pen, circleRect, -90 + 360 * carProgression - 1, .5f);
-                using Brush brush = new SolidBrush(Color.FromArgb(170, 0, 0, 0));
+                using Brush brush = new SolidBrush(Color.FromArgb(150, 0, 0, 0));
 
                 g.FillEllipse(brush, rect);
                 Brush textBrush = inPitlane ? Brushes.Red : isSpeedZero ? Brushes.Yellow : Brushes.White;
