@@ -72,6 +72,7 @@
     <Compile Include="Overlays\Driving\OverlayCornerData\CornerDataConfiguration.cs" />
     <Compile Include="Overlays\Driving\OverlayCornerData\CornerDataOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayInputValues\InputValuesOverlay.cs" />
+    <Compile Include="Overlays\Driving\OverlayTrackCircle\TrackCircleOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayTrackMap\TrackMapOverlay.cs" />
     <Compile Include="Overlays\Pitwall\OverlayDualSenseXFree\DualSenseXFreeOverlay.cs" />
     <Compile Include="Overlays\Driving\OverlayLapDeltaTrace\LapDeltaTraceConfiguration.cs" />
