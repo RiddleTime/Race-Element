@@ -9,6 +9,7 @@ using System.Drawing.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Unglide;
+using System.Diagnostics;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 {
@@ -34,6 +35,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
         private List<(float, Color)> _colors;
         private List<CachedBitmap> _cachedColorBars;
+        private CachedBitmap _cachedFlashBar;
+
+        private Tweener _upShiftTweener;
+        private Tween _upShiftTween;
+        private DateTime _tweenStart;
 
         /// <summary>
         /// Used to display the early and upshift RPM in text.
@@ -74,16 +80,26 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
                     (_config.Upshift.Upshift / 100f, Color.FromArgb(_config.Colors.UpshiftOpacity, _config.Colors.UpshiftColor))
                 };
 
+
             _cachedColorBars = new List<CachedBitmap>();
             foreach (var color in _colors.Select(x => x.Item2))
             {
                 _cachedColorBars.Add(new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
                 {
                     Rectangle rect = new Rectangle(0, 1, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale));
-                    HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightUpwardDiagonal, color, Color.FromArgb(color.A - 50, color));
+                    HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightUpwardDiagonal, color, Color.FromArgb(color.A - 40, color));
                     g.FillRoundedRectangle(hatchBrush, rect, cornerRadius);
                 }));
             }
+
+            _cachedFlashBar = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
+            {
+                Color color = Color.FromArgb(_config.Colors.FlashOpacity, _config.Colors.FlashColor);
+                Rectangle rect = new Rectangle(0, 1, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale));
+                HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightUpwardDiagonal, color, Color.FromArgb(color.A - 40, color));
+                g.FillRoundedRectangle(hatchBrush, rect, cornerRadius);
+            }, opacity: 0f);
+
 
             _cachedBackground = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
             {
@@ -122,6 +138,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
                     g.DrawRoundedRectangle(new Pen(Color.FromArgb(190, Color.Yellow), 5 * Scale), new Rectangle(0, 0, (int)(Width * this.Scale - 1), (int)(Height * this.Scale - 1)), cornerRadius);
                 });
             }
+
+            _upShiftTweener = new Tweener();
+            _upShiftTween = new Tween();
+
+            _tweenStart = DateTime.Now;
         }
 
         public sealed override void BeforeStop()
@@ -129,6 +150,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             _cachedBackground?.Dispose();
             _cachedRpmLines?.Dispose();
             _cachedPitLimiterOutline?.Dispose();
+            _cachedFlashBar?.Dispose();
 
             if (_cachedColorBars != null)
                 foreach (CachedBitmap cachedBitmap in _cachedColorBars)
@@ -228,6 +250,26 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
                 foreach ((float, Color) colorRange in _colors)
                     if (percent > colorRange.Item1)
                         index = _colors.IndexOf(colorRange);
+
+                // tween the opacity of the color bar when upshift time!
+                if (percent > _colors[_colors.Count - 1].Item1)
+                {
+                    if (_upShiftTween.Paused || _upShiftTween.TimeRemaining == 0)
+                    {
+                        _cachedColorBars[_colors.Count - 1].Opacity = 1f;
+                        _cachedFlashBar.Opacity = 0;
+                        float duration = 1f / _config.Bar.FlashFrequency;
+                        _upShiftTween = _upShiftTweener.Tween(_cachedColorBars[_colors.Count - 1], new { Opacity = 0.1f }, duration).Ease(Ease.SineOut);
+                        _upShiftTweener.Tween(_cachedFlashBar, new { Opacity = 1f }, duration).Ease(Ease.SineIn);
+                        _tweenStart = DateTime.Now;
+                    }
+                    else
+                    {
+                        _upShiftTweener.Update((float)DateTime.Now.Subtract(_tweenStart).TotalSeconds);
+                    }
+
+                    _cachedFlashBar.Draw(g, 1, 0, _config.Bar.Width - 1, _config.Bar.Height - 1);
+                }
 
                 double adjustedPercent = (currentRpm - _config.Bar.HideRpm) / (maxRpm - _config.Bar.HideRpm);
                 var barDrawWidth = (int)(_config.Bar.Width * adjustedPercent);

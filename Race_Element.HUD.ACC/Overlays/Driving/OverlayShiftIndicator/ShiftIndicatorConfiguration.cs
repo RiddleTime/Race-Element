@@ -30,6 +30,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             [ToolTip("Sets the refresh rate.")]
             [IntRange(20, 70, 2)]
             public int RefreshRate { get; set; } = 50;
+
+            [ToolTip("Sets the frequency of the upshift flash.")]
+            [FloatRange(0.5f, 10f, 0.5f, 1)]
+            public float FlashFrequency { get; set; } = 5f;
         }
 
         [ConfigGrouping("Upshift Percentages", "Adjust the Early and Upshift percentages.\n" +
@@ -62,6 +66,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             public Color UpshiftColor { get; set; } = Color.FromArgb(255, 255, 4, 4);
             [IntRange(75, 255, 1)]
             public int UpshiftOpacity { get; set; } = 255;
+
+            public Color FlashColor { get; set; } = Color.FromArgb(255, 0, 131, 255);
+            [IntRange(75, 255, 1)]
+            public int FlashOpacity { get; set; } = 255;
         }
 
         public ShiftIndicatorConfiguration()
