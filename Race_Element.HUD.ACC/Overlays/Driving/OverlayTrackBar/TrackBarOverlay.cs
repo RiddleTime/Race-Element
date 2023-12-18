@@ -1,4 +1,5 @@
 ﻿using RaceElement.Data.ACC.EntryList;
+using RaceElement.Data.ACC.Session;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -24,6 +25,14 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
         private sealed class TrackBarConfiguration : OverlayConfiguration
         {
             public TrackBarConfiguration() { AllowRescale = true; }
+
+            [ConfigGrouping("View", "Adjust track circle settings.")]
+            public ViewingGroup Viewing { get; set; } = new ViewingGroup();
+            public sealed class ViewingGroup
+            {
+                [ToolTip("Show the Track Circle HUD when spectating.")]
+                public bool Spectator { get; set; } = true;
+            }
 
             [ConfigGrouping("Bar", "Adjust things like fidelity on the track bar.")]
             public BarGrouping Bar { get; set; } = new BarGrouping();
@@ -55,7 +64,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
 
             _cachedBackground = new CachedBitmap(BarRect.Width, BarRect.Height, g =>
             {
-                using Brush bg = new SolidBrush(Color.FromArgb(90, Color.Black));
+                using Brush bg = new SolidBrush(Color.FromArgb(130, Color.Black));
                 g.FillRoundedRectangle(bg, BarRect, 4);
             });
 
@@ -66,6 +75,14 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
         public override void BeforeStop()
         {
             _cachedBackground?.Dispose();
+        }
+
+        public override bool ShouldRender()
+        {
+            if (_config.Viewing.Spectator && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
+                return true;
+
+            return base.ShouldRender();
         }
 
         public override void Render(Graphics g)
@@ -123,10 +140,15 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
                 Pen pen = isSpectatingCar ? Pens.Red : isInPits ? Pens.Cyan : Pens.White;
                 if (!isInPits && !isSpectatingCar && entry.Value.RealtimeCarUpdate.Kmh < 33)
                     pen = Pens.Yellow;
-                g.DrawLine(pen, new Point(x, 0), new Point(x, BarRect.Height));
-                if (!isSpectatingCar)
-                    g.DrawStringWithShadow($"{entry.Value.RealtimeCarUpdate.Position}", font, Color.White, new Point(x, BarRect.Height / 2));
+                int y = isInPits ? 25 : 5;
+                g.DrawLine(pen, new Point(x, y), new Point(x, BarRect.Height - y));
 
+                if (!isSpectatingCar)
+                {
+                    using Brush brush = new SolidBrush(Color.FromArgb(120, Color.Black));
+                    g.FillRectangle(brush, new Rectangle(x + 1, y, 18, 15));
+                    g.DrawStringWithShadow($"{entry.Value.RealtimeCarUpdate.Position}", font, Color.White, new Point(x, y));
+                }
                 //Debug.WriteLine($"{entry.Value.RealtimeCarUpdate.SplinePosition:F2}");
             }
 
@@ -147,14 +169,14 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
 
                         int xFrom = BarRect.Width - (int)(BarRect.Width * percentageFrom);
                         int xTo = BarRect.Width - (int)(BarRect.Width * percentageTo);
-                        using Brush bg = new SolidBrush(Color.FromArgb(90, Color.White));
-                        Rectangle bounds = new Rectangle(xFrom, 10, xTo - xFrom, BarRect.Height - 20);
+                        using Brush bg = new SolidBrush(Color.FromArgb(100, Color.Black));
+                        Rectangle bounds = new Rectangle(xFrom, BarRect.Height / 2 + 20, xTo - xFrom, 40);
                         g.FillRoundedRectangle(bg, bounds, 10);
 
                         int centerX = (xTo + xFrom) / 2;
                         centerX.ClipMin(0);
                         centerX.ClipMax(BarRect.Width - 20);
-                        g.DrawStringWithShadow($"{corner.Value.Item1}", font, Color.White, new Point(centerX, 20));
+                        g.DrawStringWithShadow($"T{corner.Value.Item1}", font, Color.Orange, new Point(centerX, BarRect.Height / 2 + 30));
                     }
                 }
             }
