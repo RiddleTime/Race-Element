@@ -1,4 +1,5 @@
 ﻿using RaceElement.Data.ACC.EntryList;
+using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
@@ -17,9 +18,25 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
     internal sealed class TrackBarOverlay : AbstractOverlay
     {
 
+        private readonly TrackBarConfiguration _config = new TrackBarConfiguration();
+        private sealed class TrackBarConfiguration : OverlayConfiguration
+        {
+            public TrackBarConfiguration() { AllowRescale = true; }
+
+            [ConfigGrouping("Bar", "Adjust things like fidelity on the track bar.")]
+            public BarGrouping Bar { get; set; } = new BarGrouping();
+            public sealed class BarGrouping
+            {
+                [ToolTip("Adjust the visible range (5 up to 50%) of the track.")]
+                [IntRange(5, 50, 1)]
+                public int Range { get; set; } = 10;
+            }
+        }
+
+
         private Rectangle BarRect;
         private CachedBitmap _cachedBackground;
-        private float _range = 0.15f;
+        private float _range;
         private Font font;
 
         public TrackBarOverlay(Rectangle rectangle) : base(rectangle, "Track Bar")
@@ -29,6 +46,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
 
         public override void BeforeStart()
         {
+            _range = _config.Bar.Range / 100f;
+
             BarRect = new Rectangle(0, 0, 500, 100);
             font = FontUtil.FontSegoeMono(10);
 
@@ -99,6 +118,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
                 bool isInPits = entry.Value.RealtimeCarUpdate.CarLocation == Broadcast.CarLocationEnum.Pitlane;
 
                 Pen pen = isSpectatingCar ? Pens.Red : isInPits ? Pens.Cyan : Pens.White;
+                if (!isInPits && !isSpectatingCar && entry.Value.RealtimeCarUpdate.Kmh < 33)
+                    pen = Pens.Yellow;
                 g.DrawLine(pen, new Point(x, 0), new Point(x, BarRect.Height));
                 if (!isSpectatingCar)
                     g.DrawStringWithShadow($"{entry.Value.RealtimeCarUpdate.Position}", font, Color.White, new Point(x, BarRect.Height / 2));
