@@ -52,7 +52,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
 
         public TrackBarOverlay(Rectangle rectangle) : base(rectangle, "Track Bar")
         {
-            RefreshRateHz = 10;
+            RefreshRateHz = 8;
         }
 
         public override void BeforeStart()
