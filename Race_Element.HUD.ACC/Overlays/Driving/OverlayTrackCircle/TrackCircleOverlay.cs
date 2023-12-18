@@ -1,5 +1,6 @@
 ﻿using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.Session;
+using RaceElement.Data.ACC.Tracks;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -81,13 +82,6 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
             return base.ShouldRender();
         }
 
-        internal AbstractTrackData GetCurrentTrack()
-        {
-            if (pageStatic.Track == string.Empty) return null;
-
-            return Tracks.Find(x => x.GameName == pageStatic.Track);
-        }
-
         public override void Render(Graphics g)
         {
             _background?.Draw(g, (int)(5 * Scale), (int)(5 * Scale), (int)((dimension - 10) * Scale), (int)((dimension - 10) * Scale));
@@ -111,7 +105,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
             Rectangle circleRect = new Rectangle((int)(penWidth), (int)(penWidth), (int)(dimension * Scale - penWidth * 2), (int)(dimension * Scale - penWidth * 2));
             g.DrawArc(pen, circleRect, 269, 2);
 
-            var currentTrack = GetCurrentTrack();
+            var currentTrack = GetCurrentTrack(pageStatic.Track);
             if (currentTrack != null)
                 for (int i = 0; i < currentTrack.Sectors.Count; i++)
                     g.DrawArc(penSector, circleRect, 270 + 359.5f * currentTrack.Sectors[i], 1);

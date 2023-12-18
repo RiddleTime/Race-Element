@@ -3,6 +3,7 @@ using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
+using RaceElement.Util.SystemExtensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,6 +11,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
 {
@@ -53,7 +55,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
 
             _cachedBackground = new CachedBitmap(BarRect.Width, BarRect.Height, g =>
             {
-                g.FillRoundedRectangle(Brushes.Black, BarRect, 4);
+                using Brush bg = new SolidBrush(Color.FromArgb(90, Color.Black));
+                g.FillRoundedRectangle(bg, BarRect, 4);
             });
 
             Width = BarRect.Width;
@@ -125,6 +128,35 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
                     g.DrawStringWithShadow($"{entry.Value.RealtimeCarUpdate.Position}", font, Color.White, new Point(x, BarRect.Height / 2));
 
                 //Debug.WriteLine($"{entry.Value.RealtimeCarUpdate.SplinePosition:F2}");
+            }
+
+            AbstractTrackData current = GetCurrentTrack(pageStatic.Track);
+            if (current != null)
+            {
+                foreach (var corner in current.CornerNames)
+                {
+                    float min = spectatingPosition - halfRange;
+                    float max = spectatingPosition + halfRange;
+                    if (corner.Key.To > min && corner.Key.From < max)
+                    {
+                        float corrected1 = max - corner.Key.From;
+                        float corrected2 = max - corner.Key.To;
+
+                        float percentageFrom = (corrected1 * 100) / _range / 100;
+                        float percentageTo = (corrected2 * 100) / _range / 100;
+
+                        int xFrom = BarRect.Width - (int)(BarRect.Width * percentageFrom);
+                        int xTo = BarRect.Width - (int)(BarRect.Width * percentageTo);
+                        using Brush bg = new SolidBrush(Color.FromArgb(90, Color.White));
+                        Rectangle bounds = new Rectangle(xFrom, 10, xTo - xFrom, BarRect.Height - 20);
+                        g.FillRoundedRectangle(bg, bounds, 10);
+
+                        int centerX = (xTo + xFrom) / 2;
+                        centerX.ClipMin(0);
+                        centerX.ClipMax(BarRect.Width - 20);
+                        g.DrawStringWithShadow($"{corner.Value.Item1}", font, Color.White, new Point(centerX, 20));
+                    }
+                }
             }
 
         }
