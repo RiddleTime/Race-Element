@@ -93,11 +93,11 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
             if (EntryListTracker.Instance.Cars.Count == 0) return;
 
             var spectatingCar = EntryListTracker.Instance.Cars.First(x => x.Key == broadCastRealTime.FocusedCarIndex);
-            float spectatingPosition = spectatingCar.Value.RealtimeCarUpdate.SplinePosition;
+            float spectatingSplinePosition = spectatingCar.Value.RealtimeCarUpdate.SplinePosition;
 
             float halfRange = _range / 2f;
-            float minSpline = spectatingPosition - halfRange;
-            float maxSpline = spectatingPosition + halfRange;
+            float minSpline = spectatingSplinePosition - halfRange;
+            float maxSpline = spectatingSplinePosition + halfRange;
 
             bool adjustedUp = false;
             if (minSpline < 0)
@@ -147,8 +147,16 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
                 {
                     using Brush brush = new SolidBrush(Color.FromArgb(120, Color.Black));
                     g.FillRectangle(brush, new Rectangle(x + 1, y, 18, 15));
-                    g.DrawStringWithShadow($"{entry.Value.RealtimeCarUpdate.Position}", font, Color.White, new Point(x, y));
+
+                    Color textColor = Color.White;
+                    if (entry.Value.RealtimeCarUpdate.Laps < spectatingCar.Value.RealtimeCarUpdate.Laps && pos > spectatingSplinePosition)
+                        textColor = Color.Cyan;
+                    if (entry.Value.RealtimeCarUpdate.Laps > spectatingCar.Value.RealtimeCarUpdate.Laps)
+                        textColor = Color.Orange;
+
+                    g.DrawStringWithShadow($"{entry.Value.RealtimeCarUpdate.Position}", font, textColor, new Point(x, y));
                 }
+
                 //Debug.WriteLine($"{entry.Value.RealtimeCarUpdate.SplinePosition:F2}");
             }
 
@@ -157,8 +165,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
             {
                 foreach (var corner in current.CornerNames)
                 {
-                    float min = spectatingPosition - halfRange;
-                    float max = spectatingPosition + halfRange;
+                    float min = spectatingSplinePosition - halfRange;
+                    float max = spectatingSplinePosition + halfRange;
                     if (corner.Key.To > min && corner.Key.From < max)
                     {
                         float corrected1 = max - corner.Key.From;
@@ -171,12 +179,12 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
                         int xTo = BarRect.Width - (int)(BarRect.Width * percentageTo);
                         using Brush bg = new SolidBrush(Color.FromArgb(100, Color.Black));
                         Rectangle bounds = new Rectangle(xFrom, BarRect.Height / 2 + 20, xTo - xFrom, 40);
-                        g.FillRoundedRectangle(bg, bounds, 10);
+                        g.FillRoundedRectangle(bg, bounds, 8);
 
                         int centerX = (xTo + xFrom) / 2;
-                        centerX.ClipMin(0);
+                        centerX.ClipMin(10);
                         centerX.ClipMax(BarRect.Width - 20);
-                        g.DrawStringWithShadow($"T{corner.Value.Item1}", font, Color.Orange, new Point(centerX, BarRect.Height / 2 + 30));
+                        g.DrawStringWithShadow($"T{corner.Value.Item1}", font, Color.Orange, new Point(centerX - 10, BarRect.Height / 2 + 30));
                     }
                 }
             }
