@@ -99,7 +99,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
             using Pen pen = new Pen(Brushes.White, penWidth);
             using Pen penRed = new Pen(Brushes.Red, penWidth);
             using Pen penYellow = new Pen(Brushes.Yellow, penWidth);
-            using Pen penPits = new Pen(Brushes.Cyan, penWidth / 2);
+            using Pen penPits = new Pen(Brushes.Green, penWidth / 2);
             using Pen penSector = new Pen(Brushes.Aquamarine, penWidth);
 
             Rectangle circleRect = new Rectangle((int)(penWidth), (int)(penWidth), (int)(dimension * Scale - penWidth * 2), (int)(dimension * Scale - penWidth * 2));
