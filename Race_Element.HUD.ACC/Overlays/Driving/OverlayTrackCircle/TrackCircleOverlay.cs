@@ -30,11 +30,10 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
                 public bool Spectator { get; set; } = true;
             }
         }
-        private const int dimension = 400;
+        private const int Dimension = 400;
 
         private CachedBitmap _background;
         private Font _font;
-        private string _currentTrackName;
 
         public TrackCircleOverlay(Rectangle rectangle) : base(rectangle, "Track Circle")
         {
@@ -48,7 +47,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
 
         public override void BeforeStart()
         {
-            int scaledDimension = (int)(dimension * Scale);
+            int scaledDimension = (int)(Dimension * Scale);
             Width = scaledDimension;
             Height = scaledDimension;
 
@@ -85,7 +84,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
 
         public override void Render(Graphics g)
         {
-            _background?.Draw(g, (int)(5 * Scale), (int)(5 * Scale), (int)((dimension - 10) * Scale), (int)((dimension - 10) * Scale));
+            _background?.Draw(g, (int)(5 * Scale), (int)(5 * Scale), (int)((Dimension - 10) * Scale), (int)((Dimension - 10) * Scale));
 
 
             g.CompositingQuality = CompositingQuality.HighQuality;
@@ -103,7 +102,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
             using Pen penPits = new Pen(Brushes.Green, penWidth / 2);
             using Pen penSector = new Pen(Brushes.Aquamarine, penWidth);
 
-            Rectangle circleRect = new Rectangle((int)(penWidth), (int)(penWidth), (int)(dimension * Scale - penWidth * 2), (int)(dimension * Scale - penWidth * 2));
+            Rectangle circleRect = new Rectangle((int)(penWidth), (int)(penWidth), (int)(Dimension * Scale - penWidth * 2), (int)(Dimension * Scale - penWidth * 2));
             g.DrawArc(pen, circleRect, 269, 2);
 
             var currentTrack = GetCurrentTrackByFullName(broadCastTrackData.TrackName);
@@ -124,7 +123,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
 
                 int offset = (int)((inPitlane ? 140 : islowSpeed ? 150 : 20) * Scale);
 
-                Point center = PointOnCircle((dimension * Scale - offset) / 2f, -90 + 360 * carProgression, origin);
+                Point center = PointOnCircle((Dimension * Scale - offset) / 2f, -90 + 360 * carProgression, origin);
                 float size = 26;
 
                 string text = $"{item.Value.RealtimeCarUpdate.Position}";

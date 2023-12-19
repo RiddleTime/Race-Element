@@ -41,12 +41,10 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
             }
         }
 
-
         private Rectangle BarRect;
         private CachedBitmap _cachedBackground;
         private float _range;
         private Font font;
-        private string _currentTrackName;
 
         public TrackBarOverlay(Rectangle rectangle) : base(rectangle, "Track Bar")
         {
