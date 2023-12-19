@@ -41,6 +41,13 @@ namespace RaceElement.Data.ACC.Tracks
             }
         }
 
+        public static AbstractTrackData GetCurrentTrackByFullName(string fullName)
+        {
+            if (fullName == string.Empty) return null;
+
+            return Tracks.Find(x => x.FullName == fullName);
+        }
+
         public static AbstractTrackData GetCurrentTrack(string gameName)
         {
             if (gameName == string.Empty) return null;

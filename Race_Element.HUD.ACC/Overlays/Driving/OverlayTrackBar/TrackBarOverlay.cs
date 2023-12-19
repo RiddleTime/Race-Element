@@ -1,18 +1,14 @@
 ﻿using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.Session;
+using RaceElement.Data.ACC.Tracker;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.Util.SystemExtensions;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
@@ -50,6 +46,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
         private CachedBitmap _cachedBackground;
         private float _range;
         private Font font;
+        private string _currentTrackName;
 
         public TrackBarOverlay(Rectangle rectangle) : base(rectangle, "Track Bar")
         {
@@ -167,7 +164,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
                 //Debug.WriteLine($"{entry.Value.RealtimeCarUpdate.SplinePosition:F2}");
             }
 
-            AbstractTrackData current = GetCurrentTrack(pageStatic.Track);
+            AbstractTrackData current = GetCurrentTrackByFullName(broadCastTrackData.TrackName);
             if (current != null)
             {
                 foreach (var corner in current.CornerNames)

@@ -9,7 +9,7 @@ namespace ACCManager.Data.ACC.Tracks.Data
     {
         public override Guid Guid => new Guid("0c8d198c-608f-4beb-96f5-5eafb5d3ba6b");
         public override string GameName => "Laguna_Seca";
-        public override string FullName => "Weathertech Raceway Laguna Seca";
+        public override string FullName => "WeatherTech Raceway Laguna Seca";
         public override int TrackLength => 3602;
 
         public override List<float> Sectors => new List<float>() { 0.25f, 0.63f };

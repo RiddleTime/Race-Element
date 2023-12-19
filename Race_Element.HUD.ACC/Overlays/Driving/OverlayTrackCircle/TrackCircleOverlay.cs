@@ -1,12 +1,11 @@
 ﻿using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.Session;
-using RaceElement.Data.ACC.Tracks;
+using RaceElement.Data.ACC.Tracker;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
@@ -35,6 +34,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
 
         private CachedBitmap _background;
         private Font _font;
+        private string _currentTrackName;
 
         public TrackCircleOverlay(Rectangle rectangle) : base(rectangle, "Track Circle")
         {
@@ -67,6 +67,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
                 g.DrawArc(pen, rect, 0, 360);
             });
             _font = FontUtil.FontSegoeMono(10);
+
         }
 
         public override void BeforeStop()
@@ -105,7 +106,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
             Rectangle circleRect = new Rectangle((int)(penWidth), (int)(penWidth), (int)(dimension * Scale - penWidth * 2), (int)(dimension * Scale - penWidth * 2));
             g.DrawArc(pen, circleRect, 269, 2);
 
-            var currentTrack = GetCurrentTrack(pageStatic.Track);
+            var currentTrack = GetCurrentTrackByFullName(broadCastTrackData.TrackName);
             if (currentTrack != null)
                 for (int i = 0; i < currentTrack.Sectors.Count; i++)
                     g.DrawArc(penSector, circleRect, 270 + 359.5f * currentTrack.Sectors[i], 1);
