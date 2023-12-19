@@ -150,7 +150,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
 
                     Color textColor = Color.White;
 
-                    if (pageGraphics.SessionType == ACCSharedMemory.AcSessionType.AC_RACE)
+                    if (pageGraphics.SessionType == ACCSharedMemory.AcSessionType.AC_RACE || broadCastRealTime.SessionType == Broadcast.RaceSessionType.Race)
                     {
                         if (entry.Value.RealtimeCarUpdate.Laps < spectatingCar.Value.RealtimeCarUpdate.Laps)
                             textColor = Color.Cyan;
