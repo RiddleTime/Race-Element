@@ -54,11 +54,9 @@ namespace RaceElement.Controls.Liveries
                             targetFile.Delete();
 
                         FileStream write = targetFile.OpenWrite();
-                        DdsFile.Save(write, DdsFileFormat.BC7, DdsErrorMetric.Perceptual, BC7CompressionSpeed.Slow, true, true, ResamplingAlgorithm.SuperSampling, surface, ProgressChanged);
+                        DdsFile.Save(write, DdsFileFormat.BC7, DdsErrorMetric.Perceptual, BC7CompressionSpeed.Fast, true, true, ResamplingAlgorithm.SuperSampling, surface, ProgressChanged);
                         write.Close();
                         actualFileStream.Close();
-
-                        GC.Collect();
                     }
                 }
             }
@@ -77,7 +75,7 @@ namespace RaceElement.Controls.Liveries
                     KeyValuePair<string, string> kvp = pngsToDDS.ElementAt(i);
 
                     DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + livery.CarsRoot.CustomSkinName);
-                    if (customSkinDir != null && customSkinDir.Exists)
+                    if (customSkinDir.Exists)
                     {
                         //check if png exists
                         FileInfo[] foundFiles = customSkinDir.GetFiles(kvp.Value);
