@@ -23,7 +23,7 @@ namespace RaceElement.Controls
         public TitleBar()
         {
             InitializeComponent();
-            SetAppTitle();
+            this.Loaded += (s, e) => SetAppTitle();
             buttonExit.Click += ButtonExit_Click;
 
             buttonMinimize.Click += (s, e) => { App.Current.MainWindow.WindowState = WindowState.Minimized; };
@@ -156,20 +156,8 @@ namespace RaceElement.Controls
 
         public static string GetAssemblyFileVersion()
         {
-            try
-            {
-
-                System.Reflection.Assembly assembly = typeof(App).Assembly;
-                LogWriter.WriteToLog("assembly name: " + assembly.FullName);
-                LogWriter.WriteToLog("assembly loc: " + assembly.Location);
-                FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(Path.Combine(Environment.CurrentDirectory, assembly.GetName() + ".exe"));
-                return fileVersion.ProductVersion;
-            }
-            catch (Exception ex)
-            {
-                LogWriter.WriteToLog(ex);
-                return String.Empty;
-            }
+            FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
+            return fileVersion.FileVersion;
         }
 
         public void SetUpdateButton(string version, string releaseNotes, ReleaseAsset asset)

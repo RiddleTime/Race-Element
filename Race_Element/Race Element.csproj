@@ -30,6 +30,9 @@
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <Copyright>Copyright © Reinier Klarenberg 2024</Copyright>
+    <AssemblyVersion>0.3.0.9</AssemblyVersion>
+    <FileVersion>0.3.0.9</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -65,9 +68,12 @@
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
     <PlatformTarget>x64</PlatformTarget>
-    <AssemblyVersion>0.3.2.7</AssemblyVersion>
-    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-    <FileVersion>0.3.2.7</FileVersion>
+    <AssemblyVersion>0.3.0.9</AssemblyVersion>
+    <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
+    <FileVersion>0.3.0.9</FileVersion>
+    <Title>Race Element</Title>
+    <PackageIcon>race element icon 2.png</PackageIcon>
+    <Authors>Element Future</Authors>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug Minimized|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -135,6 +141,10 @@
   <ItemGroup>
     <None Include="..\.editorconfig">
       <Link>.editorconfig</Link>
+    </None>
+    <None Include="..\other resources\race element icon 2.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
     </None>
     <None Include="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
     <None Include="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\x64\DdsFileTypePlusIO_x64.dll" />

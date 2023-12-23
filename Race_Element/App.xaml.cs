@@ -6,6 +6,7 @@ using RaceElement.Controls;
 using RaceElement.HUD.ACC.Overlays.OverlayStartScreen;
 using RaceElement.Util;
 using RaceElement.Util.Settings;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Runtime;
@@ -33,7 +34,8 @@ namespace RaceElement
             var uiSettings = new UiSettings().Get();
 
             _startScreenOverlay = new StartScreenOverlay(new System.Drawing.Rectangle(uiSettings.X, uiSettings.Y, 150, 150));
-            _startScreenOverlay.Version = TitleBar.GetAssemblyFileVersion();
+            FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
+            _startScreenOverlay.Version = fileVersion.FileVersion;
             _startScreenOverlay.Start(false);
 
             var builder = Host.CreateDefaultBuilder().ConfigureServices((cxt, services) =>

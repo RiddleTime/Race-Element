@@ -30,7 +30,7 @@ namespace RaceElement
     /// </summary>
     public partial class MainWindow : Window
     {
-        internal static MainWindow Instance { get; private set; }
+        public static MainWindow Instance { get; private set; }
         public const double MaxOpacity = 1;
 
         private readonly UiSettings _uiSettings;
@@ -422,16 +422,8 @@ namespace RaceElement
 
         public static string GetAssemblyFileVersion()
         {
-            try
-            {
-                System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-                FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(assembly.Location);
-                return fileVersion.FileVersion;
-            }
-            catch (Exception)
-            {
-                return String.Empty;
-            }
+            FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
+            return fileVersion.FileVersion;
         }
 
         public enum DWMWINDOWATTRIBUTE
