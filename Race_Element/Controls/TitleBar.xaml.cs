@@ -1,7 +1,9 @@
 ﻿using Octokit;
 using RaceElement.Controls.Util.Updater;
+using RaceElement.Util;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -156,12 +158,16 @@ namespace RaceElement.Controls
         {
             try
             {
-                System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-                FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(assembly.Location);
-                return fileVersion.FileVersion;
+
+                System.Reflection.Assembly assembly = typeof(App).Assembly;
+                LogWriter.WriteToLog("assembly name: " + assembly.FullName);
+                LogWriter.WriteToLog("assembly loc: " + assembly.Location);
+                FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(Path.Combine(Environment.CurrentDirectory, assembly.GetName() + ".exe"));
+                return fileVersion.ProductVersion;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogWriter.WriteToLog(ex);
                 return String.Empty;
             }
         }

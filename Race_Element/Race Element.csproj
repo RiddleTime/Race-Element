@@ -1,24 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Costura.Fody.5.7.0\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.5.7.0\build\Costura.Fody.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DEA7B2CA-611A-4CB8-BEDA-988F3EA11AF9}</ProjectGuid>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
     <RootNamespace>RaceElement</RootNamespace>
     <AssemblyName>RaceElement</AssemblyName>
-    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -40,28 +26,12 @@
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <Prefer32Bit>true</Prefer32Bit>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
@@ -73,9 +43,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <DelaySign>false</DelaySign>
@@ -95,60 +62,24 @@
   <PropertyGroup>
     <TargetZone>Custom</TargetZone>
   </PropertyGroup>
-  <PropertyGroup />
-  <PropertyGroup />
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+    <PlatformTarget>x64</PlatformTarget>
+    <AssemblyVersion>0.3.2.7</AssemblyVersion>
+    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    <FileVersion>0.3.2.7</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug Minimized|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug Minimized\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.1.0" />
-    <PackageReference Include="Costura.Fody" Version="5.7.0" PrivateAssets="All" />
-    <PackageReference Include="DdsFileTypePlusHack" Version="1.0.4" />
-    <PackageReference Include="Fody" Version="6.8.0" PrivateAssets="all" />
+    <PackageReference Include="DdsFileTypePlusHack" Version="1.2.1" />
     <PackageReference Include="LiteDB" Version="5.0.17" />
     <PackageReference Include="MaterialDesignColors" Version="2.1.4" />
     <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
-    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.EventSource" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Primitives" Version="7.0.0" />
-    <PackageReference Include="Microsoft.NETCore.Platforms" Version="7.0.4" />
-    <PackageReference Include="Microsoft.Win32.Primitives" Version="4.3.0" />
-    <PackageReference Include="MouseKeyHook" Version="5.7.1" />
-    <PackageReference Include="NETStandard.Library" Version="2.0.3" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="obs-websocket-dotnet" Version="5.0.0.3" />
     <PackageReference Include="Octokit" Version="8.0.1" />
     <PackageReference Include="Quartz" Version="3.6.3" />
@@ -158,424 +89,57 @@
     <PackageReference Include="ScottPlot.WPF" Version="4.1.68" />
     <PackageReference Include="SharpCompress" Version="0.34.1" />
     <PackageReference Include="SLOBSharp" Version="1.1.4" />
-    <PackageReference Include="System.AppContext" Version="4.3.0" />
-    <PackageReference Include="System.Buffers" Version="4.5.1" />
-    <PackageReference Include="System.Collections" Version="4.3.0" />
-    <PackageReference Include="System.Collections.Concurrent" Version="4.3.0" />
-    <PackageReference Include="System.Collections.Immutable" Version="7.0.0" />
-    <PackageReference Include="System.Console" Version="4.3.1" />
-    <PackageReference Include="System.Diagnostics.Debug" Version="4.3.0" />
-    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="7.0.2" />
-    <PackageReference Include="System.Diagnostics.Tools" Version="4.3.0" />
-    <PackageReference Include="System.Diagnostics.Tracing" Version="4.3.0" />
-    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
-    <PackageReference Include="System.Globalization" Version="4.3.0" />
-    <PackageReference Include="System.Globalization.Calendars" Version="4.3.0" />
-    <PackageReference Include="System.IO" Version="4.3.0" />
-    <PackageReference Include="System.IO.Compression" Version="4.3.0" />
-    <PackageReference Include="System.IO.Compression.ZipFile" Version="4.3.0" />
-    <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
-    <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
-    <PackageReference Include="System.Linq" Version="4.3.0" />
-    <PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
-    <PackageReference Include="System.Memory" Version="4.5.5" />
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="System.Net.Primitives" Version="4.3.1" />
-    <PackageReference Include="System.Net.Sockets" Version="4.3.0" />
-    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
-    <PackageReference Include="System.ObjectModel" Version="4.3.0" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Reactive" Version="6.0.0" />
-    <PackageReference Include="System.Reflection" Version="4.3.0" />
-    <PackageReference Include="System.Reflection.Extensions" Version="4.3.0" />
-    <PackageReference Include="System.Reflection.Primitives" Version="4.3.0" />
-    <PackageReference Include="System.Resources.ResourceManager" Version="4.3.0" />
-    <PackageReference Include="System.Runtime" Version="4.3.1" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
-    <PackageReference Include="System.Runtime.Extensions" Version="4.3.1" />
     <PackageReference Include="System.Runtime.Handles" Version="4.3.0" />
-    <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
-    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
-    <PackageReference Include="System.Runtime.Numerics" Version="4.3.0" />
-    <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
-    <PackageReference Include="System.Security.Cryptography.Encoding" Version="4.3.0" />
-    <PackageReference Include="System.Security.Cryptography.Primitives" Version="4.3.0" />
-    <PackageReference Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" />
-    <PackageReference Include="System.Text.Encoding" Version="4.3.0" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
-    <PackageReference Include="System.Text.Encoding.Extensions" Version="4.3.0" />
-    <PackageReference Include="System.Text.Encodings.Web" Version="7.0.0" />
-    <PackageReference Include="System.Text.Json" Version="7.0.3" />
-    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
-    <PackageReference Include="System.Threading" Version="4.3.0" />
-    <PackageReference Include="System.Threading.Channels" Version="7.0.0" />
-    <PackageReference Include="System.Threading.Tasks" Version="4.3.0" />
-    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
-    <PackageReference Include="System.Threading.Timer" Version="4.3.0" />
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-    <PackageReference Include="System.Xml.ReaderWriter" Version="4.3.1" />
-    <PackageReference Include="System.Xml.XDocument" Version="4.3.0" />
     <PackageReference Include="Websocket.Client" Version="4.6.1" />
     <PackageReference Include="WebSocketSharp-netstandard" Version="1.0.1" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.EventSource" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Primitives" Version="8.0.0" />
+    <PackageReference Include="Microsoft.NETCore.Platforms" Version="8.0.0-preview.7.23375.6" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Collections.Immutable" Version="8.0.0" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="8.0.0" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="8.0.0" />
+    <PackageReference Include="System.Text.Json" Version="8.0.0" />
+    <PackageReference Include="System.Threading.Channels" Version="8.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-  </ItemGroup>
-  <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="Controls\Info\Info.xaml.cs">
-      <DependentUpon>Info.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Info\License.xaml.cs">
-      <DependentUpon>License.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Info\ReleaseNotes.cs" />
-    <Compile Include="Controls\HUD\ConfigurationControls.cs" />
-    <Compile Include="Controls\HUD\Controls\ControlFactory.cs" />
-    <Compile Include="Controls\HUD\Controls\ValueControls\ByteValueControl.cs" />
-    <Compile Include="Controls\HUD\Controls\ValueControls\ColorValueControl.cs" />
-    <Compile Include="Controls\HUD\Controls\ValueControls\EnumValueControl.cs" />
-    <Compile Include="Controls\HUD\Controls\ValueControls\FloatValueControl.cs" />
-    <Compile Include="Controls\HUD\Controls\ValueControls\IntegerValueControl.cs" />
-    <Compile Include="Controls\HUD\Controls\ValueControls\IValueControl.cs" />
-    <Compile Include="Controls\HUD\Controls\ValueControls\BooleanValueControl.cs" />
-    <Compile Include="Controls\HUD\HudOptions.xaml.cs">
-      <DependentUpon>HudOptions.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\HUD\HudTab.xaml.cs">
-      <DependentUpon>HudTab.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\HUD\PreviewCache.cs" />
-    <Compile Include="Controls\Liveries\AfterImport.xaml.cs">
-      <DependentUpon>AfterImport.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Liveries\DDSgenerator.xaml.cs">
-      <DependentUpon>DDSgenerator.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Liveries\DDSutil.cs" />
-    <Compile Include="Controls\Liveries\LiveriesTab.xaml.cs">
-      <DependentUpon>LiveriesTab.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Liveries\LiveryBrowser.xaml.cs">
-      <DependentUpon>LiveryBrowser.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Liveries\LiveryCreator.xaml.cs">
-      <DependentUpon>LiveryCreator.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Liveries\LiveryDeleter.xaml.cs">
-      <DependentUpon>LiveryDeleter.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Liveries\LiveryDisplayer.xaml.cs">
-      <DependentUpon>LiveryDisplayer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Liveries\LiveryExporter.xaml.cs">
-      <DependentUpon>LiveryExporter.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Liveries\LiveryImporter.cs" />
-    <Compile Include="Controls\Liveries\LiveryTagCreator.xaml.cs">
-      <DependentUpon>LiveryTagCreator.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Liveries\LiveryTagger.xaml.cs">
-      <DependentUpon>LiveryTagger.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Liveries\LiveryTagging.cs" />
-    <Compile Include="Controls\Settings\AccManagerSettings\AccManagerSettingsTab.xaml.cs">
-      <DependentUpon>AccManagerSettingsTab.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Settings\AccSettings\AccCameraSettings.xaml.cs">
-      <DependentUpon>AccCameraSettings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Settings\AccSettings\AccHudSettings.xaml.cs">
-      <DependentUpon>AccHudSettings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Settings\AccSettings\AccLiverySettings.xaml.cs">
-      <DependentUpon>AccLiverySettings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Settings\AccSettings\AccSettingsTab.xaml.cs">
-      <DependentUpon>AccSettingsTab.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Settings\AccSettings\AccServerListSettings.xaml.cs">
-      <DependentUpon>AccServerListSettings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Settings\AccSettings\ReplaySettings.xaml.cs">
-      <DependentUpon>ReplaySettings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Settings\Hardware.xaml.cs">
-      <DependentUpon>Hardware.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Settings\SettingsTab.xaml.cs">
-      <DependentUpon>SettingsTab.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Settings\Streaming.xaml.cs">
-      <DependentUpon>Streaming.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Setup\FlowDocUtil\DocUtil.cs" />
-    <Compile Include="Controls\Setup\FlowDocUtil\FlowDocCompareSetupRenderer.cs" />
-    <Compile Include="Controls\Setup\SetupBrowser.xaml.cs">
-      <DependentUpon>SetupBrowser.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Setup\FlowDocUtil\FlowDocSetupRenderer.cs" />
-    <Compile Include="Controls\Setup\SetupComparer.xaml.cs">
-      <DependentUpon>SetupComparer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Setup\SetupEditor.xaml.cs">
-      <DependentUpon>SetupEditor.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Telemetry\RaceSessions\DivideBy1000ToFloatConverter.cs" />
-    <Compile Include="Controls\Telemetry\RaceSessions\FormattedFloatConverter.cs" />
-    <Compile Include="Controls\Telemetry\RaceSessions\LapTypeConverter.cs" />
-    <Compile Include="Controls\Telemetry\RaceSessions\MillisecondsToFormattedTimeSpanString.cs" />
-    <Compile Include="Controls\Telemetry\RaceSessions\Plots\BrakeTempsPlot.cs" />
-    <Compile Include="Controls\Telemetry\RaceSessions\Plots\InputsPlot.cs" />
-    <Compile Include="Controls\Telemetry\RaceSessions\Plots\LateralGvsWheelSlipPlot.cs" />
-    <Compile Include="Controls\Telemetry\RaceSessions\Plots\PlotUtil.cs" />
-    <Compile Include="Controls\Telemetry\RaceSessions\Plots\SpeedGearPlot.cs" />
-    <Compile Include="Controls\Telemetry\RaceSessions\Plots\TractionCirclePlot.cs" />
-    <Compile Include="Controls\Telemetry\RaceSessions\Plots\TyrePressurePlot.cs" />
-    <Compile Include="Controls\Telemetry\RaceSessions\Plots\TyreTempsPlot.cs" />
-    <Compile Include="Controls\Telemetry\RaceSessions\Plots\WheelSlipPlot.cs" />
-    <Compile Include="Controls\Telemetry\RaceSessions\RaceSessionBrowser.xaml.cs">
-      <DependentUpon>RaceSessionBrowser.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Telemetry\RaceSessions\TrackMap\TrackMap.xaml.cs">
-      <DependentUpon>TrackMap.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Util\ContextMenuHelper.cs" />
-    <Compile Include="Controls\Util\ImageControlCreator.cs" />
-    <Compile Include="Controls\Setup\SetupImporter.xaml.cs">
-      <DependentUpon>SetupImporter.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Setup\SetupsTab.xaml.cs">
-      <DependentUpon>SetupsTab.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Telemetry\TelemetryTab.xaml.cs">
-      <DependentUpon>TelemetryTab.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\TitleBar.xaml.cs">
-      <DependentUpon>TitleBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Tools\FuelCalculator.xaml.cs">
-      <DependentUpon>FuelCalculator.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Tools\ToolsTabs.xaml.cs">
-      <DependentUpon>ToolsTabs.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Util\Updater\Updater.cs" />
-    <Compile Include="LiveryParser\CarsJson.cs" />
-    <Compile Include="LiveryParser\PaintDetailsJson.cs" />
-    <Page Include="Controls\Info\Info.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Info\License.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\HUD\HudOptions.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\HUD\HudTab.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Liveries\AfterImport.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Liveries\DDSgenerator.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Liveries\LiveriesTab.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Liveries\LiveryBrowser.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Liveries\LiveryCreator.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Liveries\LiveryDeleter.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Liveries\LiveryDisplayer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Liveries\LiveryExporter.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Liveries\LiveryTagCreator.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Liveries\LiveryTagger.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Settings\AccManagerSettings\AccManagerSettingsTab.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Settings\AccSettings\AccCameraSettings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Settings\AccSettings\AccHudSettings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Settings\AccSettings\AccLiverySettings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Settings\AccSettings\AccSettingsTab.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Settings\AccSettings\AccServerListSettings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Settings\AccSettings\ReplaySettings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Settings\Hardware.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Settings\SettingsTab.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Settings\Streaming.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Setup\SetupBrowser.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Setup\SetupComparer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Setup\SetupEditor.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Setup\SetupImporter.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Setup\SetupRenderer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Setup\SetupsTab.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Telemetry\RaceSessions\RaceSessionBrowser.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Telemetry\RaceSessions\TrackMap\TrackMap.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Telemetry\TelemetryTab.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\TitleBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Tools\FuelCalculator.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Tools\ToolsTabs.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Controls\Setup\SetupRenderer.xaml.cs">
-      <DependentUpon>SetupRenderer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="MaterialDesignThemes.Overrides.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <None Include="..\.editorconfig">
       <Link>.editorconfig</Link>
     </None>
+    <None Include="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
+    <None Include="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\x64\DdsFileTypePlusIO_x64.dll" />
     <Resource Include="Fonts\ConthraxSb.ttf" />
     <None Include="key.snk" />
-    <None Include="Properties\app.manifest" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">
@@ -590,44 +154,70 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="costura32\DdsFileTypePlusIO_x86.dll" />
-    <EmbeddedResource Include="costura64\DdsFileTypePlusIO_x64.dll" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="race-element-icon-2.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\race element icon 2.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Race_Element.Broadcast\Race Element.Broadcast.csproj">
-      <Project>{840220BD-8469-4A04-A6EC-1ED2BC743EFB}</Project>
-      <Name>Race Element.Broadcast</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Race_Element.Data.ACC\Race Element.Data.ACC.csproj">
-      <Project>{BB693CEB-CD96-4EB6-9F13-110D3CCECFFE}</Project>
-      <Name>Race Element.Data.ACC</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Race_Element.Hardware\Race Element.Hardware.csproj">
-      <Project>{8A7A4857-2F0A-4E85-98C5-3EA1228A8CE2}</Project>
-      <Name>Race Element.Hardware</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Race_Element.HUD.ACC\Race Element.HUD.ACC.csproj">
-      <Project>{F1699F70-54A1-49F2-896D-B70B1EDABF74}</Project>
-      <Name>Race Element.HUD.ACC</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Race_Element.HUD\Race Element.HUD.csproj">
-      <Project>{3717A55E-4629-40ED-9C93-24058D9EF18C}</Project>
-      <Name>Race Element.HUD</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Race_Element.SharedMemory\Race Element.SharedMemory.csproj">
-      <Project>{9F9BE520-14C4-4AB6-8119-5E14BCCA9A0F}</Project>
-      <Name>Race Element.SharedMemory</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Race_Element.Util\Race Element.Util.csproj">
-      <Project>{AAB23116-299B-415B-8305-96CB86148CE7}</Project>
-      <Name>Race Element.Util</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\Race_Element.Broadcast\Race Element.Broadcast.csproj" />
+    <ProjectReference Include="..\Race_Element.Data.ACC\Race Element.Data.ACC.csproj" />
+    <ProjectReference Include="..\Race_Element.Hardware\Race Element.Hardware.csproj" />
+    <ProjectReference Include="..\Race_Element.HUD.ACC\Race Element.HUD.ACC.csproj" />
+    <ProjectReference Include="..\Race_Element.HUD\Race Element.HUD.csproj" />
+    <ProjectReference Include="..\Race_Element.SharedMemory\Race Element.SharedMemory.csproj" />
+    <ProjectReference Include="..\Race_Element.Util\Race Element.Util.csproj" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\x64\DdsFileTypePlusIO_x64.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\x64\DdsFileTypePlusIO_x64.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\x64\DdsFileTypePlusIO_x64.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\x64\DdsFileTypePlusIO_x64.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\x64\DdsFileTypePlusIO_x64.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\x64\DdsFileTypePlusIO_x64.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
+  </ItemGroup>
 </Project>

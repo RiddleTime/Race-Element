@@ -54,7 +54,7 @@ namespace RaceElement.Controls.Liveries
                             targetFile.Delete();
 
                         FileStream write = targetFile.OpenWrite();
-                        DdsFile.Save(write, DdsFileFormat.BC7, DdsErrorMetric.Perceptual, BC7CompressionMode.Slow, true, true, ResamplingAlgorithm.SuperSampling, surface, ProgressChanged);
+                        DdsFile.Save(write, DdsFileFormat.BC7, DdsErrorMetric.Perceptual, BC7CompressionSpeed.Slow, true, true, ResamplingAlgorithm.SuperSampling, surface, ProgressChanged);
                         write.Close();
                         actualFileStream.Close();
 

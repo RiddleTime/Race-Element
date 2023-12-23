@@ -293,41 +293,52 @@ namespace RaceElement
 
         private void MainWindow_StateChanged(object sender, EventArgs e)
         {
-            switch (this.WindowState)
+            try
             {
-                case WindowState.Minimized:
+                Dispatcher.CurrentDispatcher.Invoke(() =>
+                {
+                    switch (this.WindowState)
                     {
-                        if (_accManagerSettings.Get().MinimizeToSystemTray)
-                        {
-                            _notifyIcon.Visible = true;
+                        case WindowState.Minimized:
+                            {
+                                if (_accManagerSettings.Get().MinimizeToSystemTray)
+                                {
+                                    _notifyIcon.Visible = true;
 
-                            ShowInTaskbar = false;
-                        }
+                                    ShowInTaskbar = false;
+                                }
 
-                        break;
+                                break;
+                            }
+                        case WindowState.Normal:
+                            {
+                                this.Activate();
+                                mainGrid.Margin = new Thickness(0);
+                                TitleBar.Instance.minMaxButton.Kind = MaterialDesignThemes.Wpf.PackIconKind.WindowMaximize;
+                                if (_notifyIcon != null)
+                                    _notifyIcon.Visible = false;
+
+                                _stopDecreaseOpacty = true;
+                                ShowInTaskbar = true;
+
+                                break;
+                            }
+                        case WindowState.Maximized:
+                            {
+                                mainGrid.Margin = new Thickness(8);
+                                TitleBar.Instance.minMaxButton.Kind = MaterialDesignThemes.Wpf.PackIconKind.WindowRestore;
+                                _notifyIcon.Visible = false;
+
+                                _stopDecreaseOpacty = true;
+                                ShowInTaskbar = true;
+                                break;
+                            }
                     }
-                case WindowState.Normal:
-                    {
-                        this.Activate();
-                        mainGrid.Margin = new Thickness(0);
-                        TitleBar.Instance.minMaxButton.Kind = MaterialDesignThemes.Wpf.PackIconKind.WindowMaximize;
-                        _notifyIcon.Visible = false;
-
-                        _stopDecreaseOpacty = true;
-                        ShowInTaskbar = true;
-
-                        break;
-                    }
-                case WindowState.Maximized:
-                    {
-                        mainGrid.Margin = new Thickness(8);
-                        TitleBar.Instance.minMaxButton.Kind = MaterialDesignThemes.Wpf.PackIconKind.WindowRestore;
-                        _notifyIcon.Visible = false;
-
-                        _stopDecreaseOpacty = true;
-                        ShowInTaskbar = true;
-                        break;
-                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                LogWriter.WriteToLog(ex);
             }
         }
 
