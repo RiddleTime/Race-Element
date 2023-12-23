@@ -11,7 +11,7 @@ image: Visual Studio 2022
 configuration: Release
 before_build:
 - cmd: nuget restore
-build:
+build_script:
 - cmd: dotnet publish -p:PublishProfile=FolderProfile
 test: off
 artifacts:
