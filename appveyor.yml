@@ -12,7 +12,7 @@ configuration: Release
 before_build:
 - cmd: nuget restore
 build:
-  cmd: dotnet publish -p:PublishProfile=FolderProfile
+- cmd: dotnet publish -p:PublishProfile=FolderProfile
 test: off
 artifacts:
 - path: '**\bin\Release\RaceElement.exe'
