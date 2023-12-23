@@ -88,17 +88,17 @@
     <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
     <PackageReference Include="obs-websocket-dotnet" Version="5.0.0.3" />
     <PackageReference Include="Octokit" Version="8.0.1" />
-    <PackageReference Include="Quartz" Version="3.6.3" />
-    <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.6.3" />
-    <PackageReference Include="Quartz.Extensions.Hosting" Version="3.6.3" />
-    <PackageReference Include="ScottPlot" Version="4.1.68" />
-    <PackageReference Include="ScottPlot.WPF" Version="4.1.68" />
-    <PackageReference Include="SharpCompress" Version="0.34.1" />
+    <PackageReference Include="Quartz" Version="3.8.0" />
+    <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.8.0" />
+    <PackageReference Include="Quartz.Extensions.Hosting" Version="3.8.0" />
+    <PackageReference Include="ScottPlot" Version="4.1.69" />
+    <PackageReference Include="ScottPlot.WPF" Version="4.1.69" />
+    <PackageReference Include="SharpCompress" Version="0.35.0" />
     <PackageReference Include="SLOBSharp" Version="1.1.4" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Reactive" Version="6.0.0" />
     <PackageReference Include="System.Runtime.Handles" Version="4.3.0" />
-    <PackageReference Include="Websocket.Client" Version="4.6.1" />
+    <PackageReference Include="Websocket.Client" Version="5.0.0" />
     <PackageReference Include="WebSocketSharp-netstandard" Version="1.0.1" />
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />

@@ -21,7 +21,7 @@
     <PackageReference Include="EdCanHack.Unglide" Version="2.0.0" />
     <PackageReference Include="MouseKeyHook" Version="5.7.1" />
     <PackageReference Include="ScottPlot">
-      <Version>4.1.68</Version>
+      <Version>4.1.69</Version>
     </PackageReference>
     <PackageReference Include="System.Collections.Immutable" Version="8.0.0" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
