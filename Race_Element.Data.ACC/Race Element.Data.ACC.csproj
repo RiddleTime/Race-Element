@@ -13,7 +13,7 @@
     <OutputPath>bin\Debug Minimized\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="8.1.0" />
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="LiteDB" Version="5.0.17" />
     <PackageReference Include="obs-websocket-dotnet" Version="5.0.0.3" />
     <PackageReference Include="Quartz" Version="3.6.3" />
