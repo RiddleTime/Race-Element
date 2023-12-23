@@ -9,10 +9,8 @@ branches:
     - pages
 image: Visual Studio 2022
 configuration: Release
-before_build:
-- cmd: nuget restore
 build_script:
-- cmd: dotnet publish -p:PublishProfile=FolderProfile
+- cmd: dotnet publish -p:PublishProfile=PublishProfile
 test: off
 artifacts:
 - path: '**\RaceElement.exe'
