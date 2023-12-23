@@ -200,7 +200,7 @@ namespace RaceElement
             {
 
                 string loadString = $"Loaded Race Element {GetAssemblyFileVersion()}";
-                string fileHash = FileUtil.GetBase64Hash(FileUtil.AppFullName);
+                string fileHash = FileUtil.GetBase64Hash(Process.GetCurrentProcess().MainModule.FileName);
 
 #if DEBUG
                 loadString += " - Debug";
@@ -267,7 +267,7 @@ namespace RaceElement
             {
                 _notifyIcon = new System.Windows.Forms.NotifyIcon()
                 {
-                    Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location),
+                    Icon = System.Drawing.Icon.ExtractAssociatedIcon(Process.GetCurrentProcess().MainModule.FileName),
                     Visible = false,
                     ContextMenuStrip = CreateContextMenu(),
                     Text = "Race Element"
