@@ -3,6 +3,7 @@ branches:
   only:
     - dev
     - release
+    - csharp12
   except:
     - gh-pages
     - pages
@@ -11,9 +12,7 @@ configuration: Release
 before_build:
 - cmd: nuget restore
 build:
-  project: Race Element.sln
-  parallel: true
-  verbosity: minimal
+  cmd: dotnet publish -p:PublishProfile=FolderProfile
 test: off
 artifacts:
 - path: '**\bin\Release\RaceElement.exe'
