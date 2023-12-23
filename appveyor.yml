@@ -15,7 +15,7 @@ build_script:
 - cmd: dotnet publish -p:PublishProfile=FolderProfile
 test: off
 artifacts:
-- path: '**\bin\Release\RaceElement.exe'
+- path: '**\RaceElement.exe'
   name: Race Element
 deploy:
 - provider: Webhook
