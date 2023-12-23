@@ -34,7 +34,7 @@ namespace RaceElement
             var uiSettings = new UiSettings().Get();
 
             _startScreenOverlay = new StartScreenOverlay(new System.Drawing.Rectangle(uiSettings.X, uiSettings.Y, 150, 150));
-            FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
+            FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(System.Environment.ProcessPath);
             _startScreenOverlay.Version = fileVersion.FileVersion;
             _startScreenOverlay.Start(false);
 

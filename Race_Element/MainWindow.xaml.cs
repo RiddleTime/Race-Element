@@ -39,12 +39,14 @@ namespace RaceElement
         public MainWindow()
         {
             this.Opacity = MaxOpacity;
+            Stopwatch sw = Stopwatch.StartNew();
             DateTime startTime = DateTime.Now;
 
             InitializeComponent();
             Instance = this;
 
-            LogWriter.WriteToLog($"Startup time(ms): {DateTime.Now.Subtract(startTime).TotalMilliseconds}");
+            LogWriter.WriteToLog($"Startup time(ms): {sw.Elapsed.TotalNanoseconds / 1_000_000:F4}");
+            sw.Stop();
 
             try
             {

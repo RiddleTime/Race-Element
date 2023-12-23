@@ -650,7 +650,7 @@ namespace RaceElement.Controls
                         return;
 
                     DirectoryInfo directory = new DirectoryInfo($"{FileUtil.LiveriesPath}{liveryTreeCar.CarsRoot.CustomSkinName}");
-                    Process.Start(directory.FullName);
+                    Process.Start("explorer", directory.FullName);
                 }
             }
             catch (Exception ex) { LogWriter.WriteToLog(ex); }

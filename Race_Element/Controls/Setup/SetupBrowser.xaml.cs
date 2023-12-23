@@ -276,7 +276,7 @@ namespace RaceElement.Controls
                 MenuItem button = (MenuItem)sender;
 
                 DirectoryInfo directory = (DirectoryInfo)button.CommandParameter;
-                Process.Start(directory.FullName);
+                Process.Start("explorer", directory.FullName);
             }
         }
 
