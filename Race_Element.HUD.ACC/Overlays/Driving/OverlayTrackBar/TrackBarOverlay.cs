@@ -11,186 +11,185 @@ using System.Drawing.Text;
 using System.Linq;
 using static RaceElement.Data.ACC.Tracks.TrackData;
 
-namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
+namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar;
+
+[Overlay(Name = "Track Bar",
+         Description = "A bar displaying a flat and zoomed in version of the Track Circle HUD.")]
+internal sealed class TrackBarOverlay : AbstractOverlay
 {
-    [Overlay(Name = "Track Bar",
-             Description = "A bar displaying a flat and zoomed in version of the Track Circle HUD.")]
-    internal sealed class TrackBarOverlay : AbstractOverlay
+
+    private readonly TrackBarConfiguration _config = new();
+    private sealed class TrackBarConfiguration : OverlayConfiguration
     {
+        public TrackBarConfiguration() { AllowRescale = true; }
 
-        private readonly TrackBarConfiguration _config = new();
-        private sealed class TrackBarConfiguration : OverlayConfiguration
+        [ConfigGrouping("View", "Adjust track circle settings.")]
+        public ViewingGroup Viewing { get; set; } = new ViewingGroup();
+        public sealed class ViewingGroup
         {
-            public TrackBarConfiguration() { AllowRescale = true; }
-
-            [ConfigGrouping("View", "Adjust track circle settings.")]
-            public ViewingGroup Viewing { get; set; } = new ViewingGroup();
-            public sealed class ViewingGroup
-            {
-                [ToolTip("Show the Track Circle HUD when spectating.")]
-                public bool Spectator { get; set; } = true;
-            }
-
-            [ConfigGrouping("Bar", "Adjust things like fidelity on the track bar.")]
-            public BarGrouping Bar { get; set; } = new BarGrouping();
-            public sealed class BarGrouping
-            {
-                [ToolTip("Adjust the visible range (5 up to 50%) of the track.")]
-                [IntRange(5, 50, 1)]
-                public int Range { get; set; } = 10;
-            }
+            [ToolTip("Show the Track Circle HUD when spectating.")]
+            public bool Spectator { get; set; } = true;
         }
 
-        private Rectangle BarRect;
-        private CachedBitmap _cachedBackground;
-        private float _range;
-        private Font font;
-
-        public TrackBarOverlay(Rectangle rectangle) : base(rectangle, "Track Bar")
+        [ConfigGrouping("Bar", "Adjust things like fidelity on the track bar.")]
+        public BarGrouping Bar { get; set; } = new BarGrouping();
+        public sealed class BarGrouping
         {
-            RefreshRateHz = 8;
+            [ToolTip("Adjust the visible range (5 up to 50%) of the track.")]
+            [IntRange(5, 50, 1)]
+            public int Range { get; set; } = 10;
+        }
+    }
+
+    private Rectangle BarRect;
+    private CachedBitmap _cachedBackground;
+    private float _range;
+    private Font font;
+
+    public TrackBarOverlay(Rectangle rectangle) : base(rectangle, "Track Bar")
+    {
+        RefreshRateHz = 8;
+    }
+
+    public override void BeforeStart()
+    {
+        _range = _config.Bar.Range / 100f;
+
+        BarRect = new Rectangle(0, 0, 500, 80);
+        font = FontUtil.FontSegoeMono(10);
+
+        _cachedBackground = new CachedBitmap(BarRect.Width, BarRect.Height, g =>
+        {
+            using Brush bg = new SolidBrush(Color.FromArgb(130, Color.Black));
+            g.FillRoundedRectangle(bg, BarRect, 4);
+        });
+
+        Width = BarRect.Width;
+        Height = BarRect.Height;
+    }
+
+    public override void BeforeStop()
+    {
+        _cachedBackground?.Dispose();
+    }
+
+    public override bool ShouldRender()
+    {
+        if (_config.Viewing.Spectator && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
+            return true;
+
+        return base.ShouldRender();
+    }
+
+    public override void Render(Graphics g)
+    {
+        _cachedBackground?.Draw(g);
+
+
+        if (EntryListTracker.Instance.Cars.Count == 0) return;
+
+        g.TextRenderingHint = TextRenderingHint.AntiAlias;
+
+        var spectatingCar = EntryListTracker.Instance.Cars.First(x => x.Key == broadCastRealTime.FocusedCarIndex);
+        float spectatingSplinePosition = spectatingCar.Value.RealtimeCarUpdate.SplinePosition;
+
+        float halfRange = _range / 2f;
+        float minSpline = spectatingSplinePosition - halfRange;
+        float maxSpline = spectatingSplinePosition + halfRange;
+
+        bool adjustedUp = false;
+        if (minSpline < 0)
+        {
+            minSpline += 1;
+            maxSpline += 1;
+            adjustedUp = true;
         }
 
-        public override void BeforeStart()
+        var data = EntryListTracker.Instance.Cars.Where(x =>
         {
-            _range = _config.Bar.Range / 100f;
+            float pos = x.Value.RealtimeCarUpdate.SplinePosition;
 
-            BarRect = new Rectangle(0, 0, 500, 80);
-            font = FontUtil.FontSegoeMono(10);
+            if (adjustedUp && pos < 0.5)
+                pos += 1;
+            if (!adjustedUp && pos < minSpline)
+                pos += 1;
 
-            _cachedBackground = new CachedBitmap(BarRect.Width, BarRect.Height, g =>
-            {
-                using Brush bg = new SolidBrush(Color.FromArgb(130, Color.Black));
-                g.FillRoundedRectangle(bg, BarRect, 4);
-            });
+            return pos < maxSpline && pos > minSpline;
+        });
 
-            Width = BarRect.Width;
-            Height = BarRect.Height;
-        }
 
-        public override void BeforeStop()
+        //Debug.WriteLine($"Found {data.Count()} cars in range\nRange: {minSpline:F2} - {maxSpline:F2}");
+        foreach (var entry in data)
         {
-            _cachedBackground?.Dispose();
-        }
+            float pos = entry.Value.RealtimeCarUpdate.SplinePosition;
+            if (adjustedUp && pos < 0.5) pos += 1;
+            if (pos < minSpline) pos += 1;
+            float correctedPos = maxSpline - pos;
+            bool isSpectatingCar = broadCastRealTime.FocusedCarIndex == entry.Key;
 
-        public override bool ShouldRender()
-        {
-            if (_config.Viewing.Spectator && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
-                return true;
+            float correctedPercentage = (correctedPos * 100) / _range / 100;
+            if (isSpectatingCar) correctedPercentage = 0.5f;
+            //Debug.WriteLine($"pos:{pos} --> cor:{correctedPos} --> perc:{correctedPercentage:F3}");
 
-            return base.ShouldRender();
-        }
+            int x = BarRect.Width - (int)(BarRect.Width * correctedPercentage);
 
-        public override void Render(Graphics g)
-        {
-            _cachedBackground?.Draw(g);
+            bool isInPits = entry.Value.RealtimeCarUpdate.CarLocation == Broadcast.CarLocationEnum.Pitlane;
 
+            Pen pen = isSpectatingCar ? Pens.Red : isInPits ? Pens.Green : Pens.White;
+            if (!isInPits && !isSpectatingCar && entry.Value.RealtimeCarUpdate.Kmh < 33)
+                pen = Pens.Yellow;
+            int y = isInPits ? 25 : 5;
+            g.DrawLine(pen, new Point(x, y), new Point(x, BarRect.Height - y));
 
-            if (EntryListTracker.Instance.Cars.Count == 0) return;
-
-            g.TextRenderingHint = TextRenderingHint.AntiAlias;
-
-            var spectatingCar = EntryListTracker.Instance.Cars.First(x => x.Key == broadCastRealTime.FocusedCarIndex);
-            float spectatingSplinePosition = spectatingCar.Value.RealtimeCarUpdate.SplinePosition;
-
-            float halfRange = _range / 2f;
-            float minSpline = spectatingSplinePosition - halfRange;
-            float maxSpline = spectatingSplinePosition + halfRange;
-
-            bool adjustedUp = false;
-            if (minSpline < 0)
+            if (!isSpectatingCar)
             {
-                minSpline += 1;
-                maxSpline += 1;
-                adjustedUp = true;
-            }
+                using Brush brush = new SolidBrush(Color.FromArgb(120, Color.Black));
+                g.FillRectangle(brush, new Rectangle(x + 1, y, 18, 15));
 
-            var data = EntryListTracker.Instance.Cars.Where(x =>
-            {
-                float pos = x.Value.RealtimeCarUpdate.SplinePosition;
+                Color textColor = Color.White;
 
-                if (adjustedUp && pos < 0.5)
-                    pos += 1;
-                if (!adjustedUp && pos < minSpline)
-                    pos += 1;
-
-                return pos < maxSpline && pos > minSpline;
-            });
-
-
-            //Debug.WriteLine($"Found {data.Count()} cars in range\nRange: {minSpline:F2} - {maxSpline:F2}");
-            foreach (var entry in data)
-            {
-                float pos = entry.Value.RealtimeCarUpdate.SplinePosition;
-                if (adjustedUp && pos < 0.5) pos += 1;
-                if (pos < minSpline) pos += 1;
-                float correctedPos = maxSpline - pos;
-                bool isSpectatingCar = broadCastRealTime.FocusedCarIndex == entry.Key;
-
-                float correctedPercentage = (correctedPos * 100) / _range / 100;
-                if (isSpectatingCar) correctedPercentage = 0.5f;
-                //Debug.WriteLine($"pos:{pos} --> cor:{correctedPos} --> perc:{correctedPercentage:F3}");
-
-                int x = BarRect.Width - (int)(BarRect.Width * correctedPercentage);
-
-                bool isInPits = entry.Value.RealtimeCarUpdate.CarLocation == Broadcast.CarLocationEnum.Pitlane;
-
-                Pen pen = isSpectatingCar ? Pens.Red : isInPits ? Pens.Green : Pens.White;
-                if (!isInPits && !isSpectatingCar && entry.Value.RealtimeCarUpdate.Kmh < 33)
-                    pen = Pens.Yellow;
-                int y = isInPits ? 25 : 5;
-                g.DrawLine(pen, new Point(x, y), new Point(x, BarRect.Height - y));
-
-                if (!isSpectatingCar)
+                if (pageGraphics.SessionType == ACCSharedMemory.AcSessionType.AC_RACE || broadCastRealTime.SessionType == Broadcast.RaceSessionType.Race)
                 {
-                    using Brush brush = new SolidBrush(Color.FromArgb(120, Color.Black));
-                    g.FillRectangle(brush, new Rectangle(x + 1, y, 18, 15));
-
-                    Color textColor = Color.White;
-
-                    if (pageGraphics.SessionType == ACCSharedMemory.AcSessionType.AC_RACE || broadCastRealTime.SessionType == Broadcast.RaceSessionType.Race)
-                    {
-                        if (entry.Value.RealtimeCarUpdate.Laps < spectatingCar.Value.RealtimeCarUpdate.Laps)
-                            textColor = Color.Cyan;
-                        if (entry.Value.RealtimeCarUpdate.Laps > spectatingCar.Value.RealtimeCarUpdate.Laps)
-                            textColor = Color.Orange;
-                    }
-
-                    g.DrawStringWithShadow($"{entry.Value.RealtimeCarUpdate.Position}", font, textColor, new Point(x, y));
+                    if (entry.Value.RealtimeCarUpdate.Laps < spectatingCar.Value.RealtimeCarUpdate.Laps)
+                        textColor = Color.Cyan;
+                    if (entry.Value.RealtimeCarUpdate.Laps > spectatingCar.Value.RealtimeCarUpdate.Laps)
+                        textColor = Color.Orange;
                 }
 
-                //Debug.WriteLine($"{entry.Value.RealtimeCarUpdate.SplinePosition:F2}");
+                g.DrawStringWithShadow($"{entry.Value.RealtimeCarUpdate.Position}", font, textColor, new Point(x, y));
             }
 
-            AbstractTrackData current = GetCurrentTrackByFullName(broadCastTrackData.TrackName);
-            if (current != null)
+            //Debug.WriteLine($"{entry.Value.RealtimeCarUpdate.SplinePosition:F2}");
+        }
+
+        AbstractTrackData current = GetCurrentTrackByFullName(broadCastTrackData.TrackName);
+        if (current != null)
+        {
+            foreach (var corner in current.CornerNames)
             {
-                foreach (var corner in current.CornerNames)
+                float min = spectatingSplinePosition - halfRange;
+                float max = spectatingSplinePosition + halfRange;
+                if (corner.Value.Item1 != -1 && corner.Key.To > min && corner.Key.From < max)
                 {
-                    float min = spectatingSplinePosition - halfRange;
-                    float max = spectatingSplinePosition + halfRange;
-                    if (corner.Value.Item1 != -1 && corner.Key.To > min && corner.Key.From < max)
-                    {
-                        float corrected1 = max - corner.Key.From;
-                        float corrected2 = max - corner.Key.To;
+                    float corrected1 = max - corner.Key.From;
+                    float corrected2 = max - corner.Key.To;
 
-                        float percentageFrom = (corrected1 * 100) / _range / 100;
-                        float percentageTo = (corrected2 * 100) / _range / 100;
+                    float percentageFrom = (corrected1 * 100) / _range / 100;
+                    float percentageTo = (corrected2 * 100) / _range / 100;
 
-                        int xFrom = BarRect.Width - (int)(BarRect.Width * percentageFrom);
-                        int xTo = BarRect.Width - (int)(BarRect.Width * percentageTo);
-                        using Brush bg = new SolidBrush(Color.FromArgb(50, Color.White));
-                        Rectangle bounds = new(xFrom, BarRect.Height - 20, xTo - xFrom, 20);
-                        g.FillRoundedRectangle(bg, bounds, 8);
+                    int xFrom = BarRect.Width - (int)(BarRect.Width * percentageFrom);
+                    int xTo = BarRect.Width - (int)(BarRect.Width * percentageTo);
+                    using Brush bg = new SolidBrush(Color.FromArgb(50, Color.White));
+                    Rectangle bounds = new(xFrom, BarRect.Height - 20, xTo - xFrom, 20);
+                    g.FillRoundedRectangle(bg, bounds, 8);
 
-                        int centerX = (xTo + xFrom) / 2;
-                        centerX.ClipMin(10);
-                        centerX.ClipMax(BarRect.Width - 20);
-                        g.DrawStringWithShadow($"T{corner.Value.Item1}", font, Color.Orange, new Point(centerX - 10, BarRect.Height - 16));
-                    }
+                    int centerX = (xTo + xFrom) / 2;
+                    centerX.ClipMin(10);
+                    centerX.ClipMax(BarRect.Width - 20);
+                    g.DrawStringWithShadow($"T{corner.Value.Item1}", font, Color.Orange, new Point(centerX - 10, BarRect.Height - 16));
                 }
             }
-
         }
+
     }
 }

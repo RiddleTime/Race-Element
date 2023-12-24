@@ -1,31 +1,30 @@
 ﻿using System;
 
-namespace RaceElement.HUD.Overlay.Internal
+namespace RaceElement.HUD.Overlay.Internal;
+
+public class OverlayAttribute : Attribute
 {
-    public class OverlayAttribute : Attribute
-    {
-        public string Name { get; set; }
-        public OverlayType OverlayType { get; set; }
-        public OverlayCategory OverlayCategory { get; set; } = OverlayCategory.All;
+    public string Name { get; set; }
+    public OverlayType OverlayType { get; set; }
+    public OverlayCategory OverlayCategory { get; set; } = OverlayCategory.All;
 
-        public double Version { get; set; }
-        public string Description { get; set; } = string.Empty;
-    }
+    public double Version { get; set; }
+    public string Description { get; set; } = string.Empty;
+}
 
-    public enum OverlayType
-    {
-        Drive,
-        Pitwall,
-    }
+public enum OverlayType
+{
+    Drive,
+    Pitwall,
+}
 
-    public enum OverlayCategory
-    {
-        All,
-        Car,
-        Driving,
-        Inputs,
-        Lap,
-        Physics,
-        Track,
-    }
+public enum OverlayCategory
+{
+    All,
+    Car,
+    Driving,
+    Inputs,
+    Lap,
+    Physics,
+    Track,
 }

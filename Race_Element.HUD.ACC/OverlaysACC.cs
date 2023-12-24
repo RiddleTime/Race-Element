@@ -4,34 +4,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace RaceElement.HUD.ACC
+namespace RaceElement.HUD.ACC;
+
+public class OverlaysACC
 {
-    public class OverlaysACC
+    public static SortedDictionary<string, Type> AbstractOverlays = new();
+    public static List<AbstractOverlay> ActiveOverlays = new();
+
+    public static void GenerateDictionary()
     {
-        public static SortedDictionary<string, Type> AbstractOverlays = new();
-        public static List<AbstractOverlay> ActiveOverlays = new();
+        AbstractOverlays.Clear();
 
-        public static void GenerateDictionary()
+        foreach (var type in Assembly.GetExecutingAssembly().GetTypes().Where(x => x.IsDefined(typeof(OverlayAttribute))))
         {
-            AbstractOverlays.Clear();
+            var overlayType = type.GetCustomAttribute<OverlayAttribute>();
+            if (overlayType != null && !AbstractOverlays.ContainsKey(overlayType.Name))
+                AbstractOverlays.Add(overlayType.Name, type);
+        }
+    }
 
-            foreach (var type in Assembly.GetExecutingAssembly().GetTypes().Where(x => x.IsDefined(typeof(OverlayAttribute))))
+    public static void CloseAll()
+    {
+        lock (ActiveOverlays)
+            while (ActiveOverlays.Count > 0)
             {
-                var overlayType = type.GetCustomAttribute<OverlayAttribute>();
-                if (overlayType != null && !AbstractOverlays.ContainsKey(overlayType.Name))
-                    AbstractOverlays.Add(overlayType.Name, type);
+                ActiveOverlays.ElementAt(0).EnableReposition(false);
+                ActiveOverlays.ElementAt(0).Stop();
+                ActiveOverlays.Remove(ActiveOverlays.ElementAt(0));
             }
-        }
-
-        public static void CloseAll()
-        {
-            lock (ActiveOverlays)
-                while (ActiveOverlays.Count > 0)
-                {
-                    ActiveOverlays.ElementAt(0).EnableReposition(false);
-                    ActiveOverlays.ElementAt(0).Stop();
-                    ActiveOverlays.Remove(ActiveOverlays.ElementAt(0));
-                }
-        }
     }
 }

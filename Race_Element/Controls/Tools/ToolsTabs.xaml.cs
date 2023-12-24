@@ -1,15 +1,14 @@
 ﻿using System.Windows.Controls;
 
-namespace RaceElement.Controls
+namespace RaceElement.Controls;
+
+/// <summary>
+/// Interaction logic for ToolsTabs.xaml
+/// </summary>
+public partial class ToolsTabs : UserControl
 {
-    /// <summary>
-    /// Interaction logic for ToolsTabs.xaml
-    /// </summary>
-    public partial class ToolsTabs : UserControl
+    public ToolsTabs()
     {
-        public ToolsTabs()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

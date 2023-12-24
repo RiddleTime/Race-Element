@@ -1,93 +1,92 @@
 ﻿using LiteDB;
 using System;
 
-namespace RaceElement.Data.ACC.Database.Telemetry
+namespace RaceElement.Data.ACC.Database.Telemetry;
+
+public class DbLapTelemetry
 {
-    public class DbLapTelemetry
-    {
-        public Guid Id { get; set; }
-        public Guid LapId { get; set; }
-        public int Herz { get; set; }
-        public byte[] LapData { get; set; }
-    }
+    public Guid Id { get; set; }
+    public Guid LapId { get; set; }
+    public int Herz { get; set; }
+    public byte[] LapData { get; set; }
+}
 
-    [Serializable]
-    public class TelemetryPoint
-    {
-        public float SplinePosition { get; set; }
-        public InputsData InputsData { get; set; }
-        public TyreData TyreData { get; set; }
-        public BrakeData BrakeData { get; set; }
-        public PhysicsData PhysicsData { get; set; }
-    }
+[Serializable]
+public class TelemetryPoint
+{
+    public float SplinePosition { get; set; }
+    public InputsData InputsData { get; set; }
+    public TyreData TyreData { get; set; }
+    public BrakeData BrakeData { get; set; }
+    public PhysicsData PhysicsData { get; set; }
+}
 
-    [Serializable]
-    public class InputsData
-    {
-        public float Gas { get; set; }
-        public float Brake { get; set; }
-        public float SteerAngle { get; set; }
-        public int Gear { get; set; }
-    }
+[Serializable]
+public class InputsData
+{
+    public float Gas { get; set; }
+    public float Brake { get; set; }
+    public float SteerAngle { get; set; }
+    public int Gear { get; set; }
+}
 
-    [Serializable]
-    public class TyreData
-    {
-        public float[] TyreCoreTemperature { get; set; }
-        public float[] TyrePressure { get; set; }
-    }
+[Serializable]
+public class TyreData
+{
+    public float[] TyreCoreTemperature { get; set; }
+    public float[] TyrePressure { get; set; }
+}
 
-    [Serializable]
-    public class BrakeData
-    {
-        public float[] BrakeTemperature { get; set; }
-    }
+[Serializable]
+public class BrakeData
+{
+    public float[] BrakeTemperature { get; set; }
+}
 
-    [Serializable]
-    public class PhysicsData
-    {
-        public float[] WheelSlip { get; set; }
-        public float[] WheelSlipAngle { get; set; }
-        
-        /// <summary>
-        /// X, Y acceleration (G)
-        /// </summary>
-        public float[] Acceleration { get; set; }
-        public float Speed { get; set; }
-        public float X { get; set; }
-        public float Y { get; set; }
-        public float Heading { get; set; }
-    }
+[Serializable]
+public class PhysicsData
+{
+    public float[] WheelSlip { get; set; }
+    public float[] WheelSlipAngle { get; set; }
+    
+    /// <summary>
+    /// X, Y acceleration (G)
+    /// </summary>
+    public float[] Acceleration { get; set; }
+    public float Speed { get; set; }
+    public float X { get; set; }
+    public float Y { get; set; }
+    public float Heading { get; set; }
+}
 
-    public class LapTelemetryCollection
+public class LapTelemetryCollection
+{
+    private static ILiteCollection<DbLapTelemetry> Collection
     {
-        private static ILiteCollection<DbLapTelemetry> Collection
+        get
         {
-            get
-            {
-                ILiteCollection<DbLapTelemetry> _collection = RaceWeekendDatabase.Database.GetCollection<DbLapTelemetry>();
+            ILiteCollection<DbLapTelemetry> _collection = RaceWeekendDatabase.Database.GetCollection<DbLapTelemetry>();
 
-                return _collection;
-            }
+            return _collection;
         }
+    }
 
-        private static ILiteCollection<DbLapTelemetry> GetCollection(ILiteDatabase db)
+    private static ILiteCollection<DbLapTelemetry> GetCollection(ILiteDatabase db)
+    {
+        return db.GetCollection<DbLapTelemetry>();
+    }
+
+    public static DbLapTelemetry GetForLap(ILiteCollection<DbLapTelemetry> collection, Guid lapId)
+    {
+        if (lapId == Guid.Empty) return null;
+        try
         {
-            return db.GetCollection<DbLapTelemetry>();
+            return collection.FindOne(x => x.LapId == lapId);
         }
-
-        public static DbLapTelemetry GetForLap(ILiteCollection<DbLapTelemetry> collection, Guid lapId)
+        catch (InvalidCastException)
         {
-            if (lapId == Guid.Empty) return null;
-            try
-            {
-                return collection.FindOne(x => x.LapId == lapId);
-            }
-            catch (InvalidCastException)
-            {
-                //System.InvalidCastException: 'Unable to cast object of type 'System.Collections.Generic.Dictionary`2[System.String, LiteDB.BsonValue]' to type 'System.Byte[]'.'
-                return null;
-            }
+            //System.InvalidCastException: 'Unable to cast object of type 'System.Collections.Generic.Dictionary`2[System.String, LiteDB.BsonValue]' to type 'System.Byte[]'.'
+            return null;
         }
     }
 }

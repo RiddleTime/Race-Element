@@ -5,24 +5,23 @@ using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.Data.ACC.Tyres;
 using System.Diagnostics;
 
-namespace RaceElement.Data.ACC.Tracker
+namespace RaceElement.Data.ACC.Tracker;
+
+public class ACCTrackerDispose
 {
-    public class ACCTrackerDispose
+    public static void Dispose()
     {
-        public static void Dispose()
-        {
-            Debug.WriteLine("Safely disposing ACC Data Tracker instances");
-            BroadcastTracker.Instance.Dispose();
-            EntryListTracker.Instance.Stop();
-            
-            SetupHiderTracker.Instance.Dispose();
+        Debug.WriteLine("Safely disposing ACC Data Tracker instances");
+        BroadcastTracker.Instance.Dispose();
+        EntryListTracker.Instance.Stop();
+        
+        SetupHiderTracker.Instance.Dispose();
 
 
-            RaceSessionTracker.Instance.Stop();
-            LapTracker.Instance.Stop();
-            TyresTracker.Instance.Stop();
+        RaceSessionTracker.Instance.Stop();
+        LapTracker.Instance.Stop();
+        TyresTracker.Instance.Stop();
 
-            RaceWeekendDatabase.Close();
-        }
+        RaceWeekendDatabase.Close();
     }
 }

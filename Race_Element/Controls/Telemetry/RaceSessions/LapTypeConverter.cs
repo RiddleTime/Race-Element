@@ -7,27 +7,26 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace RaceElement.Controls.Telemetry.RaceSessions
-{
-    internal class LapTypeConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value != null && value is LapType)
-            {
-                switch (value)
-                {
-                    case LapType.Inlap: return "In";
-                    case LapType.Outlap: return "Out";
-                    default: return string.Empty;
-                }
-            }
-            return string.Empty;
-        }
+namespace RaceElement.Controls.Telemetry.RaceSessions;
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+internal class LapTypeConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value != null && value is LapType)
         {
-            throw new NotImplementedException();
+            switch (value)
+            {
+                case LapType.Inlap: return "In";
+                case LapType.Outlap: return "Out";
+                default: return string.Empty;
+            }
         }
+        return string.Empty;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
     }
 }

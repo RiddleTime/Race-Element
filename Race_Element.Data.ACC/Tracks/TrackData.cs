@@ -5,54 +5,53 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 
-namespace RaceElement.Data.ACC.Tracks
+namespace RaceElement.Data.ACC.Tracks;
+
+public class TrackData
 {
-    public class TrackData
+    public abstract class AbstractTrackData
     {
-        public abstract class AbstractTrackData
-        {
-            public abstract Guid Guid { get; }
-            public abstract string GameName { get; }
-            public abstract string FullName { get; }
-            public abstract int TrackLength { get; }
+        public abstract Guid Guid { get; }
+        public abstract string GameName { get; }
+        public abstract string FullName { get; }
+        public abstract int TrackLength { get; }
 
-            /// <summary>
-            /// the float range is the normalized track position(spline position).
-            /// (int, string) => (corner number, corner name). -1 will only show "name", use for straights.
-            /// </summary>
-            public abstract Dictionary<FloatRangeStruct, (int, string)> CornerNames { get; }
-            public abstract List<float> Sectors { get; }
-        }
+        /// <summary>
+        /// the float range is the normalized track position(spline position).
+        /// (int, string) => (corner number, corner name). -1 will only show "name", use for straights.
+        /// </summary>
+        public abstract Dictionary<FloatRangeStruct, (int, string)> CornerNames { get; }
+        public abstract List<float> Sectors { get; }
+    }
 
-        private static readonly List<AbstractTrackData> _tracks = new();
-        public static List<AbstractTrackData> Tracks
+    private static readonly List<AbstractTrackData> _tracks = new();
+    public static List<AbstractTrackData> Tracks
+    {
+        get
         {
-            get
+            if (!_tracks.Any())
             {
-                if (!_tracks.Any())
-                {
-                    foreach (var type in Assembly.GetExecutingAssembly().GetTypes().Where(x => x.IsClass && x.UnderlyingSystemType.BaseType == typeof(AbstractTrackData)))
-                        _tracks.Add((AbstractTrackData)Activator.CreateInstance(type));
+                foreach (var type in Assembly.GetExecutingAssembly().GetTypes().Where(x => x.IsClass && x.UnderlyingSystemType.BaseType == typeof(AbstractTrackData)))
+                    _tracks.Add((AbstractTrackData)Activator.CreateInstance(type));
 
-                    _tracks.Sort((x, y) => x.GameName.CompareTo(y.GameName));
-                }
-
-                return _tracks;
+                _tracks.Sort((x, y) => x.GameName.CompareTo(y.GameName));
             }
+
+            return _tracks;
         }
+    }
 
-        public static AbstractTrackData GetCurrentTrackByFullName(string fullName)
-        {
-            if (fullName == string.Empty) return null;
+    public static AbstractTrackData GetCurrentTrackByFullName(string fullName)
+    {
+        if (fullName == string.Empty) return null;
 
-            return Tracks.Find(x => x.FullName == fullName);
-        }
+        return Tracks.Find(x => x.FullName == fullName);
+    }
 
-        public static AbstractTrackData GetCurrentTrack(string gameName)
-        {
-            if (gameName == string.Empty) return null;
+    public static AbstractTrackData GetCurrentTrack(string gameName)
+    {
+        if (gameName == string.Empty) return null;
 
-            return Tracks.Find(x => x.GameName == gameName);
-        }
+        return Tracks.Find(x => x.GameName == gameName);
     }
 }

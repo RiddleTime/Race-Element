@@ -1,15 +1,14 @@
 ﻿using System.Windows.Controls;
 
-namespace RaceElement.Controls
+namespace RaceElement.Controls;
+
+/// <summary>
+/// Interaction logic for AccSettings.xaml
+/// </summary>
+public partial class AccSettingsTab : UserControl
 {
-    /// <summary>
-    /// Interaction logic for AccSettings.xaml
-    /// </summary>
-    public partial class AccSettingsTab : UserControl
+    public AccSettingsTab()
     {
-        public AccSettingsTab()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

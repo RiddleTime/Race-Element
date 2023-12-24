@@ -7,50 +7,49 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace RaceElement.Data.ACC.Core.Game.Jobs
+namespace RaceElement.Data.ACC.Core.Game.Jobs;
+
+public class ReplaySaver : IJob
 {
-    public class ReplaySaver : IJob
+    public static readonly JobKey JobKey = new("replay-saver", "acc-jobs");
+    public static readonly TriggerKey TriggerKey = new("replaySaverTrigger");
+
+    private static DateTime LastReplaySave = DateTime.MinValue;
+
+    public async Task Execute(IJobExecutionContext context)
     {
-        public static readonly JobKey JobKey = new("replay-saver", "acc-jobs");
-        public static readonly TriggerKey TriggerKey = new("replaySaverTrigger");
-
-        private static DateTime LastReplaySave = DateTime.MinValue;
-
-        public async Task Execute(IJobExecutionContext context)
+        if (AccProcess.IsRunning)
         {
-            if (AccProcess.IsRunning)
+            var replayJson = new ReplaySettings().Get();
+            var accSettings = new AccSettings().Get();
+
+            if (accSettings.AutoRecordReplay && replayJson.AutoSaveEnabled == 1)
             {
-                var replayJson = new ReplaySettings().Get();
-                var accSettings = new AccSettings().Get();
-
-                if (accSettings.AutoRecordReplay && replayJson.AutoSaveEnabled == 1)
+                if (ACCSharedMemory.Instance.ReadGraphicsPageFile().Status == ACCSharedMemory.AcStatus.AC_LIVE)
                 {
-                    if (ACCSharedMemory.Instance.ReadGraphicsPageFile().Status == ACCSharedMemory.AcStatus.AC_LIVE)
+                    if (DateTime.UtcNow.Subtract(LastReplaySave) > new TimeSpan(0, 0, replayJson.MaxTimeReplaySeconds))
                     {
-                        if (DateTime.UtcNow.Subtract(LastReplaySave) > new TimeSpan(0, 0, replayJson.MaxTimeReplaySeconds))
-                        {
-                            Debug.WriteLine("Auto save is enabled");
-                            LastReplaySave = AccHotkeys.SaveReplay();
+                        Debug.WriteLine("Auto save is enabled");
+                        LastReplaySave = AccHotkeys.SaveReplay();
 
-                            Debug.WriteLine(LastReplaySave);
-                        }
+                        Debug.WriteLine(LastReplaySave);
                     }
                 }
-                else
-                {
-                    await context.Scheduler.UnscheduleJob(TriggerKey);
-                    Debug.WriteLine("Auto save is not enabled, unscheduled replay saver");
-                }
+            }
+            else
+            {
+                await context.Scheduler.UnscheduleJob(TriggerKey);
+                Debug.WriteLine("Auto save is not enabled, unscheduled replay saver");
             }
         }
+    }
 
-        public static void Schedule()
-        {
-            IJobDetail job = JobBuilder.Create<ReplaySaver>().WithIdentity(JobKey).Build();
-            if (!AccScheduler.Scheduler.CheckExists(JobKey).Result)
-                AccScheduler.Scheduler.ScheduleJob(job, TriggerBuilder.Create()
-                            .WithIdentity(TriggerKey)
-                            .WithSimpleSchedule(x => x.WithInterval(new TimeSpan(0, 0, 15)).RepeatForever()).ForJob(JobKey).Build());
-        }
+    public static void Schedule()
+    {
+        IJobDetail job = JobBuilder.Create<ReplaySaver>().WithIdentity(JobKey).Build();
+        if (!AccScheduler.Scheduler.CheckExists(JobKey).Result)
+            AccScheduler.Scheduler.ScheduleJob(job, TriggerBuilder.Create()
+                        .WithIdentity(TriggerKey)
+                        .WithSimpleSchedule(x => x.WithInterval(new TimeSpan(0, 0, 15)).RepeatForever()).ForJob(JobKey).Build());
     }
 }

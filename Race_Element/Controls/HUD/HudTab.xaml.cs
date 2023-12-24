@@ -1,15 +1,14 @@
 ﻿using System.Windows.Controls;
 
-namespace RaceElement.Controls
+namespace RaceElement.Controls;
+
+/// <summary>
+/// Interaction logic for HudTab.xaml
+/// </summary>
+public partial class HudTab : UserControl
 {
-    /// <summary>
-    /// Interaction logic for HudTab.xaml
-    /// </summary>
-    public partial class HudTab : UserControl
+    public HudTab()
     {
-        public HudTab()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

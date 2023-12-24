@@ -5,114 +5,113 @@ using System.Windows.Media;
 using static RaceElement.Controls.LiveryBrowser;
 using static RaceElement.Controls.LiveryTagging;
 
-namespace RaceElement.Controls
+namespace RaceElement.Controls;
+
+/// <summary>
+/// Interaction logic for LiveryTagger.xaml
+/// </summary>
+public partial class LiveryTagger : UserControl
 {
-    /// <summary>
-    /// Interaction logic for LiveryTagger.xaml
-    /// </summary>
-    public partial class LiveryTagger : UserControl
+    public static LiveryTagger Instance { get; private set; }
+
+    internal List<LiveryTreeCar> Cars = new();
+
+    public LiveryTagger()
     {
-        public static LiveryTagger Instance { get; private set; }
+        InitializeComponent();
 
-        internal List<LiveryTreeCar> Cars = new();
+        buttonAdd.Click += ButtonAdd_Click;
+        buttonCancel.Click += ButtonCancel_Click;
 
-        public LiveryTagger()
+        tagList.SelectionChanged += TagList_SelectionChanged;
+
+        Visibility = Visibility.Hidden;
+        Instance = this;
+    }
+
+    private void TagList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        foreach (var item in tagList.Items)
         {
-            InitializeComponent();
-
-            buttonAdd.Click += ButtonAdd_Click;
-            buttonCancel.Click += ButtonCancel_Click;
-
-            tagList.SelectionChanged += TagList_SelectionChanged;
-
-            Visibility = Visibility.Hidden;
-            Instance = this;
+            var listBoxItem = (item as ListBoxItem);
+            listBoxItem.Background = Brushes.Transparent;
         }
 
-        private void TagList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        foreach (var item in tagList.SelectedItems)
         {
-            foreach (var item in tagList.Items)
+            var listBoxItem = (item as ListBoxItem);
+            listBoxItem.Background = Brushes.OrangeRed;
+        }
+    }
+
+    private void ButtonCancel_Click(object sender, RoutedEventArgs e)
+    {
+        this.Visibility = Visibility.Hidden;
+        AfterImport.Instance.IsEnabled = true;
+    }
+
+    private void UpdateTagList()
+    {
+        tagList.Items.Clear();
+        LiveryTagging.GetAllTags().ForEach(tag =>
+        {
+            ListBoxItem item = new()
             {
-                var listBoxItem = (item as ListBoxItem);
-                listBoxItem.Background = Brushes.Transparent;
+                DataContext = tag,
+                Content = tag.Name
+            };
+            tagList.Items.Add(item);
+        });
+    }
+
+    internal void Open(LiveryTreeCar car)
+    {
+        Cars.Clear();
+        Cars.Add(car);
+
+        UpdateTagList();
+
+        this.Visibility = Visibility.Visible;
+    }
+
+    internal void Open(List<LiveryTreeCar> cars)
+    {
+        Cars.Clear();
+        Cars = cars;
+
+        UpdateTagList();
+
+        AfterImport.Instance.IsEnabled = false;
+
+        this.Visibility = Visibility.Visible;
+    }
+
+    private void ButtonAdd_Click(object sender, RoutedEventArgs e)
+    {
+        if (tagList.Items.Count == 0)
+        {
+            MainWindow.Instance.EnqueueSnackbarMessage("Please add a new tag first.");
+            goto close;
+        }
+
+        if (tagList.SelectedItems.Count == 0)
+        {
+            MainWindow.Instance.EnqueueSnackbarMessage("Please select 1 or more tags.");
+            return;
+        }
+
+        foreach (var listItem in tagList.SelectedItems)
+        {
+            var listBox = listItem as ListBoxItem;
+            LiveryTag tag = listBox.DataContext as LiveryTag;
+            foreach (var car in Cars)
+            {
+                LiveryTagging.AddToTag(tag, car);
             }
-
-            foreach (var item in tagList.SelectedItems)
-            {
-                var listBoxItem = (item as ListBoxItem);
-                listBoxItem.Background = Brushes.OrangeRed;
-            }
         }
-
-        private void ButtonCancel_Click(object sender, RoutedEventArgs e)
-        {
-            this.Visibility = Visibility.Hidden;
-            AfterImport.Instance.IsEnabled = true;
-        }
-
-        private void UpdateTagList()
-        {
-            tagList.Items.Clear();
-            LiveryTagging.GetAllTags().ForEach(tag =>
-            {
-                ListBoxItem item = new()
-                {
-                    DataContext = tag,
-                    Content = tag.Name
-                };
-                tagList.Items.Add(item);
-            });
-        }
-
-        internal void Open(LiveryTreeCar car)
-        {
-            Cars.Clear();
-            Cars.Add(car);
-
-            UpdateTagList();
-
-            this.Visibility = Visibility.Visible;
-        }
-
-        internal void Open(List<LiveryTreeCar> cars)
-        {
-            Cars.Clear();
-            Cars = cars;
-
-            UpdateTagList();
-
-            AfterImport.Instance.IsEnabled = false;
-
-            this.Visibility = Visibility.Visible;
-        }
-
-        private void ButtonAdd_Click(object sender, RoutedEventArgs e)
-        {
-            if (tagList.Items.Count == 0)
-            {
-                MainWindow.Instance.EnqueueSnackbarMessage("Please add a new tag first.");
-                goto close;
-            }
-
-            if (tagList.SelectedItems.Count == 0)
-            {
-                MainWindow.Instance.EnqueueSnackbarMessage("Please select 1 or more tags.");
-                return;
-            }
-
-            foreach (var listItem in tagList.SelectedItems)
-            {
-                var listBox = listItem as ListBoxItem;
-                LiveryTag tag = listBox.DataContext as LiveryTag;
-                foreach (var car in Cars)
-                {
-                    LiveryTagging.AddToTag(tag, car);
-                }
-            }
-        close:
-            this.Visibility = Visibility.Hidden;
-            LiveryBrowser.Instance.FetchAllCars(true);
-            AfterImport.Instance.IsEnabled = true;
-        }
+    close:
+        this.Visibility = Visibility.Hidden;
+        LiveryBrowser.Instance.FetchAllCars(true);
+        AfterImport.Instance.IsEnabled = true;
     }
 }

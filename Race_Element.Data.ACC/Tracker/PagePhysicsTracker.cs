@@ -4,54 +4,53 @@ using System.Threading;
 using System.Threading.Tasks;
 using static RaceElement.ACCSharedMemory;
 
-namespace RaceElement.Data.ACC.Tracker
+namespace RaceElement.Data.ACC.Tracker;
+
+public class PagePhysicsTracker : IDisposable
 {
-    public class PagePhysicsTracker : IDisposable
+    private static PagePhysicsTracker _instance;
+    public static PagePhysicsTracker Instance
     {
-        private static PagePhysicsTracker _instance;
-        public static PagePhysicsTracker Instance
+        get
         {
-            get
-            {
-                if (_instance == null)
-                    _instance = new PagePhysicsTracker();
+            if (_instance == null)
+                _instance = new PagePhysicsTracker();
 
-                return _instance;
-            }
+            return _instance;
         }
+    }
 
-        public event EventHandler<SPageFilePhysics> Tracker;
+    public event EventHandler<SPageFilePhysics> Tracker;
 
-        private bool isTracking = false;
+    private bool isTracking = false;
 
-        private readonly Task trackingTask;
+    private readonly Task trackingTask;
 
-        private PagePhysicsTracker()
+    private PagePhysicsTracker()
+    {
+        trackingTask = Task.Run(() =>
         {
-            trackingTask = Task.Run(() =>
+            isTracking = true;
+            while (isTracking)
             {
-                isTracking = true;
-                while (isTracking)
+                if (AccProcess.IsRunning)
                 {
-                    if (AccProcess.IsRunning)
-                    {
-                        Thread.Sleep(2);
-                        Tracker?.Invoke(this, ACCSharedMemory.Instance.ReadPhysicsPageFile());
-                    }
-                    else
-                    {
-                        Thread.Sleep(500);
-                    }
+                    Thread.Sleep(2);
+                    Tracker?.Invoke(this, ACCSharedMemory.Instance.ReadPhysicsPageFile());
                 }
-            });
+                else
+                {
+                    Thread.Sleep(500);
+                }
+            }
+        });
 
-            _instance = this;
-        }
+        _instance = this;
+    }
 
-        public void Dispose()
-        {
-            isTracking = false;
-            trackingTask.Dispose();
-        }
+    public void Dispose()
+    {
+        isTracking = false;
+        trackingTask.Dispose();
     }
 }

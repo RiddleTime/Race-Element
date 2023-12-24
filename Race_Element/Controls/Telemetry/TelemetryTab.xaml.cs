@@ -1,15 +1,14 @@
 ﻿using System.Windows.Controls;
 
-namespace RaceElement.Controls
+namespace RaceElement.Controls;
+
+/// <summary>
+/// Interaction logic for TelemetryTab.xaml
+/// </summary>
+public partial class TelemetryTab : UserControl
 {
-    /// <summary>
-    /// Interaction logic for TelemetryTab.xaml
-    /// </summary>
-    public partial class TelemetryTab : UserControl
+    public TelemetryTab()
     {
-        public TelemetryTab()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

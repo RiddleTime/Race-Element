@@ -5,82 +5,81 @@ using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace RaceElement.Data.ACC.Database
+namespace RaceElement.Data.ACC.Database;
+
+/// <summary>
+/// https://github.com/mbdavid/LiteDB
+/// </summary>
+public class RaceWeekendDatabase
 {
-    /// <summary>
-    /// https://github.com/mbdavid/LiteDB
-    /// </summary>
-    public class RaceWeekendDatabase
+    private static string fileName;
+
+    internal static LiteDatabase CreateDatabase(string trackParseName, string carParseName, DateTime startTime)
     {
-        private static string fileName;
-
-        internal static LiteDatabase CreateDatabase(string trackParseName, string carParseName, DateTime startTime)
+        try
         {
-            try
-            {
-                DirectoryInfo dataDir = new(FileUtil.RaceElementDataPath);
-                if (!dataDir.Exists)
-                    dataDir.Create();
+            DirectoryInfo dataDir = new(FileUtil.RaceElementDataPath);
+            if (!dataDir.Exists)
+                dataDir.Create();
 
-                fileName = FileUtil.RaceElementDataPath + $"{trackParseName}-{carParseName}-" + $"{startTime:G}".Replace(":", ".").Replace("/", ".").Replace(" ", "-") + ".rwdb";
+            fileName = FileUtil.RaceElementDataPath + $"{trackParseName}-{carParseName}-" + $"{startTime:G}".Replace(":", ".").Replace("/", ".").Replace(" ", "-") + ".rwdb";
 
 
-                if (Database == null)
-                    Database = new LiteDatabase($"Filename={fileName}; Initial Size=16KB;");
-
-                if (Database == null)
-                    Trace.WriteLine("Something went wrong initializing the LocalDatabase.Database");
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-
-            return Database;
-
-        }
-
-        public static LiteDatabase OpenDatabase(string file)
-        {
-            try
-            {
-                LiteDatabase db = new($"Filename={file}; Mode=ReadOnly;");
-
-                if (db == null)
-                    Trace.WriteLine("Something went wrong initializing the LocalDatabase.Database");
-                else
-                    return db;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-
-            return null;
-        }
-
-        public static LiteDatabase Database { get; private set; }
-
-        public static void Close()
-        {
             if (Database == null)
-                return;
+                Database = new LiteDatabase($"Filename={fileName}; Initial Size=16KB;");
 
-            bool anyLaps = LapDataCollection.Any();
-            Database.Dispose();
-            Database = null;
+            if (Database == null)
+                Trace.WriteLine("Something went wrong initializing the LocalDatabase.Database");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+        }
 
-            if (!anyLaps)
+        return Database;
+
+    }
+
+    public static LiteDatabase OpenDatabase(string file)
+    {
+        try
+        {
+            LiteDatabase db = new($"Filename={file}; Mode=ReadOnly;");
+
+            if (db == null)
+                Trace.WriteLine("Something went wrong initializing the LocalDatabase.Database");
+            else
+                return db;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+        }
+
+        return null;
+    }
+
+    public static LiteDatabase Database { get; private set; }
+
+    public static void Close()
+    {
+        if (Database == null)
+            return;
+
+        bool anyLaps = LapDataCollection.Any();
+        Database.Dispose();
+        Database = null;
+
+        if (!anyLaps)
+        {
+            try
             {
-                try
-                {
-                    new FileInfo(fileName).Delete();
-                    Debug.WriteLine("Deleted rwdb file, contains no laps.");
-                }
-                catch (Exception e)
-                {
-                    LogWriter.WriteToLog(e);
-                }
+                new FileInfo(fileName).Delete();
+                Debug.WriteLine("Deleted rwdb file, contains no laps.");
+            }
+            catch (Exception e)
+            {
+                LogWriter.WriteToLog(e);
             }
         }
     }

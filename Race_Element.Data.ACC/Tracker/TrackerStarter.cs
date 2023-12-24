@@ -4,20 +4,19 @@ using RaceElement.Data.ACC.Tyres;
 using System.Diagnostics;
 using System.Threading;
 
-namespace RaceElement.Data.ACC.Tracker
-{
-    public static class ACCTrackerStarter
-    {
-        public static void StartACCTrackers()
-        {
-            new Thread(() =>
-            {
-                _ = LapTracker.Instance;
-                _ = RaceSessionTracker.Instance;
-                _ = TyresTracker.Instance;
+namespace RaceElement.Data.ACC.Tracker;
 
-                Debug.WriteLine("Started ACC.Trackers");
-            }).Start();
-        }
+public static class ACCTrackerStarter
+{
+    public static void StartACCTrackers()
+    {
+        new Thread(() =>
+        {
+            _ = LapTracker.Instance;
+            _ = RaceSessionTracker.Instance;
+            _ = TyresTracker.Instance;
+
+            Debug.WriteLine("Started ACC.Trackers");
+        }).Start();
     }
 }

@@ -4,142 +4,141 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
-namespace RaceElement.Broadcast
+namespace RaceElement.Broadcast;
+
+public class ACCUdpRemoteClient : IDisposable
 {
-    public class ACCUdpRemoteClient : IDisposable
+    private UdpClient _client;
+    private Task _listenerTask;
+    public BroadcastingNetworkProtocol MessageHandler { get; }
+    public string IpPort { get; }
+    public string DisplayName { get; }
+    public string ConnectionPassword { get; }
+    public string CommandPassword { get; }
+    public int MsRealtimeUpdateInterval { get; }
+
+    /// <summary>
+    /// To get the events delivered inside the UI thread, just create this object from the UI thread/synchronization context.
+    /// </summary>
+    public ACCUdpRemoteClient(string ip, int port, string displayName, string connectionPassword, string commandPassword, int msRealtimeUpdateInterval)
     {
-        private UdpClient _client;
-        private Task _listenerTask;
-        public BroadcastingNetworkProtocol MessageHandler { get; }
-        public string IpPort { get; }
-        public string DisplayName { get; }
-        public string ConnectionPassword { get; }
-        public string CommandPassword { get; }
-        public int MsRealtimeUpdateInterval { get; }
+        IpPort = $"{ip}:{port}";
+        MessageHandler = new BroadcastingNetworkProtocol(IpPort, Send);
+        _client = new UdpClient(new IPEndPoint(IPAddress.Loopback, 0));
+        _client.Connect(ip, port);
 
-        /// <summary>
-        /// To get the events delivered inside the UI thread, just create this object from the UI thread/synchronization context.
-        /// </summary>
-        public ACCUdpRemoteClient(string ip, int port, string displayName, string connectionPassword, string commandPassword, int msRealtimeUpdateInterval)
+        DisplayName = displayName;
+        ConnectionPassword = connectionPassword;
+        CommandPassword = commandPassword;
+        MsRealtimeUpdateInterval = msRealtimeUpdateInterval;
+
+        _listenerTask = ConnectAndRun();
+    }
+
+    private void Send(byte[] payload)
+    {
+        if (_client != null)
+            _client.Send(payload, payload.Length);
+    }
+
+    public void Shutdown()
+    {
+        ShutdownAsnyc().ContinueWith(t =>
+         {
+             if (t.Exception?.InnerExceptions?.Any() == true)
+                 System.Diagnostics.Debug.WriteLine($"Broadcast Client shut down with {t.Exception.InnerExceptions.Count} errors");
+             //else
+             //System.Diagnostics.Debug.WriteLine("Client shut down asynchronously");
+
+         });
+    }
+
+    public async Task ShutdownAsnyc()
+    {
+        if (_client == null)
+            return;
+
+        if (_listenerTask != null && !_listenerTask.IsCompleted)
         {
-            IpPort = $"{ip}:{port}";
-            MessageHandler = new BroadcastingNetworkProtocol(IpPort, Send);
-            _client = new UdpClient(new IPEndPoint(IPAddress.Loopback, 0));
-            _client.Connect(ip, port);
-
-            DisplayName = displayName;
-            ConnectionPassword = connectionPassword;
-            CommandPassword = commandPassword;
-            MsRealtimeUpdateInterval = msRealtimeUpdateInterval;
-
-            _listenerTask = ConnectAndRun();
+            MessageHandler.Disconnect();
+            _client.Close();
+            _client = null;
+            await _listenerTask;
         }
+    }
 
-        private void Send(byte[] payload)
+    private async Task ConnectAndRun()
+    {
+        MessageHandler.RequestConnection(DisplayName, ConnectionPassword, MsRealtimeUpdateInterval, CommandPassword);
+        while (_client != null)
         {
-            if (_client != null)
-                _client.Send(payload, payload.Length);
-        }
-
-        public void Shutdown()
-        {
-            ShutdownAsnyc().ContinueWith(t =>
-             {
-                 if (t.Exception?.InnerExceptions?.Any() == true)
-                     System.Diagnostics.Debug.WriteLine($"Broadcast Client shut down with {t.Exception.InnerExceptions.Count} errors");
-                 //else
-                 //System.Diagnostics.Debug.WriteLine("Client shut down asynchronously");
-
-             });
-        }
-
-        public async Task ShutdownAsnyc()
-        {
-            if (_client == null)
-                return;
-
-            if (_listenerTask != null && !_listenerTask.IsCompleted)
+            try
             {
-                MessageHandler.Disconnect();
-                _client.Close();
-                _client = null;
-                await _listenerTask;
+                var udpPacket = await _client.ReceiveAsync();
+                using (var ms = new System.IO.MemoryStream(udpPacket.Buffer))
+                using (var reader = new System.IO.BinaryReader(ms))
+                {
+                    MessageHandler.ProcessMessage(reader);
+                }
+            }
+            catch (ObjectDisposedException)
+            {
+                // Shutdown happened
+                break;
+            }
+            catch (Exception)
+            {
+                // Other exceptions
+                //System.Diagnostics.Debug.WriteLine(ex);
             }
         }
+    }
 
-        private async Task ConnectAndRun()
+    #region IDisposable Support
+    private bool disposedValue = false; // To detect redundant calls
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposedValue)
         {
-            MessageHandler.RequestConnection(DisplayName, ConnectionPassword, MsRealtimeUpdateInterval, CommandPassword);
-            while (_client != null)
+            if (disposing)
             {
                 try
                 {
-                    var udpPacket = await _client.ReceiveAsync();
-                    using (var ms = new System.IO.MemoryStream(udpPacket.Buffer))
-                    using (var reader = new System.IO.BinaryReader(ms))
+                    if (_client != null)
                     {
-                        MessageHandler.ProcessMessage(reader);
+                        _client.Close();
+                        _client.Dispose();
+                        _client = null;
                     }
+
                 }
-                catch (ObjectDisposedException)
+                catch (Exception ex)
                 {
-                    // Shutdown happened
-                    break;
-                }
-                catch (Exception)
-                {
-                    // Other exceptions
-                    //System.Diagnostics.Debug.WriteLine(ex);
+                    System.Diagnostics.Debug.WriteLine(ex);
                 }
             }
+
+            // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+            // TODO: set large fields to null.
+
+            disposedValue = true;
         }
-
-        #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    try
-                    {
-                        if (_client != null)
-                        {
-                            _client.Close();
-                            _client.Dispose();
-                            _client = null;
-                        }
-
-                    }
-                    catch (Exception ex)
-                    {
-                        System.Diagnostics.Debug.WriteLine(ex);
-                    }
-                }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
-                disposedValue = true;
-            }
-        }
-
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~ACCUdpRemoteClient() {
-        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-        //   Dispose(false);
-        // }
-
-        // This code added to correctly implement the disposable pattern.
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
-        }
-        #endregion
     }
+
+    // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+    // ~ACCUdpRemoteClient() {
+    //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+    //   Dispose(false);
+    // }
+
+    // This code added to correctly implement the disposable pattern.
+    public void Dispose()
+    {
+        // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        Dispose(true);
+        // TODO: uncomment the following line if the finalizer is overridden above.
+        // GC.SuppressFinalize(this);
+    }
+    #endregion
 }
