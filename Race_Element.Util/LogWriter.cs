@@ -43,7 +43,7 @@ namespace RaceElement.Util
         /// <summary>
         /// Lof file name
         /// </summary>
-        private static string LogFile = "ACC_Manager_Log.txt";
+        private static string LogFile = "Race_Element_Log.txt";
 
         /// <summary>
         /// Flush log when time reached
