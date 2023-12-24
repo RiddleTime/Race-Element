@@ -2,6 +2,7 @@
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
@@ -23,7 +24,7 @@ public sealed class StartScreenOverlay : AbstractOverlay
     private CachedBitmap _cachedText;
     private CachedBitmap _slider;
     private Tweener tweener;
-    private DateTime tweenStart;
+    private Stopwatch stopwatch;
 
     private const int SliderWidth = 280;
     private int sliderX = -SliderWidth;
@@ -88,7 +89,7 @@ public sealed class StartScreenOverlay : AbstractOverlay
         tweener.AddTween(tweener.Tween(_cachedBackground, new { Opacity = 1f }, 2f).Ease(Ease.SineIn));
         tweener.AddTween(tweener.Tween(_cachedText, new { Opacity = 0.95f }, 1.3f).Ease(Ease.ExpoIn));
         tweener.AddTween(tweener.Tween(_slider, new { Opacity = 1f }, 2f).Ease(Ease.ExpoIn));
-        tweenStart = DateTime.Now;
+        stopwatch = Stopwatch.StartNew();
     }
 
     public override void BeforeStop()
@@ -96,13 +97,14 @@ public sealed class StartScreenOverlay : AbstractOverlay
         _cachedBackground?.Dispose();
         _cachedText?.Dispose();
         _slider?.Dispose();
+        stopwatch.Stop();
     }
 
     public override bool ShouldRender() => true;
 
     public override void Render(Graphics g)
     {
-        tweener.Update((float)DateTime.Now.Subtract(tweenStart).TotalSeconds);
+        tweener.Update(stopwatch.ElapsedMilliseconds / 1000f);
 
         _cachedBackground?.Draw(g);
 
