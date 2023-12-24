@@ -36,7 +36,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace
         public void Draw(Graphics g)
         {
             //this.SetMinAndMax();
-            Rectangle graphRect = new Rectangle(X, Y, Width, Height);
+            Rectangle graphRect = new(X, Y, Width, Height);
             // draw background
             g.FillRectangle(new SolidBrush(Color.FromArgb(196, Color.Black)), graphRect);
 
@@ -57,7 +57,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace
         {
             if (Data.Count > 0)
             {
-                List<Point> points = new List<Point>();
+                List<Point> points = new();
                 lock (Data)
                     for (int i = 0; i < Data.Count - 1; i++)
                     {
@@ -75,7 +75,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace
 
                             if (points.Count > 1)
                             {
-                                GraphicsPath path = new GraphicsPath() { FillMode = FillMode.Winding };
+                                GraphicsPath path = new() { FillMode = FillMode.Winding };
                                 path.AddLines(points.ToArray());
                                 g.DrawPath(new Pen(GetLineColor(Data.ElementAt(i)), 2.5f), path);
                                 points.Clear();

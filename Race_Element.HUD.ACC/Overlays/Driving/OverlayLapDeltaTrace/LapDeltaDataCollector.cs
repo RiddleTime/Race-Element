@@ -9,8 +9,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaTrace
         private readonly int TraceCount = 300;
         public float MaxDelta { get; set; }
 
-        public LinkedList<float> PositiveDeltaData = new LinkedList<float>();
-        public LinkedList<float> NegativeDeltaData = new LinkedList<float>();
+        public LinkedList<float> PositiveDeltaData = new();
+        public LinkedList<float> NegativeDeltaData = new();
 
         public LapDeltaDataCollector(int traceCount)
         {

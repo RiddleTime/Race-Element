@@ -15,7 +15,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
         OverlayCategory = OverlayCategory.Inputs)]
     internal sealed class SteeringOverlay : AbstractOverlay
     {
-        private readonly SteeringConfig _config = new SteeringConfig();
+        private readonly SteeringConfig _config = new();
         private sealed class SteeringConfig : OverlayConfiguration
         {
             public enum InputsText
@@ -76,9 +76,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
 
             _cachedBackground = new CachedBitmap((int)(Width * this.Scale + (1 * this.Scale)), (int)(Height * this.Scale + (1 * this.Scale)), g =>
             {
-                GraphicsPath gradientPath = new GraphicsPath();
+                GraphicsPath gradientPath = new();
                 gradientPath.AddEllipse(0, 0, (int)(InitialSize * Scale), (int)(InitialSize * Scale));
-                PathGradientBrush pthGrBrush = new PathGradientBrush(gradientPath);
+                PathGradientBrush pthGrBrush = new(gradientPath);
                 pthGrBrush.CenterColor = Color.FromArgb(40, 0, 0, 0);
                 pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(220, 0, 0, 0) };
 
@@ -127,7 +127,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs
             float angle = Rescale(200, SteeringLock.Get(pageStatic.CarModel) * 2, accSteering) - (SteeringLock.Get(pageStatic.CarModel));
 
             int padding = 1;
-            Rectangle rect = new Rectangle(0 + _wheelThickness / 2 + padding, 0 + _wheelThickness / 2 + padding, InitialSize - (2 * _wheelThickness / 2) - padding * 2, InitialSize - (2 * _wheelThickness / 2) - padding * 2);
+            Rectangle rect = new(0 + _wheelThickness / 2 + padding, 0 + _wheelThickness / 2 + padding, InitialSize - (2 * _wheelThickness / 2) - padding * 2, InitialSize - (2 * _wheelThickness / 2) - padding * 2);
             float drawAngle = angle + 270 - (indicatorWidth / 2);
             g.DrawArc(new Pen(Color.White, _wheelThickness), rect, drawAngle, indicatorWidth);
         }

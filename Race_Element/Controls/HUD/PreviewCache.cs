@@ -12,7 +12,7 @@ namespace RaceElement.Controls.HUD
 {
     internal class PreviewCache
     {
-        internal static readonly Dictionary<string, CachedPreview> _cachedPreviews = new Dictionary<string, CachedPreview>();
+        internal static readonly Dictionary<string, CachedPreview> _cachedPreviews = new();
         private static readonly object[] DefaultOverlayArgs = new object[] { new System.Drawing.Rectangle((int)SystemParameters.PrimaryScreenWidth / 2, (int)SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
 
         public class CachedPreview
@@ -125,7 +125,7 @@ namespace RaceElement.Controls.HUD
             try
             {
                 overlay.BeforeStart();
-                CachedPreview cachedPreview = new CachedPreview()
+                CachedPreview cachedPreview = new()
                 {
                     Width = overlay.Width,
                     Height = overlay.Height,

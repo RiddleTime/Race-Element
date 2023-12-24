@@ -97,7 +97,7 @@ namespace RaceElement.Controls
             {
                 try
                 {
-                    OBSWebsocket _obsWebSocket = new OBSWebsocket();
+                    OBSWebsocket _obsWebSocket = new();
                     _obsWebSocket.Connected += (s, e) =>
                     {
                         Task.Run(() =>
@@ -153,7 +153,7 @@ namespace RaceElement.Controls
             {
                 try
                 {
-                    SlobsPipeClient client = new SlobsPipeClient();
+                    SlobsPipeClient client = new();
                     var request = SlobsRequestBuilder.NewRequest().SetMethod("getScenes").SetResource("ScenesService").BuildRequest();
 
                     var response = client.ExecuteRequest(request);

@@ -19,7 +19,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
     Description = "Shows the selected gear.")]
     internal sealed class CurrentGearOverlay : AbstractOverlay
     {
-        private readonly CurrentGearConfiguration _config = new CurrentGearConfiguration();
+        private readonly CurrentGearConfiguration _config = new();
         private sealed class CurrentGearConfiguration : OverlayConfiguration
         {
             [ConfigGrouping("Gear", "Options for the Current Gear HUD")]
@@ -44,7 +44,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
 
         private const int InitialWidth = 80;
         private const int InitialHeight = 72;
-        private readonly List<CachedBitmap> _gearBitmaps = new List<CachedBitmap>();
+        private readonly List<CachedBitmap> _gearBitmaps = new();
 
         private int _lastGear = -2;
         private const float MaxOpacity = 1f;
@@ -69,9 +69,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
         public override void BeforeStart()
         {
             Font font = FontUtil.FontConthrax(50 * this.Scale);
-            HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightUpwardDiagonal, Color.FromArgb(225, Color.Black), Color.FromArgb(185, Color.Black));
+            HatchBrush hatchBrush = new(HatchStyle.LightUpwardDiagonal, Color.FromArgb(225, Color.Black), Color.FromArgb(185, Color.Black));
 
-            Rectangle renderRectangle = new Rectangle(0, 0, (int)(InitialWidth * this.Scale), (int)(InitialHeight * this.Scale));
+            Rectangle renderRectangle = new(0, 0, (int)(InitialWidth * this.Scale), (int)(InitialHeight * this.Scale));
             for (int i = 0; i <= 8; i++)
             {
                 string gear = i switch

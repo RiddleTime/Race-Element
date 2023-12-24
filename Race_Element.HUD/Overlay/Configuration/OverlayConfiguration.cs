@@ -42,7 +42,7 @@ namespace RaceElement.HUD.Overlay.Configuration
 
         public static List<ConfigField> GetConfigFields(OverlayConfiguration overlayConfiguration)
         {
-            List<ConfigField> configFields = new List<ConfigField>();
+            List<ConfigField> configFields = new();
             var runtimeProperties = overlayConfiguration.GetType().GetRuntimeProperties();
             foreach (PropertyInfo nested in runtimeProperties)
             {

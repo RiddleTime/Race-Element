@@ -38,13 +38,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
             {
                 if (config.InfoPanel.GridLines)
                 {
-                    using Pen linePen = new Pen(new SolidBrush(Color.FromArgb(90, Color.White)), 1);
+                    using Pen linePen = new(new SolidBrush(Color.FromArgb(90, Color.White)), 1);
                     for (int i = 1; i <= 9; i++)
                         g.DrawLine(linePen, new Point(0, i * _height / 10), new Point(_width, i * _height / 10));
                 }
 
-                Rectangle graphRect = new Rectangle(_x, _y, _width, _height);
-                LinearGradientBrush gradientBrush = new LinearGradientBrush(graphRect, Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical);
+                Rectangle graphRect = new(_x, _y, _width, _height);
+                LinearGradientBrush gradientBrush = new(graphRect, Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical);
                 g.FillRoundedRectangle(gradientBrush, graphRect, 3);
                 g.DrawRoundedRectangle(new Pen(Color.FromArgb(196, Color.Black)), graphRect, 3);
             });
@@ -75,7 +75,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
         {
             if (Data.Count > 0)
             {
-                List<Point> points = new List<Point>();
+                List<Point> points = new();
                 lock (Data)
                     for (int i = 0; i < Data.Count - 1; i++)
                     {
@@ -93,7 +93,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
 
                 if (points.Count > 0)
                 {
-                    GraphicsPath path = new GraphicsPath();
+                    GraphicsPath path = new();
                     path.AddLines(points.ToArray());
                     g.DrawPath(pen, path);
                     path?.Dispose();

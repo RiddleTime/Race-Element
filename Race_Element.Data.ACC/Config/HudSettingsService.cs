@@ -5,7 +5,7 @@ namespace RaceElement.Data.ACC.Config
 {
     public class HudSettingsService
     {
-        private readonly AccHudSettings hudSettings = new AccHudSettings();
+        private readonly AccHudSettings hudSettings = new();
 
         public AccHudSettings Settings() => hudSettings;
 
@@ -14,7 +14,7 @@ namespace RaceElement.Data.ACC.Config
             public override string Path => FileUtil.AccConfigPath;
             public override string FileName => "hud.json";
 
-            public override AccHudSettingsJson Default() => new AccHudSettingsJson();
+            public override AccHudSettingsJson Default() => new();
         }
 
         public class AccHudSettingsJson : IGenericSettingsJson

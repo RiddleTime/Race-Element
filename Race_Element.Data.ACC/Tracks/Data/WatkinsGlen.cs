@@ -7,14 +7,14 @@ namespace ACCManager.Data.ACC.Tracks.Data
 {
     internal class WatkinsGlen : AbstractTrackData
     {
-        public override Guid Guid => new Guid("6c4d5fe4-105d-47b0-8699-49c10a92c591");
+        public override Guid Guid => new("6c4d5fe4-105d-47b0-8699-49c10a92c591");
         public override string GameName => "watkins_glen";
         public override string FullName => "Watkins Glen International";
         public override int TrackLength => 5552;
 
-        public override List<float> Sectors => new List<float>() { 0.3185f, 0.632f };
+        public override List<float> Sectors => new() { 0.3185f, 0.632f };
 
-        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
         {
             { new FloatRangeStruct(0.03883164f, 0.08408849f), (1, "The 90") },
             { new FloatRangeStruct(0.1122197f, 0.1562921f), (2, "The Esses") },

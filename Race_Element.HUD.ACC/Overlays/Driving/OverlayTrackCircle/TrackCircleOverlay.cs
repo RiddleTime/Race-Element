@@ -17,7 +17,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
             Description = "Shows the progression of all cars on track in a track circle.")]
     internal sealed class TrackCircleOverlay : AbstractOverlay
     {
-        private readonly TrackCircleConfiguration _config = new TrackCircleConfiguration();
+        private readonly TrackCircleConfiguration _config = new();
         private sealed class TrackCircleConfiguration : OverlayConfiguration
         {
             public TrackCircleConfiguration() => AllowRescale = true;
@@ -54,15 +54,15 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
             _background = new CachedBitmap(scaledDimension, scaledDimension, g =>
             {
                 float penWidth = 35f;
-                Rectangle rect = new Rectangle((int)penWidth, (int)penWidth, (int)(scaledDimension - penWidth * 2), (int)(scaledDimension - penWidth * 2));
+                Rectangle rect = new((int)penWidth, (int)penWidth, (int)(scaledDimension - penWidth * 2), (int)(scaledDimension - penWidth * 2));
 
-                using GraphicsPath gradientPath = new GraphicsPath();
+                using GraphicsPath gradientPath = new();
                 gradientPath.AddEllipse(0, 0, scaledDimension, scaledDimension);
-                using PathGradientBrush pthGrBrush = new PathGradientBrush(gradientPath);
+                using PathGradientBrush pthGrBrush = new(gradientPath);
                 pthGrBrush.CenterColor = Color.FromArgb(40, 0, 0, 0);
                 pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(220, 0, 0, 0) };
 
-                using Pen pen = new Pen(pthGrBrush, penWidth);
+                using Pen pen = new(pthGrBrush, penWidth);
                 g.DrawArc(pen, rect, 0, 360);
             });
             _font = FontUtil.FontSegoeMono(10);
@@ -93,16 +93,16 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
 
 
-            PointF origin = new PointF(Width / Scale / 2f, Height / Scale / 2f);
+            PointF origin = new(Width / Scale / 2f, Height / Scale / 2f);
 
             float penWidth = 35f;
-            using Pen pen = new Pen(Brushes.White, penWidth);
-            using Pen penRed = new Pen(Brushes.Red, penWidth);
-            using Pen penYellow = new Pen(Brushes.Yellow, penWidth);
-            using Pen penPits = new Pen(Brushes.Green, penWidth / 2);
-            using Pen penSector = new Pen(Brushes.Aquamarine, penWidth);
+            using Pen pen = new(Brushes.White, penWidth);
+            using Pen penRed = new(Brushes.Red, penWidth);
+            using Pen penYellow = new(Brushes.Yellow, penWidth);
+            using Pen penPits = new(Brushes.Green, penWidth / 2);
+            using Pen penSector = new(Brushes.Aquamarine, penWidth);
 
-            Rectangle circleRect = new Rectangle((int)(penWidth), (int)(penWidth), (int)(Dimension * Scale - penWidth * 2), (int)(Dimension * Scale - penWidth * 2));
+            Rectangle circleRect = new((int)(penWidth), (int)(penWidth), (int)(Dimension * Scale - penWidth * 2), (int)(Dimension * Scale - penWidth * 2));
             g.DrawArc(pen, circleRect, 269, 2);
 
             var currentTrack = GetCurrentTrackByFullName(broadCastTrackData.TrackName);
@@ -111,7 +111,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
                     g.DrawArc(penSector, circleRect, 270 + 359.5f * currentTrack.Sectors[i], 1);
 
 
-            using StringFormat stringFormat = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
+            using StringFormat stringFormat = new() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
             var data = EntryListTracker.Instance.Cars;
             data.Sort((a, b) => a.Value.RealtimeCarUpdate.Position.CompareTo(b.Value.RealtimeCarUpdate.Position));
             data.Reverse();
@@ -133,7 +133,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle
                     size = 40;
                 }
 
-                Rectangle rect = new Rectangle((int)(center.X - size / 2f), (int)(center.Y - size / 2f), (int)size, (int)size);
+                Rectangle rect = new((int)(center.X - size / 2f), (int)(center.Y - size / 2f), (int)size, (int)size);
 
                 bool isViewingCar = broadCastRealTime.FocusedCarIndex == item.Key;
                 g.DrawArc(inPitlane ? penPits : islowSpeed ? penYellow : isViewingCar ? penRed : pen, circleRect, -90 + 360 * carProgression - 1, .5f);

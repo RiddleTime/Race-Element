@@ -51,8 +51,8 @@ namespace RaceElement.Controls
 
         private void ButtonOpenAccManagerFolder_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            DirectoryInfo directory = new DirectoryInfo($"{FileUtil.RaceElementAppDataPath}");
-            Process.Start(directory.FullName);
+            DirectoryInfo directory = new($"{FileUtil.RaceElementAppDataPath}");
+            Process.Start("explorer", directory.FullName);
         }
 
         private void SaveSettings()

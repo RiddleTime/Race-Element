@@ -38,37 +38,37 @@ namespace CPI.Plot3D
         /// <summary>
         /// The zero vector, which represents neither distance nor direction.
         /// </summary>
-        public static readonly Vector3D Zero = new Vector3D(0f, 0f, 0f);
+        public static readonly Vector3D Zero = new(0f, 0f, 0f);
 
         /// <summary>
         /// A unit vector pointing in a positive direction along the X axis.
         /// </summary>
-        public static readonly Vector3D PositiveX = new Vector3D(1f, 0f, 0f);
+        public static readonly Vector3D PositiveX = new(1f, 0f, 0f);
 
         /// <summary>
         /// A unit vector pointing in a negative direction along the X axis.
         /// </summary>
-        public static readonly Vector3D NegativeX = new Vector3D(-1f, 0f, 0f);
+        public static readonly Vector3D NegativeX = new(-1f, 0f, 0f);
 
         /// <summary>
         /// A unit vector pointing in a positive direction along the Y axis.
         /// </summary>
-        public static readonly Vector3D PositiveY = new Vector3D(0f, 1f, 0f);
+        public static readonly Vector3D PositiveY = new(0f, 1f, 0f);
 
         /// <summary>
         /// A unit vector pointing in a negative direction along the Y axis.
         /// </summary>
-        public static readonly Vector3D NegativeY = new Vector3D(0f, -1f, 0f);
+        public static readonly Vector3D NegativeY = new(0f, -1f, 0f);
 
         /// <summary>
         /// A unit vector pointing in a positive direction along the Z axis.
         /// </summary>
-        public static readonly Vector3D PositiveZ = new Vector3D(0f, 0f, 1f);
+        public static readonly Vector3D PositiveZ = new(0f, 0f, 1f);
 
         /// <summary>
         /// A unit vector pointing in a negative direction along the Z axis.
         /// </summary>
-        public static readonly Vector3D NegativeZ = new Vector3D(0f, 0f, -1f);
+        public static readonly Vector3D NegativeZ = new(0f, 0f, -1f);
 
         # endregion
 

@@ -11,7 +11,7 @@ namespace ACCManager.Data.ACC.Core.Game
 
         public static void RegisterJobs()
         {
-            StdSchedulerFactory factory = new StdSchedulerFactory();
+            StdSchedulerFactory factory = new();
             Scheduler = factory.GetScheduler().Result;
             Scheduler.Start();
 

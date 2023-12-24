@@ -21,7 +21,7 @@ namespace RaceElement.Controls
     /// </summary>
     public partial class AccCameraSettings : UserControl
     {
-        private readonly CameraSettingService camera = new CameraSettingService();
+        private readonly CameraSettingService camera = new();
 
         public AccCameraSettings()
         {

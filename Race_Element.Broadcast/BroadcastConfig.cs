@@ -24,7 +24,7 @@ namespace RaceElement.Broadcast
         {
             lock (_lock)
             {
-                FileInfo broadcastingConfig = new FileInfo(FileUtil.AccConfigPath + "broadcasting.json");
+                FileInfo broadcastingConfig = new(FileUtil.AccConfigPath + "broadcasting.json");
 
                 if (broadcastingConfig.Exists)
                 {
@@ -59,7 +59,7 @@ namespace RaceElement.Broadcast
             string jsonString = string.Empty;
             try
             {
-                using (StreamReader reader = new StreamReader(stream))
+                using (StreamReader reader = new(stream))
                 {
                     jsonString = reader.ReadToEnd();
                     jsonString = jsonString.Replace("\0", "");

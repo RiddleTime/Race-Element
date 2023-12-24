@@ -20,7 +20,7 @@ namespace RaceElement.Controls.Util.Updater
 
             string assemblyStart = System.Reflection.Assembly.GetExecutingAssembly().Location;
 
-            FileInfo currentAssemblyFile = new FileInfo(assemblyStart);
+            FileInfo currentAssemblyFile = new(assemblyStart);
 
             MoveCurrentExecutableToDocumentsPath(currentAssemblyFile.FullName);
 
@@ -42,11 +42,11 @@ namespace RaceElement.Controls.Util.Updater
         {
             LogWriter.WriteToLog($"AutoUpdater: Moving current Executable to {FileUtil.RaceElementAppDataPath}");
 
-            FileInfo toBeMoved = new FileInfo(currentExecutableFullName);
+            FileInfo toBeMoved = new(currentExecutableFullName);
 
             string tempTargetFile = $"{FileUtil.RaceElementAppDataPath}RaceElement.exe";
 
-            FileInfo targetFile = new FileInfo(tempTargetFile);
+            FileInfo targetFile = new(tempTargetFile);
             if (targetFile.Exists)
                 targetFile.Delete();
 
@@ -62,9 +62,9 @@ namespace RaceElement.Controls.Util.Updater
             {
                 LogWriter.WriteToLog($"AutoUpdater: Reverting Executable from {FileUtil.RaceElementAppDataPath} to {currentExecutableFullName}");
 
-                FileInfo toBeMoved = new FileInfo($"{FileUtil.RaceElementAppDataPath}RaceElement.exe");
+                FileInfo toBeMoved = new($"{FileUtil.RaceElementAppDataPath}RaceElement.exe");
 
-                FileInfo targetFile = new FileInfo(currentExecutableFullName);
+                FileInfo targetFile = new(currentExecutableFullName);
                 if (targetFile.Exists)
                     targetFile.Delete();
 
@@ -89,7 +89,7 @@ namespace RaceElement.Controls.Util.Updater
 
                 LogWriter.WriteToLog($"AutoUpdater: Downloaded latest version from {downloadUrl} to file:\n{targetFile}");
 
-                FileInfo newVersion = new FileInfo(targetFile);
+                FileInfo newVersion = new(targetFile);
                 return newVersion.Exists;
             }
             catch (Exception e)
@@ -104,13 +104,13 @@ namespace RaceElement.Controls.Util.Updater
         {
             LogWriter.WriteToLog("Shutting down, starting newest version");
 
-            FileInfo newVersion = new FileInfo(targetFile);
+            FileInfo newVersion = new(targetFile);
 
             if (!newVersion.Exists)
                 return false;
 
             string fullName = newVersion.FullName.Replace('\\', '/');
-            ProcessStartInfo startInfo = new ProcessStartInfo()
+            ProcessStartInfo startInfo = new()
             {
                 FileName = "cmd",
                 Arguments = $"/c start \"RaceElement.exe\" \"{fullName}\"",

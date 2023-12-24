@@ -82,7 +82,7 @@ namespace RaceElement.Controls
                     int lockToLock = SteeringLock.Get(search.First().Key);
                     string carName = ConversionFactory.GetNameFromCarModel(carModel);
 
-                    Label label = new Label()
+                    Label label = new()
                     {
                         Content = $"  {lockToLock}   |   {carName}",
                         FontWeight = FontWeights.Bold,

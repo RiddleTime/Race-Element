@@ -18,7 +18,7 @@ namespace RaceElement.HUD.Overlay.Configuration
 
         public static int[] GetOptionsCollection(IntRangeAttribute intRange)
         {
-            List<int> collection = new List<int>();
+            List<int> collection = new();
 
             for (int i = intRange.Min; i < intRange.Max + intRange.Increment; i += intRange.Increment)
             {

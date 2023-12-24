@@ -7,14 +7,14 @@ namespace ACCManager.Data.ACC.Tracks.Data
 {
     internal class Suzuka : AbstractTrackData
     {
-        public override Guid Guid => new Guid("1c9b35a5-dacb-40e2-adc9-134d75f75c3f");
+        public override Guid Guid => new("1c9b35a5-dacb-40e2-adc9-134d75f75c3f");
         public override string GameName => "Suzuka";
         public override string FullName => "Suzuka Circuit";
         public override int TrackLength => 5807;
 
-        public override List<float> Sectors => new List<float>() { 0.324f, 0.757f };
+        public override List<float> Sectors => new() { 0.324f, 0.757f };
 
-        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
         {
             { new FloatRangeStruct(0.03883164f, 0.0825785f), (1, "First Curve") },
             { new FloatRangeStruct(0.08290438f, 0.1167337f), (2, "First Curve") },

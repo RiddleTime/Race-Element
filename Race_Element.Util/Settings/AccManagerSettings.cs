@@ -14,7 +14,7 @@
 
         public override string FileName => "AccManager.json";
 
-        public override AccManagerSettingsJson Default() => new AccManagerSettingsJson()
+        public override AccManagerSettingsJson Default() => new()
         {
             MinimizeToSystemTray = false,
             TelemetryRecordDetailed = false,

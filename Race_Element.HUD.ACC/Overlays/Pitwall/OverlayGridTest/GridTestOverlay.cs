@@ -11,7 +11,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
     [Overlay(Name = "Grid Test", Description = "Testing of the grid", OverlayType = OverlayType.Pitwall)]
     internal sealed class GridTestOverlay : AbstractOverlay
     {
-        private readonly GridTestConfiguration _config = new GridTestConfiguration();
+        private readonly GridTestConfiguration _config = new();
         private sealed class GridTestConfiguration : OverlayConfiguration
         {
             public GridTestConfiguration() => AllowRescale = true;
@@ -46,12 +46,12 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
             float fontHeight = Font.GetHeight(120);
             int columnWidth = (int)fontHeight;
             int columnHeight = (int)fontHeight;
-            Random rand = new Random();
+            Random rand = new();
 
             for (int row = 0; row < testgrid.Rows; row++)
                 for (int column = 0; column < testgrid.Columns; column++)
                 {
-                    DrawableTextCell cell = new DrawableTextCell(new RectangleF(column * columnWidth, row * columnHeight, columnWidth, columnHeight), Font);
+                    DrawableTextCell cell = new(new RectangleF(column * columnWidth, row * columnHeight, columnWidth, columnHeight), Font);
 
                     cell.CachedBackground = new CachedBitmap((int)cell.Rectangle.Width, (int)cell.Rectangle.Height, g =>
                     {
@@ -74,7 +74,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest
         public override bool ShouldRender() => true;
         public override void Render(Graphics g)
         {
-            Random rand = new Random();
+            Random rand = new();
             for (int row = 0; row < testgrid.Rows; row++)
                 for (int column = 0; column < testgrid.Columns; column++)
                 {

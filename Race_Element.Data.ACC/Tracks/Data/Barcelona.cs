@@ -7,14 +7,14 @@ namespace ACCManager.Data.ACC.Tracks.Data
 {
     internal class Barcelona : AbstractTrackData
     {
-        public override Guid Guid => new Guid("c47d348d-4cac-4377-90ff-be3613bc6519");
+        public override Guid Guid => new("c47d348d-4cac-4377-90ff-be3613bc6519");
         public override string GameName => "Barcelona";
         public override string FullName => "Circuit de Barcelona-Catalunya";
         public override int TrackLength => 4655;
 
-        public override List<float> Sectors => new List<float>() { 0.348f, 0.730f };
+        public override List<float> Sectors => new() { 0.348f, 0.730f };
 
-        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
         {
             { new FloatRangeStruct(0.1577717f, 0.1954681f), (1, "Elf") },
             { new FloatRangeStruct(0.1967648f, 0.2195874f), (2, "Elf") },

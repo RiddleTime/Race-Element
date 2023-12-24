@@ -28,49 +28,49 @@ namespace RaceElement.Data.Cars.GT4
         private class TyreSetupChanger : ITyreSetupChanger
         {
             public SetupDoubleRange TyrePressures => TyrePressuresGT4;
-            public SetupDoubleRange CamberFront => new SetupDoubleRange(-5.0, 0.0, 0.1);
+            public SetupDoubleRange CamberFront => new(-5.0, 0.0, 0.1);
             public SetupDoubleRange CamberRear => CamberFront;
-            public SetupDoubleRange ToeFront => new SetupDoubleRange(-0.4, 0.4, 0.01);
+            public SetupDoubleRange ToeFront => new(-0.4, 0.4, 0.01);
             public SetupDoubleRange ToeRear => ToeFront;
-            public SetupDoubleRange Caster => new SetupDoubleRange(casters);
+            public SetupDoubleRange Caster => new(casters);
         }
 
         private class ElectronicsSetupChanger : IElectronicsSetupChanger
         {
-            public SetupIntRange TractionControl => new SetupIntRange(0, 5, 1);
-            public SetupIntRange ABS => new SetupIntRange(0, 10, 1);
-            public SetupIntRange EcuMap => new SetupIntRange(1, 1, 1);
-            public SetupIntRange TractionControlCut => new SetupIntRange(0, 0, 1);
+            public SetupIntRange TractionControl => new(0, 5, 1);
+            public SetupIntRange ABS => new(0, 10, 1);
+            public SetupIntRange EcuMap => new(1, 1, 1);
+            public SetupIntRange TractionControlCut => new(0, 0, 1);
         }
 
         private class MechSetupChanger : IMechanicalSetupChanger
         {
-            public SetupIntRange AntiRollBarFront => new SetupIntRange(0, 3, 1);
-            public SetupIntRange AntiRollBarRear => new SetupIntRange(0, 2, 1);
-            public SetupDoubleRange BrakeBias => new SetupDoubleRange(45.0, 70.0, 0.2);
-            public SetupIntRange PreloadDifferential => new SetupIntRange(10, 80, 10);
-            public SetupIntRange BrakePower => new SetupIntRange(80, 100, 1);
-            public SetupDoubleRange SteeringRatio => new SetupDoubleRange(12, 18, 1);
-            public SetupIntRange WheelRateFronts => new SetupIntRange(wheelRateFronts);
-            public SetupIntRange WheelRateRears => new SetupIntRange(wheelRateRears);
-            public SetupIntRange BumpstopRate => new SetupIntRange(300, 1000, 100);
-            public SetupIntRange BumpstopRangeFronts => new SetupIntRange(0, 0, 1);
-            public SetupIntRange BumpstopRangeRears => new SetupIntRange(0, 0, 1);
+            public SetupIntRange AntiRollBarFront => new(0, 3, 1);
+            public SetupIntRange AntiRollBarRear => new(0, 2, 1);
+            public SetupDoubleRange BrakeBias => new(45.0, 70.0, 0.2);
+            public SetupIntRange PreloadDifferential => new(10, 80, 10);
+            public SetupIntRange BrakePower => new(80, 100, 1);
+            public SetupDoubleRange SteeringRatio => new(12, 18, 1);
+            public SetupIntRange WheelRateFronts => new(wheelRateFronts);
+            public SetupIntRange WheelRateRears => new(wheelRateRears);
+            public SetupIntRange BumpstopRate => new(300, 1000, 100);
+            public SetupIntRange BumpstopRangeFronts => new(0, 0, 1);
+            public SetupIntRange BumpstopRangeRears => new(0, 0, 1);
         }
 
         private class AeroSetupChanger : IAeroSetupChanger
         {
-            public SetupIntRange RideHeightFront => new SetupIntRange(95, 120, 1);
-            public SetupIntRange RideHeightRear => new SetupIntRange(85, 125, 1);
+            public SetupIntRange RideHeightFront => new(95, 120, 1);
+            public SetupIntRange RideHeightRear => new(85, 125, 1);
             public SetupIntRange BrakeDucts => BrakeDuctsGT3;
-            public SetupIntRange Splitter => new SetupIntRange(0, 0, 1);
-            public SetupIntRange RearWing => new SetupIntRange(0, 4, 1);
+            public SetupIntRange Splitter => new(0, 0, 1);
+            public SetupIntRange RearWing => new(0, 4, 1);
         }
 
         private class DamperSetupChanger : IDamperSetupChanger
         {
-            public SetupIntRange BumpSlow => new SetupIntRange(0, 24, 1);
-            public SetupIntRange BumpFast => new SetupIntRange(0, 0, 1);
+            public SetupIntRange BumpSlow => new(0, 24, 1);
+            public SetupIntRange BumpFast => new(0, 0, 1);
             public SetupIntRange ReboundSlow => BumpSlow;
             public SetupIntRange ReboundFast => BumpFast;
         }

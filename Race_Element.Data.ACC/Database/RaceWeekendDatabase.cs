@@ -18,7 +18,7 @@ namespace RaceElement.Data.ACC.Database
         {
             try
             {
-                DirectoryInfo dataDir = new DirectoryInfo(FileUtil.RaceElementDataPath);
+                DirectoryInfo dataDir = new(FileUtil.RaceElementDataPath);
                 if (!dataDir.Exists)
                     dataDir.Create();
 
@@ -44,7 +44,7 @@ namespace RaceElement.Data.ACC.Database
         {
             try
             {
-                LiteDatabase db = new LiteDatabase($"Filename={file}; Mode=ReadOnly;");
+                LiteDatabase db = new($"Filename={file}; Mode=ReadOnly;");
 
                 if (db == null)
                     Trace.WriteLine("Something went wrong initializing the LocalDatabase.Database");

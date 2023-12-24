@@ -25,7 +25,7 @@ namespace RaceElement.Controls
     /// </summary>
     public partial class AccLiverySettings : UserControl
     {
-        private readonly MenuSettingsService menu = new MenuSettingsService();
+        private readonly MenuSettingsService menu = new();
 
         public AccLiverySettings()
         {

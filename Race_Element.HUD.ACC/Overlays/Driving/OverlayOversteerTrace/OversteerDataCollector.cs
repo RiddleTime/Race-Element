@@ -13,8 +13,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
         public int Herz = 30;
         public float MaxSlipAngle { get; set; }
 
-        public LinkedList<float> OversteerData = new LinkedList<float>();
-        public LinkedList<float> UndersteerData = new LinkedList<float>();
+        public LinkedList<float> OversteerData = new();
+        public LinkedList<float> UndersteerData = new();
 
         public OversteerDataCollector(int traceCount)
         {

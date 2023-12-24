@@ -25,7 +25,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo
 
         public static DebugInfoHelper Instance { get; } = new DebugInfoHelper();
 
-        private List<AbstractOverlay> _infoOverlays = new List<AbstractOverlay>();
+        private List<AbstractOverlay> _infoOverlays = new();
 
         public void AddOverlay(AbstractOverlay overlay)
         {

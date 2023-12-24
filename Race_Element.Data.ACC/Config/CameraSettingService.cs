@@ -11,7 +11,7 @@ namespace RaceElement.Data.ACC.Config
 {
     public class CameraSettingService
     {
-        private readonly CameraSettings cameraSettings = new CameraSettings();
+        private readonly CameraSettings cameraSettings = new();
 
         public CameraSettings Settings() => cameraSettings;
 
@@ -46,7 +46,7 @@ namespace RaceElement.Data.ACC.Config
 
             public override string FileName => "cameraSettings.json";
 
-            public override CameraSettingsJson Default()    => new CameraSettingsJson();
+            public override CameraSettingsJson Default()    => new();
         }
 
         public class CameraSettingsJson : IGenericSettingsJson

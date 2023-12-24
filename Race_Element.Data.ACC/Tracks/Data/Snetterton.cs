@@ -7,14 +7,14 @@ namespace ACCManager.Data.ACC.Tracks.Data
 {
     internal class Snetterton : AbstractTrackData
     {
-        public override Guid Guid => new Guid("9248d360-e1ba-45be-bdec-dc939fb3959b");
+        public override Guid Guid => new("9248d360-e1ba-45be-bdec-dc939fb3959b");
         public override string GameName => "snetterton";
         public override string FullName => "Snetterton Circuit";
         public override int TrackLength => 4779;
 
-        public override List<float> Sectors => new List<float>() { 0.321f, 0.678f };
+        public override List<float> Sectors => new() { 0.321f, 0.678f };
 
-        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
         {
               { new FloatRangeStruct(0.05055097f, 0.1186151f), (1, "Riches")},
               { new FloatRangeStruct(0.1454172f, 0.1875129f), (2, "Montreal")},

@@ -9,7 +9,7 @@ namespace RaceElement.Controls
     /// </summary>
     public partial class SetupComparer : UserControl
     {
-        private readonly FlowDocCompareSetupRenderer setupRenderer = new FlowDocCompareSetupRenderer();
+        private readonly FlowDocCompareSetupRenderer setupRenderer = new();
         private FileInfo Setup1 { get; set; }
         private FileInfo Setup2 { get; set; }
 

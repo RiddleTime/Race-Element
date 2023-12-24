@@ -7,14 +7,14 @@ namespace ACCManager.Data.ACC.Tracks.Data
 {
     internal class Zandvoort : AbstractTrackData
     {
-        public override Guid Guid => new Guid("e7a091a3-b2c1-4903-8768-591a937858ea");
+        public override Guid Guid => new("e7a091a3-b2c1-4903-8768-591a937858ea");
         public override string GameName => "Zandvoort";
         public override string FullName => "Circuit Zandvoort";
         public override int TrackLength => 4252;
 
-        public override List<float> Sectors => new List<float>() { 0.318f, 0.654f };
+        public override List<float> Sectors => new() { 0.318f, 0.654f };
 
-        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
         {
             { new FloatRangeStruct(0.05284053f, 0.1141072f), (1, "Tarzanbocht") },
             { new FloatRangeStruct(0.1480813f, 0.1814992f), (2, "Gerlachbocht") },

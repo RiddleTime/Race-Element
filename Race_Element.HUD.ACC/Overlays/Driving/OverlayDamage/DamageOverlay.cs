@@ -15,7 +15,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
         OverlayCategory = OverlayCategory.Car)]
     internal sealed class DamageOverlay : AbstractOverlay
     {
-        private readonly DamageConfiguration _config = new DamageConfiguration();
+        private readonly DamageConfiguration _config = new();
         private sealed class DamageConfiguration : OverlayConfiguration
         {
             public DamageConfiguration() => AllowRescale = true;
@@ -80,7 +80,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
                 float horizontalPadding = scaledWidth * 0.05f;
                 float verticalPadding = scaledHeight * 0.025f;
 
-                Pen bodyOutlinePen = new Pen(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), 0.8f * this.Scale);
+                Pen bodyOutlinePen = new(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), 0.8f * this.Scale);
 
                 float frontRearWidth = scaledWidth - horizontalPadding * 6;
                 g.FillRectangle(new SolidBrush(Color.FromArgb(125, 0, 0, 0)), new RectangleF(horizontalPadding + frontRearWidth / 7, verticalPadding * 3, frontRearWidth, scaledHeight - verticalPadding * 6));
@@ -157,8 +157,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
             float frontRearWidth = scaledWidth - horizontalPadding * 6;
 
             // body shapes Front
-            RectangleF bodyFront = new RectangleF(horizontalPadding + frontRearWidth / 7, verticalPadding, frontRearWidth, verticalPadding * 4);
-            GraphicsPath pathBodyFront = new GraphicsPath();
+            RectangleF bodyFront = new(horizontalPadding + frontRearWidth / 7, verticalPadding, frontRearWidth, verticalPadding * 4);
+            GraphicsPath pathBodyFront = new();
             pathBodyFront.AddArc(bodyFront, 180, 180);
             _shapeBodyFront = new PathShape()
             {
@@ -168,8 +168,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
             };
 
             // body shape rear
-            RectangleF bodyRear = new RectangleF(horizontalPadding + frontRearWidth / 7, scaledHeight - verticalPadding * 5, frontRearWidth, verticalPadding * 4);
-            GraphicsPath pathBodyRear = new GraphicsPath();
+            RectangleF bodyRear = new(horizontalPadding + frontRearWidth / 7, scaledHeight - verticalPadding * 5, frontRearWidth, verticalPadding * 4);
+            GraphicsPath pathBodyRear = new();
             pathBodyRear.AddArc(bodyRear, 180, -180);
             _shapeBodyRear = new PathShape()
             {
@@ -183,8 +183,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
             float bodyLeftRightHeight = verticalPadding * 34;
 
             // body shape left
-            RectangleF bodyLeft = new RectangleF(0 + horizontalPadding, scaledHeight / 2 - bodyLeftRightHeight / 2, bodyLeftRightWidth, bodyLeftRightHeight);
-            GraphicsPath pathBodyLeft = new GraphicsPath();
+            RectangleF bodyLeft = new(0 + horizontalPadding, scaledHeight / 2 - bodyLeftRightHeight / 2, bodyLeftRightWidth, bodyLeftRightHeight);
+            GraphicsPath pathBodyLeft = new();
             pathBodyLeft.AddArc(bodyLeft, 90, 180);
             _shapeBodyLeft = new PathShape()
             {
@@ -194,8 +194,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
             };
 
             // Body shape right
-            RectangleF bodyRight = new RectangleF(scaledWidth - bodyLeftRightWidth - horizontalPadding, scaledHeight / 2 - bodyLeftRightHeight / 2, bodyLeftRightWidth, bodyLeftRightHeight);
-            GraphicsPath pathBodyRight = new GraphicsPath();
+            RectangleF bodyRight = new(scaledWidth - bodyLeftRightWidth - horizontalPadding, scaledHeight / 2 - bodyLeftRightHeight / 2, bodyLeftRightWidth, bodyLeftRightHeight);
+            GraphicsPath pathBodyRight = new();
             pathBodyRight.AddArc(bodyRight, -90, 180);
             _shapeBodyRight = new PathShape()
             {
@@ -211,8 +211,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
             float verticalWheelPadding = verticalPadding * 4;
 
             // wheel left front
-            RectangleF wheelFrontLeft = new RectangleF(bodyLeftRightWidth / 2 + horizontalPadding * 1.5f, verticalWheelPadding, wheelWidth, wheelHeight);
-            GraphicsPath pathWheelFrontLeft = new GraphicsPath();
+            RectangleF wheelFrontLeft = new(bodyLeftRightWidth / 2 + horizontalPadding * 1.5f, verticalWheelPadding, wheelWidth, wheelHeight);
+            GraphicsPath pathWheelFrontLeft = new();
             pathWheelFrontLeft.AddRectangle(wheelFrontLeft);
             _shapeSuspensionFrontLeft = new PathShape()
             {
@@ -222,8 +222,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
             };
 
             // wheel right front
-            RectangleF wheelFrontRight = new RectangleF(scaledWidth - (bodyLeftRightWidth / 2 + horizontalPadding * 1.5f + wheelWidth), verticalWheelPadding, wheelWidth, wheelHeight);
-            GraphicsPath pathWheelFrontRight = new GraphicsPath();
+            RectangleF wheelFrontRight = new(scaledWidth - (bodyLeftRightWidth / 2 + horizontalPadding * 1.5f + wheelWidth), verticalWheelPadding, wheelWidth, wheelHeight);
+            GraphicsPath pathWheelFrontRight = new();
             pathWheelFrontRight.AddRectangle(wheelFrontRight);
             _shapeSuspensionFrontRight = new PathShape()
             {
@@ -233,8 +233,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
             };
 
             // wheel left Rear
-            RectangleF wheelRearLeft = new RectangleF(bodyLeftRightWidth / 2 + horizontalPadding * 1.5f, scaledHeight - verticalWheelPadding - wheelHeight, wheelWidth, wheelHeight);
-            GraphicsPath pathWheelRearLeft = new GraphicsPath();
+            RectangleF wheelRearLeft = new(bodyLeftRightWidth / 2 + horizontalPadding * 1.5f, scaledHeight - verticalWheelPadding - wheelHeight, wheelWidth, wheelHeight);
+            GraphicsPath pathWheelRearLeft = new();
             pathWheelRearLeft.AddRectangle(wheelRearLeft);
             _shapeSuspensionRearLeft = new PathShape()
             {
@@ -244,8 +244,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
             };
 
             // wheel right Rear
-            RectangleF wheelRearRight = new RectangleF(scaledWidth - (bodyLeftRightWidth / 2 + horizontalPadding * 1.5f + wheelWidth), scaledHeight - verticalWheelPadding - wheelHeight, wheelWidth, wheelHeight);
-            GraphicsPath pathWheelRearRight = new GraphicsPath();
+            RectangleF wheelRearRight = new(scaledWidth - (bodyLeftRightWidth / 2 + horizontalPadding * 1.5f + wheelWidth), scaledHeight - verticalWheelPadding - wheelHeight, wheelWidth, wheelHeight);
+            GraphicsPath pathWheelRearRight = new();
             pathWheelRearRight.AddRectangle(wheelRearRight);
             _shapeSuspensionRearRight = new PathShape()
             {
@@ -358,7 +358,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage
         {
             g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
             int textWidth = (int)g.MeasureString(text, _font).Width;
-            Rectangle backgroundDimension = new Rectangle(x - textWidth / 2, y, textWidth, _font.Height);
+            Rectangle backgroundDimension = new(x - textWidth / 2, y, textWidth, _font.Height);
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 0, 0, 0)), backgroundDimension, 2);
             g.DrawRoundedRectangle(new Pen(Color.FromArgb(135, 230, 0, 0), 0.6f * this.Scale), backgroundDimension, 2);
             g.DrawStringWithShadow(text, _font, textColor, new PointF(x - textWidth / 2, y + _font.GetHeight(g) / 11f), 0.75f * this.Scale);

@@ -28,12 +28,12 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStandings
 
     public sealed class StandingsOverlay : AbstractOverlay
     {
-        private readonly StandingsConfiguration _config = new StandingsConfiguration();
+        private readonly StandingsConfiguration _config = new();
         private const int _height = 800;
         private const int _width = 800;
         private float _trackMeter = 0;
 
-        private readonly Dictionary<CarClasses, SolidBrush> _carClassToBrush = new Dictionary<CarClasses, SolidBrush>()
+        private readonly Dictionary<CarClasses, SolidBrush> _carClassToBrush = new()
         {
             {CarClasses.GT3, new SolidBrush(Color.FromArgb(150, Color.Yellow))},
             {CarClasses.GT4, new SolidBrush(Color.FromArgb(150, Color.LightBlue))},
@@ -49,7 +49,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStandings
         private AcStatus _currentAcStatus = AcStatus.AC_OFF;
 
         // the entry list splint into separate lists for every car class
-        private Dictionary<CarClasses, List<KeyValuePair<int, CarData>>> _entryListForCarClass = new Dictionary<CarClasses, List<KeyValuePair<int, CarData>>>();
+        private Dictionary<CarClasses, List<KeyValuePair<int, CarData>>> _entryListForCarClass = new();
 
         public StandingsOverlay(Rectangle rectangle) : base(rectangle, "Live Standings")
         {
@@ -127,7 +127,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStandings
 
             //int bestSessionLapMS = GetBestSessionLap();
 
-            Dictionary<CarClasses, List<StandingsTableRow>> tableRows = new Dictionary<CarClasses, List<StandingsTableRow>>();
+            Dictionary<CarClasses, List<StandingsTableRow>> tableRows = new();
 
             if (_config.Information.MultiClass)
             {
@@ -145,7 +145,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStandings
 
             AddDriversRow(tableRows[_driversClass], _entryListForCarClass[_driversClass]);
 
-            OverlayStandingsTable ost = new OverlayStandingsTable(10, 10, 13);
+            OverlayStandingsTable ost = new(10, 10, 13);
 
             int height = 0;
             foreach (KeyValuePair<CarClasses, List<StandingsTableRow>> kvp in tableRows)
@@ -463,9 +463,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStandings
         private readonly int _rowGab = 3;
         private readonly int _fontSize = 0;
 
-        private readonly SolidBrush _oddBackground = new SolidBrush(Color.FromArgb(100, Color.Black));
-        private readonly SolidBrush _evenBackground = new SolidBrush(Color.FromArgb(180, Color.Black));
-        private readonly SolidBrush _driversCarBackground = new SolidBrush(Color.FromArgb(180, Color.DarkSeaGreen));
+        private readonly SolidBrush _oddBackground = new(Color.FromArgb(100, Color.Black));
+        private readonly SolidBrush _evenBackground = new(Color.FromArgb(180, Color.Black));
+        private readonly SolidBrush _driversCarBackground = new(Color.FromArgb(180, Color.DarkSeaGreen));
 
         public OverlayStandingsTable(int x, int y, int fontSize)
         {
@@ -480,7 +480,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStandings
 
             if (tableData.Count == 0) return;
 
-            OverlayStandingTableHeaderLabel tableHeader = new OverlayStandingTableHeaderLabel(g, _x, rowPosY, classBackground, FontUtil.FontSegoeMono(_fontSize));
+            OverlayStandingTableHeaderLabel tableHeader = new(g, _x, rowPosY, classBackground, FontUtil.FontSegoeMono(_fontSize));
             tableHeader.Draw(g, Brushes.White, header);
             rowPosY += tableHeader.Height + _rowGab;
 
@@ -503,19 +503,19 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStandings
                 //String deltaString = $"{tableData[i].Delta / 1000f:F2}".FillStart(6, ' ');
                 String deltaString = $"{TimeSpan.FromMilliseconds(tableData[i].Delta):ss\\.f}";
 
-                OverlayStandingsTablePositionLabel position = new OverlayStandingsTablePositionLabel(g, columnPosX, rowPosY, backgroundColor, classBackground, FontUtil.FontSegoeMono(_fontSize));
+                OverlayStandingsTablePositionLabel position = new(g, columnPosX, rowPosY, backgroundColor, classBackground, FontUtil.FontSegoeMono(_fontSize));
                 position.Draw(g, tableData[i].Position.ToString());
 
                 columnPosX += position.Width + _columnGab;
-                OverlayStandingsTableTextLabel raceNumber = new OverlayStandingsTableTextLabel(g, columnPosX, rowPosY, 4, FontUtil.FontSegoeMono(_fontSize));
+                OverlayStandingsTableTextLabel raceNumber = new(g, columnPosX, rowPosY, 4, FontUtil.FontSegoeMono(_fontSize));
                 raceNumber.Draw(g, backgroundColor, (SolidBrush)Brushes.White, Brushes.White, "#" + tableData[i].RaceNumber.ToString(), false);
 
                 columnPosX += raceNumber.Width + _columnGab;
-                OverlayStandingsTableTextLabel driverName = new OverlayStandingsTableTextLabel(g, columnPosX, rowPosY, 20, FontUtil.FontSegoeMono(_fontSize));
+                OverlayStandingsTableTextLabel driverName = new(g, columnPosX, rowPosY, 20, FontUtil.FontSegoeMono(_fontSize));
                 driverName.Draw(g, backgroundColor, (SolidBrush)Brushes.Purple, Brushes.White, tableData[i].DriverName, false);
 
                 columnPosX += driverName.Width + _columnGab;
-                OverlayStandingsTableTextLabel deltaTime = new OverlayStandingsTableTextLabel(g, columnPosX, rowPosY, 5, FontUtil.FontSegoeMono(_fontSize));
+                OverlayStandingsTableTextLabel deltaTime = new(g, columnPosX, rowPosY, 5, FontUtil.FontSegoeMono(_fontSize));
                 if (tableData[i].Delta < -100)
                 {
                     deltaTime.Draw(g, backgroundColor, (SolidBrush)Brushes.DarkGreen, Brushes.White, "-" + deltaString, true);
@@ -533,13 +533,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStandings
                 columnPosX += deltaTime.Width + _columnGab;
                 if (showDeltaRow)
                 {
-                    OverlayStandingsTableTextLabel gabTime = new OverlayStandingsTableTextLabel(g, columnPosX, rowPosY, 3, FontUtil.FontSegoeMono(_fontSize));
+                    OverlayStandingsTableTextLabel gabTime = new(g, columnPosX, rowPosY, 3, FontUtil.FontSegoeMono(_fontSize));
                     gabTime.Draw(g, backgroundColor, (SolidBrush)Brushes.Green, Brushes.White, tableData[i].Gab, false);
                     columnPosX += gabTime.Width + _columnGab;
                 }
 
 
-                OverlayStandingsTableTextLabel laptTime = new OverlayStandingsTableTextLabel(g, columnPosX, rowPosY, 9, FontUtil.FontSegoeMono(_fontSize));
+                OverlayStandingsTableTextLabel laptTime = new(g, columnPosX, rowPosY, 9, FontUtil.FontSegoeMono(_fontSize));
                 laptTime.Draw(g, backgroundColor, (SolidBrush)Brushes.Purple, Brushes.White, tableData[i].LapTime, tableData[i].FastestLapTime);
 
                 if (tableData[i].AdditionalInfo != "")
@@ -624,7 +624,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStandings
             _x = x;
             _y = y;
 
-            string maxString = new string('K', _maxStringLength);
+            string maxString = new('K', _maxStringLength);
             var fontSize = g.MeasureString(maxString, _fontFamily);
             Width = (int)fontSize.Width + _spacing;
             _height = (int)fontSize.Height;
@@ -633,14 +633,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStandings
 
         public void Draw(Graphics g, SolidBrush backgroundBrush, SolidBrush highlightBrush, Brush fontBruch, String text, bool highlight)
         {
-            Rectangle graphRect = new Rectangle(_x - (_spacing / 2), _y, (int)Width, (int)_height);
+            Rectangle graphRect = new(_x - (_spacing / 2), _y, (int)Width, (int)_height);
 
             if (highlight)
             {
-                LinearGradientBrush lgb = new LinearGradientBrush(graphRect, backgroundBrush.Color, highlightBrush.Color, 0f, true);
+                LinearGradientBrush lgb = new(graphRect, backgroundBrush.Color, highlightBrush.Color, 0f, true);
                 lgb.SetBlendTriangularShape(.5f, .6f);
                 g.FillRectangle(lgb, graphRect);
-                Rectangle hightlightRect = new Rectangle(_x - (_spacing / 2), _y + (int)_height - 4, (int)Width, 4);
+                Rectangle hightlightRect = new(_x - (_spacing / 2), _y + (int)_height - 4, (int)Width, 4);
                 g.FillRoundedRectangle(highlightBrush, hightlightRect, 3);
             }
             else
@@ -693,7 +693,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStandings
             _y = y;
             _fontFamily = font;
 
-            string maxString = new string('K', 2); // max two figures are allowed :-)
+            string maxString = new('K', 2); // max two figures are allowed :-)
             var fontSize = g.MeasureString(maxString, _fontFamily);
             _maxFontWidth = (int)fontSize.Width;
             Width = (int)(fontSize.Width) + _spacing;
@@ -705,7 +705,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStandings
 
             _cachedBackground = new CachedBitmap((int)(fontSize.Width + _spacing), (int)fontSize.Height, gr =>
             {
-                LinearGradientBrush lgb = new LinearGradientBrush(new Point() { X = _x - _spacing, Y = _y }, new Point() { X = Width + _spacing, Y = _y }, highlight.Color, background.Color);
+                LinearGradientBrush lgb = new(new Point() { X = _x - _spacing, Y = _y }, new Point() { X = Width + _spacing, Y = _y }, highlight.Color, background.Color);
                 g.FillPath(lgb, _path);
 
                 var highlightRectanle = new Rectangle(_x, _y, 4, Height);

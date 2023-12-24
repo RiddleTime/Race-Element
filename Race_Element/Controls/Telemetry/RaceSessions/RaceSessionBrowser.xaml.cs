@@ -86,7 +86,7 @@ namespace RaceElement.Controls
         {
             new Thread(x =>
             {
-                DirectoryInfo dataDir = new DirectoryInfo(FileUtil.RaceElementDataPath);
+                DirectoryInfo dataDir = new(FileUtil.RaceElementDataPath);
                 if (!dataDir.Exists)
                     return;
 
@@ -100,10 +100,10 @@ namespace RaceElement.Controls
 
                     DateTime now = DateTime.Now;
 
-                    Thickness itemThickness = new Thickness(2, 5, 2, 5);
+                    Thickness itemThickness = new(2, 5, 2, 5);
                     foreach (var yearGroup in yearGroupings.OrderByDescending(x => x.First().CreationTime.Year))
                     {
-                        TreeViewItem yearItem = new TreeViewItem()
+                        TreeViewItem yearItem = new()
                         {
                             Header = yearGroup.Key,
                             Cursor = Cursors.Hand,
@@ -117,7 +117,7 @@ namespace RaceElement.Controls
                         var monthGroupings = yearGroup.OrderByDescending(x => x.CreationTime.Month).GroupBy(x => x.CreationTimeUtc.Month);
                         foreach (var monthGroup in monthGroupings)
                         {
-                            TreeViewItem monthItem = new TreeViewItem()
+                            TreeViewItem monthItem = new()
                             {
                                 Header = CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(monthGroup.Key),
                                 Cursor = Cursors.Hand,
@@ -129,7 +129,7 @@ namespace RaceElement.Controls
 
                             foreach (var file in monthGroup.OrderByDescending(x => x.CreationTimeUtc))
                             {
-                                TreeViewItem lvi = new TreeViewItem
+                                TreeViewItem lvi = new()
                                 {
                                     Header = file.Name.Replace(file.Extension, ""),
                                     DataContext = file.FullName,
@@ -160,7 +160,7 @@ namespace RaceElement.Controls
             MenuItem copyToClipboard = ContextMenuHelper.DefaultMenuItem("Copy to Clipboard", PackIconKind.ContentCopy);
             copyToClipboard.Click += (s, e) =>
             {
-                Thread thread = new Thread(() =>
+                Thread thread = new(() =>
                 {
                     Clipboard.SetFileDropList(new StringCollection
                         {
@@ -271,7 +271,7 @@ namespace RaceElement.Controls
             {
                 var carModel = ConversionFactory.ParseCarName(carData.ParseName);
                 string carName = ConversionFactory.GetNameFromCarModel(carModel);
-                ComboBoxItem item = new ComboBoxItem() { DataContext = carData.Id, Content = carName };
+                ComboBoxItem item = new() { DataContext = carData.Id, Content = carName };
                 comboCars.Items.Add(item);
             }
             comboCars.SelectedIndex = 0;
@@ -290,7 +290,7 @@ namespace RaceElement.Controls
                     if (trackData == null) trackName = track.ParseName;
                     else trackName = trackData.FullName;
 
-                    ComboBoxItem item = new ComboBoxItem() { DataContext = track.Id, Content = trackName };
+                    ComboBoxItem item = new() { DataContext = track.Id, Content = trackName };
                     comboTracks.Items.Add(item);
                 }
 
@@ -320,7 +320,7 @@ namespace RaceElement.Controls
                     if (dbTrackData != null) trackName = trackData.FullName;
 
                     session.UtcStart = DateTime.SpecifyKind(session.UtcStart, DateTimeKind.Utc);
-                    ListViewItem listItem = new ListViewItem()
+                    ListViewItem listItem = new()
                     {
                         Content = $"{ACCSharedMemory.SessionTypeToString(session.SessionType)} - {session.UtcStart.ToLocalTime():U}",
                         DataContext = session
@@ -335,7 +335,7 @@ namespace RaceElement.Controls
         public DataGrid GetLapDataGrid(Dictionary<int, DbLapData> laps)
         {
             var data = laps.OrderByDescending(x => x.Key).Select(x => x.Value);
-            DataGrid grid = new DataGrid()
+            DataGrid grid = new()
             {
                 ItemsSource = data,
                 AutoGenerateColumns = false,
@@ -419,7 +419,7 @@ namespace RaceElement.Controls
             });
 
             // fuel used
-            StackPanel fuelUsagePanel = new StackPanel()
+            StackPanel fuelUsagePanel = new()
             {
                 Orientation = System.Windows.Controls.Orientation.Horizontal,
                 ToolTip = "Fuel used",
@@ -432,7 +432,7 @@ namespace RaceElement.Controls
             });
 
             // fuel left
-            StackPanel fuelLeftPanel = new StackPanel()
+            StackPanel fuelLeftPanel = new()
             {
                 Orientation = System.Windows.Controls.Orientation.Horizontal,
                 ToolTip = "Fuel left"
@@ -641,7 +641,7 @@ namespace RaceElement.Controls
                 trackMap.Visibility = Visibility.Visible;
 
 
-                Dictionary<string, Plotter> plots = new Dictionary<string, Plotter>();
+                Dictionary<string, Plotter> plots = new();
                 plots.Add("Speed/Gear", (g, d) => new SpeedGearPlot(trackData, ref textBlockMetricInfo).Create(g, d));
                 plots.Add("Inputs", (g, d) => new InputsPlot(trackData, ref textBlockMetricInfo, fullSteeringLock).Create(g, d));
                 plots.Add("Wheel Slip", (g, d) => new WheelSlipPlot(trackData, ref textBlockMetricInfo).Create(g, d));
@@ -667,7 +667,7 @@ namespace RaceElement.Controls
                     gridMetrics.Children.Clear();
                     textBlockMetricInfo.Text = String.Empty;
 
-                    Grid grid = new Grid();
+                    Grid grid = new();
                     gridMetrics.Children.Add(grid);
 
                     Plotter plotter = (Plotter)(comboBoxMetrics.SelectedItem as ComboBoxItem).DataContext;
@@ -682,7 +682,7 @@ namespace RaceElement.Controls
 
                 foreach (var plot in plots)
                 {
-                    ComboBoxItem boxItem = new ComboBoxItem()
+                    ComboBoxItem boxItem = new()
                     {
                         Content = plot.Key,
                         DataContext = plot.Value

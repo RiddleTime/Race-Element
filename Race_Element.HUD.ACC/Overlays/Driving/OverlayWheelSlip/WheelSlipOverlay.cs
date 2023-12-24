@@ -15,7 +15,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
         OverlayType = OverlayType.Drive)]
     internal sealed class WheelSlipOverlay : AbstractOverlay
     {
-        private readonly WheelSlipConfiguration _config = new WheelSlipConfiguration();
+        private readonly WheelSlipConfiguration _config = new();
         private sealed class WheelSlipConfiguration : OverlayConfiguration
         {
             [ConfigGrouping("Data", "Adjust the data displayed.")]
@@ -70,9 +70,9 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
             {
                 var wheelRect = new Rectangle(0, 0, scaledRadius, scaledRadius);
 
-                using GraphicsPath gradientPath = new GraphicsPath();
+                using GraphicsPath gradientPath = new();
                 gradientPath.AddEllipse(wheelRect);
-                using PathGradientBrush pthGrBrush = new PathGradientBrush(gradientPath);
+                using PathGradientBrush pthGrBrush = new(gradientPath);
                 pthGrBrush.CenterColor = Color.FromArgb(40, 0, 0, 0);
                 pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(220, 0, 0, 0) };
 
@@ -136,9 +136,9 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip
             int centerX = x + size / 2;
             int centerY = y + size / 2;
 
-            using GraphicsPath gradientPath = new GraphicsPath();
+            using GraphicsPath gradientPath = new();
             gradientPath.AddEllipse(wheelRect);
-            using PathGradientBrush pthGrBrush = new PathGradientBrush(gradientPath);
+            using PathGradientBrush pthGrBrush = new(gradientPath);
             pthGrBrush.CenterColor = color;
             pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(40, 0, 0, 0) };
 

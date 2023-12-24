@@ -10,17 +10,17 @@ namespace RaceElement.Controls.Util.SetupImage
     {
         public static System.Windows.Controls.Image CreateImage(int width, int height, RaceElement.HUD.Overlay.OverlayUtil.CachedBitmap cachedBitmap)
         {
-            Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format32bppPArgb);
+            Bitmap bitmap = new(width, height, PixelFormat.Format32bppPArgb);
 
             using (Graphics g = Graphics.FromImage(bitmap))
             {
                 cachedBitmap?.Draw(g, 0, 0, width, height);
             }
 
-            MemoryStream memStream = new MemoryStream();
+            MemoryStream memStream = new();
             bitmap.Save(memStream, ImageFormat.Png);
 
-            BitmapImage bmi = new BitmapImage
+            BitmapImage bmi = new()
             {
                 DecodePixelWidth = bitmap.Width,
                 DecodePixelHeight = bitmap.Height,
@@ -32,7 +32,7 @@ namespace RaceElement.Controls.Util.SetupImage
             bmi.EndInit();
             bmi.Freeze();
 
-            System.Windows.Controls.Image image = new System.Windows.Controls.Image
+            System.Windows.Controls.Image image = new()
             {
                 Width = bitmap.Width,
                 Height = bitmap.Height,

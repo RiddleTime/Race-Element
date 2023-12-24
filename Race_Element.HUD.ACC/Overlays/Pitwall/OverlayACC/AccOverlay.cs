@@ -18,7 +18,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayACC
 #endif
     internal class AccProcessOverlay : AbstractOverlay
     {
-        private readonly AccOverlayConfiguration _config = new AccOverlayConfiguration();
+        private readonly AccOverlayConfiguration _config = new();
         private class AccOverlayConfiguration : OverlayConfiguration
         {
             [ConfigGrouping("Dock", "Provides settings for overlay docking.")]

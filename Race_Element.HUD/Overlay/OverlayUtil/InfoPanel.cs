@@ -41,7 +41,7 @@ namespace RaceElement.HUD.Overlay.Util
             _addMonoY = _font.Height / 8;
         }
 
-        private List<IPanelLine> Lines = new List<IPanelLine>();
+        private List<IPanelLine> Lines = new();
 
         public void SetBackground()
         {
@@ -63,7 +63,7 @@ namespace RaceElement.HUD.Overlay.Util
             });
         }
 
-        private readonly StringFormat _rightAlligned = new StringFormat() { Alignment = StringAlignment.Center };
+        private readonly StringFormat _rightAlligned = new() { Alignment = StringAlignment.Center };
 
         public void Draw(Graphics g)
         {
@@ -115,7 +115,7 @@ namespace RaceElement.HUD.Overlay.Util
                         TextLine textLine = (TextLine)line;
 
                         g.DrawStringWithShadow($"{textLine.Title}", _font, Color.White, new PointF(X, Y + counter * (this.FontHeight + ExtraLineSpacing) + _addMonoY));
-                        Rectangle valueRectangle = new Rectangle((int)(X + MaxTitleWidth),
+                        Rectangle valueRectangle = new((int)(X + MaxTitleWidth),
                                 Y + counter * (this.FontHeight + ExtraLineSpacing) + _addMonoY,
                                 (int)(MaxWidth - MaxTitleWidth),
                                 this.FontHeight);
@@ -127,7 +127,7 @@ namespace RaceElement.HUD.Overlay.Util
                         TitledProgressBarLine bar = (TitledProgressBarLine)line;
                         g.DrawStringWithShadow($"{bar.Title}", _font, Brushes.White, new PointF(X, Y + counter * FontHeight));
 
-                        ProgressBar progressBar = new ProgressBar(bar.Min, bar.Max, bar.Value);
+                        ProgressBar progressBar = new(bar.Min, bar.Max, bar.Value);
                         progressBar.Draw(g, bar.BarColor, Brushes.Transparent, new Rectangle((int)(X + MaxTitleWidth + _font.Size), Y + counter * (this.FontHeight + ExtraLineSpacing) + 1, (int)(MaxWidth - MaxTitleWidth - _font.Size) - 4, (int)FontHeight - 2), false, false);
 
                         string percent = $"{(bar.Max / bar.Value * 100):F1}%";
@@ -139,7 +139,7 @@ namespace RaceElement.HUD.Overlay.Util
                     {
                         CenterTextedProgressBarLine bar = (CenterTextedProgressBarLine)line;
 
-                        ProgressBar progressBar = new ProgressBar(bar.Min, bar.Max, bar.Value);
+                        ProgressBar progressBar = new(bar.Min, bar.Max, bar.Value);
                         progressBar.Draw(g, bar.BarColor, Brushes.Transparent, new Rectangle(X + 3, Y + counter * FontHeight + 1, (int)MaxWidth - 6, (int)FontHeight - 2), false, false);
 
                         SizeF textWidth = g.MeasureString(bar.CenteredText, _font);
@@ -150,7 +150,7 @@ namespace RaceElement.HUD.Overlay.Util
                     {
                         CenteredTextedDeltabarLine bar = (CenteredTextedDeltabarLine)line;
 
-                        DeltaBar deltaBar = new DeltaBar(bar.Min, bar.Max, bar.Value);
+                        DeltaBar deltaBar = new(bar.Min, bar.Max, bar.Value);
                         deltaBar.Draw(g, X + 1, Y + counter * FontHeight + 1, (int)MaxWidth - 2, (int)FontHeight - 2);
 
                         SizeF textWidth = g.MeasureString(bar.CenteredText, _font);

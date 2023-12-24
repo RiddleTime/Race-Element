@@ -89,7 +89,7 @@ namespace RaceElement.Controls
                 if (HasAddedDownloadButton)
                     return;
 
-                GitHubClient client = new GitHubClient(new ProductHeaderValue("Race-Element"), new Uri("https://github.com/RiddleTime/Race-Element.git"));
+                GitHubClient client = new(new ProductHeaderValue("Race-Element"), new Uri("https://github.com/RiddleTime/Race-Element.git"));
                 var releases = await client.Repository.Release.GetAll("RiddleTime", "Race-Element", new ApiOptions() { PageSize = 5 });
 
                 if (releases != null && releases.Count > 0)
@@ -110,7 +110,7 @@ namespace RaceElement.Controls
                         {
                             var accManagerAsset = latest.Assets.Where(x => x.Name == "RaceElement.exe").First();
 
-                            StringBuilder releaseNotes = new StringBuilder();
+                            StringBuilder releaseNotes = new();
                             foreach (Release newRelease in newerVersions)
                             {
                                 releaseNotes.AppendLine(newRelease.Name);
@@ -142,7 +142,7 @@ namespace RaceElement.Controls
             try
             {
                 string tempTargetFile = $"{FileUtil.RaceElementAppDataPath}AccManager.exe";
-                FileInfo tempFile = new FileInfo(tempTargetFile);
+                FileInfo tempFile = new(tempTargetFile);
 
                 if (tempFile.Exists)
                     tempFile.Delete();
@@ -172,21 +172,21 @@ namespace RaceElement.Controls
                 stackPanelReleaseNotes.Children.Clear();
                 ReleaseNotes.Notes.ToList().ForEach(note =>
                 {
-                    TextBlock noteTitle = new TextBlock()
+                    TextBlock noteTitle = new()
                     {
                         Text = note.Key,
                         Style = Resources["MaterialDesignBody1TextBlock"] as Style,
                         FontWeight = FontWeights.Bold,
                         FontStyle = FontStyles.Oblique
                     };
-                    TextBlock noteDescription = new TextBlock()
+                    TextBlock noteDescription = new()
                     {
                         Text = note.Value,
                         TextWrapping = TextWrapping.WrapWithOverflow,
                         Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style
                     };
 
-                    StackPanel changePanel = new StackPanel() { Margin = new Thickness(0, 10, 0, 0) };
+                    StackPanel changePanel = new() { Margin = new Thickness(0, 10, 0, 0) };
                     changePanel.Children.Add(noteTitle);
                     changePanel.Children.Add(noteDescription);
 

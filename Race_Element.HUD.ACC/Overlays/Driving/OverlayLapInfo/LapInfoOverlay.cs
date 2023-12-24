@@ -14,7 +14,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDeltaInfo
         OverlayCategory = OverlayCategory.Lap)]
     internal sealed class LapInfoOverlay : AbstractOverlay
     {
-        private readonly LapInfoConfig _config = new LapInfoConfig();
+        private readonly LapInfoConfig _config = new();
         private sealed class LapInfoConfig : OverlayConfiguration
         {
             [ConfigGrouping("Lap Info", "Show or hide inputs or the current gear.")]

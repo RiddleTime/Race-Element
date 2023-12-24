@@ -30,7 +30,7 @@ namespace RaceElement
     /// </summary>
     public partial class MainWindow : Window
     {
-        internal static MainWindow Instance { get; private set; }
+        public static MainWindow Instance { get; private set; }
         public const double MaxOpacity = 1;
 
         private readonly UiSettings _uiSettings;
@@ -39,12 +39,14 @@ namespace RaceElement
         public MainWindow()
         {
             this.Opacity = MaxOpacity;
+            Stopwatch sw = Stopwatch.StartNew();
             DateTime startTime = DateTime.Now;
 
             InitializeComponent();
             Instance = this;
 
-            LogWriter.WriteToLog($"Startup time(ms): {DateTime.Now.Subtract(startTime).TotalMilliseconds}");
+            LogWriter.WriteToLog($"Startup time(ms): {sw.Elapsed.TotalNanoseconds / 1_000_000:F4}");
+            sw.Stop();
 
             try
             {
@@ -200,7 +202,7 @@ namespace RaceElement
             {
 
                 string loadString = $"Loaded Race Element {GetAssemblyFileVersion()}";
-                string fileHash = FileUtil.GetBase64Hash(FileUtil.AppFullName);
+                string fileHash = FileUtil.GetBase64Hash(Process.GetCurrentProcess().MainModule.FileName);
 
 #if DEBUG
                 loadString += " - Debug";
@@ -267,7 +269,7 @@ namespace RaceElement
             {
                 _notifyIcon = new System.Windows.Forms.NotifyIcon()
                 {
-                    Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location),
+                    Icon = System.Drawing.Icon.ExtractAssociatedIcon(Process.GetCurrentProcess().MainModule.FileName),
                     Visible = false,
                     ContextMenuStrip = CreateContextMenu(),
                     Text = "Race Element"
@@ -293,41 +295,52 @@ namespace RaceElement
 
         private void MainWindow_StateChanged(object sender, EventArgs e)
         {
-            switch (this.WindowState)
+            try
             {
-                case WindowState.Minimized:
+                Dispatcher.CurrentDispatcher.Invoke(() =>
+                {
+                    switch (this.WindowState)
                     {
-                        if (_accManagerSettings.Get().MinimizeToSystemTray)
-                        {
-                            _notifyIcon.Visible = true;
+                        case WindowState.Minimized:
+                            {
+                                if (_accManagerSettings.Get().MinimizeToSystemTray)
+                                {
+                                    _notifyIcon.Visible = true;
 
-                            ShowInTaskbar = false;
-                        }
+                                    ShowInTaskbar = false;
+                                }
 
-                        break;
+                                break;
+                            }
+                        case WindowState.Normal:
+                            {
+                                this.Activate();
+                                mainGrid.Margin = new Thickness(0);
+                                TitleBar.Instance.minMaxButton.Kind = MaterialDesignThemes.Wpf.PackIconKind.WindowMaximize;
+                                if (_notifyIcon != null)
+                                    _notifyIcon.Visible = false;
+
+                                _stopDecreaseOpacty = true;
+                                ShowInTaskbar = true;
+
+                                break;
+                            }
+                        case WindowState.Maximized:
+                            {
+                                mainGrid.Margin = new Thickness(8);
+                                TitleBar.Instance.minMaxButton.Kind = MaterialDesignThemes.Wpf.PackIconKind.WindowRestore;
+                                _notifyIcon.Visible = false;
+
+                                _stopDecreaseOpacty = true;
+                                ShowInTaskbar = true;
+                                break;
+                            }
                     }
-                case WindowState.Normal:
-                    {
-                        this.Activate();
-                        mainGrid.Margin = new Thickness(0);
-                        TitleBar.Instance.minMaxButton.Kind = MaterialDesignThemes.Wpf.PackIconKind.WindowMaximize;
-                        _notifyIcon.Visible = false;
-
-                        _stopDecreaseOpacty = true;
-                        ShowInTaskbar = true;
-
-                        break;
-                    }
-                case WindowState.Maximized:
-                    {
-                        mainGrid.Margin = new Thickness(8);
-                        TitleBar.Instance.minMaxButton.Kind = MaterialDesignThemes.Wpf.PackIconKind.WindowRestore;
-                        _notifyIcon.Visible = false;
-
-                        _stopDecreaseOpacty = true;
-                        ShowInTaskbar = true;
-                        break;
-                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                LogWriter.WriteToLog(ex);
             }
         }
 
@@ -411,16 +424,8 @@ namespace RaceElement
 
         public static string GetAssemblyFileVersion()
         {
-            try
-            {
-                System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-                FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(assembly.Location);
-                return fileVersion.FileVersion;
-            }
-            catch (Exception)
-            {
-                return String.Empty;
-            }
+            FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
+            return fileVersion.FileVersion;
         }
 
         public enum DWMWINDOWATTRIBUTE

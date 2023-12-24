@@ -7,14 +7,14 @@ namespace ACCManager.Data.ACC.Tracks.Data
 {
     internal class Misano : AbstractTrackData
     {
-        public override Guid Guid => new Guid("e8ce417b-5f5c-4921-9b6b-9367e703d3f8");
+        public override Guid Guid => new("e8ce417b-5f5c-4921-9b6b-9367e703d3f8");
         public override string GameName => "misano";
         public override string FullName => "Misano World Circuit";
         public override int TrackLength => 4226;
 
-        public override List<float> Sectors => new List<float>() { 0.222f, 0.621f };
+        public override List<float> Sectors => new() { 0.222f, 0.621f };
 
-        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
         {
             { new FloatRangeStruct(0.0450355f, 0.07379355f), (1, string.Empty)},
             { new FloatRangeStruct(0.07942149f, 0.1005504f), (2, string.Empty)},

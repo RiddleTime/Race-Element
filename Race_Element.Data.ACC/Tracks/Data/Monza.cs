@@ -7,14 +7,14 @@ namespace ACCManager.Data.ACC.Tracks.Data
 {
     internal class Monza : AbstractTrackData
     {
-        public override Guid Guid => new Guid("5091ac88-c7c3-4cf1-ac46-e974bc7b73d5");
+        public override Guid Guid => new("5091ac88-c7c3-4cf1-ac46-e974bc7b73d5");
         public override string GameName => "monza";
         public override string FullName => "Monza Circuit";
         public override int TrackLength => 5793;
 
-        public override List<float> Sectors => new List<float>() { 0.334f, 0.661f };
+        public override List<float> Sectors => new() { 0.334f, 0.661f };
 
-        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
         {
             { new FloatRangeStruct(0.1326408f, 0.1643242f), (1, "Variante del Rettifilo") },
             { new FloatRangeStruct(0.1643243f, 0.1892741f), (2, "Variante del Rettifilo") },

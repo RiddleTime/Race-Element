@@ -66,7 +66,7 @@ namespace RaceElement.Util
         /// <returns>base64 string of SHA256 hash, or empty string if file doesn't exist or when exception occurs</returns>
         public static string GetBase64Hash(string file)
         {
-            FileInfo fileInfo = new FileInfo(file);
+            FileInfo fileInfo = new(file);
             if (!fileInfo.Exists) return string.Empty;
 
             try
@@ -90,7 +90,7 @@ namespace RaceElement.Util
 
             try
             {
-                DirectoryInfo downloadCache = new DirectoryInfo(RaceElementDownloadCachePath);
+                DirectoryInfo downloadCache = new(RaceElementDownloadCachePath);
                 if (downloadCache.Exists)
                     downloadCache.Delete(true);
             }

@@ -13,7 +13,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
         Description = "A panel showing live debug output.")]
     internal sealed class DebugOutputOverlay : AbstractOverlay
     {
-        private readonly DebugOutputConfiguration _config = new DebugOutputConfiguration();
+        private readonly DebugOutputConfiguration _config = new();
         private class DebugOutputConfiguration : OverlayConfiguration
         {
             [ConfigGrouping("Output", "Provides settings for overlay docking.")]

@@ -22,7 +22,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
         Version = 1.00)]
     internal sealed class TrackCornersOverlay : AbstractOverlay
     {
-        private readonly CornerNamesConfig _config = new CornerNamesConfig();
+        private readonly CornerNamesConfig _config = new();
         private sealed class CornerNamesConfig : OverlayConfiguration
         {
             [ConfigGrouping("Names", "Configure options specific to the Corner Names HUD.")]
@@ -66,16 +66,16 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 
             int headerWidth = (int)(unscaledHeaderWidth * this.Scale);
 
-            RectangleF headerRect = new RectangleF(0, 0, headerWidth, lineHeight);
-            StringFormat headerFormat = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near };
-            StringFormat valueFormat = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near };
+            RectangleF headerRect = new(0, 0, headerWidth, lineHeight);
+            StringFormat headerFormat = new() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near };
+            StringFormat valueFormat = new() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near };
 
-            CachedBitmap headerBackground = new CachedBitmap(headerWidth, lineHeight, g =>
+            CachedBitmap headerBackground = new(headerWidth, lineHeight, g =>
             {
                 Color accentColor = Color.FromArgb(25, 255, 0, 0);
-                Rectangle panelRect = new Rectangle(0, 0, headerWidth, lineHeight);
+                Rectangle panelRect = new(0, 0, headerWidth, lineHeight);
                 using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(panelRect, 0, _config.CornerNames.Names ? 0 : RoundingRadius, 0, RoundingRadius);
-                using LinearGradientBrush brush = new LinearGradientBrush(panelRect, Color.FromArgb(185, 0, 0, 0), Color.FromArgb(255, 10, 10, 10), LinearGradientMode.BackwardDiagonal);
+                using LinearGradientBrush brush = new(panelRect, Color.FromArgb(185, 0, 0, 0), Color.FromArgb(255, 10, 10, 10), LinearGradientMode.BackwardDiagonal);
                 g.FillPath(brush, path);
                 g.DrawLine(new Pen(accentColor), 0 + RoundingRadius / 2, lineHeight, headerWidth, lineHeight - 1);
             });
@@ -85,7 +85,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
 
             if (_config.CornerNames.Names)
             {
-                RectangleF valueRect = new RectangleF(headerWidth, 0, 10, lineHeight);
+                RectangleF valueRect = new(headerWidth, 0, 10, lineHeight);
                 _cornerTextValue = new PanelText(_font, GetCachedValueBackGround(10, lineHeight), valueRect) { StringFormat = valueFormat };
                 valueRect.Offset(0, lineHeight);
             }
@@ -112,9 +112,9 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
             return new CachedBitmap(valueWidth, lineHeight, g =>
             {
                 Color accentColor = Color.FromArgb(25, 255, 0, 0);
-                Rectangle panelRect = new Rectangle(0, 0, valueWidth, lineHeight);
+                Rectangle panelRect = new(0, 0, valueWidth, lineHeight);
                 using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(panelRect, 0, RoundingRadius, 0, 0);
-                using LinearGradientBrush brush = new LinearGradientBrush(panelRect, Color.FromArgb(255, 0, 0, 0), Color.FromArgb(185, 0, 0, 0), LinearGradientMode.ForwardDiagonal);
+                using LinearGradientBrush brush = new(panelRect, Color.FromArgb(255, 0, 0, 0), Color.FromArgb(185, 0, 0, 0), LinearGradientMode.ForwardDiagonal);
                 g.FillPath(brush, path);
                 g.DrawLine(new Pen(accentColor), 0, lineHeight - 1, valueWidth, lineHeight - 1);
             });
@@ -148,7 +148,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames
         {
             float maxTextWidth = 0;
 
-            CachedBitmap b = new CachedBitmap(1, 1, g =>
+            CachedBitmap b = new(1, 1, g =>
             {
                 if (_currentTrack != null)
                     foreach ((int, string) value in _currentTrack.CornerNames.Values)

@@ -18,7 +18,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
         Description = "A panel showing live broadcast realtime data.")]
     internal sealed class BroadcastRealtimeOverlay : AbstractOverlay
     {
-        private DebugConfig _config = new DebugConfig();
+        private DebugConfig _config = new();
 
         private InfoTable _table;
 

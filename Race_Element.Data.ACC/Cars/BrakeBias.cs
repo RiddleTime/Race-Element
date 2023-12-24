@@ -8,7 +8,7 @@ namespace RaceElement.Data.ACC.Cars
 {
     public class BrakeBias
     {
-        private static readonly Dictionary<string, int> _brakeBiasOffsets = new Dictionary<string, int>()
+        private static readonly Dictionary<string, int> _brakeBiasOffsets = new()
         {
             // CUP
             {"porsche_991ii_gt3_cup", -5},

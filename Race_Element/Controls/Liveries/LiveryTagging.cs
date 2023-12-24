@@ -55,7 +55,7 @@ namespace RaceElement.Controls
                 return new List<LiveryTag>();
             }
 
-            List<LiveryTag> allTags = new List<LiveryTag>();
+            List<LiveryTag> allTags = new();
 
             foreach (FileInfo file in jsonFiles)
             {
@@ -69,7 +69,7 @@ namespace RaceElement.Controls
 
         public static bool AddToTag(LiveryTag tag, LiveryTreeCar livery)
         {
-            TaggedLivery taggedLivery = new TaggedLivery()
+            TaggedLivery taggedLivery = new()
             {
                 CarModelType = livery.CarsRoot.CarModelType,
                 TeamName = livery.CarsRoot.TeamName,
@@ -90,7 +90,7 @@ namespace RaceElement.Controls
 
         internal static void RemoveFromTag(LiveryTag tag, LiveryTreeCar livery)
         {
-            TaggedLivery taggedLivery = new TaggedLivery()
+            TaggedLivery taggedLivery = new()
             {
                 CarModelType = livery.CarsRoot.CarModelType,
                 TeamName = livery.CarsRoot.TeamName,
@@ -103,7 +103,7 @@ namespace RaceElement.Controls
 
         public static LiveryTag CreateNewTag(string tagName)
         {
-            LiveryTag tag = new LiveryTag()
+            LiveryTag tag = new()
             {
                 Guid = Guid.NewGuid(),
                 Name = tagName,
@@ -181,7 +181,7 @@ namespace RaceElement.Controls
             string jsonString = string.Empty;
             try
             {
-                using (StreamReader reader = new StreamReader(stream))
+                using (StreamReader reader = new(stream))
                 {
                     jsonString = reader.ReadToEnd();
                     jsonString = jsonString.Replace("\0", "");
@@ -201,7 +201,7 @@ namespace RaceElement.Controls
 
         private static DirectoryInfo GetTagDirectory()
         {
-            DirectoryInfo tagDir = new DirectoryInfo(FileUtil.RaceElementTagsPath);
+            DirectoryInfo tagDir = new(FileUtil.RaceElementTagsPath);
 
             if (!tagDir.Exists)
             {

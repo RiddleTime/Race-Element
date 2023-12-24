@@ -7,14 +7,14 @@ namespace ACCManager.Data.ACC.Tracks.Data
 {
     internal class BrandsHatch : AbstractTrackData
     {
-        public override Guid Guid => new Guid("7827823f-6df1-4295-bc24-93bc83d71855");
+        public override Guid Guid => new("7827823f-6df1-4295-bc24-93bc83d71855");
         public override string GameName => "brands_hatch";
         public override string FullName => "Brands Hatch Circuit";
         public override int TrackLength => 3908;
 
-        public override List<float> Sectors => new List<float>() { 0.287f, 0.563f };
+        public override List<float> Sectors => new() { 0.287f, 0.563f };
 
-        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
         {
             { new FloatRangeStruct(0.02583388f, 0.09228041f), (1, "Paddock Hill Bend") },
             { new FloatRangeStruct(0.128806f, 0.1749151f), (2, "Druids") },

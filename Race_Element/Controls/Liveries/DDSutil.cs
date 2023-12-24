@@ -13,7 +13,7 @@ namespace RaceElement.Controls.Liveries
 {
     internal class DDSutil
     {
-        private static readonly Dictionary<string, string> pngsToDDS = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> pngsToDDS = new()
             {
                 //{"decals_0.dds","decals.png" },
                 //{"sponsors_0.dds" ,"sponsors.png"},
@@ -29,7 +29,7 @@ namespace RaceElement.Controls.Liveries
             {
                 for (int i = 0; i < pngsToDDS.Count; i++)
                 {
-                    DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + livery.CarsRoot.CustomSkinName);
+                    DirectoryInfo customSkinDir = new(FileUtil.LiveriesPath + livery.CarsRoot.CustomSkinName);
                     FileInfo[] liveryPngFiles = customSkinDir.GetFiles(pngsToDDS.ElementAt(i).Value);
                     if (liveryPngFiles != null && liveryPngFiles.Length > 0)
                     {
@@ -42,23 +42,21 @@ namespace RaceElement.Controls.Liveries
                         FileInfo pngFile = liveryPngFiles[0];
                         FileStream actualFileStream = pngFile.OpenRead();
 
-                        Bitmap bitmap = new Bitmap(actualFileStream);
+                        Bitmap bitmap = new(actualFileStream);
 
                         if (!accManagerSettings.Generate4kDDS && pngsToDDS.ElementAt(i).Key.Contains("_1"))
                             bitmap = ResizeBitmap(bitmap, 2048, 2048);
 
                         Surface surface = Surface.CopyFromBitmap(bitmap);
 
-                        FileInfo targetFile = new FileInfo($"{customSkinDir}\\{pngsToDDS.ElementAt(i).Key}");
+                        FileInfo targetFile = new($"{customSkinDir}\\{pngsToDDS.ElementAt(i).Key}");
                         if (targetFile.Exists)
                             targetFile.Delete();
 
                         FileStream write = targetFile.OpenWrite();
-                        DdsFile.Save(write, DdsFileFormat.BC7, DdsErrorMetric.Perceptual, BC7CompressionMode.Slow, true, true, ResamplingAlgorithm.SuperSampling, surface, ProgressChanged);
+                        DdsFile.Save(write, DdsFileFormat.BC7, DdsErrorMetric.Perceptual, BC7CompressionSpeed.Fast, true, true, ResamplingAlgorithm.SuperSampling, surface, ProgressChanged);
                         write.Close();
                         actualFileStream.Close();
-
-                        GC.Collect();
                     }
                 }
             }
@@ -76,8 +74,8 @@ namespace RaceElement.Controls.Liveries
                 {
                     KeyValuePair<string, string> kvp = pngsToDDS.ElementAt(i);
 
-                    DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + livery.CarsRoot.CustomSkinName);
-                    if (customSkinDir != null && customSkinDir.Exists)
+                    DirectoryInfo customSkinDir = new(FileUtil.LiveriesPath + livery.CarsRoot.CustomSkinName);
+                    if (customSkinDir.Exists)
                     {
                         //check if png exists
                         FileInfo[] foundFiles = customSkinDir.GetFiles(kvp.Value);
@@ -104,7 +102,7 @@ namespace RaceElement.Controls.Liveries
 
         private static Bitmap ResizeBitmap(Bitmap bmp, int width, int height)
         {
-            Bitmap result = new Bitmap(width, height);
+            Bitmap result = new(width, height);
             using (Graphics g = Graphics.FromImage(result))
             {
                 g.DrawImage(bmp, 0, 0, width, height);

@@ -17,7 +17,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
         OverlayCategory = OverlayCategory.Car)]
     internal sealed class CarInfoOverlay : AbstractOverlay
     {
-        private readonly CarInfoConfiguration _config = new CarInfoConfiguration();
+        private readonly CarInfoConfiguration _config = new();
         private sealed class CarInfoConfiguration : OverlayConfiguration
         {
             [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
@@ -71,21 +71,21 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
             int headerColumnWidth = (int)Math.Ceiling(76f * Scale);
             int valueColumnWidth = (int)Math.Ceiling(56f * Scale);
             float roundingRadius = 6f * Scale;
-            RectangleF headerRectangle = new RectangleF(0, 0, headerColumnWidth, columnHeight);
-            RectangleF valueRectangle = new RectangleF(headerColumnWidth, 0, valueColumnWidth, columnHeight);
+            RectangleF headerRectangle = new(0, 0, headerColumnWidth, columnHeight);
+            RectangleF valueRectangle = new(headerColumnWidth, 0, valueColumnWidth, columnHeight);
 
             // create value and header backgrounds
             Color accentColor = Color.FromArgb(25, 255, 0, 0);
-            CachedBitmap headerBackground = new CachedBitmap(headerColumnWidth, columnHeight, g =>
+            CachedBitmap headerBackground = new(headerColumnWidth, columnHeight, g =>
             {
-                Rectangle panelRect = new Rectangle(0, 0, headerColumnWidth, columnHeight);
+                Rectangle panelRect = new(0, 0, headerColumnWidth, columnHeight);
                 using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(panelRect, 0, 0, 0, (int)roundingRadius);
                 g.FillPath(new SolidBrush(Color.FromArgb(225, 10, 10, 10)), path);
                 g.DrawLine(new Pen(accentColor), 0 + roundingRadius / 2, columnHeight, headerColumnWidth, columnHeight - 1 * Scale);
             });
-            CachedBitmap valueBackground = new CachedBitmap(valueColumnWidth, columnHeight, g =>
+            CachedBitmap valueBackground = new(valueColumnWidth, columnHeight, g =>
             {
-                Rectangle panelRect = new Rectangle(0, 0, valueColumnWidth, columnHeight);
+                Rectangle panelRect = new(0, 0, valueColumnWidth, columnHeight);
                 using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(panelRect, 0, (int)roundingRadius, 0, 0);
                 g.FillPath(new SolidBrush(Color.FromArgb(225, 0, 0, 0)), path);
                 g.DrawLine(new Pen(accentColor), 0, columnHeight - 1 * Scale, valueColumnWidth, columnHeight - 1 * Scale);
@@ -95,7 +95,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
 
             // Damage
             int currentRow = 0;
-            DrawableTextCell damageHeader = new DrawableTextCell(headerRectangle, _font);
+            DrawableTextCell damageHeader = new(headerRectangle, _font);
             damageHeader.CachedBackground = headerBackground;
             damageHeader.StringFormat.Alignment = StringAlignment.Near;
             damageHeader.UpdateText("Damage");
@@ -111,7 +111,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
                 headerRectangle.Offset(0, columnHeight);
                 valueRectangle.Offset(0, columnHeight);
 
-                DrawableTextCell header = new DrawableTextCell(headerRectangle, _font);
+                DrawableTextCell header = new(headerRectangle, _font);
                 header.CachedBackground = headerBackground;
                 header.StringFormat.Alignment = StringAlignment.Near;
                 header.UpdateText("Tyre set");
@@ -129,7 +129,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
                 headerRectangle.Offset(0, columnHeight);
                 valueRectangle.Offset(0, columnHeight);
 
-                DrawableTextCell header = new DrawableTextCell(headerRectangle, _font);
+                DrawableTextCell header = new(headerRectangle, _font);
                 header.CachedBackground = headerBackground;
                 header.StringFormat.Alignment = StringAlignment.Near;
                 header.UpdateText("Fuel/Lap");
@@ -147,7 +147,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
                 headerRectangle.Offset(0, columnHeight);
                 valueRectangle.Offset(0, columnHeight);
 
-                DrawableTextCell header = new DrawableTextCell(headerRectangle, _font);
+                DrawableTextCell header = new(headerRectangle, _font);
                 header.CachedBackground = headerBackground;
                 header.StringFormat.Alignment = StringAlignment.Near;
                 header.UpdateText("Exhaust");
@@ -165,7 +165,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo
                 headerRectangle.Offset(0, columnHeight);
                 valueRectangle.Offset(0, columnHeight);
 
-                DrawableTextCell header = new DrawableTextCell(headerRectangle, _font);
+                DrawableTextCell header = new(headerRectangle, _font);
                 header.CachedBackground = headerBackground;
                 header.StringFormat.Alignment = StringAlignment.Near;
                 header.UpdateText("Water");

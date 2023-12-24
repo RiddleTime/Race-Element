@@ -112,7 +112,7 @@ namespace RaceElement.Controls.Setup
             string[] frontOrRearLabels = new string[] { "Front: ", "Rear: " };
 
 
-            Section setupTitle = new Section();
+            Section setupTitle = new();
             setupTitle.Blocks.Add(DocUtil.GetDefaultHeader(20, $"{new FileInfo(file).Name.Replace(".json", "")}"));
             setupTitle.BorderBrush = Brushes.White;
             setupTitle.BorderThickness = new Thickness(1);
@@ -122,21 +122,21 @@ namespace RaceElement.Controls.Setup
 
             //// Setup Info Section
             Table setupInfoTable = DocUtil.GetLeftAllignedTable(headerWidthPercent, cells);
-            TableRowGroup rowGroupSetupInfo = new TableRowGroup();
+            TableRowGroup rowGroupSetupInfo = new();
             if (logTrack)
                 rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRowLeft("Track", $"{DocUtil.GetTrackName(file)}", cells, true));
             rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRowLeft("Car", $"{CarModelToCarName[carSetup.CarModel]}", cells, true));
             rowGroupSetupInfo.Rows.Add(DocUtil.GetTableRowLeft("Class", $"{carSetup.CarClass}", cells, true));
             setupInfoTable.RowGroups.Add(rowGroupSetupInfo);
-            Section setupSection = new Section();
+            Section setupSection = new();
             setupInfoTable.BorderBrush = Brushes.DarkGray;
             setupInfoTable.BorderThickness = new Thickness(0, 0, 0, 1);
             setupSection.Blocks.Add(setupInfoTable);
             flowDocument.Blocks.Add(setupSection);
 
             //// Tyres Section
-            Section tyresSection = new Section();
-            TableRowGroup rgTyres = new TableRowGroup();
+            Section tyresSection = new();
+            TableRowGroup rgTyres = new();
             rgTyres.Rows.Add(DocUtil.GetTableRowLeftTitle("Tyres Setup", cells));
             rgTyres.Rows.Add(DocUtil.GetTableRowLeft("Compound", $"{compound}", cells, true));
             rgTyres.Rows.Add(DocUtil.GetTableRowLeft("Pressures(psi)", tyreLocationLabels, new double[] { frontLeftPressure, frontRightPressure, rearLeftPressure, rearRightPressure }, cells, 1));
@@ -151,8 +151,8 @@ namespace RaceElement.Controls.Setup
             flowDocument.Blocks.Add(tyresSection);
 
             //// Mechanical Grip Section
-            Section gripSection = new Section();
-            TableRowGroup rgGrip = new TableRowGroup();
+            Section gripSection = new();
+            TableRowGroup rgGrip = new();
             rgGrip.Rows.Add(DocUtil.GetTableRowLeftTitle("Mechanical Grip", cells));
             rgGrip.Rows.Add(DocUtil.GetTableRowLeft("Wheelrates(Nm)", tyreLocationLabels, new double[] { wheelRateFrontLeft, wheelRateFrontRight, wheelRateRearLeft, wheelRateRearRight }, cells, 0));
             rgGrip.Rows.Add(DocUtil.GetTableRowLeft("Bumpstop Rate(Nm)", tyreLocationLabels, new double[] { bumpStopRateFrontLeft, bumpStopRateFrontRight, bumpStopRateRearLeft, bumpStopRateRearRight }, cells, 0));
@@ -170,8 +170,8 @@ namespace RaceElement.Controls.Setup
             flowDocument.Blocks.Add(gripSection);
 
             //// Dampers Section
-            Section dampersSection = new Section();
-            TableRowGroup rgDampers = new TableRowGroup();
+            Section dampersSection = new();
+            TableRowGroup rgDampers = new();
             rgDampers.Rows.Add(DocUtil.GetTableRowLeftTitle("Dampers", cells));
             rgDampers.Rows.Add(DocUtil.GetTableRowLeft("Bump Slow", tyreLocationLabels, new double[] { bumpSlowFrontLeft, bumpSlowFrontRight, bumpSlowRearLeft, bumpSlowRearRight }, cells));
             rgDampers.Rows.Add(DocUtil.GetTableRowLeft("Bump Fast", tyreLocationLabels, new double[] { bumpFastFrontLeft, bumpFastFrontRight, bumpFastRearLeft, bumpFastRearRight }, cells));
@@ -185,8 +185,8 @@ namespace RaceElement.Controls.Setup
             flowDocument.Blocks.Add(dampersSection);
 
             //// Aero
-            Section aeroBalanceSection = new Section();
-            TableRowGroup rgAero = new TableRowGroup();
+            Section aeroBalanceSection = new();
+            TableRowGroup rgAero = new();
             rgAero.Rows.Add(DocUtil.GetTableRowLeftTitle("Aero Balance", cells));
             rgAero.Rows.Add(DocUtil.GetTableRowLeft("Ride height(mm)", frontOrRearLabels, new double[] { rideHeightFront, rideHeightRear }, cells));
             rgAero.Rows.Add(DocUtil.GetTableRowLeft("Splitter", splitter, cells));
@@ -200,8 +200,8 @@ namespace RaceElement.Controls.Setup
             flowDocument.Blocks.Add(aeroBalanceSection);
 
             //// Electronics
-            Section electronicsSection = new Section();
-            TableRowGroup rgElectro = new TableRowGroup();
+            Section electronicsSection = new();
+            TableRowGroup rgElectro = new();
             rgElectro.Rows.Add(DocUtil.GetTableRowLeftTitle("Electronics", cells));
             rgElectro.Rows.Add(DocUtil.GetTableRowLeft("TC 1", setup.BasicSetup.Electronics.TC1, cells));
             rgElectro.Rows.Add(DocUtil.GetTableRowLeft("TC 2", setup.BasicSetup.Electronics.TC2, cells));
@@ -215,8 +215,8 @@ namespace RaceElement.Controls.Setup
             flowDocument.Blocks.Add(electronicsSection);
 
             //// Strategy
-            Section strategySection = new Section();
-            TableRowGroup rgStrategy = new TableRowGroup();
+            Section strategySection = new();
+            TableRowGroup rgStrategy = new();
             rgStrategy.Rows.Add(DocUtil.GetTableRowLeftTitle("Strategy", cells));
             rgStrategy.Rows.Add(DocUtil.GetTableRowLeft("Brake Compound", frontOrRearLabels, new double[] { brakeCompoundFront, brakeCompoundRear }, cells));
             Table strategyTable = DocUtil.GetLeftAllignedTable(headerWidthPercent, cells);

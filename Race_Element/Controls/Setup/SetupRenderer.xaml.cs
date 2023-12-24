@@ -24,7 +24,7 @@ namespace RaceElement.Controls
         {
             try
             {
-                Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+                Microsoft.Win32.OpenFileDialog dlg = new();
 
                 // Set filter for file extension and default file extension 
                 dlg.DefaultExt = ".json";

@@ -60,7 +60,7 @@ namespace RaceElement.Data.ACC.Tracker
             };
             client.MessageHandler.OnConnectionStateChanged += (int connectionId, bool connectionSuccess, bool isReadonly, string error) =>
             {
-                ConnectionState state = new ConnectionState()
+                ConnectionState state = new()
                 {
                     ConnectionId = connectionId,
                     ConnectionSuccess = connectionSuccess,

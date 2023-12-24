@@ -16,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaTrace
         Version = 1)]
     internal sealed class LapDeltaTraceOverlay : AbstractOverlay
     {
-        private readonly LapDeltaTraceConfiguration _config = new LapDeltaTraceConfiguration();
+        private readonly LapDeltaTraceConfiguration _config = new();
         private readonly LapDeltaDataCollector _collector;
         private readonly LapDeltaGraph _graph;
 

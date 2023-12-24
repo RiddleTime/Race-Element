@@ -1,7 +1,9 @@
 ﻿using Octokit;
 using RaceElement.Controls.Util.Updater;
+using RaceElement.Util;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,7 +23,7 @@ namespace RaceElement.Controls
         public TitleBar()
         {
             InitializeComponent();
-            SetAppTitle();
+            this.Loaded += (s, e) => SetAppTitle();
             buttonExit.Click += ButtonExit_Click;
 
             buttonMinimize.Click += (s, e) => { App.Current.MainWindow.WindowState = WindowState.Minimized; };
@@ -154,16 +156,8 @@ namespace RaceElement.Controls
 
         public static string GetAssemblyFileVersion()
         {
-            try
-            {
-                System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-                FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(assembly.Location);
-                return fileVersion.FileVersion;
-            }
-            catch (Exception)
-            {
-                return String.Empty;
-            }
+            FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
+            return fileVersion.FileVersion;
         }
 
         public void SetUpdateButton(string version, string releaseNotes, ReleaseAsset asset)

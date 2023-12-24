@@ -1,180 +1,42 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F1699F70-54A1-49F2-896D-B70B1EDABF74}</ProjectGuid>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RaceElement.HUD.ACC</RootNamespace>
     <AssemblyName>RaceElement.HUD.ACC</AssemblyName>
-    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AssemblyTitle>RaceElement.HUD.ACC</AssemblyTitle>
+    <Company>Element Future</Company>
+    <Product>RaceElement.HUD.ACC</Product>
+    <Copyright>Copyright 2024 © Reinier Klarenberg</Copyright>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug Minimized|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug Minimized\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="EdCanHack.Unglide">
-      <Version>2.0.0</Version>
-    </PackageReference>
+    <PackageReference Include="EdCanHack.Unglide" Version="2.0.0" />
     <PackageReference Include="MouseKeyHook" Version="5.7.1" />
     <PackageReference Include="ScottPlot">
-      <Version>4.1.68</Version>
+      <Version>4.1.69</Version>
     </PackageReference>
-    <PackageReference Include="System.Buffers" Version="4.5.1" />
-    <PackageReference Include="System.Collections.Immutable" Version="7.0.0" />
-    <PackageReference Include="System.Memory" Version="4.5.5" />
-    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
+    <PackageReference Include="System.Collections.Immutable" Version="8.0.0" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Numerics" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Data\Trackers.cs" />
-    <Compile Include="Data\Tracker\Weather\WeatherTracker.cs" />
-    <Compile Include="OverlaysACC.cs" />
-    <Compile Include="Overlays\Driving\OverlayAccelerometer\AccelerometerOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayBoostGauge\BoostGaugeOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayCarInfo\CarInfoOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayCornerData\CornerDataCollector.cs" />
-    <Compile Include="Overlays\Driving\OverlayCornerData\CornerDataConfiguration.cs" />
-    <Compile Include="Overlays\Driving\OverlayCornerData\CornerDataOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayInputValues\InputValuesOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayTrackBar\TrackBarOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayTrackCircle\TrackCircleOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayTrackMap\TrackMapOverlay.cs" />
-    <Compile Include="Overlays\Pitwall\OverlayDualSenseXFree\DualSenseXFreeOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayLapDeltaTrace\LapDeltaTraceConfiguration.cs" />
-    <Compile Include="Overlays\Driving\OverlayLapDeltaTrace\LapDeltaTraceOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayLapDeltaTrace\LapDeltaDataCollector.cs" />
-    <Compile Include="Overlays\Driving\OverlayLapDeltaTrace\LapDeltaGraph.cs" />
-    <Compile Include="Overlays\Driving\OverlayMapBar\MapBar.cs" />
-    <Compile Include="Overlays\Driving\OverlayTrackCorners\TrackCornersOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayCurrentGear\CurrentGearOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayDamage\DamageOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayWheelSlip\WheelSlipOverlay.cs" />
-    <Compile Include="Overlays\Pitwall\DebugInfoHelper.cs" />
-    <Compile Include="Overlays\Pitwall\OverlayDualSenseX\DualSenseXConfiguration.cs" />
-    <Compile Include="Overlays\Pitwall\OverlayDualSenseX\DualSenseXOverlay.cs" />
-    <Compile Include="Overlays\Pitwall\OverlayDualSenseX\DualSenseXResources.cs" />
-    <Compile Include="Overlays\Pitwall\OverlayDualSenseX\TriggerHaptics.cs" />
-    <Compile Include="Overlays\Pitwall\OverlayGridTest\GridTestOverlay.cs" />
-    <Compile Include="Overlays\Pitwall\OverlayHUDs\HUDsOverlay.cs" />
-    <Compile Include="Overlays\Pitwall\OverlayRenderTest\RenderTestOverlay.cs" />
-    <Compile Include="Overlays\Pitwall\OverlayACC\AccOverlay.cs" />
-    <Compile Include="Overlays\Pitwall\OverlayBroadcastRealtime\BroadcastRealtimeOverlay.cs" />
-    <Compile Include="Overlays\Pitwall\OverlayBroadcastTrackData\BroadcastTrackDataOverlay.cs" />
-    <Compile Include="Overlays\Pitwall\OverlayDebugOutput\TraceOutputListener.cs" />
-    <Compile Include="Overlays\Pitwall\OverlayDebugOutput\DebugOutputOverlay.cs" />
-    <Compile Include="Overlays\Pitwall\OverlayEntryList\EntryListOverlay.cs" />
-    <Compile Include="Overlays\Pitwall\OverlayFocusedCar\FocusedCarOverlay.cs" />
-    <Compile Include="Overlays\Pitwall\OverlayGraphicsInfo\GraphicsInfoOverlay.cs" />
-    <Compile Include="Overlays\Pitwall\OverlayPhysicsInfo\PhysicsInfoOverlay.cs" />
-    <Compile Include="Overlays\Pitwall\OverlayStaticInfo\StaticInfoOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayElectronics\ElectronicsOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayInputBars\InputBarsConfiguration.cs" />
-    <Compile Include="Overlays\Driving\OverlayInputBars\InputBarsOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayLapDeltaBar\LapTimeDeltaConfiguration.cs" />
-    <Compile Include="Overlays\Driving\OverlayLapDeltaBar\LapDeltaOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayLapInfo\LapInfoOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayEcuMapInfo\EcuMapOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayEcuMapInfo\EcuMaps.cs" />
-    <Compile Include="Overlays\Driving\OverlayFuelInfo\FuelInfoOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayInputTrace\InputDataCollector.cs" />
-    <Compile Include="Overlays\Driving\OverlayInputTrace\InputGraph.cs" />
-    <Compile Include="Overlays\Driving\OverlayInputTrace\InputTraceOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayLapTable\LapTimeTableConfiguration.cs" />
-    <Compile Include="Overlays\Driving\OverlayLapTable\LapTableOverlay.cs" />
-    <Compile Include="Overlays\Pitwall\OverlayClock\ClockOverlay.cs" />
-    <Compile Include="Overlays\System\Overlay3D\3dOverlay.cs" />
-    <Compile Include="Overlays\System\OverlayMousePosition\MousePositionOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayOpponent\OpponentOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayPressureTrace\PressureTraceOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayPressureTrace\TyrePressureDataCollector.cs" />
-    <Compile Include="Overlays\Driving\OverlayPressureTrace\TyrePressureGraph.cs" />
-    <Compile Include="Overlays\Driving\OverlayPressureTrace\TyrePressures.cs" />
-    <Compile Include="Overlays\Driving\OverlaySteering\SteeringOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayRaceInfo\RaceInfoOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayRefuel\OverlayRefuel.cs" />
-    <Compile Include="Overlays\Driving\OverlayShiftIndicator\ShiftIndicatorConfiguration.cs" />
-    <Compile Include="Overlays\Driving\OverlayShiftIndicator\ShiftIndicatorOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlaySpeedometer\SpeedometerOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayRadar\OverlayRadar.cs" />
-    <Compile Include="Overlays\Driving\OverlayStandings\StandingsConfiguration.cs" />
-    <Compile Include="Overlays\Driving\OverlayStandings\StandingsOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayOversteerTrace\OversteerDataCollector.cs" />
-    <Compile Include="Overlays\Driving\OverlayOversteerTrace\OversteerGraph.cs" />
-    <Compile Include="Overlays\Driving\OverlayOversteerTrace\OversteerTraceOverlay.cs" />
-    <Compile Include="Overlays\System\OverlayStartScreen\StartScreenOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayTyreInfo\TyreInfoOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayTrackInfo\TrackInfoOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayWeather\WeatherOverlay.cs" />
-    <Compile Include="Overlays\Driving\OverlayWind\WindOverlay.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig">
       <Link>.editorconfig</Link>
     </None>
-    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Race Element.Core\Race Element.Core.csproj">
-      <Project>{6b29d63b-57cb-4a13-bc5f-9b5f726a3430}</Project>
-      <Name>Race Element.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Race_Element.Broadcast\Race Element.Broadcast.csproj">
-      <Project>{840220BD-8469-4A04-A6EC-1ED2BC743EFB}</Project>
-      <Name>Race Element.Broadcast</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Race_Element.Data.ACC\Race Element.Data.ACC.csproj">
-      <Project>{BB693CEB-CD96-4EB6-9F13-110D3CCECFFE}</Project>
-      <Name>Race Element.Data.ACC</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Race_Element.HUD\Race Element.HUD.csproj">
-      <Project>{3717A55E-4629-40ED-9C93-24058D9EF18C}</Project>
-      <Name>Race Element.HUD</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Race_Element.SharedMemory\Race Element.SharedMemory.csproj">
-      <Project>{9F9BE520-14C4-4AB6-8119-5E14BCCA9A0F}</Project>
-      <Name>Race Element.SharedMemory</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Race_Element.Util\Race Element.Util.csproj">
-      <Project>{AAB23116-299B-415B-8305-96CB86148CE7}</Project>
-      <Name>Race Element.Util</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\Race Element.Core\Race Element.Core.csproj" />
+    <ProjectReference Include="..\Race_Element.Broadcast\Race Element.Broadcast.csproj" />
+    <ProjectReference Include="..\Race_Element.Data.ACC\Race Element.Data.ACC.csproj" />
+    <ProjectReference Include="..\Race_Element.HUD\Race Element.HUD.csproj" />
+    <ProjectReference Include="..\Race_Element.SharedMemory\Race Element.SharedMemory.csproj" />
+    <ProjectReference Include="..\Race_Element.Util\Race Element.Util.csproj" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

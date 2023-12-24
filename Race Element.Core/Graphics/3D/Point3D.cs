@@ -104,7 +104,7 @@ namespace CPI.Plot3D
         /// </remarks>
         public PointF GetScreenPosition(Point3D cameraPosition)
         {
-            PointF returnValue = new PointF();
+            PointF returnValue = new();
 
             returnValue.X = (float)
                 (((((double)this.X - (double)cameraPosition.X) 

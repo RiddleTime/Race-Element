@@ -21,7 +21,7 @@ namespace RaceElement.HUD.Overlay.Configuration
 
         public static byte[] GetOptionsCollection(ByteRangeAttribute intRange)
         {
-            List<byte> collection = new List<byte>();
+            List<byte> collection = new();
 
             for (byte i = intRange.Min; i < intRange.Max + intRange.Increment; i += intRange.Increment)
                 collection.Add(i);

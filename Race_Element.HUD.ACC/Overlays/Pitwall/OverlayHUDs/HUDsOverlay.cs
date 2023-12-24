@@ -10,7 +10,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayHUDs
         OverlayType = OverlayType.Pitwall)]
     internal sealed class HUDsOverlay : AbstractOverlay
     {
-        private readonly HUDsConfiguration _config = new HUDsConfiguration();
+        private readonly HUDsConfiguration _config = new();
         private sealed class HUDsConfiguration : OverlayConfiguration
         {
             public HUDsConfiguration() => this.AllowRescale = true;

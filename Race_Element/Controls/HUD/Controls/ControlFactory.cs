@@ -17,11 +17,11 @@ namespace RaceElement.Controls.HUD.Controls
 
         public ListViewItem GenerateOption(string group, string label, PropertyInfo pi, ConfigField configField)
         {
-            Grid grid = new Grid() { Margin = new Thickness(0, 0, 0, 2) /*Height = 26*/ };
+            Grid grid = new() { Margin = new Thickness(0, 0, 0, 2) /*Height = 26*/ };
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(120, GridUnitType.Pixel) });
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(310, GridUnitType.Pixel) });
 
-            ListViewItem item = new ListViewItem()
+            ListViewItem item = new()
             {
                 Content = grid,
                 Margin = new Thickness(0, 0, -1, 0),

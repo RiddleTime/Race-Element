@@ -20,10 +20,10 @@ namespace RaceElement.Data.ACC.AccidentList
 
         // History of realtime car updates
         // Maps session time to a map of carID and realTimeInfo
-        private Dictionary<double, Dictionary<int, RealtimeCarUpdate>> _realTimeCarHistory = new Dictionary<double, Dictionary<int, RealtimeCarUpdate>>();
+        private Dictionary<double, Dictionary<int, RealtimeCarUpdate>> _realTimeCarHistory = new();
 
         // store all incoming broadcast accident events with the corresponding real time car update
-        private List<CarInfoWithRealTime> _unprocessedAccidents = new List<CarInfoWithRealTime>();
+        private List<CarInfoWithRealTime> _unprocessedAccidents = new();
 
         public static AccidentListTracker Instance
         {
@@ -82,7 +82,7 @@ namespace RaceElement.Data.ACC.AccidentList
 
             //Debug.WriteLine($"session time {key} accident time {accidentTime}");
             // get real time car update data from history and add information to accident event
-            CarInfoWithRealTime carInfoWithRealTime = new CarInfoWithRealTime(broadcastingEvent.CarData);
+            CarInfoWithRealTime carInfoWithRealTime = new(broadcastingEvent.CarData);
             carInfoWithRealTime.RealtimeCarUpdate = _realTimeCarHistory[key][broadcastingEvent.CarId];
             lock(_unprocessedAccidents)
             {
@@ -177,7 +177,7 @@ namespace RaceElement.Data.ACC.AccidentList
             } 
             else 
             {
-                Dictionary<int, RealtimeCarUpdate> carUpdate = new Dictionary<int, RealtimeCarUpdate>();
+                Dictionary<int, RealtimeCarUpdate> carUpdate = new();
                 carUpdate[realtimeCarUpdate.CarIndex] = realtimeCarUpdate;
                 //Debug.WriteLine($"# create key {key} car index {realtimeCarUpdate.CarIndex}");
                 _realTimeCarHistory[key] = carUpdate;

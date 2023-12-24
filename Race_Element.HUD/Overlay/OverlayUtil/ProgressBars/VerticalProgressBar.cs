@@ -38,7 +38,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.ProgressBars
             int scaledHeight = (int)(_height * Scale);
             int scaledWidth = (int)(_width * Scale);
 
-            CachedBitmap barBitmap = new CachedBitmap(scaledWidth + 1, scaledHeight + 1, bg =>
+            CachedBitmap barBitmap = new(scaledWidth + 1, scaledHeight + 1, bg =>
             {
                 if (Rounded)
                 {

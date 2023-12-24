@@ -7,14 +7,14 @@ namespace ACCManager.Data.ACC.Tracks.Data
 {
     internal class Imola : AbstractTrackData
     {
-        public override Guid Guid => new Guid("678eefc3-a5f0-4b2a-a1cc-03ac62650ede");
+        public override Guid Guid => new("678eefc3-a5f0-4b2a-a1cc-03ac62650ede");
         public override string GameName => "Imola";
         public override string FullName => "Autodromo Enzo e Dino Ferrari";
         public override int TrackLength => 4959;
 
-        public override List<float> Sectors => new List<float>() { 0.247f, 0.552f };
+        public override List<float> Sectors => new() { 0.247f, 0.552f };
 
-        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
         {
             { new FloatRangeStruct(0.0005297028f, 0.03412261f), (1, string.Empty) },
             { new FloatRangeStruct(0.112587f, 0.1497782f), (2, "Variante Tamburello") },

@@ -6,7 +6,7 @@ namespace RaceElement.Data.ACC.EntryList.TrackPositionGraph
 {
     public class PositionGraph
     {
-        private Dictionary<int, Car> _cars = new Dictionary<int, Car>();
+        private Dictionary<int, Car> _cars = new();
 
         private static PositionGraph _instance;
         public static PositionGraph Instance
@@ -25,7 +25,7 @@ namespace RaceElement.Data.ACC.EntryList.TrackPositionGraph
 
         public void AddCar(int carIndex)
         {
-            Car newCar = new Car()
+            Car newCar = new()
             {
                 CarIndex = carIndex,
                 Location = Broadcast.CarLocationEnum.NONE,

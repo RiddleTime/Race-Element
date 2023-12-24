@@ -7,14 +7,14 @@ namespace ACCManager.Data.ACC.Tracks.Data
 {
     internal class Silverstone : AbstractTrackData
     {
-        public override Guid Guid => new Guid("8636837e-e916-4d4b-8f29-625cf6bf4695");
+        public override Guid Guid => new("8636837e-e916-4d4b-8f29-625cf6bf4695");
         public override string GameName => "Silverstone";
         public override string FullName => "Silverstone";
         public override int TrackLength => 5891;
 
-        public override List<float> Sectors => new List<float>() { 0.315f, 0.707f };
+        public override List<float> Sectors => new() { 0.315f, 0.707f };
 
-        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
         {
             { new FloatRangeStruct(0, 0.02048442f), (-1, "National Pits Straight")},
             { new FloatRangeStruct(0.02117836f, 0.07587882f), (1, "Copse")},

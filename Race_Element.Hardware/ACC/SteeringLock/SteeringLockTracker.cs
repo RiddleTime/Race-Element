@@ -100,7 +100,7 @@ namespace RaceElement.Hardware.ACC.SteeringLock
 
         public static string GetSupportedDeviceName()
         {
-            DirectInput di = new DirectInput();
+            DirectInput di = new();
 
             foreach (DeviceInstance device in di.GetDevices(DeviceClass.GameControl, DeviceEnumerationFlags.AttachedOnly))
             {
@@ -117,7 +117,7 @@ namespace RaceElement.Hardware.ACC.SteeringLock
 
         private void DetectDevices()
         {
-            DirectInput di = new DirectInput();
+            DirectInput di = new();
 
             foreach (DeviceInstance device in di.GetDevices(DeviceClass.GameControl, DeviceEnumerationFlags.AttachedOnly))
             {

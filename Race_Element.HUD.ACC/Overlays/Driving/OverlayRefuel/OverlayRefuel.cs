@@ -18,7 +18,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayRefuel
 #endif
     internal sealed class RefuelInfoOverlay : AbstractOverlay
     {
-        private readonly RefuelConfiguration _config = new RefuelConfiguration();
+        private readonly RefuelConfiguration _config = new();
         private class RefuelConfiguration : OverlayConfiguration
         {
             [ConfigGrouping("Refuel Info", "Show or hide additional information in the panel.")]
@@ -38,8 +38,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayRefuel
             }
         }
 
-        private SolidBrush _whiteBrush = new SolidBrush(Color.White);
-        private SolidBrush _greenBrush = new SolidBrush(Color.Green);
+        private SolidBrush _whiteBrush = new(Color.White);
+        private SolidBrush _greenBrush = new(Color.Green);
 
         private const int windowWidth = 400;
         private const int windowHeight = 100;
@@ -87,7 +87,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayRefuel
 
             UpdateSessionData();
 
-            StringFormat drawFormat = new StringFormat();
+            StringFormat drawFormat = new();
             SmoothingMode previous = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 

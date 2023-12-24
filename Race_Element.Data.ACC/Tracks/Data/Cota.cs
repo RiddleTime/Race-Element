@@ -7,14 +7,14 @@ namespace ACCManager.Data.ACC.Tracks.Data
 {
     internal class Cota : AbstractTrackData
     {
-        public override Guid Guid => new Guid("f45eac53-7a77-4fe5-812f-064b30ac22df");
+        public override Guid Guid => new("f45eac53-7a77-4fe5-812f-064b30ac22df");
         public override string GameName => "cota";
         public override string FullName => "Circuit of the Americas";
         public override int TrackLength => 5513;
 
-        public override List<float> Sectors => new List<float>() { 0.236f, 0.647f };
+        public override List<float> Sectors => new() { 0.236f, 0.647f };
 
-        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
         {
             { new FloatRangeStruct(0.09711581f, 0.1336419f), (1, string.Empty) },
             { new FloatRangeStruct(0.139182f, 0.1873701f), (2, string.Empty) },

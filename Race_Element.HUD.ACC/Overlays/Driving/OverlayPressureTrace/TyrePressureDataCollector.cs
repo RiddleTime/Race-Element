@@ -11,10 +11,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace
         private bool IsCollecting = false;
         public int TraceCount = 300;
 
-        public LinkedList<float> FrontLeft = new LinkedList<float>();
-        public LinkedList<float> FrontRight = new LinkedList<float>();
-        public LinkedList<float> RearLeft = new LinkedList<float>();
-        public LinkedList<float> RearRight = new LinkedList<float>();
+        public LinkedList<float> FrontLeft = new();
+        public LinkedList<float> FrontRight = new();
+        public LinkedList<float> RearLeft = new();
+        public LinkedList<float> RearRight = new();
 
         public void Collect(SPageFilePhysics filePhysics)
         {

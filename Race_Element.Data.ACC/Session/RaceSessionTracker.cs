@@ -54,7 +54,7 @@ namespace RaceElement.Data.ACC.Session
             OnSessionIndexChanged += TryCreateNewSession;
             OnACSessionTypeChanged += TryCreateNewSession;
 
-            ReplaySettings replaySettingsJson = new ReplaySettings();
+            ReplaySettings replaySettingsJson = new();
             var json = replaySettingsJson.Get(false);
             Debug.WriteLine(json);
         }

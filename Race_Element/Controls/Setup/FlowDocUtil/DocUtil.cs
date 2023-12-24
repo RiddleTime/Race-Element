@@ -12,12 +12,12 @@ namespace RaceElement.Controls.Setup.FlowDocUtil
     {
         public static Table GetTable(int headerWidth, int valueWidth)
         {
-            Table table = new Table();
-            TableColumn columnTitle = new TableColumn();
+            Table table = new();
+            TableColumn columnTitle = new();
             columnTitle.Width = new GridLength(headerWidth, GridUnitType.Star);
             table.Columns.Add(columnTitle);
 
-            TableColumn columnValues = new TableColumn();
+            TableColumn columnValues = new();
             columnValues.Width = new GridLength(valueWidth, GridUnitType.Star);
             table.Columns.Add(columnValues);
 
@@ -29,17 +29,17 @@ namespace RaceElement.Controls.Setup.FlowDocUtil
 
         public static Table GetLeftAllignedTable(int headerWidth, int cells)
         {
-            Table table = new Table();
+            Table table = new();
 
             int cellWidth = (100 - headerWidth) / cells;
 
-            TableColumn columnHeader = new TableColumn();
+            TableColumn columnHeader = new();
             columnHeader.Width = new GridLength(headerWidth, GridUnitType.Star);
             table.Columns.Add(columnHeader);
 
             for (int i = 0; i < cells; i++)
             {
-                TableColumn column = new TableColumn();
+                TableColumn column = new();
                 column.Width = new GridLength(cellWidth, GridUnitType.Star);
                 table.Columns.Add(column);
             }
@@ -60,24 +60,24 @@ namespace RaceElement.Controls.Setup.FlowDocUtil
             if (cells % 2 == 1)
                 throw new ArgumentException("Cells requires to be an even number");
 
-            Table table = new Table() { Padding = new Thickness(0) };
+            Table table = new() { Padding = new Thickness(0) };
 
             int cellWidth = (100 - headerWidth) / cells;
 
             for (int i = 0; i < cells / 2; i++)
             {
-                TableColumn column = new TableColumn();
+                TableColumn column = new();
                 column.Width = new GridLength(cellWidth, GridUnitType.Star);
                 table.Columns.Add(column);
             }
 
-            TableColumn columnHeader = new TableColumn();
+            TableColumn columnHeader = new();
             columnHeader.Width = new GridLength(headerWidth, GridUnitType.Star);
             table.Columns.Add(columnHeader);
 
             for (int i = 0; i < cells / 2; i++)
             {
-                TableColumn column = new TableColumn();
+                TableColumn column = new();
                 column.Width = new GridLength(cellWidth, GridUnitType.Star);
                 table.Columns.Add(column);
             }
@@ -90,16 +90,16 @@ namespace RaceElement.Controls.Setup.FlowDocUtil
 
         public static Table GetTable(int valueWidth1, int headerWidth, int valueWidth2)
         {
-            Table table = new Table();
-            TableColumn columnValues1 = new TableColumn();
+            Table table = new();
+            TableColumn columnValues1 = new();
             columnValues1.Width = new GridLength(valueWidth1, GridUnitType.Star);
             table.Columns.Add(columnValues1);
 
-            TableColumn columnTitle = new TableColumn();
+            TableColumn columnTitle = new();
             columnTitle.Width = new GridLength(headerWidth, GridUnitType.Star);
             table.Columns.Add(columnTitle);
 
-            TableColumn columnValues2 = new TableColumn();
+            TableColumn columnValues2 = new();
             columnValues2.Width = new GridLength(valueWidth2, GridUnitType.Star);
             table.Columns.Add(columnValues2);
 
@@ -109,7 +109,7 @@ namespace RaceElement.Controls.Setup.FlowDocUtil
 
         public static TableRow GetTableRow(string title, string value)
         {
-            TableRow row = new TableRow();
+            TableRow row = new();
             row.Cells.Add(new TableCell(GetDefaultParagraph(title)));
             row.Cells.Add(new TableCell(GetDefaultParagraph(value)));
             return row;
@@ -117,10 +117,10 @@ namespace RaceElement.Controls.Setup.FlowDocUtil
 
         public static TableRow GetTableRow(string value1, string title, string value2)
         {
-            TableRow row = new TableRow();
-            TableCell cellA = new TableCell(GetDefaultParagraph(value1)) { TextAlignment = TextAlignment.Right };
-            TableCell cellB = new TableCell(GetDefaultParagraph(title)) { TextAlignment = TextAlignment.Center };
-            TableCell cellC = new TableCell(GetDefaultParagraph(value2)) { TextAlignment = TextAlignment.Left };
+            TableRow row = new();
+            TableCell cellA = new(GetDefaultParagraph(value1)) { TextAlignment = TextAlignment.Right };
+            TableCell cellB = new(GetDefaultParagraph(title)) { TextAlignment = TextAlignment.Center };
+            TableCell cellC = new(GetDefaultParagraph(value2)) { TextAlignment = TextAlignment.Left };
             row.Cells.Add(cellA);
             row.Cells.Add(cellB);
             row.Cells.Add(cellC);
@@ -138,12 +138,12 @@ namespace RaceElement.Controls.Setup.FlowDocUtil
             if (cellCount > 3)
                 cellsToAdd = (cellCount - 1) / 2;
 
-            TableRow row = new TableRow();
-            TableCell cellA = new TableCell(a) { TextAlignment = TextAlignment.Right };
+            TableRow row = new();
+            TableCell cellA = new(a) { TextAlignment = TextAlignment.Right };
             if (cellsToAdd > 0)
                 cellA.ColumnSpan = cellsToAdd;
-            TableCell cellB = new TableCell(b) { TextAlignment = TextAlignment.Center, Padding = new Thickness(0, 3, 0, 3) };
-            TableCell cellC = new TableCell(c) { TextAlignment = TextAlignment.Left };
+            TableCell cellB = new(b) { TextAlignment = TextAlignment.Center, Padding = new Thickness(0, 3, 0, 3) };
+            TableCell cellC = new(c) { TextAlignment = TextAlignment.Left };
             if (cellsToAdd > 0)
                 cellC.ColumnSpan = cellsToAdd;
 
@@ -162,11 +162,11 @@ namespace RaceElement.Controls.Setup.FlowDocUtil
                 cellsToAdd = (cellCount - 1) / 2;
 
 
-            TableRow row = new TableRow();
-            TableCell cellA = new TableCell(GetDefaultParagraph(value1, new Thickness(0, 0, 5, 0))) { TextAlignment = TextAlignment.Right };
+            TableRow row = new();
+            TableCell cellA = new(GetDefaultParagraph(value1, new Thickness(0, 0, 5, 0))) { TextAlignment = TextAlignment.Right };
             if (cellsToAdd > 0)
                 cellA.ColumnSpan = cellsToAdd;
-            TableCell cellB = new TableCell(GetDefaultParagraph(title))
+            TableCell cellB = new(GetDefaultParagraph(title))
             {
                 TextAlignment = TextAlignment.Center,
                 BorderThickness = new Thickness(2, 0, 2, 0),
@@ -178,7 +178,7 @@ namespace RaceElement.Controls.Setup.FlowDocUtil
                 cellB.BorderBrush = Brushes.DarkOrange;
             }
 
-            TableCell cellC = new TableCell(GetDefaultParagraph(value2, new Thickness(5, 0, 0, 0))) { TextAlignment = TextAlignment.Left };
+            TableCell cellC = new(GetDefaultParagraph(value2, new Thickness(5, 0, 0, 0))) { TextAlignment = TextAlignment.Left };
             if (cellsToAdd > 0)
                 cellC.ColumnSpan = cellsToAdd;
 
@@ -203,11 +203,11 @@ namespace RaceElement.Controls.Setup.FlowDocUtil
             if (labels.Length == 0)
                 labels = new string[values.Length];
 
-            List<TableCell> tableCells = new List<TableCell>();
+            List<TableCell> tableCells = new();
 
             for (int i = 0; i != values.Length; i++)
             {
-                TableCell cell = new TableCell(GetDefaultParagraph($"{labels[i]}{values[i].ToString($"F{denominator}")}", new Thickness(3, 0, 3, 0)))
+                TableCell cell = new(GetDefaultParagraph($"{labels[i]}{values[i].ToString($"F{denominator}")}", new Thickness(3, 0, 3, 0)))
                 {
                     TextAlignment = TextAlignment.Left,
                     BorderThickness = new Thickness(0),
@@ -216,13 +216,13 @@ namespace RaceElement.Controls.Setup.FlowDocUtil
                 tableCells.Add(cell);
             }
 
-            TableRow row = new TableRow();
+            TableRow row = new();
 
             int spacingCells = 0;
             if (cellCount > values.Count() + 1)
                 spacingCells = (cellCount - (values.Count() + 1));
 
-            TableCell header = new TableCell(GetDefaultParagraph(title, new Thickness(3, 0, 3, 0)))
+            TableCell header = new(GetDefaultParagraph(title, new Thickness(3, 0, 3, 0)))
             {
                 TextAlignment = TextAlignment.Left,
                 BorderThickness = new Thickness(2, 0, 2, 0),
@@ -245,14 +245,14 @@ namespace RaceElement.Controls.Setup.FlowDocUtil
 
         public static TableRow GetTableRowLeftTitle(string title, int cellCount)
         {
-            TableRow row = new TableRow();
+            TableRow row = new();
 
             // add header
             Paragraph pHeader = GetDefaultHeader(18, title);
             pHeader.TextAlignment = TextAlignment.Left;
             pHeader.Margin = new Thickness(3, 5, 0, 3);
             pHeader.FontStyle = FontStyles.Italic;
-            TableCell header = new TableCell(pHeader)
+            TableCell header = new(pHeader)
             {
                 TextAlignment = TextAlignment.Left,
                 ColumnSpan = cellCount,
@@ -272,7 +272,7 @@ namespace RaceElement.Controls.Setup.FlowDocUtil
             }
             else
             {
-                TableRow row = new TableRow();
+                TableRow row = new();
 
                 // set amount of spacing cells on the right
                 int spacingCells = 0;
@@ -280,7 +280,7 @@ namespace RaceElement.Controls.Setup.FlowDocUtil
                     spacingCells = (cellCount - 1);
 
                 // add header
-                TableCell header = new TableCell(GetDefaultParagraph(title))
+                TableCell header = new(GetDefaultParagraph(title))
                 {
                     TextAlignment = TextAlignment.Left,
                     BorderThickness = new Thickness(2, 0, 2, 0),
@@ -289,7 +289,7 @@ namespace RaceElement.Controls.Setup.FlowDocUtil
                 };
                 row.Cells.Add(header);
 
-                TableCell valueCell = new TableCell(GetDefaultParagraph(value, new Thickness(3, 0, 3, 0)))
+                TableCell valueCell = new(GetDefaultParagraph(value, new Thickness(3, 0, 3, 0)))
                 {
                     TextAlignment = TextAlignment.Left,
                     Padding = new Thickness(3, 0, 0, 0),
@@ -308,7 +308,7 @@ namespace RaceElement.Controls.Setup.FlowDocUtil
             if (values.Length == 0)
                 throw new ArgumentException("Provide at least 1 value.");
 
-            TableRow row = new TableRow();
+            TableRow row = new();
 
             // set amount of spacing cells on the right
             int spacingCells = 0;
@@ -316,7 +316,7 @@ namespace RaceElement.Controls.Setup.FlowDocUtil
                 spacingCells = (cellCount - (values.Count() + 1));
 
             // add header
-            TableCell header = new TableCell(GetDefaultParagraph(title))
+            TableCell header = new(GetDefaultParagraph(title))
             {
                 TextAlignment = TextAlignment.Left,
                 BorderThickness = new Thickness(2, 0, 2, 0),
@@ -363,20 +363,20 @@ namespace RaceElement.Controls.Setup.FlowDocUtil
             if (values1.Length != values2.Length)
                 throw new ArgumentException("Both of the values arrays have to be the same length.");
 
-            List<TableCell> cells1 = new List<TableCell>();
-            List<TableCell> cells2 = new List<TableCell>();
+            List<TableCell> cells1 = new();
+            List<TableCell> cells2 = new();
 
             bool different = false;
 
             for (int i = 0; i < values1.Length; i++)
             {
-                TableCell cell1 = new TableCell(GetDefaultParagraph($"{labels[i]}{values1[i].ToString($"F{denominator}")}", new Thickness(0, 0, 5, 0)))
+                TableCell cell1 = new(GetDefaultParagraph($"{labels[i]}{values1[i].ToString($"F{denominator}")}", new Thickness(0, 0, 5, 0)))
                 {
                     TextAlignment = TextAlignment.Right,
                     Padding = new Thickness(0),
                     BorderThickness = new Thickness(0)
                 };
-                TableCell cell2 = new TableCell(GetDefaultParagraph($"{labels[i]}{values2[i].ToString($"F{denominator}")}", new Thickness(5, 0, 0, 0)))
+                TableCell cell2 = new(GetDefaultParagraph($"{labels[i]}{values2[i].ToString($"F{denominator}")}", new Thickness(5, 0, 0, 0)))
                 {
                     TextAlignment = TextAlignment.Left,
                     Padding = new Thickness(0),
@@ -401,7 +401,7 @@ namespace RaceElement.Controls.Setup.FlowDocUtil
                 cells2.Add(cell2);
             }
 
-            TableRow row = new TableRow();
+            TableRow row = new();
 
             int spacingCells = 0;
             if (cellCount > values2.Count() * 2 + 1)
@@ -419,7 +419,7 @@ namespace RaceElement.Controls.Setup.FlowDocUtil
             for (int i = 0; i < cells1.Count; i++)
                 row.Cells.Add(cells1[i]);
 
-            TableCell header = new TableCell(GetDefaultParagraph(title))
+            TableCell header = new(GetDefaultParagraph(title))
             {
                 TextAlignment = TextAlignment.Center,
                 BorderThickness = new Thickness(2, 0, 2, 0),
@@ -453,7 +453,7 @@ namespace RaceElement.Controls.Setup.FlowDocUtil
 
         public static Paragraph GetDefaultHeader()
         {
-            Paragraph content = new Paragraph
+            Paragraph content = new()
             {
                 FontSize = 17,
                 FontWeight = FontWeights.Medium,
@@ -488,7 +488,7 @@ namespace RaceElement.Controls.Setup.FlowDocUtil
 
         public static Paragraph GetDefaultParagraph()
         {
-            Paragraph content = new Paragraph
+            Paragraph content = new()
             {
                 FontSize = 12,
                 FontWeight = FontWeights.Medium,
@@ -529,7 +529,7 @@ namespace RaceElement.Controls.Setup.FlowDocUtil
 
         public static List GetDefaultList()
         {
-            List list = new List
+            List list = new()
             {
                 FontSize = 13,
                 Foreground = Brushes.White

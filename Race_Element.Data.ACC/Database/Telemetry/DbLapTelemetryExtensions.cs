@@ -10,13 +10,15 @@ namespace RaceElement.Data.ACC.Database.Telemetry
     {
         public static Dictionary<long, TelemetryPoint> DeserializeLapData(this DbLapTelemetry dbLapTelemetry)
         {
-            Dictionary<long, TelemetryPoint> Data = new Dictionary<long, TelemetryPoint>();
+            Dictionary<long, TelemetryPoint> Data = new();
 
             try
             {
                 using (var ms = new MemoryStream(dbLapTelemetry.LapData))
                 {
+#pragma warning disable SYSLIB0011 // Type or member is obsolete
                     var formatter = new BinaryFormatter();
+#pragma warning restore SYSLIB0011 // Type or member is obsolete
                     Data = (Dictionary<long, TelemetryPoint>)formatter.Deserialize(ms);
                     ms.Close();
                 }
@@ -37,7 +39,9 @@ namespace RaceElement.Data.ACC.Database.Telemetry
             {
                 using (var ms = new MemoryStream())
                 {
+#pragma warning disable SYSLIB0011 // Type or member is obsolete
                     var formatter = new BinaryFormatter();
+#pragma warning restore SYSLIB0011 // Type or member is obsolete
 
                     formatter.Serialize(ms, dbLapTelemetry);
                     Data = ms.ToArray();

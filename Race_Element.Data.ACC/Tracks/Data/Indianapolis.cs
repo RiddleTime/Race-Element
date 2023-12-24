@@ -7,14 +7,14 @@ namespace ACCManager.Data.ACC.Tracks.Data
 {
     internal class Indianapolis : AbstractTrackData
     {
-        public override Guid Guid => new Guid("d3c246d2-edba-429e-af59-6e25357d59d4");
+        public override Guid Guid => new("d3c246d2-edba-429e-af59-6e25357d59d4");
         public override string GameName => "indianapolis";
         public override string FullName => "Indianapolis Motor Speedway";
         public override int TrackLength => 4167;
 
-        public override List<float> Sectors => new List<float>() { 0.390f, 0.719f };
+        public override List<float> Sectors => new() { 0.390f, 0.719f };
 
-        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
         {
             { new FloatRangeStruct(0.1243783f, 0.1692718f), (1, string.Empty) },
             { new FloatRangeStruct(0.1696899f, 0.195541f), (2, string.Empty) },

@@ -7,14 +7,14 @@ namespace ACCManager.Data.ACC.Tracks.Data
 {
     internal class Zolder : AbstractTrackData
     {
-        public override Guid Guid => new Guid("eaca1a4d-aa7e-4c31-bfc5-6035bfa30395");
+        public override Guid Guid => new("eaca1a4d-aa7e-4c31-bfc5-6035bfa30395");
         public override string GameName => "Zolder";
         public override string FullName => "Circuit Zolder";
         public override int TrackLength => 4011;
 
-        public override List<float> Sectors => new List<float>() { 0.3625f, 0.6835f };
+        public override List<float> Sectors => new() { 0.3625f, 0.6835f };
 
-        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
         {
             { new FloatRangeStruct(0.04245049f, 0.0946003f), (1, "Earste Links") },
             { new FloatRangeStruct(0.1296046f, 0.1782782f), (2, "Sterrenwachtbocht") },

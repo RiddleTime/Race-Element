@@ -11,7 +11,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayBoostGauge
       Description = "Progress bar showing boost percentage.")]
     internal sealed class BoostGaugeOverlay : AbstractOverlay
     {
-        private readonly BoostConfiguration _config = new BoostConfiguration();
+        private readonly BoostConfiguration _config = new();
         private sealed class BoostConfiguration : OverlayConfiguration
         {
             public BoostConfiguration()

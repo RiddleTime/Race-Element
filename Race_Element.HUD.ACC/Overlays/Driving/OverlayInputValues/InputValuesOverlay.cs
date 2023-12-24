@@ -15,7 +15,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayInputValues
         )]
     internal class InputValuesOverlay : AbstractOverlay
     {
-        private readonly InputValuesConfiguration _config = new InputValuesConfiguration();
+        private readonly InputValuesConfiguration _config = new();
         private sealed class InputValuesConfiguration : OverlayConfiguration
         {
             public InputValuesConfiguration() => AllowRescale = true;
@@ -59,18 +59,18 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayInputValues
             Color colorDefault = Color.FromArgb(190, Color.Black);
             Color colorRed = Color.FromArgb(150, Color.Red);
             Color colorGreen = Color.FromArgb(150, Color.LimeGreen);
-            using HatchBrush columnBrushDefault = new HatchBrush(HatchStyle.LightUpwardDiagonal, colorDefault, Color.FromArgb(colorDefault.A - 25, colorDefault));
-            using HatchBrush columnBrushRed = new HatchBrush(HatchStyle.LightUpwardDiagonal, colorDefault, Color.FromArgb(colorRed.A - 75, colorRed));
-            using HatchBrush columnBrushGreen = new HatchBrush(HatchStyle.LightUpwardDiagonal, colorDefault, Color.FromArgb(colorGreen.A - 25, colorGreen));
+            using HatchBrush columnBrushDefault = new(HatchStyle.LightUpwardDiagonal, colorDefault, Color.FromArgb(colorDefault.A - 25, colorDefault));
+            using HatchBrush columnBrushRed = new(HatchStyle.LightUpwardDiagonal, colorDefault, Color.FromArgb(colorRed.A - 75, colorRed));
+            using HatchBrush columnBrushGreen = new(HatchStyle.LightUpwardDiagonal, colorDefault, Color.FromArgb(colorGreen.A - 25, colorGreen));
 
             _throttleCell = new DrawableTextCell(new RectangleF(0, 0, baseWidth, baseHeight), font);
             _throttleCell.CachedBackground = new CachedBitmap((int)baseWidth, (int)baseHeight, g =>
             {
-                Rectangle rect = new Rectangle(0, 0, (int)baseWidth - 1, (int)baseHeight - 1);
-                using LinearGradientBrush brush = new LinearGradientBrush(new PointF(baseWidth, baseHeight), new PointF(0, 0), Color.FromArgb(90, 0, 0, 0), Color.FromArgb(colorGreen.A, 10, 10, 10));
+                Rectangle rect = new(0, 0, (int)baseWidth - 1, (int)baseHeight - 1);
+                using LinearGradientBrush brush = new(new PointF(baseWidth, baseHeight), new PointF(0, 0), Color.FromArgb(90, 0, 0, 0), Color.FromArgb(colorGreen.A, 10, 10, 10));
                 g.FillRoundedRectangle(brush, rect, (int)(2f * Scale));
                 g.FillRoundedRectangle(columnBrushGreen, rect, (int)(2f * Scale));
-                using Pen pen = new Pen(colorGreen, 1f * Scale);
+                using Pen pen = new(colorGreen, 1f * Scale);
                 g.DrawRoundedRectangle(pen, rect, (int)(2f * Scale));
             });
             _graphicsGrid.Grid[0][0] = _throttleCell;
@@ -78,11 +78,11 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayInputValues
             _brakeCell = new DrawableTextCell(new RectangleF(0, baseHeight, baseWidth, baseHeight), font);
             _brakeCell.CachedBackground = new CachedBitmap((int)baseWidth, (int)baseHeight, g =>
             {
-                Rectangle rect = new Rectangle(0, 0, (int)baseWidth - 1, (int)baseHeight - 1);
-                using LinearGradientBrush brush = new LinearGradientBrush(new PointF(baseWidth, baseHeight), new PointF(0, 0), Color.FromArgb(90, 0, 0, 0), Color.FromArgb(colorRed.A, 10, 10, 10));
+                Rectangle rect = new(0, 0, (int)baseWidth - 1, (int)baseHeight - 1);
+                using LinearGradientBrush brush = new(new PointF(baseWidth, baseHeight), new PointF(0, 0), Color.FromArgb(90, 0, 0, 0), Color.FromArgb(colorRed.A, 10, 10, 10));
                 g.FillRoundedRectangle(brush, rect, (int)(2f * Scale));
                 g.FillRoundedRectangle(columnBrushRed, rect, (int)(2f * Scale));
-                using Pen pen = new Pen(colorRed, 1f * Scale);
+                using Pen pen = new(colorRed, 1f * Scale);
                 g.DrawRoundedRectangle(pen, rect, (int)(2f * Scale));
             });
             _graphicsGrid.Grid[1][0] = _brakeCell;

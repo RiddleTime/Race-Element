@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
+using System.Text;
 
 namespace CPI.Plot3D
 {
@@ -16,7 +16,7 @@ namespace CPI.Plot3D
         Orientation3D orientation;
 
         // Indicates the pen's current location in 3d coordinates.
-        Point3D location = new Point3D(0, 0, 0);
+        Point3D location = new(0, 0, 0);
 
         // The pen we use to draw on the canvas.
         private Pen pen;
@@ -24,7 +24,7 @@ namespace CPI.Plot3D
         // The location of the "camera" that we use to determine perspective.
         // All points are projected onto a "screen" that is the XY plane at the Z origin,
         // and moving the camera around messes with the perspective.
-        private Point3D cameraLocation = new Point3D(60, 0, -600);
+        private Point3D cameraLocation = new(60, 0, -600);
 
         // If the pen is down, we draw lines when we move forward.  If not, we just change our
         // location without drawing any lines.

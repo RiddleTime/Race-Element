@@ -10,7 +10,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
         OverlayCategory = OverlayCategory.Physics)]
     internal sealed class OversteerTraceOverlay : AbstractOverlay
     {
-        private readonly OversteerTraceConfiguration _config = new OversteerTraceConfiguration();
+        private readonly OversteerTraceConfiguration _config = new();
         internal sealed class OversteerTraceConfiguration : OverlayConfiguration
         {
             [ConfigGrouping("Chart", "Customize the charts refresh rate, data points or change the max slip angle shown.")]

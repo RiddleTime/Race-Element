@@ -11,7 +11,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
       OverlayCategory = OverlayCategory.Inputs)]
     internal sealed class InputBarsOverlay : AbstractOverlay
     {
-        private readonly InputBarsConfiguration _config = new InputBarsConfiguration();
+        private readonly InputBarsConfiguration _config = new();
 
         private CachedBitmap _cachedBackground;
 
@@ -56,14 +56,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars
             {
                 if (_config.Bars.Orientation == InputBarsConfiguration.BarOrientation.Horizontal)
                 {
-                    using LinearGradientBrush gradientBrush = new LinearGradientBrush(new Rectangle(0, 0, (int)(_config.Bars.Length * this.Scale), (int)(_config.Bars.Thickness * this.Scale)), Color.FromArgb(120, Color.Black), Color.FromArgb(230, Color.Black), LinearGradientMode.Horizontal);
+                    using LinearGradientBrush gradientBrush = new(new Rectangle(0, 0, (int)(_config.Bars.Length * this.Scale), (int)(_config.Bars.Thickness * this.Scale)), Color.FromArgb(120, Color.Black), Color.FromArgb(230, Color.Black), LinearGradientMode.Horizontal);
 
                     g.FillRoundedRectangle(gradientBrush, new Rectangle(0, 0, (int)(_config.Bars.Length * this.Scale), (int)(_config.Bars.Thickness * this.Scale)), (int)(5 * this.Scale));
                     g.FillRoundedRectangle(gradientBrush, new Rectangle(0, (int)((_config.Bars.Thickness + _config.Bars.Spacing) * this.Scale), (int)(_config.Bars.Length * this.Scale), (int)(_config.Bars.Thickness * this.Scale)), (int)(5 * this.Scale));
                 }
                 else
                 {
-                    using LinearGradientBrush gradientBrush = new LinearGradientBrush(new Rectangle(0, 0, (int)(_config.Bars.Thickness * this.Scale), (int)(height * this.Scale)), Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical);
+                    using LinearGradientBrush gradientBrush = new(new Rectangle(0, 0, (int)(_config.Bars.Thickness * this.Scale), (int)(height * this.Scale)), Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical);
 
                     g.FillRoundedRectangle(gradientBrush, new Rectangle(0, 0, (int)(_config.Bars.Thickness * this.Scale), (int)(height * this.Scale)), (int)(6 * this.Scale));
                     g.FillRoundedRectangle(gradientBrush, new Rectangle((int)((_config.Bars.Thickness + _config.Bars.Spacing) * this.Scale), 0, (int)(_config.Bars.Thickness * this.Scale), (int)(height * this.Scale)), (int)(5 * this.Scale));

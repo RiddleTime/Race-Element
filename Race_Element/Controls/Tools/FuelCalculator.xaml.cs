@@ -13,8 +13,8 @@ namespace RaceElement.Controls
     /// </summary>
     public partial class FuelCalculator : UserControl
     {
-        Regex regexRealNumbersOnly = new Regex("[0-9]+$");
-        Regex regexDoublesOnly = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
+        Regex regexRealNumbersOnly = new("[0-9]+$");
+        Regex regexDoublesOnly = new("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
 
         private int raceHours = 0;
         private int raceMinutes = 0;

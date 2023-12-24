@@ -9,7 +9,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
         OverlayCategory = OverlayCategory.Inputs)]
     internal sealed class InputTraceOverlay : AbstractOverlay
     {
-        private readonly InputTraceConfig _config = new InputTraceConfig();
+        private readonly InputTraceConfig _config = new();
         internal class InputTraceConfig : OverlayConfiguration
         {
             [ConfigGrouping("Chart", "Customize the charts refresh rate, data points or hide the steering input.")]

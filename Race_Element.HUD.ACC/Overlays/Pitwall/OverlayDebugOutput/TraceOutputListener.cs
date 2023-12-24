@@ -19,7 +19,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
         private TextWriterTraceListener _traceListener;
         private long lastPosition = -1;
 
-        private LinkedList<MessageOut> _outputs = new LinkedList<MessageOut>();
+        private LinkedList<MessageOut> _outputs = new();
         public LinkedList<MessageOut> Outputs { get { lock (_outputs) return _outputs; } }
 
         private static TraceOutputListener _instance;
@@ -53,7 +53,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
                 {
                     Thread.Sleep(100);
 
-                    StreamReader reader = new StreamReader(_outputStream);
+                    StreamReader reader = new(_outputStream);
 
                     if (lastPosition == -1)
                         lastPosition = 0;

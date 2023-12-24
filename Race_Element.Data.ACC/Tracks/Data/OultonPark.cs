@@ -7,14 +7,14 @@ namespace ACCManager.Data.ACC.Tracks.Data
 {
     internal class OultonPark : AbstractTrackData
     {
-        public override Guid Guid => new Guid("72794bc2-841c-40e1-8587-3e41f9228ea8");
+        public override Guid Guid => new("72794bc2-841c-40e1-8587-3e41f9228ea8");
         public override string GameName => "oulton_park";
         public override string FullName => "Oulton Park";
         public override int TrackLength => 4307;
 
-        public override List<float> Sectors => new List<float>() { 0.264f, 0.693f };
+        public override List<float> Sectors => new() { 0.264f, 0.693f };
 
-        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
         {
               { new FloatRangeStruct(0.03764982f, 0.09288816f), (1, "Old Hall Corner")},
               { new FloatRangeStruct(0.1238538f, 0.152804f), (2, "Denton's")},
