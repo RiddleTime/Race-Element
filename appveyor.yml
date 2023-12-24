@@ -13,7 +13,7 @@ build_script:
 - cmd: dotnet publish -p:PublishProfile=PublishProfile
 test: off
 artifacts:
-- path: '**\RaceElement.exe'
+- path: '**\publish\win-x64\RaceElement.exe'
   name: Race Element
 deploy:
 - provider: Webhook
