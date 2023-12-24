@@ -3,77 +3,76 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using HidLibrary;
 
-namespace RaceElement.Hardware.ACC.SteeringLock.Implementations
+namespace RaceElement.Hardware.ACC.SteeringLock.Implementations;
+
+internal class SimuCube : IWheelSteerLockSetter
 {
-    internal class SimuCube : IWheelSteerLockSetter
+    public virtual string ControllerName => "SimuCUBE";
+
+    public virtual bool Test(string productGuid)
     {
-        public virtual string ControllerName => "SimuCUBE";
+        return string.Equals(productGuid, "0D5A16D0-0000-0000-0000-504944564944", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(productGuid, "0D5F16D0-0000-0000-0000-504944564944", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(productGuid, "0D6016D0-0000-0000-0000-504944564944", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(productGuid, "0D6116D0-0000-0000-0000-504944564944", StringComparison.OrdinalIgnoreCase);
+    }
 
-        public virtual bool Test(string productGuid)
+    public int MaximumSteerLock => 65535;
+    public int MinimumSteerLock => 40;
+
+    private enum ScReportId : byte
+    {
+        Out = 0x6B
+    }
+
+    private enum ScCommand : byte
+    {
+        SetTemporaryVariable = 100
+    }
+
+    private enum ScValue1 : ushort
+    {
+        TemporarySteeringAngle = 1,
+        UnsetTemporarySteeringAngle = 2
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    struct CommandPacket
+    {
+        public ScReportId ReportId;
+        public ScCommand Command;
+        public ScValue1 Value1;
+        public ushort Value2;
+
+        public static readonly int Size = Marshal.SizeOf(typeof(CommandPacket));
+    }
+
+    public bool Apply(int steerLock, bool isReset, out int appliedValue)
+    {
+        appliedValue = Math.Min(Math.Max(steerLock, MinimumSteerLock), MaximumSteerLock);
+
+        var packet = new CommandPacket
         {
-            return string.Equals(productGuid, "0D5A16D0-0000-0000-0000-504944564944", StringComparison.OrdinalIgnoreCase)
-                    || string.Equals(productGuid, "0D5F16D0-0000-0000-0000-504944564944", StringComparison.OrdinalIgnoreCase)
-                    || string.Equals(productGuid, "0D6016D0-0000-0000-0000-504944564944", StringComparison.OrdinalIgnoreCase)
-                    || string.Equals(productGuid, "0D6116D0-0000-0000-0000-504944564944", StringComparison.OrdinalIgnoreCase);
-        }
+            ReportId = ScReportId.Out,
+            Command = ScCommand.SetTemporaryVariable,
+            Value1 = isReset ? ScValue1.UnsetTemporarySteeringAngle : ScValue1.TemporarySteeringAngle,
+            Value2 = (ushort)appliedValue
+        };
 
-        public int MaximumSteerLock => 65535;
-        public int MinimumSteerLock => 40;
+        var ptr = Marshal.AllocHGlobal(CommandPacket.Size);
+        var data = new byte[60];
+        Marshal.StructureToPtr(packet, ptr, false);
+        Marshal.Copy(ptr, data, 0, CommandPacket.Size);
+        Marshal.FreeHGlobal(ptr);
 
-        private enum ScReportId : byte
+        var result = HidDevices.Enumerate(0x16d0, 0x0d5a, 0x0d5f, 0x0d60, 0x0d61).Aggregate(false, (a, b) =>
         {
-            Out = 0x6B
-        }
-
-        private enum ScCommand : byte
-        {
-            SetTemporaryVariable = 100
-        }
-
-        private enum ScValue1 : ushort
-        {
-            TemporarySteeringAngle = 1,
-            UnsetTemporarySteeringAngle = 2
-        }
-
-        [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        struct CommandPacket
-        {
-            public ScReportId ReportId;
-            public ScCommand Command;
-            public ScValue1 Value1;
-            public ushort Value2;
-
-            public static readonly int Size = Marshal.SizeOf(typeof(CommandPacket));
-        }
-
-        public bool Apply(int steerLock, bool isReset, out int appliedValue)
-        {
-            appliedValue = Math.Min(Math.Max(steerLock, MinimumSteerLock), MaximumSteerLock);
-
-            var packet = new CommandPacket
+            using (b)
             {
-                ReportId = ScReportId.Out,
-                Command = ScCommand.SetTemporaryVariable,
-                Value1 = isReset ? ScValue1.UnsetTemporarySteeringAngle : ScValue1.TemporarySteeringAngle,
-                Value2 = (ushort)appliedValue
-            };
+                return a | b.Write(data);
+            }
+        });
 
-            var ptr = Marshal.AllocHGlobal(CommandPacket.Size);
-            var data = new byte[60];
-            Marshal.StructureToPtr(packet, ptr, false);
-            Marshal.Copy(ptr, data, 0, CommandPacket.Size);
-            Marshal.FreeHGlobal(ptr);
-
-            var result = HidDevices.Enumerate(0x16d0, 0x0d5a, 0x0d5f, 0x0d60, 0x0d61).Aggregate(false, (a, b) =>
-            {
-                using (b)
-                {
-                    return a | b.Write(data);
-                }
-            });
-
-            return result;
-        }
+        return result;
     }
 }

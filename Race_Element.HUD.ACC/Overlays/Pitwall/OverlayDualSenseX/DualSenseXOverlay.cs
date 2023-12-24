@@ -11,124 +11,123 @@ using System.Text;
 using System.Threading;
 using static RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX.DualSenseXResources;
 
-namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
+namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX;
+
+[Overlay(Name = "DualSense X",
+    Description = "Adds active triggers for the DualSense 5 controller using DSX on steam.\n See Guide in the Discord of Race Element for instructions.",
+    OverlayCategory = OverlayCategory.Inputs,
+    OverlayType = OverlayType.Pitwall)]
+internal sealed class DualSenseXOverlay : AbstractOverlay
 {
-    [Overlay(Name = "DualSense X",
-        Description = "Adds active triggers for the DualSense 5 controller using DSX on steam.\n See Guide in the Discord of Race Element for instructions.",
-        OverlayCategory = OverlayCategory.Inputs,
-        OverlayType = OverlayType.Pitwall)]
-    internal sealed class DualSenseXOverlay : AbstractOverlay
+    private readonly DualSenseXConfiguration _config = new();
+
+    private UdpClient _client;
+    private IPEndPoint _endPoint;
+    private DateTime _timeSent;
+
+    /// <summary>
+    /// This is set to true when the preview data is set up, avoids any connection as long as the overlay is not running but just rendering a preview.
+    /// </summary>
+    private bool IsRenderingPreview = false;
+
+    public DualSenseXOverlay(Rectangle rectangle) : base(rectangle, "DualSense X")
     {
-        private readonly DualSenseXConfiguration _config = new();
+        this.Width = 1; this.Height = 1;
+        RefreshRateHz = 70;
+    }
 
-        private UdpClient _client;
-        private IPEndPoint _endPoint;
-        private DateTime _timeSent;
+    public override void SetupPreviewData() => IsRenderingPreview = true;
 
-        /// <summary>
-        /// This is set to true when the preview data is set up, avoids any connection as long as the overlay is not running but just rendering a preview.
-        /// </summary>
-        private bool IsRenderingPreview = false;
+    public override void BeforeStop()
+    {
+        _client?.Close();
+        _client?.Dispose();
+    }
 
-        public DualSenseXOverlay(Rectangle rectangle) : base(rectangle, "DualSense X")
+    public override bool ShouldRender() => !IsRenderingPreview;
+
+    public override void Render(Graphics g)
+    {
+        if (IsRenderingPreview) return;
+        if (_client == null)
         {
-            this.Width = 1; this.Height = 1;
-            RefreshRateHz = 70;
+            CreateEndPoint();
+            SetLighting();
         }
 
-        public override void SetupPreviewData() => IsRenderingPreview = true;
-
-        public override void BeforeStop()
+        Packet tcPacket = TriggerHaptics.HandleAcceleration(pagePhysics, _config.ThrottleHaptics);
+        if (tcPacket != null)
         {
-            _client?.Close();
-            _client?.Dispose();
+            Send(tcPacket);
+            //ServerResponse response = Receive();
+            //HandleResponse(response);
         }
 
-        public override bool ShouldRender() => !IsRenderingPreview;
-
-        public override void Render(Graphics g)
+        Packet absPacket = TriggerHaptics.HandleBraking(pagePhysics, _config.BrakeHaptics);
+        if (absPacket != null)
         {
-            if (IsRenderingPreview) return;
-            if (_client == null)
-            {
-                CreateEndPoint();
-                SetLighting();
-            }
+            Send(absPacket);
+            //ServerResponse response = Receive();
+            //HandleResponse(response);
+        }
+    }
 
-            Packet tcPacket = TriggerHaptics.HandleAcceleration(pagePhysics, _config.ThrottleHaptics);
-            if (tcPacket != null)
-            {
-                Send(tcPacket);
-                //ServerResponse response = Receive();
-                //HandleResponse(response);
-            }
+    private void SetLighting()
+    {
+        Debug.WriteLine("Changing RGB");
+        Packet p = new();
+        int controllerIndex = 0;
 
-            Packet absPacket = TriggerHaptics.HandleBraking(pagePhysics, _config.BrakeHaptics);
-            if (absPacket != null)
-            {
-                Send(absPacket);
-                //ServerResponse response = Receive();
-                //HandleResponse(response);
-            }
+        p.instructions = new Instruction[1];  // send only 1 instruction
+        p.instructions[0].type = InstructionType.RGBUpdate;
+        p.instructions[0].parameters = new object[] { controllerIndex, 255, 69, 0 };
+
+        Send(p);
+        ServerResponse lightingReponse = Receive();
+        HandleResponse(lightingReponse);
+    }
+
+    private void CreateEndPoint()
+    {
+        _client = new UdpClient();
+        _endPoint = new IPEndPoint(Triggers.localhost, _config.UDP.Port);
+    }
+
+    private void Send(Packet data)
+    {
+        var RequestData = Encoding.ASCII.GetBytes(Triggers.PacketToJson(data));
+        _client.Send(RequestData, RequestData.Length, _endPoint);
+        _timeSent = DateTime.Now;
+    }
+
+    private ServerResponse Receive()
+    {
+        byte[] bytesReceivedFromServer = _client.Receive(ref _endPoint);
+
+        if (bytesReceivedFromServer.Length > 0)
+        {
+            ServerResponse ServerResponseJson = JsonConvert.DeserializeObject<ServerResponse>($"{Encoding.ASCII.GetString(bytesReceivedFromServer, 0, bytesReceivedFromServer.Length)}");
+            return ServerResponseJson;
         }
 
-        private void SetLighting()
+        return null;
+    }
+
+    private void HandleResponse(ServerResponse response)
+    {
+        if (response != null)
         {
-            Debug.WriteLine("Changing RGB");
-            Packet p = new();
-            int controllerIndex = 0;
+            Debug.WriteLine("===================================================================");
 
-            p.instructions = new Instruction[1];  // send only 1 instruction
-            p.instructions[0].type = InstructionType.RGBUpdate;
-            p.instructions[0].parameters = new object[] { controllerIndex, 255, 69, 0 };
+            Debug.WriteLine($"Status: {response.Status}");
+            DateTime CurrentTime = DateTime.Now;
+            TimeSpan Timespan = CurrentTime - _timeSent;
+            // First send shows high Milliseconds response time for some reason
+            Debug.WriteLine($"Time Received: {response.TimeReceived}, took: {Timespan.TotalMilliseconds} to receive response from DSX");
+            Debug.WriteLine($"isControllerConnected: {response.isControllerConnected}");
+            Debug.WriteLine($"BatteryLevel: {response.BatteryLevel}");
 
-            Send(p);
-            ServerResponse lightingReponse = Receive();
-            HandleResponse(lightingReponse);
-        }
-
-        private void CreateEndPoint()
-        {
-            _client = new UdpClient();
-            _endPoint = new IPEndPoint(Triggers.localhost, _config.UDP.Port);
-        }
-
-        private void Send(Packet data)
-        {
-            var RequestData = Encoding.ASCII.GetBytes(Triggers.PacketToJson(data));
-            _client.Send(RequestData, RequestData.Length, _endPoint);
-            _timeSent = DateTime.Now;
-        }
-
-        private ServerResponse Receive()
-        {
-            byte[] bytesReceivedFromServer = _client.Receive(ref _endPoint);
-
-            if (bytesReceivedFromServer.Length > 0)
-            {
-                ServerResponse ServerResponseJson = JsonConvert.DeserializeObject<ServerResponse>($"{Encoding.ASCII.GetString(bytesReceivedFromServer, 0, bytesReceivedFromServer.Length)}");
-                return ServerResponseJson;
-            }
-
-            return null;
-        }
-
-        private void HandleResponse(ServerResponse response)
-        {
-            if (response != null)
-            {
-                Debug.WriteLine("===================================================================");
-
-                Debug.WriteLine($"Status: {response.Status}");
-                DateTime CurrentTime = DateTime.Now;
-                TimeSpan Timespan = CurrentTime - _timeSent;
-                // First send shows high Milliseconds response time for some reason
-                Debug.WriteLine($"Time Received: {response.TimeReceived}, took: {Timespan.TotalMilliseconds} to receive response from DSX");
-                Debug.WriteLine($"isControllerConnected: {response.isControllerConnected}");
-                Debug.WriteLine($"BatteryLevel: {response.BatteryLevel}");
-
-                Debug.WriteLine("===================================================================\n");
-            }
+            Debug.WriteLine("===================================================================\n");
         }
     }
 }

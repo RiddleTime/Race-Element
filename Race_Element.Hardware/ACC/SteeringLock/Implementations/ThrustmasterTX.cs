@@ -1,16 +1,15 @@
 ﻿using System;
 
-namespace RaceElement.Hardware.ACC.SteeringLock.Implementations
+namespace RaceElement.Hardware.ACC.SteeringLock.Implementations;
+
+internal class ThrustmasterTX : ThrustmasterT500
 {
-    internal class ThrustmasterTX : ThrustmasterT500
+    public override string ControllerName => "Thrustmaster TX";
+
+    public override bool Test(string productGuid)
     {
-        public override string ControllerName => "Thrustmaster TX";
-
-        public override bool Test(string productGuid)
-        {
-            return string.Equals(productGuid, "B669044F-0000-0000-0000-504944564944", StringComparison.OrdinalIgnoreCase);
-        }
-
-        protected override int ProductId => 0xb669;
+        return string.Equals(productGuid, "B669044F-0000-0000-0000-504944564944", StringComparison.OrdinalIgnoreCase);
     }
+
+    protected override int ProductId => 0xb669;
 }

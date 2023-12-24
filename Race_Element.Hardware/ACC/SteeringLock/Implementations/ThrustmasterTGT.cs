@@ -1,14 +1,13 @@
 using System;
 
-namespace RaceElement.Hardware.ACC.SteeringLock.Implementations
-{
-    internal class ThrustmasterTGT : ThrustmasterT500 {
-        public override string ControllerName => "Thrustmaster T-GT";
+namespace RaceElement.Hardware.ACC.SteeringLock.Implementations;
 
-        public override bool Test(string productGuid) {
-            return string.Equals(productGuid, "B684044F-0000-0000-0000-504944564944", StringComparison.OrdinalIgnoreCase);
-        }
+internal class ThrustmasterTGT : ThrustmasterT500 {
+    public override string ControllerName => "Thrustmaster T-GT";
 
-        protected override int ProductId => 0xb684;
+    public override bool Test(string productGuid) {
+        return string.Equals(productGuid, "B684044F-0000-0000-0000-504944564944", StringComparison.OrdinalIgnoreCase);
     }
+
+    protected override int ProductId => 0xb684;
 }

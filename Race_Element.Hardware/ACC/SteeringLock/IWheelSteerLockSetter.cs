@@ -1,13 +1,12 @@
-﻿namespace RaceElement.Hardware.ACC.SteeringLock
+﻿namespace RaceElement.Hardware.ACC.SteeringLock;
+
+internal interface IWheelSteerLockSetter
 {
-    internal interface IWheelSteerLockSetter
-    {
-        string ControllerName { get; }
+    string ControllerName { get; }
 
-        bool Test(string productGuid);
-        bool Apply(int angle, bool isReset, out int appliedValue);
+    bool Test(string productGuid);
+    bool Apply(int angle, bool isReset, out int appliedValue);
 
-        int MaximumSteerLock { get; }
-        int MinimumSteerLock { get; }
-    }
+    int MaximumSteerLock { get; }
+    int MinimumSteerLock { get; }
 }
