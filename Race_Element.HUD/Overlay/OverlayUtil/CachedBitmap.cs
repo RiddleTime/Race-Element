@@ -86,7 +86,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil
 
         public void Draw(Graphics g, int x, int y, int width, int height)
         {
-            if (_bitmap == null)
+            if (g == null || _bitmap == null)
                 return;
 
             lock (_bitmap)
