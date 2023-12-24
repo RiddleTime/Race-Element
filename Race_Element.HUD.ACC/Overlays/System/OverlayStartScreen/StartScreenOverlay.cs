@@ -17,7 +17,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
 #endif
     public sealed class StartScreenOverlay : AbstractOverlay
     {
-        public string Version { get; set; } = "0.0.0.0";
+        public string Version { get; init; } = "0.0.0.0";
 
         private CachedBitmap _cachedBackground;
         private CachedBitmap _cachedText;
