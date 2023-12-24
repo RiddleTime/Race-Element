@@ -70,7 +70,7 @@ Description = "(BETA) A table representing a leaderboard.")]
             _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 18), (int)(font.Size * 9), (int)(font.Size * 8), (int)(font.Size * 30) });
 
             this.Width = 650;
-            this.Height = 900;
+            this.Height = 500;
         }
 
         private void Instance_WidthChanged(object sender, bool e)
