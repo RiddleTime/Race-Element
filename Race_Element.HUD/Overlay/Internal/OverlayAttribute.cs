@@ -2,9 +2,10 @@
 
 namespace RaceElement.HUD.Overlay.Internal;
 
+[AttributeUsage(AttributeTargets.Class)]
 public class OverlayAttribute : Attribute
 {
-    public string Name { get; set; }
+    public required string Name { get; set; }
     public OverlayType OverlayType { get; set; }
     public OverlayCategory OverlayCategory { get; set; } = OverlayCategory.All;
 
