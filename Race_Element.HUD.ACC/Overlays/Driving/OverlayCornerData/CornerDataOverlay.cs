@@ -45,8 +45,8 @@ internal sealed class CornerDataOverlay : AbstractOverlay
     public CornerDataOverlay(Rectangle rectangle) : base(rectangle, "Corner Data")
     {
         RefreshRateHz = 2;
-        _cornerDatas = new List<CornerData>();
-        _bestLapCorners = new Dictionary<int, CornerData>();
+        _cornerDatas = [];
+        _bestLapCorners = [];
     }
 
     public override void SetupPreviewData()
@@ -211,8 +211,8 @@ internal sealed class CornerDataOverlay : AbstractOverlay
             {
                 isInCorner = true;
 
-                List<string> columns = new();
-                List<Color> colors = new();
+                List<string> columns = [];
+                List<Color> colors = [];
 
                 // add delta column
                 int delta = -(_currentCorner.EntryDeltaMilliseconds - pageGraphics.DeltaLapTimeMillis);
@@ -262,8 +262,8 @@ internal sealed class CornerDataOverlay : AbstractOverlay
 
         foreach (var corner in _cornerDatas.Skip(_cornerDatas.Count - _config.Table.CornerAmount).Reverse().Take(isInCorner ? _config.Table.CornerAmount - 1 : _config.Table.CornerAmount))
         {
-            List<string> columns = new();
-            List<Color> colors = new();
+            List<string> columns = [];
+            List<Color> colors = [];
 
             // add delta column
             if (_bestLapCorners.Count == _currentTrack.CornerNames.Count)
@@ -365,8 +365,8 @@ internal sealed class CornerDataOverlay : AbstractOverlay
 
     private void AddHeaderRow()
     {
-        List<string> headerColumns = new() { "Delta" };
-        List<Color> headerColours = new() { Color.White };
+        List<string> headerColumns = ["Delta"];
+        List<Color> headerColours = [Color.White];
 
         if (_config.Data.MinimumSpeed)
         {
