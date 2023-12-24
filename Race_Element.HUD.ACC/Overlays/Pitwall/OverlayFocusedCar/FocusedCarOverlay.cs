@@ -13,7 +13,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayFocusedCar
         OverlayType = OverlayType.Pitwall, Version = 1.00)]
     internal class FocusedCarOverlay : AbstractOverlay
     {
-        private FocusedCarConfig _config = new FocusedCarConfig();
+        private FocusedCarConfig _config = new();
         private class FocusedCarConfig : OverlayConfiguration
         {
             public FocusedCarConfig()
@@ -32,7 +32,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayFocusedCar
         private float minX = float.MaxValue, maxX = float.MinValue;
         private float minY = float.MaxValue, maxY = float.MinValue;
 
-        private LinkedList<PointF> _trajectory = new LinkedList<PointF>();
+        private LinkedList<PointF> _trajectory = new();
         private int lastFocused = -1;
 
         public override void Render(Graphics g)
@@ -105,14 +105,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayFocusedCar
                     x.Y /= maxSize;
                     return new PointF(halfWidth + x.X * halfWidth, halfHeight + x.Y * halfHeight);
                 }).ToArray();
-                GraphicsPath path = new GraphicsPath(FillMode.Winding);
+                GraphicsPath path = new(FillMode.Winding);
                 path.AddLines(traj);
 
-                Matrix transformMatrix = new Matrix();
+                Matrix transformMatrix = new();
                 transformMatrix.RotateAt(-90, new PointF(halfWidth, halfHeight));
                 path.Transform(transformMatrix);
 
-                Pen pen = new Pen(Color.OrangeRed, 2f);
+                Pen pen = new(Color.OrangeRed, 2f);
                 g.SmoothingMode = SmoothingMode.AntiAlias;
                 g.DrawPath(pen, path);
 

@@ -9,7 +9,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayRaceInfo
     [Overlay(Name = "Race Info", Description = "(BETA) Provides information for the current race session.", OverlayType = OverlayType.Drive, Version = 1.00)]
     internal class RaceInfoOverlay : AbstractOverlay
     {
-        private readonly RaceInfoConfig _config = new RaceInfoConfig();
+        private readonly RaceInfoConfig _config = new();
         private class RaceInfoConfig : OverlayConfiguration
         {
             [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
@@ -29,7 +29,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayRaceInfo
             }
         }
 
-        private readonly InfoPanel _panel = new InfoPanel(10, 230);
+        private readonly InfoPanel _panel = new(10, 230);
 
         public RaceInfoOverlay(Rectangle rectangle) : base(rectangle, "Race Info")
         {

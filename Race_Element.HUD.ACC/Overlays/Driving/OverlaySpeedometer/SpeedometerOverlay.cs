@@ -11,7 +11,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpeedometer
     [Overlay(Name = "Speedometer", Description = "Shows a speedometer", Version = 1.00, OverlayType = OverlayType.Drive)]
     internal sealed class SpeedometerOverlay : AbstractOverlay
     {
-        private readonly SpeedometerConfiguration _config = new SpeedometerConfiguration();
+        private readonly SpeedometerConfiguration _config = new();
         private class SpeedometerConfiguration : OverlayConfiguration
         {
             [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]

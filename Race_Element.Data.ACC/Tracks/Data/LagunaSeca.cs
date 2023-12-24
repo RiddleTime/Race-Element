@@ -7,14 +7,14 @@ namespace ACCManager.Data.ACC.Tracks.Data
 {
     internal class LagunaSeca : AbstractTrackData
     {
-        public override Guid Guid => new Guid("0c8d198c-608f-4beb-96f5-5eafb5d3ba6b");
+        public override Guid Guid => new("0c8d198c-608f-4beb-96f5-5eafb5d3ba6b");
         public override string GameName => "Laguna_Seca";
         public override string FullName => "WeatherTech Raceway Laguna Seca";
         public override int TrackLength => 3602;
 
-        public override List<float> Sectors => new List<float>() { 0.25f, 0.63f };
+        public override List<float> Sectors => new() { 0.25f, 0.63f };
 
-        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
         {
             { new FloatRangeStruct(0.00000001f, 0.05178322f), (1, string.Empty)},
             { new FloatRangeStruct(0.09772267f, 0.1708893f), (2, "Andretti Hairpin")},

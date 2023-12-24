@@ -19,7 +19,7 @@ namespace RaceElement.HUD.Overlay.Configuration
 
         private static DirectoryInfo GetOverlayDirectory()
         {
-            DirectoryInfo overlayDir = new DirectoryInfo(FileUtil.RaceElementOverlayPath);
+            DirectoryInfo overlayDir = new(FileUtil.RaceElementOverlayPath);
 
             if (!overlayDir.Exists)
             {
@@ -125,7 +125,7 @@ namespace RaceElement.HUD.Overlay.Configuration
             OverlaySettingsJson settings = null;
             try
             {
-                using (StreamReader reader = new StreamReader(stream))
+                using (StreamReader reader = new(stream))
                 {
                     jsonString = reader.ReadToEnd();
                     jsonString = jsonString.Replace("\0", "");

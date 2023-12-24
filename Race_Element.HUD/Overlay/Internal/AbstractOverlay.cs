@@ -194,7 +194,7 @@ namespace RaceElement.HUD.Overlay.Internal
                 this.hasClosed = false;
                 if (!RequestsDrawItself)
                 {
-                    Thread renderThread = new Thread(() =>
+                    Thread renderThread = new(() =>
                       {
                           double tickRefreshRate = Math.Ceiling(1000 / this.RefreshRateHz);
                           Stopwatch stopwatch = Stopwatch.StartNew();

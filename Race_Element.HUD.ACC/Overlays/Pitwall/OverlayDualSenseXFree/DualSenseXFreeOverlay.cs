@@ -22,7 +22,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseXFree
         OverlayType = OverlayType.Pitwall)]
     internal sealed class DualSenseXFreeOverlay : AbstractOverlay
     {
-        private readonly DualSenseXConfiguration _config = new DualSenseXConfiguration();
+        private readonly DualSenseXConfiguration _config = new();
         private sealed class DualSenseXConfiguration : OverlayConfiguration
         {
             [ConfigGrouping("Haptics", "Adjust the haptics for the left and right trigger.")]
@@ -62,7 +62,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseXFree
         public override void Render(Graphics g)
         {
 
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             if (pagePhysics.Abs > 0)
             {
                 if (!wasAbsOn)

@@ -8,15 +8,15 @@ namespace ACCManager.Data.ACC.Tracks.Data
 {
     internal class Nurburgring : AbstractTrackData
     {
-        public override Guid Guid => new Guid("20200ee1-89c1-4580-86f1-3ded3018e9e3");
+        public override Guid Guid => new("20200ee1-89c1-4580-86f1-3ded3018e9e3");
         public override string GameName => "nurburgring";
         public override string FullName => "Nürburgring";
         public override int TrackLength => 5137;
 
-        public override List<float> Sectors => new List<float>() { 0.451f, 0.858f };
+        public override List<float> Sectors => new() { 0.451f, 0.858f };
 
         // https://www.paradigmshiftracing.com/uploads/4/8/2/6/48261497/nurburgring-map_orig.png
-        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
         {
             { new FloatRangeStruct(0.09318506f, 0.1456866f), (1, "Yohohama Kurve")},
             { new FloatRangeStruct(0.1456867f, 0.184711f), (2, "Mercedes Arena")},

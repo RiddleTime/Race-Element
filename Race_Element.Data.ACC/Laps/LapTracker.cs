@@ -26,8 +26,8 @@ namespace RaceElement.Data.ACC.Tracker.Laps
 
         private int CurrentSector = 0;
 
-        public Dictionary<int, DbLapData> Laps = new Dictionary<int, DbLapData>();
-        public DbLapData CurrentLap = new DbLapData();
+        public Dictionary<int, DbLapData> Laps = new();
+        public DbLapData CurrentLap = new();
 
         public event EventHandler<DbLapData> LapFinished;
 

@@ -158,7 +158,7 @@ namespace RaceElement.Controls
                         stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Rim Base: {GetRimMaterialType(carsRoot.RimMaterialType1)}"));
                         stackPanelLiveryInfo.Children.Add(GetInfoLabel($"Rim Accent: {GetRimMaterialType(carsRoot.RimMaterialType2)}"));
 
-                        DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + customSkinName);
+                        DirectoryInfo customSkinDir = new(FileUtil.LiveriesPath + customSkinName);
                         if (customSkinDir.Exists)
                         {
                             imageGrid.Children.Clear();
@@ -167,7 +167,7 @@ namespace RaceElement.Controls
                             if (decalFiles != null && decalFiles.Length > 0)
                             {
                                 FileInfo decalsFile = decalFiles[0];
-                                System.Windows.Controls.Image imageControl = new System.Windows.Controls.Image()
+                                System.Windows.Controls.Image imageControl = new()
                                 {
                                     Stretch = Stretch.Fill,
                                     Height = 366,
@@ -215,7 +215,7 @@ namespace RaceElement.Controls
                             if (sponsorFiles != null && sponsorFiles.Length > 0)
                             {
                                 FileInfo sponsorsFile = sponsorFiles[0];
-                                System.Windows.Controls.Image imageControl = new System.Windows.Controls.Image() { Stretch = Stretch.UniformToFill, Height = 366, Width = 366 };
+                                System.Windows.Controls.Image imageControl = new() { Stretch = Stretch.UniformToFill, Height = 366, Width = 366 };
                                 imageGrid.Children.Add(imageControl);
                                 LoadPhoto(imageControl, sponsorsFile.FullName);
                                 ThreadPool.QueueUserWorkItem(gc =>
@@ -286,7 +286,7 @@ namespace RaceElement.Controls
         {
             ThreadPool.QueueUserWorkItem(x =>
             {
-                BitmapImage bmi = new BitmapImage();
+                BitmapImage bmi = new();
 
                 try
                 {
@@ -320,7 +320,7 @@ namespace RaceElement.Controls
 
         private Label GetInfoLabel(string text, HorizontalAlignment allignmment = HorizontalAlignment.Left, int size = 13, string toolTip = "")
         {
-            Label label = new Label()
+            Label label = new()
             {
                 Content = text,
                 Style = Resources["MaterialDesignLabel"] as Style,
@@ -334,7 +334,7 @@ namespace RaceElement.Controls
             return label;
         }
 
-        public static readonly Dictionary<int, string> Nationalities = new Dictionary<int, string>()
+        public static readonly Dictionary<int, string> Nationalities = new()
             {
                 {0,"Other" },
                 {49,"Andorra" },
@@ -434,7 +434,7 @@ namespace RaceElement.Controls
         }
 
 
-        private static Dictionary<int, string> RimMaterialTypes = new Dictionary<int, string>()
+        private static Dictionary<int, string> RimMaterialTypes = new()
         {
             {1,"Glossy" },
             {2,"Matte" },
@@ -449,7 +449,7 @@ namespace RaceElement.Controls
             return MaterialType;
         }
 
-        private static Dictionary<int, string> BodyMaterialTypes = new Dictionary<int, string>()
+        private static Dictionary<int, string> BodyMaterialTypes = new()
         {
             {0,"Glossy" },
             {1,"Matte" },

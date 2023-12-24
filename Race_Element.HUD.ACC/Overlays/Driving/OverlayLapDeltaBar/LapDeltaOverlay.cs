@@ -17,7 +17,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDeltaBar
         OverlayCategory = OverlayCategory.Lap)]
     internal class LapDeltaOverlay : AbstractOverlay
     {
-        private readonly LapTimeDeltaConfiguration _config = new LapTimeDeltaConfiguration();
+        private readonly LapTimeDeltaConfiguration _config = new();
 
         private float _deltaStringWidth = -1;
         private readonly Font _font;
@@ -51,21 +51,21 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDeltaBar
                 _cachedBackground = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
                 {
                     Color bgColor = Color.FromArgb(185, 0, 0, 0);
-                    HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightUpwardDiagonal, bgColor, Color.FromArgb(bgColor.A - 50, bgColor));
+                    HatchBrush hatchBrush = new(HatchStyle.LightUpwardDiagonal, bgColor, Color.FromArgb(bgColor.A - 50, bgColor));
                     g.FillRoundedRectangle(hatchBrush, new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), cornerRadius);
                     g.DrawRoundedRectangle(new Pen(Color.Black, 1 * this.Scale), new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), cornerRadius);
                 });
 
                 _cachedPositiveDelta = new CachedBitmap((int)(_config.Bar.Width / 2 * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
                 {
-                    Rectangle rect = new Rectangle(0, 0, (int)(_config.Bar.Width / 2 * this.Scale), (int)(_config.Bar.Height * this.Scale));
+                    Rectangle rect = new(0, 0, (int)(_config.Bar.Width / 2 * this.Scale), (int)(_config.Bar.Height * this.Scale));
                     using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(rect, cornerRadius, 0, 0, cornerRadius);
                     g.FillPath(new SolidBrush(Color.FromArgb(_config.Colors.SlowerOpacity, _config.Colors.SlowerColor)), path);
                 });
 
                 _cachedNegativeDelta = new CachedBitmap((int)(_config.Bar.Width / 2 * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
                 {
-                    Rectangle rect = new Rectangle(0, 0, (int)(_config.Bar.Width / 2 * this.Scale), (int)(_config.Bar.Height * this.Scale));
+                    Rectangle rect = new(0, 0, (int)(_config.Bar.Width / 2 * this.Scale), (int)(_config.Bar.Height * this.Scale));
                     using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(rect, 0, cornerRadius, cornerRadius, 0);
                     g.FillPath(new SolidBrush(Color.FromArgb(_config.Colors.FasterOpacity, _config.Colors.FasterColor)), path);
                 });
@@ -171,7 +171,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDeltaBar
 
         private void DrawTextWithOutline(Graphics g, Color textColor, string text, int x, int y)
         {
-            Rectangle backgroundDimension = new Rectangle((int)(x - _deltaStringWidth / 2), y, (int)(_deltaStringWidth), (int)(_font.Height * 0.9));
+            Rectangle backgroundDimension = new((int)(x - _deltaStringWidth / 2), y, (int)(_deltaStringWidth), (int)(_font.Height * 0.9));
 
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), backgroundDimension, (int)(2 * this.Scale));

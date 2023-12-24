@@ -172,13 +172,13 @@ namespace RaceElement.Data
             SetupIntRange TractionControlCut { get; }
         }
 
-        public static SetupDoubleRange TyrePressuresGT3 = new SetupDoubleRange(20.3, 35, 0.1);
-        public static SetupDoubleRange TyrePressuresGT4 = new SetupDoubleRange(17.0, 35, 0.1);
+        public static SetupDoubleRange TyrePressuresGT3 = new(20.3, 35, 0.1);
+        public static SetupDoubleRange TyrePressuresGT4 = new(17.0, 35, 0.1);
 
-        public static SetupDoubleRange CamberFrontGT3 => new SetupDoubleRange(-4, -1.5, 0.1);
-        public static SetupDoubleRange CamberRearGT3 => new SetupDoubleRange(-3.5, -1, 0.1);
+        public static SetupDoubleRange CamberFrontGT3 => new(-4, -1.5, 0.1);
+        public static SetupDoubleRange CamberRearGT3 => new(-3.5, -1, 0.1);
 
-        public static SetupIntRange BrakeDuctsGT3 => new SetupIntRange(0, 6, 1);
+        public static SetupIntRange BrakeDuctsGT3 => new(0, 6, 1);
 
         public interface IMechanicalSetupChanger
         {

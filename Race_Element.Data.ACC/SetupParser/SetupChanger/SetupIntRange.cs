@@ -28,7 +28,7 @@ namespace RaceElement.Data.SetupRanges
                 return intRange.LUT;
             }
 
-            List<int> collection = new List<int>();
+            List<int> collection = new();
 
             for (int i = intRange.Min; i < intRange.Max + intRange.Increment; i += intRange.Increment)
             {

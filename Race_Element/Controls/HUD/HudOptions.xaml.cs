@@ -272,7 +272,7 @@ namespace RaceElement.Controls
 
             StackPanel configStacker = GetConfigStacker(type);
 
-            Label overlayNameLabel = new Label()
+            Label overlayNameLabel = new()
             {
                 Content = overlayAttribute.Name,
                 FontFamily = FindResource("Conthrax") as FontFamily,
@@ -283,7 +283,7 @@ namespace RaceElement.Controls
                 FontSize = 32,
                 Foreground = Brushes.White
             };
-            TextBlock overlayDescription = new TextBlock()
+            TextBlock overlayDescription = new()
             {
                 Text = overlayAttribute.Description,
                 HorizontalAlignment = HorizontalAlignment.Center,
@@ -292,7 +292,7 @@ namespace RaceElement.Controls
                 FontSize = 13.5,
                 Margin = new Thickness(0, 0, 0, 2),
             };
-            StackPanel stackerOverlayInfo = new StackPanel()
+            StackPanel stackerOverlayInfo = new()
             {
                 Orientation = Orientation.Vertical,
                 Margin = new Thickness(0, 0, 0, 0),
@@ -302,7 +302,7 @@ namespace RaceElement.Controls
             stackerOverlayInfo.Children.Add(overlayNameLabel);
             stackerOverlayInfo.Children.Add(overlayDescription);
 
-            StackPanel activationPanel = new StackPanel()
+            StackPanel activationPanel = new()
             {
                 Orientation = Orientation.Horizontal,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -311,7 +311,7 @@ namespace RaceElement.Controls
                 Name = "activationStacker",
                 Margin = new Thickness(0, 0, 0, 0),
             };
-            ToggleButton toggle = new ToggleButton()
+            ToggleButton toggle = new()
             {
                 Visibility = Visibility.Collapsed,
                 VerticalAlignment = VerticalAlignment.Center
@@ -501,7 +501,7 @@ namespace RaceElement.Controls
 
             foreach (OverlayCategory category in Enum.GetValues(typeof(OverlayCategory)))
             {
-                ComboBoxItem item = new ComboBoxItem()
+                ComboBoxItem item = new()
                 {
                     Content = string.Concat(category.ToString().Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' '),
                     DataContext = category,
@@ -536,7 +536,7 @@ namespace RaceElement.Controls
                     continue;
 
                 double marginTopBottom = 6.5d;
-                ListViewItem listViewItem = new ListViewItem()
+                ListViewItem listViewItem = new()
                 {
                     Content = new TextBlock()
                     {
@@ -591,7 +591,7 @@ namespace RaceElement.Controls
         /// <returns></returns>
         private StackPanel GetConfigStacker(Type overlayType)
         {
-            StackPanel stacker = new StackPanel()
+            StackPanel stacker = new()
             {
                 Margin = new Thickness(10, 0, 0, 0),
                 Orientation = Orientation.Vertical,
@@ -627,7 +627,7 @@ namespace RaceElement.Controls
                 {
                     //Debug.WriteLine($"{type.Name} -  {type.ReflectedType.FullName} - {type.PropertyType.Name}");
 
-                    ListView listView = new ListView()
+                    ListView listView = new()
                     {
                         Width = 430,
                         HorizontalAlignment = HorizontalAlignment.Center,

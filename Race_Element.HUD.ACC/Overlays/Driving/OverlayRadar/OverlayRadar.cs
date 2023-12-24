@@ -21,7 +21,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
     )]
     internal sealed class RadarOverlay : AbstractOverlay
     {
-        private readonly RadarConfiguration _config = new RadarConfiguration();
+        private readonly RadarConfiguration _config = new();
         private sealed class RadarConfiguration : OverlayConfiguration
         {
             public RadarConfiguration() => AllowRescale = true;
@@ -64,7 +64,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
             public float Distance;
         }
 
-        private readonly List<SpottableCar> _spottables = new List<SpottableCar>();
+        private readonly List<SpottableCar> _spottables = new();
 
         private float _playerY;
         private float _playerX;
@@ -77,7 +77,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
         private CachedBitmap _cachedCloseCar;
         private CachedBitmap _cachedNearCar;
 
-        private readonly CarDrawingData _carDrawingData = new CarDrawingData();
+        private readonly CarDrawingData _carDrawingData = new();
         private sealed class CarDrawingData
         {
             public static readonly int CarWidth = 10;
@@ -137,14 +137,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
             int scaledHeight = (int)(Height * Scale);
             _cachedBackground = new CachedBitmap(scaledWidth + 1, scaledHeight + 1, g =>
             {
-                using GraphicsPath gradientPath = new GraphicsPath();
+                using GraphicsPath gradientPath = new();
                 gradientPath.AddEllipse(0, 0, scaledWidth, scaledHeight);
-                using PathGradientBrush pthGrBrush = new PathGradientBrush(gradientPath);
+                using PathGradientBrush pthGrBrush = new(gradientPath);
                 pthGrBrush.CenterColor = Color.FromArgb(172, 0, 0, 0);
                 pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(5, 0, 0, 0) };
                 g.FillRoundedRectangle(pthGrBrush, new Rectangle(0, 0, scaledWidth, scaledHeight), (int)(3 * this.Scale));
 
-                using Pen pen = new Pen(new SolidBrush(Color.FromArgb(160, Color.White)));
+                using Pen pen = new(new SolidBrush(Color.FromArgb(160, Color.White)));
                 pen.DashPattern = new float[] { 2 / this.Scale, 4 / this.Scale };
                 pen.Width = 2f * Scale;
                 g.DrawLine(pen, new PointF(0, scaledHeight / 2), new PointF(scaledWidth, scaledHeight / 2));
@@ -152,7 +152,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
             });
 
 
-            Rectangle carRectangle = new Rectangle(0, 0, (int)Math.Ceiling(_carDrawingData.ScaledCarWidth), (int)Math.Ceiling(_carDrawingData.ScaledCarHeight));
+            Rectangle carRectangle = new(0, 0, (int)Math.Ceiling(_carDrawingData.ScaledCarWidth), (int)Math.Ceiling(_carDrawingData.ScaledCarHeight));
             _cachedLocalCar = new CachedBitmap(carRectangle.Width + 1, carRectangle.Height + 1, g =>
             {
                 g.FillRoundedRectangle(Brushes.LimeGreen, carRectangle, (int)(3 * Scale));
@@ -227,7 +227,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter
                     float newX = (float)(xOffset * Math.Cos(heading) + yOffset * Math.Sin(heading)) * multiplier;
                     float newY = (float)(-xOffset * Math.Sin(heading) + yOffset * Math.Cos(heading)) * multiplier;
 
-                    Rectangle otherCar = new Rectangle((int)(centerX - CarDrawingData.CarWidth / 2f + newX), (int)(centerY - CarDrawingData.CarHeight / 2f + newY), CarDrawingData.CarWidth, CarDrawingData.CarHeight);
+                    Rectangle otherCar = new((int)(centerX - CarDrawingData.CarWidth / 2f + newX), (int)(centerY - CarDrawingData.CarHeight / 2f + newY), CarDrawingData.CarWidth, CarDrawingData.CarHeight);
                     var transform = g.Transform;
                     transform.RotateAt((float)(-(_playerHeading - car.Heading) * 180f / Math.PI), new PointF(otherCar.Left, otherCar.Top));
                     g.Transform = transform;

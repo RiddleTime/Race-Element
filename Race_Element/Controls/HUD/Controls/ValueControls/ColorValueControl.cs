@@ -34,7 +34,7 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
 
 
             // add color picker
-            ColorPicker colorPicker = new ColorPicker()
+            ColorPicker colorPicker = new()
             {
                 HueSliderPosition = Dock.Bottom,
                 Margin = new Thickness(0, 0, 0, -7),

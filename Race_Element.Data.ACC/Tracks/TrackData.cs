@@ -24,7 +24,7 @@ namespace RaceElement.Data.ACC.Tracks
             public abstract List<float> Sectors { get; }
         }
 
-        private static readonly List<AbstractTrackData> _tracks = new List<AbstractTrackData>();
+        private static readonly List<AbstractTrackData> _tracks = new();
         public static List<AbstractTrackData> Tracks
         {
             get

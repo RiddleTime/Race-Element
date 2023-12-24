@@ -40,7 +40,7 @@ namespace RaceElement.HUD.Overlay.Util
         {
             float width = 0;
 
-            CachedBitmap c = new CachedBitmap(1, 1, g =>
+            CachedBitmap c = new(1, 1, g =>
             {
                 width = g.MeasureString(text, font).Width;
             });

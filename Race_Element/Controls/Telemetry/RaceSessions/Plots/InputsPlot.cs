@@ -25,7 +25,7 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
 
         internal WpfPlot Create(Grid outerGrid, Dictionary<long, TelemetryPoint> dict)
         {
-            WpfPlot wpfPlot = new WpfPlot();
+            WpfPlot wpfPlot = new();
 
             PlotUtil.SetDefaultWpfPlotConfiguration(ref wpfPlot);
 

@@ -35,13 +35,13 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaTrace
             {
                 if (config.Chart.GridLines)
                 {
-                    using Pen linePen = new Pen(new SolidBrush(Color.FromArgb(90, Color.White)), 1);
+                    using Pen linePen = new(new SolidBrush(Color.FromArgb(90, Color.White)), 1);
                     for (int i = 1; i <= 9; i++)
                         g.DrawLine(linePen, new Point(0, i * _height / 10), new Point(_width, i * _height / 10));
                 }
 
-                Rectangle graphRect = new Rectangle(0, 0, _width, _height);
-                LinearGradientBrush gradientBrush = new LinearGradientBrush(graphRect, Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical);
+                Rectangle graphRect = new(0, 0, _width, _height);
+                LinearGradientBrush gradientBrush = new(graphRect, Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical);
                 g.FillRoundedRectangle(gradientBrush, graphRect, 3);
                 g.DrawRoundedRectangle(new Pen(Color.FromArgb(196, Color.Black)), graphRect, 3);
             });
@@ -70,8 +70,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaTrace
         {
             if (data1.Count > 0 && data2.Count > 0 && data1.Count == data2.Count)
             {
-                List<Point[]> points = new List<Point[]>();
-                List<Point> subPoints = new List<Point>();
+                List<Point[]> points = new();
+                List<Point> subPoints = new();
 
                 for (int i = 0; i < data1.Count - 1; i++)
                 {
@@ -122,7 +122,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaTrace
                         if (!subList.Any())
                             continue;
 
-                        using GraphicsPath path = new GraphicsPath();
+                        using GraphicsPath path = new();
                         path.AddLines(subList);
                         g.DrawPath(pen, path);
                         path?.Dispose();
@@ -136,10 +136,10 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaTrace
 
             if (Data.Count > 0)
             {
-                List<Point[]> points = new List<Point[]>();
+                List<Point[]> points = new();
                 lock (Data)
                 {
-                    List<Point> subList = new List<Point>();
+                    List<Point> subList = new();
 
                     float previous = 0;
                     for (int i = 0; i < Data.Count - 1; i++)
@@ -177,7 +177,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaTrace
                         if (!subList.Any())
                             continue;
 
-                        using GraphicsPath path = new GraphicsPath();
+                        using GraphicsPath path = new();
                         path.AddLines(subList);
                         g.DrawPath(pen, path);
                         path?.Dispose();

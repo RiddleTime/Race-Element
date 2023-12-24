@@ -7,14 +7,14 @@ namespace ACCManager.Data.ACC.Tracks.Data
 {
     internal class Hungaroring : AbstractTrackData
     {
-        public override Guid Guid => new Guid("f59e6015-077b-40e0-a822-71104f253ea2");
+        public override Guid Guid => new("f59e6015-077b-40e0-a822-71104f253ea2");
         public override string GameName => "Hungaroring";
         public override string FullName => "Hungaroring";
         public override int TrackLength => 4381;
 
-        public override List<float> Sectors => new List<float>() { 0.397f, 0.748f };
+        public override List<float> Sectors => new() { 0.397f, 0.748f };
 
-        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
         {
             { new FloatRangeStruct(0.117462f, 0.1763413f), (1, string.Empty) },
             { new FloatRangeStruct(0.2342479f, 0.2827142f), (2, string.Empty) },

@@ -7,14 +7,14 @@ namespace ACCManager.Data.ACC.Tracks.Data
 {
     internal class Donington : AbstractTrackData
     {
-        public override Guid Guid => new Guid("e93925e9-16c8-442a-bea3-ae449d2e04be");
+        public override Guid Guid => new("e93925e9-16c8-442a-bea3-ae449d2e04be");
         public override string GameName => "donington";
         public override string FullName => "Donington Park";
         public override int TrackLength => 4020;
 
-        public override List<float> Sectors => new List<float>() { 0.233f, 0.668f };
+        public override List<float> Sectors => new() { 0.233f, 0.668f };
 
-        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
         {
             { new FloatRangeStruct(0.0772981f, 0.1404632f), (1, "Redgate") },
             { new FloatRangeStruct(0.1477933f, 0.1860932f), (2, "Hollywood") },

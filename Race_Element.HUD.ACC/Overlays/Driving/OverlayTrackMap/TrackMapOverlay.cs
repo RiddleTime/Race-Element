@@ -21,7 +21,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackMap
 #endif
     internal sealed class TrackMapOverlay : AbstractOverlay
     {
-        private readonly TrackMapConfiguration _config = new TrackMapConfiguration();
+        private readonly TrackMapConfiguration _config = new();
         private class TrackMapConfiguration : OverlayConfiguration
         {
 

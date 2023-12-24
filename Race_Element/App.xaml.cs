@@ -65,7 +65,7 @@ namespace RaceElement
                     StartMinimized = true;
             }
 
-            DirectoryInfo internalPath = new DirectoryInfo(FileUtil.RaceElementInternalPath);
+            DirectoryInfo internalPath = new(FileUtil.RaceElementInternalPath);
             if (!internalPath.Exists) internalPath.Create();
             ProfileOptimization.SetProfileRoot(FileUtil.RaceElementInternalPath);
             ProfileOptimization.StartProfile("RaceElementProfile");

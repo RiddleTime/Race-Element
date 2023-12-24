@@ -45,7 +45,7 @@ namespace RaceElement.Controls
 
             try
             {
-                DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + ToBeDeleted.CarsRoot.CustomSkinName);
+                DirectoryInfo customSkinDir = new(FileUtil.LiveriesPath + ToBeDeleted.CarsRoot.CustomSkinName);
                 if (customSkinDir.Exists)
                     customSkinDir.Delete(true);
 

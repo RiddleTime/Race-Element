@@ -10,9 +10,9 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
     {
         public int TraceCount = 300;
 
-        public LinkedList<int> Throttle = new LinkedList<int>();
-        public LinkedList<int> Brake = new LinkedList<int>();
-        public LinkedList<int> Steering = new LinkedList<int>();
+        public LinkedList<int> Throttle = new();
+        public LinkedList<int> Brake = new();
+        public LinkedList<int> Steering = new();
 
         public InputDataCollector(int traceCount)
         {

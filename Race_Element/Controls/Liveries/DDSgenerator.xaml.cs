@@ -20,7 +20,7 @@ namespace RaceElement.Controls
     {
         internal static DDSgenerator Instance;
 
-        private List<LiveryTreeCar> liveriesWithoutDDS = new List<LiveryTreeCar>();
+        private List<LiveryTreeCar> liveriesWithoutDDS = new();
         private bool Generating = false;
 
         public DDSgenerator()
@@ -132,9 +132,9 @@ namespace RaceElement.Controls
             todoList.Items.Clear();
             liveriesWithoutDDS.Clear();
 
-            DirectoryInfo customsCarsDirectory = new DirectoryInfo(FileUtil.CarsPath);
+            DirectoryInfo customsCarsDirectory = new(FileUtil.CarsPath);
 
-            List<LiveryTreeCar> liveryTreeCars = new List<LiveryTreeCar>();
+            List<LiveryTreeCar> liveryTreeCars = new();
 
             foreach (var carsFile in customsCarsDirectory.GetFiles())
             {
@@ -144,7 +144,7 @@ namespace RaceElement.Controls
 
                     if (carsRoot != null)
                     {
-                        LiveryTreeCar treeCar = new LiveryTreeCar() { CarsFile = carsFile, CarsRoot = carsRoot };
+                        LiveryTreeCar treeCar = new() { CarsFile = carsFile, CarsRoot = carsRoot };
 
                         if (treeCar.CarsRoot.CustomSkinName != null && treeCar.CarsRoot.TeamName != null)
                             if (!treeCar.CarsRoot.CustomSkinName.Equals(string.Empty)
@@ -177,7 +177,7 @@ namespace RaceElement.Controls
 
             liveryTreeCars.ForEach(x =>
             {
-                ListBoxItem listBoxItem = new ListBoxItem()
+                ListBoxItem listBoxItem = new()
                 {
                     AllowDrop = true,
                     Content = $"{x.CarsRoot.TeamName} / {x.CarsRoot.CustomSkinName}",

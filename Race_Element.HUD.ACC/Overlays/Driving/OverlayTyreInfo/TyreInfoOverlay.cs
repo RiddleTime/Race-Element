@@ -16,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
         Description = "Shows tyre temperatures and more. Put it on top of vanilla in-game tyre hud.")]
     internal sealed class TyreInfoOverlay : AbstractOverlay
     {
-        private readonly TyreInfoConfig _config = new TyreInfoConfig();
+        private readonly TyreInfoConfig _config = new();
         private sealed class TyreInfoConfig : OverlayConfiguration
         {
             [ConfigGrouping("Info", "Show additional information about the condition of the tyres.")]
@@ -99,7 +99,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
         {
             if (this.IsRepositioning)
             {
-                using Pen repositionLinePen = new Pen(Brushes.Red, 2 * this.Scale);
+                using Pen repositionLinePen = new(Brushes.Red, 2 * this.Scale);
                 g.DrawLine(repositionLinePen, new Point(InitialWidth / 2, 0), new Point(InitialWidth / 2, InitialHeight));
                 g.DrawLine(repositionLinePen, new Point(0, InitialHeight / 2), new Point(InitialWidth, InitialHeight / 2));
             }
@@ -201,7 +201,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
             string text = $"{temp:F1}°";
             int textWidth = (int)g.MeasureString(text, _fontFamily).Width;
 
-            Rectangle backgroundDimension = new Rectangle(x - textWidth / 2, y, textWidth, _fontFamily.Height);
+            Rectangle backgroundDimension = new(x - textWidth / 2, y, textWidth, _fontFamily.Height);
 
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), backgroundDimension, 2);
 
@@ -327,7 +327,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo
         private void DrawTextWithOutline(Graphics g, Color textColor, string text, int x, int y)
         {
             int textWidth = (int)g.MeasureString(text, _fontFamilyLarge).Width;
-            Rectangle backgroundDimension = new Rectangle(x - textWidth / 2, y, (int)textWidth, _fontFamilyLarge.Height);
+            Rectangle backgroundDimension = new(x - textWidth / 2, y, (int)textWidth, _fontFamilyLarge.Height);
             g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 0, 0, 0)), backgroundDimension, 2);
             g.DrawRoundedRectangle(new Pen(Color.FromArgb(135, 0, 0, 0), 0.6f * this.Scale), backgroundDimension, 2);
             g.DrawStringWithShadow(text, _fontFamilyLarge, textColor, new PointF(x - textWidth / 2, y + _fontFamilyLarge.GetHeight(g) / 11f), 1.3f * this.Scale);

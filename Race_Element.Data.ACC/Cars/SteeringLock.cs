@@ -4,7 +4,7 @@ namespace RaceElement.Data.ACC.Cars
 {
     public class SteeringLock
     {
-        private static readonly Dictionary<string, int> _steeringLocks = new Dictionary<string, int>()
+        private static readonly Dictionary<string, int> _steeringLocks = new()
         {
             // CUP
             {"porsche_991ii_gt3_cup", 800},

@@ -25,7 +25,7 @@ namespace RaceElement.Controls.AccHudSettingsNS
     /// </summary>
     public partial class AccHudSettings : UserControl
     {
-        private readonly HudSettingsService hudSettings = new HudSettingsService();
+        private readonly HudSettingsService hudSettings = new();
 
 
         public AccHudSettings()

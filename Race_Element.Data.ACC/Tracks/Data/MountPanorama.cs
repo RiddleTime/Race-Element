@@ -7,14 +7,14 @@ namespace ACCManager.Data.ACC.Tracks.Data
 {
     internal class MountPanorama : AbstractTrackData
     {
-        public override Guid Guid => new Guid("c054299c-0e16-4094-8e76-a9a4da399268");
+        public override Guid Guid => new("c054299c-0e16-4094-8e76-a9a4da399268");
         public override string GameName => "mount_panorama";
         public override string FullName => "Mount Panorama Circuit";
         public override int TrackLength => 6213;
 
-        public override List<float> Sectors => new List<float>() { 0.313f, 0.760f };
+        public override List<float> Sectors => new() { 0.313f, 0.760f };
 
-        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
         {
             { new FloatRangeStruct(0.04306454f, 0.07633644f), (1, "Hell Corner")},
             { new FloatRangeStruct(0.2216722f, 0.2671284f), (2, "Quarry")},

@@ -8,14 +8,14 @@ namespace ACCManager.Data.ACC.Tracks.Data
 {
     internal class Valencia : AbstractTrackData
     {
-        public override Guid Guid => new Guid("51bcd9f5-5048-4f98-aff6-ec853e77de5a");
+        public override Guid Guid => new("51bcd9f5-5048-4f98-aff6-ec853e77de5a");
         public override string GameName => "Valencia";
         public override string FullName => "Circuit Ricardo Tormo Valencia";
         public override int TrackLength => 4005;
 
-        public override List<float> Sectors => new List<float>() { 0.3785f, 0.7245f };
+        public override List<float> Sectors => new() { 0.3785f, 0.7245f };
 
-        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
         {
            { new FloatRangeStruct(0.0993231f, 0.1736007f), (1, "Jorge Martinez Aspar")},
            { new FloatRangeStruct(0.2048207f, 0.2503794f), (2, "Mick Doohan")},

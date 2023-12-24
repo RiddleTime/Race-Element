@@ -28,9 +28,9 @@ namespace RaceElement.Controls
     {
         public static LiveryBrowser Instance;
 
-        private List<string> expandedCarHeaders = new List<string>();
-        private List<string> expandedTeamHeaders = new List<string>();
-        private List<string> expandedTagHeaders = new List<string>();
+        private List<string> expandedCarHeaders = new();
+        private List<string> expandedTeamHeaders = new();
+        private List<string> expandedTagHeaders = new();
 
         public LiveryBrowser()
         {
@@ -164,9 +164,9 @@ namespace RaceElement.Controls
                     }
                     liveriesTreeViewTags.Items.Clear();
 
-                    DirectoryInfo customsCarsDirectory = new DirectoryInfo(FileUtil.CarsPath);
+                    DirectoryInfo customsCarsDirectory = new(FileUtil.CarsPath);
 
-                    List<LiveryTreeCar> liveryTreeCars = new List<LiveryTreeCar>();
+                    List<LiveryTreeCar> liveryTreeCars = new();
 
                     foreach (var carsFile in customsCarsDirectory.GetFiles())
                     {
@@ -176,7 +176,7 @@ namespace RaceElement.Controls
 
                             if (carsRoot != null)
                             {
-                                LiveryTreeCar treeCar = new LiveryTreeCar() { CarsFile = carsFile, CarsRoot = carsRoot };
+                                LiveryTreeCar treeCar = new() { CarsFile = carsFile, CarsRoot = carsRoot };
 
                                 if (treeCar.CarsRoot.CustomSkinName != null /*&& treeCar.carsRoot.teamName != null*/)
                                     if (!treeCar.CarsRoot.CustomSkinName.Equals(string.Empty)
@@ -209,7 +209,7 @@ namespace RaceElement.Controls
 
         private void FillTreeViewModels(IEnumerable<IGrouping<string, LiveryTreeCar>> liveriesGroupedByModel)
         {
-            List<TreeViewItem> carsTreeViews = new List<TreeViewItem>();
+            List<TreeViewItem> carsTreeViews = new();
 
             foreach (IGrouping<string, LiveryTreeCar> tItem in liveriesGroupedByModel)
             {
@@ -219,7 +219,7 @@ namespace RaceElement.Controls
                 {
                     treeViewTitle += $"  ({groupCount})";
                 }
-                TextBlock teamHeader = new TextBlock()
+                TextBlock teamHeader = new()
                 {
                     Text = treeViewTitle,
                     Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
@@ -227,7 +227,7 @@ namespace RaceElement.Controls
                     Width = liveriesTreeViewTeams.Width - 5,
                     DataContext = tItem.Key
                 };
-                TreeViewItem modelItem = new TreeViewItem()
+                TreeViewItem modelItem = new()
                 {
                     Header = teamHeader,
                     Background = new SolidColorBrush(Color.FromArgb(38, 10, 0, 0)),
@@ -254,14 +254,14 @@ namespace RaceElement.Controls
                 });
                 foreach (LiveryTreeCar car in cars)
                 {
-                    TextBlock skinHeader = new TextBlock()
+                    TextBlock skinHeader = new()
                     {
                         Text = $"{car.CarsRoot.CustomSkinName}",
                         Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style,
                         TextTrimming = TextTrimming.WordEllipsis,
                         Width = liveriesTreeViewTeams.Width - 5
                     };
-                    TreeViewItem skinItem = new TreeViewItem() { Header = skinHeader, DataContext = car };
+                    TreeViewItem skinItem = new() { Header = skinHeader, DataContext = car };
                     skinItem.ContextMenu = GetSkinContextMenu(car, null);
                     skinItem.MouseLeftButtonUp += (s, e) => e.Handled = true;
 
@@ -285,7 +285,7 @@ namespace RaceElement.Controls
 
         private void FillTreeViewTeams(IEnumerable<IGrouping<string, LiveryTreeCar>> liveriesGroupedByTeam)
         {
-            List<TreeViewItem> carsTreeViews = new List<TreeViewItem>();
+            List<TreeViewItem> carsTreeViews = new();
 
             foreach (IGrouping<string, LiveryTreeCar> tItem in liveriesGroupedByTeam)
             {
@@ -295,7 +295,7 @@ namespace RaceElement.Controls
                 {
                     treeViewTitle += $"  ({groupCount})";
                 }
-                TextBlock teamHeader = new TextBlock()
+                TextBlock teamHeader = new()
                 {
                     Text = treeViewTitle,
                     Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
@@ -303,7 +303,7 @@ namespace RaceElement.Controls
                     Width = liveriesTreeViewTeams.Width - 5,
                     DataContext = tItem.Key
                 };
-                TreeViewItem teamItem = new TreeViewItem()
+                TreeViewItem teamItem = new()
                 {
                     Header = teamHeader,
                     Background = new SolidColorBrush(Color.FromArgb(38, 10, 0, 0)),
@@ -331,14 +331,14 @@ namespace RaceElement.Controls
 
                 foreach (LiveryTreeCar car in cars)
                 {
-                    TextBlock skinHeader = new TextBlock()
+                    TextBlock skinHeader = new()
                     {
                         Text = $"{car.CarsRoot.CustomSkinName}",
                         Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style,
                         TextTrimming = TextTrimming.WordEllipsis,
                         Width = liveriesTreeViewTeams.Width - 5
                     };
-                    TreeViewItem skinItem = new TreeViewItem() { Header = skinHeader, DataContext = car };
+                    TreeViewItem skinItem = new() { Header = skinHeader, DataContext = car };
                     skinItem.ContextMenu = GetSkinContextMenu(car, null);
                     skinItem.MouseLeftButtonUp += (s, e) => e.Handled = true;
 
@@ -361,13 +361,13 @@ namespace RaceElement.Controls
 
         private void FillTreeViewTags(List<LiveryTreeCar> allLiveries)
         {
-            List<TreeViewItem> tagTreeItems = new List<TreeViewItem>();
+            List<TreeViewItem> tagTreeItems = new();
 
-            List<LiveryTreeCar> liveriesWithTags = new List<LiveryTreeCar>();
+            List<LiveryTreeCar> liveriesWithTags = new();
 
             LiveryTagging.GetAllTags().ForEach(liveryTag =>
             {
-                List<LiveryTreeCar> tagCars = new List<LiveryTreeCar>();
+                List<LiveryTreeCar> tagCars = new();
                 foreach (LiveryTreeCar car in allLiveries)
                 {
                     if (LiveryTagging.TagContainsCar(liveryTag, car))
@@ -383,7 +383,7 @@ namespace RaceElement.Controls
                     treeViewTitle += $"  ({groupCount})";
                 }
 
-                TextBlock tagHeader = new TextBlock()
+                TextBlock tagHeader = new()
                 {
                     Text = treeViewTitle,
                     Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
@@ -391,7 +391,7 @@ namespace RaceElement.Controls
                     Width = liveriesTreeViewTeams.Width - 5,
                     DataContext = liveryTag.Name
                 };
-                TreeViewItem tagItem = new TreeViewItem()
+                TreeViewItem tagItem = new()
                 {
                     Header = tagHeader,
                     Background = new SolidColorBrush(Color.FromArgb(38, 10, 0, 0)),
@@ -420,14 +420,14 @@ namespace RaceElement.Controls
 
                 foreach (LiveryTreeCar car in tagCars)
                 {
-                    TextBlock skinHeader = new TextBlock()
+                    TextBlock skinHeader = new()
                     {
                         Text = $"{car.CarsRoot.CustomSkinName}",
                         Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style,
                         TextTrimming = TextTrimming.WordEllipsis,
                         Width = liveriesTreeViewTeams.Width - 5
                     };
-                    TreeViewItem skinItem = new TreeViewItem() { Header = skinHeader, DataContext = car };
+                    TreeViewItem skinItem = new() { Header = skinHeader, DataContext = car };
                     skinItem.ContextMenu = GetSkinContextMenu(car, liveryTag);
                     skinItem.MouseLeftButtonUp += (s, e) => e.Handled = true;
                     if (!liveriesWithTags.Contains(car))
@@ -452,7 +452,7 @@ namespace RaceElement.Controls
                 List<LiveryTreeCar> liveriesWithoutTags = allLiveries.Except(liveriesWithTags).ToList();
 
                 string treeViewTitle = $"No Tags ({liveriesWithoutTags.Count})";
-                TextBlock tagHeader = new TextBlock()
+                TextBlock tagHeader = new()
                 {
                     Text = treeViewTitle,
                     Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
@@ -463,7 +463,7 @@ namespace RaceElement.Controls
                 if (liveriesWithoutTags.Count == 0)
                     tagHeader.Background = new SolidColorBrush(Colors.DarkOliveGreen);
 
-                TreeViewItem tagItem = new TreeViewItem()
+                TreeViewItem tagItem = new()
                 {
                     Header = tagHeader,
                     Background = new SolidColorBrush(Color.FromArgb(38, 10, 0, 0)),
@@ -487,14 +487,14 @@ namespace RaceElement.Controls
 
                 foreach (LiveryTreeCar car in liveriesWithoutTags)
                 {
-                    TextBlock skinHeader = new TextBlock()
+                    TextBlock skinHeader = new()
                     {
                         Text = $"{car.CarsRoot.TeamName} / {car.CarsRoot.CustomSkinName}",
                         Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style,
                         TextTrimming = TextTrimming.WordEllipsis,
                         Width = liveriesTreeViewTeams.Width - 5
                     };
-                    TreeViewItem skinItem = new TreeViewItem() { Header = skinHeader, DataContext = car };
+                    TreeViewItem skinItem = new() { Header = skinHeader, DataContext = car };
                     skinItem.ContextMenu = GetSkinContextMenu(car, null);
 
                     if (!liveriesWithTags.Contains(car))
@@ -630,7 +630,7 @@ namespace RaceElement.Controls
                     if (liveryTreeCar.CarsRoot.CustomSkinName == null || liveryTreeCar.CarsRoot.CustomSkinName.Length == 0)
                         return;
 
-                    FileInfo carsJsonFile = new FileInfo($"{liveryTreeCar.CarsFile}");
+                    FileInfo carsJsonFile = new($"{liveryTreeCar.CarsFile}");
                     Process.Start($"explorer", $"/select,{FileUtil.CarsPath}{carsJsonFile.Name}");
                 }
             }
@@ -649,7 +649,7 @@ namespace RaceElement.Controls
                     if (liveryTreeCar.CarsRoot.CustomSkinName == null || liveryTreeCar.CarsRoot.CustomSkinName.Length == 0)
                         return;
 
-                    DirectoryInfo directory = new DirectoryInfo($"{FileUtil.LiveriesPath}{liveryTreeCar.CarsRoot.CustomSkinName}");
+                    DirectoryInfo directory = new($"{FileUtil.LiveriesPath}{liveryTreeCar.CarsRoot.CustomSkinName}");
                     Process.Start("explorer", directory.FullName);
                 }
             }
@@ -699,7 +699,7 @@ namespace RaceElement.Controls
                     MenuItem button = (MenuItem)sender;
 
                     TreeViewItem treeItem = (TreeViewItem)button.CommandParameter;
-                    List<LiveryTreeCar> treeCars = new List<LiveryTreeCar>();
+                    List<LiveryTreeCar> treeCars = new();
 
                     treeItem.Items.OfType<TreeViewItem>().ToList().ForEach(x =>
                     {
@@ -724,7 +724,7 @@ namespace RaceElement.Controls
                     MenuItem button = (MenuItem)sender;
 
                     TreeViewItem treeItem = (TreeViewItem)button.CommandParameter;
-                    List<LiveryTreeCar> treeCars = new List<LiveryTreeCar>();
+                    List<LiveryTreeCar> treeCars = new();
 
                     treeItem.Items.OfType<TreeViewItem>().ToList().ForEach(x =>
                     {
@@ -749,7 +749,7 @@ namespace RaceElement.Controls
                 if (liveryTreeCar.CarsRoot.CustomSkinName == null || liveryTreeCar.CarsRoot.CustomSkinName.Length == 0)
                     return;
 
-                Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+                Microsoft.Win32.SaveFileDialog dlg = new();
 
                 // Set filter for file extension and default file extension 
                 dlg.DefaultExt = ".zip";
@@ -776,14 +776,14 @@ namespace RaceElement.Controls
                         string carsFolder = "Cars\\";
                         zipArchive.AddEntry($"{carsFolder}{liveryTreeCar.CarsFile.Name}", liveryTreeCar.CarsFile);
 
-                        DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + liveryTreeCar.CarsRoot.CustomSkinName);
+                        DirectoryInfo customSkinDir = new(FileUtil.LiveriesPath + liveryTreeCar.CarsRoot.CustomSkinName);
                         if (customSkinDir.Exists)
                         {
 
-                            FileInfo decalsPng = new FileInfo(customSkinDir.FullName + "\\" + "decals.png");
-                            FileInfo decalsJson = new FileInfo(customSkinDir.FullName + "\\" + "decals.json");
-                            FileInfo sponsorsPng = new FileInfo(customSkinDir.FullName + "\\" + "sponsors.png");
-                            FileInfo sponsorsJson = new FileInfo(customSkinDir.FullName + "\\" + "sponsors.json");
+                            FileInfo decalsPng = new(customSkinDir.FullName + "\\" + "decals.png");
+                            FileInfo decalsJson = new(customSkinDir.FullName + "\\" + "decals.json");
+                            FileInfo sponsorsPng = new(customSkinDir.FullName + "\\" + "sponsors.png");
+                            FileInfo sponsorsJson = new(customSkinDir.FullName + "\\" + "sponsors.json");
 
                             if (decalsPng.Exists)
                                 zipArchive.AddEntry($"{liveriesFolder}{decalsPng.Name}", decalsPng);
@@ -794,9 +794,9 @@ namespace RaceElement.Controls
                             if (sponsorsJson.Exists)
                                 zipArchive.AddEntry($"{liveriesFolder}{sponsorsJson.Name}", sponsorsJson);
 
-                            FileInfo decalsDds0 = new FileInfo(customSkinDir.FullName + "\\" + "decals_0.dds");
+                            FileInfo decalsDds0 = new(customSkinDir.FullName + "\\" + "decals_0.dds");
                             //FileInfo decalsDds1 = new FileInfo(customSkinDir.FullName + "\\" + "decals_1.dds");
-                            FileInfo sponsorsDds0 = new FileInfo(customSkinDir.FullName + "\\" + "sponsors_0.dds");
+                            FileInfo sponsorsDds0 = new(customSkinDir.FullName + "\\" + "sponsors_0.dds");
                             //FileInfo sponsorsDds1 = new FileInfo(customSkinDir.FullName + "\\" + "sponsors_1.dds");
 
                             if (decalsDds0.Exists)
@@ -809,7 +809,7 @@ namespace RaceElement.Controls
                             //    zipArchive.AddEntry($"{liveriesFolder}{sponsorsDds1.Name}", sponsorsDds1);
 
 
-                            using (FileStream outputStream = new FileStream(filename, FileMode.Create))
+                            using (FileStream outputStream = new(filename, FileMode.Create))
                             {
                                 zipArchive.SaveTo(outputStream);
                                 MainWindow.Instance.snackbar.MessageQueue.Enqueue($"Livery \"{liveryTreeCar.CarsRoot.TeamName}\" saved as: {filename}");

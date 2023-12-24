@@ -77,7 +77,7 @@ namespace RaceElement.Controls
 
         private void AddTags()
         {
-            List<LiveryTreeCar> selected = new List<LiveryTreeCar>();
+            List<LiveryTreeCar> selected = new();
 
             foreach (var item in lvImportedLiveries.SelectedItems)
             {
@@ -93,7 +93,7 @@ namespace RaceElement.Controls
 
             foreach (LiveryTreeCar car in ImportedLiveries)
             {
-                ListBoxItem listBoxItem = new ListBoxItem() { Content = $"{car.CarsRoot.TeamName} / {car.CarsRoot.CustomSkinName}", DataContext = car };
+                ListBoxItem listBoxItem = new() { Content = $"{car.CarsRoot.TeamName} / {car.CarsRoot.CustomSkinName}", DataContext = car };
                 lvImportedLiveries.Items.Add(listBoxItem);
             }
         }

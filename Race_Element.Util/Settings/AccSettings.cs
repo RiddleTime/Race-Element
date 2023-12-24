@@ -13,7 +13,7 @@ namespace RaceElement.Util.Settings
         public override string Path => FileUtil.RaceElementSettingsPath;
         public override string FileName => "ACC.json";
 
-        public override AccSettingsJson Default() => new AccSettingsJson()
+        public override AccSettingsJson Default() => new()
         {
             UnlistedAccServer = Guid.Empty,
             AutoRecordReplay = false,

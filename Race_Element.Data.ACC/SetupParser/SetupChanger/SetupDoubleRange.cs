@@ -29,7 +29,7 @@ namespace RaceElement.Data.SetupRanges
                 return doubleRange.LUT;
             }
 
-            List<double> collection = new List<double>();
+            List<double> collection = new();
 
             for (double i = doubleRange.Min; i < doubleRange.Max + Math.Round(doubleRange.Increment, 2); i += Math.Round(doubleRange.Increment, 2))
             {

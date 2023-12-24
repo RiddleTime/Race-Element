@@ -24,7 +24,7 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
 
         internal WpfPlot Create(Grid outerGrid, Dictionary<long, TelemetryPoint> dict)
         {
-            WpfPlot wpfPlot = new WpfPlot();
+            WpfPlot wpfPlot = new();
 
             PlotUtil.SetDefaultWpfPlotConfiguration(ref wpfPlot);
 
@@ -160,7 +160,7 @@ namespace RaceElement.Controls.Telemetry.RaceSessions.Plots
                     return points;
 
                 int n = points.Count(), k = 0;
-                List<PointF> H = new List<PointF>(new PointF[2 * n]);
+                List<PointF> H = new(new PointF[2 * n]);
 
                 points.Sort((a, b) =>
                      a.X == b.X ? a.Y.CompareTo(b.Y) : a.X.CompareTo(b.X));

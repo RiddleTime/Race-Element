@@ -34,7 +34,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing
                 if (Font != null)
                 {
                     g.TextContrast = 2;
-                    RectangleF rect = new RectangleF(0, 0, Rectangle.Width, Rectangle.Height);
+                    RectangleF rect = new(0, 0, Rectangle.Width, Rectangle.Height);
                     g.DrawStringWithShadow(text, Font, TextBrush, rect, StringFormat);
                 }
             });

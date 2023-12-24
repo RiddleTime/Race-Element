@@ -13,7 +13,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
         OverlayType = OverlayType.Pitwall)]
     internal sealed class RenderTestOverlay : AbstractOverlay
     {
-        private readonly RenderTestConfiguration _config = new RenderTestConfiguration();
+        private readonly RenderTestConfiguration _config = new();
         private sealed class RenderTestConfiguration : OverlayConfiguration
         {
             [ConfigGrouping("Render", "Higher Is More Heat")]
@@ -54,42 +54,42 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
             int scaledHeight = (int)(Height * Scale);
             _cachedPositiveImage = new CachedBitmap(scaledWidth, scaledHeight, g =>
             {
-                using SolidBrush brushBackground = new SolidBrush(Color.FromArgb(14, 0, 0, 0));
+                using SolidBrush brushBackground = new(Color.FromArgb(14, 0, 0, 0));
                 int boxSize = 16;
-                Rectangle box = new Rectangle(scaledWidth / 2 - boxSize / 2, scaledHeight / 2 - boxSize / 2, boxSize, boxSize);
+                Rectangle box = new(scaledWidth / 2 - boxSize / 2, scaledHeight / 2 - boxSize / 2, boxSize, boxSize);
 
                 g.FillEllipse(brushBackground, box);
 
                 if (_font != null)
                 {
-                    using StringFormat format = new StringFormat()
+                    using StringFormat format = new()
                     {
                         Alignment = StringAlignment.Center,
                         LineAlignment = StringAlignment.Center,
                         Trimming = StringTrimming.EllipsisCharacter,
                     };
-                    using SolidBrush brushForeground = new SolidBrush(Color.FromArgb(185, 255, 69, 0));
+                    using SolidBrush brushForeground = new(Color.FromArgb(185, 255, 69, 0));
                     g.DrawStringWithShadow("+", _font, brushForeground, box, format);
                 }
             });
 
             _cachedNegativeImage = new CachedBitmap(scaledWidth, scaledHeight, g =>
             {
-                using SolidBrush brushBackground = new SolidBrush(Color.FromArgb(14, 0, 0, 0));
+                using SolidBrush brushBackground = new(Color.FromArgb(14, 0, 0, 0));
                 int boxSize = 16;
-                Rectangle box = new Rectangle(scaledWidth / 2 - boxSize / 2, scaledHeight / 2 - boxSize / 2, boxSize, boxSize);
+                Rectangle box = new(scaledWidth / 2 - boxSize / 2, scaledHeight / 2 - boxSize / 2, boxSize, boxSize);
 
                 g.FillEllipse(brushBackground, box);
 
                 if (_font != null)
                 {
-                    using StringFormat format = new StringFormat()
+                    using StringFormat format = new()
                     {
                         Alignment = StringAlignment.Center,
                         LineAlignment = StringAlignment.Center,
                         Trimming = StringTrimming.EllipsisCharacter,
                     };
-                    using SolidBrush brushForeground = new SolidBrush(Color.FromArgb(185, 69, 255, 0));
+                    using SolidBrush brushForeground = new(Color.FromArgb(185, 69, 255, 0));
                     g.DrawStringWithShadow("-", _font, brushForeground, box, format);
                 }
             });
@@ -167,7 +167,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc
 
         private void DrawFpsCounter(Graphics g)
         {
-            Rectangle fpsRect = new Rectangle(0, 0, (int)(120 * this.Scale), _font.Height);
+            Rectangle fpsRect = new(0, 0, (int)(120 * this.Scale), _font.Height);
             g.DrawStringWithShadow($"{_fps:F0}", _font, Brushes.White, fpsRect);
         }
     }

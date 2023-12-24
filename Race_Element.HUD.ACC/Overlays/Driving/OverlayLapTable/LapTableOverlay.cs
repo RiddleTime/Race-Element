@@ -17,7 +17,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
         OverlayCategory = OverlayCategory.Lap)]
     internal sealed class LapTableOverlay : AbstractOverlay
     {
-        private readonly LapTimeTableConfiguration _config = new LapTimeTableConfiguration();
+        private readonly LapTimeTableConfiguration _config = new();
         private GraphicsGrid _graphicsGrid;
         private Font _font;
         private CachedBitmap[] _columnBackgroundsValid;
@@ -38,8 +38,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
         {
             _dataIsPreview = true;
 
-            Dictionary<int, DbLapData> Laps = new Dictionary<int, DbLapData>();
-            Random rand = new Random();
+            Dictionary<int, DbLapData> Laps = new();
+            Random rand = new();
             int maxSectorDeviation = 10000;
             int s1 = 28525 + rand.Next(-maxSectorDeviation, maxSectorDeviation);
             int s2 = 38842 + rand.Next(-maxSectorDeviation, maxSectorDeviation);
@@ -48,7 +48,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
 
             for (int i = startLapIndex; i < _config.Table.Rows + startLapIndex; i++)
             {
-                DbLapData randomData = new DbLapData()
+                DbLapData randomData = new()
                 {
                     Index = i,
                     LapType = Broadcast.LapType.Regular,
@@ -88,48 +88,48 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
             Color colorRed = Color.FromArgb(150, Color.Red);
             Color colorGreen = Color.FromArgb(150, Color.LimeGreen);
             Color colorPurple = Color.FromArgb(150, Color.MediumPurple);
-            using HatchBrush columnBrushDefault = new HatchBrush(HatchStyle.LightUpwardDiagonal, colorDefault, Color.FromArgb(colorDefault.A - 25, colorDefault));
-            using HatchBrush columnBrushRed = new HatchBrush(HatchStyle.LightUpwardDiagonal, colorDefault, Color.FromArgb(colorRed.A - 75, colorRed));
-            using HatchBrush columnBrushGreen = new HatchBrush(HatchStyle.LightUpwardDiagonal, colorDefault, Color.FromArgb(colorGreen.A - 25, colorGreen));
-            using HatchBrush columnBrushPurple = new HatchBrush(HatchStyle.LightUpwardDiagonal, colorDefault, Color.FromArgb(colorPurple.A - 25, colorPurple));
+            using HatchBrush columnBrushDefault = new(HatchStyle.LightUpwardDiagonal, colorDefault, Color.FromArgb(colorDefault.A - 25, colorDefault));
+            using HatchBrush columnBrushRed = new(HatchStyle.LightUpwardDiagonal, colorDefault, Color.FromArgb(colorRed.A - 75, colorRed));
+            using HatchBrush columnBrushGreen = new(HatchStyle.LightUpwardDiagonal, colorDefault, Color.FromArgb(colorGreen.A - 25, colorGreen));
+            using HatchBrush columnBrushPurple = new(HatchStyle.LightUpwardDiagonal, colorDefault, Color.FromArgb(colorPurple.A - 25, colorPurple));
             _columnBackgroundsValid = new CachedBitmap[columns];
             _columnBackgroundsRed = new CachedBitmap[columns];
             _columnBackgroundsGreen = new CachedBitmap[columns];
             _columnBackgroundsPurple = new CachedBitmap[columns];
             for (int i = 0; i < columns; i++)
             {
-                Rectangle rect = new Rectangle(0, 0, columnWidths[i], columnHeight);
+                Rectangle rect = new(0, 0, columnWidths[i], columnHeight);
                 _columnBackgroundsValid[i] = new CachedBitmap(columnWidths[i], columnHeight, g =>
                 {
-                    using LinearGradientBrush brush = new LinearGradientBrush(new PointF(columnWidths[i], columnHeight), new PointF(0, 0), Color.FromArgb(90, 0, 0, 0), Color.FromArgb(colorDefault.A, 10, 10, 10));
+                    using LinearGradientBrush brush = new(new PointF(columnWidths[i], columnHeight), new PointF(0, 0), Color.FromArgb(90, 0, 0, 0), Color.FromArgb(colorDefault.A, 10, 10, 10));
                     g.FillRoundedRectangle(brush, rect, (int)(_config.Table.Roundness * scale));
                     g.FillRoundedRectangle(columnBrushDefault, rect, (int)(_config.Table.Roundness * scale));
                 });
                 _columnBackgroundsRed[i] = new CachedBitmap(columnWidths[i], columnHeight, g =>
                 {
-                    using LinearGradientBrush brush = new LinearGradientBrush(new PointF(0, 0), new PointF(columnWidths[i], columnHeight), Color.FromArgb(90, 0, 0, 0), Color.FromArgb(colorRed.A, colorRed.R, 10, 10));
+                    using LinearGradientBrush brush = new(new PointF(0, 0), new PointF(columnWidths[i], columnHeight), Color.FromArgb(90, 0, 0, 0), Color.FromArgb(colorRed.A, colorRed.R, 10, 10));
                     g.FillRoundedRectangle(brush, rect, (int)(_config.Table.Roundness * scale));
                     g.FillRoundedRectangle(columnBrushRed, rect, (int)(_config.Table.Roundness * scale));
                 });
                 _columnBackgroundsGreen[i] = new CachedBitmap(columnWidths[i], columnHeight, g =>
                 {
-                    using LinearGradientBrush brush = new LinearGradientBrush(new PointF(0, 0), new PointF(columnWidths[i], columnHeight), Color.FromArgb(90, 0, 0, 0), Color.FromArgb(colorGreen.A, colorGreen.R, 10, 10));
+                    using LinearGradientBrush brush = new(new PointF(0, 0), new PointF(columnWidths[i], columnHeight), Color.FromArgb(90, 0, 0, 0), Color.FromArgb(colorGreen.A, colorGreen.R, 10, 10));
                     g.FillRoundedRectangle(brush, rect, (int)(_config.Table.Roundness * scale));
                     g.FillRoundedRectangle(columnBrushGreen, rect, (int)(_config.Table.Roundness * scale));
                 });
                 _columnBackgroundsPurple[i] = new CachedBitmap(columnWidths[i], columnHeight, g =>
                 {
-                    using LinearGradientBrush brush = new LinearGradientBrush(new PointF(0, 0), new PointF(columnWidths[i], columnHeight), Color.FromArgb(90, 0, 0, 0), Color.FromArgb(colorPurple.A, colorPurple.R, 10, 10));
+                    using LinearGradientBrush brush = new(new PointF(0, 0), new PointF(columnWidths[i], columnHeight), Color.FromArgb(90, 0, 0, 0), Color.FromArgb(colorPurple.A, colorPurple.R, 10, 10));
                     g.FillRoundedRectangle(brush, rect, (int)(_config.Table.Roundness * scale));
                     g.FillRoundedRectangle(columnBrushPurple, rect, (int)(_config.Table.Roundness * scale));
                 });
             }
 
             // add header row, base columns
-            DrawableTextCell col0 = new DrawableTextCell(new Rectangle(0, 0, columnWidths[0], columnHeight), _font);
+            DrawableTextCell col0 = new(new Rectangle(0, 0, columnWidths[0], columnHeight), _font);
             _graphicsGrid.Grid[0][0] = col0;
 
-            DrawableTextCell col1 = new DrawableTextCell(new RectangleF(col0.Rectangle.Width, 0, columnWidths[1], columnHeight), _font);
+            DrawableTextCell col1 = new(new RectangleF(col0.Rectangle.Width, 0, columnWidths[1], columnHeight), _font);
             col1.CachedBackground = _columnBackgroundsValid[1];
             col1.UpdateText("Time");
             _graphicsGrid.Grid[0][1] = col1;
@@ -139,13 +139,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
             {
                 totalWidth += columnWidths[2] + columnWidths[3] + columnWidths[4];
 
-                DrawableTextCell col2 = new DrawableTextCell(new RectangleF(col1.Rectangle.X + columnWidths[1], 0, columnWidths[2], columnHeight), _font);
+                DrawableTextCell col2 = new(new RectangleF(col1.Rectangle.X + columnWidths[1], 0, columnWidths[2], columnHeight), _font);
                 col2.CachedBackground = _columnBackgroundsValid[2];
                 col2.UpdateText("S1");
-                DrawableTextCell col3 = new DrawableTextCell(new RectangleF(col2.Rectangle.X + columnWidths[2], 0, columnWidths[3], columnHeight), _font);
+                DrawableTextCell col3 = new(new RectangleF(col2.Rectangle.X + columnWidths[2], 0, columnWidths[3], columnHeight), _font);
                 col3.CachedBackground = _columnBackgroundsValid[3];
                 col3.UpdateText("S2");
-                DrawableTextCell col4 = new DrawableTextCell(new RectangleF(col3.Rectangle.X + columnWidths[3], 0, columnWidths[4], columnHeight), _font);
+                DrawableTextCell col4 = new(new RectangleF(col3.Rectangle.X + columnWidths[3], 0, columnWidths[4], columnHeight), _font);
                 col4.CachedBackground = _columnBackgroundsValid[4];
                 col4.UpdateText("S3");
                 _graphicsGrid.Grid[0][2] = col2;
@@ -164,8 +164,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
                     int x = columnWidths.Take(column).Sum();
                     int y = row * columnHeight;
                     int width = columnWidths[column];
-                    RectangleF rect = new RectangleF(x, y, width, columnHeight);
-                    DrawableTextCell cell = new DrawableTextCell(rect, _font);
+                    RectangleF rect = new(x, y, width, columnHeight);
+                    DrawableTextCell cell = new(rect, _font);
                     cell.CachedBackground = _columnBackgroundsValid[column];
                     _graphicsGrid.Grid[row][column] = cell;
                 }
@@ -222,7 +222,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable
 
             if (_dataIsPreview)
             {
-                Random rand = new Random();
+                Random rand = new();
                 int maxSectorDeviation = 10000;
                 fastestSector1 = 23525 + rand.Next(-maxSectorDeviation, maxSectorDeviation);
                 fastestSector2 = 37842 + rand.Next(-maxSectorDeviation, maxSectorDeviation);

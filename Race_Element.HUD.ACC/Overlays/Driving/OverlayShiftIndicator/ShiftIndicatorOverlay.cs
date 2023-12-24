@@ -20,7 +20,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
         OverlayCategory = OverlayCategory.Driving)]
     internal sealed class ShiftIndicatorOverlay : AbstractOverlay
     {
-        private readonly ShiftIndicatorConfiguration _config = new ShiftIndicatorConfiguration();
+        private readonly ShiftIndicatorConfiguration _config = new();
 
         private string _lastCar = string.Empty;
         private CachedBitmap _cachedBackground;
@@ -86,8 +86,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             {
                 _cachedColorBars.Add(new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
                 {
-                    Rectangle rect = new Rectangle(0, 1, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale));
-                    HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightUpwardDiagonal, color, Color.FromArgb(color.A - 40, color));
+                    Rectangle rect = new(0, 1, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale));
+                    HatchBrush hatchBrush = new(HatchStyle.LightUpwardDiagonal, color, Color.FromArgb(color.A - 40, color));
                     g.FillRoundedRectangle(hatchBrush, rect, cornerRadius);
                 }));
             }
@@ -95,8 +95,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
             _cachedFlashBar = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
             {
                 Color color = Color.FromArgb(_config.Colors.FlashOpacity, _config.Colors.FlashColor);
-                Rectangle rect = new Rectangle(0, 1, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale));
-                HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightUpwardDiagonal, color, Color.FromArgb(color.A - 40, color));
+                Rectangle rect = new(0, 1, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale));
+                HatchBrush hatchBrush = new(HatchStyle.LightUpwardDiagonal, color, Color.FromArgb(color.A - 40, color));
                 g.FillRoundedRectangle(hatchBrush, rect, cornerRadius);
             }, opacity: 0f);
 
@@ -119,7 +119,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
                 lineCount.ClipMin(0);
 
-                Pen linePen = new Pen(new SolidBrush(Color.FromArgb(220, Color.Black)), 1.5f * this.Scale);
+                Pen linePen = new(new SolidBrush(Color.FromArgb(220, Color.Black)), 1.5f * this.Scale);
 
                 double thousandPercent = (1000d / (pageStatic.MaxRpm - _config.Bar.HideRpm)) * lineCount;
                 double baseX = (_config.Bar.Width * this.Scale) / lineCount * thousandPercent;
@@ -181,13 +181,13 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
                 int y = (int)(_config.Bar.Height / 2 - _font.Height / 2.05);
                 string earlyShiftRpm = $"Early:{(_config.Upshift.Early / 100f * pageStatic.MaxRpm):F0}";
                 float earlyWidth = g.MeasureString(earlyShiftRpm, _font).Width;
-                Rectangle earlyRect = new Rectangle((int)(x - earlyWidth / 5), y, (int)(earlyWidth), _font.Height);
+                Rectangle earlyRect = new((int)(x - earlyWidth / 5), y, (int)(earlyWidth), _font.Height);
                 DrawTextWithOutline(g, Color.White, earlyShiftRpm, x, y, earlyRect);
 
                 x += (int)(earlyWidth + 5);
                 string upshiftRpm = $"Up:{(_config.Upshift.Upshift / 100f * pageStatic.MaxRpm):F0}";
                 float upshiftWidth = g.MeasureString(upshiftRpm, _font).Width;
-                Rectangle upshiftRect = new Rectangle((int)(x - upshiftWidth / 3.5), y, (int)(upshiftWidth), _font.Height);
+                Rectangle upshiftRect = new((int)(x - upshiftWidth / 3.5), y, (int)(upshiftWidth), _font.Height);
                 DrawTextWithOutline(g, Color.White, upshiftRpm, x, y, upshiftRect);
             }
 
@@ -225,7 +225,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator
 
             int x = (int)((_halfRpmStringWidth + 8));
             int y = (int)(_config.Bar.Height / 2 - _font.Height / 2.05);
-            Rectangle backgroundDimension = new Rectangle((int)(x - _halfRpmStringWidth), y, (int)(_halfRpmStringWidth * 2), _font.Height);
+            Rectangle backgroundDimension = new((int)(x - _halfRpmStringWidth), y, (int)(_halfRpmStringWidth * 2), _font.Height);
             DrawTextWithOutline(g, Color.White, currentRpm, x, y, backgroundDimension);
         }
 

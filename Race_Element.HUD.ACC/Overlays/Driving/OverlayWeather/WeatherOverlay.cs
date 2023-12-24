@@ -12,7 +12,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWeather
 {
     internal class WeatherOverlay : AbstractOverlay
     {
-        private readonly WeatherConfiguration _config = new WeatherConfiguration();
+        private readonly WeatherConfiguration _config = new();
         private sealed class WeatherConfiguration : OverlayConfiguration
         {
             public WeatherConfiguration()

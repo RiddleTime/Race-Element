@@ -69,7 +69,7 @@ namespace RaceElement.Controls.Liveries
                     if (item.Key == ConversionFactory.CarModels.None)
                         continue;
 
-                    ComboBoxItem comboBoxItem = new ComboBoxItem
+                    ComboBoxItem comboBoxItem = new()
                     {
                         DataContext = item.Key,
                         Content = item.Value
@@ -81,7 +81,7 @@ namespace RaceElement.Controls.Liveries
             if (comboNationality.Items.Count == 0)
                 foreach (var item in LiveryDisplayer.Nationalities)
                 {
-                    ComboBoxItem comboBoxItem = new ComboBoxItem
+                    ComboBoxItem comboBoxItem = new()
                     {
                         DataContext = item.Key,
                         Content = item.Value
@@ -101,7 +101,7 @@ namespace RaceElement.Controls.Liveries
             ComboBoxItem boxItemNationality = (ComboBoxItem)comboNationality.SelectedItem;
             int selectedNationality = (int)boxItemNationality.DataContext;
 
-            LiveryTreeCar liveryTreeCar = new LiveryTreeCar()
+            LiveryTreeCar liveryTreeCar = new()
             {
                 CarsFile = new FileInfo($"{RaceElement.Util.FileUtil.CarsPath}{Guid.NewGuid()}.json"),
                 CarsRoot = new CarsJson.Root()
@@ -133,7 +133,7 @@ namespace RaceElement.Controls.Liveries
 
             Debug.WriteLine(JsonConvert.SerializeObject(liveryTreeCar, Formatting.Indented, new JsonConverter[] { new StringEnumConverter() }));
 
-            DirectoryInfo carFolder = new DirectoryInfo($"{RaceElement.Util.FileUtil.LiveriesPath}{liveryTreeCar.CarsRoot.CustomSkinName}");
+            DirectoryInfo carFolder = new($"{RaceElement.Util.FileUtil.LiveriesPath}{liveryTreeCar.CarsRoot.CustomSkinName}");
             if (carFolder.Exists)
             {
                 MainWindow.Instance.EnqueueSnackbarMessage($"Custom livery name already exists.");
@@ -152,8 +152,8 @@ namespace RaceElement.Controls.Liveries
             string[] sponsorAndDecals = new string[] { "sponsors.json", "decals.json" };
             foreach (string fileName in sponsorAndDecals)
             {
-                FileInfo sponsorsJson = new FileInfo($"{RaceElement.Util.FileUtil.LiveriesPath}{liveryTreeCar.CarsRoot.CustomSkinName}\\{fileName}");
-                PaintDetailsJson.Root paintDetailsJson = new PaintDetailsJson.Root();
+                FileInfo sponsorsJson = new($"{RaceElement.Util.FileUtil.LiveriesPath}{liveryTreeCar.CarsRoot.CustomSkinName}\\{fileName}");
+                PaintDetailsJson.Root paintDetailsJson = new();
                 string json = JsonConvert.SerializeObject(paintDetailsJson, Formatting.Indented, jsonSettings);
                 File.WriteAllText(sponsorsJson.FullName, json);
             }

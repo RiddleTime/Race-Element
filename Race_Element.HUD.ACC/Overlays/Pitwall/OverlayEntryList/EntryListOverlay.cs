@@ -26,7 +26,7 @@ Description = "(BETA) A table representing a leaderboard.")]
     //#endif
     internal sealed class EntryListOverlay : AbstractOverlay
     {
-        private readonly EntryListDebugConfig _config = new EntryListDebugConfig();
+        private readonly EntryListDebugConfig _config = new();
         private sealed class EntryListDebugConfig : OverlayConfiguration
         {
             [ConfigGrouping("EntryList", "Provides settings for overlay docking.")]
@@ -283,7 +283,7 @@ Description = "(BETA) A table representing a leaderboard.")]
                                     (int, string) corner = items.First().Value;
                                     if (corner.Item1 != 0)
                                     {
-                                        StringBuilder builder = new StringBuilder();
+                                        StringBuilder builder = new();
                                         builder.Append("T");
                                         builder.Append(corner.Item1.ToString().FillEnd(2, ' ') + ' ');
                                         builder.Append(corner.Item2);
@@ -327,7 +327,7 @@ Description = "(BETA) A table representing a leaderboard.")]
             }
 
             string cupPosition = $"{kv.Value.RealtimeCarUpdate.CupPosition}";
-            TableRow row = new TableRow()
+            TableRow row = new()
             {
                 Header = $"{cupPosition}".FillStart(3, ' '),
                 Columns = firstRow,

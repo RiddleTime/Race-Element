@@ -32,8 +32,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
 
             _cachedBackground = new CachedBitmap(_width + 1, _height + 1, g =>
             {
-                Rectangle graphRect = new Rectangle(0, 0, _width, _height);
-                LinearGradientBrush gradientBrush = new LinearGradientBrush(graphRect, Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical);
+                Rectangle graphRect = new(0, 0, _width, _height);
+                LinearGradientBrush gradientBrush = new(graphRect, Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical);
                 g.FillRoundedRectangle(gradientBrush, graphRect, 3);
                 g.DrawRoundedRectangle(new Pen(Color.FromArgb(196, Color.Black)), graphRect, 3);
             });
@@ -61,7 +61,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
         {
             if (Data.Count > 0)
             {
-                List<Point> points = new List<Point>();
+                List<Point> points = new();
                 lock (Data)
                     for (int i = 0; i < Data.Count - 1; i++)
                     {
@@ -77,7 +77,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle
 
                 if (points.Count > 0)
                 {
-                    GraphicsPath path = new GraphicsPath();
+                    GraphicsPath path = new();
                     path.AddLines(points.ToArray());
                     g.DrawPath(pen, path);
                     path?.Dispose();

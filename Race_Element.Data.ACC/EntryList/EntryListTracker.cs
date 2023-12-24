@@ -33,7 +33,7 @@ namespace RaceElement.Data.ACC.EntryList
             private set { _instance = value; }
         }
 
-        internal Dictionary<int, CarData> _entryListCars = new Dictionary<int, CarData>();
+        internal Dictionary<int, CarData> _entryListCars = new();
         //private static AccidentListTracker _accidentListTracker = AccidentListTracker.Instance;
 
         public List<KeyValuePair<int, CarData>> Cars
@@ -85,7 +85,7 @@ namespace RaceElement.Data.ACC.EntryList
             {
                 try
                 {
-                    List<(int, int)> previousTimes = new List<(int, int)>();
+                    List<(int, int)> previousTimes = new();
                     while (_isRunning)
                     {
                         const int waitTime = 5000;

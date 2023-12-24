@@ -33,7 +33,7 @@ namespace RaceElement.Controls
         private string _selectedSetup;
 
         // car -> track
-        private Dictionary<string, List<string>> _expandedHeaders = new Dictionary<string, List<string>>();
+        private Dictionary<string, List<string>> _expandedHeaders = new();
 
         public SetupBrowser()
         {
@@ -96,7 +96,7 @@ namespace RaceElement.Controls
 
         internal void FetchAllSetups()
         {
-            DirectoryInfo setupsDirectory = new DirectoryInfo(FileUtil.SetupsPath);
+            DirectoryInfo setupsDirectory = new(FileUtil.SetupsPath);
 
             if (!setupsDirectory.Exists)
                 return;
@@ -121,12 +121,12 @@ namespace RaceElement.Controls
                         bool carHasSetups = false;
 
                         // Make Car Tree View Item
-                        TextBlock carHeader = new TextBlock()
+                        TextBlock carHeader = new()
                         {
                             Text = CarModelToCarName[ParseCarName(carDir.Name)],
                             Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
                         };
-                        TreeViewItem carTreeViewItem = new TreeViewItem()
+                        TreeViewItem carTreeViewItem = new()
                         {
                             Header = carHeader,
                             Background = new SolidColorBrush(Color.FromArgb(38, 10, 0, 0)),
@@ -160,12 +160,12 @@ namespace RaceElement.Controls
                             string trackName = trackDir.Name;
                             trackName = Regex.Replace(trackName, "^[a-z]", m => m.Value.ToUpper());
                             trackName = trackName.Replace("_", " ");
-                            TextBlock trackHeader = new TextBlock()
+                            TextBlock trackHeader = new()
                             {
                                 Text = trackName,
                                 Style = Resources["MaterialDesignSubtitle2TextBlock"] as Style,
                             };
-                            TreeViewItem trackTreeViewItem = new TreeViewItem()
+                            TreeViewItem trackTreeViewItem = new()
                             {
                                 Header = trackHeader,
                                 DataContext = trackDir,
@@ -203,12 +203,12 @@ namespace RaceElement.Controls
                             {
                                 if (trackFile.Extension.Equals(".json"))
                                 {
-                                    TextBlock setupHeader = new TextBlock()
+                                    TextBlock setupHeader = new()
                                     {
                                         Text = trackFile.Name.Replace(".json", ""),
                                         Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style
                                     };
-                                    TreeViewItem setupTreeViewItem = new TreeViewItem()
+                                    TreeViewItem setupTreeViewItem = new()
                                     {
                                         Header = setupHeader,
                                         DataContext = trackFile,
@@ -312,7 +312,7 @@ namespace RaceElement.Controls
             if (sender is MenuItem button)
             {
                 FileInfo file = (FileInfo)button.CommandParameter;
-                Thread thread = new Thread(() =>
+                Thread thread = new(() =>
                 {
                     Clipboard.SetFileDropList(new StringCollection
                     {

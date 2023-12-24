@@ -7,14 +7,14 @@ namespace ACCManager.Data.ACC.Tracks.Data
 {
     internal class PaulRicard : AbstractTrackData
     {
-        public override Guid Guid => new Guid("c46a0299-b5d0-421f-90a7-0c5223deaa63");
+        public override Guid Guid => new("c46a0299-b5d0-421f-90a7-0c5223deaa63");
         public override string GameName => "Paul_Ricard";
         public override string FullName => "Circuit Paul Ricard";
         public override int TrackLength => 5770;
 
-        public override List<float> Sectors => new List<float>() { 0.264f, 0.591f };
+        public override List<float> Sectors => new() { 0.264f, 0.591f };
 
-        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
         {
              { new FloatRangeStruct(0.08376743f, 0.1196156f), (1, "\"S\" de la Verrerie")},
              { new FloatRangeStruct(0.1196157f, 0.1582872f), (2,  "\"S\" de la Verrerie")},

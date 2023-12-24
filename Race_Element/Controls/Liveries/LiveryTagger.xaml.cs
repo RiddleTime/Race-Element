@@ -14,7 +14,7 @@ namespace RaceElement.Controls
     {
         public static LiveryTagger Instance { get; private set; }
 
-        internal List<LiveryTreeCar> Cars = new List<LiveryTreeCar>();
+        internal List<LiveryTreeCar> Cars = new();
 
         public LiveryTagger()
         {
@@ -55,7 +55,7 @@ namespace RaceElement.Controls
             tagList.Items.Clear();
             LiveryTagging.GetAllTags().ForEach(tag =>
             {
-                ListBoxItem item = new ListBoxItem()
+                ListBoxItem item = new()
                 {
                     DataContext = tag,
                     Content = tag.Name

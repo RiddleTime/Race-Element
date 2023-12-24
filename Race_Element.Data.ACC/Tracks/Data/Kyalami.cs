@@ -7,14 +7,14 @@ namespace ACCManager.Data.ACC.Tracks.Data
 {
     internal class Kyalami : AbstractTrackData
     {
-        public override Guid Guid => new Guid("65e00cd4-6c39-4cb4-acf9-f8977cd56ba1");
+        public override Guid Guid => new("65e00cd4-6c39-4cb4-acf9-f8977cd56ba1");
         public override string GameName => "Kyalami";
         public override string FullName => "Kyalami Grand Prix Circuit";
         public override int TrackLength => 4522;
 
-        public override List<float> Sectors => new List<float>() { 0.316f, 0.710f };
+        public override List<float> Sectors => new() { 0.316f, 0.710f };
 
-        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new Dictionary<FloatRangeStruct, (int, string)>()
+        public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
         {
             { new FloatRangeStruct(0.03799635f, 0.07576057f), (1, "The Kink")},
             { new FloatRangeStruct(0.1186805f, 0.1687038f), (2, "Crowthorne")},

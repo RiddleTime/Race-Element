@@ -15,7 +15,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
         Version = 1.00)]
     internal sealed class WindDirectionOverlay : AbstractOverlay
     {
-        private readonly WindDirectionConfiguration _config = new WindDirectionConfiguration();
+        private readonly WindDirectionConfiguration _config = new();
         private sealed class WindDirectionConfiguration : OverlayConfiguration
         {
             [ConfigGrouping("Wind", "Adjust settings related to the wind")]
@@ -58,14 +58,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
             int scaledPadding = (int)(padding * this.Scale);
             _background = new CachedBitmap(scaledSize + 1, scaledSize + 1, g =>
             {
-                Rectangle rect = new Rectangle(scaledPadding / 2, scaledPadding / 2, scaledSize - scaledPadding, scaledSize - scaledPadding);
-                using SolidBrush brush = new SolidBrush(Color.FromArgb(90, 0, 0, 0));
+                Rectangle rect = new(scaledPadding / 2, scaledPadding / 2, scaledSize - scaledPadding, scaledSize - scaledPadding);
+                using SolidBrush brush = new(Color.FromArgb(90, 0, 0, 0));
                 g.FillEllipse(brush, rect);
                 g.DrawEllipse(new Pen(Color.FromArgb(165, 0, 0, 0), 18 * this.Scale), new Rectangle(scaledPadding / 2, scaledPadding / 2, scaledSize - scaledPadding, scaledSize - scaledPadding));
             });
 
             Font font = FontUtil.FontSegoeMono(15f * Scale);
-            Rectangle rect = new Rectangle(0, 0, scaledSize, scaledSize);
+            Rectangle rect = new(0, 0, scaledSize, scaledSize);
             _textCell = new DrawableTextCell(rect, font);
         }
 
@@ -92,7 +92,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind
             double relativeAngle = vaneAngle + carDirection;
 
             g.SmoothingMode = SmoothingMode.AntiAlias;
-            Rectangle rect = new Rectangle(padding / 2, padding / 2, _config.Shape.Size - padding, _config.Shape.Size - padding);
+            Rectangle rect = new(padding / 2, padding / 2, _config.Shape.Size - padding, _config.Shape.Size - padding);
 
             // draw relative angle (blowing to)
             g.DrawArc(new Pen(Brushes.LimeGreen, 16), rect, (float)relativeAngle - 4, 8);

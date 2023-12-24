@@ -112,7 +112,7 @@ namespace RaceElement.Data.ACC.Tyres
 
         private void SendTyresInfoUpdate()
         {
-            TyresInfo tyresInfo = new TyresInfo
+            TyresInfo tyresInfo = new()
             {
                 PressureLoss = _lastPressureLosses
             };

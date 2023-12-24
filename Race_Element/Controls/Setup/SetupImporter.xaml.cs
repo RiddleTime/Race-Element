@@ -41,7 +41,7 @@ namespace RaceElement.Controls
                 MainWindow.Instance.EnqueueSnackbarMessage($"Importing setups, please wait...");
                 if (listViewTracks.SelectedItems.Count > 0 && listViewTracks.SelectionMode == SelectionMode.Multiple)
                 {
-                    StringBuilder sb = new StringBuilder();
+                    StringBuilder sb = new();
 
                     foreach (ListViewItem selectedItem in listViewTracks.SelectedItems)
                     {
@@ -70,7 +70,7 @@ namespace RaceElement.Controls
             this.listViewTracks.Items.Clear();
             foreach (AbstractTrackData trackData in Tracks)
             {
-                ListViewItem trackItem = new ListViewItem()
+                ListViewItem trackItem = new()
                 {
                     FontWeight = FontWeights.Bold,
                     Content = trackData.FullName,
@@ -100,7 +100,7 @@ namespace RaceElement.Controls
                 string modelName = ConversionFactory.GetNameFromCarModel(model);
 
 
-                FileInfo targetFile = new FileInfo(FileUtil.AccPath + "Setups\\" + _currentSetup.CarName + "\\" + track + "\\" + _setupName + ".json");
+                FileInfo targetFile = new(FileUtil.AccPath + "Setups\\" + _currentSetup.CarName + "\\" + track + "\\" + _setupName + ".json");
 
                 if (targetFile.Exists)
                 {
@@ -111,7 +111,7 @@ namespace RaceElement.Controls
                 if (!targetFile.Directory.Exists)
                     targetFile.Directory.Create();
 
-                FileInfo originalFile = new FileInfo(_originalSetupFile);
+                FileInfo originalFile = new(_originalSetupFile);
                 if (originalFile.Exists)
                     originalFile.CopyTo(targetFile.FullName);
 
@@ -144,7 +144,7 @@ namespace RaceElement.Controls
                         string[] splits = setupFile.Split(new char[] { '/' });
                         fileName = splits[splits.Length - 1];
 
-                        DirectoryInfo downloadCache = new DirectoryInfo(FileUtil.RaceElementDownloadCachePath);
+                        DirectoryInfo downloadCache = new(FileUtil.RaceElementDownloadCachePath);
 
                         if (!downloadCache.Exists) downloadCache.Create();
 

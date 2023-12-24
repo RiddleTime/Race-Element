@@ -20,7 +20,7 @@ namespace RaceElement.HUD.Overlay.Configuration
 
         public static float[] GetOptionsCollection(FloatRangeAttribute floatRange)
         {
-            List<float> collection = new List<float>();
+            List<float> collection = new();
 
             for (float i = floatRange.Min; i < floatRange.Max + floatRange.Increment; i += floatRange.Increment)
             {

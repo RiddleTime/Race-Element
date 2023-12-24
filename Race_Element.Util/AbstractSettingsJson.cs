@@ -15,7 +15,7 @@ namespace RaceElement.Util
         public abstract T Default();
         public abstract string Path { get; }
         public abstract string FileName { get; }
-        private FileInfo SettingsFile => new FileInfo(Path + FileName);
+        private FileInfo SettingsFile => new(Path + FileName);
 
         public static T Cached { get; private set; }
 
@@ -72,7 +72,7 @@ namespace RaceElement.Util
             string jsonString = string.Empty;
             try
             {
-                using (StreamReader reader = new StreamReader(stream))
+                using (StreamReader reader = new(stream))
                 {
                     jsonString = reader.ReadToEnd();
                     jsonString = jsonString.Replace("\0", "");

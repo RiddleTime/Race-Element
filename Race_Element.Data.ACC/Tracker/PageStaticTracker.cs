@@ -9,8 +9,8 @@ namespace RaceElement.Data.ACC.Tracker
 {
     public class PageStaticTracker : IJob
     {
-        public static readonly JobKey JobKey = new JobKey("PageStaticTracker", "acc-jobs");
-        public static readonly TriggerKey TriggerKey = new TriggerKey("PageStaticTracker");
+        public static readonly JobKey JobKey = new("PageStaticTracker", "acc-jobs");
+        public static readonly TriggerKey TriggerKey = new("PageStaticTracker");
 
         public static event EventHandler<SPageFileStatic> Tracker;
 

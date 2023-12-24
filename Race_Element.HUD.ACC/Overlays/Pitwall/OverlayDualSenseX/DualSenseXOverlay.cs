@@ -19,7 +19,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
         OverlayType = OverlayType.Pitwall)]
     internal sealed class DualSenseXOverlay : AbstractOverlay
     {
-        private readonly DualSenseXConfiguration _config = new DualSenseXConfiguration();
+        private readonly DualSenseXConfiguration _config = new();
 
         private UdpClient _client;
         private IPEndPoint _endPoint;
@@ -75,7 +75,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
         private void SetLighting()
         {
             Debug.WriteLine("Changing RGB");
-            Packet p = new Packet();
+            Packet p = new();
             int controllerIndex = 0;
 
             p.instructions = new Instruction[1];  // send only 1 instruction

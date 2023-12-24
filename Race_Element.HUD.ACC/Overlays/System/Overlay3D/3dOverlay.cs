@@ -14,7 +14,7 @@ namespace RaceElement.HUD.ACC.Overlays.System.Overlay3D
          OverlayType = OverlayType.Pitwall)]
     internal class _3dOverlay : AbstractOverlay
     {
-        private _3dConfiguration _config = new _3dConfiguration();
+        private _3dConfiguration _config = new();
         private class _3dConfiguration : OverlayConfiguration
         {
 
@@ -64,7 +64,7 @@ namespace RaceElement.HUD.ACC.Overlays.System.Overlay3D
         }
         public override void Render(Graphics g)
         {
-            using SolidBrush backgroundBrush = new SolidBrush(Color.FromArgb(130, Color.Black));
+            using SolidBrush backgroundBrush = new(Color.FromArgb(130, Color.Black));
             g.FillRectangle(backgroundBrush, new Rectangle(0, 0, this.Width, this.Height));
 
             g.CompositingQuality = CompositingQuality.HighQuality;
@@ -72,7 +72,7 @@ namespace RaceElement.HUD.ACC.Overlays.System.Overlay3D
             float scaledWidth = this.Width / this.Scale;
             float scaledHeight = this.Height / this.Scale;
 
-            using Plotter3D plotter3d = new Plotter3D(g, new Point3D(scaledWidth / 2 + 110, scaledHeight / 2 - 90, _config.Animation.CubeSize * 2.5f));
+            using Plotter3D plotter3d = new(g, new Point3D(scaledWidth / 2 + 110, scaledHeight / 2 - 90, _config.Animation.CubeSize * 2.5f));
 
             float angle = (float)Math.Sin((float)DateTime.Now.Subtract(_Timestart).TotalSeconds);
             float cubeSize = _config.Animation.CubeSize;

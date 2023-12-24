@@ -18,7 +18,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
     internal sealed class TrackBarOverlay : AbstractOverlay
     {
 
-        private readonly TrackBarConfiguration _config = new TrackBarConfiguration();
+        private readonly TrackBarConfiguration _config = new();
         private sealed class TrackBarConfiguration : OverlayConfiguration
         {
             public TrackBarConfiguration() { AllowRescale = true; }
@@ -180,7 +180,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar
                         int xFrom = BarRect.Width - (int)(BarRect.Width * percentageFrom);
                         int xTo = BarRect.Width - (int)(BarRect.Width * percentageTo);
                         using Brush bg = new SolidBrush(Color.FromArgb(50, Color.White));
-                        Rectangle bounds = new Rectangle(xFrom, BarRect.Height - 20, xTo - xFrom, 20);
+                        Rectangle bounds = new(xFrom, BarRect.Height - 20, xTo - xFrom, 20);
                         g.FillRoundedRectangle(bg, bounds, 8);
 
                         int centerX = (xTo + xFrom) / 2;

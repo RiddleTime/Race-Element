@@ -20,7 +20,7 @@ namespace RaceElement.Controls
     {
         public static LiveryExporter Instance { get; private set; }
 
-        private List<LiveryTreeCar> exportItems = new List<LiveryTreeCar>();
+        private List<LiveryTreeCar> exportItems = new();
 
         public LiveryExporter()
         {
@@ -41,7 +41,7 @@ namespace RaceElement.Controls
 
                 ThreadPool.QueueUserWorkItem((WaitCallback)(x =>
                 {
-                    Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+                    Microsoft.Win32.SaveFileDialog dlg = new();
 
                     // Set filter for file extension and default file extension 
                     dlg.DefaultExt = ".zip";
@@ -82,14 +82,14 @@ namespace RaceElement.Controls
                                 string carsFolder = "Cars\\";
                                 zipArchive.AddEntry($"{carsFolder}{liveryTreeCar.CarsFile.Name}", liveryTreeCar.CarsFile);
 
-                                DirectoryInfo customSkinDir = new DirectoryInfo(FileUtil.LiveriesPath + liveryTreeCar.CarsRoot.CustomSkinName);
+                                DirectoryInfo customSkinDir = new(FileUtil.LiveriesPath + liveryTreeCar.CarsRoot.CustomSkinName);
                                 if (customSkinDir.Exists)
                                 {
 
-                                    FileInfo decalsPng = new FileInfo(customSkinDir.FullName + "\\" + "decals.png");
-                                    FileInfo decalsJson = new FileInfo(customSkinDir.FullName + "\\" + "decals.json");
-                                    FileInfo sponsorsPng = new FileInfo(customSkinDir.FullName + "\\" + "sponsors.png");
-                                    FileInfo sponsorsJson = new FileInfo(customSkinDir.FullName + "\\" + "sponsors.json"); ;
+                                    FileInfo decalsPng = new(customSkinDir.FullName + "\\" + "decals.png");
+                                    FileInfo decalsJson = new(customSkinDir.FullName + "\\" + "decals.json");
+                                    FileInfo sponsorsPng = new(customSkinDir.FullName + "\\" + "sponsors.png");
+                                    FileInfo sponsorsJson = new(customSkinDir.FullName + "\\" + "sponsors.json"); ;
 
                                     if (decalsPng.Exists)
                                         zipArchive.AddEntry($"{liveriesFolder}{decalsPng.Name}", decalsPng);
@@ -104,9 +104,9 @@ namespace RaceElement.Controls
                                     if (shouldExportDDS)
                                     {
                                         //FileInfo decalsDds0 = new FileInfo(customSkinDir.FullName + "\\" + "decals_0.dds");
-                                        FileInfo decalsDds1 = new FileInfo(customSkinDir.FullName + "\\" + "decals_1.dds");
+                                        FileInfo decalsDds1 = new(customSkinDir.FullName + "\\" + "decals_1.dds");
                                         //FileInfo sponsorsDds0 = new FileInfo(customSkinDir.FullName + "\\" + "sponsors_0.dds");
-                                        FileInfo sponsorsDds1 = new FileInfo(customSkinDir.FullName + "\\" + "sponsors_1.dds");
+                                        FileInfo sponsorsDds1 = new(customSkinDir.FullName + "\\" + "sponsors_1.dds");
 
                                         //if (decalsDds0.Exists)
                                         //    zipArchive.AddEntry($"{liveriesFolder}{decalsDds0.Name}", decalsDds0);
@@ -120,7 +120,7 @@ namespace RaceElement.Controls
                                 }
                             }
 
-                            using (FileStream outputStream = new FileStream(filename, FileMode.Create))
+                            using (FileStream outputStream = new(filename, FileMode.Create))
                             {
                                 zipArchive.SaveTo(outputStream);
                                 outputStream.Close();
@@ -187,7 +187,7 @@ namespace RaceElement.Controls
                 exportList.Items.Clear();
                 exportItems.ForEach(x =>
                 {
-                    ListBoxItem listBoxItem = new ListBoxItem()
+                    ListBoxItem listBoxItem = new()
                     {
                         AllowDrop = true,
                         Content = $"{x.CarsRoot.TeamName} / {x.CarsRoot.CustomSkinName}",

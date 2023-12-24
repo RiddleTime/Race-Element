@@ -74,7 +74,7 @@ namespace RaceElement.Util
             lock (Instance.LogQueue)
             {
                 // Create log
-                Log log = new Log(message);
+                Log log = new(message);
                 Instance.LogQueue.Enqueue(log);
 
                 // Check if should flush
@@ -95,8 +95,8 @@ namespace RaceElement.Util
             lock (Instance.LogQueue)
             {
                 // Create log
-                Log msg = new Log(e.Source.ToString().Trim() + " " + e.Message.ToString().Trim());
-                Log stack = new Log("Stack: " + e.StackTrace.ToString().Trim());
+                Log msg = new(e.Source.ToString().Trim() + " " + e.Message.ToString().Trim());
+                Log stack = new("Stack: " + e.StackTrace.ToString().Trim());
                 Instance.LogQueue.Enqueue(msg);
                 Instance.LogQueue.Enqueue(stack);
 
@@ -144,7 +144,7 @@ namespace RaceElement.Util
                 string path = LogPath + entry.GetDate() + "_" + LogFile;
 
 
-                FileInfo fileInfo = new FileInfo(path);
+                FileInfo fileInfo = new(path);
 
                 if (!fileInfo.Directory.Exists)
                     new DirectoryInfo(fileInfo.DirectoryName).Create();

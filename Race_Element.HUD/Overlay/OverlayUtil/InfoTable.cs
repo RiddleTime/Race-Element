@@ -17,7 +17,7 @@ namespace RaceElement.HUD.Overlay.OverlayUtil
         public bool _headerWidthSet;
         private float _maxHeaderWidth;
         private int[] _columnWidths;
-        private List<TableRow> _rows = new List<TableRow>();
+        private List<TableRow> _rows = new();
 
         public int X = 0;
         public int Y = 0;
@@ -54,10 +54,10 @@ namespace RaceElement.HUD.Overlay.OverlayUtil
                     _cachedBackground = new CachedBitmap((int)Math.Ceiling(GetTotalWidth()), _rows.Count * FontHeight + (int)_yMono, bg =>
                     {
                         Color color = Color.FromArgb(120, Color.Black);
-                        using HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightUpwardDiagonal, color, Color.FromArgb(color.A - 50, color));
+                        using HatchBrush hatchBrush = new(HatchStyle.LightUpwardDiagonal, color, Color.FromArgb(color.A - 50, color));
                         bg.FillRoundedRectangle(hatchBrush, new Rectangle(0, 0, (int)GetTotalWidth(), _rows.Count * this.Font.Height + (int)_yMono), 4);
-                        using SolidBrush linebrush = new SolidBrush(Color.FromArgb(130, Color.OrangeRed));
-                        using Pen pen = new Pen(linebrush, 2);
+                        using SolidBrush linebrush = new(Color.FromArgb(130, Color.OrangeRed));
+                        using Pen pen = new(linebrush, 2);
                         int maxWidth = (int)Math.Ceiling(GetTotalWidth());
                         bg.DrawLine(pen, 4, 0, maxWidth - 4, 0);
                     });

@@ -14,7 +14,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
         Description = "A panel showing information about the track state: grip, temperatures and wind.\nOptionally showing the global flag, session type and time of day.")]
     internal sealed class TrackInfoOverlay : AbstractOverlay
     {
-        private readonly TrackInfoConfig _config = new TrackInfoConfig();
+        private readonly TrackInfoConfig _config = new();
         private sealed class TrackInfoConfig : OverlayConfiguration
         {
             [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
@@ -75,25 +75,25 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo
             int valueWidth = (int)(unscaledValueWidth * this.Scale);
             int roundingRadius = (int)(6 * this.Scale);
 
-            RectangleF headerRect = new RectangleF(0, 0, headerWidth, lineHeight);
-            RectangleF valueRect = new RectangleF(headerWidth, 0, valueWidth, lineHeight);
-            StringFormat headerFormat = new StringFormat() { Alignment = StringAlignment.Near };
-            StringFormat valueFormat = new StringFormat() { Alignment = StringAlignment.Far };
+            RectangleF headerRect = new(0, 0, headerWidth, lineHeight);
+            RectangleF valueRect = new(headerWidth, 0, valueWidth, lineHeight);
+            StringFormat headerFormat = new() { Alignment = StringAlignment.Near };
+            StringFormat valueFormat = new() { Alignment = StringAlignment.Far };
 
             Color accentColor = Color.FromArgb(25, 255, 0, 0);
-            CachedBitmap headerBackground = new CachedBitmap(headerWidth, lineHeight, g =>
+            CachedBitmap headerBackground = new(headerWidth, lineHeight, g =>
             {
-                Rectangle panelRect = new Rectangle(0, 0, headerWidth, lineHeight);
+                Rectangle panelRect = new(0, 0, headerWidth, lineHeight);
                 using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(panelRect, 0, 0, 0, roundingRadius);
-                using LinearGradientBrush brush = new LinearGradientBrush(panelRect, Color.FromArgb(185, 0, 0, 0), Color.FromArgb(255, 10, 10, 10), LinearGradientMode.BackwardDiagonal);
+                using LinearGradientBrush brush = new(panelRect, Color.FromArgb(185, 0, 0, 0), Color.FromArgb(255, 10, 10, 10), LinearGradientMode.BackwardDiagonal);
                 g.FillPath(brush, path);
                 g.DrawLine(new Pen(accentColor), 0 + roundingRadius / 2, lineHeight, headerWidth, lineHeight - 1);
             });
-            CachedBitmap valueBackground = new CachedBitmap(valueWidth, lineHeight, g =>
+            CachedBitmap valueBackground = new(valueWidth, lineHeight, g =>
             {
-                Rectangle panelRect = new Rectangle(0, 0, valueWidth, lineHeight);
+                Rectangle panelRect = new(0, 0, valueWidth, lineHeight);
                 using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(panelRect, 0, roundingRadius, 0, 0);
-                using LinearGradientBrush brush = new LinearGradientBrush(panelRect, Color.FromArgb(255, 0, 0, 0), Color.FromArgb(185, 0, 0, 0), LinearGradientMode.ForwardDiagonal);
+                using LinearGradientBrush brush = new(panelRect, Color.FromArgb(255, 0, 0, 0), Color.FromArgb(185, 0, 0, 0), LinearGradientMode.ForwardDiagonal);
                 g.FillPath(brush, path);
                 g.DrawLine(new Pen(accentColor), 0, lineHeight - 1, valueWidth, lineHeight - 1);
             });

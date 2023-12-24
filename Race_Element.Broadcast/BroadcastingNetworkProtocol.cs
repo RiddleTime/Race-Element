@@ -74,7 +74,7 @@ namespace RaceElement.Broadcast
 
         // To avoid huge UDP pakets for longer entry lists, we will first receive the indexes of cars and drivers,
         // cache the entries and wait for the detailled updates
-        List<CarInfo> _entryListCars = new List<CarInfo>();
+        List<CarInfo> _entryListCars = new();
 
         #endregion
 
@@ -171,7 +171,7 @@ namespace RaceElement.Broadcast
                         break;
                     case InboundMessageTypes.REALTIME_UPDATE:
                         {
-                            RealtimeUpdate update = new RealtimeUpdate();
+                            RealtimeUpdate update = new();
                             update.EventIndex = (int)br.ReadUInt16();
                             update.SessionIndex = (int)br.ReadUInt16();
                             update.SessionType = (RaceSessionType)br.ReadByte();
@@ -207,7 +207,7 @@ namespace RaceElement.Broadcast
                         break;
                     case InboundMessageTypes.REALTIME_CAR_UPDATE:
                         {
-                            RealtimeCarUpdate carUpdate = new RealtimeCarUpdate();
+                            RealtimeCarUpdate carUpdate = new();
 
                             carUpdate.CarIndex = br.ReadUInt16();
                             carUpdate.DriverIndex = br.ReadUInt16(); // Driver swap will make this change
@@ -285,7 +285,7 @@ namespace RaceElement.Broadcast
                         break;
                     case InboundMessageTypes.BROADCASTING_EVENT:
                         {
-                            BroadcastingEvent evt = new BroadcastingEvent()
+                            BroadcastingEvent evt = new()
                             {
                                 Type = (BroadcastingCarEventType)br.ReadByte(),
                                 Msg = ReadString(br),

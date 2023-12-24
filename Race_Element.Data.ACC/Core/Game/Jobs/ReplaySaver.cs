@@ -11,8 +11,8 @@ namespace RaceElement.Data.ACC.Core.Game.Jobs
 {
     public class ReplaySaver : IJob
     {
-        public static readonly JobKey JobKey = new JobKey("replay-saver", "acc-jobs");
-        public static readonly TriggerKey TriggerKey = new TriggerKey("replaySaverTrigger");
+        public static readonly JobKey JobKey = new("replay-saver", "acc-jobs");
+        public static readonly TriggerKey TriggerKey = new("replaySaverTrigger");
 
         private static DateTime LastReplaySave = DateTime.MinValue;
 

@@ -17,8 +17,8 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
 
         public static Packet HandleBraking(SPageFilePhysics pagePhysics, BrakeHapticsConfig brakeConfig)
         {
-            Packet p = new Packet();
-            List<Instruction> instructions = new List<Instruction>();
+            Packet p = new();
+            List<Instruction> instructions = new();
             int controllerIndex = 0;
 
             if (pagePhysics.Abs > 0 && brakeConfig.AbsEffect)
@@ -73,8 +73,8 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
 
         public static Packet HandleAcceleration(SPageFilePhysics pagePhysics, ThrottleHapticsConfig throttleConfig)
         {
-            Packet p = new Packet();
-            List<Instruction> instructions = new List<Instruction>();
+            Packet p = new();
+            List<Instruction> instructions = new();
             int controllerIndex = 0;
 
             float rearLeftSlip = pagePhysics.SlipRatio[(int)Wheel.RearLeft];

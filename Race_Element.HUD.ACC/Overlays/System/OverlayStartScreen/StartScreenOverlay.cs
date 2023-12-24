@@ -41,8 +41,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
         {
             _cachedBackground = new CachedBitmap(this.Width, this.Height, g =>
             {
-                Rectangle rectangle = new Rectangle(0, 0, Width - 1, Height - 1);
-                using HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightUpwardDiagonal, Color.FromArgb(255, Color.Black), Color.FromArgb(230, Color.Black));
+                Rectangle rectangle = new(0, 0, Width - 1, Height - 1);
+                using HatchBrush hatchBrush = new(HatchStyle.LightUpwardDiagonal, Color.FromArgb(255, Color.Black), Color.FromArgb(230, Color.Black));
                 g.FillRoundedRectangle(hatchBrush, rectangle, 8);
             }, opacity: 0);
 
@@ -67,14 +67,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
 
             _slider = new CachedBitmap(SliderWidth, Height, g =>
             {
-                RectangleF rect = new RectangleF(0, 0, SliderWidth, Height / 1.5f);
-                using GraphicsPath gradientPath = new GraphicsPath();
+                RectangleF rect = new(0, 0, SliderWidth, Height / 1.5f);
+                using GraphicsPath gradientPath = new();
                 gradientPath.AddEllipse(rect);
-                using PathGradientBrush pthGrBrush = new PathGradientBrush(gradientPath);
+                using PathGradientBrush pthGrBrush = new(gradientPath);
                 pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(20, 255, 0, 0) };
                 pthGrBrush.CenterColor = Color.FromArgb(255, 255, 0, 0);
 
-                using Pen pen = new Pen(pthGrBrush, 1.15f);
+                using Pen pen = new(pthGrBrush, 1.15f);
                 int spacing = 6;
                 int lines = (int)Math.Floor(SliderWidth / (double)spacing);
                 for (int i = 0; i < lines * 2; i++)

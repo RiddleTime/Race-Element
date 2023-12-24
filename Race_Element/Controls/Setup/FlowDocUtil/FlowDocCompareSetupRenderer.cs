@@ -216,8 +216,8 @@ namespace RaceElement.Controls.Setup
 
 
             //// Setup Info Section
-            Section setupSection = new Section();
-            TableRowGroup rgSetupInfo = new TableRowGroup();
+            Section setupSection = new();
+            TableRowGroup rgSetupInfo = new();
             Paragraph header1 = DocUtil.GetDefaultHeader($"{setupFile1.Name.Replace(".json", "")}");
             header1.TextAlignment = TextAlignment.Right;
             Paragraph header2 = DocUtil.GetDefaultHeader($"{setupFile2.Name.Replace(".json", "")}");
@@ -238,8 +238,8 @@ namespace RaceElement.Controls.Setup
 
 
             //// Tyres Section
-            Section tyresSection = new Section();
-            TableRowGroup rgTyres = new TableRowGroup();
+            Section tyresSection = new();
+            TableRowGroup rgTyres = new();
             Paragraph tyresHeader = DocUtil.GetDefaultHeader("Tyres Setup");
             tyresHeader.FontStyle = FontStyles.Italic;
             rgTyres.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), tyresHeader, DocUtil.GetDefaultParagraph(), cells));
@@ -256,8 +256,8 @@ namespace RaceElement.Controls.Setup
             flowDocument.Blocks.Add(tyresSection);
 
             //// Mechanical Grip Section
-            Section gripSection = new Section();
-            TableRowGroup rgGrip = new TableRowGroup();
+            Section gripSection = new();
+            TableRowGroup rgGrip = new();
             Paragraph mechanicalHeader = DocUtil.GetDefaultHeader("Mechanical Grip");
             mechanicalHeader.FontStyle = FontStyles.Italic;
             rgGrip.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), mechanicalHeader, DocUtil.GetDefaultParagraph(), cells));
@@ -279,8 +279,8 @@ namespace RaceElement.Controls.Setup
 
 
             //// Dampers Section
-            Section dampersSection = new Section();
-            TableRowGroup rgDampers = new TableRowGroup();
+            Section dampersSection = new();
+            TableRowGroup rgDampers = new();
             Paragraph dampersHeader = DocUtil.GetDefaultHeader("Dampers");
             dampersHeader.FontStyle = FontStyles.Italic;
             rgDampers.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), dampersHeader, DocUtil.GetDefaultParagraph(), cells));
@@ -297,8 +297,8 @@ namespace RaceElement.Controls.Setup
 
 
             //// Aero
-            Section aeroBalanceSection = new Section();
-            TableRowGroup rgAero = new TableRowGroup();
+            Section aeroBalanceSection = new();
+            TableRowGroup rgAero = new();
             Paragraph aeroHeader = DocUtil.GetDefaultHeader("Aero Balance");
             aeroHeader.FontStyle = FontStyles.Italic;
             rgAero.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), aeroHeader, DocUtil.GetDefaultParagraph(), cells));
@@ -314,8 +314,8 @@ namespace RaceElement.Controls.Setup
             flowDocument.Blocks.Add(aeroBalanceSection);
 
             //// Electronics
-            Section electronicsSection = new Section();
-            TableRowGroup rgElectro = new TableRowGroup();
+            Section electronicsSection = new();
+            TableRowGroup rgElectro = new();
             Paragraph electroHeader = DocUtil.GetDefaultHeader("Electronics");
             electroHeader.FontStyle = FontStyles.Italic;
             rgElectro.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), electroHeader, DocUtil.GetDefaultParagraph(), cells));
@@ -332,8 +332,8 @@ namespace RaceElement.Controls.Setup
 
 
             //// Strategy
-            Section strategySection = new Section();
-            TableRowGroup rgStrategy = new TableRowGroup();
+            Section strategySection = new();
+            TableRowGroup rgStrategy = new();
             Paragraph strategyHeader = DocUtil.GetDefaultHeader("Strategy");
             strategyHeader.FontStyle = FontStyles.Italic;
             rgStrategy.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), strategyHeader, DocUtil.GetDefaultParagraph(), cells));

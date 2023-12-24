@@ -32,7 +32,7 @@ namespace RaceElement.Data.ACC.Database.Telemetry
         private bool _isRunning = false;
         private SPageFilePhysics _pagePhysics;
         private SPageFileGraphic _pageGraphics;
-        private readonly Dictionary<long, TelemetryPoint> _lapData = new Dictionary<long, TelemetryPoint>();
+        private readonly Dictionary<long, TelemetryPoint> _lapData = new();
 
         private TelemetryRecorder()
         {
@@ -60,7 +60,7 @@ namespace RaceElement.Data.ACC.Database.Telemetry
                 lock (_lapData)
                 {
                     LogWriter.WriteToLog($"TelemetryRecorder: Recorded {_lapData.Count} data points.");
-                    DbLapTelemetry lapTelemetry = new DbLapTelemetry()
+                    DbLapTelemetry lapTelemetry = new()
                     {
                         Id = Guid.NewGuid(),
                         LapId = e.Id,

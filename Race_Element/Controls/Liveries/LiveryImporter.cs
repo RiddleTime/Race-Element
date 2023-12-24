@@ -15,7 +15,7 @@ namespace RaceElement.Controls
     {
 
         private static int liveryCount = 0;
-        private static List<LiveryTreeCar> ImportedLiveries = new List<LiveryTreeCar>();
+        private static List<LiveryTreeCar> ImportedLiveries = new();
 
         public static void ImportLiveryZips(FileInfo file = null)
         {
@@ -40,7 +40,7 @@ namespace RaceElement.Controls
                     LiveryDisplayer.Instance.IsEnabled = false;
                 }));
 
-                Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+                Microsoft.Win32.OpenFileDialog dlg = new();
                 if (file == null)
                 {
                     // Set filter for file extension and default file extension 
@@ -57,7 +57,7 @@ namespace RaceElement.Controls
                         {
                             for (int i = 0; i < fileNames.Length; i++)
                             {
-                                FileInfo fi = new FileInfo(fileNames[i]);
+                                FileInfo fi = new(fileNames[i]);
                                 if (fi.Exists)
                                 {
                                     FileStream fs = fi.OpenRead();
@@ -227,7 +227,7 @@ namespace RaceElement.Controls
                                     }
 
                                 }
-                                LiveryTreeCar ltc = new LiveryTreeCar() { CarsFile = new FileInfo(carsJsonFileName), CarsRoot = carRoot };
+                                LiveryTreeCar ltc = new() { CarsFile = new FileInfo(carsJsonFileName), CarsRoot = carRoot };
                                 if (!ImportedLiveries.Contains(ltc))
                                 {
                                     ImportedLiveries.Add(ltc);
@@ -293,7 +293,7 @@ namespace RaceElement.Controls
                                     }
 
                                 }
-                                LiveryTreeCar ltc = new LiveryTreeCar() { CarsFile = new FileInfo(carsJsonFileName), CarsRoot = carRoot };
+                                LiveryTreeCar ltc = new() { CarsFile = new FileInfo(carsJsonFileName), CarsRoot = carRoot };
                                 if (!ImportedLiveries.Contains(ltc))
                                 {
                                     ImportedLiveries.Add(ltc);
@@ -333,7 +333,7 @@ namespace RaceElement.Controls
             string jsonString = string.Empty;
             try
             {
-                using (StreamReader reader = new StreamReader(stream))
+                using (StreamReader reader = new(stream))
                 {
                     jsonString = reader.ReadToEnd();
                     jsonString = jsonString.Replace("\0", "");

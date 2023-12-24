@@ -10,7 +10,7 @@ namespace RaceElement.Data.ACC.Database.Telemetry
     {
         public static Dictionary<long, TelemetryPoint> DeserializeLapData(this DbLapTelemetry dbLapTelemetry)
         {
-            Dictionary<long, TelemetryPoint> Data = new Dictionary<long, TelemetryPoint>();
+            Dictionary<long, TelemetryPoint> Data = new();
 
             try
             {

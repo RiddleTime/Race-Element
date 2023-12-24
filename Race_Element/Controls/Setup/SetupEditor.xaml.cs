@@ -131,9 +131,9 @@ namespace RaceElement.Controls
 
 
             // Front
-            StackPanel stackerFront = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFront = new() { Orientation = Orientation.Horizontal };
             stackerFront.Children.Add(new Label() { Content = "Splitter" });
-            ComboBox comboSplitter = new ComboBox() { Width = blockWidth - 11, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboSplitter = new() { Width = blockWidth - 11, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboSplitter.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.AeroSetupChanger.Splitter);
             comboSplitter.SelectedIndex = Setup.AdvancedSetup.AeroBalance.Splitter;
             comboSplitter.SelectionChanged += (s, e) => { Setup.AdvancedSetup.AeroBalance.Splitter = comboSplitter.SelectedIndex; };
@@ -141,9 +141,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerFront, 0);
 
             // Rear
-            StackPanel stackerRear = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRear = new() { Orientation = Orientation.Horizontal };
             stackerRear.Children.Add(new Label() { Content = "Wing" });
-            ComboBox comboRear = new ComboBox() { Width = blockWidth + 1, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboRear = new() { Width = blockWidth + 1, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboRear.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.AeroSetupChanger.RearWing);
             comboRear.SelectedIndex = Setup.AdvancedSetup.AeroBalance.RearWing;
             comboRear.SelectionChanged += (s, e) => { Setup.AdvancedSetup.AeroBalance.RearWing = comboRear.SelectedIndex; };
@@ -170,9 +170,9 @@ namespace RaceElement.Controls
 
 
             // Front
-            StackPanel stackerFront = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFront = new() { Orientation = Orientation.Horizontal };
             stackerFront.Children.Add(new Label() { Content = "Front" });
-            ComboBox comboFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboFL = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboFL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.AeroSetupChanger.BrakeDucts);
             comboFL.SelectedIndex = Setup.AdvancedSetup.AeroBalance.BrakeDuct[(int)Position.Front];
             comboFL.SelectionChanged += (s, e) => { Setup.AdvancedSetup.AeroBalance.BrakeDuct[(int)Position.Front] = comboFL.SelectedIndex; };
@@ -180,9 +180,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerFront, 0);
 
             // Rear
-            StackPanel stackerRear = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRear = new() { Orientation = Orientation.Horizontal };
             stackerRear.Children.Add(new Label() { Content = "Rear" });
-            ComboBox comboFR = new ComboBox() { Width = blockWidth + 4, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboFR = new() { Width = blockWidth + 4, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboFR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.AeroSetupChanger.BrakeDucts);
             comboFR.SelectedIndex = Setup.AdvancedSetup.AeroBalance.BrakeDuct[(int)Position.Rear];
             comboFR.SelectionChanged += (s, e) => { Setup.AdvancedSetup.AeroBalance.BrakeDuct[(int)Position.Rear] = comboFR.SelectedIndex; };
@@ -209,9 +209,9 @@ namespace RaceElement.Controls
 
 
             // Front
-            StackPanel stackerFront = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFront = new() { Orientation = Orientation.Horizontal };
             stackerFront.Children.Add(new Label() { Content = "Front" });
-            ComboBox comboFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboFL = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboFL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.AeroSetupChanger.RideHeightFront);
             comboFL.SelectedIndex = Setup.AdvancedSetup.AeroBalance.RideHeight[0];
             comboFL.SelectionChanged += (s, e) => { Setup.AdvancedSetup.AeroBalance.RideHeight[0] = comboFL.SelectedIndex; };
@@ -219,9 +219,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerFront, 0);
 
             // Rear
-            StackPanel stackerRear = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRear = new() { Orientation = Orientation.Horizontal };
             stackerRear.Children.Add(new Label() { Content = "Rear" });
-            ComboBox comboFR = new ComboBox() { Width = blockWidth + 4, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboFR = new() { Width = blockWidth + 4, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboFR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.AeroSetupChanger.RideHeightRear);
             comboFR.SelectedIndex = Setup.AdvancedSetup.AeroBalance.RideHeight[2];
             comboFR.SelectionChanged += (s, e) => { Setup.AdvancedSetup.AeroBalance.RideHeight[2] = comboFR.SelectedIndex; };
@@ -252,9 +252,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(settings, 1);
 
             // FL
-            StackPanel stackerFL = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFL = new() { Orientation = Orientation.Horizontal };
             stackerFL.Children.Add(new Label() { Content = "FL" });
-            ComboBox comboPressureFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboPressureFL = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboPressureFL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.ReboundFast);
             comboPressureFL.SelectedIndex = Setup.AdvancedSetup.Dampers.ReboundFast[(int)Wheel.FrontLeft];
             comboPressureFL.SelectionChanged += (s, e) => { Setup.AdvancedSetup.Dampers.ReboundFast[(int)Wheel.FrontLeft] = comboPressureFL.SelectedIndex; };
@@ -263,9 +263,9 @@ namespace RaceElement.Controls
 
 
             // FR
-            StackPanel stackerFR = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFR = new() { Orientation = Orientation.Horizontal };
             stackerFR.Children.Add(new Label() { Content = "FR" });
-            ComboBox comboPressureFR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboPressureFR = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboPressureFR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.ReboundFast);
             comboPressureFR.SelectedIndex = Setup.AdvancedSetup.Dampers.ReboundFast[(int)Wheel.FrontRight];
             comboPressureFR.SelectionChanged += (s, e) => { Setup.AdvancedSetup.Dampers.ReboundFast[(int)Wheel.FrontRight] = comboPressureFR.SelectedIndex; };
@@ -273,9 +273,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerFR, 1);
 
             // RL
-            StackPanel stackerRL = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRL = new() { Orientation = Orientation.Horizontal };
             stackerRL.Children.Add(new Label() { Content = "RL" });
-            ComboBox comboPressureRL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboPressureRL = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboPressureRL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.ReboundFast);
             comboPressureRL.SelectedIndex = Setup.AdvancedSetup.Dampers.ReboundFast[(int)Wheel.RearLeft];
             comboPressureRL.SelectionChanged += (s, e) => { Setup.AdvancedSetup.Dampers.ReboundFast[(int)Wheel.RearLeft] = comboPressureRL.SelectedIndex; };
@@ -283,9 +283,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerRL, 2);
 
             // RR
-            StackPanel stackerRR = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRR = new() { Orientation = Orientation.Horizontal };
             stackerRR.Children.Add(new Label() { Content = "RR" });
-            ComboBox comboPressureRR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboPressureRR = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboPressureRR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.ReboundFast);
             comboPressureRR.SelectedIndex = Setup.AdvancedSetup.Dampers.ReboundFast[(int)Wheel.RearRight];
             comboPressureRR.SelectionChanged += (s, e) => { Setup.AdvancedSetup.Dampers.ReboundFast[(int)Wheel.RearRight] = comboPressureRR.SelectedIndex; };
@@ -314,9 +314,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(settings, 1);
 
             // FL
-            StackPanel stackerFL = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFL = new() { Orientation = Orientation.Horizontal };
             stackerFL.Children.Add(new Label() { Content = "FL" });
-            ComboBox comboPressureFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboPressureFL = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboPressureFL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.ReboundSlow);
             comboPressureFL.SelectedIndex = Setup.AdvancedSetup.Dampers.ReboundSlow[(int)Wheel.FrontLeft];
             comboPressureFL.SelectionChanged += (s, e) => { Setup.AdvancedSetup.Dampers.ReboundSlow[(int)Wheel.FrontLeft] = comboPressureFL.SelectedIndex; };
@@ -325,9 +325,9 @@ namespace RaceElement.Controls
 
 
             // FR
-            StackPanel stackerFR = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFR = new() { Orientation = Orientation.Horizontal };
             stackerFR.Children.Add(new Label() { Content = "FR" });
-            ComboBox comboPressureFR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboPressureFR = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboPressureFR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.ReboundSlow);
             comboPressureFR.SelectedIndex = Setup.AdvancedSetup.Dampers.ReboundSlow[(int)Wheel.FrontRight];
             comboPressureFR.SelectionChanged += (s, e) => { Setup.AdvancedSetup.Dampers.ReboundSlow[(int)Wheel.FrontRight] = comboPressureFR.SelectedIndex; };
@@ -335,9 +335,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerFR, 1);
 
             // RL
-            StackPanel stackerRL = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRL = new() { Orientation = Orientation.Horizontal };
             stackerRL.Children.Add(new Label() { Content = "RL" });
-            ComboBox comboPressureRL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboPressureRL = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboPressureRL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.ReboundSlow);
             comboPressureRL.SelectedIndex = Setup.AdvancedSetup.Dampers.ReboundSlow[(int)Wheel.RearLeft];
             comboPressureRL.SelectionChanged += (s, e) => { Setup.AdvancedSetup.Dampers.ReboundSlow[(int)Wheel.RearLeft] = comboPressureRL.SelectedIndex; };
@@ -345,9 +345,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerRL, 2);
 
             // RR
-            StackPanel stackerRR = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRR = new() { Orientation = Orientation.Horizontal };
             stackerRR.Children.Add(new Label() { Content = "RR" });
-            ComboBox comboPressureRR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboPressureRR = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboPressureRR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.ReboundSlow);
             comboPressureRR.SelectedIndex = Setup.AdvancedSetup.Dampers.ReboundSlow[(int)Wheel.RearRight];
             comboPressureRR.SelectionChanged += (s, e) => { Setup.AdvancedSetup.Dampers.ReboundSlow[(int)Wheel.RearRight] = comboPressureRR.SelectedIndex; };
@@ -376,9 +376,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(settings, 1);
 
             // FL
-            StackPanel stackerFL = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFL = new() { Orientation = Orientation.Horizontal };
             stackerFL.Children.Add(new Label() { Content = "FL" });
-            ComboBox comboPressureFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboPressureFL = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboPressureFL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.BumpSlow);
             comboPressureFL.SelectedIndex = Setup.AdvancedSetup.Dampers.BumpSlow[(int)Wheel.FrontLeft];
             comboPressureFL.SelectionChanged += (s, e) => { Setup.AdvancedSetup.Dampers.BumpSlow[(int)Wheel.FrontLeft] = comboPressureFL.SelectedIndex; };
@@ -387,9 +387,9 @@ namespace RaceElement.Controls
 
 
             // FR
-            StackPanel stackerFR = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFR = new() { Orientation = Orientation.Horizontal };
             stackerFR.Children.Add(new Label() { Content = "FR" });
-            ComboBox comboPressureFR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboPressureFR = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboPressureFR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.BumpSlow);
             comboPressureFR.SelectedIndex = Setup.AdvancedSetup.Dampers.BumpSlow[(int)Wheel.FrontRight];
             comboPressureFR.SelectionChanged += (s, e) => { Setup.AdvancedSetup.Dampers.BumpSlow[(int)Wheel.FrontRight] = comboPressureFR.SelectedIndex; };
@@ -397,9 +397,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerFR, 1);
 
             // RL
-            StackPanel stackerRL = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRL = new() { Orientation = Orientation.Horizontal };
             stackerRL.Children.Add(new Label() { Content = "RL" });
-            ComboBox comboPressureRL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboPressureRL = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboPressureRL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.BumpSlow);
             comboPressureRL.SelectedIndex = Setup.AdvancedSetup.Dampers.BumpSlow[(int)Wheel.RearLeft];
             comboPressureRL.SelectionChanged += (s, e) => { Setup.AdvancedSetup.Dampers.BumpSlow[(int)Wheel.RearLeft] = comboPressureRL.SelectedIndex; };
@@ -407,9 +407,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerRL, 2);
 
             // RR
-            StackPanel stackerRR = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRR = new() { Orientation = Orientation.Horizontal };
             stackerRR.Children.Add(new Label() { Content = "RR" });
-            ComboBox comboPressureRR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboPressureRR = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboPressureRR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.BumpSlow);
             comboPressureRR.SelectedIndex = Setup.AdvancedSetup.Dampers.BumpSlow[(int)Wheel.RearRight];
             comboPressureRR.SelectionChanged += (s, e) => { Setup.AdvancedSetup.Dampers.BumpSlow[(int)Wheel.RearRight] = comboPressureRR.SelectedIndex; };
@@ -438,9 +438,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(settings, 1);
 
             // FL
-            StackPanel stackerFL = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFL = new() { Orientation = Orientation.Horizontal };
             stackerFL.Children.Add(new Label() { Content = "FL" });
-            ComboBox comboPressureFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboPressureFL = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboPressureFL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.BumpFast);
             comboPressureFL.SelectedIndex = Setup.AdvancedSetup.Dampers.BumpFast[(int)Wheel.FrontLeft];
             comboPressureFL.SelectionChanged += (s, e) => { Setup.AdvancedSetup.Dampers.BumpFast[(int)Wheel.FrontLeft] = comboPressureFL.SelectedIndex; };
@@ -449,9 +449,9 @@ namespace RaceElement.Controls
 
 
             // FR
-            StackPanel stackerFR = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFR = new() { Orientation = Orientation.Horizontal };
             stackerFR.Children.Add(new Label() { Content = "FR" });
-            ComboBox comboPressureFR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboPressureFR = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboPressureFR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.BumpFast);
             comboPressureFR.SelectedIndex = Setup.AdvancedSetup.Dampers.BumpFast[(int)Wheel.FrontRight];
             comboPressureFR.SelectionChanged += (s, e) => { Setup.AdvancedSetup.Dampers.BumpFast[(int)Wheel.FrontRight] = comboPressureFR.SelectedIndex; };
@@ -459,9 +459,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerFR, 1);
 
             // RL
-            StackPanel stackerRL = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRL = new() { Orientation = Orientation.Horizontal };
             stackerRL.Children.Add(new Label() { Content = "RL" });
-            ComboBox comboPressureRL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboPressureRL = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboPressureRL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.BumpFast);
             comboPressureRL.SelectedIndex = Setup.AdvancedSetup.Dampers.BumpFast[(int)Wheel.RearLeft];
             comboPressureRL.SelectionChanged += (s, e) => { Setup.AdvancedSetup.Dampers.BumpFast[(int)Wheel.RearLeft] = comboPressureRL.SelectedIndex; };
@@ -469,9 +469,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerRL, 2);
 
             // RR
-            StackPanel stackerRR = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRR = new() { Orientation = Orientation.Horizontal };
             stackerRR.Children.Add(new Label() { Content = "RR" });
-            ComboBox comboPressureRR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboPressureRR = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboPressureRR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.DamperSetupChanger.BumpFast);
             comboPressureRR.SelectedIndex = Setup.AdvancedSetup.Dampers.BumpFast[(int)Wheel.RearRight];
             comboPressureRR.SelectionChanged += (s, e) => { Setup.AdvancedSetup.Dampers.BumpFast[(int)Wheel.RearRight] = comboPressureRR.SelectedIndex; };
@@ -503,8 +503,8 @@ namespace RaceElement.Controls
             Grid.SetColumn(settings, 1);
 
 
-            StackPanel stackerEcuMap = new StackPanel { Orientation = Orientation.Horizontal };
-            ComboBox comboEcuMap = new ComboBox() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
+            StackPanel stackerEcuMap = new() { Orientation = Orientation.Horizontal };
+            ComboBox comboEcuMap = new() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboEcuMap.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.ElectronicsSetupChanger.EcuMap);
             comboEcuMap.SelectedIndex = Setup.BasicSetup.Electronics.ECUMap;
             comboEcuMap.SelectionChanged += (s, e) => { Setup.BasicSetup.Electronics.ECUMap = comboEcuMap.SelectedIndex; };
@@ -527,8 +527,8 @@ namespace RaceElement.Controls
             Grid.SetColumn(settings, 1);
 
 
-            StackPanel stackerABS = new StackPanel { Orientation = Orientation.Horizontal };
-            ComboBox comboABS = new ComboBox() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
+            StackPanel stackerABS = new() { Orientation = Orientation.Horizontal };
+            ComboBox comboABS = new() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboABS.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.ElectronicsSetupChanger.ABS);
             comboABS.SelectedIndex = Setup.BasicSetup.Electronics.Abs;
             comboABS.SelectionChanged += (s, e) => { Setup.BasicSetup.Electronics.Abs = comboABS.SelectedIndex; };
@@ -551,18 +551,18 @@ namespace RaceElement.Controls
             Grid.SetColumn(settings, 2);
 
 
-            StackPanel stackerTC = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerTC = new() { Orientation = Orientation.Horizontal };
             stackerTC.Children.Add(new Label() { Content = "TC1", ToolTip = "Traction Control" });
-            ComboBox comboTC = new ComboBox() { Width = 56, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboTC = new() { Width = 56, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboTC.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.ElectronicsSetupChanger.TractionControl);
             comboTC.SelectedIndex = Setup.BasicSetup.Electronics.TC1;
             comboTC.SelectionChanged += (s, e) => { Setup.BasicSetup.Electronics.TC1 = comboTC.SelectedIndex; };
             stackerTC.Children.Add(comboTC);
             Grid.SetColumn(stackerTC, 0);
 
-            StackPanel stackerTC2 = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerTC2 = new() { Orientation = Orientation.Horizontal };
             stackerTC2.Children.Add(new Label() { Content = "TC2", ToolTip = "Traction Control Cut" });
-            ComboBox comboTC2 = new ComboBox() { Width = 57, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboTC2 = new() { Width = 57, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboTC2.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.ElectronicsSetupChanger.TractionControlCut);
             comboTC2.SelectedIndex = Setup.BasicSetup.Electronics.TC2;
             comboTC2.SelectionChanged += (s, e) => { Setup.BasicSetup.Electronics.TC2 = comboTC2.SelectedIndex; };
@@ -589,8 +589,8 @@ namespace RaceElement.Controls
             Grid.SetColumn(settings, 1);
 
 
-            StackPanel stackerBrakeBias = new StackPanel { Orientation = Orientation.Horizontal };
-            ComboBox comboBrakeBias = new ComboBox() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
+            StackPanel stackerBrakeBias = new() { Orientation = Orientation.Horizontal };
+            ComboBox comboBrakeBias = new() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboBrakeBias.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.SteeringRatio);
             comboBrakeBias.SelectedIndex = Setup.BasicSetup.Alignment.SteerRatio;
             comboBrakeBias.SelectionChanged += (s, e) => { Setup.BasicSetup.Alignment.SteerRatio = comboBrakeBias.SelectedIndex; };
@@ -613,8 +613,8 @@ namespace RaceElement.Controls
             Grid.SetColumn(settings, 1);
 
 
-            StackPanel stackerBrakeBias = new StackPanel { Orientation = Orientation.Horizontal };
-            ComboBox comboBrakeBias = new ComboBox() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
+            StackPanel stackerBrakeBias = new() { Orientation = Orientation.Horizontal };
+            ComboBox comboBrakeBias = new() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboBrakeBias.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.BrakeBias);
             comboBrakeBias.SelectedIndex = Setup.AdvancedSetup.MechanicalBalance.BrakeBias;
             comboBrakeBias.SelectionChanged += (s, e) => { Setup.AdvancedSetup.MechanicalBalance.BrakeBias = comboBrakeBias.SelectedIndex; };
@@ -637,8 +637,8 @@ namespace RaceElement.Controls
             Grid.SetColumn(settings, 1);
 
 
-            StackPanel stackerBrakePower = new StackPanel { Orientation = Orientation.Horizontal };
-            ComboBox comboBrakePower = new ComboBox() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
+            StackPanel stackerBrakePower = new() { Orientation = Orientation.Horizontal };
+            ComboBox comboBrakePower = new() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboBrakePower.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.BrakePower);
             comboBrakePower.SelectedIndex = Setup.AdvancedSetup.MechanicalBalance.BrakeTorque;
             comboBrakePower.SelectionChanged += (s, e) => { Setup.AdvancedSetup.MechanicalBalance.BrakeTorque = comboBrakePower.SelectedIndex; };
@@ -661,8 +661,8 @@ namespace RaceElement.Controls
             Grid.SetColumn(settings, 1);
 
 
-            StackPanel stackerPreload = new StackPanel { Orientation = Orientation.Horizontal };
-            ComboBox comboPreload = new ComboBox() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
+            StackPanel stackerPreload = new() { Orientation = Orientation.Horizontal };
+            ComboBox comboPreload = new() { Width = 88, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboPreload.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.PreloadDifferential);
             comboPreload.SelectedIndex = Setup.AdvancedSetup.Drivetrain.Preload;
             comboPreload.SelectionChanged += (s, e) => { Setup.AdvancedSetup.Drivetrain.Preload = comboPreload.SelectedIndex; };
@@ -688,9 +688,9 @@ namespace RaceElement.Controls
 
 
             // FL
-            StackPanel stackerFront = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFront = new() { Orientation = Orientation.Horizontal };
             stackerFront.Children.Add(new Label() { Content = "Front" });
-            ComboBox comboFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboFL = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboFL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.AntiRollBarFront);
             comboFL.SelectedIndex = Setup.AdvancedSetup.MechanicalBalance.ARBFront;
             comboFL.SelectionChanged += (s, e) => { Setup.AdvancedSetup.MechanicalBalance.ARBFront = comboFL.SelectedIndex; };
@@ -698,9 +698,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerFront, 0);
 
             // FR
-            StackPanel stackerRear = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRear = new() { Orientation = Orientation.Horizontal };
             stackerRear.Children.Add(new Label() { Content = "Rear" });
-            ComboBox comboFR = new ComboBox() { Width = blockWidth + 4, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboFR = new() { Width = blockWidth + 4, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboFR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.AntiRollBarRear);
             comboFR.SelectedIndex = Setup.AdvancedSetup.MechanicalBalance.ARBRear;
             comboFR.SelectionChanged += (s, e) => { Setup.AdvancedSetup.MechanicalBalance.ARBRear = comboFR.SelectedIndex; };
@@ -727,9 +727,9 @@ namespace RaceElement.Controls
 
 
             // FL
-            StackPanel stackerFL = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFL = new() { Orientation = Orientation.Horizontal };
             stackerFL.Children.Add(new Label() { Content = "FL" });
-            ComboBox comboFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboFL = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboFL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.BumpstopRangeFronts);
             comboFL.SelectedIndex = Setup.AdvancedSetup.MechanicalBalance.BumpStopWindow[(int)Wheel.FrontLeft];
             comboFL.SelectionChanged += (s, e) => { Setup.AdvancedSetup.MechanicalBalance.BumpStopWindow[(int)Wheel.FrontLeft] = comboFL.SelectedIndex; };
@@ -737,9 +737,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerFL, 0);
 
             // FR
-            StackPanel stackerFR = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFR = new() { Orientation = Orientation.Horizontal };
             stackerFR.Children.Add(new Label() { Content = "FR" });
-            ComboBox comboFR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboFR = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboFR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.BumpstopRangeFronts);
             comboFR.SelectedIndex = Setup.AdvancedSetup.MechanicalBalance.BumpStopWindow[(int)Wheel.FrontRight];
             comboFR.SelectionChanged += (s, e) => { Setup.AdvancedSetup.MechanicalBalance.BumpStopWindow[(int)Wheel.FrontRight] = comboFR.SelectedIndex; };
@@ -747,9 +747,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerFR, 1);
 
             // RL
-            StackPanel stackerRL = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRL = new() { Orientation = Orientation.Horizontal };
             stackerRL.Children.Add(new Label() { Content = "RL" });
-            ComboBox comboRL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboRL = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboRL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.BumpstopRangeRears);
             comboRL.SelectedIndex = Setup.AdvancedSetup.MechanicalBalance.BumpStopWindow[(int)Wheel.RearLeft];
             comboRL.SelectionChanged += (s, e) => { Setup.AdvancedSetup.MechanicalBalance.BumpStopWindow[(int)Wheel.RearLeft] = comboRL.SelectedIndex; };
@@ -757,9 +757,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerRL, 2);
 
             // RR
-            StackPanel stackerRR = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRR = new() { Orientation = Orientation.Horizontal };
             stackerRR.Children.Add(new Label() { Content = "RR" });
-            ComboBox comboRR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboRR = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboRR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.BumpstopRangeRears);
             comboRR.SelectedIndex = Setup.AdvancedSetup.MechanicalBalance.BumpStopWindow[(int)Wheel.RearRight];
             comboRR.SelectionChanged += (s, e) => { Setup.AdvancedSetup.MechanicalBalance.BumpStopWindow[(int)Wheel.RearRight] = comboRR.SelectedIndex; };
@@ -787,9 +787,9 @@ namespace RaceElement.Controls
 
 
             // FL
-            StackPanel stackerFL = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFL = new() { Orientation = Orientation.Horizontal };
             stackerFL.Children.Add(new Label() { Content = "FL" });
-            ComboBox comboFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboFL = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboFL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.BumpstopRate);
             comboFL.SelectedIndex = Setup.AdvancedSetup.MechanicalBalance.BumpStopRateUp[(int)Wheel.FrontLeft];
             comboFL.SelectionChanged += (s, e) => { Setup.AdvancedSetup.MechanicalBalance.BumpStopRateUp[(int)Wheel.FrontLeft] = comboFL.SelectedIndex; };
@@ -797,9 +797,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerFL, 0);
 
             // FR
-            StackPanel stackerFR = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFR = new() { Orientation = Orientation.Horizontal };
             stackerFR.Children.Add(new Label() { Content = "FR" });
-            ComboBox comboFR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboFR = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboFR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.BumpstopRate);
             comboFR.SelectedIndex = Setup.AdvancedSetup.MechanicalBalance.BumpStopRateUp[(int)Wheel.FrontRight];
             comboFR.SelectionChanged += (s, e) => { Setup.AdvancedSetup.MechanicalBalance.BumpStopRateUp[(int)Wheel.FrontRight] = comboFR.SelectedIndex; };
@@ -807,9 +807,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerFR, 1);
 
             // RL
-            StackPanel stackerRL = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRL = new() { Orientation = Orientation.Horizontal };
             stackerRL.Children.Add(new Label() { Content = "RL" });
-            ComboBox comboRL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboRL = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboRL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.BumpstopRate);
             comboRL.SelectedIndex = Setup.AdvancedSetup.MechanicalBalance.BumpStopRateUp[(int)Wheel.RearLeft];
             comboRL.SelectionChanged += (s, e) => { Setup.AdvancedSetup.MechanicalBalance.BumpStopRateUp[(int)Wheel.RearLeft] = comboRL.SelectedIndex; };
@@ -817,9 +817,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerRL, 2);
 
             // RR
-            StackPanel stackerRR = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRR = new() { Orientation = Orientation.Horizontal };
             stackerRR.Children.Add(new Label() { Content = "RR" });
-            ComboBox comboRR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboRR = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboRR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.BumpstopRate);
             comboRR.SelectedIndex = Setup.AdvancedSetup.MechanicalBalance.BumpStopRateUp[(int)Wheel.RearRight];
             comboRR.SelectionChanged += (s, e) => { Setup.AdvancedSetup.MechanicalBalance.BumpStopRateUp[(int)Wheel.RearRight] = comboRR.SelectedIndex; };
@@ -846,9 +846,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(settings, 1);
 
             // FL
-            StackPanel stackerFL = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFL = new() { Orientation = Orientation.Horizontal };
             stackerFL.Children.Add(new Label() { Content = "FL" });
-            ComboBox comboFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboFL = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboFL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.WheelRateFronts);
             comboFL.SelectedIndex = Setup.AdvancedSetup.MechanicalBalance.WheelRate[(int)Wheel.FrontLeft];
             comboFL.SelectionChanged += (s, e) => { Setup.AdvancedSetup.MechanicalBalance.WheelRate[(int)Wheel.FrontLeft] = comboFL.SelectedIndex; };
@@ -856,9 +856,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerFL, 0);
 
             // FR
-            StackPanel stackerFR = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFR = new() { Orientation = Orientation.Horizontal };
             stackerFR.Children.Add(new Label() { Content = "FR" });
-            ComboBox comboFR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboFR = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboFR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.WheelRateFronts);
             comboFR.SelectedIndex = Setup.AdvancedSetup.MechanicalBalance.WheelRate[(int)Wheel.FrontRight];
             comboFR.SelectionChanged += (s, e) => { Setup.AdvancedSetup.MechanicalBalance.WheelRate[(int)Wheel.FrontRight] = comboFR.SelectedIndex; };
@@ -866,9 +866,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerFR, 1);
 
             // RL
-            StackPanel stackerRL = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRL = new() { Orientation = Orientation.Horizontal };
             stackerRL.Children.Add(new Label() { Content = "RL" });
-            ComboBox comboRL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboRL = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboRL.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.WheelRateRears);
             comboRL.SelectedIndex = Setup.AdvancedSetup.MechanicalBalance.WheelRate[(int)Wheel.RearLeft];
             comboRL.SelectionChanged += (s, e) => { Setup.AdvancedSetup.MechanicalBalance.WheelRate[(int)Wheel.RearLeft] = comboRL.SelectedIndex; };
@@ -876,9 +876,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerRL, 2);
 
             // RR
-            StackPanel stackerRR = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRR = new() { Orientation = Orientation.Horizontal };
             stackerRR.Children.Add(new Label() { Content = "RR" });
-            ComboBox comboRR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboRR = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboRR.ItemsSource = SetupIntRange.GetOptionsCollection(SetupChanger.MechanicalSetupChanger.WheelRateRears);
             comboRR.SelectedIndex = Setup.AdvancedSetup.MechanicalBalance.WheelRate[(int)Wheel.RearRight];
             comboRR.SelectionChanged += (s, e) => { Setup.AdvancedSetup.MechanicalBalance.WheelRate[(int)Wheel.RearRight] = comboRR.SelectedIndex; };
@@ -910,9 +910,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(settings, 1);
 
             // FL
-            StackPanel stackerFL = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFL = new() { Orientation = Orientation.Horizontal };
             stackerFL.Children.Add(new Label() { Content = "FL" });
-            ComboBox comboPressureFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboPressureFL = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboPressureFL.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.TyrePressures);
             comboPressureFL.SelectedIndex = Setup.BasicSetup.Tyres.TyrePressure[(int)Wheel.FrontLeft];
             comboPressureFL.SelectionChanged += (s, e) => { Setup.BasicSetup.Tyres.TyrePressure[(int)Wheel.FrontLeft] = comboPressureFL.SelectedIndex; };
@@ -921,9 +921,9 @@ namespace RaceElement.Controls
 
 
             // FR
-            StackPanel stackerFR = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFR = new() { Orientation = Orientation.Horizontal };
             stackerFR.Children.Add(new Label() { Content = "FR" });
-            ComboBox comboPressureFR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboPressureFR = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboPressureFR.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.TyrePressures);
             comboPressureFR.SelectedIndex = Setup.BasicSetup.Tyres.TyrePressure[(int)Wheel.FrontRight];
             comboPressureFR.SelectionChanged += (s, e) => { Setup.BasicSetup.Tyres.TyrePressure[(int)Wheel.FrontRight] = comboPressureFR.SelectedIndex; };
@@ -931,9 +931,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerFR, 1);
 
             // RL
-            StackPanel stackerRL = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRL = new() { Orientation = Orientation.Horizontal };
             stackerRL.Children.Add(new Label() { Content = "RL" });
-            ComboBox comboPressureRL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboPressureRL = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboPressureRL.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.TyrePressures);
             comboPressureRL.SelectedIndex = Setup.BasicSetup.Tyres.TyrePressure[(int)Wheel.RearLeft];
             comboPressureRL.SelectionChanged += (s, e) => { Setup.BasicSetup.Tyres.TyrePressure[(int)Wheel.RearLeft] = comboPressureRL.SelectedIndex; };
@@ -941,9 +941,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerRL, 2);
 
             // RR
-            StackPanel stackerRR = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRR = new() { Orientation = Orientation.Horizontal };
             stackerRR.Children.Add(new Label() { Content = "RR" });
-            ComboBox comboPressureRR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboPressureRR = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboPressureRR.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.TyrePressures);
             comboPressureRR.SelectedIndex = Setup.BasicSetup.Tyres.TyrePressure[(int)Wheel.RearRight];
             comboPressureRR.SelectionChanged += (s, e) => { Setup.BasicSetup.Tyres.TyrePressure[(int)Wheel.RearRight] = comboPressureRR.SelectedIndex; };
@@ -971,9 +971,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(settings, 1);
 
             // FL
-            StackPanel stackerFL = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFL = new() { Orientation = Orientation.Horizontal };
             stackerFL.Children.Add(new Label() { Content = "FL" });
-            ComboBox comboToeFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboToeFL = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboToeFL.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.CamberFront);
             comboToeFL.SelectedIndex = Setup.BasicSetup.Alignment.Camber[(int)Wheel.FrontLeft];
             comboToeFL.SelectionChanged += (s, e) => { Setup.BasicSetup.Alignment.Camber[(int)Wheel.FrontLeft] = comboToeFL.SelectedIndex; };
@@ -981,9 +981,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerFL, 0);
 
             // FR
-            StackPanel stackerFR = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFR = new() { Orientation = Orientation.Horizontal };
             stackerFR.Children.Add(new Label() { Content = "FR" });
-            ComboBox comboToeFR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboToeFR = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboToeFR.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.CamberFront);
             comboToeFR.SelectedIndex = Setup.BasicSetup.Alignment.Camber[(int)Wheel.FrontRight];
             comboToeFR.SelectionChanged += (s, e) => { Setup.BasicSetup.Alignment.Camber[(int)Wheel.FrontRight] = comboToeFR.SelectedIndex; };
@@ -991,9 +991,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerFR, 1);
 
             // RL
-            StackPanel stackerRL = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRL = new() { Orientation = Orientation.Horizontal };
             stackerRL.Children.Add(new Label() { Content = "RL" });
-            ComboBox comboToeRL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboToeRL = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboToeRL.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.CamberRear);
             comboToeRL.SelectedIndex = Setup.BasicSetup.Alignment.Camber[(int)Wheel.RearLeft];
             comboToeRL.SelectionChanged += (s, e) => { Setup.BasicSetup.Alignment.Camber[(int)Wheel.RearLeft] = comboToeRL.SelectedIndex; };
@@ -1001,9 +1001,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerRL, 2);
 
             // RR
-            StackPanel stackerRR = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRR = new() { Orientation = Orientation.Horizontal };
             stackerRR.Children.Add(new Label() { Content = "RR" });
-            ComboBox comboToeRR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboToeRR = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboToeRR.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.CamberRear);
             comboToeRR.SelectedIndex = Setup.BasicSetup.Alignment.Camber[(int)Wheel.RearRight];
             comboToeRR.SelectionChanged += (s, e) => { Setup.BasicSetup.Alignment.Camber[(int)Wheel.RearRight] = comboToeRR.SelectedIndex; };
@@ -1031,9 +1031,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(settings, 1);
 
             // LF
-            StackPanel stackerCasterLF = new StackPanel() { Orientation = Orientation.Horizontal };
+            StackPanel stackerCasterLF = new() { Orientation = Orientation.Horizontal };
             stackerCasterLF.Children.Add(new Label() { Content = "FL" });
-            ComboBox comboCasterLF = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboCasterLF = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboCasterLF.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.Caster);
             comboCasterLF.SelectedIndex = Setup.BasicSetup.Alignment.CasterLF;
             comboCasterLF.SelectionChanged += (s, e) => { Setup.BasicSetup.Alignment.CasterLF = comboCasterLF.SelectedIndex; };
@@ -1041,9 +1041,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerCasterLF, 0);
 
             // RF
-            StackPanel stackerCasterRF = new StackPanel() { Orientation = Orientation.Horizontal };
+            StackPanel stackerCasterRF = new() { Orientation = Orientation.Horizontal };
             stackerCasterRF.Children.Add(new Label() { Content = "FR" });
-            ComboBox comboCasterRF = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboCasterRF = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboCasterRF.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.Caster);
             comboCasterRF.SelectedIndex = Setup.BasicSetup.Alignment.CasterRF;
             comboCasterRF.SelectionChanged += (s, e) => { Setup.BasicSetup.Alignment.CasterRF = comboCasterRF.SelectedIndex; };
@@ -1068,9 +1068,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(settings, 1);
 
             // FL
-            StackPanel stackerFL = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFL = new() { Orientation = Orientation.Horizontal };
             stackerFL.Children.Add(new Label() { Content = "FL" });
-            ComboBox comboCasterFL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboCasterFL = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboCasterFL.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.ToeFront);
             comboCasterFL.SelectedIndex = Setup.BasicSetup.Alignment.Toe[(int)Wheel.FrontLeft];
             comboCasterFL.SelectionChanged += (s, e) => { Setup.BasicSetup.Alignment.Camber[(int)Wheel.FrontLeft] = comboCasterFL.SelectedIndex; };
@@ -1078,9 +1078,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerFL, 0);
 
             // FR
-            StackPanel stackerFR = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerFR = new() { Orientation = Orientation.Horizontal };
             stackerFR.Children.Add(new Label() { Content = "FR" });
-            ComboBox comboCasterFR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboCasterFR = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboCasterFR.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.ToeFront);
             comboCasterFR.SelectedIndex = Setup.BasicSetup.Alignment.Toe[(int)Wheel.FrontRight];
             comboCasterFR.SelectionChanged += (s, e) => { Setup.BasicSetup.Alignment.Camber[(int)Wheel.FrontRight] = comboCasterFR.SelectedIndex; };
@@ -1088,9 +1088,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerFR, 1);
 
             // RL
-            StackPanel stackerRL = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRL = new() { Orientation = Orientation.Horizontal };
             stackerRL.Children.Add(new Label() { Content = "RL" });
-            ComboBox comboCasterRL = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right }; ;
+            ComboBox comboCasterRL = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right }; ;
             comboCasterRL.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.ToeRear);
             comboCasterRL.SelectedIndex = Setup.BasicSetup.Alignment.Toe[(int)Wheel.RearLeft];
             comboCasterRL.SelectionChanged += (s, e) => { Setup.BasicSetup.Alignment.Camber[(int)Wheel.RearLeft] = comboCasterRL.SelectedIndex; };
@@ -1098,9 +1098,9 @@ namespace RaceElement.Controls
             Grid.SetColumn(stackerRL, 2);
 
             // RR
-            StackPanel stackerRR = new StackPanel { Orientation = Orientation.Horizontal };
+            StackPanel stackerRR = new() { Orientation = Orientation.Horizontal };
             stackerRR.Children.Add(new Label() { Content = "RR" });
-            ComboBox comboCasterRR = new ComboBox() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
+            ComboBox comboCasterRR = new() { Width = blockWidth, HorizontalContentAlignment = HorizontalAlignment.Right };
             comboCasterRR.ItemsSource = SetupDoubleRange.GetOptionsCollection(SetupChanger.TyreSetupChanger.ToeRear);
             comboCasterRR.SelectedIndex = Setup.BasicSetup.Alignment.Toe[(int)Wheel.RearRight];
             comboCasterRR.SelectionChanged += (s, e) => { Setup.BasicSetup.Alignment.Camber[(int)Wheel.RearRight] = comboCasterRR.SelectedIndex; };
@@ -1121,7 +1121,7 @@ namespace RaceElement.Controls
 
         private Grid GetMainGrid(string label, int labelWidth)
         {
-            Grid grid = new Grid()
+            Grid grid = new()
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 ColumnDefinitions = {
@@ -1136,7 +1136,7 @@ namespace RaceElement.Controls
 
         private Grid GetGrid(int columnCount, int columnWidth)
         {
-            Grid customGrid = new Grid()
+            Grid customGrid = new()
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
             };
@@ -1172,7 +1172,7 @@ namespace RaceElement.Controls
             {
                 using (FileStream fileStream = file.OpenRead())
                 {
-                    using (StreamReader reader = new StreamReader(fileStream))
+                    using (StreamReader reader = new(fileStream))
                     {
                         jsonString = reader.ReadToEnd();
                         reader.Close();

@@ -36,9 +36,9 @@ namespace RaceElement.HUD.Overlay.Internal
         #region #  Fields  #
         protected bool _disposed = false;
         private byte _alpha = 255;
-        private Size _size = new Size(250, 50);
+        private Size _size = new(250, 50);
         private Rectangle _drawingRect;
-        private Point _location = new Point(50, 50);
+        private Point _location = new(50, 50);
         #endregion
 
         #region #  Methods  #
@@ -63,7 +63,7 @@ namespace RaceElement.HUD.Overlay.Internal
         {
             try
             {
-                using Bitmap bitmap = new Bitmap(this.Size.Width, this.Size.Height, PixelFormat.Format32bppPArgb);
+                using Bitmap bitmap = new(this.Size.Width, this.Size.Height, PixelFormat.Format32bppPArgb);
                 using Graphics graphics = Graphics.FromImage(bitmap);
 
                 POINT point1;
@@ -315,7 +315,7 @@ namespace RaceElement.HUD.Overlay.Internal
             this._location = Monitors.IsInsideMonitor(nX, nY, this._size.Width, this._size.Height, this.Handle);
             Size size1 = this._size;
             Point point1 = this._location;
-            CreateParams params1 = new CreateParams();
+            CreateParams params1 = new();
             params1.Caption = Name;
             params1.X = _location.X;
             params1.Y = _location.Y;
@@ -372,7 +372,7 @@ namespace RaceElement.HUD.Overlay.Internal
                 rectangle1 = new Rectangle(0, 0, rect1.right - rect1.left, rect1.bottom - rect1.top);
                 using (Graphics graphics1 = Graphics.FromHdc(ptr1))
                 {
-                    Bitmap bitmap1 = new Bitmap(rectangle1.Width, rectangle1.Height);
+                    Bitmap bitmap1 = new(rectangle1.Width, rectangle1.Height);
                     using (Graphics graphics2 = Graphics.FromImage(bitmap1))
                         this.PerformPaint(new PaintEventArgs(graphics2, rectangle1));
                     graphics1.DrawImageUnscaled(bitmap1, 0, 0);
@@ -405,7 +405,7 @@ namespace RaceElement.HUD.Overlay.Internal
             POINT point1 = GetCursorPosition();
             point1.X -= _location.X;
             point1.Y -= _location.Y;
-            Rectangle rect = new Rectangle(_location.Y, _location.X, _size.Width, _size.Height);
+            Rectangle rect = new(_location.Y, _location.X, _size.Width, _size.Height);
             if (!rect.Contains(point1.X, point1.Y))
                 return false;
 
@@ -452,7 +452,7 @@ namespace RaceElement.HUD.Overlay.Internal
                         this.OnMouseEnter();
                         this.isMouseIn = true;
                     }
-                    Point p6 = new Point(m.LParam.ToInt32());
+                    Point p6 = new(m.LParam.ToInt32());
                     this.OnMouseMove(new MouseEventArgs(Control.MouseButtons, 1, p6.X, p6.X, 0));
                     if (this.onMouseMove)
                     {
@@ -487,7 +487,7 @@ namespace RaceElement.HUD.Overlay.Internal
                 case 0x202: // WM_LBUTTONUP
                     {
                         //Debug.WriteLine("WM_LBUTTONUP");
-                        Point p = new Point(m.LParam.ToInt32());
+                        Point p = new(m.LParam.ToInt32());
                         this.OnMouseUp(new MouseEventArgs(Control.MouseButtons, 1, p.X, p.Y, 0));
                         if (this.onMouseUp)
                         {
@@ -622,7 +622,7 @@ namespace RaceElement.HUD.Overlay.Internal
         private void PerformWmMouseMove(ref Message m)
         {
             Point p = Control.MousePosition;
-            POINT point1 = new POINT();
+            POINT point1 = new();
             point1.X = p.X;
             point1.Y = p.Y;
             point1 = this.MousePositionToClient(point1);
@@ -797,7 +797,7 @@ namespace RaceElement.HUD.Overlay.Internal
                 if (base.Handle != IntPtr.Zero)
                 {
                     this.SetBoundsCore(value.X, value.Y, this._size.Width, this._size.Height);
-                    RECT rect = new RECT();
+                    RECT rect = new();
                     User32.GetWindowRect(base.Handle, ref rect);
                     this._location = new Point(rect.left, rect.top);
                     //this.UpdateLayeredWindow();
@@ -819,7 +819,7 @@ namespace RaceElement.HUD.Overlay.Internal
                 if (base.Handle != IntPtr.Zero)
                 {
                     this.SetBoundsCore(this._location.X, this._location.Y, value.Width, value.Height);
-                    RECT rect = new RECT();
+                    RECT rect = new();
                     User32.GetWindowRect(base.Handle, ref rect);
                     this._size = new Size(rect.right - rect.left, rect.bottom - rect.top);
                     //this.UpdateLayeredWindow();

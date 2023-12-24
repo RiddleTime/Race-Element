@@ -6,7 +6,7 @@ namespace RaceElement.Data.ACC.Config
 {
     public class MenuSettingsService
     {
-        private readonly MenuSettings cameraSettings = new MenuSettings();
+        private readonly MenuSettings cameraSettings = new();
 
         public MenuSettings Settings() => cameraSettings;
 
@@ -24,7 +24,7 @@ namespace RaceElement.Data.ACC.Config
 
             public override string FileName => "menuSettings.json";
 
-            public override MenuSettingsJson Default() => new MenuSettingsJson();
+            public override MenuSettingsJson Default() => new();
         }
 
         public class MenuSettingsJson : IGenericSettingsJson

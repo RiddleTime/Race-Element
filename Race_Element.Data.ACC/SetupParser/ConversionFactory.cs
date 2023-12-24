@@ -68,7 +68,7 @@ namespace RaceElement.Data
             Porsche_992_GT3_R_2023
         }
 
-        private static readonly Dictionary<CarModels, ISetupChanger> Changers = new Dictionary<CarModels, ISetupChanger>()
+        private static readonly Dictionary<CarModels, ISetupChanger> Changers = new()
         {
             // GT3
             {Aston_Martin_V8_Vantage_GT3_2019, new AMRV8VantageGT3() },
@@ -130,7 +130,7 @@ namespace RaceElement.Data
             return null;
         }
 
-        private static readonly Dictionary<CarModels, ICarSetupConversion> Conversions = new Dictionary<CarModels, ICarSetupConversion>()
+        private static readonly Dictionary<CarModels, ICarSetupConversion> Conversions = new()
         {
             // GT3
             {Aston_Martin_V8_Vantage_GT3_2019, new AMRV8VantageGT3() },
@@ -197,7 +197,7 @@ namespace RaceElement.Data
 
         public static List<string> GetAllNamesByClass(CarClasses carClass)
         {
-            List<string> classNames = new List<string>();
+            List<string> classNames = new();
             Conversions.ToList().ForEach(x =>
             {
                 if (x.Value.CarClass == carClass)
@@ -209,7 +209,7 @@ namespace RaceElement.Data
             return classNames;
         }
 
-        public static readonly Dictionary<CarModels, string> CarModelToCarName = new Dictionary<CarModels, string>() {
+        public static readonly Dictionary<CarModels, string> CarModelToCarName = new() {
             {None, "Unknown car model" },
             {Alpine_A110_GT4_2018, "Alpine A110 GT4 2018" },
             {Aston_Martin_V8_Vantage_GT3_2019, "Aston Martin V8 Vantage GT3 2019" },
@@ -267,7 +267,7 @@ namespace RaceElement.Data
             return name;
         }
 
-        public static readonly Dictionary<string, CarModels> ParseNames = new Dictionary<string, CarModels>()
+        public static readonly Dictionary<string, CarModels> ParseNames = new()
         {
             {"alpine_a110_gt4", Alpine_A110_GT4_2018 },
             {"amr_v8_vantage_gt3", Aston_Martin_V8_Vantage_GT3_2019 },
@@ -325,7 +325,7 @@ namespace RaceElement.Data
             else return None;
         }
 
-        public static readonly Dictionary<int, CarModels> IdsToCarModel = new Dictionary<int, CarModels>()
+        public static readonly Dictionary<int, CarModels> IdsToCarModel = new()
         {
             {0, Porsche_911_GT3_R_2018 },
             {1, Mercedes_AMG_GT3_2015 },
@@ -404,7 +404,7 @@ namespace RaceElement.Data
             {
                 using (FileStream fileStream = jsonFile.OpenRead())
                 {
-                    using (StreamReader reader = new StreamReader(fileStream))
+                    using (StreamReader reader = new(fileStream))
                     {
                         jsonString = reader.ReadToEnd();
                         reader.Close();
@@ -424,7 +424,7 @@ namespace RaceElement.Data
 
         public static Root GetSetupJsonRoot(string file)
         {
-            FileInfo jsonFile = new FileInfo(file);
+            FileInfo jsonFile = new(file);
             if (!jsonFile.Exists)
                 return null;
 

@@ -20,8 +20,8 @@ namespace RaceElement.Controls
         private readonly AccSettings _accSettings;
         private AccSettingsJson _accSettingsJson;
 
-        private readonly AccServerListSettingsJson _accServerListSettingsJson = new AccServerListSettingsJson();
-        private readonly UnlistedServersSettingsJson _unlistedServerSettingsJson = new UnlistedServersSettingsJson();
+        private readonly AccServerListSettingsJson _accServerListSettingsJson = new();
+        private readonly UnlistedServersSettingsJson _unlistedServerSettingsJson = new();
 
         public AccServerListSettings()
         {
@@ -38,30 +38,30 @@ namespace RaceElement.Controls
         {
             stackPanelServerDescription.Children.Clear();
 
-            StackPanel namePanel = new StackPanel() { Orientation = Orientation.Horizontal };
-            Label nameLabel = new Label() { Content = "Name", Width = 80 };
-            TextBox nameBox = new TextBox() { Width = 150 };
+            StackPanel namePanel = new() { Orientation = Orientation.Horizontal };
+            Label nameLabel = new() { Content = "Name", Width = 80 };
+            TextBox nameBox = new() { Width = 150 };
             namePanel.Children.Add(nameLabel);
             namePanel.Children.Add(nameBox);
 
-            StackPanel descriptionPanel = new StackPanel() { Orientation = Orientation.Horizontal };
-            Label descriptionLabel = new Label() { Content = "Description", Width = 80 };
-            TextBox descriptionBox = new TextBox() { Width = 150 };
+            StackPanel descriptionPanel = new() { Orientation = Orientation.Horizontal };
+            Label descriptionLabel = new() { Content = "Description", Width = 80 };
+            TextBox descriptionBox = new() { Width = 150 };
             descriptionPanel.Children.Add(descriptionLabel);
             descriptionPanel.Children.Add(descriptionBox);
 
 
-            StackPanel serverPanel = new StackPanel() { Orientation = Orientation.Horizontal };
-            Label serverLabel = new Label() { Content = "Server", Width = 80 };
-            TextBox serverBox = new TextBox() { Width = 150 };
+            StackPanel serverPanel = new() { Orientation = Orientation.Horizontal };
+            Label serverLabel = new() { Content = "Server", Width = 80 };
+            TextBox serverBox = new() { Width = 150 };
             serverPanel.Children.Add(serverLabel);
             serverPanel.Children.Add(serverBox);
 
-            StackPanel buttonPanel = new StackPanel() { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 10, 0, 0) };
-            Button saveButton = new Button() { Content = "Save" };
+            StackPanel buttonPanel = new() { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 10, 0, 0) };
+            Button saveButton = new() { Content = "Save" };
             saveButton.Click += (s, ev) =>
             {
-                UnlistedAccServer newServer = new UnlistedAccServer()
+                UnlistedAccServer newServer = new()
                 {
                     Name = nameBox.Text,
                     Description = descriptionBox.Text,
@@ -80,7 +80,7 @@ namespace RaceElement.Controls
                 }
             };
             buttonPanel.Children.Add(saveButton);
-            Button cancelButton = new Button() { Content = "Cancel", Margin = new Thickness(5, 0, 0, 0) };
+            Button cancelButton = new() { Content = "Cancel", Margin = new Thickness(5, 0, 0, 0) };
             cancelButton.Click += (s, ev) => stackPanelServerDescription.Children.Clear();
             buttonPanel.Children.Add(cancelButton);
 
@@ -98,11 +98,11 @@ namespace RaceElement.Controls
 
                 var unlistedServer = ((listViewServers.SelectedItem as ListViewItem).DataContext as UnlistedAccServer);
 
-                StackPanel togglePanel = new StackPanel() { Orientation = Orientation.Horizontal, Cursor = Cursors.Hand };
-                ToggleButton toggle = new ToggleButton();
+                StackPanel togglePanel = new() { Orientation = Orientation.Horizontal, Cursor = Cursors.Hand };
+                ToggleButton toggle = new();
                 if (_accSettingsJson.UnlistedAccServer == unlistedServer.Guid)
                     toggle.IsChecked = true;
-                Label toggleLabel = new Label() { Content = toggle.IsChecked.Value ? " Deactivate" : " Activate" };
+                Label toggleLabel = new() { Content = toggle.IsChecked.Value ? " Deactivate" : " Activate" };
 
                 toggle.Checked += (s, ev) =>
                 {
@@ -156,7 +156,7 @@ namespace RaceElement.Controls
             if (unlistedServersJson.UnlistedServers != null)
                 foreach (var unlistedAccServer in unlistedServersJson.UnlistedServers)
                 {
-                    TextBlock serverTextBlock = new TextBlock()
+                    TextBlock serverTextBlock = new()
                     {
                         Text = $"{unlistedAccServer.Name}",
                         Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
@@ -165,7 +165,7 @@ namespace RaceElement.Controls
                     if (unlistedAccServer.Guid == _accSettingsJson.UnlistedAccServer)
                         serverTextBlock.Foreground = Brushes.Green;
 
-                    ListViewItem listItem = new ListViewItem
+                    ListViewItem listItem = new()
                     {
                         Content = serverTextBlock,
                         DataContext = unlistedAccServer,

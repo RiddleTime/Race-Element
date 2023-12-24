@@ -21,7 +21,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
             OverlayType = OverlayType.Drive)]
     internal sealed class CornerDataOverlay : AbstractOverlay
     {
-        internal readonly CornerDataConfiguration _config = new CornerDataConfiguration();
+        internal readonly CornerDataConfiguration _config = new();
 
         internal class CornerData
         {
@@ -57,7 +57,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
             pageStatic.Track = trackKyalami.GameName;
             _currentTrack = GetCurrentTrack();
 
-            Random rand = new Random();
+            Random rand = new();
             int delta = rand.Next(-200, 600);
             for (int i = 1; i < _currentTrack.CornerNames.Count + 1; i++)
             {
@@ -95,7 +95,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
             _collector = new CornerDataCollector();
 
             // create info table based on selected config
-            List<int> columnWidths = new List<int> { 90 }; // delta
+            List<int> columnWidths = new() { 90 }; // delta
 
             if (_config.Data.MinimumSpeed)
             {
@@ -211,8 +211,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
                 {
                     isInCorner = true;
 
-                    List<string> columns = new List<string>();
-                    List<Color> colors = new List<Color>();
+                    List<string> columns = new();
+                    List<Color> colors = new();
 
                     // add delta column
                     int delta = -(_currentCorner.EntryDeltaMilliseconds - pageGraphics.DeltaLapTimeMillis);
@@ -262,8 +262,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
 
             foreach (var corner in _cornerDatas.Skip(_cornerDatas.Count - _config.Table.CornerAmount).Reverse().Take(isInCorner ? _config.Table.CornerAmount - 1 : _config.Table.CornerAmount))
             {
-                List<string> columns = new List<string>();
-                List<Color> colors = new List<Color>();
+                List<string> columns = new();
+                List<Color> colors = new();
 
                 // add delta column
                 if (_bestLapCorners.Count == _currentTrack.CornerNames.Count)
@@ -365,8 +365,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
 
         private void AddHeaderRow()
         {
-            List<string> headerColumns = new List<string> { "Delta" };
-            List<Color> headerColours = new List<Color> { Color.White };
+            List<string> headerColumns = new() { "Delta" };
+            List<Color> headerColours = new() { Color.White };
 
             if (_config.Data.MinimumSpeed)
             {

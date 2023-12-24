@@ -13,7 +13,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayMapBar
 #endif
     internal sealed class MapBar : AbstractOverlay
     {
-        private readonly MapBarConfiguration _config = new MapBarConfiguration();
+        private readonly MapBarConfiguration _config = new();
         private sealed class MapBarConfiguration : OverlayConfiguration
         {
             public MapBarConfiguration() => AllowRescale = true;
