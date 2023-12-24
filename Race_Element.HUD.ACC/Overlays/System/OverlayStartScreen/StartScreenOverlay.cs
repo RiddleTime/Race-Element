@@ -34,7 +34,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
             this.Y = rectangle.Y;
             this.Width = 620;
             this.Height = 74;
-            this.RefreshRateHz = 60;
+            this.RefreshRateHz = 80;
         }
 
         public override void BeforeStart()
@@ -71,11 +71,11 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
                 using GraphicsPath gradientPath = new();
                 gradientPath.AddEllipse(rect);
                 using PathGradientBrush pthGrBrush = new(gradientPath);
-                pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(20, 255, 0, 0) };
+                pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(40, 255, 0, 0) };
                 pthGrBrush.CenterColor = Color.FromArgb(255, 255, 0, 0);
 
                 using Pen pen = new(pthGrBrush, 1.15f);
-                int spacing = 6;
+                int spacing = 8;
                 int lines = (int)Math.Floor(SliderWidth / (double)spacing);
                 for (int i = 0; i < lines * 2; i++)
                 {
@@ -108,7 +108,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStartScreen
 
             if (sliderX > Width) sliderX = -SliderWidth;
             _slider?.Draw(g, new Point(sliderX, 0));
-            sliderX += 16;
+            sliderX += 8;
 
             _cachedText?.Draw(g);
         }
