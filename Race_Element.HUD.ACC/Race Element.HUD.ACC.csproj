@@ -17,6 +17,14 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug Minimized\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <IsTrimmable>True</IsTrimmable>
+    <IsAotCompatible>True</IsAotCompatible>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <IsTrimmable>True</IsTrimmable>
+    <IsAotCompatible>True</IsAotCompatible>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="EdCanHack.Unglide" Version="2.0.0" />
     <PackageReference Include="MouseKeyHook" Version="5.7.1" />
