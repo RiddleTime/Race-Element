@@ -5,7 +5,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyTitle>Race Element.Core</AssemblyTitle>
     <Product>Race Element.Core</Product>
-    <Copyright>Copyright ©  2023</Copyright>
+    <Copyright>Copyright ©  2024</Copyright>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
