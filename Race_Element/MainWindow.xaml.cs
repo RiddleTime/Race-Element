@@ -218,7 +218,19 @@ public partial class MainWindow : Window
         });
 
         if (!App.Instance.StartMinimized)
+        {
             this.WindowState = WindowState.Normal;
+        }
+        else
+        {
+            if (_accManagerSettings.Get().MinimizeToSystemTray)
+            {
+                _notifyIcon.Visible = true;
+
+                ShowInTaskbar = false;
+                Hide();
+            }
+        }
     }
 
     private void UpdateUsage()
