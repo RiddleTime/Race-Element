@@ -275,7 +275,13 @@ public partial class MainWindow : Window
                 Text = "Race Element"
             };
 
-            _notifyIcon.DoubleClick += (s, e) => Instance.WindowState = WindowState.Normal;
+            _notifyIcon.DoubleClick += (s, e) =>
+            {
+                Instance.Show();
+                Instance.WindowState = WindowState.Normal;
+                ShowInTaskbar = true;
+                Instance.BringIntoView();
+            };
         }
         catch (Exception e)
         {
@@ -286,7 +292,13 @@ public partial class MainWindow : Window
     private System.Windows.Forms.ContextMenuStrip CreateContextMenu()
     {
         var openItem = new System.Windows.Forms.ToolStripMenuItem("Open");
-        openItem.Click += (s, e) => Instance.WindowState = WindowState.Normal;
+        openItem.Click += (s, e) =>
+        {
+            Instance.Show();
+            Instance.WindowState = WindowState.Normal;
+            ShowInTaskbar = true;
+            Instance.BringIntoView();
+        };
         var exitItem = new System.Windows.Forms.ToolStripMenuItem("Exit");
         exitItem.Click += (s, e) => Environment.Exit(0);
         var contextMenu = new System.Windows.Forms.ContextMenuStrip { Items = { openItem, exitItem } };
@@ -308,6 +320,7 @@ public partial class MainWindow : Window
                                 _notifyIcon.Visible = true;
 
                                 ShowInTaskbar = false;
+                                Hide();
                             }
 
                             break;
@@ -321,6 +334,7 @@ public partial class MainWindow : Window
                                 _notifyIcon.Visible = false;
 
                             _stopDecreaseOpacty = true;
+
                             ShowInTaskbar = true;
 
                             break;
@@ -332,6 +346,7 @@ public partial class MainWindow : Window
                             _notifyIcon.Visible = false;
 
                             _stopDecreaseOpacty = true;
+
                             ShowInTaskbar = true;
                             break;
                         }
