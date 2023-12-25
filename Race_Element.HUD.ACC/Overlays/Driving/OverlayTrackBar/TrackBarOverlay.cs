@@ -1,6 +1,5 @@
 ﻿using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.Session;
-using RaceElement.Data.ACC.Tracker;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -9,6 +8,7 @@ using RaceElement.Util.SystemExtensions;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
+using System.Runtime.Versioning;
 using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar;
@@ -17,27 +17,26 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar;
          Description = "A bar displaying a flat and zoomed in version of the Track Circle HUD.")]
 internal sealed class TrackBarOverlay : AbstractOverlay
 {
-
     private readonly TrackBarConfiguration _config = new();
     private sealed class TrackBarConfiguration : OverlayConfiguration
     {
         public TrackBarConfiguration() { AllowRescale = true; }
 
         [ConfigGrouping("View", "Adjust track circle settings.")]
-        public ViewingGroup Viewing { get; set; } = new ViewingGroup();
+        public ViewingGroup Viewing { get; init; } = new ViewingGroup();
         public sealed class ViewingGroup
         {
             [ToolTip("Show the Track Circle HUD when spectating.")]
-            public bool Spectator { get; set; } = true;
+            public bool Spectator { get; init; } = true;
         }
 
         [ConfigGrouping("Bar", "Adjust things like fidelity on the track bar.")]
-        public BarGrouping Bar { get; set; } = new BarGrouping();
+        public BarGrouping Bar { get; init; } = new BarGrouping();
         public sealed class BarGrouping
         {
             [ToolTip("Adjust the visible range (5 up to 50%) of the track.")]
             [IntRange(5, 50, 1)]
-            public int Range { get; set; } = 10;
+            public int Range { get; init; } = 10;
         }
     }
 
