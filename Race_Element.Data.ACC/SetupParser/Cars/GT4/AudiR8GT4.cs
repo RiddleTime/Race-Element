@@ -25,11 +25,11 @@ internal class AudiR8GT4 : ICarSetupConversion
             }
         }
 
-        private readonly double[] casters = new double[] {
+        private readonly double[] casters = [
             6.6, 6.8, 7.0, 7.2, 7.4, 7.6, 7.8, 8.0, 8.2, 8.4, 8.6, 8.8, 9.0,
             9.2, 9.4, 9.6, 9.8, 10.0, 10.2, 10.4, 10.6, 10.8, 11.0, 11.2,
             11.4, 11.6, 11.8, 12.0, 12.2,12.3, 12.7, 12.9, 13.1, 13.3
-        };
+        ];
         public override double Caster(int rawValue)
         {
             return Math.Round(casters[rawValue], 2);
@@ -84,8 +84,8 @@ internal class AudiR8GT4 : ICarSetupConversion
             return Math.Round(14d + rawValue, 2);
         }
 
-        private readonly int[] fronts = new int[] { 142000, 160000 };
-        private readonly int[] rears = new int[] { 146000, 163000 };
+        private readonly int[] fronts = [142000, 160000];
+        private readonly int[] rears = [146000, 163000];
         public int WheelRate(List<int> rawValue, Wheel wheel)
         {
             switch (GetPosition(wheel))

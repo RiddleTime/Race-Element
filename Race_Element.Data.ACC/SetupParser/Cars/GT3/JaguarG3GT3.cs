@@ -25,10 +25,10 @@ internal class JaguarG3GT3 : ICarSetupConversion
             }
         }
 
-        private readonly double[] casters = new double[] { 4.0, 4.1, 4.3, 4.5, 4.7, 4.9, 5.1,
+        private readonly double[] casters = [ 4.0, 4.1, 4.3, 4.5, 4.7, 4.9, 5.1,
             5.3, 5.5, 5.6, 5.8, 6.0, 6.2, 6.4, 6.6, 6.8, 6.9, 7.1, 7.3, 7.5, 7.7, 7.9, 8.0,
             8.2, 8.4, 8.6, 8.8, 9.0, 9.1, 9.3, 9.5, 9.7, 9.9, 10.1, 10.2, 10.4, 10.6, 10.8,
-            11.0, 11.2, 11.3 };
+            11.0, 11.2, 11.3 ];
         public override double Caster(int rawValue)
         {
             return Math.Round(casters[rawValue], 2);
@@ -90,11 +90,11 @@ internal class JaguarG3GT3 : ICarSetupConversion
             return Math.Round(10d + rawValue, 2);
         }
 
-        private readonly int[] fronts = new int[] { 100000, 105000, 110000, 115000, 120000, 125000,
+        private readonly int[] fronts = [ 100000, 105000, 110000, 115000, 120000, 125000,
             130000, 135000, 140000, 145000, 150000, 155000, 160000, 165000, 170000, 175000, 180000,
-            185000 };
-        private readonly int[] rears = new int[] { 120000, 125000, 130000, 135000, 140000, 145000,
-            150000, 155000, 160000, 165000, 170000, 175000, 180000, 185000, 190000, 195000 };
+            185000 ];
+        private readonly int[] rears = [ 120000, 125000, 130000, 135000, 140000, 145000,
+            150000, 155000, 160000, 165000, 170000, 175000, 180000, 185000, 190000, 195000 ];
         public int WheelRate(List<int> rawValue, Wheel wheel)
         {
             switch (GetPosition(wheel))

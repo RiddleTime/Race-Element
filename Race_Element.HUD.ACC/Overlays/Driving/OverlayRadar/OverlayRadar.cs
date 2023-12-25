@@ -141,11 +141,11 @@ internal sealed class RadarOverlay : AbstractOverlay
             gradientPath.AddEllipse(0, 0, scaledWidth, scaledHeight);
             using PathGradientBrush pthGrBrush = new(gradientPath);
             pthGrBrush.CenterColor = Color.FromArgb(172, 0, 0, 0);
-            pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(5, 0, 0, 0) };
+            pthGrBrush.SurroundColors = [Color.FromArgb(5, 0, 0, 0)];
             g.FillRoundedRectangle(pthGrBrush, new Rectangle(0, 0, scaledWidth, scaledHeight), (int)(3 * this.Scale));
 
             using Pen pen = new(new SolidBrush(Color.FromArgb(160, Color.White)));
-            pen.DashPattern = new float[] { 2 / this.Scale, 4 / this.Scale };
+            pen.DashPattern = [2 / this.Scale, 4 / this.Scale];
             pen.Width = 2f * Scale;
             g.DrawLine(pen, new PointF(0, scaledHeight / 2), new PointF(scaledWidth, scaledHeight / 2));
             g.DrawLine(pen, new PointF(scaledWidth / 2, 0), new PointF(scaledWidth / 2, scaledHeight));

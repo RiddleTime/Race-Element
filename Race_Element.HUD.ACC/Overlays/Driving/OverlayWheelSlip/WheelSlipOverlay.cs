@@ -57,8 +57,8 @@ internal sealed class WheelSlipOverlay : AbstractOverlay
 
     public override void SetupPreviewData()
     {
-        pagePhysics.WheelSlip = new float[] { 0.3f, 0.3f, 0.6f, 0.745f };
-        pagePhysics.SlipAngle = new float[] { 0, 0, -0.45f, -0.35f };
+        pagePhysics.WheelSlip = [0.3f, 0.3f, 0.6f, 0.745f];
+        pagePhysics.SlipAngle = [0, 0, -0.45f, -0.35f];
     }
 
     public override void BeforeStart()
@@ -74,7 +74,7 @@ internal sealed class WheelSlipOverlay : AbstractOverlay
             gradientPath.AddEllipse(wheelRect);
             using PathGradientBrush pthGrBrush = new(gradientPath);
             pthGrBrush.CenterColor = Color.FromArgb(40, 0, 0, 0);
-            pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(220, 0, 0, 0) };
+            pthGrBrush.SurroundColors = [Color.FromArgb(220, 0, 0, 0)];
 
             g.FillEllipse(pthGrBrush, wheelRect);
             g.DrawEllipse(Pens.Black, wheelRect);
@@ -140,7 +140,7 @@ internal sealed class WheelSlipOverlay : AbstractOverlay
         gradientPath.AddEllipse(wheelRect);
         using PathGradientBrush pthGrBrush = new(gradientPath);
         pthGrBrush.CenterColor = color;
-        pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(40, 0, 0, 0) };
+        pthGrBrush.SurroundColors = [Color.FromArgb(40, 0, 0, 0)];
 
         g.FillEllipse(pthGrBrush, centerX, centerY, size / 2 * percentage / 100);
 

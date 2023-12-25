@@ -44,7 +44,7 @@ internal sealed class LapInfoOverlay : AbstractOverlay
 
     public LapInfoOverlay(Rectangle rectangle) : base(rectangle, "Lap Info")
     {
-        _table = new InfoTable(10, new int[] { 85, 83 });
+        _table = new InfoTable(10, [85, 83]);
         this.Width = _overlayWidth + 1;
         this.Height = _table.FontHeight * 7 + 2;
         RefreshRateHz = 10;
@@ -162,19 +162,19 @@ internal sealed class LapInfoOverlay : AbstractOverlay
 
 
         if (pageGraphics.CurrentSectorIndex != 0 && lap.Sector1 != -1 && lap.IsValid)
-            _table.AddRow("S1 ", rowSector1, new Color[] { LapTracker.Instance.Laps.IsSectorFastest(1, lap.Sector1) ? Color.LimeGreen : Color.White, Color.Orange });
+            _table.AddRow("S1 ", rowSector1, [LapTracker.Instance.Laps.IsSectorFastest(1, lap.Sector1) ? Color.LimeGreen : Color.White, Color.Orange]);
         else
-            _table.AddRow("S1 ", rowSector1, new Color[] { Color.White });
+            _table.AddRow("S1 ", rowSector1, [Color.White]);
 
         if (pageGraphics.CurrentSectorIndex != 1 && lap.Sector2 != -1 && lap.IsValid)
-            _table.AddRow("S2 ", rowSector2, new Color[] { LapTracker.Instance.Laps.IsSectorFastest(2, lap.Sector2) ? Color.LimeGreen : Color.White, Color.Orange });
+            _table.AddRow("S2 ", rowSector2, [LapTracker.Instance.Laps.IsSectorFastest(2, lap.Sector2) ? Color.LimeGreen : Color.White, Color.Orange]);
         else
-            _table.AddRow("S2 ", rowSector2, new Color[] { Color.White });
+            _table.AddRow("S2 ", rowSector2, [Color.White]);
 
         if (pageGraphics.CurrentSectorIndex != 2 && lap.Sector3 != -1 && lap.IsValid)
-            _table.AddRow("S3 ", rowSector3, new Color[] { LapTracker.Instance.Laps.IsSectorFastest(3, lap.Sector3) ? Color.LimeGreen : Color.White, Color.Orange });
+            _table.AddRow("S3 ", rowSector3, [LapTracker.Instance.Laps.IsSectorFastest(3, lap.Sector3) ? Color.LimeGreen : Color.White, Color.Orange]);
         else
-            _table.AddRow("S3 ", rowSector3, new Color[] { Color.White });
+            _table.AddRow("S3 ", rowSector3, [Color.White]);
     }
 
     private void AddLastLap()
@@ -207,7 +207,7 @@ internal sealed class LapInfoOverlay : AbstractOverlay
         }
 
         if (broadCastLocalCar.CarIndex == broadCastRealTime.BestLapCarIndex)
-            this._table.AddRow("Best", bestLapValues, new Color[] { Color.Purple });
+            this._table.AddRow("Best", bestLapValues, [Color.Purple]);
         else
             this._table.AddRow("Best", bestLapValues);
     }

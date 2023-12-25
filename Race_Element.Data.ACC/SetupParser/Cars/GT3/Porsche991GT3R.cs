@@ -25,9 +25,9 @@ internal class Porsche991GT3R : ICarSetupConversion
             }
         }
 
-        private readonly double[] casters = new double[] { 7.3, 7.4, 7.5, 7.6, 7.7, 7.8,
+        private readonly double[] casters = [ 7.3, 7.4, 7.5, 7.6, 7.7, 7.8,
             7.9, 8.0, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.9, 9.0, 9.1, 9.2,
-            9.3, 9.4, 9.5, 9.6, 9.7, 9.8, 9.9, 10.0, 10.1, 10.2, 10.3 };
+            9.3, 9.4, 9.5, 9.6, 9.7, 9.8, 9.9, 10.0, 10.1, 10.2, 10.3 ];
         public override double Caster(int rawValue)
         {
             return Math.Round(casters[rawValue], 2);
@@ -82,8 +82,8 @@ internal class Porsche991GT3R : ICarSetupConversion
             return Math.Round(11d + rawValue, 2);
         }
 
-        private readonly int[] fronts = new int[] { 83000, 100000, 116000, 133000, 149000, 166000 };
-        private readonly int[] rears = new int[] { 115000, 128000, 141000, 154000, 167000, 180000 };
+        private readonly int[] fronts = [83000, 100000, 116000, 133000, 149000, 166000];
+        private readonly int[] rears = [115000, 128000, 141000, 154000, 167000, 180000];
         public int WheelRate(List<int> rawValue, Wheel wheel)
         {
             switch (GetPosition(wheel))

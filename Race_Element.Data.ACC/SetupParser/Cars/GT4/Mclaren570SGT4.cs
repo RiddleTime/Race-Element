@@ -25,10 +25,10 @@ internal class Mclaren570SGT4 : ICarSetupConversion
             }
         }
 
-        private readonly double[] casters = new double[] {
+        private readonly double[] casters = [
             5.3, 5.6, 5.8, 6.0, 6.3, 6.5, 6.8, 7.0, 7.3, 7.5, 7.8,
             8.0, 8.2, 8.5, 8.7, 9.0, 9.2, 9.4, 9.7, 9.9, 10.2
-        };
+        ];
         public override double Caster(int rawValue)
         {
             return Math.Round(casters[rawValue], 2);
@@ -83,8 +83,8 @@ internal class Mclaren570SGT4 : ICarSetupConversion
             return Math.Round(11d + rawValue, 2);
         }
 
-        private readonly int[] fronts = new int[] { 140000, 175000 };
-        private readonly int[] rears = new int[] { 162850, 175520 };
+        private readonly int[] fronts = [140000, 175000];
+        private readonly int[] rears = [162850, 175520];
         public int WheelRate(List<int> rawValue, Wheel wheel)
         {
             switch (GetPosition(wheel))

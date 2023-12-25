@@ -26,9 +26,9 @@ internal class LexusRcfGT3 : ICarSetupConversion
         }
 
 
-        private readonly double[] casters = new double[] { 7.9, 8.1, 8.3, 8.5, 8.7, 8.8, 9.0, 9.2,
+        private readonly double[] casters = [ 7.9, 8.1, 8.3, 8.5, 8.7, 8.8, 9.0, 9.2,
             9.4, 9.6, 9.8, 10.0, 10.2, 10.4, 10.6, 10.8, 10.9, 11.1, 11.3, 11.5, 11.7, 11.9, 12.1,
-            12.3, 12.5, 12.6, 12.8, 13.0, 13.2, 13.4, 13.6 };
+            12.3, 12.5, 12.6, 12.8, 13.0, 13.2, 13.4, 13.6 ];
         public override double Caster(int rawValue)
         {
             return Math.Round(casters[rawValue], 2);
@@ -90,8 +90,8 @@ internal class LexusRcfGT3 : ICarSetupConversion
             return Math.Round(11d + rawValue, 2);
         }
 
-        private readonly int[] fronts = new int[] { 96000, 115000, 134000, 154000, 173000, 192000 };
-        private readonly int[] rears = new int[] { 87000, 112000, 136000, 154000, 175000, 210000 };
+        private readonly int[] fronts = [96000, 115000, 134000, 154000, 173000, 192000];
+        private readonly int[] rears = [87000, 112000, 136000, 154000, 175000, 210000];
         public int WheelRate(List<int> rawValue, Wheel wheel)
         {
             switch (GetPosition(wheel))

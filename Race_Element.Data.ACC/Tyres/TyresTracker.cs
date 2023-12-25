@@ -31,7 +31,7 @@ public class TyresTracker
 
     private bool _isTracking;
     private float[] _lastPressureReading;
-    private float[] _lastPressureLosses = { 0, 0, 0, 0 };
+    private float[] _lastPressureLosses = [0, 0, 0, 0];
     private int _lastTyreSetIndexValue;
     private bool _isInPitLane = false;
 
@@ -45,7 +45,7 @@ public class TyresTracker
     {
         return new TyresInfo
         {
-            PressureLoss = new[] { 0.12f, 0.23f, 0.34f, 0.45f }
+            PressureLoss = [0.12f, 0.23f, 0.34f, 0.45f]
         };
     }
 
@@ -107,7 +107,7 @@ public class TyresTracker
 
     private void ResetPressureLosses()
     {
-        _lastPressureLosses = new float[] { 0, 0, 0, 0 };
+        _lastPressureLosses = [0, 0, 0, 0];
     }
 
     private void SendTyresInfoUpdate()

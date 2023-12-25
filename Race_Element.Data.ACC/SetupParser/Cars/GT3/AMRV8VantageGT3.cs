@@ -13,10 +13,10 @@ internal class AMRV8VantageGT3 : ICarSetupConversion, ISetupChanger
     CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
     public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHF2023;
 
-    private static readonly double[] casters = new double[] { 10.7, 10.9, 11.1, 11.3, 11.5, 11.6, 11.8, 12.0, 12.2, 12.4, 12.5, 12.7, 12.9, 13.1, 13.3, 13.4,
-            13.6, 13.8, 14.0, 14.2, 14.3, 14.5, 14.7, 14.9, 15.0, 15.2, 15.4, 15.6, 15.7, 15.9, 16.1 };
-    private static readonly int[] wheelRateFronts = new int[] { 115000, 125000, 135000, 145000, 155000, 165000, 175000, 185000 };
-    private static readonly int[] wheelRateRears = new int[] { 105000, 115000, 125000, 135000, 145000, 155000, 165000, 175000, 185000, 195000 };
+    private static readonly double[] casters = [ 10.7, 10.9, 11.1, 11.3, 11.5, 11.6, 11.8, 12.0, 12.2, 12.4, 12.5, 12.7, 12.9, 13.1, 13.3, 13.4,
+            13.6, 13.8, 14.0, 14.2, 14.3, 14.5, 14.7, 14.9, 15.0, 15.2, 15.4, 15.6, 15.7, 15.9, 16.1 ];
+    private static readonly int[] wheelRateFronts = [115000, 125000, 135000, 145000, 155000, 165000, 175000, 185000];
+    private static readonly int[] wheelRateRears = [105000, 115000, 125000, 135000, 145000, 155000, 165000, 175000, 185000, 195000];
 
     ITyreSetupChanger ISetupChanger.TyreSetupChanger => new TyreSetupChanger();
     IElectronicsSetupChanger ISetupChanger.ElectronicsSetupChanger => new ElectronicsSetupChanger();
@@ -87,10 +87,10 @@ internal class AMRV8VantageGT3 : ICarSetupConversion, ISetupChanger
             }
         }
 
-        private readonly double[] casters = new double[] {
+        private readonly double[] casters = [
             10.7, 10.9, 11.1, 11.3, 11.5, 11.6, 11.8, 12.0, 12.2, 12.4, 12.5, 12.7, 12.9, 13.1, 13.3, 13.4,
             13.6, 13.8, 14.0, 14.2, 14.3, 14.5, 14.7, 14.9, 15.0, 15.2, 15.4, 15.6, 15.7, 15.9, 16.1
-        };
+        ];
         public override double Caster(int rawValue)
         {
             return Math.Round(casters[rawValue], 2);
@@ -145,8 +145,8 @@ internal class AMRV8VantageGT3 : ICarSetupConversion, ISetupChanger
             return Math.Round(14d + rawValue, 2);
         }
 
-        private readonly int[] fronts = new int[] { 115000, 125000, 135000, 145000, 155000, 165000, 175000, 185000 };
-        private readonly int[] rears = new int[] { 105000, 115000, 125000, 135000, 145000, 155000, 165000, 175000, 185000, 195000 };
+        private readonly int[] fronts = [115000, 125000, 135000, 145000, 155000, 165000, 175000, 185000];
+        private readonly int[] rears = [105000, 115000, 125000, 135000, 145000, 155000, 165000, 175000, 185000, 195000];
         public int WheelRate(List<int> rawValue, Wheel wheel)
         {
             switch (GetPosition(wheel))

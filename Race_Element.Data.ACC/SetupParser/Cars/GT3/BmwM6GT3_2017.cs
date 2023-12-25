@@ -25,10 +25,10 @@ internal class BmwM6GT3_2017 : ICarSetupConversion
             }
         }
 
-        private readonly double[] casters = new double[] { 6.7, 6.9, 7.1, 7.4, 7.6, 7.8, 8.0,
+        private readonly double[] casters = [ 6.7, 6.9, 7.1, 7.4, 7.6, 7.8, 8.0,
             8.2, 8.4, 8.6, 8.8, 9.0, 9.2, 9.4, 9.7, 9.9, 10.1, 10.3, 10.5, 10.7, 10.9, 11.1,
             11.3, 11.5, 11.7, 11.9, 12.1, 12.3, 12.5, 12.7, 12.9, 13.1, 13.3, 13.5, 13.7,
-            13.9, 14.2, 14.4, 14.6, 14.8, 15.0, };
+            13.9, 14.2, 14.4, 14.6, 14.8, 15.0, ];
         public override double Caster(int rawValue)
         {
             return Math.Round(casters[rawValue], 2);
@@ -90,8 +90,8 @@ internal class BmwM6GT3_2017 : ICarSetupConversion
             return Math.Round(10d + rawValue, 2);
         }
 
-        private readonly int[] fronts = new int[] { 136000, 146000, 156000, 166000, 176000, 186000 };
-        private readonly int[] rears = new int[] { 96000, 106000, 116000, 126000, 136000, 146000 };
+        private readonly int[] fronts = [136000, 146000, 156000, 166000, 176000, 186000];
+        private readonly int[] rears = [96000, 106000, 116000, 126000, 136000, 146000];
         public int WheelRate(List<int> rawValue, Wheel wheel)
         {
             switch (GetPosition(wheel))

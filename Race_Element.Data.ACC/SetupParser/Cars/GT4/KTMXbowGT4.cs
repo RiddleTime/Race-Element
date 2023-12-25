@@ -25,11 +25,11 @@ internal class KTMXbowGT4 : ICarSetupConversion
             }
         }
 
-        private readonly double[] casters = new double[] {
+        private readonly double[] casters = [
             1.7, 1.9, 2.1, 2.3, 2.5, 2.7, 2.9, 3.1, 3.3, 3.5, 3.7, 3.9, 4.1, 4.3, 4.5, 4.7,
             4.8, 5.0, 5.2, 5.4, 5.6, 5.8, 6.0, 6.2, 6.4, 6.6, 6.8, 7.0, 7.1, 7.3, 7.5, 7.7,
             7.9, 8.1, 8.3, 8.5, 8.7, 8.9, 9.1, 9.2, 9.4
-        };
+        ];
         public override double Caster(int rawValue)
         {
             return Math.Round(casters[rawValue], 2);
@@ -84,8 +84,8 @@ internal class KTMXbowGT4 : ICarSetupConversion
             return Math.Round(11d + rawValue, 2);
         }
 
-        private readonly int[] fronts = new int[] { 87000, 97000, 107000, 117000, 127000 };
-        private readonly int[] rears = new int[] { 81000, 91000, 101000, 111000, 121000, 131000 };
+        private readonly int[] fronts = [87000, 97000, 107000, 117000, 127000];
+        private readonly int[] rears = [81000, 91000, 101000, 111000, 121000, 131000];
         public int WheelRate(List<int> rawValue, Wheel wheel)
         {
             switch (GetPosition(wheel))

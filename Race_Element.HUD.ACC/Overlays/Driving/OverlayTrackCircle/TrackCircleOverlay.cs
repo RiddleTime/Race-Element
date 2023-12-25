@@ -60,7 +60,7 @@ internal sealed class TrackCircleOverlay : AbstractOverlay
             gradientPath.AddEllipse(0, 0, scaledDimension, scaledDimension);
             using PathGradientBrush pthGrBrush = new(gradientPath);
             pthGrBrush.CenterColor = Color.FromArgb(40, 0, 0, 0);
-            pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(220, 0, 0, 0) };
+            pthGrBrush.SurroundColors = [Color.FromArgb(220, 0, 0, 0)];
 
             using Pen pen = new(pthGrBrush, penWidth);
             g.DrawArc(pen, rect, 0, 360);

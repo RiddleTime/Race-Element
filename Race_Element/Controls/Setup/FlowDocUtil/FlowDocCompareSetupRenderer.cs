@@ -211,8 +211,8 @@ public class FlowDocCompareSetupRenderer
 
         const int cells = 13;
         const int headerWidthPercent = 15;
-        string[] tyreLocationLabels = new string[] { "FL: ", "FR: ", "RL: ", "RR: " };
-        string[] frontOrRearLabels = new string[] { "Front: ", "Rear: " };
+        string[] tyreLocationLabels = ["FL: ", "FR: ", "RL: ", "RR: "];
+        string[] frontOrRearLabels = ["Front: ", "Rear: "];
 
 
         //// Setup Info Section
@@ -244,10 +244,10 @@ public class FlowDocCompareSetupRenderer
         tyresHeader.FontStyle = FontStyles.Italic;
         rgTyres.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), tyresHeader, DocUtil.GetDefaultParagraph(), cells));
         rgTyres.Rows.Add(DocUtil.GetTableRowCompare($"{compound1}", "Compound", $"{compound2}", cells));
-        rgTyres.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, new double[] { frontLeftPressure1, frontRightPressure1, rearLeftPressure1, rearRightPressure1 }, "Pressures(psi)", new double[] { frontLeftPressure2, frontRightPressure2, rearLeftPressure2, rearRightPressure2 }, cells, 1));
-        rgTyres.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, new double[] { frontLeftToe1, frontRightToe1, rearLeftToe1, rearRightToe1 }, "Toe(°)", new double[] { frontLeftToe2, frontRightToe2, rearLeftToe2, rearRightToe2 }, cells, 2));
-        rgTyres.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, new double[] { camberFrontLeft1, camberFrontRight1, camberRearLeft1, camberRearRight1 }, "Camber(°)", new double[] { camberFrontLeft2, camberFrontRight2, camberRearLeft2, camberRearRight2 }, cells, 1));
-        rgTyres.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels.Take(2).ToArray(), new double[] { frontLeftCaster1, frontRightCaster1 }, "Caster(°)", new double[] { frontLeftCaster2, frontRightCaster2 }, cells, 1));
+        rgTyres.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, [frontLeftPressure1, frontRightPressure1, rearLeftPressure1, rearRightPressure1], "Pressures(psi)", [frontLeftPressure2, frontRightPressure2, rearLeftPressure2, rearRightPressure2], cells, 1));
+        rgTyres.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, [frontLeftToe1, frontRightToe1, rearLeftToe1, rearRightToe1], "Toe(°)", [frontLeftToe2, frontRightToe2, rearLeftToe2, rearRightToe2], cells, 2));
+        rgTyres.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, [camberFrontLeft1, camberFrontRight1, camberRearLeft1, camberRearRight1], "Camber(°)", [camberFrontLeft2, camberFrontRight2, camberRearLeft2, camberRearRight2], cells, 1));
+        rgTyres.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels.Take(2).ToArray(), [frontLeftCaster1, frontRightCaster1], "Caster(°)", [frontLeftCaster2, frontRightCaster2], cells, 1));
         Table tyresSetupTable = DocUtil.GetCenteredTable(headerWidthPercent, cells - 1);
         tyresSetupTable.RowGroups.Add(rgTyres);
         tyresSection.Blocks.Add(tyresSetupTable);
@@ -261,10 +261,10 @@ public class FlowDocCompareSetupRenderer
         Paragraph mechanicalHeader = DocUtil.GetDefaultHeader("Mechanical Grip");
         mechanicalHeader.FontStyle = FontStyles.Italic;
         rgGrip.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), mechanicalHeader, DocUtil.GetDefaultParagraph(), cells));
-        rgGrip.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, new double[] { wheelRateFrontLeft1, wheelRateFrontRight1, wheelRateRearLeft1, wheelRateRearRight1 }, "Wheelrates(Nm)", new double[] { wheelRateFrontLeft2, wheelRateFrontRight2, wheelRateRearLeft2, wheelRateRearRight2 }, cells, 0));
-        rgGrip.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, new double[] { bumpStopRateFrontLeft1, bumpStopRateFrontRight1, bumpStopRateRearLeft1, bumpStopRateRearRight1 }, "Bumpstop Rate(Nm)", new double[] { bumpStopRateFrontLeft2, bumpStopRateFrontRight2, bumpStopRateRearLeft2, bumpStopRateRearRight2 }, cells, 0));
-        rgGrip.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, new double[] { bumpStopRangeFrontLeft1, bumpStopRangeFrontRight1, bumpStopRangeRearLeft1, bumpStopRangeRearRight1 }, "Bumpstop Range", new double[] { bumpStopRangeFrontLeft2, bumpStopRangeFrontRight2, bumpStopRangeRearLeft2, bumpStopRangeRearRight2 }, cells, 0));
-        rgGrip.Rows.Add(DocUtil.GetTableRowCompareWithLabels(frontOrRearLabels, new double[] { antiRollBarFront1, antiRollBarRear1 }, "Anti roll bar", new double[] { antiRollBarFront2, antiRollBarRear2 }, cells, 0));
+        rgGrip.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, [wheelRateFrontLeft1, wheelRateFrontRight1, wheelRateRearLeft1, wheelRateRearRight1], "Wheelrates(Nm)", [wheelRateFrontLeft2, wheelRateFrontRight2, wheelRateRearLeft2, wheelRateRearRight2], cells, 0));
+        rgGrip.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, [bumpStopRateFrontLeft1, bumpStopRateFrontRight1, bumpStopRateRearLeft1, bumpStopRateRearRight1], "Bumpstop Rate(Nm)", [bumpStopRateFrontLeft2, bumpStopRateFrontRight2, bumpStopRateRearLeft2, bumpStopRateRearRight2], cells, 0));
+        rgGrip.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, [bumpStopRangeFrontLeft1, bumpStopRangeFrontRight1, bumpStopRangeRearLeft1, bumpStopRangeRearRight1], "Bumpstop Range", [bumpStopRangeFrontLeft2, bumpStopRangeFrontRight2, bumpStopRangeRearLeft2, bumpStopRangeRearRight2], cells, 0));
+        rgGrip.Rows.Add(DocUtil.GetTableRowCompareWithLabels(frontOrRearLabels, [antiRollBarFront1, antiRollBarRear1], "Anti roll bar", [antiRollBarFront2, antiRollBarRear2], cells, 0));
         rgGrip.Rows.Add(DocUtil.GetTableRowCompare(differentialPreload1, "Diff Preload(Nm)", differentialPreload2, cells));
         rgGrip.Rows.Add(DocUtil.GetTableRowCompare(brakePower1, "Brake Power(%)", brakePower2, cells));
         rgGrip.Rows.Add(DocUtil.GetTableRowCompare(brakeBias1, "Brake Bias(%)", brakeBias2, cells, 1));
@@ -284,10 +284,10 @@ public class FlowDocCompareSetupRenderer
         Paragraph dampersHeader = DocUtil.GetDefaultHeader("Dampers");
         dampersHeader.FontStyle = FontStyles.Italic;
         rgDampers.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), dampersHeader, DocUtil.GetDefaultParagraph(), cells));
-        rgDampers.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, new double[] { bumpSlowFrontLeft1, bumpSlowFrontRight1, bumpSlowRearLeft1, bumpSlowRearRight1 }, "Bump Slow", new double[] { bumpSlowFrontLeft2, bumpSlowFrontRight2, bumpSlowRearLeft2, bumpSlowRearRight2 }, cells));
-        rgDampers.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, new double[] { bumpFastFrontLeft1, bumpFastFrontRight1, bumpFastRearLeft1, bumpFastRearRight1 }, "Bump Fast", new double[] { bumpFastFrontLeft2, bumpFastFrontRight2, bumpFastRearLeft2, bumpFastRearRight2 }, cells));
-        rgDampers.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, new double[] { reboundSlowFrontLeft1, reboundSlowFrontRight1, reboundSlowRearLeft1, reboundSlowRearRight1 }, "Rebound Slow", new double[] { reboundSlowFrontLeft2, reboundSlowFrontRight2, reboundSlowRearLeft2, reboundSlowRearRight2 }, cells));
-        rgDampers.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, new double[] { reboundFastFrontLeft1, reboundFastFrontRight1, reboundFastRearLeft1, reboundFastRearRight1 }, "Rebound Fast", new double[] { reboundFastFrontLeft2, reboundFastFrontRight2, reboundFastRearLeft2, reboundFastRearRight2 }, cells));
+        rgDampers.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, [bumpSlowFrontLeft1, bumpSlowFrontRight1, bumpSlowRearLeft1, bumpSlowRearRight1], "Bump Slow", [bumpSlowFrontLeft2, bumpSlowFrontRight2, bumpSlowRearLeft2, bumpSlowRearRight2], cells));
+        rgDampers.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, [bumpFastFrontLeft1, bumpFastFrontRight1, bumpFastRearLeft1, bumpFastRearRight1], "Bump Fast", [bumpFastFrontLeft2, bumpFastFrontRight2, bumpFastRearLeft2, bumpFastRearRight2], cells));
+        rgDampers.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, [reboundSlowFrontLeft1, reboundSlowFrontRight1, reboundSlowRearLeft1, reboundSlowRearRight1], "Rebound Slow", [reboundSlowFrontLeft2, reboundSlowFrontRight2, reboundSlowRearLeft2, reboundSlowRearRight2], cells));
+        rgDampers.Rows.Add(DocUtil.GetTableRowCompareWithLabels(tyreLocationLabels, [reboundFastFrontLeft1, reboundFastFrontRight1, reboundFastRearLeft1, reboundFastRearRight1], "Rebound Fast", [reboundFastFrontLeft2, reboundFastFrontRight2, reboundFastRearLeft2, reboundFastRearRight2], cells));
         Table dampersTable = DocUtil.GetCenteredTable(headerWidthPercent, cells - 1);
         dampersTable.RowGroups.Add(rgDampers);
         dampersSection.Blocks.Add(dampersTable);
@@ -302,10 +302,10 @@ public class FlowDocCompareSetupRenderer
         Paragraph aeroHeader = DocUtil.GetDefaultHeader("Aero Balance");
         aeroHeader.FontStyle = FontStyles.Italic;
         rgAero.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), aeroHeader, DocUtil.GetDefaultParagraph(), cells));
-        rgAero.Rows.Add(DocUtil.GetTableRowCompareWithLabels(frontOrRearLabels, new double[] { rideHeightFront1, rideHeightRear1 }, "Ride height(mm)", new double[] { rideHeightFront2, rideHeightRear2 }, cells));
+        rgAero.Rows.Add(DocUtil.GetTableRowCompareWithLabels(frontOrRearLabels, [rideHeightFront1, rideHeightRear1], "Ride height(mm)", [rideHeightFront2, rideHeightRear2], cells));
         rgAero.Rows.Add(DocUtil.GetTableRowCompare(splitter1, "Splitter", splitter2, cells));
         rgAero.Rows.Add(DocUtil.GetTableRowCompare(rearWing1, "Rear Wing", rearWing2, cells));
-        rgAero.Rows.Add(DocUtil.GetTableRowCompareWithLabels(frontOrRearLabels, new double[] { brakeDuctsFront1, brakeDuctsRear1 }, "Brake ducts", new double[] { brakeDuctsFront2, brakeDuctsRear2 }, cells));
+        rgAero.Rows.Add(DocUtil.GetTableRowCompareWithLabels(frontOrRearLabels, [brakeDuctsFront1, brakeDuctsRear1], "Brake ducts", [brakeDuctsFront2, brakeDuctsRear2], cells));
         Table aeroTable = DocUtil.GetCenteredTable(headerWidthPercent, cells - 1);
         aeroTable.RowGroups.Add(rgAero);
         aeroBalanceSection.Blocks.Add(aeroTable);
@@ -337,7 +337,7 @@ public class FlowDocCompareSetupRenderer
         Paragraph strategyHeader = DocUtil.GetDefaultHeader("Strategy");
         strategyHeader.FontStyle = FontStyles.Italic;
         rgStrategy.Rows.Add(DocUtil.GetTableRow(DocUtil.GetDefaultParagraph(), strategyHeader, DocUtil.GetDefaultParagraph(), cells));
-        rgStrategy.Rows.Add(DocUtil.GetTableRowCompareWithLabels(frontOrRearLabels, new double[] { brakeCompoundFront1, brakeCompoundRear1 }, "Brake Compound", new double[] { brakeCompoundFront2, brakeCompoundRear2 }, cells));
+        rgStrategy.Rows.Add(DocUtil.GetTableRowCompareWithLabels(frontOrRearLabels, [brakeCompoundFront1, brakeCompoundRear1], "Brake Compound", [brakeCompoundFront2, brakeCompoundRear2], cells));
         Table strategyTable = DocUtil.GetCenteredTable(headerWidthPercent, cells - 1);
         strategyTable.RowGroups.Add(rgStrategy);
         strategySection.Blocks.Add(strategyTable);

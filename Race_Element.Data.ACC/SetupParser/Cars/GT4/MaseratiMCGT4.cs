@@ -25,9 +25,9 @@ internal class MaseratiMCGT4 : ICarSetupConversion
             }
         }
 
-        private readonly double[] casters = new double[] {
+        private readonly double[] casters = [
             3.4, 3.7, 3.9, 4.1, 4.3, 4.5, 4.7, 5.0, 5.2, 5.4, 5.6
-        };
+        ];
         public override double Caster(int rawValue)
         {
             return Math.Round(casters[rawValue], 2);
@@ -82,8 +82,8 @@ internal class MaseratiMCGT4 : ICarSetupConversion
             return Math.Round(14d + rawValue, 2);
         }
 
-        private readonly int[] fronts = new int[] { 116000, 151000, 186000 };
-        private readonly int[] rears = new int[] { 113000, 138000, 163000 };
+        private readonly int[] fronts = [116000, 151000, 186000];
+        private readonly int[] rears = [113000, 138000, 163000];
         public int WheelRate(List<int> rawValue, Wheel wheel)
         {
             switch (GetPosition(wheel))

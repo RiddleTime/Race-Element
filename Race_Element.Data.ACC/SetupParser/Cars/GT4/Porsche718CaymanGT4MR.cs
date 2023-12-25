@@ -25,10 +25,10 @@ internal class Porsche718CaymanGT4MR : ICarSetupConversion
             }
         }
 
-        private readonly double[] casters = new double[] {
+        private readonly double[] casters = [
             7.3, 7.4, 7.5, 7.6, 7.7, 7.8, 7.9, 8.0, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8,
             8.9, 9.0, 9.2, 9.3, 9.4, 9.5, 9.6, 9.7, 9.8, 9.9, 10.0, 10.1, 10.2
-        };
+        ];
         public override double Caster(int rawValue)
         {
             return Math.Round(casters[rawValue], 2);
@@ -83,8 +83,8 @@ internal class Porsche718CaymanGT4MR : ICarSetupConversion
             return Math.Round(15d + rawValue, 2);
         }
 
-        private readonly int[] fronts = new int[] { 99000, 108000, 116000, 124000 };
-        private readonly int[] rears = new int[] { 91000, 99000, 108000, 116000, 124000 };
+        private readonly int[] fronts = [99000, 108000, 116000, 124000];
+        private readonly int[] rears = [91000, 99000, 108000, 116000, 124000];
         public int WheelRate(List<int> rawValue, Wheel wheel)
         {
             switch (GetPosition(wheel))

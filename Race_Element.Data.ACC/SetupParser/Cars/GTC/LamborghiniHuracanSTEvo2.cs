@@ -25,11 +25,11 @@ internal class LamborghiniHuracanSTEvo22021 : ICarSetupConversion
             }
         }
 
-        private readonly double[] casters = new double[] {
+        private readonly double[] casters = [
             10.7, 10.9, 11.1, 11.3, 11.5, 11.7, 11.9, 12.1, 12.3, 12.5, 12.1, 12.9, 13.1,
             13.3, 13.5, 13.7, 13.9, 14.1, 14.3, 14.5, 14.7, 14.9, 15.1, 15.3, 15.5, 15.7,
             15.9, 16.1, 16.3, 16.5, 16.7, 16.8, 17.0, 17.2, 17.4
-        };
+        ];
         public override double Caster(int rawValue)
         {
             return Math.Round(casters[rawValue], 2);
@@ -91,8 +91,8 @@ internal class LamborghiniHuracanSTEvo22021 : ICarSetupConversion
             return Math.Round(10d + rawValue, 2);
         }
 
-        private readonly int[] fronts = new int[] { 121000, 144000, 167000, 190000, 201000, 212000 };
-        private readonly int[] rears = new int[] { 117000, 136000, 154000, 164000, 173000, 191000 };
+        private readonly int[] fronts = [121000, 144000, 167000, 190000, 201000, 212000];
+        private readonly int[] rears = [117000, 136000, 154000, 164000, 173000, 191000];
         public int WheelRate(List<int> rawValue, Wheel wheel)
         {
             switch (GetPosition(wheel))

@@ -67,7 +67,7 @@ internal sealed class EntryListOverlay : AbstractOverlay
 
         float fontSize = 9;
         var font = FontUtil.FontSegoeMono(fontSize);
-        _table = new InfoTable(fontSize, new int[] { (int)(font.Size * 18), (int)(font.Size * 9), (int)(font.Size * 8), (int)(font.Size * 30) });
+        _table = new InfoTable(fontSize, [(int)(font.Size * 18), (int)(font.Size * 9), (int)(font.Size * 8), (int)(font.Size * 30)]);
 
         this.Width = 650;
         this.Height = 500;
@@ -106,7 +106,7 @@ internal sealed class EntryListOverlay : AbstractOverlay
     {
         // table titles
 
-        _table.AddRow("P", new string[] { "#    Driver", $"Previous", "Delta", "Lap| Turn" });
+        _table.AddRow("P", ["#    Driver", $"Previous", "Delta", "Lap| Turn"]);
 
         List<KeyValuePair<int, CarData>> cars = EntryListTracker.Instance.Cars;
 
@@ -161,7 +161,7 @@ internal sealed class EntryListOverlay : AbstractOverlay
 
                     if (kv.Value.RealtimeCarUpdate.CurrentLap != null)
                         currentLap = kv.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.HasValue ? $"|----- {kv.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.Value / 1000}" : "|----- ";
-                    _table.AddRow(String.Empty, new string[] { String.Empty, $"{distanceText}", speed, currentLap });
+                    _table.AddRow(String.Empty, [String.Empty, $"{distanceText}", speed, currentLap]);
                 }
             }
         }
@@ -173,8 +173,8 @@ internal sealed class EntryListOverlay : AbstractOverlay
 
     private void AddCarFirstRow(KeyValuePair<int, CarData> kv)
     {
-        string[] firstRow = new string[] { String.Empty, String.Empty, String.Empty, String.Empty, String.Empty };
-        Color[] firstRowColors = new Color[] { Color.White, Color.White, Color.White, Color.White, Color.White };
+        string[] firstRow = [String.Empty, String.Empty, String.Empty, String.Empty, String.Empty];
+        Color[] firstRowColors = [Color.White, Color.White, Color.White, Color.White, Color.White];
 
         DriverInfo currentDriver = kv.Value.CarInfo.Drivers[kv.Value.CarInfo.CurrentDriverIndex];
         firstRow[0] = $"{kv.Value.CarInfo.RaceNumber.ToString().FillEnd(5, ' ')}";

@@ -26,7 +26,7 @@ internal class Porsche992GT3Cup_2021 : ICarSetupConversion
             }
         }
 
-        private readonly double[] casters = new double[] { 14.8 };
+        private readonly double[] casters = [14.8];
         public override double Caster(int rawValue)
         {
             return Math.Round(casters[rawValue], 2);
@@ -88,8 +88,8 @@ internal class Porsche992GT3Cup_2021 : ICarSetupConversion
             return Math.Round(11d + rawValue, 2);
         }
 
-        private readonly int[] fronts = new int[] { 1 };
-        private readonly int[] rears = new int[] { 1 };
+        private readonly int[] fronts = [1];
+        private readonly int[] rears = [1];
         public int WheelRate(List<int> rawValue, Wheel wheel)
         {
             switch (GetPosition(wheel))

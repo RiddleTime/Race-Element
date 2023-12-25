@@ -80,7 +80,7 @@ internal sealed class SteeringOverlay : AbstractOverlay
             gradientPath.AddEllipse(0, 0, (int)(InitialSize * Scale), (int)(InitialSize * Scale));
             PathGradientBrush pthGrBrush = new(gradientPath);
             pthGrBrush.CenterColor = Color.FromArgb(40, 0, 0, 0);
-            pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(220, 0, 0, 0) };
+            pthGrBrush.SurroundColors = [Color.FromArgb(220, 0, 0, 0)];
 
             // draw background
             g.FillEllipse(pthGrBrush, new Rectangle(0, 0, (int)(InitialSize * Scale), (int)(InitialSize * Scale)));

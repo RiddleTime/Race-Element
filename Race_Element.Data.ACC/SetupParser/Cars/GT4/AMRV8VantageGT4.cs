@@ -25,11 +25,11 @@ internal class AMRV8VantageGT4 : ICarSetupConversion
             }
         }
 
-        private readonly double[] casters = new double[] {
+        private readonly double[] casters = [
             10.7, 10.9, 11.1, 11.3, 11.5, 11.6, 11.8, 12.0, 12.2, 12.4, 12.5, 12.7, 12.9,
             13.1, 13.3, 13.4, 13.6, 13.8, 14.0, 14.2, 14.3, 14.5, 14.7, 14.9, 15.0, 15.2,
             15.4, 15.6, 15.7, 15.9, 16.1
-        };
+        ];
         public override double Caster(int rawValue)
         {
             return Math.Round(casters[rawValue], 2);
@@ -84,8 +84,8 @@ internal class AMRV8VantageGT4 : ICarSetupConversion
             return Math.Round(14d + rawValue, 2);
         }
 
-        private readonly int[] fronts = new int[] { 80000, 90000, 100000, 110000 };
-        private readonly int[] rears = new int[] { 70000, 75000, 80000 };
+        private readonly int[] fronts = [80000, 90000, 100000, 110000];
+        private readonly int[] rears = [70000, 75000, 80000];
         public int WheelRate(List<int> rawValue, Wheel wheel)
         {
             switch (GetPosition(wheel))

@@ -29,7 +29,7 @@ internal sealed class BroadcastRealtimeOverlay : AbstractOverlay
         this.Width = 370;
         this.Height = 280;
 
-        _table = new InfoTable(9, new int[] { 250 });
+        _table = new InfoTable(9, [250]);
     }
 
     private void Instance_WidthChanged(object sender, bool e)
@@ -75,28 +75,28 @@ internal sealed class BroadcastRealtimeOverlay : AbstractOverlay
                     string driverName = carData.Value.CarInfo.GetCurrentDriverName();
 
                     string firstName = carData.Value.CarInfo.Drivers[carData.Value.CarInfo.CurrentDriverIndex].FirstName;
-                    _table.AddRow("P", new string[] { $"{carData.Value.RealtimeCarUpdate.Position}" });
-                    _table.AddRow($"", new string[] { $"#{carData.Value.CarInfo.RaceNumber.ToString().FillEnd(4, ' ')}- {firstName} {driverName}" });
-                    _table.AddRow("Team", new string[] { $"{carData.Value.CarInfo.TeamName}" });
+                    _table.AddRow("P", [$"{carData.Value.RealtimeCarUpdate.Position}"]);
+                    _table.AddRow($"", [$"#{carData.Value.CarInfo.RaceNumber.ToString().FillEnd(4, ' ')}- {firstName} {driverName}"]);
+                    _table.AddRow("Team", [$"{carData.Value.CarInfo.TeamName}"]);
 
                     var name = ConversionFactory.GetCarName(carData.Value.CarInfo.CarModelType);
-                    _table.AddRow("Car", new string[] { $"{name}" });
+                    _table.AddRow("Car", [$"{name}"]);
 
 
                     string lapType = string.Empty;
                     if (carData.Value.RealtimeCarUpdate.CurrentLap != null)
                         lapType = $" - {carData.Value.RealtimeCarUpdate.CurrentLap.Type}";
-                    _table.AddRow("Lap", new string[] { $"{carData.Value.RealtimeCarUpdate.Laps}{lapType}" });
+                    _table.AddRow("Lap", [$"{carData.Value.RealtimeCarUpdate.Laps}{lapType}"]);
 
-                    _table.AddRow("Speed", new string[] { $"{carData.Value.RealtimeCarUpdate.Kmh} km/h" });
+                    _table.AddRow("Speed", [$"{carData.Value.RealtimeCarUpdate.Kmh} km/h"]);
 
                     if (carData.Value.RealtimeCarUpdate.CurrentLap != null && carData.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.HasValue)
                     {
-                        _table.AddRow("", new string[] { carData.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.HasValue ? $"{carData.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.Value / 1000}" : "" });
+                        _table.AddRow("", [carData.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.HasValue ? $"{carData.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.Value / 1000}" : ""]);
                     }
 
-                    _table.AddRow("Coords", new string[] { $"X: {carData.Value.RealtimeCarUpdate.WorldPosX * 1000:F3}, Y: {carData.Value.RealtimeCarUpdate.WorldPosY * 1000:F3}" });
-                    _table.AddRow("%", new string[] { $"{carData.Value.RealtimeCarUpdate.SplinePosition:F3}" });
+                    _table.AddRow("Coords", [$"X: {carData.Value.RealtimeCarUpdate.WorldPosX * 1000:F3}, Y: {carData.Value.RealtimeCarUpdate.WorldPosY * 1000:F3}"]);
+                    _table.AddRow("%", [$"{carData.Value.RealtimeCarUpdate.SplinePosition:F3}"]);
 
                     //FieldInfo[] members = carData.Value.RealtimeCarUpdate.GetType().GetRuntimeFields().ToArray();
                     //foreach (FieldInfo member in members)

@@ -72,7 +72,7 @@ public sealed class StartScreenOverlay : AbstractOverlay
             using GraphicsPath gradientPath = new();
             gradientPath.AddEllipse(rect);
             using PathGradientBrush pthGrBrush = new(gradientPath);
-            pthGrBrush.SurroundColors = new Color[] { Color.FromArgb(40, 255, 0, 0) };
+            pthGrBrush.SurroundColors = [Color.FromArgb(40, 255, 0, 0)];
             pthGrBrush.CenterColor = Color.FromArgb(255, 255, 0, 0);
 
             using Pen pen = new(pthGrBrush, 1.15f);

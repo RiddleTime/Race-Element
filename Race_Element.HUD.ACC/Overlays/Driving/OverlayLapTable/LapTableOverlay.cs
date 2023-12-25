@@ -80,7 +80,7 @@ internal sealed class LapTableOverlay : AbstractOverlay
 
         float fontHeight = (int)(_font.GetHeight(120));
         int columnHeight = (int)(Math.Ceiling(fontHeight) + 1 * scale);
-        int[] columnWidths = new int[] { (int)(45f * scale), (int)(100f * scale), (int)(78f * scale), (int)(78f * scale), (int)(78f * scale) };
+        int[] columnWidths = [(int)(45f * scale), (int)(100f * scale), (int)(78f * scale), (int)(78f * scale), (int)(78f * scale)];
         int totalWidth = columnWidths[0] + columnWidths[1];
 
         // set up backgrounds and invalid ones

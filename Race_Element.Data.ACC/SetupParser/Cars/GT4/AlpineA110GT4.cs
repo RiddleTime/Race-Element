@@ -13,11 +13,11 @@ internal class AlpineA110GT4 : ICarSetupConversion, ISetupChanger
     CarClasses ICarSetupConversion.CarClass => CarClasses.GT4;
     public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHF2023_GT4;
 
-    private static readonly double[] casters = new double[] { 7.3, 7.5, 7.7, 7.9, 8.1, 8.3, 8.5, 8.6, 8.8, 9.0, 9.2,
+    private static readonly double[] casters = [ 7.3, 7.5, 7.7, 7.9, 8.1, 8.3, 8.5, 8.6, 8.8, 9.0, 9.2,
                 9.4, 9.6, 9.8, 10.0, 10.1, 10.3, 10.5, 10.7, 10.9, 11.1, 11.3, 11.5, 11.6, 11.8, 12.0, 12.2,
-                12.4, 12.6, 12.7, 12.9, 13.1, 13.3, 13.5, 13.7 };
-    private static readonly int[] wheelRateFronts = new int[] { 62500, 72500, 82500, 92500 };
-    private static readonly int[] wheelRateRears = new int[] { 73300, 83300, 93300, 103300 };
+                12.4, 12.6, 12.7, 12.9, 13.1, 13.3, 13.5, 13.7 ];
+    private static readonly int[] wheelRateFronts = [62500, 72500, 82500, 92500];
+    private static readonly int[] wheelRateRears = [73300, 83300, 93300, 103300];
 
     ITyreSetupChanger ISetupChanger.TyreSetupChanger => new TyreSetupChanger();
     IElectronicsSetupChanger ISetupChanger.ElectronicsSetupChanger => new ElectronicsSetupChanger();

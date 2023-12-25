@@ -39,7 +39,7 @@ public partial class HudOptions : UserControl
     private HudSettings _hudSettings;
     private HudSettingsJson _hudSettingsJson;
 
-    private readonly object[] DefaultOverlayArgs = new object[] { new System.Drawing.Rectangle((int)SystemParameters.PrimaryScreenWidth / 2, (int)SystemParameters.PrimaryScreenHeight / 2, 300, 150) };
+    private readonly object[] DefaultOverlayArgs = [new System.Drawing.Rectangle((int)SystemParameters.PrimaryScreenWidth / 2, (int)SystemParameters.PrimaryScreenHeight / 2, 300, 150)];
 
     private DateTime _lastMovementModeChange = DateTime.MinValue;
     private const int MovementModeDebounce = 250;
@@ -691,7 +691,7 @@ public partial class HudOptions : UserControl
 
     private void SaveOverlayConfig(Type overlay, OverlayConfiguration overlayConfiguration)
     {
-        object[] args = new object[] { new System.Drawing.Rectangle(0, 0, 300, 150) };
+        object[] args = [new System.Drawing.Rectangle(0, 0, 300, 150)];
         AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(overlay, args);
         SaveOverlayConfig(tempOverlay, overlayConfiguration);
         tempOverlay.Dispose();
@@ -735,7 +735,7 @@ public partial class HudOptions : UserControl
 
     private OverlayConfiguration GetOverlayConfig(Type overlay)
     {
-        object[] args = new object[] { new System.Drawing.Rectangle(0, 0, 300, 150) };
+        object[] args = [new System.Drawing.Rectangle(0, 0, 300, 150)];
         AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(overlay, args);
 
         OverlayConfiguration temp = null;

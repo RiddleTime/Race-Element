@@ -14,9 +14,9 @@ internal class BMWM2CSRacing : ICarSetupConversion, ISetupChanger
     public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHF2023_GT4;
 
 
-    private static readonly double[] casters = new double[] { 8.5 };
-    private static readonly int[] wheelRateFronts = new int[] { 162000, 180000, 198000 };
-    private static readonly int[] wheelRateRears = new int[] { 103000, 117000, 131000 };
+    private static readonly double[] casters = [8.5];
+    private static readonly int[] wheelRateFronts = [162000, 180000, 198000];
+    private static readonly int[] wheelRateRears = [103000, 117000, 131000];
 
     ITyreSetupChanger ISetupChanger.TyreSetupChanger => new TyreSetupChanger();
     IElectronicsSetupChanger ISetupChanger.ElectronicsSetupChanger => new ElectronicsSetupChanger();

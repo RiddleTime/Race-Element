@@ -23,7 +23,7 @@ internal class OpponentOverlay : AbstractOverlay
         this.Width = InitialWidth;
         this.Height = InitialHeight;
 
-        _table = new InfoTable(12, new int[] { 100, 100 });
+        _table = new InfoTable(12, [100, 100]);
     }
 
     public override void BeforeStart()
@@ -38,10 +38,10 @@ internal class OpponentOverlay : AbstractOverlay
     public override void Render(Graphics g)
     {
         float gapAhead = pageGraphics.gapAheadMillis / 1000f;
-        _table.AddRow("Ahead", new string[] { $"{gapAhead:F3}" });
+        _table.AddRow("Ahead", [$"{gapAhead:F3}"]);
 
         float gapBehind = pageGraphics.gapBehindMillis * -1 / 1000f;
-        _table.AddRow("Behind", new string[] { $"{gapBehind:F3}" });
+        _table.AddRow("Behind", [$"{gapBehind:F3}"]);
         _table.Draw(g);
     }
 

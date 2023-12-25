@@ -80,7 +80,7 @@ internal sealed class DualSenseXOverlay : AbstractOverlay
 
         p.instructions = new Instruction[1];  // send only 1 instruction
         p.instructions[0].type = InstructionType.RGBUpdate;
-        p.instructions[0].parameters = new object[] { controllerIndex, 255, 69, 0 };
+        p.instructions[0].parameters = [controllerIndex, 255, 69, 0];
 
         Send(p);
         ServerResponse lightingReponse = Receive();

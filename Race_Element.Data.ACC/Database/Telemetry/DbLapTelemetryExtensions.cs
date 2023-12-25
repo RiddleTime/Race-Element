@@ -33,7 +33,7 @@ public static class DbLapTelemetryExtensions
 
     public static byte[] SerializeLapData(this Dictionary<long, TelemetryPoint> dbLapTelemetry)
     {
-        byte[] Data = new byte[0];
+        byte[] Data = [];
 
         try
         {

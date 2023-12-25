@@ -25,10 +25,10 @@ internal class Mclaren720sEvoGT3 : ICarSetupConversion
             }
         }
 
-        private readonly double[] casters = new double[] { 5.3, 5.6, 5.8, 6.0, 6.3, 6.5, 6.8, 7.0,
+        private readonly double[] casters = [ 5.3, 5.6, 5.8, 6.0, 6.3, 6.5, 6.8, 7.0,
             7.3, 7.5, 7.8, 8.0, 8.2, 8.5, 8.7, 9.0, 9.2, 9.4, 9.7, 9.9, 10.2, 10.4, 10.7, 10.9,
             11.1, 11.4, 11.6, 11.8, 12.1, 12.3, 12.6, 12.8, 13.0, 13.3, 13.5, 13.7, 14.0, 14.2,
-            14.4, 14.7, 14.9, 15.1, 15.4, 15.6, 15.8, 16.0, 16.3 };
+            14.4, 14.7, 14.9, 15.1, 15.4, 15.6, 15.8, 16.0, 16.3 ];
         public override double Caster(int rawValue)
         {
             return Math.Round(casters[rawValue], 2);
@@ -88,8 +88,8 @@ internal class Mclaren720sEvoGT3 : ICarSetupConversion
             return Math.Round(11d + rawValue, 2);
         }
 
-        private readonly int[] fronts = new int[] { 118000, 134000, 150000, 166000, 182000, 198000, 214000, 230000 };
-        private readonly int[] rears = new int[] { 83000, 97000, 111000, 125000, 139000, 153000, 167000, 181000, 195000, 209000 };
+        private readonly int[] fronts = [118000, 134000, 150000, 166000, 182000, 198000, 214000, 230000];
+        private readonly int[] rears = [83000, 97000, 111000, 125000, 139000, 153000, 167000, 181000, 195000, 209000];
         public int WheelRate(List<int> rawValue, Wheel wheel)
         {
             switch (GetPosition(wheel))

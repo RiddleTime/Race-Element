@@ -193,7 +193,7 @@ public static class DocUtil
 
     public static TableRow GetTableRowLeft(string title, double value, int cellCount, int denominator = 0)
     {
-        return GetTableRowLeft(title, new string[1], new double[] { value }, cellCount, denominator);
+        return GetTableRowLeft(title, new string[1], [value], cellCount, denominator);
     }
 
     public static TableRow GetTableRowLeft(string title, string[] labels, double[] values, int cellCount, int denominator = 0)
@@ -268,7 +268,7 @@ public static class DocUtil
     {
         if (!fullValueColumnSpan)
         {
-            return GetTableRowLeft(title, new string[] { value }, cellCount);
+            return GetTableRowLeft(title, [value], cellCount);
         }
         else
         {
@@ -350,7 +350,7 @@ public static class DocUtil
 
     public static TableRow GetTableRowCompare(double value1, string title, double value2, int cellCount, int denominator = 0)
     {
-        return GetTableRowCompare(new double[] { value1 }, title, new double[] { value2 }, cellCount, denominator);
+        return GetTableRowCompare([value1], title, [value2], cellCount, denominator);
     }
 
     public static TableRow GetTableRowCompare(double[] values1, string title, double[] values2, int cellCount, int denominator = 0)

@@ -26,11 +26,11 @@ internal class NissanGtrGT3_2015 : ICarSetupConversion
         }
 
 
-        private readonly double[] casters = new double[] { 6.0, 6.2, 6.4, 6.6, 6.8, 7.0, 7.2,
+        private readonly double[] casters = [ 6.0, 6.2, 6.4, 6.6, 6.8, 7.0, 7.2,
             7.3, 7.5, 7.7, 7.9, 8.1, 8.3, 8.5, 8.7, 8.9, 9.1, 9.3, 9.5, 9.7, 9.8, 10.0, 10.2,
             10.4, 10.6, 10.8, 11.0, 11.2, 11.4, 11.6, 11.7, 11.9, 12.1, 12.3, 12.5, 12.7, 12.9,
             13.1, 13.2, 13.4, 13.6, 13.8, 14.0, 14.2, 14.4, 14.5, 14.7, 14.9, 15.1, 15.3, 15.5,
-            15.6, 15.8, 16.0, 16.2, 16.4, 16.5, 16.7, 16.9, 17.1, 17.3 };
+            15.6, 15.8, 16.0, 16.2, 16.4, 16.5, 16.7, 16.9, 17.1, 17.3 ];
         public override double Caster(int rawValue)
         {
             return Math.Round(casters[rawValue], 2);
@@ -92,8 +92,8 @@ internal class NissanGtrGT3_2015 : ICarSetupConversion
             return Math.Round(12d + rawValue, 2);
         }
 
-        private readonly int[] fronts = new int[] { 122000, 132000, 142000, 152000, 162000, 172000, 182000 };
-        private readonly int[] rears = new int[] { 94000, 104000, 114000, 124000, 134000, 144000, 154000 };
+        private readonly int[] fronts = [122000, 132000, 142000, 152000, 162000, 172000, 182000];
+        private readonly int[] rears = [94000, 104000, 114000, 124000, 134000, 144000, 154000];
         public int WheelRate(List<int> rawValue, Wheel wheel)
         {
             switch (GetPosition(wheel))

@@ -25,9 +25,9 @@ internal class ChevroletCamaroGT4R : ICarSetupConversion
             }
         }
 
-        private readonly double[] casters = new double[] {
+        private readonly double[] casters = [
             7.1
-        };
+        ];
         public override double Caster(int rawValue)
         {
             return Math.Round(casters[rawValue], 2);
@@ -87,8 +87,8 @@ internal class ChevroletCamaroGT4R : ICarSetupConversion
             return Math.Round(10d + rawValue, 2);
         }
 
-        private readonly int[] fronts = new int[] { 165888, 184320, 202752 };
-        private readonly int[] rears = new int[] { 90000, 102000, 114000 };
+        private readonly int[] fronts = [165888, 184320, 202752];
+        private readonly int[] rears = [90000, 102000, 114000];
         public int WheelRate(List<int> rawValue, Wheel wheel)
         {
             switch (GetPosition(wheel))

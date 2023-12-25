@@ -25,11 +25,11 @@ internal class MercedesAMGGT4 : ICarSetupConversion
             }
         }
 
-        private readonly double[] casters = new double[] {
+        private readonly double[] casters = [
             9.2, 9.4, 9.5, 9.7, 9.9, 10.1, 10.3, 10.5, 10.7, 10.8, 11.0, 11.2, 11.4, 11.6, 11.8,
             11.9, 12.1, 12.3, 12.5, 12.7, 12.8, 13.0, 13.2, 13.4, 13.6, 13.7, 13.9, 14.1, 14.3,
             14.5, 14.6, 14.8, 15.0, 15.2, 15.4, 15.5, 15.7, 15.9, 16.1, 16.2, 16.4
-        };
+        ];
         public override double Caster(int rawValue)
         {
             return Math.Round(casters[rawValue], 2);
@@ -89,8 +89,8 @@ internal class MercedesAMGGT4 : ICarSetupConversion
             return Math.Round(10d + rawValue, 2);
         }
 
-        private readonly int[] fronts = new int[] { 78000, 88000, 104000 };
-        private readonly int[] rears = new int[] { 66000 };
+        private readonly int[] fronts = [78000, 88000, 104000];
+        private readonly int[] rears = [66000];
         public int WheelRate(List<int> rawValue, Wheel wheel)
         {
             switch (GetPosition(wheel))

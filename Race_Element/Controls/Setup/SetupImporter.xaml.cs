@@ -141,7 +141,7 @@ public partial class SetupImporter : UserControl
                 using (var client = new WebClient())
                 {
                     string fileName;
-                    string[] splits = setupFile.Split(new char[] { '/' });
+                    string[] splits = setupFile.Split(['/']);
                     fileName = splits[splits.Length - 1];
 
                     DirectoryInfo downloadCache = new(FileUtil.RaceElementDownloadCachePath);

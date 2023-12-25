@@ -23,7 +23,7 @@ internal sealed class BroadcastTrackDataOverlay : AbstractOverlay
         this.Width = 300;
         this.Height = 80;
 
-        _table = new InfoTable(9, new int[] { 200 });
+        _table = new InfoTable(9, [200]);
     }
 
     private void Instance_WidthChanged(object sender, bool e)
@@ -63,7 +63,7 @@ internal sealed class BroadcastTrackDataOverlay : AbstractOverlay
             value = ReflectionUtil.FieldTypeValue(member, value);
 
             if (value != null)
-                _table.AddRow($"{member.Name.Replace("<", "").Replace(">k__BackingField", "")}", new string[] { value.ToString() });
+                _table.AddRow($"{member.Name.Replace("<", "").Replace(">k__BackingField", "")}", [value.ToString()]);
         }
 
         _table.Draw(g);

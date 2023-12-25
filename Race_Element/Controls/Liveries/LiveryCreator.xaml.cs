@@ -149,7 +149,7 @@ public partial class LiveryCreator : UserControl
         carFolder.Create();
 
         // create both default sponsors and decals files in cars folder
-        string[] sponsorAndDecals = new string[] { "sponsors.json", "decals.json" };
+        string[] sponsorAndDecals = ["sponsors.json", "decals.json"];
         foreach (string fileName in sponsorAndDecals)
         {
             FileInfo sponsorsJson = new($"{RaceElement.Util.FileUtil.LiveriesPath}{liveryTreeCar.CarsRoot.CustomSkinName}\\{fileName}");

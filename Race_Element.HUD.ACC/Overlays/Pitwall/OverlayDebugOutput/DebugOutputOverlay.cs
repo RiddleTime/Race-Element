@@ -53,7 +53,7 @@ internal sealed class DebugOutputOverlay : AbstractOverlay
 
         int fontSize = 9;
         _font = FontUtil.FontOrbitron(fontSize);
-        _table = new InfoTable(fontSize, new int[] { _config.Output.Width - 66 });
+        _table = new InfoTable(fontSize, [_config.Output.Width - 66]);
         RefreshRateHz = 5;
         this.Width = _config.Output.Width + 1;
     }
@@ -94,7 +94,7 @@ internal sealed class DebugOutputOverlay : AbstractOverlay
             foreach (MessageOut output in TraceOutputListener.Instance.Outputs.Take(_config.Output.VisibleLines))
             {
                 DateTime time = DateTime.FromFileTime(output.time);
-                _table.AddRow($"{time:HH\\:mm\\:ss}", new string[] { output.message });
+                _table.AddRow($"{time:HH\\:mm\\:ss}", [output.message]);
             }
 
         _table.Draw(g);

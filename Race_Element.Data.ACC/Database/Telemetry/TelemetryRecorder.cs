@@ -180,7 +180,7 @@ internal class TelemetryRecorder
                                         WheelSlip = _pagePhysics.WheelSlip,
                                         WheelSlipAngle = _pagePhysics.SlipAngle,
                                         Speed = _pagePhysics.SpeedKmh,
-                                        Acceleration = new float[] { _pagePhysics.AccG[0], _pagePhysics.AccG[2] },
+                                        Acceleration = [_pagePhysics.AccG[0], _pagePhysics.AccG[2]],
                                         X = xCoord,
                                         Y = yCoord,
                                         Heading = _pagePhysics.Heading,

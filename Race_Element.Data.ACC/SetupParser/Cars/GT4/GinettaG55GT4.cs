@@ -25,11 +25,11 @@ internal class GinettaG55GT4 : ICarSetupConversion
             }
         }
 
-        private readonly double[] casters = new double[] {
+        private readonly double[] casters = [
             3.7, 3.9, 4.2, 4.5, 4.7, 5.0, 5.3, 5.6, 5.8, 6.1, 6.4, 6.6, 6.9, 7.2, 7.4, 7.7,
             7.9, 8.2, 8.5, 8.7, 9.0, 9.3, 9.5, 9.8, 10.1, 10.3, 10.6, 10.8, 11.1, 11.4, 11.6,
             11.9, 12.1, 12.4, 12.7, 12.9, 13.2, 13.4, 13.7, 13.9, 14.2
-        };
+        ];
         public override double Caster(int rawValue)
         {
             return Math.Round(casters[rawValue], 2);
@@ -84,8 +84,8 @@ internal class GinettaG55GT4 : ICarSetupConversion
             return Math.Round(11d + rawValue, 2);
         }
 
-        private readonly int[] fronts = new int[] { 80000, 90000, 100000, 110000, 120000 };
-        private readonly int[] rears = new int[] { 60000, 70000, 80000, 90000, 100000 };
+        private readonly int[] fronts = [80000, 90000, 100000, 110000, 120000];
+        private readonly int[] rears = [60000, 70000, 80000, 90000, 100000];
         public int WheelRate(List<int> rawValue, Wheel wheel)
         {
             switch (GetPosition(wheel))

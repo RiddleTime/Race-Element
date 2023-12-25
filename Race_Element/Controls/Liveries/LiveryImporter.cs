@@ -179,7 +179,7 @@ internal static class LiveryImporter
 
                         string carsJsonFileName = $"{FileUtil.CarsPath}{FileUtil.GetFileName(x.Key)}";
 
-                        string[] validSkinFiles = new string[] { "sponsors.json", "sponsors.png", "decals.json", "decals.png", ".dds" };
+                        string[] validSkinFiles = ["sponsors.json", "sponsors.png", "decals.json", "decals.png", ".dds"];
 
                         List<IArchiveEntry> skinFiles = archiveEntries.FindAll(s =>
                         {
@@ -275,7 +275,7 @@ internal static class LiveryImporter
                         {
                             x.WriteToFile(carsJsonFileName);
 
-                            string[] validSkinFiles = new string[] { "sponsors.json", "sponsors.png", "decals.json", "decals.png", ".dds" };
+                            string[] validSkinFiles = ["sponsors.json", "sponsors.png", "decals.json", "decals.png", ".dds"];
                             foreach (IArchiveEntry skinFile in skinFiles)
                             {
                                 for (int s = 0; s < validSkinFiles.Length; s++)

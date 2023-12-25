@@ -25,10 +25,10 @@ internal class Ferrari296GT3 : ICarSetupConversion
             }
         }
 
-        private readonly double[] casters = new double[] {
+        private readonly double[] casters = [
             8.5, 8.7, 8.9, 9.1, 9.2, 9.4, 9.6, 9.8, 9.9, 10.1, 10.3, 10.5, 10.6,
             10.8, 11.0, 11.2, 11.3, 11.5, 11.7, 11.9, 12.0, 12.2, 12.4, 12.6,
-            12.7, 12.9, 13.1, 13.3, 13.4, 13.6, 13.8 };
+            12.7, 12.9, 13.1, 13.3, 13.4, 13.6, 13.8 ];
 
         public override double Caster(int rawValue)
         {
@@ -90,8 +90,8 @@ internal class Ferrari296GT3 : ICarSetupConversion
             return Math.Round(13d + rawValue, 2);
         }
 
-        private readonly int[] fronts = new int[] { 163769, 170068, 176367, 182666, 188964, 195263, 201562, 207861, 214160 };
-        private readonly int[] rears = new int[] { 122091, 129273, 136455, 143637, 150818, 158000, 165182, 172364, 179546 };
+        private readonly int[] fronts = [163769, 170068, 176367, 182666, 188964, 195263, 201562, 207861, 214160];
+        private readonly int[] rears = [122091, 129273, 136455, 143637, 150818, 158000, 165182, 172364, 179546];
 
         public int WheelRate(List<int> rawValue, Wheel wheel)
         {

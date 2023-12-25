@@ -28,7 +28,7 @@ internal static class TriggerHaptics
                 type = InstructionType.TriggerUpdate,
                 /// Start: 0-9 Strength:0-8 Frequency:0-255
                 //parameters = new object[] { controllerIndex, Trigger.Left, TriggerMode.AutomaticGun, 0, 6, 45 } // vibrate is not enough
-                parameters = new object[] { controllerIndex, Trigger.Left, TriggerMode.CustomTriggerValue, CustomTriggerValueMode.VibrateResistanceB, brakeConfig.AbsFrequency/*85*/, 1, 0, 0, 0, 0, 0 }
+                parameters = [controllerIndex, Trigger.Left, TriggerMode.CustomTriggerValue, CustomTriggerValueMode.VibrateResistanceB, brakeConfig.AbsFrequency/*85*/, 1, 0, 0, 0, 0, 0]
             });
 
         }
@@ -37,7 +37,7 @@ internal static class TriggerHaptics
             instructions.Add(new Instruction()
             {
                 type = InstructionType.TriggerUpdate,
-                parameters = new object[] { controllerIndex, Trigger.Left, TriggerMode.Normal }
+                parameters = [controllerIndex, Trigger.Left, TriggerMode.Normal]
             });
 
             if (brakeConfig.ActiveLoad)
@@ -48,7 +48,7 @@ internal static class TriggerHaptics
                     instructions.Add(new Instruction()
                     {
                         type = InstructionType.TriggerUpdate,
-                        parameters = new object[] { controllerIndex, Trigger.Left, TriggerMode.Normal }
+                        parameters = [controllerIndex, Trigger.Left, TriggerMode.Normal]
                     });
                 }
                 else
@@ -60,7 +60,7 @@ internal static class TriggerHaptics
                     instructions.Add(new Instruction()
                     {
                         type = InstructionType.TriggerUpdate,
-                        parameters = new object[] { controllerIndex, Trigger.Left, TriggerMode.AutomaticGun, 0, 2 * totalBrakePressure, 45 }
+                        parameters = [controllerIndex, Trigger.Left, TriggerMode.AutomaticGun, 0, 2 * totalBrakePressure, 45]
                     });
                 }
             }
@@ -89,7 +89,7 @@ internal static class TriggerHaptics
                 type = InstructionType.TriggerUpdate,
                 //parameters = new object[] { controllerIndex, Trigger.Right, TriggerMode.CustomTriggerValue, CustomTriggerValueMode.VibrateResistanceB, 200, 1, 0, 0, 0, 0, 0 }
                 /// Start: 0-9 Strength:0-8 Frequency:0-255
-                parameters = new object[] { controllerIndex, Trigger.Right, TriggerMode.AutomaticGun, 0, averageRearTyreSlip / 4, 100 + averageRearTyreSlip * 4 }
+                parameters = [controllerIndex, Trigger.Right, TriggerMode.AutomaticGun, 0, averageRearTyreSlip / 4, 100 + averageRearTyreSlip * 4]
             });
         }
         else
@@ -97,7 +97,7 @@ internal static class TriggerHaptics
             instructions.Add(new Instruction()
             {
                 type = InstructionType.TriggerUpdate,
-                parameters = new object[] { controllerIndex, Trigger.Right, TriggerMode.Normal }
+                parameters = [controllerIndex, Trigger.Right, TriggerMode.Normal]
             });
         }
 
@@ -107,7 +107,7 @@ internal static class TriggerHaptics
             instructions.Add(new Instruction()
             {
                 type = InstructionType.TriggerUpdate,
-                parameters = new object[] { controllerIndex, Trigger.Right, TriggerMode.CustomTriggerValue, CustomTriggerValueMode.VibrateResistanceB, throttleConfig.TcFrequency /*130*/, 10, 0, 0, 0, 0, 0 }
+                parameters = [controllerIndex, Trigger.Right, TriggerMode.CustomTriggerValue, CustomTriggerValueMode.VibrateResistanceB, throttleConfig.TcFrequency /*130*/, 10, 0, 0, 0, 0, 0]
                 /// Start: 0-9 Strength:0-8 Frequency:0-255
                 //parameters = new object[] { controllerIndex, Trigger.Right, TriggerMode.AutomaticGun, 0, 6, 65 }
             });
@@ -118,7 +118,7 @@ internal static class TriggerHaptics
             instructions.Add(new Instruction()
             {
                 type = InstructionType.TriggerUpdate,
-                parameters = new object[] { controllerIndex, Trigger.Right, TriggerMode.Normal }
+                parameters = [controllerIndex, Trigger.Right, TriggerMode.Normal]
             });
         }
 
