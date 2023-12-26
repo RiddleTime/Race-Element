@@ -159,7 +159,10 @@ internal sealed class TrackBarOverlay : AbstractOverlay
             //Debug.WriteLine($"{entry.Value.RealtimeCarUpdate.SplinePosition:F2}");
         }
 
-        AbstractTrackData current = GetCurrentTrackByFullName(broadCastTrackData.TrackName);
+        AbstractTrackData current = GetCurrentTrack(pageStatic.Track);
+        if (current == null && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
+            current = GetCurrentTrackByFullName(broadCastTrackData.TrackName);
+
         if (current != null)
         {
             foreach (var corner in current.CornerNames)
