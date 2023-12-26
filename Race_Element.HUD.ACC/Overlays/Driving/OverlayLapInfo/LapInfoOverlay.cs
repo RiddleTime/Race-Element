@@ -18,17 +18,17 @@ internal sealed class LapInfoOverlay : AbstractOverlay
     private sealed class LapInfoConfig : OverlayConfiguration
     {
         [ConfigGrouping("Lap Info", "Show or hide inputs or the current gear.")]
-        public InfoPanelGrouping InfoPanel { get; set; } = new InfoPanelGrouping();
+        public InfoPanelGrouping InfoPanel { get; init; } = new InfoPanelGrouping();
         public class InfoPanelGrouping
         {
             [ToolTip("Displays the time for each sector, green colored sectors are personal best.")]
-            public bool Sectors { get; set; } = true;
+            public bool Sectors { get; init; } = true;
 
             [ToolTip("Displays the best lap time.")]
-            public bool BestLap { get; set; } = true;
+            public bool BestLap { get; init; } = true;
 
             [ToolTip("Displays the potential best lap time based on your fastest sector times.")]
-            public bool PotentialBest { get; set; } = true;
+            public bool PotentialBest { get; init; } = true;
         }
 
         public LapInfoConfig() : base()

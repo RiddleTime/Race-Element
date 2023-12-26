@@ -15,14 +15,14 @@ internal sealed class SpeedometerOverlay : AbstractOverlay
     private class SpeedometerConfiguration : OverlayConfiguration
     {
         [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
-        public InfoPanelGrouping InfoPanel { get; set; } = new InfoPanelGrouping();
+        public InfoPanelGrouping InfoPanel { get; init; } = new InfoPanelGrouping();
         public class InfoPanelGrouping
         {
             [ToolTip("Displays the maximum speed reached on each lap.")]
-            public bool MaxSpeed { get; set; } = false;
+            public bool MaxSpeed { get; init; } = false;
 
             [ToolTip("Displays the minimum speed reached on each lap.")]
-            public bool MinSpeed { get; set; } = false;
+            public bool MinSpeed { get; init; } = false;
         }
 
         public SpeedometerConfiguration()

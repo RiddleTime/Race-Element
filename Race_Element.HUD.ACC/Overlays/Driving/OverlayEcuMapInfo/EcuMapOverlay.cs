@@ -16,11 +16,11 @@ internal sealed class EcuMapOverlay : AbstractOverlay
     private sealed class EcuMapConfiguration : OverlayConfiguration
     {
         [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
-        public InfoPanelGrouping InfoPanel { get; set; } = new InfoPanelGrouping();
+        public InfoPanelGrouping InfoPanel { get; init; } = new InfoPanelGrouping();
         public class InfoPanelGrouping
         {
             [ToolTip("Displays the number of the ecu map.")]
-            public bool MapNumber { get; set; } = true;
+            public bool MapNumber { get; init; } = true;
         }
 
         public EcuMapConfiguration() => this.AllowRescale = true;

@@ -19,20 +19,20 @@ internal sealed class WindDirectionOverlay : AbstractOverlay
     private sealed class WindDirectionConfiguration : OverlayConfiguration
     {
         [ConfigGrouping("Wind", "Adjust settings related to the wind")]
-        public WindGrouping Wind { get; set; } = new WindGrouping();
+        public WindGrouping Wind { get; init; } = new WindGrouping();
         public sealed class WindGrouping
         {
             [ToolTip("Below this wind speed(km/h) the hud will hide itself.")]
             [FloatRange(0f, 10f, 0.5f, 1)]
-            public float ShowThreshold { get; set; } = 0.5f;
+            public float ShowThreshold { get; init; } = 0.5f;
         }
 
         [ConfigGrouping("Shape", "Adjust the shape")]
-        public ShapeGrouping Shape { get; set; } = new ShapeGrouping();
+        public ShapeGrouping Shape { get; init; } = new ShapeGrouping();
         public sealed class ShapeGrouping
         {
             [IntRange(100, 200, 1)]
-            public int Size { get; set; } = 120;
+            public int Size { get; init; } = 120;
         }
 
         public WindDirectionConfiguration() => AllowRescale = true;

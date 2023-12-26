@@ -1,6 +1,5 @@
 ﻿using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.Session;
-using RaceElement.Data.ACC.Tracker;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -23,11 +22,11 @@ internal sealed class TrackCircleOverlay : AbstractOverlay
         public TrackCircleConfiguration() => AllowRescale = true;
 
         [ConfigGrouping("View", "Adjust track circle settings.")]
-        public ViewingGroup Viewing { get; set; } = new ViewingGroup();
+        public ViewingGroup Viewing { get; init; } = new ViewingGroup();
         public sealed class ViewingGroup
         {
             [ToolTip("Show the Track Circle HUD when spectating.")]
-            public bool Spectator { get; set; } = true;
+            public bool Spectator { get; init; } = true;
         }
     }
     private const int Dimension = 400;

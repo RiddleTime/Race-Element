@@ -20,41 +20,41 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
     private sealed class FuelInfoConfig : OverlayConfiguration
     {
         [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
-        public InfoPanelGrouping InfoPanel { get; set; } = new InfoPanelGrouping();
+        public InfoPanelGrouping InfoPanel { get; init; } = new InfoPanelGrouping();
         public class InfoPanelGrouping
         {
             [ToolTip("Sets the number of additional laps as a fuel buffer.")]
             [IntRange(0, 3, 1)]
-            public int FuelBufferLaps { get; set; } = 0;
+            public int FuelBufferLaps { get; init; } = 0;
 
             [ToolTip("Displays Fuel time remaining which is green if it's higher than stint time or session time and red if it is not.")]
-            public bool FuelTime { get; set; } = true;
+            public bool FuelTime { get; init; } = true;
 
             [ToolTip("Displays stint time remaining and the suggested amount of fuel to the end of the stint or the session.")]
-            public bool StintInfo { get; set; } = true;
+            public bool StintInfo { get; init; } = true;
 
             [ToolTip("When viewing the setup menu it will still display the HUD.\nOverriding the default.")]
-            public bool ShowInSetup { get; set; } = false;
+            public bool ShowInSetup { get; init; } = false;
         }
 
         [ConfigGrouping("Colors", "Adjust colors for the fuel bar.")]
-        public ColorsGrouping Colors { get; set; } = new ColorsGrouping();
+        public ColorsGrouping Colors { get; init; } = new ColorsGrouping();
         public class ColorsGrouping
         {
             [ToolTip("Change the color of the fuel bar when full fuel.")]
-            public Color FullColor { get; set; } = Color.FromArgb(255, Color.Green);
+            public Color FullColor { get; init; } = Color.FromArgb(255, Color.Green);
 
             [ToolTip("Change the medium fuel percentage for the fuel bar to change color.")]
             [FloatRange(0.30f, 0.75f, 0.01f, 2)]
-            public float MediumPercent { get; set; } = 0.5f;
+            public float MediumPercent { get; init; } = 0.5f;
             [ToolTip("Change the color of the fuel bar when medium fuel.")]
-            public Color MediumColor { get; set; } = Color.FromArgb(255, 255, 135, 0);
+            public Color MediumColor { get; init; } = Color.FromArgb(255, 255, 135, 0);
 
             [ToolTip("Change the low fuel percentage for the fuel bar to change color.")]
             [FloatRange(0.01f, 0.25f, 0.01f, 2)]
-            public float LowPercent { get; set; } = 0.15f;
+            public float LowPercent { get; init; } = 0.15f;
             [ToolTip("Change the color of the fuel bar when low fuel.")]
-            public Color LowColor { get; set; } = Color.FromArgb(255, Color.Red);
+            public Color LowColor { get; init; } = Color.FromArgb(255, Color.Red);
         }
 
         public FuelInfoConfig()

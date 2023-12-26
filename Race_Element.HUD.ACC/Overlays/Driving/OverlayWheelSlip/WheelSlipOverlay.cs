@@ -19,20 +19,20 @@ internal sealed class WheelSlipOverlay : AbstractOverlay
     private sealed class WheelSlipConfiguration : OverlayConfiguration
     {
         [ConfigGrouping("Data", "Adjust the data displayed.")]
-        public DataGrouping Data { get; set; } = new DataGrouping();
+        public DataGrouping Data { get; init; } = new DataGrouping();
         public sealed class DataGrouping
         {
             [ToolTip("Adjust maximum ratio of wheel slip displayed over all 4 wheels.")]
             [FloatRange(0.5f, 10f, 0.1f, 2)]
-            public float MaxSlipRatio { get; set; } = 2f;
+            public float MaxSlipRatio { get; init; } = 2f;
 
             [ToolTip("Adjust the amount of slip ratio offset required to show understeer color on the front wheels.")]
             [FloatRange(0.1f, 1.5f, 0.02f, 2)]
-            public float UndersteerOffset { get; set; } = 0.3f;
+            public float UndersteerOffset { get; init; } = 0.3f;
 
             [ToolTip("Adjust the amount of slip ratio offset required to show oversteer color on the rear wheels.")]
             [FloatRange(0.1f, 1.5f, 0.02f, 2)]
-            public float OversteerOffset { get; set; } = 0.3f;
+            public float OversteerOffset { get; init; } = 0.3f;
         }
 
         [ConfigGrouping("Shape", "Adjust the shape.")]

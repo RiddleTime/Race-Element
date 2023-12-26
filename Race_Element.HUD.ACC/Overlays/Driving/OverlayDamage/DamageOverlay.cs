@@ -21,14 +21,14 @@ internal sealed class DamageOverlay : AbstractOverlay
         public DamageConfiguration() => AllowRescale = true;
 
         [ConfigGrouping("Damage", "Changes the behavior of the Damage HUD")]
-        public DamageGrouping Damage { get; set; } = new DamageGrouping();
+        public DamageGrouping Damage { get; init; } = new DamageGrouping();
         public class DamageGrouping
         {
             [ToolTip("Only show the HUD when there is actual damage on the car.")]
             public bool AutoHide { get; set; } = true;
 
             [ToolTip("Displays the total repair time in the center of the HUD with red colored text.")]
-            public bool TotalRepairTime { get; set; } = true;
+            public bool TotalRepairTime { get; init; } = true;
         }
     }
 

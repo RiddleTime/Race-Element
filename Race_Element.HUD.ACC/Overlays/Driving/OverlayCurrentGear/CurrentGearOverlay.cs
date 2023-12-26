@@ -23,20 +23,20 @@ internal sealed class CurrentGearOverlay : AbstractOverlay
     private sealed class CurrentGearConfiguration : OverlayConfiguration
     {
         [ConfigGrouping("Gear", "Options for the Current Gear HUD")]
-        public GearGrouping Gear { get; set; } = new GearGrouping();
+        public GearGrouping Gear { get; init; } = new GearGrouping();
         public class GearGrouping
         {
             [ToolTip("Show the current gear HUD when spectating")]
-            public bool Spectator { get; set; } = true;
+            public bool Spectator { get; init; } = true;
         }
 
         [ConfigGrouping("Colors", "Adjust colors")]
-        public ColorsGrouping Colors { get; set; } = new ColorsGrouping();
+        public ColorsGrouping Colors { get; init; } = new ColorsGrouping();
         public class ColorsGrouping
         {
-            public Color TextColor { get; set; } = Color.FromArgb(255, 255, 255, 255);
+            public Color TextColor { get; init; } = Color.FromArgb(255, 255, 255, 255);
             [IntRange(75, 255, 1)]
-            public int TextOpacity { get; set; } = 255;
+            public int TextOpacity { get; init; } = 255;
         }
 
         public CurrentGearConfiguration() { AllowRescale = true; }

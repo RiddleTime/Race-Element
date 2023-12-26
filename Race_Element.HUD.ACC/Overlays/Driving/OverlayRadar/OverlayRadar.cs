@@ -27,31 +27,31 @@ internal sealed class RadarOverlay : AbstractOverlay
         public RadarConfiguration() => AllowRescale = true;
 
         [ConfigGrouping("Radar", "General options for the radar")]
-        public RadarGrouping Radar { get; set; } = new RadarGrouping();
+        public RadarGrouping Radar { get; init; } = new RadarGrouping();
         public class RadarGrouping
         {
 
             [IntRange(1, 20, 2)]
             [ToolTip("The refreshrate of this HUD.")]
-            public int Herz { get; set; } = 20;
+            public int Herz { get; init; } = 20;
 
             [IntRange(50, 250, 2)]
-            public int Width { get; set; } = 250;
+            public int Width { get; init; } = 250;
 
             [IntRange(50, 250, 2)]
-            public int Height { get; set; } = 250;
+            public int Height { get; init; } = 250;
 
             [ToolTip("Display cars inside of the pits.")]
-            public bool ShowPitted { get; set; } = true;
+            public bool ShowPitted { get; init; } = true;
         }
 
         [ConfigGrouping("Proximity", "Options related to proximity of other cars")]
-        public ProximityGrouping Proxmity { get; set; } = new ProximityGrouping();
+        public ProximityGrouping Proxmity { get; init; } = new ProximityGrouping();
         public class ProximityGrouping
         {
             [ToolTip("Adjust the distance before the HUD will show.")]
             [FloatRange(4f, 40f, 0.02f, 2)]
-            public float ShowDistance { get; set; } = 16f;
+            public float ShowDistance { get; init; } = 16f;
         }
     }
 

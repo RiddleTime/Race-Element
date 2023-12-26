@@ -13,30 +13,30 @@ internal sealed class InputTraceOverlay : AbstractOverlay
     internal class InputTraceConfig : OverlayConfiguration
     {
         [ConfigGrouping("Chart", "Customize the charts refresh rate, data points or hide the steering input.")]
-        public ChartGrouping InfoPanel { get; set; } = new ChartGrouping();
+        public ChartGrouping InfoPanel { get; init; } = new ChartGrouping();
         public class ChartGrouping
         {
             [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
             [IntRange(10, 800, 10)]
-            public int Width { get; set; } = 300;
+            public int Width { get; init; } = 300;
 
             [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
             [IntRange(80, 250, 10)]
-            public int Height { get; set; } = 120;
+            public int Height { get; init; } = 120;
 
             [ToolTip("Set the thickness of the lines in the chart.")]
             [IntRange(1, 4, 1)]
-            public int LineThickness { get; set; } = 2;
+            public int LineThickness { get; init; } = 2;
 
             [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
             [IntRange(10, 100, 5)]
-            public int Herz { get; set; } = 30;
+            public int Herz { get; init; } = 30;
 
             [ToolTip("Displays the steering input as a white line in the trace.")]
-            public bool SteeringInput { get; set; } = true;
+            public bool SteeringInput { get; init; } = true;
 
             [ToolTip("Show horizontal grid lines.")]
-            public bool GridLines { get; set; } = true;
+            public bool GridLines { get; init; } = true;
         }
 
         public InputTraceConfig()

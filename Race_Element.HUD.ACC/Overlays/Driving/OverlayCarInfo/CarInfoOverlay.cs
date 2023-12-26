@@ -21,20 +21,20 @@ internal sealed class CarInfoOverlay : AbstractOverlay
     private sealed class CarInfoConfiguration : OverlayConfiguration
     {
         [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
-        public InfoPanelGrouping InfoPanel { get; set; } = new InfoPanelGrouping();
+        public InfoPanelGrouping InfoPanel { get; init; } = new InfoPanelGrouping();
         public class InfoPanelGrouping
         {
             [ToolTip("Displays your current tyre set")]
-            public bool TyreSet { get; set; } = true;
+            public bool TyreSet { get; init; } = true;
 
             [ToolTip("Displays the average fuel usage over the past 3 laps.\n(uses last lap info if not enough data)")]
-            public bool FuelPerLap { get; set; } = false;
+            public bool FuelPerLap { get; init; } = false;
 
             [ToolTip("Displays the exhaust temperature.")]
-            public bool ExhaustTemp { get; set; } = false;
+            public bool ExhaustTemp { get; init; } = false;
 
             [ToolTip("Displays the water temperature of the engine.")]
-            public bool WaterTemp { get; set; } = false;
+            public bool WaterTemp { get; init; } = false;
         }
 
         public CarInfoConfiguration() => this.AllowRescale = true;

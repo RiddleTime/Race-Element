@@ -18,20 +18,20 @@ internal sealed class TrackInfoOverlay : AbstractOverlay
     private sealed class TrackInfoConfig : OverlayConfiguration
     {
         [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
-        public InfoPanelGrouping InfoPanel { get; set; } = new InfoPanelGrouping();
+        public InfoPanelGrouping InfoPanel { get; init; } = new InfoPanelGrouping();
         public class InfoPanelGrouping
         {
             [ToolTip("Displays the actual time on track.")]
-            public bool TimeOfDay { get; set; } = true;
+            public bool TimeOfDay { get; init; } = true;
 
             [ToolTip("Shows the global track flag.")]
-            public bool GlobalFlag { get; set; } = true;
+            public bool GlobalFlag { get; init; } = true;
 
             [ToolTip("Shows the type of the session.")]
             public bool SessionType { get; set; } = true;
 
             [ToolTip("Displays the track temperature")]
-            public bool TrackTemperature { get; set; } = true;
+            public bool TrackTemperature { get; init; } = true;
         }
 
         public TrackInfoConfig()

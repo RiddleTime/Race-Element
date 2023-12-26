@@ -47,19 +47,19 @@ internal sealed class TrackBarOverlay : AbstractOverlay
 
     public TrackBarOverlay(Rectangle rectangle) : base(rectangle, "Track Bar")
     {
-        RefreshRateHz = 8;
+        RefreshRateHz = 6;
     }
 
     public override void BeforeStart()
     {
         _range = _config.Bar.Range / 100f;
 
-        BarRect = new Rectangle(0, 0, 500, 80);
+        BarRect = new Rectangle(0, 0, 400, 60);
         font = FontUtil.FontSegoeMono(10);
 
         _cachedBackground = new CachedBitmap(BarRect.Width, BarRect.Height, g =>
         {
-            using Brush bg = new SolidBrush(Color.FromArgb(130, Color.Black));
+            using Brush bg = new SolidBrush(Color.FromArgb(170, Color.Black));
             g.FillRoundedRectangle(bg, BarRect, 4);
         });
 
@@ -83,7 +83,6 @@ internal sealed class TrackBarOverlay : AbstractOverlay
     public override void Render(Graphics g)
     {
         _cachedBackground?.Draw(g);
-
 
         if (EntryListTracker.Instance.Cars.Count == 0) return;
 
@@ -115,7 +114,6 @@ internal sealed class TrackBarOverlay : AbstractOverlay
 
             return pos < maxSpline && pos > minSpline;
         });
-
 
         //Debug.WriteLine($"Found {data.Count()} cars in range\nRange: {minSpline:F2} - {maxSpline:F2}");
         foreach (var entry in data)

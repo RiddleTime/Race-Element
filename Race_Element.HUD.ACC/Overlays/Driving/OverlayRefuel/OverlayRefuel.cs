@@ -22,14 +22,14 @@ internal sealed class RefuelInfoOverlay : AbstractOverlay
     private class RefuelConfiguration : OverlayConfiguration
     {
         [ConfigGrouping("Refuel Info", "Show or hide additional information in the panel.")]
-        public InfoPanelGrouping RefuelInfoGrouping { get; set; } = new InfoPanelGrouping();
+        public InfoPanelGrouping RefuelInfoGrouping { get; init; } = new InfoPanelGrouping();
         public class InfoPanelGrouping
         {
-            public bool SolidProgressBar { get; set; } = false;
+            public bool SolidProgressBar { get; init; } = false;
 
             [ToolTip("Amount of extra laps for fuel calculation.")]
             [IntRange(1, 5, 1)]
-            public int ExtraLaps { get; set; } = 2;
+            public int ExtraLaps { get; init; } = 2;
         }
 
         public RefuelConfiguration()

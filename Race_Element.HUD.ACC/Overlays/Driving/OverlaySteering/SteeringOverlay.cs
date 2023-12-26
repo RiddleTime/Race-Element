@@ -27,22 +27,22 @@ internal sealed class SteeringOverlay : AbstractOverlay
         }
 
         [ConfigGrouping("Information", "Set the text that is displayed within the steering circle.")]
-        public InputsGrouping Info { get; set; } = new InputsGrouping();
+        public InputsGrouping Info { get; init; } = new InputsGrouping();
         public class InputsGrouping
         {
-            public InputsText Text { get; set; } = InputsText.None;
+            public InputsText Text { get; init; } = InputsText.None;
         }
 
         [ConfigGrouping("Colors", "Adjust the colors used in the Steering HUD.")]
-        public RingGrouping Ring { get; set; } = new RingGrouping();
+        public RingGrouping Ring { get; init; } = new RingGrouping();
         public class RingGrouping
         {
             [IntRange(4, 12, 1)]
-            public int RingThickness { get; set; } = 7;
+            public int RingThickness { get; init; } = 7;
 
-            public Color RingColor { get; set; } = Color.FromArgb(255, 255, 0, 0);
+            public Color RingColor { get; init; } = Color.FromArgb(255, 255, 0, 0);
             [IntRange(75, 255, 1)]
-            public int RingOpacity { get; set; } = 117;
+            public int RingOpacity { get; init; } = 117;
         }
 
         public SteeringConfig() => this.AllowRescale = true;

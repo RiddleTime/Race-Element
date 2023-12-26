@@ -21,12 +21,12 @@ internal class InputValuesOverlay : AbstractOverlay
         public InputValuesConfiguration() => AllowRescale = true;
 
         [ConfigGrouping("Format", "Adjust the text format")]
-        public FormatGrouping Format { get; set; } = new FormatGrouping();
+        public FormatGrouping Format { get; init; } = new FormatGrouping();
         public class FormatGrouping
         {
             [ToolTip("Change the amount of decimals shown.")]
             [IntRange(0, 3, 1)]
-            public int Decimals { get; set; } = 2;
+            public int Decimals { get; init; } = 2;
         }
     }
 

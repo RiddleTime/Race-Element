@@ -21,14 +21,14 @@ internal sealed class AccelerometerOverlay : AbstractOverlay
     private sealed class AccelleroConfig : OverlayConfiguration
     {
         [ConfigGrouping("Accelerometer", "Additional options for the Accelerometer")]
-        public AccelerometerGrouping Accelerometer { get; set; } = new AccelerometerGrouping();
+        public AccelerometerGrouping Accelerometer { get; init; } = new AccelerometerGrouping();
         public class AccelerometerGrouping
         {
             [ToolTip("Displays fading dots representing history of the g-forces.")]
-            public bool HistoryTrace { get; set; } = true;
+            public bool HistoryTrace { get; init; } = true;
 
             [ToolTip("Displays the lateral and longitudinal g-forces as text.")]
-            public bool GText { get; set; } = false;
+            public bool GText { get; init; } = false;
         }
 
         public AccelleroConfig()

@@ -13,14 +13,14 @@ internal class RaceInfoOverlay : AbstractOverlay
     private class RaceInfoConfig : OverlayConfiguration
     {
         [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
-        public InfoPanelGrouping InfoPanel { get; set; } = new InfoPanelGrouping();
+        public InfoPanelGrouping InfoPanel { get; init; } = new InfoPanelGrouping();
         public class InfoPanelGrouping
         {
             [ToolTip("Shows a timer when the pit window starts and ends.")]
-            public bool PitWindow { get; set; } = true;
+            public bool PitWindow { get; init; } = true;
 
             [ToolTip("Shows the current location on track.")]
-            public bool TrackLocation { get; set; } = true;
+            public bool TrackLocation { get; init; } = true;
         }
 
         public RaceInfoConfig()

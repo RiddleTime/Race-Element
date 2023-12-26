@@ -30,10 +30,10 @@ internal sealed class TrackCornersOverlay : AbstractOverlay
         public class CornerNamesGrouping
         {
             [ToolTip("Show corner names in addition to the already displayin corner numbers.\nNot Every corner has got a name and some tracks don't have corner names at all.")]
-            public bool Names { get; set; } = true;
+            public bool Names { get; init; } = true;
 
             [ToolTip("Show the HUD when spectating.")]
-            public bool Spectator { get; set; } = true;
+            public bool Spectator { get; init; } = true;
         }
 
         public CornerNamesConfig() => this.AllowRescale = true;
