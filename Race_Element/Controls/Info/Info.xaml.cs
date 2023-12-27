@@ -95,8 +95,9 @@ public partial class Info : UserControl
             if (releases != null && releases.Count > 0)
             {
                 Release latest = releases.First();
+                FileVersionInfo fileVersion = FileVersionInfo.GetVersionInfo(System.Environment.ProcessPath);
 
-                long localVersion = VersionToLong(Assembly.GetEntryAssembly().GetName().Version);
+                long localVersion = VersionToLong(new Version(fileVersion.FileVersion));
                 long remoteVersion = VersionToLong(new Version(latest.Name));
 
                 var newerVersions = releases.Where(x => VersionToLong(new Version(x.Name)) > localVersion);
