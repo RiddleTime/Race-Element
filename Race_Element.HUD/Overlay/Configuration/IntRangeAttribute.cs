@@ -1,31 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RaceElement.HUD.Overlay.Configuration
+namespace RaceElement.HUD.Overlay.Configuration;
+
+public class IntRangeAttribute : Attribute
 {
-    public class IntRangeAttribute : Attribute
+    public int Min;
+    public int Max;
+    public int Increment;
+
+    public IntRangeAttribute(int min, int max, int increment)
     {
-        public int Min;
-        public int Max;
-        public int Increment;
+        Min = min;
+        Max = max;
+        Increment = increment;
+    }
 
-        public IntRangeAttribute(int min, int max, int increment)
+    public static int[] GetOptionsCollection(IntRangeAttribute intRange)
+    {
+        List<int> collection = new();
+
+        for (int i = intRange.Min; i < intRange.Max + intRange.Increment; i += intRange.Increment)
         {
-            Min = min;
-            Max = max;
-            Increment = increment;
+            collection.Add(i);
         }
 
-        public static int[] GetOptionsCollection(IntRangeAttribute intRange)
-        {
-            List<int> collection = new List<int>();
-
-            for (int i = intRange.Min; i < intRange.Max + intRange.Increment; i += intRange.Increment)
-            {
-                collection.Add(i);
-            }
-
-            return collection.ToArray();
-        }
+        return collection.ToArray();
     }
 }

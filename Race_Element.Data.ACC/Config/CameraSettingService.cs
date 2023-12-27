@@ -7,160 +7,159 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RaceElement.Data.ACC.Config
+namespace RaceElement.Data.ACC.Config;
+
+public class CameraSettingService
 {
-    public class CameraSettingService
+    private readonly CameraSettings cameraSettings = new();
+
+    public CameraSettings Settings() => cameraSettings;
+
+    public void ResetTvCamSettings()
     {
-        private readonly CameraSettings cameraSettings = new CameraSettings();
+        var settings = cameraSettings.Get(false);
 
-        public CameraSettings Settings() => cameraSettings;
+        settings.TVCamFocusedAperture = 2.7999999523162842;
+        settings.TVCamStaticAperture = 16;
+        settings.TVCamStaticFocusDistance = 100000;
+        settings.TVCamConstrainAspectRatio = 0;
 
-        public void ResetTvCamSettings()
-        {
-            var settings = cameraSettings.Get(false);
+        cameraSettings.Save(settings);
+    }
 
-            settings.TVCamFocusedAperture = 2.7999999523162842;
-            settings.TVCamStaticAperture = 16;
-            settings.TVCamStaticFocusDistance = 100000;
-            settings.TVCamConstrainAspectRatio = 0;
+    public void ResetHelicamCamera()
+    {
+        var settings = cameraSettings.Get(false);
 
-            cameraSettings.Save(settings);
-        }
+        settings.HelicamDistance = 6000;
+        settings.HelicamFOV = 60;
+        settings.HelicamTargetMoreCars = 1;
+        settings.HelicamTargetCarsMaxDist = 2000;
+        settings.HelicamTargetInterpTime = 1;
 
-        public void ResetHelicamCamera()
-        {
-            var settings = cameraSettings.Get(false);
+        cameraSettings.Save(settings);
+    }
 
-            settings.HelicamDistance = 6000;
-            settings.HelicamFOV = 60;
-            settings.HelicamTargetMoreCars = 1;
-            settings.HelicamTargetCarsMaxDist = 2000;
-            settings.HelicamTargetInterpTime = 1;
+    public class CameraSettings : AbstractSettingsJson<CameraSettingsJson>
+    {
+        public override string Path => FileUtil.AccConfigPath;
 
-            cameraSettings.Save(settings);
-        }
+        public override string FileName => "cameraSettings.json";
 
-        public class CameraSettings : AbstractSettingsJson<CameraSettingsJson>
-        {
-            public override string Path => FileUtil.AccConfigPath;
+        public override CameraSettingsJson Default()    => new();
+    }
 
-            public override string FileName => "cameraSettings.json";
+    public class CameraSettingsJson : IGenericSettingsJson
+    {
+        [JsonProperty("version")]
+        public int Version { get; set; }
 
-            public override CameraSettingsJson Default()    => new CameraSettingsJson();
-        }
+        [JsonProperty("lastUsedCamIndex")]
+        public int LastUsedCamIndex { get; set; }
 
-        public class CameraSettingsJson : IGenericSettingsJson
-        {
-            [JsonProperty("version")]
-            public int Version { get; set; }
+        [JsonProperty("lastUsedOnboardIndex")]
+        public int LastUsedOnboardIndex { get; set; }
 
-            [JsonProperty("lastUsedCamIndex")]
-            public int LastUsedCamIndex { get; set; }
+        [JsonProperty("generalMovement")]
+        public int GeneralMovement { get; set; }
 
-            [JsonProperty("lastUsedOnboardIndex")]
-            public int LastUsedOnboardIndex { get; set; }
+        [JsonProperty("onboardMovement")]
+        public int OnboardMovement { get; set; }
 
-            [JsonProperty("generalMovement")]
-            public int GeneralMovement { get; set; }
+        [JsonProperty("dashcamFactor")]
+        public double DashcamFactor { get; set; }
 
-            [JsonProperty("onboardMovement")]
-            public int OnboardMovement { get; set; }
+        [JsonProperty("panniniProjection")]
+        public int PanniniProjection { get; set; }
 
-            [JsonProperty("dashcamFactor")]
-            public double DashcamFactor { get; set; }
+        [JsonProperty("helicamDistance")]
+        public int HelicamDistance { get; set; }
 
-            [JsonProperty("panniniProjection")]
-            public int PanniniProjection { get; set; }
+        [JsonProperty("helicamFOV")]
+        public int HelicamFOV { get; set; }
 
-            [JsonProperty("helicamDistance")]
-            public int HelicamDistance { get; set; }
+        [JsonProperty("helicamTargetMoreCars")]
+        public int HelicamTargetMoreCars { get; set; }
 
-            [JsonProperty("helicamFOV")]
-            public int HelicamFOV { get; set; }
+        [JsonProperty("helicamTargetCarsMaxDist")]
+        public int HelicamTargetCarsMaxDist { get; set; }
 
-            [JsonProperty("helicamTargetMoreCars")]
-            public int HelicamTargetMoreCars { get; set; }
+        [JsonProperty("helicamTargetInterpTime")]
+        public int HelicamTargetInterpTime { get; set; }
 
-            [JsonProperty("helicamTargetCarsMaxDist")]
-            public int HelicamTargetCarsMaxDist { get; set; }
+        [JsonProperty("helicamDebug")]
+        public int HelicamDebug { get; set; }
 
-            [JsonProperty("helicamTargetInterpTime")]
-            public int HelicamTargetInterpTime { get; set; }
+        [JsonProperty("cameraFOV")]
+        public List<int> CameraFOV { get; set; }
 
-            [JsonProperty("helicamDebug")]
-            public int HelicamDebug { get; set; }
+        [JsonProperty("mapCarCameraData")]
+        public object MapCarCameraData { get; set; }
 
-            [JsonProperty("cameraFOV")]
-            public List<int> CameraFOV { get; set; }
+        [JsonProperty("lookWithSteerGain")]
+        public int LookWithSteerGain { get; set; }
 
-            [JsonProperty("mapCarCameraData")]
-            public object MapCarCameraData { get; set; }
+        [JsonProperty("lookWithSteerGamma")]
+        public double LookWithSteerGamma { get; set; }
 
-            [JsonProperty("lookWithSteerGain")]
-            public int LookWithSteerGain { get; set; }
+        [JsonProperty("lookWithSteerSmoothing")]
+        public double LookWithSteerSmoothing { get; set; }
 
-            [JsonProperty("lookWithSteerGamma")]
-            public double LookWithSteerGamma { get; set; }
+        [JsonProperty("lookAroundSpeed")]
+        public int LookAroundSpeed { get; set; }
 
-            [JsonProperty("lookWithSteerSmoothing")]
-            public double LookWithSteerSmoothing { get; set; }
+        [JsonProperty("horizonLock")]
+        public double HorizonLock { get; set; }
 
-            [JsonProperty("lookAroundSpeed")]
-            public int LookAroundSpeed { get; set; }
+        [JsonProperty("enableTrackIR")]
+        public int EnableTrackIR { get; set; }
 
-            [JsonProperty("horizonLock")]
-            public double HorizonLock { get; set; }
+        [JsonProperty("tripleWidth")]
+        public int TripleWidth { get; set; }
 
-            [JsonProperty("enableTrackIR")]
-            public int EnableTrackIR { get; set; }
+        [JsonProperty("tripleDistance")]
+        public int TripleDistance { get; set; }
 
-            [JsonProperty("tripleWidth")]
-            public int TripleWidth { get; set; }
+        [JsonProperty("tripleAngle")]
+        public int TripleAngle { get; set; }
 
-            [JsonProperty("tripleDistance")]
-            public int TripleDistance { get; set; }
+        [JsonProperty("tripleBezel")]
+        public int TripleBezel { get; set; }
 
-            [JsonProperty("tripleAngle")]
-            public int TripleAngle { get; set; }
+        [JsonProperty("hDRExposure")]
+        public double HDRExposure { get; set; }
 
-            [JsonProperty("tripleBezel")]
-            public int TripleBezel { get; set; }
+        [JsonProperty("hDRContrast")]
+        public double HDRContrast { get; set; }
 
-            [JsonProperty("hDRExposure")]
-            public double HDRExposure { get; set; }
+        [JsonProperty("mirrorFOV")]
+        public int MirrorFOV { get; set; }
 
-            [JsonProperty("hDRContrast")]
-            public double HDRContrast { get; set; }
+        [JsonProperty("useGamepadForFreeCamera")]
+        public int UseGamepadForFreeCamera { get; set; }
 
-            [JsonProperty("mirrorFOV")]
-            public int MirrorFOV { get; set; }
+        [JsonProperty("virtualMirrorSize")]
+        public double VirtualMirrorSize { get; set; }
 
-            [JsonProperty("useGamepadForFreeCamera")]
-            public int UseGamepadForFreeCamera { get; set; }
+        [JsonProperty("virtualMirrorVerticalOffset")]
+        public int VirtualMirrorVerticalOffset { get; set; }
 
-            [JsonProperty("virtualMirrorSize")]
-            public double VirtualMirrorSize { get; set; }
+        [JsonProperty("virtualMirrorHorizontalOffset")]
+        public int VirtualMirrorHorizontalOffset { get; set; }
 
-            [JsonProperty("virtualMirrorVerticalOffset")]
-            public int VirtualMirrorVerticalOffset { get; set; }
+        [JsonProperty("tVCamFocusedAperture")]
+        public double TVCamFocusedAperture { get; set; }
 
-            [JsonProperty("virtualMirrorHorizontalOffset")]
-            public int VirtualMirrorHorizontalOffset { get; set; }
+        [JsonProperty("tVCamStaticAperture")]
+        public int TVCamStaticAperture { get; set; }
 
-            [JsonProperty("tVCamFocusedAperture")]
-            public double TVCamFocusedAperture { get; set; }
+        [JsonProperty("tVCamStaticFocusDistance")]
+        public int TVCamStaticFocusDistance { get; set; }
 
-            [JsonProperty("tVCamStaticAperture")]
-            public int TVCamStaticAperture { get; set; }
+        [JsonProperty("tVCamConstrainAspectRatio")]
+        public int TVCamConstrainAspectRatio { get; set; }
 
-            [JsonProperty("tVCamStaticFocusDistance")]
-            public int TVCamStaticFocusDistance { get; set; }
-
-            [JsonProperty("tVCamConstrainAspectRatio")]
-            public int TVCamConstrainAspectRatio { get; set; }
-
-            [JsonProperty("freeCamDOFEnabled")]
-            public int FreeCamDOFEnabled { get; set; }
-        }
+        [JsonProperty("freeCamDOFEnabled")]
+        public int FreeCamDOFEnabled { get; set; }
     }
 }

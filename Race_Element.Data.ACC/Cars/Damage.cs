@@ -2,64 +2,63 @@
 using static RaceElement.ACCSharedMemory;
 using static RaceElement.Data.SetupConverter;
 
-namespace RaceElement.Data.ACC.Cars
+namespace RaceElement.Data.ACC.Cars;
+
+public class Damage
 {
-    public class Damage
+    private const float MagicDamageMultiplier = 0.282f;
+
+    public static float GetTotalRepairTime(SPageFilePhysics pagePhysics)
     {
-        private const float MagicDamageMultiplier = 0.282f;
+        float totalRepairTime = 0;
 
-        public static float GetTotalRepairTime(SPageFilePhysics pagePhysics)
-        {
-            float totalRepairTime = 0;
+        totalRepairTime += GetBodyWorkDamage(pagePhysics, CarDamagePosition.Centre);
 
-            totalRepairTime += GetBodyWorkDamage(pagePhysics, CarDamagePosition.Centre);
+        foreach (Wheel wheel in Enum.GetValues(typeof(Wheel)))
+            totalRepairTime += GetSuspensionDamage(pagePhysics, wheel);
 
-            foreach (Wheel wheel in Enum.GetValues(typeof(Wheel)))
-                totalRepairTime += GetSuspensionDamage(pagePhysics, wheel);
+        return totalRepairTime;
+    }
 
-            return totalRepairTime;
-        }
+    public static bool HasAnyDamage(SPageFilePhysics pagePhysics)
+    {
+        foreach (int i in Enum.GetValues(typeof(CarDamagePosition)))
+            if (pagePhysics.CarDamage[i] > 0)
+                return true;
 
-        public static bool HasAnyDamage(SPageFilePhysics pagePhysics)
-        {
-            foreach (int i in Enum.GetValues(typeof(CarDamagePosition)))
-                if (pagePhysics.CarDamage[i] > 0)
-                    return true;
+        foreach (int i in Enum.GetValues(typeof(Wheel)))
+            if (pagePhysics.SuspensionDamage[i] > 0)
+                return true;
 
-            foreach (int i in Enum.GetValues(typeof(Wheel)))
-                if (pagePhysics.SuspensionDamage[i] > 0)
-                    return true;
+        return false;
+    }
 
-            return false;
-        }
+    /// <summary>
+    /// Gets the amount of damage/repair-time for the given wheel
+    /// </summary>
+    /// <param name="wheel"></param>
+    /// <returns></returns>
+    public static float GetSuspensionDamage(SPageFilePhysics pagePhysics, Wheel wheel)
+    {
+        return pagePhysics.SuspensionDamage[(int)wheel] * 30;
+    }
 
-        /// <summary>
-        /// Gets the amount of damage/repair-time for the given wheel
-        /// </summary>
-        /// <param name="wheel"></param>
-        /// <returns></returns>
-        public static float GetSuspensionDamage(SPageFilePhysics pagePhysics, Wheel wheel)
-        {
-            return pagePhysics.SuspensionDamage[(int)wheel] * 30;
-        }
+    /// <summary>
+    /// Gets the amount of bodywork damage/repair-time for the given car damage position
+    /// </summary>
+    /// <param name="position"></param>
+    /// <returns></returns>
+    public static float GetBodyWorkDamage(SPageFilePhysics pagePhysics, CarDamagePosition position)
+    {
+        return pagePhysics.CarDamage[(int)position] * MagicDamageMultiplier;
+    }
 
-        /// <summary>
-        /// Gets the amount of bodywork damage/repair-time for the given car damage position
-        /// </summary>
-        /// <param name="position"></param>
-        /// <returns></returns>
-        public static float GetBodyWorkDamage(SPageFilePhysics pagePhysics, CarDamagePosition position)
-        {
-            return pagePhysics.CarDamage[(int)position] * MagicDamageMultiplier;
-        }
-
-        public enum CarDamagePosition : int
-        {
-            Front,
-            Rear,
-            Left,
-            Right,
-            Centre
-        }
+    public enum CarDamagePosition : int
+    {
+        Front,
+        Rear,
+        Left,
+        Right,
+        Centre
     }
 }

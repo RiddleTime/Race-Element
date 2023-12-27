@@ -3,109 +3,108 @@ using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace RaceElement.Util
+namespace RaceElement.Util;
+
+public interface IGenericSettingsJson
 {
-    public interface IGenericSettingsJson
+}
+
+public abstract class AbstractSettingsJson<T>
+    where T : IGenericSettingsJson
+{
+    public abstract T Default();
+    public abstract string Path { get; }
+    public abstract string FileName { get; }
+    private FileInfo SettingsFile => new(Path + FileName);
+
+    public static T Cached { get; private set; }
+
+    protected AbstractSettingsJson()
     {
+        Cached = Get(false);
     }
 
-    public abstract class AbstractSettingsJson<T>
-        where T : IGenericSettingsJson
+    public T Get(bool cached = true)
     {
-        public abstract T Default();
-        public abstract string Path { get; }
-        public abstract string FileName { get; }
-        private FileInfo SettingsFile => new FileInfo(Path + FileName);
+        if (cached && Cached != null)
+            return Cached;
 
-        public static T Cached { get; private set; }
+        if (!SettingsFile.Exists)
+            return Default();
 
-        protected AbstractSettingsJson()
+        try
         {
-            Cached = Get(false);
+            using (FileStream fileStream = SettingsFile.OpenRead())
+            {
+                Cached = ReadJson(fileStream);
+                return Cached;
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
         }
 
-        public T Get(bool cached = true)
-        {
-            if (cached && Cached != null)
-                return Cached;
+        return Default();
+    }
 
-            if (!SettingsFile.Exists)
+    public void Save(T genericJson)
+    {
+        try
+        {
+            string jsonString = JsonConvert.SerializeObject(genericJson, Formatting.Indented);
+
+            if (!SettingsFile.Exists && !Directory.Exists(Path))
+                Directory.CreateDirectory(Path);
+
+            File.WriteAllText(Path + "\\" + FileName, jsonString);
+
+            Cached = genericJson;
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e);
+        }
+    }
+
+    private T ReadJson(Stream stream)
+    {
+        string jsonString = string.Empty;
+        try
+        {
+            using (StreamReader reader = new(stream))
+            {
+                jsonString = reader.ReadToEnd();
+                jsonString = jsonString.Replace("\0", "");
+                reader.Close();
+                stream.Close();
+            }
+
+            T t = JsonConvert.DeserializeObject<T>(jsonString);
+
+            if (t == null)
                 return Default();
 
-            try
-            {
-                using (FileStream fileStream = SettingsFile.OpenRead())
-                {
-                    Cached = ReadJson(fileStream);
-                    return Cached;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-
-            return Default();
+            return t;
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e);
         }
 
-        public void Save(T genericJson)
+        return Default();
+    }
+
+    public void Delete()
+    {
+        try
         {
-            try
-            {
-                string jsonString = JsonConvert.SerializeObject(genericJson, Formatting.Indented);
-
-                if (!SettingsFile.Exists && !Directory.Exists(Path))
-                    Directory.CreateDirectory(Path);
-
-                File.WriteAllText(Path + "\\" + FileName, jsonString);
-
-                Cached = genericJson;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-            }
+            if (SettingsFile.Exists)
+                SettingsFile.Delete();
         }
-
-        private T ReadJson(Stream stream)
+        catch (Exception e)
         {
-            string jsonString = string.Empty;
-            try
-            {
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    jsonString = reader.ReadToEnd();
-                    jsonString = jsonString.Replace("\0", "");
-                    reader.Close();
-                    stream.Close();
-                }
-
-                T t = JsonConvert.DeserializeObject<T>(jsonString);
-
-                if (t == null)
-                    return Default();
-
-                return t;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-            }
-
-            return Default();
-        }
-
-        public void Delete()
-        {
-            try
-            {
-                if (SettingsFile.Exists)
-                    SettingsFile.Delete();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-            }
+            Debug.WriteLine(e);
         }
     }
 }

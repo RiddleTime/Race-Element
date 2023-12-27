@@ -6,270 +6,269 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace RaceElement.Controls
+namespace RaceElement.Controls;
+
+/// <summary>
+/// Interaction logic for FuelCalculator.xaml
+/// </summary>
+public partial class FuelCalculator : UserControl
 {
-    /// <summary>
-    /// Interaction logic for FuelCalculator.xaml
-    /// </summary>
-    public partial class FuelCalculator : UserControl
+    Regex regexRealNumbersOnly = new("[0-9]+$");
+    Regex regexDoublesOnly = new("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
+
+    private int raceHours = 0;
+    private int raceMinutes = 0;
+
+    private double fuelPerLap = 0;
+
+    private int lapTimeMinutes = 0;
+    private int lapTimeSeconds = 0;
+    private int lapTimeMilliseconds = 0;
+
+
+    public FuelCalculator()
     {
-        Regex regexRealNumbersOnly = new Regex("[0-9]+$");
-        Regex regexDoublesOnly = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
+        InitializeComponent();
 
-        private int raceHours = 0;
-        private int raceMinutes = 0;
+        sliderHours.ValueChanged += SliderHours_ValueChanged;
+        sliderMinutes.ValueChanged += SliderMinutes_ValueChanged;
 
-        private double fuelPerLap = 0;
+        // validate input 
+        textBoxFuelPerLap.PreviewTextInput += TextBoxFuelPerLap_PreviewTextInput;
+        textBoxLapTimeMinute.PreviewTextInput += PreviewTextInput_NumbersOnly;
+        textBoxLapTimeSecond.PreviewTextInput += PreviewTextInput_NumbersOnly;
+        textBoxLapTimeMillis.PreviewTextInput += PreviewTextInput_NumbersOnly;
 
-        private int lapTimeMinutes = 0;
-        private int lapTimeSeconds = 0;
-        private int lapTimeMilliseconds = 0;
+        textBoxFuelPerLap.TextChanged += TextBoxFuelPerLap_TextChanged;
+        textBoxLapTimeMinute.TextChanged += TextBoxLapTimeMinute_TextChanged;
+        textBoxLapTimeSecond.TextChanged += TextBoxLapTimeSecond_TextChanged;
+        textBoxLapTimeMillis.TextChanged += TextBoxLapTimeMillis_TextChanged;
 
+        UpdateRaceDuration();
+        UpdateLapTime();
 
-        public FuelCalculator()
+        buttonFillDataFromMemory.Click += ButtonFillDataFromMemory_Click;
+    }
+
+    private void ButtonFillDataFromMemory_Click(object sender, RoutedEventArgs e)
+    {
+        try
         {
-            InitializeComponent();
+            var memoryMap = ACCSharedMemory.Instance.ReadGraphicsPageFile(false);
 
-            sliderHours.ValueChanged += SliderHours_ValueChanged;
-            sliderMinutes.ValueChanged += SliderMinutes_ValueChanged;
-
-            // validate input 
-            textBoxFuelPerLap.PreviewTextInput += TextBoxFuelPerLap_PreviewTextInput;
-            textBoxLapTimeMinute.PreviewTextInput += PreviewTextInput_NumbersOnly;
-            textBoxLapTimeSecond.PreviewTextInput += PreviewTextInput_NumbersOnly;
-            textBoxLapTimeMillis.PreviewTextInput += PreviewTextInput_NumbersOnly;
-
-            textBoxFuelPerLap.TextChanged += TextBoxFuelPerLap_TextChanged;
-            textBoxLapTimeMinute.TextChanged += TextBoxLapTimeMinute_TextChanged;
-            textBoxLapTimeSecond.TextChanged += TextBoxLapTimeSecond_TextChanged;
-            textBoxLapTimeMillis.TextChanged += TextBoxLapTimeMillis_TextChanged;
-
-            UpdateRaceDuration();
-            UpdateLapTime();
-
-            buttonFillDataFromMemory.Click += ButtonFillDataFromMemory_Click;
-        }
-
-        private void ButtonFillDataFromMemory_Click(object sender, RoutedEventArgs e)
-        {
-            try
+            if (memoryMap.Status == ACCSharedMemory.AcStatus.AC_OFF)
             {
-                var memoryMap = ACCSharedMemory.Instance.ReadGraphicsPageFile(false);
-
-                if (memoryMap.Status == ACCSharedMemory.AcStatus.AC_OFF)
-                {
-                    return;
-                }
-
-                float memFuelPerLap = memoryMap.FuelXLap;
-                textBoxFuelPerLap.Text = Math.Round(memFuelPerLap, 6).ToString();
-
-                string[] splittedTime = memoryMap.BestTime.Split(':');
-                if (int.Parse(splittedTime[0]) > 4) // no lap-time set 
-                    return;
-
-                textBoxLapTimeMinute.Text = splittedTime[0];
-                textBoxLapTimeSecond.Text = splittedTime[1];
-                textBoxLapTimeMillis.Text = splittedTime[2];
-            }
-            catch (Exception ex)
-            {
-                LogWriter.WriteToLog(ex);
-            }
-        }
-
-        private void CalculateFuel()
-        {
-            long totalRaceMilliseconds = raceHours * 60 * 60 * 1000 + raceMinutes * 60 * 1000;
-            long totalLapTimeMilliseconds = lapTimeMinutes * 60 * 1000 + lapTimeSeconds * 1000 + lapTimeMilliseconds;
-
-            if (totalRaceMilliseconds == 0 || totalLapTimeMilliseconds == 0 || fuelPerLap == 0)
-            {
-                lapCountLabel.Content = string.Empty;
-                fuelRequiredLabel.Content = string.Empty;
                 return;
             }
 
-            double laps = (double)totalRaceMilliseconds / (double)totalLapTimeMilliseconds;
-            double fuelRequired = Math.Ceiling(laps) * fuelPerLap;
+            float memFuelPerLap = memoryMap.FuelXLap;
+            textBoxFuelPerLap.Text = Math.Round(memFuelPerLap, 6).ToString();
 
-            lapCountLabel.Content = $"Laps: {Math.Ceiling(laps)} ({Math.Round(laps, 3)})";
-            fuelRequiredLabel.Content = $"Fuel Required: {Math.Ceiling(fuelRequired)} Liters ({Math.Round(fuelRequired, 3)})";
+            string[] splittedTime = memoryMap.BestTime.Split(':');
+            if (int.Parse(splittedTime[0]) > 4) // no lap-time set 
+                return;
+
+            textBoxLapTimeMinute.Text = splittedTime[0];
+            textBoxLapTimeSecond.Text = splittedTime[1];
+            textBoxLapTimeMillis.Text = splittedTime[2];
+        }
+        catch (Exception ex)
+        {
+            LogWriter.WriteToLog(ex);
+        }
+    }
+
+    private void CalculateFuel()
+    {
+        long totalRaceMilliseconds = raceHours * 60 * 60 * 1000 + raceMinutes * 60 * 1000;
+        long totalLapTimeMilliseconds = lapTimeMinutes * 60 * 1000 + lapTimeSeconds * 1000 + lapTimeMilliseconds;
+
+        if (totalRaceMilliseconds == 0 || totalLapTimeMilliseconds == 0 || fuelPerLap == 0)
+        {
+            lapCountLabel.Content = string.Empty;
+            fuelRequiredLabel.Content = string.Empty;
+            return;
         }
 
-        private void TextBoxFuelPerLap_TextChanged(object sender, TextChangedEventArgs e)
+        double laps = (double)totalRaceMilliseconds / (double)totalLapTimeMilliseconds;
+        double fuelRequired = Math.Ceiling(laps) * fuelPerLap;
+
+        lapCountLabel.Content = $"Laps: {Math.Ceiling(laps)} ({Math.Round(laps, 3)})";
+        fuelRequiredLabel.Content = $"Fuel Required: {Math.Ceiling(fuelRequired)} Liters ({Math.Round(fuelRequired, 3)})";
+    }
+
+    private void TextBoxFuelPerLap_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        string text = textBoxFuelPerLap.Text;
+        if (!regexDoublesOnly.IsMatch(text))
         {
-            string text = textBoxFuelPerLap.Text;
-            if (!regexDoublesOnly.IsMatch(text))
+            if (text.Equals(string.Empty))
             {
-                if (text.Equals(string.Empty))
-                {
-                    textBoxFuelPerLap.Text = string.Empty;
-                    fuelPerLap = 0.0;
-                }
-                else
-                {
-                    textBoxFuelPerLap.Text = fuelPerLap.ToString();
-                }
-            }
-
-            if (text.Length > 0)
-            {
-                try
-                {
-                    var separator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-                    fuelPerLap = double.Parse(text.Replace(".", separator));
-
-                    CalculateFuel();
-                }
-                catch (Exception)
-                {
-                    fuelPerLap = 0.0;
-                }
+                textBoxFuelPerLap.Text = string.Empty;
+                fuelPerLap = 0.0;
             }
             else
+            {
+                textBoxFuelPerLap.Text = fuelPerLap.ToString();
+            }
+        }
+
+        if (text.Length > 0)
+        {
+            try
+            {
+                var separator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+                fuelPerLap = double.Parse(text.Replace(".", separator));
+
+                CalculateFuel();
+            }
+            catch (Exception)
             {
                 fuelPerLap = 0.0;
             }
         }
-
-
-        private void TextBoxLapTimeMillis_TextChanged(object sender, TextChangedEventArgs e)
+        else
         {
-            string text = textBoxLapTimeMillis.Text;
-            if (!regexRealNumbersOnly.IsMatch(text))
+            fuelPerLap = 0.0;
+        }
+    }
+
+
+    private void TextBoxLapTimeMillis_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        string text = textBoxLapTimeMillis.Text;
+        if (!regexRealNumbersOnly.IsMatch(text))
+        {
+            if (text.Equals(string.Empty))
             {
-                if (text.Equals(string.Empty))
-                {
-                    textBoxLapTimeMillis.Text = string.Empty;
-                    lapTimeMilliseconds = 0;
-                }
-                else
-                {
-                    textBoxLapTimeMillis.Text = lapTimeMilliseconds.ToString();
-                }
+                textBoxLapTimeMillis.Text = string.Empty;
+                lapTimeMilliseconds = 0;
             }
             else
             {
-                if (text.Length > 0)
-                    lapTimeMilliseconds = Convert.ToInt32(text);
-                else
-                    lapTimeMilliseconds = 0;
+                textBoxLapTimeMillis.Text = lapTimeMilliseconds.ToString();
             }
-
-            UpdateLapTime();
+        }
+        else
+        {
+            if (text.Length > 0)
+                lapTimeMilliseconds = Convert.ToInt32(text);
+            else
+                lapTimeMilliseconds = 0;
         }
 
-        private void TextBoxLapTimeSecond_TextChanged(object sender, TextChangedEventArgs e)
+        UpdateLapTime();
+    }
+
+    private void TextBoxLapTimeSecond_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        string text = textBoxLapTimeSecond.Text;
+        if (!regexRealNumbersOnly.IsMatch(text))
         {
-            string text = textBoxLapTimeSecond.Text;
-            if (!regexRealNumbersOnly.IsMatch(text))
+            if (text.Equals(string.Empty))
             {
-                if (text.Equals(string.Empty))
-                {
-                    textBoxLapTimeSecond.Text = string.Empty;
-                    lapTimeSeconds = 0;
-                }
-                else
-                {
-                    textBoxLapTimeSecond.Text = lapTimeSeconds.ToString();
-                }
+                textBoxLapTimeSecond.Text = string.Empty;
+                lapTimeSeconds = 0;
             }
             else
             {
-
-                if (text.Length > 0)
-                    lapTimeSeconds = Convert.ToInt32(text);
-                else
-                    lapTimeSeconds = 0;
+                textBoxLapTimeSecond.Text = lapTimeSeconds.ToString();
             }
+        }
+        else
+        {
 
-            UpdateLapTime();
+            if (text.Length > 0)
+                lapTimeSeconds = Convert.ToInt32(text);
+            else
+                lapTimeSeconds = 0;
         }
 
-        private void TextBoxLapTimeMinute_TextChanged(object sender, TextChangedEventArgs e)
+        UpdateLapTime();
+    }
+
+    private void TextBoxLapTimeMinute_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        string text = textBoxLapTimeMinute.Text;
+        if (!regexRealNumbersOnly.IsMatch(text))
         {
-            string text = textBoxLapTimeMinute.Text;
-            if (!regexRealNumbersOnly.IsMatch(text))
+            if (text.Equals(string.Empty))
             {
-                if (text.Equals(string.Empty))
-                {
-                    textBoxLapTimeMinute.Text = string.Empty;
-                    lapTimeMinutes = 0;
-                }
-                else
-                {
-                    textBoxLapTimeMinute.Text = lapTimeMinutes.ToString();
-                }
+                textBoxLapTimeMinute.Text = string.Empty;
+                lapTimeMinutes = 0;
             }
+            else
             {
-                if (text.Length > 0)
-                    lapTimeMinutes = Convert.ToInt32(text);
-                else
-                    lapTimeMinutes = 0;
+                textBoxLapTimeMinute.Text = lapTimeMinutes.ToString();
             }
-
-            UpdateLapTime();
+        }
+        {
+            if (text.Length > 0)
+                lapTimeMinutes = Convert.ToInt32(text);
+            else
+                lapTimeMinutes = 0;
         }
 
-        private void UpdateLapTime()
+        UpdateLapTime();
+    }
+
+    private void UpdateLapTime()
+    {
+        lapTimeLabel.Content = $"Laptime: {lapTimeMinutes}:{lapTimeSeconds}.{lapTimeMilliseconds}";
+        CalculateFuel();
+    }
+
+    private void PreviewTextInput_NumbersOnly(object sender, TextCompositionEventArgs e)
+    {
+        e.Handled = !regexRealNumbersOnly.IsMatch(e.Text);
+    }
+
+    private void TextBoxFuelPerLap_PreviewTextInput(object sender, TextCompositionEventArgs e)
+    {
+
+        e.Handled = !regexDoublesOnly.IsMatch((sender as TextBox).Text.Insert((sender as TextBox).SelectionStart, e.Text));
+    }
+
+    private void SliderMinutes_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+    {
+        UpdateRaceDuration();
+    }
+
+    private void SliderHours_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+    {
+        UpdateRaceDuration();
+    }
+
+    private void UpdateRaceDuration()
+    {
+        raceHours = (int)sliderHours.Value;
+        raceMinutes = (int)sliderMinutes.Value;
+
+        bool includeMinutes = raceMinutes > 0;
+
+        string duration = string.Empty;
+        if (raceHours > 0)
         {
-            lapTimeLabel.Content = $"Laptime: {lapTimeMinutes}:{lapTimeSeconds}.{lapTimeMilliseconds}";
-            CalculateFuel();
-        }
+            string hourOrHours = "hour";
+            if (raceHours > 1)
+                hourOrHours += 's';
 
-        private void PreviewTextInput_NumbersOnly(object sender, TextCompositionEventArgs e)
-        {
-            e.Handled = !regexRealNumbersOnly.IsMatch(e.Text);
-        }
-
-        private void TextBoxFuelPerLap_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-
-            e.Handled = !regexDoublesOnly.IsMatch((sender as TextBox).Text.Insert((sender as TextBox).SelectionStart, e.Text));
-        }
-
-        private void SliderMinutes_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            UpdateRaceDuration();
-        }
-
-        private void SliderHours_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            UpdateRaceDuration();
-        }
-
-        private void UpdateRaceDuration()
-        {
-            raceHours = (int)sliderHours.Value;
-            raceMinutes = (int)sliderMinutes.Value;
-
-            bool includeMinutes = raceMinutes > 0;
-
-            string duration = string.Empty;
-            if (raceHours > 0)
-            {
-                string hourOrHours = "hour";
-                if (raceHours > 1)
-                    hourOrHours += 's';
-
-                duration += $"{raceHours} {hourOrHours}";
-
-                if (includeMinutes)
-                {
-                    duration += " and ";
-                }
-            }
+            duration += $"{raceHours} {hourOrHours}";
 
             if (includeMinutes)
             {
-                duration += $"{raceMinutes} minutes";
+                duration += " and ";
             }
-
-            raceDurationLabel.Content = $"Race Duration: {duration}";
-            CalculateFuel();
         }
 
+        if (includeMinutes)
+        {
+            duration += $"{raceMinutes} minutes";
+        }
 
+        raceDurationLabel.Content = $"Race Duration: {duration}";
+        CalculateFuel();
     }
+
+
 }

@@ -1,10 +1,9 @@
-﻿namespace RaceElement.Core.Jobs
+﻿namespace RaceElement.Core.Jobs;
+
+public enum JobStatus
 {
-    public enum JobStatus
-    {
-        None,
-        Initiating,
-        Executing,
-        Completing,
-    }
+    None,
+    Initiating,
+    Executing,
+    Completing,
 }

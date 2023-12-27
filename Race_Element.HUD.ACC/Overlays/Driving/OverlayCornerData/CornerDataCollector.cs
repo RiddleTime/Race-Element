@@ -2,94 +2,92 @@
 using System.Threading;
 using static RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData.CornerDataOverlay;
 
-namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData
+namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData;
+
+internal class CornerDataCollector
 {
-    internal class CornerDataCollector
+    private bool IsCollecting = false;
+
+    public void Start(CornerDataOverlay overlay)
     {
-        private bool IsCollecting = false;
+        if (overlay == null) return;
 
-        public void Start(CornerDataOverlay overlay)
+        IsCollecting = true;
+        new Thread(x =>
         {
-            if (overlay == null) return;
-
-            IsCollecting = true;
-            new Thread(x =>
+            while (IsCollecting)
             {
-                while (IsCollecting)
-                {
-                    Thread.Sleep(20);
-                    Collect(overlay);
-                }
+                Thread.Sleep(20);
+                Collect(overlay);
+            }
 
-                IsCollecting = false;
-            }).Start();
-        }
-
-
-        public void Stop()
-        {
             IsCollecting = false;
-        }
+        }).Start();
+    }
 
-        private void Collect(CornerDataOverlay overlay)
+
+    public void Stop()
+    {
+        IsCollecting = false;
+    }
+
+    private void Collect(CornerDataOverlay overlay)
+    {
+        if (overlay.pagePhysics != null)
         {
-            if (overlay.pagePhysics != null)
+            int currentCornerIndex = overlay.GetCurrentCorner(overlay.pageGraphics.NormalizedCarPosition);
+
+            if (currentCornerIndex == -1 && overlay._previousCorner != -1)
             {
-                int currentCornerIndex = overlay.GetCurrentCorner(overlay.pageGraphics.NormalizedCarPosition);
+                CornerExited(overlay);
+            }
 
-                if (currentCornerIndex == -1 && overlay._previousCorner != -1)
+            if (currentCornerIndex != -1)
+            {
+                if (currentCornerIndex == overlay._previousCorner)
                 {
-                    CornerExited(overlay);
+                    // we're still in the current corner..., check the data
+                    if (overlay._currentCorner.MinimumSpeed > overlay.pagePhysics.SpeedKmh)
+                        overlay._currentCorner.MinimumSpeed = overlay.pagePhysics.SpeedKmh;
+
+                    overlay._currentCorner.AverageSpeed = (overlay.pagePhysics.SpeedKmh + overlay._currentCorner.AverageSpeed) / 2;
+
+                    if (overlay._config.Data.MaxLatG)
+                    {
+                        float latG = overlay.pagePhysics.AccG[0];
+                        if (latG < 0) latG *= -1;
+                        if (overlay._currentCorner.MaxLatG < latG)
+                            overlay._currentCorner.MaxLatG = latG;
+                    }
                 }
-
-                if (currentCornerIndex != -1)
+                else
                 {
-                    if (currentCornerIndex == overlay._previousCorner)
+                    if (overlay._previousCorner != -1)
                     {
-                        // we're still in the current corner..., check the data
-                        if (overlay._currentCorner.MinimumSpeed > overlay.pagePhysics.SpeedKmh)
-                            overlay._currentCorner.MinimumSpeed = overlay.pagePhysics.SpeedKmh;
-
-                        overlay._currentCorner.AverageSpeed = (overlay.pagePhysics.SpeedKmh + overlay._currentCorner.AverageSpeed) / 2;
-
-                        if (overlay._config.Data.MaxLatG)
-                        {
-                            float latG = overlay.pagePhysics.AccG[0];
-                            if (latG < 0) latG *= -1;
-                            if (overlay._currentCorner.MaxLatG < latG)
-                                overlay._currentCorner.MaxLatG = latG;
-                        }
+                        CornerExited(overlay);
                     }
-                    else
+
+                    // entered a new corner
+                    overlay._previousCorner = currentCornerIndex;
+                    overlay._currentCorner = new CornerData()
                     {
-                        if (overlay._previousCorner != -1)
-                        {
-                            CornerExited(overlay);
-                        }
-
-                        // entered a new corner
-                        overlay._previousCorner = currentCornerIndex;
-                        overlay._currentCorner = new CornerData()
-                        {
-                            CornerNumber = currentCornerIndex,
-                            MinimumSpeed = float.MaxValue,
-                            AverageSpeed = overlay.pagePhysics.SpeedKmh,
-                            EntryDeltaMilliseconds = overlay.pageGraphics.DeltaLapTimeMillis,
-                        };
-                    }
+                        CornerNumber = currentCornerIndex,
+                        MinimumSpeed = float.MaxValue,
+                        AverageSpeed = overlay.pagePhysics.SpeedKmh,
+                        EntryDeltaMilliseconds = overlay.pageGraphics.DeltaLapTimeMillis,
+                    };
                 }
             }
         }
+    }
 
-        private void CornerExited(CornerDataOverlay overlay)
-        {
-            // corner exited
-            overlay._currentCorner.ExitDeltaMilliseconds = overlay.pageGraphics.DeltaLapTimeMillis;
-            overlay._cornerDatas.Add(overlay._currentCorner);
-            overlay._previousCorner = -1;
-            Debug.WriteLine("Exited corner");
-        }
-
+    private void CornerExited(CornerDataOverlay overlay)
+    {
+        // corner exited
+        overlay._currentCorner.ExitDeltaMilliseconds = overlay.pageGraphics.DeltaLapTimeMillis;
+        overlay._cornerDatas.Add(overlay._currentCorner);
+        overlay._previousCorner = -1;
+        Debug.WriteLine("Exited corner");
     }
 
 }

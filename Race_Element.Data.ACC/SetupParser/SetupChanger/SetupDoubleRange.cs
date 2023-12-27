@@ -1,43 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RaceElement.Data.SetupRanges
+namespace RaceElement.Data.SetupRanges;
+
+public class SetupDoubleRange
 {
-    public class SetupDoubleRange
+    public double Min;
+    public double Max;
+    public double Increment;
+    public double[] LUT;
+
+    public SetupDoubleRange(double[] LUT)
     {
-        public double Min;
-        public double Max;
-        public double Increment;
-        public double[] LUT;
+        this.LUT = LUT;
+    }
 
-        public SetupDoubleRange(double[] LUT)
+    public SetupDoubleRange(double min, double max, double increment)
+    {
+        Min = min;
+        Max = max;
+        Increment = increment;
+    }
+
+    public static double[] GetOptionsCollection(SetupDoubleRange doubleRange)
+    {
+        if (doubleRange.LUT != null)
         {
-            this.LUT = LUT;
+            return doubleRange.LUT;
         }
 
-        public SetupDoubleRange(double min, double max, double increment)
+        List<double> collection = new();
+
+        for (double i = doubleRange.Min; i < doubleRange.Max + Math.Round(doubleRange.Increment, 2); i += Math.Round(doubleRange.Increment, 2))
         {
-            Min = min;
-            Max = max;
-            Increment = increment;
+            i = Math.Round(i, 2);
+            collection.Add(Math.Round(i, 2));
         }
 
-        public static double[] GetOptionsCollection(SetupDoubleRange doubleRange)
-        {
-            if (doubleRange.LUT != null)
-            {
-                return doubleRange.LUT;
-            }
-
-            List<double> collection = new List<double>();
-
-            for (double i = doubleRange.Min; i < doubleRange.Max + Math.Round(doubleRange.Increment, 2); i += Math.Round(doubleRange.Increment, 2))
-            {
-                i = Math.Round(i, 2);
-                collection.Add(Math.Round(i, 2));
-            }
-
-            return collection.ToArray();
-        }
+        return collection.ToArray();
     }
 }

@@ -4,48 +4,47 @@ using System.Collections.Generic;
 using System.Threading;
 using static RaceElement.ACCSharedMemory;
 
-namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace
+namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace;
+
+internal class InputDataCollector
 {
-    internal class InputDataCollector
+    public int TraceCount = 300;
+
+    public LinkedList<int> Throttle = new();
+    public LinkedList<int> Brake = new();
+    public LinkedList<int> Steering = new();
+
+    public InputDataCollector(int traceCount)
     {
-        public int TraceCount = 300;
-
-        public LinkedList<int> Throttle = new LinkedList<int>();
-        public LinkedList<int> Brake = new LinkedList<int>();
-        public LinkedList<int> Steering = new LinkedList<int>();
-
-        public InputDataCollector(int traceCount)
+        TraceCount = traceCount;
+        for (int i = 0; i < TraceCount; i++)
         {
-            TraceCount = traceCount;
-            for (int i = 0; i < TraceCount; i++)
-            {
-                Throttle.AddLast(0);
-                Brake.AddLast(0);
-                Steering.AddLast(50);
-            }
+            Throttle.AddLast(0);
+            Brake.AddLast(0);
+            Steering.AddLast(50);
+        }
+    }
+
+    public void Collect(SPageFilePhysics filePhysics)
+    {
+        lock (Throttle)
+        {
+            Throttle.AddFirst((int)(filePhysics.Gas * 100));
+            if (Throttle.Count > TraceCount)
+                Throttle.RemoveLast();
+        }
+        lock (Brake)
+        {
+            Brake.AddFirst((int)(filePhysics.Brake * 100));
+            if (Brake.Count > TraceCount)
+                Brake.RemoveLast();
         }
 
-        public void Collect(SPageFilePhysics filePhysics)
+        lock (Steering)
         {
-            lock (Throttle)
-            {
-                Throttle.AddFirst((int)(filePhysics.Gas * 100));
-                if (Throttle.Count > TraceCount)
-                    Throttle.RemoveLast();
-            }
-            lock (Brake)
-            {
-                Brake.AddFirst((int)(filePhysics.Brake * 100));
-                if (Brake.Count > TraceCount)
-                    Brake.RemoveLast();
-            }
-
-            lock (Steering)
-            {
-                Steering.AddFirst((int)((filePhysics.SteerAngle + 1.0) / 2 * 100));
-                if (Steering.Count > TraceCount)
-                    Steering.RemoveLast();
-            }
+            Steering.AddFirst((int)((filePhysics.SteerAngle + 1.0) / 2 * 100));
+            if (Steering.Count > TraceCount)
+                Steering.RemoveLast();
         }
     }
 }

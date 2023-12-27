@@ -1,34 +1,34 @@
-﻿namespace RaceElement.Broadcast
+﻿namespace RaceElement.Broadcast;
+
+public enum DriverCategory
 {
-    public enum DriverCategory
-    {
-        Platinum = 3,
-        Gold = 2,
-        Silver = 1,
-        Bronze = 0,
-        Error = 255
-    }
+    Platinum = 3,
+    Gold = 2,
+    Silver = 1,
+    Bronze = 0,
+    Error = 255
+}
 
-    public enum LapType
-    {
-        ERROR = 0,
-        Outlap = 1,
-        Regular = 2,
-        Inlap = 3
-    }
+public enum LapType
+{
+    ERROR = 0,
+    Outlap = 1,
+    Regular = 2,
+    Inlap = 3
+}
 
-    public enum CarLocationEnum
-    {
-        NONE = 0,
-        Track = 1,
-        Pitlane = 2,
-        PitEntry = 3,
-        PitExit = 4
-    }
+public enum CarLocationEnum
+{
+    NONE = 0,
+    Track = 1,
+    Pitlane = 2,
+    PitEntry = 3,
+    PitExit = 4
+}
 
-    public enum SessionPhase
-    {
-        NONE = 0,
+public enum SessionPhase
+{
+    NONE = 0,
 		Starting = 1,
 		PreFormation = 2,
 		FormationLap = 3,
@@ -37,10 +37,10 @@
 		SessionOver = 6,
 		PostSession = 7,
 		ResultUI = 8
-    };
-    public enum RaceSessionType
-    {
-        Practice = 0,
+};
+public enum RaceSessionType
+{
+    Practice = 0,
 		Qualifying = 4,
 		Superpole = 9,
 		Race = 10,
@@ -50,21 +50,21 @@
 		Replay = 14
 	};
 
-    public enum BroadcastingCarEventType
-    {
-        None = 0,
-        GreenFlag = 1,
-        SessionOver = 2,
-        PenaltyCommMsg = 3,
-        Accident = 4,
-        LapCompleted = 5,
-        BestSessionLap = 6,
-        BestPersonalLap = 7
-    };
+public enum BroadcastingCarEventType
+{
+    None = 0,
+    GreenFlag = 1,
+    SessionOver = 2,
+    PenaltyCommMsg = 3,
+    Accident = 4,
+    LapCompleted = 5,
+    BestSessionLap = 6,
+    BestPersonalLap = 7
+};
 
-    public enum NationalityEnum
-    {
-        Any = 0,
+public enum NationalityEnum
+{
+    Any = 0,
 		Italy = 1,
 		Germany = 2,
 		France = 3,
@@ -142,12 +142,11 @@
 		Ukraine = 75,
 		Venezuela = 76,
 		Wales = 77,
-        Iran = 78,
-        Bahrain = 79,
-        Zimbabwe = 80,
-        ChineseTaipei = 81,
-        Chile = 82,
-        Uruguay = 83,
-        Madagascar = 84
-    };
-}
+    Iran = 78,
+    Bahrain = 79,
+    Zimbabwe = 80,
+    ChineseTaipei = 81,
+    Chile = 82,
+    Uruguay = 83,
+    Madagascar = 84
+};

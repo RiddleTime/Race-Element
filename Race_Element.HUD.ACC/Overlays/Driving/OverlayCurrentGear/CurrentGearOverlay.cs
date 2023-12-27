@@ -12,145 +12,144 @@ using System.Drawing.Text;
 using System.Linq;
 using Unglide;
 
-namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear
+namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear;
+
+[Overlay(Name = "Current Gear", Version = 1.00, OverlayType = OverlayType.Drive,
+    OverlayCategory = OverlayCategory.Driving,
+Description = "Shows the selected gear.")]
+internal sealed class CurrentGearOverlay : AbstractOverlay
 {
-    [Overlay(Name = "Current Gear", Version = 1.00, OverlayType = OverlayType.Drive,
-        OverlayCategory = OverlayCategory.Driving,
-    Description = "Shows the selected gear.")]
-    internal sealed class CurrentGearOverlay : AbstractOverlay
+    private readonly CurrentGearConfiguration _config = new();
+    private sealed class CurrentGearConfiguration : OverlayConfiguration
     {
-        private readonly CurrentGearConfiguration _config = new CurrentGearConfiguration();
-        private sealed class CurrentGearConfiguration : OverlayConfiguration
+        [ConfigGrouping("Gear", "Options for the Current Gear HUD")]
+        public GearGrouping Gear { get; init; } = new GearGrouping();
+        public class GearGrouping
         {
-            [ConfigGrouping("Gear", "Options for the Current Gear HUD")]
-            public GearGrouping Gear { get; set; } = new GearGrouping();
-            public class GearGrouping
+            [ToolTip("Show the current gear HUD when spectating")]
+            public bool Spectator { get; init; } = true;
+        }
+
+        [ConfigGrouping("Colors", "Adjust colors")]
+        public ColorsGrouping Colors { get; init; } = new ColorsGrouping();
+        public class ColorsGrouping
+        {
+            public Color TextColor { get; init; } = Color.FromArgb(255, 255, 255, 255);
+            [IntRange(75, 255, 1)]
+            public int TextOpacity { get; init; } = 255;
+        }
+
+        public CurrentGearConfiguration() { AllowRescale = true; }
+    }
+
+    private const int InitialWidth = 80;
+    private const int InitialHeight = 72;
+    private readonly List<CachedBitmap> _gearBitmaps = new();
+
+    private int _lastGear = -2;
+    private const float MaxOpacity = 1f;
+    private float _opacity = MaxOpacity;
+    private Tweener _gearTweener;
+    private DateTime _gearTweenerStart = DateTime.Now;
+
+
+    public CurrentGearOverlay(Rectangle rectangle) : base(rectangle, "Current Gear")
+    {
+        Width = InitialWidth;
+        Height = InitialHeight;
+        RefreshRateHz = 30;
+    }
+
+    public override void SetupPreviewData()
+    {
+        _lastGear = 3;
+        pagePhysics.Gear = 3;
+    }
+
+    public override void BeforeStart()
+    {
+        Font font = FontUtil.FontConthrax(50 * this.Scale);
+        HatchBrush hatchBrush = new(HatchStyle.LightUpwardDiagonal, Color.FromArgb(225, Color.Black), Color.FromArgb(185, Color.Black));
+
+        Rectangle renderRectangle = new(0, 0, (int)(InitialWidth * this.Scale), (int)(InitialHeight * this.Scale));
+        for (int i = 0; i <= 8; i++)
+        {
+            string gear = i switch
             {
-                [ToolTip("Show the current gear HUD when spectating")]
-                public bool Spectator { get; set; } = true;
-            }
+                0 => "R",
+                1 => "N",
+                _ => $"{i - 1}",
+            };
 
-            [ConfigGrouping("Colors", "Adjust colors")]
-            public ColorsGrouping Colors { get; set; } = new ColorsGrouping();
-            public class ColorsGrouping
+            _gearBitmaps.Add(new CachedBitmap((int)(InitialWidth * this.Scale) + 1, (int)(InitialHeight * this.Scale) + 1, g =>
             {
-                public Color TextColor { get; set; } = Color.FromArgb(255, 255, 255, 255);
-                [IntRange(75, 255, 1)]
-                public int TextOpacity { get; set; } = 255;
-            }
+                g.TextRenderingHint = TextRenderingHint.AntiAlias;
+                g.TextContrast = 1;
 
-            public CurrentGearConfiguration() { AllowRescale = true; }
+                g.FillRoundedRectangle(hatchBrush, renderRectangle, (int)(6 * this.Scale));
+
+                int textWidth = (int)g.MeasureString(gear, font).Width;
+                g.DrawStringWithShadow(gear, font, Color.FromArgb(_config.Colors.TextOpacity, _config.Colors.TextColor), new Point(renderRectangle.Width / 2 - textWidth / 2, (int)(renderRectangle.Height / 2 - font.Height / 2.18)), 1.5f * this.Scale);
+            }));
         }
 
-        private const int InitialWidth = 80;
-        private const int InitialHeight = 72;
-        private readonly List<CachedBitmap> _gearBitmaps = new List<CachedBitmap>();
+        font.Dispose();
+        hatchBrush.Dispose();
 
-        private int _lastGear = -2;
-        private const float MaxOpacity = 1f;
-        private float _opacity = MaxOpacity;
-        private Tweener _gearTweener;
-        private DateTime _gearTweenerStart = DateTime.Now;
+        _gearTweener = new Tweener();
+    }
 
+    public override void BeforeStop()
+    {
+        foreach (CachedBitmap cachedBitmap in _gearBitmaps)
+            cachedBitmap?.Dispose();
+    }
 
-        public CurrentGearOverlay(Rectangle rectangle) : base(rectangle, "Current Gear")
+    public override bool ShouldRender()
+    {
+        if (_config.Gear.Spectator && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
+            return true;
+
+        return base.ShouldRender();
+    }
+
+    private int GetCurrentGear()
+    {
+        int currentGear = pagePhysics.Gear;
+
+        if (_config.Gear.Spectator)
         {
-            Width = InitialWidth;
-            Height = InitialHeight;
-            RefreshRateHz = 30;
+            int focusedIndex = broadCastRealTime.FocusedCarIndex;
+
+            if (RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, focusedIndex))
+                lock (EntryListTracker.Instance.Cars)
+                    if (EntryListTracker.Instance.Cars.Any())
+                    {
+                        var car = EntryListTracker.Instance.Cars.First(car => car.Key == focusedIndex);
+                        currentGear = car.Value.RealtimeCarUpdate.Gear + 2;
+                    }
         }
 
-        public override void SetupPreviewData()
+        return currentGear;
+    }
+
+    public override void Render(Graphics g)
+    {
+        int currentGear = GetCurrentGear();
+
+        if (_lastGear != currentGear)
         {
-            _lastGear = 3;
-            pagePhysics.Gear = 3;
+            _opacity = 0.8f;
+            _gearTweenerStart = DateTime.Now;
+            _gearTweener.Tween(this, new { _opacity = MaxOpacity }, 0.8f);
+            _lastGear = currentGear;
         }
 
-        public override void BeforeStart()
-        {
-            Font font = FontUtil.FontConthrax(50 * this.Scale);
-            HatchBrush hatchBrush = new HatchBrush(HatchStyle.LightUpwardDiagonal, Color.FromArgb(225, Color.Black), Color.FromArgb(185, Color.Black));
+        if (_opacity < MaxOpacity)
+            _gearTweener.Update(secondsElapsed: (float)DateTime.Now.Subtract(_gearTweenerStart).TotalSeconds);
 
-            Rectangle renderRectangle = new Rectangle(0, 0, (int)(InitialWidth * this.Scale), (int)(InitialHeight * this.Scale));
-            for (int i = 0; i <= 8; i++)
-            {
-                string gear = i switch
-                {
-                    0 => "R",
-                    1 => "N",
-                    _ => $"{i - 1}",
-                };
-
-                _gearBitmaps.Add(new CachedBitmap((int)(InitialWidth * this.Scale) + 1, (int)(InitialHeight * this.Scale) + 1, g =>
-                {
-                    g.TextRenderingHint = TextRenderingHint.AntiAlias;
-                    g.TextContrast = 1;
-
-                    g.FillRoundedRectangle(hatchBrush, renderRectangle, (int)(6 * this.Scale));
-
-                    int textWidth = (int)g.MeasureString(gear, font).Width;
-                    g.DrawStringWithShadow(gear, font, Color.FromArgb(_config.Colors.TextOpacity, _config.Colors.TextColor), new Point(renderRectangle.Width / 2 - textWidth / 2, (int)(renderRectangle.Height / 2 - font.Height / 2.18)), 1.5f * this.Scale);
-                }));
-            }
-
-            font.Dispose();
-            hatchBrush.Dispose();
-
-            _gearTweener = new Tweener();
-        }
-
-        public override void BeforeStop()
-        {
-            foreach (CachedBitmap cachedBitmap in _gearBitmaps)
-                cachedBitmap?.Dispose();
-        }
-
-        public override bool ShouldRender()
-        {
-            if (_config.Gear.Spectator && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
-                return true;
-
-            return base.ShouldRender();
-        }
-
-        private int GetCurrentGear()
-        {
-            int currentGear = pagePhysics.Gear;
-
-            if (_config.Gear.Spectator)
-            {
-                int focusedIndex = broadCastRealTime.FocusedCarIndex;
-
-                if (RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, focusedIndex))
-                    lock (EntryListTracker.Instance.Cars)
-                        if (EntryListTracker.Instance.Cars.Any())
-                        {
-                            var car = EntryListTracker.Instance.Cars.First(car => car.Key == focusedIndex);
-                            currentGear = car.Value.RealtimeCarUpdate.Gear + 2;
-                        }
-            }
-
-            return currentGear;
-        }
-
-        public override void Render(Graphics g)
-        {
-            int currentGear = GetCurrentGear();
-
-            if (_lastGear != currentGear)
-            {
-                _opacity = 0.8f;
-                _gearTweenerStart = DateTime.Now;
-                _gearTweener.Tween(this, new { _opacity = MaxOpacity }, 0.8f);
-                _lastGear = currentGear;
-            }
-
-            if (_opacity < MaxOpacity)
-                _gearTweener.Update(secondsElapsed: (float)DateTime.Now.Subtract(_gearTweenerStart).TotalSeconds);
-
-            CachedBitmap bitmap = _gearBitmaps[currentGear];
-            bitmap.Opacity = _opacity;
-            bitmap?.Draw(g, InitialWidth, InitialHeight);
-        }
+        CachedBitmap bitmap = _gearBitmaps[currentGear];
+        bitmap.Opacity = _opacity;
+        bitmap?.Draw(g, InitialWidth, InitialHeight);
     }
 }

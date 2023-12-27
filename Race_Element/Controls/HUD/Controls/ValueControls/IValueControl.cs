@@ -6,17 +6,16 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace RaceElement.Controls.HUD.Controls.ValueControls
+namespace RaceElement.Controls.HUD.Controls.ValueControls;
+
+internal interface IControl
 {
-    internal interface IControl
-    {
-        FrameworkElement Control { get; }
-    }
+    FrameworkElement Control { get; }
+}
 
-    internal interface IValueControl<T> : IControl
-    {
-        T Value { get; set; }
+internal interface IValueControl<T> : IControl
+{
+    T Value { get; set; }
 
-        void Save();
-    }
+    void Save();
 }

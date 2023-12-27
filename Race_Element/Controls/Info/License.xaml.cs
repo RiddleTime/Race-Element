@@ -1,26 +1,26 @@
 ﻿using System.Windows.Controls;
 
-namespace RaceElement.Controls
+namespace RaceElement.Controls;
+
+/// <summary>
+/// Interaction logic for License.xaml
+/// </summary>
+public partial class License : UserControl
 {
-    /// <summary>
-    /// Interaction logic for License.xaml
-    /// </summary>
-    public partial class License : UserControl
+    public License()
     {
-        public License()
+        InitializeComponent();
+
+        this.IsVisibleChanged += (s, e) =>
         {
-            InitializeComponent();
+            if ((bool)e.NewValue)
+                TextBlockLicense.Text = LicenseText;
+            else
+                TextBlockLicense.Text = string.Empty;
+        };
+    }
 
-            this.IsVisibleChanged += (s, e) =>
-            {
-                if ((bool)e.NewValue)
-                    TextBlockLicense.Text = LicenseText;
-                else
-                    TextBlockLicense.Text = string.Empty;
-            };
-        }
-
-        private const string LicenseText = @"
+    private const string LicenseText = @"
 GNU GENERAL PUBLIC LICENSE
 Version 3, 29 June 2007
 
@@ -698,9 +698,8 @@ Public License instead of this License.  But first, please read
 
 ";
 
-        private void TextBlockLicense_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
-        {
+    private void TextBlockLicense_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
+    {
 
-        }
     }
 }

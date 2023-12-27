@@ -12,187 +12,186 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Text;
 
-namespace RaceElement.Controls
+namespace RaceElement.Controls;
+
+/// <summary>
+/// Interaction logic for About.xaml
+/// </summary>
+public partial class Info : UserControl
 {
-    /// <summary>
-    /// Interaction logic for About.xaml
-    /// </summary>
-    public partial class Info : UserControl
+    private bool HasAddedDownloadButton = false;
+
+
+    public Info()
     {
-        private bool HasAddedDownloadButton = false;
+        InitializeComponent();
 
 
-        public Info()
+        buttonWebsite.Click += (sender, e) => Process.Start(new ProcessStartInfo()
         {
-            InitializeComponent();
-
-
-            buttonWebsite.Click += (sender, e) => Process.Start(new ProcessStartInfo()
-            {
-                FileName = "cmd",
-                Arguments = $"/c start https://race.elementfuture.com/",
-                WindowStyle = ProcessWindowStyle.Hidden,
-            });
-            buttonDiscord.Click += (sender, e) => Process.Start(new ProcessStartInfo()
-            {
-                FileName = "cmd",
-                Arguments = $"/c start https://discord.gg/26AAEW5mUq",
-                WindowStyle = ProcessWindowStyle.Hidden,
-            });
-            buttonGithub.Click += (sender, e) => Process.Start(new ProcessStartInfo()
-            {
-                FileName = "cmd",
-                Arguments = $"/c start https://github.com/RiddleTime/Race-Element",
-                WindowStyle = ProcessWindowStyle.Hidden,
-            });
-            buttonDonate.Click += (sender, e) => Process.Start(new ProcessStartInfo()
-            {
-                FileName = "cmd",
-                Arguments = $"/c start https://paypal.me/CompetizioneManager",
-                WindowStyle = ProcessWindowStyle.Hidden,
-            });
-            ToolTipService.SetInitialShowDelay(buttonWebsite, 1);
-            ToolTipService.SetInitialShowDelay(buttonDiscord, 1);
-            ToolTipService.SetInitialShowDelay(buttonGithub, 1);
-            ToolTipService.SetInitialShowDelay(buttonDonate, 1);
-
-            new Thread(() => CheckNewestVersion()).Start();
-
-            this.IsVisibleChanged += (s, e) =>
-            {
-                if ((bool)e.NewValue)
-                    FillReleaseNotes();
-                else
-                    stackPanelReleaseNotes.Children.Clear();
-
-                ThreadPool.QueueUserWorkItem(x =>
-                {
-                    Thread.Sleep(5 * 1000);
-                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
-                });
-            };
-        }
-
-        private async void CheckNewestVersion()
+            FileName = "cmd",
+            Arguments = $"/c start https://race.elementfuture.com/",
+            WindowStyle = ProcessWindowStyle.Hidden,
+        });
+        buttonDiscord.Click += (sender, e) => Process.Start(new ProcessStartInfo()
         {
-            Thread.Sleep(2000);
+            FileName = "cmd",
+            Arguments = $"/c start https://discord.gg/26AAEW5mUq",
+            WindowStyle = ProcessWindowStyle.Hidden,
+        });
+        buttonGithub.Click += (sender, e) => Process.Start(new ProcessStartInfo()
+        {
+            FileName = "cmd",
+            Arguments = $"/c start https://github.com/RiddleTime/Race-Element",
+            WindowStyle = ProcessWindowStyle.Hidden,
+        });
+        buttonDonate.Click += (sender, e) => Process.Start(new ProcessStartInfo()
+        {
+            FileName = "cmd",
+            Arguments = $"/c start https://paypal.me/CompetizioneManager",
+            WindowStyle = ProcessWindowStyle.Hidden,
+        });
+        ToolTipService.SetInitialShowDelay(buttonWebsite, 1);
+        ToolTipService.SetInitialShowDelay(buttonDiscord, 1);
+        ToolTipService.SetInitialShowDelay(buttonGithub, 1);
+        ToolTipService.SetInitialShowDelay(buttonDonate, 1);
 
-            RemoveTempVersionFile();
+        new Thread(() => CheckNewestVersion()).Start();
+
+        this.IsVisibleChanged += (s, e) =>
+        {
+            if ((bool)e.NewValue)
+                FillReleaseNotes();
+            else
+                stackPanelReleaseNotes.Children.Clear();
+
+            ThreadPool.QueueUserWorkItem(x =>
+            {
+                Thread.Sleep(5 * 1000);
+                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+            });
+        };
+    }
+
+    private async void CheckNewestVersion()
+    {
+        Thread.Sleep(2000);
+
+        RemoveTempVersionFile();
 #if DEBUG
-            TitleBar.Instance.SetAppTitle("Dev");
-            return;
+        TitleBar.Instance.SetAppTitle("Dev");
+        return;
 #endif
 #pragma warning disable CS0162 // Unreachable code detected
 
-            try
+        try
+        {
+            if (HasAddedDownloadButton)
+                return;
+
+            GitHubClient client = new(new ProductHeaderValue("Race-Element"), new Uri("https://github.com/RiddleTime/Race-Element.git"));
+            var releases = await client.Repository.Release.GetAll("RiddleTime", "Race-Element", new ApiOptions() { PageSize = 5 });
+
+            if (releases != null && releases.Count > 0)
             {
-                if (HasAddedDownloadButton)
-                    return;
+                Release latest = releases.First();
 
-                GitHubClient client = new GitHubClient(new ProductHeaderValue("Race-Element"), new Uri("https://github.com/RiddleTime/Race-Element.git"));
-                var releases = await client.Repository.Release.GetAll("RiddleTime", "Race-Element", new ApiOptions() { PageSize = 5 });
+                long localVersion = VersionToLong(Assembly.GetEntryAssembly().GetName().Version);
+                long remoteVersion = VersionToLong(new Version(latest.Name));
 
-                if (releases != null && releases.Count > 0)
+                var newerVersions = releases.Where(x => VersionToLong(new Version(x.Name)) > localVersion);
+
+                if (localVersion > remoteVersion)
+                    TitleBar.Instance.SetAppTitle("Beta");
+
+                if (remoteVersion > localVersion)
                 {
-                    Release latest = releases.First();
-
-                    long localVersion = VersionToLong(Assembly.GetEntryAssembly().GetName().Version);
-                    long remoteVersion = VersionToLong(new Version(latest.Name));
-
-                    var newerVersions = releases.Where(x => VersionToLong(new Version(x.Name)) > localVersion);
-
-                    if (localVersion > remoteVersion)
-                        TitleBar.Instance.SetAppTitle("Beta");
-
-                    if (remoteVersion > localVersion)
+                    if (latest != null)
                     {
-                        if (latest != null)
+                        var accManagerAsset = latest.Assets.Where(x => x.Name == "RaceElement.exe").First();
+
+                        StringBuilder releaseNotes = new();
+                        foreach (Release newRelease in newerVersions)
                         {
-                            var accManagerAsset = latest.Assets.Where(x => x.Name == "RaceElement.exe").First();
-
-                            StringBuilder releaseNotes = new StringBuilder();
-                            foreach (Release newRelease in newerVersions)
-                            {
-                                releaseNotes.AppendLine(newRelease.Name);
-                                releaseNotes.AppendLine(newRelease.Body);
-                            }
-
-                            await Dispatcher.BeginInvoke(new Action(() =>
-                             {
-                                 MainWindow.Instance.EnqueueSnackbarMessage($"A new version of Race Element is available: {latest.Name}", " Open About tab ", new Action(() => { MainWindow.Instance.tabAbout.Focus(); }));
-
-                                 TitleBar.Instance.SetUpdateButton(latest.Name, releaseNotes.ToString(), accManagerAsset);
-
-                                 HasAddedDownloadButton = true;
-                             }));
+                            releaseNotes.AppendLine(newRelease.Name);
+                            releaseNotes.AppendLine(newRelease.Body);
                         }
+
+                        await Dispatcher.BeginInvoke(new Action(() =>
+                         {
+                             MainWindow.Instance.EnqueueSnackbarMessage($"A new version of Race Element is available: {latest.Name}", " Open About tab ", new Action(() => { MainWindow.Instance.tabAbout.Focus(); }));
+
+                             TitleBar.Instance.SetUpdateButton(latest.Name, releaseNotes.ToString(), accManagerAsset);
+
+                             HasAddedDownloadButton = true;
+                         }));
                     }
                 }
+            }
 
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-            }
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e);
+        }
 #pragma warning restore CS0162 // Unreachable code detected
-        }
+    }
 
-        private void RemoveTempVersionFile()
+    private void RemoveTempVersionFile()
+    {
+        try
         {
-            try
-            {
-                string tempTargetFile = $"{FileUtil.RaceElementAppDataPath}AccManager.exe";
-                FileInfo tempFile = new FileInfo(tempTargetFile);
+            string tempTargetFile = $"{FileUtil.RaceElementAppDataPath}AccManager.exe";
+            FileInfo tempFile = new(tempTargetFile);
 
-                if (tempFile.Exists)
-                    tempFile.Delete();
-            }
-            catch (Exception e)
-            {
-                LogWriter.WriteToLog(e);
-            }
+            if (tempFile.Exists)
+                tempFile.Delete();
         }
-
-        private long VersionToLong(Version VersionInfo)
+        catch (Exception e)
         {
-            string major = $"{VersionInfo.Major}".FillStart(4, '0');
-            string minor = $"{VersionInfo.Minor}".FillStart(4, '0');
-            string build = $"{VersionInfo.Build}".FillStart(4, '0');
-            string revision = $"{VersionInfo.Revision}".FillStart(4, '0');
-            string versionString = major + minor + build + revision;
-
-            long.TryParse(versionString, out long version);
-            return version;
+            LogWriter.WriteToLog(e);
         }
+    }
 
-        private void FillReleaseNotes()
+    private long VersionToLong(Version VersionInfo)
+    {
+        string major = $"{VersionInfo.Major}".FillStart(4, '0');
+        string minor = $"{VersionInfo.Minor}".FillStart(4, '0');
+        string build = $"{VersionInfo.Build}".FillStart(4, '0');
+        string revision = $"{VersionInfo.Revision}".FillStart(4, '0');
+        string versionString = major + minor + build + revision;
+
+        long.TryParse(versionString, out long version);
+        return version;
+    }
+
+    private void FillReleaseNotes()
+    {
+        Dispatcher.BeginInvoke(new Action(() =>
         {
-            Dispatcher.BeginInvoke(new Action(() =>
+            stackPanelReleaseNotes.Children.Clear();
+            ReleaseNotes.Notes.ToList().ForEach(note =>
             {
-                stackPanelReleaseNotes.Children.Clear();
-                ReleaseNotes.Notes.ToList().ForEach(note =>
+                TextBlock noteTitle = new()
                 {
-                    TextBlock noteTitle = new TextBlock()
-                    {
-                        Text = note.Key,
-                        Style = Resources["MaterialDesignBody1TextBlock"] as Style,
-                        FontWeight = FontWeights.Bold,
-                        FontStyle = FontStyles.Oblique
-                    };
-                    TextBlock noteDescription = new TextBlock()
-                    {
-                        Text = note.Value,
-                        TextWrapping = TextWrapping.WrapWithOverflow,
-                        Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style
-                    };
+                    Text = note.Key,
+                    Style = Resources["MaterialDesignBody1TextBlock"] as Style,
+                    FontWeight = FontWeights.Bold,
+                    FontStyle = FontStyles.Oblique
+                };
+                TextBlock noteDescription = new()
+                {
+                    Text = note.Value,
+                    TextWrapping = TextWrapping.WrapWithOverflow,
+                    Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style
+                };
 
-                    StackPanel changePanel = new StackPanel() { Margin = new Thickness(0, 10, 0, 0) };
-                    changePanel.Children.Add(noteTitle);
-                    changePanel.Children.Add(noteDescription);
+                StackPanel changePanel = new() { Margin = new Thickness(0, 10, 0, 0) };
+                changePanel.Children.Add(noteTitle);
+                changePanel.Children.Add(noteDescription);
 
-                    stackPanelReleaseNotes.Children.Add(changePanel);
-                });
-            }));
-        }
+                stackPanelReleaseNotes.Children.Add(changePanel);
+            });
+        }));
     }
 }

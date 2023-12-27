@@ -3,17 +3,14 @@ branches:
   only:
     - dev
     - release
+    - csharp12
   except:
     - gh-pages
     - pages
 image: Visual Studio 2022
 configuration: Release
-before_build:
-- cmd: nuget restore
-build:
-  project: Race Element.sln
-  parallel: true
-  verbosity: minimal
+build_script:
+- cmd: dotnet publish -p:PublishProfile=PublishProfile
 test: off
 artifacts:
 - path: '**\bin\Release\RaceElement.exe'

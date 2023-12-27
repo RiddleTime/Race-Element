@@ -4,86 +4,85 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 
-namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput
+namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput;
+
+public class TraceOutputListener
 {
-    public class TraceOutputListener
+    public struct MessageOut
     {
-        public struct MessageOut
+        public long time;
+        public string message;
+    }
+
+
+    private Stream _outputStream;
+    private TextWriterTraceListener _traceListener;
+    private long lastPosition = -1;
+
+    private LinkedList<MessageOut> _outputs = new();
+    public LinkedList<MessageOut> Outputs { get { lock (_outputs) return _outputs; } }
+
+    private static TraceOutputListener _instance;
+    public static TraceOutputListener Instance
+    {
+        get
         {
-            public long time;
-            public string message;
+            if (_instance == null) _instance = new TraceOutputListener(); return _instance;
         }
+    }
 
+    private bool _isRunning;
 
-        private Stream _outputStream;
-        private TextWriterTraceListener _traceListener;
-        private long lastPosition = -1;
+    public TraceOutputListener()
+    {
+        _outputStream = new MemoryStream();
+        _traceListener = new TextWriterTraceListener(new StreamWriter(_outputStream));
 
-        private LinkedList<MessageOut> _outputs = new LinkedList<MessageOut>();
-        public LinkedList<MessageOut> Outputs { get { lock (_outputs) return _outputs; } }
+        Trace.Listeners.Add(_traceListener);
+        Debug.AutoFlush = true;
 
-        private static TraceOutputListener _instance;
-        public static TraceOutputListener Instance
+        Start();
+    }
+
+    public void Start()
+    {
+        _isRunning = true;
+        new Thread(x =>
         {
-            get
+            while (_isRunning)
             {
-                if (_instance == null) _instance = new TraceOutputListener(); return _instance;
-            }
-        }
+                Thread.Sleep(100);
 
-        private bool _isRunning;
+                StreamReader reader = new(_outputStream);
 
-        public TraceOutputListener()
-        {
-            _outputStream = new MemoryStream();
-            _traceListener = new TextWriterTraceListener(new StreamWriter(_outputStream));
+                if (lastPosition == -1)
+                    lastPosition = 0;
+                else
+                    _outputStream.Position = lastPosition;
 
-            Trace.Listeners.Add(_traceListener);
-            Debug.AutoFlush = true;
-
-            Start();
-        }
-
-        public void Start()
-        {
-            _isRunning = true;
-            new Thread(x =>
-            {
-                while (_isRunning)
+                while (!reader.EndOfStream)
                 {
-                    Thread.Sleep(100);
-
-                    StreamReader reader = new StreamReader(_outputStream);
-
-                    if (lastPosition == -1)
-                        lastPosition = 0;
-                    else
-                        _outputStream.Position = lastPosition;
-
-                    while (!reader.EndOfStream)
+                    lock (_outputs)
                     {
-                        lock (_outputs)
-                        {
-                            if (_outputs.Count >= 100)
-                                _outputs.RemoveLast();
-                            _outputs.AddFirst(new MessageOut() { message = reader.ReadLine(), time = DateTime.Now.ToFileTime() });
-                        }
+                        if (_outputs.Count >= 100)
+                            _outputs.RemoveLast();
+                        _outputs.AddFirst(new MessageOut() { message = reader.ReadLine(), time = DateTime.Now.ToFileTime() });
                     }
-
-                    lastPosition = _outputStream.Position;
                 }
-            }).Start();
-        }
 
-        public void Stop()
-        {
-            _isRunning = false;
-            _traceListener.Flush();
-            Trace.Listeners.Remove(_traceListener);
-            _outputStream.Close();
+                lastPosition = _outputStream.Position;
+            }
+        }).Start();
+    }
 
-            Debug.AutoFlush = false;
-            _outputStream.Position = 0;
-        }
+    public void Stop()
+    {
+        _isRunning = false;
+        _traceListener.Flush();
+        Trace.Listeners.Remove(_traceListener);
+        _outputStream.Close();
+
+        Debug.AutoFlush = false;
+        _outputStream.Position = 0;
     }
 }
