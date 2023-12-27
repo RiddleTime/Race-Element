@@ -6,7 +6,10 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
-        {"1.0.0.0", "- Upgraded to from .NET 4.8.2 -> .NET 8" },
+        {"1.0.0.0", "- Upgraded to from .NET 4.8.2 -> .NET 8"+
+                    "\n- Added Track Bar HUD: Alpha version for now."+
+                    "\n- Added Track Circle HUD: Alpha version for now."+
+                    "\n- Minimize to tray now also hides the app in the windows alt-tab menu."},
         {"0.3.0.6", "- Shift Indicator HUD: Now flashes after upshift percentage has been reached." },
         {"0.3.0.4", "- Added Input Values HUD: Showing raw throttle and brake values"+
                     "\n- Wind Direction HUD: Now shows wind speed in km/h in the center."},
