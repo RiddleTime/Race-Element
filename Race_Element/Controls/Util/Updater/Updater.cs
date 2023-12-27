@@ -18,7 +18,7 @@ internal class AppUpdater
         }
         LogWriter.WriteToLog($"Updater started");
 
-        string assemblyStart = System.Reflection.Assembly.GetExecutingAssembly().Location;
+        string assemblyStart = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "RaceElement.exe";
 
         FileInfo currentAssemblyFile = new(assemblyStart);
 
