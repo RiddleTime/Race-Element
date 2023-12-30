@@ -26,7 +26,7 @@ internal static class TyrePressures
     public static TyrePressureRange DRY_DHF2023 = new()
     {
         OptimalMinimum = 26.0,
-        OptimalMaximum = 27.0,
+        OptimalMaximum = 27.3,
     };
 
     // public static TyrePressureRange WET_WH2023 = new TyrePressureRange()
