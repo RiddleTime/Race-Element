@@ -39,6 +39,9 @@ internal sealed class CornerDataConfiguration : OverlayConfiguration
 
         [ToolTip("Shows the maximum lateral G force for each corner.")]
         public bool MaxLatG { get; init; } = true;
+
+        [ToolTip("Shows the Name of the corner.")]
+        public bool CornerName { get; init; } = true;
     }
 
     [ConfigGrouping("Colors", "Adjust colors used for delta")]

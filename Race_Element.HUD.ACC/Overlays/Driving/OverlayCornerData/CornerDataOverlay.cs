@@ -31,6 +31,7 @@ internal sealed class CornerDataOverlay : AbstractOverlay
         public float MaxLatG { get; set; }
         public int EntryDeltaMilliseconds { get; set; }
         public int ExitDeltaMilliseconds { get; set; }
+        public string CornerName { get; set; }
     }
 
     private CornerDataCollector _collector;
@@ -73,6 +74,7 @@ internal sealed class CornerDataOverlay : AbstractOverlay
                 MaxLatG = maxLatG,
                 EntryDeltaMilliseconds = delta,
                 ExitDeltaMilliseconds = delta + rand.Next(-30, 30),
+                CornerName = _currentTrack.CornerNames.ElementAt(i - 1).Value.Item2,
             });
 
             float randMinSpeed = (float)(rand.NextDouble() * 2.5f);
@@ -86,6 +88,7 @@ internal sealed class CornerDataOverlay : AbstractOverlay
                 MaxLatG = (float)(maxLatG + rand.NextDouble() + .5 * 0.08f),
                 EntryDeltaMilliseconds = delta - 1,
                 ExitDeltaMilliseconds = delta - 1 + rand.Next(-30, 30),
+                CornerName = _currentTrack.CornerNames.ElementAt(i - 1).Value.Item2,
             });
         }
     }
@@ -113,6 +116,9 @@ internal sealed class CornerDataOverlay : AbstractOverlay
 
         if (_config.Data.MaxLatG)
             columnWidths.Add(60);
+
+        if (_config.Data.CornerName)
+            columnWidths.Add(220);
 
         _table = new InfoTable(12, columnWidths.ToArray());
 
@@ -257,6 +263,12 @@ internal sealed class CornerDataOverlay : AbstractOverlay
                     colors.Add(Color.FromArgb(190, Color.White));
                 }
 
+                // add Corner Name column to preview graphic
+                if (_config.Data.CornerName)
+                {
+                    columns.Add(_currentCorner.CornerName);
+                }
+
                 _table.AddRow($"{currentCorner.ToString().FillStart(2, ' ')}", columns.ToArray(), colors.ToArray());
             }
 
@@ -356,6 +368,12 @@ internal sealed class CornerDataOverlay : AbstractOverlay
             if (_config.Data.MaxLatG)
                 columns.Add($"{corner.MaxLatG:F2}");
 
+            // add Corner Name column to preview graphic
+            if (_config.Data.CornerName)
+            {
+                columns.Add(corner.CornerName);
+            }
+
             _table.AddRow($"{corner.CornerNumber.ToString().FillStart(2, ' ')}", columns.ToArray(), colors.ToArray());
         }
 
@@ -401,6 +419,9 @@ internal sealed class CornerDataOverlay : AbstractOverlay
 
         if (_config.Data.MaxLatG)
             headerColumns.Add("LatG");
+
+        if (_config.Data.CornerName)
+            headerColumns.Add("Corner Name");
 
         _table.AddRow("  ", headerColumns.ToArray(), headerColours.ToArray());
     }
