@@ -29,6 +29,7 @@
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Copyright>Copyright © Reinier Klarenberg 2024</Copyright>
   </PropertyGroup>
@@ -145,7 +146,9 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-    <None Include="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
+    <EmbeddedResource Include="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Resource Include="Fonts\ConthraxSb.ttf" />
     <None Include="key.snk" />
   </ItemGroup>
@@ -188,44 +191,5 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\x64\DdsFileTypePlusIO_x64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\x64\DdsFileTypePlusIO_x64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\x64\DdsFileTypePlusIO_x64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\x64\DdsFileTypePlusIO_x64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\x64\DdsFileTypePlusIO_x64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\x64\DdsFileTypePlusIO_x64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
   </ItemGroup>
 </Project>
