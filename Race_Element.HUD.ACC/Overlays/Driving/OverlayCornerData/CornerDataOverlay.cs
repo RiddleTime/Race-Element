@@ -31,7 +31,6 @@ internal sealed class CornerDataOverlay : AbstractOverlay
         public float MaxLatG { get; set; }
         public int EntryDeltaMilliseconds { get; set; }
         public int ExitDeltaMilliseconds { get; set; }
-        public string CornerName { get; set; }
     }
 
     private CornerDataCollector _collector;
@@ -74,7 +73,6 @@ internal sealed class CornerDataOverlay : AbstractOverlay
                 MaxLatG = maxLatG,
                 EntryDeltaMilliseconds = delta,
                 ExitDeltaMilliseconds = delta + rand.Next(-30, 30),
-                CornerName = _currentTrack.CornerNames.ElementAt(i - 1).Value.Item2,
             });
 
             float randMinSpeed = (float)(rand.NextDouble() * 2.5f);
@@ -88,7 +86,6 @@ internal sealed class CornerDataOverlay : AbstractOverlay
                 MaxLatG = (float)(maxLatG + rand.NextDouble() + .5 * 0.08f),
                 EntryDeltaMilliseconds = delta - 1,
                 ExitDeltaMilliseconds = delta - 1 + rand.Next(-30, 30),
-                CornerName = _currentTrack.CornerNames.ElementAt(i - 1).Value.Item2,
             });
         }
     }
@@ -266,7 +263,8 @@ internal sealed class CornerDataOverlay : AbstractOverlay
                 // add Corner Name column to preview graphic
                 if (_config.Data.CornerName)
                 {
-                    columns.Add(_currentCorner.CornerName);
+                    string cornerName = GetCornerName(currentCorner);
+                    columns.Add(cornerName);
                 }
 
                 _table.AddRow($"{currentCorner.ToString().FillStart(2, ' ')}", columns.ToArray(), colors.ToArray());
@@ -371,7 +369,8 @@ internal sealed class CornerDataOverlay : AbstractOverlay
             // add Corner Name column to preview graphic
             if (_config.Data.CornerName)
             {
-                columns.Add(corner.CornerName);
+                string cornerName = GetCornerName(corner.CornerNumber);
+                columns.Add(cornerName);
             }
 
             _table.AddRow($"{corner.CornerNumber.ToString().FillStart(2, ' ')}", columns.ToArray(), colors.ToArray());
@@ -379,6 +378,16 @@ internal sealed class CornerDataOverlay : AbstractOverlay
 
         // draw table of previous corners, min speed? corner g? min gear? 
         _table.Draw(g);
+    }
+
+    private string GetCornerName(int cornerNumber)
+    {
+        var corners = _currentTrack.CornerNames.Where(x => x.Value.Item1 == cornerNumber);
+
+        if (corners.Any())
+            return corners.First().Value.Item2;
+
+        return string.Empty;
     }
 
     private void AddHeaderRow()

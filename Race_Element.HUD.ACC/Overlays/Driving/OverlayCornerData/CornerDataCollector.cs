@@ -69,11 +69,6 @@ internal class CornerDataCollector
                     }
 
                     // entered a new corner
-                    string CornerName = overlay._currentTrack.CornerNames.ElementAt(currentCornerIndex - 1).Value.Item2;
-                    if (CornerName == string.Empty) 
-                    {
-                        CornerName = string.Concat("Corner ", currentCornerIndex);
-                    }
                     overlay._previousCorner = currentCornerIndex;
                     overlay._currentCorner = new CornerData()
                     {
@@ -81,7 +76,6 @@ internal class CornerDataCollector
                         MinimumSpeed = float.MaxValue,
                         AverageSpeed = overlay.pagePhysics.SpeedKmh,
                         EntryDeltaMilliseconds = overlay.pageGraphics.DeltaLapTimeMillis,
-                        CornerName = CornerName,
                     };
                 }
             }
