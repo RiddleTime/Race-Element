@@ -146,9 +146,6 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-    <EmbeddedResource Include="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
     <Resource Include="Fonts\ConthraxSb.ttf" />
     <None Include="key.snk" />
   </ItemGroup>
