@@ -146,7 +146,6 @@
       <PackagePath>\</PackagePath>
     </None>
     <None Include="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
-    <None Include="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\x64\DdsFileTypePlusIO_x64.dll" />
     <Resource Include="Fonts\ConthraxSb.ttf" />
     <None Include="key.snk" />
   </ItemGroup>
