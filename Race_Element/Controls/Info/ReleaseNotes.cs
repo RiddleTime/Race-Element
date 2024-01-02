@@ -6,7 +6,8 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
-        {"1.0.0.2", "- Adjusted tyre pressure range up to 27.3 instead of up to 27.0" },
+        {"1.0.0.2", "- Adjusted tyre pressure range up to 27.3 instead of up to 27.0"+
+                    "\n- Corner Data HUD: Added Corner Names Column (By mreininger23)."},
         {"1.0.0.0", "- Upgraded to from .NET 4.8.2 -> .NET 8"+
                     "\n- Added Track Bar HUD: Alpha version for now."+
                     "\n- Added Track Circle HUD: Alpha version for now."+
