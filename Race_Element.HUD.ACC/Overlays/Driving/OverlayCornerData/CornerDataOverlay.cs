@@ -114,6 +114,9 @@ internal sealed class CornerDataOverlay : AbstractOverlay
         if (_config.Data.MaxLatG)
             columnWidths.Add(60);
 
+        if (_config.Data.CornerName)
+            columnWidths.Add(220);
+
         _table = new InfoTable(12, columnWidths.ToArray());
 
         // set Width and Height of HUD based on amount of rows and columns in table
@@ -257,6 +260,13 @@ internal sealed class CornerDataOverlay : AbstractOverlay
                     colors.Add(Color.FromArgb(190, Color.White));
                 }
 
+                // add Corner Name column to preview graphic
+                if (_config.Data.CornerName)
+                {
+                    string cornerName = GetCornerName(currentCorner);
+                    columns.Add(cornerName);
+                }
+
                 _table.AddRow($"{currentCorner.ToString().FillStart(2, ' ')}", columns.ToArray(), colors.ToArray());
             }
 
@@ -356,11 +366,28 @@ internal sealed class CornerDataOverlay : AbstractOverlay
             if (_config.Data.MaxLatG)
                 columns.Add($"{corner.MaxLatG:F2}");
 
+            // add Corner Name column to preview graphic
+            if (_config.Data.CornerName)
+            {
+                string cornerName = GetCornerName(corner.CornerNumber);
+                columns.Add(cornerName);
+            }
+
             _table.AddRow($"{corner.CornerNumber.ToString().FillStart(2, ' ')}", columns.ToArray(), colors.ToArray());
         }
 
         // draw table of previous corners, min speed? corner g? min gear? 
         _table.Draw(g);
+    }
+
+    private string GetCornerName(int cornerNumber)
+    {
+        var corners = _currentTrack.CornerNames.Where(x => x.Value.Item1 == cornerNumber);
+
+        if (corners.Any())
+            return corners.First().Value.Item2;
+
+        return string.Empty;
     }
 
     private void AddHeaderRow()
@@ -401,6 +428,9 @@ internal sealed class CornerDataOverlay : AbstractOverlay
 
         if (_config.Data.MaxLatG)
             headerColumns.Add("LatG");
+
+        if (_config.Data.CornerName)
+            headerColumns.Add("Corner Name");
 
         _table.AddRow("  ", headerColumns.ToArray(), headerColours.ToArray());
     }
