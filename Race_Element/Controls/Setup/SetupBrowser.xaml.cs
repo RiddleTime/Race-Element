@@ -58,6 +58,8 @@ public partial class SetupBrowser : UserControl
             return;
 
         CarModels carModel = ConversionFactory.ParseCarName(carParseName);
+        if(carModel == CarModels.None) return;
+
         ConversionFactory.CarModelToCarName.TryGetValue(carModel, out string carName);
         AbstractTrackData trackData = TrackData.Tracks.Find(x => track == x.GameName);
 
