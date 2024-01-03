@@ -6,6 +6,10 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.0.2", "- Adjusted tyre pressure range up to 27.3 instead of up to 27.0"+
+                    "\n- Corner Data HUD: Added Corner Names Column by mreininger23."+
+                    "\n- Prevent Race Element from crashing whilst Content Manager(AC) is still running after AC started and was exited (please shut down content manager before starting ACC and Race Element)."+
+                    "\n- Adjusted publish profile to include dds generation api dll."},
         {"1.0.0.0", "- Upgraded to from .NET 4.8.2 -> .NET 8"+
                     "\n- Added Track Bar HUD: Alpha version for now."+
                     "\n- Added Track Circle HUD: Alpha version for now."+

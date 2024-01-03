@@ -21,7 +21,7 @@
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <DisallowUrlActivation>true</DisallowUrlActivation>
     <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.0.0.0</ApplicationVersion>
+    <ApplicationVersion>1.0.0.2</ApplicationVersion>
     <UseApplicationTrust>true</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -29,6 +29,7 @@
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Copyright>Copyright © Reinier Klarenberg 2024</Copyright>
   </PropertyGroup>
@@ -66,12 +67,12 @@
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
     <PlatformTarget>x64</PlatformTarget>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <AssemblyVersion>1.0.0.2</AssemblyVersion>
     <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
     <Title>Race Element</Title>
     <PackageIcon>race element icon 2.png</PackageIcon>
     <Authors>Element Future</Authors>
-    <Version>1.0.0.0</Version>
+    <Version>1.0.0.2</Version>
     <Product>Race Element</Product>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug Minimized|AnyCPU'">
@@ -145,8 +146,6 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-    <None Include="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
-    <None Include="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\x64\DdsFileTypePlusIO_x64.dll" />
     <Resource Include="Fonts\ConthraxSb.ttf" />
     <None Include="key.snk" />
   </ItemGroup>
@@ -189,44 +188,5 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\x64\DdsFileTypePlusIO_x64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\x64\DdsFileTypePlusIO_x64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\x64\DdsFileTypePlusIO_x64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\x64\DdsFileTypePlusIO_x64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\x64\DdsFileTypePlusIO_x64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\x64\DdsFileTypePlusIO_x64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Reinier\.nuget\packages\ddsfiletypeplushack\1.2.1\build\\ARM64\DdsFileTypePlusIO_ARM64.dll" />
   </ItemGroup>
 </Project>
