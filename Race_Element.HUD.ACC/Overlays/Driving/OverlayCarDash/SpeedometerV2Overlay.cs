@@ -7,15 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlaySpeedometerV2;
 
-#if DEBUG
 [Overlay(Name = "Speedometer V2", Description = "(WIP)")]
-#endif
 internal sealed class SpeedometerV2Overlay(Rectangle rectangle) : AbstractOverlay(rectangle, "Speedometer V2")
 {
     private readonly SpeedometerConfiguration _config = new();
@@ -29,6 +28,19 @@ internal sealed class SpeedometerV2Overlay(Rectangle rectangle) : AbstractOverla
         {
             [IntRange(180, 340, 1)]
             public int MaxSpeed { get; init; } = 300;
+        }
+
+        [ConfigGrouping("Shape", "Adjust the shape of the rpm indicator.")]
+        public ShapeGrouping Shape { get; init; } = new ShapeGrouping();
+        public sealed class ShapeGrouping
+        {
+            [ToolTip("Adjust where the circular guage starts (0 degrees is at the positive x-xis).")]
+            [IntRange(0, 360, 1)]
+            public int StartAngle { get; init; } = 120;
+
+            [ToolTip("Adjust the amount of degrees of the circular guage.")]
+            [IntRange(45, 360, 1)]
+            public int SweepAngle { get; init; } = 240;
         }
     }
 
@@ -49,8 +61,11 @@ internal sealed class SpeedometerV2Overlay(Rectangle rectangle) : AbstractOverla
     {
         g.CompositingQuality = CompositingQuality.AssumeLinear;
         g.SmoothingMode = SmoothingMode.AntiAlias;
+
+        g.TextRenderingHint = TextRenderingHint.AntiAlias;
+
         int padding = 25;
-        DrawSpeedIndicator(g, padding, padding, 150);
+        DrawSpeedIndicator(g, padding, padding, Width - padding * 2);
     }
 
     private void DrawSpeedIndicator(Graphics g, int x, int y, int size)
@@ -60,12 +75,12 @@ internal sealed class SpeedometerV2Overlay(Rectangle rectangle) : AbstractOverla
 
         Rectangle rect = new(x, y, size, size);
 
-        DrawGauge(g, rect, 100, 240, speedPercentage);
+        DrawGauge(g, rect, _config.Shape.StartAngle, _config.Shape.SweepAngle, speedPercentage);
 
 
-        Font font = FontUtil.FontOrbitron(24);
+        Font font = FontUtil.FontConthrax(24);
         using StringFormat format = new() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
-        string speedText = $"{pagePhysics.SpeedKmh:F1}";
+        string speedText = $"{pagePhysics.SpeedKmh:F0}";
         g.DrawStringWithShadow(speedText, font, Brushes.White, rect, format);
     }
 
