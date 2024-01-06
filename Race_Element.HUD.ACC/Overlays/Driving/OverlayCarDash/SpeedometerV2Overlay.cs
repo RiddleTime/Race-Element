@@ -4,13 +4,9 @@ using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.Util.SystemExtensions;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlaySpeedometerV2;
 
@@ -20,6 +16,8 @@ internal sealed class SpeedometerV2Overlay(Rectangle rectangle) : AbstractOverla
     private readonly SpeedometerConfiguration _config = new();
     private sealed class SpeedometerConfiguration : OverlayConfiguration
     {
+        public enum GuageDirection { Clockwise, CounterClockwise }
+
         public SpeedometerConfiguration() => AllowRescale = true;
 
         [ConfigGrouping("Settings", "Adjust general settings for the Speedometer overlay.")]
@@ -34,6 +32,9 @@ internal sealed class SpeedometerV2Overlay(Rectangle rectangle) : AbstractOverla
         public ShapeGrouping Shape { get; init; } = new ShapeGrouping();
         public sealed class ShapeGrouping
         {
+            [ToolTip("Adjust the way the guage fills up, Clockwise is positive degrees and counter clockwise is negative degrees.")]
+            public GuageDirection Direction { get; init; } = GuageDirection.Clockwise;
+
             [ToolTip("Adjust where the circular guage starts (0 degrees is at the positive x-xis).")]
             [IntRange(0, 360, 1)]
             public int StartAngle { get; init; } = 120;
@@ -75,8 +76,8 @@ internal sealed class SpeedometerV2Overlay(Rectangle rectangle) : AbstractOverla
 
         Rectangle rect = new(x, y, size, size);
 
-        DrawGauge(g, rect, _config.Shape.StartAngle, _config.Shape.SweepAngle, speedPercentage);
-
+        bool positiveDegrees = _config.Shape.Direction == SpeedometerConfiguration.GuageDirection.Clockwise;
+        DrawGauge(g, rect, _config.Shape.StartAngle, _config.Shape.SweepAngle, speedPercentage, positiveDegrees);
 
         Font font = FontUtil.FontConthrax(24);
         using StringFormat format = new() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
@@ -84,18 +85,24 @@ internal sealed class SpeedometerV2Overlay(Rectangle rectangle) : AbstractOverla
         g.DrawStringWithShadow(speedText, font, Brushes.White, rect, format);
     }
 
-    private static void DrawGauge(Graphics g, Rectangle rect, float startAngle, float sweepAngle, double percentage)
+    private void DrawGauge(Graphics g, Rectangle rect, float startAngle, float sweepAngle, double percentage, bool positiveDegrees)
     {
         percentage.Clip(0, 1);
-        // drawBackground
+
+        float calculatedAngle = (float)Math.Ceiling(sweepAngle * percentage);
+        if (!positiveDegrees)
+        {
+            startAngle += sweepAngle;
+            sweepAngle *= -1;
+            calculatedAngle *= -1;
+        }
+
         float backgroundWidth = 16;
         using Pen backgroundPen = new(Color.Black, backgroundWidth);
         g.DrawArc(backgroundPen, rect, startAngle, sweepAngle);
 
-        // drawIndicator
         float indicatorWidth = 10;
         using Pen indicatorPen = new(Color.White, indicatorWidth);
-        g.DrawArc(indicatorPen, rect, startAngle, (float)Math.Ceiling(sweepAngle * percentage));
+        g.DrawArc(indicatorPen, rect, startAngle, calculatedAngle);
     }
 }
-
