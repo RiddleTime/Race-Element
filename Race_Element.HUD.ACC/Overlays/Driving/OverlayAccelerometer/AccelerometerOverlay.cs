@@ -21,7 +21,7 @@ internal sealed class AccelerometerOverlay : AbstractOverlay
     private sealed class AccelleroConfig : OverlayConfiguration
     {
         [ConfigGrouping("Accelerometer", "Additional options for the Accelerometer")]
-        public AccelerometerGrouping Accelerometer { get; init; } = new AccelerometerGrouping();
+        public AccelerometerGrouping Accelerometer { get; init; } = new();
         public class AccelerometerGrouping
         {
             [ToolTip("Displays fading dots representing history of the g-forces.")]
