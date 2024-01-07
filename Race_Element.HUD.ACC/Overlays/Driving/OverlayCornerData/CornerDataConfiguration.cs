@@ -32,16 +32,16 @@ internal sealed class CornerDataConfiguration : OverlayConfiguration
         public DeltaSource DeltaSource { get; init; } = DeltaSource.BestSessionLap;
 
         [ToolTip("Shows the minimum speed through each corner")]
-        public bool MinimumSpeed { get; init; } = true;
+        public bool MinimumSpeed { get; init; } = false;
 
         [ToolTip("Shows the average speed through each corner.")]
-        public bool AverageSpeed { get; init; } = true;
+        public bool AverageSpeed { get; init; } = false;
 
         [ToolTip("Shows the maximum lateral G force for each corner.")]
-        public bool MaxLatG { get; init; } = true;
+        public bool MaxLatG { get; init; } = false;
 
         [ToolTip("Shows the Name of the corner.")]
-        public bool CornerName { get; init; } = true;
+        public bool CornerName { get; init; } = false;
     }
 
     [ConfigGrouping("Colors", "Adjust colors used for delta")]
