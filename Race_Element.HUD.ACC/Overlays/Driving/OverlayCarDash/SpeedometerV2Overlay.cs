@@ -1,4 +1,4 @@
-﻿using RaceElement.HUD.Overlay.Configuration;
+﻿using RaceElement.HUD.ACC.Overlays.Driving.OverlayCarDash;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
@@ -14,40 +14,10 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlaySpeedometerV2;
 internal sealed class SpeedometerV2Overlay(Rectangle rectangle) : AbstractOverlay(rectangle, "Speedometer V2")
 {
     private readonly SpeedometerConfiguration _config = new();
-    private sealed class SpeedometerConfiguration : OverlayConfiguration
-    {
-        public enum GuageDirection { Clockwise, CounterClockwise }
-
-        public SpeedometerConfiguration() => AllowRescale = true;
-
-        [ConfigGrouping("Settings", "Adjust general settings for the Speedometer overlay.")]
-        public SettingsGrouping Settings { get; init; } = new SettingsGrouping();
-        public sealed class SettingsGrouping
-        {
-            [IntRange(180, 340, 1)]
-            public int MaxSpeed { get; init; } = 300;
-        }
-
-        [ConfigGrouping("Shape", "Adjust the shape of the rpm indicator.")]
-        public ShapeGrouping Shape { get; init; } = new ShapeGrouping();
-        public sealed class ShapeGrouping
-        {
-            [ToolTip("Adjust the way the guage fills up, Clockwise is positive degrees and counter clockwise is negative degrees.")]
-            public GuageDirection Direction { get; init; } = GuageDirection.Clockwise;
-
-            [ToolTip("Adjust where the circular guage starts (0 degrees is at the positive x-xis).")]
-            [IntRange(0, 360, 1)]
-            public int StartAngle { get; init; } = 120;
-
-            [ToolTip("Adjust the amount of degrees of the circular guage.")]
-            [IntRange(45, 360, 1)]
-            public int SweepAngle { get; init; } = 240;
-        }
-    }
 
     public override void SetupPreviewData()
     {
-        pagePhysics.SpeedKmh = 180;
+        pagePhysics.SpeedKmh = 169;
         pagePhysics.Rpms = 8523;
         pageStatic.MaxRpm = 9250;
     }
@@ -79,7 +49,7 @@ internal sealed class SpeedometerV2Overlay(Rectangle rectangle) : AbstractOverla
         bool positiveDegrees = _config.Shape.Direction == SpeedometerConfiguration.GuageDirection.Clockwise;
         DrawGauge(g, rect, _config.Shape.StartAngle, _config.Shape.SweepAngle, speedPercentage, positiveDegrees);
 
-        Font font = FontUtil.FontConthrax(24);
+        Font font = FontUtil.FontConthrax(34);
         using StringFormat format = new() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
         string speedText = $"{pagePhysics.SpeedKmh:F0}";
         g.DrawStringWithShadow(speedText, font, Brushes.White, rect, format);
