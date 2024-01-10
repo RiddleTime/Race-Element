@@ -681,21 +681,18 @@ public unsafe class ACCSharedMemory
     public SPageFileGraphic ReadGraphicsPageFile(bool fromCache = false)
     {
         if (fromCache) return PageFileGraphic;
-        using var mappedFile = MemoryMappedFile.CreateOrOpen(graphicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite);
-        return PageFileGraphic = StructExtension.ToStruct<SPageFileGraphic>(mappedFile, SPageFileGraphic.Buffer);
+        return PageFileGraphic = StructExtension.ToStruct<SPageFileGraphic>(MemoryMappedFile.CreateOrOpen(graphicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite), SPageFileGraphic.Buffer);
     }
 
     public SPageFileStatic ReadStaticPageFile(bool fromCache = false)
     {
         if (fromCache) return PageFileStatic;
-        using var mappedFile = MemoryMappedFile.CreateOrOpen(staticMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite);
-        return PageFileStatic = StructExtension.ToStruct<SPageFileStatic>(mappedFile, SPageFileStatic.Buffer);
+        return PageFileStatic = StructExtension.ToStruct<SPageFileStatic>(MemoryMappedFile.CreateOrOpen(staticMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite), SPageFileStatic.Buffer);
     }
 
     public SPageFilePhysics ReadPhysicsPageFile(bool fromCache = false)
     {
         if (fromCache) return PageFilePhysics;
-        using var mappedFile = MemoryMappedFile.CreateOrOpen(physicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite);
-        return PageFilePhysics = StructExtension.ToStruct<SPageFilePhysics>(mappedFile, SPageFilePhysics.Buffer);
+        return PageFilePhysics = StructExtension.ToStruct<SPageFilePhysics>(MemoryMappedFile.CreateOrOpen(physicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite), SPageFilePhysics.Buffer);
     }
 }
