@@ -1,5 +1,6 @@
 ﻿using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
+using RaceElement.Util.SystemExtensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,10 +27,13 @@ internal class TwitchChatOverlay : AbstractOverlay
 
     private bool _isPreviewing = false;
 
+    private const int maxTwitchUserNameLength = 25;
+    private const int maxValueLength = 25;
+
     public TwitchChatOverlay(Rectangle rectangle) : base(rectangle, "Twitch Chat")
     {
-        Width = 300;
-        Height = 150;
+        Width = 450;
+        Height = 160;
         RefreshRateHz = 1;
     }
 
@@ -76,7 +80,7 @@ internal class TwitchChatOverlay : AbstractOverlay
 
     private void TwitchClient_OnMessageReceived(object sender, TwitchLib.Client.Events.OnMessageReceivedArgs e)
     {
-        _messages.Add(new(e.ChatMessage.Username, e.ChatMessage.Message));
+        _messages.Add(new($"{e.ChatMessage.Username}:", e.ChatMessage.Message));
         Debug.WriteLine(e.ChatMessage.Message);
     }
 
@@ -90,18 +94,50 @@ internal class TwitchChatOverlay : AbstractOverlay
             _twitchClient.Connect();
 
 
+
         if (_messages.Count > 0)
         {
-            foreach ((string user, string message) in _messages.TakeLast(10).Reverse())
+            Font font = FontUtil.FontSegoeMono(10);
+
+            //var stringFormat = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near };
+            foreach ((string user, string message) in _messages.TakeLast(10))
             {
-                _panel.AddLine(user, message);
+                //var size = g.MeasureString(message, font, 300, stringFormat);
+
+
+                if (message.Length > maxValueLength)
+                {
+                    _panel.AddLine(user, message[0..maxValueLength]);
+
+                    int count = maxValueLength;
+                    while (count < message.Length)
+                    {
+                        int maxIndex = count + maxValueLength;
+                        maxIndex.ClipMax(message.Length - 1);
+                        _panel.AddLine("", message[count..maxIndex]);
+                        count += maxValueLength;
+                    }
+                }
+                else
+                {
+                    _panel.AddLine(user, message);
+                }
             }
         }
         else
         {
+            string maxTwitchUserLength = string.Empty;
+            for (int i = 0; i < maxTwitchUserNameLength + 2; i++)
+                _ = maxTwitchUserLength.Append(' ');
+
+
+            string valueTemp = string.Empty;
+            for (int i = 0; i < maxValueLength + 1; i++)
+                _ = valueTemp.Append(' ');
+
             for (int i = 0; i < 10; i++)
             {
-                _panel.AddLine("", "");
+                _panel.AddLine(maxTwitchUserLength, valueTemp);
             }
         }
 
