@@ -22,9 +22,9 @@ internal class TwitchChatConfiguration : OverlayConfiguration
     public class ShapeGrouping
     {
         [IntRange(100, 400, 2)]
-        public int Width = 400;
+        public int Width { get; init; } = 400;
 
         [IntRange(100, 400, 2)]
-        public int Height = 150;
+        public int Height { get; init; } = 150;
     }
 }
