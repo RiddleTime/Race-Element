@@ -135,11 +135,18 @@ internal class ControlFactory
                     break;
                 }
 
+            case Type _ when pi.PropertyType == typeof(string):
+                {
+                    contentControl = new StringValueControl(configField);
+                    break;
+                }
+
             case Type _ when pi.PropertyType.BaseType == typeof(Enum):
                 {
                     contentControl = new EnumValueControl(configField, pi.PropertyType);
                     break;
                 }
+
         }
 
         if (contentControl == null)
