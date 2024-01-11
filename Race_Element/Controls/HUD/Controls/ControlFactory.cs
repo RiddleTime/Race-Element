@@ -137,7 +137,16 @@ internal class ControlFactory
 
             case Type _ when pi.PropertyType == typeof(string):
                 {
-                    contentControl = new StringValueControl(configField);
+                    StringOptionsAttribute stringOptions = null;
+                    foreach (Attribute customAttribute in Attribute.GetCustomAttributes(pi))
+                        if (customAttribute is StringOptionsAttribute stringOptionsAttribute)
+                            stringOptions = stringOptionsAttribute;
+
+                    bool isPassword = false;
+                    if (stringOptions != null)
+                        isPassword = stringOptions.IsPassword;
+
+                    contentControl = new StringValueControl(configField, isPassword);
                     break;
                 }
 
