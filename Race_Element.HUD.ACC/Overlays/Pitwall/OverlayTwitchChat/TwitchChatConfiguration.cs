@@ -11,6 +11,8 @@ internal class TwitchChatConfiguration : OverlayConfiguration
     public class CredentialsGrouping
     {
         public string TwitchUser { get; init; } = "";
+
+        [ToolTip("Create an O Auth token at https://twitchapps.com/tmi/ and copy/paste the entire result in here.")]
         public string OAuthToken { get; init; } = "";
     }
 }
