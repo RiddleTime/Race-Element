@@ -68,9 +68,7 @@ internal class TwitchChatOverlay : AbstractOverlay
         if (_isPreviewing) return;
 
         if (_twitchClient.IsConnected)
-        {
             _twitchClient.Disconnect();
-        }
     }
 
     private void TwitchClient_OnConnected(object sender, TwitchLib.Client.Events.OnConnectedArgs e)
