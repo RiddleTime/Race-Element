@@ -29,6 +29,9 @@ internal class TwitchChatOverlay : AbstractOverlay
     private bool _isPreviewing = false;
 
     private Font _font;
+    private readonly StringFormat _stringFormat = new() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Near };
+
+    private CachedBitmap _cachedBackground;
 
     public TwitchChatOverlay(Rectangle rectangle) : base(rectangle, "Twitch Chat")
     {
@@ -44,6 +47,12 @@ internal class TwitchChatOverlay : AbstractOverlay
 
     public override void BeforeStart()
     {
+        _cachedBackground = new CachedBitmap(_config.Shape.Width, _config.Shape.Height, g =>
+        {
+            using Brush brush = new SolidBrush(Color.FromArgb(170, 0, 0, 0));
+            g.FillRoundedRectangle(brush, new Rectangle(0, 0, _config.Shape.Width, _config.Shape.Height), 4);
+        });
+
         if (_isPreviewing) return;
 
         var credentials = new TwitchLib.Client.Models.ConnectionCredentials(_config.Credentials.TwitchUser, _config.Credentials.OAuthToken);
@@ -56,11 +65,10 @@ internal class TwitchChatOverlay : AbstractOverlay
         _twitchClient = new(customClient);
 
         _twitchClient.Initialize(credentials, _config.Credentials.TwitchUser);
-        _twitchClient.OnMessageReceived += TwitchClient_OnMessageReceived;
-        _twitchClient.OnConnected += TwitchClient_OnConnected;
-        _twitchClient.OnLog += (s, e) => { Debug.WriteLine(e.Data); };
+        _twitchClient.OnMessageReceived += (s, e) => _messages.Add(new($"{e.ChatMessage.DisplayName}", e.ChatMessage.Message));
+        _twitchClient.OnConnected += (s, e) => _twitchClient.SendMessage(_twitchClient.JoinedChannels[0], "Race Element Connected to Twitch Chat!");
 
-        _font = FontUtil.FontSegoeMono(9);
+        _font = FontUtil.FontConthrax(8);
     }
 
     public override void BeforeStop()
@@ -69,18 +77,9 @@ internal class TwitchChatOverlay : AbstractOverlay
 
         if (_twitchClient.IsConnected)
             _twitchClient.Disconnect();
-    }
 
-    private void TwitchClient_OnConnected(object sender, TwitchLib.Client.Events.OnConnectedArgs e)
-    {
-        Debug.WriteLine($"Connected to {e.AutoJoinChannel}");
-        _twitchClient.SendMessage(_twitchClient.JoinedChannels[0], "Race Element Connected to Twitch Chat!");
-    }
-
-    private void TwitchClient_OnMessageReceived(object sender, TwitchLib.Client.Events.OnMessageReceivedArgs e)
-    {
-        _messages.Add(new($"{e.ChatMessage.DisplayName}", e.ChatMessage.Message));
-        Debug.WriteLine(e.ChatMessage.Message);
+        _cachedBackground?.Dispose();
+        _stringFormat?.Dispose();
     }
 
     public override bool ShouldRender() => true;
@@ -96,20 +95,18 @@ internal class TwitchChatOverlay : AbstractOverlay
         g.SmoothingMode = SmoothingMode.AntiAlias;
         g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 
-        g.FillRoundedRectangle(Brushes.Black, new Rectangle(0, 0, _config.Shape.Width, _config.Shape.Height), 3);
+        _cachedBackground?.Draw(g, 0, 0, _config.Shape.Width, _config.Shape.Height);
 
         if (_messages.Count > 0)
         {
-            var stringFormat = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near };
-
             int y = 0;
-            foreach ((string user, string message) in _messages.TakeLast(10).Reverse())
+            foreach ((string user, string message) in _messages.TakeLast(20).Reverse())
             {
+                if (y > _config.Shape.Height) break;
+
                 string text = $"{user}: {message}";
-
-                var size = g.MeasureString(text, _font, _config.Shape.Width, stringFormat);
-
-                g.DrawStringWithShadow(text, _font, Brushes.White, new RectangleF(0, y, size.Width, size.Height), stringFormat);
+                var size = g.MeasureString(text, _font, _config.Shape.Width, _stringFormat);
+                g.DrawStringWithShadow(text, _font, Brushes.White, new RectangleF(0, y, size.Width, size.Height), _stringFormat);
 
                 y += (int)Math.Ceiling(size.Height);
             }
