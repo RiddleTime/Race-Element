@@ -24,7 +24,7 @@ HUDs(Head-up displays) are 2D graphics that can be used to provide you data whil
 - Scalable
 - Modular
 - Custom Configuration
-- Low performance hit
+- Low performance hit as the app doesn't use your gpu but only your cpu unlike all other HUD apps.
 - Can be used for stream only
 
 ### Data
