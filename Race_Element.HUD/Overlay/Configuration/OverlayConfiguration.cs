@@ -96,6 +96,8 @@ public abstract class OverlayConfiguration
                                     subNested.SetValue(nestedValue, int.Parse(field.Value.ToString()));
                                 else if (subNested.PropertyType == typeof(bool))
                                     subNested.SetValue(nestedValue, field.Value);
+                                else if (subNested.PropertyType == typeof(string))
+                                    subNested.SetValue(nestedValue, field.Value);
                                 else if (subNested.PropertyType == typeof(byte))
                                     subNested.SetValue(nestedValue, byte.Parse(field.Value.ToString()));
                                 else if (subNested.PropertyType == typeof(Color))
@@ -135,6 +137,8 @@ public abstract class OverlayConfiguration
                         else if (prop.PropertyType == typeof(int))
                             prop.SetValue(this, int.Parse(field.Value.ToString()));
                         else if (prop.PropertyType == typeof(bool))
+                            prop.SetValue(this, field.Value);
+                        else if (prop.PropertyType == typeof(string))
                             prop.SetValue(this, field.Value);
                         else if (prop.PropertyType == typeof(byte))
                             prop.SetValue(this, byte.Parse(field.Value.ToString()));

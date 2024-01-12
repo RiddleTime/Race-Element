@@ -18,8 +18,8 @@ internal class ControlFactory
     public ListViewItem GenerateOption(string group, string label, PropertyInfo pi, ConfigField configField)
     {
         Grid grid = new() { Margin = new Thickness(0, 0, 0, 2) /*Height = 26*/ };
-        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(120, GridUnitType.Pixel) });
-        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(310, GridUnitType.Pixel) });
+        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(160, GridUnitType.Pixel) });
+        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(ControlConstants.ControlWidth + 20, GridUnitType.Pixel) });
 
         ListViewItem item = new()
         {
@@ -135,11 +135,27 @@ internal class ControlFactory
                     break;
                 }
 
+            case Type _ when pi.PropertyType == typeof(string):
+                {
+                    StringOptionsAttribute stringOptions = null;
+                    foreach (Attribute customAttribute in Attribute.GetCustomAttributes(pi))
+                        if (customAttribute is StringOptionsAttribute stringOptionsAttribute)
+                            stringOptions = stringOptionsAttribute;
+
+                    bool isPassword = false;
+                    if (stringOptions != null)
+                        isPassword = stringOptions.IsPassword;
+
+                    contentControl = new StringValueControl(configField, isPassword);
+                    break;
+                }
+
             case Type _ when pi.PropertyType.BaseType == typeof(Enum):
                 {
                     contentControl = new EnumValueControl(configField, pi.PropertyType);
                     break;
                 }
+
         }
 
         if (contentControl == null)

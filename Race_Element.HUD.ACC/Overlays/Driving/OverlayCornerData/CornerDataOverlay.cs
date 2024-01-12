@@ -430,7 +430,7 @@ internal sealed class CornerDataOverlay : AbstractOverlay
             headerColumns.Add("LatG");
 
         if (_config.Data.CornerName)
-            headerColumns.Add("Corner Name");
+            headerColumns.Add("Name");
 
         _table.AddRow("  ", headerColumns.ToArray(), headerColours.ToArray());
     }
