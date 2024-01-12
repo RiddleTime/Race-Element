@@ -24,7 +24,7 @@ internal class EnumValueControl : IValueControl<Enum>
         _field = field;
         _grid = new Grid()
         {
-            Width = 290,
+            Width = ControlConstants.ControlWidth,
             Margin = new Thickness(0, 1, 7, 1),
             Background = new SolidColorBrush(Color.FromArgb(140, 2, 2, 2)),
             Cursor = Cursors.Hand,

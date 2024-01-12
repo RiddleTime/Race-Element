@@ -24,14 +24,14 @@ internal class FloatValueControl : IValueControl<float>, IControl
 
         _grid = new Grid()
         {
-            Width = 290,
+            Width = ControlConstants.ControlWidth,
             Margin = new Thickness(0, 0, 7, 0),
             Background = new SolidColorBrush(Color.FromArgb(140, 2, 2, 2)),
             Cursor = Cursors.Hand
         };
         _grid.PreviewMouseLeftButtonUp += (s, e) => Save();
         _grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(2, GridUnitType.Star) });
-        _grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(8, GridUnitType.Star) });
+        _grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(10, GridUnitType.Star) });
 
         _label = new Label()
         {

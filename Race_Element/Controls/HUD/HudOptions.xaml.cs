@@ -629,7 +629,7 @@ public partial class HudOptions : UserControl
 
                 ListView listView = new()
                 {
-                    Width = 430,
+                    Width = 550,
                     HorizontalAlignment = HorizontalAlignment.Center,
                     Margin = new Thickness(0, 0, 0, 5),
                     Background = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0)),

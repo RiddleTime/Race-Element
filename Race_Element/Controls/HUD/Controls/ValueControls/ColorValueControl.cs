@@ -22,17 +22,14 @@ internal class ColorValueControl : IValueControl<System.Drawing.Color>
         _field = configField;
         _grid = new Grid()
         {
-            Width = 290,
+            Width = ControlConstants.ControlWidth,
             Height = 66,
             Margin = new Thickness(0, 1, 7, 1),
             Background = new SolidColorBrush(Color.FromArgb(140, 2, 2, 2)),
             Cursor = Cursors.Hand,
             VerticalAlignment = VerticalAlignment.Center,
         };
-        //_grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(235, GridUnitType.Pixel) });
-        //_grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(55, GridUnitType.Pixel) });
-
-
+      
         // add color picker
         ColorPicker colorPicker = new()
         {

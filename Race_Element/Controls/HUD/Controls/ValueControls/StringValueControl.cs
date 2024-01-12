@@ -21,7 +21,7 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
             _field = configField;
             _grid = new Grid()
             {
-                Width = 290,
+                Width = ControlConstants.ControlWidth,
                 Margin = new Thickness(0, 0, 7, 0),
                 Background = new SolidColorBrush(Color.FromArgb(140, 2, 2, 2)),
                 Cursor = Cursors.Hand

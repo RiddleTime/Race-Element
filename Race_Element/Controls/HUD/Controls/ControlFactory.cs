@@ -18,8 +18,8 @@ internal class ControlFactory
     public ListViewItem GenerateOption(string group, string label, PropertyInfo pi, ConfigField configField)
     {
         Grid grid = new() { Margin = new Thickness(0, 0, 0, 2) /*Height = 26*/ };
-        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(120, GridUnitType.Pixel) });
-        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(310, GridUnitType.Pixel) });
+        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(160, GridUnitType.Pixel) });
+        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(ControlConstants.ControlWidth + 20, GridUnitType.Pixel) });
 
         ListViewItem item = new()
         {

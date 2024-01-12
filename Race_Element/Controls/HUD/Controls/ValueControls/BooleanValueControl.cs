@@ -23,13 +23,13 @@ internal class BooleanValueControl : IValueControl<bool>, IControl
         _field = configField;
         _grid = new Grid()
         {
-            Width = 290,
+            Width = ControlConstants.ControlWidth,
             Margin = new Thickness(0, 0, 7, 0),
             Background = new SolidColorBrush(Color.FromArgb(140, 2, 2, 2)),
             Cursor = Cursors.Hand
         };
         _grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(2, GridUnitType.Star) });
-        _grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(8, GridUnitType.Star) });
+        _grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(10, GridUnitType.Star) });
 
         // add label
         _label = new Label()
