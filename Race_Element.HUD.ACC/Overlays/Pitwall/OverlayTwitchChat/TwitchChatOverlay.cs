@@ -17,9 +17,9 @@ using TwitchLib.Communication.Models;
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
 
 [Overlay(Name = "Twitch Chat",
-    Description = "Shows twitch chat",
+    Description = "Shows twitch chat, newest messages appear at the top.",
     OverlayType = OverlayType.Pitwall)]
-internal class TwitchChatOverlay : AbstractOverlay
+internal sealed class TwitchChatOverlay : AbstractOverlay
 {
     private readonly TwitchChatConfiguration _config = new TwitchChatConfiguration();
 
@@ -32,26 +32,28 @@ internal class TwitchChatOverlay : AbstractOverlay
     private readonly StringFormat _stringFormat = new() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Near };
 
     private CachedBitmap _cachedBackground;
+    private SolidBrush _textBrush;
 
     public TwitchChatOverlay(Rectangle rectangle) : base(rectangle, "Twitch Chat")
     {
         Width = _config.Shape.Width;
         Height = _config.Shape.Height;
-        RefreshRateHz = 1;
+        RefreshRateHz = 0.5;
     }
 
-    public override void SetupPreviewData()
+    public sealed override void SetupPreviewData()
     {
         _isPreviewing = true;
     }
 
-    public override void BeforeStart()
+    public sealed override void BeforeStart()
     {
         _cachedBackground = new CachedBitmap(_config.Shape.Width, _config.Shape.Height, g =>
         {
-            using Brush brush = new SolidBrush(Color.FromArgb(170, 0, 0, 0));
+            using SolidBrush brush = new SolidBrush(Color.FromArgb(_config.Colors.BackgroundOpacity, _config.Colors.BackgroundColor));
             g.FillRoundedRectangle(brush, new Rectangle(0, 0, _config.Shape.Width, _config.Shape.Height), 4);
         });
+        _textBrush = new SolidBrush(Color.FromArgb(255, _config.Colors.TextColor));
 
         if (_isPreviewing) return;
 
@@ -68,10 +70,10 @@ internal class TwitchChatOverlay : AbstractOverlay
         _twitchClient.OnMessageReceived += (s, e) => _messages.Add(new($"{e.ChatMessage.DisplayName}", e.ChatMessage.Message));
         _twitchClient.OnConnected += (s, e) => _twitchClient.SendMessage(_twitchClient.JoinedChannels[0], "Race Element Connected to Twitch Chat!");
 
-        _font = FontUtil.FontConthrax(8);
+        _font = FontUtil.FontRoboto(11);
     }
 
-    public override void BeforeStop()
+    public sealed override void BeforeStop()
     {
         if (_isPreviewing) return;
 
@@ -80,11 +82,12 @@ internal class TwitchChatOverlay : AbstractOverlay
 
         _cachedBackground?.Dispose();
         _stringFormat?.Dispose();
+        _textBrush?.Dispose();
     }
 
-    public override bool ShouldRender() => true;
+    public sealed override bool ShouldRender() => true;
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
         if (_isPreviewing) return;
 
@@ -100,16 +103,19 @@ internal class TwitchChatOverlay : AbstractOverlay
         if (_messages.Count > 0)
         {
             int y = 0;
-            foreach ((string user, string message) in _messages.TakeLast(20).Reverse())
+            foreach ((string user, string message) in _messages.TakeLast(50).Reverse())
             {
                 if (y > _config.Shape.Height) break;
 
                 string text = $"{user}: {message}";
                 var size = g.MeasureString(text, _font, _config.Shape.Width, _stringFormat);
-                g.DrawStringWithShadow(text, _font, Brushes.White, new RectangleF(0, y, size.Width, size.Height), _stringFormat);
+                g.DrawStringWithShadow(text, _font, _textBrush, new RectangleF(0, y, size.Width, size.Height), _stringFormat);
 
                 y += (int)Math.Ceiling(size.Height);
             }
+
+            if (_messages.Count > 100)
+                _messages.RemoveRange(0, 50);
         }
     }
 }
