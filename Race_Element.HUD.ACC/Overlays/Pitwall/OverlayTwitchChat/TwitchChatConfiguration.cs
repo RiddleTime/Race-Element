@@ -27,7 +27,7 @@ internal class TwitchChatConfiguration : OverlayConfiguration
         [IntRange(100, 500, 2)]
         public int Width { get; init; } = 400;
 
-        [IntRange(100, 400, 2)]
+        [IntRange(100, 500, 2)]
         public int Height { get; init; } = 150;
     }
 
