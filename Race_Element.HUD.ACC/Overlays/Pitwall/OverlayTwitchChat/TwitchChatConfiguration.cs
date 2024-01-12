@@ -11,9 +11,11 @@ internal class TwitchChatConfiguration : OverlayConfiguration
     public CredentialsGrouping Credentials { get; init; } = new();
     public class CredentialsGrouping
     {
+        [ToolTip("Your channel name")]
         public string TwitchUser { get; init; } = "";
 
-        [ToolTip("Create an O Auth token at https://twitchapps.com/tmi/ and copy/paste the entire result in here.")]
+        [ToolTip("Create an O Auth token at twitchapps.com/tmi, click connect and connect and copy -> paste the entire result in here." +
+            "\n(This is required for Race Element to connect to your chat using the twitch api.)")]
         [StringOptions(isPassword: true)]
         public string OAuthToken { get; init; } = "";
     }
@@ -39,6 +41,5 @@ internal class TwitchChatConfiguration : OverlayConfiguration
 
         [IntRange(0, 255, 1)]
         public int BackgroundOpacity { get; init; } = 170;
-
     }
 }

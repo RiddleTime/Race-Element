@@ -10,7 +10,9 @@ using System.Drawing.Text;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlaySpeedometerV2;
 
+#if DEBUG
 [Overlay(Name = "Speedometer V2", Description = "(WIP)")]
+#endif
 internal sealed class SpeedometerV2Overlay(Rectangle rectangle) : AbstractOverlay(rectangle, "Speedometer V2")
 {
     private readonly SpeedometerConfiguration _config = new();

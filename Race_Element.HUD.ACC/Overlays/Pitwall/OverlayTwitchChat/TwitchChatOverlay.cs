@@ -17,14 +17,15 @@ using TwitchLib.Communication.Models;
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
 
 [Overlay(Name = "Twitch Chat",
-    Description = "Shows twitch chat, newest messages appear at the top.",
+    Description = "Shows twitch chat, newest messages appear at the top.\nTo allow Race Element to connect to the twitch api create the O Auth token at twitchapps.com/tmi",
     OverlayType = OverlayType.Pitwall)]
 internal sealed class TwitchChatOverlay : AbstractOverlay
 {
     private readonly TwitchChatConfiguration _config = new TwitchChatConfiguration();
 
     private TwitchClient _twitchClient = null;
-    private readonly List<(string, string)> _messages = [];
+
+    private readonly List<string> _messages = [];
 
     private bool _isPreviewing = false;
 
@@ -33,6 +34,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
 
     private CachedBitmap _cachedBackground;
     private SolidBrush _textBrush;
+    private Pen _dividerPen;
 
     public TwitchChatOverlay(Rectangle rectangle) : base(rectangle, "Twitch Chat")
     {
@@ -55,6 +57,8 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         });
         _textBrush = new SolidBrush(Color.FromArgb(255, _config.Colors.TextColor));
 
+        _dividerPen = new(new SolidBrush(Color.FromArgb(25, _config.Colors.TextColor)), 0.5f);
+
         if (_isPreviewing) return;
 
         var credentials = new TwitchLib.Client.Models.ConnectionCredentials(_config.Credentials.TwitchUser, _config.Credentials.OAuthToken);
@@ -67,8 +71,11 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _twitchClient = new(customClient);
 
         _twitchClient.Initialize(credentials, _config.Credentials.TwitchUser);
-        _twitchClient.OnMessageReceived += (s, e) => _messages.Add(new($"{e.ChatMessage.DisplayName}", e.ChatMessage.Message));
-        _twitchClient.OnConnected += (s, e) => _twitchClient.SendMessage(_twitchClient.JoinedChannels[0], "Race Element Connected to Twitch Chat!");
+        _twitchClient.OnMessageReceived += (s, e) =>
+        {
+            _messages.Add(new($"{DateTime.Now:HH:mm} {e.ChatMessage.DisplayName}: {e.ChatMessage.Message}"));
+        };
+        _twitchClient.OnConnected += (s, e) => _twitchClient.SendMessage(_twitchClient.JoinedChannels[0], "Race Element has Connected to Twitch Chat!");
 
         _font = FontUtil.FontRoboto(11);
     }
@@ -78,38 +85,42 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         if (_isPreviewing) return;
 
         if (_twitchClient.IsConnected)
-            _twitchClient.Disconnect();
+            Task.Run(() => _twitchClient.Disconnect());
 
         _cachedBackground?.Dispose();
         _stringFormat?.Dispose();
         _textBrush?.Dispose();
+        _dividerPen?.Dispose();
     }
 
     public sealed override bool ShouldRender() => true;
-
     public sealed override void Render(Graphics g)
     {
         if (_isPreviewing) return;
 
         if (!_twitchClient.IsConnected)
-            _twitchClient.Connect();
+            Task.Run(() => _twitchClient.Connect());
 
         g.CompositingQuality = CompositingQuality.HighQuality;
         g.SmoothingMode = SmoothingMode.AntiAlias;
         g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 
-        _cachedBackground?.Draw(g, 0, 0, _config.Shape.Width, _config.Shape.Height);
+        if (_config.Colors.BackgroundOpacity != 0)
+            _cachedBackground?.Draw(g, 0, 0, _config.Shape.Width, _config.Shape.Height);
 
         if (_messages.Count > 0)
         {
             int y = 0;
-            foreach ((string user, string message) in _messages.TakeLast(50).Reverse())
+            foreach (string message in _messages.TakeLast(50).Reverse())
             {
                 if (y > _config.Shape.Height) break;
 
-                string text = $"{user}: {message}";
-                var size = g.MeasureString(text, _font, _config.Shape.Width, _stringFormat);
-                g.DrawStringWithShadow(text, _font, _textBrush, new RectangleF(0, y, size.Width, size.Height), _stringFormat);
+                var size = g.MeasureString(message, _font, _config.Shape.Width, _stringFormat);
+
+                if (_config.Colors.BackgroundOpacity != 0) // draw divider line
+                    g.DrawLine(_dividerPen, 0, y + size.Height, _config.Shape.Width, y + size.Height);
+
+                g.DrawStringWithShadow(message, _font, _textBrush, new RectangleF(0, y, size.Width, size.Height), _stringFormat);
 
                 y += (int)Math.Ceiling(size.Height);
             }

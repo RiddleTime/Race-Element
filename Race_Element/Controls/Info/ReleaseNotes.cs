@@ -6,7 +6,7 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
-        {"1.0.0.4", "- Add Twitch Chat HUD."},
+        {"1.0.0.4", "- Add Twitch Chat HUD to Pitwall HUDs, read the description of the HUD on how to configure it."},
         {"1.0.0.2", "- Adjusted tyre pressure range up to 27.3 instead of up to 27.0"+
                     "\n- Corner Data HUD: Added Corner Names Column by mreininger23."+
                     "\n- Prevent Race Element from crashing whilst Content Manager(AC) is still running after AC started and was exited (please shut down content manager before starting ACC and Race Element)."+
