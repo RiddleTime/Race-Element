@@ -51,6 +51,7 @@ internal sealed class SpeedometerConfiguration : OverlayConfiguration
         [ToolTip("Sets the background color of the guage")]
         public Color BackgroundColor { get; init; } = Color.FromArgb(255, 0, 0, 0);
 
+        [ToolTip("Sets the opacity of the background color")]
         [IntRange(50, 255, 1)]
         public int BackgroundOpacity { get; init; } = 170;
     }

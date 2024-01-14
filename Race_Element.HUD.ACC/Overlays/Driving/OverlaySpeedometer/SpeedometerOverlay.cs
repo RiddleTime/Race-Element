@@ -9,7 +9,10 @@ using System.Drawing.Text;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlaySpeedometer;
 
-[Overlay(Name = "Speedometer", Description = "Displays a circular guage with the current speed in km/h.")]
+[Overlay(Name = "Speedometer",
+    Description = "Displays a circular guage with the current speed in km/h.",
+    OverlayCategory = OverlayCategory.Driving,
+    OverlayType = OverlayType.Drive)]
 internal sealed class SpeedometerOverlay(Rectangle rectangle) : AbstractOverlay(rectangle, "Speedometer")
 {
     private readonly SpeedometerConfiguration _config = new();
