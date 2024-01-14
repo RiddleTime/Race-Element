@@ -27,14 +27,14 @@ internal sealed class SpeedometerOverlay(Rectangle rectangle) : AbstractOverlay(
     private SolidBrush _textBrush;
     private Pen _indicatorPen;
 
-    public override void SetupPreviewData()
+    public sealed override void SetupPreviewData()
     {
         pagePhysics.SpeedKmh = 269;
         pagePhysics.Rpms = 8523;
         pageStatic.MaxRpm = 9250;
     }
 
-    public override void BeforeStart()
+    public sealed override void BeforeStart()
     {
         Width = ShapeSize;
         Height = ShapeSize;
@@ -71,14 +71,14 @@ internal sealed class SpeedometerOverlay(Rectangle rectangle) : AbstractOverlay(
         _font = FontUtil.FontConthrax(34);
     }
 
-    public override void BeforeStop()
+    public sealed override void BeforeStop()
     {
         _background?.Dispose();
         _indicatorPen?.Dispose();
         _textBrush?.Dispose();
     }
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
         g.CompositingQuality = CompositingQuality.AssumeLinear;
         g.SmoothingMode = SmoothingMode.AntiAlias;
