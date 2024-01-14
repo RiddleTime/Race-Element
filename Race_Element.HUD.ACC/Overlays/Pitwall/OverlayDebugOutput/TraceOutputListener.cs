@@ -27,7 +27,7 @@ public class TraceOutputListener
     {
         get
         {
-            if (_instance == null) _instance = new TraceOutputListener(); return _instance;
+            _instance ??= new TraceOutputListener(); return _instance;
         }
     }
 

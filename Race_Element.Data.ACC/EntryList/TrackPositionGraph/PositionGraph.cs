@@ -6,14 +6,14 @@ namespace RaceElement.Data.ACC.EntryList.TrackPositionGraph;
 
 public class PositionGraph
 {
-    private Dictionary<int, Car> _cars = new();
+    private Dictionary<int, Car> _cars = [];
 
     private static PositionGraph _instance;
     public static PositionGraph Instance
     {
         get
         {
-            if (_instance == null) _instance = new PositionGraph();
+            _instance ??= new PositionGraph();
             return _instance;
         }
     }

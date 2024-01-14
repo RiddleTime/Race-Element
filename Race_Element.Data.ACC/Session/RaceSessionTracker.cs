@@ -63,7 +63,7 @@ public class RaceSessionTracker
     {
         get
         {
-            if (_instance == null) _instance = new RaceSessionTracker();
+            _instance ??= new RaceSessionTracker();
             return _instance;
         }
     }

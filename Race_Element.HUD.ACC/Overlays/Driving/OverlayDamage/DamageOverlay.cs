@@ -32,7 +32,7 @@ internal sealed class DamageOverlay : AbstractOverlay
         }
     }
 
-    private sealed class PathShape
+    private struct PathShape
     {
         public RectangleF Shape { get; set; }
         public GraphicsPath Path { get; set; }

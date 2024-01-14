@@ -28,7 +28,7 @@ public class SetupIntRange
             return intRange.LUT;
         }
 
-        List<int> collection = new();
+        List<int> collection = [];
 
         for (int i = intRange.Min; i < intRange.Max + intRange.Increment; i += intRange.Increment)
         {

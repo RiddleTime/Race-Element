@@ -15,7 +15,7 @@ internal static class LiveryImporter
 {
 
     private static int liveryCount = 0;
-    private static List<LiveryTreeCar> ImportedLiveries = new();
+    private static List<LiveryTreeCar> ImportedLiveries = [];
 
     public static void ImportLiveryZips(FileInfo file = null)
     {

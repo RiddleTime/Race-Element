@@ -74,7 +74,7 @@ public class BroadcastingNetworkProtocol
 
     // To avoid huge UDP pakets for longer entry lists, we will first receive the indexes of cars and drivers,
     // cache the entries and wait for the detailled updates
-    List<CarInfo> _entryListCars = new();
+    List<CarInfo> _entryListCars = [];
 
     #endregion
 
@@ -256,13 +256,13 @@ public class BroadcastingNetworkProtocol
                         trackData.TrackMeters = br.ReadInt32();
                         TrackMeters = trackData.TrackMeters > 0 ? trackData.TrackMeters : -1;
 
-                        trackData.CameraSets = new Dictionary<string, List<string>>();
+                        trackData.CameraSets = [];
 
                         var cameraSetCount = br.ReadByte();
                         for (int camSet = 0; camSet < cameraSetCount; camSet++)
                         {
                             var camSetName = ReadString(br);
-                            trackData.CameraSets.Add(camSetName, new List<string>());
+                            trackData.CameraSets.Add(camSetName, []);
 
                             var cameraCount = br.ReadByte();
                             for (int cam = 0; cam < cameraCount; cam++)

@@ -31,14 +31,14 @@ internal sealed class LapTableOverlay : AbstractOverlay
     public LapTableOverlay(Rectangle rectangle) : base(rectangle, "Lap Table")
     {
         this.RefreshRateHz = 2;
-        _storedLaps = new List<KeyValuePair<int, DbLapData>>();
+        _storedLaps = [];
     }
 
     public override void SetupPreviewData()
     {
         _dataIsPreview = true;
 
-        Dictionary<int, DbLapData> Laps = new();
+        Dictionary<int, DbLapData> Laps = [];
         Random rand = new();
         int maxSectorDeviation = 10000;
         int s1 = 28525 + rand.Next(-maxSectorDeviation, maxSectorDeviation);

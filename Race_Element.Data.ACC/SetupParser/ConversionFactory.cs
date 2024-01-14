@@ -197,7 +197,7 @@ public static class ConversionFactory
 
     public static List<string> GetAllNamesByClass(CarClasses carClass)
     {
-        List<string> classNames = new();
+        List<string> classNames = [];
         Conversions.ToList().ForEach(x =>
         {
             if (x.Value.CarClass == carClass)

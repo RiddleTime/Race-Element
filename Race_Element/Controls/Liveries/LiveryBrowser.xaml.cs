@@ -28,9 +28,9 @@ public partial class LiveryBrowser : UserControl
 {
     public static LiveryBrowser Instance;
 
-    private List<string> expandedCarHeaders = new();
-    private List<string> expandedTeamHeaders = new();
-    private List<string> expandedTagHeaders = new();
+    private List<string> expandedCarHeaders = [];
+    private List<string> expandedTeamHeaders = [];
+    private List<string> expandedTagHeaders = [];
 
     public LiveryBrowser()
     {
@@ -166,7 +166,7 @@ public partial class LiveryBrowser : UserControl
 
                 DirectoryInfo customsCarsDirectory = new(FileUtil.CarsPath);
 
-                List<LiveryTreeCar> liveryTreeCars = new();
+                List<LiveryTreeCar> liveryTreeCars = [];
 
                 foreach (var carsFile in customsCarsDirectory.GetFiles())
                 {
@@ -209,7 +209,7 @@ public partial class LiveryBrowser : UserControl
 
     private void FillTreeViewModels(IEnumerable<IGrouping<string, LiveryTreeCar>> liveriesGroupedByModel)
     {
-        List<TreeViewItem> carsTreeViews = new();
+        List<TreeViewItem> carsTreeViews = [];
 
         foreach (IGrouping<string, LiveryTreeCar> tItem in liveriesGroupedByModel)
         {
@@ -285,7 +285,7 @@ public partial class LiveryBrowser : UserControl
 
     private void FillTreeViewTeams(IEnumerable<IGrouping<string, LiveryTreeCar>> liveriesGroupedByTeam)
     {
-        List<TreeViewItem> carsTreeViews = new();
+        List<TreeViewItem> carsTreeViews = [];
 
         foreach (IGrouping<string, LiveryTreeCar> tItem in liveriesGroupedByTeam)
         {
@@ -361,13 +361,13 @@ public partial class LiveryBrowser : UserControl
 
     private void FillTreeViewTags(List<LiveryTreeCar> allLiveries)
     {
-        List<TreeViewItem> tagTreeItems = new();
+        List<TreeViewItem> tagTreeItems = [];
 
-        List<LiveryTreeCar> liveriesWithTags = new();
+        List<LiveryTreeCar> liveriesWithTags = [];
 
         LiveryTagging.GetAllTags().ForEach(liveryTag =>
         {
-            List<LiveryTreeCar> tagCars = new();
+            List<LiveryTreeCar> tagCars = [];
             foreach (LiveryTreeCar car in allLiveries)
             {
                 if (LiveryTagging.TagContainsCar(liveryTag, car))
@@ -699,7 +699,7 @@ public partial class LiveryBrowser : UserControl
                 MenuItem button = (MenuItem)sender;
 
                 TreeViewItem treeItem = (TreeViewItem)button.CommandParameter;
-                List<LiveryTreeCar> treeCars = new();
+                List<LiveryTreeCar> treeCars = [];
 
                 treeItem.Items.OfType<TreeViewItem>().ToList().ForEach(x =>
                 {
@@ -724,7 +724,7 @@ public partial class LiveryBrowser : UserControl
                 MenuItem button = (MenuItem)sender;
 
                 TreeViewItem treeItem = (TreeViewItem)button.CommandParameter;
-                List<LiveryTreeCar> treeCars = new();
+                List<LiveryTreeCar> treeCars = [];
 
                 treeItem.Items.OfType<TreeViewItem>().ToList().ForEach(x =>
                 {

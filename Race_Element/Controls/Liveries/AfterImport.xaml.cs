@@ -77,7 +77,7 @@ public partial class AfterImport : UserControl
 
     private void AddTags()
     {
-        List<LiveryTreeCar> selected = new();
+        List<LiveryTreeCar> selected = [];
 
         foreach (var item in lvImportedLiveries.SelectedItems)
         {

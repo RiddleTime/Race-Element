@@ -3,6 +3,8 @@ using System.Drawing;
 using System.Drawing.Text;
 using RaceElement.Util.SystemExtensions;
 using RaceElement.HUD.Overlay.OverlayUtil;
+using System.Runtime.InteropServices;
+using System;
 
 namespace RaceElement.HUD.Overlay.Util;
 
@@ -32,6 +34,8 @@ public class InfoPanel
 
     private int previousLineCount = 0;
 
+    private readonly object _lockObj = new();
+
     public InfoPanel(double fontSize, int maxWidth)
     {
         fontSize.ClipMin(10);
@@ -41,7 +45,7 @@ public class InfoPanel
         _addMonoY = _font.Height / 8;
     }
 
-    private List<IPanelLine> Lines = new();
+    private readonly List<IPanelLine> Lines = [];
 
     public void SetBackground()
     {
@@ -88,8 +92,10 @@ public class InfoPanel
         g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
         g.TextContrast = 1;
 
-        lock (Lines)
+        lock (_lockObj)
         {
+            ReadOnlySpan<IPanelLine> lines = CollectionsMarshal.AsSpan(Lines);
+
             int length = Lines.Count;
             int counter = 0;
 
@@ -107,10 +113,9 @@ public class InfoPanel
                     _cachedLine.Draw(g, new Point(X + 1, (int)rowY));
                 }
 
-                IPanelLine line = Lines[counter];
+                IPanelLine line = lines[counter];
 
-
-                if (line.GetType() == typeof(TextLine))
+                if (line is TextLine)
                 {
                     TextLine textLine = (TextLine)line;
 
@@ -122,7 +127,7 @@ public class InfoPanel
                     g.DrawStringWithShadow($"{textLine.Value}", _font, textLine.ValueBrush, valueRectangle, _rightAlligned);
                 }
 
-                if (line.GetType() == typeof(TitledProgressBarLine))
+                if (line is TitledProgressBarLine)
                 {
                     TitledProgressBarLine bar = (TitledProgressBarLine)line;
                     g.DrawStringWithShadow($"{bar.Title}", _font, Brushes.White, new PointF(X, Y + counter * FontHeight));
@@ -135,7 +140,7 @@ public class InfoPanel
                     g.DrawStringWithShadow($"{percent}", _font, Brushes.White, new PointF((int)(X + (MaxWidth - MaxTitleWidth)) - textWidth.Width / 2, Y + counter * (this.FontHeight + ExtraLineSpacing) + _addMonoY));
                 }
 
-                if (line.GetType() == typeof(CenterTextedProgressBarLine))
+                if (line is CenterTextedProgressBarLine)
                 {
                     CenterTextedProgressBarLine bar = (CenterTextedProgressBarLine)line;
 
@@ -146,7 +151,7 @@ public class InfoPanel
                     g.DrawStringWithShadow($"{bar.CenteredText}", _font, Color.White, new PointF(X + MaxWidth / 2 - textWidth.Width / 2, Y + counter * (this.FontHeight + ExtraLineSpacing) + _addMonoY), 1f);
                 }
 
-                if (line.GetType() == typeof(CenteredTextedDeltabarLine))
+                if (line is CenteredTextedDeltabarLine)
                 {
                     CenteredTextedDeltabarLine bar = (CenteredTextedDeltabarLine)line;
 
@@ -162,16 +167,14 @@ public class InfoPanel
                 length = Lines.Count;
             }
         }
-
         g.TextRenderingHint = previousHint;
 
-        lock (Lines)
-            Lines.Clear();
+        Lines.Clear();
     }
 
     private void UpdateMaxTitleWidth(Graphics g)
     {
-        lock (Lines)
+        lock (_lockObj)
         {
             int length = Lines.Count;
             int counter = 0;
@@ -179,7 +182,7 @@ public class InfoPanel
             {
                 IPanelLine line = Lines[counter];
 
-                if (line.GetType() == typeof(TextLine))
+                if (line is TextLine)
                 {
                     TextLine textLine = (TextLine)line;
                     SizeF titleWidth;
@@ -187,7 +190,7 @@ public class InfoPanel
                         MaxTitleWidth = titleWidth.Width;
                 }
 
-                if (line.GetType() == typeof(TitledProgressBarLine))
+                if (line is TitledProgressBarLine)
                 {
                     TitledProgressBarLine titledProgressBar = (TitledProgressBarLine)line;
                     SizeF titleWidth = g.MeasureString(titledProgressBar.Title, _font);
@@ -237,14 +240,14 @@ public class InfoPanel
         Lines.Add(new CenteredTextedDeltabarLine() { CenteredText = centeredText, Min = min, Max = max, Value = value });
     }
 
-    private class TextLine : IPanelLine
+    private sealed class TextLine : IPanelLine
     {
         internal string Title { get; set; }
         internal string Value { get; set; }
         internal Brush ValueBrush { get; set; } = Brushes.White;
     }
 
-    private class TitledProgressBarLine : IPanelLine
+    private sealed class TitledProgressBarLine : IPanelLine
     {
         internal string Title { get; set; }
         internal double Min { get; set; }
@@ -253,7 +256,7 @@ public class InfoPanel
         internal Brush BarColor { get; set; } = Brushes.OrangeRed;
     }
 
-    private class CenterTextedProgressBarLine : IPanelLine
+    private sealed class CenterTextedProgressBarLine : IPanelLine
     {
         internal string CenteredText { get; set; }
         internal double Min { get; set; }
@@ -262,7 +265,7 @@ public class InfoPanel
         internal Brush BarColor { get; set; } = Brushes.OrangeRed;
     }
 
-    private class CenteredTextedDeltabarLine : IPanelLine
+    private sealed class CenteredTextedDeltabarLine : IPanelLine
     {
         internal string CenteredText { get; set; }
         internal double Min { get; set; }

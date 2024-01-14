@@ -14,12 +14,9 @@ internal static class WheelSteerLock
 
     private static void Initialize()
     {
-        if (_instances == null)
-        {
-            _instances = Assembly.GetExecutingAssembly().GetTypes()
+        _instances ??= Assembly.GetExecutingAssembly().GetTypes()
                                  .Where(x => !x.IsAbstract && x.GetInterfaces().Contains(typeof(IWheelSteerLockSetter)))
                                  .Select(x => (IWheelSteerLockSetter)Activator.CreateInstance(x)).ToArray();
-        }
     }
 
     public static IWheelSteerLockSetter Get(string productGuid)

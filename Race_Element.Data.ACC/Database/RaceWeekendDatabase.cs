@@ -25,8 +25,7 @@ public class RaceWeekendDatabase
             fileName = FileUtil.RaceElementDataPath + $"{trackParseName}-{carParseName}-" + $"{startTime:G}".Replace(":", ".").Replace("/", ".").Replace(" ", "-") + ".rwdb";
 
 
-            if (Database == null)
-                Database = new LiteDatabase($"Filename={fileName}; Initial Size=16KB;");
+            Database ??= new LiteDatabase($"Filename={fileName}; Initial Size=16KB;");
 
             if (Database == null)
                 Trace.WriteLine("Something went wrong initializing the LocalDatabase.Database");

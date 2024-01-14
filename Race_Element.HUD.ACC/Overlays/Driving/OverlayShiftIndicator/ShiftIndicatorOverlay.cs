@@ -73,15 +73,15 @@ internal sealed class ShiftIndicatorOverlay : AbstractOverlay
         }
         int cornerRadius = (int)(10 * this.Scale);
 
-        _colors = new List<(float, Color)>
-            {
+        _colors =
+            [
                 (0.7f, Color.FromArgb(_config.Colors.NormalOpacity, _config.Colors.NormalColor)),
                 (_config.Upshift.Early / 100f, Color.FromArgb(_config.Colors.EarlyOpacity, _config.Colors.EarlyColor)),
                 (_config.Upshift.Upshift / 100f, Color.FromArgb(_config.Colors.UpshiftOpacity, _config.Colors.UpshiftColor))
-            };
+            ];
 
 
-        _cachedColorBars = new List<CachedBitmap>();
+        _cachedColorBars = [];
         foreach (var color in _colors.Select(x => x.Item2))
         {
             _cachedColorBars.Add(new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>

@@ -23,8 +23,7 @@ public unsafe class ACCSharedMemory
     {
         get
         {
-            if (_instance == null)
-                _instance = new ACCSharedMemory();
+            _instance ??= new ACCSharedMemory();
 
             return _instance;
         }

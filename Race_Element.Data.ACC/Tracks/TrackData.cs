@@ -24,7 +24,7 @@ public class TrackData
         public abstract List<float> Sectors { get; }
     }
 
-    private static readonly List<AbstractTrackData> _tracks = new();
+    private static readonly List<AbstractTrackData> _tracks = [];
     public static List<AbstractTrackData> Tracks
     {
         get

@@ -25,7 +25,7 @@ internal class DebugInfoHelper
 
     public static DebugInfoHelper Instance { get; } = new DebugInfoHelper();
 
-    private List<AbstractOverlay> _infoOverlays = new();
+    private List<AbstractOverlay> _infoOverlays = [];
 
     public void AddOverlay(AbstractOverlay overlay)
     {

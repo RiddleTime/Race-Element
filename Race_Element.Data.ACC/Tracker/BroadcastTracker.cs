@@ -14,8 +14,7 @@ public class BroadcastTracker : IDisposable
     {
         get
         {
-            if (_instance == null)
-                _instance = new BroadcastTracker();
+            _instance ??= new BroadcastTracker();
 
             return _instance;
         }

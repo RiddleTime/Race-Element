@@ -162,10 +162,10 @@ public partial class RaceSessionBrowser : UserControl
         {
             Thread thread = new(() =>
             {
-                Clipboard.SetFileDropList(new StringCollection
-                    {
+                Clipboard.SetFileDropList(
+                    [
                     file.FullName
-                    });
+                    ]);
 
                 Dispatcher.Invoke(new Action(() =>
                 {
@@ -641,15 +641,17 @@ public partial class RaceSessionBrowser : UserControl
             trackMap.Visibility = Visibility.Visible;
 
 
-            Dictionary<string, Plotter> plots = new();
-            plots.Add("Speed/Gear", (g, d) => new SpeedGearPlot(trackData, ref textBlockMetricInfo).Create(g, d));
-            plots.Add("Inputs", (g, d) => new InputsPlot(trackData, ref textBlockMetricInfo, fullSteeringLock).Create(g, d));
-            plots.Add("Wheel Slip", (g, d) => new WheelSlipPlot(trackData, ref textBlockMetricInfo).Create(g, d));
-            plots.Add("Tyre Temperatures", (g, d) => new TyreTempsPlot(trackData, ref textBlockMetricInfo).Create(g, d));
-            plots.Add("Tyre Pressures", (g, d) => new TyrePressurePlot(trackData, ref textBlockMetricInfo).Create(g, d));
-            plots.Add("Brake Temperatures", (g, d) => new BrakeTempsPlot(trackData, ref textBlockMetricInfo).Create(g, d));
-            plots.Add("Traction Circle", (g, d) => new TractionCirclePlot(trackData, ref textBlockMetricInfo).Create(g, d));
-            plots.Add("Lateral-G vs Wheel Slip", (g, d) => new LateralGvsWheelSlipPlot(trackData, ref textBlockMetricInfo).Create(g, d));
+            Dictionary<string, Plotter> plots = new()
+            {
+                { "Speed/Gear", (g, d) => new SpeedGearPlot(trackData, ref textBlockMetricInfo).Create(g, d) },
+                { "Inputs", (g, d) => new InputsPlot(trackData, ref textBlockMetricInfo, fullSteeringLock).Create(g, d) },
+                { "Wheel Slip", (g, d) => new WheelSlipPlot(trackData, ref textBlockMetricInfo).Create(g, d) },
+                { "Tyre Temperatures", (g, d) => new TyreTempsPlot(trackData, ref textBlockMetricInfo).Create(g, d) },
+                { "Tyre Pressures", (g, d) => new TyrePressurePlot(trackData, ref textBlockMetricInfo).Create(g, d) },
+                { "Brake Temperatures", (g, d) => new BrakeTempsPlot(trackData, ref textBlockMetricInfo).Create(g, d) },
+                { "Traction Circle", (g, d) => new TractionCirclePlot(trackData, ref textBlockMetricInfo).Create(g, d) },
+                { "Lateral-G vs Wheel Slip", (g, d) => new LateralGvsWheelSlipPlot(trackData, ref textBlockMetricInfo).Create(g, d) }
+            };
 
             if (_selectionChangedHandler != null)
             {

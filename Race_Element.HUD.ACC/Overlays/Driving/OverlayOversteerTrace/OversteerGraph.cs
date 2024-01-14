@@ -61,7 +61,7 @@ internal class OversteerGraph : IDisposable
     {
         if (Data.Count > 0)
         {
-            List<Point> points = new();
+            List<Point> points = [];
             lock (Data)
                 for (int i = 0; i < Data.Count - 1; i++)
                 {

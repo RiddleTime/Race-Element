@@ -17,7 +17,7 @@ public class LapTracker
     {
         get
         {
-            if (_instance == null) _instance = new LapTracker();
+            _instance ??= new LapTracker();
             return _instance;
         }
     }
@@ -26,7 +26,7 @@ public class LapTracker
 
     private int CurrentSector = 0;
 
-    public Dictionary<int, DbLapData> Laps = new();
+    public Dictionary<int, DbLapData> Laps = [];
     public DbLapData CurrentLap = new();
 
     public event EventHandler<DbLapData> LapFinished;

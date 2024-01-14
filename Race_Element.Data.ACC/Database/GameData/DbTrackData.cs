@@ -36,7 +36,7 @@ public class TrackDataCollection
     public static List<DbTrackData> GetAll(ILiteDatabase db)
     {
         var allTracks = GetCollection(db).FindAll();
-        if (!allTracks.Any()) return new List<DbTrackData>();
+        if (!allTracks.Any()) return [];
 
         return allTracks.OrderBy(x => x.ParseName).ToList();
     }
@@ -44,7 +44,7 @@ public class TrackDataCollection
     public static List<DbTrackData> GetAll()
     {
         var allTracks = Collection.FindAll();
-        if (!allTracks.Any()) return new List<DbTrackData>();
+        if (!allTracks.Any()) return [];
 
         return allTracks.OrderBy(x => x.ParseName).ToList();
     }

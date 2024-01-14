@@ -98,8 +98,7 @@ public class FontUtil
                     if (null != pbyt)
                     {
                         Marshal.Copy(rgbyt, 0, pbyt, rgbyt.Length);
-                        if (m_pfc == null)
-                            m_pfc = new PrivateFontCollection();
+                        m_pfc ??= new PrivateFontCollection();
                         m_pfc.AddMemoryFont(pbyt, rgbyt.Length);
                         Marshal.FreeCoTaskMem(pbyt);
                     }

@@ -13,7 +13,7 @@ public class AccProcess
     {
         get
         {
-            if (_handlerInstance == null) _handlerInstance = new ProcessTracker("AC2-Win64-Shipping");
+            _handlerInstance ??= new ProcessTracker("AC2-Win64-Shipping");
             return _handlerInstance;
         }
     }

@@ -33,7 +33,7 @@ public partial class SetupBrowser : UserControl
     private string _selectedSetup;
 
     // car -> track
-    private Dictionary<string, List<string>> _expandedHeaders = new();
+    private Dictionary<string, List<string>> _expandedHeaders = [];
 
     public SetupBrowser()
     {
@@ -64,7 +64,7 @@ public partial class SetupBrowser : UserControl
         AbstractTrackData trackData = TrackData.Tracks.Find(x => track == x.GameName);
 
         if (!_expandedHeaders.TryGetValue(carName, out List<string> list))
-            _expandedHeaders.Add(carName, new List<string>() { trackData.GameName });
+            _expandedHeaders.Add(carName, [trackData.GameName]);
         else
             _expandedHeaders[carName].Add(Regex.Replace(trackData.GameName, "^[a-z]", m => m.Value.ToUpper()));
     }
@@ -148,7 +148,7 @@ public partial class SetupBrowser : UserControl
                         carTreeViewItem.Expanded += (s, e) =>
                         {
                             if (!_expandedHeaders.ContainsKey(carHeader.Text))
-                                _expandedHeaders.Add(carHeader.Text, new List<string>());
+                                _expandedHeaders.Add(carHeader.Text, []);
                         };
                         carTreeViewItem.Collapsed += (s, e) =>
                         {
@@ -326,10 +326,10 @@ public partial class SetupBrowser : UserControl
             FileInfo file = (FileInfo)button.CommandParameter;
             Thread thread = new(() =>
             {
-                Clipboard.SetFileDropList(new StringCollection
-                {
+                Clipboard.SetFileDropList(
+                [
                     file.FullName
-                });
+                ]);
 
                 Dispatcher.Invoke(new Action(() =>
                 {

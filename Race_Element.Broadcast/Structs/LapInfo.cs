@@ -5,7 +5,7 @@ namespace RaceElement.Broadcast.Structs;
 public class LapInfo
 {
     public int? LaptimeMS { get; internal set; }
-    public List<int?> Splits { get; } = new List<int?>();
+    public List<int?> Splits { get; } = [];
     public ushort CarIndex { get; internal set; }
     public ushort DriverIndex { get; internal set; }
     public bool IsInvalid { get; internal set; }

@@ -16,7 +16,7 @@ public class SetupHiderTracker : IDisposable
     {
         get
         {
-            if (_instance == null) _instance = new SetupHiderTracker();
+            _instance ??= new SetupHiderTracker();
             return _instance;
         }
     }

@@ -21,7 +21,7 @@ public class ByteRangeAttribute : Attribute
 
     public static byte[] GetOptionsCollection(ByteRangeAttribute intRange)
     {
-        List<byte> collection = new();
+        List<byte> collection = [];
 
         for (byte i = intRange.Min; i < intRange.Max + intRange.Increment; i += intRange.Increment)
             collection.Add(i);

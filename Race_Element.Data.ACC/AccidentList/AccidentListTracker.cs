@@ -20,16 +20,16 @@ public sealed class AccidentListTracker
 
     // History of realtime car updates
     // Maps session time to a map of carID and realTimeInfo
-    private Dictionary<double, Dictionary<int, RealtimeCarUpdate>> _realTimeCarHistory = new();
+    private Dictionary<double, Dictionary<int, RealtimeCarUpdate>> _realTimeCarHistory = [];
 
     // store all incoming broadcast accident events with the corresponding real time car update
-    private List<CarInfoWithRealTime> _unprocessedAccidents = new();
+    private List<CarInfoWithRealTime> _unprocessedAccidents = [];
 
     public static AccidentListTracker Instance
     {
         get
         {
-            if (_instance == null) _instance = new AccidentListTracker();
+            _instance ??= new AccidentListTracker();
             return _instance;
         }
         private set { _instance = value; }
@@ -177,8 +177,10 @@ public sealed class AccidentListTracker
         } 
         else 
         {
-            Dictionary<int, RealtimeCarUpdate> carUpdate = new();
-            carUpdate[realtimeCarUpdate.CarIndex] = realtimeCarUpdate;
+            Dictionary<int, RealtimeCarUpdate> carUpdate = new()
+            {
+                [realtimeCarUpdate.CarIndex] = realtimeCarUpdate
+            };
             //Debug.WriteLine($"# create key {key} car index {realtimeCarUpdate.CarIndex}");
             _realTimeCarHistory[key] = carUpdate;
         }

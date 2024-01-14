@@ -65,8 +65,7 @@ internal class ConfigurationControls
         }
 
         ConfigField field = null;
-        if (settings.Config == null)
-            settings.Config = OverlayConfiguration.GetConfigFields(HudOptions.Instance.overlayConfig);
+        settings.Config ??= OverlayConfiguration.GetConfigFields(HudOptions.Instance.overlayConfig);
 
         field = settings.Config.Find(x => x.Name == configField.Name);
         if (field == null)

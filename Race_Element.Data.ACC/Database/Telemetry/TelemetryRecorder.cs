@@ -19,8 +19,7 @@ internal class TelemetryRecorder
     {
         get
         {
-            if (_instance == null)
-                _instance = new TelemetryRecorder();
+            _instance ??= new TelemetryRecorder();
 
             return _instance;
         }
@@ -32,7 +31,7 @@ internal class TelemetryRecorder
     private bool _isRunning = false;
     private SPageFilePhysics _pagePhysics;
     private SPageFileGraphic _pageGraphics;
-    private readonly Dictionary<long, TelemetryPoint> _lapData = new();
+    private readonly Dictionary<long, TelemetryPoint> _lapData = [];
 
     private TelemetryRecorder()
     {

@@ -21,7 +21,7 @@ internal sealed class GraphicsInfoOverlay : AbstractOverlay
     private readonly DebugConfig _config = new();
 
     private GraphicsGrid _graphicsGrid;
-    private readonly List<string> fieldNames = new();
+    private readonly List<string> fieldNames = [];
 
     public GraphicsInfoOverlay(Rectangle rectangle) : base(rectangle, "Graphics Info")
     {

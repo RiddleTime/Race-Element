@@ -23,8 +23,7 @@ public class Windows
     /// <returns></returns>
     public static WindowAndMonitorHandle[] GetWindowAndMonitorHandles()
     {
-        if (_windowAndMonitorHandles == null)
-            _windowAndMonitorHandles = new List<WindowAndMonitorHandle>();
+        _windowAndMonitorHandles ??= new List<WindowAndMonitorHandle>();
 
         lock (_windowAndMonitorHandles)
         {
