@@ -45,7 +45,6 @@ public partial class SetupBrowser : UserControl
 		InitializeComponent();
 
 		_setupRenderer = new FlowDocSetupRenderer();
-		this.Loaded += (s, e) => FetchAllSetups(false);
 
 		setupsTreeView.SelectedItemChanged += SetupsTreeView_SelectedItemChanged;
 
@@ -53,6 +52,14 @@ public partial class SetupBrowser : UserControl
 		{
 			if (_selectedSetup != null)
 				SetupEditor.Instance.Open(_selectedSetup);
+		};
+
+		this.IsVisibleChanged += (o, e) =>
+		{
+			if ((bool)e.NewValue)
+				FetchAllSetups(false);
+			else
+				ClearSetups();
 		};
 
 		Instance = this;
