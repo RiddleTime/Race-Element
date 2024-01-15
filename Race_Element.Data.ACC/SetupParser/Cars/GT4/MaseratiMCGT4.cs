@@ -26,7 +26,17 @@ internal class MaseratiMCGT4 : ICarSetupConversion
         }
 
         private readonly double[] casters = [
-            3.4, 3.7, 3.9, 4.1, 4.3, 4.5, 4.7, 5.0, 5.2, 5.4, 5.6
+            3.4,
+            3.7,
+            3.9,
+            4.1,
+            4.3,
+            4.5,
+            4.7,
+            5.0,
+            5.2,
+            5.4,
+            5.6
         ];
         public override double Caster(int rawValue)
         {

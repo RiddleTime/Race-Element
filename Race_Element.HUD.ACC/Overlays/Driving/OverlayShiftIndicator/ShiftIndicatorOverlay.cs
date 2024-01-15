@@ -1,15 +1,14 @@
-﻿using RaceElement.Util.SystemExtensions;
-using RaceElement.HUD.Overlay.Internal;
+﻿using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
+using RaceElement.Util.SystemExtensions;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using System.Collections.Generic;
 using System.Linq;
 using Unglide;
-using System.Diagnostics;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator;
 

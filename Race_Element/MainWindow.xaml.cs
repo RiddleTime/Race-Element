@@ -1,6 +1,4 @@
 ﻿using RaceElement.Broadcast;
-using RaceElement.Util.Settings;
-using RaceElement.Util.SystemExtensions;
 using RaceElement.Controls;
 using RaceElement.Data.ACC.Tracker;
 using RaceElement.Hardware.ACC.SteeringLock;
@@ -8,20 +6,20 @@ using RaceElement.HUD.ACC;
 using RaceElement.HUD.ACC.Data.Tracker;
 using RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput;
 using RaceElement.Util;
+using RaceElement.Util.Settings;
+using RaceElement.Util.SystemExtensions;
 using System;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
-using System.IO;
-using System.Threading.Tasks;
-using System.Linq;
 
 namespace RaceElement;
 

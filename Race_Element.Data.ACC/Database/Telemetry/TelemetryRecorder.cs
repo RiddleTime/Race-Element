@@ -1,8 +1,8 @@
-﻿using RaceElement.Util.Settings;
-using RaceElement.Data.ACC.Session;
+﻿using RaceElement.Data.ACC.Session;
 using RaceElement.Data.ACC.Tracker;
 using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.Util;
+using RaceElement.Util.Settings;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

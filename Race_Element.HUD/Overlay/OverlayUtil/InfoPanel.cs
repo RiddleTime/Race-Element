@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.Util.SystemExtensions;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Text;
-using RaceElement.Util.SystemExtensions;
-using RaceElement.HUD.Overlay.OverlayUtil;
 using System.Runtime.InteropServices;
-using System;
 
 namespace RaceElement.HUD.Overlay.Util;
 

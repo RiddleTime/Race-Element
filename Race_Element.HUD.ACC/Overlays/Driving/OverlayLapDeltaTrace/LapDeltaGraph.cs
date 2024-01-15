@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using static RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaTrace.LapDeltaTraceOverlay;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaTrace;
 

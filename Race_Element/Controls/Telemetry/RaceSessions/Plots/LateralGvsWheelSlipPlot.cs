@@ -2,13 +2,10 @@
 using ScottPlot;
 using ScottPlot.Drawing;
 using ScottPlot.SnapLogic;
-using ScottPlot.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using static RaceElement.Data.ACC.Tracks.TrackData;
 

@@ -1,8 +1,8 @@
 ﻿using System.Windows;
-using static RaceElement.HUD.Overlay.Configuration.OverlayConfiguration;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Input;
+using System.Windows.Media;
+using static RaceElement.HUD.Overlay.Configuration.OverlayConfiguration;
 
 namespace RaceElement.Controls.HUD.Controls.ValueControls
 {

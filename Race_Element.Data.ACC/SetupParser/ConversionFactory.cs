@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using Newtonsoft.Json;
 using RaceElement.Data.Cars.GT3;
 using RaceElement.Data.Cars.GT4;
 using RaceElement.Data.Cars.GTC;
 using RaceElement.Data.Cars.TCX;
-using System.IO;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using Newtonsoft.Json;
-using static RaceElement.Data.SetupConverter;
+using System.IO;
+using System.Linq;
 using static RaceElement.Data.ConversionFactory.CarModels;
+using static RaceElement.Data.SetupConverter;
 using static RaceElement.Data.SetupJson;
 
 namespace RaceElement.Data;

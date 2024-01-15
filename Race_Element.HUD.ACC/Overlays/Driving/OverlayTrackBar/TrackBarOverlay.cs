@@ -8,7 +8,6 @@ using RaceElement.Util.SystemExtensions;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
-using System.Runtime.Versioning;
 using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar;

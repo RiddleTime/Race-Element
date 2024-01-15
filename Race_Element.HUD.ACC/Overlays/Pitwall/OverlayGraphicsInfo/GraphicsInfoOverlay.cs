@@ -1,8 +1,8 @@
 ﻿using RaceElement.HUD.ACC.Overlays.OverlayDebugInfo;
 using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
 using RaceElement.HUD.Overlay.Util;
-using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.Util;
 using System;
 using System.Collections.Generic;

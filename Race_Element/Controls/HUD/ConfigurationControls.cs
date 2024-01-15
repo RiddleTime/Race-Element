@@ -1,12 +1,12 @@
-﻿using RaceElement.HUD.Overlay.Configuration;
+﻿using RaceElement.Controls.Util.SetupImage;
+using RaceElement.HUD.Overlay.Configuration;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows;
-using RaceElement.Controls.Util.SetupImage;
-using static RaceElement.HUD.Overlay.Configuration.OverlaySettings;
 using static RaceElement.Controls.HUD.PreviewCache;
 using static RaceElement.HUD.Overlay.Configuration.OverlayConfiguration;
-using System.Collections.Generic;
+using static RaceElement.HUD.Overlay.Configuration.OverlaySettings;
 
 namespace RaceElement.Controls.HUD;
 

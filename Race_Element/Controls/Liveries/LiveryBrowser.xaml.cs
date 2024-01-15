@@ -1,7 +1,10 @@
-﻿using RaceElement.Util.SystemExtensions;
+﻿using MaterialDesignThemes.Wpf;
+using RaceElement.Controls.Liveries;
+using RaceElement.Controls.Util;
 using RaceElement.Data;
 using RaceElement.LiveryParser;
 using RaceElement.Util;
+using RaceElement.Util.SystemExtensions;
 using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
 using System;
@@ -15,9 +18,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using static RaceElement.Controls.LiveryTagging;
-using RaceElement.Controls.Util;
-using MaterialDesignThemes.Wpf;
-using RaceElement.Controls.Liveries;
 
 namespace RaceElement.Controls;
 

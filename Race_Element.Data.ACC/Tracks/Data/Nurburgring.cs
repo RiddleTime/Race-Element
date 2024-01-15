@@ -1,7 +1,6 @@
 ﻿using RaceElement.Util.DataTypes;
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.Data.ACC.Tracks.Data;

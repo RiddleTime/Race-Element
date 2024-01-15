@@ -1,6 +1,9 @@
-﻿using RaceElement.Broadcast;
+﻿using LiteDB;
+using MaterialDesignThemes.Wpf;
+using RaceElement.Broadcast;
 using RaceElement.Controls.Telemetry.RaceSessions;
 using RaceElement.Controls.Telemetry.RaceSessions.Plots;
+using RaceElement.Controls.Util;
 using RaceElement.Data;
 using RaceElement.Data.ACC.Cars;
 using RaceElement.Data.ACC.Database;
@@ -9,14 +12,12 @@ using RaceElement.Data.ACC.Database.LapDataDB;
 using RaceElement.Data.ACC.Database.SessionData;
 using RaceElement.Data.ACC.Database.Telemetry;
 using RaceElement.Data.ACC.Session;
-using RaceElement.Data.ACC.Tracks;
 using RaceElement.Util;
-using LiteDB;
-using MaterialDesignThemes.Wpf;
 using ScottPlot;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -26,9 +27,6 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using DataGridTextColumn = MaterialDesignThemes.Wpf.DataGridTextColumn;
-using RaceElement.Controls.Util;
-using System.Collections.Specialized;
-using System.Globalization;
 
 namespace RaceElement.Controls;
 

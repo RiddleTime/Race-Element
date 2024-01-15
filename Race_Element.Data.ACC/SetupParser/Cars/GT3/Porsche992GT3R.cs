@@ -9,12 +9,41 @@ namespace RaceElement.Data.Cars.GT3;
 internal class Porsche992GT3R : ICarSetupConversion, ISetupChanger
 {
     public CarModels CarModel => CarModels.Porsche_992_GT3_R_2023;
-    
+
     CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
     public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHF2023;
 
-    private static readonly double[] casters = [6.5, 6.7, 6.9, 7.1, 7.3, 7.5, 7.7, 7.8, 8.0, 8.2, 8.4, 8.6, 8.8, 9.0, 9.2, 9.4, 9.6, 
-        9.8, 10.0, 10.2, 10.4, 10.6, 10.8, 11.0, 11.2, 11.4, 11.6, 11.8, 12.0, 12.2, 12.4 ];
+    private static readonly double[] casters = [6.5,
+        6.7,
+        6.9,
+        7.1,
+        7.3,
+        7.5,
+        7.7,
+        7.8,
+        8.0,
+        8.2,
+        8.4,
+        8.6,
+        8.8,
+        9.0,
+        9.2,
+        9.4,
+        9.6,
+        9.8,
+        10.0,
+        10.2,
+        10.4,
+        10.6,
+        10.8,
+        11.0,
+        11.2,
+        11.4,
+        11.6,
+        11.8,
+        12.0,
+        12.2,
+        12.4];
     private static readonly int[] wheelRateFronts = [100500, 110000, 114000, 119000, 127000, 137000, 141500, 146000, 155000, 173500];
     private static readonly int[] wheelRateRears = [137000, 149500, 156000, 162000, 174500, 187000, 193000, 199500, 212000, 237000];
 

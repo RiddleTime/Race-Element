@@ -14,6 +14,6 @@ public class LapInfo
 
     public override string ToString()
     {
-        return $"{LaptimeMS, 5}|{string.Join("|", Splits)}";
+        return $"{LaptimeMS,5}|{string.Join("|", Splits)}";
     }
 }

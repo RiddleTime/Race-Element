@@ -1,8 +1,4 @@
-﻿using RaceElement.Data;
-using static RaceElement.Data.ConversionFactory;
-using static RaceElement.Data.SetupConverter;
-
-namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace;
+﻿namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace;
 
 internal static class TyrePressures
 {

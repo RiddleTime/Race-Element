@@ -1,15 +1,15 @@
-﻿using RaceElement.Util.Settings;
+﻿using RaceElement.Data;
+using RaceElement.Data.ACC.Cars;
 using RaceElement.Hardware.ACC.SteeringLock;
+using RaceElement.Util.Settings;
+using SharpCompress;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using RaceElement.Data.ACC.Cars;
-using static RaceElement.Data.ConversionFactory;
-using SharpCompress;
-using RaceElement.Data;
-using System.Linq;
 using System.Windows.Media;
+using static RaceElement.Data.ConversionFactory;
 
 namespace RaceElement.Controls;
 
@@ -88,8 +88,8 @@ public partial class Hardware : UserControl
                     FontWeight = FontWeights.Bold,
                     FontStyle = FontStyles.Italic,
                     FontSize = 15,
-                    BorderBrush = new SolidColorBrush(Color.FromArgb(90,0,0,0)),
-                    BorderThickness = new Thickness(0,0,0,2),
+                    BorderBrush = new SolidColorBrush(Color.FromArgb(90, 0, 0, 0)),
+                    BorderThickness = new Thickness(0, 0, 0, 2),
                 };
                 stackerAllLocks.Children.Add(label);
             }

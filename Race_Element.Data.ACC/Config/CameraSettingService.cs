@@ -1,11 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RaceElement.Util;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaceElement.Data.ACC.Config;
 
@@ -46,7 +41,7 @@ public class CameraSettingService
 
         public override string FileName => "cameraSettings.json";
 
-        public override CameraSettingsJson Default()    => new();
+        public override CameraSettingsJson Default() => new();
     }
 
     public class CameraSettingsJson : IGenericSettingsJson

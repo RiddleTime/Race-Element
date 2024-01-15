@@ -1,9 +1,9 @@
-﻿using RaceElement.HUD.Overlay.Internal;
+﻿using Gma.System.MouseKeyHook;
+using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using System.Drawing;
-using System.Windows.Forms;
-using Gma.System.MouseKeyHook;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayMousePosition;
 

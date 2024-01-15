@@ -1,9 +1,9 @@
-﻿using System.Windows;
+﻿using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.Util.SystemExtensions;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using RaceElement.Util.SystemExtensions;
-using RaceElement.HUD.Overlay.Configuration;
 using static RaceElement.HUD.Overlay.Configuration.OverlayConfiguration;
 
 namespace RaceElement.Controls.HUD.Controls.ValueControls;
@@ -59,8 +59,8 @@ internal class IntegerValueControl : IValueControl<int>, IControl
         value.Clip(intRange.Min, intRange.Max);
         _slider.Value = value;
         _grid.Children.Add(_slider);
-        _slider.HorizontalAlignment= HorizontalAlignment.Right;
-        _slider.VerticalAlignment= VerticalAlignment.Center;
+        _slider.HorizontalAlignment = HorizontalAlignment.Right;
+        _slider.VerticalAlignment = VerticalAlignment.Center;
         Grid.SetColumn(_slider, 1);
 
         _label.Content = _field.Value;

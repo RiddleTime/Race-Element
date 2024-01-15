@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using RaceElement.Data;
+using RaceElement.Data.SetupRanges;
+using System;
+using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.IO;
-using System.Diagnostics;
-using Newtonsoft.Json;
 using static RaceElement.Data.SetupConverter;
-using RaceElement.Data;
 using static RaceElement.Data.SetupJson;
-using RaceElement.Data.SetupRanges;
 
 namespace RaceElement.Controls;
 

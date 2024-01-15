@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 
 namespace CPI.Plot3D;
 
@@ -10,7 +8,7 @@ namespace CPI.Plot3D;
 /// </summary>
 public class Plotter3D : IDisposable
 {
-    # region Private Fields
+    #region Private Fields
 
     // Represents the orientation of the cursor in 3D space.
     Orientation3D orientation;
@@ -37,29 +35,29 @@ public class Plotter3D : IDisposable
     // A rectangle that represents the bounds of the stuff that we've drawn.
     Rectangle boundingBox;
 
-    # endregion
+    #endregion
 
-    # region Constructors
+    #region Constructors
 
     /// <summary>
     /// Instantiates a new Plotter.
     /// </summary>
     /// <param name="canvas">The Graphics object that we want to draw on.</param>
-    public Plotter3D(Graphics canvas) : this(canvas, new Pen(Color.Black)) {}
+    public Plotter3D(Graphics canvas) : this(canvas, new Pen(Color.Black)) { }
 
     /// <summary>
     /// Instantiates a new Plotter.
     /// </summary>
     /// <param name="canvas">The Graphics object that we want to draw on.</param>
     /// <param name="pen">The pen we want to use to draw on the canvas.</param>
-    public Plotter3D(Graphics canvas, Pen pen) : this(canvas, pen, new Point3D(-30, 0, -600)) {}
+    public Plotter3D(Graphics canvas, Pen pen) : this(canvas, pen, new Point3D(-30, 0, -600)) { }
 
     /// <summary>
     /// Instantiates a new Plotter.
     /// </summary>
     /// <param name="canvas">The Graphics object that we want to draw on.</param>
     /// <param name="cameraLocation">The location of the camera that we use to calculate perspective.</param>
-    public Plotter3D(Graphics canvas, Point3D cameraLocation) : this(canvas, new Pen(Color.Black), cameraLocation) {}
+    public Plotter3D(Graphics canvas, Point3D cameraLocation) : this(canvas, new Pen(Color.Black), cameraLocation) { }
 
     /// <summary>
     /// Instantiates a new Plotter.
@@ -76,9 +74,9 @@ public class Plotter3D : IDisposable
         this.orientation = new Orientation3D();
     }
 
-    # endregion
+    #endregion
 
-    # region Properties
+    #region Properties
 
     /// <summary>
     /// Gets or sets the orientation of the cursor.
@@ -276,9 +274,9 @@ public class Plotter3D : IDisposable
         }
     }
 
-    # endregion
+    #endregion
 
-    # region Methods
+    #region Methods
 
     /// <summary>
     /// Moves the cursor forward, and draws a line from the start point to the end point
@@ -441,7 +439,7 @@ public class Plotter3D : IDisposable
         boundingBox = Rectangle.FromLTRB(newLeft, newTop, newRight, newBottom);
     }
 
-    # endregion
+    #endregion
 
     #region IDisposable Members
 

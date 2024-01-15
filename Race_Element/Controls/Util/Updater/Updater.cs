@@ -1,5 +1,5 @@
-﻿using RaceElement.Util;
-using Octokit;
+﻿using Octokit;
+using RaceElement.Util;
 using System;
 using System.Diagnostics;
 using System.IO;

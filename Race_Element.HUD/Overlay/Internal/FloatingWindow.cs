@@ -110,7 +110,7 @@ public class FloatingWindow : NativeWindow, IDisposable
         //Debug.WriteLine("base handle: " + base.Handle);
         if (base.Handle == IntPtr.Zero)
         {  //if handle don't equal to zero - window was created and just hided
-            //Debug.WriteLine("Creating window only with normal style");
+           //Debug.WriteLine("Creating window only with normal style");
             this.CreateWindowOnly(GetExStyle());
         }
 
@@ -123,7 +123,7 @@ public class FloatingWindow : NativeWindow, IDisposable
     {
         if (base.Handle == IntPtr.Zero)
         {  //if handle don't equal to zero - window was created and just hided
-            //Debug.WriteLine($"Creating window only with draggy style: {toggle}");
+           //Debug.WriteLine($"Creating window only with draggy style: {toggle}");
             this.CreateWindowOnly(toggle ? GetExStyleDrag() : GetExStyle());
         }
 
@@ -215,8 +215,8 @@ public class FloatingWindow : NativeWindow, IDisposable
         this.ShowAnimate(mode, time);
     }
     /// <summary>
-		/// Hides the window and release it's handle.
-		/// </summary>
+    /// Hides the window and release it's handle.
+    /// </summary>
     public virtual void Hide()
     {
         if (base.Handle == IntPtr.Zero)
@@ -445,7 +445,7 @@ public class FloatingWindow : NativeWindow, IDisposable
             //        //}
             //    }
             case 0x200: // WM_MOUSEMOVE
-                //Debug.WriteLine("WM_MOUSEMOVE");
+                        //Debug.WriteLine("WM_MOUSEMOVE");
 
                 if (!this.isMouseIn)
                 {
@@ -835,7 +835,7 @@ public class FloatingWindow : NativeWindow, IDisposable
     /// <summary>
     /// Gets or sets the height of the floating native window
     /// </summary>
-		public int Height
+    public int Height
     {
         get { return this._size.Height; }
         set
@@ -857,7 +857,7 @@ public class FloatingWindow : NativeWindow, IDisposable
     /// <summary>
     /// Get or set x-coordinate of top-left corner of floating native window in screen coordinates
     /// </summary>
-		public int X
+    public int X
     {
         get { return this._location.X; }
         set
@@ -879,7 +879,7 @@ public class FloatingWindow : NativeWindow, IDisposable
     /// <summary>
     /// Get rectangle represented client area of floating native window in client coordinates(top-left corner always has coord. 0,0)
     /// </summary>
-		public Rectangle Bound
+    public Rectangle Bound
     {
         get
         {
@@ -889,7 +889,7 @@ public class FloatingWindow : NativeWindow, IDisposable
     /// <summary>
     /// Get or set full opacity(255) or full transparency(0) or any intermediate state for floating native window transparency
     /// </summary>
-		public byte Alpha
+    public byte Alpha
     {
         get { return this._alpha; }
         set

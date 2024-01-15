@@ -1,11 +1,9 @@
-﻿using RaceElement.Util.Settings;
-using RaceElement.Util;
+﻿using RaceElement.Util;
+using RaceElement.Util.Settings;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
 using System.Windows.Controls;
-using static RaceElement.Controls.LiveryBrowser;
 
 namespace RaceElement.Controls;
 

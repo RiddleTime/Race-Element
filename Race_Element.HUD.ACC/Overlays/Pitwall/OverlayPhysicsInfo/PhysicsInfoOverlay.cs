@@ -21,7 +21,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPhysicsInfo;
 internal sealed class PhysicsInfoOverlay : AbstractOverlay
 {
     private readonly DebugConfig _config = new();
-   
+
     private GraphicsGrid _graphicsGrid;
     private readonly List<string> fieldNames = [];
 

@@ -7,28 +7,28 @@ namespace RaceElement.Data.ACC.Tracker;
 
 public class PageStaticTracker : AbstractLoopJob
 {
-	private static PageStaticTracker _instance;
-	public static PageStaticTracker Instance
-	{
-		get
-		{
-			if (_instance == null)
-				_instance = new PageStaticTracker();
+    private static PageStaticTracker _instance;
+    public static PageStaticTracker Instance
+    {
+        get
+        {
+            if (_instance == null)
+                _instance = new PageStaticTracker();
 
-			return _instance;
-		}
-	}
+            return _instance;
+        }
+    }
 
-	public PageStaticTracker()
-	{
-		IntervalMillis = 100;
-	}
+    public PageStaticTracker()
+    {
+        IntervalMillis = 100;
+    }
 
-	public static event EventHandler<SPageFileStatic> Tracker;
+    public static event EventHandler<SPageFileStatic> Tracker;
 
-	public override void RunAction()
-	{
-		if (AccProcess.IsRunning)
-			Tracker?.Invoke(null, ACCSharedMemory.Instance.ReadStaticPageFile());
-	}
+    public override void RunAction()
+    {
+        if (AccProcess.IsRunning)
+            Tracker?.Invoke(null, ACCSharedMemory.Instance.ReadStaticPageFile());
+    }
 }

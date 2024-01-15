@@ -3,15 +3,11 @@ using RaceElement.HUD.Overlay.Internal;
 using RaceElement.Util;
 using RaceElement.Util.SystemExtensions;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseXFree;

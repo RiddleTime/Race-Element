@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CPI.Plot3D;
 
@@ -9,13 +7,13 @@ namespace CPI.Plot3D;
 /// </summary>
 public class Orientation3D : ICloneable
 {
-    # region Constants
+    #region Constants
 
     const double PiDividedBy180 = Math.PI / 180;
 
-    # endregion
+    #endregion
 
-    # region Private Fields
+    #region Private Fields
 
     // These two unit vectors establish our orientation.
     // These will move around as our direction changes.
@@ -25,9 +23,9 @@ public class Orientation3D : ICloneable
     // This enumeration specifies whether we interpret angles as degrees or radians
     AngleMeasurement angleMeasurement;
 
-    # endregion
+    #endregion
 
-    # region Constructors
+    #region Constructors
 
     /// <summary>
     /// Instantiates a new Orientation object.
@@ -52,9 +50,9 @@ public class Orientation3D : ICloneable
         angleMeasurement = source.angleMeasurement;
     }
 
-    # endregion
+    #endregion
 
-    # region Properties
+    #region Properties
 
     /// <summary>
     /// Gets or sets whether angles are measured in degrees or radians.
@@ -140,9 +138,9 @@ public class Orientation3D : ICloneable
         }
     }
 
-    # endregion
+    #endregion
 
-    # region Methods
+    #region Methods
 
     /// <summary>
     /// Rotates right around the up/down axis.
@@ -228,9 +226,9 @@ public class Orientation3D : ICloneable
         RollRight(-angle);
     }
 
-    # endregion
+    #endregion
 
-    # region Static Methods
+    #region Static Methods
 
     /// <summary>
     /// Converts from degrees to radians.
@@ -252,7 +250,7 @@ public class Orientation3D : ICloneable
         return radians / PiDividedBy180;
     }
 
-    # endregion
+    #endregion
 
     #region ICloneable Members
 

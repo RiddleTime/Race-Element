@@ -26,9 +26,37 @@ internal class LexusRcfGT3 : ICarSetupConversion
         }
 
 
-        private readonly double[] casters = [ 7.9, 8.1, 8.3, 8.5, 8.7, 8.8, 9.0, 9.2,
-            9.4, 9.6, 9.8, 10.0, 10.2, 10.4, 10.6, 10.8, 10.9, 11.1, 11.3, 11.5, 11.7, 11.9, 12.1,
-            12.3, 12.5, 12.6, 12.8, 13.0, 13.2, 13.4, 13.6 ];
+        private readonly double[] casters = [7.9,
+            8.1,
+            8.3,
+            8.5,
+            8.7,
+            8.8,
+            9.0,
+            9.2,
+            9.4,
+            9.6,
+            9.8,
+            10.0,
+            10.2,
+            10.4,
+            10.6,
+            10.8,
+            10.9,
+            11.1,
+            11.3,
+            11.5,
+            11.7,
+            11.9,
+            12.1,
+            12.3,
+            12.5,
+            12.6,
+            12.8,
+            13.0,
+            13.2,
+            13.4,
+            13.6];
         public override double Caster(int rawValue)
         {
             return Math.Round(casters[rawValue], 2);

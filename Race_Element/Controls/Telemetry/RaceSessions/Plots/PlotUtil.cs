@@ -5,7 +5,6 @@ using ScottPlot.Styles;
 using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace RaceElement.Controls.Telemetry.RaceSessions.Plots;

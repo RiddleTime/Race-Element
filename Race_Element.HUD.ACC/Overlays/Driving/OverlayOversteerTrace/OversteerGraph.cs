@@ -1,5 +1,4 @@
-﻿using RaceElement.Util.SystemExtensions;
-using RaceElement.HUD.Overlay.OverlayUtil;
+﻿using RaceElement.HUD.Overlay.OverlayUtil;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

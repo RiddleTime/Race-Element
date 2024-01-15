@@ -1,5 +1,5 @@
-﻿using RaceElement.Util;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using RaceElement.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

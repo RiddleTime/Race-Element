@@ -99,7 +99,7 @@ public partial class DDSgenerator : UserControl
                 }));
             }
 
-         
+
             Instance.Dispatcher.Invoke(() =>
             {
                 MainWindow.Instance.ClearSnackbar();

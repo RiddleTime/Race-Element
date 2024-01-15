@@ -25,9 +25,41 @@ internal class LamborghiniHuracanGT3 : ICarSetupConversion
             }
         }
 
-        private readonly double[] casters = [ 6.2, 6.5, 6.7, 7.0, 7.3, 7.5, 7.8, 8.1,
-            8.3, 8.6, 8.9, 9.1, 9.4, 9.6, 9.9, 10.2, 10.4, 10.7, 10.9, 11.2, 11.5, 11.7, 12.0, 12.2,
-            12.5, 12.8, 13.0, 13.3, 13.5, 13.8, 14.0, 14.3, 14.5, 14.8, 15.0 ];
+        private readonly double[] casters = [6.2,
+            6.5,
+            6.7,
+            7.0,
+            7.3,
+            7.5,
+            7.8,
+            8.1,
+            8.3,
+            8.6,
+            8.9,
+            9.1,
+            9.4,
+            9.6,
+            9.9,
+            10.2,
+            10.4,
+            10.7,
+            10.9,
+            11.2,
+            11.5,
+            11.7,
+            12.0,
+            12.2,
+            12.5,
+            12.8,
+            13.0,
+            13.3,
+            13.5,
+            13.8,
+            14.0,
+            14.3,
+            14.5,
+            14.8,
+            15.0];
         public override double Caster(int rawValue)
         {
             return Math.Round(casters[rawValue], 2);

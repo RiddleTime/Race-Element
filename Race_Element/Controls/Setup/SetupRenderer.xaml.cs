@@ -1,9 +1,9 @@
-﻿using System;
+﻿using RaceElement.Controls.Setup;
+using RaceElement.Util;
+using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using RaceElement.Controls.Setup;
-using RaceElement.Util;
-using System.Diagnostics;
 
 namespace RaceElement.Controls;
 

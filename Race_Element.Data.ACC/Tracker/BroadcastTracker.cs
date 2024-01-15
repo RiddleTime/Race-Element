@@ -2,7 +2,6 @@
 using RaceElement.Broadcast.Structs;
 using System;
 using System.Diagnostics;
-using System.Dynamic;
 using System.Net;
 
 namespace RaceElement.Data.ACC.Tracker;

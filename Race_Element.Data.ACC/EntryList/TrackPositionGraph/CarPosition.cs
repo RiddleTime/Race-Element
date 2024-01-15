@@ -1,5 +1,5 @@
-﻿using RaceElement.Util.SystemExtensions;
-using RaceElement.Broadcast;
+﻿using RaceElement.Broadcast;
+using RaceElement.Util.SystemExtensions;
 using System.Diagnostics;
 
 namespace RaceElement.Data.ACC.EntryList.TrackPositionGraph;

@@ -1,13 +1,15 @@
-﻿using System;
+﻿using HidLibrary;
+using System;
 using System.Linq;
-using HidLibrary;
 
 namespace RaceElement.Hardware.ACC.SteeringLock.Implementations;
 
-internal class ThrustmasterT500 : IWheelSteerLockSetter {
+internal class ThrustmasterT500 : IWheelSteerLockSetter
+{
     public virtual string ControllerName => "Thrustmaster T500RS";
 
-    public virtual bool Test(string productGuid) {
+    public virtual bool Test(string productGuid)
+    {
         return string.Equals(productGuid, "B65E044F-0000-0000-0000-504944564944", StringComparison.OrdinalIgnoreCase);
     }
 
@@ -16,11 +18,14 @@ internal class ThrustmasterT500 : IWheelSteerLockSetter {
     public int MaximumSteerLock => 1080;
     public int MinimumSteerLock => 40;
 
-    public bool Apply(int steerLock, bool isReset, out int appliedValue) {
+    public bool Apply(int steerLock, bool isReset, out int appliedValue)
+    {
         appliedValue = Math.Min(Math.Max(steerLock, MinimumSteerLock), MaximumSteerLock);
         var cmd = new byte[] { 0x40, 0x11 }.Concat(BitConverter.GetBytes((ushort)(65535d / 1080d * (appliedValue - 1)))).ToArray();
-        return HidDevices.Enumerate(0x44f, ProductId).Aggregate(false, (a, b) => {
-            using (b) {
+        return HidDevices.Enumerate(0x44f, ProductId).Aggregate(false, (a, b) =>
+        {
+            using (b)
+            {
                 return a | b.Write(cmd);
             }
         });

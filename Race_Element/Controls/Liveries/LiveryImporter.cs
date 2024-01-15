@@ -1,6 +1,6 @@
-﻿using RaceElement.LiveryParser;
+﻿using Newtonsoft.Json;
+using RaceElement.LiveryParser;
 using RaceElement.Util;
-using Newtonsoft.Json;
 using SharpCompress.Archives;
 using System;
 using System.Collections.Generic;
@@ -21,7 +21,7 @@ internal static class LiveryImporter
     {
         liveryCount = 0;
         ImportedLiveries.Clear();
-       
+
 
         try
         {

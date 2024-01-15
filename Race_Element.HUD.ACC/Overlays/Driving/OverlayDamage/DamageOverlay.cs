@@ -1,11 +1,11 @@
-﻿using System.Drawing;
-using System.Drawing.Drawing2D;
-using RaceElement.Data.ACC.Cars;
-using RaceElement.HUD.Overlay.Internal;
+﻿using RaceElement.Data.ACC.Cars;
 using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.Util.SystemExtensions;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayDamage;

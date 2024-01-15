@@ -26,8 +26,27 @@ internal class Mclaren570SGT4 : ICarSetupConversion
         }
 
         private readonly double[] casters = [
-            5.3, 5.6, 5.8, 6.0, 6.3, 6.5, 6.8, 7.0, 7.3, 7.5, 7.8,
-            8.0, 8.2, 8.5, 8.7, 9.0, 9.2, 9.4, 9.7, 9.9, 10.2
+            5.3,
+            5.6,
+            5.8,
+            6.0,
+            6.3,
+            6.5,
+            6.8,
+            7.0,
+            7.3,
+            7.5,
+            7.8,
+            8.0,
+            8.2,
+            8.5,
+            8.7,
+            9.0,
+            9.2,
+            9.4,
+            9.7,
+            9.9,
+            10.2
         ];
         public override double Caster(int rawValue)
         {

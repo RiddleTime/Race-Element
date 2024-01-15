@@ -1,16 +1,12 @@
 ﻿using RaceElement.Controls.Setup;
 using RaceElement.Data;
-using RaceElement.Data.ACC.Tracks;
 using RaceElement.Util;
 using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using static RaceElement.Data.ACC.Tracks.TrackData;

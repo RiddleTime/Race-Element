@@ -1,6 +1,6 @@
-﻿using RaceElement.Data.ACC.Tracker;
+﻿using OBSWebsocketDotNet;
+using RaceElement.Data.ACC.Tracker;
 using RaceElement.Util.Settings;
-using OBSWebsocketDotNet;
 using SLOBSharp.Client;
 using SLOBSharp.Client.Requests;
 using System;
@@ -10,7 +10,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using WebSocketSharp;
 
 namespace RaceElement.Controls;
 

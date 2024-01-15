@@ -1,5 +1,4 @@
-﻿using RaceElement.Util.Settings;
-using RaceElement.Util.SystemExtensions;
+﻿using Gma.System.MouseKeyHook;
 using RaceElement.Controls.HUD;
 using RaceElement.Controls.HUD.Controls;
 using RaceElement.Controls.Util.SetupImage;
@@ -8,7 +7,7 @@ using RaceElement.HUD.ACC.Overlays.OverlayMousePosition;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.Util;
-using Gma.System.MouseKeyHook;
+using RaceElement.Util.Settings;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

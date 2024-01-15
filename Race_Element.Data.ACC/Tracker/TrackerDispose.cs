@@ -14,7 +14,7 @@ public class ACCTrackerDispose
         Debug.WriteLine("Safely disposing ACC Data Tracker instances");
         BroadcastTracker.Instance.Dispose();
         EntryListTracker.Instance.Stop();
-        
+
         SetupHiderTracker.Instance.Dispose();
 
 

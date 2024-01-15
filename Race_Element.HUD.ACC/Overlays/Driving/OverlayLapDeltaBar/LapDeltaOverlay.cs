@@ -1,14 +1,14 @@
-﻿using RaceElement.HUD.Overlay.Internal;
+﻿using RaceElement.Data.ACC.EntryList;
+using RaceElement.Data.ACC.Session;
+using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.Util;
+using RaceElement.Util.SystemExtensions;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using RaceElement.Util.SystemExtensions;
-using RaceElement.HUD.Overlay.Util;
 using System.Drawing.Text;
-using System.Diagnostics;
-using RaceElement.Data.ACC.Session;
-using RaceElement.Data.ACC.EntryList;
 using System.Linq;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayLapDeltaBar;

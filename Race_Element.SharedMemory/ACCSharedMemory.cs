@@ -1,7 +1,7 @@
-﻿using System;
+﻿using RaceElement.Controls.Telemetry.SharedMemory;
+using System;
 using System.IO.MemoryMappedFiles;
 using System.Runtime.InteropServices;
-using RaceElement.Controls.Telemetry.SharedMemory;
 
 namespace RaceElement;
 

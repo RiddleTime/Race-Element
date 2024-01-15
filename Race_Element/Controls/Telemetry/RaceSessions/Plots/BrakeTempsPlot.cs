@@ -1,6 +1,6 @@
-﻿using RaceElement.Util.SystemExtensions;
-using RaceElement.Data;
+﻿using RaceElement.Data;
 using RaceElement.Data.ACC.Database.Telemetry;
+using RaceElement.Util.SystemExtensions;
 using ScottPlot;
 using ScottPlot.Plottable;
 using System;
@@ -68,7 +68,7 @@ internal class BrakeTempsPlot
         double padding = 10;
         plot.SetAxisLimitsX(xMin: 0, xMax: _trackData.TrackLength);
         plot.SetAxisLimitsY(minTemp - padding, maxTemp + padding);
-        plot.XAxis.SetBoundary(0,_trackData.TrackLength);
+        plot.XAxis.SetBoundary(0, _trackData.TrackLength);
         plot.YAxis.SetBoundary(minTemp - padding, maxTemp + padding);
         plot.XLabel("Meters");
         plot.YLabel("Celsius");

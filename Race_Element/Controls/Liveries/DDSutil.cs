@@ -1,13 +1,13 @@
-﻿using RaceElement.Util;
-using DdsFileTypePlus;
+﻿using DdsFileTypePlus;
 using PaintDotNet;
+using RaceElement.Util;
+using RaceElement.Util.Settings;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using static RaceElement.Controls.LiveryBrowser;
-using RaceElement.Util.Settings;
 
 namespace RaceElement.Controls.Liveries;
 

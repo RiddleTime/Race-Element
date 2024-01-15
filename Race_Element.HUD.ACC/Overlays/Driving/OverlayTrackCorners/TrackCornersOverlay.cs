@@ -1,16 +1,16 @@
-﻿using RaceElement.Data.ACC.Session;
+﻿using RaceElement.Data.ACC.EntryList;
+using RaceElement.Data.ACC.Session;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
-using RaceElement.HUD.Overlay.Util;
-using System.Drawing;
-using System.Linq;
-using System.Drawing.Drawing2D;
 using RaceElement.HUD.Overlay.OverlayUtil.InfoPanel;
+using RaceElement.HUD.Overlay.Util;
 using RaceElement.Util.SystemExtensions;
 using System;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Linq;
 using static RaceElement.Data.ACC.Tracks.TrackData;
-using RaceElement.Data.ACC.EntryList;
 
 namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames;
 

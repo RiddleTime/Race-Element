@@ -53,7 +53,7 @@
         <materialDesign:Snackbar Grid.Row="1" Panel.ZIndex="4" Margin="70,0,0,0" HorizontalAlignment="Center" x:Name="snackbar" MessageQueue="{materialDesign:MessageQueue}" />
 
         <TabControl x:Name="tabControl" Style="{StaticResource MaterialDesignUniformTabControl}"  VerticalAlignment="Stretch" TabStripPlacement="Left" Grid.Row="1">
-            
+
 
 
             <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabHUD" Height="64">
@@ -84,7 +84,7 @@
                     </Grid.ColumnDefinitions>
                     <materialDesign:TransitioningContent Grid.Column="1">
                         <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="FadeIn"/>
+                            <materialDesign:TransitionEffect Kind="FadeIn" Duration="0"/>
                         </materialDesign:TransitioningContent.OpeningEffects>
                         <controls:HudTab></controls:HudTab>
                     </materialDesign:TransitioningContent>
@@ -119,7 +119,7 @@
                     </Grid.ColumnDefinitions>
                     <materialDesign:TransitioningContent Grid.Column="1">
                         <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="FadeIn"/>
+                            <materialDesign:TransitionEffect Kind="FadeIn" Duration="0" />
                         </materialDesign:TransitioningContent.OpeningEffects>
                         <controls:TelemetryTab></controls:TelemetryTab>
                     </materialDesign:TransitioningContent>
@@ -153,7 +153,7 @@
                     </Grid.ColumnDefinitions>
                     <materialDesign:TransitioningContent Grid.Column="1">
                         <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="FadeIn"/>
+                            <materialDesign:TransitionEffect Kind="FadeIn" Duration="0"/>
                         </materialDesign:TransitioningContent.OpeningEffects>
 
                         <controls:SetupsTab></controls:SetupsTab>
@@ -188,7 +188,7 @@
                     </Grid.ColumnDefinitions>
                     <materialDesign:TransitioningContent Grid.Column="1">
                         <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="FadeIn"/>
+                            <materialDesign:TransitionEffect Kind="FadeIn" Duration="0"/>
                         </materialDesign:TransitioningContent.OpeningEffects>
                         <controls:LiveriesTab></controls:LiveriesTab>
                     </materialDesign:TransitioningContent>
@@ -221,7 +221,7 @@
                     </Grid.ColumnDefinitions>
                     <materialDesign:TransitioningContent Grid.Column="1">
                         <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="FadeIn"/>
+                            <materialDesign:TransitionEffect Kind="FadeIn" Duration="0"/>
                         </materialDesign:TransitioningContent.OpeningEffects>
                         <controls:ToolsTabs></controls:ToolsTabs>
                     </materialDesign:TransitioningContent>
@@ -256,7 +256,7 @@
                     </Grid.ColumnDefinitions>
                     <materialDesign:TransitioningContent Grid.Column="1">
                         <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="FadeIn"/>
+                            <materialDesign:TransitionEffect Kind="FadeIn" Duration="0"/>
                         </materialDesign:TransitioningContent.OpeningEffects>
                         <controls:SettingsTab></controls:SettingsTab>
                     </materialDesign:TransitioningContent>
@@ -289,7 +289,7 @@
                     </Grid.ColumnDefinitions>
                     <materialDesign:TransitioningContent Grid.Column="1">
                         <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="FadeIn"/>
+                            <materialDesign:TransitionEffect Kind="FadeIn" Duration="0"/>
                         </materialDesign:TransitioningContent.OpeningEffects>
 
                         <controls:Info></controls:Info>
@@ -318,7 +318,7 @@
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
-            
+
             <TextBlock TextAlignment="Center" FontFamily="{StaticResource Conthrax}" FontSize="20">
                 <materialDesign:PackIcon
                     Grid.Row="0"

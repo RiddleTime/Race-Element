@@ -36,7 +36,8 @@ public class DeltaBar
 
         Color drawingColor = Color.White;
 
-        if (DrawBackground) { 
+        if (DrawBackground)
+        {
             if (IsValidLap)
                 g.FillRectangle(new SolidBrush(Color.FromArgb(120, Color.Black)), new Rectangle(x, y, width, height));
             else
@@ -77,7 +78,7 @@ public class DeltaBar
         if (DrawOutline)
         {
             Brush outlineBrush = new SolidBrush(drawingColor);
-            
+
             if (!IsValidLap)
                 outlineBrush = new SolidBrush(Color.DarkRed);
 
