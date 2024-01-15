@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Race_Element.Core.Jobs.LoopJob
+namespace RaceElement.Core.Jobs.LoopJob
 {
 	public abstract class AbstractLoopJob : IJob
 	{
@@ -13,8 +13,8 @@ namespace Race_Element.Core.Jobs.LoopJob
 
 		public bool IsRunning => !_isStopped;
 
-		private long _intervalMillis = 1;
-		public long IntervalMillis
+		private int _intervalMillis = 1;
+		public int IntervalMillis
 		{
 			get { return _intervalMillis; }
 			set

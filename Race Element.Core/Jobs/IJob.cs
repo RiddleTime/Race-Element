@@ -19,6 +19,8 @@ public static class IJobExtensions
 	/// <param name="checkIntervalMilliseconds"></param>
 	public static void WaitForCompletion(this IJob job, int checkIntervalMilliseconds = 100)
 	{
+		ArgumentOutOfRangeException.ThrowIfLessThan(checkIntervalMilliseconds, 1);
+
 		while (job.IsRunning)
 			Thread.Sleep(checkIntervalMilliseconds);
 	}
@@ -31,6 +33,8 @@ public static class IJobExtensions
 	/// <param name="checkIntervalMilliseconds"></param>
 	public static void WaitForCompletionAndDo(this IJob job, Action action, int checkIntervalMilliseconds = 100)
 	{
+		ArgumentOutOfRangeException.ThrowIfLessThan(checkIntervalMilliseconds, 1);
+
 		while (job.IsRunning)
 		{
 			action();

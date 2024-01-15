@@ -1,5 +1,4 @@
-﻿using Quartz;
-using RaceElement.Data.ACC.Database.Telemetry;
+﻿using RaceElement.Data.ACC.Database.Telemetry;
 using ScottPlot;
 using ScottPlot.Drawing;
 using ScottPlot.SnapLogic;

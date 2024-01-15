@@ -1,30 +1,34 @@
-﻿using ACCManager.Data.ACC.Core.Game;
-using Quartz;
+﻿using RaceElement.Core.Jobs.LoopJob;
 using RaceElement.Data.ACC.Core;
 using System;
-using System.Threading.Tasks;
 using static RaceElement.ACCSharedMemory;
 
 namespace RaceElement.Data.ACC.Tracker;
 
-public class PageStaticTracker : IJob
+public class PageStaticTracker : AbstractLoopJob
 {
-    public static readonly JobKey JobKey = new("PageStaticTracker", "acc-jobs");
-    public static readonly TriggerKey TriggerKey = new("PageStaticTracker");
+	private static PageStaticTracker _instance;
+	public static PageStaticTracker Instance
+	{
+		get
+		{
+			if (_instance == null)
+				_instance = new PageStaticTracker();
 
-    public static event EventHandler<SPageFileStatic> Tracker;
+			return _instance;
+		}
+	}
 
-    public async Task Execute(IJobExecutionContext context)
-    {
-        if (AccProcess.IsRunning)
-            Tracker?.Invoke(null, ACCSharedMemory.Instance.ReadStaticPageFile());
-    }
+	public PageStaticTracker()
+	{
+		IntervalMillis = 100;
+	}
 
-    public static void Schedule()
-    {
-        IJobDetail job = JobBuilder.Create<PageStaticTracker>().WithIdentity(JobKey).Build();
-        AccScheduler.Scheduler.ScheduleJob(job, TriggerBuilder.Create()
-                    .WithIdentity(TriggerKey)
-                    .WithSimpleSchedule(x => x.WithInterval(new TimeSpan(0, 0, 0, 0, 500)).RepeatForever()).ForJob(JobKey).Build());
-    }
+	public static event EventHandler<SPageFileStatic> Tracker;
+
+	public override void RunAction()
+	{
+		if (AccProcess.IsRunning)
+			Tracker?.Invoke(null, ACCSharedMemory.Instance.ReadStaticPageFile());
+	}
 }

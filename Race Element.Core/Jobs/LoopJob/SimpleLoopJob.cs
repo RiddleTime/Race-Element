@@ -1,4 +1,4 @@
-﻿namespace Race_Element.Core.Jobs.LoopJob
+﻿namespace RaceElement.Core.Jobs.LoopJob
 {
 	public class SimpleLoopJob : AbstractLoopJob
 	{
