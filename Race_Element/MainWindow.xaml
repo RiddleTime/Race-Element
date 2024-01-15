@@ -20,50 +20,48 @@
         WindowStartupLocation="Manual"
         WindowState="Minimized"
         AllowDrop="True">
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="DeepOrange" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Snackbar.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TabControl.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Label.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Card.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Slider.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml"/>
+  <Window.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="DeepOrange" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Snackbar.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TabControl.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Label.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Card.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Slider.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml"/>
 
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Overrides.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        </ResourceDictionary>
-    </Window.Resources>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Overrides.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+      <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </ResourceDictionary>
+  </Window.Resources>
 
-    <Grid x:Name="mainGrid">
-        <Grid.RowDefinitions>
-            <RowDefinition x:Name="rowTitleBar" Height="32"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+  <Grid x:Name="mainGrid">
+    <Grid.RowDefinitions>
+      <RowDefinition x:Name="rowTitleBar" Height="32"/>
+      <RowDefinition/>
+    </Grid.RowDefinitions>
 
-        <controls:TitleBar x:Name="titleBar" Grid.Row="0">
+    <controls:TitleBar x:Name="titleBar" Grid.Row="0">
 
-        </controls:TitleBar>
+    </controls:TitleBar>
 
-        <materialDesign:Snackbar Grid.Row="1" Panel.ZIndex="4" Margin="70,0,0,0" HorizontalAlignment="Center" x:Name="snackbar" MessageQueue="{materialDesign:MessageQueue}" />
+    <materialDesign:Snackbar Grid.Row="1" Panel.ZIndex="4" Margin="70,0,0,0" HorizontalAlignment="Center" x:Name="snackbar" MessageQueue="{materialDesign:MessageQueue}" />
 
-        <TabControl x:Name="tabControl" Style="{StaticResource MaterialDesignUniformTabControl}"  VerticalAlignment="Stretch" TabStripPlacement="Left" Grid.Row="1">
+    <TabControl x:Name="tabControl" Style="{StaticResource MaterialDesignUniformTabControl}"  VerticalAlignment="Stretch" TabStripPlacement="Left" Grid.Row="1">
 
-
-
-            <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabHUD" Height="64">
-                <TabItem.Header>
-                    <Grid Style="{DynamicResource HoverGrid}" ToolTip="Customizable Overlays">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="2*"/>
-                            <RowDefinition Height="1*"/>
-                        </Grid.RowDefinitions>
-                        <materialDesign:PackIcon
+      <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabHUD" Height="64">
+        <TabItem.Header>
+          <Grid Style="{DynamicResource HoverGrid}" ToolTip="Customizable Overlays">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="2*"/>
+              <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <materialDesign:PackIcon
                             Grid.Row="0"
                             Kind="MonitorDashboard"
                             VerticalAlignment="Center"
@@ -72,33 +70,29 @@
                             Width="32"
                         Foreground="White"    
                         />
-                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" HorizontalAlignment="Center" FontFamily="{StaticResource Conthrax}" FontSize="14" >
+            <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" HorizontalAlignment="Center" FontFamily="{StaticResource Conthrax}" FontSize="14" >
                             HUD
-                        </TextBlock>
-                    </Grid>
-                </TabItem.Header>
+            </TextBlock>
+          </Grid>
+        </TabItem.Header>
 
-                <Grid HorizontalAlignment="Stretch">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <materialDesign:TransitioningContent Grid.Column="1">
-                        <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="FadeIn" Duration="0"/>
-                        </materialDesign:TransitioningContent.OpeningEffects>
-                        <controls:HudTab></controls:HudTab>
-                    </materialDesign:TransitioningContent>
-                </Grid>
-            </TabItem>
+        <Grid HorizontalAlignment="Stretch">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+          </Grid.ColumnDefinitions>
 
-            <TabItem Style="{DynamicResource MaterialDesignTabItem}" ToolTip="Recorded session data" x:Name="tabTelemetry" Height="64">
-                <TabItem.Header>
-                    <Grid Style="{DynamicResource HoverGrid}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="2*"/>
-                            <RowDefinition Height="1*"/>
-                        </Grid.RowDefinitions>
-                        <materialDesign:PackIcon
+          <controls:HudTab Grid.Column="1"></controls:HudTab>
+        </Grid>
+      </TabItem>
+
+      <TabItem Style="{DynamicResource MaterialDesignTabItem}" ToolTip="Recorded session data" x:Name="tabTelemetry" Height="64">
+        <TabItem.Header>
+          <Grid Style="{DynamicResource HoverGrid}">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="2*"/>
+              <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <materialDesign:PackIcon
                             Grid.Row="0"
                             Kind="Analytics"
                             VerticalAlignment="Center"
@@ -107,33 +101,29 @@
                             Width="32"
                         Foreground="White"    
                         />
-                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" HorizontalAlignment="Center" FontFamily="{StaticResource Conthrax}" FontSize="14" >
+            <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" HorizontalAlignment="Center" FontFamily="{StaticResource Conthrax}" FontSize="14" >
                             Data
-                        </TextBlock>
-                    </Grid>
-                </TabItem.Header>
+            </TextBlock>
+          </Grid>
+        </TabItem.Header>
 
-                <Grid HorizontalAlignment="Stretch">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <materialDesign:TransitioningContent Grid.Column="1">
-                        <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="FadeIn" Duration="0" />
-                        </materialDesign:TransitioningContent.OpeningEffects>
-                        <controls:TelemetryTab></controls:TelemetryTab>
-                    </materialDesign:TransitioningContent>
-                </Grid>
-            </TabItem>
+        <Grid HorizontalAlignment="Stretch">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+          </Grid.ColumnDefinitions>
 
-            <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabSetups" ToolTip="View and Compare your Setups" Height="64">
-                <TabItem.Header>
-                    <Grid Style="{DynamicResource HoverGrid}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="2*"/>
-                            <RowDefinition Height="1*"/>
-                        </Grid.RowDefinitions>
-                        <materialDesign:PackIcon
+          <controls:TelemetryTab Grid.Column="1"></controls:TelemetryTab>
+        </Grid>
+      </TabItem>
+
+      <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabSetups" ToolTip="View and Compare your Setups" Height="64">
+        <TabItem.Header>
+          <Grid Style="{DynamicResource HoverGrid}">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="2*"/>
+              <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <materialDesign:PackIcon
                             Grid.Row="0"
                             Kind="SpannerOutline"
                             VerticalAlignment="Center"
@@ -142,34 +132,28 @@
                             Width="32"
                         Foreground="White"    
                         />
-                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" HorizontalAlignment="Center" FontFamily="{StaticResource Conthrax}" FontSize="14" >Setups</TextBlock>
-                    </Grid>
+            <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" HorizontalAlignment="Center" FontFamily="{StaticResource Conthrax}" FontSize="14" >Setups</TextBlock>
+          </Grid>
 
-                </TabItem.Header>
+        </TabItem.Header>
 
-                <Grid HorizontalAlignment="Stretch">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <materialDesign:TransitioningContent Grid.Column="1">
-                        <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="FadeIn" Duration="0"/>
-                        </materialDesign:TransitioningContent.OpeningEffects>
+        <Grid HorizontalAlignment="Stretch">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+          </Grid.ColumnDefinitions>
 
-                        <controls:SetupsTab></controls:SetupsTab>
+          <controls:SetupsTab Grid.Column="1"></controls:SetupsTab>
+        </Grid>
+      </TabItem>
 
-                    </materialDesign:TransitioningContent>
-                </Grid>
-            </TabItem>
-
-            <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabLiveries" ToolTip="View, Create, Import and Export Custom Liveries." Height="64">
-                <TabItem.Header>
-                    <Grid Style="{DynamicResource HoverGrid}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="2*"/>
-                            <RowDefinition Height="1*"/>
-                        </Grid.RowDefinitions>
-                        <materialDesign:PackIcon
+      <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabLiveries" ToolTip="View, Create, Import and Export Custom Liveries." Height="64">
+        <TabItem.Header>
+          <Grid Style="{DynamicResource HoverGrid}">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="2*"/>
+              <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <materialDesign:PackIcon
                             Grid.Row="0"
                             Kind="Paintbrush"
                             VerticalAlignment="Center"
@@ -178,31 +162,27 @@
                             Width="32"
                         Foreground="White"    
                         />
-                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" HorizontalAlignment="Center" FontFamily="{StaticResource Conthrax}" FontSize="14" >Liveries</TextBlock>
-                    </Grid>
-                </TabItem.Header>
+            <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" HorizontalAlignment="Center" FontFamily="{StaticResource Conthrax}" FontSize="14" >Liveries</TextBlock>
+          </Grid>
+        </TabItem.Header>
 
-                <Grid HorizontalAlignment="Stretch">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <materialDesign:TransitioningContent Grid.Column="1">
-                        <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="FadeIn" Duration="0"/>
-                        </materialDesign:TransitioningContent.OpeningEffects>
-                        <controls:LiveriesTab></controls:LiveriesTab>
-                    </materialDesign:TransitioningContent>
-                </Grid>
-            </TabItem>
+        <Grid HorizontalAlignment="Stretch">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+          </Grid.ColumnDefinitions>
 
-            <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabTools" Height="64">
-                <TabItem.Header>
-                    <Grid Style="{DynamicResource HoverGrid}" ToolTip="Fuel Calculator">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="2*"/>
-                            <RowDefinition Height="1*"/>
-                        </Grid.RowDefinitions>
-                        <materialDesign:PackIcon
+          <controls:LiveriesTab Grid.Column="1"></controls:LiveriesTab>
+        </Grid>
+      </TabItem>
+
+      <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabTools" Height="64">
+        <TabItem.Header>
+          <Grid Style="{DynamicResource HoverGrid}" ToolTip="Fuel Calculator">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="2*"/>
+              <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <materialDesign:PackIcon
                             Grid.Row="0"
                             Kind="Calculator"
                             VerticalAlignment="Center"
@@ -211,31 +191,27 @@
                             Width="32"
                         Foreground="White"    
                         />
-                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" HorizontalAlignment="Center" FontFamily="{StaticResource Conthrax}" FontSize="14" >Tools</TextBlock>
-                    </Grid>
-                </TabItem.Header>
+            <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" HorizontalAlignment="Center" FontFamily="{StaticResource Conthrax}" FontSize="14" >Tools</TextBlock>
+          </Grid>
+        </TabItem.Header>
 
-                <Grid HorizontalAlignment="Stretch">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <materialDesign:TransitioningContent Grid.Column="1">
-                        <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="FadeIn" Duration="0"/>
-                        </materialDesign:TransitioningContent.OpeningEffects>
-                        <controls:ToolsTabs></controls:ToolsTabs>
-                    </materialDesign:TransitioningContent>
-                </Grid>
-            </TabItem>
+        <Grid HorizontalAlignment="Stretch">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+          </Grid.ColumnDefinitions>
 
-            <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabSettings" ToolTip="Settings for Race Element, Hardware, Streaming and ACC" Height="64">
-                <TabItem.Header>
-                    <Grid Style="{DynamicResource HoverGrid}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="2*"/>
-                            <RowDefinition Height="1*"/>
-                        </Grid.RowDefinitions>
-                        <materialDesign:PackIcon
+          <controls:ToolsTabs Grid.Column="1"></controls:ToolsTabs>
+        </Grid>
+      </TabItem>
+
+      <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabSettings" ToolTip="Settings for Race Element, Hardware, Streaming and ACC" Height="64">
+        <TabItem.Header>
+          <Grid Style="{DynamicResource HoverGrid}">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="2*"/>
+              <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <materialDesign:PackIcon
                             Grid.Row="0"
                             Kind="Cog"
                             VerticalAlignment="Center"
@@ -244,33 +220,29 @@
                             Width="32"
                         Foreground="White"    
                         />
-                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" HorizontalAlignment="Center" FontFamily="{StaticResource Conthrax}" FontSize="14" >
+            <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" HorizontalAlignment="Center" FontFamily="{StaticResource Conthrax}" FontSize="14" >
                             Settings
-                        </TextBlock>
-                    </Grid>
-                </TabItem.Header>
+            </TextBlock>
+          </Grid>
+        </TabItem.Header>
 
-                <Grid HorizontalAlignment="Stretch">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <materialDesign:TransitioningContent Grid.Column="1">
-                        <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="FadeIn" Duration="0"/>
-                        </materialDesign:TransitioningContent.OpeningEffects>
-                        <controls:SettingsTab></controls:SettingsTab>
-                    </materialDesign:TransitioningContent>
-                </Grid>
-            </TabItem>
+        <Grid HorizontalAlignment="Stretch">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+          </Grid.ColumnDefinitions>
 
-            <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabAbout" Height="64" VerticalAlignment="Bottom">
-                <TabItem.Header>
-                    <Grid Style="{DynamicResource HoverGrid}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="2*"/>
-                            <RowDefinition Height="1*"/>
-                        </Grid.RowDefinitions>
-                        <materialDesign:PackIcon
+          <controls:SettingsTab Grid.Column="1"></controls:SettingsTab>
+        </Grid>
+      </TabItem>
+
+      <TabItem Style="{DynamicResource MaterialDesignTabItem}" x:Name="tabAbout" Height="64" VerticalAlignment="Bottom">
+        <TabItem.Header>
+          <Grid Style="{DynamicResource HoverGrid}">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="2*"/>
+              <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <materialDesign:PackIcon
                 Grid.Row="0"
                 Kind="QuestionMarkCircleOutline"
                 VerticalAlignment="Center"
@@ -279,47 +251,41 @@
                 Width="32"
             Foreground="White"    
             />
-                        <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" HorizontalAlignment="Center" FontFamily="{StaticResource Conthrax}" FontSize="14">Info</TextBlock>
-                    </Grid>
-                </TabItem.Header>
+            <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignButtonTextBlock}" HorizontalAlignment="Center" FontFamily="{StaticResource Conthrax}" FontSize="14">Info</TextBlock>
+          </Grid>
+        </TabItem.Header>
 
-                <Grid UseLayoutRounding="True" HorizontalAlignment="Stretch">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <materialDesign:TransitioningContent Grid.Column="1">
-                        <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="FadeIn" Duration="0"/>
-                        </materialDesign:TransitioningContent.OpeningEffects>
+        <Grid UseLayoutRounding="True" HorizontalAlignment="Stretch">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
 
-                        <controls:Info></controls:Info>
+          <controls:Info Grid.Column="1"></controls:Info>
+        </Grid>
+      </TabItem>
+    </TabControl>
 
-                    </materialDesign:TransitioningContent>
-                </Grid>
-            </TabItem>
-        </TabControl>
+    <Grid x:Name="gridPlayACC" Grid.Row="1" Margin="0,0,0,3" Width="92" Height="64" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+      <Grid.Style>
+        <Style BasedOn="{StaticResource HoverGrid}" TargetType="{x:Type Grid}">
+          <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter Property="Cursor" Value="Hand"/>
+              <Setter Property="Background">
+                <Setter.Value>
+                  <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#20FF4500" Offset="0.0"/>
+                    <GradientStop Color="#80000000" Offset="0.8"/>
+                  </LinearGradientBrush>
+                </Setter.Value>
+              </Setter>
+              <Setter Property="Opacity" Value="1"/>
+            </Trigger>
+          </Style.Triggers>
+        </Style>
+      </Grid.Style>
 
-        <Grid x:Name="gridPlayACC" Grid.Row="1" Margin="0,0,0,3" Width="92" Height="64" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-            <Grid.Style>
-                <Style BasedOn="{StaticResource HoverGrid}" TargetType="{x:Type Grid}">
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Cursor" Value="Hand"/>
-                            <Setter Property="Background">
-                                <Setter.Value>
-                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                        <GradientStop Color="#20FF4500" Offset="0.0"/>
-                                        <GradientStop Color="#80000000" Offset="0.8"/>
-                                    </LinearGradientBrush>
-                                </Setter.Value>
-                            </Setter>
-                            <Setter Property="Opacity" Value="1"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
-
-            <TextBlock TextAlignment="Center" FontFamily="{StaticResource Conthrax}" FontSize="20">
+      <TextBlock TextAlignment="Center" FontFamily="{StaticResource Conthrax}" FontSize="20">
                 <materialDesign:PackIcon
                     Grid.Row="0"
                     Kind="Steam"
@@ -331,7 +297,7 @@
                     Foreground="White"/>
                 <LineBreak/>
                 Play
-            </TextBlock>
-        </Grid>
+      </TextBlock>
     </Grid>
+  </Grid>
 </Window>
