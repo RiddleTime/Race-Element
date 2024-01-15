@@ -21,7 +21,7 @@ public partial class SetupsTab : UserControl
 
 		headerSetupTree.MouseRightButtonUp += (s, e) =>
 		{
-			SetupBrowser.Instance.FetchAllSetups();
+			SetupBrowser.Instance.RefreshTree();
 
 			
 			e.Handled = true;

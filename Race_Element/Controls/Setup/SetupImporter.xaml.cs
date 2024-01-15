@@ -54,7 +54,7 @@ public partial class SetupImporter : UserControl
                 string modelName = ConversionFactory.GetNameFromCarModel(model);
                 MainWindow.Instance.EnqueueSnackbarMessage($"Imported setup \"{_setupName}\" for {modelName} at{sb}");
 
-                SetupBrowser.Instance.FetchAllSetups();
+                SetupBrowser.Instance.RefreshTree();
 
                 Close();
             }
@@ -82,7 +82,7 @@ public partial class SetupImporter : UserControl
                 {
                     Import(trackData.GameName, true);
 
-                    SetupBrowser.Instance.FetchAllSetups();
+                    SetupBrowser.Instance.RefreshTree();
 
                     Close();
                 };
