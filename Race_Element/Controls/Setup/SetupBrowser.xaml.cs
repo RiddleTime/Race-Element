@@ -19,6 +19,9 @@ using MaterialDesignThemes.Wpf;
 using RaceElement.Data;
 using RaceElement.Data.ACC.Tracks;
 using static RaceElement.Data.ACC.Tracks.TrackData;
+using System.Threading.Tasks;
+using System.Runtime.InteropServices;
+using RaceElement.Data.ACC.Core;
 
 namespace RaceElement.Controls;
 
@@ -27,372 +30,406 @@ namespace RaceElement.Controls;
 /// </summary>
 public partial class SetupBrowser : UserControl
 {
-    public static SetupBrowser Instance { get; set; }
+	public static SetupBrowser Instance { get; set; }
 
-    private readonly FlowDocSetupRenderer _setupRenderer;
-    private string _selectedSetup;
+	private readonly FlowDocSetupRenderer _setupRenderer;
+	private string _selectedSetup;
 
-    // car -> track
-    private readonly Dictionary<string, List<string>> _expandedHeaders = [];
+	private Task _refreshTask = Task.CompletedTask;
 
-    public SetupBrowser()
-    {
-        InitializeComponent();
+	// car -> track
+	private readonly Dictionary<string, List<string>> _expandedHeaders = [];
 
-        _setupRenderer = new FlowDocSetupRenderer();
-        this.Loaded += (s, e) => ThreadPool.QueueUserWorkItem(x => FetchAllSetups());
-        setupsTreeView.SelectedItemChanged += SetupsTreeView_SelectedItemChanged;
+	public SetupBrowser()
+	{
+		InitializeComponent();
 
-        buttonEditSetup.Click += (o, e) =>
-        {
-            if (_selectedSetup != null)
-                SetupEditor.Instance.Open(_selectedSetup);
-        };
+		_setupRenderer = new FlowDocSetupRenderer();
+		this.Loaded += (s, e) => FetchAllSetups(false);
 
-        Instance = this;
-    }
+		setupsTreeView.SelectedItemChanged += SetupsTreeView_SelectedItemChanged;
 
-    private void ExpandCombination(string track, string carParseName)
-    {
-        if (track is null || track == string.Empty || carParseName == null || carParseName == string.Empty)
-            return;
+		buttonEditSetup.Click += (o, e) =>
+		{
+			if (_selectedSetup != null)
+				SetupEditor.Instance.Open(_selectedSetup);
+		};
 
-        CarModels carModel = ConversionFactory.ParseCarName(carParseName);
-        if (carModel == CarModels.None) return;
+		Instance = this;
+	}
 
-        ConversionFactory.CarModelToCarName.TryGetValue(carModel, out string carName);
-        AbstractTrackData trackData = TrackData.Tracks.Find(x => track == x.GameName);
+	private void ExpandCombination(string track, string carParseName)
+	{
+		if (track is null || track == string.Empty || carParseName == null || carParseName == string.Empty)
+			return;
 
-        if (!_expandedHeaders.TryGetValue(carName, out List<string> list))
-            _expandedHeaders.Add(carName, [trackData.GameName]);
-        else
-            _expandedHeaders[carName].Add(Regex.Replace(trackData.GameName, "^[a-z]", m => m.Value.ToUpper()));
-    }
+		CarModels carModel = ConversionFactory.ParseCarName(carParseName);
+		if (carModel == CarModels.None) return;
 
-    private void SetupsTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-    {
-        if (e.NewValue != null && e.NewValue.GetType() == typeof(TreeViewItem))
-        {
-            TreeViewItem item = (TreeViewItem)e.NewValue;
-            if (item.DataContext is FileInfo file)
-            {
-                _selectedSetup = file.FullName;
+		ConversionFactory.CarModelToCarName.TryGetValue(carModel, out string carName);
+		AbstractTrackData trackData = TrackData.Tracks.Find(x => track == x.GameName);
 
-                Root root = GetSetupJsonRoot(file);
-                if (root == null)
-                    return;
+		if (!_expandedHeaders.TryGetValue(carName, out List<string> list))
+			_expandedHeaders.Add(carName, [trackData.GameName]);
+		else
+			_expandedHeaders[carName].Add(Regex.Replace(trackData.GameName, "^[a-z]", m => m.Value.ToUpper()));
+	}
+
+	private void SetupsTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+	{
+		if (e.NewValue != null && e.NewValue.GetType() == typeof(TreeViewItem))
+		{
+			TreeViewItem item = (TreeViewItem)e.NewValue;
+			if (item.DataContext is FileInfo file)
+			{
+				_selectedSetup = file.FullName;
+
+				Root root = GetSetupJsonRoot(file);
+				if (root == null)
+					return;
 
 #if DEBUG
-                // make edit button visible depending on whether there is a setup changer avaiable for the car
-                if (GetChanger(ParseCarName(root.CarName)) == null)
-                    buttonEditSetup.Visibility = Visibility.Hidden;
-                else
-                    buttonEditSetup.Visibility = Visibility.Visible;
+				// make edit button visible depending on whether there is a setup changer avaiable for the car
+				if (GetChanger(ParseCarName(root.CarName)) == null)
+					buttonEditSetup.Visibility = Visibility.Hidden;
+				else
+					buttonEditSetup.Visibility = Visibility.Visible;
 #endif
 
-                _setupRenderer.LogSetup(ref flowDocument, file.FullName);
-                e.Handled = true;
-            }
-        }
-    }
+				_setupRenderer.LogSetup(ref flowDocument, file.FullName);
+				e.Handled = true;
+			}
+		}
+	}
 
-    private void ClearSetups()
-    {
-        for (int i = 0; i < setupsTreeView.Items.Count; i++)
-        {
-            TreeViewItem item = (TreeViewItem)setupsTreeView.Items[i];
-            item.ContextMenu?.Items.Clear();
-            if (item.DataContext != null)
-                item.DataContext = null;
-        }
+	private void ClearSetups()
+	{
+		while (setupsTreeView.Items.Count > 0)
+		{
+			TreeViewItem item = (TreeViewItem)setupsTreeView.Items[0];
 
-        setupsTreeView.UpdateDefaultStyle();
-        setupsTreeView.Items.Clear();
-    }
+			foreach (var cItem in item.ContextMenu.Items)
+				if (cItem is MenuItem mItem)
+				{
+					mItem.Click -= AddToCompare1_Click;
+					mItem.Click -= AddToCompare2_Click;
+					mItem.Click -= CopyToClipBoard_Click;
+					mItem.Click -= CopyToOtherTrack_Click;
+					mItem.Click -= OpenFolder_Click;
+					mItem.Visibility = Visibility.Collapsed;
+				}
+			item.ContextMenu?.Items.Clear();
 
-    internal void FetchAllSetups()
-    {
-        DirectoryInfo setupsDirectory = new(FileUtil.SetupsPath);
+			item.Visibility = Visibility.Collapsed;
 
-        if (!setupsDirectory.Exists)
-            return;
+			setupsTreeView.Items.RemoveAt(0);
+		}
 
-        try
-        {
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                ClearSetups();
+		Task.Run(() => GC.Collect(2, GCCollectionMode.Forced, true));
+	}
 
-                // Pre-expand the current car and track leafs
-                var staticPage = ACCSharedMemory.Instance.ReadStaticPageFile();
-                if (staticPage != null)
-                {
-                    string track = staticPage.Track;
-                    string carModel = staticPage.CarModel;
-                    ExpandCombination(track, carModel);
-                }
+	internal void FetchAllSetups(bool showMessage = true)
+	{
+		try
+		{
+			if (_refreshTask == Task.CompletedTask)
+			{
+				_refreshTask = Task.Run(() =>
+				{
+					DirectoryInfo setupsDirectory = new(FileUtil.SetupsPath);
 
-                // Find car directories
-                foreach (var carDir in setupsDirectory.GetDirectories())
-                {
-                    if (carDir.GetDirectories().Any() && !carDir.Name.Contains(".git"))
-                    {
-                        bool carHasSetups = false;
+					if (!setupsDirectory.Exists)
+						return;
 
-                        // Make Car Tree View Item
-                        TextBlock carHeader = new()
-                        {
-                            Text = CarModelToCarName[ParseCarName(carDir.Name)],
-                            Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
-                        };
-                        TreeViewItem carTreeViewItem = new()
-                        {
-                            Header = carHeader,
-                            Background = new SolidColorBrush(Color.FromArgb(38, 10, 0, 0)),
-                        };
-                        carTreeViewItem.MouseLeftButtonUp += (s, e) =>
-                        {
-                            carTreeViewItem.IsExpanded = !carTreeViewItem.IsExpanded;
-                            if (s == carTreeViewItem)
-                                e.Handled = true;
-                        };
-                        carTreeViewItem.ContextMenu = GetCarContextMenu(carDir);
-                        carTreeViewItem.Expanded += (s, e) =>
-                        {
-                            if (!_expandedHeaders.ContainsKey(carHeader.Text))
-                                _expandedHeaders.Add(carHeader.Text, []);
-                        };
-                        carTreeViewItem.Collapsed += (s, e) =>
-                        {
-                            if (s == carTreeViewItem)
-                                if (_expandedHeaders.ContainsKey(carHeader.Text))
-                                    _expandedHeaders.Remove(carHeader.Text);
-                        };
+					Dispatcher.BeginInvoke(new Action(() =>
+					{
+						ClearSetups();
 
-                        if (_expandedHeaders.ContainsKey(carHeader.Text)) carTreeViewItem.IsExpanded = true;
+						// Pre-expand the current car and track leafs
+						if (AccProcess.IsRunning)
+						{
+							var staticPage = ACCSharedMemory.Instance.ReadStaticPageFile();
+							if (staticPage != null)
+							{
+								string track = staticPage.Track;
+								string carModel = staticPage.CarModel;
+								ExpandCombination(track, carModel);
+							}
+						}
 
-                        // find track directories in car dir
-                        foreach (var trackDir in carDir.GetDirectories())
-                        {
-                            bool trackHasSetups = false;
+						// Find car directories
+						foreach (var carDir in (Span<DirectoryInfo>)setupsDirectory.GetDirectories())
+						{
+							if (carDir.GetDirectories().Length > 0 && !carDir.Name.Contains(".git"))
+							{
+								bool carHasSetups = false;
 
-                            string trackName = trackDir.Name;
-                            trackName = Regex.Replace(trackName, "^[a-z]", m => m.Value.ToUpper());
-                            trackName = trackName.Replace("_", " ");
-                            TextBlock trackHeader = new()
-                            {
-                                Text = trackName,
-                                Style = Resources["MaterialDesignSubtitle2TextBlock"] as Style,
-                            };
-                            TreeViewItem trackTreeViewItem = new()
-                            {
-                                Header = trackHeader,
-                                DataContext = trackDir,
-                                Background = new SolidColorBrush(Color.FromArgb(19, 0, 0, 0)),
-                            };
-                            trackTreeViewItem.MouseLeftButtonUp += (s, e) =>
-                            {
-                                trackTreeViewItem.IsExpanded = !trackTreeViewItem.IsExpanded;
-                                if (s == trackTreeViewItem)
-                                    e.Handled = true;
-                            };
-                            trackTreeViewItem.Expanded += (s, e) =>
-                            {
-                                if (_expandedHeaders.ContainsKey(carHeader.Text) && !_expandedHeaders[carHeader.Text].Contains(trackName))
-                                    _expandedHeaders[carHeader.Text].Add(trackName);
+								// Make Car Tree View Item
+								TextBlock carHeader = new()
+								{
+									Text = CarModelToCarName[ParseCarName(carDir.Name)],
+									Style = Resources["MaterialDesignSubtitle1TextBlock"] as Style,
+								};
+								TreeViewItem carTreeViewItem = new()
+								{
+									Header = carHeader,
+									Background = new SolidColorBrush(Color.FromArgb(38, 10, 0, 0)),
+								};
+								carTreeViewItem.MouseLeftButtonUp += (s, e) =>
+								{
+									carTreeViewItem.IsExpanded = !carTreeViewItem.IsExpanded;
+									if (s == carTreeViewItem)
+										e.Handled = true;
+								};
+								carTreeViewItem.ContextMenu = GetCarContextMenu(carDir);
+								carTreeViewItem.Expanded += (s, e) =>
+								{
+									if (!_expandedHeaders.ContainsKey(carHeader.Text))
+										_expandedHeaders.Add(carHeader.Text, []);
+								};
+								carTreeViewItem.Collapsed += (s, e) =>
+								{
+									if (s == carTreeViewItem)
+										if (_expandedHeaders.ContainsKey(carHeader.Text))
+											_expandedHeaders.Remove(carHeader.Text);
+								};
 
-                                int targetItemInView = trackTreeViewItem.Items.Count;
-                                targetItemInView.ClipMax(18);
-                                if (targetItemInView > 0)
-                                    ((TreeViewItem)trackTreeViewItem.Items.GetItemAt(targetItemInView - 1)).BringIntoView();
-                            };
-                            trackTreeViewItem.Collapsed += (s, e) =>
-                            {
-                                if (_expandedHeaders.ContainsKey(carHeader.Text))
-                                    _expandedHeaders[carHeader.Text].Remove(trackName);
-                                e.Handled = true;
-                            };
-                            trackTreeViewItem.ContextMenu = GetTrackContextMenu(trackDir);
+								if (_expandedHeaders.ContainsKey(carHeader.Text)) carTreeViewItem.IsExpanded = true;
 
-                            if (_expandedHeaders.ContainsKey(carHeader.Text) && _expandedHeaders[carHeader.Text].Contains(trackName))
-                                trackTreeViewItem.IsExpanded = true;
+								// find track directories in car dir
+								foreach (var trackDir in (Span<DirectoryInfo>)carDir.GetDirectories())
+								{
+									bool trackHasSetups = false;
 
-                            // find setups in track dir
-                            foreach (var trackFile in trackDir.GetFiles())
-                            {
-                                if (trackFile.Extension.Equals(".json"))
-                                {
-                                    TextBlock setupHeader = new()
-                                    {
-                                        Text = trackFile.Name.Replace(".json", ""),
-                                        Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style
-                                    };
-                                    TreeViewItem setupTreeViewItem = new()
-                                    {
-                                        Header = setupHeader,
-                                        DataContext = trackFile,
-                                    };
-                                    setupTreeViewItem.MouseLeftButtonUp += (s, e) => e.Handled = true;
+									string trackName = trackDir.Name;
+									trackName = Regex.Replace(trackName, "^[a-z]", m => m.Value.ToUpper());
+									trackName = trackName.Replace("_", " ");
+									TextBlock trackHeader = new()
+									{
+										Text = trackName,
+										Style = Resources["MaterialDesignSubtitle2TextBlock"] as Style,
+									};
+									TreeViewItem trackTreeViewItem = new()
+									{
+										Header = trackHeader,
+										DataContext = trackDir,
+										Background = new SolidColorBrush(Color.FromArgb(19, 0, 0, 0)),
+									};
+									trackTreeViewItem.MouseLeftButtonUp += (s, e) =>
+									{
+										trackTreeViewItem.IsExpanded = !trackTreeViewItem.IsExpanded;
+										if (s == trackTreeViewItem)
+											e.Handled = true;
+									};
+									trackTreeViewItem.Expanded += (s, e) =>
+									{
+										if (_expandedHeaders.ContainsKey(carHeader.Text) && !_expandedHeaders[carHeader.Text].Contains(trackName))
+											_expandedHeaders[carHeader.Text].Add(trackName);
 
-                                    setupTreeViewItem.ContextMenu = GetSetupContextMenu(trackFile);
+										int targetItemInView = trackTreeViewItem.Items.Count;
+										targetItemInView.ClipMax(18);
+										if (targetItemInView > 0)
+											((TreeViewItem)trackTreeViewItem.Items.GetItemAt(targetItemInView - 1)).BringIntoView();
+									};
+									trackTreeViewItem.Collapsed += (s, e) =>
+									{
+										if (_expandedHeaders.ContainsKey(carHeader.Text))
+											_expandedHeaders[carHeader.Text].Remove(trackName);
+										e.Handled = true;
+									};
+									trackTreeViewItem.ContextMenu = GetTrackContextMenu(trackDir);
 
-                                    trackTreeViewItem.Items.Add(setupTreeViewItem);
-                                }
-                            }
+									if (_expandedHeaders.ContainsKey(carHeader.Text) && _expandedHeaders[carHeader.Text].Contains(trackName))
+										trackTreeViewItem.IsExpanded = true;
 
-                            // check for any setups so the tree view doesn't get cluttered with cars that have no setups
-                            if (trackTreeViewItem.Items.Count > 0)
-                            {
-                                carHasSetups = true;
-                                trackHasSetups = true;
-                            }
+									// find setups in track dir
+									foreach (var trackFile in (Span<FileInfo>)trackDir.GetFiles())
+									{
+										if (trackFile.Extension.Equals(".json"))
+										{
+											TextBlock setupHeader = new()
+											{
+												Text = trackFile.Name.Replace(".json", ""),
+												Style = Resources["MaterialDesignDataGridTextColumnStyle"] as Style
+											};
+											TreeViewItem setupTreeViewItem = new()
+											{
+												Header = setupHeader,
+												DataContext = trackFile,
+											};
+											setupTreeViewItem.MouseLeftButtonUp += (s, e) => e.Handled = true;
 
-                            if (trackHasSetups)
-                                carTreeViewItem.Items.Add(trackTreeViewItem);
-                        }
+											setupTreeViewItem.ContextMenu = GetSetupContextMenu(trackFile);
 
-                        if (carHasSetups)
-                            setupsTreeView.Items.Add(carTreeViewItem);
-                    }
-                }
-                ThreadPool.QueueUserWorkItem(x =>
-                {
-                    Thread.Sleep(2000);
-                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
-                });
-            }));
-        }
-        catch (Exception e)
-        {
-            LogWriter.WriteToLog(e);
-        }
-    }
+											trackTreeViewItem.Items.Add(setupTreeViewItem);
+										}
+									}
 
-    private ContextMenu GetCarContextMenu(DirectoryInfo directory)
-    {
-        ContextMenu menu = ContextMenuHelper.DefaultContextMenu();
+									// check for any setups so the tree view doesn't get cluttered with cars that have no setups
+									if (trackTreeViewItem.Items.Count > 0)
+									{
+										carHasSetups = true;
+										trackHasSetups = true;
+									}
 
-        MenuItem folder = ContextMenuHelper.DefaultMenuItem("Open in explorer", PackIconKind.FolderOpen);
-        folder.CommandParameter = directory;
-        folder.Click += OpenFolder_Click;
+									if (trackHasSetups)
+										carTreeViewItem.Items.Add(trackTreeViewItem);
+								}
 
-        menu.Items.Add(folder);
-        return menu;
-    }
+								if (carHasSetups)
+									setupsTreeView.Items.Add(carTreeViewItem);
+							}
+						}
+						//Task.Run(() =>
+						//{
+						//	Thread.Sleep(2000);
+						//	GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, false);
+						//});
+					}));
 
-    private ContextMenu GetTrackContextMenu(DirectoryInfo directory)
-    {
-        ContextMenu menu = ContextMenuHelper.DefaultContextMenu();
+					if (showMessage)
+					{
+						MainWindow.Instance.ClearSnackbar();
+						MainWindow.Instance.EnqueueSnackbarMessage("Refreshed Setups");
+					}
 
-        MenuItem folder = ContextMenuHelper.DefaultMenuItem("Open in explorer", PackIconKind.FolderOpen);
-        folder.CommandParameter = directory;
-        folder.Click += OpenFolder_Click;
+					// debounce
+					Thread.Sleep(1000);
+					_refreshTask = Task.CompletedTask;
+				});
+			}
+		}
+		catch (Exception e)
+		{
+			LogWriter.WriteToLog(e);
+		}
+	}
 
-        menu.Items.Add(folder);
+	private ContextMenu GetCarContextMenu(DirectoryInfo directory)
+	{
+		ContextMenu menu = ContextMenuHelper.DefaultContextMenu();
 
-        return menu;
-    }
+		MenuItem folder = ContextMenuHelper.DefaultMenuItem("Open in explorer", PackIconKind.FolderOpen);
+		folder.CommandParameter = directory;
+		folder.Click += OpenFolder_Click;
 
-    private void OpenFolder_Click(object sender, RoutedEventArgs e)
-    {
-        if (sender.GetType() == typeof(MenuItem))
-        {
-            MenuItem button = (MenuItem)sender;
+		menu.Items.Add(folder);
+		return menu;
+	}
 
-            DirectoryInfo directory = (DirectoryInfo)button.CommandParameter;
-            Process.Start("explorer", directory.FullName);
-        }
-    }
+	private ContextMenu GetTrackContextMenu(DirectoryInfo directory)
+	{
+		ContextMenu menu = ContextMenuHelper.DefaultContextMenu();
 
-    private ContextMenu GetSetupContextMenu(FileInfo file)
-    {
-        ContextMenu contextMenu = ContextMenuHelper.DefaultContextMenu();
+		MenuItem folder = ContextMenuHelper.DefaultMenuItem("Open in explorer", PackIconKind.FolderOpen);
+		folder.CommandParameter = directory;
+		folder.Click += OpenFolder_Click;
 
-        MenuItem copy = ContextMenuHelper.DefaultMenuItem("Copy to clipboard", PackIconKind.ContentCopy);
-        copy.CommandParameter = file;
-        copy.Click += CopyToClipBoard_Click;
-        contextMenu.Items.Add(copy);
+		menu.Items.Add(folder);
 
-        MenuItem addCompare1 = ContextMenuHelper.DefaultMenuItem("Add to compare 1", PackIconKind.Compare);
-        addCompare1.CommandParameter = file;
-        addCompare1.Click += AddToCompare1_Click;
-        contextMenu.Items.Add(addCompare1);
+		return menu;
+	}
 
-        MenuItem addCompare2 = ContextMenuHelper.DefaultMenuItem("Add to compare 2", PackIconKind.Compare);
-        addCompare2.CommandParameter = file;
-        addCompare2.Click += AddToCompare2_Click;
-        contextMenu.Items.Add(addCompare2);
+	private void OpenFolder_Click(object sender, RoutedEventArgs e)
+	{
+		if (sender.GetType() == typeof(MenuItem))
+		{
+			MenuItem button = (MenuItem)sender;
 
-        MenuItem copyToOtherTrack = ContextMenuHelper.DefaultMenuItem("Copy to other track", PackIconKind.SwapVertical);
-        copyToOtherTrack.CommandParameter = file;
-        copyToOtherTrack.Click += CopyToOtherTrack_Click;
-        contextMenu.Items.Add(copyToOtherTrack);
+			DirectoryInfo directory = (DirectoryInfo)button.CommandParameter;
+			Process.Start("explorer", directory.FullName);
+		}
+	}
 
-        return contextMenu;
-    }
+	private ContextMenu GetSetupContextMenu(FileInfo file)
+	{
+		ContextMenu contextMenu = ContextMenuHelper.DefaultContextMenu();
 
-    private void CopyToClipBoard_Click(object sender, RoutedEventArgs e)
-    {
-        if (sender is MenuItem button)
-        {
-            FileInfo file = (FileInfo)button.CommandParameter;
-            Thread thread = new(() =>
-            {
-                Clipboard.SetFileDropList(
-                [
-                    file.FullName
-                ]);
+		MenuItem copy = ContextMenuHelper.DefaultMenuItem("Copy to clipboard", PackIconKind.ContentCopy);
+		copy.CommandParameter = file;
+		copy.Click += CopyToClipBoard_Click;
+		contextMenu.Items.Add(copy);
 
-                Dispatcher.Invoke(new Action(() =>
-                {
-                    MainWindow.Instance.EnqueueSnackbarMessage($"Copied setup \'{file.Name}\' to the clipboard.");
-                }));
-            });
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
-        }
-    }
+		MenuItem addCompare1 = ContextMenuHelper.DefaultMenuItem("Add to compare 1", PackIconKind.Compare);
+		addCompare1.CommandParameter = file;
+		addCompare1.Click += AddToCompare1_Click;
+		contextMenu.Items.Add(addCompare1);
 
-    private void CopyToOtherTrack_Click(object sender, RoutedEventArgs e)
-    {
-        if (sender is MenuItem button)
-        {
-            FileInfo file = (FileInfo)button.DataContext;
+		MenuItem addCompare2 = ContextMenuHelper.DefaultMenuItem("Add to compare 2", PackIconKind.Compare);
+		addCompare2.CommandParameter = file;
+		addCompare2.Click += AddToCompare2_Click;
+		contextMenu.Items.Add(addCompare2);
 
-            SetupImporter.Instance.Open(file.FullName, true, true);
+		MenuItem copyToOtherTrack = ContextMenuHelper.DefaultMenuItem("Copy to other track", PackIconKind.SwapVertical);
+		copyToOtherTrack.CommandParameter = file;
+		copyToOtherTrack.Click += CopyToOtherTrack_Click;
+		contextMenu.Items.Add(copyToOtherTrack);
 
-            (button.Parent as ContextMenu).IsOpen = false;
-        }
-    }
+		return contextMenu;
+	}
 
-    private void AddToCompare2_Click(object sender, RoutedEventArgs e)
-    {
-        if (sender.GetType() == typeof(MenuItem))
-        {
-            MenuItem button = (MenuItem)sender;
+	private void CopyToClipBoard_Click(object sender, RoutedEventArgs e)
+	{
+		if (sender is MenuItem button)
+		{
+			FileInfo file = (FileInfo)button.CommandParameter;
+			Thread thread = new(() =>
+			{
+				Clipboard.SetFileDropList(
+				[
+					file.FullName
+				]);
 
-            SetupComparer.Instance.SetSetup2((FileInfo)button.CommandParameter);
+				Dispatcher.Invoke(new Action(() =>
+				{
+					MainWindow.Instance.EnqueueSnackbarMessage($"Copied setup \'{file.Name}\' to the clipboard.");
+				}));
+			});
+			thread.SetApartmentState(ApartmentState.STA);
+			thread.Start();
+		}
+	}
 
-            MainWindow.Instance.snackbar.MessageQueue.Clear();
-            MainWindow.Instance.snackbar.MessageQueue.Enqueue("Added setup to compare 2");
+	private void CopyToOtherTrack_Click(object sender, RoutedEventArgs e)
+	{
+		if (sender is MenuItem button)
+		{
+			FileInfo file = (FileInfo)button.DataContext;
 
-            (button.Parent as ContextMenu).IsOpen = false;
-        }
-    }
+			SetupImporter.Instance.Open(file.FullName, true, true);
 
-    private void AddToCompare1_Click(object sender, RoutedEventArgs e)
-    {
-        if (sender.GetType() == typeof(MenuItem))
-        {
-            MenuItem button = (MenuItem)sender;
+			(button.Parent as ContextMenu).IsOpen = false;
+		}
+	}
 
-            SetupComparer.Instance.SetSetup1((FileInfo)button.CommandParameter);
+	private void AddToCompare2_Click(object sender, RoutedEventArgs e)
+	{
+		if (sender.GetType() == typeof(MenuItem))
+		{
+			MenuItem button = (MenuItem)sender;
 
-            MainWindow.Instance.snackbar.MessageQueue.Clear();
-            MainWindow.Instance.snackbar.MessageQueue.Enqueue("Added setup to compare 1");
+			SetupComparer.Instance.SetSetup2((FileInfo)button.CommandParameter);
 
-            (button.Parent as ContextMenu).IsOpen = false;
-        }
-    }
+			MainWindow.Instance.snackbar.MessageQueue.Clear();
+			MainWindow.Instance.snackbar.MessageQueue.Enqueue("Added setup to compare 2");
+
+			(button.Parent as ContextMenu).IsOpen = false;
+		}
+	}
+
+	private void AddToCompare1_Click(object sender, RoutedEventArgs e)
+	{
+		if (sender.GetType() == typeof(MenuItem))
+		{
+			MenuItem button = (MenuItem)sender;
+
+			SetupComparer.Instance.SetSetup1((FileInfo)button.CommandParameter);
+
+			MainWindow.Instance.snackbar.MessageQueue.Clear();
+			MainWindow.Instance.snackbar.MessageQueue.Enqueue("Added setup to compare 1");
+
+			(button.Parent as ContextMenu).IsOpen = false;
+		}
+	}
 
 }
