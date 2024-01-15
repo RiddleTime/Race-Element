@@ -13,26 +13,21 @@ namespace RaceElement.Controls;
 /// </summary>
 public partial class SetupsTab : UserControl
 {
-    public static SetupsTab Instance { get; private set; }
+	public static SetupsTab Instance { get; private set; }
 
-    public SetupsTab()
-    {
-        InitializeComponent();
+	public SetupsTab()
+	{
+		InitializeComponent();
 
-        headerSetupTree.MouseRightButtonUp += (s, e) =>
-        {
-            ThreadPool.QueueUserWorkItem(x =>
-            {
-                Debug.WriteLine("Refreshing setups with right click");
-                MainWindow.Instance.EnqueueSnackbarMessage("Refreshing Setups.... Please wait");
-                SetupBrowser.Instance.FetchAllSetups();
-                MainWindow.Instance.ClearSnackbar();
-                MainWindow.Instance.EnqueueSnackbarMessage("Refreshed Setups");
-            });
-            e.Handled = true;
-        };
+		headerSetupTree.MouseRightButtonUp += (s, e) =>
+		{
+			SetupBrowser.Instance.FetchAllSetups();
 
-        Instance = this;
-    }
+			
+			e.Handled = true;
+		};
+
+		Instance = this;
+	}
 
 }
