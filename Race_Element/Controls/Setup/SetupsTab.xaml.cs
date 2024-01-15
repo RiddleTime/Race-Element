@@ -23,7 +23,7 @@ public partial class SetupsTab : UserControl
         {
             ThreadPool.QueueUserWorkItem(x =>
             {
-                Debug.WriteLine("Refreshting setups with right click");
+                Debug.WriteLine("Refreshing setups with right click");
                 MainWindow.Instance.EnqueueSnackbarMessage("Refreshing Setups.... Please wait");
                 SetupBrowser.Instance.FetchAllSetups();
                 MainWindow.Instance.ClearSnackbar();

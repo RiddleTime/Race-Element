@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using TwitchLib.Client;
 using TwitchLib.Communication.Clients;
@@ -56,7 +57,13 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _textBrush = new SolidBrush(Color.FromArgb(255, _config.Colors.TextColor));
 
         _dividerPen = new(new SolidBrush(Color.FromArgb(25, _config.Colors.TextColor)), 0.5f);
+        _font = FontUtil.FontRoboto(11);
 
+        SetupTwitchClient();
+    }
+
+    private void SetupTwitchClient()
+    {
         if (_isPreviewing) return;
 
         var credentials = new TwitchLib.Client.Models.ConnectionCredentials(_config.Credentials.TwitchUser, _config.Credentials.OAuthToken);
@@ -74,16 +81,13 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
             _messages.Add(new($"{DateTime.Now:HH:mm} {e.ChatMessage.DisplayName}: {e.ChatMessage.Message}"));
         };
         _twitchClient.OnConnected += (s, e) => _twitchClient.SendMessage(_twitchClient.JoinedChannels[0], "Race Element has Connected to Twitch Chat!");
-
-        _font = FontUtil.FontRoboto(11);
     }
 
     public sealed override void BeforeStop()
     {
         if (_isPreviewing) return;
 
-        if (_twitchClient.IsConnected)
-            Task.Run(() => _twitchClient.Disconnect());
+        if (_twitchClient.IsConnected) Task.Run(() => _twitchClient.Disconnect());
 
         _cachedBackground?.Dispose();
         _stringFormat?.Dispose();
@@ -109,16 +113,19 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         if (_messages.Count > 0)
         {
             int y = 0;
-            foreach (string message in _messages.TakeLast(50).Reverse())
+
+
+            for (int i = _messages.Count - 1; i >= 0; i--)
             {
                 if (y > _config.Shape.Height) break;
 
+                string message = _messages[i];
+
                 var size = g.MeasureString(message, _font, _config.Shape.Width, _stringFormat);
-
-                if (_config.Colors.BackgroundOpacity != 0) // draw divider line
-                    g.DrawLine(_dividerPen, 0, y + size.Height, _config.Shape.Width, y + size.Height);
-
                 g.DrawStringWithShadow(message, _font, _textBrush, new RectangleF(0, y, size.Width, size.Height), _stringFormat);
+
+                if (_config.Colors.BackgroundOpacity != 0) // draw divider line at the bottom
+                    g.DrawLine(_dividerPen, 0, y + size.Height, _config.Shape.Width, y + size.Height);
 
                 y += (int)Math.Ceiling(size.Height);
             }

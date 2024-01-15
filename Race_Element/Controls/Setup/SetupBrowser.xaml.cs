@@ -33,14 +33,14 @@ public partial class SetupBrowser : UserControl
     private string _selectedSetup;
 
     // car -> track
-    private Dictionary<string, List<string>> _expandedHeaders = [];
+    private readonly Dictionary<string, List<string>> _expandedHeaders = [];
 
     public SetupBrowser()
     {
         InitializeComponent();
 
         _setupRenderer = new FlowDocSetupRenderer();
-        ThreadPool.QueueUserWorkItem(x => FetchAllSetups());
+        this.Loaded += (s, e) => ThreadPool.QueueUserWorkItem(x => FetchAllSetups());
         setupsTreeView.SelectedItemChanged += SetupsTreeView_SelectedItemChanged;
 
         buttonEditSetup.Click += (o, e) =>
@@ -58,7 +58,7 @@ public partial class SetupBrowser : UserControl
             return;
 
         CarModels carModel = ConversionFactory.ParseCarName(carParseName);
-        if(carModel == CarModels.None) return;
+        if (carModel == CarModels.None) return;
 
         ConversionFactory.CarModelToCarName.TryGetValue(carModel, out string carName);
         AbstractTrackData trackData = TrackData.Tracks.Find(x => track == x.GameName);
@@ -96,6 +96,20 @@ public partial class SetupBrowser : UserControl
         }
     }
 
+    private void ClearSetups()
+    {
+        for (int i = 0; i < setupsTreeView.Items.Count; i++)
+        {
+            TreeViewItem item = (TreeViewItem)setupsTreeView.Items[i];
+            item.ContextMenu?.Items.Clear();
+            if (item.DataContext != null)
+                item.DataContext = null;
+        }
+
+        setupsTreeView.UpdateDefaultStyle();
+        setupsTreeView.Items.Clear();
+    }
+
     internal void FetchAllSetups()
     {
         DirectoryInfo setupsDirectory = new(FileUtil.SetupsPath);
@@ -107,9 +121,7 @@ public partial class SetupBrowser : UserControl
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                setupsTreeView.Items.Clear();
-
-
+                ClearSetups();
 
                 // Pre-expand the current car and track leafs
                 var staticPage = ACCSharedMemory.Instance.ReadStaticPageFile();
