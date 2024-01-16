@@ -129,7 +129,7 @@ public partial class SetupBrowser : UserControl
             setupsTreeView.Items.RemoveAt(0);
         }
 
-        Task.Run(() => GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true));
+        Task.Run(() => GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true));
     }
 
     internal void RefreshTree(bool showMessage = true)
