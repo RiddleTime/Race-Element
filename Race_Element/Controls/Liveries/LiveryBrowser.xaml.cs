@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -66,13 +67,20 @@ public partial class LiveryBrowser : UserControl
             if ((bool)e.NewValue)
                 LiveryDisplayer.Instance.ReloadLivery();
             else
+            {
                 LiveryDisplayer.Instance.Cache();
 
-            ThreadPool.QueueUserWorkItem(x =>
-            {
-                Thread.Sleep(10 * 1000);
-                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
-            });
+                Task.Run(() =>
+                {
+                    Debug.WriteLine("visible changed to false, cleaning");
+                    Thread.Sleep(10 * 1000);
+
+                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                    GC.WaitForPendingFinalizers();
+
+                    Process.GetCurrentProcess().MaxWorkingSet = 150 * 1_000_000;
+                });
+            }
         };
     }
 

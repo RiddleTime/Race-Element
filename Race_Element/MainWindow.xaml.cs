@@ -16,6 +16,7 @@ using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -332,6 +333,17 @@ public partial class MainWindow : Window
                                 ShowInTaskbar = false;
                                 Hide();
                             }
+
+                            Task.Run(() =>
+                            {
+                                Debug.WriteLine("visible changed to false, cleaning");
+                                Thread.Sleep(10 * 1000);
+
+                                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                                GC.WaitForPendingFinalizers();
+
+                                Process.GetCurrentProcess().MaxWorkingSet = 50 * 1_000_000;
+                            });
 
                             break;
                         }

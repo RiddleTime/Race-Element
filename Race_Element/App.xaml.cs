@@ -47,6 +47,9 @@ public partial class App : Application
         if (!internalPath.Exists) internalPath.Create();
         ProfileOptimization.SetProfileRoot(FileUtil.RaceElementInternalPath);
         ProfileOptimization.StartProfile("RaceElementProfile");
+
+        using Process current = Process.GetCurrentProcess();
+        current.PriorityClass = ProcessPriorityClass.BelowNormal;
     }
 
 }
