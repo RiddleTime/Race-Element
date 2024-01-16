@@ -21,7 +21,7 @@
 
   <Grid Background="#7F000000" x:Name="backGround">
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="7"/>
+      <ColumnDefinition Width="6"/>
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="50"/>
@@ -30,11 +30,11 @@
 
     <materialDesign:TransitioningContent Grid.Column="1">
       <materialDesign:TransitioningContent.Effect>
-        <DropShadowEffect Color="OrangeRed" Opacity="0.85" BlurRadius="8" ShadowDepth="2.5"/>
+        <DropShadowEffect Color="OrangeRed" Opacity="0.95" BlurRadius="15" ShadowDepth="0"/>
       </materialDesign:TransitioningContent.Effect>
 
-      <StackPanel Orientation="Horizontal" Grid.Column="1">
-        <TextBlock x:Name="Title" Foreground="#EFEFEFEF" FontFamily="{StaticResource Conthrax}" FontSize="24" FontWeight="SemiBold" VerticalAlignment="Center">
+      <StackPanel Orientation="Horizontal">
+        <TextBlock x:Name="Title" Foreground="#EFEFEFEF" FontFamily="{StaticResource Conthrax}" FontSize="24" FontWeight="SemiBold" FontStyle="Italic" VerticalAlignment="Center">
                   Race Element
         </TextBlock>
 
