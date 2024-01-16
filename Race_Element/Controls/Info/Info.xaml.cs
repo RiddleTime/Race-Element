@@ -73,7 +73,7 @@ public partial class Info : UserControl
 
     private async void CheckNewestVersion()
     {
-        Thread.Sleep(2000);
+        Thread.Sleep(500);
 
         RemoveTempVersionFile();
 #if DEBUG
