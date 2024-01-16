@@ -22,18 +22,18 @@ internal sealed class SpeedometerConfiguration : OverlayConfiguration
         public int RefreshRate { get; init; } = 20;
     }
 
-    [ConfigGrouping("Shape", "Modify the shape of the guage.")]
+    [ConfigGrouping("Shape", "Modify the shape of the gauge.")]
     public ShapeGrouping Shape { get; init; } = new ShapeGrouping();
     public sealed class ShapeGrouping
     {
-        [ToolTip("Sets the way the guage fills up, Clockwise is positive degrees and counter clockwise is negative degrees.")]
+        [ToolTip("Sets the way the gauge fills up, Clockwise is positive degrees and counter clockwise is negative degrees.")]
         public GuageDirection Direction { get; init; } = GuageDirection.Clockwise;
 
-        [ToolTip("Sets where the circular guage starts (0 degrees is at the positive x-axis, 135 is default).")]
+        [ToolTip("Sets where the circular gauge starts (0 degrees is at the positive x-axis, 135 is default).")]
         [IntRange(0, 360, 1)]
         public int StartAngle { get; init; } = 135;
 
-        [ToolTip("Sets the amount of degrees of the circular guage (270 is defualt).")]
+        [ToolTip("Sets the amount of degrees of the circular gauge (270 is defualt).")]
         [IntRange(45, 340, 1)]
         public int SweepAngle { get; init; } = 270;
     }
@@ -48,7 +48,7 @@ internal sealed class SpeedometerConfiguration : OverlayConfiguration
         [ToolTip("Sets the color of indicator that shows the percentual RPMs.")]
         public Color IndicatorColor { get; init; } = Color.FromArgb(255, 255, 255, 255);
 
-        [ToolTip("Sets the background color of the guage")]
+        [ToolTip("Sets the background color of the gauge")]
         public Color BackgroundColor { get; init; } = Color.FromArgb(255, 0, 0, 0);
 
         [ToolTip("Sets the opacity of the background color")]
