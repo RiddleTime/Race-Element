@@ -229,6 +229,16 @@ public partial class MainWindow : Window
                 ShowInTaskbar = false;
                 Hide();
             }
+
+            Task.Run(() =>
+            {
+                Thread.Sleep(5 * 1000);
+
+                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                GC.WaitForPendingFinalizers();
+
+                Process.GetCurrentProcess().MaxWorkingSet = 50 * 1_000_000;
+            });
         }
     }
 
