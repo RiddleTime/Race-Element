@@ -1,6 +1,7 @@
 ﻿using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
+using ScottPlot.Plottable;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -52,14 +53,22 @@ public sealed class StartScreenOverlay : AbstractOverlay
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
             g.TextContrast = 1;
 
+            using Matrix transform = g.Transform;
+            transform.Shear(-0.3f, 0);
+            transform.Translate(7f, 0);
+            g.Transform = transform;
+
             string header = $"Race Element {Version}";
             Font font16 = FontUtil.FontConthrax(32);
             int font16Height = (int)font16.GetHeight(g);
             int halfStringLength = (int)(g.MeasureString(header, font16).Width / 2);
             int x = this.Width / 2 - halfStringLength;
-            g.DrawStringWithShadow(header, font16, Color.FromArgb(215, Color.White), new Point(x, 0), 2f, new StringFormat() { LineAlignment = StringAlignment.Near });
+            g.DrawStringWithShadow(header, font16, Color.FromArgb(215, Color.White), new Point(x, 0), 4f, new StringFormat() { LineAlignment = StringAlignment.Near });
             font16.Dispose();
 
+            transform.Shear(0.3f, 0);
+            transform.Translate(-12f, -3f);
+            g.Transform = transform;
             string subHeader = "Developed by Reinier Klarenberg";
             Font font11 = FontUtil.FontConthrax(13);
             g.DrawStringWithShadow(subHeader, font11, Color.FromArgb(185, Color.White), new Point(x + 6, font16Height - 2));
@@ -104,7 +113,10 @@ public sealed class StartScreenOverlay : AbstractOverlay
 
     public override void Render(Graphics g)
     {
+
         tweener.Update(stopwatch.ElapsedMilliseconds / 1000f);
+
+        g.SmoothingMode = SmoothingMode.HighQuality;
 
         _cachedBackground?.Draw(g);
 
