@@ -169,8 +169,8 @@ public partial class SetupBrowser : UserControl
                                 bool carHasSetups = false;
 
                                 // check whether any setups exist for this car
-                                foreach (var trackDir in (Span<DirectoryInfo>)carDir.GetDirectories())
-                                    foreach (var carDirFile in (Span<FileInfo>)trackDir.GetFiles())
+                                foreach (var trackDir in (ReadOnlySpan<DirectoryInfo>)carDir.GetDirectories())
+                                    foreach (var carDirFile in (ReadOnlySpan<FileInfo>)trackDir.GetFiles())
                                         if (carDirFile.Extension == ".json")
                                             carHasSetups = true;
 
@@ -196,18 +196,15 @@ public partial class SetupBrowser : UserControl
                                 };
                                 carTreeViewItem.ContextMenu = GetCarContextMenu(carDir);
 
-
-
-
                                 carTreeViewItem.Expanded += (s, e) =>
                                 {
                                     if (!carTreeViewItem.HasItems)
                                     {
                                         Debug.WriteLine($"Loading tracks for {carHeader.Text} ");
-                                        foreach (var trackDir in (Span<DirectoryInfo>)carDir.GetDirectories())
+                                        foreach (var trackDir in (ReadOnlySpan<DirectoryInfo>)carDir.GetDirectories())
                                         {
                                             bool trackHasSetups = false;
-                                            foreach (var carDirFile in (Span<FileInfo>)trackDir.GetFiles())
+                                            foreach (var carDirFile in (ReadOnlySpan<FileInfo>)trackDir.GetFiles())
                                                 if (carDirFile.Extension == ".json")
                                                     trackHasSetups = true;
 
@@ -257,7 +254,7 @@ public partial class SetupBrowser : UserControl
                                                 if (!trackTreeViewItem.HasItems)
                                                 {
                                                     // find setups in track dir
-                                                    foreach (var trackFile in (Span<FileInfo>)trackDir.GetFiles())
+                                                    foreach (var trackFile in (ReadOnlySpan<FileInfo>)trackDir.GetFiles())
                                                         if (trackFile.Extension.Equals(".json"))
                                                         {
                                                             TextBlock setupHeader = new()
