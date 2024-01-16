@@ -7,41 +7,39 @@
                xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              >
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="Yellow" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TabControl.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        </ResourceDictionary>
-    </UserControl.Resources>
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="Yellow" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TabControl.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+      <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </ResourceDictionary>
+  </UserControl.Resources>
 
-    <Grid Background="#7F000000" x:Name="backGround">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="7"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="50"/>
-            <ColumnDefinition Width="140"/>
-        </Grid.ColumnDefinitions>
+  <Grid Background="#7F000000" x:Name="backGround">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="7"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="50"/>
+      <ColumnDefinition Width="140"/>
+    </Grid.ColumnDefinitions>
 
-        <materialDesign:TransitioningContent Grid.Column="1">
-            <materialDesign:TransitioningContent.OpeningEffects>
-                <materialDesign:TransitionEffect Kind="FadeIn"/>
-            </materialDesign:TransitioningContent.OpeningEffects>
+    <materialDesign:TransitioningContent Grid.Column="1">
+      <materialDesign:TransitioningContent.Effect>
+        <DropShadowEffect Color="OrangeRed" Opacity="0.85" BlurRadius="8" ShadowDepth="2.5"/>
+      </materialDesign:TransitioningContent.Effect>
 
-            <materialDesign:TransitioningContent.Effect>
-                <DropShadowEffect Color="Black" Opacity="0.85" BlurRadius="4" ShadowDepth="2.5"/>
-            </materialDesign:TransitioningContent.Effect>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="Title" Foreground="#EFEFEFEF" FontFamily="{StaticResource Conthrax}" FontSize="24" FontWeight="SemiBold" VerticalAlignment="Center">
-                </TextBlock>
+      <StackPanel Orientation="Horizontal" Grid.Column="1">
+        <TextBlock x:Name="Title" Foreground="#EFEFEFEF" FontFamily="{StaticResource Conthrax}" FontSize="24" FontWeight="SemiBold" VerticalAlignment="Center">
+                  Race Element
+        </TextBlock>
 
-                <StackPanel x:Name="stackPanelActivatedIcons"  Orientation="Horizontal" Margin="10,0,0,0" HorizontalAlignment="Right">
-                    <materialDesign:PackIcon
+        <StackPanel x:Name="stackPanelActivatedIcons"  Orientation="Horizontal" Margin="10,0,0,0" HorizontalAlignment="Right">
+          <materialDesign:PackIcon
                         x:Name="iconSteeringLock"
                         Kind="Steering"
                         VerticalAlignment="Center"
@@ -56,7 +54,7 @@
                         Visibility="Collapsed"
                         Cursor="Hand"
                     />
-                    <materialDesign:PackIcon
+          <materialDesign:PackIcon
                         x:Name="iconSetupHider"
                         Kind="EyeOff"
                         VerticalAlignment="Center"
@@ -71,7 +69,7 @@
                         Visibility="Collapsed"
                         Cursor="Hand"
                     />
-                    <materialDesign:PackIcon
+          <materialDesign:PackIcon
                         x:Name="iconAutoSaveReplay"
                         Kind="Camcorder"
                         VerticalAlignment="Center"
@@ -87,29 +85,29 @@
                         Cursor="Hand"
                     />
 
-                    <!--<Button x:Name="copySpline" Visibility="Collapsed">Copy Spline</Button>-->
-                </StackPanel>
-            </StackPanel>
-        </materialDesign:TransitioningContent>
+          <!--<Button x:Name="copySpline" Visibility="Collapsed">Copy Spline</Button>-->
+        </StackPanel>
+      </StackPanel>
+    </materialDesign:TransitioningContent>
 
-        <Grid Grid.Column="2">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Visibility="Collapsed" Width="160" x:Name="updateButton" Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}">
-                    Update to 0.1.7.6
-                </Button>
-            </StackPanel>
-        </Grid>
+    <Grid Grid.Column="2">
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+        <Button Visibility="Collapsed" Width="160" x:Name="updateButton" Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}">
+          Update to 0.1.7.6
+        </Button>
+      </StackPanel>
+    </Grid>
 
-        <Grid Grid.Column="3">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+    <Grid Grid.Column="3">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" x:Name="buttonHelp" Margin="0" Padding="0" Style="{StaticResource MaterialDesignFlatSecondaryDarkBgButton}" 
+        <Button Grid.Column="0" x:Name="buttonHelp" Margin="0" Padding="0" Style="{StaticResource MaterialDesignFlatSecondaryDarkBgButton}" 
                         Background="Transparent" BorderBrush="Transparent" Focusable="False" VerticalAlignment="Center"
                         ToolTip="Opens the Info Tab">
-                    <materialDesign:PackIcon
+          <materialDesign:PackIcon
                         Margin="0"
                         Kind="QuestionMarkCircleOutline"
                         VerticalAlignment="Center"
@@ -118,22 +116,22 @@
                         Width="22"
                         Height="22"
                      />
-                </Button>
-            </Grid>
-        </Grid>
+        </Button>
+      </Grid>
+    </Grid>
 
-        <Grid Grid.Column="4">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+    <Grid Grid.Column="4">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition/>
+          <ColumnDefinition/>
+          <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
 
-                <!--Icons here https://materialdesignicons.com/icon/settings-->
+        <!--Icons here https://materialdesignicons.com/icon/settings-->
 
-                <Button Grid.Column="0" x:Name="buttonMinimize" Margin="0,0,2,0" Style="{StaticResource MaterialDesignFlatSecondaryLightButton}" Focusable="False" VerticalAlignment="Center">
-                    <materialDesign:PackIcon
+        <Button Grid.Column="0" x:Name="buttonMinimize" Margin="0,0,2,0" Style="{StaticResource MaterialDesignFlatSecondaryLightButton}" Focusable="False" VerticalAlignment="Center">
+          <materialDesign:PackIcon
                         Kind="WindowMinimize"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
@@ -141,9 +139,9 @@
                         Height="20"
                         Foreground="White"    
                         />
-                </Button>
-                <Button Grid.Column="1" x:Name="buttonMaximize" Margin="0,0,2,0" Style="{StaticResource MaterialDesignFlatSecondaryLightButton}" Focusable="False" VerticalAlignment="Center">
-                    <materialDesign:PackIcon
+        </Button>
+        <Button Grid.Column="1" x:Name="buttonMaximize" Margin="0,0,2,0" Style="{StaticResource MaterialDesignFlatSecondaryLightButton}" Focusable="False" VerticalAlignment="Center">
+          <materialDesign:PackIcon
                         x:Name="minMaxButton"
                         Kind="WindowMaximize"
                         VerticalAlignment="Center"
@@ -152,20 +150,20 @@
                         Height="20"
                         Foreground="White"    
                         />
-                </Button>
-                <Button Grid.Column="2" x:Name="buttonExit" Style="{StaticResource MaterialDesignFlatButton}" Focusable="False" VerticalAlignment="Center" >
-                    <materialDesign:PackIcon
+        </Button>
+        <Button Grid.Column="2" x:Name="buttonExit" Style="{StaticResource MaterialDesignFlatButton}" Focusable="False" VerticalAlignment="Center" >
+          <materialDesign:PackIcon
                         Kind="CloseBox"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
                         Width="20"
                         Height="20"
                         Foreground="White">
-                    </materialDesign:PackIcon>
-                </Button>
-            </Grid>
-        </Grid>
-
-
+          </materialDesign:PackIcon>
+        </Button>
+      </Grid>
     </Grid>
+
+
+  </Grid>
 </UserControl>
