@@ -1,5 +1,5 @@
-﻿using RaceElement.Util;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using RaceElement.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,7 +18,7 @@ internal class LiveryTagging
         /// <summary>
         /// <TeamName, CustomSkinName>
         /// </summary>
-        public List<TaggedLivery> TaggedLiveries { get; set; } = new List<TaggedLivery>();
+        public List<TaggedLivery> TaggedLiveries { get; set; } = [];
     }
 
     public class TaggedLivery
@@ -52,10 +52,10 @@ internal class LiveryTagging
 
         if (jsonFiles.Length == 0)
         {
-            return new List<LiveryTag>();
+            return [];
         }
 
-        List<LiveryTag> allTags = new();
+        List<LiveryTag> allTags = [];
 
         foreach (FileInfo file in jsonFiles)
         {

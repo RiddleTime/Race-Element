@@ -12,7 +12,7 @@ public class SessionTimeTracker
     {
         get
         {
-            if (_instance == null) _instance = new SessionTimeTracker();
+            _instance ??= new SessionTimeTracker();
             return _instance;
         }
     }

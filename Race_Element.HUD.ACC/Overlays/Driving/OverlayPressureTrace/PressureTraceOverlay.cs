@@ -6,7 +6,7 @@ using System.Drawing;
 namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace;
 
 [Overlay(Name = "Pressure Trace",
-    Version = 1.00, 
+    Version = 1.00,
     OverlayType = OverlayType.Drive,
     Description = "Live graphs of the tyre pressures, green is within range, red is too high, blue is too low.",
     OverlayCategory = OverlayCategory.Physics)]

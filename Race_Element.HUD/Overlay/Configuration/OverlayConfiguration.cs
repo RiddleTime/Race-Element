@@ -42,7 +42,7 @@ public abstract class OverlayConfiguration
 
     public static List<ConfigField> GetConfigFields(OverlayConfiguration overlayConfiguration)
     {
-        List<ConfigField> configFields = new();
+        List<ConfigField> configFields = [];
         var runtimeProperties = overlayConfiguration.GetType().GetRuntimeProperties();
         foreach (PropertyInfo nested in runtimeProperties)
         {

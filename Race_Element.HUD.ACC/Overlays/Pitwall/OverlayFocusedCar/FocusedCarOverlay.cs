@@ -32,7 +32,7 @@ internal class FocusedCarOverlay : AbstractOverlay
     private float minX = float.MaxValue, maxX = float.MinValue;
     private float minY = float.MaxValue, maxY = float.MinValue;
 
-    private LinkedList<PointF> _trajectory = new();
+    private List<PointF> _trajectory = new();
     private int lastFocused = -1;
 
     public override void Render(Graphics g)
@@ -77,7 +77,7 @@ internal class FocusedCarOverlay : AbstractOverlay
                     if (y < minY)
                         minY = y;
 
-                    _trajectory.AddLast(new PointF(x, y));
+                    _trajectory.Add(new PointF(x, y));
                 }
             }
         }

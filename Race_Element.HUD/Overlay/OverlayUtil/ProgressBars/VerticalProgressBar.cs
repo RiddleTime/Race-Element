@@ -49,7 +49,7 @@ public class VerticalProgressBar
                 }
             }
             else
-                bg.FillRectangle(FillBrush, new Rectangle(0 + scaledWidth - (int)(scaledWidth * percent), 0 , scaledWidth, (int)(scaledHeight)));
+                bg.FillRectangle(FillBrush, new Rectangle(0 + scaledWidth - (int)(scaledWidth * percent), 0, scaledWidth, (int)(scaledHeight)));
         });
 
         barBitmap?.Draw(g, x, y, _width, _height);

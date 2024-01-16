@@ -1,7 +1,10 @@
-﻿using RaceElement.Util.SystemExtensions;
+﻿using MaterialDesignThemes.Wpf;
+using RaceElement.Controls.Liveries;
+using RaceElement.Controls.Util;
 using RaceElement.Data;
 using RaceElement.LiveryParser;
 using RaceElement.Util;
+using RaceElement.Util.SystemExtensions;
 using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
 using System;
@@ -10,14 +13,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using static RaceElement.Controls.LiveryTagging;
-using RaceElement.Controls.Util;
-using MaterialDesignThemes.Wpf;
-using RaceElement.Controls.Liveries;
 
 namespace RaceElement.Controls;
 
@@ -28,9 +29,9 @@ public partial class LiveryBrowser : UserControl
 {
     public static LiveryBrowser Instance;
 
-    private List<string> expandedCarHeaders = new();
-    private List<string> expandedTeamHeaders = new();
-    private List<string> expandedTagHeaders = new();
+    private List<string> expandedCarHeaders = [];
+    private List<string> expandedTeamHeaders = [];
+    private List<string> expandedTagHeaders = [];
 
     public LiveryBrowser()
     {
@@ -66,13 +67,20 @@ public partial class LiveryBrowser : UserControl
             if ((bool)e.NewValue)
                 LiveryDisplayer.Instance.ReloadLivery();
             else
+            {
                 LiveryDisplayer.Instance.Cache();
 
-            ThreadPool.QueueUserWorkItem(x =>
-            {
-                Thread.Sleep(10 * 1000);
-                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
-            });
+                Task.Run(() =>
+                {
+                    Debug.WriteLine("visible changed to false, cleaning");
+                    Thread.Sleep(10 * 1000);
+
+                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                    GC.WaitForPendingFinalizers();
+
+                    Process.GetCurrentProcess().MaxWorkingSet = 150 * 1_000_000;
+                });
+            }
         };
     }
 
@@ -166,7 +174,7 @@ public partial class LiveryBrowser : UserControl
 
                 DirectoryInfo customsCarsDirectory = new(FileUtil.CarsPath);
 
-                List<LiveryTreeCar> liveryTreeCars = new();
+                List<LiveryTreeCar> liveryTreeCars = [];
 
                 foreach (var carsFile in customsCarsDirectory.GetFiles())
                 {
@@ -209,7 +217,7 @@ public partial class LiveryBrowser : UserControl
 
     private void FillTreeViewModels(IEnumerable<IGrouping<string, LiveryTreeCar>> liveriesGroupedByModel)
     {
-        List<TreeViewItem> carsTreeViews = new();
+        List<TreeViewItem> carsTreeViews = [];
 
         foreach (IGrouping<string, LiveryTreeCar> tItem in liveriesGroupedByModel)
         {
@@ -285,7 +293,7 @@ public partial class LiveryBrowser : UserControl
 
     private void FillTreeViewTeams(IEnumerable<IGrouping<string, LiveryTreeCar>> liveriesGroupedByTeam)
     {
-        List<TreeViewItem> carsTreeViews = new();
+        List<TreeViewItem> carsTreeViews = [];
 
         foreach (IGrouping<string, LiveryTreeCar> tItem in liveriesGroupedByTeam)
         {
@@ -361,13 +369,13 @@ public partial class LiveryBrowser : UserControl
 
     private void FillTreeViewTags(List<LiveryTreeCar> allLiveries)
     {
-        List<TreeViewItem> tagTreeItems = new();
+        List<TreeViewItem> tagTreeItems = [];
 
-        List<LiveryTreeCar> liveriesWithTags = new();
+        List<LiveryTreeCar> liveriesWithTags = [];
 
         LiveryTagging.GetAllTags().ForEach(liveryTag =>
         {
-            List<LiveryTreeCar> tagCars = new();
+            List<LiveryTreeCar> tagCars = [];
             foreach (LiveryTreeCar car in allLiveries)
             {
                 if (LiveryTagging.TagContainsCar(liveryTag, car))
@@ -699,7 +707,7 @@ public partial class LiveryBrowser : UserControl
                 MenuItem button = (MenuItem)sender;
 
                 TreeViewItem treeItem = (TreeViewItem)button.CommandParameter;
-                List<LiveryTreeCar> treeCars = new();
+                List<LiveryTreeCar> treeCars = [];
 
                 treeItem.Items.OfType<TreeViewItem>().ToList().ForEach(x =>
                 {
@@ -724,7 +732,7 @@ public partial class LiveryBrowser : UserControl
                 MenuItem button = (MenuItem)sender;
 
                 TreeViewItem treeItem = (TreeViewItem)button.CommandParameter;
-                List<LiveryTreeCar> treeCars = new();
+                List<LiveryTreeCar> treeCars = [];
 
                 treeItem.Items.OfType<TreeViewItem>().ToList().ForEach(x =>
                 {

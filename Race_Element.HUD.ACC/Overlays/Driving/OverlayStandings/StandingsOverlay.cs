@@ -49,7 +49,7 @@ public sealed class StandingsOverlay : AbstractOverlay
     private AcStatus _currentAcStatus = AcStatus.AC_OFF;
 
     // the entry list splint into separate lists for every car class
-    private Dictionary<CarClasses, List<KeyValuePair<int, CarData>>> _entryListForCarClass = new();
+    private Dictionary<CarClasses, List<KeyValuePair<int, CarData>>> _entryListForCarClass = [];
 
     public StandingsOverlay(Rectangle rectangle) : base(rectangle, "Live Standings")
     {
@@ -107,7 +107,7 @@ public sealed class StandingsOverlay : AbstractOverlay
         _entryListForCarClass.Clear();
         foreach (CarClasses carClass in Enum.GetValues(typeof(CarClasses)))
         {
-            _entryListForCarClass[carClass] = new List<KeyValuePair<int, CarData>>();
+            _entryListForCarClass[carClass] = [];
         }
     }
 
@@ -127,19 +127,19 @@ public sealed class StandingsOverlay : AbstractOverlay
 
         //int bestSessionLapMS = GetBestSessionLap();
 
-        Dictionary<CarClasses, List<StandingsTableRow>> tableRows = new();
+        Dictionary<CarClasses, List<StandingsTableRow>> tableRows = [];
 
         if (_config.Information.MultiClass)
         {
             foreach (CarClasses carClass in Enum.GetValues(typeof(CarClasses)))
             {
-                tableRows[carClass] = new List<StandingsTableRow>();
+                tableRows[carClass] = [];
                 EntryListToTableRow(tableRows[carClass], _entryListForCarClass[carClass]);
             }
         }
         else
         {
-            tableRows[_driversClass] = new List<StandingsTableRow>();
+            tableRows[_driversClass] = [];
             EntryListToTableRow(tableRows[_driversClass], _entryListForCarClass[_driversClass]);
         }
 

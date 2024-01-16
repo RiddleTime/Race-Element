@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CPI.Plot3D;
 
@@ -23,7 +21,7 @@ namespace CPI.Plot3D;
 /// </remarks>
 public struct Vector3D : IEquatable<Vector3D>
 {
-    # region Constants
+    #region Constants
 
     /// <summary>
     /// The maximum distance two coordinates can be from each other
@@ -31,9 +29,9 @@ public struct Vector3D : IEquatable<Vector3D>
     /// </summary>
     public const float Tolerance = Point3D.Tolerance;
 
-    # endregion
+    #endregion
 
-    # region Static Fields
+    #region Static Fields
 
     /// <summary>
     /// The zero vector, which represents neither distance nor direction.
@@ -70,15 +68,15 @@ public struct Vector3D : IEquatable<Vector3D>
     /// </summary>
     public static readonly Vector3D NegativeZ = new(0f, 0f, -1f);
 
-    # endregion
+    #endregion
 
-    # region Private Fields
+    #region Private Fields
 
     private readonly Point3D endPoint;
 
-    # endregion
+    #endregion
 
-    # region Constructors
+    #region Constructors
 
     /// <summary>
     /// Create an instance of Vector3D with the specified x, y, z coordinates.
@@ -86,7 +84,7 @@ public struct Vector3D : IEquatable<Vector3D>
     /// <param name="x">The X coordinate of the endpoint</param>
     /// <param name="y">The Y coordinate of the endpoint</param>
     /// <param name="z">The Z coordinate of the endpoint</param>
-    public Vector3D(float x, float y, float z) : this (new Point3D(x, y, z)){}
+    public Vector3D(float x, float y, float z) : this(new Point3D(x, y, z)) { }
 
     /// <summary>
     /// Create an instance of Vector3D with the specified endpoint.
@@ -97,9 +95,9 @@ public struct Vector3D : IEquatable<Vector3D>
         this.endPoint = endPoint;
     }
 
-    # endregion
+    #endregion
 
-    # region Properties
+    #region Properties
 
     /// <summary>
     /// The X coordinate of the vector.
@@ -160,9 +158,9 @@ public struct Vector3D : IEquatable<Vector3D>
         }
     }
 
-    # endregion
+    #endregion
 
-    # region Overridden Methods
+    #region Overridden Methods
 
     /// <summary>
     /// Returns a string representation of the vector's endpoint in [X,Y,Z] format.
@@ -203,9 +201,9 @@ public struct Vector3D : IEquatable<Vector3D>
         return ~endPoint.GetHashCode();
     }
 
-    # endregion
+    #endregion
 
-    # region Methods
+    #region Methods
 
     /// <summary>
     /// Determines whether this instance is very nearly equal to a specified Vector3D structure.
@@ -328,7 +326,7 @@ public struct Vector3D : IEquatable<Vector3D>
 
         // Calculate the vector that represents the portion of our rotated vector that is perpendicular
         // to our rotation vector.
-        Vector3D rotatedPerpendicularVector = 
+        Vector3D rotatedPerpendicularVector =
             (Math.Cos(rotationAngle) * perpendicularVector)
             + (Math.Sin(rotationAngle) * mutuallyPerpendicularVector);
 
@@ -338,9 +336,9 @@ public struct Vector3D : IEquatable<Vector3D>
         return rotatedVector;
     }
 
-    # endregion
+    #endregion
 
-    # region Overloaded Operators
+    #region Overloaded Operators
 
     /// <summary>
     /// Determines whether the specified vectors are equal.
@@ -376,8 +374,8 @@ public struct Vector3D : IEquatable<Vector3D>
         float newY = a.Y + b.Y;
         float newZ = a.Z + b.Z;
 
-        if (float.IsInfinity(newX) || float.IsNaN(newX) 
-            || float.IsInfinity(newY) || float.IsNaN(newY) 
+        if (float.IsInfinity(newX) || float.IsNaN(newX)
+            || float.IsInfinity(newY) || float.IsNaN(newY)
             || float.IsInfinity(newZ) || float.IsNaN(newZ))
         {
             throw new OverflowException(string.Format("{0} + {1} produced an arithmetic overflow.", a.ToString(), b.ToString()));
@@ -551,7 +549,7 @@ public struct Vector3D : IEquatable<Vector3D>
     }
 
 
-    # endregion
+    #endregion
 
     #region IEquatable<Vector3D> Members
 

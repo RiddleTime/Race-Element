@@ -1,16 +1,14 @@
-﻿using RaceElement.Util.SystemExtensions;
-using RaceElement.Controls.Util.Updater;
+﻿using Octokit;
 using RaceElement.Util;
-using Octokit;
+using RaceElement.Util.SystemExtensions;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Text;
 
 namespace RaceElement.Controls;
 
@@ -75,7 +73,7 @@ public partial class Info : UserControl
 
     private async void CheckNewestVersion()
     {
-        Thread.Sleep(2000);
+        Thread.Sleep(500);
 
         RemoveTempVersionFile();
 #if DEBUG

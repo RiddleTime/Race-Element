@@ -1,5 +1,4 @@
-﻿using RaceElement.Util;
-using System;
+﻿using System;
 
 namespace RaceElement.Util.Settings;
 

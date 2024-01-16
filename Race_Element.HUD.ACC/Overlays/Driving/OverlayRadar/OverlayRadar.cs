@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter;
 
@@ -64,7 +65,7 @@ internal sealed class RadarOverlay : AbstractOverlay
         public float Distance;
     }
 
-    private readonly List<SpottableCar> _spottables = new();
+    private readonly List<SpottableCar> _spottables = [];
 
     private float _playerY;
     private float _playerX;
@@ -217,7 +218,7 @@ internal sealed class RadarOverlay : AbstractOverlay
             _cachedLocalCar?.Draw(g, (int)(centerX - CarDrawingData.CarWidth / 2), (int)(centerY - CarDrawingData.CarHeight / 2), CarDrawingData.CarWidth, CarDrawingData.CarHeight);
 
             Matrix originalTransform = g.Transform;
-            foreach (SpottableCar car in _spottables)
+            foreach (SpottableCar car in CollectionsMarshal.AsSpan(_spottables))
             {
                 float multiplier = 5f;
                 float xOffset = (_playerY - car.X);

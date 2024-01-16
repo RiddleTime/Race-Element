@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing;
 
@@ -10,8 +11,12 @@ public class GraphicsGrid : AbstractDrawableGrid<AbstractDrawableCell>
 
     public override void Draw(Graphics g, float scaling = 1)
     {
+        ReadOnlySpan<AbstractDrawableCell[]> gridRows = Grid.AsSpan();
         for (int row = 0; row < Rows; row++)
             for (int column = 0; column < Columns; column++)
-                Grid[row][column]?.Draw(g, scaling);
+            {
+                ReadOnlySpan<AbstractDrawableCell> rowColumns = gridRows[row].AsSpan();
+                rowColumns[column]?.Draw(g, scaling);
+            }
     }
 }

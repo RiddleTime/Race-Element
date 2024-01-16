@@ -109,7 +109,7 @@ public partial class LiveryDisplayer : UserControl
         buttonGenerateDDS.Visibility = Visibility.Hidden;
 
         this.Visibility = Visibility.Collapsed;
-        GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
+        GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, false);
     }
 
     internal void SetLivery(LiveryTreeCar livery)
@@ -175,12 +175,6 @@ public partial class LiveryDisplayer : UserControl
                             };
                             imageGrid.Children.Add(imageControl);
                             LoadPhoto(imageControl, decalsFile.FullName);
-
-                            ThreadPool.QueueUserWorkItem(gc =>
-                            {
-                                Thread.Sleep(1 * 1000);
-                                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
-                            });
                         }
 
 
@@ -218,11 +212,7 @@ public partial class LiveryDisplayer : UserControl
                             System.Windows.Controls.Image imageControl = new() { Stretch = Stretch.UniformToFill, Height = 366, Width = 366 };
                             imageGrid.Children.Add(imageControl);
                             LoadPhoto(imageControl, sponsorsFile.FullName);
-                            ThreadPool.QueueUserWorkItem(gc =>
-                            {
-                                Thread.Sleep(2 * 1000);
-                                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
-                            });
+
                         }
 
 
@@ -276,6 +266,11 @@ public partial class LiveryDisplayer : UserControl
                         UpdateImageSize();
                         this.Visibility = Visibility.Visible;
                         _isLoading = false;
+                        ThreadPool.QueueUserWorkItem(gc =>
+                        {
+                            Thread.Sleep(2 * 1000);
+                            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, false);
+                        });
                     }
                 }
             }));

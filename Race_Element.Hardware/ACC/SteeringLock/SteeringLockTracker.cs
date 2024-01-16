@@ -16,7 +16,7 @@ public class SteeringLockTracker : IDisposable
     {
         get
         {
-            if (_instance == null) _instance = new SteeringLockTracker();
+            _instance ??= new SteeringLockTracker();
             return _instance;
         }
     }

@@ -31,7 +31,7 @@ internal class WeatherTracker
     {
         get
         {
-            if (_instance == null) _instance = new WeatherTracker();
+            _instance ??= new WeatherTracker();
             return _instance;
         }
     }

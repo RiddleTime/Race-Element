@@ -1,9 +1,9 @@
+using RaceElement.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using RaceElement.Util;
 using static RaceElement.Data.SetupConverter;
 
 namespace RaceElement.Data.ACC.Tyres;

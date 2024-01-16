@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 
 namespace CPI.Plot3D;
@@ -10,7 +8,7 @@ namespace CPI.Plot3D;
 /// </summary>
 public struct Point3D : IEquatable<Point3D>
 {
-    # region Constants
+    #region Constants
 
     /// <summary>
     /// The maximum distance two coordinates can be from each other
@@ -18,17 +16,17 @@ public struct Point3D : IEquatable<Point3D>
     /// </summary>
     public const float Tolerance = .000001f;
 
-    # endregion
+    #endregion
 
-    # region Private Fields
+    #region Private Fields
 
     private readonly float x;
     private readonly float y;
     private readonly float z;
 
-    # endregion
+    #endregion
 
-    # region Constructors
+    #region Constructors
 
     /// <summary>
     /// Instantiates a new Point3D.
@@ -51,9 +49,9 @@ public struct Point3D : IEquatable<Point3D>
         this.z = z;
     }
 
-    # endregion
+    #endregion
 
-    # region Properties
+    #region Properties
 
     /// <summary>
     /// The point's X coordinate.
@@ -88,9 +86,9 @@ public struct Point3D : IEquatable<Point3D>
         }
     }
 
-    # endregion
+    #endregion
 
-    # region Methods
+    #region Methods
 
     /// <summary>
     /// Gets the location of the point projected onto the XY plane at the Z origin, from a specified
@@ -107,15 +105,15 @@ public struct Point3D : IEquatable<Point3D>
         PointF returnValue = new();
 
         returnValue.X = (float)
-            (((((double)this.X - (double)cameraPosition.X) 
-            * (-1 * (double)cameraPosition.Z)) 
+            (((((double)this.X - (double)cameraPosition.X)
+            * (-1 * (double)cameraPosition.Z))
             / ((double)this.Z - (double)cameraPosition.Z))
             + (double)cameraPosition.X);
 
         returnValue.Y = (float)
-            (((((double)this.Y - (double)cameraPosition.Y) 
-            * (-1 * (double)cameraPosition.Z)) 
-            / ((double)this.Z - (double)cameraPosition.Z)) 
+            (((((double)this.Y - (double)cameraPosition.Y)
+            * (-1 * (double)cameraPosition.Z))
+            / ((double)this.Z - (double)cameraPosition.Z))
             + (double)cameraPosition.Y);
 
         if (float.IsInfinity(returnValue.X) || float.IsNaN(returnValue.X)
@@ -164,9 +162,9 @@ public struct Point3D : IEquatable<Point3D>
         return string.Format("[{0}, {1}, {2}]", ((float)Math.Round(X, decimalPlaces)).ToString(), ((float)Math.Round(Y, decimalPlaces)).ToString(), ((float)Math.Round(Z, decimalPlaces)).ToString());
     }
 
-    # endregion
+    #endregion
 
-    # region Overridden Methods
+    #region Overridden Methods
 
     /// <summary>
     /// Returns a string representation of the point in [X,Y,Z] format.
@@ -211,9 +209,9 @@ public struct Point3D : IEquatable<Point3D>
         return (int)(hashX ^ ((hashY << 10) + (hashY >> 22)) ^ ((hashZ << 20) + (hashZ >> 12)));
     }
 
-    # endregion
+    #endregion
 
-    # region Overloaded Operators
+    #region Overloaded Operators
 
     /// <summary>
     /// Determines whether the specified Point3D instances are equal.
@@ -237,7 +235,7 @@ public struct Point3D : IEquatable<Point3D>
         return !a.Equals(b);
     }
 
-    # endregion
+    #endregion
 
     #region IEquatable<Point3D> Members
 

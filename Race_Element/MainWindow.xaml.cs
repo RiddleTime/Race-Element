@@ -1,6 +1,4 @@
 ﻿using RaceElement.Broadcast;
-using RaceElement.Util.Settings;
-using RaceElement.Util.SystemExtensions;
 using RaceElement.Controls;
 using RaceElement.Data.ACC.Tracker;
 using RaceElement.Hardware.ACC.SteeringLock;
@@ -8,20 +6,21 @@ using RaceElement.HUD.ACC;
 using RaceElement.HUD.ACC.Data.Tracker;
 using RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput;
 using RaceElement.Util;
+using RaceElement.Util.Settings;
+using RaceElement.Util.SystemExtensions;
 using System;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
-using System.IO;
-using System.Threading.Tasks;
-using System.Linq;
 
 namespace RaceElement;
 
@@ -230,6 +229,16 @@ public partial class MainWindow : Window
                 ShowInTaskbar = false;
                 Hide();
             }
+
+            Task.Run(() =>
+            {
+                Thread.Sleep(5 * 1000);
+
+                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                GC.WaitForPendingFinalizers();
+
+                Process.GetCurrentProcess().MaxWorkingSet = 50 * 1_000_000;
+            });
         }
     }
 
@@ -334,6 +343,17 @@ public partial class MainWindow : Window
                                 ShowInTaskbar = false;
                                 Hide();
                             }
+
+                            Task.Run(() =>
+                            {
+                                Debug.WriteLine("visible changed to false, cleaning");
+                                Thread.Sleep(10 * 1000);
+
+                                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+                                GC.WaitForPendingFinalizers();
+
+                                Process.GetCurrentProcess().MaxWorkingSet = 50 * 1_000_000;
+                            });
 
                             break;
                         }

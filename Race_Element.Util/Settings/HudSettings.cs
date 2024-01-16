@@ -1,6 +1,4 @@
-﻿using RaceElement.Util;
-
-namespace RaceElement.Util.Settings;
+﻿namespace RaceElement.Util.Settings;
 
 public class HudSettingsJson : IGenericSettingsJson
 {

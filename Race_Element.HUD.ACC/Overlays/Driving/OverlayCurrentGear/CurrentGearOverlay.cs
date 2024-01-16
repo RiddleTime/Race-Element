@@ -44,7 +44,7 @@ internal sealed class CurrentGearOverlay : AbstractOverlay
 
     private const int InitialWidth = 80;
     private const int InitialHeight = 72;
-    private readonly List<CachedBitmap> _gearBitmaps = new();
+    private readonly List<CachedBitmap> _gearBitmaps = [];
 
     private int _lastGear = -2;
     private const float MaxOpacity = 1f;

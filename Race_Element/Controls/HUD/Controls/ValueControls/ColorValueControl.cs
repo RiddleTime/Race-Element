@@ -29,7 +29,7 @@ internal class ColorValueControl : IValueControl<System.Drawing.Color>
             Cursor = Cursors.Hand,
             VerticalAlignment = VerticalAlignment.Center,
         };
-      
+
         // add color picker
         ColorPicker colorPicker = new()
         {

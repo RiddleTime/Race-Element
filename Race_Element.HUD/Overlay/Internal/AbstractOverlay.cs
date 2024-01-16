@@ -1,10 +1,10 @@
-﻿using RaceElement.Util.Settings;
-using RaceElement.Broadcast.Structs;
+﻿using RaceElement.Broadcast.Structs;
 using RaceElement.Data.ACC.Core;
 using RaceElement.Data.ACC.Session;
 using RaceElement.Data.ACC.Tracker;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.Util;
+using RaceElement.Util.Settings;
 using System;
 using System.Diagnostics;
 using System.Drawing;

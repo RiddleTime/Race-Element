@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using static RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaTrace.LapDeltaTraceOverlay;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayLapDeltaTrace;
 
@@ -70,8 +69,8 @@ internal class LapDeltaGraph : IDisposable
     {
         if (data1.Count > 0 && data2.Count > 0 && data1.Count == data2.Count)
         {
-            List<Point[]> points = new();
-            List<Point> subPoints = new();
+            List<Point[]> points = [];
+            List<Point> subPoints = [];
 
             for (int i = 0; i < data1.Count - 1; i++)
             {
@@ -136,10 +135,10 @@ internal class LapDeltaGraph : IDisposable
 
         if (Data.Count > 0)
         {
-            List<Point[]> points = new();
+            List<Point[]> points = [];
             lock (Data)
             {
-                List<Point> subList = new();
+                List<Point> subList = [];
 
                 float previous = 0;
                 for (int i = 0; i < Data.Count - 1; i++)

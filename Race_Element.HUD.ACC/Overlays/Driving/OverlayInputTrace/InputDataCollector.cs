@@ -1,7 +1,4 @@
-﻿using RaceElement.HUD.Overlay.Internal;
-using RaceElement.HUD.Overlay.Util;
-using System.Collections.Generic;
-using System.Threading;
+﻿using System.Collections.Generic;
 using static RaceElement.ACCSharedMemory;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace;

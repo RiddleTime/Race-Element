@@ -20,16 +20,16 @@ public sealed class AccidentListTracker
 
     // History of realtime car updates
     // Maps session time to a map of carID and realTimeInfo
-    private Dictionary<double, Dictionary<int, RealtimeCarUpdate>> _realTimeCarHistory = new();
+    private Dictionary<double, Dictionary<int, RealtimeCarUpdate>> _realTimeCarHistory = [];
 
     // store all incoming broadcast accident events with the corresponding real time car update
-    private List<CarInfoWithRealTime> _unprocessedAccidents = new();
+    private List<CarInfoWithRealTime> _unprocessedAccidents = [];
 
     public static AccidentListTracker Instance
     {
         get
         {
-            if (_instance == null) _instance = new AccidentListTracker();
+            _instance ??= new AccidentListTracker();
             return _instance;
         }
         private set { _instance = value; }
@@ -84,19 +84,19 @@ public sealed class AccidentListTracker
         // get real time car update data from history and add information to accident event
         CarInfoWithRealTime carInfoWithRealTime = new(broadcastingEvent.CarData);
         carInfoWithRealTime.RealtimeCarUpdate = _realTimeCarHistory[key][broadcastingEvent.CarId];
-        lock(_unprocessedAccidents)
+        lock (_unprocessedAccidents)
         {
             _unprocessedAccidents.Add(carInfoWithRealTime);
             //Debug.WriteLine($"unprocessed accidents list size: {_unprocessedAccidents.Count}");
         }
-        
+
 
         if (_accidentTime == DateTime.MinValue)
         {
             _accidentTime = DateTime.Now;
             //Debug.WriteLine($"set new accident timestamp: {_accidentTime}");
         }
-            
+
 
     }
 
@@ -109,22 +109,22 @@ public sealed class AccidentListTracker
         if (_accidentTime != DateTime.MinValue && timediff.TotalMilliseconds > 1000)
         {
             //Debug.WriteLine($"process old accident data list size {_unprocessedAccidents.Count} ...");
-            
+
             if (_unprocessedAccidents.Count < 2)
             {
                 Debug.WriteLine($"accident: #{_unprocessedAccidents[0].RaceNumber}|{_unprocessedAccidents[0].GetCurrentDriverName()}");
             }
 
-            for (int i=0; i<_unprocessedAccidents.Count-1; i++)
+            for (int i = 0; i < _unprocessedAccidents.Count - 1; i++)
             {
                 float distance = Math.Abs((_unprocessedAccidents[i].RealtimeCarUpdate.SplinePosition - _unprocessedAccidents[i + 1].RealtimeCarUpdate.SplinePosition) * _trackDistance);
-                Debug.WriteLine($"accident: #{_unprocessedAccidents[i].RaceNumber} vs #{_unprocessedAccidents[i+1].RaceNumber} distance {distance.ToString("0.##")}m");
+                Debug.WriteLine($"accident: #{_unprocessedAccidents[i].RaceNumber} vs #{_unprocessedAccidents[i + 1].RaceNumber} distance {distance.ToString("0.##")}m");
 
                 // TODO send out accident event
                 OnAccident?.Invoke(this, new AccidentEvent());
             }
 
-            lock(_unprocessedAccidents)
+            lock (_unprocessedAccidents)
             {
                 //Debug.WriteLine($"clear unprocessed accident list and reset accident timestamp");
                 _accidentTime = DateTime.MinValue;
@@ -133,7 +133,7 @@ public sealed class AccidentListTracker
         }
 
 
-       // double key = GetSessionTimeKey();
+        // double key = GetSessionTimeKey();
 
     }
 
@@ -161,7 +161,7 @@ public sealed class AccidentListTracker
         double key = GetSessionTimeKey();
         if (key == 0) return; // session not started
 
-        if (_realTimeCarHistory.ContainsKey(key)) 
+        if (_realTimeCarHistory.ContainsKey(key))
         {
             //Debug.WriteLine($"+ add to key {key} car index {realtimeCarUpdate.CarIndex}");
             var carUpdate = _realTimeCarHistory[key];
@@ -173,12 +173,14 @@ public sealed class AccidentListTracker
             {
                 _realTimeCarHistory[key].Add(realtimeCarUpdate.CarIndex, realtimeCarUpdate);
             }
-            
-        } 
-        else 
+
+        }
+        else
         {
-            Dictionary<int, RealtimeCarUpdate> carUpdate = new();
-            carUpdate[realtimeCarUpdate.CarIndex] = realtimeCarUpdate;
+            Dictionary<int, RealtimeCarUpdate> carUpdate = new()
+            {
+                [realtimeCarUpdate.CarIndex] = realtimeCarUpdate
+            };
             //Debug.WriteLine($"# create key {key} car index {realtimeCarUpdate.CarIndex}");
             _realTimeCarHistory[key] = carUpdate;
         }

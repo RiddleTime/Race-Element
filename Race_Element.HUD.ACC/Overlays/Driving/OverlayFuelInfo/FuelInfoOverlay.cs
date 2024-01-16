@@ -1,7 +1,7 @@
-﻿using RaceElement.Util.SystemExtensions;
-using RaceElement.HUD.Overlay.Configuration;
+﻿using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
+using RaceElement.Util.SystemExtensions;
 using System;
 using System.Drawing;
 

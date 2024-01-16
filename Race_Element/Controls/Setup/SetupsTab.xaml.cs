@@ -1,10 +1,4 @@
-﻿using MaterialDesignThemes.Wpf;
-using RaceElement.Controls.Util;
-using System.Diagnostics;
-using System.Threading;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
+﻿using System.Windows.Controls;
 
 namespace RaceElement.Controls;
 
@@ -21,14 +15,9 @@ public partial class SetupsTab : UserControl
 
         headerSetupTree.MouseRightButtonUp += (s, e) =>
         {
-            ThreadPool.QueueUserWorkItem(x =>
-            {
-                Debug.WriteLine("Refreshting setups with right click");
-                MainWindow.Instance.EnqueueSnackbarMessage("Refreshing Setups.... Please wait");
-                SetupBrowser.Instance.FetchAllSetups();
-                MainWindow.Instance.ClearSnackbar();
-                MainWindow.Instance.EnqueueSnackbarMessage("Refreshed Setups");
-            });
+            SetupBrowser.Instance.RefreshTree();
+
+
             e.Handled = true;
         };
 

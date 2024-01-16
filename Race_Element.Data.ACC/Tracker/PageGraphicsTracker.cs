@@ -39,7 +39,7 @@ public class PageGraphicsTracker : IDisposable
             {
                 if (AccProcess.IsRunning)
                 {
-                    Thread.Sleep(2);
+                    Thread.Sleep(10);
                     Tracker?.Invoke(this, ACCSharedMemory.Instance.ReadGraphicsPageFile());
                 }
                 else

@@ -1,5 +1,5 @@
-﻿using RaceElement.HUD.Overlay.Internal;
-using RaceElement.HUD.Overlay.Configuration;
+﻿using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
 using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace;

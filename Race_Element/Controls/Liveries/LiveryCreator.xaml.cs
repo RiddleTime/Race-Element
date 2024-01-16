@@ -1,30 +1,16 @@
-﻿using Newtonsoft.Json.Converters;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using RaceElement.Data;
-using SharpCompress;
+using RaceElement.LiveryParser;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using static RaceElement.Controls.LiveryBrowser;
-using Quartz.Util;
-using RaceElement.Util;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.IO;
-using Newtonsoft.Json.Serialization;
-using RaceElement.LiveryParser;
-using System.Threading;
 
 namespace RaceElement.Controls.Liveries;
 

@@ -1,11 +1,11 @@
-﻿using System.Drawing;
-using System.Drawing.Drawing2D;
-using RaceElement.Data.ACC.Cars;
-using RaceElement.HUD.Overlay.Internal;
+﻿using RaceElement.Data.ACC.Cars;
 using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.Util.SystemExtensions;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayDamage;
@@ -32,7 +32,7 @@ internal sealed class DamageOverlay : AbstractOverlay
         }
     }
 
-    private sealed class PathShape
+    private struct PathShape
     {
         public RectangleF Shape { get; set; }
         public GraphicsPath Path { get; set; }

@@ -1,12 +1,12 @@
-﻿using RaceElement.Util.SystemExtensions;
-using RaceElement.Data.ACC.Database.Telemetry;
+﻿using RaceElement.Data.ACC.Database.Telemetry;
+using RaceElement.Util.SystemExtensions;
 using ScottPlot;
+using ScottPlot.Plottable;
 using System.Collections.Generic;
 using System.Linq;
-using static RaceElement.Data.SetupConverter;
 using System.Windows.Controls;
 using static RaceElement.Data.ACC.Tracks.TrackData;
-using ScottPlot.Plottable;
+using static RaceElement.Data.SetupConverter;
 
 namespace RaceElement.Controls.Telemetry.RaceSessions.Plots;
 

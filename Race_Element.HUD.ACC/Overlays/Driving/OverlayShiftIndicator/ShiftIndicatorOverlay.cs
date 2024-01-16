@@ -1,15 +1,14 @@
-﻿using RaceElement.Util.SystemExtensions;
-using RaceElement.HUD.Overlay.Internal;
+﻿using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
+using RaceElement.Util.SystemExtensions;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using System.Collections.Generic;
 using System.Linq;
 using Unglide;
-using System.Diagnostics;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator;
 
@@ -73,15 +72,15 @@ internal sealed class ShiftIndicatorOverlay : AbstractOverlay
         }
         int cornerRadius = (int)(10 * this.Scale);
 
-        _colors = new List<(float, Color)>
-            {
+        _colors =
+            [
                 (0.7f, Color.FromArgb(_config.Colors.NormalOpacity, _config.Colors.NormalColor)),
                 (_config.Upshift.Early / 100f, Color.FromArgb(_config.Colors.EarlyOpacity, _config.Colors.EarlyColor)),
                 (_config.Upshift.Upshift / 100f, Color.FromArgb(_config.Colors.UpshiftOpacity, _config.Colors.UpshiftColor))
-            };
+            ];
 
 
-        _cachedColorBars = new List<CachedBitmap>();
+        _cachedColorBars = [];
         foreach (var color in _colors.Select(x => x.Item2))
         {
             _cachedColorBars.Add(new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>

@@ -1,5 +1,5 @@
-﻿using RaceElement.Util;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using RaceElement.Util;
 
 namespace RaceElement.Data.ACC.Core.Config;
 

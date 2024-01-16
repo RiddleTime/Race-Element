@@ -1,5 +1,5 @@
-﻿using RaceElement.Data.ACC.Tracks;
-using LiteDB;
+﻿using LiteDB;
+using RaceElement.Data.ACC.Tracks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -36,7 +36,7 @@ public class TrackDataCollection
     public static List<DbTrackData> GetAll(ILiteDatabase db)
     {
         var allTracks = GetCollection(db).FindAll();
-        if (!allTracks.Any()) return new List<DbTrackData>();
+        if (!allTracks.Any()) return [];
 
         return allTracks.OrderBy(x => x.ParseName).ToList();
     }
@@ -44,7 +44,7 @@ public class TrackDataCollection
     public static List<DbTrackData> GetAll()
     {
         var allTracks = Collection.FindAll();
-        if (!allTracks.Any()) return new List<DbTrackData>();
+        if (!allTracks.Any()) return [];
 
         return allTracks.OrderBy(x => x.ParseName).ToList();
     }

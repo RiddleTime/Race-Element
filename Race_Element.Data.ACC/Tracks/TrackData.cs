@@ -1,9 +1,8 @@
 ﻿using RaceElement.Util.DataTypes;
-using ACCManager.Data.ACC.Tracks.Data;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Linq;
+using System.Reflection;
 
 namespace RaceElement.Data.ACC.Tracks;
 
@@ -24,7 +23,7 @@ public class TrackData
         public abstract List<float> Sectors { get; }
     }
 
-    private static readonly List<AbstractTrackData> _tracks = new();
+    private static readonly List<AbstractTrackData> _tracks = [];
     public static List<AbstractTrackData> Tracks
     {
         get

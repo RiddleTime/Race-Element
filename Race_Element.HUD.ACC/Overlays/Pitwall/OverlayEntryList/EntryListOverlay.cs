@@ -1,5 +1,4 @@
-﻿using RaceElement.Util.SystemExtensions;
-using RaceElement.Broadcast;
+﻿using RaceElement.Broadcast;
 using RaceElement.Broadcast.Structs;
 using RaceElement.Data;
 using RaceElement.Data.ACC.EntryList;
@@ -8,15 +7,16 @@ using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
+using RaceElement.Util.SystemExtensions;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using static RaceElement.Data.SetupConverter;
-using static RaceElement.HUD.Overlay.OverlayUtil.InfoTable;
-using static RaceElement.Data.ACC.Tracks.TrackData;
 using System.Text;
 using static RaceElement.Data.ACC.EntryList.EntryListTracker;
+using static RaceElement.Data.ACC.Tracks.TrackData;
+using static RaceElement.Data.SetupConverter;
+using static RaceElement.HUD.Overlay.OverlayUtil.InfoTable;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList;
 

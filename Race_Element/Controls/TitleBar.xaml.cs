@@ -1,10 +1,9 @@
 ﻿using Octokit;
 using RaceElement.Controls.Util.Updater;
-using RaceElement.Util;
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -90,12 +89,14 @@ public partial class TitleBar : UserControl
 
     internal void SetAppTitle(string launchType = "")
     {
-        Dispatcher.BeginInvoke(new Action(() =>
+        Task.Run(() =>
         {
-            this.Title.Text = $"{_AppName} {GetAssemblyFileVersion()}";
+            string text = $"{_AppName} {GetAssemblyFileVersion()}";
             if (launchType != String.Empty)
-                this.Title.Text += $" - {launchType}";
-        }));
+                text += $" - {launchType}";
+
+            Dispatcher.BeginInvoke(new Action(() => this.Title.Text = text));
+        });
     }
 
     private void TitleBar_MouseDoubleClick(object sender, MouseButtonEventArgs e)

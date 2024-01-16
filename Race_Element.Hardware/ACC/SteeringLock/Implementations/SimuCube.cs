@@ -1,7 +1,7 @@
-﻿using System;
+﻿using HidLibrary;
+using System;
 using System.Linq;
 using System.Runtime.InteropServices;
-using HidLibrary;
 
 namespace RaceElement.Hardware.ACC.SteeringLock.Implementations;
 

@@ -20,7 +20,7 @@ public class Monitors
     public static MonitorInfoWithHandle[] GetMonitors()
     {
         if (_monitorInfos == null)
-            _monitorInfos = new List<MonitorInfoWithHandle>();
+            _monitorInfos = [];
         else if (_monitorInfos.Count > 0)
             return _monitorInfos.ToArray();
 

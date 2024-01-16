@@ -1,14 +1,13 @@
-﻿using RaceElement.Util.SystemExtensions;
-using RaceElement.HUD.Overlay.Configuration;
+﻿using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
+using RaceElement.Util.SystemExtensions;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Diagnostics.Metrics;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayAccelerometer;
 

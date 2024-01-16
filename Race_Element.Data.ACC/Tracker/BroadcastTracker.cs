@@ -2,7 +2,6 @@
 using RaceElement.Broadcast.Structs;
 using System;
 using System.Diagnostics;
-using System.Dynamic;
 using System.Net;
 
 namespace RaceElement.Data.ACC.Tracker;
@@ -14,8 +13,7 @@ public class BroadcastTracker : IDisposable
     {
         get
         {
-            if (_instance == null)
-                _instance = new BroadcastTracker();
+            _instance ??= new BroadcastTracker();
 
             return _instance;
         }

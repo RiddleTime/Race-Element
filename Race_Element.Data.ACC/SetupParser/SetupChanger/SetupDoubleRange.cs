@@ -29,7 +29,7 @@ public class SetupDoubleRange
             return doubleRange.LUT;
         }
 
-        List<double> collection = new();
+        List<double> collection = [];
 
         for (double i = doubleRange.Min; i < doubleRange.Max + Math.Round(doubleRange.Increment, 2); i += Math.Round(doubleRange.Increment, 2))
         {

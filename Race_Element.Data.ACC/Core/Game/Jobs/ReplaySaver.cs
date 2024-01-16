@@ -1,22 +1,22 @@
-﻿using ACCManager.Data.ACC.Core.Game;
-using Quartz;
+﻿using RaceElement.Core.Jobs.LoopJob;
 using RaceElement.Data.ACC.Core.Config;
 using RaceElement.Data.ACC.HotKey;
 using RaceElement.Util.Settings;
 using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace RaceElement.Data.ACC.Core.Game.Jobs;
 
-public class ReplaySaver : IJob
+public class ReplaySaver : AbstractLoopJob
 {
-    public static readonly JobKey JobKey = new("replay-saver", "acc-jobs");
-    public static readonly TriggerKey TriggerKey = new("replaySaverTrigger");
-
     private static DateTime LastReplaySave = DateTime.MinValue;
 
-    public async Task Execute(IJobExecutionContext context)
+    public ReplaySaver()
+    {
+        IntervalMillis = 15000;
+    }
+
+    public override void RunAction()
     {
         if (AccProcess.IsRunning)
         {
@@ -38,18 +38,8 @@ public class ReplaySaver : IJob
             }
             else
             {
-                await context.Scheduler.UnscheduleJob(TriggerKey);
                 Debug.WriteLine("Auto save is not enabled, unscheduled replay saver");
             }
         }
-    }
-
-    public static void Schedule()
-    {
-        IJobDetail job = JobBuilder.Create<ReplaySaver>().WithIdentity(JobKey).Build();
-        if (!AccScheduler.Scheduler.CheckExists(JobKey).Result)
-            AccScheduler.Scheduler.ScheduleJob(job, TriggerBuilder.Create()
-                        .WithIdentity(TriggerKey)
-                        .WithSimpleSchedule(x => x.WithInterval(new TimeSpan(0, 0, 15)).RepeatForever()).ForJob(JobKey).Build());
     }
 }

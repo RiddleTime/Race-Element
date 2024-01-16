@@ -1,14 +1,11 @@
 ﻿using Newtonsoft.Json;
-using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 using static RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX.DualSenseXResources;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX;

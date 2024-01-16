@@ -95,7 +95,7 @@ internal sealed class CornerDataOverlay : AbstractOverlay
         _collector = new CornerDataCollector();
 
         // create info table based on selected config
-        List<int> columnWidths = new() { 90 }; // delta
+        List<int> columnWidths = [90]; // delta
 
         if (_config.Data.MinimumSpeed)
         {

@@ -18,7 +18,7 @@ public class IntRangeAttribute : Attribute
 
     public static int[] GetOptionsCollection(IntRangeAttribute intRange)
     {
-        List<int> collection = new();
+        List<int> collection = [];
 
         for (int i = intRange.Min; i < intRange.Max + intRange.Increment; i += intRange.Increment)
         {

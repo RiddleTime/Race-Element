@@ -20,7 +20,7 @@ public partial class LiveryExporter : UserControl
 {
     public static LiveryExporter Instance { get; private set; }
 
-    private List<LiveryTreeCar> exportItems = new();
+    private List<LiveryTreeCar> exportItems = [];
 
     public LiveryExporter()
     {

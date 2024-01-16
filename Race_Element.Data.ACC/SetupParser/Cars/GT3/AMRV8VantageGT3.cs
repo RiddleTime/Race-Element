@@ -13,8 +13,37 @@ internal class AMRV8VantageGT3 : ICarSetupConversion, ISetupChanger
     CarClasses ICarSetupConversion.CarClass => CarClasses.GT3;
     public DryTyreCompounds DryTyreCompound => DryTyreCompounds.DHF2023;
 
-    private static readonly double[] casters = [ 10.7, 10.9, 11.1, 11.3, 11.5, 11.6, 11.8, 12.0, 12.2, 12.4, 12.5, 12.7, 12.9, 13.1, 13.3, 13.4,
-            13.6, 13.8, 14.0, 14.2, 14.3, 14.5, 14.7, 14.9, 15.0, 15.2, 15.4, 15.6, 15.7, 15.9, 16.1 ];
+    private static readonly double[] casters = [10.7,
+        10.9,
+        11.1,
+        11.3,
+        11.5,
+        11.6,
+        11.8,
+        12.0,
+        12.2,
+        12.4,
+        12.5,
+        12.7,
+        12.9,
+        13.1,
+        13.3,
+        13.4,
+        13.6,
+        13.8,
+        14.0,
+        14.2,
+        14.3,
+        14.5,
+        14.7,
+        14.9,
+        15.0,
+        15.2,
+        15.4,
+        15.6,
+        15.7,
+        15.9,
+        16.1];
     private static readonly int[] wheelRateFronts = [115000, 125000, 135000, 145000, 155000, 165000, 175000, 185000];
     private static readonly int[] wheelRateRears = [105000, 115000, 125000, 135000, 145000, 155000, 165000, 175000, 185000, 195000];
 
@@ -88,8 +117,37 @@ internal class AMRV8VantageGT3 : ICarSetupConversion, ISetupChanger
         }
 
         private readonly double[] casters = [
-            10.7, 10.9, 11.1, 11.3, 11.5, 11.6, 11.8, 12.0, 12.2, 12.4, 12.5, 12.7, 12.9, 13.1, 13.3, 13.4,
-            13.6, 13.8, 14.0, 14.2, 14.3, 14.5, 14.7, 14.9, 15.0, 15.2, 15.4, 15.6, 15.7, 15.9, 16.1
+            10.7,
+            10.9,
+            11.1,
+            11.3,
+            11.5,
+            11.6,
+            11.8,
+            12.0,
+            12.2,
+            12.4,
+            12.5,
+            12.7,
+            12.9,
+            13.1,
+            13.3,
+            13.4,
+            13.6,
+            13.8,
+            14.0,
+            14.2,
+            14.3,
+            14.5,
+            14.7,
+            14.9,
+            15.0,
+            15.2,
+            15.4,
+            15.6,
+            15.7,
+            15.9,
+            16.1
         ];
         public override double Caster(int rawValue)
         {

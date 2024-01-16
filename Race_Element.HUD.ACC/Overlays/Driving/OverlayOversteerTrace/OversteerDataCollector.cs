@@ -1,7 +1,5 @@
 ﻿using RaceElement.Util.SystemExtensions;
-using RaceElement.HUD.Overlay.Internal;
 using System.Collections.Generic;
-using System.Threading;
 using static RaceElement.ACCSharedMemory;
 using static RaceElement.Data.SetupConverter;
 

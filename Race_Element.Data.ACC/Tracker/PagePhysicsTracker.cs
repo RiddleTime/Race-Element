@@ -13,8 +13,7 @@ public class PagePhysicsTracker : IDisposable
     {
         get
         {
-            if (_instance == null)
-                _instance = new PagePhysicsTracker();
+            _instance ??= new PagePhysicsTracker();
 
             return _instance;
         }

@@ -20,7 +20,7 @@ public partial class DDSgenerator : UserControl
 {
     internal static DDSgenerator Instance;
 
-    private List<LiveryTreeCar> liveriesWithoutDDS = new();
+    private List<LiveryTreeCar> liveriesWithoutDDS = [];
     private bool Generating = false;
 
     public DDSgenerator()
@@ -99,7 +99,7 @@ public partial class DDSgenerator : UserControl
                 }));
             }
 
-         
+
             Instance.Dispatcher.Invoke(() =>
             {
                 MainWindow.Instance.ClearSnackbar();
@@ -134,7 +134,7 @@ public partial class DDSgenerator : UserControl
 
         DirectoryInfo customsCarsDirectory = new(FileUtil.CarsPath);
 
-        List<LiveryTreeCar> liveryTreeCars = new();
+        List<LiveryTreeCar> liveryTreeCars = [];
 
         foreach (var carsFile in customsCarsDirectory.GetFiles())
         {

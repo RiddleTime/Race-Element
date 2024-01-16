@@ -18,7 +18,7 @@ internal static class TriggerHaptics
     public static Packet HandleBraking(SPageFilePhysics pagePhysics, BrakeHapticsConfig brakeConfig)
     {
         Packet p = new();
-        List<Instruction> instructions = new();
+        List<Instruction> instructions = [];
         int controllerIndex = 0;
 
         if (pagePhysics.Abs > 0 && brakeConfig.AbsEffect)
@@ -74,7 +74,7 @@ internal static class TriggerHaptics
     public static Packet HandleAcceleration(SPageFilePhysics pagePhysics, ThrottleHapticsConfig throttleConfig)
     {
         Packet p = new();
-        List<Instruction> instructions = new();
+        List<Instruction> instructions = [];
         int controllerIndex = 0;
 
         float rearLeftSlip = pagePhysics.SlipRatio[(int)Wheel.RearLeft];

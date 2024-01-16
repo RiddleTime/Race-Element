@@ -1,9 +1,9 @@
-﻿using RaceElement.Util.SystemExtensions;
-using RaceElement.Data.ACC.Session;
+﻿using RaceElement.Data.ACC.Session;
 using RaceElement.HUD.ACC.Data.Tracker.Weather;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
+using RaceElement.Util.SystemExtensions;
 using System;
 using System.Diagnostics;
 using System.Drawing;

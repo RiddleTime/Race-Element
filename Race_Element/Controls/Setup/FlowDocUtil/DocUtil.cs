@@ -203,7 +203,7 @@ public static class DocUtil
         if (labels.Length == 0)
             labels = new string[values.Length];
 
-        List<TableCell> tableCells = new();
+        List<TableCell> tableCells = [];
 
         for (int i = 0; i != values.Length; i++)
         {
@@ -363,8 +363,8 @@ public static class DocUtil
         if (values1.Length != values2.Length)
             throw new ArgumentException("Both of the values arrays have to be the same length.");
 
-        List<TableCell> cells1 = new();
-        List<TableCell> cells2 = new();
+        List<TableCell> cells1 = [];
+        List<TableCell> cells2 = [];
 
         bool different = false;
 

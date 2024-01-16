@@ -6,6 +6,9 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.0.6", "- Redesigned speedometer, it is now a circular gauge with more customization options."+
+                    "\n- Setup Browser now lazy loads."+
+                    "\n- Add simple Race Element Process HUD."},
         {"1.0.0.4", "- Add Twitch Chat HUD to Pitwall HUDs, read the description of the HUD on how to configure it."},
         {"1.0.0.2", "- Adjusted tyre pressure range up to 27.3 instead of up to 27.0"+
                     "\n- Corner Data HUD: Added Corner Names Column by mreininger23."+

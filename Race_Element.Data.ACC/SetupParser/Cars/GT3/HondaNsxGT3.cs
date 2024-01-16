@@ -25,9 +25,41 @@ internal class HondaNsxGT3 : ICarSetupConversion
             }
         }
 
-        private readonly double[] casters = [ 8.8, 9.0, 9.2, 9.4, 9.6, 9.8, 10.0, 10.2, 10.4, 10.6,
-                10.8, 10.9, 11.1, 11.3, 11.5, 11.7, 11.9, 12.1, 12.3, 12.4, 12.6, 12.8, 13.0, 13.2,
-                13.4, 13.6, 13.8, 13.9, 14.1, 14.3, 14.5, 14.7, 14.9, 15.0, 15.2 ];
+        private readonly double[] casters = [8.8,
+            9.0,
+            9.2,
+            9.4,
+            9.6,
+            9.8,
+            10.0,
+            10.2,
+            10.4,
+            10.6,
+            10.8,
+            10.9,
+            11.1,
+            11.3,
+            11.5,
+            11.7,
+            11.9,
+            12.1,
+            12.3,
+            12.4,
+            12.6,
+            12.8,
+            13.0,
+            13.2,
+            13.4,
+            13.6,
+            13.8,
+            13.9,
+            14.1,
+            14.3,
+            14.5,
+            14.7,
+            14.9,
+            15.0,
+            15.2];
         public override double Caster(int rawValue)
         {
             return Math.Round(casters[rawValue], 2);
@@ -82,10 +114,27 @@ internal class HondaNsxGT3 : ICarSetupConversion
             return Math.Round(10d + rawValue, 2);
         }
 
-        private readonly int[] fronts = [ 115000, 124000, 133000, 142000, 151000,
-            160000, 169000, 178000, 187000, 196000 ];
-        private readonly int[] rears = [ 115000, 124000, 133000, 142000, 151000,
-            160000, 169000, 178000, 187000, 196000, 205000 ];
+        private readonly int[] fronts = [115000,
+            124000,
+            133000,
+            142000,
+            151000,
+            160000,
+            169000,
+            178000,
+            187000,
+            196000];
+        private readonly int[] rears = [115000,
+            124000,
+            133000,
+            142000,
+            151000,
+            160000,
+            169000,
+            178000,
+            187000,
+            196000,
+            205000];
         public int WheelRate(List<int> rawValue, Wheel wheel)
         {
             switch (GetPosition(wheel))

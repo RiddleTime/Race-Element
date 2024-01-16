@@ -1,14 +1,12 @@
 ﻿using RaceElement.Broadcast;
 using RaceElement.Broadcast.Structs;
 using RaceElement.Data.ACC.EntryList.TrackPositionGraph;
-using RaceElement.Data.ACC.AccidentList;
+using RaceElement.Data.ACC.Tracker;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
-using RaceElement.Data.ACC.Tracker;
 
 namespace RaceElement.Data.ACC.EntryList;
 
@@ -27,13 +25,13 @@ public class EntryListTracker
     {
         get
         {
-            if (_instance == null) _instance = new EntryListTracker();
+            _instance ??= new EntryListTracker();
             return _instance;
         }
         private set { _instance = value; }
     }
 
-    internal Dictionary<int, CarData> _entryListCars = new();
+    internal Dictionary<int, CarData> _entryListCars = [];
     //private static AccidentListTracker _accidentListTracker = AccidentListTracker.Instance;
 
     public List<KeyValuePair<int, CarData>> Cars
@@ -85,7 +83,7 @@ public class EntryListTracker
         {
             try
             {
-                List<(int, int)> previousTimes = new();
+                List<(int, int)> previousTimes = [];
                 while (_isRunning)
                 {
                     const int waitTime = 5000;

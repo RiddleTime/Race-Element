@@ -1,13 +1,13 @@
-﻿using RaceElement.HUD.Overlay.Internal;
+﻿using RaceElement.Data.ACC.Tyres;
+using RaceElement.HUD.ACC.Overlays.OverlayPressureTrace;
+using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.Util;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using RaceElement.HUD.Overlay.Util;
-using RaceElement.HUD.Overlay.Configuration;
-using RaceElement.HUD.ACC.Overlays.OverlayPressureTrace;
-using RaceElement.HUD.Overlay.OverlayUtil;
-using static RaceElement.Data.SetupConverter;
-using RaceElement.Data.ACC.Tyres;
 using System.Drawing.Text;
+using static RaceElement.Data.SetupConverter;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo;
 

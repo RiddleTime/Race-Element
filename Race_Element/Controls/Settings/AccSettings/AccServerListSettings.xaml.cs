@@ -235,7 +235,7 @@ public partial class AccServerListSettings : UserControl
     }
     public class UnlistedServersJson : IGenericSettingsJson
     {
-        public List<UnlistedAccServer> UnlistedServers { get; set; } = new List<UnlistedAccServer>();
+        public List<UnlistedAccServer> UnlistedServers { get; set; } = [];
     }
     internal class UnlistedServersSettingsJson : AbstractSettingsJson<UnlistedServersJson>
     {
@@ -244,7 +244,7 @@ public partial class AccServerListSettings : UserControl
 
         public override UnlistedServersJson Default()
         {
-            return new UnlistedServersJson() { UnlistedServers = new List<UnlistedAccServer>() };
+            return new UnlistedServersJson() { UnlistedServers = [] };
         }
     }
 }

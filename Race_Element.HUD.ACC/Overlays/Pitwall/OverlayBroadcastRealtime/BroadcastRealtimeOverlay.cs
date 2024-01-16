@@ -1,14 +1,10 @@
 ﻿using RaceElement.Data;
 using RaceElement.Data.ACC.EntryList;
-using RaceElement.Data.ACC.EntryList.TrackPositionGraph;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
-using RaceElement.Util;
 using RaceElement.Util.SystemExtensions;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Reflection;
 using static RaceElement.Data.ACC.EntryList.EntryListTracker;
 using static RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
 

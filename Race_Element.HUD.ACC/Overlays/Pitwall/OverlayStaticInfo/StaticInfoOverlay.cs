@@ -1,16 +1,16 @@
-﻿using RaceElement.HUD.Overlay.Internal;
+﻿using RaceElement.HUD.ACC.Overlays.OverlayDebugInfo;
+using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.Util;
 using System;
-using System.Drawing;
-using System.Reflection;
-using RaceElement.HUD.ACC.Overlays.OverlayDebugInfo;
-using static RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
-using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
 using System.Collections.Generic;
-using System.Linq;
+using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
+using System.Reflection;
+using static RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayStaticInfo;
 
@@ -21,7 +21,7 @@ internal sealed class StaticInfoOverlay : AbstractOverlay
     private readonly DebugConfig _config = new();
 
     private GraphicsGrid _graphicsGrid;
-    private readonly List<string> fieldNames = new();
+    private readonly List<string> fieldNames = [];
 
     public StaticInfoOverlay(Rectangle rectangle) : base(rectangle, "Static Info")
     {

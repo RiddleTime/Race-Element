@@ -1,5 +1,4 @@
-﻿using RaceElement.Util.Settings;
-using RaceElement.Util.SystemExtensions;
+﻿using Gma.System.MouseKeyHook;
 using RaceElement.Controls.HUD;
 using RaceElement.Controls.HUD.Controls;
 using RaceElement.Controls.Util.SetupImage;
@@ -8,7 +7,7 @@ using RaceElement.HUD.ACC.Overlays.OverlayMousePosition;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.Util;
-using Gma.System.MouseKeyHook;
+using RaceElement.Util.Settings;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -472,8 +471,7 @@ public partial class HudOptions : UserControl
 
         if (enabled)
         {
-            if (mousePositionOverlay == null)
-                mousePositionOverlay = new MousePositionOverlay(new System.Drawing.Rectangle(0, 0, 150, 150), "Mouse Position");
+            mousePositionOverlay ??= new MousePositionOverlay(new System.Drawing.Rectangle(0, 0, 150, 150), "Mouse Position");
             mousePositionOverlay.Start(false);
         }
         else
@@ -610,8 +608,7 @@ public partial class HudOptions : UserControl
         else
             configFields = overlaySettings.Config;
 
-        if (configFields == null)
-            configFields = OverlayConfiguration.GetConfigFields(overlayConfig);
+        configFields ??= OverlayConfiguration.GetConfigFields(overlayConfig);
 
 
         // discover classes (Config Groupings) in OverlaySettings class
@@ -679,10 +676,7 @@ public partial class HudOptions : UserControl
     private void SaveOverlaySettings(AbstractOverlay overlay, bool isEnabled)
     {
         OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(overlay.Name);
-        if (settings == null)
-        {
-            settings = new OverlaySettingsJson() { X = overlay.X, Y = overlay.Y };
-        }
+        settings ??= new OverlaySettingsJson() { X = overlay.X, Y = overlay.Y };
 
         settings.Enabled = isEnabled;
 
@@ -700,10 +694,7 @@ public partial class HudOptions : UserControl
     private void SaveOverlayConfig(AbstractOverlay overlay, OverlayConfiguration overlayConfiguration)
     {
         OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(overlay.Name);
-        if (settings == null)
-        {
-            settings = new OverlaySettingsJson() { X = overlay.X, Y = overlay.Y };
-        }
+        settings ??= new OverlaySettingsJson() { X = overlay.X, Y = overlay.Y };
 
         settings.Config = OverlayConfiguration.GetConfigFields(overlayConfiguration);
 

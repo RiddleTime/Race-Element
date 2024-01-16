@@ -1,8 +1,4 @@
 ﻿using ACCManager.Data.ACC.Core.Game;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Quartz;
-using RaceElement.Controls;
 using RaceElement.HUD.ACC.Overlays.OverlayStartScreen;
 using RaceElement.Util;
 using RaceElement.Util.Settings;
@@ -36,23 +32,7 @@ public partial class App : Application
         _startScreenOverlay = new StartScreenOverlay(new System.Drawing.Rectangle(uiSettings.X, uiSettings.Y, 150, 150)) { Version = fileVersion.FileVersion };
         _startScreenOverlay.Start(false);
 
-        var builder = Host.CreateDefaultBuilder().ConfigureServices((cxt, services) =>
-         {
-             services.AddQuartz(q =>
-             {
-                 q.UseMicrosoftDependencyInjectionJobFactory();
-
-                 AccScheduler.RegisterJobs();
-             });
-             services.AddQuartzHostedService(opt =>
-             {
-                 opt.WaitForJobsToComplete = false;
-                 opt.AwaitApplicationStarted = true;
-             });
-         }).Build();
-
-        builder.RunAsync();
-
+        AccScheduler.RegisterJobs();
     }
 
     private void App_Startup(object sender, StartupEventArgs e)
@@ -67,6 +47,9 @@ public partial class App : Application
         if (!internalPath.Exists) internalPath.Create();
         ProfileOptimization.SetProfileRoot(FileUtil.RaceElementInternalPath);
         ProfileOptimization.StartProfile("RaceElementProfile");
+
+        using Process current = Process.GetCurrentProcess();
+        current.PriorityClass = ProcessPriorityClass.BelowNormal;
     }
 
 }

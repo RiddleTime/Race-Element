@@ -1,5 +1,5 @@
-﻿using RaceElement.Util;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using RaceElement.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -40,10 +40,7 @@ public class OverlaySettings
             {
                 OverlaySettingsJson overlay = LoadSettings(overlayFile);
 
-                if (overlay == null)
-                {
-                    overlay = new OverlaySettingsJson();
-                }
+                overlay ??= new OverlaySettingsJson();
 
                 return overlay;
             }
@@ -75,8 +72,7 @@ public class OverlaySettings
             }
         }
 
-        if (overlaySettingsFile == null)
-            overlaySettingsFile = new FileInfo($"{FileUtil.RaceElementOverlayPath}{overlayName}.json");
+        overlaySettingsFile ??= new FileInfo($"{FileUtil.RaceElementOverlayPath}{overlayName}.json");
 
         string jsonString = JsonConvert.SerializeObject(settings, Formatting.Indented);
 

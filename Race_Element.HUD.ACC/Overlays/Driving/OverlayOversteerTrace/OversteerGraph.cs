@@ -1,5 +1,4 @@
-﻿using RaceElement.Util.SystemExtensions;
-using RaceElement.HUD.Overlay.OverlayUtil;
+﻿using RaceElement.HUD.Overlay.OverlayUtil;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -61,7 +60,7 @@ internal class OversteerGraph : IDisposable
     {
         if (Data.Count > 0)
         {
-            List<Point> points = new();
+            List<Point> points = [];
             lock (Data)
                 for (int i = 0; i < Data.Count - 1; i++)
                 {

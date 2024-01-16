@@ -48,7 +48,7 @@ public class PhysicsData
 {
     public float[] WheelSlip { get; set; }
     public float[] WheelSlipAngle { get; set; }
-    
+
     /// <summary>
     /// X, Y acceleration (G)
     /// </summary>

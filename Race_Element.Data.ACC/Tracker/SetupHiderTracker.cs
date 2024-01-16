@@ -1,5 +1,5 @@
-﻿using RaceElement.Util.Settings;
-using OBSWebsocketDotNet;
+﻿using OBSWebsocketDotNet;
+using RaceElement.Util.Settings;
 using SLOBSharp.Client;
 using SLOBSharp.Client.Requests;
 using System;
@@ -16,7 +16,7 @@ public class SetupHiderTracker : IDisposable
     {
         get
         {
-            if (_instance == null) _instance = new SetupHiderTracker();
+            _instance ??= new SetupHiderTracker();
             return _instance;
         }
     }

@@ -1,6 +1,6 @@
-﻿using RaceElement.Data.ACC.Database.LapDataDB;
+﻿using LiteDB;
+using RaceElement.Data.ACC.Database.LapDataDB;
 using RaceElement.Util;
-using LiteDB;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -25,8 +25,7 @@ public class RaceWeekendDatabase
             fileName = FileUtil.RaceElementDataPath + $"{trackParseName}-{carParseName}-" + $"{startTime:G}".Replace(":", ".").Replace("/", ".").Replace(" ", "-") + ".rwdb";
 
 
-            if (Database == null)
-                Database = new LiteDatabase($"Filename={fileName}; Initial Size=16KB;");
+            Database ??= new LiteDatabase($"Filename={fileName}; Initial Size=16KB;");
 
             if (Database == null)
                 Trace.WriteLine("Something went wrong initializing the LocalDatabase.Database");

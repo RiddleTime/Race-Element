@@ -1,7 +1,7 @@
-﻿using System;
+﻿using RaceElement.Controls.Telemetry.SharedMemory;
+using System;
 using System.IO.MemoryMappedFiles;
 using System.Runtime.InteropServices;
-using RaceElement.Controls.Telemetry.SharedMemory;
 
 namespace RaceElement;
 
@@ -23,8 +23,7 @@ public unsafe class ACCSharedMemory
     {
         get
         {
-            if (_instance == null)
-                _instance = new ACCSharedMemory();
+            _instance ??= new ACCSharedMemory();
 
             return _instance;
         }

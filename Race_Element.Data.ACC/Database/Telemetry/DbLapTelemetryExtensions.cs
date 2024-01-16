@@ -10,7 +10,7 @@ public static class DbLapTelemetryExtensions
 {
     public static Dictionary<long, TelemetryPoint> DeserializeLapData(this DbLapTelemetry dbLapTelemetry)
     {
-        Dictionary<long, TelemetryPoint> Data = new();
+        Dictionary<long, TelemetryPoint> Data = [];
 
         try
         {

@@ -14,7 +14,7 @@ public partial class LiveryTagger : UserControl
 {
     public static LiveryTagger Instance { get; private set; }
 
-    internal List<LiveryTreeCar> Cars = new();
+    internal List<LiveryTreeCar> Cars = [];
 
     public LiveryTagger()
     {

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaceElement.HUD.Overlay.Configuration;
 
@@ -21,7 +18,7 @@ public class ByteRangeAttribute : Attribute
 
     public static byte[] GetOptionsCollection(ByteRangeAttribute intRange)
     {
-        List<byte> collection = new();
+        List<byte> collection = [];
 
         for (byte i = intRange.Min; i < intRange.Max + intRange.Increment; i += intRange.Increment)
             collection.Add(i);

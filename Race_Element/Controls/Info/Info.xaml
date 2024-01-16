@@ -30,10 +30,18 @@
 
                 <Grid>
                     <StackPanel Orientation="Vertical">
-                        <TextBlock FontWeight="SemiBold" FontFamily="{StaticResource Conthrax}" Foreground="#FEE45000" FontSize="64" HorizontalAlignment="Center">
-                            <TextBlock.Text>Race Element</TextBlock.Text>
-                        </TextBlock>
-                        <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" Foreground="#BBE2E2E2" FontSize="22" FontFamily="{StaticResource Conthrax}"  Margin="0,-18,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"> 
+
+            <materialDesign:TransitioningContent>
+              <materialDesign:TransitioningContent.Effect>
+                <DropShadowEffect Color="#FEE45000" Opacity="0.85" BlurRadius="25" ShadowDepth="0"/>
+              </materialDesign:TransitioningContent.Effect>
+
+              <TextBlock FontWeight="SemiBold" FontStyle="Italic" FontFamily="{StaticResource Conthrax}" Foreground="#FEE45000" FontSize="64" HorizontalAlignment="Center">
+                <TextBlock.Text>Race Element</TextBlock.Text>
+              </TextBlock>
+            </materialDesign:TransitioningContent>
+
+            <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" Foreground="#BBE2E2E2" FontSize="22" FontFamily="{StaticResource Conthrax}"  Margin="0,-18,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"> 
                             Provides Solutions for Sim Racing<LineBreak/>
                         </TextBlock>
 

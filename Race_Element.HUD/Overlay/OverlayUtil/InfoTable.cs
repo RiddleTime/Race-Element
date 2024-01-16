@@ -1,11 +1,12 @@
-﻿using RaceElement.Util.SystemExtensions;
-using RaceElement.HUD.Overlay.Util;
+﻿using RaceElement.HUD.Overlay.Util;
+using RaceElement.Util.SystemExtensions;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Linq;
-using System.Drawing.Drawing2D;
+using System.Runtime.InteropServices;
 
 namespace RaceElement.HUD.Overlay.OverlayUtil;
 
@@ -17,7 +18,7 @@ public class InfoTable
     public bool _headerWidthSet;
     private float _maxHeaderWidth;
     private int[] _columnWidths;
-    private List<TableRow> _rows = new();
+    private readonly List<TableRow> _rows = [];
 
     public int X = 0;
     public int Y = 0;
@@ -33,6 +34,8 @@ public class InfoTable
     private CachedBitmap _cachedLine;
 
     private int previousRowCount = 0;
+
+    private readonly object _lockObj = new();
 
     public InfoTable(float fontSize, int[] columnWidths)
     {
@@ -70,20 +73,23 @@ public class InfoTable
         TextRenderingHint previousHint = g.TextRenderingHint;
         g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
         g.TextContrast = 1;
-        lock (_rows)
+
+        lock (_lockObj)
         {
-            int length = _rows.Count;
+            ReadOnlySpan<TableRow> rows = CollectionsMarshal.AsSpan(_rows);
+
+            int length = rows.Length;
             int counter = 0;
             int totalWidth = (int)GetTotalWidth();
             int valueWidth = (int)(totalWidth - this._maxHeaderWidth);
 
             if (DrawValueBackground)
-            {
-                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(80, Color.Black)), new Rectangle((int)_maxHeaderWidth + 5, Y, valueWidth - 4, _rows.Count * this.Font.Height + (int)_yMono + 1), 4);
-            }
+                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(80, Color.Black)), new Rectangle((int)_maxHeaderWidth + 5, Y, valueWidth - 4, rows.Length * this.Font.Height + (int)_yMono + 1), 4);
+
+
             while (counter < length)
             {
-                TableRow row = _rows[counter];
+                TableRow row = rows[counter];
                 float rowY = Y + counter * Font.Height;
 
                 if (row.HeaderBackground != Color.Transparent)
@@ -91,13 +97,10 @@ public class InfoTable
 
                 if (DrawRowLines && counter > 0)
                 {
-                    if (_cachedLine == null)
-                    {
-                        _cachedLine = new CachedBitmap(totalWidth - 2, 1, lg =>
+                    _cachedLine ??= new CachedBitmap(totalWidth - 2, 1, lg =>
                         {
                             lg.DrawLine(new Pen(Color.FromArgb(42, Color.White)), new Point(1, 0), new Point(totalWidth - 1, 0));
                         });
-                    }
 
                     _cachedLine.Draw(g, new Point(X + 1, (int)rowY));
                 }
@@ -112,9 +115,9 @@ public class InfoTable
                 }
                 counter++;
             }
-
-            _rows.Clear();
         }
+
+        _rows.Clear();
 
         g.TextRenderingHint = previousHint;
     }
@@ -124,8 +127,10 @@ public class InfoTable
         float x = this.X;
         x += this._maxHeaderWidth;
 
+        Span<int> columWidths = _columnWidths.AsSpan();
+
         for (int i = 0; i < columnIndex; i++)
-            x += this._columnWidths[i];
+            x += columWidths[i];
 
         return x;
     }
@@ -133,9 +138,9 @@ public class InfoTable
     private float GetTotalWidth()
     {
         float totalWidth = this._maxHeaderWidth;
+        Span<int> columnWidths = _columnWidths.AsSpan();
         for (int i = 0; i < _columnWidths.Length; i++)
-            totalWidth += this._columnWidths[i];
-
+            totalWidth += columnWidths[i];
         return totalWidth;
     }
 
@@ -147,8 +152,8 @@ public class InfoTable
     public void AddRow(TableRow row)
     {
         if (row == null) return;
-        if (row.Header == null) row.Header = string.Empty;
-        if (row.Columns == null) row.Columns = new string[this._columnWidths.Length];
+        row.Header ??= string.Empty;
+        row.Columns ??= new string[this._columnWidths.Length];
         if (row.ColumnColors == null)
         {
             row.ColumnColors = new Color[this._columnWidths.Length];
@@ -183,7 +188,7 @@ public class InfoTable
 
     private void UpdateMaxheaderWidth(Graphics g)
     {
-        lock (_rows)
+        lock (_lockObj)
         {
             _maxHeaderWidth = 0;
 
