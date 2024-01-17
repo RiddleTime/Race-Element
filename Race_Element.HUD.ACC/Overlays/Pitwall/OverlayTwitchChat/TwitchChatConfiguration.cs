@@ -45,6 +45,9 @@ internal class TwitchChatConfiguration : OverlayConfiguration
         [IntRange(0, 255, 1)]
         public int BackgroundOpacity { get; init; } = 170;
 
+        [ToolTip("Adjust the text color when someone sends in bits.")]
+        public Color BitsColor { get; init; } = Color.FromArgb(255, 255, 215, 0);
+
         [ToolTip("Adjust the text color when your channel is being raided.")]
         public Color RaidColor { get; init; } = Color.FromArgb(255, 255, 215, 0);
     }

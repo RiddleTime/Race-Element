@@ -397,6 +397,16 @@ public static class ConversionFactory
         return $"Unknown: {carId}";
     }
 
+    public static string GetCarName(string carModelName)
+    {
+        var model = ParseCarName(carModelName);
+
+        if (CarModelToCarName.ContainsKey(model))
+            return CarModelToCarName[model];
+
+        return $"Unknown car";
+    }
+
     public static Root GetSetupJsonRoot(FileInfo jsonFile)
     {
         string jsonString = string.Empty;

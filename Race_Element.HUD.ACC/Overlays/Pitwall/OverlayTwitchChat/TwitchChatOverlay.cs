@@ -1,15 +1,20 @@
-﻿using RaceElement.HUD.Overlay.Internal;
+﻿using RaceElement.Data.ACC.Cars;
+using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Threading.Tasks;
 using TwitchLib.Client;
+using TwitchLib.Client.Events;
+using TwitchLib.Client.Interfaces;
 using TwitchLib.Communication.Clients;
 using TwitchLib.Communication.Models;
+using WebSocketSharp;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
 
@@ -30,16 +35,15 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
     private readonly StringFormat _stringFormat = new() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Near };
 
     private CachedBitmap _cachedBackground;
-
     private SolidBrush _textBrushChat;
+    private SolidBrush _textBrushBits;
     private SolidBrush _textBrushRaid;
-
-
     private Pen _dividerPen;
 
     public enum MessageType
     {
         Chat,
+        Bits,
         Raided,
     }
 
@@ -64,6 +68,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         });
         _textBrushChat = new SolidBrush(Color.FromArgb(255, _config.Colors.TextColor));
         _textBrushRaid = new SolidBrush(Color.FromArgb(255, _config.Colors.RaidColor));
+        _textBrushBits = new SolidBrush(Color.FromArgb(255, _config.Colors.BitsColor));
 
         _dividerPen = new(new SolidBrush(Color.FromArgb(25, _config.Colors.TextColor)), 0.5f);
         _font = FontUtil.FontRoboto(11);
@@ -87,22 +92,36 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _twitchClient.Initialize(credentials, _config.Credentials.TwitchUser);
         _twitchClient.OnMessageReceived += (s, e) =>
         {
-            _messages.Add(new(MessageType.Chat, $"{DateTime.Now:HH:mm} {e.ChatMessage.DisplayName}: {e.ChatMessage.Message}"));
-        };
+            if (e.ChatMessage.Bits > 0)
+                _messages.Add(new(MessageType.Bits, $"{DateTime.Now:HH:mm} {e.ChatMessage.DisplayName} cheered {e.ChatMessage.Bits} bits: {e.ChatMessage.Message}"));
+            else
+                _messages.Add(new(MessageType.Chat, $"{DateTime.Now:HH:mm} {e.ChatMessage.DisplayName}: {e.ChatMessage.Message}"));
 
+        };
         _twitchClient.OnRaidNotification += (s, e) =>
         {
             _messages.Add(new(MessageType.Raided, $"{e.RaidNotification.DisplayName} has raided the channel with {e.RaidNotification.MsgParamViewerCount} viewers."));
         };
 
-        _twitchClient.OnConnected += (s, e) => { _twitchClient.SendMessage(_twitchClient.JoinedChannels[0], "Race Element has Connected to Twitch Chat!"); };
+        TwitchChatCommandHandler chatCommandHandler = new(this, _twitchClient);
+        _twitchClient.AddChatCommandIdentifier(TwitchChatCommandHandler.ChatCommandCharacter);
+        _twitchClient.OnChatCommandReceived += chatCommandHandler.OnChatCommandReceived;
+
+        _twitchClient.OnConnected += (s, e) =>
+        {
+            _twitchClient.SendMessage(_twitchClient.JoinedChannels[0], "Race Element has Connected to Twitch Chat!");
+        };
     }
 
     public sealed override void BeforeStop()
     {
         if (_isPreviewing) return;
 
-        if (_twitchClient.IsConnected) Task.Run(() => _twitchClient.Disconnect());
+        if (_twitchClient.IsConnected) Task.Run(() =>
+        {
+            _twitchClient.RemoveChatCommandIdentifier(TwitchChatCommandHandler.ChatCommandCharacter);
+            _twitchClient.Disconnect();
+        });
 
         _cachedBackground?.Dispose();
         _stringFormat?.Dispose();
@@ -129,7 +148,6 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         {
             int y = 0;
 
-
             for (int i = _messages.Count - 1; i >= 0; i--)
             {
                 if (y > _config.Shape.Height) break;
@@ -138,12 +156,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
 
                 var size = g.MeasureString(message, _font, _config.Shape.Width, _stringFormat);
 
-                SolidBrush textBrush = _messages[i].Item1 switch
-                {
-                    MessageType.Chat => _textBrushChat,
-                    MessageType.Raided => _textBrushRaid,
-                    _ => _textBrushChat,
-                };
+                SolidBrush textBrush = GetMessageBrush(_messages[i].Item1);
                 g.DrawStringWithShadow(message, _font, textBrush, new RectangleF(0, y, size.Width, size.Height), _stringFormat);
 
                 if (_config.Colors.BackgroundOpacity != 0) // draw divider line at the bottom
@@ -156,4 +169,12 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
                 _messages.RemoveRange(0, 50);
         }
     }
+
+    private SolidBrush GetMessageBrush(MessageType type) => type switch
+    {
+        MessageType.Chat => _textBrushChat,
+        MessageType.Bits => _textBrushBits,
+        MessageType.Raided => _textBrushRaid,
+        _ => _textBrushChat,
+    };
 }
