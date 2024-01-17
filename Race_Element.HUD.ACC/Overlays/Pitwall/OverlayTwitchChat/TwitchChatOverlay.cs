@@ -33,6 +33,8 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
     private SolidBrush _textBrushChat;
     private SolidBrush _textBrushBits;
     private SolidBrush _textBrushRaid;
+    private SolidBrush _textBrushSubscription;
+
     private Pen _dividerPen;
 
     public enum MessageType
@@ -40,6 +42,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         Chat,
         Bits,
         Raided,
+        Subscriber
     }
 
     public TwitchChatOverlay(Rectangle rectangle) : base(rectangle, "Twitch Chat")
@@ -49,10 +52,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         RefreshRateHz = 0.5;
     }
 
-    public sealed override void SetupPreviewData()
-    {
-        _isPreviewing = true;
-    }
+    public sealed override void SetupPreviewData() => _isPreviewing = true;
 
     public sealed override void BeforeStart()
     {
@@ -64,6 +64,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _textBrushChat = new SolidBrush(Color.FromArgb(255, _config.Colors.TextColor));
         _textBrushRaid = new SolidBrush(Color.FromArgb(255, _config.Colors.RaidColor));
         _textBrushBits = new SolidBrush(Color.FromArgb(255, _config.Colors.BitsColor));
+        _textBrushSubscription = new SolidBrush(Color.FromArgb(255, _config.Colors.SubscriptionColor));
 
         _dividerPen = new(new SolidBrush(Color.FromArgb(25, _config.Colors.TextColor)), 0.5f);
         _font = FontUtil.FontRoboto(11);
@@ -97,6 +98,10 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         {
             _messages.Add(new(MessageType.Raided, $"{e.RaidNotification.DisplayName} has raided the channel with {e.RaidNotification.MsgParamViewerCount} viewers."));
         };
+        _twitchClient.OnNewSubscriber += (s, e) => _messages.Add(new(MessageType.Subscriber, $"{e.Subscriber.DisplayName} Subscribed! ({e.Subscriber.SubscriptionPlanName})"));
+        _twitchClient.OnReSubscriber += (s, e) => _messages.Add(new(MessageType.Subscriber, $"{e.ReSubscriber.DisplayName} Resubscribed! ({e.ReSubscriber.SubscriptionPlanName})"));
+        _twitchClient.OnPrimePaidSubscriber += (s, e) => _messages.Add(new(MessageType.Subscriber, $"{e.PrimePaidSubscriber.DisplayName} Subscribed with Prime!"));
+        _twitchClient.OnGiftedSubscription += (s, e) => _messages.Add(new(MessageType.Subscriber, $"{e.GiftedSubscription.DisplayName} gifted a subscription ({e.GiftedSubscription.MsgParamSubPlanName}) to {e.GiftedSubscription.MsgParamRecipientDisplayName}"));
 
         TwitchChatCommandHandler chatCommandHandler = new(this, _twitchClient);
         _twitchClient.AddChatCommandIdentifier(TwitchChatCommandHandler.ChatCommandCharacter);
@@ -124,6 +129,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _textBrushChat?.Dispose();
         _textBrushBits?.Dispose();
         _textBrushRaid?.Dispose();
+        _textBrushSubscription?.Dispose();
 
         _dividerPen?.Dispose();
     }
@@ -174,6 +180,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         MessageType.Chat => _textBrushChat,
         MessageType.Bits => _textBrushBits,
         MessageType.Raided => _textBrushRaid,
+        MessageType.Subscriber => _textBrushSubscription,
         _ => _textBrushChat,
     };
 }
