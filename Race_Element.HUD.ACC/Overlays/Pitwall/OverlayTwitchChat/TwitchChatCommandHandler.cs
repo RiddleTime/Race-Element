@@ -34,7 +34,7 @@ internal class TwitchChatCommandHandler(AbstractOverlay overlay, TwitchClient tw
             if (result.IsNullOrEmpty())
                 return;
 
-            twitchClient.SendMessage(twitchClient.JoinedChannels[0], result);
+            twitchClient.SendReply(twitchClient.JoinedChannels[0], e.Command.ChatMessage.Id, result);
         }
         catch (Exception ex)
         {
