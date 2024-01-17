@@ -1,25 +1,20 @@
-﻿using RaceElement.Data.ACC.Cars;
-using RaceElement.HUD.Overlay.Internal;
+﻿using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Threading.Tasks;
 using TwitchLib.Client;
-using TwitchLib.Client.Events;
-using TwitchLib.Client.Interfaces;
 using TwitchLib.Communication.Clients;
 using TwitchLib.Communication.Models;
-using WebSocketSharp;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
 
 [Overlay(Name = "Twitch Chat",
-    Description = "Shows twitch chat, newest messages appear at the top.\nTo allow Race Element to connect to the twitch api create the O Auth token at twitchapps.com/tmi",
+    Description = "Shows twitch chat, newest messages appear at the top. (type +commands in chat for all available ones)\nTo allow Race Element to connect to the twitch api create the O Auth token at twitchapps.com/tmi",
     OverlayType = OverlayType.Pitwall)]
 internal sealed class TwitchChatOverlay : AbstractOverlay
 {
