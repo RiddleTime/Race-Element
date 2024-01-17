@@ -40,7 +40,7 @@ internal class TwitchChatCommandHandler(AbstractOverlay overlay, TwitchClient tw
             {
                 "commands" => GetCommandsList(),
                 "hud" => "These are Race Element HUDs, it's free to use: https://race.elementfuture.com",
-                "damage" => $"Total damage(repair time) {TimeSpan.FromSeconds(Damage.GetTotalRepairTime(overlay.pagePhysics)):mm\\:ss\\.ff}",
+                "damage" => $"{TimeSpan.FromSeconds(Damage.GetTotalRepairTime(overlay.pagePhysics)):mm\\:ss\\.fff}",
                 "conditions" => $"Air {overlay.pagePhysics.AirTemp:F2}, Track {overlay.pagePhysics.RoadTemp:F2}, Wind {overlay.pageGraphics.WindSpeed:F2}, Grip: {overlay.pageGraphics.trackGripStatus}",
                 "track" => GetCurrentTrackResponse(),
                 "car" => GetCurrentCarResponse(),
