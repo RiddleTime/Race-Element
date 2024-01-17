@@ -35,11 +35,17 @@ internal class TwitchChatConfiguration : OverlayConfiguration
     public ColorGrouping Colors { get; init; } = new();
     public class ColorGrouping
     {
+        [ToolTip("Adjust the text color for normal chat messages")]
         public Color TextColor { get; init; } = Color.FromArgb(255, 255, 255, 255);
 
+        [ToolTip("Adjust the background color of this HUD.")]
         public Color BackgroundColor { get; init; } = Color.FromArgb(170, 0, 0, 0);
 
+        [ToolTip("Adjust the opacity for the background color.")]
         [IntRange(0, 255, 1)]
         public int BackgroundOpacity { get; init; } = 170;
+
+        [ToolTip("Adjust the text color when your channel is being raided.")]
+        public Color RaidColor { get; init; } = Color.FromArgb(255, 255, 215, 0);
     }
 }

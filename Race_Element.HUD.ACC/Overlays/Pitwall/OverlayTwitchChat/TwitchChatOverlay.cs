@@ -22,7 +22,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
 
     private TwitchClient _twitchClient = null;
 
-    private readonly List<string> _messages = [];
+    private readonly List<(MessageType, string)> _messages = [];
 
     private bool _isPreviewing = false;
 
@@ -30,8 +30,18 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
     private readonly StringFormat _stringFormat = new() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Near };
 
     private CachedBitmap _cachedBackground;
-    private SolidBrush _textBrush;
+
+    private SolidBrush _textBrushChat;
+    private SolidBrush _textBrushRaid;
+
+
     private Pen _dividerPen;
+
+    public enum MessageType
+    {
+        Chat,
+        Raided,
+    }
 
     public TwitchChatOverlay(Rectangle rectangle) : base(rectangle, "Twitch Chat")
     {
@@ -52,7 +62,8 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
             using SolidBrush brush = new SolidBrush(Color.FromArgb(_config.Colors.BackgroundOpacity, _config.Colors.BackgroundColor));
             g.FillRoundedRectangle(brush, new Rectangle(0, 0, _config.Shape.Width, _config.Shape.Height), 4);
         });
-        _textBrush = new SolidBrush(Color.FromArgb(255, _config.Colors.TextColor));
+        _textBrushChat = new SolidBrush(Color.FromArgb(255, _config.Colors.TextColor));
+        _textBrushRaid = new SolidBrush(Color.FromArgb(255, _config.Colors.RaidColor));
 
         _dividerPen = new(new SolidBrush(Color.FromArgb(25, _config.Colors.TextColor)), 0.5f);
         _font = FontUtil.FontRoboto(11);
@@ -68,7 +79,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         var clientOptions = new ClientOptions
         {
             MessagesAllowedInPeriod = 750,
-            ThrottlingPeriod = TimeSpan.FromSeconds(30)
+            ThrottlingPeriod = TimeSpan.FromSeconds(30),
         };
         WebSocketClient customClient = new(clientOptions);
         _twitchClient = new(customClient);
@@ -76,9 +87,15 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _twitchClient.Initialize(credentials, _config.Credentials.TwitchUser);
         _twitchClient.OnMessageReceived += (s, e) =>
         {
-            _messages.Add(new($"{DateTime.Now:HH:mm} {e.ChatMessage.DisplayName}: {e.ChatMessage.Message}"));
+            _messages.Add(new(MessageType.Chat, $"{DateTime.Now:HH:mm} {e.ChatMessage.DisplayName}: {e.ChatMessage.Message}"));
         };
-        _twitchClient.OnConnected += (s, e) => _twitchClient.SendMessage(_twitchClient.JoinedChannels[0], "Race Element has Connected to Twitch Chat!");
+
+        _twitchClient.OnRaidNotification += (s, e) =>
+        {
+            _messages.Add(new(MessageType.Raided, $"{e.RaidNotification.DisplayName} has raided the channel with {e.RaidNotification.MsgParamViewerCount} viewers."));
+        };
+
+        _twitchClient.OnConnected += (s, e) => { _twitchClient.SendMessage(_twitchClient.JoinedChannels[0], "Race Element has Connected to Twitch Chat!"); };
     }
 
     public sealed override void BeforeStop()
@@ -89,7 +106,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
 
         _cachedBackground?.Dispose();
         _stringFormat?.Dispose();
-        _textBrush?.Dispose();
+        _textBrushChat?.Dispose();
         _dividerPen?.Dispose();
     }
 
@@ -117,10 +134,17 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
             {
                 if (y > _config.Shape.Height) break;
 
-                string message = _messages[i];
+                string message = _messages[i].Item2;
 
                 var size = g.MeasureString(message, _font, _config.Shape.Width, _stringFormat);
-                g.DrawStringWithShadow(message, _font, _textBrush, new RectangleF(0, y, size.Width, size.Height), _stringFormat);
+
+                SolidBrush textBrush = _messages[i].Item1 switch
+                {
+                    MessageType.Chat => _textBrushChat,
+                    MessageType.Raided => _textBrushRaid,
+                    _ => _textBrushChat,
+                };
+                g.DrawStringWithShadow(message, _font, textBrush, new RectangleF(0, y, size.Width, size.Height), _stringFormat);
 
                 if (_config.Colors.BackgroundOpacity != 0) // draw divider line at the bottom
                     g.DrawLine(_dividerPen, 0, y + size.Height, _config.Shape.Width, y + size.Height);
