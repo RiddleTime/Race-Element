@@ -120,7 +120,11 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
 
         _cachedBackground?.Dispose();
         _stringFormat?.Dispose();
+
         _textBrushChat?.Dispose();
+        _textBrushBits?.Dispose();
+        _textBrushRaid?.Dispose();
+
         _dividerPen?.Dispose();
     }
 
