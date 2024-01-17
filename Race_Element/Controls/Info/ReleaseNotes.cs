@@ -8,7 +8,7 @@ public static class ReleaseNotes
     {
         {"1.0.1.0", "- Twitch Chat HUD:"+
                     "\n  Added support for subscriptions they will now show up."+
-                    "\n  Added more chat bot commands: purplelap...."},
+                    "\n  Added more chat bot commands: purple, position....."},
         {"1.0.0.8", "- Twitch Chat HUD: Added support for bits/raids and added several chat commands (type +commands for the list of commands)."},
         {"1.0.0.6", "- Redesigned speedometer, it is now a circular gauge with more customization options."+
                     "\n- Setup Browser now lazy loads."+

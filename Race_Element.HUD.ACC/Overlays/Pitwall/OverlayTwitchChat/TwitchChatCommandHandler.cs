@@ -1,10 +1,12 @@
 ﻿using RaceElement.Data;
 using RaceElement.Data.ACC.Cars;
+using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.Tracks;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.Util;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
@@ -41,7 +43,7 @@ internal class TwitchChatCommandHandler
             new("car", GetCurrentCarResponse),
             new("steering", GetSteeringLockResponse),
             new("purple", GetPurpleLapResponse),
-            //new("position", GetPositionResonse)
+            new("position", GetPositionResponse)
         ];
     }
 
@@ -73,22 +75,40 @@ internal class TwitchChatCommandHandler
     {
         StringBuilder sb = new("Race Element Commands: ");
         Span<ChatResponse> responses = Responses.AsSpan();
-        for (int i = 0; i < responses.Length; i++)
-        {
-            sb.Append(responses[i].Command);
-            if (i < responses.Length - 1)
-                sb.Append(", ");
-        }
+        for (int i = 0; i < responses.Length; i++) sb.Append($"{responses[i].Command}{(i < responses.Length - 1 ? ", " : string.Empty)}");
         sb.Append('.');
         return sb.ToString();
     }
 
-    private string GetPositionResonse()
+    /// <summary>
+    /// Returns the global position or if with other classes on track the in " cup/class position"
+    /// </summary>
+    /// <returns></returns>
+    private string GetPositionResponse()
     {
-        StringBuilder sb = new();
-        sb.Append($"P:{_overlay.pageGraphics.Position}");
+        StringBuilder sb = new($"{_overlay.pageGraphics.Position}/{_overlay.pageGraphics.ActiveCars}");
+        ConversionFactory.CarModels localCarModel = ConversionFactory.ParseCarName(_overlay.pageStatic.CarModel);
+        if (localCarModel == ConversionFactory.CarModels.None) return string.Empty;
 
-        return $"P:{_overlay.pageGraphics.Position}, in class: {_overlay.broadCastLocalCar.CupPosition}";
+        var localCarModelConverter = ConversionFactory.GetConversion(localCarModel);
+
+        var grouping = EntryListTracker.Instance.Cars.GroupBy(x => x.Value.CarInfo.CupCategory);
+        if (localCarModel != ConversionFactory.CarModels.None && grouping.Count() > 1)
+        {
+            var localCar = EntryListTracker.Instance.Cars.First(x => x.Value.CarInfo.CarIndex == _overlay.pageGraphics.PlayerCarID);
+            int count = 0;
+
+            foreach (var car in EntryListTracker.Instance.Cars)
+            {
+                ConversionFactory.CarModels model = ConversionFactory.GetCarModels(car.Value.CarInfo.CarModelType);
+                if (model != ConversionFactory.CarModels.None && ConversionFactory.GetConversion(model).CarClass == localCarModelConverter.CarClass)
+                    count++;
+            }
+
+            if (count != _overlay.pageGraphics.ActiveCars)
+                sb.Append($", in {ConversionFactory.GetConversion(localCarModel).CarClass}: {localCar.Value.RealtimeCarUpdate.CupPosition}/{count}");
+        }
+        return sb.ToString();
     }
 
     private string GetPurpleLapResponse()
