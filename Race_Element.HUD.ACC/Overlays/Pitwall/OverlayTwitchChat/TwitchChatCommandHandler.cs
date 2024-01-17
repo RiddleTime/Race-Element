@@ -16,7 +16,7 @@ internal class TwitchChatCommandHandler(AbstractOverlay overlay, TwitchClient tw
     public const char ChatCommandCharacter = '+';
     private string GetCommandsList()
     {
-        Span<string> commands = ["hud", "damage", "conditions", "track", "car", "steering", "commands", "lobbybestlap"];
+        Span<string> commands = ["hud", "damage", "conditions", "track", "car", "steering", "commands", "purplelap"];
 
         StringBuilder sb = new();
         sb.Append("Race Element Commands: ");
@@ -36,7 +36,7 @@ internal class TwitchChatCommandHandler(AbstractOverlay overlay, TwitchClient tw
     {
         try
         {
-            string result = e.Command.CommandText switch
+            string result = e.Command.CommandText.ToLower() switch
             {
                 "commands" => GetCommandsList(),
                 "hud" => "These are Race Element HUDs, it's free to use: https://race.elementfuture.com",
@@ -45,7 +45,7 @@ internal class TwitchChatCommandHandler(AbstractOverlay overlay, TwitchClient tw
                 "track" => GetCurrentTrackResponse(),
                 "car" => GetCurrentCarResponse(),
                 "steering" => GetSteeringLockResponse(),
-                "lobbybestlap" => GetLobbyBestLapResponse(),
+                "purplelap" => GetPurpleLapResponse(),
                 _ => string.Empty
             };
 
@@ -60,7 +60,7 @@ internal class TwitchChatCommandHandler(AbstractOverlay overlay, TwitchClient tw
         }
     }
 
-    private string GetLobbyBestLapResponse()
+    private string GetPurpleLapResponse()
     {
         var lobbyBest = overlay.broadCastRealTime.BestSessionLap;
         if (lobbyBest == null || lobbyBest.IsInvalid)
