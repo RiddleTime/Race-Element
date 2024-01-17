@@ -2,6 +2,7 @@
 using RaceElement.Data.ACC.Cars;
 using RaceElement.Data.ACC.Tracks;
 using RaceElement.HUD.Overlay.Internal;
+using RaceElement.Util;
 using System;
 using System.Diagnostics;
 using System.Text;
@@ -11,58 +12,88 @@ using WebSocketSharp;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
 
-internal class TwitchChatCommandHandler(AbstractOverlay overlay, TwitchClient twitchClient)
+internal class TwitchChatCommandHandler
 {
+    private readonly AbstractOverlay _overlay;
+
+    private readonly TwitchClient _client;
+
     public const char ChatCommandCharacter = '+';
-    private string GetCommandsList()
+
+    public readonly struct ChatResponse(string command, Func<string> result)
     {
-        Span<string> commands = ["commands", "hud", "damage", "conditions", "track", "car", "steering", "purplelap"];
+        public readonly string Command = command;
+        public readonly Func<string> Result = result;
+    }
+    private readonly ChatResponse[] Responses;
 
-        StringBuilder sb = new();
-        sb.Append("Race Element Commands: ");
-        for (int i = 0; i < commands.Length; i++)
-        {
-            sb.Append(commands[i]);
+    public TwitchChatCommandHandler(AbstractOverlay overlay, TwitchClient client)
+    {
+        _overlay = overlay;
+        _client = client;
 
-            if (i < commands.Length - 1)
-                sb.Append(", ");
-        }
-        sb.Append('.');
-
-        return sb.ToString();
+        Responses = [
+            new("commands", GetCommandsList),
+            new("hud", () => "These are Race Element HUDs, it's free to use: https://race.elementfuture.com"),
+            new("damage", () => $"{TimeSpan.FromSeconds(Damage.GetTotalRepairTime(_overlay.pagePhysics)):mm\\:ss\\.fff}"),
+            new("conditions", () => $"Air {_overlay.pagePhysics.AirTemp:F2}°, Track {_overlay.pagePhysics.RoadTemp:F2}°, Wind {_overlay.pageGraphics.WindSpeed:F2}, Grip: {_overlay.pageGraphics.trackGripStatus}"),
+            new("track", GetCurrentTrackResponse),
+            new("car", GetCurrentCarResponse),
+            new("steering", GetSteeringLockResponse),
+            new("purple", GetPurpleLapResponse),
+            //new("position", GetPositionResonse)
+        ];
     }
 
     internal void OnChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
     {
         try
         {
-            string result = e.Command.CommandText.ToLower() switch
-            {
-                "commands" => GetCommandsList(),
-                "hud" => "These are Race Element HUDs, it's free to use: https://race.elementfuture.com",
-                "damage" => $"{TimeSpan.FromSeconds(Damage.GetTotalRepairTime(overlay.pagePhysics)):mm\\:ss\\.fff}",
-                "conditions" => $"Air {overlay.pagePhysics.AirTemp:F2}°, Track {overlay.pagePhysics.RoadTemp:F2}°, Wind {overlay.pageGraphics.WindSpeed:F2}, Grip: {overlay.pageGraphics.trackGripStatus}",
-                "track" => GetCurrentTrackResponse(),
-                "car" => GetCurrentCarResponse(),
-                "steering" => GetSteeringLockResponse(),
-                "purplelap" => GetPurpleLapResponse(),
-                _ => string.Empty
-            };
+            string command = e.Command.CommandText.ToLower();
+            string replyMessage = string.Empty;
+            foreach (ChatResponse response in Responses.AsSpan())
+                if (response.Command.Equals(command))
+                {
+                    replyMessage = response.Result();
+                    break;
+                }
 
-            if (result.IsNullOrEmpty())
+            if (replyMessage.IsNullOrEmpty())
                 return;
 
-            twitchClient.SendReply(twitchClient.JoinedChannels[0], e.Command.ChatMessage.Id, result);
+            _client.SendReply(_client.JoinedChannels[0], e.Command.ChatMessage.Id, replyMessage);
         }
         catch (Exception ex)
         {
-            Debug.WriteLine(ex.ToString());
+            Debug.WriteLine(ex);
+            LogWriter.WriteToLog(ex);
         }
+    }
+    private string GetCommandsList()
+    {
+        StringBuilder sb = new("Race Element Commands: ");
+        Span<ChatResponse> responses = Responses.AsSpan();
+        for (int i = 0; i < responses.Length; i++)
+        {
+            sb.Append(responses[i].Command);
+            if (i < responses.Length - 1)
+                sb.Append(", ");
+        }
+        sb.Append('.');
+        return sb.ToString();
+    }
+
+    private string GetPositionResonse()
+    {
+        StringBuilder sb = new();
+        sb.Append($"P:{_overlay.pageGraphics.Position}");
+
+        return $"P:{_overlay.pageGraphics.Position}, in class: {_overlay.broadCastLocalCar.CupPosition}";
     }
 
     private string GetPurpleLapResponse()
     {
-        var lobbyBest = overlay.broadCastRealTime.BestSessionLap;
+        var lobbyBest = _overlay.broadCastRealTime.BestSessionLap;
         if (lobbyBest == null || lobbyBest.IsInvalid)
             return "There isn't a valid lap yet in the lobby.";
 
@@ -83,26 +114,26 @@ internal class TwitchChatCommandHandler(AbstractOverlay overlay, TwitchClient tw
 
     private string GetSteeringLockResponse()
     {
-        if (overlay.pageStatic.CarModel.IsNullOrEmpty())
+        if (_overlay.pageStatic.CarModel.IsNullOrEmpty())
             return string.Empty;
 
-        return $"{ConversionFactory.GetCarName(overlay.pageStatic.CarModel)}: {SteeringLock.Get(overlay.pageStatic.CarModel)}°";
+        return $"{ConversionFactory.GetCarName(_overlay.pageStatic.CarModel)}: {SteeringLock.Get(_overlay.pageStatic.CarModel)}°";
     }
 
     private string GetCurrentCarResponse()
     {
-        if (overlay.pageStatic.CarModel.IsNullOrEmpty())
+        if (_overlay.pageStatic.CarModel.IsNullOrEmpty())
             return string.Empty;
 
-        return $"{ConversionFactory.GetCarName(overlay.pageStatic.CarModel)}";
+        return $"{ConversionFactory.GetCarName(_overlay.pageStatic.CarModel)}";
     }
 
     private string GetCurrentTrackResponse()
     {
-        if (overlay.pageStatic.Track.IsNullOrEmpty())
+        if (_overlay.pageStatic.Track.IsNullOrEmpty())
             return string.Empty;
 
-        var currentTrack = TrackData.GetCurrentTrack(overlay.pageStatic.Track);
+        var currentTrack = TrackData.GetCurrentTrack(_overlay.pageStatic.Track);
         if (currentTrack == null) return string.Empty;
 
         return $"{currentTrack.FullName}, Length: {currentTrack.TrackLength} meters";
