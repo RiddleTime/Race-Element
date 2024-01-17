@@ -46,3 +46,4 @@ The Liveries tab provides functionality to manage liveries, Race Element automat
 ### Streaming
 - Setup Hider for OBS and Streamlabs.
 - Display HUDs on stream with OBS and Streamlabs.
+- Twitch Chat HUD which also serves as a chat bot delivering Game specific information.
