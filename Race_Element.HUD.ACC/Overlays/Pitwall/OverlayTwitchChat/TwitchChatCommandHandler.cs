@@ -16,7 +16,7 @@ internal class TwitchChatCommandHandler(AbstractOverlay overlay, TwitchClient tw
     public const char ChatCommandCharacter = '+';
     private string GetCommandsList()
     {
-        Span<string> commands = ["hud", "damage", "conditions", "track", "car", "steering", "commands", "purplelap"];
+        Span<string> commands = ["commands", "hud", "damage", "conditions", "track", "car", "steering", "purplelap"];
 
         StringBuilder sb = new();
         sb.Append("Race Element Commands: ");
@@ -41,7 +41,7 @@ internal class TwitchChatCommandHandler(AbstractOverlay overlay, TwitchClient tw
                 "commands" => GetCommandsList(),
                 "hud" => "These are Race Element HUDs, it's free to use: https://race.elementfuture.com",
                 "damage" => $"{TimeSpan.FromSeconds(Damage.GetTotalRepairTime(overlay.pagePhysics)):mm\\:ss\\.fff}",
-                "conditions" => $"Air {overlay.pagePhysics.AirTemp:F2}, Track {overlay.pagePhysics.RoadTemp:F2}, Wind {overlay.pageGraphics.WindSpeed:F2}, Grip: {overlay.pageGraphics.trackGripStatus}",
+                "conditions" => $"Air {overlay.pagePhysics.AirTemp:F2}°, Track {overlay.pagePhysics.RoadTemp:F2}°, Wind {overlay.pageGraphics.WindSpeed:F2}, Grip: {overlay.pageGraphics.trackGripStatus}",
                 "track" => GetCurrentTrackResponse(),
                 "car" => GetCurrentCarResponse(),
                 "steering" => GetSteeringLockResponse(),
@@ -86,7 +86,7 @@ internal class TwitchChatCommandHandler(AbstractOverlay overlay, TwitchClient tw
         if (overlay.pageStatic.CarModel.IsNullOrEmpty())
             return string.Empty;
 
-        return $"{ConversionFactory.GetCarName(overlay.pageStatic.CarModel)}: {SteeringLock.Get(overlay.pageStatic.CarModel)} Degrees";
+        return $"{ConversionFactory.GetCarName(overlay.pageStatic.CarModel)}: {SteeringLock.Get(overlay.pageStatic.CarModel)}°";
     }
 
     private string GetCurrentCarResponse()
