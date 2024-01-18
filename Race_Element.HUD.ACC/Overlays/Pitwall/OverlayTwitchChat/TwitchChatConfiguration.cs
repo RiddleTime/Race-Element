@@ -2,7 +2,6 @@
 using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
-
 internal class TwitchChatConfiguration : OverlayConfiguration
 {
     public TwitchChatConfiguration() => AllowRescale = true;

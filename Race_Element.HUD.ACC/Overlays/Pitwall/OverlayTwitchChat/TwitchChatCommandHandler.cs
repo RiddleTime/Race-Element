@@ -38,7 +38,7 @@ internal class TwitchChatCommandHandler
             new("commands", GetCommandsList),
             new("hud", () => "These are Race Element HUDs, it's free to use: https://race.elementfuture.com"),
             new("damage", () => $"{TimeSpan.FromSeconds(Damage.GetTotalRepairTime(_overlay.pagePhysics)):mm\\:ss\\.fff}"),
-            new("conditions", () => $"Air {_overlay.pagePhysics.AirTemp:F2}°, Track {_overlay.pagePhysics.RoadTemp:F2}°, Wind {_overlay.pageGraphics.WindSpeed:F2} km/h, Grip: {_overlay.pageGraphics.trackGripStatus}"),
+            new("conditions", () => $"Air {_overlay.pagePhysics.AirTemp:F2}°, Track {_overlay.pagePhysics.RoadTemp:F2}°, Wind {_overlay.pageGraphics.WindSpeed:F1} km/h, Grip: {_overlay.pageGraphics.trackGripStatus}"),
             new("track", GetCurrentTrackResponse),
             new("car", GetCurrentCarResponse),
             new("steering", GetSteeringLockResponse),
@@ -54,12 +54,17 @@ internal class TwitchChatCommandHandler
         {
             string command = e.Command.CommandText.ToLower();
             string replyMessage = string.Empty;
-            foreach (ChatResponse response in Responses.AsSpan())
+
+            var responses = Responses.AsSpan();
+            for (int i = 0; i < Responses.Length; i++)
+            {
+                var response = responses[i];
                 if (response.Command.Equals(command))
                 {
                     replyMessage = response.Result();
                     break;
                 }
+            }
 
             if (replyMessage.IsNullOrEmpty())
                 return;
@@ -76,7 +81,7 @@ internal class TwitchChatCommandHandler
     {
         StringBuilder sb = new("Race Element Commands: ");
         Span<ChatResponse> responses = Responses.AsSpan();
-        for (int i = 0; i < responses.Length; i++) sb.Append($"{responses[i].Command}{(i < responses.Length - 1 ? ", " : string.Empty)}");
+        for (int i = 1; i < responses.Length; i++) sb.Append($"{responses[i].Command}{(i < responses.Length - 1 ? ", " : string.Empty)}");
         sb.Append('.');
         return sb.ToString();
     }
@@ -87,30 +92,40 @@ internal class TwitchChatCommandHandler
     /// <returns></returns>
     private string GetPositionResponse()
     {
-        StringBuilder sb = new($"P{_overlay.pageGraphics.Position}/{_overlay.pageGraphics.ActiveCars}");
-        ConversionFactory.CarModels localCarModel = ConversionFactory.ParseCarName(_overlay.pageStatic.CarModel);
-        if (localCarModel == ConversionFactory.CarModels.None) return string.Empty;
+        StringBuilder sb = new($"{_overlay.pageGraphics.Position}/{_overlay.pageGraphics.ActiveCars}");
 
-        var localClass = ConversionFactory.GetConversion(localCarModel).CarClass;
-
-        if (localCarModel != ConversionFactory.CarModels.None)
+        try
         {
-            var localCar = EntryListTracker.Instance.Cars.First(x => x.Value.CarInfo?.CarIndex == _overlay.pageGraphics.PlayerCarID);
-            if (localCar.Value.CarInfo != null)
-            {
-                int count = 0;
+            ConversionFactory.CarModels localCarModel = ConversionFactory.ParseCarName(_overlay.pageStatic.CarModel);
+            if (localCarModel == ConversionFactory.CarModels.None) return "Not in a session";
 
-                foreach (var car in EntryListTracker.Instance.Cars)
+            var localClass = ConversionFactory.GetConversion(localCarModel).CarClass;
+
+            if (localCarModel != ConversionFactory.CarModels.None)
+            {
+
+                var localCar = EntryListTracker.Instance.Cars.FirstOrDefault(x => x.Value.CarInfo?.CarIndex == _overlay.pageGraphics.PlayerCarID);
+                if (localCar.Value != null && localCar.Value.CarInfo != null)
                 {
-                    if (car.Value.CarInfo == null) continue;
-                    ConversionFactory.CarModels model = ConversionFactory.GetCarModels(car.Value.CarInfo.CarModelType);
-                    if (model != ConversionFactory.CarModels.None && ConversionFactory.GetConversion(model).CarClass == localClass)
-                        count++;
+                    int count = 0;
+
+                    foreach (var car in EntryListTracker.Instance.Cars)
+                    {
+                        if (car.Value.CarInfo == null) continue;
+                        ConversionFactory.CarModels model = ConversionFactory.GetCarModels(car.Value.CarInfo.CarModelType);
+                        if (model != ConversionFactory.CarModels.None && ConversionFactory.GetConversion(model).CarClass == localClass)
+                            count++;
+                    }
+
+                    if (count != _overlay.pageGraphics.ActiveCars)
+                        sb.Append($" | {ConversionFactory.GetConversion(localCarModel).CarClass}: {localCar.Value.RealtimeCarUpdate.CupPosition}/{count}");
                 }
 
-                if (count != _overlay.pageGraphics.ActiveCars)
-                    sb.Append($" | {ConversionFactory.GetConversion(localCarModel).CarClass}: {localCar.Value.RealtimeCarUpdate.CupPosition}/{count}");
             }
+        }
+        catch (Exception)
+        {
+            return "Not in a session";
         }
 
         return sb.ToString();

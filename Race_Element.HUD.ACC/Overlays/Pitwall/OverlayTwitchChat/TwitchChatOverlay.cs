@@ -18,7 +18,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
     OverlayType = OverlayType.Pitwall)]
 internal sealed class TwitchChatOverlay : AbstractOverlay
 {
-    private readonly TwitchChatConfiguration _config = new TwitchChatConfiguration();
+    private readonly TwitchChatConfiguration _config = new();
 
     private TwitchClient _twitchClient = null;
 
@@ -107,10 +107,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _twitchClient.AddChatCommandIdentifier(TwitchChatCommandHandler.ChatCommandCharacter);
         _twitchClient.OnChatCommandReceived += chatCommandHandler.OnChatCommandReceived;
 
-        _twitchClient.OnConnected += (s, e) =>
-        {
-            _twitchClient.SendMessage(_twitchClient.JoinedChannels[0], "Race Element has Connected to Twitch Chat!");
-        };
+        _twitchClient.OnConnected += (s, e) => _twitchClient.SendMessage(_twitchClient.JoinedChannels[0], "Race Element has Connected to Twitch Chat!");
     }
 
     public sealed override void BeforeStop()
