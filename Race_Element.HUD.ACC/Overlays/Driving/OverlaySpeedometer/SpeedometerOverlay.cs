@@ -16,10 +16,10 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlaySpeedometer;
 internal sealed class SpeedometerOverlay(Rectangle rectangle) : AbstractOverlay(rectangle, "Speedometer")
 {
     private readonly SpeedometerConfiguration _config = new();
-    private const int ShapeSize = 200;
-    private const int Padding = 25;
-    private const int BackgroundWidth = 16;
-    private const int IndicatorWidth = 10;
+    private const int ShapeSize = 180;
+    private const int Padding = 18;
+    private const int BackgroundWidth = 12;
+    private const int IndicatorWidth = 6;
 
     private CachedBitmap _background;
 
@@ -68,7 +68,7 @@ internal sealed class SpeedometerOverlay(Rectangle rectangle) : AbstractOverlay(
 
         _indicatorPen = new(_config.Colors.IndicatorColor, IndicatorWidth);
         _textBrush = new(_config.Colors.TextColor);
-        _font = FontUtil.FontConthrax(34);
+        _font = FontUtil.FontConthrax(33);
     }
 
     public sealed override void BeforeStop()

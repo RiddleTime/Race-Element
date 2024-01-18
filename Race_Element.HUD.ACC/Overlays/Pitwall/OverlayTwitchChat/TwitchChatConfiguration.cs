@@ -2,7 +2,6 @@
 using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
-
 internal class TwitchChatConfiguration : OverlayConfiguration
 {
     public TwitchChatConfiguration() => AllowRescale = true;
@@ -50,5 +49,8 @@ internal class TwitchChatConfiguration : OverlayConfiguration
 
         [ToolTip("Adjust the text color when your channel is being raided.")]
         public Color RaidColor { get; init; } = Color.FromArgb(255, 255, 215, 0);
+
+        [ToolTip("Adjust the text color when someone subscribes.")]
+        public Color SubscriptionColor { get; init; } = Color.FromArgb(255, 255, 215, 0);
     }
 }
