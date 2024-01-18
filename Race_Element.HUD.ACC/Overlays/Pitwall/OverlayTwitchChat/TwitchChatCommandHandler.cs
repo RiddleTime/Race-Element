@@ -38,10 +38,11 @@ internal class TwitchChatCommandHandler
             new("commands", GetCommandsList),
             new("hud", () => "These are Race Element HUDs, it's free to use: https://race.elementfuture.com"),
             new("damage", () => $"{TimeSpan.FromSeconds(Damage.GetTotalRepairTime(_overlay.pagePhysics)):mm\\:ss\\.fff}"),
-            new("conditions", () => $"Air {_overlay.pagePhysics.AirTemp:F2}°, Track {_overlay.pagePhysics.RoadTemp:F2}°, Wind {_overlay.pageGraphics.WindSpeed:F2}, Grip: {_overlay.pageGraphics.trackGripStatus}"),
+            new("conditions", () => $"Air {_overlay.pagePhysics.AirTemp:F2}°, Track {_overlay.pagePhysics.RoadTemp:F2}°, Wind {_overlay.pageGraphics.WindSpeed:F2} km/h, Grip: {_overlay.pageGraphics.trackGripStatus}"),
             new("track", GetCurrentTrackResponse),
             new("car", GetCurrentCarResponse),
             new("steering", GetSteeringLockResponse),
+            new("green", GetGreenLapResponse),
             new("purple", GetPurpleLapResponse),
             new("position", GetPositionResponse)
         ];
@@ -86,39 +87,44 @@ internal class TwitchChatCommandHandler
     /// <returns></returns>
     private string GetPositionResponse()
     {
-        StringBuilder sb = new($"{_overlay.pageGraphics.Position}/{_overlay.pageGraphics.ActiveCars}");
+        StringBuilder sb = new($"P{_overlay.pageGraphics.Position}/{_overlay.pageGraphics.ActiveCars}");
         ConversionFactory.CarModels localCarModel = ConversionFactory.ParseCarName(_overlay.pageStatic.CarModel);
         if (localCarModel == ConversionFactory.CarModels.None) return string.Empty;
 
-        var localCarModelConverter = ConversionFactory.GetConversion(localCarModel);
+        var localClass = ConversionFactory.GetConversion(localCarModel).CarClass;
 
-        var grouping = EntryListTracker.Instance.Cars.GroupBy(x => x.Value.CarInfo.CupCategory);
-        if (localCarModel != ConversionFactory.CarModels.None && grouping.Count() > 1)
+        if (localCarModel != ConversionFactory.CarModels.None)
         {
-            var localCar = EntryListTracker.Instance.Cars.First(x => x.Value.CarInfo.CarIndex == _overlay.pageGraphics.PlayerCarID);
-            int count = 0;
-
-            foreach (var car in EntryListTracker.Instance.Cars)
+            var localCar = EntryListTracker.Instance.Cars.First(x => x.Value.CarInfo?.CarIndex == _overlay.pageGraphics.PlayerCarID);
+            if (localCar.Value.CarInfo != null)
             {
-                ConversionFactory.CarModels model = ConversionFactory.GetCarModels(car.Value.CarInfo.CarModelType);
-                if (model != ConversionFactory.CarModels.None && ConversionFactory.GetConversion(model).CarClass == localCarModelConverter.CarClass)
-                    count++;
-            }
+                int count = 0;
 
-            if (count != _overlay.pageGraphics.ActiveCars)
-                sb.Append($", in {ConversionFactory.GetConversion(localCarModel).CarClass}: {localCar.Value.RealtimeCarUpdate.CupPosition}/{count}");
+                foreach (var car in EntryListTracker.Instance.Cars)
+                {
+                    if (car.Value.CarInfo == null) continue;
+                    ConversionFactory.CarModels model = ConversionFactory.GetCarModels(car.Value.CarInfo.CarModelType);
+                    if (model != ConversionFactory.CarModels.None && ConversionFactory.GetConversion(model).CarClass == localClass)
+                        count++;
+                }
+
+                if (count != _overlay.pageGraphics.ActiveCars)
+                    sb.Append($" | {ConversionFactory.GetConversion(localCarModel).CarClass}: {localCar.Value.RealtimeCarUpdate.CupPosition}/{count}");
+            }
         }
+
         return sb.ToString();
     }
 
     private string GetPurpleLapResponse()
     {
         var lobbyBest = _overlay.broadCastRealTime.BestSessionLap;
-        if (lobbyBest == null || lobbyBest.IsInvalid)
-            return "There isn't a valid lap yet in the lobby.";
+        if (lobbyBest == null || lobbyBest.IsInvalid) goto returnNoValidLaps;
 
         try
         {
+            if (!lobbyBest.LaptimeMS.HasValue) goto returnNoValidLaps;
+
             TimeSpan lapTime = TimeSpan.FromSeconds(lobbyBest.LaptimeMS.Value / 1000d);
             TimeSpan s1 = TimeSpan.FromSeconds(lobbyBest.Splits[0].Value / 1000d);
             TimeSpan s2 = TimeSpan.FromSeconds(lobbyBest.Splits[1].Value / 1000d);
@@ -129,7 +135,31 @@ internal class TwitchChatCommandHandler
         {
             Debug.WriteLine(ex);
         }
-        return string.Empty;
+
+    returnNoValidLaps: return "No valid lap in the lobby";
+    }
+
+    public string GetGreenLapResponse()
+    {
+        var personalBest = _overlay.broadCastLocalCar.BestSessionLap;
+        if (personalBest == null || personalBest.IsInvalid) goto returnNoValidLaps;
+
+        try
+        {
+            if (!personalBest.LaptimeMS.HasValue) goto returnNoValidLaps;
+
+            TimeSpan lapTime = TimeSpan.FromSeconds(personalBest.LaptimeMS.Value / 1000d);
+            TimeSpan s1 = TimeSpan.FromSeconds(personalBest.Splits[0].Value / 1000d);
+            TimeSpan s2 = TimeSpan.FromSeconds(personalBest.Splits[1].Value / 1000d);
+            TimeSpan s3 = TimeSpan.FromSeconds(personalBest.Splits[2].Value / 1000d);
+            return $"{lapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}";
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+        }
+
+    returnNoValidLaps: return "No valid laps";
     }
 
     private string GetSteeringLockResponse()
