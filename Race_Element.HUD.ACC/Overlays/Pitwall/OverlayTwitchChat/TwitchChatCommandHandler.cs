@@ -38,13 +38,13 @@ internal class TwitchChatCommandHandler
             new("commands", GetCommandsList),
             new("hud", () => "These are Race Element HUDs, it's free to use: https://race.elementfuture.com"),
             new("damage", () => $"{TimeSpan.FromSeconds(Damage.GetTotalRepairTime(_overlay.pagePhysics)):mm\\:ss\\.fff}"),
-            new("conditions", () => $"Air {_overlay.pagePhysics.AirTemp:F2}°, Track {_overlay.pagePhysics.RoadTemp:F2}°, Wind {_overlay.pageGraphics.WindSpeed:F1} km/h, Grip: {_overlay.pageGraphics.trackGripStatus}"),
+            new("temps", () => $"Air {_overlay.pagePhysics.AirTemp:F2}°, Track {_overlay.pagePhysics.RoadTemp:F2}°, Wind {_overlay.pageGraphics.WindSpeed:F1} km/h, Grip: {_overlay.pageGraphics.trackGripStatus}"),
             new("track", GetCurrentTrackResponse),
             new("car", GetCurrentCarResponse),
             new("steering", GetSteeringLockResponse),
             new("green", GetGreenLapResponse),
             new("purple", GetPurpleLapResponse),
-            new("position", GetPositionResponse)
+            new("pos", GetPositionResponse)
         ];
     }
 

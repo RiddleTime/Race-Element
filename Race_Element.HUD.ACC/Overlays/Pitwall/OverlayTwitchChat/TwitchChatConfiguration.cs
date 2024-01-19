@@ -4,6 +4,8 @@ using System.Drawing;
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
 internal class TwitchChatConfiguration : OverlayConfiguration
 {
+    public enum Direction { TopToBottom, BottomToTop }
+
     public TwitchChatConfiguration() => AllowRescale = true;
 
     [ConfigGrouping("Connection", "Set up the username and O Auth token")]
@@ -23,6 +25,9 @@ internal class TwitchChatConfiguration : OverlayConfiguration
     public ShapeGrouping Shape { get; init; } = new();
     public class ShapeGrouping
     {
+        [ToolTip("Either new text will come from the top or it will come from the bottom of the hud.")]
+        public Direction Direction { get; set; } = Direction.TopToBottom;
+
         [IntRange(100, 500, 2)]
         public int Width { get; init; } = 400;
 

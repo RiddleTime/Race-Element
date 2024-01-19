@@ -148,24 +148,43 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
 
         if (_messages.Count > 0)
         {
-            int y = 0;
+            int y = _config.Shape.Direction == TwitchChatConfiguration.Direction.TopToBottom ? 0 : Height;
 
-            for (int i = _messages.Count - 1; i >= 0; i--)
+            Action<int, TwitchChatConfiguration.Direction> func = (index, direction) =>
             {
-                if (y > _config.Shape.Height) break;
-
-                string message = _messages[i].Item2;
-
+                string message = _messages[index].Item2;
                 var size = g.MeasureString(message, _font, _config.Shape.Width, _stringFormat);
+                int directionalHeight = (int)Math.Ceiling(size.Height);
 
-                SolidBrush textBrush = GetMessageBrush(_messages[i].Item1);
-                g.DrawStringWithShadow(message, _font, textBrush, new RectangleF(0, y, size.Width, size.Height), _stringFormat);
+                if (direction == TwitchChatConfiguration.Direction.TopToBottom)
+                {
+                    if (y > _config.Shape.Height) y = -1;
+                }
+                else
+                {
+                    if (y < 0) y = -1;
+                }
 
-                if (_config.Colors.BackgroundOpacity != 0) // draw divider line at the bottom
-                    g.DrawLine(_dividerPen, 0, y + size.Height, _config.Shape.Width, y + size.Height);
+                int actualY = y;
+                if (direction == TwitchChatConfiguration.Direction.BottomToTop)
+                    actualY -= directionalHeight;
 
-                y += (int)Math.Ceiling(size.Height);
-            }
+                g.DrawStringWithShadow(message, _font, GetMessageBrush(_messages[index].Item1), new RectangleF(0, actualY, size.Width, size.Height), _stringFormat);
+
+                if (_config.Colors.BackgroundOpacity != 0) // draw divider line
+                {
+                    int linyY = actualY;
+                    if (direction == TwitchChatConfiguration.Direction.TopToBottom) linyY += (int)size.Height;
+                    g.DrawLine(_dividerPen, 0, linyY, _config.Shape.Width, linyY);
+                }
+
+                if (_config.Shape.Direction == TwitchChatConfiguration.Direction.BottomToTop) directionalHeight *= -1;
+                y += directionalHeight;
+            };
+
+
+            for (int i = _messages.Count - 1; i >= 0 && y != -1; i--)
+                func(i, _config.Shape.Direction);
 
             if (_messages.Count > 100)
                 _messages.RemoveRange(0, 50);
