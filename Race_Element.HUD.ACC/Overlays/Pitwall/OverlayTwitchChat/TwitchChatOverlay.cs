@@ -94,10 +94,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
                 _messages.Add(new(MessageType.Chat, $"{DateTime.Now:HH:mm} {e.ChatMessage.DisplayName}: {e.ChatMessage.Message}"));
 
         };
-        _twitchClient.OnRaidNotification += (s, e) =>
-        {
-            _messages.Add(new(MessageType.Raided, $"{e.RaidNotification.DisplayName} has raided the channel with {e.RaidNotification.MsgParamViewerCount} viewers."));
-        };
+        _twitchClient.OnRaidNotification += (s, e) => _messages.Add(new(MessageType.Raided, $"{e.RaidNotification.DisplayName} has raided the channel with {e.RaidNotification.MsgParamViewerCount} viewers."));
         _twitchClient.OnNewSubscriber += (s, e) => _messages.Add(new(MessageType.Subscriber, $"{e.Subscriber.DisplayName} Subscribed! ({e.Subscriber.SubscriptionPlanName})"));
         _twitchClient.OnReSubscriber += (s, e) => _messages.Add(new(MessageType.Subscriber, $"{e.ReSubscriber.DisplayName} Resubscribed! ({e.ReSubscriber.SubscriptionPlanName})"));
         _twitchClient.OnPrimePaidSubscriber += (s, e) => _messages.Add(new(MessageType.Subscriber, $"{e.PrimePaidSubscriber.DisplayName} Subscribed with Prime!"));
@@ -107,7 +104,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _twitchClient.AddChatCommandIdentifier(TwitchChatCommandHandler.ChatCommandCharacter);
         _twitchClient.OnChatCommandReceived += chatCommandHandler.OnChatCommandReceived;
 
-        _twitchClient.OnConnected += (s, e) => _twitchClient.SendMessage(_twitchClient.JoinedChannels[0], "Race Element has Connected to Twitch Chat!");
+        _twitchClient.OnConnected += (s, e) => _twitchClient.SendMessage(_twitchClient.JoinedChannels[0], "Race Element - Connected");
     }
 
     public sealed override void BeforeStop()
