@@ -104,7 +104,6 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
         string stintTime = $"{TimeSpan.FromMilliseconds(stintDebug):hh\\:mm\\:ss}";
         //**********************
         Brush fuelBarBrush = GetFuelBarBrush();
-
         Brush fuelTimeBrush = GetFuelTimeBrush(fuelTimeLeft, stintDebug);
         //Start (Basic)
         _infoPanel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel:F2} L", 0, pageStatic.MaxFuel, pagePhysics.Fuel, fuelBarBrush);

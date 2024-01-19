@@ -46,7 +46,6 @@ internal sealed class AccelerometerOverlay : AbstractOverlay
 
     public AccelerometerOverlay(Rectangle rectangle) : base(rectangle, "Accelerometer") { }
 
-
     public override void SetupPreviewData()
     {
         pagePhysics.AccG[0] = 0f;

@@ -86,10 +86,6 @@ internal class TwitchChatCommandHandler
         return sb.ToString();
     }
 
-    /// <summary>
-    /// Returns the global position or if with other classes on track the in " cup/class position"
-    /// </summary>
-    /// <returns></returns>
     private string GetPositionResponse()
     {
         StringBuilder sb = new($"{_overlay.pageGraphics.Position}/{_overlay.pageGraphics.ActiveCars}");
@@ -103,7 +99,6 @@ internal class TwitchChatCommandHandler
 
             if (localCarModel != ConversionFactory.CarModels.None)
             {
-
                 var localCar = EntryListTracker.Instance.Cars.FirstOrDefault(x => x.Value.CarInfo?.CarIndex == _overlay.pageGraphics.PlayerCarID);
                 if (localCar.Value != null && localCar.Value.CarInfo != null)
                 {
