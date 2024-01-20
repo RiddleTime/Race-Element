@@ -35,6 +35,17 @@ internal class TwitchChatConfiguration : OverlayConfiguration
         public int Height { get; init; } = 150;
     }
 
+    [ConfigGrouping("Bot", "Adjust the twitch chat bot.")]
+    public BotGrouping Bot { get; init; } = new();
+    public class BotGrouping
+    {
+        [ToolTip("Enable or disable the chat bot")]
+        public bool IsEnabled { get; init; } = true;
+
+        [ToolTip("When enabled the bot answers will also be displayed in the Twitch Chat HUD.")]
+        public bool DisplayBotAnswers { get; init; } = false;
+    }
+
     [ConfigGrouping("Colors", "Adjust the colors of the text and the background")]
     public ColorGrouping Colors { get; init; } = new();
     public class ColorGrouping
@@ -57,5 +68,8 @@ internal class TwitchChatConfiguration : OverlayConfiguration
 
         [ToolTip("Adjust the text color when someone subscribes.")]
         public Color SubscriptionColor { get; init; } = Color.FromArgb(255, 255, 215, 0);
+
+        [ToolTip("Adjust the text color when Display Bot Answers is enabled.")]
+        public Color BotColor { get; init; } = Color.FromArgb(255, 255, 69, 0);
     }
 }
