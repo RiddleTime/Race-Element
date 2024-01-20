@@ -154,11 +154,11 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
 
                 if (direction == TwitchChatConfiguration.Direction.TopToBottom)
                 {
-                    if (y > _config.Shape.Height) y = -1;
+                    if (y > _config.Shape.Height) { y = -1; return; }
                 }
                 else
                 {
-                    if (y < 0) y = -1;
+                    if (y < 0) { y = -1; return; }
                 }
 
                 int actualY = y;
