@@ -6,6 +6,9 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.1.2", "- Twitch Chat HUD:"+
+                    "\n  - Added option to make new messages appear at the bottom of the hud."+
+                    "\n  - Added more chat bot commands: ahead, behind.."},
         {"1.0.1.0", "- Twitch Chat HUD:"+
                     "\n  - Added support for subscriptions alerts, they will now show up in one form or another."+
                     "\n  - Added more chat bot commands: purple, green, position."+

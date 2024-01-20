@@ -154,7 +154,7 @@ internal class TwitchChatCommandHandler
         }
         catch (Exception e)
         {
-            Debug.WriteLine("e);
+            Debug.WriteLine(e);
         }
 
         return string.Empty;

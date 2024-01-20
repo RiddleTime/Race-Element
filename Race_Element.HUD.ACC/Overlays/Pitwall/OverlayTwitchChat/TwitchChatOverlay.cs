@@ -45,7 +45,6 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         Raided,
         Subscriber
     }
-
     public TwitchChatOverlay(Rectangle rectangle) : base(rectangle, "Twitch Chat")
     {
         Width = _config.Shape.Width;
@@ -59,7 +58,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
     {
         _cachedBackground = new CachedBitmap(_config.Shape.Width, _config.Shape.Height, g =>
         {
-            using SolidBrush brush = new SolidBrush(Color.FromArgb(_config.Colors.BackgroundOpacity, _config.Colors.BackgroundColor));
+            using SolidBrush brush = new(Color.FromArgb(_config.Colors.BackgroundOpacity, _config.Colors.BackgroundColor));
             g.FillRoundedRectangle(brush, new Rectangle(0, 0, _config.Shape.Width, _config.Shape.Height), 4);
         });
         _textBrushChat = new SolidBrush(Color.FromArgb(255, _config.Colors.TextColor));
@@ -134,7 +133,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         if (_isPreviewing) return;
 
         if (!_twitchClient.IsConnected)
-            Task.Run(() => _twitchClient.Connect());
+            _twitchClient.Connect();
 
         g.CompositingQuality = CompositingQuality.HighQuality;
         g.SmoothingMode = SmoothingMode.AntiAlias;
