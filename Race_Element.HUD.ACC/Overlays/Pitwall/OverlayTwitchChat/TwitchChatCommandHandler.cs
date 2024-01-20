@@ -1,16 +1,19 @@
-﻿using RaceElement.Data;
+﻿using RaceElement.Broadcast.Structs;
+using RaceElement.Data;
 using RaceElement.Data.ACC.Cars;
 using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.Tracks;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.Util;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using WebSocketSharp;
+using static RaceElement.Data.ACC.EntryList.EntryListTracker;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
 
@@ -44,7 +47,9 @@ internal class TwitchChatCommandHandler
             new("steering", GetSteeringLockResponse),
             new("green", GetGreenLapResponse),
             new("purple", GetPurpleLapResponse),
-            new("pos", GetPositionResponse)
+            new("pos", GetPositionResponse),
+            new("ahead", GetCarAheadResponse),
+            new("behind", GetCarBehindResponse),
         ];
     }
 
@@ -82,8 +87,114 @@ internal class TwitchChatCommandHandler
         StringBuilder sb = new("Race Element Commands: ");
         Span<ChatResponse> responses = Responses.AsSpan();
         for (int i = 1; i < responses.Length; i++) sb.Append($"{responses[i].Command}{(i < responses.Length - 1 ? ", " : string.Empty)}");
-        sb.Append('.');
+        _ = sb.Append('.');
         return sb.ToString();
+    }
+
+    private string GetCarAheadResponse()
+    {
+        try
+        {
+            CarData localCar = GetLocalCar();
+            if (localCar == null) return string.Empty;
+
+            CarData carBehind = GetCarAtPosition(localCar.RealtimeCarUpdate.Position - 1);
+            if (carBehind == null) return string.Empty;
+            StringBuilder sb = new($"P{localCar.RealtimeCarUpdate.Position - 1} #{carBehind.CarInfo.RaceNumber}: ");
+
+            if (carBehind.RealtimeCarUpdate.LastLap != null)
+            {
+
+                LapInfo lastLap = carBehind.RealtimeCarUpdate.LastLap;
+                if (!lastLap.LaptimeMS.HasValue) { sb.Append("no laps"); goto noLastLap; }
+
+                TimeSpan lapTime = TimeSpan.FromSeconds(lastLap.LaptimeMS.Value / 1000d);
+                TimeSpan s1 = TimeSpan.FromSeconds(lastLap.Splits[0].Value / 1000d);
+                TimeSpan s2 = TimeSpan.FromSeconds(lastLap.Splits[1].Value / 1000d);
+                TimeSpan s3 = TimeSpan.FromSeconds(lastLap.Splits[2].Value / 1000d);
+                sb.Append($"{lapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}");
+            }
+        noLastLap:;
+
+            return sb.ToString();
+
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine("");
+        }
+
+        return string.Empty;
+    }
+
+    private CarData GetLocalCar()
+    {
+        int focussedIndex = _overlay.broadCastRealTime.FocusedCarIndex;
+        if (focussedIndex < 0)
+            return null;
+
+        CarData localCar = null;
+        foreach (var car in EntryListTracker.Instance.Cars)
+        {
+            if (car.Value.CarInfo == null) continue;
+            if (car.Key == focussedIndex)
+            {
+                localCar = car.Value;
+                break;
+            }
+        }
+
+        return localCar;
+    }
+
+    private static CarData GetCarAtPosition(int globalPosition)
+    {
+        CarData carAtPosition = null;
+        foreach (var car in EntryListTracker.Instance.Cars)
+        {
+            if (car.Value.CarInfo == null) continue;
+            if (car.Value.RealtimeCarUpdate.Position == globalPosition)
+            {
+                carAtPosition = car.Value;
+                break;
+            }
+        }
+        return carAtPosition;
+    }
+    private string GetCarBehindResponse()
+    {
+        try
+        {
+            CarData localCar = GetLocalCar();
+            if (localCar == null) return string.Empty;
+
+            CarData carBehind = GetCarAtPosition(localCar.RealtimeCarUpdate.Position + 1);
+            if (carBehind == null) return string.Empty;
+            StringBuilder sb = new($"P{localCar.RealtimeCarUpdate.Position + 1} #{carBehind.CarInfo.RaceNumber}: ");
+
+            if (carBehind.RealtimeCarUpdate.LastLap != null)
+            {
+
+                LapInfo lastLap = carBehind.RealtimeCarUpdate.LastLap;
+                if (!lastLap.LaptimeMS.HasValue) { sb.Append("no laps"); goto noLastLap; }
+
+                TimeSpan lapTime = TimeSpan.FromSeconds(lastLap.LaptimeMS.Value / 1000d);
+                TimeSpan s1 = TimeSpan.FromSeconds(lastLap.Splits[0].Value / 1000d);
+                TimeSpan s2 = TimeSpan.FromSeconds(lastLap.Splits[1].Value / 1000d);
+                TimeSpan s3 = TimeSpan.FromSeconds(lastLap.Splits[2].Value / 1000d);
+                sb.Append($"{lapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}");
+            }
+        noLastLap:;
+
+            return sb.ToString();
+
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine("");
+        }
+
+        return string.Empty;
     }
 
     private string GetPositionResponse()
@@ -193,7 +304,7 @@ internal class TwitchChatCommandHandler
         if (_overlay.pageStatic.Track.IsNullOrEmpty())
             return string.Empty;
 
-        var currentTrack = TrackData.GetCurrentTrack(_overlay.pageStatic.Track);
+        var currentTrack = RaceElement.Data.ACC.Tracks.TrackData.GetCurrentTrack(_overlay.pageStatic.Track);
         if (currentTrack == null) return string.Empty;
 
         return $"{currentTrack.FullName}, Length: {currentTrack.TrackLength} meters";
