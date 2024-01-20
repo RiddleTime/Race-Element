@@ -88,7 +88,6 @@ internal class TwitchChatCommandHandler
         _ = sb.Append('.');
         return sb.ToString();
     }
-
     private string GetCarAheadResponse()
     {
         try
@@ -102,7 +101,6 @@ internal class TwitchChatCommandHandler
 
             if (carBehind.RealtimeCarUpdate.LastLap != null)
             {
-
                 LapInfo lastLap = carBehind.RealtimeCarUpdate.LastLap;
                 if (!lastLap.LaptimeMS.HasValue) { sb.Append("no last lap."); goto noLastLap; }
 
@@ -137,7 +135,6 @@ internal class TwitchChatCommandHandler
 
             if (carBehind.RealtimeCarUpdate.LastLap != null)
             {
-
                 LapInfo lastLap = carBehind.RealtimeCarUpdate.LastLap;
                 if (!lastLap.LaptimeMS.HasValue) { sb.Append("no last lap."); goto noLastLap; }
 

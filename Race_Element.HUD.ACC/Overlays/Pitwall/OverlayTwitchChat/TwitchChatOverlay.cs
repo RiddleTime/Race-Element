@@ -104,7 +104,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _twitchClient.AddChatCommandIdentifier(TwitchChatCommandHandler.ChatCommandCharacter);
         _twitchClient.OnChatCommandReceived += _chatCommandHandler.OnChatCommandReceived;
 
-        _twitchClient.OnConnected += (s, e) => _twitchClient.SendMessage(_twitchClient.JoinedChannels[0], "Race Element - Connected");
+        _twitchClient.OnConnected += (s, e) => _messages.Add(new(MessageType.Chat, $"{DateTime.Now:HH:mm} Race Element - Connected"));
     }
 
     public sealed override void BeforeStop()
