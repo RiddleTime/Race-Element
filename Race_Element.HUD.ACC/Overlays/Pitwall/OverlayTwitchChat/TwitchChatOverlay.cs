@@ -21,6 +21,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
     private readonly TwitchChatConfiguration _config = new();
 
     private TwitchClient _twitchClient = null;
+    private TwitchChatCommandHandler _chatCommandHandler;
 
     private readonly List<(MessageType, string)> _messages = [];
 
@@ -100,9 +101,9 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _twitchClient.OnPrimePaidSubscriber += (s, e) => _messages.Add(new(MessageType.Subscriber, $"{e.PrimePaidSubscriber.DisplayName} Subscribed with Prime!"));
         _twitchClient.OnGiftedSubscription += (s, e) => _messages.Add(new(MessageType.Subscriber, $"{e.GiftedSubscription.DisplayName} gifted a subscription ({e.GiftedSubscription.MsgParamSubPlanName}) to {e.GiftedSubscription.MsgParamRecipientDisplayName}"));
 
-        TwitchChatCommandHandler chatCommandHandler = new(this, _twitchClient);
+        _chatCommandHandler = new(this, _twitchClient);
         _twitchClient.AddChatCommandIdentifier(TwitchChatCommandHandler.ChatCommandCharacter);
-        _twitchClient.OnChatCommandReceived += chatCommandHandler.OnChatCommandReceived;
+        _twitchClient.OnChatCommandReceived += _chatCommandHandler.OnChatCommandReceived;
 
         _twitchClient.OnConnected += (s, e) => _twitchClient.SendMessage(_twitchClient.JoinedChannels[0], "Race Element - Connected");
     }
@@ -111,11 +112,10 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
     {
         if (_isPreviewing) return;
 
-        if (_twitchClient.IsConnected) Task.Run(() =>
-        {
-            _twitchClient.RemoveChatCommandIdentifier(TwitchChatCommandHandler.ChatCommandCharacter);
-            _twitchClient.Disconnect();
-        });
+
+        _twitchClient.RemoveChatCommandIdentifier(TwitchChatCommandHandler.ChatCommandCharacter);
+        _twitchClient.OnChatCommandReceived -= _chatCommandHandler.OnChatCommandReceived;
+        _twitchClient.Disconnect();
 
         _cachedBackground?.Dispose();
         _stringFormat?.Dispose();
