@@ -2,11 +2,9 @@
 using RaceElement.Data;
 using RaceElement.Data.ACC.Cars;
 using RaceElement.Data.ACC.EntryList;
-using RaceElement.Data.ACC.Tracks;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.Util;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -121,7 +119,42 @@ internal class TwitchChatCommandHandler
         }
         catch (Exception e)
         {
-            Debug.WriteLine("");
+            Debug.WriteLine(e);
+        }
+
+        return string.Empty;
+    }
+    private string GetCarBehindResponse()
+    {
+        try
+        {
+            CarData localCar = GetLocalCar();
+            if (localCar == null) return string.Empty;
+
+            CarData carBehind = GetCarAtPosition(localCar.RealtimeCarUpdate.Position + 1);
+            if (carBehind == null) return string.Empty;
+            StringBuilder sb = new($"P{localCar.RealtimeCarUpdate.Position + 1} #{carBehind.CarInfo.RaceNumber}: ");
+
+            if (carBehind.RealtimeCarUpdate.LastLap != null)
+            {
+
+                LapInfo lastLap = carBehind.RealtimeCarUpdate.LastLap;
+                if (!lastLap.LaptimeMS.HasValue) { sb.Append("no last lap."); goto noLastLap; }
+
+                TimeSpan lapTime = TimeSpan.FromSeconds(lastLap.LaptimeMS.Value / 1000d);
+                TimeSpan s1 = TimeSpan.FromSeconds(lastLap.Splits[0].Value / 1000d);
+                TimeSpan s2 = TimeSpan.FromSeconds(lastLap.Splits[1].Value / 1000d);
+                TimeSpan s3 = TimeSpan.FromSeconds(lastLap.Splits[2].Value / 1000d);
+                sb.Append($"{lapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}");
+            }
+        noLastLap:;
+
+            return sb.ToString();
+
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine("e);
         }
 
         return string.Empty;
@@ -160,41 +193,6 @@ internal class TwitchChatCommandHandler
             }
         }
         return carAtPosition;
-    }
-    private string GetCarBehindResponse()
-    {
-        try
-        {
-            CarData localCar = GetLocalCar();
-            if (localCar == null) return string.Empty;
-
-            CarData carBehind = GetCarAtPosition(localCar.RealtimeCarUpdate.Position + 1);
-            if (carBehind == null) return string.Empty;
-            StringBuilder sb = new($"P{localCar.RealtimeCarUpdate.Position + 1} #{carBehind.CarInfo.RaceNumber}: ");
-
-            if (carBehind.RealtimeCarUpdate.LastLap != null)
-            {
-
-                LapInfo lastLap = carBehind.RealtimeCarUpdate.LastLap;
-                if (!lastLap.LaptimeMS.HasValue) { sb.Append("no laps"); goto noLastLap; }
-
-                TimeSpan lapTime = TimeSpan.FromSeconds(lastLap.LaptimeMS.Value / 1000d);
-                TimeSpan s1 = TimeSpan.FromSeconds(lastLap.Splits[0].Value / 1000d);
-                TimeSpan s2 = TimeSpan.FromSeconds(lastLap.Splits[1].Value / 1000d);
-                TimeSpan s3 = TimeSpan.FromSeconds(lastLap.Splits[2].Value / 1000d);
-                sb.Append($"{lapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}");
-            }
-        noLastLap:;
-
-            return sb.ToString();
-
-        }
-        catch (Exception e)
-        {
-            Debug.WriteLine("");
-        }
-
-        return string.Empty;
     }
 
     private string GetPositionResponse()
