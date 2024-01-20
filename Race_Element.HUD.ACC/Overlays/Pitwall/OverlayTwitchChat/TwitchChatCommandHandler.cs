@@ -104,7 +104,7 @@ internal class TwitchChatCommandHandler
             {
 
                 LapInfo lastLap = carBehind.RealtimeCarUpdate.LastLap;
-                if (!lastLap.LaptimeMS.HasValue) { sb.Append("no laps"); goto noLastLap; }
+                if (!lastLap.LaptimeMS.HasValue) { sb.Append("no last lap."); goto noLastLap; }
 
                 TimeSpan lapTime = TimeSpan.FromSeconds(lastLap.LaptimeMS.Value / 1000d);
                 TimeSpan s1 = TimeSpan.FromSeconds(lastLap.Splits[0].Value / 1000d);
