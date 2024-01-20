@@ -21,6 +21,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
     private readonly TwitchChatConfiguration _config = new();
 
     private TwitchClient _twitchClient = null;
+    private TwitchChatCommandHandler _chatCommandHandler;
 
     private readonly List<(MessageType, string)> _messages = [];
 
@@ -44,7 +45,6 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         Raided,
         Subscriber
     }
-
     public TwitchChatOverlay(Rectangle rectangle) : base(rectangle, "Twitch Chat")
     {
         Width = _config.Shape.Width;
@@ -58,7 +58,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
     {
         _cachedBackground = new CachedBitmap(_config.Shape.Width, _config.Shape.Height, g =>
         {
-            using SolidBrush brush = new SolidBrush(Color.FromArgb(_config.Colors.BackgroundOpacity, _config.Colors.BackgroundColor));
+            using SolidBrush brush = new(Color.FromArgb(_config.Colors.BackgroundOpacity, _config.Colors.BackgroundColor));
             g.FillRoundedRectangle(brush, new Rectangle(0, 0, _config.Shape.Width, _config.Shape.Height), 4);
         });
         _textBrushChat = new SolidBrush(Color.FromArgb(255, _config.Colors.TextColor));
@@ -94,31 +94,27 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
                 _messages.Add(new(MessageType.Chat, $"{DateTime.Now:HH:mm} {e.ChatMessage.DisplayName}: {e.ChatMessage.Message}"));
 
         };
-        _twitchClient.OnRaidNotification += (s, e) =>
-        {
-            _messages.Add(new(MessageType.Raided, $"{e.RaidNotification.DisplayName} has raided the channel with {e.RaidNotification.MsgParamViewerCount} viewers."));
-        };
+        _twitchClient.OnRaidNotification += (s, e) => _messages.Add(new(MessageType.Raided, $"{e.RaidNotification.DisplayName} has raided the channel with {e.RaidNotification.MsgParamViewerCount} viewers."));
         _twitchClient.OnNewSubscriber += (s, e) => _messages.Add(new(MessageType.Subscriber, $"{e.Subscriber.DisplayName} Subscribed! ({e.Subscriber.SubscriptionPlanName})"));
         _twitchClient.OnReSubscriber += (s, e) => _messages.Add(new(MessageType.Subscriber, $"{e.ReSubscriber.DisplayName} Resubscribed! ({e.ReSubscriber.SubscriptionPlanName})"));
         _twitchClient.OnPrimePaidSubscriber += (s, e) => _messages.Add(new(MessageType.Subscriber, $"{e.PrimePaidSubscriber.DisplayName} Subscribed with Prime!"));
         _twitchClient.OnGiftedSubscription += (s, e) => _messages.Add(new(MessageType.Subscriber, $"{e.GiftedSubscription.DisplayName} gifted a subscription ({e.GiftedSubscription.MsgParamSubPlanName}) to {e.GiftedSubscription.MsgParamRecipientDisplayName}"));
 
-        TwitchChatCommandHandler chatCommandHandler = new(this, _twitchClient);
+        _chatCommandHandler = new(this, _twitchClient);
         _twitchClient.AddChatCommandIdentifier(TwitchChatCommandHandler.ChatCommandCharacter);
-        _twitchClient.OnChatCommandReceived += chatCommandHandler.OnChatCommandReceived;
+        _twitchClient.OnChatCommandReceived += _chatCommandHandler.OnChatCommandReceived;
 
-        _twitchClient.OnConnected += (s, e) => _twitchClient.SendMessage(_twitchClient.JoinedChannels[0], "Race Element has Connected to Twitch Chat!");
+        _twitchClient.OnConnected += (s, e) => _messages.Add(new(MessageType.Chat, $"{DateTime.Now:HH:mm} Race Element - Connected"));
     }
 
     public sealed override void BeforeStop()
     {
         if (_isPreviewing) return;
 
-        if (_twitchClient.IsConnected) Task.Run(() =>
-        {
-            _twitchClient.RemoveChatCommandIdentifier(TwitchChatCommandHandler.ChatCommandCharacter);
-            _twitchClient.Disconnect();
-        });
+
+        _twitchClient.RemoveChatCommandIdentifier(TwitchChatCommandHandler.ChatCommandCharacter);
+        _twitchClient.OnChatCommandReceived -= _chatCommandHandler.OnChatCommandReceived;
+        _twitchClient.Disconnect();
 
         _cachedBackground?.Dispose();
         _stringFormat?.Dispose();
@@ -137,7 +133,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         if (_isPreviewing) return;
 
         if (!_twitchClient.IsConnected)
-            Task.Run(() => _twitchClient.Connect());
+            _twitchClient.Connect();
 
         g.CompositingQuality = CompositingQuality.HighQuality;
         g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -148,24 +144,43 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
 
         if (_messages.Count > 0)
         {
-            int y = 0;
+            int y = _config.Shape.Direction == TwitchChatConfiguration.Direction.TopToBottom ? 0 : Height;
 
-            for (int i = _messages.Count - 1; i >= 0; i--)
+            Action<int, TwitchChatConfiguration.Direction> func = (index, direction) =>
             {
-                if (y > _config.Shape.Height) break;
-
-                string message = _messages[i].Item2;
-
+                string message = _messages[index].Item2;
                 var size = g.MeasureString(message, _font, _config.Shape.Width, _stringFormat);
+                int directionalHeight = (int)Math.Ceiling(size.Height);
 
-                SolidBrush textBrush = GetMessageBrush(_messages[i].Item1);
-                g.DrawStringWithShadow(message, _font, textBrush, new RectangleF(0, y, size.Width, size.Height), _stringFormat);
+                if (direction == TwitchChatConfiguration.Direction.TopToBottom)
+                {
+                    if (y > _config.Shape.Height) { y = -1; return; }
+                }
+                else
+                {
+                    if (y < 0) { y = -1; return; }
+                }
 
-                if (_config.Colors.BackgroundOpacity != 0) // draw divider line at the bottom
-                    g.DrawLine(_dividerPen, 0, y + size.Height, _config.Shape.Width, y + size.Height);
+                int actualY = y;
+                if (direction == TwitchChatConfiguration.Direction.BottomToTop)
+                    actualY -= directionalHeight;
 
-                y += (int)Math.Ceiling(size.Height);
-            }
+                g.DrawStringWithShadow(message, _font, GetMessageBrush(_messages[index].Item1), new RectangleF(0, actualY, size.Width, size.Height), _stringFormat);
+
+                if (_config.Colors.BackgroundOpacity != 0) // draw divider line
+                {
+                    int linyY = actualY;
+                    if (direction == TwitchChatConfiguration.Direction.TopToBottom) linyY += (int)size.Height;
+                    g.DrawLine(_dividerPen, 0, linyY, _config.Shape.Width, linyY);
+                }
+
+                if (_config.Shape.Direction == TwitchChatConfiguration.Direction.BottomToTop) directionalHeight *= -1;
+                y += directionalHeight;
+            };
+
+
+            for (int i = _messages.Count - 1; i >= 0 && y != -1; i--)
+                func(i, _config.Shape.Direction);
 
             if (_messages.Count > 100)
                 _messages.RemoveRange(0, 50);
