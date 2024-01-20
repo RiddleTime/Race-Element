@@ -67,7 +67,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _textBrushRaid = new SolidBrush(Color.FromArgb(255, _config.Colors.RaidColor));
         _textBrushBits = new SolidBrush(Color.FromArgb(255, _config.Colors.BitsColor));
         _textBrushSubscription = new SolidBrush(Color.FromArgb(255, _config.Colors.SubscriptionColor));
-        if (_config.Bot.DisplayBotAnswers) _textBrushBot = new SolidBrush(Color.FromArgb(255, _config.Colors.BotColor));
+        _textBrushBot = new SolidBrush(Color.FromArgb(255, _config.Colors.BotColor));
 
         _dividerPen = new(new SolidBrush(Color.FromArgb(25, _config.Colors.TextColor)), 0.5f);
         _font = FontUtil.FontRoboto(11);
@@ -110,7 +110,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
             _twitchClient.OnChatCommandReceived += _chatCommandHandler.OnChatCommandReceived;
         }
 
-        _twitchClient.OnConnected += (s, e) => _messages.Add(new(MessageType.Chat, $"{DateTime.Now:HH:mm} Race Element - Connected"));
+        _twitchClient.OnConnected += (s, e) => _messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} Race Element - Connected"));
     }
 
     public sealed override void BeforeStop()

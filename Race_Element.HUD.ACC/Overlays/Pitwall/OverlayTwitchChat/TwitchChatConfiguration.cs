@@ -70,6 +70,6 @@ internal class TwitchChatConfiguration : OverlayConfiguration
         public Color SubscriptionColor { get; init; } = Color.FromArgb(255, 255, 215, 0);
 
         [ToolTip("Adjust the text color when Display Bot Answers is enabled.")]
-        public Color BotColor { get; init; } = Color.FromArgb(255, 255, 69, 0);
+        public Color BotColor { get; init; } = Color.FromArgb(255, 0, 255, 255);
     }
 }
