@@ -42,8 +42,8 @@ internal class TwitchChatConfiguration : OverlayConfiguration
         [ToolTip("Enable or disable the chat bot")]
         public bool IsEnabled { get; init; } = true;
 
-        [ToolTip("When enabled the bot answers will also be displayed in the Twitch Chat HUD.")]
-        public bool DisplayBotAnswers { get; init; } = false;
+        [ToolTip("When enabled the bot responses will also be displayed in the Twitch Chat HUD.")]
+        public bool DisplayBotResponses { get; init; } = false;
     }
 
     [ConfigGrouping("Colors", "Adjust the colors of the text and the background")]

@@ -74,7 +74,7 @@ internal class TwitchChatCommandHandler
 
             _client.SendReply(_client.JoinedChannels[0], e.Command.ChatMessage.Id, replyMessage);
 
-            if (_overlay._config.Bot.DisplayBotAnswers && !command.Equals("commands"))
+            if (_overlay._config.Bot.DisplayBotResponses && !command.Equals("commands"))
                 _overlay._messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} - {replyMessage}"));
         }
         catch (Exception ex)
