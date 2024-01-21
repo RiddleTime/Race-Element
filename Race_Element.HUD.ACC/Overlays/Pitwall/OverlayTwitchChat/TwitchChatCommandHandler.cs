@@ -53,6 +53,7 @@ internal class TwitchChatCommandHandler
 
     internal void OnChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
     {
+        if (e.Command.CommandIdentifier != ChatCommandCharacter) return;
         try
         {
             string command = e.Command.CommandText.ToLower();
