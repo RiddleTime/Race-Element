@@ -26,13 +26,16 @@ internal class TwitchChatConfiguration : OverlayConfiguration
     public class ShapeGrouping
     {
         [ToolTip("Either new text will come from the top or it will come from the bottom of the hud.")]
-        public Direction Direction { get; set; } = Direction.TopToBottom;
+        public Direction Direction { get; init; } = Direction.TopToBottom;
 
         [IntRange(100, 500, 2)]
         public int Width { get; init; } = 400;
 
         [IntRange(100, 500, 2)]
         public int Height { get; init; } = 150;
+
+        [ToolTip("When disabled the hud will only appear when the engine is running.\nWhen disabled and spectating the twitch chat HUD will dissapear.")]
+        public bool AlwaysVisible { get; init; } = true;
     }
 
     [ConfigGrouping("Bot", "Adjust the twitch chat bot.")]

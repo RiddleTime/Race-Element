@@ -110,6 +110,12 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         }
 
         _twitchClient.OnConnected += (s, e) => _messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} Race Element - Connected"));
+
+        if (!_config.Shape.AlwaysVisible)
+        {
+            if (!_twitchClient.IsConnected)
+                _twitchClient.Connect();
+        }
     }
 
     public sealed override void BeforeStop()
@@ -137,7 +143,13 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _dividerPen?.Dispose();
     }
 
-    public sealed override bool ShouldRender() => true;
+    public sealed override bool ShouldRender()
+    {
+        if (_config.Shape.AlwaysVisible)
+            return true;
+
+        return base.ShouldRender();
+    }
     public sealed override void Render(Graphics g)
     {
         if (_isPreviewing) return;
