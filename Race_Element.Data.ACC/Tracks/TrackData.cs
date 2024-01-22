@@ -28,7 +28,7 @@ public class TrackData
     {
         get
         {
-            if (!_tracks.Any())
+            if (_tracks.Count == 0)
             {
                 foreach (var type in Assembly.GetExecutingAssembly().GetTypes().Where(x => x.IsClass && x.UnderlyingSystemType.BaseType == typeof(AbstractTrackData)))
                     _tracks.Add((AbstractTrackData)Activator.CreateInstance(type));
