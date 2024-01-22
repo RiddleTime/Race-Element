@@ -9,6 +9,7 @@ public class SetupConverter
 {
     public enum CarClasses
     {
+        GT2,
         GT3,
         GT4,
         CUP,
