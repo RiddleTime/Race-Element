@@ -140,7 +140,7 @@ internal class TwitchChatCommandHandler
                 if (!lastLap.LaptimeMS.HasValue) { sb.Append($"no {(isBest ? "best" : "last")} lap."); goto noLastLap; }
 
                 sb.Append($"{(isBest ? "Best: " : "Last: ")}");
-                TimeSpan lapTime = TimeSpan.FromSeconds(lastLap.LaptimeMS.Value / 1000d);
+                TimeSpan lapTime = TimeSpan.FromSeconds(GetLapTimeMS(lastLap.Splits) / 1000d);
                 TimeSpan s1 = TimeSpan.FromSeconds(lastLap.Splits[0].Value / 1000d);
                 TimeSpan s2 = TimeSpan.FromSeconds(lastLap.Splits[1].Value / 1000d);
                 TimeSpan s3 = TimeSpan.FromSeconds(lastLap.Splits[2].Value / 1000d);
@@ -158,6 +158,18 @@ internal class TwitchChatCommandHandler
 
         return string.Empty;
     }
+
+    private int GetLapTimeMS(List<int?> splits)
+    {
+        int lapTimeMs = 0;
+        for (int i = 0; i < splits.Count; i++)
+        {
+            lapTimeMs += splits[i].GetValueOrDefault();
+        }
+
+        return lapTimeMs;
+    }
+
     private string GetCarBehindResponse(string[] args)
     {
         try
@@ -182,7 +194,7 @@ internal class TwitchChatCommandHandler
                 if (!lastLap.LaptimeMS.HasValue) { sb.Append($"no {(isBest ? "best" : "last")} lap."); goto noLastLap; }
 
                 sb.Append($"{(isBest ? "Best: " : "Last: ")}");
-                TimeSpan lapTime = TimeSpan.FromSeconds(lastLap.LaptimeMS.Value / 1000d);
+                TimeSpan lapTime = TimeSpan.FromSeconds(GetLapTimeMS(lastLap.Splits) / 1000d);
                 TimeSpan s1 = TimeSpan.FromSeconds(lastLap.Splits[0].Value / 1000d);
                 TimeSpan s2 = TimeSpan.FromSeconds(lastLap.Splits[1].Value / 1000d);
                 TimeSpan s3 = TimeSpan.FromSeconds(lastLap.Splits[2].Value / 1000d);
