@@ -6,6 +6,11 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.1.4", "- Twitch Chat HUD:"+
+                    "\n  - Added option to enable or disable chat bot."+
+                    "\n  - Added option to only display the hud when the engine is running, disabling this option also hides the HUD during spectator."+
+                    "\n  - Added option to display bot responses in hud."+
+                    "\n  - ahead and behind commands now have a parameter called 'best', instead of showing the last lap it will show the best lap.(for example: +behind best)"},
         {"1.0.1.2", "- Twitch Chat HUD:"+
                     "\n  - Connected message is now only visible to you."+
                     "\n  - Added option to make new messages appear at the bottom of the hud."+

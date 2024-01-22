@@ -2,44 +2,50 @@
 using RaceElement.Data;
 using RaceElement.Data.ACC.Cars;
 using RaceElement.Data.ACC.EntryList;
-using RaceElement.HUD.Overlay.Internal;
 using RaceElement.Util;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using WebSocketSharp;
 using static RaceElement.Data.ACC.EntryList.EntryListTracker;
+using static RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat.TwitchChatOverlay;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
 
 internal class TwitchChatCommandHandler
 {
-    private readonly AbstractOverlay _overlay;
+    private readonly TwitchChatOverlay _overlay;
 
     private readonly TwitchClient _client;
 
     public const char ChatCommandCharacter = '+';
 
-    public readonly struct ChatResponse(string command, Func<string> result)
+    public readonly struct ChatResponse(string command, Func<string[], string> result)
     {
         public readonly string Command = command;
-        public readonly Func<string> Result = result;
+        /// <summary>
+        /// in String[]: Arguments 
+        /// out String: response(string.empty if no response)
+        /// </summary>
+        public readonly Func<string[], string> Result = result;
     }
     private readonly ChatResponse[] Responses;
 
-    public TwitchChatCommandHandler(AbstractOverlay overlay, TwitchClient client)
+    public TwitchChatCommandHandler(TwitchChatOverlay overlay, TwitchClient client)
     {
         _overlay = overlay;
         _client = client;
 
         Responses = [
             new("commands", GetCommandsList),
-            new("hud", () => "These are Race Element HUDs, it's free to use: https://race.elementfuture.com"),
-            new("damage", () => $"{TimeSpan.FromSeconds(Damage.GetTotalRepairTime(_overlay.pagePhysics)):mm\\:ss\\.fff}"),
-            new("temps", () => $"Air {_overlay.pagePhysics.AirTemp:F2}°, Track {_overlay.pagePhysics.RoadTemp:F2}°, Wind {_overlay.pageGraphics.WindSpeed:F1} km/h, Grip: {_overlay.pageGraphics.trackGripStatus}"),
+            new("bot", (args) => "Race Element, it's free to use: https://race.elementfuture.com"),
+            new("damage", (args) => $"{TimeSpan.FromSeconds(Damage.GetTotalRepairTime(_overlay.pagePhysics)):mm\\:ss\\.fff}"),
+            new("temps", GetTemperaturesResponse),
             new("track", GetCurrentTrackResponse),
             new("car", GetCurrentCarResponse),
             new("steering", GetSteeringLockResponse),
@@ -53,6 +59,8 @@ internal class TwitchChatCommandHandler
 
     internal void OnChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
     {
+        if (e.Command.CommandIdentifier != ChatCommandCharacter) return;
+
         try
         {
             string command = e.Command.CommandText.ToLower();
@@ -64,7 +72,10 @@ internal class TwitchChatCommandHandler
                 var response = responses[i];
                 if (response.Command.Equals(command))
                 {
-                    replyMessage = response.Result();
+                    Span<string> argsSpan = CollectionsMarshal.AsSpan(e.Command.ArgumentsAsList);
+                    for (int s = 0; s < argsSpan.Length; s++) argsSpan[s] = argsSpan[s].ToLower();
+                    string[] args = argsSpan.Length > 0 ? argsSpan.ToArray() : [];
+                    replyMessage = response.Result(args);
                     break;
                 }
             }
@@ -73,6 +84,9 @@ internal class TwitchChatCommandHandler
                 return;
 
             _client.SendReply(_client.JoinedChannels[0], e.Command.ChatMessage.Id, replyMessage);
+
+            if (_overlay._config.Bot.DisplayBotResponses && !command.Equals("commands"))
+                _overlay._messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} - {replyMessage}"));
         }
         catch (Exception ex)
         {
@@ -80,7 +94,7 @@ internal class TwitchChatCommandHandler
             LogWriter.WriteToLog(ex);
         }
     }
-    private string GetCommandsList()
+    private string GetCommandsList(string[] args)
     {
         StringBuilder sb = new("Race Element Commands: ");
         Span<ChatResponse> responses = Responses.AsSpan();
@@ -88,22 +102,44 @@ internal class TwitchChatCommandHandler
         _ = sb.Append('.');
         return sb.ToString();
     }
-    private string GetCarAheadResponse()
+
+    private string GetTemperaturesResponse(string[] args)
+    {
+        StringBuilder sb = new();
+        if (_overlay.pagePhysics.AirTemp > 0)
+        {
+            sb.Append($"Air {_overlay.pagePhysics.AirTemp:F2}°, Track {_overlay.pagePhysics.RoadTemp:F2}°, Wind {_overlay.pageGraphics.WindSpeed:F1} km/h, Grip: {_overlay.pageGraphics.trackGripStatus}");
+        }
+        else
+        {
+            sb.Append($"Air {_overlay.broadCastRealTime.AmbientTemp}° ,Track {_overlay.broadCastRealTime.TrackTemp}°");
+        }
+        return sb.ToString();
+    }
+    private string GetCarAheadResponse(string[] args)
     {
         try
         {
             CarData localCar = GetLocalCar();
             if (localCar == null) return string.Empty;
 
-            CarData carBehind = GetCarAtPosition(localCar.RealtimeCarUpdate.Position - 1);
-            if (carBehind == null) return string.Empty;
-            StringBuilder sb = new($"P{localCar.RealtimeCarUpdate.Position - 1} #{carBehind.CarInfo.RaceNumber}: ");
+            CarData carAhead = GetCarAtPosition(localCar.RealtimeCarUpdate.Position - 1);
+            if (carAhead == null) return string.Empty;
+            StringBuilder sb = new($"P{localCar.RealtimeCarUpdate.Position - 1} #{carAhead.CarInfo.RaceNumber} - ");
 
-            if (carBehind.RealtimeCarUpdate.LastLap != null)
+            if (carAhead.RealtimeCarUpdate.LastLap != null)
             {
-                LapInfo lastLap = carBehind.RealtimeCarUpdate.LastLap;
-                if (!lastLap.LaptimeMS.HasValue) { sb.Append("no last lap."); goto noLastLap; }
+                LapInfo lastLap = carAhead.RealtimeCarUpdate.LastLap;
+                bool isBest = false;
+                if (args.Length > 0 && args[0] == "best")
+                {
+                    lastLap = carAhead.RealtimeCarUpdate.BestSessionLap;
+                    isBest = true;
+                }
 
+                if (!lastLap.LaptimeMS.HasValue) { sb.Append($"no {(isBest ? "best" : "last")} lap."); goto noLastLap; }
+
+                sb.Append($"{(isBest ? "Best: " : "Last: ")}");
                 TimeSpan lapTime = TimeSpan.FromSeconds(lastLap.LaptimeMS.Value / 1000d);
                 TimeSpan s1 = TimeSpan.FromSeconds(lastLap.Splits[0].Value / 1000d);
                 TimeSpan s2 = TimeSpan.FromSeconds(lastLap.Splits[1].Value / 1000d);
@@ -122,7 +158,7 @@ internal class TwitchChatCommandHandler
 
         return string.Empty;
     }
-    private string GetCarBehindResponse()
+    private string GetCarBehindResponse(string[] args)
     {
         try
         {
@@ -131,13 +167,21 @@ internal class TwitchChatCommandHandler
 
             CarData carBehind = GetCarAtPosition(localCar.RealtimeCarUpdate.Position + 1);
             if (carBehind == null) return string.Empty;
-            StringBuilder sb = new($"P{localCar.RealtimeCarUpdate.Position + 1} #{carBehind.CarInfo.RaceNumber}: ");
+            StringBuilder sb = new($"P{localCar.RealtimeCarUpdate.Position + 1} #{carBehind.CarInfo.RaceNumber} - ");
 
             if (carBehind.RealtimeCarUpdate.LastLap != null)
             {
                 LapInfo lastLap = carBehind.RealtimeCarUpdate.LastLap;
-                if (!lastLap.LaptimeMS.HasValue) { sb.Append("no last lap."); goto noLastLap; }
+                bool isBest = false;
+                if (args.Length > 0 && args[0] == "best")
+                {
+                    lastLap = carBehind.RealtimeCarUpdate.BestSessionLap;
+                    isBest = true;
+                }
 
+                if (!lastLap.LaptimeMS.HasValue) { sb.Append($"no {(isBest ? "best" : "last")} lap."); goto noLastLap; }
+
+                sb.Append($"{(isBest ? "Best: " : "Last: ")}");
                 TimeSpan lapTime = TimeSpan.FromSeconds(lastLap.LaptimeMS.Value / 1000d);
                 TimeSpan s1 = TimeSpan.FromSeconds(lastLap.Splits[0].Value / 1000d);
                 TimeSpan s2 = TimeSpan.FromSeconds(lastLap.Splits[1].Value / 1000d);
@@ -192,7 +236,7 @@ internal class TwitchChatCommandHandler
         return carAtPosition;
     }
 
-    private string GetPositionResponse()
+    private string GetPositionResponse(string[] args)
     {
         StringBuilder sb = new($"{_overlay.pageGraphics.Position}/{_overlay.pageGraphics.ActiveCars}");
 
@@ -232,7 +276,7 @@ internal class TwitchChatCommandHandler
         return sb.ToString();
     }
 
-    private string GetPurpleLapResponse()
+    private string GetPurpleLapResponse(string[] args)
     {
         var lobbyBest = _overlay.broadCastRealTime.BestSessionLap;
         if (lobbyBest == null || lobbyBest.IsInvalid) goto returnNoValidLaps;
@@ -245,7 +289,7 @@ internal class TwitchChatCommandHandler
             TimeSpan s1 = TimeSpan.FromSeconds(lobbyBest.Splits[0].Value / 1000d);
             TimeSpan s2 = TimeSpan.FromSeconds(lobbyBest.Splits[1].Value / 1000d);
             TimeSpan s3 = TimeSpan.FromSeconds(lobbyBest.Splits[2].Value / 1000d);
-            return $"{lapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}";
+            return $"Lobby Best Lap: {lapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}";
         }
         catch (Exception ex)
         {
@@ -255,7 +299,7 @@ internal class TwitchChatCommandHandler
     returnNoValidLaps: return "No valid lap in the lobby";
     }
 
-    public string GetGreenLapResponse()
+    public string GetGreenLapResponse(string[] args)
     {
         var personalBest = _overlay.broadCastLocalCar.BestSessionLap;
         if (personalBest == null || personalBest.IsInvalid) goto returnNoValidLaps;
@@ -278,7 +322,7 @@ internal class TwitchChatCommandHandler
     returnNoValidLaps: return "No valid laps";
     }
 
-    private string GetSteeringLockResponse()
+    private string GetSteeringLockResponse(string[] args)
     {
         if (_overlay.pageStatic.CarModel.IsNullOrEmpty())
             return string.Empty;
@@ -286,7 +330,7 @@ internal class TwitchChatCommandHandler
         return $"{ConversionFactory.GetCarName(_overlay.pageStatic.CarModel)}: {SteeringLock.Get(_overlay.pageStatic.CarModel)}°";
     }
 
-    private string GetCurrentCarResponse()
+    private string GetCurrentCarResponse(string[] args)
     {
         if (_overlay.pageStatic.CarModel.IsNullOrEmpty())
             return string.Empty;
@@ -294,7 +338,7 @@ internal class TwitchChatCommandHandler
         return $"{ConversionFactory.GetCarName(_overlay.pageStatic.CarModel)}";
     }
 
-    private string GetCurrentTrackResponse()
+    private string GetCurrentTrackResponse(string[] args)
     {
         if (_overlay.pageStatic.Track.IsNullOrEmpty())
             return string.Empty;

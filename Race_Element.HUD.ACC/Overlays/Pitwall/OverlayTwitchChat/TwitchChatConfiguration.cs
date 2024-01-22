@@ -26,13 +26,27 @@ internal class TwitchChatConfiguration : OverlayConfiguration
     public class ShapeGrouping
     {
         [ToolTip("Either new text will come from the top or it will come from the bottom of the hud.")]
-        public Direction Direction { get; set; } = Direction.TopToBottom;
+        public Direction Direction { get; init; } = Direction.TopToBottom;
 
         [IntRange(100, 500, 2)]
         public int Width { get; init; } = 400;
 
         [IntRange(100, 500, 2)]
         public int Height { get; init; } = 150;
+
+        [ToolTip("When disabled the hud will only appear when the engine is running.\nWhen disabled and spectating the twitch chat HUD will dissapear.")]
+        public bool AlwaysVisible { get; init; } = true;
+    }
+
+    [ConfigGrouping("Bot", "Adjust the twitch chat bot.")]
+    public BotGrouping Bot { get; init; } = new();
+    public class BotGrouping
+    {
+        [ToolTip("Enable or disable the chat bot")]
+        public bool IsEnabled { get; init; } = true;
+
+        [ToolTip("When enabled the bot responses will also be displayed in the Twitch Chat HUD.")]
+        public bool DisplayBotResponses { get; init; } = true;
     }
 
     [ConfigGrouping("Colors", "Adjust the colors of the text and the background")]
@@ -57,5 +71,8 @@ internal class TwitchChatConfiguration : OverlayConfiguration
 
         [ToolTip("Adjust the text color when someone subscribes.")]
         public Color SubscriptionColor { get; init; } = Color.FromArgb(255, 255, 215, 0);
+
+        [ToolTip("Adjust the text color when Display Bot Answers is enabled.")]
+        public Color BotColor { get; init; } = Color.FromArgb(255, 0, 255, 255);
     }
 }

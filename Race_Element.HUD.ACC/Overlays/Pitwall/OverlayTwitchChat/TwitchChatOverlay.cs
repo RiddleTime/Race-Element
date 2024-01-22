@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using System.Threading.Tasks;
 using TwitchLib.Client;
 using TwitchLib.Communication.Clients;
 using TwitchLib.Communication.Models;
@@ -18,12 +17,12 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
     OverlayType = OverlayType.Pitwall)]
 internal sealed class TwitchChatOverlay : AbstractOverlay
 {
-    private readonly TwitchChatConfiguration _config = new();
+    internal readonly TwitchChatConfiguration _config = new();
 
     private TwitchClient _twitchClient = null;
     private TwitchChatCommandHandler _chatCommandHandler;
 
-    private readonly List<(MessageType, string)> _messages = [];
+    internal List<(MessageType, string)> _messages = [];
 
     private bool _isPreviewing = false;
 
@@ -35,6 +34,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
     private SolidBrush _textBrushBits;
     private SolidBrush _textBrushRaid;
     private SolidBrush _textBrushSubscription;
+    private SolidBrush _textBrushBot;
 
     private Pen _dividerPen;
 
@@ -43,7 +43,8 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         Chat,
         Bits,
         Raided,
-        Subscriber
+        Subscriber,
+        Bot
     }
     public TwitchChatOverlay(Rectangle rectangle) : base(rectangle, "Twitch Chat")
     {
@@ -65,6 +66,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _textBrushRaid = new SolidBrush(Color.FromArgb(255, _config.Colors.RaidColor));
         _textBrushBits = new SolidBrush(Color.FromArgb(255, _config.Colors.BitsColor));
         _textBrushSubscription = new SolidBrush(Color.FromArgb(255, _config.Colors.SubscriptionColor));
+        _textBrushBot = new SolidBrush(Color.FromArgb(255, _config.Colors.BotColor));
 
         _dividerPen = new(new SolidBrush(Color.FromArgb(25, _config.Colors.TextColor)), 0.5f);
         _font = FontUtil.FontRoboto(11);
@@ -100,11 +102,20 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _twitchClient.OnPrimePaidSubscriber += (s, e) => _messages.Add(new(MessageType.Subscriber, $"{e.PrimePaidSubscriber.DisplayName} Subscribed with Prime!"));
         _twitchClient.OnGiftedSubscription += (s, e) => _messages.Add(new(MessageType.Subscriber, $"{e.GiftedSubscription.DisplayName} gifted a subscription ({e.GiftedSubscription.MsgParamSubPlanName}) to {e.GiftedSubscription.MsgParamRecipientDisplayName}"));
 
-        _chatCommandHandler = new(this, _twitchClient);
-        _twitchClient.AddChatCommandIdentifier(TwitchChatCommandHandler.ChatCommandCharacter);
-        _twitchClient.OnChatCommandReceived += _chatCommandHandler.OnChatCommandReceived;
+        if (_config.Bot.IsEnabled)
+        {
+            _chatCommandHandler = new(this, _twitchClient);
+            _twitchClient.AddChatCommandIdentifier(TwitchChatCommandHandler.ChatCommandCharacter);
+            _twitchClient.OnChatCommandReceived += _chatCommandHandler.OnChatCommandReceived;
+        }
 
-        _twitchClient.OnConnected += (s, e) => _messages.Add(new(MessageType.Chat, $"{DateTime.Now:HH:mm} Race Element - Connected"));
+        _twitchClient.OnConnected += (s, e) => _messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} Race Element - Connected"));
+
+        if (!_config.Shape.AlwaysVisible)
+        {
+            if (!_twitchClient.IsConnected)
+                _twitchClient.Connect();
+        }
     }
 
     public sealed override void BeforeStop()
@@ -112,8 +123,12 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         if (_isPreviewing) return;
 
 
-        _twitchClient.RemoveChatCommandIdentifier(TwitchChatCommandHandler.ChatCommandCharacter);
-        _twitchClient.OnChatCommandReceived -= _chatCommandHandler.OnChatCommandReceived;
+        if (_config.Bot.IsEnabled)
+        {
+            _twitchClient.RemoveChatCommandIdentifier(TwitchChatCommandHandler.ChatCommandCharacter);
+            _twitchClient.OnChatCommandReceived -= _chatCommandHandler.OnChatCommandReceived;
+        }
+
         _twitchClient.Disconnect();
 
         _cachedBackground?.Dispose();
@@ -123,11 +138,18 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _textBrushBits?.Dispose();
         _textBrushRaid?.Dispose();
         _textBrushSubscription?.Dispose();
+        _textBrushBot?.Dispose();
 
         _dividerPen?.Dispose();
     }
 
-    public sealed override bool ShouldRender() => true;
+    public sealed override bool ShouldRender()
+    {
+        if (_config.Shape.AlwaysVisible)
+            return true;
+
+        return base.ShouldRender();
+    }
     public sealed override void Render(Graphics g)
     {
         if (_isPreviewing) return;
@@ -193,6 +215,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         MessageType.Bits => _textBrushBits,
         MessageType.Raided => _textBrushRaid,
         MessageType.Subscriber => _textBrushSubscription,
+        MessageType.Bot => _textBrushBot,
         _ => _textBrushChat,
     };
 }
