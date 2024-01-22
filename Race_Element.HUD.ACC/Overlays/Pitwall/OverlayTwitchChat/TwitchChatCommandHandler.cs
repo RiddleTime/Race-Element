@@ -4,7 +4,6 @@ using RaceElement.Data.ACC.Cars;
 using RaceElement.Data.ACC.EntryList;
 using RaceElement.Util;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -158,18 +157,6 @@ internal class TwitchChatCommandHandler
 
         return string.Empty;
     }
-
-    private int GetLapTimeMS(List<int?> splits)
-    {
-        int lapTimeMs = 0;
-        for (int i = 0; i < splits.Count; i++)
-        {
-            lapTimeMs += splits[i].GetValueOrDefault();
-        }
-
-        return lapTimeMs;
-    }
-
     private string GetCarBehindResponse(string[] args)
     {
         try
@@ -297,7 +284,7 @@ internal class TwitchChatCommandHandler
         {
             if (!lobbyBest.LaptimeMS.HasValue) goto returnNoValidLaps;
 
-            TimeSpan lapTime = TimeSpan.FromSeconds(lobbyBest.LaptimeMS.Value / 1000d);
+            TimeSpan lapTime = TimeSpan.FromSeconds(lobbyBest.GetLapTimeMS() / 1000d);
             TimeSpan s1 = TimeSpan.FromSeconds(lobbyBest.Splits[0].Value / 1000d);
             TimeSpan s2 = TimeSpan.FromSeconds(lobbyBest.Splits[1].Value / 1000d);
             TimeSpan s3 = TimeSpan.FromSeconds(lobbyBest.Splits[2].Value / 1000d);
@@ -320,7 +307,7 @@ internal class TwitchChatCommandHandler
         {
             if (!personalBest.LaptimeMS.HasValue) goto returnNoValidLaps;
 
-            TimeSpan lapTime = TimeSpan.FromSeconds(personalBest.LaptimeMS.Value / 1000d);
+            TimeSpan lapTime = TimeSpan.FromSeconds(personalBest.GetLapTimeMS() / 1000d);
             TimeSpan s1 = TimeSpan.FromSeconds(personalBest.Splits[0].Value / 1000d);
             TimeSpan s2 = TimeSpan.FromSeconds(personalBest.Splits[1].Value / 1000d);
             TimeSpan s3 = TimeSpan.FromSeconds(personalBest.Splits[2].Value / 1000d);
