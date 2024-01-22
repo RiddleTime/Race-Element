@@ -8,7 +8,8 @@ public static class ReleaseNotes
     {
         {"1.0.1.4", "- Twitch Chat HUD:"+
                     "\n  - Add option to enable or disable chat bot."+
-                    "\n  - Add option to display bot responses in hud."},
+                    "\n  - Add option to display bot responses in hud."+
+                    "\n  - ahead and behind commands now have a parameter called 'best', instead of showing the last lap it will show the best lap."},
         {"1.0.1.2", "- Twitch Chat HUD:"+
                     "\n  - Connected message is now only visible to you."+
                     "\n  - Added option to make new messages appear at the bottom of the hud."+
