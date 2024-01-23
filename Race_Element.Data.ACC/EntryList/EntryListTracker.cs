@@ -122,10 +122,10 @@ public class EntryListTracker
 
                                 int previousIndex = previousTimes.FindIndex(x => x.Item1 == entry.Key);
                                 if (previousIndex == -1)
-                                    previousTimes.Add((entry.Key, entry.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.Value));
+                                    previousTimes.Add((entry.Key, entry.Value.RealtimeCarUpdate.CurrentLap.GetLapTimeMS()));
                                 else
                                 {
-                                    int currentLapTime = entry.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.Value;
+                                    int currentLapTime = entry.Value.RealtimeCarUpdate.CurrentLap.GetLapTimeMS();
                                     if (currentLapTime > 0 && currentLapTime == previousTimes[previousIndex].Item2)
                                     {
                                         //Debug.WriteLine($"Possible leaver?: {entry.Key}, {previousIndex} - #{entry.Value.CarInfo.RaceNumber} - {entry.Value.CarInfo.GetCurrentDriverName()} - time: {entry.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS}");
@@ -140,7 +140,7 @@ public class EntryListTracker
                                         continue;
                                     }
 
-                                    previousTimes[previousIndex] = (previousIndex, entry.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.Value);
+                                    previousTimes[previousIndex] = (previousIndex, entry.Value.RealtimeCarUpdate.CurrentLap.GetLapTimeMS());
                                 }
 
                             }

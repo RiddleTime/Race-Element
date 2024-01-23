@@ -208,7 +208,7 @@ internal sealed class LapTableOverlay : AbstractOverlay
 
         int bestLapInLobby = -1;
         if (broadCastRealTime.BestSessionLap != null && broadCastRealTime.BestSessionLap.LaptimeMS.HasValue)
-            bestLapInLobby = broadCastRealTime.BestSessionLap.LaptimeMS.Value;
+            bestLapInLobby = broadCastRealTime.BestSessionLap.GetLapTimeMS();
 
 
         int fastestLapIndex = LapTracker.Instance.Laps.GetFastestLapIndex();

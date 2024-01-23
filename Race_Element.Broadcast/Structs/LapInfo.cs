@@ -12,6 +12,23 @@ public class LapInfo
     public bool IsValidForBest { get; internal set; }
     public LapType Type { get; internal set; }
 
+    /// <summary>
+    /// Prefered to use this method instead of LapTimeMS property.
+    /// The LapTimeMS Property sometimes doesn't return the correct laptime.
+    /// </summary>
+    /// <param name="splits"></param>
+    /// <returns></returns>
+    public int GetLapTimeMS()
+    {
+        int lapTimeMs = 0;
+        for (int i = 0; i < Splits.Count; i++)
+        {
+            lapTimeMs += Splits[i].GetValueOrDefault();
+        }
+
+        return lapTimeMs;
+    }
+
     public override string ToString()
     {
         return $"{LaptimeMS,5}|{string.Join("|", Splits)}";

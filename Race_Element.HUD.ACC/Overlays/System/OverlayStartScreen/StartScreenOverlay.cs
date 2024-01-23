@@ -113,14 +113,13 @@ public sealed class StartScreenOverlay : AbstractOverlay
 
     public override void Render(Graphics g)
     {
-
         tweener.Update(stopwatch.ElapsedMilliseconds / 1000f);
-
         g.SmoothingMode = SmoothingMode.HighQuality;
 
         _cachedBackground?.Draw(g);
 
-        if (sliderX > Width) sliderX = -SliderWidth;
+        if (sliderX > Width)
+            sliderX = -SliderWidth;
         _slider?.Draw(g, new Point(sliderX, 0));
         sliderX += 8;
 

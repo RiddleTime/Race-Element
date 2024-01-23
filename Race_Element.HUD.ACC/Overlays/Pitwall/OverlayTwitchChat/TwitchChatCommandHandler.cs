@@ -1,10 +1,13 @@
-﻿using RaceElement.Broadcast.Structs;
+﻿using RaceElement.Broadcast;
+using RaceElement.Broadcast.Structs;
 using RaceElement.Data;
 using RaceElement.Data.ACC.Cars;
+using RaceElement.Data.ACC.Database.LapDataDB;
 using RaceElement.Data.ACC.EntryList;
+using RaceElement.Data.ACC.Tracker;
+using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.Util;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -45,13 +48,13 @@ internal class TwitchChatCommandHandler
             new("commands", GetCommandsList),
             new("bot", (args) => "Race Element, it's free to use: https://race.elementfuture.com"),
             new("damage", (args) => $"{TimeSpan.FromSeconds(Damage.GetTotalRepairTime(_overlay.pagePhysics)):mm\\:ss\\.fff}"),
+            new("potential", GetPotentialBestResponse),
             new("temps", GetTemperaturesResponse),
             new("track", GetCurrentTrackResponse),
             new("car", GetCurrentCarResponse),
             new("steering", GetSteeringLockResponse),
             new("green", GetGreenLapResponse),
             new("purple", GetPurpleLapResponse),
-            new("pos", GetPositionResponse),
             new("ahead", GetCarAheadResponse),
             new("behind", GetCarBehindResponse),
         ];
@@ -103,6 +106,30 @@ internal class TwitchChatCommandHandler
         return sb.ToString();
     }
 
+    private string GetPotentialBestResponse(string[] args)
+    {
+        StringBuilder sb = new();
+        var laps = LapTracker.Instance.Laps;
+        if (laps.Count == 0) return string.Empty;
+
+        int sector1 = laps.GetFastestSector(1);
+        int sector2 = laps.GetFastestSector(2);
+        int sector3 = laps.GetFastestSector(3);
+        if (sector1 != int.MaxValue && sector2 != int.MaxValue && sector3 != int.MaxValue)
+        {
+            int totalLapTime = sector1 + sector2 + sector3;
+            TimeSpan lapTime = TimeSpan.FromSeconds(totalLapTime / 1000d);
+            TimeSpan s1 = TimeSpan.FromSeconds(sector1 / 1000d);
+            TimeSpan s2 = TimeSpan.FromSeconds(sector2 / 1000d);
+            TimeSpan s3 = TimeSpan.FromSeconds(sector3 / 1000d);
+            sb.Append($"Potential Best: {lapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}");
+        }
+        else
+            sb.Append("No valid laps");
+
+        return sb.ToString();
+    }
+
     private string GetTemperaturesResponse(string[] args)
     {
         StringBuilder sb = new();
@@ -140,7 +167,7 @@ internal class TwitchChatCommandHandler
                 if (!lastLap.LaptimeMS.HasValue) { sb.Append($"no {(isBest ? "best" : "last")} lap."); goto noLastLap; }
 
                 sb.Append($"{(isBest ? "Best: " : "Last: ")}");
-                TimeSpan lapTime = TimeSpan.FromSeconds(lastLap.LaptimeMS.Value / 1000d);
+                TimeSpan lapTime = TimeSpan.FromSeconds(lastLap.GetLapTimeMS() / 1000d);
                 TimeSpan s1 = TimeSpan.FromSeconds(lastLap.Splits[0].Value / 1000d);
                 TimeSpan s2 = TimeSpan.FromSeconds(lastLap.Splits[1].Value / 1000d);
                 TimeSpan s3 = TimeSpan.FromSeconds(lastLap.Splits[2].Value / 1000d);
@@ -182,7 +209,7 @@ internal class TwitchChatCommandHandler
                 if (!lastLap.LaptimeMS.HasValue) { sb.Append($"no {(isBest ? "best" : "last")} lap."); goto noLastLap; }
 
                 sb.Append($"{(isBest ? "Best: " : "Last: ")}");
-                TimeSpan lapTime = TimeSpan.FromSeconds(lastLap.LaptimeMS.Value / 1000d);
+                TimeSpan lapTime = TimeSpan.FromSeconds(lastLap.GetLapTimeMS() / 1000d);
                 TimeSpan s1 = TimeSpan.FromSeconds(lastLap.Splits[0].Value / 1000d);
                 TimeSpan s2 = TimeSpan.FromSeconds(lastLap.Splits[1].Value / 1000d);
                 TimeSpan s3 = TimeSpan.FromSeconds(lastLap.Splits[2].Value / 1000d);
@@ -236,46 +263,6 @@ internal class TwitchChatCommandHandler
         return carAtPosition;
     }
 
-    private string GetPositionResponse(string[] args)
-    {
-        StringBuilder sb = new($"{_overlay.pageGraphics.Position}/{_overlay.pageGraphics.ActiveCars}");
-
-        try
-        {
-            ConversionFactory.CarModels localCarModel = ConversionFactory.ParseCarName(_overlay.pageStatic.CarModel);
-            if (localCarModel == ConversionFactory.CarModels.None) return "Not in a session";
-
-            var localClass = ConversionFactory.GetConversion(localCarModel).CarClass;
-
-            if (localCarModel != ConversionFactory.CarModels.None)
-            {
-                var localCar = EntryListTracker.Instance.Cars.FirstOrDefault(x => x.Value.CarInfo?.CarIndex == _overlay.pageGraphics.PlayerCarID);
-                if (localCar.Value != null && localCar.Value.CarInfo != null)
-                {
-                    int count = 0;
-
-                    foreach (var car in EntryListTracker.Instance.Cars)
-                    {
-                        if (car.Value.CarInfo == null) continue;
-                        ConversionFactory.CarModels model = ConversionFactory.GetCarModels(car.Value.CarInfo.CarModelType);
-                        if (model != ConversionFactory.CarModels.None && ConversionFactory.GetConversion(model).CarClass == localClass)
-                            count++;
-                    }
-
-                    if (count != _overlay.pageGraphics.ActiveCars)
-                        sb.Append($" | {ConversionFactory.GetConversion(localCarModel).CarClass}: {localCar.Value.RealtimeCarUpdate.CupPosition}/{count}");
-                }
-
-            }
-        }
-        catch (Exception)
-        {
-            return "Not in a session";
-        }
-
-        return sb.ToString();
-    }
-
     private string GetPurpleLapResponse(string[] args)
     {
         var lobbyBest = _overlay.broadCastRealTime.BestSessionLap;
@@ -285,7 +272,7 @@ internal class TwitchChatCommandHandler
         {
             if (!lobbyBest.LaptimeMS.HasValue) goto returnNoValidLaps;
 
-            TimeSpan lapTime = TimeSpan.FromSeconds(lobbyBest.LaptimeMS.Value / 1000d);
+            TimeSpan lapTime = TimeSpan.FromSeconds(lobbyBest.GetLapTimeMS() / 1000d);
             TimeSpan s1 = TimeSpan.FromSeconds(lobbyBest.Splits[0].Value / 1000d);
             TimeSpan s2 = TimeSpan.FromSeconds(lobbyBest.Splits[1].Value / 1000d);
             TimeSpan s3 = TimeSpan.FromSeconds(lobbyBest.Splits[2].Value / 1000d);
@@ -308,7 +295,7 @@ internal class TwitchChatCommandHandler
         {
             if (!personalBest.LaptimeMS.HasValue) goto returnNoValidLaps;
 
-            TimeSpan lapTime = TimeSpan.FromSeconds(personalBest.LaptimeMS.Value / 1000d);
+            TimeSpan lapTime = TimeSpan.FromSeconds(personalBest.GetLapTimeMS() / 1000d);
             TimeSpan s1 = TimeSpan.FromSeconds(personalBest.Splits[0].Value / 1000d);
             TimeSpan s2 = TimeSpan.FromSeconds(personalBest.Splits[1].Value / 1000d);
             TimeSpan s3 = TimeSpan.FromSeconds(personalBest.Splits[2].Value / 1000d);

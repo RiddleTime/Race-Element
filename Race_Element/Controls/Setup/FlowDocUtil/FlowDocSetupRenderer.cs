@@ -27,13 +27,13 @@ public class FlowDocSetupRenderer
         if (carSetup == null)
             return;
 
-        TyreCompound compound = carSetup.TyresSetup.Compound(setup.BasicSetup.Tyres.TyreCompound);
+        TyreCompound compound = AbstractTyresSetup.Compound(setup.BasicSetup.Tyres.TyreCompound);
 
         // Allignment / Tyre Setup
-        double frontLeftPressure = carSetup.TyresSetup.TirePressure(carSetup.DryTyreCompound, Wheel.FrontLeft, setup.BasicSetup.Tyres.TyrePressure);
-        double frontRightPressure = carSetup.TyresSetup.TirePressure(carSetup.DryTyreCompound, Wheel.FrontRight, setup.BasicSetup.Tyres.TyrePressure);
-        double rearLeftPressure = carSetup.TyresSetup.TirePressure(carSetup.DryTyreCompound, Wheel.RearLeft, setup.BasicSetup.Tyres.TyrePressure);
-        double rearRightPressure = carSetup.TyresSetup.TirePressure(carSetup.DryTyreCompound, Wheel.RearRight, setup.BasicSetup.Tyres.TyrePressure);
+        double frontLeftPressure = AbstractTyresSetup.TirePressure(carSetup.DryTyreCompound, Wheel.FrontLeft, setup.BasicSetup.Tyres.TyrePressure);
+        double frontRightPressure = AbstractTyresSetup.TirePressure(carSetup.DryTyreCompound, Wheel.FrontRight, setup.BasicSetup.Tyres.TyrePressure);
+        double rearLeftPressure = AbstractTyresSetup.TirePressure(carSetup.DryTyreCompound, Wheel.RearLeft, setup.BasicSetup.Tyres.TyrePressure);
+        double rearRightPressure = AbstractTyresSetup.TirePressure(carSetup.DryTyreCompound, Wheel.RearRight, setup.BasicSetup.Tyres.TyrePressure);
 
         double frontLeftCaster = carSetup.TyresSetup.Caster(setup.BasicSetup.Alignment.CasterLF);
         double frontRightCaster = carSetup.TyresSetup.Caster(setup.BasicSetup.Alignment.CasterRF);

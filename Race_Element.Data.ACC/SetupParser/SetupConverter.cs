@@ -9,6 +9,7 @@ public class SetupConverter
 {
     public enum CarClasses
     {
+        GT2,
         GT3,
         GT4,
         CUP,
@@ -23,7 +24,7 @@ public class SetupConverter
         DHF2023,
     }
 
-    public enum Wheel : int
+    public enum Wheel
     {
         FrontLeft,
         FrontRight,
@@ -43,24 +44,12 @@ public class SetupConverter
         Wet
     }
 
-    public static Position GetPosition(Wheel wheel)
+    public static Position GetPosition(Wheel wheel) => wheel switch
     {
-        Position position;
-        switch (wheel)
-        {
-            case Wheel.FrontLeft:
-                position = Position.Front;
-                break;
-            case Wheel.FrontRight:
-                position = Position.Front;
-                break;
-
-            default:
-                position = Position.Rear;
-                break;
-        }
-        return position;
-    }
+        Wheel.FrontLeft => Position.Front,
+        Wheel.FrontRight => Position.Front,
+        _ => Position.Rear,
+    };
 
     public interface ICarSetupConversion
     {
@@ -94,7 +83,6 @@ public class SetupConverter
         int BumpstopRate(List<int> rawValue, Wheel wheel);
         int BumpstopRange(List<int> rawValue, Wheel wheel);
     }
-
 
     public interface IDamperSetup
     {
@@ -138,7 +126,6 @@ public class SetupConverter
 
     public interface IElectronicsSetup
     {
-
         int TractionControl { get; }
         int ABS { get; }
         int EcuMap { get; }
@@ -174,10 +161,8 @@ public class SetupConverter
 
     public static SetupDoubleRange TyrePressuresGT3 = new(20.3, 35, 0.1);
     public static SetupDoubleRange TyrePressuresGT4 = new(17.0, 35, 0.1);
-
     public static SetupDoubleRange CamberFrontGT3 => new(-4, -1.5, 0.1);
     public static SetupDoubleRange CamberRearGT3 => new(-3.5, -1, 0.1);
-
     public static SetupIntRange BrakeDuctsGT3 => new(0, 6, 1);
 
     public interface IMechanicalSetupChanger
@@ -214,27 +199,23 @@ public class SetupConverter
 
     public abstract class AbstractTyresSetup
     {
-        public TyreCompound Compound(int rawValue)
+        public static TyreCompound Compound(int rawValue)
         {
-            switch (rawValue)
+            return rawValue switch
             {
-                case 0: return TyreCompound.Dry;
-                case 1: return TyreCompound.Wet;
-
-                default: return TyreCompound.Dry;
-            }
+                0 => TyreCompound.Dry,
+                1 => TyreCompound.Wet,
+                _ => TyreCompound.Dry,
+            };
         }
 
-        public double TirePressure(DryTyreCompounds compound, Wheel wheel, List<int> rawValue)
+        public static double TirePressure(DryTyreCompounds compound, Wheel wheel, List<int> rawValue) => compound switch
         {
-            switch (compound)
-            {
-                case DryTyreCompounds.DHF2023: return Math.Round(20.3f + 0.1f * rawValue[(int)wheel], 2);
-                case DryTyreCompounds.DHF2023_GT4: return Math.Round(17.0f + 0.1f * rawValue[(int)wheel], 2);
+            DryTyreCompounds.DHF2023 => Math.Round(20.3f + 0.1f * rawValue[(int)wheel], 2),
+            DryTyreCompounds.DHF2023_GT4 => Math.Round(17.0f + 0.1f * rawValue[(int)wheel], 2),
+            _ => -1,
+        };
 
-                default: return -1;
-            }
-        }
         public abstract double Toe(Wheel wheel, List<int> rawValue);
         public abstract double Camber(Wheel wheel, List<int> rawValue);
         public abstract double Caster(int rawValue);

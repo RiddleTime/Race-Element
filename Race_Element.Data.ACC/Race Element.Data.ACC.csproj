@@ -63,4 +63,7 @@
     <ProjectReference Include="..\Race_Element.SharedMemory\Race Element.SharedMemory.csproj" />
     <ProjectReference Include="..\Race_Element.Util\Race Element.Util.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SetupParser\Cars\GT2\" />
+  </ItemGroup>
 </Project>
