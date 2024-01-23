@@ -1,7 +1,11 @@
-﻿using RaceElement.Broadcast.Structs;
+﻿using RaceElement.Broadcast;
+using RaceElement.Broadcast.Structs;
 using RaceElement.Data;
 using RaceElement.Data.ACC.Cars;
+using RaceElement.Data.ACC.Database.LapDataDB;
 using RaceElement.Data.ACC.EntryList;
+using RaceElement.Data.ACC.Tracker;
+using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.Util;
 using System;
 using System.Diagnostics;
@@ -44,6 +48,7 @@ internal class TwitchChatCommandHandler
             new("commands", GetCommandsList),
             new("bot", (args) => "Race Element, it's free to use: https://race.elementfuture.com"),
             new("damage", (args) => $"{TimeSpan.FromSeconds(Damage.GetTotalRepairTime(_overlay.pagePhysics)):mm\\:ss\\.fff}"),
+            new("potential", GetPotentialBestResponse),
             new("temps", GetTemperaturesResponse),
             new("track", GetCurrentTrackResponse),
             new("car", GetCurrentCarResponse),
@@ -99,6 +104,30 @@ internal class TwitchChatCommandHandler
         Span<ChatResponse> responses = Responses.AsSpan();
         for (int i = 1; i < responses.Length; i++) sb.Append($"{responses[i].Command}{(i < responses.Length - 1 ? ", " : string.Empty)}");
         _ = sb.Append('.');
+        return sb.ToString();
+    }
+
+    private string GetPotentialBestResponse(string[] args)
+    {
+        StringBuilder sb = new();
+        var laps = LapTracker.Instance.Laps;
+        if (laps.Count == 0) return string.Empty;
+
+        int sector1 = laps.GetFastestSector(1);
+        int sector2 = laps.GetFastestSector(2);
+        int sector3 = laps.GetFastestSector(3);
+        if (sector1 != int.MaxValue && sector2 != int.MaxValue && sector3 != int.MaxValue)
+        {
+            int totalLapTime = sector1 + sector2 + sector3;
+            TimeSpan lapTime = TimeSpan.FromSeconds(totalLapTime / 1000d);
+            TimeSpan s1 = TimeSpan.FromSeconds(sector1 / 1000d);
+            TimeSpan s2 = TimeSpan.FromSeconds(sector2 / 1000d);
+            TimeSpan s3 = TimeSpan.FromSeconds(sector3 / 1000d);
+            sb.Append($"Potential Best: {lapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}");
+        }
+        else
+            sb.Append("No valid laps");
+
         return sb.ToString();
     }
 
