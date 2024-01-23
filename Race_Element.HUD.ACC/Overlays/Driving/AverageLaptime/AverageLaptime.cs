@@ -64,7 +64,7 @@ internal class AverageLapTimeOverlay : AbstractOverlay
         int validLaps = _config.InfoPanel.ValidLaps;
         // get the last valid laps without inlap or outlap
         var validLastLaps = LapTracker.Instance.Laps.TakeLast(validLaps)
-            .TakeWhile(lap => lap.Value.IsValid && (lap.Value.LapType == Broadcast.LapType.Regular));
+            .TakeWhile(lap => lap.Value.IsValid && (lap.Value.LapType != Broadcast.LapType.Outlap) && (lap.Value.LapType != Broadcast.LapType.Inlap)/*(lap.Value.LapType == Broadcast.LapType.Regular)*/);
 
         int averageLapTime = 0;
         if (validLastLaps.Count() >= validLaps)
@@ -126,12 +126,12 @@ internal class AverageLapTimeOverlay : AbstractOverlay
                 }
             }
             
-
             string lapType = " V ";
+            if (!lap.Value.IsValid) lapType = " X ";
+            if (lap.Value.LapType == Broadcast.LapType.ERROR) lapType = " E ";
             if (lap.Value.LapType == Broadcast.LapType.Outlap) lapType = " O ";
             if (lap.Value.LapType == Broadcast.LapType.Inlap) lapType = " I ";
-            if (!lap.Value.IsValid) lapType = " X ";
-
+            
             _table.AddRow((line + 1).ToString("D2"), [$"{lapType}", lap.Value.Index.ToString("D2"), $"{lapTimeValue}", $"{averageLapTimeValue}"]);
 
             if (!lap.Value.IsValid)
