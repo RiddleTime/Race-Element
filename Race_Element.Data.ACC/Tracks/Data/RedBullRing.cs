@@ -8,7 +8,6 @@ internal class RedBullRing : AbstractTrackData
 {
     public override Guid Guid => new("f40d09f5-d548-4206-978c-61275840e808");
 
-    // -- TODO, collect the game name for the track itself, verify this (this is based on the pattern that kunos simulazioni has used for the most recent new tracks).
     public override string GameName => "red_bull_ring";
 
     public override string FullName => "Red Bull Ring";
