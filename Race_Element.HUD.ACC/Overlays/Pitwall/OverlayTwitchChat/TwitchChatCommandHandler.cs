@@ -55,7 +55,6 @@ internal class TwitchChatCommandHandler
             new("steering", GetSteeringLockResponse),
             new("green", GetGreenLapResponse),
             new("purple", GetPurpleLapResponse),
-            new("pos", GetPositionResponse),
             new("ahead", GetCarAheadResponse),
             new("behind", GetCarBehindResponse),
         ];
@@ -262,46 +261,6 @@ internal class TwitchChatCommandHandler
             }
         }
         return carAtPosition;
-    }
-
-    private string GetPositionResponse(string[] args)
-    {
-        StringBuilder sb = new($"{_overlay.pageGraphics.Position}/{_overlay.pageGraphics.ActiveCars}");
-
-        try
-        {
-            ConversionFactory.CarModels localCarModel = ConversionFactory.ParseCarName(_overlay.pageStatic.CarModel);
-            if (localCarModel == ConversionFactory.CarModels.None) return "Not in a session";
-
-            var localClass = ConversionFactory.GetConversion(localCarModel).CarClass;
-
-            if (localCarModel != ConversionFactory.CarModels.None)
-            {
-                var localCar = EntryListTracker.Instance.Cars.FirstOrDefault(x => x.Value.CarInfo?.CarIndex == _overlay.pageGraphics.PlayerCarID);
-                if (localCar.Value != null && localCar.Value.CarInfo != null)
-                {
-                    int count = 0;
-
-                    foreach (var car in EntryListTracker.Instance.Cars)
-                    {
-                        if (car.Value.CarInfo == null) continue;
-                        ConversionFactory.CarModels model = ConversionFactory.GetCarModels(car.Value.CarInfo.CarModelType);
-                        if (model != ConversionFactory.CarModels.None && ConversionFactory.GetConversion(model).CarClass == localClass)
-                            count++;
-                    }
-
-                    if (count != _overlay.pageGraphics.ActiveCars)
-                        sb.Append($" | {ConversionFactory.GetConversion(localCarModel).CarClass}: {localCar.Value.RealtimeCarUpdate.CupPosition}/{count}");
-                }
-
-            }
-        }
-        catch (Exception)
-        {
-            return "Not in a session";
-        }
-
-        return sb.ToString();
     }
 
     private string GetPurpleLapResponse(string[] args)

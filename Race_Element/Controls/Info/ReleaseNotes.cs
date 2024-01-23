@@ -7,7 +7,8 @@ public static class ReleaseNotes
     internal readonly static Dictionary<string, string> Notes = new()
     {
         {"1.0.1.6", "- Twitch chat HUD:"+
-                    "\n  - Added +potential best command, shows the potential best lap if you've set any valid laps." },
+                    "\n  - Added +potential best command, shows the potential best lap if you've set any valid laps."+
+                    "\n  - Removed +pos command, (you can literally see this in the Vanilla ACC Widgets)."},
         {"1.0.1.4", "- Twitch Chat HUD:"+
                     "\n  - Added option to enable or disable chat bot."+
                     "\n  - Added option to only display the hud when the engine is running, disabling this option also hides the HUD during spectator."+
