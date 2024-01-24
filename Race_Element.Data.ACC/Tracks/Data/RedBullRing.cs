@@ -14,10 +14,8 @@ internal class RedBullRing : AbstractTrackData
 
     public override int TrackLength => 4318;
 
-    // -- TODO, collect the sector transition
     public override List<float> Sectors => [0.28641132f, 0.6864937f];
 
-    // -- TODO, fill out the start and end the float range structs
     public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
     {
         { new FloatRangeStruct(0.07443155f, 0.13285546f), (1, "Niki Lauda")},
