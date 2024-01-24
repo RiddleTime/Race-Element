@@ -4,6 +4,8 @@ using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
+using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -36,6 +38,8 @@ internal class AverageLapTimeOverlay : AbstractOverlay
 
     private const int InitialWidth = 500, InitialHeight = 250;
     private InfoTable _table;
+    private GraphicsGrid _graphicsGrid;
+    private Font _font;
 
     public AverageLapTimeOverlay(Rectangle rectangle) : base(rectangle, "Average Laptime")
     {
@@ -51,6 +55,7 @@ internal class AverageLapTimeOverlay : AbstractOverlay
     public override void BeforeStart()
     {
         LapTracker.Instance.LapFinished += Collector_LapFinished;
+        _font = FontUtil.FontSegoeMono(12f * this.Scale);
     }
 
     public override void BeforeStop()
@@ -82,6 +87,8 @@ internal class AverageLapTimeOverlay : AbstractOverlay
 
     private int GetFastestAvgLaptime()
     {
+        if (_averageTimes.Count < _config.InfoPanel.ValidLaps) return 0;
+
         int fastestTime = int.MaxValue;
 
         foreach(var avg in _averageTimes)
@@ -92,64 +99,72 @@ internal class AverageLapTimeOverlay : AbstractOverlay
     }
     public override void Render(Graphics g)
     {
+
+        // display fastest average lap time and fastest lap time
+        string fastestAverageLapTimeValue = "--:--.----";
         string fastestLapTimeValue = "--:--.----";
-        int fastestTime = GetFastestAvgLaptime();
-        if (fastestTime > 0)
+
+        int fastestAvgTime = GetFastestAvgLaptime();
+        if (fastestAvgTime > 0)
         {
-            TimeSpan fastestTimeTimeSpan = TimeSpan.FromMilliseconds(fastestTime);
-            fastestLapTimeValue = $"{fastestTimeTimeSpan:mm\\:ss\\.fff}";
+            fastestAverageLapTimeValue = MillisecondsToTimeString(fastestAvgTime);
         }
-        _table.AddRow("", [$"{_config.InfoPanel.ValidLaps}", " ", "fastest", $"{fastestLapTimeValue}"]);
+
+        int fastestLapIndex = LapTracker.Instance.Laps.GetFastestLapIndex();
+        if (fastestLapIndex != -1)
+        {
+            DbLapData bestlap = LapTracker.Instance.Laps.FirstOrDefault(lap => lap.Value.Index == fastestLapIndex).Value;
+            fastestLapTimeValue = MillisecondsToTimeString(bestlap.Time);
+        }
+
+        _table.AddRow("", ["fastest lap time:      " + $"{fastestLapTimeValue}"]);
+        _table.AddRow("", ["fastest "+ $"{_config.InfoPanel.ValidLaps}"+" lap average: " + $"{fastestAverageLapTimeValue}"]);
 
         // empty row for spacing
         _table.AddRow("", ["", "", "", ""]);
 
         // here comes all the lap times
-        _table.AddRow("", [" T ", "lap", "time", "average"]); ;
-        //_table.AddRow("1", [" T ", "02", "--:--.----", "--:--.----"]); 
+        _table.AddRow("", ["   ", " ", " ", "average"]); ;
+        //_table.AddRow("1", [" X ", "02", "--:--.----", "--:--.----"], [Color.White, Color.White, Color.Red, Color.White]);
+        //_table.AddRow("1", [" O ", "02--:--.------:--.----"]);
 
-        var laps = LapTracker.Instance.Laps;
         int line = 0;
-        bool isInvalidLapInList = false;
-        foreach (var lap in laps) 
+        
+        foreach (var lap in LapTracker.Instance.Laps) 
         {
-            TimeSpan laptime = TimeSpan.FromMilliseconds(lap.Value.Time);
-            string lapTimeValue = $"{laptime:mm\\:ss\\.fff}";
-
+            string lapTimeValue = MillisecondsToTimeString(lap.Value.Time);
             string averageLapTimeValue = "--:--.----";
-            if (_averageTimes.ContainsKey(lap.Key))
+            if (_averageTimes.ContainsKey(lap.Value.Index))
             {
-                if (_averageTimes[lap.Key] != 0)
+                if (_averageTimes[lap.Value.Index] != 0)
                 {
-                    TimeSpan avergeLapTimeTimeSpan = TimeSpan.FromMilliseconds(_averageTimes[lap.Key]);
-                    averageLapTimeValue = $"{avergeLapTimeTimeSpan:mm\\:ss\\.fff}";
+                    averageLapTimeValue = MillisecondsToTimeString(_averageTimes[lap.Key]);
                 }
             }
+            else
+            {
+                // average indicator ??
+            }
             
-            string lapType = " V ";
-            if (!lap.Value.IsValid) lapType = " X ";
+            // indcator for in and out lap, invalid laps get red color lap time
+            string lapType = "   ";
             if (lap.Value.LapType == Broadcast.LapType.ERROR) lapType = " E ";
             if (lap.Value.LapType == Broadcast.LapType.Outlap) lapType = " O ";
             if (lap.Value.LapType == Broadcast.LapType.Inlap) lapType = " I ";
             
-            _table.AddRow((line + 1).ToString("D2"), [$"{lapType}", lap.Value.Index.ToString("D2"), $"{lapTimeValue}", $"{averageLapTimeValue}"]);
-
-            if (!lap.Value.IsValid)
-            {
-                isInvalidLapInList = true;
-            }
-
-            // do not show all laps
-            if ((isInvalidLapInList) && (line > (_config.InfoPanel.ValidLaps * 2)))
-            {
-                continue;
-            }
+            _table.AddRow((line + 1).ToString("D2"), 
+                [$"{lapType}", lap.Value.Index.ToString("D2"), $"{lapTimeValue}", $"{averageLapTimeValue}"],
+                [Color.White, Color.White, lap.Value.IsValid ? Color.White : Color.Red, Color.White]);
 
             line++;
         }
         _table.Draw(g);
-        
 
+    }
+
+    private string MillisecondsToTimeString(int milliseconds)
+    {
+        return $"{TimeSpan.FromMilliseconds(milliseconds):mm\\:ss\\.fff}";
     }
 }
 
