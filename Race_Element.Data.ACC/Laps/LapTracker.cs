@@ -89,7 +89,7 @@ public class LapTracker
                             if (!Laps.TryGetValue(CurrentLap.Index - 1, out DbLapData lastData))
                                 return;
 
-                            if (_lastLapInfo.GetLapTimeMS() == lastData.Time)
+                            if (_lastLapInfo.LaptimeMS == lastData.Time)
                             {
                                 if (_lastLapInfo.Splits[2].HasValue)
                                 {

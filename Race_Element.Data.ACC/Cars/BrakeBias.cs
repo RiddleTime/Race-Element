@@ -59,6 +59,13 @@ public class BrakeBias
         {"mclaren_570s_gt4", -9},
         {"mercedes_amg_gt4", -20},
         {"porsche_718_cayman_gt4_mr", -20},
+        // GT2
+        {"audi_r8_lms_gt2", -15 },
+        {"ktm_xbow_gt2", -20 },
+        {"maserati_mc20_gt2", -5 },
+        {"mercedes_amg_gt2", -10 },
+        {"porsche_935", -5 },
+        {"porsche_991_gt2_rs_mr", -5 },
     };
 
 

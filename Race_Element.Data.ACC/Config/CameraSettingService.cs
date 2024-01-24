@@ -65,7 +65,7 @@ public class CameraSettingService
         public double DashcamFactor { get; set; }
 
         [JsonProperty("panniniProjection")]
-        public int PanniniProjection { get; set; }
+        public float PanniniProjection { get; set; }
 
         [JsonProperty("helicamDistance")]
         public int HelicamDistance { get; set; }

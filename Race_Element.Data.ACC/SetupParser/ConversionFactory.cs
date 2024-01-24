@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RaceElement.Data.ACC.SetupParser.Cars.GT2;
 using RaceElement.Data.Cars.GT3;
 using RaceElement.Data.Cars.GT4;
 using RaceElement.Data.Cars.GTC;
@@ -190,6 +191,14 @@ public static class ConversionFactory
         {Porsche_992_GT3_Cup_2021, new Porsche992GT3Cup_2021() },
         {Ferrari_488_Challenge_Evo_2020, new Ferrari488ChallengeEvo() },
 
+        // GT2
+        {Audi_R8_LMS_GT2_2021, new AudiR8LMS_GT2_2021() },
+        {KTM_Xbow_GT2_2021, new KtmXbowGT2_2021() },
+        {Maserati_GT2_2023, new MaseratiGT2_2023() },
+        {Mercedes_AMG_GT2_2023, new MercedesAmgGT2_2023() },
+        {Porsche_935_2019, new Porsche935_GT2_2019() },
+        {Porsche_991_II_GT2_RS_CS_EVO_2023, new Porsche991IIGT2_RS_CS_EVO_2023() },
+
         // TCX
         {BMW_M2_Cup_2020, new BMWM2CSRacing() }
     };
@@ -285,6 +294,7 @@ public static class ConversionFactory
         {"amr_v8_vantage_gt3", Aston_Martin_V8_Vantage_GT3_2019 },
         {"amr_v8_vantage_gt4", Aston_Martin_Vantage_AMR_GT4_2018 },
         {"amr_v12_vantage_gt3", Aston_Martin_Vantage_V12_GT3_2013 },
+        {"audi_r8_lms_gt2", Audi_R8_LMS_GT2_2021 },
         {"audi_r8_gt4", Audi_R8_LMS_GT4_2016 },
         {"audi_r8_lms", Audi_R8_LMS_2015 },
         {"audi_r8_lms_evo", Audi_R8_LMS_Evo_2019 },
@@ -304,6 +314,7 @@ public static class ConversionFactory
         {"honda_nsx_gt3", Honda_NSX_GT3_2017 },
         {"honda_nsx_gt3_evo", Honda_NSX_GT3_Evo_2019 },
         {"jaguar_g3", Emil_Frey_Jaguar_G3_2021 },
+        {"ktm_xbow_gt2", KTM_Xbow_GT2_2021 },
         {"ktm_xbow_gt4", KTM_Xbow_GT4_2016 },
         {"lamborghini_gallardo_rex", Lamborghini_Gallardo_G3_Reiter_2017 },
         {"lamborghini_huracan_gt3", Lamborghini_Huracan_GT3_2015 },
@@ -312,17 +323,21 @@ public static class ConversionFactory
         {"lamborghini_huracan_st", Lamborghini_Huracan_ST_2015 },
         {"lamborghini_huracan_st_evo2", Lamborghini_Huracan_ST_Evo2_2021 },
         {"lexus_rc_f_gt3", Lexus_RCF_GT3_2016 },
+        {"maserati_mc20_gt2", Maserati_GT2_2023 },
         {"maserati_mc_gt4", Maserati_Gran_Turismo_MC_GT4_2016 },
         {"mclaren_570s_gt4", McLaren_570s_GT4_2016 },
         {"mclaren_650s_gt3", McLaren_650S_GT3_2015 },
         {"mclaren_720s_gt3", McLaren_720S_GT3_2019 },
         {"mclaren_720s_gt3_evo", McLaren_720s_GT3_Evo_2023 },
+        {"mercedes_amg_gt2", Mercedes_AMG_GT2_2023 },
         {"mercedes_amg_gt3", Mercedes_AMG_GT3_2015 },
         {"mercedes_amg_gt3_evo", Mercedes_AMG_GT3_Evo_2020 },
         {"mercedes_amg_gt4", Mercedes_AMG_GT4_2016 },
         {"nissan_gt_r_gt3_2017", Nissan_GT_R_Nismo_GT3_2015 }, // yes the parsename is 2017 and not 2015.. (kunos feature)
         {"nissan_gt_r_gt3_2018", Nissan_GT_R_Nismo_GT3_2018 },
         {"porsche_718_cayman_gt4_mr", Porsche_718_Cayman_GT4_MR_2019 },
+        {"porsche_935", Porsche_935_2019 },
+        {"porsche_991_gt2_rs_mr", Porsche_991_II_GT2_RS_CS_EVO_2023 },
         {"porsche_991_gt3_r", Porsche_911_GT3_R_2018 },
         {"porsche_991ii_gt3_cup", Porsche_991_II_GT3_Cup_2017 },
         {"porsche_991ii_gt3_r", Porsche_911_II_GT3_R_2019 },
@@ -385,7 +400,13 @@ public static class ConversionFactory
         {58, Maserati_Gran_Turismo_MC_GT4_2016 },
         {59, McLaren_570s_GT4_2016 },
         {60, Mercedes_AMG_GT4_2016 },
-        {61, Porsche_718_Cayman_GT4_MR_2019 }
+        {61, Porsche_718_Cayman_GT4_MR_2019 },
+        {80, Audi_R8_LMS_GT2_2021 },
+        {82, KTM_Xbow_GT2_2021 },
+        {83, Maserati_GT2_2023 },
+        {84, Mercedes_AMG_GT2_2023 },
+        {85, Porsche_991_II_GT2_RS_CS_EVO_2023 },
+        {86, Porsche_935_2019 },
     };
 
     public static CarModels GetCarModels(int carId)
