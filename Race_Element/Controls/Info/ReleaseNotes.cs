@@ -6,6 +6,9 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.2.0", "- Added Track corner names for Red Bull Ring."+
+                    "\n- Added Setup Converters for all 6 new GT2 cars(for viewing and comparing setups)."+
+                    "\n- Added Steering Locks for all 6 new GT2 cars."},
         {"1.0.1.6", "- Twitch chat HUD:"+
                     "\n  - Added +potential best command, shows the potential best lap if you've set any valid laps."+
                     "\n  - Removed +pos command, (you can literally see this in the Vanilla ACC Widgets)."+
