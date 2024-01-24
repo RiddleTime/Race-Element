@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RaceElement.Data.ACC.SetupParser.Cars.GT2;
 using RaceElement.Data.Cars.GT3;
 using RaceElement.Data.Cars.GT4;
 using RaceElement.Data.Cars.GTC;
@@ -189,6 +190,9 @@ public static class ConversionFactory
         {Porsche_991_II_GT3_Cup_2017, new Porsche991IIGT3Cup_2017() },
         {Porsche_992_GT3_Cup_2021, new Porsche992GT3Cup_2021() },
         {Ferrari_488_Challenge_Evo_2020, new Ferrari488ChallengeEvo() },
+
+        // GT2
+        {Audi_R8_LMS_GT2_2021, new AudiR8LMS_GT2_2021() },
 
         // TCX
         {BMW_M2_Cup_2020, new BMWM2CSRacing() }

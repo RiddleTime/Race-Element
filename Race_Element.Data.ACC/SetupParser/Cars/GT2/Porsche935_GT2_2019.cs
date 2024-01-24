@@ -15,9 +15,6 @@ internal class Porsche935_GT2_2019 : ICarSetupConversion
     private static readonly double[] casters = [];
     private static readonly int[] wheelRateFronts = [];
     private static readonly int[] wheelRateRears = [];
-    private static readonly double[] casters = [];
-    private static readonly int[] wheelRateFronts = [];
-    private static readonly int[] wheelRateRears = [];
 
     AbstractTyresSetup ICarSetupConversion.TyresSetup => new TyreSetup();
     private class TyreSetup : AbstractTyresSetup

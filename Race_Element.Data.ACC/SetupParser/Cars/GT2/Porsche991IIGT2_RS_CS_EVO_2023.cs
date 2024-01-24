@@ -16,9 +16,6 @@ internal class Porsche991IIGT2_RS_CS_EVO_2023 : ICarSetupConversion
     private static readonly double[] casters = [];
     private static readonly int[] wheelRateFronts = [];
     private static readonly int[] wheelRateRears = [];
-    private static readonly double[] casters = [];
-    private static readonly int[] wheelRateFronts = [];
-    private static readonly int[] wheelRateRears = [];
 
     AbstractTyresSetup ICarSetupConversion.TyresSetup => new TyreSetup();
     private class TyreSetup : AbstractTyresSetup
