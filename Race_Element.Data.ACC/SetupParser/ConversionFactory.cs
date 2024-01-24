@@ -391,7 +391,13 @@ public static class ConversionFactory
         {58, Maserati_Gran_Turismo_MC_GT4_2016 },
         {59, McLaren_570s_GT4_2016 },
         {60, Mercedes_AMG_GT4_2016 },
-        {61, Porsche_718_Cayman_GT4_MR_2019 }
+        {61, Porsche_718_Cayman_GT4_MR_2019 },
+        {80, Audi_R8_LMS_GT2_2021 },
+        {82, KTM_Xbow_GT2_2021 },
+        {83, Maserati_GT2_2023 },
+        {84, Mercedes_AMG_GT2_2023 },
+        {85, Porsche_991_II_GT2_RS_CS_EVO_2023 },
+        {86, Porsche_935_2019 },
     };
 
     public static CarModels GetCarModels(int carId)
