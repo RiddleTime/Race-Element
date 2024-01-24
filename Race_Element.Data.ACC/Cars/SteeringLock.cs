@@ -59,6 +59,13 @@ public class SteeringLock
         {"mclaren_570s_gt4", 480},
         {"mercedes_amg_gt4", 492},
         {"porsche_718_cayman_gt4_mr", 800},
+        // GT2
+        {"audi_r8_lms_gt2", 720 },
+        {"ktm_xbow_gt2", 582 },
+        {"maserati_mc20_gt2", 480 },
+        {"mercedes_amg_gt2", 492 },
+        {"porsche_935", 720 },
+        {"porsche_991_gt2_rs_mr", 720 },
     };
 
     /// <summary>
