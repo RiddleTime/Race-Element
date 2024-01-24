@@ -67,6 +67,7 @@ internal class AudiR8LMS_GT2_2021 : ICarSetupConversion
 
         public override double Caster(int rawValue)
         {
+            if (rawValue > casters.Length - 1) return casters[^1];
             return Math.Round(casters[rawValue], 2);
         }
 

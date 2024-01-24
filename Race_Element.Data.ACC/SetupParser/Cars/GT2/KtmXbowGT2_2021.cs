@@ -73,6 +73,7 @@ internal class KtmXbowGT2_2021 : ICarSetupConversion
 
         public override double Caster(int rawValue)
         {
+            if (rawValue > casters.Length - 1) return casters[^1];
             return Math.Round(casters[rawValue], 2);
         }
 
@@ -150,12 +151,12 @@ internal class KtmXbowGT2_2021 : ICarSetupConversion
 
         public int RideHeight(List<int> rawValue, Position position)
         {
-            switch (position)
+            return position switch
             {
-                case Position.Front: return 75 + rawValue[0];
-                case Position.Rear: return 200 + rawValue[2];
-                default: return -1;
-            }
+                Position.Front => 75 + rawValue[0],
+                Position.Rear => 200 + rawValue[2],
+                _ => -1,
+            };
         }
 
         public int Splitter(int rawValue)
