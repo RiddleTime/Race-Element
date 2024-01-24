@@ -195,6 +195,7 @@ public static class ConversionFactory
         {Audi_R8_LMS_GT2_2021, new AudiR8LMS_GT2_2021() },
         {KTM_Xbow_GT2_2021, new KtmXbowGT2_2021() },
         {Maserati_GT2_2023, new MaseratiGT2_2023() },
+        {Mercedes_AMG_GT2_2023, new MercedesAmgGT2_2023() },
 
         // TCX
         {BMW_M2_Cup_2020, new BMWM2CSRacing() }

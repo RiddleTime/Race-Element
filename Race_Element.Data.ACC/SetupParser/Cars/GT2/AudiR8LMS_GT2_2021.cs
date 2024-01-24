@@ -145,12 +145,12 @@ internal class AudiR8LMS_GT2_2021 : ICarSetupConversion
 
         public int WheelRate(List<int> rawValue, Wheel wheel)
         {
-            switch (GetPosition(wheel))
+            return GetPosition(wheel) switch
             {
-                case Position.Front: return wheelRateFronts[rawValue[(int)wheel]];
-                case Position.Rear: return wheelRateRears[rawValue[(int)wheel]];
-                default: return -1;
-            }
+                Position.Front => wheelRateFronts[rawValue[(int)wheel]],
+                Position.Rear => wheelRateRears[rawValue[(int)wheel]],
+                _ => -1,
+            };
         }
     }
     IAeroBalance ICarSetupConversion.AeroBalance => new AeroSetup();
@@ -168,12 +168,12 @@ internal class AudiR8LMS_GT2_2021 : ICarSetupConversion
 
         public int RideHeight(List<int> rawValue, Position position)
         {
-            switch (position)
+            return position switch
             {
-                case Position.Front: return 80 + rawValue[0];
-                case Position.Rear: return 80 + rawValue[2];
-                default: return -1;
-            }
+                Position.Front => 80 + rawValue[0],
+                Position.Rear => 80 + rawValue[2],
+                _ => -1,
+            };
         }
 
         public int Splitter(int rawValue)
