@@ -1,10 +1,19 @@
 ﻿using RaceElement.Core.Jobs.LoopJob;
-using RaceElement.Util.SystemExtensions;
 using System;
-using System.Windows.Documents;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.SectorData
 {
+    internal class SectorDataModel
+    {
+        /// <summary>
+        /// 0 indexed
+        /// </summary>
+        public required int SectorIndex { get; set; }
+
+        public required float SpeedMin { get; set; }
+        public required float SpeedMax { get; set; }
+    }
+
     internal class SectorDataJob : AbstractLoopJob
     {
         private int _lastSectorIndex = -1;
@@ -15,6 +24,9 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.SectorData
         {
             var physics = ACCSharedMemory.Instance.ReadPhysicsPageFile(true);
             var graphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);
+
+            if (graphics.Status != ACCSharedMemory.AcStatus.AC_LIVE)
+                return;
 
             if (_lastSectorIndex != graphics.CurrentSectorIndex || _currentData == null)
             {
@@ -31,23 +43,12 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.SectorData
             else
             {
                 if (_currentData.SpeedMax < physics.SpeedKmh) _currentData.SpeedMax = physics.SpeedKmh;
-                if (_currentData.SpeedMin < physics.SpeedKmh) _currentData.SpeedMin = physics.SpeedKmh;
+                if (_currentData.SpeedMin > physics.SpeedKmh) _currentData.SpeedMin = physics.SpeedKmh;
             }
 
             _lastSectorIndex = graphics.CurrentSectorIndex;
         }
 
         public EventHandler<SectorDataModel> OnSectorCompleted;
-    }
-
-    public class SectorDataModel
-    {
-        /// <summary>
-        /// 0 indexed
-        /// </summary>
-        public required int SectorIndex { get; set; }
-
-        public required float SpeedMin { get; set; }
-        public required float SpeedMax { get; set; }
     }
 }
