@@ -1,4 +1,6 @@
 ﻿using RaceElement.Core.Jobs.LoopJob;
+using RaceElement.Data.ACC.Database.SessionData;
+using RaceElement.Data.ACC.Session;
 using System;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.SectorData
@@ -19,6 +21,14 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.SectorData
         private int _lastSectorIndex = -1;
 
         private SectorDataModel _currentData;
+
+        public EventHandler<SectorDataModel> OnSectorCompleted;
+
+        public SectorDataJob() => RaceSessionTracker.Instance.OnNewSessionStarted += Instance_OnNewSessionStarted;
+
+        private void Instance_OnNewSessionStarted(object sender, DbRaceSession e) => _currentData = null;
+
+        public override void AfterCancel() => RaceSessionTracker.Instance.OnNewSessionStarted -= Instance_OnNewSessionStarted;
 
         public override void RunAction()
         {
@@ -49,6 +59,5 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.SectorData
             _lastSectorIndex = graphics.CurrentSectorIndex;
         }
 
-        public EventHandler<SectorDataModel> OnSectorCompleted;
     }
 }

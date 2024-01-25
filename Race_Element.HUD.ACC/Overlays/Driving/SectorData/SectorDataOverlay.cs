@@ -1,5 +1,6 @@
 ﻿using LiteDB;
 using Newtonsoft.Json;
+using RaceElement.Data.ACC.Session;
 using RaceElement.HUD.Overlay.Internal;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,7 +26,11 @@ internal class SectorDataOverlay : AbstractOverlay
         _datajob = new SectorDataJob() { IntervalMillis = 100 };
         _datajob.OnSectorCompleted += SectorCompleted;
         _datajob.Run();
+
+        RaceSessionTracker.Instance.OnNewSessionStarted += Instance_OnNewSessionStarted;
     }
+
+    private void Instance_OnNewSessionStarted(object sender, RaceElement.Data.ACC.Database.SessionData.DbRaceSession e) => _Sectors.Clear();
 
     private void SectorCompleted(object sender, SectorDataModel e)
     {
@@ -36,7 +41,8 @@ internal class SectorDataOverlay : AbstractOverlay
     public override void BeforeStop()
     {
         _datajob.OnSectorCompleted -= SectorCompleted;
-        _datajob?.CancelJoin();
+        _datajob.CancelJoin();
+        RaceSessionTracker.Instance.OnNewSessionStarted -= Instance_OnNewSessionStarted;
     }
 
     public override void Render(Graphics g)
