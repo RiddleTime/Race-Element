@@ -12,8 +12,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.SectorData
         /// </summary>
         public required int SectorIndex { get; set; }
 
-        public required float SpeedMin { get; set; }
-        public required float SpeedMax { get; set; }
+        public required float VelocityMin { get; set; }
+        public required float VelocityMax { get; set; }
     }
 
     internal class SectorDataJob : AbstractLoopJob
@@ -46,14 +46,14 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.SectorData
                 _currentData = new SectorDataModel()
                 {
                     SectorIndex = graphics.CurrentSectorIndex,
-                    SpeedMin = physics.SpeedKmh,
-                    SpeedMax = physics.SpeedKmh
+                    VelocityMin = physics.SpeedKmh,
+                    VelocityMax = physics.SpeedKmh
                 };
             }
             else
             {
-                if (_currentData.SpeedMax < physics.SpeedKmh) _currentData.SpeedMax = physics.SpeedKmh;
-                if (_currentData.SpeedMin > physics.SpeedKmh) _currentData.SpeedMin = physics.SpeedKmh;
+                if (_currentData.VelocityMax < physics.SpeedKmh) _currentData.VelocityMax = physics.SpeedKmh;
+                if (_currentData.VelocityMin > physics.SpeedKmh) _currentData.VelocityMin = physics.SpeedKmh;
             }
 
             _lastSectorIndex = graphics.CurrentSectorIndex;
