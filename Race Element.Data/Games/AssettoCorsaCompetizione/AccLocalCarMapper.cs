@@ -8,29 +8,29 @@ namespace RaceElement.Data.AssettoCorsaCompetizione;
 public static partial class AccLocalCarMapper
 {
     // -- Engine data
-    [MapProperty(nameof(PageFilePhysics.Rpms), $"{nameof(CommonLocalCarData.Engine)}.{nameof(CommonEngineData.RPM)}")]
+    [MapProperty(nameof(PageFilePhysics.Rpms), $"{nameof(LocalCarData.Engine)}.{nameof(EngineData.RPM)}")]
     // -- Inputs Data
-    [MapProperty(nameof(PageFilePhysics.Gas), $"{nameof(CommonLocalCarData.Inputs)}.{nameof(CommonInputsData.Throttle)}")]
-    [MapProperty(nameof(PageFilePhysics.Brake), $"{nameof(CommonLocalCarData.Inputs)}.{nameof(CommonInputsData.Brake)}")]
-    [MapProperty(nameof(PageFilePhysics.Clutch), $"{nameof(CommonLocalCarData.Inputs)}.{nameof(CommonInputsData.Clutch)}")]
-    [MapProperty(nameof(PageFilePhysics.Gear), $"{nameof(CommonLocalCarData.Inputs)}.{nameof(CommonInputsData.Gear)}")]
-    [MapProperty(nameof(PageFilePhysics.SteerAngle), $"{nameof(CommonLocalCarData.Inputs)}.{nameof(CommonInputsData.Steering)}")]
+    [MapProperty(nameof(PageFilePhysics.Gas), $"{nameof(LocalCarData.Inputs)}.{nameof(InputsData.Throttle)}")]
+    [MapProperty(nameof(PageFilePhysics.Brake), $"{nameof(LocalCarData.Inputs)}.{nameof(InputsData.Brake)}")]
+    [MapProperty(nameof(PageFilePhysics.Clutch), $"{nameof(LocalCarData.Inputs)}.{nameof(InputsData.Clutch)}")]
+    [MapProperty(nameof(PageFilePhysics.Gear), $"{nameof(LocalCarData.Inputs)}.{nameof(InputsData.Gear)}")]
+    [MapProperty(nameof(PageFilePhysics.SteerAngle), $"{nameof(LocalCarData.Inputs)}.{nameof(InputsData.Steering)}")]
     // -- Physics data
-    [MapProperty(nameof(PageFilePhysics.SpeedKmh), $"{nameof(CommonLocalCarData.Physics)}.{nameof(CommonPhysicsData.Velocity)}")]
+    [MapProperty(nameof(PageFilePhysics.SpeedKmh), $"{nameof(LocalCarData.Physics)}.{nameof(PhysicsData.Velocity)}")]
     // -- Tyre Data
-    [MapProperty(nameof(PageFilePhysics.TyreTemp), $"{nameof(CommonLocalCarData.Tyres)}.{nameof(CommonWheelData.CoreTemperature)}")]
-    [MapProperty(nameof(PageFilePhysics.WheelPressure), $"{nameof(CommonLocalCarData.Tyres)}.{nameof(CommonWheelData.Pressure)}")]
-    [MapProperty(nameof(PageFilePhysics.Velocity), $"{nameof(CommonLocalCarData.Tyres)}.{nameof(CommonWheelData.Velocity)}")]
-    [MapProperty(nameof(PageFilePhysics.SlipAngle), $"{nameof(CommonLocalCarData.Tyres)}.{nameof(CommonWheelData.SlipAngle)}")]
+    [MapProperty(nameof(PageFilePhysics.TyreTemp), $"{nameof(LocalCarData.Tyres)}.{nameof(TyresData.CoreTemperature)}")]
+    [MapProperty(nameof(PageFilePhysics.WheelPressure), $"{nameof(LocalCarData.Tyres)}.{nameof(TyresData.Pressure)}")]
+    [MapProperty(nameof(PageFilePhysics.Velocity), $"{nameof(LocalCarData.Tyres)}.{nameof(TyresData.Velocity)}")]
+    [MapProperty(nameof(PageFilePhysics.SlipAngle), $"{nameof(LocalCarData.Tyres)}.{nameof(TyresData.SlipAngle)}")]
     // -- Brakes Data
-    [MapProperty(nameof(PageFilePhysics.BrakeTemperature), $"{nameof(CommonLocalCarData.BrakesData)}.{nameof(CommonBrakesData.DiscTemperature)}")]
-    [MapProperty(nameof(PageFilePhysics.BrakePressure), $"{nameof(CommonLocalCarData.BrakesData)}.{nameof(CommonBrakesData.Pressure)}")]
+    [MapProperty(nameof(PageFilePhysics.BrakeTemperature), $"{nameof(LocalCarData.Brakes)}.{nameof(BrakesData.DiscTemperature)}")]
+    [MapProperty(nameof(PageFilePhysics.BrakePressure), $"{nameof(LocalCarData.Brakes)}.{nameof(BrakesData.Pressure)}")]
     // -- Electronics activation
-    [MapProperty(nameof(PageFilePhysics.TC), $"{nameof(CommonLocalCarData.Electronics)}.{nameof(CommonElectronicsData.TractionControlActivation)}")]
-    [MapProperty(nameof(PageFilePhysics.Abs), $"{nameof(CommonLocalCarData.Electronics)}.{nameof(CommonElectronicsData.AbsActivation)}")]
-    private static partial void WithAccPhysics(PageFilePhysics physicsData, CommonLocalCarData commonData);
+    [MapProperty(nameof(PageFilePhysics.TC), $"{nameof(LocalCarData.Electronics)}.{nameof(ElectronicsData.TractionControlActivation)}")]
+    [MapProperty(nameof(PageFilePhysics.Abs), $"{nameof(LocalCarData.Electronics)}.{nameof(ElectronicsData.AbsActivation)}")]
+    private static partial void WithAccPhysics(PageFilePhysics physicsData, LocalCarData commonData);
 
-    public static CommonLocalCarData AddSharedPhysicsPage(PageFilePhysics physicsData, CommonLocalCarData commonData)
+    public static LocalCarData AddSharedPhysicsPage(PageFilePhysics physicsData, LocalCarData commonData)
     {
         WithAccPhysics(physicsData, commonData);
 
@@ -40,14 +40,14 @@ public static partial class AccLocalCarMapper
     }
 
     // Electronics Data
-    [MapProperty(nameof(PageFileGraphic.TC), $"{nameof(CommonLocalCarData.Electronics)}.{nameof(CommonElectronicsData.TractionControlLevel)}")]
-    [MapProperty(nameof(PageFileGraphic.TCCut), $"{nameof(CommonLocalCarData.Electronics)}.{nameof(CommonElectronicsData.TractionControlCutLevel)}")]
-    [MapProperty(nameof(PageFileGraphic.ABS), $"{nameof(CommonLocalCarData.Electronics)}.{nameof(CommonElectronicsData.AbsLevel)}")]
-    public static partial void WithSharedGraphicsPage(PageFileGraphic graphicsData, CommonLocalCarData commonData);
+    [MapProperty(nameof(PageFileGraphic.TC), $"{nameof(LocalCarData.Electronics)}.{nameof(ElectronicsData.TractionControlLevel)}")]
+    [MapProperty(nameof(PageFileGraphic.TCCut), $"{nameof(LocalCarData.Electronics)}.{nameof(ElectronicsData.TractionControlCutLevel)}")]
+    [MapProperty(nameof(PageFileGraphic.ABS), $"{nameof(LocalCarData.Electronics)}.{nameof(ElectronicsData.AbsLevel)}")]
+    public static partial void WithSharedGraphicsPage(PageFileGraphic graphicsData, LocalCarData commonData);
 
     // Engine Data
-    [MapProperty(nameof(PageFileStatic.MaxRpm), $"{nameof(CommonLocalCarData.Engine)}.{nameof(CommonEngineData.MaxRPM)}")]
+    [MapProperty(nameof(PageFileStatic.MaxRpm), $"{nameof(LocalCarData.Engine)}.{nameof(EngineData.MaxRPM)}")]
     // Model Data
-    [MapProperty(nameof(PageFileStatic.CarModel), $"{nameof(CommonLocalCarData.Model)}.{nameof(CommonModelData.GameName)}")]
-    public static partial void WithSharedStaticPage(PageFileStatic staticData, CommonLocalCarData commonData);
+    [MapProperty(nameof(PageFileStatic.CarModel), $"{nameof(LocalCarData.Model)}.{nameof(CarModelData.GameName)}")]
+    public static partial void WithSharedStaticPage(PageFileStatic staticData, LocalCarData commonData);
 }

@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace RaceElement.Data.Common
 {
-    public class CommonSessionData
+    public class SessionData
     {
-        public CommonSessionConditions Conditioons { get; set; } = new();
+        public SessionConditions Conditioons { get; set; } = new();
     }
 
-    public class CommonSessionConditions
+    public class SessionConditions
     {
         public float AirTemperature { get; set; }
         public float AirPressure { get; set; }

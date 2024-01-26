@@ -23,7 +23,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Games\AssettoCorsa\SharedMemory\" />
       <Folder Include="Games\rFactor2\" />
     </ItemGroup>
 

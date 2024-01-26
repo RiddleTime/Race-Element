@@ -2,32 +2,32 @@
 
 namespace RaceElement.Data.Common
 {
-    public class CommonLocalCarData
+    public class LocalCarData
     {
         /// <summary>
         /// Provides information about the car Model
         /// </summary>
-        public CommonModelData Model { get; set; } = new();
-        public CommonPhysicsData Physics { get; set; } = new();
-        public CommonEngineData Engine { get; set; } = new();
-        public CommonInputsData Inputs { get; set; } = new();
-        public CommonWheelData Tyres { get; set; } = new();
-        public CommonBrakesData BrakesData { get; set; } = new();
-        public CommonElectronicsData Electronics { get; set; } = new();
+        public CarModelData Model { get; set; } = new();
+        public PhysicsData Physics { get; set; } = new();
+        public EngineData Engine { get; set; } = new();
+        public InputsData Inputs { get; set; } = new();
+        public TyresData Tyres { get; set; } = new();
+        public BrakesData Brakes { get; set; } = new();
+        public ElectronicsData Electronics { get; set; } = new();
     }
 
-    public class CommonModelData
+    public class CarModelData
     {
         public string GameName { get; set; } = string.Empty;
         public int GameId { get; set; }
     }
 
-    public class CommonEngineData
+    public sealed class EngineData
     {
         public int RPM { get; set; }
         public int MaxRPM { get; set; }
     }
-    public class CommonWheelData
+    public class TyresData
     {
         public float[] Velocity { get; set; } = [];
         public float[] Pressure { get; set; } = [];
@@ -36,7 +36,7 @@ namespace RaceElement.Data.Common
         public float[] SlipAngle { get; set; } = [];
     }
 
-    public class CommonBrakesData
+    public class BrakesData
     {
         /// <summary>
         /// The temperature in Celsius for each of the brake discs.
@@ -49,7 +49,7 @@ namespace RaceElement.Data.Common
         public float[] Pressure { get; set; } = [];
     }
 
-    public class CommonPhysicsData
+    public class PhysicsData
     {
         /// <summary>
         /// The speed of the car in kilometers per hour.
@@ -61,7 +61,7 @@ namespace RaceElement.Data.Common
         /// </summary>
         public Vector3 Acceleration { get; set; } = new();
     }
-    public class CommonInputsData
+    public class InputsData
     {
         public float Throttle { get; set; }
         public float Brake { get; set; }
@@ -75,7 +75,7 @@ namespace RaceElement.Data.Common
         public int Gear { get; set; }
     }
 
-    public class CommonElectronicsData
+    public class ElectronicsData
     {
         public int TractionControlLevel { get; set; }
         public int TractionControlCutLevel { get; set; }
