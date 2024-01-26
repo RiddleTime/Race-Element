@@ -35,7 +35,7 @@ public unsafe class ACCSharedMemory
         ReadGraphicsPageFile();
     }
 
-    public enum AcStatus : int
+    public enum AccStatus : int
     {
         AC_OFF,
         AC_REPLAY,
@@ -43,7 +43,7 @@ public unsafe class ACCSharedMemory
         AC_PAUSE,
     }
 
-    public enum AcSessionType : int
+    public enum AccSessionType : int
     {
         AC_UNKNOWN = -1,
         AC_PRACTICE = 0,
@@ -58,26 +58,26 @@ public unsafe class ACCSharedMemory
     }
 
 
-    public static string SessionTypeToString(AcSessionType sessionType)
+    public static string SessionTypeToString(AccSessionType sessionType)
     {
         switch (sessionType)
         {
-            case AcSessionType.AC_UNKNOWN: return "Unknown";
-            case AcSessionType.AC_PRACTICE: return "Practice";
-            case AcSessionType.AC_QUALIFY: return "Qualify";
-            case AcSessionType.AC_RACE: return "Race";
-            case AcSessionType.AC_HOTLAP: return "Hotlap";
-            case AcSessionType.AC_TIME_ATTACK: return "Time attack";
-            case AcSessionType.AC_DRIFT: return "Drift";
-            case AcSessionType.AC_DRAG: return "Drag";
-            case AcSessionType.AC_HOTSTINT: return "Hotstint";
-            case AcSessionType.AC_HOTLAPSUPERPOLE: return "Hotlap superpole";
+            case AccSessionType.AC_UNKNOWN: return "Unknown";
+            case AccSessionType.AC_PRACTICE: return "Practice";
+            case AccSessionType.AC_QUALIFY: return "Qualify";
+            case AccSessionType.AC_RACE: return "Race";
+            case AccSessionType.AC_HOTLAP: return "Hotlap";
+            case AccSessionType.AC_TIME_ATTACK: return "Time attack";
+            case AccSessionType.AC_DRIFT: return "Drift";
+            case AccSessionType.AC_DRAG: return "Drag";
+            case AccSessionType.AC_HOTSTINT: return "Hotstint";
+            case AccSessionType.AC_HOTLAPSUPERPOLE: return "Hotlap superpole";
 
             default: return sessionType.ToString();
         }
     }
 
-    public enum AcFlagType : int
+    public enum AccFlagType : int
     {
         AC_NO_FLAG,
         AC_BLUE_FLAG,
@@ -91,19 +91,19 @@ public unsafe class ACCSharedMemory
 
     }
 
-    public static string FlagTypeToString(AcFlagType flagType)
+    public static string FlagTypeToString(AccFlagType flagType)
     {
         switch (flagType)
         {
-            case AcFlagType.AC_NO_FLAG: return "Green";
-            case AcFlagType.AC_BLUE_FLAG: return "Blue";
-            case AcFlagType.AC_YELLOW_FLAG: return "Yellow";
-            case AcFlagType.AC_BLACK_FLAG: return "Black";
-            case AcFlagType.AC_WHITE_FLAG: return "White";
-            case AcFlagType.AC_CHECKERED_FLAG: return "Checkered";
-            case AcFlagType.AC_PENALTY_FLAG: return "Penalty";
-            case AcFlagType.AC_GREEN_FLAG: return "Green";
-            case AcFlagType.AC_BLACK_FLAG_WITH_ORANGE_CIRCLE: return "Orange";
+            case AccFlagType.AC_NO_FLAG: return "Green";
+            case AccFlagType.AC_BLUE_FLAG: return "Blue";
+            case AccFlagType.AC_YELLOW_FLAG: return "Yellow";
+            case AccFlagType.AC_BLACK_FLAG: return "Black";
+            case AccFlagType.AC_WHITE_FLAG: return "White";
+            case AccFlagType.AC_CHECKERED_FLAG: return "Checkered";
+            case AccFlagType.AC_PENALTY_FLAG: return "Penalty";
+            case AccFlagType.AC_GREEN_FLAG: return "Green";
+            case AccFlagType.AC_BLACK_FLAG_WITH_ORANGE_CIRCLE: return "Orange";
 
             default: return flagType.ToString();
         }
@@ -165,8 +165,8 @@ public unsafe class ACCSharedMemory
     public class PageFileGraphic
     {
         public int PacketId;
-        public AcStatus Status;
-        public AcSessionType SessionType;
+        public AccStatus Status;
+        public AccSessionType SessionType;
 
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
         public string CurrentTime;
@@ -213,7 +213,7 @@ public unsafe class ACCSharedMemory
         public int PlayerCarID;
 
         public float PenaltyTime;
-        public AcFlagType Flag;
+        public AccFlagType Flag;
 
         public PenaltyShortcut PenaltyType;
 
