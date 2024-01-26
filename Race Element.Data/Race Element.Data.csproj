@@ -26,4 +26,8 @@
       <Folder Include="Games\rFactor2\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Race Element.Core\Race Element.Core.csproj" />
+    </ItemGroup>
+
 </Project>
