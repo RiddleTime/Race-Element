@@ -1,7 +1,8 @@
-﻿using System.IO.MemoryMappedFiles;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IO.MemoryMappedFiles;
 using System.Runtime.InteropServices;
 
-namespace RaceElement.Data.Games.AssettoCorsaCompetizione.SharedMemory;
+namespace RaceElement.Data.SharedMemory;
 
 /// <summary>
 /// From ACManager.Tools https://github.com/gro-ove/actools/blob/master/AcManager.Tools/SharedMemory/StructExtension.cs

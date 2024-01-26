@@ -1,8 +1,8 @@
-﻿using System;
+﻿using RaceElement.Data.SharedMemory;
 using System.IO.MemoryMappedFiles;
 using System.Runtime.InteropServices;
 
-namespace Race_Element.Data.Games.AssettoCorsaCompetizione.SharedMemory;
+namespace RaceElement.Data.Games.AssettoCorsaCompetizione.SharedMemory;
 
 /// <summary>
 /// Used certain shared memory from https://github.com/gro-ove/actools

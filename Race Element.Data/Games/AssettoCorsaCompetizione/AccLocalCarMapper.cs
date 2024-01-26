@@ -1,34 +1,31 @@
 ﻿using RaceElement.Data.Common;
 using Riok.Mapperly.Abstractions;
-using static Race_Element.Data.Games.AssettoCorsaCompetizione.SharedMemory.ACCSharedMemory;
+using static RaceElement.Data.Games.AssettoCorsaCompetizione.SharedMemory.ACCSharedMemory;
 
 namespace RaceElement.Data.AssettoCorsaCompetizione;
 
 [Mapper]
 public static partial class AccLocalCarMapper
 {
-    // Engine data
+    // -- Engine data
     [MapProperty(nameof(PageFilePhysics.Rpms), $"{nameof(CommonLocalCarData.Engine)}.{nameof(CommonEngineData.RPM)}")]
-    // Inputs Data
+    // -- Inputs Data
     [MapProperty(nameof(PageFilePhysics.Gas), $"{nameof(CommonLocalCarData.Inputs)}.{nameof(CommonInputsData.Throttle)}")]
     [MapProperty(nameof(PageFilePhysics.Brake), $"{nameof(CommonLocalCarData.Inputs)}.{nameof(CommonInputsData.Brake)}")]
     [MapProperty(nameof(PageFilePhysics.Clutch), $"{nameof(CommonLocalCarData.Inputs)}.{nameof(CommonInputsData.Clutch)}")]
     [MapProperty(nameof(PageFilePhysics.Gear), $"{nameof(CommonLocalCarData.Inputs)}.{nameof(CommonInputsData.Gear)}")]
     [MapProperty(nameof(PageFilePhysics.SteerAngle), $"{nameof(CommonLocalCarData.Inputs)}.{nameof(CommonInputsData.Steering)}")]
-    // Physics data
+    // -- Physics data
     [MapProperty(nameof(PageFilePhysics.SpeedKmh), $"{nameof(CommonLocalCarData.Physics)}.{nameof(CommonPhysicsData.Velocity)}")]
-
-    // Tyre Data
+    // -- Tyre Data
     [MapProperty(nameof(PageFilePhysics.TyreTemp), $"{nameof(CommonLocalCarData.Tyres)}.{nameof(CommonWheelData.CoreTemperature)}")]
     [MapProperty(nameof(PageFilePhysics.WheelPressure), $"{nameof(CommonLocalCarData.Tyres)}.{nameof(CommonWheelData.Pressure)}")]
     [MapProperty(nameof(PageFilePhysics.Velocity), $"{nameof(CommonLocalCarData.Tyres)}.{nameof(CommonWheelData.Velocity)}")]
     [MapProperty(nameof(PageFilePhysics.SlipAngle), $"{nameof(CommonLocalCarData.Tyres)}.{nameof(CommonWheelData.SlipAngle)}")]
-
-    // Brakes Data
+    // -- Brakes Data
     [MapProperty(nameof(PageFilePhysics.BrakeTemperature), $"{nameof(CommonLocalCarData.BrakesData)}.{nameof(CommonBrakesData.DiscTemperature)}")]
     [MapProperty(nameof(PageFilePhysics.BrakePressure), $"{nameof(CommonLocalCarData.BrakesData)}.{nameof(CommonBrakesData.Pressure)}")]
-
-    // Electronics activation
+    // -- Electronics activation
     [MapProperty(nameof(PageFilePhysics.TC), $"{nameof(CommonLocalCarData.Electronics)}.{nameof(CommonElectronicsData.TractionControlActivation)}")]
     [MapProperty(nameof(PageFilePhysics.Abs), $"{nameof(CommonLocalCarData.Electronics)}.{nameof(CommonElectronicsData.AbsActivation)}")]
     private static partial void WithAccPhysics(PageFilePhysics physicsData, CommonLocalCarData commonData);

@@ -10,12 +10,12 @@
         <FileVersion>1.0.0.0</FileVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-      <IsAotCompatible>True</IsAotCompatible>
-      <IsTrimmable>True</IsTrimmable>
+      <IsAotCompatible>False</IsAotCompatible>
+      <IsTrimmable>False</IsTrimmable>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-      <IsAotCompatible>True</IsAotCompatible>
-      <IsTrimmable>True</IsTrimmable>
+      <IsAotCompatible>False</IsAotCompatible>
+      <IsTrimmable>False</IsTrimmable>
     </PropertyGroup>
 
     <ItemGroup>
