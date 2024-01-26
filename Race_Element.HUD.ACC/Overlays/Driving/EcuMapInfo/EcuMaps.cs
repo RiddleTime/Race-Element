@@ -164,7 +164,7 @@ internal class EcuMaps
                 new(){ Index = 9, Power = PowerDelivery.Low, Conditon = EcuMapConditions.PaceCar, ThrottleMap = "Very Low", FuelConsumption = FuelConsumptions.Low },
             }
         },
-        {   new CarModels[]{ McLaren_720S_GT3_2019 },
+        {   new CarModels[]{ McLaren_720S_GT3_2019, McLaren_720s_GT3_Evo_2023 },
             new EcuMap[]{
                 new(){ Index = 1, Power = PowerDelivery.Highest, Conditon = EcuMapConditions.Dry, ThrottleMap = "Aggressive", FuelConsumption = FuelConsumptions.Highest },
                 new(){ Index = 2, Power = PowerDelivery.High, Conditon = EcuMapConditions.Dry, ThrottleMap = "Linear", FuelConsumption = FuelConsumptions.High },
