@@ -4,6 +4,9 @@ namespace RaceElement.Data.Common
 {
     public class CommonLocalCarData
     {
+        /// <summary>
+        /// Provides information about the car Model
+        /// </summary>
         public CommonModelData Model { get; set; } = new();
         public CommonPhysicsData Physics { get; set; } = new();
         public CommonEngineData Engine { get; set; } = new();
@@ -24,7 +27,6 @@ namespace RaceElement.Data.Common
         public int RPM { get; set; }
         public int MaxRPM { get; set; }
     }
-
     public class CommonWheelData
     {
         public float[] Velocity { get; set; } = [];
@@ -45,14 +47,6 @@ namespace RaceElement.Data.Common
         /// The amount of pressure applied to each of the brake pads
         /// </summary>
         public float[] Pressure { get; set; } = [];
-    }
-
-    public enum RaceFlag
-    {
-        Green,
-        Yellow,
-        Red,
-        Black
     }
 
     public class CommonPhysicsData
@@ -83,14 +77,11 @@ namespace RaceElement.Data.Common
 
     public class CommonElectronicsData
     {
-        public float TractionControlActivation { get; set; }
-
         public int TractionControlLevel { get; set; }
         public int TractionControlCutLevel { get; set; }
-
+        public float TractionControlActivation { get; set; }
         public int AbsLevel { get; set; }
         public float AbsActivation { get; set; }
-
         public float BrakeBias { get; set; }
     }
 }

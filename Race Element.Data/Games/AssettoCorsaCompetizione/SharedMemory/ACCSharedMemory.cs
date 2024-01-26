@@ -2,7 +2,7 @@
 using System.IO.MemoryMappedFiles;
 using System.Runtime.InteropServices;
 
-namespace RaceElement.Data.Games.AssettoCorsaCompetizione.SharedMemory;
+namespace Race_Element.Data.Games.AssettoCorsaCompetizione.SharedMemory;
 
 /// <summary>
 /// Used certain shared memory from https://github.com/gro-ove/actools
@@ -13,11 +13,11 @@ public unsafe class ACCSharedMemory
     private readonly string graphicsMap = "Local\\acpmf_graphics";
     private readonly string staticMap = "Local\\acpmf_static";
 
-    public SPageFileStatic PageFileStatic { get; private set; }
-    public SPageFilePhysics PageFilePhysics { get; private set; }
-    public SPageFileGraphic PageFileGraphic { get; private set; }
+    public PageFileStatic StaticPage { get; private set; }
+    public PageFilePhysics PhysicsPage { get; private set; }
+    public PageFileGraphic GraphicsPage { get; private set; }
 
-    private static ACCSharedMemory _instance;
+    private static ACCSharedMemory? _instance;
     public static ACCSharedMemory Instance
     {
         get
@@ -162,7 +162,7 @@ public unsafe class ACCSharedMemory
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
-    public class SPageFileGraphic
+    public class PageFileGraphic
     {
         public int PacketId;
         public AcStatus Status;
@@ -322,7 +322,7 @@ public unsafe class ACCSharedMemory
         public int gapBehindMillis;
 
 
-        public static readonly int Size = Marshal.SizeOf(typeof(SPageFileGraphic));
+        public static readonly int Size = Marshal.SizeOf(typeof(PageFileGraphic));
         public static readonly byte[] Buffer = new byte[Size];
     };
 
@@ -337,7 +337,7 @@ public unsafe class ACCSharedMemory
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
-    public class SPageFilePhysics
+    public class PageFilePhysics
     {
         public int PacketId;
         public float Gas;
@@ -553,12 +553,12 @@ public unsafe class ACCSharedMemory
         public float Gvibrations;
         public float AbsVibrations;
 
-        public static readonly int Size = Marshal.SizeOf(typeof(SPageFilePhysics));
+        public static readonly int Size = Marshal.SizeOf(typeof(PageFilePhysics));
         public static readonly byte[] Buffer = new byte[Size];
     };
 
     [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
-    public class SPageFileStatic
+    public class PageFileStatic
     {
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
         public string SharedMemoryVersion;
@@ -672,25 +672,25 @@ public unsafe class ACCSharedMemory
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
         public string WetTyresName;
 
-        public static readonly int Size = Marshal.SizeOf(typeof(SPageFileStatic));
+        public static readonly int Size = Marshal.SizeOf(typeof(PageFileStatic));
         public static readonly byte[] Buffer = new byte[Size];
     };
 
-    public SPageFileGraphic ReadGraphicsPageFile(bool fromCache = false)
+    public PageFileGraphic ReadGraphicsPageFile(bool fromCache = false)
     {
-        if (fromCache) return PageFileGraphic;
-        return PageFileGraphic = MemoryMappedFile.CreateOrOpen(graphicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite).ToStruct<SPageFileGraphic>(SPageFileGraphic.Buffer);
+        if (fromCache) return GraphicsPage;
+        return GraphicsPage = MemoryMappedFile.CreateOrOpen(graphicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite).ToStruct<PageFileGraphic>(PageFileGraphic.Buffer);
     }
 
-    public SPageFileStatic ReadStaticPageFile(bool fromCache = false)
+    public PageFileStatic ReadStaticPageFile(bool fromCache = false)
     {
-        if (fromCache) return PageFileStatic;
-        return PageFileStatic = MemoryMappedFile.CreateOrOpen(staticMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite).ToStruct<SPageFileStatic>(SPageFileStatic.Buffer);
+        if (fromCache) return StaticPage;
+        return StaticPage = MemoryMappedFile.CreateOrOpen(staticMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite).ToStruct<PageFileStatic>(PageFileStatic.Buffer);
     }
 
-    public SPageFilePhysics ReadPhysicsPageFile(bool fromCache = false)
+    public PageFilePhysics ReadPhysicsPageFile(bool fromCache = false)
     {
-        if (fromCache) return PageFilePhysics;
-        return PageFilePhysics = MemoryMappedFile.CreateOrOpen(physicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite).ToStruct<SPageFilePhysics>(SPageFilePhysics.Buffer);
+        if (fromCache) return PhysicsPage;
+        return PhysicsPage = MemoryMappedFile.CreateOrOpen(physicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite).ToStruct<PageFilePhysics>(PageFilePhysics.Buffer);
     }
 }
