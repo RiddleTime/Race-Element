@@ -8,5 +8,6 @@ namespace RaceElement.Data.Games.AssettoCorsaCompetizione
     public static partial class AccSessionDataMapper
     {
         public static partial void WithAccPhysicsPage(PageFilePhysics pagePhysics, SessionData sessionData);
+        public static partial void WithAccGraphicsPage(PageFileGraphics pageGraphics, SessionData sessionData);
     }
 }

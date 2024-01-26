@@ -38,14 +38,14 @@ public static partial class AccLocalCarMapper
     }
 
     // Electronics Data
-    [MapProperty(nameof(PageFileGraphic.TC), $"{nameof(LocalCarData.Electronics)}.{nameof(ElectronicsData.TractionControlLevel)}")]
-    [MapProperty(nameof(PageFileGraphic.TCCut), $"{nameof(LocalCarData.Electronics)}.{nameof(ElectronicsData.TractionControlCutLevel)}")]
-    [MapProperty(nameof(PageFileGraphic.ABS), $"{nameof(LocalCarData.Electronics)}.{nameof(ElectronicsData.AbsLevel)}")]
-    public static partial void WithSharedGraphicsPage(PageFileGraphic graphicsData, LocalCarData commonData);
+    [MapProperty(nameof(PageFileGraphics.TC), $"{nameof(LocalCarData.Electronics)}.{nameof(ElectronicsData.TractionControlLevel)}")]
+    [MapProperty(nameof(PageFileGraphics.TCCut), $"{nameof(LocalCarData.Electronics)}.{nameof(ElectronicsData.TractionControlCutLevel)}")]
+    [MapProperty(nameof(PageFileGraphics.ABS), $"{nameof(LocalCarData.Electronics)}.{nameof(ElectronicsData.AbsLevel)}")]
+    public static partial void WithSharedGraphicsPage(PageFileGraphics pageGraphics, LocalCarData commonData);
 
     // Engine Data
     [MapProperty(nameof(PageFileStatic.MaxRpm), $"{nameof(LocalCarData.Engine)}.{nameof(EngineData.MaxRPM)}")]
     // Model Data
     [MapProperty(nameof(PageFileStatic.CarModel), $"{nameof(LocalCarData.CarModel)}.{nameof(CarModelData.GameName)}")]
-    public static partial void WithSharedStaticPage(PageFileStatic staticData, LocalCarData commonData);
+    public static partial void WithSharedStaticPage(PageFileStatic pageStatic, LocalCarData commonData);
 }

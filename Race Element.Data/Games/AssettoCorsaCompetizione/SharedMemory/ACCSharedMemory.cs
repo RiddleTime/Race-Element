@@ -15,7 +15,7 @@ public unsafe class AccSharedMemory
 
     public PageFileStatic StaticPage { get; private set; }
     public PageFilePhysics PhysicsPage { get; private set; }
-    public PageFileGraphic GraphicsPage { get; private set; }
+    public PageFileGraphics GraphicsPage { get; private set; }
 
     private static AccSharedMemory? _instance;
     public static AccSharedMemory Instance
@@ -162,7 +162,7 @@ public unsafe class AccSharedMemory
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
-    public class PageFileGraphic
+    public class PageFileGraphics
     {
         public int PacketId;
         public AccStatus Status;
@@ -322,7 +322,7 @@ public unsafe class AccSharedMemory
         public int gapBehindMillis;
 
 
-        public static readonly int Size = Marshal.SizeOf(typeof(PageFileGraphic));
+        public static readonly int Size = Marshal.SizeOf(typeof(PageFileGraphics));
         public static readonly byte[] Buffer = new byte[Size];
     };
 
@@ -676,10 +676,10 @@ public unsafe class AccSharedMemory
         public static readonly byte[] Buffer = new byte[Size];
     };
 
-    public PageFileGraphic ReadGraphicsPageFile(bool fromCache = false)
+    public PageFileGraphics ReadGraphicsPageFile(bool fromCache = false)
     {
         if (fromCache) return GraphicsPage;
-        return GraphicsPage = MemoryMappedFile.CreateOrOpen(graphicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite).ToStruct<PageFileGraphic>(PageFileGraphic.Buffer);
+        return GraphicsPage = MemoryMappedFile.CreateOrOpen(graphicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite).ToStruct<PageFileGraphics>(PageFileGraphics.Buffer);
     }
 
     public PageFileStatic ReadStaticPageFile(bool fromCache = false)
