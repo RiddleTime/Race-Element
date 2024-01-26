@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RaceElement.Data.Common
+namespace RaceElement.Data.Common.SimulatorData
 {
     public sealed class SessionData
     {

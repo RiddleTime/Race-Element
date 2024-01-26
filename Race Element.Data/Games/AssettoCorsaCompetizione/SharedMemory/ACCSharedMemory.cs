@@ -7,7 +7,7 @@ namespace RaceElement.Data.Games.AssettoCorsaCompetizione.SharedMemory;
 /// <summary>
 /// Used certain shared memory from https://github.com/gro-ove/actools
 /// </summary>
-public unsafe class ACCSharedMemory
+public unsafe class AccSharedMemory
 {
     private readonly string physicsMap = "Local\\acpmf_physics";
     private readonly string graphicsMap = "Local\\acpmf_graphics";
@@ -17,18 +17,18 @@ public unsafe class ACCSharedMemory
     public PageFilePhysics PhysicsPage { get; private set; }
     public PageFileGraphic GraphicsPage { get; private set; }
 
-    private static ACCSharedMemory? _instance;
-    public static ACCSharedMemory Instance
+    private static AccSharedMemory? _instance;
+    public static AccSharedMemory Instance
     {
         get
         {
-            _instance ??= new ACCSharedMemory();
+            _instance ??= new AccSharedMemory();
 
             return _instance;
         }
     }
 
-    private ACCSharedMemory()
+    private AccSharedMemory()
     {
         ReadStaticPageFile();
         ReadPhysicsPageFile();

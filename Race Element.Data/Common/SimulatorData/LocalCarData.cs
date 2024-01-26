@@ -1,13 +1,10 @@
 ﻿using System.Numerics;
 
-namespace RaceElement.Data.Common
+namespace RaceElement.Data.Common.SimulatorData
 {
     public sealed class LocalCarData
     {
-        /// <summary>
-        /// Provides information about the car Model
-        /// </summary>
-        public CarModelData Model { get; set; } = new();
+        public CarModelData CarModel { get; set; } = new();
         public PhysicsData Physics { get; set; } = new();
         public EngineData Engine { get; set; } = new();
         public InputsData Inputs { get; set; } = new();

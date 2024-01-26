@@ -1,6 +1,6 @@
-﻿using RaceElement.Data.Common;
+﻿using RaceElement.Data.Common.SimulatorData;
 using Riok.Mapperly.Abstractions;
-using static RaceElement.Data.Games.AssettoCorsaCompetizione.SharedMemory.ACCSharedMemory;
+using static RaceElement.Data.Games.AssettoCorsaCompetizione.SharedMemory.AccSharedMemory;
 
 namespace RaceElement.Data.Games.AssettoCorsaCompetizione
 {

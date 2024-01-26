@@ -1,6 +1,6 @@
-﻿using RaceElement.Data.Common;
+﻿using RaceElement.Data.Common.SimulatorData;
 using Riok.Mapperly.Abstractions;
-using static RaceElement.Data.Games.AssettoCorsaCompetizione.SharedMemory.ACCSharedMemory;
+using static RaceElement.Data.Games.AssettoCorsaCompetizione.SharedMemory.AccSharedMemory;
 
 namespace RaceElement.Data.AssettoCorsaCompetizione;
 
@@ -28,15 +28,13 @@ public static partial class AccLocalCarMapper
     // -- Electronics activation
     [MapProperty(nameof(PageFilePhysics.TC), $"{nameof(LocalCarData.Electronics)}.{nameof(ElectronicsData.TractionControlActivation)}")]
     [MapProperty(nameof(PageFilePhysics.Abs), $"{nameof(LocalCarData.Electronics)}.{nameof(ElectronicsData.AbsActivation)}")]
-    private static partial void WithAccPhysics(PageFilePhysics physicsData, LocalCarData commonData);
+    private static partial void AddAccPhysics(PageFilePhysics physicsData, LocalCarData commonData);
 
-    public static LocalCarData AddSharedPhysicsPage(PageFilePhysics physicsData, LocalCarData commonData)
+    public static void WithAccPhysics(PageFilePhysics physicsData, LocalCarData commonData)
     {
-        WithAccPhysics(physicsData, commonData);
+        AddAccPhysics(physicsData, commonData);
 
         commonData.Physics.Acceleration = new(physicsData.AccG[0], physicsData.AccG[1], physicsData.AccG[2]);
-
-        return commonData;
     }
 
     // Electronics Data
@@ -48,6 +46,6 @@ public static partial class AccLocalCarMapper
     // Engine Data
     [MapProperty(nameof(PageFileStatic.MaxRpm), $"{nameof(LocalCarData.Engine)}.{nameof(EngineData.MaxRPM)}")]
     // Model Data
-    [MapProperty(nameof(PageFileStatic.CarModel), $"{nameof(LocalCarData.Model)}.{nameof(CarModelData.GameName)}")]
+    [MapProperty(nameof(PageFileStatic.CarModel), $"{nameof(LocalCarData.CarModel)}.{nameof(CarModelData.GameName)}")]
     public static partial void WithSharedStaticPage(PageFileStatic staticData, LocalCarData commonData);
 }
