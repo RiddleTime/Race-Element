@@ -2,7 +2,7 @@
 
 namespace RaceElement.Data.Common
 {
-    public class LocalCarData
+    public sealed class LocalCarData
     {
         /// <summary>
         /// Provides information about the car Model
@@ -27,7 +27,7 @@ namespace RaceElement.Data.Common
         public int RPM { get; set; }
         public int MaxRPM { get; set; }
     }
-    public class TyresData
+    public sealed class TyresData
     {
         public float[] Velocity { get; set; } = [];
         public float[] Pressure { get; set; } = [];
@@ -36,7 +36,7 @@ namespace RaceElement.Data.Common
         public float[] SlipAngle { get; set; } = [];
     }
 
-    public class BrakesData
+    public sealed class BrakesData
     {
         /// <summary>
         /// The temperature in Celsius for each of the brake discs.
@@ -49,7 +49,7 @@ namespace RaceElement.Data.Common
         public float[] Pressure { get; set; } = [];
     }
 
-    public class PhysicsData
+    public sealed class PhysicsData
     {
         /// <summary>
         /// The speed of the car in kilometers per hour.
@@ -61,7 +61,7 @@ namespace RaceElement.Data.Common
         /// </summary>
         public Vector3 Acceleration { get; set; } = new();
     }
-    public class InputsData
+    public sealed class InputsData
     {
         public float Throttle { get; set; }
         public float Brake { get; set; }
@@ -75,7 +75,7 @@ namespace RaceElement.Data.Common
         public int Gear { get; set; }
     }
 
-    public class ElectronicsData
+    public sealed class ElectronicsData
     {
         public int TractionControlLevel { get; set; }
         public int TractionControlCutLevel { get; set; }
