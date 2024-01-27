@@ -14,7 +14,6 @@ using System.Threading;
 using System.Windows.Forms;
 using static RaceElement.ACCSharedMemory;
 using static RaceElement.HUD.Overlay.Configuration.OverlaySettings;
-using Point = System.Drawing.Point;
 
 namespace RaceElement.HUD.Overlay.Internal;
 

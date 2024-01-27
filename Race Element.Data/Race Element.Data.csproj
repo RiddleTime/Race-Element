@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <RootNamespace>RaceElement.Data</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Copyright>Copyright © Reinier Klarenberg 2024</Copyright>
+        <AssemblyVersion>1.0.0.0</AssemblyVersion>
+        <FileVersion>1.0.0.0</FileVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <IsAotCompatible>False</IsAotCompatible>
+      <IsTrimmable>False</IsTrimmable>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <IsAotCompatible>False</IsAotCompatible>
+      <IsTrimmable>False</IsTrimmable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Riok.Mapperly" Version="3.3.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Race Element.Core\Race Element.Core.csproj" />
+    </ItemGroup>
+
+</Project>
