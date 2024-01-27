@@ -101,7 +101,7 @@ internal class AverageLapTimeOverlay : AbstractOverlay
 
         foreach(var avg in _averageTimes)
         {
-            if (avg.Value < fastestTime) fastestTime = avg.Value;
+            if (avg.Value < fastestTime && avg.Value != 0) fastestTime = avg.Value;
         }
         return fastestTime;
     }
@@ -136,49 +136,56 @@ internal class AverageLapTimeOverlay : AbstractOverlay
         //_table.AddRow("1", [" X ", "02", "--:--.----", "--:--.----"], [Color.White, Color.White, Color.Red, Color.White]);
         //_table.AddRow("1", [" O ", "02--:--.------:--.----"]);
 
+
+
         int line = 0;
 
-        bool allLapsValid = true;
-        foreach (var lap in LapTracker.Instance.Laps) 
+        int startIdx = 1;   // start idx set to 1 because key into dictionary start with lap 1
+        Dictionary<int, DbLapData> laps = LapTracker.Instance.Laps;
+        if (laps.Count == 0)
         {
+            return;
+        }
 
-            if (!lap.Value.IsValid)
-            {
-                allLapsValid = false;
-            }
+        if (laps.Count > _config.InfoPanel.ValidLaps * 3)
+        {
+            startIdx = laps.Count - (_config.InfoPanel.ValidLaps * 3);
+        }
 
+        for (int i= startIdx; i<=LapTracker.Instance.Laps.Count; i++)
+        {
             int averageLapTime = 0;
 
-            string lapTimeValue = MillisecondsToTimeString(lap.Value.Time);
+            string lapTimeValue = MillisecondsToTimeString(laps[i].Time);
             string averageLapTimeValue = "--:--.----";
-            if (_averageTimes.ContainsKey(lap.Value.Index))
+            if (_averageTimes.ContainsKey(laps[i].Index))
             {
-                if (_averageTimes[lap.Value.Index] != 0)
+                if (_averageTimes[laps[i].Index] != 0)
                 {
-                    averageLapTime = _averageTimes[lap.Key];
+                    averageLapTime = _averageTimes[i];
                     averageLapTimeValue = MillisecondsToTimeString(averageLapTime);
                 }
             }
-            
+
             // indcator for in and out lap, invalid laps get red color lap time
             string lapType = "   ";
-            if (lap.Value.LapType == Broadcast.LapType.ERROR) lapType = " E ";
-            if (lap.Value.LapType == Broadcast.LapType.Outlap) lapType = " O ";
-            if (lap.Value.LapType == Broadcast.LapType.Inlap) lapType = " I ";
+            if (laps[i].LapType == Broadcast.LapType.ERROR) lapType = " E ";
+            if (laps[i].LapType == Broadcast.LapType.Outlap) lapType = " O ";
+            if (laps[i].LapType == Broadcast.LapType.Inlap) lapType = " I ";
 
-            _table.AddRow((line + 1).ToString("D2"), 
-                [$"{lapType}", lap.Value.Index.ToString("D2"), $"{lapTimeValue}", $"{averageLapTimeValue}"],
-                [Color.White, Color.White, lap.Value.IsValid ? Color.White : Color.Red, Color.White]);
+            _table.AddRow((line + 1).ToString("D2"),
+                [$"{lapType}", laps[i].Index.ToString("D2"), $"{lapTimeValue}", $"{averageLapTimeValue}"],
+                [Color.White, Color.White, laps[i].IsValid ? Color.White : Color.Red, Color.White]);
 
             line++;
 
-            // display all laps if we have only valid laps,
-            // otherwise stop lap loop here if there are twice the valid laps visible
-            if (!allLapsValid && line >= _config.InfoPanel.ValidLaps*2)
+            if (line >= _config.InfoPanel.ValidLaps * 3)
             {
                 break;
             }
         }
+
+        
         _table.Draw(g);
 
     }
