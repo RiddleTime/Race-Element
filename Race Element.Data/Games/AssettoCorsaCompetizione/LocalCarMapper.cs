@@ -5,7 +5,7 @@ using static RaceElement.Data.Games.AssettoCorsaCompetizione.SharedMemory.AccSha
 namespace RaceElement.Data.AssettoCorsaCompetizione;
 
 [Mapper]
-public static partial class AccLocalCarMapper
+public static partial class LocalCarMapper
 {
     // -- Engine data
     [MapProperty(nameof(PageFilePhysics.Rpms), $"{nameof(LocalCarData.Engine)}.{nameof(EngineData.RPM)}")]
