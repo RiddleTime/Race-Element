@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RaceElement.Broadcast.Structs;
 using RaceElement.Data.ACC.Database.LapDataDB;
 using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.HUD.Overlay.Configuration;
@@ -8,7 +9,9 @@ using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
 using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.Dynamic;
 using System.Linq;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayAverageLapTime;
@@ -67,9 +70,12 @@ internal class AverageLapTimeOverlay : AbstractOverlay
     {
 
         int validLaps = _config.InfoPanel.ValidLaps;
-        // get the last valid laps without inlap or outlap
+        // Get the last valid laps without inlap or outlap
+        // The lap type detection is not always possible, therefore laps with type error are also taken into account.
         var validLastLaps = LapTracker.Instance.Laps.TakeLast(validLaps)
-            .TakeWhile(lap => lap.Value.IsValid && (lap.Value.LapType != Broadcast.LapType.Outlap) && (lap.Value.LapType != Broadcast.LapType.Inlap)/*(lap.Value.LapType == Broadcast.LapType.Regular)*/);
+            .TakeWhile(lap => lap.Value.IsValid && (lap.Value.LapType != Broadcast.LapType.Outlap) && (lap.Value.LapType != Broadcast.LapType.Inlap));
+
+        Debug.WriteLine($"lap: {newLap.Index}, calculate average lap time with {validLastLaps.Count()} valid laps");
 
         int averageLapTime = 0;
         if (validLastLaps.Count() >= validLaps)
@@ -80,14 +86,16 @@ internal class AverageLapTimeOverlay : AbstractOverlay
             }
             averageLapTime = averageLapTime / validLaps;
         }
-        _averageTimes.Add(newLap.Index, averageLapTime);
 
+        Debug.WriteLine($"lap: {newLap.Index}, add new average lap time {averageLapTime} into dictionary");
+
+       _averageTimes.Add(newLap.Index, averageLapTime);
 
     }
 
     private int GetFastestAvgLaptime()
     {
-        if (_averageTimes.Count < _config.InfoPanel.ValidLaps) return 0;
+        if (_averageTimes.Count == 0) return 0;
 
         int fastestTime = int.MaxValue;
 
@@ -130,20 +138,39 @@ internal class AverageLapTimeOverlay : AbstractOverlay
 
         int line = 0;
         
+        // TODO display not all laps of the current stint,
+        // only the last validLap count?
         foreach (var lap in LapTracker.Instance.Laps) 
         {
+
+            int lastLapAvg = 0;
+            int averageLapTime = 0;
+
             string lapTimeValue = MillisecondsToTimeString(lap.Value.Time);
             string averageLapTimeValue = "--:--.----";
             if (_averageTimes.ContainsKey(lap.Value.Index))
             {
                 if (_averageTimes[lap.Value.Index] != 0)
                 {
-                    averageLapTimeValue = MillisecondsToTimeString(_averageTimes[lap.Key]);
+                    averageLapTime = _averageTimes[lap.Key];
+                    averageLapTimeValue = MillisecondsToTimeString(averageLapTime);
                 }
             }
             else
             {
                 // average indicator ??
+
+                var validLastLaps = LapTracker.Instance.Laps.TakeLast(_config.InfoPanel.ValidLaps)
+                    .TakeWhile(lap => lap.Value.IsValid && (lap.Value.LapType != Broadcast.LapType.Outlap) && (lap.Value.LapType != Broadcast.LapType.Inlap));
+
+                if (validLastLaps.Count() > 2)
+                {
+                    foreach (var validLastLap in validLastLaps)
+                    {
+                        lastLapAvg += validLastLap.Value.Time;
+                    }
+                    lastLapAvg = lastLapAvg / validLastLaps.Count();
+                }
             }
             
             // indcator for in and out lap, invalid laps get red color lap time
@@ -151,7 +178,7 @@ internal class AverageLapTimeOverlay : AbstractOverlay
             if (lap.Value.LapType == Broadcast.LapType.ERROR) lapType = " E ";
             if (lap.Value.LapType == Broadcast.LapType.Outlap) lapType = " O ";
             if (lap.Value.LapType == Broadcast.LapType.Inlap) lapType = " I ";
-            
+
             _table.AddRow((line + 1).ToString("D2"), 
                 [$"{lapType}", lap.Value.Index.ToString("D2"), $"{lapTimeValue}", $"{averageLapTimeValue}"],
                 [Color.White, Color.White, lap.Value.IsValid ? Color.White : Color.Red, Color.White]);
