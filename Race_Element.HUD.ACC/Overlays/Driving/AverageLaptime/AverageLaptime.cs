@@ -137,13 +137,16 @@ internal class AverageLapTimeOverlay : AbstractOverlay
         //_table.AddRow("1", [" O ", "02--:--.------:--.----"]);
 
         int line = 0;
-        
-        // TODO display not all laps of the current stint,
-        // only the last validLap count?
+
+        bool allLapsValid = true;
         foreach (var lap in LapTracker.Instance.Laps) 
         {
 
-            int lastLapAvg = 0;
+            if (!lap.Value.IsValid)
+            {
+                allLapsValid = false;
+            }
+
             int averageLapTime = 0;
 
             string lapTimeValue = MillisecondsToTimeString(lap.Value.Time);
@@ -154,22 +157,6 @@ internal class AverageLapTimeOverlay : AbstractOverlay
                 {
                     averageLapTime = _averageTimes[lap.Key];
                     averageLapTimeValue = MillisecondsToTimeString(averageLapTime);
-                }
-            }
-            else
-            {
-                // average indicator ??
-
-                var validLastLaps = LapTracker.Instance.Laps.TakeLast(_config.InfoPanel.ValidLaps)
-                    .TakeWhile(lap => lap.Value.IsValid && (lap.Value.LapType != Broadcast.LapType.Outlap) && (lap.Value.LapType != Broadcast.LapType.Inlap));
-
-                if (validLastLaps.Count() > 2)
-                {
-                    foreach (var validLastLap in validLastLaps)
-                    {
-                        lastLapAvg += validLastLap.Value.Time;
-                    }
-                    lastLapAvg = lastLapAvg / validLastLaps.Count();
                 }
             }
             
@@ -184,6 +171,13 @@ internal class AverageLapTimeOverlay : AbstractOverlay
                 [Color.White, Color.White, lap.Value.IsValid ? Color.White : Color.Red, Color.White]);
 
             line++;
+
+            // display all laps if we have only valid laps,
+            // otherwise stop lap loop here if there are twice the valid laps visible
+            if (!allLapsValid && line >= _config.InfoPanel.ValidLaps*2)
+            {
+                break;
+            }
         }
         _table.Draw(g);
 
