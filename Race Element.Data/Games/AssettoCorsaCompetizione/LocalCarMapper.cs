@@ -34,7 +34,7 @@ public static partial class LocalCarMapper
     {
         AddAccPhysics(physicsData, commonData);
 
-        commonData.Physics.Acceleration = new(physicsData.AccG[0], physicsData.AccG[1], physicsData.AccG[2]);
+        commonData.Physics.Acceleration = new(physicsData.AccG[0], physicsData.AccG[2], physicsData.AccG[1]);
     }
 
     // Electronics Data
