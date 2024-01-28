@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 
 using RaceElement.Data.Common;
+using RaceElement.Data.Common.SimulatorData;
 using RaceElement.HUD.Overlay.Internal;
 
 using System.Diagnostics;
@@ -22,11 +23,11 @@ namespace RaceElement.HUD.ACC.Overlays.System.OverlayTesting
         {
             SimulatorDataProvider.Update();
 
-            var sessionData = SimulatorDataProvider.Session;
+            var session = SimulatorDataProvider.Session;
             var localCar = SimulatorDataProvider.LocalCar;
 
-            Debug.WriteLine(JsonConvert.SerializeObject(sessionData, Formatting.Indented));
-            Debug.WriteLine(JsonConvert.SerializeObject(localCar), Formatting.Indented);
+            Debug.WriteLine(JsonConvert.SerializeObject(session, Formatting.Indented));
+            Debug.WriteLine(JsonConvert.SerializeObject(localCar));
         }
     }
 }

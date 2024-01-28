@@ -1,7 +1,5 @@
 ﻿using RaceElement.Data.Common.SimulatorData;
-using RaceElement.Data.Extensions;
 using Riok.Mapperly.Abstractions;
-using System.Diagnostics;
 using System.Numerics;
 using static RaceElement.Data.Games.AssettoCorsaCompetizione.SharedMemory.AccSharedMemory;
 

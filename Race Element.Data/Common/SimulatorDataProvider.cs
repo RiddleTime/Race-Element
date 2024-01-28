@@ -6,16 +6,15 @@ namespace RaceElement.Data.Common
 {
     public static class SimulatorDataProvider
     {
-        private static LocalCarData _localCarData = new LocalCarData();
+        private static LocalCarData _localCarData = new();
         public static LocalCarData LocalCar { get => _localCarData; }
 
-        private static SessionData _session = new SessionData();
+        private static SessionData _session = new();
         public static SessionData Session { get => _session; }
 
         public static void Update(bool clear = false)
         {
-            if (clear)
-                Clear();
+            if (clear) Clear();
 
             Game game = Game.AssettoCorsaCompetizione;
 
@@ -37,7 +36,5 @@ namespace RaceElement.Data.Common
             _localCarData = new LocalCarData();
             _session = new SessionData();
         }
-
-
     }
 }
