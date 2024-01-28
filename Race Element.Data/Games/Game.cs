@@ -5,5 +5,6 @@
         AssettoCorsa1,
         AssettoCorsaCompetizione,
         rFactor2,
+        iRacing,
     }
 }

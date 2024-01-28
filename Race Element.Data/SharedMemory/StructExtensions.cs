@@ -1,11 +1,11 @@
 ﻿using System.IO.MemoryMappedFiles;
 using System.Runtime.InteropServices;
 
-namespace RaceElement.Data.SharedMemory;
-
 /// <summary>
 /// From ACManager.Tools https://github.com/gro-ove/actools/blob/master/AcManager.Tools/SharedMemory/StructExtension.cs
 /// </summary>
+namespace RaceElement.Data.SharedMemory;
+
 public static class StructExtension
 {
     public static T ToStruct<T>(this MemoryMappedFile file, byte[] buffer)
