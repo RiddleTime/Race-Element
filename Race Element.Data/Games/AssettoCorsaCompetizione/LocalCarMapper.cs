@@ -1,5 +1,7 @@
 ﻿using RaceElement.Data.Common.SimulatorData;
+using RaceElement.Data.Extensions;
 using Riok.Mapperly.Abstractions;
+using System.Numerics;
 using static RaceElement.Data.Games.AssettoCorsaCompetizione.SharedMemory.AccSharedMemory;
 
 namespace RaceElement.Data.AssettoCorsaCompetizione;
@@ -38,9 +40,8 @@ public static partial class LocalCarMapper
 
         commonData.Physics.Acceleration = new(physicsData.AccG[0], physicsData.AccG[2], physicsData.AccG[1]);
 
-        // TODO create quaternion from euler angles: https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles#Source_code
-        // this considering the heading pitch and roll are radian angles
-        //commonData.Rotations.Quaternion = new(physicsData.Heading, physicsData.Pitch, physicsData.Roll, 1);
+        Vector3 rotation = new(physicsData.Roll, physicsData.Pitch, physicsData.Heading);
+        commonData.Rotations.Quaternion = rotation.ToQuaternion();
     }
 
     // Electronics Data
