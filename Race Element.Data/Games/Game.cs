@@ -1,6 +1,6 @@
 ﻿namespace RaceElement.Data.Games
 {
-    public enum Games
+    public enum Game
     {
         AssettoCorsa1,
         AssettoCorsaCompetizione,

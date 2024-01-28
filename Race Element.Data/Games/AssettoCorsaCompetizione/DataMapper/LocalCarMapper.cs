@@ -1,13 +1,14 @@
 ﻿using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Extensions;
 using Riok.Mapperly.Abstractions;
+using System.Diagnostics;
 using System.Numerics;
 using static RaceElement.Data.Games.AssettoCorsaCompetizione.SharedMemory.AccSharedMemory;
 
-namespace RaceElement.Data.AssettoCorsaCompetizione;
+namespace RaceElement.Data.Games.AssettoCorsaCompetizione.DataMapper;
 
 [Mapper]
-public static partial class LocalCarMapper
+internal static partial class LocalCarMapper
 {
     // -- Engine data
     [MapProperty(nameof(PageFilePhysics.Rpms), $"{nameof(LocalCarData.Engine)}.{nameof(EngineData.RPM)}")]
@@ -34,25 +35,23 @@ public static partial class LocalCarMapper
     [MapProperty(nameof(PageFilePhysics.Abs), $"{nameof(LocalCarData.Electronics)}.{nameof(ElectronicsData.AbsActivation)}")]
     private static partial void AddAccPhysics(PageFilePhysics physicsData, LocalCarData commonData);
 
-    public static void WithAccPhysics(PageFilePhysics physicsData, LocalCarData commonData)
+    internal static void WithPhysicsPage(PageFilePhysics physicsData, LocalCarData commonData)
     {
         AddAccPhysics(physicsData, commonData);
 
         commonData.Physics.Acceleration = new(physicsData.AccG[0], physicsData.AccG[2], physicsData.AccG[1]);
-
-        Vector3 rotation = new(physicsData.Roll, physicsData.Pitch, physicsData.Heading);
-        commonData.Rotations.Quaternion = rotation.ToQuaternion();
+        commonData.Rotations.Quaternion = Quaternion.CreateFromYawPitchRoll(physicsData.Heading, physicsData.Pitch, physicsData.Roll);
     }
 
     // Electronics Data
     [MapProperty(nameof(PageFileGraphics.TC), $"{nameof(LocalCarData.Electronics)}.{nameof(ElectronicsData.TractionControlLevel)}")]
     [MapProperty(nameof(PageFileGraphics.TCCut), $"{nameof(LocalCarData.Electronics)}.{nameof(ElectronicsData.TractionControlCutLevel)}")]
     [MapProperty(nameof(PageFileGraphics.ABS), $"{nameof(LocalCarData.Electronics)}.{nameof(ElectronicsData.AbsLevel)}")]
-    public static partial void WithSharedGraphicsPage(PageFileGraphics pageGraphics, LocalCarData commonData);
+    internal static partial void WithGraphicsPage(PageFileGraphics pageGraphics, LocalCarData commonData);
 
     // Engine Data
     [MapProperty(nameof(PageFileStatic.MaxRpm), $"{nameof(LocalCarData.Engine)}.{nameof(EngineData.MaxRPM)}")]
     // Model Data
     [MapProperty(nameof(PageFileStatic.CarModel), $"{nameof(LocalCarData.CarModel)}.{nameof(CarModelData.GameName)}")]
-    public static partial void WithSharedStaticPage(PageFileStatic pageStatic, LocalCarData commonData);
+    internal static partial void WithStaticPage(PageFileStatic pageStatic, LocalCarData commonData);
 }

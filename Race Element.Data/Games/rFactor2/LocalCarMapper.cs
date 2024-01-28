@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RaceElement.Data.Games.rFactor2
 {
-    internal class LocalCarMapper
+    internal static class LocalCarMapper
     {
     }
 }

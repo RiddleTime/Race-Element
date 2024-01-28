@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace RaceElement.Data.Games.AssettoCorsa
 {
     [Mapper]
-    public static partial class SessionDataMapper
+    internal static partial class SessionDataMapper
     {
     }
 }

@@ -1,17 +1,24 @@
-﻿using RaceElement.Data.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RaceElement.Data.Common.SimulatorData;
+using RaceElement.Data.Games.AssettoCorsaCompetizione.DataMapper;
+using RaceElement.Data.Games.AssettoCorsaCompetizione.SharedMemory;
 
 namespace RaceElement.Data.Games.AssettoCorsaCompetizione
 {
-    internal class AccSimulatorDataJob : AbstractSimulatorDataJob
+    internal static class AssettoCorsaCompetizioneDataProvider
     {
-        public override void RunAction()
+        internal static void Update(ref LocalCarData LocalCar, ref SessionData SessionData)
         {
-            throw new NotImplementedException();
+            var graphicsPage = AccSharedMemory.ReadGraphicsPageFile();
+            var physicsPage = AccSharedMemory.ReadPhysicsPageFile();
+            var staticPage = AccSharedMemory.ReadStaticPageFile();
+
+            LocalCarMapper.WithGraphicsPage(graphicsPage, LocalCar);
+            LocalCarMapper.WithPhysicsPage(physicsPage, LocalCar);
+            LocalCarMapper.WithStaticPage(staticPage, LocalCar);
+
+            SessionDataMapper.WithGraphicsPage(graphicsPage, SessionData);
+            SessionDataMapper.WithPhysicsPage(physicsPage, SessionData);
         }
+
     }
 }

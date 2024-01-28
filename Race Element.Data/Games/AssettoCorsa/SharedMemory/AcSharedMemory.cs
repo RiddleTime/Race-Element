@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
 {
-    internal class AcSharedMemory
+    internal static class AcSharedMemory
     {
     }
 }

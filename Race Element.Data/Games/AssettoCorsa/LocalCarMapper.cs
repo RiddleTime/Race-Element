@@ -3,6 +3,6 @@
 namespace RaceElement.Data.Games.AssettoCorsa;
 
 [Mapper]
-public static partial class LocalCarMapper
+internal static partial class LocalCarMapper
 {
 }

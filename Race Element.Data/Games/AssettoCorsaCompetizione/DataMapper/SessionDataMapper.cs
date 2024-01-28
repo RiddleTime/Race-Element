@@ -2,18 +2,20 @@
 using Riok.Mapperly.Abstractions;
 using static RaceElement.Data.Games.AssettoCorsaCompetizione.SharedMemory.AccSharedMemory;
 
-namespace RaceElement.Data.Games.AssettoCorsaCompetizione
+namespace RaceElement.Data.Games.AssettoCorsaCompetizione.DataMapper
 {
     [Mapper]
-    public static partial class SessionDataMapper
+    internal static partial class SessionDataMapper
     {
-        // -- Session Conditions
+        // -- Weather Conditions
         [MapProperty($"{nameof(PageFilePhysics.AirTemp)}", $"{nameof(SessionData.Weather)}.{nameof(WeatherConditions.AirTemperature)}")]
-        [MapProperty($"{nameof(PageFilePhysics.RoadTemp)}", $"{nameof(SessionData.Weather)}.{nameof(WeatherConditions.TrackTemperature)}")]
-        public static partial void WithAccPhysicsPage(PageFilePhysics pagePhysics, SessionData sessionData);
+        // -- Track Conditions
+        [MapProperty($"{nameof(PageFilePhysics.RoadTemp)}", $"{nameof(SessionData.Track)}.{nameof(TrackConditions.TrackTemperature)}")]
+        internal static partial void WithPhysicsPage(PageFilePhysics pagePhysics, SessionData sessionData);
 
+        // -- Weather Conditions
         [MapProperty($"{nameof(PageFileGraphics.WindSpeed)}", $"{nameof(SessionData.Weather)}.{nameof(WeatherConditions.AirVelocity)}")]
         [MapProperty($"{nameof(PageFileGraphics.WindDirection)}", $"{nameof(SessionData.Weather)}.{nameof(WeatherConditions.AirDirection)}")]
-        public static partial void WithAccGraphicsPage(PageFileGraphics pageGraphics, SessionData sessionData);
+        internal static partial void WithGraphicsPage(PageFileGraphics pageGraphics, SessionData sessionData);
     }
 }

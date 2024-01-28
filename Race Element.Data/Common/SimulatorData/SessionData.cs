@@ -3,6 +3,15 @@
     public sealed class SessionData
     {
         public WeatherConditions Weather { get; set; } = new();
+        public TrackConditions Track { get; set; } = new();
+    }
+
+    public class TrackConditions
+    {
+        /// <summary>
+        /// The track temperature in celsius
+        /// </summary>
+        public float TrackTemperature { get; set; }
     }
 
     public sealed class WeatherConditions
@@ -22,10 +31,5 @@
         /// The direction of the air in degrees
         /// </summary>
         public float AirDirection { get; set; }
-
-        /// <summary>
-        /// The track temperature in celsius
-        /// </summary>
-        public float TrackTemperature { get; set; }
     }
 }
