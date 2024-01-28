@@ -4,6 +4,7 @@ namespace RaceElement.Data.Common.SimulatorData
 {
     public sealed class LocalCarData
     {
+        public Rotations Rotations { get; set; } = new();
         public CarModelData CarModel { get; set; } = new();
         public PhysicsData Physics { get; set; } = new();
         public EngineData Engine { get; set; } = new();
@@ -11,6 +12,14 @@ namespace RaceElement.Data.Common.SimulatorData
         public TyresData Tyres { get; set; } = new();
         public BrakesData Brakes { get; set; } = new();
         public ElectronicsData Electronics { get; set; } = new();
+    }
+
+    /// <summary>
+    /// Stores Eulers parameters
+    /// </summary>
+    public class Rotations
+    {
+        public Quaternion Quaternion { get; set; }
     }
 
     public class CarModelData
@@ -22,6 +31,7 @@ namespace RaceElement.Data.Common.SimulatorData
     public sealed class EngineData
     {
         public bool IsRunning { get; set; }
+        public bool IsIgnitionOn { get; set; }
         public int RPM { get; set; }
         public int MaxRPM { get; set; }
     }

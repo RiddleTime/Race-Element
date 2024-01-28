@@ -10,6 +10,7 @@ public static partial class LocalCarMapper
     // -- Engine data
     [MapProperty(nameof(PageFilePhysics.Rpms), $"{nameof(LocalCarData.Engine)}.{nameof(EngineData.RPM)}")]
     [MapProperty(nameof(PageFilePhysics.IsEngineRunning), $"{nameof(LocalCarData.Engine)}.{nameof(EngineData.IsRunning)}")]
+    [MapProperty(nameof(PageFilePhysics.IgnitionOn), $"{nameof(LocalCarData.Engine)}.{nameof(EngineData.IsIgnitionOn)}")]
     // -- Inputs Data
     [MapProperty(nameof(PageFilePhysics.Gas), $"{nameof(LocalCarData.Inputs)}.{nameof(InputsData.Throttle)}")]
     [MapProperty(nameof(PageFilePhysics.Brake), $"{nameof(LocalCarData.Inputs)}.{nameof(InputsData.Brake)}")]
@@ -36,6 +37,10 @@ public static partial class LocalCarMapper
         AddAccPhysics(physicsData, commonData);
 
         commonData.Physics.Acceleration = new(physicsData.AccG[0], physicsData.AccG[2], physicsData.AccG[1]);
+
+        // TODO create quaternion from euler angles: https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles#Source_code
+        // this considering the heading pitch and roll are radian angles
+        //commonData.Rotations.Quaternion = new(physicsData.Heading, physicsData.Pitch, physicsData.Roll, 1);
     }
 
     // Electronics Data
