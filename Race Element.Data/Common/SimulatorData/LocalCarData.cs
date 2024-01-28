@@ -21,6 +21,7 @@ namespace RaceElement.Data.Common.SimulatorData
 
     public sealed class EngineData
     {
+        public bool IsRunning { get; set; }
         public int RPM { get; set; }
         public int MaxRPM { get; set; }
     }

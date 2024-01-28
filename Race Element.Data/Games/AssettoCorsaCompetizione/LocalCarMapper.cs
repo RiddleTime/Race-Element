@@ -9,6 +9,7 @@ public static partial class LocalCarMapper
 {
     // -- Engine data
     [MapProperty(nameof(PageFilePhysics.Rpms), $"{nameof(LocalCarData.Engine)}.{nameof(EngineData.RPM)}")]
+    [MapProperty(nameof(PageFilePhysics.IsEngineRunning), $"{nameof(LocalCarData.Engine)}.{nameof(EngineData.IsRunning)}")]
     // -- Inputs Data
     [MapProperty(nameof(PageFilePhysics.Gas), $"{nameof(LocalCarData.Inputs)}.{nameof(InputsData.Throttle)}")]
     [MapProperty(nameof(PageFilePhysics.Brake), $"{nameof(LocalCarData.Inputs)}.{nameof(InputsData.Brake)}")]
