@@ -1,4 +1,6 @@
-﻿namespace RaceElement.Data.Games
+﻿using static System.Net.WebRequestMethods;
+
+namespace RaceElement.Data.Games
 {
 
     public enum Game
@@ -23,6 +25,13 @@
             "AC1" => Game.AssettoCorsa1,
             "ACC" => Game.AssettoCorsaCompetizione,
             _ => Game.AssettoCorsaCompetizione,
+        };
+
+        public static int GetSteamID(this Game game) => game switch
+        {
+            Game.AssettoCorsa1 => 244210,
+            Game.AssettoCorsaCompetizione => 805550,
+            _ => -1
         };
     }
 }

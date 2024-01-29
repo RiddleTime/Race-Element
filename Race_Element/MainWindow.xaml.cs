@@ -1,6 +1,7 @@
 ﻿using RaceElement.Broadcast;
 using RaceElement.Controls;
 using RaceElement.Data.ACC.Tracker;
+using RaceElement.Data.Games;
 using RaceElement.Hardware.ACC.SteeringLock;
 using RaceElement.HUD.ACC;
 using RaceElement.HUD.ACC.Data.Tracker;
@@ -80,12 +81,18 @@ public partial class MainWindow : Window
         this.titleBar.DragLeave += (s, e) => { _stopDecreaseOpacty = true; e.Handled = true; this.Opacity = MaxOpacity; };
         this.titleBar.MouseDoubleClick += (s, e) => { _stopDecreaseOpacty = true; e.Handled = true; this.Opacity = MaxOpacity; };
 
-        this.gridPlayACC.MouseLeftButtonUp += (sender, e) => Process.Start(new ProcessStartInfo()
+        this.gridPlayACC.MouseLeftButtonUp += (sender, e) =>
         {
-            FileName = "cmd",
-            Arguments = $"/c start steam://rungameid/805550",
-            WindowStyle = ProcessWindowStyle.Hidden,
-        });
+            int steamID = GameManager.CurrentGame.GetSteamID();
+            if (steamID == -1) return;
+
+            Process.Start(new ProcessStartInfo()
+            {
+                FileName = "cmd",
+                Arguments = $"/c start steam://rungameid/{steamID}",
+                WindowStyle = ProcessWindowStyle.Hidden,
+            });
+        };
 
         this.StateChanged += MainWindow_StateChanged;
 
