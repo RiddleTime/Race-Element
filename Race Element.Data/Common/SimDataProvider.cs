@@ -1,6 +1,7 @@
 ﻿using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Games.AssettoCorsaCompetizione;
 using RaceElement.Data.Games;
+using RaceElement.Data.Games.AssettoCorsa;
 
 namespace RaceElement.Data.Common
 {
@@ -16,17 +17,17 @@ namespace RaceElement.Data.Common
         {
             if (clear) Clear();
 
-            Game game = Game.AssettoCorsaCompetizione;
-
-            switch (game)
+            switch (GameManager.CurrentGame)
             {
                 case Game.AssettoCorsa1:
                     {
+                        AssettoCorsa1DataProvider.Update(ref _localCarData, ref _session);
                         break;
                     }
                 case Game.AssettoCorsaCompetizione:
                     {
-                        AssettoCorsaCompetizioneDataProvider.Update(ref _localCarData, ref _session); break;
+                        AssettoCorsaCompetizioneDataProvider.Update(ref _localCarData, ref _session);
+                        break;
                     }
             }
         }

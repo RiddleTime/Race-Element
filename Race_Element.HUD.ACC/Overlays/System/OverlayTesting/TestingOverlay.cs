@@ -1,7 +1,9 @@
-﻿using RaceElement.Core.Jobs.LoopJob;
+﻿using Newtonsoft.Json;
+using RaceElement.Core.Jobs.LoopJob;
 using RaceElement.Data.Common;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
+using System.Diagnostics;
 using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.System.OverlayTesting
@@ -33,7 +35,7 @@ namespace RaceElement.HUD.ACC.Overlays.System.OverlayTesting
             _job.CancelJoin();
         }
 
-        public override bool ShouldRender() => SimDataProvider.LocalCar.Engine.IsRunning;
+        public override bool ShouldRender() => SimDataProvider.LocalCar.Engine.RPM > 0;
         public override void Render(Graphics g)
         {
             var localCar = SimDataProvider.LocalCar;
@@ -43,6 +45,8 @@ namespace RaceElement.HUD.ACC.Overlays.System.OverlayTesting
             var session = SimDataProvider.Session;
             _panel.AddLine($"Track T", $"{session.Track.TrackTemperature:F1}");
             _panel.Draw(g);
+
+            Debug.WriteLine(JsonConvert.SerializeObject(localCar.Engine));
         }
     }
 }

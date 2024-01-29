@@ -1,0 +1,20 @@
+﻿using Riok.Mapperly.Abstractions;
+using RaceElement.Data.Common.SimulatorData;
+using static RaceElement.Data.Games.AssettoCorsa.SharedMemory.AcSharedMemory;
+
+namespace RaceElement.Data.Games.AssettoCorsa.DataMapper;
+
+[Mapper]
+internal static partial class SessionDataMapper
+{
+    // -- Weather Conditions
+    [MapProperty($"{nameof(PageFilePhysics.AirTemp)}", nameof(@SessionData.Weather.AirTemperature))]
+    // -- Track Conditions
+    [MapProperty($"{nameof(PageFilePhysics.RoadTemp)}", nameof(@SessionData.Track.TrackTemperature))]
+    internal static partial void WithPhysicsPage(PageFilePhysics pagePhysics, SessionData sessionData);
+
+    // -- Weather Conditions
+    [MapProperty($"{nameof(PageFileGraphics.WindSpeed)}", nameof(@SessionData.Weather.AirVelocity))]
+    [MapProperty($"{nameof(PageFileGraphics.WindDirection)}", nameof(@SessionData.Weather.AirDirection))]
+    internal static partial void WithGraphicsPage(PageFileGraphics pageGraphics, SessionData sessionData);
+}
