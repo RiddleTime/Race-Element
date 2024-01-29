@@ -4,7 +4,7 @@ using RaceElement.Data.Games;
 
 namespace RaceElement.Data.Common
 {
-    public static class SimulatorDataProvider
+    public static class SimDataProvider
     {
         private static LocalCarData _localCarData = new();
         public static LocalCarData LocalCar { get => _localCarData; }

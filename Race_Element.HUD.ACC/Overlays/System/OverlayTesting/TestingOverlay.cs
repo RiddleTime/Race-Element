@@ -20,7 +20,7 @@ namespace RaceElement.HUD.ACC.Overlays.System.OverlayTesting
             SubscribeToACCData = false;
 
             _panel = new InfoPanel(10, 500);
-            _job = new SimpleLoopJob() { Action = () => SimulatorDataProvider.Update(), IntervalMillis = 1000 / 50 };
+            _job = new SimpleLoopJob() { Action = () => SimDataProvider.Update(), IntervalMillis = 1000 / 50 };
         }
 
         public override void BeforeStart()
@@ -33,14 +33,14 @@ namespace RaceElement.HUD.ACC.Overlays.System.OverlayTesting
             _job.CancelJoin();
         }
 
-        public override bool ShouldRender() => SimulatorDataProvider.LocalCar.Engine.IsRunning;
+        public override bool ShouldRender() => SimDataProvider.LocalCar.Engine.IsRunning;
         public override void Render(Graphics g)
         {
-            var localCar = SimulatorDataProvider.LocalCar;
+            var localCar = SimDataProvider.LocalCar;
             _panel.AddLine($"Speed", $"{localCar.Physics.Velocity:F2}");
             _panel.AddLine($"Rotation", $"{localCar.Physics.Rotation}");
 
-            var session = SimulatorDataProvider.Session;
+            var session = SimDataProvider.Session;
             _panel.AddLine($"Track T", $"{session.Track.TrackTemperature:F1}");
             _panel.Draw(g);
         }
