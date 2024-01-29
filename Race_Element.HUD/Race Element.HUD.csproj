@@ -25,6 +25,7 @@
     <EmbeddedResource Include="Fonts\segoe-ui-mono-w01-bold.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Race Element.Data\Race Element.Data.csproj" />
     <ProjectReference Include="..\Race_Element.Broadcast\Race Element.Broadcast.csproj" />
     <ProjectReference Include="..\Race_Element.Data.ACC\Race Element.Data.ACC.csproj" />
     <ProjectReference Include="..\Race_Element.SharedMemory\Race Element.SharedMemory.csproj" />
