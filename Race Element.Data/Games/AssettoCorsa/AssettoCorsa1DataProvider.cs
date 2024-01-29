@@ -1,7 +1,9 @@
-﻿using RaceElement.Data.Common;
-using RaceElement.Data.Common.SimulatorData;
+﻿using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Games.AssettoCorsa.DataMapper;
+using RaceElement.Data.Games.AssettoCorsa.DataMapper.LocalCar;
 using RaceElement.Data.Games.AssettoCorsa.SharedMemory;
+using System.Drawing.Drawing2D;
+using static RaceElement.Data.Games.AssettoCorsa.SharedMemory.AcSharedMemory;
 
 namespace RaceElement.Data.Games.AssettoCorsa;
 
@@ -20,8 +22,7 @@ internal class AssettoCorsa1DataProvider
         var graphicsPage = AcSharedMemory.ReadGraphicsPageFile();
         var staticPage = AcSharedMemory.ReadStaticPageFile();
 
-        LocalCarMapper.AddGraphics(graphicsPage, localCar);
-        LocalCarMapper.AddPhysics(physicsPage, localCar);
+        MapLocalCar(ref graphicsPage, ref physicsPage, ref localCar);
         LocalCarMapper.WithStaticPage(staticPage, localCar);
 
         SessionDataMapper.WithGraphicsPage(graphicsPage, sessionData);
@@ -34,5 +35,13 @@ internal class AssettoCorsa1DataProvider
         lastPhysicsPacketId = physicsPage.PacketId;
     }
 
+
+    private static void MapLocalCar(ref PageFileGraphics graphics, ref PageFilePhysics physics, ref LocalCarData localCar)
+    {
+        LocalCarMapper.AddGraphics(graphics, localCar);
+        LocalCarMapper.AddPhysics(ref physics, ref localCar);
+
+        PhysicsDataMapper.InsertPhysicsPage(ref physics, localCar.Physics);
+    }
 
 }

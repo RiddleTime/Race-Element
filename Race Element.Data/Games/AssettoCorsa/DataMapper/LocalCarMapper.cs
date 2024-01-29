@@ -17,8 +17,6 @@ internal static partial class LocalCarMapper
     [MapProperty(nameof(PageFilePhysics.Clutch), nameof(@LocalCarData.Inputs.Clutch))]
     [MapProperty(nameof(PageFilePhysics.Gear), nameof(@LocalCarData.Inputs.Gear))]
     [MapProperty(nameof(PageFilePhysics.SteerAngle), nameof(@LocalCarData.Inputs.Steering))]
-    // -- Physics data
-    [MapProperty(nameof(PageFilePhysics.SpeedKmh), nameof(@LocalCarData.Physics.Velocity))]
     // -- Tyre Data
     [MapProperty(nameof(PageFilePhysics.TyreCoreTemperature), nameof(@LocalCarData.Tyres.CoreTemperature))]
     [MapProperty(nameof(PageFilePhysics.WheelPressure), nameof(@LocalCarData.Tyres.Pressure))]
@@ -28,15 +26,11 @@ internal static partial class LocalCarMapper
     // -- Electronics activation
     [MapProperty(nameof(PageFilePhysics.TC), nameof(@LocalCarData.Electronics.TractionControlActivation))]
     [MapProperty(nameof(PageFilePhysics.Abs), nameof(@LocalCarData.Electronics.AbsActivation))]
-    private static partial void WithPhysicsPage(PageFilePhysics physicsData, LocalCarData commonData);
+    private static partial void WithPhysicsPage(PageFilePhysics pagePhysics, LocalCarData commonData);
 
-    internal static void AddPhysics(PageFilePhysics physicsData, LocalCarData commonData)
+    internal static void AddPhysics(ref PageFilePhysics pagePhysics, ref LocalCarData commonData)
     {
-
-        commonData.Physics.Acceleration = new(physicsData.AccG[0], physicsData.AccG[2], physicsData.AccG[1]);
-        commonData.Physics.Rotation = Quaternion.CreateFromYawPitchRoll(physicsData.Heading, physicsData.Pitch, physicsData.Roll);
-
-        WithPhysicsPage(physicsData, commonData);
+        WithPhysicsPage(pagePhysics, commonData);
     }
 
     // Electronics Data
