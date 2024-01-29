@@ -22,7 +22,7 @@ internal class AssettoCorsa1DataProvider
 
         SessionDataMapper.WithGraphicsPage(graphicsPage, SessionData);
         SessionDataMapper.WithPhysicsPage(physicsPage, SessionData);
-
+        SessionDataMapper.WithStaticPage(staticPage, SessionData);
 
         packetId = physicsPage.PacketId;
     }
