@@ -4,26 +4,32 @@ using RaceElement.Data.Games.AssettoCorsa.SharedMemory;
 
 namespace RaceElement.Data.Games.AssettoCorsa;
 
-internal class AssettoCorsa1DataProvider
+internal static class AssettoCorsa1DataProvider
 {
-    static int packetId = -1;
-    internal static void Update(ref LocalCarData LocalCar, ref SessionData SessionData)
+    static int lastPhysicsPacketId = -1;
+
+    internal static void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
     {
         var physicsPage = AcSharedMemory.ReadPhysicsPageFile();
-        if (packetId == physicsPage.PacketId)
+        if (lastPhysicsPacketId == physicsPage.PacketId) // no need to remap the physics page if packet is the same
             return;
+
         var graphicsPage = AcSharedMemory.ReadGraphicsPageFile();
         var staticPage = AcSharedMemory.ReadStaticPageFile();
 
+        LocalCarMapper.AddGraphics(graphicsPage, localCar);
+        LocalCarMapper.AddPhysics(physicsPage, localCar);
+        LocalCarMapper.WithStaticPage(staticPage, localCar);
 
-        LocalCarMapper.AddAcGraphics(graphicsPage, LocalCar);
-        LocalCarMapper.AddAcPhysics(physicsPage, LocalCar);
-        LocalCarMapper.WithStaticPage(staticPage, LocalCar);
+        SessionDataMapper.WithGraphicsPage(graphicsPage, sessionData);
+        SessionDataMapper.WithPhysicsPage(physicsPage, sessionData);
+        SessionDataMapper.WithStaticPage(staticPage, sessionData);
 
-        SessionDataMapper.WithGraphicsPage(graphicsPage, SessionData);
-        SessionDataMapper.WithPhysicsPage(physicsPage, SessionData);
-        SessionDataMapper.WithStaticPage(staticPage, SessionData);
+        GameDataMapper.WithStaticPage(staticPage, gameData);
+        gameData.Name = GameManager.CurrentGame.ToFriendlyName();
 
-        packetId = physicsPage.PacketId;
+        lastPhysicsPacketId = physicsPage.PacketId;
     }
+
+
 }

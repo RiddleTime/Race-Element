@@ -30,7 +30,7 @@ internal static partial class LocalCarMapper
     [MapProperty(nameof(PageFilePhysics.Abs), nameof(@LocalCarData.Electronics.AbsActivation))]
     private static partial void WithPhysicsPage(PageFilePhysics physicsData, LocalCarData commonData);
 
-    internal static void AddAcPhysics(PageFilePhysics physicsData, LocalCarData commonData)
+    internal static void AddPhysics(PageFilePhysics physicsData, LocalCarData commonData)
     {
 
         commonData.Physics.Acceleration = new(physicsData.AccG[0], physicsData.AccG[2], physicsData.AccG[1]);
@@ -43,7 +43,7 @@ internal static partial class LocalCarMapper
     // Electronics Data
     private static partial void WithGraphicsPage(PageFileGraphics pageGraphics, LocalCarData commonData);
 
-    internal static void AddAcGraphics(PageFileGraphics pageGraphics, LocalCarData commonData)
+    internal static void AddGraphics(PageFileGraphics pageGraphics, LocalCarData commonData)
     {
         var coords = pageGraphics.CarCoordinates[pageGraphics.PlayerCarID];
         commonData.Physics.Location = new Vector3(coords.X, coords.Y, coords.Z);

@@ -6,25 +6,28 @@ namespace RaceElement.Data.Games.AssettoCorsaCompetizione
 {
     internal static class AssettoCorsaCompetizioneDataProvider
     {
-        static int packetId = -1;
-        internal static void Update(ref LocalCarData LocalCar, ref SessionData SessionData)
+        static int lastPhysicsPacketId = -1;
+        internal static void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
         {
             var physicsPage = AccSharedMemory.ReadPhysicsPageFile();
-            if (packetId == physicsPage.PacketId)
+            if (lastPhysicsPacketId == physicsPage.PacketId)
                 return;
+
             var graphicsPage = AccSharedMemory.ReadGraphicsPageFile();
             var staticPage = AccSharedMemory.ReadStaticPageFile();
 
 
-            LocalCarMapper.AddAccGraphics(graphicsPage, LocalCar);
-            LocalCarMapper.WithPhysicsPage(physicsPage, LocalCar);
-            LocalCarMapper.WithStaticPage(staticPage, LocalCar);
+            LocalCarMapper.AddAccGraphics(graphicsPage, localCar);
+            LocalCarMapper.WithPhysicsPage(physicsPage, localCar);
+            LocalCarMapper.WithStaticPage(staticPage, localCar);
 
-            SessionDataMapper.WithGraphicsPage(graphicsPage, SessionData);
-            SessionDataMapper.WithPhysicsPage(physicsPage, SessionData);
+            SessionDataMapper.WithGraphicsPage(graphicsPage, sessionData);
+            SessionDataMapper.WithPhysicsPage(physicsPage, sessionData);
 
+            GameDataMapper.WithStaticPage(staticPage, gameData);
+            gameData.Name = GameManager.CurrentGame.ToFriendlyName();
 
-            packetId = physicsPage.PacketId;
+            lastPhysicsPacketId = physicsPage.PacketId;
         }
 
     }

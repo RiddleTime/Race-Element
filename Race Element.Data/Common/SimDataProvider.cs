@@ -13,6 +13,9 @@ namespace RaceElement.Data.Common
         private static SessionData _session = new();
         public static SessionData Session { get => _session; }
 
+        private static GameData _gameData = new();
+        public static GameData GameData { get => _gameData; }
+
         public static void Update(bool clear = false)
         {
             if (clear) Clear();
@@ -21,22 +24,23 @@ namespace RaceElement.Data.Common
             {
                 case Game.AssettoCorsa1:
                     {
-                        AssettoCorsa1DataProvider.Update(ref _localCarData, ref _session);
+                        AssettoCorsa1DataProvider.Update(ref _localCarData, ref _session, ref _gameData);
                         break;
                     }
                 case Game.AssettoCorsaCompetizione:
                     {
-                        AssettoCorsaCompetizioneDataProvider.Update(ref _localCarData, ref _session);
+                        AssettoCorsaCompetizioneDataProvider.Update(ref _localCarData, ref _session, ref _gameData);
                         break;
                     }
                 default: { break; }
             }
         }
 
-        private static void Clear()
+        internal static void Clear()
         {
             _localCarData = new LocalCarData();
             _session = new SessionData();
+            _gameData = new GameData();
         }
     }
 }
