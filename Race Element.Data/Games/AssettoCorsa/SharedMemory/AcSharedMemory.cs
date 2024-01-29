@@ -182,7 +182,6 @@ namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
             public string TyreCompound;
 
-            [Obsolete]
             public float ReplayTimeMultiplier;
             public float NormalizedCarPosition;
 
@@ -340,7 +339,6 @@ namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] WheelSlip;
 
-            [Obsolete]
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] WheelLoad;
 
@@ -350,62 +348,51 @@ namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] WheelAngularSpeed;
 
-            [Obsolete]
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] TyreWear;
 
-            [Obsolete]
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] TyreDirtyLevel;
 
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] TyreCoreTemperature;
 
-            [Obsolete]
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] CamberRad;
 
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] SuspensionTravel;
 
-            [Obsolete]
             public float Drs;
             public float TC;
             public float Heading;
             public float Pitch;
             public float Roll;
 
-            [Obsolete]
             public float CgHeight;
 
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 5)]
             public float[] CarDamage;
 
-            [Obsolete]
             public int NumberOfTyresOut;
 
             [MarshalAs(UnmanagedType.Bool)]
             public bool PitLimiterOn;
             public float Abs;
 
-            [Obsolete]
             public float KersCharge;
 
-            [Obsolete]
             public float KersInput;
 
             [MarshalAs(UnmanagedType.Bool)]
             public bool AutoShifterOn;
 
-            [Obsolete]
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
             public float[] RideHeight;
 
             public float TurboBoost;
 
-            [Obsolete]
             public float Ballast;
-            [Obsolete]
             public float AirDensity;
 
             public float AirTemp;
@@ -416,26 +403,17 @@ namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
 
             public float finalFF;
 
-            [Obsolete]
             public float PerformanceMeter;
-            [Obsolete]
             public int EngineBrake;
-            [Obsolete]
             public int ErsRecoveryLevel;
-            [Obsolete]
             public int ErsPowerLevel;
-            [Obsolete]
             public int ErsHeatCharging;
-            [Obsolete]
             public int ErsIsCharging;
-            [Obsolete]
             public float KersCurrentKJ;
 
-            [Obsolete]
             [MarshalAs(UnmanagedType.Bool)]
             public bool DrsAvailable;
 
-            [Obsolete]
             [MarshalAs(UnmanagedType.Bool)]
             public bool DrsEnabled;
 
@@ -444,15 +422,12 @@ namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
 
             public float Clutch;
 
-            [Obsolete]
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] TyreTempI;
 
-            [Obsolete]
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] TyreTempM;
 
-            [Obsolete]
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] TyreTempO;
 
@@ -474,23 +449,17 @@ namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
             public float[] LocalVelocity;
 
-            [Obsolete]
             public int P2PActivations;
-            [Obsolete]
             public int P2PStatus;
 
-            [Obsolete]
             public int CurrentMaxRpm;
 
-            [Obsolete]
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] mz;
 
-            [Obsolete]
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] fx;
 
-            [Obsolete]
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] fy;
 
@@ -500,9 +469,7 @@ namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] SlipAngle;
 
-            [Obsolete]
             public int TcinAction;
-            [Obsolete]
             public int AbsInAction;
 
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
@@ -571,27 +538,21 @@ namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
             public int SectorCount;
 
             // car static info
-            [Obsolete]
             public float MaxTorque;
-            [Obsolete]
             public float MaxPower;
             public int MaxRpm;
             public float MaxFuel;
 
-            [Obsolete]
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] SuspensionMaxTravel;
 
-            [Obsolete]
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public float[] TyreRadius;
 
             public float MaxTurboBoost;
 
-            [Obsolete]
             public float AirTemperature;
 
-            [Obsolete]
             public float RoadTemperature;
 
             [MarshalAs(UnmanagedType.Bool)]
@@ -607,40 +568,27 @@ namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
             [MarshalAs(UnmanagedType.Bool)]
             public bool AidAutoBlip;
 
-            [Obsolete]
             [MarshalAs(UnmanagedType.Bool)]
             public bool HasDRS;
 
-            [Obsolete]
             [MarshalAs(UnmanagedType.Bool)]
             public bool HasERS;
 
-            [Obsolete]
             [MarshalAs(UnmanagedType.Bool)]
             public bool HasKERS;
-            [Obsolete]
             public float KersMaxJoules;
-            [Obsolete]
             public int EngineBrakeSettingsCount;
-            [Obsolete]
             public int ErsPowerControllerCount;
-            [Obsolete]
             public float TrackSplineLength;
-            [Obsolete]
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
             public string TrackConfiguration;
-            [Obsolete]
             public float ErsMaxJ;
-            [Obsolete]
             [MarshalAs(UnmanagedType.Bool)]
             public bool IsTimedRace;
-            [Obsolete]
             [MarshalAs(UnmanagedType.Bool)]
             public bool HasExtraLap;
-            [Obsolete]
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
             public string CarSkin;
-            [Obsolete]
             public int ReversedGridPositions;
 
             public int PitWindowStart;
