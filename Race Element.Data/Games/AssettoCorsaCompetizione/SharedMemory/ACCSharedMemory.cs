@@ -7,33 +7,15 @@ namespace RaceElement.Data.Games.AssettoCorsaCompetizione.SharedMemory;
 /// <summary>
 /// Used certain shared memory from https://github.com/gro-ove/actools
 /// </summary>
-public unsafe class AccSharedMemory
+internal static unsafe class AccSharedMemory
 {
-    private readonly string physicsMap = "Local\\acpmf_physics";
-    private readonly string graphicsMap = "Local\\acpmf_graphics";
-    private readonly string staticMap = "Local\\acpmf_static";
+    private static readonly string physicsMap = "Local\\acpmf_physics";
+    private static readonly string graphicsMap = "Local\\acpmf_graphics";
+    private static readonly string staticMap = "Local\\acpmf_static";
 
-    public PageFileStatic StaticPage { get; private set; }
-    public PageFilePhysics PhysicsPage { get; private set; }
-    public PageFileGraphics GraphicsPage { get; private set; }
-
-    private static AccSharedMemory? _instance;
-    public static AccSharedMemory Instance
-    {
-        get
-        {
-            _instance ??= new AccSharedMemory();
-
-            return _instance;
-        }
-    }
-
-    private AccSharedMemory()
-    {
-        ReadStaticPageFile();
-        ReadPhysicsPageFile();
-        ReadGraphicsPageFile();
-    }
+    public static PageFileStatic StaticPage { get; private set; }
+    public static PageFilePhysics PhysicsPage { get; private set; }
+    public static PageFileGraphics GraphicsPage { get; private set; }
 
     public enum AccStatus : int
     {
@@ -676,19 +658,19 @@ public unsafe class AccSharedMemory
         public static readonly byte[] Buffer = new byte[Size];
     };
 
-    public PageFileGraphics ReadGraphicsPageFile(bool fromCache = false)
+    public static PageFileGraphics ReadGraphicsPageFile(bool fromCache = false)
     {
         if (fromCache) return GraphicsPage;
         return GraphicsPage = MemoryMappedFile.CreateOrOpen(graphicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite).ToStruct<PageFileGraphics>(PageFileGraphics.Buffer);
     }
 
-    public PageFileStatic ReadStaticPageFile(bool fromCache = false)
+    public static PageFileStatic ReadStaticPageFile(bool fromCache = false)
     {
         if (fromCache) return StaticPage;
         return StaticPage = MemoryMappedFile.CreateOrOpen(staticMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite).ToStruct<PageFileStatic>(PageFileStatic.Buffer);
     }
 
-    public PageFilePhysics ReadPhysicsPageFile(bool fromCache = false)
+    public static PageFilePhysics ReadPhysicsPageFile(bool fromCache = false)
     {
         if (fromCache) return PhysicsPage;
         return PhysicsPage = MemoryMappedFile.CreateOrOpen(physicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite).ToStruct<PageFilePhysics>(PageFilePhysics.Buffer);

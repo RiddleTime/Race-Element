@@ -62,7 +62,7 @@ public abstract class AbstractOverlay : FloatingWindow
     public float Scale { get; private set; } = 1f;
     private bool _allowRescale = false;
 
-
+    public bool SubscribeToACCData = true;
 
     public virtual void SetupPreviewData()
     {
@@ -158,7 +158,7 @@ public abstract class AbstractOverlay : FloatingWindow
     {
         try
         {
-            if (addTrackers)
+            if (addTrackers && SubscribeToACCData)
             {
                 PageStaticTracker.Tracker += PageStaticChanged;
                 PageGraphicsTracker.Instance.Tracker += PageGraphicsChanged;

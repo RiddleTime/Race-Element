@@ -21,6 +21,8 @@ namespace RaceElement.Data.Common.SimulatorData
 
     public sealed class EngineData
     {
+        public bool IsRunning { get; set; }
+        public bool IsIgnitionOn { get; set; }
         public int RPM { get; set; }
         public int MaxRPM { get; set; }
     }
@@ -48,6 +50,11 @@ namespace RaceElement.Data.Common.SimulatorData
 
     public sealed class PhysicsData
     {
+        /// <summary>
+        /// The global rotation of the car (yaw/pitch/roll)
+        /// </summary>
+        public Quaternion Rotation { get; set; }
+
         /// <summary>
         /// The speed of the car in kilometers per hour.
         /// </summary>

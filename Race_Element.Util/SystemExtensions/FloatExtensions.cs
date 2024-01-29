@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace RaceElement.Util.SystemExtensions;
 
@@ -43,6 +44,8 @@ public static class FloatExtensions
         if (value < min) value = min;
         return value;
     }
+
+
 
     public static string ToString(this float[] values, int decimals)
     {
