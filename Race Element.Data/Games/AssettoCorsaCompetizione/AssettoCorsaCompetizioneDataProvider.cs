@@ -1,7 +1,6 @@
 ﻿using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Games.AssettoCorsaCompetizione.DataMapper;
 using RaceElement.Data.Games.AssettoCorsaCompetizione.SharedMemory;
-using System.Diagnostics;
 
 namespace RaceElement.Data.Games.AssettoCorsaCompetizione
 {

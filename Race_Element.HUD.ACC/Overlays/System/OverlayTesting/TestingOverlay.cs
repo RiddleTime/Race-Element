@@ -1,13 +1,8 @@
-﻿using Newtonsoft.Json;
-using RaceElement.Core.Jobs;
-using RaceElement.Core.Jobs.LoopJob;
+﻿using RaceElement.Core.Jobs.LoopJob;
 using RaceElement.Data.Common;
-using RaceElement.Data.Common.SimulatorData;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
-using System.Diagnostics;
 using System.Drawing;
-using System.Threading.Tasks;
 
 namespace RaceElement.HUD.ACC.Overlays.System.OverlayTesting
 {
