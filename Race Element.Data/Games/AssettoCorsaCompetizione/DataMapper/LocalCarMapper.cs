@@ -45,8 +45,14 @@ internal static partial class LocalCarMapper
     [MapProperty(nameof(PageFileGraphics.TC), nameof(@LocalCarData.Electronics.TractionControlLevel))]
     [MapProperty(nameof(PageFileGraphics.TCCut), nameof(@LocalCarData.Electronics.TractionControlCutLevel))]
     [MapProperty(nameof(PageFileGraphics.ABS), nameof(@LocalCarData.Electronics.AbsLevel))]
-    internal static partial void WithGraphicsPage(PageFileGraphics pageGraphics, LocalCarData commonData);
+    private static partial void WithGraphicsPage(PageFileGraphics pageGraphics, LocalCarData commonData);
 
+    internal static void AddAccGraphics(PageFileGraphics pageGraphics, LocalCarData commonData)
+    {
+        commonData.Physics.Location = pageGraphics.CarCoordinates[pageGraphics.PlayerCarID];
+
+        WithGraphicsPage(pageGraphics, commonData);
+    }
     // Engine Data
     [MapProperty(nameof(PageFileStatic.MaxRpm), nameof(@LocalCarData.Engine.MaxRPM))]
     // Model Data

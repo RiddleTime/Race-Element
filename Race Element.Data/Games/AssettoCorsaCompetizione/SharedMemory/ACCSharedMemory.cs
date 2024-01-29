@@ -1,5 +1,6 @@
 ﻿using RaceElement.Data.SharedMemory;
 using System.IO.MemoryMappedFiles;
+using System.Numerics;
 using System.Runtime.InteropServices;
 
 namespace RaceElement.Data.Games.AssettoCorsaCompetizione.SharedMemory;
@@ -187,7 +188,7 @@ internal static unsafe class AccSharedMemory
         public int ActiveCars;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 60)]
-        public StructVector3[] CarCoordinates;
+        public Vector3[] CarCoordinates;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 60)]
         public int[] CarIds;

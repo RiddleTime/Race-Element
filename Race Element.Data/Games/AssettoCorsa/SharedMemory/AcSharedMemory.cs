@@ -3,10 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.IO.MemoryMappedFiles;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
+
+// Used parts of: https://github.com/gro-ove/actools/tree/master/AcManager.Tools/SharedMemory
 namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
 {
     internal static class AcSharedMemory
@@ -188,7 +191,7 @@ namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
             public int ActiveCars;
 
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 60)]
-            public StructVector3[] CarCoordinates;
+            public Vector3[] CarCoordinates;
 
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 60)]
             public int[] CarIds;
@@ -209,100 +212,6 @@ namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
 
             [MarshalAs(UnmanagedType.Bool)]
             public bool MandatoryPitDone;
-
-            public float WindSpeed;
-            public float WindDirection;
-
-            [MarshalAs(UnmanagedType.Bool)]
-            public bool IsSetupMenuVisible;
-
-            public int MainDisplayIndex;
-            public int SecondaryDisplayIndex;
-            public int TC;
-            public int TCCut;
-            public int EngineMap;
-            public int ABS;
-            public float FuelXLap;
-            public int RainLights;
-            public int FlashingLights;
-            public int LightsStage;
-            public float ExhaustTemperature;
-            public int WiperLV;
-            public int DriverStintTotalTimeLeft;
-            public int DriverStintTimeLeft;
-            public int RainTyres;
-
-            public int SessionIndex;
-            public float UsedFuelSinceRefuel;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-            public string DeltaLapTime;
-
-            public int DeltaLapTimeMillis;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-            public string EstimatedLapTime;
-            public int EstimatedLapTimeMillis;
-
-            [MarshalAs(UnmanagedType.Bool)]
-            public bool IsDeltaPositive;
-            public int SplitTimeMillis;
-
-            [MarshalAs(UnmanagedType.Bool)]
-            public bool IsValidLap;
-            public float FuelEstimatedLaps;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
-            public string TrackStatus;
-
-            public int MandatoryPitStopsLeft;
-            float ClockTimeDaySeconds;
-
-            [MarshalAs(UnmanagedType.Bool)]
-            public bool BlinkerLeftOn;
-
-            [MarshalAs(UnmanagedType.Bool)]
-            public bool BlinkerRightOn;
-
-            [MarshalAs(UnmanagedType.Bool)]
-            public bool GlobalYellow;
-
-            [MarshalAs(UnmanagedType.Bool)]
-            public bool GlobalYellowSector1;
-
-            [MarshalAs(UnmanagedType.Bool)]
-            public bool GlobalYellowSector2;
-
-            [MarshalAs(UnmanagedType.Bool)]
-            public bool GlobalYellowSector3;
-
-            [MarshalAs(UnmanagedType.Bool)]
-            public bool GlobalWhite;
-
-            [MarshalAs(UnmanagedType.Bool)]
-            public bool GreenFlag;
-
-            [MarshalAs(UnmanagedType.Bool)]
-            public bool GlobalChequered;
-
-            [MarshalAs(UnmanagedType.Bool)]
-            public bool GlobalRed;
-
-            public int mfdTyreSet;
-            public float mfdFuelToAdd;
-
-            public float mfdTyrePressureLF;
-            public float mfdTyrePressureRF;
-            public float mfdTyrePressureLR;
-            public float mfdTyrePressureRR;
-            public AcTrackGripStatus trackGripStatus;
-            public AcRainIntensity rainIntensity;
-            public AcRainIntensity rainIntensityIn10min;
-            public AcRainIntensity rainIntensityIn30min;
-            public int currentTyreSet;
-            public int strategyTyreSet;
-            public int gapAheadMillis;
-            public int gapBehindMillis;
 
 
             public static readonly int Size = Marshal.SizeOf(typeof(PageFileGraphics));
@@ -448,62 +357,7 @@ namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
 
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
             public float[] LocalVelocity;
-
-            public int P2PActivations;
-            public int P2PStatus;
-
-            public int CurrentMaxRpm;
-
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-            public float[] mz;
-
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-            public float[] fx;
-
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-            public float[] fy;
-
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-            public float[] SlipRatio;
-
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-            public float[] SlipAngle;
-
-            public int TcinAction;
-            public int AbsInAction;
-
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-            public float[] SuspensionDamage;
-
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-            public float[] TyreTemp;
-
-            public float WaterTemp;
-
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-            public float[] BrakePressure;
-            public int frontBrakeCompound;
-            public int rearBrakeCompound;
-
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-            public float[] PadLife;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-            public float[] DiscLife;
-
-            [MarshalAs(UnmanagedType.Bool)]
-            public bool IgnitionOn;
-
-            [MarshalAs(UnmanagedType.Bool)]
-            public bool StarterEngineOn;
-
-            [MarshalAs(UnmanagedType.Bool)]
-            public bool IsEngineRunning;
-
-            public float KerbVibration;
-            public float SlipVibrations;
-            public float Gvibrations;
-            public float AbsVibrations;
-
+        
             public static readonly int Size = Marshal.SizeOf(typeof(PageFilePhysics));
             public static readonly byte[] Buffer = new byte[Size];
         };
@@ -593,16 +447,6 @@ namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
 
             public int PitWindowStart;
             public int PitWindowEnd;
-
-
-            [MarshalAs(UnmanagedType.Bool)]
-            public bool isOnline;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
-            public string DryTyresName;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
-            public string WetTyresName;
 
             public static readonly int Size = Marshal.SizeOf(typeof(PageFileStatic));
             public static readonly byte[] Buffer = new byte[Size];

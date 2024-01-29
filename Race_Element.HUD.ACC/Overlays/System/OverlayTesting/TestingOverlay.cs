@@ -18,7 +18,7 @@ namespace RaceElement.HUD.ACC.Overlays.System.OverlayTesting
         {
             Width = 500;
             Height = 100;
-            RefreshRateHz = 30;
+            RefreshRateHz = 5;
             SubscribeToACCData = false;
 
             _panel = new InfoPanel(10, 500);
@@ -46,7 +46,7 @@ namespace RaceElement.HUD.ACC.Overlays.System.OverlayTesting
             _panel.AddLine($"Track T", $"{session.Track.TrackTemperature:F1}");
             _panel.Draw(g);
 
-            Debug.WriteLine(JsonConvert.SerializeObject(localCar.Engine));
+            Debug.WriteLine(JsonConvert.SerializeObject(localCar.Physics));
         }
     }
 }

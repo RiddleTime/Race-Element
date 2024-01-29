@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RaceElement.Data.Common;
 
-namespace RaceElement.Data.Games
+namespace RaceElement.Data.Games;
+
+public static class GameManager
 {
-    public static class GameManager
-    {
-        public static Game CurrentGame { get; private set; } = Game.AssettoCorsaCompetizione;
+    public static Game CurrentGame { get; private set; } = Game.AssettoCorsaCompetizione;
 
-        public static void SetCurrentGame(Game game)
-        {
-            CurrentGame = game;
-        }
+    public static void SetCurrentGame(Game game)
+    {
+        CurrentGame = game;
+        SimDataProvider.Clear();
     }
 }
