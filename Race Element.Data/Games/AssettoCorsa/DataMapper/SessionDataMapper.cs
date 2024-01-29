@@ -9,7 +9,9 @@ internal static partial class SessionDataMapper
 {
     // -- Weather Conditions
     [MapProperty(nameof(PageFilePhysics.AirDensity), nameof(@SessionData.Weather.AirPressure))]
+    [MapProperty($"{nameof(PageFilePhysics.AirTemp)}", nameof(@SessionData.Weather.AirTemperature))]
     // -- Track Conditions
+    [MapProperty($"{nameof(PageFilePhysics.RoadTemp)}", nameof(@SessionData.Track.Temperature))]
     internal static partial void WithPhysicsPage(PageFilePhysics pagePhysics, SessionData sessionData);
 
     //  -- Weather Conditions
@@ -18,7 +20,6 @@ internal static partial class SessionDataMapper
 
     // -- Weather Conditions
     [MapperIgnoreSource(nameof(PageFileStatic.Track))]
-    [MapProperty(nameof(PageFileStatic.AirTemperature), nameof(@SessionData.Weather.AirTemperature))]
-    [MapProperty(nameof(PageFileStatic.RoadTemperature), nameof(@SessionData.Track.TrackTemperature))]
+    [MapProperty(nameof(PageFileStatic.Track), nameof(@SessionData.Track.GameName))]
     internal static partial void WithStaticPage(PageFileStatic pageStatic, SessionData sessionData);
 }

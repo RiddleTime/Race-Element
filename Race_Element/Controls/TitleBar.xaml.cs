@@ -118,7 +118,7 @@ public partial class TitleBar : UserControl
         comboBoxCurrentGame.Items.Clear();
         foreach (Game game in Enum.GetValues(typeof(Game)))
         {
-            string friendlyName = game.ToFriendlyName();
+            string friendlyName = game.ToShortName();
             if (friendlyName.Length > 0)
             {
                 ComboBoxItem comboBoxItem = new() { Content = friendlyName, DataContext = game };

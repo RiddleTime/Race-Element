@@ -2,16 +2,18 @@
 {
     public sealed class SessionData
     {
+
         public WeatherConditions Weather { get; set; } = new();
-        public TrackConditions Track { get; set; } = new();
+        public TrackData Track { get; set; } = new();
     }
 
-    public class TrackConditions
+    public class TrackData
     {
+        public string GameName { get; set; } = string.Empty;
         /// <summary>
         /// The track temperature in celsius
         /// </summary>
-        public float TrackTemperature { get; set; }
+        public float Temperature { get; set; }
     }
 
     public sealed class WeatherConditions

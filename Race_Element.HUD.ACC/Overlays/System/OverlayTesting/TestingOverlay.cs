@@ -18,7 +18,7 @@ namespace RaceElement.HUD.ACC.Overlays.System.OverlayTesting
         {
             Width = 500;
             Height = 100;
-            RefreshRateHz = 5;
+            RefreshRateHz = 50;
             SubscribeToACCData = false;
 
             _panel = new InfoPanel(10, 500);
@@ -35,18 +35,24 @@ namespace RaceElement.HUD.ACC.Overlays.System.OverlayTesting
             _job.CancelJoin();
         }
 
-        public override bool ShouldRender() => SimDataProvider.LocalCar.Engine.RPM > 0;
+        public override bool ShouldRender() => true;// SimDataProvider.LocalCar.Engine.RPM > 0;
         public override void Render(Graphics g)
         {
             var localCar = SimDataProvider.LocalCar;
             _panel.AddLine($"Speed", $"{localCar.Physics.Velocity:F2}");
-            _panel.AddLine($"Rotation", $"{localCar.Physics.Rotation}");
+            _panel.AddLine($"Location", $"{localCar.Physics.Location}");
 
             var session = SimDataProvider.Session;
-            _panel.AddLine($"Track T", $"{session.Track.TrackTemperature:F1}");
+            _panel.AddLine($"Temps", $"Air: {session.Weather.AirTemperature:F1}, Track: {session.Track.Temperature}{(session.Weather.AirPressure > 0 ? $", Pressure: {session.Weather.AirPressure}" : "")}");
+            _panel.AddLine($"Track", $"{session.Track.GameName}");
+            _panel.AddLine($"Car", $"{localCar.CarModel.GameName}");
+            _panel.AddLine("RPM", $"{localCar.Engine.RPM}/{localCar.Engine.MaxRPM}");
+
+            _panel.AddLine($"WindHeading", $"{session.Weather.AirDirection}");
+
             _panel.Draw(g);
 
-            Debug.WriteLine(JsonConvert.SerializeObject(localCar.Physics));
+            Debug.WriteLine(JsonConvert.SerializeObject(SimDataProvider.GameData));
         }
     }
 }

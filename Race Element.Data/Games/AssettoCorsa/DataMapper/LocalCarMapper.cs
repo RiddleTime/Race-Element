@@ -36,7 +36,6 @@ internal static partial class LocalCarMapper
         commonData.Physics.Acceleration = new(physicsData.AccG[0], physicsData.AccG[2], physicsData.AccG[1]);
         commonData.Physics.Rotation = Quaternion.CreateFromYawPitchRoll(physicsData.Heading, physicsData.Pitch, physicsData.Roll);
 
-
         WithPhysicsPage(physicsData, commonData);
     }
 
@@ -46,7 +45,7 @@ internal static partial class LocalCarMapper
     internal static void AddGraphics(PageFileGraphics pageGraphics, LocalCarData commonData)
     {
         var coords = pageGraphics.CarCoordinates[pageGraphics.PlayerCarID];
-        commonData.Physics.Location = new Vector3(coords.X, coords.Y, coords.Z);
+        commonData.Physics.Location = new Vector3(coords.X * 10f, coords.Y, coords.Z);
 
         WithGraphicsPage(pageGraphics, commonData);
     }

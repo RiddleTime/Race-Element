@@ -1,7 +1,6 @@
 ﻿
 namespace RaceElement.Data.Games
 {
-
     public enum Game
     {
         AssettoCorsa1,
@@ -14,14 +13,27 @@ namespace RaceElement.Data.Games
     {
         static class FriendlyNames
         {
+            public const string AssettoCorsaCompetizione = "Assetto Corsa Competizione";
+            public const string AssettoCorsa = "Assetto Corsa";
+        }
+
+        static class ShortNames
+        {
             public const string AssettoCorsaCompetizione = "ACC";
-            public const string AssettoCorsa = "AC1";
+            public const string AssettoCorsa = "AC";
         }
 
         public static string ToFriendlyName(this Game game) => game switch
         {
             Game.AssettoCorsa1 => FriendlyNames.AssettoCorsa,
             Game.AssettoCorsaCompetizione => FriendlyNames.AssettoCorsaCompetizione,
+            _ => string.Empty
+        };
+
+        public static string ToShortName(this Game game) => game switch
+        {
+            Game.AssettoCorsa1 => ShortNames.AssettoCorsa,
+            Game.AssettoCorsaCompetizione => ShortNames.AssettoCorsaCompetizione,
             _ => string.Empty
         };
 

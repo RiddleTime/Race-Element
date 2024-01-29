@@ -7,6 +7,9 @@ namespace RaceElement.Data.Games.AssettoCorsaCompetizione
     internal static class AssettoCorsaCompetizioneDataProvider
     {
         static int lastPhysicsPacketId = -1;
+
+        private static string GameName { get => Game.AssettoCorsaCompetizione.ToShortName(); }
+
         internal static void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
         {
             var physicsPage = AccSharedMemory.ReadPhysicsPageFile();
@@ -23,9 +26,10 @@ namespace RaceElement.Data.Games.AssettoCorsaCompetizione
 
             SessionDataMapper.WithGraphicsPage(graphicsPage, sessionData);
             SessionDataMapper.WithPhysicsPage(physicsPage, sessionData);
+            SessionDataMapper.WithStaticPage(staticPage, sessionData);
 
             GameDataMapper.WithStaticPage(staticPage, gameData);
-            gameData.Name = GameManager.CurrentGame.ToFriendlyName();
+            gameData.Name = GameName;
 
             lastPhysicsPacketId = physicsPage.PacketId;
         }

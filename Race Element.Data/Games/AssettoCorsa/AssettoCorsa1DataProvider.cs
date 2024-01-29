@@ -1,12 +1,15 @@
-﻿using RaceElement.Data.Common.SimulatorData;
+﻿using RaceElement.Data.Common;
+using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Games.AssettoCorsa.DataMapper;
 using RaceElement.Data.Games.AssettoCorsa.SharedMemory;
 
 namespace RaceElement.Data.Games.AssettoCorsa;
 
-internal static class AssettoCorsa1DataProvider
+internal class AssettoCorsa1DataProvider
 {
     static int lastPhysicsPacketId = -1;
+
+    private static string GameName { get => Game.AssettoCorsa1.ToShortName(); }
 
     internal static void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
     {
@@ -26,7 +29,7 @@ internal static class AssettoCorsa1DataProvider
         SessionDataMapper.WithStaticPage(staticPage, sessionData);
 
         GameDataMapper.WithStaticPage(staticPage, gameData);
-        gameData.Name = GameManager.CurrentGame.ToFriendlyName();
+        gameData.Name = GameName;
 
         lastPhysicsPacketId = physicsPage.PacketId;
     }
