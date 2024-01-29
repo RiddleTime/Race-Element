@@ -46,7 +46,7 @@ namespace RaceElement.HUD.ACC.Overlays.System.OverlayTesting
             _panel.AddLine($"Temps", $"Air: {session.Weather.AirTemperature:F1}, Track: {session.Track.Temperature}{(session.Weather.AirPressure > 0 ? $", Pressure: {session.Weather.AirPressure}" : "")}");
             _panel.AddLine($"Track", $"{session.Track.GameName}");
             _panel.AddLine($"Car", $"{localCar.CarModel.GameName}");
-            _panel.AddLine("RPM", $"{localCar.Engine.RPM}/{localCar.Engine.MaxRPM}");
+            _panel.AddLine("RPM", $"{localCar.Engine.Rpm}/{localCar.Engine.MaxRpm}");
 
             _panel.AddLine($"WindHeading", $"{session.Weather.AirDirection}");
 

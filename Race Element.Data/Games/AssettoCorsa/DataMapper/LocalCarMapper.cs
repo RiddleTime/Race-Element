@@ -10,7 +10,7 @@ internal static partial class LocalCarMapper
 {
 
     // -- Engine data
-    [MapProperty(nameof(PageFilePhysics.Rpms), nameof(@LocalCarData.Engine.RPM))]
+    [MapProperty(nameof(PageFilePhysics.Rpms), nameof(@LocalCarData.Engine.Rpm))]
     // -- Inputs Data
     [MapProperty(nameof(PageFilePhysics.Gas), nameof(@LocalCarData.Inputs.Throttle))]
     [MapProperty(nameof(PageFilePhysics.Brake), nameof(@LocalCarData.Inputs.Brake))]
@@ -45,7 +45,7 @@ internal static partial class LocalCarMapper
     }
 
     // Engine Data
-    [MapProperty(nameof(PageFileStatic.MaxRpm), nameof(@LocalCarData.Engine.MaxRPM))]
+    [MapProperty(nameof(PageFileStatic.MaxRpm), nameof(@LocalCarData.Engine.MaxRpm))]
     // Model Data
     [MapProperty(nameof(PageFileStatic.CarModel), nameof(@LocalCarData.CarModel.GameName))]
     internal static partial void WithStaticPage(PageFileStatic pageStatic, LocalCarData commonData);

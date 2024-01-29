@@ -9,7 +9,7 @@ namespace RaceElement.Data.Games.AssettoCorsaCompetizione.DataMapper;
 internal static partial class LocalCarMapper
 {
     // -- Engine data
-    [MapProperty(nameof(PageFilePhysics.Rpms), nameof(@LocalCarData.Engine.RPM))]
+    [MapProperty(nameof(PageFilePhysics.Rpms), nameof(@LocalCarData.Engine.Rpm))]
     [MapProperty(nameof(PageFilePhysics.IsEngineRunning), nameof(@LocalCarData.Engine.IsRunning))]
     [MapProperty(nameof(PageFilePhysics.IgnitionOn), nameof(@LocalCarData.Engine.IsIgnitionOn))]
     // -- Inputs Data
@@ -54,7 +54,7 @@ internal static partial class LocalCarMapper
         WithGraphicsPage(pageGraphics, commonData);
     }
     // Engine Data
-    [MapProperty(nameof(PageFileStatic.MaxRpm), nameof(@LocalCarData.Engine.MaxRPM))]
+    [MapProperty(nameof(PageFileStatic.MaxRpm), nameof(@LocalCarData.Engine.MaxRpm))]
     // Model Data
     [MapProperty(nameof(PageFileStatic.CarModel), nameof(@LocalCarData.CarModel.GameName))]
     internal static partial void WithStaticPage(PageFileStatic pageStatic, LocalCarData commonData);

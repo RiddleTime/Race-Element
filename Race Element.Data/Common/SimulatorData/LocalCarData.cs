@@ -23,8 +23,16 @@ namespace RaceElement.Data.Common.SimulatorData
     {
         public bool IsRunning { get; set; }
         public bool IsIgnitionOn { get; set; }
-        public int RPM { get; set; }
-        public int MaxRPM { get; set; }
+
+        /// <summary>
+        /// Current revolutions per minute
+        /// </summary>
+        public int Rpm { get; set; }
+
+        /// <summary>
+        /// Maximum revolutions per minute
+        /// </summary>
+        public int MaxRpm { get; set; }
     }
     public sealed class TyresData
     {
