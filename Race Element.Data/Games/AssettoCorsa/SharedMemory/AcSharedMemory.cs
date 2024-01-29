@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO.MemoryMappedFiles;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -188,7 +189,7 @@ namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
             public int ActiveCars;
 
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 60)]
-            public StructVector3[] CarCoordinates;
+            public Vector3[] CarCoordinates;
 
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 60)]
             public int[] CarIds;

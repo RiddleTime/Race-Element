@@ -29,6 +29,7 @@ namespace RaceElement.Data.Common
                         AssettoCorsaCompetizioneDataProvider.Update(ref _localCarData, ref _session);
                         break;
                     }
+                default: { break; }
             }
         }
 

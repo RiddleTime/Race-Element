@@ -8,13 +8,14 @@ namespace RaceElement.Data.Games.AssettoCorsa.DataMapper;
 internal static partial class SessionDataMapper
 {
     // -- Weather Conditions
-    [MapProperty($"{nameof(PageFilePhysics.AirTemp)}", nameof(@SessionData.Weather.AirTemperature))]
+    [MapProperty(nameof(PageFilePhysics.AirTemp), nameof(@SessionData.Weather.AirTemperature))]
+    [MapProperty(nameof(PageFilePhysics.AirDensity), nameof(@SessionData.Weather.AirPressure))]
     // -- Track Conditions
-    [MapProperty($"{nameof(PageFilePhysics.RoadTemp)}", nameof(@SessionData.Track.TrackTemperature))]
+    [MapProperty(nameof(PageFilePhysics.RoadTemp), nameof(@SessionData.Track.TrackTemperature))]
     internal static partial void WithPhysicsPage(PageFilePhysics pagePhysics, SessionData sessionData);
 
     // -- Weather Conditions
-    [MapProperty($"{nameof(PageFileGraphics.WindSpeed)}", nameof(@SessionData.Weather.AirVelocity))]
-    [MapProperty($"{nameof(PageFileGraphics.WindDirection)}", nameof(@SessionData.Weather.AirDirection))]
+    [MapProperty(nameof(PageFileGraphics.WindSpeed), nameof(@SessionData.Weather.AirVelocity))]
+    [MapProperty(nameof(PageFileGraphics.WindDirection), nameof(@SessionData.Weather.AirDirection))]
     internal static partial void WithGraphicsPage(PageFileGraphics pageGraphics, SessionData sessionData);
 }

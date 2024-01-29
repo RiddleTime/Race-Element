@@ -50,6 +50,9 @@ namespace RaceElement.Data.Common.SimulatorData
 
     public sealed class PhysicsData
     {
+        public Vector3 Location { get; set; } = new();
+
+
         /// <summary>
         /// The global rotation of the car (yaw/pitch/roll)
         /// </summary>

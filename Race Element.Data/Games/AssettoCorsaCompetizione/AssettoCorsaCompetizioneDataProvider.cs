@@ -16,9 +16,7 @@ namespace RaceElement.Data.Games.AssettoCorsaCompetizione
             var staticPage = AccSharedMemory.ReadStaticPageFile();
 
 
-
-
-            LocalCarMapper.WithGraphicsPage(graphicsPage, LocalCar);
+            LocalCarMapper.AddAccGraphics(graphicsPage, LocalCar);
             LocalCarMapper.WithPhysicsPage(physicsPage, LocalCar);
             LocalCarMapper.WithStaticPage(staticPage, LocalCar);
 

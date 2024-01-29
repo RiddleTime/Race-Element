@@ -16,10 +16,8 @@ internal class AssettoCorsa1DataProvider
         var staticPage = AcSharedMemory.ReadStaticPageFile();
 
 
-
-
-        LocalCarMapper.WithGraphicsPage(graphicsPage, LocalCar);
-        LocalCarMapper.WithPhysicsPage(physicsPage, LocalCar);
+        LocalCarMapper.AddAcGraphics(graphicsPage, LocalCar);
+        LocalCarMapper.AddAcPhysics(physicsPage, LocalCar);
         LocalCarMapper.WithStaticPage(staticPage, LocalCar);
 
         SessionDataMapper.WithGraphicsPage(graphicsPage, SessionData);

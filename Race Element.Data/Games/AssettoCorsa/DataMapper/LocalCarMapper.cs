@@ -32,21 +32,31 @@ internal static partial class LocalCarMapper
     // -- Electronics activation
     [MapProperty(nameof(PageFilePhysics.TC), nameof(@LocalCarData.Electronics.TractionControlActivation))]
     [MapProperty(nameof(PageFilePhysics.Abs), nameof(@LocalCarData.Electronics.AbsActivation))]
-    private static partial void AddAccPhysics(PageFilePhysics physicsData, LocalCarData commonData);
+    private static partial void WithPhysicsPage(PageFilePhysics physicsData, LocalCarData commonData);
 
-    internal static void WithPhysicsPage(PageFilePhysics physicsData, LocalCarData commonData)
+    internal static void AddAcPhysics(PageFilePhysics physicsData, LocalCarData commonData)
     {
-        AddAccPhysics(physicsData, commonData);
 
         commonData.Physics.Acceleration = new(physicsData.AccG[0], physicsData.AccG[2], physicsData.AccG[1]);
         commonData.Physics.Rotation = Quaternion.CreateFromYawPitchRoll(physicsData.Heading, physicsData.Pitch, physicsData.Roll);
+
+
+        WithPhysicsPage(physicsData, commonData);
     }
 
     // Electronics Data
     [MapProperty(nameof(PageFileGraphics.TC), nameof(@LocalCarData.Electronics.TractionControlLevel))]
     [MapProperty(nameof(PageFileGraphics.TCCut), nameof(@LocalCarData.Electronics.TractionControlCutLevel))]
     [MapProperty(nameof(PageFileGraphics.ABS), nameof(@LocalCarData.Electronics.AbsLevel))]
-    internal static partial void WithGraphicsPage(PageFileGraphics pageGraphics, LocalCarData commonData);
+    private static partial void WithGraphicsPage(PageFileGraphics pageGraphics, LocalCarData commonData);
+
+    internal static void AddAcGraphics(PageFileGraphics pageGraphics, LocalCarData commonData)
+    {
+        var coords = pageGraphics.CarCoordinates[pageGraphics.PlayerCarID];
+        commonData.Physics.Location = new Vector3(coords.X, coords.Y, coords.Z);
+
+        WithGraphicsPage(pageGraphics, commonData);
+    }
 
     // Engine Data
     [MapProperty(nameof(PageFileStatic.MaxRpm), nameof(@LocalCarData.Engine.MaxRPM))]
