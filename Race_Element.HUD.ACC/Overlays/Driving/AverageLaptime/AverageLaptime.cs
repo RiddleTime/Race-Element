@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using RaceElement.Broadcast.Structs;
-using RaceElement.Data.ACC.Database.LapDataDB;
+﻿using RaceElement.Data.ACC.Database.LapDataDB;
 using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
@@ -11,15 +9,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Dynamic;
 using System.Linq;
-using System.Windows.Forms;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayAverageLapTime;
 
-#if DEBUG
 [Overlay(Name = "Average Laptime", Description = "Shows last valid laps and the average lap time.", OverlayType = OverlayType.Drive, Version = 1.00)]
-#endif
 internal class AverageLapTimeOverlay : AbstractOverlay
 {
 
