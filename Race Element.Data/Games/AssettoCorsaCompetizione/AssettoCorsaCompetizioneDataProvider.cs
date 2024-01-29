@@ -1,16 +1,23 @@
 ﻿using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Games.AssettoCorsaCompetizione.DataMapper;
 using RaceElement.Data.Games.AssettoCorsaCompetizione.SharedMemory;
+using System.Diagnostics;
 
 namespace RaceElement.Data.Games.AssettoCorsaCompetizione
 {
     internal static class AssettoCorsaCompetizioneDataProvider
     {
+        static int packetId = -1;
         internal static void Update(ref LocalCarData LocalCar, ref SessionData SessionData)
         {
-            var graphicsPage = AccSharedMemory.ReadGraphicsPageFile();
             var physicsPage = AccSharedMemory.ReadPhysicsPageFile();
+            if (packetId == physicsPage.PacketId)
+                return;
+            var graphicsPage = AccSharedMemory.ReadGraphicsPageFile();
             var staticPage = AccSharedMemory.ReadStaticPageFile();
+
+
+
 
             LocalCarMapper.WithGraphicsPage(graphicsPage, LocalCar);
             LocalCarMapper.WithPhysicsPage(physicsPage, LocalCar);
@@ -18,6 +25,9 @@ namespace RaceElement.Data.Games.AssettoCorsaCompetizione
 
             SessionDataMapper.WithGraphicsPage(graphicsPage, SessionData);
             SessionDataMapper.WithPhysicsPage(physicsPage, SessionData);
+
+
+            packetId = physicsPage.PacketId;
         }
 
     }

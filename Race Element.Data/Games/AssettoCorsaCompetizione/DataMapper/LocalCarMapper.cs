@@ -38,7 +38,7 @@ internal static partial class LocalCarMapper
         AddAccPhysics(physicsData, commonData);
 
         commonData.Physics.Acceleration = new(physicsData.AccG[0], physicsData.AccG[2], physicsData.AccG[1]);
-        commonData.Rotations.Quaternion = Quaternion.CreateFromYawPitchRoll(physicsData.Heading, physicsData.Pitch, physicsData.Roll);
+        commonData.Physics.Rotation = Quaternion.CreateFromYawPitchRoll(physicsData.Heading, physicsData.Pitch, physicsData.Roll);
     }
 
     // Electronics Data
