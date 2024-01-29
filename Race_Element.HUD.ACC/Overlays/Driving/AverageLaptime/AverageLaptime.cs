@@ -72,7 +72,7 @@ internal class AverageLapTimeOverlay : AbstractOverlay
         int averageLapTime = 0;
         if (validLastLaps.Count() >= validLaps)
         {
-            foreach(var lap in validLastLaps)
+            foreach (var lap in validLastLaps)
             {
                 averageLapTime += lap.Value.Time;
             }
@@ -81,7 +81,7 @@ internal class AverageLapTimeOverlay : AbstractOverlay
 
         Debug.WriteLine($"lap: {newLap.Index}, add new average lap time {averageLapTime} into dictionary");
 
-       _averageTimes.Add(newLap.Index, averageLapTime);
+        _averageTimes.Add(newLap.Index, averageLapTime);
 
     }
 
@@ -91,7 +91,7 @@ internal class AverageLapTimeOverlay : AbstractOverlay
 
         int fastestTime = int.MaxValue;
 
-        foreach(var avg in _averageTimes)
+        foreach (var avg in _averageTimes)
         {
             if (avg.Value < fastestTime && avg.Value != 0) fastestTime = avg.Value;
         }
@@ -119,7 +119,7 @@ internal class AverageLapTimeOverlay : AbstractOverlay
         }
 
         _table.AddRow("", ["fastest lap time:      " + $"{fastestLapTimeValue}"]);
-        _table.AddRow("", ["fastest "+ $"{_config.InfoPanel.ValidLaps}"+" lap average: " + $"{fastestAverageLapTimeValue}"]);
+        _table.AddRow("", ["fastest " + $"{_config.InfoPanel.ValidLaps}" + " lap average: " + $"{fastestAverageLapTimeValue}"]);
 
         // empty row for spacing
         _table.AddRow("", ["", "", "", ""]);
@@ -127,7 +127,7 @@ internal class AverageLapTimeOverlay : AbstractOverlay
         // here comes all the lap times
         _table.AddRow("", ["   ", " ", " ", "average"]); ;
         //_table.AddRow("1", [" X ", "02", "--:--.----", "--:--.----"], [Color.White, Color.White, Color.Red, Color.White]);
-   
+
 
         int idx = 0;
         int skipIdx = 0;
@@ -166,9 +166,8 @@ internal class AverageLapTimeOverlay : AbstractOverlay
                 [Color.White, Color.White, lap.Value.IsValid ? Color.White : Color.Red, Color.White]);
 
             idx++;
-            
-        }
 
+        }
 
         var columnHeigth = (int)(Math.Ceiling(this._font.GetHeight()) + 1 * this.Scale);
         this.Height = columnHeigth * (idx + 4); // four lines at the top
