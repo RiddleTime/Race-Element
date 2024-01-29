@@ -11,8 +11,6 @@ internal static partial class LocalCarMapper
 
     // -- Engine data
     [MapProperty(nameof(PageFilePhysics.Rpms), nameof(@LocalCarData.Engine.RPM))]
-    [MapProperty(nameof(PageFilePhysics.IsEngineRunning), nameof(@LocalCarData.Engine.IsRunning))]
-    [MapProperty(nameof(PageFilePhysics.IgnitionOn), nameof(@LocalCarData.Engine.IsIgnitionOn))]
     // -- Inputs Data
     [MapProperty(nameof(PageFilePhysics.Gas), nameof(@LocalCarData.Inputs.Throttle))]
     [MapProperty(nameof(PageFilePhysics.Brake), nameof(@LocalCarData.Inputs.Brake))]
@@ -22,13 +20,11 @@ internal static partial class LocalCarMapper
     // -- Physics data
     [MapProperty(nameof(PageFilePhysics.SpeedKmh), nameof(@LocalCarData.Physics.Velocity))]
     // -- Tyre Data
-    [MapProperty(nameof(PageFilePhysics.TyreTemp), nameof(@LocalCarData.Tyres.CoreTemperature))]
+    [MapProperty(nameof(PageFilePhysics.TyreCoreTemperature), nameof(@LocalCarData.Tyres.CoreTemperature))]
     [MapProperty(nameof(PageFilePhysics.WheelPressure), nameof(@LocalCarData.Tyres.Pressure))]
     [MapProperty(nameof(PageFilePhysics.Velocity), nameof(@LocalCarData.Tyres.Velocity))]
-    [MapProperty(nameof(PageFilePhysics.SlipAngle), nameof(@LocalCarData.Tyres.SlipAngle))]
     // -- Brakes Data
     [MapProperty(nameof(PageFilePhysics.BrakeTemperature), nameof(@LocalCarData.Brakes.DiscTemperature))]
-    [MapProperty(nameof(PageFilePhysics.BrakePressure), nameof(@LocalCarData.Brakes.Pressure))]
     // -- Electronics activation
     [MapProperty(nameof(PageFilePhysics.TC), nameof(@LocalCarData.Electronics.TractionControlActivation))]
     [MapProperty(nameof(PageFilePhysics.Abs), nameof(@LocalCarData.Electronics.AbsActivation))]
@@ -45,9 +41,6 @@ internal static partial class LocalCarMapper
     }
 
     // Electronics Data
-    [MapProperty(nameof(PageFileGraphics.TC), nameof(@LocalCarData.Electronics.TractionControlLevel))]
-    [MapProperty(nameof(PageFileGraphics.TCCut), nameof(@LocalCarData.Electronics.TractionControlCutLevel))]
-    [MapProperty(nameof(PageFileGraphics.ABS), nameof(@LocalCarData.Electronics.AbsLevel))]
     private static partial void WithGraphicsPage(PageFileGraphics pageGraphics, LocalCarData commonData);
 
     internal static void AddAcGraphics(PageFileGraphics pageGraphics, LocalCarData commonData)

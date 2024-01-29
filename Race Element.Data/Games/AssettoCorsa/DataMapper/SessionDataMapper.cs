@@ -15,7 +15,5 @@ internal static partial class SessionDataMapper
     internal static partial void WithPhysicsPage(PageFilePhysics pagePhysics, SessionData sessionData);
 
     // -- Weather Conditions
-    [MapProperty(nameof(PageFileGraphics.WindSpeed), nameof(@SessionData.Weather.AirVelocity))]
-    [MapProperty(nameof(PageFileGraphics.WindDirection), nameof(@SessionData.Weather.AirDirection))]
     internal static partial void WithGraphicsPage(PageFileGraphics pageGraphics, SessionData sessionData);
 }
