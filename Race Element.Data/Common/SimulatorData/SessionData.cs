@@ -1,13 +1,12 @@
 ﻿namespace RaceElement.Data.Common.SimulatorData
 {
-    public sealed class SessionData
+    public sealed record SessionData
     {
-
         public WeatherConditions Weather { get; set; } = new();
         public TrackData Track { get; set; } = new();
     }
 
-    public class TrackData
+    public sealed record TrackData
     {
         public string GameName { get; set; } = string.Empty;
         /// <summary>
@@ -16,7 +15,7 @@
         public float Temperature { get; set; }
     }
 
-    public sealed class WeatherConditions
+    public sealed record WeatherConditions
     {
         /// <summary>
         /// The air temperature in celsius

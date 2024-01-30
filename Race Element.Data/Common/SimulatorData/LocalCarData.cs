@@ -2,7 +2,7 @@
 
 namespace RaceElement.Data.Common.SimulatorData
 {
-    public sealed class LocalCarData
+    public sealed record LocalCarData
     {
         public CarModelData CarModel { get; set; } = new();
         public PhysicsData Physics { get; set; } = new();
@@ -13,13 +13,13 @@ namespace RaceElement.Data.Common.SimulatorData
         public ElectronicsData Electronics { get; set; } = new();
     }
 
-    public class CarModelData
+    public sealed record CarModelData
     {
         public string GameName { get; set; } = string.Empty;
         public int GameId { get; set; }
     }
 
-    public sealed class EngineData
+    public sealed record EngineData
     {
         public bool IsRunning { get; set; }
         public bool IsIgnitionOn { get; set; }
@@ -34,7 +34,7 @@ namespace RaceElement.Data.Common.SimulatorData
         /// </summary>
         public int MaxRpm { get; set; }
     }
-    public sealed class TyresData
+    public sealed record TyresData
     {
         public float[] Velocity { get; set; } = [];
         public float[] Pressure { get; set; } = [];
@@ -43,7 +43,7 @@ namespace RaceElement.Data.Common.SimulatorData
         public float[] SlipAngle { get; set; } = [];
     }
 
-    public sealed class BrakesData
+    public sealed record BrakesData
     {
         /// <summary>
         /// The temperature in Celsius for each of the brake discs.
@@ -56,7 +56,7 @@ namespace RaceElement.Data.Common.SimulatorData
         public float[] Pressure { get; set; } = [];
     }
 
-    public sealed class PhysicsData
+    public sealed record PhysicsData
     {
         public Vector3 Location { get; set; } = new();
 
@@ -76,7 +76,7 @@ namespace RaceElement.Data.Common.SimulatorData
         /// </summary>
         public Vector3 Acceleration { get; set; } = new();
     }
-    public sealed class InputsData
+    public sealed record InputsData
     {
         public float Throttle { get; set; }
         public float Brake { get; set; }
@@ -90,7 +90,7 @@ namespace RaceElement.Data.Common.SimulatorData
         public int Gear { get; set; }
     }
 
-    public sealed class ElectronicsData
+    public sealed record ElectronicsData
     {
         public int TractionControlLevel { get; set; }
         public int TractionControlCutLevel { get; set; }
