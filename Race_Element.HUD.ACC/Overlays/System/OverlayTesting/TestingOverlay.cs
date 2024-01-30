@@ -8,7 +8,7 @@ using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.System.OverlayTesting
 {
-    [Overlay(Name = "Testing", Description = "some testing ")]
+    [Overlay(Name = "Testing", Description = "some testing ", OverlayType = OverlayType.Pitwall)]
     internal class TestingOverlay : AbstractOverlay
     {
         private readonly AbstractLoopJob _job;
@@ -17,7 +17,7 @@ namespace RaceElement.HUD.ACC.Overlays.System.OverlayTesting
         public TestingOverlay(Rectangle rectangle) : base(rectangle, "Testing")
         {
             Width = 500;
-            Height = 100;
+            Height = 150;
             RefreshRateHz = 50;
             SubscribeToACCData = false;
 
