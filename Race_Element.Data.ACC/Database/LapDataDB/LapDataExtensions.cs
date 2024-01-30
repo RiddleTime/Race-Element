@@ -146,6 +146,8 @@ public static class LapDataExtensions
     /// <returns>true if the given sector time is faster than any others of that sector in these laps</returns>
     public static bool IsSectorFastest(this Dictionary<int, DbLapData> laps, int sector, int time)
     {
+        if (time < 1) return false;
+
         Dictionary<int, DbLapData> data = laps;
 
         sector.Clip(1, 3);
@@ -193,19 +195,19 @@ public static class LapDataExtensions
         {
             case 1:
                 foreach (DbLapData lap in laps.Select(x => x.Value))
-                    if (lap.IsValid && (lap.Sector1 < fastest) && lap.Sector1 != -1)
+                    if (lap.IsValid && (lap.Sector1 < fastest) && lap.Sector1 > 0)
                         fastest = lap.Sector1;
                 break;
 
             case 2:
                 foreach (DbLapData lap in laps.Select(x => x.Value))
-                    if (lap.IsValid && (lap.Sector2 < fastest) && lap.Sector2 != -1)
+                    if (lap.IsValid && (lap.Sector2 < fastest) && lap.Sector2 > 0)
                         fastest = lap.Sector2;
                 break;
 
             case 3:
                 foreach (DbLapData lap in laps.Select(x => x.Value))
-                    if (lap.IsValid && (lap.Sector3 < fastest) && lap.Sector3 != -1)
+                    if (lap.IsValid && (lap.Sector3 < fastest) && lap.Sector3 > 0)
                         fastest = lap.Sector3;
                 break;
 
