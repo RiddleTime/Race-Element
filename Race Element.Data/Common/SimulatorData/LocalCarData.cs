@@ -60,11 +60,10 @@ namespace RaceElement.Data.Common.SimulatorData
     {
         public Vector3 Location { get; set; } = new();
 
-
         /// <summary>
         /// The global rotation of the car (yaw/pitch/roll)
         /// </summary>
-        public Quaternion Rotation { get; set; }
+        public Quaternion Rotation { get; set; } = Quaternion.Zero;
 
         /// <summary>
         /// The speed of the car in kilometers per hour.
