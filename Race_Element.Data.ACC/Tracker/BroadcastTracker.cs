@@ -1,4 +1,5 @@
-﻿using RaceElement.Broadcast;
+﻿using Newtonsoft.Json;
+using RaceElement.Broadcast;
 using RaceElement.Broadcast.Structs;
 using System;
 using System.Diagnostics;
@@ -86,6 +87,12 @@ public class BroadcastTracker : IDisposable
             //Debug.WriteLine("");
             //Debug.WriteLine("---- OnBroadcastingEvent (s, broadcastEvent) ----");
             //Debug.WriteLine($"#{broadcastEvent.CarData.RaceNumber}, Index:{broadcastEvent.CarId}, Type: {broadcastEvent.Type}, Msg: {broadcastEvent.Msg}");
+
+            if (broadcastEvent.Type == BroadcastingCarEventType.BestSessionLap)
+            {
+                //Debug.WriteLine(JsonConvert.SerializeObject(broadcastEvent, Formatting.Indented));
+            }
+
             OnBroadcastEvent?.Invoke(this, broadcastEvent);
         };
         client.MessageHandler.OnTrackDataUpdate += (s, trackData) => OnTrackDataUpdate?.Invoke(this, trackData);
