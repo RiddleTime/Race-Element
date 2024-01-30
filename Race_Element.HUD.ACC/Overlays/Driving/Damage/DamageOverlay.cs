@@ -118,32 +118,6 @@ internal sealed class DamageOverlay : AbstractOverlay
         UpdateBodyDamage();
     }
 
-    public override void BeforeStop()
-    {
-        _carOutline?.Dispose();
-        _suspensionDamage?.Dispose();
-        _bodyDamage?.Dispose();
-    }
-
-    public override void Render(Graphics g)
-    {
-        float newDamageTime = Damage.GetTotalRepairTime(pagePhysics);
-        if (newDamageTime != _damageTime)
-        {
-            _damageTime = newDamageTime;
-            UpdateShapeDamageColors();
-            UpdateSuspensionDamage();
-            UpdateBodyDamage();
-        }
-
-        if (newDamageTime == 0 && _config.Damage.AutoHide && !this.IsRepositioning)
-            return;
-
-        _carOutline?.Draw(g, 0, 0, OriginalWidth, OriginalHeight);
-        _suspensionDamage?.Draw(g, 0, 0, OriginalWidth, OriginalHeight);
-        _bodyDamage?.Draw(g, 0, 0, OriginalWidth, OriginalHeight);
-    }
-
     private void CreatePathShapes()
     {
         int scaledWidth = (int)(this.Width * this.Scale) - 1;
@@ -254,6 +228,33 @@ internal sealed class DamageOverlay : AbstractOverlay
             Path = pathWheelRearRight,
         };
     }
+
+    public override void BeforeStop()
+    {
+        _carOutline?.Dispose();
+        _suspensionDamage?.Dispose();
+        _bodyDamage?.Dispose();
+    }
+
+    public override void Render(Graphics g)
+    {
+        float newDamageTime = Damage.GetTotalRepairTime(pagePhysics);
+        if (newDamageTime != _damageTime)
+        {
+            _damageTime = newDamageTime;
+            UpdateShapeDamageColors();
+            UpdateSuspensionDamage();
+            UpdateBodyDamage();
+        }
+
+        if (newDamageTime == 0 && _config.Damage.AutoHide && !this.IsRepositioning)
+            return;
+
+        _carOutline?.Draw(g, 0, 0, OriginalWidth, OriginalHeight);
+        _suspensionDamage?.Draw(g, 0, 0, OriginalWidth, OriginalHeight);
+        _bodyDamage?.Draw(g, 0, 0, OriginalWidth, OriginalHeight);
+    }
+
 
     private void UpdateShapeDamageColors()
     {
