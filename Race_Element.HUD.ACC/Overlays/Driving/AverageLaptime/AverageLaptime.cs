@@ -27,7 +27,7 @@ internal class AverageLapTimeOverlay : AbstractOverlay
         {
             [ToolTip("Number of valid laps in a row for average time calculation.")]
             [IntRange(1, 10, 1)]
-            public int ValidLaps { get; init; } = 0;
+            public int ValidLaps { get; init; } = 1;
         }
     }
 
