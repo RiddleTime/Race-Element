@@ -6,21 +6,12 @@
         <AssemblyName>RaceElement</AssemblyName>
         <IsWebBootstrapper>false</IsWebBootstrapper>
         <PublishUrl>publish\</PublishUrl>
-        <Install>true</Install>
-        <InstallFrom>Disk</InstallFrom>
-        <UpdateEnabled>false</UpdateEnabled>
-        <UpdateMode>Foreground</UpdateMode>
-        <UpdateInterval>7</UpdateInterval>
-        <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-        <UpdatePeriodically>false</UpdatePeriodically>
-        <UpdateRequired>false</UpdateRequired>
         <MapFileExtensions>false</MapFileExtensions>
         <ProductName>Race Element</ProductName>
         <PublisherName>Reinier Klarenberg</PublisherName>
         <SuiteName>Race Element</SuiteName>
         <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
         <DisallowUrlActivation>true</DisallowUrlActivation>
-        <ApplicationRevision>1</ApplicationRevision>
         <ApplicationVersion>1.0.2.1</ApplicationVersion>
         <UseApplicationTrust>true</UseApplicationTrust>
         <CreateDesktopShortcut>true</CreateDesktopShortcut>
