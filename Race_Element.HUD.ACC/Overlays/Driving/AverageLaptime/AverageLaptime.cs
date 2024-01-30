@@ -36,6 +36,7 @@ internal class AverageLapTimeOverlay : AbstractOverlay
 
     private const int InitialWidth = 500, InitialHeight = 750;
     private InfoTable _table;
+    private int _fastestAvgTime;
     private GraphicsGrid _graphicsGrid;
     private Font _font;
 
@@ -44,6 +45,7 @@ internal class AverageLapTimeOverlay : AbstractOverlay
         this.Width = InitialWidth;
 
         _averageTimes = [];
+        _fastestAvgTime = int.MaxValue;
 
         // index / type / lap / time / average
         _table = new InfoTable(12, [40, 40, 150, 150]);
@@ -83,19 +85,8 @@ internal class AverageLapTimeOverlay : AbstractOverlay
 
         _averageTimes.Add(newLap.Index, averageLapTime);
 
-    }
+        if (averageLapTime < _fastestAvgTime) _fastestAvgTime = averageLapTime;
 
-    private int GetFastestAvgLaptime()
-    {
-        if (_averageTimes.Count == 0) return 0;
-
-        int fastestTime = int.MaxValue;
-
-        foreach (var avg in _averageTimes)
-        {
-            if (avg.Value < fastestTime && avg.Value != 0) fastestTime = avg.Value;
-        }
-        return fastestTime;
     }
 
     public override void Render(Graphics g)
@@ -105,10 +96,9 @@ internal class AverageLapTimeOverlay : AbstractOverlay
         string fastestAverageLapTimeValue = "--:--.----";
         string fastestLapTimeValue = "--:--.----";
 
-        int fastestAvgTime = GetFastestAvgLaptime();
-        if (fastestAvgTime > 0)
+        if (_fastestAvgTime != int.MaxValue)
         {
-            fastestAverageLapTimeValue = MillisecondsToTimeString(fastestAvgTime);
+            fastestAverageLapTimeValue = MillisecondsToTimeString(_fastestAvgTime);
         }
 
         int fastestLapIndex = LapTracker.Instance.Laps.GetFastestLapIndex();
