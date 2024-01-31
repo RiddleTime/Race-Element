@@ -1,5 +1,6 @@
 ﻿using Octokit;
 using RaceElement.Controls.Util.Updater;
+using RaceElement.Data.Games;
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -22,7 +23,11 @@ public partial class TitleBar : UserControl
     public TitleBar()
     {
         InitializeComponent();
-        this.Loaded += (s, e) => SetAppTitle();
+        this.Loaded += (s, e) =>
+        {
+            SetAppTitle();
+            PopulateGames();
+        };
         buttonExit.Click += ButtonExit_Click;
 
         buttonMinimize.Click += (s, e) => { App.Current.MainWindow.WindowState = WindowState.Minimized; };
@@ -63,6 +68,15 @@ public partial class TitleBar : UserControl
             SettingsTab.Instance.tabAccSettings.Focus();
         };
 
+        comboBoxCurrentGame.SelectionChanged += (s, e) =>
+        {
+            var item = comboBoxCurrentGame.SelectedItem as ComboBoxItem;
+            if (item != null && item.DataContext != null)
+            {
+                Game currentGame = (Game)item.DataContext;
+                GameManager.SetCurrentGame(currentGame);
+            }
+        };
 
 
         //// used for collecting corner numbers in data.acc.tracks
@@ -97,6 +111,27 @@ public partial class TitleBar : UserControl
 
             Dispatcher.BeginInvoke(new Action(() => this.Title.Text = text));
         });
+    }
+
+    private void PopulateGames()
+    {
+        comboBoxCurrentGame.Items.Clear();
+        foreach (Game game in Enum.GetValues(typeof(Game)))
+        {
+            string friendlyName = game.ToShortName();
+            if (friendlyName.Length > 0)
+            {
+                ComboBoxItem comboBoxItem = new() { Content = friendlyName, DataContext = game };
+                comboBoxCurrentGame.Items.Add(comboBoxItem);
+            }
+            else
+            {
+                comboBoxCurrentGame.Items.Add(string.Empty);
+            }
+        }
+
+        comboBoxCurrentGame.SelectedIndex = (int)GameManager.CurrentGame;
+
     }
 
     private void TitleBar_MouseDoubleClick(object sender, MouseButtonEventArgs e)

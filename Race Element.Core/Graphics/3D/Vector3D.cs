@@ -2,6 +2,7 @@ using System;
 
 namespace CPI.Plot3D;
 
+// https://www.codeproject.com/articles/14397/a-3d-plotting-library-in-c
 /// <summary>
 /// Represents a distance and direction in 3 dimensions.
 /// </summary>

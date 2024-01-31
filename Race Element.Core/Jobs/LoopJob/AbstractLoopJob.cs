@@ -25,7 +25,15 @@ public abstract class AbstractLoopJob : IJob
 
     public abstract void RunAction();
 
-    public void Cancel() => _isCancelling = true;
+    public virtual void AfterCancel() { }
+
+    public void Cancel() { if (!_isStopped) _isCancelling = true; }
+
+    public void CancelJoin()
+    {
+        Cancel();
+        this.WaitForCompletion(50);
+    }
 
     public void Run()
     {
@@ -53,6 +61,9 @@ public abstract class AbstractLoopJob : IJob
             }
 
             sw.Reset();
+
+            AfterCancel();
+
             _isStopped = true;
         });
     }
