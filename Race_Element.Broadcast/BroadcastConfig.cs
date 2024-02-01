@@ -18,7 +18,7 @@ public class BroadcastConfig
         public string CommandPassword { get; set; }
     }
 
-    private static string _lock = String.Empty;
+    private readonly static object _lock = new();
 
     public static Root GetConfiguration()
     {
@@ -53,8 +53,7 @@ public class BroadcastConfig
         return null;
     }
 
-
-    private static Root GetConfiguration(Stream stream)
+    private static Root GetConfiguration(FileStream stream)
     {
         string jsonString = string.Empty;
         try
