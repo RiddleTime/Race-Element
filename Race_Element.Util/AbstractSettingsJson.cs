@@ -67,7 +67,7 @@ public abstract class AbstractSettingsJson<T>
         }
     }
 
-    private T ReadJson(Stream stream)
+    private T ReadJson(FileStream stream)
     {
         string jsonString = string.Empty;
         try
