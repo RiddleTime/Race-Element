@@ -89,8 +89,11 @@ internal class AverageLapTimeOverlay : AbstractOverlay
 
         _averageTimes.Add(newLap.Index, averageLapTime);
 
-        if (averageLapTime < _fastestAvgTime) _fastestAvgTime = averageLapTime;
-
+        if (averageLapTime != 0 && averageLapTime < _fastestAvgTime)
+        {
+            _fastestAvgTime = averageLapTime;
+        }
+            
     }
 
     public override void Render(Graphics g)
