@@ -166,6 +166,7 @@ public abstract class AbstractOverlay : FloatingWindow
                 BroadcastTracker.Instance.OnRealTimeUpdate += BroadCastRealTimeChanged;
                 BroadcastTracker.Instance.OnTrackDataUpdate += BroadCastTrackDataChanged;
                 BroadcastTracker.Instance.OnRealTimeLocalCarUpdate += BroadCastRealTimeLocalCarUpdateChanged;
+                RaceSessionTracker.Instance.OnNewSessionStarted += Instance_OnNewSessionStarted;
             }
 
             pageStatic = ACCSharedMemory.Instance.ReadStaticPageFile(false);
@@ -236,6 +237,12 @@ public abstract class AbstractOverlay : FloatingWindow
         catch (Exception ex) { Debug.WriteLine(ex); }
     }
 
+    private void Instance_OnNewSessionStarted(object sender, Data.ACC.Database.SessionData.DbRaceSession e)
+    {
+        broadCastRealTime = new();
+        broadCastLocalCar = new();
+    }
+
     private void BroadCastRealTimeLocalCarUpdateChanged(object sender, RealtimeCarUpdate e)
     {
         broadCastLocalCar = e;
@@ -297,6 +304,7 @@ public abstract class AbstractOverlay : FloatingWindow
         BroadcastTracker.Instance.OnRealTimeUpdate -= BroadCastRealTimeChanged;
         BroadcastTracker.Instance.OnTrackDataUpdate -= BroadCastTrackDataChanged;
         BroadcastTracker.Instance.OnRealTimeLocalCarUpdate -= BroadCastRealTimeLocalCarUpdateChanged;
+        RaceSessionTracker.Instance.OnNewSessionStarted -= Instance_OnNewSessionStarted;
 
         Draw = false;
 

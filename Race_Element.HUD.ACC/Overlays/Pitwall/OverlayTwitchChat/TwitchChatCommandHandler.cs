@@ -1,4 +1,5 @@
-﻿using RaceElement.Broadcast;
+﻿using Newtonsoft.Json;
+using RaceElement.Broadcast;
 using RaceElement.Broadcast.Structs;
 using RaceElement.Data;
 using RaceElement.Data.ACC.Cars;
@@ -8,6 +9,7 @@ using RaceElement.Data.ACC.Tracker;
 using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.Util;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -156,22 +158,31 @@ internal class TwitchChatCommandHandler
 
             if (carAhead.RealtimeCarUpdate.LastLap != null)
             {
-                LapInfo lastLap = carAhead.RealtimeCarUpdate.LastLap;
+                LapInfo lap = carAhead.RealtimeCarUpdate.LastLap;
                 bool isBest = false;
                 if (args.Length > 0 && args[0] == "best")
                 {
-                    lastLap = carAhead.RealtimeCarUpdate.BestSessionLap;
+                    lap = carAhead.RealtimeCarUpdate.BestSessionLap;
                     isBest = true;
                 }
 
-                if (!lastLap.LaptimeMS.HasValue) { sb.Append($"no {(isBest ? "best" : "last")} lap."); goto noLastLap; }
+                if (!lap.LaptimeMS.HasValue) { sb.Append($"no {(isBest ? "best" : "last")} lap."); goto noLastLap; }
 
                 sb.Append($"{(isBest ? "Best: " : "Last: ")}");
-                TimeSpan lapTime = TimeSpan.FromSeconds(lastLap.GetLapTimeMS() / 1000d);
-                TimeSpan s1 = TimeSpan.FromSeconds(lastLap.Splits[0].Value / 1000d);
-                TimeSpan s2 = TimeSpan.FromSeconds(lastLap.Splits[1].Value / 1000d);
-                TimeSpan s3 = TimeSpan.FromSeconds(lastLap.Splits[2].Value / 1000d);
-                sb.Append($"{lapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}");
+
+                if (isBest)
+                {
+                    TimeSpan lapTime = TimeSpan.FromMilliseconds((double)lap.LaptimeMS);
+                    sb.Append($"{lapTime:m\\:ss\\:fff}");
+                }
+                else
+                {
+                    TimeSpan lapTime = TimeSpan.FromSeconds(lap.GetLapTimeMS() / 1000d);
+                    TimeSpan s1 = TimeSpan.FromSeconds(lap.Splits[0].Value / 1000d);
+                    TimeSpan s2 = TimeSpan.FromSeconds(lap.Splits[1].Value / 1000d);
+                    TimeSpan s3 = TimeSpan.FromSeconds(lap.Splits[2].Value / 1000d);
+                    sb.Append($"{lapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}");
+                }
             }
         noLastLap:;
 
@@ -198,22 +209,31 @@ internal class TwitchChatCommandHandler
 
             if (carBehind.RealtimeCarUpdate.LastLap != null)
             {
-                LapInfo lastLap = carBehind.RealtimeCarUpdate.LastLap;
+                LapInfo lap = carBehind.RealtimeCarUpdate.LastLap;
                 bool isBest = false;
                 if (args.Length > 0 && args[0] == "best")
                 {
-                    lastLap = carBehind.RealtimeCarUpdate.BestSessionLap;
+                    lap = carBehind.RealtimeCarUpdate.BestSessionLap;
                     isBest = true;
                 }
 
-                if (!lastLap.LaptimeMS.HasValue) { sb.Append($"no {(isBest ? "best" : "last")} lap."); goto noLastLap; }
+                if (!lap.LaptimeMS.HasValue) { sb.Append($"no {(isBest ? "best" : "last")} lap."); goto noLastLap; }
 
                 sb.Append($"{(isBest ? "Best: " : "Last: ")}");
-                TimeSpan lapTime = TimeSpan.FromSeconds(lastLap.GetLapTimeMS() / 1000d);
-                TimeSpan s1 = TimeSpan.FromSeconds(lastLap.Splits[0].Value / 1000d);
-                TimeSpan s2 = TimeSpan.FromSeconds(lastLap.Splits[1].Value / 1000d);
-                TimeSpan s3 = TimeSpan.FromSeconds(lastLap.Splits[2].Value / 1000d);
-                sb.Append($"{lapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}");
+
+                if (isBest)
+                {
+                    TimeSpan lapTime = TimeSpan.FromMilliseconds((double)lap.LaptimeMS);
+                    sb.Append($"{lapTime:m\\:ss\\:fff}");
+                }
+                else
+                {
+                    TimeSpan lapTime = TimeSpan.FromSeconds(lap.GetLapTimeMS() / 1000d);
+                    TimeSpan s1 = TimeSpan.FromSeconds(lap.Splits[0].Value / 1000d);
+                    TimeSpan s2 = TimeSpan.FromSeconds(lap.Splits[1].Value / 1000d);
+                    TimeSpan s3 = TimeSpan.FromSeconds(lap.Splits[2].Value / 1000d);
+                    sb.Append($"{lapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}");
+                }
             }
         noLastLap:;
 
@@ -268,15 +288,28 @@ internal class TwitchChatCommandHandler
         var lobbyBest = _overlay.broadCastRealTime.BestSessionLap;
         if (lobbyBest == null || lobbyBest.IsInvalid) goto returnNoValidLaps;
 
+        Debug.WriteLine($"best lap index: {_overlay.broadCastRealTime.BestLapCarIndex}, best car index: {lobbyBest.CarIndex}");
+        var purpleCar = EntryListTracker.Instance.Cars.Where(x => x.Key == _overlay.broadCastRealTime.BestSessionLap.CarIndex);
+        CarData car = null;
+        if (purpleCar.Any())
+        {
+            car = purpleCar.First().Value;
+            var carBestLap = car.RealtimeCarUpdate.BestSessionLap;
+            if (carBestLap.LaptimeMS != null && !carBestLap.IsInvalid && lobbyBest.IsValidForBest)
+            {
+                Debug.WriteLine(JsonConvert.SerializeObject(lobbyBest));
+                Debug.WriteLine(JsonConvert.SerializeObject(carBestLap));
+                //lobbyBest = carBestLap;
+            }
+        }
+
         try
         {
             if (!lobbyBest.LaptimeMS.HasValue) goto returnNoValidLaps;
 
-            TimeSpan lapTime = TimeSpan.FromSeconds(lobbyBest.GetLapTimeMS() / 1000d);
-            TimeSpan s1 = TimeSpan.FromSeconds(lobbyBest.Splits[0].Value / 1000d);
-            TimeSpan s2 = TimeSpan.FromSeconds(lobbyBest.Splits[1].Value / 1000d);
-            TimeSpan s3 = TimeSpan.FromSeconds(lobbyBest.Splits[2].Value / 1000d);
-            return $"Lobby Best Lap: {lapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}";
+            TimeSpan lapTime = TimeSpan.FromMilliseconds((double)lobbyBest.LaptimeMS);
+            string carInfo = $"P{car.RealtimeCarUpdate.Position} #{(car == null ? string.Empty : car.CarInfo.RaceNumber)} {car.CarInfo.Drivers[car.CarInfo.CurrentDriverIndex].FirstName[0]}. {car.CarInfo.GetCurrentDriverName()}";
+            return $"{carInfo} - {lapTime:m\\:ss\\:fff}";
         }
         catch (Exception ex)
         {

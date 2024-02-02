@@ -13,7 +13,11 @@ using System.Linq;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayAverageLapTime;
 
-[Overlay(Name = "Average Laptime", Description = "Shows last valid laps and the average lap time.", OverlayType = OverlayType.Drive, Version = 1.00)]
+[Overlay(Name = "Average Laptime",
+Description = "Shows last valid laps and the average lap time.",
+OverlayType = OverlayType.Drive,
+OverlayCategory = OverlayCategory.Lap,
+Version = 1.00)]
 internal class AverageLapTimeOverlay : AbstractOverlay
 {
 
@@ -26,8 +30,8 @@ internal class AverageLapTimeOverlay : AbstractOverlay
         public class InfoPanelGrouping
         {
             [ToolTip("Number of valid laps in a row for average time calculation.")]
-            [IntRange(1, 10, 1)]
-            public int ValidLaps { get; init; } = 0;
+            [IntRange(2, 10, 1)]
+            public int ValidLaps { get; init; } = 2;
         }
     }
 

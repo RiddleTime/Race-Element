@@ -6,6 +6,9 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.2.2", "- Internal changes for future multi-sim support."+
+                    "\n- Twitch Chat HUD: fixed a few commands related to lap times."+
+                    "\n- New HUD: Average Laptime HUD by goeflo."},
         {"1.0.2.0", "- Added Track corner names for Red Bull Ring."+
                     "\n- Added Setup Converters for all 6 new GT2 cars(for viewing and comparing setups)."+
                     "\n- Added Steering Locks for all 6 new GT2 cars."},

@@ -1,4 +1,5 @@
 ﻿using RaceElement.Util.SystemExtensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,7 +11,7 @@ public static class LapDataExtensions
 
     public static float GetLapTime(this DbLapData lap)
     {
-        return lap.Time / 1000f;
+        return (float)Math.Ceiling(lap.Time / 1000f);
     }
 
     public static float GetSector1(this DbLapData lap)

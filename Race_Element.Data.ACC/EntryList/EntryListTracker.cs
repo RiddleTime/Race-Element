@@ -1,4 +1,5 @@
-﻿using RaceElement.Broadcast;
+﻿using Newtonsoft.Json;
+using RaceElement.Broadcast;
 using RaceElement.Broadcast.Structs;
 using RaceElement.Data.ACC.EntryList.TrackPositionGraph;
 using RaceElement.Data.ACC.Tracker;
@@ -178,8 +179,11 @@ public class EntryListTracker
         {
             switch (broadcastingEvent.Type)
             {
+
                 case BroadcastingCarEventType.BestSessionLap:
                     {
+                        Debug.WriteLine(JsonConvert.SerializeObject(broadcastingEvent));
+                        Debug.WriteLine(JsonConvert.SerializeObject(_entryListCars[broadcastingEvent.CarId]));
                         break;
                     }
                 case BroadcastingCarEventType.LapCompleted:
