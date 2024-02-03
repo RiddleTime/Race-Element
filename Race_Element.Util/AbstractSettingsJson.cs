@@ -34,11 +34,9 @@ public abstract class AbstractSettingsJson<T>
 
         try
         {
-            using (FileStream fileStream = SettingsFile.OpenRead())
-            {
-                Cached = ReadJson(fileStream);
-                return Cached;
-            }
+            using FileStream fileStream = SettingsFile.OpenRead();
+            Cached = ReadJson(fileStream);
+            return Cached;
         }
         catch (Exception ex)
         {

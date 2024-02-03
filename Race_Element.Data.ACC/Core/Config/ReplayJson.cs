@@ -3,7 +3,7 @@ using RaceElement.Util;
 
 namespace RaceElement.Data.ACC.Core.Config;
 
-public class ReplaySettingsJson : IGenericSettingsJson
+public sealed class ReplaySettingsJson : IGenericSettingsJson
 {
     [JsonProperty("replayQuality")]
     public int ReplayQuality { get; set; }
