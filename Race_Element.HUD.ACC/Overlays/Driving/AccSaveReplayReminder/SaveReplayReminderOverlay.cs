@@ -12,7 +12,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.AccSaveReplayReminder;
 Description = "Shows an overlay that will remind you to save the replay.",
 OverlayType = OverlayType.Drive,
 OverlayCategory = OverlayCategory.All,
-Version = 1.00)]
+Version = 1.00,
+Authors = ["Reinier Klarenberg"])]
 internal sealed class SaveReplayReminderOverlay : AbstractOverlay
 {
     private ReplaySettings _replaySettings;

@@ -12,6 +12,9 @@ public class OverlayAttribute : Attribute
     public double Version { get; set; }
     public string Description { get; set; } = string.Empty;
 
+    /// <summary>
+    /// Initial creator at 0 index.
+    /// </summary>
     public string[] Authors { get; set; } = [];
 }
 
