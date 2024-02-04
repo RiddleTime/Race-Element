@@ -7,6 +7,7 @@ namespace RaceElement.Data.Games
         AssettoCorsaCompetizione,
         //rFactor2,
         //iRacing,
+        //Automobilista2
     }
 
     public static class GameExtensions
