@@ -39,7 +39,7 @@ internal sealed class CurrentGearOverlay : AbstractOverlay
             public int TextOpacity { get; init; } = 255;
         }
 
-        public CurrentGearConfiguration() { AllowRescale = true; }
+        public CurrentGearConfiguration() { GenericConfiguration.AllowRescale = true; }
     }
 
     private const int InitialWidth = 80;

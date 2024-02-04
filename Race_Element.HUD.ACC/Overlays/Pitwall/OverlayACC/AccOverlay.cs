@@ -25,7 +25,7 @@ internal class AccProcessOverlay : AbstractOverlay
 
         public AccOverlayConfiguration()
         {
-            this.AllowRescale = true;
+            this.GenericConfiguration.AllowRescale = true;
         }
     }
 

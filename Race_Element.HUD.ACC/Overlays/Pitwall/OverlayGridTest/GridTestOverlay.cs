@@ -14,7 +14,7 @@ internal sealed class GridTestOverlay : AbstractOverlay
     private readonly GridTestConfiguration _config = new();
     private sealed class GridTestConfiguration : OverlayConfiguration
     {
-        public GridTestConfiguration() => AllowRescale = true;
+        public GridTestConfiguration() => GenericConfiguration.AllowRescale = true;
 
         [ConfigGrouping("Grid", "Customize rows and columns")]
         public GridGrouping Grid { get; set; } = new GridGrouping();

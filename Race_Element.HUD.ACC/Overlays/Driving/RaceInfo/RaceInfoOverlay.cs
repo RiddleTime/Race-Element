@@ -25,7 +25,7 @@ internal class RaceInfoOverlay : AbstractOverlay
 
         public RaceInfoConfig()
         {
-            this.AllowRescale = true;
+            this.GenericConfiguration.AllowRescale = true;
         }
     }
 

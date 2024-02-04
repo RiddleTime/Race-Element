@@ -9,12 +9,12 @@ namespace RaceElement.HUD.Overlay.Configuration;
 
 public abstract class OverlayConfiguration
 {
-    public bool AllowRescale = false;
-
     [ConfigGrouping("HUD", "General settings")]
     public GenericConfig GenericConfiguration { get; set; } = new GenericConfig();
     public class GenericConfig
     {
+        public bool AllowRescale = false;
+
         [ToolTip("Defines the scale of the overlay.")]
         [FloatRange(0.650f, 3.000f, 0.002f, 3)]
         public float Scale { get; set; } = 1.00f;

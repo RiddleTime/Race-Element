@@ -18,7 +18,7 @@ internal class InputValuesOverlay : AbstractOverlay
     private readonly InputValuesConfiguration _config = new();
     private sealed class InputValuesConfiguration : OverlayConfiguration
     {
-        public InputValuesConfiguration() => AllowRescale = true;
+        public InputValuesConfiguration() => GenericConfiguration.AllowRescale = true;
 
         [ConfigGrouping("Format", "Adjust the text format")]
         public FormatGrouping Format { get; init; } = new FormatGrouping();

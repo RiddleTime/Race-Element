@@ -41,7 +41,7 @@ internal sealed class InputTraceOverlay : AbstractOverlay
 
         public InputTraceConfig()
         {
-            this.AllowRescale = true;
+            this.GenericConfiguration.AllowRescale = true;
         }
     }
 

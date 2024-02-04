@@ -39,7 +39,7 @@ internal sealed class DebugOutputOverlay : AbstractOverlay
 
         public DebugOutputConfiguration()
         {
-            this.AllowRescale = true;
+            this.GenericConfiguration.AllowRescale = true;
         }
     }
 

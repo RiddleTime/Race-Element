@@ -59,5 +59,5 @@ internal sealed class LapTimeDeltaConfiguration : OverlayConfiguration
         public int SlowerOpacity { get; init; } = 255;
     }
 
-    public LapTimeDeltaConfiguration() => this.AllowRescale = true;
+    public LapTimeDeltaConfiguration() => this.GenericConfiguration.AllowRescale = true;
 }

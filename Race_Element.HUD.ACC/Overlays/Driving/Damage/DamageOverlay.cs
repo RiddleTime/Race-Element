@@ -18,7 +18,7 @@ internal sealed class DamageOverlay : AbstractOverlay
     private readonly DamageConfiguration _config = new();
     private sealed class DamageConfiguration : OverlayConfiguration
     {
-        public DamageConfiguration() => AllowRescale = true;
+        public DamageConfiguration() => GenericConfiguration.AllowRescale = true;
 
         [ConfigGrouping("Damage", "Changes the behavior of the Damage HUD")]
         public DamageGrouping Damage { get; init; } = new DamageGrouping();

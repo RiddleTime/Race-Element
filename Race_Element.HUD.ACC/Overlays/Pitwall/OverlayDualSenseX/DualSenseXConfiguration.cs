@@ -9,7 +9,7 @@ internal sealed class DualSenseXConfiguration : OverlayConfiguration
         this.GenericConfiguration.AlwaysOnTop = false;
         this.GenericConfiguration.Window = false;
         this.GenericConfiguration.Opacity = 1.0f;
-        this.AllowRescale = false;
+        this.GenericConfiguration.AllowRescale = false;
     }
 
     [ConfigGrouping("DSX UDP", "Adjust the port DSX uses, 6969 is default.")]

@@ -35,7 +35,7 @@ internal sealed class ClockOverlay : AbstractOverlay
             public bool AlwaysShow { get; set; } = true;
         }
 
-        public SystemTimeConfig() => this.AllowRescale = true;
+        public SystemTimeConfig() => this.GenericConfiguration.AllowRescale = true;
     }
 
     private Font _font;

@@ -40,7 +40,7 @@ internal sealed class OversteerTraceOverlay : AbstractOverlay
 
         public OversteerTraceConfiguration()
         {
-            this.AllowRescale = true;
+            this.GenericConfiguration.AllowRescale = true;
         }
     }
 

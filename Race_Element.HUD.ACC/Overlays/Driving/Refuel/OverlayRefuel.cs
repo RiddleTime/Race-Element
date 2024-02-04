@@ -34,7 +34,7 @@ internal sealed class RefuelInfoOverlay : AbstractOverlay
 
         public RefuelConfiguration()
         {
-            this.AllowRescale = true;
+            this.GenericConfiguration.AllowRescale = true;
         }
     }
 

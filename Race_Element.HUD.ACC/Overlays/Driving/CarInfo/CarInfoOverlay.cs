@@ -37,7 +37,7 @@ internal sealed class CarInfoOverlay : AbstractOverlay
             public bool WaterTemp { get; init; } = false;
         }
 
-        public CarInfoConfiguration() => this.AllowRescale = true;
+        public CarInfoConfiguration() => this.GenericConfiguration.AllowRescale = true;
     }
 
     private Font _font;

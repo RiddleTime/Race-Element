@@ -36,7 +36,7 @@ internal sealed class TrackCornersOverlay : AbstractOverlay
             public bool Spectator { get; init; } = true;
         }
 
-        public CornerNamesConfig() => this.AllowRescale = true;
+        public CornerNamesConfig() => this.GenericConfiguration.AllowRescale = true;
     }
 
     private Font _font;

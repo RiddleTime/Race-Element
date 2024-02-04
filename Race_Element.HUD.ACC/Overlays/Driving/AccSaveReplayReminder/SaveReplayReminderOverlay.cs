@@ -3,12 +3,8 @@ using RaceElement.Data.ACC.Database.SessionData;
 using RaceElement.Data.ACC.Session;
 using RaceElement.HUD.Overlay.Internal;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.AccSaveReplayReminder;
 
@@ -19,7 +15,6 @@ OverlayCategory = OverlayCategory.All,
 Version = 1.00)]
 internal sealed class SaveReplayReminderOverlay : AbstractOverlay
 {
-
     private ReplaySettings _replaySettings;
 
     public SaveReplayReminderOverlay(Rectangle rectangle) : base(rectangle, "Save Replay Reminder")
@@ -30,18 +25,20 @@ internal sealed class SaveReplayReminderOverlay : AbstractOverlay
     public sealed override void BeforeStart()
     {
         _replaySettings = new();
-        var settings = _replaySettings.Get();
-
-        int maxReplayDuration = settings.AutoSaveMinTimeSeconds;
-
 
         RaceSessionTracker.Instance.OnNewSessionStarted += Instance_OnNewSessionStarted;
-
     }
 
     private void Instance_OnNewSessionStarted(object sender, DbRaceSession e)
     {
         Debug.WriteLine(e.UtcStart.ToString());
+        var settings = _replaySettings.Get();
+        int maxReplayDuration = settings.AutoSaveMinTimeSeconds;
+        if (maxReplayDuration > 0)
+        {
+            DateTime targetTime = DateTime.UtcNow.AddSeconds(settings.AutoSaveMinTimeSeconds);
+            Debug.WriteLine($"");
+        }
     }
 
     public sealed override void BeforeStop()

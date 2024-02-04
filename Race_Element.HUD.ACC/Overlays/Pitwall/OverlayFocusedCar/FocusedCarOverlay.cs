@@ -18,7 +18,7 @@ internal class FocusedCarOverlay : AbstractOverlay
     {
         public FocusedCarConfig()
         {
-            this.AllowRescale = true;
+            this.GenericConfiguration.AllowRescale = true;
         }
     }
 

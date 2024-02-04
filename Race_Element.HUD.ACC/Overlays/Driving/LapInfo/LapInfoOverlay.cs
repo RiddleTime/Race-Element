@@ -33,7 +33,7 @@ internal sealed class LapInfoOverlay : AbstractOverlay
 
         public LapInfoConfig() : base()
         {
-            this.AllowRescale = true;
+            this.GenericConfiguration.AllowRescale = true;
         }
     }
 

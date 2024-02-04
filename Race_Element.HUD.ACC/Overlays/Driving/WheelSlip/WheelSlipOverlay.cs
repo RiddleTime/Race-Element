@@ -44,7 +44,7 @@ internal sealed class WheelSlipOverlay : AbstractOverlay
             public int WheelSize { get; set; } = 92;
         }
 
-        public WheelSlipConfiguration() => AllowRescale = true;
+        public WheelSlipConfiguration() => GenericConfiguration.AllowRescale = true;
     }
 
     private CachedBitmap _cachedCircleBackground;

@@ -17,7 +17,7 @@ internal sealed class PressureTraceOverlay : AbstractOverlay
     {
         public PressureTraceOverlayConfig()
         {
-            AllowRescale = false;
+            GenericConfiguration.AllowRescale = false;
         }
     }
 

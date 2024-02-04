@@ -32,7 +32,7 @@ internal sealed class AccelerometerOverlay : AbstractOverlay
 
         public AccelleroConfig()
         {
-            this.AllowRescale = true;
+            this.GenericConfiguration.AllowRescale = true;
         }
     }
 

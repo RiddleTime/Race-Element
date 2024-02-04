@@ -35,7 +35,7 @@ internal sealed class WindDirectionOverlay : AbstractOverlay
             public int Size { get; init; } = 120;
         }
 
-        public WindDirectionConfiguration() => AllowRescale = true;
+        public WindDirectionConfiguration() => GenericConfiguration.AllowRescale = true;
     }
 
     private CachedBitmap _background;

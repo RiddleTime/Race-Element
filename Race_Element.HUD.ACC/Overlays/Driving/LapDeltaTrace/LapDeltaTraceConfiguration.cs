@@ -49,6 +49,6 @@ internal sealed class LapDeltaTraceConfiguration : OverlayConfiguration
 
     public LapDeltaTraceConfiguration()
     {
-        this.AllowRescale = true;
+        this.GenericConfiguration.AllowRescale = true;
     }
 }

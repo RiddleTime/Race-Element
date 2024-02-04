@@ -46,7 +46,7 @@ internal sealed class TyreInfoOverlay : AbstractOverlay
 
         public TyreInfoConfig()
         {
-            this.AllowRescale = true;
+            this.GenericConfiguration.AllowRescale = true;
         }
     }
 

@@ -45,7 +45,7 @@ internal sealed class SteeringOverlay : AbstractOverlay
             public int RingOpacity { get; init; } = 117;
         }
 
-        public SteeringConfig() => this.AllowRescale = true;
+        public SteeringConfig() => this.GenericConfiguration.AllowRescale = true;
     }
 
     private const int InitialSize = 140;

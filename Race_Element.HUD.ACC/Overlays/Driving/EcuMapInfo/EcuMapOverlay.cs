@@ -23,7 +23,7 @@ internal sealed class EcuMapOverlay : AbstractOverlay
             public bool MapNumber { get; init; } = true;
         }
 
-        public EcuMapConfiguration() => this.AllowRescale = true;
+        public EcuMapConfiguration() => this.GenericConfiguration.AllowRescale = true;
     }
 
     public EcuMapOverlay(Rectangle rectangle) : base(rectangle, "ECU Maps")

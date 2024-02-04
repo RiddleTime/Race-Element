@@ -47,7 +47,7 @@ internal sealed class EntryListOverlay : AbstractOverlay
 
         public EntryListDebugConfig()
         {
-            AllowRescale = true;
+            GenericConfiguration.AllowRescale = true;
         }
     }
 

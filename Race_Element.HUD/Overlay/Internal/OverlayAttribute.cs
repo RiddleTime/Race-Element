@@ -11,8 +11,13 @@ public class OverlayAttribute : Attribute
 
     public double Version { get; set; }
     public string Description { get; set; } = string.Empty;
+
+    public string[] Authors { get; set; } = [];
 }
 
+/// <summary>
+/// Determines the Global Type, Drive overlays are focussed on info when playing, pitwall is for debug and other things.
+/// </summary>
 public enum OverlayType
 {
     Drive,
