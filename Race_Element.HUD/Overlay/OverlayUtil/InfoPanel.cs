@@ -85,7 +85,7 @@ public class InfoPanel
                 previousLineCount = Lines.Count;
             }
 
-            _cachedBackground.Draw(g, new Point(X, Y));
+            _cachedBackground?.Draw(g, new Point(X, Y));
         }
 
         TextRenderingHint previousHint = g.TextRenderingHint;

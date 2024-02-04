@@ -1,7 +1,9 @@
-﻿using RaceElement.Data.ACC.Core.Config;
+﻿using Newtonsoft.Json;
+using RaceElement.Data.ACC.Core.Config;
 using RaceElement.Data.ACC.Database.SessionData;
 using RaceElement.Data.ACC.Session;
 using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -18,9 +20,13 @@ internal sealed class SaveReplayReminderOverlay : AbstractOverlay
 {
     private ReplaySettings _replaySettings;
 
+    private DateTime _nextManualSaveUTC = DateTime.MinValue;
+
+    private InfoPanel _panel;
+
     public SaveReplayReminderOverlay(Rectangle rectangle) : base(rectangle, "Save Replay Reminder")
     {
-        Width = 200;
+        Width = 300;
         Height = Width / 4;
     }
 
@@ -29,17 +35,19 @@ internal sealed class SaveReplayReminderOverlay : AbstractOverlay
         _replaySettings = new();
 
         RaceSessionTracker.Instance.OnNewSessionStarted += Instance_OnNewSessionStarted;
+
+        _panel = new InfoPanel(10, 300);
     }
 
     private void Instance_OnNewSessionStarted(object sender, DbRaceSession e)
     {
         Debug.WriteLine(e.UtcStart.ToString());
         var settings = _replaySettings.Get();
-        int maxReplayDuration = settings.AutoSaveMinTimeSeconds;
-        if (maxReplayDuration > 0)
+        Debug.WriteLine(JsonConvert.SerializeObject(settings, Formatting.Indented));
+        if (settings.MaxTimeReplaySeconds > 0)
         {
-            DateTime targetTime = DateTime.UtcNow.AddSeconds(settings.AutoSaveMinTimeSeconds);
-            Debug.WriteLine($"");
+            _nextManualSaveUTC = DateTime.UtcNow.AddSeconds(settings.MaxTimeReplaySeconds);
+            Debug.WriteLine($"Replay time limit at {_nextManualSaveUTC.ToLocalTime():HH\\:mm\\:ss}");
         }
     }
 
@@ -50,5 +58,10 @@ internal sealed class SaveReplayReminderOverlay : AbstractOverlay
 
     public override sealed void Render(Graphics g)
     {
+        if (_nextManualSaveUTC != DateTime.MinValue)
+            _panel.AddLine("Save replay before", $"{_nextManualSaveUTC.Subtract(DateTime.UtcNow):hh\\:mm\\:ss}");
+
+        _panel.Draw(g);
+
     }
 }
