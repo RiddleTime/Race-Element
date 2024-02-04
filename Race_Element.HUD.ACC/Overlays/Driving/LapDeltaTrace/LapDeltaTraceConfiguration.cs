@@ -6,7 +6,7 @@ internal sealed class LapDeltaTraceConfiguration : OverlayConfiguration
 {
     [ConfigGrouping("Chart", "Customize the charts refresh rate, data points or change the max amount of delta time.")]
     public ChartGrouping Chart { get; init; } = new ChartGrouping();
-    public class ChartGrouping
+    public sealed class ChartGrouping
     {
         [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
         [IntRange(50, 800, 10)]
@@ -40,7 +40,7 @@ internal sealed class LapDeltaTraceConfiguration : OverlayConfiguration
 
     [ConfigGrouping("Preview", "Customize the data for the preview image.")]
     public PreviewGrouping Preview { get; init; } = new PreviewGrouping();
-    public class PreviewGrouping
+    public sealed class PreviewGrouping
     {
         [ToolTip("Data seed for the generated data in the preview image above.")]
         [IntRange(1, 500, 1)]
