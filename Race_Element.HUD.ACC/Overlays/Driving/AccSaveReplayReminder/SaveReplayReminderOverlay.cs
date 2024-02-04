@@ -20,7 +20,8 @@ internal sealed class SaveReplayReminderOverlay : AbstractOverlay
 
     public SaveReplayReminderOverlay(Rectangle rectangle) : base(rectangle, "Save Replay Reminder")
     {
-
+        Width = 200;
+        Height = Width / 4;
     }
 
     public sealed override void BeforeStart()
