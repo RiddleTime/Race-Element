@@ -22,6 +22,14 @@ internal sealed class SaveReplayReminderOverlay : AbstractOverlay
 
     private DateTime _nextManualSaveUTC = DateTime.MinValue;
 
+    private NextSave _nextSaveType = NextSave.Automatic;
+
+    private enum NextSave
+    {
+        Automatic,
+        Manual
+    }
+
     private InfoPanel _panel;
 
     public SaveReplayReminderOverlay(Rectangle rectangle) : base(rectangle, "Save Replay Reminder")
@@ -44,6 +52,10 @@ internal sealed class SaveReplayReminderOverlay : AbstractOverlay
         Debug.WriteLine(e.UtcStart.ToString());
         var settings = _replaySettings.Get();
         Debug.WriteLine(JsonConvert.SerializeObject(settings, Formatting.Indented));
+
+        if (settings.AutoSaveEnabled == 0)
+            _nextSaveType = NextSave.Manual;
+
         if (settings.MaxTimeReplaySeconds > 0)
         {
             _nextManualSaveUTC = DateTime.UtcNow.AddSeconds(settings.MaxTimeReplaySeconds);
