@@ -2,7 +2,7 @@
 using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
-internal class TwitchChatConfiguration : OverlayConfiguration
+internal sealed class TwitchChatConfiguration : OverlayConfiguration
 {
     public enum Direction { TopToBottom, BottomToTop }
 
