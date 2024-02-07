@@ -8,7 +8,11 @@
 
     public sealed record TrackData
     {
+        /// <summary>
+        /// The track name based on the way the game provides it
+        /// </summary>
         public string GameName { get; set; } = string.Empty;
+
         /// <summary>
         /// The track temperature in celsius
         /// </summary>
