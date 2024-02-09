@@ -1,26 +1,49 @@
-﻿using iRacingSDK;
-using RaceElement.Data.Common.SimulatorData;
+﻿using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Games.iRacing.DataMapper;
+using RaceElement.Data.Games.iRacing.SDK;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// https://github.com/vipoo/iRacingSDK.Net
+// https://github.com/mherbold/IRSDKSharper
+// https://sajax.github.io/irsdkdocs/telemetry/
 namespace RaceElement.Data.Games.iRacing
 {
     internal static class IRacingDataProvider
     {
-        internal static void Update(ref LocalCarData localCar, ref Common.SimulatorData.SessionData sessionData, ref GameData gameData)
+        private static IRSDKSharper _iRacingSDK;
+        internal static IRSDKSharper IRacingSDK
+        {
+            get
+            {
+                if (_iRacingSDK == null)
+                {
+                    _iRacingSDK = new IRSDKSharper
+                    {
+                        UpdateInterval = 1000 / 50
+                    };
+                    _iRacingSDK.Start();
+                }
+                return _iRacingSDK;
+            }
+        }
+
+        internal static void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
         {
             try
             {
-                var iRacing = new iRacingConnection();
-                var data = iRacing.GetDataFeed().First();
+                gameData.Name = Game.iRacing.ToShortName();
 
-                IRacingLocalCarMapper.WithTelemetry(data.Telemetry, localCar);
-                IRacingLocalCarMapper.WithSessionData(data.SessionData, localCar);
+                var iRacing = IRacingSDK;
+                if (iRacing.Data.SessionInfo.DriverInfo == null) return;
+                int carIndex = iRacing.Data.SessionInfo.DriverInfo.DriverCarIdx;
+
+                localCar.RacePosition.CarNumber = iRacing.Data.SessionInfo.DriverInfo.Drivers[carIndex].CarNumberRaw;
+                localCar.Physics.Velocity = iRacing.Data.GetFloat("Speed") * 3.6f;
+                localCar.RacePosition.GlobalPosition = iRacing.Data.GetInt("PlayerCarPosition");
+
             }
             catch (Exception)
             {

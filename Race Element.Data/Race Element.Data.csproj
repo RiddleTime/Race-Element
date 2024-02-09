@@ -19,8 +19,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="iRacingSDK-hfoxy" Version="1.0.1.32" />
         <PackageReference Include="Riok.Mapperly" Version="3.3.0" />
+        <PackageReference Include="YamlDotNet" Version="15.1.1" />
     </ItemGroup>
 
     <ItemGroup>
