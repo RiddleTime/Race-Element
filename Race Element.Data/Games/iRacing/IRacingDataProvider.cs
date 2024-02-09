@@ -40,9 +40,23 @@ namespace RaceElement.Data.Games.iRacing
                 if (iRacing.Data.SessionInfo.DriverInfo == null) return;
                 int carIndex = iRacing.Data.SessionInfo.DriverInfo.DriverCarIdx;
 
-                localCar.RacePosition.CarNumber = iRacing.Data.SessionInfo.DriverInfo.Drivers[carIndex].CarNumberRaw;
+                var driverModel = iRacing.Data.SessionInfo.DriverInfo.Drivers.First(x => x.CarIdx == carIndex);
+                if (driverModel != null)
+                {
+                    localCar.RacePosition.CarNumber = driverModel.CarNumberRaw;
+                    localCar.Engine.MaxRpm = (int)iRacing.Data.SessionInfo.DriverInfo.DriverCarSLBlinkRPM;
+                    localCar.Engine.Rpm = (int)iRacing.Data.GetFloat("RPM");
+                }
+
                 localCar.Physics.Velocity = iRacing.Data.GetFloat("Speed") * 3.6f;
                 localCar.RacePosition.GlobalPosition = iRacing.Data.GetInt("PlayerCarPosition");
+
+
+
+                sessionData.Weather.AirTemperature = iRacing.Data.GetFloat("AirTemp");
+                sessionData.Weather.AirVelocity = iRacing.Data.GetFloat("WindVel") * 3.6f;
+                sessionData.Track.Temperature = iRacing.Data.GetFloat("TrackTempCrew");
+                sessionData.Track.GameName = iRacing.Data.SessionInfo.WeekendInfo.TrackName;
 
             }
             catch (Exception)
