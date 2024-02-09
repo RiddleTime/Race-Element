@@ -11,6 +11,8 @@ namespace RaceElement.Data.Common.SimulatorData
         public TyresData Tyres { get; set; } = new();
         public BrakesData Brakes { get; set; } = new();
         public ElectronicsData Electronics { get; set; } = new();
+
+        public RacePositionData RacePosition { get; set; } = new();
     }
 
     public sealed record CarModelData
@@ -97,5 +99,12 @@ namespace RaceElement.Data.Common.SimulatorData
         public int AbsLevel { get; set; }
         public float AbsActivation { get; set; }
         public float BrakeBias { get; set; }
+    }
+
+    public sealed record RacePositionData
+    {
+        public int CarNumber { get; set; }
+        public int GlobalPosition { get; set; }
+        public int ClassPosition { get; set; }
     }
 }

@@ -34,6 +34,7 @@ internal static partial class LocalCarMapper
     }
 
     // Electronics Data
+    [MapProperty(nameof(PageFileGraphics.Position), nameof(@LocalCarData.RacePosition.GlobalPosition))]
     private static partial void WithGraphicsPage(PageFileGraphics pageGraphics, LocalCarData commonData);
 
     internal static void AddGraphics(PageFileGraphics pageGraphics, LocalCarData commonData)

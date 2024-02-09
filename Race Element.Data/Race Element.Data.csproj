@@ -19,6 +19,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="iRacingSDK-hfoxy" Version="1.0.1.32" />
         <PackageReference Include="Riok.Mapperly" Version="3.3.0" />
     </ItemGroup>
 
@@ -27,7 +28,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Games\iRacing\" />
       <Folder Include="Games\Automobilista 2\" />
     </ItemGroup>
 
