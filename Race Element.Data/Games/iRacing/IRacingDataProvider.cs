@@ -7,18 +7,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// https://github.com/vipoo/iRacingSDK.Net
 namespace RaceElement.Data.Games.iRacing
 {
-    internal class IRacingDataProvider
+    internal static class IRacingDataProvider
     {
         internal static void Update(ref LocalCarData localCar, ref Common.SimulatorData.SessionData sessionData, ref GameData gameData)
         {
-            var iRacing = new iRacingConnection();
+            try
+            {
+                var iRacing = new iRacingConnection();
+                var data = iRacing.GetDataFeed().First();
 
-            var data = iRacing.GetDataFeed().First();
-
-            IRacingLocalCarMapper.WithTelemetry(data.Telemetry, localCar);
-            IRacingLocalCarMapper.WithSessionData(data.SessionData, localCar);
+                IRacingLocalCarMapper.WithTelemetry(data.Telemetry, localCar);
+                IRacingLocalCarMapper.WithSessionData(data.SessionData, localCar);
+            }
+            catch (Exception)
+            {
+                // atm not leaning on iRacing sdk exceptions
+            }
         }
     }
 }
