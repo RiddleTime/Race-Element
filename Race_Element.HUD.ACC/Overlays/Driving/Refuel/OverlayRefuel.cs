@@ -1,10 +1,14 @@
 ﻿using RaceElement.Data.ACC.Database.LapDataDB;
+using RaceElement.Data.ACC.Database.SessionData;
+using RaceElement.Data.ACC.Session;
 using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.Util.SystemExtensions;
+using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
@@ -39,57 +43,71 @@ internal sealed class RefuelInfoOverlay : AbstractOverlay
     }
 
     private SolidBrush _whiteBrush = new(Color.White);
-    private SolidBrush _greenBrush = new(Color.Green);
+    private SolidBrush _blackBrush = new(Color.Black);
 
+    // some widget position and size values
     private const int windowWidth = 400;
     private const int windowHeight = 100;
     private const int padding = 10;
-    private const int barYPos = 30;
+    private const int barYPos = 50;
+    private const int widgetMinXPos = 0 + padding;
+    private const int widgetMaxXPos = windowWidth - padding;
+    private const int widgetMaxWidth = widgetMaxXPos - widgetMinXPos;
     private const int progressBarHeight = 20;
     private const int pitBarHeight = 5;
-    private const int amountOfLapsForAverageCalculation = 3;
 
-    private AcSessionType _lastSessionType = AcSessionType.AC_UNKNOWN;
-    private float _sessionLength = 0;
-    private float _pitWindowStartPercentage = 0;
-    private float _pitWindowEndPercentage = 0;
-    private float _raceProgressWithFuelPercentage = 0;
-    private float _refuelTimeWithMaxFuelPercentage = 0;
-    private float _lapsWithFuel = 0;
-    private float _refuelToTheEnd = 0;
+    private double _sessionLength = 0;
 
-    private float _avgFuelConsumption = 0;
-    private float _lastFuelConsumption = 0;
 
     public RefuelInfoOverlay(Rectangle rect) : base(rect, "Refuel Info")
     {
         this.Width = windowWidth;
         this.Height = windowHeight;
-        this.RefreshRateHz = 5;
+        this.RefreshRateHz = 2;
     }
 
     public sealed override void BeforeStart()
     {
         LapTracker.Instance.LapFinished += FuelHelperLapFinished;
+        RaceSessionTracker.Instance.OnNewSessionStarted += FuelHelperNewSession;
     }
 
     public sealed override void BeforeStop()
     {
         LapTracker.Instance.LapFinished -= FuelHelperLapFinished;
+        RaceSessionTracker.Instance.OnNewSessionStarted -= FuelHelperNewSession;
+    }
+
+    private void FuelHelperNewSession(object sender, DbRaceSession e)
+    {
+        Debug.WriteLine($"FuelHelperNewSession: {e.SessionType}");
+
+        if (e.SessionType == AcSessionType.AC_RACE ||
+            e.SessionType == AcSessionType.AC_QUALIFY ||
+            e.SessionType == AcSessionType.AC_PRACTICE)
+        {
+            this._sessionLength = pageGraphics.SessionTimeLeft;
+            Debug.WriteLine($"FuelHelperNewSession: {e.SessionType} set session values session length: {this._sessionLength}");
+        } 
+        else
+        {
+            Debug.WriteLine($"FuelHelperNewSession: {e.SessionType} reset session values");
+            this._sessionLength = -1;
+        }
+ 
+    }
+
+    private void FuelHelperLapFinished(object sender, DbLapData lap)
+    {
+        Debug.WriteLine($"FuelHelperLapFinished: {lap.Index}");
     }
 
     public sealed override void Render(Graphics g)
     {
 
-        int widgetMinXPos = 0 + padding;
-        int widgetMaxXPos = windowWidth - padding;
-        int widgetMaxWidth = widgetMaxXPos - widgetMinXPos;
-
-        UpdateSessionData();
-
-        StringFormat drawFormat = new();
-        SmoothingMode previous = g.SmoothingMode;
-        g.SmoothingMode = SmoothingMode.AntiAlias;
+        if (this._sessionLength == 0 ) {
+            this._sessionLength = pageGraphics.SessionTimeLeft;
+        } 
 
         TextRenderingHint previousHint = g.TextRenderingHint;
         g.TextContrast = 2;
@@ -98,133 +116,97 @@ internal sealed class RefuelInfoOverlay : AbstractOverlay
         // transparent background
         g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(100, 0, 0, 0)), new Rectangle(0, 0, windowWidth, windowHeight), 10);
 
-        // complete progress bar
+        // progress bar background
         DrawProgressBarBackground(g, widgetMinXPos, widgetMaxWidth, this._config.RefuelInfoGrouping.SolidProgressBar);
 
-        // checkered flag
-        for (int i = 0; i < 4; i++)
-        {
-            if (i % 2 == 0)
-            {
-                g.FillRectangle(new SolidBrush(Color.FromArgb(200, 255, 255, 255)), new Rectangle(widgetMaxXPos - 5, barYPos + (i * 5), 5, 5));
-                g.FillRectangle(new SolidBrush(Color.FromArgb(200, 0, 0, 0)), new Rectangle(widgetMaxXPos - 10, barYPos + (i * 5), 5, 5));
-            }
-            else
-            {
-                g.FillRectangle(new SolidBrush(Color.FromArgb(200, 0, 0, 0)), new Rectangle(widgetMaxXPos - 5, barYPos + (i * 5), 5, 5));
-                g.FillRectangle(new SolidBrush(Color.FromArgb(200, 255, 255, 255)), new Rectangle(widgetMaxXPos - 10, barYPos + (i * 5), 5, 5));
-            }
-
-        }
-
-        if (this._sessionLength == 0) return;
-
         // pit window
-        int pitWindowStartPxl = PercentageToPxl(widgetMaxWidth, this._pitWindowStartPercentage);
-        if (pitWindowStartPxl < widgetMinXPos) pitWindowStartPxl = widgetMinXPos;
-        int pitWindowEndPxl = PercentageToPxl(widgetMaxWidth, this._pitWindowEndPercentage);
-        if (pitWindowEndPxl > widgetMaxXPos) pitWindowEndPxl = widgetMaxXPos;
-        g.FillRectangle(new SolidBrush(Color.FromArgb(200, 0, 255, 0)), new Rectangle(pitWindowStartPxl, barYPos + progressBarHeight - pitBarHeight, (int)(pitWindowEndPxl - pitWindowStartPxl), pitBarHeight));
+        DrawPitWindowBar(g, barYPos + progressBarHeight - pitBarHeight);
 
-        // race progress
-        float raceProgressPercentage = GetRaceProgressPercentage();
+        // stint indicator
+        DrawStintIndicatorBar(g, barYPos + progressBarHeight - pitBarHeight);
+
+        // race progress bar
+        double raceProgressPercentage = GetRaceProgressPercentage();
         int raceProgressPercentagePxl = PercentageToPxl(widgetMaxWidth, raceProgressPercentage);
         g.FillRectangle(new SolidBrush(Color.FromArgb(200, 255, 255, 255)), new Rectangle(widgetMinXPos, barYPos, (int)raceProgressPercentagePxl, progressBarHeight));
 
-        // earliest pit stop bar
-        int maxFuelPx = PercentageToPxl(widgetMaxWidth, this._refuelTimeWithMaxFuelPercentage);
-        maxFuelPx += widgetMinXPos;
-        maxFuelPx = (maxFuelPx > widgetMaxWidth) ? widgetMaxWidth : maxFuelPx;
-        g.FillRectangle(new SolidBrush(Color.FromArgb(200, 0, 255, 0)), new Rectangle(maxFuelPx, barYPos - 10, 2, progressBarHeight + 16));
+        double bestLapTime = pageGraphics.BestTimeMs; bestLapTime.ClipMax(180000);
+        double lapsUntilTheEnd = pageGraphics.SessionTimeLeft / bestLapTime;
+        double fuelTimeLeft = pageGraphics.FuelEstimatedLaps * bestLapTime;
+        double fuelToRaceEnd = lapsUntilTheEnd * pageGraphics.FuelXLap;
 
-        // latest pit stop bar
-        int raceProgressWithFuelPx = PercentageToPxl(widgetMaxWidth, this._raceProgressWithFuelPercentage);
-        raceProgressWithFuelPx += widgetMinXPos;
-        raceProgressWithFuelPx = (raceProgressWithFuelPx > widgetMaxWidth) ? widgetMaxWidth : raceProgressWithFuelPx;
-        g.FillRectangle(new SolidBrush(Color.FromArgb(200, 255, 0, 0)), new Rectangle(raceProgressWithFuelPx, barYPos - 10, 2, progressBarHeight + 16));
+        // fuel level indicator on race progress bar
+        double raceProgressWithFuelPercentage = 0;
+        if (_sessionLength != 0)
+            raceProgressWithFuelPercentage = bestLapTime * pageGraphics.FuelEstimatedLaps * 100 / _sessionLength;
+        
+        raceProgressWithFuelPercentage.Clip(0, 100);
+        int raceProgressWithFuelPxl = PercentageToPxl(widgetMaxWidth, raceProgressWithFuelPercentage);
+        g.FillRectangle(new SolidBrush(Color.FromArgb(200, 255, 255, 255)), new Rectangle(raceProgressWithFuelPxl + padding, barYPos - 10, 2, progressBarHeight + 16));
 
-        // latest pit stop lap info
-        string pitStopInfo = $"in {(int)this._lapsWithFuel} laps";
-        if ((int)this._lapsWithFuel < 2)
-        {
-            pitStopInfo = "box THIS lap!";
-        }
+        // earliest pit stop indicator for full tank
+        double lapsWithMaxFuel = (pageStatic.MaxFuel / pageGraphics.FuelXLap) - _config.RefuelInfoGrouping.ExtraLaps;
+        double drivingTimeWithMaxFuel = lapsWithMaxFuel * bestLapTime;
+        double pitStopTime = _sessionLength - drivingTimeWithMaxFuel;
+        double pitStopTimePercentage = RaceTimeToRacePercentage(_sessionLength - pitStopTime);
+        int pitStopTimePxl = PercentageToPxl(widgetMaxWidth, pitStopTimePercentage);
+        g.FillRectangle(new SolidBrush(Color.FromArgb(200, 0, 255, 0)), new Rectangle(pitStopTimePxl + padding, barYPos - 10, 2, progressBarHeight + 16));
 
-        // if text does not fit into the overlay, move text to the left
-        Font drawFont = FontUtil.FontOrbitron(10);
-        SizeF pitStopTextSize = g.MeasureString(pitStopInfo, drawFont);
-        float textPosition = raceProgressWithFuelPx + 6;
-        if ((textPosition + pitStopTextSize.Width) > widgetMaxXPos)
-        {
-            textPosition -= pitStopTextSize.Width - 5;
-        }
-        g.DrawString(pitStopInfo, drawFont, new SolidBrush(Color.Red), textPosition, barYPos - 20, drawFormat);
+        // display amount of laps with current fuel level
+        StringFormat drawFormat = new();
+        Font drawFont = FontUtil.FontSegoeMono(14);
+        string lapsLeft = $"Laps Left {pageGraphics.FuelEstimatedLaps:F1} @ {pageGraphics.FuelXLap:F2}L per Lap";
+        g.DrawString(lapsLeft, drawFont, _whiteBrush, padding, padding, drawFormat);
 
-        // fuel consumption indicator
-        float fuelDifference = this._avgFuelConsumption - this._lastFuelConsumption;
-        string fuelConsumptionIndicator = " ";
-        SolidBrush drawBrush;
-        if (fuelDifference > 0.01)
-        {
-            drawBrush = _greenBrush;
-            fuelConsumptionIndicator = "\u23F7";
-        }
-        else if (fuelDifference < -0.01)
-        {
-            drawBrush = new SolidBrush(Color.Red);
-            fuelConsumptionIndicator = "\u23F6";
-        }
-        else
-        {
-            drawBrush = _whiteBrush;
-            fuelConsumptionIndicator = "=";
-        }
-
-        drawFont = FontUtil.FontOrbitron(15);
-        g.DrawString($"[{fuelConsumptionIndicator}] {fuelDifference.ToString("0.00")}l", drawFont, drawBrush, widgetMinXPos + 200, barYPos + pitBarHeight + 30, drawFormat);
-
-        // refuel
-        drawFont = FontUtil.FontOrbitron(15);
-        g.DrawString($"Refuel:", drawFont, _whiteBrush, widgetMinXPos, barYPos + pitBarHeight + 30, drawFormat);
-        if (this._refuelToTheEnd <= 0) drawBrush = _greenBrush;
-        g.DrawString($"{this._refuelToTheEnd.ToString("0.0")}l ", drawFont, drawBrush, widgetMinXPos + 110, barYPos + pitBarHeight + 30, drawFormat);
-
-        drawFont = FontUtil.FontOrbitron(8);
-        g.DrawString($"{_config.RefuelInfoGrouping.ExtraLaps} extra laps", drawFont, _whiteBrush, widgetMinXPos, barYPos + pitBarHeight + 50, drawFormat);
-
-        g.TextRenderingHint = previousHint;
-        g.SmoothingMode = previous;
     }
 
-    private void FuelHelperLapFinished(object sender, DbLapData lap)
+    private void DrawStintIndicatorBar(Graphics g, int yPos)
     {
+        double stintTimeLeft = pageGraphics.DriverStintTimeLeft;
+        stintTimeLeft.ClipMin(-1);
 
-        float fuelLevel = (int)(pagePhysics.Fuel);
-        this._avgFuelConsumption = GetAverageFuelConsumption();
-        this._lastFuelConsumption = GetLastFuelConsumption();
-        int averageLapTime = GetAverageLapTime();
+        // no stint timer set
+        if (stintTimeLeft == -1) return;
 
-        this._lapsWithFuel = fuelLevel / _lastFuelConsumption;
+        double sessionTimeWithStintTime = pageGraphics.SessionTimeLeft - stintTimeLeft;
+        double sessionTimeWithStintTimePercentage = RaceTimeToRacePercentage(_sessionLength - sessionTimeWithStintTime);
+        //double sessionTimeWithStintTimePercentage = RaceTimeToRacePercentage(sessionTimeWithStintTime);
+        int sessionTimeWithStintTimePxl = PercentageToPxl(widgetMaxWidth, sessionTimeWithStintTimePercentage);
 
-        float sessionTimeLeft = pageGraphics.SessionTimeLeft;
-        float lapsUntilTheEnd = sessionTimeLeft / averageLapTime;
-        float fuelUntilTheEnd = _lastFuelConsumption * (lapsUntilTheEnd + _config.RefuelInfoGrouping.ExtraLaps);
-        this._refuelToTheEnd = fuelUntilTheEnd - fuelLevel;
-        this._raceProgressWithFuelPercentage = ((averageLapTime * this._lapsWithFuel) * 100) / _sessionLength;
-        this._raceProgressWithFuelPercentage += GetRaceProgressPercentage();
+        double raceProgressPercentage = GetRaceProgressPercentage();
+        int raceProgressPercentagePxl = PercentageToPxl(widgetMaxWidth, raceProgressPercentage);
 
+        g.FillRectangle(new SolidBrush(Color.FromArgb(200, 255, 165, 0)), new Rectangle(raceProgressPercentagePxl + padding, yPos- pitBarHeight, (int)(sessionTimeWithStintTimePxl), pitBarHeight));
 
-        // the time where we will make it to the end with a full tank.
-        float lapsWithMaxFuel = (int)(pageStatic.MaxFuel) / _lastFuelConsumption;
-        lapsWithMaxFuel -= _config.RefuelInfoGrouping.ExtraLaps;
-        //float lapsInSession = sessionLength / averageLapTime;
-        int timeWithMaxFuel = (int)(lapsWithMaxFuel * averageLapTime);
-        float refuelTimeWithMaxFuel = _sessionLength - timeWithMaxFuel;
-        if (refuelTimeWithMaxFuel < 0)
+    }
+
+    private void DrawPitWindowBar(Graphics g, int yPos)
+    {
+        int pitWindowLength = pageStatic.PitWindowEnd - pageStatic.PitWindowStart;
+        pitWindowLength.ClipMin(-1);
+
+        // no pitwindow set
+        if (pitWindowLength == -1) return;
+
+        double pitWindowStartTime = (this._sessionLength - pitWindowLength) / 2;
+        double pitWindowEndTime = pitWindowStartTime + pitWindowLength;
+
+        double pitWindowStartPercentage = 0;
+        double pitWindowEndPercentage = 0;
+
+        if (this._sessionLength != 0)
         {
-            refuelTimeWithMaxFuel = 0;
+            pitWindowStartPercentage = (pitWindowStartTime * 100) / this._sessionLength;
+            pitWindowEndPercentage = (pitWindowEndTime * 100) / this._sessionLength;
         }
-        this._refuelTimeWithMaxFuelPercentage = RaceTimeToRacePercentage(_sessionLength - refuelTimeWithMaxFuel);
+        
+        int pitWindowStartPxl = PercentageToPxl(widgetMaxWidth, pitWindowStartPercentage);
+        pitWindowStartPxl.ClipMin(widgetMinXPos);
+
+        int pitWindowEndPxl = PercentageToPxl(widgetMaxWidth, pitWindowEndPercentage);
+        pitWindowEndPxl.ClipMax(widgetMaxXPos);
+
+        g.FillRectangle(new SolidBrush(Color.FromArgb(200, 0, 255, 0)), new Rectangle(pitWindowStartPxl, yPos, (int)(pitWindowEndPxl - pitWindowStartPxl), pitBarHeight));
 
     }
 
@@ -243,77 +225,44 @@ internal sealed class RefuelInfoOverlay : AbstractOverlay
                 g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(100, 255, 255, 255)), new Rectangle(xPos + (i * barWidthPx), barYPos, (barWidthPx / 2) + 2, progressBarHeight), 1);
             }
         }
+
+        // draw checkered flag at the end of the prograss bar
+        DrawCheckeredFlag(g);
     }
 
-    private float RaceTimeToRacePercentage(float raceTime)
+    private void DrawCheckeredFlag(Graphics g)
     {
-        float percentage = 100 - (raceTime * 100) / this._sessionLength;
-        return percentage.ClipMax((float)100);
+        for (int i = 0; i < 4; i++)
+        {
+            if (i % 2 == 0)
+            {
+                g.FillRectangle(_whiteBrush, new Rectangle(widgetMaxXPos - 5, barYPos + (i * 5), 5, 5));
+                g.FillRectangle(_blackBrush, new Rectangle(widgetMaxXPos - 10, barYPos + (i * 5), 5, 5));
+            }
+            else
+            {
+                g.FillRectangle(_blackBrush, new Rectangle(widgetMaxXPos - 5, barYPos + (i * 5), 5, 5));
+                g.FillRectangle(_whiteBrush, new Rectangle(widgetMaxXPos - 10, barYPos + (i * 5), 5, 5));
+            }
+
+        }
     }
 
-    private float GetRaceProgressPercentage()
+    private double RaceTimeToRacePercentage(double raceTime)
+    {
+        if (this._sessionLength == 0) return 0;
+        double percentage = 100 - (raceTime * 100) / this._sessionLength;
+        return percentage.Clip(0, 100f);
+    }
+
+    private double GetRaceProgressPercentage()
     {
         return RaceTimeToRacePercentage(pageGraphics.SessionTimeLeft);
     }
 
-    private float GetLastFuelConsumption()
-    {
-        return pageGraphics.FuelXLap;
-    }
-
-    private int GetAverageLapTime()
-    {
-        return LapDataExtensions.GetAverageLapTime(LapTracker.Instance.Laps, amountOfLapsForAverageCalculation);
-    }
-
-    private float GetAverageFuelConsumption()
-    {
-        if (LapTracker.Instance.Laps.Count < 2)
-        {
-            return GetLastFuelConsumption();
-        }
-        return (float)(LapDataExtensions.GetAverageFuelUsage(LapTracker.Instance.Laps, amountOfLapsForAverageCalculation)) / 1000;
-    }
-
-    private int PercentageToPxl(float width, float percentage)
+    private int PercentageToPxl(float width, double percentage)
     {
         return (int)((width * percentage) / 100);
-    }
-
-    private void UpdateSessionData()
-    {
-        if (_lastSessionType != pageGraphics.SessionType)
-        {
-            // new session, reset
-            this._sessionLength = 0;
-            this._lastSessionType = pageGraphics.SessionType;
-            //return;
-        }
-
-        // new session started
-        if (this._sessionLength < pageGraphics.SessionTimeLeft)
-        {
-            // we will not get the session length after race start, save the session length.            {
-            this._sessionLength = pageGraphics.SessionTimeLeft;
-
-            // calculate pit window length
-            if (pageStatic.PitWindowStart <= 0 || pageStatic.PitWindowStart >= pageStatic.PitWindowEnd || pageGraphics.SessionType != AcSessionType.AC_RACE)
-            {
-                this._pitWindowStartPercentage = 0;
-                this._pitWindowEndPercentage = 0;
-            }
-            else
-            {
-                int pitWindowLength = pageStatic.PitWindowEnd - pageStatic.PitWindowStart;
-                float pitWindowStartTime = (this._sessionLength - pitWindowLength) / 2;
-                float pitWindowEndTime = pitWindowStartTime + pitWindowLength;
-                this._pitWindowStartPercentage = (pitWindowStartTime * 100) / this._sessionLength;
-                this._pitWindowEndPercentage = (pitWindowEndTime * 100) / this._sessionLength;
-
-            }
-
-        }
-
     }
 
 }
