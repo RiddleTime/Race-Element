@@ -45,6 +45,7 @@ internal static partial class LocalCarMapper
     [MapProperty(nameof(PageFileGraphics.TC), nameof(@LocalCarData.Electronics.TractionControlLevel))]
     [MapProperty(nameof(PageFileGraphics.TCCut), nameof(@LocalCarData.Electronics.TractionControlCutLevel))]
     [MapProperty(nameof(PageFileGraphics.ABS), nameof(@LocalCarData.Electronics.AbsLevel))]
+    [MapProperty(nameof(PageFileGraphics.Position), nameof(@LocalCarData.RacePosition.GlobalPosition))]
     private static partial void WithGraphicsPage(PageFileGraphics pageGraphics, LocalCarData commonData);
 
     internal static void AddAccGraphics(PageFileGraphics pageGraphics, LocalCarData commonData)
