@@ -163,15 +163,6 @@ internal sealed class RefuelInfoOverlay : AbstractOverlay
 
         // display stint fuel
         DisplayStintFuelLevel(g, drawFormat, drawFont, stintTimeLeft, bestLapTime, rowHeight*row);
-        DisplayPitWindowLevel(g, drawFormat, drawFont, pitWindowLength, bestLapTime, rowHeight * row);
-    }
-
-    private void DisplayPitWindowLevel(Graphics g, StringFormat drawFormat, Font drawFont, double pitWindowLength, double bestLapTime, int yPos)
-    {
-        if (pitWindowLength == -1) { return; }
-        string fuelToPitLabel = $"Fuel to Pit";
-       // g.DrawString(fuelToPitLabel, drawFont, _whiteBrush, padding, yPos, drawFormat);
-
 
     }
 
