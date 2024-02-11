@@ -40,8 +40,8 @@ namespace RaceElement.HUD.ACC.Overlays.System.OverlayTesting
         {
             var localCar = SimDataProvider.LocalCar;
             _panel.AddLine($"Speed", $"{localCar.Physics.Velocity:F2} km/h");
-            _panel.AddLine($"#", $"{localCar.RacePosition.CarNumber}");
-            _panel.AddLine("P", $"{localCar.RacePosition.GlobalPosition}");
+            _panel.AddLine($"#", $"{localCar.Race.CarNumber}");
+            _panel.AddLine("P", $"{localCar.Race.GlobalPosition}");
 
             var session = SimDataProvider.Session;
             _panel.AddLine($"Temps", $"Air: {session.Weather.AirTemperature:F1} °C, Track: {session.Track.Temperature} °C{(session.Weather.AirPressure > 0 ? $", Pressure: {session.Weather.AirPressure}" : "")}");

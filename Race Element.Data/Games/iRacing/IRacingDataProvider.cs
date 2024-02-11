@@ -43,13 +43,13 @@ namespace RaceElement.Data.Games.iRacing
                 var driverModel = iRacing.Data.SessionInfo.DriverInfo.Drivers.First(x => x.CarIdx == carIndex);
                 if (driverModel != null)
                 {
-                    localCar.RacePosition.CarNumber = driverModel.CarNumberRaw;
+                    localCar.Race.CarNumber = driverModel.CarNumberRaw;
                     localCar.Engine.MaxRpm = (int)iRacing.Data.SessionInfo.DriverInfo.DriverCarSLBlinkRPM;
                     localCar.Engine.Rpm = (int)iRacing.Data.GetFloat("RPM");
                 }
 
                 localCar.Physics.Velocity = iRacing.Data.GetFloat("Speed") * 3.6f;
-                localCar.RacePosition.GlobalPosition = iRacing.Data.GetInt("PlayerCarPosition");
+                localCar.Race.GlobalPosition = iRacing.Data.GetInt("PlayerCarPosition");
 
 
 
