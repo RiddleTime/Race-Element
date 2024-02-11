@@ -215,15 +215,19 @@ internal sealed class RefuelInfoOverlay : AbstractOverlay
 
         raceProgressWithFuelPercentage.Clip(0, 100);
         int raceProgressWithFuelPxl = PercentageToPxl(_widgetMaxWidth, raceProgressWithFuelPercentage);
-        g.FillRectangle(_transparentWhite, new Rectangle(raceProgressWithFuelPxl + _padding, yPos - 10, 2, _progressBarHeight + 16));
+        g.FillRectangle(_transparentWhite, new Rectangle(raceProgressWithFuelPxl + _padding, yPos - 10, 3, _progressBarHeight + 16));
 
         // earliest pit stop indicator for full tank
         double lapsWithMaxFuel = (pageStatic.MaxFuel / pageGraphics.FuelXLap) - _config.RefuelInfoGrouping.ExtraLaps;
         double drivingTimeWithMaxFuel = lapsWithMaxFuel * bestLapTime;
         double pitStopTime = _sessionLength - drivingTimeWithMaxFuel;
-        double pitStopTimePercentage = RaceTimeToRacePercentage(_sessionLength - pitStopTime);
-        int pitStopTimePxl = PercentageToPxl(_widgetMaxWidth, pitStopTimePercentage);
-        g.FillRectangle(_greenBrush, new Rectangle(pitStopTimePxl + _padding, yPos - 10, 2, _progressBarHeight + 16));
+        if (pitStopTime > 0)
+        {
+            double pitStopTimePercentage = RaceTimeToRacePercentage(_sessionLength - pitStopTime);
+            int pitStopTimePxl = PercentageToPxl(_widgetMaxWidth, pitStopTimePercentage);
+            g.FillRectangle(_greenBrush, new Rectangle(pitStopTimePxl + _padding, yPos - 10, 3, _progressBarHeight + 16));
+        }
+        
 
         // pit window
         DrawPitWindowBar(g, yPos + _progressBarHeight - _pitBarHeight, pitWindowLength);
@@ -239,13 +243,14 @@ internal sealed class RefuelInfoOverlay : AbstractOverlay
         if (stintTimeLeft == -1) return;
 
         double sessionTimeWithStintTime = pageGraphics.SessionTimeLeft - stintTimeLeft;
+        if (sessionTimeWithStintTime < pageGraphics.SessionTimeLeft) sessionTimeWithStintTime = pageGraphics.SessionTimeLeft;
         double sessionTimeWithStintTimePercentage = RaceTimeToRacePercentage(_sessionLength - sessionTimeWithStintTime);
         int sessionTimeWithStintTimePxl = PercentageToPxl(_widgetMaxWidth, sessionTimeWithStintTimePercentage);
 
         double raceProgressPercentage = GetRaceProgressPercentage();
         int raceProgressPercentagePxl = PercentageToPxl(_widgetMaxWidth, raceProgressPercentage);
 
-        g.FillRectangle(_transparentOrange, new Rectangle(raceProgressPercentagePxl + _padding, yPos - _progressBarHeight/4, (int)(sessionTimeWithStintTimePxl), _pitBarHeight));
+        g.FillRectangle(_transparentOrange, new Rectangle(raceProgressPercentagePxl + _padding, yPos+ _pitBarHeight / 2, (int)(sessionTimeWithStintTimePxl), _pitBarHeight/2));
 
     }
 
@@ -272,7 +277,7 @@ internal sealed class RefuelInfoOverlay : AbstractOverlay
         int pitWindowEndPxl = PercentageToPxl(_widgetMaxWidth, pitWindowEndPercentage);
         pitWindowEndPxl.ClipMax(_widgetMaxXPos);
 
-        g.FillRectangle(_transparentGreen, new Rectangle(pitWindowStartPxl, yPos - _progressBarHeight / 4, (int)(pitWindowEndPxl - pitWindowStartPxl), _pitBarHeight));
+        g.FillRectangle(_transparentGreen, new Rectangle(pitWindowStartPxl + _padding, yPos - _progressBarHeight / 4, (int)(pitWindowEndPxl - pitWindowStartPxl), _pitBarHeight));
 
     }
 
@@ -337,7 +342,7 @@ internal sealed class RefuelInfoOverlay : AbstractOverlay
     private int PercentageToPxl(float width, double percentage)
     {
         int pxl = (int)((width * percentage) / 100);
-        return pxl.Clip(0, 100);
+        return pxl.ClipMin(0);
     }
 
 }
