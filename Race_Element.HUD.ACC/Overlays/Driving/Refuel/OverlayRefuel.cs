@@ -28,7 +28,7 @@ internal sealed class RefuelInfoOverlay : AbstractOverlay
     private SolidBrush _whiteBrush = new(Color.White);
     private SolidBrush _blackBrush = new(Color.Black);
     private SolidBrush _greenBrush = new (Color.FromArgb(255, 0, 255, 0));
-    private SolidBrush _redBrush = new (Color.FromArgb(255, 0, 255, 0));
+    private SolidBrush _redBrush = new (Color.FromArgb(255, 255, 0, 0));
 
     private SolidBrush _transparentWhite = new (Color.FromArgb(200, 255, 255, 255));
     private SolidBrush _transparentOrange = new (Color.FromArgb(200, 255, 165, 0));
@@ -38,7 +38,8 @@ internal sealed class RefuelInfoOverlay : AbstractOverlay
 
     // some widget position and size values
     private const int _windowWidth = 410;
-    private const int _windowHeight = 220;
+    private const int _windowHeightProgressBarWithText = 220;
+    private const int _windowHeightProgressBarOnly = 70;
     private const int _rowHeight = 25;
     private const int _padding = 10;
     private const int _widgetMinXPos = 0 + _padding;
@@ -47,12 +48,13 @@ internal sealed class RefuelInfoOverlay : AbstractOverlay
     private const int _progressBarHeight = 20;
     private const int _pitBarHeight = 10;
 
+    //private int _windowHeight = 0;
     private double _sessionLength = 0;
 
     public RefuelInfoOverlay(Rectangle rect) : base(rect, "Refuel Info")
     {
         this.Width = _windowWidth;
-        this.Height = _windowHeight;
+        SetWindowHeight();
         this.RefreshRateHz = 2;
     }
 
@@ -117,42 +119,52 @@ internal sealed class RefuelInfoOverlay : AbstractOverlay
         StringFormat drawFormat = new();
         Font drawFont = FontUtil.FontSegoeMono(13);
 
+        SetWindowHeight();
+
         // transparent background
-        g.FillRoundedRectangle(_transparentBackground, new Rectangle(0, 0, _windowWidth, _windowHeight), 10);
+        g.FillRoundedRectangle(_transparentBackground, new Rectangle(0, 0, this.Width, this.Height), 10);
 
-        // display amount of laps with current fuel level
-        string lapsLeft = $"Laps Left {pageGraphics.FuelEstimatedLaps:F1} @ {pageGraphics.FuelXLap:F2}L per Lap";
-        g.DrawString(lapsLeft, drawFont, _whiteBrush, _padding, _rowHeight * row, drawFormat);
-        row++;
-
-        // fuel timer
-        string fuelTime = $"{TimeSpan.FromMilliseconds(fuelTimeLeft):hh\\:mm\\:ss}";
-        string fuelTimeString = $"Time Left {fuelTime}";
-        if (stintTimeLeft != -1)
+        if (!_config.RefuelInfoGrouping.ProgressBarOnly)
         {
-            string stintTime = $" / Stint {TimeSpan.FromMilliseconds(stintTimeLeft):hh\\:mm\\:ss}";
-            fuelTimeString += stintTime;
-        }
-        g.DrawString(fuelTimeString, drawFont, _whiteBrush, _padding, _rowHeight * row, drawFormat);
+            // display amount of laps with current fuel level
+            string lapsLeft = $"Laps Left {pageGraphics.FuelEstimatedLaps:F1} @ {pageGraphics.FuelXLap:F2}L per Lap";
+            g.DrawString(lapsLeft, drawFont, _whiteBrush, _padding, _rowHeight * row, drawFormat);
+            row++;
 
-        row++;
-        row++;
+            // fuel timer
+            string fuelTime = $"{TimeSpan.FromMilliseconds(fuelTimeLeft):hh\\:mm\\:ss}";
+            string fuelTimeString = $"Time Left {fuelTime}";
+            if (stintTimeLeft != -1)
+            {
+                string stintTime = $" / Stint {TimeSpan.FromMilliseconds(stintTimeLeft):hh\\:mm\\:ss}";
+                fuelTimeString += stintTime;
+            }
+            g.DrawString(fuelTimeString, drawFont, _whiteBrush, _padding, _rowHeight * row, drawFormat);
+
+            row++;
+            row++;
+        }
+        
 
         // progress bar background
         DrawProgressBarBackground(g, _widgetMinXPos, _rowHeight * row, _widgetMaxWidth, this._config.RefuelInfoGrouping.SolidProgressBar);
 
         // race progress bar
         DrawProgressBar(g, _rowHeight * row, stintTimeLeft, bestLapTime, pitWindowLength);
+
+        if (!_config.RefuelInfoGrouping.ProgressBarOnly)
+        {
+            row++;
+            row++;
+
+            // fuel to the finsh line
+            DisplayFuelToRaceEnd(g, drawFormat, drawFont, _rowHeight * row, fuelToRaceEnd);
+            row++;
+
+            // display stint fuel
+            DisplayStintFuelLevel(g, drawFormat, drawFont, stintTimeLeft, bestLapTime, _rowHeight * row);
+        }
         
-        row++;
-        row++;
-
-        // fuel to the finsh line
-        DisplayFuelToRaceEnd(g, drawFormat, drawFont, _rowHeight*row, fuelToRaceEnd);
-        row++;
-
-        // display stint fuel
-        DisplayStintFuelLevel(g, drawFormat, drawFont, stintTimeLeft, bestLapTime, _rowHeight*row);
 
     }
 
@@ -302,6 +314,14 @@ internal sealed class RefuelInfoOverlay : AbstractOverlay
         }
     }
 
+    private void SetWindowHeight()
+    {
+        if (_config.RefuelInfoGrouping.ProgressBarOnly)
+            this.Height = _windowHeightProgressBarOnly;
+        else
+            this.Height = _windowHeightProgressBarWithText;
+    }
+
     private double RaceTimeToRacePercentage(double raceTime)
     {
         if (this._sessionLength == 0) return 0;
@@ -316,7 +336,8 @@ internal sealed class RefuelInfoOverlay : AbstractOverlay
 
     private int PercentageToPxl(float width, double percentage)
     {
-        return (int)((width * percentage) / 100);
+        int pxl = (int)((width * percentage) / 100);
+        return pxl.Clip(0, 100);
     }
 
 }
