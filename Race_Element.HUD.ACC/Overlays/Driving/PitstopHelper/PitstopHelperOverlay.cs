@@ -111,18 +111,24 @@ Description = "Helps you with settings up a pitstop")]
             for (int i = 0; i < 4; i++)
             {
                 string value = $"Init: {Model.InitialPressures[i]:F1}";
-                value += $", Loss: {Model.PressureLoss[i]:F2}";
                 value += $", MFD: {mfdPressures[i]:F1}";
+                value += $", Loss: {Model.PressureLoss[i]:F2}";
                 InfoPanel.AddLine(wheels[i], value);
             }
 
             float change = pagePhysics.AirTemp - Model.InitialAmbientTemp;
-            string airDelta = change > 0 ? "+" : "-";
+            string airDelta = change > 0 ? "+" : "";
             if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_LIVE && pagePhysics.IsEngineRunning)
-                InfoPanel.AddLine($"Δ Air", $"{airDelta}{change:F3} °C");
+            {
+                InfoPanel.AddLine($"Air Δ", $"{airDelta}{change:F3} °C");
 
-            // 1 C change = 0.1 psi change?
-            //InfoPanel.AddLine("Suggested PSI Δ", $"{change / 10:F2}");
+                if (change > 0.005 || change < -0.0005)
+                {
+                    string psiDelta = change < 0 ? "+" : "";
+                    // 1 C change = 0.1 psi change?
+                    InfoPanel.AddLine("PSI? Δ", $"{psiDelta}{change * -1 / 10:F2}");
+                }
+            }
             InfoPanel.Draw(g);
         }
 
