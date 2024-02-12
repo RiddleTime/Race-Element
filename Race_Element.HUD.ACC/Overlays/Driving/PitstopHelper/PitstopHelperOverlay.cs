@@ -86,7 +86,7 @@ Description = "Helps you with settings up a pitstop")]
                 }
                 else
                 {
-                    if (Model.TyreSet != pageGraphics.currentTyreSet)
+                    if (Model.TyreSet != pageGraphics.currentTyreSet && pageGraphics.Status == ACCSharedMemory.AcStatus.AC_LIVE)
                     {
                         SetModel();
                     }
@@ -118,7 +118,8 @@ Description = "Helps you with settings up a pitstop")]
 
             float change = pagePhysics.AirTemp - Model.InitialAmbientTemp;
             string airDelta = change > 0 ? "+" : "-";
-            InfoPanel.AddLine($"Δ Air", $"{airDelta}{change:F3} °C");
+            if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_LIVE && pagePhysics.IsEngineRunning)
+                InfoPanel.AddLine($"Δ Air", $"{airDelta}{change:F3} °C");
 
             // 1 C change = 0.1 psi change?
             //InfoPanel.AddLine("Suggested PSI Δ", $"{change / 10:F2}");
