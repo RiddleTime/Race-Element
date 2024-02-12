@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace RaceElement.HUD.ACC.Overlays.Driving.PitstopHelper
 {
     [Overlay(Name = "Pitstop Helper",
-Description = "Helps you with settings up a pitstop")]
+Description = "Helps you with tyre pressure for a pitstop.\nIt considers your initial pressures to be set up correctly.")]
     internal class PitstopHelperOverlay : AbstractOverlay
     {
         private PressureInfoModel Model { get; set; } = new();
@@ -122,7 +122,7 @@ Description = "Helps you with settings up a pitstop")]
             {
                 InfoPanel.AddLine($"Air Δ", $"{airDelta}{change:F3} °C");
 
-                if (change > 0.005 || change < -0.0005)
+                if (change > 0.5 || change < -0.5)
                 {
                     string psiDelta = change < 0 ? "+" : "";
                     // 1 C change = 0.1 psi change?
