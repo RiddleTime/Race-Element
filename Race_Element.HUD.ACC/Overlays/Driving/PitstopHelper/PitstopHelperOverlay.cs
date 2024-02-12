@@ -23,6 +23,7 @@ Description = "Helps you with settings up a pitstop")]
         private sealed record PressureInfoModel
         {
             public DateTime InitialDate { get; set; } = DateTime.MinValue;
+            public int TyreSet = -1;
             public float[] InitialPressures { get; set; } = new float[4];
             public float[] PressureLoss { get; set; } = new float[4];
 
@@ -80,14 +81,25 @@ Description = "Helps you with settings up a pitstop")]
                 {
                     if (pagePhysics.WheelPressure[0] > 0)
                     {
-                        Model.InitialDate = DateTime.UtcNow;
-                        Model.InitialPressures = pagePhysics.WheelPressure;
-                        Model.InitialAmbientTemp = pagePhysics.AirTemp;
+                        SetModel();
+                    }
+                }
+                else
+                {
+                    if (Model.TyreSet != pageGraphics.currentTyreSet)
+                    {
+                        SetModel();
                     }
                 }
             }
+        }
 
-
+        private void SetModel()
+        {
+            Model.InitialDate = DateTime.UtcNow;
+            Model.InitialPressures = pagePhysics.WheelPressure;
+            Model.InitialAmbientTemp = pagePhysics.AirTemp;
+            Model.TyreSet = pageGraphics.currentTyreSet;
         }
 
         private void DrawPanel(Graphics g)
