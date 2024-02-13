@@ -53,6 +53,7 @@ public partial class HudOptions : UserControl
             _hudSettingsJson = _hudSettings.Get();
 
             ComboBoxHudReset.SelectionChanged += ComboBoxHudReset_SelectionChanged;
+            ToolTipService.SetInitialShowDelay(ComboBoxHudReset, 0);
 
             listOverlays.SelectionChanged += ListOverlays_SelectionChanged;
             listDebugOverlays.SelectionChanged += ListDebugOverlays_SelectionChanged;
