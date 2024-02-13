@@ -111,6 +111,8 @@ Description = "Helps you with tyre pressure for a pitstop.")]
             float[] mfdPressures = [pageGraphics.mfdTyrePressureLF, pageGraphics.mfdTyrePressureRF, pageGraphics.mfdTyrePressureLR, pageGraphics.mfdTyrePressureRR];
 
 
+       
+
             for (int i = 0; i < 4; i++)
             {
                 StringBuilder sb = new($"Init: {Model.InitialPressures[i]:F1}");
@@ -123,6 +125,8 @@ Description = "Helps you with tyre pressure for a pitstop.")]
             string airDelta = change > 0 ? "+" : "";
             if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_LIVE && pagePhysics.IsEngineRunning)
             {
+                InfoPanel.AddLine("Set", $"{pageGraphics.currentTyreSet} -> {pageGraphics.mfdTyreSet}");
+
                 InfoPanel.AddLine($"Air Δ", $"{airDelta}{change:F3} °C");
 
                 if (change > 0.5 || change < -0.5)
