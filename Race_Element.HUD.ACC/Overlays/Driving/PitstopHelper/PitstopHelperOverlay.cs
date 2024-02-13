@@ -17,6 +17,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.PitstopHelper
 Description = "Helps you with tyre pressure for a pitstop.\nIt considers your initial pressures to be set up correctly.")]
     internal class PitstopHelperOverlay : AbstractOverlay
     {
+        private readonly PitstopHelperConfiguration _config = new();
         private PressureInfoModel Model { get; set; } = new();
         private InfoPanel InfoPanel;
 
@@ -81,25 +82,28 @@ Description = "Helps you with tyre pressure for a pitstop.\nIt considers your in
                 {
                     if (pagePhysics.WheelPressure[0] > 0)
                     {
-                        SetModel();
+                        InitModel();
                     }
                 }
                 else
                 {
                     if (Model.TyreSet != pageGraphics.currentTyreSet && pageGraphics.Status == ACCSharedMemory.AcStatus.AC_LIVE)
                     {
-                        SetModel();
+                        InitModel();
                     }
                 }
             }
         }
 
-        private void SetModel()
+        private void InitModel()
         {
-            Model.InitialDate = DateTime.UtcNow;
-            Model.InitialPressures = pagePhysics.WheelPressure;
-            Model.InitialAmbientTemp = pagePhysics.AirTemp;
-            Model.TyreSet = pageGraphics.currentTyreSet;
+            Model = new()
+            {
+                InitialDate = DateTime.UtcNow,
+                InitialPressures = pagePhysics.WheelPressure,
+                InitialAmbientTemp = pagePhysics.AirTemp,
+                TyreSet = pageGraphics.currentTyreSet
+            };
         }
 
         private void DrawPanel(Graphics g)
@@ -110,10 +114,10 @@ Description = "Helps you with tyre pressure for a pitstop.\nIt considers your in
 
             for (int i = 0; i < 4; i++)
             {
-                string value = $"Init: {Model.InitialPressures[i]:F1}";
-                value += $", MFD: {mfdPressures[i]:F1}";
-                value += $", Loss: {Model.PressureLoss[i]:F2}";
-                InfoPanel.AddLine(wheels[i], value);
+                StringBuilder sb = new($"Init: {Model.InitialPressures[i]:F1}");
+                sb.Append($", MFD: {mfdPressures[i]:F1}");
+                sb.Append($", Loss: {Model.PressureLoss[i]:F2}");
+                InfoPanel.AddLine(wheels[i], sb.ToString());
             }
 
             float change = pagePhysics.AirTemp - Model.InitialAmbientTemp;
@@ -131,7 +135,5 @@ Description = "Helps you with tyre pressure for a pitstop.\nIt considers your in
             }
             InfoPanel.Draw(g);
         }
-
-
     }
 }
