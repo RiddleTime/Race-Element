@@ -1,5 +1,4 @@
-﻿using LiteDB;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RaceElement.Data.ACC.Session;
 using RaceElement.HUD.Overlay.Internal;
 using System.Collections.Generic;
@@ -8,7 +7,9 @@ using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.SectorData;
 
+#if DEBUG
 [Overlay(Name = "Sector Data", Description = "Shows data from previous sectors")]
+#endif
 internal class SectorDataOverlay : AbstractOverlay
 {
     private readonly List<SectorDataModel> _Sectors = [];

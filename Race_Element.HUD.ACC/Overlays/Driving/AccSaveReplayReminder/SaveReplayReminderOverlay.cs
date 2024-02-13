@@ -10,12 +10,14 @@ using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.AccSaveReplayReminder;
 
+#if DEBUG
 [Overlay(Name = "Save Replay Reminder",
 Description = "Shows an overlay that will remind you to save the replay.",
 OverlayType = OverlayType.Drive,
 OverlayCategory = OverlayCategory.All,
 Version = 1.00,
 Authors = ["Reinier Klarenberg"])]
+#endif
 internal sealed class SaveReplayReminderOverlay : AbstractOverlay
 {
     private ReplaySettings _replaySettings;
