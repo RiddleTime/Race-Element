@@ -6,7 +6,7 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
-        {"1.0.2.4", "- Decrease shutdown time of app."+
+        {"1.0.3.0", "- Decrease shutdown time of app."+
                     "\n- HUD Tab:"+
                     "\n  - Added buttons to reset the position or the configuration for a HUD."+
                     "\n  - Added tooltips when hovering a hud in the list, it shows the description of the HUD."+
