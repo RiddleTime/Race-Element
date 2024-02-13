@@ -6,6 +6,7 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.2.4", "- Decrease shutdown time of app." },
         {"1.0.2.2", "- Internal changes for future multi-sim support."+
                     "\n- Twitch Chat HUD: fixed a few commands related to lap times."+
                     "\n- New HUD: Average Laptime HUD by goeflo."},

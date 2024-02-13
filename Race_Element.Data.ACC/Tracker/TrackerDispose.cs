@@ -17,6 +17,7 @@ public class ACCTrackerDispose
 
         SetupHiderTracker.Instance.Dispose();
 
+        PageGraphicsTracker.Stop();
 
         RaceSessionTracker.Instance.Stop();
         LapTracker.Instance.Stop();

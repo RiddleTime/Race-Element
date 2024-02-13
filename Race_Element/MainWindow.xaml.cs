@@ -266,28 +266,40 @@ public partial class MainWindow : Window
 
     private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
+
+        TraceOutputListener.Stop();
+
         SaveLocation();
+
+        _notifyIcon?.Dispose();
 
         OverlaysACC.CloseAll();
         HudTrackers.StopAll();
         ACCTrackerDispose.Dispose();
         HudOptions.Instance.DisposeKeyboardHooks();
-        SteeringLockTracker.Instance.Dispose();
+        SteeringLockTracker.Stop();
         FileUtil.CleanDownloadCache();
 
-        Environment.Exit(0);
+        //Application.Current.Shutdown();
+        Debug.WriteLine("cleaned up app");
+        //Environment.Exit(0);
     }
 
     private void CurrentDomain_ProcessExit(object sender, EventArgs e)
     {
+        Debug.WriteLine("CurrentDomain Process Exit");
+        TraceOutputListener.Stop();
+
+        _notifyIcon?.Dispose();
         OverlaysACC.CloseAll();
         HudTrackers.StopAll();
         ACCTrackerDispose.Dispose();
         HudOptions.Instance.DisposeKeyboardHooks();
-        SteeringLockTracker.Instance.Dispose();
+        SteeringLockTracker.Stop();
         FileUtil.CleanDownloadCache();
 
-        Environment.Exit(0);
+        Debug.WriteLine("exiting app");
+        //Environment.Exit(0);
     }
 
     private System.Windows.Forms.NotifyIcon _notifyIcon;

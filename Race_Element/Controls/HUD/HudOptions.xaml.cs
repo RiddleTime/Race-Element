@@ -551,7 +551,11 @@ public partial class HudOptions : UserControl
                 BorderThickness = new Thickness(4, 0, 0, 0),
             };
             if (overlayAttribute.Description != string.Empty)
+            {
                 listViewItem.ToolTip = overlayAttribute.Description;
+                ToolTipService.SetPlacement(listViewItem, PlacementMode.Right);
+                ToolTipService.SetInitialShowDelay(listViewItem, 0);
+            }
 
             if (tempOverlaySettings != null)
                 if (tempOverlaySettings.Enabled)

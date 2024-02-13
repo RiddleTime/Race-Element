@@ -130,10 +130,15 @@ public class PageGraphicsTracker : IDisposable
 
         _instance = this;
     }
-
+    public static void Stop()
+    {
+        if (_instance == null) return;
+        _instance.Dispose();
+    }
     public void Dispose()
     {
         isTracking = false;
+        trackingTask.Wait();
         trackingTask.Dispose();
     }
 }

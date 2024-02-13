@@ -31,6 +31,13 @@ public class TraceOutputListener
         }
     }
 
+    public static void Stop()
+    {
+        if (_instance == null) return;
+        _instance.Dispose();
+        _instance = null;
+    }
+
     private bool _isRunning;
 
     public TraceOutputListener()
@@ -52,30 +59,36 @@ public class TraceOutputListener
             while (_isRunning)
             {
                 Thread.Sleep(100);
-
-                StreamReader reader = new(_outputStream);
-
-                if (lastPosition == -1)
-                    lastPosition = 0;
-                else
-                    _outputStream.Position = lastPosition;
-
-                while (!reader.EndOfStream)
+                try
                 {
-                    lock (_outputs)
-                    {
-                        if (_outputs.Count >= 100)
-                            _outputs.RemoveLast();
-                        _outputs.AddFirst(new MessageOut() { message = reader.ReadLine(), time = DateTime.Now.ToFileTime() });
-                    }
-                }
+                    StreamReader reader = new(_outputStream);
 
-                lastPosition = _outputStream.Position;
+                    if (lastPosition == -1)
+                        lastPosition = 0;
+                    else
+                        _outputStream.Position = lastPosition;
+
+                    while (!reader.EndOfStream)
+                    {
+                        lock (_outputs)
+                        {
+                            if (_outputs.Count >= 100)
+                                _outputs.RemoveLast();
+                            _outputs.AddFirst(new MessageOut() { message = reader.ReadLine(), time = DateTime.Now.ToFileTime() });
+                        }
+                    }
+
+                    lastPosition = _outputStream.Position;
+                }
+                catch (Exception ex)
+                {
+                    break;
+                }
             }
         }).Start();
     }
 
-    public void Stop()
+    public void Dispose()
     {
         _isRunning = false;
         _traceListener.Flush();
@@ -83,6 +96,5 @@ public class TraceOutputListener
         _outputStream.Close();
 
         Debug.AutoFlush = false;
-        _outputStream.Position = 0;
     }
 }
