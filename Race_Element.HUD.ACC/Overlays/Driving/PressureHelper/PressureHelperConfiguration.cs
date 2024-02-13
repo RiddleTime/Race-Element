@@ -8,6 +8,12 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.PressureHelper
         public TyrePressures Pressures { get; init; } = new();
         public class TyrePressures
         {
+
+            [ToolTip("Set the amount of laps required for the tyres to normalize the pressures.\n" +
+                     "After this amount of laps the HUD will start suggesting possible adjustments.")]
+            [IntRange(1, 4, 1)]
+            public int MinimumLaps { get; init; } = 2;
+
             [ToolTip("TODO")]
             [FloatRange(26f, 27.3f, 0.1f, 1)]
             public float DryTyreTarget { get; init; } = 26.9f;
