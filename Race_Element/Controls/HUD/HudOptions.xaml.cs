@@ -550,6 +550,8 @@ public partial class HudOptions : UserControl
                 BorderBrush = new SolidColorBrush(Colors.Transparent),
                 BorderThickness = new Thickness(4, 0, 0, 0),
             };
+            if (overlayAttribute.Description != string.Empty)
+                listViewItem.ToolTip = overlayAttribute.Description;
 
             if (tempOverlaySettings != null)
                 if (tempOverlaySettings.Enabled)
