@@ -21,6 +21,7 @@ Description = "Helps you with tyre pressure for a pitstop.")]
         private PressureInfoModel Model { get; set; } = new();
         private InfoPanel InfoPanel;
 
+        private bool _isPreviewing = false;
         private sealed record PressureInfoModel
         {
             public DateTime InitialDate { get; set; } = DateTime.MinValue;
@@ -35,6 +36,30 @@ Description = "Helps you with tyre pressure for a pitstop.")]
         {
             Width = 500;
             Height = 250;
+        }
+
+        public override void SetupPreviewData()
+        {
+            Model = new()
+            {
+                InitialAmbientTemp = 23.0f,
+                InitialDate = DateTime.UtcNow,
+                InitialPressures = [23f, 23f, 23.5f, 23.5f],
+                PressureLoss = [0.14f, 0f, 0f, 0f],
+                TyreSet = 3,
+            };
+            pageGraphics.mfdTyreSet = 5;
+            pageGraphics.mfdTyrePressureLF = 23.1f;
+            pageGraphics.mfdTyrePressureRF = 23.1f;
+            pageGraphics.mfdTyrePressureLR = 23.6f;
+            pageGraphics.mfdTyrePressureRR = 23.6f;
+
+            pagePhysics.AirTemp = 22.3f;
+
+            pagePhysics.IsEngineRunning = true;
+            pageGraphics.Status = ACCSharedMemory.AcStatus.AC_LIVE;
+
+            _isPreviewing = true;
         }
 
         public override void BeforeStart()
@@ -70,6 +95,8 @@ Description = "Helps you with tyre pressure for a pitstop.")]
 
         private void UpdateModel()
         {
+            if (_isPreviewing) return;
+
             if (pageGraphics.IsSetupMenuVisible)
             {
                 Model = new();
@@ -109,9 +136,6 @@ Description = "Helps you with tyre pressure for a pitstop.")]
         {
             string[] wheels = ["FL", "FR", "RL", "RR"];
             float[] mfdPressures = [pageGraphics.mfdTyrePressureLF, pageGraphics.mfdTyrePressureRF, pageGraphics.mfdTyrePressureLR, pageGraphics.mfdTyrePressureRR];
-
-
-       
 
             for (int i = 0; i < 4; i++)
             {
