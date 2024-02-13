@@ -195,7 +195,8 @@ public partial class HudOptions : UserControl
                     ListViewItem selected = (ListViewItem)listView.SelectedItem;
                     KeyValuePair<string, Type> kv = (KeyValuePair<string, Type>)selected.DataContext;
                     BuildOverlayConfigPanel(selected, kv.Value);
-                    MainWindow.Instance.EnqueueSnackbarMessage($"HUD Config has been reset for {currentlyViewedOverlay}.");
+                    PreviewCache.UpdatePreviewImage(listOverlays, previewImage, currentlyViewedOverlay);
+                    MainWindow.Instance.EnqueueSnackbarMessage($"Config has been reset for {currentlyViewedOverlay} HUD.");
                     break;
                 }
             default: break;

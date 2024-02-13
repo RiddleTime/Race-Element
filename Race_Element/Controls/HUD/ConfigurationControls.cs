@@ -31,7 +31,7 @@ internal class ConfigurationControls
 
         SaveOverlaySettings(overlayName, settings);
 
-        MainWindow.Instance.EnqueueSnackbarMessage($"{overlayName} has been placed on the center of your primary monitor.\nYou may need to activate it to see the change.");
+        MainWindow.Instance.EnqueueSnackbarMessage($"{overlayName} HUD has been placed on the center of your primary monitor.\nYou may need to activate it to see the change.");
     }
 
     internal static bool ResetConfigurationFields(string overlayName)
