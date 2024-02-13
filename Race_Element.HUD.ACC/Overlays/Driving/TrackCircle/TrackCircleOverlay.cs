@@ -19,7 +19,7 @@ internal sealed class TrackCircleOverlay : AbstractOverlay
     private readonly TrackCircleConfiguration _config = new();
     private sealed class TrackCircleConfiguration : OverlayConfiguration
     {
-        public TrackCircleConfiguration() => AllowRescale = true;
+        public TrackCircleConfiguration() => GenericConfiguration.AllowRescale = true;
 
         [ConfigGrouping("View", "Adjust track circle settings.")]
         public ViewingGroup Viewing { get; init; } = new ViewingGroup();

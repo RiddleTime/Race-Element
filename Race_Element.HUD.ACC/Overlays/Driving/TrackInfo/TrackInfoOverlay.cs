@@ -36,7 +36,7 @@ internal sealed class TrackInfoOverlay : AbstractOverlay
 
         public TrackInfoConfig()
         {
-            this.AllowRescale = true;
+            this.GenericConfiguration.AllowRescale = true;
         }
     }
 

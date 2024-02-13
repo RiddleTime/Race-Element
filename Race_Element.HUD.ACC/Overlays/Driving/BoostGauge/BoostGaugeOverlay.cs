@@ -16,7 +16,7 @@ internal sealed class BoostGaugeOverlay : AbstractOverlay
     {
         public BoostConfiguration()
         {
-            AllowRescale = true;
+            GenericConfiguration.AllowRescale = true;
         }
     }
 

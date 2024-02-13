@@ -59,7 +59,7 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
 
         public FuelInfoConfig()
         {
-            this.AllowRescale = true;
+            this.GenericConfiguration.AllowRescale = true;
         }
     }
 

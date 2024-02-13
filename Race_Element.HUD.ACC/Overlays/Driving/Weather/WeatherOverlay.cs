@@ -17,7 +17,7 @@ internal class WeatherOverlay : AbstractOverlay
     {
         public WeatherConfiguration()
         {
-            this.AllowRescale = true;
+            this.GenericConfiguration.AllowRescale = true;
         }
     }
 

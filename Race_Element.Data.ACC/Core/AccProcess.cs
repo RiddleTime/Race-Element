@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Windows;
 
 namespace RaceElement.Data.ACC.Core;
 
@@ -61,7 +62,8 @@ public class AccProcess
                         LogWriter.WriteToLog(e);
                     }
                 }
-            }).Start();
+            })
+            { IsBackground = true }.Start();
         }
 
         private void FindProcess()

@@ -105,7 +105,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <ComboBox x:Name="comboBoxCurrentGame"/>
+                <ComboBox x:Name="comboBoxCurrentGame" ToolTip="This is alpha functionality, for now only used with Testing HUD (pitwall section)."/>
 
                 <Button Grid.Column="1" x:Name="buttonHelp" Width="50" Margin="0" Padding="0" Style="{StaticResource MaterialDesignFlatSecondaryDarkBgButton}" 
                         Background="Transparent" BorderBrush="Transparent" Focusable="False" VerticalAlignment="Center"

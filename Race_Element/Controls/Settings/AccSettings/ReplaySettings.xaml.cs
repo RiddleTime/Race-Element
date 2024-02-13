@@ -22,8 +22,8 @@ public partial class ReplaySettings : UserControl
 
     private void SaveSettings()
     {
-        _accSettings.AutoRecordReplay = toggleAutoSaveReplay.IsChecked.Value;
-        TitleBar.Instance.SetIcons(TitleBar.ActivatedIcons.AutomaticSaveReplay, _accSettings.AutoRecordReplay);
+        //_accSettings.AutoRecordReplay = toggleAutoSaveReplay.IsChecked.Value;
+        //TitleBar.Instance.SetIcons(TitleBar.ActivatedIcons.AutomaticSaveReplay, _accSettings.AutoRecordReplay);
 
         new AccSettings().Save(_accSettings);
     }
@@ -32,7 +32,7 @@ public partial class ReplaySettings : UserControl
     {
         _accSettings = new AccSettings().Get();
 
-        toggleAutoSaveReplay.IsChecked = _accSettings.AutoRecordReplay;
-        TitleBar.Instance.SetIcons(TitleBar.ActivatedIcons.AutomaticSaveReplay, _accSettings.AutoRecordReplay);
+        //toggleAutoSaveReplay.IsChecked = _accSettings.AutoRecordReplay;
+        //TitleBar.Instance.SetIcons(TitleBar.ActivatedIcons.AutomaticSaveReplay, _accSettings.AutoRecordReplay);
     }
 }

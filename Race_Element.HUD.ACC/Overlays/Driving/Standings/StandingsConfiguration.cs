@@ -33,6 +33,6 @@ internal sealed class StandingsConfiguration : OverlayConfiguration
 
     public StandingsConfiguration()
     {
-        this.AllowRescale = true;
+        this.GenericConfiguration.AllowRescale = true;
     }
 }

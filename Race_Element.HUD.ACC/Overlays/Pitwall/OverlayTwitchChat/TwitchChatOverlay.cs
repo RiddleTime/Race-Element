@@ -13,8 +13,9 @@ using TwitchLib.Communication.Models;
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
 
 [Overlay(Name = "Twitch Chat",
-    Description = "Shows twitch chat, newest messages appear at the top. (type +commands in chat for all available ones)\nTo allow Race Element to connect to the twitch api create the O Auth token at twitchapps.com/tmi",
-    OverlayType = OverlayType.Pitwall)]
+Description = "Shows twitch chat, newest messages appear at the top. (type +commands in chat for all available ones)\nTo allow Race Element to connect to the twitch api create the O Auth token at twitchapps.com/tmi",
+OverlayType = OverlayType.Pitwall,
+Authors = ["Reinier Klarenberg"])]
 internal sealed class TwitchChatOverlay : AbstractOverlay
 {
     internal readonly TwitchChatConfiguration _config = new();

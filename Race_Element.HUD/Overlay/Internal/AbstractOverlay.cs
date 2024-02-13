@@ -127,7 +127,7 @@ public abstract class AbstractOverlay : FloatingWindow
                 }
                 nested.SetValue(this, overlayConfig);
 
-                if (overlayConfig.AllowRescale)
+                if (overlayConfig.GenericConfiguration.AllowRescale)
                 {
                     this._allowRescale = true;
                     this.Scale = overlayConfig.GenericConfiguration.Scale;

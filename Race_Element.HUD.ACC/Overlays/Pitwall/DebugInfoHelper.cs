@@ -19,7 +19,7 @@ internal class DebugInfoHelper
 
         public DebugConfig()
         {
-            this.AllowRescale = true;
+            this.GenericConfiguration.AllowRescale = true;
         }
     }
 

@@ -212,7 +212,9 @@ public class LapTracker
 
             _instance = null;
             IsTracking = false;
-        }).Start();
+        })
+        { IsBackground = true }.Start();
+
     }
 
     internal void Stop()

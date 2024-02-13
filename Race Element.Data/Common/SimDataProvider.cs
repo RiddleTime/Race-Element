@@ -2,6 +2,7 @@
 using RaceElement.Data.Games.AssettoCorsaCompetizione;
 using RaceElement.Data.Games;
 using RaceElement.Data.Games.AssettoCorsa;
+using RaceElement.Data.Games.iRacing;
 
 namespace RaceElement.Data.Common
 {
@@ -30,6 +31,11 @@ namespace RaceElement.Data.Common
                 case Game.AssettoCorsaCompetizione:
                     {
                         AssettoCorsaCompetizioneDataProvider.Update(ref _localCarData, ref _session, ref _gameData);
+                        break;
+                    }
+                case Game.iRacing:
+                    {
+                        IRacingDataProvider.Update(ref _localCarData, ref _session, ref _gameData);
                         break;
                     }
                 default: { break; }

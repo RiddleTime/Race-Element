@@ -20,6 +20,7 @@
 
     <ItemGroup>
         <PackageReference Include="Riok.Mapperly" Version="3.3.0" />
+        <PackageReference Include="YamlDotNet" Version="15.1.1" />
     </ItemGroup>
 
     <ItemGroup>
@@ -27,7 +28,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Games\iRacing\" />
       <Folder Include="Games\Automobilista 2\" />
     </ItemGroup>
 

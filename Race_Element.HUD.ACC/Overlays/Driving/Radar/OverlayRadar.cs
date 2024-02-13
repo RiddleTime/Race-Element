@@ -25,7 +25,7 @@ internal sealed class RadarOverlay : AbstractOverlay
     private readonly RadarConfiguration _config = new();
     private sealed class RadarConfiguration : OverlayConfiguration
     {
-        public RadarConfiguration() => AllowRescale = true;
+        public RadarConfiguration() => GenericConfiguration.AllowRescale = true;
 
         [ConfigGrouping("Radar", "General options for the radar")]
         public RadarGrouping Radar { get; init; } = new RadarGrouping();

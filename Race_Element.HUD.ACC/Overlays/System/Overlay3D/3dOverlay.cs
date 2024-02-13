@@ -20,7 +20,7 @@ internal class _3dOverlay : AbstractOverlay
 
         public _3dConfiguration()
         {
-            AllowRescale = true;
+            GenericConfiguration.AllowRescale = true;
         }
 
         [ConfigGrouping("Animation", "Change animation properties")]

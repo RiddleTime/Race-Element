@@ -5,7 +5,7 @@ namespace RaceElement.HUD.HUDs.Driving.OverlayInputBars;
 
 internal sealed class InputBarsConfiguration : OverlayConfiguration
 {
-    public InputBarsConfiguration() => AllowRescale = true;
+    public InputBarsConfiguration() => this.GenericConfiguration.AllowRescale = true;
 
     public enum BarOrientation { Horizontal, Vertical };
 

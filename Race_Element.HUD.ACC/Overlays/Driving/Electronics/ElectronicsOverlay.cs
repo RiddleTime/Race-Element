@@ -18,7 +18,7 @@ internal sealed class ElectronicsOverlay : AbstractOverlay
     private readonly ElectronicsConfiguration _config = new();
     private sealed class ElectronicsConfiguration : OverlayConfiguration
     {
-        public ElectronicsConfiguration() => AllowRescale = true;
+        public ElectronicsConfiguration() => GenericConfiguration.AllowRescale = true;
     }
 
     private Font _font;

@@ -6,7 +6,8 @@ namespace RaceElement.Data.Games
         AssettoCorsa1,
         AssettoCorsaCompetizione,
         //rFactor2,
-        //iRacing,
+        iRacing,
+        //Automobilista2
     }
 
     public static class GameExtensions
@@ -15,18 +16,21 @@ namespace RaceElement.Data.Games
         {
             public const string AssettoCorsaCompetizione = "Assetto Corsa Competizione";
             public const string AssettoCorsa = "Assetto Corsa";
+            public const string IRacing = "iRacing";
         }
 
         static class ShortNames
         {
             public const string AssettoCorsaCompetizione = "ACC";
             public const string AssettoCorsa = "AC";
+            public const string IRacing = "iRacing";
         }
 
         public static string ToFriendlyName(this Game game) => game switch
         {
             Game.AssettoCorsa1 => FriendlyNames.AssettoCorsa,
             Game.AssettoCorsaCompetizione => FriendlyNames.AssettoCorsaCompetizione,
+            Game.iRacing => FriendlyNames.IRacing,
             _ => string.Empty
         };
 
@@ -34,6 +38,7 @@ namespace RaceElement.Data.Games
         {
             Game.AssettoCorsa1 => ShortNames.AssettoCorsa,
             Game.AssettoCorsaCompetizione => ShortNames.AssettoCorsaCompetizione,
+            Game.iRacing => ShortNames.IRacing,
             _ => string.Empty
         };
 
@@ -41,6 +46,7 @@ namespace RaceElement.Data.Games
         {
             FriendlyNames.AssettoCorsa => Game.AssettoCorsa1,
             FriendlyNames.AssettoCorsaCompetizione => Game.AssettoCorsaCompetizione,
+            FriendlyNames.IRacing => Game.iRacing,
             _ => Game.AssettoCorsaCompetizione,
         };
 

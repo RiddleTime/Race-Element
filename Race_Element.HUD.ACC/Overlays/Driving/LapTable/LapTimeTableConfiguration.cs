@@ -20,5 +20,5 @@ internal sealed class LapTimeTableConfiguration : OverlayConfiguration
         public int Roundness { get; init; } = 2;
     }
 
-    public LapTimeTableConfiguration() => AllowRescale = true;
+    public LapTimeTableConfiguration() => GenericConfiguration.AllowRescale = true;
 }

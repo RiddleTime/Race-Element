@@ -40,7 +40,7 @@ public abstract class AbstractLoopJob : IJob
         _isStopped = false;
         _isCancelling = false;
 
-        Task.Run(() =>
+        new Thread(() =>
         {
             Stopwatch sw = Stopwatch.StartNew();
 
@@ -65,6 +65,7 @@ public abstract class AbstractLoopJob : IJob
             AfterCancel();
 
             _isStopped = true;
-        });
+        })
+        { IsBackground = true }.Start();
     }
 }

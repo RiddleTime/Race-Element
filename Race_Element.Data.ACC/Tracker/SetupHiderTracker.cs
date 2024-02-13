@@ -67,7 +67,8 @@ public class SetupHiderTracker : IDisposable
                             Toggle(pageGraphics.IsSetupMenuVisible);
                         }
                 }
-            }).Start();
+            })
+            { IsBackground = true }.Start();
         }
     }
 

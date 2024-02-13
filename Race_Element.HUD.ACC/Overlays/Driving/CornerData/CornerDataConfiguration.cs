@@ -59,5 +59,5 @@ internal sealed class CornerDataConfiguration : OverlayConfiguration
         public Color SpeedSlower { get; init; } = Color.FromArgb(255, 255, 0);
     }
 
-    public CornerDataConfiguration() => AllowRescale = true;
+    public CornerDataConfiguration() => GenericConfiguration.AllowRescale = true;
 }

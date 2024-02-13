@@ -21,6 +21,11 @@ public class SteeringLockTracker : IDisposable
         }
     }
 
+    public static void Stop()
+    {
+        _instance?.Dispose();
+    }
+
     public bool IsTracking = false;
 
     private string _lastCar;

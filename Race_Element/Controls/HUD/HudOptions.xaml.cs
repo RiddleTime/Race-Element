@@ -52,6 +52,9 @@ public partial class HudOptions : UserControl
             _hudSettings = new HudSettings();
             _hudSettingsJson = _hudSettings.Get();
 
+            ComboBoxHudReset.SelectionChanged += ComboBoxHudReset_SelectionChanged;
+            ToolTipService.SetInitialShowDelay(ComboBoxHudReset, 0);
+
             listOverlays.SelectionChanged += ListOverlays_SelectionChanged;
             listDebugOverlays.SelectionChanged += ListDebugOverlays_SelectionChanged;
             tabControlListOverlays.SelectionChanged += (s, e) =>
@@ -159,6 +162,48 @@ public partial class HudOptions : UserControl
                 }
         }));
         Instance = this;
+    }
+
+    private void ComboBoxHudReset_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (ComboBoxHudReset.SelectedIndex == 0) { e.Handled = true; return; }
+
+        // index 1 = reset position
+        // index 2 = reset config
+
+        string currentlyViewedOverlay = GetCurrentlyViewedOverlayName();
+        if (currentlyViewedOverlay == string.Empty)
+        {
+            MainWindow.Instance.EnqueueSnackbarMessage("To reset HUD properties first select a HUD in the list.");
+            ComboBoxHudReset.SelectedIndex = 0; return;
+        }
+
+        switch (ComboBoxHudReset.SelectedIndex)
+        {
+            case 1:
+                {
+                    ConfigurationControls.ResetConfigurationPosition(currentlyViewedOverlay);
+                    break;
+                }
+            case 2:
+                {
+                    if (!ConfigurationControls.ResetConfigurationFields(currentlyViewedOverlay))
+                        break;
+
+                    configStackPanel.Children.Clear();
+
+                    ListView listView = tabControlListOverlays.SelectedIndex == 0 ? listOverlays : listDebugOverlays;
+                    ListViewItem selected = (ListViewItem)listView.SelectedItem;
+                    KeyValuePair<string, Type> kv = (KeyValuePair<string, Type>)selected.DataContext;
+                    BuildOverlayConfigPanel(selected, kv.Value);
+                    PreviewCache.UpdatePreviewImage(listOverlays, previewImage, currentlyViewedOverlay);
+                    MainWindow.Instance.EnqueueSnackbarMessage($"Config has been reset for {currentlyViewedOverlay} HUD.");
+                    break;
+                }
+            default: break;
+        }
+
+        ComboBoxHudReset.SelectedIndex = 0;
     }
 
     private void HudOptions_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -297,6 +342,7 @@ public partial class HudOptions : UserControl
             Margin = new Thickness(0, 0, 0, 0),
             Background = new SolidColorBrush(Color.FromArgb(140, 0, 0, 0)),
         };
+
 
         stackerOverlayInfo.Children.Add(overlayNameLabel);
         stackerOverlayInfo.Children.Add(overlayDescription);
@@ -550,6 +596,12 @@ public partial class HudOptions : UserControl
                 BorderBrush = new SolidColorBrush(Colors.Transparent),
                 BorderThickness = new Thickness(4, 0, 0, 0),
             };
+            if (overlayAttribute.Description != string.Empty)
+            {
+                listViewItem.ToolTip = overlayAttribute.Description;
+                ToolTipService.SetPlacement(listViewItem, PlacementMode.Right);
+                ToolTipService.SetInitialShowDelay(listViewItem, 0);
+            }
 
             if (tempOverlaySettings != null)
                 if (tempOverlaySettings.Enabled)

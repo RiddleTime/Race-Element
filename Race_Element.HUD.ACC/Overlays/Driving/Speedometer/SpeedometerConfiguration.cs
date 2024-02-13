@@ -7,7 +7,7 @@ internal sealed class SpeedometerConfiguration : OverlayConfiguration
 {
     public enum GuageDirection { Clockwise, CounterClockwise }
 
-    public SpeedometerConfiguration() => AllowRescale = true;
+    public SpeedometerConfiguration() => GenericConfiguration.AllowRescale = true;
 
     [ConfigGrouping("Settings", "Adjust general settings for the Speedometer overlay.")]
     public SettingsGrouping Settings { get; init; } = new SettingsGrouping();

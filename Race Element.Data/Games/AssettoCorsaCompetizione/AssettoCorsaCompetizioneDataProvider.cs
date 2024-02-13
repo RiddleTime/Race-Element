@@ -8,8 +8,6 @@ namespace RaceElement.Data.Games.AssettoCorsaCompetizione
     {
         static int lastPhysicsPacketId = -1;
 
-        private static string GameName { get => Game.AssettoCorsaCompetizione.ToShortName(); }
-
         internal static void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
         {
             var physicsPage = AccSharedMemory.ReadPhysicsPageFile();
@@ -29,7 +27,7 @@ namespace RaceElement.Data.Games.AssettoCorsaCompetizione
             SessionDataMapper.WithStaticPage(staticPage, sessionData);
 
             GameDataMapper.WithStaticPage(staticPage, gameData);
-            gameData.Name = GameName;
+            gameData.Name = Game.AssettoCorsaCompetizione.ToShortName();
 
             lastPhysicsPacketId = physicsPage.PacketId;
         }

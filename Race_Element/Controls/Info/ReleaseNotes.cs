@@ -6,6 +6,11 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.2.4", "- Decrease shutdown time of app."+
+                    "\n- HUD Tab:"+
+                    "\n  - Added buttons to reset the position or the configuration for a HUD."+
+                    "\n  - Added tooltips when hovering a hud in the list, it shows the description of the HUD."+
+                    "\n- Internal changes for Multi-Sim support, added option to select iRacing."},
         {"1.0.2.2", "- Internal changes for future multi-sim support."+
                     "\n- Twitch Chat HUD: fixed a few commands related to lap times."+
                     "\n- New HUD: Average Laptime HUD by goeflo."},

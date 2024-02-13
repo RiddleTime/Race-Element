@@ -74,6 +74,6 @@ internal sealed class ShiftIndicatorConfiguration : OverlayConfiguration
 
     public ShiftIndicatorConfiguration()
     {
-        this.AllowRescale = true;
+        this.GenericConfiguration.AllowRescale = true;
     }
 }

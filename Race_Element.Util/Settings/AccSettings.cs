@@ -4,7 +4,6 @@ namespace RaceElement.Util.Settings;
 
 public class AccSettingsJson : IGenericSettingsJson
 {
-    public bool AutoRecordReplay { get; set; } = false;
     public Guid UnlistedAccServer { get; set; }
 }
 
@@ -16,6 +15,5 @@ public class AccSettings : AbstractSettingsJson<AccSettingsJson>
     public override AccSettingsJson Default() => new()
     {
         UnlistedAccServer = Guid.Empty,
-        AutoRecordReplay = false,
     };
 }

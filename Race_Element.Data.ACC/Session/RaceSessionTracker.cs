@@ -7,7 +7,6 @@ using RaceElement.Data.ACC.Database.LapDataDB;
 using RaceElement.Data.ACC.Database.RaceWeekend;
 using RaceElement.Data.ACC.Database.SessionData;
 using RaceElement.Data.ACC.Database.Telemetry;
-using RaceElement.Data.ACC.HotKey;
 using RaceElement.Data.ACC.Tracker;
 using RaceElement.Util;
 using System;
@@ -220,23 +219,12 @@ public class RaceSessionTracker
                     if (sessionTypeChanged)
                         OnACSessionTypeChanged?.Invoke(this, _lastSessionType);
 
-                    //HandleReplaySave();
-
                 }
             }
 
             BroadcastTracker.Instance.OnRealTimeUpdate -= Instance_OnRealTimeUpdate;
         }).Start();
 
-    }
-
-    private void HandleReplaySave()
-    {
-        if (_lastReplaySave.AddHours(1) < DateTime.UtcNow)
-        {
-            LogWriter.WriteToLog($"Automatically Saving Replay after {_lastReplaySave.Subtract(DateTime.UtcNow)}");
-            _lastReplaySave = AccHotkeys.SaveReplay();
-        }
     }
 
     private void Instance_OnRealTimeUpdate(object sender, Broadcast.Structs.RealtimeUpdate e)

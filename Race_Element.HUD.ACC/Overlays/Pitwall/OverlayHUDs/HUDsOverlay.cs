@@ -13,7 +13,7 @@ internal sealed class HUDsOverlay : AbstractOverlay
     private readonly HUDsConfiguration _config = new();
     private sealed class HUDsConfiguration : OverlayConfiguration
     {
-        public HUDsConfiguration() => this.AllowRescale = true;
+        public HUDsConfiguration() => this.GenericConfiguration.AllowRescale = true;
     }
 
     private InfoPanel _panel;
