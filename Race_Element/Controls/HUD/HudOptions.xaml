@@ -44,6 +44,12 @@
                             Content="{materialDesign:PackIcon Kind=Visibility,Size=48}" HorizontalContentAlignment="Center" Foreground="DarkGray" Padding="0"
                             Cursor="Hand" Focusable="False" Style="{StaticResource MaterialDesignNavigationListBoxItem}" />
                     </ListBox>
+
+                    <ComboBox x:Name="ComboBoxHudReset" SelectedIndex="0" Margin="0,10,0,0" ToolTip="Reset either the HUD position or the HUD Configuration for the currently viewed HUD.">
+                        <ComboBoxItem>Reset</ComboBoxItem>
+                        <ComboBoxItem ToolTip="Centers the HUD on the primary monitor">Position</ComboBoxItem>
+                        <ComboBoxItem>Configuration</ComboBoxItem>
+                    </ComboBox>
                 </StackPanel>
             </Border>
         </Grid>

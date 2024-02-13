@@ -12,12 +12,54 @@ namespace RaceElement.Controls.HUD;
 
 internal class ConfigurationControls
 {
+    internal static void ResetConfigurationPosition(string overlayName)
+    {
+        OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(overlayName);
+
+
+        if (settings != null)
+        {
+            if (settings.Enabled)
+            {
+                MainWindow.Instance.EnqueueSnackbarMessage("Can't reset an active HUD, first disable it.");
+                return;
+            }
+
+            settings.X = (int)(SystemParameters.PrimaryScreenWidth / 2);
+            settings.Y = (int)(SystemParameters.PrimaryScreenHeight / 2);
+        }
+
+        SaveOverlaySettings(overlayName, settings);
+
+        MainWindow.Instance.EnqueueSnackbarMessage($"{overlayName} has been placed on the center of your primary monitor.\nYou may need to activate it to see the change.");
+    }
+
+    internal static bool ResetConfigurationFields(string overlayName)
+    {
+        OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(overlayName);
+
+        if (settings != null)
+        {
+            if (settings.Enabled)
+            {
+                MainWindow.Instance.EnqueueSnackbarMessage("Can't reset an active HUD, first disable it.");
+                return false;
+            }
+
+            settings.Config = new();
+        }
+
+        SaveOverlaySettings(overlayName, settings);
+        return true;
+    }
+
+
     internal static void SaveOverlayConfigFields(string overlayName, List<ConfigField> configFields)
     {
         OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(overlayName);
         if (settings == null)
         {
-            int screenMiddleX = (int)(SystemParameters.PrimaryScreenHeight / 2);
+            int screenMiddleX = (int)(SystemParameters.PrimaryScreenWidth / 2);
             int screenMiddleY = (int)(SystemParameters.PrimaryScreenHeight / 2);
             settings = new OverlaySettingsJson() { X = screenMiddleX, Y = screenMiddleY };
         }
@@ -59,7 +101,7 @@ internal class ConfigurationControls
         OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(overlayName);
         if (settings == null)
         {
-            int screenMiddleX = (int)(SystemParameters.PrimaryScreenHeight / 2);
+            int screenMiddleX = (int)(SystemParameters.PrimaryScreenWidth / 2);
             int screenMiddleY = (int)(SystemParameters.PrimaryScreenHeight / 2);
             settings = new OverlaySettingsJson() { X = screenMiddleX, Y = screenMiddleY, Config = OverlayConfiguration.GetConfigFields(HudOptions.Instance.overlayConfig) };
         }
