@@ -30,6 +30,11 @@ namespace RaceElement.Data.Games.iRacing
             }
         }
 
+        internal static void Stop()
+        {
+            _iRacingSDK?.Stop();
+        }
+
         internal static void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
         {
             try
