@@ -11,13 +11,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RaceElement.HUD.ACC.Overlays.Driving.PitstopHelper
+namespace RaceElement.HUD.ACC.Overlays.Driving.PressureHelper
 {
-    [Overlay(Name = "Pitstop Helper",
-Description = "Helps you with tyre pressure for a pitstop.\nIt considers your initial pressures to be set up correctly.")]
-    internal class PitstopHelperOverlay : AbstractOverlay
+    [Overlay(Name = "Pressure Helper",
+Description = "Helps you with tyre pressure for a pitstop.")]
+    internal class PressureHelperOverlay : AbstractOverlay
     {
-        private readonly PitstopHelperConfiguration _config = new();
+        private readonly PressureHelperConfiguration _config = new();
         private PressureInfoModel Model { get; set; } = new();
         private InfoPanel InfoPanel;
 
@@ -31,7 +31,7 @@ Description = "Helps you with tyre pressure for a pitstop.\nIt considers your in
             public float InitialAmbientTemp { get; set; } = 0;
         }
 
-        public PitstopHelperOverlay(Rectangle rectangle) : base(rectangle, "Pitstop Helper")
+        public PressureHelperOverlay(Rectangle rectangle) : base(rectangle, "Pressure Helper")
         {
             Width = 500;
             Height = 250;
@@ -58,7 +58,6 @@ Description = "Helps you with tyre pressure for a pitstop.\nIt considers your in
             RaceSessionTracker.Instance.OnNewSessionStarted -= Instance_OnNewSessionStarted;
             TyresTracker.Instance.OnTyresInfoChanged -= Instance_OnTyresInfoChanged;
         }
-
 
         public override bool ShouldRender() => true;
 
