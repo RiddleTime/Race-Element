@@ -1,6 +1,7 @@
 ﻿using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
+using RaceElement.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -111,6 +112,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         }
 
         _twitchClient.OnConnected += (s, e) => _messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} Race Element - Connected"));
+        _twitchClient.OnConnectionError += TwitchClient_OnConnectionError;
 
         if (!_config.Shape.AlwaysVisible)
         {
@@ -128,6 +130,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         {
             _twitchClient.RemoveChatCommandIdentifier(TwitchChatCommandHandler.ChatCommandCharacter);
             _twitchClient.OnChatCommandReceived -= _chatCommandHandler.OnChatCommandReceived;
+            _twitchClient.OnConnectionError -= TwitchClient_OnConnectionError;
         }
 
         _twitchClient.Disconnect();
@@ -142,6 +145,13 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _textBrushBot?.Dispose();
 
         _dividerPen?.Dispose();
+
+
+    }
+
+    private void TwitchClient_OnConnectionError(object sender, TwitchLib.Client.Events.OnConnectionErrorArgs e)
+    {
+        LogWriter.WriteToLog($"Twitch chat bot error: {e.Error}");
     }
 
     public sealed override bool ShouldRender()
@@ -156,7 +166,10 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         if (_isPreviewing) return;
 
         if (!_twitchClient.IsConnected)
-            _twitchClient.Connect();
+        {
+            _twitchClient.Reconnect();
+            _messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} chat hud Reconnecting..."));
+        }
 
         g.CompositingQuality = CompositingQuality.HighQuality;
         g.SmoothingMode = SmoothingMode.AntiAlias;
