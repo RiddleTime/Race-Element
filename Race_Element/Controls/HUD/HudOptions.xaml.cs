@@ -161,6 +161,7 @@ public partial class HudOptions : UserControl
                     LogWriter.WriteToLog(ex);
                 }
         }));
+
         Instance = this;
     }
 
@@ -509,7 +510,7 @@ public partial class HudOptions : UserControl
             m_GlobalHook.Dispose();
     }
 
-    private MousePositionOverlay mousePositionOverlay;
+    internal MousePositionOverlay mousePositionOverlay;
     private void SetRepositionMode(bool enabled)
     {
         gridOverlays.IsEnabled = !enabled;

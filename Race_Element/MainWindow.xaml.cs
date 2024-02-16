@@ -277,6 +277,8 @@ public partial class MainWindow : Window
         HudTrackers.StopAll();
         ACCTrackerDispose.Dispose();
         HudOptions.Instance.DisposeKeyboardHooks();
+        HudOptions.Instance.mousePositionOverlay?.Stop();
+        HudOptions.Instance.mousePositionOverlay?.Dispose();
         SteeringLockTracker.Stop();
         FileUtil.CleanDownloadCache();
 
@@ -295,6 +297,8 @@ public partial class MainWindow : Window
         HudTrackers.StopAll();
         ACCTrackerDispose.Dispose();
         HudOptions.Instance.DisposeKeyboardHooks();
+        HudOptions.Instance.mousePositionOverlay?.Stop();
+        HudOptions.Instance.mousePositionOverlay?.Dispose();
         SteeringLockTracker.Stop();
         FileUtil.CleanDownloadCache();
 
