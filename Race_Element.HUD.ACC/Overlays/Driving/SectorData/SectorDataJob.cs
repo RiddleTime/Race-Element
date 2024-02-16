@@ -5,12 +5,12 @@ using System;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.SectorData
 {
-    internal class SectorDataModel
+    internal record SectorDataModel
     {
         /// <summary>
         /// 0 indexed
         /// </summary>
-        public required int SectorIndex { get; set; }
+        public required int SectorIndex { get; init; }
 
         public required float VelocityMin { get; set; }
         public required float VelocityMax { get; set; }
