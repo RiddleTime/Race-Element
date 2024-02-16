@@ -74,7 +74,7 @@ public abstract class OverlayConfiguration
 
         foreach (var field in configFields)
         {
-            bool isGrouped = field.Name.Contains(".");
+            bool isGrouped = field.Name.Contains('.');
             if (isGrouped)
             {
                 string[] groupSplit = field.Name.Split('.');
