@@ -18,7 +18,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter;
     Description = "Beta",
     Version = 1.00,
     OverlayType = OverlayType.Drive,
-    OverlayCategory = OverlayCategory.Driving
+    OverlayCategory = OverlayCategory.Driving,
+    Authors = ["Reinier Klarenberg"]
 )]
 internal sealed class RadarOverlay : AbstractOverlay
 {

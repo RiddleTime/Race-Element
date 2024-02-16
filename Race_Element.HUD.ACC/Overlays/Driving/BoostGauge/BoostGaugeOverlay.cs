@@ -14,10 +14,7 @@ internal sealed class BoostGaugeOverlay : AbstractOverlay
     private readonly BoostConfiguration _config = new();
     private sealed class BoostConfiguration : OverlayConfiguration
     {
-        public BoostConfiguration()
-        {
-            GenericConfiguration.AllowRescale = true;
-        }
+        public BoostConfiguration() => GenericConfiguration.AllowRescale = true;
     }
 
     private readonly InfoPanel _panel;
