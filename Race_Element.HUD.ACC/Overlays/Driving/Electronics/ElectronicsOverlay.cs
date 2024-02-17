@@ -36,7 +36,7 @@ internal sealed class ElectronicsOverlay : AbstractOverlay
 
     public ElectronicsOverlay(Rectangle rectangle) : base(rectangle, "Electronics")
     {
-        RefreshRateHz = 2;
+        RefreshRateHz = 5;
     }
 
     public override void BeforeStart()
