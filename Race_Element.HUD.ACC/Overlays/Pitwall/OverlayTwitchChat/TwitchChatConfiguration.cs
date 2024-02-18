@@ -38,14 +38,11 @@ internal sealed class TwitchChatConfiguration : OverlayConfiguration
         public bool AlwaysVisible { get; init; } = true;
     }
 
-    [ConfigGrouping("Bot", "Adjust the twitch chat bot.")]
+    [ConfigGrouping("Bot", "If you've enabled the twitch Chat Bot HUD, this will allow you to also show the responses of the bot in the twitch chat hud.")]
     public BotGrouping Bot { get; init; } = new();
     public class BotGrouping
     {
-        [ToolTip("Enable or disable the chat bot")]
-        public bool IsEnabled { get; init; } = true;
-
-        [ToolTip("When enabled the bot responses will also be displayed in the Twitch Chat HUD.")]
+        [ToolTip("When enabled responses from the Twitch Chat Bot will also be displayed in the Twitch Chat HUD.")]
         public bool DisplayBotResponses { get; init; } = true;
     }
 
