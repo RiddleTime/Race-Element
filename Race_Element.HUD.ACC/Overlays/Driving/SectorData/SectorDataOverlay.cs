@@ -45,16 +45,16 @@ internal sealed class SectorDataOverlay : AbstractOverlay
         _Sectors.Insert(0, new SectorDataModel() { SectorIndex = 2, VelocityMin = 88, VelocityMax = 188 });
         _Sectors.Insert(0, new SectorDataModel() { SectorIndex = 0, VelocityMin = 101, VelocityMax = 140 });
         _Sectors.Insert(0, new SectorDataModel() { SectorIndex = 1, VelocityMin = 56, VelocityMax = 160 });
-        _Sectors.Insert(0, new SectorDataModel() { SectorIndex = 2, VelocityMin = 88, VelocityMax = 188.3f });
+        _Sectors.Insert(0, new SectorDataModel() { SectorIndex = 2, VelocityMin = 88, VelocityMax = 188.37f });
         _Sectors.Insert(0, new SectorDataModel() { SectorIndex = 0, VelocityMin = 101, VelocityMax = 140 });
         _Sectors.Insert(0, new SectorDataModel() { SectorIndex = 1, VelocityMin = 56, VelocityMax = 160 });
-        _Sectors.Insert(0, new SectorDataModel() { SectorIndex = 2, VelocityMin = 88, VelocityMax = 188.3f });
+        _Sectors.Insert(0, new SectorDataModel() { SectorIndex = 2, VelocityMin = 88, VelocityMax = 178.31f });
         _Sectors.Insert(0, new SectorDataModel() { SectorIndex = 0, VelocityMin = 101, VelocityMax = 140 });
         _Sectors.Insert(0, new SectorDataModel() { SectorIndex = 1, VelocityMin = 56, VelocityMax = 160 });
-        _Sectors.Insert(0, new SectorDataModel() { SectorIndex = 2, VelocityMin = 88, VelocityMax = 188.3f });
+        _Sectors.Insert(0, new SectorDataModel() { SectorIndex = 2, VelocityMin = 88, VelocityMax = 189.33f });
         _Sectors.Insert(0, new SectorDataModel() { SectorIndex = 0, VelocityMin = 101, VelocityMax = 140 });
         _Sectors.Insert(0, new SectorDataModel() { SectorIndex = 1, VelocityMin = 56, VelocityMax = 160 });
-        _Sectors.Insert(0, new SectorDataModel() { SectorIndex = 2, VelocityMin = 88, VelocityMax = 188.3f });
+        _Sectors.Insert(0, new SectorDataModel() { SectorIndex = 2, VelocityMin = 88, VelocityMax = 187.34f });
     }
 
     public sealed override void BeforeStart()
