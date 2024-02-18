@@ -158,7 +158,7 @@ internal sealed class SectorDataOverlay : AbstractOverlay
     {
         for (int i = 0; i < _config.Table.Rows; i++)
         {
-            if (i > _Sectors.Count)
+            if (i >= _Sectors.Count)
                 break;
 
             DrawableTextCell sectorCell = (DrawableTextCell)_graphicsGrid.Grid[1 + i][0];
