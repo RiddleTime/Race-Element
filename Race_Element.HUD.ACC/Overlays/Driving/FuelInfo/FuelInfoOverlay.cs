@@ -11,7 +11,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayFuelInfo;
     Description = "A panel showing information about the fuel: laps left, fuel to end of race. Optionally showing stint information.",
     Version = 1.00,
     OverlayType = OverlayType.Drive,
-    OverlayCategory = OverlayCategory.Car)]
+    OverlayCategory = OverlayCategory.Car,
+Authors = ["Kris Vickers", "Reinier Klarenberg"])]
 internal sealed class FuelInfoOverlay : AbstractOverlay
 {
     private readonly InfoPanel _infoPanel;

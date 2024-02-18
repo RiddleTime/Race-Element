@@ -12,7 +12,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlaySpeedometer;
 [Overlay(Name = "Speedometer",
     Description = "Displays a circular gauge with the current speed in km/h.",
     OverlayCategory = OverlayCategory.Driving,
-    OverlayType = OverlayType.Drive)]
+    OverlayType = OverlayType.Drive,
+Authors = ["Reinier Klarenberg"])]
 internal sealed class SpeedometerOverlay(Rectangle rectangle) : AbstractOverlay(rectangle, "Speedometer")
 {
     private readonly SpeedometerConfiguration _config = new();

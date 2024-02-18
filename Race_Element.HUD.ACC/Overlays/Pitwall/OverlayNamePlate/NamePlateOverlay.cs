@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayNamePlate;
 
 #if DEBUG
-[Overlay(Name = "Name plate", Description = "A plate/bar")]
+[Overlay(Name = "Name plate", Description = "A plate/bar", OverlayType = OverlayType.Pitwall)]
 #endif
 internal sealed class NamePlateOverlay : AbstractOverlay
 {

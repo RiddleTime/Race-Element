@@ -6,7 +6,8 @@ using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayRaceInfo;
 
-[Overlay(Name = "Race Info", Description = "(BETA) Provides information for the current race session.", OverlayType = OverlayType.Drive, Version = 1.00)]
+[Overlay(Name = "Race Info", Description = "(BETA) Provides information for the current race session.", OverlayType = OverlayType.Drive, Version = 1.00,
+Authors = ["Reinier Klarenberg"])]
 internal class RaceInfoOverlay : AbstractOverlay
 {
     private readonly RaceInfoConfig _config = new();

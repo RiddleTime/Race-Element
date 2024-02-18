@@ -11,7 +11,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayInputValues;
 [Overlay(Name = "Input Values",
     Description = "Shows raw Throttle and Brake data.",
     OverlayCategory = OverlayCategory.Inputs,
-    OverlayType = OverlayType.Drive
+    OverlayType = OverlayType.Drive,
+Authors = ["Reinier Klarenberg"]
     )]
 internal class InputValuesOverlay : AbstractOverlay
 {

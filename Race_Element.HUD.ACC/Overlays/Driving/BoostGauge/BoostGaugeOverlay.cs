@@ -8,7 +8,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayBoostGauge;
 
 [Overlay(Name = "Boost Gauge", Version = 1.00, OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Driving,
-  Description = "Progress bar showing boost percentage.")]
+  Description = "Progress bar showing boost percentage.",
+Authors = ["Reinier Klarenberg"])]
 internal sealed class BoostGaugeOverlay : AbstractOverlay
 {
     private readonly BoostConfiguration _config = new();

@@ -6,7 +6,8 @@ using System.Drawing;
 namespace RaceElement.HUD.ACC.Overlays.OverlayEcuMapInfo;
 
 [Overlay(Name = "ECU Maps", Version = 1.00, OverlayType = OverlayType.Drive,
-    Description = "A panel showing information about the current ECU Map.")]
+    Description = "A panel showing information about the current ECU Map.",
+Authors = ["Reinier Klarenberg"])]
 internal sealed class EcuMapOverlay : AbstractOverlay
 {
     private const int PanelWidth = 270;

@@ -16,7 +16,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator;
     Description = "Shift Bar with RPM Text. Adjustable colors and percentages.",
     Version = 1.00,
     OverlayType = OverlayType.Drive,
-    OverlayCategory = OverlayCategory.Driving)]
+    OverlayCategory = OverlayCategory.Driving,
+Authors = ["Reinier Klarenberg"])]
 internal sealed class ShiftIndicatorOverlay : AbstractOverlay
 {
     private readonly ShiftIndicatorConfiguration _config = new();

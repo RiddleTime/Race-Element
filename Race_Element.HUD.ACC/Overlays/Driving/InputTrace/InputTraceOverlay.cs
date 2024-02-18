@@ -6,7 +6,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace;
 
 [Overlay(Name = "Input Trace", Version = 1.00, OverlayType = OverlayType.Drive,
     Description = "Live graph of steering, throttle and brake inputs.",
-    OverlayCategory = OverlayCategory.Inputs)]
+    OverlayCategory = OverlayCategory.Inputs,
+Authors = ["Reinier Klarenberg"])]
 internal sealed class InputTraceOverlay : AbstractOverlay
 {
     private readonly InputTraceConfig _config = new();

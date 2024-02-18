@@ -12,7 +12,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind;
 [Overlay(Name = "Wind Direction", Description = "Shows wind direction relative to car heading.",
     OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Track,
-    Version = 1.00)]
+    Version = 1.00,
+Authors = ["Reinier Klarenberg"])]
 internal sealed class WindDirectionOverlay : AbstractOverlay
 {
     private readonly WindDirectionConfiguration _config = new();

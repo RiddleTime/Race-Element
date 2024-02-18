@@ -13,7 +13,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo;
 
 [Overlay(Name = "Tyre Info", Version = 1.00, OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Car,
-    Description = "Shows tyre temperatures and more. Put it on top of vanilla in-game tyre hud.")]
+    Description = "Shows tyre temperatures and more. Put it on top of vanilla in-game tyre hud.",
+Authors = ["Reinier Klarenberg"])]
 internal sealed class TyreInfoOverlay : AbstractOverlay
 {
     private readonly TyreInfoConfig _config = new();
