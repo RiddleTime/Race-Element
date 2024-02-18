@@ -16,7 +16,8 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseXFree;
 [Overlay(Name = "DualSense X Free",
     Description = "Adds variable trigger haptics and feedback for the DualSense 5 controller using DualSense X 1.4.9.\n See Guide in the Discord of Race Element for instructions.",
     OverlayCategory = OverlayCategory.Inputs,
-    OverlayType = OverlayType.Pitwall)]
+    OverlayType = OverlayType.Pitwall,
+Authors = ["Reinier Klarenberg"])]
 internal sealed class DualSenseXFreeOverlay : AbstractOverlay
 {
     private readonly DualSenseXConfiguration _config = new();
