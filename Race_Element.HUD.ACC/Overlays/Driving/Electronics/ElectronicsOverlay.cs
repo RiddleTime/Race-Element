@@ -12,7 +12,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayElectronics;
 [Overlay(Name = "Electronics",
     Description = "Shows current Brake Bias, ABS, TC1, TC2 and engine map setting.",
     OverlayCategory = OverlayCategory.Car,
-    OverlayType = OverlayType.Drive)]
+    OverlayType = OverlayType.Drive,
+Authors = ["Reinier Klarenberg"])]
 internal sealed class ElectronicsOverlay : AbstractOverlay
 {
     private readonly ElectronicsConfiguration _config = new();
@@ -36,7 +37,7 @@ internal sealed class ElectronicsOverlay : AbstractOverlay
 
     public ElectronicsOverlay(Rectangle rectangle) : base(rectangle, "Electronics")
     {
-        RefreshRateHz = 2;
+        RefreshRateHz = 5;
     }
 
     public override void BeforeStart()

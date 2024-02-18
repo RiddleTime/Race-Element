@@ -3,6 +3,7 @@ using RaceElement.HUD.Overlay.Internal;
 using RaceElement.Util;
 using RaceElement.Util.SystemExtensions;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
@@ -15,7 +16,8 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseXFree;
 [Overlay(Name = "DualSense X Free",
     Description = "Adds variable trigger haptics and feedback for the DualSense 5 controller using DualSense X 1.4.9.\n See Guide in the Discord of Race Element for instructions.",
     OverlayCategory = OverlayCategory.Inputs,
-    OverlayType = OverlayType.Pitwall)]
+    OverlayType = OverlayType.Pitwall,
+Authors = ["Reinier Klarenberg"])]
 internal sealed class DualSenseXFreeOverlay : AbstractOverlay
 {
     private readonly DualSenseXConfiguration _config = new();
@@ -43,7 +45,8 @@ internal sealed class DualSenseXFreeOverlay : AbstractOverlay
 
     public override void BeforeStart()
     {
-        _textFile = new FileInfo($"{FileUtil.AppDirectory}{Path.DirectorySeparatorChar}DualSenseXTriggerStates.txt");
+        _textFile = new FileInfo($"{AppContext.BaseDirectory}{Path.DirectorySeparatorChar}DualSenseXTriggerStates.txt");
+        Debug.WriteLine(_textFile.FullName);
         if (!_textFile.Exists)
             _textFile.Create();
     }

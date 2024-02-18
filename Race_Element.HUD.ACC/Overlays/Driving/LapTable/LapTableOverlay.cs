@@ -13,8 +13,11 @@ using System.Linq;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable;
 
-[Overlay(Name = "Lap Table", Description = "A table showing time for each lap and optionally sectors.", OverlayType = OverlayType.Drive, Version = 1.00,
-    OverlayCategory = OverlayCategory.Lap)]
+[Overlay(Name = "Lap Table",
+Description = "A table showing time for each lap and optionally sectors.",
+OverlayType = OverlayType.Drive, Version = 1.00,
+OverlayCategory = OverlayCategory.Lap,
+Authors = ["Reinier Klarenberg"])]
 internal sealed class LapTableOverlay : AbstractOverlay
 {
     private readonly LapTimeTableConfiguration _config = new();

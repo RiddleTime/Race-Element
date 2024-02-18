@@ -277,6 +277,8 @@ public partial class MainWindow : Window
         HudTrackers.StopAll();
         ACCTrackerDispose.Dispose();
         HudOptions.Instance.DisposeKeyboardHooks();
+        HudOptions.Instance.mousePositionOverlay?.Stop();
+        HudOptions.Instance.mousePositionOverlay?.Dispose();
         SteeringLockTracker.Stop();
         FileUtil.CleanDownloadCache();
 
@@ -295,6 +297,8 @@ public partial class MainWindow : Window
         HudTrackers.StopAll();
         ACCTrackerDispose.Dispose();
         HudOptions.Instance.DisposeKeyboardHooks();
+        HudOptions.Instance.mousePositionOverlay?.Stop();
+        HudOptions.Instance.mousePositionOverlay?.Dispose();
         SteeringLockTracker.Stop();
         FileUtil.CleanDownloadCache();
 
@@ -443,7 +447,7 @@ public partial class MainWindow : Window
 
     private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        DecreaseOpacity(0.850, 0.025);
+        DecreaseOpacity(0.825, 0.025);
         DragMove();
         e.Handled = true;
     }

@@ -6,6 +6,7 @@ using RaceElement.Data.ACC.Cars;
 using RaceElement.Data.ACC.Database.LapDataDB;
 using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.Tracker.Laps;
+using RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
 using RaceElement.Util;
 using System;
 using System.Diagnostics;
@@ -18,11 +19,11 @@ using WebSocketSharp;
 using static RaceElement.Data.ACC.EntryList.EntryListTracker;
 using static RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat.TwitchChatOverlay;
 
-namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
+namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChatBot;
 
-internal class TwitchChatCommandHandler
+internal class TwitchChatBotCommandHandler
 {
-    private readonly TwitchChatOverlay _overlay;
+    private readonly TwitchChatBotOverlay _overlay;
 
     private readonly TwitchClient _client;
 
@@ -39,7 +40,7 @@ internal class TwitchChatCommandHandler
     }
     private readonly ChatResponse[] Responses;
 
-    public TwitchChatCommandHandler(TwitchChatOverlay overlay, TwitchClient client)
+    public TwitchChatBotCommandHandler(TwitchChatBotOverlay overlay, TwitchClient client)
     {
         _overlay = overlay;
         _client = client;
@@ -88,8 +89,8 @@ internal class TwitchChatCommandHandler
 
             _client.SendReply(_client.JoinedChannels[0], e.Command.ChatMessage.Id, replyMessage);
 
-            if (_overlay._config.Bot.DisplayBotResponses && !command.Equals("commands"))
-                _overlay._messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} - {replyMessage}"));
+            if (!command.Equals("commands"))
+                TwitchChatOverlay.Messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} - {replyMessage}"));
         }
         catch (Exception ex)
         {

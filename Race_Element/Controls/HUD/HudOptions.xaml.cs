@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -161,6 +162,7 @@ public partial class HudOptions : UserControl
                     LogWriter.WriteToLog(ex);
                 }
         }));
+
         Instance = this;
     }
 
@@ -509,7 +511,7 @@ public partial class HudOptions : UserControl
             m_GlobalHook.Dispose();
     }
 
-    private MousePositionOverlay mousePositionOverlay;
+    internal MousePositionOverlay mousePositionOverlay;
     private void SetRepositionMode(bool enabled)
     {
         gridOverlays.IsEnabled = !enabled;
@@ -598,7 +600,20 @@ public partial class HudOptions : UserControl
             };
             if (overlayAttribute.Description != string.Empty)
             {
-                listViewItem.ToolTip = overlayAttribute.Description;
+                StringBuilder tooltipBuilder = new StringBuilder(overlayAttribute.Description);
+                string toolTip = overlayAttribute.Description;
+                if (overlayAttribute.Authors.Length > 0)
+                {
+                    tooltipBuilder.Append("\n\nAuthors: ");
+                    for (int i = 0; i < overlayAttribute.Authors.Length; i++)
+                    {
+                        tooltipBuilder.Append(overlayAttribute.Authors[i]);
+
+                        tooltipBuilder.Append($"{(i < overlayAttribute.Authors.Length - 1 ? ", " : ".")}");
+                    }
+                }
+
+                listViewItem.ToolTip = tooltipBuilder.ToString();
                 ToolTipService.SetPlacement(listViewItem, PlacementMode.Right);
                 ToolTipService.SetInitialShowDelay(listViewItem, 0);
             }

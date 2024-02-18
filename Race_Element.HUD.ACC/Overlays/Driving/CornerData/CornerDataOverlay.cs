@@ -18,7 +18,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData;
 [Overlay(Name = "Corner Data",
         Description = "(early access/alpha)\nShows Corner Delta and other data like speeds for each corner.",
         OverlayCategory = OverlayCategory.Lap,
-        OverlayType = OverlayType.Drive)]
+        OverlayType = OverlayType.Drive,
+Authors = ["Reinier Klarenberg"])]
 internal sealed class CornerDataOverlay : AbstractOverlay
 {
     internal readonly CornerDataConfiguration _config = new();

@@ -17,7 +17,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayAverageLapTime;
 Description = "Shows last valid laps and the average lap time.",
 OverlayType = OverlayType.Drive,
 OverlayCategory = OverlayCategory.Lap,
-Version = 1.00)]
+Version = 1.00,
+Authors = ["FG"])]
 internal class AverageLapTimeOverlay : AbstractOverlay
 {
 
@@ -93,7 +94,7 @@ internal class AverageLapTimeOverlay : AbstractOverlay
         {
             _fastestAvgTime = averageLapTime;
         }
-            
+
     }
 
     public override void Render(Graphics g)

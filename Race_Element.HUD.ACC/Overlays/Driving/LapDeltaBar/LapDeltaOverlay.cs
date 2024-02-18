@@ -14,7 +14,8 @@ using System.Linq;
 namespace RaceElement.HUD.ACC.Overlays.OverlayLapDeltaBar;
 
 [Overlay(Name = "Lap Delta Bar", Description = "A customizable Laptime Delta Bar", OverlayType = OverlayType.Drive, Version = 1,
-    OverlayCategory = OverlayCategory.Lap)]
+    OverlayCategory = OverlayCategory.Lap,
+Authors = ["Reinier Klarenberg"])]
 internal class LapDeltaOverlay : AbstractOverlay
 {
     private readonly LapTimeDeltaConfiguration _config = new();

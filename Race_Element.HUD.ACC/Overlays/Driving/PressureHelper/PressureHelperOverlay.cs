@@ -14,7 +14,8 @@ using System.Threading.Tasks;
 namespace RaceElement.HUD.ACC.Overlays.Driving.PressureHelper
 {
     [Overlay(Name = "Pressure Helper",
-Description = "Helps you with setting up tyre pressures.\n(Alpha version, in progress but could be tested to verify data, options won't do anything for now.)")]
+Description = "Helps you with setting up tyre pressures.\n(Alpha version, in progress but could be tested to verify data, options won't do anything for now.)",
+Authors = ["Reinier Klarenberg"])]
     internal class PressureHelperOverlay : AbstractOverlay
     {
         private readonly PressureHelperConfiguration _config = new();

@@ -13,7 +13,8 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX;
 [Overlay(Name = "DualSense X",
     Description = "Adds active triggers for the DualSense 5 controller using DSX on steam.\n See Guide in the Discord of Race Element for instructions.",
     OverlayCategory = OverlayCategory.Inputs,
-    OverlayType = OverlayType.Pitwall)]
+    OverlayType = OverlayType.Pitwall,
+Authors = ["Reinier Klarenberg"])]
 internal sealed class DualSenseXOverlay : AbstractOverlay
 {
     private readonly DualSenseXConfiguration _config = new();
@@ -52,7 +53,7 @@ internal sealed class DualSenseXOverlay : AbstractOverlay
             SetLighting();
         }
 
-        Packet tcPacket = TriggerHaptics.HandleAcceleration(pagePhysics, _config.ThrottleHaptics);
+        Packet tcPacket = TriggerHaptics.HandleAcceleration(ref pagePhysics, _config.ThrottleHaptics);
         if (tcPacket != null)
         {
             Send(tcPacket);
@@ -60,7 +61,7 @@ internal sealed class DualSenseXOverlay : AbstractOverlay
             //HandleResponse(response);
         }
 
-        Packet absPacket = TriggerHaptics.HandleBraking(pagePhysics, _config.BrakeHaptics);
+        Packet absPacket = TriggerHaptics.HandleBraking(ref pagePhysics, _config.BrakeHaptics);
         if (absPacket != null)
         {
             Send(absPacket);
@@ -117,8 +118,7 @@ internal sealed class DualSenseXOverlay : AbstractOverlay
             Debug.WriteLine("===================================================================");
 
             Debug.WriteLine($"Status: {response.Status}");
-            DateTime CurrentTime = DateTime.Now;
-            TimeSpan Timespan = CurrentTime - _timeSent;
+            TimeSpan Timespan = DateTime.Now - _timeSent;
             // First send shows high Milliseconds response time for some reason
             Debug.WriteLine($"Time Received: {response.TimeReceived}, took: {Timespan.TotalMilliseconds} to receive response from DSX");
             Debug.WriteLine($"isControllerConnected: {response.isControllerConnected}");

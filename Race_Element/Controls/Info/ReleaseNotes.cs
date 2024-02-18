@@ -6,6 +6,11 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.3.2", "- Add Sector Data HUD: Shows you the Min and Max velocity after each sector."+
+                    "\n- Add Twitch Chat Bot: Removed it from the chat HUD itself, this way you can only enable the bot without using the twitch chat HUD. There is still an option to display the bot commands in the chat hud itself." +
+                    " You can use the same credentials as you have used in the twitch chat hud."+
+                    "\n- Fix Mouse Position HUD disposal at shutdown of app when movement mode was still active."+
+                    "\n- Fix DualSenseX Free, now places the trigger states text file in correct directory."},
         {"1.0.3.0", "- Decrease shutdown time of app."+
                     "\n- HUD Tab:"+
                     "\n  - Added buttons to reset the position or the configuration for a HUD."+

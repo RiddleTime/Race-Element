@@ -12,7 +12,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip;
 [Overlay(Name = "Wheel Slip",
     Description = "Shows wheel slip angle and ratio of each tyre.",
     OverlayCategory = OverlayCategory.Physics,
-    OverlayType = OverlayType.Drive)]
+    OverlayType = OverlayType.Drive,
+Authors = ["Reinier Klarenberg"])]
 internal sealed class WheelSlipOverlay : AbstractOverlay
 {
     private readonly WheelSlipConfiguration _config = new();

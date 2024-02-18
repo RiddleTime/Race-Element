@@ -19,7 +19,8 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames;
     Description = "Shows corner/sector names for each track.",
     OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Track,
-    Version = 1.00)]
+    Version = 1.00,
+Authors = ["Reinier Klarenberg"])]
 internal sealed class TrackCornersOverlay : AbstractOverlay
 {
     private readonly CornerNamesConfig _config = new();

@@ -1,6 +1,7 @@
 ﻿using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
+using RaceElement.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,7 +14,7 @@ using TwitchLib.Communication.Models;
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
 
 [Overlay(Name = "Twitch Chat",
-Description = "Shows twitch chat, newest messages appear at the top. (type +commands in chat for all available ones)\nTo allow Race Element to connect to the twitch api create the O Auth token at twitchapps.com/tmi",
+Description = "Shows twitch chat, newest messages appear at the top.\nTo allow Race Element to connect to the twitch api create the O Auth token at twitchapps.com/tmi",
 OverlayType = OverlayType.Pitwall,
 Authors = ["Reinier Klarenberg"])]
 internal sealed class TwitchChatOverlay : AbstractOverlay
@@ -21,11 +22,8 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
     internal readonly TwitchChatConfiguration _config = new();
 
     private TwitchClient _twitchClient = null;
-    private TwitchChatCommandHandler _chatCommandHandler;
 
-    internal List<(MessageType, string)> _messages = [];
-
-    private bool _isPreviewing = false;
+    internal static readonly List<(MessageType, string)> Messages = [];
 
     private Font _font;
     private readonly StringFormat _stringFormat = new() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Near };
@@ -54,8 +52,6 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         RefreshRateHz = 0.5;
     }
 
-    public sealed override void SetupPreviewData() => _isPreviewing = true;
-
     public sealed override void BeforeStart()
     {
         _cachedBackground = new CachedBitmap(_config.Shape.Width, _config.Shape.Height, g =>
@@ -72,12 +68,15 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _dividerPen = new(new SolidBrush(Color.FromArgb(25, _config.Colors.TextColor)), 0.5f);
         _font = FontUtil.FontRoboto(11);
 
+        if (!IsPreviewing)
+            Messages.Clear();
+
         SetupTwitchClient();
     }
 
     private void SetupTwitchClient()
     {
-        if (_isPreviewing) return;
+        if (IsPreviewing) return;
 
         var credentials = new TwitchLib.Client.Models.ConnectionCredentials(_config.Credentials.TwitchUser, _config.Credentials.OAuthToken);
         var clientOptions = new ClientOptions
@@ -91,26 +90,23 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _twitchClient.Initialize(credentials, _config.Credentials.TwitchUser);
         _twitchClient.OnMessageReceived += (s, e) =>
         {
+            if (e.ChatMessage.IsBroadcaster && e.ChatMessage.ChatReply != null)
+                return;
+
             if (e.ChatMessage.Bits > 0)
-                _messages.Add(new(MessageType.Bits, $"{DateTime.Now:HH:mm} {e.ChatMessage.DisplayName} cheered {e.ChatMessage.Bits} bits: {e.ChatMessage.Message}"));
+                Messages.Add(new(MessageType.Bits, $"{DateTime.Now:HH:mm} {e.ChatMessage.DisplayName} cheered {e.ChatMessage.Bits} bits: {e.ChatMessage.Message}"));
             else
-                _messages.Add(new(MessageType.Chat, $"{DateTime.Now:HH:mm} {e.ChatMessage.DisplayName}: {e.ChatMessage.Message}"));
+                Messages.Add(new(MessageType.Chat, $"{DateTime.Now:HH:mm} {e.ChatMessage.DisplayName}: {e.ChatMessage.Message}"));
 
         };
-        _twitchClient.OnRaidNotification += (s, e) => _messages.Add(new(MessageType.Raided, $"{e.RaidNotification.DisplayName} has raided the channel with {e.RaidNotification.MsgParamViewerCount} viewers."));
-        _twitchClient.OnNewSubscriber += (s, e) => _messages.Add(new(MessageType.Subscriber, $"{e.Subscriber.DisplayName} Subscribed! ({e.Subscriber.SubscriptionPlanName})"));
-        _twitchClient.OnReSubscriber += (s, e) => _messages.Add(new(MessageType.Subscriber, $"{e.ReSubscriber.DisplayName} Resubscribed! ({e.ReSubscriber.SubscriptionPlanName})"));
-        _twitchClient.OnPrimePaidSubscriber += (s, e) => _messages.Add(new(MessageType.Subscriber, $"{e.PrimePaidSubscriber.DisplayName} Subscribed with Prime!"));
-        _twitchClient.OnGiftedSubscription += (s, e) => _messages.Add(new(MessageType.Subscriber, $"{e.GiftedSubscription.DisplayName} gifted a subscription ({e.GiftedSubscription.MsgParamSubPlanName}) to {e.GiftedSubscription.MsgParamRecipientDisplayName}"));
+        _twitchClient.OnRaidNotification += (s, e) => Messages.Add(new(MessageType.Raided, $"{e.RaidNotification.DisplayName} has raided the channel with {e.RaidNotification.MsgParamViewerCount} viewers."));
+        _twitchClient.OnNewSubscriber += (s, e) => Messages.Add(new(MessageType.Subscriber, $"{e.Subscriber.DisplayName} Subscribed! ({e.Subscriber.SubscriptionPlanName})"));
+        _twitchClient.OnReSubscriber += (s, e) => Messages.Add(new(MessageType.Subscriber, $"{e.ReSubscriber.DisplayName} Resubscribed! ({e.ReSubscriber.SubscriptionPlanName})"));
+        _twitchClient.OnPrimePaidSubscriber += (s, e) => Messages.Add(new(MessageType.Subscriber, $"{e.PrimePaidSubscriber.DisplayName} Subscribed with Prime!"));
+        _twitchClient.OnGiftedSubscription += (s, e) => Messages.Add(new(MessageType.Subscriber, $"{e.GiftedSubscription.DisplayName} gifted a subscription ({e.GiftedSubscription.MsgParamSubPlanName}) to {e.GiftedSubscription.MsgParamRecipientDisplayName}"));
 
-        if (_config.Bot.IsEnabled)
-        {
-            _chatCommandHandler = new(this, _twitchClient);
-            _twitchClient.AddChatCommandIdentifier(TwitchChatCommandHandler.ChatCommandCharacter);
-            _twitchClient.OnChatCommandReceived += _chatCommandHandler.OnChatCommandReceived;
-        }
-
-        _twitchClient.OnConnected += (s, e) => _messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} Race Element - Connected"));
+        _twitchClient.OnConnected += (s, e) => Messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} Race Element - Chat HUD - Connected"));
+        _twitchClient.OnConnectionError += TwitchClient_OnConnectionError;
 
         if (!_config.Shape.AlwaysVisible)
         {
@@ -121,14 +117,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
 
     public sealed override void BeforeStop()
     {
-        if (_isPreviewing) return;
-
-
-        if (_config.Bot.IsEnabled)
-        {
-            _twitchClient.RemoveChatCommandIdentifier(TwitchChatCommandHandler.ChatCommandCharacter);
-            _twitchClient.OnChatCommandReceived -= _chatCommandHandler.OnChatCommandReceived;
-        }
+        if (IsPreviewing) return;
 
         _twitchClient.Disconnect();
 
@@ -144,6 +133,11 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _dividerPen?.Dispose();
     }
 
+    private void TwitchClient_OnConnectionError(object sender, TwitchLib.Client.Events.OnConnectionErrorArgs e)
+    {
+        LogWriter.WriteToLog($"Twitch chat bot error: {e.Error}");
+    }
+
     public sealed override bool ShouldRender()
     {
         if (_config.Shape.AlwaysVisible)
@@ -153,10 +147,13 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
     }
     public sealed override void Render(Graphics g)
     {
-        if (_isPreviewing) return;
+        if (IsPreviewing) return;
 
         if (!_twitchClient.IsConnected)
+        {
             _twitchClient.Connect();
+            //Messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} chat hud Reconnecting..."));
+        }
 
         g.CompositingQuality = CompositingQuality.HighQuality;
         g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -165,13 +162,16 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         if (_config.Colors.BackgroundOpacity != 0)
             _cachedBackground?.Draw(g, 0, 0, _config.Shape.Width, _config.Shape.Height);
 
-        if (_messages.Count > 0)
+        if (Messages.Count > 0)
         {
             int y = _config.Shape.Direction == TwitchChatConfiguration.Direction.TopToBottom ? 0 : Height;
 
             Action<int, TwitchChatConfiguration.Direction> func = (index, direction) =>
             {
-                string message = _messages[index].Item2;
+                if (!_config.Bot.DisplayBotResponses && Messages[index].Item1 == MessageType.Bot)
+                    return;
+
+                string message = Messages[index].Item2;
                 var size = g.MeasureString(message, _font, _config.Shape.Width, _stringFormat);
                 int directionalHeight = (int)Math.Ceiling(size.Height);
 
@@ -188,7 +188,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
                 if (direction == TwitchChatConfiguration.Direction.BottomToTop)
                     actualY -= directionalHeight;
 
-                g.DrawStringWithShadow(message, _font, GetMessageBrush(_messages[index].Item1), new RectangleF(0, actualY, size.Width, size.Height), _stringFormat);
+                g.DrawStringWithShadow(message, _font, GetMessageBrush(Messages[index].Item1), new RectangleF(0, actualY, size.Width, size.Height), _stringFormat);
 
                 if (_config.Colors.BackgroundOpacity != 0) // draw divider line
                 {
@@ -202,11 +202,11 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
             };
 
 
-            for (int i = _messages.Count - 1; i >= 0 && y != -1; i--)
+            for (int i = Messages.Count - 1; i >= 0 && y != -1; i--)
                 func(i, _config.Shape.Direction);
 
-            if (_messages.Count > 100)
-                _messages.RemoveRange(0, 50);
+            if (Messages.Count > 100)
+                Messages.RemoveRange(0, 50);
         }
     }
 
