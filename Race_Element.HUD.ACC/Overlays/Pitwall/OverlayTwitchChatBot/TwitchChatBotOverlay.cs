@@ -10,7 +10,7 @@ using TwitchLib.Communication.Clients;
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChatBot;
 
 [Overlay(Name = "Twitch Chat Bot",
-Description = "+commands in chat for all commands\nTo allow Race Element to connect to the twitch api create the O Auth token at twitchapps.com/tmi",
+Description = "(type +commands in chat for all available ones)\nTo allow Race Element to connect to the twitch api create the O Auth token at twitchapps.com/tmi",
 OverlayType = OverlayType.Pitwall,
 Authors = ["Reinier Klarenberg"])]
 internal sealed class TwitchChatBotOverlay : AbstractOverlay
@@ -53,7 +53,7 @@ internal sealed class TwitchChatBotOverlay : AbstractOverlay
         _twitchClient.OnConnected += (s, e) => Messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} Race Element - Chat Bot - Connected"));
         _twitchClient.OnDisconnected += (s, e) => Messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} Race Element - Chat Bot - Disconnected"));
         _twitchClient.OnConnectionError += TwitchClient_OnConnectionError;
-      
+
     }
     private void TwitchClient_OnConnectionError(object sender, TwitchLib.Client.Events.OnConnectionErrorArgs e)
     {
