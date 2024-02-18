@@ -5,7 +5,7 @@ using System;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.SectorData
 {
-    internal record SectorDataModel
+    internal sealed record SectorDataModel
     {
         /// <summary>
         /// 0 indexed
@@ -16,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.SectorData
         public required float VelocityMax { get; set; }
     }
 
-    internal class SectorDataJob : AbstractLoopJob
+    internal sealed class SectorDataJob : AbstractLoopJob
     {
         private int _lastSectorIndex = -1;
 

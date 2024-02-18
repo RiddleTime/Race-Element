@@ -20,17 +20,6 @@ internal sealed class SectorDataOverlay : AbstractOverlay
 {
     private readonly SectorDataConfiguration _config = new();
 
-
-    /*
-
-        | Sector | vMin   | vMax   |
-        | 3      | 110.99 | 236.29 |
-        | 2      | 60.97  | 246.56 |
-        | 1      | 96.59  | 245.33 |
-
-     */
-
-
     /// <summary>
     /// New sector at 0 index;
     /// </summary>
@@ -49,7 +38,7 @@ internal sealed class SectorDataOverlay : AbstractOverlay
         RefreshRateHz = 0.5f;
     }
 
-    public override void SetupPreviewData()
+    public sealed override void SetupPreviewData()
     {
         _Sectors.Insert(0, new SectorDataModel() { SectorIndex = 0, VelocityMin = 101, VelocityMax = 140 });
         _Sectors.Insert(0, new SectorDataModel() { SectorIndex = 1, VelocityMin = 56, VelocityMax = 160 });
@@ -68,7 +57,7 @@ internal sealed class SectorDataOverlay : AbstractOverlay
         _Sectors.Insert(0, new SectorDataModel() { SectorIndex = 2, VelocityMin = 88, VelocityMax = 188.3f });
     }
 
-    public override void BeforeStart()
+    public sealed override void BeforeStart()
     {
         float scale = this.Scale;
         if (IsPreviewing) scale = 1f;
@@ -152,7 +141,7 @@ internal sealed class SectorDataOverlay : AbstractOverlay
         Debug.WriteLine($"Sector {e.SectorIndex + 1} completed:\n{JsonConvert.SerializeObject(e)}");
     }
 
-    public override void BeforeStop()
+    public sealed override void BeforeStop()
     {
         _graphicsGrid?.Dispose();
         _font?.Dispose();
@@ -166,23 +155,21 @@ internal sealed class SectorDataOverlay : AbstractOverlay
         RaceSessionTracker.Instance.OnNewSessionStarted -= Instance_OnNewSessionStarted;
     }
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
-
-
         for (int i = 0; i < _config.Table.Rows; i++)
         {
             if (i > _Sectors.Count)
                 break;
 
             DrawableTextCell sectorCell = (DrawableTextCell)_graphicsGrid.Grid[1 + i][0];
-            sectorCell.UpdateText($"{_Sectors[i].SectorIndex + 1}");
+            sectorCell?.UpdateText($"{_Sectors[i].SectorIndex + 1}");
 
             DrawableTextCell vMinCell = (DrawableTextCell)_graphicsGrid.Grid[1 + i][1];
-            vMinCell.UpdateText($"{_Sectors[i].VelocityMin:F2}");
+            vMinCell?.UpdateText($"{_Sectors[i].VelocityMin:F2}");
 
             DrawableTextCell vMaxCell = (DrawableTextCell)_graphicsGrid.Grid[1 + i][2];
-            vMaxCell.UpdateText($"{_Sectors[i].VelocityMax:F2}");
+            vMaxCell?.UpdateText($"{_Sectors[i].VelocityMax:F2}");
         }
 
         _graphicsGrid?.Draw(g);
