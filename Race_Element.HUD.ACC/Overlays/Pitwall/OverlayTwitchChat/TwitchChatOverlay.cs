@@ -90,7 +90,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _twitchClient.Initialize(credentials, _config.Credentials.TwitchUser);
         _twitchClient.OnMessageReceived += (s, e) =>
         {
-            if (e.ChatMessage.DisplayName.ToLower() == $"{_config.Credentials.TwitchUser.ToLower()}")
+            if (e.ChatMessage.IsBroadcaster && e.ChatMessage.ChatReply != null)
                 return;
 
             if (e.ChatMessage.Bits > 0)
