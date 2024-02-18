@@ -3,6 +3,7 @@ using RaceElement.HUD.Overlay.Internal;
 using RaceElement.Util;
 using RaceElement.Util.SystemExtensions;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
@@ -43,7 +44,8 @@ internal sealed class DualSenseXFreeOverlay : AbstractOverlay
 
     public override void BeforeStart()
     {
-        _textFile = new FileInfo($"{FileUtil.AppDirectory}{Path.DirectorySeparatorChar}DualSenseXTriggerStates.txt");
+        _textFile = new FileInfo($"{AppContext.BaseDirectory}{Path.DirectorySeparatorChar}DualSenseXTriggerStates.txt");
+        Debug.WriteLine(_textFile.FullName);
         if (!_textFile.Exists)
             _textFile.Create();
     }
