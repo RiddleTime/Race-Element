@@ -6,7 +6,8 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
-        {"1.0.3.2", "- Fix Mouse Position HUD disposal at shutdown of app when movement mode was still active."+
+        {"1.0.3.2", "- Add Sector Data HUD: Shows you the Min and Max velocity after each sector."+
+                    "\n- Fix Mouse Position HUD disposal at shutdown of app when movement mode was still active."+
                     "\n- Fix DualSenseX Free, now places the trigger states text file in correct directory."},
         {"1.0.3.0", "- Decrease shutdown time of app."+
                     "\n- HUD Tab:"+
