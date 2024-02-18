@@ -15,7 +15,7 @@ internal static class TriggerHaptics
         return null;
     }
 
-    public static Packet HandleBraking(SPageFilePhysics pagePhysics, BrakeHapticsConfig brakeConfig)
+    public static Packet HandleBraking(ref SPageFilePhysics pagePhysics, BrakeHapticsConfig brakeConfig)
     {
         Packet p = new();
         List<Instruction> instructions = [];
@@ -71,7 +71,7 @@ internal static class TriggerHaptics
         return p;
     }
 
-    public static Packet HandleAcceleration(SPageFilePhysics pagePhysics, ThrottleHapticsConfig throttleConfig)
+    public static Packet HandleAcceleration(ref SPageFilePhysics pagePhysics, ThrottleHapticsConfig throttleConfig)
     {
         Packet p = new();
         List<Instruction> instructions = [];

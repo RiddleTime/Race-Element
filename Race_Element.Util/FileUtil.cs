@@ -24,6 +24,7 @@ public class FileUtil
     public static string SetupsPath = AccPath + "Setups\\";
     public static string AccConfigPath => AccPath + "Config\\";
 
+    [Obsolete("Use AppContext.BaseDirectory instead: .NET 8 broke the Assembly.GetEntryAssembly().Location implementation.")]
     public static string AppDirectory => StripFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
     public static string AppFullName => AppDomain.CurrentDomain.BaseDirectory + AppDomain.CurrentDomain.FriendlyName;
 
