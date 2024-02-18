@@ -90,6 +90,9 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _twitchClient.Initialize(credentials, _config.Credentials.TwitchUser);
         _twitchClient.OnMessageReceived += (s, e) =>
         {
+            if (e.ChatMessage.DisplayName.ToLower() == $"{_config.Credentials.TwitchUser.ToLower()}")
+                return;
+
             if (e.ChatMessage.Bits > 0)
                 Messages.Add(new(MessageType.Bits, $"{DateTime.Now:HH:mm} {e.ChatMessage.DisplayName} cheered {e.ChatMessage.Bits} bits: {e.ChatMessage.Message}"));
             else
@@ -102,7 +105,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _twitchClient.OnPrimePaidSubscriber += (s, e) => Messages.Add(new(MessageType.Subscriber, $"{e.PrimePaidSubscriber.DisplayName} Subscribed with Prime!"));
         _twitchClient.OnGiftedSubscription += (s, e) => Messages.Add(new(MessageType.Subscriber, $"{e.GiftedSubscription.DisplayName} gifted a subscription ({e.GiftedSubscription.MsgParamSubPlanName}) to {e.GiftedSubscription.MsgParamRecipientDisplayName}"));
 
-        _twitchClient.OnConnected += (s, e) => Messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} Race Element - Connected"));
+        _twitchClient.OnConnected += (s, e) => Messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} Race Element - Chat HUD - Connected"));
         _twitchClient.OnConnectionError += TwitchClient_OnConnectionError;
 
         if (!_config.Shape.AlwaysVisible)
@@ -148,8 +151,8 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
 
         if (!_twitchClient.IsConnected)
         {
-            _twitchClient.Reconnect();
-            Messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} chat hud Reconnecting..."));
+            _twitchClient.Connect();
+            //Messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} chat hud Reconnecting..."));
         }
 
         g.CompositingQuality = CompositingQuality.HighQuality;

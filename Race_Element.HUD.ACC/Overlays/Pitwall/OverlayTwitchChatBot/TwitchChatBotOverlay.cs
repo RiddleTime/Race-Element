@@ -15,7 +15,7 @@ OverlayType = OverlayType.Pitwall,
 Authors = ["Reinier Klarenberg"])]
 internal sealed class TwitchChatBotOverlay : AbstractOverlay
 {
-    private TwitchChatBotConfiguration _config = new();
+    private readonly TwitchChatBotConfiguration _config = new();
 
     private TwitchClient _twitchClient = null;
     private TwitchChatBotCommandHandler _chatCommandHandler;
@@ -24,12 +24,12 @@ internal sealed class TwitchChatBotOverlay : AbstractOverlay
     {
         Width = 1;
         Height = 1;
-        RequestsDrawItself = true;
+        RefreshRateHz = 0.5f;
     }
 
     public sealed override void BeforeStart()
     {
-        base.BeforeStart();
+        SetupTwitchClient();
     }
 
     private void SetupTwitchClient()
@@ -49,14 +49,11 @@ internal sealed class TwitchChatBotOverlay : AbstractOverlay
 
         _chatCommandHandler = new(this, _twitchClient);
         _twitchClient.AddChatCommandIdentifier(TwitchChatBotCommandHandler.ChatCommandCharacter);
-
-
-        _twitchClient.OnConnected += (s, e) => Messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} Race Element - Connected"));
+        _twitchClient.OnChatCommandReceived += _chatCommandHandler.OnChatCommandReceived;
+        _twitchClient.OnConnected += (s, e) => Messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} Race Element - Chat Bot - Connected"));
+        _twitchClient.OnDisconnected += (s, e) => Messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} Race Element - Chat Bot - Disconnected"));
         _twitchClient.OnConnectionError += TwitchClient_OnConnectionError;
-
-
-        if (!_twitchClient.IsConnected)
-            _twitchClient.Connect();
+      
     }
     private void TwitchClient_OnConnectionError(object sender, TwitchLib.Client.Events.OnConnectionErrorArgs e)
     {
@@ -67,11 +64,17 @@ internal sealed class TwitchChatBotOverlay : AbstractOverlay
 
     public sealed override void BeforeStop()
     {
-        _twitchClient.RemoveChatCommandIdentifier(TwitchChatBotCommandHandler.ChatCommandCharacter);
-        _twitchClient.OnChatCommandReceived -= _chatCommandHandler.OnChatCommandReceived;
-        _twitchClient.OnConnectionError -= TwitchClient_OnConnectionError;
+        if (!IsPreviewing)
+        {
+            if (_twitchClient == null)
+                return;
 
-        _twitchClient.Disconnect();
+            _twitchClient.RemoveChatCommandIdentifier(TwitchChatBotCommandHandler.ChatCommandCharacter);
+            _twitchClient.OnChatCommandReceived -= _chatCommandHandler.OnChatCommandReceived;
+            _twitchClient.OnConnectionError -= TwitchClient_OnConnectionError;
+
+            _twitchClient.Disconnect();
+        }
     }
 
     public sealed override void Render(Graphics g)
@@ -80,8 +83,7 @@ internal sealed class TwitchChatBotOverlay : AbstractOverlay
 
         if (!_twitchClient.IsConnected)
         {
-            _twitchClient.Reconnect();
-            Messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} chat hud Reconnecting..."));
+            _twitchClient.Connect();
         }
     }
 }
