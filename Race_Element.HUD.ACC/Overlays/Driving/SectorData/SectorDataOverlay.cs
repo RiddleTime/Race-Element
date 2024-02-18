@@ -17,17 +17,10 @@ internal sealed class SectorDataOverlay : AbstractOverlay
 
     /*
 
-                L2     L3     Best
-         S1
-         S2
-         S3  
-
-
         | Sector | vMin   | vMax   |
         | 3      | 110.99 | 236.29 |
         | 2      | 60.97  | 246.56 |
         | 1      | 96.59  | 245.33 |
-
 
 
      */

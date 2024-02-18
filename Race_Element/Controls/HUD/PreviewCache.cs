@@ -121,6 +121,7 @@ internal class PreviewCache
         overlay.pageStatic.CarModel = "porsche_991ii_gt3_r";
 
         overlay.SetupPreviewData();
+        overlay.IsPreviewing = true;
 
         try
         {

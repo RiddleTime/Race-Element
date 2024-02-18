@@ -46,6 +46,8 @@ public abstract class AbstractOverlay : FloatingWindow
 
     public bool IsRepositioning { get; internal set; }
 
+    public bool IsPreviewing { get; set; }
+
     public double RefreshRateHz = 30;
 
     public SPageFilePhysics pagePhysics;
