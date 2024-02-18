@@ -71,7 +71,7 @@ internal sealed class SectorDataOverlay : AbstractOverlay
 
         float fontHeight = (int)(_font.GetHeight(120));
         int columnHeight = (int)(Math.Ceiling(fontHeight) + 1 * scale);
-        int[] columnWidths = [(int)(70f * scale), (int)(100f * scale), (int)(100f * scale)];
+        int[] columnWidths = [(int)(70f * scale), (int)(75 * scale), (int)(75 * scale)];
         int totalWidth = columnWidths[0] + columnWidths[1] + columnWidths[2];
 
         // set up backgrounds of each cell
@@ -106,6 +106,8 @@ internal sealed class SectorDataOverlay : AbstractOverlay
         this.Width = totalWidth + 1;
         this.Height = columnHeight * (_config.Table.Rows + 1) + 1; // +1 for header
 
+
+        StringFormat sf = new() { Alignment = StringAlignment.Far };
         // config data rows
         for (int row = 1; row <= _config.Table.Rows; row++)
         {
@@ -116,6 +118,7 @@ internal sealed class SectorDataOverlay : AbstractOverlay
                 int width = columnWidths[column];
                 RectangleF rect = new(x, y, width, columnHeight);
                 DrawableTextCell cell = new(rect, _font);
+                if (column > 0) cell.StringFormat = sf;
                 cell.CachedBackground = _columnBackgrounds[column];
                 _graphicsGrid.Grid[row][column] = cell;
                 cell.UpdateText("");
@@ -132,7 +135,11 @@ internal sealed class SectorDataOverlay : AbstractOverlay
         RaceSessionTracker.Instance.OnNewSessionStarted += Instance_OnNewSessionStarted;
     }
 
-    private void Instance_OnNewSessionStarted(object sender, RaceElement.Data.ACC.Database.SessionData.DbRaceSession e) => _Sectors.Clear();
+    private void Instance_OnNewSessionStarted(object sender, RaceElement.Data.ACC.Database.SessionData.DbRaceSession e)
+    {
+        _Sectors.Clear();
+        ClearData();
+    }
 
     private void SectorCompleted(object sender, SectorDataModel e)
     {
@@ -173,5 +180,20 @@ internal sealed class SectorDataOverlay : AbstractOverlay
 
         _graphicsGrid?.Draw(g);
 
+    }
+
+    private void ClearData()
+    {
+        for (int i = 0; i < _config.Table.Rows; i++)
+        {
+            DrawableTextCell sectorCell = (DrawableTextCell)_graphicsGrid.Grid[1 + i][0];
+            sectorCell?.UpdateText($"");
+
+            DrawableTextCell vMinCell = (DrawableTextCell)_graphicsGrid.Grid[1 + i][1];
+            vMinCell?.UpdateText($"");
+
+            DrawableTextCell vMaxCell = (DrawableTextCell)_graphicsGrid.Grid[1 + i][2];
+            vMaxCell?.UpdateText($"");
+        }
     }
 }
