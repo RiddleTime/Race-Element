@@ -74,7 +74,7 @@ internal sealed class SectorDataOverlay : AbstractOverlay
         int[] columnWidths = [(int)(70f * scale), (int)(100f * scale), (int)(100f * scale)];
         int totalWidth = columnWidths[0] + columnWidths[1] + columnWidths[2];
 
-        // set up backgrounds and invalid ones
+        // set up backgrounds of each cell
         Color colorDefault = Color.FromArgb(190, Color.Black);
         using HatchBrush columnBrushDefault = new(HatchStyle.LightUpwardDiagonal, colorDefault, Color.FromArgb(colorDefault.A - 25, colorDefault));
         _columnBackgrounds = new CachedBitmap[columns];
@@ -106,7 +106,6 @@ internal sealed class SectorDataOverlay : AbstractOverlay
         this.Width = totalWidth + 1;
         this.Height = columnHeight * (_config.Table.Rows + 1) + 1; // +1 for header
 
-
         // config data rows
         for (int row = 1; row <= _config.Table.Rows; row++)
         {
@@ -118,8 +117,8 @@ internal sealed class SectorDataOverlay : AbstractOverlay
                 RectangleF rect = new(x, y, width, columnHeight);
                 DrawableTextCell cell = new(rect, _font);
                 cell.CachedBackground = _columnBackgrounds[column];
-                cell.UpdateText("");
                 _graphicsGrid.Grid[row][column] = cell;
+                cell.UpdateText("");
             }
         }
 
