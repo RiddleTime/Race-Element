@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace RaceElement.HUD.Overlay.OverlayUtil.ProgressBars;
 
@@ -15,12 +16,16 @@ public class HorizontalProgressBar
     public double Value { private get; set; } = 0;
 
     // style
+    public bool LeftToRight { private get; set; } = true;
+    public bool DrawBackground { private get; set; } = false;
     public bool Rounded { private get; set; }
     public float Rounding { private get; set; } = 3;
     public Brush OutlineBrush { private get; set; } = Brushes.White;
     public Brush FillBrush { private get; set; } = Brushes.OrangeRed;
+    public Brush BackgroundBrush { private get; set; } = new SolidBrush(Color.FromArgb(96, Color.Black));
 
     private CachedBitmap _cachedOutline;
+    private CachedBitmap _cachedBackground;
 
     public HorizontalProgressBar(int width, int height)
     {
@@ -33,10 +38,26 @@ public class HorizontalProgressBar
         if (_cachedOutline == null)
             RenderCachedOutline();
 
+        if (DrawBackground)
+        {
+            if (_cachedBackground == null)
+                RenderCachedBackground();
+
+            _cachedBackground?.Draw(g, x, y, _width, _height);
+        }
+
         double percent = Value / Max;
 
         int scaledHeight = (int)(_height * Scale);
         int scaledWidth = (int)(_width * Scale);
+
+        int fillWidth = (int)(scaledWidth * percent);
+        int adjustedX = 0;
+
+        if (!LeftToRight)
+        {
+            adjustedX = (scaledWidth - fillWidth);
+        }
 
         CachedBitmap barBitmap = new(scaledWidth + 1, scaledHeight + 1, bg =>
         {
@@ -44,16 +65,25 @@ public class HorizontalProgressBar
             {
                 if (percent >= 0.035f)
                 {
-                    int width = (int)(scaledWidth * percent);
-                    bg.FillRoundedRectangle(FillBrush, new Rectangle(0, 0, width, scaledHeight), (int)(Rounding * Scale));
+                    bg.FillRoundedRectangle(FillBrush, new Rectangle(adjustedX, 0, fillWidth, scaledHeight), (int)(Rounding * Scale));
                 }
             }
             else
-                bg.FillRectangle(FillBrush, new Rectangle(0, 0, (int)(scaledWidth * percent), (int)(scaledHeight)));
+                bg.FillRectangle(FillBrush, new Rectangle(adjustedX, 0, fillWidth, scaledHeight));
         });
 
         barBitmap?.Draw(g, x, y, _width, _height);
         _cachedOutline?.Draw(g, x, y, _width, _height);
+    }
+
+    private void RenderCachedBackground()
+    {
+        int scaledWidth = (int)(_width * Scale);
+        int scaledHeight = (int)(_height * Scale);
+        if (Rounded)
+            _cachedBackground = new CachedBitmap(scaledWidth + 1, scaledHeight + 1, g => g.FillRoundedRectangle(BackgroundBrush, new Rectangle(0, 0, scaledWidth, scaledHeight), (int)(Rounding * Scale)));
+        else
+            _cachedBackground = new CachedBitmap(scaledWidth + 1, scaledHeight + 1, g => g.FillRectangle(BackgroundBrush, new Rectangle(0, 0, scaledWidth, scaledHeight)));
     }
 
     private void RenderCachedOutline()
@@ -64,5 +94,11 @@ public class HorizontalProgressBar
             _cachedOutline = new CachedBitmap(scaledWidth + 1, scaledHeight + 1, g => g.DrawRoundedRectangle(new Pen(OutlineBrush, 1 * Scale), new Rectangle(0, 0, scaledWidth, scaledHeight), (int)(Rounding * Scale)));
         else
             _cachedOutline = new CachedBitmap(scaledWidth + 1, scaledHeight + 1, g => g.DrawRectangle(new Pen(OutlineBrush, 1 * Scale), new Rectangle(0, 0, scaledWidth, scaledHeight)));
+    }
+
+    public void DisposeBitmaps()
+    {
+        _cachedOutline?.Dispose();
+        _cachedBackground?.Dispose();
     }
 }
