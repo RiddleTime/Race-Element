@@ -27,7 +27,7 @@ https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-8.0
 ### Code Signing
 
 <a href="https://www.signpath.io">
-    <img src="https://about.signpath.io/assets/logo_signpath_500.png" width="150">
+    <img src="https://about.signpath.io/assets/signpath-logo.svg" width="150">
 </a> 
 
 Free code signing provided by [SignPath.io](https://signpath.io?utm_source=foundation&utm_medium=github&utm_campaign=race-element), certificate by [SignPath Foundation](https://signpath.org?utm_source=foundation&utm_medium=github&utm_campaign=race-element)
