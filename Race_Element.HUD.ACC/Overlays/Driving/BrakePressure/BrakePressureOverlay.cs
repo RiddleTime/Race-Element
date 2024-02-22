@@ -16,18 +16,20 @@ Authors = ["Reinier Klarenberg"]
 internal sealed class BrakePressureOverlay : AbstractOverlay
 {
     private readonly BrakePressureConfiguration _config = new();
-    private sealed class BrakePressureConfiguration : OverlayConfiguration
-    {
-        public BrakePressureConfiguration() => GenericConfiguration.AllowRescale = true;
-    }
 
     private readonly HorizontalProgressBar[] _brakePressureBars = new HorizontalProgressBar[4];
     private readonly Point[] _barLocations = new Point[4];
     private readonly DrawableTextCell[] _brakePressureTexts = new DrawableTextCell[4];
     private Font _font;
 
+    private SolidBrush _textBrush;
+    private SolidBrush _fillBrush;
+    private SolidBrush _outlineBrush;
+    private SolidBrush _backgroundBrush;
+
     public BrakePressureOverlay(Rectangle rectangle) : base(rectangle, "Brake Pressure")
     {
+        RefreshRateHz = 20;
     }
 
     public sealed override void SetupPreviewData()
@@ -42,11 +44,18 @@ internal sealed class BrakePressureOverlay : AbstractOverlay
     {
         int barWidth = 80;
         int barHeight = 20;
-        SolidBrush outline = new(Color.Black);
+
+        _textBrush = new SolidBrush(Color.FromArgb(_config.Colors.TextOpacity, _config.Colors.TextColor));
+        _fillBrush = new SolidBrush(Color.FromArgb(_config.Colors.FillOpacity, _config.Colors.FillColor));
+        _outlineBrush = new SolidBrush(Color.FromArgb(_config.Colors.OutlineOpacity, _config.Colors.OutlineColor));
+        _backgroundBrush = new SolidBrush(Color.FromArgb(_config.Colors.BackgroundOpacity, _config.Colors.BackgroundColor));
+
         for (int i = 0; i < 4; i++)
             _brakePressureBars[i] = new HorizontalProgressBar(barWidth, barHeight)
             {
-                OutlineBrush = outline,
+                OutlineBrush = _outlineBrush,
+                BackgroundBrush = _backgroundBrush,
+                FillBrush = _fillBrush,
                 LeftToRight = (i % 2 == 0),
                 DrawBackground = true,
             };
@@ -70,7 +79,8 @@ internal sealed class BrakePressureOverlay : AbstractOverlay
                 StringFormat = new StringFormat()
                 {
                     Alignment = (i % 2 == 0 ? StringAlignment.Near : StringAlignment.Far)
-                }
+                },
+                TextBrush = _textBrush
             };
 
 
@@ -85,6 +95,12 @@ internal sealed class BrakePressureOverlay : AbstractOverlay
             _brakePressureTexts[i]?.Dispose();
             _brakePressureBars[i]?.DisposeBitmaps();
         }
+
+        _textBrush?.Dispose();
+        _fillBrush?.Dispose();
+        _outlineBrush?.Dispose();
+        _backgroundBrush?.Dispose();
+        _font?.Dispose();
     }
 
     public sealed override void Render(Graphics g)
