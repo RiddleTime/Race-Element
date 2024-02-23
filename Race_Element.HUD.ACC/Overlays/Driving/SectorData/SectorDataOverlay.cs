@@ -35,7 +35,7 @@ internal sealed class SectorDataOverlay : AbstractOverlay
     {
         Width = 300;
         Height = 50;
-        RefreshRateHz = 0.5f;
+
     }
 
     public sealed override void SetupPreviewData()
@@ -106,6 +106,9 @@ internal sealed class SectorDataOverlay : AbstractOverlay
         this.Width = totalWidth + 1;
         this.Height = columnHeight * (_config.Table.Rows + 1) + 1; // +1 for header
 
+        RefreshRateHz = 0.5f;
+        if (_config.Table.LiveCurrentSector)
+            RefreshRateHz = 4f;
 
         StringFormat sf = new() { Alignment = StringAlignment.Far };
         // config data rows
@@ -163,18 +166,38 @@ internal sealed class SectorDataOverlay : AbstractOverlay
 
     public sealed override void Render(Graphics g)
     {
+        bool hasSetLiveSector = false;
+        if (!IsPreviewing && _config.Table.LiveCurrentSector && _datajob._currentData != null)
+        {
+            DrawableTextCell sectorCell = (DrawableTextCell)_graphicsGrid.Grid[1][0];
+            sectorCell?.UpdateText($"{_datajob._currentData.SectorIndex + 1}..");
+
+            DrawableTextCell vMinCell = (DrawableTextCell)_graphicsGrid.Grid[1][1];
+            vMinCell?.UpdateText($"{_datajob._currentData.VelocityMin:F2}");
+
+            DrawableTextCell vMaxCell = (DrawableTextCell)_graphicsGrid.Grid[1][2];
+            vMaxCell?.UpdateText($"{_datajob._currentData.VelocityMax:F2}");
+            hasSetLiveSector = true;
+        }
         for (int i = 0; i < _config.Table.Rows; i++)
         {
             if (i >= _Sectors.Count)
                 break;
 
-            DrawableTextCell sectorCell = (DrawableTextCell)_graphicsGrid.Grid[1 + i][0];
+            if (hasSetLiveSector && i >= _config.Table.Rows - 1)
+                break;
+
+            int baseGridRow = (hasSetLiveSector ? 2 : 1);
+            if (baseGridRow >= _graphicsGrid.Columns)
+                break;
+
+            DrawableTextCell sectorCell = (DrawableTextCell)_graphicsGrid.Grid[baseGridRow + i][0];
             sectorCell?.UpdateText($"{_Sectors[i].SectorIndex + 1}");
 
-            DrawableTextCell vMinCell = (DrawableTextCell)_graphicsGrid.Grid[1 + i][1];
+            DrawableTextCell vMinCell = (DrawableTextCell)_graphicsGrid.Grid[baseGridRow + i][1];
             vMinCell?.UpdateText($"{_Sectors[i].VelocityMin:F2}");
 
-            DrawableTextCell vMaxCell = (DrawableTextCell)_graphicsGrid.Grid[1 + i][2];
+            DrawableTextCell vMaxCell = (DrawableTextCell)_graphicsGrid.Grid[baseGridRow + i][2];
             vMaxCell?.UpdateText($"{_Sectors[i].VelocityMax:F2}");
         }
 

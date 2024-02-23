@@ -20,7 +20,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.SectorData
     {
         private int _lastSectorIndex = -1;
 
-        private SectorDataModel _currentData;
+        internal SectorDataModel _currentData;
 
         public EventHandler<SectorDataModel> OnSectorCompleted;
 
