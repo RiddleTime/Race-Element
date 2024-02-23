@@ -98,6 +98,8 @@ internal sealed class BrakePressureOverlay(Rectangle rectangle) : AbstractOverla
     public sealed override void Render(Graphics g)
     {
         g.CompositingQuality = CompositingQuality.HighQuality;
+        g.SmoothingMode = SmoothingMode.AntiAlias;
+
         for (int i = 0; i < 2; i++)
         {
             _brakePressureBars[i].Value = pagePhysics.brakePressure[i * 2];
