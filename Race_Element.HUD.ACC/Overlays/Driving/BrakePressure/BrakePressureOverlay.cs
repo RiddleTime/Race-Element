@@ -75,7 +75,7 @@ internal sealed class BrakePressureOverlay(Rectangle rectangle) : AbstractOverla
 
         Width = barWidth;
         Height = barHeight;
-        RefreshRateHz = 20
+        RefreshRateHz = 20;
     }
 
     public sealed override void BeforeStop()
