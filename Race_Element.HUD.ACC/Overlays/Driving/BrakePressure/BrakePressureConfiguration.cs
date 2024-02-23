@@ -16,9 +16,13 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.BrakePressure
             [IntRange(70, 255, 1)]
             public int TextOpacity { get; init; } = 255;
 
-            public Color FillColor { get; init; } = Color.FromArgb(255, 255, 69, 0);
+            public Color FrontFillColor { get; init; } = Color.FromArgb(255, 0, 32, 255);
             [IntRange(70, 255, 1)]
-            public int FillOpacity { get; init; } = 255;
+            public int FrontFillOpacity { get; init; } = 255;
+
+            public Color RearFillColor { get; init; } = Color.FromArgb(255, 255, 69, 0);
+            [IntRange(70, 255, 1)]
+            public int RearFillOpacity { get; init; } = 255;
 
             public Color OutlineColor { get; init; } = Color.FromArgb(255, 0, 0, 0);
             [IntRange(70, 255, 1)]

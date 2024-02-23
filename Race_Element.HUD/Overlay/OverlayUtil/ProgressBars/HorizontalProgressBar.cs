@@ -18,6 +18,7 @@ public class HorizontalProgressBar
     // style
     public bool LeftToRight { private get; set; } = true;
     public bool DrawBackground { private get; set; } = false;
+    public bool DrawOutline { private get; set; } = true;
     public bool Rounded { private get; set; }
     public float Rounding { private get; set; } = 3;
     public Brush OutlineBrush { private get; set; } = Brushes.White;
@@ -35,7 +36,7 @@ public class HorizontalProgressBar
 
     public void Draw(Graphics g, int x, int y)
     {
-        if (_cachedOutline == null)
+        if (DrawOutline && _cachedOutline == null)
             RenderCachedOutline();
 
         if (DrawBackground)
@@ -56,7 +57,7 @@ public class HorizontalProgressBar
 
         if (!LeftToRight)
         {
-            adjustedX = (scaledWidth - fillWidth);
+            adjustedX = (int)(scaledWidth - scaledWidth * percent);
         }
 
         CachedBitmap barBitmap = new(scaledWidth + 1, scaledHeight + 1, bg =>
@@ -65,15 +66,15 @@ public class HorizontalProgressBar
             {
                 if (percent >= 0.035f)
                 {
-                    bg.FillRoundedRectangle(FillBrush, new Rectangle(adjustedX, 0, fillWidth, scaledHeight), (int)(Rounding * Scale));
+                    bg?.FillRoundedRectangle(FillBrush, new Rectangle(adjustedX, 0, fillWidth, scaledHeight), (int)(Rounding * Scale));
                 }
             }
             else
-                bg.FillRectangle(FillBrush, new Rectangle(adjustedX, 0, fillWidth, scaledHeight));
+                bg?.FillRectangle(FillBrush, new Rectangle(adjustedX, 0, fillWidth, scaledHeight));
         });
 
         barBitmap?.Draw(g, x, y, _width, _height);
-        _cachedOutline?.Draw(g, x, y, _width, _height);
+        if (DrawOutline) _cachedOutline?.Draw(g, x, y, _width, _height);
     }
 
     private void RenderCachedBackground()
