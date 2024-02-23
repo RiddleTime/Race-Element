@@ -16,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.SectorData;
 [Overlay(Name = "Sector Data",
 Description = "Shows data from previous sectors. New driven sectors appear at the top",
 Authors = ["Reinier Klarenberg"])]
-internal sealed class SectorDataOverlay : AbstractOverlay
+internal sealed class SectorDataOverlay(Rectangle rectangle) : AbstractOverlay(rectangle, "Sector Data")
 {
     private readonly SectorDataConfiguration _config = new();
 
@@ -30,9 +30,6 @@ internal sealed class SectorDataOverlay : AbstractOverlay
     private GraphicsGrid _graphicsGrid;
     private Font _font;
     private CachedBitmap[] _columnBackgrounds;
-
-    public SectorDataOverlay(Rectangle rectangle) : base(rectangle, "Sector Data")
-    { }
 
     public sealed override void SetupPreviewData()
     {
@@ -198,7 +195,6 @@ internal sealed class SectorDataOverlay : AbstractOverlay
         }
 
         _graphicsGrid?.Draw(g);
-
     }
 
     private void ClearData()

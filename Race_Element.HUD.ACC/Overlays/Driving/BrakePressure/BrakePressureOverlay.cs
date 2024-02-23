@@ -1,9 +1,7 @@
-﻿using RaceElement.HUD.Overlay.Configuration;
-using RaceElement.HUD.Overlay.Internal;
+﻿using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
 using RaceElement.HUD.Overlay.OverlayUtil.ProgressBars;
 using RaceElement.HUD.Overlay.Util;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
@@ -15,7 +13,7 @@ OverlayType = OverlayType.Drive,
 OverlayCategory = OverlayCategory.Inputs,
 Authors = ["Reinier Klarenberg"]
 )]
-internal sealed class BrakePressureOverlay : AbstractOverlay
+internal sealed class BrakePressureOverlay(Rectangle rectangle) : AbstractOverlay(rectangle, "Brake Pressure")
 {
     private readonly BrakePressureConfiguration _config = new();
 
@@ -29,12 +27,6 @@ internal sealed class BrakePressureOverlay : AbstractOverlay
     private SolidBrush _rearBrush;
     private SolidBrush _outlineBrush;
     private SolidBrush _backgroundBrush;
-
-    public BrakePressureOverlay(Rectangle rectangle) : base(rectangle, "Brake Pressure")
-    {
-        RefreshRateHz = 20;
-    }
-
     public sealed override void SetupPreviewData()
     {
         pagePhysics.brakePressure[0] = 0.646f;
@@ -83,6 +75,7 @@ internal sealed class BrakePressureOverlay : AbstractOverlay
 
         Width = barWidth;
         Height = barHeight;
+        RefreshRateHz = 20
     }
 
     public sealed override void BeforeStop()
