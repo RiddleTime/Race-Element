@@ -6,8 +6,8 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
-        {"1.0.3.4", "- Added Brake Pressure HUD: Shows the applied brake pressure percentage for all 4 brakes."+
-                    "\n - Sector Data HUD: Added option to show the current sector live, will increase refreshrate thus cpu usage."},
+        {"1.0.3.4", "- Added Brake Pressure HUD: Shows the applied brake pressure for front and rear brakes."+
+                    "\n - Sector Data HUD: Added option to show the current sector live, will increase refresh rate thus cpu usage."},
         {"1.0.3.2", "- Add Sector Data HUD: Shows you the Min and Max velocity after each sector."+
                     "\n- Add Twitch Chat Bot: Removed it from the chat HUD itself, this way you can only enable the bot without using the twitch chat HUD. There is still an option to display the bot commands in the chat hud itself." +
                     " You can use the same credentials as you have used in the twitch chat hud."+
