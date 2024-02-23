@@ -32,11 +32,7 @@ internal sealed class SectorDataOverlay : AbstractOverlay
     private CachedBitmap[] _columnBackgrounds;
 
     public SectorDataOverlay(Rectangle rectangle) : base(rectangle, "Sector Data")
-    {
-        Width = 300;
-        Height = 50;
-
-    }
+    { }
 
     public sealed override void SetupPreviewData()
     {
@@ -108,7 +104,7 @@ internal sealed class SectorDataOverlay : AbstractOverlay
 
         RefreshRateHz = 0.5f;
         if (_config.Table.LiveCurrentSector)
-            RefreshRateHz = 4f;
+            RefreshRateHz = 6f;
 
         StringFormat sf = new() { Alignment = StringAlignment.Far };
         // config data rows
