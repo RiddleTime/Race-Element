@@ -29,10 +29,10 @@ internal sealed class BrakePressureOverlay(Rectangle rectangle) : AbstractOverla
     private SolidBrush _backgroundBrush;
     public sealed override void SetupPreviewData()
     {
-        pagePhysics.brakePressure[0] = 0.646f;
-        pagePhysics.brakePressure[1] = 0.646f;
-        pagePhysics.brakePressure[2] = 0.323f;
-        pagePhysics.brakePressure[3] = 0.323f;
+        pagePhysics.brakePressure[0] = 0.546f;
+        pagePhysics.brakePressure[1] = 0.546f;
+        pagePhysics.brakePressure[2] = 0.283f;
+        pagePhysics.brakePressure[3] = 0.283f;
     }
 
     public sealed override void BeforeStart()
