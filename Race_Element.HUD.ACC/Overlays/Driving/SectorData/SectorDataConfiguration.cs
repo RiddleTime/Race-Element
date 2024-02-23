@@ -17,7 +17,9 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.SectorData
         {
             [ToolTip("Sets the amount of previous sectors visible, in general settings it to more than 3 will also show you the data from previous laps.")]
             [IntRange(1, 13, 1)]
-            public int Rows { get; set; } = 4;
+            public int Rows { get; init; } = 4;
+
+            public bool LiveCurrentSector { get; init; } = false;
 
             [ToolTip("Changed the amount of corner roundering for each cell in the table.")]
             [IntRange(0, 12, 2)]
