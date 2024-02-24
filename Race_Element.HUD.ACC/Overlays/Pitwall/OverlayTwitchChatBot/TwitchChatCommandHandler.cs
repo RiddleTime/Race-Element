@@ -47,7 +47,7 @@ internal class TwitchChatBotCommandHandler
 
         Responses = [
             new("commands", GetCommandsList),
-            new("bot", (args) => "Race Element, it's free to use: https://race.elementfuture.com"),
+            new("app", (args) => "https://race.elementfuture.com - Solutions for Sim Racing"),
             new("damage", (args) => $"{TimeSpan.FromSeconds(Damage.GetTotalRepairTime(_overlay.pagePhysics)):mm\\:ss\\.fff}"),
             new("potential", GetPotentialBestResponse),
             new("temps", GetTemperaturesResponse),
@@ -102,8 +102,11 @@ internal class TwitchChatBotCommandHandler
     {
         StringBuilder sb = new("Race Element Commands: ");
         Span<ChatResponse> responses = Responses.AsSpan();
-        for (int i = 1; i < responses.Length; i++) sb.Append($"{responses[i].Command}{(i < responses.Length - 1 ? ", " : string.Empty)}");
+        for (int i = 1; i < responses.Length; i++)
+            sb.Append($"{responses[i].Command}{(i < responses.Length - 1 ? ", " : string.Empty)}");
+
         _ = sb.Append('.');
+
         return sb.ToString();
     }
 
@@ -137,10 +140,11 @@ internal class TwitchChatBotCommandHandler
         if (_overlay.pagePhysics.AirTemp > 0)
         {
             sb.Append($"Air {_overlay.pagePhysics.AirTemp:F2}°, Track {_overlay.pagePhysics.RoadTemp:F2}°, Wind {_overlay.pageGraphics.WindSpeed:F1} km/h, Grip: {_overlay.pageGraphics.trackGripStatus}");
+            sb.Append($"Air {_overlay.pagePhysics.AirTemp:F3}°, Track {_overlay.pagePhysics.RoadTemp:F3}°, Wind {_overlay.pageGraphics.WindSpeed:F1} km/h, Grip: {_overlay.pageGraphics.trackGripStatus}");
         }
         else
         {
-            sb.Append($"Air {_overlay.broadCastRealTime.AmbientTemp}° ,Track {_overlay.broadCastRealTime.TrackTemp}°");
+            sb.Append($"Air {_overlay.broadCastRealTime.AmbientTemp}°, Track {_overlay.broadCastRealTime.TrackTemp}°");
         }
         return sb.ToString();
     }
