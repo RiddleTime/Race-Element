@@ -139,6 +139,7 @@ public partial class SetupImporter : UserControl
                     string fileName;
                     string[] splits = setupFile.Split(['/']);
                     fileName = splits[splits.Length - 1];
+                    fileName = fileName[..fileName.IndexOf('?')]; // usually if a link contains arguments we want to remove them from the filename
 
                     DirectoryInfo downloadCache = new(FileUtil.RaceElementDownloadCachePath);
 

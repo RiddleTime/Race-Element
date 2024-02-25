@@ -161,7 +161,7 @@ public partial class MainWindow : Window
                 //Debug.WriteLine($"link?: {droppedItem}");
             }
 
-            if (droppedItem.EndsWith(".json"))
+            if (droppedItem.Contains(".json"))
             {
                 if (SetupImporter.Instance.Open(droppedItem, false))
                 {
