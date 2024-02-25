@@ -6,6 +6,7 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.3.6", "- Setup Importer now detects Discord download links again, discord changed the way they build up the URLs."},
         {"1.0.3.4", "- Added Brake Pressure HUD: Shows the applied brake pressure for front and rear brakes."+
                     "\n- Sector Data HUD: Added option to show the current sector live, will increase refresh rate thus cpu usage."},
         {"1.0.3.2", "- Add Sector Data HUD: Shows you the Min and Max velocity after each sector."+
