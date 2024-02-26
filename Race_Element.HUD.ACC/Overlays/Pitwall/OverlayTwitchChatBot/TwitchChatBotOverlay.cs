@@ -25,7 +25,7 @@ internal sealed class TwitchChatBotOverlay : AbstractOverlay
     {
         Width = 1;
         Height = 1;
-        RefreshRateHz = 0.25f;
+        RefreshRateHz = 1 / 4f; // 1 in 4 seconds.
     }
 
     public sealed override bool ShouldRender() => true;
