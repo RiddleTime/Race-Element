@@ -99,7 +99,7 @@ internal sealed class TwitchChatBotOverlay : AbstractOverlay
     {
         _twitchClient.OnChatCommandReceived += _chatCommandHandler.OnChatCommandReceived;
         _twitchClient.AddChatCommandIdentifier(TwitchChatBotCommandHandler.ChatCommandCharacter);
-        Messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm:ss} Race Element - Chat Bot - Connected"));
+        Messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm:ss} Race Element - Chat Bot - Connected to {_twitchClient.JoinedChannels[0].Channel}"));
     }
 
     private void TwitchClient_OnReconnected(object sender, TwitchLib.Communication.Events.OnReconnectedEventArgs e)
