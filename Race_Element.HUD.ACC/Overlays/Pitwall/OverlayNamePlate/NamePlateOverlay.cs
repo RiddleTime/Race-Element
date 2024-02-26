@@ -74,8 +74,8 @@ internal sealed class NamePlateOverlay : AbstractOverlay
 
         g.TextRenderingHint = TextRenderingHint.AntiAlias;
 
-        g.DrawStringWithShadow("René Buttler", _fontBig, Brushes.White, new PointF(Width / 2, 25), new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
-        g.DrawStringWithShadow("OVALTAKE Racing Team", _fontBig, Brushes.White, new PointF(Width / 2, 50), new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+        g.DrawStringWithShadow("FirstName LastName", _fontBig, Brushes.White, new PointF(Width / 2, 25), new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+        g.DrawStringWithShadow("TeamName", _fontBig, Brushes.White, new PointF(Width / 2, 50), new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
 
 
     }
