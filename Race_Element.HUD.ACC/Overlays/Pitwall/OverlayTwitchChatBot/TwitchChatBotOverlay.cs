@@ -16,9 +16,9 @@ OverlayType = OverlayType.Pitwall,
 Authors = ["Reinier Klarenberg"])]
 internal sealed class TwitchChatBotOverlay : AbstractOverlay
 {
-    private readonly TwitchChatBotConfiguration _config = new();
+    internal readonly TwitchChatBotConfiguration _config = new();
 
-    private TwitchClient _twitchClient = null;
+    internal TwitchClient _twitchClient = null;
     private TwitchChatBotCommandHandler _chatCommandHandler;
 
     public TwitchChatBotOverlay(Rectangle rectangle) : base(rectangle, "Twitch Chat Bot")
@@ -32,8 +32,7 @@ internal sealed class TwitchChatBotOverlay : AbstractOverlay
 
     public sealed override void BeforeStop()
     {
-        if (!IsPreviewing)
-            DisconnectTwitchClient();
+        if (!IsPreviewing) DisconnectTwitchClient();
     }
 
     public sealed override void Render(Graphics g)
@@ -87,7 +86,7 @@ internal sealed class TwitchChatBotOverlay : AbstractOverlay
 
         _twitchClient.Initialize(credentials, _config.Credentials.TwitchUser);
 
-        _chatCommandHandler = new(this, _twitchClient);
+        _chatCommandHandler = new(this);
 
         _twitchClient.OnConnected += TwitchClient_OnConnected;
         _twitchClient.OnDisconnected += TwitchClient_OnDisconnected;

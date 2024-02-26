@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using RaceElement.Broadcast;
 using RaceElement.Broadcast.Structs;
 using RaceElement.Data;
 using RaceElement.Data.ACC.Cars;
@@ -13,7 +12,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using WebSocketSharp;
 using static RaceElement.Data.ACC.EntryList.EntryListTracker;
@@ -24,8 +22,6 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChatBot;
 internal class TwitchChatBotCommandHandler
 {
     private readonly TwitchChatBotOverlay _overlay;
-
-    private readonly TwitchClient _client;
 
     public const char ChatCommandCharacter = '+';
 
@@ -40,10 +36,9 @@ internal class TwitchChatBotCommandHandler
     }
     private readonly ChatResponse[] Responses;
 
-    public TwitchChatBotCommandHandler(TwitchChatBotOverlay overlay, TwitchClient client)
+    public TwitchChatBotCommandHandler(TwitchChatBotOverlay overlay)
     {
         _overlay = overlay;
-        _client = client;
 
         Responses = [
             new("commands", GetCommandsList),
@@ -87,7 +82,10 @@ internal class TwitchChatBotCommandHandler
             if (replyMessage.IsNullOrEmpty())
                 return;
 
-            _client.SendReply(_client.JoinedChannels[0], e.Command.ChatMessage.Id, replyMessage);
+            if (_overlay._twitchClient.JoinedChannels.Count == 0)
+                _overlay._twitchClient.JoinChannel(_overlay._config.Credentials.TwitchUser);
+
+            _overlay._twitchClient.SendReply(_overlay._twitchClient.JoinedChannels[0], e.Command.ChatMessage.Id, replyMessage);
 
             if (!command.Equals("commands"))
                 TwitchChatOverlay.Messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} - {replyMessage}"));
