@@ -25,7 +25,7 @@ internal sealed class TwitchChatBotOverlay : AbstractOverlay
     {
         Width = 1;
         Height = 1;
-        RefreshRateHz = 0.5f;
+        RefreshRateHz = 0.25f;
     }
 
     public sealed override bool ShouldRender() => true;
@@ -39,7 +39,6 @@ internal sealed class TwitchChatBotOverlay : AbstractOverlay
     public sealed override void Render(Graphics g)
     {
         if (IsPreviewing) return;
-
 
         if (_twitchClient == null || !_twitchClient.IsConnected)
         {
