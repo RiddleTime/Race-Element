@@ -6,7 +6,8 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
-        {"1.0.3.6", "- Setup Importer now detects Discord download links again, discord changed the way they build up the URLs."+
+        {"1.0.3.6", "- Setup Importer now detects Discord download links again, drag it straight from the discord download button on-top of the app, discord changed the way they build up the URLs."+
+                    "\n- Twitch Chat HUD: Increased max width from 500 to 800."+
                     "\n- Twitch Chat Bot: Added +pos command, it provides information regarding the car in the requested race position. Use it like +pos 1, and you will gain information about the car in P1!"},
         {"1.0.3.4", "- Added Brake Pressure HUD: Shows the applied brake pressure for front and rear brakes."+
                     "\n- Sector Data HUD: Added option to show the current sector live, will increase refresh rate thus cpu usage."},
