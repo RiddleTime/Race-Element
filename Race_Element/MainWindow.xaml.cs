@@ -134,6 +134,8 @@ public partial class MainWindow : Window
 
         InitializeSystemTrayIcon();
 
+        GameManager.OnGameChanged += GameManager_OnGameChanged;
+
 
         // --- TODO refactor
         ACCTrackerStarter.StartACCTrackers();
@@ -141,6 +143,15 @@ public partial class MainWindow : Window
         // warm up the broad cast config json.. make sure it's set up before we join any session
         _ = BroadcastConfig.GetConfiguration();
         // ---
+    }
+
+    private void GameManager_OnGameChanged(object sender, Game selectedGame)
+    {
+        tabSetups.Visibility = selectedGame == Game.AssettoCorsaCompetizione ? Visibility.Visible : Visibility.Collapsed;
+        tabLiveries.Visibility = selectedGame == Game.AssettoCorsaCompetizione ? Visibility.Visible : Visibility.Collapsed;
+        tabTelemetry.Visibility = selectedGame == Game.AssettoCorsaCompetizione ? Visibility.Visible : Visibility.Collapsed;
+
+        tabControl.SelectedIndex = 0;
     }
 
     private void MainWindow_Drop(object sender, DragEventArgs e)
@@ -161,7 +172,7 @@ public partial class MainWindow : Window
                 //Debug.WriteLine($"link?: {droppedItem}");
             }
 
-            if (droppedItem.EndsWith(".json"))
+            if (droppedItem.Contains(".json"))
             {
                 if (SetupImporter.Instance.Open(droppedItem, false))
                 {

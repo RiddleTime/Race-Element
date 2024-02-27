@@ -8,7 +8,9 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using TwitchLib.Client;
+using TwitchLib.Client.Events;
 using TwitchLib.Communication.Clients;
+using TwitchLib.Communication.Events;
 using TwitchLib.Communication.Models;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
@@ -70,56 +72,13 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
 
         if (!IsPreviewing)
             Messages.Clear();
-
-        SetupTwitchClient();
-    }
-
-    private void SetupTwitchClient()
-    {
-        if (IsPreviewing) return;
-
-        var credentials = new TwitchLib.Client.Models.ConnectionCredentials(_config.Credentials.TwitchUser, _config.Credentials.OAuthToken);
-        var clientOptions = new ClientOptions
-        {
-            MessagesAllowedInPeriod = 750,
-            ThrottlingPeriod = TimeSpan.FromSeconds(30),
-        };
-        WebSocketClient customClient = new(clientOptions);
-        _twitchClient = new(customClient);
-
-        _twitchClient.Initialize(credentials, _config.Credentials.TwitchUser);
-        _twitchClient.OnMessageReceived += (s, e) =>
-        {
-            if (e.ChatMessage.IsBroadcaster && e.ChatMessage.ChatReply != null)
-                return;
-
-            if (e.ChatMessage.Bits > 0)
-                Messages.Add(new(MessageType.Bits, $"{DateTime.Now:HH:mm} {e.ChatMessage.DisplayName} cheered {e.ChatMessage.Bits} bits: {e.ChatMessage.Message}"));
-            else
-                Messages.Add(new(MessageType.Chat, $"{DateTime.Now:HH:mm} {e.ChatMessage.DisplayName}: {e.ChatMessage.Message}"));
-
-        };
-        _twitchClient.OnRaidNotification += (s, e) => Messages.Add(new(MessageType.Raided, $"{e.RaidNotification.DisplayName} has raided the channel with {e.RaidNotification.MsgParamViewerCount} viewers."));
-        _twitchClient.OnNewSubscriber += (s, e) => Messages.Add(new(MessageType.Subscriber, $"{e.Subscriber.DisplayName} Subscribed! ({e.Subscriber.SubscriptionPlanName})"));
-        _twitchClient.OnReSubscriber += (s, e) => Messages.Add(new(MessageType.Subscriber, $"{e.ReSubscriber.DisplayName} Resubscribed! ({e.ReSubscriber.SubscriptionPlanName})"));
-        _twitchClient.OnPrimePaidSubscriber += (s, e) => Messages.Add(new(MessageType.Subscriber, $"{e.PrimePaidSubscriber.DisplayName} Subscribed with Prime!"));
-        _twitchClient.OnGiftedSubscription += (s, e) => Messages.Add(new(MessageType.Subscriber, $"{e.GiftedSubscription.DisplayName} gifted a subscription ({e.GiftedSubscription.MsgParamSubPlanName}) to {e.GiftedSubscription.MsgParamRecipientDisplayName}"));
-
-        _twitchClient.OnConnected += (s, e) => Messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} Race Element - Chat HUD - Connected"));
-        _twitchClient.OnConnectionError += TwitchClient_OnConnectionError;
-
-        if (!_config.Shape.AlwaysVisible)
-        {
-            if (!_twitchClient.IsConnected)
-                _twitchClient.Connect();
-        }
     }
 
     public sealed override void BeforeStop()
     {
         if (IsPreviewing) return;
 
-        _twitchClient.Disconnect();
+        DisconnectTwitchClient();
 
         _cachedBackground?.Dispose();
         _stringFormat?.Dispose();
@@ -133,7 +92,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _dividerPen?.Dispose();
     }
 
-    private void TwitchClient_OnConnectionError(object sender, TwitchLib.Client.Events.OnConnectionErrorArgs e)
+    private void TwitchClient_OnConnectionError(object sender, OnConnectionErrorArgs e)
     {
         LogWriter.WriteToLog($"Twitch chat bot error: {e.Error}");
     }
@@ -149,10 +108,14 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
     {
         if (IsPreviewing) return;
 
-        if (!_twitchClient.IsConnected)
+        if (_twitchClient == null || !_twitchClient.IsConnected)
         {
-            _twitchClient.Connect();
-            //Messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} chat hud Reconnecting..."));
+            try
+            {
+                InitTwitchClient();
+                _twitchClient.Connect();
+            }
+            catch (Exception) { }
         }
 
         g.CompositingQuality = CompositingQuality.HighQuality;
@@ -219,4 +182,110 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         MessageType.Bot => _textBrushBot,
         _ => _textBrushChat,
     };
+
+    private void DisconnectTwitchClient()
+    {
+        if (_twitchClient == null)
+            return;
+
+        _twitchClient.OnMessageReceived -= TwitchClient_OnMessageReceived;
+
+        _twitchClient.OnRaidNotification -= TwitchClient_OnRaidNotification;
+        _twitchClient.OnNewSubscriber -= TwitchClient_OnNewSubscriber;
+        _twitchClient.OnReSubscriber -= TwitchClient_OnReSubscriber;
+        _twitchClient.OnPrimePaidSubscriber -= TwitchClient_OnPrimePaidSubscriber;
+        _twitchClient.OnGiftedSubscription -= TwitchClient_OnGiftedSubscription;
+
+        _twitchClient.OnConnectionError -= TwitchClient_OnConnectionError;
+        _twitchClient.OnConnected -= TwitchClient_OnConnected;
+        _twitchClient.OnDisconnected -= TwitchClient_OnDisconnected;
+        _twitchClient.OnReconnected -= TwitchClient_OnReconnected;
+        _twitchClient.OnConnectionError -= TwitchClient_OnConnectionError;
+
+        if (_twitchClient.IsConnected)
+            _twitchClient.Disconnect();
+
+        _twitchClient = null;
+    }
+
+    private void InitTwitchClient()
+    {
+        DisconnectTwitchClient();
+
+        var credentials = new TwitchLib.Client.Models.ConnectionCredentials(_config.Credentials.TwitchUser, _config.Credentials.OAuthToken);
+        var clientOptions = new ClientOptions
+        {
+            MessagesAllowedInPeriod = 750,
+            ThrottlingPeriod = TimeSpan.FromSeconds(30),
+            ReconnectionPolicy = new ReconnectionPolicy(5),
+        };
+        WebSocketClient customClient = new(clientOptions);
+        _twitchClient = new(customClient);
+
+        _twitchClient.Initialize(credentials, _config.Credentials.TwitchUser);
+
+        _twitchClient.OnMessageReceived += TwitchClient_OnMessageReceived;
+
+        _twitchClient.OnRaidNotification += TwitchClient_OnRaidNotification;
+        _twitchClient.OnNewSubscriber += TwitchClient_OnNewSubscriber;
+        _twitchClient.OnReSubscriber += TwitchClient_OnReSubscriber;
+        _twitchClient.OnPrimePaidSubscriber += TwitchClient_OnPrimePaidSubscriber;
+        _twitchClient.OnGiftedSubscription += TwitchClient_OnGiftedSubscription;
+
+        _twitchClient.OnConnected += TwitchClient_OnConnected;
+        _twitchClient.OnDisconnected += TwitchClient_OnDisconnected;
+        _twitchClient.OnReconnected += TwitchClient_OnReconnected;
+        _twitchClient.OnConnectionError += TwitchClient_OnConnectionError;
+    }
+
+    private void TwitchClient_OnMessageReceived(object sender, OnMessageReceivedArgs e)
+    {
+        if (e.ChatMessage.IsBroadcaster && e.ChatMessage.ChatReply != null)
+            return;
+
+        if (e.ChatMessage.Bits > 0)
+            Messages.Add(new(MessageType.Bits, $"{DateTime.Now:HH:mm} {e.ChatMessage.DisplayName} cheered {e.ChatMessage.Bits} bits: {e.ChatMessage.Message}"));
+        else
+            Messages.Add(new(MessageType.Chat, $"{DateTime.Now:HH:mm} {e.ChatMessage.DisplayName}: {e.ChatMessage.Message}"));
+    }
+
+    private void TwitchClient_OnGiftedSubscription(object sender, OnGiftedSubscriptionArgs e)
+    {
+        Messages.Add(new(MessageType.Subscriber, $"{e.GiftedSubscription.DisplayName} gifted a subscription ({e.GiftedSubscription.MsgParamSubPlanName}) to {e.GiftedSubscription.MsgParamRecipientDisplayName}"));
+    }
+
+    private void TwitchClient_OnPrimePaidSubscriber(object sender, OnPrimePaidSubscriberArgs e)
+    {
+        Messages.Add(new(MessageType.Subscriber, $"{e.PrimePaidSubscriber.DisplayName} Subscribed with Prime!"));
+    }
+
+    private void TwitchClient_OnReSubscriber(object sender, OnReSubscriberArgs e)
+    {
+        Messages.Add(new(MessageType.Subscriber, $"{e.ReSubscriber.DisplayName} Resubscribed! ({e.ReSubscriber.SubscriptionPlanName})"));
+    }
+
+    private void TwitchClient_OnNewSubscriber(object sender, OnNewSubscriberArgs e)
+    {
+        Messages.Add(new(MessageType.Subscriber, $"{e.Subscriber.DisplayName} Subscribed! ({e.Subscriber.SubscriptionPlanName})"));
+    }
+
+    private void TwitchClient_OnRaidNotification(object sender, OnRaidNotificationArgs e)
+    {
+        Messages.Add(new(MessageType.Raided, $"{e.RaidNotification.DisplayName} has raided the channel with {e.RaidNotification.MsgParamViewerCount} viewers."));
+    }
+
+    private void TwitchClient_OnConnected(object sender, OnConnectedArgs e)
+    {
+        Messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm:ss} Race Element - Chat HUD - Connected"));
+    }
+
+    private void TwitchClient_OnReconnected(object sender, OnReconnectedEventArgs e)
+    {
+        Messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm:ss} Race Element - Chat HUD - Reconnected"));
+    }
+
+    private void TwitchClient_OnDisconnected(object sender, OnDisconnectedEventArgs e)
+    {
+        Messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm:ss} Race Element - Chat HUD - Disconnected"));
+    }
 }

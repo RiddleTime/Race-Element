@@ -8,7 +8,6 @@ using RaceElement.Data.ACC.Database.RaceWeekend;
 using RaceElement.Data.ACC.Database.SessionData;
 using RaceElement.Data.ACC.Database.Telemetry;
 using RaceElement.Data.ACC.Tracker;
-using RaceElement.Util;
 using System;
 using System.Diagnostics;
 using System.Linq;

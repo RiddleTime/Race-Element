@@ -9,17 +9,17 @@
     <Grid>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" ToolTip="Displays or Hides the rating widget in the right top of the screen.">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" ToolTip="Displays or Hides the in-game rating widget in the right top of the screen.">
                 <ToggleButton x:Name="toggleRatingWidget" Width="50" Height="35" VerticalAlignment="Center" Cursor="Hand"/>
                 <Label VerticalAlignment="Center">Show rating widget</Label>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" ToolTip="Displays or Hides the server stats widget in the right bottom of the screen.">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" ToolTip="Displays or Hides the in-game server stats widget in the right bottom of the screen.">
                 <ToggleButton x:Name="toggleServerStats" Width="50" Height="35" VerticalAlignment="Center" Cursor="Hand"/>
                 <Label VerticalAlignment="Center">Show server stats widget</Label>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" ToolTip="Displays or Hides the fps widget.">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" ToolTip="Displays or Hides the in-game fps widget.">
                 <ToggleButton x:Name="toggleFps" Width="50" Height="35" VerticalAlignment="Center" Cursor="Hand"/>
                 <Label VerticalAlignment="Center">Show fps widget</Label>
             </StackPanel>

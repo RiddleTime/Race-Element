@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using RaceElement.Broadcast;
 using RaceElement.Broadcast.Structs;
 using RaceElement.Data;
 using RaceElement.Data.ACC.Cars;
@@ -9,11 +8,11 @@ using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
 using RaceElement.Util;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using WebSocketSharp;
 using static RaceElement.Data.ACC.EntryList.EntryListTracker;
@@ -24,8 +23,6 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChatBot;
 internal class TwitchChatBotCommandHandler
 {
     private readonly TwitchChatBotOverlay _overlay;
-
-    private readonly TwitchClient _client;
 
     public const char ChatCommandCharacter = '+';
 
@@ -40,14 +37,13 @@ internal class TwitchChatBotCommandHandler
     }
     private readonly ChatResponse[] Responses;
 
-    public TwitchChatBotCommandHandler(TwitchChatBotOverlay overlay, TwitchClient client)
+    public TwitchChatBotCommandHandler(TwitchChatBotOverlay overlay)
     {
         _overlay = overlay;
-        _client = client;
 
         Responses = [
             new("commands", GetCommandsList),
-            new("bot", (args) => "Race Element, it's free to use: https://race.elementfuture.com"),
+            new("app", (args) => "https://race.elementfuture.com / https://discord.gg/26AAEW5mUq"),
             new("damage", (args) => $"{TimeSpan.FromSeconds(Damage.GetTotalRepairTime(_overlay.pagePhysics)):mm\\:ss\\.fff}"),
             new("potential", GetPotentialBestResponse),
             new("temps", GetTemperaturesResponse),
@@ -58,6 +54,7 @@ internal class TwitchChatBotCommandHandler
             new("purple", GetPurpleLapResponse),
             new("ahead", GetCarAheadResponse),
             new("behind", GetCarBehindResponse),
+            new("pos", GetPositionResponse),
         ];
     }
 
@@ -87,7 +84,10 @@ internal class TwitchChatBotCommandHandler
             if (replyMessage.IsNullOrEmpty())
                 return;
 
-            _client.SendReply(_client.JoinedChannels[0], e.Command.ChatMessage.Id, replyMessage);
+            if (_overlay._twitchClient.JoinedChannels.Count == 0)
+                _overlay._twitchClient.JoinChannel(_overlay._config.Credentials.TwitchUser);
+
+            _overlay._twitchClient.SendReply(_overlay._twitchClient.JoinedChannels[0], e.Command.ChatMessage.Id, replyMessage);
 
             if (!command.Equals("commands"))
                 TwitchChatOverlay.Messages.Add(new(MessageType.Bot, $"{DateTime.Now:HH:mm} - {replyMessage}"));
@@ -102,8 +102,11 @@ internal class TwitchChatBotCommandHandler
     {
         StringBuilder sb = new("Race Element Commands: ");
         Span<ChatResponse> responses = Responses.AsSpan();
-        for (int i = 1; i < responses.Length; i++) sb.Append($"{responses[i].Command}{(i < responses.Length - 1 ? ", " : string.Empty)}");
+        for (int i = 1; i < responses.Length; i++)
+            sb.Append($"{responses[i].Command}{(i < responses.Length - 1 ? ", " : string.Empty)}");
+
         _ = sb.Append('.');
+
         return sb.ToString();
     }
 
@@ -136,14 +139,52 @@ internal class TwitchChatBotCommandHandler
         StringBuilder sb = new();
         if (_overlay.pagePhysics.AirTemp > 0)
         {
-            sb.Append($"Air {_overlay.pagePhysics.AirTemp:F2}°, Track {_overlay.pagePhysics.RoadTemp:F2}°, Wind {_overlay.pageGraphics.WindSpeed:F1} km/h, Grip: {_overlay.pageGraphics.trackGripStatus}");
+            sb.Append($"Air {_overlay.pagePhysics.AirTemp:F3}°, Track {_overlay.pagePhysics.RoadTemp:F3}°, Wind {_overlay.pageGraphics.WindSpeed:F1} km/h, Grip: {_overlay.pageGraphics.trackGripStatus}");
         }
         else
         {
-            sb.Append($"Air {_overlay.broadCastRealTime.AmbientTemp}° ,Track {_overlay.broadCastRealTime.TrackTemp}°");
+            sb.Append($"Air {_overlay.broadCastRealTime.AmbientTemp}°, Track {_overlay.broadCastRealTime.TrackTemp}°");
         }
         return sb.ToString();
     }
+
+    private string GetPositionResponse(string[] args)
+    {
+        if (args.Length == 0)
+            return string.Empty;
+
+        string possibleNumber = args[0];
+        if (!int.TryParse(possibleNumber, out int requestedPosition))
+            return string.Empty;
+
+        CarData requestedCar = GetCarAtPosition(requestedPosition);
+        if (requestedCar == null) return string.Empty;
+
+        StringBuilder sb = new($"P{requestedCar.RealtimeCarUpdate.Position} #{requestedCar.CarInfo.RaceNumber} - ");
+
+        sb.Append($"{requestedCar.CarInfo.Drivers[requestedCar.RealtimeCarUpdate.DriverIndex].FirstName} {requestedCar.CarInfo.GetCurrentDriverName()}");
+        if (requestedCar.CarInfo.TeamName.Length > 0) sb.Append($" [{requestedCar.CarInfo.TeamName}]");
+
+        LapInfo bestLap = requestedCar.RealtimeCarUpdate.BestSessionLap;
+        if (bestLap.LaptimeMS.HasValue)
+        {
+            TimeSpan bestLapTime = TimeSpan.FromMilliseconds((double)bestLap.LaptimeMS);
+            sb.Append($" - Best: {bestLapTime:m\\:ss\\:fff}");
+        }
+
+        LapInfo lastLap = requestedCar.RealtimeCarUpdate.LastLap;
+        if (lastLap.LaptimeMS.HasValue)
+        {
+            TimeSpan lastLapTime = TimeSpan.FromSeconds(lastLap.GetLapTimeMS() / 1000d);
+            TimeSpan s1 = TimeSpan.FromSeconds(lastLap.Splits[0].Value / 1000d);
+            TimeSpan s2 = TimeSpan.FromSeconds(lastLap.Splits[1].Value / 1000d);
+            TimeSpan s3 = TimeSpan.FromSeconds(lastLap.Splits[2].Value / 1000d);
+            sb.Append($" - Last: {lastLapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}");
+        }
+
+        return $"{sb}";
+    }
+
     private string GetCarAheadResponse(string[] args)
     {
         try

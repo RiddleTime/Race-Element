@@ -28,7 +28,7 @@ internal sealed class TwitchChatConfiguration : OverlayConfiguration
         [ToolTip("Either new text will come from the top or it will come from the bottom of the hud.")]
         public Direction Direction { get; init; } = Direction.TopToBottom;
 
-        [IntRange(100, 500, 2)]
+        [IntRange(100, 800, 2)]
         public int Width { get; init; } = 400;
 
         [IntRange(100, 500, 2)]
