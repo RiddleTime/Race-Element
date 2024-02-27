@@ -54,7 +54,7 @@ internal class TwitchChatBotCommandHandler
             new("purple", GetPurpleLapResponse),
             new("ahead", GetCarAheadResponse),
             new("behind", GetCarBehindResponse),
-            new("p", GetPositionResponse),
+            new("pos", GetPositionResponse),
         ];
     }
 
