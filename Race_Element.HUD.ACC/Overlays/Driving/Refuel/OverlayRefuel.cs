@@ -15,11 +15,10 @@ using static RaceElement.ACCSharedMemory;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayRefuel;
 
-#if DEBUG
 [Overlay(Name = "Refuel Info", Version = 1.00,
 Description = "Overlay to verify the fuel calculation during the race and help with pit stop strategy.", 
     OverlayType = OverlayType.Drive, Authors =["FG"])]
-#endif
+
 internal sealed class RefuelInfoOverlay : AbstractOverlay
 {
     internal readonly OverlayRefuelConfiguration _config = new();
