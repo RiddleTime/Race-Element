@@ -6,6 +6,9 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.4.0", "- Twitch Chat Bot:"+
+                    "\n  - Corrected last name during driver swap races for +pos command."+
+                    "\n  - Added +commands shoutout option, periodically uses +commands. (TODO!)"},
         {"1.0.3.6", "- Setup Importer now detects Discord download links again, drag it straight from the discord download button on-top of the app, discord changed the way they build up the URLs."+
                     "\n- Twitch Chat HUD: Increased max width from 500 to 800."+
                     "\n- Twitch Chat Bot: Added +pos command, it provides information regarding the car in the requested race position. Use it like +pos 1 and you will gain information about the car in P1!"},
