@@ -25,7 +25,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport
         public class FontGrouping
         {
             [ToolTip("Font size")]
-            [IntRange(1,32, 1)]
+            [IntRange(5, 32, 1)]
             public int Size { get; init; } = 10;
         }
     }
