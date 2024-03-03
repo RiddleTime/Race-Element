@@ -1,13 +1,11 @@
 using RaceElement.Core.Jobs.LoopJob;
-
 using Newtonsoft.Json.Linq;
-
 using System.Net.Http;
 using System;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport;
 
-internal sealed class LowFuelMotorsportUserLicense
+internal record struct LowFuelMotorsportUserLicense
 {
     public string FirstName;
     public string LastName;
@@ -22,7 +20,7 @@ internal sealed class LowFuelMotorsportUserLicense
     public string GamePlatform;
 }
 
-internal sealed class LowFuelMotorsportNextRace
+internal record LowFuelMotorsportNextRace
 {
     public string Name;
     public string Id;
@@ -34,37 +32,27 @@ internal sealed class LowFuelMotorsportNextRace
     public string Sof;
 }
 
-internal sealed class LowFuelMotorsportAPI
-{
-    public LowFuelMotorsportUserLicense UserLicense;
-    public LowFuelMotorsportNextRace NextRace;
-}
+internal record LowFuelMotorsportAPI(LowFuelMotorsportUserLicense UserLicense, LowFuelMotorsportNextRace NextRace);
 
-internal sealed class LowFuelMotorsportJob : AbstractLoopJob
+internal sealed class LowFuelMotorsportJob(string userId) : AbstractLoopJob
 {
     public static readonly string DRIVER_RACE_API_URL = "https://api2.lowfuelmotorsport.com/api/licenseWidgetUserData/{0}";
-    private string _userId = null;
-
     public EventHandler<LowFuelMotorsportAPI> OnFetchCompleted;
-
-    public LowFuelMotorsportJob(string userId)
-    {
-        _userId = userId;
-    }
 
     private void JsonToLFMObject(JObject lfmObject)
     {
-        LowFuelMotorsportUserLicense userLicense = new();
-        LowFuelMotorsportNextRace nextRace = null;
+        LowFuelMotorsportUserLicense userLicense = new()
+        {
 
-        userLicense.FirstName = lfmObject["user"]["vorname"].Value<string>().Trim();
-        userLicense.LastName = lfmObject["user"]["nachname"].Value<string>().Trim();
+            FirstName = lfmObject["user"]["vorname"].Value<string>().Trim(),
+            LastName = lfmObject["user"]["nachname"].Value<string>().Trim(),
 
-        userLicense.License = lfmObject["user"]["license"].Value<string>().Trim();
-        userLicense.Elo = lfmObject["user"]["cc_rating"].Value<string>().Trim();
+            License = lfmObject["user"]["license"].Value<string>().Trim(),
+            Elo = lfmObject["user"]["cc_rating"].Value<string>().Trim(),
 
-        userLicense.SafetyRatingLicense = lfmObject["user"]["sr_license"].Value<string>().Trim();
-        userLicense.SafetyRating = lfmObject["user"]["safety_rating"].Value<string>().Trim();
+            SafetyRatingLicense = lfmObject["user"]["sr_license"].Value<string>().Trim(),
+            SafetyRating = lfmObject["user"]["safety_rating"].Value<string>().Trim()
+        };
 
         if (lfmObject["sim"] != null)
         {
@@ -72,6 +60,7 @@ internal sealed class LowFuelMotorsportJob : AbstractLoopJob
             userLicense.GamePlatform = lfmObject["sim"]["platform"].Value<string>().Trim();
         }
 
+        LowFuelMotorsportNextRace nextRace = null;
         if (((JArray)lfmObject["race"]).Count > 0)
         {
             nextRace = new()
@@ -87,19 +76,14 @@ internal sealed class LowFuelMotorsportJob : AbstractLoopJob
             };
         }
 
-        LowFuelMotorsportAPI api = new()
-        {
-            UserLicense = userLicense,
-            NextRace = nextRace
-        };
-
+        LowFuelMotorsportAPI api = new(userLicense, nextRace);
         OnFetchCompleted?.Invoke(this, api);
     }
 
     public override void RunAction()
     {
-        HttpClient client = new();
-        string url = string.Format(DRIVER_RACE_API_URL, _userId);
+        using HttpClient client = new();
+        string url = string.Format(DRIVER_RACE_API_URL, userId);
 
         using HttpResponseMessage response = client.GetAsync(url).Result;
         using HttpContent content = response.Content;
