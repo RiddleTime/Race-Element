@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace RaceElement.Core.Jobs.LoopJob;
 
@@ -21,13 +20,6 @@ public abstract class AbstractLoopJob : IJob
             ArgumentOutOfRangeException.ThrowIfLessThan(value, 1);
             _intervalMillis = value;
         }
-    }
-
-    private int _maxSleepTimeInMillis = -1;
-    public int MaxSleepTimeInMillis
-    {
-        get { return _maxSleepTimeInMillis; }
-        set { _maxSleepTimeInMillis = value; }
     }
 
     public abstract void RunAction();
@@ -57,10 +49,7 @@ public abstract class AbstractLoopJob : IJob
                 {
                     int sleepTime = (int)(IntervalMillis - sw.ElapsedMilliseconds);
                     if (sleepTime > 2)
-                    {
-                        sleepTime = _maxSleepTimeInMillis >= 0 ? (sleepTime % _maxSleepTimeInMillis) : sleepTime;
                         Thread.Sleep(sleepTime);
-                    }
 
                     continue;
                 }
