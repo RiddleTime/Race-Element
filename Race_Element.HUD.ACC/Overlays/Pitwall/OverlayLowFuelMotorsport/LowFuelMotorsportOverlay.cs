@@ -4,6 +4,7 @@ using RaceElement.HUD.Overlay.Internal;
 using System.Drawing.Text;
 using System.Drawing;
 using System;
+using System.Threading.Tasks;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport;
 
@@ -28,7 +29,7 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
 
     public LowFuelMotorsportOverlay(Rectangle rectangle) : base(rectangle, "Low Fuel Motorsport")
     {
-        this.RefreshRateHz = 1 / 4f;
+        this.RefreshRateHz = 1f;
     }
 
     public override void SetupPreviewData()
@@ -46,7 +47,7 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
         },
         new LowFuelMotorsportNextRace()
         {
-               // TODO: add some data for the preview
+            // TODO: add some data for the preview
         });
     }
 
@@ -63,14 +64,18 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
         };
 
         _fetchJob.OnFetchCompleted += OnLFMFetchCompleted;
-        _fetchJob.RunAction();
+        Task.Run(() => _fetchJob.RunAction());
         _fetchJob.Run();
+    }
+    private void OnLFMFetchCompleted(object sender, LowFuelMotorsportAPI e)
+    {
+        _api = e;
     }
 
     public sealed override void BeforeStop()
     {
-
         if (IsPreviewing) return;
+
         _fetchJob.OnFetchCompleted -= OnLFMFetchCompleted;
         _fetchJob.CancelJoin();
     }
@@ -105,11 +110,6 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
         }
 
         return $"{diff:dd\\:hh\\:mm\\:ss}";
-    }
-
-    private void OnLFMFetchCompleted(object sender, LowFuelMotorsportAPI e)
-    {
-        _api = e;
     }
 
     private string GenerateLFMLicense(LowFuelMotorsportAPI api)
