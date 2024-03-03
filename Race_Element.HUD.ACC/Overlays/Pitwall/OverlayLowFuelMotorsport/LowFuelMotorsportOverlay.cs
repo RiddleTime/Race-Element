@@ -28,15 +28,38 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
 
     public LowFuelMotorsportOverlay(Rectangle rectangle) : base(rectangle, "Low Fuel Motorsport")
     {
+        this.RefreshRateHz = 1 / 4f;
+    }
+
+    public override void SetupPreviewData()
+    {
+        _api = new(new LowFuelMotorsportUserLicense()
+        {
+            Elo = "9000",
+            FirstName = "Race",
+            LastName = "Element",
+            GameName = "ACC",
+            GamePlatform = "",
+            License = "",
+            SafetyRating = "",
+            SafetyRatingLicense = "",
+        },
+        new LowFuelMotorsportNextRace()
+        {
+               // TODO: add some data for the preview
+        });
     }
 
     public override void BeforeStart()
     {
         _fontFamily = Overlay.Util.FontUtil.FontSegoeMono(_config.Font.Size);
+
+
+        if (IsPreviewing) return;
+
         _fetchJob = new LowFuelMotorsportJob(_config.Connection.User)
         {
             IntervalMillis = _config.Connection.Interval * 1000,
-            MaxSleepTimeInMillis = 100
         };
 
         _fetchJob.OnFetchCompleted += OnLFMFetchCompleted;
@@ -44,19 +67,16 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
         _fetchJob.Run();
     }
 
-     public sealed override void BeforeStop()
-     {
-        _fetchJob.CancelJoin();
+    public sealed override void BeforeStop()
+    {
+
+        if (IsPreviewing) return;
         _fetchJob.OnFetchCompleted -= OnLFMFetchCompleted;
-     }
+        _fetchJob.CancelJoin();
+    }
 
     public override void Render(Graphics g)
     {
-        if (_api == null)
-        {
-            return;
-        }
-
         string licenseText = GenerateLFMLicense(_api);
         SizeF bounds = g.MeasureString(licenseText, _fontFamily);
 
@@ -84,7 +104,7 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
             return "Session Live";
         }
 
-       return $"{diff:dd\\:hh\\:mm\\:ss}";
+        return $"{diff:dd\\:hh\\:mm\\:ss}";
     }
 
     private void OnLFMFetchCompleted(object sender, LowFuelMotorsportAPI e)
@@ -94,6 +114,8 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
 
     private string GenerateLFMLicense(LowFuelMotorsportAPI api)
     {
+        if (api == null) return "No data";
+
         string licenseText = string.Format
         (
             "{0} {1}    {2} ({3}) ({4})    ELO {5}    {6} ({7})",
