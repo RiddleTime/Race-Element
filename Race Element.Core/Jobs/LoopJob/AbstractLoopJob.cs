@@ -23,6 +23,13 @@ public abstract class AbstractLoopJob : IJob
         }
     }
 
+    private int _maxSleepTimeInMillis = -1;
+    public int MaxSleepTimeInMillis
+    {
+        get { return _maxSleepTimeInMillis; }
+        set { _maxSleepTimeInMillis = value; }
+    }
+
     public abstract void RunAction();
 
     public virtual void AfterCancel() { }
@@ -50,7 +57,10 @@ public abstract class AbstractLoopJob : IJob
                 {
                     int sleepTime = (int)(IntervalMillis - sw.ElapsedMilliseconds);
                     if (sleepTime > 2)
+                    {
+                        sleepTime = _maxSleepTimeInMillis >= 0 ? (sleepTime % _maxSleepTimeInMillis) : sleepTime;
                         Thread.Sleep(sleepTime);
+                    }
 
                     continue;
                 }
