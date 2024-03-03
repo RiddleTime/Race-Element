@@ -33,7 +33,11 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
     public override void BeforeStart()
     {
         _fontFamily = Overlay.Util.FontUtil.FontSegoeMono(_config.Font.Size);
-        _fetchJob = new LowFuelMotorsportJob(_config.Connection.User) { IntervalMillis = _config.Connection.Interval * 1000 };
+        _fetchJob = new LowFuelMotorsportJob(_config.Connection.User)
+        {
+            IntervalMillis = _config.Connection.Interval * 1000,
+            MaxSleepTimeInMillis = 100
+        };
 
         _fetchJob.OnFetchCompleted += OnLFMFetchCompleted;
         _fetchJob.RunAction();
