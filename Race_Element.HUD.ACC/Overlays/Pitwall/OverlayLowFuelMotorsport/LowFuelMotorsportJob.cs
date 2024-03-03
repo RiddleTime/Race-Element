@@ -50,15 +50,19 @@ internal sealed class LowFuelMotorsportJob(string userId) : AbstractLoopJob
             License = lfmObject["user"]["license"].Value<string>().Trim(),
             Elo = lfmObject["user"]["cc_rating"].Value<string>().Trim(),
 
-            SafetyRatingLicense = lfmObject["user"]["sr_license"].Value<string>().Trim(),
             SafetyRating = lfmObject["user"]["safety_rating"].Value<string>().Trim()
         };
+
+        if (lfmObject["user"]["sr_license"] != null)
+            userLicense.SafetyRatingLicense = lfmObject["user"]["sr_license"].Value<string>().Trim();
 
         if (lfmObject["sim"] != null)
         {
             userLicense.GameName = lfmObject["sim"]["name"].Value<string>().Trim();
             userLicense.GamePlatform = lfmObject["sim"]["platform"].Value<string>().Trim();
         }
+
+        // TODO deserialize into an Object 
 
         LowFuelMotorsportNextRace nextRace = null;
         if (((JArray)lfmObject["race"]).Count > 0)
