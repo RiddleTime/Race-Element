@@ -6,19 +6,20 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport
     {
         public LowFuelMotorsportConfiguration() => GenericConfiguration.AllowRescale = false;
 
-        [ConfigGrouping("Connection", "LFM user information")]
-        public CredentialsGrouping Credentials { get; init; } = new();
+        [ConfigGrouping("Connection", "LFM user information and fetch information interval")]
+        public ConnectionGrouping Connection { get; init; } = new();
 
         [ConfigGrouping("Font", "Font configuration")]
         public FontGrouping Font { get; init; } = new();
 
-        [ConfigGrouping("Update", "Update inteval configuration")]
-        public UpdateGrouping Update { get; init; } = new();
-
-        public class CredentialsGrouping
+        public class ConnectionGrouping
         {
             [ToolTip("User identifier (https://lowfuelmotorsport.com/profile/[HERE_IS_THE_ID])")]
             public string User { get; init; } = "";
+
+            [ToolTip("Server fetch interval in seconds")]
+            [IntRange(30, 120, 10)]
+            public int Interval { get; init; } = 30;
         }
 
         public class FontGrouping
@@ -26,13 +27,6 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport
             [ToolTip("Font size")]
             [IntRange(1,32, 1)]
             public int Size { get; init; } = 10;
-        }
-
-        public class UpdateGrouping
-        {
-            [ToolTip("Update interval in seconds")]
-            [IntRange(30, 3600, 10)]
-            public int Interval { get; init; } = 30;
         }
     }
 }
