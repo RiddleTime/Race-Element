@@ -7,7 +7,6 @@ using System;
 using System.Threading.Tasks;
 using static RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport.LowFuelMotorsportConfiguration;
 using RaceElement.HUD.Overlay.Util;
-using System.Windows.Media;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport;
 
