@@ -7,20 +7,23 @@ using System;
 using System.Threading.Tasks;
 using static RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport.LowFuelMotorsportConfiguration;
 using RaceElement.HUD.Overlay.Util;
+using RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport.API;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport;
 
 [Overlay(Name = "Low Fuel Motorsport",
-    Description = "Shows driver license and next race info",
-    OverlayType = OverlayType.Pitwall)]
+    Description = "Shows driver license and next upcoming races.",
+    OverlayType = OverlayType.Drive,
+    Authors = []
+)]
 
 internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
 {
     private readonly LowFuelMotorsportConfiguration _config = new();
-    private Font _fontFamily = null;
 
-    private LowFuelMotorsportJob _fetchJob = null;
-    private LowFuelMotorsportAPI _api = null;
+    private Font _fontFamily;
+    private ApiObject _apiObject;
+    private LowFuelMotorsportJob _lfmJob;
 
     public LowFuelMotorsportOverlay(Rectangle rectangle) : base(rectangle, "Low Fuel Motorsport")
     {
@@ -29,27 +32,7 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
 
     public override void SetupPreviewData()
     {
-        _api = new(new LowFuelMotorsportUserLicense()
-        {
-            Elo = "9000",
-            FirstName = "Race",
-            LastName = "Element",
-            GameName = "ACC",
-            GamePlatform = "",
-            License = "",
-            SafetyRating = "",
-            SafetyRatingLicense = "",
-        },
-        new LowFuelMotorsportNextRace()
-        {
-            Date = DateTime.Now.AddMinutes(45),
-            NumberOfDrivers = "28",
-            Name = "",
-            Sof = string.Empty,
-            Split = string.Empty,
-            Id = string.Empty,
-            // TODO: add some data for the preview
-        });
+
     }
 
     public override void BeforeStart()
@@ -65,31 +48,30 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
 
         if (IsPreviewing) return;
 
-        _fetchJob = new LowFuelMotorsportJob(_config.Connection.User)
+        _lfmJob = new LowFuelMotorsportJob(_config.Connection.User)
         {
             IntervalMillis = _config.Connection.Interval * 1000,
         };
 
-        _fetchJob.OnFetchCompleted += OnLFMFetchCompleted;
-        Task.Run(() => _fetchJob.RunAction());
-        _fetchJob.Run();
+        _lfmJob.OnNewApiObject += OnNewApiObject;
+
+        Task.Run(() => _lfmJob.RunAction());
+
+        _lfmJob.Run();
     }
-    private void OnLFMFetchCompleted(object sender, LowFuelMotorsportAPI e)
-    {
-        _api = e;
-    }
+    private void OnNewApiObject(object sender, ApiObject apiObject) => _apiObject = apiObject;
 
     public sealed override void BeforeStop()
     {
         if (IsPreviewing) return;
 
-        _fetchJob.OnFetchCompleted -= OnLFMFetchCompleted;
-        _fetchJob.Cancel();
+        _lfmJob.OnNewApiObject -= OnNewApiObject;
+        _lfmJob.Cancel();
     }
 
     public override void Render(Graphics g)
     {
-        string licenseText = GenerateLFMLicense(_api);
+        string licenseText = GenerateLFMLicense();
         SizeF bounds = g.MeasureString(licenseText, _fontFamily);
 
         this.Height = (int)(bounds.Height + 1);
@@ -119,33 +101,34 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
         return $"{diff:dd\\:hh\\:mm\\:ss}";
     }
 
-    private string GenerateLFMLicense(LowFuelMotorsportAPI api)
+    private string GenerateLFMLicense()
     {
-        if (api == null) return "No data";
+        if (_apiObject == null) return "No data";
 
         string licenseText = string.Format
         (
             "{0} {1}    {2} ({3}) ({4})    ELO {5}    {6} ({7})",
-            api.UserLicense.FirstName,
-            api.UserLicense.LastName,
-            api.UserLicense.License,
-            api.UserLicense.SafetyRatingLicense,
-            api.UserLicense.SafetyRating,
-            api.UserLicense.Elo,
-            api.UserLicense.GameName,
-            api.UserLicense.GamePlatform
+            _apiObject.User.FirstName,
+            _apiObject.User.LastName,
+            _apiObject.User.License,
+            _apiObject.User.SrLicense,
+            _apiObject.User.SafetyRating,
+            _apiObject.User.CcRating,
+            _apiObject.Sim.Name,
+            _apiObject.Sim.Platform
         ).Trim();
 
-        if (api.NextRace != null)
+        if (_apiObject.Race.Count > 0)
         {
+            Race race = _apiObject.Race[0]; // current race or upcoming race
             string raceText = string.Format
             (
                 "{0} | #{1} | Split {2} | SOF {3} | Drivers {4}",
-                api.NextRace.Name,
-                api.NextRace.Id,
-                api.NextRace.Split,
-                api.NextRace.Sof,
-                api.NextRace.NumberOfDrivers
+                race.EventName,
+                race.RaceId,
+                race.Split,
+                race.Sof,
+                _apiObject.Drivers
             ).Trim();
 
             int raceLen = raceText.Length;
@@ -168,11 +151,12 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
                 raceText
             );
 
-            if (api.NextRace.Date.Year != 1)
+            if (race.RaceDate.Year != 1)
             {
-                string time = TimeSpanToStringCountDown(api.NextRace.Date.Subtract(DateTime.Now));
+                string time = TimeSpanToStringCountDown(race.RaceDate.Subtract(DateTime.Now));
                 licenseText = string.Format("{0}\n{1}", licenseText, time.PadLeft(licenseText.IndexOf('\n'), ' '));
             }
+
         }
 
         return licenseText;

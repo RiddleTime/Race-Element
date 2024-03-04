@@ -2,27 +2,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport.LowFuelMotorSportApi;
+namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport.API;
 
-public record Race(
-    [property: JsonProperty("event_name")] string EventName,
-    [property: JsonProperty("race_id")] int RaceId,
-    [property: JsonProperty("split")] int Split,
-    [property: JsonProperty("sim_id")] int SimId,
-    [property: JsonProperty("race_date")] DateTime RaceDate,
-    [property: JsonProperty("sof")] int Sof,
-    [property: JsonProperty("split2_sof")] int Split2Sof,
-    [property: JsonProperty("split3_sof")] int Split3Sof,
-    [property: JsonProperty("split4_sof")] int Split4Sof,
-    [property: JsonProperty("split5_sof")] int Split5Sof,
-    [property: JsonProperty("split6_sof")] int Split6Sof,
-    [property: JsonProperty("split7_sof")] int Split7Sof,
-    [property: JsonProperty("split8_sof")] int Split8Sof,
-    [property: JsonProperty("split9_sof")] int Split9Sof,
-    [property: JsonProperty("split10_sof")] int Split10Sof
-);
-
-public record LfmRootObject(
+public record ApiObject(
     [property: JsonProperty("user")] User User,
     [property: JsonProperty("race")] IReadOnlyList<Race> Race,
     [property: JsonProperty("drivers")] int Drivers,
@@ -40,6 +22,24 @@ public record Sim(
     [property: JsonProperty("logo_big")] string LogoBig,
     [property: JsonProperty("platform")] string Platform,
     [property: JsonProperty("active")] int Active
+);
+
+public record Race(
+    [property: JsonProperty("event_name")] string EventName,
+    [property: JsonProperty("race_id")] int RaceId,
+    [property: JsonProperty("split")] int Split,
+    [property: JsonProperty("sim_id")] int SimId,
+    [property: JsonProperty("race_date")] DateTime RaceDate,
+    [property: JsonProperty("sof")] int Sof,
+    [property: JsonProperty("split2_sof")] int Split2Sof,
+    [property: JsonProperty("split3_sof")] int Split3Sof,
+    [property: JsonProperty("split4_sof")] int Split4Sof,
+    [property: JsonProperty("split5_sof")] int Split5Sof,
+    [property: JsonProperty("split6_sof")] int Split6Sof,
+    [property: JsonProperty("split7_sof")] int Split7Sof,
+    [property: JsonProperty("split8_sof")] int Split8Sof,
+    [property: JsonProperty("split9_sof")] int Split9Sof,
+    [property: JsonProperty("split10_sof")] int Split10Sof
 );
 
 public record User(
@@ -76,4 +76,3 @@ public record User(
     [property: JsonProperty("fav_sim")] int FavSim,
     [property: JsonProperty("sr_license")] string SrLicense
 );
-
