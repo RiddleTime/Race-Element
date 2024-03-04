@@ -55,28 +55,18 @@ public readonly record struct User
     [JsonProperty("nachname")] public string LastName { get; init; }
     [JsonProperty("steamid")] public string SteamId { get; init; }
     [JsonProperty("avatar")] public string Avatar { get; init; }
-    [JsonProperty("email")] public string Email { get; init; }
-    [JsonProperty("email_verified_at")] public object EmailVerifiedAt { get; init; }
-    [JsonProperty("password")] public string Password { get; init; }
-    [JsonProperty("remember_token")] public string RememberToken { get; init; }
     [JsonProperty("admin")] public int Admin { get; init; }
     [JsonProperty("created_at")] public string CreatedAt { get; init; }
     [JsonProperty("updated_at")] public string UpdatedAt { get; init; }
-    [JsonProperty("discord_id")] public string DiscordId { get; init; }
     [JsonProperty("profile_extras")] public string ProfileExtras { get; init; }
     [JsonProperty("origin")] public string Origin { get; init; }
     [JsonProperty("c_rating")] public int CRating { get; init; }
     [JsonProperty("cc_rating")] public int CcRating { get; init; }
-    [JsonProperty("twitch_channel")] public string TwitchChannel { get; init; }
-    [JsonProperty("is_tv_broadcaster")] public int IsTvBroadcaster { get; init; }
-    [JsonProperty("youtube_channel")] public string YoutubeChannel { get; init; }
-    [JsonProperty("popometer_id")] public string PopometerId { get; init; }
     [JsonProperty("license")] public string License { get; init; }
     [JsonProperty("safety_rating")] public string SafetyRating { get; init; }
     [JsonProperty("division")] public int Division { get; init; }
     [JsonProperty("valid_license")] public int ValidLicense { get; init; }
     [JsonProperty("darkmode")] public int Darkmode { get; init; }
-    [JsonProperty("patreon")] public int Patreon { get; init; }
     [JsonProperty("fav_sim")] public int FavSim { get; init; }
     [JsonProperty("sr_license")] public string SrLicense { get; init; }
 }
