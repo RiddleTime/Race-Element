@@ -5,15 +5,11 @@ using System.Drawing.Text;
 using System.Drawing;
 using System;
 using System.Threading.Tasks;
+using static RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport.LowFuelMotorsportConfiguration;
+using RaceElement.HUD.Overlay.Util;
+using System.Windows.Media;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport;
-
-enum DownloadState : int
-{
-    Undefined,
-    Downloading,
-    DownloadFinished
-}
 
 [Overlay(Name = "Low Fuel Motorsport",
     Description = "Shows driver license and next race info",
@@ -53,8 +49,14 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
 
     public override void BeforeStart()
     {
-        _fontFamily = Overlay.Util.FontUtil.FontSegoeMono(_config.Font.Size);
-
+        _fontFamily = _config.Font.FontFamily switch
+        {
+            FontFamilyConfig.SegoeMono => FontUtil.FontSegoeMono(_config.Font.Size),
+            FontFamilyConfig.Conthrax => FontUtil.FontConthrax(_config.Font.Size),
+            FontFamilyConfig.Orbitron => FontUtil.FontOrbitron(_config.Font.Size),
+            FontFamilyConfig.Roboto => FontUtil.FontRoboto(_config.Font.Size),
+            _ => FontUtil.FontSegoeMono(_config.Font.Size)
+        };
 
         if (IsPreviewing) return;
 

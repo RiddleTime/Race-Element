@@ -4,14 +4,18 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport
 {
     internal sealed class LowFuelMotorsportConfiguration : OverlayConfiguration
     {
+        public enum FontFamilyConfig
+        {
+            SegoeMono,
+            Conthrax,
+            Orbitron,
+            Roboto,
+        }
+
         public LowFuelMotorsportConfiguration() => GenericConfiguration.AllowRescale = false;
 
         [ConfigGrouping("Connection", "LFM user information and fetch information interval")]
         public ConnectionGrouping Connection { get; init; } = new();
-
-        [ConfigGrouping("Font", "Font configuration")]
-        public FontGrouping Font { get; init; } = new();
-
         public class ConnectionGrouping
         {
             [ToolTip("User identifier (https://lowfuelmotorsport.com/profile/[HERE_IS_THE_ID])")]
@@ -22,8 +26,13 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport
             public int Interval { get; init; } = 30;
         }
 
+        [ConfigGrouping("Font", "Font configuration")]
+        public FontGrouping Font { get; init; } = new();
         public class FontGrouping
         {
+            [ToolTip("Font family")]
+            public FontFamilyConfig FontFamily { get; init; } = FontFamilyConfig.SegoeMono;
+
             [ToolTip("Font size")]
             [IntRange(5, 32, 1)]
             public int Size { get; init; } = 10;
