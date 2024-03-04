@@ -32,7 +32,10 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
 
     public override void SetupPreviewData()
     {
+        _apiObject = new()
+        {
 
+        };
     }
 
     public override void BeforeStart()
@@ -103,7 +106,7 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
 
     private string GenerateLFMLicense()
     {
-        if (_apiObject == null) return "No data";
+        if (_apiObject == null || _apiObject.User == null) return "No data";
 
         string licenseText = string.Format
         (
