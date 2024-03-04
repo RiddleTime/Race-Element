@@ -42,6 +42,12 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
         },
         new LowFuelMotorsportNextRace()
         {
+            Date = DateTime.Now.AddMinutes(45),
+            NumberOfDrivers = "28",
+            Name = "",
+            Sof = string.Empty,
+            Split = string.Empty,
+            Id = string.Empty,
             // TODO: add some data for the preview
         });
     }
@@ -78,7 +84,7 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
         if (IsPreviewing) return;
 
         _fetchJob.OnFetchCompleted -= OnLFMFetchCompleted;
-        _fetchJob.CancelJoin();
+        _fetchJob.Cancel();
     }
 
     public override void Render(Graphics g)
