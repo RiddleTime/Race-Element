@@ -7,7 +7,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport.API;
 public record ApiObject
 {
     [JsonProperty("user")] public User User { get; init; }
-    [JsonProperty("race")] public IReadOnlyList<Race> Race { get; init; }
+    [JsonProperty("race")] public IReadOnlyList<Race> Races { get; init; }
     [JsonProperty("drivers")] public int Drivers { get; init; }
     [JsonProperty("sim")] public Sim Sim { get; init; }
     [JsonProperty("licenseclass")] public string Licenseclass { get; init; }

@@ -1,6 +1,5 @@
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Internal;
-
 using System.Drawing.Text;
 using System.Drawing;
 using System;
@@ -34,7 +33,28 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
     {
         _apiObject = new()
         {
-
+            User = new()
+            {
+                FavSim = 1,
+                FirstName = "Race",
+                LastName = "Element",
+                License = "Rookie",
+                SrLicense = "E3",
+                SafetyRating = "8.08",
+                CcRating = 1520,
+            },
+            Sim = new()
+            {
+                SimId = 1,
+                SelectOrder = 1,
+                Name = "Assetto Corsa Competizione",
+                LogoUrl = "/assets/img/sims/acc.png",
+                LogoBig = "/assets/img/sims/acc_new.png",
+                Platform = "PC",
+                Active = 1
+            },
+            Licenseclass = "ROOKIE",
+            Sof = 1520,
         };
     }
 
@@ -87,9 +107,7 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
     public override bool ShouldRender()
     {
         if (_config.Connection.User.Trim() == "")
-        {
             return false;
-        }
 
         return base.ShouldRender();
     }
@@ -97,9 +115,7 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
     private string TimeSpanToStringCountDown(TimeSpan diff)
     {
         if (diff.TotalSeconds <= 0)
-        {
             return "Session Live";
-        }
 
         return $"{diff:dd\\:hh\\:mm\\:ss}";
     }
@@ -121,9 +137,9 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
             _apiObject.Sim.Platform
         ).Trim();
 
-        if (_apiObject.Race.Count > 0)
+        if (_apiObject.Races != null && _apiObject.Races.Count > 0)
         {
-            Race race = _apiObject.Race[0]; // current race or upcoming race
+            Race race = _apiObject.Races[0]; // current race or upcoming race
             string raceText = string.Format
             (
                 "{0} | #{1} | Split {2} | SOF {3} | Drivers {4}",
