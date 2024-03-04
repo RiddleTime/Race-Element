@@ -26,7 +26,7 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
 
     public LowFuelMotorsportOverlay(Rectangle rectangle) : base(rectangle, "Low Fuel Motorsport")
     {
-        this.RefreshRateHz = 1f;
+        this.RefreshRateHz = 2f;
     }
 
     public override void SetupPreviewData()
@@ -106,7 +106,9 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
         {
             using SolidBrush backgroundBrush = new(Color.FromArgb(175, 0, 0, 0));
             g.FillRoundedRectangle(backgroundBrush, new Rectangle(0, 0, Width, Height), 2);
-            g.DrawStringWithShadow(licenseText, _fontFamily, Brushes.White, new PointF(0, 0));
+
+            using StringFormat stringFormat = new() { Alignment = StringAlignment.Near };
+            g.DrawStringWithShadow(licenseText, _fontFamily, Brushes.White, new PointF(0, 0), stringFormat);
         }
     }
 
