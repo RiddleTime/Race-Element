@@ -3,6 +3,8 @@ using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System;
 using System.Diagnostics;
+using Newtonsoft.Json;
+using RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport.LowFuelMotorSportApi;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport;
 
@@ -42,18 +44,15 @@ internal sealed class LowFuelMotorsportJob(string userId) : AbstractLoopJob
 
     private void JsonToLFMObject(JObject lfmObject)
     {
-        Debug.WriteLine($"");
+        LfmRootObject root = lfmObject.ToObject<LfmRootObject>();
 
         LowFuelMotorsportUserLicense userLicense = new()
         {
-
-            FirstName = lfmObject["user"]["vorname"].Value<string>().Trim(),
-            LastName = lfmObject["user"]["nachname"].Value<string>().Trim(),
-
-            License = lfmObject["user"]["license"].Value<string>().Trim(),
-            Elo = lfmObject["user"]["cc_rating"].Value<string>().Trim(),
-
-            SafetyRating = lfmObject["user"]["safety_rating"].Value<string>().Trim()
+            FirstName = root.User.FirstName,
+            LastName = root.User.LastName,
+            License = root.User.License,
+            Elo = $"{root.User.CcRating}",
+            SafetyRating = root.User.SafetyRating,
         };
 
         if (lfmObject["user"]["sr_license"] != null)
