@@ -101,7 +101,13 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
         this.Width = (int)(bounds.Width + 1);
 
         g.TextRenderingHint = TextRenderingHint.AntiAlias;
-        g.DrawStringWithShadow(licenseText, _fontFamily, Brushes.White, new PointF(0, 0));
+
+        if (licenseText != string.Empty)
+        {
+            using SolidBrush backgroundBrush = new(Color.FromArgb(175, 0, 0, 0));
+            g.FillRoundedRectangle(backgroundBrush, new Rectangle(0, 0, Width, Height), 2);
+            g.DrawStringWithShadow(licenseText, _fontFamily, Brushes.White, new PointF(0, 0));
+        }
     }
 
     public override bool ShouldRender()
