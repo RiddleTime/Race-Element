@@ -31,7 +31,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport
         public class FontGrouping
         {
             [ToolTip("Font family")]
-            public FontFamilyConfig FontFamily { get; init; } = FontFamilyConfig.SegoeMono;
+            public FontFamilyConfig FontFamily { get; init; } = FontFamilyConfig.Roboto;
 
             [ToolTip("Font size")]
             [IntRange(5, 32, 1)]
