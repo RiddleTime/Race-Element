@@ -2,9 +2,9 @@ using RaceElement.Core.Jobs.LoopJob;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System;
-using RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport.API;
+using RaceElement.HUD.ACC.Overlays.Pitwall.LowFuelMotorsport.API;
 
-namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport;
+namespace RaceElement.HUD.ACC.Overlays.Pitwall.LowFuelMotorsport;
 
 internal sealed class LowFuelMotorsportJob(string userId) : AbstractLoopJob
 {

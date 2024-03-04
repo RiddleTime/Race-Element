@@ -4,11 +4,11 @@ using System.Drawing.Text;
 using System.Drawing;
 using System;
 using System.Threading.Tasks;
-using static RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport.LowFuelMotorsportConfiguration;
+using static RaceElement.HUD.ACC.Overlays.Pitwall.LowFuelMotorsport.LowFuelMotorsportConfiguration;
 using RaceElement.HUD.Overlay.Util;
-using RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport.API;
+using RaceElement.HUD.ACC.Overlays.Pitwall.LowFuelMotorsport.API;
 
-namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport;
+namespace RaceElement.HUD.ACC.Overlays.Pitwall.LowFuelMotorsport;
 
 [Overlay(Name = "Low Fuel Motorsport",
     Description = "Shows driver license and next upcoming races.",
@@ -130,7 +130,7 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
 
     private string GenerateLFMLicense()
     {
-        if (_apiObject == null || _apiObject.User == null) return "No data";
+        if (_apiObject.User.UserName == null && !IsPreviewing) return "No data";
 
         string licenseText = string.Format
         (
