@@ -40,7 +40,7 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
                 LastName = "Element",
                 License = "Rookie",
                 SrLicense = "E3",
-                SafetyRating = "8.08",
+                SafetyRating = "1520",
                 CcRating = 1520,
             },
             Sim = new()
