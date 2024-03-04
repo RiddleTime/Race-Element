@@ -2,6 +2,7 @@ using RaceElement.Core.Jobs.LoopJob;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System;
+using System.Diagnostics;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport;
 
@@ -41,6 +42,8 @@ internal sealed class LowFuelMotorsportJob(string userId) : AbstractLoopJob
 
     private void JsonToLFMObject(JObject lfmObject)
     {
+        Debug.WriteLine($"");
+
         LowFuelMotorsportUserLicense userLicense = new()
         {
 
