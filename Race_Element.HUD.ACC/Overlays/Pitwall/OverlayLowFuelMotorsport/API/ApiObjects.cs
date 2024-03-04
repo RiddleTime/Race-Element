@@ -4,75 +4,79 @@ using System.Collections.Generic;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayLowFuelMotorsport.API;
 
-public record ApiObject(
-    [property: JsonProperty("user")] User User,
-    [property: JsonProperty("race")] IReadOnlyList<Race> Race,
-    [property: JsonProperty("drivers")] int Drivers,
-    [property: JsonProperty("sim")] Sim Sim,
-    [property: JsonProperty("licenseclass")] string Licenseclass,
-    [property: JsonProperty("safetyplate")] string Safetyplate,
-    [property: JsonProperty("sof")] int Sof
-);
+public record ApiObject
+{
+    [JsonProperty("user")] public User User { get; init; }
+    [JsonProperty("race")] public IReadOnlyList<Race> Race { get; init; }
+    [JsonProperty("drivers")] public int Drivers { get; init; }
+    [JsonProperty("sim")] public Sim Sim { get; init; }
+    [JsonProperty("licenseclass")] public string Licenseclass { get; init; }
+    [JsonProperty("safetyplate")] public string Safetyplate { get; init; }
+    [JsonProperty("sof")] public int Sof { get; init; }
+}
 
-public record Sim(
-    [property: JsonProperty("sim_id")] int SimId,
-    [property: JsonProperty("select_order")] int SelectOrder,
-    [property: JsonProperty("name")] string Name,
-    [property: JsonProperty("logo_url")] string LogoUrl,
-    [property: JsonProperty("logo_big")] string LogoBig,
-    [property: JsonProperty("platform")] string Platform,
-    [property: JsonProperty("active")] int Active
-);
+public record Sim
+{
+    [JsonProperty("sim_id")] public int SimId { get; init; }
+    [JsonProperty("select_order")] public int SelectOrder { get; init; }
+    [JsonProperty("name")] public string Name { get; init; }
+    [JsonProperty("logo_url")] public string LogoUrl { get; init; }
+    [JsonProperty("logo_big")] public string LogoBig { get; init; }
+    [JsonProperty("platform")] public string Platform { get; init; }
+    [JsonProperty("active")] public int Active { get; init; }
+}
 
-public record Race(
-    [property: JsonProperty("event_name")] string EventName,
-    [property: JsonProperty("race_id")] int RaceId,
-    [property: JsonProperty("split")] int Split,
-    [property: JsonProperty("sim_id")] int SimId,
-    [property: JsonProperty("race_date")] DateTime RaceDate,
-    [property: JsonProperty("sof")] int Sof,
-    [property: JsonProperty("split2_sof")] int Split2Sof,
-    [property: JsonProperty("split3_sof")] int Split3Sof,
-    [property: JsonProperty("split4_sof")] int Split4Sof,
-    [property: JsonProperty("split5_sof")] int Split5Sof,
-    [property: JsonProperty("split6_sof")] int Split6Sof,
-    [property: JsonProperty("split7_sof")] int Split7Sof,
-    [property: JsonProperty("split8_sof")] int Split8Sof,
-    [property: JsonProperty("split9_sof")] int Split9Sof,
-    [property: JsonProperty("split10_sof")] int Split10Sof
-);
+public record Race
+{
+    [JsonProperty("event_name")] public string EventName { get; init; }
+    [JsonProperty("race_id")] public int RaceId { get; init; }
+    [JsonProperty("split")] public int Split { get; init; }
+    [JsonProperty("sim_id")] public int SimId { get; init; }
+    [JsonProperty("race_date")] public DateTime RaceDate { get; init; }
+    [JsonProperty("sof")] public int Sof { get; init; }
+    [JsonProperty("split2_sof")] public int Split2Sof { get; init; }
+    [JsonProperty("split3_sof")] public int Split3Sof { get; init; }
+    [JsonProperty("split4_sof")] public int Split4Sof { get; init; }
+    [JsonProperty("split5_sof")] public int Split5Sof { get; init; }
+    [JsonProperty("split6_sof")] public int Split6Sof { get; init; }
+    [JsonProperty("split7_sof")] public int Split7Sof { get; init; }
+    [JsonProperty("split8_sof")] public int Split8Sof { get; init; }
+    [JsonProperty("split9_sof")] public int Split9Sof { get; init; }
+    [JsonProperty("split10_sof")] public int Split10Sof { get; init; }
+}
 
-public record User(
-    [property: JsonProperty("id")] int Id,
-    [property: JsonProperty("name")] string Name,
-    [property: JsonProperty("username")] string UserName,
-    [property: JsonProperty("vorname")] string FirstName,
-    [property: JsonProperty("shortname")] string Shortname,
-    [property: JsonProperty("nachname")] string LastName,
-    [property: JsonProperty("steamid")] string SteamId,
-    [property: JsonProperty("avatar")] string Avatar,
-    [property: JsonProperty("email")] string Email,
-    [property: JsonProperty("email_verified_at")] object EmailVerifiedAt,
-    [property: JsonProperty("password")] string Password,
-    [property: JsonProperty("remember_token")] string RememberToken,
-    [property: JsonProperty("admin")] int Admin,
-    [property: JsonProperty("created_at")] string CreatedAt,
-    [property: JsonProperty("updated_at")] string UpdatedAt,
-    [property: JsonProperty("discord_id")] string DiscordId,
-    [property: JsonProperty("profile_extras")] string ProfileExtras,
-    [property: JsonProperty("origin")] string Origin,
-    [property: JsonProperty("c_rating")] int CRating,
-    [property: JsonProperty("cc_rating")] int CcRating,
-    [property: JsonProperty("twitch_channel")] string TwitchChannel,
-    [property: JsonProperty("is_tv_broadcaster")] int IsTvBroadcaster,
-    [property: JsonProperty("youtube_channel")] string YoutubeChannel,
-    [property: JsonProperty("popometer_id")] string PopometerId,
-    [property: JsonProperty("license")] string License,
-    [property: JsonProperty("safety_rating")] string SafetyRating,
-    [property: JsonProperty("division")] int Division,
-    [property: JsonProperty("valid_license")] int ValidLicense,
-    [property: JsonProperty("darkmode")] int Darkmode,
-    [property: JsonProperty("patreon")] int Patreon,
-    [property: JsonProperty("fav_sim")] int FavSim,
-    [property: JsonProperty("sr_license")] string SrLicense
-);
+public record User
+{
+    [JsonProperty("id")] public int Id { get; init; }
+    [JsonProperty("name")] public string Name { get; init; }
+    [JsonProperty("username")] public string UserName { get; init; }
+    [JsonProperty("vorname")] public string FirstName { get; init; }
+    [JsonProperty("shortname")] public string Shortname { get; init; }
+    [JsonProperty("nachname")] public string LastName { get; init; }
+    [JsonProperty("steamid")] public string SteamId { get; init; }
+    [JsonProperty("avatar")] public string Avatar { get; init; }
+    [JsonProperty("email")] public string Email { get; init; }
+    [JsonProperty("email_verified_at")] public object EmailVerifiedAt { get; init; }
+    [JsonProperty("password")] public string Password { get; init; }
+    [JsonProperty("remember_token")] public string RememberToken { get; init; }
+    [JsonProperty("admin")] public int Admin { get; init; }
+    [JsonProperty("created_at")] public string CreatedAt { get; init; }
+    [JsonProperty("updated_at")] public string UpdatedAt { get; init; }
+    [JsonProperty("discord_id")] public string DiscordId { get; init; }
+    [JsonProperty("profile_extras")] public string ProfileExtras { get; init; }
+    [JsonProperty("origin")] public string Origin { get; init; }
+    [JsonProperty("c_rating")] public int CRating { get; init; }
+    [JsonProperty("cc_rating")] public int CcRating { get; init; }
+    [JsonProperty("twitch_channel")] public string TwitchChannel { get; init; }
+    [JsonProperty("is_tv_broadcaster")] public int IsTvBroadcaster { get; init; }
+    [JsonProperty("youtube_channel")] public string YoutubeChannel { get; init; }
+    [JsonProperty("popometer_id")] public string PopometerId { get; init; }
+    [JsonProperty("license")] public string License { get; init; }
+    [JsonProperty("safety_rating")] public string SafetyRating { get; init; }
+    [JsonProperty("division")] public int Division { get; init; }
+    [JsonProperty("valid_license")] public int ValidLicense { get; init; }
+    [JsonProperty("darkmode")] public int Darkmode { get; init; }
+    [JsonProperty("patreon")] public int Patreon { get; init; }
+    [JsonProperty("fav_sim")] public int FavSim { get; init; }
+    [JsonProperty("sr_license")] public string SrLicense { get; init; }
+}
