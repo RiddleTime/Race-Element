@@ -162,7 +162,7 @@ internal class TwitchChatBotCommandHandler
 
         StringBuilder sb = new($"P{requestedCar.RealtimeCarUpdate.Position} #{requestedCar.CarInfo.RaceNumber} - ");
 
-        sb.Append($"{requestedCar.CarInfo.Drivers[requestedCar.RealtimeCarUpdate.DriverIndex].FirstName} {requestedCar.CarInfo.GetCurrentDriverName()}");
+        sb.Append($"{requestedCar.CarInfo.Drivers[requestedCar.RealtimeCarUpdate.DriverIndex].FirstName} {requestedCar.CarInfo.Drivers[requestedCar.RealtimeCarUpdate.DriverIndex].LastName}");
         if (requestedCar.CarInfo.TeamName.Length > 0) sb.Append($" [{requestedCar.CarInfo.TeamName}]");
 
         LapInfo bestLap = requestedCar.RealtimeCarUpdate.BestSessionLap;
