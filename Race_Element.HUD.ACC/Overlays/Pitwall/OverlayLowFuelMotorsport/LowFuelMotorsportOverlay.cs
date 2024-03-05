@@ -21,8 +21,11 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
     private readonly LowFuelMotorsportConfiguration _config = new();
 
     private Font _fontFamily;
+
     private ApiObject _apiObject;
     private LowFuelMotorsportJob _lfmJob;
+
+    private SizeF _previousTextBounds = Size.Empty;
 
     public LowFuelMotorsportOverlay(Rectangle rectangle) : base(rectangle, "Low Fuel Motorsport")
     {
@@ -78,10 +81,11 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
 
         _lfmJob.OnNewApiObject += OnNewApiObject;
 
-        Task.Run(() => _lfmJob.RunAction());
+        _ = Task.Run(() => _lfmJob.RunAction());
 
         _lfmJob.Run();
     }
+
     private void OnNewApiObject(object sender, ApiObject apiObject) => _apiObject = apiObject;
 
     public sealed override void BeforeStop()
@@ -92,13 +96,25 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
         _lfmJob.Cancel();
     }
 
+    public override bool ShouldRender()
+    {
+        if (_config.Connection.User.Trim() == "")
+            return false;
+
+        return base.ShouldRender();
+    }
+
     public override void Render(Graphics g)
     {
         string licenseText = GenerateLFMLicense();
-        SizeF bounds = g.MeasureString(licenseText, _fontFamily);
 
-        this.Height = (int)(bounds.Height + 1);
-        this.Width = (int)(bounds.Width + 1);
+        SizeF bounds = g.MeasureString(licenseText, _fontFamily);
+        if (!bounds.Equals(_previousTextBounds))
+        {
+            this.Height = (int)(bounds.Height + 1);
+            this.Width = (int)(bounds.Width + 1);
+        }
+        _previousTextBounds = bounds;
 
         g.TextRenderingHint = TextRenderingHint.AntiAlias;
 
@@ -112,15 +128,7 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
         }
     }
 
-    public override bool ShouldRender()
-    {
-        if (_config.Connection.User.Trim() == "")
-            return false;
-
-        return base.ShouldRender();
-    }
-
-    private string TimeSpanToStringCountDown(TimeSpan diff)
+    private static string TimeSpanToStringCountDown(TimeSpan diff)
     {
         if (diff.TotalSeconds <= 0)
             return "Session Live";
