@@ -10,6 +10,7 @@ public abstract class AbstractLoopJob : IJob
     private bool _isStopped = true;
 
     public bool IsRunning => !_isStopped;
+    private ManualResetEvent WaitEvent = new ManualResetEvent(false);
 
     private int _intervalMillis = 1;
     public int IntervalMillis
@@ -26,7 +27,12 @@ public abstract class AbstractLoopJob : IJob
 
     public virtual void AfterCancel() { }
 
-    public void Cancel() { if (!_isStopped) _isCancelling = true; }
+    public void Cancel()
+     {
+        if (_isStopped) return;
+        _isCancelling = true;
+        WaitEvent.Set();
+    }
 
     public void CancelJoin()
     {
@@ -45,24 +51,15 @@ public abstract class AbstractLoopJob : IJob
 
             while (!_isCancelling)
             {
-                if (sw.ElapsedMilliseconds < IntervalMillis)
-                {
-                    int sleepTime = (int)(IntervalMillis - sw.ElapsedMilliseconds);
-                    if (sleepTime > 2)
-                        Thread.Sleep(sleepTime);
-
-                    continue;
-                }
-
-                sw = Stopwatch.StartNew();
-
                 RunAction();
+
+                long waitTime = IntervalMillis - sw.ElapsedMilliseconds;
+                if (waitTime > 0) WaitEvent.WaitOne((int)waitTime);
+
+                sw.Restart();
             }
 
-            sw.Reset();
-
             AfterCancel();
-
             _isStopped = true;
         })
         { IsBackground = true }.Start();

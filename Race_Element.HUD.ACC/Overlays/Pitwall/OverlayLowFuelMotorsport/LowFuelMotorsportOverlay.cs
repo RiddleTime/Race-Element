@@ -13,7 +13,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.LowFuelMotorsport;
 [Overlay(Name = "Low Fuel Motorsport",
     Description = "Shows driver license and next upcoming races.",
     OverlayType = OverlayType.Drive,
-    Authors = []
+    Authors = ["Andrei Jianu"]
 )]
 
 internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
@@ -80,8 +80,6 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
         };
 
         _lfmJob.OnNewApiObject += OnNewApiObject;
-
-        _ = Task.Run(() => _lfmJob.RunAction());
 
         _lfmJob.Run();
     }
