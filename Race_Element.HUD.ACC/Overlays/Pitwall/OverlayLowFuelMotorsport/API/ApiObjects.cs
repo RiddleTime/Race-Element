@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.LowFuelMotorsport.API;
 
-public readonly record struct ApiObject
+internal readonly record struct ApiObject
 {
     [JsonProperty("user")] public User User { get; init; }
     [JsonProperty("race")] public IReadOnlyList<Race> Races { get; init; }
@@ -15,7 +15,7 @@ public readonly record struct ApiObject
     [JsonProperty("sof")] public int Sof { get; init; }
 }
 
-public readonly record struct Sim
+internal readonly record struct Sim
 {
     [JsonProperty("sim_id")] public int SimId { get; init; }
     [JsonProperty("select_order")] public int SelectOrder { get; init; }
@@ -26,7 +26,7 @@ public readonly record struct Sim
     [JsonProperty("active")] public int Active { get; init; }
 }
 
-public readonly record struct Race
+internal readonly record struct Race
 {
     [JsonProperty("event_name")] public string EventName { get; init; }
     [JsonProperty("race_id")] public int RaceId { get; init; }
@@ -45,7 +45,7 @@ public readonly record struct Race
     [JsonProperty("split10_sof")] public int Split10Sof { get; init; }
 }
 
-public readonly record struct User
+internal readonly record struct User
 {
     [JsonProperty("id")] public int Id { get; init; }
     [JsonProperty("name")] public string Name { get; init; }
