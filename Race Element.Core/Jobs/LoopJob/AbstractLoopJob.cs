@@ -6,10 +6,8 @@ namespace RaceElement.Core.Jobs.LoopJob;
 
 public abstract class AbstractLoopJob : IJob
 {
-    private bool _isCancelling = false;
-    private bool _isStopped = true;
-
-    public bool IsRunning => !_isStopped;
+    private bool _isRunning = false;
+    public bool IsRunning => _isRunning;
     private ManualResetEvent WaitEvent = new ManualResetEvent(false);
 
     private int _intervalMillis = 1;
@@ -29,9 +27,11 @@ public abstract class AbstractLoopJob : IJob
 
     public void Cancel()
      {
-        if (_isStopped) return;
-        _isCancelling = true;
-        WaitEvent.Set();
+        if (_isRunning)
+        {
+            _isRunning = false;
+            WaitEvent.Set();
+        }
     }
 
     public void CancelJoin()
@@ -42,26 +42,22 @@ public abstract class AbstractLoopJob : IJob
 
     public void Run()
     {
-        _isStopped = false;
-        _isCancelling = false;
+        _isRunning = true;
+        new Thread(WorkerThread) { IsBackground = true }.Start();
+    }
 
-        new Thread(() =>
+    private void WorkerThread()
+    {
+        Stopwatch sw = Stopwatch.StartNew();
+        while (_isRunning)
         {
-            Stopwatch sw = Stopwatch.StartNew();
+            RunAction();
 
-            while (!_isCancelling)
-            {
-                RunAction();
+            long waitTime = IntervalMillis - sw.ElapsedMilliseconds;
+            if (waitTime > 0) WaitEvent.WaitOne((int)waitTime);
 
-                long waitTime = IntervalMillis - sw.ElapsedMilliseconds;
-                if (waitTime > 0) WaitEvent.WaitOne((int)waitTime);
-
-                sw.Restart();
-            }
-
-            AfterCancel();
-            _isStopped = true;
-        })
-        { IsBackground = true }.Start();
+            sw.Restart();
+        }
+        AfterCancel();
     }
 }

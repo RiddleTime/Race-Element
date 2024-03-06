@@ -109,7 +109,7 @@ internal sealed class LapInfoOverlay : AbstractOverlay
         string[] predictedTime = new string[2];
         predictedTime[0] = $"--:--.---";
 
-        if (pageGraphics.EstimatedLapTimeMillis > 0)
+        if (pageGraphics.EstimatedLapTimeMillis != Int32.MaxValue)
         {
             predictedTime[0] = $"{TimeSpan.FromMilliseconds(pageGraphics.EstimatedLapTimeMillis):mm\\:ss\\:fff}";
         }
