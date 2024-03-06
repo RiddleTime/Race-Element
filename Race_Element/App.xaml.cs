@@ -24,6 +24,8 @@ public partial class App : Application
     {
 
         this.Startup += App_Startup;
+        this.Exit += App_Exit;
+
         CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
         Instance = this;
 
@@ -52,5 +54,8 @@ public partial class App : Application
         current.PriorityClass = ProcessPriorityClass.BelowNormal;
     }
 
+    private void App_Exit(object sender, ExitEventArgs e)
+    {
+        AccScheduler.UnregisterJobs();
+    }
 }
-
