@@ -3,7 +3,6 @@ using RaceElement.HUD.Overlay.Internal;
 using System.Drawing.Text;
 using System.Drawing;
 using System;
-using System.Threading.Tasks;
 using static RaceElement.HUD.ACC.Overlays.Pitwall.LowFuelMotorsport.LowFuelMotorsportConfiguration;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.HUD.ACC.Overlays.Pitwall.LowFuelMotorsport.API;
@@ -13,7 +12,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.LowFuelMotorsport;
 [Overlay(Name = "Low Fuel Motorsport",
     Description = "Shows driver license and next upcoming races.",
     OverlayType = OverlayType.Drive,
-    Authors = []
+    Authors = ["Andrei Jianu"]
 )]
 
 internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
@@ -80,8 +79,6 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
         };
 
         _lfmJob.OnNewApiObject += OnNewApiObject;
-
-        _ = Task.Run(() => _lfmJob.RunAction());
 
         _lfmJob.Run();
     }
