@@ -3,7 +3,6 @@ using RaceElement.HUD.Overlay.Internal;
 using System.Drawing.Text;
 using System.Drawing;
 using System;
-using System.Threading.Tasks;
 using static RaceElement.HUD.ACC.Overlays.Pitwall.LowFuelMotorsport.LowFuelMotorsportConfiguration;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.HUD.ACC.Overlays.Pitwall.LowFuelMotorsport.API;
