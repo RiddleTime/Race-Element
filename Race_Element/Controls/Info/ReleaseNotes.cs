@@ -8,8 +8,8 @@ public static class ReleaseNotes
     {
         {"1.0.4.0", "- Twitch Chat Bot:"+
                     "\n  - Corrected last name during driver swap races for +pos command."+
-                    "\n  - Added +commands shoutout option, periodically uses +commands. (TODO!)"+
-                    "\n  - New HUD: show session progress bar, pit stop window and stint timer if availabel to help with the refuel strategy."},
+                    "\n- Added Refuel Info HUD by FG - Shows session progress bar, pit stop window and stint timer if available to help with the refuel strategy. With option to only show the progress bar or to display additional information."+
+                    "\n- Added Low Fuel Motorsport HUD by Andrei Jianu - Shows drivers license and the upcoming race."},
         {"1.0.3.6", "- Setup Importer now detects Discord download links again, drag it straight from the discord download button on-top of the app, discord changed the way they build up the URLs."+
                     "\n- Twitch Chat HUD: Increased max width from 500 to 800."+
                     "\n- Twitch Chat Bot: Added +pos command, it provides information regarding the car in the requested race position. Use it like +pos 1 and you will gain information about the car in P1!"},
