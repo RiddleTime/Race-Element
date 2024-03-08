@@ -251,7 +251,8 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
 
     private void TwitchClient_OnGiftedSubscription(object sender, OnGiftedSubscriptionArgs e)
     {
-        Messages.Add(new(MessageType.Subscriber, $"{e.GiftedSubscription.DisplayName} gifted a subscription ({e.GiftedSubscription.MsgParamSubPlanName}) to {e.GiftedSubscription.MsgParamRecipientDisplayName}"));
+        string subPlan = e.GiftedSubscription.MsgParamSubPlan == TwitchLib.Client.Enums.SubscriptionPlan.NotSet ? "" : $"({e.GiftedSubscription.MsgParamSubPlan})";
+        Messages.Add(new(MessageType.Subscriber, $"{e.GiftedSubscription.DisplayName} gifted a subscription {subPlan} to {e.GiftedSubscription.MsgParamRecipientDisplayName}"));
     }
 
     private void TwitchClient_OnPrimePaidSubscriber(object sender, OnPrimePaidSubscriberArgs e)

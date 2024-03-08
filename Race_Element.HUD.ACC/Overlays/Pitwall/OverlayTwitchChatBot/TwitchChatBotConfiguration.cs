@@ -23,5 +23,19 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChatBot
             [StringOptions(isPassword: true)]
             public string OAuthToken { get; init; } = "";
         }
+
+
+        //[ConfigGrouping("Tasks", "Add additional behavior that is for example periodically actived.")]
+        //public TasksGrouping Tasks { get; init; } = new();
+        //public class TasksGrouping
+        //{
+        //    [ToolTip("Automatically shout out the +commands periodically")]
+        //    public bool ShoutCommands { get; init; } = true;
+
+        //    [ToolTip("Set the amount of minutes between each shoutout of '+commands' in chat.")]
+        //    [IntRange(1, 60, 1)]
+        //    public int CommandsInterval { get; init; } = 20;
+        //}
+
     }
 }

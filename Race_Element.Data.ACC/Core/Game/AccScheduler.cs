@@ -8,4 +8,9 @@ public static class AccScheduler
     {
         PageStaticTracker.Instance.Run();
     }
+
+    public static void UnregisterJobs()
+    {
+        ACCTrackerDispose.Dispose();
+    }
 }
