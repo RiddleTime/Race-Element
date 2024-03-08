@@ -6,23 +6,22 @@ namespace RaceElement.Core.Jobs.LoopJob;
 
 public abstract class AbstractLoopJob : IJob
 {
-    /** @brief Used by the cancel method to wait until job finish. */
+    /// <summary>Used by the cancel method to wait until job finish.</summary>
     private ManualResetEvent _workerExitEvent = new(false);
 
-    /** @brief Used by worker thread to sleep until next tick or wake up on cancel. */
+    /// <summary>Used by worker thread to sleep until next tick or wake up on cancel.</summary>
     private ManualResetEvent _jobSleepEvent = new(false);
 
-    /** @brief Tick interval. At what pace "RunAction" is executed.  */
+    /// <summary>Tick interval. At what pace "RunAction" is executed.</summary>
     private int _intervalMillis = 1;
 
-    /** @brief Used to keep worker thread running. */
+    /// <summary>Used to keep worker thread running.</summary>
     private bool _isRunning = false;
 
-    /**
-     * @brief Set at what interval "RunAction()" is executed.If the execution
-     * time is less than the interval it will wait until the next interval,
-     * otherwise it will be executed immediately.
-     */
+    /// <summary>Set at what interval "RunAction()" is executed. If the execution
+    /// time is less than the interval it will wait until the next interval,
+    /// otherwise it will be executed immediately.
+    /// </summary>
     public int IntervalMillis
     {
         get
@@ -36,41 +35,27 @@ public abstract class AbstractLoopJob : IJob
         }
     }
 
-    /**
-     * @brief Test if the job is running. A job is running when it has been
-     * started and has not been canceled yet.
-     *
-     * @return true if the job is active, false otherwise.
-     */
+    /// <summary>Test if the job is running. A job is running when it has been started and has not been canceled yet.</summary>
+    /// <returns>true if the job is active, false otherwise</returns>
     public bool IsRunning => _isRunning;
 
-    /**
-     * @Callback method executed by the job at the certain time in future.
-     * This method is executed from another thread, you may require
-     * synchronization mechanism.
-     */
+    /// <summary>
+    /// Callback method executed by the job at the certain time in future. This method is executed from another thread, you may require synchronization mechanism.
+    /// </summary>
     public abstract void RunAction();
 
-    /**
-     * @brief Callback method used by the job to notify it has been canceled.
-     * This method is executed from another thread, you may require
-     * synchronization mechanism.
-     */
+    /// <summary>
+    ///    Callback method used by the job to notify it has been canceled. This method is executed from another thread, you may require synchronization mechanism.
+    /// </summary>
     public virtual void AfterCancel() { }
 
-    /**
-     * @brief Callback used to notify the client that "RunAction()" takes
-     * longer time than expected.
-     * @param millis Number if milliseconds exceeded from IntervalMillis.
-     */
+    /// <summary>Callback used to notify the client that "RunAction()" takes longer time than expected.</summary>
+    /// <param name="millis">Number of milliseconds exceeded from IntervalMillis.</param>
     protected virtual void ExecutionIntervalOverflow(int millis) { }
 
-    /**
-     * @brief Cancel the execution of the job without waiting for finish
-     * confirmation (no synchronization).
-     */
+    /// <summary>Cancel the execution of the job without waiting for finish confirmation(no synchronization).</summary>
     public void Cancel()
-     {
+    {
         if (_isRunning)
         {
             _isRunning = false;
@@ -78,21 +63,17 @@ public abstract class AbstractLoopJob : IJob
         }
     }
 
-    /**
-     * @brief Cancel the execution of the job and wait for the finish
-     * confirmation (synchronization method).
-     */
+    /// <summary>Cancel the execution of the job and wait for the finish confirmation(synchronization method).</summary>
     public void CancelJoin()
     {
         Cancel();
         _workerExitEvent.WaitOne();
     }
 
-    /**
-     * @brief Causes the job to begin executing. The result is a thread calling
-     * "RunAction()" method which is implemented by the child. If the job is
-     * executing and the method all calls to this method will be ignored.
-     */
+    /// <summary>
+    ///  Causes the job to begin executing. The result is a thread calling "RunAction()" method which is implemented by the child. 
+    ///  If the job is executing and the method all calls to this method will be ignored.
+    /// </summary>
     public void Run()
     {
         if (_isRunning)
@@ -107,9 +88,7 @@ public abstract class AbstractLoopJob : IJob
         new Thread(WorkerThread) { IsBackground = true }.Start();
     }
 
-    /**
-     * @brief Worker thread, loop until "Cancel()" is executed.
-     */
+    /// <summary>Worker thread, loop until "Cancel()" is executed.</summary>
     private void WorkerThread()
     {
         Stopwatch sw = Stopwatch.StartNew();
