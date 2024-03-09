@@ -166,7 +166,7 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
                 race.EventName,
                 race.RaceId,
                 race.Split,
-                race.Sof,
+                _apiObject.Sof,
                 _apiObject.Drivers
             ).Trim();
 
