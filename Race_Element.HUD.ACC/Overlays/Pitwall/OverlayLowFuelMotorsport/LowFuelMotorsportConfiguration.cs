@@ -14,7 +14,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.LowFuelMotorsport
 
         public LowFuelMotorsportConfiguration() => GenericConfiguration.AllowRescale = false;
 
-        [ConfigGrouping("Connection", "LFM user information and fetch information interval")]
+        [ConfigGrouping("Connection", "LFM user information and fetch interval")]
         public ConnectionGrouping Connection { get; init; } = new();
         public class ConnectionGrouping
         {
@@ -36,6 +36,14 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.LowFuelMotorsport
             [ToolTip("Font size")]
             [IntRange(5, 32, 1)]
             public int Size { get; init; } = 10;
+        }
+
+        [ConfigGrouping("Others", "Other options")]
+        public OtherGrouping Others { get; init; } = new();
+        public class OtherGrouping
+        {
+            [ToolTip("Show always")]
+            public bool ShowAlways { get; init; } = false;
         }
     }
 }
