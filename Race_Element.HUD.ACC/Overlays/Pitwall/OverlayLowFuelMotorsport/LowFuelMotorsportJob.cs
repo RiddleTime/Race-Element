@@ -2,6 +2,7 @@ using RaceElement.Core.Jobs.LoopJob;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System;
+using System.Diagnostics;
 using RaceElement.HUD.ACC.Overlays.Pitwall.LowFuelMotorsport.API;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.LowFuelMotorsport;
@@ -13,14 +14,26 @@ internal sealed class LowFuelMotorsportJob(string userId) : AbstractLoopJob
 
     public override void RunAction()
     {
-        using HttpClient client = new();
-        string url = string.Format(DRIVER_RACE_API_URL, userId);
+        if (userId.Trim().Length == 0)
+        {
+            return;
+        }
 
-        using HttpResponseMessage response = client.GetAsync(url).Result;
-        using HttpContent content = response.Content;
+        try
+        {
+            using HttpClient client = new();
+            string url = string.Format(DRIVER_RACE_API_URL, userId);
 
-        string json = content.ReadAsStringAsync().Result;
-        ApiObject root = JObject.Parse(json).ToObject<ApiObject>();
-        OnNewApiObject?.Invoke(null, root);
+            using HttpResponseMessage response = client.GetAsync(url).Result;
+            using HttpContent content = response.Content;
+
+            string json = content.ReadAsStringAsync().Result;
+            ApiObject root = JObject.Parse(json).ToObject<ApiObject>();
+            OnNewApiObject?.Invoke(null, root);
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e);
+        }
     }
 }

@@ -3,6 +3,7 @@ using RaceElement.HUD.Overlay.Internal;
 using System.Drawing.Text;
 using System.Drawing;
 using System;
+using System.Windows.Forms;
 using static RaceElement.HUD.ACC.Overlays.Pitwall.LowFuelMotorsport.LowFuelMotorsportConfiguration;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.HUD.ACC.Overlays.Pitwall.LowFuelMotorsport.API;
@@ -73,6 +74,12 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
 
         if (IsPreviewing) return;
 
+        if (_config.Connection.User.Trim().Length == 0)
+        {
+            var message = "Missing user identifier (check your configuration)\n(https://lowfuelmotorsport.com/profile/[HERE_IS_THE_ID]";
+            MessageBox.Show(message, "LFM Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
         _lfmJob = new LowFuelMotorsportJob(_config.Connection.User)
         {
             IntervalMillis = _config.Connection.Interval * 1000,
@@ -95,10 +102,10 @@ internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
 
     public override bool ShouldRender()
     {
-        if (_config.Connection.User.Trim() == "")
+        if (_config.Connection.User.Trim().Length == 0)
             return false;
 
-        return base.ShouldRender();
+        return _config.Others.ShowAlways || base.ShouldRender();
     }
 
     public override void Render(Graphics g)
