@@ -6,6 +6,7 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.4.2", "- Low Fuel Motorsport HUD: fixed app crash and corrected SOF to match driver." },
         {"1.0.4.0", "- Twitch Chat Bot:"+
                     "\n  - Corrected last name during driver swap races for +pos command."+
                     "\n- Added Refuel Info HUD by FG - Shows session progress bar, pit stop window and stint timer if available to help with the refuel strategy. With option to only show the progress bar or to display additional information."+
