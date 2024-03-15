@@ -31,8 +31,8 @@ internal sealed class LapInfoOverlay : AbstractOverlay
             [ToolTip("Displays the potential best lap time based on your fastest sector times.")]
             public bool PotentialBest { get; init; } = true;
 
-            [ToolTip("Displays the predicted lap time.")]
-            public bool PredictedLap { get; init; } = true;
+            [ToolTip("Displays the estimated lap time.")]
+            public bool EstimatedTime { get; init; } = true;
         }
 
         public LapInfoConfig() : base()
@@ -65,7 +65,7 @@ internal sealed class LapInfoOverlay : AbstractOverlay
         if (!this._config.InfoPanel.PotentialBest)
             this.Height -= this._table.FontHeight;
 
-        if (!this._config.InfoPanel.PredictedLap)
+        if (!this._config.InfoPanel.EstimatedTime)
             this.Height -= this._table.FontHeight;
 
         LapTracker.Instance.LapFinished += Collector_LapFinished;
@@ -98,13 +98,13 @@ internal sealed class LapInfoOverlay : AbstractOverlay
         if (this._config.InfoPanel.PotentialBest)
             AddPotentialBest();
 
-        if (this._config.InfoPanel.PredictedLap)
-            AddPredictedLap();
+        if (this._config.InfoPanel.EstimatedTime)
+            AddEstimatedTime();
 
         _table.Draw(g);
     }
 
-    private void AddPredictedLap()
+    private void AddEstimatedTime()
     {
         string[] predictedTime = new string[2];
         predictedTime[0] = $"--:--.---";
@@ -114,7 +114,7 @@ internal sealed class LapInfoOverlay : AbstractOverlay
             predictedTime[0] = $"{TimeSpan.FromMilliseconds(pageGraphics.EstimatedLapTimeMillis):mm\\:ss\\:fff}";
         }
 
-        this._table.AddRow("Predicted", predictedTime);
+        this._table.AddRow("Est", predictedTime);
     }
 
     private void AddPotentialBest()
