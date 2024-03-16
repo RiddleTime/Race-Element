@@ -12,6 +12,7 @@
     <Copyright>Copyright 2024 © Reinier Klarenberg</Copyright>
     <AssemblyVersion>1.0.0.1</AssemblyVersion>
     <FileVersion>1.0.0.1</FileVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug Minimized|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
