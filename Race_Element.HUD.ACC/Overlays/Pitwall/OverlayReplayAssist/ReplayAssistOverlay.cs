@@ -1,19 +1,16 @@
 ﻿using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayReplayAssist
 {
     [Overlay(Name = "Replay Assist",
 Description = "Proof of concept for replay utility",
-OverlayType = OverlayType.Pitwall
+OverlayType = OverlayType.Pitwall,
+Authors = ["Reinier Klarenberg"]
 )]
     internal class ReplayAssistOverlay : AbstractOverlay
     {
@@ -21,7 +18,7 @@ OverlayType = OverlayType.Pitwall
 
         public ReplayAssistOverlay(Rectangle rectangle) : base(rectangle, "Replay Assist")
         {
-            RefreshRateHz = 1f;
+            RefreshRateHz = 5f;
         }
 
         public override void BeforeStart()
@@ -30,14 +27,11 @@ OverlayType = OverlayType.Pitwall
             Height = 400;
             _panel = new InfoPanel(10, 500);
         }
-        public override bool ShouldRender()
-        {
-            return true;
-        }
+        public override bool ShouldRender() => true;
 
         public override void Render(Graphics g)
         {
-            _panel.AddLine("Replay Time", $"{GetReplayTime():hh\\:mm\\:ss}");
+            _panel.AddLine("Replay Time", $"{GetReplayTime():hh\\:mm\\:ss\\.ff}");
             _panel.Draw(g);
         }
 
@@ -58,8 +52,8 @@ OverlayType = OverlayType.Pitwall
                         IntPtr replayTimePtr = GetPointedAddress(acc, basePtr, [0x20, 0x20, 0x670, 0x678, 0x8, 0x0, 0xB8]);
                         if (replayTimePtr != IntPtr.Zero)
                         {
-                            int replayTime = (int)(ProcessMemory.ReadInt32(acc, replayTimePtr) / 10f);
-                            replayTimeSpan = new TimeSpan(0, 0, replayTime);
+                            int replayTime = ProcessMemory.ReadInt32(acc, replayTimePtr);
+                            replayTimeSpan = new TimeSpan(0, 0, 0, 0, replayTime * 100);
                         }
                     }
                     else
