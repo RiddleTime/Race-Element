@@ -162,166 +162,269 @@ public unsafe class ACCSharedMemory
         Thunderstorm,
     }
 
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
-    public class SPageFileGraphic
+    /// <summary>The following members are updated at each graphical step. They mostly refer to player’s car except for carCoordinates and carID, which refer to the cars currently on track.</summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable] public class SPageFileGraphic
     {
+        /// <summary>Current step index</summary>
         public int PacketId;
+
+        /// <summary>See enums AcStatus</summary>
         public AcStatus Status;
+
+        /// <summary>See enums AcSessionType</summary>
         public AcSessionType SessionType;
 
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-        public string CurrentTime;
+        /// <summary>Current lap time in wide character</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)] public string CurrentTime;
 
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-        public string LastTime;
+        /// <summary>Last lap time in wide character</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)] public string LastTime;
 
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-        public string BestTime;
+        /// <summary>Best lap time in wide character</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)] public string BestTime;
 
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-        public string Split;
+        /// <summary>Last split time in wide character</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)] public string Split;
 
+        /// <summary>Number of completed laps</summary>
         public int CompletedLaps;
+
+        /// <summary>Current player positio</summary>
         public int Position;
+
+        /// <summary>Current lap time in milliseconds</summary>
         public int CurrentTimeMs;
+
+        /// <summary>Last lap time in milliseconds</summary>
         public int LastTimeMs;
+
+        /// <summary>Best lap time in milliseconds</summary>
         public int BestTimeMs;
+
+        /// <summary>Session time lef</summary>
         public float SessionTimeLeft;
+
+        /// <summary>Distance travelled in the current stin</summary>
         public float DistanceTraveled;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool IsInPits;
+        /// <summary>Car is pitting</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool IsInPits;
 
+        /// <summary>Current track sector</summary>
         public int CurrentSectorIndex;
+
+        /// <summary>Last sector time in milliseconds</summary>
         public int LastSectorTime;
+
+        /// <summary>Number of completed laps</summary>
         public int NumberOfLaps;
 
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
-        public string TyreCompound;
+        /// <summary>Tyre compound used in wide character</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string TyreCompound;
 
-        [Obsolete]
-        public float ReplayTimeMultiplier;
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] public float ReplayTimeMultiplier;
+
+        /// <summary>Car position on track spline (0.0 start to 1.0 finish)</summary>
         public float NormalizedCarPosition;
 
+        /// <summary>Number of cars on track</summary>
         public int ActiveCars;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 60)]
-        public StructVector3[] CarCoordinates;
+        /// <summary>Coordinates of cars on track</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 60)] public StructVector3[] CarCoordinates;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 60)]
-        public int[] CarIds;
+        /// <summary>Car IDs of cars on track</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 60)] public int[] CarIds;
 
+        /// <summary>Player Car ID</summary>
         public int PlayerCarID;
 
+        /// <summary>Penalty time to wait</summary>
         public float PenaltyTime;
+
+        /// <summary>See enums AcFlagType</summary>
         public AcFlagType Flag;
 
+        /// <summary>See enums PenaltyShortcut</summary>
         public PenaltyShortcut PenaltyType;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool IdealLineOn;
+        /// <summary>Ideal line on</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool IdealLineOn;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool IsInPitLane;
+        /// <summary>Car is in pit lane</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool IsInPitLane;
+
+        /// <summary>Ideal line friction coefficient</summary>
         public float SurfaceGrip;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool MandatoryPitDone;
+        /// <summary>Mandatory pit is completed</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool MandatoryPitDone;
 
+        /// <summary>Wind speed in m/s</summary>
         public float WindSpeed;
+
+        /// <summary>wind direction in radians</summary>
         public float WindDirection;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool IsSetupMenuVisible;
+        /// <summary>Car is working on setup</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool IsSetupMenuVisible;
 
+        /// <summary>Current car main display index</summary>
         public int MainDisplayIndex;
+
+        /// <summary>Current car secondary display index</summary>
         public int SecondaryDisplayIndex;
+
+        /// <summary>Traction control level</summary>
         public int TC;
+
+        /// <summary>Traction control cut level</summary>
         public int TCCut;
+
+        /// <summary>Current engine map</summary>
         public int EngineMap;
+
+        /// <summary>ABS level</summary>
         public int ABS;
+
+        /// <summary>Average fuel consumed per lap in liters</summary>
         public float FuelXLap;
+
+        /// <summary>Rain lights on</summary>
         public int RainLights;
+
+        /// <summary>Flashing lights on</summary>
         public int FlashingLights;
+
+        /// <summary>Current lights stage</summary>
         public int LightsStage;
+
+        /// <summary>Exhaust temperature</summary>
         public float ExhaustTemperature;
+
+        /// <summary>Current wiper stage</summary>
         public int WiperLV;
+
+        /// <summary>Time the driver is allowed to drive/race (ms)</summary>
         public int DriverStintTotalTimeLeft;
+
+        /// <summary>Time the driver is allowed to drive/stint (ms)</summary>
         public int DriverStintTimeLeft;
+
+        /// <summary>Are rain tyres equipped</summary>
         public int RainTyres;
 
+        /// <summary>[No info given by ACC docs on it]</summary>
         public int SessionIndex;
+
+        /// <summary>Used fuel since last time refueling</summary>
         public float UsedFuelSinceRefuel;
 
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-        public string DeltaLapTime;
+        /// <summary>Delta time in wide character</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)] public string DeltaLapTime;
 
+        /// <summary>Delta time time in milliseconds</summary>
         public int DeltaLapTimeMillis;
 
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-        public string EstimatedLapTime;
+        /// <summary>Estimated lap time in wide character</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)] public string EstimatedLapTime;
+
+        /// <summary>Estimated lap time in milliseconds</summary>
         public int EstimatedLapTimeMillis;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool IsDeltaPositive;
+        /// <summary>Delta positive (1) or negative (0)</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool IsDeltaPositive;
+
+        /// <summary>Last split time in milliseconds</summary>
         public int SplitTimeMillis;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool IsValidLap;
+        /// <summary>Check if Lap is valid for timing</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool IsValidLap;
+
+        /// <summary>Laps possible with current fuel level</summary>
         public float FuelEstimatedLaps;
 
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
-        public string TrackStatus;
+        /// <summary>Status of track in wide character</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string TrackStatus;
 
+        /// <summary>Mandatory pitstops the player still has to do</summary>
         public int MandatoryPitStopsLeft;
+
+        /// <summary>Time of day in seconds</summary>
         float ClockTimeDaySeconds;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool BlinkerLeftOn;
+        /// <summary>Is Blinker left on</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool BlinkerLeftOn;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool BlinkerRightOn;
+        /// <summary>Is Blinker right on</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool BlinkerRightOn;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool GlobalYellow;
+        /// <summary>Yellow Flag is out?</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool GlobalYellow;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool GlobalYellowSector1;
+        /// <summary>Yellow Flag in Sector 1 is out?</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool GlobalYellowSector1;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool GlobalYellowSector2;
+        /// <summary>Yellow Flag in Sector 2 is out?</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool GlobalYellowSector2;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool GlobalYellowSector3;
+        /// <summary>Yellow Flag in Sector 3 is out?</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool GlobalYellowSector3;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool GlobalWhite;
+        /// <summary>White Flag is out?</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool GlobalWhite;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool GreenFlag;
+        /// <summary>Green Flag is out?</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool GreenFlag;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool GlobalChequered;
+        /// <summary>Checkered Flag is out?</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool GlobalChequered;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool GlobalRed;
+        /// <summary>Red Flag is out?</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool GlobalRed;
 
+        /// <summary># of tyre set on the MFD</summary>
         public int mfdTyreSet;
+
+        /// <summary>How much fuel to add on the MFD</summary>
         public float mfdFuelToAdd;
 
+        /// <summary>Tyre pressure left front on the MFD</summary>
         public float mfdTyrePressureLF;
-        public float mfdTyrePressureRF;
-        public float mfdTyrePressureLR;
-        public float mfdTyrePressureRR;
-        public AcTrackGripStatus trackGripStatus;
-        public AcRainIntensity rainIntensity;
-        public AcRainIntensity rainIntensityIn10min;
-        public AcRainIntensity rainIntensityIn30min;
-        public int currentTyreSet;
-        public int strategyTyreSet;
-        public int gapAheadMillis;
-        public int gapBehindMillis;
 
+        /// <summary>Tyre pressure right front on the MFD</summary>
+        public float mfdTyrePressureRF;
+
+        /// <summary>Tyre pressure left rear on the MFD</summary>
+        public float mfdTyrePressureLR;
+
+        /// <summary>Tyre pressure right rear on the MFD</summary>
+        public float mfdTyrePressureRR;
+
+        /// <summary>See enums AcTrackGripStatus</summary>
+        public AcTrackGripStatus trackGripStatus;
+
+        /// <summary>See enums AcRainIntensity</summary>
+        public AcRainIntensity rainIntensity;
+
+        /// <summary>See enums AcRainIntensity</summary>
+        public AcRainIntensity rainIntensityIn10min;
+
+        /// <summary>See enums AcRainIntensity</summary>
+        public AcRainIntensity rainIntensityIn30min;
+
+        /// <summary>Tyre Set currently in use</summary>
+        public int currentTyreSet;
+
+        /// <summary>Next Tyre set per strategy</summary>
+        public int strategyTyreSet;
+
+        /// <summary>Distance in ms to car in front</summary>
+        public int gapAheadMillis;
+
+        /// <summary>Distance in ms to car behind</summary>
+        public int gapBehindMillis;
 
         public static readonly int Size = Marshal.SizeOf(typeof(SPageFileGraphic));
         public static readonly byte[] Buffer = new byte[Size];
@@ -337,341 +440,405 @@ public unsafe class ACCSharedMemory
         public override string ToString() => $"X: {X}, Y: {Y}, Z: {Z}";
     }
 
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
-    public class SPageFilePhysics
+    /// <summary>The following members change at each graphic step. They all refer to the player’s car</summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable] public class SPageFilePhysics
     {
+        /// <summary>Current step index</summary>
         public int PacketId;
+
+        /// <summary>Gas pedal input value (from -0 to 1.0)</summary>
         public float Gas;
+
+        /// <summary>Brake pedal input value (from -0 to 1.0)</summary>
         public float Brake;
+
+        /// <summary>Amount of fuel remaining in kg</summary>
         public float Fuel;
+
+        /// <summary>Current gear</summary>
         public int Gear;
+
+        /// <summary>Engine revolutions per minute</summary>
         public int Rpms;
+
+        /// <summary>Steering input value (from -1.0 to 1.0)</summary>
         public float SteerAngle;
+
+        /// <summary>Car speed in km/h</summary>
         public float SpeedKmh;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public float[] Velocity;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public float[] AccG;
+        /// <summary>Car velocity vector in global coordinates</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)] public float[] Velocity;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] WheelSlip;
+        /// <summary>Car acceleration vector in global coordinates</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)] public float[] AccG;
 
-        [Obsolete]
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] WheelLoad;
+        /// <summary>Tyre slip for each tyre [FL, FR, RL, RR]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] WheelSlip;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] WheelPressure;
+        /// <summary>Wheel load for each tyre [FL, FR, RL, RR]</summary>
+        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] WheelLoad;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] WheelAngularSpeed;
+        /// <summary>Tyre pressure [FL, FR, RL, RR]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] WheelPressure;
 
-        [Obsolete]
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] TyreWear;
+        /// <summary>Wheel angular speed in rad/s [FL, FR, RL, RR]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] WheelAngularSpeed;
 
-        [Obsolete]
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] TyreDirtyLevel;
+        /// <summary>Tyre wear [FL, FR, RL, RR]</summary>
+        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreWear;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] TyreCoreTemperature;
+        /// <summary>Dirt accumulated on tyre surface [FL, FR, RL, RR]</summary>
+        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreDirtyLevel;
 
-        [Obsolete]
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] CamberRad;
+        /// <summary>Tyre rubber core temperature [FL, FR, RL, RR]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreCoreTemperature;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] SuspensionTravel;
+        /// <summary>Wheels camber in radians [FL, FR, RL, RR]</summary>
+        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] CamberRad;
 
-        [Obsolete]
-        public float Drs;
+        /// <summary>Suspension travel [FL, FR, RL, RR]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] SuspensionTravel;
+
+        /// <summary>DRS on</summary>
+        [Obsolete] public float Drs;
+
+        /// <summary>TC in action</summary>
         public float TC;
+
+        /// <summary>Car yaw orientation</summary>
         public float Heading;
+
+        /// <summary>Car pitch orientation</summary>
         public float Pitch;
+
+        /// <summary>Car roll orientation</summary>
         public float Roll;
 
-        [Obsolete]
-        public float CgHeight;
+        /// <summary>Centre of gravity height</summary>
+        [Obsolete] public float CgHeight;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 5)]
-        public float[] CarDamage;
+        /// <summary>Car damage: front 0, rear 1, left 2, right 3, centre 4</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 5)] public float[] CarDamage;
 
-        [Obsolete]
-        public int NumberOfTyresOut;
+        /// <summary>Number of tyres out of track</summary>
+        [Obsolete] public int NumberOfTyresOut;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool PitLimiterOn;
+        /// <summary>Pit limiter is on</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool PitLimiterOn;
+
+        /// <summary>ABS in action</summary>
         public float Abs;
 
-        [Obsolete]
-        public float KersCharge;
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] public float KersCharge;
 
-        [Obsolete]
-        public float KersInput;
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] public float KersInput;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool AutoShifterOn;
+        /// <summary>Automatic transmission on</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool AutoShifterOn;
 
-        [Obsolete]
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-        public float[] RideHeight;
+        /// <summary>Ride height: 0 front, 1 rear</summary>
+        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)] public float[] RideHeight;
 
+        /// <summary>Car turbo level</summary>
         public float TurboBoost;
 
-        [Obsolete]
-        public float Ballast;
-        [Obsolete]
-        public float AirDensity;
+        /// <summary>Car ballast in kg / Not implemented</summary>
+        [Obsolete] public float Ballast;
 
+        /// <summary>Air density</summary>
+        [Obsolete] public float AirDensity;
+
+        /// <summary>Air temperature</summary>
         public float AirTemp;
+
+        /// <summary>Road temperature</summary>
         public float RoadTemp;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public float[] LocalAngularVelocity;
+        /// <summary>Car angular velocity vector in local coordinates</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)] public float[] LocalAngularVelocity;
 
+        /// <summary>Force feedback signal</summary>
         public float finalFF;
 
-        [Obsolete]
-        public float PerformanceMeter;
-        [Obsolete]
-        public int EngineBrake;
-        [Obsolete]
-        public int ErsRecoveryLevel;
-        [Obsolete]
-        public int ErsPowerLevel;
-        [Obsolete]
-        public int ErsHeatCharging;
-        [Obsolete]
-        public int ErsIsCharging;
-        [Obsolete]
-        public float KersCurrentKJ;
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] public float PerformanceMeter;
 
-        [Obsolete]
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool DrsAvailable;
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] public int EngineBrake;
 
-        [Obsolete]
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool DrsEnabled;
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] public int ErsRecoveryLevel;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] BrakeTemperature;
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] public int ErsPowerLevel;
 
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] public int ErsHeatCharging;
+
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] public int ErsIsCharging;
+
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] public float KersCurrentKJ;
+
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] [MarshalAs(UnmanagedType.Bool)] public bool DrsAvailable;
+
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] [MarshalAs(UnmanagedType.Bool)] public bool DrsEnabled;
+
+        /// <summary>Brake discs temperatures</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] BrakeTemperature;
+
+        /// <summary>Clutch pedal input value (from -0 to 1.0)</summary>
         public float Clutch;
 
-        [Obsolete]
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] TyreTempI;
+        /// <summary>Not shown in ACC</summary>
+        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreTempI;
 
-        [Obsolete]
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] TyreTempM;
+        /// <summary>Not shown in ACC</summary>
+        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreTempM;
 
-        [Obsolete]
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] TyreTempO;
+        /// <summary>Not shown in ACC</summary>
+        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreTempO;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool IsAiControlled;
+        /// <summary>Car is controlled by the AI</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool IsAiControlled;
 
+        /// <summary>Tyre contact point global coordinates [FL, FR, RL, RR]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public StructVector3[] TyreContactPoint;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public StructVector3[] TyreContactPoint;
+        /// <summary>Tyre contact normal [FL, FR, RL, RR]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public StructVector3[] TyreContactNormal;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public StructVector3[] TyreContactNormal;
+        /// <summary>Tyre contact heading [FL, FR, RL, RR]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public StructVector3[] TyreContactHeading;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public StructVector3[] TyreContactHeading;
-
+        /// <summary>Front brake bias</summary>
         public float BrakeBias;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public float[] LocalVelocity;
+        /// <summary>Car velocity vector in local coordinates</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)] public float[] LocalVelocity;
 
-        [Obsolete]
-        public int P2PActivations;
-        [Obsolete]
-        public int P2PStatus;
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] public int P2PActivations;
 
-        [Obsolete]
-        public int CurrentMaxRpm;
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] public int P2PStatus;
 
-        [Obsolete]
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] mz;
+        /// <summary>Maximum engine rpm</summary>
+        [Obsolete] public int CurrentMaxRpm;
 
-        [Obsolete]
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] fx;
+        /// <summary>Not shown in ACC</summary>
+        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] mz;
 
-        [Obsolete]
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] fy;
+        /// <summary>Not shown in ACC</summary>
+        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] fx;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] SlipRatio;
+        /// <summary>Not shown in ACC</summary>
+        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] fy;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] SlipAngle;
+        /// <summary>Tyre slip ratio [FL, FR, RL, RR] in radians</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] SlipRatio;
 
-        [Obsolete]
-        public int TcinAction;
-        [Obsolete]
-        public int AbsInAction;
+        /// <summary>Tyre slip angle [FL, FR, RL, RR]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] SlipAngle;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] SuspensionDamage;
+        /// <summary>TC in action</summary>
+        [Obsolete] public int TcinAction;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] TyreTemp;
+        /// <summary>ABS in action</summary>
+        [Obsolete] public int AbsInAction;
 
+        /// <summary>Suspensions damage levels [FL, FR, RL, RR] (obsolete?)</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] SuspensionDamage;
+
+        /// <summary>Tyres core temperatures [FL, FR, RL, RR] (obsolete?)</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreTemp;
+
+        /// <summary>Water Temperature</summary>
         public float WaterTemp;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] brakePressure;
+        /// <summary>Brake pressure [FL, FR, RL, RR]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] brakePressure;
+
+        /// <summary>Brake pad compund front</summary>
         public int frontBrakeCompound;
+
+        /// <summary>Brake pad compund rear</summary>
         public int rearBrakeCompound;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] PadLife;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] DiscLife;
+        /// <summary>Brake pad wear [FL, FR, RL, RR]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] PadLife;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool IgnitionOn;
+        /// <summary>Brake disk wear [FL, FR, RL, RR]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] DiscLife;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool StarterEngineOn;
+        /// <summary>Ignition switch set to on?</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool IgnitionOn;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool IsEngineRunning;
+        /// <summary>Starter Switch set to on?</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool StarterEngineOn;
 
+        /// <summary>Engine running?</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool IsEngineRunning;
+
+        /// <summary>Vibrations sent to the FFB, could be used for motion rigs</summary>
         public float KerbVibration;
+
+        /// <summary>Vibrations sent to the FFB, could be used for motion rigs</summary>
         public float SlipVibrations;
+
+        /// <summary>Vibrations sent to the FFB, could be used for motion rigs</summary>
         public float Gvibrations;
+
+        /// <summary>Vibrations sent to the FFB, could be used for motion rigs</summary>
         public float AbsVibrations;
 
         public static readonly int Size = Marshal.SizeOf(typeof(SPageFilePhysics));
         public static readonly byte[] Buffer = new byte[Size];
     };
 
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
-    public class SPageFileStatic
+    /// <summary>The following members are initialized when the instance starts and never changes until the instance is closed</summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable] public class SPageFileStatic
     {
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-        public string SharedMemoryVersion;
+        /// <summary>Shared memory version in wide character</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)] public string SharedMemoryVersion;
 
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-        public string AssettoCorsaVersion;
+        /// <summary>Assetto Corsa version in wide character</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)] public string AssettoCorsaVersion;
 
+        /// <summary>Number of sessions</summary>
         public int NumberOfSessions;
+
+        /// <summary>Number of cars</summary>
         public int NumberOfCars;
 
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
-        public string CarModel;
+        /// <summary>Player car model in wide character</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string CarModel;
 
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
-        public string Track;
+        /// <summary>Track name in wide character</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string Track;
 
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
-        public string PlayerName;
+        /// <summary>Player name in wide character</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string PlayerName;
 
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
-        public string PlayerSurname;
+        /// <summary>Player surname in wide character</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string PlayerSurname;
 
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
-        public string PlayerNickname;
+        /// <summary>Player nickname in wide character</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string PlayerNickname;
 
+        /// <summary>Number of sectors</summary>
         public int SectorCount;
 
-        // car static info
-        [Obsolete]
-        public float MaxTorque;
-        [Obsolete]
-        public float MaxPower;
+        /// <summary>Not shown in ACC</summary>
+        [Obsolete] public float MaxTorque;
+
+        /// <summary>Not shown in ACC</summary>
+        [Obsolete] public float MaxPower;
+
+        /// <summary>Maximum rpm</summary>
         public int MaxRpm;
+
+        /// <summary>Maximum fuel tank capacity</summary>
         public float MaxFuel;
 
-        [Obsolete]
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] SuspensionMaxTravel;
+        /// <summary>Not shown in ACC</summary>
+        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] SuspensionMaxTravel;
 
-        [Obsolete]
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] TyreRadius;
+        /// <summary>Not shown in ACC</summary>
+        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreRadius;
 
+        /// <summary>Maximum turbo boost (obsolete?)</summary>
         public float MaxTurboBoost;
 
-        [Obsolete]
-        public float AirTemperature;
+        /// <summary>[]</summary>
+        [Obsolete] public float AirTemperature;
 
-        [Obsolete]
-        public float RoadTemperature;
+        /// <summary>[]</summary>
+        [Obsolete] public float RoadTemperature;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool PenaltiesEnabled;
+        /// <summary>Penalties enabled?</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool PenaltiesEnabled;
+
+        /// <summary>Fuel consumption rate</summary>
         public float AidFuelRate;
+
+        /// <summary>Tyre wear rate</summary>
         public float AidTireRate;
+
+        /// <summary>Mechanical damage rate</summary>
         public float AidMechanicalDamage;
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool AidAllowTyreBlankets;
+
+        /// <summary>Not allowed in Blancpain endurance series</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool AidAllowTyreBlankets;
+
+        /// <summary>Stability control used</summary>
         public float AidStability;
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool AidAutoClutch;
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool AidAutoBlip;
 
-        [Obsolete]
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool HasDRS;
+        /// <summary>Auto clutch used</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool AidAutoClutch;
 
-        [Obsolete]
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool HasERS;
+        /// <summary>Always true in ACC</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool AidAutoBlip;
 
-        [Obsolete]
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool HasKERS;
-        [Obsolete]
-        public float KersMaxJoules;
-        [Obsolete]
-        public int EngineBrakeSettingsCount;
-        [Obsolete]
-        public int ErsPowerControllerCount;
-        [Obsolete]
-        public float TrackSplineLength;
-        [Obsolete]
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
-        public string TrackConfiguration;
-        [Obsolete]
-        public float ErsMaxJ;
-        [Obsolete]
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool IsTimedRace;
-        [Obsolete]
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool HasExtraLap;
-        [Obsolete]
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
-        public string CarSkin;
-        [Obsolete]
-        public int ReversedGridPositions;
+        /// <summary></summary>
+        [Obsolete] [MarshalAs(UnmanagedType.Bool)] public bool HasDRS;
 
+        /// <summary></summary>
+        [Obsolete] [MarshalAs(UnmanagedType.Bool)] public bool HasERS;
+
+        /// <summary></summary>
+        [Obsolete] [MarshalAs(UnmanagedType.Bool)] public bool HasKERS;
+
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] public float KersMaxJoules;
+
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] public int EngineBrakeSettingsCount;
+
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] public int ErsPowerControllerCount;
+
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] public float TrackSplineLength;
+
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string TrackConfiguration;
+
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] public float ErsMaxJ;
+
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] [MarshalAs(UnmanagedType.Bool)] public bool IsTimedRace;
+
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] [MarshalAs(UnmanagedType.Bool)] public bool HasExtraLap;
+
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string CarSkin;
+
+        /// <summary>Not used in ACC</summary>
+        [Obsolete] public int ReversedGridPositions;
+
+        /// <summary>Pit window opening time</summary>
         public int PitWindowStart;
+
+        /// <summary>Pit windows closing time</summary>
         public int PitWindowEnd;
 
+        /// <summary>If is a multiplayer session</summary>
+        [MarshalAs(UnmanagedType.Bool)] public bool isOnline;
 
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool isOnline;
+        /// <summary>Name of the dry tyres</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string DryTyresName;
 
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
-        public string DryTyresName;
-
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
-        public string WetTyresName;
+        /// <summary>Name of the wet tyres</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string WetTyresName;
 
         public static readonly int Size = Marshal.SizeOf(typeof(SPageFileStatic));
         public static readonly byte[] Buffer = new byte[Size];
