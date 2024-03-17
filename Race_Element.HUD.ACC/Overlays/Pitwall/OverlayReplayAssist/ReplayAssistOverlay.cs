@@ -37,51 +37,58 @@ Authors = ["Reinier Klarenberg"]
 
         private TimeSpan GetReplayTime()
         {
-            TimeSpan replayTimeSpan = TimeSpan.Zero;
-            unsafe
+            if (IsPreviewing)
             {
-                if (IsPreviewing) return replayTimeSpan;
-
-                try
-                {
-                    Process acc = Process.GetProcessesByName("AC2-Win64-Shipping").FirstOrDefault();
-
-                    if (acc != null)
-                    {
-                        IntPtr basePtr = acc.MainModule.BaseAddress + 0x051AE868;
-                        IntPtr replayTimePtr = GetPointedAddress(acc, basePtr, [0x20, 0x20, 0x670, 0x678, 0x8, 0x0, 0xB8]);
-                        if (replayTimePtr != IntPtr.Zero)
-                        {
-                            int replayTime = ProcessMemory.ReadInt32(acc, replayTimePtr);
-                            replayTimeSpan = new TimeSpan(0, 0, 0, 0, replayTime * 100);
-                        }
-                    }
-                    else
-                    {
-                        Debug.WriteLine("ACC NULL");
-                    }
-                }
-                catch (Exception e)
-                {
-                    //Debug.WriteLine(e);
-                }
+                return TimeSpan.Zero;
             }
+
+            TimeSpan replayTimeSpan = TimeSpan.Zero;
+            Process accHandle;
+
+            try
+            {
+                accHandle = Process.GetProcessesByName("AC2-Win64-Shipping").FirstOrDefault();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return replayTimeSpan;
+            }
+
+            if (accHandle == null)
+            {
+                Debug.WriteLine("ACC process not found. Game may not be running.");
+                return replayTimeSpan;
+            }
+
+            if (accHandle.MainModule == null)
+            {
+                Debug.WriteLine("ACC process MainModule not found.");
+                return replayTimeSpan;
+            }
+
+            IntPtr baseAddr = accHandle.MainModule.BaseAddress + 0x051AE868;
+            IntPtr replayTimeAddr = GetPointedAddress(accHandle, baseAddr, [0x20, 0x20, 0x670, 0x678, 0x8, 0x0, 0xB8]);
+
+            if (replayTimeAddr != IntPtr.Zero)
+            {
+                var replayTime = ProcessMemory<int>.Read(accHandle, replayTimeAddr);
+                replayTimeSpan = new TimeSpan(0, 0, 0, 0, replayTime * 100);
+            }
+
             return replayTimeSpan;
         }
 
         private IntPtr GetPointedAddress(Process process, IntPtr baseAddress, int[] offsets)
         {
-            IntPtr nextBase = baseAddress;
+            var nextBase = baseAddress;
 
-            unsafe
+            foreach (var offset in offsets)
             {
-                for (int i = 0; i < offsets.Length; i++)
-                {
-                    nint ptr = (nint)ProcessMemory.ReadInt64(process, nextBase);
-                    ptr += offsets[i];
-                    nextBase = new IntPtr(ptr);
-                }
+                var ptr = ProcessMemory<nint>.Read(process, nextBase);
+                nextBase = ptr + offset;
             }
+
             return nextBase;
         }
 
