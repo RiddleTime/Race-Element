@@ -106,7 +106,7 @@ public sealed class StartScreenOverlay : AbstractOverlay
         _cachedBackground?.Dispose();
         _cachedText?.Dispose();
         _slider?.Dispose();
-        stopwatch.Stop();
+        stopwatch?.Stop();
     }
 
     public override bool ShouldRender() => true;
