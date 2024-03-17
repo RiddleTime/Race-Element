@@ -56,12 +56,12 @@ Authors = ["Reinier Klarenberg"]
                 return replayTimeSpan;
 
             IntPtr baseAddr = accProcess.MainModule.BaseAddress + 0x051AE868;
-            IntPtr replayTimeAddr = GetPointedAddress(accProcess, baseAddr, [0x20, 0x20, 0x670, 0x678, 0x8, 0x0, 0xB8]);
+            IntPtr replayTimeAddr = GetPointedAddress(accProcess, baseAddr, [0x20, 0x20, 0x778, 0x20, 0x20, 0x538]);
 
             if (replayTimeAddr != IntPtr.Zero)
             {
                 var replayTime = ProcessMemory<int>.Read(accProcess, replayTimeAddr);
-                replayTimeSpan = new TimeSpan(0, 0, 0, 0, replayTime * 100);
+                replayTimeSpan = new TimeSpan(0, 0, 0, replayTime);
             }
 
             return replayTimeSpan;
@@ -87,8 +87,9 @@ Authors = ["Reinier Klarenberg"]
 
             if (accProcess == null || accProcess.MainModule == null) return 0;
 
-            IntPtr baseAddr = accProcess.MainModule.BaseAddress + 0x051BFED8;
-            IntPtr replayTimeAddr = GetPointedAddress(accProcess, baseAddr, [0x118, 0x2E8, 0x28, 0x6A0, 0x290, 0xCC]);
+
+            IntPtr baseAddr = accProcess.MainModule.BaseAddress + 0x051AE868;
+            IntPtr replayTimeAddr = GetPointedAddress(accProcess, baseAddr, [0x20, 0x20, 0x778, 0x20, 0x20, 0x530]);
 
             if (replayTimeAddr != IntPtr.Zero)
             {
