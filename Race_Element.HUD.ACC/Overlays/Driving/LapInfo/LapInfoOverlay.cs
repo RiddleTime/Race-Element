@@ -111,7 +111,7 @@ internal sealed class LapInfoOverlay : AbstractOverlay
 
         if (pageGraphics.EstimatedLapTimeMillis != Int32.MaxValue)
         {
-            predictedTime[0] = $"{TimeSpan.FromMilliseconds(pageGraphics.EstimatedLapTimeMillis):mm\\:ss\\:fff}";
+            predictedTime[0] = $"{TimeSpan.FromMilliseconds(pageGraphics.EstimatedLapTimeMillis):mm\\:ss\\.fff}";
         }
 
         this._table.AddRow("Est", predictedTime);
@@ -127,7 +127,7 @@ internal sealed class LapInfoOverlay : AbstractOverlay
         else
         {
             TimeSpan best = TimeSpan.FromMilliseconds(potentialBest);
-            potentialValues[0] = $"{best:mm\\:ss\\:fff}";
+            potentialValues[0] = $"{best:mm\\:ss\\.fff}";
         }
 
         this._table.AddRow("Pot", potentialValues);
@@ -210,7 +210,7 @@ internal sealed class LapInfoOverlay : AbstractOverlay
         else
         {
             TimeSpan best = TimeSpan.FromMilliseconds(lastLap);
-            LastLapValues[0] = $"{best:mm\\:ss\\:fff}";
+            LastLapValues[0] = $"{best:mm\\:ss\\.fff}";
         }
 
         this._table.AddRow("Last", LastLapValues);
@@ -226,7 +226,7 @@ internal sealed class LapInfoOverlay : AbstractOverlay
         else
         {
             TimeSpan best = TimeSpan.FromMilliseconds(bestLap);
-            bestLapValues[0] = $"{best:mm\\:ss\\:fff}";
+            bestLapValues[0] = $"{best:mm\\:ss\\.fff}";
         }
 
         if (broadCastLocalCar.CarIndex == broadCastRealTime.BestLapCarIndex)
