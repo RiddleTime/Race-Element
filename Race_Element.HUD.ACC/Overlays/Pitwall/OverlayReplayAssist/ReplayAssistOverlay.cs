@@ -31,6 +31,7 @@ Authors = ["Reinier Klarenberg"]
 
         public override void Render(Graphics g)
         {
+            _panel.AddLine("Replay Puased", $"{IsReplayPaused()}");
             _panel.AddLine("Replay Time", $"{GetReplayTime():hh\\:mm\\:ss\\.ff}");
             _panel.AddLine("Replay Speed", $"{GetReplaySpeed():F3}");
             _panel.Draw(g);
@@ -69,6 +70,33 @@ Authors = ["Reinier Klarenberg"]
 
         private static Process GetAccProcess() => Process.GetProcessesByName("AC2-Win64-Shipping").FirstOrDefault();
 
+
+        private bool IsReplayPaused()
+        {
+            if (IsPreviewing) return true;
+            Process accProcess;
+            try
+            {
+                accProcess = GetAccProcess();
+            }
+            catch (Exception e)
+            {
+                //Debug.WriteLine(e);
+                return true;
+            }
+
+            if (accProcess == null || accProcess.MainModule == null) return true;
+
+
+            IntPtr baseAddr = accProcess.MainModule.BaseAddress + 0x051AE868;
+            IntPtr replayTimeAddr = GetPointedAddress(accProcess, baseAddr, [0x20, 0x20, 0x778, 0x20, 0x20, 0x528]);
+
+            if (replayTimeAddr != IntPtr.Zero)
+            {
+                return ProcessMemory<byte>.Read(accProcess, replayTimeAddr) == 1;
+            }
+            return true;
+        }
 
         private float GetReplaySpeed()
         {
