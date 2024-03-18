@@ -34,6 +34,11 @@ Authors = ["Reinier Klarenberg"]
         /// Test? perhaps this leads to the functional call of each menu button :D
         /// </summary>
         private readonly MultiLevelPointer PtrHoveredMenuBarFunction = new(0x051AE868, [0x20, 0x20, 0x778, 0x20, 0x20, 0x2b0]);
+
+        /// <summary>
+        /// Byte value, 1 = lost focus, 0 = has focus
+        /// </summary>
+        private readonly MultiLevelPointer PtrHoveredReplayHasFocus = new(0x051AE868, [0x20, 0x20, 0x778, 0x20, 0x20, 0x521]);
         public ReplayAssistOverlay(Rectangle rectangle) : base(rectangle, "Replay Assist")
         {
             RefreshRateHz = 5f;
@@ -55,7 +60,25 @@ Authors = ["Reinier Klarenberg"]
             _panel.AddLine("Replay Bar open?", $"{IsMenuBarOpen()}");
             _panel.AddLine("Replay Bar %", $"{GetReplayBarPercentage():F3}");
             _panel.AddLine("Function", $"{GetHoveredFunction():X}");
+            _panel.AddLine("Has Focus?", $"{ReplayHasFocus()}");
             _panel.Draw(g);
+        }
+
+        private bool ReplayHasFocus()
+        {
+            if (IsPreviewing) return false;
+            Process accProcess = GetAccProcess();
+
+            if (accProcess == null || accProcess.MainModule == null) return false;
+
+            IntPtr baseAddr = GetBaseAddress(accProcess, PtrHoveredReplayHasFocus);
+            if (baseAddr == IntPtr.Zero) return false;
+
+            IntPtr addrReplayIsPaused = GetPointedAddress(accProcess, baseAddr, PtrHoveredReplayHasFocus.Offsets);
+
+            if (addrReplayIsPaused != IntPtr.Zero)
+                return ProcessMemory<byte>.Read(accProcess, addrReplayIsPaused) == 0;
+            return false;
         }
 
         private IntPtr GetHoveredFunction()
@@ -74,7 +97,7 @@ Authors = ["Reinier Klarenberg"]
             IntPtr functionAddr = ProcessMemory<IntPtr>.Read(accProcess, functionPtr);
 
             IntPtr a = ProcessMemory<IntPtr>.Read(accProcess, functionAddr);
-            Debug.WriteLine($"{baseAddr- functionAddr:X}");
+            Debug.WriteLine($"{baseAddr - functionAddr:X}");
 
             return functionAddr;
         }
