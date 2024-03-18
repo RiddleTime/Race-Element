@@ -1,9 +1,12 @@
-﻿using RaceElement.HUD.Overlay.Internal;
+﻿
+using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
+
 using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayReplayAssist
 {
@@ -15,7 +18,22 @@ Authors = ["Reinier Klarenberg"]
     internal class ReplayAssistOverlay : AbstractOverlay
     {
         private InfoPanel _panel;
+        readonly record struct MultiLevelPointer(int MainModuleOffset, int[] Offsets);
 
+        private readonly MultiLevelPointer PtrReplayIsPaused = new(0x051AE868, [0x20, 0x20, 0x778, 0x20, 0x20, 0x528]);
+
+        /// <summary>
+        /// Shows the current selected percentage in the replay bar (only changes when using mouse)
+        /// </summary>
+        private readonly MultiLevelPointer PtrReplayBarPercentage = new(0x051AE868, [0x20, 0x20, 0x778, 0x20, 0x20, 0x52c]);
+        private readonly MultiLevelPointer PtrReplaySpeedMultiplier = new(0x051AE868, [0x20, 0x20, 0x778, 0x20, 0x20, 0x530]);
+        private readonly MultiLevelPointer PtrReplayTimeSeconds = new(0x051AE868, [0x20, 0x20, 0x778, 0x20, 0x20, 0x538]);
+        private readonly MultiLevelPointer PtrMenuBarOpened = new(0x051AE868, [0x20, 0x20, 0x778, 0x20, 0x20, 0x662]);
+
+        /// <summary>
+        /// Test? perhaps this leads to the functional call of each menu button :D
+        /// </summary>
+        private readonly MultiLevelPointer PtrHoveredMenuBarFunction = new(0x051AE868, [0x20, 0x20, 0x778, 0x20, 0x20, 0x2b0]);
         public ReplayAssistOverlay(Rectangle rectangle) : base(rectangle, "Replay Assist")
         {
             RefreshRateHz = 5f;
@@ -31,10 +49,34 @@ Authors = ["Reinier Klarenberg"]
 
         public override void Render(Graphics g)
         {
-            _panel.AddLine("Replay Puased", $"{IsReplayPaused()}");
+            _panel.AddLine("Replay Paused", $"{IsReplayPaused()}");
             _panel.AddLine("Replay Time", $"{GetReplayTime():hh\\:mm\\:ss\\.ff}");
             _panel.AddLine("Replay Speed", $"{GetReplaySpeed():F3}");
+            _panel.AddLine("Replay Bar open?", $"{IsMenuBarOpen()}");
+            _panel.AddLine("Replay Bar %", $"{GetReplayBarPercentage():F3}");
+            _panel.AddLine("Function", $"{GetHoveredFunction():X}");
             _panel.Draw(g);
+        }
+
+        private IntPtr GetHoveredFunction()
+        {
+            if (IsPreviewing) return IntPtr.Zero;
+
+            Process accProcess = GetAccProcess();
+            if (accProcess == null || accProcess.MainModule == null) return IntPtr.Zero;
+
+            IntPtr baseAddr = GetBaseAddress(accProcess, PtrHoveredMenuBarFunction);
+            if (baseAddr == IntPtr.Zero) return IntPtr.Zero;
+
+            IntPtr functionPtr = GetPointedAddress(accProcess, baseAddr, PtrHoveredMenuBarFunction.Offsets);
+
+            if (functionPtr == IntPtr.Zero) return IntPtr.Zero;
+            IntPtr functionAddr = ProcessMemory<IntPtr>.Read(accProcess, functionPtr);
+
+            IntPtr a = ProcessMemory<IntPtr>.Read(accProcess, functionAddr);
+            Debug.WriteLine($"{baseAddr- functionAddr:X}");
+
+            return functionAddr;
         }
 
         private TimeSpan GetReplayTime()
@@ -42,22 +84,13 @@ Authors = ["Reinier Klarenberg"]
             if (IsPreviewing) return TimeSpan.Zero;
 
             TimeSpan replayTimeSpan = TimeSpan.Zero;
-            Process accProcess;
+            Process accProcess = GetAccProcess();
+            if (accProcess == null || accProcess.MainModule == null) return replayTimeSpan;
 
-            try
-            {
-                accProcess = GetAccProcess();
-            }
-            catch (Exception)
-            {
-                return replayTimeSpan;
-            }
+            IntPtr baseAddr = GetBaseAddress(accProcess, PtrReplayTimeSeconds);
+            if (baseAddr == IntPtr.Zero) return replayTimeSpan;
 
-            if (accProcess == null || accProcess.MainModule == null)
-                return replayTimeSpan;
-
-            IntPtr baseAddr = accProcess.MainModule.BaseAddress + 0x051AE868;
-            IntPtr replayTimeAddr = GetPointedAddress(accProcess, baseAddr, [0x20, 0x20, 0x778, 0x20, 0x20, 0x538]);
+            IntPtr replayTimeAddr = GetPointedAddress(accProcess, baseAddr, PtrReplayTimeSeconds.Offsets);
 
             if (replayTimeAddr != IntPtr.Zero)
             {
@@ -67,34 +100,41 @@ Authors = ["Reinier Klarenberg"]
 
             return replayTimeSpan;
         }
+        private static IntPtr GetBaseAddress(Process process, MultiLevelPointer pointer)
+        {
+            if (process == null || process.MainModule == null) return IntPtr.Zero;
+            return process.MainModule.BaseAddress + pointer.MainModuleOffset;
+        }
 
-        private static Process GetAccProcess() => Process.GetProcessesByName("AC2-Win64-Shipping").FirstOrDefault();
+        private static Process GetAccProcess()
+        {
+            Process accProcess = null;
 
+            try
+            {
+                accProcess = Process.GetProcessesByName("AC2-Win64-Shipping").FirstOrDefault();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+            return accProcess;
+        }
 
         private bool IsReplayPaused()
         {
             if (IsPreviewing) return true;
-            Process accProcess;
-            try
-            {
-                accProcess = GetAccProcess();
-            }
-            catch (Exception e)
-            {
-                //Debug.WriteLine(e);
-                return true;
-            }
+            Process accProcess = GetAccProcess();
 
             if (accProcess == null || accProcess.MainModule == null) return true;
 
+            IntPtr baseAddr = GetBaseAddress(accProcess, PtrReplayIsPaused);
+            if (baseAddr == IntPtr.Zero) return true;
 
-            IntPtr baseAddr = accProcess.MainModule.BaseAddress + 0x051AE868;
-            IntPtr replayTimeAddr = GetPointedAddress(accProcess, baseAddr, [0x20, 0x20, 0x778, 0x20, 0x20, 0x528]);
+            IntPtr addrReplayIsPaused = GetPointedAddress(accProcess, baseAddr, PtrReplayIsPaused.Offsets);
 
-            if (replayTimeAddr != IntPtr.Zero)
-            {
-                return ProcessMemory<byte>.Read(accProcess, replayTimeAddr) == 1;
-            }
+            if (addrReplayIsPaused != IntPtr.Zero)
+                return ProcessMemory<byte>.Read(accProcess, addrReplayIsPaused) == 1;
             return true;
         }
 
@@ -102,32 +142,57 @@ Authors = ["Reinier Klarenberg"]
         {
             float speed = 1;
             if (IsPreviewing) return speed;
-            Process accProcess;
-            try
-            {
-                accProcess = GetAccProcess();
-            }
-            catch (Exception e)
-            {
-                //Debug.WriteLine(e);
-                return 0;
-            }
+            Process accProcess = GetAccProcess();
 
             if (accProcess == null || accProcess.MainModule == null) return 0;
 
+            IntPtr baseAddr = GetBaseAddress(accProcess, PtrReplaySpeedMultiplier);
+            if (baseAddr == IntPtr.Zero) return speed;
 
-            IntPtr baseAddr = accProcess.MainModule.BaseAddress + 0x051AE868;
-            IntPtr replayTimeAddr = GetPointedAddress(accProcess, baseAddr, [0x20, 0x20, 0x778, 0x20, 0x20, 0x530]);
-
-            if (replayTimeAddr != IntPtr.Zero)
-            {
-                speed = ProcessMemory<float>.Read(accProcess, replayTimeAddr);
-            }
+            IntPtr replaySpeedAddr = GetPointedAddress(accProcess, baseAddr, PtrReplaySpeedMultiplier.Offsets);
+            if (replaySpeedAddr != IntPtr.Zero)
+                speed = ProcessMemory<float>.Read(accProcess, replaySpeedAddr);
 
             return speed;
         }
 
-        private IntPtr GetPointedAddress(Process process, IntPtr baseAddress, int[] offsets)
+        private float GetReplayBarPercentage()
+        {
+            float speed = 1;
+            if (IsPreviewing) return speed;
+            Process accProcess = GetAccProcess();
+
+            if (accProcess == null || accProcess.MainModule == null) return 0;
+
+            IntPtr baseAddr = GetBaseAddress(accProcess, PtrReplayBarPercentage);
+            if (baseAddr == IntPtr.Zero) return speed;
+
+            IntPtr replayTimeAddr = GetPointedAddress(accProcess, baseAddr, PtrReplayBarPercentage.Offsets);
+            if (replayTimeAddr != IntPtr.Zero)
+                speed = ProcessMemory<float>.Read(accProcess, replayTimeAddr);
+
+            return speed;
+        }
+
+        private bool IsMenuBarOpen()
+        {
+            bool isOpen = false;
+            if (IsPreviewing) return false;
+            Process accProcess = GetAccProcess();
+
+            if (accProcess == null || accProcess.MainModule == null) return isOpen;
+
+            IntPtr baseAddr = GetBaseAddress(accProcess, PtrMenuBarOpened);
+            if (baseAddr == IntPtr.Zero) return isOpen;
+
+            IntPtr replayTimeAddr = GetPointedAddress(accProcess, baseAddr, PtrMenuBarOpened.Offsets);
+            if (replayTimeAddr != IntPtr.Zero)
+                isOpen = ProcessMemory<Byte>.Read(accProcess, replayTimeAddr) != 1;
+
+            return isOpen;
+        }
+
+        private static IntPtr GetPointedAddress(Process process, IntPtr baseAddress, int[] offsets)
         {
             var nextBase = baseAddress;
 
@@ -140,7 +205,7 @@ Authors = ["Reinier Klarenberg"]
             return nextBase;
         }
 
-        private void LogPointer(IntPtr address)
+        private static void LogPointer(IntPtr address)
         {
             Debug.WriteLine($"0x{address.ToInt64():X} - {address}");
         }
