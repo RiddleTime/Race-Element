@@ -45,8 +45,10 @@ Authors = ["Reinier Klarenberg"]
         private readonly MultiLevelPointer PtrHoveredReplayHasFocus = new(0x051AE868, [0x20, 0x20, 0x778, 0x20, 0x20, 0x521]);
 
 
-        private readonly MultiLevelPointer PtrReplayIsReversed = new(0x051A4520, [0x30, 0x2B0, 0x6A8, 0x360, 0x850, 0x0, 0x28, 0x50, 0xE48]);
-        private readonly MultiLevelPointer PtrReplayPlayPause = new(0x051A4520, [0x30, 0x2B0, 0x6A8, 0x360, 0x850, 0x0, 0x28, 0x50, 0xE5F]);
+        private readonly MultiLevelPointer PtrReplayIsReversed = new(0x04B77F20, [0x68, 0x38, 0x580, 0x1100]);  //new(0x04B8A6C0, [0x118, 0x620, 0x1170]); // 
+
+
+        private readonly MultiLevelPointer PtrReplayPlayPause = new(0x04B77F20, [0x68, 0x38, 0x580, 0x1117]); // new(0x051A4520, [0x30, 0x2B0, 0x6A8, 0x360, 0x850, 0x0, 0x28, 0x50, 0xE5F]);
 
         private IKeyboardMouseEvents _globalKbmHook;
 
@@ -140,7 +142,7 @@ Authors = ["Reinier Klarenberg"]
                 byte a = ProcessMemory<byte>.Read(accProcess, addrReplayIsPaused);
                 a = a switch { 0 => 1, 1 => 0 };
                 //ProcessMemory<byte>.Write(accProcess, addrReplayIsPaused, a);
-                return a == 1;
+                return a == 0;
             }
             return false;
         }
