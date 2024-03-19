@@ -7,6 +7,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Windows.Forms;
 
 
@@ -54,7 +55,7 @@ Authors = ["Reinier Klarenberg"]
 
         public ReplayAssistOverlay(Rectangle rectangle) : base(rectangle, "Replay Assist")
         {
-            RefreshRateHz = 5f;
+            RefreshRateHz = 30f;
         }
 
         public override void BeforeStart()
@@ -72,7 +73,7 @@ Authors = ["Reinier Klarenberg"]
         {
             try
             {
-                if (!ReplayHasFocus())
+                if (!AccHasFocus())
                     return;
 
                 switch (e.KeyCode)
@@ -92,7 +93,7 @@ Authors = ["Reinier Klarenberg"]
             }
             catch (Exception ex)
             {
-
+                Trace.WriteLine(ex);
             }
         }
 
@@ -107,6 +108,8 @@ Authors = ["Reinier Klarenberg"]
 
         public override void Render(Graphics g)
         {
+
+            _panel.AddLine("Replay", "Helper");
             try
             {
                 _panel.AddLine("Replay Paused", $"{IsReplayPaused()}");
@@ -115,12 +118,24 @@ Authors = ["Reinier Klarenberg"]
                 _panel.AddLine("Replay Bar open?", $"{IsMenuBarOpen()}");
                 _panel.AddLine("Replay Bar %", $"{GetReplayBarPercentage():F3}");
                 _panel.AddLine("Function", $"{GetHoveredFunction():X}");
-                _panel.AddLine("Has Focus?", $"{ReplayHasFocus()}");
+                _panel.AddLine("Has Focus?", $"{AccHasFocus()}");
                 _panel.AddLine("Reversed?", $"{ReplayIsReversed()}");
+
+                Process accProcess = GetAccProcess();
+                if (accProcess == null || accProcess.MainModule == null) throw new Exception();
+
+                IntPtr baseAddr = GetBaseAddress(accProcess, PtrReplayPlayPause);
+                if (baseAddr == IntPtr.Zero) throw new Exception();
+
+                IntPtr directionPtr = GetPointedAddress(accProcess, baseAddr, PtrReplayIsReversed.Offsets);
+                IntPtr playPausePtr = GetPointedAddress(accProcess, baseAddr, PtrReplayPlayPause.Offsets);
+                _panel.AddLine("play", $"{playPausePtr:X}");
+                _panel.AddLine("dir", $"{directionPtr:X}");
+
             }
             catch (Exception ex)
             {
-                _panel.AddLine("Replay Not Open", "No data");
+                Trace.WriteLine(ex);
             }
             _panel.Draw(g);
         }
@@ -139,10 +154,7 @@ Authors = ["Reinier Klarenberg"]
 
             if (addrReplayIsPaused != IntPtr.Zero)
             {
-                byte a = ProcessMemory<byte>.Read(accProcess, addrReplayIsPaused);
-                a = a switch { 0 => 1, 1 => 0 };
-                //ProcessMemory<byte>.Write(accProcess, addrReplayIsPaused, a);
-                return a == 0;
+                return ProcessMemory<byte>.Read(accProcess, addrReplayIsPaused) == 1;
             }
             return false;
         }
@@ -161,8 +173,9 @@ Authors = ["Reinier Klarenberg"]
             if (addrReplayIsPaused != IntPtr.Zero)
             {
                 byte a = ProcessMemory<byte>.Read(accProcess, addrReplayIsPaused);
-                a = a switch { 0 => 1, 1 => 0, _ => 0 };
-                ProcessMemory<byte>.Write(accProcess, addrReplayIsPaused, a);
+                a = a switch { 0 => 1, 1 => 0, _ => 2 };
+                if (a != 2)
+                    ProcessMemory<byte>.Write(accProcess, addrReplayIsPaused, a);
             }
         }
 
@@ -185,21 +198,10 @@ Authors = ["Reinier Klarenberg"]
             }
         }
 
-        private bool ReplayHasFocus()
+        private bool AccHasFocus()
         {
-            if (IsPreviewing) return false;
             Process accProcess = GetAccProcess();
-
-            if (accProcess == null || accProcess.MainModule == null) return false;
-
-            IntPtr baseAddr = GetBaseAddress(accProcess, PtrHoveredReplayHasFocus);
-            if (baseAddr == IntPtr.Zero) return false;
-
-            IntPtr addrReplayIsPaused = GetPointedAddress(accProcess, baseAddr, PtrHoveredReplayHasFocus.Offsets);
-
-            if (addrReplayIsPaused != IntPtr.Zero)
-                return ProcessMemory<byte>.Read(accProcess, addrReplayIsPaused) == 0;
-            return false;
+            return User32.GetForegroundWindow() == accProcess.MainWindowHandle;
         }
 
         private IntPtr GetHoveredFunction()
@@ -343,6 +345,10 @@ Authors = ["Reinier Klarenberg"]
             foreach (var offset in offsets)
             {
                 var ptr = ProcessMemory<nint>.Read(process, nextBase);
+
+                if (ptr == IntPtr.Zero)
+                    return IntPtr.Zero;
+
                 nextBase = ptr + offset;
             }
 

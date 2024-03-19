@@ -7,6 +7,8 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayReplayAssist
 {
     static partial class Win32
     {
+
+
         [LibraryImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static partial bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, [Out] byte[] lpBuffer, int dwSize, out int lpNumberOfBytesRead);
@@ -14,6 +16,12 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayReplayAssist
         [LibraryImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static partial bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, uint nSize, out UIntPtr lpNumberOfBytesWritten);
+    }
+
+    static partial class User32
+    {
+        [LibraryImport("user32.dll")]
+        public static partial IntPtr GetForegroundWindow();
     }
 
     public static unsafe class ProcessMemory<T> where T : unmanaged
