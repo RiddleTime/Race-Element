@@ -45,15 +45,14 @@ Authors = ["Reinier Klarenberg"]
         private readonly MultiLevelPointer PtrHoveredReplayHasFocus = new(0x051AE868, [0x20, 0x20, 0x778, 0x20, 0x20, 0x521]);
 
 
-        private readonly MultiLevelPointer PtrReplayIsReversed = new(0x051A4520, [0x30, 0x2B0, 0x6A8, 0x360, 0x2B8, 0x0, 0x28, 0x50, 0xE48]);
-        private readonly MultiLevelPointer PtrReplayPlayPause = new(0x051A4520, [0x30, 0x2B0, 0x6A8, 0x360, 0x2B8, 0x0, 0x28, 0x50, 0xE5F]);
-
+        private readonly MultiLevelPointer PtrReplayIsReversed = new(0x051A4520, [0x30, 0x2B0, 0x6A8, 0x360, 0x850, 0x0, 0x28, 0x50, 0xE48]);
+        private readonly MultiLevelPointer PtrReplayPlayPause = new(0x051A4520, [0x30, 0x2B0, 0x6A8, 0x360, 0x850, 0x0, 0x28, 0x50, 0xE5F]);
 
         private IKeyboardMouseEvents _globalKbmHook;
 
         public ReplayAssistOverlay(Rectangle rectangle) : base(rectangle, "Replay Assist")
         {
-            RefreshRateHz = 1 / 5f;
+            RefreshRateHz = 5f;
         }
 
         public override void BeforeStart()
@@ -67,21 +66,31 @@ Authors = ["Reinier Klarenberg"]
             _globalKbmHook.KeyUp += GlobalKbmHook_KeyUp;
         }
 
-        private void GlobalKbmHook_KeyUp(object sender, global::System.Windows.Forms.KeyEventArgs e)
+        private void GlobalKbmHook_KeyUp(object sender, KeyEventArgs e)
         {
-            switch (e.KeyCode)
+            try
             {
-                case Keys.R:
-                    {
-                        ToggleReplayPlayDirection();
-                        break;
-                    }
-                case Keys.Space:
-                    {
-                        TogglePlayPause();
-                        break;
-                    }
-                default: break;
+                if (!ReplayHasFocus())
+                    return;
+
+                switch (e.KeyCode)
+                {
+                    case Keys.R:
+                        {
+                            ToggleReplayPlayDirection();
+                            break;
+                        }
+                    case Keys.Space:
+                        {
+                            TogglePlayPause();
+                            break;
+                        }
+                    default: break;
+                }
+            }
+            catch (Exception ex)
+            {
+
             }
         }
 
@@ -96,15 +105,21 @@ Authors = ["Reinier Klarenberg"]
 
         public override void Render(Graphics g)
         {
-            _panel.AddLine("Replay Paused", $"{IsReplayPaused()}");
-            _panel.AddLine("Replay Time", $"{GetReplayTime():hh\\:mm\\:ss\\.ff}");
-            _panel.AddLine("Replay Speed", $"{GetReplaySpeed():F3}");
-            _panel.AddLine("Replay Bar open?", $"{IsMenuBarOpen()}");
-            _panel.AddLine("Replay Bar %", $"{GetReplayBarPercentage():F3}");
-            _panel.AddLine("Function", $"{GetHoveredFunction():X}");
-            _panel.AddLine("Has Focus?", $"{ReplayHasFocus()}");
-            _panel.AddLine("Reversed?", $"{ReplayIsReversed()}");
-
+            try
+            {
+                _panel.AddLine("Replay Paused", $"{IsReplayPaused()}");
+                _panel.AddLine("Replay Time", $"{GetReplayTime():hh\\:mm\\:ss\\.ff}");
+                _panel.AddLine("Replay Speed", $"{GetReplaySpeed():F3}");
+                _panel.AddLine("Replay Bar open?", $"{IsMenuBarOpen()}");
+                _panel.AddLine("Replay Bar %", $"{GetReplayBarPercentage():F3}");
+                _panel.AddLine("Function", $"{GetHoveredFunction():X}");
+                _panel.AddLine("Has Focus?", $"{ReplayHasFocus()}");
+                _panel.AddLine("Reversed?", $"{ReplayIsReversed()}");
+            }
+            catch (Exception ex)
+            {
+                _panel.AddLine("Replay Not Open", "No data");
+            }
             _panel.Draw(g);
         }
 
