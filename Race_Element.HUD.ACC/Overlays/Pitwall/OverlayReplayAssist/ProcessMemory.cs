@@ -2,12 +2,12 @@
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System;
+using System.Runtime.ExceptionServices;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayReplayAssist
 {
     static partial class Win32
     {
-
 
         [LibraryImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -38,14 +38,12 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayReplayAssist
         /// <param name="address">Address of memory to start to read.</param>
         /// <returns>The value read.</returns>
         /// <exception cref="InvalidOperationException"></exception>
-        public static T Read(Process process, nint address)
+        [HandleProcessCorruptedStateExceptions]
+        public static T Read(nint handle, nint address)
         {
             byte[] buffer = new byte[sizeof(T)];
-            int bytesread;
-
-            bool ok = Win32.ReadProcessMemory(process.Handle, new IntPtr(address), buffer, sizeof(T), out bytesread);
-            if (ok == false || bytesread != sizeof(T)) throw new InvalidOperationException();
-
+            bool ok = Win32.ReadProcessMemory(handle, address, buffer, sizeof(T), out int numberOfBytesRead);
+            //if (ok == false || numberOfBytesRead != sizeof(T)) throw new InvalidOperationException();
             return FromBytes(buffer);
         }
 
@@ -61,13 +59,12 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayReplayAssist
         /// <param name="address"></param>
         /// <param name="value"></param>
         /// <exception cref="InvalidOperationException"></exception>
-        public static void Write(Process process, nint address, T value)
+        [HandleProcessCorruptedStateExceptions]
+        public static void Write(nint handle, nint address, T value)
         {
-            UIntPtr byteswritten;
             var bytes = GetBytes(value);
-
-            bool ok = Win32.WriteProcessMemory(process.Handle, address, bytes, (uint)bytes.Length, out byteswritten);
-            if (ok == false || byteswritten.ToUInt32() != bytes.Length) throw new InvalidOperationException();
+            bool ok = Win32.WriteProcessMemory(handle, address, bytes, (uint)bytes.Length, out nuint numberOfBytesWritten);
+            //if (ok == false || numberOfBytesWritten.ToUInt32() != bytes.Length) throw new InvalidOperationException();
         }
 
         /// <summary>
@@ -94,7 +91,9 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayReplayAssist
             T retValue = default;
             var tmp = (byte*)&retValue;
 
-            for (var i = 0; i < buffer.Length; ++i)
+            if (buffer.Length != sizeof(T)) { return retValue; }
+
+            for (var i = 0; i < sizeof(T); ++i)
             {
                 tmp[i] = buffer[i];
             }
