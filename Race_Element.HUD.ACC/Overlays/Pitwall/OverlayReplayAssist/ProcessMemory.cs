@@ -42,8 +42,13 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayReplayAssist
         public static T Read(nint handle, nint address)
         {
             byte[] buffer = new byte[sizeof(T)];
+
+            if (handle == IntPtr.Zero) return FromBytes(buffer);
+
             bool ok = Win32.ReadProcessMemory(handle, address, buffer, sizeof(T), out int numberOfBytesRead);
+
             //if (ok == false || numberOfBytesRead != sizeof(T)) throw new InvalidOperationException();
+
             return FromBytes(buffer);
         }
 
@@ -62,6 +67,8 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayReplayAssist
         [HandleProcessCorruptedStateExceptions]
         public static void Write(nint handle, nint address, T value)
         {
+            if (handle == IntPtr.Zero) return;
+
             var bytes = GetBytes(value);
             bool ok = Win32.WriteProcessMemory(handle, address, bytes, (uint)bytes.Length, out nuint numberOfBytesWritten);
             //if (ok == false || numberOfBytesWritten.ToUInt32() != bytes.Length) throw new InvalidOperationException();

@@ -73,24 +73,30 @@ Authors = ["Reinier Klarenberg"]
             _panel = new InfoPanel(10, 300);
 
             if (IsPreviewing) return;
+
+            SetProcessHandle();
             _globalKbmHook = Hook.GlobalEvents();
             _globalKbmHook.KeyUp += GlobalKbmHook_KeyUp;
+        }
+
+        private void SetProcessHandle()
+        {
+            Debug.WriteLine("Setting _accProcess and _processHandle");
+            _accProcess?.Dispose();
+            _accProcess = GetAccProcess();
+
+            _processHandle = NativeWrapper.OpenProcess(ProcessAccessFlags.ReadWrite, _accProcess.Id);
         }
 
         private Stopwatch _debounce = Stopwatch.StartNew();
         private void GlobalKbmHook_KeyUp(object sender, KeyEventArgs e)
         {
-            if (_debounce.ElapsedMilliseconds > 150)
+            if (_debounce.ElapsedMilliseconds > 25)
                 new Thread(x =>
                 {
-                    if (_processHandle == IntPtr.Zero || _accProcess.HasExited)
+                    if (_processHandle == IntPtr.Zero || _accProcess == null || _accProcess.HasExited)
                     {
-                        Debug.WriteLine("erwer");
-                        _accProcess?.Dispose();
-                        _accProcess = GetAccProcess();
-
-                        _processHandle = NativeWrapper.OpenProcess(ProcessAccessFlags.ReadWrite, _accProcess.Id);
-                        //NativeWrapper.CloseHandle(_processHandle);
+                        SetProcessHandle();
                     }
 
                     try
@@ -118,6 +124,11 @@ Authors = ["Reinier Klarenberg"]
                     {
                         Trace.WriteLine(ex);
                     }
+                    finally
+                    {
+                        //NativeWrapper.CloseHandle(_processHandle);
+
+                    }
                     _debounce = Stopwatch.StartNew();
                 }).Start();
         }
@@ -137,16 +148,22 @@ Authors = ["Reinier Klarenberg"]
         {
             _panel.AddProgressBarWithCenteredText("Replay Helper", 0, 1, 0);
 
+            if (IsPreviewing) goto drawPanel;
+
             try
             {
-                _panel.AddLine("Replay Paused", $"{IsReplayPaused()}");
-                _panel.AddLine("Replay Time", $"{GetReplayTime():hh\\:mm\\:ss\\.ff}");
+                _panel.AddLine("Replay Time", $"{GetReplayTime():h\\:mm\\:ss\\.ff}");
                 _panel.AddLine("Replay Speed", $"{GetReplaySpeed():F3}");
                 _panel.AddLine("Replay Bar open?", $"{IsMenuBarOpen()}");
                 _panel.AddLine("Replay Bar %", $"{GetReplayBarPercentage():F3}");
                 _panel.AddLine("Function", $"{GetHoveredFunction():X}");
                 _panel.AddLine("Has Focus?", $"{AccHasFocus()}");
+
+
+
+                // different base pointer
                 _panel.AddLine("Reversed?", $"{ReplayIsReversed()}");
+                _panel.AddLine("Replay Paused", $"{ReplayIsPlaying()}");
 
                 Process accProcess = GetAccProcess();
                 if (accProcess == null || accProcess.MainModule == null) throw new Exception();
@@ -167,6 +184,8 @@ Authors = ["Reinier Klarenberg"]
                 Debug.WriteLine(ex);
                 Trace.WriteLine(ex);
             }
+
+        drawPanel:
             _panel.Draw(g);
         }
 
@@ -190,28 +209,12 @@ Authors = ["Reinier Klarenberg"]
             return false;
         }
 
-private bool ReplayIsPlaying(){
-            Process accProcess = GetAccProcess();
-
-            if (accProcess == null || accProcess.MainModule == null) return false;
-
-            IntPtr baseAddr = GetBaseAddress(accProcess, MlpReplayPlayPause);
+        private bool ReplayIsPlaying()
+        {
+            IntPtr baseAddr = GetBaseAddress(_accProcess, MlpReplayPlayPause);
             if (baseAddr == IntPtr.Zero) return false;
 
-            if (PtrReplayReverseByte == IntPtr.Zero)
-                PtrReplayReverseByte = GetPointedAddress(baseAddr, MlpReplayPlayPause.Offsets);
-
-            if (PtrReplayReverseByte != IntPtr.Zero)
-            {
-                return ProcessMemory<byte>.Read(_processHandle, MlpReplayPlayPause) == 1;
-            }
-            return false;
-
-
-
-
-            if (PtrReplayReverseByte == IntPtr.Zero)
-                PtrReplayReverseByte = GetPointedAddress(baseAddr, MlpReplayIsReversed.Offsets);
+            return ProcessMemory<byte>.Read(_processHandle, GetPointedAddress(baseAddr, MlpReplayPlayPause.Offsets)) == 1;
         }
 
         private void ToggleReplayPlayDirection()
