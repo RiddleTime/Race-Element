@@ -38,7 +38,6 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayReplayAssist
         /// <param name="address">Address of memory to start to read.</param>
         /// <returns>The value read.</returns>
         /// <exception cref="InvalidOperationException"></exception>
-        [HandleProcessCorruptedStateExceptions]
         public static T Read(nint handle, nint address)
         {
             byte[] buffer = new byte[sizeof(T)];
@@ -64,7 +63,6 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayReplayAssist
         /// <param name="address"></param>
         /// <param name="value"></param>
         /// <exception cref="InvalidOperationException"></exception>
-        [HandleProcessCorruptedStateExceptions]
         public static void Write(nint handle, nint address, T value)
         {
             if (handle == IntPtr.Zero) return;
