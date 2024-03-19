@@ -1,4 +1,5 @@
 ﻿
+using Gma.System.MouseKeyHook;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
 
@@ -6,6 +7,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayReplayAssist
@@ -30,6 +32,8 @@ Authors = ["Reinier Klarenberg"]
         private readonly MultiLevelPointer PtrReplayTimeSeconds = new(0x051AE868, [0x20, 0x20, 0x778, 0x20, 0x20, 0x538]);
         private readonly MultiLevelPointer PtrMenuBarOpened = new(0x051AE868, [0x20, 0x20, 0x778, 0x20, 0x20, 0x662]);
 
+
+
         /// <summary>
         /// Test? perhaps this leads to the functional call of each menu button :D
         /// </summary>
@@ -39,9 +43,17 @@ Authors = ["Reinier Klarenberg"]
         /// Byte value, 1 = lost focus, 0 = has focus
         /// </summary>
         private readonly MultiLevelPointer PtrHoveredReplayHasFocus = new(0x051AE868, [0x20, 0x20, 0x778, 0x20, 0x20, 0x521]);
+
+
+        private readonly MultiLevelPointer PtrReplayIsReversed = new(0x051A4520, [0x30, 0x2B0, 0x6A8, 0x360, 0x2B8, 0x0, 0x28, 0x50, 0xE48]);
+        private readonly MultiLevelPointer PtrReplayPlayPause = new(0x051A4520, [0x30, 0x2B0, 0x6A8, 0x360, 0x2B8, 0x0, 0x28, 0x50, 0xE5F]);
+
+
+        private IKeyboardMouseEvents _globalKbmHook;
+
         public ReplayAssistOverlay(Rectangle rectangle) : base(rectangle, "Replay Assist")
         {
-            RefreshRateHz = 5f;
+            RefreshRateHz = 1 / 5f;
         }
 
         public override void BeforeStart()
@@ -49,7 +61,37 @@ Authors = ["Reinier Klarenberg"]
             Width = 400;
             Height = 400;
             _panel = new InfoPanel(10, 300);
+
+            if (IsPreviewing) return;
+            _globalKbmHook = Hook.GlobalEvents();
+            _globalKbmHook.KeyUp += GlobalKbmHook_KeyUp;
         }
+
+        private void GlobalKbmHook_KeyUp(object sender, global::System.Windows.Forms.KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.R:
+                    {
+                        ToggleReplayPlayDirection();
+                        break;
+                    }
+                case Keys.Space:
+                    {
+                        TogglePlayPause();
+                        break;
+                    }
+                default: break;
+            }
+        }
+
+        public override void BeforeStop()
+        {
+            if (IsPreviewing) return;
+            _globalKbmHook.KeyUp -= GlobalKbmHook_KeyUp;
+            _globalKbmHook?.Dispose();
+        }
+
         public override bool ShouldRender() => true;
 
         public override void Render(Graphics g)
@@ -61,7 +103,69 @@ Authors = ["Reinier Klarenberg"]
             _panel.AddLine("Replay Bar %", $"{GetReplayBarPercentage():F3}");
             _panel.AddLine("Function", $"{GetHoveredFunction():X}");
             _panel.AddLine("Has Focus?", $"{ReplayHasFocus()}");
+            _panel.AddLine("Reversed?", $"{ReplayIsReversed()}");
+
             _panel.Draw(g);
+        }
+
+        private bool ReplayIsReversed()
+        {
+            if (IsPreviewing) return false;
+            Process accProcess = GetAccProcess();
+
+            if (accProcess == null || accProcess.MainModule == null) return false;
+
+            IntPtr baseAddr = GetBaseAddress(accProcess, PtrReplayIsReversed);
+            if (baseAddr == IntPtr.Zero) return false;
+
+            IntPtr addrReplayIsPaused = GetPointedAddress(accProcess, baseAddr, PtrReplayIsReversed.Offsets);
+
+            if (addrReplayIsPaused != IntPtr.Zero)
+            {
+                byte a = ProcessMemory<byte>.Read(accProcess, addrReplayIsPaused);
+                a = a switch { 0 => 1, 1 => 0 };
+                //ProcessMemory<byte>.Write(accProcess, addrReplayIsPaused, a);
+                return a == 1;
+            }
+            return false;
+        }
+
+        private void ToggleReplayPlayDirection()
+        {
+            Process accProcess = GetAccProcess();
+
+            if (accProcess == null || accProcess.MainModule == null) return;
+
+            IntPtr baseAddr = GetBaseAddress(accProcess, PtrReplayIsReversed);
+            if (baseAddr == IntPtr.Zero) return;
+
+            IntPtr addrReplayIsPaused = GetPointedAddress(accProcess, baseAddr, PtrReplayIsReversed.Offsets);
+
+            if (addrReplayIsPaused != IntPtr.Zero)
+            {
+                byte a = ProcessMemory<byte>.Read(accProcess, addrReplayIsPaused);
+                a = a switch { 0 => 1, 1 => 0, _ => 0 };
+                ProcessMemory<byte>.Write(accProcess, addrReplayIsPaused, a);
+            }
+        }
+
+        private void TogglePlayPause()
+        {
+            Process accProcess = GetAccProcess();
+
+            if (accProcess == null || accProcess.MainModule == null) return;
+
+            IntPtr baseAddr = GetBaseAddress(accProcess, PtrReplayPlayPause);
+            if (baseAddr == IntPtr.Zero) return;
+
+            IntPtr addrReplayIsPaused = GetPointedAddress(accProcess, baseAddr, PtrReplayPlayPause.Offsets);
+
+            if (addrReplayIsPaused != IntPtr.Zero)
+            {
+                byte a = ProcessMemory<byte>.Read(accProcess, addrReplayIsPaused);
+                a = a switch { 0 => 1, 1 => 0, _ => 0 };
+                ProcessMemory<byte>.Write(accProcess, addrReplayIsPaused, a);
+            }
         }
 
         private bool ReplayHasFocus()
@@ -97,7 +201,7 @@ Authors = ["Reinier Klarenberg"]
             IntPtr functionAddr = ProcessMemory<IntPtr>.Read(accProcess, functionPtr);
 
             IntPtr a = ProcessMemory<IntPtr>.Read(accProcess, functionAddr);
-            Debug.WriteLine($"{baseAddr - functionAddr:X}");
+            //Debug.WriteLine($"{baseAddr - functionAddr:X}");
 
             return functionAddr;
         }
