@@ -1,4 +1,5 @@
 ﻿using Gma.System.MouseKeyHook;
+using Newtonsoft.Json;
 using ProcessMemoryUtilities.Managed;
 using ProcessMemoryUtilities.Native;
 using RaceElement.HUD.Overlay.Internal;
@@ -7,6 +8,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -38,7 +40,6 @@ internal class ReplayAssistOverlay : AbstractOverlay
     private readonly MultiLevelPointer PtrMenuBarOpened = new(0x051AE868, [0x20, 0x20, 0x778, 0x20, 0x20, 0x662]);
 
 
-
     /// <summary>
     /// Test? perhaps this leads to the functional call of each menu button :D
     /// </summary>
@@ -50,11 +51,19 @@ internal class ReplayAssistOverlay : AbstractOverlay
     private readonly MultiLevelPointer MlpHoveredReplayHasFocus = new(0x051AE868, [0x20, 0x20, 0x778, 0x20, 0x20, 0x521]);
 
 
+    private readonly MultiLevelPointer MlpReplayBase = new(0x04B8A6C0, [0x118, 0x620, 0x0]);
 
-    // perhaps new?
-    private readonly MultiLevelPointer MlpReplayIsReversed = new(0x04B8A6C0, [0x118, 0x620, 0x1170]);
+    [StructLayout(LayoutKind.Explicit)]
+    private record struct ReplayBase
+    {
+        [FieldOffset(0x1170)]
+        [MarshalAs(UnmanagedType.I1)]
+        public byte Reverse;
 
-    private readonly MultiLevelPointer MlpReplayPlayPause = new(0x04B8A6C0, [0x118, 0x620, 0x1187]);
+        [FieldOffset(0x1187)]
+        [MarshalAs(UnmanagedType.I1)]
+        public byte Pause;
+    }
 
     private IKeyboardMouseEvents _globalKbmHook;
 
@@ -92,36 +101,44 @@ internal class ReplayAssistOverlay : AbstractOverlay
         if (_debounce.ElapsedMilliseconds > 25)
         {
             new Thread(x =>
-                        {
-                            try
-                            {
-                                if (!AccHasFocus())
-                                    return;
+            {
+                try
+                {
+                    if (!AccHasFocus())
+                        return;
 
-                                if (_processHandle == IntPtr.Zero || _accProcess == null || !_accProcess.Responding || _accProcess.HasExited)
-                                    SetProcessHandle();
+                    if (_processHandle == IntPtr.Zero || _accProcess == null ||  !_accProcess.Responding || _accProcess.HasExited)
+                        SetProcessHandle();
 
-                                _debounce = Stopwatch.StartNew();
-                                switch (e.KeyCode)
-                                {
-                                    case Keys.R:
-                                        {
-                                            ToggleReplayPlayDirection();
-                                            break;
-                                        }
-                                    case Keys.Space:
-                                        {
-                                            TogglePlayPause();
-                                            break;
-                                        }
-                                    default: break;
-                                }
-                            }
-                            catch (AccessViolationException ex)
+                    _debounce = Stopwatch.StartNew();
+                    ReplayBase replay = GetReplayBase();
+                    switch (e.KeyCode)
+                    {
+                        case Keys.R:
                             {
-                                Trace.WriteLine(ex);
+                                replay.Reverse = (byte)(replay.Reverse == 0 ? 1 : 0);
+                                break;
                             }
-                        }).Start();
+                        case Keys.Space:
+                            {
+                                replay.Pause = (byte)(replay.Pause == 0 ? 1 : 0);
+                                break;
+                            }
+
+                        default: return;
+                    }
+
+                    if (!SetReplayBase(replay))
+                    {
+                        Debug.WriteLine($"Couldn't set replay base {JsonConvert.SerializeObject(replay)}");
+                    }
+                }
+                catch (AccessViolationException ex)
+                {
+                    Debug.WriteLine(ex);
+                    Trace.WriteLine(ex);
+                }
+            }).Start();
         }
     }
 
@@ -136,7 +153,7 @@ internal class ReplayAssistOverlay : AbstractOverlay
         NativeWrapper.CloseHandle(_processHandle);
     }
 
-    public override bool ShouldRender() => true;
+    public override bool ShouldRender() => AccHasFocus();
 
     public override void Render(Graphics g)
     {
@@ -147,29 +164,31 @@ internal class ReplayAssistOverlay : AbstractOverlay
 #if DEBUG
         try
         {
-            _panel.AddLine("Replay Time", $"{GetReplayTime():h\\:mm\\:ss\\.ff}");
+            _panel.AddLine("Replay Time", $"{GetReplayTime():h\\:mm\\:ss}");
             _panel.AddLine("Replay Speed", $"{GetReplaySpeed():F3}");
             _panel.AddLine("Replay Bar open?", $"{IsMenuBarOpen()}");
             _panel.AddLine("Replay Bar %", $"{GetReplayBarPercentage():F3}");
-            _panel.AddLine("Function", $"{GetHoveredFunction():X}");
             _panel.AddLine("Has Focus?", $"{AccHasFocus()}");
 
 
-
             // different base pointer
-            _panel.AddLine("Reversed?", $"{ReplayIsReversed()}");
-            _panel.AddLine("Replay Paused", $"{ReplayIsPlaying()}");
+            var replay = GetReplayBase();
+            _panel.AddLine("Reversed?", $"{replay.Reverse == 1}");
+            _panel.AddLine("Replay Paused", $"{replay.Pause == 1}");
 
-            Process accProcess = GetAccProcess();
-            if (accProcess == null || accProcess.MainModule == null) throw new Exception();
 
-            IntPtr baseAddr = GetBaseAddress(accProcess, MlpReplayPlayPause);
-            if (baseAddr == IntPtr.Zero) throw new Exception();
+            //_panel.AddLine("Function", $"{GetHoveredFunction():X}");
 
-            IntPtr directionPtr = GetPointedAddress(baseAddr, MlpReplayIsReversed.Offsets);
-            IntPtr playPausePtr = GetPointedAddress(baseAddr, MlpReplayPlayPause.Offsets);
-            _panel.AddLine("play", $"{playPausePtr:X}");
-            _panel.AddLine("dir", $"{directionPtr:X}");
+            //Process accProcess = GetAccProcess();
+            //if (accProcess == null || accProcess.MainModule == null) throw new Exception();
+
+            //IntPtr baseAddr = GetBaseAddress(accProcess, MlpReplayPlayPause);
+            //if (baseAddr == IntPtr.Zero) throw new Exception();
+
+            //IntPtr directionPtr = GetPointedAddress(baseAddr, MlpReplayIsReversed.Offsets);
+            //IntPtr playPausePtr = GetPointedAddress(baseAddr, MlpReplayPlayPause.Offsets);
+            //_panel.AddLine("play", $"{playPausePtr:X}");
+            //_panel.AddLine("dir", $"{directionPtr:X}");
         }
         catch (Exception ex)
         {
@@ -182,67 +201,41 @@ internal class ReplayAssistOverlay : AbstractOverlay
         _panel.Draw(g);
     }
 
-    private bool ReplayIsReversed()
+
+    private ReplayBase GetReplayBase()
     {
-        IntPtr baseAddr = GetBaseAddress(_accProcess, MlpReplayIsReversed);
+        IntPtr baseAddr = GetBaseAddress(_accProcess, MlpReplayBase);
+        if (baseAddr == IntPtr.Zero) return new ReplayBase();
+        var replay = ProcessMemory<ReplayBase>.Read(_processHandle, GetPointedAddress(baseAddr, MlpReplayBase.Offsets));
+        //Debug.WriteLine(JsonConvert.SerializeObject(replay));
+        return replay;
+    }
+
+    private bool SetReplayBase(ReplayBase replay)
+    {
+        IntPtr baseAddr = GetBaseAddress(_accProcess, MlpReplayBase);
         if (baseAddr == IntPtr.Zero) return false;
 
-        return ProcessMemory<byte>.Read(_processHandle, GetPointedAddress(baseAddr, MlpReplayIsReversed.Offsets)) == 1;
-
-    }
-
-    private bool ReplayIsPlaying()
-    {
-        IntPtr baseAddr = GetBaseAddress(_accProcess, MlpReplayPlayPause);
-        if (baseAddr == IntPtr.Zero) return false;
-
-        return ProcessMemory<byte>.Read(_processHandle, GetPointedAddress(baseAddr, MlpReplayPlayPause.Offsets)) == 1;
-    }
-
-    private void ToggleReplayPlayDirection()
-    {
-        IntPtr baseAddr = GetBaseAddress(_accProcess, MlpReplayIsReversed);
-        if (baseAddr == IntPtr.Zero) return;
-
-        IntPtr pointedAddress = GetPointedAddress(baseAddr, MlpReplayIsReversed.Offsets);
-        if (pointedAddress == IntPtr.Zero) return;
-        int a = ProcessMemory<int>.Read(_processHandle, pointedAddress);
-        a = a switch { 0 => 1, 1 => 0, _ => 2 };
-        if (a != 2) ProcessMemory<int>.Write(_processHandle, pointedAddress, a);
-    }
-
-    private void TogglePlayPause()
-    {
-        Process accProcess = GetAccProcess();
-        if (accProcess == null || accProcess.MainModule == null) return;
-
-        IntPtr baseAddr = GetBaseAddress(accProcess, MlpReplayPlayPause);
-        if (baseAddr == IntPtr.Zero) return;
-
-        IntPtr addrReplayIsPaused = GetPointedAddress(baseAddr, MlpReplayPlayPause.Offsets);
-
-        if (addrReplayIsPaused != IntPtr.Zero)
+        try
         {
-            int a = ProcessMemory<int>.Read(_processHandle, addrReplayIsPaused);
-            a = a switch { 0 => 1, 1 => 0, _ => 0 };
-            ProcessMemory<int>.Write(_processHandle, addrReplayIsPaused, a);
+            ProcessMemory<ReplayBase>.Write(_processHandle, GetPointedAddress(baseAddr, MlpReplayBase.Offsets), replay);
         }
+        catch (Exception)
+        {
+            return false;
+        }
+        return true;
     }
 
-    private bool AccHasFocus()
-    {
-        Process accProcess = GetAccProcess();
-        return User32.GetForegroundWindow() == accProcess.MainWindowHandle;
-    }
+    private bool AccHasFocus() => User32.GetForegroundWindow() == GetAccProcess().MainWindowHandle;
 
     private IntPtr GetHoveredFunction()
     {
         if (IsPreviewing) return IntPtr.Zero;
 
-        Process accProcess = GetAccProcess();
-        if (accProcess == null || accProcess.MainModule == null) return IntPtr.Zero;
+        if (_accProcess == null || _accProcess.MainModule == null) return IntPtr.Zero;
 
-        IntPtr baseAddr = GetBaseAddress(accProcess, PtrHoveredMenuBarFunction);
+        IntPtr baseAddr = GetBaseAddress(_accProcess, PtrHoveredMenuBarFunction);
         if (baseAddr == IntPtr.Zero) return IntPtr.Zero;
 
         IntPtr functionPtr = GetPointedAddress(baseAddr, PtrHoveredMenuBarFunction.Offsets);
@@ -261,10 +254,9 @@ internal class ReplayAssistOverlay : AbstractOverlay
         if (IsPreviewing) return TimeSpan.Zero;
 
         TimeSpan replayTimeSpan = TimeSpan.Zero;
-        Process accProcess = GetAccProcess();
-        if (accProcess == null || accProcess.MainModule == null) return replayTimeSpan;
+        if (_accProcess == null || _accProcess.MainModule == null) return replayTimeSpan;
 
-        IntPtr baseAddr = GetBaseAddress(accProcess, PtrReplayTimeSeconds);
+        IntPtr baseAddr = GetBaseAddress(_accProcess, PtrReplayTimeSeconds);
         if (baseAddr == IntPtr.Zero) return replayTimeSpan;
 
         IntPtr replayTimeAddr = GetPointedAddress(baseAddr, PtrReplayTimeSeconds.Offsets);
@@ -299,11 +291,10 @@ internal class ReplayAssistOverlay : AbstractOverlay
     private bool IsReplayPaused()
     {
         if (IsPreviewing) return true;
-        Process accProcess = GetAccProcess();
 
-        if (accProcess == null || accProcess.MainModule == null) return true;
+        if (_accProcess == null || _accProcess.MainModule == null) return true;
 
-        IntPtr baseAddr = GetBaseAddress(accProcess, PtrReplayIsPaused);
+        IntPtr baseAddr = GetBaseAddress(_accProcess, PtrReplayIsPaused);
         if (baseAddr == IntPtr.Zero) return true;
 
         IntPtr addrReplayIsPaused = GetPointedAddress(baseAddr, PtrReplayIsPaused.Offsets);
@@ -317,11 +308,10 @@ internal class ReplayAssistOverlay : AbstractOverlay
     {
         float speed = 1;
         if (IsPreviewing) return speed;
-        Process accProcess = GetAccProcess();
 
-        if (accProcess == null || accProcess.MainModule == null) return 0;
+        if (_accProcess == null || _accProcess.MainModule == null) return 0;
 
-        IntPtr baseAddr = GetBaseAddress(accProcess, PtrReplaySpeedMultiplier);
+        IntPtr baseAddr = GetBaseAddress(_accProcess, PtrReplaySpeedMultiplier);
         if (baseAddr == IntPtr.Zero) return speed;
 
         IntPtr replaySpeedAddr = GetPointedAddress(baseAddr, PtrReplaySpeedMultiplier.Offsets);
@@ -335,11 +325,10 @@ internal class ReplayAssistOverlay : AbstractOverlay
     {
         float speed = 1;
         if (IsPreviewing) return speed;
-        Process accProcess = GetAccProcess();
 
-        if (accProcess == null || accProcess.MainModule == null) return 0;
+        if (_accProcess == null || _accProcess.MainModule == null) return 0;
 
-        IntPtr baseAddr = GetBaseAddress(accProcess, PtrReplayBarPercentage);
+        IntPtr baseAddr = GetBaseAddress(_accProcess, PtrReplayBarPercentage);
         if (baseAddr == IntPtr.Zero) return speed;
 
         IntPtr replayTimeAddr = GetPointedAddress(baseAddr, PtrReplayBarPercentage.Offsets);
@@ -352,12 +341,10 @@ internal class ReplayAssistOverlay : AbstractOverlay
     private bool IsMenuBarOpen()
     {
         bool isOpen = false;
-        if (IsPreviewing) return false;
-        Process accProcess = GetAccProcess();
 
-        if (accProcess == null || accProcess.MainModule == null) return isOpen;
+        if (IsPreviewing || _accProcess == null || _accProcess.MainModule == null) return isOpen;
 
-        IntPtr baseAddr = GetBaseAddress(accProcess, PtrMenuBarOpened);
+        IntPtr baseAddr = GetBaseAddress(_accProcess, PtrMenuBarOpened);
         if (baseAddr == IntPtr.Zero) return isOpen;
 
         IntPtr replayTimeAddr = GetPointedAddress(baseAddr, PtrMenuBarOpened.Offsets);
