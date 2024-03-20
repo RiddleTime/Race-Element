@@ -90,45 +90,39 @@ internal class ReplayAssistOverlay : AbstractOverlay
     private void GlobalKbmHook_KeyUp(object sender, KeyEventArgs e)
     {
         if (_debounce.ElapsedMilliseconds > 25)
+        {
             new Thread(x =>
-            {
-                try
-                {
-                    if (_processHandle == IntPtr.Zero || _accProcess == null || !_accProcess.Responding || _accProcess.HasExited)
-                    {
-                        SetProcessHandle();
-                    }
-
-                    if (!AccHasFocus())
-                        return;
-
-
-                    switch (e.KeyCode)
-                    {
-                        case Keys.R:
+                        {
+                            try
                             {
-                                ToggleReplayPlayDirection();
-                                break;
-                            }
-                        case Keys.Space:
-                            {
-                                TogglePlayPause();
-                                break;
-                            }
-                        default: break;
-                    }
-                }
-                catch (AccessViolationException ex)
-                {
-                    Trace.WriteLine(ex);
-                }
-                finally
-                {
-                    //NativeWrapper.CloseHandle(_processHandle);
+                                if (!AccHasFocus())
+                                    return;
 
-                }
-                _debounce = Stopwatch.StartNew();
-            }).Start();
+                                if (_processHandle == IntPtr.Zero || _accProcess == null || !_accProcess.Responding || _accProcess.HasExited)
+                                    SetProcessHandle();
+
+                                _debounce = Stopwatch.StartNew();
+                                switch (e.KeyCode)
+                                {
+                                    case Keys.R:
+                                        {
+                                            ToggleReplayPlayDirection();
+                                            break;
+                                        }
+                                    case Keys.Space:
+                                        {
+                                            TogglePlayPause();
+                                            break;
+                                        }
+                                    default: break;
+                                }
+                            }
+                            catch (AccessViolationException ex)
+                            {
+                                Trace.WriteLine(ex);
+                            }
+                        }).Start();
+        }
     }
 
     public override void BeforeStop()
