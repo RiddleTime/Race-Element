@@ -14,13 +14,11 @@ using System.Windows.Forms;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayReplayAssist;
 
-#if DEBUG
 [Overlay(Name = "Replay Assist",
 Description = "Proof of concept for replay utility",
 OverlayType = OverlayType.Pitwall,
 Authors = ["Reinier Klarenberg"]
 )]
-#endif
 internal class ReplayAssistOverlay : AbstractOverlay
 {
     private InfoPanel _panel;
@@ -63,6 +61,10 @@ internal class ReplayAssistOverlay : AbstractOverlay
         [FieldOffset(0x1187)]
         [MarshalAs(UnmanagedType.I1)]
         public byte Pause;
+
+        [FieldOffset(0x118C)]
+        [MarshalAs(UnmanagedType.R4)]
+        public float Speed;
     }
 
     private IKeyboardMouseEvents _globalKbmHook;
@@ -107,7 +109,7 @@ internal class ReplayAssistOverlay : AbstractOverlay
                     if (!AccHasFocus())
                         return;
 
-                    if (_processHandle == IntPtr.Zero || _accProcess == null ||  !_accProcess.Responding || _accProcess.HasExited)
+                    if (_processHandle == IntPtr.Zero || _accProcess == null || !_accProcess.Responding || _accProcess.HasExited)
                         SetProcessHandle();
 
                     _debounce = Stopwatch.StartNew();
@@ -122,6 +124,18 @@ internal class ReplayAssistOverlay : AbstractOverlay
                         case Keys.Space:
                             {
                                 replay.Pause = (byte)(replay.Pause == 0 ? 1 : 0);
+                                break;
+                            }
+                        case Keys.W:
+                            {
+                                if (replay.Speed < 2.5f)
+                                    replay.Speed += 0.125f;
+                                break;
+                            }
+                        case Keys.S:
+                            {
+                                if (replay.Speed > 1.5f)
+                                    replay.Speed -= 0.125f;
                                 break;
                             }
 
