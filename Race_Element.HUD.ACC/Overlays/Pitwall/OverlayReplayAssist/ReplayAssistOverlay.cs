@@ -19,7 +19,7 @@ Description = "Proof of concept for replay utility",
 OverlayType = OverlayType.Pitwall,
 Authors = ["Reinier Klarenberg"]
 )]
-internal readonly class ReplayAssistOverlay : AbstractOverlay
+internal class ReplayAssistOverlay : AbstractOverlay
 {
     private InfoPanel _panel;
     private Process _accProcess;
