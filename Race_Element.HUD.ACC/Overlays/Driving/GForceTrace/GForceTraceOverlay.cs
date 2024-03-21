@@ -1,4 +1,5 @@
-﻿using RaceElement.HUD.Overlay.Configuration;
+﻿using RaceElement.Core.Jobs.LoopJob;
+using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using System;
 using System.Collections.Generic;
@@ -14,17 +15,55 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.GForceTrace;
 Description = "A graph that shows you both lateral and longitudinal forces over time.")]
 internal sealed class GForceTraceOverlay : AbstractOverlay
 {
-    private sealed class GForceTraceConfiguration : OverlayConfiguration
-    {
-        public GForceTraceConfiguration() => GenericConfiguration.AllowRescale = true;
-    }
+    private readonly GForceTraceConfiguration _config = new();
+
+    private GForceDataJob _dataJob;
 
     public GForceTraceOverlay(Rectangle rectangle) : base(rectangle, "G-Force Trace")
     {
     }
 
+    public override void BeforeStart()
+    {
+        if (IsPreviewing) return;
+
+        _dataJob = new GForceDataJob() { IntervalMillis = 20 };
+        _dataJob.Run();
+    }
+
+    public override void BeforeStop()
+    {
+        if (IsPreviewing) return;
+
+        _dataJob.CancelJoin();
+    }
+
     public override void Render(Graphics g)
     {
-        throw new NotImplementedException();
+
+    }
+
+    internal sealed class GForceDataJob : AbstractLoopJob
+    {
+        public sealed override void RunAction() => Collect();
+
+        private void Collect()
+        {
+
+        }
+    }
+
+    internal readonly record struct GForceDataChunk
+    {
+        public int ChunkSize { get; init; }
+        public float[] X { get; init; }
+        public float[] Y { get; init; }
+
+        public GForceDataChunk(float[] x, float[] y, int chunkSize)
+        {
+            this.X = x;
+            this.Y = y;
+            this.ChunkSize = chunkSize;
+        }
     }
 }
