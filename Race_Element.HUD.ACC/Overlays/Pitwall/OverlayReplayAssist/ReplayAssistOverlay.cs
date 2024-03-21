@@ -93,7 +93,7 @@ internal class ReplayAssistOverlay : AbstractOverlay
         Debug.WriteLine("Setting _accProcess and _processHandle");
         _accProcess?.Dispose();
         _accProcess = GetAccProcess();
-
+        if (_accProcess == null) return;
         _processHandle = NativeWrapper.OpenProcess(ProcessAccessFlags.ReadWrite, true, _accProcess.Id);
     }
 
@@ -241,7 +241,7 @@ internal class ReplayAssistOverlay : AbstractOverlay
         return true;
     }
 
-    private bool AccHasFocus() => User32.GetForegroundWindow() == GetAccProcess().MainWindowHandle;
+    private bool AccHasFocus() => User32.GetForegroundWindow() == GetAccProcess()?.MainWindowHandle;
 
     private IntPtr GetHoveredFunction()
     {
