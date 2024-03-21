@@ -33,7 +33,7 @@
                     <ListBox SelectionMode="Extended" Background="Transparent" Focusable="False" HorizontalContentAlignment="Center" 
                         Style="{StaticResource MaterialDesignToolToggleFlatListBox}"  Margin="0" Padding="0">
 
-                        <ListBoxItem Width="90" Height="80" x:Name="listBoxItemToggleMovementMode" ToolTip="Toggles Movement mode. (Keyboard: Control + Home)" 
+                        <ListBoxItem Width="90" Height="80" x:Name="listBoxItemToggleMovementMode" ToolTip="Toggle Movement mode | Mouse: Scroll Click | Keyboard: Control + Home)" 
                             Content="{materialDesign:PackIcon Kind=ArrowAll, Size=48}" HorizontalContentAlignment="Center" Foreground="DarkGray" Padding="0"
                             Cursor="Hand" Focusable="False" Style="{StaticResource MaterialDesignNavigationListBoxItem}" />
                     </ListBox>
