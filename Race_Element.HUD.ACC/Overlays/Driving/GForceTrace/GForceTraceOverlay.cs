@@ -8,20 +8,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace RaceElement.HUD.ACC.Overlays.Driving.GForceTrace;
 
 [Overlay(Name = "G-Force Trace",
 Description = "A graph that shows you both lateral and longitudinal forces over time.")]
-internal sealed class GForceTraceOverlay : AbstractOverlay
+internal sealed class GForceTraceOverlay(Rectangle rectangle) : AbstractOverlay(rectangle, "G-Force Trace")
 {
     private readonly GForceTraceConfiguration _config = new();
 
     private GForceDataJob _dataJob;
-
-    public GForceTraceOverlay(Rectangle rectangle) : base(rectangle, "G-Force Trace")
-    {
-    }
 
     public override void BeforeStart()
     {
