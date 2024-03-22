@@ -1,5 +1,4 @@
 ﻿using RaceElement.Core.Jobs.LoopJob;
-using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
 using System;
