@@ -62,17 +62,17 @@ internal sealed class GForceTraceOverlay : AbstractOverlay
             PointF[] xPoints = new PointF[lateralSpan.Length];
             for (int i = 0; i < lateralSpan.Length; i++)
                 xPoints[i] = new PointF(i, lateralSpan[i] + 50);
-            GraphicsPath xPath = new();
+            GraphicsPath xPath = new(FillMode.Winding);
             xPath.AddLines(xPoints);
             g.DrawPath(Pens.White, xPath);
 
-            Span<float> longitudinalSpan = (Span<float>)chunk.X;
+            Span<float> longitudinalSpan = (Span<float>)chunk.Y;
             PointF[] yPoints = new PointF[longitudinalSpan.Length];
             for (int i = 0; i < longitudinalSpan.Length; i++)
-                xPoints[i] = new PointF(i, longitudinalSpan[i] + 50);
+                yPoints[i] = new PointF(i, longitudinalSpan[i] + 75);
             GraphicsPath yPath = new();
-            xPath.AddLines(yPoints);
-            g.DrawPath(Pens.White, yPath);
+            yPath.AddLines(yPoints);
+            g.DrawPath(Pens.Yellow, yPath);
         }));
     }
 
@@ -92,7 +92,7 @@ internal sealed class GForceTraceOverlay : AbstractOverlay
 
         if (!IsPreviewing)
         {
-            _panel?.AddProgressBarWithCenteredText($"{_chunks.Count}/{_config.Chunks.MaxChunks}", 0, _config.Chunks.MaxChunks, _chunks.Count);
+            //_panel?.AddProgressBarWithCenteredText($"{_chunks.Count}/{_config.Chunks.MaxChunks}", 0, _config.Chunks.MaxChunks, _chunks.Count);
             _panel?.AddProgressBarWithCenteredText($"{_dataJob.ChunkArrayIndex}/{GForceDataChunk.ChunkSize}", 0, GForceDataChunk.ChunkSize - 2, _dataJob.ChunkArrayIndex);
 
 
