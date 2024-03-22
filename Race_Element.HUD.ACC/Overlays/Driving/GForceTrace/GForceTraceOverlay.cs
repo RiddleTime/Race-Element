@@ -20,12 +20,11 @@ Description = "A graph that shows you both lateral and longitudinal forces over 
 internal sealed class GForceTraceOverlay : AbstractOverlay
 {
     private readonly GForceTraceConfiguration _config = new();
-    private List<GForceDataChunk> _chunks = [];
+    private readonly List<GForceDataChunk> _chunks = [];
+    private readonly Queue<CachedBitmap> _bitmapQueue = [];
 
     private GForceDataJob _dataJob;
     private InfoPanel _panel;
-
-    private Queue<CachedBitmap> _bitmapQueue = [];
 
     public GForceTraceOverlay(global::System.Drawing.Rectangle rectangle) : base(rectangle, "G-Force Trace")
     {
@@ -104,6 +103,7 @@ internal sealed class GForceTraceOverlay : AbstractOverlay
             {
                 _bitmapQueue.ElementAt(i).Draw(g, new Point(x, 0));
                 x += GForceDataChunk.ChunkSize;
+                if (x > this.Width) { break; }
             }
         }
 
@@ -148,7 +148,7 @@ internal sealed class GForceTraceOverlay : AbstractOverlay
 
     internal readonly record struct GForceDataChunk
     {
-        public const int ChunkSize = 128;
+        public const int ChunkSize = 32;
         public readonly float[] X { get; init; } = new float[ChunkSize];
         public readonly float[] Y { get; init; } = new float[ChunkSize];
         public GForceDataChunk()
