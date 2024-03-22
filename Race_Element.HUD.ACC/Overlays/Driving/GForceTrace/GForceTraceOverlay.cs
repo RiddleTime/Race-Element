@@ -25,6 +25,8 @@ internal sealed class GForceTraceOverlay : AbstractOverlay
     private GForceDataJob _dataJob;
     private InfoPanel _panel;
 
+    private Queue<CachedBitmap> _bitmapQueue = [];
+
     public GForceTraceOverlay(global::System.Drawing.Rectangle rectangle) : base(rectangle, "G-Force Trace")
     {
         RefreshRateHz = 18;
@@ -49,16 +51,18 @@ internal sealed class GForceTraceOverlay : AbstractOverlay
             _chunks.RemoveAt(0);
         _chunks.Add(chunk);
 
-        CachedBitmap chunkBitmap = new(GForceDataChunk.ChunkSize, 100, g =>
+        if (_bitmapQueue.Count > _config.Chunks.MaxChunks)
+            _bitmapQueue.Dequeue();
+
+        int height = 100;
+        _bitmapQueue.Enqueue(new(GForceDataChunk.ChunkSize, height, g =>
         {
-            g.DrawRectangle(Pens.White, new RectangleF(0, 0, GForceDataChunk.ChunkSize, 100));
-
-            int height = 100;
-
             Span<float> lateralSpan = (Span<float>)chunk.X;
+            if (lateralSpan.IsEmpty)
+                return;
             PointF[] xPoints = new PointF[lateralSpan.Length];
             for (int i = 0; i < lateralSpan.Length; i++)
-                xPoints[i] = new PointF(i, 2);
+                xPoints[i] = new PointF(i, lateralSpan[i] + 50);
             GraphicsPath xPath = new();
             xPath.AddLines(xPoints);
             g.DrawPath(Pens.White, xPath);
@@ -66,12 +70,11 @@ internal sealed class GForceTraceOverlay : AbstractOverlay
             Span<float> longitudinalSpan = (Span<float>)chunk.X;
             PointF[] yPoints = new PointF[longitudinalSpan.Length];
             for (int i = 0; i < longitudinalSpan.Length; i++)
-                xPoints[i] = new PointF(i, 2);
+                xPoints[i] = new PointF(i, longitudinalSpan[i] + 50);
             GraphicsPath yPath = new();
             xPath.AddLines(yPoints);
             g.DrawPath(Pens.White, yPath);
-        });
-        chunkBitmap.Dispose();
+        }));
     }
 
     public sealed override void BeforeStop()
@@ -92,6 +95,16 @@ internal sealed class GForceTraceOverlay : AbstractOverlay
         {
             _panel?.AddProgressBarWithCenteredText($"{_chunks.Count}/{_config.Chunks.MaxChunks}", 0, _config.Chunks.MaxChunks, _chunks.Count);
             _panel?.AddProgressBarWithCenteredText($"{_dataJob.ChunkArrayIndex}/{GForceDataChunk.ChunkSize}", 0, GForceDataChunk.ChunkSize - 2, _dataJob.ChunkArrayIndex);
+
+
+            g.CompositingQuality = CompositingQuality.HighQuality;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            int x = _dataJob.ChunkArrayIndex;
+            for (int i = _bitmapQueue.Count - 1; i >= 0; i--)
+            {
+                _bitmapQueue.ElementAt(i).Draw(g, new Point(x, 0));
+                x += GForceDataChunk.ChunkSize;
+            }
         }
 
         _panel?.Draw(g);
