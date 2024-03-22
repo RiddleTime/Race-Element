@@ -22,7 +22,7 @@ internal sealed class GForceTraceOverlay(Rectangle rectangle) : AbstractOverlay(
     private GForceDataJob _dataJob;
     private InfoPanel _panel;
 
-    public override void BeforeStart()
+    public sealed override void BeforeStart()
     {
         if (IsPreviewing) return;
 
@@ -42,7 +42,7 @@ internal sealed class GForceTraceOverlay(Rectangle rectangle) : AbstractOverlay(
         _chunks.Add(chunk);
     }
 
-    public override void BeforeStop()
+    public sealed override void BeforeStop()
     {
         if (IsPreviewing) return;
 
@@ -50,11 +50,12 @@ internal sealed class GForceTraceOverlay(Rectangle rectangle) : AbstractOverlay(
         _dataJob.CancelJoin();
     }
 
-    public override bool ShouldRender() => true;
+    public sealed override bool ShouldRender() => true;
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
         _panel.AddProgressBarWithCenteredText($"{_chunks.Count}/{_config.Chunks.MaxChunks}", 0, _config.Chunks.MaxChunks, _chunks.Count);
+        _panel.AddProgressBarWithCenteredText($"{_dataJob.ChunkArrayIndex}/{GForceDataChunk.ChunkSize}", 0, GForceDataChunk.ChunkSize - 2, _dataJob.ChunkArrayIndex);
         _panel.AddLine("Total Data Points", $"{_config.Chunks.MaxChunks * GForceDataChunk.ChunkSize}");
         _panel.Draw(g);
     }
@@ -63,12 +64,12 @@ internal sealed class GForceTraceOverlay(Rectangle rectangle) : AbstractOverlay(
     {
         public Action<GForceDataChunk> OnNewDataChunk;
 
-        private int _chunkArrayIndex = 0;
-        private GForceDataChunk _dataChunk = new();
+        public int ChunkArrayIndex { get; private set; }
+        private GForceDataChunk _activeChunk = new();
 
         public sealed override void RunAction()
         {
-            if (_chunkArrayIndex < _dataChunk.X.Length - 1)
+            if (ChunkArrayIndex < _activeChunk.X.Length - 1)
                 Collect();
             else
                 Send();
@@ -76,16 +77,16 @@ internal sealed class GForceTraceOverlay(Rectangle rectangle) : AbstractOverlay(
 
         private void Send()
         {
-            OnNewDataChunk(_dataChunk);
-            _dataChunk = new();
-            _chunkArrayIndex = 0;
+            OnNewDataChunk(_activeChunk);
+            _activeChunk = new();
+            ChunkArrayIndex = 0;
         }
 
         private void Collect()
         {
-            _dataChunk.X[_chunkArrayIndex] = 0f;
-            _dataChunk.Y[_chunkArrayIndex] = 0f;
-            _chunkArrayIndex++;
+            _activeChunk.X[ChunkArrayIndex] = 0f;
+            _activeChunk.Y[ChunkArrayIndex] = 0f;
+            ChunkArrayIndex++;
         }
     }
 
