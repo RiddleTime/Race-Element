@@ -1,6 +1,7 @@
 ﻿using RaceElement.Core.Jobs.LoopJob;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,6 +20,7 @@ internal sealed class GForceTraceOverlay(Rectangle rectangle) : AbstractOverlay(
     private List<GForceDataChunk> _chunks = [];
 
     private GForceDataJob _dataJob;
+    private InfoPanel _panel;
 
     public override void BeforeStart()
     {
@@ -27,6 +29,10 @@ internal sealed class GForceTraceOverlay(Rectangle rectangle) : AbstractOverlay(
         _dataJob = new GForceDataJob() { IntervalMillis = 20 };
         _dataJob.OnNewDataChunk += OnNewDataChunk;
         _dataJob.Run();
+
+        _panel = new(14, 500);
+        Width = 500;
+        Height = 500;
     }
 
     private void OnNewDataChunk(GForceDataChunk chunk)
@@ -34,8 +40,6 @@ internal sealed class GForceTraceOverlay(Rectangle rectangle) : AbstractOverlay(
         if (_chunks.Count >= _config.Chunks.MaxChunks)
             _chunks.RemoveAt(0);
         _chunks.Add(chunk);
-
-        Debug.WriteLine(_chunks.Count);
     }
 
     public override void BeforeStop()
@@ -46,39 +50,48 @@ internal sealed class GForceTraceOverlay(Rectangle rectangle) : AbstractOverlay(
         _dataJob.CancelJoin();
     }
 
+    public override bool ShouldRender() => true;
+
     public override void Render(Graphics g)
     {
-
+        _panel.AddProgressBarWithCenteredText($"{_chunks.Count}/{_config.Chunks.MaxChunks}", 0, _config.Chunks.MaxChunks, _chunks.Count);
+        _panel.AddLine("Total Data Points", $"{_config.Chunks.MaxChunks * GForceDataChunk.ChunkSize}");
+        _panel.Draw(g);
     }
 
     internal sealed class GForceDataJob : AbstractLoopJob
     {
+        public Action<GForceDataChunk> OnNewDataChunk;
+
+        private int _chunkArrayIndex = 0;
         private GForceDataChunk _dataChunk = new();
 
-        private int index = 0;
-        public sealed override void RunAction() => Collect();
+        public sealed override void RunAction()
+        {
+            if (_chunkArrayIndex < _dataChunk.X.Length - 1)
+                Collect();
+            else
+                Send();
+        }
 
-        public Action<GForceDataChunk> OnNewDataChunk;
+        private void Send()
+        {
+            OnNewDataChunk(_dataChunk);
+            _dataChunk = new();
+            _chunkArrayIndex = 0;
+        }
+
         private void Collect()
         {
-            if (index < _dataChunk.X.Length - 1)
-            {
-                _dataChunk.X[index] = 0f;
-                _dataChunk.Y[index] = 0f;
-                index++;
-            }
-            else
-            {
-                OnNewDataChunk(_dataChunk);
-                _dataChunk = new();
-                index = 0;
-            }
+            _dataChunk.X[_chunkArrayIndex] = 0f;
+            _dataChunk.Y[_chunkArrayIndex] = 0f;
+            _chunkArrayIndex++;
         }
     }
 
     internal readonly record struct GForceDataChunk
     {
-        private const int ChunkSize = 256;
+        public const int ChunkSize = 256;
         public readonly float[] X { get; init; } = new float[ChunkSize];
         public readonly float[] Y { get; init; } = new float[ChunkSize];
         public GForceDataChunk()
