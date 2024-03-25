@@ -31,8 +31,8 @@ internal sealed class LapInfoOverlay : AbstractOverlay
             [ToolTip("Displays the potential best lap time based on your fastest sector times.")]
             public bool PotentialBest { get; init; } = true;
 
-            [ToolTip("Displays the predicted lap time.")]
-            public bool PredictedLap { get; init; } = true;
+            [ToolTip("Displays the estimated lap time.")]
+            public bool EstimatedTime { get; init; } = true;
         }
 
         public LapInfoConfig() : base()
@@ -65,7 +65,7 @@ internal sealed class LapInfoOverlay : AbstractOverlay
         if (!this._config.InfoPanel.PotentialBest)
             this.Height -= this._table.FontHeight;
 
-        if (!this._config.InfoPanel.PredictedLap)
+        if (!this._config.InfoPanel.EstimatedTime)
             this.Height -= this._table.FontHeight;
 
         LapTracker.Instance.LapFinished += Collector_LapFinished;
@@ -98,23 +98,23 @@ internal sealed class LapInfoOverlay : AbstractOverlay
         if (this._config.InfoPanel.PotentialBest)
             AddPotentialBest();
 
-        if (this._config.InfoPanel.PredictedLap)
-            AddPredictedLap();
+        if (this._config.InfoPanel.EstimatedTime)
+            AddEstimatedTime();
 
         _table.Draw(g);
     }
 
-    private void AddPredictedLap()
+    private void AddEstimatedTime()
     {
         string[] predictedTime = new string[2];
         predictedTime[0] = $"--:--.---";
 
         if (pageGraphics.EstimatedLapTimeMillis != Int32.MaxValue)
         {
-            predictedTime[0] = $"{TimeSpan.FromMilliseconds(pageGraphics.EstimatedLapTimeMillis):mm\\:ss\\:fff}";
+            predictedTime[0] = $"{TimeSpan.FromMilliseconds(pageGraphics.EstimatedLapTimeMillis):mm\\:ss\\.fff}";
         }
 
-        this._table.AddRow("Predicted", predictedTime);
+        this._table.AddRow("Est", predictedTime);
     }
 
     private void AddPotentialBest()
@@ -127,7 +127,7 @@ internal sealed class LapInfoOverlay : AbstractOverlay
         else
         {
             TimeSpan best = TimeSpan.FromMilliseconds(potentialBest);
-            potentialValues[0] = $"{best:mm\\:ss\\:fff}";
+            potentialValues[0] = $"{best:mm\\:ss\\.fff}";
         }
 
         this._table.AddRow("Pot", potentialValues);
@@ -210,7 +210,7 @@ internal sealed class LapInfoOverlay : AbstractOverlay
         else
         {
             TimeSpan best = TimeSpan.FromMilliseconds(lastLap);
-            LastLapValues[0] = $"{best:mm\\:ss\\:fff}";
+            LastLapValues[0] = $"{best:mm\\:ss\\.fff}";
         }
 
         this._table.AddRow("Last", LastLapValues);
@@ -226,7 +226,7 @@ internal sealed class LapInfoOverlay : AbstractOverlay
         else
         {
             TimeSpan best = TimeSpan.FromMilliseconds(bestLap);
-            bestLapValues[0] = $"{best:mm\\:ss\\:fff}";
+            bestLapValues[0] = $"{best:mm\\:ss\\.fff}";
         }
 
         if (broadCastLocalCar.CarIndex == broadCastRealTime.BestLapCarIndex)

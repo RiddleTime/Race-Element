@@ -3,13 +3,9 @@ using RaceElement.Data.ACC.Tyres;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.DirectoryServices.ActiveDirectory;
 using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.PressureHelper
 {

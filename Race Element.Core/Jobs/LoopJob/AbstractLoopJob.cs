@@ -66,6 +66,9 @@ public abstract class AbstractLoopJob : IJob
     /// <summary>Cancel the execution of the job and wait for the finish confirmation(synchronization method).</summary>
     public void CancelJoin()
     {
+        if (!_isRunning)
+            return;
+
         Cancel();
         _workerExitEvent.WaitOne();
     }
