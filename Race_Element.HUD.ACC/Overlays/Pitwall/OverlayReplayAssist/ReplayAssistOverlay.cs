@@ -14,11 +14,13 @@ using System.Windows.Forms;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayReplayAssist;
 
+#if DEBUG
 [Overlay(Name = "Replay Assist",
 Description = "Proof of concept for replay utility",
 OverlayType = OverlayType.Pitwall,
 Authors = ["Reinier Klarenberg"]
 )]
+#endif
 internal class ReplayAssistOverlay : AbstractOverlay
 {
     private InfoPanel _panel;
