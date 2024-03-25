@@ -1,5 +1,4 @@
-﻿using RaceElement.HUD.ACC.Overlays.OverlayInputTrace;
-using RaceElement.HUD.Overlay.Internal;
+﻿using RaceElement.HUD.Overlay.Internal;
 using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.GForceTrace;
@@ -26,7 +25,7 @@ internal sealed class GForceTraceOverlay : AbstractOverlay
     public sealed override void BeforeStart()
     {
         _dataJob = new GForceDataJob(this, _config.Chart.Width - 1) { IntervalMillis = 1000 / _config.Chart.Herz };
-        _graph = new GForceGraph(0, 0, _config.Chart.Width - 1, _config.Chart.Height - 1, _dataJob, this._config);
+        _graph = new GForceGraph(0, 0, _config.Chart.Width - 1, _config.Chart.Height - 1, _dataJob, _config);
 
         if (!IsPreviewing)
             _dataJob.Run();

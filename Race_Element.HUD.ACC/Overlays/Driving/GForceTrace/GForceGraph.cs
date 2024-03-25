@@ -6,13 +6,12 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 
-namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace;
+namespace RaceElement.HUD.ACC.Overlays.Driving.GForceTrace;
 
 internal class GForceGraph : IDisposable
 {
     private readonly int _x, _y;
     private readonly int _width, _height;
-    private readonly GForceTraceConfiguration _config;
     private readonly GForceDataJob _collector;
 
     private readonly CachedBitmap _cachedBackground;
@@ -26,10 +25,9 @@ internal class GForceGraph : IDisposable
         _width = width;
         _height = height;
         _collector = collector;
-        _config = config;
 
-        _longPen = new Pen(Color.LightGray, _config.Chart.LineThickness);
-        _latPen = new Pen(Color.Yellow, _config.Chart.LineThickness);
+        _longPen = new Pen(Color.LightGray, config.Chart.LineThickness);
+        _latPen = new Pen(Color.Yellow, config.Chart.LineThickness);
 
         _cachedBackground = new CachedBitmap(_width + 1, _height + 1, g =>
         {
