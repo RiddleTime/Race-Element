@@ -33,8 +33,7 @@ internal sealed class GForceTraceOverlay : AbstractOverlay
     public sealed override void BeforeStop()
     {
         _graph?.Dispose();
-
-        if (!IsPreviewing)
+        if (!IsPreviewing && _dataJob.IsRunning)
             _dataJob.CancelJoin();
     }
 
