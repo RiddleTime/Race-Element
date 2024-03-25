@@ -6,7 +6,8 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
-        {"1.0.4.4", "- Lap Info HUD: Predicated laptime now shows as Estimated time(Est)."},
+        {"1.0.4.4", "- Lap Info HUD: Predicated laptime now shows as Estimated time(Est)."+
+                    "\n- Added G-Force Trace HUD: a live graph of lateral and longitudinal G-forces."},
         {"1.0.4.2", "- Low Fuel Motorsport HUD: fixed app crash and corrected SOF to match driver." },
         {"1.0.4.0", "- Twitch Chat Bot:"+
                     "\n  - Corrected last name during driver swap races for +pos command."+
