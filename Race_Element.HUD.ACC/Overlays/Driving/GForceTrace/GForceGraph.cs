@@ -1,5 +1,4 @@
-﻿using RaceElement.HUD.ACC.Overlays.Driving.GForceTrace;
-using RaceElement.HUD.Overlay.OverlayUtil;
+﻿using RaceElement.HUD.Overlay.OverlayUtil;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
