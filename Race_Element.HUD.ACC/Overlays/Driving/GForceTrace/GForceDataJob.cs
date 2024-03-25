@@ -16,10 +16,17 @@ internal sealed class GForceDataJob : AbstractLoopJob
     {
         Overlay = overlay;
         DataCount = dataCount;
+
+        int presetLat = 50, presetLong = 50;
+        if (overlay.IsPreviewing)
+        {
+            presetLat = 45;
+            presetLong = 55;
+        }
         for (int i = 0; i < DataCount; i++)
         {
-            Lateral.AddFirst(45);
-            Longitudinal.AddFirst(55);
+            Lateral.AddFirst(presetLat);
+            Longitudinal.AddFirst(presetLong);
         }
     }
 
@@ -31,7 +38,6 @@ internal sealed class GForceDataJob : AbstractLoopJob
         SPageFilePhysics filePhysics = Overlay.pagePhysics;
         lock (Lateral)
         {
-
             float latG = filePhysics.AccG[0] *= -1;
             float maxLatG = Overlay._config.Data.MaxLatG;
             latG.Clip(-maxLatG, maxLatG);
@@ -45,7 +51,6 @@ internal sealed class GForceDataJob : AbstractLoopJob
 
         lock (Longitudinal)
         {
-
             float longG = filePhysics.AccG[2] *= -1;
             float maxLongG = Overlay._config.Data.MaxLongG;
             longG.Clip(-maxLongG, maxLongG);
