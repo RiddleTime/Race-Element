@@ -58,7 +58,7 @@ internal class PreviewCache
         if (cached && _cachedPreviews.ContainsKey(overlayName))
             return;
 
-        OverlaysACC.AbstractOverlays.TryGetValue(overlayName, out Type overlayType);
+        OverlaysAcc.AbstractOverlays.TryGetValue(overlayName, out Type overlayType);
 
         if (overlayType == null)
             return;

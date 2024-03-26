@@ -284,7 +284,7 @@ public partial class MainWindow : Window
 
         _notifyIcon?.Dispose();
 
-        OverlaysACC.CloseAll();
+        OverlaysAcc.CloseAll();
         HudTrackers.StopAll();
         ACCTrackerDispose.Dispose();
         HudOptions.Instance.DisposeKeyboardHooks();
@@ -304,7 +304,7 @@ public partial class MainWindow : Window
         TraceOutputListener.Stop();
 
         _notifyIcon?.Dispose();
-        OverlaysACC.CloseAll();
+        OverlaysAcc.CloseAll();
         HudTrackers.StopAll();
         ACCTrackerDispose.Dispose();
         HudOptions.Instance.DisposeKeyboardHooks();
