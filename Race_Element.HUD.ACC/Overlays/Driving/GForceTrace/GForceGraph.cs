@@ -32,13 +32,14 @@ internal class GForceGraph : IDisposable
         {
             if (config.Chart.GridLines)
             {
-                using Pen linePen = new(new SolidBrush(Color.FromArgb(90, Color.White)), 1);
+                using SolidBrush lineBrush = new(Color.FromArgb(90, Color.White));
+                using Pen linePen = new(lineBrush, 1);
                 for (int i = 1; i <= 9; i++)
                     g.DrawLine(linePen, new Point(0, i * _height / 10), new Point(_width, i * _height / 10));
             }
 
             Rectangle graphRect = new(_x, _y, _width, _height);
-            LinearGradientBrush gradientBrush = new(graphRect, Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical);
+            using LinearGradientBrush gradientBrush = new(graphRect, Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical);
             g.FillRoundedRectangle(gradientBrush, graphRect, 3);
             g.DrawRoundedRectangle(new Pen(Color.FromArgb(196, Color.Black)), graphRect, 3);
         });
