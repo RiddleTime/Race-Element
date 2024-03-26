@@ -33,16 +33,16 @@ internal sealed class HUDsOverlay : AbstractOverlay
         // add summary line
         long totalPixels = 0;
         long pixelsPerSecond = 0;
-        OverlaysACC.ActiveOverlays.ForEach(hud =>
+        OverlaysAcc.ActiveOverlays.ForEach(hud =>
         {
             long pixels = (long)(hud.Scale * hud.Width * hud.Height);
             pixelsPerSecond += (long)(pixels * hud.RefreshRateHz);
             totalPixels += pixels;
         });
-        _panel.AddLine($"  - {OverlaysACC.ActiveOverlays.Count} HUDs -  ", $"Pixels: {totalPixels}, Per Second: {pixelsPerSecond}");
+        _panel.AddLine($"  - {OverlaysAcc.ActiveOverlays.Count} HUDs -  ", $"Pixels: {totalPixels}, Per Second: {pixelsPerSecond}");
 
         // add details lines for all active huds
-        OverlaysACC.ActiveOverlays.ForEach(hud =>
+        OverlaysAcc.ActiveOverlays.ForEach(hud =>
         {
             long pixels = (long)(hud.Scale * hud.Width * hud.Height);
             _panel.AddLine(hud.Name, $"({hud.X}, {hud.Y}, {hud.Width}, {hud.Height}, scale: {hud.Scale:F3}), herz: {hud.RefreshRateHz}, vis: {hud.ShouldRender()}, pix: {pixels:F0}, PPS: {hud.RefreshRateHz * pixels:F0}");
