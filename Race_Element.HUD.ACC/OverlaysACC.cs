@@ -6,12 +6,12 @@ using System.Reflection;
 
 namespace RaceElement.HUD.ACC;
 
-public class OverlaysACC
+public class OverlaysAcc
 {
-    public static SortedDictionary<string, Type> AbstractOverlays = [];
-    public static List<AbstractOverlay> ActiveOverlays = [];
+    protected static readonly SortedDictionary<string, Type> AbstractOverlays = [];
+    protected static readonly List<AbstractOverlay> ActiveOverlays = [];
 
-    protected OverlaysACC() { }
+    protected OverlaysAcc() { }
 
     public static void GenerateDictionary()
     {
@@ -33,7 +33,7 @@ public class OverlaysACC
             {
                 ActiveOverlays[0].EnableReposition(false);
                 ActiveOverlays[0].Stop();
-                ActiveOverlays.Remove(ActiveOverlays.ElementAt(0));
+                ActiveOverlays.Remove(ActiveOverlays[0]);
             }
         }
     }
