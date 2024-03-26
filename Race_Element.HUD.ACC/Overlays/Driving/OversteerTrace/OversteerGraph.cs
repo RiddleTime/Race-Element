@@ -60,13 +60,16 @@ internal class OversteerGraph : IDisposable
 
         g.SmoothingMode = SmoothingMode.HighQuality;
 
-        LinkedList<float> data;
+        if (_dataJob != null)
+        {
+            LinkedList<float> data;
 
-        lock (_dataJob.Oversteer) data = new(_dataJob.Oversteer);
-        DrawData(g, data, _penOversteer);
+            lock (_dataJob.Oversteer) data = new(_dataJob.Oversteer);
+            DrawData(g, data, _penOversteer);
 
-        lock (_dataJob.Understeer) data = new(_dataJob.Understeer);
-        DrawData(g, data, _penUndersteer);
+            lock (_dataJob.Understeer) data = new(_dataJob.Understeer);
+            DrawData(g, data, _penUndersteer);
+        }
     }
 
     private void DrawData(Graphics g, LinkedList<float> Data, Pen pen)

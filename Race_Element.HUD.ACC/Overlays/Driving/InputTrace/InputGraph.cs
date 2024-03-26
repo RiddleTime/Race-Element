@@ -62,19 +62,22 @@ internal class InputGraph : IDisposable
 
         g.SmoothingMode = SmoothingMode.HighQuality;
 
-        LinkedList<int> data;
-
-        if (_config.Chart.SteeringInput)
+        if (_dataJob != null)
         {
-            lock (_dataJob.Steering) data = new(_dataJob.Steering);
-            DrawData(g, data, _steeringPen);
+            LinkedList<int> data;
+
+            if (_config.Chart.SteeringInput)
+            {
+                lock (_dataJob.Steering) data = new(_dataJob.Steering);
+                DrawData(g, data, _steeringPen);
+            }
+
+            lock (_dataJob.Throttle) data = new(_dataJob.Throttle);
+            DrawData(g, data, _throttlePen);
+
+            lock (_dataJob.Brake) data = new(_dataJob.Brake);
+            DrawData(g, data, _brakePen);
         }
-
-        lock (_dataJob.Throttle) data = new(_dataJob.Throttle);
-        DrawData(g, data, _throttlePen);
-
-        lock (_dataJob.Brake) data = new(_dataJob.Brake);
-        DrawData(g, data, _brakePen);
     }
 
     private void DrawData(Graphics g, LinkedList<int> Data, Pen pen)
