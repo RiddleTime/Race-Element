@@ -21,15 +21,15 @@ internal sealed class GForceTraceConfiguration : OverlayConfiguration
         public int Herz { get; init; } = 70;
     }
 
-    [ConfigGrouping("Chart", "Customize the charts refresh rate or amount of data points.")]
+    [ConfigGrouping("Chart", "Customize the appearance of the live trace.")]
     public ChartGrouping Chart { get; init; } = new ChartGrouping();
     public sealed class ChartGrouping
     {
-        [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
+        [ToolTip("The amount of datapoints shown, this changes the width of the chart.")]
         [IntRange(10, 800, 10)]
         public int Width { get; init; } = 300;
 
-        [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
+        [ToolTip("The height of the chart.")]
         [IntRange(80, 250, 10)]
         public int Height { get; init; } = 120;
 
