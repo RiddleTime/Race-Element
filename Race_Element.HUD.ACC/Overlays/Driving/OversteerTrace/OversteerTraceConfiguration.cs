@@ -1,22 +1,17 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
 
-namespace RaceElement.HUD.ACC.Overlays.Driving.GForceTrace;
-
-internal sealed class GForceTraceConfiguration : OverlayConfiguration
+namespace RaceElement.HUD.ACC.Overlays.Driving.OversteerTrace;
+internal sealed class OversteerTraceConfiguration : OverlayConfiguration
 {
-    public GForceTraceConfiguration() => GenericConfiguration.AllowRescale = true;
+    public OversteerTraceConfiguration() => this.GenericConfiguration.AllowRescale = true;
 
     [ConfigGrouping("Data", "Adjust data bounds.")]
     public DataGrouping Data { get; init; } = new();
     public sealed class DataGrouping
     {
-        [ToolTip("Sets the maximum lateral g-force displayed.")]
-        [FloatRange(1, 3, 0.1f, 1)]
-        public float MaxLatG { get; init; } = 3f;
-
-        [ToolTip("Sets the maximum longitudinal g-force displayed.")]
-        [FloatRange(1, 3, 0.1f, 1)]
-        public float MaxLongG { get; init; } = 2.5f;
+        [ToolTip("Sets the maximum amount of slip angle displayed.")]
+        [FloatRange(0.1f, 10f, 0.1f, 1)]
+        public float MaxSlipAngle { get; init; } = 1.5f;
 
         [ToolTip("Sets the data collection rate.")]
         [IntRange(10, 150, 2)]
@@ -25,10 +20,10 @@ internal sealed class GForceTraceConfiguration : OverlayConfiguration
 
     [ConfigGrouping("Chart", "Customize the appearance of the live trace.")]
     public ChartGrouping Chart { get; init; } = new ChartGrouping();
-    public sealed class ChartGrouping
+    public class ChartGrouping
     {
         [ToolTip("The amount of datapoints shown, this changes the width of the chart.")]
-        [IntRange(10, 800, 10)]
+        [IntRange(50, 800, 10)]
         public int Width { get; init; } = 300;
 
         [ToolTip("The height of the chart.")]
@@ -47,4 +42,3 @@ internal sealed class GForceTraceConfiguration : OverlayConfiguration
         public int HudRefreshRate { get; init; } = 24;
     }
 }
-

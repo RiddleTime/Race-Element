@@ -371,9 +371,9 @@ public partial class HudOptions : UserControl
             stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(140, 0, 0, 0));
             overlayNameLabel.Foreground = Brushes.LimeGreen;
 
-            lock (OverlaysACC.ActiveOverlays)
+            lock (OverlaysAcc.ActiveOverlays)
             {
-                AbstractOverlay overlay = OverlaysACC.ActiveOverlays.Find(f => f.GetType() == type);
+                AbstractOverlay overlay = OverlaysAcc.ActiveOverlays.Find(f => f.GetType() == type);
 
                 if (overlay == null)
                 {
@@ -389,8 +389,8 @@ public partial class HudOptions : UserControl
 
                     configStacker.IsEnabled = false;
 
-                    if (OverlaysACC.ActiveOverlays.FindIndex(o => o.Name == overlay.Name) == -1)
-                        OverlaysACC.ActiveOverlays.Add(overlay);
+                    if (OverlaysAcc.ActiveOverlays.FindIndex(o => o.Name == overlay.Name) == -1)
+                        OverlaysAcc.ActiveOverlays.Add(overlay);
                 }
             }
         };
@@ -402,19 +402,19 @@ public partial class HudOptions : UserControl
             overlayNameLabel.BorderBrush = Brushes.OrangeRed;
             overlayNameLabel.Foreground = Brushes.White;
 
-            lock (OverlaysACC.ActiveOverlays)
+            lock (OverlaysAcc.ActiveOverlays)
             {
                 listViewItem.Background = Brushes.Transparent;
                 listViewItem.BorderBrush = new SolidColorBrush(Colors.Transparent);
-                AbstractOverlay overlay = OverlaysACC.ActiveOverlays.Find(f => f.GetType() == type);
+                AbstractOverlay overlay = OverlaysAcc.ActiveOverlays.Find(f => f.GetType() == type);
 
                 SaveOverlaySettings(overlay, false);
 
 
 
-                int index = OverlaysACC.ActiveOverlays.FindIndex(o => o.Name == overlay.Name);
+                int index = OverlaysAcc.ActiveOverlays.FindIndex(o => o.Name == overlay.Name);
                 if (index != -1)
-                    OverlaysACC.ActiveOverlays.RemoveAt(index);
+                    OverlaysAcc.ActiveOverlays.RemoveAt(index);
                 Task.Run(() =>
                 {
                     overlay?.Stop(true);
@@ -528,14 +528,14 @@ public partial class HudOptions : UserControl
                 mousePositionOverlay.Stop();
         }
 
-        lock (OverlaysACC.ActiveOverlays)
-            foreach (AbstractOverlay overlay in OverlaysACC.ActiveOverlays)
+        lock (OverlaysAcc.ActiveOverlays)
+            foreach (AbstractOverlay overlay in OverlaysAcc.ActiveOverlays)
                 overlay.EnableReposition(enabled);
     }
 
     private void BuildOverlayPanel()
     {
-        OverlaysACC.GenerateDictionary();
+        OverlaysAcc.GenerateDictionary();
 
         BuildOverlayListView(listOverlays, OverlayType.Drive, (OverlayCategory)((ComboBoxItem)comboOverlays.SelectedItem).DataContext);
         BuildOverlayListView(listDebugOverlays, OverlayType.Pitwall, (OverlayCategory)((ComboBoxItem)comboOverlays.SelectedItem).DataContext);
@@ -568,7 +568,7 @@ public partial class HudOptions : UserControl
     {
         listView.Items.Clear();
 
-        foreach (KeyValuePair<string, Type> x in OverlaysACC.AbstractOverlays)
+        foreach (KeyValuePair<string, Type> x in OverlaysAcc.AbstractOverlays)
         {
             AbstractOverlay tempAbstractOverlay = (AbstractOverlay)Activator.CreateInstance(x.Value, DefaultOverlayArgs);
             var overlayAttribute = GetOverlayAttribute(x.Value);
@@ -624,13 +624,13 @@ public partial class HudOptions : UserControl
                     listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
                     listViewItem.BorderBrush = new SolidColorBrush(Colors.LimeGreen);
 
-                    lock (OverlaysACC.ActiveOverlays)
+                    lock (OverlaysAcc.ActiveOverlays)
                     {
                         AbstractOverlay overlay = (AbstractOverlay)Activator.CreateInstance(x.Value, DefaultOverlayArgs);
-                        if (OverlaysACC.ActiveOverlays.FindIndex(o => o.Name == overlay.Name) == -1)
+                        if (OverlaysAcc.ActiveOverlays.FindIndex(o => o.Name == overlay.Name) == -1)
                         {
                             SaveOverlaySettings(overlay, true);
-                            OverlaysACC.ActiveOverlays.Add(overlay);
+                            OverlaysAcc.ActiveOverlays.Add(overlay);
                             overlay.Start();
                         }
                         else

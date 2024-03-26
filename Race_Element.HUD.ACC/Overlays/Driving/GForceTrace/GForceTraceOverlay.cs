@@ -1,4 +1,5 @@
 ﻿using RaceElement.HUD.Overlay.Internal;
+using RaceElement.Util.SystemExtensions;
 using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.GForceTrace;
@@ -17,14 +18,15 @@ internal sealed class GForceTraceOverlay : AbstractOverlay
 
     public GForceTraceOverlay(Rectangle rectangle) : base(rectangle, "G-Force Trace")
     {
-        RefreshRateHz = 30;
+        this.RefreshRateHz = _config.Chart.HudRefreshRate;
+        this.RefreshRateHz.ClipMax(_config.Data.Herz);
         this.Width = _config.Chart.Width;
         this.Height = _config.Chart.Height;
     }
 
     public sealed override void BeforeStart()
     {
-        _dataJob = new GForceDataJob(this, _config.Chart.Width - 1) { IntervalMillis = 1000 / _config.Chart.Herz };
+        _dataJob = new GForceDataJob(this, _config.Chart.Width - 1) { IntervalMillis = 1000 / _config.Data.Herz };
         _graph = new GForceGraph(0, 0, _config.Chart.Width - 1, _config.Chart.Height - 1, _dataJob, _config);
 
         if (!IsPreviewing)
@@ -33,8 +35,9 @@ internal sealed class GForceTraceOverlay : AbstractOverlay
     public sealed override void BeforeStop()
     {
         _graph?.Dispose();
-        if (!IsPreviewing && _dataJob.IsRunning)
-            _dataJob.CancelJoin();
+
+        if (!IsPreviewing)
+            _dataJob?.CancelJoin();
     }
 
     public sealed override void Render(Graphics g) => _graph?.Draw(g);

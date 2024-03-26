@@ -6,6 +6,16 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.5.0", "- Rework of several Live Trace HUDs:"+
+                    "\n  - G-Force Trace HUD:"+
+                    "\n    - Added option to set hud refresh rate and faster data collection."+
+                    "\n  - Oversteer Trace HUD:"+
+                    "\n    - Added option to set hud refresh rate and faster data collection."+
+                    "\n    - Added option to set enable horizontal grid lines."+
+                    "\n    - Decrease cpu usage."+
+                    "\n  - Input Trace HUD:"+
+                    "\n    - Added option to set hud refresh rate and faster data collection."+
+                    "\n    - Decrease cpu usage."},
         {"1.0.4.4", "- Lap Info HUD: Predicted laptime now shows as Estimated time(Est)."+
                     "\n- Added G-Force Trace HUD: a live graph of lateral and longitudinal G-forces."+
                     "\n- Updated tooltip for movement button in HUD tab, will now show mouse and keyboard shortcut."},

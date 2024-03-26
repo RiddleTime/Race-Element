@@ -11,19 +11,19 @@ internal class GForceGraph : IDisposable
 {
     private readonly int _x, _y;
     private readonly int _width, _height;
-    private readonly GForceDataJob _collector;
+    private readonly GForceDataJob _dataJob;
 
     private readonly CachedBitmap _cachedBackground;
     private readonly Pen _longPen;
     private readonly Pen _latPen;
 
-    public GForceGraph(int x, int y, int width, int height, GForceDataJob collector, GForceTraceConfiguration config)
+    public GForceGraph(int x, int y, int width, int height, GForceDataJob dataJob, GForceTraceConfiguration config)
     {
         _x = x;
         _y = y;
         _width = width;
         _height = height;
-        _collector = collector;
+        _dataJob = dataJob;
 
         _longPen = new Pen(Color.LightGray, config.Chart.LineThickness);
         _latPen = new Pen(Color.Yellow, config.Chart.LineThickness);
@@ -32,15 +32,17 @@ internal class GForceGraph : IDisposable
         {
             if (config.Chart.GridLines)
             {
-                using Pen linePen = new(new SolidBrush(Color.FromArgb(90, Color.White)), 1);
+                using SolidBrush lineBrush = new(Color.FromArgb(90, Color.White));
+                using Pen linePen = new(lineBrush, 1);
                 for (int i = 1; i <= 9; i++)
                     g.DrawLine(linePen, new Point(0, i * _height / 10), new Point(_width, i * _height / 10));
             }
 
             Rectangle graphRect = new(_x, _y, _width, _height);
-            LinearGradientBrush gradientBrush = new(graphRect, Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical);
+            using LinearGradientBrush gradientBrush = new(graphRect, Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical);
             g.FillRoundedRectangle(gradientBrush, graphRect, 3);
-            g.DrawRoundedRectangle(new Pen(Color.FromArgb(196, Color.Black)), graphRect, 3);
+            using Pen outlinePen = new(Color.FromArgb(196, Color.Black));
+            g.DrawRoundedRectangle(outlinePen, graphRect, 3);
         });
     }
 
@@ -58,10 +60,15 @@ internal class GForceGraph : IDisposable
 
         g.SmoothingMode = SmoothingMode.HighQuality;
 
-        if (_collector != null)
+        if (_dataJob != null)
         {
-            DrawData(g, _collector.Longitudinal, _longPen);
-            DrawData(g, _collector.Lateral, _latPen);
+            LinkedList<int> data;
+
+            lock (_dataJob.Longitudinal) data = new(_dataJob.Longitudinal);
+            DrawData(g, data, _longPen);
+
+            lock (_dataJob.Lateral) data = new(_dataJob.Lateral);
+            DrawData(g, data, _latPen);
         }
     }
 
@@ -70,27 +77,22 @@ internal class GForceGraph : IDisposable
         if (Data.Count > 0)
         {
             List<Point> points = [];
-            lock (Data)
-                for (int i = 0; i < Data.Count - 1; i++)
-                {
-                    int x = _x + _width - i * (_width / Data.Count);
-                    lock (Data)
-                    {
-                        int y = _y + GetRelativeNodeY(Data.ElementAt(i));
+            for (int i = 0; i < Data.Count - 1; i++)
+            {
+                int x = _x + _width - i * (_width / Data.Count);
+                int y = _y + GetRelativeNodeY(Data.ElementAt(i));
 
-                        if (x < _x)
-                            break;
+                if (x < _x)
+                    break;
 
-                        points.Add(new Point(x, y));
-                    }
-                }
+                points.Add(new Point(x, y));
+            }
 
             if (points.Count > 0)
             {
-                GraphicsPath path = new();
+                using GraphicsPath path = new();
                 path.AddLines(points.ToArray());
                 g.DrawPath(pen, path);
-                path?.Dispose();
             }
         }
     }

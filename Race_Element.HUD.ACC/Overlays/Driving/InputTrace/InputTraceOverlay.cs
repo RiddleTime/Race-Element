@@ -1,72 +1,46 @@
-﻿using RaceElement.HUD.Overlay.Configuration;
-using RaceElement.HUD.Overlay.Internal;
+﻿using RaceElement.HUD.Overlay.Internal;
+using RaceElement.Util.SystemExtensions;
 using System.Drawing;
 
-namespace RaceElement.HUD.ACC.Overlays.OverlayInputTrace;
+namespace RaceElement.HUD.ACC.Overlays.Driving.InputTrace;
 
-[Overlay(Name = "Input Trace", Version = 1.00, OverlayType = OverlayType.Drive,
-    Description = "Live graph of steering, throttle and brake inputs.",
-    OverlayCategory = OverlayCategory.Inputs,
-Authors = ["Reinier Klarenberg"])]
+[Overlay(Name = "Input Trace",
+Description = "Live graph of steering, throttle and brake inputs.",
+Version = 1.00,
+Authors = ["Reinier Klarenberg"],
+OverlayType = OverlayType.Drive,
+OverlayCategory = OverlayCategory.Inputs)]
 internal sealed class InputTraceOverlay : AbstractOverlay
 {
-    private readonly InputTraceConfig _config = new();
-    internal class InputTraceConfig : OverlayConfiguration
-    {
-        [ConfigGrouping("Chart", "Customize the charts refresh rate, data points or hide the steering input.")]
-        public ChartGrouping InfoPanel { get; init; } = new ChartGrouping();
-        public class ChartGrouping
-        {
-            [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
-            [IntRange(10, 800, 10)]
-            public int Width { get; init; } = 300;
-
-            [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
-            [IntRange(80, 250, 10)]
-            public int Height { get; init; } = 120;
-
-            [ToolTip("Set the thickness of the lines in the chart.")]
-            [IntRange(1, 4, 1)]
-            public int LineThickness { get; init; } = 2;
-
-            [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
-            [IntRange(10, 70, 5)]
-            public int Herz { get; init; } = 30;
-
-            [ToolTip("Displays the steering input as a white line in the trace.")]
-            public bool SteeringInput { get; init; } = true;
-
-            [ToolTip("Show horizontal grid lines.")]
-            public bool GridLines { get; init; } = true;
-        }
-
-        public InputTraceConfig()
-        {
-            this.GenericConfiguration.AllowRescale = true;
-        }
-    }
+    private readonly InputTraceConfiguration _config = new();
 
     private InputGraph _graph;
-    private InputDataCollector _inputDataCollector;
+    private InputDataJob _dataJob;
 
     public InputTraceOverlay(Rectangle rectangle) : base(rectangle, "Input Trace")
     {
-        this.Width = _config.InfoPanel.Width;
-        this.Height = _config.InfoPanel.Height;
-        this.RefreshRateHz = _config.InfoPanel.Herz;
+        this.Width = _config.Chart.Width;
+        this.Height = _config.Chart.Height;
+        this.RefreshRateHz = _config.Chart.HudRefreshRate;
+        this.RefreshRateHz.ClipMax(_config.Data.Herz);
     }
 
     public sealed override void BeforeStart()
     {
-        _inputDataCollector = new InputDataCollector(_config.InfoPanel.Width - 1);
-        _graph = new InputGraph(0, 0, _config.InfoPanel.Width - 1, _config.InfoPanel.Height - 1, _inputDataCollector, this._config);
+        _dataJob = new(this, _config.Chart.Width - 1) { IntervalMillis = 1000 / _config.Data.Herz };
+        _graph = new InputGraph(0, 0, _config.Chart.Width - 1, _config.Chart.Height - 1, _dataJob, this._config);
+
+        if (!IsPreviewing)
+            _dataJob.Run();
     }
 
-    public sealed override void BeforeStop() => _graph?.Dispose();
-
-    public sealed override void Render(Graphics g)
+    public sealed override void BeforeStop()
     {
-        _inputDataCollector.Collect(pagePhysics);
-        _graph.Draw(g);
+        _graph?.Dispose();
+
+        if (!IsPreviewing)
+            _dataJob?.CancelJoin();
     }
+
+    public sealed override void Render(Graphics g) => _graph?.Draw(g);
 }

@@ -7,37 +7,31 @@ namespace RaceElement.Core.Jobs.LoopJob;
 public abstract class AbstractLoopJob : IJob
 {
     /// <summary>Used by the cancel method to wait until job finish.</summary>
-    private ManualResetEvent _workerExitEvent = new(false);
+    private readonly ManualResetEvent _workerExitEvent = new(false);
 
     /// <summary>Used by worker thread to sleep until next tick or wake up on cancel.</summary>
-    private ManualResetEvent _jobSleepEvent = new(false);
+    private readonly ManualResetEvent _jobSleepEvent = new(false);
 
     /// <summary>Tick interval. At what pace "RunAction" is executed.</summary>
     private int _intervalMillis = 1;
 
-    /// <summary>Used to keep worker thread running.</summary>
-    private bool _isRunning = false;
+    /// <summary>Test if the job is running. A job is running when it has been started and has not been canceled yet.</summary>
+    /// <returns>true if the job is active, false otherwise</returns>
+    public bool IsRunning { get; private set; } = false;
 
-    /// <summary>Set at what interval "RunAction()" is executed. If the execution
+    /// <summary>Set at what interval <see cref="RunAction"/> is executed. If the execution
     /// time is less than the interval it will wait until the next interval,
     /// otherwise it will be executed immediately.
     /// </summary>
     public int IntervalMillis
     {
-        get
-        {
-            return _intervalMillis;
-        }
+        get { return _intervalMillis; }
         set
         {
             ArgumentOutOfRangeException.ThrowIfLessThan(value, 1);
             _intervalMillis = value;
         }
     }
-
-    /// <summary>Test if the job is running. A job is running when it has been started and has not been canceled yet.</summary>
-    /// <returns>true if the job is active, false otherwise</returns>
-    public bool IsRunning => _isRunning;
 
     /// <summary>
     /// Callback method executed by the job at the certain time in future. This method is executed from another thread, you may require synchronization mechanism.
@@ -49,24 +43,24 @@ public abstract class AbstractLoopJob : IJob
     /// </summary>
     public virtual void AfterCancel() { }
 
-    /// <summary>Callback used to notify the client that "RunAction()" takes longer time than expected.</summary>
-    /// <param name="millis">Number of milliseconds exceeded from IntervalMillis.</param>
+    /// <summary>Callback used to notify the client that <see cref="RunAction"/> takes longer time than expected.</summary>
+    /// <param name="millis">Number of milliseconds exceeded from <see cref="IntervalMillis"/>.</param>
     protected virtual void ExecutionIntervalOverflow(int millis) { }
 
-    /// <summary>Cancel the execution of the job without waiting for finish confirmation(no synchronization).</summary>
+    /// <summary>Cancel @ execution of the job if <see cref="IsRunning"/> without waiting for finish confirmation(no synchronization).</summary>
     public void Cancel()
     {
-        if (_isRunning)
+        if (IsRunning)
         {
-            _isRunning = false;
+            IsRunning = false;
             _jobSleepEvent.Set();
         }
     }
 
-    /// <summary>Cancel the execution of the job and wait for the finish confirmation(synchronization method).</summary>
+    /// <summary>Cancel execution of the job if <see cref="IsRunning"/> and wait for the finish confirmation(synchronization method).</summary>
     public void CancelJoin()
     {
-        if (!_isRunning)
+        if (!IsRunning)
             return;
 
         Cancel();
@@ -79,15 +73,13 @@ public abstract class AbstractLoopJob : IJob
     /// </summary>
     public void Run()
     {
-        if (_isRunning)
-        {
+        if (IsRunning)
             return;
-        }
 
         _jobSleepEvent.Reset();
         _workerExitEvent.Reset();
 
-        _isRunning = true;
+        IsRunning = true;
         new Thread(WorkerThread) { IsBackground = true }.Start();
     }
 
@@ -95,7 +87,7 @@ public abstract class AbstractLoopJob : IJob
     private void WorkerThread()
     {
         Stopwatch sw = Stopwatch.StartNew();
-        while (_isRunning)
+        while (IsRunning)
         {
             RunAction();
             int waitTime = (int)(IntervalMillis - sw.ElapsedMilliseconds);
