@@ -34,7 +34,7 @@ internal sealed class GForceTraceConfiguration : OverlayConfiguration
         public int LineThickness { get; init; } = 2;
 
         [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
-        [IntRange(10, 70, 5)]
+        [IntRange(10, 100, 5)]
         public int Herz { get; init; } = 30;
 
 
