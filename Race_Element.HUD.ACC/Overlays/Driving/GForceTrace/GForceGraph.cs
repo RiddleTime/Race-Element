@@ -41,7 +41,8 @@ internal class GForceGraph : IDisposable
             Rectangle graphRect = new(_x, _y, _width, _height);
             using LinearGradientBrush gradientBrush = new(graphRect, Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical);
             g.FillRoundedRectangle(gradientBrush, graphRect, 3);
-            g.DrawRoundedRectangle(new Pen(Color.FromArgb(196, Color.Black)), graphRect, 3);
+            using Pen outlinePen = new(Color.FromArgb(196, Color.Black));
+            g.DrawRoundedRectangle(outlinePen, graphRect, 3);
         });
     }
 
