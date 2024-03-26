@@ -8,8 +8,8 @@ namespace RaceElement.HUD.ACC;
 
 public class OverlaysAcc
 {
-    protected static readonly SortedDictionary<string, Type> AbstractOverlays = [];
-    protected static readonly List<AbstractOverlay> ActiveOverlays = [];
+    public static readonly SortedDictionary<string, Type> AbstractOverlays = [];
+    public static readonly List<AbstractOverlay> ActiveOverlays = [];
 
     protected OverlaysAcc() { }
 
