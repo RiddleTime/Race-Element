@@ -60,8 +60,15 @@ internal class GForceGraph : IDisposable
 
         if (_collector != null)
         {
-            DrawData(g, _collector.Longitudinal, _longPen);
-            DrawData(g, _collector.Lateral, _latPen);
+            LinkedList<int> data;
+
+            lock (_collector.Longitudinal)
+                data = new(_collector.Longitudinal);
+            DrawData(g, data, _longPen);
+
+            lock (_collector.Lateral)
+                data = new(_collector.Lateral);
+            DrawData(g, data, _latPen);
         }
     }
 
@@ -70,20 +77,19 @@ internal class GForceGraph : IDisposable
         if (Data.Count > 0)
         {
             List<Point> points = [];
-            lock (Data)
-                for (int i = 0; i < Data.Count - 1; i++)
+            for (int i = 0; i < Data.Count - 1; i++)
+            {
+                int x = _x + _width - i * (_width / Data.Count);
+                lock (Data)
                 {
-                    int x = _x + _width - i * (_width / Data.Count);
-                    lock (Data)
-                    {
-                        int y = _y + GetRelativeNodeY(Data.ElementAt(i));
+                    int y = _y + GetRelativeNodeY(Data.ElementAt(i));
 
-                        if (x < _x)
-                            break;
+                    if (x < _x)
+                        break;
 
-                        points.Add(new Point(x, y));
-                    }
+                    points.Add(new Point(x, y));
                 }
+            }
 
             if (points.Count > 0)
             {
