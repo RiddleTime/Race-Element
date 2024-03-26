@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Windows.Threading;
 
 namespace RaceElement.HUD.ACC;
 
@@ -11,6 +10,8 @@ public class OverlaysACC
 {
     public static SortedDictionary<string, Type> AbstractOverlays = [];
     public static List<AbstractOverlay> ActiveOverlays = [];
+
+    protected OverlaysACC() { }
 
     public static void GenerateDictionary()
     {
@@ -26,12 +27,12 @@ public class OverlaysACC
 
     public static void CloseAll()
     {
-        lock (ActiveOverlays)
+        lock (ActiveOverlays) // yep someone fix? pls? xD
         {
             while (ActiveOverlays.Count > 0)
             {
-                ActiveOverlays.ElementAt(0).EnableReposition(false);
-                ActiveOverlays.ElementAt(0).Stop();
+                ActiveOverlays[0].EnableReposition(false);
+                ActiveOverlays[0].Stop();
                 ActiveOverlays.Remove(ActiveOverlays.ElementAt(0));
             }
         }
