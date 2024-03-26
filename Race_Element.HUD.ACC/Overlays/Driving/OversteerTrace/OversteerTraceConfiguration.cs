@@ -32,7 +32,7 @@ internal sealed class OversteerTraceConfiguration : OverlayConfiguration
 
         [ToolTip("Set the thickness of the lines in the chart.")]
         [IntRange(1, 4, 1)]
-        public int LineThickness { get; init; } = 1;
+        public int LineThickness { get; init; } = 2;
 
         [ToolTip("Show horizontal grid lines.")]
         public bool GridLines { get; init; } = true;

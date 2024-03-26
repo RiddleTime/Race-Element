@@ -29,7 +29,7 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
 
         [ToolTip("Set the thickness of the lines in the chart.")]
         [IntRange(1, 4, 1)]
-        public int LineThickness { get; init; } = 1;
+        public int LineThickness { get; init; } = 2;
 
         [ToolTip("Displays the steering input as a white line in the trace.")]
         public bool SteeringInput { get; init; } = true;
