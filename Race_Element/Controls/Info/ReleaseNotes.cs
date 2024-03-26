@@ -6,7 +6,7 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
-        {"1.0.4.6", "- Rework of several Live Trace HUDs:"+
+        {"1.0.5.0", "- Rework of several Live Trace HUDs:"+
                     "\n  - G-Force Trace HUD:"+
                     "\n    - Added option to set hud refresh rate and faster data collection."+
                     "\n  - Oversteer Trace HUD:"+
