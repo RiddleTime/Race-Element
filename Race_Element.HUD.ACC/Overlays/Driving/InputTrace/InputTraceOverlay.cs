@@ -15,7 +15,7 @@ internal sealed class InputTraceOverlay : AbstractOverlay
     {
         [ConfigGrouping("Chart", "Customize the charts refresh rate, data points or hide the steering input.")]
         public ChartGrouping InfoPanel { get; init; } = new ChartGrouping();
-        public class ChartGrouping
+        public sealed class ChartGrouping
         {
             [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
             [IntRange(10, 800, 10)]
