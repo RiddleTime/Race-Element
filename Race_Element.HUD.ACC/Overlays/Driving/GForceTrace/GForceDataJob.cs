@@ -7,8 +7,9 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.GForceTrace;
 
 internal sealed class GForceDataJob : AbstractLoopJob
 {
-    public GForceTraceOverlay Overlay { get; init; }
-    public int DataCount { get; init; }
+    public int DataCount { get; private init; }
+    public GForceTraceOverlay Overlay { get; private init; }
+
     public readonly LinkedList<int> Lateral = [];
     public readonly LinkedList<int> Longitudinal = [];
 
@@ -18,7 +19,7 @@ internal sealed class GForceDataJob : AbstractLoopJob
         DataCount = dataCount;
 
         int presetLat = 50, presetLong = 50;
-        if (overlay.IsPreviewing)
+        if (Overlay.IsPreviewing)
         {
             presetLat = 45;
             presetLong = 55;
@@ -45,6 +46,7 @@ internal sealed class GForceDataJob : AbstractLoopJob
 
             int data = (int)(latG * 100 / (maxLatG * 2));
             Lateral.AddFirst(data);
+
             if (Lateral.Count > DataCount)
                 Lateral.RemoveLast();
         }
@@ -58,6 +60,7 @@ internal sealed class GForceDataJob : AbstractLoopJob
 
             int data = (int)(longG * 100 / (maxLongG * 2));
             Longitudinal.AddFirst(data);
+
             if (Longitudinal.Count > DataCount)
                 Longitudinal.RemoveLast();
         }

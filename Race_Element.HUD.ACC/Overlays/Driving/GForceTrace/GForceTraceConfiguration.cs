@@ -15,6 +15,10 @@ internal sealed class GForceTraceConfiguration : OverlayConfiguration
 
         [FloatRange(1, 3, 0.1f, 1)]
         public float MaxLongG { get; init; } = 2.5f;
+
+        [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
+        [IntRange(10, 100, 2)]
+        public int Herz { get; init; } = 70;
     }
 
     [ConfigGrouping("Chart", "Customize the charts refresh rate or amount of data points.")]
@@ -33,9 +37,7 @@ internal sealed class GForceTraceConfiguration : OverlayConfiguration
         [IntRange(1, 4, 1)]
         public int LineThickness { get; init; } = 2;
 
-        [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
-        [IntRange(10, 100, 5)]
-        public int Herz { get; init; } = 30;
+     
 
 
         [ToolTip("Show horizontal grid lines.")]
