@@ -66,6 +66,13 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OversteerTrace
             }
         }
 
+        /// <summary>
+        /// Adds new under and oversteer data to <see cref="Understeer"/> and <see cref="Oversteer"/>.
+        /// Also limits the size of both linked lists determined by <see cref="DataCount"/>.
+        /// The method locks both of the linked lists.
+        /// </summary>
+        /// <param name="understeerData"></param>
+        /// <param name="oversteerData"></param>
         private void AddDataAndLimitSize(float understeerData, float oversteerData)
         {
             lock (Understeer)
