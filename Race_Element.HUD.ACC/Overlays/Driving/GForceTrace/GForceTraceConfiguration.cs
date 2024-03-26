@@ -19,7 +19,7 @@ internal sealed class GForceTraceConfiguration : OverlayConfiguration
 
     [ConfigGrouping("Chart", "Customize the charts refresh rate or amount of data points.")]
     public ChartGrouping Chart { get; init; } = new ChartGrouping();
-    public class ChartGrouping
+    public sealed class ChartGrouping
     {
         [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
         [IntRange(10, 800, 10)]
