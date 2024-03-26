@@ -80,23 +80,19 @@ internal class GForceGraph : IDisposable
             for (int i = 0; i < Data.Count - 1; i++)
             {
                 int x = _x + _width - i * (_width / Data.Count);
-                lock (Data)
-                {
-                    int y = _y + GetRelativeNodeY(Data.ElementAt(i));
+                int y = _y + GetRelativeNodeY(Data.ElementAt(i));
 
-                    if (x < _x)
-                        break;
+                if (x < _x)
+                    break;
 
-                    points.Add(new Point(x, y));
-                }
+                points.Add(new Point(x, y));
             }
 
             if (points.Count > 0)
             {
-                GraphicsPath path = new();
+                using GraphicsPath path = new();
                 path.AddLines(points.ToArray());
                 g.DrawPath(pen, path);
-                path?.Dispose();
             }
         }
     }
