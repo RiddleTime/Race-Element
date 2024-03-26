@@ -17,7 +17,7 @@ internal sealed class GForceTraceOverlay : AbstractOverlay
 
     public GForceTraceOverlay(Rectangle rectangle) : base(rectangle, "G-Force Trace")
     {
-        RefreshRateHz = 30;
+        this.RefreshRateHz = _config.Chart.HudRefreshRate;
         this.Width = _config.Chart.Width;
         this.Height = _config.Chart.Height;
     }
