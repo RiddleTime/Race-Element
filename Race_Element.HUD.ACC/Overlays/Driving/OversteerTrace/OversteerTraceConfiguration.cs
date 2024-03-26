@@ -13,7 +13,7 @@ internal sealed class OversteerTraceConfiguration : OverlayConfiguration
         [FloatRange(0.1f, 10f, 0.1f, 1)]
         public float MaxSlipAngle { get; init; } = 1.5f;
 
-        [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
+        [ToolTip("Sets the data collection rate.")]
         [IntRange(10, 100, 2)]
         public int Herz { get; init; } = 70;
     }
@@ -33,5 +33,12 @@ internal sealed class OversteerTraceConfiguration : OverlayConfiguration
         [ToolTip("Set the thickness of the lines in the chart.")]
         [IntRange(1, 4, 1)]
         public int LineThickness { get; init; } = 1;
+
+        [ToolTip("Show horizontal grid lines.")]
+        public bool GridLines { get; init; } = true;
+
+        [ToolTip("Sets the drawing refresh rate.")]
+        [IntRange(24, 30, 6)]
+        public int HudRefreshRate { get; init; } = 30;
     }
 }

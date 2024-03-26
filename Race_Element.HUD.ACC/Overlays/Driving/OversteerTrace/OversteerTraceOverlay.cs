@@ -20,7 +20,7 @@ internal sealed class OversteerTraceOverlay : AbstractOverlay
     {
         this.Width = _config.Chart.Width;
         this.Height = _config.Chart.Height;
-        this.RefreshRateHz = 30;
+        this.RefreshRateHz = _config.Chart.HudRefreshRate;
     }
 
     public sealed override void BeforeStart()

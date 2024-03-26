@@ -30,6 +30,14 @@ internal class OversteerGraph : IDisposable
 
         _cachedBackground = new CachedBitmap(_width + 1, _height + 1, g =>
         {
+            if (config.Chart.GridLines)
+            {
+                using SolidBrush lineBrush = new(Color.FromArgb(90, Color.White));
+                using Pen linePen = new(lineBrush, 1);
+                for (int i = 1; i <= 9; i++)
+                    g.DrawLine(linePen, new Point(0, i * _height / 10), new Point(_width, i * _height / 10));
+            }
+
             Rectangle graphRect = new(0, 0, _width, _height);
             using LinearGradientBrush gradientBrush = new(graphRect, Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical);
             g.FillRoundedRectangle(gradientBrush, graphRect, 3);
