@@ -7,8 +7,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.GForceTrace;
 
 internal sealed class GForceDataJob : AbstractLoopJob
 {
-    public int DataCount { get; private init; }
     public GForceTraceOverlay Overlay { get; private init; }
+    public int DataCount { get; private init; }
 
     public readonly LinkedList<int> Lateral = [];
     public readonly LinkedList<int> Longitudinal = [];
