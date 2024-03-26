@@ -12,7 +12,7 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
     {
         [ToolTip("Sets the data collection rate.")]
         [IntRange(10, 150, 2)]
-        public int Herz { get; init; } = 50;
+        public int Herz { get; init; } = 70;
     }
 
     [ConfigGrouping("Chart", "Customize the charts refresh rate, data points or hide the steering input.")]
