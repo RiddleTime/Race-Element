@@ -10,9 +10,11 @@ internal sealed class GForceTraceConfiguration : OverlayConfiguration
     public DataGrouping Data { get; init; } = new();
     public sealed class DataGrouping
     {
+        [ToolTip("Sets the maximum lateral g-force displayed.")]
         [FloatRange(1, 3, 0.1f, 1)]
         public float MaxLatG { get; init; } = 3f;
 
+        [ToolTip("Sets the maximum longitudinal g-force displayed.")]
         [FloatRange(1, 3, 0.1f, 1)]
         public float MaxLongG { get; init; } = 2.5f;
 
@@ -41,8 +43,8 @@ internal sealed class GForceTraceConfiguration : OverlayConfiguration
         public bool GridLines { get; init; } = true;
 
         [ToolTip("Sets the drawing refresh rate.")]
-        [IntRange(24, 30, 6)]
-        public int HudRefreshRate { get; init; } = 30;
+        [IntRange(12, 30, 6)]
+        public int HudRefreshRate { get; init; } = 24;
     }
 }
 
