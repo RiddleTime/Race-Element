@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using static RaceElement.ACCSharedMemory;
 using static RaceElement.Data.SetupConverter;
 
-namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle;
+namespace RaceElement.HUD.ACC.Overlays.Driving.OversteerTrace;
 
 internal class OversteerDataCollector
 {

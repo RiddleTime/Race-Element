@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using static RaceElement.HUD.ACC.Overlays.OverlaySlipAngle.OversteerTraceOverlay;
 
-namespace RaceElement.HUD.ACC.Overlays.OverlaySlipAngle;
+namespace RaceElement.HUD.ACC.Overlays.Driving.OversteerTrace;
 
 internal class OversteerGraph : IDisposable
 {
