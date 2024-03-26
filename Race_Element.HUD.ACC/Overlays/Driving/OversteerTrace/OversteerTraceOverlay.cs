@@ -1,4 +1,5 @@
 ﻿using RaceElement.HUD.Overlay.Internal;
+using RaceElement.Util.SystemExtensions;
 using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OversteerTrace;
@@ -21,6 +22,7 @@ internal sealed class OversteerTraceOverlay : AbstractOverlay
         this.Width = _config.Chart.Width;
         this.Height = _config.Chart.Height;
         this.RefreshRateHz = _config.Chart.HudRefreshRate;
+        this.RefreshRateHz.ClipMax(_config.Data.Herz);
     }
 
     public sealed override void BeforeStart()

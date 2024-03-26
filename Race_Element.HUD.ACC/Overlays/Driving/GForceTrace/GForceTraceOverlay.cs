@@ -1,4 +1,5 @@
 ﻿using RaceElement.HUD.Overlay.Internal;
+using RaceElement.Util.SystemExtensions;
 using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.GForceTrace;
@@ -18,6 +19,7 @@ internal sealed class GForceTraceOverlay : AbstractOverlay
     public GForceTraceOverlay(Rectangle rectangle) : base(rectangle, "G-Force Trace")
     {
         this.RefreshRateHz = _config.Chart.HudRefreshRate;
+        this.RefreshRateHz.ClipMax(_config.Data.Herz);
         this.Width = _config.Chart.Width;
         this.Height = _config.Chart.Height;
     }
