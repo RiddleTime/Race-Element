@@ -19,8 +19,8 @@ internal sealed class GForceTraceConfiguration : OverlayConfiguration
         public float MaxLongG { get; init; } = 2.5f;
 
         [ToolTip("Sets the data collection rate.")]
-        [IntRange(10, 100, 2)]
-        public int Herz { get; init; } = 70;
+        [IntRange(10, 150, 2)]
+        public int Herz { get; init; } = 50;
     }
 
     [ConfigGrouping("Chart", "Customize the appearance of the live trace.")]

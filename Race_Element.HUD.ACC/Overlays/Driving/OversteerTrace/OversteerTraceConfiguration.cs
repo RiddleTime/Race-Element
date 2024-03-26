@@ -14,8 +14,8 @@ internal sealed class OversteerTraceConfiguration : OverlayConfiguration
         public float MaxSlipAngle { get; init; } = 1.5f;
 
         [ToolTip("Sets the data collection rate.")]
-        [IntRange(10, 100, 2)]
-        public int Herz { get; init; } = 70;
+        [IntRange(10, 150, 2)]
+        public int Herz { get; init; } = 50;
     }
 
     [ConfigGrouping("Chart", "Customize the appearance of the live trace.")]
