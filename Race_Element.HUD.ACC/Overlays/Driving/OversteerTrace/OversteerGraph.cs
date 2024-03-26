@@ -11,19 +11,19 @@ internal class OversteerGraph : IDisposable
 {
     private readonly int _x, _y;
     private readonly int _width, _height;
-    private readonly OversteerDataCollector _collector;
+    private readonly OversteerDataJob _dataJob;
 
     private readonly CachedBitmap _cachedBackground;
     private readonly Pen _penOversteer;
     private readonly Pen _penUndersteer;
 
-    public OversteerGraph(int x, int y, int width, int height, OversteerDataCollector collector, OversteerTraceConfiguration config)
+    public OversteerGraph(int x, int y, int width, int height, OversteerDataJob dataJob, OversteerTraceConfiguration config)
     {
         _x = x;
         _y = y;
         _width = width;
         _height = height;
-        _collector = collector;
+        _dataJob = dataJob;
 
         _penOversteer = new Pen(Color.OrangeRed, config.Chart.LineThickness);
         _penUndersteer = new Pen(Color.DeepSkyBlue, config.Chart.LineThickness);
@@ -31,15 +31,16 @@ internal class OversteerGraph : IDisposable
         _cachedBackground = new CachedBitmap(_width + 1, _height + 1, g =>
         {
             Rectangle graphRect = new(0, 0, _width, _height);
-            LinearGradientBrush gradientBrush = new(graphRect, Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical);
+            using LinearGradientBrush gradientBrush = new(graphRect, Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical);
             g.FillRoundedRectangle(gradientBrush, graphRect, 3);
-            g.DrawRoundedRectangle(new Pen(Color.FromArgb(196, Color.Black)), graphRect, 3);
+            using Pen outlinePen = new(Color.FromArgb(196, Color.Black));
+            g.DrawRoundedRectangle(outlinePen, graphRect, 3);
         });
     }
 
     private int GetRelativeNodeY(float value)
     {
-        double range = _collector.MaxSlipAngle - 0;
+        double range = _dataJob.MaxSlipAngle - 0;
         double percentage = 1d - (value - 0) / range;
         return (int)(percentage * (_height - _height / 5))
                 + _height / 10;
@@ -47,12 +48,17 @@ internal class OversteerGraph : IDisposable
 
     public void Draw(Graphics g)
     {
-        g.SmoothingMode = SmoothingMode.HighQuality;
-
         _cachedBackground?.Draw(g, _x, _y, _width, _height);
 
-        DrawData(g, _collector.OversteerData, _penOversteer);
-        DrawData(g, _collector.UndersteerData, _penUndersteer);
+        g.SmoothingMode = SmoothingMode.HighQuality;
+
+        LinkedList<float> data;
+
+        lock (_dataJob.Oversteer) data = new(_dataJob.Oversteer);
+        DrawData(g, data, _penOversteer);
+
+        lock (_dataJob.Understeer) data = new(_dataJob.Understeer);
+        DrawData(g, data, _penUndersteer);
     }
 
     private void DrawData(Graphics g, LinkedList<float> Data, Pen pen)
@@ -75,10 +81,9 @@ internal class OversteerGraph : IDisposable
 
             if (points.Count > 0)
             {
-                GraphicsPath path = new();
+                using GraphicsPath path = new();
                 path.AddLines(points.ToArray());
                 g.DrawPath(pen, path);
-                path?.Dispose();
             }
         }
     }

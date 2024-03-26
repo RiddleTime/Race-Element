@@ -37,29 +37,30 @@ internal sealed class GForceDataJob : AbstractLoopJob
             return;
 
         SPageFilePhysics filePhysics = Overlay.pagePhysics;
+
+        float latG = filePhysics.AccG[0] *= -1;
+        float maxLatG = Overlay._config.Data.MaxLatG;
+        latG.Clip(-maxLatG, maxLatG);
+        latG += maxLatG;
+
+        int latData = (int)(latG * 100 / (maxLatG * 2));
         lock (Lateral)
         {
-            float latG = filePhysics.AccG[0] *= -1;
-            float maxLatG = Overlay._config.Data.MaxLatG;
-            latG.Clip(-maxLatG, maxLatG);
-            latG += maxLatG;
-
-            int data = (int)(latG * 100 / (maxLatG * 2));
-            Lateral.AddFirst(data);
+            Lateral.AddFirst(latData);
 
             if (Lateral.Count > DataCount)
                 Lateral.RemoveLast();
         }
 
+        float longG = filePhysics.AccG[2] *= -1;
+        float maxLongG = Overlay._config.Data.MaxLongG;
+        longG.Clip(-maxLongG, maxLongG);
+        longG += maxLongG;
+
+        int longData = (int)(longG * 100 / (maxLongG * 2));
         lock (Longitudinal)
         {
-            float longG = filePhysics.AccG[2] *= -1;
-            float maxLongG = Overlay._config.Data.MaxLongG;
-            longG.Clip(-maxLongG, maxLongG);
-            longG += maxLongG;
-
-            int data = (int)(longG * 100 / (maxLongG * 2));
-            Longitudinal.AddFirst(data);
+            Longitudinal.AddFirst(longData);
 
             if (Longitudinal.Count > DataCount)
                 Longitudinal.RemoveLast();

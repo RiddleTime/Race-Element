@@ -5,6 +5,19 @@ internal sealed class OversteerTraceConfiguration : OverlayConfiguration
 {
     public OversteerTraceConfiguration() => this.GenericConfiguration.AllowRescale = true;
 
+    [ConfigGrouping("Data", "Adjust data bounds.")]
+    public DataGrouping Data { get; init; } = new();
+    public sealed class DataGrouping
+    {
+        [ToolTip("Sets the maximum amount of slip angle displayed.")]
+        [FloatRange(0.1f, 10f, 0.1f, 1)]
+        public float MaxSlipAngle { get; init; } = 1.5f;
+
+        [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
+        [IntRange(10, 100, 2)]
+        public int Herz { get; init; } = 70;
+    }
+
     [ConfigGrouping("Chart", "Customize the charts refresh rate, data points or change the max slip angle shown.")]
     public ChartGrouping Chart { get; init; } = new ChartGrouping();
     public class ChartGrouping
@@ -20,13 +33,5 @@ internal sealed class OversteerTraceConfiguration : OverlayConfiguration
         [ToolTip("Set the thickness of the lines in the chart.")]
         [IntRange(1, 4, 1)]
         public int LineThickness { get; init; } = 1;
-
-        [ToolTip("Sets the maximum amount of slip angle displayed.")]
-        [FloatRange(0.1f, 10f, 0.1f, 1)]
-        public float MaxSlipAngle { get; init; } = 1.5f;
-
-        [ToolTip("Sets the data collection rate, this does affect cpu usage at higher values.")]
-        [IntRange(10, 100, 5)]
-        public int Herz { get; init; } = 30;
     }
 }

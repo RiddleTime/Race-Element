@@ -11,19 +11,19 @@ internal class GForceGraph : IDisposable
 {
     private readonly int _x, _y;
     private readonly int _width, _height;
-    private readonly GForceDataJob _collector;
+    private readonly GForceDataJob _dataJob;
 
     private readonly CachedBitmap _cachedBackground;
     private readonly Pen _longPen;
     private readonly Pen _latPen;
 
-    public GForceGraph(int x, int y, int width, int height, GForceDataJob collector, GForceTraceConfiguration config)
+    public GForceGraph(int x, int y, int width, int height, GForceDataJob dataJob, GForceTraceConfiguration config)
     {
         _x = x;
         _y = y;
         _width = width;
         _height = height;
-        _collector = collector;
+        _dataJob = dataJob;
 
         _longPen = new Pen(Color.LightGray, config.Chart.LineThickness);
         _latPen = new Pen(Color.Yellow, config.Chart.LineThickness);
@@ -60,16 +60,14 @@ internal class GForceGraph : IDisposable
 
         g.SmoothingMode = SmoothingMode.HighQuality;
 
-        if (_collector != null)
+        if (_dataJob != null)
         {
             LinkedList<int> data;
 
-            lock (_collector.Longitudinal)
-                data = new(_collector.Longitudinal);
+            lock (_dataJob.Longitudinal) data = new(_dataJob.Longitudinal);
             DrawData(g, data, _longPen);
 
-            lock (_collector.Lateral)
-                data = new(_collector.Lateral);
+            lock (_dataJob.Lateral) data = new(_dataJob.Lateral);
             DrawData(g, data, _latPen);
         }
     }
