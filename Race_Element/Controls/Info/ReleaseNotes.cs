@@ -6,6 +6,7 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.4.6", "- Reworked Oversteer Trace HUD, decreased cpu usage and allow for 100 Herz data collection rate."},
         {"1.0.4.4", "- Lap Info HUD: Predicted laptime now shows as Estimated time(Est)."+
                     "\n- Added G-Force Trace HUD: a live graph of lateral and longitudinal G-forces."+
                     "\n- Updated tooltip for movement button in HUD tab, will now show mouse and keyboard shortcut."},
