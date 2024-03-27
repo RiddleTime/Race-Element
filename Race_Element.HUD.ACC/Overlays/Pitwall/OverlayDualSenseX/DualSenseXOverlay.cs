@@ -28,6 +28,7 @@ internal sealed class DualSenseXOverlay : AbstractOverlay
     {
         this.Width = 1; this.Height = 1;
         RefreshRateHz = 1;
+        AllowReposition = false;
     }
 
     public override void BeforeStart()
