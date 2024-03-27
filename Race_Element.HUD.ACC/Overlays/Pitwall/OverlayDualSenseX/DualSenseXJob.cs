@@ -32,5 +32,10 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
                 //HandleResponse(response);
             }
         }
+        public override void AfterCancel()
+        {
+            overlay?._client?.Close();
+            overlay?._client?.Dispose();
+        }
     }
 }

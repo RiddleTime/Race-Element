@@ -41,9 +41,9 @@ internal sealed class DualSenseXOverlay : AbstractOverlay
     {
         if (IsPreviewing) return;
 
+        _dsxJob?.CancelJoin();
         _client?.Close();
         _client?.Dispose();
-        _dsxJob?.CancelJoin();
     }
 
     public override bool ShouldRender() => DefaultShouldRender() && !IsPreviewing;
@@ -74,7 +74,7 @@ internal sealed class DualSenseXOverlay : AbstractOverlay
     internal void Send(Packet data)
     {
         var RequestData = Encoding.ASCII.GetBytes(Triggers.PacketToJson(data));
-        _client.Send(RequestData, RequestData.Length, _endPoint);
+        _client?.Send(RequestData, RequestData.Length, _endPoint);
         _timeSent = DateTime.Now;
     }
 
