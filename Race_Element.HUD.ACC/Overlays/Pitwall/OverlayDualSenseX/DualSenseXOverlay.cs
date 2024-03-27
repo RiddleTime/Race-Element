@@ -17,60 +17,40 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX;
 Authors = ["Reinier Klarenberg"])]
 internal sealed class DualSenseXOverlay : AbstractOverlay
 {
-    private readonly DualSenseXConfiguration _config = new();
+    internal readonly DualSenseXConfiguration _config = new();
+    private DualSenseXJob _dsxJob;
 
-    private UdpClient _client;
-    private IPEndPoint _endPoint;
+    internal UdpClient _client;
+    internal IPEndPoint _endPoint;
     private DateTime _timeSent;
-
-    /// <summary>
-    /// This is set to true when the preview data is set up, avoids any connection as long as the overlay is not running but just rendering a preview.
-    /// </summary>
-    private bool IsRenderingPreview = false;
 
     public DualSenseXOverlay(Rectangle rectangle) : base(rectangle, "DualSense X")
     {
         this.Width = 1; this.Height = 1;
-        RefreshRateHz = 70;
+        RefreshRateHz = 1;
     }
 
-    public override void SetupPreviewData() => IsRenderingPreview = true;
+    public override void BeforeStart()
+    {
+        if (IsPreviewing) return;
 
+        _dsxJob = new DualSenseXJob(this) { IntervalMillis = 1000 / 100 };
+        _dsxJob.Run();
+    }
     public override void BeforeStop()
     {
+        if (IsPreviewing) return;
+
         _client?.Close();
         _client?.Dispose();
+        _dsxJob?.CancelJoin();
     }
 
-    public override bool ShouldRender() => !IsRenderingPreview;
+    public override bool ShouldRender() => DefaultShouldRender() && !IsPreviewing;
 
-    public override void Render(Graphics g)
-    {
-        if (IsRenderingPreview) return;
-        if (_client == null)
-        {
-            CreateEndPoint();
-            SetLighting();
-        }
+    public override void Render(Graphics g) { }
 
-        Packet tcPacket = TriggerHaptics.HandleAcceleration(ref pagePhysics, _config.ThrottleHaptics);
-        if (tcPacket != null)
-        {
-            Send(tcPacket);
-            //ServerResponse response = Receive();
-            //HandleResponse(response);
-        }
-
-        Packet absPacket = TriggerHaptics.HandleBraking(ref pagePhysics, _config.BrakeHaptics);
-        if (absPacket != null)
-        {
-            Send(absPacket);
-            //ServerResponse response = Receive();
-            //HandleResponse(response);
-        }
-    }
-
-    private void SetLighting()
+    internal void SetLighting()
     {
         Debug.WriteLine("Changing RGB");
         Packet p = new();
@@ -85,13 +65,13 @@ internal sealed class DualSenseXOverlay : AbstractOverlay
         HandleResponse(lightingReponse);
     }
 
-    private void CreateEndPoint()
+    internal void CreateEndPoint()
     {
         _client = new UdpClient();
         _endPoint = new IPEndPoint(Triggers.localhost, _config.UDP.Port);
     }
 
-    private void Send(Packet data)
+    internal void Send(Packet data)
     {
         var RequestData = Encoding.ASCII.GetBytes(Triggers.PacketToJson(data));
         _client.Send(RequestData, RequestData.Length, _endPoint);
