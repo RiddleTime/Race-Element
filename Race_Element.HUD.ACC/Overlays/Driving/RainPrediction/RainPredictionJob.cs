@@ -24,9 +24,7 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
     {
         if (Overlay.pageGraphics.Status == AcStatus.AC_OFF)
         {
-            WeatherChanges.Clear();
-            _lastWeather = new();
-            UpcomingChanges.Clear();
+            ResetData();
             return;
         }
 
@@ -56,5 +54,14 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
             }
             _lastWeather = newScan;
         }
+    }
+
+    internal void ResetData()
+    {
+        lock (WeatherChanges)
+            WeatherChanges.Clear();
+        lock (UpcomingChanges)
+            UpcomingChanges.Clear();
+        return;
     }
 }

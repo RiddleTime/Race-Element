@@ -1,4 +1,5 @@
-﻿using RaceElement.Data.ACC.Session;
+﻿using RaceElement.Data.ACC.Database.SessionData;
+using RaceElement.Data.ACC.Session;
 using RaceElement.HUD.ACC.Overlays.Driving.Weather;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
@@ -38,35 +39,31 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
         _panel = new InfoPanel(10, panelWidth);
 
         this.Width = panelWidth + 1;
-        this.Height = _panel.FontHeight * 10;
-    }
-
-    private void Instance_OnMultiplierChanged(object sender, int e)
-    {
-        _timeMultiplier = e;
+        this.Height = _panel.FontHeight * 20;
     }
 
     public sealed override void BeforeStart()
     {
+        if (IsPreviewing) return;
 
-        if (!IsPreviewing)
-        {
-            SessionTimeTracker.Instance.OnMultiplierChanged += Instance_OnMultiplierChanged;
+        SessionTimeTracker.Instance.OnMultiplierChanged += Instance_OnMultiplierChanged;
+        RaceSessionTracker.Instance.OnNewSessionStarted += Instance_OnNewSessionStarted;
 
-            _weatherJob = new RainPredictionJob(this) { IntervalMillis = 1000 };
-            _weatherJob.Run();
-        }
+        _weatherJob = new RainPredictionJob(this) { IntervalMillis = 1000 };
+        _weatherJob.Run();
     }
+
+    private void Instance_OnNewSessionStarted(object sender, DbRaceSession e) => _weatherJob?.ResetData();
+    private void Instance_OnMultiplierChanged(object sender, int e) => _timeMultiplier = e;
 
     public sealed override void BeforeStop()
     {
+        if (IsPreviewing) return;
 
-        if (!IsPreviewing)
-        {
-            SessionTimeTracker.Instance.OnMultiplierChanged -= Instance_OnMultiplierChanged;
+        SessionTimeTracker.Instance.OnMultiplierChanged -= Instance_OnMultiplierChanged;
+        RaceSessionTracker.Instance.OnNewSessionStarted -= Instance_OnNewSessionStarted;
 
-            _weatherJob.CancelJoin();
-        }
+        _weatherJob.CancelJoin();
     }
 
     public sealed override void Render(Graphics g)
@@ -88,7 +85,13 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
             else
             {
                 for (int i = 0; i < data.Count; i++)
+                {
+                    if (i < data.Count - 1 && i > 0 && data[i].Value == AcRainIntensity.No_Rain)
+                        if (data[i - 1].Value == AcRainIntensity.No_Rain && data[i + 1].Value == AcRainIntensity.No_Rain)
+                            continue;
+
                     _panel.AddLine($"{data[i].Key.Subtract(DateTime.UtcNow):mm\\:ss}", $"{data[i].Value}");
+                }
             }
         }
 
