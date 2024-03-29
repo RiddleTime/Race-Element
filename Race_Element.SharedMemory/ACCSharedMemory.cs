@@ -162,8 +162,21 @@ public unsafe class ACCSharedMemory
         Thunderstorm,
     }
 
+    public static string AcRainIntensityToString(AcRainIntensity intensity) => intensity switch
+    {
+        AcRainIntensity.No_Rain => "Dry",
+        AcRainIntensity.Drizzle => "Drizzle",
+        AcRainIntensity.Light_Rain => "Light Rain",
+        AcRainIntensity.Medium_Rain => "Medium Rain",
+        AcRainIntensity.Heavy_Rain => "Heavy Rain",
+        AcRainIntensity.Thunderstorm => "Thunderstorm",
+        _ => string.Empty,
+    };
+
+
     /// <summary>The following members are updated at each graphical step. They mostly refer to player’s car except for carCoordinates and carID, which refer to the cars currently on track.</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable] public class SPageFileGraphic
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
+    public class SPageFileGraphic
     {
         /// <summary>Current step index</summary>
         public int PacketId;
@@ -441,7 +454,8 @@ public unsafe class ACCSharedMemory
     }
 
     /// <summary>The following members change at each graphic step. They all refer to the player’s car</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable] public class SPageFilePhysics
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
+    public class SPageFilePhysics
     {
         /// <summary>Current step index</summary>
         public int PacketId;
@@ -477,7 +491,7 @@ public unsafe class ACCSharedMemory
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] WheelSlip;
 
         /// <summary>Wheel load for each tyre [FL, FR, RL, RR]</summary>
-        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] WheelLoad;
+        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] WheelLoad;
 
         /// <summary>Tyre pressure [FL, FR, RL, RR]</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] WheelPressure;
@@ -486,16 +500,16 @@ public unsafe class ACCSharedMemory
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] WheelAngularSpeed;
 
         /// <summary>Tyre wear [FL, FR, RL, RR]</summary>
-        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreWear;
+        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreWear;
 
         /// <summary>Dirt accumulated on tyre surface [FL, FR, RL, RR]</summary>
-        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreDirtyLevel;
+        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreDirtyLevel;
 
         /// <summary>Tyre rubber core temperature [FL, FR, RL, RR]</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreCoreTemperature;
 
         /// <summary>Wheels camber in radians [FL, FR, RL, RR]</summary>
-        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] CamberRad;
+        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] CamberRad;
 
         /// <summary>Suspension travel [FL, FR, RL, RR]</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] SuspensionTravel;
@@ -540,7 +554,7 @@ public unsafe class ACCSharedMemory
         [MarshalAs(UnmanagedType.Bool)] public bool AutoShifterOn;
 
         /// <summary>Ride height: 0 front, 1 rear</summary>
-        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)] public float[] RideHeight;
+        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)] public float[] RideHeight;
 
         /// <summary>Car turbo level</summary>
         public float TurboBoost;
@@ -585,10 +599,10 @@ public unsafe class ACCSharedMemory
         [Obsolete] public float KersCurrentKJ;
 
         /// <summary>Not used in ACC</summary>
-        [Obsolete] [MarshalAs(UnmanagedType.Bool)] public bool DrsAvailable;
+        [Obsolete][MarshalAs(UnmanagedType.Bool)] public bool DrsAvailable;
 
         /// <summary>Not used in ACC</summary>
-        [Obsolete] [MarshalAs(UnmanagedType.Bool)] public bool DrsEnabled;
+        [Obsolete][MarshalAs(UnmanagedType.Bool)] public bool DrsEnabled;
 
         /// <summary>Brake discs temperatures</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] BrakeTemperature;
@@ -597,13 +611,13 @@ public unsafe class ACCSharedMemory
         public float Clutch;
 
         /// <summary>Not shown in ACC</summary>
-        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreTempI;
+        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreTempI;
 
         /// <summary>Not shown in ACC</summary>
-        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreTempM;
+        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreTempM;
 
         /// <summary>Not shown in ACC</summary>
-        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreTempO;
+        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreTempO;
 
         /// <summary>Car is controlled by the AI</summary>
         [MarshalAs(UnmanagedType.Bool)] public bool IsAiControlled;
@@ -633,13 +647,13 @@ public unsafe class ACCSharedMemory
         [Obsolete] public int CurrentMaxRpm;
 
         /// <summary>Not shown in ACC</summary>
-        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] mz;
+        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] mz;
 
         /// <summary>Not shown in ACC</summary>
-        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] fx;
+        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] fx;
 
         /// <summary>Not shown in ACC</summary>
-        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] fy;
+        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] fy;
 
         /// <summary>Tyre slip ratio [FL, FR, RL, RR] in radians</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] SlipRatio;
@@ -703,7 +717,8 @@ public unsafe class ACCSharedMemory
     };
 
     /// <summary>The following members are initialized when the instance starts and never changes until the instance is closed</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable] public class SPageFileStatic
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
+    public class SPageFileStatic
     {
         /// <summary>Shared memory version in wide character</summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)] public string SharedMemoryVersion;
@@ -748,10 +763,10 @@ public unsafe class ACCSharedMemory
         public float MaxFuel;
 
         /// <summary>Not shown in ACC</summary>
-        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] SuspensionMaxTravel;
+        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] SuspensionMaxTravel;
 
         /// <summary>Not shown in ACC</summary>
-        [Obsolete] [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreRadius;
+        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreRadius;
 
         /// <summary>Maximum turbo boost (obsolete?)</summary>
         public float MaxTurboBoost;
@@ -787,13 +802,13 @@ public unsafe class ACCSharedMemory
         [MarshalAs(UnmanagedType.Bool)] public bool AidAutoBlip;
 
         /// <summary></summary>
-        [Obsolete] [MarshalAs(UnmanagedType.Bool)] public bool HasDRS;
+        [Obsolete][MarshalAs(UnmanagedType.Bool)] public bool HasDRS;
 
         /// <summary></summary>
-        [Obsolete] [MarshalAs(UnmanagedType.Bool)] public bool HasERS;
+        [Obsolete][MarshalAs(UnmanagedType.Bool)] public bool HasERS;
 
         /// <summary></summary>
-        [Obsolete] [MarshalAs(UnmanagedType.Bool)] public bool HasKERS;
+        [Obsolete][MarshalAs(UnmanagedType.Bool)] public bool HasKERS;
 
         /// <summary>Not used in ACC</summary>
         [Obsolete] public float KersMaxJoules;
@@ -808,19 +823,19 @@ public unsafe class ACCSharedMemory
         [Obsolete] public float TrackSplineLength;
 
         /// <summary>Not used in ACC</summary>
-        [Obsolete] [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string TrackConfiguration;
+        [Obsolete][MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string TrackConfiguration;
 
         /// <summary>Not used in ACC</summary>
         [Obsolete] public float ErsMaxJ;
 
         /// <summary>Not used in ACC</summary>
-        [Obsolete] [MarshalAs(UnmanagedType.Bool)] public bool IsTimedRace;
+        [Obsolete][MarshalAs(UnmanagedType.Bool)] public bool IsTimedRace;
 
         /// <summary>Not used in ACC</summary>
-        [Obsolete] [MarshalAs(UnmanagedType.Bool)] public bool HasExtraLap;
+        [Obsolete][MarshalAs(UnmanagedType.Bool)] public bool HasExtraLap;
 
         /// <summary>Not used in ACC</summary>
-        [Obsolete] [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string CarSkin;
+        [Obsolete][MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string CarSkin;
 
         /// <summary>Not used in ACC</summary>
         [Obsolete] public int ReversedGridPositions;

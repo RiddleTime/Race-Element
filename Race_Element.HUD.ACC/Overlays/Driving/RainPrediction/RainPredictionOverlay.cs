@@ -70,7 +70,7 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
     {
         if (_weatherJob != null)
         {
-            _panel.AddLine($"Now", $"{pageGraphics.rainIntensity}");
+            _panel.AddLine($"Now", $"{AcRainIntensityToString(pageGraphics.rainIntensity)}");
 
             List<KeyValuePair<DateTime, AcRainIntensity>> data;
             lock (_weatherJob.UpcomingChanges)
@@ -86,11 +86,11 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
             {
                 for (int i = 0; i < data.Count; i++)
                 {
-                    if (i < data.Count - 1 && i > 0 && data[i].Value == AcRainIntensity.No_Rain)
-                        if (data[i - 1].Value == AcRainIntensity.No_Rain && data[i + 1].Value == AcRainIntensity.No_Rain)
+                    if (i < data.Count - 1 && i > 0)
+                        if (data[i - 1].Value == data[i].Value && data[i + 1].Value == data[i].Value)
                             continue;
 
-                    _panel.AddLine($"{data[i].Key.Subtract(DateTime.UtcNow):mm\\:ss}", $"{data[i].Value}");
+                    _panel.AddLine($"{data[i].Key.Subtract(DateTime.UtcNow):mm\\:ss}", $"{AcRainIntensityToString(data[i].Value)}");
                 }
             }
         }
