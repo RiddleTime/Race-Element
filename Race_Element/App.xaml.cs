@@ -22,7 +22,7 @@ public partial class App : Application
 
     public App()
     {
-
+        Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
         this.Startup += App_Startup;
         this.Exit += App_Exit;
 

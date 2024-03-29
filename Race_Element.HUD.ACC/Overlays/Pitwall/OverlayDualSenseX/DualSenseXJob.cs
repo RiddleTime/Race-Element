@@ -1,4 +1,5 @@
 ﻿using RaceElement.Core.Jobs.LoopJob;
+using System;
 using static RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX.DualSenseXResources;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
@@ -12,8 +13,15 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX
 
             if (overlay._client == null)
             {
-                overlay.CreateEndPoint();
-                overlay.SetLighting();
+                try
+                {
+                    overlay.CreateEndPoint();
+                    overlay.SetLighting();
+                }
+                catch (Exception)
+                {
+                   // let's not cause an app crash, shall we?
+                }
             }
 
             Packet tcPacket = TriggerHaptics.HandleAcceleration(ref overlay.pagePhysics, overlay._config.ThrottleHaptics);
