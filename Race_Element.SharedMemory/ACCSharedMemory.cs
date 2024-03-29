@@ -166,10 +166,10 @@ public unsafe class ACCSharedMemory
     {
         AcRainIntensity.No_Rain => "Dry",
         AcRainIntensity.Drizzle => "Drizzle",
-        AcRainIntensity.Light_Rain => "Light Rain",
-        AcRainIntensity.Medium_Rain => "Medium Rain",
-        AcRainIntensity.Heavy_Rain => "Heavy Rain",
-        AcRainIntensity.Thunderstorm => "Thunderstorm",
+        AcRainIntensity.Light_Rain => "Light",
+        AcRainIntensity.Medium_Rain => "Medium",
+        AcRainIntensity.Heavy_Rain => "Heavy",
+        AcRainIntensity.Thunderstorm => "Thunder",
         _ => string.Empty,
     };
 
