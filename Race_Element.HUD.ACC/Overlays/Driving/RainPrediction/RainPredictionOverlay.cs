@@ -86,9 +86,24 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
             {
                 for (int i = 0; i < data.Count; i++)
                 {
-                    if (i < data.Count - 1 && i > 0)
-                        if (data[i - 1].Value == data[i].Value && data[i + 1].Value == data[i].Value)
+                    //hide initial data if it's the same as the current condition, might be annoying..?
+                    if (i == 0)
+                    {
+                        if (data[i].Value == pageGraphics.rainIntensity)
+                        {
                             continue;
+                        }
+                    }
+
+                    if (i > 0)
+                    {
+                        if (i < data.Count - 1)
+                            if (data[i - 1].Value == data[i].Value && data[i + 1].Value == data[i].Value)
+                                continue;
+
+                        if (data[i - 1].Value == data[i].Value)
+                            continue;
+                    }
 
                     _panel.AddLine($"{data[i].Key.Subtract(DateTime.UtcNow):mm\\:ss}", $"{AcRainIntensityToString(data[i].Value)}");
                 }
