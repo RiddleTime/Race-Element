@@ -2,6 +2,7 @@
 using RaceElement.HUD.ACC.Overlays.OverlayRainPrediction;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using static RaceElement.ACCSharedMemory;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.Weather;
@@ -22,37 +23,49 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
 
     public override void RunAction()
     {
-        if (Overlay.pageGraphics.Status == AcStatus.AC_OFF)
+        try
         {
-            ResetData();
-            return;
-        }
+            if (Overlay.pageGraphics.Status == AcStatus.AC_OFF)
+            {
+                ResetData();
+                return;
+            }
 
-        if (WeatherChanges.Count == 0)
-            _lastWeather = new()
+            lock (UpcomingChanges)
+                if (UpcomingChanges.Count > 200)
+                    for (int i = 0; i < 100; i++)
+                        UpcomingChanges.Remove(UpcomingChanges.Keys.First());
+
+            if (WeatherChanges.Count == 0)
+                _lastWeather = new()
+                {
+                    Now = Overlay.pageGraphics.rainIntensity,
+                    In10 = Overlay.pageGraphics.rainIntensityIn10min,
+                    In30 = Overlay.pageGraphics.rainIntensityIn30min
+                };
+
+            RealtimeWeather newScan = new()
             {
                 Now = Overlay.pageGraphics.rainIntensity,
                 In10 = Overlay.pageGraphics.rainIntensityIn10min,
                 In30 = Overlay.pageGraphics.rainIntensityIn30min
             };
 
-        RealtimeWeather newScan = new()
-        {
-            Now = Overlay.pageGraphics.rainIntensity,
-            In10 = Overlay.pageGraphics.rainIntensityIn10min,
-            In30 = Overlay.pageGraphics.rainIntensityIn30min
-        };
-
-        if (newScan != _lastWeather || UpcomingChanges.Count == 0)
-        {
-            DateTime change = DateTime.UtcNow;
-            WeatherChanges.Add(change, newScan);
-            lock (UpcomingChanges)
+            if (newScan != _lastWeather || UpcomingChanges.Count == 0)
             {
-                UpcomingChanges.Add(change.AddMinutes(10), newScan.In10);
-                UpcomingChanges.Add(change.AddMinutes(30), newScan.In30);
+                DateTime change = DateTime.UtcNow;
+                WeatherChanges.Add(change, newScan);
+                lock (UpcomingChanges)
+                {
+                    UpcomingChanges.Add(change.AddMinutes(10), newScan.In10);
+                    UpcomingChanges.Add(change.AddMinutes(30), newScan.In30);
+                }
+                _lastWeather = newScan;
             }
-            _lastWeather = newScan;
+        }
+        catch (Exception)
+        {
+            // let's not break something for a new release, just in case.
         }
     }
 

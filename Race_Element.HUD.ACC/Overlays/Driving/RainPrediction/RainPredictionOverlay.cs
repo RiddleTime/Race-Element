@@ -14,7 +14,7 @@ using static RaceElement.ACCSharedMemory;
 namespace RaceElement.HUD.ACC.Overlays.OverlayRainPrediction;
 
 [Overlay(Name = "Rain Prediction",
-Description = "Shows predicted rain forecasts.",
+Description = "Timers that predict weather changes.",
 OverlayCategory = OverlayCategory.Track,
 OverlayType = OverlayType.Drive,
 Version = 1.00,
@@ -30,23 +30,23 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
     private RainPredictionJob _weatherJob;
 
     private readonly InfoPanel _panel;
-    private int _timeMultiplier = -1;
+    //private int _timeMultiplier = -1;
 
     public RainPredictionOverlay(Rectangle rectangle) : base(rectangle, "Rain Prediction")
     {
-        this.RefreshRateHz = 1;
+        this.RefreshRateHz = 2;
         int panelWidth = 200;
         _panel = new InfoPanel(10, panelWidth);
 
         this.Width = panelWidth + 1;
-        this.Height = _panel.FontHeight * 20;
+        this.Height = _panel.FontHeight * 12;
     }
 
     public sealed override void BeforeStart()
     {
         if (IsPreviewing) return;
 
-        SessionTimeTracker.Instance.OnMultiplierChanged += Instance_OnMultiplierChanged;
+        //SessionTimeTracker.Instance.OnMultiplierChanged += Instance_OnMultiplierChanged;
         RaceSessionTracker.Instance.OnNewSessionStarted += Instance_OnNewSessionStarted;
 
         _weatherJob = new RainPredictionJob(this) { IntervalMillis = 1000 };
@@ -54,16 +54,16 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
     }
 
     private void Instance_OnNewSessionStarted(object sender, DbRaceSession e) => _weatherJob?.ResetData();
-    private void Instance_OnMultiplierChanged(object sender, int e) => _timeMultiplier = e;
+    //private void Instance_OnMultiplierChanged(object sender, int e) => _timeMultiplier = e;
 
     public sealed override void BeforeStop()
     {
         if (IsPreviewing) return;
 
-        SessionTimeTracker.Instance.OnMultiplierChanged -= Instance_OnMultiplierChanged;
+        //SessionTimeTracker.Instance.OnMultiplierChanged -= Instance_OnMultiplierChanged;
         RaceSessionTracker.Instance.OnNewSessionStarted -= Instance_OnNewSessionStarted;
 
-        _weatherJob.CancelJoin();
+        _weatherJob?.CancelJoin();
     }
 
     public sealed override void Render(Graphics g)
