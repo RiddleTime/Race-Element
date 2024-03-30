@@ -6,7 +6,7 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
-        {"1.0.5.6", "Added preliminary support for Nordschle 24h dlc, expect an update for corner names and sector data." },
+        {"1.0.5.6", "- Added preliminary support for Nordschle 24h dlc, expect an update for corner names and sector data." },
         {"1.0.5.4", "- Add Rain Prediction HUD: Shows predicted rain intensity and counts down." },
         {"1.0.5.2", "- Dual Sense X: Improved responsiveness by increasing ffb rate from 70 to 100 Herz." },
         {"1.0.5.0", "- Rework of several Live Trace HUDs:"+
