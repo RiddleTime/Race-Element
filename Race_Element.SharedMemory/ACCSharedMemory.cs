@@ -59,24 +59,20 @@ public unsafe class ACCSharedMemory
     }
 
 
-    public static string SessionTypeToString(AcSessionType sessionType)
+    public static string SessionTypeToString(AcSessionType sessionType) => sessionType switch
     {
-        switch (sessionType)
-        {
-            case AcSessionType.AC_UNKNOWN: return "Unknown";
-            case AcSessionType.AC_PRACTICE: return "Practice";
-            case AcSessionType.AC_QUALIFY: return "Qualify";
-            case AcSessionType.AC_RACE: return "Race";
-            case AcSessionType.AC_HOTLAP: return "Hotlap";
-            case AcSessionType.AC_TIME_ATTACK: return "Time attack";
-            case AcSessionType.AC_DRIFT: return "Drift";
-            case AcSessionType.AC_DRAG: return "Drag";
-            case AcSessionType.AC_HOTSTINT: return "Hotstint";
-            case AcSessionType.AC_HOTLAPSUPERPOLE: return "Hotlap superpole";
-
-            default: return sessionType.ToString();
-        }
-    }
+        AcSessionType.AC_UNKNOWN => "Unknown",
+        AcSessionType.AC_PRACTICE => "Practice",
+        AcSessionType.AC_QUALIFY => "Qualify",
+        AcSessionType.AC_RACE => "Race",
+        AcSessionType.AC_HOTLAP => "Hotlap",
+        AcSessionType.AC_TIME_ATTACK => "Time attack",
+        AcSessionType.AC_DRIFT => "Drift",
+        AcSessionType.AC_DRAG => "Drag",
+        AcSessionType.AC_HOTSTINT => "Hotstint",
+        AcSessionType.AC_HOTLAPSUPERPOLE => "Hotlap superpole",
+        _ => sessionType.ToString(),
+    };
 
     public enum AcFlagType : int
     {
@@ -92,23 +88,19 @@ public unsafe class ACCSharedMemory
 
     }
 
-    public static string FlagTypeToString(AcFlagType flagType)
+    public static string FlagTypeToString(AcFlagType flagType) => flagType switch
     {
-        switch (flagType)
-        {
-            case AcFlagType.AC_NO_FLAG: return "Green";
-            case AcFlagType.AC_BLUE_FLAG: return "Blue";
-            case AcFlagType.AC_YELLOW_FLAG: return "Yellow";
-            case AcFlagType.AC_BLACK_FLAG: return "Black";
-            case AcFlagType.AC_WHITE_FLAG: return "White";
-            case AcFlagType.AC_CHECKERED_FLAG: return "Checkered";
-            case AcFlagType.AC_PENALTY_FLAG: return "Penalty";
-            case AcFlagType.AC_GREEN_FLAG: return "Green";
-            case AcFlagType.AC_BLACK_FLAG_WITH_ORANGE_CIRCLE: return "Orange";
-
-            default: return flagType.ToString();
-        }
-    }
+        AcFlagType.AC_NO_FLAG => "Green",
+        AcFlagType.AC_BLUE_FLAG => "Blue",
+        AcFlagType.AC_YELLOW_FLAG => "Yellow",
+        AcFlagType.AC_BLACK_FLAG => "Black",
+        AcFlagType.AC_WHITE_FLAG => "White",
+        AcFlagType.AC_CHECKERED_FLAG => "Checkered",
+        AcFlagType.AC_PENALTY_FLAG => "Penalty",
+        AcFlagType.AC_GREEN_FLAG => "Green",
+        AcFlagType.AC_BLACK_FLAG_WITH_ORANGE_CIRCLE => "Orange",
+        _ => flagType.ToString(),
+    };
 
     public enum PenaltyShortcut : int
     {
@@ -166,10 +158,10 @@ public unsafe class ACCSharedMemory
     {
         AcRainIntensity.No_Rain => "Dry",
         AcRainIntensity.Drizzle => "Drizzle",
-        AcRainIntensity.Light_Rain => "Light Rain",
-        AcRainIntensity.Medium_Rain => "Medium Rain",
-        AcRainIntensity.Heavy_Rain => "Heavy Rain",
-        AcRainIntensity.Thunderstorm => "Thunderstorm",
+        AcRainIntensity.Light_Rain => "Light",
+        AcRainIntensity.Medium_Rain => "Medium",
+        AcRainIntensity.Heavy_Rain => "Heavy",
+        AcRainIntensity.Thunderstorm => "Thunder",
         _ => string.Empty,
     };
 

@@ -102,14 +102,14 @@ internal sealed class CornerDataOverlay : AbstractOverlay
         {
             columnWidths.Add(80);
             if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
-                columnWidths.Add(50);
+                columnWidths.Add(68);
         }
 
         if (_config.Data.AverageSpeed)
         {
             columnWidths.Add(80);
             if (_config.Data.DeltaSource != CornerDataConfiguration.DeltaSource.Off)
-                columnWidths.Add(50);
+                columnWidths.Add(68);
         }
 
         if (_config.Data.MaxLatG)
