@@ -11,7 +11,7 @@ internal class Nordschleife : AbstractTrackData
 
     public override string GameName => "nurburgring_24h";
 
-    public override string FullName => "Nurburgring 24h";
+    public override string FullName => "24h Nürburgring";
 
     public override int TrackLength => 25378;
 
