@@ -6,6 +6,7 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.6.0", "- Nordschleife is now called 24H Nürburgring instead of Nurburgring 24h, this should place the track at the top of the setup viewer." },
         {"1.0.5.6", "- Added preliminary support for ACC Nordschleife 24H DLC, expect an update for corner names and sector data."+
                     "\n- Corner Data HUD: Increased width of speed delta columns."+
                     "\n- Rain Prediction HUD: \"Heavy Rain\" will now show as \"Heavy\"."},
