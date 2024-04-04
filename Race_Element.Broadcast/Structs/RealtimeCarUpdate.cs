@@ -7,6 +7,7 @@ public struct RealtimeCarUpdate
     public int Gear { get; internal set; }
     public float Heading { get; internal set; }
     public float WorldPosX { get; internal set; }
+    public float WorldPosZ { get; internal set; }
     public float WorldPosY { get; internal set; }
     public CarLocationEnum CarLocation { get; internal set; }
     public int Kmh { get; internal set; }
