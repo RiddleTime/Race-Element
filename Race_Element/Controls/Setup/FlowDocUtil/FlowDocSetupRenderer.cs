@@ -94,8 +94,8 @@ public class FlowDocSetupRenderer
         int reboundFastRearRight = carSetup.DamperSetup.ReboundFast(setup.AdvancedSetup.Dampers.ReboundFast, Wheel.RearRight);
 
         // Aero Balance
-        int rideHeightFront = carSetup.AeroBalance.RideHeight(setup.AdvancedSetup.AeroBalance.RideHeight, Position.Front);
-        int rideHeightRear = carSetup.AeroBalance.RideHeight(setup.AdvancedSetup.AeroBalance.RideHeight, Position.Rear);
+        int rideHeightFront = carSetup.AeroBalance.RideHeight(setup.AdvancedSetup.AeroBalance.RideHeight, Position.Front, setup.TrackBopType);
+        int rideHeightRear = carSetup.AeroBalance.RideHeight(setup.AdvancedSetup.AeroBalance.RideHeight, Position.Rear, setup.TrackBopType);
         int rearWing = carSetup.AeroBalance.RearWing(setup.AdvancedSetup.AeroBalance.RearWing);
         int splitter = carSetup.AeroBalance.Splitter(setup.AdvancedSetup.AeroBalance.Splitter);
         int brakeDuctsFront = setup.AdvancedSetup.AeroBalance.BrakeDuct[(int)Position.Front];

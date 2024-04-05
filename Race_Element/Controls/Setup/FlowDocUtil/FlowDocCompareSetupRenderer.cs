@@ -105,8 +105,8 @@ public class FlowDocCompareSetupRenderer
         int reboundFastRearRight1 = carSetup1.DamperSetup.ReboundFast(setup1.AdvancedSetup.Dampers.ReboundFast, Wheel.RearRight);
 
         // Aero Balance car 1
-        int rideHeightFront1 = carSetup1.AeroBalance.RideHeight(setup1.AdvancedSetup.AeroBalance.RideHeight, Position.Front);
-        int rideHeightRear1 = carSetup1.AeroBalance.RideHeight(setup1.AdvancedSetup.AeroBalance.RideHeight, Position.Rear);
+        int rideHeightFront1 = carSetup1.AeroBalance.RideHeight(setup1.AdvancedSetup.AeroBalance.RideHeight, Position.Front, setup1.TrackBopType);
+        int rideHeightRear1 = carSetup1.AeroBalance.RideHeight(setup1.AdvancedSetup.AeroBalance.RideHeight, Position.Rear, setup1.TrackBopType);
         int rearWing1 = carSetup1.AeroBalance.RearWing(setup1.AdvancedSetup.AeroBalance.RearWing);
         int splitter1 = carSetup1.AeroBalance.Splitter(setup1.AdvancedSetup.AeroBalance.Splitter);
         int brakeDuctsFront1 = setup1.AdvancedSetup.AeroBalance.BrakeDuct[(int)Position.Front];
@@ -196,8 +196,8 @@ public class FlowDocCompareSetupRenderer
         int reboundFastRearRight2 = carSetup2.DamperSetup.ReboundFast(setup2.AdvancedSetup.Dampers.ReboundFast, Wheel.RearRight);
 
         // Aero Balance car 2
-        int rideHeightFront2 = carSetup2.AeroBalance.RideHeight(setup2.AdvancedSetup.AeroBalance.RideHeight, Position.Front);
-        int rideHeightRear2 = carSetup2.AeroBalance.RideHeight(setup2.AdvancedSetup.AeroBalance.RideHeight, Position.Rear);
+        int rideHeightFront2 = carSetup2.AeroBalance.RideHeight(setup2.AdvancedSetup.AeroBalance.RideHeight, Position.Front, setup2.TrackBopType);
+        int rideHeightRear2 = carSetup2.AeroBalance.RideHeight(setup2.AdvancedSetup.AeroBalance.RideHeight, Position.Rear, setup2.TrackBopType);
         int rearWing2 = carSetup2.AeroBalance.RearWing(setup2.AdvancedSetup.AeroBalance.RearWing);
         int splitter2 = carSetup2.AeroBalance.Splitter(setup2.AdvancedSetup.AeroBalance.Splitter);
         int brakeDuctsFront2 = setup2.AdvancedSetup.AeroBalance.BrakeDuct[(int)Position.Front];

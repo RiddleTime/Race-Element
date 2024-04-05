@@ -166,7 +166,7 @@ internal class AudiR8LMS_GT2_2021 : ICarSetupConversion
             return rawValue;
         }
 
-        public int RideHeight(List<int> rawValue, Position position)
+        public int RideHeight(List<int> rawValue, Position position, int trackTypeBop)
         {
             return position switch
             {

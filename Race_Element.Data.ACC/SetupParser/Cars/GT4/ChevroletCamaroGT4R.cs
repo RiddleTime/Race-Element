@@ -115,7 +115,7 @@ internal class ChevroletCamaroGT4R : ICarSetupConversion
             return rawValue + 1;
         }
 
-        public int RideHeight(List<int> rawValue, Position position)
+        public int RideHeight(List<int> rawValue, Position position, int trackTypeBop)
         {
             switch (position)
             {
