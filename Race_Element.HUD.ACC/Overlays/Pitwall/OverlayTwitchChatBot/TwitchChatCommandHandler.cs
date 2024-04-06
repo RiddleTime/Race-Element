@@ -8,7 +8,6 @@ using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
 using RaceElement.Util;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
