@@ -19,7 +19,7 @@ using static RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat.TwitchChatOv
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChatBot;
 
-internal class TwitchChatBotCommandHandler
+internal sealed class TwitchChatBotCommandHandler
 {
     private readonly TwitchChatBotOverlay _overlay;
 
