@@ -8,10 +8,13 @@ internal sealed class TwitchChatConfiguration : OverlayConfiguration
 
     public TwitchChatConfiguration() => GenericConfiguration.AllowRescale = true;
 
-    [ConfigGrouping("Behaviour", "Adjust conditional visibility for the HUD.")]
+    [ConfigGrouping("Behaviour", "Adjust conditional visibility for the HUD.\nAlways Visible overrules all others.")]
     public BehaviourGrouping Behaviour { get; init; } = new();
     public class BehaviourGrouping
     {
+        [ToolTip("When disabled the hud will only appear when the engine is running.\nWhen disabled and spectating the twitch chat HUD will dissapear.")]
+        public bool AlwaysVisible { get; init; } = true;
+
         [ToolTip("Hide the Twitch Chat HUD when you are in a qualifying session.")]
         public bool HideInQualifying { get; init; } = false;
     }
@@ -42,8 +45,7 @@ internal sealed class TwitchChatConfiguration : OverlayConfiguration
         [IntRange(100, 500, 2)]
         public int Height { get; init; } = 150;
 
-        [ToolTip("When disabled the hud will only appear when the engine is running.\nWhen disabled and spectating the twitch chat HUD will dissapear.")]
-        public bool AlwaysVisible { get; init; } = true;
+
     }
 
     [ConfigGrouping("Bot", "If you've enabled the twitch Chat Bot HUD, this will allow you to also show the responses of the bot in the twitch chat hud.")]

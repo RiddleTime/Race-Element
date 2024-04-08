@@ -99,8 +99,11 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
 
     public sealed override bool ShouldRender()
     {
-        if (_config.Shape.AlwaysVisible)
+        if (_config.Behaviour.AlwaysVisible)
             return true;
+
+        if (_config.Behaviour.HideInQualifying && pageGraphics.SessionType == ACCSharedMemory.AcSessionType.AC_QUALIFY)
+            return false;
 
         return base.ShouldRender();
     }
