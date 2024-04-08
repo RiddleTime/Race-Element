@@ -44,8 +44,6 @@ internal sealed class TwitchChatConfiguration : OverlayConfiguration
 
         [IntRange(100, 500, 2)]
         public int Height { get; init; } = 150;
-
-
     }
 
     [ConfigGrouping("Bot", "If you've enabled the twitch Chat Bot HUD, this will allow you to also show the responses of the bot in the twitch chat hud.")]
