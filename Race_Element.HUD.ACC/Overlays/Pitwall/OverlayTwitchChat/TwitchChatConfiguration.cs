@@ -8,6 +8,14 @@ internal sealed class TwitchChatConfiguration : OverlayConfiguration
 
     public TwitchChatConfiguration() => GenericConfiguration.AllowRescale = true;
 
+    [ConfigGrouping("Behaviour", "Adjust conditional visibility for the HUD.")]
+    public BehaviourGrouping Behaviour { get; init; } = new();
+    public class BehaviourGrouping
+    {
+        [ToolTip("Hide the Twitch Chat HUD when you are in a qualifying session.")]
+        public bool HideInQualifying { get; init; } = false;
+    }
+
     [ConfigGrouping("Connection", "Set up the username and O Auth token")]
     public CredentialsGrouping Credentials { get; init; } = new();
     public class CredentialsGrouping
