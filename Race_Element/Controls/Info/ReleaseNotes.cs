@@ -6,8 +6,7 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
-        {"1.0.6.0", "- Nordschleife is now called 24H Nürburgring instead of Nurburgring 24h, this should place the track at the top of the setup viewer."+
-                    "\n- Twitch Chat Bot:"+
+        {"1.0.6.0", "\n- Twitch Chat Bot:"+
                     "\n  - +temps now also shows rain condition when it's not dry."+
                     "\n- Twitch Chat HUD: Added behaviuor category, adding Always Visible and Hide in Qualifying."+
                     "\n- Rain Prediction HUD: Smaller dimension."},
