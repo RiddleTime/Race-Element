@@ -16,7 +16,7 @@ public readonly record struct RealtimeWeather
 
 internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : AbstractLoopJob
 {
-    private readonly object _lockObj = new object();
+    private readonly object _lockObj = new();
     private Dictionary<DateTime, AcRainIntensity> _weatherForecast = [];
     private RealtimeWeather _lastWeather;
 
@@ -29,7 +29,7 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
         }
     }
 
-    public override void RunAction()
+    public sealed override void RunAction()
     {
         try
         {
