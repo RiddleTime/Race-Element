@@ -19,14 +19,7 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
     private Dictionary<DateTime, AcRainIntensity> _weatherForecast = [];
     private RealtimeWeather _lastWeather;
 
-    public Dictionary<DateTime, AcRainIntensity> WeatherForecast
-    {
-        get
-        {
-            lock (_lockObj)
-                return _weatherForecast;
-        }
-    }
+    public Dictionary<DateTime, AcRainIntensity> WeatherForecast { get { lock (_lockObj) return _weatherForecast; } }
 
     public sealed override void RunAction()
     {
