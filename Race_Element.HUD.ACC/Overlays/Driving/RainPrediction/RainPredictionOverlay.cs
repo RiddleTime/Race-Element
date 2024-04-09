@@ -1,7 +1,5 @@
 ﻿using RaceElement.Data.ACC.Database.SessionData;
 using RaceElement.Data.ACC.Session;
-using RaceElement.HUD.ACC.Overlays.Driving.Weather;
-using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
 using System;
@@ -9,7 +7,7 @@ using System.Drawing;
 using System.Linq;
 using static RaceElement.ACCSharedMemory;
 
-namespace RaceElement.HUD.ACC.Overlays.OverlayRainPrediction;
+namespace RaceElement.HUD.ACC.Overlays.Driving.RainPrediction;
 
 [Overlay(Name = "Rain Prediction",
 Description = "Timers that predict weather changes.",
@@ -19,12 +17,7 @@ Version = 1.00,
 Authors = ["Reinier Klarenberg"])]
 internal sealed class RainPredictionOverlay : AbstractOverlay
 {
-    private sealed class WeatherConfiguration : OverlayConfiguration
-    {
-        public WeatherConfiguration() => this.GenericConfiguration.AllowRescale = true;
-    }
-
-    private readonly WeatherConfiguration _config = new();
+    private readonly RainPredictionConfiguration _config = new();
     private RainPredictionJob _weatherJob;
 
     private readonly InfoPanel _panel;
@@ -33,7 +26,7 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
     public RainPredictionOverlay(Rectangle rectangle) : base(rectangle, "Rain Prediction")
     {
         this.RefreshRateHz = 2;
-        int panelWidth = 200;
+        int panelWidth = 150;
         _panel = new InfoPanel(10, panelWidth);
 
         this.Width = panelWidth + 1;

@@ -1,11 +1,10 @@
 ﻿using RaceElement.Core.Jobs.LoopJob;
-using RaceElement.HUD.ACC.Overlays.OverlayRainPrediction;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using static RaceElement.ACCSharedMemory;
 
-namespace RaceElement.HUD.ACC.Overlays.Driving.Weather;
+namespace RaceElement.HUD.ACC.Overlays.Driving.RainPrediction;
 
 public readonly record struct RealtimeWeather
 {
