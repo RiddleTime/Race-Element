@@ -69,6 +69,7 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
         if (_weatherJob != null)
         {
             _panel.AddLine($"Now", $"{AcRainIntensityToString(pageGraphics.rainIntensity)}");
+            AcRainIntensity prevRainIntensity = pageGraphics.rainIntensity;
             var forecast = _weatherJob.GetWeatherForecast().ToList();
 
             if (forecast.Count == 0)
@@ -77,10 +78,7 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
                 return;
             }
 
-            int sIndex = forecast[0].Value == pageGraphics.rainIntensity ? 1 : 0;
-            AcRainIntensity prevRainIntensity = pageGraphics.rainIntensity;
-
-            for (int i = sIndex; i < forecast.Count; ++i)
+            for (int i = 0; i < forecast.Count; ++i)
             {
                 if (prevRainIntensity == forecast[i].Value)
                 {
