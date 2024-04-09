@@ -5,8 +5,6 @@ using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using static RaceElement.ACCSharedMemory;
@@ -21,12 +19,12 @@ Version = 1.00,
 Authors = ["Reinier Klarenberg"])]
 internal sealed class RainPredictionOverlay : AbstractOverlay
 {
-    private readonly WeatherConfiguration _config = new();
     private sealed class WeatherConfiguration : OverlayConfiguration
     {
         public WeatherConfiguration() => this.GenericConfiguration.AllowRescale = true;
     }
 
+    private readonly WeatherConfiguration _config = new();
     private RainPredictionJob _weatherJob;
 
     private readonly InfoPanel _panel;
@@ -71,41 +69,24 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
         if (_weatherJob != null)
         {
             _panel.AddLine($"Now", $"{AcRainIntensityToString(pageGraphics.rainIntensity)}");
+            AcRainIntensity prevRainIntensity = pageGraphics.rainIntensity;
+            var forecast = _weatherJob.WeatherForecast.ToList();
 
-            List<KeyValuePair<DateTime, AcRainIntensity>> data;
-            lock (_weatherJob.UpcomingChanges)
-            {
-                data = [.. _weatherJob.UpcomingChanges.Where(x => x.Key > DateTime.UtcNow).OrderBy(x => x.Key)];
-            }
-
-            if (data.Count == 0)
+            if (forecast.Count == 0)
             {
                 _panel.AddLine("--:--", "No data yet");
             }
             else
             {
-                for (int i = 0; i < data.Count; i++)
+                for (int i = 0; i < forecast.Count; ++i)
                 {
-                    //hide initial data if it's the same as the current condition, might be annoying..?
-                    if (i == 0)
+                    if (prevRainIntensity == forecast[i].Value)
                     {
-                        if (data[i].Value == pageGraphics.rainIntensity)
-                        {
-                            continue;
-                        }
+                        continue;
                     }
 
-                    if (i > 0)
-                    {
-                        if (i < data.Count - 1)
-                            if (data[i - 1].Value == data[i].Value && data[i + 1].Value == data[i].Value)
-                                continue;
-
-                        if (data[i - 1].Value == data[i].Value)
-                            continue;
-                    }
-
-                    _panel.AddLine($"{data[i].Key.Subtract(DateTime.UtcNow):mm\\:ss}", $"{AcRainIntensityToString(data[i].Value)}");
+                    prevRainIntensity = forecast[i].Value;
+                    _panel.AddLine($"{forecast[i].Key.Subtract(DateTime.UtcNow):mm\\:ss}", $"{AcRainIntensityToString(forecast[i].Value)}");
                 }
             }
         }

@@ -7,21 +7,29 @@ using static RaceElement.ACCSharedMemory;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.Weather;
 
-public record struct RealtimeWeather
+public readonly record struct RealtimeWeather
 {
-    public RealtimeWeather() { }
-    public AcRainIntensity Now { get; set; }
-    public AcRainIntensity In10 { get; set; }
-    public AcRainIntensity In30 { get; set; }
+    public AcRainIntensity Now { get; init; }
+    public AcRainIntensity In10 { get; init; }
+    public AcRainIntensity In30 { get; init; }
 }
 
 internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : AbstractLoopJob
 {
-    private readonly Dictionary<DateTime, RealtimeWeather> WeatherChanges = [];
-    public readonly Dictionary<DateTime, AcRainIntensity> UpcomingChanges = [];
+    private readonly object _lockObj = new();
+    private Dictionary<DateTime, AcRainIntensity> _weatherForecast = [];
     private RealtimeWeather _lastWeather;
 
-    public override void RunAction()
+    public Dictionary<DateTime, AcRainIntensity> WeatherForecast
+    {
+        get
+        {
+            lock (_lockObj)
+                return _weatherForecast;
+        }
+    }
+
+    public sealed override void RunAction()
     {
         try
         {
@@ -31,36 +39,10 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
                 return;
             }
 
-            lock (UpcomingChanges)
-                if (UpcomingChanges.Count > 200)
-                    for (int i = 0; i < 100; i++)
-                        UpcomingChanges.Remove(UpcomingChanges.Keys.First());
-
-            if (WeatherChanges.Count == 0)
-                _lastWeather = new()
-                {
-                    Now = Overlay.pageGraphics.rainIntensity,
-                    In10 = Overlay.pageGraphics.rainIntensityIn10min,
-                    In30 = Overlay.pageGraphics.rainIntensityIn30min
-                };
-
-            RealtimeWeather newScan = new()
+            lock (_lockObj)
             {
-                Now = Overlay.pageGraphics.rainIntensity,
-                In10 = Overlay.pageGraphics.rainIntensityIn10min,
-                In30 = Overlay.pageGraphics.rainIntensityIn30min
-            };
-
-            if (newScan != _lastWeather || UpcomingChanges.Count == 0)
-            {
-                DateTime change = DateTime.UtcNow;
-                WeatherChanges.Add(change, newScan);
-                lock (UpcomingChanges)
-                {
-                    UpcomingChanges.Add(change.AddMinutes(10), newScan.In10);
-                    UpcomingChanges.Add(change.AddMinutes(30), newScan.In30);
-                }
-                _lastWeather = newScan;
+                RemoveOldForecast(DateTime.UtcNow);
+                AddNewForecast();
             }
         }
         catch (Exception)
@@ -69,12 +51,39 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
         }
     }
 
+    private void AddNewForecast()
+    {
+        RealtimeWeather newScan = new()
+        {
+            Now = Overlay.pageGraphics.rainIntensity,
+            In10 = Overlay.pageGraphics.rainIntensityIn10min,
+            In30 = Overlay.pageGraphics.rainIntensityIn30min
+        };
+
+        if (newScan != _lastWeather || _weatherForecast.Count == 0)
+        {
+            DateTime currentDateTime = DateTime.UtcNow;
+            _lastWeather = newScan;
+
+            _weatherForecast.Add(currentDateTime.AddMinutes(10), newScan.In10);
+            _weatherForecast.Add(currentDateTime.AddMinutes(30), newScan.In30);
+
+            var tmp = _weatherForecast.OrderBy(x => x.Key);
+            _weatherForecast = tmp.ToDictionary(x => x.Key, x => x.Value);
+        }
+    }
+
+    private void RemoveOldForecast(DateTime threshold)
+    {
+        foreach (var kvp in _weatherForecast.Where(x => threshold.Ticks > x.Key.Ticks).ToList())
+        {
+            _weatherForecast.Remove(kvp.Key);
+        }
+    }
+
     internal void ResetData()
     {
-        lock (WeatherChanges)
-            WeatherChanges.Clear();
-        lock (UpcomingChanges)
-            UpcomingChanges.Clear();
-        return;
+        lock (_lockObj)
+            _weatherForecast.Clear();
     }
 }

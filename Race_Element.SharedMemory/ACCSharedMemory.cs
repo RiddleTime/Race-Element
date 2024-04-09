@@ -194,7 +194,7 @@ public unsafe class ACCSharedMemory
         /// <summary>Number of completed laps</summary>
         public int CompletedLaps;
 
-        /// <summary>Current player positio</summary>
+        /// <summary>Current player position</summary>
         public int Position;
 
         /// <summary>Current lap time in milliseconds</summary>
@@ -357,7 +357,7 @@ public unsafe class ACCSharedMemory
         public int MandatoryPitStopsLeft;
 
         /// <summary>Time of day in seconds</summary>
-        float ClockTimeDaySeconds;
+        public float ClockTimeDaySeconds;
 
         /// <summary>Is Blinker left on</summary>
         [MarshalAs(UnmanagedType.Bool)] public bool BlinkerLeftOn;
