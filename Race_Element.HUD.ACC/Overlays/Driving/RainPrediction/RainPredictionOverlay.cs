@@ -68,19 +68,27 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
     {
         if (_weatherJob != null)
         {
-            var weather = _weatherJob.GetWeatherForecast().GroupBy(x => x.Value).Select(x => x.First()).ToList();
             _panel.AddLine($"Now", $"{AcRainIntensityToString(pageGraphics.rainIntensity)}");
-            int sIndex = weather[0].Value == pageGraphics.rainIntensity ? 1 : 0;
+            var forecast = _weatherJob.GetWeatherForecast().ToList();
 
-            if (weather.Count == 0)
+            if (forecast.Count == 0)
             {
                 _panel.AddLine("--:--", "No data yet");
                 return;
             }
 
-            for (int i = sIndex; i < weather.Count; ++i)
+            int sIndex = forecast[0].Value == pageGraphics.rainIntensity ? 1 : 0;
+            AcRainIntensity prevRainIntensity = pageGraphics.rainIntensity;
+
+            for (int i = sIndex; i < forecast.Count; ++i)
             {
-                _panel.AddLine($"{weather[i].Key.Subtract(DateTime.UtcNow):mm\\:ss}", $"{AcRainIntensityToString(weather[i].Value)}");
+                if (prevRainIntensity == forecast[i].Value)
+                {
+                    continue;
+                }
+
+                prevRainIntensity = forecast[i].Value;
+                _panel.AddLine($"{forecast[i].Key.Subtract(DateTime.UtcNow):mm\\:ss}", $"{AcRainIntensityToString(forecast[i].Value)}");
             }
         }
 
