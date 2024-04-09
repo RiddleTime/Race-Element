@@ -5,10 +5,7 @@ using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using static RaceElement.ACCSharedMemory;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayRainPrediction;
@@ -21,12 +18,12 @@ Version = 1.00,
 Authors = ["Reinier Klarenberg"])]
 internal sealed class RainPredictionOverlay : AbstractOverlay
 {
-    private readonly WeatherConfiguration _config = new();
     private sealed class WeatherConfiguration : OverlayConfiguration
     {
         public WeatherConfiguration() => this.GenericConfiguration.AllowRescale = true;
     }
 
+    private readonly WeatherConfiguration _config = new();
     private RainPredictionJob _weatherJob;
 
     private readonly InfoPanel _panel;
@@ -71,42 +68,17 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
         if (_weatherJob != null)
         {
             _panel.AddLine($"Now", $"{AcRainIntensityToString(pageGraphics.rainIntensity)}");
+            var weather = _weatherJob.GetWeatherForecast();
 
-            List<KeyValuePair<DateTime, AcRainIntensity>> data;
-            lock (_weatherJob.UpcomingChanges)
-            {
-                data = [.. _weatherJob.UpcomingChanges.Where(x => x.Key > DateTime.UtcNow).OrderBy(x => x.Key)];
-            }
-
-            if (data.Count == 0)
+            if (weather.Count == 0)
             {
                 _panel.AddLine("--:--", "No data yet");
+                return;
             }
-            else
+
+            foreach (var kvp in weather)
             {
-                for (int i = 0; i < data.Count; i++)
-                {
-                    //hide initial data if it's the same as the current condition, might be annoying..?
-                    if (i == 0)
-                    {
-                        if (data[i].Value == pageGraphics.rainIntensity)
-                        {
-                            continue;
-                        }
-                    }
-
-                    if (i > 0)
-                    {
-                        if (i < data.Count - 1)
-                            if (data[i - 1].Value == data[i].Value && data[i + 1].Value == data[i].Value)
-                                continue;
-
-                        if (data[i - 1].Value == data[i].Value)
-                            continue;
-                    }
-
-                    _panel.AddLine($"{data[i].Key.Subtract(DateTime.UtcNow):mm\\:ss}", $"{AcRainIntensityToString(data[i].Value)}");
-                }
+                _panel.AddLine($"{kvp.Key.Subtract(DateTime.Now):mm\\:ss}", $"{AcRainIntensityToString(kvp.Value)}");
             }
         }
 

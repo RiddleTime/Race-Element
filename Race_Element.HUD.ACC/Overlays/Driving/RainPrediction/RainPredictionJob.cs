@@ -17,9 +17,16 @@ public record struct RealtimeWeather
 
 internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : AbstractLoopJob
 {
-    private readonly Dictionary<DateTime, RealtimeWeather> WeatherChanges = [];
-    public readonly Dictionary<DateTime, AcRainIntensity> UpcomingChanges = [];
+    private Dictionary<DateTime, AcRainIntensity> _weatherForecast = [];
     private RealtimeWeather _lastWeather;
+
+    public Dictionary<DateTime, AcRainIntensity> GetWeatherForecast()
+    {
+        lock (_weatherForecast)
+        {
+            return _weatherForecast;
+        }
+    }
 
     public override void RunAction()
     {
@@ -31,36 +38,10 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
                 return;
             }
 
-            lock (UpcomingChanges)
-                if (UpcomingChanges.Count > 200)
-                    for (int i = 0; i < 100; i++)
-                        UpcomingChanges.Remove(UpcomingChanges.Keys.First());
-
-            if (WeatherChanges.Count == 0)
-                _lastWeather = new()
-                {
-                    Now = Overlay.pageGraphics.rainIntensity,
-                    In10 = Overlay.pageGraphics.rainIntensityIn10min,
-                    In30 = Overlay.pageGraphics.rainIntensityIn30min
-                };
-
-            RealtimeWeather newScan = new()
+            lock (_weatherForecast)
             {
-                Now = Overlay.pageGraphics.rainIntensity,
-                In10 = Overlay.pageGraphics.rainIntensityIn10min,
-                In30 = Overlay.pageGraphics.rainIntensityIn30min
-            };
-
-            if (newScan != _lastWeather || UpcomingChanges.Count == 0)
-            {
-                DateTime change = DateTime.UtcNow;
-                WeatherChanges.Add(change, newScan);
-                lock (UpcomingChanges)
-                {
-                    UpcomingChanges.Add(change.AddMinutes(10), newScan.In10);
-                    UpcomingChanges.Add(change.AddMinutes(30), newScan.In30);
-                }
-                _lastWeather = newScan;
+                RemoveOldForecast(DateTime.Now);
+                AddNewForecast();
             }
         }
         catch (Exception)
@@ -69,12 +50,42 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
         }
     }
 
+    private void AddNewForecast()
+    {
+        RealtimeWeather newScan = new()
+        {
+            Now = 0/*Overlay.pageGraphics.rainIntensity*/,
+            In10 = Overlay.pageGraphics.rainIntensityIn10min,
+            In30 = Overlay.pageGraphics.rainIntensityIn30min
+        };
+
+        if (newScan != _lastWeather || _weatherForecast.Count == 0)
+        {
+            DateTime currentDateTime = DateTime.Now;
+            _lastWeather = newScan;
+
+            _weatherForecast.Add(currentDateTime.AddMinutes(10), newScan.In10);
+            _weatherForecast.Add(currentDateTime.AddMinutes(30), newScan.In30);
+
+            // NOTE(Andrei): Order by date, and keep only the first of all consecutive equal values.
+            var tmp = _weatherForecast.OrderBy(x => x.Key).GroupBy(x => x.Value).Select(x => x.First());
+            _weatherForecast = tmp.ToDictionary(x => x.Key, x => x.Value);
+        }
+    }
+
+    private void RemoveOldForecast(DateTime threshold)
+    {
+        foreach (var kvp in _weatherForecast.Where(x => threshold.Ticks > x.Key.Ticks).ToList())
+        {
+            _weatherForecast.Remove(kvp.Key);
+        }
+    }
+
     internal void ResetData()
     {
-        lock (WeatherChanges)
-            WeatherChanges.Clear();
-        lock (UpcomingChanges)
-            UpcomingChanges.Clear();
-        return;
+        lock (_weatherForecast)
+        {
+            _weatherForecast.Clear();
+        }
     }
 }
