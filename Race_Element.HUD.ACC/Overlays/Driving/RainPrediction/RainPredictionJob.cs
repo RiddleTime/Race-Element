@@ -17,14 +17,16 @@ public record struct RealtimeWeather
 
 internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : AbstractLoopJob
 {
+    private readonly object _lockObj = new object();
     private Dictionary<DateTime, AcRainIntensity> _weatherForecast = [];
     private RealtimeWeather _lastWeather;
 
-    public Dictionary<DateTime, AcRainIntensity> GetWeatherForecast()
+    public Dictionary<DateTime, AcRainIntensity> WeatherForecast
     {
-        lock (_weatherForecast)
+        get
         {
-            return _weatherForecast;
+            lock (_lockObj)
+                return _weatherForecast;
         }
     }
 
@@ -38,7 +40,7 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
                 return;
             }
 
-            lock (_weatherForecast)
+            lock (_lockObj)
             {
                 RemoveOldForecast(DateTime.UtcNow);
                 AddNewForecast();
@@ -82,9 +84,7 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
 
     internal void ResetData()
     {
-        lock (_weatherForecast)
-        {
+        lock (_lockObj)
             _weatherForecast.Clear();
-        }
     }
 }

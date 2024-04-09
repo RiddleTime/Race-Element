@@ -70,23 +70,24 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
         {
             _panel.AddLine($"Now", $"{AcRainIntensityToString(pageGraphics.rainIntensity)}");
             AcRainIntensity prevRainIntensity = pageGraphics.rainIntensity;
-            var forecast = _weatherJob.GetWeatherForecast().ToList();
+            var forecast = _weatherJob.WeatherForecast.ToList();
 
             if (forecast.Count == 0)
             {
                 _panel.AddLine("--:--", "No data yet");
-                return;
             }
-
-            for (int i = 0; i < forecast.Count; ++i)
+            else
             {
-                if (prevRainIntensity == forecast[i].Value)
+                for (int i = 0; i < forecast.Count; ++i)
                 {
-                    continue;
-                }
+                    if (prevRainIntensity == forecast[i].Value)
+                    {
+                        continue;
+                    }
 
-                prevRainIntensity = forecast[i].Value;
-                _panel.AddLine($"{forecast[i].Key.Subtract(DateTime.UtcNow):mm\\:ss}", $"{AcRainIntensityToString(forecast[i].Value)}");
+                    prevRainIntensity = forecast[i].Value;
+                    _panel.AddLine($"{forecast[i].Key.Subtract(DateTime.UtcNow):mm\\:ss}", $"{AcRainIntensityToString(forecast[i].Value)}");
+                }
             }
         }
 
