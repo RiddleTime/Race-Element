@@ -6,7 +6,7 @@ internal sealed class LapTimeTableConfiguration : OverlayConfiguration
 {
     [ConfigGrouping("Table", "Change the behavior of the table")]
     public TableGrouping Table { get; init; } = new();
-    public class TableGrouping
+    public sealed class TableGrouping
     {
         [ToolTip("Display Columns with sector times for each lap in the table.")]
         public bool ShowSectors { get; init; } = true;
