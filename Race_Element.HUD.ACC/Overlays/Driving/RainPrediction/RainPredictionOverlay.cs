@@ -6,6 +6,7 @@ using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Drawing;
+using System.Linq;
 using static RaceElement.ACCSharedMemory;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayRainPrediction;
@@ -67,8 +68,9 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
     {
         if (_weatherJob != null)
         {
+            var weather = _weatherJob.GetWeatherForecast().GroupBy(x => x.Value).Select(x => x.First()).ToList();
             _panel.AddLine($"Now", $"{AcRainIntensityToString(pageGraphics.rainIntensity)}");
-            var weather = _weatherJob.GetWeatherForecast();
+            int sIndex = weather[0].Value == pageGraphics.rainIntensity ? 1 : 0;
 
             if (weather.Count == 0)
             {
@@ -76,9 +78,9 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
                 return;
             }
 
-            foreach (var kvp in weather)
+            for (int i = sIndex; i < weather.Count; ++i)
             {
-                _panel.AddLine($"{kvp.Key.Subtract(DateTime.Now):mm\\:ss}", $"{AcRainIntensityToString(kvp.Value)}");
+                _panel.AddLine($"{weather[i].Key.Subtract(DateTime.UtcNow):mm\\:ss}", $"{AcRainIntensityToString(weather[i].Value)}");
             }
         }
 

@@ -40,7 +40,7 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
 
             lock (_weatherForecast)
             {
-                RemoveOldForecast(DateTime.Now);
+                RemoveOldForecast(DateTime.UtcNow);
                 AddNewForecast();
             }
         }
@@ -54,21 +54,20 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
     {
         RealtimeWeather newScan = new()
         {
-            Now = 0/*Overlay.pageGraphics.rainIntensity*/,
+            Now = Overlay.pageGraphics.rainIntensity,
             In10 = Overlay.pageGraphics.rainIntensityIn10min,
             In30 = Overlay.pageGraphics.rainIntensityIn30min
         };
 
         if (newScan != _lastWeather || _weatherForecast.Count == 0)
         {
-            DateTime currentDateTime = DateTime.Now;
+            DateTime currentDateTime = DateTime.UtcNow;
             _lastWeather = newScan;
 
             _weatherForecast.Add(currentDateTime.AddMinutes(10), newScan.In10);
             _weatherForecast.Add(currentDateTime.AddMinutes(30), newScan.In30);
 
-            // NOTE(Andrei): Order by date, and keep only the first of all consecutive equal values.
-            var tmp = _weatherForecast.OrderBy(x => x.Key).GroupBy(x => x.Value).Select(x => x.First());
+            var tmp = _weatherForecast.OrderBy(x => x.Key);
             _weatherForecast = tmp.ToDictionary(x => x.Key, x => x.Value);
         }
     }
