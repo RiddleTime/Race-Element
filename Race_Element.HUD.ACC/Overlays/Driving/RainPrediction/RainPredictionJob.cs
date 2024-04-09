@@ -7,12 +7,11 @@ using static RaceElement.ACCSharedMemory;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.Weather;
 
-public record struct RealtimeWeather
+public readonly record struct RealtimeWeather
 {
-    public RealtimeWeather() { }
-    public AcRainIntensity Now { get; set; }
-    public AcRainIntensity In10 { get; set; }
-    public AcRainIntensity In30 { get; set; }
+    public AcRainIntensity Now { get; init; }
+    public AcRainIntensity In10 { get; init; }
+    public AcRainIntensity In30 { get; init; }
 }
 
 internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : AbstractLoopJob
