@@ -15,11 +15,14 @@ public readonly record struct RealtimeWeather
 
 internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : AbstractLoopJob
 {
-    private readonly object _lockObj = new();
     private Dictionary<DateTime, AcRainIntensity> _weatherForecast = [];
+    private readonly object _lockObj = new();
+
     private RealtimeWeather _lastWeather;
+    private int _multiplier = 0;
 
     public Dictionary<DateTime, AcRainIntensity> WeatherForecast { get { lock (_lockObj) return _weatherForecast; } }
+    public void SetMultiplier(int multiplier) { _multiplier = multiplier; }
 
     public sealed override void RunAction()
     {
@@ -57,8 +60,8 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
             DateTime currentDateTime = DateTime.UtcNow;
             _lastWeather = newScan;
 
-            _weatherForecast.Add(currentDateTime.AddMinutes(10), newScan.In10);
-            _weatherForecast.Add(currentDateTime.AddMinutes(30), newScan.In30);
+            _weatherForecast.Add(currentDateTime.AddMinutes(Get10MinutesWithMultiplier()), newScan.In10);
+            _weatherForecast.Add(currentDateTime.AddMinutes(Get30MinutesWithMultiplier()), newScan.In30);
 
             var tmp = _weatherForecast.OrderBy(x => x.Key);
             _weatherForecast = tmp.ToDictionary(x => x.Key, x => x.Value);
@@ -70,6 +73,36 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
         foreach (var kvp in _weatherForecast.Where(x => threshold.Ticks > x.Key.Ticks).ToList())
         {
             _weatherForecast.Remove(kvp.Key);
+        }
+    }
+
+    private double Get10MinutesWithMultiplier()
+    {
+        switch (_multiplier)
+        {
+            case 1: return 10;
+            case 2: return 5;
+            case 4: return 2;
+            case 6: return 1;
+            case 12: return 0.5;
+            case 24: return 0.5;
+            case 48: return 0.5;
+            default: return 0;
+        }
+    }
+
+    private double Get30MinutesWithMultiplier()
+    {
+        switch (_multiplier)
+        {
+            case 1: return 30;
+            case 2: return 15;
+            case 4: return 7;
+            case 6: return 5;
+            case 12: return 2;
+            case 24: return 1;
+            case 48: return 1;
+            default: return 0;
         }
     }
 
