@@ -18,9 +18,13 @@ namespace RaceElement.Data.ACC.Session;
 
 public class RaceSessionTracker
 {
-    private bool _isTracking = false;
+    private bool _isTracking;
 
     private float _sessionTimeLeft;
+
+    private int _gameTimeMultiplier = 1;
+    private float _prevClockTimeDaySeconds = 0;
+    public event EventHandler<int> OnMultiplierChanged;
 
     private AcSessionType _lastSessionType = AcSessionType.AC_UNKNOWN;
     public event EventHandler<AcSessionType> OnACSessionTypeChanged;
@@ -47,8 +51,11 @@ public class RaceSessionTracker
     private RaceSessionTracker()
     {
         Debug.WriteLine("Started race session tracker.");
+        _prevClockTimeDaySeconds = ACCSharedMemory.Instance.ReadGraphicsPageFile().ClockTimeDaySeconds;
 
-        StartTracking();
+        _isTracking = true;
+        new Thread(WorkerThread).Start();
+
         OnSessionIndexChanged += TryCreateNewSession;
         OnACSessionTypeChanged += TryCreateNewSession;
 
@@ -105,8 +112,8 @@ public class RaceSessionTracker
                 TrackId = trackData.Id,
                 IsOnline = staticPageFile.isOnline
             };
-            _sessionTimeLeft = ACCSharedMemory.Instance.ReadGraphicsPageFile().SessionTimeLeft;
 
+            _sessionTimeLeft = ACCSharedMemory.Instance.ReadGraphicsPageFile().SessionTimeLeft;
             _lastReplaySave = DateTime.UtcNow;
 
             RaceSessionCollection.Insert(CurrentSession);
@@ -152,80 +159,6 @@ public class RaceSessionTracker
         RaceWeekendCollection.Insert(new DbRaceWeekend() { Id = Guid.NewGuid(), UtcStart = DateTime.UtcNow });
     }
 
-    private void StartTracking()
-    {
-        _isTracking = true;
-
-        new Thread(() =>
-        {
-            BroadcastTracker.Instance.OnRealTimeUpdate += Instance_OnRealTimeUpdate;
-
-
-            while (_isTracking)
-            {
-                Thread.Sleep(100);
-
-                if (AccProcess.IsRunning)
-                {
-                    var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile();
-
-                    if (pageGraphics.Status != _lastAcStatus)
-                    {
-                        Debug.WriteLine($"AcStatus: {_lastAcStatus} -> {pageGraphics.Status}");
-
-                        if (_lastAcStatus == AcStatus.AC_OFF)
-                            CreateNewRaceWeekend();
-
-                        _lastAcStatus = pageGraphics.Status;
-
-                        if (_lastAcStatus == AcStatus.AC_OFF)
-                        {
-                            FinalizeCurrentSession();
-                            FinalizeRaceWeekend();
-                            OnSessionIndexChanged?.Invoke(this, _lastSessionIndex);
-                        }
-
-                        OnACStatusChanged?.Invoke(this, _lastAcStatus);
-                    }
-
-                    bool sessionIndexChanged = false;
-                    if (pageGraphics.SessionIndex != _lastSessionIndex && _lastAcStatus != AcStatus.AC_OFF)
-                    {
-                        Debug.WriteLine($"SessionIndex: {_lastSessionIndex} -> {pageGraphics.SessionIndex}");
-                        _lastSessionIndex = pageGraphics.SessionIndex;
-                        sessionIndexChanged = true;
-                    }
-
-                    bool sessionTypeChanged = false;
-                    if (pageGraphics.SessionType != _lastSessionType && _lastAcStatus != AcStatus.AC_OFF)
-                    {
-                        Debug.WriteLine($"SessionType: {_lastSessionType} -> {pageGraphics.SessionType}");
-                        _lastSessionType = pageGraphics.SessionType;
-                        sessionTypeChanged = true;
-                    }
-
-                    if (pageGraphics.SessionTimeLeft > _sessionTimeLeft)
-                    {
-                        if (CurrentSession == null)
-                            _sessionTimeLeft = pageGraphics.SessionTimeLeft;
-
-                        Trace.WriteLine("Detected session restart.. finalizing current session");
-                        FinalizeCurrentSession();
-                    }
-
-                    if (sessionIndexChanged)
-                        OnSessionIndexChanged?.Invoke(this, _lastSessionIndex);
-                    if (sessionTypeChanged)
-                        OnACSessionTypeChanged?.Invoke(this, _lastSessionType);
-
-                }
-            }
-
-            BroadcastTracker.Instance.OnRealTimeUpdate -= Instance_OnRealTimeUpdate;
-        }).Start();
-
-    }
-
     private void Instance_OnRealTimeUpdate(object sender, Broadcast.Structs.RealtimeUpdate e)
     {
         if (e.Phase != _lastSessionPhase)
@@ -240,5 +173,98 @@ public class RaceSessionTracker
     internal void Stop()
     {
         _isTracking = false;
+    }
+
+    private void WorkerThread()
+    {
+        BroadcastTracker.Instance.OnRealTimeUpdate += Instance_OnRealTimeUpdate;
+        Stopwatch timer = Stopwatch.StartNew();
+
+        while (_isTracking)
+        {
+            Thread.Sleep(100);
+
+            if (AccProcess.IsRunning == false)
+            {
+                continue;
+            }
+
+            var pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile();
+
+            if (pageGraphics.Status != _lastAcStatus)
+            {
+                Debug.WriteLine($"AcStatus: {_lastAcStatus} -> {pageGraphics.Status}");
+
+                if (_lastAcStatus == AcStatus.AC_OFF)
+                    CreateNewRaceWeekend();
+
+                _lastAcStatus = pageGraphics.Status;
+
+                if (_lastAcStatus == AcStatus.AC_OFF)
+                {
+                    FinalizeCurrentSession();
+                    FinalizeRaceWeekend();
+                    OnSessionIndexChanged?.Invoke(this, _lastSessionIndex);
+                }
+
+                OnACStatusChanged?.Invoke(this, _lastAcStatus);
+            }
+
+            bool sessionIndexChanged = false;
+            if (pageGraphics.SessionIndex != _lastSessionIndex && _lastAcStatus != AcStatus.AC_OFF)
+            {
+                Debug.WriteLine($"SessionIndex: {_lastSessionIndex} -> {pageGraphics.SessionIndex}");
+                _lastSessionIndex = pageGraphics.SessionIndex;
+                sessionIndexChanged = true;
+            }
+
+            bool sessionTypeChanged = false;
+            if (pageGraphics.SessionType != _lastSessionType && _lastAcStatus != AcStatus.AC_OFF)
+            {
+                Debug.WriteLine($"SessionType: {_lastSessionType} -> {pageGraphics.SessionType}");
+                _lastSessionType = pageGraphics.SessionType;
+                sessionTypeChanged = true;
+            }
+
+            if (pageGraphics.SessionTimeLeft > _sessionTimeLeft)
+            {
+                if (CurrentSession == null)
+                    _sessionTimeLeft = pageGraphics.SessionTimeLeft;
+
+                Trace.WriteLine("Detected session restart.. finalizing current session");
+                FinalizeCurrentSession();
+            }
+
+            if (HasMultiplierChanged(pageGraphics, timer))
+                OnMultiplierChanged?.Invoke(this, _gameTimeMultiplier);
+
+            if (sessionIndexChanged)
+                OnSessionIndexChanged?.Invoke(this, _lastSessionIndex);
+
+            if (sessionTypeChanged)
+                OnACSessionTypeChanged?.Invoke(this, _lastSessionType);
+        }
+
+        BroadcastTracker.Instance.OnRealTimeUpdate -= Instance_OnRealTimeUpdate;
+    }
+
+    private bool HasMultiplierChanged(SPageFileGraphic pageGraphics, Stopwatch timer)
+    {
+        float currentClockTimeDaySeconds = pageGraphics.ClockTimeDaySeconds;
+        currentClockTimeDaySeconds += (currentClockTimeDaySeconds < _prevClockTimeDaySeconds) ? (24 * 3600) : 0;
+
+        float inGameSeconds = currentClockTimeDaySeconds - _prevClockTimeDaySeconds;
+        float worldSeconds = timer.ElapsedMilliseconds / 1000.0f;
+
+        if (worldSeconds < 1)
+        {
+            return false;
+        }
+
+        _prevClockTimeDaySeconds = pageGraphics.ClockTimeDaySeconds;
+        timer.Restart();
+
+        _gameTimeMultiplier = (int)Math.Round(inGameSeconds / worldSeconds);
+        return true;
     }
 }
