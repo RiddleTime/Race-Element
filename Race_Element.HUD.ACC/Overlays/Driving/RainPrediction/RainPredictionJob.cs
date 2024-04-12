@@ -15,11 +15,14 @@ public readonly record struct RealtimeWeather
 
 internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : AbstractLoopJob
 {
-    private readonly object _lockObj = new();
     private Dictionary<DateTime, AcRainIntensity> _weatherForecast = [];
+    private readonly object _lockObj = new();
+
     private RealtimeWeather _lastWeather;
+    private int _multiplier = 1;
 
     public Dictionary<DateTime, AcRainIntensity> WeatherForecast { get { lock (_lockObj) return _weatherForecast; } }
+    public void SetMultiplier(int multiplier) { _multiplier = multiplier; }
 
     public sealed override void RunAction()
     {
@@ -57,8 +60,8 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
             DateTime currentDateTime = DateTime.UtcNow;
             _lastWeather = newScan;
 
-            _weatherForecast.Add(currentDateTime.AddMinutes(10), newScan.In10);
-            _weatherForecast.Add(currentDateTime.AddMinutes(30), newScan.In30);
+            _weatherForecast.Add(currentDateTime.AddMinutes(Get10MinutesWithMultiplier()), newScan.In10);
+            _weatherForecast.Add(currentDateTime.AddMinutes(Get30MinutesWithMultiplier()), newScan.In30);
 
             var tmp = _weatherForecast.OrderBy(x => x.Key);
             _weatherForecast = tmp.ToDictionary(x => x.Key, x => x.Value);
@@ -71,6 +74,18 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
         {
             _weatherForecast.Remove(kvp.Key);
         }
+    }
+
+    private double Get10MinutesWithMultiplier()
+    {
+        int countDown = 10 / _multiplier;
+        return countDown < 1 ? 0.5 : countDown;
+    }
+
+    private double Get30MinutesWithMultiplier()
+    {
+        int countDown = 30 / _multiplier;
+        return countDown < 1 ? 1.0 : countDown;
     }
 
     internal void ResetData()

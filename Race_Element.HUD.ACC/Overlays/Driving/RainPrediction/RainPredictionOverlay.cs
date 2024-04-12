@@ -17,15 +17,13 @@ Version = 1.00,
 Authors = ["Reinier Klarenberg"])]
 internal sealed class RainPredictionOverlay : AbstractOverlay
 {
-    private readonly RainPredictionConfiguration _config = new();
     private RainPredictionJob _weatherJob;
-
     private readonly InfoPanel _panel;
-    //private int _timeMultiplier = -1;
 
     public RainPredictionOverlay(Rectangle rectangle) : base(rectangle, "Rain Prediction")
     {
         this.RefreshRateHz = 2;
+
         int panelWidth = 150;
         _panel = new InfoPanel(10, panelWidth);
 
@@ -37,7 +35,7 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
     {
         if (IsPreviewing) return;
 
-        //SessionTimeTracker.Instance.OnMultiplierChanged += Instance_OnMultiplierChanged;
+        RaceSessionTracker.Instance.OnMultiplierChanged += Instance_OnMultiplierChanged;
         RaceSessionTracker.Instance.OnNewSessionStarted += Instance_OnNewSessionStarted;
 
         _weatherJob = new RainPredictionJob(this) { IntervalMillis = 1000 };
@@ -45,13 +43,13 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
     }
 
     private void Instance_OnNewSessionStarted(object sender, DbRaceSession e) => _weatherJob?.ResetData();
-    //private void Instance_OnMultiplierChanged(object sender, int e) => _timeMultiplier = e;
+    private void Instance_OnMultiplierChanged(object sender, int e) => _weatherJob.SetMultiplier(e);
 
     public sealed override void BeforeStop()
     {
         if (IsPreviewing) return;
 
-        //SessionTimeTracker.Instance.OnMultiplierChanged -= Instance_OnMultiplierChanged;
+        RaceSessionTracker.Instance.OnMultiplierChanged -= Instance_OnMultiplierChanged;
         RaceSessionTracker.Instance.OnNewSessionStarted -= Instance_OnNewSessionStarted;
 
         _weatherJob?.CancelJoin();
@@ -59,33 +57,25 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
 
     public sealed override void Render(Graphics g)
     {
-        if (_weatherJob != null)
+        _panel.AddLine($"Now", $"{AcRainIntensityToString(pageGraphics.rainIntensity)}");
+        AcRainIntensity prevRainIntensity = pageGraphics.rainIntensity;
+        var forecast = _weatherJob.WeatherForecast.ToList();
+
+        for (int i = 0; i < forecast.Count; ++i)
         {
-            _panel.AddLine($"Now", $"{AcRainIntensityToString(pageGraphics.rainIntensity)}");
-            AcRainIntensity prevRainIntensity = pageGraphics.rainIntensity;
-            var forecast = _weatherJob.WeatherForecast.ToList();
-
-            if (forecast.Count == 0)
+            if (prevRainIntensity == forecast[i].Value)
             {
-                _panel.AddLine("--:--", "No data yet");
+                continue;
             }
-            else
-            {
-                for (int i = 0; i < forecast.Count; ++i)
-                {
-                    if (prevRainIntensity == forecast[i].Value)
-                    {
-                        continue;
-                    }
 
-                    prevRainIntensity = forecast[i].Value;
-                    _panel.AddLine($"{forecast[i].Key.Subtract(DateTime.UtcNow):mm\\:ss}", $"{AcRainIntensityToString(forecast[i].Value)}");
-                }
-            }
+            prevRainIntensity = forecast[i].Value;
+            _panel.AddLine($"{forecast[i].Key.Subtract(DateTime.UtcNow):mm\\:ss}", $"{AcRainIntensityToString(forecast[i].Value)}");
         }
 
-        //string multiplierText = _timeMultiplier > 0 ? $"{_timeMultiplier}x" : "Detecting";
-        //_panel.AddLine("Multiplier", $"{multiplierText}");
+        if (forecast.Count == 0)
+        {
+            _panel.AddLine("--:--", "No data yet");
+        }
 
         _panel.Draw(g);
     }
