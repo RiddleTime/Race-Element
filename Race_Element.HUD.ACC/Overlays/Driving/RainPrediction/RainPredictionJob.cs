@@ -19,7 +19,7 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
     private readonly object _lockObj = new();
 
     private RealtimeWeather _lastWeather;
-    private int _multiplier = 0;
+    private int _multiplier = 1;
 
     public Dictionary<DateTime, AcRainIntensity> WeatherForecast { get { lock (_lockObj) return _weatherForecast; } }
     public void SetMultiplier(int multiplier) { _multiplier = multiplier; }
@@ -78,32 +78,14 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
 
     private double Get10MinutesWithMultiplier()
     {
-        switch (_multiplier)
-        {
-            case 1: return 10;
-            case 2: return 5;
-            case 4: return 2;
-            case 6: return 1;
-            case 12: return 0.5;
-            case 24: return 0.5;
-            case 48: return 0.5;
-            default: return 0;
-        }
+        int countDown = 10 / _multiplier;
+        return countDown < 1 ? 0.5 : countDown;
     }
 
     private double Get30MinutesWithMultiplier()
     {
-        switch (_multiplier)
-        {
-            case 1: return 30;
-            case 2: return 15;
-            case 4: return 7;
-            case 6: return 5;
-            case 12: return 2;
-            case 24: return 1;
-            case 48: return 1;
-            default: return 0;
-        }
+        int countDown = 30 / _multiplier;
+        return countDown < 1 ? 1.0 : countDown;
     }
 
     internal void ResetData()

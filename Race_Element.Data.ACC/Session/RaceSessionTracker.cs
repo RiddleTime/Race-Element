@@ -43,10 +43,8 @@ public class RaceSessionTracker
     public event EventHandler<DbRaceWeekend> OnRaceWeekendEnded;
 
     internal DbRaceSession CurrentSession { get; private set; }
-
-    private DateTime _lastReplaySave;
-
     private static RaceSessionTracker _instance;
+    private DateTime _lastReplaySave;
 
     private RaceSessionTracker()
     {
