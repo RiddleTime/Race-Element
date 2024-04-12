@@ -84,6 +84,7 @@ public abstract class AbstractLoopJob : IJob
         _jobSleepEvent.Reset();
         _workerExitEvent.Reset();
 
+        BeforeRun();
         IsRunning = true;
         new Thread(WorkerThread) { IsBackground = true }.Start();
     }
