@@ -40,7 +40,7 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
             if (Multiplier == -1) return;
 
             lock (UpcomingChanges)
-                while (UpcomingChanges.Keys.First() < DateTime.UtcNow)
+                while (UpcomingChanges.Count > 100 && UpcomingChanges.Keys.First() < DateTime.UtcNow)
                     UpcomingChanges.Remove(UpcomingChanges.Keys.First());
 
             if (WeatherChanges.Count == 0)
