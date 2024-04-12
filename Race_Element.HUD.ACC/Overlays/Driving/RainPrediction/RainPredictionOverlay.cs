@@ -84,12 +84,8 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
                     _panel.AddLine($"{data[i].Key.Subtract(DateTime.UtcNow):mm\\:ss}", $"{AcRainIntensityToString(data[i].Value)}");
                 }
             }
-
-#if DEBUG
-            _panel.AddLine("Multiplier", $"{_rainJob.Multiplier}X");
-#endif
+            //_panel.AddLine("Multiplier", $"{_rainJob.Multiplier}X");
         }
-
 
         _panel.Draw(g);
     }

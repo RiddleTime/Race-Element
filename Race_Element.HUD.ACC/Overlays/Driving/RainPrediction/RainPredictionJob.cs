@@ -64,8 +64,8 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
                 WeatherChanges.Add(change, newScan);
                 lock (UpcomingChanges)
                 {
-                    UpcomingChanges.Add(change.AddMinutes(10d / Multiplier), newScan.In10);
-                    UpcomingChanges.Add(change.AddMinutes(30d / Multiplier), newScan.In30);
+                    UpcomingChanges.Add(change.AddMinutes(10d), newScan.In10);
+                    UpcomingChanges.Add(change.AddMinutes(30d), newScan.In30);
                 }
                 _lastWeather = newScan;
             }
