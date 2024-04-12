@@ -6,7 +6,7 @@ using System.Linq;
 using static RaceElement.ACCSharedMemory;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.RainPrediction;
-public record struct RealtimeWeather
+internal record struct RealtimeWeather
 {
     public RealtimeWeather() { }
     public AcRainIntensity Now { get; set; }
