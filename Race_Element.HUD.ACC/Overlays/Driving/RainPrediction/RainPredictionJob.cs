@@ -1,30 +1,33 @@
 ﻿using RaceElement.Core.Jobs.LoopJob;
+using RaceElement.Data.ACC.Session;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using static RaceElement.ACCSharedMemory;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.RainPrediction;
-
-public readonly record struct RealtimeWeather
+public record struct RealtimeWeather
 {
-    public AcRainIntensity Now { get; init; }
-    public AcRainIntensity In10 { get; init; }
-    public AcRainIntensity In30 { get; init; }
+    public RealtimeWeather() { }
+    public AcRainIntensity Now { get; set; }
+    public AcRainIntensity In10 { get; set; }
+    public AcRainIntensity In30 { get; set; }
 }
 
 internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : AbstractLoopJob
 {
-    private Dictionary<DateTime, AcRainIntensity> _weatherForecast = [];
-    private readonly object _lockObj = new();
-
+    private readonly Dictionary<DateTime, RealtimeWeather> WeatherChanges = [];
+    public readonly Dictionary<DateTime, AcRainIntensity> UpcomingChanges = [];
     private RealtimeWeather _lastWeather;
-    private int _multiplier = 1;
 
-    public Dictionary<DateTime, AcRainIntensity> WeatherForecast { get { lock (_lockObj) return _weatherForecast; } }
-    public void SetMultiplier(int multiplier) { _multiplier = multiplier; }
+    /// <summary>-1 if multiplier not set, happens initially and when <see cref="ResetData"/> </summary>
+    public int Multiplier { get; private set; } = -1;
 
-    public sealed override void RunAction()
+    public override void BeforeRun() => RaceSessionTracker.Instance.OnMultiplierChanged += OnSessionTimeMultiplierChanged;
+    private void OnSessionTimeMultiplierChanged(object sender, int e) => Multiplier = e;
+    public override void AfterCancel() => RaceSessionTracker.Instance.OnMultiplierChanged -= OnSessionTimeMultiplierChanged;
+
+    public override void RunAction()
     {
         try
         {
@@ -34,10 +37,37 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
                 return;
             }
 
-            lock (_lockObj)
+            if (Multiplier == -1) return;
+
+            lock (UpcomingChanges)
+                while (UpcomingChanges.Keys.First() < DateTime.UtcNow)
+                    UpcomingChanges.Remove(UpcomingChanges.Keys.First());
+
+            if (WeatherChanges.Count == 0)
+                _lastWeather = new()
+                {
+                    Now = Overlay.pageGraphics.rainIntensity,
+                    In10 = Overlay.pageGraphics.rainIntensityIn10min,
+                    In30 = Overlay.pageGraphics.rainIntensityIn30min
+                };
+
+            RealtimeWeather newScan = new()
             {
-                RemoveOldForecast(DateTime.UtcNow);
-                AddNewForecast();
+                Now = Overlay.pageGraphics.rainIntensity,
+                In10 = Overlay.pageGraphics.rainIntensityIn10min,
+                In30 = Overlay.pageGraphics.rainIntensityIn30min
+            };
+
+            if (newScan != _lastWeather || UpcomingChanges.Count == 0)
+            {
+                DateTime change = DateTime.UtcNow;
+                WeatherChanges.Add(change, newScan);
+                lock (UpcomingChanges)
+                {
+                    UpcomingChanges.Add(change.AddMinutes(10d / Multiplier), newScan.In10);
+                    UpcomingChanges.Add(change.AddMinutes(30d / Multiplier), newScan.In30);
+                }
+                _lastWeather = newScan;
             }
         }
         catch (Exception)
@@ -45,52 +75,24 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
             // let's not break something for a new release, just in case.
         }
     }
-
-    private void AddNewForecast()
+    internal void ResetData()
     {
-        RealtimeWeather newScan = new()
-        {
-            Now = Overlay.pageGraphics.rainIntensity,
-            In10 = Overlay.pageGraphics.rainIntensityIn10min,
-            In30 = Overlay.pageGraphics.rainIntensityIn30min
-        };
-
-        if (newScan != _lastWeather || _weatherForecast.Count == 0)
-        {
-            DateTime currentDateTime = DateTime.UtcNow;
-            _lastWeather = newScan;
-
-            _weatherForecast.Add(currentDateTime.AddMinutes(Get10MinutesWithMultiplier()), newScan.In10);
-            _weatherForecast.Add(currentDateTime.AddMinutes(Get30MinutesWithMultiplier()), newScan.In30);
-
-            var tmp = _weatherForecast.OrderBy(x => x.Key);
-            _weatherForecast = tmp.ToDictionary(x => x.Key, x => x.Value);
-        }
-    }
-
-    private void RemoveOldForecast(DateTime threshold)
-    {
-        foreach (var kvp in _weatherForecast.Where(x => threshold.Ticks > x.Key.Ticks).ToList())
-        {
-            _weatherForecast.Remove(kvp.Key);
-        }
+        Multiplier = -1;
+        lock (WeatherChanges)
+            WeatherChanges.Clear();
+        lock (UpcomingChanges)
+            UpcomingChanges.Clear();
     }
 
     private double Get10MinutesWithMultiplier()
     {
-        int countDown = 10 / _multiplier;
-        return countDown < 1 ? 0.5 : countDown;
+        double countDown = 10d / Multiplier;
+        return countDown < 1d ? 0.5d : countDown;
     }
 
     private double Get30MinutesWithMultiplier()
     {
-        int countDown = 30 / _multiplier;
-        return countDown < 1 ? 1.0 : countDown;
-    }
-
-    internal void ResetData()
-    {
-        lock (_lockObj)
-            _weatherForecast.Clear();
+        double countDown = 30d / Multiplier;
+        return countDown < 1d ? 1d : countDown;
     }
 }

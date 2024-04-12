@@ -3,6 +3,7 @@ using RaceElement.Data.ACC.Session;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using static RaceElement.ACCSharedMemory;
@@ -17,7 +18,9 @@ Version = 1.00,
 Authors = ["Reinier Klarenberg"])]
 internal sealed class RainPredictionOverlay : AbstractOverlay
 {
-    private RainPredictionJob _weatherJob;
+    private RainPredictionConfiguration _config = new();
+
+    private RainPredictionJob _rainJob;
     private readonly InfoPanel _panel;
 
     public RainPredictionOverlay(Rectangle rectangle) : base(rectangle, "Rain Prediction")
@@ -35,47 +38,58 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
     {
         if (IsPreviewing) return;
 
-        RaceSessionTracker.Instance.OnMultiplierChanged += Instance_OnMultiplierChanged;
-        RaceSessionTracker.Instance.OnNewSessionStarted += Instance_OnNewSessionStarted;
+        RaceSessionTracker.Instance.OnNewSessionStarted += OnNewSessionStarted;
 
-        _weatherJob = new RainPredictionJob(this) { IntervalMillis = 1000 };
-        _weatherJob.Run();
+        _rainJob = new RainPredictionJob(this) { IntervalMillis = 1000 };
+        _rainJob.Run();
     }
 
-    private void Instance_OnNewSessionStarted(object sender, DbRaceSession e) => _weatherJob?.ResetData();
-    private void Instance_OnMultiplierChanged(object sender, int e) => _weatherJob.SetMultiplier(e);
+    private void OnNewSessionStarted(object sender, DbRaceSession e) => _rainJob?.ResetData();
 
     public sealed override void BeforeStop()
     {
         if (IsPreviewing) return;
 
-        RaceSessionTracker.Instance.OnMultiplierChanged -= Instance_OnMultiplierChanged;
-        RaceSessionTracker.Instance.OnNewSessionStarted -= Instance_OnNewSessionStarted;
+        RaceSessionTracker.Instance.OnNewSessionStarted -= OnNewSessionStarted;
 
-        _weatherJob?.CancelJoin();
+        _rainJob?.CancelJoin();
     }
 
     public sealed override void Render(Graphics g)
     {
-        _panel.AddLine($"Now", $"{AcRainIntensityToString(pageGraphics.rainIntensity)}");
-        AcRainIntensity prevRainIntensity = pageGraphics.rainIntensity;
-        var forecast = _weatherJob.WeatherForecast.ToList();
-
-        for (int i = 0; i < forecast.Count; ++i)
+        if (_rainJob != null)
         {
-            if (prevRainIntensity == forecast[i].Value)
+            _panel.AddLine($"Now", $"{AcRainIntensityToString(pageGraphics.rainIntensity)}");
+
+            List<KeyValuePair<DateTime, AcRainIntensity>> data;
+            lock (_rainJob.UpcomingChanges)
+                data = [.. _rainJob.UpcomingChanges.Where(x => x.Key > DateTime.UtcNow).OrderBy(x => x.Key)];
+
+            if (data.Count != 0)
             {
-                continue;
+                for (int i = 0; i < data.Count; i++)
+                {
+                    if (i == 0 && data[i].Value == pageGraphics.rainIntensity) continue;
+
+                    if (i > 0)
+                    {
+                        if (i < data.Count - 1)
+                            if (data[i - 1].Value == data[i].Value && data[i + 1].Value == data[i].Value)
+                                continue;
+
+                        if (data[i - 1].Value == data[i].Value)
+                            continue;
+                    }
+
+                    _panel.AddLine($"{data[i].Key.Subtract(DateTime.UtcNow):mm\\:ss}", $"{AcRainIntensityToString(data[i].Value)}");
+                }
             }
 
-            prevRainIntensity = forecast[i].Value;
-            _panel.AddLine($"{forecast[i].Key.Subtract(DateTime.UtcNow):mm\\:ss}", $"{AcRainIntensityToString(forecast[i].Value)}");
+#if DEBUG
+            _panel.AddLine("Multiplier", $"{_rainJob.Multiplier}X");
+#endif
         }
 
-        if (forecast.Count == 0)
-        {
-            _panel.AddLine("--:--", "No data yet");
-        }
 
         _panel.Draw(g);
     }
