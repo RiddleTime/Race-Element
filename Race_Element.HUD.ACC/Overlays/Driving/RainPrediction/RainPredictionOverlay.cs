@@ -39,6 +39,9 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
     {
         pageGraphics.rainIntensity = AcRainIntensity.Drizzle;
         _rainPredictionData = [
+            new(DateTime.UtcNow.AddMinutes(1), AcRainIntensity.Drizzle),
+            new(DateTime.UtcNow.AddMinutes(2), AcRainIntensity.Drizzle),
+            new(DateTime.UtcNow.AddMinutes(3), AcRainIntensity.Drizzle),
             new(DateTime.UtcNow.AddMinutes(6), AcRainIntensity.Light_Rain),
             new(DateTime.UtcNow.AddMinutes(6.5d), AcRainIntensity.Medium_Rain),
             new(DateTime.UtcNow.AddMinutes(8), AcRainIntensity.Light_Rain),
