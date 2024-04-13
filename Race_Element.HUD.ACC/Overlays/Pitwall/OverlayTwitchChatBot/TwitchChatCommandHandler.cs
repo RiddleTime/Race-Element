@@ -54,6 +54,7 @@ internal sealed class TwitchChatBotCommandHandler
             new("ahead", GetCarAheadResponse),
             new("behind", GetCarBehindResponse),
             new("pos", GetPositionLookupResponse),
+            new("session", GetSessionResponse),
         ];
     }
 
@@ -106,6 +107,12 @@ internal sealed class TwitchChatBotCommandHandler
 
         _ = sb.Append('.');
 
+        return sb.ToString();
+    }
+
+    private string GetSessionResponse(string[] args)
+    {
+        StringBuilder sb = new($"{_overlay.broadCastRealTime.SessionType}");
         return sb.ToString();
     }
 
