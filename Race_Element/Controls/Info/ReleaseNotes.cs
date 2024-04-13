@@ -6,7 +6,7 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
-        {"1.0.6.0", "\n- Twitch Chat Bot:"+
+        {"1.0.6.0", "- Twitch Chat Bot:"+
                     "\n  - Added +session, responds with information about the current session."+
                     "\n  - +temps now also shows rain condition when it's not dry."+
                     "\n  - +pos, +ahead and +behind now all use the same response, including the lap index of the last lap."+
