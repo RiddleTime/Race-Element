@@ -23,9 +23,9 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
     /// <summary>-1 if multiplier not set, happens initially and when <see cref="ResetData"/> </summary>
     public int Multiplier { get; private set; } = -1;
 
-    public override void BeforeRun() => RaceSessionTracker.Instance.OnMultiplierChanged += OnSessionTimeMultiplierChanged;
-    private void OnSessionTimeMultiplierChanged(object sender, int e) => Multiplier = e;
-    public override void AfterCancel() => RaceSessionTracker.Instance.OnMultiplierChanged -= OnSessionTimeMultiplierChanged;
+    //public override void BeforeRun() => RaceSessionTracker.Instance.OnMultiplierChanged += OnSessionTimeMultiplierChanged;
+    //private void OnSessionTimeMultiplierChanged(object sender, int e) => Multiplier = e;
+    //public override void AfterCancel() => RaceSessionTracker.Instance.OnMultiplierChanged -= OnSessionTimeMultiplierChanged;
 
     public override void RunAction()
     {
