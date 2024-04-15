@@ -46,7 +46,7 @@ internal sealed class LapTableOverlay : AbstractOverlay
         int maxSectorDeviation = 10000;
         int s1 = 28525 + rand.Next(-maxSectorDeviation, maxSectorDeviation);
         int s2 = 38842 + rand.Next(-maxSectorDeviation, maxSectorDeviation);
-        int s3 = 36840 + rand.Next(-maxSectorDeviation, maxSectorDeviation);
+        int s3 = rand.Next(35_000, 150_000) + rand.Next(-maxSectorDeviation, maxSectorDeviation);
         int startLapIndex = 100 + rand.Next(-50, 800);
 
         for (int i = startLapIndex; i < _config.Table.Rows + startLapIndex; i++)
@@ -83,7 +83,7 @@ internal sealed class LapTableOverlay : AbstractOverlay
 
         float fontHeight = (int)(_font.GetHeight(120));
         int columnHeight = (int)(Math.Ceiling(fontHeight) + 1 * scale);
-        int[] columnWidths = [(int)(45f * scale), (int)(100f * scale), (int)(78f * scale), (int)(78f * scale), (int)(78f * scale)];
+        int[] columnWidths = [(int)(45f * scale), (int)(100f * scale), (int)(90f * scale), (int)(90f * scale), (int)(90f * scale)];
         int totalWidth = columnWidths[0] + columnWidths[1];
 
         // set up backgrounds and invalid ones
@@ -306,6 +306,8 @@ internal sealed class LapTableOverlay : AbstractOverlay
     /// Creates a string reprenting the given sector time.
     ///  If the given sector time is equal or higher than 1,000,000 milliseconds, the returned value will be '-' to prevent overflow.
     /// </summary>
-    private string FormatSectorTime(int sectorTimeMilliseconds) => sectorTimeMilliseconds > 999_999 ? "-" : $"{sectorTimeMilliseconds / 1000d:F3}";
-
+    private static string FormatSectorTime(int sectorTimeMilliseconds)
+    {
+        return sectorTimeMilliseconds > 59_999 ? $"{TimeSpan.FromMilliseconds(sectorTimeMilliseconds):m\\:ss\\.fff}" : $"{sectorTimeMilliseconds / 1000d:F3}";
+    }
 }
