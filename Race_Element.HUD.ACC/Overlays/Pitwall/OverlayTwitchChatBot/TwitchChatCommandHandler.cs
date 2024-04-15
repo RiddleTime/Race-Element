@@ -148,7 +148,7 @@ internal sealed class TwitchChatBotCommandHandler
             sb.Append($"Air {_overlay.pagePhysics.AirTemp:F3}°, Track {_overlay.pagePhysics.RoadTemp:F3}°, Wind {_overlay.pageGraphics.WindSpeed:F3} km/h, Grip: {_overlay.pageGraphics.trackGripStatus}");
 
             if (_overlay.pageGraphics.rainIntensity != ACCSharedMemory.AcRainIntensity.No_Rain)
-                sb.Append($", {ACCSharedMemory.AcRainIntensityToString(_overlay.pageGraphics.rainIntensity)}");
+                sb.Append($", Rain: {ACCSharedMemory.AcRainIntensityToString(_overlay.pageGraphics.rainIntensity)}");
         }
         else
         {
