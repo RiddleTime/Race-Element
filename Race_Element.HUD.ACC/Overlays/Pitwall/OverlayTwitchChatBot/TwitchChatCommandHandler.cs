@@ -176,7 +176,7 @@ internal sealed class TwitchChatBotCommandHandler
 
     private static string GetPositionResponse(int requestedPosition)
     {
-        if (requestedPosition <= 0 || requestedPosition >= 200)
+        if (requestedPosition >= 0 && requestedPosition <= 200)
         {
             CarData requestedCar = GetCarAtPosition(requestedPosition);
             if (requestedCar == null) return string.Empty;
@@ -200,7 +200,7 @@ internal sealed class TwitchChatBotCommandHandler
                 TimeSpan s1 = TimeSpan.FromSeconds(lastLap.Splits[0].Value / 1000d);
                 TimeSpan s2 = TimeSpan.FromSeconds(lastLap.Splits[1].Value / 1000d);
                 TimeSpan s3 = TimeSpan.FromSeconds(lastLap.Splits[2].Value / 1000d);
-                sb.Append($" - Lap {requestedCar.RealtimeCarUpdate.Laps}: {lastLapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}");
+                sb.Append($" - L{requestedCar.RealtimeCarUpdate.Laps}: {lastLapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}");
             }
 
             return $"{sb}";
