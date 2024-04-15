@@ -34,6 +34,11 @@ public abstract class AbstractLoopJob : IJob
     }
 
     /// <summary>
+    /// Callback method executed when calling <see cref="Run"/>. Executed ahead of job execution.
+    /// </summary>
+    public virtual void BeforeRun() { }
+
+    /// <summary>
     /// Callback method executed by the job at the certain time in future. This method is executed from another thread, you may require synchronization mechanism.
     /// </summary>
     public abstract void RunAction();
@@ -79,6 +84,7 @@ public abstract class AbstractLoopJob : IJob
         _jobSleepEvent.Reset();
         _workerExitEvent.Reset();
 
+        BeforeRun();
         IsRunning = true;
         new Thread(WorkerThread) { IsBackground = true }.Start();
     }

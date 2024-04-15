@@ -147,7 +147,33 @@ internal class Ferrari296GT3 : ICarSetupConversion
             return rawValue;
         }
 
-        public int RideHeight(List<int> rawValue, Position position)
+        private int GetMinRideHeight(Position position, int trackTypeBop)
+        {
+            switch (position)
+            {
+                case Position.Front:
+                    {
+                        return trackTypeBop switch
+                        {
+                            // todo
+                            1 => 55,
+                            _ => 50,
+                        };
+                    }
+                case Position.Rear:
+                    {
+                        return trackTypeBop switch
+                        {
+                            // todo
+                            1 => 55,
+                            _ => 50,
+                        };
+                    }
+                default: return -1;
+            }
+        }
+
+        public int RideHeight(List<int> rawValue, Position position, int trackTypeBop)
         {
             switch (position)
             {

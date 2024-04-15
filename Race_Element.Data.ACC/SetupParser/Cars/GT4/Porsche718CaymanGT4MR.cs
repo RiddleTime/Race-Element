@@ -138,7 +138,7 @@ internal class Porsche718CaymanGT4MR : ICarSetupConversion
             return rawValue;
         }
 
-        public int RideHeight(List<int> rawValue, Position position)
+        public int RideHeight(List<int> rawValue, Position position, int trackTypeBop)
         {
             switch (position)
             {

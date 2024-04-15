@@ -187,7 +187,7 @@ internal class JaguarG3GT3 : ICarSetupConversion
             return rawValue;
         }
 
-        public int RideHeight(List<int> rawValue, Position position)
+        public int RideHeight(List<int> rawValue, Position position, int trackTypeBop)
         {
             switch (position)
             {

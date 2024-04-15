@@ -118,7 +118,7 @@ public class SetupConverter
 
     public interface IAeroBalance
     {
-        int RideHeight(List<int> rawValue, Position position);
+        int RideHeight(List<int> rawValue, Position position, int trackTypeBop);
         int BrakeDucts(int rawValue);
         int RearWing(int rawValue);
         int Splitter(int rawValue);

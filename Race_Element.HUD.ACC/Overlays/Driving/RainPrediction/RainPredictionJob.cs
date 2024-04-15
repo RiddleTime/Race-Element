@@ -1,13 +1,12 @@
 ﻿using RaceElement.Core.Jobs.LoopJob;
-using RaceElement.HUD.ACC.Overlays.OverlayRainPrediction;
+using RaceElement.Data.ACC.Session;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using static RaceElement.ACCSharedMemory;
 
-namespace RaceElement.HUD.ACC.Overlays.Driving.Weather;
-
-public record struct RealtimeWeather
+namespace RaceElement.HUD.ACC.Overlays.Driving.RainPrediction;
+internal record struct RealtimeWeather
 {
     public RealtimeWeather() { }
     public AcRainIntensity Now { get; set; }
@@ -21,6 +20,13 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
     public readonly Dictionary<DateTime, AcRainIntensity> UpcomingChanges = [];
     private RealtimeWeather _lastWeather;
 
+    /// <summary>-1 if multiplier not set, happens initially and when <see cref="ResetData"/> </summary>
+    public int Multiplier { get; private set; } = -1;
+
+    //public override void BeforeRun() => RaceSessionTracker.Instance.OnMultiplierChanged += OnSessionTimeMultiplierChanged;
+    //private void OnSessionTimeMultiplierChanged(object sender, int e) => Multiplier = e;
+    //public override void AfterCancel() => RaceSessionTracker.Instance.OnMultiplierChanged -= OnSessionTimeMultiplierChanged;
+
     public override void RunAction()
     {
         try
@@ -31,10 +37,11 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
                 return;
             }
 
+            if (Multiplier == -1) return;
+
             lock (UpcomingChanges)
-                if (UpcomingChanges.Count > 200)
-                    for (int i = 0; i < 100; i++)
-                        UpcomingChanges.Remove(UpcomingChanges.Keys.First());
+                while (UpcomingChanges.Count > 100 && UpcomingChanges.Keys.First() < DateTime.UtcNow)
+                    UpcomingChanges.Remove(UpcomingChanges.Keys.First());
 
             if (WeatherChanges.Count == 0)
                 _lastWeather = new()
@@ -57,8 +64,8 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
                 WeatherChanges.Add(change, newScan);
                 lock (UpcomingChanges)
                 {
-                    UpcomingChanges.Add(change.AddMinutes(10), newScan.In10);
-                    UpcomingChanges.Add(change.AddMinutes(30), newScan.In30);
+                    UpcomingChanges.Add(change.AddMinutes(10d), newScan.In10);
+                    UpcomingChanges.Add(change.AddMinutes(30d), newScan.In30);
                 }
                 _lastWeather = newScan;
             }
@@ -68,13 +75,24 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
             // let's not break something for a new release, just in case.
         }
     }
-
     internal void ResetData()
     {
+        Multiplier = -1;
         lock (WeatherChanges)
             WeatherChanges.Clear();
         lock (UpcomingChanges)
             UpcomingChanges.Clear();
-        return;
+    }
+
+    private double Get10MinutesWithMultiplier()
+    {
+        double countDown = 10d / Multiplier;
+        return countDown < 1d ? 0.5d : countDown;
+    }
+
+    private double Get30MinutesWithMultiplier()
+    {
+        double countDown = 30d / Multiplier;
+        return countDown < 1d ? 1d : countDown;
     }
 }

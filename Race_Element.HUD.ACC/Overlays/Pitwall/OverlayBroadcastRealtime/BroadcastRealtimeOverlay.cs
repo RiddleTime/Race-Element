@@ -5,6 +5,7 @@ using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.Util.SystemExtensions;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using static RaceElement.Data.ACC.EntryList.EntryListTracker;
 using static RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.DebugInfoHelper;
 
@@ -91,7 +92,18 @@ internal sealed class BroadcastRealtimeOverlay : AbstractOverlay
                         _table.AddRow("", [carData.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.HasValue ? $"{carData.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.Value / 1000}" : ""]);
                     }
 
-                    _table.AddRow("Coords", [$"X: {carData.Value.RealtimeCarUpdate.WorldPosX * 1000:F3}, Y: {carData.Value.RealtimeCarUpdate.WorldPosY * 1000:F3}"]);
+                    _table.AddRow("BroadCst", [$"X: {carData.Value.RealtimeCarUpdate.WorldPosX:F2}, Z: {carData.Value.RealtimeCarUpdate.WorldPosZ:F2}, Y: {carData.Value.RealtimeCarUpdate.WorldPosY:F2}"]);
+                    int playerCarIndex = pageGraphics.PlayerCarID;
+                    int playerIndex = 0;
+                    for (int i = 0; i < pageGraphics.CarIds.Length; i++)
+                        if (pageGraphics.CarIds[i] == playerCarIndex)
+                        {
+                            playerIndex = i;
+                            break;
+                        }
+
+                    var coord = pageGraphics.CarCoordinates[playerIndex];
+                    _table.AddRow("ShMem", [$"X: {coord.X:F2}, Z: {coord.Y:F2}, Y: {coord.Z:F2}"]);
                     _table.AddRow("%", [$"{carData.Value.RealtimeCarUpdate.SplinePosition:F3}"]);
 
                     //FieldInfo[] members = carData.Value.RealtimeCarUpdate.GetType().GetRuntimeFields().ToArray();

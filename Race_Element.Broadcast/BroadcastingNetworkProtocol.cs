@@ -213,8 +213,8 @@ public class BroadcastingNetworkProtocol
                         carUpdate.DriverIndex = br.ReadUInt16(); // Driver swap will make this change
                         carUpdate.DriverCount = br.ReadByte();
                         carUpdate.Gear = br.ReadByte() - 2; // -2 makes the R -1, N 0 and the rest as-is
-                        carUpdate.Heading = br.ReadSingle();
                         carUpdate.WorldPosX = br.ReadSingle();
+                        carUpdate.WorldPosZ = br.ReadSingle();
                         carUpdate.WorldPosY = br.ReadSingle();
                         carUpdate.CarLocation = (CarLocationEnum)br.ReadByte(); // - , Track, Pitlane, PitEntry, PitExit = 4
                         carUpdate.Kmh = br.ReadUInt16();

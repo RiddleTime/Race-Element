@@ -5,8 +5,8 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapTimeTable;
 internal sealed class LapTimeTableConfiguration : OverlayConfiguration
 {
     [ConfigGrouping("Table", "Change the behavior of the table")]
-    public TableGrouping Table { get; init; } = new TableGrouping();
-    public class TableGrouping
+    public TableGrouping Table { get; init; } = new();
+    public sealed class TableGrouping
     {
         [ToolTip("Display Columns with sector times for each lap in the table.")]
         public bool ShowSectors { get; init; } = true;

@@ -6,6 +6,13 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.6.0", "- Twitch Chat Bot:"+
+                    "\n  - Added +session, responds with information about the current session."+
+                    "\n  - +temps now also shows rain condition when it's not dry."+
+                    "\n  - +pos, +ahead and +behind now all use the same response, including the lap index of the last lap."+
+                    "\n- Twitch Chat HUD: Added behaviour category to options: Always Visible and Hide In Qualifying."+
+                    "\n- Rain Prediction HUD: Smaller dimension."+
+                    "\n- Lap Table HUD: Sector times will now show a minute marker if higher than 59.999. The HUD is now slightly wider than before."},
         {"1.0.5.6", "- Added preliminary support for ACC Nordschleife 24H DLC, expect an update for corner names and sector data."+
                     "\n- Corner Data HUD: Increased width of speed delta columns."+
                     "\n- Rain Prediction HUD: \"Heavy Rain\" will now show as \"Heavy\"."},

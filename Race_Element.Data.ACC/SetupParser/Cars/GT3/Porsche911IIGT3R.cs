@@ -208,7 +208,7 @@ internal class Porsche911IIGT3R : ICarSetupConversion, ISetupChanger
             return rawValue;
         }
 
-        public int RideHeight(List<int> rawValue, Position position)
+        public int RideHeight(List<int> rawValue, Position position, int trackTypeBop)
         {
             switch (position)
             {

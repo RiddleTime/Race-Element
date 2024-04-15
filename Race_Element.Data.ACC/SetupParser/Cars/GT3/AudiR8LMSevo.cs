@@ -142,7 +142,7 @@ internal class AudiR8LMSevo : ICarSetupConversion
             return rawValue;
         }
 
-        public int RideHeight(List<int> rawValue, Position position)
+        public int RideHeight(List<int> rawValue, Position position, int trackTypeBop)
         {
             switch (position)
             {

@@ -197,7 +197,7 @@ internal class BMWM2CSRacing : ICarSetupConversion, ISetupChanger
             return rawValue + 1;
         }
 
-        public int RideHeight(List<int> rawValue, Position position)
+        public int RideHeight(List<int> rawValue, Position position, int trackTypeBop)
         {
             switch (position)
             {
