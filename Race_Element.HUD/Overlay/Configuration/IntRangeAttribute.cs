@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace RaceElement.HUD.Overlay.Configuration;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class IntRangeAttribute : Attribute
+public sealed class IntRangeAttribute : Attribute
 {
     public int Min;
     public int Max;

@@ -3,7 +3,7 @@
 namespace RaceElement.HUD.Overlay.Configuration;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class ConfigGroupingAttribute : Attribute
+public sealed class ConfigGroupingAttribute : Attribute
 {
     public string Title;
     public string Description;
