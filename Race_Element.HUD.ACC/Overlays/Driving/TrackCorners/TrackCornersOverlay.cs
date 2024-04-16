@@ -28,7 +28,7 @@ internal sealed class TrackCornersOverlay : AbstractOverlay
     {
         [ConfigGrouping("Names", "Configure options specific to the Corner Names HUD.")]
         public CornerNamesGrouping CornerNames { get; set; } = new CornerNamesGrouping();
-        public class CornerNamesGrouping
+        public sealed class CornerNamesGrouping
         {
             [ToolTip("Show corner names in addition to the already displayin corner numbers.\nNot Every corner has got a name and some tracks don't have corner names at all.")]
             public bool Names { get; init; } = true;
@@ -52,13 +52,13 @@ internal sealed class TrackCornersOverlay : AbstractOverlay
         RefreshRateHz = 3;
     }
 
-    public override void SetupPreviewData()
+    public sealed override void SetupPreviewData()
     {
         pageStatic.Track = "Spa";
         pageGraphics.NormalizedCarPosition = 0.0472972f;
     }
 
-    public override void BeforeStart()
+    public sealed override void BeforeStart()
     {
         _font = FontUtil.FontSegoeMono(14f * this.Scale);
 
@@ -165,7 +165,7 @@ internal sealed class TrackCornersOverlay : AbstractOverlay
         return maxTextWidth;
     }
 
-    public override void BeforeStop()
+    public sealed override void BeforeStop()
     {
         RaceSessionTracker.Instance.OnNewSessionStarted -= Instance_OnNewSessionStarted;
         RaceSessionTracker.Instance.OnRaceWeekendEnded -= Instance_OnRaceWeekendEnded;
@@ -175,7 +175,7 @@ internal sealed class TrackCornersOverlay : AbstractOverlay
         _font?.Dispose();
     }
 
-    public override bool ShouldRender()
+    public sealed override bool ShouldRender()
     {
         if (_config.CornerNames.Spectator && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
             return true;
@@ -183,7 +183,7 @@ internal sealed class TrackCornersOverlay : AbstractOverlay
         return base.ShouldRender();
     }
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
         string cornerNumber = "";
         string cornerName = "";

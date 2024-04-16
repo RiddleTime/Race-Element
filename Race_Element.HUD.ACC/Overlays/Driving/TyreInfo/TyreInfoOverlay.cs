@@ -22,7 +22,7 @@ internal sealed class TyreInfoOverlay : AbstractOverlay
     {
         [ConfigGrouping("Info", "Show additional information about the condition of the tyres.")]
         public InfoGrouping Information { get; init; } = new InfoGrouping();
-        public class InfoGrouping
+        public sealed class InfoGrouping
         {
             [ToolTip("Displays the percentage of brake pad life above the brake pads.")]
             public bool PadLife { get; init; } = true;
@@ -76,12 +76,12 @@ internal sealed class TyreInfoOverlay : AbstractOverlay
         this.RefreshRateHz = _config.Information.RefreshRate;
     }
 
-    public override void BeforeStart()
+    public sealed override void BeforeStart()
     {
         TyresTracker.Instance.OnTyresInfoChanged += OnTyresInfoChanged;
     }
 
-    public override void BeforeStop()
+    public sealed override void BeforeStop()
     {
         TyresTracker.Instance.OnTyresInfoChanged -= OnTyresInfoChanged;
     }
@@ -91,7 +91,7 @@ internal sealed class TyreInfoOverlay : AbstractOverlay
         _lastTyresInfo = e;
     }
 
-    public override void SetupPreviewData()
+    public sealed override void SetupPreviewData()
     {
         _lastTyresInfo = TyresTracker.GetPreviewTyresInfo();
     }

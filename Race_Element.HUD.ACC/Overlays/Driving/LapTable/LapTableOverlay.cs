@@ -37,7 +37,7 @@ internal sealed class LapTableOverlay : AbstractOverlay
         _storedLaps = [];
     }
 
-    public override void SetupPreviewData()
+    public sealed override void SetupPreviewData()
     {
         _dataIsPreview = true;
 
@@ -67,7 +67,7 @@ internal sealed class LapTableOverlay : AbstractOverlay
         _storedLaps = Laps.OrderByDescending(x => x.Key).ToList();
     }
 
-    public override void BeforeStart()
+    public sealed override void BeforeStart()
     {
         float scale = this.Scale;
         if (_dataIsPreview) scale = 1f;
@@ -193,7 +193,7 @@ internal sealed class LapTableOverlay : AbstractOverlay
             }
     }
 
-    public override void BeforeStop()
+    public sealed override void BeforeStop()
     {
         RaceSessionTracker.Instance.OnNewSessionStarted -= OnNewSessionStarted;
 
@@ -203,7 +203,7 @@ internal sealed class LapTableOverlay : AbstractOverlay
             _columnBackgroundsValid[i].Dispose();
     }
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
         if (!_dataIsPreview)
             _storedLaps = LapTracker.Instance.Laps.OrderByDescending(x => x.Key).Take(_config.Table.Rows).ToList();

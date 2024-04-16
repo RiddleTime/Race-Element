@@ -19,7 +19,7 @@ OverlayType = OverlayType.Drive,
 OverlayCategory = OverlayCategory.Lap,
 Version = 1.00,
 Authors = ["FG"])]
-internal class AverageLapTimeOverlay : AbstractOverlay
+internal sealed class AverageLapTimeOverlay : AbstractOverlay
 {
 
     private readonly AverageLapTimeOverlayConfig _config = new();
@@ -28,7 +28,7 @@ internal class AverageLapTimeOverlay : AbstractOverlay
     {
         [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
         public InfoPanelGrouping InfoPanel { get; init; } = new InfoPanelGrouping();
-        public class InfoPanelGrouping
+        public sealed class InfoPanelGrouping
         {
             [ToolTip("Number of valid laps in a row for average time calculation.")]
             [IntRange(2, 10, 1)]
@@ -56,13 +56,13 @@ internal class AverageLapTimeOverlay : AbstractOverlay
         _table = new InfoTable(12, [40, 40, 150, 150]);
     }
 
-    public override void BeforeStart()
+    public sealed override void BeforeStart()
     {
         LapTracker.Instance.LapFinished += Collector_LapFinished;
         _font = FontUtil.FontSegoeMono(12f * this.Scale);
     }
 
-    public override void BeforeStop()
+    public sealed override void BeforeStop()
     {
         LapTracker.Instance.LapFinished -= Collector_LapFinished;
     }
@@ -97,7 +97,7 @@ internal class AverageLapTimeOverlay : AbstractOverlay
 
     }
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
 
         // display fastest average lap time and fastest lap time

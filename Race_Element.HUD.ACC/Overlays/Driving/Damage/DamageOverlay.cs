@@ -24,7 +24,7 @@ internal sealed class DamageOverlay : AbstractOverlay
 
         [ConfigGrouping("Damage", "Changes the behavior of the Damage HUD")]
         public DamageGrouping Damage { get; init; } = new DamageGrouping();
-        public class DamageGrouping
+        public sealed class DamageGrouping
         {
             [ToolTip("Only show the HUD when there is actual damage on the car.")]
             public bool AutoHide { get; set; } = true;
@@ -68,7 +68,7 @@ internal sealed class DamageOverlay : AbstractOverlay
         RefreshRateHz = 1;
     }
 
-    public override void BeforeStart()
+    public sealed override void BeforeStart()
     {
         int scaledWidth = (int)(this.Width * this.Scale) - 1;
         int scaledHeight = (int)(this.Height * this.Scale) - 1;
@@ -231,14 +231,14 @@ internal sealed class DamageOverlay : AbstractOverlay
         };
     }
 
-    public override void BeforeStop()
+    public sealed override void BeforeStop()
     {
         _carOutline?.Dispose();
         _suspensionDamage?.Dispose();
         _bodyDamage?.Dispose();
     }
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
         float newDamageTime = Damage.GetTotalRepairTime(pagePhysics);
         if (newDamageTime != _damageTime)

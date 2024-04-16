@@ -35,7 +35,7 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
         this.RefreshRateHz = 2;
     }
 
-    public override void SetupPreviewData()
+    public sealed override void SetupPreviewData()
     {
         pageGraphics.rainIntensity = AcRainIntensity.Drizzle;
         _rainPredictionData = [

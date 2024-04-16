@@ -56,13 +56,13 @@ internal sealed class WheelSlipOverlay : AbstractOverlay
         RefreshRateHz = 30;
     }
 
-    public override void SetupPreviewData()
+    public sealed override void SetupPreviewData()
     {
         pagePhysics.WheelSlip = [0.3f, 0.3f, 0.6f, 0.745f];
         pagePhysics.SlipAngle = [0, 0, -0.45f, -0.35f];
     }
 
-    public override void BeforeStart()
+    public sealed override void BeforeStart()
     {
         _wheelPen = new Pen(Brushes.White, 4);
 
@@ -90,13 +90,13 @@ internal sealed class WheelSlipOverlay : AbstractOverlay
         Height = size;
     }
 
-    public override void BeforeStop()
+    public sealed override void BeforeStop()
     {
         _cachedCircleBackground?.Dispose();
         _wheelPen?.Dispose();
     }
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
         int baseX = 2;
         int baseY = 2;

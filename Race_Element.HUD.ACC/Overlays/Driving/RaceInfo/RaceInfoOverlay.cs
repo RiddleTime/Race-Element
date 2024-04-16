@@ -15,7 +15,7 @@ internal class RaceInfoOverlay : AbstractOverlay
     {
         [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
         public InfoPanelGrouping InfoPanel { get; init; } = new InfoPanelGrouping();
-        public class InfoPanelGrouping
+        public sealed class InfoPanelGrouping
         {
             [ToolTip("Shows a timer when the pit window starts and ends.")]
             public bool PitWindow { get; init; } = true;

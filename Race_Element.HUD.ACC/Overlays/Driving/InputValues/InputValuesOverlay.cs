@@ -14,7 +14,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayInputValues;
     OverlayType = OverlayType.Drive,
 Authors = ["Reinier Klarenberg"]
     )]
-internal class InputValuesOverlay : AbstractOverlay
+internal sealed class InputValuesOverlay : AbstractOverlay
 {
     private readonly InputValuesConfiguration _config = new();
     private sealed class InputValuesConfiguration : OverlayConfiguration
@@ -40,13 +40,13 @@ internal class InputValuesOverlay : AbstractOverlay
         RefreshRateHz = 20;
     }
 
-    public override void SetupPreviewData()
+    public sealed override void SetupPreviewData()
     {
         pagePhysics.Gas = 0.9986f;
         pagePhysics.Brake = 0.0127f;
     }
 
-    public override void BeforeStart()
+    public sealed override void BeforeStart()
     {
         _graphicsGrid = new GraphicsGrid(2, 1);
 
@@ -92,14 +92,14 @@ internal class InputValuesOverlay : AbstractOverlay
         Height = (int)(baseHeight * 2f) + 1;
     }
 
-    public override void BeforeStop()
+    public sealed override void BeforeStop()
     {
         _graphicsGrid?.Dispose();
         _throttleCell?.Dispose();
         _brakeCell?.Dispose();
     }
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
         _throttleCell.CachedBackground.Opacity = 0.7f + 0.3f * pagePhysics.Gas;
         _throttleCell.UpdateText($"{(pagePhysics.Gas * 100f).ToString($"F{_config.Format.Decimals}")}");

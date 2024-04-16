@@ -27,7 +27,7 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
     //private void OnSessionTimeMultiplierChanged(object sender, int e) => Multiplier = e;
     //public override void AfterCancel() => RaceSessionTracker.Instance.OnMultiplierChanged -= OnSessionTimeMultiplierChanged;
 
-    public override void RunAction()
+    public sealed override void RunAction()
     {
         try
         {

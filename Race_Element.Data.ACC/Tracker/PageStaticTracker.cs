@@ -5,7 +5,7 @@ using static RaceElement.ACCSharedMemory;
 
 namespace RaceElement.Data.ACC.Tracker;
 
-public class PageStaticTracker : AbstractLoopJob
+public sealed class PageStaticTracker : AbstractLoopJob
 {
     private static PageStaticTracker _instance;
     public static PageStaticTracker Instance

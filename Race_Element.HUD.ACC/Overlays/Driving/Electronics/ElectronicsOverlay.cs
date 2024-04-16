@@ -40,7 +40,7 @@ internal sealed class ElectronicsOverlay : AbstractOverlay
         RefreshRateHz = 5;
     }
 
-    public override void BeforeStart()
+    public sealed override void BeforeStart()
     {
         _font = FontUtil.FontSegoeMono(11f * this.Scale);
 
@@ -102,7 +102,7 @@ internal sealed class ElectronicsOverlay : AbstractOverlay
         this.Height = (int)(headerRect.Top / this.Scale);
     }
 
-    public override void BeforeStop()
+    public sealed override void BeforeStop()
     {
         _brakeBiasHeader?.Dispose();
         _brakeBiasValue?.Dispose();
@@ -118,7 +118,7 @@ internal sealed class ElectronicsOverlay : AbstractOverlay
         _font?.Dispose();
     }
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
         float brakeBias = pagePhysics.BrakeBias * 100 + BrakeBias.Get(pageStatic.CarModel);
         if (brakeBias < 0)

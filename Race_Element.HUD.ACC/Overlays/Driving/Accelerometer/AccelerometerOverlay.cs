@@ -23,7 +23,7 @@ internal sealed class AccelerometerOverlay : AbstractOverlay
     {
         [ConfigGrouping("Accelerometer", "Additional options for the Accelerometer")]
         public AccelerometerGrouping Accelerometer { get; init; } = new();
-        public class AccelerometerGrouping
+        public sealed class AccelerometerGrouping
         {
             [ToolTip("Displays fading dots representing history of the g-forces.")]
             public bool HistoryTrace { get; init; } = true;
@@ -48,7 +48,7 @@ internal sealed class AccelerometerOverlay : AbstractOverlay
 
     public AccelerometerOverlay(Rectangle rectangle) : base(rectangle, "Accelerometer") { }
 
-    public override void SetupPreviewData()
+    public sealed override void SetupPreviewData()
     {
         pagePhysics.AccG[0] = 0f;
         pagePhysics.AccG[2] = 0f;

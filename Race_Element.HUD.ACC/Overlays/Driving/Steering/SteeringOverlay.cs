@@ -29,14 +29,14 @@ internal sealed class SteeringOverlay : AbstractOverlay
 
         [ConfigGrouping("Information", "Set the text that is displayed within the steering circle.")]
         public InputsGrouping Info { get; init; } = new InputsGrouping();
-        public class InputsGrouping
+        public sealed class InputsGrouping
         {
             public InputsText Text { get; init; } = InputsText.None;
         }
 
         [ConfigGrouping("Colors", "Adjust the colors used in the Steering HUD.")]
         public RingGrouping Ring { get; init; } = new RingGrouping();
-        public class RingGrouping
+        public sealed class RingGrouping
         {
             [IntRange(4, 12, 1)]
             public int RingThickness { get; init; } = 7;

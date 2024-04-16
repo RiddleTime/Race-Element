@@ -16,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDeltaBar;
 [Overlay(Name = "Lap Delta Bar", Description = "A customizable Laptime Delta Bar", OverlayType = OverlayType.Drive, Version = 1,
     OverlayCategory = OverlayCategory.Lap,
 Authors = ["Reinier Klarenberg"])]
-internal class LapDeltaOverlay : AbstractOverlay
+internal sealed class LapDeltaOverlay : AbstractOverlay
 {
     private readonly LapTimeDeltaConfiguration _config = new();
 
@@ -38,12 +38,12 @@ internal class LapDeltaOverlay : AbstractOverlay
         this.RefreshRateHz = 5;
     }
 
-    public override void SetupPreviewData()
+    public sealed override void SetupPreviewData()
     {
         pageGraphics.DeltaLapTimeMillis = -0137;
     }
 
-    public override void BeforeStart()
+    public sealed override void BeforeStart()
     {
         try
         {
@@ -77,7 +77,7 @@ internal class LapDeltaOverlay : AbstractOverlay
         }
     }
 
-    public override void BeforeStop()
+    public sealed override void BeforeStop()
     {
         _cachedBackground?.Dispose();
         _cachedPositiveDelta?.Dispose();
@@ -86,7 +86,7 @@ internal class LapDeltaOverlay : AbstractOverlay
         _font?.Dispose();
     }
 
-    public override bool ShouldRender()
+    public sealed override bool ShouldRender()
     {
         if (_config.Delta.HideForRace && !this.IsRepositioning && pageGraphics.SessionType == ACCSharedMemory.AcSessionType.AC_RACE)
             return false;
@@ -97,7 +97,7 @@ internal class LapDeltaOverlay : AbstractOverlay
         return base.ShouldRender();
     }
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
         _cachedBackground?.Draw(g, 0, 0, _config.Bar.Width, _config.Bar.Height);
 

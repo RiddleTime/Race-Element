@@ -22,7 +22,7 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
     {
         [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
         public InfoPanelGrouping InfoPanel { get; init; } = new InfoPanelGrouping();
-        public class InfoPanelGrouping
+        public sealed class InfoPanelGrouping
         {
             [ToolTip("Sets the number of additional laps as a fuel buffer.")]
             [IntRange(0, 3, 1)]
@@ -40,7 +40,7 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
 
         [ConfigGrouping("Colors", "Adjust colors for the fuel bar.")]
         public ColorsGrouping Colors { get; init; } = new ColorsGrouping();
-        public class ColorsGrouping
+        public sealed class ColorsGrouping
         {
             [ToolTip("Change the color of the fuel bar when full fuel.")]
             public Color FullColor { get; init; } = Color.FromArgb(255, Color.Green);

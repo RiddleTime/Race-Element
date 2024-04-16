@@ -61,13 +61,13 @@ internal sealed class CurrentGearOverlay : AbstractOverlay
         RefreshRateHz = 30;
     }
 
-    public override void SetupPreviewData()
+    public sealed override void SetupPreviewData()
     {
         _lastGear = 3;
         pagePhysics.Gear = 3;
     }
 
-    public override void BeforeStart()
+    public sealed override void BeforeStart()
     {
         Font font = FontUtil.FontConthrax(50 * this.Scale);
         HatchBrush hatchBrush = new(HatchStyle.LightUpwardDiagonal, Color.FromArgb(225, Color.Black), Color.FromArgb(185, Color.Black));
@@ -100,13 +100,13 @@ internal sealed class CurrentGearOverlay : AbstractOverlay
         _gearTweener = new Tweener();
     }
 
-    public override void BeforeStop()
+    public sealed override void BeforeStop()
     {
         foreach (CachedBitmap cachedBitmap in _gearBitmaps)
             cachedBitmap?.Dispose();
     }
 
-    public override bool ShouldRender()
+    public sealed override bool ShouldRender()
     {
         if (_config.Gear.Spectator && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
             return true;
@@ -134,7 +134,7 @@ internal sealed class CurrentGearOverlay : AbstractOverlay
         return currentGear;
     }
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
         int currentGear = GetCurrentGear();
 

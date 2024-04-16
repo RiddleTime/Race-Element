@@ -53,7 +53,7 @@ internal sealed class ShiftIndicatorOverlay : AbstractOverlay
         this.Width = _config.Bar.Width + 1;
     }
 
-    public override void SetupPreviewData()
+    public sealed override void SetupPreviewData()
     {
         int maxRpm = ACCSharedMemory.Instance.ReadStaticPageFile().MaxRpm;
         if (maxRpm == 0) maxRpm = 9250; // porsche 911 max rpm..
