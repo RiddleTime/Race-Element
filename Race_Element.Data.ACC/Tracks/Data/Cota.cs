@@ -5,7 +5,7 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.Data.ACC.Tracks.Data;
 
-internal class Cota : AbstractTrackData
+internal sealed class Cota : AbstractTrackData
 {
     public override Guid Guid => new("f45eac53-7a77-4fe5-812f-064b30ac22df");
     public override string GameName => "cota";

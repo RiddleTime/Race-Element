@@ -5,7 +5,7 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.Data.ACC.Tracks.Data;
 
-internal class LagunaSeca : AbstractTrackData
+internal sealed class LagunaSeca : AbstractTrackData
 {
     public override Guid Guid => new("0c8d198c-608f-4beb-96f5-5eafb5d3ba6b");
     public override string GameName => "Laguna_Seca";

@@ -5,7 +5,7 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.Data.ACC.Tracks.Data;
 
-internal class Silverstone : AbstractTrackData
+internal sealed class Silverstone : AbstractTrackData
 {
     public override Guid Guid => new("8636837e-e916-4d4b-8f29-625cf6bf4695");
     public override string GameName => "Silverstone";

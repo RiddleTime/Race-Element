@@ -5,7 +5,7 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.Data.ACC.Tracks.Data;
 
-internal class Nurburgring : AbstractTrackData
+internal sealed class Nurburgring : AbstractTrackData
 {
     public override Guid Guid => new("20200ee1-89c1-4580-86f1-3ded3018e9e3");
     public override string GameName => "nurburgring";

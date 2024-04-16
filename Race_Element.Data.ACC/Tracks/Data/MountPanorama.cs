@@ -5,7 +5,7 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.Data.ACC.Tracks.Data;
 
-internal class MountPanorama : AbstractTrackData
+internal sealed class MountPanorama : AbstractTrackData
 {
     public override Guid Guid => new("c054299c-0e16-4094-8e76-a9a4da399268");
     public override string GameName => "mount_panorama";

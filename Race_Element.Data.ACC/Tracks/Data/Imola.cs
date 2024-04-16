@@ -5,7 +5,7 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.Data.ACC.Tracks.Data;
 
-internal class Imola : AbstractTrackData
+internal sealed class Imola : AbstractTrackData
 {
     public override Guid Guid => new("678eefc3-a5f0-4b2a-a1cc-03ac62650ede");
     public override string GameName => "Imola";

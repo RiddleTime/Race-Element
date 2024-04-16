@@ -5,7 +5,7 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.Data.ACC.Tracks.Data;
 
-internal class Zandvoort : AbstractTrackData
+internal sealed class Zandvoort : AbstractTrackData
 {
     public override Guid Guid => new("e7a091a3-b2c1-4903-8768-591a937858ea");
     public override string GameName => "Zandvoort";

@@ -5,7 +5,7 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.Data.ACC.Tracks.Data;
 
-internal class BrandsHatch : AbstractTrackData
+internal sealed class BrandsHatch : AbstractTrackData
 {
     public override Guid Guid => new("7827823f-6df1-4295-bc24-93bc83d71855");
     public override string GameName => "brands_hatch";

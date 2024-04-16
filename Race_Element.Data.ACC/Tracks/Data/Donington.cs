@@ -5,7 +5,7 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.Data.ACC.Tracks.Data;
 
-internal class Donington : AbstractTrackData
+internal sealed class Donington : AbstractTrackData
 {
     public override Guid Guid => new("e93925e9-16c8-442a-bea3-ae449d2e04be");
     public override string GameName => "donington";

@@ -5,7 +5,7 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.Data.ACC.Tracks.Data;
 
-internal class Kyalami : AbstractTrackData
+internal sealed class Kyalami : AbstractTrackData
 {
     public override Guid Guid => new("65e00cd4-6c39-4cb4-acf9-f8977cd56ba1");
     public override string GameName => "Kyalami";
