@@ -68,6 +68,9 @@ internal sealed class TwitchChatConfiguration : OverlayConfiguration
         [IntRange(0, 255, 1)]
         public int BackgroundOpacity { get; init; } = 170;
 
+        [ToolTip("Adjust the text color when Display Bot Answers is enabled.")]
+        public Color TagColor { get; init; } = Color.FromArgb(255, 255, 155, 56);
+
         [ToolTip("Adjust the text color when someone sends in bits.")]
         public Color BitsColor { get; init; } = Color.FromArgb(255, 255, 215, 0);
 
