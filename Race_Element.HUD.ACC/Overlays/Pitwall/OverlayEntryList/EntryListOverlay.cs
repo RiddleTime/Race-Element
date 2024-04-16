@@ -31,7 +31,7 @@ internal sealed class EntryListOverlay : AbstractOverlay
     {
         [ConfigGrouping("EntryList", "Provides settings for overlay docking.")]
         public EntryListGrouping Entrylist { get; set; } = new EntryListGrouping();
-        public class EntryListGrouping
+        public sealed class EntryListGrouping
         {
             [ToolTip("Show extended data, adds a new row for each car.")]
             public bool ExtendedData { get; set; } = false;

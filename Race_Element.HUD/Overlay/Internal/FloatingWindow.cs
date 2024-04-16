@@ -962,7 +962,7 @@ internal struct BLENDFUNCTION
     public byte SourceConstantAlpha;
     public byte AlphaFormat;
 }
-internal class User32
+internal sealed class User32
 {
     public const uint WS_POPUP = 0x80000000;
     public const int WS_EX_TOPMOST = 0x8;
@@ -1069,7 +1069,7 @@ internal class User32
     public static extern bool AdjustWindowRectEx(ref RECT lpRect, int dwStyle, bool bMenu, int dwExStyle);
 }
 
-internal class Gdi32
+internal sealed class Gdi32
 {
     // Methods
     private Gdi32()

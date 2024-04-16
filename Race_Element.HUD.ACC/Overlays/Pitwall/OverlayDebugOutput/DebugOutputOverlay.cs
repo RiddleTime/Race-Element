@@ -14,7 +14,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput;
 internal sealed class DebugOutputOverlay : AbstractOverlay
 {
     private readonly DebugOutputConfiguration _config = new();
-    private class DebugOutputConfiguration : OverlayConfiguration
+    private sealed class DebugOutputConfiguration : OverlayConfiguration
     {
         [ConfigGrouping("Output", "Provides settings for overlay docking.")]
         public OutputGrouping Output { get; set; } = new OutputGrouping();

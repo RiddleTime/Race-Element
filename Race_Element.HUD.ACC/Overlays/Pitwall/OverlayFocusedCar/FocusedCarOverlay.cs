@@ -11,10 +11,10 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayFocusedCar;
 
 [Overlay(Name = "Focused Car", Description = "Shows information regarding the focused car",
     OverlayType = OverlayType.Pitwall, Version = 1.00)]
-internal class FocusedCarOverlay : AbstractOverlay
+internal sealed class FocusedCarOverlay : AbstractOverlay
 {
     private FocusedCarConfig _config = new();
-    private class FocusedCarConfig : OverlayConfiguration
+    private sealed class FocusedCarConfig : OverlayConfiguration
     {
         public FocusedCarConfig()
         {

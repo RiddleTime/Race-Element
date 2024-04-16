@@ -15,7 +15,7 @@ namespace RaceElement.HUD.ACC.Overlays.System.Overlay3D;
 internal class _3dOverlay : AbstractOverlay
 {
     private _3dConfiguration _config = new();
-    private class _3dConfiguration : OverlayConfiguration
+    private sealed class _3dConfiguration : OverlayConfiguration
     {
 
         public _3dConfiguration()

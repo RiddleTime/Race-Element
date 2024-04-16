@@ -10,14 +10,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayACC;
 [Overlay(Name = "ACC Process", Version = 1.00, OverlayType = OverlayType.Pitwall,
    Description = "A panel showing information about ACC.")]
 #endif
-internal class AccProcessOverlay : AbstractOverlay
+internal sealed class AccProcessOverlay : AbstractOverlay
 {
     private readonly AccOverlayConfiguration _config = new();
-    private class AccOverlayConfiguration : OverlayConfiguration
+    private sealed class AccOverlayConfiguration : OverlayConfiguration
     {
         [ConfigGrouping("Dock", "Provides settings for overlay docking.")]
         public DockConfigGrouping Dock { get; set; } = new DockConfigGrouping();
-        public class DockConfigGrouping
+        public sealed class DockConfigGrouping
         {
             [ToolTip("Allows you to reposition this debug panel.")]
             public bool Undock { get; set; } = false;

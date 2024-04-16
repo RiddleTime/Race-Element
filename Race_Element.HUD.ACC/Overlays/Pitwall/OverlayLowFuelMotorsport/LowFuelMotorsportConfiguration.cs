@@ -16,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.LowFuelMotorsport
 
         [ConfigGrouping("Connection", "LFM user information and fetch interval")]
         public ConnectionGrouping Connection { get; init; } = new();
-        public class ConnectionGrouping
+        public sealed class ConnectionGrouping
         {
             [ToolTip("User identifier (https://lowfuelmotorsport.com/profile/[HERE_IS_THE_ID])")]
             public string User { get; init; } = "";
@@ -28,7 +28,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.LowFuelMotorsport
 
         [ConfigGrouping("Font", "Font configuration")]
         public FontGrouping Font { get; init; } = new();
-        public class FontGrouping
+        public sealed class FontGrouping
         {
             [ToolTip("Font family")]
             public FontFamilyConfig FontFamily { get; init; } = FontFamilyConfig.Roboto;
@@ -40,7 +40,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.LowFuelMotorsport
 
         [ConfigGrouping("Others", "Other options")]
         public OtherGrouping Others { get; init; } = new();
-        public class OtherGrouping
+        public sealed class OtherGrouping
         {
             [ToolTip("Show always")]
             public bool ShowAlways { get; init; } = false;

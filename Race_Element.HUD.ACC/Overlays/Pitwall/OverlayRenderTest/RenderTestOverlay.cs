@@ -18,7 +18,7 @@ internal sealed class RenderTestOverlay : AbstractOverlay
     {
         [ConfigGrouping("Render", "Higher Is More Heat")]
         public TestGrouping Test { get; set; } = new TestGrouping();
-        public class TestGrouping
+        public sealed class TestGrouping
         {
             internal int Herz = 100;
 
