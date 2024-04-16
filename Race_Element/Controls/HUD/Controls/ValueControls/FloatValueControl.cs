@@ -8,7 +8,7 @@ using static RaceElement.HUD.Overlay.Configuration.OverlayConfiguration;
 
 namespace RaceElement.Controls.HUD.Controls.ValueControls;
 
-internal class FloatValueControl : IValueControl<float>
+internal sealed class FloatValueControl : IValueControl<float>
 {
     private readonly Grid _grid;
     private readonly Label _label;

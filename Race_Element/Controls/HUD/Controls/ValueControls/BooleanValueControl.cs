@@ -7,7 +7,7 @@ using static RaceElement.HUD.Overlay.Configuration.OverlayConfiguration;
 
 namespace RaceElement.Controls.HUD.Controls.ValueControls;
 
-internal class BooleanValueControl : IValueControl<bool>, IControl
+internal sealed class BooleanValueControl : IValueControl<bool>, IControl
 {
     private readonly Grid _grid;
     private readonly Label _label;

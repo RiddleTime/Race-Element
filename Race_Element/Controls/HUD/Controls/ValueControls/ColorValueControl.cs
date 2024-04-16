@@ -9,7 +9,7 @@ using static RaceElement.HUD.Overlay.Configuration.OverlayConfiguration;
 
 namespace RaceElement.Controls.HUD.Controls.ValueControls;
 
-internal class ColorValueControl : IValueControl<System.Drawing.Color>
+internal sealed class ColorValueControl : IValueControl<System.Drawing.Color>
 {
     System.Drawing.Color IValueControl<System.Drawing.Color>.Value { get; set; }
 
