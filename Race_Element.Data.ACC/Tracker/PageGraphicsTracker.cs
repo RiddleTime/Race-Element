@@ -9,7 +9,7 @@ using static RaceElement.ACCSharedMemory;
 
 namespace RaceElement.Data.ACC.Tracker;
 
-public class PageGraphicsTracker : IDisposable
+public sealed class PageGraphicsTracker : IDisposable
 {
     private static PageGraphicsTracker _instance;
     public static PageGraphicsTracker Instance
