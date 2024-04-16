@@ -225,7 +225,7 @@ namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
             public float Y;
             public float Z;
 
-            public override string ToString() => $"X: {X}, Y: {Y}, Z: {Z}";
+            public readonly override string ToString() => $"X: {X}, Y: {Y}, Z: {Z}";
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
