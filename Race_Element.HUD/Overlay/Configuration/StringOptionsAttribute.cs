@@ -2,6 +2,7 @@
 
 namespace RaceElement.HUD.Overlay.Configuration;
 
+[AttributeUsage(AttributeTargets.Property)]
 public sealed class StringOptionsAttribute : Attribute
 {
     public bool IsPassword { get; private set; }

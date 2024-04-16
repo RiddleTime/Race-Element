@@ -11,7 +11,7 @@ public abstract class OverlayConfiguration
 {
     [ConfigGrouping("HUD", "General settings")]
     public GenericConfig GenericConfiguration { get; set; } = new GenericConfig();
-    public class GenericConfig
+    public sealed class GenericConfig
     {
         public bool AllowRescale = false;
 
