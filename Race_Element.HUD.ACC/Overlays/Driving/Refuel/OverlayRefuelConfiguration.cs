@@ -11,7 +11,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.Refuel
     {
         [ConfigGrouping("Refuel Info", "Show or hide additional information in the panel.")]
         public InfoPanelGrouping RefuelInfoGrouping { get; init; } = new InfoPanelGrouping();
-        public class InfoPanelGrouping
+        public sealed class InfoPanelGrouping
         {
             [ToolTip("Show solid progress bar.")] 
             public bool SolidProgressBar { get; init; } = false;

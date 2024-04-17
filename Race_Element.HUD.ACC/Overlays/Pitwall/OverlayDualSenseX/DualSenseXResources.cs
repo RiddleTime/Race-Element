@@ -110,7 +110,7 @@ internal class DualSenseXResources
         public Instruction[] instructions;
     }
 
-    public class ServerResponse
+    public sealed class ServerResponse
     {
         public string Status;
         public string TimeReceived;

@@ -5,7 +5,7 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.Data.ACC.Tracks.Data;
 
-internal class Suzuka : AbstractTrackData
+internal sealed class Suzuka : AbstractTrackData
 {
     public override Guid Guid => new("1c9b35a5-dacb-40e2-adc9-134d75f75c3f");
     public override string GameName => "Suzuka";

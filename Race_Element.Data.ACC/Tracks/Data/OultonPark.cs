@@ -5,7 +5,7 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.Data.ACC.Tracks.Data;
 
-internal class OultonPark : AbstractTrackData
+internal sealed class OultonPark : AbstractTrackData
 {
     public override Guid Guid => new("72794bc2-841c-40e1-8587-3e41f9228ea8");
     public override string GameName => "oulton_park";

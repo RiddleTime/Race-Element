@@ -5,7 +5,7 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.Data.ACC.Tracks.Data;
 
-internal class SpaFrancorchamps : AbstractTrackData
+internal sealed class SpaFrancorchamps : AbstractTrackData
 {
     public override Guid Guid => new("a56b5381-6c59-4380-8a32-679c8734a9a9");
     public override string GameName => "Spa";

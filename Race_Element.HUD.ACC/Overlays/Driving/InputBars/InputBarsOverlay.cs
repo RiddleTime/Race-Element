@@ -42,7 +42,7 @@ internal sealed class InputBarsOverlay : AbstractOverlay
         }
     }
 
-    public override void BeforeStart()
+    public sealed override void BeforeStart()
     {
         int width = _config.Bars.Thickness * 2 + _config.Bars.Spacing;
         int height = _config.Bars.Length;
@@ -146,9 +146,9 @@ internal sealed class InputBarsOverlay : AbstractOverlay
         }
     }
 
-    public override void BeforeStop() => _cachedBackground?.Dispose();
+    public sealed override void BeforeStop() => _cachedBackground?.Dispose();
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
         ApplyElectronicsColors();
 

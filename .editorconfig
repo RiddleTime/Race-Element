@@ -86,6 +86,7 @@ dotnet_style_parentheses_in_other_operators = never_if_unnecessary:silent
 
 # IDE0003: Remove qualification
 dotnet_style_qualification_for_field = false
+dotnet_diagnostic.CA1852.severity = suggestion
 
 [*.cs]
 csharp_using_directive_placement = outside_namespace:silent
@@ -129,3 +130,5 @@ csharp_style_prefer_not_pattern = true:suggestion
 
 # CA1416: Validate platform compatibility
 dotnet_diagnostic.CA1416.severity = silent
+csharp_style_prefer_top_level_statements = true:silent
+csharp_style_prefer_primary_constructors = true:suggestion

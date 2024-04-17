@@ -20,7 +20,7 @@ internal sealed class LapInfoOverlay : AbstractOverlay
     {
         [ConfigGrouping("Lap Info", "Show or hide inputs or the current gear.")]
         public InfoPanelGrouping InfoPanel { get; init; } = new InfoPanelGrouping();
-        public class InfoPanelGrouping
+        public sealed class InfoPanelGrouping
         {
             [ToolTip("Displays the time for each sector, green colored sectors are personal best.")]
             public bool Sectors { get; init; } = true;

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace RaceElement.HUD.Overlay.Configuration;
 
-public class FloatRangeAttribute : Attribute
+[AttributeUsage(AttributeTargets.Property)]
+public sealed class FloatRangeAttribute : Attribute
 {
     public float Min;
     public float Max;

@@ -13,7 +13,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChatBot
 
         [ConfigGrouping("Connection", "Set up the username and O Auth token")]
         public CredentialsGrouping Credentials { get; init; } = new();
-        public class CredentialsGrouping
+        public sealed class CredentialsGrouping
         {
             [ToolTip("Your channel name")]
             public string TwitchUser { get; init; } = "";

@@ -34,7 +34,7 @@ internal sealed class BoostGaugeOverlay : AbstractOverlay
     public override void BeforeStart() { }
     public override void BeforeStop() { }
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
         _panel.AddProgressBarWithCenteredText($"{pagePhysics.TurboBoost * 100f:F1}".FillStart(4, ' '), 0, 100, pagePhysics.TurboBoost * 100f);
         _panel.Draw(g);

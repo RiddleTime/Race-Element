@@ -11,7 +11,7 @@ internal sealed class InputBarsConfiguration : OverlayConfiguration
 
     [ConfigGrouping("Bars", "The shape and spacing of the bars")]
     public BarsGrouping Bars { get; init; } = new BarsGrouping();
-    public class BarsGrouping
+    public sealed class BarsGrouping
     {
         public BarOrientation Orientation { get; init; } = BarOrientation.Vertical;
 
@@ -37,7 +37,7 @@ internal sealed class InputBarsConfiguration : OverlayConfiguration
 
     [ConfigGrouping("Colors", "The shape and spacing of the bars")]
     public ColorsGrouping Colors { get; init; } = new ColorsGrouping();
-    public class ColorsGrouping
+    public sealed class ColorsGrouping
     {
         [ToolTip("Changes the color of the throttle bar.")]
         public Color ThrottleColor { get; init; } = Color.FromArgb(255, 50, 205, 1);

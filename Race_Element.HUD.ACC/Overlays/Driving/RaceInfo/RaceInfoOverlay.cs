@@ -8,14 +8,14 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayRaceInfo;
 
 [Overlay(Name = "Race Info", Description = "(BETA) Provides information for the current race session.", OverlayType = OverlayType.Drive, Version = 1.00,
 Authors = ["Reinier Klarenberg"])]
-internal class RaceInfoOverlay : AbstractOverlay
+internal sealed class RaceInfoOverlay : AbstractOverlay
 {
     private readonly RaceInfoConfig _config = new();
-    private class RaceInfoConfig : OverlayConfiguration
+    private sealed class RaceInfoConfig : OverlayConfiguration
     {
         [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
         public InfoPanelGrouping InfoPanel { get; init; } = new InfoPanelGrouping();
-        public class InfoPanelGrouping
+        public sealed class InfoPanelGrouping
         {
             [ToolTip("Shows a timer when the pit window starts and ends.")]
             public bool PitWindow { get; init; } = true;

@@ -50,7 +50,7 @@ internal sealed class CornerDataOverlay : AbstractOverlay
         _bestLapCorners = [];
     }
 
-    public override void SetupPreviewData()
+    public sealed override void SetupPreviewData()
     {
         var trackKyalami = TrackData.Tracks.FirstOrDefault(x => x.GameName == "Kyalami");
         if (trackKyalami == null)
@@ -91,7 +91,7 @@ internal sealed class CornerDataOverlay : AbstractOverlay
         }
     }
 
-    public override void BeforeStart()
+    public sealed override void BeforeStart()
     {
         _collector = new CornerDataCollector();
 
@@ -165,7 +165,7 @@ internal sealed class CornerDataOverlay : AbstractOverlay
         _cornerDatas.Clear();
     }
 
-    public override void BeforeStop()
+    public sealed override void BeforeStop()
     {
         RaceSessionTracker.Instance.OnNewSessionStarted -= OnNewSessionStarted;
         RaceSessionTracker.Instance.OnSessionIndexChanged += Instance_OnSessionIndexChanged;
@@ -203,7 +203,7 @@ internal sealed class CornerDataOverlay : AbstractOverlay
         }
     }
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
         if (_config.Table.Header)
             AddHeaderRow();

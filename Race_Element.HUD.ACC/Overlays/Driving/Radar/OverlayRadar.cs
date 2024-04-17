@@ -30,7 +30,7 @@ internal sealed class RadarOverlay : AbstractOverlay
 
         [ConfigGrouping("Radar", "General options for the radar")]
         public RadarGrouping Radar { get; init; } = new RadarGrouping();
-        public class RadarGrouping
+        public sealed class RadarGrouping
         {
 
             [IntRange(1, 20, 2)]
@@ -49,7 +49,7 @@ internal sealed class RadarOverlay : AbstractOverlay
 
         [ConfigGrouping("Proximity", "Options related to proximity of other cars")]
         public ProximityGrouping Proxmity { get; init; } = new ProximityGrouping();
-        public class ProximityGrouping
+        public sealed class ProximityGrouping
         {
             [ToolTip("Adjust the distance before the HUD will show.")]
             [FloatRange(4f, 40f, 0.02f, 2)]
@@ -93,7 +93,7 @@ internal sealed class RadarOverlay : AbstractOverlay
         RefreshRateHz = _config.Radar.Herz;
     }
 
-    public override bool ShouldRender()
+    public sealed override bool ShouldRender()
     {
         if (RaceSessionState.IsFormationLap(pageGraphics.GlobalRed, broadCastRealTime.Phase))
             return false;
@@ -104,7 +104,7 @@ internal sealed class RadarOverlay : AbstractOverlay
         return base.ShouldRender();
     }
 
-    public override void SetupPreviewData()
+    public sealed override void SetupPreviewData()
     {
         _spottables.Clear();
 
@@ -127,7 +127,7 @@ internal sealed class RadarOverlay : AbstractOverlay
         _spottables.Add(car4);
     }
 
-    public override void BeforeStart()
+    public sealed override void BeforeStart()
     {
         Width = _config.Radar.Width;
         Height = _config.Radar.Height;
@@ -177,7 +177,7 @@ internal sealed class RadarOverlay : AbstractOverlay
         });
     }
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
         try
         {

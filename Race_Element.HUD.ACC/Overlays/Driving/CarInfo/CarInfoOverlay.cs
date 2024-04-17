@@ -23,7 +23,7 @@ internal sealed class CarInfoOverlay : AbstractOverlay
     {
         [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
         public InfoPanelGrouping InfoPanel { get; init; } = new InfoPanelGrouping();
-        public class InfoPanelGrouping
+        public sealed class InfoPanelGrouping
         {
             [ToolTip("Displays your current tyre set")]
             public bool TyreSet { get; init; } = true;
@@ -183,7 +183,7 @@ internal sealed class CarInfoOverlay : AbstractOverlay
         Height = rows * columnHeight;
     }
 
-    public override void BeforeStop()
+    public sealed override void BeforeStop()
     {
         _font?.Dispose();
         _graphicsGrid?.Dispose();

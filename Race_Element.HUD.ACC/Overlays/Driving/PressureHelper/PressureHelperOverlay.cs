@@ -12,7 +12,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.PressureHelper
     [Overlay(Name = "Pressure Helper",
 Description = "Helps you with setting up tyre pressures.\n(Alpha version, in progress but could be tested to verify data, options won't do anything for now.)",
 Authors = ["Reinier Klarenberg"])]
-    internal class PressureHelperOverlay : AbstractOverlay
+    internal sealed class PressureHelperOverlay : AbstractOverlay
     {
         private readonly PressureHelperConfiguration _config = new();
         private PressureInfoModel Model { get; set; } = new();
@@ -35,7 +35,7 @@ Authors = ["Reinier Klarenberg"])]
             Height = 250;
         }
 
-        public override void SetupPreviewData()
+        public sealed override void SetupPreviewData()
         {
             Model = new()
             {
@@ -59,7 +59,7 @@ Authors = ["Reinier Klarenberg"])]
             _isPreviewing = true;
         }
 
-        public override void BeforeStart()
+        public sealed override void BeforeStart()
         {
             InfoPanel = new(12, 400);
             RaceSessionTracker.Instance.OnNewSessionStarted += Instance_OnNewSessionStarted;
@@ -75,15 +75,15 @@ Authors = ["Reinier Klarenberg"])]
             Model.PressureLoss = e.PressureLoss;
         }
 
-        public override void BeforeStop()
+        public sealed override void BeforeStop()
         {
             RaceSessionTracker.Instance.OnNewSessionStarted -= Instance_OnNewSessionStarted;
             TyresTracker.Instance.OnTyresInfoChanged -= Instance_OnTyresInfoChanged;
         }
 
-        public override bool ShouldRender() => true;
+        public sealed override bool ShouldRender() => true;
 
-        public override void Render(Graphics g)
+        public sealed override void Render(Graphics g)
         {
             UpdateModel();
 

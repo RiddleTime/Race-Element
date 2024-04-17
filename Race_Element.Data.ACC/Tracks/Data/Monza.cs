@@ -5,7 +5,7 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.Data.ACC.Tracks.Data;
 
-internal class Monza : AbstractTrackData
+internal sealed class Monza : AbstractTrackData
 {
     public override Guid Guid => new("5091ac88-c7c3-4cf1-ac46-e974bc7b73d5");
     public override string GameName => "monza";

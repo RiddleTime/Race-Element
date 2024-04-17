@@ -40,12 +40,12 @@ internal sealed class TrackCircleOverlay : AbstractOverlay
         RefreshRateHz = 3;
     }
 
-    public override void SetupPreviewData()
+    public sealed override void SetupPreviewData()
     {
         pageStatic.Track = "Laguna_Seca";
     }
 
-    public override void BeforeStart()
+    public sealed override void BeforeStart()
     {
         int scaledDimension = (int)(Dimension * Scale);
         Width = scaledDimension;
@@ -69,12 +69,12 @@ internal sealed class TrackCircleOverlay : AbstractOverlay
 
     }
 
-    public override void BeforeStop()
+    public sealed override void BeforeStop()
     {
         _background?.Dispose();
     }
 
-    public override bool ShouldRender()
+    public sealed override bool ShouldRender()
     {
         if (_config.Viewing.Spectator && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
             return true;
@@ -82,7 +82,7 @@ internal sealed class TrackCircleOverlay : AbstractOverlay
         return base.ShouldRender();
     }
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
         _background?.Draw(g, (int)(5 * Scale), (int)(5 * Scale), (int)((Dimension - 10) * Scale), (int)((Dimension - 10) * Scale));
 

@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace RaceElement.Data.ACC.Tracker;
 
-public class SetupHiderTracker : IDisposable
+public sealed class SetupHiderTracker : IDisposable
 {
     public static SetupHiderTracker _instance;
     public static SetupHiderTracker Instance

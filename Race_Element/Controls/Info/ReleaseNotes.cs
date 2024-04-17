@@ -6,6 +6,9 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.6.2", "- Twitch Chat HUD:"+
+                    "\n  - Added configurable color for when someone tags you(the broadcaster) in the chat."+
+                    "\n- Rain Prediction HUD: Fixed, will now show weather predictions again."},
         {"1.0.6.0", "- Twitch Chat Bot:"+
                     "\n  - Added +session, responds with information about the current session."+
                     "\n  - +temps now also shows rain condition when it's not dry."+

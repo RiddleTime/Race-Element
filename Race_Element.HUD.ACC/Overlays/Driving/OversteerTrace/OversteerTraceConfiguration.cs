@@ -20,7 +20,7 @@ internal sealed class OversteerTraceConfiguration : OverlayConfiguration
 
     [ConfigGrouping("Chart", "Customize the appearance of the live trace.")]
     public ChartGrouping Chart { get; init; } = new ChartGrouping();
-    public class ChartGrouping
+    public sealed class ChartGrouping
     {
         [ToolTip("The amount of datapoints shown, this changes the width of the chart.")]
         [IntRange(50, 800, 10)]

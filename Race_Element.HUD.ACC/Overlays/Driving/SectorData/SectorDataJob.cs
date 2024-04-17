@@ -30,7 +30,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.SectorData
 
         public override void AfterCancel() => RaceSessionTracker.Instance.OnNewSessionStarted -= Instance_OnNewSessionStarted;
 
-        public override void RunAction()
+        public sealed override void RunAction()
         {
             var physics = ACCSharedMemory.Instance.ReadPhysicsPageFile(true);
             var graphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(true);

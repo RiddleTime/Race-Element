@@ -13,7 +13,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.SectorData
 
         [ConfigGrouping("Table", "Adjust settings for the sector data table")]
         public TableGrouping Table { get; init; } = new();
-        public class TableGrouping
+        public sealed class TableGrouping
         {
             [ToolTip("Sets the amount of previous sectors visible, in general settings it to more than 3 will also show you the data from previous laps.")]
             [IntRange(1, 13, 1)]

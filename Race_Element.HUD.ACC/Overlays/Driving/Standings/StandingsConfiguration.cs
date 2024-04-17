@@ -20,7 +20,7 @@ internal sealed class StandingsConfiguration : OverlayConfiguration
 
     [ConfigGrouping("Layout", "Change the layout of the standings.")]
     public LayoutGrouping Layout { get; init; } = new LayoutGrouping();
-    public class LayoutGrouping
+    public sealed class LayoutGrouping
     {
         [ToolTip("Additional Rows in front and behind.")]
         [IntRange(1, 5, 1)]

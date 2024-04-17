@@ -6,7 +6,7 @@ using static RaceElement.ACCSharedMemory;
 
 namespace RaceElement.Data.ACC.Tracker;
 
-public class PagePhysicsTracker : IDisposable
+public sealed class PagePhysicsTracker : IDisposable
 {
     private static PagePhysicsTracker _instance;
     public static PagePhysicsTracker Instance

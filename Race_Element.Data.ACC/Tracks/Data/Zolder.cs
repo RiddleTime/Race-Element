@@ -5,7 +5,7 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.Data.ACC.Tracks.Data;
 
-internal class Zolder : AbstractTrackData
+internal sealed class Zolder : AbstractTrackData
 {
     public override Guid Guid => new("eaca1a4d-aa7e-4c31-bfc5-6035bfa30395");
     public override string GameName => "Zolder";

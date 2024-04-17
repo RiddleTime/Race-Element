@@ -3,7 +3,7 @@ using System.Drawing.Drawing2D;
 
 namespace RaceElement.HUD.Overlay.OverlayUtil;
 
-internal class ProgressBar
+internal sealed class ProgressBar
 {
     internal double Min { get; set; }
     internal double Max { get; set; }

@@ -50,7 +50,7 @@ internal sealed class TrackBarOverlay : AbstractOverlay
         RefreshRateHz = 6;
     }
 
-    public override void BeforeStart()
+    public sealed override void BeforeStart()
     {
         _range = _config.Bar.Range / 100f;
 
@@ -67,12 +67,12 @@ internal sealed class TrackBarOverlay : AbstractOverlay
         Height = BarRect.Height;
     }
 
-    public override void BeforeStop()
+    public sealed override void BeforeStop()
     {
         _cachedBackground?.Dispose();
     }
 
-    public override bool ShouldRender()
+    public sealed override bool ShouldRender()
     {
         if (_config.Viewing.Spectator && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
             return true;
@@ -80,7 +80,7 @@ internal sealed class TrackBarOverlay : AbstractOverlay
         return base.ShouldRender();
     }
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
         _cachedBackground?.Draw(g);
 

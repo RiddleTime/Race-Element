@@ -5,7 +5,7 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.Data.ACC.Tracks.Data;
 
-internal class Indianapolis : AbstractTrackData
+internal sealed class Indianapolis : AbstractTrackData
 {
     public override Guid Guid => new("d3c246d2-edba-429e-af59-6e25357d59d4");
     public override string GameName => "indianapolis";

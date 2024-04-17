@@ -5,7 +5,7 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace RaceElement.Data.ACC.Tracks.Data;
 
-internal class Nordschleife : AbstractTrackData
+internal sealed class Nordschleife : AbstractTrackData
 {
     public override Guid Guid => new("fae08ea8-03fb-429b-be59-c56c7cd18ef1");
 

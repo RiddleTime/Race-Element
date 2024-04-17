@@ -6,7 +6,7 @@ using static RaceElement.HUD.Overlay.Configuration.OverlayConfiguration;
 
 namespace RaceElement.Controls.HUD.Controls.ValueControls;
 
-internal class StringValueControl : IValueControl<string>, IControl
+internal sealed class StringValueControl : IValueControl<string>, IControl
 {
     string IValueControl<string>.Value { get; set; }
     FrameworkElement IControl.Control => _grid;

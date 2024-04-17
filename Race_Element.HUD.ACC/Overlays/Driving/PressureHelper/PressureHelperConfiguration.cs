@@ -6,7 +6,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.PressureHelper
     {
         [ConfigGrouping("Tyre Pressures", "Adjust tyre pressure targets to be used in the hud.")]
         public TyrePressures Pressures { get; init; } = new();
-        public class TyrePressures
+        public sealed class TyrePressures
         {
 
             [ToolTip("Set the amount of laps required for the tyres to normalize the pressures.\n" +

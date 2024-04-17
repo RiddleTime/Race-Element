@@ -7,7 +7,7 @@ internal sealed class ShiftIndicatorConfiguration : OverlayConfiguration
 {
     [ConfigGrouping("Bar", "The shape and options of the shift indicator bar.")]
     public BarsGrouping Bar { get; init; } = new BarsGrouping();
-    public class BarsGrouping
+    public sealed class BarsGrouping
     {
         [ToolTip("Sets the Width of the shift indicator bar.")]
         [IntRange(430, 800, 10)]
@@ -40,7 +40,7 @@ internal sealed class ShiftIndicatorConfiguration : OverlayConfiguration
         "The displayed early and upshift RPM texts only show in the GUI.\n" +
         "These RPMs will update if you are currently in a lobby, once you adjust any of the settings.")]
     public UpshiftGrouping Upshift { get; init; } = new UpshiftGrouping();
-    public class UpshiftGrouping
+    public sealed class UpshiftGrouping
     {
         [ToolTip("Sets the percentage of max rpm required to activate the early upshift color")]
         [FloatRange(80.0f, 96.8f, 0.02f, 2)]
@@ -53,7 +53,7 @@ internal sealed class ShiftIndicatorConfiguration : OverlayConfiguration
 
     [ConfigGrouping("Colors", "Adjust the colors used in the shift bar")]
     public ColorsGrouping Colors { get; init; } = new ColorsGrouping();
-    public class ColorsGrouping
+    public sealed class ColorsGrouping
     {
         public Color NormalColor { get; init; } = Color.FromArgb(255, 5, 255, 5);
         [IntRange(75, 255, 1)]

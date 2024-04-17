@@ -20,7 +20,7 @@ internal sealed class TrackInfoOverlay : AbstractOverlay
     {
         [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
         public InfoPanelGrouping InfoPanel { get; init; } = new InfoPanelGrouping();
-        public class InfoPanelGrouping
+        public sealed class InfoPanelGrouping
         {
             [ToolTip("Displays the actual time on track.")]
             public bool TimeOfDay { get; init; } = true;
@@ -150,7 +150,7 @@ internal sealed class TrackInfoOverlay : AbstractOverlay
         this.Height = (int)(headerRect.Top / this.Scale);
     }
 
-    public override void BeforeStop()
+    public sealed override void BeforeStop()
     {
         _font?.Dispose();
 

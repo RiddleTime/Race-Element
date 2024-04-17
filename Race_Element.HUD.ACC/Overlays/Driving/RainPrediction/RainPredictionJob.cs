@@ -2,6 +2,7 @@
 using RaceElement.Data.ACC.Session;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using static RaceElement.ACCSharedMemory;
 
@@ -27,7 +28,7 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
     //private void OnSessionTimeMultiplierChanged(object sender, int e) => Multiplier = e;
     //public override void AfterCancel() => RaceSessionTracker.Instance.OnMultiplierChanged -= OnSessionTimeMultiplierChanged;
 
-    public override void RunAction()
+    public sealed override void RunAction()
     {
         try
         {
@@ -37,7 +38,7 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
                 return;
             }
 
-            if (Multiplier == -1) return;
+            //if (Multiplier == -1) return;
 
             lock (UpcomingChanges)
                 while (UpcomingChanges.Count > 100 && UpcomingChanges.Keys.First() < DateTime.UtcNow)
@@ -66,6 +67,7 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
                 {
                     UpcomingChanges.Add(change.AddMinutes(10d), newScan.In10);
                     UpcomingChanges.Add(change.AddMinutes(30d), newScan.In30);
+                    Debug.WriteLine("Added new weather change");
                 }
                 _lastWeather = newScan;
             }

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace RaceElement.HUD.Overlay.Configuration;
 
-public class ByteRangeAttribute : Attribute
+[AttributeUsage(AttributeTargets.Property)]
+public sealed class ByteRangeAttribute : Attribute
 {
     public byte Min;
     public byte Max;
@@ -23,6 +24,6 @@ public class ByteRangeAttribute : Attribute
         for (byte i = intRange.Min; i < intRange.Max + intRange.Increment; i += intRange.Increment)
             collection.Add(i);
 
-        return collection.ToArray();
+        return [.. collection];
     }
 }

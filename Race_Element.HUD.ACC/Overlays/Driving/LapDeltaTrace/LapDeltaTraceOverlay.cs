@@ -33,7 +33,7 @@ internal sealed class LapDeltaTraceOverlay : AbstractOverlay
         _graph = new LapDeltaGraph(0, 0, _config.Chart.Width - 1, _config.Chart.Height - 1, _collector, _config);
     }
 
-    public override void SetupPreviewData()
+    public sealed override void SetupPreviewData()
     {
         if (_collector != null)
         {
@@ -55,7 +55,7 @@ internal sealed class LapDeltaTraceOverlay : AbstractOverlay
 
     public sealed override void BeforeStop() => _graph?.Dispose();
 
-    public override bool ShouldRender()
+    public sealed override bool ShouldRender()
     {
         if (_config.Chart.HideForRace && !this.IsRepositioning && pageGraphics.SessionType == ACCSharedMemory.AcSessionType.AC_RACE)
             return false;
@@ -66,7 +66,7 @@ internal sealed class LapDeltaTraceOverlay : AbstractOverlay
         return base.ShouldRender();
     }
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
         _collector?.Collect(GetDelta());
         _graph?.Draw(g);

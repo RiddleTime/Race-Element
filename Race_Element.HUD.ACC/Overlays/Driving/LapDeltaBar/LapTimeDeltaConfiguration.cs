@@ -7,7 +7,7 @@ internal sealed class LapTimeDeltaConfiguration : OverlayConfiguration
 {
     [ConfigGrouping("Delta", "Adjust how the delta is displayed")]
     public DeltaGrouping Delta { get; init; } = new DeltaGrouping();
-    public class DeltaGrouping
+    public sealed class DeltaGrouping
     {
         [ToolTip("Sets the maximum range in seconds for the delta bar.")]
         [FloatRange(0.02f, 9.98f, 0.02f, 2)]
@@ -30,7 +30,7 @@ internal sealed class LapTimeDeltaConfiguration : OverlayConfiguration
 
     [ConfigGrouping("Bar", "Adjust bar behavior.")]
     public BarGrouping Bar { get; init; } = new BarGrouping();
-    public class BarGrouping
+    public sealed class BarGrouping
     {
         [ToolTip("Sets the Width of the Delta Bar.")]
         [IntRange(180, 800, 10)]
@@ -46,7 +46,7 @@ internal sealed class LapTimeDeltaConfiguration : OverlayConfiguration
 
     [ConfigGrouping("Colors", "Adjust Colors.")]
     public ColorsGrouping Colors { get; init; } = new ColorsGrouping();
-    public class ColorsGrouping
+    public sealed class ColorsGrouping
     {
         [ToolTip("Sets the color when the delta is negative (faster).")]
         public Color FasterColor { get; init; } = Color.FromArgb(255, Color.LimeGreen);

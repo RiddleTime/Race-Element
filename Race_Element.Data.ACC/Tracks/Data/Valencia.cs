@@ -5,7 +5,7 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.Data.ACC.Tracks.Data;
 
-internal class Valencia : AbstractTrackData
+internal sealed class Valencia : AbstractTrackData
 {
     public override Guid Guid => new("51bcd9f5-5048-4f98-aff6-ec853e77de5a");
     public override string GameName => "Valencia";

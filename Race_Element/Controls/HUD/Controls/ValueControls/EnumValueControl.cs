@@ -9,7 +9,7 @@ using static RaceElement.HUD.Overlay.Configuration.OverlayConfiguration;
 
 namespace RaceElement.Controls.HUD.Controls.ValueControls;
 
-internal class EnumValueControl : IValueControl<Enum>
+internal sealed class EnumValueControl : IValueControl<Enum>
 {
     Enum IValueControl<Enum>.Value { get; set; }
     FrameworkElement IControl.Control => _grid;

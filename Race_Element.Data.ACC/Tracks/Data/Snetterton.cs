@@ -5,7 +5,7 @@ using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace ACCManager.Data.ACC.Tracks.Data;
 
-internal class Snetterton : AbstractTrackData
+internal sealed class Snetterton : AbstractTrackData
 {
     public override Guid Guid => new("9248d360-e1ba-45be-bdec-dc939fb3959b");
     public override string GameName => "snetterton";

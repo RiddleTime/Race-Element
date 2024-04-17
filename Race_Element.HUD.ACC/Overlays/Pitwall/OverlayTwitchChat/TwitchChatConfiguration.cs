@@ -10,7 +10,7 @@ internal sealed class TwitchChatConfiguration : OverlayConfiguration
 
     [ConfigGrouping("Behaviour", "Adjust conditional visibility for the HUD.\nAlways Visible overrules all others.")]
     public BehaviourGrouping Behaviour { get; init; } = new();
-    public class BehaviourGrouping
+    public sealed class BehaviourGrouping
     {
         [ToolTip("When disabled the hud will only appear when the engine is running.\nWhen disabled and spectating the twitch chat HUD will dissapear.")]
         public bool AlwaysVisible { get; init; } = true;
@@ -21,7 +21,7 @@ internal sealed class TwitchChatConfiguration : OverlayConfiguration
 
     [ConfigGrouping("Connection", "Set up the username and O Auth token")]
     public CredentialsGrouping Credentials { get; init; } = new();
-    public class CredentialsGrouping
+    public sealed class CredentialsGrouping
     {
         [ToolTip("Your channel name")]
         public string TwitchUser { get; init; } = "";
@@ -34,7 +34,7 @@ internal sealed class TwitchChatConfiguration : OverlayConfiguration
 
     [ConfigGrouping("Shape", "Adjust the size of the twitch chat box")]
     public ShapeGrouping Shape { get; init; } = new();
-    public class ShapeGrouping
+    public sealed class ShapeGrouping
     {
         [ToolTip("Either new text will come from the top or it will come from the bottom of the hud.")]
         public Direction Direction { get; init; } = Direction.TopToBottom;
@@ -48,7 +48,7 @@ internal sealed class TwitchChatConfiguration : OverlayConfiguration
 
     [ConfigGrouping("Bot", "If you've enabled the twitch Chat Bot HUD, this will allow you to also show the responses of the bot in the twitch chat hud.")]
     public BotGrouping Bot { get; init; } = new();
-    public class BotGrouping
+    public sealed class BotGrouping
     {
         [ToolTip("When enabled responses from the Twitch Chat Bot will also be displayed in the Twitch Chat HUD.")]
         public bool DisplayBotResponses { get; init; } = true;
@@ -56,7 +56,7 @@ internal sealed class TwitchChatConfiguration : OverlayConfiguration
 
     [ConfigGrouping("Colors", "Adjust the colors of the text and the background")]
     public ColorGrouping Colors { get; init; } = new();
-    public class ColorGrouping
+    public sealed class ColorGrouping
     {
         [ToolTip("Adjust the text color for normal chat messages")]
         public Color TextColor { get; init; } = Color.FromArgb(255, 255, 255, 255);
@@ -67,6 +67,9 @@ internal sealed class TwitchChatConfiguration : OverlayConfiguration
         [ToolTip("Adjust the opacity for the background color.")]
         [IntRange(0, 255, 1)]
         public int BackgroundOpacity { get; init; } = 170;
+
+        [ToolTip("Adjust the text color when Display Bot Answers is enabled.")]
+        public Color TagColor { get; init; } = Color.FromArgb(255, 255, 155, 56);
 
         [ToolTip("Adjust the text color when someone sends in bits.")]
         public Color BitsColor { get; init; } = Color.FromArgb(255, 255, 215, 0);

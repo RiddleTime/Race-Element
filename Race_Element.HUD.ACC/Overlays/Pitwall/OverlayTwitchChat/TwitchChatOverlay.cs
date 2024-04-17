@@ -32,6 +32,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
 
     private CachedBitmap _cachedBackground;
     private SolidBrush _textBrushChat;
+    private SolidBrush _textBrushTag;
     private SolidBrush _textBrushBits;
     private SolidBrush _textBrushRaid;
     private SolidBrush _textBrushSubscription;
@@ -45,7 +46,8 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         Bits,
         Raided,
         Subscriber,
-        Bot
+        Bot,
+        Tag
     }
     public TwitchChatOverlay(Rectangle rectangle) : base(rectangle, "Twitch Chat")
     {
@@ -62,6 +64,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
             g.FillRoundedRectangle(brush, new Rectangle(0, 0, _config.Shape.Width, _config.Shape.Height), 4);
         });
         _textBrushChat = new SolidBrush(Color.FromArgb(255, _config.Colors.TextColor));
+        _textBrushTag = new SolidBrush(Color.FromArgb(255, _config.Colors.TagColor));
         _textBrushRaid = new SolidBrush(Color.FromArgb(255, _config.Colors.RaidColor));
         _textBrushBits = new SolidBrush(Color.FromArgb(255, _config.Colors.BitsColor));
         _textBrushSubscription = new SolidBrush(Color.FromArgb(255, _config.Colors.SubscriptionColor));
@@ -84,6 +87,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _stringFormat?.Dispose();
 
         _textBrushChat?.Dispose();
+        _textBrushTag?.Dispose();
         _textBrushBits?.Dispose();
         _textBrushRaid?.Dispose();
         _textBrushSubscription?.Dispose();
@@ -183,6 +187,7 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         MessageType.Raided => _textBrushRaid,
         MessageType.Subscriber => _textBrushSubscription,
         MessageType.Bot => _textBrushBot,
+        MessageType.Tag => _textBrushTag,
         _ => _textBrushChat,
     };
 
@@ -249,7 +254,10 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         if (e.ChatMessage.Bits > 0)
             Messages.Add(new(MessageType.Bits, $"{DateTime.Now:HH:mm} {e.ChatMessage.DisplayName} cheered {e.ChatMessage.Bits} bits: {e.ChatMessage.Message}"));
         else
-            Messages.Add(new(MessageType.Chat, $"{DateTime.Now:HH:mm} {e.ChatMessage.DisplayName}: {e.ChatMessage.Message}"));
+        {
+            bool tagsChannelOwner = e.ChatMessage.Message.ToLower().Contains($"@{_config.Credentials.TwitchUser.ToLower()}");
+            Messages.Add(new(tagsChannelOwner ? MessageType.Tag : MessageType.Chat, $"{DateTime.Now:HH:mm} {e.ChatMessage.DisplayName}: {e.ChatMessage.Message}"));
+        }
     }
 
     private void TwitchClient_OnGiftedSubscription(object sender, OnGiftedSubscriptionArgs e)

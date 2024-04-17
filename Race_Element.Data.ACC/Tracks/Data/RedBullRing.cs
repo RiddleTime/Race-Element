@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace RaceElement.Data.ACC.Tracks.Data;
-internal class RedBullRing : AbstractTrackData
+internal sealed class RedBullRing : AbstractTrackData
 {
     public override Guid Guid => new("f40d09f5-d548-4206-978c-61275840e808");
 
