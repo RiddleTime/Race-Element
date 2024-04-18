@@ -147,7 +147,7 @@ public unsafe class ACCSharedMemory
     public enum AcRainIntensity : int
     {
         No_Rain,
-        Drizzle,
+        Dew,
         Light_Rain,
         Medium_Rain,
         Heavy_Rain,
@@ -157,7 +157,7 @@ public unsafe class ACCSharedMemory
     public static string AcRainIntensityToString(AcRainIntensity intensity) => intensity switch
     {
         AcRainIntensity.No_Rain => "Dry",
-        AcRainIntensity.Drizzle => "Drizzle",
+        AcRainIntensity.Dew => "Dew",
         AcRainIntensity.Light_Rain => "Light",
         AcRainIntensity.Medium_Rain => "Medium",
         AcRainIntensity.Heavy_Rain => "Heavy",
