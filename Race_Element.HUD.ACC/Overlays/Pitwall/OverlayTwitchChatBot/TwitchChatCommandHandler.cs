@@ -48,12 +48,12 @@ internal sealed class TwitchChatBotCommandHandler
             new("temps", GetTemperaturesResponse),
             new("track", GetCurrentTrackResponse),
             new("car", GetCurrentCarResponse),
-            new("steering", GetSteeringLockResponse),
+            new("angle", GetSteeringLockResponse),
             new("green", GetGreenLapResponse),
             new("purple", GetPurpleLapResponse),
             new("ahead", GetCarAheadResponse),
             new("behind", GetCarBehindResponse),
-            new("pos", GetPositionLookupResponse),
+            new("p", GetPositionLookupResponse),
             new("session", GetSessionResponse),
         ];
     }
@@ -101,13 +101,12 @@ internal sealed class TwitchChatBotCommandHandler
     private string GetCommandsList(string[] args)
     {
         StringBuilder sb = new("Race Element Commands: ");
+
         Span<ChatResponse> responses = Responses.AsSpan();
         for (int i = 1; i < responses.Length; i++)
             sb.Append($"{responses[i].Command}{(i < responses.Length - 1 ? ", " : string.Empty)}");
 
-        _ = sb.Append('.');
-
-        return sb.ToString();
+        return $"{sb.Append('.')}";
     }
 
     private string GetSessionResponse(string[] args)
