@@ -37,12 +37,12 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
 
     public sealed override void SetupPreviewData()
     {
-        pageGraphics.rainIntensity = AcRainIntensity.Drizzle;
+        pageGraphics.rainIntensity = AcRainIntensity.Dew;
         _rainPredictionData = [
-            new(DateTime.UtcNow.AddMinutes(1), AcRainIntensity.Drizzle),
-            new(DateTime.UtcNow.AddMinutes(2), AcRainIntensity.Drizzle),
-            new(DateTime.UtcNow.AddMinutes(3), AcRainIntensity.Drizzle),
-            new(DateTime.UtcNow.AddMinutes(4), AcRainIntensity.Drizzle),
+            new(DateTime.UtcNow.AddMinutes(1), AcRainIntensity.Dew),
+            new(DateTime.UtcNow.AddMinutes(2), AcRainIntensity.Dew),
+            new(DateTime.UtcNow.AddMinutes(3), AcRainIntensity.Dew),
+            new(DateTime.UtcNow.AddMinutes(4), AcRainIntensity.Dew),
             new(DateTime.UtcNow.AddMinutes(6), AcRainIntensity.Light_Rain),
             new(DateTime.UtcNow.AddMinutes(6.5d), AcRainIntensity.Medium_Rain),
             new(DateTime.UtcNow.AddMinutes(6.8d), AcRainIntensity.Medium_Rain),

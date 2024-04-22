@@ -41,19 +41,19 @@ internal sealed class TwitchChatBotCommandHandler
         _overlay = overlay;
 
         Responses = [
-            new("commands", GetCommandsList),
+            new("commands", (args)=> "https://race.elementfuture.com/2024/04/22/twitch-chat-bot-commands.html"),
             new("app", (args) => "https://race.elementfuture.com / https://discord.gg/26AAEW5mUq"),
             new("damage", (args) => $"{TimeSpan.FromSeconds(Damage.GetTotalRepairTime(_overlay.pagePhysics)):mm\\:ss\\.fff}"),
             new("potential", GetPotentialBestResponse),
             new("temps", GetTemperaturesResponse),
             new("track", GetCurrentTrackResponse),
             new("car", GetCurrentCarResponse),
-            new("steering", GetSteeringLockResponse),
-            new("green", GetGreenLapResponse),
+            new("angle", GetSteeringLockResponse),
             new("purple", GetPurpleLapResponse),
             new("ahead", GetCarAheadResponse),
             new("behind", GetCarBehindResponse),
-            new("pos", GetPositionLookupResponse),
+            new("p", GetPositionLookupResponse),
+            new("#", GetRaceNumberLookupResponse),
             new("session", GetSessionResponse),
         ];
     }
@@ -98,16 +98,17 @@ internal sealed class TwitchChatBotCommandHandler
             LogWriter.WriteToLog(ex);
         }
     }
+
+    [Obsolete("In favor of the guide on the website, this command is disabled, may enable again if website would be down.")]
     private string GetCommandsList(string[] args)
     {
         StringBuilder sb = new("Race Element Commands: ");
+
         Span<ChatResponse> responses = Responses.AsSpan();
         for (int i = 1; i < responses.Length; i++)
             sb.Append($"{responses[i].Command}{(i < responses.Length - 1 ? ", " : string.Empty)}");
 
-        _ = sb.Append('.');
-
-        return sb.ToString();
+        return $"{sb.Append('.')}";
     }
 
     private string GetSessionResponse(string[] args)
@@ -155,6 +156,32 @@ internal sealed class TwitchChatBotCommandHandler
             sb.Append($"Air {_overlay.broadCastRealTime.AmbientTemp}°, Track {_overlay.broadCastRealTime.TrackTemp}°");
         }
         return sb.ToString();
+    }
+
+    private string GetRaceNumberLookupResponse(string[] args)
+    {
+        if (args.Length == 0)
+            return string.Empty;
+
+        string possibleNumber = args[0];
+        if (!int.TryParse(possibleNumber, out int raceNumber))
+            return string.Empty;
+
+        int requestedPosition = -1;
+        foreach (var car in EntryListTracker.Instance.Cars)
+        {
+            if (car.Value.CarInfo == null) continue;
+            if (car.Value.CarInfo.RaceNumber == raceNumber)
+            {
+                requestedPosition = car.Value.RealtimeCarUpdate.Position;
+                break;
+            }
+        }
+
+        if (requestedPosition == -1)
+            return string.Empty;
+
+        return GetPositionResponse(requestedPosition);
     }
 
     /// <summary>
@@ -292,29 +319,6 @@ internal sealed class TwitchChatBotCommandHandler
         }
 
     returnNoValidLaps: return "No valid lap in the lobby";
-    }
-
-    public string GetGreenLapResponse(string[] args)
-    {
-        var personalBest = _overlay.broadCastLocalCar.BestSessionLap;
-        if (personalBest == null || personalBest.IsInvalid) goto returnNoValidLaps;
-
-        try
-        {
-            if (!personalBest.LaptimeMS.HasValue) goto returnNoValidLaps;
-
-            TimeSpan lapTime = TimeSpan.FromSeconds(personalBest.GetLapTimeMS() / 1000d);
-            TimeSpan s1 = TimeSpan.FromSeconds(personalBest.Splits[0].Value / 1000d);
-            TimeSpan s2 = TimeSpan.FromSeconds(personalBest.Splits[1].Value / 1000d);
-            TimeSpan s3 = TimeSpan.FromSeconds(personalBest.Splits[2].Value / 1000d);
-            return $"{lapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}";
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex);
-        }
-
-    returnNoValidLaps: return "No valid laps";
     }
 
     private string GetSteeringLockResponse(string[] args)

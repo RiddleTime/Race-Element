@@ -12,7 +12,9 @@
         <SuiteName>Race Element</SuiteName>
         <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
         <DisallowUrlActivation>true</DisallowUrlActivation>
-        <ApplicationVersion>1.0.6.2</ApplicationVersion>
+        <ApplicationVersion>1.0.6.4</ApplicationVersion>
+        <AssemblyVersion>1.0.6.4</AssemblyVersion>
+        <Version>1.0.6.4</Version>
         <UseApplicationTrust>true</UseApplicationTrust>
         <CreateDesktopShortcut>true</CreateDesktopShortcut>
         <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -31,12 +33,10 @@
     <PropertyGroup>
         <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
         <PlatformTarget>x64</PlatformTarget>
-        <AssemblyVersion>1.0.6.2</AssemblyVersion>
         <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
         <Title>Race Element</Title>
         <PackageIcon>race element icon 2.png</PackageIcon>
         <Authors>Element Future</Authors>
-        <Version>1.0.6.2</Version>
         <Product>Race Element</Product>
     </PropertyGroup>
     <PropertyGroup>
