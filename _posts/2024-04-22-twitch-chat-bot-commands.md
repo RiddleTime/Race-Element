@@ -13,7 +13,7 @@ Every Race Element Chat Commands starts with a `+`
 Links to the Race Element website and discord.
 ### `+purple`
 Best valid lap in the lobby for the current session.
-### `+ahead` and `+behind`
+### `+ahead`  `+behind`
 Race info for the car ahead or behind, this is based on the race position of the car that is currently viewed, so not relative on track.
 ### `+p`
 Race info for the car at the requested global position. Use like `+p 1` to gain information about the car in position 1.
