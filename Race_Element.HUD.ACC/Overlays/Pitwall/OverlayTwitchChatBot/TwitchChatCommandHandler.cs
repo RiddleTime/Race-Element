@@ -98,6 +98,8 @@ internal sealed class TwitchChatBotCommandHandler
             LogWriter.WriteToLog(ex);
         }
     }
+
+    [Obsolete("In favor of the guide on the website, this command is disabled, may enable again if website would be down.")]
     private string GetCommandsList(string[] args)
     {
         StringBuilder sb = new("Race Element Commands: ");
