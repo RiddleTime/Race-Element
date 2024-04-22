@@ -54,6 +54,7 @@ internal sealed class TwitchChatBotCommandHandler
             new("ahead", GetCarAheadResponse),
             new("behind", GetCarBehindResponse),
             new("p", GetPositionLookupResponse),
+            new("#", GetRaceNumberLookupResponse),
             new("session", GetSessionResponse),
         ];
     }
@@ -154,6 +155,32 @@ internal sealed class TwitchChatBotCommandHandler
             sb.Append($"Air {_overlay.broadCastRealTime.AmbientTemp}°, Track {_overlay.broadCastRealTime.TrackTemp}°");
         }
         return sb.ToString();
+    }
+
+    private string GetRaceNumberLookupResponse(string[] args)
+    {
+        if (args.Length == 0)
+            return string.Empty;
+
+        string possibleNumber = args[0];
+        if (!int.TryParse(possibleNumber, out int raceNumber))
+            return string.Empty;
+
+        int requestedPosition = -1;
+        foreach (var car in EntryListTracker.Instance.Cars)
+        {
+            if (car.Value.CarInfo == null) continue;
+            if (car.Value.CarInfo.RaceNumber == raceNumber)
+            {
+                requestedPosition = car.Value.RealtimeCarUpdate.Position;
+                break;
+            }
+        }
+
+        if (requestedPosition == -1)
+            return string.Empty;
+
+        return GetPositionResponse(requestedPosition);
     }
 
     /// <summary>
