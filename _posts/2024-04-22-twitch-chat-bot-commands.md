@@ -6,7 +6,7 @@ tags: guide
 ---
 
 ## Race Element Chat Commands
-Every Race Element Chat Commands starts with a `+`
+Every Race Element Chat Command starts with: `+`
 
 ## Available Commands
 #### **`+app`** *Links to the Race Element website and discord.*
