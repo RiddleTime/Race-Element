@@ -17,3 +17,6 @@ The total damage in repair time, this data is only available when the streamer i
 ### +potential
 Calculates the potential best lap based on the fastest sectors from valid laps. Requires the driver to have set a valid lap.
 ### +temps
+The current ambient and track temperature, will provide more information when the streamer is driving the car.
+### +track
+The current track, name and length.
