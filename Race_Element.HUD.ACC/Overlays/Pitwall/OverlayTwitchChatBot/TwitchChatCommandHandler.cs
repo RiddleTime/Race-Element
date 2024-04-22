@@ -41,7 +41,7 @@ internal sealed class TwitchChatBotCommandHandler
         _overlay = overlay;
 
         Responses = [
-            new("commands", GetCommandsList),
+            new("commands", (args)=> "https://race.elementfuture.com/2024/04/22/twitch-chat-bot-commands.html"),
             new("app", (args) => "https://race.elementfuture.com / https://discord.gg/26AAEW5mUq"),
             new("damage", (args) => $"{TimeSpan.FromSeconds(Damage.GetTotalRepairTime(_overlay.pagePhysics)):mm\\:ss\\.fff}"),
             new("potential", GetPotentialBestResponse),
@@ -49,7 +49,6 @@ internal sealed class TwitchChatBotCommandHandler
             new("track", GetCurrentTrackResponse),
             new("car", GetCurrentCarResponse),
             new("angle", GetSteeringLockResponse),
-            new("green", GetGreenLapResponse),
             new("purple", GetPurpleLapResponse),
             new("ahead", GetCarAheadResponse),
             new("behind", GetCarBehindResponse),
@@ -318,29 +317,6 @@ internal sealed class TwitchChatBotCommandHandler
         }
 
     returnNoValidLaps: return "No valid lap in the lobby";
-    }
-
-    public string GetGreenLapResponse(string[] args)
-    {
-        var personalBest = _overlay.broadCastLocalCar.BestSessionLap;
-        if (personalBest == null || personalBest.IsInvalid) goto returnNoValidLaps;
-
-        try
-        {
-            if (!personalBest.LaptimeMS.HasValue) goto returnNoValidLaps;
-
-            TimeSpan lapTime = TimeSpan.FromSeconds(personalBest.GetLapTimeMS() / 1000d);
-            TimeSpan s1 = TimeSpan.FromSeconds(personalBest.Splits[0].Value / 1000d);
-            TimeSpan s2 = TimeSpan.FromSeconds(personalBest.Splits[1].Value / 1000d);
-            TimeSpan s3 = TimeSpan.FromSeconds(personalBest.Splits[2].Value / 1000d);
-            return $"{lapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}";
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex);
-        }
-
-    returnNoValidLaps: return "No valid laps";
     }
 
     private string GetSteeringLockResponse(string[] args)

@@ -8,6 +8,7 @@ public static class ReleaseNotes
     {
         {"1.0.6.4", "- Rain Prediction HUD: Drizzle is now called Dew."+
                     "\n- Twitch Chat Bot:"+
+                    "\n  - +commands now links to the guide on the website, this guide provides a bit more detail than just a commands list."+
                     "\n  - +pos is now +p."+
                     "\n  - Added +# to look up a car using it's entry number, for example: +# 992."},
         {"1.0.6.2", "- Twitch Chat HUD:"+
