@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RaceElement.Broadcast;
 using RaceElement.Broadcast.Structs;
 using RaceElement.Data;
 using RaceElement.Data.ACC.Cars;
@@ -228,6 +229,12 @@ internal sealed class TwitchChatBotCommandHandler
                 TimeSpan s2 = TimeSpan.FromSeconds(lastLap.Splits[1].Value / 1000d);
                 TimeSpan s3 = TimeSpan.FromSeconds(lastLap.Splits[2].Value / 1000d);
                 sb.Append($" - L{requestedCar.RealtimeCarUpdate.Laps}: {lastLapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}");
+                sb.Append(lastLap.Type switch
+                {
+                    LapType.Outlap => " - Outlap",
+                    LapType.Inlap => " - Inlap",
+                    _ => string.Empty,
+                });
             }
 
             return $"{sb}";
