@@ -42,7 +42,8 @@ internal sealed class TwitchChatBotCommandHandler
         _overlay = overlay;
 
         Responses = [
-            new("commands", (args)=> "https://race.elementfuture.com/2024/04/22/twitch-chat-bot-commands.html"),
+            new("commands", GetCommandsLink),
+            new("help", GetCommandsLink),
             new("app", (args) => "https://race.elementfuture.com / https://discord.gg/26AAEW5mUq"),
             new("damage", (args) => $"{TimeSpan.FromSeconds(Damage.GetTotalRepairTime(_overlay.pagePhysics)):mm\\:ss\\.fff}"),
             new("potential", GetPotentialBestResponse),
@@ -99,6 +100,8 @@ internal sealed class TwitchChatBotCommandHandler
             LogWriter.WriteToLog(ex);
         }
     }
+
+    private string GetCommandsLink(string[] args) => "https://race.elementfuture.com/2024/04/22/twitch-chat-bot-commands.html";
 
     [Obsolete("In favor of the guide on the website, this command is disabled, may enable again if website would be down.")]
     private string GetCommandsList(string[] args)
