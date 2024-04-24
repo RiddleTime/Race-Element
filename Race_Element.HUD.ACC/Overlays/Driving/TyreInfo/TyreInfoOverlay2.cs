@@ -2,16 +2,13 @@
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
 using RaceElement.HUD.Overlay.Util;
-using ScottPlot.Drawing.Colormaps;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static RaceElement.Data.SetupConverter;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TyreInfo;
 
@@ -51,7 +48,7 @@ internal sealed class TyreInfoOverlay2 : AbstractOverlay
 
         PointF TyresLeftTopOrigin = new(0, 0);
 
-        Font fontCoreTemps = FontUtil.FontSegoeMono(10.5f * Scale);
+        Font fontCoreTemps = FontUtil.FontSegoeMono(11f * Scale);
         float scaledTotalTyresWidth = VanillaWidgetDimensions.Tyres.TotalWidth * Scale;
         float scaledTotalTyresHeight = VanillaWidgetDimensions.Tyres.TotalHeight * Scale;
         float scaledTyreWidth = VanillaWidgetDimensions.Tyres.TyreWidth * Scale;
@@ -68,48 +65,47 @@ internal sealed class TyreInfoOverlay2 : AbstractOverlay
         // core tyre temps
         for (int i = 0; i < 4; i++)
         {
-            try
+            _cellsCoreTemperature[i] = new(rectsTyres[i], fontCoreTemps);
+            _graphicsGrid.Grid[rowIndex][i] = _cellsCoreTemperature[i];
+            _cellsCoreTemperature[i].StringFormat.LineAlignment = (i >= 2) ? StringAlignment.Near : StringAlignment.Far;
+            int index = i;
+            _cellsCoreTemperature[i].CachedBackground = new CachedBitmap((int)rectsTyres[index].Width + 1, (int)rectsTyres[index].Height + 1, g =>
             {
-                _cellsCoreTemperature[i] = new(rectsTyres[i], fontCoreTemps);
-                _graphicsGrid.Grid[rowIndex][i] = _cellsCoreTemperature[i];
-                _cellsCoreTemperature[i].StringFormat.LineAlignment = (i >= 2) ? StringAlignment.Near : StringAlignment.Far;
-                int index = i;
-                _cellsCoreTemperature[i].CachedBackground = new CachedBitmap((int)rectsTyres[index].Width, (int)rectsTyres[index].Height, g =>
+                float fontHeight = g.MeasureString("99.0", fontCoreTemps).Height;
+                float y = (index >= 2) ? 0 : (float)Math.Ceiling(rectsTyres[index].Height - fontHeight);
+                y -= (index >= 2) ? 1 : -1;
+                int halfWidth = (int)rectsTyres[index].Width / 2;
+                PointF from = (index < 2) ? new PointF(halfWidth, y - 1) : new PointF(halfWidth, y + fontHeight);
+                PointF to = (index < 2) ? new PointF(halfWidth, y + fontHeight) : new PointF(halfWidth, y);
+
+
+                Color colorBase;
+                float temp = pagePhysics.TyreCoreTemperature[index];
+                if (temp > 95)
+                    colorBase = Color.IndianRed;
+                else if (temp < 75)
+                    colorBase = Color.Cyan;
+                else
+                    colorBase = Color.LimeGreen;
+                if (pageGraphics.TyreCompound == "wet_compound")
                 {
-                    float fontHeight = g.MeasureString("100.0", fontCoreTemps).Height;
-                    float y = (index >= 2) ? 0 : (float)Math.Ceiling(rectsTyres[index].Height - fontHeight);
-                    y -= (index >= 2) ? 1 : -1;
-                    int halfWidth = (int)rectsTyres[index].Width / 2;
-                    PointF from = (index < 2) ? new PointF(halfWidth, y - 1) : new PointF(halfWidth, y + fontHeight);
-                    PointF to = (index < 2) ? new PointF(halfWidth, y + fontHeight) : new PointF(halfWidth, y);
+                    colorBase = Color.LimeGreen;
+                    if (temp > 65)
+                        colorBase = Color.IndianRed;
+                    if (temp < 25)
+                        colorBase = Color.Cyan;
+                }
+                Color colorTo = Color.FromArgb(225, Color.Black);
+                Color colorFrom = Color.FromArgb(130, Color.Black);
+                using LinearGradientBrush pthGrBrush = new(from, to, colorFrom, colorTo);
 
+                using Pen pen = new(pthGrBrush, 1 * Scale);
+                g.DrawRoundedRectangle(pen, new Rectangle(0, (int)y, (int)rectsTyres[index].Width, (int)fontHeight), (int)(6 * Scale));
 
-                    Color colorTo;
-                    float temp = pagePhysics.TyreCoreTemperature[index];
-                    if (temp > 95)
-                        colorTo = Color.IndianRed;
-                    else if (temp < 75)
-                        colorTo = Color.Cyan;
-                    else
-                        colorTo = Color.LimeGreen;
-                    if (pageGraphics.TyreCompound == "wet_compound")
-                    {
-                        colorTo = Color.LimeGreen;
-                        if (temp > 65)
-                            colorTo = Color.IndianRed;
-                        if (temp < 25)
-                            colorTo = Color.Cyan;
-                    }
-                    colorTo = Color.FromArgb(220, colorTo);
+                g.FillRoundedRectangle(pthGrBrush, new Rectangle(0, (int)y, (int)rectsTyres[index].Width, (int)fontHeight), (int)(6 * Scale));
 
-                    using LinearGradientBrush pthGrBrush = new(from, to, Color.FromArgb(70, 0, 0, 0), colorTo);
-                    g.FillRoundedRectangle(pthGrBrush, new Rectangle(0, (int)y, (int)rectsTyres[index].Width, (int)fontHeight), (int)(6 * Scale));
-                });
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-            }
+            });
+
         }
         UpdateTyreTemps();
 
@@ -119,11 +115,10 @@ internal sealed class TyreInfoOverlay2 : AbstractOverlay
 
     public override void Render(Graphics g)
     {
-        SetupPreviewData();
-
-
         UpdateTyreTemps();
 
+        g.CompositingQuality = CompositingQuality.HighQuality;
+        g.SmoothingMode = SmoothingMode.AntiAlias;
         _graphicsGrid?.Draw(g);
     }
 
@@ -131,7 +126,26 @@ internal sealed class TyreInfoOverlay2 : AbstractOverlay
     {
         for (int i = 0; i < 4; i++)
         {
-            if (_cellsCoreTemperature[i].UpdateText($"{pagePhysics.TyreCoreTemperature[i]:F1}°"))
+            float temp = pagePhysics.TyreCoreTemperature[i];
+
+            Color colorBase;
+            if (temp > 95)
+                colorBase = Color.IndianRed;
+            else if (temp < 75)
+                colorBase = Color.Cyan;
+            else
+                colorBase = Color.LimeGreen;
+            if (pageGraphics.TyreCompound == "wet_compound")
+            {
+                colorBase = Color.LimeGreen;
+                if (temp > 65)
+                    colorBase = Color.IndianRed;
+                if (temp < 25)
+                    colorBase = Color.Cyan;
+            }
+
+            _cellsCoreTemperature[i].TextBrush = new SolidBrush(colorBase);
+            if (_cellsCoreTemperature[i].UpdateText($"{temp.ToString(temp >= 100 ? "F0" : "F1")}"))
                 _cellsCoreTemperature[i]?.CachedBackground?.Render();
         }
     }
@@ -145,10 +159,10 @@ internal static class VanillaWidgetDimensions
     /// </summary>
     public static class Tyres
     {
-        public const int TotalWidth = 128;
+        public const int TotalWidth = 130;
         public const int TotalHeight = 140;
 
-        public const int TyreWidth = 49;
+        public const int TyreWidth = 50;
         public const int TyreHeight = 56;
 
         public static RectangleF GetTyre(PointF tyreOrigin, float scaling) => new(tyreOrigin.X, tyreOrigin.Y, TyreWidth * scaling, TyreHeight * scaling);
