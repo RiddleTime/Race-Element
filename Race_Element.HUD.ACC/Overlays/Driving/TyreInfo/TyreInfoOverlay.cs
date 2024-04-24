@@ -4,6 +4,7 @@ using RaceElement.HUD.ACC.Overlays.OverlayPressureTrace;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
 using RaceElement.HUD.Overlay.Util;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -32,6 +33,7 @@ internal sealed class TyreInfoOverlay : AbstractOverlay
 
     private TyresTracker.TyresInfo _lastTyresInfo;
 
+
     public TyreInfoOverlay(Rectangle rectangle) : base(rectangle, "Tyre Info")
     {
         _fontFamilyLarge = FontUtil.FontSegoeMono(13);
@@ -44,6 +46,8 @@ internal sealed class TyreInfoOverlay : AbstractOverlay
         this.Height = InitialHeight;
         this.RefreshRateHz = _config.Information.RefreshRate;
     }
+
+
 
     public sealed override void BeforeStart()
     {
