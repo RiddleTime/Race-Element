@@ -8,7 +8,7 @@ public static class ReleaseNotes
     {
         {"1.0.6.6", "- Twitch Chat Bot:"+
                     "\n  - Car Info commands(+p, +#, +ahead/behind) now also show whether last lap was an inlap or an outlap."+
-                    "\n- Revert Speedometer to old version due to it being more minimalistic whilst providing more info."},
+                    "\n- Revert Speedometer HUD to old version due to it being more minimalistic whilst providing more info."},
         {"1.0.6.4", "- Rain Prediction HUD: Drizzle is now called Dew."+
                     "\n- Twitch Chat Bot:"+
                     "\n  - +commands now links to the guide on the website, this guide provides a bit more detail than just a commands list."+
