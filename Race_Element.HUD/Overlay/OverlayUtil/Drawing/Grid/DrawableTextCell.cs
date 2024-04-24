@@ -22,10 +22,10 @@ public sealed class DrawableTextCell : AbstractDrawableCell
         };
     }
 
-    public void UpdateText(string text, bool forced = false)
+    public bool UpdateText(string text, bool forced = false)
     {
         if (Text == text && !forced)
-            return;
+            return false;
 
         Text = text;
 
@@ -38,5 +38,7 @@ public sealed class DrawableTextCell : AbstractDrawableCell
                 g.DrawStringWithShadow(text, Font, TextBrush, rect, StringFormat);
             }
         });
+
+        return true;
     }
 }

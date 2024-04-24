@@ -2,13 +2,16 @@
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
 using RaceElement.HUD.Overlay.Util;
+using ScottPlot.Drawing.Colormaps;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static RaceElement.Data.SetupConverter;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TyreInfo;
 
@@ -21,7 +24,7 @@ internal sealed class TyreInfoOverlay2 : AbstractOverlay
 
 
     private GraphicsGrid _graphicsGrid;
-    private DrawableTextCell[] _cellsCoreTemperature = new DrawableTextCell[4];
+    private readonly DrawableTextCell[] _cellsCoreTemperature = new DrawableTextCell[4];
     private DrawableTextCell[] _pressureCells = new DrawableTextCell[4];
     private DrawableTextCell[] _pressureLossCells = new DrawableTextCell[4];
     private DrawableTextCell[] _padLifeCells = new DrawableTextCell[4];
@@ -33,7 +36,7 @@ internal sealed class TyreInfoOverlay2 : AbstractOverlay
 
     public override void SetupPreviewData()
     {
-        pagePhysics.TyreCoreTemperature = [70, 70, 70, 70];
+        pagePhysics.TyreCoreTemperature = [25, 80, 80, 80];
     }
 
     public override void BeforeStart()
@@ -48,7 +51,7 @@ internal sealed class TyreInfoOverlay2 : AbstractOverlay
 
         PointF TyresLeftTopOrigin = new(0, 0);
 
-        Font fontCoreTemps = FontUtil.FontSegoeMono(10 * Scale);
+        Font fontCoreTemps = FontUtil.FontSegoeMono(10.5f * Scale);
         float scaledTotalTyresWidth = VanillaWidgetDimensions.Tyres.TotalWidth * Scale;
         float scaledTotalTyresHeight = VanillaWidgetDimensions.Tyres.TotalHeight * Scale;
         float scaledTyreWidth = VanillaWidgetDimensions.Tyres.TyreWidth * Scale;
@@ -65,22 +68,48 @@ internal sealed class TyreInfoOverlay2 : AbstractOverlay
         // core tyre temps
         for (int i = 0; i < 4; i++)
         {
-            _cellsCoreTemperature[i] = new(rectsTyres[i], fontCoreTemps);
-            _graphicsGrid.Grid[rowIndex][i] = _cellsCoreTemperature[i];
-
-            _cellsCoreTemperature[i].StringFormat.LineAlignment = (i >= 2) ? StringAlignment.Near : StringAlignment.Far;
-            _cellsCoreTemperature[i].CachedBackground = new CachedBitmap((int)rectsTyres[i].Width, (int)rectsTyres[i].Height, g =>
+            try
             {
-                float fontHeight = g.MeasureString("100.0", fontCoreTemps).Height;
-                float y = (i >= 2) ? 0 : (float)Math.Ceiling(rectsTyres[i].Height - fontHeight);
-                y -= (i >= 2) ? 1 : -1;
-                int halfWidth = (int)rectsTyres[i].Width / 2;
-                PointF from = (i < 2) ? new PointF(halfWidth, y - 1) : new PointF(halfWidth, y + fontHeight);
-                PointF to = (i < 2) ? new PointF(halfWidth, y + fontHeight) : new PointF(halfWidth, y);
-                using LinearGradientBrush pthGrBrush = new(from, to, Color.FromArgb(5, 255, 255, 255), Color.FromArgb(170, 0, 0, 0));
-                g.FillRoundedRectangle(pthGrBrush, new Rectangle(0, (int)y, (int)rectsTyres[i].Width, (int)fontHeight), (int)(6 * Scale));
-            });
+                _cellsCoreTemperature[i] = new(rectsTyres[i], fontCoreTemps);
+                _graphicsGrid.Grid[rowIndex][i] = _cellsCoreTemperature[i];
+                _cellsCoreTemperature[i].StringFormat.LineAlignment = (i >= 2) ? StringAlignment.Near : StringAlignment.Far;
+                int index = i;
+                _cellsCoreTemperature[i].CachedBackground = new CachedBitmap((int)rectsTyres[index].Width, (int)rectsTyres[index].Height, g =>
+                {
+                    float fontHeight = g.MeasureString("100.0", fontCoreTemps).Height;
+                    float y = (index >= 2) ? 0 : (float)Math.Ceiling(rectsTyres[index].Height - fontHeight);
+                    y -= (index >= 2) ? 1 : -1;
+                    int halfWidth = (int)rectsTyres[index].Width / 2;
+                    PointF from = (index < 2) ? new PointF(halfWidth, y - 1) : new PointF(halfWidth, y + fontHeight);
+                    PointF to = (index < 2) ? new PointF(halfWidth, y + fontHeight) : new PointF(halfWidth, y);
 
+
+                    Color colorTo;
+                    float temp = pagePhysics.TyreCoreTemperature[index];
+                    if (temp > 95)
+                        colorTo = Color.IndianRed;
+                    else if (temp < 75)
+                        colorTo = Color.Cyan;
+                    else
+                        colorTo = Color.LimeGreen;
+                    if (pageGraphics.TyreCompound == "wet_compound")
+                    {
+                        colorTo = Color.LimeGreen;
+                        if (temp > 65)
+                            colorTo = Color.IndianRed;
+                        if (temp < 25)
+                            colorTo = Color.Cyan;
+                    }
+                    colorTo = Color.FromArgb(220, colorTo);
+
+                    using LinearGradientBrush pthGrBrush = new(from, to, Color.FromArgb(70, 0, 0, 0), colorTo);
+                    g.FillRoundedRectangle(pthGrBrush, new Rectangle(0, (int)y, (int)rectsTyres[index].Width, (int)fontHeight), (int)(6 * Scale));
+                });
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
         }
         UpdateTyreTemps();
 
@@ -90,6 +119,9 @@ internal sealed class TyreInfoOverlay2 : AbstractOverlay
 
     public override void Render(Graphics g)
     {
+        SetupPreviewData();
+
+
         UpdateTyreTemps();
 
         _graphicsGrid?.Draw(g);
@@ -98,7 +130,10 @@ internal sealed class TyreInfoOverlay2 : AbstractOverlay
     private void UpdateTyreTemps()
     {
         for (int i = 0; i < 4; i++)
-            _cellsCoreTemperature[i].UpdateText($"{pagePhysics.TyreCoreTemperature[i]:F1}");
+        {
+            if (_cellsCoreTemperature[i].UpdateText($"{pagePhysics.TyreCoreTemperature[i]:F1}°"))
+                _cellsCoreTemperature[i]?.CachedBackground?.Render();
+        }
     }
 }
 
