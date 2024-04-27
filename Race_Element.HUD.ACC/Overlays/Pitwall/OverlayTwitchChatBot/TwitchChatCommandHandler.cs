@@ -125,7 +125,7 @@ internal sealed class TwitchChatBotCommandHandler
     private string GetFuelResponse(string[] args)
     {
         if (args.Length != 3) return string.Empty;
-        if (!int.TryParse(args[0], out int minutes))
+        if (!int.TryParse(args[0], out int totalMinutes))
             return string.Empty;
         if (!float.TryParse(args[1], out float litersPerLap))
             return string.Empty;
@@ -133,13 +133,9 @@ internal sealed class TwitchChatBotCommandHandler
                 out TimeSpan lapTime))
             return string.Empty;
 
-        Debug.WriteLine(lapTime.TotalMinutes);
-        StringBuilder sb = new($"{minutes} minutes at {litersPerLap:F3}L with {lapTime:m\\:ss\\.fff} is ");
-
-        double laps = TimeSpan.FromMinutes(minutes).Divide(lapTime);
+        double laps = TimeSpan.FromMinutes(totalMinutes).Divide(lapTime);
         double fuelRequired = Math.Ceiling(laps) * litersPerLap;
-        sb.Append($"{fuelRequired:F3}");
-        return sb.ToString();
+        return $"{totalMinutes} minutes at {litersPerLap:F3}L with {lapTime:m\\:ss\\.fff} is {fuelRequired:F3}";
     }
 
     private string GetSessionResponse(string[] args)
