@@ -76,7 +76,7 @@ internal sealed class WindDirectionOverlay : AbstractOverlay
         _textCell?.Dispose();
     }
 
-    public override bool ShouldRender()
+    public sealed override bool ShouldRender()
     {
         if (_config.Wind.ShowThreshold > pageGraphics.WindSpeed && !this.IsRepositioning)
             return false;
