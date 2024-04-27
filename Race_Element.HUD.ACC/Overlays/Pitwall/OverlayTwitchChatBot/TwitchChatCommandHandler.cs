@@ -10,6 +10,7 @@ using RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
 using RaceElement.Util;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -57,6 +58,7 @@ internal sealed class TwitchChatBotCommandHandler
             new("p", GetPositionLookupResponse),
             new("#", GetRaceNumberLookupResponse),
             new("session", GetSessionResponse),
+            new("fuel", GetFuelResponse)
         ];
     }
 
@@ -113,6 +115,31 @@ internal sealed class TwitchChatBotCommandHandler
             sb.Append($"{responses[i].Command}{(i < responses.Length - 1 ? ", " : string.Empty)}");
 
         return $"{sb.Append('.')}";
+    }
+
+    /// <summary>
+    /// +fuel [minutes] [liters/lap] [laptime]
+    /// </summary>
+    /// <param name="args"></param>
+    /// <returns></returns>
+    private string GetFuelResponse(string[] args)
+    {
+        if (args.Length != 3) return string.Empty;
+        if (!int.TryParse(args[0], out int minutes))
+            return string.Empty;
+        if (!float.TryParse(args[1], out float litersPerLap))
+            return string.Empty;
+        if (!TimeSpan.TryParseExact(args[2], ["m\\:s", "m\\:s\\.f", "m\\:s\\.ff", "m\\:s\\.fff", "m\\:ss", "m\\:ss\\.f", "m\\:ss\\.ff", "m\\:ss\\.fff"], CultureInfo.InvariantCulture,
+                out TimeSpan lapTime))
+            return string.Empty;
+
+        Debug.WriteLine(lapTime.TotalMinutes);
+        StringBuilder sb = new($"{minutes} minutes at {litersPerLap:F3}L with {lapTime:m\\:ss\\.fff} is ");
+
+        double laps = TimeSpan.FromMinutes(minutes).Divide(lapTime);
+        double fuelRequired = Math.Ceiling(laps) * litersPerLap;
+        sb.Append($"{fuelRequired:F3}");
+        return sb.ToString();
     }
 
     private string GetSessionResponse(string[] args)
