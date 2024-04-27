@@ -62,7 +62,8 @@ internal sealed class WindDirectionOverlay : AbstractOverlay
             Rectangle rect = new(scaledPadding / 2, scaledPadding / 2, scaledSize - scaledPadding, scaledSize - scaledPadding);
             using SolidBrush brush = new(Color.FromArgb(90, 0, 0, 0));
             g.FillEllipse(brush, rect);
-            g.DrawEllipse(new Pen(Color.FromArgb(165, 0, 0, 0), 18 * this.Scale), new Rectangle(scaledPadding / 2, scaledPadding / 2, scaledSize - scaledPadding, scaledSize - scaledPadding));
+            using Pen outlinePen = new(Color.FromArgb(165, 0, 0, 0), 18 * this.Scale);
+            g.DrawEllipse(outlinePen, new Rectangle(scaledPadding / 2, scaledPadding / 2, scaledSize - scaledPadding, scaledSize - scaledPadding));
         });
 
         Font font = FontUtil.FontSegoeMono(15f * Scale);
@@ -96,10 +97,12 @@ internal sealed class WindDirectionOverlay : AbstractOverlay
         Rectangle rect = new(padding / 2, padding / 2, _config.Shape.Size - padding, _config.Shape.Size - padding);
 
         // draw relative angle (blowing to)
-        g.DrawArc(new Pen(Brushes.LimeGreen, 16), rect, (float)relativeAngle - 4, 8);
+        using Pen limeGreenPen = new(Brushes.LimeGreen, 16);
+        g.DrawArc(limeGreenPen, rect, (float)relativeAngle - 4, 8);
 
         // draw angle where the wind is coming from
-        g.DrawArc(new Pen(Brushes.Red, 8), rect, (float)relativeAngle - 180 - 35, 70);
+        using Pen redPen = new(Brushes.Red, 8);
+        g.DrawArc(redPen, rect, (float)relativeAngle - 180 - 35, 70);
 
         _textCell?.UpdateText($"{pageGraphics.WindSpeed:F1}");
         _textCell?.Draw(g, 1f / Scale);
