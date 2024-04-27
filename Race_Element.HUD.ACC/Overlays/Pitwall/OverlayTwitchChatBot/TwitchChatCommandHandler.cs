@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.VisualBasic;
+using Newtonsoft.Json;
 using RaceElement.Broadcast;
 using RaceElement.Broadcast.Structs;
 using RaceElement.Data;
@@ -140,7 +141,8 @@ internal sealed class TwitchChatBotCommandHandler
 
     private string GetSessionResponse(string[] args)
     {
-        StringBuilder sb = new($"{_overlay.broadCastRealTime.SessionType}");
+        RealtimeUpdate update = _overlay.broadCastRealTime;
+        StringBuilder sb = new($"{update.SessionType} - {$"{update.SessionTime:hh\\:mm\\:ss}"}");
         return sb.ToString();
     }
 
@@ -255,10 +257,9 @@ internal sealed class TwitchChatBotCommandHandler
                 TimeSpan s2 = TimeSpan.FromSeconds(lastLap.Splits[1].Value / 1000d);
                 TimeSpan s3 = TimeSpan.FromSeconds(lastLap.Splits[2].Value / 1000d);
                 sb.Append($" - L{requestedCar.RealtimeCarUpdate.Laps}: {lastLapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}");
-                sb.Append(lastLap.Type switch
+                sb.Append(requestedCar.RealtimeCarUpdate.CarLocation switch
                 {
-                    LapType.Outlap => " - Outlap",
-                    LapType.Inlap => " - Inlap",
+                    CarLocationEnum.Pitlane => " - Pitlane",
                     _ => string.Empty,
                 });
             }
