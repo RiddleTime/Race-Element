@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RaceElement.Broadcast;
 using RaceElement.Broadcast.Structs;
 using RaceElement.Data;
 using RaceElement.Data.ACC.Cars;
@@ -9,6 +10,7 @@ using RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
 using RaceElement.Util;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -41,7 +43,8 @@ internal sealed class TwitchChatBotCommandHandler
         _overlay = overlay;
 
         Responses = [
-            new("commands", (args)=> "https://race.elementfuture.com/2024/04/22/twitch-chat-bot-commands.html"),
+            new("commands", GetCommandsLink),
+            new("help", GetCommandsLink),
             new("app", (args) => "https://race.elementfuture.com / https://discord.gg/26AAEW5mUq"),
             new("damage", (args) => $"{TimeSpan.FromSeconds(Damage.GetTotalRepairTime(_overlay.pagePhysics)):mm\\:ss\\.fff}"),
             new("potential", GetPotentialBestResponse),
@@ -55,6 +58,7 @@ internal sealed class TwitchChatBotCommandHandler
             new("p", GetPositionLookupResponse),
             new("#", GetRaceNumberLookupResponse),
             new("session", GetSessionResponse),
+            new("fuel", GetFuelResponse)
         ];
     }
 
@@ -99,6 +103,8 @@ internal sealed class TwitchChatBotCommandHandler
         }
     }
 
+    private string GetCommandsLink(string[] args) => "https://race.elementfuture.com/2024/04/22/twitch-chat-bot-commands.html";
+
     [Obsolete("In favor of the guide on the website, this command is disabled, may enable again if website would be down.")]
     private string GetCommandsList(string[] args)
     {
@@ -111,9 +117,31 @@ internal sealed class TwitchChatBotCommandHandler
         return $"{sb.Append('.')}";
     }
 
+    /// <summary>
+    /// +fuel [minutes] [liters/lap] [laptime]
+    /// </summary>
+    /// <param name="args"></param>
+    /// <returns></returns>
+    private string GetFuelResponse(string[] args)
+    {
+        if (args.Length != 3) return string.Empty;
+        if (!int.TryParse(args[0], out int totalMinutes))
+            return string.Empty;
+        if (!float.TryParse(args[1], out float litersPerLap))
+            return string.Empty;
+        if (!TimeSpan.TryParseExact(args[2], ["m\\:s", "m\\:s\\.f", "m\\:s\\.ff", "m\\:s\\.fff", "m\\:ss", "m\\:ss\\.f", "m\\:ss\\.ff", "m\\:ss\\.fff"], CultureInfo.InvariantCulture,
+                out TimeSpan lapTime))
+            return string.Empty;
+
+        double laps = TimeSpan.FromMinutes(totalMinutes).Divide(lapTime);
+        double fuelRequired = Math.Ceiling(laps) * litersPerLap;
+        return $"{totalMinutes} minutes at {litersPerLap:F3}L with {lapTime:m\\:ss\\.fff} is in total {fuelRequired:F3}L. Estimated {laps:F3} laps.";
+    }
+
     private string GetSessionResponse(string[] args)
     {
-        StringBuilder sb = new($"{_overlay.broadCastRealTime.SessionType}");
+        RealtimeUpdate update = _overlay.broadCastRealTime;
+        StringBuilder sb = new($"{update.SessionType} - {$"{update.SessionTime:hh\\:mm\\:ss}"}");
         return sb.ToString();
     }
 
@@ -228,6 +256,11 @@ internal sealed class TwitchChatBotCommandHandler
                 TimeSpan s2 = TimeSpan.FromSeconds(lastLap.Splits[1].Value / 1000d);
                 TimeSpan s3 = TimeSpan.FromSeconds(lastLap.Splits[2].Value / 1000d);
                 sb.Append($" - L{requestedCar.RealtimeCarUpdate.Laps}: {lastLapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}");
+                sb.Append(requestedCar.RealtimeCarUpdate.CarLocation switch
+                {
+                    CarLocationEnum.Pitlane => " - Pitlane",
+                    _ => string.Empty,
+                });
             }
 
             return $"{sb}";

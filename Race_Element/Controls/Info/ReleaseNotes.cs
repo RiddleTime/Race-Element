@@ -6,6 +6,11 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.6.6", "- Twitch Chat Bot:"+
+                    "\n  - Added Fuel Calculator: +fuel [minutes] [liters/lap] [laptime]. Use like +fuel 60 3 2:16."+
+                    "\n  - Car info commands now also show whether a car is in the pitlane."+
+                    "\n  - Added: +help, does the same as +commands."+
+                    "\n- Revert Speedometer HUD to old version due to it being more minimalistic whilst providing more info."},
         {"1.0.6.4", "- Rain Prediction HUD: Drizzle is now called Dew."+
                     "\n- Twitch Chat Bot:"+
                     "\n  - +commands now links to the guide on the website, this guide provides a bit more detail than just a commands list."+
