@@ -12,9 +12,11 @@ using System.Linq;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TyreInfo;
 
+#if DEBUG
 [Overlay(Name = "Tyre Info Overlay",
 Description = "Overlays the vanilla tyre widget.",
 Authors = ["Reinier Klarenberg"])]
+#endif
 internal sealed class TyreInfoOverlay2 : AbstractOverlay
 {
     private readonly TyreInfoConfiguration _config = new();
