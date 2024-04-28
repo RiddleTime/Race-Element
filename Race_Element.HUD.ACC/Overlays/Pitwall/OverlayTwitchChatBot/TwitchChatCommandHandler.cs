@@ -136,7 +136,7 @@ internal sealed class TwitchChatBotCommandHandler
 
         double laps = TimeSpan.FromMinutes(totalMinutes).Divide(lapTime);
         double fuelRequired = Math.Ceiling(laps) * litersPerLap;
-        return $"{totalMinutes} minutes at {litersPerLap:F3}L with {lapTime:m\\:ss\\.fff} is {fuelRequired:F3}";
+        return $"{totalMinutes} minutes at {litersPerLap:F3}L with {lapTime:m\\:ss\\.fff} is in total {fuelRequired:F3}L. Estimated {laps:F3} laps.";
     }
 
     private string GetSessionResponse(string[] args)
