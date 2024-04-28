@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RaceElement.Broadcast;
 using RaceElement.Broadcast.Structs;
 using RaceElement.Data;
