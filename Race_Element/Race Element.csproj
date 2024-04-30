@@ -12,9 +12,9 @@
         <SuiteName>Race Element</SuiteName>
         <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
         <DisallowUrlActivation>true</DisallowUrlActivation>
-        <ApplicationVersion>1.0.6.8</ApplicationVersion>
-        <AssemblyVersion>1.0.6.8</AssemblyVersion>
-        <Version>1.0.6.8</Version>
+        <ApplicationVersion>1.0.7.0</ApplicationVersion>
+        <AssemblyVersion>1.0.7.0</AssemblyVersion>
+        <Version>1.0.7.0</Version>
         <UseApplicationTrust>true</UseApplicationTrust>
         <CreateDesktopShortcut>true</CreateDesktopShortcut>
         <PublishWizardCompleted>true</PublishWizardCompleted>

@@ -6,6 +6,7 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.7.0", "- hotfix for fuel info hud, drawing things were disposed when they shouldn't have been." },
         {"1.0.6.8", "- Fuel Info HUD:" +
                     "\n  - Now calculates laptimes above 3 minutes. It will also use your last lap as laptime if you don't haven't set a valid best lap yet." +
                     "\n  - No data will be shown if there are no known laptimes(best or last)."+
