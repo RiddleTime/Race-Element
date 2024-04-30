@@ -6,6 +6,8 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.6.8", "- Fuel Info HUD: Now calculates laptimes above 3 minutes, (we never expected Nordschleife DLC)."+
+                    "\n- Setup Viewer: Fix Camber value for Lambo Huracan ST Evo 2."},
         {"1.0.6.6", "- Twitch Chat Bot:"+
                     "\n  - Added Fuel Calculator: +fuel [minutes] [liters/lap] [laptime]. Use like +fuel 60 3 2:16."+
                     "\n  - Car info commands now also show whether a car is in the pitlane."+
