@@ -104,8 +104,9 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
                 bestLapTime = pageGraphics.LastTimeMs;
             else
             {
-                //bestLapTime = new TimeSpan(0, 8, 10).TotalMilliseconds;
-                _infoPanel.AddLine("Notice", "No best/last lap set");
+                string header = "No";
+                header = header.FillStart(10, ' ');
+                _infoPanel.AddLine(header, "Best/Last Lap");
                 goto drawPanel;
             }
         }
