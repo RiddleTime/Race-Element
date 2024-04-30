@@ -8,7 +8,8 @@ using System.Drawing;
 namespace RaceElement.HUD.ACC.Overlays.OverlayFuelInfo;
 
 [Overlay(Name = "Fuel Info",
-    Description = "A panel showing information about the fuel: laps left, fuel to end of race. Optionally showing stint information.",
+    Description = "A panel showing information about the fuel: laps left, fuel to end of race. Optionally showing stint information." +
+    "\nBest to be used in a race, Do not use this before you start it as the game doesn't provide accurate data at that point.",
     Version = 1.00,
     OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Car,
