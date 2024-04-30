@@ -19,8 +19,8 @@ internal class LamborghiniHuracanSTEvo22021 : ICarSetupConversion
         {
             switch (GetPosition(wheel))
             {
-                case Position.Front: return Math.Round(-3.0 + 0.1 * rawValue[(int)wheel], 2);
-                case Position.Rear: return Math.Round(-3.5 + 0.1 * rawValue[(int)wheel], 2);
+                case Position.Front: return Math.Round(-3.5 + 0.1 * rawValue[(int)wheel], 2);
+                case Position.Rear: return Math.Round(-3.0 + 0.1 * rawValue[(int)wheel], 2);
                 default: return -1;
             }
         }
