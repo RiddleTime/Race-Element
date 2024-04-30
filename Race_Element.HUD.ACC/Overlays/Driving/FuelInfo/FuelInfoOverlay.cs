@@ -93,7 +93,7 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
     {
         // Some global variants
         double lapBufferVar = pageGraphics.FuelXLap * this._config.InfoPanel.FuelBufferLaps;
-        double bestLapTime = pageGraphics.BestTimeMs; bestLapTime.ClipMax(180000);
+        double bestLapTime = pageGraphics.BestTimeMs; if (bestLapTime > TimeSpan.FromMinutes(12).TotalMilliseconds) bestLapTime = new TimeSpan(0, 8, 10).TotalMilliseconds;
         double fuelTimeLeft = pageGraphics.FuelEstimatedLaps * bestLapTime;
         double stintDebug = pageGraphics.DriverStintTimeLeft; stintDebug.ClipMin(-1);
         //**********************
