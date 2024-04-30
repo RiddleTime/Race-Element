@@ -99,7 +99,7 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
 
     public sealed override void Render(Graphics g)
     {
-        Brush fuelBarBrush = GetFuelBarBrush();
+        using SolidBrush fuelBarBrush = new(GetFuelBarColor());
         _infoPanel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel:F2} L", 0, pageStatic.MaxFuel, pagePhysics.Fuel, fuelBarBrush);
         // Some global variants
         double lapBufferVar = pageGraphics.FuelXLap * this._config.InfoPanel.FuelBufferLaps;
@@ -115,7 +115,8 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
                     string header = "No Laptime";
                     header = header.FillEnd(10, ' ');
                     _infoPanel.AddLine(header, "Waiting...");
-                    goto drawPanel;
+                    _infoPanel.Draw(g);
+                    return;
                 }
             }
         }
@@ -129,7 +130,7 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
         string fuelTime = $"{TimeSpan.FromMilliseconds(fuelTimeLeft):hh\\:mm\\:ss}";
         string stintTime = $"{TimeSpan.FromMilliseconds(stintDebug):hh\\:mm\\:ss}";
         //**********************
-        Brush fuelTimeBrush = GetFuelTimeBrush(fuelTimeLeft, stintDebug);
+        using SolidBrush fuelTimeBrush = new(GetFuelTimeColor(fuelTimeLeft, stintDebug));
         //Start (Basic)
         _infoPanel.AddLine("Laps Left", $"{pageGraphics.FuelEstimatedLaps:F1} @ {pageGraphics.FuelXLap:F2}L");
         _infoPanel.AddLine("Fuel-End", $"{fuelToEnd + lapBufferVar:F1} : Add {fuelToAdd:F0}");
@@ -147,10 +148,8 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
             else
                 _infoPanel.AddLine("Stint Fuel", $"{stintFuel + lapBufferVar:F1}");
         }
-    //Magic End (Advanced)
-    drawPanel:
+        //Magic End (Advanced)
         _infoPanel.Draw(g);
-        //fuelTimeBrush?.Dispose();
     }
 
     private double FuelToAdd(double lapBufferVar, double stintDebug, double stintFuel, double fuelToEnd)
@@ -164,7 +163,7 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
         return fuel;
     }
 
-    private SolidBrush GetFuelBarBrush()
+    private Color GetFuelBarColor()
     {
         float percentage = pagePhysics.Fuel / pageStatic.MaxFuel;
 
@@ -172,16 +171,16 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
         if (percentage <= _config.Colors.MediumPercent) color = _config.Colors.MediumColor;
         if (percentage <= _config.Colors.LowPercent) color = _config.Colors.LowColor;
 
-        return new SolidBrush(color);
+        return color;
     }
 
-    private Brush GetFuelTimeBrush(double fuelTimeLeft, double stintDebug)
+    private Color GetFuelTimeColor(double fuelTimeLeft, double stintDebug)
     {
-        Brush brush;
+        Color color;
         if (stintDebug > -1)
-            brush = fuelTimeLeft <= stintDebug ? Brushes.Red : Brushes.LimeGreen;
+            color = fuelTimeLeft <= stintDebug ? Color.Red : Color.LimeGreen;
         else
-            brush = fuelTimeLeft <= pageGraphics.SessionTimeLeft ? Brushes.Red : Brushes.LimeGreen;
-        return brush;
+            color = fuelTimeLeft <= pageGraphics.SessionTimeLeft ? Color.Red : Color.LimeGreen;
+        return color;
     }
 }
