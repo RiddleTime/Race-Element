@@ -99,8 +99,7 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
 
     public sealed override void Render(Graphics g)
     {
-        using Brush fuelBarBrush = GetFuelBarBrush();
-        Brush fuelTimeBrush = null;
+        Brush fuelBarBrush = GetFuelBarBrush();
         _infoPanel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel:F2} L", 0, pageStatic.MaxFuel, pagePhysics.Fuel, fuelBarBrush);
         // Some global variants
         double lapBufferVar = pageGraphics.FuelXLap * this._config.InfoPanel.FuelBufferLaps;
@@ -130,7 +129,7 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
         string fuelTime = $"{TimeSpan.FromMilliseconds(fuelTimeLeft):hh\\:mm\\:ss}";
         string stintTime = $"{TimeSpan.FromMilliseconds(stintDebug):hh\\:mm\\:ss}";
         //**********************
-        fuelTimeBrush = GetFuelTimeBrush(fuelTimeLeft, stintDebug);
+        Brush fuelTimeBrush = GetFuelTimeBrush(fuelTimeLeft, stintDebug);
         //Start (Basic)
         _infoPanel.AddLine("Laps Left", $"{pageGraphics.FuelEstimatedLaps:F1} @ {pageGraphics.FuelXLap:F2}L");
         _infoPanel.AddLine("Fuel-End", $"{fuelToEnd + lapBufferVar:F1} : Add {fuelToAdd:F0}");
@@ -151,7 +150,7 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
     //Magic End (Advanced)
     drawPanel:
         _infoPanel.Draw(g);
-        fuelTimeBrush?.Dispose();
+        //fuelTimeBrush?.Dispose();
     }
 
     private double FuelToAdd(double lapBufferVar, double stintDebug, double stintFuel, double fuelToEnd)
