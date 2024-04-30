@@ -92,15 +92,22 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
 
     public sealed override void Render(Graphics g)
     {
+        using Brush fuelBarBrush = GetFuelBarBrush();
+
+        _infoPanel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel:F2} L", 0, pageStatic.MaxFuel, pagePhysics.Fuel, fuelBarBrush);
         // Some global variants
         double lapBufferVar = pageGraphics.FuelXLap * this._config.InfoPanel.FuelBufferLaps;
         double bestLapTime = pageGraphics.BestTimeMs;
-        if (bestLapTime > TimeSpan.FromMinutes(12).TotalMilliseconds)
+        if (bestLapTime > TimeSpan.FromMinutes(12).TotalMilliseconds || bestLapTime == 0)
         {
-            if (pageGraphics.LastTimeMs < TimeSpan.FromMinutes(12).TotalMilliseconds)
+            if (pageGraphics.LastTimeMs < TimeSpan.FromMinutes(12).TotalMilliseconds && pageGraphics.LastTimeMs != 0)
                 bestLapTime = pageGraphics.LastTimeMs;
             else
-                bestLapTime = new TimeSpan(0, 8, 10).TotalMilliseconds;
+            {
+                //bestLapTime = new TimeSpan(0, 8, 10).TotalMilliseconds;
+                _infoPanel.AddLine("Notice", "No best/last lap set");
+                goto drawPanel;
+            }
         }
         double fuelTimeLeft = pageGraphics.FuelEstimatedLaps * bestLapTime;
         double stintDebug = pageGraphics.DriverStintTimeLeft; stintDebug.ClipMin(-1);
@@ -112,10 +119,8 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
         string fuelTime = $"{TimeSpan.FromMilliseconds(fuelTimeLeft):hh\\:mm\\:ss}";
         string stintTime = $"{TimeSpan.FromMilliseconds(stintDebug):hh\\:mm\\:ss}";
         //**********************
-        Brush fuelBarBrush = GetFuelBarBrush();
         Brush fuelTimeBrush = GetFuelTimeBrush(fuelTimeLeft, stintDebug);
         //Start (Basic)
-        _infoPanel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel:F2} L", 0, pageStatic.MaxFuel, pagePhysics.Fuel, fuelBarBrush);
         _infoPanel.AddLine("Laps Left", $"{pageGraphics.FuelEstimatedLaps:F1} @ {pageGraphics.FuelXLap:F2}L");
         _infoPanel.AddLine("Fuel-End", $"{fuelToEnd + lapBufferVar:F1} : Add {fuelToAdd:F0}");
         //End (Basic)
@@ -132,7 +137,8 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
             else
                 _infoPanel.AddLine("Stint Fuel", $"{stintFuel + lapBufferVar:F1}");
         }
-        //Magic End (Advanced)
+    //Magic End (Advanced)
+    drawPanel:
         _infoPanel.Draw(g);
     }
 
@@ -147,7 +153,7 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
         return fuel;
     }
 
-    private Brush GetFuelBarBrush()
+    private SolidBrush GetFuelBarBrush()
     {
         float percentage = pagePhysics.Fuel / pageStatic.MaxFuel;
 

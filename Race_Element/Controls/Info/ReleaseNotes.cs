@@ -6,7 +6,9 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
-        {"1.0.6.8", "- Fuel Info HUD: Now calculates laptimes above 3 minutes. It will also use your last lap as laptime if you don't haven't set a valid best lap yet."+
+        {"1.0.6.8", "- Fuel Info HUD:" +
+                    "\n  - Now calculates laptimes above 3 minutes. It will also use your last lap as laptime if you don't haven't set a valid best lap yet." +
+                    "\n  - No data will be shown if there are no known laptimes(best or last)."+
                     "\n- Setup Viewer: Fix Camber value for Lambo Huracan ST Evo 2."},
         {"1.0.6.6", "- Twitch Chat Bot:"+
                     "\n  - Added Fuel Calculator: +fuel [minutes] [liters/lap] [laptime]. Use like +fuel 60 3 2:16."+
