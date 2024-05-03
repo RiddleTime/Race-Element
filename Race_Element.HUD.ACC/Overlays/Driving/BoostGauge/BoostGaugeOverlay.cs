@@ -27,6 +27,7 @@ internal sealed class BoostGaugeOverlay : AbstractOverlay
     }
 
     private readonly InfoPanel _panel;
+    private SolidBrush _barBrush;
 
     public BoostGaugeOverlay(Rectangle rectangle) : base(rectangle, "Boost Gauge")
     {
@@ -39,13 +40,13 @@ internal sealed class BoostGaugeOverlay : AbstractOverlay
         this.RefreshRateHz = 10;
     }
 
-    public override void BeforeStart() { }
-    public override void BeforeStop() { }
+    public sealed override void BeforeStart() => _barBrush = new(_config.Colors.BarColor);
+
+    public sealed override void BeforeStop() => _barBrush?.Dispose();
 
     public sealed override void Render(Graphics g)
     {
-        using SolidBrush solidBrush = new(_config.Colors.BarColor);
-        _panel.AddProgressBarWithCenteredText($"{pagePhysics.TurboBoost * 100f:F1}".FillStart(4, ' '), 0, 100, pagePhysics.TurboBoost * 100f, solidBrush);
+        _panel.AddProgressBarWithCenteredText($"{pagePhysics.TurboBoost * 100f:F1}".FillStart(4, ' '), 0, 100, pagePhysics.TurboBoost * 100f, _barBrush);
         _panel.Draw(g);
     }
 }
