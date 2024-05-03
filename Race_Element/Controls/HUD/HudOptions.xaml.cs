@@ -125,7 +125,7 @@ public partial class HudOptions : UserControl
                     listBoxItemToggleDemoMode.Selected += (s, e) =>
                     {
                         _hudSettingsJson.DemoMode = true;
-                        _hudSettings.Save(_hudSettingsJson);
+                        _hudSettings.Save(_hudSettingsJson);                                
                         listBoxItemToggleDemoMode.Foreground = Brushes.Cyan;
                     };
                     listBoxItemToggleDemoMode.Unselected += (s, e) =>
