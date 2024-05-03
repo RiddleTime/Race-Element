@@ -17,7 +17,10 @@ using static RaceElement.Data.ACC.EntryList.EntryListTracker;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall;
 
-[Overlay(Name = "Positions Timestamp", Description = "Shows the positions at a timestamp when the hotkey was pressed.\nPress hotkey to reset and hide hud again.")]
+[Overlay(Name = "Positions Timestamp",
+Description = "Shows the positions at a timestamp when the hotkey was pressed.\nPress hotkey to reset and hide hud again.",
+Authors = ["Reinier Klarenberg", "Kenneth Portis(idea)"],
+OverlayType = OverlayType.Pitwall)]
 internal sealed class PositionsTimestamp : AbstractOverlay
 {
     private readonly PositionsTimestampConfiguration _config = new();
