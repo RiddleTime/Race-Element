@@ -34,7 +34,8 @@ internal sealed class TrackMapOverlay : AbstractOverlay
                 IntervalMillis = 4,
                 Scale = _config.Map.Scale,
                 MapColor = _config.Map.MapColor,
-                Thickness = _config.Map.Thickness
+                Thickness = _config.Map.Thickness,
+                Rotation = _config.Map.Rotation
             };
 
             _minimapCreationJob.OnMapCreation += OnMiniMapCreated;
@@ -58,7 +59,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     public override bool ShouldRender()
     {
-        return true;
+        return _trackMinimap != null;
     }
 
     public override void Render(Graphics g)

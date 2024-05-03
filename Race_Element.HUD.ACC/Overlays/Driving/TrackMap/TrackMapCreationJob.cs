@@ -11,19 +11,25 @@ using RaceElement.Util;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
+internal struct BoundingBox
+{
+    public float minX, maxX;
+    public float minY, maxY;
+}
+
 public class TrackMapCreationJob : AbstractLoopJob
 {
     private enum CreationState
     {
         Start,
         TraceTrack,
-        RescaleTrack,
+        ScaleAndRotateTrack,
         BitmapTrack,
         LoadFromFile,
         End
     }
 
-    private List<ACCSharedMemory.StructVector3> _mapPoints = new();
+    private readonly List<PointF> _mapPoints = new();
     private CreationState _mapTrackingState;
 
     public EventHandler<Bitmap> OnMapCreation;
@@ -32,6 +38,7 @@ public class TrackMapCreationJob : AbstractLoopJob
     private int _completedLaps;
     private int _prevPacketId;
 
+    private float _rotation;
     private float _carNormPosition;
     private float _thickness;
     private float _scale;
@@ -40,6 +47,8 @@ public class TrackMapCreationJob : AbstractLoopJob
     {
         _mapTrackingState = CreationState.Start;
         _mapColor = Color.DarkGray;
+
+        _rotation = 0.1f;
         _thickness = 0.5f;
         _scale = 0.1f;
 
@@ -48,6 +57,11 @@ public class TrackMapCreationJob : AbstractLoopJob
         _prevPacketId = ACCSharedMemory.Instance.PageFileGraphic.PacketId;
 
         Debug.WriteLine("[MAP TRACE] CreationState.Start");
+    }
+
+    public float Rotation
+    {
+        set { _rotation = value; }
     }
 
     public float Scale
@@ -108,9 +122,9 @@ public class TrackMapCreationJob : AbstractLoopJob
                 _mapTrackingState = TrackMapPosition();
             }break;
 
-            case CreationState.RescaleTrack:
+            case CreationState.ScaleAndRotateTrack:
             {
-                _mapTrackingState = TrackMapRescale();
+                _mapTrackingState = TrackMapRescaleAndRotate();
             }break;
 
             case CreationState.BitmapTrack:
@@ -142,48 +156,37 @@ public class TrackMapCreationJob : AbstractLoopJob
             return CreationState.Start;
         }
 
-        _mapPoints.Add(pageGraphics.CarCoordinates[0]);
+        var pos = pageGraphics.CarCoordinates[0];
+        _mapPoints.Add(new PointF(pos.X, pos.Z));
 
         if (_carNormPosition > pageGraphics.NormalizedCarPosition)
         {
             Debug.WriteLine("[MAP TRACE] CreationState.TraceTrack -> CreationState.RescaleTrack");
             WriteMapToFile();
-            return CreationState.RescaleTrack;
+            return CreationState.ScaleAndRotateTrack;
         }
 
         _carNormPosition = pageGraphics.NormalizedCarPosition;
         return CreationState.TraceTrack;
     }
 
-    private CreationState TrackMapRescale()
+    private CreationState TrackMapRescaleAndRotate()
     {
-        float maxX = -999999999999.0f;
-        float minX = 999999999999.0f;
-
-        float maxZ = -999999999999.0f;
-        float minZ = 999999999999.0f;
-
-        foreach (var pos in _mapPoints)
-        {
-            maxX = Math.Max(maxX, pos.X);
-            minX = Math.Min(minX, pos.X);
-
-            maxZ = Math.Max(maxZ, pos.Z);
-            minZ = Math.Min(minZ, pos.Z);
-        }
-
-        float centerX = (maxX + minX) * 0.5f;
-        float centerZ = (maxZ + minZ) * 0.5f;
+        var boundingBox = GetBoundingBox(_mapPoints);
+        float centerX = (boundingBox.maxX + boundingBox.minX) * 0.5f;
+        float centerY = (boundingBox.maxY + boundingBox.minY) * 0.5f;
 
         for (int i = 0; i < _mapPoints.Count; ++i)
         {
             var pos = _mapPoints[i];
 
             pos.X = (_mapPoints[i].X - centerX) * _scale;
-            pos.Y = 0.0f;
-            pos.Z = (_mapPoints[i].Z - centerZ) * _scale;
+            pos.Y = (_mapPoints[i].Y - centerY) * _scale;
 
-            _mapPoints[i] = pos;
+            var x = pos.X * Math.Cos(Deg2Rad(_rotation)) - pos.Y * Math.Sin(Deg2Rad(_rotation));
+            var y = pos.X * Math.Sin(Deg2Rad(_rotation)) + pos.Y * Math.Cos(Deg2Rad(_rotation));
+
+            _mapPoints[i] = new PointF((float)x, (float)y);
         }
 
         Debug.WriteLine("[MAP TRACE] CreationState.RescaleTrack -> CreationState.BitmapTrack");
@@ -192,33 +195,18 @@ public class TrackMapCreationJob : AbstractLoopJob
 
     private CreationState TrackMapCreateBitmap()
     {
-        var points = new List<Point>();
+        var boundingBox = GetBoundingBox(_mapPoints);
 
-        float maxX = -999999999999.0f;
-        float minX = 999999999999.0f;
-
-        float maxZ = -999999999999.0f;
-        float minZ = 999999999999.0f;
-
-        foreach (var pos in _mapPoints)
+        for (int i = 0; i < _mapPoints.Count; ++i)
         {
-            maxX = Math.Max(maxX, pos.X);
-            minX = Math.Min(minX, pos.X);
+            float x = _mapPoints[i].X - boundingBox.minX;
+            float y = _mapPoints[i].Y - boundingBox.minY;
 
-            maxZ = Math.Max(maxZ, pos.Z);
-            minZ = Math.Min(minZ, pos.Z);
+            _mapPoints[i] = new PointF(x, y);
         }
 
-        foreach (var it in _mapPoints)
-        {
-            float x = it.X - minX;
-            float z = it.Z - minZ;
-
-            points.Add(new Point((int)x, (int)z));
-        }
-
-        float w = (float)Math.Sqrt((maxX - minX) * (maxX - minX));
-        float h = (float)Math.Sqrt((maxZ - minZ) * (maxZ - minZ));
+        float w = (float)Math.Sqrt((boundingBox.maxX - boundingBox.minX) * (boundingBox.maxX - boundingBox.minX));
+        float h = (float)Math.Sqrt((boundingBox.maxY - boundingBox.minY) * (boundingBox.maxY - boundingBox.minY));
 
         var track = new Bitmap((int)(w + 1.0f), (int)(h + 1.0f));
         track.MakeTransparent();
@@ -227,7 +215,7 @@ public class TrackMapCreationJob : AbstractLoopJob
         g.SmoothingMode = SmoothingMode.AntiAlias;
         g.CompositingMode = CompositingMode.SourceOver;
         g.CompositingQuality = CompositingQuality.HighQuality;
-        g.DrawLines(new Pen(_mapColor, _thickness), points.ToArray());
+        g.DrawLines(new Pen(_mapColor, _thickness), _mapPoints.ToArray());
 
         Debug.WriteLine("[MAP TRACE] CreationState.BitmapTrack -> CreationState.End");
         OnMapCreation?.Invoke(null, track);
@@ -244,10 +232,10 @@ public class TrackMapCreationJob : AbstractLoopJob
 
         while (fs.Position < fs.Length)
         {
-            ACCSharedMemory.StructVector3 pos = new();
+            PointF pos = new();
 
             pos.X = br.ReadSingle();
-            pos.Z = br.ReadSingle();
+            pos.Y = br.ReadSingle();
 
             _mapPoints.Add(pos);
         }
@@ -255,7 +243,7 @@ public class TrackMapCreationJob : AbstractLoopJob
         br.Close();
         fs.Close();
 
-        return CreationState.RescaleTrack;
+        return CreationState.ScaleAndRotateTrack;
     }
 
     private void WriteMapToFile()
@@ -272,10 +260,37 @@ public class TrackMapCreationJob : AbstractLoopJob
         foreach (var it in _mapPoints)
         {
             bw.Write(it.X);
-            bw.Write(it.Z);
+            bw.Write(it.Y);
         }
 
         bw.Close();
         fs.Close();
+    }
+
+    private double Deg2Rad(double deg)
+    {
+        return deg * (Math.PI / 180.0);
+    }
+
+    private BoundingBox GetBoundingBox(List<PointF> points)
+    {
+        BoundingBox result = new();
+
+        result.maxX = -999999999999.0f;
+        result.minX = 999999999999.0f;
+
+        result.maxY = -999999999999.0f;
+        result.minY = 999999999999.0f;
+
+        foreach (var it in points)
+        {
+            result.maxX = Math.Max(result.maxX, it.X);
+            result.minX = Math.Min(result.minX, it.X);
+
+            result.maxY = Math.Max(result.maxY, it.Y);
+            result.minY = Math.Min(result.minY, it.Y);
+        }
+
+        return result;
     }
 }
