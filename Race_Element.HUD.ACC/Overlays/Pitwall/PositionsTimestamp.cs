@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +28,15 @@ internal sealed class PositionsTimestamp : AbstractOverlay
     private sealed class PositionsTimestampConfiguration : OverlayConfiguration
     {
         public PositionsTimestampConfiguration() => this.GenericConfiguration.AllowRescale = false;
+
+        [ConfigGrouping("Text Settings", "Adjust the look and feel of the text")]
+        public TextGrouping Text { get; init; } = new TextGrouping();
+        public sealed class TextGrouping
+        {
+            [ToolTip("Sets the size of the font.")]
+            [IntRange(10, 20, 1)]
+            public int FontSize { get; init; } = 12;
+        }
     }
 
     private IKeyboardMouseEvents m_GlobalHook;
@@ -45,7 +55,7 @@ internal sealed class PositionsTimestamp : AbstractOverlay
     {
         if (IsPreviewing) return;
 
-        _font = FontUtil.FontSegoeMono(12);
+        _font = FontUtil.FontSegoeMono(_config.Text.FontSize);
 
         m_GlobalHook = Hook.GlobalEvents();
         m_GlobalHook.OnCombination(new Dictionary<Combination, Action> {
@@ -89,6 +99,7 @@ internal sealed class PositionsTimestamp : AbstractOverlay
         Height = totalHeight;
 
         g.FillRectangle(Brushes.Black, new Rectangle(0, 0, Width, Height));
+        g.TextRenderingHint = TextRenderingHint.AntiAlias;
         for (int i = 0; i < strings.Count; i++)
         {
             g.DrawStringWithShadow(strings[i], _font, Brushes.White, new PointF(0, i * _font.GetHeight()));
