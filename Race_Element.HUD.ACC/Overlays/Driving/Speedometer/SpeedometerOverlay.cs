@@ -28,6 +28,14 @@ internal sealed class SpeedometerOverlay : AbstractOverlay
             [ToolTip("Displays the minimum speed reached on each lap.")]
             public bool MinSpeed { get; init; } = false;
         }
+
+        [ConfigGrouping("Colors", "Change the appearance of the HUD.")]
+        public ColorGrouping Colors { get; init; } = new ColorGrouping();
+        public sealed class ColorGrouping
+        {
+            [ToolTip("Sets the color of the bar")]
+            public Color BarColor { get; init; } = Color.FromArgb(255, 255, 69, 0);
+        }
     }
 
     private readonly InfoPanel _panel;
@@ -70,7 +78,8 @@ internal sealed class SpeedometerOverlay : AbstractOverlay
 
     public sealed override void Render(Graphics g)
     {
-        _panel.AddProgressBarWithCenteredText($"{pagePhysics.SpeedKmh:F0}".FillStart(3, ' '), 0, 320, pagePhysics.SpeedKmh);
+        using SolidBrush solidBrush = new(_config.Colors.BarColor);
+        _panel.AddProgressBarWithCenteredText($"{pagePhysics.SpeedKmh:F0}".FillStart(3, ' '), 0, 320, pagePhysics.SpeedKmh, solidBrush);
 
         if (_config.InfoPanel.MaxSpeed)
         {

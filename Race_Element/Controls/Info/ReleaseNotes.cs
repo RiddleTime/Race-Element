@@ -7,6 +7,8 @@ public static class ReleaseNotes
     internal readonly static Dictionary<string, string> Notes = new()
     {
         {"1.0.7.2", "- Fuel Info HUD: Reworked some internals."+
+                    "\n- Boost Guage HUD: Added customizable bar color."+
+                    "\n- Speedometer HUD: Added customizable bar color."+
                     "\n- TODO: - Added Nordschleife Corner Data."},
         {"1.0.7.0", "- hotfix for fuel info hud, drawing things were disposed when they shouldn't have been." },
         {"1.0.6.8", "- Fuel Info HUD:" +
