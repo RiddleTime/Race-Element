@@ -329,7 +329,7 @@ public unsafe class ACCSharedMemory
         /// <summary>Delta time in wide character</summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)] public string DeltaLapTime;
 
-        /// <summary>Delta time time in milliseconds</summary>
+        /// <summary>Delta time in milliseconds</summary>
         public int DeltaLapTimeMillis;
 
         /// <summary>Estimated lap time in wide character</summary>

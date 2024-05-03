@@ -1,69 +1,81 @@
-﻿using RaceElement.HUD.Overlay.Configuration;
-using RaceElement.HUD.Overlay.Internal;
-//using Svg;
+﻿using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.Util;
+using RaceElement.Util;
 using System.Drawing;
 
-namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackMap;
+namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
-#if DEBUG
 [Overlay(Name = "Track Map",
     Description = "Shows a track map",
     OverlayCategory = OverlayCategory.Track,
     OverlayType = OverlayType.Drive)]
-#endif
 internal sealed class TrackMapOverlay : AbstractOverlay
 {
-    private readonly TrackMapConfiguration _config = new();
-    private class TrackMapConfiguration : OverlayConfiguration
-    {
+    private  readonly TrackMapConfiguration _config = new();
+    private TrackMapCreationJob _minimapCreationJob;
+    private Bitmap _trackMinimap;
 
-    }
-
-    private Bitmap map;
     public TrackMapOverlay(Rectangle rectangle) : base(rectangle, "Track Map")
     {
-        Width = 520;
-        Height = 380;
         RefreshRateHz = 1;
     }
 
     public override void BeforeStart()
     {
+        if (IsPreviewing)
+        {
+            return;
+        }
 
+        if (_trackMinimap == null)
+        {
+            _minimapCreationJob = new TrackMapCreationJob()
+            {
+                IntervalMillis = 4,
+                Scale = _config.Map.Scale,
+                MapColor = _config.Map.MapColor,
+                Thickness = _config.Map.Thickness
+            };
+
+            _minimapCreationJob.OnMapCreation += OnMiniMapCreated;
+            _minimapCreationJob.Run();
+        }
     }
 
     public override void BeforeStop()
     {
-        map?.Dispose();
+        if (IsPreviewing)
+        {
+            return;
+        }
+
+        _minimapCreationJob?.Cancel();
+        _trackMinimap?.Dispose();
+
+        _minimapCreationJob = null;
+        _trackMinimap = null;
     }
 
-    //private void ProcessNodes(IEnumerable<SvgElement> nodes, SvgPaintServer colorServer)
-    //{
-    //    foreach (var node in nodes)
-    //    {
-    //        if (node.Fill != SvgPaintServer.None) node.Fill = colorServer;
-    //        if (node.Color != SvgPaintServer.None) node.Color = colorServer;
-    //        if (node.Stroke != SvgPaintServer.None) node.Stroke = colorServer;
-    //        node.StrokeWidth = 1;
-
-    //        ProcessNodes(node.Descendants(), colorServer);
-    //    }
-    //}
+    public override bool ShouldRender()
+    {
+        return true;
+    }
 
     public override void Render(Graphics g)
     {
-        //var names = Assembly.GetExecutingAssembly().GetManifestResourceNames().Where(x => x.EndsWith(".svg"));
+        g.DrawImage(_trackMinimap, new Point());
+    }
 
-        //var name = names.ElementAt(new Random().Next(0, names.Count() - 1));
+    private void OnMiniMapCreated(object sender, Bitmap minimap)
+    {
+        _minimapCreationJob.Cancel();
+        _trackMinimap = minimap;
 
-        //XmlDocument doc = new XmlDocument();
-        //doc.Load(Assembly.GetExecutingAssembly().GetManifestResourceStream(name));
-        //var svgDoc = SvgDocument.Open(doc);
-        //svgDoc.Fill = new SvgColourServer(Color.FromArgb(130, 0, 0, 0));
-        //ProcessNodes(svgDoc.Descendants(), new SvgColourServer(Color.White));
-        //map = svgDoc.Draw();
-
-        //g.DrawImage(map, 0, 0, Width, Height);
-
+        if (_config.Map.SavePreview && ACCSharedMemory.Instance.PageFileStatic.Track.Length != 0)
+        {
+            var trackName = ACCSharedMemory.Instance.PageFileStatic.Track.Trim() + ".jpg";
+            string path = FileUtil.RaceElementTracks + trackName;
+            _trackMinimap.Save(path);
+        }
     }
 }

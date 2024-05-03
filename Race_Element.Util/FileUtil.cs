@@ -15,6 +15,7 @@ public class FileUtil
     public static string RaceElementSettingsPath = RaceElementAppDataPath + "Settings\\";
     public static string RaceElementDataPath = RaceElementAppDataPath + "Data\\";
     public static string RaceElementDownloadCachePath = RaceElementAppDataPath + "DownloadCache\\";
+    public static string RaceElementTracks = RaceElementAppDataPath + "Tracks\\";
 
 
     public static string AccPath => Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "Assetto Corsa Competizione\\";
