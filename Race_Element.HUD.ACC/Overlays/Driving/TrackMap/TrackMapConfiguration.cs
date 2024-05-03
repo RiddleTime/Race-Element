@@ -25,6 +25,6 @@ internal sealed class TrackMapConfiguration : OverlayConfiguration
         public bool SavePreview { get; init; } = false;
 
         [ToolTip("Map color")]
-        public Color MapColor { get; init; } = Color.DarkGray;
+        public Color Color { get; init; } = Color.DarkGray;
     }
 }
