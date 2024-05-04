@@ -1,7 +1,11 @@
-﻿using RaceElement.HUD.Overlay.OverlayUtil;
-using RaceElement.HUD.Overlay.Internal;
+﻿using RaceElement.Data.ACC.Database.SessionData;
 using RaceElement.Data.ACC.EntryList;
+using RaceElement.Data.ACC.Session;
+
+using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
+
 using RaceElement.Util;
 
 using System.Collections.Generic;
@@ -44,13 +48,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             return;
         }
 
-        _miniMapCreationJob = new TrackMapCreationJob()
-        {
-            IntervalMillis = 4,
-        };
-
-        _miniMapCreationJob.OnMapPositionsCallback += OnMapPositionsCallback;
-        _miniMapCreationJob.Run();
+        RaceSessionTracker.Instance.OnNewSessionStarted += OnNewSessionStart;
     }
 
     public override void BeforeStop()
@@ -86,6 +84,25 @@ internal sealed class TrackMapOverlay : AbstractOverlay
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private void OnNewSessionStart(object sender, DbRaceSession session)
+    {
+        if (_miniMapCreationJob != null)
+        {
+            _miniMapCreationJob.CancelJoin();
+            _miniMapCreationJob = null;
+        }
+
+        _miniMapCreationJob = new TrackMapCreationJob()
+        {
+            IntervalMillis = 4,
+        };
+
+        _trackPositions = null;
+        _miniMapCreationJob.OnMapPositionsCallback += OnMapPositionsCallback;
+
+        _miniMapCreationJob.Run();
+    }
 
     private void OnMapPositionsCallback(object sender, List<PointF> positions)
     {
