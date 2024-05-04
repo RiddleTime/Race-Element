@@ -1,5 +1,6 @@
 ﻿using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Internal;
+using RaceElement.Data.ACC.EntryList;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.Util;
 
@@ -155,13 +156,13 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         }
 
         var w = (float)Math.Sqrt((boundaries.Right - boundaries.Left) * (boundaries.Right - boundaries.Left));
-        var  h = (float)Math.Sqrt((boundaries.Top - boundaries.Bottom) * (boundaries.Top - boundaries.Bottom));
+        var h = (float)Math.Sqrt((boundaries.Top - boundaries.Bottom) * (boundaries.Top - boundaries.Bottom));
 
         var carsAndTrack = new Bitmap((int)(w + _margin), (int)(h + _margin));
         carsAndTrack.MakeTransparent();
 
-        var  ellipseRadius = _config.Other.Dotsize;
-        var  fontScale = _config.Other.FontSize;
+        var ellipseRadius = _config.Other.Dotsize;
+        var fontScale = _config.Other.FontSize;
 
         var g = Graphics.FromImage(carsAndTrack);
         g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -172,15 +173,21 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         var font = FontUtil.FontSegoeMono(fontScale);
         g.DrawLines(new Pen(_config.Map.Color, _config.Map.Thickness), track.ToArray());
 
+        var outterColor = new SolidBrush(Color.Black);
+        var playerColor = new SolidBrush(_config.Car.PlayerColor);
+        var othersColor = new SolidBrush(_config.Car.OthersColor);
+
+        var carList = EntryListTracker.Instance.Cars;
+
         for (int i = 0; i < cars.Count; ++i)
         {
             var car = cars[i];
-            Color color = _config.Car.OthersColor;
+            var color = othersColor;
             var pageFileGraphic = ACCSharedMemory.Instance.PageFileGraphic;
 
             if (pageFileGraphic.CarIds[i] == pageFileGraphic.PlayerCarID)
             {
-                color = _config.Car.PlayerColor;
+                color = playerColor;
             }
 
             {
@@ -189,20 +196,25 @@ internal sealed class TrackMapOverlay : AbstractOverlay
                 car.X -= ellipseRadius * 0.5f;
                 car.Y -= ellipseRadius * 0.5f;
 
-                g.FillEllipse(new SolidBrush(Color.Black), car.X - outBorder * 0.5f, car.Y - outBorder * 0.5f, ellipseRadius, ellipseRadius);
-                g.FillEllipse(new SolidBrush(color), car.X, car.Y, ellipseRadius - outBorder, ellipseRadius - outBorder);
+                g.FillEllipse(outterColor, car.X - outBorder * 0.5f, car.Y - outBorder * 0.5f, ellipseRadius, ellipseRadius);
+                g.FillEllipse(color, car.X, car.Y, ellipseRadius - outBorder, ellipseRadius - outBorder);
             }
 
-            if (_config.Car.ShowCarIdentifier)
+            if (_config.Car.ShowCarNumber)
             {
                 car.X += 3 + ellipseRadius * 0.5f;
                 car.Y += 3 + ellipseRadius * 0.5f;
 
-                var id = pageFileGraphic.CarIds[i].ToString();
+                var id = carList[pageFileGraphic.CarIds[i]].Value.CarInfo.RaceNumber.ToString();
                 g.DrawStringWithShadow(id, font, new SolidBrush(Color.WhiteSmoke), car);
             }
         }
 
+        outterColor?.Dispose();
+        playerColor?.Dispose();
+        othersColor?.Dispose();
+
+        font?.Dispose();
         return carsAndTrack;
     }
 

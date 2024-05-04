@@ -32,8 +32,8 @@ internal sealed class TrackMapConfiguration : OverlayConfiguration
     public CarGrouping Car { get; init; } = new();
     public sealed class CarGrouping
     {
-        [ToolTip("Show Cars identifier")]
-        public bool ShowCarIdentifier { get; init; } = false;
+        [ToolTip("Show Cars number")]
+        public bool ShowCarNumber { get; init; } = false;
 
         [ToolTip("Player car color")]
         public Color PlayerColor { get; init; } = Color.Red;
