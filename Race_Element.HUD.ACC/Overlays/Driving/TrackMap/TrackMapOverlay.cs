@@ -28,7 +28,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
     private List<PointF> _trackPositions;
     private Bitmap _trackMiniMap;
 
-    private readonly float _margin = 30.0f;
+    private readonly float _margin = 24.0f;
 
     public TrackMapOverlay(Rectangle rectangle) : base(rectangle, "Track Map")
     {
@@ -159,19 +159,19 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         }
 
         PointF result = car;
-        var prevDistance = Math.Pow(car.X - track[0].X, 2) + Math.Pow(car.Y - track[0].Y, 2);
+        var distance = Math.Pow(car.X - track[0].X, 2) + Math.Pow(car.Y - track[0].Y, 2);
 
         foreach (var it in track)
         {
             var currentDistance = Math.Pow(car.X - it.X, 2) + Math.Pow(car.Y - it.Y, 2);
-            if (currentDistance < prevDistance)
+            if (currentDistance < distance)
             {
-                prevDistance = currentDistance;
+                distance = currentDistance;
                 result = it;
             }
         }
 
-        return prevDistance > 10 ? car : result;
+        return distance > 5 ? car : result;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
