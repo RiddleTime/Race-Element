@@ -25,7 +25,7 @@ public class TrackMapCreationJob : AbstractLoopJob
     private readonly List<PointF> _trackedPositions;
     private CreationState _mapTrackingState;
 
-    public EventHandler<List<PointF>> OnMapCreation;
+    public EventHandler<List<PointF>> OnMapPositionsCallback;
     private float _carNormPosition;
 
     private int _completedLaps;
@@ -62,7 +62,7 @@ public class TrackMapCreationJob : AbstractLoopJob
 
             case CreationState.NotifySubscriber:
             {
-                OnMapCreation?.Invoke(this, _trackedPositions);
+                OnMapPositionsCallback?.Invoke(this, _trackedPositions);
                 _mapTrackingState = CreationState.End;
             } break;
 

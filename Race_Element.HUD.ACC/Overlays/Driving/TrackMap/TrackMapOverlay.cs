@@ -28,9 +28,11 @@ internal sealed class TrackMapOverlay : AbstractOverlay
     private List<PointF> _trackPositions;
     private Bitmap _trackMiniMap;
 
+    private readonly float _margin = 30.0f;
+
     public TrackMapOverlay(Rectangle rectangle) : base(rectangle, "Track Map")
     {
-        RefreshRateHz = 1;
+        RefreshRateHz = 30;
     }
 
     public override void BeforeStart()
@@ -45,7 +47,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             IntervalMillis = 4,
         };
 
-        _minimapCreationJob.OnMapCreation += OnMiniMapCreated;
+        _minimapCreationJob.OnMapPositionsCallback += OnMapPositionsCallback;
         _minimapCreationJob.Run();
     }
 
@@ -73,26 +75,130 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     public override void Render(Graphics g)
     {
-        g.DrawImage(_trackMiniMap, new Point());
+        g.DrawImage(_trackMiniMap, 0, 0);
+        g.DrawImage(CreateBitmapForCarsOnTrack(), 0, 0);
     }
 
-    private void OnMiniMapCreated(object sender, List<PointF> positions)
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private Bitmap CreateBitmapForCarsOnTrack()
     {
+        var pageFileGraphic = ACCSharedMemory.Instance.PageFileGraphic;
+        List<PointF> cars = new();
+
+        for (int i = 0; i < pageFileGraphic.ActiveCars; ++i)
+        {
+            float x = pageFileGraphic.CarCoordinates[i].X;
+            float y = pageFileGraphic.CarCoordinates[i].Z;
+
+            cars.Add(new PointF(x, y));
+        }
+
+        var boundaries = GetBoundingBox(_trackPositions);
+        cars = ScaleAndRotate(cars, boundaries, _config.Map.Scale, _config.Map.Rotation);
+
+        var track = ScaleAndRotate(_trackPositions, boundaries, _config.Map.Scale, _config.Map.Rotation);
+        boundaries = GetBoundingBox(track);
+
+        return CreateBitmapForCarsOnTrack(cars, track, boundaries);
+    }
+
+    private Bitmap CreateBitmapForCarsOnTrack(List<PointF> cars, List<PointF> track, BoundingBox boundaries)
+    {
+        for (int i = 0; i < cars.Count; ++i)
+        {
+            float x = cars[i].X - boundaries.Left + _margin * 0.5f;
+            float y = cars[i].Y - boundaries.Bottom + _margin * 0.5f;
+
+            cars[i] = new PointF(x, y);
+        }
+
+        for (int i = 0; i < track.Count; ++i)
+        {
+            float x = track[i].X - boundaries.Left + _margin * 0.5f;
+            float y = track[i].Y - boundaries.Bottom + _margin * 0.5f;
+
+            track[i] = new PointF(x, y);
+        }
+
+        float w = (float)Math.Sqrt((boundaries.Right - boundaries.Left) * (boundaries.Right - boundaries.Left));
+        float h = (float)Math.Sqrt((boundaries.Top - boundaries.Bottom) * (boundaries.Top - boundaries.Bottom));
+
+        var carsOnTrack = new Bitmap((int)(w + _margin), (int)(h + _margin));
+        carsOnTrack.MakeTransparent();
+
+        var g = Graphics.FromImage(carsOnTrack);
+        g.SmoothingMode = SmoothingMode.AntiAlias;
+        g.CompositingMode = CompositingMode.SourceOver;
+        g.CompositingQuality = CompositingQuality.HighQuality;
+
+        for (int i = 0; i < cars.Count; ++i)
+        {
+            Color color = _config.Car.OthersColor;
+            var pageFileGraphic = ACCSharedMemory.Instance.PageFileGraphic;
+
+            if (pageFileGraphic.CarIds[i] == pageFileGraphic.PlayerCarID)
+            {
+                color = _config.Car.PlayerColor;
+            }
+
+            var it = FindClosedTrackPoint(cars[i], track);
+            //var it = cars[i];
+            g.FillEllipse(new SolidBrush(color), it.X, it.Y, _config.Car.Scale, _config.Car.Scale);
+
+        }
+
+        return carsOnTrack;
+    }
+
+    private PointF FindClosedTrackPoint(PointF car, List<PointF> track)
+    {
+        if (track.Count == 0)
+        {
+            return car;
+        }
+
+        PointF result = car;
+        var prevDistance = Math.Pow(car.X - track[0].X, 2) + Math.Pow(car.Y - track[0].Y, 2);
+
+        foreach (var it in track)
+        {
+            var currentDistance = Math.Pow(car.X - it.X, 2) + Math.Pow(car.Y - it.Y, 2);
+            if (currentDistance < prevDistance)
+            {
+                prevDistance = currentDistance;
+                result = it;
+            }
+        }
+
+        return prevDistance > 10 ? car : result;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private void OnMapPositionsCallback(object sender, List<PointF> positions)
+    {
+        var pageFileStatic = ACCSharedMemory.Instance.PageFileStatic;
         _minimapCreationJob.Cancel();
 
         _trackPositions = positions;
         _trackMiniMap = CreateMiniMap(ScaleAndRotate(positions, _config.Map.Scale, _config.Map.Rotation));
 
-
         Height = _trackMiniMap.Height;
         Width = _trackMiniMap.Width;
 
-        if (_config.Map.SavePreview && ACCSharedMemory.Instance.PageFileStatic.Track.Length != 0)
+        if (!_config.Map.SavePreview)
         {
-            var trackName = ACCSharedMemory.Instance.PageFileStatic.Track.Trim() + ".jpg";
-            string path = FileUtil.RaceElementTracks + trackName;
-            _trackMiniMap.Save(path);
+            return;
         }
+
+        if (pageFileStatic.Track.Length == 0)
+        {
+            return;
+        }
+
+        string path = FileUtil.RaceElementTracks + pageFileStatic + ".jpg";
+        _trackMiniMap.Save(path);
     }
 
     private Bitmap CreateMiniMap(List<PointF> positions)
@@ -102,8 +208,8 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
         for (int i = 0; i < positions.Count; ++i)
         {
-            float x = positions[i].X - boundingBox.Left;
-            float y = positions[i].Y - boundingBox.Bottom;
+            float x = positions[i].X - boundingBox.Left + _margin * 0.5f;
+            float y = positions[i].Y - boundingBox.Bottom + _margin * 0.5f;
 
             pos.Add(new PointF(x, y));
         }
@@ -111,7 +217,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         float w = (float)Math.Sqrt((boundingBox.Right - boundingBox.Left) * (boundingBox.Right - boundingBox.Left));
         float h = (float)Math.Sqrt((boundingBox.Top - boundingBox.Bottom) * (boundingBox.Top - boundingBox.Bottom));
 
-        var track = new Bitmap((int)(w + 10.0f), (int)(h + 10.0f));
+        var track = new Bitmap((int)(w + _margin), (int)(h + _margin));
         track.MakeTransparent();
 
         var g = Graphics.FromImage(track);
@@ -125,12 +231,17 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     private List<PointF> ScaleAndRotate(List<PointF> positions, float scale, float rotation)
     {
-        var boundingBox = GetBoundingBox(positions);
+        var boundings = GetBoundingBox(positions);
+        return ScaleAndRotate(positions, boundings, scale, rotation);
+    }
+
+    private List<PointF> ScaleAndRotate(List<PointF> positions, BoundingBox boundings, float scale, float rotation)
+    {
+        var rot = Double.DegreesToRadians(rotation);
+        float centerX = (boundings.Right + boundings.Left) * 0.5f;
+        float centerY = (boundings.Top + boundings.Bottom) * 0.5f;
+
         List<PointF> result = new();
-
-        float centerX = (boundingBox.Right + boundingBox.Left) * 0.5f;
-        float centerY = (boundingBox.Top + boundingBox.Bottom) * 0.5f;
-
         foreach (var it in positions)
         {
             PointF pos = new();
@@ -138,8 +249,8 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             pos.X = (it.X - centerX) * scale;
             pos.Y = (it.Y - centerY) * scale;
 
-            var x = pos.X * Math.Cos(Double.DegreesToRadians(rotation)) - pos.Y * Math.Sin(Double.DegreesToRadians(rotation));
-            var y = pos.X * Math.Sin(Double.DegreesToRadians(rotation)) + pos.Y * Math.Cos(Double.DegreesToRadians(rotation));
+            var x = pos.X * Math.Cos(rot) - pos.Y * Math.Sin(rot);
+            var y = pos.X * Math.Sin(rot) + pos.Y * Math.Cos(rot);
 
             result.Add(new PointF((float)x, (float)y));
         }
