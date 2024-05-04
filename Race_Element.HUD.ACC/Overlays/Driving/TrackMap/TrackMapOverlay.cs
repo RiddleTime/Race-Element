@@ -13,6 +13,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Drawing;
 using System;
+using System.Linq;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
@@ -47,6 +48,14 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         {
             return;
         }
+
+        _miniMapCreationJob = new TrackMapCreationJob()
+        {
+            IntervalMillis = 4,
+        };
+
+        _miniMapCreationJob.OnMapPositionsCallback += OnMapPositionsCallback;
+        _miniMapCreationJob.Run();
 
         RaceSessionTracker.Instance.OnNewSessionStarted += OnNewSessionStart;
     }
@@ -98,9 +107,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             IntervalMillis = 4,
         };
 
-        _trackPositions = null;
         _miniMapCreationJob.OnMapPositionsCallback += OnMapPositionsCallback;
-
         _miniMapCreationJob.Run();
     }
 
@@ -217,12 +224,15 @@ internal sealed class TrackMapOverlay : AbstractOverlay
                 g.FillEllipse(color, car.X, car.Y, ellipseRadius - outBorder, ellipseRadius - outBorder);
             }
 
-            if (_config.Car.ShowCarNumber)
+            if (_config.Car.ShowCarNumber && carList.Count >= pageGraphics.ActiveCars)
             {
                 car.X += 3 + ellipseRadius * 0.5f;
                 car.Y += 3 + ellipseRadius * 0.5f;
 
-                var id = carList[pageFileGraphic.CarIds[i]].Value.CarInfo.RaceNumber.ToString();
+                var idx = pageFileGraphic.CarIds[i];
+                var entry = EntryListTracker.Instance.Cars.First(x => x.Key == idx);
+
+                var id = entry.Value.CarInfo.RaceNumber.ToString();
                 g.DrawStringWithShadow(id, font, new SolidBrush(Color.WhiteSmoke), car);
             }
         }
