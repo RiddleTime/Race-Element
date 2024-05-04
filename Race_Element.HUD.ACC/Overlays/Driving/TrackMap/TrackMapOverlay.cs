@@ -154,30 +154,22 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             track[i] = new PointF(x, y);
         }
 
-        float w = (float)Math.Sqrt((boundaries.Right - boundaries.Left) * (boundaries.Right - boundaries.Left));
-        float h = (float)Math.Sqrt((boundaries.Top - boundaries.Bottom) * (boundaries.Top - boundaries.Bottom));
+        var w = (float)Math.Sqrt((boundaries.Right - boundaries.Left) * (boundaries.Right - boundaries.Left));
+        var  h = (float)Math.Sqrt((boundaries.Top - boundaries.Bottom) * (boundaries.Top - boundaries.Bottom));
 
         var carsAndTrack = new Bitmap((int)(w + _margin), (int)(h + _margin));
         carsAndTrack.MakeTransparent();
 
-        float elipseRadius = 18 * _config.Map.Thickness / 10;
-        elipseRadius = elipseRadius < 5 ? 5 : elipseRadius;
+        var  ellipseRadius = _config.Other.Dotsize;
+        var  fontScale = _config.Other.FontSize;
 
-        float fontScale = 15 * _config.Map.Thickness / 10;
-        fontScale = fontScale < 7 ? 7 : fontScale;
-
-        float fontDisplacement = 10 * _config.Map.Thickness / 10;
-        fontDisplacement = fontDisplacement < 3 ? 3 : fontDisplacement;
-
-        var font = FontUtil.FontSegoeMono(fontScale);
         var g = Graphics.FromImage(carsAndTrack);
-
         g.SmoothingMode = SmoothingMode.AntiAlias;
         g.CompositingMode = CompositingMode.SourceOver;
         g.TextRenderingHint = TextRenderingHint.AntiAlias;
         g.CompositingQuality = CompositingQuality.HighQuality;
 
-        RectangleF rectf = new RectangleF(0, 0, carsAndTrack.Width, carsAndTrack.Height);
+        var font = FontUtil.FontSegoeMono(fontScale);
         g.DrawLines(new Pen(_config.Map.Color, _config.Map.Thickness), track.ToArray());
 
         for (int i = 0; i < cars.Count; ++i)
@@ -192,22 +184,22 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             }
 
             {
-                float outBorder = 3.0f;
+                var outBorder = 3.0f;
 
-                car.X -= elipseRadius * 0.5f;
-                car.Y -= elipseRadius * 0.5f;
+                car.X -= ellipseRadius * 0.5f;
+                car.Y -= ellipseRadius * 0.5f;
 
-                g.FillEllipse(new SolidBrush(Color.Black), car.X - outBorder * 0.5f, car.Y - outBorder * 0.5f, elipseRadius, elipseRadius);
-                g.FillEllipse(new SolidBrush(color), car.X, car.Y, elipseRadius - outBorder, elipseRadius - outBorder);
+                g.FillEllipse(new SolidBrush(Color.Black), car.X - outBorder * 0.5f, car.Y - outBorder * 0.5f, ellipseRadius, ellipseRadius);
+                g.FillEllipse(new SolidBrush(color), car.X, car.Y, ellipseRadius - outBorder, ellipseRadius - outBorder);
             }
 
             if (_config.Car.ShowCarIdentifier)
             {
-                car.X += fontDisplacement;
-                car.Y += fontDisplacement;
+                car.X += 3 + ellipseRadius * 0.5f;
+                car.Y += 3 + ellipseRadius * 0.5f;
 
-                var number = (pageFileGraphic.CarIds[i] + 1).ToString();
-                g.DrawStringWithShadow(number, font, new SolidBrush(Color.WhiteSmoke), car);
+                var id = pageFileGraphic.CarIds[i].ToString();
+                g.DrawStringWithShadow(id, font, new SolidBrush(Color.WhiteSmoke), car);
             }
         }
 
@@ -217,8 +209,8 @@ internal sealed class TrackMapOverlay : AbstractOverlay
     private List<PointF> ScaleAndRotate(List<PointF> positions, BoundingBox boundaries, float scale, float rotation)
     {
         var rot = Double.DegreesToRadians(rotation);
-        float centerX = (boundaries.Right + boundaries.Left) * 0.5f;
-        float centerY = (boundaries.Top + boundaries.Bottom) * 0.5f;
+        var  centerX = (boundaries.Right + boundaries.Left) * 0.5f;
+        var  centerY = (boundaries.Top + boundaries.Bottom) * 0.5f;
 
         List<PointF> result = new();
         foreach (var it in positions)
