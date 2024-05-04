@@ -96,7 +96,10 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         var pageFileStatic = ACCSharedMemory.Instance.PageFileStatic;
         if (pageFileStatic.Track.Length == 0) return;
 
-        var track = ScaleAndRotate(_trackPositions, GetBoundingBox(_trackPositions), _config.Map.Scale, _config.Map.Rotation);
+        var boundaries = GetBoundingBox(_trackPositions);
+        float w = (float)Math.Sqrt((boundaries.Right - boundaries.Left) * (boundaries.Right - boundaries.Left));
+
+        var track = ScaleAndRotate(_trackPositions, boundaries, _config.Map.MaxWidth / w, _config.Map.Rotation);
         var minimap = CreateBitmapForCarsAndTrack(new List<PointF>(), track);
 
         string path = FileUtil.RaceElementTracks + pageFileStatic.Track + ".jpg";
@@ -119,8 +122,11 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             cars.Add(new PointF(x, y));
         }
 
-        var track = ScaleAndRotate(_trackPositions, boundaries, _config.Map.Scale, _config.Map.Rotation);
-        cars = ScaleAndRotate(cars, boundaries, _config.Map.Scale, _config.Map.Rotation);
+        float w = (float)Math.Sqrt((boundaries.Right - boundaries.Left) * (boundaries.Right - boundaries.Left));
+        float scale = _config.Map.MaxWidth / w;
+
+        var track = ScaleAndRotate(_trackPositions, boundaries, scale, _config.Map.Rotation);
+        cars = ScaleAndRotate(cars, boundaries, scale, _config.Map.Rotation);
 
         return CreateBitmapForCarsAndTrack(cars, track);
     }
@@ -180,11 +186,11 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         return carsAndTrack;
     }
 
-    private List<PointF> ScaleAndRotate(List<PointF> positions, BoundingBox boundings, float scale, float rotation)
+    private List<PointF> ScaleAndRotate(List<PointF> positions, BoundingBox boundaries, float scale, float rotation)
     {
         var rot = Double.DegreesToRadians(rotation);
-        float centerX = (boundings.Right + boundings.Left) * 0.5f;
-        float centerY = (boundings.Top + boundings.Bottom) * 0.5f;
+        float centerX = (boundaries.Right + boundaries.Left) * 0.5f;
+        float centerY = (boundaries.Top + boundaries.Bottom) * 0.5f;
 
         List<PointF> result = new();
         foreach (var it in positions)
