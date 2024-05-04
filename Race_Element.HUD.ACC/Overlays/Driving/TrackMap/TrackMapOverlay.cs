@@ -1,8 +1,11 @@
-﻿using RaceElement.HUD.Overlay.Internal;
+﻿using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.Util;
 using RaceElement.Util;
 
 using System.Collections.Generic;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Drawing;
 using System;
 
@@ -157,14 +160,29 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         var carsAndTrack = new Bitmap((int)(w + _margin), (int)(h + _margin));
         carsAndTrack.MakeTransparent();
 
+        float elipseRadius = 18 * _config.Map.Thickness / 10;
+        elipseRadius = elipseRadius < 5 ? 5 : elipseRadius;
+
+        float fontScale = 15 * _config.Map.Thickness / 10;
+        fontScale = fontScale < 7 ? 7 : fontScale;
+
+        float fontDisplacement = 10 * _config.Map.Thickness / 10;
+        fontDisplacement = fontDisplacement < 3 ? 3 : fontDisplacement;
+
+        var font = FontUtil.FontSegoeMono(fontScale);
         var g = Graphics.FromImage(carsAndTrack);
+
         g.SmoothingMode = SmoothingMode.AntiAlias;
         g.CompositingMode = CompositingMode.SourceOver;
+        g.TextRenderingHint = TextRenderingHint.AntiAlias;
         g.CompositingQuality = CompositingQuality.HighQuality;
+
+        RectangleF rectf = new RectangleF(0, 0, carsAndTrack.Width, carsAndTrack.Height);
         g.DrawLines(new Pen(_config.Map.Color, _config.Map.Thickness), track.ToArray());
 
         for (int i = 0; i < cars.Count; ++i)
         {
+            var car = cars[i];
             Color color = _config.Car.OthersColor;
             var pageFileGraphic = ACCSharedMemory.Instance.PageFileGraphic;
 
@@ -173,14 +191,24 @@ internal sealed class TrackMapOverlay : AbstractOverlay
                 color = _config.Car.PlayerColor;
             }
 
-            float outBorder = 3.0f;
-            var car = cars[i];
+            {
+                float outBorder = 3.0f;
 
-            float scale = 18 * _config.Map.Thickness / 10;
-            scale = scale < 5 ? 5 : scale;
+                car.X -= elipseRadius * 0.5f;
+                car.Y -= elipseRadius * 0.5f;
 
-            g.FillEllipse(new SolidBrush(Color.Black), car.X - outBorder * 0.5f, car.Y - outBorder * 0.5f, scale, scale);
-            g.FillEllipse(new SolidBrush(color), car.X, car.Y, scale - outBorder, scale - outBorder);
+                g.FillEllipse(new SolidBrush(Color.Black), car.X - outBorder * 0.5f, car.Y - outBorder * 0.5f, elipseRadius, elipseRadius);
+                g.FillEllipse(new SolidBrush(color), car.X, car.Y, elipseRadius - outBorder, elipseRadius - outBorder);
+            }
+
+            if (_config.Car.ShowCarIdentifier)
+            {
+                car.X += fontDisplacement;
+                car.Y += fontDisplacement;
+
+                var number = (pageFileGraphic.CarIds[i] + 1).ToString();
+                g.DrawStringWithShadow(number, font, new SolidBrush(Color.WhiteSmoke), car);
+            }
         }
 
         return carsAndTrack;
