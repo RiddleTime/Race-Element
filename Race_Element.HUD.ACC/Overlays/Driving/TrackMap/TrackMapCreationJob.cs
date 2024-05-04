@@ -112,8 +112,15 @@ public class TrackMapCreationJob : AbstractLoopJob
             return CreationState.Start;
         }
 
-        var pos = pageGraphics.CarCoordinates[0];
-        _trackedPositions.Add(new PointF(pos.X, pos.Z));
+        for (int i = 0; i < pageGraphics.ActiveCars; ++i)
+        {
+            if (pageGraphics.CarIds[i] == pageGraphics.PlayerCarID)
+            {
+                var pos = pageGraphics.CarCoordinates[i];
+                _trackedPositions.Add(new PointF(pos.X, pos.Z));
+                break;
+            }
+        }
 
         if (pageGraphics.CompletedLaps != _completedLaps)
         {
