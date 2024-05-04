@@ -36,7 +36,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
     private  readonly TrackMapConfiguration _config = new();
     private TrackMapCreationJob _miniMapCreationJob;
 
-    private readonly float _margin = 32.0f;
+    private readonly float _margin = 48.0f;
     private List<PointF> _trackPositions;
 
     public TrackMapOverlay(Rectangle rectangle) : base(rectangle, "Track Map")
@@ -108,6 +108,8 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         {
             IntervalMillis = 4,
         };
+
+        _trackPositions.Clear();
 
         _miniMapCreationJob.OnMapPositionsCallback += OnMapPositionsCallback;
         _miniMapCreationJob.Run();
