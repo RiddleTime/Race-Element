@@ -19,8 +19,6 @@ public class EntryListTracker
         public RealtimeCarUpdate RealtimeCarUpdate { get; set; }
     }
 
-
-
     private static EntryListTracker _instance;
     public static EntryListTracker Instance
     {
@@ -45,6 +43,19 @@ public class EntryListTracker
             }
         }
     }
+
+    public CarData GetCarData(int identifier)
+    {
+        try
+        {
+            return _entryListCars.First(x => x.Key == identifier).Value;
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
+
     private bool _isRunning = false;
 
     private EntryListTracker()
@@ -99,7 +110,7 @@ public class EntryListTracker
                             {
                                 if (entry.Value.CarInfo == null)
                                 {
-                                    //Debug.WriteLine($"Removed entry {entry.Key} - CarInfo null");  
+                                    //Debug.WriteLine($"Removed entry {entry.Key} - CarInfo null");
 
                                     PositionGraph.Instance.RemoveCar(entry.Key);
                                     lock (_entryListCars)
@@ -240,7 +251,7 @@ public class EntryListTracker
                 {
                     carData.CarInfo = carInfo;
 
-                    // 
+                    //
                     Car car = PositionGraph.Instance.GetCar(carInfo.CarIndex);
                     if (car != null)
                         car.UpdateLocation(carData.RealtimeCarUpdate.SplinePosition, carData.RealtimeCarUpdate.CarLocation);

@@ -6,16 +6,16 @@ using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
 
+using RaceElement.Broadcast;
 using RaceElement.Util;
 
-using System.Collections.Generic;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Drawing;
+
+using System.Collections.Generic;
 using System;
-using System.Diagnostics;
-using System.Linq;
-using RaceElement.Broadcast;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
@@ -186,7 +186,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         var w = (float)Math.Sqrt((boundaries.Right - boundaries.Left) * (boundaries.Right - boundaries.Left));
         var h = (float)Math.Sqrt((boundaries.Top - boundaries.Bottom) * (boundaries.Top - boundaries.Bottom));
 
-        var carsAndTrack = new Bitmap((int)(w + _margin), (int)(h + _margin));
+        var carsAndTrack = new Bitmap((int)(w + _margin), (int)(h + _margin), PixelFormat.Format32bppPArgb);
         carsAndTrack.MakeTransparent();
 
         var ellipseRadius = _config.Other.Dotsize;
@@ -202,16 +202,37 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         g.DrawLines(new Pen(_config.Map.Color, _config.Map.Thickness), track.ToArray());
 
         var outterColor = new SolidBrush(Color.Black);
+        var blueColor = new SolidBrush(Color.SteelBlue);
+        var orangeColor = new SolidBrush(Color.DarkOrange);
+
         var playerColor = new SolidBrush(_config.Car.PlayerColor);
         var othersColor = new SolidBrush(_config.Car.OthersColor);
 
-        var carList = EntryListTracker.Instance.Cars;
+        var pageFileGraphic = ACCSharedMemory.Instance.PageFileGraphic;
+        var playerCarData = EntryListTracker.Instance.GetCarData(pageFileGraphic.PlayerCarID);
 
         for (int i = 0; i < cars.Count; ++i)
         {
             var car = cars[i];
             var color = othersColor;
-            var pageFileGraphic = ACCSharedMemory.Instance.PageFileGraphic;
+
+            var idx = pageFileGraphic.CarIds[i];
+            var currentCarData = EntryListTracker.Instance.GetCarData(idx);
+
+            if (playerCarData != null && currentCarData != null)
+            {
+                var player = playerCarData.RealtimeCarUpdate.Laps;
+                var other = currentCarData.RealtimeCarUpdate.Laps;
+
+                if (other < player)
+                {
+                    color = blueColor;
+                }
+                else if (other > player)
+                {
+                    color = orangeColor;
+                }
+            }
 
             if (pageFileGraphic.CarIds[i] == pageFileGraphic.PlayerCarID)
             {
@@ -228,34 +249,27 @@ internal sealed class TrackMapOverlay : AbstractOverlay
                 g.FillEllipse(color, car.X, car.Y, ellipseRadius - outBorder, ellipseRadius - outBorder);
             }
 
-            if (_config.Car.ShowCarNumber)
+            if (_config.Car.ShowCarNumber && currentCarData != null)
             {
-                try
+                if (currentCarData.RealtimeCarUpdate.CarLocation != CarLocationEnum.Track)
                 {
-                    var idx = pageFileGraphic.CarIds[i];
-                    var entry = EntryListTracker.Instance.Cars.First(x => x.Key == idx);
-
-                    if (entry.Value.RealtimeCarUpdate.CarLocation != CarLocationEnum.Track)
-                    {
-                        continue;
-                    }
-
-                    car.X += 3 + ellipseRadius * 0.5f;
-                    car.Y += 3 + ellipseRadius * 0.5f;
-
-                    var id = entry.Value.CarInfo.RaceNumber.ToString();
-                    g.DrawStringWithShadow(id, font, new SolidBrush(Color.WhiteSmoke), car);
+                    continue;
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e);
-                }
+
+                car.X += 3 + ellipseRadius * 0.5f;
+                car.Y += 3 + ellipseRadius * 0.5f;
+
+                var id = currentCarData.CarInfo.RaceNumber.ToString();
+                g.DrawStringWithShadow(id, font, new SolidBrush(Color.WhiteSmoke), car);
             }
         }
 
         outterColor?.Dispose();
         playerColor?.Dispose();
         othersColor?.Dispose();
+
+        orangeColor?.Dispose();
+        blueColor?.Dispose();
 
         font?.Dispose();
         return carsAndTrack;
