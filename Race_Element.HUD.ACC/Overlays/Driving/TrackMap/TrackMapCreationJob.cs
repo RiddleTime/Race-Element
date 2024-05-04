@@ -22,11 +22,10 @@ public class TrackMapCreationJob : AbstractLoopJob
         End
     }
 
+    public EventHandler<List<PointF>> OnMapPositionsCallback;
+
     private readonly List<PointF> _trackedPositions;
     private CreationState _mapTrackingState;
-
-    public EventHandler<List<PointF>> OnMapPositionsCallback;
-    private float _carNormPosition;
 
     private int _completedLaps;
     private int _prevPacketId;
@@ -36,7 +35,6 @@ public class TrackMapCreationJob : AbstractLoopJob
         _mapTrackingState = CreationState.Start;
         _trackedPositions = new();
 
-        _carNormPosition = ACCSharedMemory.Instance.PageFileGraphic.NormalizedCarPosition;
         _completedLaps = ACCSharedMemory.Instance.PageFileGraphic.CompletedLaps;
         _prevPacketId = ACCSharedMemory.Instance.PageFileGraphic.PacketId;
     }
@@ -75,6 +73,7 @@ public class TrackMapCreationJob : AbstractLoopJob
 
     private CreationState InitialState()
     {
+        var laps = ACCSharedMemory.Instance.PageFileGraphic.CompletedLaps;
         var trackName = ACCSharedMemory.Instance.PageFileStatic.Track;
         string path = FileUtil.RaceElementTracks + trackName + ".bin";
 
@@ -88,13 +87,9 @@ public class TrackMapCreationJob : AbstractLoopJob
             return CreationState.Start;
         }
 
-        var laps = ACCSharedMemory.Instance.PageFileGraphic.CompletedLaps;
-        var position = ACCSharedMemory.Instance.PageFileGraphic.NormalizedCarPosition;
-
-        if (laps != _completedLaps && position < 0.01)
+        if (laps != _completedLaps)
         {
             _completedLaps = laps;
-            _carNormPosition = position;
             return CreationState.TraceTrack;
         }
 
@@ -120,13 +115,12 @@ public class TrackMapCreationJob : AbstractLoopJob
         var pos = pageGraphics.CarCoordinates[0];
         _trackedPositions.Add(new PointF(pos.X, pos.Z));
 
-        if (_carNormPosition > pageGraphics.NormalizedCarPosition)
+        if (pageGraphics.CompletedLaps != _completedLaps)
         {
             WriteMapToFile();
             return CreationState.NotifySubscriber;
         }
 
-        _carNormPosition = pageGraphics.NormalizedCarPosition;
         return CreationState.TraceTrack;
     }
 
