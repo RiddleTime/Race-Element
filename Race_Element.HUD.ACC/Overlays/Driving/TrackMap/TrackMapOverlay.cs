@@ -13,7 +13,9 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Drawing;
 using System;
+using System.Diagnostics;
 using System.Linq;
+using RaceElement.Broadcast;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
@@ -224,16 +226,28 @@ internal sealed class TrackMapOverlay : AbstractOverlay
                 g.FillEllipse(color, car.X, car.Y, ellipseRadius - outBorder, ellipseRadius - outBorder);
             }
 
-            if (_config.Car.ShowCarNumber && carList.Count >= pageGraphics.ActiveCars)
+            if (_config.Car.ShowCarNumber)
             {
-                car.X += 3 + ellipseRadius * 0.5f;
-                car.Y += 3 + ellipseRadius * 0.5f;
+                try
+                {
+                    var idx = pageFileGraphic.CarIds[i];
+                    var entry = EntryListTracker.Instance.Cars.First(x => x.Key == idx);
 
-                var idx = pageFileGraphic.CarIds[i];
-                var entry = EntryListTracker.Instance.Cars.First(x => x.Key == idx);
+                    if (entry.Value.RealtimeCarUpdate.CarLocation != CarLocationEnum.Track)
+                    {
+                        continue;
+                    }
 
-                var id = entry.Value.CarInfo.RaceNumber.ToString();
-                g.DrawStringWithShadow(id, font, new SolidBrush(Color.WhiteSmoke), car);
+                    car.X += 3 + ellipseRadius * 0.5f;
+                    car.Y += 3 + ellipseRadius * 0.5f;
+
+                    var id = entry.Value.CarInfo.RaceNumber.ToString();
+                    g.DrawStringWithShadow(id, font, new SolidBrush(Color.WhiteSmoke), car);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e);
+                }
             }
         }
 
