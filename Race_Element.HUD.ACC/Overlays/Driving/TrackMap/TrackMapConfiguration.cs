@@ -32,12 +32,8 @@ internal sealed class TrackMapConfiguration : OverlayConfiguration
     public CarGrouping Car { get; init; } = new();
     public sealed class CarGrouping
     {
-        [ToolTip("Cars dot size (between 5.0 and 20.0")]
-        [FloatRange(5.0f, 20.0f, 1.0f, 1)]
-        public float Scale { get; init; } = 10.0f;
-
         [ToolTip("Player car color")]
-        public Color PlayerColor { get; init; } = Color.DarkRed;
+        public Color PlayerColor { get; init; } = Color.Red;
 
         [ToolTip("Others car color")]
         public Color OthersColor { get; init; } = Color.DarkGray;
