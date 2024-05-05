@@ -44,30 +44,35 @@ public class TrackMapCreationJob : AbstractLoopJob
         switch (_mapTrackingState)
         {
             case CreationState.Start:
-            {
-                _mapTrackingState = InitialState();
-            } break;
+                {
+                    _mapTrackingState = InitialState();
+                }
+                break;
 
             case CreationState.LoadFromFile:
-            {
-                _mapTrackingState = LoadMapFromFile();
-            } break;
+                {
+                    _mapTrackingState = LoadMapFromFile();
+                }
+                break;
 
             case CreationState.TraceTrack:
-            {
-                _mapTrackingState = PositionTracking();
-            } break;
+                {
+                    _mapTrackingState = PositionTracking();
+                }
+                break;
 
             case CreationState.NotifySubscriber:
-            {
-                OnMapPositionsCallback?.Invoke(this, _trackedPositions);
-                _mapTrackingState = CreationState.End;
-            } break;
+                {
+                    OnMapPositionsCallback?.Invoke(this, _trackedPositions);
+                    _mapTrackingState = CreationState.End;
+                }
+                break;
 
             default:
-            {
-                Thread.Sleep(10);
-            } break;
+                {
+                    Thread.Sleep(10);
+                }
+                break;
         }
     }
 
@@ -136,21 +141,22 @@ public class TrackMapCreationJob : AbstractLoopJob
         var trackName = ACCSharedMemory.Instance.PageFileStatic.Track;
         string path = FileUtil.RaceElementTracks + trackName + ".bin";
 
-        var fs = new FileStream(path, FileMode.Open);
-        var br = new BinaryReader(fs);
+        using FileStream fileStream = new(path, FileMode.Open);
+        using BinaryReader binaryReader = new(fileStream);
 
-        while (fs.Position < fs.Length)
+        while (fileStream.Position < fileStream.Length)
         {
-            PointF pos = new();
-
-            pos.X = br.ReadSingle();
-            pos.Y = br.ReadSingle();
+            PointF pos = new()
+            {
+                X = binaryReader.ReadSingle(),
+                Y = binaryReader.ReadSingle()
+            };
 
             _trackedPositions.Add(pos);
         }
 
-        br.Close();
-        fs.Close();
+        binaryReader.Close();
+        fileStream.Close();
 
         return CreationState.NotifySubscriber;
     }
