@@ -163,16 +163,16 @@ public class TrackMapCreationJob : AbstractLoopJob
         var trackName = ACCSharedMemory.Instance.PageFileStatic.Track;
         string path = FileUtil.RaceElementTracks + trackName + ".bin";
 
-        var fs = new FileStream(path, FileMode.Create);
-        var bw = new BinaryWriter(fs);
+        using FileStream fileStream = new(path, FileMode.Create);
+        using BinaryWriter binaryWriter = new(fileStream);
 
         foreach (var it in _trackedPositions)
         {
-            bw.Write(it.X);
-            bw.Write(it.Y);
+            binaryWriter.Write(it.X);
+            binaryWriter.Write(it.Y);
         }
 
-        bw.Close();
-        fs.Close();
+        binaryWriter.Close();
+        fileStream.Close();
     }
 }
