@@ -46,14 +46,10 @@ public class EntryListTracker
 
     public CarData GetCarData(int identifier)
     {
-        try
-        {
-            return _entryListCars.First(x => x.Key == identifier).Value;
-        }
-        catch (Exception e)
-        {
-            return null;
-        }
+        if (_entryListCars.TryGetValue(identifier, out CarData carData))
+            return carData;
+
+        return null;
     }
 
     private bool _isRunning = false;
