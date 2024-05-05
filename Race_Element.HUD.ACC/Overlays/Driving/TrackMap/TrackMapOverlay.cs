@@ -221,14 +221,18 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
             if (playerCarData != null && currentCarData != null)
             {
-                var player = playerCarData.RealtimeCarUpdate.Laps;
-                var other = currentCarData.RealtimeCarUpdate.Laps;
+                var playerLaps = playerCarData.RealtimeCarUpdate.Laps;
+                var otherLaps = currentCarData.RealtimeCarUpdate.Laps;
 
-                if (other < player)
+                var trackMeters = broadCastTrackData.TrackMeters;
+                var otherTrackMeters = otherLaps * trackMeters + currentCarData.RealtimeCarUpdate.SplinePosition * trackMeters;
+                var playerTrackMeters = playerLaps * trackMeters + playerCarData.RealtimeCarUpdate.SplinePosition * trackMeters;
+
+                if (playerLaps > otherLaps && (playerTrackMeters - otherTrackMeters) >= trackMeters)
                 {
                     color = blueColor;
                 }
-                else if (other > player)
+                else if (otherLaps > playerLaps && (otherTrackMeters - playerTrackMeters) >= trackMeters)
                 {
                     color = orangeColor;
                 }
@@ -249,7 +253,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
                 g.FillEllipse(color, car.X, car.Y, ellipseRadius - outBorder, ellipseRadius - outBorder);
             }
 
-            if (_config.Car.ShowCarNumber && currentCarData != null)
+            if (_config.Car.ShowCarNumber && currentCarData != null && currentCarData.CarInfo != null)
             {
                 if (currentCarData.RealtimeCarUpdate.CarLocation != CarLocationEnum.Track)
                 {
