@@ -28,9 +28,19 @@ internal sealed class SpeedometerOverlay : AbstractOverlay
             [ToolTip("Displays the minimum speed reached on each lap.")]
             public bool MinSpeed { get; init; } = false;
         }
+
+        [ConfigGrouping("Colors", "Change the appearance of the HUD.")]
+        public ColorGrouping Colors { get; init; } = new ColorGrouping();
+        public sealed class ColorGrouping
+        {
+            [ToolTip("Sets the color of the bar")]
+            public Color BarColor { get; init; } = Color.FromArgb(255, 255, 69, 0);
+        }
     }
 
     private readonly InfoPanel _panel;
+    private SolidBrush _barBrush;
+
     private float _maxSpeed = 0;
     private float _minSpeed = 0;
 
@@ -54,12 +64,16 @@ internal sealed class SpeedometerOverlay : AbstractOverlay
             this.Height -= _panel.FontHeight;
         if (!_config.InfoPanel.MaxSpeed)
             this.Height -= _panel.FontHeight;
+
+        _barBrush = new(_config.Colors.BarColor);
     }
 
     public sealed override void BeforeStop()
     {
         if (_config.InfoPanel.MinSpeed || _config.InfoPanel.MaxSpeed)
             LapTracker.Instance.LapFinished -= OnLapFinished;
+
+        _barBrush?.Dispose();
     }
 
     private void OnLapFinished(object sender, DbLapData e)
@@ -70,7 +84,7 @@ internal sealed class SpeedometerOverlay : AbstractOverlay
 
     public sealed override void Render(Graphics g)
     {
-        _panel.AddProgressBarWithCenteredText($"{pagePhysics.SpeedKmh:F0}".FillStart(3, ' '), 0, 320, pagePhysics.SpeedKmh);
+        _panel.AddProgressBarWithCenteredText($"{pagePhysics.SpeedKmh:F0}".FillStart(3, ' '), 0, 320, pagePhysics.SpeedKmh, _barBrush);
 
         if (_config.InfoPanel.MaxSpeed)
         {

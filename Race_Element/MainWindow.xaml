@@ -16,7 +16,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         WindowStyle="None"
-        Title="Race Element" MinWidth="1210" Width="1210" MinHeight="790" Height="790" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" 
+        Title="Race Element" MinWidth="1210" Width="1210" MinHeight="790" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" 
         WindowStartupLocation="Manual"
         WindowState="Minimized"
         AllowDrop="True">
