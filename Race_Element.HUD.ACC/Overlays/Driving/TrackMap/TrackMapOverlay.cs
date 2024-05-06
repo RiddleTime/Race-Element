@@ -29,7 +29,9 @@ internal struct BoundingBox
 [Overlay(Name = "Track Map",
     Description = "Shows a track map",
     OverlayCategory = OverlayCategory.Track,
-    OverlayType = OverlayType.Drive)]
+    OverlayType = OverlayType.Drive,
+    Authors = ["Andrei Jianu"]
+)]
 #endif
 internal sealed class TrackMapOverlay : AbstractOverlay
 {
