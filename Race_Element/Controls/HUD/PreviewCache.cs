@@ -104,17 +104,6 @@ internal class PreviewCache
         overlay.pagePhysics.RoadTemp = 29.826f;
         overlay.pagePhysics.AirTemp = 36.2326f;
 
-
-        overlay.pagePhysics.CarDamage[0] = 20;
-        overlay.pagePhysics.CarDamage[1] = 20;
-        overlay.pagePhysics.CarDamage[2] = 35;
-        overlay.pagePhysics.CarDamage[3] = 20;
-
-        overlay.pagePhysics.SuspensionDamage[0] = 0.1f;
-        overlay.pagePhysics.SuspensionDamage[1] = 0.2f;
-        overlay.pagePhysics.SuspensionDamage[2] = 0.05f;
-        overlay.pagePhysics.SuspensionDamage[3] = 0.13f;
-
         overlay.pageStatic = ACCSharedMemory.Instance.ReadStaticPageFile(false);
         overlay.pageStatic.MaxFuel = 120f;
         overlay.pageStatic.MaxRpm = 9250;

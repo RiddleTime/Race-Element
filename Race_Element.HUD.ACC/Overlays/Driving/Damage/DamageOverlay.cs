@@ -67,6 +67,18 @@ internal sealed class DamageOverlay : AbstractOverlay
         Height = OriginalHeight;
         RefreshRateHz = 1;
     }
+    public sealed override void SetupPreviewData()
+    {
+        pagePhysics.CarDamage[0] = 5;
+        pagePhysics.CarDamage[1] = 20;
+        pagePhysics.CarDamage[2] = 70;
+        pagePhysics.CarDamage[3] = 20;
+
+        pagePhysics.SuspensionDamage[0] = 0.3f;
+        pagePhysics.SuspensionDamage[1] = 0.01f;
+        pagePhysics.SuspensionDamage[2] = 0.05f;
+        pagePhysics.SuspensionDamage[3] = 0.13f;
+    }
 
     public sealed override void BeforeStart()
     {
@@ -292,7 +304,7 @@ internal sealed class DamageOverlay : AbstractOverlay
     private static Color GetColorForBodyDamage(Color baseColor, float bodyDamage) => bodyDamage switch
     {
         <= 0 => baseColor,
-        > 0 and < 10 => Color.Yellow,
+        > 0 and <= 5 => Color.Yellow,
         _ => Color.Red,
     };
 
@@ -370,7 +382,7 @@ internal sealed class DamageOverlay : AbstractOverlay
         int textWidth = (int)g.MeasureString(text, _font).Width;
         Rectangle backgroundDimension = new(x - textWidth / 2, y, textWidth, _font.Height);
         g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 0, 0, 0)), backgroundDimension, 2);
-        g.DrawRoundedRectangle(new Pen(Color.FromArgb(135, 230, 0, 0), 0.6f * this.Scale), backgroundDimension, 2);
+        g.DrawRoundedRectangle(new Pen(Color.FromArgb(140, 230, 0, 0), 0.6f * this.Scale), backgroundDimension, 2);
         g.DrawStringWithShadow(text, _font, textColor, new PointF(x - textWidth / 2, y + _font.GetHeight(g) / 11f), 0.75f * this.Scale);
     }
 }
