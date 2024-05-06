@@ -268,10 +268,10 @@ internal sealed class DamageOverlay : AbstractOverlay
         float bodyDamageRear = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Rear);
         float bodyDamageLeft = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Left);
         float bodyDamageRight = Damage.GetBodyWorkDamage(pagePhysics, Damage.CarDamagePosition.Right);
-        _shapeBodyFront.Brush = new LinearGradientBrush(_shapeBodyFront.Shape, bodyDamageFront > 0 ? Color.Red : baseColor, Color.Transparent, LinearGradientMode.Vertical);
-        _shapeBodyRear.Brush = new LinearGradientBrush(_shapeBodyRear.Shape, Color.Transparent, bodyDamageRear > 0 ? Color.Red : baseColor, LinearGradientMode.Vertical);
-        _shapeBodyLeft.Brush = new LinearGradientBrush(_shapeBodyLeft.Shape, bodyDamageLeft > 0 ? Color.Red : baseColor, Color.Transparent, LinearGradientMode.Horizontal);
-        _shapeBodyRight.Brush = new LinearGradientBrush(_shapeBodyRight.Shape, Color.Transparent, bodyDamageRight > 0 ? Color.Red : baseColor, LinearGradientMode.Horizontal);
+        _shapeBodyFront.Brush = new LinearGradientBrush(_shapeBodyFront.Shape, GetColorForBodyDamage(baseColor, bodyDamageFront), Color.Transparent, LinearGradientMode.Vertical);
+        _shapeBodyRear.Brush = new LinearGradientBrush(_shapeBodyRear.Shape, Color.Transparent, GetColorForBodyDamage(baseColor, bodyDamageRear), LinearGradientMode.Vertical);
+        _shapeBodyLeft.Brush = new LinearGradientBrush(_shapeBodyLeft.Shape, GetColorForBodyDamage(baseColor, bodyDamageLeft), Color.Transparent, LinearGradientMode.Horizontal);
+        _shapeBodyRight.Brush = new LinearGradientBrush(_shapeBodyRight.Shape, Color.Transparent, GetColorForBodyDamage(baseColor, bodyDamageRight), LinearGradientMode.Horizontal);
 
         /// SUSPENSION DAMAGE
         /// 
@@ -288,6 +288,13 @@ internal sealed class DamageOverlay : AbstractOverlay
         // re-render car outline
         _carOutline.Render();
     }
+
+    private static Color GetColorForBodyDamage(Color baseColor, float bodyDamage) => bodyDamage switch
+    {
+        <= 0 => baseColor,
+        > 0 and < 10 => Color.Yellow,
+        _ => Color.Red,
+    };
 
     private void UpdateSuspensionDamage()
     {
