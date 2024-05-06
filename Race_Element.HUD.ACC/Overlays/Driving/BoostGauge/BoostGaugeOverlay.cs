@@ -16,9 +16,18 @@ internal sealed class BoostGaugeOverlay : AbstractOverlay
     private sealed class BoostConfiguration : OverlayConfiguration
     {
         public BoostConfiguration() => GenericConfiguration.AllowRescale = true;
+
+        [ConfigGrouping("Colors", "Change the appearance of the HUD.")]
+        public ColorGrouping Colors { get; init; } = new ColorGrouping();
+        public sealed class ColorGrouping
+        {
+            [ToolTip("Sets the color of the bar")]
+            public Color BarColor { get; init; } = Color.FromArgb(255, 255, 69, 0);
+        }
     }
 
     private readonly InfoPanel _panel;
+    private SolidBrush _barBrush;
 
     public BoostGaugeOverlay(Rectangle rectangle) : base(rectangle, "Boost Gauge")
     {
@@ -31,12 +40,13 @@ internal sealed class BoostGaugeOverlay : AbstractOverlay
         this.RefreshRateHz = 10;
     }
 
-    public override void BeforeStart() { }
-    public override void BeforeStop() { }
+    public sealed override void BeforeStart() => _barBrush = new(_config.Colors.BarColor);
+
+    public sealed override void BeforeStop() => _barBrush?.Dispose();
 
     public sealed override void Render(Graphics g)
     {
-        _panel.AddProgressBarWithCenteredText($"{pagePhysics.TurboBoost * 100f:F1}".FillStart(4, ' '), 0, 100, pagePhysics.TurboBoost * 100f);
+        _panel.AddProgressBarWithCenteredText($"{pagePhysics.TurboBoost * 100f:F1}".FillStart(4, ' '), 0, 100, pagePhysics.TurboBoost * 100f, _barBrush);
         _panel.Draw(g);
     }
 }
