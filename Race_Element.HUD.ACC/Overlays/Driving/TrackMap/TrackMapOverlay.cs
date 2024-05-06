@@ -198,15 +198,15 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         g.TextRenderingHint = TextRenderingHint.AntiAlias;
         g.CompositingQuality = CompositingQuality.HighQuality;
 
-        var font = FontUtil.FontSegoeMono(fontScale);
+        using Font font = FontUtil.FontSegoeMono(fontScale);
         g.DrawLines(new Pen(_config.Map.Color, _config.Map.Thickness), track.ToArray());
 
-        var outterColor = new SolidBrush(Color.Black);
-        var blueColor = new SolidBrush(Color.SteelBlue);
-        var orangeColor = new SolidBrush(Color.DarkOrange);
+        using SolidBrush outterColor = new(Color.Black);
+        using SolidBrush blueColor = new(Color.SteelBlue);
+        using SolidBrush orangeColor = new(Color.DarkOrange);
 
-        var playerColor = new SolidBrush(_config.Car.PlayerColor);
-        var othersColor = new SolidBrush(_config.Car.OthersColor);
+        using SolidBrush playerColor = new(_config.Car.PlayerColor);
+        using SolidBrush othersColor = new(_config.Car.OthersColor);
 
         var pageFileGraphic = ACCSharedMemory.Instance.PageFileGraphic;
         var playerCarData = EntryListTracker.Instance.GetCarData(pageFileGraphic.PlayerCarID);
@@ -268,14 +268,6 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             }
         }
 
-        outterColor?.Dispose();
-        playerColor?.Dispose();
-        othersColor?.Dispose();
-
-        orangeColor?.Dispose();
-        blueColor?.Dispose();
-
-        font?.Dispose();
         return carsAndTrack;
     }
 
