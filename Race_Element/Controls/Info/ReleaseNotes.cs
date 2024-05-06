@@ -6,6 +6,7 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.7.4", "- Damage HUD: Now shows different colors based on the amount of damage."},
         {"1.0.7.2", "- Fuel Info HUD: Reworked some internals."+
                     "\n- Boost Gauge HUD: Added customizable bar color."+
                     "\n- Speedometer HUD: Added customizable bar color."+
