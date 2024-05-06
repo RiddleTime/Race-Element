@@ -1,5 +1,4 @@
 ﻿using Gma.System.MouseKeyHook;
-using RaceElement.Data.ACC.EntryList;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -7,19 +6,15 @@ using RaceElement.HUD.Overlay.Util;
 using RaceElement.Util.SystemExtensions;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Threading;
 using static RaceElement.Data.ACC.EntryList.EntryListTracker;
 
-namespace RaceElement.HUD.ACC.Overlays.Pitwall;
+namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayPositionsTimestamp;
 
 [Overlay(Name = "Positions Timestamp",
-Description = "Shows the positions at a timestamp when the hotkey was pressed.\nPress hotkey to reset and hide hud again.",
+Description = "Shows the car numbers, positions laps driven at a timestamp when the hotkey(control + s) was pressed during a race session.\nPress hotkey to reset and hide hud again.",
 Authors = ["Reinier Klarenberg", "Kenneth Portis(idea)"],
 OverlayType = OverlayType.Pitwall)]
 internal sealed class PositionsTimestamp : AbstractOverlay
@@ -27,7 +22,7 @@ internal sealed class PositionsTimestamp : AbstractOverlay
     private readonly PositionsTimestampConfiguration _config = new();
     private sealed class PositionsTimestampConfiguration : OverlayConfiguration
     {
-        public PositionsTimestampConfiguration() => this.GenericConfiguration.AllowRescale = false;
+        public PositionsTimestampConfiguration() => GenericConfiguration.AllowRescale = false;
 
         [ConfigGrouping("Text Settings", "Adjust the look and feel of the text")]
         public TextGrouping Text { get; init; } = new TextGrouping();
@@ -63,7 +58,7 @@ internal sealed class PositionsTimestamp : AbstractOverlay
             Combination.FromString("Control+S"), () => {
                 if (broadCastRealTime.SessionType == Broadcast.RaceSessionType.Race)
                     if (TimeStamped == DateTime.MinValue){
-                        TimeStampedCars = EntryListTracker.Instance.Cars.OrderBy(x => x.Value.RealtimeCarUpdate.Position).ToList();
+                        TimeStampedCars = Instance.Cars.OrderBy(x => x.Value.RealtimeCarUpdate.Position).ToList();
                         TimeStamped = DateTime.UtcNow;
                     } else {
                         TimeStamped = DateTime.MinValue;
@@ -90,7 +85,7 @@ internal sealed class PositionsTimestamp : AbstractOverlay
         List<string> strings = [];
         for (int i = 0; i < TimeStampedCars.Count; i++)
         {
-            string row = $"{TimeStampedCars[i].Value.RealtimeCarUpdate.Position} - #{TimeStampedCars[i].Value.CarInfo.RaceNumber}";
+            string row = $"{TimeStampedCars[i].Value.RealtimeCarUpdate.Position} - #{TimeStampedCars[i].Value.CarInfo.RaceNumber} | L{TimeStampedCars[i].Value.RealtimeCarUpdate.Laps}";
             maxWidth.ClipMin(g.MeasureString(row, _font).Width);
             strings.Add(row);
         }

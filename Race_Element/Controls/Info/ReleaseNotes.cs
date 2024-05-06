@@ -9,7 +9,7 @@ public static class ReleaseNotes
         {"1.0.7.2", "- Fuel Info HUD: Reworked some internals."+
                     "\n- Boost Guage HUD: Added customizable bar color."+
                     "\n- Speedometer HUD: Added customizable bar color."+
-                    "\n- TODO: - Added Nordschleife Corner Data."},
+                    "\n- Added Positions Timestamp HUD: Can be used during a race session whilst calling a safety car, you will have all the positions (according to when drivers crossed a sector)."},
         {"1.0.7.0", "- hotfix for fuel info hud, drawing things were disposed when they shouldn't have been." },
         {"1.0.6.8", "- Fuel Info HUD:" +
                     "\n  - Now calculates laptimes above 3 minutes. It will also use your last lap as laptime if you don't haven't set a valid best lap yet." +
