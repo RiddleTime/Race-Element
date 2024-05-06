@@ -38,19 +38,19 @@ internal sealed class TrackMapConfiguration : OverlayConfiguration
         [ToolTip("Player car color")]
         public Color PlayerColor { get; init; } = Color.Red;
 
-        [ToolTip("Others car color")]
-        public Color OthersColor { get; init; } = Color.DarkGray;
+        [ToolTip("Default car color (no player / no lapped)")]
+        public Color DefaultColor { get; init; } = Color.DarkGray;
     }
 
     [ConfigGrouping("Other", "Other options")]
     public OtherGrouping Other { get; init; } = new();
     public sealed class OtherGrouping
     {
-        [ToolTip("Map dot size")]
+        [ToolTip("Car size on the map")]
         [FloatRange(5.0f, 32.0f, 1.0f, 1)]
-        public float Dotsize { get; init; } = 15;
+        public float CarSize { get; init; } = 15;
 
-        [ToolTip("Font size")]
+        [ToolTip("Font size for car number")]
         [FloatRange(5.0f, 32.0f, 1.0f, 1)]
         public float FontSize { get; init; } = 10;
     }

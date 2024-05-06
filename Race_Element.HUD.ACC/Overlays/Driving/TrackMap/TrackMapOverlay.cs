@@ -186,89 +186,20 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         var w = (float)Math.Sqrt((boundaries.Right - boundaries.Left) * (boundaries.Right - boundaries.Left));
         var h = (float)Math.Sqrt((boundaries.Top - boundaries.Bottom) * (boundaries.Top - boundaries.Bottom));
 
-        var carsAndTrack = new Bitmap((int)(w + _margin), (int)(h + _margin), PixelFormat.Format32bppPArgb);
-        carsAndTrack.MakeTransparent();
+        TrackMapDrawing drawer = new();
+        drawer.SetDotSize(_config.Other.CarSize)
+            .SetFontSize(_config.Other.FontSize)
+            .SetMapThickness(_config.Map.Thickness)
+            .SetShowCarNumber(_config.Car.ShowCarNumber);
 
-        var ellipseRadius = _config.Other.Dotsize;
-        var fontScale = _config.Other.FontSize;
+        drawer.SetColorMap(_config.Map.Color)
+            .SetColorCarDefault(_config.Car.DefaultColor)
+            .SetColorPlayer(_config.Car.PlayerColor)
+            .SetColorOthersLappedPlayer(Color.DarkOrange)
+            .SetColorPlayerLappedOthers(Color.SteelBlue);
 
-        var g = Graphics.FromImage(carsAndTrack);
-        g.SmoothingMode = SmoothingMode.AntiAlias;
-        g.CompositingMode = CompositingMode.SourceOver;
-        g.TextRenderingHint = TextRenderingHint.AntiAlias;
-        g.CompositingQuality = CompositingQuality.HighQuality;
-
-        using Font font = FontUtil.FontSegoeMono(fontScale);
-        g.DrawLines(new Pen(_config.Map.Color, _config.Map.Thickness), track.ToArray());
-
-        using SolidBrush outterColor = new(Color.Black);
-        using SolidBrush blueColor = new(Color.SteelBlue);
-        using SolidBrush orangeColor = new(Color.DarkOrange);
-
-        using SolidBrush playerColor = new(_config.Car.PlayerColor);
-        using SolidBrush othersColor = new(_config.Car.OthersColor);
-
-        var pageFileGraphic = ACCSharedMemory.Instance.PageFileGraphic;
-        var playerCarData = EntryListTracker.Instance.GetCarData(pageFileGraphic.PlayerCarID);
-
-        for (int i = 0; i < cars.Count; ++i)
-        {
-            var car = cars[i];
-            var color = othersColor;
-
-            var idx = pageFileGraphic.CarIds[i];
-            var currentCarData = EntryListTracker.Instance.GetCarData(idx);
-
-            if (playerCarData != null && currentCarData != null)
-            {
-                var playerLaps = playerCarData.RealtimeCarUpdate.Laps;
-                var otherLaps = currentCarData.RealtimeCarUpdate.Laps;
-
-                var trackMeters = broadCastTrackData.TrackMeters;
-                var otherTrackMeters = otherLaps * trackMeters + currentCarData.RealtimeCarUpdate.SplinePosition * trackMeters;
-                var playerTrackMeters = playerLaps * trackMeters + playerCarData.RealtimeCarUpdate.SplinePosition * trackMeters;
-
-                if (playerLaps > otherLaps && (playerTrackMeters - otherTrackMeters) >= trackMeters)
-                {
-                    color = blueColor;
-                }
-                else if (otherLaps > playerLaps && (otherTrackMeters - playerTrackMeters) >= trackMeters)
-                {
-                    color = orangeColor;
-                }
-            }
-
-            if (pageFileGraphic.CarIds[i] == pageFileGraphic.PlayerCarID)
-            {
-                color = playerColor;
-            }
-
-            {
-                var outBorder = 3.0f;
-
-                car.X -= ellipseRadius * 0.5f;
-                car.Y -= ellipseRadius * 0.5f;
-
-                g.FillEllipse(outterColor, car.X - outBorder * 0.5f, car.Y - outBorder * 0.5f, ellipseRadius, ellipseRadius);
-                g.FillEllipse(color, car.X, car.Y, ellipseRadius - outBorder, ellipseRadius - outBorder);
-            }
-
-            if (_config.Car.ShowCarNumber && currentCarData != null && currentCarData.CarInfo != null)
-            {
-                if (currentCarData.RealtimeCarUpdate.CarLocation != CarLocationEnum.Track)
-                {
-                    continue;
-                }
-
-                car.X += 3 + ellipseRadius * 0.5f;
-                car.Y += 3 + ellipseRadius * 0.5f;
-
-                var id = currentCarData.CarInfo.RaceNumber.ToString();
-                g.DrawStringWithShadow(id, font, new SolidBrush(Color.WhiteSmoke), car);
-            }
-        }
-
-        return carsAndTrack;
+        drawer.CreateBitmap(w, h, _margin);
+        return drawer.Draw(cars, track, broadCastTrackData);
     }
 
     private List<PointF> ScaleAndRotate(List<PointF> positions, BoundingBox boundaries, float scale, float rotation)
