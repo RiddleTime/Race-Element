@@ -50,7 +50,7 @@ internal sealed class PressureHistoryOverlay : AbstractOverlay
 
     public sealed override void BeforeStart()
     {
-        _panel = new InfoPanel(10, 300);
+        _panel = new InfoPanel(10, 250);
 
         if (IsPreviewing) return;
 
@@ -59,6 +59,8 @@ internal sealed class PressureHistoryOverlay : AbstractOverlay
         _historyJob = new(this) { IntervalMillis = 100 };
         _historyJob.OnNewHistory += OnNewHistory;
         _historyJob.Run();
+
+        CreateGraphicsGrid();
     }
 
     private void OnNewSessionStarted(object sender, DbRaceSession e) => _pressureHistory.Clear();
