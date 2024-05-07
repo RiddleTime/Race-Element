@@ -39,7 +39,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
     private TrackMapCreationJob _miniMapCreationJob;
 
     private readonly float _margin = 48.0f;
-    private List<PointF> _trackPositions;
+    private List<PointF> _trackPositions = [];
 
     public TrackMapOverlay(Rectangle rectangle) : base(rectangle, "Track Map")
     {
