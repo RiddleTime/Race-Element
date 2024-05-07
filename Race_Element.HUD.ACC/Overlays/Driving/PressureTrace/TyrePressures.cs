@@ -31,7 +31,7 @@ internal static class TyrePressures
     // };
 
 
-    public static TyrePressureRange GetCurrentRange(string compound, string carModel)
+    public static TyrePressureRange GetCurrentRange(string compound, string carModel = "")
     {
         if (compound == "wet_compound")
             return WET_ALL;
