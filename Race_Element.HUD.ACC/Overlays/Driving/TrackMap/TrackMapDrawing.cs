@@ -15,13 +15,14 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
 class TrackMapDrawing
 {
-    private bool _showCarNumber = false;
+    private readonly SolidBrush _borderColor = new(Color.Black);
     private Bitmap _bitmap = null;
+
+    private bool _showCarNumber = false;
+    private bool _showPitStop = false;
 
     private float _fontSize = 10;
     private float _dotSize = 15;
-
-    private readonly SolidBrush _borderColor = new(Color.Black);
 
     private Color _mapColor = Color.WhiteSmoke;
     private float _mapThickness = 4;
@@ -29,8 +30,11 @@ class TrackMapDrawing
     private SolidBrush _colorCarOthersLappedPlayer = new(Color.DarkOrange);
     private SolidBrush _colorCarPlayerLapperOthers = new(Color.SteelBlue);
 
-    private SolidBrush _playerCarColor = new(Color.Red);
-    private SolidBrush _defaultCarColor = new(Color.DarkGray);
+    private SolidBrush _colorCarPlayer = new(Color.Red);
+    private SolidBrush _colorCarDefault = new(Color.DarkGray);
+
+    private SolidBrush _colorPitStop = new(Color.Yellow);
+    private SolidBrush _colorPitStopWithDamange = new(Color.MediumPurple);
 
     public TrackMapDrawing SetDotSize(float size)
     {
@@ -58,13 +62,13 @@ class TrackMapDrawing
 
     public TrackMapDrawing SetColorPlayer(Color color)
     {
-        _playerCarColor = new(color);
+        _colorCarPlayer = new(color);
         return this;
     }
 
     public TrackMapDrawing SetColorCarDefault(Color color)
     {
-        _defaultCarColor = new(color);
+        _colorCarDefault = new(color);
         return this;
     }
 
@@ -83,6 +87,24 @@ class TrackMapDrawing
     public TrackMapDrawing SetColorOthersLappedPlayer(Color color)
     {
         _colorCarOthersLappedPlayer = new(color);
+        return this;
+    }
+
+    public TrackMapDrawing SetShowPitStop(bool show)
+    {
+        _showPitStop = show;
+        return this;
+    }
+
+    public TrackMapDrawing SetColorPitStop(Color color)
+    {
+        _colorPitStop = new(color);
+        return this;
+    }
+
+    public TrackMapDrawing SetColorPitStopWithDamange(Color color)
+    {
+        _colorPitStopWithDamange = new(color);
         return this;
     }
 
@@ -112,10 +134,10 @@ class TrackMapDrawing
         g.CompositingQuality = CompositingQuality.HighQuality;
 
         g.DrawLines(new Pen(_mapColor, _mapThickness), track.ToArray());
-        return DrawCars(cars, g, broadCastTrackData);
+        return DrawCars(cars, track, g, broadCastTrackData);
     }
 
-    private Bitmap DrawCars(List<PointF> cars, Graphics g, TrackData broadCastTrackData)
+    private Bitmap DrawCars(List<PointF> cars, List<PointF> track, Graphics g, TrackData broadCastTrackData)
     {
         int playerIdx = 0;
         using Font font = FontUtil.FontSegoeMono(_fontSize);
@@ -132,7 +154,7 @@ class TrackMapDrawing
             }
 
             var car = cars[i];
-            var color = _defaultCarColor;
+            var color = _colorCarDefault;
 
             var idx = pageFileGraphic.CarIds[i];
             var currentCarData = EntryListTracker.Instance.GetCarData(idx);
@@ -156,18 +178,24 @@ class TrackMapDrawing
                 }
             }
 
-            DrawCarsOnMap(car, g, color, font, currentCarData);
+            DrawCarOnMap(car, g, color, font, currentCarData);
         }
 
         if (playerIdx < cars.Count)
         {
-            DrawCarsOnMap(cars[playerIdx], g, _playerCarColor, font, playerCarData);
+            DrawCarOnMap(cars[playerIdx], g, _colorCarPlayer, font, playerCarData);
+
+            if (_showPitStop)
+            {
+                DrawPitStopOnMap(font, g, _colorPitStop, TrackMapPitPrediction.GetPitStop(track));
+                DrawPitStopOnMap(font, g, _colorPitStopWithDamange, TrackMapPitPrediction.GetPitStopWithDamage(track));
+            }
         }
 
         return _bitmap;
     }
 
-    private void DrawCarsOnMap(PointF car, Graphics g, SolidBrush color, Font font, EntryListTracker.CarData carData)
+    private void DrawCarOnMap(PointF car, Graphics g, SolidBrush color, Font font, EntryListTracker.CarData carData)
     {
         {
             var outBorder = 3.0f;
@@ -190,6 +218,41 @@ class TrackMapDrawing
 
             g.FillRectangle(pen, car.X, car.Y, size.Width, size.Height);
             g.DrawStringWithShadow(id, font, new SolidBrush(Color.WhiteSmoke), car);
+        }
+    }
+
+    private void DrawPitStopOnMap(Font font, Graphics g, SolidBrush color, PitStop pitStop)
+    {
+        if (pitStop == null)
+        {
+            return;
+        }
+
+        var car = pitStop.Position;
+        var outBorder = 3.0f;
+
+        car.X -= _dotSize * 0.5f;
+        car.Y -= _dotSize * 0.5f;
+
+        g.FillEllipse(_borderColor, car.X - outBorder * 0.5f, car.Y - outBorder * 0.5f, _dotSize, _dotSize);
+        g.FillEllipse(color, car.X, car.Y, _dotSize - outBorder, _dotSize - outBorder);
+
+        string simbol = pitStop.Laps > 0 ? "+" : "P";
+        g.DrawStringWithShadow(simbol, font, new SolidBrush(Color.WhiteSmoke), car);
+
+        if (pitStop.Laps > 0)
+        {
+            g.DrawStringWithShadow("+", font, new SolidBrush(Color.WhiteSmoke), car);
+            using SolidBrush pen = new (Color.FromArgb(100, Color.Black));
+
+            var laps = pitStop.Laps.ToString();
+            var size = g.MeasureString(laps, font);
+
+            car.X -= size.Width * 0.25f;
+            car.Y -= size.Height;
+
+            g.FillRectangle(pen, car.X, car.Y, size.Width, size.Height);
+            g.DrawStringWithShadow(laps, font, new SolidBrush(Color.WhiteSmoke), car);
         }
     }
 }

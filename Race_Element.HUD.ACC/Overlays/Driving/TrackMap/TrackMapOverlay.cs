@@ -1,20 +1,11 @@
 ﻿using RaceElement.Data.ACC.Database.SessionData;
-using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.Session;
 
-using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Internal;
-using RaceElement.HUD.Overlay.Util;
-
-using RaceElement.Broadcast;
 using RaceElement.Util;
 
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.Drawing.Text;
-using System.Drawing;
-
 using System.Collections.Generic;
+using System.Drawing;
 using System;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
@@ -190,15 +181,20 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
         TrackMapDrawing drawer = new();
         drawer.SetDotSize(_config.Other.CarSize)
-            .SetFontSize(_config.Other.FontSize)
-            .SetMapThickness(_config.Map.Thickness)
-            .SetShowCarNumber(_config.Car.ShowCarNumber);
+            .SetFontSize(_config.Other.FontSize);
 
-        drawer.SetColorMap(_config.Map.Color)
+        drawer.SetShowCarNumber(_config.Car.ShowCarNumber)
+            .SetShowPitStop(_config.Car.ShowPitStop)
+            .SetMapThickness(_config.Map.Thickness)
+            .SetColorMap(_config.Map.Color);
+
+        drawer.SetColorPlayer(_config.Car.PlayerColor)
             .SetColorCarDefault(_config.Car.DefaultColor)
-            .SetColorPlayer(_config.Car.PlayerColor)
-            .SetColorOthersLappedPlayer(Color.DarkOrange)
-            .SetColorPlayerLappedOthers(Color.SteelBlue);
+            .SetColorPlayerLappedOthers(Color.SteelBlue)
+            .SetColorOthersLappedPlayer(Color.DarkOrange);
+
+        drawer.SetColorPitStop(_config.Car.PitStopColor)
+            .SetColorPitStopWithDamange(_config.Car.PitStopWithDamageColor);
 
         drawer.CreateBitmap(w, h, _margin);
         return drawer.Draw(cars, track, broadCastTrackData);

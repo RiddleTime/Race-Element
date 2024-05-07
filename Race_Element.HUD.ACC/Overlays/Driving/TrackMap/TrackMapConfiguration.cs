@@ -35,11 +35,20 @@ internal sealed class TrackMapConfiguration : OverlayConfiguration
         [ToolTip("Show Cars number")]
         public bool ShowCarNumber { get; init; } = false;
 
+        [ToolTip("Show pit stop on map")]
+        public bool ShowPitStop { get; init; } = false;
+
         [ToolTip("Player car color")]
         public Color PlayerColor { get; init; } = Color.Red;
 
         [ToolTip("Default car color (no player / no lapped)")]
         public Color DefaultColor { get; init; } = Color.DarkGray;
+
+        [ToolTip("Pit stop color")]
+        public Color PitStopColor { get; init; } = Color.Yellow;
+
+        [ToolTip("Pit stop with damage color")]
+        public Color PitStopWithDamageColor { get; init; } = Color.MediumPurple;
     }
 
     [ConfigGrouping("Other", "Other options")]
