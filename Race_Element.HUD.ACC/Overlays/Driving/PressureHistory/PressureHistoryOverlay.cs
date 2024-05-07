@@ -1,6 +1,8 @@
-﻿using RaceElement.Data.ACC.Session;
+﻿using RaceElement.Data.ACC.Database.SessionData;
+using RaceElement.Data.ACC.Session;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
 using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
@@ -29,28 +31,37 @@ internal sealed class PressureHistoryOverlay : AbstractOverlay
     private readonly List<PressureHistoryModel> _pressureHistory = [];
     private InfoPanel _panel;
 
+    private GraphicsGrid _graphicsGrid;
+
     public PressureHistoryOverlay(Rectangle rectangle) : base(rectangle, "Pressure History")
     {
     }
 
+    public override void SetupPreviewData()
+    {
+        _pressureHistory.Add(new()
+        {
+            Lap = 4,
+            Averages = [26.6f, 26.7f, 27.0f, 27.5f],
+            Min = [26.5f, 26.6f, 26.9f, 27.4f],
+            Max = [26.8f, 27.0f, 27.0f, 27.6f]
+        });
+    }
+
     public sealed override void BeforeStart()
     {
-        _panel = new InfoPanel(10, 400);
+        _panel = new InfoPanel(10, 300);
 
         if (IsPreviewing) return;
 
-        RaceSessionTracker.Instance.OnNewSessionStarted += Instance_OnNewSessionStarted;
+        RaceSessionTracker.Instance.OnNewSessionStarted += OnNewSessionStarted;
 
         _historyJob = new(this) { IntervalMillis = 100 };
         _historyJob.OnNewHistory += OnNewHistory;
         _historyJob.Run();
     }
 
-    private void Instance_OnNewSessionStarted(object sender, RaceElement.Data.ACC.Database.SessionData.DbRaceSession e)
-    {
-        _pressureHistory.Clear();
-    }
-
+    private void OnNewSessionStarted(object sender, DbRaceSession e) => _pressureHistory.Clear();
     private void OnNewHistory(object sender, PressureHistoryModel model) => _pressureHistory.Add(model);
 
     public sealed override void BeforeStop()
@@ -59,6 +70,13 @@ internal sealed class PressureHistoryOverlay : AbstractOverlay
 
         _historyJob.OnNewHistory -= OnNewHistory;
         _historyJob?.CancelJoin();
+
+        _graphicsGrid?.Dispose();
+    }
+
+    private void CreateGraphicsGrid()
+    {
+
     }
 
     public sealed override void Render(Graphics g)
