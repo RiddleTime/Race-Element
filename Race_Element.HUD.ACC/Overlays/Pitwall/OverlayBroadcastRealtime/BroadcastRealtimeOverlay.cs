@@ -92,7 +92,7 @@ internal sealed class BroadcastRealtimeOverlay : AbstractOverlay
                         _table.AddRow("", [carData.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.HasValue ? $"{carData.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.Value / 1000}" : ""]);
                     }
 
-                    _table.AddRow("BroadCst", [$"X: {carData.Value.RealtimeCarUpdate.WorldPosX:F2}, Z: {carData.Value.RealtimeCarUpdate.WorldPosZ:F2}, Y: {carData.Value.RealtimeCarUpdate.WorldPosY:F2}"]);
+                    _table.AddRow("BroadCst", [$"X: {carData.Value.RealtimeCarUpdate.WorldPosX:F2}, Y: {carData.Value.RealtimeCarUpdate.WorldPosY:F2}, H: {carData.Value.RealtimeCarUpdate.Heading:F2}"]);
                     int playerCarIndex = pageGraphics.PlayerCarID;
                     int playerIndex = 0;
                     for (int i = 0; i < pageGraphics.CarIds.Length; i++)
