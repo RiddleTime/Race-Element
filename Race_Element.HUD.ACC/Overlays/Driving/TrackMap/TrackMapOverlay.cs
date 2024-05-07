@@ -43,7 +43,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     public TrackMapOverlay(Rectangle rectangle) : base(rectangle, "Track Map")
     {
-        RefreshRateHz = 24;
+        RefreshRateHz = 6;
     }
 
     public override void BeforeStart()
@@ -75,7 +75,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         _miniMapCreationJob = null;
 
         _trackPositions.Clear();
-        _trackPositions = null;
+        _trackPositions = [];
     }
 
     public override bool ShouldRender()
