@@ -38,6 +38,7 @@ internal sealed class PressureHistoryOverlay : AbstractOverlay
 
     public PressureHistoryOverlay(Rectangle rectangle) : base(rectangle, "Pressure History")
     {
+        RefreshRateHz = 1 / 3f;
     }
 
     public override void SetupPreviewData()
