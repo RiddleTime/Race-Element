@@ -395,6 +395,7 @@ public static class ConversionFactory
         {33, Lamborghini_Huracan_GT3_Evo2_2023 },
         {34, Porsche_992_GT3_R_2023 },
         {35, McLaren_720s_GT3_Evo_2023 },
+        {36, Ford_Mustang_GT3_2024 },
         {50, Alpine_A110_GT4_2018 },
         {51, Aston_Martin_Vantage_AMR_GT4_2018 },
         {52, Audi_R8_LMS_GT4_2016 },
