@@ -6,6 +6,8 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.8.2", "- Added Pressure History HUD: showing minimum, average and maximum tyre pressures for the last lap (beta)."+
+                    "\n- Radar HUD is now hiding again when there aren't any cars close enough."},
         {"1.0.8.0", "- Added Ford Mustang GT3 support."+
                     "\n- Radar HUD is functional again."+
                     "\n- Damage HUD: Now shows different colors based on the amount of damage."},

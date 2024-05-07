@@ -14,7 +14,7 @@ using System.Linq;
 namespace RaceElement.HUD.ACC.Overlays.Driving.PressureHistory;
 
 [Overlay(Name = "Pressure History",
-Description = "A table with the minimum, average and maximum tyre pressure for each tyre for the previous lap.",
+Description = "(beta) A table with the minimum, average and maximum tyre pressure for each tyre for the previous lap.",
 OverlayCategory = OverlayCategory.Physics,
 OverlayType = OverlayType.Drive,
 Authors = ["Reinier Klarenberg"],
@@ -47,7 +47,8 @@ internal sealed class PressureHistoryOverlay : AbstractOverlay
             Lap = 4,
             Min = [25.9f, 26.6f, 26.9f, 27.0f],
             Averages = [26.2f, 26.7f, 27.0f, 27.5f],
-            Max = [26.5f, 27.0f, 27.0f, 27.6f]
+            Max = [26.5f, 27.0f, 27.0f, 27.6f],
+            TyreCompound = "" // compound can be "wet_compound", else it's dry 
         });
     }
 
@@ -199,15 +200,15 @@ internal sealed class PressureHistoryOverlay : AbstractOverlay
                 AbstractDrawableCell[] row = _graphicsGrid.Grid[1 + i];
 
                 DrawableTextCell min = (DrawableTextCell)row[1];
-                min.CachedBackground = GetBackgroundSet(last.Min[i])[1];
+                min.CachedBackground = GetBackgroundSet(last.Min[i], last.TyreCompound)[1];
                 min.UpdateText($"{last.Min[i]:F1}");
 
                 DrawableTextCell avg = (DrawableTextCell)row[2];
-                avg.CachedBackground = GetBackgroundSet(last.Averages[i])[2];
+                avg.CachedBackground = GetBackgroundSet(last.Averages[i], last.TyreCompound)[2];
                 avg.UpdateText($"{last.Averages[i]:F1}");
 
                 DrawableTextCell max = (DrawableTextCell)row[3];
-                max.CachedBackground = GetBackgroundSet(last.Max[i])[3];
+                max.CachedBackground = GetBackgroundSet(last.Max[i], last.TyreCompound)[3];
                 max.UpdateText($"{last.Max[i]:F1}");
             }
         }
@@ -226,9 +227,9 @@ internal sealed class PressureHistoryOverlay : AbstractOverlay
             }
     }
 
-    private CachedBitmap[] GetBackgroundSet(float psi)
+    private CachedBitmap[] GetBackgroundSet(float psi, string compound)
     {
-        var range = TyrePressures.GetCurrentRange(pageGraphics.TyreCompound);
+        var range = TyrePressures.GetCurrentRange(compound);
         if (psi < range.OptimalMinimum)
             return _columnBackgroundsBlue;
         if (psi > range.OptimalMaximum)

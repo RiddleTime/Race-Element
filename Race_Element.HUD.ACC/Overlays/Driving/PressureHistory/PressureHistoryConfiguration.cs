@@ -9,6 +9,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.PressureHistory;
 
 internal sealed class PressureHistoryConfiguration : OverlayConfiguration
 {
+    public PressureHistoryConfiguration() => GenericConfiguration.AllowRescale = true;
+
     [ConfigGrouping("Table", "Adjust settings for the sector data table")]
     public TableGrouping Table { get; init; } = new();
     public sealed class TableGrouping
