@@ -63,16 +63,22 @@ internal sealed class PressureHistoryOverlay : AbstractOverlay
 
     public sealed override void Render(Graphics g)
     {
-        PressureHistoryModel last = _pressureHistory.Last();
-        if (last == null) return;
-        _panel.AddLine($"L{last.Lap}", $"Min - Max  -  Avg");
-
-        string[] tyres = ["FL", "FR", "RL", "RR"];
-        for (int i = 0; i < 4; i++)
+        if (_pressureHistory.Count == 0)
         {
-            _panel.AddLine(tyres[i], $"{last.Min[i]:F1} - {last.Max[i]:F1} - {last.Averages[i]:F1}");
+            _panel.AddLine("..", "Waiting for data");
         }
+        else
+        {
+            PressureHistoryModel last = _pressureHistory.Last();
+            if (last == null) return;
+            _panel.AddLine($"L{last.Lap}", $"Min - Max  -  Avg");
 
+            string[] tyres = ["FL", "FR", "RL", "RR"];
+            for (int i = 0; i < 4; i++)
+            {
+                _panel.AddLine(tyres[i], $"{last.Min[i]:F1} - {last.Max[i]:F1} - {last.Averages[i]:F1}");
+            }
+        }
         _panel.Draw(g);
     }
 }

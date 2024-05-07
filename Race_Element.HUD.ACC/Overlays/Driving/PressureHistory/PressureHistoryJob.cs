@@ -83,7 +83,7 @@ internal sealed class PressureHistoryJob : AbstractLoopJob
             float[] pressures = _overlay.pagePhysics.WheelPressure;
 
             for (int i = 0; i < 4; i++)
-                if (pressures[i] < 1)
+                if (pressures[i] < 10)
                     return;
 
             for (int i = 0; i < 4; i++)
