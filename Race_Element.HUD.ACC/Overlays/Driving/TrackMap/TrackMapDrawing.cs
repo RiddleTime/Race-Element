@@ -119,7 +119,7 @@ class TrackMapDrawing
         return this;
     }
 
-    public Bitmap Draw(List<PointF> cars, List<PointF> track, TrackData broadCastTrackData)
+    public Bitmap Draw(List<PointF> cars, List<int> ids, List<PointF> track, TrackData broadCastTrackData)
     {
         if (_bitmap == null)
         {
@@ -134,10 +134,10 @@ class TrackMapDrawing
         g.CompositingQuality = CompositingQuality.HighQuality;
 
         g.DrawLines(new Pen(_mapColor, _mapThickness), track.ToArray());
-        return DrawCars(cars, track, g, broadCastTrackData);
+        return DrawCars(cars, ids, track, g, broadCastTrackData);
     }
 
-    private Bitmap DrawCars(List<PointF> cars, List<PointF> track, Graphics g, TrackData broadCastTrackData)
+    private Bitmap DrawCars(List<PointF> cars, List<int> ids, List<PointF> track, Graphics g, TrackData broadCastTrackData)
     {
         int playerIdx = 0;
         using Font font = FontUtil.FontSegoeMono(_fontSize);
@@ -147,7 +147,7 @@ class TrackMapDrawing
 
         for (int i = 0; i < cars.Count; ++i)
         {
-            if (pageFileGraphic.CarIds[i] == pageFileGraphic.PlayerCarID)
+            if (ids[i] == pageFileGraphic.PlayerCarID)
             {
                 playerIdx = i;
                 continue;

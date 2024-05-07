@@ -7,6 +7,7 @@ using RaceElement.Util;
 using System.Collections.Generic;
 using System.Drawing;
 using System;
+using RaceElement.Data.ACC.EntryList;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
@@ -125,7 +126,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         float w = (float)Math.Sqrt((boundaries.Right - boundaries.Left) * (boundaries.Right - boundaries.Left));
 
         var track = ScaleAndRotate(_trackPositions, boundaries, _config.Map.MaxWidth / w, _config.Map.Rotation);
-        var minimap = CreateBitmapForCarsAndTrack(new List<PointF>(), track);
+        var minimap = CreateBitmapForCarsAndTrack(new List<PointF>(), new List<int>(), track);
 
         string path = FileUtil.RaceElementTracks + pageFileStatic.Track + ".jpg";
         minimap.Save(path);
@@ -135,15 +136,16 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     private Bitmap CreateBitmapForCarsAndTrack()
     {
-        var pageFileGraphic = ACCSharedMemory.Instance.PageFileGraphic;
         var boundaries = GetBoundingBox(_trackPositions);
         List<PointF> cars = new();
+        List<int> ids = new();
 
-        for (int i = 0; i < pageFileGraphic.ActiveCars; ++i)
+        for (int i = 0; i < EntryListTracker.Instance.Cars.Count; ++i)
         {
-            float x = pageFileGraphic.CarCoordinates[i].X;
-            float y = pageFileGraphic.CarCoordinates[i].Z;
+            float x = EntryListTracker.Instance.Cars[i].Value.RealtimeCarUpdate.WorldPosX;
+            float y = EntryListTracker.Instance.Cars[i].Value.RealtimeCarUpdate.WorldPosY;
 
+            ids.Add(EntryListTracker.Instance.Cars[i].Key);
             cars.Add(new PointF(x, y));
         }
 
@@ -153,10 +155,10 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         var track = ScaleAndRotate(_trackPositions, boundaries, scale, _config.Map.Rotation);
         cars = ScaleAndRotate(cars, boundaries, scale, _config.Map.Rotation);
 
-        return CreateBitmapForCarsAndTrack(cars, track);
+        return CreateBitmapForCarsAndTrack(cars, ids, track);
     }
 
-    private Bitmap CreateBitmapForCarsAndTrack(List<PointF> cars, List<PointF> track)
+    private Bitmap CreateBitmapForCarsAndTrack(List<PointF> cars, List<int> ids, List<PointF> track)
     {
         BoundingBox boundaries = GetBoundingBox(track);
 
@@ -197,7 +199,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             .SetColorPitStopWithDamange(_config.Car.PitStopWithDamageColor);
 
         drawer.CreateBitmap(w, h, _margin);
-        return drawer.Draw(cars, track, broadCastTrackData);
+        return drawer.Draw(cars, ids, track, broadCastTrackData);
     }
 
     private List<PointF> ScaleAndRotate(List<PointF> positions, BoundingBox boundaries, float scale, float rotation)
