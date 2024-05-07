@@ -11,6 +11,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.PressureHistory;
 
 internal readonly record struct PressureHistoryModel
 {
+    public int Lap { get; init; }
     public float[] Averages { get; init; }
     public float[] Min { get; init; }
     public float[] Max { get; init; }
@@ -20,13 +21,16 @@ internal sealed class PressureHistoryJob : AbstractLoopJob
 {
     private readonly AbstractOverlay _overlay;
 
-    private List<float>[] LapPressures = new List<float>[4];
+    private readonly List<float>[] LapPressures;
 
-    private EventHandler<PressureHistoryModel> OnNewHistory;
+    public EventHandler<PressureHistoryModel> OnNewHistory;
 
     public PressureHistoryJob(AbstractOverlay overlay)
     {
         _overlay = overlay;
+        LapPressures = new List<float>[4];
+        for (int i = 0; i < 4; i++)
+            LapPressures[i] = [];
     }
 
     public sealed override void BeforeRun()
@@ -36,7 +40,7 @@ internal sealed class PressureHistoryJob : AbstractLoopJob
 
     private void Instance_LapFinished(object sender, RaceElement.Data.ACC.Database.LapDataDB.DbLapData e)
     {
-        OnNewHistory?.Invoke(this, GetHistoryModel());
+        OnNewHistory?.Invoke(this, GetHistoryModel(e.Index));
         ResetLapData();
     }
 
@@ -45,7 +49,7 @@ internal sealed class PressureHistoryJob : AbstractLoopJob
         LapTracker.Instance.LapFinished -= Instance_LapFinished;
     }
 
-    private PressureHistoryModel GetHistoryModel()
+    private PressureHistoryModel GetHistoryModel(int lap)
     {
         float[] averages = new float[4];
         float[] mins = new float[4];
@@ -59,6 +63,7 @@ internal sealed class PressureHistoryJob : AbstractLoopJob
 
         return new()
         {
+            Lap = lap,
             Averages = averages,
             Min = mins,
             Max = maxs,
@@ -75,8 +80,14 @@ internal sealed class PressureHistoryJob : AbstractLoopJob
     {
         if (_overlay.DefaultShouldRender())
         {
+            float[] pressures = _overlay.pagePhysics.WheelPressure;
+
             for (int i = 0; i < 4; i++)
-                LapPressures[i].Add(_overlay.pagePhysics.WheelPressure[i]);
+                if (pressures[i] < 1)
+                    return;
+
+            for (int i = 0; i < 4; i++)
+                LapPressures[i].Add(pressures[i]);
         }
     }
 }
