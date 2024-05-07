@@ -30,6 +30,7 @@ public class SteeringLock
         {"ferrari_296_gt3", 800 },
         {"ferrari_488_gt3", 480},
         {"ferrari_488_gt3_evo", 480},
+        {"ford_mustang_gt3", 520 },
         {"honda_nsx_gt3", 620},
         {"honda_nsx_gt3_evo", 436},
         {"lamborghini_huracan_gt3", 620},
