@@ -181,22 +181,19 @@ internal sealed class RadarOverlay : AbstractOverlay
     {
         try
         {
-            int playerID = broadCastRealTime.FocusedCarIndex;
+            int playerID = pageGraphics.PlayerCarID;
             var playerCar = EntryListTracker.Instance.Cars.FirstOrDefault(car => car.Key == playerID);
             if (playerCar.Value == null && EntryListTracker.Instance.Cars.Any()) return;
 
 
             // find local player id
-            for (int i = 0; i < pageGraphics.CarIds.Length; i++)
+
+            var localCar = EntryListTracker.Instance.Cars.FirstOrDefault(x => x.Key == playerID);
+            if (localCar.Value != null)
             {
-                if (pageGraphics.CarIds[i] == playerID)
-                {
-                    _playerY = pageGraphics.CarCoordinates[i].Z;
-                    _playerX = -pageGraphics.CarCoordinates[i].X;
-                    var car = EntryListTracker.Instance.Cars.FirstOrDefault(x => x.Key == playerID);
-                    if (car.Value != null)
-                        _playerHeading = car.Value.RealtimeCarUpdate.Heading;
-                }
+                _playerX = localCar.Value.RealtimeCarUpdate.WorldPosX;
+                _playerY = localCar.Value.RealtimeCarUpdate.WorldPosY;
+                _playerHeading = localCar.Value.RealtimeCarUpdate.Heading;
             }
 
             CollectSpottableCars(playerID);
@@ -221,11 +218,13 @@ internal sealed class RadarOverlay : AbstractOverlay
             Matrix originalTransform = g.Transform;
             foreach (SpottableCar car in CollectionsMarshal.AsSpan(_spottables))
             {
-                float multiplier = 5f;
-                float xOffset = (_playerY - car.X);
-                float yOffset = (_playerX - car.Y);
+                if (car.Index == playerID) continue;
 
-                float heading = (float)(-Math.PI / 2 + _playerHeading);
+                float multiplier = 5f;
+                float xOffset = (_playerX - car.X);
+                float yOffset = (_playerY - car.Y);
+
+                float heading = (float)(_playerHeading);
                 float newX = (float)(xOffset * Math.Cos(heading) + yOffset * Math.Sin(heading)) * multiplier;
                 float newY = (float)(-xOffset * Math.Sin(heading) + yOffset * Math.Cos(heading)) * multiplier;
 
@@ -261,38 +260,38 @@ internal sealed class RadarOverlay : AbstractOverlay
     private void CollectSpottableCars(int playerID)
     {
         // find spottable cars
-        for (int i = 0; i < pageGraphics.CarIds.Length; i++)
+        var data = EntryListTracker.Instance.Cars;
+
+        foreach (var item in data)
         {
-            if (pageGraphics.CarIds[i] != playerID && pageGraphics.CarIds[i] != 0)
+            float x = item.Value.RealtimeCarUpdate.WorldPosX;
+            float y = item.Value.RealtimeCarUpdate.WorldPosY;
+
+            float distance = DistanceBetween(_playerX, _playerY, x, y);
+
+            if (distance < _config.Proxmity.ShowDistance)
             {
-                float x = pageGraphics.CarCoordinates[i].Z;
-                float y = -pageGraphics.CarCoordinates[i].X;
-
-                float distance = DistanceBetween(_playerY, _playerX, x, y);
-
-                if (distance < _config.Proxmity.ShowDistance)
+                var spottable = new SpottableCar()
                 {
-                    var spottable = new SpottableCar()
-                    {
-                        Index = pageGraphics.CarIds[i],
-                        X = x,
-                        Y = y,
-                        Distance = distance,
-                    };
+                    Index = item.Key,
+                    X = x,
+                    Y = y,
+                    Distance = distance,
+                };
 
-                    var car = EntryListTracker.Instance.Cars.FirstOrDefault(x => x.Key == spottable.Index);
-                    if (car.Value != null)
-                    {
-                        spottable.Heading = car.Value.RealtimeCarUpdate.Heading;
-                        if (!_config.Radar.ShowPitted && car.Value.RealtimeCarUpdate.CarLocation == Broadcast.CarLocationEnum.Pitlane)
-                            continue;
-                    }
-
-                    if (!_spottables.Contains(spottable))
-                        _spottables.Add(spottable);
+                var car = EntryListTracker.Instance.Cars.FirstOrDefault(x => x.Key == spottable.Index);
+                if (car.Value != null)
+                {
+                    spottable.Heading = car.Value.RealtimeCarUpdate.Heading;
+                    if (!_config.Radar.ShowPitted && car.Value.RealtimeCarUpdate.CarLocation == Broadcast.CarLocationEnum.Pitlane)
+                        continue;
                 }
+
+                if (!_spottables.Contains(spottable))
+                    _spottables.Add(spottable);
             }
         }
+
     }
 
     private float DistanceBetween(float x1, float y1, float x2, float y2) => (float)Math.Sqrt(Math.Pow(x1 - x2, 2) + Math.Pow(y1 - y2, 2));

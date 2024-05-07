@@ -214,8 +214,8 @@ public class BroadcastingNetworkProtocol
                         carUpdate.DriverCount = br.ReadByte();
                         carUpdate.Gear = br.ReadByte() - 2; // -2 makes the R -1, N 0 and the rest as-is
                         carUpdate.WorldPosX = br.ReadSingle();
-                        carUpdate.WorldPosZ = br.ReadSingle();
                         carUpdate.WorldPosY = br.ReadSingle();
+                        carUpdate.Heading = br.ReadSingle();
                         carUpdate.CarLocation = (CarLocationEnum)br.ReadByte(); // - , Track, Pitlane, PitEntry, PitExit = 4
                         carUpdate.Kmh = br.ReadUInt16();
                         carUpdate.Position = br.ReadUInt16(); // official P/Q/R position (1 based)

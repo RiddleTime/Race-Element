@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RaceElement.Data.ACC.SetupParser.Cars.GT2;
+using RaceElement.Data.ACC.SetupParser.Cars.GT3;
 using RaceElement.Data.Cars.GT3;
 using RaceElement.Data.Cars.GT4;
 using RaceElement.Data.Cars.GTC;
@@ -41,6 +42,7 @@ public static class ConversionFactory
         Ferrari_488_Challenge_Evo_2020,
         Ferrari_488_GT3_2018,
         Ferrari_488_GT3_Evo_2020,
+        Ford_Mustang_GT3_2024,
         Ginetta_G55_GT4_2012,
         Honda_NSX_GT3_2017,
         Honda_NSX_GT3_Evo_2019,
@@ -153,6 +155,7 @@ public static class ConversionFactory
         {Ferrari_296_GT3_2023, new Ferrari296GT3() },
         {Ferrari_488_GT3_2018, new Ferrari488GT3() },
         {Ferrari_488_GT3_Evo_2020, new Ferrari488GT3evo() },
+        {Ford_Mustang_GT3_2024, new FordMustangGT3() },
         {Honda_NSX_GT3_2017, new HondaNsxGT3() },
         {Honda_NSX_GT3_Evo_2019, new HondaNsxGT3Evo() },
         {Lamborghini_Gallardo_G3_Reiter_2017, new LamborghiniGallardoG3Reiter_2017() },
@@ -247,6 +250,7 @@ public static class ConversionFactory
         {Ferrari_488_Challenge_Evo_2020, "Ferrari 488 Challenge Evo 2020" },
         {Ferrari_488_GT3_2018, "Ferrari 488 GT3 2018" },
         {Ferrari_488_GT3_Evo_2020, "Ferrari 488 GT3 Evo 2020" },
+        {Ford_Mustang_GT3_2024, "Ford Mustang GT3 2024" },
         {Ginetta_G55_GT4_2012, "Ginetta G55 GT4 2012" },
         {Honda_NSX_GT3_2017, "Honda NSX GT3 2017" },
         {Honda_NSX_GT3_Evo_2019, "Honda NSX GT3 Evo 2019" },
@@ -310,6 +314,7 @@ public static class ConversionFactory
         {"ferrari_488_challenge_evo", Ferrari_488_Challenge_Evo_2020 },
         {"ferrari_488_gt3", Ferrari_488_GT3_2018 },
         {"ferrari_488_gt3_evo", Ferrari_488_GT3_Evo_2020 },
+        {"ford_mustang_gt3", Ford_Mustang_GT3_2024 },
         {"ginetta_g55_gt4", Ginetta_G55_GT4_2012 },
         {"honda_nsx_gt3", Honda_NSX_GT3_2017 },
         {"honda_nsx_gt3_evo", Honda_NSX_GT3_Evo_2019 },
@@ -390,6 +395,7 @@ public static class ConversionFactory
         {33, Lamborghini_Huracan_GT3_Evo2_2023 },
         {34, Porsche_992_GT3_R_2023 },
         {35, McLaren_720s_GT3_Evo_2023 },
+        {36, Ford_Mustang_GT3_2024 },
         {50, Alpine_A110_GT4_2018 },
         {51, Aston_Martin_Vantage_AMR_GT4_2018 },
         {52, Audi_R8_LMS_GT4_2016 },
