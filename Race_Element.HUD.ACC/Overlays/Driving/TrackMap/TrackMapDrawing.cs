@@ -5,6 +5,7 @@ using System.Drawing;
 
 using System.Collections.Generic;
 using System.Diagnostics;
+
 using RaceElement.Data.ACC.EntryList;
 using RaceElement.Broadcast.Structs;
 
@@ -237,12 +238,11 @@ class TrackMapDrawing
         g.FillEllipse(_borderColor, car.X - outBorder * 0.5f, car.Y - outBorder * 0.5f, _dotSize, _dotSize);
         g.FillEllipse(color, car.X, car.Y, _dotSize - outBorder, _dotSize - outBorder);
 
-        string simbol = pitStop.Laps > 0 ? "+" : "P";
-        g.DrawStringWithShadow(simbol, font, new SolidBrush(Color.WhiteSmoke), car);
+        string symbol = pitStop.Laps > 0 ? "+" : "P";
+        g.DrawStringWithShadow(symbol, font, new SolidBrush(Color.WhiteSmoke), car);
 
         if (pitStop.Laps > 0)
         {
-            g.DrawStringWithShadow("+", font, new SolidBrush(Color.WhiteSmoke), car);
             using SolidBrush pen = new (Color.FromArgb(100, Color.Black));
 
             var laps = pitStop.Laps.ToString();

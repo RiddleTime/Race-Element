@@ -1,4 +1,5 @@
 ﻿using RaceElement.Data.ACC.Database.SessionData;
+using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.Session;
 
 using RaceElement.HUD.Overlay.Internal;
@@ -7,7 +8,6 @@ using RaceElement.Util;
 using System.Collections.Generic;
 using System.Drawing;
 using System;
-using RaceElement.Data.ACC.EntryList;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
