@@ -11,6 +11,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.PressureHistory;
 
 internal readonly record struct PressureHistoryModel
 {
+    public string TyreCompound { get; init; }
     public int Lap { get; init; }
     public float[] Averages { get; init; }
     public float[] Min { get; init; }
@@ -67,6 +68,7 @@ internal sealed class PressureHistoryJob : AbstractLoopJob
             Averages = averages,
             Min = mins,
             Max = maxs,
+            TyreCompound = _overlay.pageGraphics.TyreCompound
         };
     }
 

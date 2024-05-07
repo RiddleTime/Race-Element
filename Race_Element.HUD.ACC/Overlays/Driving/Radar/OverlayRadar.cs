@@ -177,24 +177,28 @@ internal sealed class RadarOverlay : AbstractOverlay
         });
     }
 
+    public sealed override void BeforeStop()
+    {
+        _cachedBackground?.Dispose();
+
+        _cachedLocalCar?.Dispose();
+        _cachedFarCar?.Dispose();
+        _cachedNearCar?.Dispose();
+        _cachedCloseCar?.Dispose();
+    }
+
     public sealed override void Render(Graphics g)
     {
         try
         {
             int playerID = pageGraphics.PlayerCarID;
             var playerCar = EntryListTracker.Instance.Cars.FirstOrDefault(car => car.Key == playerID);
-            if (playerCar.Value == null && EntryListTracker.Instance.Cars.Any()) return;
+            if (playerCar.Value == null || EntryListTracker.Instance.Cars.Count == 0) return;
 
+            _playerX = playerCar.Value.RealtimeCarUpdate.WorldPosX;
+            _playerY = playerCar.Value.RealtimeCarUpdate.WorldPosY;
+            _playerHeading = playerCar.Value.RealtimeCarUpdate.Heading;
 
-            // find local player id
-
-            var localCar = EntryListTracker.Instance.Cars.FirstOrDefault(x => x.Key == playerID);
-            if (localCar.Value != null)
-            {
-                _playerX = localCar.Value.RealtimeCarUpdate.WorldPosX;
-                _playerY = localCar.Value.RealtimeCarUpdate.WorldPosY;
-                _playerHeading = localCar.Value.RealtimeCarUpdate.Heading;
-            }
 
             CollectSpottableCars(playerID);
 
@@ -262,10 +266,12 @@ internal sealed class RadarOverlay : AbstractOverlay
         // find spottable cars
         var data = EntryListTracker.Instance.Cars;
 
-        foreach (var item in data)
+        foreach (var car in data)
         {
-            float x = item.Value.RealtimeCarUpdate.WorldPosX;
-            float y = item.Value.RealtimeCarUpdate.WorldPosY;
+            if (car.Key == playerID) continue;
+
+            float x = car.Value.RealtimeCarUpdate.WorldPosX;
+            float y = car.Value.RealtimeCarUpdate.WorldPosY;
 
             float distance = DistanceBetween(_playerX, _playerY, x, y);
 
@@ -273,13 +279,12 @@ internal sealed class RadarOverlay : AbstractOverlay
             {
                 var spottable = new SpottableCar()
                 {
-                    Index = item.Key,
+                    Index = car.Key,
                     X = x,
                     Y = y,
                     Distance = distance,
                 };
 
-                var car = EntryListTracker.Instance.Cars.FirstOrDefault(x => x.Key == spottable.Index);
                 if (car.Value != null)
                 {
                     spottable.Heading = car.Value.RealtimeCarUpdate.Heading;
