@@ -82,9 +82,14 @@ internal sealed class PressureHistoryJob : AbstractLoopJob
         {
             float[] pressures = _overlay.pagePhysics.WheelPressure;
 
+            bool pressureExists = false;
             for (int i = 0; i < 4; i++)
-                if (pressures[i] < 10)
-                    return;
+                if (pressures[i] > 10)
+                {
+                    pressureExists = true;
+                    break;
+                }
+            if (!pressureExists) return;
 
             for (int i = 0; i < 4; i++)
                 LapPressures[i].Add(pressures[i]);
