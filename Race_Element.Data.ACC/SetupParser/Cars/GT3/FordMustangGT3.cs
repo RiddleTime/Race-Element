@@ -28,105 +28,10 @@ namespace RaceElement.Data.ACC.SetupParser.Cars.GT3
                 }
             }
 
-            private readonly double[] casters = [5.0,
-            5.1,
-            5.3,
-            5.5,
-            5.6,
-            5.8,
-            6.0,
-            6.1,
-            6.3,
-            6.5,
-            6.6,
-            6.8,
-            7.0,
-            7.1,
-            7.3,
-            7.5,
-            7.6,
-            7.8,
-            8.0,
-            8.1,
-            8.3,
-            8.5,
-            8.6,
-            8.8,
-            9.0,
-            9.1,
-            9.3,
-            9.5,
-            9.6,
-            9.8,
-            9.9,
-            10.1,
-            10.3,
-            10.4,
-            10.6,
-            10.8,
-            10.9,
-            11.1,
-            11.2,
-            11.4,
-            11.6,
-            11.7,
-            11.9,
-            12.1,
-            12.2,
-            12.4,
-            12.5,
-            12.7,
-            12.9,
-            13.0,
-            13.2,
-            13.3,
-            13.5,
-            13.7,
-            13.8,
-            14.0,
-            14.1,
-            14.3,
-            14.4,
-            14.6,
-            14.8,
-            14.9,
-            15.1,
-            15.2,
-            15.4,
-            15.5,
-            15.7,
-            15.9,
-            16.0,
-            16.2,
-            16.3,
-            16.5,
-            16.6,
-            16.8,
-            16.9,
-            17.1,
-            17.3,
-            17.4,
-            17.6,
-            17.7,
-            17.9,
-            18.0,
-            18.2,
-            18.3,
-            18.5,
-            18.6,
-            18.8,
-            18.9,
-            19.1,
-            19.2,
-            19.4,
-            19.5,
-            19.7,
-            19.8,
-            20.0,
-            20.1,
-            20.3,
-            20.4,
-            20.6];
+            private readonly double[] casters = [5.3,
+5.5, 5.7, 5.9, 6.1, 6.2, 6.4, 6.6, 6.8, 6.9, 7.1, 7.3, 7.5, 7.6,
+7.8, 8.0, 8.2, 8.3, 8.5, 8.7, 8.9, 9.0, 9.2, 9.4, 9.6, 9.7, 9.9, 10.1, 10.3, 10.4, 10.6,
+10.8,10.9,11.1,11.3,11.5,11.6,11.8,12.0,12.1,12.3];
             public override double Caster(int rawValue)
             {
                 return Math.Round(casters[rawValue], 2);
@@ -134,7 +39,12 @@ namespace RaceElement.Data.ACC.SetupParser.Cars.GT3
 
             public override double Toe(Wheel wheel, List<int> rawValue)
             {
-                return Math.Round(-0.4 + 0.01 * rawValue[(int)wheel], 2);
+                return GetPosition(wheel) switch
+                {
+                    Position.Front => Math.Round(-0.2 + 0.01 * rawValue[(int)wheel], 2),
+                    Position.Rear => Math.Round(-0.1 + 0.01 * rawValue[(int)wheel], 2),
+                    _ => 0
+                };
             }
 
         }
@@ -154,7 +64,7 @@ namespace RaceElement.Data.ACC.SetupParser.Cars.GT3
 
             public double BrakeBias(int rawValue)
             {
-                return Math.Round(47.0 + 0.2 * rawValue, 2);
+                return Math.Round(48.5 + 0.3 * rawValue, 2);
             }
 
             public int BrakePower(int rawValue)
@@ -169,7 +79,7 @@ namespace RaceElement.Data.ACC.SetupParser.Cars.GT3
 
             public int BumpstopRate(List<int> rawValue, Wheel wheel)
             {
-                return 300 + 100 * rawValue[(int)wheel];
+                return 200 + 50 * rawValue[(int)wheel];
             }
 
             public int PreloadDifferential(int rawValue)
@@ -182,16 +92,16 @@ namespace RaceElement.Data.ACC.SetupParser.Cars.GT3
                 return Math.Round(10d + rawValue, 2);
             }
 
-            private readonly int[] fronts = [94000, 101000, 107000, 113000, 120000, 126000, 138600, 151000, 163800, 176000, 189000];
-            private readonly int[] rears = [106000, 113000, 120000, 127000, 134000, 141000, 155000, 169500, 183600, 198000, 212000];
+            private readonly int[] fronts = [105000, 120000, 135000, 150000, 165000, 180000];
+            private readonly int[] rears = [90000, 105000, 120000, 135000, 150000, 165000];
             public int WheelRate(List<int> rawValue, Wheel wheel)
             {
-                switch (GetPosition(wheel))
+                return GetPosition(wheel) switch
                 {
-                    case Position.Front: return fronts[rawValue[(int)wheel]];
-                    case Position.Rear: return rears[rawValue[(int)wheel]];
-                    default: return -1;
-                }
+                    Position.Front => fronts[rawValue[(int)wheel]],
+                    Position.Rear => rears[rawValue[(int)wheel]],
+                    _ => -1,
+                };
             }
         }
 
@@ -214,8 +124,8 @@ namespace RaceElement.Data.ACC.SetupParser.Cars.GT3
             {
                 switch (position)
                 {
-                    case Position.Front: return 55 + rawValue[0];
-                    case Position.Rear: return 55 + rawValue[2];
+                    case Position.Front: return 50 + rawValue[0];
+                    case Position.Rear: return 50 + rawValue[2];
                     default: return -1;
                 }
             }

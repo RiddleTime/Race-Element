@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RaceElement.Data.ACC.SetupParser.Cars.GT2;
+using RaceElement.Data.ACC.SetupParser.Cars.GT3;
 using RaceElement.Data.Cars.GT3;
 using RaceElement.Data.Cars.GT4;
 using RaceElement.Data.Cars.GTC;
@@ -154,6 +155,7 @@ public static class ConversionFactory
         {Ferrari_296_GT3_2023, new Ferrari296GT3() },
         {Ferrari_488_GT3_2018, new Ferrari488GT3() },
         {Ferrari_488_GT3_Evo_2020, new Ferrari488GT3evo() },
+        {Ford_Mustang_GT3_2024, new FordMustangGT3() },
         {Honda_NSX_GT3_2017, new HondaNsxGT3() },
         {Honda_NSX_GT3_Evo_2019, new HondaNsxGT3Evo() },
         {Lamborghini_Gallardo_G3_Reiter_2017, new LamborghiniGallardoG3Reiter_2017() },
