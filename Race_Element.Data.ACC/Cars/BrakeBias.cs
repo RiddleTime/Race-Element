@@ -30,6 +30,7 @@ public class BrakeBias
         {"ferrari_296_gt3", -5},
         {"ferrari_488_gt3", -17},
         {"ferrari_488_gt3_evo", -17},
+        {"ford_mustang_gt3", -14 },
         {"honda_nsx_gt3", -14},
         {"honda_nsx_gt3_evo", -20},
         {"lamborghini_huracan_gt3", -14},
