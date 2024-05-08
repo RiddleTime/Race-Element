@@ -85,7 +85,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             Width = bitmap.Width;
         }
 
-        g.DrawImage(CreateBitmapForCarsAndTrack(), 0, 0);
+        g.DrawImage(bitmap, 0, 0);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
