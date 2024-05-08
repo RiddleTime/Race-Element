@@ -175,7 +175,8 @@ internal sealed class LapDeltaOverlay : AbstractOverlay
         Rectangle backgroundDimension = new((int)(x - _deltaStringWidth / 2), y, (int)(_deltaStringWidth), (int)(_font.Height * 0.9));
 
         g.SmoothingMode = SmoothingMode.AntiAlias;
-        g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), backgroundDimension, (int)(2 * this.Scale));
+        using SolidBrush backgroundBrush = new(Color.FromArgb(185, 0, 0, 0));
+        g.FillRoundedRectangle(backgroundBrush, backgroundDimension, (int)(2 * this.Scale));
 
         g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
         g.TextContrast = 1;
