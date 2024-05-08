@@ -71,18 +71,18 @@ public class TrackMapPitPrediction
     private static PitStop ComputePitStop(List<PointF> track, float time)
     {
         var pageFileGraphic = ACCSharedMemory.Instance.PageFileGraphic;
+        var estimatedLapTime = pageFileGraphic.EstimatedLapTimeMillis;
         var currenTime = pageFileGraphic.CurrentTimeMs;
-        var bestTime = pageFileGraphic.BestTimeMs;
 
-        if (bestTime == Int32.MaxValue)
+        if (estimatedLapTime == Int32.MaxValue)
         {
             return null;
         }
 
-        var diffTime = currenTime - (time % bestTime);
-        diffTime = diffTime >= 0 ? diffTime : bestTime + diffTime;
+        var diffTime = currenTime - (time % estimatedLapTime);
+        diffTime = diffTime >= 0 ? diffTime : estimatedLapTime + diffTime;
 
-        var delta = diffTime / bestTime;
+        var delta = diffTime / estimatedLapTime;
         var trackPos = (int)(delta * track.Count);
 
         var result = new PitStop
