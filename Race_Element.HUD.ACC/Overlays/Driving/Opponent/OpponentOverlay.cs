@@ -1,6 +1,11 @@
 ﻿using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
+using System.Windows.Documents;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayOpponent;
 
@@ -9,35 +14,57 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayOpponent;
 #endif
 internal class OpponentOverlay : AbstractOverlay
 {
-
     private const int InitialWidth = 300, InitialHeight = 250;
-    private InfoTable _table;
+
+    private List<double> _notCached = [];
+    private List<double> _cached = [];
+
+    CachedBitmap _bitmap;
     public OpponentOverlay(Rectangle rectangle) : base(rectangle, "Opponent")
     {
         this.Width = InitialWidth;
         this.Height = InitialHeight;
-
-        _table = new InfoTable(12, [100, 100]);
+        this.RefreshRateHz = 50;
     }
 
     public override void BeforeStart()
     {
-
+        _bitmap = new CachedBitmap(100, 100, g => { RenderSomething(g, 100, 100); });
     }
 
     public override void BeforeStop()
     {
+        _bitmap?.Dispose();
     }
 
     public override void Render(Graphics g)
     {
-        float gapAhead = pageGraphics.gapAheadMillis / 1000f;
-        _table.AddRow("Ahead", [$"{gapAhead:F3}"]);
+        g.Clear(Color.Transparent);
 
-        float gapBehind = pageGraphics.gapBehindMillis * -1 / 1000f;
-        _table.AddRow("Behind", [$"{gapBehind:F3}"]);
-        _table.Draw(g);
+        var sw = Stopwatch.StartNew();
+        RenderSomething(g, 100, 100);
+        TimeSpan elapsed = sw.Elapsed;
+        AddToBenchList(elapsed, ref _notCached);
+
+        g.Clear(Color.Transparent);
+
+        sw = Stopwatch.StartNew();
+        _bitmap.Draw(g);
+        TimeSpan elapsed2 = sw.Elapsed;
+        AddToBenchList(elapsed2, ref _cached);
+
+        double avgUncached = _notCached.Average();
+        double avgCached = _cached.Average();
+        Trace.WriteLine($"cycles: {_cached.Count},  raw: {avgUncached:F0} Ns, cached: {avgCached:F0} Ns");
+    }
+    private void RenderSomething(Graphics g, int width, int height)
+    {
+        for (int i = 0; i < 10; i++)
+            g.DrawRoundedRectangle(Pens.White, new Rectangle(0, 0, width, height), 2);
     }
 
-    public override bool ShouldRender() => DefaultShouldRender();
+    private void AddToBenchList(TimeSpan t, ref List<double> list)
+    {
+        list.Add(t.TotalNanoseconds);
+    }
 }
