@@ -196,7 +196,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             .SetColorOthersLappedPlayer(Color.DarkOrange);
 
         drawer.SetColorPitStop(_config.Car.PitStopColor)
-            .SetColorPitStopWithDamange(_config.Car.PitStopWithDamageColor);
+            .SetColorPitStopWithDamage(_config.Car.PitStopWithDamageColor);
 
         drawer.CreateBitmap(w, h, _margin);
         return drawer.Draw(cars, ids, track, broadCastTrackData);

@@ -35,7 +35,7 @@ class TrackMapDrawing
     private SolidBrush _colorCarDefault = new(Color.DarkGray);
 
     private SolidBrush _colorPitStop = new(Color.Yellow);
-    private SolidBrush _colorPitStopWithDamange = new(Color.MediumPurple);
+    private SolidBrush _colorPitStopWithDamage = new(Color.MediumPurple);
 
     public TrackMapDrawing SetDotSize(float size)
     {
@@ -103,9 +103,9 @@ class TrackMapDrawing
         return this;
     }
 
-    public TrackMapDrawing SetColorPitStopWithDamange(Color color)
+    public TrackMapDrawing SetColorPitStopWithDamage(Color color)
     {
-        _colorPitStopWithDamange = new(color);
+        _colorPitStopWithDamage = new(color);
         return this;
     }
 
@@ -140,6 +140,11 @@ class TrackMapDrawing
 
     private Bitmap DrawCars(List<PointF> cars, List<int> ids, List<PointF> track, Graphics g, TrackData broadCastTrackData)
     {
+        if (ids.Count != cars.Count)
+        {
+            return null;
+        }
+
         int playerIdx = 0;
         using Font font = FontUtil.FontSegoeMono(_fontSize);
 
@@ -156,9 +161,7 @@ class TrackMapDrawing
 
             var car = cars[i];
             var color = _colorCarDefault;
-
-            var idx = pageFileGraphic.CarIds[i];
-            var currentCarData = EntryListTracker.Instance.GetCarData(idx);
+            var currentCarData = EntryListTracker.Instance.GetCarData(ids[i]);
 
             if (playerCarData != null && currentCarData != null)
             {
@@ -189,7 +192,7 @@ class TrackMapDrawing
             if (_showPitStop)
             {
                 DrawPitStopOnMap(font, g, _colorPitStop, TrackMapPitPrediction.GetPitStop(track));
-                DrawPitStopOnMap(font, g, _colorPitStopWithDamange, TrackMapPitPrediction.GetPitStopWithDamage(track));
+                DrawPitStopOnMap(font, g, _colorPitStopWithDamage, TrackMapPitPrediction.GetPitStopWithDamage(track));
             }
         }
 
@@ -239,7 +242,7 @@ class TrackMapDrawing
         g.FillEllipse(color, car.X, car.Y, _dotSize - outBorder, _dotSize - outBorder);
 
         string symbol = pitStop.Laps > 0 ? "+" : "P";
-        g.DrawStringWithShadow(symbol, font, new SolidBrush(Color.WhiteSmoke), car);
+        g.DrawStringWithShadow(symbol, font, new SolidBrush(Color.Black), car);
 
         if (pitStop.Laps > 0)
         {
