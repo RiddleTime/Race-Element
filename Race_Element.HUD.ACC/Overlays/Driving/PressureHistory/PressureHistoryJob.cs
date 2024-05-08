@@ -1,11 +1,10 @@
 ﻿using RaceElement.Core.Jobs.LoopJob;
+using RaceElement.Data.ACC.Session;
 using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.HUD.Overlay.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.PressureHistory;
 
@@ -36,10 +35,16 @@ internal sealed class PressureHistoryJob : AbstractLoopJob
 
     public sealed override void BeforeRun()
     {
-        LapTracker.Instance.LapFinished += Instance_LapFinished;
+        LapTracker.Instance.LapFinished += OnLapFinished;
+        RaceSessionTracker.Instance.OnNewSessionStarted += OnNewSessionStarted;
     }
 
-    private void Instance_LapFinished(object sender, RaceElement.Data.ACC.Database.LapDataDB.DbLapData e)
+    private void OnNewSessionStarted(object sender, RaceElement.Data.ACC.Database.SessionData.DbRaceSession e)
+    {
+        ResetLapData();
+    }
+
+    private void OnLapFinished(object sender, RaceElement.Data.ACC.Database.LapDataDB.DbLapData e)
     {
         OnNewHistory?.Invoke(this, GetHistoryModel(e.Index));
         ResetLapData();
@@ -47,7 +52,8 @@ internal sealed class PressureHistoryJob : AbstractLoopJob
 
     public sealed override void AfterCancel()
     {
-        LapTracker.Instance.LapFinished -= Instance_LapFinished;
+        LapTracker.Instance.LapFinished -= OnLapFinished;
+        RaceSessionTracker.Instance.OnNewSessionStarted -= OnNewSessionStarted;
     }
 
     private PressureHistoryModel GetHistoryModel(int lap)
