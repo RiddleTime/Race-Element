@@ -59,8 +59,8 @@ internal class OpponentOverlay : AbstractOverlay
     }
     private void RenderSomething(Graphics g, int width, int height)
     {
-        for (int i = 0; i < 10; i++)
-            g.DrawRoundedRectangle(Pens.White, new Rectangle(0, 0, width, height), 2);
+        for (int i = 1; i < 10; i++)
+            g.DrawRoundedRectangle(Pens.White, new Rectangle(0, 0, width / i, height / i), 2);
     }
 
     private void AddToBenchList(TimeSpan t, ref List<double> list)
