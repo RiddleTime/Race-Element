@@ -658,7 +658,7 @@ public class OverlayStandingsTableTextLabel
         var fontSize = g.MeasureString(text, _fontFamily);
 
         var rectanle = new Rectangle(_x + Width, _y, (int)(fontSize.Width + 10), _height);
-        var path = GraphicsExtensions.CreateRoundedRectangle(rectanle, 0, _height / 4, _height / 4, 0);
+        using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(rectanle, 0, _height / 4, _height / 4, 0);
         g.FillPath(brush, path);
         var textOffset = 2;
         g.DrawString(text, _fontFamily, Brushes.White, new PointF(_x + (int)(Width + 5), _y + textOffset));

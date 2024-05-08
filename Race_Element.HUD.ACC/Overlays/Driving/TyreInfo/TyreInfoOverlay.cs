@@ -47,8 +47,6 @@ internal sealed class TyreInfoOverlay : AbstractOverlay
         this.RefreshRateHz = _config.Information.RefreshRate;
     }
 
-
-
     public sealed override void BeforeStart()
     {
         TyresTracker.Instance.OnTyresInfoChanged += OnTyresInfoChanged;
@@ -139,7 +137,8 @@ internal sealed class TyreInfoOverlay : AbstractOverlay
 
         string text = $"-{pressureLoss:F2}";
         int textWidth = (int)g.MeasureString(text, _fontFamilySmall).Width;
-        g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(120, 0, 0, 0)), new Rectangle(x - textWidth / 2, y, textWidth, _fontFamilySmall.Height), 2);
+        using SolidBrush backgroundBrush = new(Color.FromArgb(120, 0, 0, 0));
+        g.FillRoundedRectangle(backgroundBrush, new Rectangle(x - textWidth / 2, y, textWidth, _fontFamilySmall.Height), 2);
         g.DrawStringWithShadow(text, _fontFamilySmall, Brushes.DarkOrange, new PointF(x - textWidth / 2, y + _yMonoSmall / 2));
 
         g.SmoothingMode = previous;
@@ -177,7 +176,8 @@ internal sealed class TyreInfoOverlay : AbstractOverlay
 
         Rectangle backgroundDimension = new(x - textWidth / 2, y, textWidth, _fontFamily.Height);
 
-        g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), backgroundDimension, 2);
+        using SolidBrush backgroundBrush = new(Color.FromArgb(185, 0, 0, 0));
+        g.FillRoundedRectangle(backgroundBrush, backgroundDimension, 2);
 
         g.DrawStringWithShadow(text, _fontFamily, tyreBrush, new PointF(x - textWidth / 2, y + _yMono - 1));
     }
@@ -213,7 +213,8 @@ internal sealed class TyreInfoOverlay : AbstractOverlay
         g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
         g.TextContrast = 1;
 
-        g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(120, 0, 0, 0)), new Rectangle(x - textWidth / 2, y, (int)textWidth, _fontFamilySmall.Height), 2);
+        using SolidBrush backgroundBrush = new(Color.FromArgb(120, 0, 0, 0));
+        g.FillRoundedRectangle(backgroundBrush, new Rectangle(x - textWidth / 2, y, (int)textWidth, _fontFamilySmall.Height), 2);
         g.DrawStringWithShadow(text, _fontFamilySmall, Brushes.White, new PointF(x - textWidth / 2, y + _yMonoSmall));
 
         g.SmoothingMode = previous;
@@ -256,7 +257,8 @@ internal sealed class TyreInfoOverlay : AbstractOverlay
         g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
         g.TextContrast = 1;
 
-        g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(120, 0, 0, 0)), new Rectangle(x - textWidth / 2, y, (int)textWidth, _fontFamilySmall.Height), 2);
+        using SolidBrush backgroundBrush = new(Color.FromArgb(120, 0, 0, 0));
+        g.FillRoundedRectangle(backgroundBrush, new Rectangle(x - textWidth / 2, y, (int)textWidth, _fontFamilySmall.Height), 2);
 
         g.DrawStringWithShadow(text, _fontFamilySmall, Brushes.White, new PointF(x - textWidth / 2, y + _yMonoSmall / 2));
 
@@ -280,7 +282,8 @@ internal sealed class TyreInfoOverlay : AbstractOverlay
         g.SmoothingMode = SmoothingMode.AntiAlias;
 
         int width = 58;
-        g.FillRoundedRectangle(new SolidBrush(brushColor), new Rectangle(x, y, width, 20), 3);
+        using SolidBrush backgroundBrush = new(brushColor);
+        g.FillRoundedRectangle(backgroundBrush, new Rectangle(x, y, width, 20), 3);
 
 
         CompositingQuality previousComposingQuality = g.CompositingQuality;
@@ -302,8 +305,13 @@ internal sealed class TyreInfoOverlay : AbstractOverlay
     {
         int textWidth = (int)g.MeasureString(text, _fontFamilyLarge).Width;
         Rectangle backgroundDimension = new(x - textWidth / 2, y, (int)textWidth, _fontFamilyLarge.Height);
-        g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 0, 0, 0)), backgroundDimension, 2);
-        g.DrawRoundedRectangle(new Pen(Color.FromArgb(135, 0, 0, 0), 0.6f * this.Scale), backgroundDimension, 2);
+
+        using SolidBrush backgroundBrush = new(Color.FromArgb(210, 0, 0, 0));
+        g.FillRoundedRectangle(backgroundBrush, backgroundDimension, 2);
+
+        using Pen outlinePen = new(Color.FromArgb(135, 0, 0, 0), 0.6f * this.Scale);
+        g.DrawRoundedRectangle(outlinePen, backgroundDimension, 2);
+
         g.DrawStringWithShadow(text, _fontFamilyLarge, textColor, new PointF(x - textWidth / 2, y + _fontFamilyLarge.GetHeight(g) / 11f), 1.3f * this.Scale);
     }
 }

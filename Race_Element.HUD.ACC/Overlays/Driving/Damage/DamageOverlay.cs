@@ -94,10 +94,12 @@ internal sealed class DamageOverlay : AbstractOverlay
             float horizontalPadding = scaledWidth * 0.05f;
             float verticalPadding = scaledHeight * 0.025f;
 
-            Pen bodyOutlinePen = new(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), 0.8f * this.Scale);
+            using SolidBrush bodyOutlineBrush = new(Color.FromArgb(185, 0, 0, 0));
+            using Pen bodyOutlinePen = new(bodyOutlineBrush, 0.8f * this.Scale);
 
             float frontRearWidth = scaledWidth - horizontalPadding * 6;
-            g.FillRectangle(new SolidBrush(Color.FromArgb(125, 0, 0, 0)), new RectangleF(horizontalPadding + frontRearWidth / 7, verticalPadding * 3, frontRearWidth, scaledHeight - verticalPadding * 6));
+            using SolidBrush baseRectBrush = new(Color.FromArgb(125, 0, 0, 0));
+            g.FillRectangle(baseRectBrush, new RectangleF(horizontalPadding + frontRearWidth / 7, verticalPadding * 3, frontRearWidth, scaledHeight - verticalPadding * 6));
 
             g.FillPath(_shapeBodyFront.Brush, _shapeBodyFront.Path);
             g.DrawPath(bodyOutlinePen, _shapeBodyFront.Path);
@@ -381,8 +383,13 @@ internal sealed class DamageOverlay : AbstractOverlay
         g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
         int textWidth = (int)g.MeasureString(text, _font).Width;
         Rectangle backgroundDimension = new(x - textWidth / 2, y, textWidth, _font.Height);
-        g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(210, 0, 0, 0)), backgroundDimension, 2);
-        g.DrawRoundedRectangle(new Pen(Color.FromArgb(140, 230, 0, 0), 0.6f * this.Scale), backgroundDimension, 2);
+
+        using SolidBrush backgroundBrush = new(Color.FromArgb(210, 0, 0, 0));
+        g.FillRoundedRectangle(backgroundBrush, backgroundDimension, 2);
+
+        using Pen outlinePen = new Pen(Color.FromArgb(140, 230, 0, 0), 0.6f * this.Scale);
+        g.DrawRoundedRectangle(outlinePen, backgroundDimension, 2);
+
         g.DrawStringWithShadow(text, _font, textColor, new PointF(x - textWidth / 2, y + _font.GetHeight(g) / 11f), 0.75f * this.Scale);
     }
 }

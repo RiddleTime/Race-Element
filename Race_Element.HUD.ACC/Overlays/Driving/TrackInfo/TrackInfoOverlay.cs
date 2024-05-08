@@ -88,7 +88,8 @@ internal sealed class TrackInfoOverlay : AbstractOverlay
             using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(panelRect, 0, 0, 0, roundingRadius);
             using LinearGradientBrush brush = new(panelRect, Color.FromArgb(185, 0, 0, 0), Color.FromArgb(255, 10, 10, 10), LinearGradientMode.BackwardDiagonal);
             g.FillPath(brush, path);
-            g.DrawLine(new Pen(accentColor), 0 + roundingRadius / 2, lineHeight, headerWidth, lineHeight - 1);
+            using Pen underlinePen = new(accentColor);
+            g.DrawLine(underlinePen, 0 + roundingRadius / 2, lineHeight, headerWidth, lineHeight - 1);
         });
         CachedBitmap valueBackground = new(valueWidth, lineHeight, g =>
         {
@@ -96,7 +97,8 @@ internal sealed class TrackInfoOverlay : AbstractOverlay
             using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(panelRect, 0, roundingRadius, 0, 0);
             using LinearGradientBrush brush = new(panelRect, Color.FromArgb(255, 0, 0, 0), Color.FromArgb(185, 0, 0, 0), LinearGradientMode.ForwardDiagonal);
             g.FillPath(brush, path);
-            g.DrawLine(new Pen(accentColor), 0, lineHeight - 1, valueWidth, lineHeight - 1);
+            using Pen underlinePen = new(accentColor);
+            g.DrawLine(underlinePen, 0, lineHeight - 1, valueWidth, lineHeight - 1);
         });
 
         if (this._config.InfoPanel.TimeOfDay)

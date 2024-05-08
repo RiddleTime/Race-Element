@@ -77,20 +77,21 @@ internal sealed class SteeringOverlay : AbstractOverlay
 
         _cachedBackground = new CachedBitmap((int)(Width * this.Scale + (1 * this.Scale)), (int)(Height * this.Scale + (1 * this.Scale)), g =>
         {
-            GraphicsPath gradientPath = new();
+            using GraphicsPath gradientPath = new();
             gradientPath.AddEllipse(0, 0, (int)(InitialSize * Scale), (int)(InitialSize * Scale));
-            PathGradientBrush pthGrBrush = new(gradientPath);
+            using PathGradientBrush pthGrBrush = new(gradientPath);
             pthGrBrush.CenterColor = Color.FromArgb(40, 0, 0, 0);
             pthGrBrush.SurroundColors = [Color.FromArgb(220, 0, 0, 0)];
 
             // draw background
             g.FillEllipse(pthGrBrush, new Rectangle(0, 0, (int)(InitialSize * Scale), (int)(InitialSize * Scale)));
-            g.DrawEllipse(new Pen(Color.FromArgb(230, Color.Black)), new Rectangle(0, 0, (int)(InitialSize * Scale), (int)(InitialSize * Scale)));
+            using Pen backgroundOutlinePen = new(Color.FromArgb(230, Color.Black));
+            g.DrawEllipse(backgroundOutlinePen, new Rectangle(0, 0, (int)(InitialSize * Scale), (int)(InitialSize * Scale)));
 
             // draw steering ring
             int padding = 2;
-            g.DrawEllipse(new Pen(Color.FromArgb(_config.Ring.RingOpacity, _config.Ring.RingColor),
-                _wheelThickness / 2 * Scale),
+            using Pen steeringRingPen = new Pen(Color.FromArgb(_config.Ring.RingOpacity, _config.Ring.RingColor), _wheelThickness / 2 * Scale);
+            g.DrawEllipse(steeringRingPen,
                 InitialSize / 2 * Scale,
                 InitialSize / 2 * Scale,
                 InitialSize / 2 * Scale - _wheelThickness * Scale - padding * 2);
@@ -107,7 +108,6 @@ internal sealed class SteeringOverlay : AbstractOverlay
 
     public sealed override void Render(Graphics g)
     {
-
         _cachedBackground?.Draw(g, 0, 0, InitialSize, InitialSize);
         g.SmoothingMode = SmoothingMode.AntiAlias;
 
@@ -130,7 +130,8 @@ internal sealed class SteeringOverlay : AbstractOverlay
         int padding = 1;
         Rectangle rect = new(0 + _wheelThickness / 2 + padding, 0 + _wheelThickness / 2 + padding, InitialSize - (2 * _wheelThickness / 2) - padding * 2, InitialSize - (2 * _wheelThickness / 2) - padding * 2);
         float drawAngle = angle + 270 - (indicatorWidth / 2);
-        g.DrawArc(new Pen(Color.White, _wheelThickness), rect, drawAngle, indicatorWidth);
+        using Pen indicatorPen = new(Color.White, _wheelThickness);
+        g.DrawArc(indicatorPen, rect, drawAngle, indicatorWidth);
     }
 
     // map value input from range 0 - fromMax into range 0 - toMax
