@@ -8,8 +8,10 @@ namespace RaceElement.HUD.Overlay.OverlayUtil;
 
 public sealed class CachedBitmap : IDisposable
 {
-    public int Width;
-    public int Height;
+    private readonly object _lockObject = new();
+
+    public int Width { get; init; }
+    public int Height { get; init; }
     public float Opacity { get; set; }
     public delegate void Renderer(Graphics g);
 
@@ -41,10 +43,13 @@ public sealed class CachedBitmap : IDisposable
     /// <param name="render">Default true, calls the renderer delegate</param>
     public void SetRenderer(Renderer renderer, bool render = true)
     {
-        if (_renderer == renderer)
-            return;
+        lock (_lockObject)
+        {
+            if (_renderer == renderer)
+                return;
 
-        _renderer = renderer;
+            _renderer = renderer;
+        }
 
         if (render)
             Render();
@@ -54,18 +59,17 @@ public sealed class CachedBitmap : IDisposable
     {
         _bitmap ??= new Bitmap(Width, Height, PixelFormat.Format32bppPArgb);
 
-        lock (_bitmap)
+        lock (_lockObject)
         {
-            using (Graphics g = Graphics.FromImage(_bitmap))
-            {
-                g.Clear(Color.Transparent);
-                g.SmoothingMode = SmoothingMode.AntiAlias;
-                g.CompositingQuality = CompositingQuality.GammaCorrected;
-                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+            using Graphics g = Graphics.FromImage(_bitmap);
 
-                _renderer(g);
-            }
+            g.Clear(Color.Transparent);
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.CompositingQuality = CompositingQuality.GammaCorrected;
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+
+            _renderer(g);
         }
     }
 
@@ -89,9 +93,9 @@ public sealed class CachedBitmap : IDisposable
         if (g == null || _bitmap == null)
             return;
 
-        lock (_bitmap)
+        lock (_lockObject)
         {
-            if (Opacity != 1f)
+            if (Opacity < 1f)
             {
                 ColorMatrix colormatrix = new() { Matrix33 = Opacity };
                 using ImageAttributes imgAttribute = new();
@@ -105,7 +109,7 @@ public sealed class CachedBitmap : IDisposable
 
     public void Dispose()
     {
-        _bitmap?.Dispose();
+        lock (_lockObject) _bitmap?.Dispose();
         GC.SuppressFinalize(this);
     }
 }

@@ -39,11 +39,12 @@ internal sealed class ProgressBar
 
         if (drawOutline)
         {
-            Brush brush = new SolidBrush(Color.White);
+            using SolidBrush brush = new(Color.White);
+            using Pen pen = new(brush);
             if (drawRounded)
-                g.DrawRoundedRectangle(new Pen(brush), new Rectangle(x, y, width, height), 1);
+                g.DrawRoundedRectangle(pen, new Rectangle(x, y, width, height), 1);
             else
-                g.DrawRectangle(new Pen(brush), new Rectangle(x, y, width, height));
+                g.DrawRectangle(pen, new Rectangle(x, y, width, height));
         }
         g.SmoothingMode = previous;
     }

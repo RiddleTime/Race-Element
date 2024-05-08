@@ -1,4 +1,6 @@
-﻿using RaceElement.HUD.Overlay.Configuration;
+﻿using RaceElement.Data.ACC.Database.LapDataDB;
+using RaceElement.Data.ACC.Tracker.Laps;
+using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.Util.SystemExtensions;
@@ -21,8 +23,29 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
     private readonly FuelInfoConfig _config = new();
     private sealed class FuelInfoConfig : OverlayConfiguration
     {
+
+        public enum LapTimeSource
+        {
+            LastThenBest,
+            LastTwoLapsAverage,
+            BestOnly,
+            LastOnly,
+        }
+
+        [ConfigGrouping("Data Source", "Adjust the Source of the data used in the fuel calculation.")]
+        public DataSourceGrouping DataSource { get; init; } = new();
+        public sealed class DataSourceGrouping
+        {
+            [ToolTip("Sets the source of the laptime used in the fuel calculation" +
+                     "\nLast Then Best: Uses your last lap until you set a best lap." +
+                     "\nLast Two Laps Average: Uses the average laptime of your last 2 laps." +
+                     "\nBest Only: Only uses your best valid lap if any was set." +
+                     "\nLast Only: Only uses your last lap if any was set.")]
+            public LapTimeSource LapTimeSource { get; init; } = LapTimeSource.LastThenBest;
+        }
+
         [ConfigGrouping("Info Panel", "Show or hide additional information in the panel.")]
-        public InfoPanelGrouping InfoPanel { get; init; } = new InfoPanelGrouping();
+        public InfoPanelGrouping InfoPanel { get; init; } = new();
         public sealed class InfoPanelGrouping
         {
             [ToolTip("Sets the number of additional laps as a fuel buffer.")]
@@ -40,7 +63,7 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
         }
 
         [ConfigGrouping("Colors", "Adjust colors for the fuel bar.")]
-        public ColorsGrouping Colors { get; init; } = new ColorsGrouping();
+        public ColorsGrouping Colors { get; init; } = new();
         public sealed class ColorsGrouping
         {
             [ToolTip("Change the color of the fuel bar when full fuel.")]
@@ -76,6 +99,7 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
     public override void SetupPreviewData()
     {
         pageGraphics.BestTimeMs = 138317;
+        pageGraphics.LastTimeMs = 139317;
         pageGraphics.FuelEstimatedLaps = 3;
         pagePhysics.Fuel = 26.35f;
     }
@@ -103,23 +127,20 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
         _infoPanel.AddProgressBarWithCenteredText($"{pagePhysics.Fuel:F2} L", 0, pageStatic.MaxFuel, pagePhysics.Fuel, fuelBarBrush);
         // Some global variants
         double lapBufferVar = pageGraphics.FuelXLap * this._config.InfoPanel.FuelBufferLaps;
-        double bestLapTime = pageGraphics.BestTimeMs;
-        if (bestLapTime > TimeSpan.FromMinutes(12).TotalMilliseconds || bestLapTime == 0)
+        double bestLapTime = GetLapTimeMS();
+        if (bestLapTime <= 0)
         {
-            if (pageGraphics.LastTimeMs < TimeSpan.FromMinutes(12).TotalMilliseconds && pageGraphics.LastTimeMs != 0)
-                bestLapTime = pageGraphics.LastTimeMs;
-            else
+            if (!IsPreviewing)
             {
-                if (!IsPreviewing)
-                {
-                    string header = "No Laptime";
-                    header = header.FillEnd(10, ' ');
-                    _infoPanel.AddLine(header, "Waiting...");
-                    _infoPanel.Draw(g);
-                    return;
-                }
+                string header = "No Laptime";
+                header = header.FillEnd(10, ' ');
+                _infoPanel.AddLine(header, "Waiting...");
+                _infoPanel.Draw(g);
+                return;
             }
+
         }
+
         double fuelTimeLeft = pageGraphics.FuelEstimatedLaps * bestLapTime;
         double stintDebug = pageGraphics.DriverStintTimeLeft; stintDebug.ClipMin(-1);
         //**********************
@@ -150,6 +171,43 @@ internal sealed class FuelInfoOverlay : AbstractOverlay
         }
         //Magic End (Advanced)
         _infoPanel.Draw(g);
+    }
+
+    private int GetLapTimeMS()
+    {
+        int lapTime = -1;
+        switch (_config.DataSource.LapTimeSource)
+        {
+            case FuelInfoConfig.LapTimeSource.LastTwoLapsAverage:
+                {
+                    lapTime = LapTracker.Instance.Laps.GetAverageLapTime(2);
+                    break;
+                }
+            case FuelInfoConfig.LapTimeSource.LastOnly:
+                {
+                    lapTime = LapTracker.Instance.Laps.GetLastLapTime();
+                    break;
+                }
+            case FuelInfoConfig.LapTimeSource.BestOnly:
+                {
+                    lapTime = LapTracker.Instance.Laps.GetBestLapTime();
+                    break;
+                }
+            case FuelInfoConfig.LapTimeSource.LastThenBest:
+            default:
+                {
+                    lapTime = pageGraphics.BestTimeMs;
+                    if (lapTime > TimeSpan.FromMinutes(12).TotalMilliseconds || lapTime == 0)
+                    {
+                        if (pageGraphics.LastTimeMs < TimeSpan.FromMinutes(12).TotalMilliseconds && pageGraphics.LastTimeMs != 0)
+                            lapTime = pageGraphics.LastTimeMs;
+                    }
+                    break;
+                }
+
+        }
+
+        return lapTime;
     }
 
     private double FuelToAdd(double lapBufferVar, double stintDebug, double stintFuel, double fuelToEnd)

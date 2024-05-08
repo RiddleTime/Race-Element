@@ -113,7 +113,7 @@ public sealed class StartScreenOverlay : AbstractOverlay
 
     public override void Render(Graphics g)
     {
-        tweener.Update(stopwatch.ElapsedMilliseconds / 1000f);
+        tweener?.Update(stopwatch.ElapsedMilliseconds / 1000f);
         g.SmoothingMode = SmoothingMode.HighQuality;
 
         _cachedBackground?.Draw(g);

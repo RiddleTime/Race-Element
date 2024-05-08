@@ -30,7 +30,8 @@ public static class GraphicsExtensions
     public static void DrawStringWithShadow(this Graphics g, string text, Font font, Brush brush, Color shadowColor, PointF location, float shadowDistance, StringFormat format = null)
     {
         format ??= StringFormat.GenericDefault;
-        g.DrawString(text, font, new SolidBrush(shadowColor), new PointF(location.X + shadowDistance, location.Y + shadowDistance), format);
+        using SolidBrush shadowBrush = new(shadowColor);
+        g.DrawString(text, font, shadowBrush, new PointF(location.X + shadowDistance, location.Y + shadowDistance), format);
         g.DrawString(text, font, brush, location, format);
     }
 
@@ -38,8 +39,10 @@ public static class GraphicsExtensions
     {
         format ??= StringFormat.GenericDefault;
 
-        g.DrawString(text, font, new SolidBrush(shadowColor), new PointF(location.X + shadowDistance, location.Y + shadowDistance), format);
-        g.DrawString(text, font, new SolidBrush(color), location, format);
+        using SolidBrush shadowBrush = new(shadowColor);
+        using SolidBrush foregroundBrush = new(color);
+        g.DrawString(text, font, shadowBrush, new PointF(location.X + shadowDistance, location.Y + shadowDistance), format);
+        g.DrawString(text, font, foregroundBrush, location, format);
     }
     #endregion
 
@@ -52,7 +55,8 @@ public static class GraphicsExtensions
 
     public static void DrawStringWithShadow(this Graphics g, string text, Font font, Brush brush, RectangleF rectangle, StringFormat format = null)
     {
-        DrawStringWithShadow(g, text, font, brush, new SolidBrush(Color.FromArgb(60, Color.Black)), rectangle, 0.75f, format);
+        using SolidBrush shadowBrush = new(Color.FromArgb(60, Color.Black));
+        DrawStringWithShadow(g, text, font, brush, shadowBrush, rectangle, 0.75f, format);
     }
 
     public static void DrawStringWithShadow(this Graphics g, string text, Font font, Color color, Color shadowColor, RectangleF rectangle, float shadowDistance, StringFormat format = null)
@@ -60,9 +64,12 @@ public static class GraphicsExtensions
         format ??= StringFormat.GenericDefault;
 
         rectangle.Y += shadowDistance;
-        g.DrawString(text, font, new SolidBrush(shadowColor), rectangle, format);
+        using SolidBrush shadowBrush = new(shadowColor);
+        g.DrawString(text, font, shadowBrush, rectangle, format);
+
         rectangle.Y -= shadowDistance;
-        g.DrawString(text, font, new SolidBrush(color), rectangle, format);
+        using SolidBrush foregroundBrush = new(color);
+        g.DrawString(text, font, foregroundBrush, rectangle, format);
     }
 
     public static void DrawStringWithShadow(this Graphics g, string text, Font font, Brush color, Brush shadowColor, RectangleF rectangle, float shadowDistance, StringFormat format = null)

@@ -332,7 +332,10 @@ public abstract class AbstractOverlay : FloatingWindow
                     }
 
                     if (IsRepositioning)
-                        e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(95, Color.LimeGreen)), new Rectangle(0, 0, Width, Height));
+                    {
+                        using SolidBrush backgroundBrush = new(Color.FromArgb(95, Color.LimeGreen));
+                        e.Graphics.FillRectangle(backgroundBrush, new Rectangle(0, 0, Width, Height));
+                    }
 
                     if (_allowRescale && Scale != 1f)
                         e.Graphics.ScaleTransform(Scale, Scale);
