@@ -10,8 +10,8 @@ public sealed class CachedBitmap : IDisposable
 {
     private readonly object _lockObject = new();
 
-    public int Width;
-    public int Height;
+    public int Width { get; init; }
+    public int Height { get; init; }
     public float Opacity { get; set; }
     public delegate void Renderer(Graphics g);
 
