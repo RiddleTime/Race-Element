@@ -33,10 +33,10 @@ internal sealed class TrackMapConfiguration : OverlayConfiguration
     public sealed class CarGrouping
     {
         [ToolTip("Show Cars number")]
-        public bool ShowCarNumber { get; init; } = false;
+        public bool ShowCarNumber { get; init; } = true;
 
         [ToolTip("Show pit stop on map")]
-        public bool ShowPitStop { get; init; } = false;
+        public bool ShowPitStop { get; init; } = true;
 
         [ToolTip("Player car color")]
         public Color PlayerColor { get; init; } = Color.Red;
@@ -62,5 +62,17 @@ internal sealed class TrackMapConfiguration : OverlayConfiguration
         [ToolTip("Font size for car number")]
         [FloatRange(5.0f, 32.0f, 1.0f, 1)]
         public float FontSize { get; init; } = 10;
+
+        [ToolTip("Lapped distance threshold in meters")]
+        [FloatRange(0, 200, 1.0f, 1)]
+        public float LappedThreshold { get; init; } = 75;
+
+        [ToolTip("Cars lapped by player color")]
+        public Color PlayerLappedOthersColor { get; init; } = Color.SteelBlue;
+
+        [ToolTip("Other lapped by player color")]
+        public Color OthersLappedPlayerColor { get; init; } = Color.DarkOrange;
     }
+
+    public TrackMapConfiguration() => this.GenericConfiguration.AllowRescale = false;
 }

@@ -17,10 +17,12 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 class TrackMapDrawing
 {
     private readonly SolidBrush _borderColor = new(Color.Black);
-    private Bitmap _bitmap = null;
 
-    private bool _showCarNumber = false;
-    private bool _showPitStop = false;
+    private Bitmap _bitmap;
+    private float _lappedDistanceThreshold = 100.0f;
+
+    private bool _showCarNumber;
+    private bool _showPitStop;
 
     private float _fontSize = 10;
     private float _dotSize = 15;
@@ -46,6 +48,12 @@ class TrackMapDrawing
     public TrackMapDrawing SetFontSize(float size)
     {
         _fontSize = size;
+        return this;
+    }
+
+    public TrackMapDrawing SetLappedThreshold(float threshold)
+    {
+        _lappedDistanceThreshold = threshold;
         return this;
     }
 
@@ -172,11 +180,11 @@ class TrackMapDrawing
                 var otherTrackMeters = otherLaps * trackMeters + currentCarData.RealtimeCarUpdate.SplinePosition * trackMeters;
                 var playerTrackMeters = playerLaps * trackMeters + playerCarData.RealtimeCarUpdate.SplinePosition * trackMeters;
 
-                if (playerLaps > otherLaps && (playerTrackMeters - otherTrackMeters) >= trackMeters)
+                if (playerLaps >= otherLaps && (playerTrackMeters - otherTrackMeters) >= (trackMeters - _lappedDistanceThreshold))
                 {
                     color = _colorCarPlayerLapperOthers;
                 }
-                else if (otherLaps > playerLaps && (otherTrackMeters - playerTrackMeters) >= trackMeters)
+                else if (otherLaps >= playerLaps && (otherTrackMeters - playerTrackMeters) >= (trackMeters - _lappedDistanceThreshold))
                 {
                     color = _colorCarOthersLappedPlayer;
                 }

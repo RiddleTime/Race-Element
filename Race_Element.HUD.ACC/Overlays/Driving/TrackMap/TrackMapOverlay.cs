@@ -185,15 +185,16 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         drawer.SetDotSize(_config.Other.CarSize)
             .SetFontSize(_config.Other.FontSize);
 
-        drawer.SetShowCarNumber(_config.Car.ShowCarNumber)
+        drawer.SetLappedThreshold(_config.Other.LappedThreshold)
+            .SetShowCarNumber(_config.Car.ShowCarNumber)
             .SetShowPitStop(_config.Car.ShowPitStop)
             .SetMapThickness(_config.Map.Thickness)
             .SetColorMap(_config.Map.Color);
 
         drawer.SetColorPlayer(_config.Car.PlayerColor)
             .SetColorCarDefault(_config.Car.DefaultColor)
-            .SetColorPlayerLappedOthers(Color.SteelBlue)
-            .SetColorOthersLappedPlayer(Color.DarkOrange);
+            .SetColorPlayerLappedOthers(_config.Other.PlayerLappedOthersColor)
+            .SetColorOthersLappedPlayer(_config.Other.OthersLappedPlayerColor);
 
         drawer.SetColorPitStop(_config.Car.PitStopColor)
             .SetColorPitStopWithDamage(_config.Car.PitStopWithDamageColor);
