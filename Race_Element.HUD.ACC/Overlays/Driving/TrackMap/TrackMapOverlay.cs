@@ -30,7 +30,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
     private  readonly TrackMapConfiguration _config = new();
     private TrackMapCreationJob _miniMapCreationJob;
 
-    private readonly float _margin = 48.0f;
+    private readonly float _margin = 64.0f;
     private List<PointF> _trackPositions = [];
 
     public TrackMapOverlay(Rectangle rectangle) : base(rectangle, "Track Map")
@@ -186,7 +186,9 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             .SetFontSize(_config.Other.FontSize);
 
         drawer.SetLappedThreshold(_config.Other.LappedThreshold)
-            .SetShowCarNumber(_config.Car.ShowCarNumber)
+            .SetTrackMeter(broadCastTrackData.TrackMeters);
+
+        drawer.SetShowCarNumber(_config.Car.ShowCarNumber)
             .SetShowPitStop(_config.Car.ShowPitStop)
             .SetMapThickness(_config.Map.Thickness)
             .SetColorMap(_config.Map.Color);
@@ -200,7 +202,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             .SetColorPitStopWithDamage(_config.Car.PitStopWithDamageColor);
 
         drawer.CreateBitmap(w, h, _margin);
-        return drawer.Draw(cars, ids, track, broadCastTrackData);
+        return drawer.Draw(cars, ids, track);
     }
 
     private List<PointF> ScaleAndRotate(List<PointF> positions, BoundingBox boundaries, float scale, float rotation)

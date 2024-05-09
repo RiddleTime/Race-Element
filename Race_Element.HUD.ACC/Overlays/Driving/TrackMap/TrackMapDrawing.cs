@@ -19,7 +19,9 @@ class TrackMapDrawing
     private readonly SolidBrush _borderColor = new(Color.Black);
 
     private Bitmap _bitmap;
+
     private float _lappedDistanceThreshold = 100.0f;
+    private float _trackMeters = 0.0f;
 
     private bool _showCarNumber;
     private bool _showPitStop;
@@ -54,6 +56,12 @@ class TrackMapDrawing
     public TrackMapDrawing SetLappedThreshold(float threshold)
     {
         _lappedDistanceThreshold = threshold;
+        return this;
+    }
+
+    public TrackMapDrawing SetTrackMeter(float meters)
+    {
+        _trackMeters = meters;
         return this;
     }
 
@@ -128,7 +136,7 @@ class TrackMapDrawing
         return this;
     }
 
-    public Bitmap Draw(List<PointF> cars, List<int> ids, List<PointF> track, TrackData broadCastTrackData)
+    public Bitmap Draw(List<PointF> cars, List<int> ids, List<PointF> track)
     {
         if (_bitmap == null)
         {
@@ -143,31 +151,25 @@ class TrackMapDrawing
         g.CompositingQuality = CompositingQuality.HighQuality;
 
         g.DrawLines(new Pen(_mapColor, _mapThickness), track.ToArray());
-        return DrawCars(cars, ids, track, g, broadCastTrackData);
+        return DrawCars(cars, ids, track, g);
     }
 
-    private Bitmap DrawCars(List<PointF> cars, List<int> ids, List<PointF> track, Graphics g, TrackData broadCastTrackData)
+    private Bitmap DrawCars(List<PointF> cars, List<int> ids, List<PointF> track, Graphics g)
     {
-        if (ids.Count != cars.Count)
-        {
-            return null;
-        }
-
         int playerIdx = 0;
-        using Font font = FontUtil.FontSegoeMono(_fontSize);
+        using var font = FontUtil.FontSegoeMono(_fontSize);
 
-        var pageFileGraphic = ACCSharedMemory.Instance.PageFileGraphic;
-        var playerCarData = EntryListTracker.Instance.GetCarData(pageFileGraphic.PlayerCarID);
+        var playerCarId = ACCSharedMemory.Instance.PageFileGraphic.PlayerCarID;
+        var playerCarData = EntryListTracker.Instance.GetCarData(playerCarId);
 
         for (int i = 0; i < cars.Count; ++i)
         {
-            if (ids[i] == pageFileGraphic.PlayerCarID)
+            if (ids[i] == playerCarId)
             {
                 playerIdx = i;
                 continue;
             }
 
-            var car = cars[i];
             var color = _colorCarDefault;
             var currentCarData = EntryListTracker.Instance.GetCarData(ids[i]);
 
@@ -176,34 +178,35 @@ class TrackMapDrawing
                 var playerLaps = playerCarData.RealtimeCarUpdate.Laps;
                 var otherLaps = currentCarData.RealtimeCarUpdate.Laps;
 
-                var trackMeters = broadCastTrackData.TrackMeters;
-                var otherTrackMeters = otherLaps * trackMeters + currentCarData.RealtimeCarUpdate.SplinePosition * trackMeters;
-                var playerTrackMeters = playerLaps * trackMeters + playerCarData.RealtimeCarUpdate.SplinePosition * trackMeters;
+                var otherTrackMeters = otherLaps * _trackMeters + currentCarData.RealtimeCarUpdate.SplinePosition * _trackMeters;
+                var playerTrackMeters = playerLaps * _trackMeters + playerCarData.RealtimeCarUpdate.SplinePosition * _trackMeters;
 
-                if (playerLaps >= otherLaps && (playerTrackMeters - otherTrackMeters) >= (trackMeters - _lappedDistanceThreshold))
+                if (playerLaps == otherLaps && otherLaps == 0)
+                {
+                    // NOTE(Andrei): This is just to avoid nested if. As currently
+                    // there is threshold for the distance between cars, we don't
+                    // want to take into account the distance the first lap.
+                }
+                else if (playerLaps >= otherLaps && (playerTrackMeters - otherTrackMeters) >= (_trackMeters - _lappedDistanceThreshold))
                 {
                     color = _colorCarPlayerLapperOthers;
                 }
-                else if (otherLaps >= playerLaps && (otherTrackMeters - playerTrackMeters) >= (trackMeters - _lappedDistanceThreshold))
+                else if (otherLaps >= playerLaps && (otherTrackMeters - playerTrackMeters) >= (_trackMeters - _lappedDistanceThreshold))
                 {
                     color = _colorCarOthersLappedPlayer;
                 }
             }
 
-            DrawCarOnMap(car, g, color, font, currentCarData);
+            DrawCarOnMap(cars[i], g, color, font, currentCarData);
         }
 
-        if (playerIdx < cars.Count)
+        if (_showPitStop)
         {
-            DrawCarOnMap(cars[playerIdx], g, _colorCarPlayer, font, playerCarData);
-
-            if (_showPitStop)
-            {
-                DrawPitStopOnMap(font, g, _colorPitStop, TrackMapPitPrediction.GetPitStop(track));
-                DrawPitStopOnMap(font, g, _colorPitStopWithDamage, TrackMapPitPrediction.GetPitStopWithDamage(track));
-            }
+            DrawPitStopOnMap(font, g, _colorPitStop, TrackMapPitPrediction.GetPitStop(track));
+            DrawPitStopOnMap(font, g, _colorPitStopWithDamage, TrackMapPitPrediction.GetPitStopWithDamage(track));
         }
 
+        DrawCarOnMap(cars[playerIdx], g, _colorCarPlayer, font, playerCarData);
         return _bitmap;
     }
 
