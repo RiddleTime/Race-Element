@@ -72,7 +72,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     public override bool ShouldRender()
     {
-        return base.ShouldRender() && _trackPositions != null;
+        return base.ShouldRender() && _trackPositions.Count != 0;
     }
 
     public override void Render(Graphics g)
