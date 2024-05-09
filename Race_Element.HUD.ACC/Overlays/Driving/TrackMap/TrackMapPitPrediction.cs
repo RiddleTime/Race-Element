@@ -41,7 +41,9 @@ public class TrackMapPitPrediction
         { "valencia"        , 27_000 },
         { "watkins_glen"    , 27_000 },
         { "zandvoort"       , 19_000 },
-        { "zolder"          , 30_000 }
+        { "zolder"          , 30_000 },
+        { "mount_panorama"  , 25_000 },
+        { "red_bull_ring"   , 20_000 }
     };
 
     public static PitStop GetPitStop(List<PointF> track)
