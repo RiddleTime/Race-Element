@@ -224,7 +224,8 @@ internal sealed class PressureHistoryOverlay : AbstractOverlay
             for (int column = 1; column < 4; column++)
             {
                 DrawableTextCell cell = (DrawableTextCell)_graphicsGrid.Grid[row][column];
-                cell?.UpdateText($"");
+                cell.CachedBackground = _columnBackgrounds[column];
+                cell.UpdateText($"");
             }
     }
 

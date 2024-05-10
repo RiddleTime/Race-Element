@@ -51,7 +51,8 @@ public class InfoPanel
     {
         _cachedBackground = new CachedBitmap(MaxWidth, Lines.Count * (this.FontHeight + ExtraLineSpacing), g =>
         {
-            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(158, 0, 0, 0)), new Rectangle(X, Y, this.MaxWidth, Lines.Count * (this.FontHeight + ExtraLineSpacing)), 4);
+            using SolidBrush backgroundBrush = new(Color.FromArgb(158, 0, 0, 0));
+            g.FillRoundedRectangle(backgroundBrush, new Rectangle(X, Y, this.MaxWidth, Lines.Count * (this.FontHeight + ExtraLineSpacing)), 4);
 
             if (DrawValueBackground)
             {
@@ -61,8 +62,8 @@ public class InfoPanel
                 int characterWidth = (int)g.MeasureString("M", _font).Width / 2;
                 int x = (int)(MaxTitleWidth + characterWidth);
                 int width = (int)(MaxWidth - MaxTitleWidth - characterWidth);
-
-                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(80, Color.Black)), new Rectangle(x, y, width, height), 4);
+                using SolidBrush valueBackgroundBrush = new(Color.FromArgb(80, Color.Black));
+                g.FillRoundedRectangle(valueBackgroundBrush, new Rectangle(x, y, width, height), 4);
             }
         });
     }
@@ -107,7 +108,8 @@ public class InfoPanel
 
                     _cachedLine ??= new CachedBitmap(this.MaxWidth - 2, 1, cr =>
                         {
-                            cr.DrawLine(new Pen(Color.FromArgb(42, Color.White)), new Point(1, 0), new Point(this.MaxWidth - 2, 0));
+                            using Pen linePen = new(Color.FromArgb(42, Color.White));
+                            cr.DrawLine(linePen, new Point(1, 0), new Point(this.MaxWidth - 2, 0));
                         });
 
                     _cachedLine.Draw(g, new Point(X + 1, (int)rowY));

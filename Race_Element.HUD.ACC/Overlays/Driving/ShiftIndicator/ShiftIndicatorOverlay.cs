@@ -87,7 +87,7 @@ internal sealed class ShiftIndicatorOverlay : AbstractOverlay
             _cachedColorBars.Add(new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
             {
                 Rectangle rect = new(0, 1, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale));
-                HatchBrush hatchBrush = new(HatchStyle.LightUpwardDiagonal, color, Color.FromArgb(color.A - 40, color));
+                using HatchBrush hatchBrush = new(HatchStyle.LightUpwardDiagonal, color, Color.FromArgb(color.A - 40, color));
                 g.FillRoundedRectangle(hatchBrush, rect, cornerRadius);
             }));
         }
@@ -96,7 +96,7 @@ internal sealed class ShiftIndicatorOverlay : AbstractOverlay
         {
             Color color = Color.FromArgb(_config.Colors.FlashOpacity, _config.Colors.FlashColor);
             Rectangle rect = new(0, 1, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale));
-            HatchBrush hatchBrush = new(HatchStyle.LightUpwardDiagonal, color, Color.FromArgb(color.A - 40, color));
+            using HatchBrush hatchBrush = new(HatchStyle.LightUpwardDiagonal, color, Color.FromArgb(color.A - 40, color));
             g.FillRoundedRectangle(hatchBrush, rect, cornerRadius);
         }, opacity: 0f);
 
@@ -104,9 +104,10 @@ internal sealed class ShiftIndicatorOverlay : AbstractOverlay
         _cachedBackground = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
         {
             int midHeight = (int)(_config.Bar.Height * this.Scale) / 2;
-            var linerBrush = new LinearGradientBrush(new Point(0, midHeight), new Point((int)(_config.Bar.Width * this.Scale), midHeight), Color.FromArgb(160, 0, 0, 0), Color.FromArgb(230, 0, 0, 0));
+            using LinearGradientBrush linerBrush = new(new Point(0, midHeight), new Point((int)(_config.Bar.Width * this.Scale), midHeight), Color.FromArgb(160, 0, 0, 0), Color.FromArgb(230, 0, 0, 0));
             g.FillRoundedRectangle(linerBrush, new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), cornerRadius);
-            g.DrawRoundedRectangle(new Pen(Color.Black, 1 * this.Scale), new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), cornerRadius);
+            using Pen pen = new(Color.Black, 1 * this.Scale);
+            g.DrawRoundedRectangle(pen, new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), cornerRadius);
         });
 
         _cachedRpmLines = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
@@ -118,8 +119,8 @@ internal sealed class ShiftIndicatorOverlay : AbstractOverlay
                 lineCount--;
 
             lineCount.ClipMin(0);
-
-            Pen linePen = new(new SolidBrush(Color.FromArgb(220, Color.Black)), 1.5f * this.Scale);
+            using SolidBrush brush = new(Color.FromArgb(220, Color.Black));
+            using Pen linePen = new(brush, 1.5f * this.Scale);
 
             double thousandPercent = (1000d / (pageStatic.MaxRpm - _config.Bar.HideRpm)) * lineCount;
             double baseX = (_config.Bar.Width * this.Scale) / lineCount * thousandPercent;
@@ -135,7 +136,8 @@ internal sealed class ShiftIndicatorOverlay : AbstractOverlay
             _pitLimiterTweener = new Tweener();
             _cachedPitLimiterOutline = new CachedBitmap((int)(Width * this.Scale), (int)(Height * this.Scale), g =>
             {
-                g.DrawRoundedRectangle(new Pen(Color.FromArgb(190, Color.Yellow), 5 * Scale), new Rectangle(0, 0, (int)(Width * this.Scale - 1), (int)(Height * this.Scale - 1)), cornerRadius);
+                using Pen pen = new(Color.FromArgb(190, Color.Yellow), 5 * Scale);
+                g.DrawRoundedRectangle(pen, new Rectangle(0, 0, (int)(Width * this.Scale - 1), (int)(Height * this.Scale - 1)), cornerRadius);
             });
         }
 
@@ -231,7 +233,8 @@ internal sealed class ShiftIndicatorOverlay : AbstractOverlay
 
     private void DrawTextWithOutline(Graphics g, Color textColor, string text, int x, int y, Rectangle rect)
     {
-        g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(185, 0, 0, 0)), rect, 2);
+        using SolidBrush brush = new(Color.FromArgb(185, 0, 0, 0));
+        g.FillRoundedRectangle(brush, rect, 2);
         g.DrawStringWithShadow(text, _font, textColor, new PointF(x - _halfRpmStringWidth, y + _font.Height / 14f), 1.5f * this.Scale);
     }
 

@@ -166,7 +166,8 @@ internal sealed class AccelerometerOverlay : AbstractOverlay
         int gDotPosY = (int)(middle.Y + (size / 2 * verticalPlacement) - (gDotSize / 2));
 
 
-        g.FillEllipse(new SolidBrush(Color.FromArgb(20, 255, 255, 255)), new Rectangle(gDotPosX, gDotPosY, gDotSize, gDotSize));
+        using SolidBrush backgroundBrush = new SolidBrush(Color.FromArgb(20, 255, 255, 255));
+        g.FillEllipse(backgroundBrush, new Rectangle(gDotPosX, gDotPosY, gDotSize, gDotSize));
 
         if (_config.Accelerometer.HistoryTrace)
         {
@@ -180,13 +181,14 @@ internal sealed class AccelerometerOverlay : AbstractOverlay
                 for (int i = 0; i < _trace.Count; i++)
                 {
                     Point traceItem = _trace.ElementAt(i);
-                    g.FillEllipse(new SolidBrush(Color.FromArgb(90 - i * 5, 85, 85, 85)), new Rectangle(traceItem.X, traceItem.Y, gDotSize, gDotSize));
+                    using SolidBrush historyTraceBrush = new SolidBrush(Color.FromArgb(90 - i * 5, 85, 85, 85));
+                    g.FillEllipse(historyTraceBrush, new Rectangle(traceItem.X, traceItem.Y, gDotSize, gDotSize));
                 }
             }
         }
 
-        g.FillEllipse(new SolidBrush(Color.FromArgb(170, 255, 255, 255)), new Rectangle(gDotPosX, gDotPosY, gDotSize, gDotSize));
-
+        using SolidBrush whiteDotBrush = new SolidBrush(Color.FromArgb(170, 255, 255, 255));
+        g.FillEllipse(whiteDotBrush, new Rectangle(gDotPosX, gDotPosY, gDotSize, gDotSize));
     }
 
 }

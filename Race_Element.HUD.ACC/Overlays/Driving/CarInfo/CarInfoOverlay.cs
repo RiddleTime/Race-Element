@@ -81,15 +81,19 @@ internal sealed class CarInfoOverlay : AbstractOverlay
         {
             Rectangle panelRect = new(0, 0, headerColumnWidth, columnHeight);
             using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(panelRect, 0, 0, 0, (int)roundingRadius);
-            g.FillPath(new SolidBrush(Color.FromArgb(225, 10, 10, 10)), path);
-            g.DrawLine(new Pen(accentColor), 0 + roundingRadius / 2, columnHeight, headerColumnWidth, columnHeight - 1 * Scale);
+            using SolidBrush backgroundBrush = new(Color.FromArgb(225, 10, 10, 10));
+            g.FillPath(backgroundBrush, path);
+            using Pen underlinePen = new(accentColor);
+            g.DrawLine(underlinePen, 0 + roundingRadius / 2, columnHeight, headerColumnWidth, columnHeight - 1 * Scale);
         });
         CachedBitmap valueBackground = new(valueColumnWidth, columnHeight, g =>
         {
             Rectangle panelRect = new(0, 0, valueColumnWidth, columnHeight);
             using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(panelRect, 0, (int)roundingRadius, 0, 0);
-            g.FillPath(new SolidBrush(Color.FromArgb(225, 0, 0, 0)), path);
-            g.DrawLine(new Pen(accentColor), 0, columnHeight - 1 * Scale, valueColumnWidth, columnHeight - 1 * Scale);
+            using SolidBrush backgroundBrush = new(Color.FromArgb(225, 0, 0, 0));
+            g.FillPath(backgroundBrush, path);
+            using Pen underlinePen = new(accentColor);
+            g.DrawLine(underlinePen, 0, columnHeight - 1 * Scale, valueColumnWidth, columnHeight - 1 * Scale);
         });
 
         // add data rows
@@ -187,6 +191,11 @@ internal sealed class CarInfoOverlay : AbstractOverlay
     {
         _font?.Dispose();
         _graphicsGrid?.Dispose();
+        _damageValue?.Dispose();
+        _tyreSetValue?.Dispose();
+        _fuelPerLapValue?.Dispose();
+        _exhaustValue?.Dispose();
+        _waterValue?.Dispose();
     }
 
     public sealed override void Render(Graphics g)
@@ -201,7 +210,7 @@ internal sealed class CarInfoOverlay : AbstractOverlay
         if (_config.InfoPanel.FuelPerLap)
         {
             float fuelXLap = LapTracker.Instance.Laps.GetAverageFuelUsage(3);
-            if (fuelXLap != -1)
+            if (fuelXLap > 0)
                 fuelXLap /= 1000f;
             else fuelXLap = pageGraphics.FuelXLap;
             _fuelPerLapValue.UpdateText($"{fuelXLap:F3}");
