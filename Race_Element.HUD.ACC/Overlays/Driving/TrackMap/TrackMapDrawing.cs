@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 
 using RaceElement.Data.ACC.EntryList;
-using RaceElement.Broadcast.Structs;
+using RaceElement.Broadcast;
 
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
@@ -16,6 +16,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
 class TrackMapDrawing
 {
+    private readonly SolidBrush _colorValidForBest = new(Color.Purple);
+    private readonly SolidBrush _colorCarLeader = new(Color.DarkGreen);
     private readonly SolidBrush _borderColor = new(Color.Black);
 
     private Bitmap _bitmap;
@@ -138,12 +140,6 @@ class TrackMapDrawing
 
     public Bitmap Draw(List<PointF> cars, List<int> ids, List<PointF> track)
     {
-        if (_bitmap == null)
-        {
-            Debug.WriteLine("TrackMapDrawing.Draw Please call TrackMapDrawing.CreateBitmap before draw");
-            return null;
-        }
-
         var g = Graphics.FromImage(_bitmap);
         g.SmoothingMode = SmoothingMode.AntiAlias;
         g.CompositingMode = CompositingMode.SourceOver;
@@ -156,11 +152,13 @@ class TrackMapDrawing
 
     private Bitmap DrawCars(List<PointF> cars, List<int> ids, List<PointF> track, Graphics g)
     {
-        int playerIdx = 0;
+        var sessionType = ACCSharedMemory.Instance.PageFileGraphic.SessionType;
+        var playerCarId = ACCSharedMemory.Instance.PageFileGraphic.PlayerCarID;
+
+        var playerCarData = EntryListTracker.Instance.GetCarData(playerCarId);
         using var font = FontUtil.FontSegoeMono(_fontSize);
 
-        var playerCarId = ACCSharedMemory.Instance.PageFileGraphic.PlayerCarID;
-        var playerCarData = EntryListTracker.Instance.GetCarData(playerCarId);
+        int playerIdx = 0;
 
         for (int i = 0; i < cars.Count; ++i)
         {
@@ -173,28 +171,13 @@ class TrackMapDrawing
             var color = _colorCarDefault;
             var currentCarData = EntryListTracker.Instance.GetCarData(ids[i]);
 
-            if (playerCarData != null && currentCarData != null)
+            if (sessionType == ACCSharedMemory.AcSessionType.AC_RACE)
             {
-                var playerLaps = playerCarData.RealtimeCarUpdate.Laps;
-                var otherLaps = currentCarData.RealtimeCarUpdate.Laps;
-
-                var otherTrackMeters = otherLaps * _trackMeters + currentCarData.RealtimeCarUpdate.SplinePosition * _trackMeters;
-                var playerTrackMeters = playerLaps * _trackMeters + playerCarData.RealtimeCarUpdate.SplinePosition * _trackMeters;
-
-                if (playerLaps == otherLaps && otherLaps == 0)
-                {
-                    // NOTE(Andrei): This is just to avoid nested if. As currently
-                    // there is threshold for the distance between cars, we don't
-                    // want to take into account the distance the first lap.
-                }
-                else if (playerLaps >= otherLaps && (playerTrackMeters - otherTrackMeters) >= (_trackMeters - _lappedDistanceThreshold))
-                {
-                    color = _colorCarPlayerLapperOthers;
-                }
-                else if (otherLaps >= playerLaps && (otherTrackMeters - playerTrackMeters) >= (_trackMeters - _lappedDistanceThreshold))
-                {
-                    color = _colorCarOthersLappedPlayer;
-                }
+                color = GetRaceCarColor(playerCarData, currentCarData);
+            }
+            else
+            {
+                color = GetOtherSessionCarColor(playerCarData, currentCarData);
             }
 
             DrawCarOnMap(cars[i], g, color, font, currentCarData);
@@ -268,5 +251,90 @@ class TrackMapDrawing
             g.FillRectangle(pen, car.X, car.Y, size.Width, size.Height);
             g.DrawStringWithShadow(laps, font, new SolidBrush(Color.WhiteSmoke), car);
         }
+    }
+
+    private SolidBrush GetRaceCarColor(EntryListTracker.CarData playerCarData, EntryListTracker.CarData otherCarData)
+    {
+        if (playerCarData == null || otherCarData == null)
+        {
+            return _colorCarDefault;
+        }
+
+        if (otherCarData.RealtimeCarUpdate.Position == 1)
+        {
+            return _colorCarLeader;
+        }
+
+        var playerLaps = playerCarData.RealtimeCarUpdate.Laps;
+        var otherLaps = otherCarData.RealtimeCarUpdate.Laps;
+
+        var playerTrackMeters = playerLaps * _trackMeters + playerCarData.RealtimeCarUpdate.SplinePosition * _trackMeters;
+        var otherTrackMeters = otherLaps * _trackMeters + otherCarData.RealtimeCarUpdate.SplinePosition * _trackMeters;
+
+        if (playerLaps == otherLaps && otherLaps == 0)
+        {
+            // NOTE(Andrei): This is just to avoid nested if. As currently
+            // there is threshold for the distance between cars, we don't
+            // want to take into account the distance the first lap.
+        }
+        else if (playerTrackMeters == 0 || otherTrackMeters == 0)
+        {
+            if (playerLaps > otherLaps)
+            {
+                return _colorCarPlayerLapperOthers;
+            }
+
+            if (otherLaps > playerLaps)
+            {
+                return _colorCarOthersLappedPlayer;
+            }
+        }
+        else if (playerLaps >= otherLaps && (playerTrackMeters - otherTrackMeters) >= (_trackMeters - _lappedDistanceThreshold))
+        {
+            return _colorCarPlayerLapperOthers;
+        }
+        else if (otherLaps >= playerLaps && (otherTrackMeters - playerTrackMeters) >= (_trackMeters - _lappedDistanceThreshold))
+        {
+            return _colorCarOthersLappedPlayer;
+        }
+
+        return _colorCarDefault;
+    }
+
+    private SolidBrush GetOtherSessionCarColor(EntryListTracker.CarData playerCarData, EntryListTracker.CarData otherCarData)
+    {
+        if (playerCarData == null || otherCarData == null)
+        {
+            return _colorCarDefault;
+        }
+
+        if (otherCarData.RealtimeCarUpdate.CarLocation != CarLocationEnum.Track)
+        {
+            return _colorCarDefault;
+        }
+
+        var playerLap = playerCarData.RealtimeCarUpdate.CurrentLap;
+        var otherLap = otherCarData.RealtimeCarUpdate.CurrentLap;
+
+        if (playerLap == null || otherLap == null)
+        {
+            return _colorCarDefault;
+        }
+
+        var otherIsValidForBest = otherLap.IsValidForBest;
+        var playerIsValidLap = !playerLap.IsInvalid;
+        var otherIsValidLap = !otherLap.IsInvalid;
+
+        if (playerIsValidLap && !otherIsValidLap)
+        {
+            return _colorCarPlayerLapperOthers;
+        }
+
+        if (!playerIsValidLap && otherIsValidLap)
+        {
+            return otherIsValidForBest ? _colorValidForBest : _colorCarOthersLappedPlayer;
+        }
+
+        return otherIsValidForBest ? _colorValidForBest : _colorCarDefault;
     }
 }
