@@ -30,8 +30,15 @@ internal sealed class TrackMapOverlay : AbstractOverlay
     private  readonly TrackMapConfiguration _config = new();
     private TrackMapCreationJob _miniMapCreationJob;
 
-    private readonly float _margin = 64.0f;
+    private BoundingBox _trackOriginalBoundingBox = new();
+    private BoundingBox _trackBoundingBox = new();
     private List<PointF> _trackPositions = [];
+
+    private readonly float _margin = 64.0f;
+    private float _scale = 1.0f;
+
+    private float _height = 1.0f;
+    private float _width = 1.0f;
 
     public TrackMapOverlay(Rectangle rectangle) : base(rectangle, "Track Map")
     {
@@ -72,7 +79,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     public override bool ShouldRender()
     {
-        return base.ShouldRender() && _trackPositions.Count != 0 && EntryListTracker.Instance.Cars.Count > 0;
+        return base.ShouldRender() && _trackPositions.Count > 0 && EntryListTracker.Instance.Cars.Count > 0;
     }
 
     public override void Render(Graphics g)
@@ -112,7 +119,25 @@ internal sealed class TrackMapOverlay : AbstractOverlay
     private void OnMapPositionsCallback(object sender, List<PointF> positions)
     {
         _miniMapCreationJob.Cancel();
-        _trackPositions = positions;
+        _trackOriginalBoundingBox = GetBoundingBox(positions);
+
+        _height = (float)Math.Sqrt(Math.Pow(_trackOriginalBoundingBox.Top - _trackOriginalBoundingBox.Bottom, 2));
+        _width = (float)Math.Sqrt(Math.Pow(_trackOriginalBoundingBox.Right - _trackOriginalBoundingBox.Left, 2));
+
+        _scale = _config.Map.MaxWidth / _width;
+        var track = ScaleAndRotate(positions, _trackOriginalBoundingBox, _scale, _config.Map.Rotation);
+
+        var boundaries = GetBoundingBox(track);
+        for (int i = 0; i < track.Count; ++i)
+        {
+            float y = track[i].Y - boundaries.Bottom + _margin * 0.5f;
+            float x = track[i].X - boundaries.Left + _margin * 0.5f;
+
+            track[i] = new PointF(x, y);
+        }
+
+        _trackBoundingBox = boundaries;
+        _trackPositions = track;
 
         if (!_config.Map.SavePreview)
         {
@@ -122,12 +147,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         var pageFileStatic = ACCSharedMemory.Instance.PageFileStatic;
         if (pageFileStatic.Track.Length == 0) return;
 
-        var boundaries = GetBoundingBox(_trackPositions);
-        float w = (float)Math.Sqrt((boundaries.Right - boundaries.Left) * (boundaries.Right - boundaries.Left));
-
-        var track = ScaleAndRotate(_trackPositions, boundaries, _config.Map.MaxWidth / w, _config.Map.Rotation);
-        var minimap = CreateBitmapForCarsAndTrack(new List<PointF>(), new List<int>(), track);
-
+        var minimap = CreateBitmapForCarsAndTrack(new List<PointF>(), new List<int>(), _trackPositions);
         string path = FileUtil.RaceElementTracks + pageFileStatic.Track + ".jpg";
         minimap.Save(path);
     }
@@ -136,50 +156,30 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     private Bitmap CreateBitmapForCarsAndTrack()
     {
-        var boundaries = GetBoundingBox(_trackPositions);
-        List<PointF> cars = new();
-        List<int> ids = new();
+        List<PointF> cars = [];
+        List<int> ids = [];
 
-        for (int i = 0; i < EntryListTracker.Instance.Cars.Count; ++i)
+        foreach (var it in EntryListTracker.Instance.Cars)
         {
-            float x = EntryListTracker.Instance.Cars[i].Value.RealtimeCarUpdate.WorldPosX;
-            float y = EntryListTracker.Instance.Cars[i].Value.RealtimeCarUpdate.WorldPosY;
+            var x = it.Value.RealtimeCarUpdate.WorldPosX;
+            var y = it.Value.RealtimeCarUpdate.WorldPosY;
 
-            ids.Add(EntryListTracker.Instance.Cars[i].Key);
+            ids.Add(it.Key);
             cars.Add(new PointF(x, y));
         }
 
-        float w = (float)Math.Sqrt((boundaries.Right - boundaries.Left) * (boundaries.Right - boundaries.Left));
-        float scale = _config.Map.MaxWidth / w;
-
-        var track = ScaleAndRotate(_trackPositions, boundaries, scale, _config.Map.Rotation);
-        cars = ScaleAndRotate(cars, boundaries, scale, _config.Map.Rotation);
-
-        return CreateBitmapForCarsAndTrack(cars, ids, track);
+        cars = ScaleAndRotate(cars, _trackOriginalBoundingBox, _scale, _config.Map.Rotation);
+        return CreateBitmapForCarsAndTrack(cars, ids, _trackPositions);
     }
 
     private Bitmap CreateBitmapForCarsAndTrack(List<PointF> cars, List<int> ids, List<PointF> track)
     {
-        BoundingBox boundaries = GetBoundingBox(track);
-
         for (int i = 0; i < cars.Count; ++i)
         {
-            float x = cars[i].X - boundaries.Left + _margin * 0.5f;
-            float y = cars[i].Y - boundaries.Bottom + _margin * 0.5f;
-
+            var x = cars[i].X - _trackBoundingBox.Left + _margin * 0.5f;
+            var y = cars[i].Y - _trackBoundingBox.Bottom + _margin * 0.5f;
             cars[i] = new PointF(x, y);
         }
-
-        for (int i = 0; i < track.Count; ++i)
-        {
-            float x = track[i].X - boundaries.Left + _margin * 0.5f;
-            float y = track[i].Y - boundaries.Bottom + _margin * 0.5f;
-
-            track[i] = new PointF(x, y);
-        }
-
-        var w = (float)Math.Sqrt((boundaries.Right - boundaries.Left) * (boundaries.Right - boundaries.Left));
-        var h = (float)Math.Sqrt((boundaries.Top - boundaries.Bottom) * (boundaries.Top - boundaries.Bottom));
 
         TrackMapDrawing drawer = new();
         drawer.SetDotSize(_config.Other.CarSize)
@@ -203,15 +203,15 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         drawer.SetColorPitStop(_config.Car.PitStopColor)
             .SetColorPitStopWithDamage(_config.Car.PitStopWithDamageColor);
 
-        drawer.CreateBitmap(w, h, _margin);
+        drawer.CreateBitmap(_width, _height, _margin);
         return drawer.Draw(cars, ids, track);
     }
 
     private List<PointF> ScaleAndRotate(List<PointF> positions, BoundingBox boundaries, float scale, float rotation)
     {
         var rot = Double.DegreesToRadians(rotation);
-        var  centerX = (boundaries.Right + boundaries.Left) * 0.5f;
-        var  centerY = (boundaries.Top + boundaries.Bottom) * 0.5f;
+        var centerX = (boundaries.Right + boundaries.Left) * 0.5f;
+        var centerY = (boundaries.Top + boundaries.Bottom) * 0.5f;
 
         List<PointF> result = new();
         foreach (var it in positions)
