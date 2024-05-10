@@ -194,7 +194,9 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             .SetColorMap(_config.Map.Color);
 
         drawer.SetColorPlayer(_config.Car.PlayerColor)
+            .SetColorLeader(_config.Car.LeaderColor)
             .SetColorCarDefault(_config.Car.DefaultColor)
+            .SetColorImprovingLap(_config.Car.ImprovingLapColor)
             .SetColorPlayerLappedOthers(_config.Other.PlayerLappedOthersColor)
             .SetColorOthersLappedPlayer(_config.Other.OthersLappedPlayerColor);
 

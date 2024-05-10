@@ -42,10 +42,17 @@ internal sealed class TrackMapConfiguration : OverlayConfiguration
         public Color PlayerColor { get; init; } = Color.Red;
 
         [ToolTip("Default car color (no player / no lapped)")]
-        public Color DefaultColor { get; init; } = Color.DarkGray;
+        public Color DefaultColor { get; init; } = Color.LightGray;
+
+        [ToolTip("Leader car color (no player)")]
+        public Color LeaderColor { get; init; } = Color.SeaGreen;
+
+        [ToolTip("Improving lap car color (no player)")]
+        public Color ImprovingLapColor { get; init; } = Color.SeaGreen;
+
 
         [ToolTip("Pit stop color")]
-        public Color PitStopColor { get; init; } = Color.Yellow;
+        public Color PitStopColor { get; init; } = Color.MediumOrchid;
 
         [ToolTip("Pit stop with damage color")]
         public Color PitStopWithDamageColor { get; init; } = Color.MediumPurple;

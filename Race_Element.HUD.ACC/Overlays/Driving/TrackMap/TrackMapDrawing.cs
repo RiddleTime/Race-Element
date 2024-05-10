@@ -2,9 +2,9 @@
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Drawing;
+using System;
 
 using System.Collections.Generic;
-using System.Diagnostics;
 
 using RaceElement.Data.ACC.EntryList;
 using RaceElement.Broadcast;
@@ -16,11 +16,11 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
 class TrackMapDrawing
 {
-    private readonly SolidBrush _colorValidForBest = new(Color.Purple);
-    private readonly SolidBrush _colorCarLeader = new(Color.DarkGreen);
     private readonly SolidBrush _borderColor = new(Color.Black);
-
     private Bitmap _bitmap;
+
+    private SolidBrush _colorValidForBest = new(Color.SeaGreen);
+    private SolidBrush _colorCarLeader = new(Color.SeaGreen);
 
     private float _lappedDistanceThreshold = 100.0f;
     private float _trackMeters = 0.0f;
@@ -40,7 +40,7 @@ class TrackMapDrawing
     private SolidBrush _colorCarPlayer = new(Color.Red);
     private SolidBrush _colorCarDefault = new(Color.DarkGray);
 
-    private SolidBrush _colorPitStop = new(Color.Yellow);
+    private SolidBrush _colorPitStop = new(Color.MediumOrchid);
     private SolidBrush _colorPitStopWithDamage = new(Color.MediumPurple);
 
     public TrackMapDrawing SetDotSize(float size)
@@ -61,6 +61,12 @@ class TrackMapDrawing
         return this;
     }
 
+    public TrackMapDrawing SetMapThickness(float thickness)
+    {
+        _mapThickness = thickness;
+        return this;
+    }
+
     public TrackMapDrawing SetTrackMeter(float meters)
     {
         _trackMeters = meters;
@@ -70,6 +76,12 @@ class TrackMapDrawing
     public TrackMapDrawing SetShowCarNumber(bool show)
     {
         _showCarNumber = show;
+        return this;
+    }
+
+    public TrackMapDrawing SetShowPitStop(bool show)
+    {
+        _showPitStop = show;
         return this;
     }
 
@@ -91,12 +103,6 @@ class TrackMapDrawing
         return this;
     }
 
-    public TrackMapDrawing SetMapThickness(float thickness)
-    {
-        _mapThickness = thickness;
-        return this;
-    }
-
     public TrackMapDrawing SetColorPlayerLappedOthers(Color color)
     {
         _colorCarPlayerLapperOthers = new(color);
@@ -109,12 +115,6 @@ class TrackMapDrawing
         return this;
     }
 
-    public TrackMapDrawing SetShowPitStop(bool show)
-    {
-        _showPitStop = show;
-        return this;
-    }
-
     public TrackMapDrawing SetColorPitStop(Color color)
     {
         _colorPitStop = new(color);
@@ -124,6 +124,18 @@ class TrackMapDrawing
     public TrackMapDrawing SetColorPitStopWithDamage(Color color)
     {
         _colorPitStopWithDamage = new(color);
+        return this;
+    }
+
+    public TrackMapDrawing SetColorLeader(Color color)
+    {
+        _colorCarLeader = new(color);
+        return this;
+    }
+
+    public TrackMapDrawing SetColorImprovingLap(Color color)
+    {
+        _colorValidForBest = new(color);
         return this;
     }
 
