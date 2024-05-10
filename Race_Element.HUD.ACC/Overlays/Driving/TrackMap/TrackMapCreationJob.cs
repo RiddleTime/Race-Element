@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.IO;
 using System.Threading;
+using System.Diagnostics;
 
 using RaceElement.Core.Jobs.LoopJob;
 using RaceElement.Data.ACC.Core;
@@ -44,35 +45,31 @@ public class TrackMapCreationJob : AbstractLoopJob
         switch (_mapTrackingState)
         {
             case CreationState.Start:
-                {
-                    _mapTrackingState = InitialState();
-                }
-                break;
+            {
+                _mapTrackingState = InitialState();
+            } break;
 
             case CreationState.LoadFromFile:
-                {
-                    _mapTrackingState = LoadMapFromFile();
-                }
-                break;
+            {
+                try { _mapTrackingState = LoadMapFromFile(); }
+                catch (Exception e) { Debug.WriteLine(e);  }
+            } break;
 
             case CreationState.TraceTrack:
-                {
-                    _mapTrackingState = PositionTracking();
-                }
-                break;
+            {
+                _mapTrackingState = PositionTracking();
+            } break;
 
             case CreationState.NotifySubscriber:
-                {
-                    OnMapPositionsCallback?.Invoke(this, _trackedPositions);
-                    _mapTrackingState = CreationState.End;
-                }
-                break;
+            {
+                OnMapPositionsCallback?.Invoke(this, _trackedPositions);
+                _mapTrackingState = CreationState.End;
+            } break;
 
             default:
-                {
-                    Thread.Sleep(10);
-                }
-                break;
+            {
+                Thread.Sleep(10);
+            } break;
         }
     }
 
@@ -141,7 +138,7 @@ public class TrackMapCreationJob : AbstractLoopJob
         var trackName = ACCSharedMemory.Instance.PageFileStatic.Track;
         string path = FileUtil.RaceElementTracks + trackName + ".bin";
 
-        using FileStream fileStream = new(path, FileMode.Open);
+        using FileStream fileStream = new(path, FileMode.Open, FileAccess.Read, FileShare.Read);
         using BinaryReader binaryReader = new(fileStream);
 
         while (fileStream.Position < fileStream.Length)
@@ -169,7 +166,7 @@ public class TrackMapCreationJob : AbstractLoopJob
         var trackName = ACCSharedMemory.Instance.PageFileStatic.Track;
         string path = FileUtil.RaceElementTracks + trackName + ".bin";
 
-        using FileStream fileStream = new(path, FileMode.Create);
+        using FileStream fileStream = new(path, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
         using BinaryWriter binaryWriter = new(fileStream);
 
         foreach (var it in _trackedPositions)
