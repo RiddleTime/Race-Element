@@ -238,6 +238,9 @@ class TrackMapDrawing
             return;
         }
 
+        string symbol = pitStop.Laps > 0 ? "+" : "P";
+        SizeF textSize = g.MeasureString(symbol, font);
+
         var car = pitStop.Position;
         var outBorder = 3.0f;
 
@@ -247,7 +250,9 @@ class TrackMapDrawing
         g.FillEllipse(_borderColor, car.X - outBorder * 0.5f, car.Y - outBorder * 0.5f, _dotSize, _dotSize);
         g.FillEllipse(color, car.X, car.Y, _dotSize - outBorder, _dotSize - outBorder);
 
-        string symbol = pitStop.Laps > 0 ? "+" : "P";
+        car.Y += Math.Abs(_dotSize - textSize.Height) * 0.5f;
+        car.X += Math.Abs(_dotSize - textSize.Width) * 0.5f;
+
         g.DrawStringWithShadow(symbol, font, new SolidBrush(Color.Black), car);
 
         if (pitStop.Laps > 0)
