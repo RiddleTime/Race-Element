@@ -135,7 +135,7 @@ public class TrackMapCreationJob : AbstractLoopJob
 
     private CreationState LoadMapFromFile()
     {
-        var trackName = ACCSharedMemory.Instance.PageFileStatic.Track;
+        var trackName = ACCSharedMemory.Instance.PageFileStatic.Track.ToLower();
         string path = FileUtil.RaceElementTracks + trackName + ".bin";
 
         using FileStream fileStream = new(path, FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -163,7 +163,7 @@ public class TrackMapCreationJob : AbstractLoopJob
         DirectoryInfo directory = new(FileUtil.RaceElementTracks);
         if (!directory.Exists) directory.Create();
 
-        var trackName = ACCSharedMemory.Instance.PageFileStatic.Track;
+        var trackName = ACCSharedMemory.Instance.PageFileStatic.Track.ToLower();
         string path = FileUtil.RaceElementTracks + trackName + ".bin";
 
         using FileStream fileStream = new(path, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
