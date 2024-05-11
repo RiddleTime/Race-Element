@@ -121,13 +121,17 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         _miniMapCreationJob.Cancel();
         _trackOriginalBoundingBox = GetBoundingBox(positions);
 
-        _height = (float)Math.Sqrt(Math.Pow(_trackOriginalBoundingBox.Top - _trackOriginalBoundingBox.Bottom, 2));
-        _width = (float)Math.Sqrt(Math.Pow(_trackOriginalBoundingBox.Right - _trackOriginalBoundingBox.Left, 2));
+        {
+            var scaled = ScaleAndRotate(positions, _trackOriginalBoundingBox, 1, _config.Map.Rotation);
+            var bounds = GetBoundingBox(scaled);
 
-        _scale = _config.Map.MaxWidth / _width;
+            float width = (float)Math.Sqrt(Math.Pow(bounds.Right - bounds.Left, 2));
+            _scale = _config.Map.MaxWidth / width;
+        }
+
         var track = ScaleAndRotate(positions, _trackOriginalBoundingBox, _scale, _config.Map.Rotation);
-
         var boundaries = GetBoundingBox(track);
+
         for (int i = 0; i < track.Count; ++i)
         {
             float y = track[i].Y - boundaries.Bottom + _margin * 0.5f;
@@ -138,6 +142,9 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
         _trackBoundingBox = boundaries;
         _trackPositions = track;
+
+        _height = (float)Math.Sqrt(Math.Pow(_trackBoundingBox.Bottom - _trackBoundingBox.Top, 2));;
+        _width= (float)Math.Sqrt(Math.Pow(_trackBoundingBox.Right - _trackBoundingBox.Left, 2));
 
         if (!_config.Map.SavePreview)
         {
