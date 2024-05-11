@@ -5,14 +5,35 @@ using System.Drawing;
 using System;
 
 using System.Collections.Generic;
-
-using RaceElement.Data.ACC.EntryList;
 using RaceElement.Broadcast;
 
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
+
+class CarOnTrack
+{
+    public string RaceNumber;
+
+    public CarLocationEnum Location;
+    public PointF Coord;
+
+    public bool IsValidForBest;
+    public bool IsValid;
+
+    public float Spline;
+    public int Position;
+
+    public int Laps;
+    public int Id;
+}
+
+class CarRenderData
+{
+    public List<CarOnTrack> Cars = [];
+    public CarOnTrack Player;
+}
 
 class TrackMapDrawing
 {
@@ -150,7 +171,7 @@ class TrackMapDrawing
         return this;
     }
 
-    public Bitmap Draw(List<PointF> cars, List<int> ids, List<PointF> track)
+    public Bitmap Draw(CarRenderData cars, List<PointF> track)
     {
         var g = Graphics.FromImage(_bitmap);
         g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -159,40 +180,28 @@ class TrackMapDrawing
         g.CompositingQuality = CompositingQuality.HighQuality;
 
         g.DrawLines(new Pen(_mapColor, _mapThickness), track.ToArray());
-        return DrawCars(cars, ids, track, g);
+        return DrawCars(cars, track, g);
     }
 
-    private Bitmap DrawCars(List<PointF> cars, List<int> ids, List<PointF> track, Graphics g)
+    private Bitmap DrawCars(CarRenderData cars, List<PointF> track, Graphics g)
     {
         var sessionType = ACCSharedMemory.Instance.PageFileGraphic.SessionType;
-        var playerCarId = ACCSharedMemory.Instance.PageFileGraphic.PlayerCarID;
-
-        var playerCarData = EntryListTracker.Instance.GetCarData(playerCarId);
         using var font = FontUtil.FontSegoeMono(_fontSize);
 
-        int playerIdx = 0;
-
-        for (int i = 0; i < cars.Count; ++i)
+        foreach (var it in cars.Cars)
         {
-            if (ids[i] == playerCarId)
-            {
-                playerIdx = i;
-                continue;
-            }
-
-            var color = _colorCarDefault;
-            var currentCarData = EntryListTracker.Instance.GetCarData(ids[i]);
+            SolidBrush color;
 
             if (sessionType == ACCSharedMemory.AcSessionType.AC_RACE)
             {
-                color = GetRaceCarColor(playerCarData, currentCarData);
+                color = GetRaceCarColor(cars.Player, it);
             }
             else
             {
-                color = GetOtherSessionCarColor(playerCarData, currentCarData);
+                color = GetOtherSessionCarColor(cars.Player, it);
             }
 
-            DrawCarOnMap(cars[i], g, color, font, currentCarData);
+            DrawCarOnMap(it, g, color, font);
         }
 
         if (_showPitStop)
@@ -201,33 +210,34 @@ class TrackMapDrawing
             DrawPitStopOnMap(font, g, _colorPitStopWithDamage, TrackMapPitPrediction.GetPitStopWithDamage(track));
         }
 
-        DrawCarOnMap(cars[playerIdx], g, _colorCarPlayer, font, playerCarData);
+        DrawCarOnMap(cars.Player, g, _colorCarPlayer, font);
         return _bitmap;
     }
 
-    private void DrawCarOnMap(PointF car, Graphics g, SolidBrush color, Font font, EntryListTracker.CarData carData)
+    private void DrawCarOnMap(CarOnTrack carOnTrack, Graphics g, SolidBrush color, Font font)
     {
         {
             var outBorder = 3.0f;
+            PointF pos = carOnTrack.Coord;
 
-            car.X -= _dotSize * 0.5f;
-            car.Y -= _dotSize * 0.5f;
+            pos.X -= _dotSize * 0.5f;
+            pos.Y -= _dotSize * 0.5f;
 
-            g.FillEllipse(_borderColor, car.X - outBorder * 0.5f, car.Y - outBorder * 0.5f, _dotSize, _dotSize);
-            g.FillEllipse(color, car.X, car.Y, _dotSize - outBorder, _dotSize - outBorder);
+            g.FillEllipse(_borderColor, pos.X - outBorder * 0.5f, pos.Y - outBorder * 0.5f, _dotSize, _dotSize);
+            g.FillEllipse(color, pos.X, pos.Y, _dotSize - outBorder, _dotSize - outBorder);
         }
 
-        if (_showCarNumber && carData != null && carData.CarInfo != null)
+        if (_showCarNumber && carOnTrack.RaceNumber != null)
         {
             using SolidBrush pen = new (Color.FromArgb(100, Color.Black));
-            var id = carData.CarInfo.RaceNumber.ToString();
-            var size = g.MeasureString(id, font);
+            var size = g.MeasureString(carOnTrack.RaceNumber, font);
+            PointF pos = carOnTrack.Coord;
 
-            car.X -= size.Width * 0.25f;
-            car.Y -= size.Height;
+            pos.Y -= _dotSize * 0.5f + size.Height;
+            pos.X -= _dotSize * 0.5f;
 
-            g.FillRectangle(pen, car.X, car.Y, size.Width, size.Height);
-            g.DrawStringWithShadow(id, font, new SolidBrush(Color.WhiteSmoke), car);
+            g.FillRectangle(pen, pos.X, pos.Y, size.Width, size.Height);
+            g.DrawStringWithShadow(carOnTrack.RaceNumber, font, new SolidBrush(Color.WhiteSmoke), pos);
         }
     }
 
@@ -270,23 +280,23 @@ class TrackMapDrawing
         }
     }
 
-    private SolidBrush GetRaceCarColor(EntryListTracker.CarData playerCarData, EntryListTracker.CarData otherCarData)
+    private SolidBrush GetRaceCarColor(CarOnTrack playerCarData, CarOnTrack otherCarData)
     {
         if (playerCarData == null || otherCarData == null)
         {
             return _colorCarDefault;
         }
 
-        if (otherCarData.RealtimeCarUpdate.Position == 1)
+        if (otherCarData.Position == 1)
         {
             return _colorCarLeader;
         }
 
-        var playerLaps = playerCarData.RealtimeCarUpdate.Laps;
-        var otherLaps = otherCarData.RealtimeCarUpdate.Laps;
+        var playerLaps = playerCarData.Laps;
+        var otherLaps = otherCarData.Laps;
 
-        var playerTrackMeters = playerLaps * _trackMeters + playerCarData.RealtimeCarUpdate.SplinePosition * _trackMeters;
-        var otherTrackMeters = otherLaps * _trackMeters + otherCarData.RealtimeCarUpdate.SplinePosition * _trackMeters;
+        var playerTrackMeters = playerLaps * _trackMeters + playerCarData.Spline * _trackMeters;
+        var otherTrackMeters = otherLaps * _trackMeters + otherCarData.Spline * _trackMeters;
 
         if (playerLaps == otherLaps && otherLaps == 0)
         {
@@ -318,29 +328,21 @@ class TrackMapDrawing
         return _colorCarDefault;
     }
 
-    private SolidBrush GetOtherSessionCarColor(EntryListTracker.CarData playerCarData, EntryListTracker.CarData otherCarData)
+    private SolidBrush GetOtherSessionCarColor(CarOnTrack playerCarData, CarOnTrack otherCarData)
     {
         if (playerCarData == null || otherCarData == null)
         {
             return _colorCarDefault;
         }
 
-        if (otherCarData.RealtimeCarUpdate.CarLocation != CarLocationEnum.Track)
+        if (otherCarData.Location != CarLocationEnum.Track)
         {
             return _colorCarDefault;
         }
 
-        var playerLap = playerCarData.RealtimeCarUpdate.CurrentLap;
-        var otherLap = otherCarData.RealtimeCarUpdate.CurrentLap;
-
-        if (playerLap == null || otherLap == null)
-        {
-            return _colorCarDefault;
-        }
-
-        var otherIsValidForBest = otherLap.IsValidForBest;
-        var playerIsValidLap = !playerLap.IsInvalid;
-        var otherIsValidLap = !otherLap.IsInvalid;
+        var otherIsValidForBest = otherCarData.IsValidForBest;
+        var playerIsValidLap = playerCarData.IsValid;
+        var otherIsValidLap = otherCarData.IsValid;
 
         if (playerIsValidLap && !otherIsValidLap)
         {
