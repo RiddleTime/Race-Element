@@ -3,6 +3,7 @@ using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.Session;
 
 using RaceElement.HUD.Overlay.Internal;
+using RaceElement.Broadcast;
 using RaceElement.Util;
 
 using System.Collections.Generic;
@@ -176,6 +177,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             {
                 car.IsValidForBest = it.Value.RealtimeCarUpdate.CurrentLap.IsValidForBest;
                 car.IsValid = !it.Value.RealtimeCarUpdate.CurrentLap.IsInvalid;
+                car.Delta = it.Value.RealtimeCarUpdate.Delta;
             }
 
             if (it.Value.CarInfo != null)
