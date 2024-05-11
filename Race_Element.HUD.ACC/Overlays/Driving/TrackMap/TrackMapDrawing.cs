@@ -211,7 +211,12 @@ class TrackMapDrawing
             DrawPitStopOnMap(font, g, _colorPitStopWithDamage, TrackMapPitPrediction.GetPitStopWithDamage(track));
         }
 
-        DrawCarOnMap(cars.Player, g, _colorCarPlayer, font);
+        if (cars.Player != null)
+        {
+            // Note(Andrei): To avoid crash when render the track preview
+            DrawCarOnMap(cars.Player, g, _colorCarPlayer, font);
+        }
+
         return _bitmap;
     }
 
