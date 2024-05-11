@@ -188,6 +188,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             var x = it.Value.RealtimeCarUpdate.WorldPosX;
             var y = it.Value.RealtimeCarUpdate.WorldPosY;
 
+            car.Laps = it.Value.RealtimeCarUpdate.Laps;
             car.Coord = new PointF(x, y);
             car.Id = it.Key;
 
