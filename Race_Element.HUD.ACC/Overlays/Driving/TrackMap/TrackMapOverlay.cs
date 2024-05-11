@@ -209,7 +209,26 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             }
         }
 
-        carsOnTrack.Cars.Sort((a, b) => b.Position - a.Position);
+        carsOnTrack.Cars.Sort((a, b) =>
+        {
+            if (a.Location != CarLocationEnum.Track && b.Location != CarLocationEnum.Track)
+            {
+                return 0;
+            }
+
+            if (a.Location != CarLocationEnum.Track)
+            {
+                return -1;
+            }
+
+            if (b.Location != CarLocationEnum.Track)
+            {
+                return 1;
+            }
+
+            return b.Position - a.Position;
+        });
+
         return CreateBitmapForCarsAndTrack(carsOnTrack, _trackPositions);
     }
 
@@ -255,11 +274,11 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     private PointF ScaleAndRotate(PointF point, BoundingBox boundaries, float scale, float rotation)
     {
+        PointF pos = new();
         var rot = Double.DegreesToRadians(rotation);
+
         var centerX = (boundaries.Right + boundaries.Left) * 0.5f;
         var centerY = (boundaries.Top + boundaries.Bottom) * 0.5f;
-
-        PointF pos = new();
 
         pos.X = (point.X - centerX) * scale;
         pos.Y = (point.Y - centerY) * scale;
