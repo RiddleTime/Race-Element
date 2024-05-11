@@ -71,8 +71,8 @@ internal sealed class TrackMapConfiguration : OverlayConfiguration
         public float FontSize { get; init; } = 10;
 
         [ToolTip("Lapped distance threshold in meters")]
-        [FloatRange(0, 200, 1.0f, 1)]
-        public float LappedThreshold { get; init; } = 75;
+        [FloatRange(0, 500, 1.0f, 1)]
+        public float LappedThreshold { get; init; } = 150;
 
         [ToolTip("Cars lapped by player color")]
         public Color PlayerLappedOthersColor { get; init; } = Color.SteelBlue;
