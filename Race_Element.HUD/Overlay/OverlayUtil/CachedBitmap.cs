@@ -17,7 +17,7 @@ public sealed class CachedBitmap : IDisposable
 
     private Bitmap _bitmap;
     private Renderer _renderer;
-    System.Drawing.Imaging.CachedBitmap _internalCachedBitmap;
+    private System.Drawing.Imaging.CachedBitmap _internalCachedBitmap;
 
     /// <summary>
     /// Creates a cached bitmap using the given renderer
@@ -108,7 +108,7 @@ public sealed class CachedBitmap : IDisposable
             }
             else
             {
-                if (width != Width && height != Height)
+                if (width != Width || height != Height)
                     g.DrawImage(_bitmap, new Rectangle(x, y, width, height));
                 else
                     g.DrawCachedBitmap(_internalCachedBitmap, x, y);
