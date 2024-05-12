@@ -15,6 +15,7 @@ public class EntryListTracker
 {
     public class CarData
     {
+        public DateTime LastUpdate;
         public CarInfo CarInfo { get; set; }
         public RealtimeCarUpdate RealtimeCarUpdate { get; set; }
     }
@@ -91,7 +92,6 @@ public class EntryListTracker
         {
             try
             {
-                List<(int, int)> previousTimes = [];
                 while (_isRunning)
                 {
                     const int waitTime = 5000;
@@ -100,58 +100,24 @@ public class EntryListTracker
                     try
                     {
                         List<KeyValuePair<int, CarData>> newDatas = _entryListCars.ToList();
+
                         foreach (var entry in newDatas)
                         {
-                            if (entry.Value != null)
+                            if (entry.Value == null)
                             {
-                                if (entry.Value.CarInfo == null)
-                                {
-                                    //Debug.WriteLine($"Removed entry {entry.Key} - CarInfo null");
-
-                                    PositionGraph.Instance.RemoveCar(entry.Key);
-                                    lock (_entryListCars)
-                                    {
-                                        _entryListCars.Remove(entry.Key);
-                                    }
-                                    continue;
-                                }
-
-                                if (entry.Value.RealtimeCarUpdate.CurrentLap == null)
-                                {
-                                    //Debug.WriteLine($"Removed entry {entry.Key} - CurrentLap null");
-
-                                    PositionGraph.Instance.RemoveCar(entry.Key);
-                                    lock (_entryListCars)
-                                    {
-                                        _entryListCars.Remove(entry.Key);
-                                    }
-                                    continue;
-                                }
-
-                                int previousIndex = previousTimes.FindIndex(x => x.Item1 == entry.Key);
-                                if (previousIndex == -1)
-                                    previousTimes.Add((entry.Key, entry.Value.RealtimeCarUpdate.CurrentLap.GetLapTimeMS()));
-                                else
-                                {
-                                    int currentLapTime = entry.Value.RealtimeCarUpdate.CurrentLap.GetLapTimeMS();
-                                    if (currentLapTime > 0 && currentLapTime == previousTimes[previousIndex].Item2)
-                                    {
-                                        //Debug.WriteLine($"Possible leaver?: {entry.Key}, {previousIndex} - #{entry.Value.CarInfo.RaceNumber} - {entry.Value.CarInfo.GetCurrentDriverName()} - time: {entry.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS}");
-
-                                        Debug.WriteLine($"Removed entry {entry.Key} #{entry.Value.CarInfo.RaceNumber} - Laptime is frozen (above 0)");
-                                        PositionGraph.Instance.RemoveCar(entry.Key);
-                                        lock (_entryListCars)
-                                        {
-                                            _entryListCars.Remove(entry.Key);
-                                            previousTimes.RemoveAt(previousIndex);
-                                        }
-                                        continue;
-                                    }
-
-                                    previousTimes[previousIndex] = (previousIndex, entry.Value.RealtimeCarUpdate.CurrentLap.GetLapTimeMS());
-                                }
-
+                                continue;
                             }
+
+                            if (DateTime.UtcNow.Subtract(entry.Value.LastUpdate).TotalMilliseconds < waitTime)
+                            {
+                                continue;
+                            }
+
+                            lock (_entryListCars)
+                            {
+                                _entryListCars.Remove(entry.Key);
+                            }
+                            PositionGraph.Instance.RemoveCar(entry.Key);
                         }
 
 
@@ -203,11 +169,14 @@ public class EntryListTracker
                             if (_entryListCars.TryGetValue(broadcastingEvent.CarData.CarIndex, out carData))
                             {
                                 carData.CarInfo = broadcastingEvent.CarData;
+                                carData.LastUpdate = DateTime.UtcNow;
                             }
                             else
                             {
                                 //Debug.WriteLine($"BroadcastingCarEventType.LapCompleted car index: {broadcastingEvent.CarData.CarIndex} not found in entry list");
                                 carData = new CarData();
+                                carData.LastUpdate = DateTime.UtcNow;
+
                                 carData.CarInfo = broadcastingEvent.CarData;
                                 _entryListCars.Add(broadcastingEvent.CarData.CarIndex, carData);
                             }
@@ -246,6 +215,7 @@ public class EntryListTracker
                 if (_entryListCars.TryGetValue(carInfo.CarIndex, out carData))
                 {
                     carData.CarInfo = carInfo;
+                    carData.LastUpdate = DateTime.UtcNow;
 
                     //
                     Car car = PositionGraph.Instance.GetCar(carInfo.CarIndex);
@@ -256,6 +226,7 @@ public class EntryListTracker
                 {
                     carData = new CarData();
                     carData.CarInfo = carInfo;
+                    carData.LastUpdate = DateTime.UtcNow;
 
                     _entryListCars.Add(carInfo.CarIndex, carData);
                     PositionGraph.Instance.AddCar(carInfo.CarIndex);
@@ -278,6 +249,7 @@ public class EntryListTracker
                 if (_entryListCars.TryGetValue(carUpdate.CarIndex, out carData))
                 {
                     carData.RealtimeCarUpdate = carUpdate;
+                    carData.LastUpdate = DateTime.UtcNow;
 
                     Car car = PositionGraph.Instance.GetCar(carUpdate.CarIndex);
                     if (car != null)
@@ -288,9 +260,9 @@ public class EntryListTracker
                     //Debug.WriteLine($"RealTimeCarUpdate_EventHandler car index: {carUpdate.CarIndex} not found in entry list");
                     carData = new CarData();
                     carData.RealtimeCarUpdate = carUpdate;
+                    carData.LastUpdate = DateTime.UtcNow;
 
                     _entryListCars.Add(carUpdate.CarIndex, carData);
-
                     PositionGraph.Instance.AddCar(carUpdate.CarIndex);
                 }
             }
