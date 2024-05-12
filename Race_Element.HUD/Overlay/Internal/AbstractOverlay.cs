@@ -286,11 +286,8 @@ public abstract class AbstractOverlay : FloatingWindow
         pageStatic = e;
     }
 
-    public void Stop(bool animate = false)
+    public void Stop()
     {
-        if (animate)
-            this.HideAnimate(AnimateMode.Blend | AnimateMode.ExpandCollapse, 200);
-
         try
         {
             BeforeStop();
@@ -300,6 +297,7 @@ public abstract class AbstractOverlay : FloatingWindow
             Debug.WriteLine(ex);
             LogWriter.WriteToLog(ex);
         }
+
         PageStaticTracker.Tracker -= PageStaticChanged;
         PageGraphicsTracker.Instance.Tracker -= PageGraphicsChanged;
         PagePhysicsTracker.Instance.Tracker -= PagePhysicsChanged;

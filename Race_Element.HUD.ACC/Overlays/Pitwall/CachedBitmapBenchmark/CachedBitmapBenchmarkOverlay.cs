@@ -5,14 +5,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Windows.Documents;
 
-namespace RaceElement.HUD.ACC.Overlays.OverlayOpponent;
+namespace RaceElement.HUD.ACC.Overlays.Pitwall.CachedBitmapBenchmark;
 
-#if DEBUG
-[Overlay(Name = "Opponent", Description = "Shows info about the car in front and behind.", OverlayType = OverlayType.Drive, Version = 1.00)]
-#endif
-internal class OpponentOverlay : AbstractOverlay
+[Overlay(Name = "CB Benchmark",
+Description = "Shows info about the car in front and behind.",
+OverlayType = OverlayType.Pitwall,
+Version = 1.00,
+Authors = ["Reinier Klarenberg"])]
+internal class CachedBitmapBenchmarkOverlay : AbstractOverlay
 {
     private const int InitialWidth = 300, InitialHeight = 250;
 
@@ -20,7 +21,7 @@ internal class OpponentOverlay : AbstractOverlay
     private List<double> _cached = [];
 
     CachedBitmap _bitmap;
-    public OpponentOverlay(Rectangle rectangle) : base(rectangle, "Opponent")
+    public CachedBitmapBenchmarkOverlay(Rectangle rectangle) : base(rectangle, "CB Benchmark")
     {
         this.Width = InitialWidth;
         this.Height = InitialHeight;
@@ -53,9 +54,10 @@ internal class OpponentOverlay : AbstractOverlay
         TimeSpan elapsed2 = sw.Elapsed;
         AddToBenchList(elapsed2, ref _cached);
 
-        double avgUncached = _notCached.Average();
-        double avgCached = _cached.Average();
-        Trace.WriteLine($"cycles: {_cached.Count},  raw: {avgUncached:F0} Ns, cached: {avgCached:F0} Ns");
+        Trace.WriteLine($"cycles: {_cached.Count},  raw: {_notCached.Average():F0} Ns, cached: {_cached.Average():F0} Ns");
+        Trace.WriteLine($"Min - raw {_notCached.Min():F0} Ns, cached {_cached.Min():F0}");
+        Trace.WriteLine($"Max - raw {_notCached.Max():F0} Ns, cached {_cached.Max():F0}");
+        Trace.WriteLine($"Lst - raw {_notCached.Last():F0} Ns, cached {_cached.Last():F0}");
     }
     private void RenderSomething(Graphics g, int width, int height)
     {

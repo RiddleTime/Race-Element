@@ -58,11 +58,11 @@ public sealed class CachedBitmap : IDisposable
 
     public void Render()
     {
-        _bitmap ??= new Bitmap(Width, Height, PixelFormat.Format32bppPArgb);
-        _internalCachedBitmap?.Dispose();
-
         lock (_lockObject)
         {
+            _bitmap ??= new Bitmap(Width, Height, PixelFormat.Format32bppPArgb);
+            _internalCachedBitmap?.Dispose();
+
             using Graphics g = Graphics.FromImage(_bitmap);
             g.Clear(Color.Transparent);
 
