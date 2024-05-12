@@ -54,15 +54,17 @@ internal class CachedBitmapBenchmarkOverlay : AbstractOverlay
         TimeSpan elapsed2 = sw.Elapsed;
         AddToBenchList(elapsed2, ref _cached);
 
-        Trace.WriteLine($"cycles: {_cached.Count},  raw: {_notCached.Average():F0} Ns, cached: {_cached.Average():F0} Ns");
-        Trace.WriteLine($"Min - raw {_notCached.Min():F0} Ns, cached {_cached.Min():F0}");
-        Trace.WriteLine($"Max - raw {_notCached.Max():F0} Ns, cached {_cached.Max():F0}");
-        Trace.WriteLine($"Lst - raw {_notCached.Last():F0} Ns, cached {_cached.Last():F0}");
+        if (_cached.Count % 100 == 0)
+        {
+            Trace.WriteLine($"Avg - raw: {_notCached.Average():F0} Ns, cached: {_cached.Average():F0} Ns");
+            Trace.WriteLine($"Min - raw {_notCached.Min():F0} Ns, cached {_cached.Min():F0}");
+            Trace.WriteLine($"Max - raw {_notCached.Max():F0} Ns, cached {_cached.Max():F0}");
+        }
     }
     private void RenderSomething(Graphics g, int width, int height)
     {
         for (int i = 1; i < 10; i++)
-            g.DrawRoundedRectangle(Pens.White, new Rectangle(0, 0, width / i, height / i), 2);
+            g.DrawRoundedRectangle(Pens.White, new Rectangle(0, 0, (width - 1) / i, (height - 1) / i), 2);
     }
 
     private void AddToBenchList(TimeSpan t, ref List<double> list)
