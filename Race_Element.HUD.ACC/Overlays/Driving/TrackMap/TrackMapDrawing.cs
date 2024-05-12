@@ -75,7 +75,7 @@ class TrackMapDrawer
         return bitmap;
     }
 
-    public static Bitmap CreateLineOfPoints(Color color, float thickness, float margin, List<PointF> points, BoundingBox boundaries)
+    public static Bitmap CreateLineFromPoints(Color color, float thickness, float margin, List<PointF> points, BoundingBox boundaries)
     {
         var w = Math.Sqrt(Math.Pow(boundaries.Right - boundaries.Left, 2)) + margin + 1.5;
         var h = Math.Sqrt(Math.Pow(boundaries.Bottom - boundaries.Top, 2)) + margin + 1.5;

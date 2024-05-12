@@ -153,7 +153,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         _trackBoundingBox = boundaries;
         _trackPositions = track;
 
-        _mapCache.Map = TrackMapDrawer.CreateLineOfPoints(_config.Color.Map, _config.General.Thickness, _margin, _trackPositions, _trackBoundingBox);
+        _mapCache.Map = TrackMapDrawer.CreateLineFromPoints(_config.Color.Map, _config.General.Thickness, _margin, _trackPositions, _trackBoundingBox);
 
         if (!_config.General.SavePreview)
         {
