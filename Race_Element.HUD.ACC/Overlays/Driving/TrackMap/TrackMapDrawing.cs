@@ -57,8 +57,8 @@ class TrackMapDrawer
 {
     public static Bitmap CreateCircleWithOutline(Color color, float diameter, float outLineSize)
     {
-        var w = diameter + outLineSize + 0.5f;
-        var h = diameter + outLineSize + 0.5f;
+        var w = diameter + outLineSize + 1.5f;
+        var h = diameter + outLineSize + 1.5f;
 
         var bitmap = new Bitmap((int)w, (int)h, PixelFormat.Format32bppPArgb);
         bitmap.MakeTransparent();
@@ -70,15 +70,15 @@ class TrackMapDrawer
         g.CompositingQuality = CompositingQuality.HighQuality;
 
         g.FillEllipse(new SolidBrush(color), outLineSize * 0.5f, outLineSize * 0.5f, diameter, diameter);
-        g.DrawEllipse(new Pen(new SolidBrush(Color.Black), outLineSize), outLineSize * 0.5f, outLineSize * 0.5f, diameter, diameter);
+        g.DrawEllipse(new Pen(new SolidBrush(Color.FromArgb(200, 0, 0, 0)), outLineSize), outLineSize * 0.5f, outLineSize * 0.5f, diameter, diameter);
 
         return bitmap;
     }
 
     public static Bitmap CreateLineOfPoints(Color color, float thickness, float margin, List<PointF> points, BoundingBox boundaries)
     {
-        var w = Math.Sqrt(Math.Pow(boundaries.Right - boundaries.Left, 2)) + margin + 0.5;
-        var h = Math.Sqrt(Math.Pow(boundaries.Bottom - boundaries.Top, 2)) + margin + 0.5;
+        var w = Math.Sqrt(Math.Pow(boundaries.Right - boundaries.Left, 2)) + margin + 1.5;
+        var h = Math.Sqrt(Math.Pow(boundaries.Bottom - boundaries.Top, 2)) + margin + 1.5;
 
         var bitmap = new Bitmap((int)w, (int)h, PixelFormat.Format32bppPArgb);
         bitmap.MakeTransparent();
@@ -105,7 +105,7 @@ class TrackMapDrawer
         g.CompositingQuality = CompositingQuality.HighQuality;
 
         var sessionType = ACCSharedMemory.Instance.PageFileGraphic.SessionType;
-        using var font = FontUtil.FontSegoeMono(conf.Other.FontSize);
+        using var font = FontUtil.FontSegoeMono(conf.General.FontSize);
 
         foreach (var it in cars.Cars)
         {
@@ -123,7 +123,7 @@ class TrackMapDrawer
             DrawCarOnMap(it, bitmap, conf, g, font);
         }
 
-        if (conf.Car.ShowPitStop)
+        if (conf.General.ShowPitStop)
         {
             DrawPitStopOnMap(font, g, cache.PitStop, TrackMapPitPrediction.GetPitStop(track));
             DrawPitStopOnMap(font, g, cache.PitStopWithDamage, TrackMapPitPrediction.GetPitStopWithDamage(track));
@@ -149,7 +149,7 @@ class TrackMapDrawer
             g.DrawImage(bitmap, pos);
         }
 
-        if (conf.Car.ShowCarNumber && car.RaceNumber != null)
+        if (conf.General.ShowCarNumber && car.RaceNumber != null)
         {
             using SolidBrush pen = new (Color.FromArgb(100, Color.Black));
             var size = g.MeasureString(car.RaceNumber, font);
@@ -242,11 +242,11 @@ class TrackMapDrawer
                 return cache.OthersLappedPlayer;
             }
         }
-        else if (playerLaps >= otherLaps && (playerTrackMeters - otherTrackMeters) >= (trackMeters - conf.Other.LappedThreshold))
+        else if (playerLaps >= otherLaps && (playerTrackMeters - otherTrackMeters) >= (trackMeters - conf.General.LappedThreshold))
         {
             return cache.PlayerLapperOthers;
         }
-        else if (otherLaps >= playerLaps && (otherTrackMeters - playerTrackMeters) >= (trackMeters - conf.Other.LappedThreshold))
+        else if (otherLaps >= playerLaps && (otherTrackMeters - playerTrackMeters) >= (trackMeters - conf.General.LappedThreshold))
         {
             return cache.OthersLappedPlayer;
         }
