@@ -9,6 +9,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 public class PitStop
 {
     public PointF Position;
+    public bool Damage;
     public int Laps;
 }
 
@@ -67,7 +68,10 @@ public class TrackMapPitPrediction
         var ms = TrackPitLineTimeMs.GetValueOrDefault(name, 0.0f);
 
         result = result * 1000 + DefaultPitTimeMs + ms;
-        return ComputePitStop(track, result);
+        var pitstop = ComputePitStop(track, result);
+
+        pitstop.Damage = true;
+        return pitstop;
     }
 
     private static PitStop ComputePitStop(List<PointF> track, float time)

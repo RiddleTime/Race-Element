@@ -22,7 +22,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 #endif
 internal sealed class TrackMapOverlay : AbstractOverlay
 {
-    private  readonly TrackMapConfiguration _config = new();
+    private readonly TrackMapConfiguration _config = new();
+    private TrackMapCache _mapCache = new();
 
     private TrackMapCreationJob _miniMapCreationJob;
     private List<PointF> _trackPositions = [];
@@ -30,15 +31,28 @@ internal sealed class TrackMapOverlay : AbstractOverlay
     private BoundingBox _trackOriginalBoundingBox;
     private BoundingBox _trackBoundingBox;
 
+    private readonly float _outLineBorder = 2.0f;
     private readonly float _margin = 64.0f;
-    private float _scale = 1.0f;
 
-    private float _height = 1.0f;
-    private float _width = 1.0f;
+    private float _scale = 1.0f;
 
     public TrackMapOverlay(Rectangle rectangle) : base(rectangle, "Track Map")
     {
-        RefreshRateHz = 6;
+        RefreshRateHz = 24;
+
+        _mapCache.OthersLappedPlayer = TrackMapDrawer.CreateCircleWithOutline(_config.Other.OthersLappedPlayerColor, _config.Other.CarSize, _outLineBorder);
+        _mapCache.PlayerLapperOthers = TrackMapDrawer.CreateCircleWithOutline(_config.Other.PlayerLappedOthersColor, _config.Other.CarSize, _outLineBorder);
+
+        _mapCache.PitStopWithDamage = TrackMapDrawer.CreateCircleWithOutline(_config.Car.PitStopWithDamageColor, _config.Other.CarSize, _outLineBorder);
+        _mapCache.PitStop = TrackMapDrawer.CreateCircleWithOutline(_config.Car.PitStopColor, _config.Other.CarSize, _outLineBorder);
+
+        _mapCache.CarDefault = TrackMapDrawer.CreateCircleWithOutline(_config.Car.DefaultColor, _config.Other.CarSize, _outLineBorder);
+        _mapCache.CarPlayer = TrackMapDrawer.CreateCircleWithOutline(_config.Car.PlayerColor, _config.Other.CarSize, _outLineBorder);
+
+        _mapCache.ValidForBest = TrackMapDrawer.CreateCircleWithOutline(_config.Car.ImprovingLapColor, _config.Other.CarSize, _outLineBorder);
+        _mapCache.Leader = TrackMapDrawer.CreateCircleWithOutline(_config.Car.LeaderColor, _config.Other.CarSize, _outLineBorder);
+
+        _mapCache.Map = null;
     }
 
     public override void BeforeStart()
@@ -80,7 +94,8 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     public override void Render(Graphics g)
     {
-        var bitmap = CreateBitmapForCarsAndTrack();
+        var carsOnTrack = GetCarsOnTrack();
+        var bitmap = TrackMapDrawer.Draw(_trackPositions, carsOnTrack, _mapCache, _config, 4005/*broadCastTrackData.TrackMeters*/);
 
         if (bitmap.Width != Width || bitmap.Height != Height)
         {
@@ -139,8 +154,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         _trackBoundingBox = boundaries;
         _trackPositions = track;
 
-        _height = (float)Math.Sqrt(Math.Pow(_trackBoundingBox.Bottom - _trackBoundingBox.Top, 2));
-        _width= (float)Math.Sqrt(Math.Pow(_trackBoundingBox.Right - _trackBoundingBox.Left, 2));
+        _mapCache.Map = TrackMapDrawer.CreateLineOfPoints(_config.Map.Color, _config.Map.Thickness, _margin, _trackPositions, _trackBoundingBox);
 
         if (!_config.Map.SavePreview)
         {
@@ -150,14 +164,13 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         var pageFileStatic = ACCSharedMemory.Instance.PageFileStatic;
         if (pageFileStatic.Track.Length == 0) return;
 
-        var minimap = CreateBitmapForCarsAndTrack(new CarRenderData(), _trackPositions);
-        var path = FileUtil.RaceElementTracks + pageFileStatic.Track + ".jpg";
-        minimap.Save(path);
+        var path = FileUtil.RaceElementTracks + pageFileStatic.Track.ToLower() + ".jpg";
+        _mapCache.Map.Save(path);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private Bitmap CreateBitmapForCarsAndTrack()
+    private CarRenderData GetCarsOnTrack()
     {
         CarRenderData carsOnTrack = new();
 
@@ -227,34 +240,6 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             return b.Position - a.Position;
         });
 
-        return CreateBitmapForCarsAndTrack(carsOnTrack, _trackPositions);
-    }
-
-    private Bitmap CreateBitmapForCarsAndTrack(CarRenderData cars, List<PointF> track)
-    {
-        TrackMapDrawing drawer = new();
-        drawer.SetDotSize(_config.Other.CarSize)
-            .SetFontSize(_config.Other.FontSize);
-
-        drawer.SetLappedThreshold(_config.Other.LappedThreshold)
-            .SetTrackMeter(broadCastTrackData.TrackMeters);
-
-        drawer.SetShowCarNumber(_config.Car.ShowCarNumber)
-            .SetShowPitStop(_config.Car.ShowPitStop)
-            .SetMapThickness(_config.Map.Thickness)
-            .SetColorMap(_config.Map.Color);
-
-        drawer.SetColorPlayer(_config.Car.PlayerColor)
-            .SetColorLeader(_config.Car.LeaderColor)
-            .SetColorCarDefault(_config.Car.DefaultColor)
-            .SetColorImprovingLap(_config.Car.ImprovingLapColor)
-            .SetColorPlayerLappedOthers(_config.Other.PlayerLappedOthersColor)
-            .SetColorOthersLappedPlayer(_config.Other.OthersLappedPlayerColor);
-
-        drawer.SetColorPitStop(_config.Car.PitStopColor)
-            .SetColorPitStopWithDamage(_config.Car.PitStopWithDamageColor);
-
-        drawer.CreateBitmap(_width, _height, _margin);
-        return drawer.Draw(cars, track);
+        return carsOnTrack;
     }
 }
