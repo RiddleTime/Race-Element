@@ -50,16 +50,16 @@ public class TrackMapPitPrediction
     public static PitStop GetPitStop(List<PointF> track)
     {
         var name = ACCSharedMemory.Instance.PageFileStatic.Track.ToLower();
-        float ms = TrackPitLineTimeMs.GetValueOrDefault(name, 0.0f);
-        return ComputePitStop(track, DefaultPitTimeMs + ms);
+        float time = TrackPitLineTimeMs.GetValueOrDefault(name, 0.0f);
+        return ComputePitStop(track, DefaultPitTimeMs + time);
     }
 
     public static PitStop GetPitStopWithDamage(List<PointF> track)
     {
         var p = ACCSharedMemory.Instance.PageFilePhysics;
-        var result = RaceElement.Data.ACC.Cars.Damage.GetTotalRepairTime(p);
+        var time = RaceElement.Data.ACC.Cars.Damage.GetTotalRepairTime(p);
 
-        if (result == 0)
+        if (time == 0)
         {
             return null;
         }
@@ -67,18 +67,18 @@ public class TrackMapPitPrediction
         var name = ACCSharedMemory.Instance.PageFileStatic.Track.ToLower();
         var ms = TrackPitLineTimeMs.GetValueOrDefault(name, 0.0f);
 
-        result = result * 1000 + DefaultPitTimeMs + ms;
-        var pitstop = ComputePitStop(track, result);
+        time = time * 1000 + DefaultPitTimeMs + ms;
+        var pitStop = ComputePitStop(track, time);
 
-        if (pitstop != null)
+        if (pitStop != null)
         {
-            pitstop.Damage = true;
+            pitStop.Damage = true;
         }
 
-        return pitstop;
+        return pitStop;
     }
 
-    private static PitStop ComputePitStop(List<PointF> track, float time)
+    private static PitStop ComputePitStop(List<PointF> track, float pitTime)
     {
         var pageFileGraphic = ACCSharedMemory.Instance.PageFileGraphic;
         var estimatedLapTime = pageFileGraphic.EstimatedLapTimeMillis;
@@ -89,7 +89,7 @@ public class TrackMapPitPrediction
             return null;
         }
 
-        var diffTime = currenTime - (time % estimatedLapTime);
+        var diffTime = currenTime - (pitTime % estimatedLapTime);
         diffTime = diffTime >= 0 ? diffTime : estimatedLapTime + diffTime;
 
         var delta = diffTime / estimatedLapTime;
@@ -98,7 +98,7 @@ public class TrackMapPitPrediction
         var result = new PitStop
         {
             Position = track[trackPos],
-            Laps = (int)(time / pageFileGraphic.BestTimeMs)
+            Laps = (int)(pitTime / pageFileGraphic.BestTimeMs)
         };
 
         return result;
