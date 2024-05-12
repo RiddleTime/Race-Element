@@ -70,7 +70,11 @@ public class TrackMapPitPrediction
         result = result * 1000 + DefaultPitTimeMs + ms;
         var pitstop = ComputePitStop(track, result);
 
-        pitstop.Damage = true;
+        if (pitstop != null)
+        {
+            pitstop.Damage = true;
+        }
+
         return pitstop;
     }
 
