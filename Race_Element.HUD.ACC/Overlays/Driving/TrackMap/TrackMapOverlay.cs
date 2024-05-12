@@ -94,7 +94,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
     public override void Render(Graphics g)
     {
         var carsOnTrack = GetCarsOnTrack();
-        var bitmap = TrackMapDrawer.Draw(_trackPositions, carsOnTrack, _mapCache, _config, 4005/*broadCastTrackData.TrackMeters*/);
+        var bitmap = TrackMapDrawer.Draw(_trackPositions, carsOnTrack, _mapCache, _config, broadCastTrackData.TrackMeters);
 
         if (bitmap.Width != Width || bitmap.Height != Height)
         {
