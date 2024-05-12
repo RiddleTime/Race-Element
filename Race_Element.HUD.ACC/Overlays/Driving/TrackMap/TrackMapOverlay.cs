@@ -12,12 +12,6 @@ using System;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
-internal struct BoundingBox
-{
-    public float Left, Right;
-    public float Bottom, Top;
-}
-
 #if DEBUG
 [Overlay(Name = "Track Map",
     Description = "Shows a track map",
@@ -29,11 +23,12 @@ internal struct BoundingBox
 internal sealed class TrackMapOverlay : AbstractOverlay
 {
     private  readonly TrackMapConfiguration _config = new();
-    private TrackMapCreationJob _miniMapCreationJob;
 
-    private BoundingBox _trackOriginalBoundingBox = new();
-    private BoundingBox _trackBoundingBox = new();
+    private TrackMapCreationJob _miniMapCreationJob;
     private List<PointF> _trackPositions = [];
+
+    private BoundingBox _trackOriginalBoundingBox;
+    private BoundingBox _trackBoundingBox;
 
     private readonly float _margin = 64.0f;
     private float _scale = 1.0f;
@@ -120,23 +115,23 @@ internal sealed class TrackMapOverlay : AbstractOverlay
     private void OnMapPositionsCallback(object sender, List<PointF> positions)
     {
         _miniMapCreationJob.Cancel();
-        _trackOriginalBoundingBox = GetBoundingBox(positions);
+        _trackOriginalBoundingBox = TrackMapTransform.GetBoundingBox(positions);
 
         {
-            var scaled = ScaleAndRotate(positions, _trackOriginalBoundingBox, 1, _config.Map.Rotation);
-            var bounds = GetBoundingBox(scaled);
+            var scaled = TrackMapTransform.ScaleAndRotate(positions, _trackOriginalBoundingBox, 1, _config.Map.Rotation);
+            var bounds = TrackMapTransform.GetBoundingBox(scaled);
 
-            float width = (float)Math.Sqrt(Math.Pow(bounds.Right - bounds.Left, 2));
+            var width = (float)Math.Sqrt(Math.Pow(bounds.Right - bounds.Left, 2));
             _scale = _config.Map.MaxWidth / width;
         }
 
-        var track = ScaleAndRotate(positions, _trackOriginalBoundingBox, _scale, _config.Map.Rotation);
-        var boundaries = GetBoundingBox(track);
+        var track = TrackMapTransform.ScaleAndRotate(positions, _trackOriginalBoundingBox, _scale, _config.Map.Rotation);
+        var boundaries = TrackMapTransform.GetBoundingBox(track);
 
-        for (int i = 0; i < track.Count; ++i)
+        for (var i = 0; i < track.Count; ++i)
         {
-            float y = track[i].Y - boundaries.Bottom + _margin * 0.5f;
-            float x = track[i].X - boundaries.Left + _margin * 0.5f;
+            var y = track[i].Y - boundaries.Bottom + _margin * 0.5f;
+            var x = track[i].X - boundaries.Left + _margin * 0.5f;
 
             track[i] = new PointF(x, y);
         }
@@ -144,7 +139,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         _trackBoundingBox = boundaries;
         _trackPositions = track;
 
-        _height = (float)Math.Sqrt(Math.Pow(_trackBoundingBox.Bottom - _trackBoundingBox.Top, 2));;
+        _height = (float)Math.Sqrt(Math.Pow(_trackBoundingBox.Bottom - _trackBoundingBox.Top, 2));
         _width= (float)Math.Sqrt(Math.Pow(_trackBoundingBox.Right - _trackBoundingBox.Left, 2));
 
         if (!_config.Map.SavePreview)
@@ -156,7 +151,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         if (pageFileStatic.Track.Length == 0) return;
 
         var minimap = CreateBitmapForCarsAndTrack(new CarRenderData(), _trackPositions);
-        string path = FileUtil.RaceElementTracks + pageFileStatic.Track + ".jpg";
+        var path = FileUtil.RaceElementTracks + pageFileStatic.Track + ".jpg";
         minimap.Save(path);
     }
 
@@ -197,7 +192,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             car.Position = it.Value.RealtimeCarUpdate.Position;
 
             {
-                car.Coord = ScaleAndRotate(car.Coord, _trackOriginalBoundingBox, _scale, _config.Map.Rotation);
+                car.Coord = TrackMapTransform.ScaleAndRotate(car.Coord, _trackOriginalBoundingBox, _scale, _config.Map.Rotation);
                 car.Coord.Y = car.Coord.Y - _trackBoundingBox.Bottom + _margin * 0.5f;
                 car.Coord.X = car.Coord.X - _trackBoundingBox.Left + _margin * 0.5f;
             }
@@ -261,62 +256,5 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
         drawer.CreateBitmap(_width, _height, _margin);
         return drawer.Draw(cars, track);
-    }
-
-    private List<PointF> ScaleAndRotate(List<PointF> positions, BoundingBox boundaries, float scale, float rotation)
-    {
-        List<PointF> result = new();
-        foreach (var it in positions)
-        {
-            var pos = ScaleAndRotate(it, boundaries, scale, rotation);
-            result.Add(pos);
-        }
-
-        return result;
-    }
-
-    private PointF ScaleAndRotate(PointF point, BoundingBox boundaries, float scale, float rotation)
-    {
-        PointF pos = new();
-        var rot = Double.DegreesToRadians(rotation);
-
-        var centerX = (boundaries.Right + boundaries.Left) * 0.5f;
-        var centerY = (boundaries.Top + boundaries.Bottom) * 0.5f;
-
-        pos.X = (point.X - centerX) * scale;
-        pos.Y = (point.Y - centerY) * scale;
-
-        var x = pos.X * Math.Cos(rot) - pos.Y * Math.Sin(rot);
-        var y = pos.X * Math.Sin(rot) + pos.Y * Math.Cos(rot);
-
-        pos.X = (float)x;
-        pos.Y = (float)y;
-
-        return pos;
-    }
-
-    private BoundingBox GetBoundingBox(List<PointF> positions)
-    {
-        BoundingBox result = new();
-
-        if (positions.Count > 0)
-        {
-            result.Right = positions[0].X;
-            result.Left = positions[0].X;
-
-            result.Top = positions[0].Y;
-            result.Bottom = positions[0].Y;
-        }
-
-        foreach (var it in positions)
-        {
-            result.Right = Math.Max(result.Right, it.X);
-            result.Left = Math.Min(result.Left, it.X);
-
-            result.Top = Math.Max(result.Top, it.Y);
-            result.Bottom = Math.Min(result.Bottom, it.Y);
-        }
-
-        return result;
     }
 }
