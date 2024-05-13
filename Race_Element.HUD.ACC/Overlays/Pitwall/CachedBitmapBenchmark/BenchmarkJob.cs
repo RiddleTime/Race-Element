@@ -76,8 +76,12 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.CachedBitmapBenchmark
         {
             g.SmoothingMode = smoothingMode;
             g.CompositingQuality = compositingQuality;
-            for (int i = 1; i < actions; i++)
-                g.FillRoundedRectangle(_brush, new Rectangle(0, 0, (width - 1) / i, (height - 1) / i), 2);
+            for (int i = 0; i < actions; i++)
+            {
+                int divider = i;
+                divider.ClipMin(1);
+                g.FillRoundedRectangle(_brush, new Rectangle(0, 0, (width - 1) / divider, (height - 1) / divider), 2);
+            }
         }
 
         private static void AddToBenchList(TimeSpan t, ref List<double> list) => list.Add(t.TotalMilliseconds);

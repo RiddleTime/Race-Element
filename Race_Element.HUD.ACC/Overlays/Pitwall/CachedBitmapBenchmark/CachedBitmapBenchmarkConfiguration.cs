@@ -9,11 +9,12 @@ internal sealed class CachedBitmapBenchmarkConfiguration : OverlayConfiguration
     public sealed class BenchGrouping
     {
         [ToolTip("The complexity of the drawing set by the amount of iterations.")]
-        [IntRange(1, 1000, 1)]
+        [IntRange(1, 100, 1)]
         public int ComplexityIterations { get; init; } = 4;
 
-        [IntRange(1, 500, 1)]
-        public int IterationsPerSecond { get; init; } = 200;
+        [ToolTip("The benchmark iterations per second.")]
+        [IntRange(1, 50, 1)]
+        public int IterationsPerSecond { get; init; } = 20;
 
         public CompositingQuality CompositingQuality { get; init; } = CompositingQuality.Default;
         public SmoothingMode SmoothingMode { get; init; } = SmoothingMode.Default;
