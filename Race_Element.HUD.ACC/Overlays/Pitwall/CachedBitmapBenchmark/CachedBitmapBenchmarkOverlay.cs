@@ -29,7 +29,7 @@ internal sealed class CachedBitmapBenchmarkOverlay : AbstractOverlay
 
     public CachedBitmapBenchmarkOverlay(Rectangle rectangle) : base(rectangle, "CB Benchmark")
     {
-        this.RefreshRateHz = 1 / 5f;
+        this.RefreshRateHz = 1 / 2f;
     }
 
     public override void BeforeStart()
