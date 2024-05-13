@@ -52,31 +52,31 @@ internal sealed class TrackMapConfiguration : OverlayConfiguration
     public sealed class ColorGrouping
     {
         [ToolTip("Map color")]
-        public Color Map { get; init; } = Color.WhiteSmoke;
+        public Color Map { get; init; } = Color.FromArgb(255, 245, 245, 245);
 
         [ToolTip("Player car color")]
-        public Color Player { get; init; } = Color.Red;
+        public Color Player { get; init; } = Color.FromArgb(255, 255, 0, 0);
 
         [ToolTip("Default car color (no player / no lapped)")]
-        public Color Default { get; init; } = Color.LightGray;
+        public Color Default { get; init; } = Color.FromArgb(255, 211, 211, 211);
 
         [ToolTip("Leader car color (no player)")]
-        public Color Leader { get; init; } = Color.SeaGreen;
+        public Color Leader { get; init; } = Color.FromArgb(255, 46, 139, 87);
 
         [ToolTip("Cars lapped by player color")]
-        public Color PlayerLappedOthers { get; init; } = Color.SteelBlue;
+        public Color PlayerLappedOthers { get; init; } = Color.FromArgb(255, 70, 130, 180);
 
         [ToolTip("Other lapped by player color")]
-        public Color OthersLappedPlayer { get; init; } = Color.DarkOrange;
+        public Color OthersLappedPlayer { get; init; } = Color.FromArgb(255, 255, 140, 0);
 
         [ToolTip("Improving lap car color (no player)")]
-        public Color ImprovingLap { get; init; } = Color.SeaGreen;
+        public Color ImprovingLap { get; init; } = Color.FromArgb(255, 46, 139, 87);
 
         [ToolTip("Pit stop color")]
-        public Color PitStop { get; init; } = Color.MediumOrchid;
+        public Color PitStop { get; init; } = Color.FromArgb(255, 186, 85, 211);
 
         [ToolTip("Pit stop with damage color")]
-        public Color PitStopWithDamage { get; init; } = Color.MediumPurple;
+        public Color PitStopWithDamage { get; init; } = Color.FromArgb(255, 147, 112, 219);
     }
 
     public TrackMapConfiguration() => this.GenericConfiguration.AllowRescale = false;
