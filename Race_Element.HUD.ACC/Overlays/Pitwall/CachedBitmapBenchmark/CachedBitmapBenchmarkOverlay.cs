@@ -34,9 +34,9 @@ internal sealed class CachedBitmapBenchmarkOverlay : AbstractOverlay
 
     public override void BeforeStart()
     {
-        Width = 500;
-        Height = 150;
-        _panel = new(10, 500);
+        Width = 700;
+        Height = 65;
+        _panel = new(10, 700);
         if (IsPreviewing) return;
 
         _benchmarkJob = new(_config.Bench.ComplexityIterations, _config.Bench.SmoothingMode, _config.Bench.CompositingQuality)
@@ -64,19 +64,30 @@ internal sealed class CachedBitmapBenchmarkOverlay : AbstractOverlay
             _panel.AddLine("", $"S: {_config.Bench.SmoothingMode}, Q: {_config.Bench.CompositingQuality}, P/S: {_config.Bench.IterationsPerSecond}");
             _panel.AddLine("", $"Iterations: {_benchmarkJob._notCached.Count} - Complexity {_config.Bench.ComplexityIterations}");
             _panel.AddLine("Raw MS", GetStats(_benchmarkJob._notCached));
-            _panel.AddLine("Cached MS", GetStats(_benchmarkJob._cached));
+            _panel.AddLine("CB MS", GetStats(_benchmarkJob._cached));
             _panel.Draw(g);
         }
     }
 
     private static string GetStats(List<double> data)
     {
+        var metrics = CalculateMetrics(data);
         StringBuilder sb = new();
-        sb.Append($"Min: {data.Min():F5}");
-        sb.Append($", Avg: {data.Average():F5}");
-        sb.Append($", Max: {data.Max():F5}");
+        sb.Append($"Min: {metrics.min:F4}");
+        sb.Append($", Avg: {metrics.mean:F4}");
+        sb.Append($", Max: {metrics.max:F4}");
+        sb.Append($", Median: {metrics.median:F4}");
+        sb.Append($", StDev: {metrics.std:F4}");
         return sb.ToString();
     }
 
+    private static (double min, double max, double mean, double median, double std) CalculateMetrics(List<double> list)
+    {
+        var mean = list.Average();
+        var std = Math.Sqrt(list.Aggregate(0.0, (a, x) => a + (x - mean) * (x - mean)) / list.Count());
+        var sorted = list.OrderBy(x => x).ToList();
+        var median = sorted.Count % 2 == 0 ? (sorted[sorted.Count / 2 - 1] + sorted[sorted.Count / 2]) / 2 : sorted[sorted.Count / 2];
+        return (sorted.First(), sorted.Last(), mean, median, std);
+    }
 
 }
