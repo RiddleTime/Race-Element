@@ -2,194 +2,275 @@
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Drawing;
+using System;
 
 using System.Collections.Generic;
-using System.Diagnostics;
-using RaceElement.Data.ACC.EntryList;
-using RaceElement.Broadcast.Structs;
+using RaceElement.Broadcast;
 
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
-class TrackMapDrawing
+class CarOnTrack
 {
-    private bool _showCarNumber = false;
-    private Bitmap _bitmap = null;
+    public string RaceNumber;
 
-    private float _fontSize = 10;
-    private float _dotSize = 15;
+    public CarLocationEnum Location;
+    public PointF Coord;
 
-    private readonly SolidBrush _borderColor = new(Color.Black);
+    public bool IsValidForBest;
+    public bool IsValid;
 
-    private Color _mapColor = Color.WhiteSmoke;
-    private float _mapThickness = 4;
+    public float Spline;
+    public int Position;
 
-    private SolidBrush _colorCarOthersLappedPlayer = new(Color.DarkOrange);
-    private SolidBrush _colorCarPlayerLapperOthers = new(Color.SteelBlue);
+    public int Delta;
+    public int Laps;
+    public int Id;
+}
 
-    private SolidBrush _playerCarColor = new(Color.Red);
-    private SolidBrush _defaultCarColor = new(Color.DarkGray);
+class CarRenderData
+{
+    public List<CarOnTrack> Cars = [];
+    public CarOnTrack Player;
+}
 
-    public TrackMapDrawing SetDotSize(float size)
+class TrackMapCache
+{
+    public Bitmap OthersLappedPlayer;
+    public Bitmap PlayerLapperOthers;
+
+    public Bitmap CarDefault;
+    public Bitmap CarPlayer;
+
+    public Bitmap PitStopWithDamage;
+    public Bitmap PitStop;
+
+    public Bitmap ValidForBest;
+    public Bitmap Leader;
+
+    public Bitmap Map;
+}
+
+class TrackMapDrawer
+{
+    public static Bitmap CreateCircleWithOutline(Color color, float diameter, float outLineSize)
     {
-        _dotSize = size;
-        return this;
-    }
+        var w = diameter + outLineSize + 1.5f;
+        var h = diameter + outLineSize + 1.5f;
 
-    public TrackMapDrawing SetFontSize(float size)
-    {
-        _fontSize = size;
-        return this;
-    }
+        var bitmap = new Bitmap((int)w, (int)h, PixelFormat.Format32bppPArgb);
+        bitmap.MakeTransparent();
 
-    public TrackMapDrawing SetShowCarNumber(bool show)
-    {
-        _showCarNumber = show;
-        return this;
-    }
-
-    public TrackMapDrawing SetColorMap(Color color)
-    {
-        _mapColor = color;
-        return this;
-    }
-
-    public TrackMapDrawing SetColorPlayer(Color color)
-    {
-        _playerCarColor = new(color);
-        return this;
-    }
-
-    public TrackMapDrawing SetColorCarDefault(Color color)
-    {
-        _defaultCarColor = new(color);
-        return this;
-    }
-
-    public TrackMapDrawing SetMapThickness(float thickness)
-    {
-        _mapThickness = thickness;
-        return this;
-    }
-
-    public TrackMapDrawing SetColorPlayerLappedOthers(Color color)
-    {
-        _colorCarPlayerLapperOthers = new(color);
-        return this;
-    }
-
-    public TrackMapDrawing SetColorOthersLappedPlayer(Color color)
-    {
-        _colorCarOthersLappedPlayer = new(color);
-        return this;
-    }
-
-    public TrackMapDrawing CreateBitmap(float width, float height, float margin)
-    {
-        int w = (int)(width + margin + 0.5f);
-        int h = (int)(height + margin + 0.5f);
-
-        _bitmap = new Bitmap(w, h, PixelFormat.Format32bppPArgb);
-        _bitmap.MakeTransparent();
-
-        return this;
-    }
-
-    public Bitmap Draw(List<PointF> cars, List<PointF> track, TrackData broadCastTrackData)
-    {
-        if (_bitmap == null)
-        {
-            Debug.WriteLine("TrackMapDrawing.Draw Please call TrackMapDrawing.CreateBitmap before draw");
-            return null;
-        }
-
-        var g = Graphics.FromImage(_bitmap);
+        using var g = Graphics.FromImage(bitmap);
         g.SmoothingMode = SmoothingMode.AntiAlias;
         g.CompositingMode = CompositingMode.SourceOver;
         g.TextRenderingHint = TextRenderingHint.AntiAlias;
         g.CompositingQuality = CompositingQuality.HighQuality;
 
-        g.DrawLines(new Pen(_mapColor, _mapThickness), track.ToArray());
-        return DrawCars(cars, g, broadCastTrackData);
+        g.FillEllipse(new SolidBrush(color), outLineSize * 0.5f, outLineSize * 0.5f, diameter, diameter);
+        g.DrawEllipse(new Pen(new SolidBrush(Color.FromArgb(200, 0, 0, 0)), outLineSize), outLineSize * 0.5f, outLineSize * 0.5f, diameter, diameter);
+
+        return bitmap;
     }
 
-    private Bitmap DrawCars(List<PointF> cars, Graphics g, TrackData broadCastTrackData)
+    public static Bitmap CreateLineFromPoints(Color color, float thickness, float margin, List<PointF> points, BoundingBox boundaries)
     {
-        int playerIdx = 0;
-        using Font font = FontUtil.FontSegoeMono(_fontSize);
+        var w = Math.Sqrt(Math.Pow(boundaries.Right - boundaries.Left, 2)) + margin + 1.5;
+        var h = Math.Sqrt(Math.Pow(boundaries.Bottom - boundaries.Top, 2)) + margin + 1.5;
 
-        var pageFileGraphic = ACCSharedMemory.Instance.PageFileGraphic;
-        var playerCarData = EntryListTracker.Instance.GetCarData(pageFileGraphic.PlayerCarID);
+        var bitmap = new Bitmap((int)w, (int)h, PixelFormat.Format32bppPArgb);
+        bitmap.MakeTransparent();
 
-        for (int i = 0; i < cars.Count; ++i)
-        {
-            if (pageFileGraphic.CarIds[i] == pageFileGraphic.PlayerCarID)
-            {
-                playerIdx = i;
-                continue;
-            }
+        using var g = Graphics.FromImage(bitmap);
+        g.SmoothingMode = SmoothingMode.AntiAlias;
+        g.CompositingMode = CompositingMode.SourceOver;
+        g.TextRenderingHint = TextRenderingHint.AntiAlias;
+        g.CompositingQuality = CompositingQuality.HighQuality;
 
-            var car = cars[i];
-            var color = _defaultCarColor;
-
-            var idx = pageFileGraphic.CarIds[i];
-            var currentCarData = EntryListTracker.Instance.GetCarData(idx);
-
-            if (playerCarData != null && currentCarData != null)
-            {
-                var playerLaps = playerCarData.RealtimeCarUpdate.Laps;
-                var otherLaps = currentCarData.RealtimeCarUpdate.Laps;
-
-                var trackMeters = broadCastTrackData.TrackMeters;
-                var otherTrackMeters = otherLaps * trackMeters + currentCarData.RealtimeCarUpdate.SplinePosition * trackMeters;
-                var playerTrackMeters = playerLaps * trackMeters + playerCarData.RealtimeCarUpdate.SplinePosition * trackMeters;
-
-                if (playerLaps > otherLaps && (playerTrackMeters - otherTrackMeters) >= trackMeters)
-                {
-                    color = _colorCarPlayerLapperOthers;
-                }
-                else if (otherLaps > playerLaps && (otherTrackMeters - playerTrackMeters) >= trackMeters)
-                {
-                    color = _colorCarOthersLappedPlayer;
-                }
-            }
-
-            DrawCarsOnMap(car, g, color, font, currentCarData);
-        }
-
-        if (playerIdx < cars.Count)
-        {
-            DrawCarsOnMap(cars[playerIdx], g, _playerCarColor, font, playerCarData);
-        }
-
-        return _bitmap;
+        g.DrawLines(new Pen(color, thickness), points.ToArray());
+        return bitmap;
     }
 
-    private void DrawCarsOnMap(PointF car, Graphics g, SolidBrush color, Font font, EntryListTracker.CarData carData)
+    public static Bitmap Draw(List<PointF> track,CarRenderData cars, TrackMapCache cache, TrackMapConfiguration conf, float trackMeters)
     {
+
+        var result = new Bitmap(cache.Map);
+        using var g = Graphics.FromImage(result);
+
+        g.SmoothingMode = SmoothingMode.AntiAlias;
+        g.CompositingMode = CompositingMode.SourceOver;
+        g.TextRenderingHint = TextRenderingHint.AntiAlias;
+        g.CompositingQuality = CompositingQuality.HighQuality;
+
+        var sessionType = ACCSharedMemory.Instance.PageFileGraphic.SessionType;
+        using var font = FontUtil.FontSegoeMono(conf.General.FontSize);
+
+        foreach (var it in cars.Cars)
         {
-            var outBorder = 3.0f;
+            Bitmap bitmap;
 
-            car.X -= _dotSize * 0.5f;
-            car.Y -= _dotSize * 0.5f;
+            if (sessionType == ACCSharedMemory.AcSessionType.AC_RACE)
+            {
+                bitmap = GetRaceCarBitmap(cars.Player, it, cache, conf, trackMeters);
+            }
+            else
+            {
+                bitmap = GetOtherSessionCarBitmap(it, cache);
+            }
 
-            g.FillEllipse(_borderColor, car.X - outBorder * 0.5f, car.Y - outBorder * 0.5f, _dotSize, _dotSize);
-            g.FillEllipse(color, car.X, car.Y, _dotSize - outBorder, _dotSize - outBorder);
+            DrawCarOnMap(it, bitmap, conf, g, font);
         }
 
-        if (_showCarNumber && carData != null && carData.CarInfo != null)
+        if (conf.General.ShowPitStop)
+        {
+            DrawPitStopOnMap(font, g, cache.PitStop, TrackMapPitPrediction.GetPitStop(track));
+            DrawPitStopOnMap(font, g, cache.PitStopWithDamage, TrackMapPitPrediction.GetPitStopWithDamage(track));
+        }
+
+        if (cars.Player != null)
+        {
+            // Note(Andrei): To avoid crash when render the track preview
+            DrawCarOnMap(cars.Player, cache.CarPlayer, conf, g, font);
+        }
+
+        return result;
+    }
+
+    private static void DrawCarOnMap(CarOnTrack car, Bitmap bitmap, TrackMapConfiguration conf, Graphics g, Font font)
+    {
+        {
+            PointF pos = car.Coord;
+
+            pos.X -= bitmap.Width * 0.5f;
+            pos.Y -= bitmap.Height * 0.5f;
+
+            g.DrawImage(bitmap, pos);
+        }
+
+        if (conf.General.ShowCarNumber && car.RaceNumber != null)
         {
             using SolidBrush pen = new (Color.FromArgb(100, Color.Black));
-            var id = carData.CarInfo.RaceNumber.ToString();
-            var size = g.MeasureString(id, font);
+            var size = g.MeasureString(car.RaceNumber, font);
+            PointF pos = car.Coord;
 
-            car.X -= size.Width * 0.25f;
-            car.Y -= size.Height;
+            pos.Y -= bitmap.Height * 0.5f + size.Height;
+            pos.X -= bitmap.Width * 0.5f;
 
-            g.FillRectangle(pen, car.X, car.Y, size.Width, size.Height);
-            g.DrawStringWithShadow(id, font, new SolidBrush(Color.WhiteSmoke), car);
+            g.FillRectangle(pen, pos.X, pos.Y, size.Width, size.Height);
+            g.DrawStringWithShadow(car.RaceNumber, font, new SolidBrush(Color.WhiteSmoke), pos);
         }
+    }
+
+    private static void DrawPitStopOnMap(Font font, Graphics g, Bitmap bitmap, PitStop pitStop)
+    {
+        if (pitStop == null)
+        {
+            return;
+        }
+
+        {
+            PointF p = pitStop.Position;
+
+            p.X -= bitmap.Width * 0.5f;
+            p.Y -= bitmap.Height * 0.5f;
+
+            g.DrawImage(bitmap, p);
+        }
+
+        {
+            string symbol = pitStop.Damage ? "+" : "P";
+            SizeF textSize = g.MeasureString(symbol, font);
+
+            var pos = pitStop.Position;
+            pos.X -= textSize.Width * 0.5f;
+            pos.Y -= textSize.Height * 0.5f;
+
+            g.DrawStringWithShadow(symbol, font, new SolidBrush(Color.Black), pos);
+        }
+
+        if (pitStop.Laps > 0)
+        {
+            using SolidBrush color = new (Color.FromArgb(100, Color.Black));
+            var pos = pitStop.Position;
+
+            var laps = pitStop.Laps.ToString();
+            var size = g.MeasureString(laps, font);
+
+            pos.Y -= bitmap.Height * 0.5f + size.Height;
+            pos.X -= bitmap.Width * 0.5f;
+
+            g.FillRectangle(color, pos.X, pos.Y, size.Width, size.Height);
+            g.DrawStringWithShadow(laps, font, new SolidBrush(Color.WhiteSmoke), pos);
+        }
+    }
+
+    private static Bitmap GetRaceCarBitmap(CarOnTrack player, CarOnTrack other, TrackMapCache cache, TrackMapConfiguration conf, float trackMeters)
+    {
+        if (player == null || other == null)
+        {
+            return cache.CarDefault;
+        }
+
+        if (other.Position == 1)
+        {
+            return cache.Leader;
+        }
+
+        var playerLaps = player.Laps;
+        var otherLaps = other.Laps;
+
+        var playerTrackMeters = playerLaps * trackMeters + player.Spline * trackMeters;
+        var otherTrackMeters = otherLaps * trackMeters + other.Spline * trackMeters;
+
+        if (playerLaps == otherLaps && otherLaps == 0)
+        {
+            // NOTE(Andrei): This is just to avoid nested if. As currently
+            // there is threshold for the distance between cars, we don't
+            // want to take into account the distance the first lap.
+        }
+        else if (playerTrackMeters == 0 || otherTrackMeters == 0)
+        {
+            if (playerLaps > otherLaps)
+            {
+                return cache.PlayerLapperOthers;
+            }
+
+            if (otherLaps > playerLaps)
+            {
+                return cache.OthersLappedPlayer;
+            }
+        }
+        else if (playerLaps >= otherLaps && (playerTrackMeters - otherTrackMeters) >= (trackMeters - conf.General.LappedThreshold))
+        {
+            return cache.PlayerLapperOthers;
+        }
+        else if (otherLaps >= playerLaps && (otherTrackMeters - playerTrackMeters) >= (trackMeters - conf.General.LappedThreshold))
+        {
+            return cache.OthersLappedPlayer;
+        }
+
+        return cache.CarDefault;
+    }
+
+    private static Bitmap GetOtherSessionCarBitmap(CarOnTrack car, TrackMapCache cache)
+    {
+        if (car.Location != CarLocationEnum.Track)
+        {
+            return cache.CarDefault;
+        }
+
+        if (!car.IsValid)
+        {
+            return cache.PlayerLapperOthers;
+        }
+
+        if (car.Delta < 0 && car.IsValidForBest)
+        {
+            return cache.ValidForBest;
+        }
+
+        return cache.CarDefault;
     }
 }
