@@ -41,7 +41,7 @@ internal sealed class CachedBitmapBenchmarkOverlay : AbstractOverlay
 
         _benchmarkJob = new(_config.Bench.ComplexityIterations, _config.Bench.SmoothingMode, _config.Bench.CompositingQuality)
         {
-            IntervalMillis = 1000 / 50
+            IntervalMillis = 1000 / _config.Bench.IterationsPerSecond
         };
         _benchmarkJob.Run();
     }

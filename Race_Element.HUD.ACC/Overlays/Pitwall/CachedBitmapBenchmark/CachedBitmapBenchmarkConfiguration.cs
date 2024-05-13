@@ -12,7 +12,7 @@ internal sealed class CachedBitmapBenchmarkConfiguration : OverlayConfiguration
         [IntRange(1, 100, 1)]
         public int ComplexityIterations { get; init; } = 2;
 
-        [IntRange(1, 300, 1)]
+        [IntRange(1, 500, 1)]
         public int IterationsPerSecond { get; init; } = 200;
 
         public CompositingQuality CompositingQuality { get; init; } = CompositingQuality.Default;
