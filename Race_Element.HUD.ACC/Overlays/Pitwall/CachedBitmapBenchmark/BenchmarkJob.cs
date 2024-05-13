@@ -71,6 +71,6 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.CachedBitmapBenchmark
                 g.DrawRoundedRectangle(_pen, new Rectangle(0, 0, (width - 1) / i, (height - 1) / i), 2);
         }
 
-        private static void AddToBenchList(TimeSpan t, ref List<double> list) => list.Add(t.TotalNanoseconds);
+        private static void AddToBenchList(TimeSpan t, ref List<double> list) => list.Add(t.TotalMilliseconds);
     }
 }

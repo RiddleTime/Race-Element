@@ -9,7 +9,7 @@ internal sealed class CachedBitmapBenchmarkConfiguration : OverlayConfiguration
     public sealed class BenchGrouping
     {
         [ToolTip("The complexity of the drawing set by the amount of iterations.")]
-        [IntRange(1, 100, 1)]
+        [IntRange(1, 1000, 1)]
         public int ComplexityIterations { get; init; } = 2;
 
         [IntRange(1, 500, 1)]

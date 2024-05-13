@@ -29,14 +29,14 @@ internal sealed class CachedBitmapBenchmarkOverlay : AbstractOverlay
 
     public CachedBitmapBenchmarkOverlay(Rectangle rectangle) : base(rectangle, "CB Benchmark")
     {
-        this.RefreshRateHz = 1 / 2f;
+        this.RefreshRateHz = 1;
     }
 
     public override void BeforeStart()
     {
-        Width = 450;
+        Width = 500;
         Height = 150;
-        _panel = new(10, 450);
+        _panel = new(10, 500);
         if (IsPreviewing) return;
 
         _benchmarkJob = new(_config.Bench.ComplexityIterations, _config.Bench.SmoothingMode, _config.Bench.CompositingQuality)
@@ -63,8 +63,8 @@ internal sealed class CachedBitmapBenchmarkOverlay : AbstractOverlay
         {
             _panel.AddLine("", $"S: {_config.Bench.SmoothingMode}, Q: {_config.Bench.CompositingQuality}, P/S: {_config.Bench.IterationsPerSecond}");
             _panel.AddLine("", $"Iterations: {_benchmarkJob._notCached.Count} - Complexity {_config.Bench.ComplexityIterations}");
-            _panel.AddLine("Raw", GetStats(_benchmarkJob._notCached));
-            _panel.AddLine("Cached", GetStats(_benchmarkJob._cached));
+            _panel.AddLine("Raw MS", GetStats(_benchmarkJob._notCached));
+            _panel.AddLine("Cached MS", GetStats(_benchmarkJob._cached));
             _panel.Draw(g);
         }
     }
@@ -72,9 +72,9 @@ internal sealed class CachedBitmapBenchmarkOverlay : AbstractOverlay
     private static string GetStats(List<double> data)
     {
         StringBuilder sb = new();
-        sb.Append($"Min: {data.Min():F0}");
-        sb.Append($", Avg: {data.Average():F0}");
-        sb.Append($", Max: {data.Max():F0}");
+        sb.Append($"Min: {data.Min():F4}");
+        sb.Append($", Avg: {data.Average():F4}");
+        sb.Append($", Max: {data.Max():F4}");
         return sb.ToString();
     }
 
