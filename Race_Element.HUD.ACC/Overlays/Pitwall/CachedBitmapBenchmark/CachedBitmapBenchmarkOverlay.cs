@@ -33,7 +33,7 @@ internal sealed class CachedBitmapBenchmarkOverlay : AbstractOverlay
         _panel = new(10, 700);
         if (IsPreviewing) return;
 
-        _benchmarkJob = new(_config.Bench.ComplexityIterations, _config.Bench.SmoothingMode, _config.Bench.CompositingQuality)
+        _benchmarkJob = new(_config.Bench.ComplexityIterations, _config.Bench.SmoothingMode, _config.Bench.CompositingQuality, _config.Bench.DrawingDimension)
         {
             IntervalMillis = 1000 / _config.Bench.IterationsPerSecond
         };
@@ -55,8 +55,8 @@ internal sealed class CachedBitmapBenchmarkOverlay : AbstractOverlay
 
         if (_benchmarkJob._cached.Count > 2)
         {
-            _panel.AddLine("", $"S: {_config.Bench.SmoothingMode}, Q: {_config.Bench.CompositingQuality}, P/S: {_config.Bench.IterationsPerSecond}");
-            _panel.AddLine("", $"Iterations: {_benchmarkJob._notCached.Count} - Complexity {_config.Bench.ComplexityIterations}");
+            _panel.AddLine("", $"Smoothing: {_config.Bench.SmoothingMode}, Compositing: {_config.Bench.CompositingQuality}, IPS: {_config.Bench.IterationsPerSecond}");
+            _panel.AddLine("", $"Iterations: {_benchmarkJob._notCached.Count} - Complexity: {_config.Bench.ComplexityIterations} - Size: {_config.Bench.DrawingDimension}");
             _panel.AddLine("Raw MS", GetStats(_benchmarkJob._notCached));
             _panel.AddLine("CB MS", GetStats(_benchmarkJob._cached));
             _panel.Draw(g);

@@ -9,7 +9,7 @@ using System.Drawing.Drawing2D;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.CachedBitmapBenchmark
 {
-    internal sealed class BenchmarkJob(int actions, SmoothingMode smoothingMode, CompositingQuality compositingQuality) : AbstractLoopJob
+    internal sealed class BenchmarkJob(int actions, SmoothingMode smoothingMode, CompositingQuality compositingQuality, int drawingDimension) : AbstractLoopJob
     {
         private readonly object _lock = new();
         public List<double> _notCached = [];
@@ -18,8 +18,6 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.CachedBitmapBenchmark
         private CachedBitmap _cachedBitmap;
         private CachedBitmap _benchmarkRenderCached;
         private SolidBrush _brush;
-        private const int Width = 300;
-        private const int Height = 300;
 
         public override void BeforeRun()
         {
@@ -27,15 +25,15 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.CachedBitmapBenchmark
             brushAlpha.Clip(10, 240);
             _brush = new(Color.FromArgb(brushAlpha, Color.LimeGreen));
 
-            _benchmarkRenderCached = new(Width, Height, g => RenderSomething(g, Width, Height, actions));
+            _benchmarkRenderCached = new(drawingDimension, drawingDimension, g => RenderSomething(g, drawingDimension, drawingDimension, actions));
 
-            _cachedBitmap = new CachedBitmap(Width, Height, g =>
+            _cachedBitmap = new CachedBitmap(drawingDimension, drawingDimension, g =>
             {
                 g.InterpolationMode = InterpolationMode.Default;
 
                 g.Clear(Color.Transparent);
                 var sw = Stopwatch.StartNew();
-                RenderSomething(g, Width, Height, actions);
+                RenderSomething(g, drawingDimension, drawingDimension, actions);
                 TimeSpan elapsed = sw.Elapsed;
                 sw.Stop();
                 lock (_lock) AddToBenchList(elapsed, ref _notCached);

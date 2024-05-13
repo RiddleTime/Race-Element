@@ -16,6 +16,9 @@ internal sealed class CachedBitmapBenchmarkConfiguration : OverlayConfiguration
         [IntRange(1, 50, 1)]
         public int IterationsPerSecond { get; init; } = 20;
 
+        [IntRange(8, 256, 8)]
+        public int DrawingDimension { get; init; } = 64;
+
         public CompositingQuality CompositingQuality { get; init; } = CompositingQuality.Default;
         public SmoothingMode SmoothingMode { get; init; } = SmoothingMode.Default;
     }
