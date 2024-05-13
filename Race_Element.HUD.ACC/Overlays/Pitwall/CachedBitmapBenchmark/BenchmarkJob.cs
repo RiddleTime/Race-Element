@@ -1,5 +1,6 @@
 ﻿using RaceElement.Core.Jobs.LoopJob;
 using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.Util.SystemExtensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,23 +20,31 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.CachedBitmapBenchmark
 
         private CachedBitmap _cachedBitmap;
         private CachedBitmap _benchmarkRenderCached;
-        private Pen _pen;
-        private const int Width = 100;
-        private const int Height = 100;
+        private SolidBrush _brush;
+        private const int Width = 300;
+        private const int Height = 300;
 
         public override void BeforeRun()
         {
-            _pen = new(Color.FromArgb(130, Color.LimeGreen));
+            int brushAlpha = 255 / actions;
+            brushAlpha.Clip(10, 240);
+            _brush = new(Color.FromArgb(brushAlpha, Color.LimeGreen));
+
             _benchmarkRenderCached = new(Width, Height, g => RenderSomething(g, Width, Height, actions));
 
             _cachedBitmap = new CachedBitmap(Width, Height, g =>
             {
+                g.InterpolationMode = InterpolationMode.Default;
+
                 g.Clear(Color.Transparent);
                 var sw = Stopwatch.StartNew();
                 RenderSomething(g, Width, Height, actions);
                 TimeSpan elapsed = sw.Elapsed;
                 sw.Stop();
                 lock (_lock) AddToBenchList(elapsed, ref _notCached);
+
+                g.CompositingQuality = CompositingQuality.Default;
+                g.SmoothingMode = SmoothingMode.Default;
 
                 g.Clear(Color.Transparent);
                 sw = Stopwatch.StartNew();
@@ -49,7 +58,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.CachedBitmapBenchmark
         public override void AfterCancel()
         {
             _cachedBitmap?.Dispose();
-            _pen?.Dispose();
+            _brush?.Dispose();
         }
         public override void RunAction()
         {
@@ -68,7 +77,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.CachedBitmapBenchmark
             g.SmoothingMode = smoothingMode;
             g.CompositingQuality = compositingQuality;
             for (int i = 1; i < actions; i++)
-                g.DrawRoundedRectangle(_pen, new Rectangle(0, 0, (width - 1) / i, (height - 1) / i), 2);
+                g.FillRoundedRectangle(_brush, new Rectangle(0, 0, (width - 1) / i, (height - 1) / i), 2);
         }
 
         private static void AddToBenchList(TimeSpan t, ref List<double> list) => list.Add(t.TotalMilliseconds);

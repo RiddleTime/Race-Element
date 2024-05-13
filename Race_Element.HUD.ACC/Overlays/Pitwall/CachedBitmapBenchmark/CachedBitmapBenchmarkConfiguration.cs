@@ -10,7 +10,7 @@ internal sealed class CachedBitmapBenchmarkConfiguration : OverlayConfiguration
     {
         [ToolTip("The complexity of the drawing set by the amount of iterations.")]
         [IntRange(1, 1000, 1)]
-        public int ComplexityIterations { get; init; } = 2;
+        public int ComplexityIterations { get; init; } = 4;
 
         [IntRange(1, 500, 1)]
         public int IterationsPerSecond { get; init; } = 200;

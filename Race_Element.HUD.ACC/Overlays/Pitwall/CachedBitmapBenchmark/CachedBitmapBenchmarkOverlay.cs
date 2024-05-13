@@ -72,9 +72,9 @@ internal sealed class CachedBitmapBenchmarkOverlay : AbstractOverlay
     private static string GetStats(List<double> data)
     {
         StringBuilder sb = new();
-        sb.Append($"Min: {data.Min():F4}");
-        sb.Append($", Avg: {data.Average():F4}");
-        sb.Append($", Max: {data.Max():F4}");
+        sb.Append($"Min: {data.Min():F5}");
+        sb.Append($", Avg: {data.Average():F5}");
+        sb.Append($", Max: {data.Max():F5}");
         return sb.ToString();
     }
 
