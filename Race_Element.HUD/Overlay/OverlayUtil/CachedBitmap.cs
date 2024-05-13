@@ -108,7 +108,7 @@ public sealed class CachedBitmap : IDisposable
             }
             else
             {
-                if (width == Width && height == Height)
+                if (g.Transform.IsIdentity && width == Width && height == Height)
                     g.DrawCachedBitmap(_internalCachedBitmap, x, y);
                 else
                     g.DrawImage(_bitmap, new Rectangle(x, y, width, height));
