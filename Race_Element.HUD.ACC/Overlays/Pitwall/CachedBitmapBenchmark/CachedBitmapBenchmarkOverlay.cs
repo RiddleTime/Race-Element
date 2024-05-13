@@ -1,10 +1,14 @@
-﻿using RaceElement.HUD.Overlay.Internal;
+﻿using RaceElement.Core.Jobs.LoopJob;
+using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.CachedBitmapBenchmark;
 
@@ -13,62 +17,65 @@ Description = "Shows info about the car in front and behind.",
 OverlayType = OverlayType.Pitwall,
 Version = 1.00,
 Authors = ["Reinier Klarenberg"])]
-internal class CachedBitmapBenchmarkOverlay : AbstractOverlay
+internal sealed class CachedBitmapBenchmarkOverlay : AbstractOverlay
 {
+    private readonly CachedBitmapBenchmarkConfiguration _config = new();
+
     private const int InitialWidth = 300, InitialHeight = 250;
 
-    private List<double> _notCached = [];
-    private List<double> _cached = [];
+    private BenchmarkJob _benchmarkJob;
 
-    CachedBitmap _bitmap;
+    private InfoPanel _panel;
+
     public CachedBitmapBenchmarkOverlay(Rectangle rectangle) : base(rectangle, "CB Benchmark")
     {
-        this.Width = InitialWidth;
-        this.Height = InitialHeight;
-        this.RefreshRateHz = 50;
+        this.RefreshRateHz = 1 / 5f;
     }
 
     public override void BeforeStart()
     {
-        _bitmap = new CachedBitmap(100, 100, g => { RenderSomething(g, 100, 100); });
+        Width = 500;
+        Height = 150;
+        _panel = new(10, 400);
+        if (IsPreviewing) return;
+
+        _benchmarkJob = new(_config.Bench.ComplexityIterations)
+        {
+            IntervalMillis = 1000 / 50
+        };
+        _benchmarkJob.Run();
     }
 
     public override void BeforeStop()
     {
-        _bitmap?.Dispose();
+        if (IsPreviewing) return;
+
+        _benchmarkJob?.CancelJoin();
     }
 
-    public override void Render(Graphics g)
+    public override bool ShouldRender() => true;
+
+    public sealed override void Render(Graphics g)
     {
-        g.Clear(Color.Transparent);
+        if (IsPreviewing) return;
 
-        var sw = Stopwatch.StartNew();
-        RenderSomething(g, 100, 100);
-        TimeSpan elapsed = sw.Elapsed;
-        AddToBenchList(elapsed, ref _notCached);
-
-        g.Clear(Color.Transparent);
-
-        sw = Stopwatch.StartNew();
-        _bitmap.Draw(g);
-        TimeSpan elapsed2 = sw.Elapsed;
-        AddToBenchList(elapsed2, ref _cached);
-
-        if (_cached.Count % 100 == 0)
+        if (_benchmarkJob._cached.Count > 50)
         {
-            Trace.WriteLine($"Avg - raw: {_notCached.Average():F0} Ns, cached: {_cached.Average():F0} Ns");
-            Trace.WriteLine($"Min - raw {_notCached.Min():F0} Ns, cached {_cached.Min():F0}");
-            Trace.WriteLine($"Max - raw {_notCached.Max():F0} Ns, cached {_cached.Max():F0}");
+            _panel.AddLine("", $"Iterations: {_benchmarkJob._notCached.Count} - Complexity {_config.Bench.ComplexityIterations}");
+            _panel.AddLine("Raw", GetStats(_benchmarkJob._notCached));
+            _panel.AddLine("Cached", GetStats(_benchmarkJob._cached));
+            _panel.Draw(g);
         }
     }
-    private void RenderSomething(Graphics g, int width, int height)
+
+    private static string GetStats(List<double> data)
     {
-        for (int i = 1; i < 10; i++)
-            g.DrawRoundedRectangle(Pens.White, new Rectangle(0, 0, (width - 1) / i, (height - 1) / i), 2);
+        StringBuilder sb = new();
+        sb.Append($"Min: {data.Min():F0}");
+        sb.Append($", Avg: {data.Average():F0}");
+        sb.Append($", Max: {data.Max():F0}");
+        return sb.ToString();
     }
 
-    private void AddToBenchList(TimeSpan t, ref List<double> list)
-    {
-        list.Add(t.TotalNanoseconds);
-    }
+
 }

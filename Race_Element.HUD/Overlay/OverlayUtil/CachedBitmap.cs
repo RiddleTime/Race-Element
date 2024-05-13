@@ -108,10 +108,10 @@ public sealed class CachedBitmap : IDisposable
             }
             else
             {
-                if (width != Width || height != Height)
-                    g.DrawImage(_bitmap, new Rectangle(x, y, width, height));
-                else
+                if (width == Width && height == Height)
                     g.DrawCachedBitmap(_internalCachedBitmap, x, y);
+                else
+                    g.DrawImage(_bitmap, new Rectangle(x, y, width, height));
             }
         }
     }
