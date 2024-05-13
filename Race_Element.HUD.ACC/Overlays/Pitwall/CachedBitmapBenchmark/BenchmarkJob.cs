@@ -6,9 +6,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.CachedBitmapBenchmark
 {
@@ -58,18 +55,12 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.CachedBitmapBenchmark
         public override void AfterCancel()
         {
             _cachedBitmap?.Dispose();
+            _benchmarkRenderCached?.Dispose();
             _brush?.Dispose();
         }
         public override void RunAction()
         {
-            try
-            {
-                _cachedBitmap.Render();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.StackTrace);
-            }
+            _cachedBitmap.Render();
         }
 
         private void RenderSomething(Graphics g, int width, int height, int actions)

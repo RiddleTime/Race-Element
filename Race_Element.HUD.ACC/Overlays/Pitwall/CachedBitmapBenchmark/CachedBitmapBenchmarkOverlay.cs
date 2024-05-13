@@ -1,11 +1,7 @@
-﻿using RaceElement.Core.Jobs.LoopJob;
-using RaceElement.HUD.Overlay.Configuration;
-using RaceElement.HUD.Overlay.Internal;
-using RaceElement.HUD.Overlay.OverlayUtil;
+﻿using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -13,15 +9,13 @@ using System.Text;
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.CachedBitmapBenchmark;
 
 [Overlay(Name = "CB Benchmark",
-Description = "Shows info about the car in front and behind.",
+Description = "Benches Drawing.",
 OverlayType = OverlayType.Pitwall,
 Version = 1.00,
 Authors = ["Reinier Klarenberg"])]
 internal sealed class CachedBitmapBenchmarkOverlay : AbstractOverlay
 {
     private readonly CachedBitmapBenchmarkConfiguration _config = new();
-
-    private const int InitialWidth = 300, InitialHeight = 250;
 
     private BenchmarkJob _benchmarkJob;
 
@@ -32,7 +26,7 @@ internal sealed class CachedBitmapBenchmarkOverlay : AbstractOverlay
         this.RefreshRateHz = 1;
     }
 
-    public override void BeforeStart()
+    public sealed override void BeforeStart()
     {
         Width = 700;
         Height = 65;
@@ -46,14 +40,14 @@ internal sealed class CachedBitmapBenchmarkOverlay : AbstractOverlay
         _benchmarkJob.Run();
     }
 
-    public override void BeforeStop()
+    public sealed override void BeforeStop()
     {
         if (IsPreviewing) return;
 
         _benchmarkJob?.CancelJoin();
     }
 
-    public override bool ShouldRender() => true;
+    public sealed override bool ShouldRender() => true;
 
     public sealed override void Render(Graphics g)
     {
@@ -84,10 +78,10 @@ internal sealed class CachedBitmapBenchmarkOverlay : AbstractOverlay
     private static (double min, double max, double mean, double median, double std) CalculateMetrics(List<double> list)
     {
         var mean = list.Average();
-        var std = Math.Sqrt(list.Aggregate(0.0, (a, x) => a + (x - mean) * (x - mean)) / list.Count());
+        var std = Math.Sqrt(list.Aggregate(0.0, (a, x) => a + (x - mean) * (x - mean)) / list.Count);
         var sorted = list.OrderBy(x => x).ToList();
         var median = sorted.Count % 2 == 0 ? (sorted[sorted.Count / 2 - 1] + sorted[sorted.Count / 2]) / 2 : sorted[sorted.Count / 2];
-        return (sorted.First(), sorted.Last(), mean, median, std);
+        return (sorted[0], sorted[^1], mean, median, std);
     }
 
 }
