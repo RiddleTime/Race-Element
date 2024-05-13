@@ -34,12 +34,12 @@ internal sealed class CachedBitmapBenchmarkOverlay : AbstractOverlay
 
     public override void BeforeStart()
     {
-        Width = 500;
+        Width = 450;
         Height = 150;
-        _panel = new(10, 400);
+        _panel = new(10, 450);
         if (IsPreviewing) return;
 
-        _benchmarkJob = new(_config.Bench.ComplexityIterations)
+        _benchmarkJob = new(_config.Bench.ComplexityIterations, _config.Bench.SmoothingMode, _config.Bench.CompositingQuality)
         {
             IntervalMillis = 1000 / 50
         };
@@ -59,8 +59,9 @@ internal sealed class CachedBitmapBenchmarkOverlay : AbstractOverlay
     {
         if (IsPreviewing) return;
 
-        if (_benchmarkJob._cached.Count > 50)
+        if (_benchmarkJob._cached.Count > 2)
         {
+            _panel.AddLine("", $"S: {_config.Bench.SmoothingMode}, Q: {_config.Bench.CompositingQuality}, P/S: {_config.Bench.IterationsPerSecond}");
             _panel.AddLine("", $"Iterations: {_benchmarkJob._notCached.Count} - Complexity {_config.Bench.ComplexityIterations}");
             _panel.AddLine("Raw", GetStats(_benchmarkJob._notCached));
             _panel.AddLine("Cached", GetStats(_benchmarkJob._cached));
