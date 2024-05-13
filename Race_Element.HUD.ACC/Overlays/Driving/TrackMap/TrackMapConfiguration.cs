@@ -48,35 +48,35 @@ internal sealed class TrackMapConfiguration : OverlayConfiguration
     }
 
     [ConfigGrouping("Colors", "Colors options")]
-    public ColorGrouping Color { get; init; } = new();
+    public ColorGrouping Colors { get; init; } = new();
     public sealed class ColorGrouping
     {
         [ToolTip("Map color")]
-        public Color Map { get; init; } = global::System.Drawing.Color.WhiteSmoke;
+        public Color Map { get; init; } = Color.WhiteSmoke;
 
         [ToolTip("Player car color")]
-        public Color Player { get; init; } = global::System.Drawing.Color.Red;
+        public Color Player { get; init; } = Color.Red;
 
         [ToolTip("Default car color (no player / no lapped)")]
-        public Color Default { get; init; } = global::System.Drawing.Color.LightGray;
+        public Color Default { get; init; } = Color.LightGray;
 
         [ToolTip("Leader car color (no player)")]
-        public Color Leader { get; init; } = global::System.Drawing.Color.SeaGreen;
+        public Color Leader { get; init; } = Color.SeaGreen;
 
         [ToolTip("Cars lapped by player color")]
-        public Color PlayerLappedOthers { get; init; } = global::System.Drawing.Color.SteelBlue;
+        public Color PlayerLappedOthers { get; init; } = Color.SteelBlue;
 
         [ToolTip("Other lapped by player color")]
-        public Color OthersLappedPlayer { get; init; } = global::System.Drawing.Color.DarkOrange;
+        public Color OthersLappedPlayer { get; init; } = Color.DarkOrange;
 
         [ToolTip("Improving lap car color (no player)")]
-        public Color ImprovingLap { get; init; } = global::System.Drawing.Color.SeaGreen;
+        public Color ImprovingLap { get; init; } = Color.SeaGreen;
 
         [ToolTip("Pit stop color")]
-        public Color PitStop { get; init; } = global::System.Drawing.Color.MediumOrchid;
+        public Color PitStop { get; init; } = Color.MediumOrchid;
 
         [ToolTip("Pit stop with damage color")]
-        public Color PitStopWithDamage { get; init; } = global::System.Drawing.Color.MediumPurple;
+        public Color PitStopWithDamage { get; init; } = Color.MediumPurple;
     }
 
     public TrackMapConfiguration() => this.GenericConfiguration.AllowRescale = false;
