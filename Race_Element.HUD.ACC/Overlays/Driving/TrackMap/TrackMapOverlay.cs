@@ -2,7 +2,10 @@
 using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.Session;
 
+using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.Util;
+
 using RaceElement.Broadcast;
 using RaceElement.Util;
 
@@ -27,6 +30,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     private TrackMapCreationJob _miniMapCreationJob;
     private List<PointF> _trackPositions = [];
+    private string _trackingProgress;
 
     private BoundingBox _trackOriginalBoundingBox;
     private BoundingBox _trackBoundingBox;
@@ -67,6 +71,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         };
 
         _miniMapCreationJob.OnMapPositionsCallback += OnMapPositionsCallback;
+        _miniMapCreationJob.OnMapProgressCallback += OnMapProgressCallback;
         _miniMapCreationJob.Run();
 
         RaceSessionTracker.Instance.OnNewSessionStarted += OnNewSessionStart;
@@ -88,11 +93,28 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     public override bool ShouldRender()
     {
-        return base.ShouldRender() && _trackPositions.Count > 0 && EntryListTracker.Instance.Cars.Count > 0;
+        var shouldRender = (_trackingProgress != null) || (_trackPositions.Count > 0 && EntryListTracker.Instance.Cars.Count > 0);
+        return base.ShouldRender() && shouldRender;
     }
 
     public override void Render(Graphics g)
     {
+        if (_trackingProgress != null && _trackPositions.Count == 0)
+        {
+            using var font = FontUtil.FontSegoeMono(_config.General.FontSize);
+            var size = g.MeasureString(_trackingProgress, font);
+
+            g.DrawStringWithShadow(_trackingProgress, font, Color.White, new PointF());
+
+            if ((int)size.Width != Width || (int)size.Height != Height)
+            {
+                Height = (int)size.Height;
+                Width = (int)size.Width;
+            }
+
+            return;
+        }
+
         var carsOnTrack = GetCarsOnTrack();
         var bitmap = TrackMapDrawer.Draw(_trackPositions, carsOnTrack, _mapCache, _config, broadCastTrackData.TrackMeters);
 
@@ -123,7 +145,13 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         _trackPositions.Clear();
 
         _miniMapCreationJob.OnMapPositionsCallback += OnMapPositionsCallback;
+        _miniMapCreationJob.OnMapProgressCallback += OnMapProgressCallback;
         _miniMapCreationJob.Run();
+    }
+
+    private void OnMapProgressCallback(object sender, string info)
+    {
+        _trackingProgress = info;
     }
 
     private void OnMapPositionsCallback(object sender, List<PointF> positions)
