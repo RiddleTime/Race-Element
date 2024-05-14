@@ -1,5 +1,6 @@
 ﻿using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
+using RaceElement.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -44,7 +45,19 @@ internal sealed class CachedBitmapBenchmarkOverlay : AbstractOverlay
     {
         if (IsPreviewing) return;
 
+        WriteBenchmarkResults();
+
         _benchmarkJob?.CancelJoin();
+    }
+
+    private void WriteBenchmarkResults()
+    {
+        StringBuilder sb = new StringBuilder("-- CB Benchmark HUD results --");
+        sb.Append($"\nSmoothing: {_config.Bench.SmoothingMode}, Compositing: {_config.Bench.CompositingQuality}, IPS: {_config.Bench.IterationsPerSecond}");
+        sb.AppendLine($", Iterations: {_benchmarkJob._notCached.Count}, Complexity: {_config.Bench.ComplexityIterations}, Size: {_config.Bench.DrawingDimension}.");
+        sb.AppendLine($"Raw stats:    {GetStats([.. _benchmarkJob._notCached])}");
+        sb.AppendLine($"Cached stats: {GetStats([.. _benchmarkJob._cached])}");
+        LogWriter.WriteToLog(sb.ToString());
     }
 
     public sealed override bool ShouldRender() => true;
@@ -53,14 +66,12 @@ internal sealed class CachedBitmapBenchmarkOverlay : AbstractOverlay
     {
         if (IsPreviewing) return;
 
-        if (_benchmarkJob._cached.Count > 2)
+        if (_benchmarkJob._cached.Count > 10)
         {
-            List<double> cached = [.. _benchmarkJob._cached];
-            List<double> uncached = [.. _benchmarkJob._notCached];
             _panel.AddLine("", $"Smoothing: {_config.Bench.SmoothingMode}, Compositing: {_config.Bench.CompositingQuality}, IPS: {_config.Bench.IterationsPerSecond}");
             _panel.AddLine("", $"Iterations: {_benchmarkJob._notCached.Count} - Complexity: {_config.Bench.ComplexityIterations} - Size: {_config.Bench.DrawingDimension}");
-            _panel.AddLine("Raw MS", GetStats(uncached));
-            _panel.AddLine("CB MS", GetStats(cached));
+            _panel.AddLine("Raw MS", GetStats([.. _benchmarkJob._notCached]));
+            _panel.AddLine("CB MS", GetStats([.. _benchmarkJob._cached]));
             _panel.Draw(g);
         }
     }
