@@ -93,9 +93,9 @@ class TrackMapDrawer
         return bitmap;
     }
 
-    public static Bitmap Draw(List<PointF> track,CarRenderData cars, TrackMapCache cache, TrackMapConfiguration conf, float trackMeters)
+    public static Bitmap Draw(List<PointF> track, CarRenderData cars, TrackMapCache cache, TrackMapConfiguration conf, float trackMeters)
     {
-
+        // TODO: prevent NullReferenceException when cache.Map is null
         var result = new Bitmap(cache.Map);
         using var g = Graphics.FromImage(result);
 
@@ -151,7 +151,7 @@ class TrackMapDrawer
 
         if (conf.General.ShowCarNumber && car.RaceNumber != null)
         {
-            using SolidBrush pen = new (Color.FromArgb(100, Color.Black));
+            using SolidBrush pen = new(Color.FromArgb(100, Color.Black));
             var size = g.MeasureString(car.RaceNumber, font);
             PointF pos = car.Coord;
 
@@ -192,7 +192,7 @@ class TrackMapDrawer
 
         if (pitStop.Laps > 0)
         {
-            using SolidBrush color = new (Color.FromArgb(100, Color.Black));
+            using SolidBrush color = new(Color.FromArgb(100, Color.Black));
             var pos = pitStop.Position;
 
             var laps = pitStop.Laps.ToString();
