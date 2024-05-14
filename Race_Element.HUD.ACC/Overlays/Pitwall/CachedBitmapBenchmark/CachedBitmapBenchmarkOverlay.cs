@@ -9,7 +9,7 @@ using System.Text;
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.CachedBitmapBenchmark;
 
 [Overlay(Name = "CB Benchmark",
-Description = "Benches Drawing.",
+Description = "Benches Drawing.\nThe benchmark rendering happens off-screen, lower times are better times.",
 OverlayType = OverlayType.Pitwall,
 Version = 1.00,
 Authors = ["Reinier Klarenberg"])]

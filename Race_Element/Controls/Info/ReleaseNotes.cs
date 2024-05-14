@@ -6,6 +6,8 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.8.6", "- Internal optimizations to rendering."+
+                    "\n- Added hud to benchmark rendering optimizations (Pitwall->CB Benchmark)."},
         {"1.0.8.4", "- Fuel Info HUD: Added option to set which laptime is used in the fuel calculation."+
                     "\n- Damage HUD: Added additional colors for various amounts of damage."+
                     "\n- Countless of internal optimizations."},
