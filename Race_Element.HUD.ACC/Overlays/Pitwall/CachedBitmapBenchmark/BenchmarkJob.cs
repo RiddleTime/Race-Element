@@ -12,7 +12,6 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.CachedBitmapBenchmark
 {
     internal sealed class BenchmarkJob(int actions, SmoothingMode smoothingMode, CompositingQuality compositingQuality, int drawingDimension) : AbstractLoopJob
     {
-        private readonly object _lock = new();
         public ConcurrentBag<double> _notCached = [];
         public ConcurrentBag<double> _cached = [];
 
@@ -37,7 +36,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.CachedBitmapBenchmark
                 RenderSomething(g, drawingDimension, drawingDimension, actions);
                 TimeSpan elapsed = sw.Elapsed;
                 sw.Stop();
-                lock (_lock) AddToBenchBag(elapsed, ref _notCached);
+                AddToBenchBag(elapsed, ref _notCached);
 
                 g.CompositingQuality = CompositingQuality.Default;
                 g.SmoothingMode = SmoothingMode.Default;
@@ -47,7 +46,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.CachedBitmapBenchmark
                 _benchmarkRenderCached.Draw(g);
                 TimeSpan elapsed2 = sw.Elapsed;
                 sw.Stop();
-                lock (_lock) AddToBenchBag(elapsed2, ref _cached);
+                AddToBenchBag(elapsed2, ref _cached);
             });
         }
 
