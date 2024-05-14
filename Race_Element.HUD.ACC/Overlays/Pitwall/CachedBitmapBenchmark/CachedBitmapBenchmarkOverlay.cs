@@ -55,10 +55,12 @@ internal sealed class CachedBitmapBenchmarkOverlay : AbstractOverlay
 
         if (_benchmarkJob._cached.Count > 2)
         {
+            List<double> cached = [.. _benchmarkJob._cached];
+            List<double> uncached = [.. _benchmarkJob._notCached];
             _panel.AddLine("", $"Smoothing: {_config.Bench.SmoothingMode}, Compositing: {_config.Bench.CompositingQuality}, IPS: {_config.Bench.IterationsPerSecond}");
             _panel.AddLine("", $"Iterations: {_benchmarkJob._notCached.Count} - Complexity: {_config.Bench.ComplexityIterations} - Size: {_config.Bench.DrawingDimension}");
-            _panel.AddLine("Raw MS", GetStats(_benchmarkJob._notCached));
-            _panel.AddLine("CB MS", GetStats(_benchmarkJob._cached));
+            _panel.AddLine("Raw MS", GetStats(uncached));
+            _panel.AddLine("CB MS", GetStats(cached));
             _panel.Draw(g);
         }
     }

@@ -2,6 +2,7 @@
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.Util.SystemExtensions;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -12,8 +13,8 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.CachedBitmapBenchmark
     internal sealed class BenchmarkJob(int actions, SmoothingMode smoothingMode, CompositingQuality compositingQuality, int drawingDimension) : AbstractLoopJob
     {
         private readonly object _lock = new();
-        public List<double> _notCached = [];
-        public List<double> _cached = [];
+        public ConcurrentBag<double> _notCached = [];
+        public ConcurrentBag<double> _cached = [];
 
         private CachedBitmap _cachedBitmap;
         private CachedBitmap _benchmarkRenderCached;
@@ -36,7 +37,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.CachedBitmapBenchmark
                 RenderSomething(g, drawingDimension, drawingDimension, actions);
                 TimeSpan elapsed = sw.Elapsed;
                 sw.Stop();
-                lock (_lock) AddToBenchList(elapsed, ref _notCached);
+                lock (_lock) AddToBenchBag(elapsed, ref _notCached);
 
                 g.CompositingQuality = CompositingQuality.Default;
                 g.SmoothingMode = SmoothingMode.Default;
@@ -46,7 +47,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.CachedBitmapBenchmark
                 _benchmarkRenderCached.Draw(g);
                 TimeSpan elapsed2 = sw.Elapsed;
                 sw.Stop();
-                lock (_lock) AddToBenchList(elapsed2, ref _cached);
+                lock (_lock) AddToBenchBag(elapsed2, ref _cached);
             });
         }
 
@@ -73,6 +74,6 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.CachedBitmapBenchmark
             }
         }
 
-        private static void AddToBenchList(TimeSpan t, ref List<double> list) => list.Add(t.TotalMilliseconds);
+        private static void AddToBenchBag(TimeSpan t, ref ConcurrentBag<double> bag) => bag.Add(t.TotalMilliseconds);
     }
 }
