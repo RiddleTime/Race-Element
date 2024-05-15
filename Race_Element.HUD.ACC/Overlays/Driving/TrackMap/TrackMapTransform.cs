@@ -1,16 +1,8 @@
 ﻿
 using System;
-using System.Drawing;
-
 using System.Collections.Generic;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
-
-public struct BoundingBox
-{
-    public float Left, Right;
-    public float Bottom, Top;
-}
 
 public class TrackMapTransform
 {

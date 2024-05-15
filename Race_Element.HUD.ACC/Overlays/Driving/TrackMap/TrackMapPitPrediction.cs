@@ -4,55 +4,17 @@ using System.Collections.Generic;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
-public class PitStop
-{
-    public TrackPoint Position;
-    public bool Damage;
-    public int Laps;
-}
-
 public class TrackMapPitPrediction
 {
-    private static readonly float DefaultPitTimeMs = 30_000;
-
-    private static readonly Dictionary<string, float> TrackPitLineTimeMs = new Dictionary<string, float>
-    {
-        { "barcelona"       , 30_000 },
-        { "bathurst"        , 19_000 },
-        { "brands_hatch"    , 19_000 },
-        { "cota"            , 29_000 },
-        { "donington"       , 19_000 },
-        { "hungaroring"     , 24_000 },
-        { "imola"           , 38_000 },
-        { "indianapolis"    , 44_000 },
-        { "kyalami"         , 18_000 },
-        { "laguna_seca"     , 21_000 },
-        { "misano"          , 28_000 },
-        { "monza"           , 31_000 },
-        { "nurburgring"     , 25_000 },
-        { "nurburgring_24h" , 25_000 },
-        { "oulton_park"     , 14_000 },
-        { "paul_ricard"     , 27_000 },
-        { "silverstone"     , 23_000 },
-        { "snetterton"      , 19_000 },
-        { "spa"             , 57_000 },
-        { "suzuka"          , 27_000 },
-        { "valencia"        , 27_000 },
-        { "watkins_glen"    , 27_000 },
-        { "zandvoort"       , 19_000 },
-        { "zolder"          , 30_000 },
-        { "mount_panorama"  , 25_000 },
-        { "red_bull_ring"   , 20_000 }
-    };
-
-    public static PitStop GetPitStop(List<TrackPoint> track)
+    public static PitStop GetPitStop(List<TrackPoint> track, float pitTimeMs)
     {
         var name = ACCSharedMemory.Instance.PageFileStatic.Track.ToLower();
-        float time = TrackPitLineTimeMs.GetValueOrDefault(name, 0.0f);
-        return ComputePitStop(track, DefaultPitTimeMs + time);
+        var info = TrackInfo.Data.GetValueOrDefault(name, new TrackInfo(0 , 0));
+
+        return ComputePitStop(track, pitTimeMs + info.PitLaneTimeMs);
     }
 
-    public static PitStop GetPitStopWithDamage(List<TrackPoint> track)
+    public static PitStop GetPitStopWithDamage(List<TrackPoint> track, float pitTimeMs)
     {
         var p = ACCSharedMemory.Instance.PageFilePhysics;
         var time = RaceElement.Data.ACC.Cars.Damage.GetTotalRepairTime(p);
@@ -63,9 +25,9 @@ public class TrackMapPitPrediction
         }
 
         var name = ACCSharedMemory.Instance.PageFileStatic.Track.ToLower();
-        var ms = TrackPitLineTimeMs.GetValueOrDefault(name, 0.0f);
+        var info = TrackInfo.Data.GetValueOrDefault(name, new TrackInfo(0, 0));
 
-        time = time * 1000 + DefaultPitTimeMs + ms;
+        time = time * 1000 + pitTimeMs + info.PitLaneTimeMs;
         var pitStop = ComputePitStop(track, time);
 
         if (pitStop != null)

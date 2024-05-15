@@ -5,56 +5,12 @@ using System.Drawing;
 using System;
 
 using System.Collections.Generic;
-using System.Linq;
 using RaceElement.Broadcast;
 
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
-
-class CarOnTrack
-{
-    public string RaceNumber;
-
-    public CarLocationEnum Location;
-    public TrackPoint Pos;
-
-    public bool IsValidForBest;
-    public bool IsValid;
-
-    public float Spline;
-    public int Position;
-    public int Kmh;
-
-    public int Delta;
-    public int Laps;
-    public int Id;
-}
-
-class CarRenderData
-{
-    public List<CarOnTrack> Cars = [];
-    public CarOnTrack Player;
-}
-
-class TrackMapCache
-{
-    public Bitmap OthersLappedPlayer;
-    public Bitmap PlayerLapperOthers;
-
-    public Bitmap CarDefault;
-    public Bitmap CarPlayer;
-
-    public Bitmap PitStopWithDamage;
-    public Bitmap PitStop;
-
-    public Bitmap ValidForBest;
-    public Bitmap Leader;
-
-    public Bitmap YellowFlag;
-    public Bitmap Map;
-}
 
 class TrackMapDrawer
 {
@@ -111,7 +67,7 @@ class TrackMapDrawer
         g.CompositingQuality = CompositingQuality.HighQuality;
 
         var sessionType = ACCSharedMemory.Instance.PageFileGraphic.SessionType;
-        using var font = FontUtil.FontSegoeMono(conf.General.FontSize);
+        using var font = FontUtil.FontSegoeMono(conf.Others.FontSize);
 
         foreach (var it in cars.Cars)
         {
@@ -129,10 +85,11 @@ class TrackMapDrawer
             DrawCarOnMap(it, bitmap, conf, g, font);
         }
 
-        if (conf.General.ShowPitStop)
+        if (conf.Pitstop.ShowPitStop)
         {
-            DrawPitStopOnMap(font, g, cache.PitStop, TrackMapPitPrediction.GetPitStop(track));
-            DrawPitStopOnMap(font, g, cache.PitStopWithDamage, TrackMapPitPrediction.GetPitStopWithDamage(track));
+            var pitTimeMs = (conf.Pitstop.FixedPitTime + conf.Pitstop.PitAdditionalTime) * 1000;
+            DrawPitStopOnMap(font, g, cache.PitStop, TrackMapPitPrediction.GetPitStop(track, pitTimeMs));
+            DrawPitStopOnMap(font, g, cache.PitStopWithDamage, TrackMapPitPrediction.GetPitStopWithDamage(track, pitTimeMs));
         }
 
         if (cars.Player != null)

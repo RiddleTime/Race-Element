@@ -9,25 +9,17 @@ internal sealed class TrackMapConfiguration : OverlayConfiguration
     public GeneralGrouping General { get; init; } = new();
     public sealed class GeneralGrouping
     {
-        [ToolTip("Minimap max width")]
-        [FloatRange(200.0f, 500.0f, 1.0f, 1)]
-        public float MaxWidth { get; init; } = 350f;
+        [ToolTip("Map scale factor")]
+        [FloatRange(0.1f, 1.0f, 0.05f, 2)]
+        public float ScaleFactor { get; init; } = 0.4f;
 
         [ToolTip("Map lines thickness")]
         [FloatRange(1.0f, 10.0f, 0.1f, 1)]
         public float Thickness { get; init; } = 2.0f;
 
-        [ToolTip("Rotation in degrees")]
+        [ToolTip("Map rotation in degrees")]
         [FloatRange(-360.0f, 360.0f, 1.0f, 1)]
         public float Rotation { get; init; } = -90.0f;
-
-        [ToolTip("Car size on the map")]
-        [FloatRange(5.0f, 32.0f, 1.0f, 1)]
-        public float CarSize { get; init; } = 15;
-
-        [ToolTip("Font size for car number")]
-        [FloatRange(5.0f, 32.0f, 1.0f, 1)]
-        public float FontSize { get; init; } = 10;
 
         [ToolTip("Lapped distance threshold in meters")]
         [FloatRange(0, 500, 1.0f, 1)]
@@ -37,18 +29,44 @@ internal sealed class TrackMapConfiguration : OverlayConfiguration
         [IntRange(0, 50, 1)]
         public int KmhThreshold { get; init; } = 45;
 
+        [ToolTip("Show Cars number")]
+        public bool ShowCarNumber { get; init; } = true;
+    }
+
+    [ConfigGrouping("Pitstop", "Pit stop options")]
+    public PitstopGrouping Pitstop { get; init; } = new();
+    public sealed class PitstopGrouping
+    {
+        [ToolTip("Show pit stop on map")]
+        public bool ShowPitStop { get; init; } = true;
+
+        [ToolTip("Fixed pit time in seconds (default game is 30 seconds)")]
+        [IntRange(0, 120, 1)]
+        public int FixedPitTime { get; init; } = 30;
+
+        [ToolTip("Additional pit time in seconds (pit lane entry/exit/errors/etc)")]
+        [IntRange(0, 120, 1)]
+        public int PitAdditionalTime { get; init; } = 5;
+    }
+
+    [ConfigGrouping("Other", "Other options")]
+    public OthersGrouping Others { get; init; } = new();
+    public sealed class OthersGrouping
+    {
         [ToolTip("Refresh interval (times per second)")]
         [IntRange(8, 24, 1)]
         public int RefreshInterval { get; init; } = 18;
 
+        [ToolTip("Font size for car number")]
+        [FloatRange(5.0f, 32.0f, 1.0f, 1)]
+        public float FontSize { get; init; } = 10;
+
+        [ToolTip("Car size on the map")]
+        [FloatRange(5.0f, 32.0f, 1.0f, 1)]
+        public float CarSize { get; init; } = 15;
+
         [ToolTip("Save map preview (Race Element directory -> Tracks)")]
         public bool SavePreview { get; init; } = false;
-
-        [ToolTip("Show Cars number")]
-        public bool ShowCarNumber { get; init; } = true;
-
-        [ToolTip("Show pit stop on map")]
-        public bool ShowPitStop { get; init; } = true;
     }
 
     [ConfigGrouping("Colors", "Colors options")]
