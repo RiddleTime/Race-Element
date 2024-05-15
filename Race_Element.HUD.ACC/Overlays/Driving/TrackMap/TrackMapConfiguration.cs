@@ -11,7 +11,7 @@ internal sealed class TrackMapConfiguration : OverlayConfiguration
     {
         [ToolTip("Map scale factor")]
         [FloatRange(0.1f, 1.0f, 0.05f, 2)]
-        public float ScaleFactor { get; init; } = 0.4f;
+        public float ScaleFactor { get; init; } = 0.3f;
 
         [ToolTip("Map lines thickness")]
         [FloatRange(1.0f, 10.0f, 0.1f, 1)]
@@ -63,7 +63,7 @@ internal sealed class TrackMapConfiguration : OverlayConfiguration
 
         [ToolTip("Car size on the map")]
         [FloatRange(5.0f, 32.0f, 1.0f, 1)]
-        public float CarSize { get; init; } = 15;
+        public float CarSize { get; init; } = 10;
 
         [ToolTip("Save map preview (Race Element directory -> Tracks)")]
         public bool SavePreview { get; init; } = false;
