@@ -1,16 +1,103 @@
-﻿using System.Drawing;
-using System.Collections.Generic;
-
-using System;
+﻿using System;
 using System.IO;
+using System.Drawing;
 using System.Threading;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 using RaceElement.Core.Jobs.LoopJob;
 using RaceElement.Data.ACC.Core;
 using RaceElement.Util;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
+
+public class TrackPoint
+{
+    private float _x, _y, _spline;
+    private float _deltaTime, _kmh;
+    private float _accX, _accY, _accZ;
+
+    public TrackPoint()
+    {
+        _x = 0;
+        _y = 0;
+        _spline = 0;
+
+        _kmh = 0;
+        _deltaTime = 0;
+
+        _accX = 0;
+        _accY = 0;
+        _accZ = 0;
+    }
+
+    public TrackPoint(TrackPoint other)
+    {
+        _x = other._x;
+        _y = other._y;
+        _spline = other._spline;
+
+        _kmh = other._kmh;
+        _deltaTime = other._deltaTime;
+
+        _accX = other._accX;
+        _accY = other._accY;
+        _accZ = other._accZ;
+    }
+
+    public float X
+    {
+        get => _x;
+        set => _x = value;
+    }
+
+    public float Y
+    {
+        get => _y;
+        set => _y = value;
+    }
+
+    public float Spline
+    {
+        get => _spline;
+        set => _spline = value;
+    }
+
+    public float DeltaTime
+    {
+        get => _deltaTime;
+        set => _deltaTime = value;
+    }
+
+    public float Kmh
+    {
+        get => _kmh;
+        set => _kmh = value;
+    }
+
+    public float AccX
+    {
+        get => _accX;
+        set => _accX = value;
+    }
+
+    public float AccY
+    {
+        get => _accY;
+        set => _accY = value;
+    }
+
+    public float AccZ
+    {
+        get => _accZ;
+        set => _accZ = value;
+    }
+
+    public PointF ToPointF()
+    {
+        return new PointF(_x, _y);
+    }
+}
 
 public class TrackMapCreationJob : AbstractLoopJob
 {
@@ -23,16 +110,17 @@ public class TrackMapCreationJob : AbstractLoopJob
         End
     }
 
-    public EventHandler<List<PointF>> OnMapPositionsCallback;
+    public EventHandler<List<TrackPoint>> OnMapPositionsCallback;
     public EventHandler<string> OnMapProgressCallback;
 
-    private readonly List<PointF> _trackedPositions;
+    private readonly List<TrackPoint> _trackedPositions;
     private CreationState _mapTrackingState;
 
     private int _completedLaps;
     private int _prevPacketId;
 
     private float _trackingPercentage;
+    private DateTime _dateTime;
 
     public TrackMapCreationJob()
     {
@@ -108,6 +196,7 @@ public class TrackMapCreationJob : AbstractLoopJob
         if (laps != _completedLaps)
         {
             _completedLaps = laps;
+            _dateTime = DateTime.Now;
             return CreationState.TraceTrack;
         }
 
@@ -122,6 +211,7 @@ public class TrackMapCreationJob : AbstractLoopJob
         }
 
         var pageGraphics = ACCSharedMemory.Instance.PageFileGraphic;
+        var pagePhysics = ACCSharedMemory.Instance.PageFilePhysics;
 
         if (pageGraphics.PacketId == _prevPacketId)
         {
@@ -136,7 +226,6 @@ public class TrackMapCreationJob : AbstractLoopJob
         _trackingPercentage = pageGraphics.NormalizedCarPosition;
         _prevPacketId = pageGraphics.PacketId;
 
-
         if (!pageGraphics.IsValidLap)
         {
             _trackingPercentage = 0;
@@ -144,14 +233,30 @@ public class TrackMapCreationJob : AbstractLoopJob
             return CreationState.Start;
         }
 
-        for (int i = 0; i < pageGraphics.ActiveCars; ++i)
+        for (var i = 0; i < pageGraphics.ActiveCars; ++i)
         {
-            if (pageGraphics.CarIds[i] == pageGraphics.PlayerCarID)
+            if (pageGraphics.CarIds[i] != pageGraphics.PlayerCarID)
             {
-                var pos = pageGraphics.CarCoordinates[i];
-                _trackedPositions.Add(new PointF(pos.X, pos.Z));
-                break;
+               continue;
             }
+
+            TrackPoint pos = new()
+            {
+                X = pageGraphics.CarCoordinates[i].X,
+                Y = pageGraphics.CarCoordinates[i].Z,
+
+                Spline = pageGraphics.NormalizedCarPosition,
+                Kmh = pagePhysics.SpeedKmh,
+
+                AccX = pagePhysics.AccG[0],
+                AccY = pagePhysics.AccG[1],
+                AccZ = pagePhysics.AccG[2],
+
+                DeltaTime = (float)(DateTime.Now - _dateTime).TotalMilliseconds
+            };
+
+            _trackedPositions.Add(pos);
+            break;
         }
 
         if (pageGraphics.CompletedLaps != _completedLaps)
@@ -183,10 +288,18 @@ public class TrackMapCreationJob : AbstractLoopJob
                 OnMapProgressCallback?.Invoke(null, String.Format(msg, ((float)fileStream.Position / fileStream.Length) * 100.0f));
             }
 
-            PointF pos = new()
+            TrackPoint pos = new()
             {
                 X = binaryReader.ReadSingle(),
-                Y = binaryReader.ReadSingle()
+                Y = binaryReader.ReadSingle(),
+                Spline = binaryReader.ReadSingle(),
+
+                DeltaTime = binaryReader.ReadSingle(),
+                Kmh = binaryReader.ReadSingle(),
+
+                AccX = binaryReader.ReadSingle(),
+                AccY = binaryReader.ReadSingle(),
+                AccZ = binaryReader.ReadSingle()
             };
 
             _trackedPositions.Add(pos);
@@ -223,6 +336,14 @@ public class TrackMapCreationJob : AbstractLoopJob
 
             binaryWriter.Write(_trackedPositions[i].X);
             binaryWriter.Write(_trackedPositions[i].Y);
+            binaryWriter.Write(_trackedPositions[i].Spline);
+
+            binaryWriter.Write(_trackedPositions[i].DeltaTime);
+            binaryWriter.Write(_trackedPositions[i].Kmh);
+
+            binaryWriter.Write(_trackedPositions[i].AccX);
+            binaryWriter.Write(_trackedPositions[i].AccY);
+            binaryWriter.Write(_trackedPositions[i].AccZ);
         }
 
         binaryWriter.Close();

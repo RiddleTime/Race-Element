@@ -29,7 +29,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
     private TrackMapCache _mapCache = new();
 
     private TrackMapCreationJob _miniMapCreationJob;
-    private List<PointF> _trackPositions = [];
+    private List<TrackPoint> _trackPositions = [];
     private string _trackingProgress;
 
     private BoundingBox _trackOriginalBoundingBox;
@@ -69,7 +69,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
         _miniMapCreationJob = new TrackMapCreationJob()
         {
-            IntervalMillis = 4,
+            IntervalMillis = 1,
         };
 
         _miniMapCreationJob.OnMapPositionsCallback += OnMapPositionsCallback;
@@ -141,7 +141,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
         _miniMapCreationJob = new TrackMapCreationJob()
         {
-            IntervalMillis = 4,
+            IntervalMillis = 1,
         };
 
         _trackPositions.Clear();
@@ -156,7 +156,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         _trackingProgress = info;
     }
 
-    private void OnMapPositionsCallback(object sender, List<PointF> positions)
+    private void OnMapPositionsCallback(object sender, List<TrackPoint> positions)
     {
         _miniMapCreationJob.Cancel();
         _trackOriginalBoundingBox = TrackMapTransform.GetBoundingBox(positions);
@@ -177,7 +177,22 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             var y = track[i].Y - boundaries.Bottom + _margin * 0.5f;
             var x = track[i].X - boundaries.Left + _margin * 0.5f;
 
-            track[i] = new PointF(x, y);
+            TrackPoint tr = new()
+            {
+                X = x,
+                Y = y,
+
+                Spline = track[i].Spline,
+                Kmh = track[i].Kmh,
+
+                AccX = track[i].AccX,
+                AccY = track[i].AccY,
+                AccZ = track[i].AccZ,
+
+                DeltaTime = track[i].DeltaTime
+            };
+
+            track[i] = tr;
         }
 
         _trackBoundingBox = boundaries;
@@ -224,19 +239,22 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
             var x = it.Value.RealtimeCarUpdate.WorldPosX;
             var y = it.Value.RealtimeCarUpdate.WorldPosY;
+            var spline = it.Value.RealtimeCarUpdate.SplinePosition;
 
             car.Laps = it.Value.RealtimeCarUpdate.Laps;
-            car.Coord = new PointF(x, y);
+            car.Pos = new TrackPoint() { X = x, Y = y, Spline = spline };
             car.Id = it.Key;
 
             car.Spline = it.Value.RealtimeCarUpdate.SplinePosition;
+            car.Kmh = it.Value.RealtimeCarUpdate.Kmh;
+
             car.Location = it.Value.RealtimeCarUpdate.CarLocation;
             car.Position = it.Value.RealtimeCarUpdate.Position;
 
             {
-                car.Coord = TrackMapTransform.ScaleAndRotate(car.Coord, _trackOriginalBoundingBox, _scale, _config.General.Rotation);
-                car.Coord.Y = car.Coord.Y - _trackBoundingBox.Bottom + _margin * 0.5f;
-                car.Coord.X = car.Coord.X - _trackBoundingBox.Left + _margin * 0.5f;
+                car.Pos = TrackMapTransform.ScaleAndRotate(car.Pos, _trackOriginalBoundingBox, _scale, _config.General.Rotation);
+                car.Pos.Y = car.Pos.Y - _trackBoundingBox.Bottom + _margin * 0.5f;
+                car.Pos.X = car.Pos.X - _trackBoundingBox.Left + _margin * 0.5f;
             }
 
             if (car.Id == ACCSharedMemory.Instance.PageFileGraphic.PlayerCarID)

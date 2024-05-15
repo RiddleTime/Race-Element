@@ -14,7 +14,7 @@ public struct BoundingBox
 
 public class TrackMapTransform
 {
-    public static BoundingBox GetBoundingBox(List<PointF> positions)
+    public static BoundingBox GetBoundingBox(List<TrackPoint> positions)
     {
         BoundingBox result = new();
 
@@ -39,29 +39,30 @@ public class TrackMapTransform
         return result;
     }
 
-    public static PointF ScaleAndRotate(PointF point, BoundingBox boundaries, float scale, float rotation)
+    public static TrackPoint ScaleAndRotate(TrackPoint point, BoundingBox boundaries, float scale, float rotation)
     {
-        PointF pos = new();
+        TrackPoint pos = new(point);
         var rot = Double.DegreesToRadians(rotation);
 
         var centerX = (boundaries.Right + boundaries.Left) * 0.5f;
         var centerY = (boundaries.Top + boundaries.Bottom) * 0.5f;
 
-        pos.X = (point.X - centerX) * scale;
-        pos.Y = (point.Y - centerY) * scale;
+        var xScale = (point.X - centerX) * scale;
+        var yScale = (point.Y - centerY) * scale;
 
-        var x = pos.X * Math.Cos(rot) - pos.Y * Math.Sin(rot);
-        var y = pos.X * Math.Sin(rot) + pos.Y * Math.Cos(rot);
+        var xScaleAndRot = xScale * Math.Cos(rot) - yScale * Math.Sin(rot);
+        var yScaleAndRot = xScale * Math.Sin(rot) + yScale * Math.Cos(rot);
 
-        pos.X = (float)x;
-        pos.Y = (float)y;
+        pos.X = (float)xScaleAndRot;
+        pos.Y = (float)yScaleAndRot;
 
         return pos;
     }
 
-    public static List<PointF> ScaleAndRotate(List<PointF> positions, BoundingBox boundaries, float scale, float rotation)
+    public static List<TrackPoint> ScaleAndRotate(List<TrackPoint> positions, BoundingBox boundaries, float scale, float rotation)
     {
-        List<PointF> result = new();
+        List<TrackPoint> result = new();
+
         foreach (var it in positions)
         {
             var pos = ScaleAndRotate(it, boundaries, scale, rotation);

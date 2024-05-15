@@ -8,7 +8,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
 public class PitStop
 {
-    public PointF Position;
+    public TrackPoint Position;
     public bool Damage;
     public int Laps;
 }
@@ -47,14 +47,14 @@ public class TrackMapPitPrediction
         { "red_bull_ring"   , 20_000 }
     };
 
-    public static PitStop GetPitStop(List<PointF> track)
+    public static PitStop GetPitStop(List<TrackPoint> track)
     {
         var name = ACCSharedMemory.Instance.PageFileStatic.Track.ToLower();
         float time = TrackPitLineTimeMs.GetValueOrDefault(name, 0.0f);
         return ComputePitStop(track, DefaultPitTimeMs + time);
     }
 
-    public static PitStop GetPitStopWithDamage(List<PointF> track)
+    public static PitStop GetPitStopWithDamage(List<TrackPoint> track)
     {
         var p = ACCSharedMemory.Instance.PageFilePhysics;
         var time = RaceElement.Data.ACC.Cars.Damage.GetTotalRepairTime(p);
@@ -78,7 +78,7 @@ public class TrackMapPitPrediction
         return pitStop;
     }
 
-    private static PitStop ComputePitStop(List<PointF> track, float pitTime)
+    private static PitStop ComputePitStop(List<TrackPoint> track, float pitTime)
     {
         var pageFileGraphic = ACCSharedMemory.Instance.PageFileGraphic;
         var estimatedLapTime = pageFileGraphic.EstimatedLapTimeMillis;
@@ -93,11 +93,14 @@ public class TrackMapPitPrediction
         diffTime = diffTime >= 0 ? diffTime : estimatedLapTime + diffTime;
 
         var delta = diffTime / estimatedLapTime;
-        var trackPos = (int)(delta * track.Count);
+        TrackPoint pos = null;
+
+        try { pos = track.FirstOrDefault(x => Math.Abs(x.Spline - delta) < 0.0005); }
+        catch { return null; }
 
         var result = new PitStop
         {
-            Position = track[trackPos],
+            Position = pos,
             Laps = (int)(pitTime / pageFileGraphic.BestTimeMs)
         };
 

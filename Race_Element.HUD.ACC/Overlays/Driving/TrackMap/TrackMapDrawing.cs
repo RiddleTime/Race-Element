@@ -5,6 +5,7 @@ using System.Drawing;
 using System;
 
 using System.Collections.Generic;
+using System.Linq;
 using RaceElement.Broadcast;
 
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -17,7 +18,7 @@ class CarOnTrack
     public string RaceNumber;
 
     public CarLocationEnum Location;
-    public PointF Coord;
+    public TrackPoint Pos;
 
     public bool IsValidForBest;
     public bool IsValid;
@@ -77,7 +78,7 @@ class TrackMapDrawer
         return bitmap;
     }
 
-    public static Bitmap CreateLineFromPoints(Color color, float thickness, float margin, List<PointF> points, BoundingBox boundaries)
+    public static Bitmap CreateLineFromPoints(Color color, float thickness, float margin, List<TrackPoint> points, BoundingBox boundaries)
     {
         var w = Math.Sqrt(Math.Pow(boundaries.Right - boundaries.Left, 2)) + margin + 1.5;
         var h = Math.Sqrt(Math.Pow(boundaries.Bottom - boundaries.Top, 2)) + margin + 1.5;
@@ -91,11 +92,14 @@ class TrackMapDrawer
         g.TextRenderingHint = TextRenderingHint.AntiAlias;
         g.CompositingQuality = CompositingQuality.HighQuality;
 
-        g.DrawLines(new Pen(color, thickness), points.ToArray());
+        List<PointF> tmpTrack = new();
+        foreach (var it in points) tmpTrack.Add(new PointF(it.X, it.Y));
+
+        g.DrawLines(new Pen(color, thickness), tmpTrack.ToArray());
         return bitmap;
     }
 
-    public static Bitmap Draw(List<PointF> track, CarRenderData cars, TrackMapCache cache, TrackMapConfiguration conf, float trackMeters)
+    public static Bitmap Draw(List<TrackPoint> track, CarRenderData cars, TrackMapCache cache, TrackMapConfiguration conf, float trackMeters)
     {
         // TODO: prevent NullReferenceException when cache.Map is null
         var result = new Bitmap(cache.Map);
@@ -119,7 +123,7 @@ class TrackMapDrawer
             }
             else
             {
-                bitmap = GetOtherSessionCarBitmap(it, cache);
+                bitmap = GetOtherSessionCarBitmap(it, cache, conf);
             }
 
             DrawCarOnMap(it, bitmap, conf, g, font);
@@ -143,7 +147,7 @@ class TrackMapDrawer
     private static void DrawCarOnMap(CarOnTrack car, Bitmap bitmap, TrackMapConfiguration conf, Graphics g, Font font)
     {
         {
-            PointF pos = car.Coord;
+            PointF pos = car.Pos.ToPointF();
 
             pos.X -= bitmap.Width * 0.5f;
             pos.Y -= bitmap.Height * 0.5f;
@@ -155,7 +159,7 @@ class TrackMapDrawer
         {
             using SolidBrush pen = new(Color.FromArgb(100, Color.Black));
             var size = g.MeasureString(car.RaceNumber, font);
-            PointF pos = car.Coord;
+            PointF pos = car.Pos.ToPointF();
 
             pos.Y -= bitmap.Height * 0.5f + size.Height;
             pos.X -= bitmap.Width * 0.5f;
@@ -173,7 +177,7 @@ class TrackMapDrawer
         }
 
         {
-            PointF p = pitStop.Position;
+            PointF p = pitStop.Position.ToPointF();
 
             p.X -= bitmap.Width * 0.5f;
             p.Y -= bitmap.Height * 0.5f;
@@ -185,7 +189,7 @@ class TrackMapDrawer
             string symbol = pitStop.Damage ? "+" : "P";
             SizeF textSize = g.MeasureString(symbol, font);
 
-            var pos = pitStop.Position;
+            var pos = pitStop.Position.ToPointF();
             pos.X -= textSize.Width * 0.5f;
             pos.Y -= textSize.Height * 0.5f;
 
@@ -195,7 +199,7 @@ class TrackMapDrawer
         if (pitStop.Laps > 0)
         {
             using SolidBrush color = new(Color.FromArgb(100, Color.Black));
-            var pos = pitStop.Position;
+            var pos = pitStop.Position.ToPointF();
 
             var laps = pitStop.Laps.ToString();
             var size = g.MeasureString(laps, font);
@@ -261,7 +265,7 @@ class TrackMapDrawer
         return cache.CarDefault;
     }
 
-    private static Bitmap GetOtherSessionCarBitmap(CarOnTrack car, TrackMapCache cache)
+    private static Bitmap GetOtherSessionCarBitmap(CarOnTrack car, TrackMapCache cache, TrackMapConfiguration config)
     {
         if (car.Location != CarLocationEnum.Track)
         {
