@@ -24,6 +24,7 @@ class CarOnTrack
 
     public float Spline;
     public int Position;
+    public int Kmh;
 
     public int Delta;
     public int Laps;
@@ -50,6 +51,7 @@ class TrackMapCache
     public Bitmap ValidForBest;
     public Bitmap Leader;
 
+    public Bitmap YellowFlag;
     public Bitmap Map;
 }
 
@@ -213,6 +215,11 @@ class TrackMapDrawer
             return cache.CarDefault;
         }
 
+        if (other.Kmh < conf.General.KmhThreshold)
+        {
+            return cache.YellowFlag;
+        }
+
         if (other.Position == 1)
         {
             return cache.Leader;
@@ -259,6 +266,11 @@ class TrackMapDrawer
         if (car.Location != CarLocationEnum.Track)
         {
             return cache.CarDefault;
+        }
+
+        if (car.Kmh <= config.General.KmhThreshold)
+        {
+            return cache.YellowFlag;
         }
 
         if (!car.IsValid)

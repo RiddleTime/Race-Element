@@ -43,7 +43,9 @@ internal sealed class TrackMapOverlay : AbstractOverlay
     public TrackMapOverlay(Rectangle rectangle) : base(rectangle, "Track Map")
     {
         RefreshRateHz = _config.General.RefreshInterval;
+
         _mapCache.Map = null;
+        _mapCache.YellowFlag = TrackMapDrawer.CreateCircleWithOutline(Color.Yellow, _config.General.CarSize, _outLineBorder);
 
         _mapCache.OthersLappedPlayer = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.OthersLappedPlayer, _config.General.CarSize, _outLineBorder);
         _mapCache.PlayerLapperOthers = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.PlayerLappedOthers, _config.General.CarSize, _outLineBorder);

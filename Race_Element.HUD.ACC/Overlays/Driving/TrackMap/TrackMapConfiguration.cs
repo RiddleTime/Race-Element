@@ -33,6 +33,10 @@ internal sealed class TrackMapConfiguration : OverlayConfiguration
         [FloatRange(0, 500, 1.0f, 1)]
         public float LappedThreshold { get; init; } = 150;
 
+        [ToolTip("Cars going at less than X Km/h will appear in yellow")]
+        [IntRange(0, 50, 1)]
+        public int KmhThreshold { get; init; } = 45;
+
         [ToolTip("Refresh interval (times per second)")]
         [IntRange(8, 24, 1)]
         public int RefreshInterval { get; init; } = 18;
