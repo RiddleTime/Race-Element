@@ -198,23 +198,11 @@ class TrackMapDrawer
             // there is threshold for the distance between cars, we don't
             // want to take into account the distance the first lap.
         }
-        else if (playerTrackMeters == 0 || otherTrackMeters == 0)
-        {
-            if (playerLaps > otherLaps)
-            {
-                return cache.PlayerLapperOthers;
-            }
-
-            if (otherLaps > playerLaps)
-            {
-                return cache.OthersLappedPlayer;
-            }
-        }
-        else if (playerLaps >= otherLaps && (playerTrackMeters - otherTrackMeters) >= (trackMeters - conf.General.LappedThreshold))
+        else if ((playerTrackMeters - otherTrackMeters) >= (trackMeters - conf.General.LappedThreshold))
         {
             return cache.PlayerLapperOthers;
         }
-        else if (otherLaps >= playerLaps && (otherTrackMeters - playerTrackMeters) >= (trackMeters - conf.General.LappedThreshold))
+        else if ((otherTrackMeters - playerTrackMeters) >= (trackMeters - conf.General.LappedThreshold))
         {
             return cache.OthersLappedPlayer;
         }
