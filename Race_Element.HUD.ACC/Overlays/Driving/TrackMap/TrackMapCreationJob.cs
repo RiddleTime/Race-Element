@@ -99,6 +99,37 @@ public class TrackPoint
     }
 }
 
+public class TrackPointSplineComparator : IComparer<TrackPoint>
+{
+    private float _epsilon;
+
+    public TrackPointSplineComparator()
+    {
+        _epsilon = 0.0005f;
+    }
+
+    public TrackPointSplineComparator(float epsilon)
+    {
+        _epsilon = epsilon;
+    }
+
+    public int Compare(TrackPoint x, TrackPoint y)
+    {
+        if (x == null || y == null)
+        {
+            return 0;
+        }
+
+        var diff = x.Spline - y.Spline;
+        if (Math.Abs(diff) < _epsilon)
+        {
+            return 0;
+        }
+
+        return diff > 0 ? 1 : -1;
+    }
+}
+
 public class TrackMapCreationJob : AbstractLoopJob
 {
     private enum CreationState

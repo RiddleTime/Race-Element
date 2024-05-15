@@ -1,8 +1,6 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
@@ -86,6 +84,11 @@ public class TrackMapPitPrediction
 
         if (estimatedLapTime == Int32.MaxValue)
         {
+            estimatedLapTime = pageFileGraphic.BestTimeMs;
+        }
+
+        if (estimatedLapTime == Int32.MaxValue)
+        {
             return null;
         }
 
@@ -93,14 +96,16 @@ public class TrackMapPitPrediction
         diffTime = diffTime >= 0 ? diffTime : estimatedLapTime + diffTime;
 
         var delta = diffTime / estimatedLapTime;
-        TrackPoint pos = null;
+        var p = track.BinarySearch(new TrackPoint() { Spline = delta }, new TrackPointSplineComparator());
 
-        try { pos = track.FirstOrDefault(x => Math.Abs(x.Spline - delta) < 0.0005); }
-        catch { return null; }
+        if (p < 0)
+        {
+            return null;
+        }
 
         var result = new PitStop
         {
-            Position = pos,
+            Position = track[p],
             Laps = (int)(pitTime / pageFileGraphic.BestTimeMs)
         };
 
