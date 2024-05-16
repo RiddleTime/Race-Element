@@ -1,18 +1,18 @@
-﻿using System.Drawing.Drawing2D;
+﻿using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Drawing;
 using System;
 
-using System.Collections.Generic;
-using RaceElement.Broadcast;
 
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
+using RaceElement.Broadcast;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
-class TrackMapDrawer
+public static class TrackMapDrawer
 {
     public static Bitmap CreateCircleWithOutline(Color color, float diameter, float outLineSize)
     {

@@ -26,15 +26,15 @@ public class TrackMapCreationJob : AbstractLoopJob
     public EventHandler<string> OnMapProgressCallback;
 
     private CreationState _mapTrackingState = CreationState.Start;
-    private readonly List<TrackPoint> _trackedPositions = new();
+    private readonly List<TrackPoint> _trackedPositions = [];
 
     private int _completedLaps = ACCSharedMemory.Instance.PageFileGraphic.CompletedLaps;
     private int _prevPacketId = ACCSharedMemory.Instance.PageFileGraphic.PacketId;
 
-    private float _trackingPercentage = 0;
+    private float _trackingPercentage;
 
-    private readonly short _version = 1;
-    private readonly byte[] _magic = { (byte)'r', (byte)'e', (byte)'t', (byte)'m' };
+    private const short Version = 1;
+    private readonly byte[] _magic = [ (byte)'r', (byte)'e', (byte)'t', (byte)'m' ];
 
     public override void RunAction()
     {
@@ -122,8 +122,6 @@ public class TrackMapCreationJob : AbstractLoopJob
         }
 
         var pageGraphics = ACCSharedMemory.Instance.PageFileGraphic;
-        var pagePhysics = ACCSharedMemory.Instance.PageFilePhysics;
-
         if (pageGraphics.PacketId == _prevPacketId)
         {
             return CreationState.TraceTrack;
@@ -180,16 +178,15 @@ public class TrackMapCreationJob : AbstractLoopJob
 
         var trackName = ACCSharedMemory.Instance.PageFileStatic.Track.ToLower();
         string path = FileUtil.RaceElementTracks + trackName + ".bin";
-        short version = 1;
 
         using FileStream fileStream = new(path, FileMode.Open, FileAccess.Read, FileShare.Read);
         using BinaryReader binaryReader = new(fileStream);
 
         {
-            var magic = binaryReader.ReadBytes(4);      // Magic number
-            version = binaryReader.ReadInt16();         // Version
-            var reserved01 = binaryReader.ReadInt32();  // Reserved 01 (future use)
-            var reserved02 = binaryReader.ReadInt32();  // Reserved 02 (future use)
+            var magic = binaryReader.ReadBytes(4);  // Magic number
+            binaryReader.ReadInt16();               // Version
+            binaryReader.ReadInt32();               // Reserved 01 (future use)
+            binaryReader.ReadInt32();               // Reserved 02 (future use)
 
             if (magic[0] != _magic[0] || magic[1] != _magic[1] || magic[2] != _magic[2] || magic[3] != _magic[3])
             {
@@ -245,7 +242,7 @@ public class TrackMapCreationJob : AbstractLoopJob
         using BinaryWriter binaryWriter = new(fileStream);
 
         binaryWriter.Write(_magic);     // Magic number
-        binaryWriter.Write(_version);   // Version
+        binaryWriter.Write(Version);   // Version
         binaryWriter.Write(0);          // Reserved 01 (future use)
         binaryWriter.Write(0);          // Reserved 02 (future use)
 

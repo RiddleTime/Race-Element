@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
-public class TrackMapTransform
+public static class TrackMapTransform
 {
     public static BoundingBox GetBoundingBox(List<TrackPoint> positions)
     {
@@ -12,8 +12,8 @@ public class TrackMapTransform
 
         if (positions.Count > 0)
         {
-            result.Right = positions[0].X;
             result.Left = positions[0].X;
+            result.Right = positions[0].X;
 
             result.Top = positions[0].Y;
             result.Bottom = positions[0].Y;
@@ -21,8 +21,8 @@ public class TrackMapTransform
 
         foreach (var it in positions)
         {
-            result.Right = Math.Max(result.Right, it.X);
             result.Left = Math.Min(result.Left, it.X);
+            result.Right = Math.Max(result.Right, it.X);
 
             result.Top = Math.Max(result.Top, it.Y);
             result.Bottom = Math.Min(result.Bottom, it.Y);

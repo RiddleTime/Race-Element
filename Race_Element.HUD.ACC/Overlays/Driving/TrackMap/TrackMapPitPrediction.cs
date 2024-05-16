@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
-public class TrackMapPitPrediction
+public static class TrackMapPitPrediction
 {
     public static PitStop GetPitStop(List<TrackPoint> track, float pitTimeMs)
     {
         var name = ACCSharedMemory.Instance.PageFileStatic.Track.ToLower();
-        var info = TrackInfo.Data.GetValueOrDefault(name, new TrackInfo(0 , 0));
+        var info = TrackInfo.Data.GetValueOrDefault(name, new TrackInfo(0, 0, 0));
 
         return ComputePitStop(track, pitTimeMs + info.PitLaneTimeMs);
     }
@@ -25,7 +25,7 @@ public class TrackMapPitPrediction
         }
 
         var name = ACCSharedMemory.Instance.PageFileStatic.Track.ToLower();
-        var info = TrackInfo.Data.GetValueOrDefault(name, new TrackInfo(0, 0));
+        var info = TrackInfo.Data.GetValueOrDefault(name, new TrackInfo(0, 0, 0));
 
         time = time * 1000 + pitTimeMs + info.PitLaneTimeMs;
         var pitStop = ComputePitStop(track, time);
@@ -43,11 +43,6 @@ public class TrackMapPitPrediction
         var pageFileGraphic = ACCSharedMemory.Instance.PageFileGraphic;
         var estimatedLapTime = pageFileGraphic.EstimatedLapTimeMillis;
         var currenTime = pageFileGraphic.CurrentTimeMs;
-
-        if (estimatedLapTime == Int32.MaxValue)
-        {
-            estimatedLapTime = pageFileGraphic.BestTimeMs;
-        }
 
         if (estimatedLapTime == Int32.MaxValue)
         {

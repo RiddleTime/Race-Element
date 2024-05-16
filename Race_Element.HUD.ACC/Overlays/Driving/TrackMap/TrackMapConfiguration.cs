@@ -3,19 +3,19 @@ using RaceElement.HUD.Overlay.Configuration;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
-internal sealed class TrackMapConfiguration : OverlayConfiguration
+public sealed class TrackMapConfiguration : OverlayConfiguration
 {
     [ConfigGrouping("General", "General options")]
     public GeneralGrouping General { get; init; } = new();
     public sealed class GeneralGrouping
     {
         [ToolTip("Map scale factor")]
-        [FloatRange(0.1f, 1.0f, 0.05f, 2)]
-        public float ScaleFactor { get; init; } = 0.3f;
+        [FloatRange(1.0f, 3.0f, 0.01f, 2)]
+        public float ScaleFactor { get; init; } = 1.0f;
 
         [ToolTip("Map lines thickness")]
         [FloatRange(1.0f, 10.0f, 0.1f, 1)]
-        public float Thickness { get; init; } = 2.0f;
+        public float Thickness { get; init; } = 3.0f;
 
         [ToolTip("Map rotation in degrees")]
         [FloatRange(-360.0f, 360.0f, 1.0f, 1)]
@@ -62,8 +62,8 @@ internal sealed class TrackMapConfiguration : OverlayConfiguration
         public float FontSize { get; init; } = 10;
 
         [ToolTip("Car size on the map")]
-        [FloatRange(5.0f, 32.0f, 1.0f, 1)]
-        public float CarSize { get; init; } = 10;
+        [FloatRange(12.0f, 32.0f, 1.0f, 1)]
+        public float CarSize { get; init; } = 12;
 
         [ToolTip("Save map preview (Race Element directory -> Tracks)")]
         public bool SavePreview { get; init; } = false;

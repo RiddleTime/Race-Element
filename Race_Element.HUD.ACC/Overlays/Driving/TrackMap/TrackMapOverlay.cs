@@ -11,8 +11,6 @@ using RaceElement.Util;
 
 using System.Collections.Generic;
 using System.Drawing;
-using System;
-using RaceElement.Data.Common.SimulatorData;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
@@ -27,7 +25,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 internal sealed class TrackMapOverlay : AbstractOverlay
 {
     private readonly TrackMapConfiguration _config = new();
-    private TrackMapCache _mapCache = new();
+    private readonly TrackMapCache _mapCache = new();
 
     private TrackMapCreationJob _miniMapCreationJob;
     private List<TrackPoint> _trackPositions = [];
@@ -40,10 +38,13 @@ internal sealed class TrackMapOverlay : AbstractOverlay
     private readonly float _margin = 64.0f;
 
     private float _trackLength;
+    private float _scale;
 
     public TrackMapOverlay(Rectangle rectangle) : base(rectangle, "Track Map")
     {
         RefreshRateHz = _config.Others.RefreshInterval;
+        _trackLength = 0.0f;
+        _scale = 0.15f;
 
         _mapCache.Map = null;
         _mapCache.YellowFlag = TrackMapDrawer.CreateCircleWithOutline(Color.Yellow, _config.Others.CarSize, _outLineBorder);
@@ -78,7 +79,10 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         _miniMapCreationJob.Run();
 
         RaceSessionTracker.Instance.OnNewSessionStarted += OnNewSessionStart;
-        _trackLength = TrackInfo.Data.GetValueOrDefault(pageStatic.Track.ToLower(), new TrackInfo(0, 0)).LengthMeters;
+
+        var trackInfo = TrackInfo.Data.GetValueOrDefault(pageStatic.Track.ToLower(), new TrackInfo(0, 0, 0));
+        _scale = trackInfo.Scale * _config.General.ScaleFactor;
+        _trackLength = trackInfo.LengthMeters;
     }
 
     public override void BeforeStop()
@@ -148,8 +152,11 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             IntervalMillis = 1,
         };
 
-        _trackLength = TrackInfo.Data.GetValueOrDefault(pageStatic.Track.ToLower(), new TrackInfo(0, 0)).LengthMeters;
         _trackPositions.Clear();
+        var trackInfo = TrackInfo.Data.GetValueOrDefault(pageStatic.Track.ToLower(), new TrackInfo(0, 0, 0));
+
+        _scale = trackInfo.Scale * _config.General.ScaleFactor;
+        _trackLength = trackInfo.LengthMeters;
 
         _miniMapCreationJob.OnMapPositionsCallback += OnMapPositionsCallback;
         _miniMapCreationJob.OnMapProgressCallback += OnMapProgressCallback;
@@ -166,7 +173,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         _miniMapCreationJob.Cancel();
         _trackOriginalBoundingBox = TrackMapTransform.GetBoundingBox(positions);
 
-        var track = TrackMapTransform.ScaleAndRotate(positions, _trackOriginalBoundingBox, _config.General.ScaleFactor, _config.General.Rotation);
+        var track = TrackMapTransform.ScaleAndRotate(positions, _trackOriginalBoundingBox, _scale, _config.General.Rotation);
         var boundaries = TrackMapTransform.GetBoundingBox(track);
 
         for (var i = 0; i < track.Count; ++i)
@@ -234,7 +241,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             car.Position = it.Value.RealtimeCarUpdate.Position;
 
             {
-                car.Pos = TrackMapTransform.ScaleAndRotate(car.Pos, _trackOriginalBoundingBox, _config.General.ScaleFactor, _config.General.Rotation);
+                car.Pos = TrackMapTransform.ScaleAndRotate(car.Pos, _trackOriginalBoundingBox, _scale, _config.General.Rotation);
                 car.Pos.Y = car.Pos.Y - _trackBoundingBox.Bottom + _margin * 0.5f;
                 car.Pos.X = car.Pos.X - _trackBoundingBox.Left + _margin * 0.5f;
             }
