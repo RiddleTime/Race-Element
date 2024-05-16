@@ -21,5 +21,7 @@ internal sealed class CachedBitmapBenchmarkConfiguration : OverlayConfiguration
 
         [IntRange(8, 256, 8)]
         public int DrawingDimension { get; init; } = 64;
+
+        public bool LogResults { get; init; } = true;
     }
 }

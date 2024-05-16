@@ -326,7 +326,7 @@ internal sealed class EntryListOverlay : AbstractOverlay
 
         }
 
-        string cupPosition = $"{kv.Value.RealtimeCarUpdate.CupPosition}";
+        string cupPosition = $"{kv.Value.RealtimeCarUpdate.Position}";    // changed to position, Cup position is working againt since start of May.
         TableRow row = new()
         {
             Header = $"{cupPosition}".FillStart(3, ' '),

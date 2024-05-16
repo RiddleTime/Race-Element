@@ -45,7 +45,7 @@ internal sealed class CachedBitmapBenchmarkOverlay : AbstractOverlay
     {
         if (IsPreviewing) return;
 
-        WriteBenchmarkResults();
+        if (_config.Bench.LogResults) WriteBenchmarkResults();
 
         _benchmarkJob?.CancelJoin();
     }
