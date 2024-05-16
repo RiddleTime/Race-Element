@@ -106,8 +106,10 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         if (_trackingProgress != null && _trackPositions.Count == 0)
         {
             using var font = FontUtil.FontSegoeMono(_config.Others.FontSize);
+            using SolidBrush pen = new(Color.FromArgb(100, Color.Black));
             var size = g.MeasureString(_trackingProgress, font);
 
+            g.FillRectangle(pen, 0, 0, size.Width, size.Height);
             g.DrawStringWithShadow(_trackingProgress, font, Color.White, new PointF());
 
             if ((int)size.Width != Width || (int)size.Height != Height)
@@ -172,22 +174,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             var y = track[i].Y - boundaries.Bottom + _margin * 0.5f;
             var x = track[i].X - boundaries.Left + _margin * 0.5f;
 
-            TrackPoint tr = new()
-            {
-                X = x,
-                Y = y,
-
-                Spline = track[i].Spline,
-                Kmh = track[i].Kmh,
-
-                AccX = track[i].AccX,
-                AccY = track[i].AccY,
-                AccZ = track[i].AccZ,
-
-                DeltaTime = track[i].DeltaTime
-            };
-
-            track[i] = tr;
+            track[i] = new(track[i]) { X = x, Y = y };
         }
 
         _trackBoundingBox = boundaries;

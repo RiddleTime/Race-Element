@@ -44,7 +44,7 @@ internal sealed class TrackMapConfiguration : OverlayConfiguration
         [IntRange(0, 120, 1)]
         public int FixedPitTime { get; init; } = 30;
 
-        [ToolTip("Additional pit time in seconds (pit lane entry/exit/errors/etc)")]
+        [ToolTip("Additional pit time in seconds (pit lane entry/exit, errors, etc)")]
         [IntRange(0, 120, 1)]
         public int PitAdditionalTime { get; init; } = 5;
     }

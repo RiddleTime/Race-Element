@@ -5,13 +5,13 @@ using System.Collections.Generic;
 using RaceElement.Broadcast;
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
-public struct BoundingBox
+public class BoundingBox
 {
     public float Left, Right;
     public float Bottom, Top;
 }
 
-class CarOnTrack
+public class CarOnTrack
 {
     public string RaceNumber;
 
@@ -30,13 +30,13 @@ class CarOnTrack
     public int Id;
 }
 
-class CarRenderData
+public class CarRenderData
 {
     public List<CarOnTrack> Cars = [];
     public CarOnTrack Player;
 }
 
-class TrackMapCache
+public class TrackMapCache
 {
     public Bitmap OthersLappedPlayer;
     public Bitmap PlayerLapperOthers;
@@ -57,21 +57,12 @@ class TrackMapCache
 public class TrackPoint
 {
     private float _x, _y, _spline;
-    private float _deltaTime, _kmh;
-    private float _accX, _accY, _accZ;
 
     public TrackPoint()
     {
         _x = 0;
         _y = 0;
         _spline = 0;
-
-        _kmh = 0;
-        _deltaTime = 0;
-
-        _accX = 0;
-        _accY = 0;
-        _accZ = 0;
     }
 
     public TrackPoint(TrackPoint other)
@@ -79,13 +70,6 @@ public class TrackPoint
         _x = other._x;
         _y = other._y;
         _spline = other._spline;
-
-        _kmh = other._kmh;
-        _deltaTime = other._deltaTime;
-
-        _accX = other._accX;
-        _accY = other._accY;
-        _accZ = other._accZ;
     }
 
     public float X
@@ -104,36 +88,6 @@ public class TrackPoint
     {
         get => _spline;
         set => _spline = value;
-    }
-
-    public float DeltaTime
-    {
-        get => _deltaTime;
-        set => _deltaTime = value;
-    }
-
-    public float Kmh
-    {
-        get => _kmh;
-        set => _kmh = value;
-    }
-
-    public float AccX
-    {
-        get => _accX;
-        set => _accX = value;
-    }
-
-    public float AccY
-    {
-        get => _accY;
-        set => _accY = value;
-    }
-
-    public float AccZ
-    {
-        get => _accZ;
-        set => _accZ = value;
     }
 
     public PointF ToPointF()

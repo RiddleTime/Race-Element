@@ -18,31 +18,23 @@ public class TrackMapCreationJob : AbstractLoopJob
         TraceTrack,
         LoadFromFile,
         NotifySubscriber,
+        Error,
         End
     }
 
     public EventHandler<List<TrackPoint>> OnMapPositionsCallback;
     public EventHandler<string> OnMapProgressCallback;
 
-    private readonly List<TrackPoint> _trackedPositions;
-    private CreationState _mapTrackingState;
+    private CreationState _mapTrackingState = CreationState.Start;
+    private readonly List<TrackPoint> _trackedPositions = new();
 
-    private int _completedLaps;
-    private int _prevPacketId;
+    private int _completedLaps = ACCSharedMemory.Instance.PageFileGraphic.CompletedLaps;
+    private int _prevPacketId = ACCSharedMemory.Instance.PageFileGraphic.PacketId;
 
-    private float _trackingPercentage;
-    private DateTime _dateTime;
+    private float _trackingPercentage = 0;
 
-    public TrackMapCreationJob()
-    {
-        _mapTrackingState = CreationState.Start;
-        _trackedPositions = new();
-
-        _completedLaps = ACCSharedMemory.Instance.PageFileGraphic.CompletedLaps;
-        _prevPacketId = ACCSharedMemory.Instance.PageFileGraphic.PacketId;
-
-        _trackingPercentage = 0;
-    }
+    private readonly short _version = 1;
+    private readonly byte[] _magic = { (byte)'r', (byte)'e', (byte)'t', (byte)'m' };
 
     public override void RunAction()
     {
@@ -75,6 +67,12 @@ public class TrackMapCreationJob : AbstractLoopJob
                 _mapTrackingState = CreationState.End;
             } break;
 
+            case CreationState.Error:
+            {
+                Thread.Sleep(10 * 1000);
+                _mapTrackingState = CreationState.Start;
+            } break;
+
             default:
             {
                 OnMapProgressCallback?.Invoke(null, null);
@@ -95,7 +93,10 @@ public class TrackMapCreationJob : AbstractLoopJob
         }
 
         {
-            const string msg = "Tracking state -> waiting for lap counter to change.";
+            const string msg = "Tracking state -> waiting for lap counter to change.\n"
+                               + "For a better mapping we recommend to drive at\n"
+                               + "constant speed by enabling pit speed limiter,\n"
+                               + "and at the center of the track.";
             OnMapProgressCallback?.Invoke(null, msg);
         }
 
@@ -107,7 +108,6 @@ public class TrackMapCreationJob : AbstractLoopJob
         if (laps != _completedLaps)
         {
             _completedLaps = laps;
-            _dateTime = DateTime.Now;
             return CreationState.TraceTrack;
         }
 
@@ -155,15 +155,7 @@ public class TrackMapCreationJob : AbstractLoopJob
             {
                 X = pageGraphics.CarCoordinates[i].X,
                 Y = pageGraphics.CarCoordinates[i].Z,
-
                 Spline = pageGraphics.NormalizedCarPosition,
-                Kmh = pagePhysics.SpeedKmh,
-
-                AccX = pagePhysics.AccG[0],
-                AccY = pagePhysics.AccG[1],
-                AccZ = pagePhysics.AccG[2],
-
-                DeltaTime = (float)(DateTime.Now - _dateTime).TotalMilliseconds
             };
 
             _trackedPositions.Add(pos);
@@ -188,9 +180,30 @@ public class TrackMapCreationJob : AbstractLoopJob
 
         var trackName = ACCSharedMemory.Instance.PageFileStatic.Track.ToLower();
         string path = FileUtil.RaceElementTracks + trackName + ".bin";
+        short version = 1;
 
         using FileStream fileStream = new(path, FileMode.Open, FileAccess.Read, FileShare.Read);
         using BinaryReader binaryReader = new(fileStream);
+
+        {
+            var magic = binaryReader.ReadBytes(4);      // Magic number
+            version = binaryReader.ReadInt16();         // Version
+            var reserved01 = binaryReader.ReadInt32();  // Reserved 01 (future use)
+            var reserved02 = binaryReader.ReadInt32();  // Reserved 02 (future use)
+
+            if (magic[0] != _magic[0] || magic[1] != _magic[1] || magic[2] != _magic[2] || magic[3] != _magic[3])
+            {
+                binaryReader.Close();
+                fileStream.Close();
+
+                {
+                    string msg = "Tracking state -> Corrupt map file. Delete the file and track again the track.\n" + path;
+                    OnMapProgressCallback?.Invoke(null, msg);
+                }
+
+                return CreationState.Error;
+            }
+        }
 
         while (fileStream.Position < fileStream.Length)
         {
@@ -204,13 +217,6 @@ public class TrackMapCreationJob : AbstractLoopJob
                 X = binaryReader.ReadSingle(),
                 Y = binaryReader.ReadSingle(),
                 Spline = binaryReader.ReadSingle(),
-
-                DeltaTime = binaryReader.ReadSingle(),
-                Kmh = binaryReader.ReadSingle(),
-
-                AccX = binaryReader.ReadSingle(),
-                AccY = binaryReader.ReadSingle(),
-                AccZ = binaryReader.ReadSingle()
             };
 
             _trackedPositions.Add(pos);
@@ -238,6 +244,11 @@ public class TrackMapCreationJob : AbstractLoopJob
         using FileStream fileStream = new(path, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
         using BinaryWriter binaryWriter = new(fileStream);
 
+        binaryWriter.Write(_magic);     // Magic number
+        binaryWriter.Write(_version);   // Version
+        binaryWriter.Write(0);          // Reserved 01 (future use)
+        binaryWriter.Write(0);          // Reserved 02 (future use)
+
         for (var i = 0; i < _trackedPositions.Count; ++i)
         {
             {
@@ -248,13 +259,6 @@ public class TrackMapCreationJob : AbstractLoopJob
             binaryWriter.Write(_trackedPositions[i].X);
             binaryWriter.Write(_trackedPositions[i].Y);
             binaryWriter.Write(_trackedPositions[i].Spline);
-
-            binaryWriter.Write(_trackedPositions[i].DeltaTime);
-            binaryWriter.Write(_trackedPositions[i].Kmh);
-
-            binaryWriter.Write(_trackedPositions[i].AccX);
-            binaryWriter.Write(_trackedPositions[i].AccY);
-            binaryWriter.Write(_trackedPositions[i].AccZ);
         }
 
         binaryWriter.Close();
