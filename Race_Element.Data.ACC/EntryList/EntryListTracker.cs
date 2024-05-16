@@ -92,10 +92,10 @@ public class EntryListTracker
         {
             try
             {
+                TimeSpan cleanupWaitTime = TimeSpan.FromSeconds(5);
                 while (_isRunning)
                 {
-                    const int waitTime = 5000;
-                    Thread.Sleep(waitTime);
+                    Thread.Sleep(cleanupWaitTime);
 
                     try
                     {
@@ -108,7 +108,7 @@ public class EntryListTracker
                                 continue;
                             }
 
-                            if (DateTime.UtcNow.Subtract(entry.Value.LastUpdate).TotalMilliseconds < waitTime)
+                            if (DateTime.UtcNow - entry.Value.LastUpdate < cleanupWaitTime)
                             {
                                 continue;
                             }
