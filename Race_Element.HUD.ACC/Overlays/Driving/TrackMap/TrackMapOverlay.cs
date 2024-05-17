@@ -76,13 +76,9 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
         _miniMapCreationJob.OnMapPositionsCallback += OnMapPositionsCallback;
         _miniMapCreationJob.OnMapProgressCallback += OnMapProgressCallback;
-        _miniMapCreationJob.Run();
 
         RaceSessionTracker.Instance.OnNewSessionStarted += OnNewSessionStart;
-
-        var trackInfo = TrackInfo.Data.GetValueOrDefault(pageStatic.Track.ToLower(), new TrackInfo(0, 0, 0));
-        _scale = trackInfo.Scale * _config.General.ScaleFactor;
-        _trackLength = trackInfo.LengthMeters;
+        _miniMapCreationJob.Run();
     }
 
     public override void BeforeStop()
@@ -152,14 +148,10 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             IntervalMillis = 1,
         };
 
-        _trackPositions.Clear();
-        var trackInfo = TrackInfo.Data.GetValueOrDefault(pageStatic.Track.ToLower(), new TrackInfo(0, 0, 0));
-
-        _scale = trackInfo.Scale * _config.General.ScaleFactor;
-        _trackLength = trackInfo.LengthMeters;
-
         _miniMapCreationJob.OnMapPositionsCallback += OnMapPositionsCallback;
         _miniMapCreationJob.OnMapProgressCallback += OnMapProgressCallback;
+
+        _trackPositions.Clear();
         _miniMapCreationJob.Run();
     }
 
@@ -170,6 +162,10 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     private void OnMapPositionsCallback(object sender, List<TrackPoint> positions)
     {
+        var trackInfo = TrackInfo.Data.GetValueOrDefault(pageStatic.Track.ToLower(), new TrackInfo(0, 0, 0));
+        _scale = trackInfo.Scale * _config.General.ScaleFactor;
+        _trackLength = trackInfo.LengthMeters;
+
         _miniMapCreationJob.Cancel();
         _trackOriginalBoundingBox = TrackMapTransform.GetBoundingBox(positions);
 
