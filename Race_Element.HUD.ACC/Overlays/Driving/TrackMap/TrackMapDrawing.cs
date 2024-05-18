@@ -119,7 +119,7 @@ public static class TrackMapDrawer
             PointF pos = car.Pos.ToPointF();
 
             pos.Y -= bitmap.Height * 0.5f + size.Height;
-            pos.X -= bitmap.Width * 0.5f;
+            pos.X -= size.Width * 0.5f;
 
             g.FillRectangle(pen, pos.X, pos.Y, size.Width, size.Height);
             g.DrawStringWithShadow(car.RaceNumber, font, new SolidBrush(Color.WhiteSmoke), pos);
