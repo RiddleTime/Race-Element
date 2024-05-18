@@ -56,7 +56,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         _mapCache.PitStop = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.PitStop, _config.Others.CarSize, _outLineBorder);
 
         _mapCache.CarDefault = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.Default, _config.Others.CarSize, _outLineBorder);
-        _mapCache.CarPlayer = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.Player, _config.Others.CarSize, _outLineBorder);
+        _mapCache.CarPlayer = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.Player, _config.Others.CarSize + 3, _outLineBorder);
 
         _mapCache.ValidForBest = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.ImprovingLap, _config.Others.CarSize, _outLineBorder);
         _mapCache.Leader = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.Leader, _config.Others.CarSize, _outLineBorder);
