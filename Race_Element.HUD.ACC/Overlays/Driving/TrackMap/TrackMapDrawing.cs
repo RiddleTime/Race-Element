@@ -1,59 +1,17 @@
-﻿using System.Drawing.Drawing2D;
+﻿using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Drawing;
 using System;
 
-using System.Collections.Generic;
-using RaceElement.Broadcast;
-
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
+using RaceElement.Broadcast;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
-class CarOnTrack
-{
-    public string RaceNumber;
-
-    public CarLocationEnum Location;
-    public PointF Coord;
-
-    public bool IsValidForBest;
-    public bool IsValid;
-
-    public float Spline;
-    public int Position;
-
-    public int Delta;
-    public int Laps;
-    public int Id;
-}
-
-class CarRenderData
-{
-    public List<CarOnTrack> Cars = [];
-    public CarOnTrack Player;
-}
-
-class TrackMapCache
-{
-    public Bitmap OthersLappedPlayer;
-    public Bitmap PlayerLapperOthers;
-
-    public Bitmap CarDefault;
-    public Bitmap CarPlayer;
-
-    public Bitmap PitStopWithDamage;
-    public Bitmap PitStop;
-
-    public Bitmap ValidForBest;
-    public Bitmap Leader;
-
-    public Bitmap Map;
-}
-
-class TrackMapDrawer
+public static class TrackMapDrawer
 {
     public static Bitmap CreateCircleWithOutline(Color color, float diameter, float outLineSize)
     {
@@ -69,13 +27,16 @@ class TrackMapDrawer
         g.TextRenderingHint = TextRenderingHint.AntiAlias;
         g.CompositingQuality = CompositingQuality.HighQuality;
 
-        g.FillEllipse(new SolidBrush(color), outLineSize * 0.5f, outLineSize * 0.5f, diameter, diameter);
-        g.DrawEllipse(new Pen(new SolidBrush(Color.FromArgb(200, 0, 0, 0)), outLineSize), outLineSize * 0.5f, outLineSize * 0.5f, diameter, diameter);
+        using SolidBrush backgroundBrush = new(color);
+        g.FillEllipse(backgroundBrush, outLineSize * 0.5f, outLineSize * 0.5f, diameter, diameter);
+        using SolidBrush outlineBrush = new(Color.FromArgb(200, 0, 0, 0));
+        using Pen outlinePen = new(outlineBrush, outLineSize);
+        g.DrawEllipse(outlinePen, outLineSize * 0.5f, outLineSize * 0.5f, diameter, diameter);
 
         return bitmap;
     }
 
-    public static Bitmap CreateLineFromPoints(Color color, float thickness, float margin, List<PointF> points, BoundingBox boundaries)
+    public static Bitmap CreateLineFromPoints(Color color, float thickness, float margin, List<TrackPoint> points, BoundingBox boundaries)
     {
         var w = Math.Sqrt(Math.Pow(boundaries.Right - boundaries.Left, 2)) + margin + 1.5;
         var h = Math.Sqrt(Math.Pow(boundaries.Bottom - boundaries.Top, 2)) + margin + 1.5;
@@ -89,11 +50,15 @@ class TrackMapDrawer
         g.TextRenderingHint = TextRenderingHint.AntiAlias;
         g.CompositingQuality = CompositingQuality.HighQuality;
 
-        g.DrawLines(new Pen(color, thickness), points.ToArray());
+        List<PointF> tmpTrack = [];
+        foreach (var it in points) tmpTrack.Add(new PointF(it.X, it.Y));
+
+        using Pen linePen = new(color, thickness);
+        g.DrawLines(linePen, tmpTrack.ToArray());
         return bitmap;
     }
 
-    public static Bitmap Draw(List<PointF> track, CarRenderData cars, TrackMapCache cache, TrackMapConfiguration conf, float trackMeters)
+    public static Bitmap Draw(List<TrackPoint> track, CarRenderData cars, TrackMapCache cache, TrackMapConfiguration conf, float trackMeters)
     {
         // TODO: prevent NullReferenceException when cache.Map is null
         var result = new Bitmap(cache.Map);
@@ -105,7 +70,7 @@ class TrackMapDrawer
         g.CompositingQuality = CompositingQuality.HighQuality;
 
         var sessionType = ACCSharedMemory.Instance.PageFileGraphic.SessionType;
-        using var font = FontUtil.FontSegoeMono(conf.General.FontSize);
+        using var font = FontUtil.FontSegoeMono(conf.Others.FontSize);
 
         foreach (var it in cars.Cars)
         {
@@ -117,16 +82,17 @@ class TrackMapDrawer
             }
             else
             {
-                bitmap = GetOtherSessionCarBitmap(it, cache);
+                bitmap = GetOtherSessionCarBitmap(it, cache, conf);
             }
 
             DrawCarOnMap(it, bitmap, conf, g, font);
         }
 
-        if (conf.General.ShowPitStop)
+        if (conf.Pitstop.ShowPitStop)
         {
-            DrawPitStopOnMap(font, g, cache.PitStop, TrackMapPitPrediction.GetPitStop(track));
-            DrawPitStopOnMap(font, g, cache.PitStopWithDamage, TrackMapPitPrediction.GetPitStopWithDamage(track));
+            var pitTimeMs = (conf.Pitstop.FixedPitTime + conf.Pitstop.PitAdditionalTime) * 1000;
+            DrawPitStopOnMap(font, g, cache.PitStop, TrackMapPitPrediction.GetPitStop(track, pitTimeMs));
+            DrawPitStopOnMap(font, g, cache.PitStopWithDamage, TrackMapPitPrediction.GetPitStopWithDamage(track, pitTimeMs));
         }
 
         if (cars.Player != null)
@@ -141,7 +107,7 @@ class TrackMapDrawer
     private static void DrawCarOnMap(CarOnTrack car, Bitmap bitmap, TrackMapConfiguration conf, Graphics g, Font font)
     {
         {
-            PointF pos = car.Coord;
+            PointF pos = car.Pos.ToPointF();
 
             pos.X -= bitmap.Width * 0.5f;
             pos.Y -= bitmap.Height * 0.5f;
@@ -153,13 +119,14 @@ class TrackMapDrawer
         {
             using SolidBrush pen = new(Color.FromArgb(100, Color.Black));
             var size = g.MeasureString(car.RaceNumber, font);
-            PointF pos = car.Coord;
+            PointF pos = car.Pos.ToPointF();
 
             pos.Y -= bitmap.Height * 0.5f + size.Height;
-            pos.X -= bitmap.Width * 0.5f;
+            pos.X -= size.Width * 0.5f;
 
             g.FillRectangle(pen, pos.X, pos.Y, size.Width, size.Height);
-            g.DrawStringWithShadow(car.RaceNumber, font, new SolidBrush(Color.WhiteSmoke), pos);
+            using SolidBrush textBrush = new(Color.WhiteSmoke);
+            g.DrawStringWithShadow(car.RaceNumber, font, textBrush, pos);
         }
     }
 
@@ -171,7 +138,7 @@ class TrackMapDrawer
         }
 
         {
-            PointF p = pitStop.Position;
+            PointF p = pitStop.Position.ToPointF();
 
             p.X -= bitmap.Width * 0.5f;
             p.Y -= bitmap.Height * 0.5f;
@@ -183,17 +150,17 @@ class TrackMapDrawer
             string symbol = pitStop.Damage ? "+" : "P";
             SizeF textSize = g.MeasureString(symbol, font);
 
-            var pos = pitStop.Position;
+            var pos = pitStop.Position.ToPointF();
             pos.X -= textSize.Width * 0.5f;
             pos.Y -= textSize.Height * 0.5f;
 
-            g.DrawStringWithShadow(symbol, font, new SolidBrush(Color.Black), pos);
+            using SolidBrush textBrush = new(Color.Black);
+            g.DrawStringWithShadow(symbol, font, textBrush, pos);
         }
 
         if (pitStop.Laps > 0)
         {
-            using SolidBrush color = new(Color.FromArgb(100, Color.Black));
-            var pos = pitStop.Position;
+            var pos = pitStop.Position.ToPointF();
 
             var laps = pitStop.Laps.ToString();
             var size = g.MeasureString(laps, font);
@@ -201,8 +168,10 @@ class TrackMapDrawer
             pos.Y -= bitmap.Height * 0.5f + size.Height;
             pos.X -= bitmap.Width * 0.5f;
 
-            g.FillRectangle(color, pos.X, pos.Y, size.Width, size.Height);
-            g.DrawStringWithShadow(laps, font, new SolidBrush(Color.WhiteSmoke), pos);
+            using SolidBrush backgroundBrush = new(Color.FromArgb(100, Color.Black));
+            g.FillRectangle(backgroundBrush, pos.X, pos.Y, size.Width, size.Height);
+            using SolidBrush textBrush = new(Color.WhiteSmoke);
+            g.DrawStringWithShadow(laps, font, textBrush, pos);
         }
     }
 
@@ -213,40 +182,28 @@ class TrackMapDrawer
             return cache.CarDefault;
         }
 
+        if (other.Kmh < conf.General.KmhThreshold)
+        {
+            return cache.YellowFlag;
+        }
+
         if (other.Position == 1)
         {
             return cache.Leader;
         }
 
-        var playerLaps = player.Laps;
-        var otherLaps = other.Laps;
+        var playerTrackMeters = player.Laps * trackMeters + player.Spline * trackMeters;
+        var otherTrackMeters = other.Laps * trackMeters + other.Spline * trackMeters;
 
-        var playerTrackMeters = playerLaps * trackMeters + player.Spline * trackMeters;
-        var otherTrackMeters = otherLaps * trackMeters + other.Spline * trackMeters;
+        var trackThreshold = trackMeters - conf.General.LappedThreshold;
+        var distanceDiff = playerTrackMeters - otherTrackMeters;
 
-        if (playerLaps == otherLaps && otherLaps == 0)
-        {
-            // NOTE(Andrei): This is just to avoid nested if. As currently
-            // there is threshold for the distance between cars, we don't
-            // want to take into account the distance the first lap.
-        }
-        else if (playerTrackMeters == 0 || otherTrackMeters == 0)
-        {
-            if (playerLaps > otherLaps)
-            {
-                return cache.PlayerLapperOthers;
-            }
-
-            if (otherLaps > playerLaps)
-            {
-                return cache.OthersLappedPlayer;
-            }
-        }
-        else if (playerLaps >= otherLaps && (playerTrackMeters - otherTrackMeters) >= (trackMeters - conf.General.LappedThreshold))
+        if (distanceDiff >= trackThreshold)
         {
             return cache.PlayerLapperOthers;
         }
-        else if (otherLaps >= playerLaps && (otherTrackMeters - playerTrackMeters) >= (trackMeters - conf.General.LappedThreshold))
+
+        if (Math.Abs(distanceDiff) >= trackThreshold)
         {
             return cache.OthersLappedPlayer;
         }
@@ -254,11 +211,16 @@ class TrackMapDrawer
         return cache.CarDefault;
     }
 
-    private static Bitmap GetOtherSessionCarBitmap(CarOnTrack car, TrackMapCache cache)
+    private static Bitmap GetOtherSessionCarBitmap(CarOnTrack car, TrackMapCache cache, TrackMapConfiguration config)
     {
         if (car.Location != CarLocationEnum.Track)
         {
             return cache.CarDefault;
+        }
+
+        if (car.Kmh <= config.General.KmhThreshold)
+        {
+            return cache.YellowFlag;
         }
 
         if (!car.IsValid)
