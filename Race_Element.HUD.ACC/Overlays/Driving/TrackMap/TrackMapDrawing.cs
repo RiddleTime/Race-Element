@@ -27,8 +27,11 @@ public static class TrackMapDrawer
         g.TextRenderingHint = TextRenderingHint.AntiAlias;
         g.CompositingQuality = CompositingQuality.HighQuality;
 
-        g.FillEllipse(new SolidBrush(color), outLineSize * 0.5f, outLineSize * 0.5f, diameter, diameter);
-        g.DrawEllipse(new Pen(new SolidBrush(Color.FromArgb(200, 0, 0, 0)), outLineSize), outLineSize * 0.5f, outLineSize * 0.5f, diameter, diameter);
+        using SolidBrush backgroundBrush = new(color);
+        g.FillEllipse(backgroundBrush, outLineSize * 0.5f, outLineSize * 0.5f, diameter, diameter);
+        using SolidBrush outlineBrush = new(Color.FromArgb(200, 0, 0, 0));
+        using Pen outlinePen = new(outlineBrush, outLineSize);
+        g.DrawEllipse(outlinePen, outLineSize * 0.5f, outLineSize * 0.5f, diameter, diameter);
 
         return bitmap;
     }
@@ -47,10 +50,11 @@ public static class TrackMapDrawer
         g.TextRenderingHint = TextRenderingHint.AntiAlias;
         g.CompositingQuality = CompositingQuality.HighQuality;
 
-        List<PointF> tmpTrack = new();
+        List<PointF> tmpTrack = [];
         foreach (var it in points) tmpTrack.Add(new PointF(it.X, it.Y));
 
-        g.DrawLines(new Pen(color, thickness), tmpTrack.ToArray());
+        using Pen linePen = new(color, thickness);
+        g.DrawLines(linePen, tmpTrack.ToArray());
         return bitmap;
     }
 
@@ -121,7 +125,8 @@ public static class TrackMapDrawer
             pos.X -= size.Width * 0.5f;
 
             g.FillRectangle(pen, pos.X, pos.Y, size.Width, size.Height);
-            g.DrawStringWithShadow(car.RaceNumber, font, new SolidBrush(Color.WhiteSmoke), pos);
+            using SolidBrush textBrush = new(Color.WhiteSmoke);
+            g.DrawStringWithShadow(car.RaceNumber, font, textBrush, pos);
         }
     }
 
@@ -149,12 +154,12 @@ public static class TrackMapDrawer
             pos.X -= textSize.Width * 0.5f;
             pos.Y -= textSize.Height * 0.5f;
 
-            g.DrawStringWithShadow(symbol, font, new SolidBrush(Color.Black), pos);
+            using SolidBrush textBrush = new(Color.Black);
+            g.DrawStringWithShadow(symbol, font, textBrush, pos);
         }
 
         if (pitStop.Laps > 0)
         {
-            using SolidBrush color = new(Color.FromArgb(100, Color.Black));
             var pos = pitStop.Position.ToPointF();
 
             var laps = pitStop.Laps.ToString();
@@ -163,8 +168,10 @@ public static class TrackMapDrawer
             pos.Y -= bitmap.Height * 0.5f + size.Height;
             pos.X -= bitmap.Width * 0.5f;
 
-            g.FillRectangle(color, pos.X, pos.Y, size.Width, size.Height);
-            g.DrawStringWithShadow(laps, font, new SolidBrush(Color.WhiteSmoke), pos);
+            using SolidBrush backgroundBrush = new(Color.FromArgb(100, Color.Black));
+            g.FillRectangle(backgroundBrush, pos.X, pos.Y, size.Width, size.Height);
+            using SolidBrush textBrush = new(Color.WhiteSmoke);
+            g.DrawStringWithShadow(laps, font, textBrush, pos);
         }
     }
 
