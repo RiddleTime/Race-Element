@@ -5,7 +5,6 @@ using System.Drawing.Text;
 using System.Drawing;
 using System;
 
-
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.Broadcast;
@@ -186,23 +185,18 @@ public static class TrackMapDrawer
             return cache.Leader;
         }
 
-        var playerLaps = player.Laps;
-        var otherLaps = other.Laps;
+        var playerTrackMeters = player.Laps * trackMeters + player.Spline * trackMeters;
+        var otherTrackMeters = other.Laps * trackMeters + other.Spline * trackMeters;
 
-        var playerTrackMeters = playerLaps * trackMeters + player.Spline * trackMeters;
-        var otherTrackMeters = otherLaps * trackMeters + other.Spline * trackMeters;
+        var trackThreshold = trackMeters - conf.General.LappedThreshold;
+        var distanceDiff = playerTrackMeters - otherTrackMeters;
 
-        if (playerLaps == otherLaps && otherLaps == 0)
-        {
-            // NOTE(Andrei): This is just to avoid nested if. As currently
-            // there is threshold for the distance between cars, we don't
-            // want to take into account the distance the first lap.
-        }
-        else if ((playerTrackMeters - otherTrackMeters) >= (trackMeters - conf.General.LappedThreshold))
+        if (distanceDiff >= trackThreshold)
         {
             return cache.PlayerLapperOthers;
         }
-        else if ((otherTrackMeters - playerTrackMeters) >= (trackMeters - conf.General.LappedThreshold))
+
+        if (Math.Abs(distanceDiff) >= trackThreshold)
         {
             return cache.OthersLappedPlayer;
         }
