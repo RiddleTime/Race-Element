@@ -133,7 +133,8 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         g.DrawImage(bitmap, 0, 0);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    #region Event Listeners
 
     private void OnNewSessionStart(object sender, DbRaceSession session)
     {
@@ -197,7 +198,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         _mapCache.Map.Save(path);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    #endregion
 
     private CarRenderData GetCarsOnTrack()
     {
