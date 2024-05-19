@@ -55,7 +55,7 @@ internal sealed class DamageOverlay : AbstractOverlay
     {
         pagePhysics.CarDamage[0] = 5;
         pagePhysics.CarDamage[1] = 20;
-        pagePhysics.CarDamage[2] = 70;
+        pagePhysics.CarDamage[2] = 94;
         pagePhysics.CarDamage[3] = 40;
 
         pagePhysics.SuspensionDamage[0] = 0.3f;
