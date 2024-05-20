@@ -205,7 +205,7 @@ internal sealed class EntryListOverlay : AbstractOverlay
                         {
                             if (broadCastRealTime.BestSessionLap != null)
                                 if (kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS == bestSessionLapMS)
-                                    firstRowColors[2] = Color.FromArgb(255, 207, 97, 255);
+                                    firstRowColors[1] = Color.FromArgb(255, 207, 97, 255);
 
                             TimeSpan fastestLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.LastLap.LaptimeMS.Value);
                             firstRow[1] = $"{fastestLapTime:mm\\:ss\\.fff}";
@@ -223,6 +223,18 @@ internal sealed class EntryListOverlay : AbstractOverlay
                                 float timeGapToAhead = GapTracker.Instance.TimeGapBetween(kv.Key, kv.Value.RealtimeCarUpdate.SplinePosition, carAhead.CarIndex);
                                 if (timeGapToAhead > 0)
                                     firstRow[2] = $"+{timeGapToAhead:F3}";
+
+                                if (kv.Value.RealtimeCarUpdate.CarLocation != CarLocationEnum.Pitlane)
+                                {
+                                    firstRowColors[2] = timeGapToAhead switch
+                                    {
+                                        <= .05f => Color.Red,
+                                        > .05f and <= .15f => Color.Orange,
+                                        > .15f and < .4f => Color.Yellow,
+
+                                        _ => Color.White,
+                                    }; ;
+                                }
                             }
                             else
                             {
@@ -452,6 +464,10 @@ internal sealed class EntryListOverlay : AbstractOverlay
                                         }
                                     }
 
+                                    if (aSpline > 0.9f || aSpline < 0.1f)
+                                    {
+                                        return a.Value.RealtimeCarUpdate.Position < b.Value.RealtimeCarUpdate.Position ? 1 : -1;
+                                    }
 
                                     float aPosition = aLaps + aSpline / 10;
                                     float bPosition = bLaps + bSpline / 10;

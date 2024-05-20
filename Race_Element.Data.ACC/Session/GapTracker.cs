@@ -21,7 +21,7 @@ public readonly record struct GapPointData
 
 internal static class GapTrackerConstants
 {
-    public const int GapDistanceMeter = 100;
+    public const int GapDistanceMeter = 50;
     public const int MeasuringInterval = 1000 / 100;
 }
 
