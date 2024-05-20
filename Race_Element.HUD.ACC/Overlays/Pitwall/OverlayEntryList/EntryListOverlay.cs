@@ -138,13 +138,17 @@ internal sealed class EntryListOverlay : AbstractOverlay
                     if (carAhead != null)
                     {
                         Car carCar = PositionGraph.Instance.GetCar(kv.Value.CarInfo.CarIndex);
-                        if (carCar != null && carCar != carAhead)
+                        if (kv.Value.RealtimeCarUpdate.Position != 1 && carCar != null && carCar != carAhead)
                         {
-                            if (kv.Value.RealtimeCarUpdate.Position != 1 && carAhead != null)
+                            var carAheadData = EntryListTracker.Instance.GetCarData(carAhead.CarIndex);
+                            if (kv.Value.RealtimeCarUpdate.Laps == carAheadData.RealtimeCarUpdate.Laps)
                             {
                                 float timeGapToAhead = GapTracker.Instance.TimeGapBetween(kv.Key, kv.Value.RealtimeCarUpdate.SplinePosition, carAhead.CarIndex);
                                 distanceText = $" +{timeGapToAhead:F3}";
-
+                            }
+                            else
+                            {
+                                distanceText = $"+{carAheadData.RealtimeCarUpdate.Laps - kv.Value.RealtimeCarUpdate.Laps}L";
                             }
                         }
 
