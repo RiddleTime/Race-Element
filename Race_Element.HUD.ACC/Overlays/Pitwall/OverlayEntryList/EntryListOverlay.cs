@@ -106,8 +106,19 @@ internal sealed class EntryListOverlay : AbstractOverlay
     public sealed override void Render(Graphics g)
     {
         // table titles
-
-        _table.AddRow("P", ["#    Driver", $"Previous", "Gap", "Lap| Turn"]);
+        switch (broadCastRealTime.SessionType)
+        {
+            case RaceSessionType.Race:
+                {
+                    _table.AddRow("P", ["#    Driver", $"Previous", "Interval", "Lap| Turn"]);
+                    break;
+                }
+            default:
+                {
+                    _table.AddRow("P", ["#    Driver", $"Previous", "Gap", "Lap| Turn"]);
+                    break;
+                }
+        }
 
         List<KeyValuePair<int, CarData>> cars = EntryListTracker.Instance.Cars;
 
@@ -210,15 +221,19 @@ internal sealed class EntryListOverlay : AbstractOverlay
                             if (kv.Value.RealtimeCarUpdate.Laps == carAheadData.RealtimeCarUpdate.Laps)
                             {
                                 float timeGapToAhead = GapTracker.Instance.TimeGapBetween(kv.Key, kv.Value.RealtimeCarUpdate.SplinePosition, carAhead.CarIndex);
-                                firstRow[2] = $"+{timeGapToAhead:F3}";
+                                if (timeGapToAhead > 0)
+                                    firstRow[2] = $"+{timeGapToAhead:F2}";
                             }
                             else
                             {
-                                firstRow[2] = $"+{carAheadData.RealtimeCarUpdate.Laps - kv.Value.RealtimeCarUpdate.Laps} Lap";
+                                var firstPostionCar = EntryListTracker.Instance.Cars.Where(x => x.Value.RealtimeCarUpdate.Position == 1).FirstOrDefault();
+                                if (firstPostionCar.Value != null)
+                                {
+                                    int lapDiff = firstPostionCar.Value.RealtimeCarUpdate.Laps - kv.Value.RealtimeCarUpdate.Laps;
+                                    firstRow[2] = $"+{lapDiff} Lap{(lapDiff > 1 ? "s" : "")}";
+                                }
                             }
                         }
-
-                        carAhead = PositionGraph.Instance.GetCar(kv.Value.CarInfo.CarIndex);
                     }
                     break;
                 }
@@ -235,6 +250,13 @@ internal sealed class EntryListOverlay : AbstractOverlay
 
                             TimeSpan fastestLapTime = TimeSpan.FromMilliseconds(kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.Value);
                             firstRow[1] = $"{fastestLapTime:mm\\:ss\\.fff}";
+
+                            var firstPostionCar = EntryListTracker.Instance.Cars.Where(x => x.Value.RealtimeCarUpdate.Position == 1).FirstOrDefault();
+                            if (firstPostionCar.Value != null && kv.Key != firstPostionCar.Key)
+                            {
+                                var timeDiff = TimeSpan.FromMilliseconds(firstPostionCar.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.Value).Subtract(fastestLapTime);
+                                firstRow[2] = $"+{timeDiff:s\\.fff}";
+                            }
                         }
                         else
                         {
@@ -384,10 +406,10 @@ internal sealed class EntryListOverlay : AbstractOverlay
                                         return 1;
 
 
-                                    if (a.Value.RealtimeCarUpdate.CupPosition == b.Value.RealtimeCarUpdate.CupPosition)
+                                    if (a.Value.RealtimeCarUpdate.Position == b.Value.RealtimeCarUpdate.Position)
                                         return a.Value.CarInfo.RaceNumber.CompareTo(b.Value.CarInfo.RaceNumber);
 
-                                    return a.Value.RealtimeCarUpdate.CupPosition.CompareTo(b.Value.RealtimeCarUpdate.CupPosition);
+                                    return a.Value.RealtimeCarUpdate.Position.CompareTo(b.Value.RealtimeCarUpdate.Position);
                                 });
                                 break;
                             }
@@ -403,9 +425,9 @@ internal sealed class EntryListOverlay : AbstractOverlay
 
                                     if (a.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane && b.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane)
                                     {
-                                        if (a.Value.RealtimeCarUpdate.CupPosition == b.Value.RealtimeCarUpdate.CupPosition)
+                                        if (a.Value.RealtimeCarUpdate.Position == b.Value.RealtimeCarUpdate.Position)
                                             return a.Value.CarInfo.RaceNumber.CompareTo(b.Value.CarInfo.RaceNumber);
-                                        return a.Value.RealtimeCarUpdate.CupPosition.CompareTo(b.Value.RealtimeCarUpdate.CupPosition);
+                                        return a.Value.RealtimeCarUpdate.Position.CompareTo(b.Value.RealtimeCarUpdate.Position);
                                     }
 
                                     Car carCarA = PositionGraph.Instance.GetCar(a.Value.CarInfo.CarIndex);
@@ -451,15 +473,15 @@ internal sealed class EntryListOverlay : AbstractOverlay
 
                         if (a.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane && b.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane)
                         {
-                            if (a.Value.RealtimeCarUpdate.CupPosition == b.Value.RealtimeCarUpdate.CupPosition)
+                            if (a.Value.RealtimeCarUpdate.Position == b.Value.RealtimeCarUpdate.Position)
                                 return a.Value.CarInfo.RaceNumber.CompareTo(b.Value.CarInfo.RaceNumber);
-                            return a.Value.RealtimeCarUpdate.CupPosition.CompareTo(b.Value.RealtimeCarUpdate.CupPosition);
+                            return a.Value.RealtimeCarUpdate.Position.CompareTo(b.Value.RealtimeCarUpdate.Position);
                         }
 
-                        if (a.Value.RealtimeCarUpdate.CupPosition == b.Value.RealtimeCarUpdate.CupPosition)
+                        if (a.Value.RealtimeCarUpdate.Position == b.Value.RealtimeCarUpdate.Position)
                             return a.Value.CarInfo.RaceNumber.CompareTo(b.Value.CarInfo.RaceNumber);
 
-                        return a.Value.RealtimeCarUpdate.CupPosition.CompareTo(b.Value.RealtimeCarUpdate.CupPosition);
+                        return a.Value.RealtimeCarUpdate.Position.CompareTo(b.Value.RealtimeCarUpdate.Position);
                     });
                     break;
                 }
