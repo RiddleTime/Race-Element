@@ -210,11 +210,11 @@ internal sealed class EntryListOverlay : AbstractOverlay
                             if (kv.Value.RealtimeCarUpdate.Laps == carAheadData.RealtimeCarUpdate.Laps)
                             {
                                 float timeGapToAhead = GapTracker.Instance.TimeGapBetween(kv.Key, kv.Value.RealtimeCarUpdate.SplinePosition, carAhead.CarIndex);
-                                firstRow[2] = $" +{timeGapToAhead:F3}";
+                                firstRow[2] = $"+{timeGapToAhead:F3}";
                             }
                             else
                             {
-                                firstRow[2] = $"+{carAheadData.RealtimeCarUpdate.Laps - kv.Value.RealtimeCarUpdate.Laps}L";
+                                firstRow[2] = $"+{carAheadData.RealtimeCarUpdate.Laps - kv.Value.RealtimeCarUpdate.Laps} Lap";
                             }
                         }
 

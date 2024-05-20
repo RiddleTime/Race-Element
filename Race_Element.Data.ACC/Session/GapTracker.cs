@@ -1,4 +1,5 @@
 ﻿using RaceElement.Core.Jobs.LoopJob;
+using RaceElement.Data.ACC.Core;
 using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.Tracker;
 using RaceElement.Util.SystemExtensions;
@@ -72,12 +73,9 @@ public sealed class GapTracker : AbstractLoopJob
 
     public override void RunAction()
     {
-        if (EntryListTracker.Instance.Cars.Count == 0)
+        if (EntryListTracker.Instance.Cars.Count == 0 || !AccProcess.IsRunning)
         {
-            if (GapData.IsEmpty)
-            {
-                GapData.Clear();
-            }
+            if (GapData.IsEmpty) GapData.Clear();
             return;
         }
 
