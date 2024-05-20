@@ -417,18 +417,11 @@ internal sealed class EntryListOverlay : AbstractOverlay
                             {
                                 cars.Sort((a, b) =>
                                 {
-                                    if (a.Value.CarInfo == null)
+                                    if (a.Value.CarInfo == null || b.Value.CarInfo == null)
                                         return -1;
 
-                                    if (b.Value.CarInfo == null)
+                                    if (a.Value.RealtimeCarUpdate.Laps > b.Value.RealtimeCarUpdate.Laps)
                                         return 1;
-
-                                    if (a.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane && b.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane)
-                                    {
-                                        if (a.Value.RealtimeCarUpdate.Position == b.Value.RealtimeCarUpdate.Position)
-                                            return a.Value.CarInfo.RaceNumber.CompareTo(b.Value.CarInfo.RaceNumber);
-                                        return a.Value.RealtimeCarUpdate.Position.CompareTo(b.Value.RealtimeCarUpdate.Position);
-                                    }
 
                                     Car carCarA = PositionGraph.Instance.GetCar(a.Value.CarInfo.CarIndex);
                                     Car carCarb = PositionGraph.Instance.GetCar(b.Value.CarInfo.CarIndex);
@@ -437,16 +430,24 @@ internal sealed class EntryListOverlay : AbstractOverlay
                                     if (carCarb == null) return 1;
 
                                     var aSpline = carCarA.SplinePosition;
-                                    if (a.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane || a.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.NONE)
+                                    if (a.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.NONE)
                                         aSpline = 0;
                                     var bSpline = carCarb.SplinePosition;
-                                    if (b.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane || b.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.NONE)
+                                    if (b.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.NONE)
                                         bSpline = 0;
-
 
 
                                     var aLaps = a.Value.RealtimeCarUpdate.Laps;
                                     var bLaps = b.Value.RealtimeCarUpdate.Laps;
+
+                                    if (a.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane && b.Value.RealtimeCarUpdate.CarLocation == CarLocationEnum.Pitlane)
+                                    {
+                                        if (aLaps == bLaps)
+                                        {
+                                            return a.Value.RealtimeCarUpdate.Position < b.Value.RealtimeCarUpdate.Position ? 1 : -1;
+                                        }
+                                    }
+
 
                                     float aPosition = aLaps + aSpline / 10;
                                     float bPosition = bLaps + bSpline / 10;
