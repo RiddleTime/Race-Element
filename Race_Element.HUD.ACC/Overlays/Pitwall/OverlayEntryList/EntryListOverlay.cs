@@ -107,7 +107,7 @@ internal sealed class EntryListOverlay : AbstractOverlay
     {
         // table titles
 
-        _table.AddRow("P", ["#    Driver", $"Previous", "Delta", "Lap| Turn"]);
+        _table.AddRow("P", ["#    Driver", $"Previous", "Gap", "Lap| Turn"]);
 
         List<KeyValuePair<int, CarData>> cars = EntryListTracker.Instance.Cars;
 
@@ -127,7 +127,7 @@ internal sealed class EntryListOverlay : AbstractOverlay
         {
             if (kv.Value.CarInfo != null)
             {
-                AddCarFirstRow(kv);
+                AddCarFirstRow(kv, carAhead);
 
                 if (_config.Entrylist.ExtendedData)
                 {
@@ -137,8 +137,7 @@ internal sealed class EntryListOverlay : AbstractOverlay
 
                     if (carAhead != null)
                     {
-                        Car carCar = PositionGraph.Instance.GetCar(kv.Value.CarInfo.CarIndex);
-                        if (kv.Value.RealtimeCarUpdate.Position != 1 && carCar != null && carCar != carAhead)
+                        if (kv.Value.RealtimeCarUpdate.Position != 1 && kv.Key != carAhead.CarIndex)
                         {
                             var carAheadData = EntryListTracker.Instance.GetCarData(carAhead.CarIndex);
                             if (kv.Value.RealtimeCarUpdate.Laps == carAheadData.RealtimeCarUpdate.Laps)
@@ -152,7 +151,6 @@ internal sealed class EntryListOverlay : AbstractOverlay
                             }
                         }
 
-                        carAhead = carCar;
                     }
 
                     string currentLap = "|----- NO LAP";
@@ -161,6 +159,8 @@ internal sealed class EntryListOverlay : AbstractOverlay
                         currentLap = kv.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.HasValue ? $"|----- {kv.Value.RealtimeCarUpdate.CurrentLap.LaptimeMS.Value / 1000}" : "|----- ";
                     _table.AddRow(String.Empty, [String.Empty, $"{distanceText}", speed, currentLap]);
                 }
+                carAhead = PositionGraph.Instance.GetCar(kv.Value.CarInfo.CarIndex);
+
             }
         }
 
@@ -169,7 +169,7 @@ internal sealed class EntryListOverlay : AbstractOverlay
         _table.Draw(g);
     }
 
-    private void AddCarFirstRow(KeyValuePair<int, CarData> kv)
+    private void AddCarFirstRow(KeyValuePair<int, CarData> kv, Car carAhead)
     {
         string[] firstRow = [String.Empty, String.Empty, String.Empty, String.Empty, String.Empty];
         Color[] firstRowColors = [Color.White, Color.White, Color.White, Color.White, Color.White];
@@ -201,6 +201,25 @@ internal sealed class EntryListOverlay : AbstractOverlay
                         }
                         else
                             firstRow[1] = $"--:--.---";
+
+                    if (carAhead != null)
+                    {
+                        if (kv.Value.RealtimeCarUpdate.Position != 1 && kv.Key != carAhead.CarIndex)
+                        {
+                            var carAheadData = EntryListTracker.Instance.GetCarData(carAhead.CarIndex);
+                            if (kv.Value.RealtimeCarUpdate.Laps == carAheadData.RealtimeCarUpdate.Laps)
+                            {
+                                float timeGapToAhead = GapTracker.Instance.TimeGapBetween(kv.Key, kv.Value.RealtimeCarUpdate.SplinePosition, carAhead.CarIndex);
+                                firstRow[2] = $" +{timeGapToAhead:F3}";
+                            }
+                            else
+                            {
+                                firstRow[2] = $"+{carAheadData.RealtimeCarUpdate.Laps - kv.Value.RealtimeCarUpdate.Laps}L";
+                            }
+                        }
+
+                        carAhead = PositionGraph.Instance.GetCar(kv.Value.CarInfo.CarIndex);
+                    }
                     break;
                 }
 
@@ -255,17 +274,17 @@ internal sealed class EntryListOverlay : AbstractOverlay
 
             case CarLocationEnum.Track:
                 {
-                    firstRow[2] = $"{kv.Value.RealtimeCarUpdate.Delta / 1000f:F2}".FillStart(6, ' ');
-                    firstRowColors[2] = kv.Value.RealtimeCarUpdate.Delta > 0 ? Color.OrangeRed : Color.LimeGreen;
+                    //firstRow[2] = $"{kv.Value.RealtimeCarUpdate.Delta / 1000f:F2}".FillStart(6, ' ');
+                    //firstRowColors[2] = kv.Value.RealtimeCarUpdate.Delta > 0 ? Color.OrangeRed : Color.LimeGreen;
 
-                    if (kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.HasValue && broadCastRealTime.BestSessionLap != null)
-                    {
-                        if (kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.Value + kv.Value.RealtimeCarUpdate.Delta < broadCastRealTime.BestSessionLap.LaptimeMS)
-                        {
-                            // purple if delta is faster than server best lap
-                            firstRowColors[2] = Color.FromArgb(255, 207, 97, 255);
-                        }
-                    }
+                    //if (kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.HasValue && broadCastRealTime.BestSessionLap != null)
+                    //{
+                    //    if (kv.Value.RealtimeCarUpdate.BestSessionLap.LaptimeMS.Value + kv.Value.RealtimeCarUpdate.Delta < broadCastRealTime.BestSessionLap.LaptimeMS)
+                    //    {
+                    //        // purple if delta is faster than server best lap
+                    //        firstRowColors[2] = Color.FromArgb(255, 207, 97, 255);
+                    //    }
+                    //}
 
                     firstRow[3] = $"L{kv.Value.RealtimeCarUpdate.Laps + 1} | ";
 
