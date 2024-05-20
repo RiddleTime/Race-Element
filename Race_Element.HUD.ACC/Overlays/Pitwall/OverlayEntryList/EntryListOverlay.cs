@@ -234,6 +234,10 @@ internal sealed class EntryListOverlay : AbstractOverlay
                                 }
                             }
                         }
+                        else
+                        {
+                            firstRow[2] = $"Lap {kv.Value.RealtimeCarUpdate.Laps}";
+                        }
                     }
                     break;
                 }
