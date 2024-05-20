@@ -84,7 +84,10 @@ public class InfoTable
             int valueWidth = (int)(totalWidth - this._maxHeaderWidth);
 
             if (DrawValueBackground)
-                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(80, Color.Black)), new Rectangle((int)_maxHeaderWidth + 5, Y, valueWidth - 4, rows.Length * this.Font.Height + (int)_yMono + 1), 4);
+            {
+                using SolidBrush backgroundBrush = new(Color.FromArgb(80, Color.Black));
+                g.FillRoundedRectangle(backgroundBrush, new Rectangle((int)_maxHeaderWidth + 5, Y, valueWidth - 4, rows.Length * this.Font.Height + (int)_yMono + 1), 4);
+            }
 
 
             while (counter < length)
@@ -93,13 +96,17 @@ public class InfoTable
                 float rowY = Y + counter * Font.Height;
 
                 if (row.HeaderBackground != Color.Transparent)
-                    g.FillRoundedRectangle(new SolidBrush(row.HeaderBackground), new Rectangle(X, (int)rowY, (int)_maxHeaderWidth + 5, Font.Height), 4);
+                {
+                    using SolidBrush backgroundBrush = new(row.HeaderBackground);
+                    g.FillRoundedRectangle(backgroundBrush, new Rectangle(X, (int)rowY, (int)_maxHeaderWidth + 5, Font.Height), 4);
+                }
 
                 if (DrawRowLines && counter > 0)
                 {
                     _cachedLine ??= new CachedBitmap(totalWidth - 2, 1, lg =>
                         {
-                            lg.DrawLine(new Pen(Color.FromArgb(42, Color.White)), new Point(1, 0), new Point(totalWidth - 1, 0));
+                            using Pen linePen = new(Color.FromArgb(42, Color.White));
+                            lg.DrawLine(linePen, new Point(1, 0), new Point(totalWidth - 1, 0));
                         });
 
                     _cachedLine.Draw(g, new Point(X + 1, (int)rowY));
