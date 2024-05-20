@@ -222,7 +222,7 @@ internal sealed class EntryListOverlay : AbstractOverlay
                             {
                                 float timeGapToAhead = GapTracker.Instance.TimeGapBetween(kv.Key, kv.Value.RealtimeCarUpdate.SplinePosition, carAhead.CarIndex);
                                 if (timeGapToAhead > 0)
-                                    firstRow[2] = $"+{timeGapToAhead:F2}";
+                                    firstRow[2] = $"+{timeGapToAhead:F3}";
                             }
                             else
                             {
