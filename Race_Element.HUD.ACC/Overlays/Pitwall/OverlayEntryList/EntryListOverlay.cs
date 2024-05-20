@@ -3,6 +3,7 @@ using RaceElement.Broadcast.Structs;
 using RaceElement.Data;
 using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.EntryList.TrackPositionGraph;
+using RaceElement.Data.ACC.Session;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -139,18 +140,11 @@ internal sealed class EntryListOverlay : AbstractOverlay
                         Car carCar = PositionGraph.Instance.GetCar(kv.Value.CarInfo.CarIndex);
                         if (carCar != null && carCar != carAhead)
                         {
-
-                            float carAheadDistance = 0;
-                            if (carAhead != null) carAheadDistance = carAhead.LapIndex * broadCastTrackData.TrackMeters + broadCastTrackData.TrackMeters * carAhead.SplinePosition;
-                            float carDistance = carCar.LapIndex * broadCastTrackData.TrackMeters + carCar.SplinePosition * broadCastTrackData.TrackMeters;
-
-                            if (carAheadDistance - carDistance < broadCastTrackData.TrackMeters)
+                            if (kv.Value.RealtimeCarUpdate.Position != 1 && carAhead != null)
                             {
-                                distanceText = $"+{carAheadDistance - carDistance:F0}".FillStart(4, ' ') + "m";
-                            }
-                            else
-                            {
-                                distanceText = $"+{carAhead.LapIndex - carCar.LapIndex} laps";
+                                float timeGapToAhead = GapTracker.Instance.TimeGapBetween(kv.Key, kv.Value.RealtimeCarUpdate.SplinePosition, carAhead.CarIndex);
+                                distanceText = $" +{timeGapToAhead:F3}";
+
                             }
                         }
 
