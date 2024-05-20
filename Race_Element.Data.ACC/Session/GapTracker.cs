@@ -30,19 +30,26 @@ public sealed class GapTracker : AbstractLoopJob
     private readonly ConcurrentDictionary<int, GapPointData[]> GapData = [];
     private int TotalGaps = 0;
 
-    public float TimeGapBetween(int currentCarIndex, float splineCurrent, int carAheadIndex)
+    public float TimeGapBetween(int currentCarIndex, float splineCurrent, int carAheadIndex, bool retry = false)
     {
+        if (TotalGaps <= 0) return -1;
         if (!GapData.TryGetValue(currentCarIndex, out GapPointData[] gapsA) || !GapData.TryGetValue(carAheadIndex, out GapPointData[] gapsB))
-            return 0;
+            return -1;
 
         int estimatedIndex = (int)(TotalGaps * splineCurrent);
-        estimatedIndex.ClipMax(TotalGaps - 1);
+        estimatedIndex.Clip(0, TotalGaps - 1);
         DateTime passedAtA = gapsA[estimatedIndex].PassedAt;
         DateTime passedAtB = gapsB[estimatedIndex].PassedAt;
         if (passedAtA == DateTime.MinValue || passedAtB == DateTime.MinValue)
-            return 0;
+            return -1;
         TimeSpan gap = passedAtA - passedAtB;
-        return (float)gap.TotalSeconds;
+        if (gap >= new TimeSpan(0))
+            return (float)gap.TotalSeconds;
+
+        if (retry)
+            return -1;
+        float splineGap = 1f / TotalGaps;
+        return TimeGapBetween(currentCarIndex, splineCurrent - splineGap, carAheadIndex, true);
     }
 
     public static readonly GapTracker Instance = new()
