@@ -68,7 +68,7 @@ internal sealed class EntryListOverlay : AbstractOverlay
 
         float fontSize = 9;
         var font = FontUtil.FontSegoeMono(fontSize);
-        _table = new InfoTable(fontSize, [(int)(font.Size * 18), (int)(font.Size * 9), (int)(font.Size * 8), (int)(font.Size * 30)]);
+        _table = new InfoTable(fontSize, [(int)(font.Size * 18), (int)(font.Size * 9), (int)(font.Size * 10), (int)(font.Size * 30)]);
 
         this.Width = 650;
         this.Height = 500;
