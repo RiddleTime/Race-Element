@@ -86,19 +86,19 @@ internal sealed class BrakeTempHistoryJob : AbstractLoopJob
     {
         if (_overlay.DefaultShouldRender())
         {
-            float[] pressures = _overlay.pagePhysics.WheelPressure;
+            float[] temperatures = _overlay.pagePhysics.BrakeTemperature;
 
-            bool pressureExists = false;
+            bool tempExists = false;
             for (int i = 0; i < 4; i++)
-                if (pressures[i] > 10)
+                if (temperatures[i] > 10)
                 {
-                    pressureExists = true;
+                    tempExists = true;
                     break;
                 }
-            if (!pressureExists) return;
+            if (!tempExists) return;
 
             for (int i = 0; i < 4; i++)
-                LapBrakeTemps[i].Add(pressures[i]);
+                LapBrakeTemps[i].Add(temperatures[i]);
         }
     }
 }
