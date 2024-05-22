@@ -231,24 +231,18 @@ internal sealed class BrakeTempHistoryOverlay : AbstractOverlay
 
     private CachedBitmap[] GetBackgroundSet(float temps, bool isFrontBrakes)
     {
-        if (isFrontBrakes)
-        {
-            return temps switch
-            {
-                > 700 => _columnBackgroundsRed,
-                < 250 => _columnBackgroundsBlue,
-                _ => _columnBackgrounds,
-            };
-        }
-        else
-        {
-            return temps switch
-            {
-                > 480 => _columnBackgroundsRed,
-                < 250 => _columnBackgroundsBlue,
-                _ => _columnBackgrounds,
-            };
-        }
-
+        return isFrontBrakes ?
+           temps switch
+           {
+               > 700 => _columnBackgroundsRed,
+               < 250 => _columnBackgroundsBlue,
+               _ => _columnBackgrounds,
+           }
+           : temps switch
+           {
+               > 480 => _columnBackgroundsRed,
+               < 250 => _columnBackgroundsBlue,
+               _ => _columnBackgrounds,
+           };
     }
 }
