@@ -1,5 +1,4 @@
 ﻿using RaceElement.Data.ACC.Cars;
-using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
@@ -8,7 +7,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 
-namespace RaceElement.HUD.ACC.Overlays.OverlayDamage;
+namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayDamage;
 
 [Overlay(Name = "Damage", Version = 1.00, OverlayType = OverlayType.Drive,
     Description = "Total repair time is displayed in the center.\nSuspension damage is displayed in percentages, whilst bodywork damage is displayed in repair time.",
@@ -18,21 +17,6 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDamage;
 internal sealed class DamageOverlay : AbstractOverlay
 {
     private readonly DamageConfiguration _config = new();
-    private sealed class DamageConfiguration : OverlayConfiguration
-    {
-        public DamageConfiguration() => GenericConfiguration.AllowRescale = true;
-
-        [ConfigGrouping("Damage", "Changes the behavior of the Damage HUD")]
-        public DamageGrouping Damage { get; init; } = new DamageGrouping();
-        public sealed class DamageGrouping
-        {
-            [ToolTip("Only show the HUD when there is actual damage on the car.")]
-            public bool AutoHide { get; set; } = true;
-
-            [ToolTip("Displays the total repair time in the center of the HUD with red colored text.")]
-            public bool TotalRepairTime { get; init; } = true;
-        }
-    }
 
     private struct PathShape
     {
@@ -71,7 +55,7 @@ internal sealed class DamageOverlay : AbstractOverlay
     {
         pagePhysics.CarDamage[0] = 5;
         pagePhysics.CarDamage[1] = 20;
-        pagePhysics.CarDamage[2] = 70;
+        pagePhysics.CarDamage[2] = 94;
         pagePhysics.CarDamage[3] = 40;
 
         pagePhysics.SuspensionDamage[0] = 0.3f;
@@ -303,13 +287,13 @@ internal sealed class DamageOverlay : AbstractOverlay
         _carOutline.Render();
     }
 
-    private static Color GetColorForBodyDamage(Color baseColor, float bodyDamage) => bodyDamage switch
+    private Color GetColorForBodyDamage(Color baseColor, float bodyDamage) => bodyDamage switch
     {
         <= 0 => baseColor,
-        > 0 and <= 5 => Color.Yellow,
-        > 5 and <= 10 => Color.Orange,
-        > 10 and <= 20 => Color.OrangeRed,
-        _ => Color.Red,
+        > 0 and <= 5 => _config.Colors.MinorColor,
+        > 5 and <= 10 => _config.Colors.LightColor,
+        > 10 and <= 20 => _config.Colors.MediumColor,
+        _ => _config.Colors.MajorColor,
     };
 
     private void UpdateSuspensionDamage()

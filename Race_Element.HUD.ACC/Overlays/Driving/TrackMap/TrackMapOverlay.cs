@@ -9,21 +9,10 @@ using RaceElement.HUD.Overlay.Util;
 using RaceElement.Broadcast;
 using RaceElement.Util;
 
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.Drawing.Text;
+using System.Collections.Generic;
 using System.Drawing;
 
-using System.Collections.Generic;
-using System;
-
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
-
-internal struct BoundingBox
-{
-    public float Left, Right;
-    public float Bottom, Top;
-}
 
 #if DEBUG
 [Overlay(Name = "Track Map",
@@ -35,15 +24,42 @@ internal struct BoundingBox
 #endif
 internal sealed class TrackMapOverlay : AbstractOverlay
 {
-    private  readonly TrackMapConfiguration _config = new();
-    private TrackMapCreationJob _miniMapCreationJob;
+    private readonly TrackMapConfiguration _config = new();
+    private readonly TrackMapCache _mapCache = new();
 
-    private readonly float _margin = 48.0f;
-    private List<PointF> _trackPositions = [];
+    private TrackMapCreationJob _miniMapCreationJob;
+    private List<TrackPoint> _trackPositions = [];
+    private string _trackingProgress;
+
+    private BoundingBox _trackOriginalBoundingBox;
+    private BoundingBox _trackBoundingBox;
+
+    private readonly float _outLineBorder = 2.0f;
+    private readonly float _margin = 64.0f;
+
+    private float _trackLength;
+    private float _scale;
 
     public TrackMapOverlay(Rectangle rectangle) : base(rectangle, "Track Map")
     {
-        RefreshRateHz = 6;
+        RefreshRateHz = _config.Others.RefreshInterval;
+        _trackLength = 0.0f;
+        _scale = 0.15f;
+
+        _mapCache.Map = null;
+        _mapCache.YellowFlag = TrackMapDrawer.CreateCircleWithOutline(Color.Yellow, _config.Others.CarSize, _outLineBorder);
+
+        _mapCache.OthersLappedPlayer = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.OthersLappedPlayer, _config.Others.CarSize, _outLineBorder);
+        _mapCache.PlayerLapperOthers = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.PlayerLappedOthers, _config.Others.CarSize, _outLineBorder);
+
+        _mapCache.PitStopWithDamage = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.PitStopWithDamage, _config.Others.CarSize, _outLineBorder);
+        _mapCache.PitStop = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.PitStop, _config.Others.CarSize, _outLineBorder);
+
+        _mapCache.CarDefault = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.Default, _config.Others.CarSize, _outLineBorder);
+        _mapCache.CarPlayer = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.Player, _config.Others.CarSize + 3, _outLineBorder);
+
+        _mapCache.ValidForBest = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.ImprovingLap, _config.Others.CarSize, _outLineBorder);
+        _mapCache.Leader = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.Leader, _config.Others.CarSize, _outLineBorder);
     }
 
     public override void BeforeStart()
@@ -55,13 +71,14 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
         _miniMapCreationJob = new TrackMapCreationJob()
         {
-            IntervalMillis = 4,
+            IntervalMillis = 1,
         };
 
         _miniMapCreationJob.OnMapPositionsCallback += OnMapPositionsCallback;
-        _miniMapCreationJob.Run();
+        _miniMapCreationJob.OnMapProgressCallback += OnMapProgressCallback;
 
         RaceSessionTracker.Instance.OnNewSessionStarted += OnNewSessionStart;
+        _miniMapCreationJob.Run();
     }
 
     public override void BeforeStop()
@@ -80,12 +97,32 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     public override bool ShouldRender()
     {
-        return base.ShouldRender() && _trackPositions != null;
+        var shouldRender = (_trackingProgress != null) || (_trackPositions.Count > 0 && EntryListTracker.Instance.Cars.Count > 0);
+        return base.ShouldRender() && shouldRender;
     }
 
     public override void Render(Graphics g)
     {
-        var bitmap = CreateBitmapForCarsAndTrack();
+        if (_trackingProgress != null && _trackPositions.Count == 0)
+        {
+            using var font = FontUtil.FontSegoeMono(_config.Others.FontSize);
+            using SolidBrush pen = new(Color.FromArgb(100, Color.Black));
+            var size = g.MeasureString(_trackingProgress, font);
+
+            g.FillRectangle(pen, 0, 0, size.Width, size.Height);
+            g.DrawStringWithShadow(_trackingProgress, font, Color.White, new PointF());
+
+            if ((int)size.Width != Width || (int)size.Height != Height)
+            {
+                Height = (int)size.Height;
+                Width = (int)size.Width;
+            }
+
+            return;
+        }
+
+        var carsOnTrack = GetCarsOnTrack();
+        var bitmap = TrackMapDrawer.Draw(_trackPositions, carsOnTrack, _mapCache, _config, _trackLength);
 
         if (bitmap.Width != Width || bitmap.Height != Height)
         {
@@ -93,10 +130,11 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             Width = bitmap.Width;
         }
 
-        g.DrawImage(CreateBitmapForCarsAndTrack(), 0, 0);
+        g.DrawImage(bitmap, 0, 0);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    #region Event Listeners
 
     private void OnNewSessionStart(object sender, DbRaceSession session)
     {
@@ -108,21 +146,47 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
         _miniMapCreationJob = new TrackMapCreationJob()
         {
-            IntervalMillis = 4,
+            IntervalMillis = 1,
         };
 
-        _trackPositions.Clear();
-
         _miniMapCreationJob.OnMapPositionsCallback += OnMapPositionsCallback;
+        _miniMapCreationJob.OnMapProgressCallback += OnMapProgressCallback;
+
+        _trackPositions.Clear();
         _miniMapCreationJob.Run();
     }
 
-    private void OnMapPositionsCallback(object sender, List<PointF> positions)
+    private void OnMapProgressCallback(object sender, string info)
     {
-        _miniMapCreationJob.Cancel();
-        _trackPositions = positions;
+        _trackingProgress = info;
+    }
 
-        if (!_config.Map.SavePreview)
+    private void OnMapPositionsCallback(object sender, List<TrackPoint> positions)
+    {
+        var trackInfo = TrackInfo.Data.GetValueOrDefault(pageStatic.Track.ToLower(), new TrackInfo(0, 0, 0));
+        _scale = trackInfo.Scale * _config.General.ScaleFactor;
+        _trackLength = trackInfo.LengthMeters;
+
+        _miniMapCreationJob.Cancel();
+        _trackOriginalBoundingBox = TrackMapTransform.GetBoundingBox(positions);
+
+        var track = TrackMapTransform.ScaleAndRotate(positions, _trackOriginalBoundingBox, _scale, _config.General.Rotation);
+        var boundaries = TrackMapTransform.GetBoundingBox(track);
+
+        for (var i = 0; i < track.Count; ++i)
+        {
+            var y = track[i].Y - boundaries.Bottom + _margin * 0.5f;
+            var x = track[i].X - boundaries.Left + _margin * 0.5f;
+
+            track[i] = new(track[i]) { X = x, Y = y };
+        }
+
+        _trackBoundingBox = boundaries;
+        _trackPositions = track;
+
+        _mapCache.Map = TrackMapDrawer.CreateLineFromPoints(_config.Colors.Map, _config.General.Thickness, _margin, _trackPositions, _trackBoundingBox);
+
+        if (!_config.Others.SavePreview)
         {
             return;
         }
@@ -130,125 +194,85 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         var pageFileStatic = ACCSharedMemory.Instance.PageFileStatic;
         if (pageFileStatic.Track.Length == 0) return;
 
-        var boundaries = GetBoundingBox(_trackPositions);
-        float w = (float)Math.Sqrt((boundaries.Right - boundaries.Left) * (boundaries.Right - boundaries.Left));
-
-        var track = ScaleAndRotate(_trackPositions, boundaries, _config.Map.MaxWidth / w, _config.Map.Rotation);
-        var minimap = CreateBitmapForCarsAndTrack(new List<PointF>(), track);
-
-        string path = FileUtil.RaceElementTracks + pageFileStatic.Track + ".jpg";
-        minimap.Save(path);
+        var path = FileUtil.RaceElementTracks + pageFileStatic.Track.ToLower() + ".jpg";
+        _mapCache.Map.Save(path);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    #endregion
 
-    private Bitmap CreateBitmapForCarsAndTrack()
+    private CarRenderData GetCarsOnTrack()
     {
-        var pageFileGraphic = ACCSharedMemory.Instance.PageFileGraphic;
-        var boundaries = GetBoundingBox(_trackPositions);
-        List<PointF> cars = new();
+        CarRenderData carsOnTrack = new();
 
-        for (int i = 0; i < pageFileGraphic.ActiveCars; ++i)
+        foreach (var it in EntryListTracker.Instance.Cars)
         {
-            float x = pageFileGraphic.CarCoordinates[i].X;
-            float y = pageFileGraphic.CarCoordinates[i].Z;
+            CarOnTrack car = new();
 
-            cars.Add(new PointF(x, y));
+            car.IsValidForBest = false;
+            car.IsValid = false;
+
+            if (it.Value.RealtimeCarUpdate.CurrentLap != null)
+            {
+                car.IsValidForBest = it.Value.RealtimeCarUpdate.CurrentLap.IsValidForBest;
+                car.IsValid = !it.Value.RealtimeCarUpdate.CurrentLap.IsInvalid;
+                car.Delta = it.Value.RealtimeCarUpdate.Delta;
+            }
+
+            if (it.Value.CarInfo != null)
+            {
+                car.RaceNumber = it.Value.CarInfo.RaceNumber.ToString();
+            }
+
+            var x = it.Value.RealtimeCarUpdate.WorldPosX;
+            var y = it.Value.RealtimeCarUpdate.WorldPosY;
+            var spline = it.Value.RealtimeCarUpdate.SplinePosition;
+
+            car.Laps = it.Value.RealtimeCarUpdate.Laps;
+            car.Pos = new TrackPoint() { X = x, Y = y, Spline = spline };
+            car.Id = it.Key;
+
+            car.Spline = it.Value.RealtimeCarUpdate.SplinePosition;
+            car.Kmh = it.Value.RealtimeCarUpdate.Kmh;
+
+            car.Location = it.Value.RealtimeCarUpdate.CarLocation;
+            car.Position = it.Value.RealtimeCarUpdate.Position;
+
+            {
+                car.Pos = TrackMapTransform.ScaleAndRotate(car.Pos, _trackOriginalBoundingBox, _scale, _config.General.Rotation);
+                car.Pos.Y = car.Pos.Y - _trackBoundingBox.Bottom + _margin * 0.5f;
+                car.Pos.X = car.Pos.X - _trackBoundingBox.Left + _margin * 0.5f;
+            }
+
+            if (car.Id == ACCSharedMemory.Instance.PageFileGraphic.PlayerCarID)
+            {
+                carsOnTrack.Player = car;
+            }
+            else
+            {
+                carsOnTrack.Cars.Add(car);
+            }
         }
 
-        float w = (float)Math.Sqrt((boundaries.Right - boundaries.Left) * (boundaries.Right - boundaries.Left));
-        float scale = _config.Map.MaxWidth / w;
-
-        var track = ScaleAndRotate(_trackPositions, boundaries, scale, _config.Map.Rotation);
-        cars = ScaleAndRotate(cars, boundaries, scale, _config.Map.Rotation);
-
-        return CreateBitmapForCarsAndTrack(cars, track);
-    }
-
-    private Bitmap CreateBitmapForCarsAndTrack(List<PointF> cars, List<PointF> track)
-    {
-        BoundingBox boundaries = GetBoundingBox(track);
-
-        for (int i = 0; i < cars.Count; ++i)
+        carsOnTrack.Cars.Sort((a, b) =>
         {
-            float x = cars[i].X - boundaries.Left + _margin * 0.5f;
-            float y = cars[i].Y - boundaries.Bottom + _margin * 0.5f;
+            if (a.Location != CarLocationEnum.Track && b.Location != CarLocationEnum.Track)
+            {
+                return 0;
+            }
 
-            cars[i] = new PointF(x, y);
-        }
+            if (a.Location != CarLocationEnum.Track)
+            {
+                return -1;
+            }
 
-        for (int i = 0; i < track.Count; ++i)
-        {
-            float x = track[i].X - boundaries.Left + _margin * 0.5f;
-            float y = track[i].Y - boundaries.Bottom + _margin * 0.5f;
+            if (b.Location != CarLocationEnum.Track)
+            {
+                return 1;
+            }
 
-            track[i] = new PointF(x, y);
-        }
+            return b.Position - a.Position;
+        });
 
-        var w = (float)Math.Sqrt((boundaries.Right - boundaries.Left) * (boundaries.Right - boundaries.Left));
-        var h = (float)Math.Sqrt((boundaries.Top - boundaries.Bottom) * (boundaries.Top - boundaries.Bottom));
-
-        TrackMapDrawing drawer = new();
-        drawer.SetDotSize(_config.Other.CarSize)
-            .SetFontSize(_config.Other.FontSize)
-            .SetMapThickness(_config.Map.Thickness)
-            .SetShowCarNumber(_config.Car.ShowCarNumber);
-
-        drawer.SetColorMap(_config.Map.Color)
-            .SetColorCarDefault(_config.Car.DefaultColor)
-            .SetColorPlayer(_config.Car.PlayerColor)
-            .SetColorOthersLappedPlayer(Color.DarkOrange)
-            .SetColorPlayerLappedOthers(Color.SteelBlue);
-
-        drawer.CreateBitmap(w, h, _margin);
-        return drawer.Draw(cars, track, broadCastTrackData);
-    }
-
-    private List<PointF> ScaleAndRotate(List<PointF> positions, BoundingBox boundaries, float scale, float rotation)
-    {
-        var rot = Double.DegreesToRadians(rotation);
-        var  centerX = (boundaries.Right + boundaries.Left) * 0.5f;
-        var  centerY = (boundaries.Top + boundaries.Bottom) * 0.5f;
-
-        List<PointF> result = new();
-        foreach (var it in positions)
-        {
-            PointF pos = new();
-
-            pos.X = (it.X - centerX) * scale;
-            pos.Y = (it.Y - centerY) * scale;
-
-            var x = pos.X * Math.Cos(rot) - pos.Y * Math.Sin(rot);
-            var y = pos.X * Math.Sin(rot) + pos.Y * Math.Cos(rot);
-
-            result.Add(new PointF((float)x, (float)y));
-        }
-
-        return result;
-    }
-
-    private BoundingBox GetBoundingBox(List<PointF> positions)
-    {
-        BoundingBox result = new();
-
-        if (positions.Count > 0)
-        {
-            result.Right = positions[0].X;
-            result.Left = positions[0].X;
-
-            result.Top = positions[0].Y;
-            result.Bottom = positions[0].Y;
-        }
-
-        foreach (var it in positions)
-        {
-            result.Right = Math.Max(result.Right, it.X);
-            result.Left = Math.Min(result.Left, it.X);
-
-            result.Top = Math.Max(result.Top, it.Y);
-            result.Bottom = Math.Min(result.Bottom, it.Y);
-        }
-
-        return result;
+        return carsOnTrack;
     }
 }

@@ -14,6 +14,7 @@ public class ACCTrackerDispose
         Debug.WriteLine("Safely disposing ACC Data Tracker instances");
         BroadcastTracker.Instance.Dispose();
         EntryListTracker.Instance.Stop();
+        GapTracker.Instance.CancelJoin();
 
         SetupHiderTracker.Instance.Dispose();
 
@@ -24,5 +25,6 @@ public class ACCTrackerDispose
         TyresTracker.Instance.Stop();
 
         RaceWeekendDatabase.Close();
+
     }
 }

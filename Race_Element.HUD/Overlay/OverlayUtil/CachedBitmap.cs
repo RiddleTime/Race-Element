@@ -17,6 +17,7 @@ public sealed class CachedBitmap : IDisposable
 
     private Bitmap _bitmap;
     private Renderer _renderer;
+    private System.Drawing.Imaging.CachedBitmap _internalCachedBitmap;
 
     /// <summary>
     /// Creates a cached bitmap using the given renderer
@@ -57,19 +58,22 @@ public sealed class CachedBitmap : IDisposable
 
     public void Render()
     {
-        _bitmap ??= new Bitmap(Width, Height, PixelFormat.Format32bppPArgb);
-
         lock (_lockObject)
         {
-            using Graphics g = Graphics.FromImage(_bitmap);
+            _bitmap ??= new Bitmap(Width, Height, PixelFormat.Format32bppPArgb);
+            _internalCachedBitmap?.Dispose();
 
+            using Graphics g = Graphics.FromImage(_bitmap);
             g.Clear(Color.Transparent);
+
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.CompositingQuality = CompositingQuality.GammaCorrected;
             g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+            g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
 
             _renderer(g);
+
+            _internalCachedBitmap = new(_bitmap, g);
         }
     }
 
@@ -103,13 +107,22 @@ public sealed class CachedBitmap : IDisposable
                 g.DrawImage(_bitmap, new Rectangle(x, y, width, height), 0, 0, Width, Height, GraphicsUnit.Pixel, imgAttribute);
             }
             else
-                g.DrawImage(_bitmap, x, y, width, height);
+            {
+                if (g.Transform.IsIdentity && width == Width && height == Height)
+                    g.DrawCachedBitmap(_internalCachedBitmap, x, y);
+                else
+                    g.DrawImage(_bitmap, new Rectangle(x, y, width, height));
+            }
         }
     }
 
     public void Dispose()
     {
-        lock (_lockObject) _bitmap?.Dispose();
+        lock (_lockObject)
+        {
+            _bitmap?.Dispose();
+            _internalCachedBitmap?.Dispose();
+        }
         GC.SuppressFinalize(this);
     }
 }

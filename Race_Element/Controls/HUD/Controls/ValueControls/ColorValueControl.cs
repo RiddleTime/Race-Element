@@ -67,45 +67,51 @@ internal sealed class ColorValueControl : IValueControl<System.Drawing.Color>
 
     private System.Drawing.Color FromToString(string value)
     {
-        if (value.Contains("#"))
+        try
         {
-            value = value.Replace("Color [", "");
-            value = value.Replace("]", "");
-            return (System.Drawing.Color)new System.Drawing.ColorConverter().ConvertFromString(value);
-        }
+            if (value.Contains("#") || (value.Contains("[") && !value.Contains("A=")))
+            {
+                string replacement = value.Replace("Color [", "");
+                replacement = replacement.Replace("]", "");
+                System.Drawing.Color color = (System.Drawing.Color)new System.Drawing.ColorConverter().ConvertFromString(replacement);
+                return color;
+            }
 
-        if (value.Contains("A") && value.Contains("R") && value.Contains("G") && value.Contains("B"))
-        {
-            try
+            if (value.Contains("A") && value.Contains("R") && value.Contains("G") && value.Contains("B"))
             {
-                int a = int.Parse(value.Split('A')[1].Split(',')[0].Replace("=", ""));
-                int r = int.Parse(value.Split('R')[1].Split(',')[0].Replace("=", ""));
-                int g = int.Parse(value.Split('G')[1].Split(',')[0].Replace("=", ""));
-                int b = int.Parse(value.Split('B')[1].Split(']')[0].Replace("=", ""));
-                return System.Drawing.Color.FromArgb(a, r, g, b);
+                try
+                {
+                    int a = int.Parse(value.Split('A')[1].Split(',')[0].Replace("=", ""));
+                    int r = int.Parse(value.Split('R')[1].Split(',')[0].Replace("=", ""));
+                    int g = int.Parse(value.Split('G')[1].Split(',')[0].Replace("=", ""));
+                    int b = int.Parse(value.Split('B')[1].Split(']')[0].Replace("=", ""));
+                    return System.Drawing.Color.FromArgb(a, r, g, b);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.StackTrace);
+                    return System.Drawing.Color.Red;
+                }
             }
-            catch (Exception e)
+            else
             {
-                Debug.WriteLine(e.StackTrace);
-                return System.Drawing.Color.Red;
+                try
+                {
+                    string[] split = value.Split(',');
+                    int r = int.Parse(split[0]);
+                    int g = int.Parse(split[1]);
+                    int b = int.Parse(split[2]);
+                    return System.Drawing.Color.FromArgb(255, r, g, b);
+                }
+                catch (Exception ea)
+                {
+                    Debug.WriteLine(ea);
+                    return System.Drawing.Color.Red;
+                }
             }
         }
-        else
-        {
-            try
-            {
-                string[] split = value.Split(',');
-                int r = int.Parse(split[0]);
-                int g = int.Parse(split[1]);
-                int b = int.Parse(split[2]);
-                return System.Drawing.Color.FromArgb(255, r, g, b);
-            }
-            catch (Exception ea)
-            {
-                Debug.WriteLine(ea);
-                return System.Drawing.Color.Red;
-            }
-        }
+        catch (Exception e) { Debug.WriteLine(e.StackTrace); }
+        return System.Drawing.Color.Red;
     }
 
     public void Save()

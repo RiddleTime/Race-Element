@@ -417,7 +417,7 @@ public partial class HudOptions : UserControl
                     OverlaysAcc.ActiveOverlays.RemoveAt(index);
                 Task.Run(() =>
                 {
-                    overlay?.Stop(true);
+                    overlay?.Stop();
                 });
                 configStacker.IsEnabled = true;
             }

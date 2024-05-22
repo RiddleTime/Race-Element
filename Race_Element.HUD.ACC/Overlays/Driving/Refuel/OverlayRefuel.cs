@@ -24,16 +24,16 @@ internal sealed class RefuelInfoOverlay : AbstractOverlay
     internal readonly OverlayRefuelConfiguration _config = new();
     
     // some solid and transparent color definitions
-    private SolidBrush _whiteBrush = new(Color.White);
-    private SolidBrush _blackBrush = new(Color.Black);
-    private SolidBrush _greenBrush = new (Color.FromArgb(255, 0, 255, 0));
-    private SolidBrush _redBrush = new (Color.FromArgb(255, 255, 0, 0));
+    private readonly SolidBrush _whiteBrush = new(Color.White);
+    private readonly SolidBrush _blackBrush = new(Color.Black);
+    private readonly SolidBrush _greenBrush = new (Color.FromArgb(255, 0, 255, 0));
+    private readonly SolidBrush _redBrush = new (Color.FromArgb(255, 255, 0, 0));
 
-    private SolidBrush _transparentWhite = new (Color.FromArgb(200, 255, 255, 255));
-    private SolidBrush _transparentOrange = new (Color.FromArgb(200, 255, 165, 0));
-    private SolidBrush _transparentGreen = new (Color.FromArgb(200, 0, 255, 0));
-    private SolidBrush _moreTransparentWhite = new (Color.FromArgb(100, 255, 255, 255));
-    private SolidBrush _transparentBackground = new (Color.FromArgb(100, 0, 0, 0));
+    private readonly SolidBrush _transparentWhite = new (Color.FromArgb(200, 255, 255, 255));
+    private readonly SolidBrush _transparentOrange = new (Color.FromArgb(200, 255, 165, 0));
+    private readonly SolidBrush _transparentGreen = new (Color.FromArgb(200, 0, 255, 0));
+    private readonly SolidBrush _moreTransparentWhite = new (Color.FromArgb(100, 255, 255, 255));
+    private readonly SolidBrush _transparentBackground = new (Color.FromArgb(100, 0, 0, 0));
 
     // some widget position and size values
     private const int _windowWidth = 410;

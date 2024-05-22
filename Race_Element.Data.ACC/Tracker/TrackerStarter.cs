@@ -16,6 +16,8 @@ public static class ACCTrackerStarter
             _ = RaceSessionTracker.Instance;
             _ = TyresTracker.Instance;
 
+            GapTracker.Instance.Run();
+
             Debug.WriteLine("Started ACC.Trackers");
         }).Start();
     }

@@ -53,9 +53,10 @@ internal sealed class GridTestOverlay : AbstractOverlay
             {
                 DrawableTextCell cell = new(new RectangleF(column * columnWidth, row * columnHeight, columnWidth, columnHeight), Font);
 
-                cell.CachedBackground = new CachedBitmap((int)cell.Rectangle.Width, (int)cell.Rectangle.Height, g =>
+                cell.CachedBackground = new((int)cell.Rectangle.Width, (int)cell.Rectangle.Height, g =>
                 {
-                    g.FillRectangle(new SolidBrush(Color.FromArgb(230 + rand.Next(25), rand.Next(185), rand.Next(75))), new Rectangle(0, 0, (int)cell.Rectangle.Width, (int)cell.Rectangle.Height));
+                    using SolidBrush brush = new(Color.FromArgb(230 + rand.Next(25), rand.Next(185), rand.Next(75)));
+                    g.FillRectangle(brush, new Rectangle(0, 0, (int)cell.Rectangle.Width, (int)cell.Rectangle.Height));
                 });
                 cell.CachedBackground.Opacity = (float)(rand.NextDouble() / 2 + 0.5d);
                 cell.UpdateText($"{rand.Next(10)}");
@@ -80,7 +81,11 @@ internal sealed class GridTestOverlay : AbstractOverlay
             {
                 DrawableTextCell cell = (DrawableTextCell)testgrid.Grid[row][column];
                 if (column == 0)
-                    cell.CachedBackground.SetRenderer(g => g.FillRectangle(new SolidBrush(Color.FromArgb(230 + rand.Next(25), rand.Next(185), rand.Next(75))), new Rectangle(0, 0, (int)cell.Rectangle.Width, (int)cell.Rectangle.Height)));
+                    cell.CachedBackground.SetRenderer(g =>
+                    {
+                        using SolidBrush brush = new(Color.FromArgb(230 + rand.Next(25), rand.Next(185), rand.Next(75)));
+                        g.FillRectangle(brush, new Rectangle(0, 0, (int)cell.Rectangle.Width, (int)cell.Rectangle.Height));
+                    });
                 else
                     cell.UpdateText($"{(rand.Next(50) == 1 ? 1 : 0)}");
             }
