@@ -198,7 +198,7 @@ internal sealed class TwitchChatBotCommandHandler
         if (lapsLocal == lapsOther)
         {
             float gap = GapTracker.Instance.TimeGapBetween(localCar.CarInfo.CarIndex, localCar.RealtimeCarUpdate.SplinePosition, otherCar.CarInfo.CarIndex);
-            if (gap == -1) return string.Empty;
+            if ((int)gap == -1) return string.Empty;
             sb.Append($"+{gap:F3}");
         }
         else
