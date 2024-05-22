@@ -147,14 +147,10 @@ internal sealed class TwitchChatBotCommandHandler
                         }
                         break;
                     }
-            };
+            }
         }
         else if (args.Length == 2)
         {
-            if (args[0] == "#")
-            {
-
-            }
             switch (args[0])
             {
                 case "#":
