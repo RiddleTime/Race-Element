@@ -24,7 +24,7 @@ internal sealed class BrakeTempHistoryOverlay : AbstractOverlay
     private readonly BrakeTempHistoryConfiguration _config = new();
 
     private BrakeTempHistoryJob _historyJob;
-    private readonly List<BrakeTempHistoryModel> _pressureHistory = [];
+    private readonly List<BrakeTempHistoryModel> _temperatureHistory = [];
 
     private GraphicsGrid _graphicsGrid;
     private Font _font;
@@ -43,7 +43,7 @@ internal sealed class BrakeTempHistoryOverlay : AbstractOverlay
 
     public override void SetupPreviewData()
     {
-        _pressureHistory.Add(new()
+        _temperatureHistory.Add(new()
         {
             Lap = 4,
             Min = [259f, 266f, 269f, 270f],
@@ -67,10 +67,10 @@ internal sealed class BrakeTempHistoryOverlay : AbstractOverlay
 
     private void OnNewSessionStarted(object sender, DbRaceSession e)
     {
-        _pressureHistory.Clear();
+        _temperatureHistory.Clear();
         ClearData();
     }
-    private void OnNewHistory(object sender, BrakeTempHistoryModel model) => _pressureHistory.Add(model);
+    private void OnNewHistory(object sender, BrakeTempHistoryModel model) => _temperatureHistory.Add(model);
 
     public sealed override void BeforeStop()
     {
@@ -187,13 +187,13 @@ internal sealed class BrakeTempHistoryOverlay : AbstractOverlay
 
     public sealed override void Render(Graphics g)
     {
-        if (_pressureHistory.Count == 0)
+        if (_temperatureHistory.Count == 0)
         {
             ClearData();
         }
         else
         {
-            BrakeTempHistoryModel last = _pressureHistory[^1];
+            BrakeTempHistoryModel last = _temperatureHistory[^1];
             lapTextCell.UpdateText($"L{last.Lap}");
             for (int i = 0; i < 4; i++)
             {
