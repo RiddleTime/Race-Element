@@ -105,7 +105,6 @@ public sealed class GapTracker : AbstractLoopJob
                         data[i] = new GapPointData() { PassedAt = DateTime.UtcNow };
                 }
             }
-
         });
     }
 }

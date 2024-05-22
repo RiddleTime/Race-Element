@@ -5,6 +5,7 @@ using RaceElement.Data;
 using RaceElement.Data.ACC.Cars;
 using RaceElement.Data.ACC.Database.LapDataDB;
 using RaceElement.Data.ACC.EntryList;
+using RaceElement.Data.ACC.Session;
 using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
 using RaceElement.Util;
@@ -54,6 +55,7 @@ internal sealed class TwitchChatBotCommandHandler
             new("angle", GetSteeringLockResponse),
             new("purple", GetPurpleLapResponse),
             new("ahead", GetCarAheadResponse),
+            new("gap", GetGapResponse),
             new("behind", GetCarBehindResponse),
             new("p", GetPositionLookupResponse),
             new("#", GetRaceNumberLookupResponse),
@@ -115,6 +117,97 @@ internal sealed class TwitchChatBotCommandHandler
             sb.Append($"{responses[i].Command}{(i < responses.Length - 1 ? ", " : string.Empty)}");
 
         return $"{sb.Append('.')}";
+    }
+
+    private string GetGapResponse(string[] args)
+    {
+        if (args.Length == 0 || args.Length > 2) return string.Empty;
+
+        CarData localCar = GetLocalCar();
+        if (localCar == null) return string.Empty;
+
+        CarData otherCar = null;
+        if (args.Length == 1)
+        {
+            switch (args[0])
+            {
+                case "ahead":
+                    {
+                        otherCar = GetCarAtPosition(localCar.RealtimeCarUpdate.Position - 1);
+                        break;
+                    }
+                case "behind":
+                    {
+
+                        int localPosition = localCar.RealtimeCarUpdate.Position;
+                        if (localPosition != 1)
+                        {
+                            otherCar = localCar;
+                            localCar = GetCarAtPosition(localPosition + 1);
+                        }
+                        break;
+                    }
+            };
+        }
+        else if (args.Length == 2)
+        {
+            if (args[0] == "#")
+            {
+
+            }
+            switch (args[0])
+            {
+                case "#":
+                    {
+                        if (int.TryParse(args[1], out int raceNumber))
+                        {
+                            int requestedPosition = -1;
+                            foreach (var car in EntryListTracker.Instance.Cars)
+                            {
+                                if (car.Value.CarInfo == null) continue;
+                                if (car.Value.CarInfo.RaceNumber == raceNumber)
+                                {
+                                    requestedPosition = car.Value.RealtimeCarUpdate.Position;
+                                    break;
+                                }
+                            }
+
+                            if (requestedPosition == -1)
+                                return string.Empty;
+
+                            otherCar = GetCarAtPosition(requestedPosition);
+                        }
+                        break;
+                    }
+                case "p":
+                    {
+                        if (int.TryParse(args[1], out int position))
+                        {
+                            otherCar = GetCarAtPosition(position);
+                        }
+                        break;
+                    }
+            }
+        }
+
+        if (localCar == null || otherCar == null) return string.Empty;
+
+        StringBuilder sb = new();
+        int lapsLocal = localCar.RealtimeCarUpdate.Laps;
+        int lapsOther = otherCar.RealtimeCarUpdate.Laps;
+        if (lapsLocal == lapsOther)
+        {
+            float gap = GapTracker.Instance.TimeGapBetween(localCar.CarInfo.CarIndex, localCar.RealtimeCarUpdate.SplinePosition, otherCar.CarInfo.CarIndex);
+            if (gap == -1) return string.Empty;
+            sb.Append($"+{gap:F3}");
+        }
+        else
+        {
+            int lapDiff = lapsOther - lapsLocal;
+            sb.Append($"+{lapDiff} Lap{(lapDiff > 1 ? "s" : "")}");
+        }
+        sb.Append($" (beta)");
+        return sb.ToString();
     }
 
     /// <summary>
