@@ -9,7 +9,8 @@ public static class ReleaseNotes
         {"1.0.8.6", "- Damage HUD: Added configurable colors for each level of body damage"+
                     "\n- Internal optimizations to rendering."+
                     "\n- Improved data detection for cars leaving the server by Andrei Jianu."+
-                    "\n- Added hud to benchmark rendering optimizations (Pitwall->CB Benchmark)."},
+                    "\n- Added hud to benchmark rendering optimizations (Pitwall->CB Benchmark)."+
+                    "\n- Added Brake Temp History HUD: showing minimum, average and maximum brake temps for the last lap."},
         {"1.0.8.4", "- Fuel Info HUD: Added option to set which laptime is used in the fuel calculation."+
                     "\n- Damage HUD: Added additional colors for various amounts of damage."+
                     "\n- Countless of internal optimizations."},
