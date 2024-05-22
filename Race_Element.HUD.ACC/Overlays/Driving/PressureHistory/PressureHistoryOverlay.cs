@@ -14,7 +14,7 @@ using System.Linq;
 namespace RaceElement.HUD.ACC.Overlays.Driving.PressureHistory;
 
 [Overlay(Name = "Pressure History",
-Description = "(beta) A table with the minimum, average and maximum tyre pressure for each tyre for the previous lap.",
+Description = "A table with the minimum, average and maximum tyre pressure for each tyre for the previous lap.",
 OverlayCategory = OverlayCategory.Physics,
 OverlayType = OverlayType.Drive,
 Authors = ["Reinier Klarenberg"],
