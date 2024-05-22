@@ -433,6 +433,7 @@ internal sealed class EntryListOverlay : AbstractOverlay
                             {
                                 cars.Sort((a, b) =>
                                 {
+                                    if (a.Value.RealtimeCarUpdate.Position == b.Value.RealtimeCarUpdate.Position) return 1;
                                     if (a.Value.CarInfo == null || b.Value.CarInfo == null)
                                         return -1;
 
