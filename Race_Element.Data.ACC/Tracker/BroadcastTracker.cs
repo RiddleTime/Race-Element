@@ -57,6 +57,7 @@ public class BroadcastTracker : IDisposable
         {
             OnRealTimeUpdate?.Invoke(this, realTimeUpdate);
         };
+
         client.MessageHandler.OnConnectionStateChanged += (int connectionId, bool connectionSuccess, bool isReadonly, string error) =>
         {
             ConnectionState state = new()
@@ -75,35 +76,24 @@ public class BroadcastTracker : IDisposable
         client.MessageHandler.OnEntrylistUpdate += (s, carInfo) =>
         {
             OnEntryListUpdate?.Invoke(this, carInfo);
-
-            //Debug.WriteLine("");
-            //Debug.WriteLine("---- OnEntryListUpdate (s, carinfo) ----");
-            //Debug.WriteLine($"#{carInfo.RaceNumber}, Index:{carInfo.CarIndex}, Name: {carInfo.GetCurrentDriverName()}");
-            //Debug.WriteLine("");
         };
 
         client.MessageHandler.OnBroadcastingEvent += (s, broadcastEvent) =>
         {
-            //Debug.WriteLine("");
-            //Debug.WriteLine("---- OnBroadcastingEvent (s, broadcastEvent) ----");
-            //Debug.WriteLine($"#{broadcastEvent.CarData.RaceNumber}, Index:{broadcastEvent.CarId}, Type: {broadcastEvent.Type}, Msg: {broadcastEvent.Msg}");
-
-            if (broadcastEvent.Type == BroadcastingCarEventType.BestSessionLap)
-            {
-                //Debug.WriteLine(JsonConvert.SerializeObject(broadcastEvent, Formatting.Indented));
-            }
-
             OnBroadcastEvent?.Invoke(this, broadcastEvent);
         };
-        client.MessageHandler.OnTrackDataUpdate += (s, trackData) => OnTrackDataUpdate?.Invoke(this, trackData);
+
+        client.MessageHandler.OnTrackDataUpdate += (s, trackData) =>
+        {
+            OnTrackDataUpdate?.Invoke(this, trackData);
+        };
 
         client.MessageHandler.OnRealtimeCarUpdate += (s, e) =>
         {
             OnRealTimeCarUpdate?.Invoke(this, e);
 
             int localCarIndex = ACCSharedMemory.Instance.ReadGraphicsPageFile(true).PlayerCarID;
-            if (e.CarIndex == localCarIndex)
-                OnRealTimeLocalCarUpdate?.Invoke(this, e);
+            if (e.CarIndex == localCarIndex)  OnRealTimeLocalCarUpdate?.Invoke(this, e);
         };
     }
 
@@ -127,6 +117,7 @@ public class BroadcastTracker : IDisposable
             _client.Dispose();
             _client = null;
         }
+
         Debug.WriteLine("Disconnected broadcast client");
     }
 

@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 
 namespace RaceElement.Data.ACC.EntryList;
 
@@ -28,12 +27,9 @@ public class EntryListTracker
             _instance ??= new EntryListTracker();
             return _instance;
         }
-        private set { _instance = value; }
     }
 
     internal Dictionary<int, CarData> _entryListCars = [];
-    //private static AccidentListTracker _accidentListTracker = AccidentListTracker.Instance;
-
     public List<KeyValuePair<int, CarData>> Cars
     {
         get
@@ -47,240 +43,150 @@ public class EntryListTracker
 
     public CarData GetCarData(int identifier)
     {
-        if (_entryListCars.TryGetValue(identifier, out CarData carData))
-            return carData;
+        lock (_entryListCars)
+        {
+            if (_entryListCars.TryGetValue(identifier, out CarData carData))
+            {
+                return carData;
+            }
+        }
 
         return null;
     }
 
-    private bool _isRunning = false;
-
-    private EntryListTracker()
+    private void Clear()
     {
-
+        lock (_entryListCars)
+        {
+            _entryListCars.Clear();
+        }
     }
 
     internal void Start()
     {
-        _isRunning = true;
         BroadcastTracker.Instance.OnRealTimeCarUpdate += RealTimeCarUpdate_EventHandler;
         BroadcastTracker.Instance.OnEntryListUpdate += EntryListUpdate_EventHandler;
         BroadcastTracker.Instance.OnBroadcastEvent += Broadcast_EventHandler;
 
-        //_accidentListTracker.Start();
-
-        StartEntryListCleanupTracker();
-        Debug.WriteLine("Entrylist tracker started.");
+        Clear();
+        Debug.WriteLine("EntryListTracker started");
     }
 
     internal void Stop()
     {
         Debug.WriteLine("Stopping EntryListTracker");
-        _isRunning = false;
+        Clear();
+
         BroadcastTracker.Instance.OnRealTimeCarUpdate -= RealTimeCarUpdate_EventHandler;
         BroadcastTracker.Instance.OnEntryListUpdate -= EntryListUpdate_EventHandler;
         BroadcastTracker.Instance.OnBroadcastEvent -= Broadcast_EventHandler;
-
-        //_accidentListTracker.Stop();
-
-        _entryListCars?.Clear();
     }
 
-    private void StartEntryListCleanupTracker()
+    private void CleanupEntryList()
     {
-        new Thread(() =>
+        var cleanupWaitTime = TimeSpan.FromSeconds(5);
+        List<KeyValuePair<int, CarData>> cars;
+
+        lock (_entryListCars)
         {
-            try
+            cars = _entryListCars.ToList();
+        }
+
+        foreach (var entry in cars)
+        {
+            if (entry.Value == null)
             {
-                TimeSpan cleanupWaitTime = TimeSpan.FromSeconds(5);
-                while (_isRunning)
-                {
-                    Thread.Sleep(cleanupWaitTime);
-
-                    try
-                    {
-                        List<KeyValuePair<int, CarData>> newDatas = _entryListCars.ToList();
-
-                        foreach (var entry in newDatas)
-                        {
-                            if (entry.Value == null)
-                            {
-                                continue;
-                            }
-
-                            if (DateTime.UtcNow - entry.Value.LastUpdate < cleanupWaitTime)
-                            {
-                                continue;
-                            }
-
-                            lock (_entryListCars)
-                            {
-                                _entryListCars.Remove(entry.Key);
-                            }
-                            PositionGraph.Instance.RemoveCar(entry.Key);
-                        }
-
-
-                        //int[] activeCarIds = ACCSharedMemory.Instance.ReadGraphicsPageFile().CarIds;
-
-                        //List<KeyValuePair<int, CarData>> datas = _entryListCars.ToList();
-                        //foreach (var entryListCar in datas)
-                        //{
-                        //    bool isInServer = activeCarIds.Contains(entryListCar.Key);
-                        //    if (!isInServer)
-                        //        lock (_entryListCars)
-                        //            _entryListCars.Remove(entryListCar.Key);
-                        //}
-
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine(e);
-                    }
-                }
+                continue;
             }
-            catch (Exception ex)
+
+            if ((DateTime.UtcNow - entry.Value.LastUpdate) < cleanupWaitTime)
             {
-                Debug.WriteLine(ex);
+                continue;
             }
-        }).Start();
+
+            lock (_entryListCars)
+            {
+                _entryListCars.Remove(entry.Key);
+            }
+
+            PositionGraph.Instance.RemoveCar(entry.Key);
+        }
+    }
+
+    private void UpdateEntryList(int carIndex, object obj, bool fromBroadCast = false)
+    {
+        // Remove drives that haven't received updates in a while
+        CleanupEntryList();
+
+        lock (_entryListCars)
+        {
+            if (!_entryListCars.TryGetValue(carIndex, out var carData))
+            {
+                carData = new CarData();
+                _entryListCars.Add(carIndex, carData);
+            }
+
+            if (obj is CarInfo carInfo)
+            {
+                carData.CarInfo = carInfo;
+                carData.LastUpdate = DateTime.UtcNow;
+            }
+            else if (obj is RealtimeCarUpdate carUpdate)
+            {
+                carData.RealtimeCarUpdate = carUpdate;
+                carData.LastUpdate = DateTime.UtcNow;
+            }
+
+            if (fromBroadCast) return;
+            var carGraph = PositionGraph.Instance.GetCar(carIndex);
+
+            if (carGraph == null)
+            {
+                PositionGraph.Instance.AddCar(carIndex);
+            }
+            else
+            {
+                carGraph.UpdateLocation(carData.RealtimeCarUpdate.SplinePosition, carData.RealtimeCarUpdate.CarLocation);
+            }
+        }
     }
 
     private void Broadcast_EventHandler(object sender, BroadcastingEvent broadcastingEvent)
     {
-        try
+        // Remove drives that haven't received updates in a while
+        CleanupEntryList();
+
+        switch (broadcastingEvent.Type)
         {
-            switch (broadcastingEvent.Type)
+            case BroadcastingCarEventType.BestSessionLap:
             {
+                Debug.WriteLine(JsonConvert.SerializeObject(broadcastingEvent));
+            } break;
 
-                case BroadcastingCarEventType.BestSessionLap:
-                    {
-                        Debug.WriteLine(JsonConvert.SerializeObject(broadcastingEvent));
-                        Debug.WriteLine(JsonConvert.SerializeObject(_entryListCars[broadcastingEvent.CarId]));
-                        break;
-                    }
-                case BroadcastingCarEventType.LapCompleted:
-                    {
-                        if (broadcastingEvent.CarData == null)
-                            break;
-                        lock (_entryListCars)
-                        {
-                            CarData carData;
-                            if (_entryListCars.TryGetValue(broadcastingEvent.CarData.CarIndex, out carData))
-                            {
-                                carData.CarInfo = broadcastingEvent.CarData;
-                                carData.LastUpdate = DateTime.UtcNow;
-                            }
-                            else
-                            {
-                                //Debug.WriteLine($"BroadcastingCarEventType.LapCompleted car index: {broadcastingEvent.CarData.CarIndex} not found in entry list");
-                                carData = new CarData();
-                                carData.LastUpdate = DateTime.UtcNow;
+            case BroadcastingCarEventType.LapCompleted:
+            {
+                UpdateEntryList(broadcastingEvent.CarData.CarIndex, broadcastingEvent.CarData, true);
+            } break;
 
-                                carData.CarInfo = broadcastingEvent.CarData;
-                                _entryListCars.Add(broadcastingEvent.CarData.CarIndex, carData);
-                            }
-                        }
-                        break;
-                    }
-                case BroadcastingCarEventType.Accident:
-                    {
-                        //Debug.WriteLine($"#{broadcastingEvent.CarData.RaceNumber}| {broadcastingEvent.CarData.GetCurrentDriverName()} had an accident. {broadcastingEvent.Msg}");
-                        break;
-                    }
+            case BroadcastingCarEventType.Accident:
+            {
+                Debug.WriteLine(JsonConvert.SerializeObject(broadcastingEvent));
+            } break;
 
-                default:
-                    {
-                        if (broadcastingEvent.CarData == null)
-                            break;
-
-                        //Debug.WriteLine($"{broadcastingEvent.Type} - {broadcastingEvent.CarData.RaceNumber} - {broadcastingEvent.Msg}");
-                        break;
-                    }
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex);
+            default:
+            {
+                Debug.WriteLine(JsonConvert.SerializeObject(broadcastingEvent));
+            } break;
         }
     }
 
     private void EntryListUpdate_EventHandler(object sender, CarInfo carInfo)
     {
-        try
-        {
-            CarData carData;
-            lock (_entryListCars)
-            {
-                if (_entryListCars.TryGetValue(carInfo.CarIndex, out carData))
-                {
-                    carData.CarInfo = carInfo;
-                    carData.LastUpdate = DateTime.UtcNow;
-
-                    //
-                    Car car = PositionGraph.Instance.GetCar(carInfo.CarIndex);
-                    if (car != null)
-                        car.UpdateLocation(carData.RealtimeCarUpdate.SplinePosition, carData.RealtimeCarUpdate.CarLocation);
-                }
-                else
-                {
-                    carData = new CarData();
-                    carData.CarInfo = carInfo;
-                    carData.LastUpdate = DateTime.UtcNow;
-
-                    _entryListCars.Add(carInfo.CarIndex, carData);
-                    PositionGraph.Instance.AddCar(carInfo.CarIndex);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex);
-        }
+        UpdateEntryList(carInfo.CarIndex, carInfo);
     }
 
     private void RealTimeCarUpdate_EventHandler(object sender, RealtimeCarUpdate carUpdate)
     {
-        try
-        {
-            CarData carData;
-            lock (_entryListCars)
-            {
-                if (_entryListCars.TryGetValue(carUpdate.CarIndex, out carData))
-                {
-                    carData.RealtimeCarUpdate = carUpdate;
-                    carData.LastUpdate = DateTime.UtcNow;
-
-                    Car car = PositionGraph.Instance.GetCar(carUpdate.CarIndex);
-                    if (car != null)
-                        car.UpdateLocation(carUpdate.SplinePosition, carUpdate.CarLocation);
-                }
-                else
-                {
-                    //Debug.WriteLine($"RealTimeCarUpdate_EventHandler car index: {carUpdate.CarIndex} not found in entry list");
-                    carData = new CarData();
-                    carData.RealtimeCarUpdate = carUpdate;
-                    carData.LastUpdate = DateTime.UtcNow;
-
-                    _entryListCars.Add(carUpdate.CarIndex, carData);
-                    PositionGraph.Instance.AddCar(carUpdate.CarIndex);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex);
-        }
-
-        //var accidentList = _accidentListTracker.GetNewAccidents();
-        //foreach (var broadcastEventList in accidentList)
-        //{
-        //    if (broadcastEventList.Count() == 0) continue;
-
-        //    string carNumbers = string.Join(" ", broadcastEventList.Select(x => x.CarData.RaceNumber).ToArray());
-        //    string accidentMessage = $"accident between [{carNumbers}]";
-        //    Debug.WriteLine($"{accidentMessage}");
-
-        //}
+        UpdateEntryList(carUpdate.CarIndex, carUpdate);
     }
 }
