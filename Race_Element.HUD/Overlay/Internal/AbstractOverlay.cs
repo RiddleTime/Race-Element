@@ -169,6 +169,9 @@ public abstract class AbstractOverlay : FloatingWindow
                 BroadcastTracker.Instance.OnTrackDataUpdate += BroadCastTrackDataChanged;
                 BroadcastTracker.Instance.OnRealTimeLocalCarUpdate += BroadCastRealTimeLocalCarUpdateChanged;
                 RaceSessionTracker.Instance.OnNewSessionStarted += Instance_OnNewSessionStarted;
+
+                // TODO(Andrei): This is just a temporal solution until we find a better way to redo the callbacks
+                BroadcastTracker.Instance.RequestData();
             }
 
             pageStatic = ACCSharedMemory.Instance.ReadStaticPageFile(false);

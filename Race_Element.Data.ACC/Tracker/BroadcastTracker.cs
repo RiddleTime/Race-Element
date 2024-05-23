@@ -25,7 +25,12 @@ public class BroadcastTracker : IDisposable
 
     private BroadcastTracker()
     {
+    }
 
+    public void RequestData()
+    {
+        // TODO(Andrei): This is just a temporal solution until we find a better way to redo the callbacks
+        _client.RequestData();
     }
 
     public event EventHandler<RealtimeUpdate> OnRealTimeUpdate;

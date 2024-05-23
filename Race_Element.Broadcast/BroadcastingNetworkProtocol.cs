@@ -336,7 +336,7 @@ public class BroadcastingNetworkProtocol
         else
             lap.Type = LapType.Regular;
 
-        // Now it's possible that this is "no" lap that doesn't even include a 
+        // Now it's possible that this is "no" lap that doesn't even include a
         // first split, we can detect this by comparing with int32.Max
         while (lap.Splits.Count < 3)
         {
@@ -405,7 +405,7 @@ public class BroadcastingNetworkProtocol
 
     /// <summary>
     /// Will ask the ACC client for an updated entry list, containing all car and driver data.
-    /// The client will send this automatically when something changes; however if you detect a carIndex or driverIndex, this may cure the 
+    /// The client will send this automatically when something changes; however if you detect a carIndex or driverIndex, this may cure the
     /// problem for future updates
     /// </summary>
     private void RequestEntryList()
@@ -519,5 +519,11 @@ public class BroadcastingNetworkProtocol
 
             Send(ms.ToArray());
         }
+    }
+
+    public void RequestData()
+    {
+        // TODO(Andrei): This is just a temporal solution until we find a better way to redo the callbacks
+        RequestEntryList(); RequestTrackData();
     }
 }
