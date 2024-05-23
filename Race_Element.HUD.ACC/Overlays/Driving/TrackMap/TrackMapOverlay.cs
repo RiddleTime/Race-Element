@@ -10,6 +10,7 @@ using RaceElement.Broadcast;
 using RaceElement.Util;
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
@@ -185,6 +186,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         _trackPositions = track;
 
         _mapCache.Map = TrackMapDrawer.CreateLineFromPoints(_config.Colors.Map, _config.General.Thickness, _margin, _trackPositions, _trackBoundingBox);
+        Debug.WriteLine("[MAP] " + pageStatic.Track.ToLower() + " -> [" + _scale + "] [" + _trackLength + "] [" + _trackPositions.Count + "]");
 
         if (!_config.Others.SavePreview)
         {
