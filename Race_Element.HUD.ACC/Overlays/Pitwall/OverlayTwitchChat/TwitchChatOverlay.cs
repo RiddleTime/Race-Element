@@ -251,8 +251,9 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _twitchClient.OnIncorrectLogin += (s, e) => Debug.WriteLine($"Incorrect Twitch user or auth: {e.Exception}");
         _twitchClient.OnSendReceiveData += (s, e) =>
         {
-            StringBuilder sb = new("Twitch client message received");
-            sb.Append($"\n{e.Data}");
+            // TODO remove for release 
+            StringBuilder sb = new("TwitchClient.OnSendReceiveData =>");
+            sb.Append($"\n\t{e.Data}");
             LogWriter.WriteToLog(sb.ToString());
         };
     }
