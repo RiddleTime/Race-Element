@@ -4,9 +4,11 @@ using RaceElement.HUD.Overlay.Util;
 using RaceElement.Util;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+using System.Text;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using TwitchLib.Communication.Clients;
@@ -244,6 +246,15 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _twitchClient.OnDisconnected += TwitchClient_OnDisconnected;
         _twitchClient.OnReconnected += TwitchClient_OnReconnected;
         _twitchClient.OnConnectionError += TwitchClient_OnConnectionError;
+
+        _twitchClient.OnAnnouncement += (s, e) => Debug.WriteLine($"twitch Anouncement: {e.Announcement}");
+        _twitchClient.OnIncorrectLogin += (s, e) => Debug.WriteLine($"Incorrect Twitch user or auth: {e.Exception}");
+        _twitchClient.OnSendReceiveData += (s, e) =>
+        {
+            StringBuilder sb = new("Twitch client message received");
+            sb.Append($"\n{e.Data}");
+            LogWriter.WriteToLog(sb.ToString());
+        };
     }
 
     private void TwitchClient_OnMessageReceived(object sender, OnMessageReceivedArgs e)
