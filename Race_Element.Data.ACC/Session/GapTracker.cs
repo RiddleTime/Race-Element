@@ -57,7 +57,7 @@ public sealed class GapTracker : AbstractLoopJob
         IntervalMillis = GapTrackerConstants.MeasuringInterval
     };
 
-    public GapTracker()
+    private GapTracker()
     {
     }
 
