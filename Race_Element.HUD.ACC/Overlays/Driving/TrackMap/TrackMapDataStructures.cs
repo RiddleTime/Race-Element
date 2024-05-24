@@ -122,38 +122,37 @@ public class PitStop
     public int Laps;
 }
 
-public class TrackInfo(float pitLaneTimeMs, float lengthMeters, float scale)
+public class TrackInfo(float pitLaneTimeMs, float scale)
 {
     public readonly float PitLaneTimeMs = pitLaneTimeMs;
-    public readonly float LengthMeters = lengthMeters;
     public readonly float Scale = scale;
 
     public static readonly Dictionary<string, TrackInfo> Data = new()
     {
-        { "barcelona"       , new TrackInfo(30_000,  4655, 0.310f) },
-        { "brands_hatch"    , new TrackInfo(19_000,  3908, 0.370f) },
-        { "cota"            , new TrackInfo(29_000,  5513, 0.200f) },
-        { "donington"       , new TrackInfo(19_000,  4020, 0.270f) },
-        { "hungaroring"     , new TrackInfo(24_000,  4381, 0.230f) },
-        { "imola"           , new TrackInfo(38_000,  4959, 0.200f) },
-        { "indianapolis"    , new TrackInfo(44_000,  4167, 0.250f) },
-        { "kyalami"         , new TrackInfo(18_000,  4522, 0.200f) },
-        { "laguna_seca"     , new TrackInfo(21_000,  3602, 0.360f) },
-        { "misano"          , new TrackInfo(28_000,  4226, 0.310f) },
-        { "monza"           , new TrackInfo(31_000,  5793, 0.160f) },
-        { "nurburgring"     , new TrackInfo(25_000,  5137, 0.240f) },
-        { "nurburgring_24h" , new TrackInfo(25_000, 25300, 0.061f) },
-        { "oulton_park"     , new TrackInfo(14_000,  4307, 0.230f) },
-        { "paul_ricard"     , new TrackInfo(27_000,  5770, 0.160f) },
-        { "silverstone"     , new TrackInfo(23_000,  5891, 0.210f) },
-        { "snetterton"      , new TrackInfo(19_000,  4779, 0.300f) },
-        { "spa"             , new TrackInfo(57_000,  7004, 0.190f) },
-        { "suzuka"          , new TrackInfo(27_000,  5807, 0.180f) },
-        { "valencia"        , new TrackInfo(27_000,  4005, 0.370f) },
-        { "watkins_glen"    , new TrackInfo(27_000,  5552, 0.210f) },
-        { "zandvoort"       , new TrackInfo(19_000,  4252, 0.270f) },
-        { "zolder"          , new TrackInfo(30_000,  4011, 0.280f) },
-        { "mount_panorama"  , new TrackInfo(25_000,  6213, 0.170f) },
-        { "red_bull_ring"   , new TrackInfo(20_000,  4318, 0.290f) }
+        { "barcelona"       , new TrackInfo(30_000, 0.310f) },
+        { "brands_hatch"    , new TrackInfo(19_000, 0.370f) },
+        { "cota"            , new TrackInfo(29_000, 0.200f) },
+        { "donington"       , new TrackInfo(19_000, 0.270f) },
+        { "hungaroring"     , new TrackInfo(24_000, 0.230f) },
+        { "imola"           , new TrackInfo(38_000, 0.200f) },
+        { "indianapolis"    , new TrackInfo(44_000, 0.250f) },
+        { "kyalami"         , new TrackInfo(18_000, 0.200f) },
+        { "laguna_seca"     , new TrackInfo(21_000, 0.360f) },
+        { "misano"          , new TrackInfo(28_000, 0.310f) },
+        { "monza"           , new TrackInfo(31_000, 0.160f) },
+        { "nurburgring"     , new TrackInfo(25_000, 0.240f) },
+        { "nurburgring_24h" , new TrackInfo(25_000, 0.061f) },
+        { "oulton_park"     , new TrackInfo(14_000, 0.230f) },
+        { "paul_ricard"     , new TrackInfo(27_000, 0.160f) },
+        { "silverstone"     , new TrackInfo(23_000, 0.210f) },
+        { "snetterton"      , new TrackInfo(19_000, 0.300f) },
+        { "spa"             , new TrackInfo(57_000, 0.190f) },
+        { "suzuka"          , new TrackInfo(27_000, 0.180f) },
+        { "valencia"        , new TrackInfo(27_000, 0.370f) },
+        { "watkins_glen"    , new TrackInfo(27_000, 0.210f) },
+        { "zandvoort"       , new TrackInfo(19_000, 0.270f) },
+        { "zolder"          , new TrackInfo(30_000, 0.280f) },
+        { "mount_panorama"  , new TrackInfo(25_000, 0.170f) },
+        { "red_bull_ring"   , new TrackInfo(20_000, 0.290f) }
     };
 }

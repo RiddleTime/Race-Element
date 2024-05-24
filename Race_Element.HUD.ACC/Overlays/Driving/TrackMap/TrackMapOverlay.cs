@@ -37,15 +37,11 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     private readonly float _outLineBorder = 2.0f;
     private readonly float _margin = 64.0f;
-
-    private float _trackLength;
-    private float _scale;
+    private float _scale = 0.15f;
 
     public TrackMapOverlay(Rectangle rectangle) : base(rectangle, "Track Map")
     {
         RefreshRateHz = _config.Others.RefreshInterval;
-        _trackLength = 0.0f;
-        _scale = 0.15f;
 
         _mapCache.Map = null;
         _mapCache.YellowFlag = TrackMapDrawer.CreateCircleWithOutline(Color.Yellow, _config.Others.CarSize, _outLineBorder);
@@ -123,7 +119,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         }
 
         var carsOnTrack = GetCarsOnTrack();
-        var bitmap = TrackMapDrawer.Draw(_trackPositions, carsOnTrack, _mapCache, _config, _trackLength);
+        var bitmap = TrackMapDrawer.Draw(_trackPositions, carsOnTrack, _mapCache, _config, broadCastTrackData.TrackMeters);
 
         if (bitmap.Width != Width || bitmap.Height != Height)
         {
@@ -164,9 +160,8 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     private void OnMapPositionsCallback(object sender, List<TrackPoint> positions)
     {
-        var trackInfo = TrackInfo.Data.GetValueOrDefault(pageStatic.Track.ToLower(), new TrackInfo(0, 0, 0));
+        var trackInfo = TrackInfo.Data.GetValueOrDefault(pageStatic.Track.ToLower(), new TrackInfo(0, 0));
         _scale = trackInfo.Scale * _config.General.ScaleFactor;
-        _trackLength = trackInfo.LengthMeters;
 
         _miniMapCreationJob.Cancel();
         _trackOriginalBoundingBox = TrackMapTransform.GetBoundingBox(positions);
@@ -186,7 +181,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         _trackPositions = track;
 
         _mapCache.Map = TrackMapDrawer.CreateLineFromPoints(_config.Colors.Map, _config.General.Thickness, _margin, _trackPositions, _trackBoundingBox);
-        Debug.WriteLine("[MAP] " + pageStatic.Track.ToLower() + " -> [" + _scale + "] [" + _trackLength + "] [" + _trackPositions.Count + "]");
+        Debug.WriteLine("[MAP] " + pageStatic.Track.ToLower() + " -> [" + _scale + "] [" + broadCastTrackData.TrackMeters + "] [" + _trackPositions.Count + "]");
 
         if (!_config.Others.SavePreview)
         {

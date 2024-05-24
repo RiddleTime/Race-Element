@@ -524,6 +524,7 @@ public class BroadcastingNetworkProtocol
     public void RequestData()
     {
         // TODO(Andrei): This is just a temporal solution until we find a better way to redo the callbacks
-        RequestEntryList(); RequestTrackData();
+        RequestEntryList();
+        RequestTrackData();
     }
 }

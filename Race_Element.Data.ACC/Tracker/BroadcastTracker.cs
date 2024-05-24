@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using RaceElement.Broadcast;
+﻿using RaceElement.Broadcast;
 using RaceElement.Broadcast.Structs;
 using System;
 using System.Diagnostics;
