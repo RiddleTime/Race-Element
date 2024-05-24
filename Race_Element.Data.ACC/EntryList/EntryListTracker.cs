@@ -151,31 +151,18 @@ public class EntryListTracker
         }
     }
 
-    private void Broadcast_EventHandler(object sender, BroadcastingEvent broadcastingEvent)
+    private void Broadcast_EventHandler(object sender, BroadcastingEvent evt)
     {
-        // Remove drives that haven't received updates in a while
-        CleanupEntryList();
-
-        switch (broadcastingEvent.Type)
+        switch (evt.Type)
         {
-            case BroadcastingCarEventType.BestSessionLap:
-            {
-                Debug.WriteLine(JsonConvert.SerializeObject(broadcastingEvent));
-            } break;
-
             case BroadcastingCarEventType.LapCompleted:
             {
-                UpdateEntryList(broadcastingEvent.CarData.CarIndex, broadcastingEvent.CarData, true);
-            } break;
-
-            case BroadcastingCarEventType.Accident:
-            {
-                Debug.WriteLine(JsonConvert.SerializeObject(broadcastingEvent));
+                UpdateEntryList(evt.CarData.CarIndex, evt.CarData, true);
             } break;
 
             default:
             {
-                Debug.WriteLine(JsonConvert.SerializeObject(broadcastingEvent));
+                Debug.WriteLine(JsonConvert.SerializeObject(evt));
             } break;
         }
     }

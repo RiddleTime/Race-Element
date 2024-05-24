@@ -38,6 +38,7 @@ public enum SessionPhase
     PostSession = 7,
     ResultUI = 8
 };
+
 public enum RaceSessionType
 {
     Practice = 0,
