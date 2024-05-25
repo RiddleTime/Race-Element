@@ -174,24 +174,21 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             var y = track[i].Y - boundaries.Bottom + _margin * 0.5f;
             var x = track[i].X - boundaries.Left + _margin * 0.5f;
 
-            track[i] = new(track[i]) { X = x, Y = y };
+            track[i] = new TrackPoint(track[i]) { X = x, Y = y };
         }
 
         _trackBoundingBox = boundaries;
         _trackPositions = track;
 
         _mapCache.Map = TrackMapDrawer.CreateLineFromPoints(_config.Colors.Map, _config.General.Thickness, _margin, _trackPositions, _trackBoundingBox);
-        Debug.WriteLine("[MAP] " + pageStatic.Track.ToLower() + " -> [" + _scale + "] [" + broadCastTrackData.TrackMeters + "] [" + _trackPositions.Count + "]");
+        Debug.WriteLine($"[MAP] {broadCastTrackData.TrackName} ({pageStatic.Track}) -> [S: {_scale:F3}] [L: {broadCastTrackData.TrackMeters:F3}] [P: {_trackPositions.Count}]");
 
-        if (!_config.Others.SavePreview)
+        if (!_config.Others.SavePreview || pageStatic.Track.Length == 0)
         {
             return;
         }
 
-        var pageFileStatic = ACCSharedMemory.Instance.PageFileStatic;
-        if (pageFileStatic.Track.Length == 0) return;
-
-        var path = FileUtil.RaceElementTracks + pageFileStatic.Track.ToLower() + ".jpg";
+        var path = FileUtil.RaceElementTracks + pageStatic.Track.ToLower() + ".jpg";
         _mapCache.Map.Save(path);
     }
 
