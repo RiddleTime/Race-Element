@@ -94,8 +94,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     public override bool ShouldRender()
     {
-        var shouldRender = (_trackingProgress != null) || (_trackPositions.Count > 0 && EntryListTracker.Instance.Cars.Count > 0);
-        return base.ShouldRender() && shouldRender;
+        return base.ShouldRender() && (_trackingProgress != null || _mapCache.Map != null);
     }
 
     public override void Render(Graphics g)
@@ -139,7 +138,6 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
         g.DrawImage(bitmap, 0, 0);
     }
-
 
     #region Event Listeners
 
