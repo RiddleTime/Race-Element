@@ -100,24 +100,34 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     public override void Render(Graphics g)
     {
-        if (_trackingProgress != null && _trackPositions.Count == 0)
+        if (_trackingProgress != null && _mapCache.Map == null)
         {
-            using var font = FontUtil.FontSegoeMono(_config.Others.FontSize);
-            using SolidBrush pen = new(Color.FromArgb(100, Color.Black));
-            var size = g.MeasureString(_trackingProgress, font);
-
-            g.FillRectangle(pen, 0, 0, size.Width, size.Height);
-            g.DrawStringWithShadow(_trackingProgress, font, Color.White, new PointF());
-
-            if ((int)size.Width != Width || (int)size.Height != Height)
-            {
-                Height = (int)size.Height;
-                Width = (int)size.Width;
-            }
-
-            return;
+            RenderTrackingProgress(g);
         }
+        else
+        {
+            RenderMap(g);
+        }
+    }
 
+    private void RenderTrackingProgress(Graphics g)
+    {
+        using var font = FontUtil.FontSegoeMono(_config.Others.FontSize);
+        using SolidBrush pen = new(Color.FromArgb(100, Color.Black));
+        var size = g.MeasureString(_trackingProgress, font);
+
+        g.FillRectangle(pen, 0, 0, size.Width, size.Height);
+        g.DrawStringWithShadow(_trackingProgress, font, Color.White, new PointF());
+
+        if ((int)size.Width != Width || (int)size.Height != Height)
+        {
+            Height = (int)size.Height;
+            Width = (int)size.Width;
+        }
+    }
+
+    private void RenderMap(Graphics g)
+    {
         var carsOnTrack = GetCarsOnTrack();
         var bitmap = TrackMapDrawer.Draw(_trackPositions, carsOnTrack, _mapCache, _config, broadCastTrackData.TrackMeters);
 
