@@ -99,13 +99,13 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     public override void Render(Graphics g)
     {
-        if (_trackingProgress != null && _mapCache.Map == null)
-        {
-            RenderTrackingProgress(g);
-        }
-        else
+        if (_mapCache.Map != null)
         {
             RenderMap(g);
+        }
+        else if (_trackingProgress != null)
+        {
+            RenderTrackingProgress(g);
         }
     }
 
