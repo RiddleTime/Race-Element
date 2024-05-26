@@ -201,15 +201,15 @@ internal sealed class BrakeTempHistoryOverlay : AbstractOverlay
                 bool isFrontBrakes = i < 2;
 
                 DrawableTextCell min = (DrawableTextCell)row[1];
-                min.CachedBackground = GetBackgroundSet(last.Min[i], isFrontBrakes)[1];
+                min.CachedBackground = GetBackgroundSet(last.Min[i])[1];
                 min.UpdateText($"{last.Min[i]:F0}");
 
                 DrawableTextCell avg = (DrawableTextCell)row[2];
-                avg.CachedBackground = GetBackgroundSet(last.Averages[i], isFrontBrakes)[2];
+                avg.CachedBackground = GetBackgroundSet(last.Averages[i])[2];
                 avg.UpdateText($"{last.Averages[i]:F0}");
 
                 DrawableTextCell max = (DrawableTextCell)row[3];
-                max.CachedBackground = GetBackgroundSet(last.Max[i], isFrontBrakes)[3];
+                max.CachedBackground = GetBackgroundSet(last.Max[i])[3];
                 max.UpdateText($"{last.Max[i]:F0}");
             }
         }
@@ -229,20 +229,10 @@ internal sealed class BrakeTempHistoryOverlay : AbstractOverlay
             }
     }
 
-    private CachedBitmap[] GetBackgroundSet(float temps, bool isFrontBrakes)
+    private CachedBitmap[] GetBackgroundSet(float temps) => temps switch
     {
-        return isFrontBrakes ?
-           temps switch
-           {
-               > 700 => _columnBackgroundsRed,
-               < 250 => _columnBackgroundsBlue,
-               _ => _columnBackgrounds,
-           }
-           : temps switch
-           {
-               > 480 => _columnBackgroundsRed,
-               < 250 => _columnBackgroundsBlue,
-               _ => _columnBackgrounds,
-           };
-    }
+        > 750 => _columnBackgroundsRed,
+        < 250 => _columnBackgroundsBlue,
+        _ => _columnBackgrounds,
+    };
 }
