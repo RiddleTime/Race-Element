@@ -39,7 +39,7 @@ public static class StructExtension
     }
 }
 
-public class TimestampedBytes
+public sealed class TimestampedBytes
 {
     public byte[] RawData;
     public DateTime IncomingDate;
