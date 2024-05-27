@@ -4,7 +4,7 @@ using System.Drawing.Drawing2D;
 
 namespace RaceElement.HUD.Overlay.OverlayUtil;
 
-public class DeltaBar
+public sealed class DeltaBar
 {
 
     internal double Min { get; set; }

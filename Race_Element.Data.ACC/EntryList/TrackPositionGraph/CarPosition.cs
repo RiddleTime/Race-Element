@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace RaceElement.Data.ACC.EntryList.TrackPositionGraph;
 
-public class Car
+public sealed class Car
 {
     public int CarIndex { get; set; }
     public int LapIndex { get; set; }

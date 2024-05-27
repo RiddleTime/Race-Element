@@ -9,7 +9,7 @@ namespace RaceElement.Hardware.ACC.SteeringLock;
 /// <summary>
 /// Partially From https://github.com/Havner/acc-steering-lock
 /// </summary>
-public class SteeringLockTracker : IDisposable
+public sealed class SteeringLockTracker : IDisposable
 {
     private static SteeringLockTracker _instance;
     public static SteeringLockTracker Instance

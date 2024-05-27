@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 
 namespace RaceElement.HUD.Overlay.OverlayUtil;
 
-public class InfoTable
+public sealed class InfoTable
 {
     private const float _shadowDistance = 0.75f;
 

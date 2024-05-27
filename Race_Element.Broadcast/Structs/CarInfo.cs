@@ -2,7 +2,7 @@
 
 namespace RaceElement.Broadcast.Structs;
 
-public class CarInfo
+public sealed class CarInfo
 {
     public ushort CarIndex { get; }
     public byte CarModelType { get; protected internal set; }
