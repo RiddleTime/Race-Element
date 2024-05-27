@@ -8,7 +8,7 @@ namespace RaceElement;
 /// <summary>
 /// Used certain shared memory from https://github.com/gro-ove/actools
 /// </summary>
-public unsafe class ACCSharedMemory
+public sealed unsafe class ACCSharedMemory
 {
     private readonly string physicsMap = "Local\\acpmf_physics";
     private readonly string graphicsMap = "Local\\acpmf_graphics";
@@ -168,7 +168,7 @@ public unsafe class ACCSharedMemory
 
     /// <summary>The following members are updated at each graphical step. They mostly refer to player’s car except for carCoordinates and carID, which refer to the cars currently on track.</summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
-    public class SPageFileGraphic
+    public sealed class SPageFileGraphic
     {
         /// <summary>Current step index</summary>
         public int PacketId;
@@ -447,7 +447,7 @@ public unsafe class ACCSharedMemory
 
     /// <summary>The following members change at each graphic step. They all refer to the player’s car</summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
-    public class SPageFilePhysics
+    public sealed class SPageFilePhysics
     {
         /// <summary>Current step index</summary>
         public int PacketId;
@@ -710,7 +710,7 @@ public unsafe class ACCSharedMemory
 
     /// <summary>The following members are initialized when the instance starts and never changes until the instance is closed</summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
-    public class SPageFileStatic
+    public sealed class SPageFileStatic
     {
         /// <summary>Shared memory version in wide character</summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)] public string SharedMemoryVersion;
