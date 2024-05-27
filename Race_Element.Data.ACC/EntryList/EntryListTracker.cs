@@ -7,13 +7,12 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace RaceElement.Data.ACC.EntryList;
 
-public class EntryListTracker
+public sealed class EntryListTracker
 {
-    public class CarData
+    public sealed class CarData
     {
         public DateTime LastUpdate;
         public CarInfo CarInfo { get; set; }
