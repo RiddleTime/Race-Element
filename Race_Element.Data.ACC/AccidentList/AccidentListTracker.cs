@@ -23,7 +23,7 @@ public sealed class AccidentListTracker
     private Dictionary<double, Dictionary<int, RealtimeCarUpdate>> _realTimeCarHistory = [];
 
     // store all incoming broadcast accident events with the corresponding real time car update
-    private List<CarInfoWithRealTime> _unprocessedAccidents = [];
+    //private List<CarInfoWithRealTime> _unprocessedAccidents = [];
 
     public static AccidentListTracker Instance
     {
@@ -82,13 +82,13 @@ public sealed class AccidentListTracker
 
         //Debug.WriteLine($"session time {key} accident time {accidentTime}");
         // get real time car update data from history and add information to accident event
-        CarInfoWithRealTime carInfoWithRealTime = new(broadcastingEvent.CarData);
-        carInfoWithRealTime.RealtimeCarUpdate = _realTimeCarHistory[key][broadcastingEvent.CarId];
-        lock (_unprocessedAccidents)
-        {
-            _unprocessedAccidents.Add(carInfoWithRealTime);
-            //Debug.WriteLine($"unprocessed accidents list size: {_unprocessedAccidents.Count}");
-        }
+        //CarInfoWithRealTime carInfoWithRealTime = new(broadcastingEvent.CarData);
+        //carInfoWithRealTime.RealtimeCarUpdate = _realTimeCarHistory[key][broadcastingEvent.CarId];
+        //lock (_unprocessedAccidents)
+        //{
+        //    _unprocessedAccidents.Add(carInfoWithRealTime);
+        //    //Debug.WriteLine($"unprocessed accidents list size: {_unprocessedAccidents.Count}");
+        //}
 
 
         if (_accidentTime == DateTime.MinValue)
@@ -106,31 +106,31 @@ public sealed class AccidentListTracker
 
         // process accidents older than 1 sec.
         TimeSpan timediff = processTime - _accidentTime;
-        if (_accidentTime != DateTime.MinValue && timediff.TotalMilliseconds > 1000)
-        {
-            //Debug.WriteLine($"process old accident data list size {_unprocessedAccidents.Count} ...");
+        //if (_accidentTime != DateTime.MinValue && timediff.TotalMilliseconds > 1000)
+        //{
+        //    //Debug.WriteLine($"process old accident data list size {_unprocessedAccidents.Count} ...");
 
-            if (_unprocessedAccidents.Count < 2)
-            {
-                Debug.WriteLine($"accident: #{_unprocessedAccidents[0].RaceNumber}|{_unprocessedAccidents[0].GetCurrentDriverName()}");
-            }
+        //    if (_unprocessedAccidents.Count < 2)
+        //    {
+        //        Debug.WriteLine($"accident: #{_unprocessedAccidents[0].RaceNumber}|{_unprocessedAccidents[0].GetCurrentDriverName()}");
+        //    }
 
-            for (int i = 0; i < _unprocessedAccidents.Count - 1; i++)
-            {
-                float distance = Math.Abs((_unprocessedAccidents[i].RealtimeCarUpdate.SplinePosition - _unprocessedAccidents[i + 1].RealtimeCarUpdate.SplinePosition) * _trackDistance);
-                Debug.WriteLine($"accident: #{_unprocessedAccidents[i].RaceNumber} vs #{_unprocessedAccidents[i + 1].RaceNumber} distance {distance.ToString("0.##")}m");
+        //    for (int i = 0; i < _unprocessedAccidents.Count - 1; i++)
+        //    {
+        //        float distance = Math.Abs((_unprocessedAccidents[i].RealtimeCarUpdate.SplinePosition - _unprocessedAccidents[i + 1].RealtimeCarUpdate.SplinePosition) * _trackDistance);
+        //        Debug.WriteLine($"accident: #{_unprocessedAccidents[i].RaceNumber} vs #{_unprocessedAccidents[i + 1].RaceNumber} distance {distance.ToString("0.##")}m");
 
-                // TODO send out accident event
-                OnAccident?.Invoke(this, new AccidentEvent());
-            }
+        //        // TODO send out accident event
+        //        OnAccident?.Invoke(this, new AccidentEvent());
+        //    }
 
-            lock (_unprocessedAccidents)
-            {
-                //Debug.WriteLine($"clear unprocessed accident list and reset accident timestamp");
-                _accidentTime = DateTime.MinValue;
-                _unprocessedAccidents.Clear();
-            }
-        }
+        //    lock (_unprocessedAccidents)
+        //    {
+        //        //Debug.WriteLine($"clear unprocessed accident list and reset accident timestamp");
+        //        _accidentTime = DateTime.MinValue;
+        //        _unprocessedAccidents.Clear();
+        //    }
+        //}
 
 
         // double key = GetSessionTimeKey();
@@ -225,24 +225,24 @@ public sealed class AccidentListTracker
         _trackDistance = trackData.TrackMeters;
     }
 
-    private class CarInfoWithRealTime : CarInfo
-    {
-        public RealtimeCarUpdate RealtimeCarUpdate { get; set; }
+    //private class CarInfoWithRealTime : CarInfo
+    //{
+    //    public RealtimeCarUpdate RealtimeCarUpdate { get; set; }
 
-        public CarInfoWithRealTime(CarInfo carInfoIn) : base(carInfoIn.CarIndex)
-        {
-            CarModelType = carInfoIn.CarModelType;
-            TeamName = carInfoIn.TeamName;
-            RaceNumber = carInfoIn.RaceNumber;
-            CupCategory = carInfoIn.CupCategory;
-            CurrentDriverIndex = carInfoIn.CurrentDriverIndex;
-            Nationality = carInfoIn.Nationality;
-        }
+    //    public CarInfoWithRealTime(CarInfo carInfoIn) : base(carInfoIn.CarIndex)
+    //    {
+    //        CarModelType = carInfoIn.CarModelType;
+    //        TeamName = carInfoIn.TeamName;
+    //        RaceNumber = carInfoIn.RaceNumber;
+    //        CupCategory = carInfoIn.CupCategory;
+    //        CurrentDriverIndex = carInfoIn.CurrentDriverIndex;
+    //        Nationality = carInfoIn.Nationality;
+    //    }
 
-        public CarInfoWithRealTime(ushort carIndex) : base(carIndex)
-        {
-        }
-    }
+    //    public CarInfoWithRealTime(ushort carIndex) : base(carIndex)
+    //    {
+    //    }
+    //}
 
     private class ContactData
     {
