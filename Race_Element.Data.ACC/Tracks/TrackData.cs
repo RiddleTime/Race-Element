@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace RaceElement.Data.ACC.Tracks;
 
-public class TrackData
+public sealed class TrackData
 {
     public abstract class AbstractTrackData
     {

@@ -13,7 +13,7 @@ namespace RaceElement.Data.ACC.Tyres;
 /// <br/><br/>
 /// <i>Originally written by Mominon in abc2823be1740d7a8c911f34880bc7a01753fba2 -	Add TyresTracker to track pressure losses</i>
 /// </summary>
-public class TyresTracker
+public sealed class TyresTracker
 {
     public class TyresInfo
     {

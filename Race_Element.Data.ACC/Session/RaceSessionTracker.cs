@@ -16,7 +16,7 @@ using static RaceElement.ACCSharedMemory;
 
 namespace RaceElement.Data.ACC.Session;
 
-public class RaceSessionTracker
+public sealed class RaceSessionTracker
 {
     private bool _isTracking;
 

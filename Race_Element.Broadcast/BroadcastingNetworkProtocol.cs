@@ -36,7 +36,7 @@ public enum InboundMessageTypes : byte
     BROADCASTING_EVENT = 7
 }
 
-public class BroadcastingNetworkProtocol
+public sealed class BroadcastingNetworkProtocol
 {
     public const int BROADCASTING_PROTOCOL_VERSION = 4;
     private string ConnectionIdentifier { get; }

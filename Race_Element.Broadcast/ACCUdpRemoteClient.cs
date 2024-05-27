@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RaceElement.Broadcast;
 
-public class ACCUdpRemoteClient : IDisposable
+public sealed class ACCUdpRemoteClient : IDisposable
 {
     private UdpClient _client;
     private Task _listenerTask;

@@ -4,7 +4,7 @@ using System.Drawing.Text;
 
 namespace RaceElement.HUD.Overlay.OverlayUtil.InfoPanel;
 
-public class PanelText
+public sealed class PanelText
 {
     public RectangleF Rectangle;
     public CachedBitmap CachedBackground;

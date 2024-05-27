@@ -2,7 +2,7 @@
 
 namespace RaceElement.Broadcast.Structs;
 
-public class LapInfo
+public sealed class LapInfo
 {
     /// <summary>
     /// Lap time in milliseconds. Use "GetLapTimeMS()"
