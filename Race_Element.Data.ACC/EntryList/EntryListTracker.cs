@@ -79,12 +79,7 @@ public class EntryListTracker
     private void CleanupEntryList()
     {
         var cleanupWaitTime = TimeSpan.FromSeconds(5);
-        List<KeyValuePair<int, CarData>> cars;
-
-        lock (_entryListCars)
-        {
-            cars = _entryListCars.ToList();
-        }
+        List<KeyValuePair<int, CarData>> cars = [.. _entryListCars];
 
         foreach (var entry in cars)
         {
@@ -98,11 +93,7 @@ public class EntryListTracker
                 continue;
             }
 
-            lock (_entryListCars)
-            {
-                CarData removed = null;
-                _entryListCars.Remove(entry.Key, out removed);
-            }
+            _entryListCars.Remove(entry.Key, out CarData _);
 
             PositionGraph.Instance.RemoveCar(entry.Key);
         }
