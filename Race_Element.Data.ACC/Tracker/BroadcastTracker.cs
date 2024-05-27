@@ -21,6 +21,7 @@ public class BroadcastTracker : IDisposable
 
     private ACCUdpRemoteClient _client;
     public bool IsConnected { get; private set; }
+    private DateTime _lastRequestTime = DateTime.MinValue;
 
     private BroadcastTracker()
     {
@@ -29,7 +30,11 @@ public class BroadcastTracker : IDisposable
     public void RequestData()
     {
         // TODO(Andrei): This is just a temporal solution until we find a better way to redo the callbacks
-        _client?.RequestData();
+        if (DateTime.UtcNow - _lastRequestTime > TimeSpan.FromSeconds(5))
+        {
+            _client?.RequestData();
+            _lastRequestTime = DateTime.UtcNow;
+        }
     }
 
     public event EventHandler<RealtimeUpdate> OnRealTimeUpdate;
@@ -97,7 +102,7 @@ public class BroadcastTracker : IDisposable
             OnRealTimeCarUpdate?.Invoke(this, e);
 
             int localCarIndex = ACCSharedMemory.Instance.ReadGraphicsPageFile(true).PlayerCarID;
-            if (e.CarIndex == localCarIndex)  OnRealTimeLocalCarUpdate?.Invoke(this, e);
+            if (e.CarIndex == localCarIndex) OnRealTimeLocalCarUpdate?.Invoke(this, e);
         };
     }
 
