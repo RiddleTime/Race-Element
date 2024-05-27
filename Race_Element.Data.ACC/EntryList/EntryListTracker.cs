@@ -4,6 +4,7 @@ using RaceElement.Broadcast.Structs;
 using RaceElement.Data.ACC.EntryList.TrackPositionGraph;
 using RaceElement.Data.ACC.Tracker;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -29,26 +30,21 @@ public class EntryListTracker
         }
     }
 
-    internal Dictionary<int, CarData> _entryListCars = [];
+    internal readonly ConcurrentDictionary<int, CarData> _entryListCars = [];
     public List<KeyValuePair<int, CarData>> Cars
     {
         get
         {
-            lock (_entryListCars)
-            {
-                return _entryListCars.ToList();
-            }
+            return [.. _entryListCars];
         }
     }
 
     public CarData GetCarData(int identifier)
     {
-        lock (_entryListCars)
+
+        if (_entryListCars.TryGetValue(identifier, out CarData carData))
         {
-            if (_entryListCars.TryGetValue(identifier, out CarData carData))
-            {
-                return carData;
-            }
+            return carData;
         }
 
         return null;
@@ -56,10 +52,8 @@ public class EntryListTracker
 
     private void Clear()
     {
-        lock (_entryListCars)
-        {
-            _entryListCars.Clear();
-        }
+
+        _entryListCars.Clear();
     }
 
     internal void Start()
@@ -106,7 +100,8 @@ public class EntryListTracker
 
             lock (_entryListCars)
             {
-                _entryListCars.Remove(entry.Key);
+                CarData removed = null;
+                _entryListCars.Remove(entry.Key, out removed);
             }
 
             PositionGraph.Instance.RemoveCar(entry.Key);
@@ -118,36 +113,34 @@ public class EntryListTracker
         // Remove drives that haven't received updates in a while
         CleanupEntryList();
 
-        lock (_entryListCars)
+
+        if (!_entryListCars.TryGetValue(carIndex, out var carData))
         {
-            if (!_entryListCars.TryGetValue(carIndex, out var carData))
-            {
-                carData = new CarData();
-                _entryListCars.Add(carIndex, carData);
-            }
+            carData = new CarData();
+            _entryListCars.TryAdd(carIndex, carData);
+        }
 
-            if (obj is CarInfo carInfo)
-            {
-                carData.CarInfo = carInfo;
-                carData.LastUpdate = DateTime.UtcNow;
-            }
-            else if (obj is RealtimeCarUpdate carUpdate)
-            {
-                carData.RealtimeCarUpdate = carUpdate;
-                carData.LastUpdate = DateTime.UtcNow;
-            }
+        if (obj is CarInfo carInfo)
+        {
+            carData.CarInfo = carInfo;
+            carData.LastUpdate = DateTime.UtcNow;
+        }
+        else if (obj is RealtimeCarUpdate carUpdate)
+        {
+            carData.RealtimeCarUpdate = carUpdate;
+            carData.LastUpdate = DateTime.UtcNow;
+        }
 
-            if (fromBroadCast) return;
-            var carGraph = PositionGraph.Instance.GetCar(carIndex);
+        if (fromBroadCast) return;
+        var carGraph = PositionGraph.Instance.GetCar(carIndex);
 
-            if (carGraph == null)
-            {
-                PositionGraph.Instance.AddCar(carIndex);
-            }
-            else
-            {
-                carGraph.UpdateLocation(carData.RealtimeCarUpdate.SplinePosition, carData.RealtimeCarUpdate.CarLocation);
-            }
+        if (carGraph == null)
+        {
+            PositionGraph.Instance.AddCar(carIndex);
+        }
+        else
+        {
+            carGraph.UpdateLocation(carData.RealtimeCarUpdate.SplinePosition, carData.RealtimeCarUpdate.CarLocation);
         }
     }
 
@@ -156,14 +149,16 @@ public class EntryListTracker
         switch (evt.Type)
         {
             case BroadcastingCarEventType.LapCompleted:
-            {
-                UpdateEntryList(evt.CarData.CarIndex, evt.CarData, true);
-            } break;
+                {
+                    UpdateEntryList(evt.CarData.CarIndex, evt.CarData, true);
+                }
+                break;
 
             default:
-            {
-                Debug.WriteLine(JsonConvert.SerializeObject(evt));
-            } break;
+                {
+                    Debug.WriteLine(JsonConvert.SerializeObject(evt));
+                }
+                break;
         }
     }
 
