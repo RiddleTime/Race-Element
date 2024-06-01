@@ -1,4 +1,5 @@
 ﻿using ACCManager.Data.ACC.Core.Game;
+using RaceElement.Controls;
 using RaceElement.Controls.Util;
 using RaceElement.HUD.ACC.Overlays.OverlayStartScreen;
 using RaceElement.Util;
@@ -8,6 +9,8 @@ using System.Globalization;
 using System.IO;
 using System.Runtime;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace RaceElement;
@@ -74,13 +77,26 @@ public partial class App : Application
         if (string.IsNullOrEmpty(arg)) return;
 
         arg = arg.Replace(@"raceelement://", "");
-        string[] commandAndData = arg.Split("=");
-        switch (commandAndData[0].ToLower())
+        string command = arg.Split("=")[0];
+        switch (command.ToLower())
         {
             case "setup":
                 {
                     LogWriter.WriteToLog($"Received setup as custom uri parameter.");
-                    LogWriter.WriteToLog($"{commandAndData[1]}");
+                    LogWriter.WriteToLog($"{command}");
+                    LogWriter.WriteToLog($"Trying to import setup through URI.");
+                    arg = arg.Replace("setup=", "");
+                    arg = arg.Replace("Setup=", "");
+                    new Thread(x =>
+                    {
+                        while (SetupImporter.Instance == null)
+                            Thread.Sleep(100);
+
+                        SetupImporter.Instance.ImportFromUri(arg);
+                        Dispatcher.BeginInvoke(() => { RaceElement.MainWindow.Instance.tabSetups.Focus(); });
+                    }).Start();
+
+
                     break;
                 }
 

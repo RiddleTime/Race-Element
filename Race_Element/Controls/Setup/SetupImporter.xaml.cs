@@ -1,12 +1,15 @@
 ﻿using RaceElement.Controls.Setup;
 using RaceElement.Data;
 using RaceElement.Util;
+using SharpCompress.Archives;
+using SharpCompress.Archives.Zip;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using static RaceElement.Data.ACC.Tracks.TrackData;
@@ -121,6 +124,47 @@ public partial class SetupImporter : UserControl
         {
             LogWriter.WriteToLog(e);
         }
+    }
+
+    public bool ImportFromUri(string uri)
+    {
+        byte[] bytes = Convert.FromBase64String(uri);
+        using MemoryStream stream = new([.. bytes]);
+        string filePath = string.Empty;
+
+        try
+        {
+            using ZipArchive archive = ZipArchive.Open(stream);
+
+            if (archive.Entries.Count == 1)
+            {
+                foreach (var entry in archive.Entries)
+                {
+                    DirectoryInfo downloadCache = new(FileUtil.RaceElementDownloadCachePath);
+                    if (!downloadCache.Exists) downloadCache.Create();
+
+                    filePath = $"{FileUtil.RaceElementDownloadCachePath}{entry.Key}";
+                    entry.WriteToFile(filePath, new SharpCompress.Common.ExtractionOptions() { Overwrite = true, PreserveFileTime = true });
+                }
+            }
+            else
+            {
+                LogWriter.WriteToLog("Empty archive");
+            }
+        }
+        catch (Exception e)
+        {
+            LogWriter.WriteToLog(e);
+        }
+        finally
+        {
+            stream.Close();
+        }
+
+        if (filePath == string.Empty) return false;
+        Thread.Sleep(200);
+        Dispatcher.Invoke(() => { return Open(filePath, true, false); });
+        return false;
     }
 
     public bool Open(string setupFile, bool selectMultipleTracks, bool showTrack = false)

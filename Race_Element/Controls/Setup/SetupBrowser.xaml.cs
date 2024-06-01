@@ -413,20 +413,6 @@ public partial class SetupBrowser : UserControl
         {
             FileInfo file = (FileInfo)button.CommandParameter;
 
-
-            Root setup = GetSetupJsonRoot(file);
-            using (var ms = new MemoryStream())
-            {
-#pragma warning disable SYSLIB0011 // Type or member is obsolete
-                var formatter = new BinaryFormatter() { FilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Low };
-#pragma warning restore SYSLIB0011 // Type or member is obsolete
-
-                formatter.Serialize(ms, setup);
-                byte[] data = ms.ToArray();
-                ms.Close();
-                Debug.WriteLine($"Data length with binary formatter: {data.Length} Bytes.");
-            }
-
             StringBuilder sb = new("RaceElement://Setup=");
             using (ZipArchive archive = ZipArchive.Create())
             {
