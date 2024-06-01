@@ -26,15 +26,17 @@ description: > # this means to ignore newlines until "show_exerpts:"
   
   <script>
     (function() {
-      document.querySelector("link[rel*='icon']").remove();
-      var link = document.createElement('link');
-      link.type = 'image/png';
-      link.rel = 'icon';
-      link.href = '/other resources/race element icon 2.png';
-      document.getElementsByTagName('head')[0].appendChild(link);
+        document.querySelector("link[rel*='icon']").remove();
+        var link = document.createElement('link');
+        link.type = 'image/png';
+        link.rel = 'icon';
+        link.href = '/other resources/race element icon 2.png';
+        document.getElementsByTagName('head')[0].appendChild(link);
 
-      var setup = <?php echo json_encode($_POST['setup'] ?? null) ?>;
-      console.log(setup);  
+        
+        var params = new URL(window.location.toLocaleString()).searchParams;
+        var setup = params.get('setup');
+        console.log(setup);  
     })();
 
   
