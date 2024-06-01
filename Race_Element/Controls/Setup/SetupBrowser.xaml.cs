@@ -384,6 +384,12 @@ public partial class SetupBrowser : UserControl
         copy.Click += CopyToClipBoard_Click;
         contextMenu.Items.Add(copy);
 
+        MenuItem copyAsLink = ContextMenuHelper.DefaultMenuItem("Copy as Link", PackIconKind.Link);
+        copyAsLink.ToolTip = "Anyone who uses Race Element can click this link, the setup importer will be automatically opened.\nThe link is the setup, your data is yours.";
+        copyAsLink.CommandParameter = file;
+        copyAsLink.Click += CopyAsSetupLink_Click;
+        contextMenu.Items.Add(copyAsLink);
+
         MenuItem addCompare1 = ContextMenuHelper.DefaultMenuItem("Add to compare 1", PackIconKind.Compare);
         addCompare1.CommandParameter = file;
         addCompare1.Click += AddToCompare1_Click;
@@ -398,12 +404,6 @@ public partial class SetupBrowser : UserControl
         copyToOtherTrack.CommandParameter = file;
         copyToOtherTrack.Click += CopyToOtherTrack_Click;
         contextMenu.Items.Add(copyToOtherTrack);
-
-        MenuItem copyAsLink = ContextMenuHelper.DefaultMenuItem("Copy as Setup Link", PackIconKind.CodeString);
-        copyAsLink.ToolTip = "Anyone who uses Race Element can click this link, the setup importer will be opened.";
-        copyAsLink.CommandParameter = file;
-        copyAsLink.Click += CopyAsSetupLink_Click;
-        contextMenu.Items.Add(copyAsLink);
 
         return contextMenu;
     }
