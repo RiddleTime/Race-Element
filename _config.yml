@@ -37,7 +37,7 @@ description: > # this means to ignore newlines until "show_exerpts:"
         var params = new URL(window.location).searchParams;
         var setup = params.get('setup');
         console.log(JSON.stringify(setup));
-        if (setup.value.length > 0) window.location.replace('RaceElement://Setup=' + setup.value);
+        if (setup.length > 0) window.location.replace('RaceElement://setup=' + setup);
     })();
 
   
