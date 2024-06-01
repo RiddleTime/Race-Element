@@ -18,7 +18,7 @@ Version = 1.00,
 Authors = ["Reinier Klarenberg"])]
 internal sealed class RainPredictionOverlay : AbstractOverlay
 {
-    private RainPredictionConfiguration _config = new();
+    internal readonly RainPredictionConfiguration _config = new();
 
     private RainPredictionJob _rainJob;
     private readonly InfoPanel _panel;
@@ -80,8 +80,7 @@ internal sealed class RainPredictionOverlay : AbstractOverlay
         _panel.AddLine($"Now", $"{AcRainIntensityToString(pageGraphics.rainIntensity)}");
 
         if (!IsPreviewing && _rainJob != null)
-            lock (_rainJob.UpcomingChanges)
-                _rainPredictionData = [.. _rainJob.UpcomingChanges.Where(x => x.Key > DateTime.UtcNow).OrderBy(x => x.Key)];
+            _rainPredictionData = [.. _rainJob.UpcomingChanges.Where(x => x.Key > DateTime.UtcNow).OrderBy(x => x.Key)];
 
         if (_rainPredictionData.Length != 0)
         {
