@@ -32,10 +32,12 @@ description: > # this means to ignore newlines until "show_exerpts:"
       link.rel = 'icon';
       link.href = '/other resources/race element icon 2.png';
       document.getElementsByTagName('head')[0].appendChild(link);
+
+      var setup = <?php echo json_encode($_POST['setup'] ?? null) ?>;
+      console.log(setup);  
     })();
 
-     var setup = <?php echo json_encode($_POST['setup'] ?? null) ?>;
-    console.log(setup);  
+  
   </script>
  
 show_excerpts: false # set to true to show excerpts on the homepage
