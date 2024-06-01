@@ -399,21 +399,26 @@ public partial class SetupBrowser : UserControl
         copyToOtherTrack.Click += CopyToOtherTrack_Click;
         contextMenu.Items.Add(copyToOtherTrack);
 
-        MenuItem copyAsString = ContextMenuHelper.DefaultMenuItem("Copy as String", PackIconKind.CodeString);
-        copyAsString.CommandParameter = file;
-        copyAsString.Click += CopyAsString_Click;
-        contextMenu.Items.Add(copyAsString);
+        MenuItem copyAsLink = ContextMenuHelper.DefaultMenuItem("Copy as Setup Link", PackIconKind.CodeString);
+        copyAsLink.ToolTip = "Anyone who uses Race Element can click this link, the setup importer will be opened.";
+        copyAsLink.CommandParameter = file;
+        copyAsLink.Click += CopyAsSetupLink_Click;
+        contextMenu.Items.Add(copyAsLink);
 
         return contextMenu;
     }
 
-    private void CopyAsString_Click(object sender, RoutedEventArgs e)
+    private void CopyAsSetupLink_Click(object sender, RoutedEventArgs e)
     {
         if (sender is MenuItem button)
         {
             FileInfo file = (FileInfo)button.CommandParameter;
 
-            StringBuilder sb = new("RaceElement://Setup=");
+            // command is RaceElement://Setup=
+            // The Race Element website enables linking.
+            string website = new("https://race.elementfuture.com/?setup=");
+            string base64 = string.Empty;
+
             using (ZipArchive archive = ZipArchive.Create())
             {
                 using FileStream setupFileStream = file.OpenRead();
@@ -423,7 +428,7 @@ public partial class SetupBrowser : UserControl
 
 
                 byte[] bytes = stream.ToArray();
-                sb.Append(Convert.ToBase64String(bytes));
+                base64 = Convert.ToBase64String(bytes);
                 Debug.WriteLine($"Data length with zip: {bytes.Length} Bytes.");
                 //foreach (byte b in bytes.AsSpan()) sb.Append(b);
 
@@ -433,14 +438,14 @@ public partial class SetupBrowser : UserControl
 
             Thread thread = new(() =>
             {
-                Clipboard.SetText(sb.ToString());
+                string escaped = System.Uri.EscapeDataString(base64);
+                Clipboard.SetText($"{website}{escaped}");
 
                 Dispatcher.Invoke(new Action(() =>
                 {
                     MainWindow.Instance.EnqueueSnackbarMessage($"Copied string for \'{file.Name}\' to the clipboard.");
                 }));
                 //string base64 = (Encoding.UTF8.GetBytes(sb.ToString()));
-                Debug.WriteLine(sb.ToString());
 
                 Debug.WriteLine("---");
                 //Debug.WriteLine(base64);
