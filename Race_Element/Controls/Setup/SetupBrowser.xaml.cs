@@ -3,13 +3,19 @@ using RaceElement.Controls.Setup;
 using RaceElement.Controls.Util;
 using RaceElement.Data;
 using RaceElement.Data.ACC.Core;
+using RaceElement.Data.ACC.Database.Telemetry;
 using RaceElement.Data.ACC.Tracks;
 using RaceElement.Util;
 using RaceElement.Util.SystemExtensions;
+using ScottPlot.Drawing.Colormaps;
+using SharpCompress.Archives.Zip;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -393,7 +399,71 @@ public partial class SetupBrowser : UserControl
         copyToOtherTrack.Click += CopyToOtherTrack_Click;
         contextMenu.Items.Add(copyToOtherTrack);
 
+        MenuItem copyAsString = ContextMenuHelper.DefaultMenuItem("Copy as String", PackIconKind.CodeString);
+        copyAsString.CommandParameter = file;
+        copyAsString.Click += CopyAsString_Click;
+        contextMenu.Items.Add(copyAsString);
+
         return contextMenu;
+    }
+
+    private void CopyAsString_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is MenuItem button)
+        {
+            FileInfo file = (FileInfo)button.CommandParameter;
+
+
+            Root setup = GetSetupJsonRoot(file);
+            using (var ms = new MemoryStream())
+            {
+#pragma warning disable SYSLIB0011 // Type or member is obsolete
+                var formatter = new BinaryFormatter() { FilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Low };
+#pragma warning restore SYSLIB0011 // Type or member is obsolete
+
+                formatter.Serialize(ms, setup);
+                byte[] data = ms.ToArray();
+                ms.Close();
+                Debug.WriteLine($"Data length with binary formatter: {data.Length} Bytes.");
+            }
+
+            StringBuilder sb = new("RaceElement://Setup=");
+            using (ZipArchive archive = ZipArchive.Create())
+            {
+                using FileStream setupFileStream = file.OpenRead();
+                archive.AddEntry(file.Name, setupFileStream);
+                using MemoryStream stream = new();
+                archive.SaveTo(stream);
+
+
+                byte[] bytes = stream.ToArray();
+                sb.Append(Convert.ToBase64String(bytes));
+                Debug.WriteLine($"Data length with zip: {bytes.Length} Bytes.");
+                //foreach (byte b in bytes.AsSpan()) sb.Append(b);
+
+                stream.Close();
+                setupFileStream.Close();
+            }
+
+            Thread thread = new(() =>
+            {
+                Clipboard.SetText(sb.ToString());
+
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    MainWindow.Instance.EnqueueSnackbarMessage($"Copied string for \'{file.Name}\' to the clipboard.");
+                }));
+                //string base64 = (Encoding.UTF8.GetBytes(sb.ToString()));
+                Debug.WriteLine(sb.ToString());
+
+                Debug.WriteLine("---");
+                //Debug.WriteLine(base64);
+
+
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+        }
     }
 
     private void CopyToClipBoard_Click(object sender, RoutedEventArgs e)

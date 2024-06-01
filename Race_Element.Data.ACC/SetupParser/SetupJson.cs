@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace RaceElement.Data;
 
 public class SetupJson
 {
+    [Serializable]
     public class Root
     {
         public string CarName { get; set; }
@@ -12,6 +14,7 @@ public class SetupJson
         public int TrackBopType { get; set; }
     }
 
+    [Serializable]
     public class AdvancedSetup
     {
         public MechanicalBalance MechanicalBalance { get; set; }
@@ -20,12 +23,14 @@ public class SetupJson
         public Drivetrain Drivetrain { get; set; }
     }
 
+    [Serializable]
     public class Tyres
     {
         public int TyreCompound { get; set; }
         public List<int> TyrePressure { get; set; }
     }
 
+    [Serializable]
     public class Alignment
     {
         public List<int> Camber { get; set; }
@@ -37,6 +42,7 @@ public class SetupJson
         public int SteerRatio { get; set; }
     }
 
+    [Serializable]
     public class Electronics
     {
         public int TC1 { get; set; }
@@ -47,6 +53,7 @@ public class SetupJson
         public int TelemetryLaps { get; set; }
     }
 
+    [Serializable]
     public class PitStrategyItem
     {
         public int FuelToAdd { get; set; }
@@ -56,6 +63,7 @@ public class SetupJson
         public int RearBrakePadCompound { get; set; }
     }
 
+    [Serializable]
     public class Strategy
     {
         public int Fuel { get; set; }
@@ -67,6 +75,7 @@ public class SetupJson
         public double FuelPerLap { get; set; }
     }
 
+    [Serializable]
     public class BasicSetup
     {
         public Tyres Tyres { get; set; }
@@ -75,6 +84,7 @@ public class SetupJson
         public Strategy Strategy { get; set; }
     }
 
+    [Serializable]
     public class MechanicalBalance
     {
         public int ARBFront { get; set; }
@@ -87,6 +97,7 @@ public class SetupJson
         public int BrakeBias { get; set; }
     }
 
+    [Serializable]
     public class Dampers
     {
         public List<int> BumpSlow { get; set; }
@@ -95,6 +106,7 @@ public class SetupJson
         public List<int> ReboundFast { get; set; }
     }
 
+    [Serializable]
     public class AeroBalance
     {
         public List<int> RideHeight { get; set; }
@@ -104,6 +116,7 @@ public class SetupJson
         public List<int> BrakeDuct { get; set; }
     }
 
+    [Serializable]
     public class Drivetrain
     {
         public int Preload { get; set; }
