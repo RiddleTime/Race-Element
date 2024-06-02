@@ -36,7 +36,10 @@ description: > # this means to ignore newlines until "show_exerpts:"
         
         var params = new URL(window.location).searchParams;
         var setup = params.get('setup');
-        if (!!setup && setup.length > 0) window.location.replace('RaceElement://setup=' + setup);
+        if (!!setup && setup.length > 0) {
+          window.location.replace('RaceElement://setup=' + setup);
+          window.close();
+        }
     })();
 
   
