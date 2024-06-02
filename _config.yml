@@ -26,10 +26,6 @@ description: > # this means to ignore newlines until "show_exerpts:"
   
   <script>
     FixIcon();
-    
-    function sleep(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    };
   
     function FixIcon() {
         document.querySelector("link[rel*='icon']").remove();
@@ -45,7 +41,7 @@ description: > # this means to ignore newlines until "show_exerpts:"
         var setup = params.get('setup');
         if (!!setup && setup.length > 0) {
             window.location.replace('RaceElement://setup=' + setup);
-            await sleep(5000);
+            setTimeout(5000);
             window.location.replace('https://race.elementfuture.com/2023/01/12/get-started.html);
         }
     };
