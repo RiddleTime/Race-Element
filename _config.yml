@@ -37,18 +37,9 @@ description: > # this means to ignore newlines until "show_exerpts:"
         var params = new URL(window.location).searchParams;
         var setup = params.get('setup');
         if (!!setup && setup.length > 0) {
-            // window.location.replace('RaceElement://setup=' + setup);
-            // window.close();
-  
-            var redirectToApp = function() {
-              setTimeout(function appNotInstalled() {
-                  window.location.replace('https://race.elementfuture.com/2023/01/12/get-started.html');
-              }, 10000);
-              
-              window.location.replace('RaceElement://setup=' + setup);
-              window.close();
-            };
-            window.onload = redirectToApp;
+            window.location.replace('RaceElement://setup=' + setup);
+            await new Promise(r => setTimeout(r, 5000));
+            window.location.replace('https://race.elementfuture.com/2023/01/12/get-started.html);
         }
     })();
 
