@@ -145,13 +145,19 @@ public partial class MainWindow : Window
         // ---
     }
 
+
+    private bool initialChange = true;
     private void GameManager_OnGameChanged(object sender, Game selectedGame)
     {
         tabSetups.Visibility = selectedGame == Game.AssettoCorsaCompetizione ? Visibility.Visible : Visibility.Collapsed;
         tabLiveries.Visibility = selectedGame == Game.AssettoCorsaCompetizione ? Visibility.Visible : Visibility.Collapsed;
         tabTelemetry.Visibility = selectedGame == Game.AssettoCorsaCompetizione ? Visibility.Visible : Visibility.Collapsed;
 
-        tabControl.SelectedIndex = 0;
+
+        if (!initialChange)
+            tabControl.SelectedIndex = 0;
+        else
+            initialChange = false;
     }
 
     private void MainWindow_Drop(object sender, DragEventArgs e)

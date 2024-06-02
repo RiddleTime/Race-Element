@@ -6,6 +6,7 @@ using RaceElement.Data.ACC.Core;
 using RaceElement.Data.ACC.Tracks;
 using RaceElement.Util;
 using RaceElement.Util.SystemExtensions;
+using SharpCompress.Archives.Zip;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -378,6 +379,12 @@ public partial class SetupBrowser : UserControl
         copy.Click += CopyToClipBoard_Click;
         contextMenu.Items.Add(copy);
 
+        MenuItem copyAsLink = ContextMenuHelper.DefaultMenuItem("Copy as Link", PackIconKind.Link);
+        copyAsLink.ToolTip = "Anyone who uses Race Element can click this link, the setup importer will be automatically opened.\nThe link is the setup, your data is yours.";
+        copyAsLink.CommandParameter = file;
+        copyAsLink.Click += CopyAsSetupLink_Click;
+        contextMenu.Items.Add(copyAsLink);
+
         MenuItem addCompare1 = ContextMenuHelper.DefaultMenuItem("Add to compare 1", PackIconKind.Compare);
         addCompare1.CommandParameter = file;
         addCompare1.Click += AddToCompare1_Click;
@@ -394,6 +401,46 @@ public partial class SetupBrowser : UserControl
         contextMenu.Items.Add(copyToOtherTrack);
 
         return contextMenu;
+    }
+
+    private void CopyAsSetupLink_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is MenuItem button)
+        {
+            FileInfo file = (FileInfo)button.CommandParameter;
+
+            // command is RaceElement://Setup=
+            // The Race Element website enables linking.
+            string website = new("https://race.elementfuture.com/?setup=");
+            string base64 = string.Empty;
+
+            using (ZipArchive archive = ZipArchive.Create())
+            {
+                using FileStream setupFileStream = file.OpenRead();
+                archive.AddEntry(file.Name, setupFileStream);
+                using MemoryStream stream = new();
+                archive.SaveTo(stream);
+
+                byte[] bytes = stream.ToArray();
+                base64 = Convert.ToBase64String(bytes);
+
+                stream.Close();
+                setupFileStream.Close();
+            }
+
+            Thread thread = new(() =>
+            {
+                string escaped = Uri.EscapeDataString(base64);
+                Clipboard.SetText($"{website}{escaped}");
+
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    MainWindow.Instance.EnqueueSnackbarMessage($"Copied Setup Link: \'{file.Name}\' to the clipboard.");
+                }));
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+        }
     }
 
     private void CopyToClipBoard_Click(object sender, RoutedEventArgs e)

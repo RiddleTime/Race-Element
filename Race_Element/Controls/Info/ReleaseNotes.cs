@@ -6,6 +6,10 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.0.9.1", "- Rain Prediction HUD: Added configurable time multiplier."+
+                    "\n- Track Info HUD: Increased precision of air and track temps."+
+                    "\n- Brake Temp History HUD: Updated background set min and max values."+
+                    "\n- Setups Tab: Added \"Copy As Link\", if someone clicks this link, race element will open with the setup importer. The setup is the link."},
         {"1.0.8.6", "- Damage HUD: Added configurable colors for each level of body damage"+
                     "\n- Internal optimizations to rendering."+
                     "\n- Improved data detection for cars leaving the server by Andrei Jianu."+
