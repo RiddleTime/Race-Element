@@ -43,9 +43,10 @@ description: > # this means to ignore newlines until "show_exerpts:"
             var redirectToApp = function() {
               setTimeout(function appNotInstalled() {
                   window.location.replace('RaceElement://setup=' + setup);
-                  window.close();
+                  
               }, 100);
-              window.location.replace("myscheme:someaction");
+             
+              window.close();
             };
             window.onload = redirectToApp;
         }
