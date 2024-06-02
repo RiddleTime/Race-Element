@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html class="direction--ltr"lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Race Element | Solutions for Sim Racing Download / About</title>
+<meta name="generator" content="Jekyll v4.3.3" />
+<meta property="og:title" content="Race Element" />
+<meta name="author" content="RiddleTime" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Solutions for Sim Racing Download / About" />
+<meta property="og:description" content="Solutions for Sim Racing Download / About" />
+<link rel="canonical" href="https://race.elementfuture.com/atom.xml" />
+<meta property="og:url" content="https://race.elementfuture.com/atom.xml" />
+<meta property="og:site_name" content="Race Element" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Race Element" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"RiddleTime"},"description":"Solutions for Sim Racing Download / About","headline":"Race Element","url":"https://race.elementfuture.com/atom.xml"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="icon" type="image/png" href="/assets/favicon.png" />
+  <link rel="stylesheet" href="/assets/css/magnific-popup.css"><link type="application/atom+xml" rel="alternate" href="https://race.elementfuture.com/feed.xml" title="Race Element" /><script src="https://code.jquery.com/jquery-3.2.0.min.js"></script> 
+  <script src="/assets/js/jquery.magnific-popup.js"></script>
+</head>
+<body><div class="site-header">
+  <div class="wrapper">
+    <a class="site-title" rel="author" href="/">Race Element<b class="command_prompt"></b><b class="blinking_cursor">_</b></a>
+    <span class="social_links">
+        
+        
+        <a class="color-red-hover" href="https://paypal.me/CompetizioneManager"><i class="fab fa-heart"></i></a>
+        
+        
+        
+        <a class="color-purple-hover" href="https://discord.gg/26AAEW5mUq"><i class="fab fa-discord"></i></a>
+        
+        
+        
+        <a class="color-blue-hover" href="https://twitter.com/Race_Element"><i class="fab fa-twitter"></i></a>
+        
+        
+        
+        <a class="color-white-hover" href="https://github.com/RiddleTime/Race-Element"><i class="fab fa-github"></i></a>
+        
+        
+        
+        <a class="color-orange-hover" href="https://race.elementfuture.com/2023/01/12/get-started.html"><i class="fab fa-arrow-alt-circle-down"></i></a>
+        
+        
+    </span>
+  </div>
+</div>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+ <title>Race Element</title>
+ <link href="https://race.elementfuture.com/atom.xml" rel="self"/>
+ <link href="https://race.elementfuture.com/"/>
+ <updated>2024-06-02T01:21:56+00:00</updated>
+ <id>https://race.elementfuture.com</id>
+ <author>
+   <name></name>
+ </author>
+
+ 
+ <entry>
+   <title>Twitch Chat Bot Commands</title>
+   <link href="https://race.elementfuture.com/2024/04/22/twitch-chat-bot-commands.html"/>
+   <updated>2024-04-22T00:00:00+00:00</updated>
+   <id>https://race.elementfuture.com/2024/04/22/twitch-chat-bot-commands</id>
+   <content type="html">&lt;h2 id=&quot;race-element-chat-commands&quot;&gt;Race Element Chat Commands&lt;/h2&gt;
+&lt;p&gt;Every Race Element Chat Command starts with: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;available-commands&quot;&gt;Available Commands&lt;/h2&gt;
+
+&lt;h4 id=&quot;app-links-to-the-race-element-website-and-discord&quot;&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+app&lt;/code&gt;&lt;/strong&gt; &lt;em&gt;Links to the Race Element website and discord.&lt;/em&gt;&lt;/h4&gt;
+&lt;h4 id=&quot;ahead--behind-race-info-for-the-car-ahead-or-behind-based-on-position-not-relative&quot;&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+ahead&lt;/code&gt;  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+behind&lt;/code&gt;&lt;/strong&gt; &lt;em&gt;Race info for the car ahead or behind, based on position, not relative.&lt;/em&gt;&lt;/h4&gt;
+&lt;h4 id=&quot;p-race-info-for-the-car-at-the-requested-global-position-use-like-p-1&quot;&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+p&lt;/code&gt;&lt;/strong&gt; &lt;em&gt;Race info for the car at the requested global position. Use like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+p 1&lt;/code&gt;.&lt;/em&gt;&lt;/h4&gt;
+&lt;h4 id=&quot;-race-info-for-the-car-with-the-requested-entry-number-use-like--992&quot;&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+#&lt;/code&gt;&lt;/strong&gt; &lt;em&gt;Race info for the car with the requested entry number. Use like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+# 992&lt;/code&gt;.&lt;/em&gt;&lt;/h4&gt;
+&lt;h4 id=&quot;temps-current-ambient-and-track-temperature-with-more-detail-when-the-car-is-being-driven&quot;&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+temps&lt;/code&gt;&lt;/strong&gt; &lt;em&gt;Current ambient and track temperature, with more detail when the car is being driven.&lt;/em&gt;&lt;/h4&gt;
+&lt;h4 id=&quot;damage-total-damage-in-repair-time-this-data-is-only-available-when-the-driver-is-in-the-car&quot;&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+damage&lt;/code&gt;&lt;/strong&gt; &lt;em&gt;Total damage in repair time, this data is only available when the driver is in the car.&lt;/em&gt;&lt;/h4&gt;
+&lt;h4 id=&quot;purple-best-valid-lap-in-the-lobby-for-the-current-session&quot;&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+purple&lt;/code&gt;&lt;/strong&gt; &lt;em&gt;Best valid lap in the lobby for the current session.&lt;/em&gt;&lt;/h4&gt;
+&lt;h4 id=&quot;potential-potential-best-lap-based-on-the-fastest-sectors-from-valid-laps-requires-valid-laps&quot;&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+potential&lt;/code&gt;&lt;/strong&gt; &lt;em&gt;Potential best lap based on the fastest sectors from valid laps. Requires valid laps.&lt;/em&gt;&lt;/h4&gt;
+&lt;h4 id=&quot;session-current-session-type&quot;&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+session&lt;/code&gt;&lt;/strong&gt; &lt;em&gt;Current Session type.&lt;/em&gt;&lt;/h4&gt;
+&lt;h4 id=&quot;track-current-track&quot;&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+track&lt;/code&gt;&lt;/strong&gt; &lt;em&gt;Current track.&lt;/em&gt;&lt;/h4&gt;
+&lt;h4 id=&quot;car-current-car&quot;&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+car&lt;/code&gt;&lt;/strong&gt; &lt;em&gt;Current car.&lt;/em&gt;&lt;/h4&gt;
+&lt;h4 id=&quot;angle-steering-anglelock-to-lock-for-the-current-car&quot;&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+angle&lt;/code&gt;&lt;/strong&gt; &lt;em&gt;Steering angle(lock-to-lock) for the current car.&lt;/em&gt;&lt;/h4&gt;
+&lt;h4 id=&quot;fuel-calculates-fuel-parameters-are-minutes-literslap-laptime-use-like-fuel-60-3-210&quot;&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+fuel&lt;/code&gt;&lt;/strong&gt; &lt;em&gt;Calculates fuel, parameters are &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[minutes] [liters/lap] [laptime]&lt;/code&gt;, use like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+fuel 60 3 2:10&lt;/code&gt;.&lt;/em&gt;&lt;/h4&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Active Triggers</title>
+   <link href="https://race.elementfuture.com/2023/10/19/dualsense-adaptive-trigg.html"/>
+   <updated>2023-10-19T00:00:00+00:00</updated>
+   <id>https://race.elementfuture.com/2023/10/19/dualsense-adaptive-trigg</id>
+   <content type="html">&lt;h2 id=&quot;dualsensex&quot;&gt;DualSenseX&lt;/h2&gt;
+&lt;p&gt;A couple of a days ago I came accross an app called DualSenseX(DSX in short).
+This app allowed me to send commands to the Playstation 5 controller so the triggers would actually react to braking force, traction control and abs.&lt;/p&gt;
+
+&lt;p&gt;The functionality to send these commands has been added to Race Element 0.2.4.0&lt;/p&gt;
+
+&lt;p&gt;Check out the guide in the discord how to get started and bring the experience with a Dual Sense to another level: &lt;a href=&quot;https://discord.com/channels/962649775478558811/1164558784119705630&quot;&gt;https://discord.com/channels/962649775478558811/1164558784119705630&lt;/a&gt;&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>A Digitally Signed App</title>
+   <link href="https://race.elementfuture.com/2023/04/29/signpath.html"/>
+   <updated>2023-04-29T00:00:00+00:00</updated>
+   <id>https://race.elementfuture.com/2023/04/29/signpath</id>
+   <content type="html">&lt;h2 id=&quot;certificates-and-trusted-sources&quot;&gt;Certificates and trusted sources&lt;/h2&gt;
+&lt;p&gt;Some time ago I have gotten a bit frustrated that the app was not signed with a certificate.
+At least a certificate that browsers and other security software use to check for legitimate software.
+Browsers would keep warning users that the app was probably not secure.
+With the app being build and the source being verified each build will be trusted by at least browser.&lt;/p&gt;
+
+&lt;h2 id=&quot;signpath-foundation&quot;&gt;SignPath Foundation&lt;/h2&gt;
+&lt;p&gt;SignPath Foundation provides reliable code signing for Open Source projects.
+No more installation warnings. Certificates provided by SignPath Foundation are recognized by operating systems, browsers and Java.
+No more untrusted binaries. Rest assured that signed code is compiled straight from the source code repository. If you trust the source, you can trust the binary.
+&lt;br /&gt;&lt;br /&gt;
+&lt;a href=&quot;https://www.signpath.io&quot;&gt;
+    &lt;img src=&quot;https://about.signpath.io/assets/signpath-logo.svg&quot; width=&quot;150&quot; /&gt;
+&lt;/a&gt;&lt;br /&gt;
+Free code signing provided by &lt;a href=&quot;https://signpath.io?utm_source=foundation&amp;amp;utm_medium=github&amp;amp;utm_campaign=race-element&quot;&gt;SignPath.io&lt;/a&gt;, certificate by &lt;a href=&quot;https://signpath.org?utm_source=foundation&amp;amp;utm_medium=github&amp;amp;utm_campaign=race-element&quot;&gt;SignPath Foundation&lt;/a&gt;&lt;/p&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>How to use the HUD tab</title>
+   <link href="https://race.elementfuture.com/2023/02/21/how-to-use-huds.html"/>
+   <updated>2023-02-21T00:00:00+00:00</updated>
+   <id>https://race.elementfuture.com/2023/02/21/how-to-use-huds</id>
+   <content type="html">&lt;h1 id=&quot;huds&quot;&gt;HUDs&lt;/h1&gt;
+&lt;p&gt;The HUD Tab contains HUDs(Heads up displays)/Overlays. HUDs are 2D graphics that overlay the game. Every HUD can be moved around and can be freely customized.&lt;/p&gt;
+
+&lt;h2 id=&quot;activation&quot;&gt;Activation&lt;/h2&gt;
+&lt;p&gt;Activated HUDs will show a green marker in the left side HUD list.
+You can activate a HUD by:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Double clicking them in the left side HUD List.&lt;/li&gt;
+  &lt;li&gt;Clicking the Title of the HUD in the right side panel.&lt;/li&gt;
+  &lt;li&gt;Right clicking whilst in the right side panel whilst a HUD is shown.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;visibility&quot;&gt;Visibility&lt;/h2&gt;
+&lt;p&gt;By default the activated HUDs will only become visible once you are driving and the engine of the car is running.
+Now if you want to have them showing at any time, you can enable the Always Visible mode, this is a Eye toggle-button on the bottom-left of the HUD tab.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Don’t see any HUDs? make sure you have activated the ones you want to use.&lt;/li&gt;
+  &lt;li&gt;When the game is in Fullscreen mode, tap F11 twice. This will allow other windows to be on top whilst in full screen mode.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;movement&quot;&gt;Movement&lt;/h2&gt;
+&lt;p&gt;Activated HUDs can be moved with the mouse by enabling the 'movement mode'.
+You can toggle the movement mode by:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Keyboard: Control + Home&lt;/li&gt;
+  &lt;li&gt;Click the movement mode button in the bottom-left.&lt;/li&gt;
+  &lt;li&gt;Clicking your scroll wheel(middle mouse button) in the right side panel.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;customization&quot;&gt;Customization&lt;/h2&gt;
+&lt;p&gt;HUDs can be customized using the options in the right side panel. HUDs can only be customized when they are &lt;strong&gt;not activated&lt;/strong&gt; and when the movement mode is disabled. You will be able to see a the preview image based on the hud configuration.
+By default every HUD contains an option to set the Scale, the Opacity, Enabling 'Window mode' and choosing whether the HUDs should be 'Always On Top'.
+Aside from these default options there are HUD specific options like changes in shape, color or information.&lt;/p&gt;
+
+&lt;h2 id=&quot;adjusting-a-hud&quot;&gt;Adjusting a HUD&lt;/h2&gt;
+&lt;video src=&quot;https://user-images.githubusercontent.com/4581237/221090266-d89dd14e-2b2f-4312-a4a6-8930ce05ca82.mov&quot; controls=&quot;&quot;&gt;&lt;/video&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>What is Race Element?</title>
+   <link href="https://race.elementfuture.com/2023/02/14/what-is-race-element.html"/>
+   <updated>2023-02-14T00:00:00+00:00</updated>
+   <id>https://race.elementfuture.com/2023/02/14/what-is-race-element</id>
+   <content type="html">&lt;h1 id=&quot;race-element&quot;&gt;Race Element&lt;/h1&gt;
+&lt;p&gt;Race Element is a lightweight application for sim racing that is designed to run with minimum system requirements. The question I asked myself when trying other HUD applications is: Why are all these apps abusing my cpu, ram and graphics card to a point where the lost performance is enough to buy another step up in graphics cards. That ends now!&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Get started and download the app: &lt;strong&gt;&lt;a href=&quot;https://race.elementfuture.com/2023/01/12/get-started.html&quot; title=&quot;Download&quot;&gt;Download&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;supported-simulators&quot;&gt;Supported Simulators&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Assetto Corsa Competizione (ACC)&lt;/li&gt;
+  &lt;li&gt;Assetto Corsa (work in progress)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;main-features&quot;&gt;Main Features&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;HUDs&lt;/li&gt;
+  &lt;li&gt;Data&lt;/li&gt;
+  &lt;li&gt;Setups&lt;/li&gt;
+  &lt;li&gt;Liveries&lt;/li&gt;
+  &lt;li&gt;Streaming&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;huds&quot;&gt;HUDs&lt;/h3&gt;
+&lt;p&gt;HUDs(Head-up displays) are 2D graphics that can be used to provide you data whilst driving. There are a various amount of HUDs that each provides you useful information in a minimalistic manner whilst being highly configurable.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Scalable&lt;/li&gt;
+  &lt;li&gt;Modular&lt;/li&gt;
+  &lt;li&gt;Custom Configuration&lt;/li&gt;
+  &lt;li&gt;Low performance hit as the app doesn’t use your gpu to render the HUDs.&lt;/li&gt;
+  &lt;li&gt;Can be used for stream only&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;data&quot;&gt;Data&lt;/h3&gt;
+&lt;p&gt;The app represents data recorded during driving into so called Race Weekend Databases(RWDB files). These Race Weekends can be viewed in the Data tab of the application and provide you essential information such as lap- and sectortimes, fuel usage and the conditions of each lap.&lt;/p&gt;
+
+&lt;h3 id=&quot;setups&quot;&gt;Setups&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;View setups&lt;/li&gt;
+  &lt;li&gt;Browse setups&lt;/li&gt;
+  &lt;li&gt;Compare setups&lt;/li&gt;
+  &lt;li&gt;Copy setups to the clipboard or to another track&lt;/li&gt;
+  &lt;li&gt;Import setups by drag and drop on-top of the app(even works straight from discord)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;liveries&quot;&gt;Liveries&lt;/h3&gt;
+&lt;p&gt;The Liveries tab provides functionality to manage liveries, Race Element automatically scans the right folders and shows you all your custom liveries.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Browse the Files and folders of a livery straight from the app&lt;/li&gt;
+  &lt;li&gt;Create the base for a Custom Livery on the fly, the days of manually setting up a custom livery are gone&lt;/li&gt;
+  &lt;li&gt;Drag and Drop to Import Livery Archives(.zip, .rar, .7z), either single liveries or livery packs&lt;/li&gt;
+  &lt;li&gt;Export Livery Archives as a Zip archive, either single liveries or livery packs&lt;/li&gt;
+  &lt;li&gt;Tag Liveries to Categorize them, create a friends tag&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;streaming&quot;&gt;Streaming&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Setup Hider for OBS and Streamlabs.&lt;/li&gt;
+  &lt;li&gt;Display HUDs on stream with OBS and Streamlabs.&lt;/li&gt;
+  &lt;li&gt;Twitch Chat HUD which also serves as a chat bot delivering Game specific information.&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>How to use the Liveries tab</title>
+   <link href="https://race.elementfuture.com/2023/01/15/how-to-use-liveries.html"/>
+   <updated>2023-01-15T00:00:00+00:00</updated>
+   <id>https://race.elementfuture.com/2023/01/15/how-to-use-liveries</id>
+   <content type="html">&lt;p&gt;The Liveries tab provides functionality to view liveries for Assetto Corsa Competizione. These liveries consist of a json file and a folder where the actual decals and sponsors are located.&lt;/p&gt;
+
+&lt;h2 id=&quot;browsing-liveries&quot;&gt;Browsing liveries&lt;/h2&gt;
+&lt;p&gt;By right clicking a livery in the list, options appear to open the json file of the livery and the custom skin directory of that livery. 
+This should give you easy access to the correct folder when for example creating a livery and you want to open up the files inside.
+You can also Delete the livery files, this is permanent so be warned!&lt;/p&gt;
+
+&lt;p&gt;If you have manually imported a livery you can click the refresh button to rescan the livery folders.&lt;/p&gt;
+
+&lt;h2 id=&quot;importing-liveries&quot;&gt;Importing liveries&lt;/h2&gt;
+&lt;p&gt;You can either Drag and Drop “.rar, .7z and .zip” on top of Race Element or click the Import Liveries button and select them by hand.&lt;/p&gt;
+
+&lt;p&gt;The importer will scan the archive for the livery json files and according to these files will look for the custom skins folders.
+Once a list appears of succesfully imported liveries you can set a tag for liveries by highlighting them.&lt;/p&gt;
+
+&lt;h2 id=&quot;exporting-liveries&quot;&gt;Exporting liveries&lt;/h2&gt;
+&lt;p&gt;A single livery can be exported by right clicking the livery and clicking “Save Skin as zip archive”.
+Skin packs can be created by right clicking single liveries/Teams/Cars and clicking Add to Skin Pack.
+After you have chosen the liveries you can decide to not include the dds files as these will increase the size of your skin pack.&lt;/p&gt;
+
+&lt;h2 id=&quot;tagging-liveries&quot;&gt;Tagging Liveries&lt;/h2&gt;
+&lt;p&gt;Liveries once imported can be tagged with a so called Tag. Livery Tags can be exported by right clicking in them in the list.
+Before you can tag a livery you will need to create a new Tag which can be done in the Tags tab.&lt;/p&gt;
+
+&lt;h2 id=&quot;generating-ddsdirectdraw-surface-files&quot;&gt;Generating DDS(DirectDraw Surface) files&lt;/h2&gt;
+&lt;p&gt;The Liveries tool allows you to generate the DDS files which the game uses in the showroom and in the races.
+There is a button to generate them in bulk or when the selected skin contains for example a sponsors.png, but no sponsors_1.dds, a button will appear in the display panel to generate the files. This might take a while and takes use of your GPU.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Starting the app minimized</title>
+   <link href="https://race.elementfuture.com/2023/01/12/start-minimized.html"/>
+   <updated>2023-01-12T00:00:00+00:00</updated>
+   <id>https://race.elementfuture.com/2023/01/12/start-minimized</id>
+   <content type="html">&lt;h2 id=&quot;start-the-app-minimized&quot;&gt;Start the app minimized&lt;/h2&gt;
+
+&lt;p&gt;Race Element has got a command line paramater that allows you to start it minimized: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/StartMinimized&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;starting-the-app-and-acc-using-one-batch-file&quot;&gt;Starting the app and ACC using one batch file.&lt;/h3&gt;
+&lt;p&gt;You could make a batch file that for example starts race element in minimized mode and launches Assetto Corsa Competizione through steam.&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;START &quot;Race Element&quot; &quot;PATH_TO_FOLDER_OF_RACE_ELEMENT\RaceElement.exe&quot; /StartMinimized
+START steam://rungameid/805550
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>How to get started</title>
+   <link href="https://race.elementfuture.com/2023/01/12/get-started.html"/>
+   <updated>2023-01-12T00:00:00+00:00</updated>
+   <id>https://race.elementfuture.com/2023/01/12/get-started</id>
+   <content type="html">&lt;h2 id=&quot;how-to-get-started&quot;&gt;How to get started&lt;/h2&gt;
+&lt;p&gt;First of all, &lt;strong&gt;&lt;a href=&quot;https://github.com/RiddleTime/Race-Element/releases/latest&quot; title=&quot;Download&quot;&gt;Download&lt;/a&gt;&lt;/strong&gt; the app. The link will lead you to the latest version at GitHub.&lt;/p&gt;
+
+&lt;p&gt;Place &lt;strong&gt;RaceElement.exe&lt;/strong&gt; in any folder of My Documents. If the app is not located there you will encounter issues with the auto-updater.&lt;/p&gt;
+
+&lt;p&gt;Then simply run the app. Do &lt;strong&gt;not&lt;/strong&gt; run it as admin, since this will prevent some features from working.&lt;/p&gt;
+
+&lt;h2 id=&quot;guides-inside-the-apps-about-tab&quot;&gt;Guides inside the app's About Tab&lt;/h2&gt;
+&lt;p&gt;The app includes an about tab which contains a guide section, read this carefully since it includes instructions on how to use for example the HUDs.&lt;/p&gt;
+
+&lt;p&gt;There are multiple guides posted on this web page which you can find &lt;a href=&quot;https://race.elementfuture.com/tag/guide/&quot; title=&quot;here&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>New Webpage!</title>
+   <link href="https://race.elementfuture.com/2023/01/11/webpage.html"/>
+   <updated>2023-01-11T00:00:00+00:00</updated>
+   <id>https://race.elementfuture.com/2023/01/11/webpage</id>
+   <content type="html">&lt;h2 id=&quot;welcome-to-the-new-webpage-for-race-element&quot;&gt;Welcome to the new webpage for Race Element.&lt;/h2&gt;
+&lt;p&gt;With the rebrand from ACC manager to Race Element it was time for a new design for the website.
+Thanks for BitBrain, a peer from uni, this was quite an easy job.
+The website will be used for guides, news and development related articles.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/RiddleTime/Race-Element/releases/latest&quot;&gt;Download Latest Release&lt;/a&gt;&lt;/p&gt;
+</content>
+ </entry>
+ 
+
+</feed>
+
+
+      </div>
+    </main><footer class="site-footer">
+  <div class="wrapper">
+    <div class="credits"><a href="https://github.com/bitbrain/jekyll-dash">dash</a> theme for Jekyll by <a href="https://github.com/bitbrain">bitbrain</a> made with <i class="fas fa-heart"></i><div class="toggleWrapper">
+    <input type="checkbox" class="dn" id="theme-toggle" onclick="modeSwitcher()" checked />
+    <label for="theme-toggle" class="toggle">
+    <span class="toggle__handler">
+      <span class="crater crater--1"></span>
+      <span class="crater crater--2"></span>
+      <span class="crater crater--3"></span>
+    </span>
+        <span class="star star--1"></span>
+        <span class="star star--2"></span>
+        <span class="star star--3"></span>
+        <span class="star star--4"></span>
+        <span class="star star--5"></span>
+        <span class="star star--6"></span>
+    </label>
+</div>
+<script type="text/javascript">
+const theme = localStorage.getItem('theme');
+
+if (theme === "light") {
+    document.documentElement.setAttribute('data-theme', 'light');
+} else {
+    document.documentElement.setAttribute('data-theme', 'dark');
+}
+const userPrefers = getComputedStyle(document.documentElement).getPropertyValue('content');
+
+function activateDarkTheme() {
+    document.getElementById('theme-toggle').checked = true;
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.documentElement.classList.add('theme--dark');
+    document.documentElement.classList.remove('theme--light');
+	document.getElementById("theme-toggle").className = 'light';
+	window.localStorage.setItem('theme', 'dark');
+}
+
+function activateLightTheme() {
+    document.getElementById('theme-toggle').checked = false;
+    document.documentElement.setAttribute('data-theme', 'light');
+    document.documentElement.classList.add('theme--light');
+    document.documentElement.classList.remove('theme--dark');
+	document.getElementById("theme-toggle").className = 'dark';
+	window.localStorage.setItem('theme', 'light');
+}
+
+if (theme === "dark") {
+    activateDarkTheme();
+} else if (theme === "light") {
+    activateLightTheme();
+} else if  (userPrefers === "light") {
+    activateDarkTheme();
+} else {
+    activateDarkTheme();
+}
+
+function modeSwitcher() {
+	let currentMode = document.documentElement.getAttribute('data-theme');
+	if (currentMode === "dark") {
+	    activateLightTheme();
+	} else {
+	    activateDarkTheme();
+	}
+}
+</script></div>
+  </div>
+</footer>
+
+
+<script>
+      window.FontAwesomeConfig = {
+        searchPseudoElements: true
+      }
+    </script>
+  </body>
+
+</html>
