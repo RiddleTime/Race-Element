@@ -41,20 +41,14 @@ description: > # this means to ignore newlines until "show_exerpts:"
         var params = new URL(window.location).searchParams;
         var setup = params.get('setup');
         if (!!setup && setup.length > 0) {
-           Redirect();
+             setTimeout(function appNotInstalled() {
+                window.location = 'https://race.elementfuture.com/2023/01/12/get-started.html';
+             }, 100);
+            window.location = 'RaceElement://setup=' + setup;
+            window.close();
         }
     };
-
-    function Redirect() {
-       setTimeout(function appNotInstalled() {
-          window.location = 'https://race.elementfuture.com/2023/01/12/get-started.html';
-       }, 100);
-
-       window.location = 'RaceElement://setup=' + setup;
-       window.close();
-    }
-
-  
+ 
   </script>
  
 show_excerpts: false # set to true to show excerpts on the homepage
