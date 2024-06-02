@@ -43,7 +43,7 @@ description: > # this means to ignore newlines until "show_exerpts:"
             var redirectToApp = function() {
               setTimeout(function appNotInstalled() {
                   window.location.replace('https://race.elementfuture.com/2023/01/12/get-started.html');
-              }, 100);
+              }, 10000);
               
               window.location.replace('RaceElement://setup=' + setup);
               window.close();
