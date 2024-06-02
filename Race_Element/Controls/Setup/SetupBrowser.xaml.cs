@@ -3,19 +3,14 @@ using RaceElement.Controls.Setup;
 using RaceElement.Controls.Util;
 using RaceElement.Data;
 using RaceElement.Data.ACC.Core;
-using RaceElement.Data.ACC.Database.Telemetry;
 using RaceElement.Data.ACC.Tracks;
 using RaceElement.Util;
 using RaceElement.Util.SystemExtensions;
-using ScottPlot.Drawing.Colormaps;
 using SharpCompress.Archives.Zip;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -426,11 +421,8 @@ public partial class SetupBrowser : UserControl
                 using MemoryStream stream = new();
                 archive.SaveTo(stream);
 
-
                 byte[] bytes = stream.ToArray();
                 base64 = Convert.ToBase64String(bytes);
-                Debug.WriteLine($"Data length with zip: {bytes.Length} Bytes.");
-                //foreach (byte b in bytes.AsSpan()) sb.Append(b);
 
                 stream.Close();
                 setupFileStream.Close();
@@ -438,19 +430,13 @@ public partial class SetupBrowser : UserControl
 
             Thread thread = new(() =>
             {
-                string escaped = System.Uri.EscapeDataString(base64);
+                string escaped = Uri.EscapeDataString(base64);
                 Clipboard.SetText($"{website}{escaped}");
 
                 Dispatcher.Invoke(new Action(() =>
                 {
-                    MainWindow.Instance.EnqueueSnackbarMessage($"Copied string for \'{file.Name}\' to the clipboard.");
+                    MainWindow.Instance.EnqueueSnackbarMessage($"Copied Setup Link: \'{file.Name}\' to the clipboard.");
                 }));
-                //string base64 = (Encoding.UTF8.GetBytes(sb.ToString()));
-
-                Debug.WriteLine("---");
-                //Debug.WriteLine(base64);
-
-
             });
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();

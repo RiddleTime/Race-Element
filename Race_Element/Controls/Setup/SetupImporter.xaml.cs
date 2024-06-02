@@ -3,6 +3,7 @@ using RaceElement.Data;
 using RaceElement.Util;
 using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
+using SharpCompress.Common;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -137,22 +138,26 @@ public partial class SetupImporter : UserControl
 
         try
         {
-            using ZipArchive archive = ZipArchive.Open(stream);
+            if (!ArchiveFactory.IsArchive(stream, out ArchiveType? type))
+                return false;
 
-            if (archive.Entries.Count == 1)
+            if (type == ArchiveType.Zip)
             {
-                foreach (var entry in archive.Entries)
+                using ZipArchive archive = ZipArchive.Open(stream);
+                if (archive.Entries.Count == 1)
                 {
-                    DirectoryInfo downloadCache = new(FileUtil.RaceElementDownloadCachePath);
-                    if (!downloadCache.Exists) downloadCache.Create();
-
-                    filePath = $"{FileUtil.RaceElementDownloadCachePath}{entry.Key}";
-                    entry.WriteToFile(filePath, new SharpCompress.Common.ExtractionOptions() { Overwrite = true, PreserveFileTime = true });
+                    foreach (var entry in archive.Entries)
+                    {
+                        DirectoryInfo downloadCache = new(FileUtil.RaceElementDownloadCachePath);
+                        if (!downloadCache.Exists) downloadCache.Create();
+                        filePath = $"{FileUtil.RaceElementDownloadCachePath}{entry.Key}";
+                        entry.WriteToFile(filePath, new SharpCompress.Common.ExtractionOptions() { Overwrite = true, PreserveFileTime = true });
+                    }
                 }
-            }
-            else
-            {
-                LogWriter.WriteToLog("Empty archive");
+                else
+                {
+                    LogWriter.WriteToLog("Empty archive");
+                }
             }
         }
         catch (Exception e)
