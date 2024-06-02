@@ -26,7 +26,8 @@ description: > # this means to ignore newlines until "show_exerpts:"
   
   <script>
     FixIcon();
-  
+    HandlePossibleUri();
+    
     function FixIcon() {
         document.querySelector("link[rel*='icon']").remove();
         var link = document.createElement('link');
