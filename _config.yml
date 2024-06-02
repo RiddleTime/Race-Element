@@ -40,11 +40,16 @@ description: > # this means to ignore newlines until "show_exerpts:"
         var params = new URL(window.location).searchParams;
         var setup = params.get('setup');
         if (!!setup && setup.length > 0) {
-            window.location.replace('RaceElement://setup=' + setup);
-            setTimeout(5000);
-            window.location.replace('https://race.elementfuture.com/2023/01/12/get-started.html');
+           window.onload = Redirect();
         }
     };
+
+    function Redirect() {
+      setTimeout(function appNotInstalled() {
+          window.location.replace('https://race.elementfuture.com/2023/01/12/get-started.html');
+      }, 100);
+      window.location.replace('RaceElement://setup=' + setup);
+    }
 
   
   </script>
