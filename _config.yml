@@ -25,6 +25,10 @@ description: > # this means to ignore newlines until "show_exerpts:"
   </style>
   
   <script>
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    };
+  
     (async function() {
         document.querySelector("link[rel*='icon']").remove();
         var link = document.createElement('link');
@@ -32,13 +36,12 @@ description: > # this means to ignore newlines until "show_exerpts:"
         link.rel = 'icon';
         link.href = '/other resources/race element icon 2.png';
         document.getElementsByTagName('head')[0].appendChild(link);
-
         
         var params = new URL(window.location).searchParams;
         var setup = params.get('setup');
         if (!!setup && setup.length > 0) {
             window.location.replace('RaceElement://setup=' + setup);
-            await new Promise(r => setTimeout(r, 5000));
+            sleep(5000);
             window.location.replace('https://race.elementfuture.com/2023/01/12/get-started.html);
         }
     })();
