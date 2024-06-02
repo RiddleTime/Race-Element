@@ -72,7 +72,10 @@ public partial class SetupImporter : UserControl
             ListViewItem trackItem = new()
             {
                 FontWeight = FontWeights.Bold,
+                FontSize = 13,
                 Content = trackData.FullName,
+                Margin = new Thickness(0, 0, 0, 0),
+                Padding = new Thickness(0, 4, 0, 6),
                 DataContext = trackData.GameName
             };
 
