@@ -15,7 +15,7 @@ namespace RaceElement.Data.ACC.Tyres;
 /// </summary>
 public sealed class TyresTracker
 {
-    public class TyresInfo
+    public record class TyresInfo
     {
         public float[] PressureLoss { get; internal set; }
     }
