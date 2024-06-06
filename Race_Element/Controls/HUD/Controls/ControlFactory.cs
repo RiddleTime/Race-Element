@@ -53,12 +53,11 @@ internal class ControlFactory
                 Grid.SetColumnSpan(valueControl.Control, 2);
                 grid.Children.Add(valueControl.Control);
 
-                valueControl.Control.HorizontalAlignment = HorizontalAlignment.Center;
+                valueControl.Control.HorizontalAlignment = HorizontalAlignment.Left;
                 valueControl.Control.VerticalAlignment = VerticalAlignment.Center;
             }
             else
             {
-
                 Label lblControl = GenerateLabel(label);
                 grid.Children.Add(lblControl);
                 Grid.SetColumn(lblControl, 0);
