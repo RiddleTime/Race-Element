@@ -2,7 +2,7 @@
 
 namespace RaceElement.HUD.Overlay.OverlayUtil.ProgressBars;
 
-public class VerticalProgressBar
+public sealed class VerticalProgressBar
 {
     // dimension
     private int _width;

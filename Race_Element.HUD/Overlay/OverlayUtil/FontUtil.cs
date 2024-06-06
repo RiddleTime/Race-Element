@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace RaceElement.HUD.Overlay.Util;
 
-public class FontUtil
+public sealed class FontUtil
 {
     // Adding a private font (Win2000 and later)
     [DllImport("gdi32.dll", ExactSpelling = true)]

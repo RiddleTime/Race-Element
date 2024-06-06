@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace RaceElement.Data.ACC.EntryList.TrackPositionGraph;
 
-public class PositionGraph
+public sealed class PositionGraph
 {
     private Dictionary<int, Car> _cars = [];
 

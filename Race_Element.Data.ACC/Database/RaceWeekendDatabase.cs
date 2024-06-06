@@ -10,7 +10,7 @@ namespace RaceElement.Data.ACC.Database;
 /// <summary>
 /// https://github.com/mbdavid/LiteDB
 /// </summary>
-public class RaceWeekendDatabase
+public sealed class RaceWeekendDatabase
 {
     private static string fileName;
 

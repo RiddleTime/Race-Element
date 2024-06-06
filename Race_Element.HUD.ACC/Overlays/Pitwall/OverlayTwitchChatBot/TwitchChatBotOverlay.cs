@@ -118,6 +118,6 @@ internal sealed class TwitchChatBotOverlay : AbstractOverlay
     private void TwitchClient_OnConnectionError(object sender, TwitchLib.Client.Events.OnConnectionErrorArgs e)
     {
         Debug.WriteLine(e.Error);
-        LogWriter.WriteToLog($"Twitch chat bot error: {e.Error}");
+        //LogWriter.WriteToLog($"Twitch chat bot error: {e.Error}");
     }
 }

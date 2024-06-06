@@ -145,13 +145,19 @@ public partial class MainWindow : Window
         // ---
     }
 
+
+    private bool initialChange = true;
     private void GameManager_OnGameChanged(object sender, Game selectedGame)
     {
         tabSetups.Visibility = selectedGame == Game.AssettoCorsaCompetizione ? Visibility.Visible : Visibility.Collapsed;
         tabLiveries.Visibility = selectedGame == Game.AssettoCorsaCompetizione ? Visibility.Visible : Visibility.Collapsed;
         tabTelemetry.Visibility = selectedGame == Game.AssettoCorsaCompetizione ? Visibility.Visible : Visibility.Collapsed;
 
-        tabControl.SelectedIndex = 0;
+
+        if (!initialChange)
+            tabControl.SelectedIndex = 0;
+        else
+            initialChange = false;
     }
 
     private void MainWindow_Drop(object sender, DragEventArgs e)
@@ -295,7 +301,9 @@ public partial class MainWindow : Window
 
         //Application.Current.Shutdown();
         Debug.WriteLine("cleaned up app");
-        //Environment.Exit(0);
+#if !DEBUG
+         Environment.Exit(0);
+#endif
     }
 
     private void CurrentDomain_ProcessExit(object sender, EventArgs e)
@@ -314,7 +322,9 @@ public partial class MainWindow : Window
         FileUtil.CleanDownloadCache();
 
         Debug.WriteLine("exiting app");
-        //Environment.Exit(0);
+#if !DEBUG
+         Environment.Exit(0);
+#endif
     }
 
     private System.Windows.Forms.NotifyIcon _notifyIcon;

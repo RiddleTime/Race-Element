@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace RaceElement.HUD.Overlay.OverlayUtil.ProgressBars;
 
-public class HorizontalProgressBar
+public sealed class HorizontalProgressBar
 {
     // dimension
     private int _width;

@@ -196,14 +196,14 @@ internal sealed class TrackInfoOverlay : AbstractOverlay
         _gripLabel.Draw(g, "Grip", this.Scale);
         _gripValue.Draw(g, pageGraphics.trackGripStatus.ToString(), this.Scale);
 
-        string airTemp = Math.Round(pagePhysics.AirTemp, 2).ToString("F2");
+        string airTemp = Math.Round(pagePhysics.AirTemp, 3).ToString("F3");
         _airTempLabel.Draw(g, "Air", this.Scale);
         _airTempValue.Draw(g, $"{airTemp} °C", this.Scale);
 
         if (this._config.InfoPanel.TrackTemperature)
         {
             _trackTempLabel.Draw(g, "Track", this.Scale);
-            string roadTemp = Math.Round(pagePhysics.RoadTemp, 2).ToString("F2");
+            string roadTemp = Math.Round(pagePhysics.RoadTemp, 3).ToString("F3");
             _trackTempValue.Draw(g, $"{roadTemp} °C", this.Scale);
         }
 

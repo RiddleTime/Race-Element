@@ -6,7 +6,7 @@ using System.IO;
 
 namespace RaceElement.Broadcast;
 
-public class BroadcastConfig
+public sealed class BroadcastConfig
 {
     public class Root
     {

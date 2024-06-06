@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace RaceElement.HUD.Overlay.Util;
 
-public class InfoPanel
+public sealed class InfoPanel
 {
     private readonly Font _font;
     private readonly int MaxWidth;

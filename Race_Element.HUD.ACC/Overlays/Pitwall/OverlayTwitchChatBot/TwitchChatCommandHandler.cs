@@ -56,6 +56,9 @@ internal sealed class TwitchChatBotCommandHandler
             new("purple", GetPurpleLapResponse),
             new("ahead", GetCarAheadResponse),
             new("gap", GetGapResponse),
+#if debug 
+            new("diff", GetCarDifferenceResponse),
+#endif
             new("behind", GetCarBehindResponse),
             new("p", GetPositionLookupResponse),
             new("#", GetRaceNumberLookupResponse),
@@ -119,6 +122,21 @@ internal sealed class TwitchChatBotCommandHandler
         return $"{sb.Append('.')}";
     }
 
+    /// <summary>
+    /// Return laptime and sector differences for last lap compared to other car.
+    /// </summary>
+    /// <param name="args"></param>
+    /// <returns></returns>
+    private string GetCarDifferenceResponse(string[] args)
+    {
+        return string.Empty;
+    }
+
+    /// <summary>
+    /// +gap [ahead, behind, # and p]
+    /// </summary>
+    /// <param name="args"></param>
+    /// <returns></returns>
     private string GetGapResponse(string[] args)
     {
         if (args.Length == 0 || args.Length > 2) return string.Empty;

@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace RaceElement.Data.ACC.Core;
 
-public class AccProcess
+public sealed class AccProcess
 {
     private static ProcessTracker _handlerInstance;
     private static ProcessTracker Handler
