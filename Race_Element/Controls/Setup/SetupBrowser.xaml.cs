@@ -379,7 +379,7 @@ public partial class SetupBrowser : UserControl
         copy.Click += CopyToClipBoard_Click;
         contextMenu.Items.Add(copy);
 
-        MenuItem copyAsLink = ContextMenuHelper.DefaultMenuItem("Copy as Link", PackIconKind.Link);
+        MenuItem copyAsLink = ContextMenuHelper.DefaultMenuItem("Copy as SetupLink", PackIconKind.Link);
         copyAsLink.ToolTip = "Anyone who uses Race Element can click this link, the setup importer will be automatically opened.\nThe link is the setup, your data is yours.";
         copyAsLink.CommandParameter = file;
         copyAsLink.Click += CopyAsSetupLink_Click;
