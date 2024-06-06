@@ -68,7 +68,10 @@ public partial class App : Application
                     if (args[0].ToLower().StartsWith("raceelement://"))
                     {
                         writer.Close();
+                        _startScreenOverlay.Hide();
                         _startScreenOverlay.Stop();
+                        _startScreenOverlay.Dispose();
+
                         App.Current.Shutdown();
                         Environment.Exit(0);
                         return;
@@ -76,8 +79,10 @@ public partial class App : Application
                 }
                 else
                 {
-                    Debug.WriteLine("Saying hi");
-                    writer.Write("Just saying hi");
+
+                    // might want to provide an initial message to already running race element client. for now nothing
+                    //Debug.WriteLine("Saying hi");
+                    //writer.Write("Just saying hi");
                 }
 
                 writer.Close();
