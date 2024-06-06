@@ -68,6 +68,7 @@ public partial class App : Application
                     if (args[0].ToLower().StartsWith("raceelement://"))
                     {
                         writer.Close();
+                        _startScreenOverlay.Stop();
                         Environment.Exit(0);
                         return;
                     }
@@ -190,8 +191,10 @@ public partial class App : Application
                         SetupImporter.Instance.ImportFromUri(arg);
                         Dispatcher.BeginInvoke(() =>
                         {
-
                             RaceElement.MainWindow.Instance.Activate();
+                            RaceElement.MainWindow.Instance.BringIntoView();
+                            RaceElement.MainWindow.Instance.Focus();
+                            Thread.Sleep(30);
                             RaceElement.MainWindow.Instance.tabSetups.Focus();
                         });
                     }).Start();
