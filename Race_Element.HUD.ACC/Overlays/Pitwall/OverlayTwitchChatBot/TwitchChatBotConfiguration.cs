@@ -31,10 +31,11 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChatBot
         public sealed class LinksGrouping
         {
             [ToolTip("Opens the website to generate an O Auth token.")]
+            [LinkText("Generate O Auth token at https://twitchapps.com/tmi")]
             public LinkOption GetToken { get; init; } = new() { Link = "https://twitchapps.com/tmi" };
 
             [ToolTip("Opens up a list of all available commands for the race element chat bot.")]
-            [LinkText("Open Chat Bot Commands")]
+            [LinkText("Open list of Chat Bot Commands")]
             public LinkOption AvailableCommands { get; init; } = new()
             {
                 Link = "https://race.elementfuture.com/2024/04/22/twitch-chat-bot-commands.html",
