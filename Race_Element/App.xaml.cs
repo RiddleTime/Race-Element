@@ -12,8 +12,8 @@ using System.IO.Pipes;
 using System.Runtime;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace RaceElement;
 
@@ -69,6 +69,7 @@ public partial class App : Application
                     {
                         writer.Close();
                         _startScreenOverlay.Stop();
+                        App.Current.Shutdown();
                         Environment.Exit(0);
                         return;
                     }
@@ -191,11 +192,15 @@ public partial class App : Application
                         SetupImporter.Instance.ImportFromUri(arg);
                         Dispatcher.BeginInvoke(() =>
                         {
+                            RaceElement.MainWindow.Instance.Topmost = true;
                             RaceElement.MainWindow.Instance.Activate();
-                            RaceElement.MainWindow.Instance.BringIntoView();
-                            RaceElement.MainWindow.Instance.Focus();
+                            RaceElement.MainWindow.Instance.WindowState = WindowState.Minimized;
+                            RaceElement.MainWindow.Instance.Show();
+                            RaceElement.MainWindow.Instance.WindowState = WindowState.Normal;
+
                             Thread.Sleep(30);
                             RaceElement.MainWindow.Instance.tabSetups.Focus();
+                            RaceElement.MainWindow.Instance.Topmost = false;
                         });
                     }).Start();
 
@@ -209,5 +214,6 @@ public partial class App : Application
     private void App_Exit(object sender, ExitEventArgs e)
     {
         AccScheduler.UnregisterJobs();
+        Environment.Exit(0);
     }
 }
