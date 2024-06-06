@@ -33,7 +33,8 @@ internal sealed class TwitchChatConfiguration : OverlayConfiguration
 
 
         [ToolTip("Opens the website to generate an O Auth token.")]
-        public LinkOption GetToken { get; init; } = new LinkOption() { Link = "https://twitchapps.com/tmi" };
+        [LinkText("Generate O Auth token at https://twitchapps.com/tmi")]
+        public LinkOption GetToken { get; init; } = new() { Link = "https://twitchapps.com/tmi" };
     }
 
     [ConfigGrouping("Shape", "Adjust the size of the twitch chat box")]
