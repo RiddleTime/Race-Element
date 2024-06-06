@@ -4,9 +4,11 @@ using RaceElement.Controls.Util;
 using RaceElement.HUD.ACC.Overlays.OverlayStartScreen;
 using RaceElement.Util;
 using RaceElement.Util.Settings;
+using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.IO.Pipes;
 using System.Runtime;
 using System.Text;
 using System.Threading;
@@ -24,6 +26,7 @@ public partial class App : Application
     internal bool StartMinimized { get; private set; } = false;
 
     internal StartScreenOverlay _startScreenOverlay;
+    private readonly Mutex mutex = new(true, "8f81b9c5-284a-4458-98be-2387c9046562");
 
     public App()
     {
@@ -42,8 +45,100 @@ public partial class App : Application
         AccScheduler.RegisterJobs();
     }
 
+    private void RegisterNamedPipe(bool isnotherInstanceRunning, string[] args)
+    {
+        if (isnotherInstanceRunning)
+        {
+            Thread writerThread = new(x =>
+            {
+                NamedPipeClientStream client = new("8f81b9c5-284a-4458-98be-2387c9046562");
+                try
+                {
+                    client.Connect(0);
+                }
+                catch (Exception)
+                {
+                    return;
+                }
+                using var writer = new BinaryWriter(client);
+                if (args.Length > 0)
+                {
+                    writer.Write(args[0]);
+                    Thread.Sleep(200);
+                    if (args[0].ToLower().StartsWith("raceelement://"))
+                    {
+                        writer.Close();
+                        Environment.Exit(0);
+                        return;
+                    }
+                }
+                else
+                {
+                    Debug.WriteLine("Saying hi");
+                    writer.Write("Just saying hi");
+                }
+
+                writer.Close();
+            });
+            writerThread.Start();
+        }
+
+        if (!isnotherInstanceRunning)
+        {
+            Thread readerThread = new(new ThreadStart(ReaderThread));
+            readerThread.Start();
+        }
+    }
+    private void ReaderThread()
+    {
+        try
+        {
+            while (true)
+            {
+                NamedPipeServerStream server = new("8f81b9c5-284a-4458-98be-2387c9046562", PipeDirection.InOut, 1, PipeTransmissionMode.Byte);
+                server.WaitForConnection();
+                using BinaryReader reader = new(server);
+                string args = reader.ReadString();
+
+                if (args.ToLower().StartsWith("raceelement://"))
+                    HandleCustomUriScheme(args);
+
+                Debug.WriteLine($"Received: {args}");
+                Thread.Sleep(1000);
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e);
+            // here's your explanation
+        }
+    }
+
+    private bool IsAnotherInstanceRunning()
+    {
+        bool isAlreadyRunning = false;
+        try
+        {
+            if (mutex.WaitOne(TimeSpan.Zero, true))
+                mutex.ReleaseMutex();
+            else
+                isAlreadyRunning = true;
+        }
+        catch (AbandonedMutexException)
+        {
+
+        }
+
+        return isAlreadyRunning;
+    }
+
+
     private void App_Startup(object sender, StartupEventArgs e)
     {
+        bool isAnotherInstanceRunning = IsAnotherInstanceRunning();
+        Debug.WriteLine("is other running " + isAnotherInstanceRunning);
+        RegisterNamedPipe(isAnotherInstanceRunning, e.Args);
+
         StringBuilder sb = new();
         foreach (var arg in e.Args) sb.Append(arg);
         LogWriter.WriteToLog(sb.ToString());
@@ -82,9 +177,9 @@ public partial class App : Application
         {
             case "setup":
                 {
-                    LogWriter.WriteToLog($"Received setup as custom uri parameter.");
-                    LogWriter.WriteToLog($"{command}");
-                    LogWriter.WriteToLog($"Trying to import setup through URI.");
+                    Debug.WriteLine($"Received setup as custom uri parameter.");
+                    Debug.WriteLine($"{command}");
+                    Debug.WriteLine($"Trying to import setup through URI.");
                     arg = arg.Replace("setup=", "");
                     arg = arg.Replace("Setup=", "");
                     new Thread(x =>
@@ -93,7 +188,12 @@ public partial class App : Application
                             Thread.Sleep(100);
 
                         SetupImporter.Instance.ImportFromUri(arg);
-                        Dispatcher.BeginInvoke(() => { RaceElement.MainWindow.Instance.tabSetups.Focus(); });
+                        Dispatcher.BeginInvoke(() =>
+                        {
+
+                            RaceElement.MainWindow.Instance.Activate();
+                            RaceElement.MainWindow.Instance.tabSetups.Focus();
+                        });
                     }).Start();
 
 
