@@ -22,8 +22,6 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChatBot
                 "\n(This is required for Race Element to connect to your chat using the twitch api.)")]
             [StringOptions(isPassword: true)]
             public string OAuthToken { get; init; } = "";
-
-
         }
 
         [ConfigGrouping("Links", "Various links on websites used for this HUD.")]

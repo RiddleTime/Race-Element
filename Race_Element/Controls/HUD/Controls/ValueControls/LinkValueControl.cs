@@ -11,7 +11,7 @@ namespace RaceElement.Controls.HUD.Controls.ValueControls
     internal class LinkValueControl : IValueControl<LinkOption>, IControl
     {
         private readonly Grid _grid;
-        private LinkOption _link;
+        private readonly LinkOption _link;
         public LinkOption Value { get => new(); set => _ = value; }
 
         public FrameworkElement Control => _grid;
