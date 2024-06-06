@@ -301,7 +301,9 @@ public partial class MainWindow : Window
 
         //Application.Current.Shutdown();
         Debug.WriteLine("cleaned up app");
-        //Environment.Exit(0);
+#if !DEBUG
+         Environment.Exit(0);
+#endif
     }
 
     private void CurrentDomain_ProcessExit(object sender, EventArgs e)
@@ -320,7 +322,9 @@ public partial class MainWindow : Window
         FileUtil.CleanDownloadCache();
 
         Debug.WriteLine("exiting app");
-        //Environment.Exit(0);
+#if !DEBUG
+         Environment.Exit(0);
+#endif
     }
 
     private System.Windows.Forms.NotifyIcon _notifyIcon;
