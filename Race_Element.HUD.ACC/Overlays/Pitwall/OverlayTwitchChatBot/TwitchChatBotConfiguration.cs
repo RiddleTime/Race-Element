@@ -19,7 +19,8 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChatBot
             public string TwitchUser { get; init; } = "";
 
             [ToolTip("Create an O Auth token at twitchapps.com/tmi, click connect and connect and copy -> paste the entire result in here." +
-                "\n(This is required for Race Element to connect to your chat using the twitch api.)")]
+                "\n(This is required for Race Element to connect to your chat using the twitch api, " +
+                "this token can expire for security reasons).")]
             [StringOptions(isPassword: true)]
             public string OAuthToken { get; init; } = "";
         }
