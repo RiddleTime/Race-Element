@@ -6,7 +6,7 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
-        {"1.0.9.1", "- Rain Prediction HUD: Added configurable time multiplier."+
+        {"1.1.0.0", "- Rain Prediction HUD: Added configurable time multiplier."+
                     "\n- Track Info HUD: Increased precision of air and track temps."+
                     "\n- Brake Temp History HUD: Updated background set min and max values."+
                     "\n- Setups Tab: Added \"Copy As Link\", if someone clicks this link, race element will open with the setup importer. The setup is the link."+
