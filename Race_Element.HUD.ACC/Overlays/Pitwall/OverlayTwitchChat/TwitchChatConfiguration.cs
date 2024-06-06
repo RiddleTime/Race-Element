@@ -30,6 +30,10 @@ internal sealed class TwitchChatConfiguration : OverlayConfiguration
             "\n(This is required for Race Element to connect to your chat using the twitch api.)")]
         [StringOptions(isPassword: true)]
         public string OAuthToken { get; init; } = "";
+
+
+        [ToolTip("Opens the website to generate an O Auth token.")]
+        public LinkOption GetToken { get; init; } = new LinkOption() { Link = "https://twitchapps.com/tmi" };
     }
 
     [ConfigGrouping("Shape", "Adjust the size of the twitch chat box")]

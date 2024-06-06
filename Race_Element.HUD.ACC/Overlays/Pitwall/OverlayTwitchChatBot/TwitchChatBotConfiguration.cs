@@ -22,6 +22,23 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChatBot
                 "\n(This is required for Race Element to connect to your chat using the twitch api.)")]
             [StringOptions(isPassword: true)]
             public string OAuthToken { get; init; } = "";
+
+
+        }
+
+        [ConfigGrouping("Links", "Various links on websites used for this HUD.")]
+        public LinksGrouping Links { get; init; } = new();
+        public sealed class LinksGrouping
+        {
+            [ToolTip("Opens the website to generate an O Auth token.")]
+            public LinkOption GetToken { get; init; } = new() { Link = "https://twitchapps.com/tmi" };
+
+            [ToolTip("Opens up a list of all available commands for the race element chat bot.")]
+            [LinkText("Open Chat Bot Commands")]
+            public LinkOption AvailableCommands { get; init; } = new()
+            {
+                Link = "https://race.elementfuture.com/2024/04/22/twitch-chat-bot-commands.html",
+            };
         }
 
 

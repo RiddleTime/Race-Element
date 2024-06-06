@@ -18,7 +18,7 @@ internal class ControlFactory
     public ListViewItem GenerateOption(string group, string label, PropertyInfo pi, ConfigField configField)
     {
         Grid grid = new() { Margin = new Thickness(0, 0, 0, 2) /*Height = 26*/ };
-        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(160, GridUnitType.Pixel) });
+        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(ControlConstants.LabelWidth, GridUnitType.Pixel) });
         grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(ControlConstants.ControlWidth + 20, GridUnitType.Pixel) });
 
         ListViewItem item = new()
@@ -42,21 +42,36 @@ internal class ControlFactory
             }
 
         // add label
-        Label lblControl = GenerateLabel(label);
-        grid.Children.Add(lblControl);
-        Grid.SetColumn(lblControl, 0);
-        lblControl.HorizontalAlignment = HorizontalAlignment.Left;
-        lblControl.VerticalAlignment = VerticalAlignment.Top;
 
-        // add generated control but only if the generated label is not null
         IControl valueControl = GenerateValueControl(pi, configField);
+        // add generated control but only if the generated label is not null
         if (valueControl != null)
         {
-            Grid.SetColumn(valueControl.Control, 1);
-            grid.Children.Add(valueControl.Control);
+            if (valueControl is LinkValueControl)
+            {
+                Grid.SetColumn(valueControl.Control, 0);
+                Grid.SetColumnSpan(valueControl.Control, 2);
+                grid.Children.Add(valueControl.Control);
 
-            valueControl.Control.HorizontalAlignment = HorizontalAlignment.Center;
-            valueControl.Control.VerticalAlignment = VerticalAlignment.Center;
+                valueControl.Control.HorizontalAlignment = HorizontalAlignment.Center;
+                valueControl.Control.VerticalAlignment = VerticalAlignment.Center;
+            }
+            else
+            {
+
+                Label lblControl = GenerateLabel(label);
+                grid.Children.Add(lblControl);
+                Grid.SetColumn(lblControl, 0);
+                lblControl.HorizontalAlignment = HorizontalAlignment.Left;
+                lblControl.VerticalAlignment = VerticalAlignment.Top;
+
+
+                Grid.SetColumn(valueControl.Control, 1);
+                grid.Children.Add(valueControl.Control);
+
+                valueControl.Control.HorizontalAlignment = HorizontalAlignment.Center;
+                valueControl.Control.VerticalAlignment = VerticalAlignment.Center;
+            }
         }
 
         return item;
@@ -153,6 +168,17 @@ internal class ControlFactory
             case Type _ when pi.PropertyType.BaseType == typeof(Enum):
                 {
                     contentControl = new EnumValueControl(configField, pi.PropertyType);
+                    break;
+                }
+
+            case Type _ when pi.PropertyType == typeof(LinkOption):
+                {
+                    string linkText = null;
+                    foreach (Attribute customAttribute in Attribute.GetCustomAttributes(pi))
+                        if (customAttribute is LinkTextAttribute linkTextAttribute)
+                            linkText = linkTextAttribute.LinkText;
+
+                    contentControl = new LinkValueControl(new LinkOption() { Link = configField.Value.ToString() }, linkText);
                     break;
                 }
 
