@@ -379,11 +379,19 @@ public partial class SetupBrowser : UserControl
         copy.Click += CopyToClipBoard_Click;
         contextMenu.Items.Add(copy);
 
-        MenuItem copyAsLink = ContextMenuHelper.DefaultMenuItem("Copy as SetupLink", PackIconKind.Link);
-        copyAsLink.ToolTip = "Anyone who uses Race Element can click this link, the setup importer will be automatically opened.\nThe link is the setup, your data is yours.";
-        copyAsLink.CommandParameter = file;
-        copyAsLink.Click += CopyAsSetupLink_Click;
-        contextMenu.Items.Add(copyAsLink);
+        MenuItem copyAsSetupLink = ContextMenuHelper.DefaultMenuItem("Copy as SetupLink", PackIconKind.Link);
+        copyAsSetupLink.ToolTip = "Anyone who uses Race Element can click this link, the setup importer will be automatically opened.\nThe link is the setup, your data is yours.";
+        copyAsSetupLink.CommandParameter = file;
+        copyAsSetupLink.Click += CopyAsSetupLink_Click;
+        contextMenu.Items.Add(copyAsSetupLink);
+
+        MenuItem copyAsDiscordSetupLink = ContextMenuHelper.DefaultMenuItem("Copy as SetupLink for Discord", PackIconKind.Link);
+        copyAsDiscordSetupLink.ToolTip = "This creates a markdown version of the SetupLink that you can paste in discord.\n" +
+                             "Anyone who uses Race Element can click this link, the setup importer will be automatically opened.\n" +
+                             "The link is the setup, your data is yours.";
+        copyAsDiscordSetupLink.CommandParameter = file;
+        copyAsDiscordSetupLink.Click += CopyAsDiscordSetupLink_Click;
+        contextMenu.Items.Add(copyAsDiscordSetupLink);
 
         MenuItem addCompare1 = ContextMenuHelper.DefaultMenuItem("Add to compare 1", PackIconKind.Compare);
         addCompare1.CommandParameter = file;
@@ -403,35 +411,22 @@ public partial class SetupBrowser : UserControl
         return contextMenu;
     }
 
-    private void CopyAsSetupLink_Click(object sender, RoutedEventArgs e)
+    private void CopyAsDiscordSetupLink_Click(object sender, RoutedEventArgs e)
     {
         if (sender is MenuItem button)
         {
             FileInfo file = (FileInfo)button.CommandParameter;
-
             // command is RaceElement://Setup=
             // The Race Element website enables linking.
             string website = new("https://race.elementfuture.com/?setup=");
-            string base64 = string.Empty;
 
-            using (ZipArchive archive = ZipArchive.Create())
-            {
-                using FileStream setupFileStream = file.OpenRead();
-                archive.AddEntry(file.Name, setupFileStream);
-                using MemoryStream stream = new();
-                archive.SaveTo(stream);
-
-                byte[] bytes = stream.ToArray();
-                base64 = Convert.ToBase64String(bytes);
-
-                stream.Close();
-                setupFileStream.Close();
-            }
+            string setupLink = GetSetupLink(file);
 
             Thread thread = new(() =>
             {
-                string escaped = Uri.EscapeDataString(base64);
-                Clipboard.SetText($"{website}{escaped}");
+                Root setup = GetSetupJsonRoot(file);
+                CarModels model = ConversionFactory.ParseCarName(setup.CarName);
+                Clipboard.SetText($"[SetupLink | {file.Name[..^4]}\n{ConversionFactory.GetCarName(setup.CarName)}]({website}{setupLink})");
 
                 Dispatcher.Invoke(new Action(() =>
                 {
@@ -441,6 +436,56 @@ public partial class SetupBrowser : UserControl
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
         }
+    }
+
+    private void CopyAsSetupLink_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is MenuItem button)
+        {
+            FileInfo file = (FileInfo)button.CommandParameter;
+
+            // command is RaceElement://Setup=
+            // The Race Element website enables linking.
+            string website = new("https://race.elementfuture.com/?setup=");
+
+            string setupLink = GetSetupLink(file);
+
+            Thread thread = new(() =>
+            {
+                Clipboard.SetText($"{website}{setupLink}");
+
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    MainWindow.Instance.EnqueueSnackbarMessage($"Copied Setup Link: \'{file.Name}\' to the clipboard.");
+                }));
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+        }
+    }
+
+    private string GetSetupLink(FileInfo file)
+    {
+        // command is RaceElement://Setup=
+        // The Race Element website enables linking.
+        string website = new("https://race.elementfuture.com/?setup=");
+        string base64 = string.Empty;
+
+        using (ZipArchive archive = ZipArchive.Create())
+        {
+            using FileStream setupFileStream = file.OpenRead();
+            archive.AddEntry(file.Name, setupFileStream);
+            using MemoryStream stream = new();
+            archive.SaveTo(stream);
+
+            byte[] bytes = stream.ToArray();
+            base64 = Convert.ToBase64String(bytes);
+
+            stream.Close();
+            setupFileStream.Close();
+        }
+        string escaped = Uri.EscapeDataString(base64);
+        return escaped;
     }
 
     private void CopyToClipBoard_Click(object sender, RoutedEventArgs e)
