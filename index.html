@@ -93,12 +93,16 @@
       var params = new URL(window.location).searchParams;
       var setup = params.get('setup');
       if (!!setup && setup.length > 0) {
-          window.location = 'RaceElement://setup=' + setup;
+          try {
+              window.location = 'RaceElement://setup=' + setup;
+	  } catch(error) {
+	      if (error.message.toLowerCase().startsWidth('failed to launch') {
+	           window.location = 'https://race.elementfuture.com/2023/01/12/get-started.html';
+	      }
+	  }
           setTimeout(function appNotInstalled() {
 	        if (!document.hidden) { 
 		    window.close();
-		} else {
-		    navigate('https://race.elementfuture.com/2023/01/12/get-started.html');
 		}
           }, 2000);
       }
