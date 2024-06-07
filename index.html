@@ -94,9 +94,11 @@
       var setup = params.get('setup');
       if (!!setup && setup.length > 0) {
           window.location = 'RaceElement://setup=' + setup;
-        //  setTimeout(function appNotInstalled() {
-       //      window.close();
-         // }, 2000);
+          setTimeout(function appNotInstalled() {
+	        if (!document.hidden) { 
+		    window.close();
+		}
+          }, 2000);
       }
   };
 
