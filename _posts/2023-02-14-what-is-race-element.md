@@ -37,6 +37,7 @@ The app represents data recorded during driving into so called Race Weekend Data
 - Compare setups
 - Copy setups to the clipboard or to another track
 - Import setups by drag and drop on-top of the app(even works straight from discord)
+- Share Setups and Import with SetupLinks for Race Element, unique links where the Setup is the Link.
 
 ### Liveries
 The Liveries tab provides functionality to manage liveries, Race Element automatically scans the right folders and shows you all your custom liveries.
