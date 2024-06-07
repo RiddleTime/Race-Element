@@ -18,7 +18,7 @@ jobs:
           key: ${{ runner.os }}-gems-v2-${{ hashFiles('**/Gemfile') }}
           restore-keys: |
             ${{ runner.os }}-gems-v2
-      - uses: RiddleTime/jekyll-action@2.5
+      - uses: RiddleTime/jekyll-action@v2.5
         with:
           token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
           target_branch: gh-pages
