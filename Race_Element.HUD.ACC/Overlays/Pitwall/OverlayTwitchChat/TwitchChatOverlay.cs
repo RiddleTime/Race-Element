@@ -247,15 +247,15 @@ internal sealed class TwitchChatOverlay : AbstractOverlay
         _twitchClient.OnReconnected += TwitchClient_OnReconnected;
         _twitchClient.OnConnectionError += TwitchClient_OnConnectionError;
 
-        _twitchClient.OnAnnouncement += (s, e) => Debug.WriteLine($"twitch Anouncement: {e.Announcement}");
-        _twitchClient.OnIncorrectLogin += (s, e) => Debug.WriteLine($"Incorrect Twitch user or auth: {e.Exception}");
-        _twitchClient.OnSendReceiveData += (s, e) =>
-        {
-            // TODO remove for release 
-            StringBuilder sb = new("TwitchClient.OnSendReceiveData =>");
-            sb.Append($"\n\t{e.Data}");
-            LogWriter.WriteToLog(sb.ToString());
-        };
+        //_twitchClient.OnAnnouncement += (s, e) => Debug.WriteLine($"twitch Anouncement: {e.Announcement}");
+        //_twitchClient.OnIncorrectLogin += (s, e) => Debug.WriteLine($"Incorrect Twitch user or auth: {e.Exception}");
+        //_twitchClient.OnSendReceiveData += (s, e) =>
+        //{
+        //    // TODO remove for release 
+        //    StringBuilder sb = new("TwitchClient.OnSendReceiveData =>");
+        //    sb.Append($"\n\t{e.Data}");
+        //    LogWriter.WriteToLog(sb.ToString());
+        //};
     }
 
     private void TwitchClient_OnMessageReceived(object sender, OnMessageReceivedArgs e)

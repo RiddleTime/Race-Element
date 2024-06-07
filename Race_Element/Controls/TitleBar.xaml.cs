@@ -187,7 +187,7 @@ public partial class TitleBar : UserControl
     {
         MainWindow.Instance.EnqueueSnackbarMessage("Shutting down Race Element");
         MainWindow.Instance.SaveLocation();
-        System.Windows.Application.Current.Shutdown();
+        Environment.Exit(0);
     }
 
     public static string GetAssemblyFileVersion()
