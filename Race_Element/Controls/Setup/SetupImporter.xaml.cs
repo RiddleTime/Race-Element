@@ -171,7 +171,7 @@ public partial class SetupImporter : UserControl
 
         if (filePath == string.Empty) return false;
         Thread.Sleep(200);
-        Dispatcher.Invoke(() => { return Open(filePath, true, false); });
+        Dispatcher.Invoke(() => { return Open(filePath, false, false); });
         return false;
     }
 

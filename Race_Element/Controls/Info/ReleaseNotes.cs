@@ -6,6 +6,8 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.1.0.2", "- Setup Importer: disabled multi-track import when opened from SetupLink."+
+                    "\n- Setup Browser: Added Copy As SetupLink for Discord, this automatically creates a nice readable link in markdown. It contains the name of the setup, the car and the track."},
         {"1.1.0.0", "- Rain Prediction HUD: Added configurable time multiplier."+
                     "\n- Track Info HUD: Increased precision of air and track temps."+
                     "\n- Brake Temp History HUD: Updated background set min and max values."+
