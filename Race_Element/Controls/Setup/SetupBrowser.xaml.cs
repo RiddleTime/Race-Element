@@ -426,7 +426,7 @@ public partial class SetupBrowser : UserControl
             {
                 Root setup = GetSetupJsonRoot(file);
                 CarModels model = ConversionFactory.ParseCarName(setup.CarName);
-                Clipboard.SetText($"[SetupLink | {file.Name[..^4]}\n{ConversionFactory.GetCarName(setup.CarName)}]({website}{setupLink})");
+                Clipboard.SetText($"[SetupLink: {file.Name[..^5]}\n{ConversionFactory.GetCarName(setup.CarName)} - {file.Directory.Name}]({website}{setupLink})");
 
                 Dispatcher.Invoke(new Action(() =>
                 {
