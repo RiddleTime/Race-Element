@@ -77,7 +77,8 @@ public partial class SetupImporter : UserControl
                 Content = trackData.FullName,
                 Margin = new Thickness(0, 0, 0, 0),
                 Padding = new Thickness(0, 4, 0, 6),
-                DataContext = trackData.GameName
+                DataContext = trackData.GameName,
+                ToolTip = trackData.GameName
             };
 
             if (listViewTracks.SelectionMode == SelectionMode.Single)
