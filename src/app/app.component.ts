@@ -8,10 +8,10 @@ import { ActivatedRoute, RouterOutlet } from '@angular/router';
   imports: [RouterOutlet],
   template: `
     <div class="container mx-auto flex flex-col self-center">
-      <a href="/" class="self-center text-center font-['Conthrax'] text-7xl text-[orangered] select-none hover:text-[orangered] drop-shadow-[0_0px_1.5px_rgba(0.01,0.01,0.01,0.95)]">
+      <a href="/" class="self-center text-center font-['Conthrax'] text-5xl md:text-7xl text-[orangered] select-none hover:text-[orangered] drop-shadow-[0_0px_1.5px_rgba(0.01,0.01,0.01,0.95)]">
         Race Element
       </a>
-      <nav class="text-2xl font-['Conthrax'] mx-auto flex flex-wrap">
+      <nav class="text-lg font-['Conthrax'] mx-auto md:text-2xl flex flex-wrap">
         <a href="/news" class="mx-auto text-[white] hover:text-[red] hover:bg-[rgba(0,0,0,0.8)] ml-1 mr-1 pl-2 pr-2 bg-[rgba(0.2,0.2,0.2)] rounded-tl-lg rounded-br-lg">News</a>
         <a href="/guide" class="mx-auto text-[white] hover:text-[red] hover:bg-[rgba(0,0,0,0.8)] ml-1 mr-1 pl-2 pr-2 bg-[rgba(0.2,0.2,0.2)] rounded-tl-lg rounded-br-lg">Guides</a>
         <a href="/guide/features" class="mx-auto text-[white] hover:text-[red] hover:bg-[rgba(0,0,0,0.8)] ml-1 mr-1 pl-2 pr-2 bg-[rgba(0.2,0.2,0.2)] rounded-tl-lg rounded-br-lg">Features</a>
@@ -35,23 +35,7 @@ import { ActivatedRoute, RouterOutlet } from '@angular/router';
     `,
   ],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
-  // http://192.168.0.130:8080/setup?234234
 
-  setupLink: string = '';
-  constructor(private route: ActivatedRoute) {
-
-  }
-
-  ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      let link = params['link'];
-      if (link !== undefined) {
-        this.setupLink = link;
-        console.log(this.setupLink);
-        window.location.assign('RaceElement://setup=' + this.setupLink);
-      }
-    });
-  }
 }
