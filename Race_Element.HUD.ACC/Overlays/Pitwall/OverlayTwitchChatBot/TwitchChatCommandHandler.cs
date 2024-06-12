@@ -108,7 +108,7 @@ internal sealed class TwitchChatBotCommandHandler
         }
     }
 
-    private string GetCommandsLink(string[] args) => "https://race.elementfuture.com/2024/04/22/twitch-chat-bot-commands.html";
+    private string GetCommandsLink(string[] args) => "https://race.elementfuture.com/guide/twitch-chat-bot-commands";
 
     [Obsolete("In favor of the guide on the website, this command is disabled, may enable again if website would be down.")]
     private string GetCommandsList(string[] args)
