@@ -28,6 +28,7 @@ import PostAttributes from '../../post-attributes';
   encapsulation: ViewEncapsulation.None,
 })
 export default class NewsSlugComponent implements OnInit{
+
   ngOnInit(): void {
   }
   readonly post = injectContent<PostAttributes>();

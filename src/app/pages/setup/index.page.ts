@@ -1,10 +1,20 @@
+import { RouteMeta } from '@analogjs/router';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+
+export const routeMeta: RouteMeta = {
+  meta: [
+    {
+      property: 'og:title',
+      content: 'Race Element - SetupLink',
+    },
+  ],
+};
 
 @Component({
   standalone: true,
   template: `
-  <div class="container mx-auto text-center">
+  <div class="container mx-auto text-center select-none">
     <h2>Opening Race Element's Setup Importer
     </h2>
 
