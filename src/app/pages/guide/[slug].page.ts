@@ -11,7 +11,7 @@ import PostAttributes from '../../post-attributes';
   template: `
     @if (post | async; as post) {
     <article class="rounded-lg container mx-auto max-w-4xl px-7">
-      <h1 class="text-3xl font-['Conthrax'] select-none border-l-2 pl-2 border-red-800 dark:text-gray-300 dark:bg-black rounded-tl-xl border-l-2 pl-2 pr-2 pt-1 pb-1 border-red-800">
+      <h1 class="text-xl md:text-3xl font-['Conthrax'] select-none border-l-2 pl-2 border-red-800 dark:text-gray-300 dark:bg-black rounded-tl-xl border-l-2 pl-2 pr-2 pt-1 pb-1 border-red-800">
         @if(post.attributes.type !== undefined){
           <a href="/guide">Guides</a> >
         }

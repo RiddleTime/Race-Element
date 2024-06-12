@@ -16,11 +16,11 @@ import { CommonModule } from '@angular/common';
         <a [routerLink]="['/news/', post.attributes.slug]">
           <div class="container bg-[rgba(0,0,0,0.7)] mb-3 hover:bg-[#191919] rounded-br-lg rounded-tl-xl  max-w-4xl mx-auto">
             <div class="container text-gray-300 bg-[#030303] rounded-tl-xl pl-2 pr-2 pt-1 pb-1 border-l-2 border-[red]">
-              <h2 class="font-['Conthrax'] text-3xl pl-1 text-white">{{ post.attributes.title }} </h2>
+              <h2 class="font-['Conthrax'] text-xl md:text-3xl pl-1 text-white">{{ post.attributes.title }} </h2>
               <p class="text-xs ml-1 mt-1 text-[rgba(255,70,0,0.8)] mx-auto">{{post.attributes.date | date:'longDate'}}</p>
             </div>
             <div class="container ml-3 pb-1">
-              <p class="text-lg text-[rgba(255,255,255,0.78)]">{{ post.attributes.description }}</p>
+              <p class="text-sm md:text-lg ml-1 mr-1 text-[rgba(255,255,255,0.78)]">{{ post.attributes.description }}</p>
             </div>
           </div>
         </a>

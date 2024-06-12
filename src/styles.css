@@ -33,7 +33,8 @@
 
   @apply select-none;
   >h1 {
-    font-size: x-large;
+    font-size: large;
+    @apply md:text-xl;
     font-weight: 700;
     margin-bottom: -0.8em;
     @apply rounded-tl-xl;
@@ -44,6 +45,8 @@
   }
 
   >h2 {
+    font-size: medium;
+    @apply md:text-lg;
     font-size: large;
     font-weight: 600;
     margin-bottom: -1em;
