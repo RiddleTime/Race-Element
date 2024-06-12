@@ -23,9 +23,6 @@ import PostAttributes from '../../post-attributes';
       </div>
     </article>
     }
-    @else {
-      <p>wtf</p>
-    }
   `,
   styles: [
     `
