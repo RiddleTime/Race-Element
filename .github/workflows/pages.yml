@@ -35,6 +35,8 @@ jobs:
           CNAME_OPTION: --cname=race.elementfuture.com # omit if your not running it on a custom domain
         run: |
           echo "DRY_RUN_OPTION=$DRY_RUN_OPTION"
+          git config user.email "reinierklarenberg@gmail.com"
+          git config user.name "Reinier Klarenberg"
           npx angular-cli-ghpages --no-silent --dir="${{env.TARGET_DIR}}" $CNAME_OPTION $DRY_RUN_OPTION
 
 
