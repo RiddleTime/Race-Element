@@ -4,7 +4,7 @@ slug: twitch-chat-bot-commands
 description: A list of all available chat bot commands and how to use them
 type: guide 
 ---
-Every Race Element Chat Command starts with: `+`
+**Every Race Element Chat Command starts with: `+`**
 
 # Available Commands
 **`+app`** *Links to the Race Element website and discord.*
