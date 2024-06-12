@@ -5,6 +5,9 @@ on:
     branches:
       - 'pages'
 
+env:
+  TARGET_DIR: dist/analog/public
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,17 +16,25 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-      - uses: k9n-dev/analog-publish-gh-pages@v1.0.0
-        with:
-          # Required: token to access / deploy on GitHub Pages
-          access-token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
-          # Optional: arguments passed to `npm ci`
-          install-args: '--legacy-peer-deps'
-          # Optional: arguments passed to `npm run build`
-          build-args: ''
-          # Optional: the directory after build process to deploy (defaults to `dist/analog/public`)
-          deploy-dir: 'dist/analog/public'
-          # Optional: a specific branch where the static site should be deployed (defaults to `gh-pages`)
-          deploy-branch: 'gh-pages' # important: --dry-run (see option below) won't actually deploy the site!
-          # Optional: prevent an actual deployment (e. g. for running in branch pipelines)
-          dry-run: false
+      - name: Set environment variable based on branch
+        run: |
+          if [[ $GITHUB_REF == refs/heads/pages ]]; then
+            echo "Branch is main or master. Setting DRY_RUN_OPTION to empty."
+            echo "DRY_RUN_OPTION=" >> $GITHUB_ENV
+          else
+            echo "Branch is not main or master. Setting DRY_RUN_OPTION to '--dry-run'."
+            echo "DRY_RUN_OPTION=--dry-run" >> $GITHUB_ENV
+          fi
+      - name: Install
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Deploy Website (gh-pages branch)
+        env:
+          GH_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }} # A token must be created to be able to deploy on the gh-pages branch
+          CNAME_OPTION: --cname=race.elementfuture.com # omit if your not running it on a custom domain
+        run: |
+          echo "DRY_RUN_OPTION=$DRY_RUN_OPTION"
+          npx angular-cli-ghpages --no-silent --dir="${{env.TARGET_DIR}}" $CNAME_OPTION $DRY_RUN_OPTION
+
+
