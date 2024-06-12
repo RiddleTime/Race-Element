@@ -3,7 +3,7 @@ name: Deploy to Github Pages
 on:
   push:
     branches:
-      - 'pages'
+      - 'main'
 
 jobs:
   build:
@@ -26,4 +26,4 @@ jobs:
           # Optional: a specific branch where the static site should be deployed (defaults to `gh-pages`)
           deploy-branch: 'gh-pages' # important: --dry-run (see option below) won't actually deploy the site!
           # Optional: prevent an actual deployment (e. g. for running in branch pipelines)
-          dry-run: false
+          dry-run: true
