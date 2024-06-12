@@ -1,24 +1,29 @@
-name: Deploy to Github Pages 
+name: Deploy to Github Pages
 
 on:
   push:
     branches:
-      - pages
-#  schedule:
-#      - cron:  '0 0 * * *'
+      - 'pages'
 
 jobs:
-  github-pages:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.6
-      - uses: actions/cache@v4.0.2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gems-v2-${{ hashFiles('**/Gemfile') }}
-          restore-keys: |
-            ${{ runner.os }}-gems-v2
-      - uses: RiddleTime/jekyll-action@v2.6
+          node-version: '20.x'
+      - uses: k9n-dev/analog-publish-gh-pages@v1.0.0
         with:
-          token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
-          target_branch: gh-pages
+          # Required: token to access / deploy on GitHub Pages
+          access-token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+          # Optional: arguments passed to `npm ci`
+          install-args: '--legacy-peer-deps'
+          # Optional: arguments passed to `npm run build`
+          build-args: ''
+          # Optional: the directory after build process to deploy (defaults to `dist/analog/public`)
+          deploy-dir: 'dist/analog/public'
+          # Optional: a specific branch where the static site should be deployed (defaults to `gh-pages`)
+          deploy-branch: 'gh-pages' # important: --dry-run (see option below) won't actually deploy the site!
+          # Optional: prevent an actual deployment (e. g. for running in branch pipelines)
+          dry-run: true
