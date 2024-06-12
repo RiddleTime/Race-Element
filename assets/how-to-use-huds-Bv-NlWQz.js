@@ -1,5 +1,5 @@
 const e=`---
-title: "How To: Use HUDs"
+title: "How To: HUD Tab"
 slug: how-to-use-huds
 description: Custom HUDs for Sim Racing
 type: guide 
