@@ -1,5 +1,5 @@
 ---
-title: "How To: Get Started"
+title: "Get Started"
 slug: how-to-get-started
 description: Downloading and Installing Race Element
 type: guide 
