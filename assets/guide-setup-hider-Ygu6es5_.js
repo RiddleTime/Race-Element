@@ -12,11 +12,12 @@ Assetto Corsa Competizione has data for developers that allows us to see when th
 Make sure you are running OBS version 28 or higher.
 1. *OBS*: **Add Any type of Source to your active Scene, name it \`SetupHider\`. This can be text, image, video, a website, basically anything even a Scene Source.**
 2. *OBS*: **At the top menu: Click Tools and Open the WebSocket Server Settings.**
-3. *OBS*: **In the WebSocket Server Settings window, Click \`Show Connect Info\`**
-4. *Race Element:* **Open the Main Settings Tab on the left -> Open the Streaming Tab.**
-5. *Race Element:* **Set the Software to \`OBS\`**
-6. *OBS/Race Element*: **Copy the Server IP, Server Port and Server Password from OBS and paste them in Race Element's OBS Settings.**
-7. *Race Element:*: **Click Save and then at the bottom Enable the SetupHider.**
+3. *OBS*: **In the WebSocket Server Settings window, Make sure \`Enable WebSocket Server\` is checked.**
+4. *OBS*: **In the WebSocket Server Settings window, Click \`Show Connect Info\`**
+5. *Race Element:* **Open the Main Settings Tab on the left -> Open the Streaming Tab.**
+6. *Race Element:* **Set the Software to \`OBS\`**
+7. *OBS/Race Element*: **Copy the Server IP, Server Port and Server Password from OBS and paste them in Race Element's OBS Settings.**
+8. *Race Element:*: **Click Save and then at the bottom Enable the SetupHider.**
 
 # StreamLabs
 1. *StreamLabs*: **Add Any type of Source to your active Scene, name it \`SetupHider\`. This can be text, image, video, a website, basically anything even a Scene Source.**
