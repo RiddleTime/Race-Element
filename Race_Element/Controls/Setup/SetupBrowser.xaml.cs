@@ -418,7 +418,7 @@ public partial class SetupBrowser : UserControl
             FileInfo file = (FileInfo)button.CommandParameter;
             // command is RaceElement://Setup=
             // The Race Element website enables linking.
-            string website = new("https://race.elementfuture.com/?setup=");
+            string website = new("https://race.elementfuture.com/setup?link=");
 
             string setupLink = GetSetupLink(file);
 
@@ -446,7 +446,7 @@ public partial class SetupBrowser : UserControl
 
             // command is RaceElement://Setup=
             // The Race Element website enables linking.
-            string website = new("https://race.elementfuture.com/?setup=");
+            string website = new("https://race.elementfuture.com/setup?link=");
 
             string setupLink = GetSetupLink(file);
 

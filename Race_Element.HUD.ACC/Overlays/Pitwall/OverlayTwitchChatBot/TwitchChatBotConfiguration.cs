@@ -37,7 +37,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChatBot
             [LinkText("Open list of Chat Bot Commands")]
             public LinkOption AvailableCommands { get; init; } = new()
             {
-                Link = "https://race.elementfuture.com/2024/04/22/twitch-chat-bot-commands.html",
+                Link = "https://race.elementfuture.com/guide/twitch-chat-bot-commands",
             };
         }
 
