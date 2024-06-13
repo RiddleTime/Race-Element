@@ -1,5 +1,5 @@
 const e=`---
-title: "How To: Use Liveries Tab"
+title: "Using the Liveries Tab"
 slug: how-to-use-liveries
 description: ACC Liveries and Race Element
 type: guide 

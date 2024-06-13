@@ -1,5 +1,5 @@
 const e=`---
-title: "How To: Start the app minimized"
+title: "Starting Race Element Minimized"
 slug: start-the-app-minimized
 description: How to start the app in minimized mode
 type: guide 
