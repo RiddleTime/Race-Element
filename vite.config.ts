@@ -45,6 +45,9 @@ export default defineConfig(({ mode }) => ({
             },
           },
         ],
+        sitemap: {
+          host: 'https://race.elementfuture.com/',
+        }
       },
     }),
   ],
