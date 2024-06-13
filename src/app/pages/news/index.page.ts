@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
     <div class="container mx-auto flex-wrap">
       @for (post of posts;track post.attributes.slug) {
         <a [routerLink]="['/news/', post.attributes.slug]">
-          <div class="container bg-[rgba(0,0,0,0.7)] mb-3 hover:bg-[#191919] rounded-br-lg rounded-tl-xl  max-w-4xl mx-auto">
+          <div class="container bg-[rgba(0,0,0,0.7)] mb-3 hover:bg-[#191919] hover:border-[transparent] hover:border-l-2 rounded-br-lg rounded-tl-xl  max-w-4xl mx-auto">
             <div class="container text-gray-300 bg-[#030303] rounded-tl-xl pl-2 pr-2 pt-1 pb-1 border-l-2 border-[red]">
               <h2 class="font-['Conthrax'] text-xl md:text-3xl pl-1 text-white">{{ post.attributes.title }} </h2>
               <p class="text-xs ml-1 mt-1 text-[rgba(255,70,0,0.8)] mx-auto">{{post.attributes.date | date:'longDate'}}</p>
