@@ -9,12 +9,12 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [RouterLink, CommonModule],
   template: `
-  <div class="mx-auto px-7 rounded-lg shadow-lg select-none container">
+  <div class="mx-auto rounded-lg shadow-lg select-none container max-w-4xl px-2">
     <h1 class="font-['Conthrax'] text-4xl mb-1 text-center">News</h1>
     <div class="container mx-auto flex-wrap">
       @for (post of posts;track post.attributes.slug) {
         <a [routerLink]="['/news/', post.attributes.slug]">
-          <div class="container bg-[rgba(0,0,0,0.7)] mb-3 hover:bg-[#191919] hover:border-[transparent] hover:border-l-2 rounded-br-lg rounded-tl-xl  max-w-4xl mx-auto">
+          <div class="container bg-[rgba(0,0,0,0.7)] mb-3 hover:bg-[#191919] hover:border-[transparent] hover:border-l-2 rounded-br-lg rounded-tl-xl  mx-auto text-pretty">
             <div class="container text-gray-300 bg-[#030303] rounded-tl-xl pl-2 pr-2 pt-1 pb-1 border-l-2 border-[red]">
               <h2 class="font-['Conthrax'] text-xl md:text-3xl pl-1 text-white">{{ post.attributes.title }} </h2>
               <p class="text-xs ml-1 mt-1 text-[rgba(255,70,0,0.8)] mx-auto">{{post.attributes.date | date:'longDate'}}</p>
