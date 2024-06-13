@@ -8,13 +8,15 @@ import { SocialsComponent } from "./components/socials/socials.component";
   template: `
     <div class="container mx-auto flex flex-col self-center pt-2 select-none">
 
-    <div class="mx-auto mb-3">
-        <a href="/" class="self-center drop-shadow-[0_35px_35px_rgba(1,1,1,0.25)] text-center font-['Conthrax'] text-5xl md:text-7xl text-[orangered] select-none hover:text-[orangered] ">
+      <div class="mx-auto mb-3">
+        <a href="/" class="self-center drop-shadow-[0_35px_35px_rgba(1,1,1,0.25)] text-center font-['Conthrax'] text-5xl md:text-7xl text-[orangered] hover:text-[orangered] ">
           <div class="-skew-x-12 ">Race Element</div>
         </a>
-        <p class="text-center font-['Conthrax'] select-none">Provides Solutions for Sim Racing</p>
+        <p class="text-center font-['Conthrax']">Provides Solutions for Sim Racing</p>
       </div>
+
       <div class="mx-auto container place-content-center grid max-w-xl md:max-w-3xl grid-cols-2 md:grid-cols-1">
+
         <nav class="select-none text-lg font-['Conthrax'] mx-auto place-content-start md:place-content-center md:text-2xl flex flex-wrap flex-col md:flex-row">
           <a href="/news" class="mx-auto text-center mb-2 md:mb-0 text-[white] hover:text-[red] hover:bg-[rgba(0,0,0,0.8)] ml-1 mr-1 pl-2 pr-2 bg-[rgba(0.2,0.2,0.2)] rounded-tl-lg rounded-br-lg">News</a>
           <a href="/guide" class="mx-auto text-center mb-2 md:mb-0 text-[white] hover:text-[red] hover:bg-[rgba(0,0,0,0.8)] ml-1 mr-1 pl-2 pr-2 bg-[rgba(0.2,0.2,0.2)] rounded-tl-lg rounded-br-lg">Guides</a>
@@ -25,6 +27,7 @@ import { SocialsComponent } from "./components/socials/socials.component";
         <app-socials class="mx-auto" />
       </div>
 
+      <div class="border-t-2 border-[orangered] mt-4 md:mt-4 container mx-auto max-w-md md:max-w-xl" ></div>
       <router-outlet class="mt-2 md:mt-4"></router-outlet>
 
       <br>
