@@ -15,21 +15,22 @@ import { SocialsComponent } from "./components/socials/socials.component";
         <p class="text-center font-['Conthrax']">Provides Solutions for Sim Racing</p>
       </div>
 
-      <div class="border-t-2 border-[orangered] mb-2 container mx-auto max-w-md md:max-w-xl" ></div>
+      <div class="border-t-2 border-[grey] mb-2 container mx-auto md:max-w-xl" ></div>
 
       <div class="mx-auto container place-content-center grid max-w-xl md:max-w-3xl grid-cols-2 md:grid-cols-1">
 
-        <nav class="select-none text-lg font-['Conthrax'] mx-auto place-content-start md:place-content-center md:text-2xl flex flex-wrap flex-col md:flex-row">
+        <nav class="select-none text-lg font-['Conthrax'] md:mx-auto ml-6  place-content-start md:place-content-center md:text-2xl flex flex-wrap flex-col md:flex-row">
           <a href="/news" class="mx-auto text-center mb-2 md:mb-0 text-[white] hover:text-[red] hover:bg-[rgba(0,0,0,0.8)] ml-1 mr-1 pl-2 pr-2 bg-[rgba(0.2,0.2,0.2)] rounded-tl-lg rounded-br-lg">News</a>
           <a href="/guide" class="mx-auto text-center mb-2 md:mb-0 text-[white] hover:text-[red] hover:bg-[rgba(0,0,0,0.8)] ml-1 mr-1 pl-2 pr-2 bg-[rgba(0.2,0.2,0.2)] rounded-tl-lg rounded-br-lg">Guides</a>
           <a href="/guide/features" class="mx-auto text-center mb-2 md:mb-0 text-[white] hover:text-[red] hover:bg-[rgba(0,0,0,0.8)] ml-1 mr-1 pl-2 pr-2 bg-[rgba(0.2,0.2,0.2)] rounded-tl-lg rounded-br-lg">Features</a>
           <a href="/guide/how-to-get-started" class="mx-auto text-center mb-2 md:mb-0 text-[white] hover:text-[red] hover:bg-[rgba(0,0,0,0.8)] ml-1 mr-1 pl-2 pr-2 bg-[rgba(0.2,0.2,0.2)] rounded-tl-lg rounded-br-lg">Download</a>
         </nav>
 
-        <app-socials class="mx-auto" />
+        <app-socials class="md:mx-auto mr-6" />
       </div>
 
-      <div class="border-t-2 border-[orangered] mt-1 md:mt-2 container mx-auto max-w-md md:max-w-xl" ></div>
+      <div class="border-t-2 border-[orangered] mt-1 md:mt-2 container mx-auto md:max-w-xl" ></div>
+
       <router-outlet class="mt-4 md:mt-4"></router-outlet>
 
       <br>
