@@ -31,6 +31,9 @@
 
 .analog-markdown {
 
+  font-size: small;
+  @apply md:text-base;
+
   @apply select-none;
   >h1 {
     font-size: large;
