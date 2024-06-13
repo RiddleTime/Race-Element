@@ -3,7 +3,16 @@ import { injectContent, MarkdownComponent } from '@analogjs/content';
 import { AsyncPipe, CommonModule } from '@angular/common';
 
 import PostAttributes from '../../post-attributes';
+import { RouteMeta } from '@analogjs/router';
 
+export const routeMeta: RouteMeta = {
+  meta: [
+    {
+      property: 'og:title',
+      content: 'Race Element - News',
+    }
+  ],
+};
 @Component({
   selector: 'app-news-post',
   standalone: true,

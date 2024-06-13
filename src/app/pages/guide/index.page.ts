@@ -3,7 +3,16 @@ import { injectContentFiles } from '@analogjs/content';
 import PostAttributes from '../../post-attributes';
 import { Route, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { RouteMeta } from '@analogjs/router';
 
+export const routeMeta: RouteMeta = {
+  meta: [
+    {
+      property: 'og:title',
+      content: 'Race Element - Guides',
+    },
+  ],
+};
 
 @Component({
   selector: 'app-guides',
