@@ -15,6 +15,8 @@ import { SocialsComponent } from "./components/socials/socials.component";
         <p class="text-center font-['Conthrax']">Provides Solutions for Sim Racing</p>
       </div>
 
+      <div class="border-t-2 border-[orangered] mb-2 container mx-auto max-w-md md:max-w-xl" ></div>
+
       <div class="mx-auto container place-content-center grid max-w-xl md:max-w-3xl grid-cols-2 md:grid-cols-1">
 
         <nav class="select-none text-lg font-['Conthrax'] mx-auto place-content-start md:place-content-center md:text-2xl flex flex-wrap flex-col md:flex-row">
@@ -27,8 +29,8 @@ import { SocialsComponent } from "./components/socials/socials.component";
         <app-socials class="mx-auto" />
       </div>
 
-      <div class="border-t-2 border-[orangered] mt-4 md:mt-4 container mx-auto max-w-md md:max-w-xl" ></div>
-      <router-outlet class="mt-2 md:mt-4"></router-outlet>
+      <div class="border-t-2 border-[orangered] mt-1 md:mt-2 container mx-auto max-w-md md:max-w-xl" ></div>
+      <router-outlet class="mt-4 md:mt-4"></router-outlet>
 
       <br>
 

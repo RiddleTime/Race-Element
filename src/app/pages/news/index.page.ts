@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
   imports: [RouterLink, CommonModule],
   template: `
   <div class="mx-auto px-7 rounded-lg shadow-lg select-none container">
-    <h1 class="font-['Conthrax'] text-4xl mb-1 mt-1 text-center">News</h1>
+    <h1 class="font-['Conthrax'] text-4xl mb-1 text-center">News</h1>
     <div class="container mx-auto flex-wrap">
       @for (post of posts;track post.attributes.slug) {
         <a [routerLink]="['/news/', post.attributes.slug]">
