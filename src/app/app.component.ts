@@ -29,7 +29,7 @@ import { SocialsComponent } from "./components/socials/socials.component";
         <app-socials class="md:mx-auto mr-6" />
       </div>
 
-      <div class="border-t-2 border-[orangered] mt-1 md:mt-2 container mx-auto md:max-w-xl" ></div>
+      <div class="border-t-2 border-[grey] mt-1 md:mt-2 container mx-auto md:max-w-xl" ></div>
 
       <router-outlet class="mt-4 md:mt-4"></router-outlet>
 
