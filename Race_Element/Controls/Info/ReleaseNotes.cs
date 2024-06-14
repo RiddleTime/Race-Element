@@ -6,6 +6,9 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.1.0.6", "- Twitch Chat Bot:"+
+                    "\n  - Added new command +diff: Shows the difference in lap times and sectors for the currently viewed car vs the selected. Use like(+diff ahead, +diff behind, +diff p 1, +diff # 1)."+
+                    "\n  - Adjusted link to commands list on new website." },
         {"1.1.0.4", "- Updated SetupLinks to use the new website format, read the news article on the website for migrating your pre 1.1.0.4 SetupLinks links." },
         {"1.1.0.2", "- Setup Importer: disabled multi-track import when opened from SetupLink."+
                     "\n- Setup Browser: Added Copy As SetupLink for Discord, this automatically creates a nice readable link in markdown. It contains the name of the setup, the car and the track."},

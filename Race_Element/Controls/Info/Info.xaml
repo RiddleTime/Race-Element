@@ -117,7 +117,7 @@
                                 Height="26"
                                 Foreground="Gold"    
                                 />
-                                <TextBlock Grid.Row="1" FontWeight="Bold" FontSize="16" Foreground="Gold" Style="{DynamicResource MaterialDesignButtonTextBlock}" HorizontalAlignment="Center" Text="Donate"></TextBlock>
+                                <TextBlock Grid.Row="1" FontWeight="Bold" FontSize="16" Foreground="Gold" Margin="4,0,4,0" Style="{DynamicResource MaterialDesignButtonTextBlock}" HorizontalAlignment="Center" Text="Sponsor"></TextBlock>
                             </Grid>
                         </Button>
                     </StackPanel>
