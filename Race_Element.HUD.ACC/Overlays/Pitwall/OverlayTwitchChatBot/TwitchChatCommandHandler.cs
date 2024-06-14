@@ -56,9 +56,7 @@ internal sealed class TwitchChatBotCommandHandler
             new("purple", GetPurpleLapResponse),
             new("ahead", GetCarAheadResponse),
             new("gap", GetGapResponse),
-#if debug 
             new("diff", GetCarDifferenceResponse),
-#endif
             new("behind", GetCarBehindResponse),
             new("p", GetPositionLookupResponse),
             new("#", GetRaceNumberLookupResponse),
@@ -129,7 +127,89 @@ internal sealed class TwitchChatBotCommandHandler
     /// <returns></returns>
     private string GetCarDifferenceResponse(string[] args)
     {
-        return string.Empty;
+        if (args.Length == 0 || args.Length > 2) return string.Empty;
+
+
+        CarData localCar = GetLocalCar();
+        if (localCar == null) return string.Empty;
+
+        CarData otherCar = null;
+        switch (args.Length)
+        {
+            case 1:
+                {
+                    if (args[0].ToLower().Equals("behind"))
+                    {
+                        otherCar = GetCarAtPosition(localCar.RealtimeCarUpdate.Position + 1);
+                    }
+                    else if (args[0].ToLower().Equals("ahead"))
+                    {
+                        otherCar = GetCarAtPosition(localCar.RealtimeCarUpdate.Position - 1);
+                    }
+                    break;
+                }
+            case 2:
+                {
+                    switch (args[0].ToLower())
+                    {
+                        case "#":
+                            {
+                                if (int.TryParse(args[1], out int otherCarNumber))
+                                {
+                                    int requestedPosition = -1;
+                                    foreach (var car in EntryListTracker.Instance.Cars)
+                                    {
+                                        if (car.Value.CarInfo == null) continue;
+                                        if (car.Value.CarInfo.RaceNumber == otherCarNumber)
+                                        {
+                                            requestedPosition = car.Value.RealtimeCarUpdate.Position;
+                                            break;
+                                        }
+                                    }
+
+                                    if (requestedPosition != -1)
+                                        otherCar = GetCarAtPosition(requestedPosition);
+                                }
+
+                                break;
+                            }
+                        case "p":
+                            {
+                                if (int.TryParse(args[1], out int otherCarPosition))
+                                    otherCar = GetCarAtPosition(otherCarPosition);
+
+                                break;
+                            }
+                        default: { break; }
+                    }
+
+                    break;
+                }
+            default: { break; }
+        }
+
+        if (otherCar == null) return string.Empty;
+
+        LapInfo localLastLap = localCar.RealtimeCarUpdate.LastLap;
+        LapInfo otherLastLap = otherCar.RealtimeCarUpdate.LastLap;
+
+
+        if (localLastLap.LaptimeMS.HasValue && otherLastLap.LaptimeMS.HasValue)
+        {
+            TimeSpan offsetLapTime = TimeSpan.FromMilliseconds(localLastLap.LaptimeMS.Value).Subtract(TimeSpan.FromMilliseconds(otherLastLap.LaptimeMS.Value));
+            TimeSpan offsetSector1 = TimeSpan.FromMilliseconds(localLastLap.Splits[0].Value).Subtract(TimeSpan.FromMilliseconds(otherLastLap.Splits[0].Value));
+            TimeSpan offsetSector2 = TimeSpan.FromMilliseconds(localLastLap.Splits[1].Value).Subtract(TimeSpan.FromMilliseconds(otherLastLap.Splits[1].Value));
+            TimeSpan offsetSector3 = TimeSpan.FromMilliseconds(localLastLap.Splits[2].Value).Subtract(TimeSpan.FromMilliseconds(otherLastLap.Splits[2].Value));
+
+            StringBuilder sb = new($"Diff to P{otherCar.RealtimeCarUpdate.Position} #{otherCar.CarInfo.RaceNumber} ");
+            sb.Append($"{otherCar.CarInfo.Drivers[otherCar.RealtimeCarUpdate.DriverIndex].FirstName} {otherCar.CarInfo.Drivers[otherCar.RealtimeCarUpdate.DriverIndex].LastName}  - ");
+            _ = sb.Append($"Lap: {(offsetLapTime.Ticks < 0 ? "-" : (offsetLapTime.Ticks > 0 ? "+" : ""))}{offsetLapTime:s\\:fff} || ");
+            _ = sb.Append($"S1: {(offsetSector1.Ticks < 0 ? "-" : (offsetSector1.Ticks > 0 ? "+" : ""))}{offsetSector1:s\\:fff} | ");
+            _ = sb.Append($"S2: {(offsetSector2.Ticks < 0 ? "-" : (offsetSector2.Ticks > 0 ? "+" : ""))}{offsetSector2:s\\:fff} | ");
+            _ = sb.Append($"S3: {(offsetSector3.Ticks < 0 ? "-" : (offsetSector3.Ticks > 0 ? "+" : ""))}{offsetSector3:s\\:fff}");
+            return sb.ToString();
+        }
+        else return string.Empty;
     }
 
     /// <summary>
