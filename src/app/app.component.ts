@@ -9,10 +9,10 @@ import { SocialsComponent } from "./components/socials/socials.component";
     <div class="container mx-auto flex flex-col self-center pt-2 select-none">
 
       <div class="mx-auto mb-3">
-        <a href="/" class="self-center drop-shadow-[0_35px_35px_rgba(1,1,1,0.25)] text-center font-['Conthrax'] text-5xl md:text-7xl text-[orangered] hover:text-[orangered] ">
+        <a href="/" class="self-center drop-shadow-[0_35px_35px_rgba(1,1,1,0.25)] text-center font-['Conthrax'] text-4xl md:text-7xl text-[orangered] hover:text-[orangered] ">
           <div class="-skew-x-12 ">Race Element</div>
         </a>
-        <p class="text-center font-['Conthrax']">Provides Solutions for Sim Racing</p>
+        <p class="text-center font-['Conthrax']">Solutions for Sim Racing</p>
       </div>
 
       <div class="border-t-2 border-[grey] mb-2 container mx-auto md:max-w-2xl" ></div>
@@ -33,11 +33,9 @@ import { SocialsComponent } from "./components/socials/socials.component";
 
       <router-outlet class="mt-4 md:mt-4"></router-outlet>
 
-      <br>
-
-      <footer class="text-sm select-none mx-auto">
+      <footer class="text-sm select-none mx-auto mt-2">
         <img class="mx-auto" src="https://hits.seeyoufarm.com/api/count/keep/badge.svg?url=https%3A%2F%2Fgithub.com%2FRiddleTime%2FRace-Element&amp;count_bg=%23FF4500&amp;title_bg=%23555555&amp;icon=&amp;icon_color=%23E7E7E7&amp;title=Usage%3A+Today+%2F+All-time&amp;edge_flat=false">
-        <p class="text-center">© {{ThisYear}} Reinier Klarenberg</p>
+        <p class="text-center">© 2022 - {{ThisYear}} Reinier Klarenberg</p>
       </footer>
     </div>
   `,
