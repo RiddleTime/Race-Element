@@ -26,10 +26,10 @@ export const routeMeta: RouteMeta = {
         <a [routerLink]="['/guide/', post.attributes.slug]">
           <div class="container bg-[rgba(0,0,0,0.7)] mb-3 hover:bg-[#191919] hover:border-[transparent] hover:border-l-2 rounded-br-lg rounded-tl-xl  max-w-4xl mx-auto text-pretty">
             <div class="container text-gray-300 bg-[#030303] rounded-tl-xl pl-2 pr-2 pt-1 pb-1 border-l-2 border-[red]">
-              <h2 class="font-['Conthrax'] text-xl md:text-3xl pl-1 text-white">{{ post.attributes.title }} </h2>
+              <h2 class="font-['Conthrax'] text-xl md:text-2xl pl-1 text-white">{{ post.attributes.title }} </h2>
             </div>
             <div class="container ml-3 pr-[1em] pb-1 text-pretty">
-              <p class="text-sm md:text-lg ml-1 mr-1 text-[rgba(255,255,255,0.78)]">{{ post.attributes.description }}</p>
+              <p class="text-sm md:text-base ml-1 mr-1 text-[rgba(255,255,255,0.78)]">{{ post.attributes.description }}</p>
             </div>
           </div>
         </a>

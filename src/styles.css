@@ -30,7 +30,6 @@
 }
 
 .analog-markdown {
-  font-size: 15;
   line-height: 1.4rem;
   @apply md:text-base;
   @apply select-none;
@@ -48,11 +47,15 @@
   }
 
   >h2 {
-    font-size: medium;
-    @apply md:text-lg;
+    font-size: 14px !important;
+    @apply md:text-lg !important;
     font-size: large;
     font-weight: 600;
     margin-bottom: -1em;
+    @apply pl-2;
+    @apply rounded-tl-xl;
+    @apply border-l-2;
+    @apply border-red-950;
   }
 
   >ul {
