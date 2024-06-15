@@ -10,6 +10,7 @@ using RaceElement.Broadcast;
 using RaceElement.Util;
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
@@ -36,15 +37,11 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     private readonly float _outLineBorder = 2.0f;
     private readonly float _margin = 64.0f;
-
-    private float _trackLength;
-    private float _scale;
+    private float _scale = 0.15f;
 
     public TrackMapOverlay(Rectangle rectangle) : base(rectangle, "Track Map")
     {
         RefreshRateHz = _config.Others.RefreshInterval;
-        _trackLength = 0.0f;
-        _scale = 0.15f;
 
         _mapCache.Map = null;
         _mapCache.YellowFlag = TrackMapDrawer.CreateCircleWithOutline(Color.Yellow, _config.Others.CarSize, _outLineBorder);
@@ -97,32 +94,41 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     public override bool ShouldRender()
     {
-        var shouldRender = (_trackingProgress != null) || (_trackPositions.Count > 0 && EntryListTracker.Instance.Cars.Count > 0);
-        return base.ShouldRender() && shouldRender;
+        return base.ShouldRender() && (_trackingProgress != null || _mapCache.Map != null);
     }
 
     public override void Render(Graphics g)
     {
-        if (_trackingProgress != null && _trackPositions.Count == 0)
+        if (_mapCache.Map != null)
         {
-            using var font = FontUtil.FontSegoeMono(_config.Others.FontSize);
-            using SolidBrush pen = new(Color.FromArgb(100, Color.Black));
-            var size = g.MeasureString(_trackingProgress, font);
-
-            g.FillRectangle(pen, 0, 0, size.Width, size.Height);
-            g.DrawStringWithShadow(_trackingProgress, font, Color.White, new PointF());
-
-            if ((int)size.Width != Width || (int)size.Height != Height)
-            {
-                Height = (int)size.Height;
-                Width = (int)size.Width;
-            }
-
-            return;
+            RenderMap(g);
         }
+        else if (_trackingProgress != null)
+        {
+            RenderTrackingProgress(g);
+        }
+    }
 
+    private void RenderTrackingProgress(Graphics g)
+    {
+        using var font = FontUtil.FontSegoeMono(_config.Others.FontSize);
+        using SolidBrush pen = new(Color.FromArgb(100, Color.Black));
+        var size = g.MeasureString(_trackingProgress, font);
+
+        g.FillRectangle(pen, 0, 0, size.Width, size.Height);
+        g.DrawStringWithShadow(_trackingProgress, font, Color.White, new PointF());
+
+        if ((int)size.Width != Width || (int)size.Height != Height)
+        {
+            Height = (int)size.Height;
+            Width = (int)size.Width;
+        }
+    }
+
+    private void RenderMap(Graphics g)
+    {
         var carsOnTrack = GetCarsOnTrack();
-        var bitmap = TrackMapDrawer.Draw(_trackPositions, carsOnTrack, _mapCache, _config, _trackLength);
+        var bitmap = TrackMapDrawer.Draw(_trackPositions, carsOnTrack, _mapCache, _config, broadCastTrackData.TrackMeters);
 
         if (bitmap.Width != Width || bitmap.Height != Height)
         {
@@ -132,7 +138,6 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
         g.DrawImage(bitmap, 0, 0);
     }
-
 
     #region Event Listeners
 
@@ -163,9 +168,8 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     private void OnMapPositionsCallback(object sender, List<TrackPoint> positions)
     {
-        var trackInfo = TrackInfo.Data.GetValueOrDefault(pageStatic.Track.ToLower(), new TrackInfo(0, 0, 0));
+        var trackInfo = TrackInfo.Data.GetValueOrDefault(pageStatic.Track.ToLower(), new TrackInfo(0, 0));
         _scale = trackInfo.Scale * _config.General.ScaleFactor;
-        _trackLength = trackInfo.LengthMeters;
 
         _miniMapCreationJob.Cancel();
         _trackOriginalBoundingBox = TrackMapTransform.GetBoundingBox(positions);
@@ -178,23 +182,21 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             var y = track[i].Y - boundaries.Bottom + _margin * 0.5f;
             var x = track[i].X - boundaries.Left + _margin * 0.5f;
 
-            track[i] = new(track[i]) { X = x, Y = y };
+            track[i] = new TrackPoint(track[i]) { X = x, Y = y };
         }
 
         _trackBoundingBox = boundaries;
         _trackPositions = track;
 
         _mapCache.Map = TrackMapDrawer.CreateLineFromPoints(_config.Colors.Map, _config.General.Thickness, _margin, _trackPositions, _trackBoundingBox);
+        Debug.WriteLine($"[MAP] {broadCastTrackData.TrackName} ({pageStatic.Track}) -> [S: {_scale:F3}] [L: {broadCastTrackData.TrackMeters:F3}] [P: {_trackPositions.Count}]");
 
-        if (!_config.Others.SavePreview)
+        if (!_config.Others.SavePreview || pageStatic.Track.Length == 0)
         {
             return;
         }
 
-        var pageFileStatic = ACCSharedMemory.Instance.PageFileStatic;
-        if (pageFileStatic.Track.Length == 0) return;
-
-        var path = FileUtil.RaceElementTracks + pageFileStatic.Track.ToLower() + ".jpg";
+        var path = FileUtil.RaceElementTracks + pageStatic.Track.ToLower() + ".jpg";
         _mapCache.Map.Save(path);
     }
 

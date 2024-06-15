@@ -209,7 +209,7 @@ public sealed unsafe class ACCSharedMemory
         /// <summary>Session time lef</summary>
         public float SessionTimeLeft;
 
-        /// <summary>Distance travelled in the current stin</summary>
+        /// <summary>Distance travelled in the current stint</summary>
         public float DistanceTraveled;
 
         /// <summary>Car is pitting</summary>

@@ -35,6 +35,12 @@ public class ACCUdpRemoteClient : IDisposable
         _listenerTask = ConnectAndRun();
     }
 
+    public void RequestData()
+    {
+        // TODO(Andrei): This is just a temporal solution until we find a better way to redo the callbacks
+        MessageHandler.RequestData();
+    }
+
     private void Send(byte[] payload)
     {
         if (_client != null)
