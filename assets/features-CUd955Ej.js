@@ -43,5 +43,10 @@ The Liveries tab provides functionality to manage liveries, Race Element automat
 # Streaming
 - Setup Hider for OBS and Streamlabs.
 - Display HUDs on stream with OBS and Streamlabs.
-- Twitch Chat HUD which also serves as a chat bot delivering Game specific information.
+- Twitch Chat HUD.
+- Twitch Chat bot delivering Game specific information.
+
+# Hardware
+- Automatic steering lock for certain wheelbases( sets max steering lock based on chosen car).
+- Adaptive trigger FFB for PS5 controller in combination with DSX.
 `;export{e as default};
