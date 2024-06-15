@@ -42,7 +42,7 @@ internal sealed class WheelSlipOverlay : AbstractOverlay
         {
             [ToolTip("Adjust maximum amount of wheel slip displayed.")]
             [IntRange(40, 120, 2)]
-            public int WheelSize { get; set; } = 92;
+            public int WheelSize { get; set; } = 68;
         }
 
         public WheelSlipConfiguration() => GenericConfiguration.AllowRescale = true;
