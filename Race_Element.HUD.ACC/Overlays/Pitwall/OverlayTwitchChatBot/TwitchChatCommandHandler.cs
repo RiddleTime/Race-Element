@@ -202,7 +202,7 @@ internal sealed class TwitchChatBotCommandHandler
             TimeSpan offsetSector3 = TimeSpan.FromMilliseconds(localLastLap.Splits[2].Value).Subtract(TimeSpan.FromMilliseconds(otherLastLap.Splits[2].Value));
 
             StringBuilder sb = new($"Diff to P{otherCar.RealtimeCarUpdate.Position} #{otherCar.CarInfo.RaceNumber} ");
-            sb.Append($"{otherCar.CarInfo.Drivers[otherCar.RealtimeCarUpdate.DriverIndex].FirstName} {otherCar.CarInfo.Drivers[otherCar.RealtimeCarUpdate.DriverIndex].LastName}  - ");
+            sb.Append($"{otherCar.CarInfo.Drivers[otherCar.RealtimeCarUpdate.DriverIndex].FirstName} {otherCar.CarInfo.Drivers[otherCar.RealtimeCarUpdate.DriverIndex].LastName} - ");
             _ = sb.Append($"Lap: {(offsetLapTime.Ticks < 0 ? "-" : (offsetLapTime.Ticks > 0 ? "+" : ""))}{offsetLapTime:s\\.fff} || ");
             _ = sb.Append($"S1: {(offsetSector1.Ticks < 0 ? "-" : (offsetSector1.Ticks > 0 ? "+" : ""))}{offsetSector1:s\\.fff} | ");
             _ = sb.Append($"S2: {(offsetSector2.Ticks < 0 ? "-" : (offsetSector2.Ticks > 0 ? "+" : ""))}{offsetSector2:s\\.fff} | ");
