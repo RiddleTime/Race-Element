@@ -1,8 +1,8 @@
 const e=`---
 title: New website
-slug: 2024-07-12-new-website-2024
+slug: 2024-06-12-new-website-2024
 description: From Ruby to Angular
-date: 2024-07-12
+date: 2024-06-12
 type: news 
 ---
 # Old website with Ruby impossible to update

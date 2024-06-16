@@ -1,8 +1,8 @@
 const e=`---
 title: SetupLinks Are Added!
-slug: 2024-07-06-setup-links
+slug: 2024-06-06-setup-links
 description: You can now share your setups as a SetupLink, these open up race element's setup importer automatically.
-date: 2024-07-06
+date: 2024-06-06
 type: news 
 ---
 # SetupLinks

@@ -1,7 +1,7 @@
 const e=`---
 title: Official Posts on Other Websites 
 slug: 2023-06-16-official-posts
-description: The only places where Race ELement is officially posted.
+description: The only places where Race Element is officially posted.
 date: 2024-06-16
 type: news
 ---
