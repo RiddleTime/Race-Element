@@ -1,7 +1,7 @@
 const t=`---
 title: Digitally Signed App
 slug: 2023-04-29-signpath
-description: Race Element is now released with a certificate.
+description: Race Element is now released with a certificate with SignPath
 date: 2023-04-29 
 type: news 
 ---

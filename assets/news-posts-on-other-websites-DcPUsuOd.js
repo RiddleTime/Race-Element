@@ -1,7 +1,7 @@
 const e=`---
 title: Official Posts on Other Websites 
 slug: 2022-04-25-official-posts
-description: The only places where Race Element is officially posted.
+description: The only places where Race Element is officially posted
 date: 2022-04-25
 type: news
 ---
