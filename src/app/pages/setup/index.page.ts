@@ -15,10 +15,8 @@ export const routeMeta: RouteMeta = {
   standalone: true,
   template: `
   <div class="container mx-auto text-center select-none">
-    <h2>Opening Race Element's Setup Importer
-    </h2>
-
-    </div>
+    <h2>Trying to Open Race Element's Setup Importer</h2>
+  </div>
   `,
   imports: []
 })
