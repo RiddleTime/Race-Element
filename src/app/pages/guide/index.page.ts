@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { injectContentFiles } from '@analogjs/content';
 import PostAttributes from '../../post-attributes';
-import { Route, RouterLink } from '@angular/router';
+import {  RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouteMeta } from '@analogjs/router';
 
@@ -44,7 +44,6 @@ export const routeMeta: RouteMeta = {
   ],
 })
 export default class GuidesIndexComponent implements OnInit {
-
   readonly posts = injectContentFiles<PostAttributes>((contentFile) => {
     return contentFile.attributes.type === 'guide';
   });
@@ -54,4 +53,5 @@ export default class GuidesIndexComponent implements OnInit {
       return b.attributes.title < a.attributes.title ? 1 : b.attributes.title > a.attributes.title ? -1 : 0;
     });
   }
+
 }

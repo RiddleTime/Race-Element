@@ -1,18 +1,8 @@
-import { Component,ViewEncapsulation } from '@angular/core';
+import { Component,OnInit,ViewEncapsulation } from '@angular/core';
 import { injectContent, MarkdownComponent } from '@analogjs/content';
 import { AsyncPipe, CommonModule } from '@angular/common';
-
 import PostAttributes from '../../post-attributes';
-import { RouteMeta } from '@analogjs/router';
-
-export const routeMeta: RouteMeta = {
-  meta: [
-    {
-      property: 'og:title',
-      content: 'Race Element - Guides',
-    },
-  ],
-};
+import { Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-guides-post',
@@ -39,6 +29,15 @@ export const routeMeta: RouteMeta = {
   ],
   encapsulation: ViewEncapsulation.None,
 })
-export default class GuideSlugComponent {
+export default class GuideSlugComponent implements OnInit {
   readonly post = injectContent<PostAttributes>('slug');
+
+  constructor(private meta: Meta) {}
+
+  ngOnInit(): void {
+    this.post.forEach(x => {
+      this.meta.updateTag({ name: 'og:title', content: `Race Element - Guide - ${x.attributes.title}` })
+      this.meta.updateTag({ name: 'og:description', content: `${x.attributes.description}` })
+    });
+  }
 }

@@ -1,18 +1,9 @@
 import { Component,OnInit,ViewEncapsulation } from '@angular/core';
 import { injectContent, MarkdownComponent } from '@analogjs/content';
 import { AsyncPipe, CommonModule } from '@angular/common';
-
 import PostAttributes from '../../post-attributes';
-import { RouteMeta } from '@analogjs/router';
+import { Meta } from '@angular/platform-browser';
 
-export const routeMeta: RouteMeta = {
-  meta: [
-    {
-      property: 'og:title',
-      content: 'Race Element - News',
-    }
-  ],
-};
 @Component({
   selector: 'app-news-post',
   standalone: true,
@@ -37,8 +28,14 @@ export const routeMeta: RouteMeta = {
   encapsulation: ViewEncapsulation.None,
 })
 export default class NewsSlugComponent implements OnInit{
+  readonly post = injectContent<PostAttributes>();
+
+  constructor(private meta: Meta) {}
 
   ngOnInit(): void {
+    this.post.forEach(x => {
+      this.meta.updateTag({ name: 'og:title', content: `Race Element - News - ${x.attributes.title}` })
+      this.meta.updateTag({ name: 'og:description', content: `${x.attributes.description}` })
+    });
   }
-  readonly post = injectContent<PostAttributes>();
 }
