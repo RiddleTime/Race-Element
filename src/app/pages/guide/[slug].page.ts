@@ -30,7 +30,10 @@ import { Meta } from '@angular/platform-browser';
   encapsulation: ViewEncapsulation.None,
 })
 export default class GuideSlugComponent implements OnInit {
-  readonly post = injectContent<PostAttributes>('slug');
+  readonly post = injectContent<PostAttributes>({
+    param: 'slug',
+    subdirectory: 'guide',
+  });
 
   constructor(private meta: Meta) {}
 

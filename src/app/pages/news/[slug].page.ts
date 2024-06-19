@@ -28,7 +28,10 @@ import { Meta } from '@angular/platform-browser';
   encapsulation: ViewEncapsulation.None,
 })
 export default class NewsSlugComponent implements OnInit{
-  readonly post = injectContent<PostAttributes>();
+  readonly post = injectContent<PostAttributes>({
+    param: 'slug',
+    subdirectory: 'news',
+  });
 
   constructor(private meta: Meta) {}
 
