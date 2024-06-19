@@ -36,8 +36,9 @@ export default class GuideSlugComponent implements OnInit {
 
   ngOnInit(): void {
     this.post.forEach(x => {
-      this.meta.updateTag({ name: 'og:title', content: `Race Element - Guide - ${x.attributes.title}` })
+      this.meta.updateTag({ name: 'og:title', content: `Race Element - Guide | ${x.attributes.title}` })
       this.meta.updateTag({ name: 'og:description', content: `${x.attributes.description}` })
+      this.meta.updateTag({ name: 'twitter:title', content: `Race Element - Guide | ${x.attributes.title}` })
     });
   }
 }
