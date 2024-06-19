@@ -1,6 +1,21 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SocialsComponent } from "./components/socials/socials.component";
+import { RouteMeta } from '@analogjs/router';
+
+
+export const routeMeta: RouteMeta = {
+  meta: [
+    {
+      property: 'og:title',
+      content: 'Race Element',
+    },
+    {
+      property: 'og:description',
+      content: 'Solutions for Sim Racing',
+    },
+  ],
+};
 
 @Component({
   selector: 'app-root',
@@ -45,6 +60,5 @@ import { SocialsComponent } from "./components/socials/socials.component";
   imports: [RouterOutlet, SocialsComponent]
 })
 export class AppComponent {
-ThisYear:number = new Date().getFullYear();
-
+  ThisYear: number = new Date().getFullYear();
 }

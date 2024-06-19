@@ -10,7 +10,7 @@ export const routeMeta: RouteMeta = {
     {
       property: 'og:title',
       content: 'Race Element - News',
-    },
+    }
   ],
 };
 

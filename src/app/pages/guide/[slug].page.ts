@@ -36,14 +36,11 @@ export default class GuideSlugComponent implements OnInit {
 
   ngOnInit(): void {
     this.post.forEach(x => {
-      this.meta.removeTag("og:url");
-      this.meta.removeTag("og:title");
-      this.meta.removeTag("og:description");
-      this.meta.removeTag("twitter:title");
-      this.meta.addTag({ name: 'og:url', content: `https://race.elementfuture.com/guide/${x.attributes.slug}` })
-      this.meta.addTag({ name: 'og:title', content: `Race Element - Guide | ${x.attributes.title}` })
-      this.meta.addTag({ name: 'og:description', content: `${x.attributes.description}` })
-      this.meta.addTag({ name: 'twitter:title', content: `Race Element - Guide | ${x.attributes.title}` })
+      console.log(x);
+      this.meta.updateTag({ name: `og:url`, content: `https://race.elementfuture.com/guide/${x.attributes.slug}` })
+      this.meta.updateTag({ name: `og:title`, content: `Race Element - Guide | ${x.attributes.title}` })
+      this.meta.updateTag({ name: `og:description`, content: `${x.attributes.description}` })
+      this.meta.updateTag({ name: `twitter:title`, content: `Race Element - Guide | ${x.attributes.title}` })
     });
   }
 }
