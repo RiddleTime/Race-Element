@@ -11,6 +11,10 @@ export const routeMeta: RouteMeta = {
       property: 'og:title',
       content: 'Race Element - Guides',
     },
+    {
+      property: 'twitter:title',
+      content: 'Race Element - Guides',
+    },
   ],
 };
 

@@ -8,6 +8,10 @@ export const routeMeta: RouteMeta = {
       property: 'og:title',
       content: 'Race Element - SetupLink',
     },
+    {
+      property: 'twitter:title',
+      content: 'Race Element - SetupLink',
+    },
   ],
 };
 

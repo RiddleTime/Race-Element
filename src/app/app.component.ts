@@ -14,6 +14,10 @@ export const routeMeta: RouteMeta = {
       property: 'og:description',
       content: 'Solutions for Sim Racing',
     },
+    {
+      property: 'twitter:title',
+      content: 'Race Element',
+    },
   ],
 };
 
