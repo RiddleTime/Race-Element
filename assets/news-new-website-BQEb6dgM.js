@@ -11,7 +11,7 @@ Where I already manually started editing the build result, it would defeat the p
 
 # New website now uses Angular
 As I was familiar with Angular and even AngularJS, the choice was fairly easy. The only issue was that I didn't want to rewrite all articles and guides from scratch. So the choice for static site generation was mandatory.
-The website is now generated with [AnalogJS](https://analogjs.org/) which allows me to continue writing articles with markdown whilst splitting up the news and guide section. Additionally the website is now entirely designed in-house. So we have full control!
+The website is now generated with [Analog](https://analogjs.org/) which allows me to continue writing articles with markdown whilst splitting up the news and guide section. Additionally the website is now entirely designed in-house. So we have full control!
 
 # Changes
 SetupLinks have been changed, instead of \`https://race.elementfuture.com?setup=\` the base has now become \`https://race.elementfuture.com/setup?link=\` 
