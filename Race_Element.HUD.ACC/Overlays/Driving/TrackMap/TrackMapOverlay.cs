@@ -94,7 +94,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     public override bool ShouldRender()
     {
-        return base.ShouldRender() && (_trackingProgress != null || _mapCache.Map != null);
+        return (base.ShouldRender() || RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex)) && (_trackingProgress != null || _mapCache.Map != null);
     }
 
     public override void Render(Graphics g)
