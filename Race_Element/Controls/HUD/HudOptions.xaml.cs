@@ -10,6 +10,7 @@ using RaceElement.Util;
 using RaceElement.Util.Settings;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -125,7 +126,7 @@ public partial class HudOptions : UserControl
                     listBoxItemToggleDemoMode.Selected += (s, e) =>
                     {
                         _hudSettingsJson.DemoMode = true;
-                        _hudSettings.Save(_hudSettingsJson);                                
+                        _hudSettings.Save(_hudSettingsJson);
                         listBoxItemToggleDemoMode.Foreground = Brushes.Cyan;
                     };
                     listBoxItemToggleDemoMode.Unselected += (s, e) =>
@@ -717,6 +718,22 @@ public partial class HudOptions : UserControl
                     BorderBrush = Brushes.OrangeRed
                 });
 
+
+
+                // hide Rescale option when disabled in the HUD code itself.
+                bool allowsRescaling = false;
+                if (type.PropertyType == typeof(GenericConfig))
+                {
+                    var field = type.PropertyType.GetField("AllowRescale");
+                    if (field != null)
+                    {
+                        var typeValue = type.GetValue(overlayConfig);
+                        object value = field.GetValue(typeValue);
+                        if (bool.TryParse(value.ToString(), out bool result))
+                            allowsRescaling = result;
+                    }
+                }
+
                 foreach (PropertyInfo subType in type.PropertyType.GetProperties())
                 {
                     ConfigField configField = configFields.Where(x => x.Name == $"{type.Name}.{subType.Name}").FirstOrDefault();
@@ -725,6 +742,12 @@ public partial class HudOptions : UserControl
                         var typeValue = type.GetValue(overlayConfig);
                         configField = new ConfigField() { Name = $"{type.Name}.{subType.Name}", Value = subType.GetValue(typeValue).ToString() };
                     }
+
+                    // hide Rescale option when disabled in the HUD code itself. (null the configField so it won't be added)
+                    if (!allowsRescaling && type.PropertyType.Name.Equals(typeof(GenericConfig).Name))
+                        if (configField.Name == "GenericConfiguration.Scale")
+                            configField = null;
+
 
                     if (configField != null)
                         Dispatcher.BeginInvoke(new Action(() =>
