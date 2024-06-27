@@ -10,7 +10,7 @@ public sealed class TrackMapConfiguration : OverlayConfiguration
     public sealed class GeneralGrouping
     {
         [ToolTip("Map scale factor")]
-        [FloatRange(1.0f, 3.0f, 0.01f, 2)]
+        [FloatRange(0.5f, 3.0f, 0.01f, 2)]
         public float ScaleFactor { get; init; } = 1.0f;
 
         [ToolTip("Map lines thickness")]
