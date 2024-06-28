@@ -7,7 +7,9 @@ public static class ReleaseNotes
     internal readonly static Dictionary<string, string> Notes = new()
     {
         {"1.1.0.8", "- Wheel Slip HUD: Adjusted default option for WheelSize from 92 to 68."+
-                    "\n- HUD Config: Now hides Scaling option when HUD does not allow scaling."},
+                    "\n- HUD Config: Now hides Scaling option when HUD does not allow scaling."+
+                    "\n- Twitch Chat Bot: Fixed time delimineter character for +gap command."+
+                    "\n- Race Element should now be able to collect data during a session which wasn't accessed before."},
         {"1.1.0.6", "- Twitch Chat Bot:"+
                     "\n  - Added new command +diff: Shows the difference in lap times and sectors for the currently viewed car vs the selected. Use like(+diff ahead, +diff behind, +diff p 1, +diff # 1)."+
                     "\n  - Adjusted link to commands list on new website." },
