@@ -432,7 +432,7 @@ internal sealed class TwitchChatBotCommandHandler
             if (bestLap.LaptimeMS.HasValue)
             {
                 TimeSpan bestLapTime = TimeSpan.FromMilliseconds((double)bestLap.LaptimeMS);
-                sb.Append($" - Best: {bestLapTime:m\\:ss\\:fff}");
+                sb.Append($" - Best: {bestLapTime:m\\:ss\\.fff}");
             }
 
             LapInfo lastLap = requestedCar.RealtimeCarUpdate.LastLap;
@@ -442,7 +442,7 @@ internal sealed class TwitchChatBotCommandHandler
                 TimeSpan s1 = TimeSpan.FromSeconds(lastLap.Splits[0].Value / 1000d);
                 TimeSpan s2 = TimeSpan.FromSeconds(lastLap.Splits[1].Value / 1000d);
                 TimeSpan s3 = TimeSpan.FromSeconds(lastLap.Splits[2].Value / 1000d);
-                sb.Append($" - L{requestedCar.RealtimeCarUpdate.Laps}: {lastLapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}");
+                sb.Append($" - L{requestedCar.RealtimeCarUpdate.Laps}: {lastLapTime:m\\:ss\\.fff} || {s1:m\\:ss\\.fff} | {s2:m\\:ss\\.fff} | {s3:m\\:ss\\.fff}");
                 sb.Append(requestedCar.RealtimeCarUpdate.CarLocation switch
                 {
                     CarLocationEnum.Pitlane => " - Pitlane",
@@ -531,7 +531,7 @@ internal sealed class TwitchChatBotCommandHandler
 
             TimeSpan lapTime = TimeSpan.FromMilliseconds((double)lobbyBest.LaptimeMS);
             string carInfo = $"P{car.RealtimeCarUpdate.Position} #{(car == null ? string.Empty : car.CarInfo.RaceNumber)} {car.CarInfo.Drivers[car.CarInfo.CurrentDriverIndex].FirstName[0]}. {car.CarInfo.GetCurrentDriverName()}";
-            return $"{carInfo} - {lapTime:m\\:ss\\:fff}";
+            return $"{carInfo} - {lapTime:m\\:ss\\.fff}";
         }
         catch (Exception ex)
         {
