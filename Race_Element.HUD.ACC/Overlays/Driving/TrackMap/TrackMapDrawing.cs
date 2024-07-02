@@ -130,12 +130,12 @@ public static class TrackMapDrawer
             using SolidBrush textBrush = new(car.CarClass switch
             {
                 CarClasses.GT2 => Color.Red,
-                CarClasses.GT3 => Color.White,
-                CarClasses.GT4 => Color.Blue,
-                CarClasses.CUP => Color.Yellow,
-                CarClasses.TCX => Color.Red,
-                CarClasses.CHL => Color.Green,
-                CarClasses.ST => Color.Green,
+                CarClasses.GT3 => Color.FromArgb(255, Color.WhiteSmoke),
+                CarClasses.GT4 => Color.FromArgb(255, 24, 24, 72),
+                CarClasses.CUP => Color.FromArgb(255, 30, 61, 26),
+                CarClasses.TCX => Color.FromArgb(255, 0, 96, 136),
+                CarClasses.CHL => Color.FromArgb(255, 112, 110, 0),
+                CarClasses.ST => Color.FromArgb(255, 0, 96, 136),
                 _ => Color.WhiteSmoke,
             });
             g.DrawStringWithShadow(car.RaceNumber, font, textBrush, pos);
