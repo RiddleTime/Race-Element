@@ -135,6 +135,7 @@ public static class TrackMapDrawer
                 CarClasses.CUP => Color.Yellow,
                 CarClasses.TCX => Color.Red,
                 CarClasses.CHL => Color.Green,
+                CarClasses.ST => Color.Green,
                 _ => Color.WhiteSmoke,
             });
             g.DrawStringWithShadow(car.RaceNumber, font, textBrush, pos);
