@@ -12,6 +12,7 @@ using RaceElement.Util;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using RaceElement.Data;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
@@ -223,6 +224,9 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             if (it.Value.CarInfo != null)
             {
                 car.RaceNumber = it.Value.CarInfo.RaceNumber.ToString();
+
+                var carModel = ConversionFactory.GetCarModels(it.Value.CarInfo.CarModelType);
+                car.CarClass = ConversionFactory.GetConversion(carModel).CarClass;
             }
 
             var x = it.Value.RealtimeCarUpdate.WorldPosX;

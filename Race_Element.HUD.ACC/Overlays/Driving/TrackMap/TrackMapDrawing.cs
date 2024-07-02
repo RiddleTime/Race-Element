@@ -8,6 +8,7 @@ using System;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.Broadcast;
+using static RaceElement.Data.SetupConverter;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
@@ -117,7 +118,7 @@ public static class TrackMapDrawer
 
         if (conf.General.ShowCarNumber && car.RaceNumber != null)
         {
-            using SolidBrush pen = new(Color.FromArgb(100, Color.Black));
+            using SolidBrush pen = new(Color.FromArgb(130, Color.Black));
             var size = g.MeasureString(car.RaceNumber, font);
             PointF pos = car.Pos.ToPointF();
 
@@ -125,7 +126,17 @@ public static class TrackMapDrawer
             pos.X -= size.Width * 0.5f;
 
             g.FillRectangle(pen, pos.X, pos.Y, size.Width, size.Height);
-            using SolidBrush textBrush = new(Color.WhiteSmoke);
+
+            using SolidBrush textBrush = new(car.CarClass switch
+            {
+                CarClasses.GT2 => Color.Red,
+                CarClasses.GT3 => Color.White,
+                CarClasses.GT4 => Color.Blue,
+                CarClasses.CUP => Color.Yellow,
+                CarClasses.TCX => Color.Red,
+                CarClasses.CHL => Color.Green,
+                _ => Color.WhiteSmoke,
+            });
             g.DrawStringWithShadow(car.RaceNumber, font, textBrush, pos);
         }
     }
