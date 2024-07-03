@@ -134,7 +134,7 @@ public static class TrackMapDrawer
             using SolidBrush lineBrush = new(car.CarClass switch
             {
                 CarClasses.GT2 => Color.FromArgb(defaultAlpha, 255, 0, 0),
-                CarClasses.GT3 => Color.FromArgb(defaultAlpha, Color.WhiteSmoke),
+                CarClasses.GT3 => Color.FromArgb(0, 0, 0, 0),
                 CarClasses.GT4 => Color.FromArgb(defaultAlpha, 24, 24, 72),
                 CarClasses.CUP => Color.FromArgb(defaultAlpha, 30, 61, 26),
                 CarClasses.TCX => Color.FromArgb(defaultAlpha, 0, 96, 136),
