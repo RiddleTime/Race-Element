@@ -29,9 +29,6 @@ public sealed class TrackMapConfiguration : OverlayConfiguration
         [IntRange(0, 50, 1)]
         public int KmhThreshold { get; init; } = 45;
 
-        [ToolTip("Show Cars number")]
-        public bool ShowCarNumber { get; init; } = true;
-
         [ToolTip("Change the appearance of the text label for each car, either show nothing, the car number or the race position")]
         public TrackMapLabelText CarLabel { get; init; } = TrackMapLabelText.CarNumber;
     }
