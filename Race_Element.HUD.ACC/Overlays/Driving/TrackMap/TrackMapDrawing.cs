@@ -127,18 +127,23 @@ public static class TrackMapDrawer
 
             g.FillRectangle(pen, pos.X, pos.Y, size.Width, size.Height);
 
-            using SolidBrush textBrush = new(car.CarClass switch
+            using SolidBrush textBrush = new(Color.WhiteSmoke);
+            g.DrawStringWithShadow(car.RaceNumber, font, textBrush, pos);
+
+            int defaultAlpha = 220;
+            using SolidBrush lineBrush = new(car.CarClass switch
             {
-                CarClasses.GT2 => Color.Red,
-                CarClasses.GT3 => Color.FromArgb(255, Color.WhiteSmoke),
-                CarClasses.GT4 => Color.FromArgb(255, 24, 24, 72),
-                CarClasses.CUP => Color.FromArgb(255, 30, 61, 26),
-                CarClasses.TCX => Color.FromArgb(255, 0, 96, 136),
-                CarClasses.CHL => Color.FromArgb(255, 112, 110, 0),
-                CarClasses.ST => Color.FromArgb(255, 0, 96, 136),
+                CarClasses.GT2 => Color.FromArgb(defaultAlpha, 255, 0, 0),
+                CarClasses.GT3 => Color.FromArgb(defaultAlpha, Color.WhiteSmoke),
+                CarClasses.GT4 => Color.FromArgb(defaultAlpha, 24, 24, 72),
+                CarClasses.CUP => Color.FromArgb(defaultAlpha, 30, 61, 26),
+                CarClasses.TCX => Color.FromArgb(defaultAlpha, 0, 96, 136),
+                CarClasses.CHL => Color.FromArgb(defaultAlpha, 112, 110, 0),
+                CarClasses.ST => Color.FromArgb(defaultAlpha, 0, 96, 136),
                 _ => Color.WhiteSmoke,
             });
-            g.DrawStringWithShadow(car.RaceNumber, font, textBrush, pos);
+            using Pen linePen = new(lineBrush, 2f);
+            g.DrawLine(linePen, new PointF(pos.X + 1, pos.Y + size.Height - 2), new(pos.X - 1 + size.Width, pos.Y + size.Height - 2));
         }
     }
 
