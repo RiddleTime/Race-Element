@@ -15,6 +15,7 @@ public class BoundingBox
 public class CarOnTrack
 {
     public string RaceNumber;
+    public string RacePosition;
     public CarClasses CarClass;
 
     public CarLocationEnum Location;

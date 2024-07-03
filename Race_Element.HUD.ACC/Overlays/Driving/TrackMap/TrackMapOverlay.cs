@@ -224,7 +224,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             if (it.Value.CarInfo != null)
             {
                 car.RaceNumber = it.Value.CarInfo.RaceNumber.ToString();
-
+;
                 var carModel = ConversionFactory.GetCarModels(it.Value.CarInfo.CarModelType);
                 car.CarClass = ConversionFactory.GetConversion(carModel).CarClass;
             }
@@ -233,6 +233,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             var y = it.Value.RealtimeCarUpdate.WorldPosY;
             var spline = it.Value.RealtimeCarUpdate.SplinePosition;
 
+            car.RacePosition = it.Value.RealtimeCarUpdate.Position.ToString();
             car.Laps = it.Value.RealtimeCarUpdate.Laps;
             car.Pos = new TrackPoint() { X = x, Y = y, Spline = spline };
             car.Id = it.Key;

@@ -9,6 +9,7 @@ using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.Broadcast;
 using static RaceElement.Data.SetupConverter;
+using static RaceElement.HUD.ACC.Overlays.Driving.TrackMap.TrackMapConfiguration;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
@@ -116,10 +117,30 @@ public static class TrackMapDrawer
             g.DrawImage(bitmap, pos);
         }
 
-        if (conf.General.ShowCarNumber && car.RaceNumber != null)
+        if (conf.General.CarLabel != TrackMapLabelText.None)
         {
+
+            string label = string.Empty;
+
+            switch (conf.General.CarLabel)
+            {
+                case TrackMapLabelText.CarNumber:
+                    {
+                        if (car.RaceNumber != null) label = car.RaceNumber;
+                        break;
+                    }
+                case TrackMapLabelText.Position:
+                    {
+                        if (car.RacePosition != null) label = car.RacePosition;
+                        break;
+                    }
+
+            }
+
+            if (label == string.Empty) return;
+
             using SolidBrush pen = new(Color.FromArgb(130, Color.Black));
-            var size = g.MeasureString(car.RaceNumber, font);
+            var size = g.MeasureString(label, font);
             PointF pos = car.Pos.ToPointF();
 
             pos.Y -= bitmap.Height * 0.5f + size.Height;
@@ -128,7 +149,8 @@ public static class TrackMapDrawer
             g.FillRectangle(pen, pos.X, pos.Y, size.Width, size.Height);
 
             using SolidBrush textBrush = new(Color.WhiteSmoke);
-            g.DrawStringWithShadow(car.RaceNumber, font, textBrush, pos);
+
+            g.DrawStringWithShadow(label, font, textBrush, pos);
 
             int defaultAlpha = 220;
             using SolidBrush lineBrush = new(car.CarClass switch
