@@ -23,7 +23,7 @@ internal sealed class PaulRicard : AbstractTrackData
          { new FloatRangeStruct(0.2557340f, 0.2690696f), (5, "Virage du camp")},
          { new FloatRangeStruct(0.2701924f, 0.3092493f), (6, "Virage de la Sainte-Beaume")},
          { new FloatRangeStruct(0.3092494f, 0.3487825f), (7, "L'ecole")},
-         { new FloatRangeStruct(0.3606598f, 0.6257137f), (-1, "Ligne Droite du Mistral")}, // mistral straight
+         //{ new FloatRangeStruct(0.3606598f, 0.6257137f), (-1, "Ligne Droite du Mistral")}, // mistral straight
          { new FloatRangeStruct(0.6409133f, 0.7051377f), (8, "Courbe de Signes")},
          { new FloatRangeStruct(0.7228328f, 0.793738f), (9, "Double Droite du Beausset")},
          { new FloatRangeStruct(0.811732f, 0.8442134f), (10, "Virage de Bendor")},
