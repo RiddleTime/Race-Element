@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using static RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData.CornerDataOverlay;
 
@@ -7,7 +9,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData;
 internal class CornerDataCollector
 {
     private bool IsCollecting = false;
-
+    private List<float> CornerSpeeds = [];
     public void Start(CornerDataOverlay overlay)
     {
         if (overlay == null) return;
@@ -50,7 +52,8 @@ internal class CornerDataCollector
                     if (overlay._currentCorner.MinimumSpeed > overlay.pagePhysics.SpeedKmh)
                         overlay._currentCorner.MinimumSpeed = overlay.pagePhysics.SpeedKmh;
 
-                    overlay._currentCorner.AverageSpeed = (overlay.pagePhysics.SpeedKmh + overlay._currentCorner.AverageSpeed) / 2;
+                    CornerSpeeds.Add(overlay.pagePhysics.SpeedKmh);
+                    overlay._currentCorner.AverageSpeed = CornerSpeeds.Average();
 
                     if (overlay._config.Data.MaxLatG)
                     {
@@ -85,6 +88,8 @@ internal class CornerDataCollector
     {
         // corner exited
         overlay._currentCorner.ExitDeltaMilliseconds = overlay.pageGraphics.DeltaLapTimeMillis;
+        overlay._currentCorner.AverageSpeed = CornerSpeeds.Average();
+        CornerSpeeds.Clear();
         overlay._cornerDatas.Add(overlay._currentCorner);
         overlay._previousCorner = -1;
         Debug.WriteLine("Exited corner");
