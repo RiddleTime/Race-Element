@@ -14,10 +14,9 @@
 [Download Latest Release](https://github.com/RiddleTime/Race-Element/releases/latest)
 
 
-## Requires .NET 8
+## App Requires .NET 8
 https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-8.0.0-windows-x64-installer
 
-## Frameworks
 ### App
 - WPF
 - [MaterialDesign In Xaml Toolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit)
