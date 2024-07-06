@@ -4,7 +4,7 @@
 [![Discord](https://badgen.net/discord/members/26AAEW5mUq?icon=discord&color=5562ea&label=Race%20Element)](https://discord.gg/26AAEW5mUq)
 [![Hits](https://hits.seeyoufarm.com/api/count/keep/badge.svg?url=https%3A%2F%2Fgithub.com%2FRiddleTime%2FRace-Element&count_bg=%23FF4500&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Usage%3A+Today+%2F+All-time&edge_flat=false)](https://hits.seeyoufarm.com)
 
-Solutions for Sim Racing
+# Solutions for Sim Racing
 - HUDs
 - Telemetry
 - Setups
@@ -14,17 +14,20 @@ Solutions for Sim Racing
 [Download Latest Release](https://github.com/RiddleTime/Race-Element/releases/latest)
 
 
-### Requires .NET 8
+## Requires .NET 8
 https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-8.0.0-windows-x64-installer
 
-### Frameworks
+## Frameworks
+### App
 - WPF
 - [MaterialDesign In Xaml Toolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit)
 - [LiteDB](https://github.com/mbdavid/LiteDB)
 - [ScottPlot](https://github.com/scottplot/scottplot)
+### Website
+- [Angular](https://github.com/angular/angular)
+- [Analog](https://github.com/analogjs/analog)
 
-
-### Code Signing
+## Code Signing
 
 <a href="https://www.signpath.io">
     <img src="https://about.signpath.io/assets/signpath-logo.svg" width="150">
