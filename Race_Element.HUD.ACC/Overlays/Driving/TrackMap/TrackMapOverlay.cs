@@ -36,7 +36,6 @@ internal sealed class TrackMapOverlay : AbstractOverlay
     private BoundingBox _trackOriginalBoundingBox;
     private BoundingBox _trackBoundingBox;
 
-    private readonly float _outLineBorder = 2.0f;
     private readonly float _margin = 64.0f;
     private float _scale = 0.15f;
 
@@ -45,19 +44,10 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         RefreshRateHz = _config.Others.RefreshInterval;
 
         _mapCache.Map = null;
-        _mapCache.YellowFlag = TrackMapDrawer.CreateCircleWithOutline(Color.Yellow, _config.Others.CarSize, _outLineBorder);
+        _mapCache.CarPlayer = TrackMapDrawer.CreateCircleWithOutline(_config.MapColors.Player, _config.Others.CarSize + 3, _config.Others.OutCircleSize, Color.Black);
 
-        _mapCache.OthersLappedPlayer = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.OthersLappedPlayer, _config.Others.CarSize, _outLineBorder);
-        _mapCache.PlayerLapperOthers = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.PlayerLappedOthers, _config.Others.CarSize, _outLineBorder);
-
-        _mapCache.PitStopWithDamage = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.PitStopWithDamage, _config.Others.CarSize, _outLineBorder);
-        _mapCache.PitStop = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.PitStop, _config.Others.CarSize, _outLineBorder);
-
-        _mapCache.CarDefault = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.Default, _config.Others.CarSize, _outLineBorder);
-        _mapCache.CarPlayer = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.Player, _config.Others.CarSize + 3, _outLineBorder);
-
-        _mapCache.ValidForBest = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.ImprovingLap, _config.Others.CarSize, _outLineBorder);
-        _mapCache.Leader = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.Leader, _config.Others.CarSize, _outLineBorder);
+        _mapCache.PitStopWithDamage = TrackMapDrawer.CreateCircleWithOutline(_config.MapColors.PitStopWithDamage, _config.Others.CarSize, _config.Others.OutCircleSize, Color.Black);
+        _mapCache.PitStop = TrackMapDrawer.CreateCircleWithOutline(_config.MapColors.PitStop, _config.Others.CarSize, _config.Others.OutCircleSize, Color.Black);
     }
 
     public override void BeforeStart()
@@ -189,7 +179,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         _trackBoundingBox = boundaries;
         _trackPositions = track;
 
-        _mapCache.Map = TrackMapDrawer.CreateLineFromPoints(_config.Colors.Map, _config.General.Thickness, _margin, _trackPositions, _trackBoundingBox);
+        _mapCache.Map = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.Map, _config.General.Thickness, _margin, _trackPositions, _trackBoundingBox);
         Debug.WriteLine($"[MAP] {broadCastTrackData.TrackName} ({pageStatic.Track}) -> [S: {_scale:F3}] [L: {broadCastTrackData.TrackMeters:F3}] [P: {_trackPositions.Count}]");
 
         if (!_config.Others.SavePreview || pageStatic.Track.Length == 0)

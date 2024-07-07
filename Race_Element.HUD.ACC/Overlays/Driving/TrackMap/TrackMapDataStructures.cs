@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using RaceElement.Broadcast;
 using static RaceElement.Data.SetupConverter;
+
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
 public class BoundingBox
@@ -41,20 +42,11 @@ public class CarRenderData
 
 public class TrackMapCache
 {
-    public Bitmap OthersLappedPlayer;
-    public Bitmap PlayerLapperOthers;
-
-    public Bitmap CarDefault;
     public Bitmap CarPlayer;
+    public Bitmap Map;
 
     public Bitmap PitStopWithDamage;
     public Bitmap PitStop;
-
-    public Bitmap ValidForBest;
-    public Bitmap Leader;
-
-    public Bitmap YellowFlag;
-    public Bitmap Map;
 }
 
 public class TrackPoint

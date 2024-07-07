@@ -68,13 +68,43 @@ public sealed class TrackMapConfiguration : OverlayConfiguration
         [FloatRange(12.0f, 32.0f, 1.0f, 1)]
         public float CarSize { get; init; } = 12;
 
+        [ToolTip("Out circle size")]
+        [IntRange(1, 10, 1)]
+        public int OutCircleSize { get; init; } = 2;
+
         [ToolTip("Save map preview (Race Element directory -> Tracks)")]
         public bool SavePreview { get; init; } = false;
     }
 
-    [ConfigGrouping("Colors", "Colors options")]
-    public ColorGrouping Colors { get; init; } = new();
-    public sealed class ColorGrouping
+    [ConfigGrouping("Car colors", "Car colors options")]
+    public CarColorGrouping CarColors { get; init; } = new();
+    public sealed class CarColorGrouping
+    {
+        [ToolTip("GT2 cars color")]
+        public Color GT2 { get; init; } = Color.FromArgb(255, 195, 201, 209);
+
+        [ToolTip("GT3 cars color")]
+        public Color GT3 { get; init; } = Color.FromArgb(255, 126, 124, 139);
+
+        [ToolTip("GT4 cars color")]
+        public Color GT4 { get; init; } = Color.FromArgb(255, 84, 76, 97);
+
+        [ToolTip("CUP cars color")]
+        public Color CUP { get; init; } = Color.FromArgb(255, 224, 170, 255);
+
+        [ToolTip("TCX cars color")]
+        public Color TCX { get; init; } = Color.FromArgb(255, 157, 78, 221);
+
+        [ToolTip("CHL cars color")]
+        public Color CHL { get; init; } = Color.FromArgb(255, 60, 9, 108);
+
+        [ToolTip("ST cars color")]
+        public Color ST { get; init; } = Color.FromArgb(255, 16, 0, 43);
+    }
+
+    [ConfigGrouping("Map Colors", "Map colors")]
+    public MapColorGrouping MapColors { get; init; } = new();
+    public sealed class MapColorGrouping
     {
         [ToolTip("Map color")]
         public Color Map { get; init; } = Color.FromArgb(255, 245, 245, 245);
