@@ -192,6 +192,7 @@ internal sealed class BrakeTempHistoryOverlay : AbstractOverlay
 
         return base.ShouldRender();
     }
+
     public sealed override void Render(Graphics g)
     {
         if (_temperatureHistory.Count == 0)
