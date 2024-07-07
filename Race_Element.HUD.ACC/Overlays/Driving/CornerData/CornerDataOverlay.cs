@@ -186,21 +186,21 @@ internal sealed class CornerDataOverlay : AbstractOverlay
     {
         _currentTrack ??= GetCurrentTrack();
 
-        if (_currentTrack == null) return -1;
+        if (_currentTrack == null)
+            return -1;
+
         if (pageStatic.Track != _currentTrack.GameName)
         {
             _currentTrack = GetCurrentTrack();
-            if (_currentTrack == null) return -1;
+            if (_currentTrack == null)
+                return -1;
         }
 
-        try
-        {
-            return _currentTrack.CornerNames.Where(x => x.Value.Item1 != -1).First(x => normalizedTrackPosition > x.Key.From && normalizedTrackPosition < x.Key.To).Value.Item1;
-        }
-        catch (Exception)
-        {
+        var item = _currentTrack.CornerNames.Where(x => x.Value.Item1 != -1).FirstOrDefault(x => normalizedTrackPosition > x.Key.From && normalizedTrackPosition < x.Key.To);
+        if (item.Value.Item1 == 0)
             return -1;
-        }
+        else
+            return item.Value.Item1;
     }
 
     public sealed override void Render(Graphics g)
@@ -387,8 +387,8 @@ internal sealed class CornerDataOverlay : AbstractOverlay
 
         if (corners.Any())
             return corners.First().Value.Item2;
-
-        return string.Empty;
+        else
+            return string.Empty;
     }
 
     private void AddHeaderRow()

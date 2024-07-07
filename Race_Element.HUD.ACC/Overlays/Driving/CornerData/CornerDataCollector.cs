@@ -9,7 +9,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData;
 internal class CornerDataCollector
 {
     private bool IsCollecting = false;
-    private List<float> CornerSpeeds = [];
+    private readonly List<float> CornerSpeeds = [];
     public void Start(CornerDataOverlay overlay)
     {
         if (overlay == null) return;
@@ -53,7 +53,8 @@ internal class CornerDataCollector
                         overlay._currentCorner.MinimumSpeed = overlay.pagePhysics.SpeedKmh;
 
                     CornerSpeeds.Add(overlay.pagePhysics.SpeedKmh);
-                    overlay._currentCorner.AverageSpeed = CornerSpeeds.Average();
+                    if (CornerSpeeds.Count > 2)
+                        overlay._currentCorner.AverageSpeed = CornerSpeeds.Average();
 
                     if (overlay._config.Data.MaxLatG)
                     {
@@ -71,6 +72,7 @@ internal class CornerDataCollector
                     }
 
                     // entered a new corner
+                    CornerSpeeds.Clear();
                     overlay._previousCorner = currentCornerIndex;
                     overlay._currentCorner = new CornerData()
                     {
@@ -88,7 +90,9 @@ internal class CornerDataCollector
     {
         // corner exited
         overlay._currentCorner.ExitDeltaMilliseconds = overlay.pageGraphics.DeltaLapTimeMillis;
-        overlay._currentCorner.AverageSpeed = CornerSpeeds.Average();
+        if (CornerSpeeds.Count > 2)
+            overlay._currentCorner.AverageSpeed = CornerSpeeds.Average();
+        else overlay._currentCorner.AverageSpeed = overlay.pagePhysics.SpeedKmh;
         CornerSpeeds.Clear();
         overlay._cornerDatas.Add(overlay._currentCorner);
         overlay._previousCorner = -1;
