@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using RaceElement.Core.Jobs.LoopJob;
 using RaceElement.Data.ACC.Core;
 using RaceElement.Util;
+using System.Reflection;
+using System.Linq;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
@@ -34,50 +36,56 @@ public class TrackMapCreationJob : AbstractLoopJob
     private float _trackingPercentage;
 
     private const short Version = 1;
-    private readonly byte[] _magic = [ (byte)'r', (byte)'e', (byte)'t', (byte)'m' ];
+    private readonly byte[] _magic = [(byte)'r', (byte)'e', (byte)'t', (byte)'m'];
 
     public override void RunAction()
     {
         switch (_mapTrackingState)
         {
             case CreationState.Start:
-            {
-                _mapTrackingState = InitialState();
-            } break;
+                {
+                    _mapTrackingState = InitialState();
+                }
+                break;
 
             case CreationState.LoadFromFile:
-            {
-                try { _mapTrackingState = LoadMapFromFile(); }
-                catch (Exception e) { Debug.WriteLine(e);  }
-            } break;
+                {
+                    try { _mapTrackingState = LoadMapFromFile(); }
+                    catch (Exception e) { Debug.WriteLine(e); }
+                }
+                break;
 
             case CreationState.TraceTrack:
-            {
-                _mapTrackingState = PositionTracking();
-            } break;
+                {
+                    _mapTrackingState = PositionTracking();
+                }
+                break;
 
             case CreationState.NotifySubscriber:
-            {
                 {
-                    const string msg = "Map tracked. Enjoy it!";
-                    OnMapProgressCallback?.Invoke(null, msg);
-                }
+                    {
+                        const string msg = "Map tracked. Enjoy it!";
+                        OnMapProgressCallback?.Invoke(null, msg);
+                    }
 
-                OnMapPositionsCallback?.Invoke(this, _trackedPositions);
-                _mapTrackingState = CreationState.End;
-            } break;
+                    OnMapPositionsCallback?.Invoke(this, _trackedPositions);
+                    _mapTrackingState = CreationState.End;
+                }
+                break;
 
             case CreationState.Error:
-            {
-                Thread.Sleep(10 * 1000);
-                _mapTrackingState = CreationState.Start;
-            } break;
+                {
+                    Thread.Sleep(10 * 1000);
+                    _mapTrackingState = CreationState.Start;
+                }
+                break;
 
             default:
-            {
-                OnMapProgressCallback?.Invoke(null, null);
-                Thread.Sleep(10);
-            } break;
+                {
+                    OnMapProgressCallback?.Invoke(null, null);
+                    Thread.Sleep(10);
+                }
+                break;
         }
     }
 
@@ -146,7 +154,7 @@ public class TrackMapCreationJob : AbstractLoopJob
         {
             if (pageGraphics.CarIds[i] != pageGraphics.PlayerCarID)
             {
-               continue;
+                continue;
             }
 
             TrackPoint pos = new()
@@ -177,10 +185,12 @@ public class TrackMapCreationJob : AbstractLoopJob
         }
 
         var trackName = ACCSharedMemory.Instance.PageFileStatic.Track.ToLower();
-        string path = FileUtil.RaceElementTracks + trackName + ".bin";
+        var founds = Assembly.GetExecutingAssembly().GetManifestResourceNames().Where(x => x.EndsWith($"{trackName}.bin"));
+        if (!founds.Any())
+            return CreationState.Error;
 
-        using FileStream fileStream = new(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-        using BinaryReader binaryReader = new(fileStream);
+        using Stream resourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(founds.First());
+        using BinaryReader binaryReader = new(resourceStream);
 
         {
             var magic = binaryReader.ReadBytes(4);  // Magic number
@@ -191,10 +201,10 @@ public class TrackMapCreationJob : AbstractLoopJob
             if (magic[0] != _magic[0] || magic[1] != _magic[1] || magic[2] != _magic[2] || magic[3] != _magic[3])
             {
                 binaryReader.Close();
-                fileStream.Close();
+                resourceStream.Close();
 
                 {
-                    string msg = "Tracking state -> Corrupt map file. Delete the file and track again the track.\n" + path;
+                    string msg = "Tracking state -> Corrupt map file. Delete the file and track again the track.\n" + trackName; //path;
                     OnMapProgressCallback?.Invoke(null, msg);
                 }
 
@@ -202,11 +212,11 @@ public class TrackMapCreationJob : AbstractLoopJob
             }
         }
 
-        while (fileStream.Position < fileStream.Length)
+        while (resourceStream.Position < resourceStream.Length)
         {
             {
                 const string msg = "Tracking state -> loading from disk ({0:0.0}%)";
-                OnMapProgressCallback?.Invoke(null, String.Format(msg, ((float)fileStream.Position / fileStream.Length) * 100.0f));
+                OnMapProgressCallback?.Invoke(null, String.Format(msg, ((float)resourceStream.Position / resourceStream.Length) * 100.0f));
             }
 
             TrackPoint pos = new()
@@ -220,7 +230,7 @@ public class TrackMapCreationJob : AbstractLoopJob
         }
 
         binaryReader.Close();
-        fileStream.Close();
+        resourceStream.Close();
 
         return CreationState.NotifySubscriber;
     }
