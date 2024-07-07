@@ -185,6 +185,14 @@ internal sealed class BrakeTempHistoryOverlay : AbstractOverlay
         }
     }
 
+    public override bool ShouldRender()
+    {
+        if (_config.Behavior.ShowInSetupScreen && pageGraphics.IsSetupMenuVisible)
+            return true;
+
+        return base.ShouldRender();
+    }
+
     public sealed override void Render(Graphics g)
     {
         if (_temperatureHistory.Count == 0)

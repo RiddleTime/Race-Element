@@ -171,7 +171,8 @@ public abstract class AbstractOverlay : FloatingWindow
                 RaceSessionTracker.Instance.OnNewSessionStarted += Instance_OnNewSessionStarted;
 
                 // TODO(Andrei): This is just a temporal solution until we find a better way to redo the callbacks
-                BroadcastTracker.Instance.RequestData();
+                if (!IsPreviewing)
+                    BroadcastTracker.Instance.RequestData();
             }
 
             pageStatic = ACCSharedMemory.Instance.ReadStaticPageFile(false);
