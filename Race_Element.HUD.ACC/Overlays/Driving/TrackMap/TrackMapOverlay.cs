@@ -12,6 +12,7 @@ using RaceElement.Util;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using RaceElement.Data;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
@@ -94,7 +95,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     public override bool ShouldRender()
     {
-        return base.ShouldRender() && (_trackingProgress != null || _mapCache.Map != null);
+        return (base.ShouldRender() || RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex)) && (_trackingProgress != null || _mapCache.Map != null);
     }
 
     public override void Render(Graphics g)
@@ -223,12 +224,16 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             if (it.Value.CarInfo != null)
             {
                 car.RaceNumber = it.Value.CarInfo.RaceNumber.ToString();
+;
+                var carModel = ConversionFactory.GetCarModels(it.Value.CarInfo.CarModelType);
+                car.CarClass = ConversionFactory.GetConversion(carModel).CarClass;
             }
 
             var x = it.Value.RealtimeCarUpdate.WorldPosX;
             var y = it.Value.RealtimeCarUpdate.WorldPosY;
             var spline = it.Value.RealtimeCarUpdate.SplinePosition;
 
+            car.RacePosition = it.Value.RealtimeCarUpdate.Position.ToString();
             car.Laps = it.Value.RealtimeCarUpdate.Laps;
             car.Pos = new TrackPoint() { X = x, Y = y, Spline = spline };
             car.Id = it.Key;

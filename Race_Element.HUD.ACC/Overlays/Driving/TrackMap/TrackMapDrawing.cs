@@ -8,6 +8,8 @@ using System;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.Broadcast;
+using static RaceElement.Data.SetupConverter;
+using static RaceElement.HUD.ACC.Overlays.Driving.TrackMap.TrackMapConfiguration;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
@@ -115,18 +117,55 @@ public static class TrackMapDrawer
             g.DrawImage(bitmap, pos);
         }
 
-        if (conf.General.ShowCarNumber && car.RaceNumber != null)
+        if (conf.General.CarLabel != TrackMapLabelText.None)
         {
-            using SolidBrush pen = new(Color.FromArgb(100, Color.Black));
-            var size = g.MeasureString(car.RaceNumber, font);
+
+            string label = string.Empty;
+
+            switch (conf.General.CarLabel)
+            {
+                case TrackMapLabelText.CarNumber:
+                    {
+                        if (car.RaceNumber != null) label = car.RaceNumber;
+                        break;
+                    }
+                case TrackMapLabelText.Position:
+                    {
+                        if (car.RacePosition != null) label = car.RacePosition;
+                        break;
+                    }
+
+            }
+
+            if (label == string.Empty) return;
+
+            using SolidBrush pen = new(Color.FromArgb(130, Color.Black));
+            var size = g.MeasureString(label, font);
             PointF pos = car.Pos.ToPointF();
 
             pos.Y -= bitmap.Height * 0.5f + size.Height;
             pos.X -= size.Width * 0.5f;
 
             g.FillRectangle(pen, pos.X, pos.Y, size.Width, size.Height);
+
             using SolidBrush textBrush = new(Color.WhiteSmoke);
-            g.DrawStringWithShadow(car.RaceNumber, font, textBrush, pos);
+
+            g.DrawStringWithShadow(label, font, textBrush, pos);
+
+            int defaultAlpha = 220;
+            using SolidBrush lineBrush = new(car.CarClass switch
+            {
+                CarClasses.GT2 => Color.FromArgb(defaultAlpha, 255, 0, 0),
+                CarClasses.GT3 => Color.FromArgb(0, 0, 0, 0),
+                CarClasses.GT4 => Color.FromArgb(defaultAlpha, 24, 24, 72),
+                CarClasses.CUP => Color.FromArgb(defaultAlpha, 30, 61, 26),
+                CarClasses.TCX => Color.FromArgb(defaultAlpha, 0, 96, 136),
+                CarClasses.CHL => Color.FromArgb(defaultAlpha, 112, 110, 0),
+                CarClasses.ST => Color.FromArgb(defaultAlpha, 0, 96, 136),
+                _ => Color.WhiteSmoke,
+            });
+            using Pen linePen = new(lineBrush, 2f);
+            g.DrawLine(linePen, new PointF(pos.X + 1, pos.Y + size.Height - 2), new(pos.X - 1 + size.Width, pos.Y + size.Height - 2));
         }
     }
 

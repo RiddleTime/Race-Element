@@ -10,7 +10,7 @@ public sealed class TrackMapConfiguration : OverlayConfiguration
     public sealed class GeneralGrouping
     {
         [ToolTip("Map scale factor")]
-        [FloatRange(1.0f, 3.0f, 0.01f, 2)]
+        [FloatRange(0.5f, 3.0f, 0.01f, 2)]
         public float ScaleFactor { get; init; } = 1.0f;
 
         [ToolTip("Map lines thickness")]
@@ -29,9 +29,12 @@ public sealed class TrackMapConfiguration : OverlayConfiguration
         [IntRange(0, 50, 1)]
         public int KmhThreshold { get; init; } = 45;
 
-        [ToolTip("Show Cars number")]
-        public bool ShowCarNumber { get; init; } = true;
+        [ToolTip("Change the appearance of the text label for each car, either show nothing, the car number or the race position")]
+        public TrackMapLabelText CarLabel { get; init; } = TrackMapLabelText.CarNumber;
     }
+
+    public enum TrackMapLabelText { None, CarNumber, Position }
+
 
     [ConfigGrouping("Pitstop", "Pit stop options")]
     public PitstopGrouping Pitstop { get; init; } = new();

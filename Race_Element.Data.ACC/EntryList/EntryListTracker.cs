@@ -136,6 +136,7 @@ public sealed class EntryListTracker
 
     private void Broadcast_EventHandler(object sender, BroadcastingEvent evt)
     {
+        if (evt.CarData == null) return;
         switch (evt.Type)
         {
             case BroadcastingCarEventType.LapCompleted:

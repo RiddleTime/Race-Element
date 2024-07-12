@@ -60,7 +60,7 @@ internal sealed class CornerDataOverlay : AbstractOverlay
 
         Random rand = new();
         int delta = rand.Next(-200, 600);
-        for (int i = 1; i < _currentTrack.CornerNames.Count + 1; i++)
+        for (int i = 1; i < _currentTrack.CornerNames.Count(x => x.Value.Item1 != -1) + 1; i++)
         {
             delta += rand.Next(-15, 15);
             float minimumSpeed = (float)(rand.NextDouble() * 230f);
@@ -147,7 +147,7 @@ internal sealed class CornerDataOverlay : AbstractOverlay
 
         // update best lap corner data 
         Trace.WriteLine($"Updating best lap corner data:\n{finishedLap}");
-        int maxCornerCount = _currentTrack.CornerNames.Count;
+        int maxCornerCount = _currentTrack.CornerNames.Count(x => x.Value.Item1 != -1);
         var cornerData = _cornerDatas.Take(maxCornerCount);
         if (cornerData.Any())
         {
@@ -186,21 +186,21 @@ internal sealed class CornerDataOverlay : AbstractOverlay
     {
         _currentTrack ??= GetCurrentTrack();
 
-        if (_currentTrack == null) return -1;
+        if (_currentTrack == null)
+            return -1;
+
         if (pageStatic.Track != _currentTrack.GameName)
         {
             _currentTrack = GetCurrentTrack();
-            if (_currentTrack == null) return -1;
+            if (_currentTrack == null)
+                return -1;
         }
 
-        try
-        {
-            return _currentTrack.CornerNames.First(x => normalizedTrackPosition > x.Key.From && normalizedTrackPosition < x.Key.To).Value.Item1;
-        }
-        catch (Exception)
-        {
+        var item = _currentTrack.CornerNames.Where(x => x.Value.Item1 != -1).FirstOrDefault(x => normalizedTrackPosition > x.Key.From && normalizedTrackPosition < x.Key.To);
+        if (item.Value.Item1 == 0)
             return -1;
-        }
+        else
+            return item.Value.Item1;
     }
 
     public sealed override void Render(Graphics g)
@@ -277,7 +277,7 @@ internal sealed class CornerDataOverlay : AbstractOverlay
             List<Color> colors = [];
 
             // add delta column
-            if (_bestLapCorners.Count == _currentTrack.CornerNames.Count)
+            if (_bestLapCorners.Count == _currentTrack.CornerNames.Count(x => x.Value.Item1 != -1))
             {
                 int deltaDelta = corner.ExitDeltaMilliseconds - corner.EntryDeltaMilliseconds;
                 string deltaDeltaString = $"{deltaDelta / 1000f:F3}";
@@ -387,8 +387,8 @@ internal sealed class CornerDataOverlay : AbstractOverlay
 
         if (corners.Any())
             return corners.First().Value.Item2;
-
-        return string.Empty;
+        else
+            return string.Empty;
     }
 
     private void AddHeaderRow()

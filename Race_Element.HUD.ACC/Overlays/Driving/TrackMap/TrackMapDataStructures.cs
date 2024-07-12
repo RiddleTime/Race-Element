@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Collections.Generic;
 
 using RaceElement.Broadcast;
+using static RaceElement.Data.SetupConverter;
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
 public class BoundingBox
@@ -14,6 +15,8 @@ public class BoundingBox
 public class CarOnTrack
 {
     public string RaceNumber;
+    public string RacePosition;
+    public CarClasses CarClass;
 
     public CarLocationEnum Location;
     public TrackPoint Pos;

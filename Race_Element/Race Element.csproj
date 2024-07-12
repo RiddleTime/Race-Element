@@ -12,9 +12,9 @@
         <SuiteName>Race Element</SuiteName>
         <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
         <DisallowUrlActivation>true</DisallowUrlActivation>
-        <ApplicationVersion>1.1.0.8</ApplicationVersion>
-        <AssemblyVersion>1.1.0.8</AssemblyVersion>
-        <Version>1.1.0.8</Version>
+        <ApplicationVersion>1.1.1.0</ApplicationVersion>
+        <AssemblyVersion>1.1.1.0</AssemblyVersion>
+        <Version>1.1.1.0</Version>
         <UseApplicationTrust>true</UseApplicationTrust>
         <CreateDesktopShortcut>true</CreateDesktopShortcut>
         <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -118,12 +118,12 @@
         <PackageReference Include="Microsoft.NETCore.Platforms" Version="8.0.0-preview.7.23375.6" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="System.Collections.Immutable" Version="8.0.0" />
-        <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="8.0.0" />
-        <PackageReference Include="System.Drawing.Common" Version="8.0.1" />
+        <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="8.0.1" />
+        <PackageReference Include="System.Drawing.Common" Version="8.0.7" />
         <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
         <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
         <PackageReference Include="System.Text.Encodings.Web" Version="8.0.0" />
-        <PackageReference Include="System.Text.Json" Version="8.0.1" />
+        <PackageReference Include="System.Text.Json" Version="8.0.4" />
         <PackageReference Include="System.Threading.Channels" Version="8.0.0" />
         <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
     </ItemGroup>
