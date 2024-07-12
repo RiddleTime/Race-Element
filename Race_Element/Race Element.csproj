@@ -87,7 +87,7 @@
         <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
         <PackageReference Include="System.Reactive" Version="6.0.0" />
         <PackageReference Include="System.Runtime.Handles" Version="4.3.0" />
-        <PackageReference Include="Websocket.Client" Version="5.0.0" />
+        <PackageReference Include="Websocket.Client" Version="5.1.2" />
         <PackageReference Include="WebSocketSharp-netstandard" Version="1.0.1" />
         <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
