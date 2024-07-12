@@ -16,14 +16,14 @@ using RaceElement.Data;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
-#if DEBUG
+//#if DEBUG
 [Overlay(Name = "Track Map",
     Description = "Shows a track map",
     OverlayCategory = OverlayCategory.Track,
     OverlayType = OverlayType.Drive,
     Authors = ["Andrei Jianu"]
 )]
-#endif
+//#endif
 internal sealed class TrackMapOverlay : AbstractOverlay
 {
     private readonly TrackMapConfiguration _config = new();
