@@ -93,9 +93,9 @@ public class TrackMapCreationJob : AbstractLoopJob
     {
         var laps = ACCSharedMemory.Instance.PageFileGraphic.CompletedLaps;
         var trackName = ACCSharedMemory.Instance.PageFileStatic.Track;
-        string path = FileUtil.RaceElementTracks + trackName + ".bin";
+        //string path = FileUtil.RaceElementTracks + trackName + ".bin";  // used when checking if track data from file exists. not used anymore, but kept in place for dev.
 
-        if (trackName.Length > 0 && File.Exists(path))
+        if (trackName.Length > 0 && TrackDataExists(trackName))
         {
             return CreationState.LoadFromFile;
         }
@@ -175,6 +175,12 @@ public class TrackMapCreationJob : AbstractLoopJob
         }
 
         return CreationState.TraceTrack;
+    }
+
+    private bool TrackDataExists(string trackName)
+    {
+        var founds = Assembly.GetExecutingAssembly().GetManifestResourceNames().Where(x => x.EndsWith($"{trackName.ToLower()}.bin"));
+        return founds.Any();
     }
 
     private CreationState LoadMapFromFile()
