@@ -348,7 +348,7 @@ internal sealed class TwitchChatBotCommandHandler
             TimeSpan s1 = TimeSpan.FromSeconds(sector1 / 1000d);
             TimeSpan s2 = TimeSpan.FromSeconds(sector2 / 1000d);
             TimeSpan s3 = TimeSpan.FromSeconds(sector3 / 1000d);
-            sb.Append($"Potential Best: {lapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}");
+            sb.Append($"Potential Best: {lapTime:m\\:ss\\.fff} || {s1:m\\:ss\\.fff} | {s2:m\\:ss\\.fff} | {s3:m\\:ss\\.fff}");
         }
         else
             sb.Append("No valid laps");
