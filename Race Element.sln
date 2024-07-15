@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Race Element.Hardware", "Ra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Race Element.Core", "Race Element.Core\Race Element.Core.csproj", "{6B29D63B-57CB-4A13-BC5F-9B5F726A3430}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Race Element.Data", "Race Element.Data\Race Element.Data.csproj", "{7B990A22-985B-4ECC-99D6-3A05EE979688}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Race Element.Data", "Race Element.Data\Race Element.Data.csproj", "{7B990A22-985B-4ECC-99D6-3A05EE979688}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
