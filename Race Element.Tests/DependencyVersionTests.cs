@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Race_Element.Tests
+namespace RaceElement.Tests
 {
     public class DependencyVersionTests
     {
