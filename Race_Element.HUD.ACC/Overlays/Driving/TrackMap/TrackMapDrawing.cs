@@ -62,6 +62,24 @@ public static class TrackMapDrawer
         return bitmap;
     }
 
+    public static Bitmap MixImages(Bitmap bmp1, Bitmap bmp2, Bitmap bmp3, int w, int h)
+    {
+        var bitmap = new Bitmap(w, h, PixelFormat.Format32bppPArgb);
+        bitmap.MakeTransparent();
+
+        using var g = Graphics.FromImage(bitmap);
+        g.SmoothingMode = SmoothingMode.AntiAlias;
+        g.CompositingMode = CompositingMode.SourceOver;
+        g.TextRenderingHint = TextRenderingHint.AntiAlias;
+        g.CompositingQuality = CompositingQuality.HighQuality;
+
+        g.DrawImage(bmp1, Point.Empty);
+        g.DrawImage(bmp2, Point.Empty);
+        g.DrawImage(bmp3, Point.Empty);
+
+        return bitmap;
+    }
+
     public static Bitmap Draw(List<TrackPoint> track, CarRenderData cars, TrackMapCache cache, TrackMapConfiguration conf, float trackMeters)
     {
         // TODO: prevent NullReferenceException when cache.Map is null

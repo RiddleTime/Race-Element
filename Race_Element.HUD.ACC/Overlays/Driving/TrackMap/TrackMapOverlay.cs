@@ -159,7 +159,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     private void OnMapPositionsCallback(object sender, List<TrackPoint> positions)
     {
-        var trackInfo = TrackInfo.Data.GetValueOrDefault(pageStatic.Track.ToLower(), new TrackInfo(0, 0));
+        var trackInfo = TrackInfo.Data.GetValueOrDefault(pageStatic.Track.ToLower(), new TrackInfo(0, 0, 0, 0));
         _scale = trackInfo.Scale * _config.General.ScaleFactor;
 
         _miniMapCreationJob.Cancel();
@@ -176,10 +176,41 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             track[i] = new TrackPoint(track[i]) { X = x, Y = y };
         }
 
+        List<TrackPoint> sector1 = new(), sector2 = new(), sector3 = new();
         _trackBoundingBox = boundaries;
         _trackPositions = track;
 
-        _mapCache.Map = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.Map, _config.General.Thickness, _margin, _trackPositions, _trackBoundingBox);
+        {
+            int i = 0;
+            while (_trackPositions[i].Spline > 0.9f || _trackPositions[i].Spline < 0.0001)
+            {
+                ++i;
+            }
+
+            while (_trackPositions[i].Spline < trackInfo.Sector1End) {
+                sector1.Add(_trackPositions[i]);
+                ++i;
+            }
+
+            while (_trackPositions[i].Spline < trackInfo.Sector2End) {
+                sector2.Add(_trackPositions[i]);
+                ++i;
+            }
+
+            while (i < _trackPositions.Count) {
+                sector3.Add(_trackPositions[i]);
+                ++i;
+            }
+        }
+
+        {
+            var s1 = TrackMapDrawer.CreateLineFromPoints(Color.Firebrick, _config.General.Thickness, _margin, sector1, _trackBoundingBox);
+            var s2 = TrackMapDrawer.CreateLineFromPoints(Color.Aqua, _config.General.Thickness, _margin, sector2, _trackBoundingBox);
+            var s3 = TrackMapDrawer.CreateLineFromPoints(Color.YellowGreen, _config.General.Thickness, _margin, sector3, _trackBoundingBox);
+            _mapCache.Map = TrackMapDrawer.MixImages(s1, s2, s3, s1.Width, s2.Width);
+        }
+
+        //_mapCache.Map = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.Map, _config.General.Thickness, _margin, _trackPositions, _trackBoundingBox);
         Debug.WriteLine($"[MAP] {broadCastTrackData.TrackName} ({pageStatic.Track}) -> [S: {_scale:F3}] [L: {broadCastTrackData.TrackMeters:F3}] [P: {_trackPositions.Count}]");
 
         if (!_config.Others.SavePreview || pageStatic.Track.Length == 0)
