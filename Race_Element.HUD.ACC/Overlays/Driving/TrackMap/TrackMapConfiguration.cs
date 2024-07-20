@@ -106,8 +106,14 @@ public sealed class TrackMapConfiguration : OverlayConfiguration
     public MapColorGrouping MapColors { get; init; } = new();
     public sealed class MapColorGrouping
     {
-        [ToolTip("Map color")]
-        public Color Map { get; init; } = Color.FromArgb(255, 245, 245, 245);
+        [ToolTip("Sector 1 color")]
+        public Color MapSector1 { get; init; } = Color.FromArgb(255, 178,34,34);
+
+        [ToolTip("Sector 2 color")]
+        public Color MapSector2 { get; init; } = Color.FromArgb(255, 0, 255, 255);
+
+        [ToolTip("Sector 3 color")]
+        public Color MapSector3 { get; init; } = Color.FromArgb(255, 154,205,50);
 
         [ToolTip("Player car color")]
         public Color Player { get; init; } = Color.FromArgb(255, 255, 0, 0);

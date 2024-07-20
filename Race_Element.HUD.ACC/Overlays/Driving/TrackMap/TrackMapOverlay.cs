@@ -204,13 +204,12 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         }
 
         {
-            var s1 = TrackMapDrawer.CreateLineFromPoints(Color.Firebrick, _config.General.Thickness, _margin, sector1, _trackBoundingBox);
-            var s2 = TrackMapDrawer.CreateLineFromPoints(Color.Aqua, _config.General.Thickness, _margin, sector2, _trackBoundingBox);
-            var s3 = TrackMapDrawer.CreateLineFromPoints(Color.YellowGreen, _config.General.Thickness, _margin, sector3, _trackBoundingBox);
+            var s1 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector1, _config.General.Thickness, _margin, sector1, _trackBoundingBox);
+            var s2 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector2, _config.General.Thickness, _margin, sector2, _trackBoundingBox);
+            var s3 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector3, _config.General.Thickness, _margin, sector3, _trackBoundingBox);
             _mapCache.Map = TrackMapDrawer.MixImages(s1, s2, s3, s1.Width, s2.Width);
         }
 
-        //_mapCache.Map = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.Map, _config.General.Thickness, _margin, _trackPositions, _trackBoundingBox);
         Debug.WriteLine($"[MAP] {broadCastTrackData.TrackName} ({pageStatic.Track}) -> [S: {_scale:F3}] [L: {broadCastTrackData.TrackMeters:F3}] [P: {_trackPositions.Count}]");
 
         if (!_config.Others.SavePreview || pageStatic.Track.Length == 0)
