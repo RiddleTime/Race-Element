@@ -12,6 +12,9 @@ internal sealed class Snetterton : AbstractTrackData
     public override string FullName => "Snetterton Circuit";
     public override int TrackLength => 4779;
 
+    public override float FactorScale => 0.3f;
+    public override float PitLaneTime => 19f;
+
     public override List<float> Sectors => new() { 0.321f, 0.678f };
 
     public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
