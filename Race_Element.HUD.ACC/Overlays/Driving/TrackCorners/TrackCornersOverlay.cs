@@ -1,5 +1,6 @@
 ﻿using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.Session;
+using RaceElement.Data.ACC.Tracker;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -96,6 +97,12 @@ internal sealed class TrackCornersOverlay : AbstractOverlay
 
         RaceSessionTracker.Instance.OnNewSessionStarted += Instance_OnNewSessionStarted;
         RaceSessionTracker.Instance.OnRaceWeekendEnded += Instance_OnRaceWeekendEnded;
+        BroadcastTracker.Instance.OnTrackDataUpdate += Instance_OnTrackDataUpdate;
+    }
+
+    private void Instance_OnTrackDataUpdate(object sender, RaceElement.Broadcast.Structs.TrackData e)
+    {
+        UpdateWidth(true, e.TrackName);
     }
 
     private void Instance_OnRaceWeekendEnded(object sender, RaceElement.Data.ACC.Database.RaceWeekend.DbRaceWeekend e)
@@ -123,12 +130,13 @@ internal sealed class TrackCornersOverlay : AbstractOverlay
         });
     }
 
-    private void UpdateWidth()
+    private void UpdateWidth(bool fromBroadcast = false, string fullName = "")
     {
-        if (!(pageGraphics.Status == RaceElement.ACCSharedMemory.AcStatus.AC_PAUSE || pageGraphics.Status == RaceElement.ACCSharedMemory.AcStatus.AC_LIVE))
-            return;
+        if (!fromBroadcast)
+            if (!(pageGraphics.Status == RaceElement.ACCSharedMemory.AcStatus.AC_PAUSE || pageGraphics.Status == RaceElement.ACCSharedMemory.AcStatus.AC_LIVE))
+                return;
 
-        _currentTrack = Tracks.FirstOrDefault(x => x.GameName == pageStatic.Track);
+        _currentTrack = Tracks.FirstOrDefault(x => x.GameName == pageStatic.Track || (fromBroadcast && x.FullName == fullName));
 
         this.Width = (int)_cornerNumberHeader.Rectangle.Width;
 
@@ -171,6 +179,7 @@ internal sealed class TrackCornersOverlay : AbstractOverlay
     {
         RaceSessionTracker.Instance.OnNewSessionStarted -= Instance_OnNewSessionStarted;
         RaceSessionTracker.Instance.OnRaceWeekendEnded -= Instance_OnRaceWeekendEnded;
+        BroadcastTracker.Instance.OnTrackDataUpdate -= Instance_OnTrackDataUpdate;
 
         _cornerNumberHeader?.Dispose();
         _cornerTextValue?.Dispose();
