@@ -49,7 +49,7 @@ public sealed class TrackMapConfiguration : OverlayConfiguration
 
         [ToolTip("Additional pit time in seconds (pit lane entry/exit, errors, etc)")]
         [IntRange(0, 120, 1)]
-        public int PitAdditionalTime { get; init; } = 5;
+        public int PitAdditionalTime { get; init; } = 0;
     }
 
     [ConfigGrouping("Other", "Other options")]
