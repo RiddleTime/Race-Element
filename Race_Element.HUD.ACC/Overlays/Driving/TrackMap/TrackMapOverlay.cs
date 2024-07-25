@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using RaceElement.Data;
+using RaceElement.Data.ACC.Tracks;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
@@ -159,8 +160,8 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     private void OnMapPositionsCallback(object sender, List<TrackPoint> positions)
     {
-        var trackInfo = TrackInfo.Data.GetValueOrDefault(pageStatic.Track.ToLower(), new TrackInfo(0, 0, 0, 0));
-        _scale = trackInfo.Scale * _config.General.ScaleFactor;
+        var trackData = TrackData.GetCurrentTrack(pageStatic.Track);
+        _scale = trackData.FactorScale * _config.General.ScaleFactor;
 
         _miniMapCreationJob.Cancel();
         _trackOriginalBoundingBox = TrackMapTransform.GetBoundingBox(positions);
@@ -180,34 +181,53 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         _trackBoundingBox = boundaries;
         _trackPositions = track;
 
+        if (trackData.Sectors.Count >= 2)
         {
-            int i = 0;
-            while (_trackPositions[i].Spline > 0.9f || _trackPositions[i].Spline < 0.0001)
+            int idx = 0, fromSectorOne = 0;
+            while (_trackPositions[idx].Spline > 0.9f && _trackPositions[idx].Spline < _trackPositions[idx + 1].Spline)
             {
-                ++i;
+                ++idx;
+                ++fromSectorOne;
             }
 
-            while (_trackPositions[i].Spline < trackInfo.Sector1End) {
-                sector1.Add(_trackPositions[i]);
-                ++i;
+            if (1.0f - _trackPositions[idx].Spline < float.Epsilon)
+            {
+                ++idx;
+                ++fromSectorOne;
             }
 
-            while (_trackPositions[i].Spline < trackInfo.Sector2End) {
-                sector2.Add(_trackPositions[i]);
-                ++i;
+            while (_trackPositions[idx].Spline < trackData.Sectors[0])
+            {
+                sector1.Add(_trackPositions[idx]);
+                ++idx;
             }
 
-            while (i < _trackPositions.Count) {
+            while (_trackPositions[idx].Spline < trackData.Sectors[1])
+            {
+                sector2.Add(_trackPositions[idx]);
+                ++idx;
+            }
+
+            while (idx < _trackPositions.Count)
+            {
+                sector3.Add(_trackPositions[idx]);
+                ++idx;
+            }
+
+            for (var i = 0; i < fromSectorOne; ++i)
+            {
                 sector3.Add(_trackPositions[i]);
-                ++i;
             }
-        }
 
-        {
             var s1 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector1, _config.General.Thickness, _margin, sector1, _trackBoundingBox);
             var s2 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector2, _config.General.Thickness, _margin, sector2, _trackBoundingBox);
             var s3 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector3, _config.General.Thickness, _margin, sector3, _trackBoundingBox);
             _mapCache.Map = TrackMapDrawer.MixImages(s1, s2, s3, s1.Width, s1.Height);
+        }
+        else
+        {
+            // TODO(Andrei): Add sectors for Nurburgring 24h
+            _mapCache.Map = TrackMapDrawer.CreateLineFromPoints(Color.Snow, _config.General.Thickness, _margin, _trackPositions, _trackBoundingBox);
         }
 
         Debug.WriteLine($"[MAP] {broadCastTrackData.TrackName} ({pageStatic.Track}) -> [S: {_scale:F3}] [L: {broadCastTrackData.TrackMeters:F3}] [P: {_trackPositions.Count}]");
