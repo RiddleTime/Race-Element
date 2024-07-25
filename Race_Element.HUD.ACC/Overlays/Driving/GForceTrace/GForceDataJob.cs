@@ -10,8 +10,8 @@ internal sealed class GForceDataJob : AbstractLoopJob
     public GForceTraceOverlay Overlay { get; private init; }
     public int DataCount { get; private init; }
 
-    public readonly LinkedList<int> Lateral = [];
-    public readonly LinkedList<int> Longitudinal = [];
+    public readonly List<int> Lateral = [];
+    public readonly List<int> Longitudinal = [];
 
     public GForceDataJob(GForceTraceOverlay overlay, int dataCount)
     {
@@ -26,8 +26,8 @@ internal sealed class GForceDataJob : AbstractLoopJob
         }
         for (int i = 0; i < DataCount; i++)
         {
-            Lateral.AddFirst(presetLat);
-            Longitudinal.AddFirst(presetLong);
+            Lateral.Insert(0, presetLat);
+            Longitudinal.Insert(0, presetLat);
         }
     }
 
@@ -46,10 +46,10 @@ internal sealed class GForceDataJob : AbstractLoopJob
         int latData = (int)(latG * 100 / (maxLatG * 2));
         lock (Lateral)
         {
-            Lateral.AddFirst(latData);
+            Lateral.Insert(0, latData);
 
             if (Lateral.Count > DataCount)
-                Lateral.RemoveLast();
+                Lateral.RemoveAt(Lateral.Count - 1);
         }
 
         float longG = filePhysics.AccG[2] *= -1;
@@ -60,10 +60,10 @@ internal sealed class GForceDataJob : AbstractLoopJob
         int longData = (int)(longG * 100 / (maxLongG * 2));
         lock (Longitudinal)
         {
-            Longitudinal.AddFirst(longData);
+            Longitudinal.Insert(0, longData);
 
             if (Longitudinal.Count > DataCount)
-                Longitudinal.RemoveLast();
+                Longitudinal.RemoveAt(Longitudinal.Count - 1);
         }
     }
 }
