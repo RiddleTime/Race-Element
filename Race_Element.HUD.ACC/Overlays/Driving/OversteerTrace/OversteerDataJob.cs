@@ -15,12 +15,12 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OversteerTrace
         /// <summary>
         /// Stores oversteer (in slip angle) 
         /// </summary>
-        public readonly LinkedList<float> Oversteer = [];
+        public readonly List<float> Oversteer = [];
 
         /// <summary>
         /// Stores understeer (in slip angle) 
         /// </summary>
-        public readonly LinkedList<float> Understeer = [];
+        public readonly List<float> Understeer = [];
 
         public OversteerDataJob(OversteerTraceOverlay overlay, int dataCount, float maxSlipAngle)
         {
@@ -34,8 +34,8 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OversteerTrace
 
             for (int i = 0; i < DataCount; i++)
             {
-                Oversteer.AddFirst(presetOversteer);
-                Understeer.AddFirst(presetUndersteer);
+                Oversteer.Insert(0, presetOversteer);
+                Understeer.Insert(0, presetUndersteer);
             }
         }
 
@@ -77,15 +77,15 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OversteerTrace
         {
             lock (Understeer)
             {
-                Understeer.AddFirst(understeerData);
+                Understeer.Insert(0, understeerData);
                 if (Understeer.Count > DataCount)
-                    Understeer.RemoveLast();
+                    Understeer.RemoveAt(Understeer.Count - 1);
             }
             lock (Oversteer)
             {
-                Oversteer.AddFirst(oversteerData);
+                Oversteer.Insert(0, oversteerData);
                 if (Oversteer.Count > DataCount)
-                    Oversteer.RemoveLast();
+                    Oversteer.RemoveAt(Oversteer.Count - 1);
             }
         }
     }
