@@ -11,7 +11,7 @@ image: Visual Studio 2022
 configuration: Release
 build_script:
 - cmd: dotnet publish -p:PublishProfile=PublishProfile
-test: off
+test_script: dotnet test
 artifacts:
 - path: '**\bin\Release\RaceElement.exe'
   name: Race Element

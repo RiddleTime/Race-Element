@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.GForceTrace;
 
@@ -62,7 +62,7 @@ internal class GForceGraph : IDisposable
 
         if (_dataJob != null)
         {
-            LinkedList<int> data;
+            List<int> data;
 
             lock (_dataJob.Longitudinal) data = new(_dataJob.Longitudinal);
             DrawData(g, data, _longPen);
@@ -72,15 +72,18 @@ internal class GForceGraph : IDisposable
         }
     }
 
-    private void DrawData(Graphics g, LinkedList<int> Data, Pen pen)
+    private void DrawData(Graphics g, List<int> data, Pen pen)
     {
-        if (Data.Count > 0)
+        if (data.Count > 0)
         {
             List<Point> points = [];
-            for (int i = 0; i < Data.Count - 1; i++)
+
+            var spanData = CollectionsMarshal.AsSpan(data);
+
+            for (int i = 0; i < spanData.Length - 1; i++)
             {
-                int x = _x + _width - i * (_width / Data.Count);
-                int y = _y + GetRelativeNodeY(Data.ElementAt(i));
+                int x = _x + _width - i * (_width / spanData.Length);
+                int y = _y + GetRelativeNodeY(spanData[i]);
 
                 if (x < _x)
                     break;
