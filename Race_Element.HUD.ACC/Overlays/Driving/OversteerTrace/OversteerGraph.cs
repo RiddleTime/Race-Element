@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OversteerTrace;
 
@@ -62,7 +62,7 @@ internal class OversteerGraph : IDisposable
 
         if (_dataJob != null)
         {
-            LinkedList<float> data;
+            List<float> data;
 
             lock (_dataJob.Oversteer) data = new(_dataJob.Oversteer);
             DrawData(g, data, _penOversteer);
@@ -72,23 +72,23 @@ internal class OversteerGraph : IDisposable
         }
     }
 
-    private void DrawData(Graphics g, LinkedList<float> Data, Pen pen)
+    private void DrawData(Graphics g, List<float> data, Pen pen)
     {
-        if (Data.Count > 0)
+        if (data.Count > 0)
         {
             List<Point> points = [];
-            lock (Data)
-                for (int i = 0; i < Data.Count - 1; i++)
-                {
-                    int x = _x + _width - i * (_width / Data.Count);
+            var spanData = CollectionsMarshal.AsSpan(data);
+            for (int i = 0; i < spanData.Length - 1; i++)
+            {
+                int x = _x + _width - i * (_width / spanData.Length);
 
-                    int y = _y + GetRelativeNodeY(Data.ElementAt(i));
+                int y = _y + GetRelativeNodeY(spanData[i]);
 
-                    if (x < _x)
-                        break;
+                if (x < _x)
+                    break;
 
-                    points.Add(new Point(x, y));
-                }
+                points.Add(new Point(x, y));
+            }
 
             if (points.Count > 0)
             {

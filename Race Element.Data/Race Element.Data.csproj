@@ -19,7 +19,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Riok.Mapperly" Version="3.3.0" />
+        <PackageReference Include="Riok.Mapperly" Version="3.6.0" />
         <PackageReference Include="YamlDotNet" Version="15.1.1" />
     </ItemGroup>
 

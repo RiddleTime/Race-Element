@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.InputTrace;
 
@@ -64,7 +64,7 @@ internal class InputGraph : IDisposable
 
         if (_dataJob != null)
         {
-            LinkedList<int> data;
+            List<int> data;
 
             if (_config.Chart.SteeringInput)
             {
@@ -80,32 +80,28 @@ internal class InputGraph : IDisposable
         }
     }
 
-    private void DrawData(Graphics g, LinkedList<int> Data, Pen pen)
+    private void DrawData(Graphics g, List<int> data, Pen pen)
     {
-        if (Data.Count > 0)
+        if (data.Count > 0)
         {
             List<Point> points = [];
-            lock (Data)
-                for (int i = 0; i < Data.Count - 1; i++)
-                {
-                    int x = _x + _width - i * (_width / Data.Count);
-                    lock (Data)
-                    {
-                        int y = _y + GetRelativeNodeY(Data.ElementAt(i));
+            var spanData = CollectionsMarshal.AsSpan<int>(data);
+            for (int i = 0; i < spanData.Length - 1; i++)
+            {
+                int x = _x + _width - i * (_width / spanData.Length);
+                int y = _y + GetRelativeNodeY(spanData[i]);
 
-                        if (x < _x)
-                            break;
+                if (x < _x)
+                    break;
 
-                        points.Add(new Point(x, y));
-                    }
-                }
+                points.Add(new Point(x, y));
+            }
 
             if (points.Count > 0)
             {
-                GraphicsPath path = new();
+                using GraphicsPath path = new();
                 path.AddLines(points.ToArray());
                 g.DrawPath(pen, path);
-                path?.Dispose();
             }
         }
     }
