@@ -149,13 +149,13 @@ internal sealed class TyreTempHistoryOverlay : AbstractOverlay
         lapTextCell.UpdateText("?");
         DrawableTextCell col2 = new(new RectangleF(lapTextCell.Rectangle.X + columnWidths[0], 0, columnWidths[1], columnHeight), _font);
         col2.CachedBackground = _columnBackgrounds[1];
-        col2.UpdateText("Min");
+        col2.UpdateText("Min°");
         DrawableTextCell col3 = new(new RectangleF(col2.Rectangle.X + columnWidths[1], 0, columnWidths[2], columnHeight), _font);
         col3.CachedBackground = _columnBackgrounds[2];
-        col3.UpdateText("Avg");
+        col3.UpdateText("Avg°");
         DrawableTextCell col4 = new(new RectangleF(col3.Rectangle.X + columnWidths[2], 0, columnWidths[3], columnHeight), _font);
         col4.CachedBackground = _columnBackgrounds[3];
-        col4.UpdateText("Max");
+        col4.UpdateText("Max°");
         _graphicsGrid.Grid[0][0] = lapTextCell;
         _graphicsGrid.Grid[0][1] = col2;
         _graphicsGrid.Grid[0][2] = col3;
