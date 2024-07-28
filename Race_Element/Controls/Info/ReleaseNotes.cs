@@ -7,7 +7,7 @@ public static class ReleaseNotes
     internal readonly static Dictionary<string, string> Notes = new()
     {
         {"1.1.1.2", "- Input Trace, Oversteer Trace, G Force Trace HUDs: Lower cpu usage by roughly 20%."+
-                    "\n- ...."},
+                    "\n- Added new Tyre Temp History HUD: showing minimum, average and maximum tyre temps for the last lap."},
         {"1.1.1.0", "- Corner Data HUD: Fixed collection of data on tracks that had straights."+
                     "\n- Brake Temp History HUD: Added option to show HUD whilst setup menu is visible in-game."+
                     "\n- Pressure History HUD: Added option to show HUD whilst setup menu is visible in-game."+
