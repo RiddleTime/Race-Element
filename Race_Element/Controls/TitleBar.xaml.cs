@@ -1,6 +1,7 @@
 ﻿using Octokit;
 using RaceElement.Controls.Util.Updater;
 using RaceElement.Data.Games;
+using RaceElement.Util.Settings;
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -75,6 +76,11 @@ public partial class TitleBar : UserControl
             {
                 Game currentGame = (Game)item.DataContext;
                 GameManager.SetCurrentGame(currentGame);
+
+                var uiSettings = new UiSettings();
+                var settings = uiSettings.Get();
+                settings.SelectedGame = currentGame;
+                uiSettings.Save(settings);
             }
         };
 
@@ -130,8 +136,7 @@ public partial class TitleBar : UserControl
             }
         }
 
-        comboBoxCurrentGame.SelectedIndex = (int)GameManager.CurrentGame;
-
+        comboBoxCurrentGame.SelectedIndex = (int)new UiSettings().Get().SelectedGame;
     }
 
     private void TitleBar_MouseDoubleClick(object sender, MouseButtonEventArgs e)
