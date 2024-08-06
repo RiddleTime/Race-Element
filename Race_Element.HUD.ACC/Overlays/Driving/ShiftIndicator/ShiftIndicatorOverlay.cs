@@ -1,5 +1,4 @@
-﻿using RaceElement.Data.Common;
-using RaceElement.HUD.Overlay.Internal;
+﻿using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.Util.SystemExtensions;
@@ -55,18 +54,17 @@ internal sealed class ShiftIndicatorOverlay : AbstractOverlay
     }
 
     public sealed override void SetupPreviewData()
-    {        
-        int maxRpm = SimDataProvider.LocalCar.Engine.MaxRpm;
+    {
+        int maxRpm = ACCSharedMemory.Instance.ReadStaticPageFile().MaxRpm;
         if (maxRpm == 0) maxRpm = 9250; // porsche 911 max rpm..
 
-        SimDataProvider.LocalCar.Engine.Rpm = (int)(maxRpm * 0.9f);
-        SimDataProvider.LocalCar.Engine.MaxRpm = maxRpm;
+        pagePhysics.Rpms = (int)(maxRpm * 0.9f);
+        pageStatic.MaxRpm = maxRpm;
         _drawShiftRPM = true;
     }
 
     public sealed override void BeforeStart()
     {
-        int maxRpm = SimDataProvider.LocalCar.Engine.MaxRpm;
         if (_config.Bar.ShowRpmText || _config.Bar.ShowPitLimiter)
         {
             float height = _config.Bar.Height - 14;
@@ -114,9 +112,9 @@ internal sealed class ShiftIndicatorOverlay : AbstractOverlay
 
         _cachedRpmLines = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
         {
-            int lineCount = (int)Math.Floor((maxRpm - _config.Bar.HideRpm) / 1000d);
+            int lineCount = (int)Math.Floor((pageStatic.MaxRpm - _config.Bar.HideRpm) / 1000d);
 
-            int leftOver = (maxRpm - _config.Bar.HideRpm) % 1000;
+            int leftOver = (pageStatic.MaxRpm - _config.Bar.HideRpm) % 1000;
             if (leftOver < 70)
                 lineCount--;
 
@@ -124,7 +122,7 @@ internal sealed class ShiftIndicatorOverlay : AbstractOverlay
             using SolidBrush brush = new(Color.FromArgb(220, Color.Black));
             using Pen linePen = new(brush, 1.5f * this.Scale);
 
-            double thousandPercent = (1000d / (maxRpm - _config.Bar.HideRpm)) * lineCount;
+            double thousandPercent = (1000d / (pageStatic.MaxRpm - _config.Bar.HideRpm)) * lineCount;
             double baseX = (_config.Bar.Width * this.Scale) / lineCount * thousandPercent;
             for (int i = 1; i <= lineCount; i++)
             {
@@ -165,9 +163,7 @@ internal sealed class ShiftIndicatorOverlay : AbstractOverlay
     {
         _cachedBackground?.Draw(g, _config.Bar.Width, _config.Bar.Height);
 
-        int maxRpm = SimDataProvider.LocalCar.Engine.MaxRpm;
-
-        if (_config.Bar.ShowPitLimiter && SimDataProvider.LocalCar.Engine.IsPitLimiterOn)
+        if (_config.Bar.ShowPitLimiter && pagePhysics.PitLimiterOn)
             DrawPitLimiterBar(g);
 
         DrawRpmBar(g);
@@ -185,13 +181,13 @@ internal sealed class ShiftIndicatorOverlay : AbstractOverlay
         {
             int x = (int)((_halfRpmStringWidth + 8) + _halfRpmStringWidth * 2 + 5);
             int y = (int)(_config.Bar.Height / 2 - _font.Height / 2.05);
-            string earlyShiftRpm = $"Early:{(_config.Upshift.Early / 100f * maxRpm):F0}";
+            string earlyShiftRpm = $"Early:{(_config.Upshift.Early / 100f * pageStatic.MaxRpm):F0}";
             float earlyWidth = g.MeasureString(earlyShiftRpm, _font).Width;
             Rectangle earlyRect = new((int)(x - earlyWidth / 5), y, (int)(earlyWidth), _font.Height);
             DrawTextWithOutline(g, Color.White, earlyShiftRpm, x, y, earlyRect);
 
             x += (int)(earlyWidth + 5);
-            string upshiftRpm = $"Up:{(_config.Upshift.Upshift / 100f * maxRpm):F0}";
+            string upshiftRpm = $"Up:{(_config.Upshift.Upshift / 100f * pageStatic.MaxRpm):F0}";
             float upshiftWidth = g.MeasureString(upshiftRpm, _font).Width;
             Rectangle upshiftRect = new((int)(x - upshiftWidth / 3.5), y, (int)(upshiftWidth), _font.Height);
             DrawTextWithOutline(g, Color.White, upshiftRpm, x, y, upshiftRect);
@@ -223,8 +219,8 @@ internal sealed class ShiftIndicatorOverlay : AbstractOverlay
     }
 
     private void DrawRpmText(Graphics g)
-    {        
-        string currentRpm = $"{SimDataProvider.LocalCar.Engine.Rpm}".FillStart(4, '0');
+    {
+        string currentRpm = $"{pagePhysics.Rpms}".FillStart(4, '0');
 
         if (_halfRpmStringWidth < 0)
             _halfRpmStringWidth = g.MeasureString("9999", _font).Width / 2;
@@ -243,13 +239,13 @@ internal sealed class ShiftIndicatorOverlay : AbstractOverlay
     }
 
     private void DrawRpmBar(Graphics g)
-    {        
-        int maxRpm = SimDataProvider.LocalCar.Engine.MaxRpm;
-        int currentRpm = SimDataProvider.LocalCar.Engine.Rpm;
-        double percent = 0;        
+    {
+        double maxRpm = pageStatic.MaxRpm;
+        double currentRpm = pagePhysics.Rpms;
+        double percent = 0;
 
         if (maxRpm > 0 && currentRpm > 0)
-            percent = ((double) currentRpm) / maxRpm;
+            percent = currentRpm / maxRpm;
 
         if (percent > 0)
         {
@@ -292,10 +288,10 @@ internal sealed class ShiftIndicatorOverlay : AbstractOverlay
 
     private void DrawRpmBar1kLines(Graphics g)
     {
-        if (_lastCar != SimDataProvider.LocalCar.CarModel.GameName)
+        if (_lastCar != pageStatic.CarModel)
         {
             _cachedRpmLines.Render();
-            _lastCar = SimDataProvider.LocalCar.CarModel.GameName;
+            _lastCar = pageStatic.CarModel;
         }
 
         _cachedRpmLines.Draw(g, _config.Bar.Width, _config.Bar.Height);
