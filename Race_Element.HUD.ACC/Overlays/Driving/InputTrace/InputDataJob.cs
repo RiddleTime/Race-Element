@@ -1,6 +1,6 @@
 ﻿using RaceElement.Core.Jobs.LoopJob;
+using RaceElement.Data.Common;
 using System.Collections.Generic;
-using static RaceElement.ACCSharedMemory;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.InputTrace;
 
@@ -49,23 +49,22 @@ internal sealed class InputDataJob : AbstractLoopJob
         if (!Overlay.ShouldRender())
             return;
 
-        SPageFilePhysics filePhysics = Overlay.pagePhysics;
         lock (Throttle)
         {
-            Throttle.Insert(0, (int)(filePhysics.Gas * 100));
+            Throttle.Insert(0, (int)(SimDataProvider.LocalCar.Inputs.Throttle * 100));
             if (Throttle.Count > DataCount)
                 Throttle.RemoveAt(Throttle.Count - 1);
         }
         lock (Brake)
         {
-            Brake.Insert(0, (int)(filePhysics.Brake * 100));
+            Brake.Insert(0, (int)(SimDataProvider.LocalCar.Inputs.Brake * 100));
             if (Brake.Count > DataCount)
                 Brake.RemoveAt(Brake.Count - 1);
         }
 
         lock (Steering)
         {
-            Steering.Insert(0, (int)((filePhysics.SteerAngle + 1.0) / 2 * 100));
+            Steering.Insert(0, (int)((SimDataProvider.LocalCar.Inputs.Steering + 1.0) / 2 * 100));
             if (Steering.Count > DataCount)
                 Steering.RemoveAt(Steering.Count - 1);
         }
