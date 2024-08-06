@@ -37,6 +37,7 @@ public sealed class StartScreenOverlay : AbstractOverlay
         this.Width = 620;
         this.Height = 74;
         this.RefreshRateHz = 80;
+        this.SubscribeToACCData = false;
     }
 
     public override void BeforeStart()
