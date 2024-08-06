@@ -2,8 +2,10 @@
 using RaceElement.Controls.HUD;
 using RaceElement.Controls.HUD.Controls;
 using RaceElement.Controls.Util.SetupImage;
+using RaceElement.Data.Games;
 using RaceElement.HUD.ACC;
 using RaceElement.HUD.ACC.Overlays.OverlayMousePosition;
+using RaceElement.HUD.Common;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.Util;
@@ -76,6 +78,11 @@ public partial class HudOptions : UserControl
                 previewImage.Source = null;
                 listDebugOverlays.SelectedIndex = -1;
                 listOverlays.SelectedIndex = -1;
+            };
+
+            GameManager.OnGameChanged += (s, newGame) =>
+            {
+                BuildOverlayPanel();
             };
 
             bool designTime = System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject());
@@ -537,6 +544,7 @@ public partial class HudOptions : UserControl
     private void BuildOverlayPanel()
     {
         OverlaysAcc.GenerateDictionary();
+        CommonHuds.GenerateDictionary();
 
         BuildOverlayListView(listOverlays, OverlayType.Drive, (OverlayCategory)((ComboBoxItem)comboOverlays.SelectedItem).DataContext);
         BuildOverlayListView(listDebugOverlays, OverlayType.Pitwall, (OverlayCategory)((ComboBoxItem)comboOverlays.SelectedItem).DataContext);
@@ -569,7 +577,21 @@ public partial class HudOptions : UserControl
     {
         listView.Items.Clear();
 
-        foreach (KeyValuePair<string, Type> x in OverlaysAcc.AbstractOverlays)
+        SortedDictionary<string, Type> abstractOverlays = [];
+
+        if (GameManager.CurrentGame != Game.AssettoCorsaCompetizione)
+        {
+            OverlaysAcc.CloseAll();
+            abstractOverlays = CommonHuds.AbstractOverlays;
+        }
+        else
+        {
+            CommonHuds.CloseAll();
+            OverlaysAcc.GenerateDictionary();
+            abstractOverlays = OverlaysAcc.AbstractOverlays;
+        }
+
+        foreach (KeyValuePair<string, Type> x in abstractOverlays)
         {
             AbstractOverlay tempAbstractOverlay = (AbstractOverlay)Activator.CreateInstance(x.Value, DefaultOverlayArgs);
             var overlayAttribute = GetOverlayAttribute(x.Value);
