@@ -6,6 +6,7 @@ using RaceElement.Hardware.ACC.SteeringLock;
 using RaceElement.HUD.ACC;
 using RaceElement.HUD.ACC.Data.Tracker;
 using RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput;
+using RaceElement.HUD.Common;
 using RaceElement.Util;
 using RaceElement.Util.Settings;
 using RaceElement.Util.SystemExtensions;
@@ -291,6 +292,7 @@ public partial class MainWindow : Window
         _notifyIcon?.Dispose();
 
         OverlaysAcc.CloseAll();
+        CommonHuds.CloseAll();
         HudTrackers.StopAll();
         ACCTrackerDispose.Dispose();
         HudOptions.Instance.DisposeKeyboardHooks();
@@ -313,6 +315,7 @@ public partial class MainWindow : Window
 
         _notifyIcon?.Dispose();
         OverlaysAcc.CloseAll();
+        CommonHuds.CloseAll();
         HudTrackers.StopAll();
         ACCTrackerDispose.Dispose();
         HudOptions.Instance.DisposeKeyboardHooks();
