@@ -163,6 +163,8 @@ public partial class MainWindow : Window
 
     private void MainWindow_Drop(object sender, DragEventArgs e)
     {
+        if (GameManager.CurrentGame != Game.AssettoCorsaCompetizione) return;
+
         if (e.Data is DataObject)
         {
             DataObject data = (DataObject)e.Data;
