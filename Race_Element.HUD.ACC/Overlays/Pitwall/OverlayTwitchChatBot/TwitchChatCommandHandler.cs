@@ -28,9 +28,9 @@ internal sealed class TwitchChatBotCommandHandler
 
     public const char ChatCommandCharacter = '+';
 
-    public readonly struct ChatResponse(string command, Func<string[], string> result)
+    public readonly struct ChatResponse(string[] commands, Func<string[], string> result)
     {
-        public readonly string Command = command;
+        public readonly string[] Commands = commands;
         /// <summary>
         /// in String[]: Arguments 
         /// out String: response(string.empty if no response)
@@ -44,24 +44,23 @@ internal sealed class TwitchChatBotCommandHandler
         _overlay = overlay;
 
         Responses = [
-            new("commands", GetCommandsLink),
-            new("help", GetCommandsLink),
-            new("app", (args) => "https://race.elementfuture.com / https://discord.gg/26AAEW5mUq"),
-            new("damage", (args) => $"{TimeSpan.FromSeconds(Damage.GetTotalRepairTime(_overlay.pagePhysics)):mm\\:ss\\.fff}"),
-            new("potential", GetPotentialBestResponse),
-            new("temps", GetTemperaturesResponse),
-            new("track", GetCurrentTrackResponse),
-            new("car", GetCurrentCarResponse),
-            new("angle", GetSteeringLockResponse),
-            new("purple", GetPurpleLapResponse),
-            new("ahead", GetCarAheadResponse),
-            new("gap", GetGapResponse),
-            new("diff", GetCarDifferenceResponse),
-            new("behind", GetCarBehindResponse),
-            new("p", GetPositionLookupResponse),
-            new("#", GetRaceNumberLookupResponse),
-            new("session", GetSessionResponse),
-            new("fuel", GetFuelResponse)
+            new(["commands", "help"], GetCommandsLink),
+            new(["app"], (args) => "https://race.elementfuture.com / https://discord.gg/26AAEW5mUq"),
+            new(["damage"], (args) => $"{TimeSpan.FromSeconds(Damage.GetTotalRepairTime(_overlay.pagePhysics)):mm\\:ss\\.fff}"),
+            new(["potential"], GetPotentialBestResponse),
+            new(["temps"], GetTemperaturesResponse),
+            new(["track"], GetCurrentTrackResponse),
+            new(["car"], GetCurrentCarResponse),
+            new(["angle"], GetSteeringLockResponse),
+            new(["purple"], GetPurpleLapResponse),
+            new(["ahead"], GetCarAheadResponse),
+            new(["gap"], GetGapResponse),
+            new(["diff"], GetCarDifferenceResponse),
+            new(["behind"], GetCarBehindResponse),
+            new(["p"], GetPositionLookupResponse),
+            new(["#"], GetRaceNumberLookupResponse),
+            new(["session"], GetSessionResponse),
+            new(["fuel"], GetFuelResponse)
         ];
     }
 
@@ -78,14 +77,16 @@ internal sealed class TwitchChatBotCommandHandler
             for (int i = 0; i < Responses.Length; i++)
             {
                 var response = responses[i];
-                if (response.Command.Equals(command))
-                {
-                    Span<string> argsSpan = CollectionsMarshal.AsSpan(e.Command.ArgumentsAsList);
-                    for (int s = 0; s < argsSpan.Length; s++) argsSpan[s] = argsSpan[s].ToLower();
-                    string[] args = argsSpan.Length > 0 ? argsSpan.ToArray() : [];
-                    replyMessage = response.Result(args);
-                    break;
-                }
+                var commands = response.Commands.AsSpan();
+                for (int c = 0; c < commands.Length; c++)
+                    if (response.Commands[c].Equals(command))
+                    {
+                        Span<string> argsSpan = CollectionsMarshal.AsSpan(e.Command.ArgumentsAsList);
+                        for (int s = 0; s < argsSpan.Length; s++) argsSpan[s] = argsSpan[s].ToLower();
+                        string[] args = argsSpan.Length > 0 ? argsSpan.ToArray() : [];
+                        replyMessage = response.Result(args);
+                        break;
+                    }
             }
 
             if (replyMessage.IsNullOrEmpty())
@@ -115,7 +116,7 @@ internal sealed class TwitchChatBotCommandHandler
 
         Span<ChatResponse> responses = Responses.AsSpan();
         for (int i = 1; i < responses.Length; i++)
-            sb.Append($"{responses[i].Command}{(i < responses.Length - 1 ? ", " : string.Empty)}");
+            sb.Append($"{responses[i].Commands[0]}{(i < responses.Length - 1 ? ", " : string.Empty)}");
 
         return $"{sb.Append('.')}";
     }
@@ -348,7 +349,7 @@ internal sealed class TwitchChatBotCommandHandler
             TimeSpan s1 = TimeSpan.FromSeconds(sector1 / 1000d);
             TimeSpan s2 = TimeSpan.FromSeconds(sector2 / 1000d);
             TimeSpan s3 = TimeSpan.FromSeconds(sector3 / 1000d);
-            sb.Append($"Potential Best: {lapTime:m\\:ss\\:fff} || {s1:m\\:ss\\:fff} | {s2:m\\:ss\\:fff} | {s3:m\\:ss\\:fff}");
+            sb.Append($"Potential Best: {lapTime:m\\:ss\\.fff} || {s1:m\\:ss\\.fff} | {s2:m\\:ss\\.fff} | {s3:m\\:ss\\.fff}");
         }
         else
             sb.Append("No valid laps");

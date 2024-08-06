@@ -6,9 +6,12 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.1.1.2", "- Input Trace, Oversteer Trace, G Force Trace HUDs: Lower cpu usage by roughly 20%."+
+                    "\n- Added new Tyre Temp History HUD: showing minimum, average and maximum tyre temps for the last lap."},
         {"1.1.1.0", "- Corner Data HUD: Fixed collection of data on tracks that had straights."+
                     "\n- Brake Temp History HUD: Added option to show HUD whilst setup menu is visible in-game."+
-                    "\n- Pressure History HUD: Added option to show HUD whilst setup menu is visible in-game."},
+                    "\n- Pressure History HUD: Added option to show HUD whilst setup menu is visible in-game."+
+                    "\n- Update .net json package due to vulnerability, recommend to update the app."},
         {"1.1.0.8", "- Wheel Slip HUD: Adjusted default option for WheelSize from 92 to 68."+
                     "\n- HUD Config: Now hides Scaling option when HUD does not allow scaling."+
                     "\n- Twitch Chat Bot: Fixed time delimiter character for +gap."+

@@ -12,17 +12,17 @@ internal sealed class InputDataJob : AbstractLoopJob
     /// <summary>
     /// Stores Steering, 50 % is center 
     /// </summary>
-    public readonly LinkedList<int> Steering = [];
+    public readonly List<int> Steering = [];
 
     /// <summary>
     /// Stores accelerator data
     /// </summary>
-    public readonly LinkedList<int> Throttle = [];
+    public readonly List<int> Throttle = [];
 
     /// <summary>
     /// Stores braking data
     /// </summary>
-    public readonly LinkedList<int> Brake = [];
+    public readonly List<int> Brake = [];
 
     public InputDataJob(InputTraceOverlay overlay, int dataCount)
     {
@@ -38,9 +38,9 @@ internal sealed class InputDataJob : AbstractLoopJob
         }
         for (int i = 0; i < DataCount; i++)
         {
-            Steering.AddFirst(presetSteering);
-            Throttle.AddFirst(presetThrottle);
-            Brake.AddFirst(presetBrake);
+            Steering.Insert(0, presetSteering);
+            Throttle.Insert(0, presetThrottle);
+            Brake.Insert(0, presetBrake);
         }
     }
 
@@ -50,23 +50,23 @@ internal sealed class InputDataJob : AbstractLoopJob
             return;
 
         lock (Throttle)
-        {            
-            Throttle.AddFirst((int)(SimDataProvider.LocalCar.Inputs.Throttle * 100));
+        {
+            Throttle.Insert(0, (int)(SimDataProvider.LocalCar.Inputs.Throttle * 100));
             if (Throttle.Count > DataCount)
-                Throttle.RemoveLast();
+                Throttle.RemoveAt(Throttle.Count - 1);
         }
         lock (Brake)
-        {            
-            Brake.AddFirst((int)(SimDataProvider.LocalCar.Inputs.Brake * 100));
+        {
+            Brake.Insert(0, (int)(SimDataProvider.LocalCar.Inputs.Brake * 100));
             if (Brake.Count > DataCount)
-                Brake.RemoveLast();
+                Brake.RemoveAt(Brake.Count - 1);
         }
 
         lock (Steering)
         {
-            Steering.AddFirst((int)((SimDataProvider.LocalCar.Inputs.Steering + 1.0) / 2 * 100));
+            Steering.Insert(0, (int)((SimDataProvider.LocalCar.Inputs.Steering + 1.0) / 2 * 100));
             if (Steering.Count > DataCount)
-                Steering.RemoveLast();
+                Steering.RemoveAt(Steering.Count - 1);
         }
     }
 }
