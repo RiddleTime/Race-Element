@@ -6,7 +6,7 @@ namespace RaceElement.Data.Games;
 
 public static class GameManager
 {
-    private static SimpleLoopJob _job;
+    private readonly static SimpleLoopJob _dataUpdaterJob = new() { Action = () => SimDataProvider.Update(), IntervalMillis = 1000 / 50 };
 
     public static Game CurrentGame { get; private set; } = Game.AssettoCorsaCompetizione;
 
@@ -19,11 +19,8 @@ public static class GameManager
         SimDataProvider.Clear();
         OnGameChanged?.Invoke(null, game);
 
-        // start job to update SimDataProvider every 50ms
-        _job = new SimpleLoopJob() { Action = () => SimDataProvider.Update(), IntervalMillis = 1000 / 50 };
-        _job.Run();                 
+        _dataUpdaterJob.Run();
     }
-
 
     /// <summary>
     /// Gracefully disposes and stops all mechanisms that are required for a game so they do not interfere with other games.
@@ -39,9 +36,7 @@ public static class GameManager
                     break;
                 }
         }
-        if (_job != null) {
-            _job.CancelJoin();
-        }
 
+        _dataUpdaterJob?.CancelJoin();
     }
 }

@@ -52,10 +52,11 @@ internal sealed class ShiftIndicatorOverlay : AbstractOverlay
         this.RefreshRateHz = this._config.Bar.RefreshRate;
         this.Height = _config.Bar.Height + 1;
         this.Width = _config.Bar.Width + 1;
+        this.SubscribeToACCData = false;
     }
 
     public sealed override void SetupPreviewData()
-    {        
+    {
         int maxRpm = SimDataProvider.LocalCar.Engine.MaxRpm;
         if (maxRpm == 0) maxRpm = 9250; // porsche 911 max rpm..
 
@@ -223,7 +224,7 @@ internal sealed class ShiftIndicatorOverlay : AbstractOverlay
     }
 
     private void DrawRpmText(Graphics g)
-    {        
+    {
         string currentRpm = $"{SimDataProvider.LocalCar.Engine.Rpm}".FillStart(4, '0');
 
         if (_halfRpmStringWidth < 0)
@@ -243,13 +244,13 @@ internal sealed class ShiftIndicatorOverlay : AbstractOverlay
     }
 
     private void DrawRpmBar(Graphics g)
-    {        
+    {
         int maxRpm = SimDataProvider.LocalCar.Engine.MaxRpm;
         int currentRpm = SimDataProvider.LocalCar.Engine.Rpm;
-        double percent = 0;        
+        double percent = 0;
 
         if (maxRpm > 0 && currentRpm > 0)
-            percent = ((double) currentRpm) / maxRpm;
+            percent = ((double)currentRpm) / maxRpm;
 
         if (percent > 0)
         {
@@ -278,7 +279,7 @@ internal sealed class ShiftIndicatorOverlay : AbstractOverlay
                 _cachedFlashBar.Draw(g, 1, 0, _config.Bar.Width - 1, _config.Bar.Height - 1);
             }
 
-            double adjustedPercent = (currentRpm - _config.Bar.HideRpm) / (maxRpm - _config.Bar.HideRpm);
+            double adjustedPercent = ((double)currentRpm - _config.Bar.HideRpm) / (maxRpm - _config.Bar.HideRpm);
             var barDrawWidth = (int)(_config.Bar.Width * adjustedPercent);
 
             g.SetClip(new Rectangle(0, 0, barDrawWidth, _config.Bar.Height));

@@ -47,6 +47,12 @@ public partial class HudOptions : UserControl
     private DateTime _lastMovementModeChange = DateTime.MinValue;
     private const int MovementModeDebounce = 250;
 
+    public static List<AbstractOverlay> ActiveOverlays => GameManager.CurrentGame switch
+    {
+        Game.AssettoCorsaCompetizione => OverlaysAcc.ActiveOverlays,
+        _ => CommonHuds.ActiveOverlays
+    };
+
     public HudOptions()
     {
         InitializeComponent();
@@ -379,26 +385,40 @@ public partial class HudOptions : UserControl
             stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(140, 0, 0, 0));
             overlayNameLabel.Foreground = Brushes.LimeGreen;
 
-            lock (OverlaysAcc.ActiveOverlays)
+
+            AbstractOverlay overlay = null;
+            if (GameManager.CurrentGame == Game.AssettoCorsaCompetizione)
             {
-                AbstractOverlay overlay = OverlaysAcc.ActiveOverlays.Find(f => f.GetType() == type);
+                overlay = ActiveOverlays.Find(f => f.GetType() == type);
+            }
+            else
+            {
+                overlay = CommonHuds.ActiveOverlays.Find(f => f.GetType() == type);
+            }
 
-                if (overlay == null)
+            if (overlay == null)
+            {
+
+                overlayNameLabel.BorderBrush = Brushes.Green;
+                listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+                listViewItem.BorderBrush = new SolidColorBrush(Colors.LimeGreen);
+                overlay = (AbstractOverlay)Activator.CreateInstance(type, DefaultOverlayArgs);
+
+                overlay.Start();
+
+                SaveOverlaySettings(overlay, true);
+
+                configStacker.IsEnabled = false;
+
+                if (GameManager.CurrentGame == Game.AssettoCorsaCompetizione)
                 {
-
-                    overlayNameLabel.BorderBrush = Brushes.Green;
-                    listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
-                    listViewItem.BorderBrush = new SolidColorBrush(Colors.LimeGreen);
-                    overlay = (AbstractOverlay)Activator.CreateInstance(type, DefaultOverlayArgs);
-
-                    overlay.Start();
-
-                    SaveOverlaySettings(overlay, true);
-
-                    configStacker.IsEnabled = false;
-
-                    if (OverlaysAcc.ActiveOverlays.FindIndex(o => o.Name == overlay.Name) == -1)
-                        OverlaysAcc.ActiveOverlays.Add(overlay);
+                    if (ActiveOverlays.FindIndex(o => o.Name == overlay.Name) == -1)
+                        ActiveOverlays.Add(overlay);
+                }
+                else
+                {
+                    if (CommonHuds.ActiveOverlays.FindIndex(o => o.Name == overlay.Name) == -1)
+                        CommonHuds.ActiveOverlays.Add(overlay);
                 }
             }
         };
@@ -410,19 +430,19 @@ public partial class HudOptions : UserControl
             overlayNameLabel.BorderBrush = Brushes.OrangeRed;
             overlayNameLabel.Foreground = Brushes.White;
 
-            lock (OverlaysAcc.ActiveOverlays)
+            lock (ActiveOverlays)
             {
                 listViewItem.Background = Brushes.Transparent;
                 listViewItem.BorderBrush = new SolidColorBrush(Colors.Transparent);
-                AbstractOverlay overlay = OverlaysAcc.ActiveOverlays.Find(f => f.GetType() == type);
+                AbstractOverlay overlay = ActiveOverlays.Find(f => f.GetType() == type);
 
                 SaveOverlaySettings(overlay, false);
 
 
 
-                int index = OverlaysAcc.ActiveOverlays.FindIndex(o => o.Name == overlay.Name);
+                int index = ActiveOverlays.FindIndex(o => o.Name == overlay.Name);
                 if (index != -1)
-                    OverlaysAcc.ActiveOverlays.RemoveAt(index);
+                    ActiveOverlays.RemoveAt(index);
                 Task.Run(() =>
                 {
                     overlay?.Stop();
@@ -536,9 +556,8 @@ public partial class HudOptions : UserControl
                 mousePositionOverlay.Stop();
         }
 
-        lock (OverlaysAcc.ActiveOverlays)
-            foreach (AbstractOverlay overlay in OverlaysAcc.ActiveOverlays)
-                overlay.EnableReposition(enabled);
+        foreach (AbstractOverlay overlay in ActiveOverlays)
+            overlay.EnableReposition(enabled);
     }
 
     private void BuildOverlayPanel()
@@ -577,21 +596,20 @@ public partial class HudOptions : UserControl
     {
         listView.Items.Clear();
 
-        SortedDictionary<string, Type> abstractOverlays = [];
+        SortedDictionary<string, Type> availableOverlays = [];
 
         if (GameManager.CurrentGame != Game.AssettoCorsaCompetizione)
         {
             OverlaysAcc.CloseAll();
-            abstractOverlays = CommonHuds.AbstractOverlays;
+            availableOverlays = CommonHuds.AbstractOverlays;
         }
         else
         {
             CommonHuds.CloseAll();
-            OverlaysAcc.GenerateDictionary();
-            abstractOverlays = OverlaysAcc.AbstractOverlays;
+            availableOverlays = OverlaysAcc.AbstractOverlays;
         }
 
-        foreach (KeyValuePair<string, Type> x in abstractOverlays)
+        foreach (KeyValuePair<string, Type> x in availableOverlays)
         {
             AbstractOverlay tempAbstractOverlay = (AbstractOverlay)Activator.CreateInstance(x.Value, DefaultOverlayArgs);
             var overlayAttribute = GetOverlayAttribute(x.Value);
@@ -647,13 +665,13 @@ public partial class HudOptions : UserControl
                     listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
                     listViewItem.BorderBrush = new SolidColorBrush(Colors.LimeGreen);
 
-                    lock (OverlaysAcc.ActiveOverlays)
+                    lock (ActiveOverlays)
                     {
                         AbstractOverlay overlay = (AbstractOverlay)Activator.CreateInstance(x.Value, DefaultOverlayArgs);
-                        if (OverlaysAcc.ActiveOverlays.FindIndex(o => o.Name == overlay.Name) == -1)
+                        if (ActiveOverlays.FindIndex(o => o.Name == overlay.Name) == -1)
                         {
                             SaveOverlaySettings(overlay, true);
-                            OverlaysAcc.ActiveOverlays.Add(overlay);
+                            ActiveOverlays.Add(overlay);
                             overlay.Start();
                         }
                         else
