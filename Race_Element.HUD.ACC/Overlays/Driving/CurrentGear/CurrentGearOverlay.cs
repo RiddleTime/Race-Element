@@ -1,5 +1,4 @@
-﻿// TODO: refactor to allow for non-ACC sims to not use RaceElement.Data.ACC
-using RaceElement.Data.ACC.EntryList;
+﻿using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.Session;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
@@ -12,7 +11,6 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Linq;
 using Unglide;
-using RaceElement.Data.Common;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear;
 
@@ -65,8 +63,8 @@ internal sealed class CurrentGearOverlay : AbstractOverlay
 
     public sealed override void SetupPreviewData()
     {
-        _lastGear = 3;        
-        SimDataProvider.LocalCar.Inputs.Gear = 3;
+        _lastGear = 3;
+        pagePhysics.Gear = 3;
     }
 
     public sealed override void BeforeStart()
@@ -110,7 +108,6 @@ internal sealed class CurrentGearOverlay : AbstractOverlay
 
     public sealed override bool ShouldRender()
     {
-        // TODO: refactor to allow for non-ACC sims
         if (_config.Gear.Spectator && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
             return true;
 
@@ -119,13 +116,12 @@ internal sealed class CurrentGearOverlay : AbstractOverlay
 
     private int GetCurrentGear()
     {
-        int currentGear = SimDataProvider.LocalCar.Inputs.Gear;
+        int currentGear = pagePhysics.Gear;
 
         if (_config.Gear.Spectator)
         {
             int focusedIndex = broadCastRealTime.FocusedCarIndex;
 
-            // TODO: refactor to allow for non-ACC sims
             if (RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, focusedIndex))
                 lock (EntryListTracker.Instance.Cars)
                     if (EntryListTracker.Instance.Cars.Any())
