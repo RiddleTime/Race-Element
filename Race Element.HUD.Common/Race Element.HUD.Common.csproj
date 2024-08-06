@@ -26,6 +26,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="EdCanHack.Unglide" Version="2.0.0" />
         <ProjectReference Include="..\Race Element.Data\Race Element.Data.csproj" />
         <ProjectReference Include="..\Race_Element.HUD\Race Element.HUD.csproj" />
     </ItemGroup>
