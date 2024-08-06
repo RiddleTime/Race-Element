@@ -1,19 +1,37 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <RootNamespace>RaceElement.HUD.Common</RootNamespace>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <OutputType>Library</OutputType>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 
-  <ItemGroup>
-    <Folder Include="Overlays\Driving\" />
-  </ItemGroup>
+        <RootNamespace>RaceElement.HUD.Common</RootNamespace>
+        <AssemblyName>RaceElement.HUD.Common</AssemblyName>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Copyright>Copyright © Reinier Klarenberg 2024</Copyright>
+        <AssemblyVersion>1.0.0.0</AssemblyVersion>
+        <FileVersion>1.0.0.0</FileVersion>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Race Element.Data\Race Element.Data.csproj" />
-    <ProjectReference Include="..\Race_Element.HUD\Race Element.HUD.csproj" />
-  </ItemGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <IsTrimmable>True</IsTrimmable>
+        <IsAotCompatible>True</IsAotCompatible>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <IsTrimmable>True</IsTrimmable>
+        <IsAotCompatible>True</IsAotCompatible>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Race Element.Data\Race Element.Data.csproj" />
+        <ProjectReference Include="..\Race_Element.HUD\Race Element.HUD.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Overlays\System\" />
+    </ItemGroup>
 
 </Project>

@@ -4,7 +4,7 @@ using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
 using System.Drawing;
 
-namespace RaceElement.HUD.Common.Overlays.System.OverlayTesting
+namespace RaceElement.HUD.Common.Overlays.Driving.OverlayTesting
 {
     [Overlay(Name = "Testing", Description = "some testing ", OverlayType = OverlayType.Drive)]
     internal class TestingOverlay : AbstractOverlay
