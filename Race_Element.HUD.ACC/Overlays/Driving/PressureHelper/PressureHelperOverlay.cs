@@ -12,7 +12,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.PressureHelper
     [Overlay(Name = "Pressure Helper",
 Description = "Helps you with setting up tyre pressures.\n(Alpha version, in progress but could be tested to verify data, options won't do anything for now.)",
 Authors = ["Reinier Klarenberg"])]
-    internal sealed class PressureHelperOverlay : AbstractOverlay
+    internal sealed class PressureHelperOverlay : ACCOverlay
     {
         private readonly PressureHelperConfiguration _config = new();
         private PressureInfoModel Model { get; set; } = new();

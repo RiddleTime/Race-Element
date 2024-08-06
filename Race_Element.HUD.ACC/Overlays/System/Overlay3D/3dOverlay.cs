@@ -12,7 +12,7 @@ namespace RaceElement.HUD.ACC.Overlays.System.Overlay3D;
      Description = "3d testing",
      Version = 1.00,
      OverlayType = OverlayType.Pitwall)]
-internal class _3dOverlay : AbstractOverlay
+internal class _3dOverlay : ACCOverlay
 {
     private _3dConfiguration _config = new();
     private sealed class _3dConfiguration : OverlayConfiguration

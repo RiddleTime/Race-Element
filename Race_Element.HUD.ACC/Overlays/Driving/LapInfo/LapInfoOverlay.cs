@@ -13,7 +13,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDeltaInfo;
     Description = "A panel with a bar showing the current delta.\nOptionally showing the sector times, last lap, best lap and the potential best.",
     OverlayCategory = OverlayCategory.Lap,
 Authors = ["Reinier Klarenberg"])]
-internal sealed class LapInfoOverlay : AbstractOverlay
+internal sealed class LapInfoOverlay : ACCOverlay
 {
     private readonly LapInfoConfig _config = new();
     private sealed class LapInfoConfig : OverlayConfiguration

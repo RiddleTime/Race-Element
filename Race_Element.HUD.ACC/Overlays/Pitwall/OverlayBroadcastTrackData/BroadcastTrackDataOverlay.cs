@@ -11,7 +11,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
 
 [Overlay(Name = "Broadcast Track Data", Version = 1.00, OverlayType = OverlayType.Pitwall,
     Description = "A panel showing live broadcast track data.")]
-internal sealed class BroadcastTrackDataOverlay : AbstractOverlay
+internal sealed class BroadcastTrackDataOverlay : ACCOverlay
 {
     private readonly DebugConfig _config = new();
     private InfoTable _table;

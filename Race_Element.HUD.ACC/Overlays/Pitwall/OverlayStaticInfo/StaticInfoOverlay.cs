@@ -16,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStaticInfo;
 
 [Overlay(Name = "Static Info", Version = 1.00,
     Description = "Shared Memory Static Page", OverlayType = OverlayType.Pitwall)]
-internal sealed class StaticInfoOverlay : AbstractOverlay
+internal sealed class StaticInfoOverlay : ACCOverlay
 {
     private readonly DebugConfig _config = new();
 

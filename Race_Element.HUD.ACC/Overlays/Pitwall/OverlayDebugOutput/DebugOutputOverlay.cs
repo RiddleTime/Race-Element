@@ -11,7 +11,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput;
 
 [Overlay(Name = "Debug Output", Version = 1.00, OverlayType = OverlayType.Pitwall,
     Description = "A panel showing live debug output.")]
-internal sealed class DebugOutputOverlay : AbstractOverlay
+internal sealed class DebugOutputOverlay : ACCOverlay
 {
     private readonly DebugOutputConfiguration _config = new();
     private sealed class DebugOutputConfiguration : OverlayConfiguration

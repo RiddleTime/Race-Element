@@ -19,7 +19,7 @@ OverlayCategory = OverlayCategory.Physics,
 OverlayType = OverlayType.Drive,
 Authors = ["Reinier Klarenberg"],
 Version = 1.0)]
-internal sealed class PressureHistoryOverlay : AbstractOverlay
+internal sealed class PressureHistoryOverlay : ACCOverlay
 {
     private readonly PressureHistoryConfiguration _config = new();
 

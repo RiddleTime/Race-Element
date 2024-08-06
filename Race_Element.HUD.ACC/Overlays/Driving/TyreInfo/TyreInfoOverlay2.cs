@@ -17,7 +17,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.TyreInfo;
 Description = "Overlays the vanilla tyre widget.",
 Authors = ["Reinier Klarenberg"])]
 #endif
-internal sealed class TyreInfoOverlay2 : AbstractOverlay
+internal sealed class TyreInfoOverlay2 : ACCOverlay
 {
     private readonly TyreInfoConfiguration _config = new();
 

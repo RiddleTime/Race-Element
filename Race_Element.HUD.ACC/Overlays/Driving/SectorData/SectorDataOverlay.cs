@@ -16,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.SectorData;
 [Overlay(Name = "Sector Data",
 Description = "Shows data from previous sectors. New driven sectors appear at the top",
 Authors = ["Reinier Klarenberg"])]
-internal sealed class SectorDataOverlay(Rectangle rectangle) : AbstractOverlay(rectangle, "Sector Data")
+internal sealed class SectorDataOverlay(Rectangle rectangle) : ACCOverlay(rectangle, "Sector Data")
 {
     private readonly SectorDataConfiguration _config = new();
 

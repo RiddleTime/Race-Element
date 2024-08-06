@@ -18,7 +18,7 @@ OverlayCategory = OverlayCategory.All,
 Version = 1.00,
 Authors = ["Reinier Klarenberg"])]
 #endif
-internal sealed class SaveReplayReminderOverlay : AbstractOverlay
+internal sealed class SaveReplayReminderOverlay : ACCOverlay
 {
     private ReplaySettings _replaySettings;
 

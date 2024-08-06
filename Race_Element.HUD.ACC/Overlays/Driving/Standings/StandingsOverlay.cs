@@ -26,7 +26,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayStandings;
 Description = "Shows race standings table for different car classes.", OverlayType = OverlayType.Drive)]
 #endif
 
-public sealed class StandingsOverlay : AbstractOverlay
+public sealed class StandingsOverlay : ACCOverlay
 {
     private readonly StandingsConfiguration _config = new();
     private const int _height = 800;

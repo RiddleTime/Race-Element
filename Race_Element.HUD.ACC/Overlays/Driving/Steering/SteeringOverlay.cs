@@ -14,7 +14,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputs;
     Description = "Displays the Steering Input.",
     OverlayCategory = OverlayCategory.Inputs,
 Authors = ["FG", "Reinier Klarenberg"])]
-internal sealed class SteeringOverlay : AbstractOverlay
+internal sealed class SteeringOverlay : ACCOverlay
 {
     private readonly SteeringConfig _config = new();
     private sealed class SteeringConfig : OverlayConfiguration

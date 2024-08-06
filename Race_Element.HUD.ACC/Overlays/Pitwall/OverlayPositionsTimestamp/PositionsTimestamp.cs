@@ -17,7 +17,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayPositionsTimestamp;
 Description = "Shows the car numbers, positions laps driven at a timestamp when the hotkey(control + s) was pressed during a race session.\nPress hotkey to reset and hide hud again.",
 Authors = ["Reinier Klarenberg", "Kenneth Portis(idea)"],
 OverlayType = OverlayType.Pitwall)]
-internal sealed class PositionsTimestamp : AbstractOverlay
+internal sealed class PositionsTimestamp : ACCOverlay
 {
     private readonly PositionsTimestampConfiguration _config = new();
     private sealed class PositionsTimestampConfiguration : OverlayConfiguration

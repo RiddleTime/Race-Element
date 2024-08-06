@@ -15,7 +15,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseX;
     OverlayCategory = OverlayCategory.Inputs,
     OverlayType = OverlayType.Pitwall,
 Authors = ["Reinier Klarenberg"])]
-internal sealed class DualSenseXOverlay : AbstractOverlay
+internal sealed class DualSenseXOverlay : ACCOverlay
 {
     internal readonly DualSenseXConfiguration _config = new();
     private DualSenseXJob _dsxJob;

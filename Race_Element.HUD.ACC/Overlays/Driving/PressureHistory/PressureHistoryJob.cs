@@ -19,13 +19,13 @@ internal readonly record struct PressureHistoryModel
 
 internal sealed class PressureHistoryJob : AbstractLoopJob
 {
-    private readonly AbstractOverlay _overlay;
+    private readonly ACCOverlay _overlay;
 
     private readonly List<float>[] LapPressures;
 
     public EventHandler<PressureHistoryModel> OnNewHistory;
 
-    public PressureHistoryJob(AbstractOverlay overlay)
+    public PressureHistoryJob(ACCOverlay overlay)
     {
         _overlay = overlay;
         LapPressures = new List<float>[4];

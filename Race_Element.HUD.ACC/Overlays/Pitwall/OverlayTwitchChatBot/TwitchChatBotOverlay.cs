@@ -14,7 +14,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChatBot;
 Description = "(type +commands in chat for all available ones)\nTo allow Race Element to connect to the twitch api create the O Auth token at twitchapps.com/tmi",
 OverlayType = OverlayType.Pitwall,
 Authors = ["Reinier Klarenberg"])]
-internal sealed class TwitchChatBotOverlay : AbstractOverlay
+internal sealed class TwitchChatBotOverlay : ACCOverlay
 {
     internal readonly TwitchChatBotConfiguration _config = new();
 

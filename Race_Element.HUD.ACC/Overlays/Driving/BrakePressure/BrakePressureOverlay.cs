@@ -13,7 +13,7 @@ OverlayType = OverlayType.Drive,
 OverlayCategory = OverlayCategory.Inputs,
 Authors = ["Reinier Klarenberg"]
 )]
-internal sealed class BrakePressureOverlay(Rectangle rectangle) : AbstractOverlay(rectangle, "Brake Pressure")
+internal sealed class BrakePressureOverlay(Rectangle rectangle) : ACCOverlay(rectangle, "Brake Pressure")
 {
     private readonly BrakePressureConfiguration _config = new();
 

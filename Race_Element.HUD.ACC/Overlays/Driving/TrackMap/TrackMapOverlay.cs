@@ -24,7 +24,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
     Authors = ["Andrei Jianu"]
 )]
 #endif
-internal sealed class TrackMapOverlay : AbstractOverlay
+internal sealed class TrackMapOverlay : ACCOverlay
 {
     private readonly TrackMapConfiguration _config = new();
     private readonly TrackMapCache _mapCache = new();

@@ -16,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayFuelInfo;
     OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Car,
 Authors = ["Kris Vickers", "Reinier Klarenberg"])]
-internal sealed class FuelInfoOverlay : AbstractOverlay
+internal sealed class FuelInfoOverlay : ACCOverlay
 {
     private readonly InfoPanel _infoPanel;
 

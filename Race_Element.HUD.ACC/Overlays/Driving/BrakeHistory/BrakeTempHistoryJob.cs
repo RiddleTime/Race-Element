@@ -18,13 +18,13 @@ internal readonly record struct BrakeTempHistoryModel
 
 internal sealed class BrakeTempHistoryJob : AbstractLoopJob
 {
-    private readonly AbstractOverlay _overlay;
+    private readonly ACCOverlay _overlay;
 
     private readonly List<float>[] LapBrakeTemps;
 
     public EventHandler<BrakeTempHistoryModel> OnNewHistory;
 
-    public BrakeTempHistoryJob(AbstractOverlay overlay)
+    public BrakeTempHistoryJob(ACCOverlay overlay)
     {
         _overlay = overlay;
         LapBrakeTemps = new List<float>[4];

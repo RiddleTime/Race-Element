@@ -18,7 +18,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear;
     OverlayCategory = OverlayCategory.Driving,
 Description = "Shows the selected gear.",
 Authors = ["Reinier Klarenberg"])]
-internal sealed class CurrentGearOverlay : AbstractOverlay
+internal sealed class CurrentGearOverlay : ACCOverlay
 {
     private readonly CurrentGearConfiguration _config = new();
     private sealed class CurrentGearConfiguration : OverlayConfiguration

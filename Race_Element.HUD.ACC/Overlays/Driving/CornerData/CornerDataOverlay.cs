@@ -20,7 +20,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayCornerData;
         OverlayCategory = OverlayCategory.Lap,
         OverlayType = OverlayType.Drive,
 Authors = ["Reinier Klarenberg"])]
-internal sealed class CornerDataOverlay : AbstractOverlay
+internal sealed class CornerDataOverlay : ACCOverlay
 {
     internal readonly CornerDataConfiguration _config = new();
 

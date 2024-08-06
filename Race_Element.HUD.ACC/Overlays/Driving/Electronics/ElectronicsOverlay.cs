@@ -14,7 +14,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayElectronics;
     OverlayCategory = OverlayCategory.Car,
     OverlayType = OverlayType.Drive,
 Authors = ["Reinier Klarenberg"])]
-internal sealed class ElectronicsOverlay : AbstractOverlay
+internal sealed class ElectronicsOverlay : ACCOverlay
 {
     private readonly ElectronicsConfiguration _config = new();
     private sealed class ElectronicsConfiguration : OverlayConfiguration

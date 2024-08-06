@@ -10,7 +10,7 @@ OverlayType = OverlayType.Drive,
 OverlayCategory = OverlayCategory.Physics,
 Version = 1.00,
 Authors = ["Reinier Klarenberg"])]
-internal sealed class OversteerTraceOverlay : AbstractOverlay
+internal sealed class OversteerTraceOverlay : ACCOverlay
 {
     internal readonly OversteerTraceConfiguration _config = new();
 

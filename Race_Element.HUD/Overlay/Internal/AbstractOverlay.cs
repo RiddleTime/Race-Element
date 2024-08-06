@@ -1,7 +1,7 @@
-﻿using RaceElement.Broadcast.Structs;
-using RaceElement.Data.ACC.Core;
-using RaceElement.Data.ACC.Session;
-using RaceElement.Data.ACC.Tracker;
+﻿//using RaceElement.Broadcast.Structs;
+//using RaceElement.Data.ACC.Core;
+//using RaceElement.Data.ACC.Session;
+//using RaceElement.Data.ACC.Tracker;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.Util;
 using RaceElement.Util.Settings;
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-using static RaceElement.ACCSharedMemory;
+// using static RaceElement.ACCSharedMemory;
 using static RaceElement.HUD.Overlay.Configuration.OverlaySettings;
 
 namespace RaceElement.HUD.Overlay.Internal;
@@ -42,7 +42,7 @@ public abstract class AbstractOverlay : FloatingWindow
         catch (Exception) { }
     }
 
-    private bool Draw = false;
+    protected bool Draw = false;
 
     public bool IsRepositioning { get; internal set; }
 
@@ -50,12 +50,12 @@ public abstract class AbstractOverlay : FloatingWindow
 
     public double RefreshRateHz = 30;
 
-    public SPageFilePhysics pagePhysics;
+/*    public SPageFilePhysics pagePhysics;
     public SPageFileGraphic pageGraphics;
     public SPageFileStatic pageStatic;
     public RealtimeUpdate broadCastRealTime;
     public TrackData broadCastTrackData;
-    public RealtimeCarUpdate broadCastLocalCar;
+    public RealtimeCarUpdate broadCastLocalCar; */
 
     public bool RequestsDrawItself = false;
 
@@ -64,7 +64,7 @@ public abstract class AbstractOverlay : FloatingWindow
     public float Scale { get; private set; } = 1f;
     private bool _allowRescale = false;
 
-    public bool SubscribeToACCData = true;
+    // public bool SubscribeToACCData = true;
 
     public virtual void SetupPreviewData()
     {
@@ -78,11 +78,12 @@ public abstract class AbstractOverlay : FloatingWindow
         if (IsRepositioning)
             return true;
 
-        if (!AccProcess.IsRunning)
-            return false;
+        /* if (!AccProcess.IsRunning)
+            return false; */
 
         bool shouldRender = true;
 
+/*
         if (pageGraphics != null)
         {
             if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_OFF || pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE || !pagePhysics.IgnitionOn)
@@ -100,6 +101,7 @@ public abstract class AbstractOverlay : FloatingWindow
             if (broadCastRealTime.FocusedCarIndex != pageGraphics.PlayerCarID)
                 shouldRender = false;
         }
+        */
 
         return shouldRender;
     }
@@ -156,10 +158,11 @@ public abstract class AbstractOverlay : FloatingWindow
     }
 
     public bool hasClosed = true;
-    public void Start(bool addTrackers = true)
+    public virtual void Start(bool addTrackers = true)
     {
         try
         {
+            /*
             if (addTrackers && SubscribeToACCData)
             {
                 PageStaticTracker.Tracker += PageStaticChanged;
@@ -178,6 +181,7 @@ public abstract class AbstractOverlay : FloatingWindow
             pageStatic = ACCSharedMemory.Instance.ReadStaticPageFile(false);
             pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(false);
             pagePhysics = ACCSharedMemory.Instance.ReadPhysicsPageFile(false);
+            */
 
             try
             {
@@ -243,6 +247,7 @@ public abstract class AbstractOverlay : FloatingWindow
         catch (Exception ex) { Debug.WriteLine(ex); }
     }
 
+/*
     private void Instance_OnNewSessionStarted(object sender, Data.ACC.Database.SessionData.DbRaceSession e)
     {
         broadCastRealTime = new();
@@ -263,7 +268,7 @@ public abstract class AbstractOverlay : FloatingWindow
     {
         broadCastRealTime = e;
     }
-
+*/
     public void RequestRedraw()
     {
         if (hasClosed)
@@ -274,7 +279,7 @@ public abstract class AbstractOverlay : FloatingWindow
 
         this.UpdateLayeredWindow();
     }
-
+/*
     private void PagePhysicsChanged(object sender, SPageFilePhysics e)
     {
         pagePhysics = e;
@@ -289,7 +294,7 @@ public abstract class AbstractOverlay : FloatingWindow
     {
         pageStatic = e;
     }
-
+*/
     public void Stop()
     {
         try
@@ -301,7 +306,7 @@ public abstract class AbstractOverlay : FloatingWindow
             Debug.WriteLine(ex);
             LogWriter.WriteToLog(ex);
         }
-
+/*
         PageStaticTracker.Tracker -= PageStaticChanged;
         PageGraphicsTracker.Instance.Tracker -= PageGraphicsChanged;
         PagePhysicsTracker.Instance.Tracker -= PagePhysicsChanged;
@@ -309,6 +314,7 @@ public abstract class AbstractOverlay : FloatingWindow
         BroadcastTracker.Instance.OnTrackDataUpdate -= BroadCastTrackDataChanged;
         BroadcastTracker.Instance.OnRealTimeLocalCarUpdate -= BroadCastRealTimeLocalCarUpdateChanged;
         RaceSessionTracker.Instance.OnNewSessionStarted -= Instance_OnNewSessionStarted;
+*/        
 
         Draw = false;
 

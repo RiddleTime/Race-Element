@@ -17,7 +17,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.SpeechTester;
 
 [Overlay(Name = "Speech Tester", Description = "Test speech output",
 OverlayType = OverlayType.Pitwall)]
-internal sealed class SpeechTesterOverlay : AbstractOverlay
+internal sealed class SpeechTesterOverlay : ACCOverlay
 {
     private SpeechSynthesizer _synth;
 

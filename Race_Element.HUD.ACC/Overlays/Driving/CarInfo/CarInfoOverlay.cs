@@ -16,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCarInfo;
     Description = "A panel showing the damage time. Optionally showing current tyre set, fuel per lap, exhaust temp and water temp.",
     OverlayCategory = OverlayCategory.Car,
 Authors = ["Reinier Klarenberg"])]
-internal sealed class CarInfoOverlay : AbstractOverlay
+internal sealed class CarInfoOverlay : ACCOverlay
 {
     private readonly CarInfoConfiguration _config = new();
     private sealed class CarInfoConfiguration : OverlayConfiguration

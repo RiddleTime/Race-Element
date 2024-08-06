@@ -16,7 +16,7 @@ OverlayCategory = OverlayCategory.Track,
 OverlayType = OverlayType.Drive,
 Version = 1.00,
 Authors = ["Reinier Klarenberg"])]
-internal sealed class RainPredictionOverlay : AbstractOverlay
+internal sealed class RainPredictionOverlay : ACCOverlay
 {
     internal readonly RainPredictionConfiguration _config = new();
 

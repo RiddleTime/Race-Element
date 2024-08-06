@@ -16,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayNamePlate;
 #if DEBUG
 [Overlay(Name = "Name plate", Description = "A plate/bar", OverlayType = OverlayType.Pitwall)]
 #endif
-internal sealed class NamePlateOverlay : AbstractOverlay
+internal sealed class NamePlateOverlay : ACCOverlay
 {
     private readonly NamePlateConfiguration _config = new();
     private sealed class NamePlateConfiguration : OverlayConfiguration

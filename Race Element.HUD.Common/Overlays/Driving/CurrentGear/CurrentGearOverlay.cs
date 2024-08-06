@@ -10,6 +10,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using Unglide;
 using RaceElement.Data.Common;
+using RaceElement.Data.Common.SimulatorData;
 
 namespace RaceElement.HUD.Common.Overlays.OverlayCurrentGear;
 
@@ -107,9 +108,9 @@ internal sealed class CurrentGearOverlay : AbstractOverlay
 
     public sealed override bool ShouldRender()
     {
-        // TODO: refactor to allow for non-ACC sims
+        /* TODO: refactor to allow for non-ACC sims
         if (_config.Gear.Spectator && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
-            return true;
+            return true; */
 
         return base.ShouldRender();
     }
@@ -120,10 +121,10 @@ internal sealed class CurrentGearOverlay : AbstractOverlay
 
         if (_config.Gear.Spectator)
         {
-            int focusedIndex = broadCastRealTime.FocusedCarIndex;
-
+            int focusedIndex = SessionData.Instance.FocusedCarIndex;
+    
             // TODO: refactor to allow for non-ACC sims
-            if (RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, focusedIndex))
+            // if (RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, focusedIndex))
                 lock (EntryListTracker.Instance.Cars)
                     if (EntryListTracker.Instance.Cars.Any())
                     {

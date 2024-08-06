@@ -18,7 +18,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPhysicsInfo;
     Description = "Shared Memory Physics Page",
     OverlayType = OverlayType.Pitwall,
     OverlayCategory = OverlayCategory.Physics)]
-internal sealed class PhysicsInfoOverlay : AbstractOverlay
+internal sealed class PhysicsInfoOverlay : ACCOverlay
 {
     private readonly DebugConfig _config = new();
 

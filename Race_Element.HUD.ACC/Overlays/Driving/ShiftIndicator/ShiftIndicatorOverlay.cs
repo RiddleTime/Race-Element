@@ -18,7 +18,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayShiftIndicator;
     OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Driving,
 Authors = ["Reinier Klarenberg"])]
-internal sealed class ShiftIndicatorOverlay : AbstractOverlay
+internal sealed class ShiftIndicatorOverlay : ACCOverlay
 {
     private readonly ShiftIndicatorConfiguration _config = new();
 

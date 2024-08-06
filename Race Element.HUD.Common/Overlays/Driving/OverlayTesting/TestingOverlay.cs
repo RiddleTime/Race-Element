@@ -17,7 +17,6 @@ namespace RaceElement.HUD.Common.Overlays.Driving.OverlayTesting
             Width = 500;
             Height = 150;
             RefreshRateHz = 50;
-            SubscribeToACCData = false;
 
             _panel = new InfoPanel(10, 500);
             _job = new SimpleLoopJob() { Action = () => SimDataProvider.Update(), IntervalMillis = 1000 / 50 };

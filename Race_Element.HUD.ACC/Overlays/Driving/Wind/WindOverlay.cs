@@ -14,7 +14,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayWind;
     OverlayCategory = OverlayCategory.Track,
     Version = 1.00,
 Authors = ["Reinier Klarenberg"])]
-internal sealed class WindDirectionOverlay : AbstractOverlay
+internal sealed class WindDirectionOverlay : ACCOverlay
 {
     private readonly WindDirectionConfiguration _config = new();
     private sealed class WindDirectionConfiguration : OverlayConfiguration

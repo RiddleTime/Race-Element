@@ -21,7 +21,7 @@ OverlayType = OverlayType.Pitwall,
 Authors = ["Reinier Klarenberg"]
 )]
 #endif
-internal class ReplayAssistOverlay : AbstractOverlay
+internal class ReplayAssistOverlay : ACCOverlay
 {
     private InfoPanel _panel;
     private Process _accProcess;

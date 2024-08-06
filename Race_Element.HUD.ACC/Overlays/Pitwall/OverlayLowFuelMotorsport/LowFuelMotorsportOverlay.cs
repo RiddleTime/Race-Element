@@ -16,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.LowFuelMotorsport;
     Authors = ["Andrei Jianu"]
 )]
 
-internal sealed class LowFuelMotorsportOverlay : AbstractOverlay
+internal sealed class LowFuelMotorsportOverlay : ACCOverlay
 {
     private readonly LowFuelMotorsportConfiguration _config = new();
 

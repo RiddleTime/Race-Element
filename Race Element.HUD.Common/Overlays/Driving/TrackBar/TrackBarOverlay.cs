@@ -1,5 +1,6 @@
-﻿using RaceElement.Data.ACC.EntryList;
-using RaceElement.Data.ACC.Session;
+﻿// using RaceElement.Data.ACC.EntryList;
+// using RaceElement.Data.ACC.Session;
+using RaceElement.Data.Common.SimulatorData;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -8,14 +9,14 @@ using RaceElement.Util.SystemExtensions;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
-using static RaceElement.Data.ACC.Tracks.TrackData;
+// using static RaceElement.Data.ACC.Tracks.TrackData;
 
-namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar;
+namespace RaceElement.HUD.Common.Overlays.Driving.OverlayTrackBar;
 
 [Overlay(Name = "Track Bar",
          Description = "A bar displaying a flat and zoomed in version of the Track Circle HUD.",
 Authors = ["Reinier Klarenberg"])]
-internal sealed class TrackBarOverlay : ACCOverlay
+internal sealed class TrackBarOverlay : AbstractOverlay
 {
     private readonly TrackBarConfiguration _config = new();
     private sealed class TrackBarConfiguration : OverlayConfiguration
@@ -50,6 +51,11 @@ internal sealed class TrackBarOverlay : ACCOverlay
         RefreshRateHz = 6;
     }
 
+    public sealed override void SetupPreviewData()
+    {
+        SessionData.Instance.AddCar(1, new CarInfo(1));
+    }
+
     public sealed override void BeforeStart()
     {
         _range = _config.Bar.Range / 100f;
@@ -74,8 +80,10 @@ internal sealed class TrackBarOverlay : ACCOverlay
 
     public sealed override bool ShouldRender()
     {
+        /* TODO
         if (_config.Viewing.Spectator && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
             return true;
+            */
 
         return base.ShouldRender();
     }
@@ -84,12 +92,13 @@ internal sealed class TrackBarOverlay : ACCOverlay
     {
         _cachedBackground?.Draw(g);
 
-        if (EntryListTracker.Instance.Cars.Count == 0) return;
+        if (SessionData.Instance.Cars.Count == 0) return;
 
         g.TextRenderingHint = TextRenderingHint.AntiAlias;
 
-        var spectatingCar = EntryListTracker.Instance.Cars.First(x => x.Key == broadCastRealTime.FocusedCarIndex);
-        float spectatingSplinePosition = spectatingCar.Value.RealtimeCarUpdate.SplinePosition;
+        // TODO: is the car list in the index order, then we can access directly without iteration
+        var spectatingCar = SessionData.Instance.Cars.First(x => x.Key == SessionData.Instance.FocusedCarIndex);
+        float spectatingSplinePosition = spectatingCar.Value.SplinePosition;
 
         float halfRange = _range / 2f;
         float minSpline = spectatingSplinePosition - halfRange;
@@ -103,9 +112,9 @@ internal sealed class TrackBarOverlay : ACCOverlay
             adjustedUp = true;
         }
 
-        var data = EntryListTracker.Instance.Cars.Where(x =>
+        var data = SessionData.Instance.Cars.Where(x =>
         {
-            float pos = x.Value.RealtimeCarUpdate.SplinePosition;
+            float pos = x.Value.SplinePosition;
 
             if (adjustedUp && pos < 0.5)
                 pos += 1;
@@ -118,11 +127,11 @@ internal sealed class TrackBarOverlay : ACCOverlay
         //Debug.WriteLine($"Found {data.Count()} cars in range\nRange: {minSpline:F2} - {maxSpline:F2}");
         foreach (var entry in data)
         {
-            float pos = entry.Value.RealtimeCarUpdate.SplinePosition;
+            float pos = entry.Value.SplinePosition;
             if (adjustedUp && pos < 0.5) pos += 1;
             if (pos < minSpline) pos += 1;
             float correctedPos = maxSpline - pos;
-            bool isSpectatingCar = broadCastRealTime.FocusedCarIndex == entry.Key;
+            bool isSpectatingCar = SessionData.Instance.FocusedCarIndex == entry.Key;
 
             float correctedPercentage = (correctedPos * 100) / _range / 100;
             if (isSpectatingCar) correctedPercentage = 0.5f;
@@ -130,10 +139,10 @@ internal sealed class TrackBarOverlay : ACCOverlay
 
             int x = BarRect.Width - (int)(BarRect.Width * correctedPercentage);
 
-            bool isInPits = entry.Value.RealtimeCarUpdate.CarLocation == Broadcast.CarLocationEnum.Pitlane;
+            bool isInPits = entry.Value.CarLocation == CarInfo.CarLocationEnum.Pitlane;
 
             Pen pen = isSpectatingCar ? Pens.Red : isInPits ? Pens.Green : Pens.White;
-            if (!isInPits && !isSpectatingCar && entry.Value.RealtimeCarUpdate.Kmh < 33)
+            if (!isInPits && !isSpectatingCar && entry.Value.Kmh < 33)
                 pen = Pens.Yellow;
             int y = isInPits ? 25 : 5;
             g.DrawLine(pen, new Point(x, y), new Point(x, BarRect.Height - y));
@@ -145,20 +154,21 @@ internal sealed class TrackBarOverlay : ACCOverlay
 
                 Color textColor = Color.White;
 
-                if (pageGraphics.SessionType == ACCSharedMemory.AcSessionType.AC_RACE || broadCastRealTime.SessionType == Broadcast.RaceSessionType.Race)
+                if (SessionData.Instance.SessionType == RaceSessionType.Race || SessionData.Instance.SessionType == RaceSessionType.Race)
                 {
-                    if (entry.Value.RealtimeCarUpdate.Laps < spectatingCar.Value.RealtimeCarUpdate.Laps)
+                    if (entry.Value.Laps < spectatingCar.Value.Laps)
                         textColor = Color.Cyan;
-                    if (entry.Value.RealtimeCarUpdate.Laps > spectatingCar.Value.RealtimeCarUpdate.Laps)
+                    if (entry.Value.Laps > spectatingCar.Value.Laps)
                         textColor = Color.Orange;
                 }
 
-                g.DrawStringWithShadow($"{entry.Value.RealtimeCarUpdate.Position}", font, textColor, new Point(x, y));
+                g.DrawStringWithShadow($"{entry.Value.Position}", font, textColor, new Point(x, y));
             }
 
             //Debug.WriteLine($"{entry.Value.RealtimeCarUpdate.SplinePosition:F2}");
         }
 
+        /* TODO: we don't have corner info for all sims
         AbstractTrackData current = GetCurrentTrack(pageStatic.Track);
         if (current == null && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
             current = GetCurrentTrackByFullName(broadCastTrackData.TrackName);
@@ -189,7 +199,7 @@ internal sealed class TrackBarOverlay : ACCOverlay
                     g.DrawStringWithShadow($"T{corner.Value.Item1}", font, Color.Orange, new Point(centerX - 10, BarRect.Height - 16));
                 }
             }
-        }
+        } */
 
     }
 }
