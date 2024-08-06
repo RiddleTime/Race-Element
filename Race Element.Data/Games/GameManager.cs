@@ -1,10 +1,13 @@
-﻿using RaceElement.Data.Common;
+﻿using RaceElement.Core.Jobs.LoopJob;
+using RaceElement.Data.Common;
 using RaceElement.Data.Games.iRacing;
 
 namespace RaceElement.Data.Games;
 
 public static class GameManager
 {
+    private static SimpleLoopJob _job;
+
     public static Game CurrentGame { get; private set; } = Game.AssettoCorsaCompetizione;
 
     public static event EventHandler<Game>? OnGameChanged;
@@ -15,6 +18,10 @@ public static class GameManager
         CurrentGame = game;
         SimDataProvider.Clear();
         OnGameChanged?.Invoke(null, game);
+
+        // start job to update SimDataProvider every 50ms
+        _job = new SimpleLoopJob() { Action = () => SimDataProvider.Update(), IntervalMillis = 1000 / 50 };
+        _job.Run();                 
     }
 
 
@@ -31,6 +38,9 @@ public static class GameManager
                     IRacingDataProvider.Stop();
                     break;
                 }
+        }
+        if (_job != null) {
+            _job.CancelJoin();
         }
 
     }
