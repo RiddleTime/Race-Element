@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using RaceElement.Data.ACC.Tracks;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
@@ -8,10 +9,8 @@ public static class TrackMapPitPrediction
 {
     public static PitStop GetPitStop(List<TrackPoint> track, float pitTimeMs)
     {
-        var name = ACCSharedMemory.Instance.PageFileStatic.Track.ToLower();
-        var info = TrackInfo.Data.GetValueOrDefault(name, new TrackInfo(0, 0));
-
-        return ComputePitStop(track, pitTimeMs + info.PitLaneTimeMs);
+        var info = TrackData.GetCurrentTrack(ACCSharedMemory.Instance.PageFileStatic.Track);
+        return ComputePitStop(track, pitTimeMs + info.PitLaneTime);
     }
 
     public static PitStop GetPitStopWithDamage(List<TrackPoint> track, float pitTimeMs)
@@ -24,10 +23,8 @@ public static class TrackMapPitPrediction
             return null;
         }
 
-        var name = ACCSharedMemory.Instance.PageFileStatic.Track.ToLower();
-        var info = TrackInfo.Data.GetValueOrDefault(name, new TrackInfo(0, 0));
-
-        time = time * 1000 + pitTimeMs + info.PitLaneTimeMs;
+        var info = TrackData.GetCurrentTrack(ACCSharedMemory.Instance.PageFileStatic.Track);
+        time = time * 1000 + pitTimeMs + info.PitLaneTime;
         var pitStop = ComputePitStop(track, time);
 
         if (pitStop != null)

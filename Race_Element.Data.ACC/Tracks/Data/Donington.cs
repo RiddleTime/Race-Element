@@ -12,6 +12,9 @@ internal sealed class Donington : AbstractTrackData
     public override string FullName => "Donington Park";
     public override int TrackLength => 4020;
 
+    public override float FactorScale => 0.27f;
+    public override float PitLaneTime => 19f;
+
     public override List<float> Sectors => new() { 0.233f, 0.668f };
 
     public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()

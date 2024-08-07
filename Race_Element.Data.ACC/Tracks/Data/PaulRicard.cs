@@ -12,6 +12,9 @@ internal sealed class PaulRicard : AbstractTrackData
     public override string FullName => "Circuit Paul Ricard";
     public override int TrackLength => 5770;
 
+    public override float FactorScale => 0.16f;
+    public override float PitLaneTime => 27f;
+
     public override List<float> Sectors => new() { 0.264f, 0.591f };
 
     public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()

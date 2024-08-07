@@ -7,12 +7,12 @@ namespace RaceElement.Data.ACC.Tracks.Data;
 internal sealed class RedBullRing : AbstractTrackData
 {
     public override Guid Guid => new("f40d09f5-d548-4206-978c-61275840e808");
-
     public override string GameName => "red_bull_ring";
-
     public override string FullName => "Red Bull Ring";
-
     public override int TrackLength => 4318;
+
+    public override float FactorScale => 0.29f;
+    public override float PitLaneTime => 20f;
 
     public override List<float> Sectors => [0.28641132f, 0.6864937f];
 

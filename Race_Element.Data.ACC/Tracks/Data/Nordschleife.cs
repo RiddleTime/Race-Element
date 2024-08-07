@@ -8,12 +8,12 @@ namespace RaceElement.Data.ACC.Tracks.Data;
 internal sealed class Nordschleife : AbstractTrackData
 {
     public override Guid Guid => new("fae08ea8-03fb-429b-be59-c56c7cd18ef1");
-
     public override string GameName => "nurburgring_24h";
-
     public override string FullName => "24h Nürburgring";
-
     public override int TrackLength => 25300;
+
+    public override float FactorScale => 0.061f;
+    public override float PitLaneTime => 25f;
 
     public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => [];
     //new()

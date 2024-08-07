@@ -12,6 +12,9 @@ internal sealed class BrandsHatch : AbstractTrackData
     public override string FullName => "Brands Hatch Circuit";
     public override int TrackLength => 3908;
 
+    public override float FactorScale => 0.37f;
+    public override float PitLaneTime => 19f;
+
     public override List<float> Sectors => new() { 0.287f, 0.563f };
 
     public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()
