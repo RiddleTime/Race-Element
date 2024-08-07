@@ -1,19 +1,13 @@
 ﻿using RaceElement.HUD.Overlay.Internal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
-namespace RaceElement.HUD.ACC;
-
-public class OverlaysAcc
+namespace RaceElement.HUD.Common;
+public static class CommonHuds
 {
     private static readonly object _lock = new();
 
     public static readonly SortedDictionary<string, Type> AbstractOverlays = [];
     public static readonly List<AbstractOverlay> ActiveOverlays = [];
-
-    protected OverlaysAcc() { }
 
     public static void GenerateDictionary()
     {

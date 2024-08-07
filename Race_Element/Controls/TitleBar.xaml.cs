@@ -1,6 +1,8 @@
 ﻿using Octokit;
 using RaceElement.Controls.Util.Updater;
 using RaceElement.Data.Games;
+using RaceElement.Util.Settings;
+using RaceElement.Util.SystemExtensions;
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -75,6 +77,11 @@ public partial class TitleBar : UserControl
             {
                 Game currentGame = (Game)item.DataContext;
                 GameManager.SetCurrentGame(currentGame);
+
+                var uiSettings = new UiSettings();
+                var settings = uiSettings.Get();
+                settings.SelectedGame = currentGame;
+                uiSettings.Save(settings);
             }
         };
 
@@ -118,6 +125,7 @@ public partial class TitleBar : UserControl
         comboBoxCurrentGame.Items.Clear();
         foreach (Game game in Enum.GetValues(typeof(Game)))
         {
+            if (game == Game.None) continue;
             string friendlyName = game.ToShortName();
             if (friendlyName.Length > 0)
             {
@@ -130,8 +138,9 @@ public partial class TitleBar : UserControl
             }
         }
 
-        comboBoxCurrentGame.SelectedIndex = (int)GameManager.CurrentGame;
-
+        int index = (int)new UiSettings().Get().SelectedGame - 1;
+        index.Clip(0, Enum.GetValues(typeof(Game)).Length - 1);
+        comboBoxCurrentGame.SelectedIndex = index;
     }
 
     private void TitleBar_MouseDoubleClick(object sender, MouseButtonEventArgs e)

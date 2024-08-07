@@ -12,6 +12,7 @@ internal static partial class LocalCarMapper
     [MapProperty(nameof(PageFilePhysics.Rpms), nameof(@LocalCarData.Engine.Rpm))]
     [MapProperty(nameof(PageFilePhysics.IsEngineRunning), nameof(@LocalCarData.Engine.IsRunning))]
     [MapProperty(nameof(PageFilePhysics.IgnitionOn), nameof(@LocalCarData.Engine.IsIgnitionOn))]
+    [MapProperty(nameof(PageFilePhysics.PitLimiterOn), nameof(@LocalCarData.Engine.IsPitLimiterOn))]
     // -- Inputs Data
     [MapProperty(nameof(PageFilePhysics.Gas), nameof(@LocalCarData.Inputs.Throttle))]
     [MapProperty(nameof(PageFilePhysics.Brake), nameof(@LocalCarData.Inputs.Brake))]

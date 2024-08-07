@@ -25,6 +25,7 @@ namespace RaceElement.Data.Common.SimulatorData
     {
         public bool IsRunning { get; set; }
         public bool IsIgnitionOn { get; set; }
+        public bool IsPitLimiterOn { get; set; }
 
         /// <summary>
         /// Current revolutions per minute

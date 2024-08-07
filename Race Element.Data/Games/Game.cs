@@ -1,8 +1,10 @@
 ﻿
 namespace RaceElement.Data.Games
 {
+    [Flags]
     public enum Game
     {
+        None,
         AssettoCorsa1,
         AssettoCorsaCompetizione,
         //rFactor2,
