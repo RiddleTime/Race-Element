@@ -40,7 +40,8 @@ public abstract class AbstractOverlay : CommonAbstractOverlay
 
     public override bool DefaultShouldRender()
     {
-        // TODO : this creates an infinite loop bool shouldRender = base.ShouldRender();
+        if (HudSettings.Cached.DemoMode)
+            return true;
     
         if (!AccProcess.IsRunning)
             return false;

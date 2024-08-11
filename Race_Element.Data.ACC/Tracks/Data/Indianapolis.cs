@@ -12,6 +12,9 @@ internal sealed class Indianapolis : AbstractTrackData
     public override string FullName => "Indianapolis Motor Speedway";
     public override int TrackLength => 4167;
 
+    public override float FactorScale => 0.25f;
+    public override float PitLaneTime => 44f;
+
     public override List<float> Sectors => new() { 0.390f, 0.719f };
 
     public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()

@@ -12,6 +12,9 @@ internal sealed class Nurburgring : AbstractTrackData
     public override string FullName => "Nürburgring";
     public override int TrackLength => 5137;
 
+    public override float FactorScale => 0.24f;
+    public override float PitLaneTime => 25f;
+
     public override List<float> Sectors => new() { 0.451f, 0.858f };
 
     // https://www.paradigmshiftracing.com/uploads/4/8/2/6/48261497/nurburgring-map_orig.png

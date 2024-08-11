@@ -13,17 +13,18 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using RaceElement.Data;
+using RaceElement.Data.ACC.Tracks;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
-#if DEBUG
+//#if DEBUG
 [Overlay(Name = "Track Map",
     Description = "Shows a track map",
     OverlayCategory = OverlayCategory.Track,
     OverlayType = OverlayType.Drive,
     Authors = ["Andrei Jianu"]
 )]
-#endif
+//#endif
 internal sealed class TrackMapOverlay : AbstractOverlay
 {
     private readonly TrackMapConfiguration _config = new();
@@ -36,7 +37,6 @@ internal sealed class TrackMapOverlay : AbstractOverlay
     private BoundingBox _trackOriginalBoundingBox;
     private BoundingBox _trackBoundingBox;
 
-    private readonly float _outLineBorder = 2.0f;
     private readonly float _margin = 64.0f;
     private float _scale = 0.15f;
 
@@ -45,19 +45,10 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         RefreshRateHz = _config.Others.RefreshInterval;
 
         _mapCache.Map = null;
-        _mapCache.YellowFlag = TrackMapDrawer.CreateCircleWithOutline(Color.Yellow, _config.Others.CarSize, _outLineBorder);
+        _mapCache.CarPlayer = TrackMapDrawer.CreateCircleWithOutline(_config.MapColors.Player, _config.Others.CarSize + 3, _config.Others.OutCircleSize, Color.Black);
 
-        _mapCache.OthersLappedPlayer = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.OthersLappedPlayer, _config.Others.CarSize, _outLineBorder);
-        _mapCache.PlayerLapperOthers = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.PlayerLappedOthers, _config.Others.CarSize, _outLineBorder);
-
-        _mapCache.PitStopWithDamage = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.PitStopWithDamage, _config.Others.CarSize, _outLineBorder);
-        _mapCache.PitStop = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.PitStop, _config.Others.CarSize, _outLineBorder);
-
-        _mapCache.CarDefault = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.Default, _config.Others.CarSize, _outLineBorder);
-        _mapCache.CarPlayer = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.Player, _config.Others.CarSize + 3, _outLineBorder);
-
-        _mapCache.ValidForBest = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.ImprovingLap, _config.Others.CarSize, _outLineBorder);
-        _mapCache.Leader = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.Leader, _config.Others.CarSize, _outLineBorder);
+        _mapCache.PitStopWithDamage = TrackMapDrawer.CreateCircleWithOutline(_config.MapColors.PitStopWithDamage, _config.Others.CarSize, _config.Others.OutCircleSize, Color.Black);
+        _mapCache.PitStop = TrackMapDrawer.CreateCircleWithOutline(_config.MapColors.PitStop, _config.Others.CarSize, _config.Others.OutCircleSize, Color.Black);
     }
 
     public override void BeforeStart()
@@ -169,8 +160,8 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     private void OnMapPositionsCallback(object sender, List<TrackPoint> positions)
     {
-        var trackInfo = TrackInfo.Data.GetValueOrDefault(pageStatic.Track.ToLower(), new TrackInfo(0, 0));
-        _scale = trackInfo.Scale * _config.General.ScaleFactor;
+        var trackData = TrackData.GetCurrentTrack(pageStatic.Track);
+        _scale = trackData.FactorScale * _config.General.ScaleFactor;
 
         _miniMapCreationJob.Cancel();
         _trackOriginalBoundingBox = TrackMapTransform.GetBoundingBox(positions);
@@ -186,10 +177,59 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             track[i] = new TrackPoint(track[i]) { X = x, Y = y };
         }
 
+        List<TrackPoint> sector1 = new(), sector2 = new(), sector3 = new();
         _trackBoundingBox = boundaries;
         _trackPositions = track;
 
-        _mapCache.Map = TrackMapDrawer.CreateLineFromPoints(_config.Colors.Map, _config.General.Thickness, _margin, _trackPositions, _trackBoundingBox);
+        if (trackData.Sectors.Count >= 2)
+        {
+            int idx = 0, fromSectorOne = 0;
+            while (_trackPositions[idx].Spline > 0.9f && _trackPositions[idx].Spline < _trackPositions[idx + 1].Spline)
+            {
+                ++idx;
+                ++fromSectorOne;
+            }
+
+            if (1.0f - _trackPositions[idx].Spline < float.Epsilon)
+            {
+                ++idx;
+                ++fromSectorOne;
+            }
+
+            while (_trackPositions[idx].Spline < trackData.Sectors[0])
+            {
+                sector1.Add(_trackPositions[idx]);
+                ++idx;
+            }
+
+            while (_trackPositions[idx].Spline < trackData.Sectors[1])
+            {
+                sector2.Add(_trackPositions[idx]);
+                ++idx;
+            }
+
+            while (idx < _trackPositions.Count)
+            {
+                sector3.Add(_trackPositions[idx]);
+                ++idx;
+            }
+
+            for (var i = 0; i < fromSectorOne; ++i)
+            {
+                sector3.Add(_trackPositions[i]);
+            }
+
+            var s1 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector1, _config.General.Thickness, _margin, sector1, _trackBoundingBox);
+            var s2 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector2, _config.General.Thickness, _margin, sector2, _trackBoundingBox);
+            var s3 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector3, _config.General.Thickness, _margin, sector3, _trackBoundingBox);
+            _mapCache.Map = TrackMapDrawer.MixImages(s1, s2, s3, s1.Width, s1.Height);
+        }
+        else
+        {
+            // TODO(Andrei): Add sectors for Nurburgring 24h
+            _mapCache.Map = TrackMapDrawer.CreateLineFromPoints(Color.Snow, _config.General.Thickness, _margin, _trackPositions, _trackBoundingBox);
+        }
+
         Debug.WriteLine($"[MAP] {broadCastTrackData.TrackName} ({pageStatic.Track}) -> [S: {_scale:F3}] [L: {broadCastTrackData.TrackMeters:F3}] [P: {_trackPositions.Count}]");
 
         if (!_config.Others.SavePreview || pageStatic.Track.Length == 0)
