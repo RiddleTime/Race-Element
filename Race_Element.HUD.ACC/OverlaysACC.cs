@@ -11,7 +11,7 @@ public class OverlaysAcc
     private static readonly object _lock = new();
 
     public static readonly SortedDictionary<string, Type> AbstractOverlays = [];
-    public static readonly List<AbstractOverlay> ActiveOverlays = [];
+    public static readonly List<CommonAbstractOverlay> ActiveOverlays = [];
 
     protected OverlaysAcc() { }
 

@@ -19,7 +19,7 @@ OverlayCategory = OverlayCategory.Physics,
 OverlayType = OverlayType.Drive,
 Authors = ["Reinier Klarenberg"],
 Version = 1.0)]
-internal sealed class BrakeTempHistoryOverlay : ACCOverlay
+internal sealed class BrakeTempHistoryOverlay : AbstractOverlay
 {
     private readonly BrakeTempHistoryConfiguration _config = new();
 

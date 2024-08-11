@@ -18,7 +18,7 @@ OverlayCategory = OverlayCategory.Physics,
 OverlayType = OverlayType.Drive,
 Authors = ["Reinier Klarenberg"],
 Version = 1.0)]
-internal sealed class TyreTempHistoryOverlay : ACCOverlay
+internal sealed class TyreTempHistoryOverlay : AbstractOverlay
 {
     private readonly TyreTempHistoryConfiguration _config = new();
 

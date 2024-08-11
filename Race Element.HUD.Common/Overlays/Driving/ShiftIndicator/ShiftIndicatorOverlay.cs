@@ -19,7 +19,7 @@ namespace RaceElement.HUD.Common.Overlays.OverlayShiftIndicator;
     OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Driving,
 Authors = ["Reinier Klarenberg"])]
-internal sealed class ShiftIndicatorOverlay : AbstractOverlay
+internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
 {
     private readonly ShiftIndicatorConfiguration _config = new();
 
@@ -52,7 +52,6 @@ internal sealed class ShiftIndicatorOverlay : AbstractOverlay
         this.RefreshRateHz = this._config.Bar.RefreshRate;
         this.Height = _config.Bar.Height + 1;
         this.Width = _config.Bar.Width + 1;
-        this.SubscribeToACCData = false;
     }
 
     public sealed override void SetupPreviewData()

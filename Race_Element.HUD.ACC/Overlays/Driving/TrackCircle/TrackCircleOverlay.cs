@@ -15,7 +15,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackCircle;
 [Overlay(Name = "Track Circle",
         Description = "Shows the progression of all cars on track in a track circle.",
 Authors = ["Reinier Klarenberg"])]
-internal sealed class TrackCircleOverlay : ACCOverlay
+internal sealed class TrackCircleOverlay : AbstractOverlay
 {
     private readonly TrackCircleConfiguration _config = new();
     private sealed class TrackCircleConfiguration : OverlayConfiguration

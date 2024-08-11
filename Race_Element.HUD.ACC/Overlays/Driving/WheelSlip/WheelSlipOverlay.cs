@@ -14,7 +14,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip;
     OverlayCategory = OverlayCategory.Physics,
     OverlayType = OverlayType.Drive,
 Authors = ["Reinier Klarenberg"])]
-internal sealed class WheelSlipOverlay : ACCOverlay
+internal sealed class WheelSlipOverlay : AbstractOverlay
 {
     private readonly WheelSlipConfiguration _config = new();
     private sealed class WheelSlipConfiguration : OverlayConfiguration

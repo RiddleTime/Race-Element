@@ -19,13 +19,13 @@ internal readonly record struct TyreTempHistoryModel
 
 internal sealed class TyreTempHistoryJob : AbstractLoopJob
 {
-    private readonly ACCOverlay _overlay;
+    private readonly AbstractOverlay _overlay;
 
     private readonly List<float>[] LapTemps;
 
     public EventHandler<TyreTempHistoryModel> OnNewHistory;
 
-    public TyreTempHistoryJob(ACCOverlay overlay)
+    public TyreTempHistoryJob(AbstractOverlay overlay)
     {
         _overlay = overlay;
         LapTemps = new List<float>[4];

@@ -9,7 +9,7 @@ using System.Drawing;
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayGridTest;
 
 [Overlay(Name = "Grid Test", Description = "Testing of the grid", OverlayType = OverlayType.Pitwall)]
-internal sealed class GridTestOverlay : ACCOverlay
+internal sealed class GridTestOverlay : AbstractOverlay
 {
     private readonly GridTestConfiguration _config = new();
     private sealed class GridTestConfiguration : OverlayConfiguration

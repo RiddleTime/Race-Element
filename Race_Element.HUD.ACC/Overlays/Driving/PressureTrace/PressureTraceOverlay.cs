@@ -11,7 +11,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace;
     Description = "Live graphs of the tyre pressures, green is within range, red is too high, blue is too low.",
     OverlayCategory = OverlayCategory.Physics,
 Authors = ["Reinier Klarenberg"])]
-internal sealed class PressureTraceOverlay : ACCOverlay
+internal sealed class PressureTraceOverlay : AbstractOverlay
 {
     private readonly PressureTraceOverlayConfig _config = new();
     private sealed class PressureTraceOverlayConfig : OverlayConfiguration

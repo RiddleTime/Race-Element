@@ -14,7 +14,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayDamage;
     OverlayCategory = OverlayCategory.Car,
     Authors = ["Reinier Klarenberg"]
 )]
-internal sealed class DamageOverlay : ACCOverlay
+internal sealed class DamageOverlay : AbstractOverlay
 {
     private readonly DamageConfiguration _config = new();
 

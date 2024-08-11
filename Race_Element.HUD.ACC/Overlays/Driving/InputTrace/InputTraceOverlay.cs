@@ -10,7 +10,7 @@ Version = 1.00,
 Authors = ["Reinier Klarenberg"],
 OverlayType = OverlayType.Drive,
 OverlayCategory = OverlayCategory.Inputs)]
-internal sealed class InputTraceOverlay : ACCOverlay
+internal sealed class InputTraceOverlay : AbstractOverlay
 {
     private readonly InputTraceConfiguration _config = new();
 

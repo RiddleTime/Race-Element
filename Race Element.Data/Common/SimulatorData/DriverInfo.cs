@@ -2,8 +2,8 @@
 
 public struct DriverInfo
 {
-    public string FirstName { get; internal set; }
-    public string LastName { get; internal set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
     public string ShortName { get; internal set; }
     // Rookie/D-class/Gold. Possibly enum later
     public string Category { get; internal set; }

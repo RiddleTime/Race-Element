@@ -14,7 +14,7 @@ Description = "Benches Drawing.\nThe benchmark rendering happens off-screen, low
 OverlayType = OverlayType.Pitwall,
 Version = 1.00,
 Authors = ["Reinier Klarenberg"])]
-internal sealed class CachedBitmapBenchmarkOverlay : ACCOverlay
+internal sealed class CachedBitmapBenchmarkOverlay : AbstractOverlay
 {
     private readonly CachedBitmapBenchmarkConfiguration _config = new();
 

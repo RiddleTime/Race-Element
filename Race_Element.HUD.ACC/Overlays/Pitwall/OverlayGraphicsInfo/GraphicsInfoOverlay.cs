@@ -16,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayGraphicsInfo;
 
 [Overlay(Name = "Graphics Info", Version = 1.00,
     Description = "Shared Memory Graphics Page", OverlayType = OverlayType.Pitwall)]
-internal sealed class GraphicsInfoOverlay : ACCOverlay
+internal sealed class GraphicsInfoOverlay : AbstractOverlay
 {
     private readonly DebugConfig _config = new();
 

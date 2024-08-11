@@ -11,7 +11,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.Speedometer;
 [Overlay(Name = "Speedometer",
 Description = "A simple piece of text displaying the speed",
 Authors = ["Reinier Klarenberg"])]
-internal sealed class SpeedometerOverlay : ACCOverlay
+internal sealed class SpeedometerOverlay : AbstractOverlay
 {
     private readonly SpeedometerConfiguration _config = new();
     private sealed class SpeedometerConfiguration : OverlayConfiguration

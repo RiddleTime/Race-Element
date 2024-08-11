@@ -7,7 +7,7 @@ using System.Drawing;
 namespace RaceElement.HUD.Common.Overlays.Driving.OverlayTesting
 {
     [Overlay(Name = "Testing", Description = "some testing ", OverlayType = OverlayType.Drive)]
-    internal class TestingOverlay : AbstractOverlay
+    internal class TestingOverlay : CommonAbstractOverlay
     {
         private readonly AbstractLoopJob _job;
         private readonly InfoPanel _panel;

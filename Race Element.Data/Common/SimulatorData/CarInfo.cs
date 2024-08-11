@@ -4,31 +4,43 @@ namespace RaceElement.Data.Common.SimulatorData;
 
 public sealed class CarInfo
 {
-    public ushort CarIndex { get; }
-    // TODO: define car model type values
-    public byte CarModelType { get; protected internal set; }
+    public uint CarIndex { get; }
+    
     public string TeamName { get; protected internal set; }
-    public int RaceNumber { get; protected internal set; }
+    public int RaceNumber { get; set; }
     public byte CupCategory { get; protected internal set; }
-    public int CurrentDriverIndex { get; protected internal set; }
+    public int CurrentDriverIndex { get; set; }
     public IList<DriverInfo> Drivers { get; } = new List<DriverInfo>();
 
-    // TODO: what do SplinePosition and Position mean?
-    public float SplinePosition { get; protected internal set; }
-    public float Position { get; protected internal set; }
+    // Percentage 0.0f (0%) to 1.0f to (100%) of track completed. Might not read full 0% and 100% at start and end of lap and is therefore rounded in that case.
+    public float TrackPercentCompleted { get; set; }
+    public float Position { get; set; }
 
     public CarLocationEnum CarLocation { get; set; }
+    // Speed of all player's cars. Not all sims provide this
     public int Kmh { get; set; }
     public int Laps { get; set; }
+    public int CupPosition { get; set; }
+    public LapInfo LastLap { get; set; }
+    public LapInfo CurrentLap { get; set; }
+    
+    // Gap to class leader
+    public float GapToClassLeaderMs { get; set; }
+    // Gap from player's car to others regardless of class
+    public float GapToPlayerMs { get; set; }
 
-    // TODO: add other info from RealtimeCarUpdate/LapInfo as needed
+    // TODO : is this the lap number we're in? 
+    public int LapIndex{ get; set; }
+    public string CarClass { get; set; }
+    public bool IsSpectator { get; set; }
 
-    public CarInfo(ushort carIndex)
+
+    public CarInfo(uint carIndex)
     {
         CarIndex = carIndex;
     }
 
-    internal void AddDriver(DriverInfo driverInfo)
+    public void AddDriver(DriverInfo driverInfo)
     {
         Drivers.Add(driverInfo);
     }
@@ -41,13 +53,11 @@ public sealed class CarInfo
     }
 
     public enum CarLocationEnum
-{
-    NONE = 0,
-    Track = 1,
-    Pitlane = 2,
-    PitEntry = 3,
-    PitExit = 4
-}
-
-
+    {
+        NONE = 0,
+        Track = 1,
+        Pitlane = 2,
+        PitEntry = 3,
+        PitExit = 4
+    }
 }

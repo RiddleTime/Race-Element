@@ -10,7 +10,7 @@ OverlayCategory = OverlayCategory.Physics,
 OverlayType = OverlayType.Drive,
 Version = 1.00,
 Authors = ["Reinier Klarenberg"])]
-internal sealed class GForceTraceOverlay : ACCOverlay
+internal sealed class GForceTraceOverlay : AbstractOverlay
 {
     internal readonly GForceTraceConfiguration _config = new();
     private GForceDataJob _dataJob;

@@ -1,9 +1,12 @@
 ﻿using RaceElement.Controls.Util.SetupImage;
+using RaceElement.Data.Games;
 using RaceElement.HUD.ACC;
+using RaceElement.HUD.Common;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -58,23 +61,31 @@ internal class PreviewCache
         if (cached && _cachedPreviews.ContainsKey(overlayName))
             return;
 
-        OverlaysAcc.AbstractOverlays.TryGetValue(overlayName, out Type overlayType);
-
+        Type overlayType;
+        if (GameManager.CurrentGame != Game.AssettoCorsaCompetizione)
+        {            
+            CommonHuds.AbstractOverlays.TryGetValue(overlayName, out overlayType);
+        }
+        else
+        {            
+            OverlaysAcc.AbstractOverlays.TryGetValue(overlayName, out overlayType);
+        }
+        
         if (overlayType == null)
             return;
 
-        AbstractOverlay abstractOverlay;
+        CommonAbstractOverlay abstractOverlay;
         try
         {
-            abstractOverlay = (AbstractOverlay)Activator.CreateInstance(overlayType, DefaultOverlayArgs);
+            abstractOverlay = (CommonAbstractOverlay)Activator.CreateInstance(overlayType, DefaultOverlayArgs);
         }
         catch (Exception)
         {
             return;
         }
 
-        if (abstractOverlay is ACCOverlay) {
-            ACCOverlay overlay = (ACCOverlay) abstractOverlay;
+        if (abstractOverlay is AbstractOverlay) {
+            AbstractOverlay overlay = (AbstractOverlay) abstractOverlay;
 
             overlay.pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(false);
             overlay.pageGraphics.NumberOfLaps = 30;

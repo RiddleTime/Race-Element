@@ -8,7 +8,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayRaceInfo;
 
 [Overlay(Name = "Race Info", Description = "(BETA) Provides information for the current race session.", OverlayType = OverlayType.Drive, Version = 1.00,
 Authors = ["Reinier Klarenberg"])]
-internal sealed class RaceInfoOverlay : ACCOverlay
+internal sealed class RaceInfoOverlay : AbstractOverlay
 {
     private readonly RaceInfoConfig _config = new();
     private sealed class RaceInfoConfig : OverlayConfiguration

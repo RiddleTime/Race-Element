@@ -7,7 +7,7 @@ public static class CommonHuds
     private static readonly object _lock = new();
 
     public static readonly SortedDictionary<string, Type> AbstractOverlays = [];
-    public static readonly List<AbstractOverlay> ActiveOverlays = [];
+    public static readonly List<CommonAbstractOverlay> ActiveOverlays = [];
 
     public static void GenerateDictionary()
     {

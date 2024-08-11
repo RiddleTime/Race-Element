@@ -16,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayLapDeltaBar;
 [Overlay(Name = "Lap Delta Bar", Description = "A customizable Laptime Delta Bar", OverlayType = OverlayType.Drive, Version = 1,
     OverlayCategory = OverlayCategory.Lap,
 Authors = ["Reinier Klarenberg"])]
-internal sealed class LapDeltaOverlay : ACCOverlay
+internal sealed class LapDeltaOverlay : AbstractOverlay
 {
     private readonly LapTimeDeltaConfiguration _config = new();
 

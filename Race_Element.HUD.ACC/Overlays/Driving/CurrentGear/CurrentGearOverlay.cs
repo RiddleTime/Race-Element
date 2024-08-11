@@ -18,7 +18,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayCurrentGear;
     OverlayCategory = OverlayCategory.Driving,
 Description = "Shows the selected gear.",
 Authors = ["Reinier Klarenberg"])]
-internal sealed class CurrentGearOverlay : ACCOverlay
+internal sealed class CurrentGearOverlay : AbstractOverlay
 {
     private readonly CurrentGearConfiguration _config = new();
     private sealed class CurrentGearConfiguration : OverlayConfiguration
@@ -106,12 +106,12 @@ internal sealed class CurrentGearOverlay : ACCOverlay
             cachedBitmap?.Dispose();
     }
 
-    public sealed override bool ShouldRender()
+    public override bool ShouldRender()
     {
+        bool baseShouldRender = base.ShouldRender();
         if (_config.Gear.Spectator && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
-            return true;
-
-        return base.ShouldRender();
+            return true;        
+        return baseShouldRender;    
     }
 
     private int GetCurrentGear()

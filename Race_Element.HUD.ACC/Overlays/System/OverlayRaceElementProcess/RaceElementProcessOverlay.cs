@@ -13,7 +13,7 @@ namespace RaceElement.HUD.ACC.Overlays.System.OverlayRaceElementProcess;
 [Overlay(Name = "Race Element Process",
     Description = "Shows details about the Race Element process",
     OverlayType = OverlayType.Pitwall)]
-internal class RaceElementProcessOverlay : ACCOverlay
+internal class RaceElementProcessOverlay : AbstractOverlay
 {
 
     InfoPanel _panel;

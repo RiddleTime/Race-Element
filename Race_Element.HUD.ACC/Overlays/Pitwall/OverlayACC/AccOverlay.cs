@@ -10,7 +10,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayACC;
 [Overlay(Name = "ACC Process", Version = 1.00, OverlayType = OverlayType.Pitwall,
    Description = "A panel showing information about ACC.")]
 #endif
-internal sealed class AccProcessOverlay : ACCOverlay
+internal sealed class AccProcessOverlay : AbstractOverlay
 {
     private readonly AccOverlayConfiguration _config = new();
     private sealed class AccOverlayConfiguration : OverlayConfiguration

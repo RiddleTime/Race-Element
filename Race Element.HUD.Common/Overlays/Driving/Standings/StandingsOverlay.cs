@@ -1,55 +1,36 @@
-﻿using RaceElement.Broadcast;
-using RaceElement.Broadcast.Structs;
-using RaceElement.Data;
-using RaceElement.Data.ACC.EntryList;
+﻿using RaceElement.Data;
 using RaceElement.Data.ACC.EntryList.TrackPositionGraph;
-using RaceElement.Data.ACC.Session;
-using RaceElement.Data.ACC.Tracker;
+using RaceElement.Data.Common;
+using RaceElement.Data.Common.SimulatorData;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using System.Linq;
-using static RaceElement.ACCSharedMemory;
-using static RaceElement.Data.ACC.EntryList.EntryListTracker;
-using static RaceElement.Data.SetupConverter;
+using static RaceElement.Data.Common.SimulatorData.CarInfo;
 
-namespace RaceElement.HUD.ACC.Overlays.OverlayStandings;
+
+namespace RaceElement.HUD.Common.Overlays.OverlayStandings;
 
 #if DEBUG
 [Overlay(Name = "Live Standings", Version = 1.00,
-Description = "Shows race standings table for different car classes.", OverlayType = OverlayType.Drive)]
+Description = "Shows race standings table for different car classes. (ALPHA)", OverlayType = OverlayType.Drive)]
 #endif
 
-public sealed class StandingsOverlay : AbstractOverlay
+public sealed class StandingsOverlay : CommonAbstractOverlay
 {
     private readonly StandingsConfiguration _config = new();
     private const int _height = 800;
     private const int _width = 800;
-    private float _trackMeter = 0;
 
-    private readonly Dictionary<CarClasses, SolidBrush> _carClassToBrush = new()
-    {
-        {CarClasses.GT3, new SolidBrush(Color.FromArgb(150, Color.Yellow))},
-        {CarClasses.GT4, new SolidBrush(Color.FromArgb(150, Color.LightBlue))},
-        {CarClasses.CUP, new SolidBrush(Color.FromArgb(150, Color.Cyan))},
-        {CarClasses.ST, new SolidBrush(Color.FromArgb(150, Color.DarkGoldenrod))},
-        {CarClasses.TCX, new SolidBrush(Color.FromArgb(150, Color.DarkRed))},
-        {CarClasses.CHL, new SolidBrush(Color.FromArgb(150, Color.DarkBlue))},
-
-    };
-
-    private CarClasses _driversClass = CarClasses.GT3;
+    
     private String _driverLastName = "";
-    private AcStatus _currentAcStatus = AcStatus.AC_OFF;
 
     // the entry list splint into separate lists for every car class
-    private Dictionary<CarClasses, List<KeyValuePair<int, CarData>>> _entryListForCarClass = [];
+    private Dictionary<string, List<KeyValuePair<int, CarInfo>>> _entryListForCarClass = [];
+
+    public List<string> CarClasses { get; private set; } = null;
 
     public StandingsOverlay(Rectangle rectangle) : base(rectangle, "Live Standings")
     {
@@ -58,54 +39,92 @@ public sealed class StandingsOverlay : AbstractOverlay
         this.RefreshRateHz = 1;
     }
 
+    public sealed override void SetupPreviewData()
+    {
+        SessionData.Instance.FocusedCarIndex = 1;
+        SessionData.Instance.Track.Length = 2000;
+        CarClasses = ["F1"];
+        
+
+        var lap1 = new LapInfo();
+        lap1.Splits = [ 10000, 22000, 11343];
+        lap1.LaptimeMS = lap1.Splits.Sum();
+        var lap2 = new LapInfo();
+        lap2.Splits = [ 9000, 22000, 11343];
+        lap2.LaptimeMS = lap2.Splits.Sum();
+
+        var car1 = new CarInfo(1);
+        car1.TrackPercentCompleted = 1.0f;
+        car1.Position = 1;
+        car1.CarLocation = CarInfo.CarLocationEnum.Track;
+        car1.CurrentDriverIndex = 0;
+        car1.TrackPercentCompleted = 0.1f;
+        car1.Kmh = 140;
+        car1.CupPosition = 1;
+        car1.RaceNumber = 17;
+        car1.LastLap = lap1;
+        car1.CurrentLap = lap2;
+        car1.GapToClassLeaderMs = 0;
+        car1.CarClass = "F1";
+        SessionData.Instance.AddOrUpdateCar(1, car1);
+        var car1driver0 = new DriverInfo();
+        car1driver0.FirstName = "Max";
+        car1driver0.LastName = "Verstappen";
+        car1.AddDriver(car1driver0);
+    
+
+        CarInfo car2 = new CarInfo(2);
+        car2.TrackPercentCompleted = 1.03f;
+        car2.Position = 2;
+        car2.CarLocation = CarInfo.CarLocationEnum.Track;
+        car2.CurrentDriverIndex = 0;
+        car2.TrackPercentCompleted = 0.3f;
+        car2.Kmh = 160;
+        car2.CupPosition = 2;
+        car2.RaceNumber = 5;        
+        car2.LastLap = lap2;
+        car2.CurrentLap = lap1;
+        car2.GapToClassLeaderMs = 1000;
+        car2.CarClass = "F1";
+        SessionData.Instance.AddOrUpdateCar(2, car2);
+        var car2driver0 = new DriverInfo();
+        car2driver0.FirstName = "Michael";
+        car2driver0.LastName = "Schumacher";
+        car2.AddDriver(car2driver0);        
+    }
+
+
     public sealed override void BeforeStart()
     {
         InitCarClassEntryLists();
-        RaceSessionTracker.Instance.OnACStatusChanged += StatusChanged;
-        RaceSessionTracker.Instance.OnACSessionTypeChanged += SessionTypeChanged;
-        BroadcastTracker.Instance.OnTrackDataUpdate += TrackDataUpdate;
-        _currentAcStatus = pageGraphics.Status;
+        base.BeforeStart();
     }
-
-    public sealed override void BeforeStop()
-    {
-        RaceSessionTracker.Instance.OnACStatusChanged -= StatusChanged;
-        RaceSessionTracker.Instance.OnACSessionTypeChanged -= SessionTypeChanged;
-        BroadcastTracker.Instance.OnTrackDataUpdate -= TrackDataUpdate;
-    }
-
-    private void TrackDataUpdate(object sender, TrackData e)
-    {
-        _trackMeter = e.TrackMeters;
-        Debug.WriteLine($"standings overlay - TrackDataUpdate  {_trackMeter}");
-    }
-
-    private void SessionTypeChanged(object sender, ACCSharedMemory.AcSessionType e)
-    {
-        ClearCarClassEntryList();
-    }
-
-    private void StatusChanged(object sender, ACCSharedMemory.AcStatus e)
-    {
-        _currentAcStatus = e;
-        if (e.Equals(AcStatus.AC_OFF))
-        {
-            ClearCarClassEntryList();
-        }
-    }
-
+    
     private void ClearCarClassEntryList()
     {
-        foreach (CarClasses carClass in Enum.GetValues(typeof(CarClasses)))
+        if (CarClasses == null)
         {
+            CarClasses = SimDataProvider.Instance.GetCarClasses();
+        }
+        foreach (string carClass in CarClasses)
+        {
+            if (!_entryListForCarClass.ContainsKey(carClass)) 
+            {
+                InitCarClassEntryLists();
+            }
             _entryListForCarClass[carClass].Clear();
         }
     }
 
     private void InitCarClassEntryLists()
-    {
+    {        
         _entryListForCarClass.Clear();
-        foreach (CarClasses carClass in Enum.GetValues(typeof(CarClasses)))
+        if (!SimDataProvider.HasTelemetry()) return;
+
+        if (CarClasses == null) {
+            CarClasses = SimDataProvider.Instance.GetCarClasses();
+        }
+        foreach (string carClass in CarClasses)
         {
             _entryListForCarClass[carClass] = [];
         }
@@ -116,9 +135,9 @@ public sealed class StandingsOverlay : AbstractOverlay
         g.TextRenderingHint = TextRenderingHint.AntiAlias;
         g.SmoothingMode = SmoothingMode.AntiAlias;
 
-        if (!_currentAcStatus.Equals(AcStatus.AC_LIVE)) return;
+        if (!SimDataProvider.HasTelemetry()) return;
 
-        List<KeyValuePair<int, CarData>> cars = EntryListTracker.Instance.Cars;
+        List<KeyValuePair<int, CarInfo>> cars = SessionData.Instance.Cars;
         if (cars.Count == 0) return;
 
         DetermineDriversClass(cars);
@@ -127,11 +146,11 @@ public sealed class StandingsOverlay : AbstractOverlay
 
         //int bestSessionLapMS = GetBestSessionLap();
 
-        Dictionary<CarClasses, List<StandingsTableRow>> tableRows = [];
+        Dictionary<string, List<StandingsTableRow>> tableRows = [];
 
         if (_config.Information.MultiClass)
         {
-            foreach (CarClasses carClass in Enum.GetValues(typeof(CarClasses)))
+            foreach (string carClass in CarClasses)
             {
                 tableRows[carClass] = [];
                 EntryListToTableRow(tableRows[carClass], _entryListForCarClass[carClass]);
@@ -139,23 +158,24 @@ public sealed class StandingsOverlay : AbstractOverlay
         }
         else
         {
-            tableRows[_driversClass] = [];
-            EntryListToTableRow(tableRows[_driversClass], _entryListForCarClass[_driversClass]);
+            tableRows[GetDriverClass()] = [];
+            EntryListToTableRow(tableRows[GetDriverClass()], _entryListForCarClass[GetDriverClass()]);
         }
 
-        AddDriversRow(tableRows[_driversClass], _entryListForCarClass[_driversClass]);
+        AddDriversRow(tableRows[GetDriverClass()], _entryListForCarClass[GetDriverClass()]);
 
         OverlayStandingsTable ost = new(10, 10, 13);
 
         int height = 0;
-        foreach (KeyValuePair<CarClasses, List<StandingsTableRow>> kvp in tableRows)
+        foreach (KeyValuePair<string, List<StandingsTableRow>> kvp in tableRows)
         {
-            ost.Draw(g, height, kvp.Value, _config.Layout.MulticlassRows, _carClassToBrush[kvp.Key], $"{kvp.Key} / {_entryListForCarClass[kvp.Key].Count()} Cars", _driverLastName, _config.Information.TimeDelta, _config.Information.InvalidLap);
+            Color color = SimDataProvider.Instance.GetColorForCarClass(kvp.Key);
+            ost.Draw(g, height, kvp.Value, _config.Layout.MulticlassRows, new SolidBrush(Color.FromArgb(150, color)), $"{kvp.Key} / {_entryListForCarClass[kvp.Key].Count()} Cars", _driverLastName, _config.Information.TimeDelta, _config.Information.InvalidLap);
             height = ost.Height;
         }
     }
 
-    private void AddDriversRow(List<StandingsTableRow> standingsTableRows, List<KeyValuePair<int, CarData>> list)
+    private void AddDriversRow(List<StandingsTableRow> standingsTableRows, List<KeyValuePair<int, CarInfo>> list)
     {
         var playersIndex = GetDriversIndex(list);
         if (playersIndex == -1 || playersIndex < _config.Layout.MulticlassRows)
@@ -170,20 +190,21 @@ public sealed class StandingsOverlay : AbstractOverlay
 
         for (int i = startIdx; i < endIdx; i++)
         {
-            CarData carData = list[i].Value;
+            CarInfo carData = list[i].Value;
             //AddCarDataTableRow(carData, tableRows[carClass], (carData.RealtimeCarUpdate.LastLap.LaptimeMS == bestSessionLapMS));
-            var gab = GetGapToCarInFront(list, i);
+            // Standings HUD displays gap to leader. Relative (other HUD) will display gap to player's car)            
+            string gab = carData.GapToClassLeaderMs.ToString();
             AddCarDataTableRow(carData, standingsTableRows, gab, false);
         }
     }
 
-    private int GetDriversIndex(List<KeyValuePair<int, CarData>> list)
+    private int GetDriversIndex(List<KeyValuePair<int, CarInfo>> list)
     {
         for (int i = 0; i < list.Count(); i++)
         {
-            CarData carData = list[i].Value;
+            CarInfo carData = list[i].Value;
 
-            if (pageGraphics.PlayerCarID == carData.CarInfo.CarIndex)
+            if (SessionData.Instance.FocusedCarIndex == carData.CarIndex)
             {
                 return i;
             }
@@ -191,29 +212,29 @@ public sealed class StandingsOverlay : AbstractOverlay
         return -1;
     }
 
-    private void EntryListToTableRow(List<StandingsTableRow> tableRows, List<KeyValuePair<int, CarData>> entryList)
+    private void EntryListToTableRow(List<StandingsTableRow> tableRows, List<KeyValuePair<int, CarInfo>> entryList)
     {
         for (int i = 0; i < (entryList.Count() < _config.Layout.MulticlassRows ? entryList.Count() : _config.Layout.MulticlassRows); i++)
         {
-            CarData carData = entryList[i].Value;
+            CarInfo carData = entryList[i].Value;
             //AddCarDataTableRow(carData, tableRows[carClass], (carData.RealtimeCarUpdate.LastLap.LaptimeMS == bestSessionLapMS));
             var gab = GetGapToCarInFront(entryList, i);
             AddCarDataTableRow(carData, tableRows, gab, false);
         }
     }
 
-    private string GetGapToCarInFront(List<KeyValuePair<int, CarData>> list, int i)
+    private string GetGapToCarInFront(List<KeyValuePair<int, CarInfo>> list, int i)
     {
         // inspired by acc bradcasting client
 
-        if (i < 1 || _trackMeter == 0) return "---";
+        if (i < 1 || SessionData.Instance.Track.Length == 0) return "---";
 
-        var carInFront = list[i - 1].Value.RealtimeCarUpdate;
-        var currentCar = list[i].Value.RealtimeCarUpdate;
-        var splineDistance = Math.Abs(carInFront.SplinePosition - currentCar.SplinePosition);
+        var carInFront = list[i - 1].Value;
+        var currentCar = list[i].Value;
+        var splineDistance = Math.Abs(carInFront.TrackPercentCompleted - currentCar.TrackPercentCompleted);
         while (splineDistance > 1f)
             splineDistance -= 1f;
-        var gabMeters = splineDistance * _trackMeter;
+        var gabMeters = splineDistance * SessionData.Instance.Track.Length;
 
         if (currentCar.Kmh < 10)
         {
@@ -226,41 +247,42 @@ public sealed class StandingsOverlay : AbstractOverlay
     private int GetBestSessionLap()
     {
         int bestSessionLapMS = -1;
+        /* TODO
         if (broadCastRealTime.BestSessionLap != null)
         {
             bestSessionLapMS = broadCastRealTime.BestSessionLap.LaptimeMS.GetValueOrDefault(-1);
-        }
+        } */
         return bestSessionLapMS;
     }
 
-    private void AddCarDataTableRow(CarData carData, List<StandingsTableRow> standingsTableRows, String gab, bool fastestLapTime)
+    private void AddCarDataTableRow(CarInfo carData, List<StandingsTableRow> standingsTableRows, String gab, bool fastestLapTime)
     {
-        DriverInfo driverInfo = carData.CarInfo.Drivers[carData.CarInfo.CurrentDriverIndex];
+        DriverInfo driverInfo = carData.Drivers[carData.CurrentDriverIndex];
         string firstName = driverInfo.FirstName;
         if (firstName.Length > 0) firstName = firstName.First() + "";
         string diverName = $"{firstName}. {driverInfo.LastName}";
-        int cupPosition = carData.RealtimeCarUpdate.CupPosition;
+        int cupPosition = carData.CupPosition;
 
-        String lapTime = GetLastLapTime(carData.RealtimeCarUpdate);
-        String additionInfo = AdditionalInfo(carData.RealtimeCarUpdate);
+        String lapTime = GetLastLapTime(carData);
+        String additionInfo = AdditionalInfo(carData);
 
         standingsTableRows.Add(new StandingsTableRow()
         {
             Position = cupPosition,
-            RaceNumber = carData.CarInfo.RaceNumber,
+            RaceNumber = carData.RaceNumber,
             DriverName = diverName,
             LapTime = lapTime,
-            Delta = carData.RealtimeCarUpdate.Delta,
+            Delta = (int) carData.GapToClassLeaderMs * 1000,
             Gab = gab,
             AdditionalInfo = additionInfo,
             FastestLapTime = fastestLapTime
         });
     }
 
-    private String AdditionalInfo(RealtimeCarUpdate realtimeCarUpdate)
+    private String AdditionalInfo(CarInfo realtimeCarUpdate)
     {
-        if (broadCastRealTime.SessionType != RaceSessionType.Race
-            && broadCastRealTime.SessionType != RaceSessionType.Qualifying) return "";
+        if (SessionData.Instance.SessionType != RaceSessionType.Race
+            && SessionData.Instance.SessionType != RaceSessionType.Qualifying) return "";
 
         switch (realtimeCarUpdate.CarLocation)
         {
@@ -286,35 +308,35 @@ public sealed class StandingsOverlay : AbstractOverlay
         return "";
     }
 
-    private String GetLastLapTime(RealtimeCarUpdate realtimeCarUpdate)
+    private String GetLastLapTime(CarInfo carInfo)
     {
-        if (realtimeCarUpdate.LastLap == null || !realtimeCarUpdate.LastLap.LaptimeMS.HasValue)
+        if (carInfo.LastLap == null || !carInfo.LastLap.LaptimeMS.HasValue)
         {
             return "--:--.---";
         }
 
-        TimeSpan lapTime = TimeSpan.FromMilliseconds(realtimeCarUpdate.LastLap.LaptimeMS.Value);
+        TimeSpan lapTime = TimeSpan.FromMilliseconds(carInfo.LastLap.LaptimeMS.Value);
         return $"{lapTime:mm\\:ss\\.fff}";
     }
 
     private void SortAllEntryLists()
     {
-        foreach (CarClasses carClass in Enum.GetValues(typeof(CarClasses)))
+        foreach (string carClass in CarClasses)
         {
             SortEntryList(_entryListForCarClass[carClass]);
         }
     }
 
-    private void SortEntryList(List<KeyValuePair<int, CarData>> cars)
+    private void SortEntryList(List<KeyValuePair<int, CarInfo>> cars)
     {
         if (cars.Count == 0) return;
 
-        switch (broadCastRealTime.SessionType)
+        switch (SessionData.Instance.SessionType)
         {
             case RaceSessionType.Practice:
             case RaceSessionType.Race:
                 {
-                    switch (broadCastRealTime.Phase)
+                    switch (SessionData.Instance.Phase)
                     {
                         case SessionPhase.SessionOver:
                         case SessionPhase.PreSession:
@@ -322,28 +344,29 @@ public sealed class StandingsOverlay : AbstractOverlay
                             {
                                 cars.Sort((a, b) =>
                                 {
-                                    return a.Value.RealtimeCarUpdate.CupPosition.CompareTo(b.Value.RealtimeCarUpdate.CupPosition);
+                                    return a.Value.CupPosition.CompareTo(b.Value.CupPosition);
                                 });
                                 break;
                             }
                         default:
                             {
+                                /* TODO: why does this not use CupPosition? We will use CupPosition for now.
                                 cars.Sort((a, b) =>
                                 {
-                                    if (a.Value.CarInfo == null)
+                                    if (a.Value == null)
                                         return -1;
 
-                                    if (b.Value.CarInfo == null)
+                                    if (b.Value == null)
                                         return 1;
 
-                                    Car carCarA = PositionGraph.Instance.GetCar(a.Value.CarInfo.CarIndex);
-                                    Car carCarb = PositionGraph.Instance.GetCar(b.Value.CarInfo.CarIndex);
+                                    CarInfo carCarA = a.Value; // TODO is this correct? PositionGraph.Instance.GetCar(a.Value.CarInfo.CarIndex);
+                                    CarInfo carCarb = b.Value; // TODO PositionGraph.Instance.GetCar(b.Value.CarInfo.CarIndex);
 
                                     if (carCarA == null) return -1;
                                     if (carCarb == null) return 1;
 
-                                    var aSpline = carCarA.SplinePosition;
-                                    var bSpline = carCarb.SplinePosition;
+                                    var aSpline = carCarA.TrackPercentCompleted;
+                                    var bSpline = carCarb.TrackPercentCompleted;
 
                                     var aLaps = carCarA.LapIndex;
                                     var bLaps = carCarb.LapIndex;
@@ -353,6 +376,11 @@ public sealed class StandingsOverlay : AbstractOverlay
                                     return aPosition.CompareTo(bPosition);
                                 });
                                 cars.Reverse();
+                                */
+                                cars.Sort((a, b) =>
+                                {
+                                    return a.Value.CupPosition.CompareTo(b.Value.CupPosition);
+                                });
                                 break;
                             };
                     }
@@ -364,7 +392,7 @@ public sealed class StandingsOverlay : AbstractOverlay
                 {
                     cars.Sort((a, b) =>
                     {
-                        return a.Value.RealtimeCarUpdate.CupPosition.CompareTo(b.Value.RealtimeCarUpdate.CupPosition);
+                        return a.Value.CupPosition.CompareTo(b.Value.CupPosition);
                     });
                     break;
                 }
@@ -373,75 +401,47 @@ public sealed class StandingsOverlay : AbstractOverlay
         }
     }
 
-    private void DetermineDriversClass(List<KeyValuePair<int, CarData>> cars)
+    private void DetermineDriversClass(List<KeyValuePair<int, CarInfo>> cars)
     {
+        if (!SimDataProvider.HasTelemetry()) return;
 
-        if (!_currentAcStatus.Equals(AcStatus.AC_LIVE)) return;
-
-        foreach (KeyValuePair<int, CarData> kvp in cars)
+        foreach (KeyValuePair<int, CarInfo> kvp in cars)
         {
-            if (kvp.Key == pageGraphics.PlayerCarID)
-            {
-                var carModel = ConversionFactory.GetCarModels(kvp.Value.CarInfo.CarModelType);
-                _driversClass = ConversionFactory.GetConversion(carModel).CarClass;
-
-                //DriverInfo driverInfo = kvp.Value.CarInfo.Drivers[kvp.Value.CarInfo.CurrentDriverIndex];
-
-                DriverInfo driverInfo = kvp.Value.CarInfo.Drivers[kvp.Value.CarInfo.CurrentDriverIndex];
+            if (kvp.Key == SessionData.Instance.FocusedCarIndex)
+            {                
+                DriverInfo driverInfo = kvp.Value.Drivers[kvp.Value.CurrentDriverIndex];
                 string firstName = driverInfo.FirstName;
                 if (firstName.Length > 0) firstName = firstName.First() + "";
-                _driverLastName = $"{firstName}. {driverInfo.LastName}";
-
-                //_driverLastName = driverInfo.LastName;
+                _driverLastName = $"{firstName}. {driverInfo.LastName}";                
                 //Debug.WriteLine($"standings overlay - car class {_ownClass} driver name {_driverLastName}");
-
             }
         }
     }
 
-    private void SplitEntryList(List<KeyValuePair<int, CarData>> cars)
+    private void SplitEntryList(List<KeyValuePair<int, CarInfo>> cars)
     {
         ClearCarClassEntryList();
 
-        foreach (KeyValuePair<int, CarData> kvp in cars)
+        foreach (KeyValuePair<int, CarInfo> kvp in cars)
         {
-            if (kvp.Value.CarInfo == null)
+            if (kvp.Value == null)
             {
                 return;
             }
 
-            var carModel = ConversionFactory.GetCarModels(kvp.Value.CarInfo.CarModelType);
-            var carClass = ConversionFactory.GetConversion(carModel).CarClass;
-
-            switch (carClass)
-            {
-                case CarClasses.GT3:
-                    _entryListForCarClass[CarClasses.GT3].Add(kvp);
-                    break;
-                case CarClasses.GT4:
-                    _entryListForCarClass[CarClasses.GT4].Add(kvp);
-                    break;
-                case CarClasses.CUP:
-                    _entryListForCarClass[CarClasses.CUP].Add(kvp);
-                    break;
-                case CarClasses.ST:
-                    _entryListForCarClass[CarClasses.ST].Add(kvp);
-                    break;
-                case CarClasses.TCX:
-                    _entryListForCarClass[CarClasses.TCX].Add(kvp);
-                    break;
-                case CarClasses.CHL:
-                    _entryListForCarClass[CarClasses.CHL].Add(kvp);
-                    break;
-                default:
-                    break;
-            }
+            CarInfo carInfo = kvp.Value;
+            string carClass = carInfo.CarClass;
+            _entryListForCarClass[carClass].Add(kvp);         
         }
-
     }
 
+    private string GetDriverClass()
+    {
+        return SimDataProvider.LocalCar.CarModel.CarClass;
+    }
 }
 
+// TODO: 1) change "Delta" to "gap from leader or "int", 2) remove "gab"
 public class StandingsTableRow
 {
     public int Position { get; set; }
@@ -722,5 +722,5 @@ public class OverlayStandingsTablePositionLabel
         var textOffset = 2;
         g.DrawString(number, _fontFamily, Brushes.White, new PointF(_x + _spacing / 2 + _maxFontWidth / 2 - numberWidth / 2, _y + textOffset));
 
-    }
+    }    
 }

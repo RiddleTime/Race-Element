@@ -21,7 +21,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlaySpotter;
     OverlayCategory = OverlayCategory.Driving,
     Authors = ["Reinier Klarenberg"]
 )]
-internal sealed class RadarOverlay : ACCOverlay
+internal sealed class RadarOverlay : AbstractOverlay
 {
     private readonly RadarConfiguration _config = new();
     private sealed class RadarConfiguration : OverlayConfiguration

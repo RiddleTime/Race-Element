@@ -16,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayAccelerometer;
     Description = "G-meter showing lateral and longitudinal g-forces.",
     Authors = ["Kris Vickers", "Reinier Klarenberg"]
 )]
-internal sealed class AccelerometerOverlay : ACCOverlay
+internal sealed class AccelerometerOverlay : AbstractOverlay
 {
     private readonly AccelleroConfig _config = new();
     private sealed class AccelleroConfig : OverlayConfiguration

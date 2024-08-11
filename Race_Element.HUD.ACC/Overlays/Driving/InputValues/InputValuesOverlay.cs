@@ -14,7 +14,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayInputValues;
     OverlayType = OverlayType.Drive,
 Authors = ["Reinier Klarenberg"]
     )]
-internal sealed class InputValuesOverlay : ACCOverlay
+internal sealed class InputValuesOverlay : AbstractOverlay
 {
     private readonly InputValuesConfiguration _config = new();
     private sealed class InputValuesConfiguration : OverlayConfiguration

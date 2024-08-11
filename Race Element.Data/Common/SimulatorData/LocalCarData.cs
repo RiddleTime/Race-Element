@@ -19,6 +19,7 @@ namespace RaceElement.Data.Common.SimulatorData
     {
         public string GameName { get; set; } = string.Empty;
         public int GameId { get; set; }
+        public string CarClass { get; set; }
     }
 
     public sealed record EngineData

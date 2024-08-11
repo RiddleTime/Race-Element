@@ -11,7 +11,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayAbc;
 [Overlay(Name = "Render Test",
     Description = "Heat Your Room",
     OverlayType = OverlayType.Pitwall)]
-internal sealed class RenderTestOverlay : ACCOverlay
+internal sealed class RenderTestOverlay : AbstractOverlay
 {
     private readonly RenderTestConfiguration _config = new();
     private sealed class RenderTestConfiguration : OverlayConfiguration

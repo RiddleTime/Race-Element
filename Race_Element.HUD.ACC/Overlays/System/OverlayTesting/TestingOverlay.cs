@@ -9,7 +9,7 @@ using System.Drawing;
 namespace RaceElement.HUD.ACC.Overlays.System.OverlayTesting
 {
     [Overlay(Name = "Testing", Description = "some testing ", OverlayType = OverlayType.Pitwall)]
-    internal class TestingOverlay : ACCOverlay
+    internal class TestingOverlay : AbstractOverlay
     {
         private readonly AbstractLoopJob _job;
         private readonly InfoPanel _panel;

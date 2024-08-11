@@ -47,7 +47,7 @@ public partial class HudOptions : UserControl
     private DateTime _lastMovementModeChange = DateTime.MinValue;
     private const int MovementModeDebounce = 250;
 
-    public static List<AbstractOverlay> ActiveOverlays => GameManager.CurrentGame switch
+    public static List<CommonAbstractOverlay> ActiveOverlays => GameManager.CurrentGame switch
     {
         Game.AssettoCorsaCompetizione => OverlaysAcc.ActiveOverlays,
         _ => CommonHuds.ActiveOverlays
@@ -386,7 +386,7 @@ public partial class HudOptions : UserControl
             overlayNameLabel.Foreground = Brushes.LimeGreen;
 
 
-            AbstractOverlay overlay = null;
+            CommonAbstractOverlay overlay = null;
             if (GameManager.CurrentGame == Game.AssettoCorsaCompetizione)
             {
                 overlay = ActiveOverlays.Find(f => f.GetType() == type);
@@ -402,7 +402,7 @@ public partial class HudOptions : UserControl
                 overlayNameLabel.BorderBrush = Brushes.Green;
                 listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
                 listViewItem.BorderBrush = new SolidColorBrush(Colors.LimeGreen);
-                overlay = (AbstractOverlay)Activator.CreateInstance(type, DefaultOverlayArgs);
+                overlay = (CommonAbstractOverlay)Activator.CreateInstance(type, DefaultOverlayArgs);
 
                 overlay.Start();
 
@@ -434,7 +434,7 @@ public partial class HudOptions : UserControl
             {
                 listViewItem.Background = Brushes.Transparent;
                 listViewItem.BorderBrush = new SolidColorBrush(Colors.Transparent);
-                AbstractOverlay overlay = ActiveOverlays.Find(f => f.GetType() == type);
+                CommonAbstractOverlay overlay = ActiveOverlays.Find(f => f.GetType() == type);
 
                 SaveOverlaySettings(overlay, false);
 
@@ -556,7 +556,7 @@ public partial class HudOptions : UserControl
                 mousePositionOverlay.Stop();
         }
 
-        foreach (AbstractOverlay overlay in ActiveOverlays)
+        foreach (CommonAbstractOverlay overlay in ActiveOverlays)
             overlay.EnableReposition(enabled);
     }
 
@@ -611,7 +611,7 @@ public partial class HudOptions : UserControl
 
         foreach (KeyValuePair<string, Type> x in availableOverlays)
         {
-            AbstractOverlay tempAbstractOverlay = (AbstractOverlay)Activator.CreateInstance(x.Value, DefaultOverlayArgs);
+            CommonAbstractOverlay tempAbstractOverlay = (CommonAbstractOverlay)Activator.CreateInstance(x.Value, DefaultOverlayArgs);
             var overlayAttribute = GetOverlayAttribute(x.Value);
             if (overlayAttribute.OverlayCategory != category && category != OverlayCategory.All)
                 continue;
@@ -667,7 +667,7 @@ public partial class HudOptions : UserControl
 
                     lock (ActiveOverlays)
                     {
-                        AbstractOverlay overlay = (AbstractOverlay)Activator.CreateInstance(x.Value, DefaultOverlayArgs);
+                        CommonAbstractOverlay overlay = (CommonAbstractOverlay)Activator.CreateInstance(x.Value, DefaultOverlayArgs);
                         if (ActiveOverlays.FindIndex(o => o.Name == overlay.Name) == -1)
                         {
                             SaveOverlaySettings(overlay, true);
@@ -803,7 +803,7 @@ public partial class HudOptions : UserControl
         return stacker;
     }
 
-    private void SaveOverlaySettings(AbstractOverlay overlay, bool isEnabled)
+    private void SaveOverlaySettings(CommonAbstractOverlay overlay, bool isEnabled)
     {
         OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(overlay.Name);
         settings ??= new OverlaySettingsJson() { X = overlay.X, Y = overlay.Y };
@@ -816,12 +816,12 @@ public partial class HudOptions : UserControl
     private void SaveOverlayConfig(Type overlay, OverlayConfiguration overlayConfiguration)
     {
         object[] args = [new System.Drawing.Rectangle(0, 0, 300, 150)];
-        AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(overlay, args);
+        CommonAbstractOverlay tempOverlay = (CommonAbstractOverlay)Activator.CreateInstance(overlay, args);
         SaveOverlayConfig(tempOverlay, overlayConfiguration);
         tempOverlay.Dispose();
     }
 
-    private void SaveOverlayConfig(AbstractOverlay overlay, OverlayConfiguration overlayConfiguration)
+    private void SaveOverlayConfig(CommonAbstractOverlay overlay, OverlayConfiguration overlayConfiguration)
     {
         OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(overlay.Name);
         settings ??= new OverlaySettingsJson() { X = overlay.X, Y = overlay.Y };
@@ -857,7 +857,7 @@ public partial class HudOptions : UserControl
     private OverlayConfiguration GetOverlayConfig(Type overlay)
     {
         object[] args = [new System.Drawing.Rectangle(0, 0, 300, 150)];
-        AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(overlay, args);
+        CommonAbstractOverlay tempOverlay = (CommonAbstractOverlay)Activator.CreateInstance(overlay, args);
 
         OverlayConfiguration temp = null;
 

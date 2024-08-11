@@ -22,7 +22,7 @@ namespace ACCManager.HUD.ACC.Overlays.OverlayCornerNames;
     OverlayCategory = OverlayCategory.Track,
     Version = 1.00,
 Authors = ["Reinier Klarenberg"])]
-internal sealed class TrackCornersOverlay : ACCOverlay
+internal sealed class TrackCornersOverlay : AbstractOverlay
 {
     private readonly CornerNamesConfig _config = new();
     private sealed class CornerNamesConfig : OverlayConfiguration

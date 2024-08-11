@@ -10,7 +10,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayInputBars;
   Description = "Live input bars of throttle and brake.",
   OverlayCategory = OverlayCategory.Inputs,
 Authors = ["Reinier Klarenberg"])]
-internal sealed class InputBarsOverlay : ACCOverlay
+internal sealed class InputBarsOverlay : AbstractOverlay
 {
     private readonly InputBarsConfiguration _config = new();
 

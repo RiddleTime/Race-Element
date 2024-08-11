@@ -13,7 +13,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayTrackInfo;
     OverlayCategory = OverlayCategory.Track,
     Description = "A panel showing information about the track state: grip, temperatures and wind.\nOptionally showing the global flag, session type and time of day.",
 Authors = ["Reinier Klarenberg"])]
-internal sealed class TrackInfoOverlay : ACCOverlay
+internal sealed class TrackInfoOverlay : AbstractOverlay
 {
     private readonly TrackInfoConfig _config = new();
     private sealed class TrackInfoConfig : OverlayConfiguration

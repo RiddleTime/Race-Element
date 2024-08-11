@@ -17,9 +17,8 @@ namespace RaceElement.Data.Common.SimulatorData
         }
 
 
-        // TODO: for now only for testing
-        public void AddCar(int carIndex, CarInfo car) {
-            _entryListCars.TryAdd(carIndex, car);
+        public void AddOrUpdateCar(int carIndex, CarInfo car) {
+            _entryListCars.AddOrUpdate(carIndex, car, (key, oldCarInfo) => car);
         }
 
         private static SessionData _instance;
@@ -34,6 +33,7 @@ namespace RaceElement.Data.Common.SimulatorData
 
         public int FocusedCarIndex {get; set;}
         public RaceSessionType SessionType { get; set; }
+        public SessionPhase Phase { get; set; }
     }
 
     public sealed record TrackData
@@ -47,6 +47,7 @@ namespace RaceElement.Data.Common.SimulatorData
         /// The track temperature in celsius
         /// </summary>
         public float Temperature { get; set; }
+        public int Length { get; set; }
     }
 
     public sealed record WeatherConditions
@@ -78,5 +79,17 @@ namespace RaceElement.Data.Common.SimulatorData
     Hotstint = 12,
     HotlapSuperpole = 13,
     Replay = 14
+};
+public enum SessionPhase
+{
+    NONE = 0,
+    Starting = 1,
+    PreFormation = 2,
+    FormationLap = 3,
+    PreSession = 4,
+    Session = 5,
+    SessionOver = 6,
+    PostSession = 7,
+    ResultUI = 8
 };
 }

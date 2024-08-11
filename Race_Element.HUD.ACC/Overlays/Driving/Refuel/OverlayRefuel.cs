@@ -19,7 +19,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayRefuel;
 Description = "Overlay to verify the fuel calculation during the race and help with pit stop strategy.", 
     OverlayType = OverlayType.Drive, Authors =["FG"])]
 
-internal sealed class RefuelInfoOverlay : ACCOverlay
+internal sealed class RefuelInfoOverlay : AbstractOverlay
 {
     internal readonly OverlayRefuelConfiguration _config = new();
     

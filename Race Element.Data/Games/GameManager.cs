@@ -27,16 +27,8 @@ public static class GameManager
     /// </summary>
     /// <param name="game"></param>
     private static void ExitGameData(Game game)
-    {
-        switch (game)
-        {
-            case Game.iRacing:
-                {
-                    IRacingDataProvider.Stop();
-                    break;
-                }
-        }
-
+    {        
+        SimDataProvider.Stop();        
         _dataUpdaterJob?.CancelJoin();
     }
 }

@@ -8,7 +8,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayEcuMapInfo;
 [Overlay(Name = "ECU Maps", Version = 1.00, OverlayType = OverlayType.Drive,
     Description = "A panel showing information about the current ECU Map.",
 Authors = ["Reinier Klarenberg"])]
-internal sealed class EcuMapOverlay : ACCOverlay
+internal sealed class EcuMapOverlay : AbstractOverlay
 {
     private const int PanelWidth = 270;
     private readonly InfoPanel _panel = new(10, PanelWidth);

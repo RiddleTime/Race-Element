@@ -18,7 +18,7 @@ Description = "A table showing time for each lap and optionally sectors.",
 OverlayType = OverlayType.Drive, Version = 1.00,
 OverlayCategory = OverlayCategory.Lap,
 Authors = ["Reinier Klarenberg"])]
-internal sealed class LapTableOverlay : ACCOverlay
+internal sealed class LapTableOverlay : AbstractOverlay
 {
     private readonly LapTimeTableConfiguration _config = new();
     private GraphicsGrid _graphicsGrid;

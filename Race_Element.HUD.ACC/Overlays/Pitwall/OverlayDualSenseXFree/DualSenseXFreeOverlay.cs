@@ -18,7 +18,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayDualSenseXFree;
     OverlayCategory = OverlayCategory.Inputs,
     OverlayType = OverlayType.Pitwall,
 Authors = ["Reinier Klarenberg"])]
-internal sealed class DualSenseXFreeOverlay : ACCOverlay
+internal sealed class DualSenseXFreeOverlay : AbstractOverlay
 {
     private readonly DualSenseXConfiguration _config = new();
     private sealed class DualSenseXConfiguration : OverlayConfiguration

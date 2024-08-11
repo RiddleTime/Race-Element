@@ -13,7 +13,7 @@ namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayBroadcastRealtime
 
 [Overlay(Name = "Broadcast Realtime", Version = 1.00, OverlayType = OverlayType.Pitwall,
     Description = "A panel showing live broadcast realtime data.")]
-internal sealed class BroadcastRealtimeOverlay : ACCOverlay
+internal sealed class BroadcastRealtimeOverlay : AbstractOverlay
 {
     private DebugConfig _config = new();
 

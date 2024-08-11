@@ -15,7 +15,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayTrackBar;
 [Overlay(Name = "Track Bar",
          Description = "A bar displaying a flat and zoomed in version of the Track Circle HUD.",
 Authors = ["Reinier Klarenberg"])]
-internal sealed class TrackBarOverlay : ACCOverlay
+internal sealed class TrackBarOverlay : AbstractOverlay
 {
     private readonly TrackBarConfiguration _config = new();
     private sealed class TrackBarConfiguration : OverlayConfiguration

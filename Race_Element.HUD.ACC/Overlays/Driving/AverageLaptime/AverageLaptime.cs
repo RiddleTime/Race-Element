@@ -19,7 +19,7 @@ OverlayType = OverlayType.Drive,
 OverlayCategory = OverlayCategory.Lap,
 Version = 1.00,
 Authors = ["FG"])]
-internal sealed class AverageLapTimeOverlay : ACCOverlay
+internal sealed class AverageLapTimeOverlay : AbstractOverlay
 {
 
     private readonly AverageLapTimeOverlayConfig _config = new();

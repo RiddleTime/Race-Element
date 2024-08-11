@@ -8,7 +8,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayHUDs;
 [Overlay(Name = "HUDs",
     Description = "Shows info about active HUDs",
     OverlayType = OverlayType.Pitwall)]
-internal sealed class HUDsOverlay : ACCOverlay
+internal sealed class HUDsOverlay : AbstractOverlay
 {
     private readonly HUDsConfiguration _config = new();
     private sealed class HUDsConfiguration : OverlayConfiguration

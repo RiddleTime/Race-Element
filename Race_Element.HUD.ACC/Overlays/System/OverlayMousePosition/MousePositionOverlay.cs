@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayMousePosition;
 
-public sealed class MousePositionOverlay : ACCOverlay
+public sealed class MousePositionOverlay : AbstractOverlay
 {
     private CachedBitmap _cachedCursor;
     private IKeyboardMouseEvents _globalKbmHook;

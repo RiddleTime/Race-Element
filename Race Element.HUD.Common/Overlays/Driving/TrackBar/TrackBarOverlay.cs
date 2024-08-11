@@ -1,22 +1,17 @@
-﻿// using RaceElement.Data.ACC.EntryList;
-// using RaceElement.Data.ACC.Session;
-using RaceElement.Data.Common.SimulatorData;
+﻿using RaceElement.Data.Common.SimulatorData;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
-using RaceElement.Util.SystemExtensions;
 using System.Drawing;
 using System.Drawing.Text;
-using System.Linq;
-// using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.OverlayTrackBar;
 
 [Overlay(Name = "Track Bar",
          Description = "A bar displaying a flat and zoomed in version of the Track Circle HUD.",
 Authors = ["Reinier Klarenberg"])]
-internal sealed class TrackBarOverlay : AbstractOverlay
+internal sealed class TrackBarOverlay : CommonAbstractOverlay
 {
     private readonly TrackBarConfiguration _config = new();
     private sealed class TrackBarConfiguration : OverlayConfiguration
@@ -53,7 +48,17 @@ internal sealed class TrackBarOverlay : AbstractOverlay
 
     public sealed override void SetupPreviewData()
     {
-        SessionData.Instance.AddCar(1, new CarInfo(1));
+        SessionData.Instance.FocusedCarIndex = 1;
+        var car1 = new CarInfo(1);
+        car1.TrackPercentCompleted = 1.0f;
+        car1.Position = 1;
+        car1.CarLocation = CarInfo.CarLocationEnum.Track;
+        SessionData.Instance.AddOrUpdateCar(1, car1);
+        CarInfo car2 = new CarInfo(2);
+        car2.TrackPercentCompleted = 1.03f;
+        car2.Position = 2;
+        car2.CarLocation = CarInfo.CarLocationEnum.Track;
+        SessionData.Instance.AddOrUpdateCar(2, car2);
     }
 
     public sealed override void BeforeStart()
@@ -95,10 +100,9 @@ internal sealed class TrackBarOverlay : AbstractOverlay
         if (SessionData.Instance.Cars.Count == 0) return;
 
         g.TextRenderingHint = TextRenderingHint.AntiAlias;
-
-        // TODO: is the car list in the index order, then we can access directly without iteration
-        var spectatingCar = SessionData.Instance.Cars.First(x => x.Key == SessionData.Instance.FocusedCarIndex);
-        float spectatingSplinePosition = spectatingCar.Value.SplinePosition;
+        
+        var spectatingCar = SessionData.Instance.Cars[SessionData.Instance.FocusedCarIndex];
+        float spectatingSplinePosition = spectatingCar.Value.TrackPercentCompleted;
 
         float halfRange = _range / 2f;
         float minSpline = spectatingSplinePosition - halfRange;
@@ -114,7 +118,7 @@ internal sealed class TrackBarOverlay : AbstractOverlay
 
         var data = SessionData.Instance.Cars.Where(x =>
         {
-            float pos = x.Value.SplinePosition;
+            float pos = x.Value.TrackPercentCompleted;
 
             if (adjustedUp && pos < 0.5)
                 pos += 1;
@@ -124,10 +128,10 @@ internal sealed class TrackBarOverlay : AbstractOverlay
             return pos < maxSpline && pos > minSpline;
         });
 
-        //Debug.WriteLine($"Found {data.Count()} cars in range\nRange: {minSpline:F2} - {maxSpline:F2}");
+        // Debug.WriteLine($"Found {data.Count()} cars in range\nRange: {minSpline:F2} - {maxSpline:F2}");
         foreach (var entry in data)
         {
-            float pos = entry.Value.SplinePosition;
+            float pos = entry.Value.TrackPercentCompleted;
             if (adjustedUp && pos < 0.5) pos += 1;
             if (pos < minSpline) pos += 1;
             float correctedPos = maxSpline - pos;
@@ -135,11 +139,11 @@ internal sealed class TrackBarOverlay : AbstractOverlay
 
             float correctedPercentage = (correctedPos * 100) / _range / 100;
             if (isSpectatingCar) correctedPercentage = 0.5f;
-            //Debug.WriteLine($"pos:{pos} --> cor:{correctedPos} --> perc:{correctedPercentage:F3}");
+            // Debug.WriteLine($"pos:{pos} --> cor:{correctedPos} --> perc:{correctedPercentage:F3}");
 
             int x = BarRect.Width - (int)(BarRect.Width * correctedPercentage);
 
-            bool isInPits = entry.Value.CarLocation == CarInfo.CarLocationEnum.Pitlane;
+            bool isInPits = (entry.Value.CarLocation == CarInfo.CarLocationEnum.Pitlane);
 
             Pen pen = isSpectatingCar ? Pens.Red : isInPits ? Pens.Green : Pens.White;
             if (!isInPits && !isSpectatingCar && entry.Value.Kmh < 33)
@@ -162,10 +166,10 @@ internal sealed class TrackBarOverlay : AbstractOverlay
                         textColor = Color.Orange;
                 }
 
-                g.DrawStringWithShadow($"{entry.Value.Position}", font, textColor, new Point(x, y));
+                g.DrawStringWithShadow($"{entry.Value.RaceNumber}", font, textColor, new Point(x, y));
             }
 
-            //Debug.WriteLine($"{entry.Value.RealtimeCarUpdate.SplinePosition:F2}");
+            // Debug.WriteLine($"{entry.Value.SplinePosition:F2}");
         }
 
         /* TODO: we don't have corner info for all sims
