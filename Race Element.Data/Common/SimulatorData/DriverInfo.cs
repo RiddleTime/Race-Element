@@ -2,10 +2,10 @@
 
 public struct DriverInfo
 {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+    // "Firstname Lastname" or whatever the sim wants displayed
+    public string Name { get; set; }    
     public string ShortName { get; internal set; }
-    // Rookie/D-class/Gold. Possibly enum later
+    // Something like Rookie/D-class/Gold.
     public string Category { get; internal set; }
     // possibly enum later
     public string Nationality { get; internal set; }

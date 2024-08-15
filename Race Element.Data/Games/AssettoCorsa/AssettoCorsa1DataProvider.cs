@@ -67,6 +67,6 @@ internal class AssettoCorsa1DataProvider : AbstractSimDataProvider
     
     internal override void Stop()
     {
-        throw new NotImplementedException();
+        // No-op
     }
 }

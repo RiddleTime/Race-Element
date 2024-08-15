@@ -66,7 +66,8 @@ namespace RaceElement.Data.Common
             {
                 case Game.AssettoCorsa1:
                     {
-                        // TODO
+                        Instance.Stop();
+                        Instance = null;
                         break;
                     }
                 case Game.AssettoCorsaCompetizione:
