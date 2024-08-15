@@ -73,15 +73,15 @@ namespace RaceElement.Data.Games.iRacing
                     return;
                 }
 
-                // for each class, the "CarIdxF2Time" of the leader in that class
-                Dictionary<string, float> classLeaderF2TimeDict = new Dictionary<string, float>();
+                // for each class, the time to get to the track position for the leader in that class (HUH? TODO)
+                Dictionary<string, float> classLeaderTrackPositionTimeDict = new Dictionary<string, float>();
                 DriverModel driverModel;
                 for (var index = 0; index < IRacingSdkConst.MaxNumCars; index++)
                 {
                     var position = _iRacingSDK.Data.GetInt("CarIdxPosition", index);
                     if (position <= 0 || position > IRacingSdkConst.MaxNumCars) continue;
                     driverModel = _iRacingSDK.Data.SessionInfo.DriverInfo.Drivers[index];
-                    var carInfo = new CarInfo((uint)index);
+                    var carInfo = new CarInfo(index);
                     carInfo.Position = position;
                     carInfo.CupPosition = _iRacingSDK.Data.GetInt("CarIdxClassPosition", index);
                     carInfo.RaceNumber = driverModel.CarNumberRaw;
@@ -93,29 +93,35 @@ namespace RaceElement.Data.Games.iRacing
                     LapInfo lapInfo = new LapInfo();
                     lapInfo.LaptimeMS = (int)(_iRacingSDK.Data.GetFloat("CarIdxLastLapTime", index) * 1000.0);                    
                     carInfo.LastLap = lapInfo;
-                    carInfo.CarClass = driverModel.CarScreenNameShort;
+                    // For multi-make classes like GT4/GT3, we use CarClassShortName otherwise (e.g. MX5 or GR86) we use CarScreenNameShort
+                    carInfo.CarClass = driverModel.CarClassShortName;
+                    if (carInfo.CarClass == null)
+                    {
+                        carInfo.CarClass = driverModel.CarScreenNameShort;
+                    }
                     carInfo.IsSpectator = driverModel.IsSpectator == 1;
                     carInfo.LapIndex = _iRacingSDK.Data.GetInt("CarIdxLap", index);
 
                     lapInfo = new LapInfo();
                     float fl = _iRacingSDK.Data.GetFloat("CarIdxBestLapTime", index);
                     lapInfo.LaptimeMS = (int) (_iRacingSDK.Data.GetFloat("CarIdxBestLapTime", index) * 1000.0);
-                    carInfo.FastestLap = lapInfo;                   
+                    carInfo.FastestLap = lapInfo;
 
                     // "CarIdxF2Time: Race time behind leader or fastest lap time otherwise"
-                    float f2Time = _iRacingSDK.Data.GetFloat("CarIdxF2Time", index);
-                    if (!classLeaderF2TimeDict.ContainsKey(carInfo.CarClass) || classLeaderF2TimeDict[carInfo.CarClass] > f2Time)
+                    // "CarIdxEstTime":  Estimated time to reach current location on track
+                    //    f2time is 0 until the driver has done a (valid?) lap. So we use CarIdxEstTime to get the time it should take a player
+                    //    to get to the current position on a track
+                    float trackPositionTime = _iRacingSDK.Data.GetFloat("CarIdxEstTime", index);
+                    if (!classLeaderTrackPositionTimeDict.ContainsKey(carInfo.CarClass) || classLeaderTrackPositionTimeDict[carInfo.CarClass] > trackPositionTime)
                     {
-                        classLeaderF2TimeDict[carInfo.CarClass] = f2Time;
+                        classLeaderTrackPositionTimeDict[carInfo.CarClass] = trackPositionTime;
                     }
-                    // "CarIdxEstTime float Estimated time to reach current location on track" 
-                    float estimateLaptime = _iRacingSDK.Data.GetFloat("CarIdxEstTime", index);
-                    // Debug.WriteLine("position:" + position + " CarIdxF2Time:" + carInfo.GapToClassLeaderMs + " CarIdxEstTime:" + estimateLaptime);
+                    carInfo.GapToRaceLeaderMs = (int)(trackPositionTime * 1000.0);                                        
                     
                     carInfo.GapToPlayerMs = GetGapToPlayerMs(index, playerCarIdx);
 
                     string currCarClassColor = driverModel.CarClassColor;
-                    AddCarClassEntry(driverModel.CarScreenNameShort, currCarClassColor);                   
+                    AddCarClassEntry(driverModel.CarScreenNameShort, Color.Aquamarine);  // TODO: need mapping from string currCarClassColor to Color
 
                     // TODO: it looks like this might change in a team race when the driver changes. We need to test this with a team race at some point.
                     DriverInfo driver = new DriverInfo();
@@ -124,7 +130,7 @@ namespace RaceElement.Data.Games.iRacing
                         DriverModel currDriverModel = driverDict[index];
                         driver.Name = currDriverModel.UserName;                        
                         driver.Rating = currDriverModel.IRating;
-                        // LicString is "<class> <SR>"
+                        // LicString is "<class> <SR>".
                         driver.Category = currDriverModel.LicString;
                         // TODO LicColor
                         carInfo.AddDriver(driver);                        
@@ -143,14 +149,18 @@ namespace RaceElement.Data.Games.iRacing
                     if (position <= 0) continue;
                     
                     CarInfo carInfo = SessionData.Instance.Cars[index].Value;
-                    carInfo.GapToClassLeaderMs = (int)((classLeaderF2TimeDict[carInfo.CarClass] - f2Time) * 1000.0);                    
+                    carInfo.GapToClassLeaderMs = 0;
+                    // special case for multi-class qualifying
+                    if (classLeaderTrackPositionTimeDict.ContainsKey(carInfo.CarClass))
+                    {
+                        carInfo.GapToClassLeaderMs = (int)((classLeaderTrackPositionTimeDict[carInfo.CarClass] - f2Time) * 1000.0);
+                    }
                 }
 
                 // DEBUG PrintAllCarInfo();
 
                 // fill player's car from session info
-                LocalCarData localCar = SimDataProvider.LocalCar;
-                var sessionData = SimDataProvider.Session;
+                LocalCarData localCar = SimDataProvider.LocalCar;                
                 driverModel = _iRacingSDK.Data.SessionInfo.DriverInfo.Drivers[playerCarIdx];
                 localCar.Race.CarNumber = driverModel.CarNumberRaw;
                 localCar.Race.GlobalPosition = _iRacingSDK.Data.GetInt("PlayerCarPosition");
@@ -201,42 +211,44 @@ namespace RaceElement.Data.Games.iRacing
                              LapDeltaToSessionLastlLap_OK    bool
                          */
 
-                    sessionData.Weather.AirTemperature = _iRacingSDK.Data.GetFloat("AirTemp");
-                sessionData.Weather.AirVelocity = _iRacingSDK.Data.GetFloat("WindVel") * 3.6f;
+                SessionData.Instance.Weather.AirTemperature = _iRacingSDK.Data.GetFloat("AirTemp");
+                SessionData.Instance.Weather.AirVelocity = _iRacingSDK.Data.GetFloat("WindVel") * 3.6f;
 
-                sessionData.Track.Temperature = _iRacingSDK.Data.GetFloat("TrackTempCrew");
-                sessionData.Track.GameName = _iRacingSDK.Data.SessionInfo.WeekendInfo.TrackName;
+                SessionData.Instance.Track.Temperature = _iRacingSDK.Data.GetFloat("TrackTempCrew");
+                SessionData.Instance.Track.GameName = _iRacingSDK.Data.SessionInfo.WeekendInfo.TrackName;
 
-                
-                var sessionType = _iRacingSDK.Data.SessionInfo.SessionInfo.Sessions[0].SessionType;
+
+                int sessionNumber = _iRacingSDK.Data.GetInt("SessionNum");
+                var sessionType = _iRacingSDK.Data.SessionInfo.SessionInfo.Sessions[sessionNumber].SessionType;
                 switch (sessionType)
                 {
                     case "Race":
-                        sessionData.SessionType = RaceSessionType.Race; break;
+                        SessionData.Instance.SessionType = RaceSessionType.Race; break;
                     case "Practice":
-                        sessionData.SessionType = RaceSessionType.Practice; break;
+                        SessionData.Instance.SessionType = RaceSessionType.Practice; break;
                     case "Qualify":
-                        sessionData.SessionType = RaceSessionType.Qualifying; break;
+                    case "Lone Qualify":
+                        SessionData.Instance.SessionType = RaceSessionType.Qualifying; break;
                     default:
                         Debug.WriteLine("Uknown session type " + sessionType);
-                        sessionData.SessionType = RaceSessionType.Race; break;
+                        SessionData.Instance.SessionType = RaceSessionType.Race; break;
                 }
                 IRacingSdkEnum.SessionState sessionState = (SessionState)_iRacingSDK.Data.GetInt("SessionState");
                 switch (sessionState)
                 {
                     case SessionState.GetInCar:
                     case SessionState.Warmup:
-                        sessionData.Phase = SessionPhase.PreSession;
+                        SessionData.Instance.Phase = SessionPhase.PreSession;
                         break;
                     case SessionState.ParadeLaps:
-                        sessionData.Phase = SessionPhase.FormationLap;
+                        SessionData.Instance.Phase = SessionPhase.FormationLap;
                         break;
                     case SessionState.Checkered:
                     case SessionState.CoolDown:
-                        sessionData.Phase = SessionPhase.SessionOver;
+                        SessionData.Instance.Phase = SessionPhase.SessionOver;
                         break;
                     case SessionState.Racing:
-                        sessionData.Phase = SessionPhase.Session;
+                        SessionData.Instance.Phase = SessionPhase.Session;
                         break;
                     default:
                         Debug.WriteLine("Unknow session state " + sessionState);
@@ -299,7 +311,7 @@ namespace RaceElement.Data.Games.iRacing
 
             // use position independent of classes
             int playerCarPosition = SessionData.Instance.Cars[playerCarIdx].Value.Position;
-            uint carAheadIdx = SessionData.Instance.Cars[playerCarPosition - 1].Value.CarIndex;
+            int carAheadIdx = SessionData.Instance.Cars[playerCarPosition - 1].Value.CarIndex;
 
             var playerCarF2Time = _iRacingSDK.Data.GetFloat("CarIdxF2Time", playerCarIdx);
             var carAheadF2Time = _iRacingSDK.Data.GetFloat("CarIdxF2Time", (int)carAheadIdx);
@@ -345,7 +357,7 @@ namespace RaceElement.Data.Games.iRacing
             return hasTelemetry;
         }        
 
-        private void AddCarClassEntry(string carClass, string color)
+        private void AddCarClassEntry(string carClass, System.Drawing.Color color)
         {
             if (carClasses == null)
             {

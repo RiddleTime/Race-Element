@@ -1,4 +1,5 @@
-﻿using RaceElement.HUD.Overlay.Configuration;
+﻿using RaceElement.Data.Common;
+using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.Util;
 using RaceElement.Util.Settings;
 using System;
@@ -66,9 +67,9 @@ public abstract class CommonAbstractOverlay : FloatingWindow
         if (IsRepositioning)
             return true;
 
-        // TODO
-        // if (!AccProcess.IsRunning)
-        //    return false;
+        
+        if (!SimDataProvider.HasTelemetry())
+            return false;
 
         bool shouldRender = true;
 

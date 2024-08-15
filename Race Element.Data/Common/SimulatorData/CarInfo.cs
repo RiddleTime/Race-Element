@@ -4,7 +4,7 @@ namespace RaceElement.Data.Common.SimulatorData;
 
 public sealed class CarInfo
 {
-    public uint CarIndex { get; }
+    public int CarIndex { get; }
     
     public string TeamName { get; protected internal set; }
     public int RaceNumber { get; set; }
@@ -32,10 +32,13 @@ public sealed class CarInfo
 
     public LapInfo FastestLap { get; set; }
 
+    // Gap to race leader (regardless of class)
+    public int GapToRaceLeaderMs { get; set; }
+
     // Gap to class leader
     public int GapToClassLeaderMs { get; set; }
     // Gap from player's car to others regardless of class
-    public int GapToPlayerMs { get; set; }
+    public int GapToPlayerMs { get; set; }    
 
     // lap number the car is in
     public int LapIndex{ get; set; }
@@ -43,7 +46,7 @@ public sealed class CarInfo
     public bool IsSpectator { get; set; }
 
 
-    public CarInfo(uint carIndex)
+    public CarInfo(int carIndex)
     {
         CarIndex = carIndex;
     }

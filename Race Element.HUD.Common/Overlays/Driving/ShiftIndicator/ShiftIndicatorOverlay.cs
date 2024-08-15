@@ -14,11 +14,11 @@ using Unglide;
 namespace RaceElement.HUD.Common.Overlays.OverlayShiftIndicator;
 
 [Overlay(Name = "Shift Indicator",
-    Description = "Shift Bar with RPM Text. Adjustable colors and percentages.",
+    Description = "Shift Bar with RPM Text. Adjustable colors and percentages. (BETA)",
     Version = 1.00,
     OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Driving,
-Authors = ["Reinier Klarenberg"])]
+Authors = ["Reinier Klarenberg, Dirk Wolf"])]
 internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
 {
     private readonly ShiftIndicatorConfiguration _config = new();

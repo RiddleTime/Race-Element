@@ -7,6 +7,7 @@ namespace RaceElement.Data.Common.SimulatorData
         public WeatherConditions Weather { get; set; } = new();
         public TrackData Track { get; set; } = new();
 
+        // car index -> car info dictionary
         internal readonly ConcurrentDictionary<int, CarInfo> _entryListCars = [];
         public List<KeyValuePair<int, CarInfo>> Cars
         {
