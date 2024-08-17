@@ -14,18 +14,15 @@ using static RaceElement.Data.Common.SimulatorData.CarInfo;
 
 namespace RaceElement.HUD.Common.Overlays.OverlayStandings;
 
-#if DEBUG
 [Overlay(Name = "Live Standings", Version = 1.00,
-Description = "Shows race standings table for different car classes. (ALPHA)", OverlayType = OverlayType.Drive)]
-#endif
-
+Description = "Shows race standings table for different car classes. (ALPHA)", OverlayType = OverlayType.Drive, Authors = ["FG", "Dirk Wolf"])]
 public sealed class StandingsOverlay : CommonAbstractOverlay
 {
     private readonly StandingsConfiguration _config = new();
     private const int _height = 800;
     private const int _width = 800;
 
-    
+
     private String _driverName = "";
 
     // the entry list splint into separate lists for every car class
@@ -45,13 +42,13 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
         SessionData.Instance.FocusedCarIndex = 1;
         SessionData.Instance.Track.Length = 2000;
         CarClasses = ["F1"];
-        
+
 
         var lap1 = new LapInfo();
-        lap1.Splits = [ 10000, 22000, 11343];
+        lap1.Splits = [10000, 22000, 11343];
         lap1.LaptimeMS = lap1.Splits.Sum();
         var lap2 = new LapInfo();
-        lap2.Splits = [ 9000, 22000, 11343];
+        lap2.Splits = [9000, 22000, 11343];
         lap2.LaptimeMS = lap2.Splits.Sum();
 
         var car1 = new CarInfo(1);
@@ -69,9 +66,9 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
         car1.CarClass = "F1";
         SessionData.Instance.AddOrUpdateCar(1, car1);
         var car1driver0 = new DriverInfo();
-        car1driver0.Name = "Max Verstappen";        
+        car1driver0.Name = "Max Verstappen";
         car1.AddDriver(car1driver0);
-    
+
 
         CarInfo car2 = new CarInfo(2);
         car2.TrackPercentCompleted = 1.03f;
@@ -81,7 +78,7 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
         car2.TrackPercentCompleted = 0.3f;
         car2.Kmh = 160;
         car2.CupPosition = 2;
-        car2.RaceNumber = 5;        
+        car2.RaceNumber = 5;
         car2.LastLap = lap2;
         car2.CurrentLap = lap1;
         car2.GapToClassLeaderMs = 1000;
@@ -89,7 +86,7 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
         SessionData.Instance.AddOrUpdateCar(2, car2);
         var car2driver0 = new DriverInfo();
         car2driver0.Name = "Michael Schumacher";
-        car2.AddDriver(car2driver0);        
+        car2.AddDriver(car2driver0);
     }
 
 
@@ -98,7 +95,7 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
         InitCarClassEntryLists();
         base.BeforeStart();
     }
-    
+
     private void ClearCarClassEntryList()
     {
         if (SimDataProvider.HasTelemetry())
@@ -107,7 +104,7 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
         }
         foreach (string carClass in CarClasses)
         {
-            if (!_entryListForCarClass.ContainsKey(carClass)) 
+            if (!_entryListForCarClass.ContainsKey(carClass))
             {
                 InitCarClassEntryLists();
             }
@@ -116,11 +113,12 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
     }
 
     private void InitCarClassEntryLists()
-    {        
+    {
         _entryListForCarClass.Clear();
         if (!SimDataProvider.HasTelemetry()) return;
 
-        if (CarClasses == null && SimDataProvider.HasTelemetry()) {
+        if (CarClasses == null && SimDataProvider.HasTelemetry())
+        {
             CarClasses = SimDataProvider.Instance.GetCarClasses();
         }
         foreach (string carClass in CarClasses)
@@ -242,27 +240,28 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
     private void AddCarDataTableRow(CarInfo carData, List<StandingsTableRow> standingsTableRows)
     {
         DriverInfo driverInfo = carData.Drivers[carData.CurrentDriverIndex];
-        
+
         String additionInfo = AdditionalInfo(carData);
 
         // Interval based on the type of session:
         // - practice/qualifying: interval is gap to driver in front's BEST time (within) same class 
         // - race: interval is gap to car in front in the same class.        
-        int intervalMs = 0;        
+        int intervalMs = 0;
         if (standingsTableRows.Count > 0)
         {
             if (SessionData.Instance.SessionType != RaceSessionType.Race)
             {
                 intervalMs = ((int)(carData.FastestLap.LaptimeMS - standingsTableRows[standingsTableRows.Count - 1].FastestLapTime.LaptimeMS));
-            } else
+            }
+            else
             {
                 // TODO: take into account being lap down. e.g. print "1L" for 1 lap down
                 int carInFont = standingsTableRows[standingsTableRows.Count - 1].CarIdx;
-                intervalMs = ((int)(carData.GapToRaceLeaderMs - SessionData.Instance.Cars[carInFont].Value.GapToRaceLeaderMs));                
+                intervalMs = ((int)(carData.GapToRaceLeaderMs - SessionData.Instance.Cars[carInFont].Value.GapToRaceLeaderMs));
             }
         }
 
-            standingsTableRows.Add(new StandingsTableRow()
+        standingsTableRows.Add(new StandingsTableRow()
         {
             CarIdx = carData.CarIndex,
             Position = carData.CupPosition,
@@ -274,8 +273,8 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
             AdditionalInfo = additionInfo,
             FastestLapTime = carData.FastestLap,
             // should be something like "A3.43 4.1k" for iRacing. TODO at a later point we can add color.
-            LicenseInfo = carData.Drivers[carData.CurrentDriverIndex].Category + " " + carData.Drivers[carData.CurrentDriverIndex].Rating 
-        });   
+            LicenseInfo = carData.Drivers[carData.CurrentDriverIndex].Category + " " + carData.Drivers[carData.CurrentDriverIndex].Rating
+        });
     }
 
     private String AdditionalInfo(CarInfo realtimeCarUpdate)
@@ -346,7 +345,7 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
 
         switch (SessionData.Instance.SessionType)
         {
-            
+
             case RaceSessionType.Race:
                 {
                     switch (SessionData.Instance.Phase)
@@ -372,7 +371,7 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
                                     if (b.Value == null)
                                         return 1;
 
-                                    CarInfo carCarA = a.Value; 
+                                    CarInfo carCarA = a.Value;
                                     CarInfo carCarb = b.Value;
 
                                     if (carCarA == null) return -1;
@@ -418,9 +417,9 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
         foreach (KeyValuePair<int, CarInfo> kvp in cars)
         {
             if (kvp.Key == SessionData.Instance.FocusedCarIndex)
-            {                
-                DriverInfo driverInfo = kvp.Value.Drivers[kvp.Value.CurrentDriverIndex];                
-                _driverName = driverInfo.Name;                
+            {
+                DriverInfo driverInfo = kvp.Value.Drivers[kvp.Value.CurrentDriverIndex];
+                _driverName = driverInfo.Name;
                 //Debug.WriteLine($"standings overlay - car class {_ownClass} driver name {_driverLastName}");
             }
         }
@@ -457,14 +456,14 @@ public class StandingsTableRow
     public int Position { get; set; }
     public int RaceNumber { get; set; }
     public String DriverName { get; set; }
-    
+
     // e.g. "A3.43 4.1k" for A class, 3.43 safety rating 4100 irating
     public String LicenseInfo { get; set; }
 
     // gap to car in front that's in the same class
-    public LapInfo IntervalMs {  get; set; }
+    public LapInfo IntervalMs { get; set; }
     public LapInfo LastLapTime { get; set; }
-    public LapInfo FastestLapTime { get; set; }    
+    public LapInfo FastestLapTime { get; set; }
     public String AdditionalInfo { get; set; }
 }
 
@@ -516,7 +515,7 @@ public class OverlayStandingsTable
                 backgroundColor = _driversCarBackground;
             }
 
-            
+
             OverlayStandingsTablePositionLabel position = new(g, columnPosX, rowPosY, backgroundColor, classBackground, FontUtil.FontSegoeMono(_fontSize));
             position.Draw(g, tableData[i].Position.ToString());
 
@@ -737,5 +736,5 @@ public class OverlayStandingsTablePositionLabel
         var textOffset = 2;
         g.DrawString(number, _fontFamily, Brushes.White, new PointF(_x + _spacing / 2 + _maxFontWidth / 2 - numberWidth / 2, _y + textOffset));
 
-    }    
+    }
 }
