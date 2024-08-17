@@ -12,7 +12,7 @@ using static RaceElement.Data.Games.iRacing.SDK.IRacingSdkEnum;
 // https://us.v-cdn.net/6034148/uploads/8DD84H30FIC8/telemetry-11-23-15.pdf Official doc
 namespace RaceElement.Data.Games.iRacing
 {
-    internal class IRacingDataProvider : AbstractSimDataProvider
+    public class IRacingDataProvider : AbstractSimDataProvider
     {
         Dictionary<string, Color> carClassColor = [];
         HashSet<string> carClasses = null;
@@ -20,6 +20,9 @@ namespace RaceElement.Data.Games.iRacing
         bool hasTelemetry = false;
 
         private IRSDKSharper _iRacingSDK;
+
+        public CarLeftRight SpotterCallout { get; private set; }
+
         public IRacingDataProvider() {                    
             if (_iRacingSDK == null)
             {
@@ -255,6 +258,8 @@ namespace RaceElement.Data.Games.iRacing
                         break;
                 }
 
+                SpotterCallout = (CarLeftRight)_iRacingSDK.Data.GetInt("CarLeftRight");
+
 
                 // TODO: pit limiter doesn't seem to work properly
                 // EngineWarnings.PitSpeedLimiter.HasFlag(EngineWarnings.PitSpeedLimiter)
@@ -274,7 +279,64 @@ namespace RaceElement.Data.Games.iRacing
             {
                 CarInfo carInfo = SessionData.Instance.Cars[index].Value;
                 Debug.WriteLine("Car " + index + " #" + carInfo.RaceNumber + " " + carInfo.Drivers[0].Name + " pos: " + carInfo.CupPosition + " GL: " + carInfo.GapToClassLeaderMs + " GP:" + carInfo.GapToPlayerMs);                
-            }
+            }               
+        }
+
+        public override void SetupPreviewData()
+        {
+            SessionData.Instance.FocusedCarIndex = 1;
+            SessionData.Instance.Track.Length = 2000;
+            SimDataProvider.LocalCar.CarModel.CarClass = "F1";
+
+            var lap1 = new LapInfo();
+            lap1.Splits = [10000, 22000, 11343];
+            lap1.LaptimeMS = lap1.Splits.Sum();
+            var lap2 = new LapInfo();
+            lap2.Splits = [9000, 22000, 11343];
+            lap2.LaptimeMS = lap2.Splits.Sum();
+
+            var car1 = new CarInfo(1);
+            car1.TrackPercentCompleted = 10.0f;
+            car1.Position = 1;
+            car1.CarLocation = CarInfo.CarLocationEnum.Track;
+            car1.CurrentDriverIndex = 0;            
+            car1.Kmh = 140;
+            car1.CupPosition = 1;
+            car1.RaceNumber = 17;
+            car1.LastLap = lap1;
+            car1.FastestLap = lap1;
+            car1.CurrentLap = lap2;
+            car1.GapToClassLeaderMs = 0;
+            car1.CarClass = "F1";
+            SessionData.Instance.AddOrUpdateCar(1, car1);
+            var car1driver0 = new DriverInfo();
+            car1driver0.Name = "Max Verstappen";
+            car1.AddDriver(car1driver0);
+
+
+            CarInfo car2 = new CarInfo(2);
+            car2.TrackPercentCompleted = 10.03f;
+            car2.Position = 2;
+            car2.CarLocation = CarInfo.CarLocationEnum.Track;
+            car2.CurrentDriverIndex = 0;            
+            car2.Kmh = 160;
+            car2.CupPosition = 2;
+            car2.RaceNumber = 5;
+            car2.LastLap = lap2;
+            car2.FastestLap = lap2;
+            car2.CurrentLap = lap1;
+            car2.GapToClassLeaderMs = 1000;
+            car2.CarClass = "F1";
+            SessionData.Instance.AddOrUpdateCar(2, car2);
+            var car2driver0 = new DriverInfo();
+            car2driver0.Name = "Michael Schumacher";
+            car2.AddDriver(car2driver0);
+            
+            AddCarClassEntry("F1", Color.Sienna);
+
+            SpotterCallout = CarLeftRight.CarLeft;
+
+            hasTelemetry = true; // TODO: will this work when we have real telemetry? And is this sample telemetry valid for all sim providers?
         }
 
         // Gap calculation according to https://github.com/lespalt/iRon 
@@ -366,6 +428,11 @@ namespace RaceElement.Data.Games.iRacing
             carClasses.Add(carClass);
             // TODO: map string->Color instead of hardcoded.  
             carClassColor.TryAdd(carClass, Color.AliceBlue); 
+        }
+
+        public CarLeftRight GetSpotterCallout()
+        {
+            return SpotterCallout;            
         }
     }
 }

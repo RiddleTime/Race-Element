@@ -42,54 +42,7 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
 
     public sealed override void SetupPreviewData()
     {
-        SessionData.Instance.FocusedCarIndex = 1;
-        SessionData.Instance.Track.Length = 2000;
-        CarClasses = ["F1"];
-        
-
-        var lap1 = new LapInfo();
-        lap1.Splits = [ 10000, 22000, 11343];
-        lap1.LaptimeMS = lap1.Splits.Sum();
-        var lap2 = new LapInfo();
-        lap2.Splits = [ 9000, 22000, 11343];
-        lap2.LaptimeMS = lap2.Splits.Sum();
-
-        var car1 = new CarInfo(1);
-        car1.TrackPercentCompleted = 1.0f;
-        car1.Position = 1;
-        car1.CarLocation = CarInfo.CarLocationEnum.Track;
-        car1.CurrentDriverIndex = 0;
-        car1.TrackPercentCompleted = 0.1f;
-        car1.Kmh = 140;
-        car1.CupPosition = 1;
-        car1.RaceNumber = 17;
-        car1.LastLap = lap1;
-        car1.CurrentLap = lap2;
-        car1.GapToClassLeaderMs = 0;
-        car1.CarClass = "F1";
-        SessionData.Instance.AddOrUpdateCar(1, car1);
-        var car1driver0 = new DriverInfo();
-        car1driver0.Name = "Max Verstappen";        
-        car1.AddDriver(car1driver0);
-    
-
-        CarInfo car2 = new CarInfo(2);
-        car2.TrackPercentCompleted = 1.03f;
-        car2.Position = 2;
-        car2.CarLocation = CarInfo.CarLocationEnum.Track;
-        car2.CurrentDriverIndex = 0;
-        car2.TrackPercentCompleted = 0.3f;
-        car2.Kmh = 160;
-        car2.CupPosition = 2;
-        car2.RaceNumber = 5;        
-        car2.LastLap = lap2;
-        car2.CurrentLap = lap1;
-        car2.GapToClassLeaderMs = 1000;
-        car2.CarClass = "F1";
-        SessionData.Instance.AddOrUpdateCar(2, car2);
-        var car2driver0 = new DriverInfo();
-        car2driver0.Name = "Michael Schumacher";
-        car2.AddDriver(car2driver0);        
+        SimDataProvider.Instance.SetupPreviewData();
     }
 
 
@@ -249,7 +202,7 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
         // - practice/qualifying: interval is gap to driver in front's BEST time (within) same class 
         // - race: interval is gap to car in front in the same class.        
         int intervalMs = 0;        
-        if (standingsTableRows.Count > 0)
+        if (standingsTableRows.Count > 1)
         {
             if (SessionData.Instance.SessionType != RaceSessionType.Race)
             {

@@ -17,4 +17,8 @@ public abstract class AbstractSimDataProvider
     abstract internal void Stop();
 
     abstract public bool HasTelemetry();
+
+    public virtual void SetupPreviewData()
+    {        
+    }
 }
