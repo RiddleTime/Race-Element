@@ -7,7 +7,7 @@ using System.Drawing;
 namespace RaceElement.HUD.Common.Overlays.Driving.OverlayTesting
 {
     [Overlay(Name = "Testing", Description = "some testing ", OverlayType = OverlayType.Drive)]
-    internal class TestingOverlay : AbstractOverlay
+    internal class TestingOverlay : CommonAbstractOverlay
     {
         private readonly AbstractLoopJob _job;
         private readonly InfoPanel _panel;
@@ -17,7 +17,6 @@ namespace RaceElement.HUD.Common.Overlays.Driving.OverlayTesting
             Width = 500;
             Height = 150;
             RefreshRateHz = 50;
-            SubscribeToACCData = false;
 
             _panel = new InfoPanel(10, 500);
             _job = new SimpleLoopJob() { Action = () => SimDataProvider.Update(), IntervalMillis = 1000 / 50 };

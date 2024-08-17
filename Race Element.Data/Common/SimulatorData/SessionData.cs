@@ -1,9 +1,40 @@
-﻿namespace RaceElement.Data.Common.SimulatorData
+﻿using System.Collections.Concurrent;
+
+namespace RaceElement.Data.Common.SimulatorData
 {
     public sealed record SessionData
     {
         public WeatherConditions Weather { get; set; } = new();
         public TrackData Track { get; set; } = new();
+
+        // car index -> car info dictionary
+        internal readonly ConcurrentDictionary<int, CarInfo> _entryListCars = [];
+        public List<KeyValuePair<int, CarInfo>> Cars
+        {
+            get
+            {
+                return [.. _entryListCars];
+            }
+        }
+
+
+        public void AddOrUpdateCar(int carIndex, CarInfo car) {
+            _entryListCars.AddOrUpdate(carIndex, car, (key, oldCarInfo) => car);
+        }
+
+        private static SessionData _instance;
+        public static SessionData Instance
+        {
+            get
+            {
+                _instance ??= new SessionData();
+                return _instance;
+            }
+        }
+
+        public int FocusedCarIndex {get; set;}
+        public RaceSessionType SessionType { get; set; }
+        public SessionPhase Phase { get; set; }
     }
 
     public sealed record TrackData
@@ -17,6 +48,7 @@
         /// The track temperature in celsius
         /// </summary>
         public float Temperature { get; set; }
+        public int Length { get; set; }
     }
 
     public sealed record WeatherConditions
@@ -37,4 +69,28 @@
         /// </summary>
         public float AirDirection { get; set; }
     }
+
+    public enum RaceSessionType
+{
+    Practice = 0,
+    Qualifying = 4,
+    Superpole = 9,
+    Race = 10,
+    Hotlap = 11,
+    Hotstint = 12,
+    HotlapSuperpole = 13,
+    Replay = 14
+};
+public enum SessionPhase
+{
+    NONE = 0,
+    Starting = 1,
+    PreFormation = 2,
+    FormationLap = 3,
+    PreSession = 4,
+    Session = 5,
+    SessionOver = 6,
+    PostSession = 7,
+    ResultUI = 8
+};
 }

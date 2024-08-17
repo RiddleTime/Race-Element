@@ -106,12 +106,12 @@ internal sealed class CurrentGearOverlay : AbstractOverlay
             cachedBitmap?.Dispose();
     }
 
-    public sealed override bool ShouldRender()
+    public override bool ShouldRender()
     {
+        bool baseShouldRender = base.ShouldRender();
         if (_config.Gear.Spectator && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
-            return true;
-
-        return base.ShouldRender();
+            return true;        
+        return baseShouldRender;    
     }
 
     private int GetCurrentGear()

@@ -1,9 +1,12 @@
 ﻿using RaceElement.Controls.Util.SetupImage;
+using RaceElement.Data.Games;
 using RaceElement.HUD.ACC;
+using RaceElement.HUD.Common;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -58,68 +61,80 @@ internal class PreviewCache
         if (cached && _cachedPreviews.ContainsKey(overlayName))
             return;
 
-        OverlaysAcc.AbstractOverlays.TryGetValue(overlayName, out Type overlayType);
-
+        Type overlayType;
+        if (GameManager.CurrentGame != Game.AssettoCorsaCompetizione)
+        {            
+            CommonHuds.AbstractOverlays.TryGetValue(overlayName, out overlayType);
+        }
+        else
+        {            
+            OverlaysAcc.AbstractOverlays.TryGetValue(overlayName, out overlayType);
+        }
+        
         if (overlayType == null)
             return;
 
-        AbstractOverlay overlay;
+        CommonAbstractOverlay abstractOverlay;
         try
         {
-            overlay = (AbstractOverlay)Activator.CreateInstance(overlayType, DefaultOverlayArgs);
+            abstractOverlay = (CommonAbstractOverlay)Activator.CreateInstance(overlayType, DefaultOverlayArgs);
         }
         catch (Exception)
         {
             return;
         }
 
-        overlay.pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(false);
-        overlay.pageGraphics.NumberOfLaps = 30;
-        overlay.pageGraphics.FuelXLap = 3.012f;
-        overlay.pageGraphics.SessionType = ACCSharedMemory.AcSessionType.AC_RACE;
-        overlay.pageGraphics.Status = ACCSharedMemory.AcStatus.AC_LIVE;
-        overlay.pageGraphics.MandatoryPitDone = false;
-        overlay.pageGraphics.NormalizedCarPosition = 0.0472972f;
-        //overlay.pageGraphics.DeltaLapTimeMillis = -0137;
-        overlay.pageGraphics.IsValidLap = true;
-        overlay.pageGraphics.WindDirection = 0.1f;
-        overlay.pageGraphics.WindSpeed = 16.92f;
-        overlay.pageGraphics.ExhaustTemperature = 325.24f;
-        overlay.pageGraphics.currentTyreSet = 3;
+        if (abstractOverlay is AbstractOverlay) {
+            AbstractOverlay overlay = (AbstractOverlay) abstractOverlay;
 
-        overlay.pagePhysics = ACCSharedMemory.Instance.ReadPhysicsPageFile(false);
-        overlay.pagePhysics.SpeedKmh = 272.32f;
-        overlay.pagePhysics.Fuel = 76.07f;
-        overlay.pagePhysics.Rpms = 8500;
-        overlay.pagePhysics.Gear = 3;
-        overlay.pagePhysics.WheelPressure = [27.61f, 27.56f, 26.94f, 26.13f];
-        overlay.pagePhysics.TyreCoreTemperature = [102.67f, 88.51f, 74.92f, 67.23f];
-        overlay.pagePhysics.PadLife = [24f, 24f, 25f, 25f];
-        overlay.pagePhysics.BrakeTemperature = [300f, 250f, 450f, 460f];
-        overlay.pagePhysics.Gas = 0.78f;
-        overlay.pagePhysics.Brake = 0.133f;
-        overlay.pagePhysics.SteerAngle = 0.053f;
-        overlay.pagePhysics.BrakeBias = 0.88f;
-        overlay.pagePhysics.WaterTemp = 98.3f;
-        overlay.pagePhysics.RoadTemp = 29.826f;
-        overlay.pagePhysics.AirTemp = 36.2326f;
+            overlay.pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(false);
+            overlay.pageGraphics.NumberOfLaps = 30;
+            overlay.pageGraphics.FuelXLap = 3.012f;
+            overlay.pageGraphics.SessionType = ACCSharedMemory.AcSessionType.AC_RACE;
+            overlay.pageGraphics.Status = ACCSharedMemory.AcStatus.AC_LIVE;
+            overlay.pageGraphics.MandatoryPitDone = false;
+            overlay.pageGraphics.NormalizedCarPosition = 0.0472972f;
+            //overlay.pageGraphics.DeltaLapTimeMillis = -0137;
+            overlay.pageGraphics.IsValidLap = true;
+            overlay.pageGraphics.WindDirection = 0.1f;
+            overlay.pageGraphics.WindSpeed = 16.92f;
+            overlay.pageGraphics.ExhaustTemperature = 325.24f;
+            overlay.pageGraphics.currentTyreSet = 3;
 
-        overlay.pageStatic = ACCSharedMemory.Instance.ReadStaticPageFile(false);
-        overlay.pageStatic.MaxFuel = 120f;
-        overlay.pageStatic.MaxRpm = 9250;
-        overlay.pageStatic.CarModel = "porsche_991ii_gt3_r";
+            overlay.pagePhysics = ACCSharedMemory.Instance.ReadPhysicsPageFile(false);
+            overlay.pagePhysics.SpeedKmh = 272.32f;
+            overlay.pagePhysics.Fuel = 76.07f;
+            overlay.pagePhysics.Rpms = 8500;
+            overlay.pagePhysics.Gear = 3;
+            overlay.pagePhysics.WheelPressure = [27.61f, 27.56f, 26.94f, 26.13f];
+            overlay.pagePhysics.TyreCoreTemperature = [102.67f, 88.51f, 74.92f, 67.23f];
+            overlay.pagePhysics.PadLife = [24f, 24f, 25f, 25f];
+            overlay.pagePhysics.BrakeTemperature = [300f, 250f, 450f, 460f];
+            overlay.pagePhysics.Gas = 0.78f;
+            overlay.pagePhysics.Brake = 0.133f;
+            overlay.pagePhysics.SteerAngle = 0.053f;
+            overlay.pagePhysics.BrakeBias = 0.88f;
+            overlay.pagePhysics.WaterTemp = 98.3f;
+            overlay.pagePhysics.RoadTemp = 29.826f;
+            overlay.pagePhysics.AirTemp = 36.2326f;
 
-        overlay.SetupPreviewData();
-        overlay.IsPreviewing = true;
+            overlay.pageStatic = ACCSharedMemory.Instance.ReadStaticPageFile(false);
+            overlay.pageStatic.MaxFuel = 120f;
+            overlay.pageStatic.MaxRpm = 9250;
+            overlay.pageStatic.CarModel = "porsche_991ii_gt3_r";
+        }
+
+        abstractOverlay.SetupPreviewData();
+        abstractOverlay.IsPreviewing = true;
 
         try
         {
-            overlay.BeforeStart();
+            abstractOverlay.BeforeStart();
             CachedPreview cachedPreview = new()
             {
-                Width = overlay.Width,
-                Height = overlay.Height,
-                CachedBitmap = new CachedBitmap(overlay.Width, overlay.Height, g => overlay.Render(g))
+                Width = abstractOverlay.Width,
+                Height = abstractOverlay.Height,
+                CachedBitmap = new CachedBitmap(abstractOverlay.Width, abstractOverlay.Height, g => abstractOverlay.Render(g))
             };
 
             if (_cachedPreviews.ContainsKey(overlayName))
@@ -127,13 +142,13 @@ internal class PreviewCache
             else
                 _cachedPreviews.Add(overlayName, cachedPreview);
 
-            overlay.BeforeStop();
+            abstractOverlay.BeforeStop();
         }
         catch (Exception) { }
         finally
         {
-            overlay.Dispose();
-            overlay = null;
+            abstractOverlay.Dispose();
+            abstractOverlay = null;
         }
     }
 

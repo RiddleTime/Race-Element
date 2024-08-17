@@ -8,6 +8,7 @@ namespace RaceElement.Data.Common
 {
     public static class SimDataProvider
     {
+        public static AbstractSimDataProvider? Instance { get; internal set; }
         private static LocalCarData _localCarData = new();
         public static LocalCarData LocalCar { get => _localCarData; }
 
@@ -25,7 +26,12 @@ namespace RaceElement.Data.Common
             {
                 case Game.AssettoCorsa1:
                     {
-                        AssettoCorsa1DataProvider.Update(ref _localCarData, ref _session, ref _gameData);
+                        if (Instance == null)
+                        {
+                            Instance = new AssettoCorsa1DataProvider();
+                        }
+
+                        Instance.Update(ref _localCarData, ref _session, ref _gameData);
                         break;
                     }
                 case Game.AssettoCorsaCompetizione:
@@ -35,7 +41,12 @@ namespace RaceElement.Data.Common
                     }
                 case Game.iRacing:
                     {
-                        IRacingDataProvider.Update(ref _localCarData, ref _session, ref _gameData);
+                        if (Instance == null)
+                        {
+                            Instance = new IRacingDataProvider();
+                        }
+
+                        Instance.Update(ref _localCarData, ref _session, ref _gameData);
                         break;
                     }
                 default: { break; }
@@ -47,6 +58,41 @@ namespace RaceElement.Data.Common
             _localCarData = new LocalCarData();
             _session = new SessionData();
             _gameData = new GameData();
+        }
+
+        internal static void Stop()
+        {
+            switch (GameManager.CurrentGame)
+            {
+                case Game.AssettoCorsa1:
+                    {
+                        Instance.Stop();
+                        Instance = null;
+                        break;
+                    }
+                case Game.AssettoCorsaCompetizione:
+                    {
+                        // TODO
+                        break;
+                    }
+                case Game.iRacing:
+                    {
+                        if (Instance == null)
+                        {
+                            return;
+                        }
+
+                        Instance.Stop();
+                        Instance = null;
+                        break;
+                    }
+                default: { break; }
+            }
+        }
+
+        public static bool HasTelemetry()
+        {
+            return (Instance != null && Instance.HasTelemetry());
         }
     }
 }
