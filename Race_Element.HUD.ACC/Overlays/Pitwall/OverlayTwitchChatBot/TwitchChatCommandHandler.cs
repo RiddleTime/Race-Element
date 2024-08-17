@@ -87,6 +87,8 @@ internal sealed class TwitchChatBotCommandHandler
                         replyMessage = response.Result(args);
                         break;
                     }
+
+                if (replyMessage.Length > 0) break;
             }
 
             if (replyMessage.IsNullOrEmpty())
