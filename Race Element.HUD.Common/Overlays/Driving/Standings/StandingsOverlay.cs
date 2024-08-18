@@ -200,13 +200,8 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
         // Interval based on the type of session:
         // - practice/qualifying: interval is gap to driver in front's BEST time (within) same class 
         // - race: interval is gap to car in front in the same class.        
-<<<<<<< HEAD
         int intervalMs = 0;        
         if (standingsTableRows.Count > 1)
-=======
-        int intervalMs = 0;
-        if (standingsTableRows.Count > 0)
->>>>>>> adc20ef0d99804698613857f4765fbf11fee1ac5
         {
             if (SessionData.Instance.SessionType != RaceSessionType.Race)
             {
